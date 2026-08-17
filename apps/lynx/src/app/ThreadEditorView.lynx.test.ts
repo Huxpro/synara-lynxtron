@@ -258,6 +258,15 @@ describe('Lynx Editor view', () => {
     expect(diffDockStyles).toMatch(
       /\.SliceRoot--viewport-compact\s+\.ThreadEditorChanges\s+\.DiffDockFileSidebar,[\s\S]*?width:\s*100%;[\s\S]*?height:\s*176px;/s
     );
+    expect(diffDockStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadEditorChanges\s+\.DiffDockBody\s*\{[^}]*flex-direction:\s*row;/s
+    );
+    expect(diffDockStyles).toMatch(
+      /\.SliceRoot--viewport-short-height[\s\S]*?\.ThreadEditorChanges[\s\S]*?\.DiffDockFileSidebar\s*\{[^}]*width:\s*104px;[^}]*min-width:\s*104px;[^}]*height:\s*100%;[^}]*min-height:\s*0;/s
+    );
+    expect(diffDockStyles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ThreadEditorChanges\s+\.DiffDockScroller\s*\{[^}]*padding:\s*4px;/s
+    );
   });
 
   it('matches the Web authority rail boundaries', () => {

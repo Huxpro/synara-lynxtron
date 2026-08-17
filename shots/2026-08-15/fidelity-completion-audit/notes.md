@@ -3392,3 +3392,21 @@ former dynamic-event P1 is no longer a valid blocker.
   `0.00 -> 0.00`; no code change was required.
 - Detailed evidence:
   `shots/2026-08-17/explorer-search-error-short-height/notes.md`.
+
+## 2026-08-17 Editor Changes at 320x200
+
+- Active discovery moved from Explorer preview states to a new Editor Changes
+  presentation with a canonical two-file, `449`-byte working-tree patch.
+- The `76px` Editor center retained a fixed `176px` changed-files sidebar,
+  placing the diff scroller entirely below the visible center and growing the
+  Editor body from `154px` client height to `200px` scroll height.
+- Short-height Editor Changes now uses a `104px` full-height file rail beside
+  a `168x76` patch scroller. Both complete file rows and the selected patch
+  remain reachable, while normal `1280x820` Editor keeps its `224px` sidebar.
+- `lynx-editor-diff-short-preview-offscreen`: P1 contribution
+  `1.00 -> 0.00`.
+- The Web authority empty-root condition, a rejected stale-bundle capture, and
+  missing browser refs for custom diff rows are separately classified as
+  harness losses or missing interaction coverage, not product passes.
+- Detailed evidence:
+  `shots/2026-08-17/editor-diff-short-height/notes.md`.
