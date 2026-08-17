@@ -4725,3 +4725,24 @@ former dynamic-event P1 is no longer a valid blocker.
   exited with `sessions: []`.
 - Detailed evidence:
   `shots/2026-08-18/native-runtime-endpoint-trim-guard/notes.md`.
+
+## 2026-08-18 Native Composer permission popup fidelity
+
+- The permission popup reused generic Native `32px` menu rows, measured
+  `188x116`, and omitted both Web leading icons.
+- The scoped runtime popup now uses exact shield/raised-hand Web artwork,
+  `26px` rows, `16px` icons, `12/18/400` labels, and the existing `12px`
+  selected check.
+- A first `176px`, then `188px`, implementation exposed selected Default
+  permissions wrapping to 36px. Both were rejected; final `196px` is the
+  smallest verified width that keeps the long selected row on one line
+  without shrinking text.
+- Final exact Native popup measured `196x64`; both labels were `18px` high,
+  row rhythm was `26px`, and real Full access -> Default permissions
+  interaction succeeded.
+- Focused Composer tests passed `4/4`; Native/Desktop production build passed;
+  warning/error console was empty.
+- KV/window state restored byte-exact, screenshot count remained `100`, and
+  browser gate exited with `sessions: []`.
+- Detailed evidence:
+  `shots/2026-08-18/native-composer-permission-popup-fidelity/notes.md`.

@@ -135,10 +135,29 @@ describe('native composer attachment menu item', () => {
       /\.ComposerRuntimeTriggerPermissionIconLynx\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*flex-shrink:\s*0;/s
     );
     expect(runtimeElementsSource).toContain('ComposerRuntimeTriggerLabelLynx');
+    expect(runtimeElementsSource).toContain('ComposerRuntimeOptionLabelLynx');
+    expect(runtimeElementsSource).toContain('ComposerRuntimeOptionIconLynx');
+    expect(runtimeElementsSource).toContain('ComposerRuntimeOptionTextLynx');
+    expect(runtimeElementsSource).toContain('HAND_RAISED_SVG');
     expect(runtimeElementsSource).toContain('<ChevronDownIcon');
     expect(runtimeElementsSource).not.toContain('>⌄</text>');
     expect(composerStyles).toMatch(
       /\.ComposerRuntimeTriggerChevronLynx\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*flex-shrink:\s*0;[^}]*opacity:\s*0\.7;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerRuntimePopupLynx\.LxMenuPopup\s*\{[^}]*width:\s*196px;[^}]*min-width:\s*196px;[^}]*min-height:\s*0;[^}]*padding:\s*5px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerRuntimePopupLynx \.LxMenuItem\s*\{[^}]*min-height:\s*26px;[^}]*padding:\s*3px 8px;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerRuntimeOptionIconLynx\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*flex-shrink:\s*0;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerRuntimeOptionTextLynx\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;/s
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerRuntimePopupLynx \.LxMenuIndicatorIcon\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*margin-left:\s*8px;/s
     );
     const inputElementsSource = readFileSync(
       new URL('./ComposerInputCompositionElements.lynx.tsx', import.meta.url),
