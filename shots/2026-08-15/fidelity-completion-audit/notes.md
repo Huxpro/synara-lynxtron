@@ -3908,3 +3908,22 @@ former dynamic-event P1 is no longer a valid blocker.
   processes.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-multifile-progressive/notes.md`.
+
+## 2026-08-17 Environment multi-server menu at 320x200
+
+- New coverage advanced the former one-server pass to four real scanner rows:
+  Synara Vite plus three harness-owned Python dev servers.
+- Three rows fit exactly, but four rows made the popup `211px` tall and left
+  the server list at `overflow-y: visible`; the fourth row ended at `204`.
+- Short-height Local Servers now reuses the branch-menu allocation:
+  popup `100vh - 16px`, list `flex:1/min-height:0/overflow-y:scroll`.
+- After, popup was `288x184 @ y=16..200`, list was `147/174`, and
+  programmatic max-scroll moved the fourth row to `y=151..193`.
+- `lynx-environment-local-servers-multi-overflow`: P1 contribution
+  `1.00 -> 0.00`.
+- Programmatic scroll proved reachability only; no wheel/Native gesture pass is
+  claimed.
+- Focused tests passed `8/8`; Web, Lynx-for-Web, and Native/Desktop builds
+  passed; all owned server/browser processes were removed.
+- Detailed evidence:
+  `shots/2026-08-17/environment-local-servers-multi-short-height/notes.md`.

@@ -435,6 +435,12 @@ describe('Lynx Environment panel', () => {
       /\.LxMenuPopup\.EnvironmentLocalServersPopup\s*\{[^}]*width:\s*288px;[^}]*padding:\s*6px;/s
     );
     expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.LxMenuPopup\.EnvironmentLocalServersPopup\s*\{[^}]*height:\s*calc\(100vh - 16px\);[^}]*max-height:\s*calc\(100vh - 16px\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.EnvironmentLocalServersList\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*overflow-y:\s*scroll;/s
+    );
+    expect(styles).toMatch(
       /\.EnvironmentChangesAddition\s*\{[^}]*color:\s*var\(--settings-usage-meter-healthy\);/s
     );
     expect(styles).toMatch(

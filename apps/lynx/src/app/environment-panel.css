@@ -513,6 +513,11 @@
   padding: 6px;
 }
 
+.SliceRoot--viewport-short-height .LxMenuPopup.EnvironmentLocalServersPopup {
+  height: calc(100vh - 16px);
+  max-height: calc(100vh - 16px);
+}
+
 .EnvironmentLocalServersHeader {
   display: flex;
   min-height: 22px;
@@ -556,6 +561,12 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.SliceRoot--viewport-short-height .EnvironmentLocalServersList {
+  flex: 1;
+  min-height: 0;
+  overflow-y: scroll;
 }
 
 .EnvironmentLocalServerRow {
