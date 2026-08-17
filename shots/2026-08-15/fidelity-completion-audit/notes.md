@@ -2700,6 +2700,17 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/appearance-terminal-font-popup-short-height/notes.md`.
 
+### Suggestion selection boundary
+
+- The real `JetBrains Mono` row was published as browser menuitem `@e7`, but
+  coordinate and direct-ref activation did not dispatch the Lynx custom item
+  event in Lynx-for-Web.
+- Input value, popup state, and isolated persisted settings remained unchanged.
+- `native-terminal-font-suggestion-selection`: missing coverage remains
+  `1.00`; no Native product loss is claimed.
+- Detailed evidence:
+  `shots/2026-08-17/appearance-terminal-font-selection/notes.md`.
+
 ## 2026-08-17 Custom Models provider menu at 320x200
 
 - The rendered Models provider control opened the real eight-option menu at
