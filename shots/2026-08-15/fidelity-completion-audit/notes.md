@@ -4110,6 +4110,30 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/native-pull-requests-multi-project-filter/notes.md`.
 
+## 2026-08-17 Native Pull Requests project and state combination
+
+- A new exact-owned Native cell combined two repositories, React project
+  scope, `Open -> Merged -> Open`, and restoration to All.
+- Canonical prerequisite RPCs proved `100` aggregate Open rows and `50`
+  React-only rows in both Open and Merged with zero errors.
+- Real Native touches selected React, Merged, Open, and All at measured centers
+  while trigger accessibility retained React across state changes.
+- Exact row-container counts passed `100 -> 50 -> 50 -> 50 -> 100`; host logs
+  independently showed React-scoped Open/Merged RPC payloads and restored
+  aggregate Open.
+- Popup geometry was `256x140 @ (616,130)` with the complete three-option
+  list.
+- `native-pull-requests-project-state-combination`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- An initial stale popup node box was rejected as capture-timing mismatch, not
+  product loss. The retained mounted-popup capture passed.
+- Native warning/error console was empty; temporary JPEG was `1800x1300`.
+- All failure/exit gates returned `sessions: []`, owned resources were
+  removed, unrelated clients were untouched, and screenshot count stayed
+  `100`.
+- Detailed evidence:
+  `shots/2026-08-17/native-pull-requests-project-state-combination/notes.md`.
+
 ## 2026-08-17 Pull Requests multi-project filter at 320x320
 
 - Two canonical projects pointed at distinct real public repositories and
