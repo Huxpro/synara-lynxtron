@@ -4404,3 +4404,23 @@ former dynamic-event P1 is no longer a valid blocker.
   and zero agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-environment-resistant-local-server-stop/notes.md`.
+
+## 2026-08-17 Native Environment Local Server feedback Refresh cleanup
+
+- A new exact-owned Native lifecycle cell continued from real resistant-server
+  feedback into target-process removal and rendered Refresh.
+- After `stopped:false`, the exact `localhost:58191` row, server message, and
+  retry-ready Stop were present.
+- The harness then killed and reaped only its owned resistant process, verified
+  port `58191` free, and activated the rendered Refresh control at `(872,255)`.
+- After Refresh the popup remained mounted while both the owned row and its
+  PID-owned alert disappeared.
+- `native-environment-local-server-feedback-refresh-cleanup`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Native console had no warning/error entry, temporary JPEG was `1800x1300`,
+  all owned resources were removed, both ports were free, and screenshot count
+  remained `100`.
+- Entry/exit `browser:gate` returned `sessions: []` and zero
+  agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-environment-local-server-feedback-refresh/notes.md`.
