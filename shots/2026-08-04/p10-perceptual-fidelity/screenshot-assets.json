@@ -1,8 +1,8 @@
 {
   "version": 1,
   "assetBaseUrl": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main",
-  "imageCount": 1387,
-  "byteCount": 212839031,
+  "imageCount": 1390,
+  "byteCount": 213049470,
   "images": [
     {
       "day": "2026-08-02",
@@ -11077,6 +11077,30 @@
       "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/web-kanban-card-actions/01-open.png",
       "repoPath": "shots/2026-08-16/web-kanban-card-actions/01-open.png",
       "bytes": 32526
+    },
+    {
+      "day": "2026-08-18",
+      "directory": "automations-edit-relay-recovery/lynx-after",
+      "name": "raw.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/automations-edit-relay-recovery/lynx-after/raw.png",
+      "repoPath": "shots/2026-08-18/automations-edit-relay-recovery/lynx-after/raw.png",
+      "bytes": 64956
+    },
+    {
+      "day": "2026-08-18",
+      "directory": "automations-edit-relay-recovery/lynx-before",
+      "name": "raw.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/automations-edit-relay-recovery/lynx-before/raw.png",
+      "repoPath": "shots/2026-08-18/automations-edit-relay-recovery/lynx-before/raw.png",
+      "bytes": 67128
+    },
+    {
+      "day": "2026-08-18",
+      "directory": "automations-edit-relay-recovery/web",
+      "name": "raw.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/automations-edit-relay-recovery/web/raw.png",
+      "repoPath": "shots/2026-08-18/automations-edit-relay-recovery/web/raw.png",
+      "bytes": 78355
     },
     {
       "day": "2026-08-18",

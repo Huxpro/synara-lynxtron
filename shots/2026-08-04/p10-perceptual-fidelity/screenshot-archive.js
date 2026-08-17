@@ -6,12 +6,12 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     "lastDay": "2026-08-18",
     "consecutiveCalendarDays": 15
   },
-  "imageCount": 1387,
-  "byteCount": 212839031,
+  "imageCount": 1390,
+  "byteCount": 213049470,
   "trackedCount": 100,
   "untrackedCount": 0,
-  "remoteCount": 1287,
-  "storyCount": 432,
+  "remoteCount": 1290,
+  "storyCount": 435,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -19826,6 +19826,75 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
       "sequence": false
     },
     {
+      "id": "2026-08-18--automations-edit-relay-recovery",
+      "day": "2026-08-18",
+      "directory": "automations-edit-relay-recovery",
+      "label": "Automations Edit Relay Recovery",
+      "images": [
+        {
+          "day": "2026-08-18",
+          "directory": "automations-edit-relay-recovery/web",
+          "name": "raw.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/automations-edit-relay-recovery/web/raw.png",
+          "repoPath": "shots/2026-08-18/automations-edit-relay-recovery/web/raw.png",
+          "bytes": 78355,
+          "gitStatus": "tracked",
+          "client": "web"
+        }
+      ],
+      "imageCount": 1,
+      "clients": [
+        "web"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--automations-edit-relay-recovery--lynx-after",
+      "day": "2026-08-18",
+      "directory": "automations-edit-relay-recovery/lynx-after",
+      "label": "Automations Edit Relay Recovery · Lynx After",
+      "images": [
+        {
+          "day": "2026-08-18",
+          "directory": "automations-edit-relay-recovery/lynx-after",
+          "name": "raw.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/automations-edit-relay-recovery/lynx-after/raw.png",
+          "repoPath": "shots/2026-08-18/automations-edit-relay-recovery/lynx-after/raw.png",
+          "bytes": 64956,
+          "gitStatus": "tracked",
+          "client": "evidence"
+        }
+      ],
+      "imageCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--automations-edit-relay-recovery--lynx-before",
+      "day": "2026-08-18",
+      "directory": "automations-edit-relay-recovery/lynx-before",
+      "label": "Automations Edit Relay Recovery · Lynx Before",
+      "images": [
+        {
+          "day": "2026-08-18",
+          "directory": "automations-edit-relay-recovery/lynx-before",
+          "name": "raw.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/automations-edit-relay-recovery/lynx-before/raw.png",
+          "repoPath": "shots/2026-08-18/automations-edit-relay-recovery/lynx-before/raw.png",
+          "bytes": 67128,
+          "gitStatus": "tracked",
+          "client": "evidence"
+        }
+      ],
+      "imageCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
       "id": "2026-08-18--flag-experiments--enableCSSInlineVariables",
       "day": "2026-08-18",
       "directory": "flag-experiments/enableCSSInlineVariables",
@@ -19838,7 +19907,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/flag-experiments/enableCSSInlineVariables/off-on.png",
           "repoPath": "shots/2026-08-18/flag-experiments/enableCSSInlineVariables/off-on.png",
           "bytes": 167222,
-          "gitStatus": "tracked",
+          "gitStatus": "remote",
           "client": "evidence"
         }
       ],
@@ -19861,7 +19930,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/flag-experiments/enableCSSRule/off-on-resize.png",
           "repoPath": "shots/2026-08-18/flag-experiments/enableCSSRule/off-on-resize.png",
           "bytes": 268644,
-          "gitStatus": "tracked",
+          "gitStatus": "remote",
           "client": "evidence"
         }
       ],
@@ -19884,7 +19953,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/flag-experiments/enableNewTransformOrigin/default-off-on.png",
           "repoPath": "shots/2026-08-18/flag-experiments/enableNewTransformOrigin/default-off-on.png",
           "bytes": 251410,
-          "gitStatus": "tracked",
+          "gitStatus": "remote",
           "client": "evidence"
         }
       ],
@@ -36792,12 +36861,57 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     },
     {
       "day": "2026-08-18",
-      "imageCount": 6,
-      "byteCount": 1717790,
+      "imageCount": 9,
+      "byteCount": 1928229,
       "trackedCount": 6,
       "untrackedCount": 0,
-      "remoteCount": 0,
+      "remoteCount": 3,
       "directories": [
+        {
+          "directory": "automations-edit-relay-recovery/lynx-after",
+          "imageCount": 1,
+          "images": [
+            {
+              "day": "2026-08-18",
+              "directory": "automations-edit-relay-recovery/lynx-after",
+              "name": "raw.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/automations-edit-relay-recovery/lynx-after/raw.png",
+              "repoPath": "shots/2026-08-18/automations-edit-relay-recovery/lynx-after/raw.png",
+              "bytes": 64956,
+              "gitStatus": "tracked"
+            }
+          ]
+        },
+        {
+          "directory": "automations-edit-relay-recovery/lynx-before",
+          "imageCount": 1,
+          "images": [
+            {
+              "day": "2026-08-18",
+              "directory": "automations-edit-relay-recovery/lynx-before",
+              "name": "raw.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/automations-edit-relay-recovery/lynx-before/raw.png",
+              "repoPath": "shots/2026-08-18/automations-edit-relay-recovery/lynx-before/raw.png",
+              "bytes": 67128,
+              "gitStatus": "tracked"
+            }
+          ]
+        },
+        {
+          "directory": "automations-edit-relay-recovery/web",
+          "imageCount": 1,
+          "images": [
+            {
+              "day": "2026-08-18",
+              "directory": "automations-edit-relay-recovery/web",
+              "name": "raw.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/automations-edit-relay-recovery/web/raw.png",
+              "repoPath": "shots/2026-08-18/automations-edit-relay-recovery/web/raw.png",
+              "bytes": 78355,
+              "gitStatus": "tracked"
+            }
+          ]
+        },
         {
           "directory": "flag-experiments/enableCSSInlineVariables",
           "imageCount": 1,
@@ -36809,7 +36923,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/flag-experiments/enableCSSInlineVariables/off-on.png",
               "repoPath": "shots/2026-08-18/flag-experiments/enableCSSInlineVariables/off-on.png",
               "bytes": 167222,
-              "gitStatus": "tracked"
+              "gitStatus": "remote"
             }
           ]
         },
@@ -36824,7 +36938,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/flag-experiments/enableCSSRule/off-on-resize.png",
               "repoPath": "shots/2026-08-18/flag-experiments/enableCSSRule/off-on-resize.png",
               "bytes": 268644,
-              "gitStatus": "tracked"
+              "gitStatus": "remote"
             }
           ]
         },
@@ -36839,7 +36953,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/flag-experiments/enableNewTransformOrigin/default-off-on.png",
               "repoPath": "shots/2026-08-18/flag-experiments/enableNewTransformOrigin/default-off-on.png",
               "bytes": 251410,
-              "gitStatus": "tracked"
+              "gitStatus": "remote"
             }
           ]
         },

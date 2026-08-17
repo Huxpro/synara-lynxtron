@@ -81,6 +81,14 @@ const reliabilityLedger = [
     summary:
       'Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present',
   },
+  {
+    id: 'lynx-web-relay-open-state-misclassified',
+    severityPoints: 3,
+    introduced: 'b4df16d69',
+    fixed: '023a36d57',
+    summary:
+      'Lynx-for-Web rejected an open feature socket because the host depended on WebSocket.OPEN',
+  },
 ];
 const harnessIssueLedger = [
   {
