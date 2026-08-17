@@ -246,6 +246,15 @@ describe('Lynx Explorer dock', () => {
       /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockEntries--truncated\s*\{[^}]*padding:\s*0;/s
     );
     expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock--editor-search\s+\.ExplorerDockSidebar\s*\{[^}]*height:\s*100%;[^}]*min-height:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock--editor-search\s+\.ExplorerDockSearch\s*\{[^}]*padding:\s*2px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock--editor-search\s+\.ExplorerDockPreview\s*\{[^}]*display:\s*none;/s
+    );
+    expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockEntryPath\s*\{[^}]*display:\s*none;/s
     );
     expect(styles).toMatch(

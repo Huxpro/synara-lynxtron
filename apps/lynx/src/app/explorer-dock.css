@@ -351,6 +351,40 @@
   display: none;
 }
 
+.SliceRoot--viewport-short-height
+  .ExplorerDock--editor-search
+  .ExplorerDockSearch {
+  padding: 2px;
+}
+
+.SliceRoot--viewport-short-height
+  .ExplorerDock--editor-search
+  .ExplorerDockSearchIcon {
+  left: 12px;
+  top: 9px;
+}
+
+.SliceRoot--viewport-short-height
+  .ExplorerDock--editor-search
+  .ExplorerDockSearchTruncated {
+  height: 14px;
+  padding: 0 4px;
+  font-size: 9px;
+  line-height: 14px;
+}
+
+.SliceRoot--viewport-short-height
+  .ExplorerDock--editor-search
+  .ExplorerDockEntries--truncated {
+  padding: 0;
+}
+
+.SliceRoot--viewport-short-height
+  .ExplorerDock--editor-search
+  .ExplorerDockPreview {
+  display: none;
+}
+
 .SliceRoot--viewport-compact
   .ExplorerDock--editor
   .ExplorerDockBody,
@@ -372,6 +406,13 @@
   min-height: 176px;
   border-right-width: 0;
   border-bottom: 1px solid var(--border);
+}
+
+.SliceRoot--viewport-short-height
+  .ExplorerDock--editor-search
+  .ExplorerDockSidebar {
+  height: 100%;
+  min-height: 0;
 }
 
 .ExplorerDockHeader {

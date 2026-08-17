@@ -3313,3 +3313,22 @@ former dynamic-event P1 is no longer a valid blocker.
   passed.
 - Detailed evidence:
   `shots/2026-08-17/explorer-long-search-result-short-height/notes.md`.
+
+## 2026-08-17 Editor Explorer truncated search at 320x200
+
+- The canonical 80-result `truncated:true` search was opened in the distinct
+  Editor Search presentation.
+- Before, Editor retained a 176px sidebar inside its 76px center row; the
+  22px truncation footer began at `y=199` and ended at `221`, while the Editor
+  surface grew to 252px.
+- `lynx-editor-explorer-truncated-footer-offscreen`: P1 contribution
+  `1.00 -> 0.00`.
+- Short-height Editor Search now uses the actual center height, compact search
+  and footer spacing, a complete 28px first row, and hides the zero-space empty
+  preview.
+- After, dock/sidebar are `272x76 @ (48,46)`, first row is
+  `272x28 @ (48,79)`, and footer is `272x14 @ (48,107)`, ending at `y=121`.
+- Focused tests passed `2/2`; Lynx-for-Web and Native/Desktop production builds
+  passed.
+- Detailed evidence:
+  `shots/2026-08-17/editor-explorer-truncated-search-short-height/notes.md`.
