@@ -6,7 +6,10 @@ import {
   PULL_REQUEST_DIFF_MORE_LINE_COUNT,
   PullRequestCodeComposition,
 } from '@synara-web/components/pullRequest/PullRequestCodeComposition';
-import { buildPullRequestCodeView } from '@synara-web/components/pullRequest/pullRequestCode.logic';
+import {
+  buildPullRequestCodeView,
+  type PullRequestDiffFileView,
+} from '@synara-web/components/pullRequest/pullRequestCode.logic';
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsBehaviorProjection,
@@ -123,6 +126,11 @@ function OpenDiffDock(props: {
           file.path.toLowerCase().includes(fileJumpQuery.trim().toLowerCase())
         )
       : [];
+  const jumpToFile = (file: PullRequestDiffFileView) => {
+    setExpandedFileKeys([file.key]);
+    closeFileJump();
+    scrollLynxElementIntoViewById(fileElementId(file.key));
+  };
   const closeInteraction = useLynxInteractiveState({
     baseClassName: 'DiffDockClose',
     accessibleLabel: 'Close changes',
@@ -308,6 +316,11 @@ function OpenDiffDock(props: {
               accessibility-label="Search changed files"
               placeholder="Jump to file"
               onInput={setFileJumpQuery}
+              onConfirm={() => {
+                if (fileJumpFiles.length === 1) {
+                  jumpToFile(fileJumpFiles[0]!);
+                }
+              }}
             />
             <scroll-view
               className="DiffDockFileJumpList"
@@ -327,11 +340,7 @@ function OpenDiffDock(props: {
                         : ''
                     }`}
                     variant="ghost"
-                    onClick={() => {
-                      setExpandedFileKeys([file.key]);
-                      closeFileJump();
-                      scrollLynxElementIntoViewById(fileElementId(file.key));
-                    }}
+                    onClick={() => jumpToFile(file)}
                   >
                     <text className="DiffDockFileJumpPath">{file.path}</text>
                     <text className="SharedPrCodeStatsAddition">

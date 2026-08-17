@@ -3612,3 +3612,15 @@ former dynamic-event P1 is no longer a valid blocker.
   Native interaction coverage remains open.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-file-jump-reset/notes.md`.
+
+## 2026-08-17 Standalone Changes file-jump keyboard confirm
+
+- The native search input supported confirm, but the picker did not use it;
+  keyboard/IME submission could not select a unique result.
+- Pointer rows and confirm now share one jump function, with confirm acting only
+  for exactly one filtered file.
+- A real `target` query plus Enter closed the overlay, left `a.ts` collapsed,
+  and expanded `target.ts` from `34px` to `94px`.
+- `lynx-diff-file-jump-confirm-missing`: P1 contribution `1.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-file-jump-keyboard/notes.md`.

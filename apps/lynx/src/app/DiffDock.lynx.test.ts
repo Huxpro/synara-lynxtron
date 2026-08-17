@@ -52,6 +52,11 @@ describe('Diff Dock chrome fidelity', () => {
     expect(source).toContain('onClick={closeFileJump}');
     expect(source).toContain('setExpandedFileKeys([file.key])');
     expect(source).toContain('scrollLynxElementIntoViewById(fileElementId(file.key))');
+    expect(source).toContain('const jumpToFile = (file: PullRequestDiffFileView) => {');
+    expect(source).toContain('onClick={() => jumpToFile(file)}');
+    expect(source).toContain('onConfirm={() => {');
+    expect(source).toContain('if (fileJumpFiles.length === 1)');
+    expect(source).toContain('jumpToFile(fileJumpFiles[0]!)');
     expect(source).not.toContain('<Menu');
     expect(styles).toMatch(
       /\.DiffDockFileJumpViewport\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*120;/s
