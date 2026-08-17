@@ -36,6 +36,9 @@ stale no-match state on the next open.
 - Native/Desktop production build passed: `4286.3 kB`.
 - Staged Native bundle SHA-256:
   `dbdd041a62f89e6776252caa90df52c8043c65e9f3a30b8383bc0a7c7f478b7d`.
+- The commit hook printed its generic React Doctor fallback warning. A real
+  uncached changed-lines scan against parent `b6366d423` inspected two files,
+  scored `90/100`, and reported `No issues found`.
 - Lynx-for-Web did not publish the custom Close button in its browser
   accessibility tree, and coordinate Close plus Escape did not dispatch the
   native custom events. Native close/reopen interaction therefore remains
