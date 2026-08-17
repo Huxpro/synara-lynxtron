@@ -4485,3 +4485,27 @@ former dynamic-event P1 is no longer a valid blocker.
   agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-environment-two-owned-server-stop-isolation/notes.md`.
+
+## 2026-08-17 Native Settings Diff word wrap restart consumption
+
+- Active discovery moved to Settings and exercised
+  `Behavior -> Diff line wrapping -> cold restart -> thread Changes`.
+- The exact switch changed through real Native touch at `(847,250)` from
+  `aria-checked=false` / `Off` to `aria-checked=true` / `On`.
+- The first owned app closed while the same server and isolated user data
+  remained; a second exact-owned app cold-started into the same thread.
+- Real Changes/header touches expanded a `2225`-byte long-line patch.
+- The code surface resolved
+  `SharedPrCodeLines SharedPrCodeLines--wrap`; its addition row was
+  `271x1800`, proving the persisted setting was consumed after restart.
+- `native-settings-diff-word-wrap-toggle-restart-consumption`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- A pre-launch shell quoting failure was rejected as harness loss and followed
+  by `browser:gate`.
+- Native console had no warning/error entry, temporary JPEG was `1800x1300`,
+  all owned resources were removed, port `58090` was free, and screenshot
+  count remained `100`.
+- Entry/failure/exit `browser:gate` returned `sessions: []` and zero
+  agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-settings-diff-word-wrap-restart/notes.md`.
