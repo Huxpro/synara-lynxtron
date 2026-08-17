@@ -3379,3 +3379,16 @@ former dynamic-event P1 is no longer a valid blocker.
   passed.
 - Detailed evidence:
   `shots/2026-08-17/explorer-nested-search-identity-normal/notes.md`.
+
+## 2026-08-17 Explorer search error at 320x200
+
+- A canonical workspace root was removed before opening Explorer with a
+  non-empty query, producing a real `projects.searchEntries` failure.
+- Lynx rendered `Could not load files.` at
+  `112.828125x18 @ (23.828125,169.5)`, ending at `y=187.5`.
+- The renderer stayed ready, pending requests returned to zero, and the empty
+  preview copy remained contained.
+- This is a compact search failure-boundary pass, contribution
+  `0.00 -> 0.00`; no code change was required.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-search-error-short-height/notes.md`.
