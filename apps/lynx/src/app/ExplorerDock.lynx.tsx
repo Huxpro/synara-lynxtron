@@ -48,6 +48,12 @@ function fileName(path: string): string {
   return path.replace(/\\/g, '/').split('/').pop() || path;
 }
 
+function directoryPath(path: string): string {
+  const normalized = path.replace(/\\/g, '/');
+  const separator = normalized.lastIndexOf('/');
+  return separator < 0 ? '' : normalized.slice(0, separator + 1);
+}
+
 function ExplorerPreviewHeader(props: {
   readonly path: string;
   readonly threadId: string;
@@ -160,8 +166,10 @@ function ExplorerEntryRow(props: {
         <text className="ExplorerDockEntryName">
           {fileName(props.entry.path)}
         </text>
-        {props.showPath && props.entry.path !== fileName(props.entry.path) ? (
-          <text className="ExplorerDockEntryPath">{props.entry.path}</text>
+        {props.showPath && directoryPath(props.entry.path) ? (
+          <text className="ExplorerDockEntryPath">
+            {directoryPath(props.entry.path)}
+          </text>
         ) : null}
       </view>
     </view>

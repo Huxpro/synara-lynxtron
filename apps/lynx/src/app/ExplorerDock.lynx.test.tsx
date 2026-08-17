@@ -127,7 +127,10 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('Could not load directory.');
     expect(source).toContain('showPaths={Boolean(props.query.trim())}');
     expect(source).toContain(
-      'props.showPath && props.entry.path !== fileName(props.entry.path)'
+      'props.showPath && directoryPath(props.entry.path)'
+    );
+    expect(source).toContain(
+      "return separator < 0 ? '' : normalized.slice(0, separator + 1);"
     );
     expect(queriesSource).toContain('export async function fetchExplorerDirectory');
     expect(queriesSource).toContain('relativePath: input.relativePath');

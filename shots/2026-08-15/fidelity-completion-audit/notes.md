@@ -3363,3 +3363,19 @@ former dynamic-event P1 is no longer a valid blocker.
   the retained exact-ref interaction.
 - Detailed evidence:
   `shots/2026-08-17/explorer-truncated-search-refine-short-height/notes.md`.
+
+## 2026-08-17 Explorer nested search identity at 1280x820
+
+- A normal-size search returned `src/deep/needle.ts`.
+- Before, Lynx rendered `needle.ts` plus `src/deep/needle.ts`, duplicating the
+  filename and weakening filename/directory hierarchy.
+- `lynx-explorer-nested-search-path-duplicates-name`: P1 contribution
+  `1.00 -> 0.00`.
+- Result rows now derive only the normalized directory prefix and omit it for
+  root-level files.
+- After, filename remained `needle.ts` and the auxiliary path became
+  `src/deep/`, shrinking from `89.5625px` to `45.3125px`.
+- Focused tests passed `2/2`; Lynx-for-Web and Native/Desktop production builds
+  passed.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-nested-search-identity-normal/notes.md`.
