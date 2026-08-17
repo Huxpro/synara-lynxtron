@@ -4682,3 +4682,26 @@ former dynamic-event P1 is no longer a valid blocker.
   added and the count remained `100`.
 - Detailed evidence:
   `shots/2026-08-18/native-sidebar-fixed-navigation-scroll-ownership/notes.md`.
+
+## 2026-08-18 Native Sidebar resize and primary icons
+
+- Current `@lynx-js/lynxtron@0.0.12-dev` exact-Native resize was rechecked:
+  the `10x820` sash accepted press, mounted a `1280x820` overlay, moved the
+  Sidebar `256 -> 332px`, removed the overlay on release, and persisted `332`.
+- The user-preview resize failure was a stale running bundle/runtime, not a
+  remaining current-source defect; no speculative resize patch was retained.
+- New thread, Search, Kanban, and Automations were not broken Native SVGs.
+  They were Web CentralIcon `span + mask-image` nodes, an unsupported Lynx
+  rendering path.
+- Shared navigation now accepts a renderer icon set; Web keeps its Central
+  mask defaults while Lynx injects the exact four Central assets as colorized
+  `<svg content>`.
+- Final Native DOM contained all four exact Central paths with
+  `centralMaskSpanCount=0` and `maskImageCount=0`; warning/error console was
+  empty.
+- Focused Lynx tests passed `6/6`, Web Sidebar import smoke passed `1/1`, and
+  Native/Desktop production build passed.
+- KV/window state restored byte-exact, screenshot count remained `100`, and
+  browser gate exited with `sessions: []`.
+- Detailed evidence:
+  `shots/2026-08-18/native-sidebar-resize-and-primary-icons/notes.md`.

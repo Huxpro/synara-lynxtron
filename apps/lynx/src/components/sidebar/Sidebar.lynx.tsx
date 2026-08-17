@@ -105,6 +105,7 @@ import {
 } from './threadContextActions.logic';
 import './sidebar.css';
 import { PullRequestCompareIcon } from './PullRequestCompareIcon.lynx';
+import { LYNX_SIDEBAR_PRIMARY_ICONS } from './SidebarPrimaryIcons.lynx';
 
 const SEARCH_TRIGGER_ELEMENT_ID = 'synara-sidebar-search-trigger';
 const ADD_PROJECT_TRIGGER_ELEMENT_ID = 'synara-sidebar-add-project-trigger';
@@ -814,6 +815,7 @@ export function Sidebar({
           <SidebarPrimarySurfaceNavigation
             surface={primarySidebarSurface}
             pullRequestIcon={PullRequestCompareIcon}
+            icons={LYNX_SIDEBAR_PRIMARY_ICONS}
             searchOpen={searchOpen}
             searchElementId={SEARCH_TRIGGER_ELEMENT_ID}
             kanbanActive={activePath === '/kanban'}

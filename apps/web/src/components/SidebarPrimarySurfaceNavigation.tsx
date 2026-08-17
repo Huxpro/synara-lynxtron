@@ -16,6 +16,19 @@ import {
 
 type Badge = SidebarPrimaryNavigationItem["badge"];
 type Icon = ComponentType<{ className?: string }>;
+export interface SidebarPrimarySurfaceIcons {
+  readonly automations: Icon;
+  readonly kanban: Icon;
+  readonly newThread: Icon;
+  readonly search: Icon;
+}
+
+const DEFAULT_ICONS: SidebarPrimarySurfaceIcons = {
+  automations: ClockIcon,
+  kanban: KanbanIcon,
+  newThread: NewThreadIcon,
+  search: SearchIcon,
+};
 
 function item(input: {
   icon: Icon;
@@ -49,6 +62,7 @@ function item(input: {
 export function SidebarPrimarySurfaceNavigation(props: {
   surface: "threads" | "studio" | "workspace";
   pullRequestIcon: Icon;
+  icons?: SidebarPrimarySurfaceIcons;
   searchOpen?: boolean;
   kanbanActive?: boolean;
   pullRequestsActive?: boolean;
@@ -67,6 +81,7 @@ export function SidebarPrimarySurfaceNavigation(props: {
   onOpenPullRequests?: () => void;
   onOpenAutomations?: () => void;
 }) {
+  const icons = props.icons ?? DEFAULT_ICONS;
   const items =
     props.surface === "workspace"
       ? [
@@ -79,12 +94,12 @@ export function SidebarPrimarySurfaceNavigation(props: {
       : props.surface === "studio"
         ? [
             item({
-              icon: NewThreadIcon,
+              icon: icons.newThread,
               label: "New studio chat",
               onActivate: props.onCreateStudioChat,
             }),
             item({
-              icon: SearchIcon,
+              icon: icons.search,
               elementId: props.searchElementId,
               label: "Search",
               active: props.searchOpen,
@@ -94,7 +109,7 @@ export function SidebarPrimarySurfaceNavigation(props: {
           ]
         : [
             item({
-              icon: NewThreadIcon,
+              icon: icons.newThread,
               label: "New thread",
               onActivate: props.onCreateThread,
               onMouseEnter: props.onCreateThreadPrewarm,
@@ -102,7 +117,7 @@ export function SidebarPrimarySurfaceNavigation(props: {
               shortcutLabel: props.newThreadShortcutLabel,
             }),
             item({
-              icon: SearchIcon,
+              icon: icons.search,
               elementId: props.searchElementId,
               label: "Search",
               active: props.searchOpen,
@@ -110,7 +125,7 @@ export function SidebarPrimarySurfaceNavigation(props: {
               shortcutLabel: props.searchShortcutLabel,
             }),
             item({
-              icon: KanbanIcon,
+              icon: icons.kanban,
               label: "Kanban",
               active: props.kanbanActive,
               onActivate: props.onOpenKanban,
@@ -125,7 +140,7 @@ export function SidebarPrimarySurfaceNavigation(props: {
               disabled: !props.onOpenPullRequests,
             }),
             item({
-              icon: ClockIcon,
+              icon: icons.automations,
               label: "Automations",
               active: props.automationsActive,
               badge: props.automationsBadge,
