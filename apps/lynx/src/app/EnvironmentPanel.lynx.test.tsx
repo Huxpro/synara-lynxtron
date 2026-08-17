@@ -440,6 +440,12 @@ describe('Lynx Environment panel', () => {
       /\.LxMenuPopup\.EnvironmentBranchPopup\s*\{[^}]*width:\s*224px;[^}]*max-height:\s*320px;[^}]*padding:\s*4px;/s
     );
     expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.LxMenuPopup\.EnvironmentBranchPopup\s*\{[^}]*height:\s*calc\(100vh - 16px\);[^}]*max-height:\s*calc\(100vh - 16px\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-short-height \.EnvironmentBranchList\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*overflow-y:\s*scroll;/s
+    );
+    expect(styles).toMatch(
       /\.EnvironmentBranchGroup\s*\{[^}]*flex-direction:\s*column;[^}]*gap:\s*2px;/s
     );
     expect(styles).toMatch(

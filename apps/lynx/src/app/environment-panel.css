@@ -229,6 +229,17 @@
   flex-direction: column;
 }
 
+.SliceRoot--viewport-short-height .LxMenuPopup.EnvironmentBranchPopup {
+  height: calc(100vh - 16px);
+  max-height: calc(100vh - 16px);
+}
+
+.SliceRoot--viewport-short-height .EnvironmentBranchList {
+  flex: 1;
+  min-height: 0;
+  overflow-y: scroll;
+}
+
 .EnvironmentBranchOption {
   min-height: 28px;
   padding: 4px 8px;

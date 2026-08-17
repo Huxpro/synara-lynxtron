@@ -2763,6 +2763,17 @@ former dynamic-event P1 is no longer a valid blocker.
   attempted.
 - The declared 320px maximum is not scored without a mounted popup.
 
+### Current-head closure
+
+- A real mouse click on a canonical 13-branch repository mounted the actual
+  branch popup without selecting or mutating a branch.
+- Before, popup `224x320 @ y=0` ended at `320`.
+- Short-height popup now measures `224x184 @ y=16..200`; its branch list is
+  `174/364` client/scroll height with `190px` scroll range.
+- `lynx-environment-branch-short-overflow`: P1 contribution `1.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/environment-branch-popup-short-height/notes.md`.
+
 ## 2026-08-17 Environment Local Servers menu at 320x200
 
 - A canonical branch-backed local thread exposed the rendered `Local Servers`
