@@ -4066,6 +4066,29 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/native-devtool-registration-restored/notes.md`.
 
+## 2026-08-17 Current-head Native Pull Requests detail tabs
+
+- The restored inspector surface was immediately consumed by a new
+  exact-owned `900x650` Native product cell rather than treated as completion
+  by itself.
+- A canonical Synara project returned 50 live open PRs with zero errors.
+- PID-derived `localhost:8903/session 1` loaded the current staged bundle.
+- Real Native touches opened the first PR, activated Timeline, activated Code,
+  and closed the detail dock at measured centers
+  `(566,189)`, `(387,70)`, `(454.5,70)`, and `(878,70)`.
+- DOM state proved Summary/Timeline/Code active transitions and detail close;
+  host logs proved real list/detail/diff RPCs.
+- Native warning/error console was empty; LynxView JPEG was exactly
+  `1800x1300` for the `900x650` DPR 2 window.
+- `native-pull-requests-populated-detail-tabs-current`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Rejected DevTool selector/tree/stream/timing attempts remained harness
+  failures. Every failure and the retained exit passed `browser:gate`.
+- All owned resources were removed, unrelated `8901`/`8902` clients were
+  untouched, and screenshot count remained `100`.
+- Detailed evidence:
+  `shots/2026-08-17/native-pull-requests-detail-tabs-current/notes.md`.
+
 ## 2026-08-17 Pull Requests multi-project filter at 320x320
 
 - Two canonical projects pointed at distinct real public repositories and
