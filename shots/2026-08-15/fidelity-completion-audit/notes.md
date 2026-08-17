@@ -3958,3 +3958,17 @@ former dynamic-event P1 is no longer a valid blocker.
 - Browser lifecycle ended at `sessions: []` with zero owned processes.
 - Detailed evidence:
   `shots/2026-08-17/environment-local-server-stop/notes.md`.
+
+## 2026-08-17 Environment stale Local Server Stop recovery
+
+- A harness-owned server exited after its row rendered, leaving a stale Stop
+  target in the open popup.
+- Real activation of that stale control returned safely, revalidated PID/port,
+  and refreshed the row away without signaling any other process.
+- Popup and Synara Vite remained; pending requests, page errors, RPC errors,
+  and transport errors were all zero/empty.
+- `environment-local-server-stale-stop-recovery`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Browser lifecycle ended at `sessions: []` with zero owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/environment-local-server-stale-stop/notes.md`.
