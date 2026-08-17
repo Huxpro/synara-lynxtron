@@ -4578,3 +4578,27 @@ former dynamic-event P1 is no longer a valid blocker.
   agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-settings-safety-confirmations-combination/notes.md`.
+
+## 2026-08-17 Native Automations create schedule switching
+
+- Active discovery moved to New automation and exercised the rendered
+  `Daily -> Manual -> Weekdays -> Cancel` schedule state sequence.
+- Daily initially owned the selected class, one Time input, and
+  `Daily at 09:00` summary.
+- Real Manual touch at `(286.5,345)` selected Manual and removed the Time
+  field.
+- Real Weekdays touch at `(412,345)` restored one Time field and
+  `Weekdays at 09:00` summary.
+- Real Cancel at `(469,524)` unmounted the dialog and restored the empty list;
+  no `automation.create` request occurred.
+- `native-automations-create-schedule-conditional-state`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- The create form exposes Manual/Daily/Weekdays; unsupported Hourly/Cron states
+  were not invented.
+- Native console had no warning/error entry, temporary JPEG was `1800x1300`,
+  all owned resources were removed, port `58090` was free, and screenshot
+  count remained `100`.
+- Entry/exit `browser:gate` returned `sessions: []` and zero
+  agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-automations-create-schedule-switching/notes.md`.
