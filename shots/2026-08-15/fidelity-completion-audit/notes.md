@@ -4555,3 +4555,26 @@ former dynamic-event P1 is no longer a valid blocker.
   agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-settings-diff-word-wrap-reset/notes.md`.
+
+## 2026-08-17 Native Settings Safety confirmations combination
+
+- A new exact-owned Native Settings cell toggled all three Safety confirmations
+  into the non-default combination deletion Off, archive On, terminal close Off.
+- Real touch centers were `(847,375)`, `(847,436)`, and `(847,497)`.
+- The complete combination persisted through a cold app restart without one key
+  overwriting another.
+- Three exact conditional Reset actions then restored deletion On, archive Off,
+  and terminal close On; all Reset actions unmounted.
+- A second cold restart preserved the restored default combination.
+- `native-settings-safety-confirmations-combination-restart`: missing coverage
+  `1.00 -> 0.00`.
+- `native-settings-safety-confirmations-independent-reset`: missing coverage
+  `1.00 -> 0.00`.
+- Product contribution remained `0.00 -> 0.00`; no code change was required.
+- Native console had no warning/error entry, temporary JPEG was `1800x1300`,
+  all owned resources were removed, port `58090` was free, and screenshot
+  count remained `100`.
+- Entry/exit `browser:gate` returned `sessions: []` and zero
+  agent-browser-owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/native-settings-safety-confirmations-combination/notes.md`.
