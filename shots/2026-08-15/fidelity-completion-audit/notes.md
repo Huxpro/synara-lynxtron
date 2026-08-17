@@ -3557,3 +3557,16 @@ former dynamic-event P1 is no longer a valid blocker.
   product-loss contribution `0.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/working-tree-diff-truncation-contract/notes.md`.
+
+## 2026-08-17 Untracked empty-file diff contract
+
+- Real `git diff --no-index` emits a `new file mode 100644` patch for an empty
+  untracked file.
+- A focused GitCore regression now proves `readWorkingTreePatch` preserves its
+  file marker, lifecycle marker, and empty-blob index.
+- Combined with the shared `File added.` projection, Status and Changes cannot
+  silently split for this state.
+- `untracked-empty-status-diff-split`: suspected loss `1.00 -> 0.00`;
+  product-loss contribution `0.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/untracked-empty-diff-contract/notes.md`.

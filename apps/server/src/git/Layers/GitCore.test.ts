@@ -1932,6 +1932,21 @@ it.layer(TestLayer)("git integration", (it) => {
       }),
     );
 
+    it.effect("preserves empty untracked files as lifecycle-only patches", () =>
+      Effect.gen(function* () {
+        const tmp = yield* makeTmpDir();
+        yield* initRepoWithCommit(tmp);
+        const core = yield* GitCore;
+
+        yield* writeTextFile(path.join(tmp, "empty.txt"), "");
+
+        const patch = (yield* core.readWorkingTreePatch(tmp)).patch;
+        expect(patch).toContain("diff --git a/empty.txt b/empty.txt");
+        expect(patch).toContain("new file mode 100644");
+        expect(patch).toContain("index 0000000..e69de29");
+      }),
+    );
+
     it.effect("reads branch, staged, and unstaged patches as separate scopes", () =>
       Effect.gen(function* () {
         const tmp = yield* makeTmpDir();
