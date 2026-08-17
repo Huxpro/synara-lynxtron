@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "viewport-state-fanout",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx viewport state subscription"
+    },
+    {
+      "id": "web-update-route-unavailable",
+      "severity": "platform",
+      "classification": "intentional-platform-delta",
+      "before": 1,
+      "after": 1,
+      "owner": "Web product routing"
+    },
+    {
+      "id": "native-short-probe-registration-race",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Native DevTool sampling timeline"
+    }
+  ]
+}

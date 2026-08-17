@@ -2,7 +2,7 @@ import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
 describe('Lynx responsive layout contract', () => {
-  it('hydrates from content bounds and subscribes to both host and Lynx resize events', () => {
+  it('hydrates from content bounds and keeps one platform resize owner', () => {
     const hook = readFileSync(
       new URL('../hooks/useViewportLayout.lynx.ts', import.meta.url),
       'utf8'
@@ -20,9 +20,7 @@ describe('Lynx responsive layout contract', () => {
       'utf8'
     );
 
-    expect(hook).toContain(
-      "useLynxGlobalEventListener('onWindowResize', update)"
-    );
+    expect(hook).not.toContain('useLynxGlobalEventListener');
     expect(hook).toContain('.getViewportSize()');
     expect(hook).toContain('.catch(() => {');
     expect(hook).toContain('platformWindow.onViewportResize');

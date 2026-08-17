@@ -1,0 +1,53 @@
+{
+  "settingsGeneral": {
+    "theme": "dark",
+    "medium": {
+      "viewport": [900, 650],
+      "web": {
+        "sidebar": [0, 0, 256, 650],
+        "main": [256, 0, 644, 650]
+      },
+      "lynx": {
+        "rootBand": "medium",
+        "dataViewport": [900, 650],
+        "sidebar": [0, 0, 256, 650],
+        "content": [256, 0, 644, 650]
+      }
+    },
+    "wide": {
+      "viewport": [1024, 700],
+      "web": {
+        "sidebar": [0, 0, 256, 700],
+        "main": [256, 0, 768, 700]
+      },
+      "lynx": {
+        "rootBand": "wide",
+        "dataViewport": [1024, 700],
+        "sidebar": [0, 0, 256, 700],
+        "content": [256, 0, 768, 700]
+      }
+    },
+    "returnMediumMatchesInitial": true,
+    "maePercent": 1.5686013071895426,
+    "parityPercent": 98.43139869281046
+  },
+  "nativeUpdate": {
+    "liveTransitions": [
+      {
+        "band": "wide",
+        "viewport": [1024, 700],
+        "windowBounds": [1024, 700]
+      },
+      {
+        "band": "medium",
+        "viewport": [900, 650],
+        "windowBounds": [900, 650]
+      }
+    ],
+    "retainedFrame": {
+      "logicalViewport": [1280, 820],
+      "physicalPng": [2560, 1640],
+      "band": "wide"
+    }
+  }
+}

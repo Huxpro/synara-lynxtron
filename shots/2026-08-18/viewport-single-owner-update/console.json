@@ -1,0 +1,24 @@
+{
+  "web": {
+    "pageErrors": [],
+    "acceptedDevelopmentNoise": [
+      "Vite connected",
+      "React DevTools development suggestion"
+    ]
+  },
+  "lynx": {
+    "pageErrors": [],
+    "acceptedUpstreamNoise": [
+      "using deprecated parameters for the initialization function; pass a single object instead"
+    ],
+    "connectionAttempts": 1,
+    "lastTransportError": null,
+    "lastRpcError": null
+  },
+  "native": {
+    "client": "localhost:8903",
+    "session": 1,
+    "errors": [],
+    "warnings": []
+  }
+}

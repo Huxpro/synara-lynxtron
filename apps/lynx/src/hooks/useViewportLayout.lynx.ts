@@ -1,7 +1,6 @@
 import {
   useCallback,
   useEffect,
-  useLynxGlobalEventListener,
   useState,
 } from '@lynx-js/react';
 
@@ -38,8 +37,6 @@ export function useViewportLayout(): ViewportLayout {
         : next
     );
   }, []);
-
-  useLynxGlobalEventListener('onWindowResize', update);
 
   useEffect(() => {
     'background only';

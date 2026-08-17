@@ -8664,3 +8664,23 @@ truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞�
   `560x432`、panel `526x312`且`scrollHeight=clientHeight=312`、footer完全可达。
   Native exact PID51253 / `localhost:8902/session1` warning/error console为空。
   证据：`shots/2026-08-18/automations-edit-relay-recovery/`。
+
+### Viewport state single owner
+
+- 新 scope：Settings General dark live `900x650 -> 1024x700 -> 900x650`，
+  Web authority `/settings`与Lynx-for-Web `/settings/general`同状态验证；Native
+  `/update`作为平台专属resize cell，不与Web错误配对。
+- active debt根因仍存在：Lynx hook同时订阅官方`onWindowResize`和
+  `platformWindow.onViewportResize`，而Desktop/Web host已各自把一个真实平台resize
+  转成`viewport:resize`，同一次resize因此fanout到两条hook链，只靠state equality
+  吞掉重复render。
+- hook收敛为单一platform owner：首帧`getViewportSize()`，live只订阅
+  `platformWindow.onViewportResize()`。focused **2 files / 7 tests**、Web/Lynx/Native
+  production builds通过。
+- Fast loop：900档两端Sidebar256/main644，1024档Sidebar256/main768，返回900几何
+  byte-for-value一致；Web/Lynx MAE `1.5686013072%`、parity `98.4313986928%`。
+- Native exact-owned long-hold probe从`wide/1024x700`实时变为`medium/900x650`，
+  PID-derived `localhost:8903/session1`，console空。两次短probe在DevTool注册前已跑完，
+  正确分类为harness timing miss；Web `/update`不存在，分类为intentional platform delta。
+- P1 contribution `1.00 -> 0.00`。证据：
+  `shots/2026-08-18/viewport-single-owner-update/`。
