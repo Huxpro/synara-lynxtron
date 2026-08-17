@@ -4022,3 +4022,16 @@ former dynamic-event P1 is no longer a valid blocker.
   processes were clear at exit.
 - Detailed evidence:
   `shots/2026-08-17/environment-local-server-alert-combination/notes.md`.
+
+## 2026-08-17 Long Local Server identity at 320x200
+
+- Four real rows included an extremely long page title.
+- Every identity region remained `208px` and ended at `x=266`; every Stop
+  control remained `24x24 @ x=274..298`.
+- No identity/Stop overlap occurred, and row height stayed `42px`.
+- `environment-local-server-long-identity`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- All auxiliary servers were current-run owned and all ports/browser processes
+  were clear at exit.
+- Detailed evidence:
+  `shots/2026-08-17/environment-local-server-long-identity/notes.md`.
