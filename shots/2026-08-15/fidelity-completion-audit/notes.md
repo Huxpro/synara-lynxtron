@@ -3332,3 +3332,19 @@ former dynamic-event P1 is no longer a valid blocker.
   passed.
 - Detailed evidence:
   `shots/2026-08-17/editor-explorer-truncated-search-short-height/notes.md`.
+
+## 2026-08-17 Explorer Markdown file link at 320x200
+
+- A canonical `README.md` rendered an inline-code reference to `target.txt`.
+- The real token measured `75.28125x17 @ (203.203125,184)` and published
+  `Open target.txt`.
+- Trusted browser mouse move/down/up changed the selected path to `target.txt`,
+  unmounted Markdown, loaded `target content`, and issued a fresh
+  `projects.readFile`.
+- This is a compact interaction pass, contribution `0.00 -> 0.00`; no code
+  change was required.
+- Earlier probes selected the sidebar row with the same accessibility label or
+  used invalid `@target.txt` Markdown syntax; both were classified as harness
+  mismatches and cleaned before retained evidence.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-markdown-file-link-short-height/notes.md`.
