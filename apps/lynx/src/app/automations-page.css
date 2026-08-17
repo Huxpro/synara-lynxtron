@@ -548,7 +548,8 @@
 }
 
 .LxDialogPopup.AutomationCreateDialog {
-  width: min(560px, calc(100vw - 32px));
+  width: 560px;
+  max-width: calc(100vw - 32px);
   height: calc(100vh - 32px);
   max-height: 680px;
 }
@@ -574,10 +575,21 @@
   padding-top: 16px;
 }
 
+.LxDialogPopup.AutomationCreateDialog > .AutomationCreatePanel {
+  max-height: 520px;
+}
+
 .AutomationCreateField {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.AutomationCreateOptionsGrid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .AutomationCreateLabel {
@@ -741,6 +753,30 @@
 
 .SliceRoot--viewport-medium .AutomationCreatePanel,
 .SliceRoot--viewport-compact .AutomationCreatePanel {
+  gap: 8px;
+}
+
+.SliceRoot--viewport-medium
+  .AutomationCreateDialog
+  > .LxDialogDescription {
+  display: none;
+}
+
+.SliceRoot--viewport-medium
+  .AutomationCreateDialog
+  > .AutomationCreatePanel {
+  padding-top: 8px;
+}
+
+.SliceRoot--viewport-medium
+  .AutomationCreateDialog
+  > .AutomationCreateFooter {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.SliceRoot--viewport-compact .AutomationCreateOptionsGrid {
+  grid-template-columns: minmax(0, 1fr);
   gap: 8px;
 }
 

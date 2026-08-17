@@ -4626,3 +4626,29 @@ former dynamic-event P1 is no longer a valid blocker.
   agent-browser-owned processes.
 - Detailed evidence:
   `shots/2026-08-17/native-automations-create-heartbeat-switching/notes.md`.
+
+## 2026-08-18 Native Automations create policy reachability
+
+- A new Native minimum-window state exposed a P1: Max iterations, Stop on
+  error, Interaction mode, Permissions, and summary content extended below the
+  real 420px dialog-panel viewport.
+- `25 runs`, `Off`, and `Plan` boxes were at `y=522`, `568`, and `614`; hit
+  testing resolved them to the footer/popup, and real drag plus positive and
+  negative wheel input did not move the panel.
+- Root cause combined unsupported `min()` width, the shared 420px panel cap,
+  and a single-column policy stack.
+- The create dialog now uses an explicit 560px width/max-width, an
+  Automation-specific 520px panel cap, and a two-column strategy grid at
+  medium/wide widths while compact remains single-column.
+- Final real touches selected `25 runs`, `Stop on error / Off`, and `Plan` at
+  visible `y=448`, `448`, and `510`; all selected classes and summary text
+  updated.
+- `native-automations-create-policy-controls-unreachable`: P1 contribution
+  `1.00 -> 0.00`.
+- Focused tests passed `11/11`; Native/Desktop build passed; final bundle hash
+  was `15bf4fba5d45227871e561cc8452d45bf0a0a3bb932a6b43f96b949b65aed145`.
+- Isolated Native validation used server `58092`, did not disturb the user
+  preview server, retained an empty console, deleted the `1800x1300` JPEG, and
+  kept screenshot count at `100`.
+- Detailed evidence:
+  `shots/2026-08-18/native-automations-create-policy-reachability/notes.md`.

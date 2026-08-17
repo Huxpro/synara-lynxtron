@@ -243,13 +243,31 @@ describe('Lynx Automations route', () => {
       '<DialogPanel className="AutomationCreatePanel">'
     );
     expect(styles).toMatch(
-      /\.LxDialogPopup\.AutomationCreateDialog\s*\{[^}]*height:\s*calc\(100vh - 32px\);[^}]*max-height:\s*680px;/s
+      /\.LxDialogPopup\.AutomationCreateDialog\s*\{[^}]*width:\s*560px;[^}]*max-width:\s*calc\(100vw - 32px\);[^}]*height:\s*calc\(100vh - 32px\);[^}]*max-height:\s*680px;/s
     );
     expect(styles).toMatch(
       /\.AutomationCreatePanel\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;/s
     );
     expect(styles).toMatch(
+      /\.LxDialogPopup\.AutomationCreateDialog\s*>\s*\.AutomationCreatePanel\s*\{[^}]*max-height:\s*520px;/s
+    );
+    expect(dialogSource).toContain(
+      '<view className="AutomationCreateOptionsGrid">'
+    );
+    expect(styles).toMatch(
+      /\.AutomationCreateOptionsGrid\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.AutomationCreateOptionsGrid\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\);/s
+    );
+    expect(styles).toMatch(
       /\.SliceRoot--viewport-medium \.AutomationCreatePanel,[^{]*\{[^}]*gap:\s*8px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-medium[\s\S]*?\.AutomationCreateDialog[\s\S]*?> \.LxDialogDescription\s*\{[^}]*display:\s*none;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-medium[\s\S]*?\.AutomationCreateDialog[\s\S]*?> \.AutomationCreateFooter\s*\{[^}]*flex-shrink:\s*0;[^}]*margin-top:\s*4px;/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-medium \.AutomationCreatePrompt,[^{]*\{[^}]*height:\s*56px;[^}]*min-height:\s*56px;/s

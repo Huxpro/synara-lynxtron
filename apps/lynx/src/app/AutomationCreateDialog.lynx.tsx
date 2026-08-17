@@ -355,6 +355,7 @@ export function AutomationCreateDialog({
               }}
             />
           </view>
+          <view className="AutomationCreateOptionsGrid">
           <view className="AutomationCreateField">
             <text className="AutomationCreateLabel">Repeats</text>
             <view className="AutomationCreateChoices">
@@ -525,6 +526,7 @@ export function AutomationCreateDialog({
                 onSelect={() => void selectFullAccess()}
               />
             </view>
+          </view>
           </view>
           <view className="AutomationCreateSummary">
             <text className="AutomationCreateSummaryText">
