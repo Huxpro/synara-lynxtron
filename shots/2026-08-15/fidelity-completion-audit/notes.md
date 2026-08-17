@@ -3348,3 +3348,18 @@ former dynamic-event P1 is no longer a valid blocker.
   mismatches and cleaned before retained evidence.
 - Detailed evidence:
   `shots/2026-08-17/explorer-markdown-file-link-short-height/notes.md`.
+
+## 2026-08-17 Explorer truncated-search refine at 320x200
+
+- The canonical 100-file truncated search started with query `match`.
+- The real accessible search input was filled with `match-100`.
+- After settlement, the footer unmounted, entries returned to
+  `158.5x43 @ (1,157)`, and the only result was a complete
+  `152.5x28 @ (4,160)` row for `match-100.txt`.
+- A new `projects.searchEntries` RPC carried the refined query.
+- This is a compact interaction pass, contribution `0.00 -> 0.00`; no product
+  code change was required.
+- The first probe expected the wrong accessibility role and was cleaned before
+  the retained exact-ref interaction.
+- Detailed evidence:
+  `shots/2026-08-17/explorer-truncated-search-refine-short-height/notes.md`.
