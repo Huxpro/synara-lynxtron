@@ -1,8 +1,8 @@
 {
   "version": 1,
   "assetBaseUrl": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main",
-  "imageCount": 1287,
-  "byteCount": 204176337,
+  "imageCount": 1387,
+  "byteCount": 212839031,
   "images": [
     {
       "day": "2026-08-02",
@@ -10184,6 +10184,38 @@
     },
     {
       "day": "2026-08-14",
+      "directory": "appearance-settings-cell",
+      "name": "lynx-light-1280x820.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/appearance-settings-cell/lynx-light-1280x820.png",
+      "repoPath": "shots/2026-08-14/appearance-settings-cell/lynx-light-1280x820.png",
+      "bytes": 76395
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "appearance-settings-cell",
+      "name": "lynx-light-390x844-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/appearance-settings-cell/lynx-light-390x844-after.png",
+      "repoPath": "shots/2026-08-14/appearance-settings-cell/lynx-light-390x844-after.png",
+      "bytes": 45097
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "appearance-settings-cell",
+      "name": "web-light-1280x820.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/appearance-settings-cell/web-light-1280x820.png",
+      "repoPath": "shots/2026-08-14/appearance-settings-cell/web-light-1280x820.png",
+      "bytes": 90041
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "appearance-settings-cell",
+      "name": "web-light-390x844.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/appearance-settings-cell/web-light-390x844.png",
+      "repoPath": "shots/2026-08-14/appearance-settings-cell/web-light-390x844.png",
+      "bytes": 47652
+    },
+    {
+      "day": "2026-08-14",
       "directory": "automations/create-dialog-expanded",
       "name": "lynx-dark-1280.png",
       "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/create-dialog-expanded/lynx-dark-1280.png",
@@ -10292,6 +10324,38 @@
     },
     {
       "day": "2026-08-14",
+      "directory": "automations/expanded-create-matrix",
+      "name": "lynx-dialog-top-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/expanded-create-matrix/lynx-dialog-top-wide-light.png",
+      "repoPath": "shots/2026-08-14/automations/expanded-create-matrix/lynx-dialog-top-wide-light.png",
+      "bytes": 50278
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "automations/expanded-create-matrix",
+      "name": "lynx-heartbeat-bottom-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/expanded-create-matrix/lynx-heartbeat-bottom-wide-light.png",
+      "repoPath": "shots/2026-08-14/automations/expanded-create-matrix/lynx-heartbeat-bottom-wide-light.png",
+      "bytes": 49671
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "automations/expanded-create-matrix",
+      "name": "lynx-heartbeat-ready-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/expanded-create-matrix/lynx-heartbeat-ready-wide-light.png",
+      "repoPath": "shots/2026-08-14/automations/expanded-create-matrix/lynx-heartbeat-ready-wide-light.png",
+      "bytes": 56430
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "automations/expanded-create-matrix",
+      "name": "web-heartbeat-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/expanded-create-matrix/web-heartbeat-wide-light.png",
+      "repoPath": "shots/2026-08-14/automations/expanded-create-matrix/web-heartbeat-wide-light.png",
+      "bytes": 58849
+    },
+    {
+      "day": "2026-08-14",
       "directory": "automations/list-paused",
       "name": "lynx-dark-1280.png",
       "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/automations/list-paused/lynx-dark-1280.png",
@@ -10325,6 +10389,742 @@
       "repoPath": "shots/2026-08-14/automations/list/web-dark-1280.png",
       "bytes": 47114,
       "sourceCommit": "dccdbb025164deb83f260dc01c43f5529018684c"
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "editor-view",
+      "name": "lynx-for-web-files-light-1280x820.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/editor-view/lynx-for-web-files-light-1280x820.png",
+      "repoPath": "shots/2026-08-14/editor-view/lynx-for-web-files-light-1280x820.png",
+      "bytes": 41136
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "environment-default-open",
+      "name": "empty-thread-closed-light-1280x820.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/environment-default-open/empty-thread-closed-light-1280x820.png",
+      "repoPath": "shots/2026-08-14/environment-default-open/empty-thread-closed-light-1280x820.png",
+      "bytes": 44648
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "new-thread-defaults/visual-matrix",
+      "name": "lynx-compact-dark-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/new-thread-defaults/visual-matrix/lynx-compact-dark-after.png",
+      "repoPath": "shots/2026-08-14/new-thread-defaults/visual-matrix/lynx-compact-dark-after.png",
+      "bytes": 23707
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "new-thread-defaults/visual-matrix",
+      "name": "lynx-compact-dark-input-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/new-thread-defaults/visual-matrix/lynx-compact-dark-input-after.png",
+      "repoPath": "shots/2026-08-14/new-thread-defaults/visual-matrix/lynx-compact-dark-input-after.png",
+      "bytes": 22897
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "new-thread-defaults/visual-matrix",
+      "name": "lynx-wide-light-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/new-thread-defaults/visual-matrix/lynx-wide-light-after.png",
+      "repoPath": "shots/2026-08-14/new-thread-defaults/visual-matrix/lynx-wide-light-after.png",
+      "bytes": 44955
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "new-thread-defaults/visual-matrix",
+      "name": "web-compact-dark.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/new-thread-defaults/visual-matrix/web-compact-dark.png",
+      "repoPath": "shots/2026-08-14/new-thread-defaults/visual-matrix/web-compact-dark.png",
+      "bytes": 29746
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "new-thread-defaults/visual-matrix",
+      "name": "web-compact-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/new-thread-defaults/visual-matrix/web-compact-light.png",
+      "repoPath": "shots/2026-08-14/new-thread-defaults/visual-matrix/web-compact-light.png",
+      "bytes": 30612
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "new-thread-defaults/visual-matrix",
+      "name": "web-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/new-thread-defaults/visual-matrix/web-wide-light.png",
+      "repoPath": "shots/2026-08-14/new-thread-defaults/visual-matrix/web-wide-light.png",
+      "bytes": 52295
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "plugins/provider-switching",
+      "name": "pi-skills-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/plugins/provider-switching/pi-skills-wide-light.png",
+      "repoPath": "shots/2026-08-14/plugins/provider-switching/pi-skills-wide-light.png",
+      "bytes": 114096
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "plugins/visual-matrix",
+      "name": "lynx-plugins-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/plugins/visual-matrix/lynx-plugins-wide-light.png",
+      "repoPath": "shots/2026-08-14/plugins/visual-matrix/lynx-plugins-wide-light.png",
+      "bytes": 33657
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "plugins/visual-matrix",
+      "name": "lynx-skills-compact-light-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/plugins/visual-matrix/lynx-skills-compact-light-after.png",
+      "repoPath": "shots/2026-08-14/plugins/visual-matrix/lynx-skills-compact-light-after.png",
+      "bytes": 54447
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "plugins/visual-matrix",
+      "name": "lynx-skills-search-compact-dark-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/plugins/visual-matrix/lynx-skills-search-compact-dark-after.png",
+      "repoPath": "shots/2026-08-14/plugins/visual-matrix/lynx-skills-search-compact-dark-after.png",
+      "bytes": 17996
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "plugins/visual-matrix",
+      "name": "lynx-skills-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/plugins/visual-matrix/lynx-skills-wide-light.png",
+      "repoPath": "shots/2026-08-14/plugins/visual-matrix/lynx-skills-wide-light.png",
+      "bytes": 144029
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "plugins/visual-matrix",
+      "name": "web-plugins-after-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/plugins/visual-matrix/web-plugins-after-wide-light.png",
+      "repoPath": "shots/2026-08-14/plugins/visual-matrix/web-plugins-after-wide-light.png",
+      "bytes": 59214
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "plugins/visual-matrix",
+      "name": "web-skills-compact-dark.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/plugins/visual-matrix/web-skills-compact-dark.png",
+      "repoPath": "shots/2026-08-14/plugins/visual-matrix/web-skills-compact-dark.png",
+      "bytes": 62352
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "plugins/visual-matrix",
+      "name": "web-skills-compact-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/plugins/visual-matrix/web-skills-compact-light.png",
+      "repoPath": "shots/2026-08-14/plugins/visual-matrix/web-skills-compact-light.png",
+      "bytes": 63206
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "plugins/visual-matrix",
+      "name": "web-skills-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/plugins/visual-matrix/web-skills-wide-light.png",
+      "repoPath": "shots/2026-08-14/plugins/visual-matrix/web-skills-wide-light.png",
+      "bytes": 139295
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "studio/visual-matrix",
+      "name": "lynx-compact-dark-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/studio/visual-matrix/lynx-compact-dark-after.png",
+      "repoPath": "shots/2026-08-14/studio/visual-matrix/lynx-compact-dark-after.png",
+      "bytes": 21773
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "studio/visual-matrix",
+      "name": "lynx-wide-light-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/studio/visual-matrix/lynx-wide-light-after.png",
+      "repoPath": "shots/2026-08-14/studio/visual-matrix/lynx-wide-light-after.png",
+      "bytes": 40520
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "studio/visual-matrix",
+      "name": "web-compact-dark.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/studio/visual-matrix/web-compact-dark.png",
+      "repoPath": "shots/2026-08-14/studio/visual-matrix/web-compact-dark.png",
+      "bytes": 25095
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "studio/visual-matrix",
+      "name": "web-compact-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/studio/visual-matrix/web-compact-light.png",
+      "repoPath": "shots/2026-08-14/studio/visual-matrix/web-compact-light.png",
+      "bytes": 26016
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "studio/visual-matrix",
+      "name": "web-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/studio/visual-matrix/web-wide-light.png",
+      "repoPath": "shots/2026-08-14/studio/visual-matrix/web-wide-light.png",
+      "bytes": 40834
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "thread-rename",
+      "name": "lynx-for-web-rename-light-1280x820.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/thread-rename/lynx-for-web-rename-light-1280x820.png",
+      "repoPath": "shots/2026-08-14/thread-rename/lynx-for-web-rename-light-1280x820.png",
+      "bytes": 41846
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "visibility-settings",
+      "name": "lynx-for-web-all-hidden-light-1280x820.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/visibility-settings/lynx-for-web-all-hidden-light-1280x820.png",
+      "repoPath": "shots/2026-08-14/visibility-settings/lynx-for-web-all-hidden-light-1280x820.png",
+      "bytes": 7406
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "workspace",
+      "name": "lynx-for-web-light-1280x820.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/lynx-for-web-light-1280x820.png",
+      "repoPath": "shots/2026-08-14/workspace/lynx-for-web-light-1280x820.png",
+      "bytes": 60964
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "workspace/split-layout",
+      "name": "lynx-two-columns-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/split-layout/lynx-two-columns-wide-light.png",
+      "repoPath": "shots/2026-08-14/workspace/split-layout/lynx-two-columns-wide-light.png",
+      "bytes": 30518
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "workspace/split-layout",
+      "name": "web-two-columns-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/split-layout/web-two-columns-wide-light.png",
+      "repoPath": "shots/2026-08-14/workspace/split-layout/web-two-columns-wide-light.png",
+      "bytes": 21228
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "workspace/visual-matrix",
+      "name": "lynx-compact-dark-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/visual-matrix/lynx-compact-dark-after.png",
+      "repoPath": "shots/2026-08-14/workspace/visual-matrix/lynx-compact-dark-after.png",
+      "bytes": 11859
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "workspace/visual-matrix",
+      "name": "lynx-compact-light-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/visual-matrix/lynx-compact-light-after.png",
+      "repoPath": "shots/2026-08-14/workspace/visual-matrix/lynx-compact-light-after.png",
+      "bytes": 11859
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "workspace/visual-matrix",
+      "name": "lynx-wide-light-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/visual-matrix/lynx-wide-light-after.png",
+      "repoPath": "shots/2026-08-14/workspace/visual-matrix/lynx-wide-light-after.png",
+      "bytes": 49722
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "workspace/visual-matrix",
+      "name": "web-compact-dark.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/visual-matrix/web-compact-dark.png",
+      "repoPath": "shots/2026-08-14/workspace/visual-matrix/web-compact-dark.png",
+      "bytes": 6874
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "workspace/visual-matrix",
+      "name": "web-compact-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/visual-matrix/web-compact-light.png",
+      "repoPath": "shots/2026-08-14/workspace/visual-matrix/web-compact-light.png",
+      "bytes": 6978
+    },
+    {
+      "day": "2026-08-14",
+      "directory": "workspace/visual-matrix",
+      "name": "web-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/visual-matrix/web-wide-light.png",
+      "repoPath": "shots/2026-08-14/workspace/visual-matrix/web-wide-light.png",
+      "bytes": 19848
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-chat-history/current-interaction",
+      "name": "01-history-open.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-chat-history/current-interaction/01-history-open.png",
+      "repoPath": "shots/2026-08-15/editor-chat-history/current-interaction/01-history-open.png",
+      "bytes": 63963
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-chat-history/current-interaction",
+      "name": "02-navigated.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-chat-history/current-interaction/02-navigated.png",
+      "repoPath": "shots/2026-08-15/editor-chat-history/current-interaction/02-navigated.png",
+      "bytes": 60001
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-chat-history",
+      "name": "lynx-web-history-open-1280x820-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-chat-history/lynx-web-history-open-1280x820-light.png",
+      "repoPath": "shots/2026-08-15/editor-chat-history/lynx-web-history-open-1280x820-light.png",
+      "bytes": 55669
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-chat-history",
+      "name": "web-history-open-1280x820-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-chat-history/web-history-open-1280x820-light.png",
+      "repoPath": "shots/2026-08-15/editor-chat-history/web-history-open-1280x820-light.png",
+      "bytes": 71626
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-compact-interactions",
+      "name": "00-changes.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-compact-interactions/00-changes.png",
+      "repoPath": "shots/2026-08-15/editor-compact-interactions/00-changes.png",
+      "bytes": 41862
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-compact-interactions",
+      "name": "01-files.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-compact-interactions/01-files.png",
+      "repoPath": "shots/2026-08-15/editor-compact-interactions/01-files.png",
+      "bytes": 34722
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-compact-interactions",
+      "name": "02-search.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-compact-interactions/02-search.png",
+      "repoPath": "shots/2026-08-15/editor-compact-interactions/02-search.png",
+      "bytes": 34281
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-compact-interactions",
+      "name": "03-changes-return.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-compact-interactions/03-changes-return.png",
+      "repoPath": "shots/2026-08-15/editor-compact-interactions/03-changes-return.png",
+      "bytes": 41862
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-compact-interactions",
+      "name": "chat-hidden.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-compact-interactions/chat-hidden.png",
+      "repoPath": "shots/2026-08-15/editor-compact-interactions/chat-hidden.png",
+      "bytes": 20140
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-compact-interactions",
+      "name": "chat-restored.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-compact-interactions/chat-restored.png",
+      "repoPath": "shots/2026-08-15/editor-compact-interactions/chat-restored.png",
+      "bytes": 41862
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-compact-interactions",
+      "name": "chat-visible.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-compact-interactions/chat-visible.png",
+      "repoPath": "shots/2026-08-15/editor-compact-interactions/chat-visible.png",
+      "bytes": 41862
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-interaction-starvation",
+      "name": "lynx-changes-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-interaction-starvation/lynx-changes-after.png",
+      "repoPath": "shots/2026-08-15/editor-interaction-starvation/lynx-changes-after.png",
+      "bytes": 49347
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-interaction-starvation",
+      "name": "lynx-files-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-interaction-starvation/lynx-files-after.png",
+      "repoPath": "shots/2026-08-15/editor-interaction-starvation/lynx-files-after.png",
+      "bytes": 40525
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-new-chat/current-interaction",
+      "name": "draft.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-new-chat/current-interaction/draft.png",
+      "repoPath": "shots/2026-08-15/editor-new-chat/current-interaction/draft.png",
+      "bytes": 47332
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-new-chat",
+      "name": "lynx-web-new-chat-1280x820-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-new-chat/lynx-web-new-chat-1280x820-light.png",
+      "repoPath": "shots/2026-08-15/editor-new-chat/lynx-web-new-chat-1280x820-light.png",
+      "bytes": 38469
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-project-switch-current",
+      "name": "02-secondary.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-project-switch-current/02-secondary.png",
+      "repoPath": "shots/2026-08-15/editor-project-switch-current/02-secondary.png",
+      "bytes": 47074
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-project-switch-current",
+      "name": "04-restored.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-project-switch-current/04-restored.png",
+      "repoPath": "shots/2026-08-15/editor-project-switch-current/04-restored.png",
+      "bytes": 59490
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "editor-terminal-rail",
+      "name": "lynx-web-terminal-open-1280x820-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/editor-terminal-rail/lynx-web-terminal-open-1280x820-light.png",
+      "repoPath": "shots/2026-08-15/editor-terminal-rail/lynx-web-terminal-open-1280x820-light.png",
+      "bytes": 44653
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "plugins-unsupported-capability",
+      "name": "claude-plugins-unsupported.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/plugins-unsupported-capability/claude-plugins-unsupported.png",
+      "repoPath": "shots/2026-08-15/plugins-unsupported-capability/claude-plugins-unsupported.png",
+      "bytes": 34676
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "plugins-unsupported-capability",
+      "name": "claude-skills-content.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/plugins-unsupported-capability/claude-skills-content.png",
+      "repoPath": "shots/2026-08-15/plugins-unsupported-capability/claude-skills-content.png",
+      "bytes": 97056
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/compact",
+      "name": "00-code-collapsed.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/compact/00-code-collapsed.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/compact/00-code-collapsed.png",
+      "bytes": 69453
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/compact",
+      "name": "00-summary.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/compact/00-summary.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/compact/00-summary.png",
+      "bytes": 79114
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/compact",
+      "name": "01-code-expanded.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/compact/01-code-expanded.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/compact/01-code-expanded.png",
+      "bytes": 76572
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/compact",
+      "name": "01-timeline.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/compact/01-timeline.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/compact/01-timeline.png",
+      "bytes": 41234
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/compact",
+      "name": "02-code-collapsed-again.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/compact/02-code-collapsed-again.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/compact/02-code-collapsed-again.png",
+      "bytes": 69453
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/compact",
+      "name": "02-code.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/compact/02-code.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/compact/02-code.png",
+      "bytes": 69453
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/compact",
+      "name": "03-list-restored.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/compact/03-list-restored.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/compact/03-list-restored.png",
+      "bytes": 92230
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/filters",
+      "name": "00-open-list.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/filters/00-open-list.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/filters/00-open-list.png",
+      "bytes": 190342
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/filters",
+      "name": "01-search-filtered.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/filters/01-search-filtered.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/filters/01-search-filtered.png",
+      "bytes": 45625
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/filters",
+      "name": "02-detail-open.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/filters/02-detail-open.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/filters/02-detail-open.png",
+      "bytes": 121833
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/filters",
+      "name": "03-closed-settled.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/filters/03-closed-settled.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/filters/03-closed-settled.png",
+      "bytes": 183625
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/pin",
+      "name": "00-before.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/pin/00-before.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/pin/00-before.png",
+      "bytes": 190036
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/pin",
+      "name": "01-pinned.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/pin/01-pinned.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/pin/01-pinned.png",
+      "bytes": 182763
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/pin",
+      "name": "02-reloaded.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/pin/02-reloaded.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/pin/02-reloaded.png",
+      "bytes": 182976
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/pin",
+      "name": "03-unpinned.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/pin/03-unpinned.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/pin/03-unpinned.png",
+      "bytes": 190286
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/wide",
+      "name": "00-summary.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/wide/00-summary.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/wide/00-summary.png",
+      "bytes": 235995
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/wide",
+      "name": "01-timeline.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/wide/01-timeline.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/wide/01-timeline.png",
+      "bytes": 181009
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/wide",
+      "name": "02-code.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/wide/02-code.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/wide/02-code.png",
+      "bytes": 216687
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "pull-requests-populated-interactions/wide",
+      "name": "03-summary-restored.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/pull-requests-populated-interactions/wide/03-summary-restored.png",
+      "repoPath": "shots/2026-08-15/pull-requests-populated-interactions/wide/03-summary-restored.png",
+      "bytes": 235990
+    },
+    {
+      "day": "2026-08-15",
+      "directory": "workspace-order",
+      "name": "lynx-order-after.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-15/workspace-order/lynx-order-after.png",
+      "repoPath": "shots/2026-08-15/workspace-order/lynx-order-after.png",
+      "bytes": 30378
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "editor-project-switch-empty",
+      "name": "02-draft.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/editor-project-switch-empty/02-draft.png",
+      "repoPath": "shots/2026-08-16/editor-project-switch-empty/02-draft.png",
+      "bytes": 48170
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "editor-project-switch-first-send",
+      "name": "01-promoted.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/editor-project-switch-first-send/01-promoted.png",
+      "repoPath": "shots/2026-08-16/editor-project-switch-first-send/01-promoted.png",
+      "bytes": 28545
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "kanban-card-actions-compact",
+      "name": "00-before.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/kanban-card-actions-compact/00-before.png",
+      "repoPath": "shots/2026-08-16/kanban-card-actions-compact/00-before.png",
+      "bytes": 17024
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "kanban-card-actions-compact",
+      "name": "01-open.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/kanban-card-actions-compact/01-open.png",
+      "repoPath": "shots/2026-08-16/kanban-card-actions-compact/01-open.png",
+      "bytes": 25362
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "kanban-card-actions-compact",
+      "name": "02-closed.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/kanban-card-actions-compact/02-closed.png",
+      "repoPath": "shots/2026-08-16/kanban-card-actions-compact/02-closed.png",
+      "bytes": 16855
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "kanban-card-actions-compact/after",
+      "name": "00-open.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/kanban-card-actions-compact/after/00-open.png",
+      "repoPath": "shots/2026-08-16/kanban-card-actions-compact/after/00-open.png",
+      "bytes": 29208
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "kanban-card-actions-compact/after",
+      "name": "01-pinned.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/kanban-card-actions-compact/after/01-pinned.png",
+      "repoPath": "shots/2026-08-16/kanban-card-actions-compact/after/01-pinned.png",
+      "bytes": 18713
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "kanban-card-actions-compact/after",
+      "name": "03-restored.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/kanban-card-actions-compact/after/03-restored.png",
+      "repoPath": "shots/2026-08-16/kanban-card-actions-compact/after/03-restored.png",
+      "bytes": 18788
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "kanban-card-actions-delete-cancel",
+      "name": "02-dismissed.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/kanban-card-actions-delete-cancel/02-dismissed.png",
+      "repoPath": "shots/2026-08-16/kanban-card-actions-delete-cancel/02-dismissed.png",
+      "bytes": 17114
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "kanban-card-rename-cancel",
+      "name": "01-edited.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/kanban-card-rename-cancel/01-edited.png",
+      "repoPath": "shots/2026-08-16/kanban-card-rename-cancel/01-edited.png",
+      "bytes": 25875
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "native-automations-detail-current",
+      "name": "native-light-1280.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/native-automations-detail-current/native-light-1280.png",
+      "repoPath": "shots/2026-08-16/native-automations-detail-current/native-light-1280.png",
+      "bytes": 507556
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "native-runtime-bootstrap",
+      "name": "kanban-populated.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/native-runtime-bootstrap/kanban-populated.png",
+      "repoPath": "shots/2026-08-16/native-runtime-bootstrap/kanban-populated.png",
+      "bytes": 631601
+    },
+    {
+      "day": "2026-08-16",
+      "directory": "web-kanban-card-actions",
+      "name": "01-open.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-16/web-kanban-card-actions/01-open.png",
+      "repoPath": "shots/2026-08-16/web-kanban-card-actions/01-open.png",
+      "bytes": 32526
+    },
+    {
+      "day": "2026-08-18",
+      "directory": "flag-experiments/enableCSSInlineVariables",
+      "name": "off-on.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/flag-experiments/enableCSSInlineVariables/off-on.png",
+      "repoPath": "shots/2026-08-18/flag-experiments/enableCSSInlineVariables/off-on.png",
+      "bytes": 167222
+    },
+    {
+      "day": "2026-08-18",
+      "directory": "flag-experiments/enableCSSRule",
+      "name": "off-on-resize.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/flag-experiments/enableCSSRule/off-on-resize.png",
+      "repoPath": "shots/2026-08-18/flag-experiments/enableCSSRule/off-on-resize.png",
+      "bytes": 268644
+    },
+    {
+      "day": "2026-08-18",
+      "directory": "flag-experiments/enableNewTransformOrigin",
+      "name": "default-off-on.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/flag-experiments/enableNewTransformOrigin/default-off-on.png",
+      "repoPath": "shots/2026-08-18/flag-experiments/enableNewTransformOrigin/default-off-on.png",
+      "bytes": 251410
+    },
+    {
+      "day": "2026-08-18",
+      "directory": "usage-mixed-auth-warning-icons/lynx",
+      "name": "raw.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/usage-mixed-auth-warning-icons/lynx/raw.png",
+      "repoPath": "shots/2026-08-18/usage-mixed-auth-warning-icons/lynx/raw.png",
+      "bytes": 85478
+    },
+    {
+      "day": "2026-08-18",
+      "directory": "usage-mixed-auth-warning-icons/native",
+      "name": "raw.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/usage-mixed-auth-warning-icons/native/raw.png",
+      "repoPath": "shots/2026-08-18/usage-mixed-auth-warning-icons/native/raw.png",
+      "bytes": 861523
+    },
+    {
+      "day": "2026-08-18",
+      "directory": "usage-mixed-auth-warning-icons/web",
+      "name": "raw.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/usage-mixed-auth-warning-icons/web/raw.png",
+      "repoPath": "shots/2026-08-18/usage-mixed-auth-warning-icons/web/raw.png",
+      "bytes": 83513
     }
   ]
 }
