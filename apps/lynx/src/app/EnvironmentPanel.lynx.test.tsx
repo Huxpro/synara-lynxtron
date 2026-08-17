@@ -123,7 +123,11 @@ describe('Lynx Environment panel', () => {
     expect(panelSource).toContain(
       'const liveQueriesEnabled = props.open && !props.bootstrapOnly'
     );
-    expect(panelSource.match(/open=\{liveQueriesEnabled\}/g)).toHaveLength(7);
+    expect(panelSource.match(/open=\{liveQueriesEnabled\}/g)).toHaveLength(6);
+    expect(panelSource).toContain('open={props.open}');
+    expect(panelSource).not.toContain(
+      'if (!props.open || props.bootstrapOnly) return;'
+    );
     expect(routerSource).toContain(
       'initialEnvironmentOpen && environmentData !== null'
     );

@@ -2558,6 +2558,22 @@ former dynamic-event P1 is no longer a valid blocker.
   pre-existing `.p10-view*` working-tree content was read by status only and
   never modified.
 
+### Current-head bootstrap closure
+
+- A changed repository with a local bare `origin` and tracked `main` still
+  rendered `Commit and Push` disabled before the fix.
+- Bootstrap-only mounting prevented the full `GitStatusResult` from reaching
+  parent Git-action derivation.
+- Environment Changes now refreshes full status whenever open; the same
+  canonical repository changed the trigger from
+  `EnvironmentGitActionTrigger--disabled` to enabled.
+- `lynx-environment-bootstrap-git-actions-disabled`: P1 contribution
+  `1.00 -> 0.00`.
+- Lynx-for-Web still did not dispatch the enabled custom Menu trigger, so popup
+  and dialog remain Native interaction coverage without any Git mutation.
+- Detailed evidence:
+  `shots/2026-08-17/environment-git-action-bootstrap/notes.md`.
+
 ## 2026-08-17 Theme import sheet at 320x200
 
 - The rendered Appearance `Import` action opened the compact theme-import sheet

@@ -439,7 +439,7 @@ function EnvironmentChanges(props: {
 
   useEffect(() => {
     'background only';
-    if (!props.open || props.bootstrapOnly) return;
+    if (!props.open) return;
     let cancelled = false;
     async function pollGitStatus() {
       'background only';
@@ -476,7 +476,6 @@ function EnvironmentChanges(props: {
       cancelled = true;
     };
   }, [
-    props.bootstrapOnly,
     props.open,
     props.workspaceRoot,
     refreshGeneration,
@@ -2703,7 +2702,7 @@ export function EnvironmentPanel(props: {
                 }
                 initialStatus={props.initialData?.gitStatus ?? null}
                 onOpenViewer={props.onOpenChanges}
-                open={liveQueriesEnabled}
+                open={props.open}
                 onStatusChange={setGitStatus}
                 workspaceRoot={props.workspaceRoot}
                 key={`changes-${gitRefreshGeneration}`}
