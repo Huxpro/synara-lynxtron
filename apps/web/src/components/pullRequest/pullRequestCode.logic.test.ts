@@ -363,6 +363,64 @@ describe("buildPullRequestCodeView", () => {
     });
   });
 
+  it("preserves lifecycle order when a file changes from regular to symlink", () => {
+    const patch = [
+      "diff --git a/node b/node",
+      "deleted file mode 100644",
+      "index 2e65efe..0000000",
+      "--- a/node",
+      "+++ /dev/null",
+      "@@ -1 +0,0 @@",
+      "-a",
+      "\\ No newline at end of file",
+      "diff --git a/node b/node",
+      "new file mode 120000",
+      "index 0000000..1de5659",
+      "--- /dev/null",
+      "+++ b/node",
+      "@@ -0,0 +1 @@",
+      "+target",
+      "\\ No newline at end of file",
+      "",
+    ].join("\n");
+
+    const parsed = buildPullRequestCodeView(patch, "pull-request:type-change");
+    expect(parsed.kind).toBe("files");
+    if (parsed.kind !== "files") return;
+    expect(parsed.files.map((file) => [file.path, file.lifecycle])).toEqual([
+      ["node", "deleted"],
+      ["node", "added"],
+    ]);
+
+    const portable = buildPortableUnifiedDiffView(patch);
+    expect(portable?.files.map((file) => [file.path, file.lifecycle])).toEqual([
+      ["node", "deleted"],
+      ["node", "added"],
+    ]);
+  });
+
+  it("falls back to a complete raw view for combined merge diffs", () => {
+    const patch = [
+      "diff --cc file.txt",
+      "index b19a1e9,950b81b..0000000",
+      "--- a/file.txt",
+      "+++ b/file.txt",
+      "@@@ -1,1 -1,1 +1,1 @@@",
+      "- ours",
+      " -theirs",
+      "++base",
+      "",
+    ].join("\n");
+
+    const view = buildPullRequestCodeView(patch, "pull-request:combined");
+    expect(view.kind).toBe("raw");
+    if (view.kind !== "raw") return;
+    expect(view.reason).toBe(
+      "Combined merge diff has multiple parents. Showing the complete raw patch.",
+    );
+    expect(view.lines.map((line) => line.text)).toEqual(patch.split("\n"));
+  });
+
   it("keeps empty and unparsable patches explicit", () => {
     expect(buildPullRequestCodeView("  ")).toEqual({ kind: "empty" });
     const raw = buildPullRequestCodeView("not a unified diff");

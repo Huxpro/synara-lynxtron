@@ -3750,3 +3750,29 @@ former dynamic-event P1 is no longer a valid blocker.
   production builds passed; screenshot count remained `100`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-quoted-path-binary/notes.md`.
+
+## 2026-08-17 Git object-type Changes at 320x320
+
+- New discovery enumerated symlink target changes, regular-to-symlink type
+  changes, added gitlinks, and unresolved combined patches.
+- A regular-to-symlink patch contains deleted and added segments with the same
+  path. Before, one path-keyed lifecycle map let the second segment overwrite
+  the first, so both cards rendered `File added.`.
+- Lifecycle metadata now preserves per-path segment order.
+- `shared-diff-type-change-lifecycle-overwrite`: P1 contribution
+  `1.00 -> 0.00`.
+- The final canonical cell showed `File deleted.` at `y=130..146` and
+  `File added.` at `y=252..268` after real pointer expansion of both `node`
+  cards.
+- A real `diff --cc` previously projected an expandable empty card. Combined
+  multi-parent patches now degrade to an explicit complete raw view.
+- `shared-diff-combined-empty-card`: P1 parser contribution `1.00 -> 0.00`;
+  PR/external-patch renderer coverage remains open because canonical
+  standalone Changes does not return the manually requested `--cc` shape.
+- Symlink target and gitlink addition projections already retained their
+  canonical content; their product contributions stayed `0.00`.
+- Focused tests passed `44/44`; Web, Lynx-for-Web, and Native/Desktop builds
+  passed; every browser failure and retained cell returned to `sessions: []`
+  with zero owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-object-types/notes.md`.

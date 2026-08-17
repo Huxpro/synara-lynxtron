@@ -307,27 +307,51 @@ function fileModeChanges(
 
 function fileLifecycles(
   patch: string | undefined,
-): ReadonlyMap<string, "added" | "deleted"> {
+): ReadonlyMap<string, readonly ("added" | "deleted" | null)[]> {
   const body = unifiedDiffBody(patch);
   if (!body) return new Map();
-  const lifecycles = new Map<string, "added" | "deleted">();
+  const lifecycles = new Map<string, Array<"added" | "deleted" | null>>();
   let currentPath: string | null = null;
+  let currentLifecycle: "added" | "deleted" | null = null;
+  const finishCurrent = () => {
+    if (!currentPath) return;
+    const pathLifecycles = lifecycles.get(currentPath) ?? [];
+    pathLifecycles.push(currentLifecycle);
+    lifecycles.set(currentPath, pathLifecycles);
+  };
   for (const line of body.split(/\r?\n/)) {
     const fileHeader = parseGitDiffHeader(line);
     if (fileHeader) {
+      finishCurrent();
       currentPath = fileHeader.path;
+      currentLifecycle = null;
       continue;
     }
     if (!currentPath) continue;
     if (/^new file mode \d+$/.test(line)) {
-      lifecycles.set(currentPath, "added");
+      currentLifecycle = "added";
       continue;
     }
     if (/^deleted file mode \d+$/.test(line)) {
-      lifecycles.set(currentPath, "deleted");
+      currentLifecycle = "deleted";
     }
   }
+  finishCurrent();
   return lifecycles;
+}
+
+function rawPatchView(patch: string, reason: string): Extract<PullRequestCodeView, { kind: "raw" }> {
+  return {
+    kind: "raw",
+    reason,
+    lines: patch.split("\n").map((text, index) => ({
+      id: `raw:${index}`,
+      kind: "context" as const,
+      oldLine: null,
+      newLine: null,
+      text,
+    })),
+  };
 }
 
 /**
@@ -522,32 +546,33 @@ export function buildPullRequestCodeView(
   patch: string | undefined,
   cacheScope = "pull-request:portable",
 ): PullRequestCodeView {
+  const body = unifiedDiffBody(patch);
+  if (body?.startsWith("diff --cc ") || body?.startsWith("diff --combined ")) {
+    return rawPatchView(
+      body,
+      "Combined merge diff has multiple parents. Showing the complete raw patch.",
+    );
+  }
   const { renderablePatch: renderable, renderableFiles } =
     buildPullRequestParsedCodeModel(patch, cacheScope);
   if (!renderable) return { kind: "empty" };
   if (renderable.kind === "raw") {
     const portable = buildPortableUnifiedDiffView(patch);
     if (portable) return portable;
-    return {
-      kind: "raw",
-      reason: renderable.reason,
-      lines: renderable.text.split("\n").map((text, index) => ({
-        id: `raw:${index}`,
-        kind: "context" as const,
-        oldLine: null,
-        newLine: null,
-        text,
-      })),
-    };
+    return rawPatchView(renderable.text, renderable.reason);
   }
   const binaryPaths = binaryFilePaths(patch);
   const modeChanges = fileModeChanges(patch);
   const lifecycles = fileLifecycles(patch);
   const eofMarkers = noNewlineMarkers(patch);
+  const lifecycleOffsets = new Map<string, number>();
   const files = renderableFiles.map((file) => {
     const stats = summarizeFileDiffStats([file]);
     const path = resolveFileDiffPath(file);
     const previousPath = file.prevName ? resolveFileDiffPath({ ...file, name: file.prevName }) : null;
+    const lifecycleOffset = lifecycleOffsets.get(path) ?? 0;
+    const lifecycle = lifecycles.get(path)?.[lifecycleOffset] ?? null;
+    lifecycleOffsets.set(path, lifecycleOffset + 1);
     return {
       key: buildFileDiffRenderKey(file),
       path,
@@ -556,7 +581,7 @@ export function buildPullRequestCodeView(
       deletions: stats.deletions,
       binary: binaryPaths.has(path),
       modeChange: modeChanges.get(path) ?? null,
-      lifecycle: lifecycles.get(path) ?? null,
+      lifecycle,
       lines: projectFileLines(file, eofMarkers.get(path) ?? []),
     };
   });
