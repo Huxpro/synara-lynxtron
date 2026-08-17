@@ -4040,6 +4040,25 @@ former dynamic-event P1 is no longer a valid blocker.
 - Detailed evidence:
   `shots/2026-08-17/native-medium-devtool-preflight/notes.md`.
 
+## 2026-08-17 Pull Requests multi-project filter at 320x320
+
+- Two canonical projects pointed at distinct real public repositories and
+  produced two repository batches, two project IDs, 100 entries, and zero
+  errors.
+- All-projects state showed 100 rows and both project identities. The filter
+  popup exposed `All projects`, `React Project`, and `Synara Project` in a
+  contained `256x140 @ y=180..320` surface.
+- Real selection of React scoped the list to 50 `facebook/react` rows and
+  updated trigger accessibility; real selection of All restored both project
+  identities.
+- `pull-requests-multi-project-filter-runtime`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Health/WebSocket readiness and malformed inline All probes were classified as
+  harness failures and rejected before the final retained roundtrip.
+- Browser sessions/processes, isolated repos/state, ports, and PNG were cleaned.
+- Detailed evidence:
+  `shots/2026-08-17/pull-requests-multi-project-filter/notes.md`.
+
 ## 2026-08-17 Long Local Server identity at 320x200
 
 - Four real rows included an extremely long page title.
