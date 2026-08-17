@@ -3542,3 +3542,18 @@ former dynamic-event P1 is no longer a valid blocker.
 - `shared-diff-empty-lifecycle-missing`: P1 contribution `1.00 -> 0.00`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-empty-lifecycle-short-height/notes.md`.
+
+## 2026-08-17 Working-tree diff truncation contract
+
+- The server output collector fails closed with `GitCommandError` when a Git
+  patch exceeds its byte limit; it never returns the collected prefix as a
+  successful `GitReadWorkingTreeDiffResult`.
+- Working-tree, staged, unstaged, and branch patch paths all preserve this
+  complete-patch-or-error contract.
+- `DiffDock` therefore cannot silently render an incomplete patch while
+  passing `truncated={false}`; oversized output belongs to the already verified
+  error/Retry boundary.
+- `working-tree-diff-silent-truncation`: suspected loss `1.00 -> 0.00`;
+  product-loss contribution `0.00 -> 0.00`.
+- Detailed evidence:
+  `shots/2026-08-17/working-tree-diff-truncation-contract/notes.md`.
