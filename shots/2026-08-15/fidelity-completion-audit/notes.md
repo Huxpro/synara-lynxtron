@@ -3838,3 +3838,23 @@ former dynamic-event P1 is no longer a valid blocker.
   screenshot count stayed `100`.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-changed-rename/notes.md`.
+
+## 2026-08-17 Progressive large diff at 320x200
+
+- A canonical empty-to-300-line patch exercised the shared 120-line initial
+  limit and 160-line increments for the first time.
+- Initial state rendered `120` rows with `Show 160 more lines`.
+- The first real activation rendered `280` rows and changed the control to
+  `Show 21 more lines`.
+- The second real activation rendered all `301` rows (one hunk plus 300
+  additions) and removed the control.
+- Scroller ownership remained `110px` while scroll height grew
+  `2542 -> 5742 -> 6130`; pending requests stayed zero.
+- `standalone-diff-progressive-large-file`: missing coverage
+  `1.00 -> 0.00`; product contribution `0.00 -> 0.00`.
+- Programmatic positioning was setup only; both disclosure transitions used
+  real pointer activation.
+- Browser lifecycle returned to `sessions: []` with zero owned processes and
+  screenshot count remained `100`.
+- Detailed evidence:
+  `shots/2026-08-17/standalone-diff-progressive-lines/notes.md`.
