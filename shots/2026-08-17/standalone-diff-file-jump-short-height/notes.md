@@ -71,6 +71,9 @@ Searching and selecting:
 - Native/Desktop production build passed: `4286.3 kB`.
 - Staged Native bundle SHA-256:
   `c8ba29a7650f821e52944e044823a3893ba31c1220ba61081ffb681494e5b4c9`.
+- The commit hook printed its generic React Doctor fallback warning. A real
+  uncached changed-lines scan against parent `eca97346e` inspected three files,
+  scored `90/100`, and reported `No issues found`.
 - Two selection attempts were rejected before product interaction because old
   command receipts/project state collided. Each wrapper closed cleanly and
   the explicit double-zero gate ran before the fresh `select-3` fixture.
