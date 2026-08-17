@@ -11,7 +11,12 @@ import {
   PullRequestCodeRootElement,
   PullRequestCodeStatsElement,
 } from "~/components/pullRequest/PullRequestCodeCompositionElements";
-import type { PullRequestCodeView } from "./pullRequestCode.logic";
+import {
+  formatGitPathForDisplay,
+  type PullRequestCodeView,
+} from "./pullRequestCode.logic";
+
+export { formatGitPathForDisplay };
 
 export const PULL_REQUEST_DIFF_INITIAL_LINE_COUNT = 120;
 export const PULL_REQUEST_DIFF_MORE_LINE_COUNT = 160;

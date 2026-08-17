@@ -3799,3 +3799,25 @@ former dynamic-event P1 is no longer a valid blocker.
   zero owned processes.
 - Detailed evidence:
   `shots/2026-08-17/diff-copy-relation/notes.md`.
+
+## 2026-08-17 Control-character diff paths at 320x200
+
+- A canonical workspace contained both a real newline path
+  `line\nbreak.txt` and an ordinary-space path `line break.txt`.
+- Before, the raw newline entered the text node despite `white-space: nowrap`,
+  expanding the first file header from `32px` to `48px` and its path text from
+  `16px` to `32px`.
+- Shared display escaping now renders newline/tab/carriage return as visible
+  escapes and other controls as `\xNN`, while preserving raw logical paths for
+  selection/search/RPC behavior.
+- Web/Lynx headers, previous-path identity, Editor rows, file-jump rows, and
+  accessibility labels reuse the same formatter.
+- After, `line\nbreak.txt` was visibly distinct from `line break.txt`; both
+  headers were `269x32`, and the escaped path text was `16px` high.
+- `shared-diff-control-character-path-layout`: P1 contribution
+  `1.00 -> 0.00`.
+- Focused tests passed `47/47` and `4/4`; Web, Lynx-for-Web, and
+  Native/Desktop builds passed; the final browser gate returned
+  `sessions: []` with zero owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/diff-control-character-path/notes.md`.

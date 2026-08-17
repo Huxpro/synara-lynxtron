@@ -1,6 +1,9 @@
 import type { ReactNode } from '@lynx-js/react';
 
-import type { PullRequestDiffLineKind } from '@synara-web/components/pullRequest/pullRequestCode.logic';
+import {
+  formatGitPathForDisplay,
+  type PullRequestDiffLineKind,
+} from '@synara-web/components/pullRequest/pullRequestCode.logic';
 import { ChevronRightIcon } from '../lib/icons.lynx';
 import {
   disclosureChevronClassName,
@@ -65,9 +68,13 @@ export function PullRequestCodeFileHeaderElement(props: {
   readonly expanded: boolean;
   readonly onActivate: () => void;
 }) {
+  const path = formatGitPathForDisplay(props.path);
+  const previousPath = props.previousPath
+    ? formatGitPathForDisplay(props.previousPath)
+    : null;
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedPrCodeFileHeader',
-    accessibleLabel: `${props.expanded ? 'Collapse' : 'Expand'} ${props.path}`,
+    accessibleLabel: `${props.expanded ? 'Collapse' : 'Expand'} ${path}`,
     accessibilityValue: props.expanded ? 'Expanded' : 'Collapsed',
     onActivate: props.onActivate,
   });
@@ -84,15 +91,15 @@ export function PullRequestCodeFileHeaderElement(props: {
         )}
         size={10}
       />
-      <text className="SharedPrCodeFilePath">{props.path}</text>
-      {props.previousPath ? (
+      <text className="SharedPrCodeFilePath">{path}</text>
+      {previousPath ? (
         <text className="SharedPrCodeFilePrevious">
           {props.relation === 'copied'
             ? 'copied from'
             : props.relation === 'renamed'
               ? 'renamed from'
               : 'from'}{' '}
-          {props.previousPath}
+          {previousPath}
         </text>
       ) : null}
       <text className="SharedPrCodeStatsAddition">+{props.additions}</text>

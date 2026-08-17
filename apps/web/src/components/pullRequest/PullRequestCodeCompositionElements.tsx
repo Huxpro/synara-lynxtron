@@ -5,7 +5,10 @@ import type { ReactNode } from "react";
 import { DisclosureChevron } from "~/components/ui/DisclosureChevron";
 import { DisclosureRegion } from "~/components/ui/DisclosureRegion";
 import { cn } from "~/lib/utils";
-import type { PullRequestDiffLineKind } from "./pullRequestCode.logic";
+import {
+  formatGitPathForDisplay,
+  type PullRequestDiffLineKind,
+} from "./pullRequestCode.logic";
 
 type ChildrenProps = { readonly children?: ReactNode };
 
@@ -48,20 +51,24 @@ export function PullRequestCodeFileHeaderElement(props: {
   readonly expanded: boolean;
   readonly onActivate: () => void;
 }) {
+  const path = formatGitPathForDisplay(props.path);
+  const previousPath = props.previousPath
+    ? formatGitPathForDisplay(props.previousPath)
+    : null;
   return (
     <button
       type="button"
       className="flex w-full items-center gap-2 bg-muted/35 px-3 py-2 text-left text-xs"
       aria-expanded={props.expanded}
-      aria-label={`${props.expanded ? "Collapse" : "Expand"} ${props.path}`}
+      aria-label={`${props.expanded ? "Collapse" : "Expand"} ${path}`}
       onClick={props.onActivate}
     >
       <DisclosureChevron open={props.expanded} className="size-2.5 shrink-0 text-muted-foreground" />
-      <span className="min-w-0 flex-1 truncate font-mono">{props.path}</span>
-      {props.previousPath ? (
+      <span className="min-w-0 flex-1 truncate font-mono">{path}</span>
+      {previousPath ? (
         <span className="truncate text-muted-foreground">
           {props.relation === "copied" ? "copied from" : props.relation === "renamed" ? "renamed from" : "from"}{" "}
-          {props.previousPath}
+          {previousPath}
         </span>
       ) : null}
       <span className="text-success">+{props.additions}</span>

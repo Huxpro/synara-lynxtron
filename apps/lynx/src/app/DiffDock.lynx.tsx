@@ -2,6 +2,7 @@ import { useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
 import type { GitReadWorkingTreeDiffResult } from '@synara/contracts';
 import {
+  formatGitPathForDisplay,
   PULL_REQUEST_DIFF_INITIAL_LINE_COUNT,
   PULL_REQUEST_DIFF_MORE_LINE_COUNT,
   PullRequestCodeComposition,
@@ -342,7 +343,9 @@ function OpenDiffDock(props: {
                     variant="ghost"
                     onClick={() => jumpToFile(file)}
                   >
-                    <text className="DiffDockFileJumpPath">{file.path}</text>
+                    <text className="DiffDockFileJumpPath">
+                      {formatGitPathForDisplay(file.path)}
+                    </text>
                     <text className="SharedPrCodeStatsAddition">
                       +{file.additions}
                     </text>
@@ -367,16 +370,18 @@ function EditorDiffFileRow(props: {
   readonly path: string;
   readonly selected: boolean;
 }) {
+  const displayPath = formatGitPathForDisplay(props.path);
   const interaction = useLynxInteractiveState({
     baseClassName: `DiffDockFileRow${
       props.selected ? ' DiffDockFileRow--selected' : ''
     }`,
-    accessibleLabel: `Open ${props.path}`,
+    accessibleLabel: `Open ${displayPath}`,
     onActivate: props.onActivate,
   });
-  const slash = props.path.lastIndexOf('/');
-  const directory = slash === -1 ? '' : props.path.slice(0, slash + 1);
-  const name = slash === -1 ? props.path : props.path.slice(slash + 1);
+  const slash = displayPath.lastIndexOf('/');
+  const directory =
+    slash === -1 ? '' : displayPath.slice(0, slash + 1);
+  const name = slash === -1 ? displayPath : displayPath.slice(slash + 1);
   return (
     <view className={interaction.className} {...interaction.eventProps}>
       <view className="DiffDockFileIdentity">

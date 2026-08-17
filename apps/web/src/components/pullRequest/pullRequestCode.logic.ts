@@ -22,6 +22,21 @@ export type PullRequestDiffLineKind =
   | "no-newline-deletion"
   | "no-newline-context";
 
+export function formatGitPathForDisplay(path: string): string {
+  return path.replace(/[\u0000-\u001f\u007f]/g, (character) => {
+    switch (character) {
+      case "\n":
+        return "\\n";
+      case "\r":
+        return "\\r";
+      case "\t":
+        return "\\t";
+      default:
+        return `\\x${character.charCodeAt(0).toString(16).padStart(2, "0")}`;
+    }
+  });
+}
+
 export interface PullRequestDiffLineView {
   readonly id: string;
   readonly kind: PullRequestDiffLineKind;

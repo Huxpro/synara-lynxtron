@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildPortableUnifiedDiffView,
   buildPullRequestCodeView,
+  formatGitPathForDisplay,
 } from "./pullRequestCode.logic";
 
 const PATCH = [
@@ -25,6 +26,13 @@ const PATCH = [
 ].join("\n");
 
 describe("buildPullRequestCodeView", () => {
+  it("escapes control characters only at the path presentation boundary", () => {
+    expect(formatGitPathForDisplay("line\nbreak\tname\r.txt\u0000")).toBe(
+      "line\\nbreak\\tname\\r.txt\\x00",
+    );
+    expect(formatGitPathForDisplay("src/文档.txt")).toBe("src/文档.txt");
+  });
+
   it("projects canonical parsed files into sorted portable line rows", () => {
     const view = buildPullRequestCodeView(PATCH, "pull-request:test");
     expect(view.kind).toBe("files");
