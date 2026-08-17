@@ -151,6 +151,15 @@ describe('Pull Request Code disclosure fidelity', () => {
     expect(composition).toContain(
       'file.lifecycle === "added" ? "File added." : "File deleted."'
     );
+    expect(composition).toContain('relation={file.relation}');
+    expect(lynxElements).toContain("props.relation === 'copied'");
+    expect(lynxElements).toContain("'copied from'");
+    expect(lynxElements).toContain("props.relation === 'renamed'");
+    expect(lynxElements).toContain("'renamed from'");
+    expect(webElements).toContain('props.relation === "copied"');
+    expect(webElements).toContain('"copied from"');
+    expect(webElements).toContain('props.relation === "renamed"');
+    expect(webElements).toContain('"renamed from"');
     expect(composition).not.toContain('{isExpanded ? (');
     expect(composition).toContain('disabled={props.retrying}');
     expect(composition).toContain('onActivate={props.onRetry}');

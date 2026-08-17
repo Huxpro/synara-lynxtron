@@ -354,12 +354,40 @@ describe("buildPullRequestCodeView", () => {
     expect(parsed.files[0]).toMatchObject({
       path: "foo b/new.txt",
       previousPath: "foo b/old.txt",
+      relation: "renamed",
     });
 
     const portable = buildPortableUnifiedDiffView(patch);
     expect(portable?.files[0]).toMatchObject({
       path: "foo b/new.txt",
       previousPath: "foo b/old.txt",
+      relation: "renamed",
+    });
+  });
+
+  it("distinguishes copied files from renamed files", () => {
+    const patch = [
+      "diff --git a/original.txt b/copied.txt",
+      "similarity index 100%",
+      "copy from original.txt",
+      "copy to copied.txt",
+      "",
+    ].join("\n");
+
+    const parsed = buildPullRequestCodeView(patch, "pull-request:copy");
+    expect(parsed.kind).toBe("files");
+    if (parsed.kind !== "files") return;
+    expect(parsed.files[0]).toMatchObject({
+      path: "copied.txt",
+      previousPath: "original.txt",
+      relation: "copied",
+    });
+
+    const portable = buildPortableUnifiedDiffView(patch);
+    expect(portable?.files[0]).toMatchObject({
+      path: "copied.txt",
+      previousPath: "original.txt",
+      relation: "copied",
     });
   });
 

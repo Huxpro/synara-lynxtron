@@ -34,6 +34,7 @@ export interface PullRequestDiffFileView {
   readonly key: string;
   readonly path: string;
   readonly previousPath: string | null;
+  readonly relation: "copied" | "renamed" | null;
   readonly additions: number;
   readonly deletions: number;
   readonly binary: boolean;
@@ -340,6 +341,42 @@ function fileLifecycles(
   return lifecycles;
 }
 
+function fileRelations(
+  patch: string | undefined,
+): ReadonlyMap<string, readonly ("copied" | "renamed" | null)[]> {
+  const body = unifiedDiffBody(patch);
+  if (!body) return new Map();
+  const relations = new Map<string, Array<"copied" | "renamed" | null>>();
+  let currentPath: string | null = null;
+  let currentRelation: "copied" | "renamed" | null = null;
+  const finishCurrent = () => {
+    if (!currentPath) return;
+    const pathRelations = relations.get(currentPath) ?? [];
+    pathRelations.push(currentRelation);
+    relations.set(currentPath, pathRelations);
+  };
+  for (const line of body.split(/\r?\n/)) {
+    const fileHeader = parseGitDiffHeader(line);
+    if (fileHeader) {
+      finishCurrent();
+      currentPath = fileHeader.path;
+      currentRelation = null;
+      continue;
+    }
+    if (line.startsWith("copy to ")) {
+      currentPath = decodeGitPath(line.slice("copy to ".length));
+      currentRelation = "copied";
+      continue;
+    }
+    if (line.startsWith("rename to ")) {
+      currentPath = decodeGitPath(line.slice("rename to ".length));
+      currentRelation = "renamed";
+    }
+  }
+  finishCurrent();
+  return relations;
+}
+
 function rawPatchView(patch: string, reason: string): Extract<PullRequestCodeView, { kind: "raw" }> {
   return {
     kind: "raw",
@@ -371,6 +408,7 @@ export function buildPortableUnifiedDiffView(
         key: string;
         path: string;
         previousPath: string | null;
+        relation: "copied" | "renamed" | null;
         additions: number;
         deletions: number;
         binary: boolean;
@@ -392,6 +430,7 @@ export function buildPortableUnifiedDiffView(
       key: current.key,
       path: current.path,
       previousPath: current.previousPath,
+      relation: current.relation,
       additions: current.additions,
       deletions: current.deletions,
       binary: current.binary,
@@ -410,6 +449,7 @@ export function buildPortableUnifiedDiffView(
         key: `portable:${previousPath}:${path}:${files.length}`,
         path,
         previousPath: previousPath !== path ? previousPath : null,
+        relation: previousPath !== path ? "renamed" : null,
         additions: 0,
         deletions: 0,
         binary: false,
@@ -423,13 +463,27 @@ export function buildPortableUnifiedDiffView(
       continue;
     }
     if (!current) continue;
+    if (line.startsWith("copy from ")) {
+      current.previousPath = decodeGitPath(line.slice("copy from ".length));
+      current.relation = "copied";
+      current.key = `portable:${current.previousPath}:${current.path}:${files.length}`;
+      continue;
+    }
+    if (line.startsWith("copy to ")) {
+      current.path = decodeGitPath(line.slice("copy to ".length));
+      current.relation = "copied";
+      current.key = `portable:${current.previousPath ?? current.path}:${current.path}:${files.length}`;
+      continue;
+    }
     if (line.startsWith("rename from ")) {
       current.previousPath = decodeGitPath(line.slice("rename from ".length));
+      current.relation = "renamed";
       current.key = `portable:${current.previousPath}:${current.path}:${files.length}`;
       continue;
     }
     if (line.startsWith("rename to ")) {
       current.path = decodeGitPath(line.slice("rename to ".length));
+      current.relation = "renamed";
       current.key = `portable:${current.previousPath ?? current.path}:${current.path}:${files.length}`;
       continue;
     }
@@ -564,8 +618,10 @@ export function buildPullRequestCodeView(
   const binaryPaths = binaryFilePaths(patch);
   const modeChanges = fileModeChanges(patch);
   const lifecycles = fileLifecycles(patch);
+  const relations = fileRelations(patch);
   const eofMarkers = noNewlineMarkers(patch);
   const lifecycleOffsets = new Map<string, number>();
+  const relationOffsets = new Map<string, number>();
   const files = renderableFiles.map((file) => {
     const stats = summarizeFileDiffStats([file]);
     const path = resolveFileDiffPath(file);
@@ -573,10 +629,14 @@ export function buildPullRequestCodeView(
     const lifecycleOffset = lifecycleOffsets.get(path) ?? 0;
     const lifecycle = lifecycles.get(path)?.[lifecycleOffset] ?? null;
     lifecycleOffsets.set(path, lifecycleOffset + 1);
+    const relationOffset = relationOffsets.get(path) ?? 0;
+    const relation = relations.get(path)?.[relationOffset] ?? null;
+    relationOffsets.set(path, relationOffset + 1);
     return {
       key: buildFileDiffRenderKey(file),
       path,
       previousPath: previousPath && previousPath !== path ? previousPath : null,
+      relation,
       additions: stats.additions,
       deletions: stats.deletions,
       binary: binaryPaths.has(path),

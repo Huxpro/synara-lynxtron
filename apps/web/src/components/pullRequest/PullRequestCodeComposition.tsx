@@ -71,6 +71,7 @@ export function PullRequestCodeComposition(props: {
             <PullRequestCodeFileHeaderElement
               path="Raw patch"
               previousPath={null}
+              relation={null}
               additions={0}
               deletions={0}
               expanded
@@ -113,6 +114,7 @@ export function PullRequestCodeComposition(props: {
                 <PullRequestCodeFileHeaderElement
                   path={file.path}
                   previousPath={file.previousPath}
+                  relation={file.relation}
                   additions={file.additions}
                   deletions={file.deletions}
                   expanded={isExpanded}

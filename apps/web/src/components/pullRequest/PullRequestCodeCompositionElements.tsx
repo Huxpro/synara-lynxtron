@@ -42,6 +42,7 @@ export function PullRequestCodeFileElement(props: ChildrenProps & { readonly id?
 export function PullRequestCodeFileHeaderElement(props: {
   readonly path: string;
   readonly previousPath: string | null;
+  readonly relation: "copied" | "renamed" | null;
   readonly additions: number;
   readonly deletions: number;
   readonly expanded: boolean;
@@ -57,7 +58,12 @@ export function PullRequestCodeFileHeaderElement(props: {
     >
       <DisclosureChevron open={props.expanded} className="size-2.5 shrink-0 text-muted-foreground" />
       <span className="min-w-0 flex-1 truncate font-mono">{props.path}</span>
-      {props.previousPath ? <span className="truncate text-muted-foreground">from {props.previousPath}</span> : null}
+      {props.previousPath ? (
+        <span className="truncate text-muted-foreground">
+          {props.relation === "copied" ? "copied from" : props.relation === "renamed" ? "renamed from" : "from"}{" "}
+          {props.previousPath}
+        </span>
+      ) : null}
       <span className="text-success">+{props.additions}</span>
       <span className="text-destructive">-{props.deletions}</span>
     </button>

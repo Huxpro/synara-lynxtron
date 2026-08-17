@@ -3776,3 +3776,26 @@ former dynamic-event P1 is no longer a valid blocker.
   with zero owned processes.
 - Detailed evidence:
   `shots/2026-08-17/standalone-diff-object-types/notes.md`.
+
+## 2026-08-17 Copy relation identity
+
+- New structural discovery covered copy detection, gitlink update/delete,
+  symlink addition, and literal-newline filenames.
+- Copy patches previously collapsed into the same `from <path>` identity used
+  by rename, even though the source file still exists.
+- Shared canonical/fallback models now preserve
+  `relation: copied | renamed | null`; Web and Lynx headers render
+  `copied from` / `renamed from` explicitly.
+- `shared-diff-copy-relation-missing`: P1 contribution `1.00 -> 0.00`.
+- Executable Lynx element-tree tests rendered both relation labels and retained
+  the header accessibility identity.
+- Standalone Changes does not enable Git copy detection and therefore cannot
+  construct this state; PR/explicit-copy browser rendering remains missing
+  coverage rather than a claimed pass.
+- Gitlink update/delete, symlink add, and newline-path states were already
+  complete; product contribution stayed `0.00`.
+- Focused tests passed `45/45` and `3/3`; Web, Lynx-for-Web, and
+  Native/Desktop builds passed; browser lifecycle ended at `sessions: []` with
+  zero owned processes.
+- Detailed evidence:
+  `shots/2026-08-17/diff-copy-relation/notes.md`.

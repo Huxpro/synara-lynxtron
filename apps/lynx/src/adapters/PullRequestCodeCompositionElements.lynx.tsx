@@ -59,6 +59,7 @@ export function PullRequestCodeFileElement(
 export function PullRequestCodeFileHeaderElement(props: {
   readonly path: string;
   readonly previousPath: string | null;
+  readonly relation: 'copied' | 'renamed' | null;
   readonly additions: number;
   readonly deletions: number;
   readonly expanded: boolean;
@@ -85,7 +86,14 @@ export function PullRequestCodeFileHeaderElement(props: {
       />
       <text className="SharedPrCodeFilePath">{props.path}</text>
       {props.previousPath ? (
-        <text className="SharedPrCodeFilePrevious">from {props.previousPath}</text>
+        <text className="SharedPrCodeFilePrevious">
+          {props.relation === 'copied'
+            ? 'copied from'
+            : props.relation === 'renamed'
+              ? 'renamed from'
+              : 'from'}{' '}
+          {props.previousPath}
+        </text>
       ) : null}
       <text className="SharedPrCodeStatsAddition">+{props.additions}</text>
       <text className="SharedPrCodeStatsDeletion">-{props.deletions}</text>
