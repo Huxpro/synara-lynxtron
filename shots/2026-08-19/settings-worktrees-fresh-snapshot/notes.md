@@ -135,3 +135,17 @@ changed.
   system modal in this slice. Native rendering, exact-client identity, and
   click-time RPC behavior are certified; the dialog-copy cell remains
   missing coverage, not a product loss.
+
+## Ledger Outcome
+
+- fidelity loss: `11.3771 → 11.2386`;
+- loss delta: `-0.2445`;
+- Web/Lynx visual parity: `99.6792%`;
+- component contribution:
+  - visual: `-0.1643`;
+  - scope: `-0.0638`;
+  - completeness: `-0.0164`;
+  - reliability: `0`;
+- accepted pair count: `448`;
+- rejected pair count remained `1`;
+- no regression change was recorded.
