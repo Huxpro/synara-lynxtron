@@ -428,6 +428,12 @@ export function SettingsPage({
   const ready = hydrationState === 'ready';
   const searchResults = rankLynxSettingsSearchEntries(searchQuery);
 
+  useEffect(() => {
+    setSection(initialSection);
+    setPendingSearchTarget(initialTarget);
+    setSearchQuery('');
+  }, [initialSection, initialTarget]);
+
   function selectSearchResult(entry: SettingsSearchEntry) {
     setSection(entry.section);
     setPendingSearchTarget(settingsSearchEntryTarget(entry));

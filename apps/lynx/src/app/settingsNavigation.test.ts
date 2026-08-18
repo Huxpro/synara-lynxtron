@@ -102,6 +102,9 @@ describe('shared settings navigation projection', () => {
     expect(source).toContain(
       "disabled={key === 'enableSystemTaskCompletionNotifications'}"
     );
+    expect(source).toMatch(
+      /useEffect\(\(\) => \{\s*setSection\(initialSection\);\s*setPendingSearchTarget\(initialTarget\);\s*setSearchQuery\(''\);\s*\}, \[initialSection, initialTarget\]\);/s
+    );
     const routerSource = readFileSync(
       new URL('./router.tsx', import.meta.url),
       'utf8'
