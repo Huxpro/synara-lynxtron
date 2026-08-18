@@ -143,9 +143,9 @@ const harnessIssueLedger = [
     summary:
       'The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint.',
     severityPoints: 0,
-    resolvedBy: [],
+    resolvedBy: ['af9db8126'],
     resolution:
-      'Unresolved harness-only ownership boundary; the user-owned @t3tools/lynxtron client was not stopped, and Native Automations certification remains missing coverage.',
+      'A fresh exact-owned @synara/lynx process registered on PID-derived localhost:8902 while the unrelated localhost:8901 client remained running, then completed the Native Automation Repeats roundtrip with a clean console.',
     resolutionStoryPrefixes: [],
   },
   {
