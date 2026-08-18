@@ -9,6 +9,38 @@ export type ProviderDiscoveryStatus =
   | { readonly kind: "empty" }
   | { readonly kind: "content" };
 
+export interface ProviderPluginDiscoveryWarningInput {
+  readonly marketplaceLoadErrors: ReadonlyArray<{
+    readonly marketplacePath: string;
+    readonly message: string;
+  }>;
+  readonly remoteSyncError: string | null;
+}
+
+function providerDiscoverySectionTitle(value: string): string {
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : "Unknown";
+}
+
+export function providerPluginDiscoveryWarnings(
+  input: ProviderPluginDiscoveryWarningInput,
+): readonly string[] {
+  const warnings: string[] = [];
+  const remoteSyncError = input.remoteSyncError?.trim();
+  if (remoteSyncError) warnings.push(remoteSyncError);
+  const marketplaceWarnings = input.marketplaceLoadErrors
+    .map((error) => {
+      const message = error.message.trim();
+      if (!message) return null;
+      return `${providerDiscoverySectionTitle(error.marketplacePath)}: ${message}`;
+    })
+    .filter((warning): warning is string => warning !== null);
+  if (marketplaceWarnings.length > 0) {
+    warnings.push(marketplaceWarnings.join(" • "));
+  }
+  return warnings;
+}
+
 export function normalizeProviderDiscoveryText(value: string | undefined): string {
   if (!value) return "";
   return value

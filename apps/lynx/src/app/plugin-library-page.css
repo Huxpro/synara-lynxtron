@@ -92,6 +92,41 @@
   height: 40px;
 }
 
+.PluginLibraryWarnings {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 672px;
+  margin: 0 auto;
+}
+
+.PluginLibraryWarning {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(245, 158, 11, 0.24);
+  border-radius: 12px;
+  background-color: rgba(245, 158, 11, 0.06);
+}
+
+.PluginLibraryWarningIcon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--warning);
+}
+
+.PluginLibraryWarningText {
+  flex: 1;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 17px;
+}
+
 .PluginLibraryRows {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

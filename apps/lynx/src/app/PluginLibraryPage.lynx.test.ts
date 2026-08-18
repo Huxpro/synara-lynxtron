@@ -31,6 +31,10 @@ describe('Lynx plugin library', () => {
     expect(pageSource).toContain("tab === 'plugins'");
     expect(pageSource).toContain("tab === 'skills'");
     expect(pageSource).toContain('resolveProviderDiscoveryStatus');
+    expect(pageSource).toContain('providerPluginDiscoveryWarnings');
+    expect(pageSource).toContain('plugins.data?.remoteSyncError ?? null');
+    expect(pageSource).toContain('plugins.data?.marketplaceLoadErrors ?? []');
+    expect(pageSource).toContain('className="PluginLibraryWarning"');
     expect(pageSource).toContain("useState<ProviderKind>('codex')");
     expect(pageSource).toContain('DEFAULT_PROVIDER_ORDER.map');
     expect(pageSource).toContain('PROVIDER_DISPLAY_NAMES[provider]');

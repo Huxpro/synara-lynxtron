@@ -65,6 +65,7 @@ import {
 } from "~/hooks/useDesktopTopBarGutter";
 import { Skeleton } from "./ui/skeleton";
 import { resolveProviderDiscoveryStatus } from "@synara/shared/providerDiscoveryPresentation";
+import { providerPluginDiscoveryWarnings } from "@synara/shared/providerDiscoveryPresentation";
 
 import { useDebouncedValue } from "@tanstack/react-pacer";
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -538,6 +539,10 @@ export function PluginLibrary() {
     resource: "plugins",
     supported: canListPlugins,
   });
+  const pluginWarnings = providerPluginDiscoveryWarnings({
+    marketplaceLoadErrors: pluginsQuery.data?.marketplaceLoadErrors ?? [],
+    remoteSyncError: pluginsQuery.data?.remoteSyncError ?? null,
+  });
   const skillStatus = resolveProviderDiscoveryStatus({
     error: skillsQuery.error,
     itemCount: filteredSkills.length,
@@ -631,26 +636,18 @@ export function PluginLibrary() {
 
           {/* Warnings */}
           {((!discoveryCwd && selectedTab === "skills") ||
-            (selectedTab === "plugins" && !!pluginsQuery.data?.remoteSyncError) ||
-            (selectedTab === "plugins" &&
-              (pluginsQuery.data?.marketplaceLoadErrors.length ?? 0) > 0)) && (
+            (selectedTab === "plugins" && pluginWarnings.length > 0)) && (
             <div className="mx-auto max-w-2xl space-y-1.5 px-6 pb-4">
               {!discoveryCwd && selectedTab === "skills" ? (
                 <InlineWarning>
                   Skills need a workspace path. Open a project or thread first.
                 </InlineWarning>
               ) : null}
-              {selectedTab === "plugins" && pluginsQuery.data?.remoteSyncError ? (
-                <InlineWarning>{pluginsQuery.data.remoteSyncError}</InlineWarning>
-              ) : null}
-              {selectedTab === "plugins" &&
-              (pluginsQuery.data?.marketplaceLoadErrors.length ?? 0) > 0 ? (
-                <InlineWarning>
-                  {pluginsQuery.data?.marketplaceLoadErrors
-                    .map((err) => `${sectionTitle(err.marketplacePath)}: ${err.message}`)
-                    .join(" • ")}
-                </InlineWarning>
-              ) : null}
+              {selectedTab === "plugins"
+                ? pluginWarnings.map((warning) => (
+                    <InlineWarning key={warning}>{warning}</InlineWarning>
+                  ))
+                : null}
             </div>
           )}
 

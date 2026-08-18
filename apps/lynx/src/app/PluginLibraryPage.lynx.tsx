@@ -8,13 +8,14 @@ import type {
 import { PROVIDER_DISPLAY_NAMES } from '@synara/contracts';
 import {
   normalizeProviderDiscoveryText,
+  providerPluginDiscoveryWarnings,
   resolveProviderDiscoveryStatus,
 } from '@synara/shared/providerDiscoveryPresentation';
 import { DEFAULT_PROVIDER_ORDER } from '@synara-web/providerOrdering';
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
-import { PuzzleIcon, SearchIcon } from '../lib/icons.lynx';
+import { CircleAlertIcon, PuzzleIcon, SearchIcon } from '../lib/icons.lynx';
 import {
   fetchPluginLibraryCapabilities,
   fetchPluginLibraryPlugins,
@@ -153,6 +154,13 @@ export function PluginLibraryPage() {
     resource: tab,
     supported,
   });
+  const pluginWarnings =
+    tab === 'plugins'
+      ? providerPluginDiscoveryWarnings({
+          marketplaceLoadErrors: plugins.data?.marketplaceLoadErrors ?? [],
+          remoteSyncError: plugins.data?.remoteSyncError ?? null,
+        })
+      : [];
 
   return (
     <view className="PluginLibraryPage">
@@ -213,6 +221,19 @@ export function PluginLibraryPage() {
               onInput={(value) => setSearch(value)}
             />
           </view>
+          {pluginWarnings.length > 0 ? (
+            <view className="PluginLibraryWarnings">
+              {pluginWarnings.map((warning) => (
+                <view className="PluginLibraryWarning" key={warning}>
+                  <CircleAlertIcon
+                    className="PluginLibraryWarningIcon"
+                    size={15}
+                  />
+                  <text className="PluginLibraryWarningText">{warning}</text>
+                </view>
+              ))}
+            </view>
+          ) : null}
           {status.kind === 'loading' ? (
             <text className="PluginLibraryState">Loading {tab}…</text>
           ) : status.kind === 'error' ? (

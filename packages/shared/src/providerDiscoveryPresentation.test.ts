@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   describeProviderDiscoveryError,
   normalizeProviderDiscoveryText,
+  providerPluginDiscoveryWarnings,
   resolveProviderDiscoveryStatus,
 } from "./providerDiscoveryPresentation";
 
@@ -68,5 +69,40 @@ describe("provider discovery presentation", () => {
     expect(normalizeProviderDiscoveryText(" React_Doctor:Review ")).toBe(
       "react doctor review",
     );
+  });
+
+  it("preserves partial plugin discovery warnings while content remains available", () => {
+    expect(
+      providerPluginDiscoveryWarnings({
+        remoteSyncError: " Remote sync unavailable ",
+        marketplaceLoadErrors: [
+          {
+            marketplacePath: " /broken/marketplace.json ",
+            message: " Invalid marketplace manifest ",
+          },
+          {
+            marketplacePath: "",
+            message: " Missing marketplace path ",
+          },
+        ],
+      }),
+    ).toEqual([
+      "Remote sync unavailable",
+      "/broken/marketplace.json: Invalid marketplace manifest • Unknown: Missing marketplace path",
+    ]);
+  });
+
+  it("omits empty partial plugin discovery warnings", () => {
+    expect(
+      providerPluginDiscoveryWarnings({
+        remoteSyncError: " ",
+        marketplaceLoadErrors: [
+          {
+            marketplacePath: "/ignored",
+            message: " ",
+          },
+        ],
+      }),
+    ).toEqual([]);
   });
 });
