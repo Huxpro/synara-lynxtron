@@ -208,6 +208,6 @@ Generated fidelity accounting:
 
 The P1 discovery and fix were committed atomically, so the active reliability
 component remains zero rather than inventing a committed unresolved interval.
-The generated scope/completeness delta is attributed to ledger refresh commit
-`58dc36421`; source/fix commit `d1ba34f80` carries the evidence files but
-precedes their first generated accounting point.
+Because the ledger is commit-bounded, the generated scope/completeness delta
+appears at the first later evidence point where the expanded final scope is
+computable, not necessarily at the source/fix commit itself.
