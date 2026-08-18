@@ -12,6 +12,7 @@ import { resolveWebInitialRoute } from './webInitialRoute.logic';
 import { resolveWebRelayEndpoint } from './webRelayEndpoint.logic';
 import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from '../syntaxHighlightingContract.logic';
 import { REDUCED_MOTION_EVENT } from '../reducedMotionEvent.logic';
+import { normalizeLynxRpcPayload } from '../rpcPayload.logic';
 import { SYSTEM_APPEARANCE_EVENT } from '../systemAppearanceEvent.logic';
 import {
   describeWebRpcDefect,
@@ -696,7 +697,12 @@ async function handleBridgeCall(
           throw error;
         }
       }
-      return await synaraRpc(params.baseUrl, params.tag, params.payload);
+      const tag = String(params.tag ?? '');
+      return await synaraRpc(
+        params.baseUrl,
+        tag,
+        normalizeLynxRpcPayload(tag, params.payload)
+      );
     }
     if (method === 'synaraRpcStream') {
       return await synaraRpc(params.baseUrl, params.tag, params.payload, true);

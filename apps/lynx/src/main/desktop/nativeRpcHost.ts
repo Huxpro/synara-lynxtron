@@ -8,6 +8,7 @@ import {
   type StartRpcTimeout,
 } from '../../data/rpcTransport.logic';
 import { resolveSynaraWsUrl } from './runtimeEndpoint.logic';
+import { normalizeLynxRpcPayload } from '../rpcPayload.logic';
 
 const CLIENT_BUILD = '0.5.5-lynx-slice';
 const SOCKET_OPEN_TIMEOUT_MS = 8_000;
@@ -129,7 +130,10 @@ export async function handleNativeRpc(
       });
       return events;
     }
-    return await featureManager.request(tag, data.payload);
+    return await featureManager.request(
+      tag,
+      normalizeLynxRpcPayload(tag, data.payload)
+    );
   } catch (error) {
     const relayError = new Error(
       error instanceof Error ? error.message : String(error)

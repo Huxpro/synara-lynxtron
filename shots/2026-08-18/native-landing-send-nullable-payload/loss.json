@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-native-thread-create-nullable-fields-stripped",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx Desktop and Web RPC host payload normalization"
+    },
+    {
+      "id": "codex-account-usage-limit",
+      "severity": "external",
+      "classification": "accepted-environment-limitation",
+      "before": 1,
+      "after": 1,
+      "owner": "Codex account usage entitlement"
+    }
+  ]
+}
