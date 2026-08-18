@@ -105,3 +105,10 @@ Neither harness failure is counted as product loss.
   remained `100`.
 - Every browser workflow ran under `browser:run`.
 - Every failed probe was followed by `browser:gate`.
+- Fidelity loss: `11.667654316861451 -> 11.539802495015246`
+  (`-0.12785182184620503`).
+- Component contribution:
+  - scope: `-0.13761467889908174`;
+  - completeness: `+0.009762857052875162`;
+  - visual: `0`;
+  - reliability: `0`.
