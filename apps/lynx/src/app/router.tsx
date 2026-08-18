@@ -95,6 +95,7 @@ import {
 import { resolveLandingModelProvider } from '../components/composer/landingModelProvider.logic';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { ProviderHealthBanner } from '../components/ProviderHealthBanner.lynx';
+import { ThreadErrorBanner } from '../components/ThreadErrorBanner.lynx';
 import {
   EMPTY_ROUTE_RESTORE_FALLBACK_DELAY_MS,
   resolveRestorableThreadRoute,
@@ -683,6 +684,9 @@ function ThreadPage(props: ThreadPageProps) {
   const [threadRenameError, setThreadRenameError] = useState<string | null>(
     null
   );
+  const [dismissedThreadError, setDismissedThreadError] = useState<
+    string | null
+  >(null);
   const threadRenameInputRef = useRef<InputRef>(null);
   const threadRenameTouchedRef = useRef(false);
   const [threadPageWidth, setThreadPageWidth] = useState(0);
@@ -1561,6 +1565,19 @@ function ThreadPage(props: ThreadPageProps) {
           />
         </view>
       </ChatSurfaceHeaderFrame>
+      <ThreadErrorBanner
+        error={
+          currentThread?.error &&
+          currentThread.error !== dismissedThreadError
+            ? currentThread.error
+            : null
+        }
+        onDismiss={() => {
+          if (currentThread?.error) {
+            setDismissedThreadError(currentThread.error);
+          }
+        }}
+      />
       <ProviderHealthBanner
         status={providerHealth.status}
         onDismiss={providerHealth.dismiss}

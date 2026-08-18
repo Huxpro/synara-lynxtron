@@ -138,6 +138,7 @@ export interface ThreadHeaderSummary {
   readonly runtimeMode: 'full-access' | 'approval-required';
   readonly interactionMode: 'default' | 'plan';
   readonly sessionStatus: string | null;
+  readonly error: string | null;
   readonly activeTurnId: string | null;
   readonly latestTurnState: string | null;
   readonly workspaceRoot: string | null;
@@ -680,6 +681,7 @@ export async function fetchThreadHeaderSummary(
     runtimeMode: thread.runtimeMode,
     interactionMode: thread.interactionMode,
     sessionStatus: thread.session?.status ?? null,
+    error: thread.session?.lastError ?? null,
     activeTurnId: thread.session?.activeTurnId ?? null,
     latestTurnState: thread.latestTurn?.state ?? null,
     workspaceRoot: project?.workspaceRoot ?? null,

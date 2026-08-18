@@ -1,0 +1,96 @@
+.ThreadErrorBannerFrame {
+  width: 100%;
+  height: 76px;
+  padding: 12px 20px 0;
+}
+
+.ThreadErrorBanner {
+  position: relative;
+  width: 736px;
+  min-height: 64px;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 12px 40px 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--destructive) 58%, transparent);
+  border-radius: 14px;
+  background-color: color-mix(in srgb, var(--destructive) 7%, transparent);
+}
+
+.SliceRoot--viewport-medium .ThreadErrorBannerFrame,
+.SliceRoot--viewport-compact .ThreadErrorBannerFrame {
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+.SliceRoot--viewport-medium .ThreadErrorBanner,
+.SliceRoot--viewport-compact .ThreadErrorBanner {
+  width: 100%;
+}
+
+.ThreadErrorBannerIcon {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.ThreadErrorBannerText {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.ThreadErrorBannerDismiss {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: var(--destructive);
+  opacity: 0.65;
+}
+
+.ThreadErrorBannerDismiss.ui-hover,
+.ThreadErrorBannerDismiss.ui-pressed {
+  background-color: color-mix(in srgb, var(--destructive) 12%, transparent);
+  opacity: 1;
+}
+
+.ThreadErrorBannerDismiss.ui-focus {
+  border-color: color-mix(in srgb, var(--destructive) 48%, transparent);
+  opacity: 1;
+}
+
+.ThreadErrorBannerDismissIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.SliceRoot--viewport-short-height .ThreadErrorBannerFrame {
+  height: 44px;
+  padding-top: 4px;
+}
+
+.SliceRoot--viewport-short-height .ThreadErrorBanner {
+  min-height: 40px;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.SliceRoot--viewport-short-height .ThreadErrorBannerText {
+  white-space: nowrap;
+}

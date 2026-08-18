@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-thread-runtime-error-detail-missing",
+      "severity": "P1",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx thread header error projection and banner"
+    },
+    {
+      "id": "lynx-web-dist-vite-fs-entry",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx-for-Web validated /lynx/index.html entry"
+    },
+    {
+      "id": "lynx-thread-error-dismiss-stale-coordinate",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Measured rendered dismiss geometry"
+    }
+  ]
+}
