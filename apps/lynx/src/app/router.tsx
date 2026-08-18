@@ -1931,7 +1931,10 @@ export function SliceRouter({
     />
   );
   const appSnapCoordinator = (
-    <AppSnapCoordinator activeThreadId={activeThreadId} />
+    <AppSnapCoordinator
+      activeThreadId={activeThreadId}
+      onOpenThread={(threadId) => history.push(`/thread/${threadId}`)}
+    />
   );
   const providerUpdatePrompt = (
     <ProviderUpdatePrompt

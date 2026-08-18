@@ -1,6 +1,6 @@
 import { describe, expect, it, rs } from '@rstest/core';
 
-import { attachAppSnapCapture } from './AppSnapCoordinator.lynx';
+import { attachAppSnapCapture } from './appSnapCapture.lynx';
 
 const capture = {
   captureId: 'capture-1',
