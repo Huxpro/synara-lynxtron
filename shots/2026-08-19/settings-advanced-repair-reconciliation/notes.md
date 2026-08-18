@@ -86,3 +86,14 @@ captures stayed in `/tmp`; the repository screenshot count remained `100`.
 - `native/outcome.json`
 - `native/recovery-trigger-geometry.json`
 - `loss.json`
+
+## Ledger Outcome
+
+- fidelity loss: `11.3072 → 11.2382`;
+- loss delta: `-0.0690`;
+- component contribution:
+  - scope: `-0.0636`;
+  - completeness: `-0.0054`;
+  - visual: `0`;
+  - reliability: `0`;
+- no regression change was recorded.
