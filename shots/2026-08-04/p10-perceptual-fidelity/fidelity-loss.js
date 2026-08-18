@@ -6,7 +6,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
     "lastDay": "2026-08-19",
     "finalStoryCount": 465,
     "finalImageCount": 1393,
-    "evidenceCommitCount": 775
+    "evidenceCommitCount": 777
   },
   "formula": {
     "expression": "100 × (0.30 × scopeGap + 0.25 × clientGap + 0.35 × visualDistance + 0.10 × reliabilityDebt)",
@@ -98087,6 +98087,206 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "loss": 11.377051573027265,
       "bestLoss": 11.377051573027265,
       "smoothLoss": 11.400302505465755
+    },
+    {
+      "index": 775,
+      "day": "2026-08-19",
+      "timestamp": "2026-08-19T04:11:09+09:00",
+      "commit": {
+        "hash": "82492c94865b2c25a410f720115f64860b4a56a2",
+        "shortHash": "82492c948",
+        "timestamp": "2026-08-19T04:11:09+09:00",
+        "date": "2026-08-19",
+        "subject": "chore(evidence): record native AppSnap fidelity",
+        "files": [
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.js",
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.json"
+        ]
+      },
+      "evidenceFileCount": 2,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "addedEvidence": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 447,
+      "cumulativeRejectedPairCount": 1,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 465,
+      "scopeCoverage": 1,
+      "clientCompleteness": 0.7463330457290768,
+      "visual": {
+        "loss": 0.14386793475011955,
+        "confidence": 1,
+        "medianPercent": 1.4386793475011956,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.14386793475011955,
+        "previousMedianPercent": 1.4386793475011956,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0,
+        "activeEvents": [],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-devtool-wheel-emulation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "7edf76421",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-cgevent-wheel-delivery",
+            "type": "native-certification-harness-blocker",
+            "detectedAt": "0870afbbd",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only input boundary; use physical hardware wheel evidence or a fixed Lynxtron DevTool wheel path before attributing Native wheel behavior to product code.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 0
+      },
+      "components": {
+        "scope": 0,
+        "completeness": 0.25366695427092323,
+        "visual": 0.14386793475011955,
+        "reliability": 0
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": 0
+      },
+      "causes": [],
+      "regressionChanges": [],
+      "lossDelta": 0,
+      "loss": 11.377051573027265,
+      "bestLoss": 11.377051573027265,
+      "smoothLoss": 11.396117337626826
+    },
+    {
+      "index": 776,
+      "day": "2026-08-19",
+      "timestamp": "2026-08-19T04:27:25+09:00",
+      "commit": {
+        "hash": "8f9b278dc97c6d353f1fe0ae7a08c9cab64deabd",
+        "shortHash": "8f9b278dc",
+        "timestamp": "2026-08-19T04:27:25+09:00",
+        "date": "2026-08-19",
+        "subject": "feat(lynx): restore AppSnap capture sound",
+        "files": [
+          "shots/2026-08-19/native-appsnap/loss.json",
+          "shots/2026-08-19/native-appsnap/notes.md"
+        ]
+      },
+      "evidenceFileCount": 2,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "addedEvidence": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 447,
+      "cumulativeRejectedPairCount": 1,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 465,
+      "scopeCoverage": 1,
+      "clientCompleteness": 0.7463330457290768,
+      "visual": {
+        "loss": 0.14386793475011955,
+        "confidence": 1,
+        "medianPercent": 1.4386793475011956,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.14386793475011955,
+        "previousMedianPercent": 1.4386793475011956,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0,
+        "activeEvents": [],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-devtool-wheel-emulation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "7edf76421",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-cgevent-wheel-delivery",
+            "type": "native-certification-harness-blocker",
+            "detectedAt": "0870afbbd",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only input boundary; use physical hardware wheel evidence or a fixed Lynxtron DevTool wheel path before attributing Native wheel behavior to product code.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 0
+      },
+      "components": {
+        "scope": 0,
+        "completeness": 0.25366695427092323,
+        "visual": 0.14386793475011955,
+        "reliability": 0
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": 0
+      },
+      "causes": [],
+      "regressionChanges": [],
+      "lossDelta": 0,
+      "loss": 11.377051573027265,
+      "bestLoss": 11.377051573027265,
+      "smoothLoss": 11.392685499998905
     }
   ],
   "riseAnalysis": [
@@ -103334,8 +103534,8 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
     {
       "day": "2026-08-19",
       "firstCommitIndex": 761,
-      "lastCommitIndex": 774,
-      "commitCount": 14,
+      "lastCommitIndex": 776,
+      "commitCount": 16,
       "openingLoss": 11.587057591240232,
       "closingLoss": 11.377051573027265,
       "netLossDelta": -0.21000601821296705,
@@ -103363,7 +103563,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         771,
         772,
         773,
-        774
+        774,
+        775,
+        776
       ]
     }
   ],
@@ -249007,22 +249209,21 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "newStoryCount": 34
     },
     {
-      "index": 774,
+      "index": 776,
       "day": "2026-08-19",
-      "timestamp": "2026-08-19T04:05:50+09:00",
+      "timestamp": "2026-08-19T04:27:25+09:00",
       "commit": {
-        "hash": "7a8588d30b42fb9272294055021646adcc8919d6",
-        "shortHash": "7a8588d30",
-        "timestamp": "2026-08-19T04:05:50+09:00",
+        "hash": "8f9b278dc97c6d353f1fe0ae7a08c9cab64deabd",
+        "shortHash": "8f9b278dc",
+        "timestamp": "2026-08-19T04:27:25+09:00",
         "date": "2026-08-19",
-        "subject": "feat(lynx): restore native AppSnap capture",
+        "subject": "feat(lynx): restore AppSnap capture sound",
         "files": [
           "shots/2026-08-19/native-appsnap/loss.json",
-          "shots/2026-08-19/native-appsnap/native/settings-ready-light-1250x896@2x.png",
           "shots/2026-08-19/native-appsnap/notes.md"
         ]
       },
-      "evidenceFileCount": 3,
+      "evidenceFileCount": 2,
       "addedStoryIds": [],
       "addedImages": [],
       "addedEvidence": [],
@@ -260297,8 +260498,8 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "lossDelta": 0,
       "loss": 11.377051573027265,
       "bestLoss": 11.377051573027265,
-      "smoothLoss": 11.400302505465755,
-      "commitCount": 14,
+      "smoothLoss": 11.392685499998905,
+      "commitCount": 16,
       "newStoryCount": 3
     }
   ]
