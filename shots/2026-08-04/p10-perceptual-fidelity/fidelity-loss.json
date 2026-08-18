@@ -6,7 +6,7 @@
     "lastDay": "2026-08-18",
     "finalStoryCount": 436,
     "finalImageCount": 1393,
-    "evidenceCommitCount": 694
+    "evidenceCommitCount": 696
   },
   "formula": {
     "expression": "100 × (0.30 × scopeGap + 0.25 × clientGap + 0.35 × visualDistance + 0.10 × reliabilityDebt)",
@@ -96,8 +96,8 @@
       "id": "native-diff-nested-wheel-routing",
       "severityPoints": 3,
       "introduced": "7edf76421",
-      "fixed": null,
-      "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present",
+      "fixed": "0870afbbd",
+      "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control",
       "introducedMetadata": {
         "hash": "7edf764214ec32f478aa083031d35f065ab857f9",
         "shortHash": "7edf76421",
@@ -105,7 +105,13 @@
         "date": "2026-08-17",
         "subject": "docs(lynx): record native diff wheel limitation"
       },
-      "fixedMetadata": null
+      "fixedMetadata": {
+        "hash": "0870afbbd7f8c76bb64dd13ebc8cfc27a8c43790",
+        "shortHash": "0870afbbd",
+        "timestamp": "2026-08-18T10:18:08+09:00",
+        "date": "2026-08-18",
+        "subject": "docs(fidelity): correct native wheel attribution"
+      }
     },
     {
       "id": "lynx-web-relay-open-state-misclassified",
@@ -615,7 +621,7 @@
       "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
       "severityPoints": 0,
       "resolvedBy": [],
-      "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+      "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
       "resolutionStoryPrefixes": [],
       "detectedMetadata": {
         "hash": "7edf764214ec32f478aa083031d35f065ab857f9",
@@ -623,6 +629,32 @@
         "timestamp": "2026-08-17T21:33:18+09:00",
         "date": "2026-08-17",
         "subject": "docs(lynx): record native diff wheel limitation"
+      },
+      "resolvedMetadata": [],
+      "resolutionEvidence": {
+        "pairCount": 0,
+        "minimumParityPercent": null,
+        "medianParityPercent": null,
+        "maximumParityPercent": null,
+        "pairs": []
+      }
+    },
+    {
+      "id": "native-cgevent-wheel-delivery",
+      "type": "native-certification-harness-blocker",
+      "detectedAt": "0870afbbd",
+      "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+      "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view.",
+      "severityPoints": 0,
+      "resolvedBy": [],
+      "resolution": "Unresolved harness-only input boundary; use physical hardware wheel evidence or a fixed Lynxtron DevTool wheel path before attributing Native wheel behavior to product code.",
+      "resolutionStoryPrefixes": [],
+      "detectedMetadata": {
+        "hash": "0870afbbd7f8c76bb64dd13ebc8cfc27a8c43790",
+        "shortHash": "0870afbbd",
+        "timestamp": "2026-08-18T10:18:08+09:00",
+        "date": "2026-08-18",
+        "subject": "docs(fidelity): correct native wheel attribution"
       },
       "resolvedMetadata": [],
       "resolutionEvidence": {
@@ -84372,8 +84404,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -84416,7 +84448,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -84445,7 +84477,7 @@
         {
           "type": "introduced",
           "id": "native-diff-nested-wheel-routing",
-          "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+          "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
         },
         {
           "type": "harness-detected",
@@ -84511,8 +84543,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -84555,7 +84587,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -84633,8 +84665,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -84677,7 +84709,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -84755,8 +84787,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -84799,7 +84831,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -84877,8 +84909,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -84921,7 +84953,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -84999,8 +85031,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -85043,7 +85075,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -85121,8 +85153,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -85165,7 +85197,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -85243,8 +85275,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -85287,7 +85319,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -85365,8 +85397,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -85409,7 +85441,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -85487,8 +85519,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -85531,7 +85563,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -85609,8 +85641,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -85653,7 +85685,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -85731,8 +85763,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -85775,7 +85807,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -85853,8 +85885,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -85897,7 +85929,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -85975,8 +86007,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -86019,7 +86051,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -86097,8 +86129,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -86141,7 +86173,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -86219,8 +86251,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -86263,7 +86295,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -86342,8 +86374,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -86386,7 +86418,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -86465,8 +86497,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -86509,7 +86541,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -86588,8 +86620,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -86632,7 +86664,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -86711,8 +86743,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -86755,7 +86787,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -86834,8 +86866,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -86878,7 +86910,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -86957,8 +86989,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -87001,7 +87033,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -87079,8 +87111,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -87123,7 +87155,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -87216,8 +87248,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -87260,7 +87292,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -87349,8 +87381,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -87393,7 +87425,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -87471,8 +87503,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -87515,7 +87547,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -87661,8 +87693,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -87705,7 +87737,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -87797,8 +87829,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -87841,7 +87873,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -87920,8 +87952,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           },
           {
             "id": "lynx-web-relay-open-state-misclassified",
@@ -87964,7 +87996,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -88056,8 +88088,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           }
         ],
         "activeHarnessIssues": [
@@ -88093,7 +88125,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -88196,8 +88228,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           }
         ],
         "activeHarnessIssues": [
@@ -88233,7 +88265,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -88354,8 +88386,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           }
         ],
         "activeHarnessIssues": [
@@ -88391,7 +88423,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -88492,8 +88524,8 @@
             "id": "native-diff-nested-wheel-routing",
             "severityPoints": 3,
             "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
           }
         ],
         "activeHarnessIssues": [
@@ -88529,7 +88561,7 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
             "resolutionStoryPrefixes": []
           }
         ],
@@ -88572,6 +88604,203 @@
         ]
       },
       "evidenceFileCount": 4,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 447,
+      "cumulativeRejectedPairCount": 1,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 434,
+      "scopeCoverage": 0.9954128440366973,
+      "clientCompleteness": 0.7402135231316725,
+      "visual": {
+        "loss": 0.14386793475011955,
+        "confidence": 1,
+        "medianPercent": 1.4386793475011956,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.14386793475011955,
+        "previousMedianPercent": 1.4386793475011956,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0.3,
+        "activeEvents": [
+          {
+            "id": "native-diff-nested-wheel-routing",
+            "severityPoints": 3,
+            "introduced": "7edf76421",
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
+          }
+        ],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-devtool-wheel-emulation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "7edf76421",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 3
+      },
+      "components": {
+        "scope": 0.004587155963302725,
+        "completeness": 0.25978647686832745,
+        "visual": 0.14386793475011955,
+        "reliability": 0.3
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": 0
+      },
+      "causes": [],
+      "regressionChanges": [
+        {
+          "type": "harness-resolution",
+          "id": "native-automations-devtool-fixed-port",
+          "summary": "A fresh exact-owned @synara/lynx process registered on PID-derived localhost:8902 while the unrelated localhost:8901 client remained running, then completed the Native Automation Repeats roundtrip with a clean console."
+        }
+      ],
+      "lossDelta": 0,
+      "loss": 14.66765431686145,
+      "bestLoss": 14.66765431686145,
+      "smoothLoss": 16.398262128514233
+    },
+    {
+      "index": 694,
+      "day": "2026-08-18",
+      "timestamp": "2026-08-18T09:01:06+09:00",
+      "commit": {
+        "hash": "67826f393cdb7368a29a38eedff31c94d509596b",
+        "shortHash": "67826f393",
+        "timestamp": "2026-08-18T09:01:06+09:00",
+        "date": "2026-08-18",
+        "subject": "docs(fidelity): close automation edit parity",
+        "files": [
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.js",
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.json"
+        ]
+      },
+      "evidenceFileCount": 2,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 447,
+      "cumulativeRejectedPairCount": 1,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 434,
+      "scopeCoverage": 0.9954128440366973,
+      "clientCompleteness": 0.7402135231316725,
+      "visual": {
+        "loss": 0.14386793475011955,
+        "confidence": 1,
+        "medianPercent": 1.4386793475011956,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.14386793475011955,
+        "previousMedianPercent": 1.4386793475011956,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0.3,
+        "activeEvents": [
+          {
+            "id": "native-diff-nested-wheel-routing",
+            "severityPoints": 3,
+            "introduced": "7edf76421",
+            "fixed": "0870afbbd",
+            "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
+          }
+        ],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-devtool-wheel-emulation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "7edf76421",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 3
+      },
+      "components": {
+        "scope": 0.004587155963302725,
+        "completeness": 0.25978647686832745,
+        "visual": 0.14386793475011955,
+        "reliability": 0.3
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": 0
+      },
+      "causes": [],
+      "regressionChanges": [],
+      "lossDelta": 0,
+      "loss": 14.66765431686145,
+      "bestLoss": 14.66765431686145,
+      "smoothLoss": 16.086752722416733
+    },
+    {
+      "index": 695,
+      "day": "2026-08-18",
+      "timestamp": "2026-08-18T10:18:08+09:00",
+      "commit": {
+        "hash": "0870afbbd7f8c76bb64dd13ebc8cfc27a8c43790",
+        "shortHash": "0870afbbd",
+        "timestamp": "2026-08-18T10:18:08+09:00",
+        "date": "2026-08-18",
+        "subject": "docs(fidelity): correct native wheel attribution",
+        "files": [
+          "shots/2026-08-18/native-wheel-attribution-audit/notes.md"
+        ]
+      },
+      "evidenceFileCount": 1,
       "addedStoryIds": [
         "2026-08-14--automations--create-dialog-expanded",
         "2026-08-14--automations--detail-not-found"
@@ -88605,16 +88834,8 @@
         "medianDelta": 0
       },
       "reliability": {
-        "loss": 0.3,
-        "activeEvents": [
-          {
-            "id": "native-diff-nested-wheel-routing",
-            "severityPoints": 3,
-            "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
-          }
-        ],
+        "loss": 0,
+        "activeEvents": [],
         "activeHarnessIssues": [
           {
             "id": "lynx-web-sidebar-row-bindtap-automation",
@@ -88635,25 +88856,41 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-cgevent-wheel-delivery",
+            "type": "native-certification-harness-blocker",
+            "detectedAt": "0870afbbd",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only input boundary; use physical hardware wheel evidence or a fixed Lynxtron DevTool wheel path before attributing Native wheel behavior to product code.",
             "resolutionStoryPrefixes": []
           }
         ],
-        "points": 3
+        "points": 0
       },
       "components": {
         "scope": 0,
         "completeness": 0.26017699115044246,
         "visual": 0.14386793475011955,
-        "reliability": 0.3
+        "reliability": 0
       },
       "componentContributions": {
         "scope": -0.13761467889908174,
         "completeness": 0.009762857052875162,
         "visual": 0,
-        "reliability": 0
+        "reliability": -3
       },
       "causes": [
+        {
+          "component": "reliability",
+          "contribution": -3,
+          "direction": "down"
+        },
         {
           "component": "scope",
           "contribution": -0.13761467889908174,
@@ -88667,15 +88904,20 @@
       ],
       "regressionChanges": [
         {
-          "type": "harness-resolution",
-          "id": "native-automations-devtool-fixed-port",
-          "summary": "A fresh exact-owned @synara/lynx process registered on PID-derived localhost:8902 while the unrelated localhost:8901 client remained running, then completed the Native Automation Repeats roundtrip with a clean console."
+          "type": "fixed",
+          "id": "native-diff-nested-wheel-routing",
+          "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
+        },
+        {
+          "type": "harness-detected",
+          "id": "native-cgevent-wheel-delivery",
+          "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view."
         }
       ],
-      "lossDelta": -0.12785182184620325,
-      "loss": 14.539802495015246,
-      "bestLoss": 14.539802495015246,
-      "smoothLoss": 16.375248800581918
+      "lossDelta": -3.1278518218462033,
+      "loss": 11.539802495015246,
+      "bestLoss": 11.539802495015246,
+      "smoothLoss": 15.268301681484466
     }
   ],
   "riseAnalysis": [
@@ -92801,7 +93043,7 @@
         {
           "type": "introduced",
           "id": "native-diff-nested-wheel-routing",
-          "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+          "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
         },
         {
           "type": "harness-detected",
@@ -92811,7 +93053,7 @@
       ],
       "explanation": [
         "reliability added 3.00 loss points",
-        "regression introduced: Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
+        "regression introduced: A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
       ]
     }
   ],
@@ -93662,11 +93904,11 @@
     {
       "day": "2026-08-18",
       "firstCommitIndex": 676,
-      "lastCommitIndex": 693,
-      "commitCount": 18,
+      "lastCommitIndex": 695,
+      "commitCount": 20,
       "openingLoss": 19.09064857913351,
-      "closingLoss": 14.539802495015246,
-      "netLossDelta": -4.550846084118264,
+      "closingLoss": 11.539802495015246,
+      "netLossDelta": -7.550846084118264,
       "riseCount": 0,
       "fallCount": 5,
       "addedStoryCount": 10,
@@ -93675,7 +93917,7 @@
         "scope": -0.688073394495412,
         "completeness": -0.027106752770469922,
         "visual": 0.16433406314761656,
-        "reliability": -4
+        "reliability": -7
       },
       "commitIndexes": [
         676,
@@ -93695,7 +93937,9 @@
         690,
         691,
         692,
-        693
+        693,
+        694,
+        695
       ]
     }
   ],
@@ -216795,23 +217039,20 @@
       "newStoryCount": 9
     },
     {
-      "index": 693,
+      "index": 695,
       "day": "2026-08-18",
-      "timestamp": "2026-08-18T08:56:16+09:00",
+      "timestamp": "2026-08-18T10:18:08+09:00",
       "commit": {
-        "hash": "af9db81266da804d1cb0c6f4cf65879353bf8c7c",
-        "shortHash": "af9db8126",
-        "timestamp": "2026-08-18T08:56:16+09:00",
+        "hash": "0870afbbd7f8c76bb64dd13ebc8cfc27a8c43790",
+        "shortHash": "0870afbbd",
+        "timestamp": "2026-08-18T10:18:08+09:00",
         "date": "2026-08-18",
-        "subject": "fix(lynx): edit automation repeats",
+        "subject": "docs(fidelity): correct native wheel attribution",
         "files": [
-          "shots/2026-08-18/automations-edit-repeats-parity/console.json",
-          "shots/2026-08-18/automations-edit-repeats-parity/geometry.json",
-          "shots/2026-08-18/automations-edit-repeats-parity/loss.json",
-          "shots/2026-08-18/automations-edit-repeats-parity/notes.md"
+          "shots/2026-08-18/native-wheel-attribution-audit/notes.md"
         ]
       },
-      "evidenceFileCount": 4,
+      "evidenceFileCount": 1,
       "addedStoryIds": [
         "2026-08-14--automations--create-dialog-expanded",
         "2026-08-14--automations--detail-not-found"
@@ -228037,16 +228278,8 @@
         ]
       },
       "reliability": {
-        "loss": 0.3,
-        "activeEvents": [
-          {
-            "id": "native-diff-nested-wheel-routing",
-            "severityPoints": 3,
-            "introduced": "7edf76421",
-            "fixed": null,
-            "summary": "Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present"
-          }
-        ],
+        "loss": 0,
+        "activeEvents": [],
         "activeHarnessIssues": [
           {
             "id": "lynx-web-sidebar-row-bindtap-automation",
@@ -228067,25 +228300,41 @@
             "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
             "severityPoints": 0,
             "resolvedBy": [],
-            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.",
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-cgevent-wheel-delivery",
+            "type": "native-certification-harness-blocker",
+            "detectedAt": "0870afbbd",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only input boundary; use physical hardware wheel evidence or a fixed Lynxtron DevTool wheel path before attributing Native wheel behavior to product code.",
             "resolutionStoryPrefixes": []
           }
         ],
-        "points": 3
+        "points": 0
       },
       "components": {
         "scope": 0,
         "completeness": 0.26017699115044246,
         "visual": 0.14386793475011955,
-        "reliability": 0.3
+        "reliability": 0
       },
       "componentContributions": {
         "scope": -0.13761467889908174,
         "completeness": 0.009762857052875162,
         "visual": 0,
-        "reliability": 0
+        "reliability": -3
       },
       "causes": [
+        {
+          "component": "reliability",
+          "contribution": -3,
+          "direction": "down"
+        },
         {
           "component": "scope",
           "contribution": -0.13761467889908174,
@@ -228099,16 +228348,21 @@
       ],
       "regressionChanges": [
         {
-          "type": "harness-resolution",
-          "id": "native-automations-devtool-fixed-port",
-          "summary": "A fresh exact-owned @synara/lynx process registered on PID-derived localhost:8902 while the unrelated localhost:8901 client remained running, then completed the Native Automation Repeats roundtrip with a clean console."
+          "type": "fixed",
+          "id": "native-diff-nested-wheel-routing",
+          "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
+        },
+        {
+          "type": "harness-detected",
+          "id": "native-cgevent-wheel-delivery",
+          "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view."
         }
       ],
-      "lossDelta": -0.12785182184620325,
-      "loss": 14.539802495015246,
-      "bestLoss": 14.539802495015246,
-      "smoothLoss": 16.375248800581918,
-      "commitCount": 21,
+      "lossDelta": -3.1278518218462033,
+      "loss": 11.539802495015246,
+      "bestLoss": 11.539802495015246,
+      "smoothLoss": 15.268301681484466,
+      "commitCount": 23,
       "newStoryCount": 10
     }
   ]

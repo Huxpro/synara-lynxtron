@@ -77,9 +77,9 @@ const reliabilityLedger = [
     id: 'native-diff-nested-wheel-routing',
     severityPoints: 3,
     introduced: '7edf76421',
-    fixed: null,
+    fixed: '0870afbbd',
     summary:
-      'Real macOS wheel input cannot scroll the overflowing Diff dock when nested code scrollers are present',
+      'A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control',
   },
   {
     id: 'lynx-web-relay-open-state-misclassified',
@@ -158,7 +158,20 @@ const harnessIssueLedger = [
     severityPoints: 0,
     resolvedBy: [],
     resolution:
-      'Tracked upstream in lynx-family/lynxtron#151; this harness boundary is separate from the active real nested-scroll product/platform loss.',
+      'Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.',
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: 'native-cgevent-wheel-delivery',
+    type: 'native-certification-harness-blocker',
+    detectedAt: '0870afbbd',
+    affectedStoryPrefix: '2026-08-17--standalone-diff-native-wheel',
+    summary:
+      'Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view.',
+    severityPoints: 0,
+    resolvedBy: [],
+    resolution:
+      'Unresolved harness-only input boundary; use physical hardware wheel evidence or a fixed Lynxtron DevTool wheel path before attributing Native wheel behavior to product code.',
     resolutionStoryPrefixes: [],
   },
 ];
