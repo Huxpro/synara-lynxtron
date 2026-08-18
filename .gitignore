@@ -6,6 +6,7 @@ node_modules
 *.tsbuildinfo
 apps/*/dist
 apps/lynx/.tmp
+apps/lynx/.runtime
 apps/lynx/output
 apps/lynx/plan/shots/**/_scratch/
 .astro

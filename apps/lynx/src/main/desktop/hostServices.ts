@@ -60,6 +60,8 @@ function getKvFile(): string {
 let kvCache: Record<string, string> | null = null;
 
 interface PickedFileRecord {
+  readonly appSnapCaptureId: string | null;
+  readonly deleteOnRelease: boolean;
   readonly expiresAt: number;
   readonly mimeType: string;
   readonly name: string;
@@ -71,6 +73,7 @@ interface PickedFileRecord {
 const PICKED_FILE_TTL_MS = 30 * 60 * 1_000;
 const PICKED_IMAGE_PREVIEW_MAX_DIMENSION = 512;
 const pickedFiles = new Map<string, PickedFileRecord>();
+let appSnapPickedDirectoryInitialized = false;
 
 function mimeTypeForPath(filePath: string): string {
   switch (path.extname(filePath).toLowerCase()) {
@@ -100,8 +103,18 @@ function mimeTypeForPath(filePath: string): string {
 
 function prunePickedFiles(now = Date.now()): void {
   for (const [token, file] of pickedFiles) {
-    if (file.expiresAt <= now) pickedFiles.delete(token);
+    if (file.expiresAt > now) continue;
+    pickedFiles.delete(token);
+    if (file.deleteOnRelease) {
+      fs.rmSync(file.path, { force: true });
+    }
   }
+}
+
+function deletePickedFile(token: string): PickedFileRecord | null {
+  const file = pickedFiles.get(token) ?? null;
+  pickedFiles.delete(token);
+  return file;
 }
 
 function attachmentHttpUrl(
@@ -326,12 +339,14 @@ export async function handleDialogs(
           }
           const token = randomUUID();
           const file = {
+            appSnapCaptureId: null,
             token,
             path: resolvedPath,
             name,
             mimeType,
             sizeBytes: stat.size,
             expiresAt: Date.now() + PICKED_FILE_TTL_MS,
+            deleteOnRelease: false,
           } satisfies PickedFileRecord;
           pickedFiles.set(token, file);
           files.push({
@@ -439,7 +454,13 @@ export async function handleAttachments(
 ): Promise<unknown> {
   prunePickedFiles();
   if (method === 'attachmentsReleasePickedFile') {
-    return JSON.stringify({ released: pickedFiles.delete(String(data.token ?? '')) });
+    const token = String(data.token ?? '');
+    const file = deletePickedFile(token);
+    const released = file !== null;
+    if (released && file?.deleteOnRelease) {
+      await fs.promises.unlink(file.path).catch(() => undefined);
+    }
+    return JSON.stringify({ released });
   }
   if (method === 'attachmentsGetPickedImagePreview') {
     const token = String(data.token ?? '');
@@ -532,6 +553,78 @@ export async function handleAttachments(
     payload: await response.json().catch(() => null),
   });
   return JSON.stringify({ attachment: payload });
+}
+
+export async function registerAppSnapPickedImage(input: {
+  readonly bytes: Uint8Array;
+  readonly captureId: string;
+  readonly name: string;
+}): Promise<{
+  readonly mimeType: 'image/png';
+  readonly name: string;
+  readonly sizeBytes: number;
+  readonly token: string;
+}> {
+  if (
+    input.bytes.byteLength === 0 ||
+    input.bytes.byteLength > PROVIDER_SEND_TURN_MAX_IMAGE_BYTES
+  ) {
+    throw new Error('The captured AppSnap exceeds the image attachment limit.');
+  }
+  prunePickedFiles();
+  const existing = Array.from(pickedFiles.values()).find(
+    (file) => file.appSnapCaptureId === input.captureId
+  );
+  if (existing) {
+    return {
+      token: existing.token,
+      name: existing.name,
+      mimeType: 'image/png',
+      sizeBytes: existing.sizeBytes,
+    };
+  }
+  const token = randomUUID();
+  const directory = path.join(
+    resolveShellUserDataDir(
+      app.getPath('userData'),
+      process.env.SYNARA_LYNX_USER_DATA_DIR
+    ),
+    'appsnap',
+    'picked'
+  );
+  await fs.promises.mkdir(directory, { recursive: true, mode: 0o700 });
+  if (!appSnapPickedDirectoryInitialized) {
+    appSnapPickedDirectoryInitialized = true;
+    const entries = await fs.promises.readdir(directory).catch(() => []);
+    await Promise.all(
+      entries
+        .filter((entry) => entry.endsWith('.png'))
+        .map((entry) =>
+          fs.promises
+            .unlink(path.join(directory, entry))
+            .catch(() => undefined)
+        )
+    );
+  }
+  const filePath = path.join(directory, `${token}.png`);
+  await fs.promises.writeFile(filePath, input.bytes, { mode: 0o600 });
+  const file = {
+    appSnapCaptureId: input.captureId,
+    token,
+    path: filePath,
+    name: input.name.trim() || `AppSnap-${input.captureId}.png`,
+    mimeType: 'image/png',
+    sizeBytes: input.bytes.byteLength,
+    expiresAt: Date.now() + PICKED_FILE_TTL_MS,
+    deleteOnRelease: true,
+  } satisfies PickedFileRecord;
+  pickedFiles.set(token, file);
+  return {
+    token: file.token,
+    name: file.name,
+    mimeType: 'image/png',
+    sizeBytes: file.sizeBytes,
+  };
 }
 
 // --- shell/window ---------------------------------------------------------------

@@ -1,7 +1,11 @@
 // FILE: appSettingsStorageProjection.logic.ts
 // Purpose: Side-effect-free canonical app-settings storage projection for shared hosts.
 
-import type { ProviderKind } from "@synara/contracts";
+import type { DesktopAppSnapShortcut, ProviderKind } from "@synara/contracts";
+import {
+  DEFAULT_APP_SNAP_SHORTCUT,
+  isAppSnapShortcut,
+} from "@synara/shared/appSnapShortcut";
 import { PROVIDER_DESCRIPTORS } from "@synara/shared/providerMetadata";
 import {
   DEFAULT_SIDEBAR_PROJECT_SORT_ORDER,
@@ -36,6 +40,18 @@ import {
 
 export const APP_SETTINGS_STORAGE_KEY = "synara:app-settings:v1";
 export const THEME_STORAGE_KEY = "synara:theme";
+
+export interface SettingsAppSnapValues {
+  readonly enableAppSnap: boolean;
+  readonly appSnapPlaySound: boolean;
+  readonly appSnapShortcut: DesktopAppSnapShortcut;
+}
+
+export const DEFAULT_SETTINGS_APPSNAP_VALUES: SettingsAppSnapValues = {
+  enableAppSnap: false,
+  appSnapPlaySound: true,
+  appSnapShortcut: DEFAULT_APP_SNAP_SHORTCUT,
+};
 
 export const DEFAULT_SETTINGS_GENERAL_VALUES: SettingsGeneralValues = {
   defaultProvider: "codex",
@@ -388,5 +404,39 @@ export function writeSettingsNotificationsProjection(
   return JSON.stringify({
     ...parseRecord(raw),
     ...values,
+  });
+}
+
+export function readSettingsAppSnapProjection(
+  raw: string | null,
+): SettingsAppSnapValues {
+  const record = parseRecord(raw);
+  const shortcut = isAppSnapShortcut(record.appSnapShortcut)
+    ? record.appSnapShortcut
+    : DEFAULT_APP_SNAP_SHORTCUT;
+  return {
+    enableAppSnap: booleanValue(
+      record,
+      "enableAppSnap",
+      DEFAULT_SETTINGS_APPSNAP_VALUES.enableAppSnap,
+    ),
+    appSnapPlaySound: booleanValue(
+      record,
+      "appSnapPlaySound",
+      DEFAULT_SETTINGS_APPSNAP_VALUES.appSnapPlaySound,
+    ),
+    appSnapShortcut: shortcut,
+  };
+}
+
+export function writeSettingsAppSnapProjection(
+  raw: string | null,
+  values: SettingsAppSnapValues,
+): string {
+  return JSON.stringify({
+    ...parseRecord(raw),
+    enableAppSnap: values.enableAppSnap,
+    appSnapPlaySound: values.appSnapPlaySound,
+    appSnapShortcut: values.appSnapShortcut,
   });
 }

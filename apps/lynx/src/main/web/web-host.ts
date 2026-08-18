@@ -776,6 +776,36 @@ async function handleBridgeCall(
     if (method === 'notificationsShow') {
       return { shown: false };
     }
+    if (method === 'appSnapGetState' || method === 'appSnapRequestPermissions') {
+      return {
+        platform: 'other',
+        supported: false,
+        enabled: false,
+        status: 'unsupported',
+        shortcut: null,
+        inputMonitoringPermission: 'unknown',
+        screenRecordingPermission: 'unknown',
+        message: 'AppSnap is available only in the macOS desktop app.',
+      };
+    }
+    if (method === 'appSnapSetEnabled') {
+      return {
+        platform: 'other',
+        supported: false,
+        enabled: false,
+        status: 'unsupported',
+        shortcut: null,
+        inputMonitoringPermission: 'unknown',
+        screenRecordingPermission: 'unknown',
+        message: 'AppSnap is available only in the macOS desktop app.',
+      };
+    }
+    if (method === 'appSnapListPendingCaptures') {
+      return { captures: [] };
+    }
+    if (method === 'appSnapAcknowledgeCapture') {
+      return { ok: false };
+    }
     if (method === 'storageDump') {
       return { entries: readStorageEntries() };
     }

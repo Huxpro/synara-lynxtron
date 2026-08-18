@@ -2,7 +2,7 @@ import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
 describe('Settings AppSnap capability fidelity', () => {
-  it('routes AppSnap and states the real unavailable host boundary', () => {
+  it('routes AppSnap through the real Native capability boundary', () => {
     const settingsSource = readFileSync(
       new URL('./SettingsPage.tsx', import.meta.url),
       'utf8'
@@ -18,19 +18,21 @@ describe('Settings AppSnap capability fidelity', () => {
     expect(panelSource).toContain(
       'AppSnap requires the Synara desktop app on macOS.'
     );
+    expect(panelSource).toContain("appSnap.onState");
+    expect(panelSource).toContain("appSnap.requestPermissions()");
+    expect(panelSource).toContain("appSnap.setEnabled(enabled)");
+    expect(panelSource).toContain('Both Option keys');
     expect(panelSource).toContain(
-      'runtime does not expose the screen-capture, permission, or global'
+      'Custom global chords are not available in this Lynxtron build.'
     );
     expect(panelSource).toContain('device until you send the message.');
-    expect(panelSource).toContain('in the last minute, and');
-    expect(panelSource).toContain('consecutive snaps stay together.');
-    expect(panelSource).toContain('Unavailable in this runtime');
-    expect(panelSource).toContain('accessibility-role="switch"');
-    expect(panelSource).toContain(
-      'accessibility-state={{ checked: false, disabled: true }}'
-    );
-    expect(panelSource).not.toContain('onChange=');
-    expect(panelSource).not.toContain('onClick=');
+    expect(panelSource).toContain('Snaps attach to the active thread.');
+    expect(panelSource).toContain('capture stays pending until you open one.');
+    expect(panelSource).toContain("await appSnap.setEnabled(false);");
+    expect(panelSource).toContain('ariaLabel="Enable AppSnap"');
+    expect(panelSource).toContain('onChange={setEnabled}');
+    expect(panelSource).toContain('onClick={recheckPermissions}');
+    expect(panelSource).not.toContain('SettingsAppSnapDisabledSwitch');
   });
 
   it('matches the Web hero and Capture row anatomy', () => {
@@ -49,6 +51,9 @@ describe('Settings AppSnap capability fidelity', () => {
       /\.SettingsAppSnapMain\s*\{[^}]*align-items:\s*center;[^}]*justify-content:\s*space-between;[^}]*gap:\s*20px;/s
     );
     expect(styles).toMatch(
+      /\.SettingsAppSnapRowCopy\s*\{[^}]*min-height:\s*40px;/s
+    );
+    expect(styles).toMatch(
       /\.SettingsAppSnapTitleLine\s*\{[^}]*min-height:\s*20px;/s
     );
     expect(styles).toMatch(
@@ -63,9 +68,7 @@ describe('Settings AppSnap capability fidelity', () => {
     expect(styles).not.toMatch(
       /\.SettingsAppSnapRow\s*\{[^}]*min-height:/s
     );
-    expect(styles).toMatch(
-      /\.SettingsAppSnapDisabledSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*opacity:\s*0\.5;/s
-    );
+    expect(styles).not.toContain('.SettingsAppSnapDisabledSwitch');
     expect(styles).not.toContain('SettingsAppSnapRow--divided');
   });
 });

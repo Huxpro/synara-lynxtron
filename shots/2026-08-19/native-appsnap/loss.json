@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "native-appsnap-permanently-unavailable",
+      "severity": "P1",
+      "classification": "product-capability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynxtron AppSnap host and shared desktop manager"
+    },
+    {
+      "id": "native-appsnap-capture-composer-bridge",
+      "severity": "P1",
+      "classification": "product-interaction-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx AppSnap coordinator and picked-file capability"
+    },
+    {
+      "id": "native-appsnap-premature-acknowledgement",
+      "severity": "P1",
+      "classification": "product-data-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx composer AppSnap lifecycle"
+    },
+    {
+      "id": "native-appsnap-dispatch-retry-capability-loss",
+      "severity": "P1",
+      "classification": "product-data-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx native attachment dispatch lifecycle"
+    },
+    {
+      "id": "native-appsnap-settings-row-overlap",
+      "severity": "P1",
+      "classification": "product-layout-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx AppSnap settings layout"
+    },
+    {
+      "id": "native-appsnap-custom-global-chord",
+      "severity": "P2",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 1,
+      "owner": "Lynxtron global shortcut capability"
+    },
+    {
+      "id": "native-appsnap-capture-sound",
+      "severity": "P2",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 1,
+      "owner": "Lynx AppSnap feedback"
+    },
+    {
+      "id": "native-appsnap-auto-new-task",
+      "severity": "P2",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 1,
+      "owner": "Lynx AppSnap target routing"
+    },
+    {
+      "id": "lynx-web-appsnap-capability",
+      "severity": "intentional",
+      "classification": "intentional-platform-delta",
+      "before": 0,
+      "after": 0,
+      "owner": "Lynx-for-Web host capability boundary"
+    }
+  ]
+}

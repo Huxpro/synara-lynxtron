@@ -54,6 +54,10 @@
   gap: 2px;
 }
 
+.SettingsAppSnapRowCopy {
+  min-height: 40px;
+}
+
 .SettingsAppSnapRow {
   display: flex;
   width: 100%;
@@ -115,24 +119,4 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
-}
-
-.SettingsAppSnapDisabledSwitch {
-  display: flex;
-  width: 32px;
-  height: 20px;
-  flex-shrink: 0;
-  align-items: center;
-  padding: 1px;
-  border: 1px solid var(--settings-switch-border);
-  border-radius: 10px;
-  background-color: var(--settings-switch-off);
-  opacity: 0.5;
-}
-
-.SettingsAppSnapDisabledSwitchThumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 8px;
-  background-color: #ffffff;
 }

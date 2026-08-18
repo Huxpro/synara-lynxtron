@@ -40,6 +40,14 @@ const stagedAttachment = (id: string) => ({
   sizeBytes: 12,
 });
 
+const stagedImageAttachment = (id: string) => ({
+  type: 'image' as const,
+  id,
+  name: `${id}.png`,
+  mimeType: 'image/png',
+  sizeBytes: 12,
+});
+
 const nativeImage = (
   token: string,
   name = 'screenshot.png'
@@ -234,6 +242,78 @@ describe('native composer picked-file intake', () => {
 
     await expect(staged.runWithDispatch(async () => 'sent')).resolves.toBe('sent');
     expect(cancelled).toEqual([]);
+  });
+
+  it('releases and acknowledges an AppSnap only after dispatch succeeds', async () => {
+    const calls: Array<{ method: string; params: Record<string, unknown> }> = [];
+    async function request<T>(
+      method: string,
+      params: Record<string, unknown>
+    ): Promise<T> {
+      calls.push({ method, params });
+      if (method === 'attachmentsUploadPickedFile') {
+        return { attachment: stagedImageAttachment('managed-appsnap') } as T;
+      }
+      return { ok: true } as T;
+    }
+    const image = {
+      ...nativeImage('appsnap-token'),
+      appSnapCaptureId: 'capture-1',
+    };
+    const staged = await stageNativeComposerFiles(
+      { threadId: 'thread-1', files: [image] },
+      request
+    );
+
+    await expect(staged.runWithDispatch(async () => 'sent')).resolves.toBe(
+      'sent'
+    );
+    expect(calls.slice(1)).toEqual([
+      {
+        method: 'attachmentsReleasePickedFile',
+        params: { token: 'appsnap-token' },
+      },
+      {
+        method: 'appSnapAcknowledgeCapture',
+        params: { captureId: 'capture-1' },
+      },
+    ]);
+  });
+
+  it('retains the AppSnap capability and capture when dispatch fails', async () => {
+    const methods: string[] = [];
+    async function request<T>(
+      method: string,
+      _params: Record<string, unknown>
+    ): Promise<T> {
+      methods.push(method);
+      if (method === 'attachmentsUploadPickedFile') {
+        return { attachment: stagedImageAttachment('managed-appsnap') } as T;
+      }
+      return { cancelled: true } as T;
+    }
+    const staged = await stageNativeComposerFiles(
+      {
+        threadId: 'thread-1',
+        files: [
+          {
+            ...nativeImage('appsnap-token'),
+            appSnapCaptureId: 'capture-1',
+          },
+        ],
+      },
+      request
+    );
+
+    await expect(
+      staged.runWithDispatch(async () => {
+        throw new Error('dispatch failed');
+      })
+    ).rejects.toThrow('dispatch failed');
+    expect(methods).toEqual([
+      'attachmentsUploadPickedFile',
+      'attachmentsCancel',
+    ]);
   });
 
   it('uploads image and file capabilities with matching server types', async () => {

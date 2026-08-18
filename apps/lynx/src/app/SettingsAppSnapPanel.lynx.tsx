@@ -1,8 +1,114 @@
+import { useEffect, useState } from '@lynx-js/react';
 import { SettingsSection } from '@synara-web/components/settings/SettingsSection';
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsAppSnapProjection,
+  writeSettingsAppSnapProjection,
+  type SettingsAppSnapValues,
+} from '@synara-web/appSettingsStorageProjection.logic';
+import type { DesktopAppSnapState } from '@synara/contracts';
 
+import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
+import { Button } from '../components/ui/button';
+import { appSnap } from '../platform/appSnap';
+import { setPersistedStorageItem, webStorage } from '../platform/storage';
 import './settings-appsnap-panel.css';
 
+function appSnapStatus(state: DesktopAppSnapState | null): string {
+  if (!state) return 'Checking AppSnap support…';
+  if (!state.supported) return state.message ?? 'Unavailable in this runtime';
+  if (state.status === 'ready') return 'Listening — press both Option keys to snap';
+  if (state.status === 'starting') return 'Starting the capture listener…';
+  if (state.status === 'permission-required') {
+    return state.message ?? 'Permission setup required';
+  }
+  if (state.status === 'error') return state.message ?? 'AppSnap could not start';
+  return 'Off';
+}
+
+async function persistAppSnapSettings(
+  values: SettingsAppSnapValues
+): Promise<void> {
+  'background only';
+  await setPersistedStorageItem(
+    APP_SETTINGS_STORAGE_KEY,
+    writeSettingsAppSnapProjection(
+      webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
+      values
+    )
+  );
+}
+
 export function SettingsAppSnapPanel() {
+  const [settings, setSettings] = useState(() =>
+    readSettingsAppSnapProjection(
+      webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+    )
+  );
+  const [state, setState] = useState<DesktopAppSnapState | null>(null);
+  const [pending, setPending] = useState(false);
+
+  useEffect(() => {
+    'background only';
+    let active = true;
+    const dispose = appSnap.onState((next) => {
+      if (active) setState(next);
+    });
+    void appSnap
+      .getState()
+      .then((next) => {
+        if (active) setState(next);
+      })
+      .catch(() => {
+        if (active) setState(null);
+      });
+    return () => {
+      active = false;
+      dispose();
+    };
+  }, []);
+
+  function setEnabled(enabled: boolean) {
+    'background only';
+    if (pending) return;
+    setPending(true);
+    void (enabled ? appSnap.requestPermissions() : Promise.resolve(state))
+      .then(() => appSnap.setEnabled(enabled))
+      .then(async (next) => {
+        setState(next);
+        const accepted =
+          !enabled ||
+          next.status === 'ready' ||
+          next.status === 'starting';
+        if (enabled && !accepted) {
+          await appSnap.setEnabled(false);
+        }
+        const nextSettings = {
+          ...settings,
+          enableAppSnap: accepted && enabled,
+          appSnapShortcut: { kind: 'both-option-keys' } as const,
+        };
+        setSettings(nextSettings);
+        await persistAppSnapSettings(nextSettings);
+      })
+      .finally(() => setPending(false));
+  }
+
+  function recheckPermissions() {
+    'background only';
+    if (pending) return;
+    setPending(true);
+    void appSnap
+      .requestPermissions()
+      .then(() => appSnap.setEnabled(settings.enableAppSnap))
+      .then(setState)
+      .finally(() => setPending(false));
+  }
+
+  const supported = state?.supported === true;
+  const enabled = supported && settings.enableAppSnap;
+  const customShortcut = settings.appSnapShortcut.kind === 'key-chord';
+
   return (
     <view className="SettingsAppSnapPanel">
       <view className="SettingsAppSnapHero">
@@ -20,11 +126,12 @@ export function SettingsAppSnapPanel() {
             attaches the snap to a task composer — the capture stays on this
             device until you send the message.
           </text>
-          <text className="SettingsAppSnapUnavailable">
-            AppSnap requires the Synara desktop app on macOS. This Lynxtron
-            runtime does not expose the screen-capture, permission, or global
-            shortcut bridge.
-          </text>
+          {!supported ? (
+            <text className="SettingsAppSnapUnavailable">
+              {state?.message ??
+                'AppSnap requires the Synara desktop app on macOS.'}
+            </text>
+          ) : null}
         </view>
       </view>
 
@@ -39,23 +146,16 @@ export function SettingsAppSnapPanel() {
                 Run the capture listener in the background while Synara is open.
               </text>
             </view>
-            <view
-              className="SettingsAppSnapDisabledSwitch"
-              aria-label="Enable AppSnap"
-              aria-checked={false}
-              aria-disabled={true}
-              accessibility-element={true}
-              accessibility-label="Enable AppSnap"
-              accessibility-role="switch"
-              accessibility-state={{ checked: false, disabled: true }}
-              accessibility-value="Off"
-            >
-              <view className="SettingsAppSnapDisabledSwitchThumb" />
-            </view>
+            <SettingsGeneralBooleanControlElement
+              checked={enabled}
+              disabled={!supported || pending}
+              ariaLabel="Enable AppSnap"
+              onChange={setEnabled}
+            />
           </view>
           <view className="SettingsAppSnapMetadata">
             <text className="SettingsAppSnapStatus">
-              Unavailable in this runtime
+              {appSnapStatus(state)}
             </text>
           </view>
         </view>
@@ -66,11 +166,18 @@ export function SettingsAppSnapPanel() {
               <text className="SettingsAppSnapRowTitle">Shortcut</text>
             </view>
             <text className="SettingsAppSnapRowDescription">
-              Shortcut registration requires the desktop host&apos;s global
-              shortcut conflict and permission service.
+              Press both physical Option keys together while another app is
+              frontmost.
             </text>
           </view>
-          <text className="SettingsAppSnapValue">Unavailable</text>
+          <view className="SettingsAppSnapMetadata">
+            <text className="SettingsAppSnapValue">Both Option keys</text>
+            {customShortcut ? (
+              <text className="SettingsAppSnapStatus">
+                Custom global chords are not available in this Lynxtron build.
+              </text>
+            ) : null}
+          </view>
         </view>
 
         <view className="SettingsAppSnapRow SettingsAppSnapRow--continued">
@@ -79,12 +186,11 @@ export function SettingsAppSnapPanel() {
               <text className="SettingsAppSnapRowTitle">Destination</text>
             </view>
             <text className="SettingsAppSnapRowDescription">
-              Snaps join the task you interacted with in the last minute, and
-              consecutive snaps stay together. Otherwise Synara opens a fresh
-              task with the capture attached.
+              Snaps attach to the active thread. If no thread is open, the
+              capture stays pending until you open one.
             </text>
           </view>
-          <text className="SettingsAppSnapValue">Automatic</text>
+          <text className="SettingsAppSnapValue">Active thread</text>
         </view>
 
         <view className="SettingsAppSnapRow">
@@ -96,9 +202,38 @@ export function SettingsAppSnapPanel() {
               Play a short shutter cue when a window is captured.
             </text>
           </view>
-          <text className="SettingsAppSnapValue">Unavailable</text>
+          <text className="SettingsAppSnapValue">Not yet available</text>
         </view>
       </SettingsSection>
+      {supported ? (
+        <SettingsSection title="macOS permissions">
+          <view className="SettingsAppSnapRow SettingsAppSnapRow--continued">
+            <text className="SettingsAppSnapRowTitle">Input Monitoring</text>
+            <text className="SettingsAppSnapValue">
+              {state.inputMonitoringPermission}
+            </text>
+          </view>
+          <view className="SettingsAppSnapRow SettingsAppSnapRow--continued">
+            <text className="SettingsAppSnapRowTitle">Screen Recording</text>
+            <text className="SettingsAppSnapValue">
+              {state.screenRecordingPermission}
+            </text>
+          </view>
+          <view className="SettingsAppSnapRow">
+            <text className="SettingsAppSnapRowDescription">
+              Recheck after changing permissions in System Settings.
+            </text>
+            <Button
+              size="xs"
+              variant="outline"
+              disabled={pending}
+              onClick={recheckPermissions}
+            >
+              Recheck permissions
+            </Button>
+          </view>
+        </SettingsSection>
+      ) : null}
     </view>
   );
 }

@@ -3,12 +3,15 @@ import { describe, expect, it } from "vitest";
 import {
   APP_SETTINGS_STORAGE_KEY,
   DEFAULT_SETTINGS_APPEARANCE_VALUES,
+  DEFAULT_SETTINGS_APPSNAP_VALUES,
   DEFAULT_SETTINGS_GENERAL_VALUES,
   THEME_STORAGE_KEY,
   readSettingsAppearanceProjection,
+  readSettingsAppSnapProjection,
   readSettingsGeneralProjection,
   readSettingsProviderPickerProjection,
   writeSettingsAppearanceProjection,
+  writeSettingsAppSnapProjection,
   writeSettingsGeneralProjection,
   writeSettingsProviderPickerProjection,
   writeSidebarSortProjection,
@@ -104,5 +107,37 @@ describe("app settings General storage projection", () => {
     const projected = readSettingsProviderPickerProjection(raw);
     expect(projected.hiddenProviders).toEqual(["kilo"]);
     expect(projected.providerOrder.slice(0, 2)).toEqual(["kilo", "codex"]);
+  });
+
+  it("round-trips AppSnap defaults and custom chords without touching unrelated settings", () => {
+    expect(readSettingsAppSnapProjection(null)).toEqual(
+      DEFAULT_SETTINGS_APPSNAP_VALUES,
+    );
+    const raw = writeSettingsAppSnapProjection(
+      JSON.stringify({ chatFontSizePx: 17 }),
+      {
+        enableAppSnap: true,
+        appSnapPlaySound: false,
+        appSnapShortcut: {
+          kind: "key-chord",
+          modifier: "option",
+          key: "KeyK",
+        },
+      },
+    );
+    expect(JSON.parse(raw)).toMatchObject({
+      chatFontSizePx: 17,
+      enableAppSnap: true,
+      appSnapPlaySound: false,
+    });
+    expect(readSettingsAppSnapProjection(raw)).toEqual({
+      enableAppSnap: true,
+      appSnapPlaySound: false,
+      appSnapShortcut: {
+        kind: "key-chord",
+        modifier: "option",
+        key: "KeyK",
+      },
+    });
   });
 });

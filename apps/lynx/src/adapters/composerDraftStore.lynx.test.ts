@@ -330,6 +330,32 @@ describe('Lynx composer draft attachment subset', () => {
     ).toBeUndefined();
   });
 
+  it('replaces a restarted AppSnap capability without duplicating its capture', () => {
+    const first = {
+      type: 'image' as const,
+      id: 'lynx-image-first',
+      token: '11111111-1111-4111-8111-111111111111',
+      name: 'appsnap.png',
+      mimeType: 'image/png',
+      sizeBytes: 12,
+      previewUrl: 'data:image/png;base64,AA==',
+      appSnapCaptureId: 'capture-1',
+    };
+    const second = {
+      ...first,
+      id: 'lynx-image-second',
+      token: '22222222-2222-4222-8222-222222222222',
+      previewUrl: 'data:image/png;base64,BB==',
+    };
+    const store = useComposerDraftStore.getState();
+    store.addImages('thread-1', [first]);
+    store.addImages('thread-1', [second]);
+
+    expect(
+      useComposerDraftStore.getState().draftsByThreadId['thread-1']?.images
+    ).toEqual([second]);
+  });
+
   it('updates and preserves options when a trait changes on the same model', () => {
     const store = useComposerDraftStore.getState();
     store.setModelSelection('thread-1', {

@@ -161,6 +161,7 @@ import { readPersistedLastThreadRouteFallback } from './routerPersistence.logic'
 import { resolveResponsiveSidebarOpen } from './sidebarVisibility.logic';
 import { TaskCompletionToastHost } from './TaskCompletionToastHost.lynx';
 import { ProviderUpdatePrompt } from './ProviderUpdatePrompt.lynx';
+import { AppSnapCoordinator } from './AppSnapCoordinator.lynx';
 export const history = createMemoryHistory({ initialEntries: ['/'] });
 
 async function readPersistedLastThreadRoute(): Promise<LastThreadRoute | null> {
@@ -1921,6 +1922,9 @@ export function SliceRouter({
       onOpenThread={(threadId) => history.push(`/thread/${threadId}`)}
     />
   );
+  const appSnapCoordinator = (
+    <AppSnapCoordinator activeThreadId={activeThreadId} />
+  );
   const providerUpdatePrompt = (
     <ProviderUpdatePrompt
       onReview={() => history.push('/settings/providers')}
@@ -2570,6 +2574,7 @@ export function SliceRouter({
     return (
       <>
         {page}
+        {appSnapCoordinator}
         {taskCompletionToast}
         {providerUpdatePrompt}
       </>
@@ -2587,6 +2592,7 @@ export function SliceRouter({
           {page}
         </view>
       </AppShellFrame>
+      {appSnapCoordinator}
       {taskCompletionToast}
       {providerUpdatePrompt}
     </>

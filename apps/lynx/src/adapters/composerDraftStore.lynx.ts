@@ -408,12 +408,25 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
       set((state) => {
         if (images.length === 0) return state;
         const current = state.draftsByThreadId[threadId] ?? emptyDraft();
+        let retainedImages = [...current.images];
         const existingTokens = new Set(
-          current.images.map((image) => image.token)
+          retainedImages.map((image) => image.token)
         );
         const incoming: NativeComposerImageAttachment[] = [];
         for (const image of images) {
           if (existingTokens.has(image.token)) continue;
+          if (image.appSnapCaptureId) {
+            const previous = retainedImages.find(
+              (entry) =>
+                entry.appSnapCaptureId === image.appSnapCaptureId
+            );
+            if (previous) {
+              existingTokens.delete(previous.token);
+              retainedImages = retainedImages.filter(
+                (entry) => entry !== previous
+              );
+            }
+          }
           existingTokens.add(image.token);
           incoming.push(image);
         }
@@ -423,7 +436,7 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
             ...state.draftsByThreadId,
             [threadId]: {
               ...current,
-              images: [...current.images, ...incoming],
+              images: [...retainedImages, ...incoming],
               nonPersistedImageIds: [
                 ...new Set([
                   ...current.nonPersistedImageIds,

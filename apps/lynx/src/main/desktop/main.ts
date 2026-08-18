@@ -20,6 +20,7 @@ import {
   handleShell,
   handleStorage,
   ensureWsEcho,
+  registerAppSnapPickedImage,
 } from './hostServices';
 import { resolveSynaraWsUrl } from './runtimeEndpoint.logic';
 import path from 'path';
@@ -59,6 +60,13 @@ import {
   type NativeNotificationConstructor,
 } from './nativeNotifications';
 import { createRequire } from 'node:module';
+import {
+  DesktopAppSnapManager,
+} from '../../../../desktop/src/appSnapManager';
+import type {
+  DesktopAppSnapErrorEvent,
+  DesktopAppSnapState,
+} from '@synara/contracts';
 const isDev = process.env.NODE_ENV === 'development';
 const isDevtoolEnabled =
   isDev || process.env.SYNARA_ENABLE_DEVTOOL === '1';
@@ -67,6 +75,9 @@ const isBackgroundLaunch =
 const hostInputProbeReportPath =
   process.env.SYNARA_HOST_INPUT_PROBE_REPORT?.trim() || null;
 const TERMINAL_EVENT = 'synara:terminal-event';
+const APPSNAP_CAPTURE_EVENT = 'synara:appsnap-captured';
+const APPSNAP_ERROR_EVENT = 'synara:appsnap-error';
+const APPSNAP_STATE_EVENT = 'synara:appsnap-state';
 const require = createRequire(import.meta.url);
 const nativeLynxtron = require('lynxtron') as {
   readonly Notification?: NativeNotificationConstructor;
@@ -120,6 +131,75 @@ const nativeNotifications = createNativeNotificationService({
   Notification: nativeLynxtron.Notification,
   openThread: (threadId) => dispatchRoute(`/thread/${threadId}`),
 });
+
+let appSnapManager: DesktopAppSnapManager | null = null;
+
+function appSnapHelperPath(): string {
+  return path.join(__dirname, 'synara-appsnap-helper');
+}
+
+function appSnapCaptureDirectory(): string {
+  return path.join(
+    resolveShellUserDataDir(
+      app.getPath('userData'),
+      process.env.SYNARA_LYNX_USER_DATA_DIR
+    ),
+    'appsnap',
+    'captures'
+  );
+}
+
+function sendAppSnapEvent(event: string, payload: unknown): void {
+  if (!mainWindow || mainWindow.isDestroyed()) return;
+  mainWindow.sendGlobalEvent(event, payload);
+}
+
+function initializeAppSnapManager(): DesktopAppSnapManager {
+  appSnapManager ??= new DesktopAppSnapManager({
+    platform: process.platform,
+    helperPath: appSnapHelperPath(),
+    captureDirectory: appSnapCaptureDirectory(),
+    excludedBundleId: 'com.lynxjs.Lynxtron',
+    onState: (state) => sendAppSnapEvent(APPSNAP_STATE_EVENT, state),
+    onCaptured: (capture) => {
+      void registerAppSnapPickedImage({
+        bytes: capture.bytes,
+        captureId: capture.id,
+        name: capture.name,
+      })
+        .then((file) => {
+          mainWindow?.show();
+          mainWindow?.focus();
+          sendAppSnapEvent(APPSNAP_CAPTURE_EVENT, {
+            captureId: capture.id,
+            capturedAt: capture.capturedAt,
+            sourceAppName: capture.sourceAppName,
+            sourceBundleIdentifier: capture.sourceBundleIdentifier,
+            sourceWindowTitle: capture.sourceWindowTitle,
+            file,
+          });
+        })
+        .catch((error) => {
+          sendAppSnapEvent(APPSNAP_ERROR_EVENT, {
+            code: 'capture-registration-failed',
+            message:
+              error instanceof Error
+                ? error.message
+                : 'The captured AppSnap could not be attached.',
+            capturedAt: capture.capturedAt,
+          });
+        });
+    },
+    onError: (error, focusApp) => {
+      if (focusApp) {
+        mainWindow?.show();
+        mainWindow?.focus();
+      }
+      sendAppSnapEvent(APPSNAP_ERROR_EVENT, error);
+    },
+  });
+  return appSnapManager;
+}
 
 function dispatchShellEvent(event: string, ...args: unknown[]): void {
   if (!mainWindow || mainWindow.isDestroyed()) return;
@@ -566,6 +646,45 @@ app.whenReady().then(() => {
               }),
             })
           );
+        } else if (name === 'appSnapGetState') {
+          callback.sendReply(
+            JSON.stringify(await initializeAppSnapManager().refreshState())
+          );
+        } else if (name === 'appSnapSetEnabled') {
+          const manager = initializeAppSnapManager();
+          await manager.setShortcut({ kind: 'both-option-keys' });
+          callback.sendReply(
+            JSON.stringify(await manager.setEnabled(data?.enabled === true))
+          );
+        } else if (name === 'appSnapRequestPermissions') {
+          callback.sendReply(
+            JSON.stringify(
+              await initializeAppSnapManager().requestPermissions()
+            )
+          );
+        } else if (name === 'appSnapListPendingCaptures') {
+          const captures =
+            await initializeAppSnapManager().listPendingCaptures();
+          const registered = await Promise.all(
+            captures.map(async (capture) => ({
+              captureId: capture.id,
+              capturedAt: capture.capturedAt,
+              sourceAppName: capture.sourceAppName,
+              sourceBundleIdentifier: capture.sourceBundleIdentifier,
+              sourceWindowTitle: capture.sourceWindowTitle,
+              file: await registerAppSnapPickedImage({
+                bytes: capture.bytes,
+                captureId: capture.id,
+                name: capture.name,
+              }),
+            }))
+          );
+          callback.sendReply(JSON.stringify({ captures: registered }));
+        } else if (name === 'appSnapAcknowledgeCapture') {
+          await initializeAppSnapManager().acknowledgeCapture(
+            String(data?.captureId ?? '')
+          );
+          callback.sendReply(JSON.stringify({ ok: true }));
         } else if (name.startsWith('storage')) {
           callback.sendReply(handleStorage(name, data));
         } else if (name.startsWith('clipboard')) {
@@ -684,6 +803,8 @@ app.whenReady().then(() => {
   w.on('close', () => {
     unsubscribeTransportState();
     disposeNativeRpcHost();
+    appSnapManager?.dispose();
+    appSnapManager = null;
     flushWindowState();
     appendShellLog(shellPaths.logFile, 'window closed');
     mainWindow = null;

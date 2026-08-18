@@ -25,6 +25,7 @@ export interface NativeComposerFileAttachment {
 }
 
 export interface NativeComposerImageAttachment {
+  readonly appSnapCaptureId?: string;
   readonly id: string;
   readonly mimeType: string;
   readonly name: string;
@@ -195,6 +196,15 @@ export async function stageNativeComposerFiles(input: {
       try {
         const result = await dispatch(attachments);
         pending = false;
+        for (const file of input.files) {
+          if (file.type !== 'image' || !file.appSnapCaptureId) continue;
+          await request('attachmentsReleasePickedFile', {
+            token: file.token,
+          }).catch(() => undefined);
+          await request('appSnapAcknowledgeCapture', {
+            captureId: file.appSnapCaptureId,
+          }).catch(() => undefined);
+        }
         return result;
       } catch (error) {
         if (pending) {

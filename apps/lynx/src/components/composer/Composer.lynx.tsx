@@ -1283,6 +1283,13 @@ export function Composer({
     const image = images.find((entry) => entry.id === imageId);
     if (!image) return;
     removeImage(brandedThreadId, imageId);
+    if (image.appSnapCaptureId) {
+      void import(
+        /* webpackMode: "eager" */ '../../platform/appSnap'
+      ).then(({ appSnap }) =>
+        appSnap.acknowledgeCapture(image.appSnapCaptureId!)
+      );
+    }
     void releasePickedComposerFile(image.token);
     setExpandedImage(null);
     restoreNativeFocus();
