@@ -1,5 +1,6 @@
 import { fireEvent, render, waitFor } from '@lynx-js/react/testing-library';
 import { describe, expect, it, rs } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 
 import type { ThreadSummary } from './queries';
 import { TaskCompletionToastHost } from './TaskCompletionToastHost.lynx';
@@ -22,6 +23,29 @@ function summary(
 }
 
 describe('Lynx task completion toast host', () => {
+  it('keeps slow completion detail delivery alive across later shell polls', () => {
+    const source = readFileSync(
+      new URL('./TaskCompletionToastHost.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain('const mountedRef = useRef(true);');
+    expect(source).toContain('const completionRunRef = useRef(0);');
+    expect(source).toContain(
+      'completionRun === completionRunRef.current'
+    );
+    expect(source).toContain(
+      'currentSettings.enableSystemTaskCompletionNotifications'
+    );
+    expect(source).toContain(
+      "notification.kind !== 'thread-completion'"
+    );
+    expect(source).toContain(
+      "notification.kind === 'thread-completion'"
+    );
+    expect(source).not.toContain('let active = true;');
+  });
+
   it('suppresses hydration and renders an off-screen completion transition', async () => {
     const onOpenThread = rs.fn();
     const { rerender } = render(

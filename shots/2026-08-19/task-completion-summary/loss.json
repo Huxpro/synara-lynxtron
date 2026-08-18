@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-task-completion-assistant-summary-missing",
+      "severity": "P2",
+      "classification": "product-content-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Shared task completion assistant summary"
+    },
+    {
+      "id": "lynx-task-completion-detail-poll-race",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx task completion toast host"
+    },
+    {
+      "id": "lynx-task-attention-blocked-by-completion-detail",
+      "severity": "P1",
+      "classification": "product-responsiveness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx task completion delivery scheduling"
+    },
+    {
+      "id": "native-summary-provider-lifecycle-evidence",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 1,
+      "owner": "Isolated provider lifecycle evidence"
+    }
+  ]
+}

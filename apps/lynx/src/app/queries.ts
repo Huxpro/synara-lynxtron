@@ -660,6 +660,25 @@ export async function fetchThreads(): Promise<ThreadSummary[]> {
   return projectActiveThreadSummaries(snapshot);
 }
 
+export async function fetchThreadCompletionAssistantSummary(
+  threadId: string
+): Promise<string | null> {
+  'background only';
+  const [
+    { fetchSynaraThreadDetailSnapshot },
+    { summarizeTaskCompletionAssistantMessage },
+  ] = await Promise.all([
+    import(/* webpackMode: "eager" */ '../data/synaraClient'),
+    import(
+      /* webpackMode: "eager" */ '@synara-web/notifications/taskCompletion.logic'
+    ),
+  ]);
+  const snapshot = await fetchSynaraThreadDetailSnapshot(threadId);
+  return snapshot?.thread
+    ? summarizeTaskCompletionAssistantMessage(snapshot.thread)
+    : null;
+}
+
 export async function fetchThreadHeaderSummary(
   threadId: string
 ): Promise<ThreadHeaderSummary | undefined> {

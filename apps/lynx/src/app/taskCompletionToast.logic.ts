@@ -11,6 +11,7 @@ import type { ThreadSummary } from './queries';
 
 export interface LynxTaskCompletionToast {
   readonly body: string;
+  readonly kind: 'terminal' | 'thread-attention' | 'thread-completion';
   readonly threadId: string;
   readonly title: string;
   readonly tone: 'success' | 'warning';
@@ -66,6 +67,7 @@ export function applyLynxTerminalActivityEvent(input: {
           title,
         }),
         threadId: input.event.threadId,
+        kind: 'terminal',
         tone: 'warning',
       },
     };
@@ -84,6 +86,7 @@ export function applyLynxTerminalActivityEvent(input: {
           title,
         }),
         threadId: input.event.threadId,
+        kind: 'terminal',
         tone: 'success',
       },
     };
@@ -137,6 +140,7 @@ export function detectLynxTaskCompletionToasts(input: {
       toasts.push({
         ...copy,
         threadId: thread.id,
+        kind: 'thread-attention',
         tone: 'warning',
       });
       continue;
@@ -160,10 +164,30 @@ export function detectLynxTaskCompletionToasts(input: {
       toasts.push({
         ...copy,
         threadId: thread.id,
+        kind: 'thread-completion',
         tone: 'success',
       });
     }
   }
 
   return toasts;
+}
+
+export async function resolveLynxTaskCompletionSummaries(input: {
+  readonly loadAssistantSummary: (threadId: string) => Promise<string | null>;
+  readonly toasts: readonly LynxTaskCompletionToast[];
+}): Promise<LynxTaskCompletionToast[]> {
+  return Promise.all(
+    input.toasts.map(async (toast) => {
+      if (toast.kind !== 'thread-completion') {
+        return toast;
+      }
+      const assistantSummary = await input
+        .loadAssistantSummary(toast.threadId)
+        .catch(() => null);
+      return assistantSummary
+        ? { ...toast, body: assistantSummary }
+        : toast;
+    })
+  );
 }

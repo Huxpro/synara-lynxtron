@@ -1,9 +1,10 @@
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it, rs } from '@rstest/core';
 
 import type { ThreadSummary } from './queries';
 import {
   applyLynxTerminalActivityEvent,
   detectLynxTaskCompletionToasts,
+  resolveLynxTaskCompletionSummaries,
 } from './taskCompletionToast.logic';
 
 function summary(
@@ -40,6 +41,7 @@ describe('Lynx task completion toast detection', () => {
       {
         title: 'Background task',
         body: 'Finished working.',
+        kind: 'thread-completion',
         threadId: 'thread-1',
         tone: 'success',
       },
@@ -57,6 +59,7 @@ describe('Lynx task completion toast detection', () => {
       {
         title: 'Input needed',
         body: 'Background task: User input requested.',
+        kind: 'thread-attention',
         threadId: 'thread-1',
         tone: 'warning',
       },
@@ -79,6 +82,7 @@ describe('Lynx task completion toast detection', () => {
       {
         title: 'Input needed',
         body: 'Background task: Command approval requested.',
+        kind: 'thread-attention',
         threadId: 'thread-1',
         tone: 'warning',
       },
@@ -171,6 +175,55 @@ describe('Lynx task completion toast detection', () => {
         ],
       })
     ).toEqual([]);
+  });
+});
+
+describe('Lynx task completion summary resolution', () => {
+  const completion = detectLynxTaskCompletionToasts({
+    activeThreadId: null,
+    previous: [summary({ live: true })],
+    current: [
+      summary({
+        latestTurnCompletedAt: '2026-08-18T00:00:01.000Z',
+        latestTurnState: 'completed',
+      }),
+    ],
+  })[0]!;
+
+  it('loads a detail summary only for thread completions', async () => {
+    const loadAssistantSummary = rs
+      .fn()
+      .mockResolvedValue('Done — tests and builds passed.');
+    const attention = {
+      ...completion,
+      kind: 'thread-attention' as const,
+      tone: 'warning' as const,
+    };
+
+    const resolved = await resolveLynxTaskCompletionSummaries({
+      toasts: [attention, completion],
+      loadAssistantSummary,
+    });
+
+    expect(loadAssistantSummary).toHaveBeenCalledTimes(1);
+    expect(loadAssistantSummary).toHaveBeenCalledWith('thread-1');
+    expect(resolved[0]).toBe(attention);
+    expect(resolved[1]?.body).toBe('Done — tests and builds passed.');
+  });
+
+  it('preserves the fallback when detail loading fails or has no summary', async () => {
+    await expect(
+      resolveLynxTaskCompletionSummaries({
+        toasts: [completion],
+        loadAssistantSummary: () => Promise.reject(new Error('offline')),
+      })
+    ).resolves.toEqual([completion]);
+    await expect(
+      resolveLynxTaskCompletionSummaries({
+        toasts: [completion],
+        loadAssistantSummary: () => Promise.resolve(null),
+      })
+    ).resolves.toEqual([completion]);
   });
 });
 

@@ -89,12 +89,26 @@ function summarizeAssistantText(text: string): string | null {
 // that lands after the work/compaction, not the opening preamble. Prefer the canonical
 // `latestTurn.assistantMessageId`; if it's missing/empty, fall back to the last non-empty
 // assistant message of that turn so we still surface the latest reply.
-function summarizeLatestAssistantMessage(thread: Thread): string | null {
-  const latestTurnId = thread.latestTurn?.turnId ?? null;
-  const finalAssistantMessageId = thread.latestTurn?.assistantMessageId ?? null;
+export function summarizeTaskCompletionAssistantMessage(input: {
+  readonly latestTurn: {
+    readonly assistantMessageId?: string | null;
+    readonly turnId?: string | null;
+  } | null;
+  readonly messages: ReadonlyArray<{
+    readonly id: string;
+    readonly role: string;
+    readonly text: string;
+    readonly turnId?: string | null;
+  }>;
+}): string | null {
+  const latestTurnId = input.latestTurn?.turnId ?? null;
+  const finalAssistantMessageId =
+    input.latestTurn?.assistantMessageId ?? null;
 
   if (finalAssistantMessageId) {
-    const finalMessage = thread.messages.find((message) => message.id === finalAssistantMessageId);
+    const finalMessage = input.messages.find(
+      (message) => message.id === finalAssistantMessageId,
+    );
     if (finalMessage) {
       const summary = summarizeAssistantText(finalMessage.text);
       if (summary) {
@@ -103,8 +117,8 @@ function summarizeLatestAssistantMessage(thread: Thread): string | null {
     }
   }
 
-  for (let index = thread.messages.length - 1; index >= 0; index -= 1) {
-    const message = thread.messages[index];
+  for (let index = input.messages.length - 1; index >= 0; index -= 1) {
+    const message = input.messages[index];
     if (!message || message.role !== "assistant") {
       continue;
     }
@@ -180,7 +194,7 @@ export function collectCompletedThreadCandidates(
       projectId: thread.projectId,
       title: thread.title,
       completedAt,
-      assistantSummary: summarizeLatestAssistantMessage(thread),
+      assistantSummary: summarizeTaskCompletionAssistantMessage(thread),
     });
   }
 

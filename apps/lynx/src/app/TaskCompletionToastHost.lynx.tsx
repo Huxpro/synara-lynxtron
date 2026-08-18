@@ -15,10 +15,15 @@ import { subscribeTerminalEvents } from '../data/synaraClient.lynx';
 import { XIcon } from '../lib/icons.lynx';
 import { onGlobalEvent } from '../platform/bridge';
 import { webStorage } from '../platform/storage';
-import { queryClient, type ThreadSummary } from './queries';
+import {
+  fetchThreadCompletionAssistantSummary,
+  queryClient,
+  type ThreadSummary,
+} from './queries';
 import {
   applyLynxTerminalActivityEvent,
   detectLynxTaskCompletionToasts,
+  resolveLynxTaskCompletionSummaries,
   type LynxTerminalActivityState,
   type LynxTaskCompletionToast,
 } from './taskCompletionToast.logic';
@@ -31,6 +36,22 @@ interface TerminalEventSnapshot {
   readonly version: number;
 }
 
+function deliverSystemNotifications(
+  notifications: readonly LynxTaskCompletionToast[]
+) {
+  'background only';
+  if (notifications.length === 0) return;
+  void import(
+    /* webpackMode: "eager" */ '../platform/notifications'
+  ).then(({ showSystemNotification }) =>
+    Promise.all(
+      notifications.map((notification) =>
+        showSystemNotification(notification).catch(() => false)
+      )
+    )
+  );
+}
+
 export function TaskCompletionToastHost(props: {
   readonly activeThreadId: string | null;
   readonly threads: readonly ThreadSummary[];
@@ -39,6 +60,8 @@ export function TaskCompletionToastHost(props: {
   const previousRef = useRef<readonly ThreadSummary[] | null>(null);
   const activeThreadIdRef = useRef(props.activeThreadId);
   activeThreadIdRef.current = props.activeThreadId;
+  const mountedRef = useRef(true);
+  const completionRunRef = useRef(0);
   const terminalActivityRef = useRef<
     ReadonlyMap<string, LynxTerminalActivityState>
   >(new Map());
@@ -66,6 +89,13 @@ export function TaskCompletionToastHost(props: {
       : terminalEventQuery.data.toast;
 
   useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    'background only';
     const previous = previousRef.current;
     previousRef.current = props.threads;
     if (previous === null) return;
@@ -80,27 +110,54 @@ export function TaskCompletionToastHost(props: {
       runtimeStartedAtMs,
     });
     if (notifications.length === 0) return;
+    const completionRun = completionRunRef.current + 1;
+    completionRunRef.current = completionRun;
+    const offscreenNotifications = notifications.filter(
+      (notification) => notification.threadId !== activeThreadIdRef.current
+    );
+    const latestOffscreenNotification = offscreenNotifications.at(-1) ?? null;
     if (settings.enableTaskCompletionToasts) {
-      setToast(
-        notifications
-          .filter(
-            (notification) =>
-              notification.threadId !== props.activeThreadId
-          )
-          .at(-1) ?? null
-      );
+      setToast(latestOffscreenNotification);
     }
     if (settings.enableSystemTaskCompletionNotifications) {
-      void import(
-        /* webpackMode: "eager" */ '../platform/notifications'
-      ).then(({ showSystemNotification }) =>
-        Promise.all(
-          notifications.map((notification) =>
-            showSystemNotification(notification).catch(() => false)
-          )
+      deliverSystemNotifications(
+        notifications.filter(
+          (notification) => notification.kind !== 'thread-completion'
         )
       );
     }
+    const completionNotifications = notifications.filter(
+      (notification) => notification.kind === 'thread-completion'
+    );
+    if (completionNotifications.length === 0) return;
+    void resolveLynxTaskCompletionSummaries({
+      toasts: completionNotifications,
+      loadAssistantSummary: fetchThreadCompletionAssistantSummary,
+    }).then((resolvedNotifications) => {
+      if (!mountedRef.current) return;
+      const currentSettings = readSettingsNotificationsProjection(
+        webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+      );
+      if (
+        currentSettings.enableTaskCompletionToasts &&
+        completionRun === completionRunRef.current &&
+        latestOffscreenNotification?.kind === 'thread-completion'
+      ) {
+        const resolvedLatest = resolvedNotifications.find(
+          (notification) =>
+            notification.threadId === latestOffscreenNotification.threadId
+        );
+        setToast(
+          resolvedLatest &&
+            resolvedLatest.threadId !== activeThreadIdRef.current
+            ? resolvedLatest
+            : null
+        );
+      }
+      if (currentSettings.enableSystemTaskCompletionNotifications) {
+        deliverSystemNotifications(resolvedNotifications);
+      }
+    });
   }, [props.activeThreadId, props.threads, runtimeStartedAtMs]);
 
   useEffect(() => {
@@ -125,11 +182,7 @@ export function TaskCompletionToastHost(props: {
           settings.enableSystemTaskCompletionNotifications &&
           result.toast
         ) {
-          void import(
-            /* webpackMode: "eager" */ '../platform/notifications'
-          ).then(({ showSystemNotification }) =>
-            showSystemNotification(result.toast!).catch(() => false)
-          );
+          deliverSystemNotifications([result.toast]);
         }
         queryClient.setQueryData<TerminalEventSnapshot>(
           TERMINAL_EVENT_QUERY_KEY,
