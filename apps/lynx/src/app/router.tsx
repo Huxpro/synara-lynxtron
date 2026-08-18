@@ -21,6 +21,7 @@ import type { InputRef } from '@lynx-js/lynx-ui';
 import { useQuery } from '@tanstack/react-query';
 import type {
   GitReadWorkingTreeDiffResult,
+  ProviderApprovalDecision,
   ProviderKind,
   ServerProviderStatus,
 } from '@synara/contracts';
@@ -77,6 +78,7 @@ import { PluginLibraryPage } from './PluginLibraryPage.lynx';
 import { resolveLandingRoutePresentation } from './landingRoutePresentation.logic';
 import { WorkspacePage } from './WorkspacePage.lynx';
 import { Composer } from '../components/composer/Composer.lynx';
+import { PendingApprovalPanel } from '../components/composer/PendingApprovalPanel.lynx';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
 import { dispatchSynaraCommand } from '../data/synaraClient.lynx';
@@ -810,8 +812,50 @@ function ThreadPage(props: ThreadPageProps) {
     onActivate: () => setExplorerVisibility(!explorerOpen),
   });
   const rightDockWidth = explorerOpen ? explorerDockWidth : diffDockWidth;
+  const [respondingApprovalRequestId, setRespondingApprovalRequestId] =
+    useState<string | null>(null);
+  const activePendingApproval = currentThread?.pendingApprovals[0] ?? null;
+  const respondToApproval = async (
+    decision: ProviderApprovalDecision,
+    lifecycleGeneration?: string
+  ) => {
+    'background only';
+    if (!activePendingApproval || respondingApprovalRequestId !== null) return;
+    setRespondingApprovalRequestId(activePendingApproval.requestId);
+    try {
+      await dispatchSynaraCommand({
+        type: 'thread.approval.respond',
+        commandId: `lynx-approval-${Date.now()}-${Math.random()
+          .toString(16)
+          .slice(2)}`,
+        threadId: threadId as never,
+        requestId: activePendingApproval.requestId,
+        ...(lifecycleGeneration ? { lifecycleGeneration } : {}),
+        decision,
+        createdAt: new Date().toISOString(),
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ['thread-detail', threadId],
+      });
+    } finally {
+      setRespondingApprovalRequestId(null);
+    }
+  };
   const composer = (
     <ComposerColumnFrameSurface>
+      {activePendingApproval ? (
+        <PendingApprovalPanel
+          approval={activePendingApproval}
+          pendingCount={currentThread?.pendingApprovals.length ?? 0}
+          responding={
+            respondingApprovalRequestId === activePendingApproval.requestId
+          }
+          onRespond={(decision, lifecycleGeneration) => {
+            'background only';
+            void respondToApproval(decision, lifecycleGeneration);
+          }}
+        />
+      ) : null}
       <Composer
         threadId={threadId}
         modelSelection={currentThread?.modelSelection}

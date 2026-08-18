@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-claude-pending-approval-capability",
+      "severity": "P1",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Shared pending approval projection and Lynx response surface"
+    },
+    {
+      "id": "claude-approval-three-client-roundtrip-coverage",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 0,
+      "owner": "Real Claude Max approval-required lifecycle"
+    },
+    {
+      "id": "server-unconsumed-stdout-pipe",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Unified exec server process ownership"
+    }
+  ]
+}
