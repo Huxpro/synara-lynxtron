@@ -190,3 +190,21 @@ temporary thread was then canonically stopped and deleted:
 - final full snapshot: thread omitted (`exists:false`).
 
 Product contribution: `1.00 -> 0.00`.
+
+Generated fidelity accounting:
+
+- loss:
+  `11.667654316861451 -> 11.539802495015246`;
+- delta:
+  `-0.12785182184620503`;
+- scope contribution:
+  `-0.13761467889908174`;
+- completeness contribution:
+  `+0.009762857052875162`;
+- visual contribution:
+  `0`;
+- reliability contribution:
+  `0`.
+
+The P1 discovery and fix were committed atomically, so the active reliability
+component remains zero rather than inventing a committed unresolved interval.
