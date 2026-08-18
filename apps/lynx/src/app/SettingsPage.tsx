@@ -869,6 +869,7 @@ export function SettingsPage({
               ) : section === 'shortcuts' ? (
                 <KeyboardShortcutsSettingsComposition
                   keybindings={keybindings}
+                  includeDesktopShellShortcuts
                 />
               ) : section === 'usage' ? (
                 <SettingsUsagePanel />

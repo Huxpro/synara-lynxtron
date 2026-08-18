@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-reload-shortcut-undiscoverable",
+      "severity": "P1",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynxtron keyboard shortcut reference"
+    },
+    {
+      "id": "web-reload-shortcut-absent",
+      "severity": "platform",
+      "classification": "intentional-platform-delta",
+      "before": 1,
+      "after": 1,
+      "owner": "Browser renderer reload ownership"
+    },
+    {
+      "id": "shortcuts-web-host-restart",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Isolated Vite authority process"
+    }
+  ]
+}

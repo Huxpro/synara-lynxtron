@@ -108,6 +108,7 @@ describe('shared settings navigation projection', () => {
     );
     expect(routerSource).toContain('<TaskCompletionToastHost');
     expect(routerSource).toContain('{taskCompletionToast}');
+    expect(source).toContain('includeDesktopShellShortcuts');
     expect(source).toContain(
       'desktopStatus="System notifications are unavailable in this runtime."'
     );

@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
 import { KeyboardShortcutsSettingsComposition } from "./KeyboardShortcutsSettingsComposition";
+import { buildShortcutSheetSections, filterShortcutSheetSections } from "../../shortcutsSheet";
 
 const keybindings: ResolvedKeybindingsConfig = [
   {
@@ -44,5 +45,75 @@ describe("KeyboardShortcutsSettingsComposition", () => {
     expect(markup).toContain("⌘");
     expect(markup).toContain("K");
     expect(markup).toContain("N");
+  });
+
+  it("renders host-owned supplemental shortcuts through the shared table", () => {
+    const markup = renderToStaticMarkup(
+      <KeyboardShortcutsSettingsComposition
+        keybindings={keybindings}
+        platform="MacIntel"
+        includeDesktopShellShortcuts
+      />,
+    );
+
+    expect(markup).toContain("Reload app");
+    expect(markup).toContain("Reload the current Lynx bundle while preserving the active route.");
+    expect(markup).toContain("R");
+  });
+
+  it("uses Ctrl labels for desktop shell shortcuts outside macOS", () => {
+    const markup = renderToStaticMarkup(
+      <KeyboardShortcutsSettingsComposition
+        keybindings={keybindings}
+        platform="Win32"
+        includeDesktopShellShortcuts
+      />,
+    );
+
+    expect(markup).toContain("Ctrl");
+    expect(markup).toContain("Shift");
+  });
+
+  it("keeps both desktop reload actions discoverable through shortcut filtering", () => {
+    const sections = buildShortcutSheetSections({
+      keybindings,
+      projectScripts: [],
+      platform: "MacIntel",
+      context: {
+        terminalFocus: false,
+        terminalOpen: false,
+        terminalWorkspaceOpen: false,
+      },
+    });
+    const filtered = filterShortcutSheetSections(
+      [
+        ...sections,
+        {
+          id: "desktop-shell",
+          title: "Desktop shell",
+          description: "Shortcuts owned by the Lynxtron application window.",
+          entries: [
+            {
+              id: "reload",
+              label: "Reload app",
+              description: "Reload the current Lynx bundle.",
+              shortcutLabel: "⌘R",
+            },
+            {
+              id: "force-reload",
+              label: "Force reload app",
+              description: "Force reload the current Lynx bundle.",
+              shortcutLabel: "⌘⇧R",
+            },
+          ],
+        },
+      ],
+      "reload",
+    );
+
+    expect(filtered.flatMap((section) => section.entries).map((entry) => entry.label)).toEqual([
+      "Reload app",
+      "Force reload app",
+    ]);
   });
 });
