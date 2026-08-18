@@ -86,6 +86,13 @@ No SQLite fixture writes were used.
 - Focused tests: `3 files / 16 tests`.
 - Lynx/Desktop production build: passed with the existing registered warnings.
 - Earlier Lynx-for-Web production build passed for the same stream routing.
+- Fidelity loss: `11.667654316861451 -> 11.539802495015246`
+  (`-0.12785182184620503`).
+- Component contribution:
+  - scope: `-0.13761467889908174`;
+  - completeness: `+0.009762857052875162`;
+  - visual: `0`;
+  - reliability: `0`.
 - No upstream issue was filed: the stream, Lynxtron GlobalEvent delivery, and
   connection remained healthy. The observed failures were local projection and
   harness timing defects.
