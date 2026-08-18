@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "native-system-activity-notifications-missing",
+      "severity": "P1",
+      "classification": "product-capability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx notification platform port and Lynxtron host"
+    },
+    {
+      "id": "native-notification-hydration-freshness",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx task completion detector"
+    },
+    {
+      "id": "native-notification-batch-completion-loss",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx task completion host"
+    },
+    {
+      "id": "lynxtron-notification-static-api-mismatch",
+      "severity": "upstream",
+      "classification": "platform-blocker",
+      "before": 1,
+      "after": 0,
+      "owner": "lynx-family/lynxtron#197"
+    },
+    {
+      "id": "lynx-web-system-notification-capability",
+      "severity": "intentional",
+      "classification": "intentional-platform-delta",
+      "before": 0,
+      "after": 0,
+      "owner": "Lynx-for-Web host capability boundary"
+    }
+  ]
+}

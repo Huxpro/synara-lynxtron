@@ -100,7 +100,11 @@ describe('shared settings navigation projection', () => {
       'activityStatus="In-app activity toasts are shown for off-screen chats."'
     );
     expect(source).toContain(
-      "disabled={key === 'enableSystemTaskCompletionNotifications'}"
+      "disabled={notificationSupported !== true}"
+    );
+    expect(source).toContain('onClick={sendTestNotification}');
+    expect(source).toContain(
+      'Desktop app notifications use your operating system notification center.'
     );
     expect(source).toMatch(
       /useEffect\(\(\) => \{\s*setSection\(initialSection\);\s*setPendingSearchTarget\(initialTarget\);\s*setSearchQuery\(''\);\s*\}, \[initialSection, initialTarget\]\);/s
@@ -113,7 +117,7 @@ describe('shared settings navigation projection', () => {
     expect(routerSource).toContain('{taskCompletionToast}');
     expect(source).toContain('includeDesktopShellShortcuts');
     expect(source).toContain(
-      'desktopStatus="System notifications are unavailable in this runtime."'
+      "'Desktop app notifications use your operating system notification center.'"
     );
     expect(source).toContain('showCodeThemeSelection={false}');
     expect(source).toContain('showFontSmoothing={false}');

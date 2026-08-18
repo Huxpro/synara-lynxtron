@@ -395,6 +395,12 @@ export function SettingsPage({
   const [notifications, setNotifications] = useState(
     DEFAULT_NOTIFICATION_SETTINGS_VALUES
   );
+  const [notificationSupported, setNotificationSupported] = useState<
+    boolean | null
+  >(null);
+  const [notificationTestStatus, setNotificationTestStatus] = useState<
+    string | null
+  >(null);
   const [models, setModels] = useState(
     DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES
   );
@@ -475,6 +481,26 @@ export function SettingsPage({
       active = false;
     };
   }, [loadAttempt, onAppearanceChange, onThemeStateChange]);
+
+  useEffect(() => {
+    'background only';
+    let active = true;
+    void import(
+      /* webpackMode: "eager" */ '../platform/notifications'
+    )
+      .then(({ isSystemNotificationSupported }) =>
+        isSystemNotificationSupported()
+      )
+      .then((supported) => {
+        if (active) setNotificationSupported(supported);
+      })
+      .catch(() => {
+        if (active) setNotificationSupported(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   function runSave(
     operation: () => Promise<SettingsPersistOutcome | void>
@@ -627,6 +653,32 @@ export function SettingsPage({
     const next = { ...notifications, [key]: value };
     setNotifications(next);
     runSave(() => persistNotificationSettings(next));
+  }
+
+  function sendTestNotification() {
+    'background only';
+    setNotificationTestStatus(null);
+    void import(
+      /* webpackMode: "eager" */ '../platform/notifications'
+    )
+      .then(({ showSystemNotification }) =>
+        showSystemNotification({
+          title: 'Synara notifications',
+          body: 'Notification test for chats and terminal agents.',
+        })
+      )
+      .then((shown) =>
+        setNotificationTestStatus(
+          shown
+            ? 'Test notification sent.'
+            : 'System notifications are unavailable in this runtime.'
+        )
+      )
+      .catch(() =>
+        setNotificationTestStatus(
+          'System notifications are unavailable in this runtime.'
+        )
+      );
   }
 
   function updateProviders(next: SettingsProviderUpdateChecksValues) {
@@ -855,21 +907,45 @@ export function SettingsPage({
                   settings={notifications}
                   defaults={DEFAULT_NOTIFICATION_SETTINGS_VALUES}
                   activityStatus="In-app activity toasts are shown for off-screen chats."
-                  desktopStatus="System notifications are unavailable in this runtime."
+                  desktopStatus={
+                    notificationTestStatus ??
+                    (notificationSupported === true
+                      ? 'Desktop app notifications use your operating system notification center.'
+                      : notificationSupported === null
+                        ? 'Checking system notification support…'
+                        : 'System notifications are unavailable in this runtime.')
+                  }
                   updateSetting={updateNotifications}
                   renderControl={({
                     key,
                     checked,
                     ariaLabel,
                     onCheckedChange,
-                  }) => (
-                    <SettingsGeneralBooleanControlElement
-                      checked={checked}
-                      disabled={key === 'enableSystemTaskCompletionNotifications'}
-                      ariaLabel={ariaLabel}
-                      onChange={onCheckedChange}
-                    />
-                  )}
+                  }) =>
+                    key === 'enableSystemTaskCompletionNotifications' ? (
+                      <view className="SettingsNotificationsDesktopControl">
+                        <Button
+                          size="xs"
+                          variant="outline"
+                          disabled={notificationSupported !== true}
+                          onClick={sendTestNotification}
+                        >
+                          Test
+                        </Button>
+                        <SettingsGeneralBooleanControlElement
+                          checked={checked}
+                          disabled={notificationSupported !== true}
+                          ariaLabel={ariaLabel}
+                          onChange={onCheckedChange}
+                        />
+                      </view>
+                    ) : (
+                      <SettingsGeneralBooleanControlElement
+                        checked={checked}
+                        ariaLabel={ariaLabel}
+                        onChange={onCheckedChange}
+                      />
+                    )}
                   renderResetAction={renderSettingsResetAction}
                 />
               ) : section === 'shortcuts' ? (

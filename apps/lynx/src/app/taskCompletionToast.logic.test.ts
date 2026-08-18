@@ -116,6 +116,62 @@ describe('Lynx task completion toast detection', () => {
       })
     ).toEqual([]);
   });
+
+  it('can include the active thread for system notification delivery', () => {
+    expect(
+      detectLynxTaskCompletionToasts({
+        activeThreadId: 'thread-1',
+        includeActiveThread: true,
+        previous: [summary({ live: true })],
+        current: [
+          summary({
+            latestTurnCompletedAt: '2026-08-18T00:00:01.000Z',
+            latestTurnState: 'completed',
+          }),
+        ],
+      })
+    ).toHaveLength(1);
+  });
+
+  it('returns every fresh completion from the same snapshot', () => {
+    expect(
+      detectLynxTaskCompletionToasts({
+        activeThreadId: null,
+        previous: [
+          summary({ id: 'thread-1', live: true }),
+          summary({ id: 'thread-2', live: true }),
+        ],
+        current: [
+          summary({
+            id: 'thread-1',
+            latestTurnCompletedAt: '2026-08-18T00:00:01.000Z',
+            latestTurnState: 'completed',
+          }),
+          summary({
+            id: 'thread-2',
+            latestTurnCompletedAt: '2026-08-18T00:00:02.000Z',
+            latestTurnState: 'completed',
+          }),
+        ],
+      }).map((toast) => toast.threadId)
+    ).toEqual(['thread-1', 'thread-2']);
+  });
+
+  it('suppresses stale transitions replayed after runtime startup', () => {
+    expect(
+      detectLynxTaskCompletionToasts({
+        activeThreadId: null,
+        runtimeStartedAtMs: Date.parse('2026-08-18T00:00:05.000Z'),
+        previous: [summary({ live: true })],
+        current: [
+          summary({
+            latestTurnCompletedAt: '2026-08-18T00:00:01.000Z',
+            latestTurnState: 'completed',
+          }),
+        ],
+      })
+    ).toEqual([]);
+  });
 });
 
 describe('Lynx managed terminal toast detection', () => {

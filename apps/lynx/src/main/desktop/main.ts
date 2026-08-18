@@ -54,6 +54,11 @@ import {
   handleNativeRpc,
   subscribeNativeRpcTransportState,
 } from './nativeRpcHost';
+import {
+  createNativeNotificationService,
+  type NativeNotificationConstructor,
+} from './nativeNotifications';
+import { createRequire } from 'node:module';
 const isDev = process.env.NODE_ENV === 'development';
 const isDevtoolEnabled =
   isDev || process.env.SYNARA_ENABLE_DEVTOOL === '1';
@@ -62,6 +67,10 @@ const isBackgroundLaunch =
 const hostInputProbeReportPath =
   process.env.SYNARA_HOST_INPUT_PROBE_REPORT?.trim() || null;
 const TERMINAL_EVENT = 'synara:terminal-event';
+const require = createRequire(import.meta.url);
+const nativeLynxtron = require('lynxtron') as {
+  readonly Notification?: NativeNotificationConstructor;
+};
 
 let mainWindow: LynxWindow | null = null;
 let searchNavigationEnabled = false;
@@ -106,6 +115,11 @@ function dispatchRoute(route: string, activate = true): void {
     mainWindow.sendGlobalEvent('shell:navigate', delivery.routeToDispatch);
   }
 }
+
+const nativeNotifications = createNativeNotificationService({
+  Notification: nativeLynxtron.Notification,
+  openThread: (threadId) => dispatchRoute(`/thread/${threadId}`),
+});
 
 function dispatchShellEvent(event: string, ...args: unknown[]): void {
   if (!mainWindow || mainWindow.isDestroyed()) return;
@@ -533,6 +547,23 @@ app.whenReady().then(() => {
           callback.sendReply(
             JSON.stringify({
               wsUrl: resolveSynaraWsUrl(process.env.SYNARA_WS_URL),
+            })
+          );
+        } else if (name === 'notificationsIsSupported') {
+          callback.sendReply(
+            JSON.stringify({
+              supported: nativeNotifications.isSupported(),
+            })
+          );
+        } else if (name === 'notificationsShow') {
+          callback.sendReply(
+            JSON.stringify({
+              shown: await nativeNotifications.show({
+                title: typeof data?.title === 'string' ? data.title : '',
+                body: typeof data?.body === 'string' ? data.body : '',
+                threadId:
+                  typeof data?.threadId === 'string' ? data.threadId : null,
+              }),
             })
           );
         } else if (name.startsWith('storage')) {

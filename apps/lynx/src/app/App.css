@@ -406,6 +406,12 @@
   margin-left: 6px;
 }
 
+.SettingsNotificationsDesktopControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .SliceRoot--theme-light .ProviderUpdatePromptAction {
   border-color: rgba(10, 10, 10, 0.2);
   background-color: rgba(10, 10, 10, 0.1);

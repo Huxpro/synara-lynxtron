@@ -770,6 +770,12 @@ async function handleBridgeCall(
       lastRendererReadyRoute = route;
       return { ok: true, route };
     }
+    if (method === 'notificationsIsSupported') {
+      return { supported: false };
+    }
+    if (method === 'notificationsShow') {
+      return { shown: false };
+    }
     if (method === 'storageDump') {
       return { entries: readStorageEntries() };
     }

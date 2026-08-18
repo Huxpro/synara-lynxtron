@@ -26,6 +26,7 @@ export function applyLynxTerminalActivityEvent(input: {
   readonly activeThreadId: string | null;
   readonly current: ReadonlyMap<string, LynxTerminalActivityState>;
   readonly event: TerminalEvent;
+  readonly includeActiveThread?: boolean;
 }): {
   readonly next: ReadonlyMap<string, LynxTerminalActivityState>;
   readonly toast: LynxTaskCompletionToast | null;
@@ -42,7 +43,10 @@ export function applyLynxTerminalActivityEvent(input: {
   };
   const next = new Map(input.current);
   next.set(key, state);
-  if (input.event.threadId === input.activeThreadId) {
+  if (
+    input.includeActiveThread !== true &&
+    input.event.threadId === input.activeThreadId
+  ) {
     return { next, toast: null };
   }
   const title = input.event.cliKind
@@ -91,6 +95,8 @@ export function detectLynxTaskCompletionToasts(input: {
   readonly activeThreadId: string | null;
   readonly current: readonly ThreadSummary[];
   readonly previous: readonly ThreadSummary[];
+  readonly includeActiveThread?: boolean;
+  readonly runtimeStartedAtMs?: number;
 }): LynxTaskCompletionToast[] {
   const previousById = new Map(
     input.previous.map((thread) => [thread.id, thread] as const)
@@ -98,7 +104,12 @@ export function detectLynxTaskCompletionToasts(input: {
   const toasts: LynxTaskCompletionToast[] = [];
 
   for (const thread of input.current) {
-    if (thread.id === input.activeThreadId) continue;
+    if (
+      input.includeActiveThread !== true &&
+      thread.id === input.activeThreadId
+    ) {
+      continue;
+    }
     const previous = previousById.get(thread.id);
     if (!previous) continue;
 
@@ -107,6 +118,14 @@ export function detectLynxTaskCompletionToasts(input: {
     const inputStarted =
       !previous.hasPendingUserInput && thread.hasPendingUserInput;
     if (approvalStarted || inputStarted) {
+      const updatedAtMs = Date.parse(thread.updatedAt);
+      if (
+        input.runtimeStartedAtMs !== undefined &&
+        Number.isFinite(updatedAtMs) &&
+        updatedAtMs <= input.runtimeStartedAtMs
+      ) {
+        continue;
+      }
       const copy = buildInputNeededCopy({
         kind: approvalStarted ? 'approval' : 'user-input',
         threadId: thread.id as never,
@@ -126,7 +145,10 @@ export function detectLynxTaskCompletionToasts(input: {
       previous.live &&
       !thread.live &&
       thread.latestTurnState === 'completed' &&
-      thread.latestTurnCompletedAt
+      thread.latestTurnCompletedAt &&
+      (input.runtimeStartedAtMs === undefined ||
+        !Number.isFinite(Date.parse(thread.latestTurnCompletedAt)) ||
+        Date.parse(thread.latestTurnCompletedAt) > input.runtimeStartedAtMs)
     ) {
       const copy = buildTaskCompletionCopy({
         threadId: thread.id as never,

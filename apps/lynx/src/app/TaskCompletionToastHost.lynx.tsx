@@ -43,6 +43,7 @@ export function TaskCompletionToastHost(props: {
     ReadonlyMap<string, LynxTerminalActivityState>
   >(new Map());
   const [toast, setToast] = useState<LynxTaskCompletionToast | null>(null);
+  const [runtimeStartedAtMs] = useState(() => Date.now());
   const [dismissedTerminalVersion, setDismissedTerminalVersion] = useState(0);
   const terminalEventQuery = useQuery(
     {
@@ -71,14 +72,36 @@ export function TaskCompletionToastHost(props: {
     const settings = readSettingsNotificationsProjection(
       webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
     );
-    if (!settings.enableTaskCompletionToasts) return;
-    const next = detectLynxTaskCompletionToasts({
+    const notifications = detectLynxTaskCompletionToasts({
       activeThreadId: props.activeThreadId,
       previous,
       current: props.threads,
-    }).at(-1);
-    if (next) setToast(next);
-  }, [props.activeThreadId, props.threads]);
+      includeActiveThread: true,
+      runtimeStartedAtMs,
+    });
+    if (notifications.length === 0) return;
+    if (settings.enableTaskCompletionToasts) {
+      setToast(
+        notifications
+          .filter(
+            (notification) =>
+              notification.threadId !== props.activeThreadId
+          )
+          .at(-1) ?? null
+      );
+    }
+    if (settings.enableSystemTaskCompletionNotifications) {
+      void import(
+        /* webpackMode: "eager" */ '../platform/notifications'
+      ).then(({ showSystemNotification }) =>
+        Promise.all(
+          notifications.map((notification) =>
+            showSystemNotification(notification).catch(() => false)
+          )
+        )
+      );
+    }
+  }, [props.activeThreadId, props.threads, runtimeStartedAtMs]);
 
   useEffect(() => {
     'background only';
@@ -91,17 +114,30 @@ export function TaskCompletionToastHost(props: {
           activeThreadId: activeThreadIdRef.current,
           current: terminalActivityRef.current,
           event: terminalEvent,
+          includeActiveThread: true,
         });
         terminalActivityRef.current = result.next;
         if (terminalEvent.type !== 'activity') return;
         const settings = readSettingsNotificationsProjection(
           webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
         );
+        if (
+          settings.enableSystemTaskCompletionNotifications &&
+          result.toast
+        ) {
+          void import(
+            /* webpackMode: "eager" */ '../platform/notifications'
+          ).then(({ showSystemNotification }) =>
+            showSystemNotification(result.toast!).catch(() => false)
+          );
+        }
         queryClient.setQueryData<TerminalEventSnapshot>(
           TERMINAL_EVENT_QUERY_KEY,
           (current) => ({
             toast:
-              settings.enableTaskCompletionToasts && result.toast
+              settings.enableTaskCompletionToasts &&
+              result.toast &&
+              terminalEvent.threadId !== activeThreadIdRef.current
                 ? result.toast
                 : null,
             version: (current?.version ?? 0) + 1,

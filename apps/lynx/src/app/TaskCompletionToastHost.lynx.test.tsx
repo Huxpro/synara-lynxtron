@@ -13,7 +13,7 @@ function summary(
     project: 'Synara',
     title: 'Background task',
     messageCount: 0,
-    updatedAt: '2026-08-18T00:00:00.000Z',
+    updatedAt: new Date(Date.now() + 1_000).toISOString(),
     live: false,
     hasPendingApprovals: false,
     hasPendingUserInput: false,
@@ -38,7 +38,7 @@ describe('Lynx task completion toast host', () => {
         activeThreadId={null}
         threads={[
           summary({
-            latestTurnCompletedAt: '2026-08-18T00:00:01.000Z',
+            latestTurnCompletedAt: new Date(Date.now() + 1_000).toISOString(),
             latestTurnState: 'completed',
           }),
         ]}
