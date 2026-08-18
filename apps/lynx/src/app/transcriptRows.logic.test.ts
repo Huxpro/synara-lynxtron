@@ -16,7 +16,8 @@ describe('buildTranscriptScrollToBottomParams', () => {
     expect(buildTranscriptScrollToBottomParams(0)).toBeNull();
     expect(buildTranscriptScrollToBottomParams(4)).toEqual({
       position: 3,
-      offset: 1_000_000,
+      offset: 0,
+      alignTo: 'bottom',
       smooth: false,
     });
   });
@@ -24,7 +25,8 @@ describe('buildTranscriptScrollToBottomParams', () => {
   it('includes explicit trailing list chrome in the target position', () => {
     expect(buildTranscriptScrollToBottomParams(4, 1)).toEqual({
       position: 4,
-      offset: 1_000_000,
+      offset: 0,
+      alignTo: 'bottom',
       smooth: false,
     });
   });

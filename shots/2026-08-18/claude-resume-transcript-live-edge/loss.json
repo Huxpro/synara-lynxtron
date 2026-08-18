@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "native-completed-transcript-live-edge",
+      "severity": "P1",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Native transcript list bottom-alignment command"
+    },
+    {
+      "id": "claude-resume-transcript-three-client-coverage",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 0,
+      "owner": "Real Claude Max stop, resume, and completed transcript projection"
+    },
+    {
+      "id": "lynxtron-app-open-page",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 1,
+      "owner": "Lynxtron App.openPage implementation"
+    }
+  ]
+}

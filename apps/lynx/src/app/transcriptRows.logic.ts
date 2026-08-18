@@ -10,11 +10,10 @@ export type WorkLogEntry = Extract<ThreadTranscriptRow, { kind: 'work' }>['group
 const TRANSCRIPT_ESTIMATED_CHARS_PER_LINE = 72;
 const TRANSCRIPT_ESTIMATED_LINE_HEIGHT_PX = 28;
 const TRANSCRIPT_MARKDOWN_BLOCK_GAP_PX = 18;
-const TRANSCRIPT_END_CLAMP_OFFSET_PX = 1_000_000;
-
 export interface TranscriptScrollToPositionParams {
   readonly position: number;
   readonly offset: number;
+  readonly alignTo: 'bottom';
   readonly smooth: boolean;
 }
 
@@ -90,10 +89,8 @@ export function buildTranscriptScrollToBottomParams(
   if (targetCount <= 0) return null;
   return {
     position: targetCount - 1,
-    // `position` aligns the final row's start. A large positive offset lets
-    // the platform clamp to the list's true end even when that row is taller
-    // than the viewport (for example, a long streaming assistant response).
-    offset: TRANSCRIPT_END_CLAMP_OFFSET_PX,
+    offset: 0,
+    alignTo: 'bottom',
     smooth: false,
   };
 }
