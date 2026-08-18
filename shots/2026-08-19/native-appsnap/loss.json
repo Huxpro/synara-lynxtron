@@ -54,8 +54,8 @@
       "severity": "P2",
       "classification": "missing-coverage",
       "before": 1,
-      "after": 1,
-      "owner": "Lynx AppSnap feedback"
+      "after": 0,
+      "owner": "Lynx AppSnap feedback and native helper"
     },
     {
       "id": "native-appsnap-auto-new-task",

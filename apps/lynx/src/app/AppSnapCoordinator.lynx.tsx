@@ -82,7 +82,8 @@ export function AppSnapCoordinator(props: {
       webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
     );
     void appSnap
-      .setEnabled(settings.enableAppSnap)
+      .setPlayCaptureSound(settings.appSnapPlaySound)
+      .then(() => appSnap.setEnabled(settings.enableAppSnap))
       .then(() => appSnap.listPendingCaptures())
       .then((captures) => captures.forEach(enqueue))
       .catch(() => undefined);

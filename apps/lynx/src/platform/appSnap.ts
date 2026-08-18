@@ -26,6 +26,12 @@ export const appSnap = {
     bridgeCall<DesktopAppSnapState>('appSnapSetEnabled', { enabled }),
   requestPermissions: () =>
     bridgeCall<DesktopAppSnapState>('appSnapRequestPermissions'),
+  setPlayCaptureSound: (enabled: boolean) =>
+    bridgeCall<DesktopAppSnapState>('appSnapSetPlaySound', { enabled }),
+  previewCaptureSound: () =>
+    bridgeCall<{ readonly played?: boolean }>('appSnapPreviewSound').then(
+      (result) => result.played === true
+    ),
   listPendingCaptures: () =>
     bridgeCall<{ readonly captures: readonly LynxAppSnapCapture[] }>(
       'appSnapListPendingCaptures'

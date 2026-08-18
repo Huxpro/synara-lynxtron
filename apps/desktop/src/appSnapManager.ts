@@ -365,6 +365,7 @@ export class DesktopAppSnapManager {
   #pendingCapturesLoadPromise: Promise<void> | null = null;
   #captureReadQueue: Promise<void> = Promise.resolve();
   #shortcut: DesktopAppSnapShortcut = DEFAULT_APP_SNAP_SHORTCUT;
+  #playCaptureSound = false;
   #registeredAccelerator: string | null = null;
 
   constructor(options: DesktopAppSnapManagerOptions) {
@@ -481,6 +482,29 @@ export class DesktopAppSnapManager {
     if (!(await this.#runPermissionCommand("--request-permissions"))) return this.getState();
     await this.#reconcileWatchProcess();
     return this.getState();
+  }
+
+  async setPlayCaptureSound(enabled: boolean): Promise<DesktopAppSnapState> {
+    if (this.#playCaptureSound === enabled) return this.getState();
+    this.#playCaptureSound = enabled;
+    if (this.#enabled) {
+      this.#stopWatchProcess();
+      await this.#reconcileWatchProcess();
+    }
+    return this.getState();
+  }
+
+  async previewCaptureSound(): Promise<boolean> {
+    if (this.#platform !== "macos" || this.#disposed || !FS.existsSync(this.#options.helperPath)) {
+      return false;
+    }
+    return await new Promise<boolean>((resolve) => {
+      const child = this.#options.spawn(this.#options.helperPath, ["--preview-sound"], {
+        stdio: ["ignore", "ignore", "ignore"],
+      });
+      child.once("error", () => resolve(false));
+      child.once("close", (code) => resolve(code === 0));
+    });
   }
 
   async listPendingCaptures(): Promise<DesktopAppSnapCapture[]> {
@@ -780,6 +804,7 @@ export class DesktopAppSnapManager {
         "--excluded-bundle-id",
         this.#options.excludedBundleId,
         ...shortcutArguments,
+        ...(this.#playCaptureSound ? ["--play-sound"] : []),
       ],
       { stdio: ["pipe", "pipe", "pipe"] },
     );

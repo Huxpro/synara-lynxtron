@@ -47,6 +47,7 @@ export function SettingsAppSnapPanel() {
   );
   const [state, setState] = useState<DesktopAppSnapState | null>(null);
   const [pending, setPending] = useState(false);
+  const [soundStatus, setSoundStatus] = useState<string | null>(null);
 
   useEffect(() => {
     'background only';
@@ -103,6 +104,28 @@ export function SettingsAppSnapPanel() {
       .then(() => appSnap.setEnabled(settings.enableAppSnap))
       .then(setState)
       .finally(() => setPending(false));
+  }
+
+  function setCaptureSound(enabled: boolean) {
+    'background only';
+    const nextSettings = { ...settings, appSnapPlaySound: enabled };
+    setSettings(nextSettings);
+    setSoundStatus(null);
+    void persistAppSnapSettings(nextSettings);
+    void appSnap.setPlayCaptureSound(enabled).catch(() => undefined);
+  }
+
+  function previewCaptureSound() {
+    'background only';
+    setSoundStatus(null);
+    void appSnap
+      .previewCaptureSound()
+      .then((played) =>
+        setSoundStatus(
+          played ? 'Preview played.' : 'Capture sound is unavailable.'
+        )
+      )
+      .catch(() => setSoundStatus('Capture sound is unavailable.'));
   }
 
   const supported = state?.supported === true;
@@ -202,7 +225,20 @@ export function SettingsAppSnapPanel() {
               Play a short shutter cue when a window is captured.
             </text>
           </view>
-          <text className="SettingsAppSnapValue">Not yet available</text>
+          <view className="SettingsAppSnapSoundControl">
+            <Button size="xs" variant="outline" onClick={previewCaptureSound}>
+              Preview
+            </Button>
+            <SettingsGeneralBooleanControlElement
+              checked={settings.appSnapPlaySound}
+              disabled={!supported}
+              ariaLabel="Play a sound when an AppSnap is captured"
+              onChange={setCaptureSound}
+            />
+          </view>
+          {soundStatus ? (
+            <text className="SettingsAppSnapStatus">{soundStatus}</text>
+          ) : null}
         </view>
       </SettingsSection>
       {supported ? (

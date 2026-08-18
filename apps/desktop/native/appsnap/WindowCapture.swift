@@ -479,6 +479,7 @@ final class AppSnapCaptureCoordinator {
     private let emitter: NDJSONEmitter
     private let outputDirectory: URL
     private let excludedBundleIdentifier: String
+    private let playSound: Bool
     private let captureFeedback = AppSnapCaptureFeedback()
     private let queue = DispatchQueue(label: "dev.synara.appsnap.capture")
     private var activeCapture: OneFrameWindowCapture?
@@ -486,11 +487,13 @@ final class AppSnapCaptureCoordinator {
     init(
         emitter: NDJSONEmitter,
         outputDirectory: URL,
-        excludedBundleIdentifier: String
+        excludedBundleIdentifier: String,
+        playSound: Bool = false
     ) {
         self.emitter = emitter
         self.outputDirectory = outputDirectory
         self.excludedBundleIdentifier = excludedBundleIdentifier
+        self.playSound = playSound
     }
 
     func handleGesture() {
@@ -575,6 +578,9 @@ final class AppSnapCaptureCoordinator {
                 // every successful capture deterministically releases its lock.
                 DispatchQueue.main.async { [self] in
                     captureFeedback.play(for: selectedWindow.bounds) { [self] in
+                        if playSound {
+                            try? playAppSnapShutterSound()
+                        }
                         queue.async { [self] in
                             emitter.emitCaptured(
                                 id: id,

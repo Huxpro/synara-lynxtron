@@ -44,7 +44,9 @@ not an upstream screen-capture blocker.
 - Added real permission state and recheck controls.
 - Kept custom global key chords explicitly unavailable because Lynxtron does
   not expose `globalShortcut`; the stored chord is preserved, not discarded.
-- Kept capture sound explicitly `Not yet available`.
+- Added a persisted capture-sound switch and a real Preview action.
+- Reused the AppSnap Swift helper for a quiet native double-click cue, avoiding
+  renderer timing and duplicate playback.
 - Corrected destination copy to the implemented active-thread/pending behavior.
 
 ## Durability
@@ -95,6 +97,36 @@ Exact-owned Native successfully completed the real product flow:
 No direct SQLite mutation was used. SQLite was read only to confirm there were
 no remaining temporary fidelity threads.
 
+## Capture Sound
+
+The original capture cue is now implemented by the same native helper that
+owns the global listener and ScreenCaptureKit capture:
+
+- Preview launches the staged helper with `--preview-sound`;
+- a successful real capture plays the cue only when the watch helper was
+  started with `--play-sound`;
+- the cue is a quiet `Tink` followed by `Pop`, separated by `70ms`;
+- the preference uses the shared `appSnapPlaySound` app setting and survives
+  renderer restarts;
+- changing the preference while AppSnap is listening restarts only the owned
+  watch helper, so the active helper arguments always match the visible switch.
+
+Exact-owned Native outcome:
+
+1. Startup synchronized `appSnapPlaySound: true` through
+   `bridge.appSnapSetPlaySound`.
+2. Activating the visible Preview button emitted
+   `bridge.appSnapPreviewSound`, played the native cue, and rendered
+   `Preview played.`.
+3. Switching Off rendered `aria-checked=false`, emitted
+   `appSnapSetPlaySound { enabled: false }`, and persisted
+   `"appSnapPlaySound":false`.
+4. Switching On rendered `aria-checked=true`, emitted
+   `appSnapSetPlaySound { enabled: true }`, and persisted
+   `"appSnapPlaySound":true`.
+5. The exact-owned helper child then ran with
+   `--watch ... --play-sound`.
+
 ## Layout Loss
 
 The first exact Native Settings screenshot exposed a separate P1 readability
@@ -127,17 +159,17 @@ macOS Input Monitoring, Screen Recording, or global event taps.
 ## Verification
 
 - Web AppSnap storage projection: `7/7`;
-- shared desktop AppSnap manager: `18/18`;
-- Lynx AppSnap/composer focused suite: `33/33`;
+- shared desktop AppSnap manager: `20/20`;
+- Lynx AppSnap Settings/coordinator focused suite: `4/4`;
 - Lynx-for-Web production build: passed;
 - Native/Desktop production build: passed;
 - staged Native bundle SHA-256:
-  `2f4ad9bfe260ee2fd76a6a42fdc81a621428a6524a5e65d4932019a4bedc731e`;
+  `a3b005cb420487bbefc586d055e48622ee794408ae5464be7c33691ccd6df4f5`;
 - staged desktop main SHA-256:
-  `0393d2a34828df78ad75a7ed4c0f5246598680cd4a41b7fd0fbb91c653323ce1`;
+  `a20fd3cc6f1bd223a5bfc9c954ff99b89f6e1d924b48349445c2b2a8f214e8fb`;
 - staged helper SHA-256:
-  `2c6e93b5e79296186bad2d8ea1e734f446f6ce31b042cfb1fd41477bf75a40b0`;
-- exact-owned final PID: `72152`;
+  `f0dbd2a79b341f9e5a43c903049a66625809dabb502763ed464936cf9e103927`;
+- exact-owned final PID: `58743`;
 - PID-derived DevTool client: `localhost:8902`, session `1`;
 - exact-client error/warning console: empty;
 - final screenshot:
@@ -153,7 +185,6 @@ was filtered and no fidelity weight or scope was changed.
 ## Residuals
 
 - custom modifier+key global chords: missing Native capability, P2;
-- capture sound: missing Native capability, P2;
 - automatically creating a fresh task when no thread is active: missing
   product coverage, P2;
 - original app-icon/source metadata is not yet displayed on the Lynx chip:

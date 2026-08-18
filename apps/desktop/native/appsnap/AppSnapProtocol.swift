@@ -7,11 +7,13 @@ struct AppSnapFailure: Error {
 
 enum AppSnapMode {
     case checkPermissions
+    case previewSound
     case requestPermissions
     case watch(
         outputDirectory: URL,
         excludedBundleIdentifier: String,
-        externalTrigger: Bool
+        externalTrigger: Bool,
+        playSound: Bool
     )
 }
 
@@ -23,12 +25,13 @@ struct AppSnapOptions {
         var outputDirectory: String?
         var excludedBundleIdentifier: String?
         var externalTrigger = false
+        var playSound = false
         var index = 0
 
         while index < arguments.count {
             let argument = arguments[index]
             switch argument {
-            case "--check-permissions", "--request-permissions", "--watch":
+            case "--check-permissions", "--preview-sound", "--request-permissions", "--watch":
                 guard requestedMode == nil else {
                     throw AppSnapFailure(
                         code: "invalid_arguments",
@@ -56,6 +59,8 @@ struct AppSnapOptions {
                 excludedBundleIdentifier = arguments[index]
             case "--external-trigger":
                 externalTrigger = true
+            case "--play-sound":
+                playSound = true
             default:
                 throw AppSnapFailure(
                     code: "invalid_arguments",
@@ -67,15 +72,23 @@ struct AppSnapOptions {
 
         switch requestedMode {
         case "--check-permissions":
-            guard outputDirectory == nil, excludedBundleIdentifier == nil, !externalTrigger else {
+            guard outputDirectory == nil, excludedBundleIdentifier == nil, !externalTrigger, !playSound else {
                 throw AppSnapFailure(
                     code: "invalid_arguments",
                     message: "Permission checks do not accept watch arguments."
                 )
             }
             return AppSnapOptions(mode: .checkPermissions)
+        case "--preview-sound":
+            guard outputDirectory == nil, excludedBundleIdentifier == nil, !externalTrigger, !playSound else {
+                throw AppSnapFailure(
+                    code: "invalid_arguments",
+                    message: "Sound preview does not accept watch arguments."
+                )
+            }
+            return AppSnapOptions(mode: .previewSound)
         case "--request-permissions":
-            guard outputDirectory == nil, excludedBundleIdentifier == nil, !externalTrigger else {
+            guard outputDirectory == nil, excludedBundleIdentifier == nil, !externalTrigger, !playSound else {
                 throw AppSnapFailure(
                     code: "invalid_arguments",
                     message: "Permission requests do not accept watch arguments."
@@ -99,13 +112,14 @@ struct AppSnapOptions {
                 mode: .watch(
                     outputDirectory: URL(fileURLWithPath: outputDirectory).standardizedFileURL,
                     excludedBundleIdentifier: excludedBundleIdentifier,
-                    externalTrigger: externalTrigger
+                    externalTrigger: externalTrigger,
+                    playSound: playSound
                 )
             )
         default:
             throw AppSnapFailure(
                 code: "invalid_arguments",
-                message: "Expected --check-permissions, --request-permissions, or --watch."
+                message: "Expected --check-permissions, --preview-sound, --request-permissions, or --watch."
             )
         }
     }

@@ -662,6 +662,21 @@ app.whenReady().then(() => {
               await initializeAppSnapManager().requestPermissions()
             )
           );
+        } else if (name === 'appSnapSetPlaySound') {
+          callback.sendReply(
+            JSON.stringify(
+              await initializeAppSnapManager().setPlayCaptureSound(
+                data?.enabled === true
+              )
+            )
+          );
+        } else if (name === 'appSnapPreviewSound') {
+          callback.sendReply(
+            JSON.stringify({
+              played:
+                await initializeAppSnapManager().previewCaptureSound(),
+            })
+          );
         } else if (name === 'appSnapListPendingCaptures') {
           const captures =
             await initializeAppSnapManager().listPendingCaptures();

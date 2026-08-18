@@ -800,6 +800,12 @@ async function handleBridgeCall(
         message: 'AppSnap is available only in the macOS desktop app.',
       };
     }
+    if (method === 'appSnapSetPlaySound') {
+      return { supported: false, enabled: false, status: 'unsupported' };
+    }
+    if (method === 'appSnapPreviewSound') {
+      return { played: false };
+    }
     if (method === 'appSnapListPendingCaptures') {
       return { captures: [] };
     }

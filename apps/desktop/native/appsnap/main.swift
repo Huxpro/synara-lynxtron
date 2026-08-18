@@ -13,13 +13,15 @@ do {
             inputMonitoring: permissions.inputMonitoring,
             screenRecording: permissions.screenRecording
         )
+    case .previewSound:
+        try playAppSnapShutterSound()
     case .requestPermissions:
         let permissions = requestAppSnapPermissions()
         emitter.emitPermissions(
             inputMonitoring: permissions.inputMonitoring,
             screenRecording: permissions.screenRecording
         )
-    case let .watch(outputDirectory, excludedBundleIdentifier, externalTrigger):
+    case let .watch(outputDirectory, excludedBundleIdentifier, externalTrigger, playSound):
         _ = umask(0o077)
         try preparePrivateOutputDirectory(outputDirectory)
         _ = NSApplication.shared.setActivationPolicy(.accessory)
@@ -27,7 +29,8 @@ do {
         let coordinator = AppSnapCaptureCoordinator(
             emitter: emitter,
             outputDirectory: outputDirectory,
-            excludedBundleIdentifier: excludedBundleIdentifier
+            excludedBundleIdentifier: excludedBundleIdentifier,
+            playSound: playSound
         )
         let parentProcessMonitor = ParentProcessMonitor()
         parentProcessMonitor.start()

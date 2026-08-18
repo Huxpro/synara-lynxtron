@@ -196,6 +196,85 @@ describe("AppSnap shortcut availability", () => {
 });
 
 describe("AppSnap helper protocol", () => {
+  it("previews the native shutter sound and reports helper failure", async () => {
+    const successChild = createFakeChildProcess();
+    const failureChild = createFakeChildProcess();
+    const spawn = vi
+      .fn()
+      .mockReturnValueOnce(successChild)
+      .mockReturnValueOnce(failureChild) as unknown as typeof ChildProcess.spawn;
+    const manager = new DesktopAppSnapManager({
+      platform: "darwin",
+      helperPath: process.execPath,
+      captureDirectory: "/tmp/synara-appsnap-test",
+      excludedBundleId: SYNARA_DEVELOPMENT_BUNDLE_ID,
+      spawn,
+      onState: vi.fn(),
+      onCaptured: vi.fn(),
+      onError: vi.fn(),
+    });
+
+    const success = manager.previewCaptureSound();
+    successChild.emit("close", 0, null);
+    await expect(success).resolves.toBe(true);
+    expect(spawn).toHaveBeenNthCalledWith(
+      1,
+      process.execPath,
+      ["--preview-sound"],
+      expect.any(Object),
+    );
+
+    const failure = manager.previewCaptureSound();
+    failureChild.emit("close", 1, null);
+    await expect(failure).resolves.toBe(false);
+  });
+
+  it("passes the capture-sound preference to the long-running helper", async () => {
+    const permissionChild = createFakeChildProcess();
+    const watchChild = createFakeChildProcess();
+    const spawn = vi
+      .fn()
+      .mockReturnValueOnce(permissionChild)
+      .mockReturnValueOnce(watchChild) as unknown as typeof ChildProcess.spawn;
+    const manager = new DesktopAppSnapManager({
+      platform: "darwin",
+      helperPath: process.execPath,
+      captureDirectory: "/tmp/synara-appsnap-test",
+      excludedBundleId: SYNARA_DEVELOPMENT_BUNDLE_ID,
+      spawn,
+      onState: vi.fn(),
+      onCaptured: vi.fn(),
+      onError: vi.fn(),
+    });
+    await manager.setPlayCaptureSound(true);
+    const enabling = manager.setEnabled(true);
+    await flushPromises();
+    permissionChild.stdout.end(
+      `${JSON.stringify({
+        type: "permissions",
+        inputMonitoring: "granted",
+        screenRecording: "granted",
+      })}\n`,
+    );
+    permissionChild.stderr.end();
+    permissionChild.emit("close", 0, null);
+    await enabling;
+
+    expect(spawn).toHaveBeenLastCalledWith(
+      process.execPath,
+      [
+        "--watch",
+        "--output-dir",
+        "/tmp/synara-appsnap-test",
+        "--excluded-bundle-id",
+        SYNARA_DEVELOPMENT_BUNDLE_ID,
+        "--play-sound",
+      ],
+      expect.any(Object),
+    );
+    manager.dispose();
+  });
+
   it("accepts typed permission and capture messages", () => {
     expect(
       parseAppSnapHelperMessage(

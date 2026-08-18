@@ -32,6 +32,10 @@ describe('Settings AppSnap capability fidelity', () => {
     expect(panelSource).toContain('ariaLabel="Enable AppSnap"');
     expect(panelSource).toContain('onChange={setEnabled}');
     expect(panelSource).toContain('onClick={recheckPermissions}');
+    expect(panelSource).toContain('onClick={previewCaptureSound}');
+    expect(panelSource).toContain('onChange={setCaptureSound}');
+    expect(panelSource).toContain('appSnap.setPlayCaptureSound(enabled)');
+    expect(panelSource).toContain('previewCaptureSound()');
     expect(panelSource).not.toContain('SettingsAppSnapDisabledSwitch');
   });
 
