@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "settings-archived-populated-actions-current",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 0,
+      "owner": "Settings Archived populated Restore/Delete state"
+    },
+    {
+      "id": "settings-archived-populated-layout",
+      "severity": "product",
+      "classification": "product-pass",
+      "before": 0,
+      "after": 0,
+      "owner": "Shared Settings archived row anatomy"
+    },
+    {
+      "id": "archived-rearchive-module-specifier",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Web authority canonical fixture workflow"
+    }
+  ]
+}
