@@ -7,12 +7,12 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     "consecutiveCalendarDays": 15
   },
   "imageCount": 1393,
-  "evidenceCount": 31,
+  "evidenceCount": 32,
   "byteCount": 213653655,
   "trackedCount": 100,
   "untrackedCount": 0,
   "remoteCount": 1293,
-  "storyCount": 464,
+  "storyCount": 465,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -21692,6 +21692,32 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
         "evidence"
       ],
       "sequence": false
+    },
+    {
+      "id": "2026-08-19--native-polyfill-user-input-composer",
+      "day": "2026-08-19",
+      "directory": "native-polyfill-user-input-composer",
+      "label": "Native Polyfill User Input Composer",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-19",
+          "directory": "native-polyfill-user-input-composer",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-19/native-polyfill-user-input-composer/loss.json",
+          "bytes": 1169,
+          "gitStatus": "tracked",
+          "sourceCommit": "8f738c32d7bd553afd1d3044423f3aabe6b648fe",
+          "sourceTimestamp": "2026-08-19T01:47:53+09:00",
+          "sourceDay": "2026-08-19"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
     }
   ],
   "days": [
@@ -38762,7 +38788,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-19",
       "imageCount": 0,
-      "evidenceCount": 2,
+      "evidenceCount": 3,
       "byteCount": 0,
       "trackedCount": 0,
       "untrackedCount": 0,
