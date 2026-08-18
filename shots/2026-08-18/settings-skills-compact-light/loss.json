@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "settings-skills-compact-populated-layout",
+      "severity": "P2",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Compact Settings header and populated Skills rows"
+    },
+    {
+      "id": "provider-update-prompt-compact-actions",
+      "severity": "P2",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Compact provider update prompt actions"
+    },
+    {
+      "id": "native-compact-window-minimum",
+      "severity": "platform",
+      "classification": "intentional-platform-delta",
+      "before": 1,
+      "after": 1,
+      "owner": "Native shell minimum window size"
+    }
+  ]
+}

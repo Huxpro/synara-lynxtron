@@ -159,7 +159,7 @@ export function SettingsSkillsPanel() {
     <view className="SettingsSkillsPanel">
       <SettingsSection title="Portable skills">
         <view className="SettingsSkillsPortableRow">
-          <view className="SettingsSkillsMain">
+          <view className="SettingsSkillsMain SettingsSkillsMain--portable">
             <view className="SettingsSkillsRowCopy">
               <view className="SettingsSkillsPortableTitleLine">
                 <text className="SettingsSkillsRowTitle">Synara skills folder</text>
@@ -176,7 +176,7 @@ export function SettingsSkillsPanel() {
             </text>
           </view>
           {catalogQuery.data?.synaraSkillsDir ? (
-            <view className="SettingsSkillsMetadata">
+            <view className="SettingsSkillsMetadata SettingsSkillsMetadata--portable">
               <text className="SettingsSkillsPath">
                 {catalogQuery.data.synaraSkillsDir}
               </text>
@@ -225,7 +225,7 @@ export function SettingsSkillsPanel() {
                     : ''
                 }`}
               >
-                <view className="SettingsSkillsMain">
+                <view className="SettingsSkillsMain SettingsSkillsMain--skill">
                   <view className="SettingsSkillsRowCopy">
                     <view className="SettingsSkillsTitleLine">
                       <view className="SettingsSkillsCube">
@@ -239,7 +239,7 @@ export function SettingsSkillsPanel() {
                       {group.description}
                     </text>
                   </view>
-                  <view className="SettingsSkillsControl">
+                  <view className="SettingsSkillsControl SettingsSkillsControl--skill">
                     <SettingsGeneralBooleanControlElement
                       checked={enabled}
                       ariaLabel={`Enable the ${group.displayName} skill`}

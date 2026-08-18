@@ -405,6 +405,23 @@
   opacity: 0.65;
 }
 
+.SliceRoot--viewport-compact .ProviderUpdatePrompt {
+  min-height: 126px;
+}
+
+.SliceRoot--viewport-compact .ProviderUpdatePromptContent {
+  height: 100px;
+}
+
+.SliceRoot--viewport-compact .ProviderUpdatePromptActions {
+  height: 28px;
+}
+
+.SliceRoot--viewport-compact .ProviderUpdatePromptAction {
+  height: 28px;
+  min-height: 28px;
+}
+
 .TaskCompletionToastTitle {
   color: var(--foreground);
   font-size: 12px;

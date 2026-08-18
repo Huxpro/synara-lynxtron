@@ -33,6 +33,12 @@ describe('Lynx provider update prompt copy', () => {
     expect(styles).toMatch(
       /\.ProviderUpdatePromptAction \+ \.ProviderUpdatePromptAction\s*\{[^}]*margin-left:\s*6px;/s
     );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.ProviderUpdatePrompt\s*\{[^}]*min-height:\s*126px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.ProviderUpdatePromptAction\s*\{[^}]*height:\s*28px;[^}]*min-height:\s*28px;/s
+    );
   });
 
   it('matches the Web single-provider prompt', () => {

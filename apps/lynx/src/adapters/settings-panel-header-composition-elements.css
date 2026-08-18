@@ -37,3 +37,14 @@
 .SharedSettingsPanelHeaderRestoreButton {
   border-radius: 6px;
 }
+
+.SliceRoot--viewport-compact .SharedSettingsPanelHeader {
+  gap: 16px;
+}
+
+.SliceRoot--viewport-compact .SharedSettingsPanelHeaderRestoreButton {
+  width: 121.8125px;
+  min-width: 121.8125px;
+  height: 28px;
+  min-height: 28px;
+}

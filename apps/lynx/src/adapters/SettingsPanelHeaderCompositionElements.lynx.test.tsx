@@ -38,6 +38,12 @@ describe('native settings panel header restore control', () => {
     expect(styles).toMatch(
       /\.SharedSettingsPanelHeaderRestoreButton\s*\{[^}]*border-radius:\s*6px;/s
     );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SharedSettingsPanelHeader\s*\{[^}]*gap:\s*16px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SharedSettingsPanelHeaderRestoreButton\s*\{[^}]*width:\s*121\.8125px;[^}]*min-width:\s*121\.8125px;[^}]*height:\s*28px;[^}]*min-height:\s*28px;/s
+    );
   });
 
   it('preserves restore activation and disabled behavior', () => {

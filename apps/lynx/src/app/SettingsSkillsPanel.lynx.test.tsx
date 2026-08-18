@@ -69,8 +69,19 @@ describe('Settings Skills fidelity', () => {
     expect(styles).toMatch(
       /\.SettingsSkillsPortableRow,\s*\.SettingsSkillsRow\s*\{[^}]*flex-direction:\s*column;/s
     );
-    expect(source).toContain('className="SettingsSkillsMain"');
     expect(source).toContain('className="SettingsSkillsMetadata"');
+    expect(source).toContain(
+      'className="SettingsSkillsMain SettingsSkillsMain--skill"'
+    );
+    expect(source).toContain(
+      'className="SettingsSkillsMain SettingsSkillsMain--portable"'
+    );
+    expect(source).toContain(
+      'className="SettingsSkillsMetadata SettingsSkillsMetadata--portable"'
+    );
+    expect(source).toContain(
+      'className="SettingsSkillsControl SettingsSkillsControl--skill"'
+    );
     expect(source).toContain("' SettingsSkillsRow--continued'");
     expect(source).toContain('index < section.groups.length - 1');
     expect(styles).toMatch(
@@ -111,6 +122,24 @@ describe('Settings Skills fidelity', () => {
     );
     expect(styles).toMatch(
       /\.SettingsSkillsCount\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SettingsSkillsMain--portable,\s*\.SliceRoot--viewport-compact \.SettingsSkillsMain--skill\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*stretch;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SettingsSkillsMain--portable\s*\{[^}]*gap:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsSkillsMetadata--portable\s*\.SettingsSkillsPath\s*\{[^}]*height:\s*33px;[^}]*white-space:\s*normal;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.SettingsSkillsControl--skill\s*\{[^}]*width:\s*100%;[^}]*align-items:\s*flex-start;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsGeneralSwitch\s*\{[^}]*width:\s*40px;[^}]*height:\s*24px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsGeneralSwitchThumb\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;/s
     );
   });
 });
