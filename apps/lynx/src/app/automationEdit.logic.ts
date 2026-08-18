@@ -2,6 +2,7 @@ import type {
   AutomationDefinition,
   AutomationSchedule,
   AutomationUpdateInput,
+  ModelSelection,
 } from '@synara/contracts';
 import {
   completionPolicyFromStopWhen,
@@ -37,12 +38,20 @@ function automationSchedulesEqual(
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
+function automationModelSelectionsEqual(
+  left: ModelSelection,
+  right: ModelSelection
+): boolean {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
 export function buildAutomationEditInput(input: {
   readonly definition: AutomationDefinition;
   readonly name: string;
   readonly prompt: string;
   readonly stopWhen: string;
   readonly schedule: AutomationSchedule;
+  readonly modelSelection: ModelSelection;
   readonly maxIterations: number | null;
 }): AutomationUpdateInput {
   const name = input.name.trim();
@@ -54,6 +63,12 @@ export function buildAutomationEditInput(input: {
     id: input.definition.id,
     name,
     prompt,
+    ...(!automationModelSelectionsEqual(
+      input.modelSelection,
+      input.definition.modelSelection
+    )
+      ? { modelSelection: input.modelSelection }
+      : {}),
     ...(!automationSchedulesEqual(input.schedule, input.definition.schedule)
       ? { schedule: input.schedule }
       : {}),
@@ -73,11 +88,16 @@ export function automationEditIsDirty(input: {
   readonly prompt: string;
   readonly stopWhen: string;
   readonly schedule: AutomationSchedule;
+  readonly modelSelection: ModelSelection;
   readonly maxIterations: number | null;
 }): boolean {
   return (
     input.name.trim() !== input.definition.name ||
     input.prompt.trim() !== input.definition.prompt ||
+    !automationModelSelectionsEqual(
+      input.modelSelection,
+      input.definition.modelSelection
+    ) ||
     !automationSchedulesEqual(input.schedule, input.definition.schedule) ||
     input.maxIterations !== input.definition.maxIterations ||
     (input.definition.mode === 'heartbeat' &&

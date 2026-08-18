@@ -51,6 +51,22 @@ const approvalRequiredTurnOverrides = {
 } as const;
 
 describe("Codex Synara harness policy", () => {
+  it("uses the shared Codex binary resolver for discovery sessions", () => {
+    const source = readFileSync(
+      new URL("./codexAppServerManager.ts", import.meta.url),
+      "utf8",
+    );
+    const discoveryMethod = source.slice(
+      source.indexOf("private async getOrCreateDiscoverySession"),
+      source.indexOf("private scheduleDiscoverySessionIdleStop"),
+    );
+
+    expect(discoveryMethod).toContain("const codexBinaryPath = resolveCodexBinaryPath();");
+    expect(discoveryMethod).toContain("binaryPath: codexBinaryPath");
+    expect(discoveryMethod.match(/binaryPath: codexBinaryPath/g)).toHaveLength(2);
+    expect(discoveryMethod).not.toContain('binaryPath: "codex"');
+  });
+
   it("keeps the same host policy exactly once in default and plan instructions", () => {
     for (const instructions of [
       CODEX_DEFAULT_MODE_DEVELOPER_INSTRUCTIONS,

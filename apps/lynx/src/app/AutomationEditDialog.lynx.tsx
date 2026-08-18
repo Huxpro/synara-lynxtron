@@ -1,6 +1,13 @@
 import { useEffect, useState } from '@lynx-js/react';
-import type { AutomationDefinition, AutomationUpdateInput } from '@synara/contracts';
+import { useQuery } from '@tanstack/react-query';
+import type {
+  AutomationDefinition,
+  AutomationUpdateInput,
+  ModelSelection,
+  ProviderKind,
+} from '@synara/contracts';
 
+import { ComposerModelControl } from '../components/composer/ComposerModelControl.lynx';
 import { Button } from '../components/ui/button';
 import {
   Dialog,
@@ -22,6 +29,10 @@ import {
 import { AutomationTimeInput } from './AutomationTimeInput.lynx';
 import { isAutomationTimeOfDay } from './automationTime.logic';
 import { isAutomationTimezone } from './automationTimezone.logic';
+import {
+  fetchAutomationCreateModels,
+  fetchAutomationCreateServerConfig,
+} from './queries';
 
 interface NativeTextInputEvent {
   readonly detail: {
@@ -46,6 +57,12 @@ export function AutomationEditDialog({
 }) {
   const [name, setName] = useState(definition.name);
   const [prompt, setPrompt] = useState(definition.prompt);
+  const [modelSelection, setModelSelection] = useState<ModelSelection>(
+    definition.modelSelection
+  );
+  const [modelCatalogProvider, setModelCatalogProvider] = useState<ProviderKind>(
+    definition.modelSelection.provider
+  );
   const [schedule, setSchedule] = useState(definition.schedule);
   const initialStopWhen = automationEditStopWhen(definition);
   const [stopWhen, setStopWhen] = useState(initialStopWhen);
@@ -56,17 +73,36 @@ export function AutomationEditDialog({
     if (!open) return;
     setName(definition.name);
     setPrompt(definition.prompt);
+    setModelSelection(definition.modelSelection);
+    setModelCatalogProvider(definition.modelSelection.provider);
     setSchedule(definition.schedule);
     setStopWhen(initialStopWhen);
     setMaxIterations(definition.maxIterations);
   }, [
     definition.maxIterations,
+    definition.modelSelection,
     definition.name,
     definition.prompt,
     definition.schedule,
     initialStopWhen,
     open,
   ]);
+  const serverConfig = useQuery({
+    queryKey: ['automation-edit', 'server-config'],
+    queryFn: fetchAutomationCreateServerConfig,
+    enabled: open,
+    staleTime: 30_000,
+  });
+  const modelCatalog = useQuery({
+    queryKey: ['automation-edit', 'models', modelCatalogProvider],
+    queryFn: () =>
+      fetchAutomationCreateModels({
+        provider: modelCatalogProvider,
+        cwd: null,
+      }),
+    enabled: open,
+    staleTime: 30_000,
+  });
   const normalizedStopWhen = stopWhen.trim();
   const timedSchedule =
     schedule.type === 'daily' || schedule.type === 'weekdays' ? schedule : null;
@@ -82,6 +118,7 @@ export function AutomationEditDialog({
       definition,
       name,
       prompt,
+      modelSelection,
       schedule,
       stopWhen,
       maxIterations,
@@ -124,6 +161,24 @@ export function AutomationEditDialog({
               bindinput={(event: NativeTextInputEvent) =>
                 setPrompt(event.detail.value)
               }
+            />
+          </view>
+          <view className="AutomationCreateField">
+            <text className="AutomationCreateLabel">Model</text>
+            <ComposerModelControl
+              modelSelection={modelSelection}
+              catalogProvider={modelCatalogProvider}
+              runtimeModels={modelCatalog.data?.models ?? []}
+              modelsLoading={
+                modelCatalog.isPending ||
+                (modelCatalog.isFetching && !modelCatalog.data)
+              }
+              providers={serverConfig.data?.providers ?? []}
+              onCatalogProviderChange={setModelCatalogProvider}
+              onModelSelectionChange={(selection) => {
+                setModelSelection(selection);
+                setModelCatalogProvider(selection.provider);
+              }}
             />
           </view>
           {definition.mode === 'heartbeat' ? (
@@ -247,6 +302,7 @@ export function AutomationEditDialog({
                   definition,
                   name,
                   prompt,
+                  modelSelection,
                   schedule,
                   stopWhen: normalizedStopWhen,
                   maxIterations,

@@ -47,17 +47,22 @@ function definition(
   } as AutomationDefinition;
 }
 
+function unchangedEditInput(current: AutomationDefinition) {
+  return {
+    definition: current,
+    name: current.name,
+    prompt: current.prompt,
+    schedule: current.schedule,
+    modelSelection: current.modelSelection,
+    stopWhen: 'Original stop condition',
+    maxIterations: current.maxIterations,
+  };
+}
+
 describe('Automation edit payload', () => {
   it('does not rewrite an unchanged Heartbeat completion policy', () => {
     const current = definition();
-    const input = {
-      definition: current,
-      name: current.name,
-      prompt: current.prompt,
-      schedule: current.schedule,
-      stopWhen: 'Original stop condition',
-      maxIterations: null,
-    };
+    const input = unchangedEditInput(current);
 
     expect(automationEditIsDirty(input)).toBe(false);
     expect(buildAutomationEditInput(input)).toEqual({
@@ -70,12 +75,8 @@ describe('Automation edit payload', () => {
   it('updates a changed Heartbeat stop condition', () => {
     const current = definition();
     const input = {
-      definition: current,
-      name: current.name,
-      prompt: current.prompt,
-      schedule: current.schedule,
+      ...unchangedEditInput(current),
       stopWhen: '  Updated stop condition  ',
-      maxIterations: null,
     };
 
     expect(automationEditIsDirty(input)).toBe(true);
@@ -93,12 +94,8 @@ describe('Automation edit payload', () => {
 
     expect(
       buildAutomationEditInput({
-        definition: current,
-        name: current.name,
-        prompt: current.prompt,
-        schedule: current.schedule,
+        ...unchangedEditInput(current),
         stopWhen: '   ',
-        maxIterations: null,
       })
     ).toMatchObject({
       completionPolicy: { type: 'none' },
@@ -108,11 +105,7 @@ describe('Automation edit payload', () => {
   it('updates Max iterations without rewriting the completion policy', () => {
     const current = definition();
     const input = {
-      definition: current,
-      name: current.name,
-      prompt: current.prompt,
-      schedule: current.schedule,
-      stopWhen: 'Original stop condition',
+      ...unchangedEditInput(current),
       maxIterations: 10,
     };
 
@@ -135,12 +128,8 @@ describe('Automation edit payload', () => {
     });
     expect(
       buildAutomationEditInput({
-        definition: current,
-        name: current.name,
-        prompt: current.prompt,
+        ...unchangedEditInput(current),
         schedule,
-        stopWhen: 'Original stop condition',
-        maxIterations: null,
       })
     ).toEqual({
       id: current.id,
@@ -188,18 +177,35 @@ describe('Automation edit payload', () => {
 
     expect(
       buildAutomationEditInput({
-        definition: current,
-        name: current.name,
-        prompt: current.prompt,
+        ...unchangedEditInput(current),
         schedule,
-        stopWhen: 'Original stop condition',
-        maxIterations: null,
       })
     ).toEqual({
       id: current.id,
       name: current.name,
       prompt: current.prompt,
       schedule,
+    });
+  });
+
+  it('updates the selected model and reasoning options without rewriting other fields', () => {
+    const current = definition();
+    const modelSelection = {
+      provider: 'codex',
+      model: 'gpt-5.6-sol',
+      options: { reasoningEffort: 'high' },
+    } as const;
+
+    expect(
+      buildAutomationEditInput({
+        ...unchangedEditInput(current),
+        modelSelection,
+      })
+    ).toEqual({
+      id: current.id,
+      name: current.name,
+      prompt: current.prompt,
+      modelSelection,
     });
   });
 });

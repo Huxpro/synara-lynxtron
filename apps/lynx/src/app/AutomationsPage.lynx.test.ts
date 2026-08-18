@@ -367,6 +367,19 @@ describe('Lynx Automations route', () => {
     expect(detailSource).toContain('onEditOpenChange(true)');
     expect(editSource).toContain('<DialogTitle>Edit automation</DialogTitle>');
     expect(editSource).toContain('buildAutomationEditInput({');
+    expect(editSource).toContain('<ComposerModelControl');
+    expect(editSource).toContain(
+      'modelSelection={modelSelection}'
+    );
+    expect(editSource).toContain(
+      "queryKey: ['automation-edit', 'server-config']"
+    );
+    expect(editSource).toContain(
+      "queryKey: ['automation-edit', 'models', modelCatalogProvider]"
+    );
+    expect(editLogicSource).toContain(
+      '? { modelSelection: input.modelSelection }'
+    );
     expect(editSource).toContain('default-value={definition.prompt}');
     expect(editSource).toContain('automationEditStopWhen(definition)');
     expect(editSource).toContain("definition.mode === 'heartbeat'");
