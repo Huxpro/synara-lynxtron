@@ -12,7 +12,7 @@ import {
 } from '@synara-web/appSettingsStorageProjection.logic';
 
 import { Button } from '../components/ui/button';
-import { XIcon } from '../lib/icons.lynx';
+import { TriangleAlertIcon, XIcon } from '../lib/icons.lynx';
 import { webStorage } from '../platform/storage';
 import {
   fetchProviderUpdatePromptData,
@@ -92,51 +92,65 @@ export function ProviderUpdatePrompt(props: {
       accessibility-element
       accessibility-label={`${title}. ${description}`}
     >
-      <view className="ProviderUpdatePromptCopy">
-        <text className="ProviderUpdatePromptTitle">{title}</text>
-        <text className="ProviderUpdatePromptDescription">{description}</text>
+      <TriangleAlertIcon
+        className="ProviderUpdatePromptIcon"
+        size={16}
+        accessibilityLabel="warning"
+      />
+      <view className="ProviderUpdatePromptContent">
+        <view className="ProviderUpdatePromptCopy">
+          <text className="ProviderUpdatePromptTitle">{title}</text>
+          <text className="ProviderUpdatePromptDescription">{description}</text>
+        </view>
+        <view className="ProviderUpdatePromptActions">
+          <Button
+            className="ProviderUpdatePromptAction"
+            size="xs"
+            variant="outline"
+            onClick={() => {
+              setDismissedKey(key);
+              props.onReview();
+            }}
+          >
+            Review updates
+          </Button>
+          <Button
+            className="ProviderUpdatePromptAction"
+            size="xs"
+            variant="outline"
+            disabled={updating}
+            onClick={() => {
+              setUpdating(true);
+              setUpdateFailed(false);
+              void Promise.allSettled(
+                providers.map((provider) =>
+                  withProviderUpdateTimeout({
+                    provider: provider.provider,
+                    request: updatePromptProvider(provider.provider),
+                  })
+                )
+              ).then((results) => {
+                setUpdating(false);
+                if (results.every((result) => result.status === 'fulfilled')) {
+                  setDismissedKey(key);
+                } else {
+                  setUpdateFailed(true);
+                }
+                void queryClient.invalidateQueries({
+                  queryKey: ['provider-update-prompt'],
+                });
+                void queryClient.invalidateQueries({
+                  queryKey: ['server-config'],
+                });
+              });
+            }}
+          >
+            {updating ? 'Updating…' : 'Update all'}
+          </Button>
+        </view>
       </view>
       <Button
-        size="xs"
-        variant="outline"
-        onClick={() => {
-          setDismissedKey(key);
-          props.onReview();
-        }}
-      >
-        Review updates
-      </Button>
-      <Button
-        size="xs"
-        variant="outline"
-        disabled={updating}
-        onClick={() => {
-          setUpdating(true);
-          setUpdateFailed(false);
-          void Promise.allSettled(
-            providers.map((provider) =>
-              withProviderUpdateTimeout({
-                provider: provider.provider,
-                request: updatePromptProvider(provider.provider),
-              })
-            )
-          ).then((results) => {
-            setUpdating(false);
-            if (results.every((result) => result.status === 'fulfilled')) {
-              setDismissedKey(key);
-            } else {
-              setUpdateFailed(true);
-            }
-            void queryClient.invalidateQueries({
-              queryKey: ['provider-update-prompt'],
-            });
-            void queryClient.invalidateQueries({ queryKey: ['server-config'] });
-          });
-        }}
-      >
-        {updating ? 'Updating…' : 'Update all'}
-      </Button>
-      <Button
+        className="ProviderUpdatePromptDismiss"
         size="icon-xs"
         variant="ghost"
         aria-label="Dismiss provider updates"

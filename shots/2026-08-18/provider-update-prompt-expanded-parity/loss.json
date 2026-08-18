@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-provider-update-prompt-expanded-layout",
+      "severity": "P2",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx global provider update notification surface"
+    },
+    {
+      "id": "native-provider-prompt-auto-text-height",
+      "severity": "product",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Native Lynx prompt text and flex fallback"
+    },
+    {
+      "id": "lynx-provider-prompt-backdrop-fallback",
+      "severity": "platform",
+      "classification": "intentional-platform-delta",
+      "before": 1,
+      "after": 1,
+      "owner": "Opaque Lynx notification surface fallback"
+    }
+  ]
+}
