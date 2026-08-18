@@ -6,7 +6,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
     "lastDay": "2026-08-18",
     "finalStoryCount": 436,
     "finalImageCount": 1393,
-    "evidenceCommitCount": 710
+    "evidenceCommitCount": 712
   },
   "formula": {
     "expression": "100 × (0.30 × scopeGap + 0.25 × clientGap + 0.35 × visualDistance + 0.10 × reliabilityDebt)",
@@ -90205,6 +90205,204 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         ]
       },
       "evidenceFileCount": 2,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 447,
+      "cumulativeRejectedPairCount": 1,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 434,
+      "scopeCoverage": 0.9954128440366973,
+      "clientCompleteness": 0.7402135231316725,
+      "visual": {
+        "loss": 0.14386793475011955,
+        "confidence": 1,
+        "medianPercent": 1.4386793475011956,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.14386793475011955,
+        "previousMedianPercent": 1.4386793475011956,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0,
+        "activeEvents": [],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-devtool-wheel-emulation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "7edf76421",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-cgevent-wheel-delivery",
+            "type": "native-certification-harness-blocker",
+            "detectedAt": "0870afbbd",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only input boundary; use physical hardware wheel evidence or a fixed Lynxtron DevTool wheel path before attributing Native wheel behavior to product code.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 0
+      },
+      "components": {
+        "scope": 0.004587155963302725,
+        "completeness": 0.25978647686832745,
+        "visual": 0.14386793475011955,
+        "reliability": 0
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": 0
+      },
+      "causes": [],
+      "regressionChanges": [],
+      "lossDelta": 0,
+      "loss": 11.667654316861451,
+      "bestLoss": 11.667654316861451,
+      "smoothLoss": 11.892840354105711
+    },
+    {
+      "index": 710,
+      "day": "2026-08-18",
+      "timestamp": "2026-08-18T13:06:07+09:00",
+      "commit": {
+        "hash": "c643e763b03ac26d1174152cc53826f44d541481",
+        "shortHash": "c643e763b",
+        "timestamp": "2026-08-18T13:06:07+09:00",
+        "date": "2026-08-18",
+        "subject": "docs(fidelity): index populated archived settings",
+        "files": [
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.js",
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.json"
+        ]
+      },
+      "evidenceFileCount": 2,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 447,
+      "cumulativeRejectedPairCount": 1,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 434,
+      "scopeCoverage": 0.9954128440366973,
+      "clientCompleteness": 0.7402135231316725,
+      "visual": {
+        "loss": 0.14386793475011955,
+        "confidence": 1,
+        "medianPercent": 1.4386793475011956,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.14386793475011955,
+        "previousMedianPercent": 1.4386793475011956,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0,
+        "activeEvents": [],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-devtool-wheel-emulation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "7edf76421",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-cgevent-wheel-delivery",
+            "type": "native-certification-harness-blocker",
+            "detectedAt": "0870afbbd",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only input boundary; use physical hardware wheel evidence or a fixed Lynxtron DevTool wheel path before attributing Native wheel behavior to product code.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 0
+      },
+      "components": {
+        "scope": 0.004587155963302725,
+        "completeness": 0.25978647686832745,
+        "visual": 0.14386793475011955,
+        "reliability": 0
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": 0
+      },
+      "causes": [],
+      "regressionChanges": [],
+      "lossDelta": 0,
+      "loss": 11.667654316861451,
+      "bestLoss": 11.667654316861451,
+      "smoothLoss": 11.852306867401746
+    },
+    {
+      "index": 711,
+      "day": "2026-08-18",
+      "timestamp": "2026-08-18T13:34:17+09:00",
+      "commit": {
+        "hash": "cbdb5f7bb77debf6f283fae06efc1686ae6b2f0e",
+        "shortHash": "cbdb5f7bb",
+        "timestamp": "2026-08-18T13:34:17+09:00",
+        "date": "2026-08-18",
+        "subject": "feat(lynx): surface provider updates globally",
+        "files": [
+          "shots/2026-08-18/provider-update-prompt-global-parity/loss.json",
+          "shots/2026-08-18/provider-update-prompt-global-parity/notes.md"
+        ]
+      },
+      "evidenceFileCount": 2,
       "addedStoryIds": [
         "2026-08-14--automations--create-dialog-expanded",
         "2026-08-14--automations--detail-not-found"
@@ -90305,7 +90503,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "lossDelta": -0.12785182184620503,
       "loss": 11.539802495015246,
       "bestLoss": 11.539802495015246,
-      "smoothLoss": 11.869827026173395
+      "smoothLoss": 11.796056080372177
     }
   ],
   "riseAnalysis": [
@@ -95292,8 +95490,8 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
     {
       "day": "2026-08-18",
       "firstCommitIndex": 676,
-      "lastCommitIndex": 709,
-      "commitCount": 34,
+      "lastCommitIndex": 711,
+      "commitCount": 36,
       "openingLoss": 19.09064857913351,
       "closingLoss": 11.539802495015246,
       "netLossDelta": -7.550846084118264,
@@ -95341,7 +95539,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         706,
         707,
         708,
-        709
+        709,
+        710,
+        711
       ]
     }
   ],
@@ -218441,18 +218641,18 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "newStoryCount": 9
     },
     {
-      "index": 709,
+      "index": 711,
       "day": "2026-08-18",
-      "timestamp": "2026-08-18T13:02:04+09:00",
+      "timestamp": "2026-08-18T13:34:17+09:00",
       "commit": {
-        "hash": "2fc7189d169ccd9cee996fd7bbcf34b7d1ad05d2",
-        "shortHash": "2fc7189d1",
-        "timestamp": "2026-08-18T13:02:04+09:00",
+        "hash": "cbdb5f7bb77debf6f283fae06efc1686ae6b2f0e",
+        "shortHash": "cbdb5f7bb",
+        "timestamp": "2026-08-18T13:34:17+09:00",
         "date": "2026-08-18",
-        "subject": "docs(fidelity): certify populated archived settings",
+        "subject": "feat(lynx): surface provider updates globally",
         "files": [
-          "shots/2026-08-18/settings-archived-populated-current/loss.json",
-          "shots/2026-08-18/settings-archived-populated-current/notes.md"
+          "shots/2026-08-18/provider-update-prompt-global-parity/loss.json",
+          "shots/2026-08-18/provider-update-prompt-global-parity/notes.md"
         ]
       },
       "evidenceFileCount": 2,
@@ -229748,8 +229948,8 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "lossDelta": -0.12785182184620503,
       "loss": 11.539802495015246,
       "bestLoss": 11.539802495015246,
-      "smoothLoss": 11.869827026173395,
-      "commitCount": 37,
+      "smoothLoss": 11.796056080372177,
+      "commitCount": 39,
       "newStoryCount": 10
     }
   ]
