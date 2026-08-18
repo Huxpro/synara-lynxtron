@@ -10,6 +10,14 @@
       "owner": "Lynx thread header error projection and banner"
     },
     {
+      "id": "lynx-thread-error-repeat-dismissal",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx thread error session revision identity"
+    },
+    {
       "id": "lynx-web-dist-vite-fs-entry",
       "severity": "harness",
       "classification": "harness-loss",

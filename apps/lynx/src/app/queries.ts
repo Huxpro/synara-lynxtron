@@ -139,6 +139,7 @@ export interface ThreadHeaderSummary {
   readonly interactionMode: 'default' | 'plan';
   readonly sessionStatus: string | null;
   readonly error: string | null;
+  readonly errorRevision: string | null;
   readonly activeTurnId: string | null;
   readonly latestTurnState: string | null;
   readonly workspaceRoot: string | null;
@@ -682,6 +683,7 @@ export async function fetchThreadHeaderSummary(
     interactionMode: thread.interactionMode,
     sessionStatus: thread.session?.status ?? null,
     error: thread.session?.lastError ?? null,
+    errorRevision: thread.session?.updatedAt ?? null,
     activeTurnId: thread.session?.activeTurnId ?? null,
     latestTurnState: thread.latestTurn?.state ?? null,
     workspaceRoot: project?.workspaceRoot ?? null,

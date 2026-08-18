@@ -104,6 +104,10 @@ import {
 import { useRestoreOrCreateChatRouteController } from '@synara-web/components/useRestoreOrCreateChatRoute.logic';
 import { resolveSettingsBackTarget } from '@synara-web/components/SidebarSettingsBack.logic';
 import { resolveThreadPageBodyState } from './threadPageState.logic';
+import {
+  threadErrorDismissKey,
+  visibleThreadError,
+} from './threadErrorBanner.logic';
 import { resolveDefaultEnvironmentPanelOpen } from '@synara-web/components/ChatView.logic';
 import {
   readEditorChatPaneVisible,
@@ -684,7 +688,7 @@ function ThreadPage(props: ThreadPageProps) {
   const [threadRenameError, setThreadRenameError] = useState<string | null>(
     null
   );
-  const [dismissedThreadError, setDismissedThreadError] = useState<
+  const [dismissedThreadErrorKey, setDismissedThreadErrorKey] = useState<
     string | null
   >(null);
   const threadRenameInputRef = useRef<InputRef>(null);
@@ -1566,16 +1570,18 @@ function ThreadPage(props: ThreadPageProps) {
         </view>
       </ChatSurfaceHeaderFrame>
       <ThreadErrorBanner
-        error={
-          currentThread?.error &&
-          currentThread.error !== dismissedThreadError
-            ? currentThread.error
-            : null
-        }
+        error={visibleThreadError({
+          dismissedKey: dismissedThreadErrorKey,
+          error: currentThread?.error,
+          revision: currentThread?.errorRevision,
+        })}
         onDismiss={() => {
-          if (currentThread?.error) {
-            setDismissedThreadError(currentThread.error);
-          }
+          setDismissedThreadErrorKey(
+            threadErrorDismissKey({
+              error: currentThread?.error,
+              revision: currentThread?.errorRevision,
+            })
+          );
         }}
       />
       <ProviderHealthBanner

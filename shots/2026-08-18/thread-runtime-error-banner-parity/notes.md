@@ -58,6 +58,8 @@ delta.
 - Dismiss locally without mutating the server event history.
 - Keep `Provider runtime error` and `Turn failed` timeline rows visible after
   dismissal.
+- Key dismissal by `session.updatedAt + error`, so the same provider message is
+  shown again after a newer failed session instead of remaining hidden forever.
 
 ## Comparable result
 
@@ -112,3 +114,16 @@ Neither harness failure is counted as product loss.
   - completeness: `+0.009762857052875162`;
   - visual: `0`;
   - reliability: `0`.
+
+## Follow-up discovery
+
+A real same-thread repeat attempt was not retained as banner evidence. The
+second Codex session remained in `starting`, and canonical stop entered
+`uncertain` because Synara could not prove process-tree capture completion:
+
+`rootExited=true, captureComplete=false; no captured descendants remain`
+
+The verification thread was permanently deleted (`exists: false`, shell
+sequence `256`). This is a separate Synara provider-process lifecycle issue,
+not a Lynx/Lynxtron connection blocker and not evidence against the pure
+dismiss-revision contract.
