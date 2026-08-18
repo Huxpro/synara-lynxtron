@@ -22,6 +22,79 @@ function deterministicClock() {
 }
 
 describe("teardownProviderProcessTree", () => {
+  it("retries an incomplete process snapshot before signaling the provider tree", async () => {
+    const incompleteTree: CapturedProcessTree = {
+      descendants: [],
+      captureComplete: false,
+    };
+    const completeTree: CapturedProcessTree = {
+      descendants: [],
+      captureComplete: true,
+    };
+    let captureCalls = 0;
+    let resolveRootExit: (() => void) | undefined;
+    const rootExited = new Promise<void>((resolve) => {
+      resolveRootExit = resolve;
+    });
+    const processTreeKiller: ProcessTreeKiller = {
+      capture: () => {
+        captureCalls += 1;
+        return captureCalls === 1 ? incompleteTree : completeTree;
+      },
+      inspect: () => ({ verified: true, survivors: [] }),
+      signal: ({ signal }) => {
+        if (signal === "SIGTERM") resolveRootExit?.();
+      },
+    };
+    const clock = deterministicClock();
+
+    await expect(
+      teardownProviderProcessTree(
+        { rootPid: 91, rootExited, termGraceMs: 10, forceExitMs: 10, pollMs: 5 },
+        {
+          processTreeKiller,
+          ...clock,
+        },
+      ),
+    ).resolves.toEqual({ escalated: false, signalErrors: [] });
+    expect(captureCalls).toBe(2);
+  });
+
+  it("fails closed when repeated pre-signal snapshots remain incomplete", async () => {
+    let captureCalls = 0;
+    let resolveRootExit: (() => void) | undefined;
+    const rootExited = new Promise<void>((resolve) => {
+      resolveRootExit = resolve;
+    });
+    const clock = deterministicClock();
+
+    const failure = await teardownProviderProcessTree(
+      { rootPid: 95, rootExited, termGraceMs: 5, forceExitMs: 5, pollMs: 5 },
+      {
+        processTreeKiller: {
+          capture: () => {
+            captureCalls += 1;
+            return { descendants: [], captureComplete: false };
+          },
+          inspect: () => ({ verified: true, survivors: [] }),
+          signal: ({ signal }) => {
+            if (signal === "SIGTERM") resolveRootExit?.();
+          },
+        },
+        ...clock,
+      },
+    ).catch((error: unknown) => error);
+
+    expect(captureCalls).toBe(2);
+    expect(failure).toBeInstanceOf(ProviderProcessExitUnprovenError);
+    expect(failure).toMatchObject({
+      rootPid: 95,
+      rootExited: true,
+      remainingDescendantPids: [],
+      captureComplete: false,
+    });
+  });
+
   it("escalates ignored TERM and returns only after root and descendants prove exit", async () => {
     const tree: CapturedProcessTree = {
       descendants: [{ pid: 102, command: "provider-worker" }],

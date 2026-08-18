@@ -136,7 +136,10 @@ export async function teardownProviderProcessTree(
   }
 
   const deps = { ...defaultDependencies, ...dependencies };
-  const tree = deps.processTreeKiller.capture(input.rootPid);
+  let tree = deps.processTreeKiller.capture(input.rootPid);
+  if (tree.captureComplete === false) {
+    tree = deps.processTreeKiller.capture(input.rootPid);
+  }
   const signalErrors: Error[] = [];
   let rootExited = false;
   void input.rootExited.then(

@@ -11,7 +11,8 @@ const PROCESS_TREE_SCAN_MAX_BUFFER_BYTES = 262_144;
 const PROCESS_COMMAND_SCAN_MAX_BUFFER_BYTES = 262_144;
 const POSIX_TREE_WALK_MAX_VISITED = 256;
 
-export type ProcessChildrenMap = Map<number, Array<CapturedProcess>>;
+export type ProcessChildrenMap = Map<number, CapturedProcess[]>;
+export type ProcessParentMap = Map<number, number[]>;
 export type ProcessCommandMap = Map<number, string>;
 
 export interface CapturedProcess {
@@ -46,7 +47,7 @@ export interface ProcessTreeKiller {
 }
 
 export interface ProcessTreeKillerDependencies {
-  captureChildrenMap: () => ProcessChildrenMap | null;
+  captureChildrenMap: () => ProcessParentMap | null;
   readCurrentCommands: (pids: readonly number[]) => ProcessCommandMap | null;
   signalPid: (pid: number, signal: TerminalKillSignal) => Error | null;
   signalTree: (
@@ -63,10 +64,23 @@ export function parseProcessChildrenMap(psOutput: string): ProcessChildrenMap {
     const pid = Number(pidRaw);
     const ppid = Number(ppidRaw);
     const command = commandParts.join(" ").trim();
-    if (!Number.isInteger(pid) || !Number.isInteger(ppid)) continue;
-    if (command.length === 0) continue;
+    if (!Number.isInteger(pid) || !Number.isInteger(ppid) || command.length === 0) continue;
     const siblings = childrenByParentPid.get(ppid) ?? [];
     siblings.push({ pid, command });
+    childrenByParentPid.set(ppid, siblings);
+  }
+  return childrenByParentPid;
+}
+
+export function parseProcessParentMap(psOutput: string): ProcessParentMap {
+  const childrenByParentPid: ProcessParentMap = new Map();
+  for (const line of psOutput.split(/\r?\n/g)) {
+    const [pidRaw, ppidRaw] = line.trim().split(/\s+/g);
+    const pid = Number(pidRaw);
+    const ppid = Number(ppidRaw);
+    if (!Number.isInteger(pid) || !Number.isInteger(ppid)) continue;
+    const siblings = childrenByParentPid.get(ppid) ?? [];
+    siblings.push(pid);
     childrenByParentPid.set(ppid, siblings);
   }
   return childrenByParentPid;
@@ -87,38 +101,38 @@ export function parseProcessCommandMap(psOutput: string): ProcessCommandMap {
 
 export function collectDescendantProcesses(
   parentPid: number,
-  childrenByParentPid: ProcessChildrenMap,
-): CapturedProcess[] {
-  const descendants: CapturedProcess[] = [];
+  childrenByParentPid: ProcessParentMap,
+): number[] {
+  const descendants: number[] = [];
   const stack = [...(childrenByParentPid.get(parentPid) ?? [])].reverse();
   const visited = new Set<number>([parentPid]);
 
   while (stack.length > 0 && descendants.length < POSIX_TREE_WALK_MAX_VISITED) {
-    const child = stack.pop();
-    if (!child || visited.has(child.pid)) {
+    const childPid = stack.pop();
+    if (!childPid || visited.has(childPid)) {
       continue;
     }
-    visited.add(child.pid);
-    descendants.push(child);
+    visited.add(childPid);
+    descendants.push(childPid);
 
-    const nestedChildren = childrenByParentPid.get(child.pid) ?? [];
-    for (const nestedChild of [...nestedChildren].reverse()) {
-      stack.push(nestedChild);
+    const nestedChildren = childrenByParentPid.get(childPid) ?? [];
+    for (const nestedChildPid of [...nestedChildren].reverse()) {
+      stack.push(nestedChildPid);
     }
   }
 
   return descendants;
 }
 
-function captureProcessChildrenMapSync(): ProcessChildrenMap | null {
+function captureProcessChildrenMapSync(): ProcessParentMap | null {
   try {
-    const result = spawnSync("ps", ["-eo", "pid=,ppid=,command="], {
+    const result = spawnSync("ps", ["-eo", "pid=,ppid="], {
       encoding: "utf8",
       maxBuffer: PROCESS_TREE_SCAN_MAX_BUFFER_BYTES,
       timeout: PROCESS_TREE_SCAN_TIMEOUT_MS,
     });
     if (result.error || result.status !== 0) return null;
-    return parseProcessChildrenMap(result.stdout);
+    return parseProcessParentMap(result.stdout);
   } catch {
     return null;
   }
@@ -200,8 +214,17 @@ export function createProcessTreeKiller(
       }
       const childrenByParentPid = deps.captureChildrenMap();
       if (!childrenByParentPid) return { descendants: [], captureComplete: false };
+      const descendantPids = collectDescendantProcesses(rootPid, childrenByParentPid);
+      const commandsByPid = deps.readCurrentCommands(descendantPids);
+      if (commandsByPid === null) return { descendants: [], captureComplete: false };
+      if (descendantPids.some((pid) => !commandsByPid.has(pid))) {
+        return { descendants: [], captureComplete: false };
+      }
       return {
-        descendants: collectDescendantProcesses(rootPid, childrenByParentPid),
+        descendants: descendantPids.map((pid) => ({
+          pid,
+          command: commandsByPid.get(pid)!,
+        })),
         captureComplete: true,
       };
     },
