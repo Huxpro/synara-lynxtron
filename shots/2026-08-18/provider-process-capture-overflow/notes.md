@@ -81,6 +81,10 @@ was available and healthy.
 - Browser ownership gates reported `sessions: []` and zero agent-browser-owned
   processes after every failed probe and at loop exit.
 - No screenshot was added; repository screenshot count remained `100`.
+- Fidelity loss remained `11.539802495015246`. Discovery and resolution were
+  recorded atomically in commit `155f997d5`, so the current active reliability
+  component remains `0`; the ledger does not invent a transient regression
+  point for a failure that was never committed unresolved.
 
 ## Harness losses
 
