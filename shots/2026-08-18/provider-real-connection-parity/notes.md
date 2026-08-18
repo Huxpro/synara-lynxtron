@@ -241,5 +241,6 @@ Generated fidelity accounting:
   `0`.
 
 The P1 discovery and fix were recorded atomically in commit `cd494ed6d`, so
-the current active reliability component remains zero rather than inventing a
-committed unresolved interval.
+the active reliability component never contains a committed unresolved
+interval. The generated loss decrease activates at authority-evidence commit
+`af21406d2`, where direct Codex/Claude execution closes the final scope proof.

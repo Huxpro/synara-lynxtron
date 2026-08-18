@@ -5015,6 +5015,7 @@ function makeClaudeAdapter(options?: ClaudeAdapterLiveOptions) {
           ...context.session,
           status: "running",
           activeTurnId: turnId,
+          lastError: undefined,
           updatedAt,
         };
 

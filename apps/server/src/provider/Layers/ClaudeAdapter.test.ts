@@ -3924,6 +3924,17 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         current?.lastError,
         "Failed to authenticate: OAuth session expired and could not be refreshed",
       );
+
+      yield* adapter.sendTurn({
+        threadId: session.threadId,
+        input: "retry after login",
+        attachments: [],
+      });
+      const retrying = (yield* adapter.listSessions()).find(
+        (candidate) => candidate.threadId === session.threadId,
+      );
+      assert.equal(retrying?.status, "running");
+      assert.equal(retrying?.lastError, undefined);
     }).pipe(
       Effect.provideService(Random.Random, makeDeterministicRandomService()),
       Effect.provide(harness.layer),
