@@ -265,6 +265,62 @@
   font-size: 11px;
 }
 
+.TaskCompletionToast {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  z-index: 1001;
+  display: flex;
+  width: 420px;
+  max-width: calc(100vw - 24px);
+  min-height: 54px;
+  padding: 10px 10px 10px 14px;
+  align-items: center;
+  gap: 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--color-border);
+  border-radius: 12px;
+  background-color: var(--color-background-elevated-primary);
+  transform: translateX(-50%);
+}
+
+.TaskCompletionToast--warning {
+  border-color: var(--warning);
+}
+
+.TaskCompletionToastCopy {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.TaskCompletionToastTitle,
+.TaskCompletionToastBody {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.TaskCompletionToastTitle {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.TaskCompletionToastBody {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.SliceRoot--viewport-compact .TaskCompletionToast {
+  top: 8px;
+  width: calc(100vw - 16px);
+}
+
 .ThreadsLanding {
   width: 100%;
   height: 100%;

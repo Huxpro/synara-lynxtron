@@ -95,6 +95,10 @@ export interface ThreadSummary {
   readonly provider?: ProviderKind;
   readonly isPinned?: boolean;
   readonly sessionStatus?: string | null;
+  readonly hasPendingApprovals?: boolean;
+  readonly hasPendingUserInput?: boolean;
+  readonly latestTurnCompletedAt?: string | null;
+  readonly latestTurnState?: string | null;
   readonly parentThreadId?: string | null;
   readonly subagentAgentId?: string | null;
   readonly subagentNickname?: string | null;

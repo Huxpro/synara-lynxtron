@@ -848,17 +848,18 @@ export function SettingsPage({
                 <SettingsNotificationsPanel
                   settings={notifications}
                   defaults={DEFAULT_NOTIFICATION_SETTINGS_VALUES}
-                  activityStatus="In-app activity toasts are unavailable in this runtime."
+                  activityStatus="In-app activity toasts are shown for off-screen chats."
                   desktopStatus="System notifications are unavailable in this runtime."
                   updateSetting={updateNotifications}
                   renderControl={({
+                    key,
                     checked,
                     ariaLabel,
                     onCheckedChange,
                   }) => (
                     <SettingsGeneralBooleanControlElement
                       checked={checked}
-                      disabled
+                      disabled={key === 'enableSystemTaskCompletionNotifications'}
                       ariaLabel={ariaLabel}
                       onChange={onCheckedChange}
                     />

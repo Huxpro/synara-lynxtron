@@ -37,7 +37,14 @@ describe('Lynx thread summary projection', () => {
           isPinned: false,
           parentThreadId: null,
           sidechatSourceThreadId: null,
-          latestTurn: null,
+          hasPendingApprovals: true,
+          hasPendingUserInput: false,
+          latestTurn: {
+            turnId: 'turn-1',
+            state: 'completed',
+            startedAt: '2026-08-15T00:00:00.000Z',
+            completedAt: '2026-08-15T00:00:01.000Z',
+          },
           createdAt: '2026-08-14T00:00:00.000Z',
           updatedAt: '2026-08-15T00:00:00.000Z',
           archivedAt: null,
@@ -75,6 +82,10 @@ describe('Lynx thread summary projection', () => {
         messageCount: 0,
         provider: 'codex',
         updatedAt: '2026-08-15T00:00:00.000Z',
+        hasPendingApprovals: true,
+        hasPendingUserInput: false,
+        latestTurnCompletedAt: '2026-08-15T00:00:01.000Z',
+        latestTurnState: 'completed',
       }),
     ]);
   });

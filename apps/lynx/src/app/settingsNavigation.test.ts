@@ -97,8 +97,17 @@ describe('shared settings navigation projection', () => {
     expect(source).toContain('<SettingsResetIcon />');
     expect(source).not.toContain('↶');
     expect(source).toContain(
-      'activityStatus="In-app activity toasts are unavailable in this runtime."'
+      'activityStatus="In-app activity toasts are shown for off-screen chats."'
     );
+    expect(source).toContain(
+      "disabled={key === 'enableSystemTaskCompletionNotifications'}"
+    );
+    const routerSource = readFileSync(
+      new URL('./router.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(routerSource).toContain('<TaskCompletionToastHost');
+    expect(routerSource).toContain('{taskCompletionToast}');
     expect(source).toContain(
       'desktopStatus="System notifications are unavailable in this runtime."'
     );

@@ -151,6 +151,7 @@ import {
 } from './routerHistory.logic';
 import { readPersistedLastThreadRouteFallback } from './routerPersistence.logic';
 import { resolveResponsiveSidebarOpen } from './sidebarVisibility.logic';
+import { TaskCompletionToastHost } from './TaskCompletionToastHost.lynx';
 export const history = createMemoryHistory({ initialEntries: ['/'] });
 
 async function readPersistedLastThreadRoute(): Promise<LastThreadRoute | null> {
@@ -1797,6 +1798,13 @@ export function SliceRouter({
       : initialRoute
         ? parseRoute(initialRoute).params.threadId ?? null
         : null;
+  const taskCompletionToast = (
+    <TaskCompletionToastHost
+      activeThreadId={activeThreadId}
+      threads={routeThreads ?? []}
+      onOpenThread={(threadId) => history.push(`/thread/${threadId}`)}
+    />
+  );
   const [explorerQuery, setExplorerQuery] = useState(initialExplorerQuery);
   const [explorerSelectedPath, setExplorerSelectedPath] = useState<
     string | null
@@ -2438,18 +2446,26 @@ export function SliceRouter({
       </SidebarDisclosure>
     ) : null;
   if (route.pathname === '/settings') {
-    return page;
+    return (
+      <>
+        {page}
+        {taskCompletionToast}
+      </>
+    );
   }
   return (
-    <AppShellFrame sidebar={sidebar}>
-      <view
-        className={`AppMain AppMain--sidebar-${
-          sidebarOpen ? 'open' : 'closed'
-        }`}
-      >
-        {sidebarOpen ? null : closedTitlebarControls}
-        {page}
-      </view>
-    </AppShellFrame>
+    <>
+      <AppShellFrame sidebar={sidebar}>
+        <view
+          className={`AppMain AppMain--sidebar-${
+            sidebarOpen ? 'open' : 'closed'
+          }`}
+        >
+          {sidebarOpen ? null : closedTitlebarControls}
+          {page}
+        </view>
+      </AppShellFrame>
+      {taskCompletionToast}
+    </>
   );
 }
