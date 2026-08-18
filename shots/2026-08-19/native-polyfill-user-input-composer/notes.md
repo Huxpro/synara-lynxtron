@@ -103,8 +103,18 @@ Typography:
 - model label `Claude Sonnet 5`: `11px / 16.5px`;
 - effort label `High`: `10px / 15px`.
 
-The effort label is intentionally one step smaller and more muted than the
-model name.
+The complete composer text audit found:
+
+- prompt/placeholder: `12px / 19.5px`;
+- permissions: `11px / 16.5px`;
+- model label: `11px / 16.5px`;
+- effort label before shared calibration: `11px / 16.5px`;
+- effort label after shared calibration: `10px / 15px`.
+
+The effort calibration now lives in the shared Web composition as well as the
+Lynx physical adapter, so Web authority and Native remain converged instead of
+creating a platform-only exception. The effort label is intentionally one step
+smaller and more muted than the model name.
 
 ## Harness Classification
 

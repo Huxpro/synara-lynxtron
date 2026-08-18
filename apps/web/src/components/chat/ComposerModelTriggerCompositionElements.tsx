@@ -74,7 +74,12 @@ export function ComposerModelTriggerStatusLabelElement(props: {
   readonly children: ReactNode;
 }) {
   return (
-    <span className={cn("shrink-0", COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME)}>
+    <span
+      className={cn(
+        "shrink-0 text-[10px] leading-[15px]",
+        COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME,
+      )}
+    >
       {props.children}
     </span>
   );
