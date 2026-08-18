@@ -152,6 +152,7 @@ import {
 import { readPersistedLastThreadRouteFallback } from './routerPersistence.logic';
 import { resolveResponsiveSidebarOpen } from './sidebarVisibility.logic';
 import { TaskCompletionToastHost } from './TaskCompletionToastHost.lynx';
+import { ProviderUpdatePrompt } from './ProviderUpdatePrompt.lynx';
 export const history = createMemoryHistory({ initialEntries: ['/'] });
 
 async function readPersistedLastThreadRoute(): Promise<LastThreadRoute | null> {
@@ -1805,6 +1806,11 @@ export function SliceRouter({
       onOpenThread={(threadId) => history.push(`/thread/${threadId}`)}
     />
   );
+  const providerUpdatePrompt = (
+    <ProviderUpdatePrompt
+      onReview={() => history.push('/settings/providers')}
+    />
+  );
   const [explorerQuery, setExplorerQuery] = useState(initialExplorerQuery);
   const [explorerSelectedPath, setExplorerSelectedPath] = useState<
     string | null
@@ -2450,6 +2456,7 @@ export function SliceRouter({
       <>
         {page}
         {taskCompletionToast}
+        {providerUpdatePrompt}
       </>
     );
   }
@@ -2466,6 +2473,7 @@ export function SliceRouter({
         </view>
       </AppShellFrame>
       {taskCompletionToast}
+      {providerUpdatePrompt}
     </>
   );
 }

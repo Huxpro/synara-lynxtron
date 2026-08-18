@@ -190,6 +190,26 @@ export async function fetchAutomations(): Promise<AutomationListResult> {
   return fetchAutomationList();
 }
 
+export async function fetchProviderUpdatePromptData() {
+  'background only';
+  const { fetchServerConfig, fetchServerSettings } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  const [config, settings] = await Promise.all([
+    fetchServerConfig(),
+    fetchServerSettings(),
+  ]);
+  return { config, settings };
+}
+
+export async function updatePromptProvider(provider: ProviderKind) {
+  'background only';
+  const { updateProvider } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return updateProvider(provider);
+}
+
 export async function createAutomation(
   input: AutomationCreateInput
 ): Promise<AutomationDefinition> {

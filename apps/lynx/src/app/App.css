@@ -303,6 +303,46 @@
   white-space: nowrap;
 }
 
+.ProviderUpdatePrompt {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  z-index: 1000;
+  display: flex;
+  width: 420px;
+  max-width: calc(100vw - 24px);
+  min-height: 64px;
+  padding: 10px;
+  align-items: center;
+  gap: 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--warning);
+  border-radius: 12px;
+  background-color: var(--color-background-elevated-primary);
+  transform: translateX(-50%);
+}
+
+.ProviderUpdatePromptCopy {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.ProviderUpdatePromptTitle {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.ProviderUpdatePromptDescription {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
+}
+
 .TaskCompletionToastTitle {
   color: var(--foreground);
   font-size: 12px;

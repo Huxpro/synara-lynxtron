@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-global-provider-update-prompt",
+      "severity": "P1",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx root-owned provider update notification"
+    },
+    {
+      "id": "lynx-web-provider-prompt-shallow-dom-probe",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx-for-Web deep shadow-root diagnostics"
+    }
+  ]
+}
