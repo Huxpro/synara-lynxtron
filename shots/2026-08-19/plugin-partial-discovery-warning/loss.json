@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-plugin-partial-discovery-warning",
+      "severity": "P1",
+      "classification": "product-data-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Shared provider discovery presentation and Lynx Plugin Library"
+    },
+    {
+      "id": "lynx-web-plugin-shadow-selector",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 1,
+      "owner": "Agent-browser accessibility traversal of Lynx Web Core custom elements"
+    }
+  ]
+}

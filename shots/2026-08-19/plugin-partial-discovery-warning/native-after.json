@@ -1,0 +1,42 @@
+{
+  "pid": 38268,
+  "client": "localhost:8903",
+  "session": 1,
+  "route": "/plugins",
+  "endpoint": "ws://127.0.0.1:58190",
+  "userData": "/tmp/synara-plugin-partial-native-data",
+  "outerWindow": {
+    "width": 1280,
+    "height": 820
+  },
+  "png": {
+    "width": 2560,
+    "height": 1640,
+    "devicePixelRatio": 2
+  },
+  "warning": {
+    "text": "/private/tmp/synara-plugin-partial-home/.factory/plugins/marketplaces/broken: Factory marketplace manifest is missing or invalid.",
+    "border": {
+      "x": 432,
+      "y": 212,
+      "width": 672,
+      "height": 56
+    },
+    "content": {
+      "x": 445,
+      "y": 223,
+      "width": 646,
+      "height": 34
+    }
+  },
+  "reviewer": {
+    "x": 362,
+    "y": 292,
+    "width": 405,
+    "height": 70
+  },
+  "console": {
+    "errors": [],
+    "warnings": []
+  }
+}
