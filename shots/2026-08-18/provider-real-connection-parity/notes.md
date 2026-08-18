@@ -36,6 +36,15 @@ The direct CLIs independently reported:
 - `claude auth status`: `loggedIn:true`, `authMethod:claude.ai`,
   `subscriptionType:max`.
 
+Final direct provider execution also matched Synara:
+
+- official `codex exec -s read-only` failed with the same usage-limit text and
+  the same `Aug 20th, 2026 12:29 PM` reset time;
+- official `claude -p` returned exactly `DIRECT_CLAUDE_OK`.
+
+This rules out a Synara-specific Codex environment, model, or transport
+failure and independently proves the recovered Claude account can execute.
+
 Claude was genuinely logged out at loop entry. The official
 `claude auth login --claudeai` flow opened the system browser and completed
 successfully. Authentication was not fabricated.
