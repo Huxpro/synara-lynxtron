@@ -143,3 +143,18 @@ No active integration credential or pairing code remains.
 - screenshot count remained `100`.
 
 Product result: pass. Coverage contribution: `1.00 -> 0.00`.
+
+Generated fidelity accounting:
+
+- loss:
+  `11.667654316861451 -> 11.539802495015246`;
+- delta:
+  `-0.12785182184620503`;
+- scope contribution:
+  `-0.13761467889908174`;
+- completeness contribution:
+  `+0.009762857052875162`;
+- visual contribution:
+  `0`;
+- reliability contribution:
+  `0`.
