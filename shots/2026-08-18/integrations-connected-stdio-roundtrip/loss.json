@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "external-mcp-real-paired-connected-coverage",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 0,
+      "owner": "External MCP real pair, stdio invocation, and three-client connected projection"
+    }
+  ]
+}
