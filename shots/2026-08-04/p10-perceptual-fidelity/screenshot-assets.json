@@ -1,8 +1,8 @@
 {
   "version": 1,
   "assetBaseUrl": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main",
-  "imageCount": 1393,
-  "byteCount": 213653655,
+  "imageCount": 1398,
+  "byteCount": 216147511,
   "images": [
     {
       "day": "2026-08-02",
@@ -11173,6 +11173,46 @@
       "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-18/viewport-single-owner-update/web/raw.png",
       "repoPath": "shots/2026-08-18/viewport-single-owner-update/web/raw.png",
       "bytes": 81849
+    },
+    {
+      "day": "2026-08-19",
+      "directory": "native-appsnap/native",
+      "name": "settings-ready-light-1250x896@2x.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/native-appsnap/native/settings-ready-light-1250x896@2x.png",
+      "repoPath": "shots/2026-08-19/native-appsnap/native/settings-ready-light-1250x896@2x.png",
+      "bytes": 1126809
+    },
+    {
+      "day": "2026-08-19",
+      "directory": "native-system-notifications/native",
+      "name": "test-delivered-light-1250x896@2x.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/native-system-notifications/native/test-delivered-light-1250x896@2x.png",
+      "repoPath": "shots/2026-08-19/native-system-notifications/native/test-delivered-light-1250x896@2x.png",
+      "bytes": 684164
+    },
+    {
+      "day": "2026-08-19",
+      "directory": "settings-worktrees-fresh-snapshot/lynx",
+      "name": "populated-light-1250x896.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/settings-worktrees-fresh-snapshot/lynx/populated-light-1250x896.png",
+      "repoPath": "shots/2026-08-19/settings-worktrees-fresh-snapshot/lynx/populated-light-1250x896.png",
+      "bytes": 56064
+    },
+    {
+      "day": "2026-08-19",
+      "directory": "settings-worktrees-fresh-snapshot/native",
+      "name": "populated-light-1250x896@2x.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/settings-worktrees-fresh-snapshot/native/populated-light-1250x896@2x.png",
+      "repoPath": "shots/2026-08-19/settings-worktrees-fresh-snapshot/native/populated-light-1250x896@2x.png",
+      "bytes": 567770
+    },
+    {
+      "day": "2026-08-19",
+      "directory": "settings-worktrees-fresh-snapshot/web",
+      "name": "populated-light-1250x896.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/settings-worktrees-fresh-snapshot/web/populated-light-1250x896.png",
+      "repoPath": "shots/2026-08-19/settings-worktrees-fresh-snapshot/web/populated-light-1250x896.png",
+      "bytes": 59049
     }
   ]
 }
