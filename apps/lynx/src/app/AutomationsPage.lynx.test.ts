@@ -352,6 +352,10 @@ describe('Lynx Automations route', () => {
       new URL('./AutomationTimeInput.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const timezoneLogicSource = readFileSync(
+      new URL('./automationTimezone.logic.ts', import.meta.url),
+      'utf8'
+    );
     const styles = readFileSync(
       new URL('./automations-page.css', import.meta.url),
       'utf8'
@@ -388,6 +392,14 @@ describe('Lynx Automations route', () => {
     expect(timeInputSource).toContain(
       'accessibleLabel="Automation time"'
     );
+    expect(editSource).toContain('timedSchedule?.timezone === undefined');
+    expect(editSource).toContain('accessibleLabel="Automation timezone"');
+    expect(editSource).toContain('defaultValue={timedSchedule.timezone}');
+    expect(editSource).toContain('timezone: event.target.value');
+    expect(editSource).toContain(
+      'isAutomationTimezone(timedSchedule.timezone)'
+    );
+    expect(timezoneLogicSource).toContain('trimmed.length <= 128');
     expect(editSource).toContain("[10, '10 runs']");
     expect(editLogicSource).toContain(
       'completionPolicyFromStopWhen(stopWhen)'

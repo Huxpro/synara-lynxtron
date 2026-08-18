@@ -627,6 +627,11 @@
   line-height: 18px;
 }
 
+.AutomationEditTimezone {
+  width: 100%;
+  height: 36px;
+}
+
 .AutomationCreateTime {
   width: 112px;
   height: 36px;
@@ -792,8 +797,10 @@
 }
 
 .SliceRoot--viewport-medium .AutomationCreateName,
+.SliceRoot--viewport-medium .AutomationEditTimezone,
 .SliceRoot--viewport-medium .AutomationCreateTime,
 .SliceRoot--viewport-compact .AutomationCreateName,
+.SliceRoot--viewport-compact .AutomationEditTimezone,
 .SliceRoot--viewport-compact .AutomationCreateTime {
   height: 32px;
   padding-top: 6px;

@@ -172,4 +172,34 @@ describe('Automation edit payload', () => {
       timeOfDay: '09:00',
     });
   });
+
+  it('updates a timezone-aware timed schedule without rewriting other fields', () => {
+    const current = definition({
+      schedule: {
+        type: 'daily',
+        timeOfDay: '09:00',
+        timezone: 'Asia/Seoul',
+      },
+    });
+    const schedule = {
+      ...current.schedule,
+      timezone: 'Europe/Rome',
+    };
+
+    expect(
+      buildAutomationEditInput({
+        definition: current,
+        name: current.name,
+        prompt: current.prompt,
+        schedule,
+        stopWhen: 'Original stop condition',
+        maxIterations: null,
+      })
+    ).toEqual({
+      id: current.id,
+      name: current.name,
+      prompt: current.prompt,
+      schedule,
+    });
+  });
 });

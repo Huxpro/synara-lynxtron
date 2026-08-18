@@ -21,6 +21,7 @@ import {
 } from './automationEdit.logic';
 import { AutomationTimeInput } from './AutomationTimeInput.lynx';
 import { isAutomationTimeOfDay } from './automationTime.logic';
+import { isAutomationTimezone } from './automationTimezone.logic';
 
 interface NativeTextInputEvent {
   readonly detail: {
@@ -74,7 +75,9 @@ export function AutomationEditDialog({
     name.trim().length > 0 &&
     prompt.trim().length > 0 &&
     (timedSchedule === null ||
-      isAutomationTimeOfDay(timedSchedule.timeOfDay)) &&
+      (isAutomationTimeOfDay(timedSchedule.timeOfDay) &&
+        (timedSchedule.timezone === undefined ||
+          isAutomationTimezone(timedSchedule.timezone)))) &&
     automationEditIsDirty({
       definition,
       name,
@@ -175,6 +178,26 @@ export function AutomationEditDialog({
                 disabled={pending}
                 onChange={(timeOfDay) =>
                   setSchedule({ ...timedSchedule, timeOfDay })
+                }
+              />
+            </view>
+          )}
+          {timedSchedule?.timezone === undefined ? null : (
+            <view className="AutomationCreateField">
+              <text className="AutomationCreateLabel">Timezone</text>
+              <Input
+                key={`timezone:${definition.updatedAt}:${open}:${timedSchedule.type}`}
+                nativeInput
+                accessibleLabel="Automation timezone"
+                className="AutomationEditTimezone"
+                defaultValue={timedSchedule.timezone}
+                disabled={pending}
+                maxLength={128}
+                onChange={(event) =>
+                  setSchedule({
+                    ...timedSchedule,
+                    timezone: event.target.value,
+                  })
                 }
               />
             </view>
