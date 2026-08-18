@@ -96,11 +96,16 @@ contains only the known upstream Web Core deprecated-initialization warning.
 - `00-changes.{png,json}`
 - `01-files.{png,json}`
 - `02-search.{png,json}`
-- `03-changes-return.{png,json}`
-- `chat-visible.{png,json}`
+- `03-changes-return.json`
+- `chat-visible.json`
 - `chat-hidden.{png,json}`
-- `chat-restored.{png,json}`
+- `chat-restored.json`
 - `hide-target.json`
 - `show-target.json`
 - `errors.json`
 - `console.json`
+
+The three omitted PNGs were byte-identical to `00-changes.png` (SHA-256
+`b242565f1bc69f1aedf373b4b8ee8453a8482dd6f25ee7650bdb97cefdd3d57b`);
+their interaction JSON remains retained, so no distinct visual sample or
+behavioral state was removed.

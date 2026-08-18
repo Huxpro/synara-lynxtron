@@ -41,6 +41,13 @@ describe('Settings Worktrees fidelity', () => {
       'utf8'
     );
 
+    expect(panelSource).toContain('const snapshot = await fetchSidebarSnapshot()');
+    expect(panelSource).toContain(
+      'linkedThreadsForWorktree(\n        snapshot.workspaceThreads,\n        input.path'
+    );
+    expect(panelSource).toContain(
+      'Could not verify linked conversations. Retry once the app reconnects to the server.'
+    );
     expect(panelSource).toContain('await dialogs.confirm(');
     expect(panelSource).toContain('createDeleteThreadCommand({');
     expect(panelSource).toContain('if (thread.archivedAt == null) continue;');

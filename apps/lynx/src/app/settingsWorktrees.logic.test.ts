@@ -5,6 +5,7 @@ import {
   createDeleteThreadCommand,
   groupManagedWorktrees,
   isThreadAssociatedWithWorktree,
+  linkedThreadsForWorktree,
   linkedWorktreeCounts,
 } from './settingsWorktrees.logic';
 
@@ -74,6 +75,22 @@ describe('Settings Worktrees projection', () => {
     expect(groups[0]?.worktrees[1]?.linkedThreads.map((item) => item.id)).toEqual([
       'a-2',
     ]);
+  });
+
+  it('resolves the current linked conversations from a fresh snapshot', () => {
+    expect(
+      linkedThreadsForWorktree(
+        [
+          thread('stale-rendered-thread'),
+          thread('new-active', { worktreePath: '/tmp/worktree-a' }),
+          thread('new-archived', {
+            archivedAt: '2026-08-19T00:00:00.000Z',
+            associatedWorktreePath: '/tmp/worktree-a',
+          }),
+        ],
+        '/tmp/worktree-a'
+      ).map((item) => item.id)
+    ).toEqual(['new-active', 'new-archived']);
   });
 
   it('counts active and archived linked conversations', () => {

@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-worktree-delete-stale-association-snapshot",
+      "severity": "P1",
+      "classification": "product-data-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx Settings Worktrees destructive transaction"
+    },
+    {
+      "id": "lynx-web-shadow-root-delete-automation",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx-for-Web shadow-root interaction harness"
+    },
+    {
+      "id": "native-worktree-delete-confirmation-copy",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 1,
+      "owner": "Native host dialog text extraction"
+    }
+  ]
+}

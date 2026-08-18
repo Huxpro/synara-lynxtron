@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "serverInstanceId": "836d71a2-ab19-4991-abfc-8728dcc0258f",
+  "worktree": {
+    "workspaceRoot": "/Users/bytedance/github/synara",
+    "path": "/Users/bytedance/github/synara/.synara-sxs/worktrees/synara/fidelity-worktrees-populated",
+    "createdThrough": "git.createDetachedWorktree",
+    "removedThrough": "git.removeWorktree"
+  },
+  "initialRenderedAssociationCount": 0,
+  "dynamicThread": {
+    "id": "fidelity-worktree-fresh-snapshot-1787082300",
+    "title": "Fidelity fresh worktree association",
+    "archivedAt": null,
+    "worktreePath": "/Users/bytedance/github/synara/.synara-sxs/worktrees/synara/fidelity-worktrees-populated",
+    "associatedWorktreePath": "/Users/bytedance/github/synara/.synara-sxs/worktrees/synara/fidelity-worktrees-populated",
+    "createdThrough": "orchestration.dispatchCommand thread.create",
+    "removedThrough": "orchestration.dispatchCommand thread.delete"
+  },
+  "interaction": {
+    "client": "Lynx-for-Web",
+    "control": "visible Delete button in SettingsWorktreesActions",
+    "confirmationResult": false,
+    "confirmationMessage": "Delete worktree \"fidelity-worktrees-populated\"?\n\n1 active and 0 archived conversation is linked to this worktree.\nDeleting it can break reopening those chats in the same workspace.\n\nDelete the worktree anyway?"
+  },
+  "outcome": {
+    "freshAssociationObserved": true,
+    "worktreesAfterCleanup": [],
+    "dynamicThreadPresentAfterCleanup": false
+  }
+}

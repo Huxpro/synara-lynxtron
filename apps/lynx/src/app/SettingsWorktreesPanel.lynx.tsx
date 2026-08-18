@@ -14,6 +14,7 @@ import { fetchSidebarSnapshot, queryClient } from './queries';
 import {
   createDeleteThreadCommand,
   groupManagedWorktrees,
+  linkedThreadsForWorktree,
   linkedWorktreeCounts,
 } from './settingsWorktrees.logic';
 
@@ -75,13 +76,24 @@ export function SettingsWorktreesPanel() {
   async function deleteWorktree(input: {
     readonly workspaceRoot: string;
     readonly path: string;
-    readonly linkedThreads: ReturnType<
-      typeof groupManagedWorktrees
-    >[number]['worktrees'][number]['linkedThreads'];
   }) {
     'background only';
     if (deletingPath) return;
-    const counts = linkedWorktreeCounts(input.linkedThreads);
+    setDeleteError(null);
+    let linkedThreads: ReturnType<typeof linkedThreadsForWorktree>;
+    try {
+      const snapshot = await fetchSidebarSnapshot();
+      linkedThreads = linkedThreadsForWorktree(
+        snapshot.workspaceThreads,
+        input.path
+      );
+    } catch {
+      setDeleteError(
+        'Could not verify linked conversations. Retry once the app reconnects to the server.'
+      );
+      return;
+    }
+    const counts = linkedWorktreeCounts(linkedThreads);
     const confirmed = await dialogs.confirm(
       deleteConfirmation({
         displayName: formatWorktreePathForDisplay(input.path),
@@ -92,9 +104,8 @@ export function SettingsWorktreesPanel() {
     if (!confirmed) return;
 
     setDeletingPath(input.path);
-    setDeleteError(null);
     try {
-      for (const thread of input.linkedThreads) {
+      for (const thread of linkedThreads) {
         if (thread.archivedAt == null) continue;
         await dispatchSynaraCommand(
           createDeleteThreadCommand({
@@ -226,7 +237,6 @@ export function SettingsWorktreesPanel() {
                     void deleteWorktree({
                       workspaceRoot: group.workspaceRoot,
                       path: worktree.path,
-                      linkedThreads: worktree.linkedThreads,
                     })
                   }
                 >

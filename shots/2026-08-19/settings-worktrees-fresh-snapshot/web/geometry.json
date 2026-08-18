@@ -1,0 +1,47 @@
+{
+  "viewport": {
+    "innerWidth": 1250,
+    "innerHeight": 896,
+    "dpr": 1
+  },
+  "section": {
+    "x": 441,
+    "y": 118,
+    "width": 624,
+    "height": 140
+  },
+  "card": {
+    "x": 441,
+    "y": 150,
+    "width": 624,
+    "height": 108
+  },
+  "row": {
+    "x": 442,
+    "y": 151,
+    "width": 622,
+    "height": 106
+  },
+  "content": {
+    "x": 454,
+    "y": 161,
+    "width": 598,
+    "height": 86
+  },
+  "path": {
+    "x": 454,
+    "y": 181,
+    "width": 540.109375,
+    "height": 18
+  },
+  "button": {
+    "x": 1004.109375,
+    "y": 161,
+    "width": 47.890625,
+    "height": 24
+  },
+  "styles": {
+    "rowPadding": "10px 12px"
+  },
+  "identity": "/Users/bytedance/github/synara/.synara-sxs/worktrees/synara/fidelity-worktrees-fresh-snapshot"
+}

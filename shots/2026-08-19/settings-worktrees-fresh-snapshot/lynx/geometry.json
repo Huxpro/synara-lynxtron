@@ -1,0 +1,25 @@
+{
+  "viewport": {
+    "innerWidth": 1250,
+    "innerHeight": 896,
+    "dpr": 1
+  },
+  "row": {
+    "x": 442,
+    "y": 151,
+    "width": 622,
+    "height": 106
+  },
+  "button": {
+    "x": 1004.109375,
+    "y": 161,
+    "width": 47.890625,
+    "height": 24
+  },
+  "styles": {
+    "borderColor": "rgb(13, 13, 13)",
+    "borderRadius": "0px",
+    "padding": "10px 12px"
+  },
+  "path": true
+}

@@ -24,6 +24,15 @@ export function isThreadAssociatedWithWorktree(
   );
 }
 
+export function linkedThreadsForWorktree(
+  threads: readonly WorktreeThreadSummary[],
+  worktreePath: string
+): readonly WorktreeThreadSummary[] {
+  return threads.filter((thread) =>
+    isThreadAssociatedWithWorktree(thread, worktreePath)
+  );
+}
+
 export function groupManagedWorktrees(
   worktrees: readonly ManagedWorktree[],
   threads: readonly WorktreeThreadSummary[]
@@ -33,9 +42,7 @@ export function groupManagedWorktrees(
   for (const worktree of worktrees) {
     const entry = {
       path: worktree.path,
-      linkedThreads: threads.filter((thread) =>
-        isThreadAssociatedWithWorktree(thread, worktree.path)
-      ),
+      linkedThreads: linkedThreadsForWorktree(threads, worktree.path),
     };
     const existingIndex = groupIndexByRoot.get(worktree.workspaceRoot);
     if (existingIndex !== undefined) {
