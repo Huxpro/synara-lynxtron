@@ -1529,6 +1529,59 @@ routing.layer("ProviderServiceLive routing", (it) => {
     }),
   );
 
+  it.effect("persists failed terminal turns as provider errors with actionable detail", () =>
+    Effect.gen(function* () {
+      const provider = yield* ProviderService;
+      const runtimeRepository = yield* ProviderSessionRuntimeRepository;
+
+      const session = yield* provider.startSession(asThreadId("thread-runtime-failed"), {
+        provider: "codex",
+        threadId: asThreadId("thread-runtime-failed"),
+        runtimeMode: "full-access",
+      });
+      const turn = yield* provider.sendTurn({
+        threadId: session.threadId,
+        input: "hello",
+        attachments: [],
+      });
+      yield* sleep(50);
+
+      routing.codex.emit({
+        type: "turn.completed",
+        eventId: asEventId("runtime-failed-event"),
+        provider: "codex",
+        createdAt: "2026-02-27T00:04:00.000Z",
+        threadId: session.threadId,
+        turnId: turn.turnId,
+        payload: {
+          state: "failed",
+          errorMessage: "Provider authentication expired.",
+        },
+      });
+      yield* sleep(50);
+
+      const runtime = yield* runtimeRepository.getByThreadId({
+        threadId: session.threadId,
+      });
+      assert.equal(Option.isSome(runtime), true);
+      if (Option.isSome(runtime)) {
+        assert.equal(runtime.value.status, "error");
+        const payload = runtime.value.runtimePayload;
+        assert.equal(payload !== null && typeof payload === "object", true);
+        if (payload !== null && typeof payload === "object" && !Array.isArray(payload)) {
+          const runtimePayload = payload as {
+            activeTurnId: string | null;
+            lastError: string | null;
+            lastRuntimeEvent: string | null;
+          };
+          assert.equal(runtimePayload.activeTurnId, null);
+          assert.equal(runtimePayload.lastError, "Provider authentication expired.");
+          assert.equal(runtimePayload.lastRuntimeEvent, "turn.completed");
+        }
+      }
+    }),
+  );
+
   it.effect("keeps a newer binding active when an overlapping older turn completes late", () =>
     Effect.gen(function* () {
       const provider = yield* ProviderService;

@@ -3836,6 +3836,100 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
     );
   });
 
+  it.effect("projects Claude API authentication messages as failed turns, not assistant replies", () => {
+    const harness = makeHarness();
+    return Effect.gen(function* () {
+      const adapter = yield* ClaudeAdapter;
+
+      const runtimeEventsFiber = yield* Stream.take(adapter.streamEvents, 7).pipe(
+        Stream.runCollect,
+        Effect.forkChild,
+      );
+
+      const session = yield* adapter.startSession({
+        threadId: THREAD_ID,
+        provider: "claudeAgent",
+        runtimeMode: "full-access",
+      });
+
+      const turn = yield* adapter.sendTurn({
+        threadId: session.threadId,
+        input: "hello",
+        attachments: [],
+      });
+
+      harness.query.emit({
+        type: "assistant",
+        session_id: "sdk-session-auth-failure",
+        uuid: "assistant-auth-failure",
+        parent_tool_use_id: null,
+        error: "authentication_failed",
+        is_api_error_message: true,
+        message: {
+          id: "assistant-message-auth-failure",
+          content: [
+            {
+              type: "text",
+              text: "Failed to authenticate: OAuth session expired and could not be refreshed",
+            },
+          ],
+        },
+      } as unknown as SDKMessage);
+
+      harness.query.emit({
+        type: "result",
+        subtype: "success",
+        is_error: false,
+        errors: [],
+        session_id: "sdk-session-auth-failure",
+        uuid: "result-auth-failure",
+      } as unknown as SDKMessage);
+
+      const runtimeEvents = Array.from(yield* Fiber.join(runtimeEventsFiber));
+      assert.equal(
+        runtimeEvents.some(
+          (event) =>
+            event.type === "content.delta" ||
+            (event.type === "item.completed" &&
+              event.payload.itemType === "assistant_message"),
+        ),
+        false,
+      );
+
+      const runtimeError = runtimeEvents.find((event) => event.type === "runtime.error");
+      assert.equal(runtimeError?.type, "runtime.error");
+      if (runtimeError?.type === "runtime.error") {
+        assert.equal(
+          runtimeError.payload.message,
+          "Failed to authenticate: OAuth session expired and could not be refreshed",
+        );
+      }
+
+      const turnCompleted = runtimeEvents.find((event) => event.type === "turn.completed");
+      assert.equal(turnCompleted?.type, "turn.completed");
+      if (turnCompleted?.type === "turn.completed") {
+        assert.equal(String(turnCompleted.turnId), String(turn.turnId));
+        assert.equal(turnCompleted.payload.state, "failed");
+        assert.equal(
+          turnCompleted.payload.errorMessage,
+          "Failed to authenticate: OAuth session expired and could not be refreshed",
+        );
+      }
+
+      const current = (yield* adapter.listSessions()).find(
+        (candidate) => candidate.threadId === session.threadId,
+      );
+      assert.equal(current?.status, "error");
+      assert.equal(
+        current?.lastError,
+        "Failed to authenticate: OAuth session expired and could not be refreshed",
+      );
+    }).pipe(
+      Effect.provideService(Random.Random, makeDeterministicRandomService()),
+      Effect.provide(harness.layer),
+    );
+  });
+
   it.effect("suppresses Claude ede_diagnostic text emitted during a user interrupt", () => {
     const harness = makeHarness();
     return Effect.gen(function* () {

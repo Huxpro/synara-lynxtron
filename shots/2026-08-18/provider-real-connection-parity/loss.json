@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "claude-api-auth-error-false-assistant-ready",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Shared Claude adapter and provider session projection"
+    },
+    {
+      "id": "lynx-web-relay-stream-counted-as-pending-unary",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx-for-Web relay diagnostics"
+    },
+    {
+      "id": "codex-account-usage-limit",
+      "severity": "external",
+      "classification": "external-provider-state",
+      "before": 1,
+      "after": 1,
+      "owner": "Authenticated ChatGPT Codex subscription credits"
+    }
+  ]
+}

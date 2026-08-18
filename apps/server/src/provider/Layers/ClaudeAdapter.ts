@@ -194,6 +194,7 @@ interface ClaudeTurnState {
   // trips; a subagent's whole conversation shares one synthetic turn), while
   // snapshot backfill aligns by position within a single message.
   assistantMessageBlockBase: number;
+  apiErrorMessage: string | undefined;
 }
 
 interface AssistantTextBlockState {
@@ -1118,6 +1119,25 @@ function extractAssistantTextBlocks(message: SDKMessage): Array<string> {
   }
 
   return fragments;
+}
+
+function claudeAssistantApiError(message: SDKMessage): string | undefined {
+  if (message.type !== "assistant") {
+    return undefined;
+  }
+  const apiError = message as SDKMessage & {
+    readonly error?: unknown;
+    readonly is_api_error_message?: unknown;
+  };
+  if (apiError.is_api_error_message !== true) {
+    return undefined;
+  }
+  const detail = extractAssistantTextBlocks(message).join("\n").trim();
+  if (detail) {
+    return detail;
+  }
+  const code = typeof apiError.error === "string" ? apiError.error.trim() : "";
+  return code ? `Claude API error: ${code}.` : "Claude API request failed.";
 }
 
 function sanitizeClaudeDisplayText(text: string): string {
@@ -2383,10 +2403,11 @@ function makeClaudeAdapter(options?: ClaudeAdapterLiveOptions) {
         context.turnState = undefined;
         context.session = {
           ...context.session,
-          status: "ready",
+          status: status === "failed" ? "error" : "ready",
           activeTurnId: undefined,
+          lastError:
+            status === "failed" ? (errorMessage ?? "Claude turn failed.") : undefined,
           updatedAt,
-          ...(status === "failed" && errorMessage ? { lastError: errorMessage } : {}),
         };
         yield* updateResumeCursor(context);
       });
@@ -2932,6 +2953,7 @@ function makeClaudeAdapter(options?: ClaudeAdapterLiveOptions) {
           sawFileChange: false,
           nextSyntheticAssistantBlockIndex: -1,
           assistantMessageBlockBase: 0,
+          apiErrorMessage: undefined,
         };
         context.session = {
           ...context.session,
@@ -3003,6 +3025,15 @@ function makeClaudeAdapter(options?: ClaudeAdapterLiveOptions) {
         }
 
         yield* ensureSyntheticTurn(context);
+        const apiErrorMessage = claudeAssistantApiError(message);
+        if (apiErrorMessage) {
+          if (context.turnState) {
+            context.turnState.apiErrorMessage = apiErrorMessage;
+          }
+          context.lastAssistantUuid = message.uuid;
+          yield* updateResumeCursor(context);
+          return;
+        }
         const content = message.message?.content;
         if (Array.isArray(content)) {
           for (const block of content) {
@@ -3135,14 +3166,17 @@ function makeClaudeAdapter(options?: ClaudeAdapterLiveOptions) {
           return;
         }
 
-        const status =
-          hasPendingUserInterrupt(context) && message.subtype === "error_during_execution"
+        const apiErrorMessage = context.turnState?.apiErrorMessage;
+        const status = apiErrorMessage
+          ? "failed"
+          : hasPendingUserInterrupt(context) && message.subtype === "error_during_execution"
             ? "interrupted"
             : turnStatusFromResult(message);
         const errorMessage =
-          message.subtype === "success"
+          apiErrorMessage ??
+          (message.subtype === "success"
             ? undefined
-            : normalizeClaudeUserVisibleErrorMessage(message.errors[0], status);
+            : normalizeClaudeUserVisibleErrorMessage(message.errors[0], status));
 
         if (status === "failed") {
           yield* emitRuntimeError(context, errorMessage ?? "Claude turn failed.");
@@ -4972,6 +5006,7 @@ function makeClaudeAdapter(options?: ClaudeAdapterLiveOptions) {
           sawFileChange: false,
           nextSyntheticAssistantBlockIndex: -1,
           assistantMessageBlockBase: 0,
+          apiErrorMessage: undefined,
         };
 
         const updatedAt = yield* nowIso;

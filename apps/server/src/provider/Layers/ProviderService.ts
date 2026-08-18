@@ -243,11 +243,12 @@ function runtimeStatusForEvent(
         ? "stopped"
         : "running";
     case "session.exited":
-    case "turn.completed":
     case "turn.aborted":
       // A completed turn can still carry a resume cursor, but it must not keep
       // the desktop app treating the provider process as active after restart.
       return "stopped";
+    case "turn.completed":
+      return event.payload.state === "failed" ? "error" : "stopped";
     case "runtime.error":
       return "error";
     default:
@@ -270,12 +271,15 @@ function shouldRefreshResumeCursorForEvent(event: ProviderRuntimeEvent): boolean
 
 function runtimeLastErrorForEvent(event: ProviderRuntimeEvent): string | null | undefined {
   if (event.type === "runtime.error") return event.payload.message;
+  if (event.type === "turn.completed")
+    return event.payload.state === "failed"
+      ? (event.payload.errorMessage ?? "Provider turn failed.")
+      : null;
   if (event.type === "session.state.changed")
     return event.payload.state === "error" ? (event.payload.reason ?? "Session error") : null;
   if (event.type === "thread.state.changed")
     return event.payload.state === "error" ? "Thread error" : null;
   return event.type === "turn.started" ||
-    event.type === "turn.completed" ||
     event.type === "turn.aborted" ||
     event.type === "session.exited"
     ? null

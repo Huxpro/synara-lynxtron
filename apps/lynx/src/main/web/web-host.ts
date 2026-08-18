@@ -20,6 +20,7 @@ import {
   type WebRpcChunkFrame,
   type WebRpcExitFrame,
 } from './webRpcFrame.logic';
+import { summarizeRelayPendingRequests } from './webRelayDiagnostics.logic';
 import { isWebSocketOpen } from './webSocketState.logic';
 
 const bundleUrl = './main.web.bundle';
@@ -133,6 +134,11 @@ declare global {
         readonly socketState: number | null;
         readonly connectionAttempts: number;
         readonly pendingRequests: number;
+        readonly pendingRequestTags: readonly string[];
+        readonly pendingUnaryRequests: number;
+        readonly pendingUnaryTags: readonly string[];
+        readonly activeStreamRequests: number;
+        readonly activeStreamTags: readonly string[];
         readonly recentRpcTags: readonly string[];
         readonly rendererReadyRoute: string | null;
         readonly lastTransportError: string | null;
@@ -1024,25 +1030,33 @@ publishRelayGitActionProgress = (event) => {
   lynxView.sendGlobalEvent?.(GIT_ACTION_PROGRESS_EVENT, [event]);
 };
 
-globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => ({
-  configuredBaseUrl: configuredRelayBaseUrl(),
-  activeBaseUrl: relaySocketBaseUrl,
-  readyBaseUrl: relayReadyBaseUrl,
-  socketState: relaySocket?.readyState ?? null,
-  connectionAttempts: relayConnectionAttempts,
-  pendingRequests: relayPending.size,
-  recentRpcTags: [...relayRecentRpcTags],
-  rendererReadyRoute: lastRendererReadyRoute,
-  lastTransportError: relayLastTransportError,
-  lastRpcError: relayLastRpcError,
-  lifecycleEvents: [...relayLifecycleEvents],
-  explorerPreviewActionCount,
-  lastExplorerPreviewAction,
-  interactionEventCount,
-  lastInteractionEvent,
-  syntaxHighlightCallCount,
-  lastSyntaxHighlightResult,
-});
+globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => {
+  const pending = summarizeRelayPendingRequests(
+    [...relayPending.values()].map((request) => ({
+      tag: request.tag,
+      streaming: request.chunks !== undefined,
+    }))
+  );
+  return {
+    configuredBaseUrl: configuredRelayBaseUrl(),
+    activeBaseUrl: relaySocketBaseUrl,
+    readyBaseUrl: relayReadyBaseUrl,
+    socketState: relaySocket?.readyState ?? null,
+    connectionAttempts: relayConnectionAttempts,
+    ...pending,
+    recentRpcTags: [...relayRecentRpcTags],
+    rendererReadyRoute: lastRendererReadyRoute,
+    lastTransportError: relayLastTransportError,
+    lastRpcError: relayLastRpcError,
+    lifecycleEvents: [...relayLifecycleEvents],
+    explorerPreviewActionCount,
+    lastExplorerPreviewAction,
+    interactionEventCount,
+    lastInteractionEvent,
+    syntaxHighlightCallCount,
+    lastSyntaxHighlightResult,
+  };
+};
 
 setupSymmetricHost(lynxView, {
   bridge: {
