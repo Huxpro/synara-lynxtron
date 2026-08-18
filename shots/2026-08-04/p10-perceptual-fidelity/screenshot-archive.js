@@ -7,12 +7,12 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     "consecutiveCalendarDays": 16
   },
   "imageCount": 1400,
-  "evidenceCount": 39,
+  "evidenceCount": 40,
   "byteCount": 216338987,
   "trackedCount": 100,
   "untrackedCount": 0,
   "remoteCount": 1300,
-  "storyCount": 472,
+  "storyCount": 473,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -21694,6 +21694,32 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
       "sequence": false
     },
     {
+      "id": "2026-08-19--integrations-clipboard-failure",
+      "day": "2026-08-19",
+      "directory": "integrations-clipboard-failure",
+      "label": "Integrations Clipboard Failure",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-19",
+          "directory": "integrations-clipboard-failure",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-19/integrations-clipboard-failure/loss.json",
+          "bytes": 501,
+          "gitStatus": "tracked",
+          "sourceCommit": "2a1d44742a6917a7d88367c0d4b8cfed8f60c00a",
+          "sourceTimestamp": "2026-08-19T07:17:41+09:00",
+          "sourceDay": "2026-08-19"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
       "id": "2026-08-19--native-appsnap",
       "day": "2026-08-19",
       "directory": "native-appsnap",
@@ -39051,7 +39077,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-19",
       "imageCount": 7,
-      "evidenceCount": 10,
+      "evidenceCount": 11,
       "byteCount": 2685332,
       "trackedCount": 7,
       "untrackedCount": 0,
