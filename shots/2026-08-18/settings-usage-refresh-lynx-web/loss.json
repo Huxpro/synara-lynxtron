@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-web-settings-custom-click",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx-for-Web custom element browser automation"
+    },
+    {
+      "id": "usage-refresh-disabled-coordinate-probe",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Usage refresh readiness and coordinate probe"
+    },
+    {
+      "id": "usage-refresh-light-dom-wait",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx shadow-root readiness probe"
+    }
+  ]
+}
