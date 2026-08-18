@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "provider-update-dismiss-current-lifecycle",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 0,
+      "owner": "Provider update prompt dismiss lifecycle"
+    },
+    {
+      "id": "provider-update-reload-seen-key-lifecycle",
+      "severity": "platform",
+      "classification": "intentional-platform-delta",
+      "before": 1,
+      "after": 1,
+      "owner": "Renderer module lifecycle"
+    }
+  ]
+}
