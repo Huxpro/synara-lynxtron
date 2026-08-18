@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-managed-terminal-activity-toasts",
+      "severity": "P1",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx root terminal activity notification projection"
+    },
+    {
+      "id": "native-terminal-osc-literal-carriage-return",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Canonical PTY fixture command submission"
+    },
+    {
+      "id": "native-terminal-toast-capture-delay",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Review-event-synchronous DevTool capture"
+    }
+  ]
+}

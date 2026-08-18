@@ -1,7 +1,10 @@
 import { describe, expect, it } from '@rstest/core';
 
 import type { ThreadSummary } from './queries';
-import { detectLynxTaskCompletionToasts } from './taskCompletionToast.logic';
+import {
+  applyLynxTerminalActivityEvent,
+  detectLynxTaskCompletionToasts,
+} from './taskCompletionToast.logic';
 
 function summary(
   overrides: Partial<ThreadSummary> = {}
@@ -112,5 +115,71 @@ describe('Lynx task completion toast detection', () => {
         current: [summary()],
       })
     ).toEqual([]);
+  });
+});
+
+describe('Lynx managed terminal toast detection', () => {
+  const activity = (
+    agentState: 'running' | 'attention' | 'review' | null
+  ) =>
+    ({
+      type: 'activity',
+      threadId: 'thread-background',
+      terminalId: 'terminal-1',
+      createdAt: '2026-08-18T00:00:00.000Z',
+      hasRunningSubprocess: agentState === 'running',
+      cliKind: 'codex',
+      agentState,
+    }) as const;
+
+  it('emits completion when a managed terminal enters review', () => {
+    const running = applyLynxTerminalActivityEvent({
+      activeThreadId: null,
+      current: new Map(),
+      event: activity('running'),
+    });
+    const completed = applyLynxTerminalActivityEvent({
+      activeThreadId: null,
+      current: running.next,
+      event: activity('review'),
+    });
+
+    expect(completed.toast).toMatchObject({
+      title: 'Terminal task completed',
+      body: 'Codex CLI finished working.',
+      threadId: 'thread-background',
+      tone: 'success',
+    });
+  });
+
+  it('emits attention only on a fresh off-screen transition', () => {
+    const first = applyLynxTerminalActivityEvent({
+      activeThreadId: null,
+      current: new Map(),
+      event: activity('attention'),
+    });
+    const repeated = applyLynxTerminalActivityEvent({
+      activeThreadId: null,
+      current: first.next,
+      event: activity('attention'),
+    });
+
+    expect(first.toast).toMatchObject({
+      title: 'Terminal input needed',
+      body: 'Codex CLI needs your attention.',
+      tone: 'warning',
+    });
+    expect(repeated.toast).toBeNull();
+  });
+
+  it('suppresses the visible thread while retaining terminal state', () => {
+    const result = applyLynxTerminalActivityEvent({
+      activeThreadId: 'thread-background',
+      current: new Map(),
+      event: activity('review'),
+    });
+
+    expect(result.toast).toBeNull();
+    expect(result.next.size).toBe(1);
   });
 });

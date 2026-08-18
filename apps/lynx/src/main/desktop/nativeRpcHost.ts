@@ -125,7 +125,7 @@ export async function handleNativeRpc(
     if (method === 'synaraRpcStream') {
       const events: unknown[] = [];
       await featureManager.requestStream(tag, data.payload, (event) => {
-        events.push(event);
+        if (tag !== 'terminal.subscribeEvents') events.push(event);
         onProgress?.(event);
       });
       return events;

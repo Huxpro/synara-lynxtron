@@ -97,6 +97,31 @@ describe('Lynx Synara relay state', () => {
     );
   });
 
+  it('keeps Native terminal delivery on the component-owned main-thread listener', () => {
+    const mainSource = readFileSync(
+      new URL('../main/desktop/main.ts', import.meta.url),
+      'utf8'
+    );
+    const clientSource = readFileSync(
+      new URL('./synaraClient.lynx.ts', import.meta.url),
+      'utf8'
+    );
+    const toastHostSource = readFileSync(
+      new URL('../app/TaskCompletionToastHost.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(mainSource).toContain('? TERMINAL_EVENT');
+    expect(clientSource).not.toContain('export function publishTerminalEvent');
+    expect(clientSource).not.toContain('onGlobalEvent(TERMINAL_EVENT');
+    expect(toastHostSource).toContain(
+      'queryClient.setQueryData<TerminalEventSnapshot>('
+    );
+    expect(toastHostSource).toContain(
+      'const disposeGlobalEvent = onGlobalEvent('
+    );
+  });
+
   it('uses canonical automation mutation tags', () => {
     const source = readFileSync(
       new URL('./synaraClient.lynx.ts', import.meta.url),
@@ -112,4 +137,5 @@ describe('Lynx Synara relay state', () => {
       "transportRequest('automation.delete', input)"
     );
   });
+
 });

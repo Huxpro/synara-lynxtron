@@ -51,6 +51,7 @@ const INITIAL_OVERLAY_POSITION_RETRY_MS = 50;
 const INITIAL_OVERLAY_POSITION_TIMEOUT_MS = 15_000;
 const TRANSPORT_STATE_EVENT = 'synara:transport-state';
 const GIT_ACTION_PROGRESS_EVENT = 'synara:git-action-progress';
+const TERMINAL_EVENT = 'synara:terminal-event';
 const COMPOSER_MODEL_MENU_QUERY = 'composerModelMenu';
 const COMPOSER_MODEL_PROVIDER_QUERY = 'composerModelProvider';
 const STORAGE_PREFIX = 'synara.lynx.';
@@ -379,8 +380,16 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
     const pending = relayPending.get(message.requestId);
     if (!pending) return;
     if (message._tag === 'Chunk') {
-      pending.chunks?.push(...(message as WebRpcChunkFrame).values);
-      for (const value of message.values) publishRelayGitActionProgress?.(value);
+      if (pending.tag !== 'terminal.subscribeEvents') {
+        pending.chunks?.push(...(message as WebRpcChunkFrame).values);
+      }
+      for (const value of message.values) {
+        if (pending.tag === 'terminal.subscribeEvents') {
+          lynxView.sendGlobalEvent?.(TERMINAL_EVENT, [value]);
+        } else {
+          publishRelayGitActionProgress?.(value);
+        }
+      }
       try {
         socket.send(
           JSON.stringify({

@@ -71,6 +71,7 @@ import type {
   ServerSettingsPatch,
   ServerSettingsView,
   ServerProviderUpdateResult,
+  TerminalEvent,
   EditorId,
   ExternalMcpCapability,
   ExternalMcpCreateIntegrationResult,
@@ -148,6 +149,9 @@ const gitActionProgressListeners = new Map<
   string,
   (event: GitActionProgressEvent) => void
 >();
+const terminalEventListeners = new Set<(event: TerminalEvent) => void>();
+let terminalEventStream: Promise<void> | null = null;
+let terminalEventRetry: ReturnType<typeof setTimeout> | null = null;
 
 function setRelayState(state: RpcTransportState): void {
   if (relayState === state) return;
@@ -184,7 +188,6 @@ onGlobalEvent(GIT_ACTION_PROGRESS_EVENT, (event: unknown) => {
     event as GitActionProgressEvent
   );
 });
-
 function describeRelayError(error: unknown): string {
   if (error instanceof Error) return error.message;
   return String(error);
@@ -310,6 +313,24 @@ async function relayStreamRequest<A>(
   }
 }
 
+function ensureTerminalEventStream(): void {
+  if (terminalEventStream || terminalEventListeners.size === 0) return;
+  terminalEventStream = relayStreamRequest<TerminalEvent>(
+    'terminal.subscribeEvents',
+    {}
+  )
+    .then(() => undefined)
+    .catch(() => undefined)
+    .finally(() => {
+      terminalEventStream = null;
+      if (terminalEventListeners.size === 0) return;
+      terminalEventRetry = setTimeout(() => {
+        terminalEventRetry = null;
+        ensureTerminalEventStream();
+      }, 1_000);
+    });
+}
+
 function transportRequest<A>(tag: string, payload: unknown): Promise<A> {
   return relayRequest<A>(tag, payload);
 }
@@ -334,6 +355,20 @@ export function subscribeSynaraTransportState(
   relayStateListeners.add(listener);
   listener(relayState);
   return () => relayStateListeners.delete(listener);
+}
+
+export function subscribeTerminalEvents(
+  listener: (event: TerminalEvent) => void
+): () => void {
+  terminalEventListeners.add(listener);
+  ensureTerminalEventStream();
+  return () => {
+    terminalEventListeners.delete(listener);
+    if (terminalEventListeners.size === 0 && terminalEventRetry) {
+      clearTimeout(terminalEventRetry);
+      terminalEventRetry = null;
+    }
+  };
 }
 
 export async function fetchSynaraSnapshot(): Promise<SynaraSnapshot> {

@@ -61,6 +61,7 @@ const isBackgroundLaunch =
   process.env.SYNARA_BACKGROUND_LAUNCH === '1';
 const hostInputProbeReportPath =
   process.env.SYNARA_HOST_INPUT_PROBE_REPORT?.trim() || null;
+const TERMINAL_EVENT = 'synara:terminal-event';
 
 let mainWindow: LynxWindow | null = null;
 let searchNavigationEnabled = false;
@@ -508,7 +509,12 @@ app.whenReady().then(() => {
                   name === 'synaraRpcStream' ? 'synaraRpcStream' : 'synaraRpc',
                   rpcData,
                   (event) => {
-                  w.sendGlobalEvent('synara:git-action-progress', event);
+                    w.sendGlobalEvent(
+                      rpcData.tag === 'terminal.subscribeEvents'
+                        ? TERMINAL_EVENT
+                        : 'synara:git-action-progress',
+                      event
+                    );
                   }
                 );
           callback.sendReply(
