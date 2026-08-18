@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-advanced-repair-authoritative-snapshot",
+      "severity": "P1",
+      "classification": "product-data-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx Settings Advanced repair transaction"
+    },
+    {
+      "id": "web-advanced-confirm-recorder",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 1,
+      "owner": "Browser native confirm interception"
+    }
+  ]
+}

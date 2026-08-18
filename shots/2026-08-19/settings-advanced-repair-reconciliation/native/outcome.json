@@ -1,0 +1,16 @@
+{
+  "pid": 21584,
+  "client": "localhost:8902",
+  "session": 1,
+  "route": "/settings/advanced",
+  "serverSnapshot": {
+    "projectCount": 4,
+    "threadCount": 2,
+    "allThreadsMessageless": true,
+    "recoveryEligible": true
+  },
+  "repairControlVisible": true,
+  "disclosureExpanded": true,
+  "disclosureCopyVisible": true,
+  "errorWarningConsoleEmpty": true
+}

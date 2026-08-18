@@ -41,7 +41,9 @@ describe('Settings Advanced fidelity', () => {
     );
 
     expect(panelSource).toContain('await dialogs.confirm(');
-    expect(panelSource).toContain('await repairSynaraState()');
+    expect(panelSource).toContain('await repairAdvancedSettingsState({');
+    expect(panelSource).toContain('repair: repairSynaraState');
+    expect(panelSource).toContain('sync: syncServerReadModel');
     expect(panelSource).toContain(
       "queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] })"
     );

@@ -37,6 +37,7 @@ import {
   firstAvailableEditor,
   shouldOfferRecoveryTools,
 } from './settingsAdvanced.logic';
+import { repairAdvancedSettingsState } from './settingsAdvancedRepair.logic';
 
 import './settings-advanced-panel.css';
 
@@ -140,6 +141,7 @@ export function SettingsAdvancedPanel() {
     createAllThreadsMessagelessSelector()
   );
   const threadsHydrated = useStore((state) => state.threadsHydrated);
+  const syncServerReadModel = useStore((state) => state.syncServerReadModel);
   const [openingFile, setOpeningFile] = useState(false);
   const [repairing, setRepairing] = useState(false);
   const [showRecoveryTools, setShowRecoveryTools] = useState(false);
@@ -206,8 +208,12 @@ export function SettingsAdvancedPanel() {
     setRepairing(true);
     setNotice(null);
     try {
-      await repairSynaraState();
-      await queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] });
+      await repairAdvancedSettingsState({
+        repair: repairSynaraState,
+        sync: syncServerReadModel,
+        invalidate: () =>
+          queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] }),
+      });
       setNotice({
         intent: 'success',
         message: 'Project indexes were rebuilt without clearing existing chats.',
