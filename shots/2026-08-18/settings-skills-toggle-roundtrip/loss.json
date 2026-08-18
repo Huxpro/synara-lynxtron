@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "settings-skills-toggle-roundtrip-current",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 0,
+      "owner": "Settings Skills rendered toggle persistence"
+    },
+    {
+      "id": "settings-skills-toggle-layout-current",
+      "severity": "product",
+      "classification": "product-pass",
+      "before": 0,
+      "after": 0,
+      "owner": "Shared Settings Skills row anatomy"
+    },
+    {
+      "id": "native-skills-sidebar-width-state",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 1,
+      "owner": "Native persisted sidebar-width alignment"
+    },
+    {
+      "id": "skills-toggle-browser-get-subcommand",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Agent-browser attribute probe"
+    }
+  ]
+}
