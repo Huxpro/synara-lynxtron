@@ -15,7 +15,7 @@ import { getNavigatorPlatform } from "~/platform/env";
 export interface ShortcutEventLike {
   type?: string;
   code?: string;
-  key: string;
+  key?: unknown;
   metaKey: boolean;
   ctrlKey: boolean;
   shiftKey: boolean;
@@ -309,7 +309,8 @@ const EVENT_CODE_KEY_ALIASES: Readonly<Record<string, readonly string[]>> = {
   KeyZ: ["z"],
 };
 
-function normalizeEventKey(key: string): string {
+function normalizeEventKey(key: unknown): string | null {
+  if (typeof key !== "string") return null;
   const normalized = key.toLowerCase();
   if (normalized === "esc") return "escape";
   if (normalized === "{") return "[";
@@ -318,7 +319,8 @@ function normalizeEventKey(key: string): string {
 }
 
 function resolveEventKeys(event: ShortcutEventLike): Set<string> {
-  const keys = new Set([normalizeEventKey(event.key)]);
+  const normalizedKey = normalizeEventKey(event.key);
+  const keys = new Set<string>(normalizedKey === null ? [] : [normalizedKey]);
   const aliases = event.code ? EVENT_CODE_KEY_ALIASES[event.code] : undefined;
   if (!aliases) return keys;
 
@@ -718,7 +720,7 @@ export function isTerminalClearShortcut(event: ShortcutEventLike): boolean {
     return false;
   }
 
-  const key = event.key.toLowerCase();
+  const key = normalizeEventKey(event.key);
 
   return key === "l" && event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey;
 }

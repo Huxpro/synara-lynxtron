@@ -44,9 +44,11 @@ import {
 } from '@synara-web/components/chat/MessagesTimeline.logic';
 import {
   derivePendingApprovals,
+  derivePendingUserInputs,
   deriveTimelineEntries,
   deriveWorkLogEntries,
   type PendingApproval,
+  type PendingUserInput,
 } from '@synara-web/session-logic';
 import {
   createSidebarDisplayThreadsSelector,
@@ -153,6 +155,7 @@ export interface ThreadHeaderSummary {
   readonly markerRevision: string;
   readonly lastKnownPr: OrchestrationThreadPullRequest | null;
   readonly pendingApprovals: readonly PendingApproval[];
+  readonly pendingUserInputs: readonly PendingUserInput[];
 }
 
 export interface ThreadRecapSummary {
@@ -706,6 +709,10 @@ export async function fetchThreadHeaderSummary(
     markerRevision: JSON.stringify(thread.threadMarkers ?? []),
     lastKnownPr: thread.lastKnownPr ?? null,
     pendingApprovals: derivePendingApprovals(
+      thread.activities,
+      thread.pendingInteractions
+    ),
+    pendingUserInputs: derivePendingUserInputs(
       thread.activities,
       thread.pendingInteractions
     ),

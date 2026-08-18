@@ -79,6 +79,7 @@ import { resolveLandingRoutePresentation } from './landingRoutePresentation.logi
 import { WorkspacePage } from './WorkspacePage.lynx';
 import { Composer } from '../components/composer/Composer.lynx';
 import { PendingApprovalPanel } from '../components/composer/PendingApprovalPanel.lynx';
+import { PendingUserInputPanel } from '../components/composer/PendingUserInputPanel.lynx';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
 import { dispatchSynaraCommand } from '../data/synaraClient.lynx';
@@ -814,7 +815,10 @@ function ThreadPage(props: ThreadPageProps) {
   const rightDockWidth = explorerOpen ? explorerDockWidth : diffDockWidth;
   const [respondingApprovalRequestId, setRespondingApprovalRequestId] =
     useState<string | null>(null);
+  const [respondingUserInputRequestId, setRespondingUserInputRequestId] =
+    useState<string | null>(null);
   const activePendingApproval = currentThread?.pendingApprovals[0] ?? null;
+  const activePendingUserInput = currentThread?.pendingUserInputs[0] ?? null;
   const respondToApproval = async (
     decision: ProviderApprovalDecision,
     lifecycleGeneration?: string
@@ -841,6 +845,32 @@ function ThreadPage(props: ThreadPageProps) {
       setRespondingApprovalRequestId(null);
     }
   };
+  const respondToUserInput = async (
+    answers: Record<string, string | string[] | null>,
+    lifecycleGeneration?: string
+  ) => {
+    'background only';
+    if (!activePendingUserInput || respondingUserInputRequestId !== null) return;
+    setRespondingUserInputRequestId(activePendingUserInput.requestId);
+    try {
+      await dispatchSynaraCommand({
+        type: 'thread.user-input.respond',
+        commandId: `lynx-user-input-${Date.now()}-${Math.random()
+          .toString(16)
+          .slice(2)}`,
+        threadId: threadId as never,
+        requestId: activePendingUserInput.requestId,
+        ...(lifecycleGeneration ? { lifecycleGeneration } : {}),
+        answers,
+        createdAt: new Date().toISOString(),
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ['thread-detail', threadId],
+      });
+    } finally {
+      setRespondingUserInputRequestId(null);
+    }
+  };
   const composer = (
     <ComposerColumnFrameSurface>
       {activePendingApproval ? (
@@ -853,6 +883,22 @@ function ThreadPage(props: ThreadPageProps) {
           onRespond={(decision, lifecycleGeneration) => {
             'background only';
             void respondToApproval(decision, lifecycleGeneration);
+          }}
+        />
+      ) : null}
+      {!activePendingApproval && activePendingUserInput ? (
+        <PendingUserInputPanel
+          key={`${activePendingUserInput.requestId}:${
+            activePendingUserInput.lifecycleGeneration ?? 'legacy'
+          }`}
+          prompt={activePendingUserInput}
+          pendingCount={currentThread?.pendingUserInputs.length ?? 0}
+          responding={
+            respondingUserInputRequestId === activePendingUserInput.requestId
+          }
+          onRespond={(answers, lifecycleGeneration) => {
+            'background only';
+            void respondToUserInput(answers, lifecycleGeneration);
           }}
         />
       ) : null}
@@ -1633,7 +1679,9 @@ function ThreadPage(props: ThreadPageProps) {
         onDismiss={providerHealth.dismiss}
       />
       {chatBody}
-      {bodyState.kind === 'empty' ? null : composer}
+      {bodyState.kind === 'empty' ? null : (
+        <view className="ThreadComposerDock">{composer}</view>
+      )}
       {currentThread?.workspaceRoot ? (
         <ThreadTerminal
           autoOpen

@@ -1,6 +1,3 @@
-import '../primjs-polyfills';
-import '../text-encoding-polyfill';
-
 import { root } from '@lynx-js/react';
 
 import { HostInputProbe } from './HostInputProbe';

@@ -982,8 +982,17 @@
   padding-top: 16px;
 }
 
+.ThreadComposerDock {
+  flex-shrink: 0;
+  padding-bottom: 16px;
+}
+
 .SliceRoot--viewport-short-height .ThreadTranscriptColumn {
   padding-top: 0;
+}
+
+.SliceRoot--viewport-short-height .ThreadComposerDock {
+  padding-bottom: 8px;
 }
 
 .ThreadTranscriptState {

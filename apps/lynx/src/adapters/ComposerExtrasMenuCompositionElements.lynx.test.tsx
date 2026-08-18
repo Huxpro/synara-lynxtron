@@ -239,6 +239,9 @@ describe('native composer attachment menu item', () => {
       /\.ComposerModelTriggerLabelLynx\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s
     );
     expect(composerStyles).toMatch(
+      /\.ComposerModelTriggerMetaLynx\s*\{[^}]*font-size:\s*10px;[^}]*line-height:\s*15px;/s
+    );
+    expect(composerStyles).toMatch(
       /\.ComposerModelTriggerLynx\s*\{[^}]*padding:\s*4px 6px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*10px;/s
     );
     expect(composerStyles).toMatch(

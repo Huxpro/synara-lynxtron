@@ -417,6 +417,7 @@ export default defineConfig({
   environments: {
     web: {
       source: {
+        preEntry: './src/runtime-polyfills.ts',
         define: {
           'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl),
           'process.env.SYNARA_APP_VERSION': JSON.stringify(appVersion),
@@ -444,6 +445,7 @@ export default defineConfig({
     },
     lynx: {
       source: {
+        preEntry: './src/runtime-polyfills.ts',
         // Rspeedy background bundles do not inherit the desktop host process
         // environment at runtime. Make an explicitly supplied certification /
         // packaged endpoint part of the bundle; an empty value preserves the

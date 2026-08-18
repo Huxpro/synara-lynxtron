@@ -382,6 +382,11 @@
   color: var(--muted-foreground);
 }
 
+.ComposerModelTriggerMetaLynx {
+  font-size: 10px;
+  line-height: 15px;
+}
+
 .ComposerModelTriggerFastIconLynx {
   width: 14px;
   height: 14px;

@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "native-shortcut-undefined-key-tolowercase",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Shared shortcut event normalization"
+    },
+    {
+      "id": "lynx-claude-pending-user-input-capability",
+      "severity": "P1",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Shared pending user-input projection and Lynx response surface"
+    },
+    {
+      "id": "native-thread-composer-bottom-inset",
+      "severity": "P2",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx thread composer layout"
+    },
+    {
+      "id": "native-composer-effort-typography",
+      "severity": "P2",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx composer model trigger typography"
+    },
+    {
+      "id": "lynx-web-origin-and-route-preflight",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Browser capture identity"
+    }
+  ]
+}

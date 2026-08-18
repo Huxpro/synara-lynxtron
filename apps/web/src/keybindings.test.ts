@@ -1328,6 +1328,23 @@ describe("cross-command precedence", () => {
 });
 
 describe("resolveShortcutCommand", () => {
+  it("ignores host events without a Web KeyboardEvent key", () => {
+    assert.isNull(
+      resolveShortcutCommand(
+        {
+          type: "keydown",
+          key: undefined,
+          metaKey: true,
+          ctrlKey: false,
+          shiftKey: false,
+          altKey: false,
+        },
+        DEFAULT_BINDINGS,
+        { platform: "MacIntel" },
+      ),
+    );
+  });
+
   it("resolves model cycle commands outside terminal focus", () => {
     assert.strictEqual(
       resolveShortcutCommand(event({ key: "]", altKey: true }), DEFAULT_BINDINGS, {
@@ -1585,6 +1602,19 @@ describe("isTerminalClearShortcut", () => {
 
   it("ignores non-keydown events", () => {
     assert.isFalse(isTerminalClearShortcut(event({ type: "keyup", key: "l", ctrlKey: true })));
+  });
+
+  it("ignores host events without a Web KeyboardEvent key", () => {
+    assert.isFalse(
+      isTerminalClearShortcut({
+        type: "keydown",
+        key: undefined,
+        metaKey: false,
+        ctrlKey: true,
+        shiftKey: false,
+        altKey: false,
+      }),
+    );
   });
 });
 
