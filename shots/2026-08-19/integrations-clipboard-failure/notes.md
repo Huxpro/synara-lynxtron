@@ -78,3 +78,14 @@ duplicate image.
 
 - `native/outcome.json`
 - `loss.json`
+
+## Ledger Outcome
+
+- fidelity loss: `11.2382 → 11.2327`;
+- loss delta: `-0.0688`;
+- component contribution:
+  - scope: `-0.0634`;
+  - completeness: `-0.0054`;
+  - visual: `0`;
+  - reliability: `0`;
+- no regression change was recorded.
