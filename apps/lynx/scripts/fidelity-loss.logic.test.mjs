@@ -10,6 +10,7 @@ import {
   isComparableImageGeometry,
   median,
   normalizeEvidenceName,
+  resolveEvidenceActivationIndex,
   reliabilityLossFromPoints,
   resolveEvidenceSourceCommit,
   visualQualityBand,
@@ -58,6 +59,43 @@ test('groups remote evidence files by their source commit', () => {
       ['commit-a', ['shots/a.png', 'shots/b.png']],
       ['commit-b', ['shots/c.png']],
     ])
+  );
+});
+
+test('anchors evidence without source metadata to its evidence day', () => {
+  const evidenceCommits = [
+    { hash: 'first', date: '2026-08-14' },
+    { hash: 'last-on-day', date: '2026-08-14' },
+    { hash: 'future', date: '2026-08-19' },
+  ];
+  const commitIndexByHash = new Map(
+    evidenceCommits.map((commit, index) => [commit.hash, index])
+  );
+
+  assert.equal(
+    resolveEvidenceActivationIndex({
+      asset: {
+        day: '2026-08-14',
+        repoPath: 'shots/2026-08-14/remote-only/web.png',
+      },
+      firstCommitByFile: new Map(),
+      commitIndexByHash,
+      evidenceCommits,
+    }),
+    1
+  );
+  assert.equal(
+    resolveEvidenceActivationIndex({
+      asset: {
+        day: '2026-08-18',
+        repoPath: 'shots/2026-08-18/explicit/loss.json',
+        sourceCommit: 'future',
+      },
+      firstCommitByFile: new Map(),
+      commitIndexByHash,
+      evidenceCommits,
+    }),
+    2
   );
 });
 

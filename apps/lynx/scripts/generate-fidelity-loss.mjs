@@ -24,6 +24,7 @@ import {
   median,
   normalizeEvidenceName,
   reliabilityLossFromPoints,
+  resolveEvidenceActivationIndex,
   resolveEvidenceSourceCommit,
   visualQualityBand,
   visualLossFromSamples,
@@ -501,16 +502,28 @@ async function visualSamples(stories, commitIndexByHash, firstCommitByFile) {
   return { accepted, rejected, harness };
 }
 
-function completeness(stories, activeImagePaths = null) {
+function storyAssets(story) {
+  return [...story.images, ...(story.evidence ?? [])];
+}
+
+function completeness(stories, activeAssetPaths = null) {
   let expected = 0;
   let observed = 0;
   for (const story of stories) {
     const clients = new Set(
       story.images
-        .filter((image) => !activeImagePaths || activeImagePaths.has(image.repoPath))
+        .filter(
+          (image) => !activeAssetPaths || activeAssetPaths.has(image.repoPath)
+        )
         .map((image) => image.client)
     );
-    if ([...clients].every((client) => client === 'evidence')) {
+    const hasEvidence = (story.evidence ?? []).some(
+      (entry) => !activeAssetPaths || activeAssetPaths.has(entry.repoPath)
+    );
+    if (
+      ![...clients].some((client) => comparableClients.includes(client)) &&
+      (hasEvidence || [...clients].every((client) => client === 'evidence'))
+    ) {
       expected += 1;
       observed += 1;
       continue;
@@ -543,7 +556,7 @@ const harnessLedger = harnessIssueLedger.map((entry) => ({
   resolvedMetadata: entry.resolvedBy.map(commitMetadata),
 }));
 const remoteEvidenceFilesByCommit = groupEvidenceFilesBySourceCommit(
-  archive.stories.flatMap((story) => story.images)
+  archive.stories.flatMap(storyAssets)
 );
 const evidenceCommits = [
   ...evidenceCommitHistory(days[0], days.at(-1)),
@@ -625,12 +638,14 @@ const storyActivationCommitIndex = new Map(
   archive.stories.map((story) => [
     story.id,
     Math.min(
-      ...story.images.map(
-        (image) =>
-          commitIndexByHash.get(
-            resolveEvidenceSourceCommit(image, firstCommitByFile)
-          ) ??
-          evidenceCommits.length - 1
+      ...storyAssets(story).map(
+        (asset) =>
+          resolveEvidenceActivationIndex({
+            asset,
+            firstCommitByFile,
+            commitIndexByHash,
+            evidenceCommits,
+          })
       )
     ),
   ])
@@ -639,10 +654,25 @@ const imageActivationCommitIndex = new Map(
   archive.stories.flatMap((story) =>
     story.images.map((image) => [
       image.repoPath,
-      commitIndexByHash.get(
-        resolveEvidenceSourceCommit(image, firstCommitByFile)
-      ) ??
-        evidenceCommits.length - 1,
+      resolveEvidenceActivationIndex({
+        asset: image,
+        firstCommitByFile,
+        commitIndexByHash,
+        evidenceCommits,
+      }),
+    ])
+  )
+);
+const evidenceActivationCommitIndex = new Map(
+  archive.stories.flatMap((story) =>
+    (story.evidence ?? []).map((entry) => [
+      entry.repoPath,
+      resolveEvidenceActivationIndex({
+        asset: entry,
+        firstCommitByFile,
+        commitIndexByHash,
+        evidenceCommits,
+      }),
     ])
   )
 );
@@ -655,8 +685,8 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
   const activeStories = archive.stories.filter(
     (story) => storyActivationCommitIndex.get(story.id) <= commitIndex
   );
-  const activeImagePaths = new Set(
-    [...imageActivationCommitIndex]
+  const activeAssetPaths = new Set(
+    [...imageActivationCommitIndex, ...evidenceActivationCommitIndex]
       .filter(([, activationIndex]) => activationIndex <= commitIndex)
       .map(([file]) => file)
   );
@@ -698,7 +728,7 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
       0
     );
   const scopeCoverage = activeStories.length / archive.storyCount;
-  const clientCompleteness = completeness(activeStories, activeImagePaths);
+  const clientCompleteness = completeness(activeStories, activeAssetPaths);
   const calculated = calculateFidelityLoss({
     scopeCoverage,
     clientCompleteness,
@@ -721,6 +751,9 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
     .filter((story) => storyActivationCommitIndex.get(story.id) === commitIndex)
     .map((story) => story.id);
   const addedImages = [...imageActivationCommitIndex]
+    .filter(([, activationIndex]) => activationIndex === commitIndex)
+    .map(([file]) => file);
+  const addedEvidence = [...evidenceActivationCommitIndex]
     .filter(([, activationIndex]) => activationIndex === commitIndex)
     .map(([file]) => file);
   const activatedPairs = allSamples.accepted.filter(
@@ -775,6 +808,7 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
     evidenceFileCount: commit.files.length,
     addedStoryIds,
     addedImages,
+    addedEvidence,
     activatedPairCount: activatedPairs.length,
     activatedRejectedPairCount: activatedRejectedPairs.length,
     activatedHarnessPairCount: activatedHarnessPairs.length,

@@ -10,8 +10,9 @@ import { extname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import {
+  archiveDays,
+  buildScreenshotStories,
   mergeScreenshotAssets,
-  screenshotDays,
 } from './screenshot-archive.logic.mjs';
 
 const scriptDirectory = fileURLToPath(new URL('.', import.meta.url));
@@ -28,16 +29,6 @@ const assetManifestPath = resolve(
 const assetBaseUrl =
   'https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main';
 const imageExtensions = new Set(['.jpeg', '.jpg', '.png']);
-const clientDirectoryNames = new Set([
-  'browser',
-  'lynx',
-  'native',
-  'native-closed',
-  'native-tools',
-  'normalized',
-  'web',
-]);
-
 function listFiles(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const path = resolve(directory, entry.name);
@@ -70,10 +61,46 @@ const deletedFiles = gitFileSet([
   'shots',
 ]);
 
-const localImages = listFiles(shotsRoot)
-  .filter((absolutePath) =>
-    imageExtensions.has(extname(absolutePath).toLowerCase())
+function firstAddedMetadata(repoPaths) {
+  if (!repoPaths.length) return new Map();
+  const output = execFileSync(
+    'git',
+    [
+      'log',
+      '--reverse',
+      '--format=@@%H%x09%ad',
+      '--date=iso-strict',
+      '--name-only',
+      '--diff-filter=A',
+      '--',
+      ...repoPaths,
+    ],
+    {
+      cwd: repoRoot,
+      encoding: 'utf8',
+    }
   );
+  const result = new Map();
+  let metadata = null;
+  for (const line of output.split('\n')) {
+    if (line.startsWith('@@')) {
+      const [sourceCommit, timestamp] = line.slice(2).split('\t');
+      metadata = {
+        sourceCommit,
+        sourceTimestamp: timestamp,
+        sourceDay: timestamp.slice(0, 10),
+      };
+    } else if (line && metadata && !result.has(line)) {
+      result.set(line, metadata);
+    }
+  }
+  return result;
+}
+
+const localFiles = listFiles(shotsRoot);
+const localImages = localFiles.filter((absolutePath) =>
+  imageExtensions.has(extname(absolutePath).toLowerCase())
+);
 const discoveredImages = localImages
   .map((absolutePath) => {
     const repoPath = relative(repoRoot, absolutePath).split(sep).join('/');
@@ -112,6 +139,38 @@ const images = mergeScreenshotAssets({
   localImages: discoveredImages,
   deletedRepoPaths: deletedFiles,
 });
+const localLossFiles = localFiles
+  .filter((absolutePath) => absolutePath.endsWith(`${sep}loss.json`))
+  .map((absolutePath) => {
+    const repoPath = relative(repoRoot, absolutePath).split(sep).join('/');
+    const [, day, ...pathParts] = repoPath.split('/');
+    if (!/^\d{4}-\d{2}-\d{2}$/u.test(day)) return null;
+    return {
+      absolutePath,
+      day,
+      directory: pathParts.slice(0, -1).join('/') || '.',
+      name: pathParts.at(-1),
+      repoPath,
+      bytes: statSync(absolutePath).size,
+      gitStatus: trackedFiles.has(repoPath)
+        ? 'tracked'
+        : untrackedFiles.has(repoPath)
+          ? 'untracked'
+          : 'ignored',
+    };
+  })
+  .filter(Boolean);
+const lossMetadata = firstAddedMetadata(
+  localLossFiles
+    .filter((entry) => entry.gitStatus === 'tracked')
+    .map((entry) => entry.repoPath)
+);
+const evidence = localLossFiles
+  .map(({ absolutePath: _absolutePath, ...entry }) => ({
+    ...entry,
+    ...lossMetadata.get(entry.repoPath),
+  }))
+  .sort((left, right) => left.repoPath.localeCompare(right.repoPath));
 
 if (images.length) {
   writeFileSync(
@@ -130,8 +189,11 @@ if (images.length) {
   );
 }
 
-const days = screenshotDays(images).map((day) => {
+const days = archiveDays(images, evidence).map((day) => {
   const dayImages = images.filter((image) => image.day === day);
+  const dayEvidence = evidence.filter(
+    (entry) => entry.day === day || entry.sourceDay === day
+  );
   const directories = new Map();
   for (const image of dayImages) {
     const entries = directories.get(image.directory) ?? [];
@@ -141,6 +203,7 @@ const days = screenshotDays(images).map((day) => {
   return {
     day,
     imageCount: dayImages.length,
+    evidenceCount: dayEvidence.length,
     byteCount: dayImages.reduce((total, image) => total + image.bytes, 0),
     trackedCount: dayImages.filter((image) => image.gitStatus === 'tracked').length,
     untrackedCount: dayImages.filter((image) => image.gitStatus === 'untracked').length,
@@ -155,81 +218,7 @@ const days = screenshotDays(images).map((day) => {
   };
 });
 
-function inferClient(image) {
-  const path = image.repoPath.toLowerCase();
-  const name = image.name.toLowerCase();
-  if (
-    path.includes('/native/') ||
-    name.startsWith('native') ||
-    name.includes('-native')
-  ) {
-    return 'native';
-  }
-  if (
-    path.includes('/lynx/') ||
-    name.startsWith('lynx') ||
-    name.includes('-lynx')
-  ) {
-    return 'lynx';
-  }
-  if (
-    path.includes('/web/') ||
-    name.startsWith('web') ||
-    name.includes('-web')
-  ) {
-    return 'web';
-  }
-  return 'evidence';
-}
-
-function storyDirectory(image) {
-  const parts = image.directory.split('/');
-  const lastPart = parts.at(-1);
-  if (lastPart && clientDirectoryNames.has(lastPart)) parts.pop();
-  if (parts[0] === 'p8-q2' && parts[1] === 'native') parts.splice(1, 1);
-  return parts.join('/');
-}
-
-function storyLabel(directory) {
-  return directory
-    .split('/')
-    .map((part) =>
-      part
-        .replaceAll('-', ' ')
-        .replace(/\b\w/gu, (letter) => letter.toUpperCase())
-    )
-    .join(' · ');
-}
-
-const storyMap = new Map();
-for (const image of images) {
-  const directory = storyDirectory(image);
-  const key = `${image.day}/${directory}`;
-  const story = storyMap.get(key) ?? {
-    id: key.replaceAll('/', '--'),
-    day: image.day,
-    directory,
-    label: storyLabel(directory),
-    images: [],
-  };
-  story.images.push({ ...image, client: inferClient(image) });
-  storyMap.set(key, story);
-}
-
-const stories = [...storyMap.values()]
-  .map((story) => ({
-    ...story,
-    imageCount: story.images.length,
-    clients: [...new Set(story.images.map((image) => image.client))],
-    sequence:
-      story.images.length >= 20 ||
-      story.directory.includes('flicker-diagnostic'),
-  }))
-  .sort((left, right) =>
-    `${left.day}/${left.directory}`.localeCompare(
-      `${right.day}/${right.directory}`
-    )
-  );
+const stories = buildScreenshotStories({ images, evidence });
 
 const archive = {
   version: 1,
@@ -240,6 +229,7 @@ const archive = {
     consecutiveCalendarDays: days.filter((day) => day.imageCount > 0).length,
   },
   imageCount: images.length,
+  evidenceCount: evidence.length,
   byteCount: images.reduce((total, image) => total + image.bytes, 0),
   trackedCount: images.filter((image) => image.gitStatus === 'tracked').length,
   untrackedCount: images.filter((image) => image.gitStatus === 'untracked').length,

@@ -31,6 +31,27 @@ export function resolveEvidenceSourceCommit(image, firstCommitByFile) {
   return image.sourceCommit ?? firstCommitByFile.get(image.repoPath) ?? null;
 }
 
+export function resolveEvidenceActivationIndex({
+  asset,
+  firstCommitByFile,
+  commitIndexByHash,
+  evidenceCommits,
+}) {
+  const sourceCommit = resolveEvidenceSourceCommit(asset, firstCommitByFile);
+  const sourceIndex = sourceCommit
+    ? commitIndexByHash.get(sourceCommit)
+    : undefined;
+  if (sourceIndex !== undefined) return sourceIndex;
+  const sameDayIndex = evidenceCommits.findLastIndex(
+    (commit) => commit.date === asset.day
+  );
+  if (sameDayIndex >= 0) return sameDayIndex;
+  const priorIndex = evidenceCommits.findLastIndex(
+    (commit) => commit.date < asset.day
+  );
+  return Math.max(0, priorIndex);
+}
+
 export function groupEvidenceFilesBySourceCommit(images) {
   const filesByCommit = new Map();
   for (const image of images) {

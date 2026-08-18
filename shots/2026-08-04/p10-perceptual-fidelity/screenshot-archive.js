@@ -3,15 +3,16 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
   "assetBaseUrl": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main",
   "range": {
     "firstDay": "2026-08-02",
-    "lastDay": "2026-08-18",
+    "lastDay": "2026-08-19",
     "consecutiveCalendarDays": 15
   },
   "imageCount": 1393,
+  "evidenceCount": 30,
   "byteCount": 213653655,
   "trackedCount": 100,
   "untrackedCount": 0,
   "remoteCount": 1293,
-  "storyCount": 436,
+  "storyCount": 463,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -70,7 +71,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 5,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -184,7 +187,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 10,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -218,7 +223,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -252,7 +259,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -286,7 +295,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -310,7 +321,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -383,7 +396,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -477,7 +492,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 8,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -531,7 +548,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -564,7 +583,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -598,7 +619,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -632,7 +655,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -666,7 +691,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -690,7 +717,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -713,7 +742,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -796,7 +827,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 7,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -870,7 +903,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -964,7 +999,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 8,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -1008,7 +1045,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web",
@@ -1053,7 +1092,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web",
@@ -1098,7 +1139,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web",
@@ -1143,7 +1186,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web",
@@ -1178,7 +1223,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -1221,7 +1268,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1266,7 +1315,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1311,7 +1362,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1356,7 +1409,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1401,7 +1456,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1446,7 +1503,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1491,7 +1550,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1536,7 +1597,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1581,7 +1644,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1626,7 +1691,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1671,7 +1738,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1716,7 +1785,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1761,7 +1832,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1806,7 +1879,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1851,7 +1926,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1896,7 +1973,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1941,7 +2020,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -1986,7 +2067,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -2031,7 +2114,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -2076,7 +2161,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "lynx",
@@ -2131,7 +2218,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -2164,7 +2253,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -2197,7 +2288,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -2260,7 +2353,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 5,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2394,7 +2489,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 12,
+      "evidenceCount": 0,
       "clients": [
         "web"
       ],
@@ -2457,7 +2554,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 5,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -2480,7 +2579,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -2503,7 +2604,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "web"
       ],
@@ -2536,7 +2639,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2570,7 +2675,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2604,7 +2711,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2638,7 +2747,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2672,7 +2783,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2706,7 +2819,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2740,7 +2855,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2774,7 +2891,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2808,7 +2927,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2842,7 +2963,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2876,7 +2999,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2910,7 +3035,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2944,7 +3071,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -2978,7 +3107,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3012,7 +3143,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3046,7 +3179,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3080,7 +3215,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3114,7 +3251,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3148,7 +3287,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3182,7 +3323,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3236,7 +3379,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3269,7 +3414,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3292,7 +3439,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3315,7 +3464,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3338,7 +3489,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3361,7 +3514,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3384,7 +3539,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3407,7 +3564,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3430,7 +3589,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3453,7 +3614,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3476,7 +3639,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3509,7 +3674,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3543,7 +3710,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3577,7 +3746,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3610,7 +3781,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3644,7 +3817,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3678,7 +3853,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3711,7 +3888,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3745,7 +3924,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3769,7 +3950,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -3822,7 +4005,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3876,7 +4061,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3930,7 +4117,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -3984,7 +4173,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -4038,7 +4229,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -4092,7 +4285,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -4146,7 +4341,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -4220,7 +4417,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -4295,7 +4494,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -4370,7 +4571,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -4445,7 +4648,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -4520,7 +4725,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -4595,7 +4802,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -4670,7 +4879,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -4745,7 +4956,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -4820,7 +5033,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -4895,7 +5110,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -4970,7 +5187,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5045,7 +5264,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5120,7 +5341,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5195,7 +5418,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5270,7 +5495,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5345,7 +5572,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5420,7 +5649,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5495,7 +5726,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5570,7 +5803,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5645,7 +5880,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5720,7 +5957,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5795,7 +6034,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5870,7 +6111,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -5945,7 +6188,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6020,7 +6265,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6095,7 +6342,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6170,7 +6419,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6245,7 +6496,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6320,7 +6573,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6395,7 +6650,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6470,7 +6727,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6545,7 +6804,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6620,7 +6881,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6695,7 +6958,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6770,7 +7035,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6845,7 +7112,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6920,7 +7189,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -6995,7 +7266,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -7030,7 +7303,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -7063,7 +7338,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -7086,7 +7363,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -7119,7 +7398,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -7152,7 +7433,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -7185,7 +7468,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -7218,7 +7503,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -7251,7 +7538,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -7274,7 +7563,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -7297,7 +7588,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -7340,7 +7633,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -7405,7 +7700,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 5,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -7449,7 +7746,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -7493,7 +7792,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -7557,7 +7858,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 5,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -7601,7 +7904,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -7656,7 +7961,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -7700,7 +8007,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -7744,7 +8053,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -7788,7 +8099,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -7853,7 +8166,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 5,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -7897,7 +8212,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -7942,7 +8259,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -7987,7 +8306,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8032,7 +8353,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8077,7 +8400,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8122,7 +8447,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8167,7 +8494,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8212,7 +8541,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8267,7 +8598,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -8311,7 +8644,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8356,7 +8691,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8401,7 +8738,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8446,7 +8785,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8471,7 +8812,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -8514,7 +8857,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8559,7 +8904,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8604,7 +8951,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8649,7 +8998,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8694,7 +9045,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -8738,7 +9091,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -8782,7 +9137,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -8826,7 +9183,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8911,7 +9270,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 7,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -8956,7 +9317,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9001,7 +9364,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9046,7 +9411,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9091,7 +9458,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9146,7 +9515,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9181,7 +9552,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native"
@@ -9235,7 +9608,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9280,7 +9655,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9325,7 +9702,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9370,7 +9749,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9415,7 +9796,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9460,7 +9843,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9505,7 +9890,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9550,7 +9937,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9595,7 +9984,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9640,7 +10031,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9685,7 +10078,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9730,7 +10125,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9775,7 +10172,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9820,7 +10219,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9865,7 +10266,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9940,7 +10343,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -9985,7 +10390,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10030,7 +10437,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10075,7 +10484,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10120,7 +10531,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10165,7 +10578,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10210,7 +10625,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10245,7 +10662,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -10299,7 +10718,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "evidence",
@@ -10324,7 +10745,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -10347,7 +10770,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -10370,7 +10795,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -10393,7 +10820,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -10416,7 +10845,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -10459,7 +10890,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10504,7 +10937,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10529,7 +10964,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -10552,7 +10989,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -10575,7 +11014,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -10618,7 +11059,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10663,7 +11106,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10708,7 +11153,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10753,7 +11200,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10798,7 +11247,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10833,7 +11284,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -10877,7 +11330,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10922,7 +11377,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -10997,7 +11454,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -11072,7 +11531,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -11117,7 +11578,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -11162,7 +11625,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -11197,7 +11662,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -11241,7 +11708,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -11275,7 +11744,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -11319,7 +11790,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -11364,7 +11837,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -11409,7 +11884,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -11454,7 +11931,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -11569,7 +12048,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 10,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "native"
@@ -11623,7 +12104,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -11647,7 +12130,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -11700,7 +12185,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -11743,7 +12230,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -11776,7 +12265,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -11809,7 +12300,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -11842,7 +12335,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -11865,7 +12360,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -11888,7 +12385,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -11911,7 +12410,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -11934,7 +12435,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -11957,7 +12460,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -11980,7 +12485,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -12023,7 +12530,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -12066,7 +12575,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -12109,7 +12620,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -12152,7 +12665,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -12195,7 +12710,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -12228,7 +12745,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -12261,7 +12780,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -12294,7 +12815,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -12337,7 +12860,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -12370,7 +12895,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -12403,7 +12930,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -12436,7 +12965,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -12459,7 +12990,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -12492,7 +13025,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native"
@@ -12526,7 +13061,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native"
@@ -12560,7 +13097,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native"
@@ -12594,7 +13133,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native"
@@ -12618,7 +13159,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -12651,7 +13194,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -12694,7 +13239,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native"
@@ -12728,7 +13275,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native"
@@ -12762,7 +13311,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native"
@@ -12786,7 +13337,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -12839,7 +13392,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "native"
@@ -12903,7 +13458,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 5,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "native"
@@ -12937,7 +13494,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -12960,7 +13519,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13003,7 +13564,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web",
@@ -13048,7 +13611,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web",
@@ -13093,7 +13658,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web",
@@ -13128,7 +13695,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -13182,7 +13751,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native",
@@ -13237,7 +13808,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -13261,7 +13834,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -13304,7 +13879,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web",
@@ -13329,7 +13906,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13352,7 +13931,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13375,7 +13956,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13398,7 +13981,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13431,7 +14016,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -13464,7 +14051,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -13497,7 +14086,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -13530,7 +14121,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -13563,7 +14156,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -13586,7 +14181,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13609,7 +14206,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13632,7 +14231,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13655,7 +14256,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13678,7 +14281,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13701,7 +14306,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13724,7 +14331,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13777,7 +14386,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "web"
@@ -13811,7 +14422,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native"
@@ -13845,7 +14458,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native"
@@ -13869,7 +14484,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13892,7 +14509,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13915,7 +14534,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -13948,7 +14569,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native"
@@ -13982,7 +14605,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "native"
@@ -14006,7 +14631,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -14029,7 +14656,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -14052,7 +14681,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -14095,7 +14726,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web",
@@ -14120,7 +14753,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -14163,7 +14798,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web",
@@ -14208,7 +14845,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web",
@@ -14283,7 +14922,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -14337,7 +14978,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -14391,7 +15034,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -14425,7 +15070,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -14458,7 +15105,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -14511,7 +15160,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -14544,7 +15195,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -14577,7 +15230,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -14620,7 +15275,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -14653,7 +15310,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -14786,7 +15445,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 12,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -14839,7 +15500,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -14873,7 +15536,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -14986,7 +15651,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 10,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -15020,7 +15687,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -15054,7 +15723,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -15118,7 +15789,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 5,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -15151,7 +15824,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -15184,7 +15859,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "native",
         "evidence"
@@ -15218,7 +15895,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -15261,7 +15940,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "lynx",
@@ -15306,7 +15987,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "lynx",
@@ -15351,7 +16034,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "lynx",
@@ -15396,7 +16081,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "lynx",
@@ -15441,7 +16128,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -15484,7 +16173,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -15527,7 +16218,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -15600,7 +16293,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -15633,7 +16328,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -16036,7 +16733,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 39,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -16069,7 +16768,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -16102,7 +16803,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -16765,7 +17468,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 65,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -17008,7 +17713,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 23,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -17091,7 +17798,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 7,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -17134,7 +17843,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "lynx",
@@ -17179,7 +17890,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "lynx",
@@ -17224,7 +17937,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "lynx",
@@ -17269,7 +17984,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "lynx",
@@ -17294,7 +18011,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -17317,7 +18036,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -17340,7 +18061,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -17363,7 +18086,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -17436,7 +18161,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "evidence",
         "lynx",
@@ -17471,7 +18198,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -17505,7 +18234,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -17539,7 +18270,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -17573,7 +18306,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -17607,7 +18342,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -17651,7 +18388,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -17685,7 +18424,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -17709,7 +18450,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "web"
       ],
@@ -17732,7 +18475,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -17755,7 +18500,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -17778,7 +18525,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "web"
       ],
@@ -17801,7 +18550,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -17824,7 +18575,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "web"
       ],
@@ -17847,7 +18600,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -17880,7 +18635,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -17934,7 +18691,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -17970,7 +18729,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18006,7 +18767,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18042,7 +18805,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18078,7 +18843,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18114,7 +18881,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18168,7 +18937,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18204,7 +18975,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18240,7 +19013,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18276,7 +19051,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18312,7 +19089,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18348,7 +19127,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18384,7 +19165,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18438,7 +19221,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18474,7 +19259,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18510,7 +19297,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18534,7 +19323,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -18557,7 +19348,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -18630,7 +19423,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18654,7 +19449,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -18747,7 +19544,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 8,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18811,7 +19610,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 5,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18835,7 +19636,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -18858,7 +19661,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -18881,7 +19686,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -18914,7 +19721,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -18988,7 +19797,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 6,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -19022,7 +19833,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx",
         "web"
@@ -19056,7 +19869,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19139,7 +19954,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 7,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19172,7 +19989,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -19195,7 +20014,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -19218,7 +20039,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19251,7 +20074,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19274,7 +20099,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -19307,7 +20134,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 2,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19390,7 +20219,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 7,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19443,7 +20274,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19496,7 +20329,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19549,7 +20384,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 4,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19572,7 +20409,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "lynx"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "lynx"
       ],
@@ -19595,7 +20434,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19618,7 +20459,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19661,7 +20504,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19704,7 +20549,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 3,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19727,7 +20574,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19750,7 +20599,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19773,7 +20624,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "native"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "native"
       ],
@@ -19796,7 +20649,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19819,7 +20674,61 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-17--standalone-diff-native-wheel",
+      "day": "2026-08-17",
+      "directory": "standalone-diff-native-wheel",
+      "label": "Standalone Diff Native Wheel",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-17",
+          "directory": "standalone-diff-native-wheel",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-17/standalone-diff-native-wheel/loss.json",
+          "bytes": 772,
+          "gitStatus": "tracked",
+          "sourceCommit": "933b87e2a25bea06dc89968d6c22f4edb47fe5a2",
+          "sourceTimestamp": "2026-08-18T07:17:23+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--automations-edit-model-parity",
+      "day": "2026-08-18",
+      "directory": "automations-edit-model-parity",
+      "label": "Automations Edit Model Parity",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "automations-edit-model-parity",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/automations-edit-model-parity/loss.json",
+          "bytes": 971,
+          "gitStatus": "tracked",
+          "sourceCommit": "ea421d44353fdb59344aaf611c14683230f53807",
+          "sourceTimestamp": "2026-08-18T15:15:45+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
       "clients": [
         "evidence"
       ],
@@ -19842,9 +20751,24 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "automations-edit-relay-recovery",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/automations-edit-relay-recovery/loss.json",
+          "bytes": 733,
+          "gitStatus": "tracked",
+          "sourceCommit": "023a36d575c1d70a8f261996ccf11822eda31eb1",
+          "sourceTimestamp": "2026-08-18T08:03:29+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
       "imageCount": 1,
+      "evidenceCount": 1,
       "clients": [
-        "web"
+        "web",
+        "evidence"
       ],
       "sequence": false
     },
@@ -19865,7 +20789,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19888,7 +20814,165 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--automations-edit-repeats-parity",
+      "day": "2026-08-18",
+      "directory": "automations-edit-repeats-parity",
+      "label": "Automations Edit Repeats Parity",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "automations-edit-repeats-parity",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/automations-edit-repeats-parity/loss.json",
+          "bytes": 722,
+          "gitStatus": "tracked",
+          "sourceCommit": "af9db81266da804d1cb0c6f4cf65879353bf8c7c",
+          "sourceTimestamp": "2026-08-18T08:56:16+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--automations-edit-short-height",
+      "day": "2026-08-18",
+      "directory": "automations-edit-short-height",
+      "label": "Automations Edit Short Height",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "automations-edit-short-height",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/automations-edit-short-height/loss.json",
+          "bytes": 739,
+          "gitStatus": "tracked",
+          "sourceCommit": "4a22294abc097916df5aec51965c2f7655a3d4e9",
+          "sourceTimestamp": "2026-08-18T10:48:51+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--automations-edit-time-parity",
+      "day": "2026-08-18",
+      "directory": "automations-edit-time-parity",
+      "label": "Automations Edit Time Parity",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "automations-edit-time-parity",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/automations-edit-time-parity/loss.json",
+          "bytes": 718,
+          "gitStatus": "tracked",
+          "sourceCommit": "b6bbf52b193e2b58e1b7b7d68ad4e8429af95a5e",
+          "sourceTimestamp": "2026-08-18T11:23:28+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--automations-edit-timezone-parity",
+      "day": "2026-08-18",
+      "directory": "automations-edit-timezone-parity",
+      "label": "Automations Edit Timezone Parity",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "automations-edit-timezone-parity",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/automations-edit-timezone-parity/loss.json",
+          "bytes": 495,
+          "gitStatus": "tracked",
+          "sourceCommit": "a57e6c8a02d487d6b2db60bef07b1ea3c54b40b0",
+          "sourceTimestamp": "2026-08-18T11:36:14+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--claude-pending-approval-roundtrip",
+      "day": "2026-08-18",
+      "directory": "claude-pending-approval-roundtrip",
+      "label": "Claude Pending Approval Roundtrip",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "claude-pending-approval-roundtrip",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/claude-pending-approval-roundtrip/loss.json",
+          "bytes": 755,
+          "gitStatus": "tracked",
+          "sourceCommit": "ac06e55f6a968db50f95c84c182a92b52a44bdaa",
+          "sourceTimestamp": "2026-08-19T00:25:39+09:00",
+          "sourceDay": "2026-08-19"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--claude-resume-transcript-live-edge",
+      "day": "2026-08-18",
+      "directory": "claude-resume-transcript-live-edge",
+      "label": "Claude Resume Transcript Live Edge",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "claude-resume-transcript-live-edge",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/claude-resume-transcript-live-edge/loss.json",
+          "bytes": 753,
+          "gitStatus": "tracked",
+          "sourceCommit": "d1ba34f80f81ac111790baf37c69d70b5440580d",
+          "sourceTimestamp": "2026-08-18T23:09:08+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
       "clients": [
         "evidence"
       ],
@@ -19911,7 +20995,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19934,7 +21020,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
       "clients": [
         "evidence"
       ],
@@ -19957,7 +21045,503 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "evidence"
         }
       ],
+      "evidence": [],
       "imageCount": 1,
+      "evidenceCount": 0,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--integrations-connected-stdio-roundtrip",
+      "day": "2026-08-18",
+      "directory": "integrations-connected-stdio-roundtrip",
+      "label": "Integrations Connected Stdio Roundtrip",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "integrations-connected-stdio-roundtrip",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/integrations-connected-stdio-roundtrip/loss.json",
+          "bytes": 321,
+          "gitStatus": "tracked",
+          "sourceCommit": "39c1e3bcf4e131600803d31b8430677a514bdb67",
+          "sourceTimestamp": "2026-08-18T21:28:54+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--integrations-revoked-audit-minimum",
+      "day": "2026-08-18",
+      "directory": "integrations-revoked-audit-minimum",
+      "label": "Integrations Revoked Audit Minimum",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "integrations-revoked-audit-minimum",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/integrations-revoked-audit-minimum/loss.json",
+          "bytes": 550,
+          "gitStatus": "tracked",
+          "sourceCommit": "fc20dbe7c4cbeda8ac4e60b3dd05e7593069de58",
+          "sourceTimestamp": "2026-08-18T22:03:04+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--integrations-setup-lifecycle-parity",
+      "day": "2026-08-18",
+      "directory": "integrations-setup-lifecycle-parity",
+      "label": "Integrations Setup Lifecycle Parity",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "integrations-setup-lifecycle-parity",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/integrations-setup-lifecycle-parity/loss.json",
+          "bytes": 990,
+          "gitStatus": "tracked",
+          "sourceCommit": "2535379eb2ee4efd40348324e3f5bb947d50f50e",
+          "sourceTimestamp": "2026-08-18T20:57:38+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--managed-terminal-activity-toast",
+      "day": "2026-08-18",
+      "directory": "managed-terminal-activity-toast",
+      "label": "Managed Terminal Activity Toast",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "managed-terminal-activity-toast",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/managed-terminal-activity-toast/loss.json",
+          "bytes": 741,
+          "gitStatus": "tracked",
+          "sourceCommit": "b55850d994bea0693efbcad4a33fb4549595b979",
+          "sourceTimestamp": "2026-08-18T17:24:19+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--native-landing-send-nullable-payload",
+      "day": "2026-08-18",
+      "directory": "native-landing-send-nullable-payload",
+      "label": "Native Landing Send Nullable Payload",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "native-landing-send-nullable-payload",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/native-landing-send-nullable-payload/loss.json",
+          "bytes": 531,
+          "gitStatus": "tracked",
+          "sourceCommit": "81c3e0a91bdac04e59aa01a38c426f29edfa5a6e",
+          "sourceTimestamp": "2026-08-18T16:55:59+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--provider-process-capture-overflow",
+      "day": "2026-08-18",
+      "directory": "provider-process-capture-overflow",
+      "label": "Provider Process Capture Overflow",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "provider-process-capture-overflow",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/provider-process-capture-overflow/loss.json",
+          "bytes": 314,
+          "gitStatus": "tracked",
+          "sourceCommit": "155f997d54f6fdef5e5fb2a61e76612bcbc87d3f",
+          "sourceTimestamp": "2026-08-18T18:36:08+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--provider-real-connection-parity",
+      "day": "2026-08-18",
+      "directory": "provider-real-connection-parity",
+      "label": "Provider Real Connection Parity",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "provider-real-connection-parity",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/provider-real-connection-parity/loss.json",
+          "bytes": 764,
+          "gitStatus": "tracked",
+          "sourceCommit": "cd494ed6da4dbd4231737864b6533b614fa8d7fe",
+          "sourceTimestamp": "2026-08-18T19:39:30+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--provider-update-dismiss-lifecycle",
+      "day": "2026-08-18",
+      "directory": "provider-update-dismiss-lifecycle",
+      "label": "Provider Update Dismiss Lifecycle",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "provider-update-dismiss-lifecycle",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/provider-update-dismiss-lifecycle/loss.json",
+          "bytes": 514,
+          "gitStatus": "tracked",
+          "sourceCommit": "e989f000b381cf44861a838d717e696a4b1c3a7a",
+          "sourceTimestamp": "2026-08-18T14:43:04+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--provider-update-prompt-expanded-parity",
+      "day": "2026-08-18",
+      "directory": "provider-update-prompt-expanded-parity",
+      "label": "Provider Update Prompt Expanded Parity",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "provider-update-prompt-expanded-parity",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/provider-update-prompt-expanded-parity/loss.json",
+          "bytes": 760,
+          "gitStatus": "tracked",
+          "sourceCommit": "8c5e25fd4f73f4c6b168ffe84abcbb6c3dce35af",
+          "sourceTimestamp": "2026-08-18T14:00:12+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--provider-update-prompt-global-parity",
+      "day": "2026-08-18",
+      "directory": "provider-update-prompt-global-parity",
+      "label": "Provider Update Prompt Global Parity",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "provider-update-prompt-global-parity",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/provider-update-prompt-global-parity/loss.json",
+          "bytes": 503,
+          "gitStatus": "tracked",
+          "sourceCommit": "cbdb5f7bb77debf6f283fae06efc1686ae6b2f0e",
+          "sourceTimestamp": "2026-08-18T13:34:17+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--provider-update-review-navigation",
+      "day": "2026-08-18",
+      "directory": "provider-update-review-navigation",
+      "label": "Provider Update Review Navigation",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "provider-update-review-navigation",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/provider-update-review-navigation/loss.json",
+          "bytes": 709,
+          "gitStatus": "tracked",
+          "sourceCommit": "690275cbcf0c9d9b16651ce18db81e4767acc3b6",
+          "sourceTimestamp": "2026-08-18T14:35:16+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--settings-archived-populated-current",
+      "day": "2026-08-18",
+      "directory": "settings-archived-populated-current",
+      "label": "Settings Archived Populated Current",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "settings-archived-populated-current",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/settings-archived-populated-current/loss.json",
+          "bytes": 741,
+          "gitStatus": "tracked",
+          "sourceCommit": "2fc7189d169ccd9cee996fd7bbcf34b7d1ad05d2",
+          "sourceTimestamp": "2026-08-18T13:02:04+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--settings-models-saved-row-dark",
+      "day": "2026-08-18",
+      "directory": "settings-models-saved-row-dark",
+      "label": "Settings Models Saved Row Dark",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "settings-models-saved-row-dark",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/settings-models-saved-row-dark/loss.json",
+          "bytes": 260,
+          "gitStatus": "tracked",
+          "sourceCommit": "5a088bd73999a496c51c2bde0447aca586031493",
+          "sourceTimestamp": "2026-08-18T12:38:56+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--settings-notifications-current-head",
+      "day": "2026-08-18",
+      "directory": "settings-notifications-current-head",
+      "label": "Settings Notifications Current Head",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "settings-notifications-current-head",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/settings-notifications-current-head/loss.json",
+          "bytes": 980,
+          "gitStatus": "tracked",
+          "sourceCommit": "afb75e8171a06941779177c7fd61743619fba028",
+          "sourceTimestamp": "2026-08-18T11:58:57+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--settings-shortcuts-reload-discoverability",
+      "day": "2026-08-18",
+      "directory": "settings-shortcuts-reload-discoverability",
+      "label": "Settings Shortcuts Reload Discoverability",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "settings-shortcuts-reload-discoverability",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/settings-shortcuts-reload-discoverability/loss.json",
+          "bytes": 697,
+          "gitStatus": "tracked",
+          "sourceCommit": "bbde431191e86842ef5f279c6b72e8e03b5b52ba",
+          "sourceTimestamp": "2026-08-18T12:19:19+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--settings-skills-compact-light",
+      "day": "2026-08-18",
+      "directory": "settings-skills-compact-light",
+      "label": "Settings Skills Compact Light",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "settings-skills-compact-light",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/settings-skills-compact-light/loss.json",
+          "bytes": 731,
+          "gitStatus": "tracked",
+          "sourceCommit": "0415d45af825313e70d616ab12e8131860f3bdc0",
+          "sourceTimestamp": "2026-08-18T14:21:56+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--settings-skills-toggle-roundtrip",
+      "day": "2026-08-18",
+      "directory": "settings-skills-toggle-roundtrip",
+      "label": "Settings Skills Toggle Roundtrip",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "settings-skills-toggle-roundtrip",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/settings-skills-toggle-roundtrip/loss.json",
+          "bytes": 950,
+          "gitStatus": "tracked",
+          "sourceCommit": "f50427cdd8303d383300785526d7a49e5dd3c75e",
+          "sourceTimestamp": "2026-08-18T13:59:14+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--settings-usage-refresh-lynx-web",
+      "day": "2026-08-18",
+      "directory": "settings-usage-refresh-lynx-web",
+      "label": "Settings Usage Refresh Lynx Web",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "settings-usage-refresh-lynx-web",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/settings-usage-refresh-lynx-web/loss.json",
+          "bytes": 724,
+          "gitStatus": "tracked",
+          "sourceCommit": "0144589eb8fbba7986b702db7d0d65cfc38af8ee",
+          "sourceTimestamp": "2026-08-18T15:26:51+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-18--thread-runtime-error-banner-parity",
+      "day": "2026-08-18",
+      "directory": "thread-runtime-error-banner-parity",
+      "label": "Thread Runtime Error Banner Parity",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "thread-runtime-error-banner-parity",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/thread-runtime-error-banner-parity/loss.json",
+          "bytes": 966,
+          "gitStatus": "tracked",
+          "sourceCommit": "0e002c44ab237ac622c4002c169e308a7e741745",
+          "sourceTimestamp": "2026-08-18T17:58:35+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
       "clients": [
         "evidence"
       ],
@@ -20000,11 +21584,26 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "usage-mixed-auth-warning-icons",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/usage-mixed-auth-warning-icons/loss.json",
+          "bytes": 935,
+          "gitStatus": "tracked",
+          "sourceCommit": "da93759e32f9371ed20bddf82f54933a3755c8d2",
+          "sourceTimestamp": "2026-08-18T06:29:04+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
       "imageCount": 3,
+      "evidenceCount": 1,
       "clients": [
         "lynx",
         "native",
-        "web"
+        "web",
+        "evidence"
       ],
       "sequence": false
     },
@@ -20045,11 +21644,26 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "client": "web"
         }
       ],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "viewport-single-owner-update",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/viewport-single-owner-update/loss.json",
+          "bytes": 690,
+          "gitStatus": "tracked",
+          "sourceCommit": "4ae9dedf430ab169621d977db361408c4890311f",
+          "sourceTimestamp": "2026-08-18T08:32:14+09:00",
+          "sourceDay": "2026-08-18"
+        }
+      ],
       "imageCount": 3,
+      "evidenceCount": 1,
       "clients": [
         "lynx",
         "native",
-        "web"
+        "web",
+        "evidence"
       ],
       "sequence": false
     }
@@ -20058,6 +21672,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-02",
       "imageCount": 40,
+      "evidenceCount": 0,
       "byteCount": 4547891,
       "trackedCount": 0,
       "untrackedCount": 0,
@@ -20482,6 +22097,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-03",
       "imageCount": 209,
+      "evidenceCount": 0,
       "byteCount": 41576655,
       "trackedCount": 0,
       "untrackedCount": 0,
@@ -23129,6 +24745,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-04",
       "imageCount": 276,
+      "evidenceCount": 0,
       "byteCount": 24109960,
       "trackedCount": 0,
       "untrackedCount": 0,
@@ -26463,6 +28080,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-05",
       "imageCount": 99,
+      "evidenceCount": 0,
       "byteCount": 9670454,
       "trackedCount": 0,
       "untrackedCount": 0,
@@ -27766,6 +29384,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-06",
       "imageCount": 178,
+      "evidenceCount": 0,
       "byteCount": 17744220,
       "trackedCount": 0,
       "untrackedCount": 0,
@@ -30230,6 +31849,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-07",
       "imageCount": 95,
+      "evidenceCount": 0,
       "byteCount": 25682559,
       "trackedCount": 0,
       "untrackedCount": 0,
@@ -31335,6 +32955,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-08",
       "imageCount": 73,
+      "evidenceCount": 0,
       "byteCount": 5811975,
       "trackedCount": 0,
       "untrackedCount": 0,
@@ -32314,6 +33935,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-09",
       "imageCount": 59,
+      "evidenceCount": 0,
       "byteCount": 7552313,
       "trackedCount": 0,
       "untrackedCount": 0,
@@ -32939,6 +34561,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-10",
       "imageCount": 206,
+      "evidenceCount": 0,
       "byteCount": 64145786,
       "trackedCount": 0,
       "untrackedCount": 0,
@@ -35091,6 +36714,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-11",
       "imageCount": 26,
+      "evidenceCount": 0,
       "byteCount": 1990669,
       "trackedCount": 0,
       "untrackedCount": 0,
@@ -35467,6 +37091,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-13",
       "imageCount": 10,
+      "evidenceCount": 0,
       "byteCount": 654266,
       "trackedCount": 0,
       "untrackedCount": 0,
@@ -35607,6 +37232,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-14",
       "imageCount": 57,
+      "evidenceCount": 0,
       "byteCount": 2565630,
       "trackedCount": 41,
       "untrackedCount": 0,
@@ -36272,6 +37898,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-15",
       "imageCount": 40,
+      "evidenceCount": 0,
       "byteCount": 3651526,
       "trackedCount": 40,
       "untrackedCount": 0,
@@ -36726,6 +38353,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-16",
       "imageCount": 13,
+      "evidenceCount": 0,
       "byteCount": 1417337,
       "trackedCount": 10,
       "untrackedCount": 0,
@@ -36905,8 +38533,19 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
       ]
     },
     {
+      "day": "2026-08-17",
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "byteCount": 0,
+      "trackedCount": 0,
+      "untrackedCount": 0,
+      "remoteCount": 0,
+      "directories": []
+    },
+    {
       "day": "2026-08-18",
       "imageCount": 12,
+      "evidenceCount": 30,
       "byteCount": 2532414,
       "trackedCount": 9,
       "untrackedCount": 0,
@@ -37093,6 +38732,16 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           ]
         }
       ]
+    },
+    {
+      "day": "2026-08-19",
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "byteCount": 0,
+      "trackedCount": 0,
+      "untrackedCount": 0,
+      "remoteCount": 0,
+      "directories": []
     }
   ]
 };
