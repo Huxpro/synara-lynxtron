@@ -7,12 +7,12 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     "consecutiveCalendarDays": 15
   },
   "imageCount": 1393,
-  "evidenceCount": 30,
+  "evidenceCount": 31,
   "byteCount": 213653655,
   "trackedCount": 100,
   "untrackedCount": 0,
   "remoteCount": 1293,
-  "storyCount": 463,
+  "storyCount": 464,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -21236,6 +21236,32 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
       "sequence": false
     },
     {
+      "id": "2026-08-18--provider-stop-delete-lifecycle",
+      "day": "2026-08-18",
+      "directory": "provider-stop-delete-lifecycle",
+      "label": "Provider Stop Delete Lifecycle",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-18",
+          "directory": "provider-stop-delete-lifecycle",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-18/provider-stop-delete-lifecycle/loss.json",
+          "bytes": 795,
+          "gitStatus": "tracked",
+          "sourceCommit": "6fe249adf75796baf517d44ff2e5da7a5adbd341",
+          "sourceTimestamp": "2026-08-19T00:58:25+09:00",
+          "sourceDay": "2026-08-19"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
       "id": "2026-08-18--provider-update-dismiss-lifecycle",
       "day": "2026-08-18",
       "directory": "provider-update-dismiss-lifecycle",
@@ -38545,7 +38571,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-18",
       "imageCount": 12,
-      "evidenceCount": 30,
+      "evidenceCount": 31,
       "byteCount": 2532414,
       "trackedCount": 9,
       "untrackedCount": 0,
@@ -38736,7 +38762,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-19",
       "imageCount": 0,
-      "evidenceCount": 1,
+      "evidenceCount": 2,
       "byteCount": 0,
       "trackedCount": 0,
       "untrackedCount": 0,
