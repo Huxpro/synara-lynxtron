@@ -6,13 +6,13 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     "lastDay": "2026-08-19",
     "consecutiveCalendarDays": 16
   },
-  "imageCount": 1398,
-  "evidenceCount": 37,
-  "byteCount": 216147511,
+  "imageCount": 1400,
+  "evidenceCount": 38,
+  "byteCount": 216338987,
   "trackedCount": 100,
   "untrackedCount": 0,
-  "remoteCount": 1298,
-  "storyCount": 470,
+  "remoteCount": 1300,
+  "storyCount": 471,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -19743,7 +19743,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/visual-matrix/lynx-compact-dark-after.png",
           "repoPath": "shots/2026-08-14/workspace/visual-matrix/lynx-compact-dark-after.png",
           "bytes": 11859,
-          "gitStatus": "tracked",
+          "gitStatus": "remote",
           "client": "lynx"
         },
         {
@@ -19753,7 +19753,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
           "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/visual-matrix/lynx-compact-light-after.png",
           "repoPath": "shots/2026-08-14/workspace/visual-matrix/lynx-compact-light-after.png",
           "bytes": 11859,
-          "gitStatus": "tracked",
+          "gitStatus": "remote",
           "client": "lynx"
         },
         {
@@ -21817,6 +21817,55 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
       "imageCount": 0,
       "evidenceCount": 1,
       "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
+      "id": "2026-08-19--settings-search-route-persistence",
+      "day": "2026-08-19",
+      "directory": "settings-search-route-persistence",
+      "label": "Settings Search Route Persistence",
+      "images": [
+        {
+          "day": "2026-08-19",
+          "directory": "settings-search-route-persistence/lynx",
+          "name": "results-light-1250x896.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/settings-search-route-persistence/lynx/results-light-1250x896.png",
+          "repoPath": "shots/2026-08-19/settings-search-route-persistence/lynx/results-light-1250x896.png",
+          "bytes": 94025,
+          "gitStatus": "tracked",
+          "client": "lynx"
+        },
+        {
+          "day": "2026-08-19",
+          "directory": "settings-search-route-persistence/web",
+          "name": "results-light-1250x896.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/settings-search-route-persistence/web/results-light-1250x896.png",
+          "repoPath": "shots/2026-08-19/settings-search-route-persistence/web/results-light-1250x896.png",
+          "bytes": 97451,
+          "gitStatus": "tracked",
+          "client": "web"
+        }
+      ],
+      "evidence": [
+        {
+          "day": "2026-08-19",
+          "directory": "settings-search-route-persistence",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-19/settings-search-route-persistence/loss.json",
+          "bytes": 780,
+          "gitStatus": "tracked",
+          "sourceCommit": "ca1886f30112fd0ccd80f60679ff014334bc611b",
+          "sourceTimestamp": "2026-08-19T06:24:47+09:00",
+          "sourceDay": "2026-08-19"
+        }
+      ],
+      "imageCount": 2,
+      "evidenceCount": 1,
+      "clients": [
+        "lynx",
+        "web",
         "evidence"
       ],
       "sequence": false
@@ -37474,9 +37523,9 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
       "imageCount": 57,
       "evidenceCount": 0,
       "byteCount": 2565630,
-      "trackedCount": 41,
+      "trackedCount": 39,
       "untrackedCount": 0,
-      "remoteCount": 16,
+      "remoteCount": 18,
       "directories": [
         {
           "directory": "appearance-settings-cell",
@@ -38084,7 +38133,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/visual-matrix/lynx-compact-dark-after.png",
               "repoPath": "shots/2026-08-14/workspace/visual-matrix/lynx-compact-dark-after.png",
               "bytes": 11859,
-              "gitStatus": "tracked"
+              "gitStatus": "remote"
             },
             {
               "day": "2026-08-14",
@@ -38093,7 +38142,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-14/workspace/visual-matrix/lynx-compact-light-after.png",
               "repoPath": "shots/2026-08-14/workspace/visual-matrix/lynx-compact-light-after.png",
               "bytes": 11859,
-              "gitStatus": "tracked"
+              "gitStatus": "remote"
             },
             {
               "day": "2026-08-14",
@@ -38975,10 +39024,10 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     },
     {
       "day": "2026-08-19",
-      "imageCount": 5,
-      "evidenceCount": 8,
-      "byteCount": 2493856,
-      "trackedCount": 5,
+      "imageCount": 7,
+      "evidenceCount": 9,
+      "byteCount": 2685332,
+      "trackedCount": 7,
       "untrackedCount": 0,
       "remoteCount": 0,
       "directories": [
@@ -39008,6 +39057,36 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/native-system-notifications/native/test-delivered-light-1250x896@2x.png",
               "repoPath": "shots/2026-08-19/native-system-notifications/native/test-delivered-light-1250x896@2x.png",
               "bytes": 684164,
+              "gitStatus": "tracked"
+            }
+          ]
+        },
+        {
+          "directory": "settings-search-route-persistence/lynx",
+          "imageCount": 1,
+          "images": [
+            {
+              "day": "2026-08-19",
+              "directory": "settings-search-route-persistence/lynx",
+              "name": "results-light-1250x896.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/settings-search-route-persistence/lynx/results-light-1250x896.png",
+              "repoPath": "shots/2026-08-19/settings-search-route-persistence/lynx/results-light-1250x896.png",
+              "bytes": 94025,
+              "gitStatus": "tracked"
+            }
+          ]
+        },
+        {
+          "directory": "settings-search-route-persistence/web",
+          "imageCount": 1,
+          "images": [
+            {
+              "day": "2026-08-19",
+              "directory": "settings-search-route-persistence/web",
+              "name": "results-light-1250x896.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/settings-search-route-persistence/web/results-light-1250x896.png",
+              "repoPath": "shots/2026-08-19/settings-search-route-persistence/web/results-light-1250x896.png",
+              "bytes": 97451,
               "gitStatus": "tracked"
             }
           ]

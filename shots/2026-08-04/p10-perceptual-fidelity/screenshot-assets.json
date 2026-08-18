@@ -1,8 +1,8 @@
 {
   "version": 1,
   "assetBaseUrl": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main",
-  "imageCount": 1398,
-  "byteCount": 216147511,
+  "imageCount": 1400,
+  "byteCount": 216338987,
   "images": [
     {
       "day": "2026-08-02",
@@ -11189,6 +11189,22 @@
       "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/native-system-notifications/native/test-delivered-light-1250x896@2x.png",
       "repoPath": "shots/2026-08-19/native-system-notifications/native/test-delivered-light-1250x896@2x.png",
       "bytes": 684164
+    },
+    {
+      "day": "2026-08-19",
+      "directory": "settings-search-route-persistence/lynx",
+      "name": "results-light-1250x896.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/settings-search-route-persistence/lynx/results-light-1250x896.png",
+      "repoPath": "shots/2026-08-19/settings-search-route-persistence/lynx/results-light-1250x896.png",
+      "bytes": 94025
+    },
+    {
+      "day": "2026-08-19",
+      "directory": "settings-search-route-persistence/web",
+      "name": "results-light-1250x896.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-08-19/settings-search-route-persistence/web/results-light-1250x896.png",
+      "repoPath": "shots/2026-08-19/settings-search-route-persistence/web/results-light-1250x896.png",
+      "bytes": 97451
     },
     {
       "day": "2026-08-19",
