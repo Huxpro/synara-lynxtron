@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-custom-model-saved-row-height",
+      "severity": "P2",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx Settings custom model saved rows"
+    }
+  ]
+}

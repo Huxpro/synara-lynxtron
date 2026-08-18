@@ -99,7 +99,7 @@ describe('Settings Custom Models fidelity', () => {
       /\.SliceRoot--viewport-md-up \.SettingsCustomModelsAdd\s*\{[^}]*width:\s*69px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsCustomModelsListRow\s*\{[^}]*min-height:\s*36px;[^}]*padding:\s*8px 12px;/s
+      /\.SettingsCustomModelsListRow\s*\{[^}]*min-height:\s*36px;[^}]*padding:\s*6px 12px;/s
     );
   });
 });
