@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "native-appsnap-auto-new-task",
+      "severity": "P2",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx AppSnap target routing"
+    }
+  ]
+}

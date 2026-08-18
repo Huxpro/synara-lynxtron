@@ -38,8 +38,9 @@ not an upstream screen-capture blocker.
 - Registered captured PNGs through the existing picked-file capability and
   preview/upload pipeline; no multi-megabyte base64 payload crosses the event
   bridge.
-- Added a root AppSnap coordinator that attaches captures to the active thread
-  and retains captures while no thread is open.
+- Added a root AppSnap coordinator that follows the original recent-target
+  policy, creates a fresh Home task when no target is available, and restores
+  pending captures to their persisted draft thread.
 - Enabled the default both-Option listener and persisted its setting.
 - Added real permission state and recheck controls.
 - Kept custom global key chords explicitly unavailable because Lynxtron does
@@ -185,7 +186,5 @@ was filtered and no fidelity weight or scope was changed.
 ## Residuals
 
 - custom modifier+key global chords: missing Native capability, P2;
-- automatically creating a fresh task when no thread is active: missing
-  product coverage, P2;
 - original app-icon/source metadata is not yet displayed on the Lynx chip:
   accepted content residual, P3.
