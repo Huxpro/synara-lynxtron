@@ -215,3 +215,22 @@ Lynxtron issue was proven, so no upstream issue was filed.
   external provider state, `1.00 -> 1.00`; excluded from product loss.
 
 No score weight, sample filtering, or scope reduction changed.
+
+Generated fidelity accounting:
+
+- loss:
+  `11.667654316861451 -> 11.539802495015246`;
+- delta:
+  `-0.12785182184620503`;
+- scope contribution:
+  `-0.13761467889908174`;
+- completeness contribution:
+  `+0.009762857052875162`;
+- visual contribution:
+  `0`;
+- reliability contribution:
+  `0`.
+
+The P1 discovery and fix were recorded atomically in commit `cd494ed6d`, so
+the current active reliability component remains zero rather than inventing a
+committed unresolved interval.
