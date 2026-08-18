@@ -133,3 +133,16 @@ The two historical Workspace compact Lynx PNGs were byte-identical and remain
 represented by labeled remote assets in the screenshot manifest. Their local
 duplicate bytes were removed to preserve the 100-image local cap without
 dropping either historical matrix record.
+
+## Ledger Outcome
+
+- fidelity loss: `11.3023 → 11.2436`;
+- loss delta: `-0.0587`;
+- Web/Lynx visual parity: `99.6636%`;
+- component contribution:
+  - scope: `-0.0637`;
+  - completeness: `+0.0050`;
+  - visual: `0`;
+  - reliability: `0`;
+- visual rolling median remained `1.3917%`;
+- no regression change was recorded.
