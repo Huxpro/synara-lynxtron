@@ -150,7 +150,7 @@ capacity. Adding a future event therefore cannot rewrite historical loss.
 
 ## Time and commit binding
 
-The interval contains 1,037 commits. Of those, 696 are evidence-bearing or
+The interval contains 1,039 commits. Of those, 698 are evidence-bearing or
 reliability-event commits:
 
 - a screenshot, metric, note, or generated evidence artifact was added or

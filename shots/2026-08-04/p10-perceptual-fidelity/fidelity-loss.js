@@ -6,7 +6,7 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
     "lastDay": "2026-08-18",
     "finalStoryCount": 436,
     "finalImageCount": 1393,
-    "evidenceCommitCount": 696
+    "evidenceCommitCount": 698
   },
   "formula": {
     "expression": "100 × (0.30 × scopeGap + 0.25 × clientGap + 0.35 × visualDistance + 0.10 × reliabilityDebt)",
@@ -88801,6 +88801,222 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         ]
       },
       "evidenceFileCount": 1,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 447,
+      "cumulativeRejectedPairCount": 1,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 434,
+      "scopeCoverage": 0.9954128440366973,
+      "clientCompleteness": 0.7402135231316725,
+      "visual": {
+        "loss": 0.14386793475011955,
+        "confidence": 1,
+        "medianPercent": 1.4386793475011956,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.14386793475011955,
+        "previousMedianPercent": 1.4386793475011956,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0,
+        "activeEvents": [],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-devtool-wheel-emulation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "7edf76421",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-cgevent-wheel-delivery",
+            "type": "native-certification-harness-blocker",
+            "detectedAt": "0870afbbd",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only input boundary; use physical hardware wheel evidence or a fixed Lynxtron DevTool wheel path before attributing Native wheel behavior to product code.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 0
+      },
+      "components": {
+        "scope": 0.004587155963302725,
+        "completeness": 0.25978647686832745,
+        "visual": 0.14386793475011955,
+        "reliability": 0
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": -3
+      },
+      "causes": [
+        {
+          "component": "reliability",
+          "contribution": -3,
+          "direction": "down"
+        }
+      ],
+      "regressionChanges": [
+        {
+          "type": "fixed",
+          "id": "native-diff-nested-wheel-routing",
+          "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
+        },
+        {
+          "type": "harness-detected",
+          "id": "native-cgevent-wheel-delivery",
+          "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view."
+        }
+      ],
+      "lossDelta": -2.9999999999999982,
+      "loss": 11.667654316861451,
+      "bestLoss": 11.667654316861451,
+      "smoothLoss": 15.291315009416783
+    },
+    {
+      "index": 696,
+      "day": "2026-08-18",
+      "timestamp": "2026-08-18T10:27:01+09:00",
+      "commit": {
+        "hash": "56516357579ba5a26729a73b3cb4a31fc82ca3f9",
+        "shortHash": "565163575",
+        "timestamp": "2026-08-18T10:27:01+09:00",
+        "date": "2026-08-18",
+        "subject": "docs(fidelity): remove unproven wheel debt",
+        "files": [
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.js",
+          "shots/2026-08-04/p10-perceptual-fidelity/fidelity-loss.json"
+        ]
+      },
+      "evidenceFileCount": 2,
+      "addedStoryIds": [],
+      "addedImages": [],
+      "activatedPairCount": 0,
+      "activatedRejectedPairCount": 0,
+      "activatedHarnessPairCount": 0,
+      "cumulativeAcceptedPairCount": 447,
+      "cumulativeRejectedPairCount": 1,
+      "rollingPairCount": 24,
+      "cumulativeStoryCount": 434,
+      "scopeCoverage": 0.9954128440366973,
+      "clientCompleteness": 0.7402135231316725,
+      "visual": {
+        "loss": 0.14386793475011955,
+        "confidence": 1,
+        "medianPercent": 1.4386793475011956,
+        "sampleCount": 24,
+        "rollingWindowSize": 24,
+        "activatedPairs": [],
+        "activatedRejectedPairs": [],
+        "activatedHarnessPairs": [],
+        "previousLoss": 0.14386793475011955,
+        "previousMedianPercent": 1.4386793475011956,
+        "medianDelta": 0
+      },
+      "reliability": {
+        "loss": 0,
+        "activeEvents": [],
+        "activeHarnessIssues": [
+          {
+            "id": "lynx-web-sidebar-row-bindtap-automation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "2f118bc49",
+            "affectedStoryPrefix": "2026-08-13--temporary-chat-current--",
+            "summary": "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-devtool-wheel-emulation",
+            "type": "interaction-harness-boundary",
+            "detectedAt": "7edf76421",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
+            "resolutionStoryPrefixes": []
+          },
+          {
+            "id": "native-cgevent-wheel-delivery",
+            "type": "native-certification-harness-blocker",
+            "detectedAt": "0870afbbd",
+            "affectedStoryPrefix": "2026-08-17--standalone-diff-native-wheel",
+            "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view.",
+            "severityPoints": 0,
+            "resolvedBy": [],
+            "resolution": "Unresolved harness-only input boundary; use physical hardware wheel evidence or a fixed Lynxtron DevTool wheel path before attributing Native wheel behavior to product code.",
+            "resolutionStoryPrefixes": []
+          }
+        ],
+        "points": 0
+      },
+      "components": {
+        "scope": 0.004587155963302725,
+        "completeness": 0.25978647686832745,
+        "visual": 0.14386793475011955,
+        "reliability": 0
+      },
+      "componentContributions": {
+        "scope": 0,
+        "completeness": 0,
+        "visual": 0,
+        "reliability": 0
+      },
+      "causes": [],
+      "regressionChanges": [],
+      "lossDelta": 0,
+      "loss": 11.667654316861451,
+      "bestLoss": 11.667654316861451,
+      "smoothLoss": 14.639056084756824
+    },
+    {
+      "index": 697,
+      "day": "2026-08-18",
+      "timestamp": "2026-08-18T10:48:51+09:00",
+      "commit": {
+        "hash": "4a22294abc097916df5aec51965c2f7655a3d4e9",
+        "shortHash": "4a22294ab",
+        "timestamp": "2026-08-18T10:48:51+09:00",
+        "date": "2026-08-18",
+        "subject": "docs(fidelity): audit short automation edit",
+        "files": [
+          "shots/2026-08-18/automations-edit-short-height/geometry.json",
+          "shots/2026-08-18/automations-edit-short-height/loss.json",
+          "shots/2026-08-18/automations-edit-short-height/notes.md"
+        ]
+      },
+      "evidenceFileCount": 3,
       "addedStoryIds": [
         "2026-08-14--automations--create-dialog-expanded",
         "2026-08-14--automations--detail-not-found"
@@ -88883,14 +89099,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "scope": -0.13761467889908174,
         "completeness": 0.009762857052875162,
         "visual": 0,
-        "reliability": -3
+        "reliability": 0
       },
       "causes": [
-        {
-          "component": "reliability",
-          "contribution": -3,
-          "direction": "down"
-        },
         {
           "component": "scope",
           "contribution": -0.13761467889908174,
@@ -88902,22 +89113,11 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "direction": "up"
         }
       ],
-      "regressionChanges": [
-        {
-          "type": "fixed",
-          "id": "native-diff-nested-wheel-routing",
-          "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
-        },
-        {
-          "type": "harness-detected",
-          "id": "native-cgevent-wheel-delivery",
-          "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view."
-        }
-      ],
-      "lossDelta": -3.1278518218462033,
+      "regressionChanges": [],
+      "lossDelta": -0.12785182184620503,
       "loss": 11.539802495015246,
       "bestLoss": 11.539802495015246,
-      "smoothLoss": 15.268301681484466
+      "smoothLoss": 14.08119043860334
     }
   ],
   "riseAnalysis": [
@@ -93904,13 +94104,13 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
     {
       "day": "2026-08-18",
       "firstCommitIndex": 676,
-      "lastCommitIndex": 695,
-      "commitCount": 20,
+      "lastCommitIndex": 697,
+      "commitCount": 22,
       "openingLoss": 19.09064857913351,
       "closingLoss": 11.539802495015246,
       "netLossDelta": -7.550846084118264,
       "riseCount": 0,
-      "fallCount": 5,
+      "fallCount": 6,
       "addedStoryCount": 10,
       "activatedPairCount": 3,
       "componentContributions": {
@@ -93939,7 +94139,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         692,
         693,
         694,
-        695
+        695,
+        696,
+        697
       ]
     }
   ],
@@ -217039,20 +217241,22 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
       "newStoryCount": 9
     },
     {
-      "index": 695,
+      "index": 697,
       "day": "2026-08-18",
-      "timestamp": "2026-08-18T10:18:08+09:00",
+      "timestamp": "2026-08-18T10:48:51+09:00",
       "commit": {
-        "hash": "0870afbbd7f8c76bb64dd13ebc8cfc27a8c43790",
-        "shortHash": "0870afbbd",
-        "timestamp": "2026-08-18T10:18:08+09:00",
+        "hash": "4a22294abc097916df5aec51965c2f7655a3d4e9",
+        "shortHash": "4a22294ab",
+        "timestamp": "2026-08-18T10:48:51+09:00",
         "date": "2026-08-18",
-        "subject": "docs(fidelity): correct native wheel attribution",
+        "subject": "docs(fidelity): audit short automation edit",
         "files": [
-          "shots/2026-08-18/native-wheel-attribution-audit/notes.md"
+          "shots/2026-08-18/automations-edit-short-height/geometry.json",
+          "shots/2026-08-18/automations-edit-short-height/loss.json",
+          "shots/2026-08-18/automations-edit-short-height/notes.md"
         ]
       },
-      "evidenceFileCount": 1,
+      "evidenceFileCount": 3,
       "addedStoryIds": [
         "2026-08-14--automations--create-dialog-expanded",
         "2026-08-14--automations--detail-not-found"
@@ -228327,14 +228531,9 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
         "scope": -0.13761467889908174,
         "completeness": 0.009762857052875162,
         "visual": 0,
-        "reliability": -3
+        "reliability": 0
       },
       "causes": [
-        {
-          "component": "reliability",
-          "contribution": -3,
-          "direction": "down"
-        },
         {
           "component": "scope",
           "contribution": -0.13761467889908174,
@@ -228346,23 +228545,12 @@ globalThis.__SYNARA_FIDELITY_LOSS__ = {
           "direction": "up"
         }
       ],
-      "regressionChanges": [
-        {
-          "type": "fixed",
-          "id": "native-diff-nested-wheel-routing",
-          "summary": "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control"
-        },
-        {
-          "type": "harness-detected",
-          "id": "native-cgevent-wheel-delivery",
-          "summary": "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view."
-        }
-      ],
-      "lossDelta": -3.1278518218462033,
+      "regressionChanges": [],
+      "lossDelta": -0.12785182184620503,
       "loss": 11.539802495015246,
       "bestLoss": 11.539802495015246,
-      "smoothLoss": 15.268301681484466,
-      "commitCount": 23,
+      "smoothLoss": 14.08119043860334,
+      "commitCount": 25,
       "newStoryCount": 10
     }
   ]
