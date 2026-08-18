@@ -7,12 +7,12 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     "consecutiveCalendarDays": 16
   },
   "imageCount": 1400,
-  "evidenceCount": 38,
+  "evidenceCount": 39,
   "byteCount": 216338987,
   "trackedCount": 100,
   "untrackedCount": 0,
   "remoteCount": 1300,
-  "storyCount": 471,
+  "storyCount": 472,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -21822,6 +21822,32 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
       "sequence": false
     },
     {
+      "id": "2026-08-19--settings-advanced-repair-reconciliation",
+      "day": "2026-08-19",
+      "directory": "settings-advanced-repair-reconciliation",
+      "label": "Settings Advanced Repair Reconciliation",
+      "images": [],
+      "evidence": [
+        {
+          "day": "2026-08-19",
+          "directory": "settings-advanced-repair-reconciliation",
+          "name": "loss.json",
+          "repoPath": "shots/2026-08-19/settings-advanced-repair-reconciliation/loss.json",
+          "bytes": 507,
+          "gitStatus": "tracked",
+          "sourceCommit": "58085a51c7be37972a0b6ea36146096de4b6c827",
+          "sourceTimestamp": "2026-08-19T06:49:05+09:00",
+          "sourceDay": "2026-08-19"
+        }
+      ],
+      "imageCount": 0,
+      "evidenceCount": 1,
+      "clients": [
+        "evidence"
+      ],
+      "sequence": false
+    },
+    {
       "id": "2026-08-19--settings-search-route-persistence",
       "day": "2026-08-19",
       "directory": "settings-search-route-persistence",
@@ -39025,7 +39051,7 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     {
       "day": "2026-08-19",
       "imageCount": 7,
-      "evidenceCount": 9,
+      "evidenceCount": 10,
       "byteCount": 2685332,
       "trackedCount": 7,
       "untrackedCount": 0,
