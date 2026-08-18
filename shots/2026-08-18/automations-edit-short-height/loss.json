@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "automations-edit-short-height-footer",
+      "severity": "product",
+      "classification": "product-pass",
+      "before": 0,
+      "after": 0,
+      "owner": "Lynx Automation Edit short-height layout"
+    },
+    {
+      "id": "lynx-web-dialog-panel-wheel",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 1,
+      "owner": "Lynx-for-Web custom scroll-view automation"
+    },
+    {
+      "id": "native-automation-edit-short-height-scroll",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 1,
+      "owner": "Native physical wheel and gesture certification"
+    }
+  ]
+}

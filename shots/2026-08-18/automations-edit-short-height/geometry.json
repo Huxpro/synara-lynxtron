@@ -1,0 +1,68 @@
+{
+  "rejectedNonShortCell": {
+    "viewport": {
+      "width": 900,
+      "height": 500,
+      "devicePixelRatio": 1
+    },
+    "rootClasses": [
+      "SliceRoot--viewport-medium"
+    ],
+    "panel": {
+      "clientHeight": 352,
+      "scrollHeight": 374
+    }
+  },
+  "shortCell": {
+    "viewport": {
+      "width": 900,
+      "height": 300,
+      "devicePixelRatio": 1
+    },
+    "dialog": {
+      "x": 170,
+      "y": 16,
+      "width": 560,
+      "height": 268
+    },
+    "panel": {
+      "x": 187,
+      "y": 54,
+      "width": 526,
+      "height": 173,
+      "clientHeight": 173,
+      "scrollHeight": 334,
+      "scrollTop": 0
+    },
+    "repeats": {
+      "x": 187,
+      "y": 288,
+      "width": 526,
+      "height": 16
+    },
+    "weekdays": {
+      "x": 303.640625,
+      "y": 308,
+      "width": 75.34375,
+      "height": 26
+    },
+    "maxIterations": {
+      "x": 187,
+      "y": 342,
+      "width": 526,
+      "height": 16
+    },
+    "runs250": {
+      "x": 537.15625,
+      "y": 362,
+      "width": 68.453125,
+      "height": 26
+    },
+    "save": {
+      "x": 659.265625,
+      "y": 231,
+      "width": 53.734375,
+      "height": 36
+    }
+  }
+}
