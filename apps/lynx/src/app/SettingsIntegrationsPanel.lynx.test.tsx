@@ -61,6 +61,13 @@ describe('Settings Integrations fidelity', () => {
     expect(panelSource).toContain('await refreshExternalMcpPairing(');
     expect(panelSource).toContain('await clipboard.writeText(');
     expect(panelSource).toContain(
+      "from '@synara-web/components/settings/externalMcpSetup'"
+    );
+    expect(panelSource).toContain('buildExternalMcpClientConfiguration(');
+    expect(panelSource).toContain('buildExternalMcpExamplePrompt(');
+    expect(panelSource).toContain('buildExternalMcpSetupPrompt(');
+    expect(panelSource).toContain('externalMcpSetupAction({');
+    expect(panelSource).toContain(
       "queryClient.invalidateQueries({\n        queryKey: ['external-mcp-integrations']"
     );
   });
@@ -139,6 +146,30 @@ describe('Settings Integrations fidelity', () => {
     );
     expect(styles).not.toMatch(
       /\.SettingsIntegrationsSetup,\s*\.SettingsIntegrationsEmpty\s*\{[^}]*min-height:/s
+    );
+    expect(panelSource).toContain('1. Give your agent this prompt');
+    expect(panelSource).toContain('Set up by hand instead');
+    expect(panelSource).toContain('Pairing command (run in Terminal)');
+    expect(panelSource).toContain('MCP configuration (JSON)');
+    expect(panelSource).toContain('2. Try it');
+    expect(panelSource).toContain('Copy example prompt');
+    expect(panelSource).toContain(
+      'className="SettingsIntegrationsCodeBlock SettingsIntegrationsSetupPrompt"'
+    );
+    expect(styles).toMatch(
+      /\.SettingsIntegrationsSetupRow\s*\{[^}]*justify-content:\s*space-between;[^}]*border-bottom:\s*1px solid var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsIntegrationsCodeBlock\s*\{[^}]*height:\s*192px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsIntegrationsSetupPrompt\s*\{[^}]*height:\s*256px;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsIntegrationsSetupRow--stacked\s*>\s*\.SettingsIntegrationsRowCopy\s*\{[^}]*flex:\s*none;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsIntegrationsSetupActionRow\s*\{[^}]*margin-top:\s*10px;/s
     );
   });
 

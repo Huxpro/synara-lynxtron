@@ -211,6 +211,103 @@
   gap: 8px;
 }
 
+.SettingsIntegrationsSetupRow {
+  display: flex;
+  width: 100%;
+  padding: 10px 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.SettingsIntegrationsSetupRow--stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.SettingsIntegrationsSetupRow--stacked > .SettingsIntegrationsRowCopy {
+  flex: none;
+}
+
+.SettingsIntegrationsSetupActionRow {
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.SettingsIntegrationsSetupRow:last-child {
+  border-bottom: 0;
+}
+
+.SettingsIntegrationsSetupDisclosureHeader,
+.SettingsIntegrationsManualHeader {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.SettingsIntegrationsManual {
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  gap: 12px;
+}
+
+.SettingsIntegrationsManualSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.SettingsIntegrationsCodeBlock,
+.SettingsIntegrationsExample {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--muted);
+}
+
+.SettingsIntegrationsCodeBlock {
+  height: 192px;
+}
+
+.SettingsIntegrationsCodeBlock--short {
+  height: 64px;
+}
+
+.SettingsIntegrationsSetupPrompt {
+  height: 256px;
+}
+
+.SettingsIntegrationsCodeText {
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 17px;
+  white-space: pre-wrap;
+}
+
+.SliceRoot--viewport-compact .SettingsIntegrationsSetupRow,
+.SliceRoot--viewport-compact .SettingsIntegrationsSetupDisclosureHeader {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.SliceRoot--viewport-short-height .SettingsIntegrationsSetupPrompt {
+  height: 192px;
+}
+
+.SliceRoot--viewport-short-height .SettingsIntegrationsCodeBlock {
+  max-height: 160px;
+}
+
 .SettingsIntegrationsConnectionActions {
   flex-shrink: 0;
   justify-content: flex-end;

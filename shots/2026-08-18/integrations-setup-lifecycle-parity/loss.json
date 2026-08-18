@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-integrations-guided-setup-capability",
+      "severity": "P1",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx Settings Integrations guided setup composition"
+    },
+    {
+      "id": "native-integrations-stacked-row-collapse",
+      "severity": "P1",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Native Settings Integrations stacked flex layout"
+    },
+    {
+      "id": "lynx-integrations-about-blank-inventory",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Named browser route readiness and identity probe"
+    },
+    {
+      "id": "native-integrations-manual-touch-visibility",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "DevTool scroll-into-view before touch"
+    }
+  ]
+}

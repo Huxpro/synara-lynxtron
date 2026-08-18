@@ -3,7 +3,6 @@ import type { ExternalMcpIntegration } from '@synara/contracts';
 
 import {
   buildExternalMcpCapabilities,
-  buildExternalMcpSetupPrompt,
   describeIntegrationPermissions,
   describeIntegrationProjects,
   formatIntegrationDate,
@@ -107,16 +106,6 @@ describe('Settings Integrations projection', () => {
         'runtime:full-access',
       ])
     ).toContain('Use the shared local checkout');
-  });
-
-  it('builds a self-contained setup prompt from canonical server output', () => {
-    const prompt = buildExternalMcpSetupPrompt({
-      setupCommand: 'synara pair abc',
-      stdio: integration.stdio,
-    });
-    expect(prompt).toContain('synara pair abc');
-    expect(prompt).toContain('"mcpServers"');
-    expect(prompt).toContain('"synara_overview"');
   });
 
   it('matches the Web local timestamp identity for connected agents', () => {

@@ -1,7 +1,6 @@
 import type {
   ExternalMcpCapability,
   ExternalMcpIntegration,
-  ExternalMcpStdioConfiguration,
 } from '@synara/contracts';
 
 export const CORE_EXTERNAL_MCP_CAPABILITIES: readonly ExternalMcpCapability[] = [
@@ -82,49 +81,4 @@ export function describeIntegrationPermissions(
     descriptions.push('Run without approval prompts');
   }
   return descriptions.join(' · ');
-}
-
-function jsonConfiguration(stdio: ExternalMcpStdioConfiguration): string {
-  return JSON.stringify(
-    {
-      mcpServers: {
-        synara: {
-          command: stdio.command,
-          args: stdio.args,
-          ...(stdio.env ? { env: stdio.env } : {}),
-        },
-      },
-    },
-    null,
-    2
-  );
-}
-
-export function buildExternalMcpSetupPrompt(input: {
-  readonly setupCommand: string | null;
-  readonly stdio: ExternalMcpStdioConfiguration;
-}): string {
-  const sections = [
-    'Connect this coding agent to Synara via MCP. Complete every step yourself, in order, and report what happened.',
-  ];
-  if (input.setupCommand) {
-    sections.push(
-      [
-        'Step 1 — Pair this computer. Run this exact command in a shell:',
-        '',
-        input.setupCommand,
-      ].join('\n')
-    );
-  } else {
-    sections.push('Step 1 — Pairing is already completed on this computer.');
-  }
-  sections.push(
-    [
-      'Step 2 — Register Synara as a local stdio MCP server named "synara":',
-      '',
-      jsonConfiguration(input.stdio),
-    ].join('\n'),
-    'Step 3 — Reload MCP servers, call the "synara_overview" tool, and summarize what it returns.'
-  );
-  return sections.join('\n\n');
 }
