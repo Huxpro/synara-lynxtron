@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-automation-edit-time-missing",
+      "severity": "P1",
+      "classification": "product-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx Automation edit timed schedule parity"
+    },
+    {
+      "id": "lynx-web-native-input-text-injection",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 1,
+      "owner": "Lynx-for-Web custom input automation"
+    },
+    {
+      "id": "native-background-text-input",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 1,
+      "owner": "Native physical keyboard certification"
+    }
+  ]
+}

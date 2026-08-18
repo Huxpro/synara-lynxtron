@@ -190,6 +190,10 @@ describe('Lynx Automations route', () => {
       new URL('./automationCreate.logic.ts', import.meta.url),
       'utf8'
     );
+    const timeLogicSource = readFileSync(
+      new URL('./automationTime.logic.ts', import.meta.url),
+      'utf8'
+    );
     const queriesSource = readFileSync(
       new URL('./queries.ts', import.meta.url),
       'utf8'
@@ -213,11 +217,14 @@ describe('Lynx Automations route', () => {
     expect(createLogicSource).toContain(
       '{ type: input.schedule, timeOfDay: input.timeOfDay }'
     );
-    expect(dialogSource).toContain('<NativeTimeInput');
-    expect(dialogSource).toContain("'default-value': '09:00'");
+    expect(dialogSource).toContain('<AutomationTimeInput');
+    expect(dialogSource).toContain('defaultValue={timeOfDay}');
     expect(dialogSource).not.toContain("defaultValue: '09:00'");
     expect(dialogSource).toContain(
-      "/^(?:[01]\\d|2[0-3]):[0-5]\\d$/u.test(timeOfDay)"
+      'isAutomationTimeOfDay(timeOfDay)'
+    );
+    expect(timeLogicSource).toContain(
+      '/^(?:[01]\\d|2[0-3]):[0-5]\\d$/u.test(value)'
     );
     expect(createLogicSource).toContain(
       'export type CreateWorktreeMode = AutomationWorktreeMode'
@@ -341,6 +348,10 @@ describe('Lynx Automations route', () => {
       new URL('./automationEdit.logic.ts', import.meta.url),
       'utf8'
     );
+    const timeInputSource = readFileSync(
+      new URL('./AutomationTimeInput.lynx.tsx', import.meta.url),
+      'utf8'
+    );
     const styles = readFileSync(
       new URL('./automations-page.css', import.meta.url),
       'utf8'
@@ -363,6 +374,20 @@ describe('Lynx Automations route', () => {
     expect(editSource).toContain("['manual', 'Manual']");
     expect(editSource).toContain("['daily', 'Daily']");
     expect(editSource).toContain("['weekdays', 'Weekdays']");
+    expect(editSource).toContain('<AutomationTimeInput');
+    expect(editSource).toContain('defaultValue={timedSchedule.timeOfDay}');
+    expect(editSource).toContain(
+      'setSchedule({ ...timedSchedule, timeOfDay })'
+    );
+    expect(editSource).toContain(
+      'isAutomationTimeOfDay(timedSchedule.timeOfDay)'
+    );
+    expect(timeInputSource).toContain('nativeInput');
+    expect(timeInputSource).toContain('defaultValue={defaultValue}');
+    expect(timeInputSource).toContain('inputFilter="[0-9:]*"');
+    expect(timeInputSource).toContain(
+      'accessibleLabel="Automation time"'
+    );
     expect(editSource).toContain("[10, '10 runs']");
     expect(editLogicSource).toContain(
       'completionPolicyFromStopWhen(stopWhen)'

@@ -19,6 +19,8 @@ import {
   buildAutomationEditInput,
   type AutomationEditScheduleKind,
 } from './automationEdit.logic';
+import { AutomationTimeInput } from './AutomationTimeInput.lynx';
+import { isAutomationTimeOfDay } from './automationTime.logic';
 
 interface NativeTextInputEvent {
   readonly detail: {
@@ -65,10 +67,14 @@ export function AutomationEditDialog({
     open,
   ]);
   const normalizedStopWhen = stopWhen.trim();
+  const timedSchedule =
+    schedule.type === 'daily' || schedule.type === 'weekdays' ? schedule : null;
   const canSave =
     !pending &&
     name.trim().length > 0 &&
     prompt.trim().length > 0 &&
+    (timedSchedule === null ||
+      isAutomationTimeOfDay(timedSchedule.timeOfDay)) &&
     automationEditIsDirty({
       definition,
       name,
@@ -160,6 +166,19 @@ export function AutomationEditDialog({
               ))}
             </view>
           </view>
+          {timedSchedule === null ? null : (
+            <view className="AutomationCreateField">
+              <text className="AutomationCreateLabel">Time</text>
+              <AutomationTimeInput
+                key={`time:${definition.updatedAt}:${open}:${timedSchedule.type}`}
+                defaultValue={timedSchedule.timeOfDay}
+                disabled={pending}
+                onChange={(timeOfDay) =>
+                  setSchedule({ ...timedSchedule, timeOfDay })
+                }
+              />
+            </view>
+          )}
           <view className="AutomationCreateField">
             <text className="AutomationCreateLabel">Max iterations</text>
             <view className="AutomationCreateChoices">

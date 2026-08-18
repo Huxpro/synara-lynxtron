@@ -38,6 +38,8 @@ import {
   type CreateSchedule,
   type CreateWorktreeMode,
 } from './automationCreate.logic';
+import { AutomationTimeInput } from './AutomationTimeInput.lynx';
+import { isAutomationTimeOfDay } from './automationTime.logic';
 
 interface NativeTextInputEvent {
   readonly detail: {
@@ -60,28 +62,6 @@ function NativeNameInput({
     focusable: !disabled,
     maxlength: 160,
     placeholder: 'Daily release review',
-    'send-composing-input': true,
-    bindinput: onInput,
-  });
-}
-
-function NativeTimeInput({
-  disabled,
-  onInput,
-}: {
-  readonly disabled: boolean;
-  readonly onInput: (event: NativeTextInputEvent) => void;
-}) {
-  return createElement('input', {
-    className: 'AutomationCreateTime',
-    'accessibility-element': true,
-    'accessibility-label': 'Automation time',
-    'default-value': '09:00',
-    disabled,
-    focusable: !disabled,
-    inputFilter: '[0-9:]*',
-    maxlength: 5,
-    placeholder: '09:00',
     'send-composing-input': true,
     bindinput: onInput,
   });
@@ -258,7 +238,7 @@ export function AutomationCreateDialog({
     !pending &&
     name.trim().length > 0 &&
     prompt.trim().length > 0 &&
-    (schedule === 'manual' || /^(?:[01]\d|2[0-3]):[0-5]\d$/u.test(timeOfDay)) &&
+    (schedule === 'manual' || isAutomationTimeOfDay(timeOfDay)) &&
     Boolean(project) &&
     (mode === 'standalone' || targetThreadId.length > 0);
 
@@ -450,9 +430,10 @@ export function AutomationCreateDialog({
           {schedule === 'manual' ? null : (
             <view className="AutomationCreateField">
               <text className="AutomationCreateLabel">Time</text>
-              <NativeTimeInput
+              <AutomationTimeInput
+                defaultValue={timeOfDay}
                 disabled={pending}
-                onInput={(event) => setTimeOfDay(event.detail.value)}
+                onChange={setTimeOfDay}
               />
             </view>
           )}
