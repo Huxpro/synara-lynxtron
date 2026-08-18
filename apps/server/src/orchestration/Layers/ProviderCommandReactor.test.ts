@@ -141,6 +141,7 @@ describe("ProviderCommandReactor", () => {
     readonly forkThreadResult?: ProviderForkThreadResult | null;
     readonly startReactor?: boolean;
     readonly interruptTurn?: ProviderServiceShape["interruptTurn"];
+    readonly stopSession?: ProviderServiceShape["stopSession"];
   }) {
     const now = new Date().toISOString();
     const baseDir = input?.baseDir ?? fs.mkdtempSync(path.join(os.tmpdir(), "synara-reactor-"));
@@ -291,20 +292,22 @@ describe("ProviderCommandReactor", () => {
       deleteCheckpointRefs: () => Effect.void,
       ...input?.checkpointStore,
     };
-    const stopSession = vi.fn((input: unknown) =>
-      Effect.sync(() => {
-        const threadId =
-          typeof input === "object" && input !== null && "threadId" in input
-            ? (input as { threadId?: ThreadId }).threadId
-            : undefined;
-        if (!threadId) {
-          return;
-        }
-        const index = runtimeSessions.findIndex((session) => session.threadId === threadId);
-        if (index >= 0) {
-          runtimeSessions.splice(index, 1);
-        }
-      }),
+    const stopSession = vi.fn(
+      input?.stopSession ??
+        ((input: unknown) =>
+          Effect.sync(() => {
+            const threadId =
+              typeof input === "object" && input !== null && "threadId" in input
+                ? (input as { threadId?: ThreadId }).threadId
+                : undefined;
+            if (!threadId) {
+              return;
+            }
+            const index = runtimeSessions.findIndex((session) => session.threadId === threadId);
+            if (index >= 0) {
+              runtimeSessions.splice(index, 1);
+            }
+          })),
     );
     const stopRuntimeSession = vi.fn((input: unknown) =>
       Effect.sync(() => {
@@ -7370,6 +7373,83 @@ describe("ProviderCommandReactor", () => {
     expect(thread?.session?.status).toBe("stopped");
     expect(thread?.session?.threadId).toBe("thread-1");
     expect(thread?.session?.activeTurnId).toBeNull();
+  });
+
+  it("settles a successful session stop when the thread is deleted during provider cleanup", async () => {
+    let releaseStop!: () => void;
+    const stopBlocked = new Promise<void>((resolve) => {
+      releaseStop = resolve;
+    });
+    const harness = await createHarness({
+      stopSession: () => Effect.promise(() => stopBlocked),
+    });
+    const now = new Date().toISOString();
+
+    await Effect.runPromise(
+      harness.engine.dispatch({
+        type: "thread.session.set",
+        commandId: CommandId.makeUnsafe("cmd-session-set-for-delete-race"),
+        threadId: ThreadId.makeUnsafe("thread-1"),
+        session: {
+          threadId: ThreadId.makeUnsafe("thread-1"),
+          status: "ready",
+          providerName: "codex",
+          runtimeMode: "approval-required",
+          activeTurnId: null,
+          lastError: null,
+          updatedAt: now,
+        },
+        createdAt: now,
+      }),
+    );
+
+    await Effect.runPromise(
+      harness.engine.dispatch({
+        type: "thread.session.stop",
+        commandId: CommandId.makeUnsafe("cmd-session-stop-delete-race"),
+        threadId: ThreadId.makeUnsafe("thread-1"),
+        createdAt: now,
+      }),
+    );
+    await waitFor(() => harness.stopSession.mock.calls.length === 1);
+
+    await Effect.runPromise(
+      harness.engine.dispatch({
+        type: "thread.delete",
+        commandId: CommandId.makeUnsafe("cmd-thread-delete-during-stop"),
+        threadId: ThreadId.makeUnsafe("thread-1"),
+      }),
+    );
+    releaseStop();
+
+    const events = await Effect.runPromise(
+      Stream.runCollect(harness.engine.readEvents(0)).pipe(
+        Effect.map((items) => Array.from(items)),
+      ),
+    );
+    const stopEvent = events.find(
+      (event) =>
+        event.commandId === "cmd-session-stop-delete-race" &&
+        event.type === "thread.session-stop-requested",
+    );
+    expect(stopEvent).toBeDefined();
+    await waitFor(async () => {
+      const delivery = await Effect.runPromise(
+        harness.deliveryRepository.getDelivery({
+          consumerName: PROVIDER_COMMAND_REACTOR_CONSUMER,
+          eventSequence: stopEvent!.sequence,
+        }),
+      );
+      return Option.isSome(delivery) && delivery.value.state === "succeeded";
+    });
+    expect(
+      await Effect.runPromise(
+        harness.reactor.listBlockingDeliveries({
+          threadId: "thread-1",
+          limit: 10,
+        }),
+      ),
+    ).toEqual([]);
   });
 
   it("does not restore pending sidechat context after an explicit session stop", async () => {

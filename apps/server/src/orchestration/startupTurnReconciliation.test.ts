@@ -60,6 +60,21 @@ describe("planRestartTurnReconciliation", () => {
     expect(planRestartTurnReconciliation({ threads: [], now: NOW })).toEqual([]);
   });
 
+  it("ignores soft-deleted threads even when their old session looks stuck", () => {
+    expect(
+      planRestartTurnReconciliation({
+        threads: [
+          makeThread("deleted-stuck", {
+            deletedAt: "2026-06-14T09:00:00.000Z",
+            session: makeSession("deleted-stuck"),
+            latestTurn: { state: "running" },
+          }),
+        ],
+        now: NOW,
+      }),
+    ).toEqual([]);
+  });
+
   it("leaves clean threads untouched (no active turn, no in-flight session, no open turn)", () => {
     const threads = [
       makeThread("idle-no-session"),

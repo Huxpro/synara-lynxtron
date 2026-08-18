@@ -2901,6 +2901,10 @@ const make = Effect.gen(function* () {
       yield* providerService.stopSession({ threadId: providerThread.id });
     }
 
+    if (!(yield* resolveThread(thread.id))) {
+      return;
+    }
+
     yield* setThreadSession({
       threadId: thread.id,
       session: {

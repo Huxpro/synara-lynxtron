@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "provider-stop-delete-projection-race",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Shared provider command reactor and durable delivery settlement"
+    },
+    {
+      "id": "deleted-thread-startup-reconciliation",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Shared startup turn reconciliation"
+    },
+    {
+      "id": "historical-deleted-thread-provider-blockers",
+      "severity": "operations",
+      "classification": "operational-reliability-debt",
+      "before": 10,
+      "after": 0,
+      "owner": "Canonical provider delivery reconciliation audit"
+    }
+  ]
+}
