@@ -148,9 +148,9 @@ export function App() {
   const initialTerminalOpen = initData.initialTerminalOpen === true;
   const initialTemporaryOpen = initData.initialTemporaryOpen === true;
   const initialSettingsTarget =
-    initData.initialSettingsTarget === 'environment-panel' ||
-    initData.initialSettingsTarget === 'provider-updates'
-      ? initData.initialSettingsTarget
+    typeof initData.initialSettingsTarget === 'string' &&
+    initData.initialSettingsTarget.trim()
+      ? initData.initialSettingsTarget.trim()
       : null;
   const initialWorkspaceVisible = initData.initialWorkspaceVisible === true;
   const initialRoute =

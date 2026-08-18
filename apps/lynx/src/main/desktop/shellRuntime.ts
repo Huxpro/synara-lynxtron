@@ -351,7 +351,7 @@ export interface SynaraDeepLinkInitData {
   readonly initialEditorSearchOpen: boolean;
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
-  readonly initialSettingsTarget: 'environment-panel' | 'provider-updates' | null;
+  readonly initialSettingsTarget: string | null;
   readonly initialWorkspaceSettingsOpen: boolean;
   readonly initialWorkspaceVisible: boolean;
   readonly initialExplorerOpen: boolean;
@@ -371,8 +371,10 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
     if (url.hostname === 'threads') initialRoute = '/';
     if (url.hostname === 'settings') {
       const section = url.pathname.replace(/^\/+/, '').split('/')[0];
+      const target = url.searchParams.get('target')?.trim();
+      const search = target ? `?target=${encodeURIComponent(target)}` : '';
       initialRoute = section
-        ? `/settings/${encodeURIComponent(decodeURIComponent(section))}`
+        ? `/settings/${encodeURIComponent(decodeURIComponent(section))}${search}`
         : '/settings';
     } else if (url.hostname === 'studio') initialRoute = '/studio';
     else if (url.hostname === 'update') initialRoute = '/update';
@@ -430,13 +432,7 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
         url.searchParams.get('editorSearch') === 'open',
       initialRenameOpen: url.searchParams.get('rename') === 'open',
       initialTerminalOpen: url.searchParams.get('terminal') === 'open',
-      initialSettingsTarget:
-        url.searchParams.get('target') === 'environment-panel' ||
-        url.searchParams.get('target') === 'provider-updates'
-          ? (url.searchParams.get('target') as
-              | 'environment-panel'
-              | 'provider-updates')
-          : null,
+      initialSettingsTarget: url.searchParams.get('target')?.trim() || null,
       initialWorkspaceSettingsOpen:
         url.searchParams.get('workspaceSettings') === 'open',
       initialWorkspaceVisible:

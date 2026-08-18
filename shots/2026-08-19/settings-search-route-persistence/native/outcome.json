@@ -1,0 +1,17 @@
+{
+  "pid": 60980,
+  "client": "localhost:8902",
+  "session": 1,
+  "startupDeepLink": "synara://settings/appearance?target=setting-terminal-font",
+  "resolvedRoute": "/settings/appearance?target=setting-terminal-font",
+  "targetId": "setting-terminal-font",
+  "targetVisible": true,
+  "viewport": {
+    "width": 1250,
+    "height": 896,
+    "devicePixelRatio": 2
+  },
+  "bundleSha256": "81a8472eb56edb917d99bd571f419398df5cef9820c7cc48e100ba25016e7639",
+  "desktopMainSha256": "3bda3e635d0be05293ba2fe79d9f4182fb4c51ce3b83c9771c2e7d6c3182115e",
+  "errorWarningConsoleEmpty": true
+}

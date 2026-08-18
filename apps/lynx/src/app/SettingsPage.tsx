@@ -1,4 +1,5 @@
 import {
+  runOnMainThread,
   useEffect,
   useRef,
   useState,
@@ -109,11 +110,11 @@ import { SettingsSkillsPanel } from './SettingsSkillsPanel.lynx';
 import { SettingsAdvancedPanel } from './SettingsAdvancedPanel.lynx';
 import { SettingsIntegrationsPanel } from './SettingsIntegrationsPanel.lynx';
 import { SettingsAppSnapPanel } from './SettingsAppSnapPanel.lynx';
+import { sleepOnHost } from '../platform/timer';
 import { SettingsSearchResults } from './SettingsSearchResults.lynx';
 import { SidebarDisclosure } from './SidebarDisclosure.lynx';
 import { rankLynxSettingsSearchEntries } from './settingsSearch.logic';
 import { settingsSearchEntryTarget } from '@synara-web/settingsSearchIndex';
-import { scrollLynxElementIntoViewById } from '../components/ui/scrollIntoView.lynx';
 
 const SETTINGS_LOCAL_SAVE_ERROR =
   'Changes could not be saved. Your current values are still shown.';
@@ -364,10 +365,36 @@ async function persistThemeState(themeState: ThemeState): Promise<void> {
   );
 }
 
+function scrollSettingsTargetOnMainThread(targetId: string): boolean {
+  'main thread';
+  const target = lynx.querySelector(`#${targetId}`);
+  if (!target) return false;
+  target.invoke('scrollIntoView', {
+    scrollIntoViewOptions: {
+      block: 'start',
+      inline: 'start',
+    },
+  });
+  return true;
+}
+
+async function scrollSettingsTargetWhenReady(targetId: string): Promise<boolean> {
+  let found = false;
+  await sleepOnHost(100);
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    found =
+      (await runOnMainThread(scrollSettingsTargetOnMainThread)(targetId)) ||
+      found;
+    if (attempt < 2) await sleepOnHost(100);
+  }
+  return found;
+}
+
 export function SettingsPage({
   initialSection = 'general',
   initialTarget = null,
   onBack,
+  onNavigate,
   sidebarOpen,
   openTitlebarControls,
   closedTitlebarControls,
@@ -378,6 +405,10 @@ export function SettingsPage({
   readonly initialSection?: SettingsSectionId;
   readonly initialTarget?: string | null;
   readonly onBack: () => void;
+  readonly onNavigate: (
+    section: SettingsSectionId,
+    target?: string | null
+  ) => void;
   readonly sidebarOpen: boolean;
   readonly openTitlebarControls: ReactNode;
   readonly closedTitlebarControls: ReactNode;
@@ -441,14 +472,19 @@ export function SettingsPage({
   }, [initialSection, initialTarget]);
 
   function selectSearchResult(entry: SettingsSearchEntry) {
-    setSection(entry.section);
-    setPendingSearchTarget(settingsSearchEntryTarget(entry));
+    const target = settingsSearchEntryTarget(entry);
+    onNavigate(entry.section, target);
     setSearchQuery('');
   }
   useEffect(() => {
     if (!pendingSearchTarget || !ready) return;
-    scrollLynxElementIntoViewById(pendingSearchTarget);
-    setPendingSearchTarget(null);
+    let active = true;
+    void scrollSettingsTargetWhenReady(pendingSearchTarget).finally(() => {
+      if (active) setPendingSearchTarget(null);
+    });
+    return () => {
+      active = false;
+    };
   }, [pendingSearchTarget, ready, section]);
 
   useEffect(() => {
@@ -786,7 +822,7 @@ export function SettingsPage({
                 'integrations',
                 'advanced',
               ]}
-              onSelectSection={setSection}
+              onSelectSection={(nextSection) => onNavigate(nextSection)}
             />
           )}
           </view>
@@ -803,7 +839,11 @@ export function SettingsPage({
         }`}
       >
         {sidebarOpen ? null : closedTitlebarControls}
-        <scroll-view className="SettingsContent" scroll-orientation="vertical">
+        <scroll-view
+          id="settings-content-scroll"
+          className="SettingsContent"
+          scroll-orientation="vertical"
+        >
         <view
           className={`SettingsContentInner${
             section === 'profile' ? ' SettingsContentInner--profile' : ''

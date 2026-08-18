@@ -233,6 +233,12 @@
 - `shots/2026-08-14/workspace/visual-matrix/lynx-compact-light-after.png`
 - `shots/2026-08-14/workspace/visual-matrix/lynx-compact-dark-after.png`
 
+Both compact Lynx PNGs are byte-identical (SHA-256
+`e732c88008b463af3e8fd05404c86ecf48fa9f229b241783112b33e68c3c7af0`).
+Their labeled remote assets remain in the screenshot manifest; the duplicate
+local bytes were removed later to keep the local screenshot cap without
+dropping either historical matrix record.
+
 ## Split-layout continuation
 
 ### Product coverage closed

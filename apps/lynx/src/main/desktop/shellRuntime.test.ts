@@ -136,15 +136,17 @@ describe('shellRuntime', () => {
         'synara://settings/general?target=environment-panel'
       )
     ).toMatchObject({
-      initialRoute: '/settings/general',
+      initialRoute: '/settings/general?target=environment-panel',
       initialSettingsTarget: 'environment-panel',
     });
     expect(
       parseSynaraDeepLinkInitData(
-        'synara://settings/general?target=unknown'
+        'synara://settings/appearance?target=setting-terminal-font'
       )
     ).toMatchObject({
-      initialSettingsTarget: null,
+      initialRoute:
+        '/settings/appearance?target=setting-terminal-font',
+      initialSettingsTarget: 'setting-terminal-font',
     });
     expect(
       parseSynaraDeepLinkInitData(

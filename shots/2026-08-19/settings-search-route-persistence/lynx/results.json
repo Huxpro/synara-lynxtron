@@ -1,0 +1,12 @@
+{
+  "query": "terminal font",
+  "results": [
+    "AppearanceTerminal font",
+    "AppearanceTerminal font size"
+  ],
+  "viewport": {
+    "innerWidth": 1250,
+    "innerHeight": 896,
+    "dpr": 1
+  }
+}

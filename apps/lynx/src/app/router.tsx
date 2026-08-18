@@ -60,6 +60,10 @@ import {
 } from './queries';
 import { resolveStudioRestoreRoute } from './studioRoute.logic';
 import {
+  parseSettingsRouteLocation,
+  settingsRouteLocation,
+} from './settingsRoute.logic';
+import {
   projectExplorerDirectories,
   toggleExpandedDirectory,
 } from './explorerTree.logic';
@@ -202,64 +206,68 @@ interface RouteState {
 }
 
 function parseRoute(pathname: string): RouteState {
-  const threadMatch = pathname.match(/^\/thread\/([^/]+)$/);
+  const [routePathname] = pathname.split('?', 2);
+  const threadMatch = routePathname.match(/^\/thread\/([^/]+)$/);
   if (threadMatch) {
     return { pathname: '/thread/$threadId', params: { threadId: threadMatch[1] } };
   }
-  const settingsMatch = pathname.match(/^\/settings(?:\/([^/]+))?$/);
-  if (settingsMatch) {
+  const settingsRoute = parseSettingsRouteLocation(pathname);
+  if (settingsRoute) {
     return {
       pathname: '/settings',
-      params: settingsMatch[1] ? { section: settingsMatch[1] } : {},
+      params: {
+        ...(settingsRoute.section ? { section: settingsRoute.section } : {}),
+        ...(settingsRoute.target ? { target: settingsRoute.target } : {}),
+      },
     };
   }
-  const newThreadMatch = pathname.match(/^\/new-thread\/([^/]+)$/);
+  const newThreadMatch = routePathname.match(/^\/new-thread\/([^/]+)$/);
   if (newThreadMatch) {
     return {
       pathname: '/new-thread/$projectId',
       params: { projectId: decodeURIComponent(newThreadMatch[1]) },
     };
   }
-  if (pathname === '/studio') {
+  if (routePathname === '/studio') {
     return { pathname: '/studio', params: {} };
   }
-  const workspaceMatch = pathname.match(/^\/workspace\/([^/]+)$/);
+  const workspaceMatch = routePathname.match(/^\/workspace\/([^/]+)$/);
   if (workspaceMatch) {
     return {
       pathname: '/workspace/$workspaceId',
       params: { workspaceId: decodeURIComponent(workspaceMatch[1]) },
     };
   }
-  if (pathname === '/workspace') {
+  if (routePathname === '/workspace') {
     return { pathname: '/workspace', params: {} };
   }
-  if (pathname === '/kanban') {
+  if (routePathname === '/kanban') {
     return { pathname: '/kanban', params: {} };
   }
-  const kanbanProjectMatch = pathname.match(/^\/kanban\/([^/]+)$/);
+  const kanbanProjectMatch = routePathname.match(/^\/kanban\/([^/]+)$/);
   if (kanbanProjectMatch) {
     return {
       pathname: '/kanban/$projectId',
       params: { projectId: decodeURIComponent(kanbanProjectMatch[1]) },
     };
   }
-  if (pathname === '/pull-requests') {
+  if (routePathname === '/pull-requests') {
     return { pathname: '/pull-requests', params: {} };
   }
-  if (pathname === '/plugins') {
+  if (routePathname === '/plugins') {
     return { pathname: '/plugins', params: {} };
   }
-  if (pathname === '/automations') {
+  if (routePathname === '/automations') {
     return { pathname: '/automations', params: {} };
   }
-  const automationMatch = pathname.match(/^\/automations\/([^/]+)$/);
+  const automationMatch = routePathname.match(/^\/automations\/([^/]+)$/);
   if (automationMatch) {
     return {
       pathname: '/automations/$automationId',
       params: { automationId: decodeURIComponent(automationMatch[1]) },
     };
   }
-  if (pathname === '/update') {
+  if (routePathname === '/update') {
     return { pathname: '/update', params: {} };
   }
   return { pathname: '/', params: {} };
@@ -270,11 +278,11 @@ export function useRoute(initialPathname: string | null = null): readonly [
   (route: RouteState) => void,
 ] {
   const [route, setRoute] = useState<RouteState>(() =>
-    parseRoute(initialPathname ?? history.location.pathname)
+    parseRoute(initialPathname ?? history.location.href)
   );
   useEffect(() => {
     return history.subscribe(({ location }) => {
-      setRoute(parseRoute(location.pathname));
+      setRoute(parseRoute(location.href));
     });
   }, []);
   return [route, setRoute] as const;
@@ -2331,8 +2339,11 @@ export function SliceRouter({
         initialSection={
           (route.params.section as SettingsSectionId | undefined) ?? 'general'
         }
-        initialTarget={initialSettingsTarget}
+        initialTarget={route.params.target ?? initialSettingsTarget}
         onBack={navigateBackFromSettings}
+        onNavigate={(section, target) => {
+          history.push(settingsRouteLocation(section, target));
+        }}
         sidebarOpen={sidebarOpen}
         openTitlebarControls={openTitlebarControls}
         closedTitlebarControls={closedTitlebarControls}

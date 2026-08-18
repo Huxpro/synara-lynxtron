@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-settings-section-route-persistence",
+      "severity": "P1",
+      "classification": "product-navigation-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx Settings navigation and shell route mirror"
+    },
+    {
+      "id": "lynx-settings-search-target-persistence",
+      "severity": "P1",
+      "classification": "product-interaction-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx Settings search route and Native target scroll"
+    },
+    {
+      "id": "lynx-web-settings-search-input-escape",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 1,
+      "owner": "Lynx-for-Web native input keydown delivery"
+    }
+  ]
+}

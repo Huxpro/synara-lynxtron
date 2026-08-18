@@ -109,10 +109,28 @@ describe('shared settings navigation projection', () => {
     expect(source).toMatch(
       /useEffect\(\(\) => \{\s*setSection\(initialSection\);\s*setPendingSearchTarget\(initialTarget\);\s*setSearchQuery\(''\);\s*\}, \[initialSection, initialTarget\]\);/s
     );
+    expect(source).toContain(
+      'onSelectSection={(nextSection) => onNavigate(nextSection)}'
+    );
+    expect(source).toContain('onNavigate(entry.section, target)');
+    expect(source).toContain(
+      'await runOnMainThread(scrollSettingsTargetOnMainThread)(targetId)'
+    );
+    expect(source).toContain("target.invoke('scrollIntoView'");
+    expect(source).toContain('id="settings-content-scroll"');
+    expect(source).toContain('await sleepOnHost(100)');
+    expect(source).toContain('for (let attempt = 0; attempt < 3; attempt += 1)');
     const routerSource = readFileSync(
       new URL('./router.tsx', import.meta.url),
       'utf8'
     );
+    expect(routerSource).toContain(
+      'history.push(settingsRouteLocation(section, target))'
+    );
+    expect(routerSource).toContain(
+      'initialTarget={route.params.target ?? initialSettingsTarget}'
+    );
+    expect(routerSource).toContain('setRoute(parseRoute(location.href))');
     expect(routerSource).toContain('<TaskCompletionToastHost');
     expect(routerSource).toContain('{taskCompletionToast}');
     expect(source).toContain('includeDesktopShellShortcuts');
