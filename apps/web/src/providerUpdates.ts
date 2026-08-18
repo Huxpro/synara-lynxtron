@@ -7,6 +7,7 @@ import {
   PROVIDER_DISPLAY_NAMES,
   type ProviderKind,
   type ServerProviderStatus,
+  type ServerProviderUpdateResult,
   type ServerSettings,
 } from "@synara/contracts";
 
@@ -49,6 +50,122 @@ export async function withProviderUpdateTimeout<T>(input: {
       clearTimeout(timeoutId);
     }
   }
+}
+
+export type ProviderUpdateFailure = {
+  readonly provider: ServerProviderStatus;
+  readonly reason: string;
+};
+
+export type ProviderUpdateBatchOutcome = {
+  readonly providers: ReadonlyArray<ServerProviderStatus>;
+  readonly failures: ReadonlyArray<ProviderUpdateFailure>;
+  readonly manualCommands: ReadonlyArray<string>;
+  readonly status: "succeeded" | "partially_failed" | "failed";
+};
+
+function providerUpdateFailureReason(
+  provider: ServerProviderStatus,
+  result: ServerProviderUpdateResult,
+): string | null {
+  const refreshed = result.providers.find((entry) => entry.provider === provider.provider);
+  if (!refreshed) {
+    return "The provider status was missing after updating.";
+  }
+
+  const updateState = refreshed.updateState;
+  if (updateState?.status === "failed" || updateState?.status === "unchanged") {
+    return updateState.message ?? "The update command did not complete successfully.";
+  }
+  if (refreshed.versionAdvisory?.status === "behind_latest") {
+    return "The provider still appears outdated after updating.";
+  }
+  return null;
+}
+
+function normalizeProviderUpdateError(error: unknown): string {
+  return error instanceof Error ? error.message : "The update request failed.";
+}
+
+export async function runProviderUpdateBatch(input: {
+  readonly providers: ReadonlyArray<ServerProviderStatus>;
+  readonly updateProvider: (provider: ProviderKind) => Promise<ServerProviderUpdateResult>;
+  readonly timeoutMs?: number;
+}): Promise<ProviderUpdateBatchOutcome> {
+  const failures: ProviderUpdateFailure[] = [];
+
+  for (const provider of input.providers) {
+    try {
+      const result = await withProviderUpdateTimeout({
+        provider: provider.provider,
+        request: input.updateProvider(provider.provider),
+        ...(input.timeoutMs === undefined ? {} : { timeoutMs: input.timeoutMs }),
+      });
+      const reason = providerUpdateFailureReason(provider, result);
+      if (reason) {
+        failures.push({ provider, reason });
+      }
+    } catch (error) {
+      failures.push({
+        provider,
+        reason: normalizeProviderUpdateError(error),
+      });
+    }
+  }
+
+  const manualCommands = Array.from(
+    new Set(
+      failures
+        .map(({ provider }) => provider.versionAdvisory?.updateCommand)
+        .filter(
+          (command): command is string =>
+            typeof command === "string" && command.trim().length > 0,
+        ),
+    ),
+  );
+
+  return {
+    providers: input.providers,
+    failures,
+    manualCommands,
+    status:
+      failures.length === 0
+        ? "succeeded"
+        : failures.length === input.providers.length
+          ? "failed"
+          : "partially_failed",
+  };
+}
+
+export function providerUpdateOutcomeCopy(outcome: ProviderUpdateBatchOutcome): {
+  readonly title: string;
+  readonly description: string;
+  readonly copyText?: string;
+} {
+  if (outcome.status === "succeeded") {
+    return {
+      title:
+        outcome.providers.length === 1
+          ? `${PROVIDER_DISPLAY_NAMES[outcome.providers[0]!.provider]} updated`
+          : `${outcome.providers.length} providers updated`,
+      description: "New sessions will use the refreshed provider tools.",
+    };
+  }
+
+  const failureLines = outcome.failures
+    .map(
+      ({ provider, reason }) => `${PROVIDER_DISPLAY_NAMES[provider.provider]}: ${reason}`,
+    )
+    .join("\n");
+  const hasManualCommands = outcome.manualCommands.length > 0;
+  return {
+    title:
+      outcome.status === "failed" ? "Provider updates failed" : "Some provider updates failed",
+    description: hasManualCommands
+      ? `${failureLines}\n\nCopy the command${outcome.manualCommands.length === 1 ? "" : "s"} below to update manually in a terminal.`
+      : failureLines,
+    ...(hasManualCommands ? { copyText: outcome.manualCommands.join("\n") } : {}),
+  };
 }
 
 type ProviderUpdateFilterInput = {

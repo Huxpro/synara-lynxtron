@@ -15,6 +15,11 @@ describe('Lynx provider update prompt copy', () => {
     expect(source).toContain('className="ProviderUpdatePromptContent"');
     expect(source).toContain('className="ProviderUpdatePromptActions"');
     expect(source).toContain('className="ProviderUpdatePromptDismiss"');
+    expect(source).toContain('runProviderUpdateBatch({');
+    expect(source).toContain('providerUpdateOutcomeCopy(outcome)');
+    expect(source).toContain("activeOutcome?.status === 'succeeded'");
+    expect(source).toContain('Copy command');
+    expect(source).not.toContain('Promise.allSettled');
     expect(styles).toMatch(
       /\.ProviderUpdatePrompt\s*\{[^}]*width:\s*384px;[^}]*min-height:\s*122px;[^}]*border-radius:\s*18px;/s
     );
@@ -32,6 +37,12 @@ describe('Lynx provider update prompt copy', () => {
     );
     expect(styles).toMatch(
       /\.ProviderUpdatePromptAction \+ \.ProviderUpdatePromptAction\s*\{[^}]*margin-left:\s*6px;/s
+    );
+    expect(styles).toMatch(
+      /\.ProviderUpdatePrompt--failure\s*\{[^}]*min-height:\s*162px;/s
+    );
+    expect(styles).toMatch(
+      /\.ProviderUpdatePrompt--failure \.ProviderUpdatePromptDescription\s*\{[^}]*height:\s*auto;[^}]*min-height:\s*80px;/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-compact \.ProviderUpdatePrompt\s*\{[^}]*min-height:\s*126px;/s

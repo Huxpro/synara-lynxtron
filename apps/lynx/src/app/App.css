@@ -323,6 +323,10 @@
   transform: translateX(-50%);
 }
 
+.ProviderUpdatePrompt--failure {
+  min-height: 162px;
+}
+
 .SliceRoot--theme-light .ProviderUpdatePrompt {
   border-color: rgba(1, 105, 204, 0.14);
   background-color: #eaf3fc;
@@ -349,9 +353,19 @@
   height: 96px;
 }
 
+.ProviderUpdatePrompt--failure .ProviderUpdatePromptContent {
+  height: auto;
+  min-height: 136px;
+}
+
 .ProviderUpdatePromptCopy {
   height: 62px;
   gap: 2px;
+}
+
+.ProviderUpdatePrompt--failure .ProviderUpdatePromptCopy {
+  height: auto;
+  min-height: 102px;
 }
 
 .ProviderUpdatePromptActions {
@@ -375,6 +389,11 @@
   font-size: 14px;
   line-height: 20px;
   opacity: 0.72;
+}
+
+.ProviderUpdatePrompt--failure .ProviderUpdatePromptDescription {
+  height: auto;
+  min-height: 80px;
 }
 
 .ProviderUpdatePromptAction {

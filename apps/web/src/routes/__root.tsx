@@ -97,10 +97,12 @@ import { useAppSettings } from "../appSettings";
 import {
   getVisibleProviderUpdateStatuses,
   isProviderUpdateActive,
+  providerUpdateOutcomeCopy,
   providerUpdateNotificationKey,
   PROVIDER_UPDATE_INITIAL_REFRESH_DELAY_MS,
   PROVIDER_UPDATE_REFRESH_INTERVAL_MS,
-  withProviderUpdateTimeout,
+  runProviderUpdateBatch,
+  type ProviderUpdateBatchOutcome,
 } from "../providerUpdates";
 import {
   getGitInvalidationThreadIdForEvent,
@@ -369,44 +371,24 @@ async function runProviderUpdateAll(params: {
     timeout: 0,
   });
 
-  const failures: Array<{ provider: ServerProviderStatus; reason: string }> = [];
+  let outcome: ProviderUpdateBatchOutcome;
 
   try {
     const api = ensureNativeApi();
-    for (const provider of providers) {
-      try {
-        const result = await withProviderUpdateTimeout({
-          provider: provider.provider,
-          request: api.server.updateProvider({ provider: provider.provider }),
-        });
-        const refreshed = result.providers.find((entry) => entry.provider === provider.provider);
-        const updateState = refreshed?.updateState;
-        if (updateState?.status === "failed" || updateState?.status === "unchanged") {
-          failures.push({
-            provider,
-            reason: updateState.message ?? "The update command did not complete successfully.",
-          });
-        } else if (refreshed?.versionAdvisory?.status === "behind_latest") {
-          failures.push({
-            provider,
-            reason: "The provider still appears outdated after updating.",
-          });
-        }
-      } catch (error) {
-        failures.push({
-          provider,
-          reason: error instanceof Error ? error.message : "The update request failed.",
-        });
-      }
-    }
+    outcome = await runProviderUpdateBatch({
+      providers,
+      updateProvider: (provider) => api.server.updateProvider({ provider }),
+    });
   } catch (error) {
-    for (const provider of providers) {
-      failures.push({
-        provider,
-        reason:
-          error instanceof Error ? error.message : "The provider update request could not start.",
-      });
-    }
+    outcome = await runProviderUpdateBatch({
+      providers,
+      updateProvider: () =>
+        Promise.reject(
+          error instanceof Error
+            ? error
+            : new Error("The provider update request could not start."),
+        ),
+    });
   } finally {
     // Refresh is best-effort UI sync; it must not keep the progress toast alive.
     await queryClient
@@ -420,37 +402,16 @@ async function runProviderUpdateAll(params: {
     return;
   }
 
-  if (failures.length > 0) {
+  const copy = providerUpdateOutcomeCopy(outcome);
+  if (outcome.status !== "succeeded") {
     activeToastRef.current = null;
-    // Surface the exact manual commands so a user whose one-click update
-    // failed (EACCES on global npm, PATH/package-manager mismatch, etc.) can
-    // copy and run them in a terminal instead of being stuck.
-    const manualCommands = Array.from(
-      new Set(
-        failures
-          .map(({ provider }) => provider.versionAdvisory?.updateCommand)
-          .filter(
-            (command): command is string =>
-              typeof command === "string" && command.trim().length > 0,
-          ),
-      ),
-    );
-    const failureLines = failures
-      .map(({ provider, reason }) => `${PROVIDER_DISPLAY_NAMES[provider.provider]}: ${reason}`)
-      .join("\n");
     toastManager.update(toastId, {
       type: "error",
-      title:
-        failures.length === providers.length
-          ? "Provider updates failed"
-          : "Some provider updates failed",
-      description:
-        manualCommands.length > 0
-          ? `${failureLines}\n\nCopy the command${manualCommands.length === 1 ? "" : "s"} below to update manually in a terminal.`
-          : failureLines,
+      title: copy.title,
+      description: copy.description,
       data: {
         onClose: dismissProgressToast,
-        ...(manualCommands.length > 0 ? { copyText: manualCommands.join("\n") } : {}),
+        ...(copy.copyText ? { copyText: copy.copyText } : {}),
       },
       timeout: 0,
     });
@@ -460,11 +421,8 @@ async function runProviderUpdateAll(params: {
   activeToastRef.current = null;
   toastManager.update(toastId, {
     type: "success",
-    title:
-      providers.length === 1
-        ? `${PROVIDER_DISPLAY_NAMES[providers[0]!.provider]} updated`
-        : `${providers.length} providers updated`,
-    description: "New sessions will use the refreshed provider tools.",
+    title: copy.title,
+    description: copy.description,
     data: { onClose: dismissProgressToast },
     timeout: 6000,
   });
