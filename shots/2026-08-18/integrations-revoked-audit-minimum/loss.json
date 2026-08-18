@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "external-mcp-revoked-audit-minimum-coverage",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 0,
+      "owner": "Shared External MCP revoked audit projection at the minimum viewport"
+    },
+    {
+      "id": "native-integrations-synthetic-scroll-delivery",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 1,
+      "owner": "Lynxtron DevTool synthetic scroll delivery"
+    }
+  ]
+}
