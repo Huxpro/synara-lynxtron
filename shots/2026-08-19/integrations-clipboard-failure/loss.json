@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "lynx-integrations-clipboard-rejection",
+      "severity": "P1",
+      "classification": "product-interaction-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx Settings Integrations clipboard actions"
+    },
+    {
+      "id": "native-devtool-remembered-port",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "PID-derived Native DevTool targeting"
+    }
+  ]
+}

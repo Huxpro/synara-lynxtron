@@ -38,6 +38,7 @@ import {
   integrationIsActive,
   integrationStatus,
 } from './settingsIntegrations.logic';
+import { copyIntegrationText } from './settingsIntegrationsClipboard.logic';
 
 import './settings-integrations-panel.css';
 
@@ -267,14 +268,24 @@ export function SettingsIntegrationsPanel() {
   async function copySetupPrompt() {
     'background only';
     if (!setupPrompt) return;
-    await clipboard.writeText(setupPrompt);
-    setNotice({ intent: 'success', message: 'Setup prompt copied.' });
+    setNotice(
+      await copyIntegrationText({
+        value: setupPrompt,
+        successMessage: 'Setup prompt copied.',
+        writeText: clipboard.writeText,
+      })
+    );
   }
 
   async function copySetupValue(value: string, message: string) {
     'background only';
-    await clipboard.writeText(value);
-    setNotice({ intent: 'success', message });
+    setNotice(
+      await copyIntegrationText({
+        value,
+        successMessage: message,
+        writeText: clipboard.writeText,
+      })
+    );
   }
 
   function closeSetup() {

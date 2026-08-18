@@ -59,7 +59,16 @@ describe('Settings Integrations fidelity', () => {
     expect(panelSource).toContain('await createExternalMcpIntegration({');
     expect(panelSource).toContain('await revokeExternalMcpIntegration(');
     expect(panelSource).toContain('await refreshExternalMcpPairing(');
-    expect(panelSource).toContain('await clipboard.writeText(');
+    expect(panelSource).toContain('await copyIntegrationText({');
+    expect(panelSource).toContain('writeText: clipboard.writeText');
+    for (const successMessage of [
+      'Setup prompt copied.',
+      'Pairing command copied.',
+      'Configuration copied.',
+      'Example prompt copied.',
+    ]) {
+      expect(panelSource).toContain(successMessage);
+    }
     expect(panelSource).toContain(
       "from '@synara-web/components/settings/externalMcpSetup'"
     );

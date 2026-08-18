@@ -1,0 +1,11 @@
+{
+  "pid": 4732,
+  "client": "localhost:8903",
+  "session": 1,
+  "route": "/settings/integrations",
+  "connectFormVisible": true,
+  "activeIntegrationCount": 0,
+  "historicalAuditRowCount": 5,
+  "productSocketEstablished": true,
+  "errorWarningConsoleEmpty": true
+}
