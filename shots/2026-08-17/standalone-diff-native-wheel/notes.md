@@ -3,10 +3,11 @@
 ## Classification
 
 - Story: `standalone-diff-native-wheel`.
-- Missing coverage: `1.00 -> 0.00`.
-- P1 product/platform loss contribution: `1.00 -> 1.00`.
-- Result: active upstream Desktop nested-scroll routing blocker, not an
-  intentional platform delta and not a passing product cell.
+- Original classification: P1 product/platform loss.
+- Corrected classification: harness loss / missing physical-input coverage.
+- Result: the retained automated input did not prove that a real hardware
+  wheel reached the exact-owned Native process. It cannot support a product or
+  platform loss claim.
 
 The Changes dock has a valid overflowing vertical layout, but Native wheel
 input does not move it. The limitation remains user-visible, so discovering
@@ -55,17 +56,13 @@ The original run used DevTool
 - positive delta movement: `0`;
 - negative delta movement: `0`.
 
-A later audit proved that this specific input path is a harness limitation,
-tracked upstream as `lynx-family/lynxtron#151`; it must not be called real
-system wheel evidence.
+A later audit correctly classified the DevTool path as a harness limitation
+tracked upstream as `lynx-family/lynxtron#151`.
 
-The product loss remains active because a fresh exact-owned run then used a
-real macOS pixel-scroll `CGEvent`. The same product geometry still produced
-`deltaY=0` on `0.0.12-dev`. The latest published Lynxtron `0.0.15` was tested
-separately with the same product bundle and canonical fixture: after real
-system clicks opened Changes and expanded the 30-line first file, real
-pixel-scroll input over both the visible code rows and the outer scroller's
-empty area left byte-identical CoreGraphics frames.
+The subsequent macOS `CGEvent` path was still synthetic input. It used a
+global event tap and did not include a passing exact-owned simple-scroll
+control in the same ownership conditions. The zero Diff movement was therefore
+not sufficient to prove a product or platform loss.
 
 ## Scroll Extent Proof
 
@@ -95,14 +92,19 @@ The final direct-child/probe combination still measured `560/1352` viewport
 and content heights while wheel movement remained `0/0`. No speculative
 product patch was retained.
 
-The HostInputProbe control was re-run with the same real macOS pixel-scroll
-input on both `0.0.12-dev` and `0.0.15`. On `0.0.12-dev` it delivered three
-`bindscroll` calls and reached `scrollTop=242`; `0.0.15` visibly moved from
-`Scroll start` to `Spacer three / Scroll end`. The current gap is therefore
-narrower than a globally missing wheel bridge and specific to the
-nested/product-shaped scroll routing.
+The stricter follow-up reran HostInputProbe with:
 
-Upstream blocker:
+- an exact-owned foreground Lynxtron process;
+- frontmost PID equal to the owned PID;
+- cursor position exactly equal to the target scroll-view coordinates;
+- both positive and negative synthetic pixel-wheel deltas;
+- `CGEvent.postToPid` and global HID event posting.
+
+The simple fixed-height HostInputProbe scroll-view produced zero `bindscroll`
+calls under those conditions. The automated CGEvent path therefore cannot
+certify Native wheel delivery in this environment.
+
+The prior upstream issue was corrected and closed:
 
 - https://github.com/lynx-family/lynx/issues/8665
 
@@ -128,14 +130,16 @@ All browser workflows remained under `browser:run`; process ownership remained
 limited to `scripts/cleanup-agent-browser.sh`. No unrelated Chrome,
 Playwright, remote-debugging, or Lynxtron process was terminated.
 
-## Verification And Cleanup
+## Corrected Verification And Cleanup
 
-- Focused tests passed before each retained conclusion:
-  `3 files / 8 tests`.
-- Native/Desktop production builds passed. Existing unsupported Lynx CSS and
-  optional `bufferutil` / `utf-8-validate` warnings were unchanged.
-- The final tracked worktree retained no product-code modification from the
-  candidate fixes.
+- Current Clay `develop` was built in an isolated clone. A wrapper-shaped
+  horizontal-inside-vertical scroll test passed through the real hit-test
+  path without an engine change, rejecting the proposed ancestor-wrapper
+  engine patch.
+- Synara focused HostInputProbe, Diff dock, word-wrap, and fidelity tests
+  passed.
+- Native/Desktop production builds passed with unchanged registered warnings.
+- No product or Lynx engine patch was retained.
 - Temporary server state, user data, Git fixture, logs, console artifact, and
   JPEG were removed by the owned lifecycle trap.
 - Screenshot count remained exactly `100`.

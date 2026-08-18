@@ -3,12 +3,11 @@
   "components": [
     {
       "id": "standalone-diff-native-wheel",
-      "severity": "P1",
-      "classification": "product-platform-loss",
+      "severity": "harness",
+      "classification": "harness-loss",
       "before": 1,
-      "after": 1,
-      "owner": "Lynx Desktop nested outer scroll-view wheel routing",
-      "upstream": "https://github.com/lynx-family/lynx/issues/8665"
+      "after": 0,
+      "owner": "Native synthetic wheel delivery attribution"
     },
     {
       "id": "native-devtool-wheel-emulation",
@@ -24,8 +23,8 @@
       "severity": "coverage",
       "classification": "missing-coverage",
       "before": 1,
-      "after": 0,
-      "owner": "HostInputProbe real macOS pixel-scroll control"
+      "after": 1,
+      "owner": "Physical hardware wheel control"
     }
   ]
 }

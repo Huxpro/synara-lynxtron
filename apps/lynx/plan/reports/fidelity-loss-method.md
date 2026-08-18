@@ -140,7 +140,8 @@ Reliability is an explicit commit-bounded ledger, not keyword sentiment:
 - viewport hydration race and duplicate resize subscriptions;
 - titlebar controls participating in the drag region;
 - Explorer preview initialization crashing Native startup;
-- Native Diff nested wheel routing blocking an overflowing outer scroll view.
+- Native synthetic-wheel attribution without a passing exact-owned
+  simple-scroll control.
 
 Each event has an introducing commit, an optional fixing commit, and severity
 points. The daily end-of-day point includes only events active at that commit.
