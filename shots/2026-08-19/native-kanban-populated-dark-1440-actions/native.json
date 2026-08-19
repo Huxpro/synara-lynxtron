@@ -1,0 +1,42 @@
+{
+  "pid": 81131,
+  "client": "localhost:8903",
+  "session": 1,
+  "route": "/kanban/kanban-native-project-1787097580201",
+  "theme": "dark",
+  "outerWindow": {
+    "x": 120,
+    "y": 80,
+    "width": 1440,
+    "height": 900
+  },
+  "png": {
+    "width": 2880,
+    "height": 1800,
+    "devicePixelRatio": 2
+  },
+  "projectId": "kanban-native-project-1787097580201",
+  "threadId": "kanban-native-thread-1787097580201",
+  "card": {
+    "title": "Native action chooser proof",
+    "column": "draft",
+    "latestTurn": null,
+    "archivedAt": null
+  },
+  "actions": [
+    "Start task",
+    "Rename task",
+    "Pin",
+    "Copy Path",
+    "Copy Thread ID",
+    "Archive task",
+    "Delete",
+    "Cancel"
+  ],
+  "cancelled": true,
+  "mutationObserved": false,
+  "console": {
+    "errors": [],
+    "warnings": []
+  }
+}

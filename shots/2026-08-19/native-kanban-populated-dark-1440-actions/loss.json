@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "native-kanban-populated-dark-1440-actions",
+      "severity": "coverage",
+      "classification": "missing-coverage",
+      "before": 1,
+      "after": 0,
+      "owner": "Native Kanban project board and card actions"
+    },
+    {
+      "id": "native-kanban-provider-update-overlay-hit-test",
+      "severity": "harness",
+      "classification": "harness-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Native verification state alignment"
+    }
+  ]
+}
