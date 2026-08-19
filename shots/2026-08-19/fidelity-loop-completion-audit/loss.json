@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "fidelity-loop-open-product-p0-p1",
+      "severity": "audit",
+      "classification": "completion-audit",
+      "before": 0,
+      "after": 0,
+      "owner": "Current fidelity loss manifests"
+    },
+    {
+      "id": "fidelity-loop-verifiable-new-scope",
+      "severity": "audit",
+      "classification": "completion-audit",
+      "before": 1,
+      "after": 0,
+      "owner": "Screen, state, theme, viewport, and interaction discovery"
+    }
+  ]
+}
