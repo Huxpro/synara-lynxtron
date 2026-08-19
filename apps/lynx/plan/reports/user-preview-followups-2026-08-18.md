@@ -50,10 +50,19 @@ exact-owned Native evidence.
 - Verify Full access and Default permissions interaction at the Native minimum
   window and a larger desktop size.
 
-## P1 — Cmd+R reload
+## P0 — Cmd+R fresh runtime reload
 
-- Provide a normal application-menu `CmdOrCtrl+R` reload action.
-- Keep force reload separate if exposed.
-- Verify the accelerator reloads the current workspace app and recovers from a
-  renderer error without launching another instance or losing the current
-  server connection.
+- Current failure: after `CmdOrCtrl+R`, Native can report
+  `snapshotPatchApply failed: ctx not found, snapshot type: 'null'`.
+- The current `reloadLynxWindow()` path calls `loadFile()` / `loadURL()` again
+  on the existing `LynxWindow`; do not treat that as fresh until exact-owned
+  evidence proves the old renderer and snapshot context were destroyed.
+- Make `CmdOrCtrl+R` either fully reload the Lynx bundle with a new renderer
+  context or fully close and reopen the application window/process while
+  preserving the canonical route and server connection.
+- Keep force reload separate only if it has a meaningfully stronger lifecycle
+  boundary.
+- Verify repeated reloads from populated thread, empty thread, Settings, and
+  error/LogBox states. Each reload must produce one healthy renderer, no stale
+  DevTool session, no duplicate host listeners, and a clean exact-client
+  warning/error console.
