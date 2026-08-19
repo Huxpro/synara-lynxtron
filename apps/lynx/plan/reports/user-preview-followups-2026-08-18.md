@@ -32,13 +32,16 @@ exact-owned Native evidence.
   minimal upstream issue with a standalone reproduction and use a product-safe
   fallback meanwhile.
 
-## P0 — `r.trim is not a function`
+## P0 — Non-string `trim` / `toLowerCase` runtime failures
 
-- Capture the exact Native stack/source path.
+- Capture the exact Native stack/source path for both observed forms:
+  `r.trim is not a function` and
+  `Cannot read properties of undefined (reading 'toLowerCase')`.
 - Compare current Rspeedy/PrimJS compatibility configuration with Lynx official
   runtime/polyfill guidance.
-- Fix the missing or partial runtime API at the entry/config boundary rather
-  than swallowing the exception.
+- Do not label an undefined receiver as a missing String polyfill. Validate
+  cross-boundary payloads and renderer lifecycle state, then fix the owning
+  source or the actual missing runtime API at the entry/config boundary.
 - Add a focused regression for the exact non-string/partial-polyfill case and
   require a clean exact-client console.
 
@@ -66,3 +69,17 @@ exact-owned Native evidence.
   error/LogBox states. Each reload must produce one healthy renderer, no stale
   DevTool session, no duplicate host listeners, and a clean exact-client
   warning/error console.
+
+## P1 — Thread header Terminal / Editor authority
+
+- Current Lynx ordinary thread headers expose separate text-only `Terminal`
+  and `Editor` buttons.
+- Compare against the current Web `ChatHeader` authority rather than treating
+  the Lynx controls as intentional: ordinary project threads use the
+  Environment/Open-in-editor cluster, while `Terminal` text belongs to an
+  editor-rail surface tab with its terminal icon.
+- Remove or recompose the Lynx-only text controls through shared product
+  composition. Preserve the folder and Environment affordances and avoid
+  hiding capabilities that still need a reachable canonical path.
+- Verify populated and empty project threads, editor rail chat/terminal tabs,
+  narrow and wide windows, both themes, and keyboard/menu entry points.
