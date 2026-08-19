@@ -1633,27 +1633,6 @@ function ThreadPage(props: ThreadPageProps) {
           {threadHeaderIdentity}
         </view>
         <view className="ThreadHeaderControls">
-          <Button
-            variant="ghost"
-            size="xs"
-            disabled={!currentThread?.workspaceRoot}
-            onClick={() => {
-              closeEnvironmentForAction();
-              setExplorerOpen(false);
-              setDiffOpen(false);
-              setTerminalOpen((open) => !open);
-            }}
-          >
-            Terminal
-          </Button>
-          <Button
-            variant="ghost"
-            size="xs"
-            disabled={!currentThread?.workspaceRoot}
-            onClick={enterEditorMode}
-          >
-            Editor
-          </Button>
           <view
             className={`${explorerToggle.className}${
               explorerOpen ? ' ThreadFilesToggle--active' : ''

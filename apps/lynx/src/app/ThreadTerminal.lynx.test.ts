@@ -83,7 +83,7 @@ describe('Lynx thread terminal', () => {
     expect(desktopHostSource).toContain("name === 'terminalClose'");
   });
 
-  it('is wired into the thread header and page body', () => {
+  it('is wired through the editor rail without Lynx-only thread-header text actions', () => {
     const routerSource = readFileSync(
       new URL('./router.tsx', import.meta.url),
       'utf8'
@@ -92,7 +92,15 @@ describe('Lynx thread terminal', () => {
     expect(routerSource).toContain(
       'const [terminalOpen, setTerminalOpen] = useState(initialTerminalOpen)'
     );
-    expect(routerSource).toContain('setTerminalOpen((open) => !open)');
+    expect(routerSource).toContain('const openEditorTerminal = () => {');
+    expect(routerSource).toContain("setEditorRailSurface('terminal')");
+    expect(routerSource).toContain('onOpenEditorView={enterEditorMode}');
+    expect(routerSource).toContain(
+      '<view className="ThreadHeaderControls">\n          <view'
+    );
+    expect(routerSource).not.toContain(
+      '<view className="ThreadHeaderControls">\n          <Button'
+    );
     expect(routerSource).toContain('<ThreadTerminal\n          autoOpen');
     expect(routerSource).toContain(
       'fontFamily={appearance.terminalFontFamily}'
