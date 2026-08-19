@@ -103,6 +103,7 @@ describe('shellRuntime', () => {
         [
           '/Applications/Synara.app/Contents/MacOS/Synara',
           'dist/desktop',
+          'synara://thread/old-thread?terminal=open&editor=open',
           '--synara-relaunch-route=%2Fold',
           '--flag',
         ],

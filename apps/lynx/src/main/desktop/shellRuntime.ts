@@ -358,7 +358,11 @@ export function buildSynaraRelaunchArguments(
 ): string[] {
   const args = argv
     .slice(1)
-    .filter((argument) => !argument.startsWith(SYNARA_RELAUNCH_ROUTE_PREFIX));
+    .filter(
+      (argument) =>
+        !argument.startsWith(SYNARA_RELAUNCH_ROUTE_PREFIX) &&
+        parseSynaraDeepLinkInitData(argument) === null
+    );
   if (route) {
     args.push(`${SYNARA_RELAUNCH_ROUTE_PREFIX}${encodeURIComponent(route)}`);
   }

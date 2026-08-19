@@ -4,7 +4,7 @@ These issues came from hands-on review of the current workspace Lynxtron app.
 Each item remains open until it has focused tests, a production build, and
 exact-owned Native evidence.
 
-## P1 — Sidebar ownership and scrolling
+## Completed — Sidebar ownership and scrolling
 
 - Compare the original Web sidebar and current Lynx sidebar ownership.
 - Keep the Studio/Projects segmented identity attached to its control.
@@ -15,15 +15,19 @@ exact-owned Native evidence.
   - only project/chat collections consume the vertical scroll viewport.
 - Verify normal and constrained heights with real wheel input and fixed-header
   geometry.
+- Closed with exact Native ownership evidence in
+  `shots/2026-08-18/native-sidebar-fixed-navigation-scroll-ownership/`.
 
-## P1 — Sidebar resize
+## Completed — Sidebar resize
 
 - Compare the current sash implementation with `~/github/lynxtron-examples`.
 - Make the visible handle publish real Native pointer movement.
 - Verify width changes, min/max constraints, persistence, restart restoration,
   and no main-content displacement loop.
+- Closed with real system-mouse drag and cold-restart restoration in
+  `shots/2026-08-18/native-sidebar-resize-connection-audit/`.
 
-## P1 — Sidebar icon rendering
+## Completed — Sidebar icon rendering
 
 - Audit missing/wrong sidebar SVGs against the Web authority.
 - Compare the installed Lynxtron runtime with current upstream SVG fixes.
@@ -31,8 +35,10 @@ exact-owned Native evidence.
 - If the runtime still cannot render the required SVG subset, prepare a
   minimal upstream issue with a standalone reproduction and use a product-safe
   fallback meanwhile.
+- Closed by replacing the unsupported Web mask path with exact Native SVG
+  adapters in `shots/2026-08-18/native-sidebar-resize-and-primary-icons/`.
 
-## P0 — Non-string `trim` / `toLowerCase` runtime failures
+## Completed — Non-string `trim` / `toLowerCase` runtime failures
 
 - Capture the exact Native stack/source path for both observed forms:
   `r.trim is not a function` and
@@ -44,16 +50,24 @@ exact-owned Native evidence.
   source or the actual missing runtime API at the entry/config boundary.
 - Add a focused regression for the exact non-string/partial-polyfill case and
   require a clean exact-client console.
+- Native runtime inspection proved both methods exist on background and main
+  threads. The observed `toLowerCase` rejection was associated with stale
+  renderer reconstruction, not a missing String polyfill. Fresh app relaunch
+  plus shared unknown-safe provider/process presentation guards now cover the
+  verified paths; populated-thread reload and Provider settings consoles are
+  clean.
 
-## P1 — Permission menu fidelity
+## Completed — Permission menu fidelity
 
 - Compare the permission popup with the original Web control.
 - Correct typography, row height, selected material, popup dimensions,
   checkmark alignment, trigger treatment, and light/dark behavior.
 - Verify Full access and Default permissions interaction at the Native minimum
   window and a larger desktop size.
+- Closed with exact icon, row, popup, and real selection evidence in
+  `shots/2026-08-18/native-composer-permission-popup-fidelity/`.
 
-## P0 — Cmd+R fresh runtime reload
+## Completed — Cmd+R fresh runtime reload
 
 - Current failure: after `CmdOrCtrl+R`, Native can report
   `snapshotPatchApply failed: ctx not found, snapshot type: 'null'`.
@@ -69,8 +83,12 @@ exact-owned Native evidence.
   error/LogBox states. Each reload must produce one healthy renderer, no stale
   DevTool session, no duplicate host listeners, and a clean exact-client
   warning/error console.
+- `CmdOrCtrl+R` now performs an idempotent full app relaunch, preserves only
+  the current canonical route, and drops stale startup/deep-link UI state.
+  Repeated exact-owned reloads replaced the PID and DevTool session while
+  keeping Settings and populated-thread routes with clean consoles.
 
-## P1 — Thread header Terminal / Editor authority
+## Completed — Thread header Terminal / Editor authority
 
 - Current Lynx ordinary thread headers expose separate text-only `Terminal`
   and `Editor` buttons.
@@ -83,3 +101,6 @@ exact-owned Native evidence.
   hiding capabilities that still need a reachable canonical path.
 - Verify populated and empty project threads, editor rail chat/terminal tabs,
   narrow and wide windows, both themes, and keyboard/menu entry points.
+- Ordinary Native thread headers now expose only the canonical files and
+  Environment controls. Terminal remains reachable as an icon-bearing editor
+  rail tab through the Environment Editor path.
