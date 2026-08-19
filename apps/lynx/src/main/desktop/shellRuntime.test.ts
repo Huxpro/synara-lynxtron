@@ -2,11 +2,13 @@ import { describe, expect, it } from '@rstest/core';
 
 import {
   INITIAL_SHELL_ROUTE_DELIVERY_STATE,
+  buildSynaraRelaunchArguments,
   buildSearchNavigationMenuItems,
   dispatchRendererGlobalEvent,
   SEARCH_NAVIGATION_ACCELERATORS,
   parseSynaraDeepLink,
   parseSynaraDeepLinkInitData,
+  parseSynaraRelaunchRoute,
   parseViewportProbeSequence,
   parseWindowState,
   reduceShellRouteDelivery,
@@ -93,6 +95,31 @@ describe('shellRuntime', () => {
     expect(parseSynaraDeepLink('synara://thread/abc-123')).toBe('/thread/abc-123');
     expect(parseSynaraDeepLink('synara://fidelity-reference')).toBe('/');
     expect(parseSynaraDeepLink('https://example.com')).toBeNull();
+  });
+
+  it('preserves exactly one encoded route across a fresh app relaunch', () => {
+    expect(
+      buildSynaraRelaunchArguments(
+        [
+          '/Applications/Synara.app/Contents/MacOS/Synara',
+          'dist/desktop',
+          '--synara-relaunch-route=%2Fold',
+          '--flag',
+        ],
+        '/settings/appearance?target=setting-terminal-font'
+      )
+    ).toEqual([
+      'dist/desktop',
+      '--flag',
+      '--synara-relaunch-route=%2Fsettings%2Fappearance%3Ftarget%3Dsetting-terminal-font',
+    ]);
+    expect(
+      parseSynaraRelaunchRoute(
+        '--synara-relaunch-route=%2Fsettings%2Fappearance%3Ftarget%3Dsetting-terminal-font'
+      )
+    ).toBe('/settings/appearance?target=setting-terminal-font');
+    expect(parseSynaraRelaunchRoute('--synara-relaunch-route=relative')).toBeNull();
+    expect(parseSynaraRelaunchRoute('--synara-relaunch-route=%E0%A4%A')).toBeNull();
   });
 
   it('preserves supported startup surface state from desktop deep links', () => {

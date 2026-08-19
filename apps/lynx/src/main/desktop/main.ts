@@ -26,12 +26,14 @@ import { resolveSynaraWsUrl } from './runtimeEndpoint.logic';
 import path from 'path';
 import {
   appendShellLog,
+  buildSynaraRelaunchArguments,
   buildSearchNavigationMenuItems,
   INITIAL_SHELL_ROUTE_DELIVERY_STATE,
   dispatchRendererGlobalEvent,
   migrateLegacyShellFiles,
   parseSynaraDeepLink,
   parseSynaraDeepLinkInitData,
+  parseSynaraRelaunchRoute,
   parseViewportProbeSequence,
   readWindowState,
   reduceShellRouteDelivery,
@@ -89,6 +91,7 @@ let routeDeliveryState: ShellRouteDeliveryState =
   INITIAL_SHELL_ROUTE_DELIVERY_STATE;
 let rendererRoute: string | null = null;
 let viewportProbeStarted = false;
+let relaunchRequested = false;
 
 function startViewportProbe(w: LynxWindow): void {
   if (viewportProbeStarted) return;
@@ -214,7 +217,8 @@ function dispatchShellCommand(command: KeybindingCommand): void {
 
 function routeFromArguments(argv: readonly string[]): string | null {
   for (const argument of argv) {
-    const route = parseSynaraDeepLink(argument);
+    const route =
+      parseSynaraRelaunchRoute(argument) ?? parseSynaraDeepLink(argument);
     if (route) return route;
   }
   return null;
@@ -228,7 +232,7 @@ function initDataFromArguments(argv: readonly string[]) {
   return null;
 }
 
-function reloadLynxWindow(w: LynxWindow): void {
+function loadLynxBundle(w: LynxWindow): void {
   const startupInitData = initDataFromArguments(process.argv);
   const route =
     rendererRoute ??
@@ -264,6 +268,29 @@ function reloadLynxWindow(w: LynxWindow): void {
     ).logFile,
     `renderer reload requested route=${route ?? '/'}`
   );
+}
+
+function relaunchApp(): void {
+  if (relaunchRequested) return;
+  relaunchRequested = true;
+  const route =
+    rendererRoute ??
+    routeDeliveryState.pendingRoute ??
+    routeFromArguments(process.argv) ??
+    null;
+  appendShellLog(
+    resolveShellPaths(
+      resolveShellUserDataDir(
+        app.getPath('userData'),
+        process.env.SYNARA_LYNX_USER_DATA_DIR
+      )
+    ).logFile,
+    `fresh app relaunch requested route=${route ?? '/'}`
+  );
+  app.relaunch({
+    args: buildSynaraRelaunchArguments(process.argv, route),
+  });
+  app.quit();
 }
 
 function installApplicationMenu(w: LynxWindow): void {
@@ -399,14 +426,14 @@ function installApplicationMenu(w: LynxWindow): void {
           label: 'Reload',
           accelerator: 'CmdOrCtrl+R',
           registerAccelerator: true,
-          click: () => reloadLynxWindow(w),
+          click: () => relaunchApp(),
         },
         {
           id: 'forceReloadBundle',
           label: 'Force Reload',
           accelerator: 'CmdOrCtrl+Shift+R',
           registerAccelerator: true,
-          click: () => reloadLynxWindow(w),
+          click: () => relaunchApp(),
         },
         ...(isDev ? [{ role: 'toggleDevTools' }] : []),
       ],
@@ -733,8 +760,8 @@ app.whenReady().then(() => {
           if (route) rendererRoute = route;
           callback.sendReply(JSON.stringify({ ok: true }));
         } else if (name === 'shellReload') {
-          reloadLynxWindow(w);
           callback.sendReply(JSON.stringify({ ok: true }));
+          setTimeout(relaunchApp, 0);
         } else if (name === 'shellSetSearchNavigationEnabled') {
           const enabled = data?.enabled === true;
           if (searchNavigationEnabled !== enabled) {
@@ -806,7 +833,10 @@ app.whenReady().then(() => {
   flushWindowState();
   const startupInitData = initDataFromArguments(process.argv);
   const startupRoute =
-    routeDeliveryState.pendingRoute ?? startupInitData?.initialRoute ?? null;
+    routeDeliveryState.pendingRoute ??
+    routeFromArguments(process.argv) ??
+    startupInitData?.initialRoute ??
+    null;
   if (startupRoute) {
     routeDeliveryState = reduceShellRouteDelivery(routeDeliveryState, {
       type: 'route-requested',
@@ -814,7 +844,7 @@ app.whenReady().then(() => {
     }).state;
   }
   rendererRoute = startupRoute;
-  reloadLynxWindow(w);
+  loadLynxBundle(w);
   w.on('close', () => {
     unsubscribeTransportState();
     disposeNativeRpcHost();
