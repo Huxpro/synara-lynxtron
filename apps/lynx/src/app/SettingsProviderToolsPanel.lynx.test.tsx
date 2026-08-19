@@ -85,6 +85,10 @@ describe('Settings Provider tools fidelity', () => {
       new URL('./SettingsPage.tsx', import.meta.url),
       'utf8'
     );
+    const providerUpdatesSource = readFileSync(
+      new URL('../../../web/src/providerUpdates.ts', import.meta.url),
+      'utf8'
+    );
 
     expect(source).toContain("queryKey: ['server-config']");
     expect(source).toContain("queryKey: ['server-settings']");
@@ -92,7 +96,13 @@ describe('Settings Provider tools fidelity', () => {
     expect(source).toContain('request: updateProvider(provider)');
     expect(source).toContain('providerUpdateFailureMessage(');
     expect(source).toContain(
-      "state.status !== 'failed' && state.status !== 'unchanged'"
+      "providerUpdateFailureMessage,\n  providerUpdateStatusLabel,"
+    );
+    expect(providerUpdatesSource).toContain(
+      'if (typeof value !== "string") return null;'
+    );
+    expect(providerUpdatesSource).toContain(
+      'state.status !== "failed" && state.status !== "unchanged"'
     );
     expect(source).toContain('updateServerSettings(patch)');
     expect(source).toContain(

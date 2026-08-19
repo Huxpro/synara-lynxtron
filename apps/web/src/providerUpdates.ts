@@ -64,6 +64,56 @@ export type ProviderUpdateBatchOutcome = {
   readonly status: "succeeded" | "partially_failed" | "failed";
 };
 
+function trimmedExternalString(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+export function formatProviderVersion(value: unknown): string | null {
+  const trimmed = trimmedExternalString(value);
+  if (!trimmed) return null;
+  return trimmed.startsWith("v") ? trimmed : `v${trimmed}`;
+}
+
+export function providerUpdateStatusLabel(
+  provider: ServerProviderStatus | undefined,
+): string | null {
+  if (!provider) return null;
+  const state = provider.updateState?.status;
+  if (state === "queued") return "Update queued";
+  if (state === "running") return "Updating";
+  if (state === "succeeded") return "Updated";
+  if (state === "failed") return "Update failed";
+  if (state === "unchanged") return "Still outdated";
+  const advisory = provider.versionAdvisory;
+  if (advisory?.status === "behind_latest" && advisory.latestVersion) {
+    const currentVersion = formatProviderVersion(advisory.currentVersion);
+    const latestVersion = formatProviderVersion(advisory.latestVersion);
+    return latestVersion
+      ? currentVersion
+        ? `${currentVersion} -> ${latestVersion}`
+        : `Latest ${latestVersion}`
+      : null;
+  }
+  const currentVersion = formatProviderVersion(provider.version);
+  return currentVersion ? `Current ${currentVersion}` : null;
+}
+
+export function providerUpdateFailureMessage(
+  provider: ServerProviderStatus | undefined,
+): string | null {
+  const state = provider?.updateState;
+  if (!state || (state.status !== "failed" && state.status !== "unchanged")) {
+    return null;
+  }
+  return (
+    trimmedExternalString(state.output) ??
+    trimmedExternalString(state.message) ??
+    "The provider update did not complete."
+  );
+}
+
 function providerUpdateFailureReason(
   provider: ServerProviderStatus,
   result: ServerProviderUpdateResult,

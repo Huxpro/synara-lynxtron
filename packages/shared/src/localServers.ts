@@ -43,7 +43,7 @@ export function localServerPrimaryLabel(server: ServerLocalServerProcess): strin
  * the split tolerates either separator defensively.
  */
 export function localServerFolderLabel(server: ServerLocalServerProcess): string | null {
-  const cwd = server.cwd?.trim();
+  const cwd = typeof server.cwd === "string" ? server.cwd.trim() : "";
   if (!cwd) {
     return null;
   }

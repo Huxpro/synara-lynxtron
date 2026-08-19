@@ -7,8 +7,11 @@ import type { ProviderKind, ServerProviderStatus, ServerSettings } from "@synara
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
+  formatProviderVersion,
   getVisibleProviderUpdateStatuses,
   isProviderUpdateActive,
+  providerUpdateFailureMessage,
+  providerUpdateStatusLabel,
   providerUpdateOutcomeCopy,
   providerUpdateNotificationKey,
   runProviderUpdateBatch,
@@ -146,6 +149,55 @@ describe("getVisibleProviderUpdateStatuses", () => {
         oneClickOnly: true,
       }).map((provider) => provider.provider),
     ).toEqual(["codex"]);
+  });
+});
+
+describe("provider update presentation", () => {
+  it("contains malformed external string fields without throwing", () => {
+    expect(formatProviderVersion(42)).toBeNull();
+    expect(
+      providerUpdateStatusLabel(
+        providerStatus("codex", {
+          version: 42 as never,
+          versionAdvisory: {
+            ...providerStatus("codex").versionAdvisory!,
+            currentVersion: { value: "1.0.0" } as never,
+            latestVersion: 11 as never,
+          },
+        }),
+      ),
+    ).toBeNull();
+    expect(
+      providerUpdateFailureMessage(
+        providerStatus("codex", {
+          updateState: {
+            status: "failed",
+            message: { detail: "failed" } as never,
+            output: 17 as never,
+            startedAt: null,
+            completedAt: null,
+          },
+        }),
+      ),
+    ).toBe("The provider update did not complete.");
+  });
+
+  it("preserves valid provider update copy", () => {
+    expect(formatProviderVersion(" 1.2.3 ")).toBe("v1.2.3");
+    expect(providerUpdateStatusLabel(providerStatus("codex"))).toBe("v1.0.0 -> v1.1.0");
+    expect(
+      providerUpdateFailureMessage(
+        providerStatus("codex", {
+          updateState: {
+            status: "failed",
+            message: "fallback",
+            output: " detailed failure ",
+            startedAt: null,
+            completedAt: null,
+          },
+        }),
+      ),
+    ).toBe("detailed failure");
   });
 });
 

@@ -83,6 +83,10 @@ describe("localServerFolderLabel", () => {
   it("returns null when the cwd is only separators", () => {
     expect(localServerFolderLabel(makeServer({ cwd: "/" }))).toBeNull();
   });
+
+  it("contains malformed monitor cwd values", () => {
+    expect(localServerFolderLabel(makeServer({ cwd: 42 as never }))).toBeNull();
+  });
 });
 
 describe("localServerMatchesRun", () => {

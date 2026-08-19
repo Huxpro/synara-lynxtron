@@ -30,7 +30,10 @@ export function resolveSynaraDesktopFlavor(input: {
   readonly isDevelopment: boolean;
   readonly requestedFlavor?: string | undefined;
 }): SynaraDesktopFlavor {
-  if (input.requestedFlavor?.trim().toLowerCase() === "canary") {
+  if (
+    typeof input.requestedFlavor === "string" &&
+    input.requestedFlavor.trim().toLowerCase() === "canary"
+  ) {
     return "canary";
   }
   return input.isDevelopment ? "development" : "production";

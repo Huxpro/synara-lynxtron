@@ -28,8 +28,11 @@ import {
 import { cn } from "~/lib/utils";
 import { ensureNativeApi } from "~/nativeApi";
 import {
+  formatProviderVersion,
   getVisibleProviderUpdateStatuses,
   isProviderUpdateActive,
+  providerUpdateFailureMessage,
+  providerUpdateStatusLabel,
   shouldOfferProviderUpdateAction,
   shouldShowProviderUpdateStatus,
   withProviderUpdateTimeout,
@@ -129,35 +132,6 @@ function ProviderDocsLinks({ docs }: { docs: ProviderToolConfig["docs"] }) {
       </div>
     </div>
   );
-}
-
-function formatProviderVersion(value: string | null | undefined): string | null {
-  const trimmed = value?.trim();
-  if (!trimmed) return null;
-  return trimmed.startsWith("v") ? trimmed : `v${trimmed}`;
-}
-
-function providerUpdateStatusLabel(provider: ServerProviderStatus): string | null {
-  const state = provider.updateState?.status;
-  if (state === "queued") return "Update queued";
-  if (state === "running") return "Updating";
-  if (state === "succeeded") return "Updated";
-  if (state === "failed") return "Update failed";
-  if (state === "unchanged") return "Still outdated";
-  const advisory = provider.versionAdvisory;
-  if (advisory?.status === "behind_latest" && advisory.latestVersion) {
-    const currentVersion = formatProviderVersion(advisory.currentVersion);
-    const latestVersion = formatProviderVersion(advisory.latestVersion);
-    return currentVersion ? `${currentVersion} -> ${latestVersion}` : `Latest ${latestVersion}`;
-  }
-  const currentVersion = formatProviderVersion(provider.version);
-  return currentVersion ? `Current ${currentVersion}` : null;
-}
-
-function providerUpdateFailureMessage(provider: ServerProviderStatus | undefined): string | null {
-  const state = provider?.updateState;
-  if (!state || (state.status !== "failed" && state.status !== "unchanged")) return null;
-  return state.output?.trim() || state.message || "The provider update did not complete.";
 }
 
 function ProviderUpdateAction(props: {

@@ -15,8 +15,11 @@ import {
   type ProviderToolField,
 } from '@synara/shared/providerTools';
 import {
+  formatProviderVersion,
   getVisibleProviderUpdateStatuses,
   isProviderUpdateActive,
+  providerUpdateFailureMessage,
+  providerUpdateStatusLabel,
   shouldOfferProviderUpdateAction,
   shouldShowProviderUpdateStatus,
   withProviderUpdateTimeout,
@@ -55,47 +58,6 @@ import {
 } from './settingsProviderTools.logic';
 
 import './settings-provider-tools-panel.css';
-
-function formatProviderVersion(value: string | null | undefined): string | null {
-  const trimmed = value?.trim();
-  if (!trimmed) return null;
-  return trimmed.startsWith('v') ? trimmed : `v${trimmed}`;
-}
-
-function providerUpdateStatusLabel(
-  status: ServerProviderStatus
-): string | null {
-  const state = status.updateState;
-  if (state?.status === 'queued') return 'Update queued';
-  if (state?.status === 'running') return 'Updating';
-  if (state?.status === 'succeeded') return 'Updated';
-  if (state?.status === 'failed') return 'Update failed';
-  if (state?.status === 'unchanged') return 'Still outdated';
-  const advisory = status.versionAdvisory;
-  if (advisory?.status === 'behind_latest' && advisory.latestVersion) {
-    const currentVersion = formatProviderVersion(advisory.currentVersion);
-    const latestVersion = formatProviderVersion(advisory.latestVersion);
-    return currentVersion
-      ? `${currentVersion} -> ${latestVersion}`
-      : `Latest ${latestVersion}`;
-  }
-  const currentVersion = formatProviderVersion(status.version);
-  return currentVersion ? `Current ${currentVersion}` : null;
-}
-
-function providerUpdateFailureMessage(
-  status: ServerProviderStatus | undefined
-): string | null {
-  const state = status?.updateState;
-  if (!state || (state.status !== 'failed' && state.status !== 'unchanged')) {
-    return null;
-  }
-  return (
-    state.output?.trim() ||
-    state.message ||
-    'The provider update did not complete.'
-  );
-}
 
 function ProviderIdentity(props: { readonly provider: ProviderKind }) {
   const descriptor = PROVIDER_DESCRIPTOR_BY_KIND[props.provider];

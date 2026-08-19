@@ -57,5 +57,11 @@ describe("desktopIdentity", () => {
     expect(resolveSynaraDesktopFlavor({ isDevelopment: true, requestedFlavor: "canary" })).toBe(
       "canary",
     );
+    expect(
+      resolveSynaraDesktopFlavor({
+        isDevelopment: true,
+        requestedFlavor: 42 as never,
+      }),
+    ).toBe("development");
   });
 });
