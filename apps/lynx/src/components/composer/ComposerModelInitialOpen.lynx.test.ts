@@ -26,7 +26,7 @@ describe('Native Composer model initial-open state', () => {
       "isProviderKind(initData.initialComposerModelProvider)"
     );
     expect(composerSource).toContain(
-      "initialModelCatalogProvider ? 'models' : 'providers'"
+      "initialModelMenuProvider ? 'models' : 'providers'"
     );
     expect(composerSource).toContain('EMPTY_ASSISTANT_SELECTIONS');
     expect(composerSource).toContain('EMPTY_NON_PERSISTED_IMAGE_IDS');

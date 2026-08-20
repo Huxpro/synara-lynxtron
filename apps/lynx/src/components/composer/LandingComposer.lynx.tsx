@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import type {
   ModelSelection,
   ProviderKind,
-  ProviderListModelsResult,
 } from '@synara/contracts';
 import { getDefaultModel } from '@synara/shared/model';
 import { PanelStateMessage } from '@synara-web/components/chat/PanelStateMessage';
@@ -21,7 +20,6 @@ import {
   dispatchSynaraCommand,
   browseFilesystem,
   fetchFreshServerConfig,
-  fetchProviderModels,
   fetchServerSettings,
   fetchSynaraSidebarShellSnapshot,
 } from '../../data/synaraClient.lynx';
@@ -83,13 +81,6 @@ export async function loadLandingBootstrap(
         entries: [],
         errorMessage: 'Home folder is not available yet.',
       };
-  const initialModelCatalog: ProviderListModelsResult | null =
-    initialModelProvider && config.homeDir
-      ? await fetchProviderModels({
-          provider: initialModelProvider,
-          cwd: config.homeDir,
-        }).catch(() => null)
-      : null;
   const existing = snapshot.projects.find(
     (project) => project.kind === containerKind
   );
@@ -102,7 +93,6 @@ export async function loadLandingBootstrap(
       localFolders: localFolderResult.entries,
       localFoldersError: localFolderResult.errorMessage,
       homeDir: config.homeDir ?? null,
-      initialModelCatalog,
       generalSettings,
       serverConfig: config,
     };
@@ -147,7 +137,6 @@ export async function loadLandingBootstrap(
       localFolders: localFolderResult.entries,
       localFoldersError: localFolderResult.errorMessage,
       homeDir: config.homeDir ?? null,
-      initialModelCatalog,
       generalSettings,
       serverConfig: config,
     };
@@ -168,7 +157,6 @@ export async function loadLandingBootstrap(
         localFolders: localFolderResult.entries,
         localFoldersError: localFolderResult.errorMessage,
         homeDir: config.homeDir ?? null,
-        initialModelCatalog,
         generalSettings,
         serverConfig: config,
       };
@@ -489,7 +477,6 @@ export function LandingComposer(props: {
         activeTurnId={null}
         workspaceRoot={workspaceContext?.workspaceRoot ?? targetProject.workspaceRoot}
         providerStatuses={data.serverConfig.providers}
-        initialModelCatalog={data.initialModelCatalog}
         emptyLanding={true}
         onBeforeSend={ensureThread}
         onSetInteractionMode={(nextInteractionMode) =>

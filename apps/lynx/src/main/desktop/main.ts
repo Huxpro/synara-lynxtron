@@ -288,7 +288,7 @@ function relaunchApp(): void {
     `fresh app relaunch requested route=${route ?? '/'}`
   );
   app.relaunch({
-    args: buildSynaraRelaunchArguments(process.argv, route),
+    args: buildSynaraRelaunchArguments(process.argv, __dirname, route),
   });
   app.quit();
 }

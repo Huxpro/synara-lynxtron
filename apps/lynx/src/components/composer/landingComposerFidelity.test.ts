@@ -165,9 +165,11 @@ describe('landing composer fidelity contract', () => {
     expect(routerSource).toContain(
       'landingBootstrap?.serverConfig.providers ?? []'
     );
-    expect(landingSource).toContain('initialModelCatalog,');
-    expect(landingSource).toContain(
-      'initialModelCatalog={data.initialModelCatalog}'
+    expect(landingSource).not.toContain('fetchProviderModels');
+    expect(landingSource).not.toContain('initialModelCatalog');
+    expect(composerSource).not.toContain('initialModelCatalog');
+    expect(composerSource).toContain(
+      'runtimeModels={runtimeModelCatalog?.models ?? []}'
     );
     expect(landingSource).toContain(
       'props.initialModelProvider ?? generalSettings.defaultProvider'

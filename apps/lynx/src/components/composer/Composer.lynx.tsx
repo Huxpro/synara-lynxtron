@@ -9,7 +9,6 @@ import { useQuery } from '@tanstack/react-query';
 import type {
   ModelSelection,
   ProviderKind,
-  ProviderListModelsResult,
   ProviderMentionReference,
   ProviderSkillReference,
   ServerProviderStatus,
@@ -321,7 +320,6 @@ interface ComposerProps {
   readonly draftId?: string;
   readonly workspaceRoot?: string | null;
   readonly emptyLanding?: boolean;
-  readonly initialModelCatalog?: ProviderListModelsResult | null;
   readonly providerStatuses?: readonly ServerProviderStatus[];
   readonly onBeforeSend?: (input: {
     readonly interactionMode: 'default' | 'plan';
@@ -356,7 +354,6 @@ export function Composer({
   draftId,
   workspaceRoot,
   emptyLanding = false,
-  initialModelCatalog,
   providerStatuses,
   onBeforeSend,
   onProviderStatusesChange,
@@ -367,7 +364,7 @@ export function Composer({
   const initData = useInitData() as {
     readonly initialComposerModelProvider?: unknown;
   };
-  const initialModelCatalogProvider =
+  const initialModelMenuProvider =
     typeof initData.initialComposerModelProvider === 'string' &&
     isProviderKind(initData.initialComposerModelProvider)
       ? initData.initialComposerModelProvider
@@ -465,7 +462,7 @@ export function Composer({
   const [composerHighlightedItemId, setComposerHighlightedItemId] =
     useState<string | null>(null);
   const [modelCatalogProvider, setModelCatalogProvider] =
-    useState<ProviderKind | null>(initialModelCatalogProvider);
+    useState<ProviderKind | null>(initialModelMenuProvider);
   const pendingNativeValueRef = useRef<ComposerNativeValueAck | null>(null);
   const nativeSelectionRef = useRef({
     selectionStart: draftProjection.displayText.length,
@@ -1787,13 +1784,9 @@ export function Composer({
                       ],
                   })}
                   initialPanel={
-                    initialModelCatalogProvider ? 'models' : 'providers'
+                    initialModelMenuProvider ? 'models' : 'providers'
                   }
-                  runtimeModels={
-                    runtimeModelCatalog?.models ??
-                    initialModelCatalog?.models ??
-                    []
-                  }
+                  runtimeModels={runtimeModelCatalog?.models ?? []}
                   modelsLoading={
                     runtimeModelsPending ||
                     (runtimeModelsFetching && !runtimeModelCatalog)

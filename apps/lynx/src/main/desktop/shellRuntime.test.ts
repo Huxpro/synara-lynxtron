@@ -107,12 +107,23 @@ describe('shellRuntime', () => {
           '--synara-relaunch-route=%2Fold',
           '--flag',
         ],
+        '/Applications/Synara.app/Contents/Resources/app',
         '/settings/appearance?target=setting-terminal-font'
       )
     ).toEqual([
-      'dist/desktop',
+      '/Applications/Synara.app/Contents/Resources/app',
       '--flag',
       '--synara-relaunch-route=%2Fsettings%2Fappearance%3Ftarget%3Dsetting-terminal-font',
+    ]);
+    expect(
+      buildSynaraRelaunchArguments(
+        ['/path/to/lynxtron'],
+        '/Users/tester/synara/apps/lynx/dist/desktop',
+        '/thread/thread-one'
+      )
+    ).toEqual([
+      '/Users/tester/synara/apps/lynx/dist/desktop',
+      '--synara-relaunch-route=%2Fthread%2Fthread-one',
     ]);
     expect(
       parseSynaraRelaunchRoute(

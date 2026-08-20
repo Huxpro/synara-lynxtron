@@ -354,15 +354,24 @@ export function parseSynaraRelaunchRoute(raw: string): string | null {
 
 export function buildSynaraRelaunchArguments(
   argv: readonly string[],
+  applicationPath: string,
   route: string | null
 ): string[] {
-  const args = argv
-    .slice(1)
+  const processArguments = argv.slice(1);
+  const args = processArguments
+    .slice(
+      processArguments[0] &&
+        !processArguments[0].startsWith('-') &&
+        parseSynaraDeepLinkInitData(processArguments[0]) === null
+        ? 1
+        : 0
+    )
     .filter(
       (argument) =>
         !argument.startsWith(SYNARA_RELAUNCH_ROUTE_PREFIX) &&
         parseSynaraDeepLinkInitData(argument) === null
     );
+  args.unshift(applicationPath);
   if (route) {
     args.push(`${SYNARA_RELAUNCH_ROUTE_PREFIX}${encodeURIComponent(route)}`);
   }

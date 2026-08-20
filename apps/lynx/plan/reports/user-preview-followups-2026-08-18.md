@@ -51,11 +51,13 @@ exact-owned Native evidence.
 - Add a focused regression for the exact non-string/partial-polyfill case and
   require a clean exact-client console.
 - Native runtime inspection proved both methods exist on background and main
-  threads. The observed `toLowerCase` rejection was associated with stale
-  renderer reconstruction, not a missing String polyfill. Fresh app relaunch
-  plus shared unknown-safe provider/process presentation guards now cover the
-  verified paths; populated-thread reload and Provider settings consoles are
-  clean.
+  threads. A later cold-start reproduction isolated the remaining
+  `toLowerCase` rejection to the fetched model catalog crossing the initial
+  landing bootstrap/IFR render boundary. The landing bootstrap no longer
+  fetches or carries that catalog; the existing post-mount Composer query owns
+  model discovery instead. Exact-owned production verification covered cold
+  start, real model-menu discovery, canonical send/navigation, provider
+  response, and a clean exact-client console.
 
 ## Completed — Permission menu fidelity
 
@@ -85,8 +87,10 @@ exact-owned Native evidence.
   warning/error console.
 - `CmdOrCtrl+R` now performs an idempotent full app relaunch, preserves only
   the current canonical route, and drops stale startup/deep-link UI state.
-  Repeated exact-owned reloads replaced the PID and DevTool session while
-  keeping Settings and populated-thread routes with clean consoles.
+  The relaunch explicitly supplies the staged desktop app path because
+  workspace Lynxtron omits it from `process.argv`. Repeated exact-owned reloads
+  replaced the PID and DevTool session while keeping Settings, landing, and
+  populated-thread routes with clean consoles.
 
 ## Completed — Thread header Terminal / Editor authority
 

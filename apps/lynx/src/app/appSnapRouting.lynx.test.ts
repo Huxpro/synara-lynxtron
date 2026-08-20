@@ -24,7 +24,6 @@ const bootstrap = {
   localFolders: [],
   localFoldersError: null,
   homeDir: '/Users/tester',
-  initialModelCatalog: null,
   generalSettings: {
     defaultProvider: 'codex',
     defaultThreadEnvMode: 'worktree',
