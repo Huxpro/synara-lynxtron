@@ -1213,11 +1213,25 @@
   align-items: center;
   justify-content: center;
   border-radius: 9px;
+}
+
+.ComposerReferenceRemoveLynx--solid {
   background-color: var(--foreground);
 }
 
-.ComposerReferenceRemoveLynx.ui-hover {
+.ComposerReferenceRemoveLynx--ghost {
+  top: 2px;
+  right: 3px;
+  background-color: transparent;
+}
+
+.ComposerReferenceRemoveLynx--solid.ui-hover {
   opacity: 0.88;
+}
+
+.ComposerReferenceRemoveLynx--ghost.ui-hover,
+.ComposerReferenceRemoveLynx--ghost.ui-pressed {
+  background-color: var(--secondary);
 }
 
 .ComposerReferenceRemoveLynx.ui-focus {
@@ -1228,7 +1242,14 @@
   width: 12px;
   height: 12px;
   flex-shrink: 0;
+}
+
+.ComposerReferenceRemoveLynx--solid .ComposerReferenceRemoveIconLynx {
   color: var(--background);
+}
+
+.ComposerReferenceRemoveLynx--ghost .ComposerReferenceRemoveIconLynx {
+  color: var(--muted-foreground);
 }
 
 .ComposerReferenceActionChevronLynx {

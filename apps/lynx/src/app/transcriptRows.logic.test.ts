@@ -7,9 +7,34 @@ import {
   resolveTranscriptPinnedFromScroll,
   resolveTranscriptPinnedFromSample,
   resolveMessageWorkPlacement,
+  resolveTranscriptWorkEntryDisplayText,
   transcriptRowVersion,
   type MessageTranscriptRow,
 } from './transcriptRows.logic';
+
+describe('transcript work-entry presentation', () => {
+  it('uses the shared reasoning formatter instead of leaking markdown', () => {
+    expect(
+      resolveTranscriptWorkEntryDisplayText({
+        id: 'reasoning-1',
+        label: 'Reasoning trace',
+        detail: '**Planning GitHub verification approach**',
+        tone: 'tool',
+      } as never)
+    ).toBe('Planning GitHub verification approach');
+  });
+
+  it('keeps ordinary work rows in label-detail form', () => {
+    expect(
+      resolveTranscriptWorkEntryDisplayText({
+        id: 'tool-1',
+        label: 'Read',
+        detail: 'src/index.ts',
+        tone: 'tool',
+      } as never)
+    ).toBe('Read src/index.ts');
+  });
+});
 
 describe('buildTranscriptScrollToBottomParams', () => {
   it('uses the Lynx list position contract and targets the final row', () => {

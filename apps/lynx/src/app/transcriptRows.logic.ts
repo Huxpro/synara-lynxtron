@@ -3,9 +3,22 @@ import {
   DEFAULT_CHAT_FONT_SIZE_PX,
   normalizeChatFontSizePx,
 } from '@synara-web/chatFontSize';
+import {
+  formatAgentActivityEntryPreview,
+  isReasoningUpdateWorkEntry,
+} from '@synara-web/components/chat/agentActivity.logic';
 
 export type MessageTranscriptRow = Extract<ThreadTranscriptRow, { kind: 'message' }>;
 export type WorkLogEntry = Extract<ThreadTranscriptRow, { kind: 'work' }>['groupedEntries'][number];
+
+export function resolveTranscriptWorkEntryDisplayText(
+  entry: WorkLogEntry
+): string {
+  if (isReasoningUpdateWorkEntry(entry)) {
+    return formatAgentActivityEntryPreview(entry) ?? entry.label;
+  }
+  return entry.detail ? `${entry.label} ${entry.detail}` : entry.label;
+}
 
 const TRANSCRIPT_ESTIMATED_CHARS_PER_LINE = 72;
 const TRANSCRIPT_ESTIMATED_LINE_HEIGHT_PX = 28;

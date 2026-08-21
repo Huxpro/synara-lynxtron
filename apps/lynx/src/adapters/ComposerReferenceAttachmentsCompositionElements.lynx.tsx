@@ -45,9 +45,12 @@ interface ImageEntry {
 function ComposerReferenceRemoveButton(props: {
   readonly label: string;
   readonly onRemove: () => void;
+  readonly tone?: 'solid' | 'ghost';
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'ComposerReferenceRemoveLynx',
+    baseClassName: `ComposerReferenceRemoveLynx ComposerReferenceRemoveLynx--${
+      props.tone ?? 'solid'
+    }`,
     accessibleLabel: props.label,
     onActivate: props.onRemove,
   });
@@ -84,7 +87,11 @@ export function ComposerAssistantSelectionsAttachmentElement({
       <MessageCircleIcon className="ComposerReferenceGlyphLynx" size={12} />
       <text className="ComposerReferenceLabelLynx">{label}</text>
       {onRemove ? (
-        <ComposerReferenceRemoveButton label="Remove selections" onRemove={onRemove} />
+        <ComposerReferenceRemoveButton
+          label="Remove selections"
+          onRemove={onRemove}
+          tone="ghost"
+        />
       ) : null}
     </view>
   );
@@ -104,7 +111,11 @@ export function ComposerFileCommentsAttachmentElement({
       <MessageCircleIcon className="ComposerReferenceGlyphLynx" size={12} />
       <text className="ComposerReferenceLabelLynx">{label}</text>
       {onRemove ? (
-        <ComposerReferenceRemoveButton label="Remove comments" onRemove={onRemove} />
+        <ComposerReferenceRemoveButton
+          label="Remove comments"
+          onRemove={onRemove}
+          tone="ghost"
+        />
       ) : null}
     </view>
   );

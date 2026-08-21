@@ -55,6 +55,13 @@ describe('composer reference attachment interaction contract', () => {
     expect(styles).not.toMatch(
       /\.ComposerReference(?:CardAction|Remove|Image)Lynx\.ui-pressed\s*\{[^}]*opacity:/s
     );
+    expect(source).toContain('tone="ghost"');
+    expect(styles).toMatch(
+      /\.ComposerReferenceRemoveLynx--ghost\s*\{[^}]*top:\s*2px;[^}]*right:\s*3px;[^}]*background-color:\s*transparent;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerReferenceRemoveLynx--ghost \.ComposerReferenceRemoveIconLynx\s*\{[^}]*color:\s*var\(--muted-foreground\);/s
+    );
     expect(styles).toMatch(
       /\.ComposerReferenceImageLynx\s*\{[^}]*border:\s*1px solid var\(--color-border-light\);[^}]*border-radius:\s*12px;[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
     );

@@ -38,6 +38,7 @@ import {
   resolveTranscriptPinnedFromScroll,
   resolveTranscriptPinnedFromSample,
   resolveMessageWorkPlacement,
+  resolveTranscriptWorkEntryDisplayText,
   transcriptRowVersion,
   type MessageTranscriptRow,
   type WorkLogEntry,
@@ -76,7 +77,7 @@ function TranscriptStatusIcon(props: {
 function TranscriptWorkEntry({ entry }: { entry: WorkLogEntry }) {
   return (
     <TimelineStatusRowComposition
-      displayText={entry.detail ? `${entry.label} ${entry.detail}` : entry.label}
+      displayText={resolveTranscriptWorkEntryDisplayText(entry)}
       fontSizePx={12}
       icon={<TranscriptStatusIcon tone={entry.tone} />}
       tone={entry.tone}
