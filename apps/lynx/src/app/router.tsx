@@ -44,6 +44,7 @@ import {
   isSupportedLocalPreviewFilePath,
 } from '@synara/shared/localPreviewFiles';
 import { VIEWPORT_BREAKPOINTS } from '@synara-web/responsiveLayout.logic';
+import panelRightCloseSvg from '@synara-central-icons/sidebar-hidden-right-wide.svg?raw';
 
 import {
   fetchExplorerDirectory,
@@ -150,6 +151,8 @@ import {
   SearchIcon,
 } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import { useTheme } from '../adapters/useTheme.lynx';
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import { webStorage } from '../platform/storage';
 import { formatRelativeTime } from '@synara-web/lib/relativeTime';
 import { resolveEditorChatHistoryThreads } from './editorChatHistory.logic';
@@ -589,6 +592,7 @@ function ThreadRightDocks(
 }
 
 function ThreadPage(props: ThreadPageProps) {
+  const { svgColors } = useTheme();
   const initData = useInitData() as {
     readonly initialEditorHistoryOpen?: unknown;
     readonly initialEditorNewChatOpen?: unknown;
@@ -815,13 +819,41 @@ function ThreadPage(props: ThreadPageProps) {
       setExplorerVisibility,
     ]
   );
-  const explorerToggle = useLynxInteractiveState({
-    baseClassName: 'ThreadFilesToggle',
-    accessibleLabel: 'Toggle files panel',
+  const diffToggle = useLynxInteractiveState({
+    baseClassName: `ThreadDiffToggle${
+      diffOpen ? ' ThreadDiffToggle--active' : ''
+    }`,
+    accessibleLabel: 'Toggle diff panel',
     disabled: !currentThread?.workspaceRoot,
-    onActivate: () => setExplorerVisibility(!explorerOpen),
+    accessibilityValue: diffOpen ? 'On' : 'Off',
+    onActivate: () => {
+      closeEnvironmentForAction();
+      setExplorerOpen(false);
+      setExplorerDockWidth(null);
+      setDiffOpen(!diffOpen);
+    },
   });
+  const availableDockWidth = threadPageWidth || viewportWidth;
   const rightDockWidth = explorerOpen ? explorerDockWidth : diffDockWidth;
+  const measuredRightDockWidth =
+    rightDockWidth !== null && rightDockWidth > 0 ? rightDockWidth : null;
+  const effectiveRightDockWidth = explorerOpen
+    ? (measuredRightDockWidth ??
+      clampSidebarWidth(initialExplorerWidth ?? Math.round(availableDockWidth / 2), {
+        maxWidth: 960,
+        minWidth: 480,
+        minimumContentWidth: 320,
+        viewportWidth: availableDockWidth,
+      }))
+    : diffOpen
+      ? (measuredRightDockWidth ??
+        clampSidebarWidth(Math.round(availableDockWidth / 2), {
+          maxWidth: 720,
+          minWidth: 320,
+          minimumContentWidth: 320,
+          viewportWidth: availableDockWidth,
+        }))
+      : null;
   const [respondingApprovalRequestId, setRespondingApprovalRequestId] =
     useState<string | null>(null);
   const [respondingUserInputRequestId, setRespondingUserInputRequestId] =
@@ -1623,8 +1655,8 @@ function ThreadPage(props: ThreadPageProps) {
         if (typeof width === 'number' && width > 0) setThreadPageWidth(width);
       }}
       style={
-        (diffOpen || explorerOpen) && rightDockWidth !== null
-          ? { paddingRight: `${rightDockWidth}px` }
+        effectiveRightDockWidth !== null
+          ? { paddingRight: `${effectiveRightDockWidth}px` }
           : undefined
       }
     >
@@ -1633,18 +1665,25 @@ function ThreadPage(props: ThreadPageProps) {
           {threadHeaderIdentity}
         </view>
         <view className="ThreadHeaderControls">
-          <view
-            className={`${explorerToggle.className}${
-              explorerOpen ? ' ThreadFilesToggle--active' : ''
-            }${explorerToggle.disabled ? ' ui-disabled' : ''}`}
-            {...explorerToggle.eventProps}
-          >
-            <FolderIcon size={16} color="var(--muted-foreground)" />
-          </view>
           <EnvironmentToggle
             open={resolvedEnvironmentOpen}
             onChange={setEnvironmentVisibility}
           />
+          <view
+            className={`${diffToggle.className}${
+              diffToggle.disabled ? ' ui-disabled' : ''
+            }`}
+            aria-pressed={diffOpen}
+            {...diffToggle.eventProps}
+          >
+            <svg
+              className="ThreadDiffToggleIcon"
+              content={colorizeLynxSvg(
+                panelRightCloseSvg,
+                svgColors.mutedForeground
+              )}
+            />
+          </view>
         </view>
       </ChatSurfaceHeaderFrame>
       <ThreadErrorBanner
@@ -1695,6 +1734,9 @@ function ThreadPage(props: ThreadPageProps) {
           threadMarkers={currentThread.threadMarkers}
           pullRequest={currentThread.lastKnownPr}
           provider={currentThread.provider ?? 'codex'}
+          rightInsetPx={
+            effectiveRightDockWidth
+          }
           recapRevision={threadRecapRevision(
             data ?? [],
             currentThread.latestTurnState

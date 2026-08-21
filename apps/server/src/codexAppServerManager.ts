@@ -276,6 +276,8 @@ const RECOVERABLE_THREAD_RESUME_ERROR_SNIPPETS = [
   "no such thread",
   "unknown thread",
   "does not exist",
+  "already has an active writer",
+  "thread-store conflict",
 ];
 const CODEX_DEFAULT_MODEL = "gpt-5.5";
 const CODEX_SPARK_MODEL = "gpt-5.3-codex-spark";
@@ -763,6 +765,7 @@ function setRecentCacheEntry<K, V>(
 
 export class CodexAppServerManager extends EventEmitter<CodexAppServerManagerEvents> {
   private readonly sessions = new Map<ThreadId, CodexSessionContext>();
+  private readonly sessionStarts = new Map<ThreadId, Promise<ProviderSession>>();
   private readonly discoverySessions = new Map<string, CodexSessionContext>();
   private readonly discoverySessionIdleTimers = new Map<string, ReturnType<typeof setTimeout>>();
   private readonly skillsCache = new Map<string, ProviderListSkillsResult>();
@@ -836,6 +839,23 @@ export class CodexAppServerManager extends EventEmitter<CodexAppServerManagerEve
   }
 
   async startSession(input: CodexAppServerStartSessionInput): Promise<ProviderSession> {
+    const previous = this.sessionStarts.get(input.threadId);
+    const start = (previous ? previous.catch(() => undefined) : Promise.resolve()).then(() =>
+      this.startSessionUnlocked(input),
+    );
+    this.sessionStarts.set(input.threadId, start);
+    try {
+      return await start;
+    } finally {
+      if (this.sessionStarts.get(input.threadId) === start) {
+        this.sessionStarts.delete(input.threadId);
+      }
+    }
+  }
+
+  private async startSessionUnlocked(
+    input: CodexAppServerStartSessionInput,
+  ): Promise<ProviderSession> {
     const threadId = input.threadId;
     const now = new Date().toISOString();
     let context: CodexSessionContext | undefined;

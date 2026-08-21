@@ -1088,10 +1088,22 @@ export function Composer({
 
   function handleComposerMenuKey(event: {
     readonly key: string;
+    readonly shiftKey?: boolean;
     preventDefault: () => void;
     stopPropagation: () => void;
   }) {
     'background only';
+    if (
+      composerMenuItems.length === 0 &&
+      event.key === 'Enter' &&
+      event.shiftKey !== true &&
+      !nativeEditorSnapshotRef.current.isComposing
+    ) {
+      event.preventDefault();
+      event.stopPropagation();
+      void activatePrimaryAction();
+      return;
+    }
     if (composerMenuItems.length === 0) return;
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
@@ -1625,7 +1637,17 @@ export function Composer({
             maxlength={8000}
             maxlines={6}
             enable-scroll-bar={true}
-            bindkeydown={handleComposerMenuKey}
+            confirm-type="send"
+            bindconfirm={() => {
+            'background only';
+            if (
+              composerMenuItems.length === 0 &&
+              !nativeEditorSnapshotRef.current.isComposing
+            ) {
+              void activatePrimaryAction();
+            }
+          }}
+            catchkeydown={handleComposerMenuKey}
             bindfocus={() => {
             'background only';
             setFocused(true);

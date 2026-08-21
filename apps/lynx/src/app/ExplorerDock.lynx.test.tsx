@@ -43,6 +43,13 @@ describe('Lynx Explorer dock', () => {
     expect(clientSource).toContain("'projects.listDirectories'");
     expect(clientSource).toContain("'projects.searchEntries'");
     expect(clientSource).toContain("'projects.readFile'");
+    expect(clientSource).toContain(
+      "'projects.createLocalFilePreviewGrant'"
+    );
+    expect(queriesSource).toContain('createLocalFilePreviewGrant');
+    expect(queriesSource).toContain(
+      'isLocalAbsolutePath(input.relativePath)'
+    );
     expect(source).not.toContain('useQuery');
     expect(source).toContain('entriesPending: boolean');
     expect(source).toContain('entriesTruncated: boolean');
@@ -183,9 +190,9 @@ describe('Lynx Explorer dock', () => {
     expect(routerSource).toContain(
       'toggleExpandedDirectory(current, path)'
     );
-    expect(routerSource).toContain("accessibleLabel: 'Toggle files panel'");
+    expect(routerSource).toContain("accessibleLabel: 'Toggle diff panel'");
     expect(routerSource).toContain(
-      'onActivate: () => setExplorerVisibility(!explorerOpen)'
+      'onOpenFileReference={openExplorerFileReference}'
     );
     expect(routerSource).toContain(
       'onOpenFileReference={openExplorerFileReference}'

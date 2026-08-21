@@ -113,8 +113,16 @@ describe('Native Composer menu navigation', () => {
       new URL('./Composer.lynx.tsx', import.meta.url),
       'utf8'
     );
-    expect(source).toContain('bindkeydown={handleComposerMenuKey}');
-    expect(source).not.toContain('catchkeydown={handleComposerMenuKey}');
+    expect(source).toContain('catchkeydown={handleComposerMenuKey}');
+    expect(source).not.toContain('bindkeydown={handleComposerMenuKey}');
+    expect(source).toContain('confirm-type="send"');
+    expect(source).toContain('bindconfirm={() => {');
+    expect(source).toContain("event.key === 'Enter'");
+    expect(source).toContain('event.shiftKey !== true');
+    expect(source).toContain(
+      '!nativeEditorSnapshotRef.current.isComposing'
+    );
+    expect(source).toContain('void activatePrimaryAction()');
     expect(source.match(/activeItemId=\{activeComposerMenuItemId\}/g)).toHaveLength(
       3
     );

@@ -1,4 +1,8 @@
-import { isWorkspaceRelativePathSafe, workspaceRelativePathOf } from '@synara/shared/path';
+import {
+  isLocalAbsolutePath,
+  isWorkspaceRelativePathSafe,
+  workspaceRelativePathOf,
+} from '@synara/shared/path';
 import { resolveInlineCodeFilePath } from '@synara-web/lib/markdownFileReferences';
 import { resolveMarkdownFileLinkTarget } from '@synara-web/markdown-links';
 
@@ -12,8 +16,19 @@ export function resolveLynxMarkdownFileReference(input: {
   const target = resolveMarkdownFileLinkTarget(input.rawPath, input.cwd);
   if (!target) return null;
   const withoutPosition = target.replace(POSITION_SUFFIX_PATTERN, '');
+  if (
+    withoutPosition
+      .replace(/\\/g, '/')
+      .split('/')
+      .some((segment) => segment === '.' || segment === '..')
+  ) {
+    return null;
+  }
   if (isWorkspaceRelativePathSafe(withoutPosition)) return withoutPosition;
-  return workspaceRelativePathOf(withoutPosition, input.cwd);
+  return (
+    workspaceRelativePathOf(withoutPosition, input.cwd) ??
+    (isLocalAbsolutePath(withoutPosition) ? withoutPosition : null)
+  );
 }
 
 export function resolveLynxInlineCodeFileReference(input: {

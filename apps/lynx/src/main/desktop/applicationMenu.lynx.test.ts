@@ -14,7 +14,14 @@ describe('Lynxtron application menu', () => {
     expect(lynxSource).toContain("id: 'forceReloadBundle'");
     expect(lynxSource).toContain("accelerator: 'CmdOrCtrl+Shift+R'");
     expect(lynxSource).toContain('click: () => relaunchApp()');
-    expect(lynxSource).toContain('app.relaunch({');
+    expect(lynxSource).toContain('spawn(process.execPath, args, {');
+    expect(lynxSource).toContain('try {');
+    expect(lynxSource).toContain('let replacement: ReturnType<typeof spawn>');
+    expect(lynxSource).toContain('return;');
+    expect(lynxSource).toContain('detached: true');
+    expect(lynxSource).toContain("replacement.once('spawn'");
+    expect(lynxSource).toContain("replacement.once('error'");
+    expect(lynxSource).toContain('app.releaseSingleInstanceLock()');
     expect(lynxSource).toContain('app.quit()');
     expect(lynxSource).toContain('if (relaunchRequested) return;');
     expect(lynxSource).not.toContain('function reloadLynxWindow');

@@ -150,8 +150,18 @@ describe('landing composer fidelity contract', () => {
     expect(routerSource).toContain(
       'const initialModelProvider = resolveLandingModelProvider('
     );
+    expect(landingSource).toContain('function landingBootstrapQueryKey(');
     expect(landingSource).toContain(
-      "'landing-composer-bootstrap',\n      initialModelProvider,"
+      "'landing-composer-bootstrap',\n    initialModelProvider,"
+    );
+    expect(landingSource).toContain(
+      'queryKey: landingBootstrapQueryKey('
+    );
+    expect(landingSource).toContain(
+      'queryClient.setQueryData(\n        landingBootstrapQueryKey('
+    );
+    expect(landingSource).not.toContain(
+      "queryClient.setQueryData(['landing-composer-bootstrap']"
     );
     expect(routerSource).toContain(
       "'landing-composer-bootstrap',\n      initialModelProvider,"

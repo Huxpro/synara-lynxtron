@@ -61,6 +61,7 @@ import {
   createNativeNotificationService,
   type NativeNotificationConstructor,
 } from './nativeNotifications';
+import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
 import {
   DesktopAppSnapManager,
@@ -287,10 +288,56 @@ function relaunchApp(): void {
     ).logFile,
     `fresh app relaunch requested route=${route ?? '/'}`
   );
-  app.relaunch({
-    args: buildSynaraRelaunchArguments(process.argv, __dirname, route),
+  const logFile = resolveShellPaths(
+    resolveShellUserDataDir(
+      app.getPath('userData'),
+      process.env.SYNARA_LYNX_USER_DATA_DIR
+    )
+  ).logFile;
+  const args = buildSynaraRelaunchArguments(process.argv, __dirname, route);
+  if (acquireSingleInstanceLock) {
+    app.releaseSingleInstanceLock();
+  }
+  let replacement: ReturnType<typeof spawn>;
+  try {
+    replacement = spawn(process.execPath, args, {
+      detached: true,
+      env: process.env,
+      stdio: 'ignore',
+    });
+  } catch (error) {
+    relaunchRequested = false;
+    if (acquireSingleInstanceLock) {
+      app.requestSingleInstanceLock();
+    }
+    appendShellLog(
+      logFile,
+      `fresh app relaunch failed error=${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
+    return;
+  }
+  replacement.once('error', (error) => {
+    relaunchRequested = false;
+    if (acquireSingleInstanceLock) {
+      app.requestSingleInstanceLock();
+    }
+    appendShellLog(
+      logFile,
+      `fresh app relaunch failed error=${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
   });
-  app.quit();
+  replacement.once('spawn', () => {
+    replacement.unref();
+    appendShellLog(
+      logFile,
+      `fresh app replacement spawned pid=${replacement.pid ?? 'unknown'}`
+    );
+    app.quit();
+  });
 }
 
 function installApplicationMenu(w: LynxWindow): void {

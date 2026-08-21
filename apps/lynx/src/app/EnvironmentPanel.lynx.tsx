@@ -2668,6 +2668,7 @@ export function EnvironmentPanel(props: {
   readonly provider: ProviderKind;
   readonly pullRequest: OrchestrationThreadPullRequest | null;
   readonly recapRevision: string;
+  readonly rightInsetPx?: number | null;
   readonly threadId: string;
   readonly threadMarkers: readonly ThreadMarker[];
   readonly workspaceRoot: string | null;
@@ -2710,6 +2711,11 @@ export function EnvironmentPanel(props: {
         props.open ? ' EnvironmentOverlay--open' : ''
       }`}
       aria-hidden={!props.open}
+      style={
+        props.rightInsetPx !== null && props.rightInsetPx !== undefined
+          ? { right: `${props.rightInsetPx}px` }
+          : undefined
+      }
     >
       <view className="EnvironmentSurface">
         <scroll-view className="EnvironmentScroller" scroll-y>

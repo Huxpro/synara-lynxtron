@@ -978,7 +978,7 @@
   text-decoration: underline;
 }
 
-.ThreadFilesToggle {
+.ThreadDiffToggle {
   display: flex;
   width: 28px;
   min-width: 28px;
@@ -988,15 +988,20 @@
   border-radius: 8px;
 }
 
-.ThreadFilesToggle.ui-hover,
-.ThreadFilesToggle.ui-focus,
-.ThreadFilesToggle.ui-pressed,
-.ThreadFilesToggle--active {
+.ThreadDiffToggle.ui-hover,
+.ThreadDiffToggle.ui-focus,
+.ThreadDiffToggle.ui-pressed,
+.ThreadDiffToggle--active {
   background-color: var(--secondary);
 }
 
-.ThreadFilesToggle.ui-disabled {
+.ThreadDiffToggle.ui-disabled {
   opacity: 0.4;
+}
+
+.ThreadDiffToggleIcon {
+  width: 16px;
+  height: 16px;
 }
 
 .ThreadTranscriptColumn {

@@ -73,6 +73,9 @@ describe('Lynx Environment panel', () => {
     );
     expect(routerSource).toContain('<EnvironmentToggle');
     expect(routerSource).toContain('<EnvironmentPanel');
+    expect(routerSource).toContain("accessibleLabel: 'Toggle diff panel'");
+    expect(routerSource).toContain('panelRightCloseSvg');
+    expect(routerSource).not.toContain("accessibleLabel: 'Toggle files panel'");
     expect(routerSource).toContain(
       'const [environmentUserOverride, setEnvironmentUserOverride] = useState<'
     );
@@ -335,14 +338,14 @@ describe('Lynx Environment panel', () => {
       "resizable={props.presentation === 'dock'}"
     );
     expect(routerSource).toContain(
-      "(diffOpen || explorerOpen) && rightDockWidth !== null"
+      'effectiveRightDockWidth !== null'
     );
     expect(routerSource).toContain('open={diffOpen}');
     expect(routerSource).not.toContain(
       'open={diffOpen}\n        presentation="editor"'
     );
     expect(routerSource).toContain(
-      "{ paddingRight: `${rightDockWidth}px` }"
+      "{ paddingRight: `${effectiveRightDockWidth}px` }"
     );
     expect(appStyles).toMatch(
       /\.ThreadPage--diff-open\s*\{[^}]*padding-right:\s*50%;/s
@@ -377,6 +380,14 @@ describe('Lynx Environment panel', () => {
   });
 
   it('matches the Web overlay footprint and row rhythm', () => {
+    const panelSource = readFileSync(
+      new URL('./EnvironmentPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const routerSource = readFileSync(
+      new URL('./router.tsx', import.meta.url),
+      'utf8'
+    );
     const styles = readFileSync(
       new URL('./environment-panel.css', import.meta.url),
       'utf8'
@@ -390,6 +401,17 @@ describe('Lynx Environment panel', () => {
     );
     expect(styles).toMatch(
       /\.EnvironmentOverlay\s*\{[^}]*right:\s*0;[^}]*flex-direction:\s*column;[^}]*padding:\s*12px;[^}]*transition:[^}]*220ms ease-out/s
+    );
+    expect(panelSource).toContain('readonly rightInsetPx?: number | null');
+    expect(panelSource).toContain("{ right: `${props.rightInsetPx}px` }");
+    expect(routerSource).toContain('const effectiveRightDockWidth =');
+    expect(routerSource).toContain(
+      'rightDockWidth !== null && rightDockWidth > 0'
+    );
+    expect(routerSource).toContain('rightInsetPx={');
+    expect(routerSource).toContain('effectiveRightDockWidth');
+    expect(styles).toContain(
+      '.ThreadPage--environment-open:not(.ThreadPage--diff-open):not('
     );
     expect(styles).toMatch(
       /\.ThreadPage--provider-health-visible \.EnvironmentOverlay\s*\{[^}]*top:\s*126px;/s

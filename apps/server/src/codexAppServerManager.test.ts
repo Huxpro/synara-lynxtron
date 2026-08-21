@@ -1059,6 +1059,16 @@ describe("isRecoverableThreadResumeError", () => {
     ).toBe(true);
   });
 
+  it("recovers from a stale active thread writer by starting a new provider thread", () => {
+    expect(
+      isRecoverableThreadResumeError(
+        new Error(
+          "thread/resume failed: thread-store conflict: thread 019db5ad already has an active writer",
+        ),
+      ),
+    ).toBe(true);
+  });
+
   it("ignores non-resume errors", () => {
     expect(
       isRecoverableThreadResumeError(new Error("thread/start failed: permission denied")),
@@ -1071,6 +1081,60 @@ describe("isRecoverableThreadResumeError", () => {
         new Error("thread/resume failed: timed out waiting for server"),
       ),
     ).toBe(false);
+  });
+});
+
+describe("Codex session start serialization", () => {
+  it("serializes concurrent starts for one Synara thread and continues after a failure", async () => {
+    const manager = new CodexAppServerManager();
+    const threadId = asThreadId("thread-start-serialization");
+    const releases: Array<() => void> = [];
+    const startSessionUnlocked = vi
+      .spyOn(
+        manager as unknown as {
+          startSessionUnlocked: (
+            input: Parameters<CodexAppServerManager["startSession"]>[0],
+          ) => Promise<Awaited<ReturnType<CodexAppServerManager["startSession"]>>>;
+        },
+        "startSessionUnlocked",
+      )
+      .mockImplementation(
+        () =>
+          new Promise((resolve, reject) => {
+            const callIndex = releases.length;
+            releases.push(() => {
+              if (callIndex === 0) {
+                reject(new Error("first start failed"));
+                return;
+              }
+              resolve({
+                provider: "codex",
+                status: "ready",
+                threadId,
+                runtimeMode: "full-access",
+                createdAt: "2026-08-20T00:00:00.000Z",
+                updatedAt: "2026-08-20T00:00:00.000Z",
+              });
+            });
+          }),
+      );
+    const input = {
+      threadId,
+      provider: "codex" as const,
+      runtimeMode: "full-access" as const,
+    };
+
+    const first = manager.startSession(input);
+    const second = manager.startSession(input);
+    await Promise.resolve();
+    expect(startSessionUnlocked).toHaveBeenCalledTimes(1);
+
+    releases[0]?.();
+    await expect(first).rejects.toThrow("first start failed");
+    await vi.waitFor(() => expect(startSessionUnlocked).toHaveBeenCalledTimes(2));
+
+    releases[1]?.();
+    await expect(second).resolves.toMatchObject({ threadId, status: "ready" });
   });
 });
 

@@ -1131,8 +1131,14 @@
   margin-top: 2px;
 }
 
-.ThreadPage--environment-open .ThreadTranscriptColumn,
-.ThreadPage--environment-open .ComposerColumnFrameSurface:not(.ThreadTranscriptColumn) {
+.ThreadPage--environment-open:not(.ThreadPage--diff-open):not(
+    .ThreadPage--explorer-open
+  )
+  .ThreadTranscriptColumn,
+.ThreadPage--environment-open:not(.ThreadPage--diff-open):not(
+    .ThreadPage--explorer-open
+  )
+  .ComposerColumnFrameSurface:not(.ThreadTranscriptColumn) {
   padding-right: 312px;
 }
 

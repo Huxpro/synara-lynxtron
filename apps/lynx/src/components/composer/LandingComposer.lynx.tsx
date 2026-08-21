@@ -47,6 +47,17 @@ function projectWorkspaceLabel(workspaceRoot: string): string {
   return segments.at(-1) || workspaceRoot;
 }
 
+function landingBootstrapQueryKey(
+  initialModelProvider: ProviderKind,
+  containerKind: 'chat' | 'studio'
+) {
+  return [
+    'landing-composer-bootstrap',
+    initialModelProvider,
+    containerKind,
+  ] as const;
+}
+
 export async function loadLandingBootstrap(
   initialModelProvider: ProviderKind | null = null,
   containerKind: 'chat' | 'studio' = 'chat'
@@ -209,11 +220,10 @@ export function LandingComposer(props: {
     null
   );
   const { data, error, isFetching, isPending, refetch } = useQuery({
-    queryKey: [
-      'landing-composer-bootstrap',
+    queryKey: landingBootstrapQueryKey(
       initialModelProvider,
-      props.containerKind ?? 'chat',
-    ],
+      props.containerKind ?? 'chat'
+    ),
     queryFn: () =>
       loadLandingBootstrap(
         initialModelProvider,
@@ -373,10 +383,22 @@ export function LandingComposer(props: {
         createdAt: new Date().toISOString(),
       });
       await queryClient.invalidateQueries({
-        queryKey: ['landing-composer-bootstrap'],
+        queryKey: landingBootstrapQueryKey(
+          initialModelProvider,
+          props.containerKind ?? 'chat'
+        ),
       });
-      const refreshed = await loadLandingBootstrap();
-      queryClient.setQueryData(['landing-composer-bootstrap'], refreshed);
+      const refreshed = await loadLandingBootstrap(
+        initialModelProvider,
+        props.containerKind ?? 'chat'
+      );
+      queryClient.setQueryData(
+        landingBootstrapQueryKey(
+          initialModelProvider,
+          props.containerKind ?? 'chat'
+        ),
+        refreshed
+      );
       selectProject(projectId);
       setProjectPickerOpen(false);
     } catch (error) {
@@ -543,9 +565,15 @@ export function LandingComposer(props: {
                   spaceId: null,
                   createdAt: new Date().toISOString(),
                 });
-                const refreshed = await loadLandingBootstrap();
+                const refreshed = await loadLandingBootstrap(
+                  initialModelProvider,
+                  props.containerKind ?? 'chat'
+                );
                 queryClient.setQueryData(
-                  ['landing-composer-bootstrap'],
+                  landingBootstrapQueryKey(
+                    initialModelProvider,
+                    props.containerKind ?? 'chat'
+                  ),
                   refreshed
                 );
                 selectProject(projectId);

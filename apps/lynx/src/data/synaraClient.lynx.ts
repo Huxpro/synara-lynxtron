@@ -32,6 +32,7 @@ import type {
   OrchestrationSession,
   OrchestrationThreadActivity,
   ProjectId,
+  ProjectCreateLocalFilePreviewGrantResult,
   ProjectListDirectoriesInput,
   ProjectListDirectoriesResult,
   ProjectInspectPdfResult,
@@ -519,6 +520,15 @@ export async function readProjectFile(
   return transportRequest<ProjectReadFileResult>('projects.readFile', input);
 }
 
+export async function createLocalFilePreviewGrant(
+  path: string
+): Promise<ProjectCreateLocalFilePreviewGrantResult> {
+  return transportRequest<ProjectCreateLocalFilePreviewGrantResult>(
+    'projects.createLocalFilePreviewGrant',
+    { path }
+  );
+}
+
 export async function inspectProjectPdf(input: {
   readonly cwd: string;
   readonly path: string;
@@ -528,6 +538,7 @@ export async function inspectProjectPdf(input: {
 
 export async function readProjectFileWithSyntax(input: {
   readonly cwd: string;
+  readonly previewGrant?: string;
   readonly relativePath: string;
 }): Promise<{
   readonly file: ProjectReadFileResult;

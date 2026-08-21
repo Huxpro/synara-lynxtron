@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "native-thread-project-ownership",
+      "severity": "P1",
+      "classification": "product-information-architecture-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Landing thread creation and sidebar projection"
+    },
+    {
+      "id": "native-transcript-file-link-action",
+      "severity": "P1",
+      "classification": "product-interaction-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx transcript file-reference routing"
+    },
+    {
+      "id": "native-thread-composer-layout",
+      "severity": "P2",
+      "classification": "product-visual-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Shared composer composition and Lynx physical adapter"
+    },
+    {
+      "id": "native-composer-enter-to-send",
+      "severity": "P1",
+      "classification": "product-keyboard-interaction-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx native textarea keyboard handling"
+    },
+    {
+      "id": "native-thread-header-actions",
+      "severity": "P1",
+      "classification": "product-interaction-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Shared ChatHeader authority and Lynx header adapter"
+    },
+    {
+      "id": "native-cmd-r-visible-relaunch",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynxtron desktop lifecycle"
+    },
+    {
+      "id": "codex-resume-active-writer-conflict",
+      "severity": "P1",
+      "classification": "product-reliability-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Codex app-server resume recovery"
+    },
+    {
+      "id": "native-environment-dock-overlap",
+      "severity": "P1",
+      "classification": "product-geometry-loss",
+      "before": 1,
+      "after": 0,
+      "owner": "Lynx thread right-surface composition"
+    }
+  ]
+}

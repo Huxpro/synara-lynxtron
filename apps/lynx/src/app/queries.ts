@@ -74,6 +74,7 @@ import {
   upsertPersistedThreadRecap,
 } from '@synara-web/lib/threadRecap';
 import type { NativeSyntaxHighlightThemes } from '../main/syntaxHighlightingContract.logic';
+import { isLocalAbsolutePath } from '@synara/shared/path';
 import { projectActiveThreadSummaries } from './threadSummaryProjection.logic';
 
 export const queryClient = new QueryClient({
@@ -591,6 +592,7 @@ export async function fetchExplorerDirectory(input: {
 }
 
 export async function fetchExplorerFile(input: {
+  readonly previewGrant?: string;
   readonly relativePath: string;
   readonly workspaceRoot: string;
 }): Promise<{
@@ -604,10 +606,22 @@ export async function fetchExplorerFile(input: {
   const { readProjectFileWithSyntax } = await import(
     /* webpackMode: "eager" */ '../data/synaraClient'
   );
-  const result = readProjectFileWithSyntax({
-    cwd: input.workspaceRoot,
-    relativePath: input.relativePath,
-  });
+  const result = (async () => {
+      let previewGrant = input.previewGrant ?? null;
+      if (!previewGrant && isLocalAbsolutePath(input.relativePath)) {
+        previewGrant = await import(
+          /* webpackMode: "eager" */ '../data/synaraClient'
+        ).then(async ({ createLocalFilePreviewGrant }) => {
+          const result = await createLocalFilePreviewGrant(input.relativePath);
+          return result.grant;
+        });
+      }
+      return readProjectFileWithSyntax({
+        cwd: input.workspaceRoot,
+        ...(previewGrant ? { previewGrant } : {}),
+        relativePath: input.relativePath,
+      });
+  })();
   explorerFileCache.set(cacheKey, {
     expiresAt: Date.now() + EXPLORER_CACHE_TTL_MS,
     result,

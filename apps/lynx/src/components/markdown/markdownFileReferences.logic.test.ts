@@ -21,17 +21,20 @@ describe('Lynx markdown file references', () => {
     ).toBe('README.md');
   });
 
-  it('rejects external, out-of-workspace, and traversal targets', () => {
+  it('keeps absolute local files for the grant-backed preview path', () => {
+    expect(
+      resolveLynxMarkdownFileReference({
+        cwd: '/Users/dev/project',
+        rawPath: '/tmp/synara-codex-workspaces/thread-1/example.js',
+      })
+    ).toBe('/tmp/synara-codex-workspaces/thread-1/example.js');
+  });
+
+  it('rejects external and traversal targets', () => {
     expect(
       resolveLynxMarkdownFileReference({
         cwd: '/Users/dev/project',
         rawPath: 'https://example.com/docs',
-      })
-    ).toBeNull();
-    expect(
-      resolveLynxMarkdownFileReference({
-        cwd: '/Users/dev/project',
-        rawPath: '/tmp/secret.txt',
       })
     ).toBeNull();
     expect(
