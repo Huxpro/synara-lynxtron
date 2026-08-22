@@ -8,5 +8,5 @@ export function resolveSynaraWsUrl(
   if (parsed.protocol !== 'ws:' && parsed.protocol !== 'wss:') {
     throw new Error('Synara endpoint requires a ws:// or wss:// URL.');
   }
-  return parsed.origin;
+  return `${parsed.origin}${parsed.search}`;
 }

@@ -127,7 +127,10 @@ import { sleepOnHost } from '../platform/timer';
 import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
 import { ThreadTerminal } from './ThreadTerminal.lynx';
 import { DiffDock } from './DiffDock.lynx';
-import { ExplorerDock } from './ExplorerDock.lynx';
+import {
+  EXPLORER_DOCK_MIN_WIDTH,
+  ExplorerDock,
+} from './ExplorerDock.lynx';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import {
   EDITOR_CHAT_PANE_DEFAULT_WIDTH,
@@ -717,7 +720,7 @@ function ThreadPage(props: ThreadPageProps) {
           initialExplorerWidth ?? Math.round(viewportWidth / 2),
           {
             maxWidth: 960,
-            minWidth: 480,
+            minWidth: EXPLORER_DOCK_MIN_WIDTH,
             minimumContentWidth: 320,
             viewportWidth,
           }
@@ -841,7 +844,7 @@ function ThreadPage(props: ThreadPageProps) {
     ? (measuredRightDockWidth ??
       clampSidebarWidth(initialExplorerWidth ?? Math.round(availableDockWidth / 2), {
         maxWidth: 960,
-        minWidth: 480,
+        minWidth: EXPLORER_DOCK_MIN_WIDTH,
         minimumContentWidth: 320,
         viewportWidth: availableDockWidth,
       }))
@@ -1680,7 +1683,7 @@ function ThreadPage(props: ThreadPageProps) {
               className="ThreadDiffToggleIcon"
               content={colorizeLynxSvg(
                 panelRightCloseSvg,
-                svgColors.mutedForeground
+                diffOpen ? svgColors.foreground : svgColors.secondaryForeground
               )}
             />
           </view>

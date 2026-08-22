@@ -11,6 +11,23 @@
   flex-direction: column;
   border-left: 1px solid var(--border);
   background-color: var(--background);
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 300ms cubic-bezier(0.32, 0.72, 0, 1),
+    transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.DiffDock--closed {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .DiffDock {
+    transition-duration: 0.01ms;
+  }
 }
 
 .DiffDockHeader {

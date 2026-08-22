@@ -400,7 +400,7 @@ describe('Lynx Environment panel', () => {
       /\.EnvironmentToggle\s*\{[^}]*width:\s*28px;[^}]*min-width:\s*28px;[^}]*height:\s*28px;[^}]*box-sizing:\s*border-box;[^}]*padding:\s*0;[^}]*-x-app-region:\s*no-drag;/s
     );
     expect(styles).toMatch(
-      /\.EnvironmentOverlay\s*\{[^}]*right:\s*0;[^}]*flex-direction:\s*column;[^}]*padding:\s*12px;[^}]*transition:[^}]*220ms ease-out/s
+      /\.EnvironmentOverlay\s*\{[^}]*right:\s*0;[^}]*flex-direction:\s*column;[^}]*padding:\s*12px;[^}]*transition:[^}]*300ms cubic-bezier\(0\.32,\s*0\.72,\s*0,\s*1\)/s
     );
     expect(panelSource).toContain('readonly rightInsetPx?: number | null');
     expect(panelSource).toContain("{ right: `${props.rightInsetPx}px` }");
@@ -412,6 +412,12 @@ describe('Lynx Environment panel', () => {
     expect(routerSource).toContain('effectiveRightDockWidth');
     expect(styles).toContain(
       '.ThreadPage--environment-open:not(.ThreadPage--diff-open):not('
+    );
+    expect(styles).toContain(
+      '.ThreadComposerDock'
+    );
+    expect(styles).toMatch(
+      /\.ThreadTranscriptColumn,[^{]*\.ThreadComposerDock\s*\{[^}]*transition:\s*padding-right 300ms cubic-bezier\(0\.32,\s*0\.72,\s*0,\s*1\);/s
     );
     expect(styles).toMatch(
       /\.ThreadPage--provider-health-visible \.EnvironmentOverlay\s*\{[^}]*top:\s*126px;/s

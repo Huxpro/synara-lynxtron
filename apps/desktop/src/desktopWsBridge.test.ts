@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { normalizeDesktopWsUrl, resolveDesktopWsUrlFromEnv } from "./desktopWsBridge";
+import {
+  normalizeDesktopWsUrl,
+  resolveDesktopBackendAuthToken,
+  resolveDesktopWsUrlFromEnv,
+} from "./desktopWsBridge";
 
 describe("desktopWsBridge", () => {
   it("normalizes non-empty WebSocket URL strings", () => {
@@ -26,5 +30,15 @@ describe("desktopWsBridge", () => {
         UNRELATED_DESKTOP_WS_URL: "ws://127.0.0.1:5000/?token=ignored",
       }),
     ).toBeNull();
+  });
+
+  it("uses an explicit comparison auth token and otherwise generates one", () => {
+    expect(
+      resolveDesktopBackendAuthToken(
+        { SYNARA_DESKTOP_AUTH_TOKEN: " fixed-comparison-token " },
+        () => "generated-token",
+      ),
+    ).toBe("fixed-comparison-token");
+    expect(resolveDesktopBackendAuthToken({}, () => "generated-token")).toBe("generated-token");
   });
 });

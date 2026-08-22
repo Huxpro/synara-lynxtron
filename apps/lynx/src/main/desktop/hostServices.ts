@@ -122,10 +122,14 @@ function attachmentHttpUrl(
   query: Readonly<Record<string, string>> = {}
 ): URL {
   const socketUrl = new URL(resolveSynaraWsUrl(process.env.SYNARA_WS_URL));
+  const legacyToken = socketUrl.searchParams.get('token');
   socketUrl.protocol = socketUrl.protocol === 'wss:' ? 'https:' : 'http:';
   socketUrl.pathname = route;
   socketUrl.search = '';
   socketUrl.hash = '';
+  if (legacyToken) {
+    socketUrl.searchParams.set('token', legacyToken);
+  }
   for (const [key, value] of Object.entries(query)) {
     socketUrl.searchParams.set(key, value);
   }

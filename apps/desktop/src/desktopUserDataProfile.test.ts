@@ -48,6 +48,23 @@ describe("desktopUserDataProfile", () => {
     ).toBe("/tmp/xdg");
   });
 
+  it("supports an explicit absolute profile for isolated desktop comparisons", () => {
+    expect(
+      resolveDesktopUserDataPath({
+        appDataBase: "/Users/tester/Library/Application Support",
+        userDataDirectoryName: "synara-dev",
+        override: " /tmp/synara-comparison-profile ",
+      }),
+    ).toBe("/tmp/synara-comparison-profile");
+    expect(() =>
+      resolveDesktopUserDataPath({
+        appDataBase: "/Users/tester/Library/Application Support",
+        userDataDirectoryName: "synara-dev",
+        override: "relative/profile",
+      }),
+    ).toThrow("SYNARA_DESKTOP_USER_DATA_DIR must be an absolute path.");
+  });
+
   it("repairs missing browser data from the profile recorded by the bridge", () => {
     const appDataBase = makeTempDir();
     const targetPath = Path.join(appDataBase, "synara");

@@ -32,6 +32,7 @@
 .EnvironmentToggleIcon {
   width: 16px;
   height: 16px;
+  opacity: 0.7;
 }
 
 .EnvironmentOverlay {
@@ -47,8 +48,8 @@
   opacity: 0;
   transform: translateX(100%);
   transition:
-    opacity 220ms ease-out,
-    transform 220ms ease-out;
+    opacity 300ms cubic-bezier(0.32, 0.72, 0, 1),
+    transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .ThreadPage--provider-health-visible .EnvironmentOverlay {
@@ -1138,15 +1139,28 @@
 .ThreadPage--environment-open:not(.ThreadPage--diff-open):not(
     .ThreadPage--explorer-open
   )
-  .ComposerColumnFrameSurface:not(.ThreadTranscriptColumn) {
+  .ThreadComposerDock {
   padding-right: 312px;
 }
 
 .SliceRoot--viewport-compact .ThreadPage--environment-open .ThreadTranscriptColumn,
 .SliceRoot--viewport-compact
   .ThreadPage--environment-open
-  .ComposerColumnFrameSurface:not(.ThreadTranscriptColumn) {
+  .ThreadComposerDock {
   padding-right: 0;
+}
+
+.ThreadTranscriptColumn,
+.ThreadComposerDock {
+  transition: padding-right 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .EnvironmentOverlay,
+  .ThreadTranscriptColumn,
+  .ThreadComposerDock {
+    transition-duration: 0.01ms;
+  }
 }
 
 .SliceRoot--viewport-compact .EnvironmentSurface {

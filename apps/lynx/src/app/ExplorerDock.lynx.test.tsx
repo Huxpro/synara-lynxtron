@@ -77,6 +77,11 @@ describe('Lynx Explorer dock', () => {
       'const [data, summary] = await Promise.all(['
     );
     expect(source).toContain('<ResizableRightPanel');
+    expect(source).toContain(
+      "props.open ? ' ExplorerDock--open' : ' ExplorerDock--closed'"
+    );
+    expect(source).toContain('minWidth={EXPLORER_DOCK_MIN_WIDTH}');
+    expect(routerSource).toContain('minWidth: EXPLORER_DOCK_MIN_WIDTH');
     expect(source).toContain('placeholder="Search files..."');
     expect(source).toContain("entry.kind === 'directory'");
     expect(source).toContain('<ChatMarkdown');
@@ -226,7 +231,13 @@ describe('Lynx Explorer dock', () => {
       expect(styles).toContain(`var(${token})`);
     }
     expect(styles).toMatch(
-      /\.ExplorerDock\s*\{[^}]*width:\s*50%;[^}]*min-width:\s*480px;[^}]*max-width:\s*960px;/s
+      /\.ExplorerDock\s*\{[^}]*width:\s*50%;[^}]*min-width:\s*416px;[^}]*max-width:\s*960px;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDock--closed\s*\{[^}]*pointer-events:\s*none;[^}]*opacity:\s*0;[^}]*transform:\s*translateX\(100%\);/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDock\s*\{[^}]*transition:[^}]*300ms cubic-bezier\(0\.32,\s*0\.72,\s*0,\s*1\)/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-compact \.ThreadPage > \.ExplorerDock\s*\{[^}]*left:\s*0;[^}]*top:\s*92px;[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*max-width:\s*none;/s

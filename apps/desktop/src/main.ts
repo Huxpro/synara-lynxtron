@@ -163,7 +163,11 @@ import {
   SYNARA_BROWSER_USE_PIPE_PATH,
   resolveBrowserUsePipeBackendEnv,
 } from "./browserUsePipeServer";
-import { normalizeDesktopWsUrl, resolveDesktopWsUrlFromEnv } from "./desktopWsBridge";
+import {
+  normalizeDesktopWsUrl,
+  resolveDesktopBackendAuthToken,
+  resolveDesktopWsUrlFromEnv,
+} from "./desktopWsBridge";
 import {
   repairBrowserProfileFromBridgeManifest,
   resolveDesktopAppDataBase,
@@ -1619,6 +1623,7 @@ function resolveUserDataPath(): string {
   return resolveDesktopUserDataPath({
     appDataBase,
     userDataDirectoryName: desktopIdentity.userDataDirectoryName,
+    override: process.env.SYNARA_DESKTOP_USER_DATA_DIR,
   });
 }
 
@@ -3558,7 +3563,9 @@ async function bootstrap(): Promise<void> {
   }
 
   configureAutoUpdater();
-  backendAuthToken = Crypto.randomBytes(24).toString("hex");
+  backendAuthToken = resolveDesktopBackendAuthToken(process.env, () =>
+    Crypto.randomBytes(24).toString("hex"),
+  );
   await reserveBackendEndpoint("bootstrap");
 
   registerIpcHandlers();

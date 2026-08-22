@@ -40,6 +40,9 @@ import { visibleExplorerEntries } from './explorerTree.logic';
 import { ExplorerSyntaxPreview } from './ExplorerSyntaxPreview.lynx';
 import './explorer-dock.css';
 
+export const EXPLORER_DOCK_MIN_WIDTH = 416;
+const EXPLORER_DOCK_TRANSITION_MS = 300;
+
 function isMarkdownPath(path: string): boolean {
   return /\.(?:md|mdx|markdown)$/i.test(path);
 }
@@ -317,8 +320,10 @@ export function ExplorerDock(props: {
     accessibleLabel: 'Close files',
     onActivate: props.onClose,
   });
-  if (!props.open) return null;
-
+  const present = useLynxDisclosurePresence(props.open, {
+    transitionMs: EXPLORER_DOCK_TRANSITION_MS,
+  });
+  if (!present) return null;
   const content = (
     <>
       <view className="ExplorerDockHeader">
@@ -496,7 +501,8 @@ export function ExplorerDock(props: {
           props.presentationMode === 'editor-search'
             ? ' ExplorerDock--editor-search'
             : ''
-        }`}
+        }${props.open ? ' ExplorerDock--open' : ' ExplorerDock--closed'}`}
+        aria-hidden={!props.open}
       >
         {content}
       </view>
@@ -506,7 +512,9 @@ export function ExplorerDock(props: {
   return (
     <ResizableRightPanel
       availableWidth={props.availableWidth}
-      className="ExplorerDock"
+      className={`ExplorerDock${
+        props.open ? ' ExplorerDock--open' : ' ExplorerDock--closed'
+      }`}
       defaultWidth={
         props.initialWidth ??
         (props.availableWidth > 0
@@ -515,7 +523,7 @@ export function ExplorerDock(props: {
       }
       maxWidth={960}
       minimumMainWidth={320}
-      minWidth={480}
+      minWidth={EXPLORER_DOCK_MIN_WIDTH}
       onWidthChange={props.onWidthChange}
       resizable
     >

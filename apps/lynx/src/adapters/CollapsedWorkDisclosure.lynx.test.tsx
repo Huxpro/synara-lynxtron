@@ -20,6 +20,9 @@ describe('Collapsed work disclosure fidelity', () => {
       /\.SharedCollapsedWorkChevron\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*flex-shrink:\s*0;[^}]*opacity:\s*0\.72;/s
     );
     expect(styles).toMatch(
+      /\.SharedCollapsedWorkTrigger\s*\{[^}]*margin-left:\s*0;/s
+    );
+    expect(styles).toMatch(
       /\.SharedCollapsedWorkTrigger\.ui-hover \.SharedCollapsedWorkLabel,[^{]*\{[^}]*opacity:\s*0\.9;/s
     );
     expect(styles).not.toMatch(

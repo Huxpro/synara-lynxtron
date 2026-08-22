@@ -10,7 +10,7 @@
   align-items: center;
   gap: 4px;
   align-self: flex-start;
-  margin-left: -7px;
+  margin-left: 0;
   padding-top: 2px;
   padding-bottom: 13px;
 }

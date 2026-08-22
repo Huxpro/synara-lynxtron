@@ -52,7 +52,15 @@ export function resolveDesktopAppDataBase(input?: {
 export function resolveDesktopUserDataPath(input: {
   readonly appDataBase: string;
   readonly userDataDirectoryName: string;
+  readonly override?: string | undefined;
 }): string {
+  const override = input.override?.trim();
+  if (override) {
+    if (!Path.isAbsolute(override)) {
+      throw new Error("SYNARA_DESKTOP_USER_DATA_DIR must be an absolute path.");
+    }
+    return Path.resolve(override);
+  }
   return Path.join(input.appDataBase, input.userDataDirectoryName);
 }
 

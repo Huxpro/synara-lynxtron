@@ -10,9 +10,9 @@ describe('Synara desktop runtime endpoint', () => {
     );
   });
 
-  it('normalizes an isolated server override to its WebSocket origin', () => {
+  it('normalizes an isolated server override while preserving authentication', () => {
     expect(resolveSynaraWsUrl(' wss://synara.example:58155/stale?token=x ')).toBe(
-      'wss://synara.example:58155'
+      'wss://synara.example:58155?token=x'
     );
   });
 

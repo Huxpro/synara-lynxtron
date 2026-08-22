@@ -68,8 +68,11 @@ async function negotiate(baseUrl: string): Promise<{
   readonly negotiatedRevision: number;
   readonly serverInstanceId: string;
 }> {
+  const bootstrapUrl = new URL(baseUrl);
+  bootstrapUrl.pathname = '/ws/bootstrap';
+  bootstrapUrl.hash = '';
   const manager = createManager(
-    () => openSocket(`${baseUrl}/ws/bootstrap`),
+    () => openSocket(bootstrapUrl.toString()),
     { maxReconnectAttempts: 0 }
   );
   try {
@@ -86,19 +89,24 @@ async function negotiate(baseUrl: string): Promise<{
 }
 
 async function openFeatureSocket(): Promise<WebSocket> {
-  const baseUrl = new URL(
-    resolveSynaraWsUrl(process.env.SYNARA_WS_URL)
-  ).origin;
-  const compatibility = await negotiate(baseUrl);
-  const query = new URLSearchParams({
-    'x-synara-client-build': CLIENT_BUILD,
-    'x-synara-protocol-epoch': String(compatibility.protocolEpoch),
-    'x-synara-protocol-revision': String(
-      compatibility.negotiatedRevision
-    ),
-    'x-synara-server-instance': compatibility.serverInstanceId,
-  });
-  return openSocket(`${baseUrl}/ws?${query}`);
+  const socketUrl = new URL(resolveSynaraWsUrl(process.env.SYNARA_WS_URL));
+  const compatibility = await negotiate(socketUrl.toString());
+  socketUrl.pathname = '/ws';
+  socketUrl.hash = '';
+  socketUrl.searchParams.set('x-synara-client-build', CLIENT_BUILD);
+  socketUrl.searchParams.set(
+    'x-synara-protocol-epoch',
+    String(compatibility.protocolEpoch)
+  );
+  socketUrl.searchParams.set(
+    'x-synara-protocol-revision',
+    String(compatibility.negotiatedRevision)
+  );
+  socketUrl.searchParams.set(
+    'x-synara-server-instance',
+    compatibility.serverInstanceId
+  );
+  return openSocket(socketUrl.toString());
 }
 
 const featureManager = createManager(openFeatureSocket, {

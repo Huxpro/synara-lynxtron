@@ -82,9 +82,13 @@ export function disclosureChevronClassName(
  */
 export function useLynxDisclosurePresence(
   open: boolean,
-  options: { readonly preserveOnClose?: boolean } = {}
+  options: {
+    readonly preserveOnClose?: boolean;
+    readonly transitionMs?: number;
+  } = {}
 ): boolean {
   const preserveOnClose = options.preserveOnClose ?? true;
+  const transitionMs = options.transitionMs ?? DISCLOSURE_TRANSITION_MS;
   const prefersReducedMotion = useLynxReducedMotion();
   const [present, setPresent] = useState(open);
 
@@ -101,10 +105,10 @@ export function useLynxDisclosurePresence(
     }
     const timeout = setTimeout(
       () => setPresent(false),
-      DISCLOSURE_TRANSITION_MS + DISCLOSURE_CLEANUP_BUFFER_MS
+      transitionMs + DISCLOSURE_CLEANUP_BUFFER_MS
     );
     return () => clearTimeout(timeout);
-  }, [open, prefersReducedMotion, preserveOnClose, present]);
+  }, [open, prefersReducedMotion, preserveOnClose, present, transitionMs]);
 
   return present;
 }

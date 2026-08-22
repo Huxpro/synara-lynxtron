@@ -560,10 +560,17 @@
   position: relative;
   overflow: hidden;
   padding: 0;
+  transition: padding-right 300ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .ThreadPage--diff-open {
   padding-right: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ThreadPage {
+    transition-duration: 0.01ms;
+  }
 }
 
 .ThreadHeaderIdentity {
@@ -1002,6 +1009,7 @@
 .ThreadDiffToggleIcon {
   width: 16px;
   height: 16px;
+  opacity: 0.7;
 }
 
 .ThreadTranscriptColumn {

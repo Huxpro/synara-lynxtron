@@ -24,6 +24,7 @@ import { Input } from '../components/ui/input.lynx';
 import { scrollLynxElementIntoViewById } from '../components/ui/scrollIntoView.lynx';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { webStorage } from '../platform/storage';
+import { useLynxDisclosurePresence } from '../platform/motion.lynx';
 
 import './diff-dock.css';
 
@@ -38,7 +39,11 @@ export function DiffDock(props: {
   readonly presentation?: 'dock' | 'editor';
   readonly workspaceRoot: string | null;
 }) {
-  if (!props.open || !props.workspaceRoot) return null;
+  const present = useLynxDisclosurePresence(
+    props.open && Boolean(props.workspaceRoot),
+    { transitionMs: 300 }
+  );
+  if (!present || !props.workspaceRoot) return null;
 
   return (
     <OpenDiffDock
@@ -47,6 +52,7 @@ export function DiffDock(props: {
       initialSelectedFilePath={props.initialSelectedFilePath}
       onClose={props.onClose}
       onWidthChange={props.onWidthChange}
+      open={props.open}
       presentation={props.presentation ?? 'dock'}
       unavailableLabel={props.unavailableLabel}
       workspaceRoot={props.workspaceRoot}
@@ -60,6 +66,7 @@ function OpenDiffDock(props: {
   readonly initialSelectedFilePath?: string | null;
   readonly onClose: () => void;
   readonly onWidthChange: (width: number) => void;
+  readonly open: boolean;
   readonly presentation: 'dock' | 'editor';
   readonly unavailableLabel?: string | null;
   readonly workspaceRoot: string;
@@ -146,7 +153,7 @@ function OpenDiffDock(props: {
   return (
     <ResizableRightPanel
       availableWidth={props.availableWidth}
-      className="DiffDock"
+      className={`DiffDock${props.open ? ' DiffDock--open' : ' DiffDock--closed'}`}
       defaultWidth={
         props.availableWidth > 0
           ? Math.round(props.availableWidth / 2)

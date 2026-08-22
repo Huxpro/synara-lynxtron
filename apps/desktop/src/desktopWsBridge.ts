@@ -16,3 +16,10 @@ export function normalizeDesktopWsUrl(value: unknown): string | null {
 export function resolveDesktopWsUrlFromEnv(env: NodeJS.ProcessEnv): string | null {
   return normalizeDesktopWsUrl(env.SYNARA_DESKTOP_WS_URL);
 }
+
+export function resolveDesktopBackendAuthToken(
+  env: NodeJS.ProcessEnv,
+  fallback: () => string,
+): string {
+  return normalizeDesktopWsUrl(env.SYNARA_DESKTOP_AUTH_TOKEN) ?? fallback();
+}

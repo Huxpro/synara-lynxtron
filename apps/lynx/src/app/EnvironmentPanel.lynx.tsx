@@ -222,7 +222,10 @@ export function EnvironmentToggle(props: {
     >
       <svg
         className="EnvironmentToggleIcon"
-        content={colorizeLynxSvg(windowSvg, svgColors.foreground)}
+        content={colorizeLynxSvg(
+          windowSvg,
+          props.open ? svgColors.foreground : svgColors.secondaryForeground
+        )}
       />
     </view>
   );

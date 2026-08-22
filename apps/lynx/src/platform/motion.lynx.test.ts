@@ -16,6 +16,13 @@ function PresenceProbe(props: { readonly open: boolean }) {
   return present ? createElement('view', { className: 'PresenceProbe' }) : null;
 }
 
+function CustomPresenceProbe(props: { readonly open: boolean }) {
+  const present = useLynxDisclosurePresence(props.open, {
+    transitionMs: 300,
+  });
+  return present ? createElement('view', { className: 'CustomPresenceProbe' }) : null;
+}
+
 describe('Lynx disclosure motion contract', () => {
   beforeEach(() => setLynxReducedMotion(false));
 
@@ -48,5 +55,11 @@ describe('Lynx disclosure motion contract', () => {
     view.rerender(createElement(PresenceProbe, { open: false }));
 
     expect(elementTree.root?.querySelector('.PresenceProbe')).toBeNull();
+  });
+
+  it('supports a longer source-matched panel transition before cleanup', async () => {
+    const view = render(createElement(CustomPresenceProbe, { open: true }));
+    view.rerender(createElement(CustomPresenceProbe, { open: false }));
+    expect(elementTree.root?.querySelector('.CustomPresenceProbe')).not.toBeNull();
   });
 });
