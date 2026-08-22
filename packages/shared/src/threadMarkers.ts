@@ -8,6 +8,8 @@ import {
   type ThreadMarkerId,
 } from "@synara/contracts";
 
+export { resolveTranscriptMarkerRange } from "./transcriptSelection";
+
 const INLINE_EMPHASIS_PATTERN = /[*_`~]+/g;
 
 export function deriveThreadMarkerLabel(marker: ThreadMarker): string {

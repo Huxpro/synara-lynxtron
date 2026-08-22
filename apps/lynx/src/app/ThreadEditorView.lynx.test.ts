@@ -289,7 +289,10 @@ describe('Lynx Editor view', () => {
       /\.ExplorerDock--editor\s+\.ExplorerDockSidebar\s*\{[^}]*width:\s*224px;[^}]*min-width:\s*224px;/s
     );
     expect(explorerStyles).toMatch(
-      /\.ExplorerDock--editor-search\s+\.ExplorerDockHeader\s*\{[^}]*display:\s*none;/s
+      /\.ExplorerDock--editor\s+\.ExplorerDockHeader\s*\{[^}]*display:\s*none;/s
+    );
+    expect(explorerStyles).toMatch(
+      /\.ExplorerDock--editor:not\(\.ExplorerDock--editor-search\)\s+\.ExplorerDockSearch\s*\{[^}]*display:\s*none;/s
     );
     expect(explorerSource).toContain(
       "props.presentationMode === 'editor-search'"

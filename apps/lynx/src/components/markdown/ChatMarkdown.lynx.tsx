@@ -1,7 +1,14 @@
 // P2-V5: unified/remark parses on the background thread; this module only
 // turns the serializable mdast subset into Lynx-native view/text elements.
 
-import { useEffect, useRef, useState } from '@lynx-js/react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from '@lynx-js/react';
+import { getRectByRef } from '@lynx-js/lynx-ui';
+import type { NodesRef, SelectionChangeEvent } from '@lynx-js/types';
 import type { ProviderMentionReference } from '@synara/contracts';
 import {
   splitPromptIntoDisplaySegments,
@@ -39,9 +46,19 @@ export interface ChatMarkdownProps {
   readonly text: string;
   readonly className?: string;
   readonly cwd?: string | null;
+  readonly selectable?: boolean;
   readonly variant?: MarkdownVariant;
   readonly mentionReferences?: ReadonlyArray<ProviderMentionReference>;
   readonly onOpenFileReference?: (relativePath: string) => void;
+  readonly onTextSelection?: (
+    selection: MarkdownTextSelection | null
+  ) => void;
+}
+
+export interface MarkdownTextSelection {
+  readonly text: string;
+  readonly left: number;
+  readonly top: number;
 }
 
 interface MarkdownRenderContext {
@@ -49,7 +66,85 @@ interface MarkdownRenderContext {
   readonly cwd: string | null;
   readonly mentionReferences: ReadonlyArray<ProviderMentionReference>;
   readonly onOpenFileReference?: (relativePath: string) => void;
+  readonly onTextSelection?: (
+    selection: MarkdownTextSelection | null
+  ) => void;
+  readonly selectable: boolean;
   readonly variant: MarkdownVariant;
+}
+
+function SelectableMarkdownText(props: {
+  readonly children?: ReactNode;
+  readonly className: string;
+  readonly context: MarkdownRenderContext;
+}) {
+  const textRef = useRef<NodesRef>(null);
+  const selectionEnabled =
+    props.context.selectable && props.context.onTextSelection !== undefined;
+
+  function handleSelectionChange(event: SelectionChangeEvent) {
+    'background only';
+    const start = event.detail.start;
+    const end = event.detail.end;
+    if (!selectionEnabled || start < 0 || end <= start || !textRef.current) {
+      props.context.onTextSelection?.(null);
+      return;
+    }
+    const selectedText = new Promise<string>((resolve) => {
+      textRef.current
+        ?.invoke({
+          method: 'getSelectedText',
+          success: (result) => resolve(result.selectedText),
+          fail: () => resolve(''),
+        })
+        .exec();
+    });
+    const selectionRect = new Promise<{
+      readonly left: number;
+      readonly top: number;
+    } | null>((resolve) => {
+      textRef.current
+        ?.invoke({
+          method: 'getTextBoundingRect',
+          params: { start, end },
+          success: (result) =>
+            resolve({
+              left: result.boundingRect.left,
+              top: result.boundingRect.bottom,
+            }),
+          fail: () => resolve(null),
+        })
+        .exec();
+    });
+    void Promise.all([selectedText, selectionRect, getRectByRef(textRef, true)])
+      .then(([text, localRect, elementRect]) => {
+        if (!text.trim() || !localRect) {
+          props.context.onTextSelection?.(null);
+          return;
+        }
+        props.context.onTextSelection?.({
+          text,
+          left: elementRect.left + localRect.left,
+          top: elementRect.top + localRect.top,
+        });
+      })
+      .catch(() => props.context.onTextSelection?.(null));
+  }
+
+  return (
+    <text
+      ref={textRef}
+      className={props.className}
+      text-selection={props.context.selectable}
+      custom-context-menu={selectionEnabled}
+      flatten={false}
+      bindselectionchange={
+        selectionEnabled ? handleSelectionChange : undefined
+      }
+    >
+      {props.children}
+    </text>
+  );
 }
 
 function MarkdownInlineToken({
@@ -414,15 +509,23 @@ function renderNode(
         : <text key={key}>{node.value ?? ''}</text>;
     case 'paragraph':
       return (
-        <text className="MdParagraph" key={key}>
+        <SelectableMarkdownText
+          className="MdParagraph"
+          context={context}
+          key={key}
+        >
           {children()}
-        </text>
+        </SelectableMarkdownText>
       );
     case 'heading':
       return (
-        <text className={`MdHeading MdH${node.depth ?? 3}`} key={key}>
+        <SelectableMarkdownText
+          className={`MdHeading MdH${node.depth ?? 3}`}
+          context={context}
+          key={key}
+        >
           {children()}
-        </text>
+        </SelectableMarkdownText>
       );
     case 'strong':
       return (
@@ -530,9 +633,11 @@ export function ChatMarkdown({
   text,
   className,
   cwd = null,
+  selectable = false,
   variant = 'assistant',
   mentionReferences = [],
   onOpenFileReference,
+  onTextSelection,
 }: ChatMarkdownProps) {
   const [tree, setTree] = useState<MarkdownNode | null>(null);
 
@@ -551,6 +656,8 @@ export function ChatMarkdown({
     cwd,
     mentionReferences,
     onOpenFileReference,
+    onTextSelection,
+    selectable,
     variant,
   };
 
@@ -563,11 +670,11 @@ export function ChatMarkdown({
       {tree ? (
         renderNode(tree, 'root', context)
       ) : (
-        <text className="MdParagraph">
+        <SelectableMarkdownText className="MdParagraph" context={context}>
           {variant === 'user'
             ? renderUserText(text, 'fallback', context)
             : text}
-        </text>
+        </SelectableMarkdownText>
       )}
     </view>
   );

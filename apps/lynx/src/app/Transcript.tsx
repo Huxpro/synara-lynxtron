@@ -4,6 +4,8 @@ import toolSvg from '@synara-central-icons/zap.svg?raw';
 
 import { PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from '@synara/contracts';
 import { resolveAssistantMessageDisplayText } from '@synara-web/components/chat/MessagesTimeline.logic';
+import { resolveTranscriptMarkerRange } from '@synara/shared/threadMarkers';
+import { formatShortTimestamp } from '@synara-web/timestampFormat';
 // Same transcript typography math the Web bubbles use (font-size, line-height,
 // footer size), so both targets derive geometry from one source instead of
 // hand-tuned CSS on each side.
@@ -23,15 +25,25 @@ import { TimelineStatusRowComposition } from '@synara-web/components/chat/Timeli
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { useTheme } from '../adapters/useTheme.lynx';
 import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
-import { CheckIcon, CircleAlertIcon } from '../lib/icons.lynx';
+import {
+  CheckIcon,
+  CircleAlertIcon,
+  CopyIcon,
+  MessageCircleIcon,
+  TextWrapIcon,
+} from '../lib/icons.lynx';
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { ChatMarkdown } from '../components/markdown/ChatMarkdown';
+import pinSvg from '@synara-central-icons/pin.svg?raw';
+import {
+  ChatMarkdown,
+  type MarkdownTextSelection,
+} from '../components/markdown/ChatMarkdown';
 import {
   createAssistantSelectionAttachment,
   getAssistantSelectionValidationError,
 } from '@synara-web/lib/assistantSelections';
 import { bridgeCall } from '../platform/bridge';
-import type { ThreadTranscriptRow } from './queries';
+import { queryClient, type ThreadTranscriptRow } from './queries';
 import {
   buildTranscriptScrollToBottomParams,
   estimateTranscriptRowMainAxisSize,
@@ -100,22 +112,76 @@ function TranscriptWorkEntries({
   );
 }
 
+function TranscriptSelectionAction(props: {
+  readonly onAddToChat: () => void;
+  readonly onHighlight: () => void;
+  readonly onUnderline: () => void;
+  readonly selection: MarkdownTextSelection;
+}) {
+  const highlight = useLynxInteractiveState({
+    baseClassName: 'TranscriptSelectionAction',
+    accessibleLabel: 'Highlight',
+    onActivate: props.onHighlight,
+  });
+  const underline = useLynxInteractiveState({
+    baseClassName: 'TranscriptSelectionAction',
+    accessibleLabel: 'Underline',
+    onActivate: props.onUnderline,
+  });
+  const addToChat = useLynxInteractiveState({
+    baseClassName: 'TranscriptSelectionAction',
+    accessibleLabel: 'Add to chat',
+    onActivate: props.onAddToChat,
+  });
+  return (
+    <view
+      className="TranscriptSelectionToolbar"
+      style={{
+        left: `${props.selection.left}px`,
+        top: `${props.selection.top + 8}px`,
+      }}
+      accessibility-element
+      accessibility-label="Selection actions"
+      accessibility-traits="summary"
+    >
+      <view className={highlight.className} {...highlight.eventProps}>
+        <text className="TranscriptSelectionActionGlyph">✎</text>
+        <text className="TranscriptSelectionActionLabel">Highlight</text>
+      </view>
+      <view className={underline.className} {...underline.eventProps}>
+        <TextWrapIcon className="TranscriptSelectionActionIcon" size={13} />
+        <text className="TranscriptSelectionActionLabel">Underline</text>
+      </view>
+      <view className={addToChat.className} {...addToChat.eventProps}>
+        <MessageCircleIcon className="TranscriptSelectionActionIcon" size={13} />
+        <text className="TranscriptSelectionActionLabel">Add to chat</text>
+      </view>
+    </view>
+  );
+}
+
 function TranscriptMessage({
   chatFontSizePx,
   onOpenFileReference,
+  pinnedMessageIds,
   row,
   threadId,
+  timestampFormat,
   workspaceRoot,
 }: {
   readonly chatFontSizePx: number;
   readonly onOpenFileReference?: (relativePath: string) => void;
+  readonly pinnedMessageIds: ReadonlySet<string>;
   row: MessageTranscriptRow;
   threadId: string;
+  readonly timestampFormat: 'locale' | '12-hour' | '24-hour';
   readonly workspaceRoot: string | null;
 }) {
   const { message } = row;
   const isUser = message.role === 'user';
   const [collapsedWorkOpen, setCollapsedWorkOpen] = useState(false);
+  const [textSelection, setTextSelection] =
+    useState<MarkdownTextSelection | null>(null);
   const {
     collapsedTurnItems,
     hasCollapsedWork,
@@ -142,7 +208,7 @@ function TranscriptMessage({
     (state) => state.addAssistantSelection
   );
   const addToChat = useLynxInteractiveState({
-    baseClassName: 'TranscriptAssistantAddToChat',
+    baseClassName: 'TranscriptMessageAction',
     accessibleLabel: 'Reference whole assistant message',
     disabled: assistantSelectionUnavailable,
     onActivate: () => {
@@ -154,6 +220,101 @@ function TranscriptMessage({
       if (selection) addAssistantSelection(threadId, selection);
     },
   });
+  const messageHover = useLynxInteractiveState({
+    baseClassName: `TranscriptMessageHoverRegion ${
+      isUser
+        ? 'TranscriptMessageHoverRegion--user'
+        : 'TranscriptMessageHoverRegion--assistant'
+    }`,
+    focusable: false,
+  });
+  const copy = useLynxInteractiveState({
+    baseClassName: 'TranscriptMessageAction',
+    accessibleLabel: 'Copy message',
+    onActivate: () => {
+      'background only';
+      const text = isUser ? message.text : assistantText;
+      if (!text) return;
+      void import(/* webpackMode: "eager" */ '../platform/clipboard').then(
+        ({ clipboard }) => clipboard.writeText(text)
+      );
+    },
+  });
+  const pinned = pinnedMessageIds.has(message.id);
+  const pin = useLynxInteractiveState({
+    baseClassName: `TranscriptMessageAction${
+      pinned ? ' TranscriptMessageAction--persistent' : ''
+    }`,
+    accessibleLabel: pinned ? 'Unpin from panel' : 'Pin to panel',
+    onActivate: () => {
+      'background only';
+      void import(/* webpackMode: "eager" */ '../data/synaraClient').then(
+        ({ dispatchSynaraCommand }) =>
+          dispatchSynaraCommand({
+            type: pinned
+              ? 'thread.pinned-message.remove'
+              : 'thread.pinned-message.add',
+            commandId: `lynx-command-${Date.now()}-${Math.random()
+              .toString(16)
+              .slice(2)}` as never,
+            threadId: threadId as never,
+            messageId: message.id,
+          }).then(() =>
+            queryClient.invalidateQueries({
+              queryKey: ['thread-detail', threadId],
+            })
+          )
+      );
+    },
+  });
+  const timestamp = formatShortTimestamp(
+    message.createdAt,
+    timestampFormat
+  );
+  function addSelectedTextToChat() {
+    'background only';
+    if (!textSelection) return;
+    const selection = createAssistantSelectionAttachment({
+      assistantMessageId: message.id,
+      text: textSelection.text,
+    });
+    if (selection) addAssistantSelection(threadId, selection);
+    setTextSelection(null);
+  }
+  function addMarker(style: 'highlight' | 'underline') {
+    'background only';
+    if (!textSelection || assistantText === null) return;
+    const range = resolveTranscriptMarkerRange({
+      messageText: assistantText,
+      selectedText: textSelection.text,
+    });
+    if (!range) return;
+    const now = Date.now();
+    void import(/* webpackMode: "eager" */ '../data/synaraClient').then(
+      ({ dispatchSynaraCommand }) =>
+        dispatchSynaraCommand({
+          type: 'thread.marker.add',
+          commandId: `lynx-command-${now}-${Math.random()
+            .toString(16)
+            .slice(2)}` as never,
+          threadId: threadId as never,
+          markerId: `lynx-marker-${now}-${Math.random()
+            .toString(16)
+            .slice(2)}` as never,
+          messageId: message.id,
+          startOffset: range.startOffset,
+          endOffset: range.endOffset,
+          selectedText: textSelection.text,
+          style,
+          color: style === 'highlight' ? 'yellow' : 'blue',
+        }).then(() => {
+          setTextSelection(null);
+          return queryClient.invalidateQueries({
+            queryKey: ['thread-detail', threadId],
+          });
+        })
+    );
+  }
   if (message.role === 'system') {
     return (
       <view className="TranscriptMessageRow TranscriptMessageRowStatus">
@@ -167,7 +328,10 @@ function TranscriptMessage({
     );
   }
   return isUser ? (
-    <view className="TranscriptMessageRow TranscriptMessageRowUser">
+    <view
+      className={`TranscriptMessageRow TranscriptMessageRowUser ${messageHover.className}`}
+      {...messageHover.eventProps}
+    >
       <MessageUserRowComposition>
         <MessageUserBubbleComposition>
           <view
@@ -180,6 +344,7 @@ function TranscriptMessage({
           >
             <ChatMarkdown
               cwd={workspaceRoot}
+              selectable
               text={message.text}
               variant="user"
               mentionReferences={message.mentions ?? []}
@@ -187,10 +352,19 @@ function TranscriptMessage({
             />
           </view>
         </MessageUserBubbleComposition>
+        <view className="TranscriptMessageFooter TranscriptMessageFooter--user">
+          <text className="TranscriptMessageTimestamp">{timestamp}</text>
+          <view className={copy.className} {...copy.eventProps}>
+            <CopyIcon className="TranscriptMessageActionIcon" size={13} />
+          </view>
+        </view>
       </MessageUserRowComposition>
     </view>
   ) : (
-    <view className="TranscriptMessageRow TranscriptMessageRowAssistant">
+    <view
+      className={`TranscriptMessageRow TranscriptMessageRowAssistant ${messageHover.className}`}
+      {...messageHover.eventProps}
+    >
       {hasCollapsedWork ? (
         <CollapsedWorkComposition
           elapsed={row.collapsedWorkElapsed}
@@ -226,8 +400,36 @@ function TranscriptMessage({
               <ChatMarkdown
                 cwd={workspaceRoot}
                 onOpenFileReference={onOpenFileReference}
+                onTextSelection={setTextSelection}
+                selectable
                 text={assistantText}
               />
+            </view>
+          </view>
+        )}
+        <TranscriptWorkEntries entries={inlineWorkEntries} />
+        {textSelection ? (
+          <TranscriptSelectionAction
+            selection={textSelection}
+            onAddToChat={addSelectedTextToChat}
+            onHighlight={() => addMarker('highlight')}
+            onUnderline={() => addMarker('underline')}
+          />
+        ) : null}
+        {assistantText === null ? null : (
+          <view
+            className={`TranscriptMessageFooter${
+              pinned ? ' TranscriptMessageFooter--persistent' : ''
+            }`}
+          >
+            <view className={pin.className} {...pin.eventProps}>
+              <svg
+                className="TranscriptMessageActionIcon"
+                content={colorizeLynxSvg(pinSvg, 'var(--muted-foreground)')}
+              />
+            </view>
+            <view className={copy.className} {...copy.eventProps}>
+              <CopyIcon className="TranscriptMessageActionIcon" size={13} />
             </view>
             <view
               className={`${addToChat.className}${
@@ -235,13 +437,11 @@ function TranscriptMessage({
               }`}
               {...addToChat.eventProps}
             >
-              <text className="TranscriptAssistantAddToChatText">
-                Reference whole message
-              </text>
+              <MessageCircleIcon className="TranscriptMessageActionIcon" size={13} />
             </view>
+            <text className="TranscriptMessageTimestamp">{timestamp}</text>
           </view>
         )}
-        <TranscriptWorkEntries entries={inlineWorkEntries} />
       </MessageAssistantRowComposition>
     </view>
   );
@@ -250,14 +450,18 @@ function TranscriptMessage({
 function TranscriptRowContent({
   chatFontSizePx,
   onOpenFileReference,
+  pinnedMessageIds,
   row,
   threadId,
+  timestampFormat,
   workspaceRoot,
 }: {
   readonly chatFontSizePx: number;
   readonly onOpenFileReference?: (relativePath: string) => void;
+  readonly pinnedMessageIds: ReadonlySet<string>;
   row: ThreadTranscriptRow;
   threadId: string;
+  readonly timestampFormat: 'locale' | '12-hour' | '24-hour';
   readonly workspaceRoot: string | null;
 }) {
   if (row.kind === 'message') {
@@ -265,8 +469,10 @@ function TranscriptRowContent({
       <TranscriptMessage
         chatFontSizePx={chatFontSizePx}
         onOpenFileReference={onOpenFileReference}
+        pinnedMessageIds={pinnedMessageIds}
         row={row}
         threadId={threadId}
+        timestampFormat={timestampFormat}
         workspaceRoot={workspaceRoot}
       />
     );
@@ -323,15 +529,19 @@ export interface TranscriptController {
 export function Transcript({
   chatFontSizePx,
   onOpenFileReference,
+  pinnedMessageIds,
   rows,
   threadId,
+  timestampFormat,
   onController,
   workspaceRoot,
 }: {
   readonly chatFontSizePx: number;
   readonly onOpenFileReference?: (relativePath: string) => void;
+  readonly pinnedMessageIds: ReadonlySet<string>;
   readonly rows: readonly ThreadTranscriptRow[];
   readonly threadId: string;
+  readonly timestampFormat: 'locale' | '12-hour' | '24-hour';
   readonly onController?: (controller: TranscriptController | null) => void;
   readonly workspaceRoot: string | null;
 }) {
@@ -498,8 +708,10 @@ export function Transcript({
             <TranscriptRowContent
               chatFontSizePx={chatFontSizePx}
               onOpenFileReference={onOpenFileReference}
+              pinnedMessageIds={pinnedMessageIds}
               row={row}
               threadId={threadId}
+              timestampFormat={timestampFormat}
               workspaceRoot={workspaceRoot}
             />
           </list-item>

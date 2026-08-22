@@ -31,6 +31,7 @@ import {
 } from '@synara-web/components/SidebarStatus.logic';
 import { resolveSidebarProjectsSectionState } from '@synara-web/components/SidebarProjectsState.logic';
 import { resolveSidebarThreadRowModel } from '@synara-web/components/SidebarThreadRowModel.logic';
+import { formatRelativeTime } from '@synara-web/lib/relativeTime';
 import {
   SIDEBAR_THREAD_PREVIEW_LIMIT,
   SIDEBAR_THREAD_PREVIEW_PAGE_SIZE,
@@ -85,14 +86,17 @@ import {
 import {
   ChevronDownIcon,
   ChevronRightIcon,
+  ArchiveIcon,
   ClockIcon,
   GitBranchIcon,
+  PlusIcon,
   SettingsIcon,
 } from '../../lib/icons';
 import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
 import { useTheme } from '../../adapters/useTheme.lynx';
 import { Button } from '../ui/button';
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
+import { lynxNestedInteractiveEventProps } from '../ui/interactive-state.lynx';
 import { deriveSidebarSections } from './sidebar.logic';
 import { SidebarSearchPaletteLynx } from './SidebarSearchPalette.lynx';
 import { LYNX_PRIMARY_SHORTCUT_LABELS } from './sidebarShortcuts';
@@ -106,6 +110,7 @@ import {
 import './sidebar.css';
 import { PullRequestCompareIcon } from './PullRequestCompareIcon.lynx';
 import { LYNX_SIDEBAR_PRIMARY_ICONS } from './SidebarPrimaryIcons.lynx';
+import pinSvg from '@synara-central-icons/pin.svg?raw';
 
 const SEARCH_TRIGGER_ELEMENT_ID = 'synara-sidebar-search-trigger';
 const ADD_PROJECT_TRIGGER_ELEMENT_ID = 'synara-sidebar-add-project-trigger';
@@ -120,9 +125,11 @@ interface PersistedSidebarListState {
 }
 
 function SidebarNavigationRow(props: {
+  readonly actions?: ReactNode;
   readonly children?: ReactNode;
   readonly className: string;
   readonly expanded?: boolean;
+  readonly hoverCard?: ReactNode;
   readonly label: string;
   readonly onActivate: () => void;
   readonly onContextMenu?: (
@@ -130,6 +137,10 @@ function SidebarNavigationRow(props: {
   ) => void;
 }) {
   const rowRef = useRef<NodesRef>(null);
+  const [hoverCardPosition, setHoverCardPosition] = useState<{
+    readonly left: number;
+    readonly top: number;
+  } | null>(null);
   const interaction = useLynxInteractiveState({
     baseClassName: props.className,
     accessibleLabel: props.label,
@@ -140,6 +151,19 @@ function SidebarNavigationRow(props: {
           ? 'Expanded'
           : 'Collapsed',
     onActivate: props.onActivate,
+    onIntent: props.hoverCard
+      ? () => {
+          'background only';
+          void getRectByRef(rowRef, true)
+            .then((rect) =>
+              setHoverCardPosition({
+                left: rect.right + 8,
+                top: rect.top,
+              })
+            )
+            .catch(() => setHoverCardPosition(null));
+        }
+      : undefined,
   });
   return (
     <view
@@ -169,6 +193,61 @@ function SidebarNavigationRow(props: {
       }}
     >
       {props.children}
+      {props.actions ? (
+        <view className="AppSidebarRowHoverActions">{props.actions}</view>
+      ) : null}
+      {props.hoverCard && hoverCardPosition ? (
+        <view
+          className="AppSidebarRowHoverCard"
+          style={{
+            left: `${hoverCardPosition.left}px`,
+            top: `${hoverCardPosition.top}px`,
+          }}
+        >
+          {props.hoverCard}
+        </view>
+      ) : null}
+    </view>
+  );
+}
+
+function SidebarHoverAction(props: {
+  readonly label: string;
+  readonly onActivate: () => void;
+  readonly children: ReactNode;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'AppSidebarHoverAction',
+    accessibleLabel: props.label,
+    onActivate: props.onActivate,
+  });
+  return (
+    <view
+      className={interaction.className}
+      {...lynxNestedInteractiveEventProps(interaction.eventProps)}
+    >
+      {props.children}
+    </view>
+  );
+}
+
+function SidebarThreadHoverCard(props: {
+  readonly projectName: string | null;
+  readonly thread: ThreadSummary;
+}) {
+  return (
+    <view className="AppSidebarHoverCardSurface">
+      <view className="AppSidebarHoverCardHeader">
+        <text className="AppSidebarHoverCardTitle">{props.thread.title}</text>
+        <text className="AppSidebarHoverCardTime">
+          {formatRelativeTime(props.thread.updatedAt ?? props.thread.createdAt ?? '')}
+        </text>
+      </view>
+      {props.projectName ? (
+        <view className="AppSidebarHoverCardMetaRow">
+          <text className="AppSidebarHoverCardMeta">{props.projectName}</text>
+        </view>
+      ) : null}
     </view>
   );
 }
@@ -480,7 +559,18 @@ export function Sidebar({
       position
     )) as ThreadContextMenuActionId | null;
     if (!action) return;
+    await performThreadAction(thread, workspaceRoot, action);
+  }
 
+  async function performThreadAction(
+    thread: ThreadSummary,
+    workspaceRoot: string,
+    action: ThreadContextMenuActionId
+  ) {
+    'background only';
+    const isPinned =
+      thread.isPinned === true ||
+      persistedPinnedThreadIds.includes(thread.id);
     if (action === 'copy-path' || action === 'copy-thread-id') {
       const { clipboard } = await import(
         /* webpackMode: "eager" */ '../../platform/clipboard'
@@ -536,6 +626,80 @@ export function Sidebar({
     } else if (activeThreadId === thread.id) {
       navigate('/');
     }
+  }
+
+  async function toggleProjectPinned(project: {
+    readonly id: string;
+    readonly isPinned?: boolean;
+  }) {
+    'background only';
+    const isPinned =
+      project.isPinned === true ||
+      persistedPinnedProjectIds.includes(project.id);
+    const { dispatchSynaraCommand } = await import(
+      /* webpackMode: "eager" */ '../../data/synaraClient'
+    );
+    await dispatchSynaraCommand({
+      type: 'project.meta.update',
+      commandId: `lynx-command-${Date.now()}-${Math.random()
+        .toString(16)
+        .slice(2)}` as never,
+      projectId: project.id as never,
+      isPinned: !isPinned,
+    });
+    await queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] });
+    const { usePinnedProjectsStore } = await import(
+      /* webpackMode: "eager" */ '@synara-web/pinnedProjectsStore'
+    );
+    if (isPinned) {
+      usePinnedProjectsStore.getState().unpinProject(project.id as never);
+    } else {
+      usePinnedProjectsStore.getState().pinProject(project.id as never);
+    }
+    setPersistedPinnedProjectIds(
+      usePinnedProjectsStore.getState().pinnedProjectIds
+    );
+  }
+
+  function threadHoverActions(thread: ThreadSummary) {
+    const isPinned =
+      thread.isPinned === true ||
+      persistedPinnedThreadIds.includes(thread.id);
+    return (
+      <>
+        <SidebarHoverAction
+          label={isPinned ? 'Unpin thread' : 'Pin thread'}
+          onActivate={() =>
+            void performThreadAction(thread, '', 'toggle-pin')
+          }
+        >
+          <svg
+            className="AppSidebarHoverActionIcon"
+            content={colorizeLynxSvg(pinSvg, 'var(--muted-foreground)')}
+          />
+        </SidebarHoverAction>
+        {!thread.live ? (
+          <SidebarHoverAction
+            label="Archive thread"
+            onActivate={() => void performThreadAction(thread, '', 'archive')}
+          >
+            <ArchiveIcon className="AppSidebarHoverActionIcon" size={13} />
+          </SidebarHoverAction>
+        ) : null}
+      </>
+    );
+  }
+
+  function threadHoverCard(thread: ThreadSummary) {
+    return (
+      <SidebarThreadHoverCard
+        projectName={
+          sections.projectGroups.find((group) => group.id === thread.projectId)
+            ?.title ?? null
+        }
+        thread={thread}
+      />
+    );
   }
 
   useEffect(() => {
@@ -900,6 +1064,8 @@ export function Sidebar({
                       className={`AppSidebarThread AppSidebarPinnedThread${
                         rowModel.isActive ? ' AppSidebarThread--active' : ''
                       }`}
+                      actions={threadHoverActions(thread)}
+                      hoverCard={threadHoverCard(thread)}
                       label={thread.title}
                       onActivate={() => navigate(`/thread/${thread.id}`)}
                       onContextMenu={(position) =>
@@ -943,6 +1109,8 @@ export function Sidebar({
                     className={`AppSidebarThread AppSidebarChatThread${
                       rowModel.isActive ? ' AppSidebarThread--active' : ''
                     }`}
+                    actions={threadHoverActions(thread)}
+                    hoverCard={threadHoverCard(thread)}
                     label={thread.title}
                     onActivate={() => navigate(`/thread/${thread.id}`)}
                     onContextMenu={(position) =>
@@ -1008,6 +1176,9 @@ export function Sidebar({
                 expandedProjectCwds.has(projectPagingKey);
               const projectRows = projectRowsById.get(group.id);
               const visibleProjectThreadRows = projectRows?.visibleEntries ?? [];
+              const projectPinned =
+                group.isPinned === true ||
+                persistedPinnedProjectIds.includes(group.id);
               return (
                 <SidebarProjectDisclosure
                   key={group.id}
@@ -1016,6 +1187,45 @@ export function Sidebar({
                     <SidebarNavigationRow
                       className="AppSidebarProjectHeader"
                       expanded={isExpanded}
+                      actions={
+                        <>
+                          <SidebarHoverAction
+                            label={
+                              projectPinned ? 'Unpin project' : 'Pin project'
+                            }
+                            onActivate={() => void toggleProjectPinned(group)}
+                          >
+                            <svg
+                              className="AppSidebarHoverActionIcon"
+                              content={colorizeLynxSvg(
+                                pinSvg,
+                                'var(--muted-foreground)'
+                              )}
+                            />
+                          </SidebarHoverAction>
+                          <SidebarHoverAction
+                            label={`View pull requests for ${group.title}`}
+                            onActivate={() => navigate('/pull-requests')}
+                          >
+                            <PullRequestCompareIcon
+                              className="AppSidebarHoverActionIcon"
+                            />
+                          </SidebarHoverAction>
+                          <SidebarHoverAction
+                            label={`Create new thread in ${group.title}`}
+                            onActivate={() =>
+                              navigate(
+                                `/new-thread/${encodeURIComponent(group.id)}`
+                              )
+                            }
+                          >
+                            <PlusIcon
+                              className="AppSidebarHoverActionIcon"
+                              size={13}
+                            />
+                          </SidebarHoverAction>
+                        </>
+                      }
                       label={`${isExpanded ? 'Collapse' : 'Expand'} ${group.title}`}
                       onActivate={() => toggleProject(group.workspaceRoot)}
                     >
@@ -1050,6 +1260,8 @@ export function Sidebar({
                         className={`AppSidebarThread${
                           rowModel.isActive ? ' AppSidebarThread--active' : ''
                         }`}
+                        actions={threadHoverActions(thread)}
+                        hoverCard={threadHoverCard(thread)}
                         label={thread.title}
                         onActivate={() => navigate(`/thread/${thread.id}`)}
                         onContextMenu={(position) =>
@@ -1127,6 +1339,8 @@ export function Sidebar({
                   className={`AppSidebarThread AppSidebarChatThread${
                     rowModel.isActive ? ' AppSidebarThread--active' : ''
                   }`}
+                  actions={threadHoverActions(thread)}
+                  hoverCard={threadHoverCard(thread)}
                   label={thread.title}
                   onActivate={() => navigate(`/thread/${thread.id}`)}
                   onContextMenu={(position) =>

@@ -1,8 +1,8 @@
 import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
-describe('Lynx whole-message assistant references', () => {
-  it('writes a thread-scoped canonical assistant selection without claiming range parity', () => {
+describe('Lynx assistant message actions', () => {
+  it('writes a thread-scoped canonical assistant selection from the hover footer', () => {
     const source = readFileSync(
       new URL('./Transcript.tsx', import.meta.url),
       'utf8'
@@ -22,31 +22,40 @@ describe('Lynx whole-message assistant references', () => {
     expect(source).toContain('disabled: assistantSelectionUnavailable');
     expect(source).toContain("addToChat.disabled ? ' ui-disabled' : ''");
     expect(source).toContain('Reference whole assistant message');
-    expect(source).toContain('Reference whole message');
+    expect(source).toContain('TranscriptMessageFooter');
+    expect(source).toContain('<MessageCircleIcon');
     expect(source).not.toContain('Reference selection');
     expect(routerSource).toContain('threadId={threadId}');
   });
 
-  it('uses the shared semantic theme tokens for every interaction state', () => {
+  it('exposes real pin, copy, and timestamp actions on hover', () => {
+    const source = readFileSync(
+      new URL('./Transcript.tsx', import.meta.url),
+      'utf8'
+    );
     const styles = readFileSync(
       new URL('./App.css', import.meta.url),
       'utf8'
     );
 
+    expect(source).toContain("'thread.pinned-message.add'");
+    expect(source).toContain("'thread.pinned-message.remove'");
+    expect(source).toContain("import(/* webpackMode: \"eager\" */ '../platform/clipboard')");
+    expect(source).toContain('formatShortTimestamp(');
     expect(styles).toMatch(
-      /\.TranscriptAssistantAddToChatText\s*\{[^}]*color:\s*var\(--color-text-foreground-tertiary\);/s
+      /\.TranscriptMessageHoverRegion\.ui-hover \.TranscriptMessageFooter,[\s\S]*?opacity:\s*1;/s
     );
     expect(styles).toMatch(
-      /\.TranscriptAssistantAddToChat\.ui-hover\s*\{[^}]*background-color:\s*var\(--color-background-button-tertiary-hover\);/s
+      /\.TranscriptMessageAction\.ui-hover\s*\{[^}]*background-color:\s*var\(--color-background-button-tertiary-hover\);/s
     );
     expect(styles).toMatch(
-      /\.TranscriptAssistantAddToChat\.ui-focus\s*\{[^}]*box-shadow:\s*0 0 0 1px var\(--color-border-focus\);/s
+      /\.TranscriptMessageAction\.ui-focus\s*\{[^}]*box-shadow:\s*0 0 0 1px var\(--color-border-focus\);/s
     );
     expect(styles).toMatch(
-      /\.TranscriptAssistantAddToChat\.ui-pressed\s*\{[^}]*background-color:\s*var\(--color-background-button-tertiary-active\);/s
+      /\.TranscriptMessageAction\.ui-pressed\s*\{[^}]*background-color:\s*var\(--color-background-button-tertiary-active\);/s
     );
     expect(styles).not.toMatch(
-      /\.SliceRoot--theme-(?:light|dark)\s+\.TranscriptAssistantAddToChat/
+      /\.SliceRoot--theme-(?:light|dark)\s+\.TranscriptMessageAction/
     );
   });
 });

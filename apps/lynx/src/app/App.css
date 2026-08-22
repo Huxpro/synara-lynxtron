@@ -1841,43 +1841,119 @@
   align-items: flex-start;
 }
 
-.TranscriptAssistantAddToChat {
+.TranscriptMessageFooter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+  margin-top: 2px;
+  color: var(--color-text-foreground-tertiary);
+  opacity: 0;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.TranscriptMessageFooter--user {
+  justify-content: flex-end;
+  padding-right: 2px;
+}
+
+.TranscriptMessageHoverRegion.ui-hover .TranscriptMessageFooter,
+.TranscriptMessageHoverRegion.ui-focus .TranscriptMessageFooter,
+.TranscriptMessageFooter--persistent {
+  opacity: 1;
+}
+
+.TranscriptMessageAction--persistent {
+  opacity: 1;
+}
+
+.TranscriptMessageAction {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 24px;
   min-height: 24px;
-  margin-top: 6px;
-  margin-left: -8px;
-  padding: 0 8px;
+  height: 24px;
   border-radius: 999px;
   background-color: transparent;
+  color: var(--color-text-foreground-tertiary);
 }
 
-.TranscriptAssistantAddToChatText {
+.TranscriptMessageActionIcon {
+  width: 13px;
+  height: 13px;
+  color: var(--color-text-foreground-tertiary);
+}
+
+.TranscriptMessageTimestamp {
   color: var(--color-text-foreground-tertiary);
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
-.TranscriptAssistantAddToChat.ui-hover {
+.TranscriptMessageAction.ui-hover {
   background-color: var(--color-background-button-tertiary-hover);
 }
 
-.TranscriptAssistantAddToChat.ui-hover .TranscriptAssistantAddToChatText,
-.TranscriptAssistantAddToChat.ui-focus .TranscriptAssistantAddToChatText {
+.TranscriptMessageAction.ui-hover .TranscriptMessageActionIcon,
+.TranscriptMessageAction.ui-focus .TranscriptMessageActionIcon {
   color: var(--color-text-foreground-secondary);
 }
 
-.TranscriptAssistantAddToChat.ui-focus {
+.TranscriptMessageAction.ui-focus {
   box-shadow: 0 0 0 1px var(--color-border-focus);
 }
 
-.TranscriptAssistantAddToChat.ui-pressed {
+.TranscriptMessageAction.ui-pressed {
   background-color: var(--color-background-button-tertiary-active);
 }
 
-.TranscriptAssistantAddToChat.ui-disabled {
+.TranscriptMessageAction.ui-disabled {
   opacity: 0.4;
+}
+
+.TranscriptSelectionToolbar {
+  position: fixed;
+  z-index: 80;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--color-background-elevated-primary-opaque);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.TranscriptSelectionAction {
+  display: flex;
+  min-height: 32px;
+  padding: 0 10px;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+}
+
+.TranscriptSelectionAction.ui-hover,
+.TranscriptSelectionAction.ui-focus,
+.TranscriptSelectionAction.ui-pressed {
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.TranscriptSelectionActionIcon {
+  width: 13px;
+  height: 13px;
+  color: var(--foreground);
+}
+
+.TranscriptSelectionActionGlyph,
+.TranscriptSelectionActionLabel {
+  color: var(--foreground);
+  font-size: 11px;
+  font-weight: 500;
 }
 
 .TranscriptJump {

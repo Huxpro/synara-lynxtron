@@ -112,6 +112,14 @@ describe('Lynx Explorer dock', () => {
     );
     expect(source).toContain('<ExplorerPdfFallback');
     expect(source).toContain('<ExplorerSyntaxPreview');
+    const styles = readFileSync(
+      new URL('./explorer-dock.css', import.meta.url),
+      'utf8'
+    );
+    expect(styles).toContain('.ExplorerDock--editor .ExplorerDockHeader');
+    expect(styles).toContain(
+      '.ExplorerDock--editor:not(.ExplorerDock--editor-search) .ExplorerDockSearch'
+    );
     expect(source).toContain('isSupportedLocalPdfPath(props.selectedPath)');
     expect(source).toContain('<ExplorerDirectory');
     expect(source).toContain('<FileEntryIcon');

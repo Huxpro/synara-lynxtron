@@ -1047,8 +1047,14 @@ function ThreadPage(props: ThreadPageProps) {
         <Transcript
           chatFontSizePx={appearance.chatFontSizePx}
           workspaceRoot={currentThread?.workspaceRoot ?? null}
+          pinnedMessageIds={
+            new Set(
+              currentThread?.pinnedMessages.map((pin) => pin.messageId) ?? []
+            )
+          }
           rows={bodyState.rows}
           threadId={threadId}
+          timestampFormat={appearance.timestampFormat}
           onController={registerTranscriptController}
           onOpenFileReference={openExplorerFileReference}
         />

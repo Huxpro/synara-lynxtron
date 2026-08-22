@@ -364,8 +364,16 @@
   min-width: 224px;
 }
 
-.ExplorerDock--editor-search .ExplorerDockHeader {
+.ExplorerDock--editor .ExplorerDockHeader {
   display: none;
+}
+
+.ExplorerDock--editor:not(.ExplorerDock--editor-search) .ExplorerDockSearch {
+  display: none;
+}
+
+.ExplorerDock--editor:not(.ExplorerDock--editor-search) .ExplorerDockEntries {
+  padding-top: 4px;
 }
 
 .SliceRoot--viewport-short-height
