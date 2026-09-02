@@ -1213,6 +1213,40 @@ test('keeps historical product pairs until later product evidence supersedes the
   );
 });
 
+test('supersedes only the committed wide Plugin Skills Browser state', () => {
+  const ledger = [
+    {
+      id: 'plugin-skills-wide',
+      affectedStoryPrefixes: ['2026-08-14--plugins--visual-matrix'],
+      affectedStateKeys: ['skills-wide-light'],
+      affectedClientPairs: ['web:lynx'],
+      supersededAt: 'plugin-skills-fixed',
+    },
+  ];
+  const commitIndexByHash = new Map([['plugin-skills-fixed', 12]]);
+  const storyId = '2026-08-14--plugins--visual-matrix';
+
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, stateKey: 'skills-wide-light', leftClient: 'web', rightClient: 'lynx' },
+      12,
+      ledger,
+      commitIndexByHash
+    )?.id,
+    'plugin-skills-wide'
+  );
+  for (const sample of [
+    { storyId, stateKey: 'plugins-wide-light', leftClient: 'web', rightClient: 'lynx' },
+    { storyId, stateKey: 'skills-compact-light', leftClient: 'web', rightClient: 'lynx' },
+    { storyId, stateKey: 'skills-wide-light', leftClient: 'lynx', rightClient: 'native' },
+  ]) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(sample, 12, ledger, commitIndexByHash),
+      null
+    );
+  }
+});
+
 test('supersedes only the retained transcript scroll states at their commit boundary', () => {
   const ledger = [
     {

@@ -104,6 +104,23 @@ const reliabilityLedger = [
 ];
 const productEvidenceSupersessionLedger = [
   {
+    id: 'plugin-skills-wide-current-committed',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: ['2026-08-14--plugins--visual-matrix'],
+    affectedStateKeys: ['skills-wide-light'],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: 'b5c80c68e',
+    summary:
+      'The archived wide Skills pair predates the committed two-column skill identity, provider icon, scrollbar-gutter, and installed-state composition.',
+    resolution:
+      'Committed current evidence renders the same populated Codex Skills catalog in Electron and Lynx-for-Web on one authenticated backend, route, theme, viewport, sidebar, and overlay state.',
+    evidence: [
+      'shots/2026-09-02/plugins-skills-current-committed/notes.md',
+      'shots/2026-09-02/plugins-skills-current-committed/web-skills-wide-light.png',
+      'shots/2026-09-02/plugins-skills-current-committed/lynx-skills-wide-light.png',
+    ],
+  },
+  {
     id: 'markdown-surface-current-light',
     type: 'superseded-product-snapshot',
     affectedStoryPrefixes: ['2026-08-02--harness--markdown--before'],

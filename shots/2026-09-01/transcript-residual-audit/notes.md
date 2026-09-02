@@ -713,3 +713,25 @@ clean same-snapshot P9 Composer default remains scored at
 pairs, `1` rejected pair, median MAE `0.6448107988835652%`, total loss
 `8.653649876629391`, reliability loss `0`, and no accepted pair at or above
 `25%`. Fidelity-loss logic passes `58/58`.
+
+## Committed Plugin Library Skills replacement
+
+The previously uncommitted Plugin Skills stack was split at a safe boundary.
+Commit `fad6fb541` contains the full Skills surface plus shared deterministic
+accent helper, while generated icon files stage only the required Tabler
+`list-check` additions; unrelated user icon changes remain in the working tree.
+Shared tests pass `7/7`, Plugin tests `3/3`, the ReactLynx scanner reports zero
+issues, icon regeneration is byte-identical, and the staged-tree Web production
+build passes.
+
+Commit-bounded evidence in
+`shots/2026-09-02/plugins-skills-current-committed/` uses backend `56506`,
+server instance `981808a8-81fa-4eda-9227-14d5b357007b`, route `/plugins`,
+Codex, Skills, light `1280x820` DPR 1, identical catalog/sidebar, and no
+overlays. Current MAE is `2.123356298820341%`, replacing the old
+`5.449254867089112%` wide Skills sample. The ledger activates one new pair and
+supersedes exactly one old pair at evidence commit `b5c80c68e`; compact,
+Plugins-tab, and Native evidence remain untouched. It now has `839` commit
+points, `158` accepted pairs, `1` rejected pair, median MAE
+`0.6448107988835652%`, total loss `8.658511436259841`, reliability loss `0`,
+and no accepted pair at or above `25%`. Fidelity-loss logic passes `59/59`.

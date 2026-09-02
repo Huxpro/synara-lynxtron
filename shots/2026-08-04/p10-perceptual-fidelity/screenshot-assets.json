@@ -1,8 +1,8 @@
 {
   "version": 1,
   "assetBaseUrl": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main",
-  "imageCount": 1418,
-  "byteCount": 217980660,
+  "imageCount": 1420,
+  "byteCount": 218250445,
   "images": [
     {
       "day": "2026-08-02",
@@ -11341,6 +11341,22 @@
       "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-09-02/markdown-tokens-current/lynx-persisted-tokens.png",
       "repoPath": "shots/2026-09-02/markdown-tokens-current/lynx-persisted-tokens.png",
       "bytes": 107721
+    },
+    {
+      "day": "2026-09-02",
+      "directory": "plugins-skills-current-committed",
+      "name": "lynx-skills-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-09-02/plugins-skills-current-committed/lynx-skills-wide-light.png",
+      "repoPath": "shots/2026-09-02/plugins-skills-current-committed/lynx-skills-wide-light.png",
+      "bytes": 116092
+    },
+    {
+      "day": "2026-09-02",
+      "directory": "plugins-skills-current-committed",
+      "name": "web-skills-wide-light.png",
+      "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-09-02/plugins-skills-current-committed/web-skills-wide-light.png",
+      "repoPath": "shots/2026-09-02/plugins-skills-current-committed/web-skills-wide-light.png",
+      "bytes": 153693
     },
     {
       "day": "2026-09-02",

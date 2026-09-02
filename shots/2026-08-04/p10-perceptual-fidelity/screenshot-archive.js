@@ -6,13 +6,13 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     "lastDay": "2026-09-02",
     "consecutiveCalendarDays": 17
   },
-  "imageCount": 1418,
+  "imageCount": 1420,
   "evidenceCount": 45,
-  "byteCount": 217980660,
-  "trackedCount": 118,
+  "byteCount": 218250445,
+  "trackedCount": 120,
   "untrackedCount": 0,
   "remoteCount": 1300,
-  "storyCount": 482,
+  "storyCount": 483,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -22327,6 +22327,42 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
       "sequence": false
     },
     {
+      "id": "2026-09-02--plugins-skills-current-committed",
+      "day": "2026-09-02",
+      "directory": "plugins-skills-current-committed",
+      "label": "Plugins Skills Current Committed",
+      "images": [
+        {
+          "day": "2026-09-02",
+          "directory": "plugins-skills-current-committed",
+          "name": "lynx-skills-wide-light.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-09-02/plugins-skills-current-committed/lynx-skills-wide-light.png",
+          "repoPath": "shots/2026-09-02/plugins-skills-current-committed/lynx-skills-wide-light.png",
+          "bytes": 116092,
+          "gitStatus": "tracked",
+          "client": "lynx"
+        },
+        {
+          "day": "2026-09-02",
+          "directory": "plugins-skills-current-committed",
+          "name": "web-skills-wide-light.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-09-02/plugins-skills-current-committed/web-skills-wide-light.png",
+          "repoPath": "shots/2026-09-02/plugins-skills-current-committed/web-skills-wide-light.png",
+          "bytes": 153693,
+          "gitStatus": "tracked",
+          "client": "web"
+        }
+      ],
+      "evidence": [],
+      "imageCount": 2,
+      "evidenceCount": 0,
+      "clients": [
+        "lynx",
+        "web"
+      ],
+      "sequence": false
+    },
+    {
       "id": "2026-09-02--transcript-current-recapture",
       "day": "2026-09-02",
       "directory": "transcript-current-recapture",
@@ -39586,10 +39622,10 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     },
     {
       "day": "2026-09-02",
-      "imageCount": 18,
+      "imageCount": 20,
       "evidenceCount": 0,
-      "byteCount": 1641673,
-      "trackedCount": 18,
+      "byteCount": 1911458,
+      "trackedCount": 20,
       "untrackedCount": 0,
       "remoteCount": 0,
       "directories": [
@@ -39733,6 +39769,30 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
               "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-09-02/markdown-tokens-current/lynx-persisted-tokens.png",
               "repoPath": "shots/2026-09-02/markdown-tokens-current/lynx-persisted-tokens.png",
               "bytes": 107721,
+              "gitStatus": "tracked"
+            }
+          ]
+        },
+        {
+          "directory": "plugins-skills-current-committed",
+          "imageCount": 2,
+          "images": [
+            {
+              "day": "2026-09-02",
+              "directory": "plugins-skills-current-committed",
+              "name": "lynx-skills-wide-light.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-09-02/plugins-skills-current-committed/lynx-skills-wide-light.png",
+              "repoPath": "shots/2026-09-02/plugins-skills-current-committed/lynx-skills-wide-light.png",
+              "bytes": 116092,
+              "gitStatus": "tracked"
+            },
+            {
+              "day": "2026-09-02",
+              "directory": "plugins-skills-current-committed",
+              "name": "web-skills-wide-light.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-09-02/plugins-skills-current-committed/web-skills-wide-light.png",
+              "repoPath": "shots/2026-09-02/plugins-skills-current-committed/web-skills-wide-light.png",
+              "bytes": 153693,
               "gitStatus": "tracked"
             }
           ]
