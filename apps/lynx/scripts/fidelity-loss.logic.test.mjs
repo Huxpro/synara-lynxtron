@@ -854,6 +854,29 @@ test('excludes August 5 Profile and Advanced Browser provider-state mismatches o
   }
 });
 
+test('excludes only the August 6 dark Providers Browser overlay pair', () => {
+  const issue = {
+    affectedStoryIds: ['2026-08-06--providers-dark-1440'],
+    affectedClientPairs: ['web:lynx'],
+  };
+  const storyId = '2026-08-06--providers-dark-1440';
+
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+      issue
+    ),
+    false
+  );
+});
+
 test('allows a known modal-backdrop theme mismatch to override mixed luminance', () => {
   const issue = {
     type: 'capture-theme-mismatch',

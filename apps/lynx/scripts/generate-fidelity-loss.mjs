@@ -702,6 +702,21 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'providers-dark-aug06-provider-overlay-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: '6cd046c06',
+    affectedStoryIds: ['2026-08-06--providers-dark-1440'],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The August 6 dark Providers Web frame contains an open provider-update dialog that obscures the heading and update card while Lynx-for-Web is unobscured.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Only this overlay-contaminated Web-to-Lynx full-shell pair is excluded. Other Providers stories and independently retained Native/provider-row evidence remain unaffected.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'sidebar-landing-provider-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '4d5ab78e6',

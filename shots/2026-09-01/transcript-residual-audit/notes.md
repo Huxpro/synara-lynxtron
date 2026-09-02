@@ -575,3 +575,14 @@ regeneration the ledger has `826` commit points, `200` accepted pairs, `1`
 rejected pair, rolling median MAE
 `0.6448107988835652%`, total loss `8.653649876629391`, reliability loss `0`,
 and no accepted pair at or above `25%`. Fidelity-loss logic passes `48/48`.
+
+## August 6 Providers dark overlay audit
+
+The `providers-dark-1440` Electron frame contains the provider-update dialog,
+obscuring the heading and upper update card, while Lynx-for-Web is unobscured.
+An exact story-ID plus `web:lynx` rule excludes only this
+`1.862102900831114%` full-shell pair. Other Providers stories and independent
+Native/provider-row evidence are unaffected. Regeneration yields `827` commit
+points, `199` accepted pairs, `1` rejected pair, median MAE
+`0.6448107988835652%`, total loss `8.653649876629391`, reliability loss `0`,
+and zero accepted pairs at or above `25%`. Fidelity-loss logic passes `49/49`.
