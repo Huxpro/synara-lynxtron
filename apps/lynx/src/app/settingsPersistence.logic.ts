@@ -18,14 +18,10 @@ export interface SettingsPersistencePresentation {
 
 export function resolveSettingsPersistencePresentation(
   state: SettingsPersistenceState
-): SettingsPersistencePresentation {
+): SettingsPersistencePresentation | null {
   switch (state.kind) {
     case 'loaded':
-      return {
-        announcement: 'Preferences loaded',
-        intent: 'status',
-        message: 'Preferences loaded.',
-      };
+      return null;
     case 'saving':
       return {
         announcement: 'Saving changes',

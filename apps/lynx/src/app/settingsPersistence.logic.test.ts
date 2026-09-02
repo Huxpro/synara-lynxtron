@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 
 import {
   resolveSettingsPersistencePresentation,
@@ -6,12 +7,18 @@ import {
 } from './settingsPersistence.logic';
 
 describe('settings persistence presentation', () => {
-  it('uses polite status copy for hydration and save progress', () => {
-    expect(resolveSettingsPersistencePresentation({ kind: 'loaded' })).toEqual({
-      announcement: 'Preferences loaded',
-      intent: 'status',
-      message: 'Preferences loaded.',
-    });
+  it('keeps a successfully hydrated stable page visually quiet', () => {
+    expect(resolveSettingsPersistencePresentation({ kind: 'loaded' })).toBeNull();
+    const settingsPageSource = readFileSync(
+      new URL('./SettingsPage.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(settingsPageSource).toContain(
+      "section !== 'archived' &&\n              persistencePresentation ? ("
+    );
+  });
+
+  it('uses polite status copy for save progress', () => {
     expect(resolveSettingsPersistencePresentation({ kind: 'saving' })).toEqual({
       announcement: 'Saving changes',
       intent: 'status',

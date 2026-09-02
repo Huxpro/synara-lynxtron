@@ -1048,7 +1048,8 @@ export function SettingsPage({
               section !== 'skills' &&
               section !== 'advanced' &&
               section !== 'integrations' &&
-              section !== 'archived' ? (
+              section !== 'archived' &&
+              persistencePresentation ? (
                 <PanelStateMessage
                   density="compact"
                   className="SettingsSavedState"
