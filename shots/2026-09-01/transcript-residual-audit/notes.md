@@ -701,3 +701,15 @@ remains intact. The ledger now has `836` commit points, `166` accepted pairs,
 `1` rejected pair, median MAE `0.6448107988835652%`, total loss
 `8.653649876629391`, reliability loss `0`, and no accepted pair at or above
 `25%`. Fidelity-loss logic remains `57/57`.
+
+## P10 Browser default overlay audit
+
+The P10 Browser `default`, `composer-default`, `landing-default`, and
+`sidebar-default` stories all reuse Electron frames with the provider-update
+dialog while Lynx-for-Web is unobscured. An exact four-story rule scoped to
+`raw`, `comparison`, and `web:lynx` excludes those 8 full-shell samples. The
+clean same-snapshot P9 Composer default remains scored at
+`1.1445656235054997%`. The ledger now has `837` commit points, `158` accepted
+pairs, `1` rejected pair, median MAE `0.6448107988835652%`, total loss
+`8.653649876629391`, reliability loss `0`, and no accepted pair at or above
+`25%`. Fidelity-loss logic passes `58/58`.

@@ -1120,6 +1120,43 @@ test('excludes only focused P10 Browser skill and picker mixed states', () => {
   );
 });
 
+test('excludes only the four P10 Browser default overlay stories', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-04--p10-perceptual-fidelity--browser--default',
+      '2026-08-04--p10-perceptual-fidelity--browser--composer-default',
+      '2026-08-04--p10-perceptual-fidelity--browser--landing-default',
+      '2026-08-04--p10-perceptual-fidelity--browser--sidebar-default',
+    ],
+    affectedStateKeys: ['raw', 'comparison'],
+    affectedClientPairs: ['web:lynx'],
+  };
+
+  for (const storyId of issue.affectedStoryIds) {
+    for (const stateKey of issue.affectedStateKeys) {
+      assert.equal(
+        visualPairMatchesIssue(
+          { storyId, stateKey, leftClient: 'web', rightClient: 'lynx' },
+          issue
+        ),
+        true
+      );
+    }
+  }
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId: '2026-08-03--p9-u5-composer--browser--default',
+        stateKey: 'screenshot',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      issue
+    ),
+    false
+  );
+});
+
 test('allows a known modal-backdrop theme mismatch to override mixed luminance', () => {
   const issue = {
     type: 'capture-theme-mismatch',

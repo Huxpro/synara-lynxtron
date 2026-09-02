@@ -873,6 +873,27 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'p10-browser-default-provider-overlay-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: '07ef0beaa',
+    affectedStoryIds: [
+      '2026-08-04--p10-perceptual-fidelity--browser--default',
+      '2026-08-04--p10-perceptual-fidelity--browser--composer-default',
+      '2026-08-04--p10-perceptual-fidelity--browser--landing-default',
+      '2026-08-04--p10-perceptual-fidelity--browser--sidebar-default',
+    ],
+    affectedStateKeys: ['raw', 'comparison'],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The four P10 default Browser stories reuse Electron frames with an open provider-update overlay while Lynx-for-Web is unobscured.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Only the raw and normalized full-shell pairs for these four exact stories are excluded. The clean P9 Composer default and later matched landing/composer evidence remain scored.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'sidebar-landing-provider-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '4d5ab78e6',
