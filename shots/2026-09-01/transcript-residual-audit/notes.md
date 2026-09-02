@@ -511,7 +511,30 @@ excludes only that pair; the same specimen's Lynx-to-Native pair remains
 scored at `1.0706325721345449%`, and later matched mention-token evidence stays
 independent.
 
-After regeneration the ledger has `813` commit points, `202` accepted pairs,
+After regeneration the ledger has `814` commit points, `202` accepted pairs,
 `1` rejected pair, rolling median MAE `0.5507725943527818%`, total loss
 `8.289406207894311`, reliability loss `0`, and no accepted pair at or above
 `25%`. Fidelity-loss logic passes `46/46`.
+
+## Authenticated Lynx-for-Web relay recovery
+
+A clean detached worktree at `3fb81905f` reproduced a harness-blocking product
+defect before any Thread fidelity comparison: the configured endpoint
+`ws://127.0.0.1:60892/?token=synara-local-desktop-comparison` was normalized
+to `url.origin`, so all `/ws/bootstrap` and `/ws` connections lost the token.
+The renderer remained at `Preparing Synara...`; relay diagnostics recorded six
+connection failures and no ready route.
+
+Commit `e86b1fe2a` moves URL normalization and socket-path composition into a
+tested helper that preserves and merges query parameters. The same clean
+worktree, backend, thread, and bundle build then connected on attempt one to
+server instance `a37695d2-2571-4837-95ee-367d435a11bf`, reported socket state
+`1`, set renderer-ready route
+`/thread/lynx-landing-thread-1787254540864-987357febecef`, and had null transport
+and RPC errors. Focused relay coverage passes `7/7`.
+
+This is recorded as a reliability event from the original relay introduction
+at `b4df16d69` through `e86b1fe2a`. It is distinct from the earlier
+`WebSocket.OPEN` ready-state defect. The clean app still resolved the cloned
+thread route to a project-scoped New Thread surface, so no Thread visual frame
+from this diagnostic run is retained or used for supersession.

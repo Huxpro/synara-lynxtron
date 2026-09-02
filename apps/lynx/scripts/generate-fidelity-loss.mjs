@@ -92,6 +92,14 @@ const reliabilityLedger = [
     summary:
       'Lynx-for-Web rejected an open feature socket because the host depended on WebSocket.OPEN',
   },
+  {
+    id: 'lynx-web-relay-auth-query-dropped',
+    severityPoints: 3,
+    introduced: 'b4df16d69',
+    fixed: 'e86b1fe2a',
+    summary:
+      'Lynx-for-Web normalized configured relay URLs to origin and dropped authentication query parameters before opening bootstrap and feature sockets',
+  },
 ];
 const productEvidenceSupersessionLedger = [
   {
