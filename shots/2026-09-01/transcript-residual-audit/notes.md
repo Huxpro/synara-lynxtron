@@ -735,3 +735,24 @@ Plugins-tab, and Native evidence remain untouched. It now has `839` commit
 points, `158` accepted pairs, `1` rejected pair, median MAE
 `0.6448107988835652%`, total loss `8.658511436259841`, reliability loss `0`,
 and no accepted pair at or above `25%`. Fidelity-loss logic passes `59/59`.
+
+## Commit-bounded Markdown highlighting and width split
+
+The fenced-code residual was separated from the user's larger Transcript stack
+without staging unrelated selection, tables, message-trail, edit, or revert
+work. Commit `356e765cf` adds asynchronous host-backed syntax highlighting with
+plaintext fallback. Commit `9de83da62` adds the transcript width styles, and
+follow-up `48115ec64` adds the required shared-frame and assistant-typography
+wiring after a browser geometry probe correctly exposed the first CSS-only
+commit as incomplete. Focused tests pass (`4/4` and `1/1`), ReactLynx scans
+report zero issues, and committed-tree Web builds pass.
+
+The diagnostic capture under
+`shots/2026-09-02/markdown-syntax-highlight-current/` proves one successful
+`javascript`/`snippet.js` highlight call with no RPC or transport error and
+shows the expected token color families. It does not supersede the current
+Markdown light/dark pair: Electron reported DPR 2 while Lynx-for-Web reported
+DPR 1, and later attempts were invalidated by AppSnap first-run modal, route
+fallback, theme, hydration, or overlay mismatches. All temporary fixtures were
+created and deleted through canonical orchestration commands; owned processes
+and ports were cleaned, and browser entry/retry/exit gates all reached zero.
