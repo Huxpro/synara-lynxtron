@@ -1028,6 +1028,57 @@ test('excludes Composer provider-banner Browser mismatches only', () => {
   }
 });
 
+test('excludes only the explicit August 6 Composer provider-shell open states', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-06--composer-picker-chrome-current',
+      '2026-08-06--composer-footer-action-gap-current',
+      '2026-08-06--extras-current',
+    ],
+    affectedStateKeys: ['open', 'open-before', 'open-final'],
+    affectedClientPairs: ['web:lynx'],
+  };
+
+  for (const [storyId, stateKey] of [
+    ['2026-08-06--composer-picker-chrome-current', 'open'],
+    ['2026-08-06--composer-footer-action-gap-current', 'open'],
+    ['2026-08-06--extras-current', 'open-before'],
+    ['2026-08-06--extras-current', 'open-final'],
+  ]) {
+    assert.equal(
+      visualPairMatchesIssue(
+        { storyId, stateKey, leftClient: 'web', rightClient: 'lynx' },
+        issue
+      ),
+      true
+    );
+  }
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId: '2026-08-06--extras-current',
+        stateKey: 'closed',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      issue
+    ),
+    false
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId: '2026-08-06--extras-current',
+        stateKey: 'open-final',
+        leftClient: 'lynx',
+        rightClient: 'native',
+      },
+      issue
+    ),
+    false
+  );
+});
+
 test('allows a known modal-backdrop theme mismatch to override mixed luminance', () => {
   const issue = {
     type: 'capture-theme-mismatch',

@@ -650,3 +650,18 @@ icon Lynx-to-Native siblings remain scored at `0.960322513151602%` and
 pairs, `1` rejected pair, median MAE `0.6448107988835652%`, total loss
 `8.653649876629391`, reliability loss `0`, and no accepted pair at or above
 `25%`. Fidelity-loss logic passes `55/55`.
+
+## August 6 Composer provider-shell family audit
+
+Representative frames and the per-story notes confirm that 15 explicit
+Composer open-state Browser pairs share the same shell mismatch: Web has
+provider-update and provider-health overlays while Lynx-for-Web has a
+Codex-unavailable banner. This applies to the named picker chrome/rows, trait,
+footer, runtime/send/voice, Extras, and related label states, but not to any
+closed state or unrelated Composer story. An explicit story list scoped to
+`open`, `open-before`, `open-final`, and `web:lynx` excludes exactly those 15
+full-shell samples. Focused geometry/behavior evidence and later matched
+Composer runs remain independent. The ledger now has `833` commit points,
+`174` accepted pairs, `1` rejected pair, median MAE
+`0.6448107988835652%`, total loss `8.653649876629391`, reliability loss `0`,
+and no accepted pair at or above `25%`. Fidelity-loss logic passes `56/56`.
