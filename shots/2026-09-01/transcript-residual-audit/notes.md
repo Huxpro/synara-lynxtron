@@ -623,3 +623,16 @@ The ledger now has `830` commit points, `194` accepted pairs, `1` rejected
 pair, median MAE `0.6448107988835652%`, total loss `8.653649876629391`,
 reliability loss `0`, and no accepted pair at or above `25%`. Fidelity-loss
 logic passes `52/52`.
+
+## Settings Archived provider-state audit
+
+The August 5 Archived empty-state pair has matching copy, but Electron carries
+the provider-update overlay while Lynx-for-Web shows `Reconnecting...`; the
+Lynx archived-state image resource is also broken. The exact `web:lynx` rule
+excludes only the `1.5035950203252033%` mixed-state full-shell sample. Its
+Lynx-to-Native sibling remains scored at `1.0598293280726927%`, and the broken
+image remains an explicit product defect rather than being declared fixed. The
+ledger now has `831` commit points, `193` accepted pairs, `1` rejected pair,
+median MAE `0.6448107988835652%`, total loss `8.653649876629391`, reliability
+loss `0`, and no accepted pair at or above `25%`. Fidelity-loss logic passes
+`53/53`.

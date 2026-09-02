@@ -766,6 +766,21 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'settings-archived-provider-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: 'a888ede17',
+    affectedStoryIds: ['2026-08-05--settings-archived-current'],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The archived-empty pair compares an Electron provider-update overlay against a Lynx reconnecting badge; Lynx also has a broken archived-state image resource.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Only this provider-state-mismatched full-shell pair is excluded. The broken Lynx empty-state image remains a separately visible product defect and requires current matched evidence before closure.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'sidebar-landing-provider-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '4d5ab78e6',
