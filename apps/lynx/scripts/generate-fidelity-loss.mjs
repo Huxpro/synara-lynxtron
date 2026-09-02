@@ -95,6 +95,29 @@ const reliabilityLedger = [
 ];
 const productEvidenceSupersessionLedger = [
   {
+    id: 'composer-details-tokens-1280-current',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: [
+      '2026-08-03--composer-details--browser--skills-mentions-1280',
+    ],
+    affectedStateKeys: [
+      'skill-menu',
+      'mention-menu',
+      'skill-selected',
+      'mention-selected',
+    ],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: 'c805bd463',
+    summary:
+      'The August 3 composer detail frames predate shared skill display names, rich-token label formatting, and the current matched 1280px composer shell.',
+    resolution:
+      'Committed retained Electron and Lynx-for-Web evidence covers the same four states on one backend, thread, route, theme, viewport, dock, transcript, and overlay state.',
+    evidence: [
+      'shots/2026-09-02/composer-tokens-1280-current/notes.md',
+      'shots/2026-09-02/composer-tokens-1280-current/pngs.sha256',
+    ],
+  },
+  {
     id: 'markdown-token-current-persisted-output',
     type: 'superseded-product-snapshot',
     affectedStoryPrefixes: ['2026-08-02--harness--markdown-tokens'],

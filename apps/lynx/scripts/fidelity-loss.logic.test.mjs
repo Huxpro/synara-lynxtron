@@ -803,6 +803,62 @@ test('supersedes persisted token output only at its retained evidence boundary',
   );
 });
 
+test('supersedes only the four retained 1280 composer token states', () => {
+  const ledger = [
+    {
+      id: 'composer-details-tokens-1280-current',
+      affectedStoryPrefixes: [
+        '2026-08-03--composer-details--browser--skills-mentions-1280',
+      ],
+      affectedStateKeys: [
+        'skill-menu',
+        'mention-menu',
+        'skill-selected',
+        'mention-selected',
+      ],
+      affectedClientPairs: ['web:lynx'],
+      supersededAt: 'composer-current',
+    },
+  ];
+  const commitIndexByHash = new Map([['composer-current', 12]]);
+
+  for (const stateKey of [
+    'skill-menu',
+    'mention-menu',
+    'skill-selected',
+    'mention-selected',
+  ]) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(
+        {
+          storyId: '2026-08-03--composer-details--browser--skills-mentions-1280',
+          stateKey,
+          leftClient: 'web',
+          rightClient: 'lynx',
+        },
+        12,
+        ledger,
+        commitIndexByHash
+      )?.id,
+      'composer-details-tokens-1280-current'
+    );
+  }
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      {
+        storyId: '2026-08-03--composer-details--browser--skills-mentions-1280',
+        stateKey: 'raw',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      12,
+      ledger,
+      commitIndexByHash
+    ),
+    null
+  );
+});
+
 test('supersedes both client pairs when later three-client product evidence exists', () => {
   const ledger = [
     {
