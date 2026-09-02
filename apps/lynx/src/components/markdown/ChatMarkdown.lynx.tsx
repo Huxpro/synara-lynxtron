@@ -41,6 +41,9 @@ import {
 } from './markdownFileReferences.logic';
 import { ExternalLinkIcon } from './ExternalLinkIcon.lynx';
 import { MarkdownFileReferenceToken } from './MarkdownFileReferenceToken.lynx';
+import { highlightExplorerCode } from '../../data/synaraClient.lynx';
+import type { NativeSyntaxHighlightResult } from '../../main/syntaxHighlightingContract.logic';
+import { useTheme } from '../../adapters/useTheme.lynx';
 
 export interface ChatMarkdownProps {
   readonly text: string;
@@ -413,11 +416,44 @@ function MarkdownTaskCheckbox(props: { readonly checked: boolean }) {
 function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; readonly nodeKey: string }) {
   const [copied, setCopied] = useState(false);
   const [wrap, setWrap] = useState(false);
+  const [highlighted, setHighlighted] =
+    useState<NativeSyntaxHighlightResult | null>(null);
   const copyGenerationRef = useRef(0);
+  const { codeFontFamily, resolvedTheme } = useTheme();
   const presentation = resolveMarkdownCodeBlockPresentation({
     code: node.value ?? '',
     language: node.lang,
   });
+
+  useEffect(() => {
+    'background only';
+    let active = true;
+    setHighlighted(null);
+    if (!presentation.code || !node.lang) {
+      return () => {
+        active = false;
+      };
+    }
+    const extension =
+      node.lang === 'javascript'
+        ? 'js'
+        : node.lang === 'typescript'
+          ? 'ts'
+          : node.lang;
+    void highlightExplorerCode({
+      code: presentation.code,
+      path: `snippet.${extension}`,
+    })
+      .then((themes) => {
+        if (active) setHighlighted(themes?.[resolvedTheme] ?? null);
+      })
+      .catch(() => {
+        if (active) setHighlighted(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, [node.lang, presentation.code, resolvedTheme]);
 
   async function copyCode() {
     'background only';
@@ -483,9 +519,39 @@ function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; rea
         <view className="MdCodeBlock">
           <text
             className="MdCode MdCodeBlockText"
-            style={{ minHeight: `${presentation.minimumTextHeightPx}px` }}
+            style={{
+              fontFamily: codeFontFamily,
+              minHeight: `${presentation.minimumTextHeightPx}px`,
+            }}
           >
-            {presentation.code}
+            {highlighted
+              ? highlighted.lines.map((line, lineIndex) => (
+                  <text
+                    key={`${lineIndex}:${line.map((token) => token.content).join('')}`}
+                  >
+                    {line.map((token, tokenIndex) => (
+                      <text
+                        key={`${tokenIndex}:${token.content}`}
+                        style={{
+                          color: token.color,
+                          ...(token.fontStyle & 1
+                            ? { fontStyle: 'italic' }
+                            : {}),
+                          ...(token.fontStyle & 2
+                            ? { fontWeight: 700 }
+                            : {}),
+                          ...(token.fontStyle & 4
+                            ? { textDecoration: 'underline' }
+                            : {}),
+                        }}
+                      >
+                        {token.content}
+                      </text>
+                    ))}
+                    {lineIndex < highlighted.lines.length - 1 ? '\n' : ''}
+                  </text>
+                ))
+              : presentation.code}
           </text>
         </view>
       </scroll-view>

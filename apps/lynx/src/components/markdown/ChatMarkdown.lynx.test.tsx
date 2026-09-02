@@ -58,4 +58,20 @@ describe('Lynx markdown file reference token', () => {
       '{external ? <text className="MdLinkTarget"> ↗</text> : null}'
     );
   });
+
+  it('reuses the native host syntax-highlighting contract for fenced code', () => {
+    const source = readFileSync(
+      new URL('./ChatMarkdown.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain(
+      "import { highlightExplorerCode } from '../../data/synaraClient.lynx'"
+    );
+    expect(source).toContain(
+      'useState<NativeSyntaxHighlightResult | null>(null)'
+    );
+    expect(source).toContain('highlightExplorerCode({');
+    expect(source).toContain('color: token.color');
+  });
 });
