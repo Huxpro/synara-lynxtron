@@ -281,7 +281,7 @@ names instead of provider display names, and selected skill chips showed raw
 lowercase names instead of Electron's shared formatter. The old
 `persisted-tokens` sample remains scored because this run sent no message.
 
-Commit `5377f2b61` closes that final stale token snapshot with a separate
+Commit `4582803a2` closes that final stale token snapshot and icon boundary with a separate
 isolated product-RPC run. The canonical user message has non-empty
 `mentions_json` and `skills_json`; both clients render `Token mention source`
 and `Polish` on backend `58270`, server instance

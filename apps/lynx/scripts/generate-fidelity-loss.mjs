@@ -100,7 +100,7 @@ const productEvidenceSupersessionLedger = [
     affectedStoryPrefixes: ['2026-08-02--harness--markdown-tokens'],
     affectedStateKeys: ['persisted-tokens'],
     affectedClientPairs: ['web:lynx'],
-    supersededAt: '5377f2b61',
+    supersededAt: '4582803a2',
     summary:
       'The August 2 persisted-token frame predates current shared token labels, full-pane transcript composition, and resolved Native skill accent paint.',
     resolution:
