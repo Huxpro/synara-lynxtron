@@ -69,3 +69,8 @@ the canonical thread path and uses Electron's message-circle fallback rather
 than inventing a provider; provider-specific runtime evidence remains pending
 until provider identity is carried into the Markdown token projection. The
 retained MAE therefore keeps the pre-fallback glyph residual visible.
+
+Screenshot-budget rotation: the eight `864x620` menu/selected PNGs were removed
+after the same four states were retained at the archive-matching `1280x820`
+viewport under `../composer-tokens-1280-current/`. Their bytes remain available
+in commit `3a8158992`; the persisted-token pair remains in this directory.
