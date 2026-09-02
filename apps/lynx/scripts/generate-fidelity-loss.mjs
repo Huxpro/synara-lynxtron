@@ -262,7 +262,7 @@ const productEvidenceSupersessionLedger = [
     summary:
       'The original dark Behavior pair predates the stable-state fix that removes Lynx-only Preferences loaded feedback.',
     resolution:
-      'Committed retained Electron and Lynx-for-Web evidence uses the same backend, Behavior route, dark 1440x900 DPR1 viewport, settings values, and provider-update overlay. Current MAE is 0.5290115387718874%.',
+      'Committed retained Electron and Lynx-for-Web evidence uses the same backend, Behavior route, dark 1440x900 DPR1 viewport, settings values, and provider-update overlay. Current MAE is 0.5927520576131687%.',
     evidence: [
       'shots/2026-09-02/settings-behavior-current/notes.md',
       'shots/2026-09-02/settings-behavior-current/pngs.sha256',
