@@ -689,3 +689,15 @@ open until a matched recapture. The ledger now has `835` commit points, `168`
 accepted pairs, `1` rejected pair, median MAE `0.6448107988835652%`, total loss
 `8.653649876629391`, reliability loss `0`, and no accepted pair at or above
 `25%`. Fidelity-loss logic passes `57/57`.
+
+## Sidebar primary-action provider-banner audit
+
+The August 6 primary-action icon and label frames reuse Electron
+provider-update/health overlays against a Lynx Codex-unavailable banner. Their
+`1.0675397038896859%` and `1.0672277269647696%` full-shell MAE cannot isolate
+the permission glyph or label. Extending the exact Composer provider-banner
+story list excludes only those two Browser pairs; focused component evidence
+remains intact. The ledger now has `836` commit points, `166` accepted pairs,
+`1` rejected pair, median MAE `0.6448107988835652%`, total loss
+`8.653649876629391`, reliability loss `0`, and no accepted pair at or above
+`25%`. Fidelity-loss logic remains `57/57`.

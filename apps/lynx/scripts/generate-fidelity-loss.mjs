@@ -809,15 +809,17 @@ const harnessIssueLedger = [
     affectedStoryIds: [
       '2026-08-06--composer-provider-row-current',
       '2026-08-08--composer-permission-icon-current',
+      '2026-08-06--sidebar-primary-action-icon-current',
+      '2026-08-06--sidebar-primary-action-label-current',
     ],
     affectedClientPairs: ['web:lynx'],
     summary:
-      'The Composer provider-row and permission-icon frames use different provider-health banners and capability state between Web and Lynx-for-Web.',
+      'The Composer provider-row, permission-icon, and Sidebar primary-action frames use different provider-health banners and capability state between Web and Lynx-for-Web.',
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the two mixed provider-state Browser full-shell pairs are excluded. The permission-icon Lynx-to-Native sibling and focused component evidence remain scored independently.',
+      'Only the four mixed provider-state Browser full-shell pairs are excluded. The permission-icon Lynx-to-Native sibling and focused component evidence remain scored independently.',
     resolutionStoryPrefixes: [],
   },
   {

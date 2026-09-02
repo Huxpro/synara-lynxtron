@@ -1011,6 +1011,8 @@ test('excludes Composer provider-banner Browser mismatches only', () => {
     affectedStoryIds: [
       '2026-08-06--composer-provider-row-current',
       '2026-08-08--composer-permission-icon-current',
+      '2026-08-06--sidebar-primary-action-icon-current',
+      '2026-08-06--sidebar-primary-action-label-current',
     ],
     affectedClientPairs: ['web:lynx'],
   };
