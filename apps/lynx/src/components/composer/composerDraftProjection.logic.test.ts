@@ -49,7 +49,7 @@ describe('native Composer draft projection', () => {
         canonicalText: '/review',
         key: 'skill:/skills/review/SKILL.md',
         kind: 'skill',
-        label: 'review',
+        label: 'Review',
       },
       {
         canonicalText: '@"Release prep"',
@@ -70,9 +70,9 @@ describe('native Composer draft projection', () => {
     });
 
     expect(result.displayTokens.map((token) => token.label)).toEqual([
-      'review',
-      'review',
-      'polish',
+      'Review',
+      'Review',
+      'Polish',
     ]);
     expect(result.displayText).toBe(
       `${NATIVE_COMPOSER_TOKEN_ANCHOR} then ${NATIVE_COMPOSER_TOKEN_ANCHOR} and ${NATIVE_COMPOSER_TOKEN_ANCHOR}`

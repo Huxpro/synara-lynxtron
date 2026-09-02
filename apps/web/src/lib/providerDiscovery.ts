@@ -205,6 +205,12 @@ export function buildSkillSearchFields(
   ];
 }
 
+export function providerSkillDisplayName(
+  skill: Pick<ProviderSkillDescriptor, "name" | "interface">,
+): string {
+  return skill.interface?.displayName?.trim() || skill.name;
+}
+
 export function isInstalledProviderPlugin(
   plugin: Pick<ProviderPluginDescriptor, "installed" | "enabled" | "installPolicy">,
 ): boolean {

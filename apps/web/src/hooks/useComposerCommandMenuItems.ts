@@ -14,6 +14,7 @@ import {
   buildSkillSearchFields,
   isInstalledProviderPlugin,
   normalizeProviderDiscoveryText,
+  providerSkillDisplayName,
   rankProviderDiscoveryItems,
 } from "~/lib/providerDiscovery";
 import {
@@ -271,7 +272,7 @@ export function useComposerCommandMenuItems(input: {
       id: `skill:${skill.path}`,
       type: "skill" as const,
       skill,
-      label: skill.interface?.displayName ?? skill.name,
+      label: providerSkillDisplayName(skill),
       description: skill.interface?.shortDescription ?? skill.description ?? skill.path,
     }));
     return [...builtInItems, ...rankedProviderCommandItems, ...skillItems];
@@ -284,7 +285,7 @@ export function useComposerCommandMenuItems(input: {
         id: `skill:${skill.path}`,
         type: "skill" as const,
         skill,
-        label: skill.interface?.displayName ?? skill.name,
+        label: providerSkillDisplayName(skill),
         description: skill.interface?.shortDescription ?? skill.description ?? skill.path,
       }),
     );

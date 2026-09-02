@@ -2,6 +2,7 @@ import type {
   ProviderMentionReference,
   ProviderSkillReference,
 } from '@synara/contracts';
+import { formatComposerSkillChipLabel } from '@synara-web/components/composerInlineChip.logic';
 
 export const NATIVE_COMPOSER_TOKEN_ANCHOR = '\u2063';
 
@@ -94,7 +95,7 @@ function collectSkillRanges(
         end: start + token.length,
         key: `skill:${skill.path}`,
         kind: 'skill',
-        label: skill.name,
+        label: formatComposerSkillChipLabel(skill.name),
         start,
       });
     }

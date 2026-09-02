@@ -5,7 +5,11 @@
 
 import type { ProviderSkillDescriptor } from "@synara/contracts";
 import { describe, expect, it } from "vitest";
-import { buildSkillSearchFields, rankProviderDiscoveryItems } from "./providerDiscovery";
+import {
+  buildSkillSearchFields,
+  providerSkillDisplayName,
+  rankProviderDiscoveryItems,
+} from "./providerDiscovery";
 
 function makeSkill(partial: Partial<ProviderSkillDescriptor>): ProviderSkillDescriptor {
   return {
@@ -19,6 +23,18 @@ function makeSkill(partial: Partial<ProviderSkillDescriptor>): ProviderSkillDesc
 }
 
 describe("rankProviderDiscoveryItems", () => {
+  it("uses the provider interface display name with a canonical-name fallback", () => {
+    expect(
+      providerSkillDisplayName(
+        makeSkill({
+          name: "template-creator:template-creator",
+          interface: { displayName: "Template Creator" },
+        }),
+      ),
+    ).toBe("Template Creator");
+    expect(providerSkillDisplayName(makeSkill({ name: "polish" }))).toBe("polish");
+  });
+
   it("prioritizes skill name and display-name matches over weaker field matches", () => {
     const skills = [
       makeSkill({

@@ -47,6 +47,7 @@ import {
 import { getComposerTraitSelection } from '@synara-web/components/chat/composerTraits';
 import {
   buildSkillSearchFields,
+  providerSkillDisplayName,
   rankProviderDiscoveryItems,
 } from '@synara-web/lib/providerDiscovery';
 import { resolveRuntimeModelDescriptor } from '@synara-web/components/chat/runtimeModelCapabilities';
@@ -680,7 +681,7 @@ export function Composer({
         id: `skill:${skill.path}`,
         type: 'skill' as const,
         skill,
-        label: skill.name,
+        label: providerSkillDisplayName(skill),
         description: skill.description ?? skill.path,
       }));
   }, [composerTrigger, providerSkillsCatalog?.skills]);
