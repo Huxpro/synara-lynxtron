@@ -717,6 +717,24 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'sidebar-primary-shortcut-offline-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: 'dc2f0a8a0',
+    affectedStoryIds: [
+      '2026-08-06--sidebar-primary-shortcut-current',
+      '2026-08-06--sidebar-primary-shortcut-reveal-current',
+    ],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The Sidebar primary-shortcut frames compare a healthy Web landing with provider-update and health overlays against a Lynx-for-Web shell in global offline/server-unavailable state.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'The raw, default, and hover full-shell pairs are excluded because they do not isolate shortcut visibility or hover paint. Focused source assertions and later healthy-shell Sidebar evidence remain independent.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'sidebar-landing-provider-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '4d5ab78e6',

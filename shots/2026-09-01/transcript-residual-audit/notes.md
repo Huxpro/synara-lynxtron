@@ -586,3 +586,15 @@ Native/provider-row evidence are unaffected. Regeneration yields `827` commit
 points, `199` accepted pairs, `1` rejected pair, median MAE
 `0.6448107988835652%`, total loss `8.653649876629391`, reliability loss `0`,
 and zero accepted pairs at or above `25%`. Fidelity-loss logic passes `49/49`.
+
+## Sidebar primary-shortcut offline-state audit
+
+The August 6 primary-shortcut `raw`, `default`, and `hover` Web frames show a
+healthy landing plus provider-update/health overlays and a usable composer.
+Their Lynx-for-Web siblings are globally offline: `Server unavailable`,
+`Synara is offline`, and a retry-only landing replace the intended state. The
+two exact story IDs plus `web:lynx` rule exclude these three full-shell samples
+without weakening focused shortcut or hover assertions. Regeneration yields
+`828` commit points, `196` accepted pairs, `1` rejected pair, median MAE
+`0.6448107988835652%`, total loss `8.653649876629391`, reliability loss `0`,
+and zero accepted pairs at or above `25%`. Fidelity-loss logic passes `50/50`.

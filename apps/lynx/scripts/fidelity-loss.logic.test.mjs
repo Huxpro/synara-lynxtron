@@ -877,6 +877,35 @@ test('excludes only the August 6 dark Providers Browser overlay pair', () => {
   );
 });
 
+test('excludes only the offline Sidebar primary-shortcut Browser stories', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-06--sidebar-primary-shortcut-current',
+      '2026-08-06--sidebar-primary-shortcut-reveal-current',
+    ],
+    affectedClientPairs: ['web:lynx'],
+  };
+
+  for (const storyId of issue.affectedStoryIds) {
+    for (const stateKey of ['raw', 'default', 'hover']) {
+      assert.equal(
+        visualPairMatchesIssue(
+          { storyId, stateKey, leftClient: 'web', rightClient: 'lynx' },
+          issue
+        ),
+        true
+      );
+      assert.equal(
+        visualPairMatchesIssue(
+          { storyId, stateKey, leftClient: 'lynx', rightClient: 'native' },
+          issue
+        ),
+        false
+      );
+    }
+  }
+});
+
 test('allows a known modal-backdrop theme mismatch to override mixed luminance', () => {
   const issue = {
     type: 'capture-theme-mismatch',
