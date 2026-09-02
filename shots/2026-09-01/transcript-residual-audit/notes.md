@@ -598,3 +598,16 @@ without weakening focused shortcut or hover assertions. Regeneration yields
 `828` commit points, `196` accepted pairs, `1` rejected pair, median MAE
 `0.6448107988835652%`, total loss `8.653649876629391`, reliability loss `0`,
 and zero accepted pairs at or above `25%`. Fidelity-loss logic passes `50/50`.
+
+## Composer model-row provider and menu-state audit
+
+The August 6 `composer-model-row-text-current/open` Web frame includes
+provider-update and provider-health overlays plus a two-level provider/model
+menu. Lynx-for-Web instead shows a Codex-unavailable banner and a single-level
+model page. The full-shell `1.742733864379085%` MAE cannot isolate row text.
+An exact story/state/`web:lynx` rule excludes only that pair; focused row
+assertions and later matched composer-model evidence remain independent. The
+ledger now has `829` commit points, `195` accepted pairs, `1` rejected pair,
+median MAE `0.6448107988835652%`, total loss `8.653649876629391`, reliability
+loss `0`, and no accepted pair at or above `25%`. Fidelity-loss logic passes
+`51/51`.

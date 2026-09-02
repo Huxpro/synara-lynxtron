@@ -906,6 +906,30 @@ test('excludes only the offline Sidebar primary-shortcut Browser stories', () =>
   }
 });
 
+test('excludes only the mixed Composer model-row open state', () => {
+  const issue = {
+    affectedStoryIds: ['2026-08-06--composer-model-row-text-current'],
+    affectedStateKeys: ['open'],
+    affectedClientPairs: ['web:lynx'],
+  };
+  const storyId = '2026-08-06--composer-model-row-text-current';
+
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'open', leftClient: 'web', rightClient: 'lynx' },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'closed', leftClient: 'web', rightClient: 'lynx' },
+      issue
+    ),
+    false
+  );
+});
+
 test('allows a known modal-backdrop theme mismatch to override mixed luminance', () => {
   const issue = {
     type: 'capture-theme-mismatch',

@@ -735,6 +735,22 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'composer-model-row-provider-and-menu-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: 'd7fcc5f60',
+    affectedStoryIds: ['2026-08-06--composer-model-row-text-current'],
+    affectedStateKeys: ['open'],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The Composer model-row frame compares Web provider-update and health overlays plus a two-level provider/model menu against a Lynx Codex-unavailable banner and single-level model page.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Only this mixed provider and menu-state full-shell pair is excluded. Focused row typography assertions and later matched composer model evidence remain independent.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'sidebar-landing-provider-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '4d5ab78e6',
