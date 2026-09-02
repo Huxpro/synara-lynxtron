@@ -435,21 +435,22 @@ retained at a safe implementation commit boundary. The audit used temporary
 Git-object extraction only; the temporary directory was removed, and the
 browser entry/exit gates both returned zero sessions and zero owned processes.
 
-## P10 final-matrix Thread Browser state audit
+## P10 final-matrix Browser state audit
 
-All eight P10 final-matrix Thread Web-to-Lynx samples are invalid as visual
-pairs. At light/dark and `1280x820`/`1440x900`, both `raw` and normalized
-`comparison` images derive from the same contaminated capture: Electron shows
-the provider-update dialog plus provider-path error banner, while Lynx-for-Web
-instead shows a `Reconnecting...` badge. The matching snapshot hashes, thread
-route, viewport, and theme do not make those renderer-local overlay and
-connection states equivalent.
+All 40 P10 final-matrix Web-to-Lynx samples are invalid as visual pairs. At
+light/dark and `1280x820`/`1440x900`, both `raw` and normalized `comparison`
+images derive from captures where Electron shows the provider-update dialog
+and Lynx-for-Web does not. This was verified across Landing, Thread, Settings
+General, project Kanban, and Pull requests. Thread additionally compares an
+Electron provider-path banner against a Lynx `Reconnecting...` badge; Pull
+requests includes an Electron-only repository warning. Matching snapshot
+hashes, routes, viewports, and themes do not make those renderer-local overlay
+and connection states equivalent.
 
-The exclusion is scoped to the P10 Thread story prefix and `web:lynx`. Its
-eight independently mismatched `lynx:native` siblings remain covered by the
-existing transcript-state rule, while all four P8-Q2 Thread Browser pairs keep
-their valid same-transcript score. After regeneration the current ledger has
-`809` commit points, `277` accepted pairs, `1` rejected pair, rolling median
+The exclusion is scoped to the P10 final-matrix namespace and `web:lynx`. The
+final-overlays family, all clean P8-Q2 Browser pairs, and independently
+governed Native pairs remain untouched. After regeneration the current ledger
+has `809` commit points, `245` accepted pairs, `1` rejected pair, rolling median
 MAE `0.5507725943527818%`, total loss `8.289406207894311`, reliability loss
 `0`, and no accepted pair at or above `25%`. Fidelity-loss logic passes
 `42/42`.

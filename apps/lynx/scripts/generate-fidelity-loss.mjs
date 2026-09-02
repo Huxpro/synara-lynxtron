@@ -812,19 +812,19 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'p10-final-matrix-thread-browser-overlay-state-mismatch',
+    id: 'p10-final-matrix-browser-overlay-state-mismatch',
     type: 'capture-product-state-mismatch',
-    detectedAt: '64f2f3d42',
+    detectedAt: '10e39095c',
     affectedStoryPrefix:
-      '2026-08-04--p10-perceptual-fidelity--final-matrix--thread-default-',
+      '2026-08-04--p10-perceptual-fidelity--final-matrix--',
     affectedClientPairs: ['web:lynx'],
     summary:
-      'All four P10 final-matrix Thread Web frames contain provider-update and provider-path overlays while Lynx-for-Web instead shows a reconnecting badge, so neither the raw nor normalized Browser pair shares overlay or connection state.',
+      'All twenty P10 final-matrix Web frames contain a provider-update overlay that is absent from Lynx-for-Web. Thread also has a Web-only provider-path banner versus a Lynx reconnecting badge, while Pull requests has a Web-only repository warning.',
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Both raw and titlebar-normalized comparison states are excluded only for Web-to-Lynx. The earlier matched P8-Q2 Browser matrix remains scored, while the independently mismatched P10 Lynx-to-Native pairs stay governed by their existing rule.',
+      'All raw and titlebar-normalized final-matrix states are excluded only for Web-to-Lynx. Earlier matched P8-Q2 Browser matrices remain scored, while Native pairs stay independently governed by their existing product and harness records.',
     resolutionStoryPrefixes: [],
   },
   {
