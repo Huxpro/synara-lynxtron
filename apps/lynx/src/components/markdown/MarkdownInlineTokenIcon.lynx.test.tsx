@@ -13,6 +13,9 @@ describe('Lynx Markdown inline token icons', () => {
           segment={{ type: 'mention', path: 'src/App.tsx' }}
         />
         <MarkdownInlineTokenIcon
+          segment={{ type: 'mention', path: 'thread://thread-1' }}
+        />
+        <MarkdownInlineTokenIcon
           segment={{ type: 'skill', name: 'polish' }}
         />
         <MarkdownInlineTokenIcon
@@ -42,11 +45,17 @@ describe('Lynx Markdown inline token icons', () => {
 
     expect(
       elementTree.root?.querySelectorAll('.MdInlineTokenIcon')
-    ).toHaveLength(5);
+    ).toHaveLength(6);
     expect(
       elementTree.root?.querySelector('.MdLinkTargetFavicon')
     ).not.toBeNull();
     expect(elementTree.root?.querySelector('.MdInlineTokenGlyph')).toBeNull();
+    const iconSource = readFileSync(
+      new URL('./MarkdownInlineTokenIcon.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(iconSource).toContain('threadIdFromThreadMentionPath(props.segment.path)');
+    expect(iconSource).toContain('<MessageCircleIcon');
     const markdownSource = readFileSync(
       new URL('./ChatMarkdown.lynx.tsx', import.meta.url),
       'utf8'
@@ -60,10 +69,7 @@ describe('Lynx Markdown inline token icons', () => {
     );
     expect(markdownSource).toContain('color={agentColor?.text}');
     expect(
-      readFileSync(
-        new URL('./MarkdownInlineTokenIcon.lynx.tsx', import.meta.url),
-        'utf8'
-      )
+      iconSource
     ).toContain("props.segment.type === 'skill'\n            ? activeTheme.theme.accent");
     expect(styles).toMatch(
       /\.MdInlineToken--mention,[^{]*\.MdInlineToken--link\s*\{[^}]*padding:\s*0;[^}]*border-width:\s*0;[^}]*background-color:\s*transparent;/s

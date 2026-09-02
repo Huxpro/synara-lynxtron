@@ -63,8 +63,9 @@ canonical persisted-token output cell.
   transport or RPC error.
 - Browser cleanup gate: no sessions and no owned browser processes.
 
-One current residual remains explicit: Electron can resolve a thread mention
-to its provider icon from the Web sidebar store, while Native still renders
-its generic source-backed path fallback because provider identity is not yet
-carried into the Markdown token projection. This residual stays visible in the
-new MAE rather than blocking replacement of the stale August 2 snapshot.
+The retained frame exposed that Native treated a `thread://` mention as a file
+path and painted a generic code glyph. The follow-up source fix now recognizes
+the canonical thread path and uses Electron's message-circle fallback rather
+than inventing a provider; provider-specific runtime evidence remains pending
+until provider identity is carried into the Markdown token projection. The
+retained MAE therefore keeps the pre-fallback glyph residual visible.

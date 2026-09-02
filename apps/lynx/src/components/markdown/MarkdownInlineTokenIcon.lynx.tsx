@@ -3,8 +3,9 @@ import skillSvg from '@synara-central-icons/building-blocks.svg?raw';
 import terminalSvg from '@synara-central-icons/console.svg?raw';
 
 import type { MarkdownInlineTokenSegment } from './markdownPresentation.logic';
+import { threadIdFromThreadMentionPath } from '@synara/shared/threadMentions';
 import { useTheme } from '../../adapters/useTheme.lynx';
-import { ClockIcon } from '../../lib/icons.lynx';
+import { ClockIcon, MessageCircleIcon } from '../../lib/icons.lynx';
 import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
 import { FileEntryIcon } from '../FileEntryIcon.lynx';
 import { ExternalLinkIcon } from './ExternalLinkIcon.lynx';
@@ -15,6 +16,15 @@ export function MarkdownInlineTokenIcon(props: {
 }) {
   const { activeTheme, svgColors } = useTheme();
   if (props.segment.type === 'mention') {
+    if (threadIdFromThreadMentionPath(props.segment.path)) {
+      return (
+        <MessageCircleIcon
+          className="MdInlineTokenIcon"
+          color="var(--info-foreground)"
+          size={12}
+        />
+      );
+    }
     return (
       <FileEntryIcon
         className="MdInlineTokenIcon"
