@@ -137,6 +137,8 @@ export function visualSampleSupersessionAtCommit(
       return (
         Number.isInteger(supersededAtIndex) &&
         supersededAtIndex <= commitIndex &&
+        (!entry.affectedStateKeys ||
+          entry.affectedStateKeys.includes(sample.stateKey)) &&
         (!entry.affectedClientPairs ||
           entry.affectedClientPairs.includes(
             `${sample.leftClient}:${sample.rightClient}`

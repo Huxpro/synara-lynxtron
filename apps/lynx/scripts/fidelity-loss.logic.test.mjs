@@ -707,6 +707,60 @@ test('supersedes only the retained transcript scroll states at their commit boun
   );
 });
 
+test('supersedes current token menu and selection states but preserves persisted output', () => {
+  const ledger = [
+    {
+      id: 'markdown-token-current-menu-and-selection',
+      affectedStoryPrefixes: ['2026-08-02--harness--markdown-tokens'],
+      affectedStateKeys: [
+        'skill-menu',
+        'mention-menu',
+        'skill-selected',
+        'mention-selected',
+      ],
+      affectedClientPairs: ['web:lynx'],
+      supersededAt: 'token-current',
+    },
+  ];
+  const commitIndexByHash = new Map([['token-current', 9]]);
+
+  for (const stateKey of [
+    'skill-menu',
+    'mention-menu',
+    'skill-selected',
+    'mention-selected',
+  ]) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(
+        {
+          storyId: '2026-08-02--harness--markdown-tokens',
+          stateKey,
+          leftClient: 'web',
+          rightClient: 'lynx',
+        },
+        9,
+        ledger,
+        commitIndexByHash
+      )?.id,
+      'markdown-token-current-menu-and-selection'
+    );
+  }
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      {
+        storyId: '2026-08-02--harness--markdown-tokens',
+        stateKey: 'persisted-tokens',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      9,
+      ledger,
+      commitIndexByHash
+    ),
+    null
+  );
+});
+
 test('supersedes both client pairs when later three-client product evidence exists', () => {
   const ledger = [
     {
@@ -761,6 +815,36 @@ test('scopes product evidence supersession to one client pair', () => {
   );
   assert.equal(
     visualSampleSupersessionAtCommit(browserSample, 5, ledger, commitIndexByHash),
+    null
+  );
+});
+
+test('scopes product evidence supersession to named states', () => {
+  const ledger = [
+    {
+      affectedStoryPrefixes: ['story'],
+      affectedStateKeys: ['open'],
+      supersededAt: 'fixed',
+    },
+  ];
+  const commitIndexByHash = new Map([['fixed', 5]]);
+
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId: 'story-one', stateKey: 'open' },
+      5,
+      ledger,
+      commitIndexByHash
+    ),
+    ledger[0]
+  );
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId: 'story-one', stateKey: 'closed' },
+      5,
+      ledger,
+      commitIndexByHash
+    ),
     null
   );
 });

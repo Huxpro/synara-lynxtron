@@ -95,6 +95,27 @@ const reliabilityLedger = [
 ];
 const productEvidenceSupersessionLedger = [
   {
+    id: 'markdown-token-current-menu-and-selection',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: ['2026-08-02--harness--markdown-tokens'],
+    affectedStateKeys: [
+      'skill-menu',
+      'mention-menu',
+      'skill-selected',
+      'mention-selected',
+    ],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: '3a8158992',
+    summary:
+      'The August 2 composer menu and selected-token frames predate shared skill display-name projection and current rich-token presentation.',
+    resolution:
+      'Committed retained Electron and Lynx-for-Web evidence covers the same backend, thread, route, overlay state, viewport, and dock state for both menus and both selected-token states. Persisted-token output remains independently scored.',
+    evidence: [
+      'shots/2026-09-02/markdown-tokens-current/notes.md',
+      'shots/2026-09-02/markdown-tokens-current/pngs.sha256',
+    ],
+  },
+  {
     id: 'transcript-scroll-current-full-pane',
     type: 'superseded-product-snapshot',
     affectedStoryPrefixes: ['2026-08-02--harness--transcript-scroll'],
