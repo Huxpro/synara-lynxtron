@@ -767,3 +767,17 @@ existing exact no-overlay Markdown pair (`1.2959141608879323%` light,
 `1.4813689373106964%` dark) under the same capture state, so the ledger remains
 unchanged. The strict-run fixture was canonically deleted and all temporary
 images, worktree, processes, ports, and browser sessions were removed.
+
+## P8-Q2 Thread full-pane supersession
+
+The four P8-Q2 Thread Browser cells were still counted even though their own
+notes identify the Lynx outer transcript owner as the retired 736px list while
+Web owned the full 1024px pane. The existing `3986fb12a` evidence proves the
+later shared full-pane scroll-owner boundary with one backend, thread, route,
+overlay state, viewport, and dock state. A new exact supersession therefore
+matches only `2026-08-03--p8-q2--thread--*`, state `raw`, client pair
+`web:lynx`; the `threads/*` landing family and Native siblings remain governed
+independently. Fidelity-loss logic passes `60/60`. The current accepted count
+drops from `158` to `154`; rolling median and total loss remain
+`0.6448107988835652%` and `8.658511436259841` because those four historical
+cells are outside the latest 24-pair rolling window.

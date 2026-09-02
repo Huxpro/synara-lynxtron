@@ -1291,6 +1291,45 @@ test('supersedes only the retained transcript scroll states at their commit boun
   );
 });
 
+test('supersedes only P8-Q2 Thread Browser cells at the full-pane boundary', () => {
+  const ledger = [
+    {
+      id: 'p8-q2-thread-current-full-pane',
+      affectedStoryPrefixes: ['2026-08-03--p8-q2--thread--'],
+      affectedStateKeys: ['raw'],
+      affectedClientPairs: ['web:lynx'],
+      supersededAt: 'transcript-current',
+    },
+  ];
+  const commitIndexByHash = new Map([['transcript-current', 7]]);
+  const storyId = '2026-08-03--p8-q2--thread--dark-1280';
+
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+      7,
+      ledger,
+      commitIndexByHash
+    )?.id,
+    'p8-q2-thread-current-full-pane'
+  );
+  for (const sample of [
+    { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+    { storyId, stateKey: 'comparison', leftClient: 'web', rightClient: 'lynx' },
+    {
+      storyId: '2026-08-03--p8-q2--threads--dark-1280',
+      stateKey: 'raw',
+      leftClient: 'web',
+      rightClient: 'lynx',
+    },
+  ]) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(sample, 7, ledger, commitIndexByHash),
+      null
+    );
+  }
+});
+
 test('supersedes current token menu and selection states but preserves persisted output', () => {
   const ledger = [
     {

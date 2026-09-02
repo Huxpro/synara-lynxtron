@@ -235,6 +235,24 @@ const productEvidenceSupersessionLedger = [
     ],
   },
   {
+    id: 'p8-q2-thread-current-full-pane',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: ['2026-08-03--p8-q2--thread--'],
+    affectedStateKeys: ['raw'],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: '3986fb12a',
+    summary:
+      'The P8-Q2 Thread Browser matrix records the same retired 736px outer transcript-list architecture as the older transcript-scroll samples.',
+    resolution:
+      'Committed retained Electron and Lynx-for-Web evidence at the full-pane scroll-owner boundary supersedes the four old Browser cells. The transcript-mismatched Native siblings remain independently excluded rather than treated as replacement evidence.',
+    evidence: [
+      'shots/2026-08-03/p8-q2/threads-thread/notes.md',
+      'shots/2026-09-02/transcript-current-recapture/notes.md',
+      'shots/2026-09-02/transcript-current-recapture/electron-pinned.png',
+      'shots/2026-09-02/transcript-current-recapture/lynx-pinned.png',
+    ],
+  },
+  {
     id: 'p8-q2-empty-thread-current-landing',
     type: 'superseded-product-snapshot',
     affectedStoryPrefixes: ['2026-08-03--p8-q2--threads--'],
