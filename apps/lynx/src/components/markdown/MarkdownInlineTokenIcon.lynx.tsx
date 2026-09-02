@@ -13,7 +13,7 @@ export function MarkdownInlineTokenIcon(props: {
   readonly color?: string;
   readonly segment: MarkdownInlineTokenSegment;
 }) {
-  const { svgColors } = useTheme();
+  const { activeTheme, svgColors } = useTheme();
   if (props.segment.type === 'mention') {
     return (
       <FileEntryIcon
@@ -47,7 +47,7 @@ export function MarkdownInlineTokenIcon(props: {
         content,
         props.color ??
           (props.segment.type === 'skill'
-            ? svgColors.foreground
+            ? activeTheme.theme.accent
             : svgColors.mutedForeground)
       )}
       accessibility-element={false}

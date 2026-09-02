@@ -59,6 +59,12 @@ describe('Lynx Markdown inline token icons', () => {
       'resolveAgentChipColor(segment.color)'
     );
     expect(markdownSource).toContain('color={agentColor?.text}');
+    expect(
+      readFileSync(
+        new URL('./MarkdownInlineTokenIcon.lynx.tsx', import.meta.url),
+        'utf8'
+      )
+    ).toContain("props.segment.type === 'skill'\n            ? activeTheme.theme.accent");
     expect(styles).toMatch(
       /\.MdInlineToken--mention,[^{]*\.MdInlineToken--link\s*\{[^}]*padding:\s*0;[^}]*border-width:\s*0;[^}]*background-color:\s*transparent;/s
     );

@@ -1,7 +1,7 @@
 # Current composer mention and skill token recapture
 
-Status: retained Electron and Lynx-for-Web fast-loop evidence. Persisted-token
-output remains a separate pending cell.
+Status: retained Electron and Lynx-for-Web fast-loop evidence, including a
+canonical persisted-token output cell.
 
 ## Identity
 
@@ -12,7 +12,7 @@ output remains a separate pending cell.
   sidebar-open state, dock closed, and provider/model selection.
 - Viewport: `864x620`, DPR 2; all eight retained PNGs are `1728x1240`.
 - Final Lynx-for-Web bundle SHA-256:
-  `78ff77791e18d4baad1166e458e3d07328e8025405627ef2fd32c72e5638593b`.
+  `48223d65d4e6ba55a286a476bf75cfe80e19a5dbe6a858c24f7a113ca8034862`.
 - Every menu was opened by typing in the rendered composer. Every selected
   token was produced through the rendered menu row. Drafts were cleared after
   capture; no message or database record was created.
@@ -27,6 +27,16 @@ output remains a separate pending cell.
   rich token while retaining canonical `/polish` command semantics.
 - Mention selected: `2.3123998890177337%` MAE. Both clients render
   `New chat (Chats)` from the same real thread.
+- Persisted tokens: `1.9202114861277046%` MAE. A separate isolated server at
+  `58270`, server instance `7f56a536-f9ed-4165-b817-079bb6a3908d`, projected
+  one canonical user message with both non-empty `mentions_json` and
+  `skills_json`. Electron and Lynx-for-Web rendered the same
+  `Token mention source` and `Polish` tokens from thread
+  `62453f79-69f3-4c13-aa63-db05fe2c9a6e`. The provider subsequently entered
+  an error state, but the user message was complete and non-streaming before
+  capture; both clients rendered the same error banner and had empty page-error
+  buffers. The state database lived only under
+  `/tmp/synara-token-recapture-home` and was deleted after capture.
 
 ## Fidelity fixes found by the recapture
 
@@ -38,6 +48,10 @@ output remains a separate pending cell.
    shared title formatter. Native draft projection now consumes the same
    formatter; canonical text and structured `{name,path}` references are
    unchanged.
+3. Lynx persisted skill glyphs used foreground ink while Electron uses the
+   shared accent tone. Native now resolves the active theme accent to a real
+   SVG stroke (`#0169cc` in the retained light cell), avoiding unsupported CSS
+   variables inside SVG content.
 
 ## Verification
 
@@ -49,5 +63,8 @@ output remains a separate pending cell.
   transport or RPC error.
 - Browser cleanup gate: no sessions and no owned browser processes.
 
-The old `persisted-tokens` state is not superseded by this evidence because no
-new message was sent during this run.
+One current residual remains explicit: Electron can resolve a thread mention
+to its provider icon from the Web sidebar store, while Native still renders
+its generic source-backed path fallback because provider identity is not yet
+carried into the Markdown token projection. This residual stays visible in the
+new MAE rather than blocking replacement of the stale August 2 snapshot.
