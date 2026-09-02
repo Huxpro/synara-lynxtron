@@ -18,6 +18,7 @@ import {
   calculateFidelityLoss,
   captureMismatchReason,
   classifyRenderedTheme,
+  daysWithCommitPoints,
   exponentialMovingAverage,
   groupEvidenceFilesBySourceCommit,
   isComparableImageGeometry,
@@ -102,6 +103,40 @@ const reliabilityLedger = [
   },
 ];
 const productEvidenceSupersessionLedger = [
+  {
+    id: 'markdown-surface-current-light',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: ['2026-08-02--harness--markdown--before'],
+    affectedStateKeys: ['1280x820'],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: '0dfcf4b69',
+    summary:
+      'The August 2 light Markdown frame predates the current shared transcript composition and Markdown rendering implementation.',
+    resolution:
+      'Committed current evidence renders one canonical Markdown fixture in Electron and Lynx-for-Web on the same authenticated backend, thread, route, light theme, viewport, dock, and overlay state.',
+    evidence: [
+      'shots/2026-09-02/markdown-surface-current/notes.md',
+      'shots/2026-09-02/markdown-surface-current/web-light-1280x820.png',
+      'shots/2026-09-02/markdown-surface-current/lynx-light-1280x820.png',
+    ],
+  },
+  {
+    id: 'markdown-surface-current-dark',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: ['2026-08-02--harness--markdown--after-dark'],
+    affectedStateKeys: ['1280x820'],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: '0dfcf4b69',
+    summary:
+      'The August 2 dark Markdown frame predates the current shared transcript composition and Markdown rendering implementation.',
+    resolution:
+      'Committed current evidence renders the same canonical Markdown fixture in Electron and Lynx-for-Web on the same authenticated backend, thread, route, dark theme, viewport, dock, and overlay state.',
+    evidence: [
+      'shots/2026-09-02/markdown-surface-current/notes.md',
+      'shots/2026-09-02/markdown-surface-current/web-dark-1280x820.png',
+      'shots/2026-09-02/markdown-surface-current/lynx-dark-1280x820.png',
+    ],
+  },
   {
     id: 'composer-details-tokens-1280-current',
     type: 'superseded-product-snapshot',
@@ -1896,7 +1931,8 @@ const riseAnalysis = commitPoints
         : null,
     ].filter(Boolean),
   }));
-const dayAnalysis = days.map((day) => {
+const anchoredDays = daysWithCommitPoints(days, commitPoints);
+const dayAnalysis = anchoredDays.map((day) => {
   const dayPoints = commitPoints.filter((point) => point.day === day);
   const first = dayPoints[0];
   const last = dayPoints.at(-1);
@@ -1933,7 +1969,7 @@ const dayAnalysis = days.map((day) => {
     commitIndexes: dayPoints.map((point) => point.index),
   };
 });
-const points = days.map((day) => {
+const points = anchoredDays.map((day) => {
   const point = [...commitPoints].reverse().find((entry) => entry.day === day);
   const commits = dayCommits.get(day) ?? [];
   return {

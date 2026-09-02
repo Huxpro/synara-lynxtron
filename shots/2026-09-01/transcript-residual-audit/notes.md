@@ -538,3 +538,24 @@ at `b4df16d69` through `e86b1fe2a`. It is distinct from the earlier
 `WebSocket.OPEN` ready-state defect. The clean app still resolved the cloned
 thread route to a project-scoped New Thread surface, so no Thread visual frame
 from this diagnostic run is retained or used for supersession.
+
+## 2026-09-02 current Markdown surface replacement
+
+The authenticated clean-worktree fast loop retained current light and dark
+Markdown fixtures at `shots/2026-09-02/markdown-surface-current/`. Both clients
+used backend `57198`, server instance
+`82ba5bed-296b-4ab2-9ba9-7ebc7efa8fff`, thread
+`fidelity-markdown-dark-20260902-b`, `1280x820` DPR 1, the same transcript,
+closed dock, and no provider-update overlay. Current MAE is
+`1.2959141608879323%` light and `1.4813689373106964%` dark.
+
+Two exact `web:lynx` / `1280x820` supersessions retire only the valid August 2
+light `before` and dark `after-dark` samples at evidence commit `0dfcf4b69`; the
+nominal light `after` pair remains rejected as a theme mismatch. Regenerating
+the clean screenshot archive also activated previously committed 2026-08-20,
+2026-08-21, and 2026-09-02 evidence. The ledger now has `824` commit points,
+`19` daily anchors, `206` accepted pairs, `1` rejected pair, rolling median MAE
+`0.6448107988835652%`, total loss `8.653649876629391`, reliability loss `0`,
+and no accepted pair at or above `25%`. The current visual residual is a wider,
+syntax-highlighted Electron Markdown rail/code block versus a narrower,
+monochrome Lynx rendering.

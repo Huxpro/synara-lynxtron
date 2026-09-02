@@ -5,6 +5,7 @@ import {
   calculateFidelityLoss,
   captureMismatchReason,
   classifyRenderedTheme,
+  daysWithCommitPoints,
   exponentialMovingAverage,
   groupEvidenceFilesBySourceCommit,
   isComparableImageGeometry,
@@ -19,6 +20,16 @@ import {
   visualSampleSupersessionAtCommit,
   weightedComponentContributions,
 } from './fidelity-loss.logic.mjs';
+
+test('keeps daily anchors only for days represented by commit points', () => {
+  assert.deepEqual(
+    daysWithCommitPoints(
+      ['2026-08-19', '2026-08-20', '2026-09-02'],
+      [{ day: '2026-08-19' }, { day: '2026-09-02' }]
+    ),
+    ['2026-08-19', '2026-09-02']
+  );
+});
 
 test('normalizes paired client filenames without erasing state identity', () => {
   assert.equal(normalizeEvidenceName('web-light.png'), 'light');

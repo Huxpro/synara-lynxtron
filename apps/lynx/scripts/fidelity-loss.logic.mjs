@@ -222,3 +222,8 @@ export function weightedComponentContributions(previous, current, weights) {
     ])
   );
 }
+
+export function daysWithCommitPoints(days, commitPoints) {
+  const anchoredDays = new Set(commitPoints.map((point) => point.day));
+  return days.filter((day) => anchoredDays.has(day));
+}
