@@ -769,7 +769,10 @@ const harnessIssueLedger = [
     id: 'settings-archived-provider-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: 'a888ede17',
-    affectedStoryIds: ['2026-08-05--settings-archived-current'],
+    affectedStoryIds: [
+      '2026-08-05--settings-archived-current',
+      '2026-08-05--settings-archived-dark-1440',
+    ],
     affectedClientPairs: ['web:lynx'],
     summary:
       'The archived-empty pair compares an Electron provider-update overlay against a Lynx reconnecting badge; Lynx also has a broken archived-state image resource.',
@@ -786,11 +789,12 @@ const harnessIssueLedger = [
     detectedAt: '9ba80eefb',
     affectedStoryIds: [
       '2026-08-05--settings-worktrees-current',
+      '2026-08-05--settings-worktrees-dark-1440',
       '2026-08-06--settings-shared-menu-text-current',
     ],
     affectedClientPairs: ['web:lynx'],
     summary:
-      'The Worktrees and shared Settings menu Web frames contain the provider-update overlay while Lynx-for-Web shows reconnecting or no equivalent overlay.',
+      'The Worktrees frames at both retained themes and the shared Settings menu Web frame contain the provider-update overlay while Lynx-for-Web shows reconnecting or no equivalent overlay.',
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],

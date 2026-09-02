@@ -665,3 +665,14 @@ Composer runs remain independent. The ledger now has `833` commit points,
 `174` accepted pairs, `1` rejected pair, median MAE
 `0.6448107988835652%`, total loss `8.653649876629391`, reliability loss `0`,
 and no accepted pair at or above `25%`. Fidelity-loss logic passes `56/56`.
+
+## Archived and Worktrees dark sibling audit
+
+The dark/1440 Archived and Worktrees siblings repeat the same Electron
+provider-update overlay versus Lynx `Reconnecting...` mismatch. Archived also
+retains the broken Lynx image. Extending the existing exact story lists removes
+only these two Browser samples. Their Lynx-to-Native siblings remain scored at
+`0.9226361655773421%` and `0.8239872306947471%`. The ledger now has `834`
+commit points, `172` accepted pairs, `1` rejected pair, median MAE
+`0.6448107988835652%`, total loss `8.653649876629391`, reliability loss `0`,
+and no accepted pair at or above `25%`. Fidelity-loss logic remains `56/56`.

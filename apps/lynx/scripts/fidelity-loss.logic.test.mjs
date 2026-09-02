@@ -955,7 +955,10 @@ test('excludes only the Settings search Browser transport-state mismatch', () =>
 
 test('excludes only the Settings Archived Browser provider-state mismatch', () => {
   const issue = {
-    affectedStoryIds: ['2026-08-05--settings-archived-current'],
+    affectedStoryIds: [
+      '2026-08-05--settings-archived-current',
+      '2026-08-05--settings-archived-dark-1440',
+    ],
     affectedClientPairs: ['web:lynx'],
   };
   const storyId = '2026-08-05--settings-archived-current';
@@ -980,6 +983,7 @@ test('excludes Settings Worktrees and shared-menu Browser overlays only', () => 
   const issue = {
     affectedStoryIds: [
       '2026-08-05--settings-worktrees-current',
+      '2026-08-05--settings-worktrees-dark-1440',
       '2026-08-06--settings-shared-menu-text-current',
     ],
     affectedClientPairs: ['web:lynx'],
