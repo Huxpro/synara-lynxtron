@@ -14,6 +14,7 @@ import {
   getChatTranscriptTextStyle,
   getChatTranscriptUserMessageTextStyle,
 } from '@synara-web/components/chat/chatTypography';
+import { ComposerColumnFrameSurface } from '@synara-web/components/chat/ComposerColumnFrameSurface';
 import {
   MessageAssistantRowComposition,
   MessageUserBubbleComposition,
@@ -401,6 +402,7 @@ function TranscriptMessage({
         {assistantText === null ? null : (
           <view className="TranscriptAssistantContent">
             <view
+              className="TranscriptAssistantTypography"
               style={
                 getChatTranscriptTextStyle(
                   chatFontSizePx
@@ -715,15 +717,17 @@ export function Transcript({
               chatFontSizePx
             )}
           >
-            <TranscriptRowContent
-              chatFontSizePx={chatFontSizePx}
-              onOpenFileReference={onOpenFileReference}
-              pinnedMessageIds={pinnedMessageIds}
-              row={row}
-              threadId={threadId}
-              timestampFormat={timestampFormat}
-              workspaceRoot={workspaceRoot}
-            />
+            <ComposerColumnFrameSurface className="TranscriptRowFrame">
+              <TranscriptRowContent
+                chatFontSizePx={chatFontSizePx}
+                onOpenFileReference={onOpenFileReference}
+                pinnedMessageIds={pinnedMessageIds}
+                row={row}
+                threadId={threadId}
+                timestampFormat={timestampFormat}
+                workspaceRoot={workspaceRoot}
+              />
+            </ComposerColumnFrameSurface>
           </list-item>
         ))}
         <list-item
