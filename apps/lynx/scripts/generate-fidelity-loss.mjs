@@ -680,6 +680,24 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'settings-profile-advanced-aug05-provider-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: 'bd76b76f3',
+    affectedStoryIds: [
+      '2026-08-05--settings-profile-current',
+      '2026-08-05--settings-advanced-current',
+    ],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The August 5 Profile and Advanced Web frames contain an open provider-update overlay while Lynx-for-Web shows a reconnecting badge and different provider-derived actions or recovery state.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Only the two provider-state-mismatched Web-to-Lynx full-shell pairs are excluded. Their Lynx-to-Native siblings remain scored, and current Profile or Advanced visual parity still requires matched-state recapture.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'sidebar-landing-provider-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '4d5ab78e6',

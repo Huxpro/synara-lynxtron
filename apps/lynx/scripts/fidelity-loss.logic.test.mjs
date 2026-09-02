@@ -823,6 +823,33 @@ test('keeps August 5 Integrations and AppSnap harness scope separate from Native
   );
 });
 
+test('excludes August 5 Profile and Advanced Browser provider-state mismatches only', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-05--settings-profile-current',
+      '2026-08-05--settings-advanced-current',
+    ],
+    affectedClientPairs: ['web:lynx'],
+  };
+
+  for (const storyId of issue.affectedStoryIds) {
+    assert.equal(
+      visualPairMatchesIssue(
+        { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+        issue
+      ),
+      true
+    );
+    assert.equal(
+      visualPairMatchesIssue(
+        { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+        issue
+      ),
+      false
+    );
+  }
+});
+
 test('allows a known modal-backdrop theme mismatch to override mixed luminance', () => {
   const issue = {
     type: 'capture-theme-mismatch',
