@@ -9,7 +9,11 @@ import {
   type LynxWebInteractionEvent,
 } from '../webInteractionEvent.logic';
 import { resolveWebInitialRoute } from './webInitialRoute.logic';
-import { resolveWebRelayEndpoint } from './webRelayEndpoint.logic';
+import {
+  buildWebRelaySocketUrl,
+  normalizeWebRelayUrl,
+  resolveWebRelayEndpoint,
+} from './webRelayEndpoint.logic';
 import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from '../syntaxHighlightingContract.logic';
 import { REDUCED_MOTION_EVENT } from '../reducedMotionEvent.logic';
 import { normalizeLynxRpcPayload } from '../rpcPayload.logic';
@@ -159,12 +163,7 @@ function configuredRelayBaseUrl(): string {
 }
 
 function normalizeSynaraWsUrl(value: unknown): string {
-  const candidate = String(value ?? '').trim() || DEFAULT_SYNARA_WS_URL;
-  const url = new URL(candidate);
-  if (url.protocol !== 'ws:' && url.protocol !== 'wss:') {
-    throw new Error('Synara relay endpoint must use ws: or wss:');
-  }
-  return url.origin;
+  return normalizeWebRelayUrl(value || DEFAULT_SYNARA_WS_URL);
 }
 
 function describeError(error: unknown): string {
@@ -236,7 +235,7 @@ function startRelayRecovery(baseUrl: string): void {
 function connectWithPath(baseUrl: string, path: string): Promise<WebSocket> {
   return new Promise((resolve, reject) => {
     let settled = false;
-    const socket = new WebSocket(`${baseUrl}${path}`);
+    const socket = new WebSocket(buildWebRelaySocketUrl(baseUrl, path));
     const timer = setTimeout(() => {
       if (settled) return;
       settled = true;

@@ -1,9 +1,39 @@
 import { describe, expect, it } from '@rstest/core';
 import fs from 'node:fs';
 
-import { resolveWebRelayEndpoint } from './webRelayEndpoint.logic';
+import {
+  buildWebRelaySocketUrl,
+  normalizeWebRelayUrl,
+  resolveWebRelayEndpoint,
+} from './webRelayEndpoint.logic';
 
 describe('Lynx-for-Web relay endpoint', () => {
+  it('preserves auth query parameters while normalizing the relay root', () => {
+    expect(
+      normalizeWebRelayUrl(
+        ' ws://127.0.0.1:53742/stale?token=synara-local-desktop-comparison '
+      )
+    ).toBe(
+      'ws://127.0.0.1:53742/?token=synara-local-desktop-comparison'
+    );
+  });
+
+  it('merges auth and protocol query parameters into socket paths', () => {
+    const base =
+      'ws://127.0.0.1:53742/?token=synara-local-desktop-comparison';
+    expect(buildWebRelaySocketUrl(base, '/ws/bootstrap')).toBe(
+      'ws://127.0.0.1:53742/ws/bootstrap?token=synara-local-desktop-comparison'
+    );
+    expect(
+      buildWebRelaySocketUrl(
+        base,
+        '/ws?x-synara-protocol-revision=1&x-synara-server-instance=server-1'
+      )
+    ).toBe(
+      'ws://127.0.0.1:53742/ws?x-synara-protocol-revision=1&x-synara-server-instance=server-1&token=synara-local-desktop-comparison'
+    );
+  });
+
   it('lets the same-origin runtime config override a stale build endpoint', () => {
     expect(
       resolveWebRelayEndpoint(
