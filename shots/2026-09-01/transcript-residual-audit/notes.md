@@ -611,3 +611,15 @@ ledger now has `829` commit points, `195` accepted pairs, `1` rejected pair,
 median MAE `0.6448107988835652%`, total loss `8.653649876629391`, reliability
 loss `0`, and no accepted pair at or above `25%`. Fidelity-loss logic passes
 `51/51`.
+
+## Settings Search transport-state audit
+
+The August 6 Settings Search frames agree on the `archived thread` query and
+result, but Electron carries the provider-update overlay while Lynx-for-Web is
+globally offline. The exact story plus `web:lynx` rule excludes only the
+`1.6027259684361548%` mixed-state Browser sample. Its Lynx-to-Native sibling
+remains scored at `2.185268586601307%`, as do focused search behavior checks.
+The ledger now has `830` commit points, `194` accepted pairs, `1` rejected
+pair, median MAE `0.6448107988835652%`, total loss `8.653649876629391`,
+reliability loss `0`, and no accepted pair at or above `25%`. Fidelity-loss
+logic passes `52/52`.

@@ -930,6 +930,29 @@ test('excludes only the mixed Composer model-row open state', () => {
   );
 });
 
+test('excludes only the Settings search Browser transport-state mismatch', () => {
+  const issue = {
+    affectedStoryIds: ['2026-08-06--settings-search-current'],
+    affectedClientPairs: ['web:lynx'],
+  };
+  const storyId = '2026-08-06--settings-search-current';
+
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+      issue
+    ),
+    false
+  );
+});
+
 test('allows a known modal-backdrop theme mismatch to override mixed luminance', () => {
   const issue = {
     type: 'capture-theme-mismatch',

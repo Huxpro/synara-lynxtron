@@ -751,6 +751,21 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'settings-search-provider-offline-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: 'c721f2441',
+    affectedStoryIds: ['2026-08-06--settings-search-current'],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The Settings search pair compares matching query/results under an Electron provider-update overlay and a Lynx-for-Web global offline banner.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Only the mixed transport/provider-state Web-to-Lynx full-shell pair is excluded. The Lynx-to-Native sibling and focused Settings search behavior remain scored independently.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'sidebar-landing-provider-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '4d5ab78e6',
