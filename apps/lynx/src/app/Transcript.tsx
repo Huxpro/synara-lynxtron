@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import botSvg from '@synara-central-icons/robot.svg?raw';
 import toolSvg from '@synara-central-icons/zap.svg?raw';
+import arrowDownSvg from '@tabler/icons/outline/arrow-down.svg?raw';
 
 import { PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from '@synara/contracts';
 import { resolveAssistantMessageDisplayText } from '@synara-web/components/chat/MessagesTimeline.logic';
@@ -13,7 +14,6 @@ import {
   getChatTranscriptTextStyle,
   getChatTranscriptUserMessageTextStyle,
 } from '@synara-web/components/chat/chatTypography';
-import { ArrowDownIcon } from '@synara-web/lib/icons';
 import {
   MessageAssistantRowComposition,
   MessageUserBubbleComposition,
@@ -82,6 +82,16 @@ function TranscriptStatusIcon(props: {
         props.tone === 'thinking' ? botSvg : toolSvg,
         svgColors.mutedForeground
       )}
+    />
+  );
+}
+
+function TranscriptJumpIcon() {
+  const { svgColors } = useTheme();
+  return (
+    <svg
+      className="TranscriptJumpIcon"
+      content={colorizeLynxSvg(arrowDownSvg, svgColors.foreground)}
     />
   );
 }
@@ -729,7 +739,7 @@ export function Transcript({
           aria-label="Scroll to bottom"
           {...jumpInteraction.eventProps}
         >
-          <ArrowDownIcon className="TranscriptJumpIcon" />
+          <TranscriptJumpIcon />
         </view>
       ) : null}
     </view>

@@ -1,0 +1,21 @@
+{
+  "href": "http://127.0.0.1:9158/lynx/index.html?route=%2Fthread%2Flynx-landing-thread-1787254540864-987357febecef",
+  "w": 864,
+  "h": 620,
+  "dpr": 2,
+  "scroll": {
+    "top": 526,
+    "height": 371,
+    "scrollHeight": 897
+  },
+  "hasJump": false,
+  "jumpHtml": null,
+  "relay": {
+    "host": "ws://127.0.0.1:54095/",
+    "serverInstanceId": "9240f5bd-66ad-4e46-8f05-9f739b614103",
+    "socketState": 1,
+    "rendererReadyRoute": "/thread/lynx-landing-thread-1787254540864-987357febecef",
+    "lastTransportError": null,
+    "lastRpcError": null
+  }
+}

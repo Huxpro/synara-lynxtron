@@ -2,6 +2,23 @@ import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
 describe('Transcript jump feedback', () => {
+  it('uses a Lynx-safe colorized arrow instead of a currentColor DOM SVG', () => {
+    const transcript = readFileSync(
+      new URL('./Transcript.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(transcript).toContain(
+      "import arrowDownSvg from '@tabler/icons/outline/arrow-down.svg?raw';"
+    );
+    expect(transcript).not.toContain(
+      "import { ArrowDownIcon } from '@synara-web/lib/icons';"
+    );
+    expect(transcript).toContain(
+      'content={colorizeLynxSvg(arrowDownSvg, svgColors.foreground)}'
+    );
+    expect(transcript).toContain('<TranscriptJumpIcon />');
+  });
+
   it('uses Web semantic surfaces without dimming the whole control', () => {
     const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
 
