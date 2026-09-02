@@ -781,6 +781,42 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'settings-worktrees-menu-provider-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: '9ba80eefb',
+    affectedStoryIds: [
+      '2026-08-05--settings-worktrees-current',
+      '2026-08-06--settings-shared-menu-text-current',
+    ],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The Worktrees and shared Settings menu Web frames contain the provider-update overlay while Lynx-for-Web shows reconnecting or no equivalent overlay.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Only these two provider-state-mismatched Browser full-shell pairs are excluded. The Worktrees Lynx-to-Native sibling and focused menu behavior remain scored independently.',
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: 'composer-provider-banner-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: '9ba80eefb',
+    affectedStoryIds: [
+      '2026-08-06--composer-provider-row-current',
+      '2026-08-08--composer-permission-icon-current',
+    ],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The Composer provider-row and permission-icon frames use different provider-health banners and capability state between Web and Lynx-for-Web.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Only the two mixed provider-state Browser full-shell pairs are excluded. The permission-icon Lynx-to-Native sibling and focused component evidence remain scored independently.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'sidebar-landing-provider-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '4d5ab78e6',

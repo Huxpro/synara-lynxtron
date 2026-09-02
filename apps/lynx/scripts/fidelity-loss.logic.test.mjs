@@ -976,6 +976,58 @@ test('excludes only the Settings Archived Browser provider-state mismatch', () =
   );
 });
 
+test('excludes Settings Worktrees and shared-menu Browser overlays only', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-05--settings-worktrees-current',
+      '2026-08-06--settings-shared-menu-text-current',
+    ],
+    affectedClientPairs: ['web:lynx'],
+  };
+  for (const storyId of issue.affectedStoryIds) {
+    assert.equal(
+      visualPairMatchesIssue(
+        { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+        issue
+      ),
+      true
+    );
+    assert.equal(
+      visualPairMatchesIssue(
+        { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+        issue
+      ),
+      false
+    );
+  }
+});
+
+test('excludes Composer provider-banner Browser mismatches only', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-06--composer-provider-row-current',
+      '2026-08-08--composer-permission-icon-current',
+    ],
+    affectedClientPairs: ['web:lynx'],
+  };
+  for (const storyId of issue.affectedStoryIds) {
+    assert.equal(
+      visualPairMatchesIssue(
+        { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+        issue
+      ),
+      true
+    );
+    assert.equal(
+      visualPairMatchesIssue(
+        { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+        issue
+      ),
+      false
+    );
+  }
+});
+
 test('allows a known modal-backdrop theme mismatch to override mixed luminance', () => {
   const issue = {
     type: 'capture-theme-mismatch',

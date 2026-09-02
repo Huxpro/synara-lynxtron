@@ -636,3 +636,17 @@ ledger now has `831` commit points, `193` accepted pairs, `1` rejected pair,
 median MAE `0.6448107988835652%`, total loss `8.653649876629391`, reliability
 loss `0`, and no accepted pair at or above `25%`. Fidelity-loss logic passes
 `53/53`.
+
+## Worktrees, shared-menu, and Composer provider-state audit
+
+Four additional Browser pairs compare different provider or transport states.
+Settings Worktrees and shared-menu text use Electron's provider-update overlay
+against reconnecting or unobscured Lynx shells. Composer provider-row and
+permission-icon frames use healthy or quiet Electron provider state against
+Codex-failure banners in Lynx-for-Web. Two exact story lists scoped to
+`web:lynx` exclude only these full-shell samples. The Worktrees and permission
+icon Lynx-to-Native siblings remain scored at `0.960322513151602%` and
+`0.5503492148892077%`. The ledger now has `832` commit points, `189` accepted
+pairs, `1` rejected pair, median MAE `0.6448107988835652%`, total loss
+`8.653649876629391`, reliability loss `0`, and no accepted pair at or above
+`25%`. Fidelity-loss logic passes `55/55`.
