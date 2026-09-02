@@ -95,6 +95,23 @@ const reliabilityLedger = [
 ];
 const productEvidenceSupersessionLedger = [
   {
+    id: 'markdown-token-current-persisted-output',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: ['2026-08-02--harness--markdown-tokens'],
+    affectedStateKeys: ['persisted-tokens'],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: '5377f2b61',
+    summary:
+      'The August 2 persisted-token frame predates current shared token labels, full-pane transcript composition, and resolved Native skill accent paint.',
+    resolution:
+      'Committed retained evidence renders one canonical isolated user message with non-empty mention and skill projections in Electron and Lynx-for-Web on the same backend, thread, route, theme, viewport, and dock state.',
+    evidence: [
+      'shots/2026-09-02/markdown-tokens-current/notes.md',
+      'shots/2026-09-02/markdown-tokens-current/electron-persisted-tokens.png',
+      'shots/2026-09-02/markdown-tokens-current/lynx-persisted-tokens.png',
+    ],
+  },
+  {
     id: 'markdown-token-current-menu-and-selection',
     type: 'superseded-product-snapshot',
     affectedStoryPrefixes: ['2026-08-02--harness--markdown-tokens'],

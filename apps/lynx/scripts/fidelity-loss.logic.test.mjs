@@ -761,6 +761,48 @@ test('supersedes current token menu and selection states but preserves persisted
   );
 });
 
+test('supersedes persisted token output only at its retained evidence boundary', () => {
+  const ledger = [
+    {
+      id: 'markdown-token-current-persisted-output',
+      affectedStoryPrefixes: ['2026-08-02--harness--markdown-tokens'],
+      affectedStateKeys: ['persisted-tokens'],
+      affectedClientPairs: ['web:lynx'],
+      supersededAt: 'persisted-current',
+    },
+  ];
+  const commitIndexByHash = new Map([['persisted-current', 11]]);
+
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      {
+        storyId: '2026-08-02--harness--markdown-tokens',
+        stateKey: 'persisted-tokens',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      11,
+      ledger,
+      commitIndexByHash
+    )?.id,
+    'markdown-token-current-persisted-output'
+  );
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      {
+        storyId: '2026-08-02--harness--markdown-tokens',
+        stateKey: 'skill-menu',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      11,
+      ledger,
+      commitIndexByHash
+    ),
+    null
+  );
+});
+
 test('supersedes both client pairs when later three-client product evidence exists', () => {
   const ledger = [
     {

@@ -4,7 +4,7 @@
 
 - Final generated fidelity loss remains `8.289406207894311`.
 - The rolling 24-pair median RGB MAE is `0.5507725943527818%`.
-- Accepted visual pairs at the latest commit point: `290`; rejected pairs: `1`; accepted pairs at or
+- Accepted visual pairs at the latest commit point: `289`; rejected pairs: `1`; accepted pairs at or
   above `25%`: `0`; active reliability loss: `0`.
 - Scoped exclusions preserve the valid Landing light `1280/1440` browser
   siblings (`0.380%` / `0.425%`) and the Sidebar Projects Lynx-to-Native
@@ -251,7 +251,7 @@ product residuals. The later retained Web/Lynx-for-Web/exact-owned Native cell
 covers the same centered heading/composer state plus its real project context
 tray and Temporary lifecycle.
 
-The regenerated latest commit point contains `290` accepted pairs and one rejected
+The regenerated latest commit point contains `289` accepted pairs and one rejected
 pair. Total loss remains `8.289406207894311`, rolling median MAE remains
 `0.5507725943527818%` across 24 samples, reliability loss remains zero, and no
 accepted pair has MAE at or above 25%. The remaining highest entries are the
@@ -280,6 +280,15 @@ two current presentation losses: Lynx menu rows leaked raw namespaced skill
 names instead of provider display names, and selected skill chips showed raw
 lowercase names instead of Electron's shared formatter. The old
 `persisted-tokens` sample remains scored because this run sent no message.
+
+Commit `5377f2b61` closes that final stale token snapshot with a separate
+isolated product-RPC run. The canonical user message has non-empty
+`mentions_json` and `skills_json`; both clients render `Token mention source`
+and `Polish` on backend `58270`, server instance
+`7f56a536-f9ed-4165-b817-079bb6a3908d`, light `864x620` DPR 2. Current MAE is
+`1.920211%`. Native's skill glyph now uses the resolved theme accent; the
+remaining generic thread-mention glyph is retained as a current residual rather
+than hidden by the supersession.
 
 ## Current Settings Behavior closure
 
@@ -383,10 +392,10 @@ dock, and interaction state.
 
 ## Verification
 
-- Fidelity ledger generation: `806` commit points / `17` archive daily anchors,
+- Fidelity ledger generation: `807` commit points / `17` archive daily anchors,
   `66.32 -> 8.29`.
-- Fidelity-loss logic: `39/39`.
-- Current visual ledger: `290` accepted / `1` rejected, rolling median MAE
+- Fidelity-loss logic: `40/40`.
+- Current visual ledger: `289` accepted / `1` rejected, rolling median MAE
   `0.5507725943527818%`, total loss `8.289406207894311`, reliability loss
   `0`, and zero accepted pairs at or above 25%.
 - Plugin Library and Composer source contracts under Rstest: `7/7`.
