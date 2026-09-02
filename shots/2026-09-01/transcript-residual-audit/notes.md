@@ -485,3 +485,18 @@ After regeneration the ledger has `811` commit points, `207` accepted pairs,
 `1` rejected pair, rolling median MAE `0.5507725943527818%`, total loss
 `8.289406207894311`, reliability loss `0`, and no accepted pair at or above
 `25%`. Fidelity-loss logic passes `44/44`.
+
+## August 3 Composer Details shell-state audit
+
+The four still-active Extras and Project Picker Browser pairs are not
+same-state full-frame comparisons. The intended `raw`/`menu` and
+`open`/`selected` composer states are present in both renderers, but Electron
+also has the provider-update dialog and provider-path error banner while
+Lynx-for-Web has neither. The exclusion uses the two exact story IDs and the
+`web:lynx` client pair, so the separately superseded skill/mention states and
+all later focused composer evidence remain untouched.
+
+After regeneration the ledger has `812` commit points, `203` accepted pairs,
+`1` rejected pair, rolling median MAE `0.5507725943527818%`, total loss
+`8.289406207894311`, reliability loss `0`, and no accepted pair at or above
+`25%`. Fidelity-loss logic passes `45/45`.

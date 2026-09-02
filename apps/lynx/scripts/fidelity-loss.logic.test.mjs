@@ -628,6 +628,44 @@ test('excludes only the unhydrated P10 Settings General Browser pair', () => {
   );
 });
 
+test('excludes only the overlay-contaminated Composer Details shell pairs', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-03--composer-details--browser--extras-default-1280',
+      '2026-08-03--composer-details--browser--project-picker-1280',
+    ],
+    affectedClientPairs: ['web:lynx'],
+  };
+
+  for (const [storyId, stateKey] of [
+    ['2026-08-03--composer-details--browser--extras-default-1280', 'raw'],
+    ['2026-08-03--composer-details--browser--extras-default-1280', 'menu'],
+    ['2026-08-03--composer-details--browser--project-picker-1280', 'open'],
+    ['2026-08-03--composer-details--browser--project-picker-1280', 'selected'],
+  ]) {
+    assert.equal(
+      visualPairMatchesIssue(
+        { storyId, stateKey, leftClient: 'web', rightClient: 'lynx' },
+        issue
+      ),
+      true
+    );
+  }
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId:
+          '2026-08-03--composer-details--browser--skills-mentions-1280',
+        stateKey: 'skill-menu',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      issue
+    ),
+    false
+  );
+});
+
 test('excludes the Settings Shortcuts provider-overlay browser family', () => {
   const issue = {
     affectedStoryPrefix: '2026-08-03--settings-shortcuts--browser--',

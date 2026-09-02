@@ -861,6 +861,24 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'composer-details-shell-overlay-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: '7c8036434',
+    affectedStoryIds: [
+      '2026-08-03--composer-details--browser--extras-default-1280',
+      '2026-08-03--composer-details--browser--project-picker-1280',
+    ],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The August 3 Extras and Project Picker Electron frames contain provider-update and provider-path overlays that are absent from the corresponding Lynx-for-Web frames.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Only the four full-frame Extras raw/menu and Project Picker open/selected Browser pairs are excluded. Their interaction assertions and later focused composer evidence remain independent.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'settings-shortcuts-provider-overlay-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '1352e45ae',
