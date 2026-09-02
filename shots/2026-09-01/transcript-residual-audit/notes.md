@@ -411,3 +411,26 @@ dock, and interaction state.
   `11px/19px` reasoning typography, while the current working tree already
   uses the shared inherited transcript typography. It does not touch the
   scroll-owner change; the focused ownership/sidechat suite remains `8/8`.
+
+## August 2 Markdown supersession audit
+
+Commit `741439802` contains the original Markdown implementation plus three
+paired Browser states. Git-object inspection confirms that `before` and
+`after-dark` use the same isolated backend, thread, `1280x820` viewport,
+message/code-block contents, composer state, and live-edge scroll position.
+The post-fix dark pair therefore remains valid implementation evidence.
+
+It is not a same-state visual replacement for the accepted light/light
+`before` pair: `after-dark` is dark/dark, while the nominal light `after` pair
+is actually Web dark versus Lynx light and is already classified as
+`capture-theme-mismatch` (`90.48495822871831%`). The current Markdown source
+also contains a large uncommitted stack spanning syntax highlighting, text
+selection, table layout, and typography, so a fresh capture from that bundle
+would be `working-tree-product-change`, not a commit-bounded replacement.
+
+No supersession is registered at `741439802`. The accepted `before`
+(`3.5946676231468198%`) and `after-dark` (`3.1481740943328553%`) samples remain
+independently scored until matched light and dark current evidence can be
+retained at a safe implementation commit boundary. The audit used temporary
+Git-object extraction only; the temporary directory was removed, and the
+browser entry/exit gates both returned zero sessions and zero owned processes.
