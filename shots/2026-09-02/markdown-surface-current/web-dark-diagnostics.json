@@ -1,0 +1,1 @@
+"{\"href\":\"http://127.0.0.1:9258/#/fidelity-markdown-dark-20260902-b\",\"w\":1280,\"h\":820,\"dpr\":1,\"dark\":true,\"hasFixture\":true,\"dialogs\":[],\"code\":[\"function greet(name = \\\"World\\\") {\\n  return `Hello, ${name}!`;\\n}\\n\\nconsole.log(greet());\\n\"]}"
