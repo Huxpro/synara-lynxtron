@@ -828,6 +828,22 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'p10-final-overlays-browser-provider-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: '973adba6f',
+    affectedStoryPrefix:
+      '2026-08-04--p10-perceptual-fidelity--final-overlays--',
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'Every P10 final-overlays Web frame contains provider-update and provider-path overlays that are absent from Lynx-for-Web, so the full-frame pairs do not isolate the intended composer overlay state.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'All raw and titlebar-normalized final-overlays states are excluded only for Web-to-Lynx. Their intended composer interactions remain behavioral evidence, Native pairs remain independent, and later matched composer token recaptures are tracked separately.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'settings-shortcuts-provider-overlay-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '1352e45ae',

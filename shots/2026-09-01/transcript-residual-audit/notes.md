@@ -454,3 +454,20 @@ has `809` commit points, `245` accepted pairs, `1` rejected pair, rolling median
 MAE `0.5507725943527818%`, total loss `8.289406207894311`, reliability loss
 `0`, and no accepted pair at or above `25%`. Fidelity-loss logic passes
 `42/42`.
+
+## P10 final-overlays Browser state audit
+
+All 36 P10 final-overlays Web-to-Lynx samples are invalid as visual pairs.
+Their intended composer states are present in both renderers, but every
+Electron frame also carries the provider-update dialog and provider-path error
+banner while Lynx-for-Web has neither. This applies to both `raw` and
+titlebar-normalized `comparison` images across all 18 Extras, project-picker,
+command, skill, and mention menu stories.
+
+The exclusion is scoped to the final-overlays namespace and `web:lynx`. Native
+siblings remain independently scored, and the later matched composer token
+recaptures keep their own commit-bounded replacement history. After
+regeneration the ledger has `810` commit points, `209` accepted pairs, `1`
+rejected pair, rolling median MAE `0.5507725943527818%`, total loss
+`8.289406207894311`, reliability loss `0`, and no accepted pair at or above
+`25%`. Fidelity-loss logic passes `43/43`.
