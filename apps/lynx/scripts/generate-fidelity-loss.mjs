@@ -852,6 +852,25 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'p10-browser-composer-overlay-and-data-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: 'b2ec67303',
+    affectedStoryIds: [
+      '2026-08-04--p10-perceptual-fidelity--browser--skill-menu-filtered',
+      '2026-08-04--p10-perceptual-fidelity--browser--project-picker-open',
+    ],
+    affectedStateKeys: ['raw', 'comparison'],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The focused P10 skill-menu and project-picker Browser frames retain a Web provider-update overlay absent from Lynx; the picker also compares loading folders against populated local-directory results and reconnecting state.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Both raw and normalized pairs for the two exact stories are excluded. Skill icon and project-picker local composition still require matched-state evidence.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'sidebar-landing-provider-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '4d5ab78e6',

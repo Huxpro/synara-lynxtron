@@ -676,3 +676,16 @@ only these two Browser samples. Their Lynx-to-Native siblings remain scored at
 commit points, `172` accepted pairs, `1` rejected pair, median MAE
 `0.6448107988835652%`, total loss `8.653649876629391`, reliability loss `0`,
 and no accepted pair at or above `25%`. Fidelity-loss logic remains `56/56`.
+
+## Focused P10 skill-menu and project-picker audit
+
+The P10 Browser `skill-menu-filtered` and `project-picker-open` stories are not
+matched full-shell states. Electron has the provider-update overlay in both;
+Lynx-for-Web does not. The picker also compares Electron's `Loading folders...`
+phase against populated local directory results and a reconnecting badge in
+Lynx. An exact two-story rule scoped to `raw`, `comparison`, and `web:lynx`
+excludes those four samples. Skill icon and project-picker composition remain
+open until a matched recapture. The ledger now has `835` commit points, `168`
+accepted pairs, `1` rejected pair, median MAE `0.6448107988835652%`, total loss
+`8.653649876629391`, reliability loss `0`, and no accepted pair at or above
+`25%`. Fidelity-loss logic passes `57/57`.

@@ -1083,6 +1083,41 @@ test('excludes only the explicit August 6 Composer provider-shell open states', 
   );
 });
 
+test('excludes only focused P10 Browser skill and picker mixed states', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-04--p10-perceptual-fidelity--browser--skill-menu-filtered',
+      '2026-08-04--p10-perceptual-fidelity--browser--project-picker-open',
+    ],
+    affectedStateKeys: ['raw', 'comparison'],
+    affectedClientPairs: ['web:lynx'],
+  };
+
+  for (const storyId of issue.affectedStoryIds) {
+    for (const stateKey of issue.affectedStateKeys) {
+      assert.equal(
+        visualPairMatchesIssue(
+          { storyId, stateKey, leftClient: 'web', rightClient: 'lynx' },
+          issue
+        ),
+        true
+      );
+    }
+  }
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId: issue.affectedStoryIds[0],
+        stateKey: 'raw',
+        leftClient: 'lynx',
+        rightClient: 'native',
+      },
+      issue
+    ),
+    false
+  );
+});
+
 test('allows a known modal-backdrop theme mismatch to override mixed luminance', () => {
   const issue = {
     type: 'capture-theme-mismatch',
