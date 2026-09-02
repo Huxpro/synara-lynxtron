@@ -15,6 +15,8 @@ import {
   resolveEvidenceSourceCommit,
   visualQualityBand,
   visualLossFromSamples,
+  visualPairMatchesIssue,
+  visualSampleSupersessionAtCommit,
   weightedComponentContributions,
 } from './fidelity-loss.logic.mjs';
 
@@ -23,6 +25,11 @@ test('normalizes paired client filenames without erasing state identity', () => 
   assert.equal(normalizeEvidenceName('lynx-light.png'), 'light');
   assert.equal(normalizeEvidenceName('native.png'), 'raw');
   assert.equal(normalizeEvidenceName('open-final-web.png'), 'open-final');
+});
+
+test('keeps post-fix suffixes distinct for explicit pair selection', () => {
+  assert.equal(normalizeEvidenceName('landing.png'), 'landing');
+  assert.equal(normalizeEvidenceName('landing-after.png'), 'landing-after');
 });
 
 test('prefers explicit source commits for remote-only evidence', () => {
@@ -159,6 +166,711 @@ test('separates capture theme mismatches from product visual loss', () => {
       renderedLeftTheme: 'light',
       renderedRightTheme: 'light',
     }),
+    null
+  );
+  assert.equal(
+    captureMismatchReason({
+      declaredLeftTheme: null,
+      declaredRightTheme: null,
+      renderedLeftTheme: 'dark',
+      renderedRightTheme: 'light',
+    }),
+    'capture-theme-mismatch'
+  );
+  assert.equal(
+    captureMismatchReason({
+      declaredLeftTheme: null,
+      declaredRightTheme: null,
+      renderedLeftTheme: 'mixed',
+      renderedRightTheme: 'light',
+    }),
+    null
+  );
+});
+
+test('keeps explicit product-state capture mismatches out of visual samples', () => {
+  const issue = {
+    affectedStoryPrefix: '2026-08-14--workspace--split-layout',
+    excludeVisualPairs: true,
+  };
+  assert.equal(
+    '2026-08-14--workspace--split-layout'.startsWith(issue.affectedStoryPrefix) &&
+      issue.excludeVisualPairs === true,
+    true
+  );
+  assert.equal(
+    '2026-08-14--workspace--visual-matrix'.startsWith(issue.affectedStoryPrefix),
+    false
+  );
+  assert.equal(
+    '2026-08-13--temporary-chat-current--on'.startsWith(
+      '2026-08-13--temporary-chat-current--'
+    ),
+    true
+  );
+  assert.equal(
+    '2026-08-14--automations--detail'.startsWith(
+      '2026-08-14--automations--detail'
+    ),
+    true
+  );
+  assert.equal(
+    '2026-08-10--settings-general-matrix-current--browser--settings-general-light-1440'.startsWith(
+      '2026-08-10--settings-general-matrix-current--browser--settings-general-'
+    ),
+    true
+  );
+});
+
+test('supports exact story lists when a shared prefix would be too broad', () => {
+  const issue = {
+    affectedStoryPrefix: '2026-08-14--automations--',
+    affectedStoryIds: [
+      '2026-08-14--automations--list',
+      '2026-08-14--automations--empty',
+    ],
+  };
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId: '2026-08-14--automations--list', stateKey: 'raw' },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId: '2026-08-14--automations--create-dialog', stateKey: 'raw' },
+      issue
+    ),
+    false
+  );
+});
+
+test('supports state-scoped exclusions without dropping valid sibling pairs', () => {
+  const issue = {
+    affectedStoryPrefix: '2026-08-09--environment-',
+    affectedStateKeys: ['dark-bottom-1280x480'],
+  };
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId: '2026-08-09--environment-loaded-current',
+        stateKey: 'dark-bottom-1280x480',
+      },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId: '2026-08-09--environment-loaded-current',
+        stateKey: 'light-bottom-1280x480',
+      },
+      issue
+    ),
+    false
+  );
+});
+
+test('scopes the Command Palette empty-state exclusion to one state and pair', () => {
+  const issue = {
+    affectedStoryIds: ['2026-08-03--command-k--browser--states'],
+    affectedStateKeys: ['empty'],
+    affectedClientPairs: ['web:lynx'],
+  };
+  const base = {
+    storyId: '2026-08-03--command-k--browser--states',
+    leftClient: 'web',
+    rightClient: 'lynx',
+  };
+
+  assert.equal(visualPairMatchesIssue({ ...base, stateKey: 'empty' }, issue), true);
+  assert.equal(visualPairMatchesIssue({ ...base, stateKey: 'query' }, issue), false);
+});
+
+test('scopes the Command Palette open-before provider mismatch exactly', () => {
+  const issue = {
+    affectedStoryIds: ['2026-08-06--command-k-current'],
+    affectedStateKeys: ['open-before'],
+    affectedClientPairs: ['web:lynx'],
+  };
+  const base = {
+    storyId: '2026-08-06--command-k-current',
+    leftClient: 'web',
+    rightClient: 'lynx',
+  };
+
+  assert.equal(
+    visualPairMatchesIssue({ ...base, stateKey: 'open-before' }, issue),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue({ ...base, stateKey: 'open-final' }, issue),
+    false
+  );
+});
+
+test('matches only the exact focused Command Palette provider-state stories', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-06--command-k-footer-current',
+      '2026-08-06--command-k-input-current',
+    ],
+    affectedStateKeys: ['open'],
+    affectedClientPairs: ['web:lynx'],
+  };
+
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId: '2026-08-06--command-k-input-current',
+        stateKey: 'open',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId: '2026-08-06--command-k-placeholder-current',
+        stateKey: 'open',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      issue
+    ),
+    false
+  );
+});
+
+test('supports client-pair exclusions without dropping a valid browser sibling', () => {
+  const issue = {
+    affectedStoryPrefix: '2026-08-08--current-head-landing-light-1280',
+    affectedClientPairs: ['lynx:native'],
+  };
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId: '2026-08-08--current-head-landing-light-1280',
+        stateKey: 'raw',
+        leftClient: 'lynx',
+        rightClient: 'native',
+      },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId: '2026-08-08--current-head-landing-light-1280',
+        stateKey: 'raw',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      issue
+    ),
+    false
+  );
+});
+
+test('excludes only the P8-Q2 Settings overlay browser pair', () => {
+  const issue = {
+    affectedStoryPrefix: '2026-08-03--p8-q2--settings--',
+    affectedClientPairs: ['web:lynx'],
+  };
+  const storyId = '2026-08-03--p8-q2--settings--light-1440';
+
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId,
+        stateKey: 'raw',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId,
+        stateKey: 'raw',
+        leftClient: 'lynx',
+        rightClient: 'native',
+      },
+      issue
+    ),
+    false
+  );
+});
+
+test('preserves P8-Q2 Pull requests Native siblings', () => {
+  const issue = {
+    affectedStoryPrefix: '2026-08-03--p8-q2--pull-requests--',
+    affectedClientPairs: ['web:lynx'],
+  };
+  const storyId = '2026-08-03--p8-q2--pull-requests--dark-1280';
+
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+      issue
+    ),
+    false
+  );
+});
+
+test('excludes only the P8-Q2 Thread transcript-mismatched Native pair', () => {
+  const issue = {
+    affectedStoryPrefix: '2026-08-03--p8-q2--thread--',
+    affectedClientPairs: ['lynx:native'],
+  };
+  const storyId = '2026-08-03--p8-q2--thread--dark-1280';
+
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId,
+        stateKey: 'raw',
+        leftClient: 'lynx',
+        rightClient: 'native',
+      },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId,
+        stateKey: 'raw',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      issue
+    ),
+    false
+  );
+});
+
+test('excludes raw and comparison P10 Thread Native transcript mismatches', () => {
+  const issue = {
+    affectedStoryPrefix:
+      '2026-08-04--p10-perceptual-fidelity--final-matrix--thread-default-',
+    affectedClientPairs: ['lynx:native'],
+  };
+  const base = {
+    storyId:
+      '2026-08-04--p10-perceptual-fidelity--final-matrix--thread-default-light-1280',
+    leftClient: 'lynx',
+    rightClient: 'native',
+  };
+
+  assert.equal(
+    visualPairMatchesIssue({ ...base, stateKey: 'raw' }, issue),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue({ ...base, stateKey: 'comparison' }, issue),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      { ...base, leftClient: 'web', rightClient: 'lynx' },
+      issue
+    ),
+    false
+  );
+});
+
+test('excludes the Settings Shortcuts provider-overlay browser family', () => {
+  const issue = {
+    affectedStoryPrefix: '2026-08-03--settings-shortcuts--browser--',
+    affectedClientPairs: ['web:lynx'],
+  };
+
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId: '2026-08-03--settings-shortcuts--browser--dark-1440',
+        stateKey: 'raw',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        storyId: '2026-08-03--settings-shortcuts--native--dark-1440',
+        stateKey: 'raw',
+        leftClient: 'lynx',
+        rightClient: 'native',
+      },
+      issue
+    ),
+    false
+  );
+});
+
+test('preserves August 5 Appearance Native siblings', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-05--settings-appearance-current',
+      '2026-08-05--settings-appearance-dark-1440',
+    ],
+    affectedClientPairs: ['web:lynx'],
+  };
+  const storyId = '2026-08-05--settings-appearance-current';
+
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+      issue
+    ),
+    false
+  );
+});
+
+test('preserves August 5 Settings Skills Native siblings', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-05--settings-skills-current',
+      '2026-08-05--settings-skills-dark-1440',
+    ],
+    affectedClientPairs: ['web:lynx'],
+  };
+  const storyId = '2026-08-05--settings-skills-current';
+
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+      issue
+    ),
+    false
+  );
+});
+
+test('keeps August 5 Integrations and AppSnap harness scope separate from Native supersession', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-05--settings-integrations-current',
+      '2026-08-05--settings-appsnap-current',
+    ],
+    affectedClientPairs: ['web:lynx'],
+  };
+  const storyId = '2026-08-05--settings-appsnap-current';
+
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+      issue
+    ),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+      issue
+    ),
+    false
+  );
+});
+
+test('allows a known modal-backdrop theme mismatch to override mixed luminance', () => {
+  const issue = {
+    type: 'capture-theme-mismatch',
+    affectedStoryPrefix:
+      '2026-08-10--settings-release-history-rhythm-current',
+    excludeVisualPairs: true,
+  };
+  assert.equal(
+    '2026-08-10--settings-release-history-rhythm-current'.startsWith(
+      issue.affectedStoryPrefix
+    ) && issue.excludeVisualPairs,
+    true
+  );
+  assert.equal(
+    issue.type === 'capture-theme-mismatch'
+      ? 'capture-theme-mismatch'
+      : 'capture-product-state-mismatch',
+    'capture-theme-mismatch'
+  );
+});
+
+test('matches an explicit whole-frame theme mismatch family by story prefix', () => {
+  const prefix = '2026-08-10--empty-thread-';
+  assert.equal(
+    '2026-08-10--empty-thread-null-branch-current'.startsWith(prefix),
+    true
+  );
+  assert.equal(
+    '2026-08-10--empty-thread-heading-current'.startsWith(prefix),
+    true
+  );
+});
+
+test('keeps historical product pairs until later product evidence supersedes them', () => {
+  const ledger = [
+    {
+      affectedStoryPrefixes: ['2026-08-14--automations--create-dialog'],
+      supersededAt: 'fixed',
+    },
+  ];
+  const commitIndexByHash = new Map([
+    ['capture', 2],
+    ['fixed', 5],
+  ]);
+  const sample = { storyId: '2026-08-14--automations--create-dialog-expanded' };
+
+  assert.equal(
+    visualSampleSupersessionAtCommit(sample, 4, ledger, commitIndexByHash),
+    null
+  );
+  assert.equal(
+    visualSampleSupersessionAtCommit(sample, 5, ledger, commitIndexByHash),
+    ledger[0]
+  );
+});
+
+test('supersedes only the retained transcript scroll states at their commit boundary', () => {
+  const ledger = [
+    {
+      id: 'transcript-scroll-current-full-pane',
+      affectedStoryPrefixes: ['2026-08-02--harness--transcript-scroll'],
+      affectedStateKeys: ['pinned', 'detached'],
+      affectedClientPairs: ['web:lynx'],
+      supersededAt: 'transcript-current',
+    },
+  ];
+  const commitIndexByHash = new Map([['transcript-current', 7]]);
+
+  for (const stateKey of ['pinned', 'detached']) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(
+        {
+          storyId: '2026-08-02--harness--transcript-scroll',
+          stateKey,
+          leftClient: 'web',
+          rightClient: 'lynx',
+        },
+        7,
+        ledger,
+        commitIndexByHash
+      )?.id,
+      'transcript-scroll-current-full-pane'
+    );
+  }
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      {
+        storyId: '2026-08-02--harness--markdown-tokens',
+        stateKey: 'persisted-tokens',
+        leftClient: 'web',
+        rightClient: 'lynx',
+      },
+      7,
+      ledger,
+      commitIndexByHash
+    ),
+    null
+  );
+});
+
+test('supersedes both client pairs when later three-client product evidence exists', () => {
+  const ledger = [
+    {
+      id: 'empty-thread-current',
+      affectedStoryPrefixes: ['2026-08-03--p8-q2--threads--'],
+      supersededAt: 'centered',
+    },
+  ];
+  const commitIndexByHash = new Map([['centered', 6]]);
+  const storyId = '2026-08-03--p8-q2--threads--dark-1280';
+
+  for (const [leftClient, rightClient] of [
+    ['web', 'lynx'],
+    ['lynx', 'native'],
+  ]) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(
+        { storyId, leftClient, rightClient },
+        6,
+        ledger,
+        commitIndexByHash
+      )?.id,
+      'empty-thread-current'
+    );
+  }
+});
+
+test('scopes product evidence supersession to one client pair', () => {
+  const ledger = [
+    {
+      id: 'native-only-current-state',
+      affectedStoryPrefixes: ['2026-08-05--settings-appsnap-current'],
+      affectedClientPairs: ['lynx:native'],
+      supersededAt: 'fixed',
+    },
+  ];
+  const commitIndexByHash = new Map([['fixed', 5]]);
+  const nativeSample = {
+    storyId: '2026-08-05--settings-appsnap-current',
+    leftClient: 'lynx',
+    rightClient: 'native',
+  };
+  const browserSample = {
+    storyId: '2026-08-05--settings-appsnap-current',
+    leftClient: 'web',
+    rightClient: 'lynx',
+  };
+
+  assert.equal(
+    visualSampleSupersessionAtCommit(nativeSample, 5, ledger, commitIndexByHash)?.id,
+    'native-only-current-state'
+  );
+  assert.equal(
+    visualSampleSupersessionAtCommit(browserSample, 5, ledger, commitIndexByHash),
+    null
+  );
+});
+
+test('supersedes only the P8-Q2 Settings Native sibling at its commit boundary', () => {
+  const ledger = [
+    {
+      id: 'p8-settings-native',
+      affectedStoryPrefixes: ['2026-08-03--p8-q2--settings--'],
+      affectedClientPairs: ['lynx:native'],
+      supersededAt: 'settings-fixed',
+    },
+  ];
+  const commitIndexByHash = new Map([['settings-fixed', 8]]);
+  const storyId = '2026-08-03--p8-q2--settings--dark-1280';
+
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, leftClient: 'lynx', rightClient: 'native' },
+      7,
+      ledger,
+      commitIndexByHash
+    ),
+    null
+  );
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, leftClient: 'lynx', rightClient: 'native' },
+      8,
+      ledger,
+      commitIndexByHash
+    )?.id,
+    'p8-settings-native'
+  );
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, leftClient: 'web', rightClient: 'lynx' },
+      8,
+      ledger,
+      commitIndexByHash
+    ),
+    null
+  );
+});
+
+test('supersedes raw and normalized P10 Settings Native samples only', () => {
+  const ledger = [
+    {
+      id: 'p10-settings-native',
+      affectedStoryPrefixes: [
+        '2026-08-04--p10-perceptual-fidelity--final-matrix--settings-general-',
+      ],
+      affectedClientPairs: ['lynx:native'],
+      supersededAt: 'settings-fixed',
+    },
+  ];
+  const commitIndexByHash = new Map([['settings-fixed', 8]]);
+  const storyId =
+    '2026-08-04--p10-perceptual-fidelity--final-matrix--settings-general-dark-1280';
+
+  for (const stateKey of ['raw', 'comparison']) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(
+        { storyId, stateKey, leftClient: 'lynx', rightClient: 'native' },
+        8,
+        ledger,
+        commitIndexByHash
+      )?.id,
+      'p10-settings-native'
+    );
+  }
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+      8,
+      ledger,
+      commitIndexByHash
+    ),
+    null
+  );
+});
+
+test('supersedes only the stale Settings Skills Native samples', () => {
+  const ledger = [
+    {
+      id: 'settings-skills-native',
+      affectedStoryPrefixes: ['2026-08-05--settings-skills-'],
+      affectedClientPairs: ['lynx:native'],
+      supersededAt: 'skills-fixed',
+    },
+  ];
+  const commitIndexByHash = new Map([['skills-fixed', 9]]);
+  const storyId = '2026-08-05--settings-skills-dark-1440';
+
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, leftClient: 'lynx', rightClient: 'native' },
+      9,
+      ledger,
+      commitIndexByHash
+    )?.id,
+    'settings-skills-native'
+  );
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, leftClient: 'web', rightClient: 'lynx' },
+      9,
+      ledger,
+      commitIndexByHash
+    ),
     null
   );
 });

@@ -98,14 +98,12 @@ export function classifyRenderedTheme({
 }
 
 export function captureMismatchReason({
-  declaredLeftTheme,
-  declaredRightTheme,
+  declaredLeftTheme: _declaredLeftTheme,
+  declaredRightTheme: _declaredRightTheme,
   renderedLeftTheme,
   renderedRightTheme,
 }) {
   if (
-    !declaredLeftTheme ||
-    declaredLeftTheme !== declaredRightTheme ||
     renderedLeftTheme === 'mixed' ||
     renderedRightTheme === 'mixed' ||
     renderedLeftTheme === renderedRightTheme
@@ -113,6 +111,42 @@ export function captureMismatchReason({
     return null;
   }
   return 'capture-theme-mismatch';
+}
+
+export function visualPairMatchesIssue(pair, issue) {
+  const storyMatches = issue.affectedStoryIds
+    ? issue.affectedStoryIds.includes(pair.storyId)
+    : pair.storyId.startsWith(issue.affectedStoryPrefix);
+  const stateMatches =
+    !issue.affectedStateKeys || issue.affectedStateKeys.includes(pair.stateKey);
+  const clientPairMatches =
+    !issue.affectedClientPairs ||
+    issue.affectedClientPairs.includes(`${pair.leftClient}:${pair.rightClient}`);
+  return storyMatches && stateMatches && clientPairMatches;
+}
+
+export function visualSampleSupersessionAtCommit(
+  sample,
+  commitIndex,
+  supersessionLedger,
+  commitIndexByHash
+) {
+  return (
+    supersessionLedger.find((entry) => {
+      const supersededAtIndex = commitIndexByHash.get(entry.supersededAt);
+      return (
+        Number.isInteger(supersededAtIndex) &&
+        supersededAtIndex <= commitIndex &&
+        (!entry.affectedClientPairs ||
+          entry.affectedClientPairs.includes(
+            `${sample.leftClient}:${sample.rightClient}`
+          )) &&
+        entry.affectedStoryPrefixes.some((prefix) =>
+          sample.storyId.startsWith(prefix)
+        )
+      );
+    }) ?? null
+  );
 }
 
 export function visualLossFromSamples(samples, targetSampleCount = 12) {

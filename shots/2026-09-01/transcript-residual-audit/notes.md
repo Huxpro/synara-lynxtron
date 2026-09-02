@@ -1,0 +1,395 @@
+# Transcript residual audit
+
+## Ledger result
+
+- Final generated fidelity loss remains `8.289406207894311`.
+- The rolling 24-pair median RGB MAE is `0.5507725943527818%`.
+- Accepted visual pairs at the latest commit point: `294`; rejected pairs: `1`; accepted pairs at or
+  above `25%`: `0`; active reliability loss: `0`.
+- Scoped exclusions preserve the valid Landing light `1280/1440` browser
+  siblings (`0.380%` / `0.425%`) and the Sidebar Projects Lynx-to-Native
+  sibling (`0.552%`).
+
+## Product fix and current Browser evidence
+
+The 2026-08-02 transcript-scroll archive explicitly records a real structural
+difference: Electron used a full-width `1024x683` transcript viewport while
+Lynx-for-Web used a centered `736x651` list. Its pinned and detached pairs
+remain the two highest accepted residuals at `8.081%` and `6.654%`.
+
+The product now separates the scroll owner from the content frame:
+
+- main thread and embedded sidechat use a full-width `ThreadTranscriptColumn`;
+- `<list>` owns the complete chat pane;
+- every `list-item` centers its content through `TranscriptRowFrame`, which
+  reuses the shared `736px` composer-column contract.
+
+A current same-origin fast loop used Web `/` and staged Lynx-for-Web `/lynx/`
+from one trusted `http://127.0.0.1:63250` origin, the same isolated backend
+`58150`, the same canonical 16-message handoff thread, light `1280x820`, DPR 1,
+and a closed dock. After the fix:
+
+- Electron scroll owner: `x=256`, `width=1024`, `height=683`;
+- Lynx-for-Web scroll owner: `x=256`, `width=1024`, `height=647`;
+- Lynx visible message frames: `x=400`, `width=736`;
+- matched pinned whole-frame MAE: `2.751226611071258%`, down from the old
+  archive's `8.08137092997768%`.
+
+Lynx-for-Web did not accept PageUp, wheel, or browser low-level drag delivery
+for this `<list>`, so no detached browser frame is claimed. The temporary
+screenshots were deleted, and without retained evidence plus a commit boundary
+the old pair remains scored.
+
+The later completed-thread live-edge fix at `d1ba34f80` validates a different
+state. It cannot supersede the old pinned/detached visual pairs. The 2026-08-31
+narrow Markdown evidence likewise validates table/code containment, not the
+old mention-menu, skill-menu, selected-token, or persisted-token states. No
+product-evidence supersession was added for either family.
+
+The apparently closer 2026-08-03 P9-U5 Composer archive was also rejected as
+replacement token evidence. Its manifest and assertions declare the same light
+theme, viewport, snapshot, and interaction state, but direct inspection of the
+archived pixels shows Web dark with provider overlays and Lynx-for-Web light.
+The four sampled menu/selected pairs measure `90.381-91.047%` whole-frame MAE.
+Those frames cannot replace the valid same-theme 2026-08-02 token pairs.
+
+## Current slash-skill result
+
+The current matched `/pol` run exposed a real remaining product loss rather
+than only stale evidence: Electron displayed the ranked Skills menu while
+Lynx-for-Web displayed `No matching command.`. The shared parser already
+classified `/pol` as a slash command; Native alone restricted that lane to
+three built-in commands and fetched skills only for the legacy `$` trigger.
+
+Native now fetches provider skills for both slash-command and legacy skill
+triggers, merges ranked skills after supported slash commands, and dispatches
+selection by item type. Current verification used one backend and light
+`1280x820` Browser clients:
+
+- Electron and Lynx-for-Web both display the same ordered Skills results with
+  `polish` first;
+- a real Lynx-for-Web pointer selection produces `ComposerChip--skill` with
+  label `polish`;
+- exact-owned Native PID/window `65219/28138`, backend `54884`, accepted real
+  `/pol` typing and a real click on `polish`;
+- the Native host persisted canonical `prompt:"/polish "` plus the structured
+  `polish` skill reference.
+
+The final backend-pinned bundle SHA-256 is
+`78af327aa52fadebf4ec78d88c815fd9b31affb5601d20e264076df6271c5de7`.
+The current screenshots remained temporary, so the historical same-theme
+skill-menu/selected pairs remain scored until retained evidence and a commit
+boundary exist.
+
+The current mention audit initially produced an empty Lynx menu because the
+temporary server ran its normal seven-day retention sweep and hid all three
+old seed threads. That run is rejected as a harness-state mismatch. Repeating
+the same-origin run with `SYNARA_DISABLE_THREAD_RETENTION=1` preserved the
+snapshot: both renderers showed the same three `New chat` thread results for
+`@New`, with matching Chats / github / Chats descriptions. Electron also
+offers its broader filesystem and subagent mention capabilities; those are a
+separate capability surface and are not folded into the old thread-token
+visual residual. A later exact-selection attempt was rejected after its shell
+quoting failed before browser launch. No mention screenshot is retained and no
+mention supersession is claimed.
+
+After the slash-skill change, the focused Composer and transcript suite passes
+5 files / 20 tests. The exact-owned host log independently records the real
+selection sequence: `/pol`, then canonical `/polish `, then a structured
+`polish` skill reference. The current bundle keeps the same SHA recorded
+above.
+
+## Current mention result
+
+The first mention recapture was invalid because the temporary server applied
+normal thread retention and hid all seed threads. With
+`SYNARA_DISABLE_THREAD_RETENTION=1`, both clients exposed the same three `New
+chat` thread matches and the same Chats / github / Chats descriptions for
+`@New`. Electron additionally exposes Local, filesystem, plugins, and
+subagents.
+
+Native now closes the subagent portion of that gap through the shared static
+provider alias catalog. Its empty `@` menu places the same Codex aliases after
+Chats, and a real `@mini` pointer selection produces canonical `@mini()` plus
+an `@mini` agent chip. `@local` and full filesystem navigation remain open
+because advertising those rows without a real nested folder-navigation owner
+would be a fake capability. No mention screenshot is retained and no ledger
+supersession is claimed.
+
+The complete eight-package build after this addition passes. Its generic
+production bundle SHA-256 is
+`d6537e8623449c96682791a76d5db3615aa55e0620dbf1f28c6462c911510278`.
+
+## P8-Q2 Settings overlay audit
+
+Direct inspection of all four archived P8-Q2 Settings cells (`dark-1280`,
+`dark-1440`, `light-1280`, and `light-1440`) confirms the Electron/Web frame
+contains the open provider-update overlay while the corresponding
+Lynx-for-Web frame does not. The underlying General-page composition is
+closely aligned, so these full-frame comparisons mix product state and cannot
+measure renderer fidelity.
+
+The harness exclusion is deliberately scoped to story prefix
+`2026-08-03--p8-q2--settings--` and client pair `web:lynx`. It removes exactly
+the four contaminated Browser comparisons, reducing current accepted pairs
+from `360` to `356`. It does not match the same stories' `lynx:native` pairs;
+those remain scored at `3.853340%`, `3.442286%`, `2.215512%`, and `1.980902%`.
+After regeneration, total loss remains `8.289406207894311`, rolling median MAE
+remains `0.5507725943527818%`, and accepted MAE at or above 25% remains zero.
+The original archive is preserved; all temporary inspection PNGs are deleted.
+
+## P8-Q2 Thread Native state audit
+
+All four P8-Q2 Thread Lynx-to-Native comparisons are invalid as visual pairs.
+The Lynx-for-Web frames contain the short seed transcript with `Hello` code
+blocks and `More. A JavaScript function`; the Native frames instead contain a
+different long WebSocket-reconnection essay, additional user messages, and a
+different scroll position. This mismatch is present at dark/light and
+`1280/1440`.
+
+The exclusion is scoped to story prefix
+`2026-08-03--p8-q2--thread--` and client pair `lynx:native`. It removes exactly
+the four mismatched Native comparisons (`6.754283%`, `6.086102%`, `4.722118%`,
+and `4.640122%`) and preserves the corresponding same-transcript Web-to-Lynx
+pairs. Current accepted count becomes `352`; total loss and rolling median MAE
+remain `8.289406207894311` and `0.5507725943527818%`, with zero accepted pairs
+at or above 25%.
+
+## Command Palette empty-state audit
+
+The `2026-08-03--command-k--browser--states` `empty` pair is not a matched
+empty palette state. Electron has both provider-update and provider-health
+overlays, no Recent rows, and a broader suggested-command set; Lynx-for-Web is
+unobscured and contains three Recent rows. An exact story, state, and
+`web:lynx` exclusion removes only this `5.992001%` pair. Other Command Palette
+states remain governed independently. The current accepted count is `351`;
+loss, rolling median MAE, and critical count remain unchanged.
+
+## P10 final-matrix Thread Native state audit
+
+The four P10 final-matrix Thread cells repeat the P8-Q2 Native transcript
+mismatch in both their `raw` and titlebar-normalized `comparison` images.
+Lynx-for-Web contains the short code-block seed transcript; Native contains the
+long WebSocket essay, extra user turns, a different scroll position, and a
+`Reconnecting...` badge. The story-family plus `lynx:native` exclusion removes
+all eight invalid comparisons while preserving all eight Web-to-Lynx siblings.
+Current accepted count becomes `343`; loss, rolling median MAE, and critical
+count remain unchanged.
+
+The separate `2026-08-06--command-k-current` `open-before` pair also mixes
+provider and snapshot state despite both palettes being open. Electron contains
+provider-update plus provider-error overlays, a broader suggested-command set,
+and a different project/thread snapshot; Lynx-for-Web contains a
+Codex-unavailable banner. Its exact `web:lynx` pair is excluded at `4.431781%`
+without broadening the rule to other Command Palette states. Current accepted
+count becomes `342`; loss, rolling median MAE, and critical count remain
+unchanged.
+
+## Settings Keyboard Shortcuts overlay audit
+
+The two archived Settings Keyboard Shortcuts Browser pairs (`dark-1440` and
+`light-1280`) both contain an open provider-update overlay only in Electron,
+obscuring the heading and search area. The underlying shortcut table is closely
+aligned. A `web:lynx`-scoped family exclusion removes the `3.944034%` and
+`2.952616%` contaminated comparisons. Current accepted count becomes `340`;
+loss, rolling median MAE, and critical count remain unchanged.
+
+Both Settings Notifications Browser cells (`dark-1440` and `light-1280`) also
+contain a Web-only provider-update overlay that obscures the heading and upper
+controls. Their full-frame pairs are excluded. The Test-button capability and
+status-copy differences remain a separate matched-state product question.
+
+The separate `2026-08-03--command-k--browser--empty-1280` story repeats the
+same mismatch with two Recent rows on Lynx-for-Web and none on Electron. Its
+exact story ID is excluded at `3.039006%`; no broad Command-K prefix exclusion
+was added. Current accepted count becomes `339`.
+
+The `2026-08-03--command-k--browser--message-1280` pair has the same query and
+thread result, but Electron is covered by provider-update and provider-health
+overlays while Lynx-for-Web is unobscured. Its exact `2.788311%` full-frame pair
+is excluded. The differing result highlight and summary remain recapture debt;
+this classification does not claim that local surface is resolved.
+
+The `2026-08-03--command-k--browser--theme-1280` pair likewise has a matched
+`dark` query and the same two theme actions, but only Electron carries the two
+provider overlays. Its exact `2.614143%` full-frame pair is excluded; selected
+row paint and icon fidelity still need a matched recapture.
+
+## High-MAE harness sweep result
+
+This pass added fifteen exact harness issue rules covering 40 invalid visual
+pairs. The rules are deliberately story, state, and/or client-pair scoped. In
+particular, valid `lynx:native` siblings remain for P8-Q2 Settings, Pull
+requests, and August 5 Appearance, while valid `web:lynx` siblings remain for
+P8-Q2 and P10 Thread evidence.
+
+Two commit-bounded product supersessions additionally retire only the stale
+August 5 Integrations/AppSnap `lynx:native` snapshots after their later
+committed capability work. Their historical `web:lynx` siblings are separately
+classified as Web-only provider-overlay capture mismatches, since both old Web
+frames obscure the heading and upper card while Lynx-for-Web is unobscured.
+The current Browser Integrations pair used backend `58150` and measured
+`0.5546544964530528%`. A separate exact-owned Native anatomy check used
+PID/window `61269/29688` and the generic `58090` endpoint; it confirms the
+current capability surface but is not presented as same-backend three-client
+evidence.
+
+The four P8-Q2 Settings General `lynx:native` snapshots are likewise retired
+at committed boundary `a385a479f`, after the retained P10 Settings evidence had
+already established the canonical 256px sidebar, 672px content rail, semantic
+typography, select/material geometry, and final vertical rhythm. Their Web
+overlay contamination remains a separate harness issue.
+
+The eight P10 final-matrix Settings General Native samples (`raw` and
+titlebar-normalized `comparison` at both themes and widths) show the same old
+Native 2x typography/control scale. They are superseded at `a385a479f` as well;
+all corresponding Web-to-Lynx samples remain independently scored.
+
+All eight P8-Q2 empty-thread `threads` pairs are retired at committed boundary
+`8d1506220`. Unlike the capture mismatches above, these were valid historical
+product residuals. The later retained Web/Lynx-for-Web/exact-owned Native cell
+covers the same centered heading/composer state plus its real project context
+tray and Temporary lifecycle.
+
+The regenerated latest commit point contains `294` accepted pairs and one rejected
+pair. Total loss remains `8.289406207894311`, rolling median MAE remains
+`0.5507725943527818%` across 24 samples, reliability loss remains zero, and no
+accepted pair has MAE at or above 25%. The remaining highest entries are the
+known Markdown-token retained-recapture debt, the pre-fix Skills
+visual evidence, or visually confirmed same-state product residuals such as
+Behavior, P8 Threads, and P8 Kanban.
+
+## Current transcript recapture
+
+Commit `3986fb12a` retains a same-backend Electron/Lynx-for-Web recapture for
+the old transcript pinned and detached states. Both clients used backend
+`54095`, server instance `9240f5bd-66ad-4e46-8f05-9f739b614103`, thread
+`lynx-landing-thread-1787254540864-987357febecef`, light `864x620` DPR 2,
+sidebar open, dock closed, and the same provider-update/error overlays. Pinned
+MAE is `2.227684%` and detached MAE is `2.263907%`, replacing the old
+`8.081371%` / `6.653651%` snapshots after that boundary. The recapture also
+closed the empty Lynx jump-button glyph by switching it from a `currentColor`
+DOM SVG whose stroke resolved to `none` to an explicitly colorized SVG content
+path. Markdown-token states remain independently open.
+
+## Current Settings Behavior closure
+
+The current shared Settings composition already aligns both renderers to the
+same 672px content frame. A fresh same-origin Browser run used isolated backend
+`58150`, dark `1280x820` at DPR 1, `/settings?section=behavior` for Electron/Web
+and `/lynx/?route=%2Fsettings%2Fbehavior` for Lynx-for-Web. With the same
+four-provider update overlay visible in both clients, whole-frame MAE measured
+`0.6582181322732344%`.
+
+That run exposed one remaining current product delta: Native permanently
+rendered `Preferences loaded.` after successful hydration while Electron stays
+visually quiet. The `loaded` persistence presentation now returns no visible
+message; saving, saved, error, and retry states are unchanged. Focused
+persistence coverage passes `4/4`; both touched ReactLynx files scan with zero
+issues; `build:web` and the complete eight-package production build pass.
+
+Exact-owned Native acceptance used PID/window `34722/29579`, route
+`synara://settings/behavior`, isolated backend `58150`, and staged bundle
+SHA-256 `24f63d012e3533f3039dd4f3059a2aa7c0abebb9f7cea0bab0a545817a70e681`.
+Computer Use dismissed the AppSnap welcome and provider update prompt through
+their real visible controls. The final stable Behavior page contains no
+`Preferences loaded.` row. The owned process had a live socket to `58150`, and
+its host log recorded `server.getConfig`, `server.getSettings`, and shell
+snapshot RPCs with that same base URL. No screenshot was retained in the
+repository.
+
+Five focused 2026-08-06 Command Palette stories (footer, footer text, input,
+keyboard hints, and labels) also reuse one mismatched full-frame capture.
+Electron has provider-update/error overlays and eight Suggested commands;
+Lynx-for-Web has a Codex-unavailable banner and six Suggested commands. Exact
+story IDs remove only those `2.912-2.998%` pairs. Current accepted count becomes
+`330`; the focused assertions and later matched palette evidence remain valid.
+
+## P8-Q2 Pull requests state audit
+
+All four P8-Q2 Pull requests Electron frames contain a
+repository-unavailable warning that is absent from Lynx-for-Web. The filter and
+search affordances also differ, but these full-frame captures cannot separate
+that capability delta from the warning-state mismatch. Only the four
+`web:lynx` pairs are excluded; all four `lynx:native` siblings remain scored.
+The exclusion reduced accepted count from `339` to `335` before the focused
+Command Palette exclusions above.
+
+## August 5 Appearance overlay audit
+
+Both August 5 Appearance Electron frames contain an open provider-update
+overlay that is absent from Lynx-for-Web, obscuring the heading and upper theme
+card. The exact two-story rule is scoped to `web:lynx`; both same-page
+`lynx:native` siblings remain scored. Current accepted count becomes `328`
+after this and the focused Command Palette classification; core loss invariants
+remain unchanged.
+
+The two August 5 Settings Skills Web-to-Lynx frames repeat the same provider
+overlay contamination over the heading and portable-skills card. They are
+excluded by exact story ID and client pair. Their same-page Lynx-to-Native
+siblings remain scored independently from the newer `/plugins` Skills evidence.
+The two old Settings Skills Native samples are then superseded at `ef1706ce3`,
+whose retained current-head wide evidence makes the 624px Shared skills section
+and representative row heights exact. This boundary does not use the newer
+`/plugins` surface as a substitute.
+
+## Current exact-owned Native acceptance
+
+- Bundle: `apps/lynx/dist/desktop/main.lynx.bundle`.
+- Final exact-owned backend-pinned bundle SHA-256:
+  `176d96efcc92f1f0df2ad0e2c92a948b55212010e3627b1c76106751be6d04a1`.
+- Exact-owned app: `com.lynxjs.SynaraComparisonLynxtron`, PID/window
+  `63644/27649`.
+- Isolated backend: `64418`; Electron CDP: `9225`; Native DevTool request:
+  `8904`; light `1280x820`; dock closed.
+- A temporary 16-message long transcript was created through canonical
+  `thread.handoff.create`; no SQLite fixture write was used. Electron and
+  Native both opened the same `fidelity-transcript-recapture-20260901` thread
+  at the live edge.
+- TraeX Computer Use opened the thread through the rendered Chats row, used a
+  real upward drag to detach from section 8 to sections 6/7, observed the
+  scroll-to-bottom affordance, and activated that affordance to return to
+  section 8.
+- The final rebuilt exact-owned run used PID/window `4310/27905`, backend
+  `53148`, and repeated the same real sidebar, drag, and jump path after the
+  full-pane scroll-owner fix.
+- Computer Use page scrolling did not move the Native list, but direct drag
+  delivery did. The Lynx DevTool CLI reported no registered clients, so this
+  run makes no Native console or DOM claim.
+
+This proves current Native pinned/detached behavior, but it is not a
+Lynx-for-Web replacement pair. The old browser-pair scores remain until a
+same-origin fast-loop recapture uses the same backend, thread, theme, viewport,
+dock, and interaction state.
+
+## Cleanup
+
+- The temporary thread was left through a rendered Native thread row and then
+  deleted through canonical `thread.delete`.
+- Temporary Electron PNGs and Git-object inspection PNGs were deleted.
+- Browser cleanup reported `sessions: []` and zero owned browser processes.
+- Owned ports `8893`, `9225`, `8904`, and `64418` were released.
+- The user's launcher PID `97403` and ports `9158/9490/9062` were not touched.
+- No screenshot was added to the repository; the existing count remains 179.
+
+## Verification
+
+- Fidelity ledger generation: `805` commit points / `17` archive daily anchors,
+  `66.32 -> 8.29`.
+- Fidelity-loss logic: `36/36`.
+- Current visual ledger: `294` accepted / `1` rejected, rolling median MAE
+  `0.5507725943527818%`, total loss `8.289406207894311`, reliability loss
+  `0`, and zero accepted pairs at or above 25%.
+- Plugin Library and Composer source contracts under Rstest: `7/7`.
+- Shared provider-discovery coverage: `7/7`.
+- Comparison launcher coverage: `20/20`.
+- ReactLynx scans: zero issues in both touched components.
+- Full-pane transcript focused coverage: `8/8`; all three affected ReactLynx
+  scans report zero issues.
+- Complete eight-package production build: passed with registered warnings
+  only.
+- A broader six-file transcript run passed `33/34`. Its sole failure is a
+  pre-existing source-contract assertion that still expects hard-coded
+  `11px/19px` reasoning typography, while the current working tree already
+  uses the shared inherited transcript typography. It does not touch the
+  scroll-owner change; the focused ownership/sidechat suite remains `8/8`.
