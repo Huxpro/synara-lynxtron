@@ -4,10 +4,21 @@ import {
   describeProviderDiscoveryError,
   normalizeProviderDiscoveryText,
   providerPluginDiscoveryWarnings,
+  providerDiscoveryItemHue,
+  providerDiscoveryItemAccent,
   resolveProviderDiscoveryStatus,
 } from "./providerDiscoveryPresentation";
 
 describe("provider discovery presentation", () => {
+  it("derives stable per-item hues across renderers", () => {
+    expect(providerDiscoveryItemHue("react-doctor")).toBe(149);
+    expect(providerDiscoveryItemAccent("react-doctor")).toBe("#166534");
+    expect(providerDiscoveryItemAccent("adapt")).toBe("#4c1d95");
+    expect(providerDiscoveryItemAccent("agent-browser")).toBe("#713f12");
+    expect(providerDiscoveryItemHue("react-doctor")).toBe(
+      providerDiscoveryItemHue("react-doctor"),
+    );
+  });
   it("keeps a provider failure ahead of placeholder empty data", () => {
     expect(
       resolveProviderDiscoveryStatus({

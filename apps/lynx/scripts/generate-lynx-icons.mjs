@@ -42,6 +42,7 @@ const icons = {
   KanbanIcon: 'layout-kanban',
   KeyboardIcon: 'keyboard',
   MessageCircleIcon: 'message-circle',
+  ListChecksIcon: 'list-check',
   MoonIcon: 'moon',
   NewThreadIcon: 'edit',
   PaletteIcon: 'palette',

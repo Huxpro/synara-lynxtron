@@ -8,6 +8,7 @@ import type {
 import { PROVIDER_DISPLAY_NAMES } from '@synara/contracts';
 import {
   normalizeProviderDiscoveryText,
+  providerDiscoveryItemAccent,
   providerPluginDiscoveryWarnings,
   resolveProviderDiscoveryStatus,
 } from '@synara/shared/providerDiscoveryPresentation';
@@ -15,7 +16,8 @@ import { DEFAULT_PROVIDER_ORDER } from '@synara-web/providerOrdering';
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
-import { CircleAlertIcon, PuzzleIcon, SearchIcon } from '../lib/icons.lynx';
+import { CheckIcon, CircleAlertIcon, ListChecksIcon, PuzzleIcon, SearchIcon } from '../lib/icons.lynx';
+import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import {
   fetchPluginLibraryCapabilities,
   fetchPluginLibraryPlugins,
@@ -56,11 +58,26 @@ function DiscoveryRow(props: {
   readonly enabled: boolean;
   readonly label: string;
   readonly meta: string;
+  readonly kind?: 'plugin' | 'skill';
 }) {
+  const skill = props.kind === 'skill';
   return (
     <view className="PluginLibraryRow">
-      <view className="PluginLibraryGlyph">
-        <PuzzleIcon size={16} color="var(--muted-foreground)" />
+      <view
+        className={`PluginLibraryGlyph${skill ? ' PluginLibraryGlyph--skill' : ''}`}
+        style={
+          skill
+            ? {
+                backgroundColor: providerDiscoveryItemAccent(props.label),
+              }
+            : undefined
+        }
+      >
+        {skill ? (
+          <ListChecksIcon size={20} color="rgba(255, 255, 255, 0.8)" />
+        ) : (
+          <PuzzleIcon size={16} color="var(--muted-foreground)" />
+        )}
       </view>
       <view className="PluginLibraryRowCopy">
         <text className="PluginLibraryRowTitle">{props.label}</text>
@@ -68,13 +85,21 @@ function DiscoveryRow(props: {
           {props.description}
         </text>
       </view>
-      <text
-        className={`PluginLibraryRowStatus${
-          props.enabled ? ' PluginLibraryRowStatus--enabled' : ''
-        }`}
-      >
-        {props.meta}
-      </text>
+      {skill ? (
+        props.enabled ? (
+          <view className="PluginLibraryInstalled">
+            <CheckIcon size={14} />
+          </view>
+        ) : null
+      ) : (
+        <text
+          className={`PluginLibraryRowStatus${
+            props.enabled ? ' PluginLibraryRowStatus--enabled' : ''
+          }`}
+        >
+          {props.meta}
+        </text>
+      )}
     </view>
   );
 }
@@ -197,7 +222,10 @@ export function PluginLibraryPage() {
                   setSearch('');
                 }}
               >
-                {PROVIDER_DISPLAY_NAMES[candidate]}
+                <OpenAIProviderIcon provider={candidate} />
+                <text className="PluginLibraryProviderLabel">
+                  {PROVIDER_DISPLAY_NAMES[candidate]}
+                </text>
               </Button>
             ))}
           </view>
@@ -251,7 +279,11 @@ export function PluginLibraryPage() {
                 : 'No skills found.'}
             </text>
           ) : (
-            <view className="PluginLibraryRows">
+            <view
+              className={`PluginLibraryRows${
+                tab === 'skills' ? ' PluginLibraryRows--skills' : ''
+              }`}
+            >
               {tab === 'plugins'
                 ? installedPlugins.map(({ marketplace, plugin }) => (
                     <DiscoveryRow
@@ -262,15 +294,23 @@ export function PluginLibraryPage() {
                       meta={marketplace}
                     />
                   ))
-                : discoveredSkills.map((skill) => (
-                    <DiscoveryRow
-                      key={skill.path}
-                      description={skillDescription(skill)}
-                      enabled={skill.enabled}
-                      label={skillLabel(skill)}
-                      meta={skill.scope ?? 'Skill'}
-                    />
-                  ))}
+                : (
+                    <>
+                      <text className="PluginLibrarySectionTitle">Skills</text>
+                      <view className="PluginLibrarySkillGrid">
+                        {discoveredSkills.map((skill) => (
+                          <DiscoveryRow
+                            key={skill.path}
+                            description={skillDescription(skill)}
+                            enabled={skill.enabled}
+                            kind="skill"
+                            label={skillLabel(skill)}
+                            meta={skill.scope ?? 'Skill'}
+                          />
+                        ))}
+                      </view>
+                    </>
+                  )}
             </view>
           )}
         </view>

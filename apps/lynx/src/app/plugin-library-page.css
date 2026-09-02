@@ -12,8 +12,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  height: 46px;
-  min-height: 46px;
+  height: 40px;
+  min-height: 40px;
   padding: 0 16px;
   border-bottom-width: 1px;
   border-bottom-style: solid;
@@ -31,7 +31,8 @@
 }
 
 .PluginLibraryProviders {
-  width: min(700px, 70%);
+  flex: 1;
+  width: auto;
   min-width: 0;
 }
 
@@ -43,6 +44,22 @@
   min-width: max-content;
 }
 
+.PluginLibraryProviderChoices .LxButton {
+  flex-shrink: 0;
+  gap: 4px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.PluginLibraryProviderChoices .OpenAIProviderIcon {
+  width: 14px;
+  height: 14px;
+}
+
 .PluginLibraryScroller {
   flex: 1;
   min-height: 0;
@@ -51,11 +68,10 @@
 .PluginLibraryContent {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 0;
   width: 100%;
-  max-width: 860px;
   margin: 0 auto;
-  padding: 40px 24px 56px;
+  padding: 44px 20px 56px;
 }
 
 .PluginLibraryTitle {
@@ -66,6 +82,7 @@
   line-height: 36px;
   text-align: center;
   letter-spacing: -0.5px;
+  margin-bottom: 42px;
 }
 
 .PluginLibrarySearch {
@@ -73,7 +90,7 @@
   align-items: center;
   gap: 10px;
   width: 100%;
-  max-width: 672px;
+  max-width: 624px;
   margin: 0 auto;
   padding: 0 14px;
   min-height: 42px;
@@ -82,6 +99,7 @@
   border-color: var(--border);
   border-radius: 12px;
   background-color: var(--card);
+  margin-bottom: 13px;
 }
 
 .PluginLibrarySearch .LxInputControl,
@@ -97,8 +115,9 @@
   flex-direction: column;
   gap: 6px;
   width: 100%;
-  max-width: 672px;
+  max-width: 624px;
   margin: 0 auto;
+  margin-bottom: 13px;
 }
 
 .PluginLibraryWarning {
@@ -133,12 +152,33 @@
   gap: 2px;
 }
 
+.PluginLibraryRows--skills {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-right: 10px;
+}
+
+.PluginLibrarySkillGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+}
+
+.PluginLibrarySectionTitle {
+  padding: 8px 12px 4px;
+  color: var(--foreground);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
 .PluginLibraryRow {
   display: flex;
   align-items: center;
   gap: 12px;
   min-width: 0;
-  min-height: 70px;
+  min-height: 68px;
   padding: 10px 12px;
   border-radius: 10px;
 }
@@ -154,6 +194,16 @@
   background-color: var(--secondary);
 }
 
+.PluginLibraryGlyph--skill {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+}
+
+.PluginLibraryRows--skills .PluginLibraryRowTitle {
+  font-size: 13px;
+}
+
 .PluginLibraryRowCopy {
   display: flex;
   flex: 1;
@@ -165,10 +215,24 @@
 .PluginLibraryRowTitle {
   color: var(--foreground);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.PluginLibraryInstalled {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 8px;
+  color: var(--muted-foreground);
 }
 
 .PluginLibraryRowDescription {
@@ -206,6 +270,14 @@
 
 .SliceRoot--viewport-compact .PluginLibraryRows {
   grid-template-columns: 1fr;
+}
+
+.SliceRoot--viewport-compact .PluginLibrarySkillGrid {
+  grid-template-columns: 1fr;
+}
+
+.SliceRoot--viewport-compact .PluginLibraryRows--skills {
+  padding-right: 0;
 }
 
 .SliceRoot--viewport-compact .PluginLibraryHeader,

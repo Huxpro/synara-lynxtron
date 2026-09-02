@@ -37,6 +37,18 @@ describe('Lynx plugin library', () => {
     expect(pageSource).toContain('className="PluginLibraryWarning"');
     expect(pageSource).toContain("useState<ProviderKind>('codex')");
     expect(pageSource).toContain('DEFAULT_PROVIDER_ORDER.map');
+    expect(pageSource).toContain('<OpenAIProviderIcon provider={candidate} />');
+    expect(pageSource).toContain('providerDiscoveryItemAccent(props.label)');
+    expect(pageSource).toContain('className="PluginLibraryProviderLabel"');
+    expect(pageSource).toContain('<ListChecksIcon size={20}');
+    const iconsSource = readFileSync(
+      new URL('../lib/icons.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(iconsSource).toContain('icon-tabler-list-check');
+    expect(iconsSource).not.toContain('icon-tabler-checklist');
+    expect(pageSource).toContain('className="PluginLibraryInstalled"');
+    expect(pageSource).toContain('className="PluginLibrarySectionTitle">Skills</text>');
     expect(pageSource).toContain('PROVIDER_DISPLAY_NAMES[provider]');
     expect(pageSource).toContain(
       'fetchPluginLibraryCapabilities(provider)'
@@ -81,7 +93,28 @@ describe('Lynx plugin library', () => {
 
     expect(pageSource).toContain('className="PluginLibraryTabs"');
     expect(styles).toMatch(
-      /\.PluginLibraryHeader\s*\{[^}]*height:\s*46px;[^}]*min-height:\s*46px;/s
+      /\.PluginLibraryHeader\s*\{[^}]*height:\s*40px;[^}]*min-height:\s*40px;/s
+    );
+    expect(styles).toMatch(
+      /\.PluginLibraryRows--skills\s*\{[^}]*padding-right:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.PluginLibraryRow\s*\{[^}]*min-height:\s*68px;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.PluginLibraryRows--skills\s*\{[^}]*padding-right:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.PluginLibraryContent\s*\{[^}]*gap:\s*0;[^}]*width:\s*100%;[^}]*padding:\s*44px 20px 56px;/s
+    );
+    expect(styles).not.toMatch(
+      /\.PluginLibraryContent\s*\{[^}]*max-width:/s
+    );
+    expect(styles).toMatch(
+      /\.PluginLibrarySearch\s*\{[^}]*max-width:\s*624px;[^}]*margin-bottom:\s*13px;/s
+    );
+    expect(styles).toMatch(
+      /\.PluginLibraryProviderChoices \.LxButton\s*\{[^}]*flex-shrink:\s*0;/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-compact \.PluginLibraryHeader,[\s\S]*?\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.PluginLibraryHeader\s*\{[^}]*height:\s*92px;[^}]*flex-direction:\s*column;/s

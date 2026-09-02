@@ -2,6 +2,36 @@ import { describeErrorMessage } from "./errorMessages";
 
 export type ProviderDiscoveryResource = "plugins" | "skills";
 
+export function providerDiscoveryItemHue(name: string): number {
+  let hash = 0;
+  for (let index = 0; index < name.length; index += 1) {
+    hash = name.charCodeAt(index) + ((hash << 5) - hash);
+  }
+  return Math.abs(hash) % 360;
+}
+
+const PROVIDER_DISCOVERY_ITEM_ACCENTS = [
+  "#7f1d1d",
+  "#7c2d12",
+  "#713f12",
+  "#3f6212",
+  "#166534",
+  "#155e75",
+  "#1e3a8a",
+  "#4c1d95",
+  "#701a75",
+  "#831843",
+] as const;
+
+export function providerDiscoveryItemAccent(name: string): string {
+  const index = Math.floor(
+    (providerDiscoveryItemHue(name) / 360) * PROVIDER_DISCOVERY_ITEM_ACCENTS.length,
+  );
+  return PROVIDER_DISCOVERY_ITEM_ACCENTS[
+    Math.min(PROVIDER_DISCOVERY_ITEM_ACCENTS.length - 1, index)
+  ];
+}
+
 export type ProviderDiscoveryStatus =
   | { readonly kind: "loading" }
   | { readonly kind: "error"; readonly message: string }
