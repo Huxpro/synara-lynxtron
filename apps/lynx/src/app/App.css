@@ -1790,6 +1790,14 @@
   height: 100%;
 }
 
+.TranscriptListItem {
+  width: 100%;
+}
+
+.TranscriptRowFrame {
+  width: calc(100% - 24px);
+}
+
 .TranscriptBottomInset {
   height: 80px;
 }
@@ -1837,8 +1845,15 @@
 
 .TranscriptAssistantContent {
   display: flex;
+  width: 100%;
+  min-width: 0;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.TranscriptAssistantTypography {
+  width: 100%;
+  min-width: 0;
 }
 
 .TranscriptMessageFooter {
