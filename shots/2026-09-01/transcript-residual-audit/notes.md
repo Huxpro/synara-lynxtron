@@ -756,3 +756,14 @@ DPR 1, and later attempts were invalidated by AppSnap first-run modal, route
 fallback, theme, hydration, or overlay mismatches. All temporary fixtures were
 created and deleted through canonical orchestration commands; owned processes
 and ports were cleaned, and browser entry/retry/exit gates all reached zero.
+
+A later committed-tree run forced both renderers to `1280x820`, DPR 1 and used
+the same backend, canonical fixture, theme, sidebar, dock, and provider-update
+overlay. The fully wired width/highlight boundary measured `1.4447498206599714%`
+light and `1.6054932847122587%` dark. A clean-overlay light cell measured
+`1.3408854166666668%`; the corresponding dark attempt was rejected because
+Lynx returned to New Chat instead of the fixture route. None improves the
+existing exact no-overlay Markdown pair (`1.2959141608879323%` light,
+`1.4813689373106964%` dark) under the same capture state, so the ledger remains
+unchanged. The strict-run fixture was canonically deleted and all temporary
+images, worktree, processes, ports, and browser sessions were removed.
