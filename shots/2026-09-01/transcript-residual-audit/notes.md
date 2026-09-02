@@ -781,3 +781,15 @@ independently. Fidelity-loss logic passes `60/60`. The current accepted count
 drops from `158` to `154`; rolling median and total loss remain
 `0.6448107988835652%` and `8.658511436259841` because those four historical
 cells are outside the latest 24-pair rolling window.
+
+## Retained Settings Behavior dark replacement
+
+Commit `779c9d05c` removes the stable-state `Preferences loaded.` row while
+preserving saving, saved, and actionable error/retry feedback. Retained evidence
+in `shots/2026-09-02/settings-behavior-current/` uses backend `59344`, server
+instance `b0f7e319-ad43-4096-a763-ad8a647e6712`, dark `1440x900` DPR 1, the
+Behavior route, identical settings values, and the same three-provider update
+prompt in both clients. Current MAE is `0.5290115387718874%`, replacing the old
+`2.79470729444041%` Browser pair. Fidelity-loss logic passes `61/61`; accepted
+count becomes `153`, while rolling median and total loss remain
+`0.6448107988835652%` and `8.658511436259841`.

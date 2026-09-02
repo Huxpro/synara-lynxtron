@@ -253,6 +253,22 @@ const productEvidenceSupersessionLedger = [
     ],
   },
   {
+    id: 'settings-behavior-dark-current-stable',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: ['2026-08-03--settings-behavior--browser--dark-1440'],
+    affectedStateKeys: ['raw'],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: '390b2fc7a',
+    summary:
+      'The original dark Behavior pair predates the stable-state fix that removes Lynx-only Preferences loaded feedback.',
+    resolution:
+      'Committed retained Electron and Lynx-for-Web evidence uses the same backend, Behavior route, dark 1440x900 DPR1 viewport, settings values, and provider-update overlay. Current MAE is 0.5290115387718874%.',
+    evidence: [
+      'shots/2026-09-02/settings-behavior-current/notes.md',
+      'shots/2026-09-02/settings-behavior-current/pngs.sha256',
+    ],
+  },
+  {
     id: 'p8-q2-empty-thread-current-landing',
     type: 'superseded-product-snapshot',
     affectedStoryPrefixes: ['2026-08-03--p8-q2--threads--'],
