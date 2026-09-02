@@ -666,6 +666,42 @@ test('excludes only the overlay-contaminated Composer Details shell pairs', () =
   );
 });
 
+test('excludes only the runtime mention-chip Browser overlay mismatch', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-04--p10-perceptual-fidelity--specimens--runtime--mention-chip',
+    ],
+    affectedClientPairs: ['web:lynx'],
+  };
+  const sample = {
+    storyId:
+      '2026-08-04--p10-perceptual-fidelity--specimens--runtime--mention-chip',
+    stateKey: 'raw',
+    leftClient: 'web',
+    rightClient: 'lynx',
+  };
+
+  assert.equal(visualPairMatchesIssue(sample, issue), true);
+  assert.equal(
+    visualPairMatchesIssue(
+      { ...sample, leftClient: 'lynx', rightClient: 'native' },
+      issue
+    ),
+    false
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        ...sample,
+        storyId: '2026-08-02--harness--markdown-tokens',
+        stateKey: 'mention-selected',
+      },
+      issue
+    ),
+    false
+  );
+});
+
 test('excludes the Settings Shortcuts provider-overlay browser family', () => {
   const issue = {
     affectedStoryPrefix: '2026-08-03--settings-shortcuts--browser--',

@@ -500,3 +500,18 @@ After regeneration the ledger has `812` commit points, `203` accepted pairs,
 `1` rejected pair, rolling median MAE `0.5507725943527818%`, total loss
 `8.289406207894311`, reliability loss `0`, and no accepted pair at or above
 `25%`. Fidelity-loss logic passes `45/45`.
+
+## P10 runtime mention-chip Browser state audit
+
+The selected mention is present in both runtime specimen frames, but Electron
+also contains the provider-update dialog and provider-path error banner while
+Lynx-for-Web has neither. Its `2.412054763470429%` whole-frame MAE therefore
+does not isolate mention-chip fidelity. The exact story-ID plus `web:lynx` rule
+excludes only that pair; the same specimen's Lynx-to-Native pair remains
+scored at `1.0706325721345449%`, and later matched mention-token evidence stays
+independent.
+
+After regeneration the ledger has `813` commit points, `202` accepted pairs,
+`1` rejected pair, rolling median MAE `0.5507725943527818%`, total loss
+`8.289406207894311`, reliability loss `0`, and no accepted pair at or above
+`25%`. Fidelity-loss logic passes `46/46`.

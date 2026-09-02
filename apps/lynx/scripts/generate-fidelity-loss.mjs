@@ -879,6 +879,23 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'p10-runtime-mention-chip-browser-overlay-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: '5b02e765f',
+    affectedStoryIds: [
+      '2026-08-04--p10-perceptual-fidelity--specimens--runtime--mention-chip',
+    ],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The runtime mention-chip Web frame contains provider-update and provider-path overlays that are absent from Lynx-for-Web, so its whole-frame MAE does not isolate the selected mention chip.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Only the Web-to-Lynx specimen pair is excluded. Its Lynx-to-Native sibling and later matched mention-token evidence remain independently tracked.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'settings-shortcuts-provider-overlay-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '1352e45ae',
