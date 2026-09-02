@@ -434,3 +434,22 @@ independently scored until matched light and dark current evidence can be
 retained at a safe implementation commit boundary. The audit used temporary
 Git-object extraction only; the temporary directory was removed, and the
 browser entry/exit gates both returned zero sessions and zero owned processes.
+
+## P10 final-matrix Thread Browser state audit
+
+All eight P10 final-matrix Thread Web-to-Lynx samples are invalid as visual
+pairs. At light/dark and `1280x820`/`1440x900`, both `raw` and normalized
+`comparison` images derive from the same contaminated capture: Electron shows
+the provider-update dialog plus provider-path error banner, while Lynx-for-Web
+instead shows a `Reconnecting...` badge. The matching snapshot hashes, thread
+route, viewport, and theme do not make those renderer-local overlay and
+connection states equivalent.
+
+The exclusion is scoped to the P10 Thread story prefix and `web:lynx`. Its
+eight independently mismatched `lynx:native` siblings remain covered by the
+existing transcript-state rule, while all four P8-Q2 Thread Browser pairs keep
+their valid same-transcript score. After regeneration the current ledger has
+`809` commit points, `277` accepted pairs, `1` rejected pair, rolling median
+MAE `0.5507725943527818%`, total loss `8.289406207894311`, reliability loss
+`0`, and no accepted pair at or above `25%`. Fidelity-loss logic passes
+`42/42`.

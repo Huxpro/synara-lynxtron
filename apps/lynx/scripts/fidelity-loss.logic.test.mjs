@@ -497,6 +497,46 @@ test('excludes raw and comparison P10 Thread Native transcript mismatches', () =
   );
 });
 
+test('excludes only P10 Thread Browser overlay and connection-state mismatches', () => {
+  const issue = {
+    affectedStoryPrefix:
+      '2026-08-04--p10-perceptual-fidelity--final-matrix--thread-default-',
+    affectedClientPairs: ['web:lynx'],
+  };
+  const base = {
+    storyId:
+      '2026-08-04--p10-perceptual-fidelity--final-matrix--thread-default-dark-1280',
+    leftClient: 'web',
+    rightClient: 'lynx',
+  };
+
+  assert.equal(
+    visualPairMatchesIssue({ ...base, stateKey: 'raw' }, issue),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue({ ...base, stateKey: 'comparison' }, issue),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      { ...base, leftClient: 'lynx', rightClient: 'native' },
+      issue
+    ),
+    false
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        ...base,
+        storyId: '2026-08-03--p8-q2--thread--dark-1280',
+      },
+      issue
+    ),
+    false
+  );
+});
+
 test('excludes the Settings Shortcuts provider-overlay browser family', () => {
   const issue = {
     affectedStoryPrefix: '2026-08-03--settings-shortcuts--browser--',
