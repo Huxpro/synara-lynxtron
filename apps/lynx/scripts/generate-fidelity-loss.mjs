@@ -844,6 +844,23 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'p10-settings-general-browser-hydration-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: 'aa58ca991',
+    affectedStoryIds: [
+      '2026-08-04--p10-perceptual-fidelity--browser--settings-general',
+    ],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The P10 Settings General Browser pair compares a hydrated Electron settings form plus provider-update overlay with Lynx-for-Web still showing Loading preferences and a reconnecting badge.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Both raw and normalized images remain historical capture evidence but cannot measure renderer fidelity. Later matched Settings evidence covers the hydrated surface independently.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'settings-shortcuts-provider-overlay-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '1352e45ae',

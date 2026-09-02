@@ -471,3 +471,17 @@ regeneration the ledger has `810` commit points, `209` accepted pairs, `1`
 rejected pair, rolling median MAE `0.5507725943527818%`, total loss
 `8.289406207894311`, reliability loss `0`, and no accepted pair at or above
 `25%`. Fidelity-loss logic passes `43/43`.
+
+## P10 Settings General Browser hydration audit
+
+The earlier P10 Browser Settings General `raw` and normalized `comparison`
+images are not same-state pairs. Electron has fully hydrated controls and an
+open provider-update dialog; Lynx-for-Web remains at `Loading preferences...`
+with a `Reconnecting...` badge. An exact story-ID plus `web:lynx` rule excludes
+only those two frames. Later hydrated Settings evidence remains independently
+available.
+
+After regeneration the ledger has `811` commit points, `207` accepted pairs,
+`1` rejected pair, rolling median MAE `0.5507725943527818%`, total loss
+`8.289406207894311`, reliability loss `0`, and no accepted pair at or above
+`25%`. Fidelity-loss logic passes `44/44`.

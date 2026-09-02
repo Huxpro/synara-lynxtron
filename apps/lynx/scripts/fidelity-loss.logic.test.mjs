@@ -593,6 +593,41 @@ test('excludes only P10 final-overlays Browser provider-state mismatches', () =>
   );
 });
 
+test('excludes only the unhydrated P10 Settings General Browser pair', () => {
+  const issue = {
+    affectedStoryIds: [
+      '2026-08-04--p10-perceptual-fidelity--browser--settings-general',
+    ],
+    affectedClientPairs: ['web:lynx'],
+  };
+  const base = {
+    storyId:
+      '2026-08-04--p10-perceptual-fidelity--browser--settings-general',
+    leftClient: 'web',
+    rightClient: 'lynx',
+  };
+
+  assert.equal(
+    visualPairMatchesIssue({ ...base, stateKey: 'raw' }, issue),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue({ ...base, stateKey: 'comparison' }, issue),
+    true
+  );
+  assert.equal(
+    visualPairMatchesIssue(
+      {
+        ...base,
+        storyId:
+          '2026-08-04--p10-perceptual-fidelity--final-matrix--settings-general-light-1280',
+      },
+      issue
+    ),
+    false
+  );
+});
+
 test('excludes the Settings Shortcuts provider-overlay browser family', () => {
   const issue = {
     affectedStoryPrefix: '2026-08-03--settings-shortcuts--browser--',
