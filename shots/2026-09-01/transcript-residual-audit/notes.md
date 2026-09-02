@@ -562,14 +562,16 @@ monochrome Lynx rendering.
 
 ## August 5 Profile and Advanced provider-state audit
 
-Direct inspection confirms that both `settings-profile-current` and
-`settings-advanced-current` compare an Electron frame with the provider-update
-dialog against a Lynx-for-Web frame with a `Reconnecting...` badge. Profile
-also differs in provider-derived actions, while Advanced differs in recovery
-state, so neither full-shell Browser pair isolates page fidelity. An exact
-story-ID plus `web:lynx` rule excludes only these two samples. Their
-Lynx-to-Native siblings remain scored at `1.8109763570062172%` and
-`2.050243229913917%`. After regeneration the ledger has `825` commit points,
-`204` accepted pairs, `1` rejected pair, rolling median MAE
+Direct inspection confirms that the light/current and dark/1440 Profile and
+Advanced stories compare Electron frames with the provider-update dialog
+against Lynx-for-Web frames with a `Reconnecting...` badge. Profile also
+differs in provider-derived actions, while Advanced differs in recovery state,
+so none of the four full-shell Browser pairs isolates page fidelity. The exact
+story-ID plus `web:lynx` rule excludes only these samples. All Lynx-to-Native
+siblings remain scored. The same inspection extended the existing
+Integrations/AppSnap rule to their dark/1440 siblings, which repeat the overlay
+versus reconnecting mismatch and expose different host capability state. After
+regeneration the ledger has `826` commit points, `200` accepted pairs, `1`
+rejected pair, rolling median MAE
 `0.6448107988835652%`, total loss `8.653649876629391`, reliability loss `0`,
 and no accepted pair at or above `25%`. Fidelity-loss logic passes `48/48`.

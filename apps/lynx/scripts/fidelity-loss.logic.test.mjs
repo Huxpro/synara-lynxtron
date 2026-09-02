@@ -802,6 +802,8 @@ test('keeps August 5 Integrations and AppSnap harness scope separate from Native
     affectedStoryIds: [
       '2026-08-05--settings-integrations-current',
       '2026-08-05--settings-appsnap-current',
+      '2026-08-05--settings-integrations-dark-1440',
+      '2026-08-05--settings-appsnap-dark-1440',
     ],
     affectedClientPairs: ['web:lynx'],
   };
@@ -828,6 +830,8 @@ test('excludes August 5 Profile and Advanced Browser provider-state mismatches o
     affectedStoryIds: [
       '2026-08-05--settings-profile-current',
       '2026-08-05--settings-advanced-current',
+      '2026-08-05--settings-profile-dark-1440',
+      '2026-08-05--settings-advanced-dark-1440',
     ],
     affectedClientPairs: ['web:lynx'],
   };

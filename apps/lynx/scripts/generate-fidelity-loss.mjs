@@ -668,15 +668,17 @@ const harnessIssueLedger = [
     affectedStoryIds: [
       '2026-08-05--settings-integrations-current',
       '2026-08-05--settings-appsnap-current',
+      '2026-08-05--settings-integrations-dark-1440',
+      '2026-08-05--settings-appsnap-dark-1440',
     ],
     affectedClientPairs: ['web:lynx'],
     summary:
-      'The August 5 Integrations and AppSnap Web frames contain an open provider-update overlay absent from Lynx-for-Web, obscuring each page heading and upper card.',
+      'The August 5 Integrations and AppSnap Web frames at both retained themes contain an open provider-update overlay while Lynx-for-Web shows a reconnecting badge; the renderers also expose different host capability state.',
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the two overlay-contaminated Browser pairs are excluded. Their stale Native snapshots are tracked separately as commit-bounded product supersessions.',
+      'Only the four provider-state-mismatched Browser pairs are excluded. Their Native snapshots remain governed separately by commit-bounded product supersessions.',
     resolutionStoryPrefixes: [],
   },
   {
@@ -686,15 +688,17 @@ const harnessIssueLedger = [
     affectedStoryIds: [
       '2026-08-05--settings-profile-current',
       '2026-08-05--settings-advanced-current',
+      '2026-08-05--settings-profile-dark-1440',
+      '2026-08-05--settings-advanced-dark-1440',
     ],
     affectedClientPairs: ['web:lynx'],
     summary:
-      'The August 5 Profile and Advanced Web frames contain an open provider-update overlay while Lynx-for-Web shows a reconnecting badge and different provider-derived actions or recovery state.',
+      'The August 5 Profile and Advanced Web frames at both retained themes contain an open provider-update overlay while Lynx-for-Web shows a reconnecting badge and different provider-derived actions or recovery state.',
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the two provider-state-mismatched Web-to-Lynx full-shell pairs are excluded. Their Lynx-to-Native siblings remain scored, and current Profile or Advanced visual parity still requires matched-state recapture.',
+      'Only the four provider-state-mismatched Web-to-Lynx full-shell pairs are excluded. Their Lynx-to-Native siblings remain scored, and current Profile or Advanced visual parity still requires matched-state recapture.',
     resolutionStoryPrefixes: [],
   },
   {
