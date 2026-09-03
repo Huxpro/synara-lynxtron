@@ -131,7 +131,7 @@ describe('Lynx plugin library', () => {
       /\.PluginLibrarySearch \.LxInputControl,[\s\S]*?\.PluginLibrarySearch \.LxInput\s*\{[^}]*height:\s*30px;/s
     );
     expect(styles).toMatch(
-      /\.PluginLibraryProviderChoices \.LxButton\s*\{[^}]*flex-shrink:\s*0;/s
+      /\.PluginLibraryProviderChoices \.LxButton\s*\{[^}]*flex-shrink:\s*0;[^}]*gap:\s*6px;[^}]*height:\s*28px;[^}]*padding:\s*0 10px;/s
     );
     expect(pageSource).toContain("PluginLibraryProviderChoice--active");
     expect(styles).toMatch(

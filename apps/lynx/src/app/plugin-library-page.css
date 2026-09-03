@@ -67,10 +67,10 @@
 
 .PluginLibraryProviderChoices .LxButton {
   flex-shrink: 0;
-  gap: 4px;
+  gap: 6px;
   height: 28px;
   min-height: 28px;
-  padding: 0 8px;
+  padding: 0 10px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 500;
