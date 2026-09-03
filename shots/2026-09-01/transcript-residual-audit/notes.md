@@ -953,9 +953,11 @@ Release History adds another About row and dialog, while repair reconciliation
 certifies the recovery transaction and feedback lifecycle rather than the same
 default whole frame.
 
-The three highest Profile Native residuals are also valid and independent. The
+The four highest Profile Native residuals are also valid and independent. The
 default light `1280x820` pair has the same zeroed stats, empty heatmap, and
-empty plugin/model state in both engines (`1.8109763570062172%`). The populated
+empty plugin/model state in both engines (`1.8109763570062172%`); its dark
+`1440x900` sibling preserves that exact empty dashboard state and remains valid
+at `1.5762241789720004%`. The populated
 plugins light `1440x900` pair has the same three prompts, activity cell, two
 plugin rows, counts, and one-model summary (`1.8538939320584202%`). The
 populated models light `1440x900` pair has the same three prompts, empty plugin
