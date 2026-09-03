@@ -925,6 +925,22 @@ Pack context corrections that remove 1px accumulated vertical drift. It does
 not cover the complete first-screen scale/composition and cannot supersede
 either full-frame pair.
 
+The August 6 `integrations-connected-current` Lynx-to-Native pair was audited
+under the same rule and also remains scored. Both clients use the same isolated
+service, light `1440x900` logical cell, complete connection form, and one
+unpaired `Fidelity coding agent` with `Waiting for pairing`, `Resume pairing`,
+and `Revoke`. The repaired connected row is 622x136 in both engines and Native
+is only 3px above Browser because of documented section-flow rounding. Direct
+inspection instead shows the same broader historical Native full-page type and
+control scaling that appears in the valid Appearance pairs; its
+`2.1769672395707254%` MAE is therefore product residual, not state mismatch.
+
+The later August 18 stdio roundtrip does not replace this frame: it is dark
+`1280x820` and deliberately advances the connection to paired/used state with
+`Connected` and `Continue setup`. It proves the canonical credential and MCP
+lifecycle plus three-client projection, but its different theme, viewport, and
+renderer-local connection state cannot supersede the light unpaired full frame.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
