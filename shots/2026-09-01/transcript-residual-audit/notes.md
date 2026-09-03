@@ -843,3 +843,13 @@ failed with `EAGAIN` before the UI interaction could be performed. Browser
 cleanup was independently verified after each failure. The existing Plugin
 Skills pair remains scored until a later stable matched recapture measures the
 post-fix frame.
+
+The same retained pair exposed a second independent header issue: Lynx gave
+both its spacer and provider viewport `flex: 1`, splitting the remaining width
+and clipping the provider list after Pi. Electron uses one flex spacer followed
+by an intrinsic-width provider rail. Commit `ce28e45e8` changes the Lynx rail to
+`flex: none`, `width: max-content`, and `max-width: 100%`, retaining horizontal
+scrolling as a narrow-width fallback. The new source contract and ReactLynx
+scanner pass. The focused Rstest runner was terminated by system resource
+pressure before assertions, so this boundary remains pending a clean test rerun
+and matched screenshot rather than being called visually certified.
