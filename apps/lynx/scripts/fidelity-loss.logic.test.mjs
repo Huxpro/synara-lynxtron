@@ -233,6 +233,57 @@ test('keeps explicit product-state capture mismatches out of visual samples', ()
   );
 });
 
+test('excludes only mismatched current composer token Browser states', () => {
+  const issue = {
+    affectedStoryIds: ['2026-09-02--composer-tokens-1280-current'],
+    affectedStateKeys: [
+      'skill-menu',
+      'mention-menu',
+      'skill-selected',
+      'mention-selected',
+    ],
+    affectedClientPairs: ['web:lynx'],
+    excludeVisualPairs: true,
+  };
+
+  for (const stateKey of issue.affectedStateKeys) {
+    assert.equal(
+      visualPairMatchesIssue(
+        {
+          storyId: '2026-09-02--composer-tokens-1280-current',
+          stateKey,
+          leftClient: 'web',
+          rightClient: 'lynx',
+        },
+        issue
+      ),
+      true
+    );
+  }
+  for (const sample of [
+    {
+      storyId: '2026-09-02--composer-tokens-1280-current',
+      stateKey: 'persisted-tokens',
+      leftClient: 'web',
+      rightClient: 'lynx',
+    },
+    {
+      storyId: '2026-09-02--composer-tokens-1280-current',
+      stateKey: 'skill-menu',
+      leftClient: 'lynx',
+      rightClient: 'native',
+    },
+    {
+      storyId: '2026-08-02--harness--markdown-tokens',
+      stateKey: 'skill-menu',
+      leftClient: 'web',
+      rightClient: 'lynx',
+    },
+  ]) {
+    assert.equal(visualPairMatchesIssue(sample, issue), false);
+  }
+});
+
 test('supports exact story lists when a shared prefix would be too broad', () => {
   const issue = {
     affectedStoryPrefix: '2026-08-14--automations--',

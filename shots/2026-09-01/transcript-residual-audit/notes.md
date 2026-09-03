@@ -867,3 +867,21 @@ Plugin-local tab class and active modifier with Electron's exact height, 12px
 gap, transparent background, square corners, and underline treatment without
 changing the global Button primitive. Source contracts, the ReactLynx scanner,
 and diff check pass; this remains part of the pending grouped recapture.
+
+## Current Composer token capture-state correction
+
+A direct audit of all four retained
+`2026-09-02--composer-tokens-1280-current` pairs disproved their notes' claim
+that the renderers shared one transcript and renderer-local state. Every Web
+frame contains a `1 selection` chip and fewer transcript messages. Every
+Lynx-for-Web frame omits that chip and contains later recovery/watchdog user and
+assistant messages. Those differences dominate the menu and selected-token
+whole-frame MAEs and cannot measure token fidelity.
+
+An exact harness issue now matches only that story's `skill-menu`,
+`mention-menu`, `skill-selected`, and `mention-selected` `web:lynx` pairs. It
+preserves persisted-token evidence, any Native sibling, and the older token
+samples already governed by the current replacement boundary. Fidelity-loss
+logic passes `62/62`; accepted count changes from 153 to 149, rolling median
+from `0.6448107988835652%` to `0.5578416427546629%`, and total loss from
+`8.658511436259841` to `8.354119389808682`.

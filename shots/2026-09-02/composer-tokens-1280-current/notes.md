@@ -26,8 +26,12 @@ archived `composer-details/browser/skills-mentions-1280` states.
 - mention-selected: `1.542851431731229%`, down from `2.465106159333652%`.
 
 All four states now use shared provider skill display names and the same rich
-token title formatting. The remaining MAE is current typography, antialiasing,
-menu material, and small positioning residual rather than stale token semantics.
+token title formatting. A later whole-frame audit found that these images do
+not share one transcript or renderer-local selection state: Web contains a
+`1 selection` chip and fewer messages, while Lynx-for-Web omits that chip and
+contains later recovery and watchdog messages. The focused interaction evidence
+remains useful, but the four whole-frame MAEs cannot isolate menu/token fidelity
+and are excluded from current visual scoring pending a truly matched recapture.
 
 ## Gates
 

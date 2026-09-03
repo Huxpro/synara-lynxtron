@@ -400,6 +400,27 @@ const visualPairOverrides = new Map([
 ]);
 const harnessIssueLedger = [
   {
+    id: 'composer-token-current-transcript-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: '79aeca05c',
+    affectedStoryIds: ['2026-09-02--composer-tokens-1280-current'],
+    affectedStateKeys: [
+      'skill-menu',
+      'mention-menu',
+      'skill-selected',
+      'mention-selected',
+    ],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The four retained current token pairs do not share one transcript or renderer-local selection state: Web contains a 1 selection chip and fewer messages, while Lynx-for-Web omits that chip and includes later recovery and watchdog messages.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Only these four whole-frame Browser pairs are excluded. Their focused interaction evidence and the earlier token supersession remain valid; a replacement requires one shared transcript and identical selection state.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'command-palette-empty-shell-and-results-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '1352e45ae',
