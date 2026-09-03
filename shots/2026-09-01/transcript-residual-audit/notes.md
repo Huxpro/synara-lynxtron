@@ -860,3 +860,10 @@ border and icon opacity while Electron uses `border-border/40` and
 to Lynx `color-mix(...)` tokens. Its source contract, ReactLynx scan, and diff
 check pass; the change remains grouped into the pending post-fix Plugin Skills
 visual recapture.
+
+The retained header also showed Lynx rounded secondary pills where Electron uses
+40px text tabs with a 2px active underline. Commit `2ee373f92` adds a
+Plugin-local tab class and active modifier with Electron's exact height, 12px
+gap, transparent background, square corners, and underline treatment without
+changing the global Button primitive. Source contracts, the ReactLynx scanner,
+and diff check pass; this remains part of the pending grouped recapture.
