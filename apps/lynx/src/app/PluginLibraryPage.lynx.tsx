@@ -194,6 +194,9 @@ export function PluginLibraryPage() {
           <Button
             variant={tab === 'plugins' ? 'secondary' : 'ghost'}
             size="sm"
+            className={`PluginLibraryTab${
+              tab === 'plugins' ? ' PluginLibraryTab--active' : ''
+            }`}
             onClick={() => setTab('plugins')}
           >
             Plugins
@@ -201,6 +204,9 @@ export function PluginLibraryPage() {
           <Button
             variant={tab === 'skills' ? 'secondary' : 'ghost'}
             size="sm"
+            className={`PluginLibraryTab${
+              tab === 'skills' ? ' PluginLibraryTab--active' : ''
+            }`}
             onClick={() => setTab('skills')}
           >
             Skills

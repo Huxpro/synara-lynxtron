@@ -92,6 +92,17 @@ describe('Lynx plugin library', () => {
     );
 
     expect(pageSource).toContain('className="PluginLibraryTabs"');
+    expect(pageSource).toContain("tab === 'plugins' ? ' PluginLibraryTab--active' : ''");
+    expect(pageSource).toContain("tab === 'skills' ? ' PluginLibraryTab--active' : ''");
+    expect(styles).toMatch(
+      /\.PluginLibraryTabs\s*\{[^}]*gap:\s*12px;/s
+    );
+    expect(styles).toMatch(
+      /\.PluginLibraryTab\.LxButton\s*\{[^}]*height:\s*40px;[^}]*border-bottom-width:\s*2px;[^}]*border-radius:\s*0;[^}]*background-color:\s*transparent;/s
+    );
+    expect(styles).toMatch(
+      /\.PluginLibraryTab--active\.LxButton\s*\{[^}]*border-bottom-color:\s*var\(--foreground\);/s
+    );
     expect(styles).toMatch(
       /\.PluginLibraryHeader\s*\{[^}]*height:\s*40px;[^}]*min-height:\s*40px;/s
     );
