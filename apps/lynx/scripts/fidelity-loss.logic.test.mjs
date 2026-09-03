@@ -1483,6 +1483,45 @@ test('supersedes only the committed wide Plugin Skills Browser state', () => {
   }
 });
 
+test('supersedes only the pre-fix current Plugin Skills Browser state', () => {
+  const ledger = [
+    {
+      id: 'plugin-skills-postfix-current',
+      affectedStoryPrefixes: ['2026-09-02--plugins-skills-current-committed'],
+      affectedStateKeys: ['skills-wide-light'],
+      affectedClientPairs: ['web:lynx'],
+      supersededAt: 'plugin-postfix',
+    },
+  ];
+  const commitIndexByHash = new Map([['plugin-postfix', 13]]);
+  const storyId = '2026-09-02--plugins-skills-current-committed';
+
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, stateKey: 'skills-wide-light', leftClient: 'web', rightClient: 'lynx' },
+      13,
+      ledger,
+      commitIndexByHash
+    )?.id,
+    'plugin-skills-postfix-current'
+  );
+  for (const sample of [
+    { storyId, stateKey: 'skills-wide-light', leftClient: 'lynx', rightClient: 'native' },
+    { storyId, stateKey: 'plugins-wide-light', leftClient: 'web', rightClient: 'lynx' },
+    {
+      storyId: '2026-09-03--plugins-skills-postfix-current',
+      stateKey: 'skills-light-1280x820',
+      leftClient: 'web',
+      rightClient: 'lynx',
+    },
+  ]) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(sample, 13, ledger, commitIndexByHash),
+      null
+    );
+  }
+});
+
 test('supersedes only the retained transcript scroll states at their commit boundary', () => {
   const ledger = [
     {

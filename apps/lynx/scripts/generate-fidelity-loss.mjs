@@ -104,6 +104,22 @@ const reliabilityLedger = [
 ];
 const productEvidenceSupersessionLedger = [
   {
+    id: 'plugin-skills-postfix-current',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: ['2026-09-02--plugins-skills-current-committed'],
+    affectedStateKeys: ['skills-wide-light'],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: '1596dfa41',
+    summary:
+      'The first committed Plugin Skills recapture predates the final provider-label/icon paint, Web-exact header capsule, and wide-grid rhythm corrections.',
+    resolution:
+      'Committed retained evidence uses the same backend, snapshot, complete Codex Skills catalog, expanded project state, light 1280x820 DPR1 viewport, and overlay-free state. Current MAE is 1.1908321128248047%.',
+    evidence: [
+      'shots/2026-09-03/plugins-skills-postfix-current/notes.md',
+      'shots/2026-09-03/plugins-skills-postfix-current/pngs.sha256',
+    ],
+  },
+  {
     id: 'plugin-skills-wide-current-committed',
     type: 'superseded-product-snapshot',
     affectedStoryPrefixes: ['2026-08-14--plugins--visual-matrix'],
