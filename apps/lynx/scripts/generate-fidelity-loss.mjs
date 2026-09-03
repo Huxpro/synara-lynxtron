@@ -474,6 +474,22 @@ const visualPairOverrides = new Map([
 ]);
 const harnessIssueLedger = [
   {
+    id: 'settings-sidebar-seam-hydration-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: '2da06b390',
+    affectedStoryIds: ['2026-08-07--settings-sidebar-seam-current'],
+    affectedStateKeys: ['raw'],
+    affectedClientPairs: ['lynx:native'],
+    summary:
+      'The Settings sidebar seam pair does not share product hydration or transport state: Lynx-for-Web is still showing Loading preferences, while Native renders the complete General form plus a Synara is offline / Retry notice.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'The retained 256px sidebar, 244px Back/Search rails, 236px search shell, and zero-border geometry remain valid focused evidence. Only the mismatched full-frame Lynx-to-Native color comparison is excluded.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'composer-token-current-transcript-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '79aeca05c',

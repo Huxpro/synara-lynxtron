@@ -988,6 +988,28 @@ complete matched full-frame pair. The latest complete 576x420 acceptance is
 dark `864x1084` with a different eight-item Suggested/Recent catalog, so it
 cannot supersede this historical light matrix cell.
 
+## Settings sidebar seam capture-state correction
+
+Direct inspection disproved the August 7 Settings sidebar-seam full-frame
+pair's comparability. Lynx-for-Web is still rendering `Loading preferences...`
+with no form, while Native renders the complete General form and an offline
+`Synara is offline / Retry` notice. An exact `lynx:native`, `raw`, story-scoped
+harness issue now excludes only that color comparison. The retained focused
+geometry remains valid: both engines prove the 256px sidebar, 244px Back/Search
+rails, 236px search shell, Settings content at x=256, and zero authored right
+border. Fidelity-loss logic passes `70/70`; regeneration changes accepted pairs
+from `142` to `141` while the current 24-pair median
+`0.5514469253148414%` and total loss `8.331737878769307` remain unchanged.
+
+The August 18 Usage mixed-auth warning-icon pair remains scored at
+`1.2018844402598439%`. Both clients share backend and snapshot, dark
+`1280x820`, 336px Settings sidebar, Codex 10%-left local history, Claude
+unauthenticated local fallback, Cursor unavailable state, warning copy, and
+14x14 warning-icon positions. Native integer line rounding and its broader
+full-page scale are genuine product residuals. This distinct mixed-auth state
+does not supersede the older light local-fallback sample and is not superseded
+by that sample.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
