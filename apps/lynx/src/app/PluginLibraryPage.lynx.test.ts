@@ -133,6 +133,13 @@ describe('Lynx plugin library', () => {
     expect(styles).toMatch(
       /\.PluginLibraryProviderChoices \.LxButton\s*\{[^}]*flex-shrink:\s*0;/s
     );
+    expect(pageSource).toContain("PluginLibraryProviderChoice--active");
+    expect(styles).toMatch(
+      /\.PluginLibraryProviderChoice--active\.LxButton,[\s\S]*?background-color:\s*var\(--foreground\);/s
+    );
+    expect(styles).toMatch(
+      /\.PluginLibraryProviderChoice--active\.LxButton \.LxButton__text\s*\{[^}]*color:\s*var\(--color-background-surface\);/s
+    );
     expect(styles).toMatch(
       /\.PluginLibraryProviders\s*\{[^}]*flex:\s*none;[^}]*width:\s*max-content;[^}]*max-width:\s*100%;/s
     );

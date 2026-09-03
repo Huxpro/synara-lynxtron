@@ -223,6 +223,11 @@ export function PluginLibraryPage() {
                 key={candidate}
                 variant={provider === candidate ? 'secondary' : 'ghost'}
                 size="sm"
+                className={`PluginLibraryProviderChoice${
+                  provider === candidate
+                    ? ' PluginLibraryProviderChoice--active'
+                    : ''
+                }`}
                 onClick={() => {
                   setProvider(candidate);
                   setSearch('');

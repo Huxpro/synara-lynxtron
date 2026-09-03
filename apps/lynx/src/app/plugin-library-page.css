@@ -76,6 +76,15 @@
   font-weight: 500;
 }
 
+.PluginLibraryProviderChoice--active.LxButton,
+.PluginLibraryProviderChoice--active.LxButton.ui-active {
+  background-color: var(--foreground);
+}
+
+.PluginLibraryProviderChoice--active.LxButton .LxButton__text {
+  color: var(--color-background-surface);
+}
+
 .PluginLibraryProviderChoices .OpenAIProviderIcon {
   width: 14px;
   height: 14px;
