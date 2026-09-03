@@ -120,6 +120,9 @@ describe('Lynx plugin library', () => {
       /\.PluginLibraryProviderChoices \.LxButton\s*\{[^}]*flex-shrink:\s*0;/s
     );
     expect(styles).toMatch(
+      /\.PluginLibraryProviders\s*\{[^}]*flex:\s*none;[^}]*width:\s*max-content;[^}]*max-width:\s*100%;/s
+    );
+    expect(styles).toMatch(
       /\.SliceRoot--viewport-compact \.PluginLibraryHeader,[\s\S]*?\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.PluginLibraryHeader\s*\{[^}]*height:\s*92px;[^}]*flex-direction:\s*column;/s
     );
     expect(styles).toMatch(

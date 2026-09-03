@@ -31,8 +31,9 @@
 }
 
 .PluginLibraryProviders {
-  flex: 1;
-  width: auto;
+  flex: none;
+  width: max-content;
+  max-width: 100%;
   min-width: 0;
 }
 
