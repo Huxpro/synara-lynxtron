@@ -415,7 +415,10 @@ const productEvidenceSupersessionLedger = [
   {
     id: 'settings-appsnap-current-native-capability',
     type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-05--settings-appsnap-current'],
+    affectedStoryPrefixes: [
+      '2026-08-05--settings-appsnap-current',
+      '2026-08-05--settings-appsnap-dark-1440',
+    ],
     affectedClientPairs: ['lynx:native'],
     supersededAt: '6cf595b46',
     summary:

@@ -956,6 +956,21 @@ remain intact. Fidelity-loss logic passes `66/66`; accepted count changes from
 146 to 145 while rolling median and total loss remain
 `0.5514469253148414%` and `8.331737878769307`.
 
+## AppSnap dark Native supersession
+
+The existing AppSnap Native product supersession covered only the August 5
+light/current path even though the dark `1440x900` sibling records the same
+retired `unavailable` capability state. Commit `6cf595b46` and later exact-owned
+AppSnap evidence establish the replacement Native behavior independently of
+theme: real permission state, shortcut listener, capture sound, destination,
+capture attachment, restart recovery, and explicit cleanup.
+
+The supersession now names both old AppSnap story prefixes while remaining
+strictly `lynx:native`; Browser overlay mismatches and later AppSnap evidence
+are untouched. Fidelity-loss logic passes `68/68`; accepted count changes from
+144 to 143 while rolling median and total loss remain
+`0.5514469253148414%` and `8.331737878769307`.
+
 ## P8 Pull Requests light Native supersession
 
 The P8 light `1280x820` Pull Requests Native pair predates the final route

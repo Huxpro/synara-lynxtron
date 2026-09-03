@@ -876,6 +876,55 @@ test('keeps August 5 Integrations and AppSnap harness scope separate from Native
   );
 });
 
+test('supersedes both stale AppSnap Native capability states only', () => {
+  const ledger = [
+    {
+      id: 'settings-appsnap-current-native-capability',
+      affectedStoryPrefixes: [
+        '2026-08-05--settings-appsnap-current',
+        '2026-08-05--settings-appsnap-dark-1440',
+      ],
+      affectedClientPairs: ['lynx:native'],
+      supersededAt: 'appsnap-native',
+    },
+  ];
+  const commitIndexByHash = new Map([['appsnap-native', 10]]);
+
+  for (const storyId of [
+    '2026-08-05--settings-appsnap-current',
+    '2026-08-05--settings-appsnap-dark-1440',
+  ]) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(
+        { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+        10,
+        ledger,
+        commitIndexByHash
+      )?.id,
+      'settings-appsnap-current-native-capability'
+    );
+  }
+  for (const sample of [
+    {
+      storyId: '2026-08-05--settings-appsnap-dark-1440',
+      stateKey: 'raw',
+      leftClient: 'web',
+      rightClient: 'lynx',
+    },
+    {
+      storyId: '2026-08-05--settings-appearance-dark-1440',
+      stateKey: 'raw',
+      leftClient: 'lynx',
+      rightClient: 'native',
+    },
+  ]) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(sample, 10, ledger, commitIndexByHash),
+      null
+    );
+  }
+});
+
 test('excludes August 5 Profile and Advanced Browser provider-state mismatches only', () => {
   const issue = {
     affectedStoryIds: [
