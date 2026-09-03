@@ -193,7 +193,6 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding-right: 10px;
 }
 
 .PluginLibrarySkillGrid {
@@ -203,11 +202,12 @@
 }
 
 .PluginLibrarySectionTitle {
+  margin-top: -1px;
   padding: 8px 12px 4px;
   color: var(--foreground);
   font-size: 15px;
   font-weight: 600;
-  line-height: 20px;
+  line-height: 22.5px;
 }
 
 .PluginLibraryRow {

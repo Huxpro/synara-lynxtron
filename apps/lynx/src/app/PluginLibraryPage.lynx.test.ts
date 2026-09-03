@@ -106,11 +106,14 @@ describe('Lynx plugin library', () => {
     expect(styles).toMatch(
       /\.PluginLibraryHeader\s*\{[^}]*gap:\s*12px;[^}]*height:\s*40px;[^}]*min-height:\s*40px;[^}]*padding:\s*0 24px;/s
     );
-    expect(styles).toMatch(
-      /\.PluginLibraryRows--skills\s*\{[^}]*padding-right:\s*10px;/s
+    expect(styles).not.toMatch(
+      /(?:^|\n)\.PluginLibraryRows--skills\s*\{[^}]*padding-right:/s
     );
     expect(styles).toMatch(
       /\.PluginLibraryRow\s*\{[^}]*min-height:\s*68px;/s
+    );
+    expect(styles).toMatch(
+      /\.PluginLibrarySectionTitle\s*\{[^}]*margin-top:\s*-1px;[^}]*font-size:\s*15px;[^}]*line-height:\s*22\.5px;/s
     );
     expect(styles).toMatch(
       /\.PluginLibraryInstalled\s*\{[^}]*border-color:\s*color-mix\(in srgb, var\(--border\) 40%, transparent\);[^}]*color:\s*color-mix\(in srgb, var\(--muted-foreground\) 60%, transparent\);/s
