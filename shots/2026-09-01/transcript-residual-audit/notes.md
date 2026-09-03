@@ -1041,6 +1041,23 @@ requests, and no transport/RPC errors. Current MAE is
 evidence commit becomes the supersession boundary. Artifacts are under
 `shots/2026-09-03/settings-behavior-light-current/`.
 
+The screenshot archive and loss ledger were regenerated from a detached clean
+worktree after the evidence and supersession commits. This was necessary
+because generating from the dirty main tree also indexed unrelated untracked
+Plugin and Markdown screenshot directories. The clean archive contains 1,430
+screenshots across 18 evidence days. It newly activates only committed evidence
+that the prior archive had not indexed: Behavior dark, Projects empty, and
+Behavior light.
+
+The committed Markdown syntax-highlight diagnostic is now explicitly excluded
+from visual MAE at both retained themes because its notes record Electron DPR2
+versus Lynx-for-Web DPR1. It remains functional highlighting evidence and does
+not replace the strict-DPR Markdown surface pair. Fidelity-loss logic passes
+`72/72`; archive logic passes `5/5`. The latest clean point has `143` accepted
+and `1` rejected pair, rolling median `0.6060078960351831%`, and total loss
+`8.541905846562244`. The change from the stale pre-index snapshot is evidence
+activation, not a product regression.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
