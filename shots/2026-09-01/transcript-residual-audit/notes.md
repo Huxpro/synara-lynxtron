@@ -912,3 +912,11 @@ An exact product supersession therefore retires only
 cells remain untouched. Fidelity-loss logic passes `63/63`; accepted count
 changes from 149 to 148 while the rolling median and total loss remain
 `0.5578416427546629%` and `8.354119389808682`.
+
+The even earlier `2026-08-02--harness--composer` light Browser pair represents
+the same empty New Chat semantic state and records the old Lynx `+8px`
+horizontal / `+7.25px` vertical composer and tray offsets in its own notes. The
+same `180a6b27` landing evidence therefore supersedes only that story's `light`
+`web:lynx` pair. Traits-menu, filtered-skill, selected-chip, and Native evidence
+remain outside the rule. Fidelity-loss logic passes `64/64`; accepted count
+changes from 148 to 147, with rolling median and total loss unchanged.

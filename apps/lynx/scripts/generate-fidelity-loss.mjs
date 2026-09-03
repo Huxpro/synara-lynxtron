@@ -300,6 +300,22 @@ const productEvidenceSupersessionLedger = [
     ],
   },
   {
+    id: 'initial-composer-current-landing',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: ['2026-08-02--harness--composer'],
+    affectedStateKeys: ['light'],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: '180a6b27e',
+    summary:
+      'The initial Composer light pair records the old +8px horizontal and +7.25px vertical Lynx landing offsets.',
+    resolution:
+      'Later retained light 1280x820 DPR1 evidence covers the same empty New Chat state with exact 256px sidebar ownership and subpixel-aligned heading, composer, and project tray anchors.',
+    evidence: [
+      'shots/2026-08-02/harness/composer/notes.md',
+      'shots/2026-08-08/current-head-landing-light-1280/notes.md',
+    ],
+  },
+  {
     id: 'p8-q2-settings-general-current-native-shell',
     type: 'superseded-product-snapshot',
     affectedStoryPrefixes: ['2026-08-03--p8-q2--settings--'],
