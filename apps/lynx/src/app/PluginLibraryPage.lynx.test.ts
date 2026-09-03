@@ -104,7 +104,7 @@ describe('Lynx plugin library', () => {
       /\.PluginLibraryTab--active\.LxButton\s*\{[^}]*border-bottom-color:\s*var\(--foreground\);/s
     );
     expect(styles).toMatch(
-      /\.PluginLibraryHeader\s*\{[^}]*height:\s*40px;[^}]*min-height:\s*40px;/s
+      /\.PluginLibraryHeader\s*\{[^}]*gap:\s*12px;[^}]*height:\s*40px;[^}]*min-height:\s*40px;[^}]*padding:\s*0 24px;/s
     );
     expect(styles).toMatch(
       /\.PluginLibraryRows--skills\s*\{[^}]*padding-right:\s*10px;/s
@@ -131,7 +131,7 @@ describe('Lynx plugin library', () => {
       /\.PluginLibrarySearch \.LxInputControl,[\s\S]*?\.PluginLibrarySearch \.LxInput\s*\{[^}]*height:\s*30px;/s
     );
     expect(styles).toMatch(
-      /\.PluginLibraryProviderChoices \.LxButton\s*\{[^}]*flex-shrink:\s*0;[^}]*gap:\s*6px;[^}]*height:\s*28px;[^}]*padding:\s*0 10px;/s
+      /\.PluginLibraryProviderChoices \.LxButton\s*\{[^}]*flex-shrink:\s*0;[^}]*gap:\s*6px;[^}]*height:\s*28px;[^}]*padding:\s*0 10px;[^}]*border-width:\s*0;/s
     );
     expect(pageSource).toContain("PluginLibraryProviderChoice--active");
     expect(pageSource).toContain(
@@ -144,7 +144,10 @@ describe('Lynx plugin library', () => {
       /\.PluginLibraryProviderChoice--active\.LxButton \.PluginLibraryProviderLabel\s*\{[^}]*color:\s*var\(--color-background-surface\);/s
     );
     expect(styles).toMatch(
-      /\.PluginLibraryProviders\s*\{[^}]*flex:\s*none;[^}]*width:\s*max-content;[^}]*max-width:\s*100%;/s
+      /\.PluginLibraryProviders\s*\{[^}]*flex:\s*none;[^}]*width:\s*max-content;[^}]*max-width:\s*100%;[^}]*padding:\s*2px;[^}]*border-width:\s*1px;[^}]*border-radius:\s*999px;/s
+    );
+    expect(styles).toMatch(
+      /\.PluginLibraryProviderChoices\s*\{[^}]*gap:\s*0;/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-compact \.PluginLibraryHeader,[\s\S]*?\.SliceRoot--viewport-medium\s+\.AppMain--sidebar-closed\s+\.PluginLibraryHeader\s*\{[^}]*height:\s*92px;[^}]*flex-direction:\s*column;/s
