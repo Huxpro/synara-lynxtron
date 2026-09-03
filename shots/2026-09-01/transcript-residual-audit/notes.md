@@ -872,6 +872,12 @@ to Lynx `color-mix(...)` tokens. Its source contract, ReactLynx scan, and diff
 check pass; the change remains grouped into the pending post-fix Plugin Skills
 visual recapture.
 
+Provider pills also retained a narrower Lynx-only internal rhythm: 4px icon gap
+and 8px horizontal padding versus Electron's 6px and 10px. Commit `4619a6e95`
+matches those exact values while preserving the 28px capsule height. The source
+contract, ReactLynx scanner, and diff check pass; this remains grouped into the
+pending Plugin Skills visual recapture.
+
 The retained header also showed Lynx rounded secondary pills where Electron uses
 40px text tabs with a 2px active underline. Commit `2ee373f92` adds a
 Plugin-local tab class and active modifier with Electron's exact height, 12px
