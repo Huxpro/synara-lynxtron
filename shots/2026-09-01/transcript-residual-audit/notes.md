@@ -903,6 +903,28 @@ the installed-badge `color-mix` rules. This closes the combined production-build
 boundary only; it does not supersede the retained `2.123356298820341%` visual
 pair or claim visual certification before an exact matched recapture.
 
+## Settings Appearance Native residual audit
+
+The two high residual August 5 Appearance Lynx-to-Native pairs remain valid.
+Their PNGs are rotated out of the working tree, so the exact images, capture
+manifests, geometry, and notes were recovered read-only from Git commit
+`6b3b1be9d`. The light pair shares route `settings-appearance`, light theme,
+comfortable density, default interaction state, snapshot
+`803ae581f62d...`, and logical `1280x820`; the dark pair shares the same route,
+state, and density, snapshot `8855c7bfa8d9...`, and logical `1440x900`. Native's
+raw images are DPR2 LynxView captures of those same logical cells, not a
+different viewport.
+
+Direct image inspection shows a consistent historical Native scale residual:
+larger sidebar, heading, row, input, and card typography/control paint relative
+to Lynx-for-Web. That is product fidelity loss, not theme, route, snapshot, or
+renderer-local state contamination, so the `2.419351660887932%` light and
+`2.1738281691277335%` dark pairs stay scored. The later August 8 Appearance
+evidence proves only the 16px/0.8 theme-icon anatomy and the two 0.5px Theme
+Pack context corrections that remove 1px accumulated vertical drift. It does
+not cover the complete first-screen scale/composition and cannot supersede
+either full-frame pair.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
