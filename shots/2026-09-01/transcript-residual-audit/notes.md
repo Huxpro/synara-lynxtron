@@ -928,6 +928,20 @@ activation states, and Native evidence remain scored. Fidelity-loss logic passes
 `65/65`; accepted count changes from 147 to 146, rolling median becomes
 `0.5514469253148414%`, and total loss becomes `8.331737878769307`.
 
+## Settings Search Native state correction
+
+The Settings Search capture metadata explicitly labels Lynx-for-Web as
+`interactionState: filtered` with the `Archived / Archived threads` result,
+while Native is `interactionState: default` and its notes say filtered Native
+interaction was not claimed. Their `raw` whole-frame pair therefore compares
+different UI states and cannot measure Native parity.
+
+An exact `story + raw + lynx:native` harness rule excludes only that pair. Web
+filtered interaction, Native default anatomy, and focused search/input evidence
+remain intact. Fidelity-loss logic passes `66/66`; accepted count changes from
+146 to 145 while rolling median and total loss remain
+`0.5514469253148414%` and `8.331737878769307`.
+
 The even earlier `2026-08-02--harness--composer` light Browser pair represents
 the same empty New Chat semantic state and records the old Lynx `+8px`
 horizontal / `+7.25px` vertical composer and tray offsets in its own notes. The

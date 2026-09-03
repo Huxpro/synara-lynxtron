@@ -54,5 +54,9 @@ events.
 - Native default-state required roles: light root, search shell, native input,
   and navigation row; exact-client console is empty. Native filtered interaction
   is not claimed because driving the real macOS text client would take focus.
+- Because the retained Lynx-for-Web frame is filtered while the Native frame is
+  explicitly default anatomy, their whole-frame `raw` pair is a capture-state
+  mismatch and is excluded from visual MAE. Both artifacts remain valid for
+  their separately stated interaction/anatomy claims.
 - Focused search/icon/layout suites: 7/7.
 - No user setting or project data changed. Owned KV was restored byte-exact.

@@ -957,6 +957,34 @@ test('excludes only the offline Sidebar primary-shortcut Browser stories', () =>
   }
 });
 
+test('excludes only the mismatched Settings Search Native default frame', () => {
+  const issue = {
+    affectedStoryIds: ['2026-08-06--settings-search-current'],
+    affectedStateKeys: ['raw'],
+    affectedClientPairs: ['lynx:native'],
+  };
+  const storyId = '2026-08-06--settings-search-current';
+  assert.equal(
+    visualPairMatchesIssue(
+      { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+      issue
+    ),
+    true
+  );
+  for (const sample of [
+    { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+    { storyId, stateKey: 'filtered', leftClient: 'lynx', rightClient: 'native' },
+    {
+      storyId: '2026-08-06--settings-search-other',
+      stateKey: 'raw',
+      leftClient: 'lynx',
+      rightClient: 'native',
+    },
+  ]) {
+    assert.equal(visualPairMatchesIssue(sample, issue), false);
+  }
+});
+
 test('excludes only the mixed Composer model-row open state', () => {
   const issue = {
     affectedStoryIds: ['2026-08-06--composer-model-row-text-current'],

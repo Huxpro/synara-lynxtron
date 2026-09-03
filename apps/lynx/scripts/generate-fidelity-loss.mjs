@@ -825,6 +825,22 @@ const harnessIssueLedger = [
     resolutionStoryPrefixes: [],
   },
   {
+    id: 'settings-search-native-interaction-state-mismatch',
+    type: 'capture-product-state-mismatch',
+    detectedAt: '76118c046',
+    affectedStoryIds: ['2026-08-06--settings-search-current'],
+    affectedStateKeys: ['raw'],
+    affectedClientPairs: ['lynx:native'],
+    summary:
+      'The Settings Search Lynx-for-Web frame is the filtered Archived result state, while its Native sibling is explicitly retained as default input/navigation anatomy without the query or result list.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'Only the mismatched Lynx-to-Native whole-frame pair is excluded. Browser search interaction evidence, Native default anatomy, and focused search/input coverage remain valid independently.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'providers-dark-aug06-provider-overlay-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '6cd046c06',
