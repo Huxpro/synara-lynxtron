@@ -853,3 +853,10 @@ scrolling as a narrow-width fallback. The new source contract and ReactLynx
 scanner pass, as does the committed-tree Lynx-for-Web build. The focused Rstest runner was terminated by system resource
 pressure before assertions, so this boundary remains pending a clean test rerun
 and matched screenshot rather than being called visually certified.
+
+The grid audit also found that Lynx rendered every installed badge with full
+border and icon opacity while Electron uses `border-border/40` and
+`text-muted-foreground/60`. Commit `a6d93fed6` maps those exact alpha semantics
+to Lynx `color-mix(...)` tokens. Its source contract, ReactLynx scan, and diff
+check pass; the change remains grouped into the pending post-fix Plugin Skills
+visual recapture.
