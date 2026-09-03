@@ -913,6 +913,21 @@ cells remain untouched. Fidelity-loss logic passes `63/63`; accepted count
 changes from 149 to 148 while the rolling median and total loss remain
 `0.5578416427546629%` and `8.354119389808682`.
 
+## Composer provider activation supersession
+
+The `bc4a1b295` provider-activation Browser pair is not a current visual
+residual: its Web frame renders seven real OpenCode models while Lynx-for-Web
+still shows only the static `OpenAI GPT-5` fallback. The immediately following
+`6c6392f1e` retained pair keeps the same light `1280x820` provider/status state
+and hydrates those same seven OpenCode models into both clients.
+
+An exact supersession retires only
+`2026-08-11--current-head-composer-provider-activation-light-1280`, state
+`models`, pair `web:lynx`. The replacement dynamic-model pair, other provider
+activation states, and Native evidence remain scored. Fidelity-loss logic passes
+`65/65`; accepted count changes from 147 to 146, rolling median becomes
+`0.5514469253148414%`, and total loss becomes `8.331737878769307`.
+
 The even earlier `2026-08-02--harness--composer` light Browser pair represents
 the same empty New Chat semantic state and records the old Lynx `+8px`
 horizontal / `+7.25px` vertical composer and tray offsets in its own notes. The

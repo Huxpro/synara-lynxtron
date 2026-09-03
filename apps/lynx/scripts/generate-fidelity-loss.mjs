@@ -316,6 +316,24 @@ const productEvidenceSupersessionLedger = [
     ],
   },
   {
+    id: 'composer-provider-activation-current-dynamic-models',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: [
+      '2026-08-11--current-head-composer-provider-activation-light-1280',
+    ],
+    affectedStateKeys: ['models'],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: '6c6392f1e',
+    summary:
+      'The provider-activation frame predates first-render dynamic model hydration and compares Web seven-model OpenCode data against the Lynx static OpenAI GPT-5 fallback.',
+    resolution:
+      'The immediately following retained light 1280x820 DPR1 dynamic-model evidence uses the same provider and status overlay while both clients render the same seven OpenCode models.',
+    evidence: [
+      'shots/2026-08-11/current-head-composer-provider-activation-light-1280/notes.md',
+      'shots/2026-08-11/current-head-composer-dynamic-models-light-1280/notes.md',
+    ],
+  },
+  {
     id: 'p8-q2-settings-general-current-native-shell',
     type: 'superseded-product-snapshot',
     affectedStoryPrefixes: ['2026-08-03--p8-q2--settings--'],

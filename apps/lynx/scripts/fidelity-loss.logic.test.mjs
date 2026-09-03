@@ -1650,6 +1650,48 @@ test('supersedes only the initial Composer light Browser pair', () => {
   }
 });
 
+test('supersedes only the static-fallback provider activation model pair', () => {
+  const ledger = [
+    {
+      id: 'composer-provider-activation-current-dynamic-models',
+      affectedStoryPrefixes: [
+        '2026-08-11--current-head-composer-provider-activation-light-1280',
+      ],
+      affectedStateKeys: ['models'],
+      affectedClientPairs: ['web:lynx'],
+      supersededAt: 'dynamic-models',
+    },
+  ];
+  const commitIndexByHash = new Map([['dynamic-models', 12]]);
+  const storyId =
+    '2026-08-11--current-head-composer-provider-activation-light-1280';
+
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, stateKey: 'models', leftClient: 'web', rightClient: 'lynx' },
+      12,
+      ledger,
+      commitIndexByHash
+    )?.id,
+    'composer-provider-activation-current-dynamic-models'
+  );
+  for (const sample of [
+    { storyId, stateKey: 'models', leftClient: 'lynx', rightClient: 'native' },
+    { storyId, stateKey: 'providers', leftClient: 'web', rightClient: 'lynx' },
+    {
+      storyId: '2026-08-11--current-head-composer-dynamic-models-light-1280',
+      stateKey: 'models',
+      leftClient: 'web',
+      rightClient: 'lynx',
+    },
+  ]) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(sample, 12, ledger, commitIndexByHash),
+      null
+    );
+  }
+});
+
 test('supersedes both client pairs when later three-client product evidence exists', () => {
   const ledger = [
     {
