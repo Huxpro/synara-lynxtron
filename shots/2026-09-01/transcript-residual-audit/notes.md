@@ -893,6 +893,16 @@ and inactive/disabled providers unchanged. Source contracts, the ReactLynx
 scanner, and diff check pass; it remains grouped into the pending Plugin Skills
 visual recapture.
 
+The combined correction stack was then verified from a detached clean worktree
+at committed `38cb5da1f`. `bun install --frozen-lockfile --ignore-scripts` and
+`bun run build:web` both completed successfully. Inspection of the generated
+Lynx-for-Web bundle confirms the current 40px/12px tab geometry, intrinsic
+capped provider rail, 6px/10px provider-button rhythm, foreground/surface active
+provider tokens, 32px/30px search geometry with a 23px following margin, and
+the installed-badge `color-mix` rules. This closes the combined production-build
+boundary only; it does not supersede the retained `2.123356298820341%` visual
+pair or claim visual certification before an exact matched recapture.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
