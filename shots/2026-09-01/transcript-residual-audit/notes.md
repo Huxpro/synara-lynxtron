@@ -964,6 +964,17 @@ three, direct image inspection isolates the same historical Native full-page
 type/control scaling. These are different canonical data snapshots, so the two
 populated proofs neither supersede the empty dashboard nor each other.
 
+The August 6 Usage local-fallback and Providers OpenCode Native pairs are also
+retained. Usage has identical real Codex/Claude archive totals, 96%-used Weekly
+limit, local-fallback warnings, Cursor unavailable state, light `1440x900`
+cell, and ordering in both engines; its `1.8071856088114255%` residual is the
+same historical Native full-page density/scale difference. Providers has the
+same installed versions, three-update count, expanded OpenCode row, tab, input
+order/types, and off WebSocket switch at the same logical cell; its
+`1.7451568228917584%` residual is likewise real. Later Usage warning-icon,
+reduced-motion disclosure, and compact provider-update evidence isolates local
+features or different states rather than replacing either complete frame.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
