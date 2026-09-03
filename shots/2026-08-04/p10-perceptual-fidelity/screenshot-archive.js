@@ -6,13 +6,13 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     "lastDay": "2026-09-03",
     "consecutiveCalendarDays": 18
   },
-  "imageCount": 1430,
+  "imageCount": 1432,
   "evidenceCount": 45,
-  "byteCount": 218872510,
-  "trackedCount": 130,
+  "byteCount": 219134337,
+  "trackedCount": 132,
   "untrackedCount": 0,
   "remoteCount": 1300,
-  "storyCount": 487,
+  "storyCount": 488,
   "stories": [
     {
       "id": "2026-08-02--harness--composer",
@@ -22547,6 +22547,42 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
       "sequence": false
     },
     {
+      "id": "2026-09-03--plugins-skills-postfix-current",
+      "day": "2026-09-03",
+      "directory": "plugins-skills-postfix-current",
+      "label": "Plugins Skills Postfix Current",
+      "images": [
+        {
+          "day": "2026-09-03",
+          "directory": "plugins-skills-postfix-current",
+          "name": "lynx-skills-light-1280x820.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-09-03/plugins-skills-postfix-current/lynx-skills-light-1280x820.png",
+          "repoPath": "shots/2026-09-03/plugins-skills-postfix-current/lynx-skills-light-1280x820.png",
+          "bytes": 118748,
+          "gitStatus": "tracked",
+          "client": "lynx"
+        },
+        {
+          "day": "2026-09-03",
+          "directory": "plugins-skills-postfix-current",
+          "name": "web-skills-light-1280x820.png",
+          "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-09-03/plugins-skills-postfix-current/web-skills-light-1280x820.png",
+          "repoPath": "shots/2026-09-03/plugins-skills-postfix-current/web-skills-light-1280x820.png",
+          "bytes": 143079,
+          "gitStatus": "tracked",
+          "client": "web"
+        }
+      ],
+      "evidence": [],
+      "imageCount": 2,
+      "evidenceCount": 0,
+      "clients": [
+        "lynx",
+        "web"
+      ],
+      "sequence": false
+    },
+    {
       "id": "2026-09-03--settings-behavior-light-current",
       "day": "2026-09-03",
       "directory": "settings-behavior-light-current",
@@ -40097,13 +40133,37 @@ globalThis.__SYNARA_SCREENSHOT_ARCHIVE__ = {
     },
     {
       "day": "2026-09-03",
-      "imageCount": 2,
+      "imageCount": 4,
       "evidenceCount": 0,
-      "byteCount": 151717,
-      "trackedCount": 2,
+      "byteCount": 413544,
+      "trackedCount": 4,
       "untrackedCount": 0,
       "remoteCount": 0,
       "directories": [
+        {
+          "directory": "plugins-skills-postfix-current",
+          "imageCount": 2,
+          "images": [
+            {
+              "day": "2026-09-03",
+              "directory": "plugins-skills-postfix-current",
+              "name": "lynx-skills-light-1280x820.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-09-03/plugins-skills-postfix-current/lynx-skills-light-1280x820.png",
+              "repoPath": "shots/2026-09-03/plugins-skills-postfix-current/lynx-skills-light-1280x820.png",
+              "bytes": 118748,
+              "gitStatus": "tracked"
+            },
+            {
+              "day": "2026-09-03",
+              "directory": "plugins-skills-postfix-current",
+              "name": "web-skills-light-1280x820.png",
+              "path": "https://raw.githubusercontent.com/Huxpro/synara-fidelity-assets/main/shots/2026-09-03/plugins-skills-postfix-current/web-skills-light-1280x820.png",
+              "repoPath": "shots/2026-09-03/plugins-skills-postfix-current/web-skills-light-1280x820.png",
+              "bytes": 143079,
+              "gitStatus": "tracked"
+            }
+          ]
+        },
         {
           "directory": "settings-behavior-light-current",
           "imageCount": 2,
