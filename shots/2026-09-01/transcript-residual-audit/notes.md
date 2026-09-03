@@ -956,6 +956,20 @@ remain intact. Fidelity-loss logic passes `66/66`; accepted count changes from
 146 to 145 while rolling median and total loss remain
 `0.5514469253148414%` and `8.331737878769307`.
 
+## Integrations dark Native supersession
+
+The existing Integrations Native supersession covered only the August 5
+light/current path. The dark `1440x900` sibling's metadata confirms the same
+old `empty-connections` surface, captured before `9962bf8a9` completed the
+responsive collections, project selection, disclosure state, input metadata,
+and full empty/create workflow.
+
+The supersession now names both old Integrations prefixes while remaining
+strictly `lynx:native`. Browser overlay classifications and the later connected
+row evidence remain independent. Fidelity-loss logic passes `69/69`; accepted
+count changes from 143 to 142 while rolling median and total loss remain
+`0.5514469253148414%` and `8.331737878769307`.
+
 ## AppSnap dark Native supersession
 
 The existing AppSnap Native product supersession covered only the August 5

@@ -400,7 +400,10 @@ const productEvidenceSupersessionLedger = [
   {
     id: 'settings-integrations-current-native-surface',
     type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-05--settings-integrations-current'],
+    affectedStoryPrefixes: [
+      '2026-08-05--settings-integrations-current',
+      '2026-08-05--settings-integrations-dark-1440',
+    ],
     affectedClientPairs: ['lynx:native'],
     supersededAt: '9962bf8a9',
     summary:
