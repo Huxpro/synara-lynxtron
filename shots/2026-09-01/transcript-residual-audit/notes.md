@@ -977,6 +977,17 @@ order/types, and off WebSocket switch at the same logical cell; its
 reduced-motion disclosure, and compact provider-update evidence isolates local
 features or different states rather than replacing either complete frame.
 
+The P10 `command-k-open-light-1280` Lynx-to-Native raw and normalized pairs
+remain scored at `1.4313590985174558%` and `1.0243878510583588%`. Direct image
+inspection shows a real historical product divergence: Native renders the
+palette, typography, controls, and shell at the old enlarged scale and includes
+a third Recent row (`In Progress seed task`), while Lynx-for-Web contains two
+Recent rows. Later light `1280x820` evidence closes individual radius, shadow,
+footer, label, keyboard-hint, and input contracts, but does not retain one exact
+complete matched full-frame pair. The latest complete 576x420 acceptance is
+dark `864x1084` with a different eight-item Suggested/Recent catalog, so it
+cannot supersede this historical light matrix cell.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
