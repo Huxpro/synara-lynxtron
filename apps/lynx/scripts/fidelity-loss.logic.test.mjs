@@ -1083,6 +1083,37 @@ test('excludes only the mismatched Settings Search Native default frame', () => 
   }
 });
 
+test('excludes only the diagnostic Markdown highlighting DPR-mismatched pairs', () => {
+  const issue = {
+    affectedStoryIds: ['2026-09-02--markdown-syntax-highlight-current'],
+    affectedStateKeys: ['light-1280x820', 'dark-1280x820'],
+    affectedClientPairs: ['web:lynx'],
+  };
+  const storyId = '2026-09-02--markdown-syntax-highlight-current';
+
+  for (const stateKey of issue.affectedStateKeys) {
+    assert.equal(
+      visualPairMatchesIssue(
+        { storyId, stateKey, leftClient: 'web', rightClient: 'lynx' },
+        issue
+      ),
+      true
+    );
+  }
+  for (const sample of [
+    { storyId, stateKey: 'light-1280x820', leftClient: 'lynx', rightClient: 'native' },
+    { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+    {
+      storyId: '2026-09-02--markdown-surface-current',
+      stateKey: 'light-1280x820',
+      leftClient: 'web',
+      rightClient: 'lynx',
+    },
+  ]) {
+    assert.equal(visualPairMatchesIssue(sample, issue), false);
+  }
+});
+
 test('excludes only the mismatched Settings sidebar seam Native frame', () => {
   const issue = {
     affectedStoryIds: ['2026-08-07--settings-sidebar-seam-current'],

@@ -490,6 +490,22 @@ const visualPairOverrides = new Map([
 ]);
 const harnessIssueLedger = [
   {
+    id: 'markdown-syntax-highlight-dpr-mismatch',
+    type: 'capture-viewport-mismatch',
+    detectedAt: 'ea4f2258d',
+    affectedStoryIds: ['2026-09-02--markdown-syntax-highlight-current'],
+    affectedStateKeys: ['light-1280x820', 'dark-1280x820'],
+    affectedClientPairs: ['web:lynx'],
+    summary:
+      'The diagnostic Markdown highlighting frames export to the same PNG dimensions but do not share runtime DPR: Electron reported DPR 2 while Lynx-for-Web reported DPR 1.',
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      'The frames remain functional syntax-highlighting evidence. They do not contribute to visual MAE and do not supersede the strict-DPR current Markdown surface pairs.',
+    resolutionStoryPrefixes: [],
+  },
+  {
     id: 'settings-sidebar-seam-hydration-state-mismatch',
     type: 'capture-product-state-mismatch',
     detectedAt: '2da06b390',
