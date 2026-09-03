@@ -953,6 +953,17 @@ Release History adds another About row and dialog, while repair reconciliation
 certifies the recovery transaction and feedback lifecycle rather than the same
 default whole frame.
 
+The three highest Profile Native residuals are also valid and independent. The
+default light `1280x820` pair has the same zeroed stats, empty heatmap, and
+empty plugin/model state in both engines (`1.8109763570062172%`). The populated
+plugins light `1440x900` pair has the same three prompts, activity cell, two
+plugin rows, counts, and one-model summary (`1.8538939320584202%`). The
+populated models light `1440x900` pair has the same three prompts, empty plugin
+column, two model rows, percentages, and tracks (`1.8281897038650847%`). In all
+three, direct image inspection isolates the same historical Native full-page
+type/control scaling. These are different canonical data snapshots, so the two
+populated proofs neither supersede the empty dashboard nor each other.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
