@@ -827,3 +827,19 @@ is a different 0-task fixture. The retained audit lives at
 `shots/2026-09-02/projects-overview-current-empty/`; the historical
 `2.7367782809261914%` Browser pair and its Native sibling remain scored pending
 an exact populated-fixture recapture.
+
+## Plugin Library search-height correction
+
+The retained Plugin Skills pair showed a local, independently attributable
+search-control mismatch: Electron's responsive InputGroup is 32px high at the
+wide viewport while Lynx fixed its shell and inner input to 42px and 40px.
+Commit `f1a2f6cb7` changes those Lynx values to 32px and 30px and increases the
+following margin from 13px to 23px, preserving the already-aligned Skills
+heading and grid positions. Focused coverage passes 3/3, the ReactLynx scanner
+reports zero issues, and committed-tree Lynx-for-Web and Desktop builds pass.
+
+A new visual pair was not retained: repeated agent-browser daemon startup
+failed with `EAGAIN` before the UI interaction could be performed. Browser
+cleanup was independently verified after each failure. The existing Plugin
+Skills pair remains scored until a later stable matched recapture measures the
+post-fix frame.
