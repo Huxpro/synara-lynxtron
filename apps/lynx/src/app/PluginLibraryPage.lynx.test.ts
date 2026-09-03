@@ -111,7 +111,10 @@ describe('Lynx plugin library', () => {
       /\.PluginLibraryContent\s*\{[^}]*max-width:/s
     );
     expect(styles).toMatch(
-      /\.PluginLibrarySearch\s*\{[^}]*max-width:\s*624px;[^}]*margin-bottom:\s*13px;/s
+      /\.PluginLibrarySearch\s*\{[^}]*max-width:\s*624px;[^}]*min-height:\s*32px;[^}]*margin-bottom:\s*23px;/s
+    );
+    expect(styles).toMatch(
+      /\.PluginLibrarySearch \.LxInputControl,[\s\S]*?\.PluginLibrarySearch \.LxInput\s*\{[^}]*height:\s*30px;/s
     );
     expect(styles).toMatch(
       /\.PluginLibraryProviderChoices \.LxButton\s*\{[^}]*flex-shrink:\s*0;/s
