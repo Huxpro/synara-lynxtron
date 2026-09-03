@@ -850,6 +850,6 @@ and clipping the provider list after Pi. Electron uses one flex spacer followed
 by an intrinsic-width provider rail. Commit `ce28e45e8` changes the Lynx rail to
 `flex: none`, `width: max-content`, and `max-width: 100%`, retaining horizontal
 scrolling as a narrow-width fallback. The new source contract and ReactLynx
-scanner pass. The focused Rstest runner was terminated by system resource
+scanner pass, as does the committed-tree Lynx-for-Web build. The focused Rstest runner was terminated by system resource
 pressure before assertions, so this boundary remains pending a clean test rerun
 and matched screenshot rather than being called visually certified.
