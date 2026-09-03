@@ -283,6 +283,23 @@ const productEvidenceSupersessionLedger = [
     ],
   },
   {
+    id: 'p9-composer-default-current-landing',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: ['2026-08-03--p9-u5-composer--browser--default'],
+    affectedStateKeys: ['screenshot'],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: '180a6b27e',
+    summary:
+      'The P9 Composer default Browser pair predates the shared 256px sidebar and current centered empty-landing geometry.',
+    resolution:
+      'Later retained light 1280x820 DPR1 evidence covers the same New Chat, empty draft, no selected project, Plan-off, Fast-off semantic state with exact sidebar/main ownership and subpixel-aligned heading and composer anchors.',
+    evidence: [
+      'shots/2026-08-03/p9-u5-composer/browser/default/web/assertions.json',
+      'shots/2026-08-03/p9-u5-composer/browser/default/lynx/assertions.json',
+      'shots/2026-08-08/current-head-landing-light-1280/notes.md',
+    ],
+  },
+  {
     id: 'p8-q2-settings-general-current-native-shell',
     type: 'superseded-product-snapshot',
     affectedStoryPrefixes: ['2026-08-03--p8-q2--settings--'],

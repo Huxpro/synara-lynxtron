@@ -896,3 +896,19 @@ samples already governed by the current replacement boundary. Fidelity-loss
 logic passes `62/62`; accepted count changes from 153 to 149, rolling median
 from `0.6448107988835652%` to `0.5578416427546629%`, and total loss from
 `8.658511436259841` to `8.354119389808682`.
+
+## P9 Composer default landing supersession
+
+The P9 Composer default Browser pair is internally matched, but its screenshot
+records the old 264px Lynx sidebar and vertically displaced landing stack. The
+later `180a6b27` evidence covers the same light `1280x820` DPR 1 New Chat state:
+empty draft, no selected project, Plan off, Fast off, no provider banner, and no
+Environment overlay. It proves exact 256px sidebar / 1024px main ownership and
+subpixel-aligned heading and composer anchors.
+
+An exact product supersession therefore retires only
+`2026-08-03--p9-u5-composer--browser--default`, state `screenshot`, pair
+`web:lynx`. P9 menus, tokens, Extras, project picker, attachment, and Native
+cells remain untouched. Fidelity-loss logic passes `63/63`; accepted count
+changes from 149 to 148 while the rolling median and total loss remain
+`0.5578416427546629%` and `8.354119389808682`.

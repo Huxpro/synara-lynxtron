@@ -1572,6 +1572,45 @@ test('supersedes only the four retained 1280 composer token states', () => {
   );
 });
 
+test('supersedes only the P9 Composer default Browser screenshot', () => {
+  const ledger = [
+    {
+      id: 'p9-composer-default-current-landing',
+      affectedStoryPrefixes: ['2026-08-03--p9-u5-composer--browser--default'],
+      affectedStateKeys: ['screenshot'],
+      affectedClientPairs: ['web:lynx'],
+      supersededAt: 'landing-current',
+    },
+  ];
+  const commitIndexByHash = new Map([['landing-current', 8]]);
+  const storyId = '2026-08-03--p9-u5-composer--browser--default';
+
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, stateKey: 'screenshot', leftClient: 'web', rightClient: 'lynx' },
+      8,
+      ledger,
+      commitIndexByHash
+    )?.id,
+    'p9-composer-default-current-landing'
+  );
+  for (const sample of [
+    { storyId, stateKey: 'screenshot', leftClient: 'lynx', rightClient: 'native' },
+    {
+      storyId: '2026-08-03--p9-u5-composer--browser--extras-default',
+      stateKey: 'screenshot',
+      leftClient: 'web',
+      rightClient: 'lynx',
+    },
+    { storyId, stateKey: 'open', leftClient: 'web', rightClient: 'lynx' },
+  ]) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(sample, 8, ledger, commitIndexByHash),
+      null
+    );
+  }
+});
+
 test('supersedes both client pairs when later three-client product evidence exists', () => {
   const ledger = [
     {
