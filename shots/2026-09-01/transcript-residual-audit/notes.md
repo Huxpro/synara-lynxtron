@@ -941,6 +941,18 @@ The later August 18 stdio roundtrip does not replace this frame: it is dark
 lifecycle plus three-client projection, but its different theme, viewport, and
 renderer-local connection state cannot supersede the light unpaired full frame.
 
+The August 5 Settings Advanced light `1280x820` and dark `1440x900`
+Lynx-to-Native pairs are likewise retained at `2.050243229913917%` and
+`1.7696187363834424%`. Their manifests and notes align route,
+`recovery-visible` state, theme, comfortable density, snapshot, and logical
+viewport; the Native images are DPR2 captures of the same cells. Direct image
+inspection again shows a genuine historical full-page scale difference in the
+sidebar, heading, cards, detail copy, and actions rather than harness
+contamination. Later Advanced work does not provide an exact replacement:
+Release History adds another About row and dialog, while repair reconciliation
+certifies the recovery transaction and feedback lifecycle rather than the same
+default whole frame.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
