@@ -1,0 +1,8 @@
+{
+  "href": "http://127.0.0.1:56610/lynx/index.html",
+  "viewport": { "innerWidth": 1280, "innerHeight": 820, "visualWidth": 1280, "visualHeight": 820, "devicePixelRatio": 1 },
+  "theme": "dark",
+  "visibleState": { "title": "Kanban", "taskCount": 0, "emptyOverview": true, "projectRow": "github", "providerUpdateOverlay": true },
+  "pageErrors": [],
+  "knownWarnings": ["using deprecated parameters for the initialization function"]
+}

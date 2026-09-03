@@ -1,0 +1,4 @@
+[log] [Lynxtron Web] Configuring nodejs module with script: http://127.0.0.1:56610/lynx/nodejs-adapter-web.js
+[log] [Lynxtron Web] Created Proxy Blob URL: blob:http://127.0.0.1:56610/89321d42-518a-4ee8-9ba0-d07a4917c8ce
+[log] [Lynxtron Web] Final nativeModulesMap: {bridge: "blob:http://127.0.0.1:56610/73679bce-1967-4bd3-8d31-c3e405e78798", nodejs: "blob:http://127.0.0.1:56610/89321d42-518a-4ee8-9ba0-d07a4917c8ce"}
+[warning] using deprecated parameters for the initialization function; pass a single object instead

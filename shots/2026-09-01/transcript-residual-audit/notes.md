@@ -810,3 +810,20 @@ state and was discarded. No SQLite writes or false supersession were used. All
 temporary threads were deleted with canonical commands or removed with their
 isolated state directory, and browser exit gates reached zero. P8 Kanban remains
 scored pending a retained exact three-Done recapture.
+
+## Current empty Projects overview dark audit
+
+A fresh commit-bounded Browser run used one isolated backend, dark `1280x820`
+DPR 1, the same `github` project row, provider-update overlay, and real visible
+`Kanban` navigation control in both clients. The current canonical snapshot has
+zero Kanban tasks, so both renderers show the same empty overview. Whole-frame
+MAE is `0.6836233909214092%`; both PNG dimensions and runtime viewports are
+exact, page-error buffers are empty, and Lynx-for-Web has only the named
+upstream initialization warning.
+
+This does not supersede the old P8-Q2 Projects cell. Its recorded snapshot SHA
+and notes describe populated project and Chats columns, while the current seed
+is a different 0-task fixture. The retained audit lives at
+`shots/2026-09-02/projects-overview-current-empty/`; the historical
+`2.7367782809261914%` Browser pair and its Native sibling remain scored pending
+an exact populated-fixture recapture.
