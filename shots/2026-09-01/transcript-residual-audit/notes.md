@@ -793,3 +793,20 @@ prompt in both clients. Current MAE is `0.5927520576131687%`, replacing the old
 `2.79470729444041%` Browser pair. Fidelity-loss logic passes `61/61`; accepted
 count becomes `153`, while rolling median and total loss remain
 `0.6448107988835652%` and `8.658511436259841`.
+
+## Current Kanban dark audit
+
+A current committed-tree Browser run used one isolated backend, dark
+`1280x820` DPR 1, the same project-scoped Kanban route, sidebar, cards, and
+provider-update overlay. With the seed's two real Done cards, whole-frame MAE
+was `0.6604728349673203%`, confirming that the modern shared card/sidebar/board
+composition has removed most of the old `2.7723045442770604%` residual.
+
+The old P8 cell has three Done cards. Attempts to build the exact third Done
+card stayed inside canonical product RPCs, but handoff cards correctly remained
+Draft until bootstrap and a real provider turn did not settle reproducibly. A
+three-card capture with two Draft and one Done measured a different product
+state and was discarded. No SQLite writes or false supersession were used. All
+temporary threads were deleted with canonical commands or removed with their
+isolated state directory, and browser exit gates reached zero. P8 Kanban remains
+scored pending a retained exact three-Done recapture.
