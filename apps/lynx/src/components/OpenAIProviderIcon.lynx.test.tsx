@@ -26,4 +26,11 @@ describe('Lynx provider icon coverage', () => {
     expect(icons[1]?.getAttribute('content')).toContain('viewBox="0 0 100 100"');
     expect(icons[2]?.getAttribute('content')).toContain('viewBox="0 0 800 800"');
   });
+
+  it('uses an explicit semantic paint when a surface overrides the default icon tone', () => {
+    render(<OpenAIProviderIcon provider="codex" color="#ffffff" />);
+
+    const icon = elementTree.root?.querySelector('.OpenAIProviderIcon');
+    expect(icon?.getAttribute('content')).toContain('#ffffff');
+  });
 });

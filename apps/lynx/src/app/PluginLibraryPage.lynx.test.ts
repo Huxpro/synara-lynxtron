@@ -37,7 +37,7 @@ describe('Lynx plugin library', () => {
     expect(pageSource).toContain('className="PluginLibraryWarning"');
     expect(pageSource).toContain("useState<ProviderKind>('codex')");
     expect(pageSource).toContain('DEFAULT_PROVIDER_ORDER.map');
-    expect(pageSource).toContain('<OpenAIProviderIcon provider={candidate} />');
+    expect(pageSource).toContain('provider={candidate}');
     expect(pageSource).toContain('providerDiscoveryItemAccent(props.label)');
     expect(pageSource).toContain('className="PluginLibraryProviderLabel"');
     expect(pageSource).toContain('<ListChecksIcon size={20}');
@@ -134,11 +134,14 @@ describe('Lynx plugin library', () => {
       /\.PluginLibraryProviderChoices \.LxButton\s*\{[^}]*flex-shrink:\s*0;[^}]*gap:\s*6px;[^}]*height:\s*28px;[^}]*padding:\s*0 10px;/s
     );
     expect(pageSource).toContain("PluginLibraryProviderChoice--active");
+    expect(pageSource).toContain(
+      'color={provider === candidate ? svgColors.surface : undefined}'
+    );
     expect(styles).toMatch(
       /\.PluginLibraryProviderChoice--active\.LxButton,[\s\S]*?background-color:\s*var\(--foreground\);/s
     );
     expect(styles).toMatch(
-      /\.PluginLibraryProviderChoice--active\.LxButton \.LxButton__text\s*\{[^}]*color:\s*var\(--color-background-surface\);/s
+      /\.PluginLibraryProviderChoice--active\.LxButton \.PluginLibraryProviderLabel\s*\{[^}]*color:\s*var\(--color-background-surface\);/s
     );
     expect(styles).toMatch(
       /\.PluginLibraryProviders\s*\{[^}]*flex:\s*none;[^}]*width:\s*max-content;[^}]*max-width:\s*100%;/s

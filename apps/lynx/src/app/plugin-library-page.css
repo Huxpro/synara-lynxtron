@@ -81,7 +81,7 @@
   background-color: var(--foreground);
 }
 
-.PluginLibraryProviderChoice--active.LxButton .LxButton__text {
+.PluginLibraryProviderChoice--active.LxButton .PluginLibraryProviderLabel {
   color: var(--color-background-surface);
 }
 

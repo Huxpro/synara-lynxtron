@@ -18,6 +18,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
 import { CheckIcon, CircleAlertIcon, ListChecksIcon, PuzzleIcon, SearchIcon } from '../lib/icons.lynx';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
+import { useTheme } from '../adapters/useTheme.lynx';
 import {
   fetchPluginLibraryCapabilities,
   fetchPluginLibraryPlugins,
@@ -105,6 +106,7 @@ function DiscoveryRow(props: {
 }
 
 export function PluginLibraryPage() {
+  const { svgColors } = useTheme();
   const [tab, setTab] = useState<DiscoveryTab>('plugins');
   const [provider, setProvider] = useState<ProviderKind>('codex');
   const [search, setSearch] = useState('');
@@ -233,7 +235,10 @@ export function PluginLibraryPage() {
                   setSearch('');
                 }}
               >
-                <OpenAIProviderIcon provider={candidate} />
+                <OpenAIProviderIcon
+                  provider={candidate}
+                  color={provider === candidate ? svgColors.surface : undefined}
+                />
                 <text className="PluginLibraryProviderLabel">
                   {PROVIDER_DISPLAY_NAMES[candidate]}
                 </text>

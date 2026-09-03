@@ -29,13 +29,15 @@ export function hasLynxProviderIcon(provider: string): boolean {
 
 export function OpenAIProviderIcon({
   provider = 'codex',
+  color,
 }: {
   readonly provider?: string;
+  readonly color?: string;
 }) {
   const { svgColors } = useTheme();
   const content = colorizeLynxSvg(
     PROVIDER_SVG[provider] ?? openAiSvg,
-    svgColors.mutedForeground
+    color ?? svgColors.mutedForeground
   );
   return (
     <svg
