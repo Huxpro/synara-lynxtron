@@ -1720,6 +1720,49 @@ test('supersedes only the static-fallback provider activation model pair', () =>
   }
 });
 
+test('supersedes only the P8 light 1280 Pull Requests Native pair', () => {
+  const ledger = [
+    {
+      id: 'p8-pull-requests-light-current-controls',
+      affectedStoryPrefixes: ['2026-08-03--p8-q2--pull-requests--light-1280'],
+      affectedStateKeys: ['raw'],
+      affectedClientPairs: ['lynx:native'],
+      supersededAt: 'pull-requests-current',
+    },
+  ];
+  const commitIndexByHash = new Map([['pull-requests-current', 14]]);
+  const storyId = '2026-08-03--p8-q2--pull-requests--light-1280';
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+      14,
+      ledger,
+      commitIndexByHash
+    )?.id,
+    'p8-pull-requests-light-current-controls'
+  );
+  for (const sample of [
+    { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+    {
+      storyId: '2026-08-03--p8-q2--pull-requests--dark-1280',
+      stateKey: 'raw',
+      leftClient: 'lynx',
+      rightClient: 'native',
+    },
+    {
+      storyId: '2026-08-06--pull-requests-current',
+      stateKey: 'raw',
+      leftClient: 'lynx',
+      rightClient: 'native',
+    },
+  ]) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(sample, 14, ledger, commitIndexByHash),
+      null
+    );
+  }
+});
+
 test('supersedes both client pairs when later three-client product evidence exists', () => {
   const ledger = [
     {

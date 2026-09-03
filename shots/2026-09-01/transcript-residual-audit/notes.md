@@ -942,6 +942,20 @@ remain intact. Fidelity-loss logic passes `66/66`; accepted count changes from
 146 to 145 while rolling median and total loss remain
 `0.5514469253148414%` and `8.331737878769307`.
 
+## P8 Pull Requests light Native supersession
+
+The P8 light `1280x820` Pull Requests Native pair predates the final route
+title, inset, pill radius, project-filter glyph, and refresh glyph composition.
+Commit `544d49bc0` retains the same light `1280x820` default All/Open empty-list
+state in Lynx-for-Web and exact-owned Native after those fixes, with real Native
+sidebar navigation and an empty console.
+
+The supersession is limited to the old `light-1280`, `raw`, `lynx:native` pair.
+Dark and 1440px P8 cells, Browser siblings, P10 matrix evidence, and the later
+replacement remain scored. Fidelity-loss logic passes `67/67`; accepted count
+changes from 145 to 144 while rolling median and total loss remain
+`0.5514469253148414%` and `8.331737878769307`.
+
 The even earlier `2026-08-02--harness--composer` light Browser pair represents
 the same empty New Chat semantic state and records the old Lynx `+8px`
 horizontal / `+7.25px` vertical composer and tray offsets in its own notes. The

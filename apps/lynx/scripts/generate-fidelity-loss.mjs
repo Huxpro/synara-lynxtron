@@ -334,6 +334,23 @@ const productEvidenceSupersessionLedger = [
     ],
   },
   {
+    id: 'p8-pull-requests-light-current-controls',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: ['2026-08-03--p8-q2--pull-requests--light-1280'],
+    affectedStateKeys: ['raw'],
+    affectedClientPairs: ['lynx:native'],
+    supersededAt: '544d49bc0',
+    summary:
+      'The P8 light 1280 Pull Requests Native pair predates the final route title, inset, pill, project-filter, and refresh-control composition.',
+    resolution:
+      'Later retained light 1280x820 default All/Open empty-list evidence covers the same semantic state in Lynx-for-Web and exact-owned Native with the corrected controls and clean consoles.',
+    evidence: [
+      'shots/2026-08-03/p8-q2/pull-requests/notes.md',
+      'shots/2026-08-06/pull-requests-current/notes.md',
+      'shots/2026-08-06/pull-requests-current/native/capture.json',
+    ],
+  },
+  {
     id: 'p8-q2-settings-general-current-native-shell',
     type: 'superseded-product-snapshot',
     affectedStoryPrefixes: ['2026-08-03--p8-q2--settings--'],
