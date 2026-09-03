@@ -879,6 +879,14 @@ gap, transparent background, square corners, and underline treatment without
 changing the global Button primitive. Source contracts, the ReactLynx scanner,
 and diff check pass; this remains part of the pending grouped recapture.
 
+The active provider pill was also a direct token mismatch: Electron uses a
+foreground solid fill with surface-colored text, while Lynx inherited the
+generic secondary-gray button. Commit `cb5a7e91e` adds a Plugin-local active
+provider modifier with the Electron tokens and leaves global Button behavior
+and inactive/disabled providers unchanged. Source contracts, the ReactLynx
+scanner, and diff check pass; it remains grouped into the pending Plugin Skills
+visual recapture.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
