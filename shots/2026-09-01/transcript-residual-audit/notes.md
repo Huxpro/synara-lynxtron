@@ -1022,6 +1022,25 @@ harness mismatch. Only the light 1280 Pull Requests sibling has a later exact
 same-state three-client replacement boundary; the dark and 1440 cells remain
 open until fixture-matched recapture.
 
+## Settings Behavior light retained recapture
+
+The previously blocked light `1280x820` Browser cell was recaptured after the
+Chrome runtime recovered. Both frames come from clean committed `ed16b5c06`,
+backend `62006` / server instance
+`fadf7faa-1714-4216-8d8d-0037ee0d5b4a`, and snapshot
+`019d1e149209933e79a7caa929ebfaaa00765b2abef92e8f5e5eb0a75a2d8d22`.
+Electron reached Behavior and light mode through rendered controls; both
+clients dismissed their provider-update prompt through a real pointer action.
+The retained frames share the Behavior route, light theme, 1280x820 DPR1
+viewport, five control values, fixed 256px sidebar, and overlay-free state.
+
+Both page-error buffers are empty. Lynx relay diagnostics show first-attempt
+connection to the recorded backend, `/settings/behavior`, zero pending unary
+requests, and no transport/RPC errors. Current MAE is
+`0.7313075382592061%`, replacing the old `1.675639646102343%` cell once the
+evidence commit becomes the supersession boundary. Artifacts are under
+`shots/2026-09-03/settings-behavior-light-current/`.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
