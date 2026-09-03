@@ -1010,6 +1010,18 @@ full-page scale are genuine product residuals. This distinct mixed-auth state
 does not supersede the older light local-fallback sample and is not superseded
 by that sample.
 
+All six remaining P8-Q2 dark Kanban, Projects, and Pull Requests
+Lynx-to-Native cells at 1280 and 1440 are also retained. Direct inspection
+confirms the shared snapshot and exact state in each pair: Kanban has the same
+three Done cards and empty Draft/In Progress columns; Projects has the same
+three project tasks and two chats; Pull Requests has identical All/Open filters,
+unavailable search, All projects filter, and empty result. Their MAEs
+(`2.459396%` / `2.136988%`, `2.459421%` / `2.131037%`, and `2.418476%` /
+`2.090236%`) record historical Native full-page scale/layout rather than a
+harness mismatch. Only the light 1280 Pull Requests sibling has a later exact
+same-state three-client replacement boundary; the dark and 1440 cells remain
+open until fixture-matched recapture.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
