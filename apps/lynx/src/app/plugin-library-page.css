@@ -231,9 +231,9 @@
   flex-shrink: 0;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--border);
+  border-color: color-mix(in srgb, var(--border) 40%, transparent);
   border-radius: 8px;
-  color: var(--muted-foreground);
+  color: color-mix(in srgb, var(--muted-foreground) 60%, transparent);
 }
 
 .PluginLibraryRowDescription {

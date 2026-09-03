@@ -102,6 +102,9 @@ describe('Lynx plugin library', () => {
       /\.PluginLibraryRow\s*\{[^}]*min-height:\s*68px;/s
     );
     expect(styles).toMatch(
+      /\.PluginLibraryInstalled\s*\{[^}]*border-color:\s*color-mix\(in srgb, var\(--border\) 40%, transparent\);[^}]*color:\s*color-mix\(in srgb, var\(--muted-foreground\) 60%, transparent\);/s
+    );
+    expect(styles).toMatch(
       /\.SliceRoot--viewport-compact \.PluginLibraryRows--skills\s*\{[^}]*padding-right:\s*0;/s
     );
     expect(styles).toMatch(
