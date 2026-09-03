@@ -269,6 +269,22 @@ const productEvidenceSupersessionLedger = [
     ],
   },
   {
+    id: 'settings-behavior-light-current-stable',
+    type: 'superseded-product-snapshot',
+    affectedStoryPrefixes: ['2026-08-03--settings-behavior--browser--light-1280'],
+    affectedStateKeys: ['raw'],
+    affectedClientPairs: ['web:lynx'],
+    supersededAt: '64b73fa6e',
+    summary:
+      'The original light Behavior pair predates the stable-state fix that removes Lynx-only Preferences loaded feedback.',
+    resolution:
+      'Committed retained Electron and Lynx-for-Web evidence uses the same backend and snapshot, Behavior route, light 1280x820 DPR1 viewport, settings values, 256px sidebar, and overlay-free state. Current MAE is 0.7313075382592061%.',
+    evidence: [
+      'shots/2026-09-03/settings-behavior-light-current/notes.md',
+      'shots/2026-09-03/settings-behavior-light-current/pngs.sha256',
+    ],
+  },
+  {
     id: 'p8-q2-empty-thread-current-landing',
     type: 'superseded-product-snapshot',
     affectedStoryPrefixes: ['2026-08-03--p8-q2--threads--'],

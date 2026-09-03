@@ -1574,6 +1574,45 @@ test('supersedes only the retained dark Settings Behavior Browser cell', () => {
   }
 });
 
+test('supersedes only the retained light Settings Behavior Browser cell', () => {
+  const ledger = [
+    {
+      id: 'settings-behavior-light-current-stable',
+      affectedStoryPrefixes: ['2026-08-03--settings-behavior--browser--light-1280'],
+      affectedStateKeys: ['raw'],
+      affectedClientPairs: ['web:lynx'],
+      supersededAt: 'behavior-light-current',
+    },
+  ];
+  const commitIndexByHash = new Map([['behavior-light-current', 11]]);
+  const storyId = '2026-08-03--settings-behavior--browser--light-1280';
+
+  assert.equal(
+    visualSampleSupersessionAtCommit(
+      { storyId, stateKey: 'raw', leftClient: 'web', rightClient: 'lynx' },
+      11,
+      ledger,
+      commitIndexByHash
+    )?.id,
+    'settings-behavior-light-current-stable'
+  );
+  for (const sample of [
+    { storyId, stateKey: 'raw', leftClient: 'lynx', rightClient: 'native' },
+    { storyId, stateKey: 'comparison', leftClient: 'web', rightClient: 'lynx' },
+    {
+      storyId: '2026-08-03--settings-behavior--browser--dark-1440',
+      stateKey: 'raw',
+      leftClient: 'web',
+      rightClient: 'lynx',
+    },
+  ]) {
+    assert.equal(
+      visualSampleSupersessionAtCommit(sample, 11, ledger, commitIndexByHash),
+      null
+    );
+  }
+});
+
 test('supersedes current token menu and selection states but preserves persisted output', () => {
   const ledger = [
     {
