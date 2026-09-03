@@ -794,6 +794,17 @@ prompt in both clients. Current MAE is `0.5927520576131687%`, replacing the old
 count becomes `153`, while rolling median and total loss remain
 `0.6448107988835652%` and `8.658511436259841`.
 
+The remaining light `1280x820` Behavior pair was recovered directly from its
+archived Git blobs and audited separately. Its Lynx frame contains the same
+now-fixed `Preferences loaded.` row, but it also differs from Electron in
+sidebar search availability/disabled styling and uses a different viewport and
+theme from the retained dark replacement. The dark proof is therefore not
+expanded to cover this light cell. Two fresh isolated recapture attempts reached
+the correct backend and endpoint-pinned bundle, but agent-browser repeatedly
+failed with `EAGAIN` during browser configuration. No partial frame was
+retained; the `1.675639646102343%` light pair remains scored pending an exact
+recapture.
+
 ## Current Kanban dark audit
 
 A current committed-tree Browser run used one isolated backend, dark
