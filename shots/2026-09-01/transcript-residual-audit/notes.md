@@ -1058,6 +1058,34 @@ and `1` rejected pair, rolling median `0.6060078960351831%`, and total loss
 `8.541905846562244`. The change from the stale pre-index snapshot is evidence
 activation, not a product regression.
 
+## Plugin Skills post-fix retained recapture
+
+The Browser runtime recovered, allowing the complete Plugin correction stack
+to be measured instead of stopping at source/build verification. Runtime box
+inspection found two additional concrete owners. First, the active provider
+label is a dedicated `PluginLibraryProviderLabel`, so the earlier
+`.LxButton__text` selector never applied; provider SVG content was also already
+colorized before CSS. Commit `a2ee504c4` gives the shared provider icon an
+optional explicit semantic paint and uses the current surface color only for
+the active Plugin provider while styling the real label node. Second, Web's
+header uses 24px horizontal padding, a 12px main gap, and a 1px/2px provider
+capsule around borderless zero-gap buttons. Commit `07f9029b7` matches that
+geometry. Finally, commit `9acfac241` removes the stale 10px wide-grid gutter
+and aligns the 15px section-title line box.
+
+The retained light `1280x820` DPR1 pair uses one backend (`58441`), server
+instance `6cea089d-503f-4b89-88fb-d82268081e7d`, snapshot
+`aee78d756003f3aea93b12082733450cc100750b9b454b09cf27c9278e57bc09`,
+the same complete skill catalog, expanded `github` project, Skills/Codex state,
+and no provider overlay. Both clients used rendered controls, both page-error
+buffers are empty, and the Lynx relay has no unary, transport, or RPC error.
+Whole-frame MAE is `1.1908321128248047%`, down from the committed pre-fix
+`2.123356298820341%`; header regional MAE fell from `8.042879391339868%` to
+`2.522122651143791%`, and grid regional MAE from `3.30925884446916%` to
+`1.1056382418163344%`. Earlier startup, hover, overlay, and mixed-sidebar
+diagnostics were discarded. Evidence lives at
+`shots/2026-09-03/plugins-skills-postfix-current/`.
+
 ## Current Composer token capture-state correction
 
 A direct audit of all four retained
