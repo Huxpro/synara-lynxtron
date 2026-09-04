@@ -822,6 +822,34 @@ temporary threads were deleted with canonical commands or removed with their
 isolated state directory, and browser exit gates reached zero. P8 Kanban remains
 scored pending a retained exact three-Done recapture.
 
+### September 3 canonical fixture retry
+
+A clean detached `25b02d94b` worktree and isolated server/state (`58790`,
+`/private/tmp/synara-p8-recapture-state`) established the precise boundary. The
+project was created through the rendered Create project form, and the first
+thread used the rendered composer twice while one browser transport remained
+alive. That path produced a real Codex lifecycle with non-null turn id,
+`turn.started`, assistant `OK`, and `turn.completed`; its projection settled as
+`completed` at `2026-09-03T23:50:29.358Z`.
+
+The same clean, hydrated, single-renderer flow could not produce a second
+terminal thread reproducibly. Codex authentication and `thread/start` succeeded,
+but the second session remained `starting`; the projection contained only a
+pending row with `turn_id=NULL`, and its provider runtime journal remained
+empty. Public `thread.session.stop` and restart reconciliation correctly moved
+the session to stopped/interrupted, but a pending row without a provider turn id
+does not become `latestTurn` and therefore remains a Draft by the Kanban
+contract. Public `thread.fork.create` and `thread.handoff.create` were also
+rejected as substitutes because they import messages but do not inherit a
+terminal `latestTurn`.
+
+All failed fixture threads were removed through public `thread.delete` commands;
+the isolated server was stopped, owned ports were released, and the final
+browser cleanup plus independent session-list gates both reported zero. No
+SQLite write, internal event injection, screenshot, or supersession was used.
+The exact three-Done recapture remains blocked on a reproducible second provider
+turn (or recovery of the original versioned snapshot).
+
 ## Current empty Projects overview dark audit
 
 A fresh commit-bounded Browser run used one isolated backend, dark `1280x820`
