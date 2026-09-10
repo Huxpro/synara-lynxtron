@@ -282,6 +282,14 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('disabled={props.state === "disabled"}');
   });
 
+  it("drives Space project search through real dialog props", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('<SpaceProjectPickerStory state={props.state}');
+    expect(source).toContain('initialQuery={props.state === "query" ? "Alpha" : ""}');
+    expect(source).toContain('searchAutoFocus={props.state === "focus"}');
+    expect(source).toContain('searchDisabled={props.state === "disabled"}');
+  });
+
   it("renders file preview recovery through the shared product composition", () => {
     const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
     expect(source).toContain('props.storyId === "editor/file-preview-error"');
@@ -368,7 +376,7 @@ describe("Components Lab story renderer", () => {
 
   it("keeps the Space project picker story controlled after submit", () => {
     const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
-    expect(source).toContain("function SpaceProjectPickerStory()");
+    expect(source).toContain("function SpaceProjectPickerStory(props: { readonly state: string })");
     expect(source).toContain("const [open, setOpen] = useState(true)");
     expect(source).toContain("onOpenChange={setOpen}");
     expect(source).not.toContain("<SpaceProjectPickerDialog open targetSpace=");

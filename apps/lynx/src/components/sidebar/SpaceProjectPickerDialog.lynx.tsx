@@ -70,22 +70,27 @@ export function SpaceProjectPickerDialogLynx(props: {
   readonly onSubmit: (projectIds: readonly ProjectId[]) => Promise<readonly ProjectId[]>;
   readonly open: boolean;
   readonly projects: readonly ProjectSummary[];
+  readonly initialQuery?: string;
+  readonly searchAutoFocus?: boolean;
+  readonly searchDisabled?: boolean;
   readonly spaces: readonly PickerSpace[];
   readonly targetSpace: PickerSpace | null;
 }) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(props.initialQuery ?? '');
   const [selectedIds, setSelectedIds] = useState<ReadonlySet<ProjectId>>(() => new Set());
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<InputRef>(null);
   useEffect(() => {
     if (!props.open) return;
-    setQuery('');
+    setQuery(props.initialQuery ?? '');
     setSelectedIds(new Set());
     setSubmitting(false);
     setError(null);
-    void inputRef.current?.focus().catch(() => undefined);
-  }, [props.open, props.targetSpace?.id]);
+    if (props.searchAutoFocus !== false && !props.searchDisabled) {
+      void inputRef.current?.focus().catch(() => undefined);
+    }
+  }, [props.initialQuery, props.open, props.searchAutoFocus, props.searchDisabled, props.targetSpace?.id]);
 
   const ordinaryProjects = useMemo(
     () =>
@@ -152,6 +157,7 @@ export function SpaceProjectPickerDialogLynx(props: {
               ref={inputRef}
               aria-label="Search projects"
               className="AppSidebarSpaceProjectSearchInput"
+              disabled={props.searchDisabled}
               nativeInput
               placeholder="Search projects"
               type="search"

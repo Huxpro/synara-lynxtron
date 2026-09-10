@@ -34,12 +34,15 @@ export function SpaceProjectPickerDialog(props: {
   targetSpace: Space | null;
   projects: ReadonlyArray<Project>;
   spaces: ReadonlyArray<Space>;
+  initialQuery?: string;
+  searchAutoFocus?: boolean;
+  searchDisabled?: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (
     projectIds: ReadonlyArray<ProjectId>,
   ) => Promise<ReadonlyArray<ProjectId> | void> | ReadonlyArray<ProjectId> | void;
 }) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(props.initialQuery ?? "");
   const [selectedIds, setSelectedIds] = useState<ReadonlySet<ProjectId>>(() => new Set());
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,11 +53,11 @@ export function SpaceProjectPickerDialog(props: {
 
   useEffect(() => {
     if (!props.open) return;
-    setQuery("");
+    setQuery(props.initialQuery ?? "");
     setSelectedIds(new Set());
     setSubmitting(false);
     setError(null);
-  }, [props.open, props.targetSpace?.id]);
+  }, [props.initialQuery, props.open, props.targetSpace?.id]);
 
   const targetSpaceId = props.targetSpace?.id ?? null;
   /**
@@ -134,6 +137,8 @@ export function SpaceProjectPickerDialog(props: {
         </DialogHeader>
         <DialogPanel className="space-y-3">
           <SearchInput
+            autoFocus={props.searchAutoFocus}
+            disabled={props.searchDisabled}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search projects"

@@ -465,7 +465,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     );
   }
   if (props.storyId === 'sidebar/space-project-picker') {
-    return <SpaceProjectPickerStory />;
+    return <SpaceProjectPickerStory state={props.state} />;
   }
   if (props.storyId === 'editor/file-preview-error') {
     return <FilePreviewErrorStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
@@ -681,7 +681,7 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
   );
 }
 
-function SpaceProjectPickerStory() {
+function SpaceProjectPickerStory(props: { readonly state: string }) {
   const [open, setOpen] = useState(true);
   const handleOpenChange = (nextOpen: boolean) => {
     'background only';
@@ -697,6 +697,9 @@ function SpaceProjectPickerStory() {
       open={open}
       projects={COMPONENT_LAB_SPACE_PROJECTS}
       spaces={[COMPONENT_LAB_SPACE, COMPONENT_LAB_OTHER_SPACE]}
+      initialQuery={props.state === 'query' ? 'Alpha' : ''}
+      searchAutoFocus={props.state === 'focus'}
+      searchDisabled={props.state === 'disabled'}
       targetSpace={COMPONENT_LAB_SPACE}
       onOpenChange={handleOpenChange}
       onSubmit={handleSubmit}

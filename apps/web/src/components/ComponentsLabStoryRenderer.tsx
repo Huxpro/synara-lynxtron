@@ -193,7 +193,7 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
   );
 }
 
-function SpaceProjectPickerStory() {
+function SpaceProjectPickerStory(props: { readonly state: string }) {
   const [open, setOpen] = useState(true);
   return (
     <SpaceProjectPickerDialog
@@ -201,6 +201,9 @@ function SpaceProjectPickerStory() {
       targetSpace={COMPONENT_LAB_SPACE}
       projects={COMPONENT_LAB_SPACE_PROJECTS}
       spaces={[COMPONENT_LAB_SPACE, COMPONENT_LAB_OTHER_SPACE]}
+      initialQuery={props.state === "query" ? "Alpha" : ""}
+      searchAutoFocus={props.state === "focus"}
+      searchDisabled={props.state === "disabled"}
       onOpenChange={setOpen}
       onSubmit={() => []}
     />
@@ -580,7 +583,7 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     );
   }
   if (props.storyId === "sidebar/space-project-picker") {
-    return <SpaceProjectPickerStory />;
+    return <SpaceProjectPickerStory state={props.state} />;
   }
   if (props.storyId === "editor/file-preview-error") {
     return <FilePreviewErrorStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;

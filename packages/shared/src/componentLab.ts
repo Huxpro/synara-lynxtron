@@ -234,7 +234,7 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
-    id: "sidebar/space-project-picker", title: "Space project picker", category: "navigation", owner: "SpaceProjectPickerDialog", fixtureId: "space-project-assignment", variants: ["grouped-projects"], states: ["default"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    id: "sidebar/space-project-picker", title: "Space project picker", category: "navigation", owner: "SpaceProjectPickerDialog", fixtureId: "space-project-assignment", variants: ["grouped-projects"], states: ["default", "query", "focus", "disabled"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "SpaceProjectPickerDialog", module: "apps/web/src/components/SpaceProjectPickerDialog.tsx", consumers: ["sidebar/empty-space/move-projects"] },
       lynx: { renderer: "lynx", component: "SpaceProjectPickerDialogLynx", module: "apps/lynx/src/components/sidebar/SpaceProjectPickerDialog.lynx.tsx", consumers: ["sidebar/empty-space/move-projects"] },

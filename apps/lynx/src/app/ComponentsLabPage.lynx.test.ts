@@ -119,6 +119,10 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('<EditorProjectSwitchSearchHeader');
     expect(renderer).toContain("autoFocus={props.state === 'focus'}");
     expect(renderer).toContain("disabled={props.state === 'disabled'}");
+    expect(renderer).toContain('<SpaceProjectPickerStory state={props.state}');
+    expect(renderer).toContain("initialQuery={props.state === 'query' ? 'Alpha' : ''}");
+    expect(renderer).toContain("searchAutoFocus={props.state === 'focus'}");
+    expect(renderer).toContain("searchDisabled={props.state === 'disabled'}");
     expect(renderer).toContain("props.storyId === 'editor/file-preview-error'");
     expect(renderer).toContain('<WorkspaceFilePreviewErrorState');
     expect(renderer).toContain("props.variant === 'explorer-dock'");
@@ -225,7 +229,7 @@ describe('paired Components Lab route', () => {
     expect(styles).toMatch(
       /\.ComponentsLabSidebarContent\s*\{[^}]*flex-shrink:\s*0;/s
     );
-    expect(renderer).toContain('function SpaceProjectPickerStory()');
+    expect(renderer).toContain('function SpaceProjectPickerStory(props: { readonly state: string })');
     expect(renderer).toContain('const [open, setOpen] = useState(true)');
     expect(renderer).toContain('onOpenChange={handleOpenChange}');
     expect(renderer).toContain('onSubmit={handleSubmit}');
