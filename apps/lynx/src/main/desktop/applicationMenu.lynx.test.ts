@@ -7,6 +7,12 @@ describe('Lynxtron application menu', () => {
     expect(source).toContain("label: 'Components Lab…'");
     expect(source).toContain("click: () => dispatchRoute('/components-lab')");
   });
+  it('exposes the shared Browser toggle shortcut', () => {
+    const source = readFileSync(new URL('./main.ts', import.meta.url), 'utf8');
+    expect(source).toContain("label: 'Toggle Browser'");
+    expect(source).toContain("accelerator: 'CmdOrCtrl+Shift+B'");
+    expect(source).toContain("dispatchShellCommand('browser.toggle')");
+  });
   it('lets AppKit select the active Native textarea directly', () => {
     const source = readFileSync(new URL('./main.ts', import.meta.url), 'utf8');
     expect(source).toContain("{ role: 'selectAll' }");

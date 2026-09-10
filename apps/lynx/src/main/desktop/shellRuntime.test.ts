@@ -344,6 +344,9 @@ describe('shellRuntime', () => {
     expect(resolveNativeRendererCommand('sidebar.search')).toBe(
       'sidebar.search'
     );
+    expect(resolveNativeRendererCommand('browser.toggle')).toBe(
+      'browser.toggle'
+    );
     expect(resolveNativeRendererCommand('chat.visible.previous')).toBe(
       'chat.visible.previous'
     );

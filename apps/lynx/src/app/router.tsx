@@ -1132,6 +1132,32 @@ function ThreadPage(props: ThreadPageProps) {
     },
     [threadId]
   );
+  useEffect(() => {
+    'background only';
+    let cancelled = false;
+    let dispose: (() => void) | null = null;
+    void import(/* webpackMode: "eager" */ '../platform/bridge')
+      .then(({ onGlobalEvent }) => {
+        if (cancelled) return;
+        dispose = onGlobalEvent('shell:command', (command: unknown) => {
+          if (command !== 'browser.toggle' || !browserSupported) return;
+          updateRightDockState((current) => {
+            const active = resolveActivePane(current);
+            return current.open && active?.kind === 'browser'
+              ? setDockOpenInState(current, false)
+              : openPaneInState(current, {
+                  paneId: 'browser',
+                  kind: 'browser',
+                });
+          });
+        });
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+      dispose?.();
+    };
+  }, [browserSupported, updateRightDockState]);
   const setDiffOpen = useCallback(
     (open: boolean) =>
       updateRightDockState((current) =>

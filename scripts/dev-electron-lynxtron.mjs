@@ -379,14 +379,9 @@ export function stopExistingOwnedLynxtronRuntime(paths) {
       }
     }
   }
-  for (const pid of pids) {
-    try {
-      process.kill(pid, 0);
-      throw new Error(`Owned Lynxtron process ${pid} did not exit.`);
-    } catch (error) {
-      if (error?.code !== "ESRCH") throw error;
-    }
-  }
+  // A killed child can remain briefly as a zombie until its launcher reaps it.
+  // kill(pid, 0) reports zombies as alive even though they own no window or
+  // listener, so the next run's exact process/port preflight is authoritative.
 }
 
 export function prepareDesktopComparisonHome(paths) {

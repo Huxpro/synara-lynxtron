@@ -36,6 +36,8 @@ describe('Native Browser right-dock pane', () => {
     const router = readFileSync(new URL('./router.tsx', import.meta.url), 'utf8');
     expect(router).toContain("queryKey: ['browser-view-capability']");
     expect(router).toContain('browserViewState?.supported === true');
+    expect(router).toContain("command !== 'browser.toggle' || !browserSupported");
+    expect(router).toContain("paneId: 'browser'");
     expect(router).toContain("browserSupported ? ['browser' as const] : []");
     expect(router).toContain("pane.kind === 'browser'");
     expect(source).toContain('if (!props.supported)');

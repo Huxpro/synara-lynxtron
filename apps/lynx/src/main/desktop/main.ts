@@ -598,6 +598,11 @@ function installApplicationMenu(w: LynxWindow): void {
           click: () => dispatchShellCommand('sidebar.toggle'),
         },
         {
+          label: 'Toggle Browser',
+          accelerator: 'CmdOrCtrl+Shift+B',
+          click: () => dispatchShellCommand('browser.toggle'),
+        },
+        {
           label: 'Back',
           accelerator: 'CmdOrCtrl+[',
           click: () => dispatchShellEvent('shell:navigate-history', 'back'),
