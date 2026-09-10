@@ -906,6 +906,10 @@ export function MenuSubTrigger(props: {
       submenu.setOpen(false);
       return;
     }
+    if (event.key === 'Escape') {
+      menu.handleKeyDown(event);
+      return;
+    }
     interaction.eventProps.bindkeydown?.(event);
   };
   return (

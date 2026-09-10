@@ -46,9 +46,9 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
 - **FC-009 is complete for the tracked right-dock/header controls.** The final
   light/1280 loaded-product run covers Environment data, Add-panel availability,
   Browser singleton reuse, Diff activation, tab counts, and Collapse behavior.
-- **FC-021 remains partial, but its favourite toggle and disclosure blocker is
-  closed.** Remaining work is keyboard, compact placement, model activation,
-  overflow, and unsampled cells.
+- **FC-021 is complete for the tracked model-picker behavior.** Native favourite
+  toggling, provider disclosure followed by model activation, nested Escape,
+  compact placement, and overflow-to-final-row reachability are all certified.
 - **FC-028 is complete for single-line geometry.** Remaining IME semantics are
   owned by FC-025/026 rather than this layout item.
 - **FC-037 is complete.** The final product-message mutation was exercised in
@@ -401,6 +401,39 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   production build succeeds. Final cleanup preserved only normal Synara
   `47905/8901` and T3 Code `18465/8902`. This closes FC-003's remaining
   long-title/draft/working and focus/pressed matrix debt.
+
+### 2026-09-10 Native model-picker continuation
+
+- The earlier 0.0.21 listener blocker is obsolete. Exact-owned PID `49217`,
+  window `83685`, and PID-derived DevTool `localhost:8903` loaded the dark/1440
+  favourite fixture. Opening the model submenu exposed `Open Model 02` under
+  Favourites with `aria-checked=true`; a real click removed the group and changed
+  the action to `Add Open Model 02 to favourites`, and a PID-owned DevTool
+  press/release restored it to checked.
+- The provider-list fixture exposed available Codex/OpenCode groups and disabled
+  `Checking` rows for unavailable providers. Opening OpenCode and activating its
+  real `Open Model 02` row closed the picker and updated the trigger from
+  `GPT-5.4` to `Open Model 02`. In the overflow fixture, the 310px model scroller
+  initially placed `GPT Archive 12` at y=730-757; a real DevTool wheel moved it
+  to y=397-424, inside the y=114-424 viewport.
+- Exact-owned PID `80615`, window `83915`, and DevTool `8903` rendered the
+  light/1280 compact/open fixture with model and status labels hidden while the
+  provider, effort, chevron, and full menu remained available. Its final
+  warning/error console was empty; bundle SHA-256 was
+  `f10f51d8d1f9da958916b79e539588f35ec2442ed699617ca94544e5a75ed1a0`.
+  Cleanup preserved only normal Synara `47905/8901` and T3 Code `18465/8902`.
+- The first Native pass exposed a shared menu bug: Escape correctly closed the
+  OpenCode submenu, but `MenuSubTrigger.catchkeydown` swallowed the next Escape
+  after the submenu was closed, so the outer picker remained open. The trigger
+  now delegates that second Escape to the parent menu's keyboard handler. Focused
+  menu/model tests pass 28/28 and the full Native production build succeeds.
+  Fresh exact-owned PID `92470` / window `84060` verified the repaired sequence:
+  first Escape returned to the provider list, second Escape removed all model
+  popups, set `aria-expanded=false`, and restored `ui-focus` to the model trigger.
+  The exact-client warning/error console was empty; bundle SHA-256 was
+  `08ee1da98608010fedad5246478d1b2d8ef41ab5819addd11060b3c2e10744fb`.
+  This closes FC-021's concrete picker debt; unsampled permutations remain
+  ordinary FC-017 matrix coverage rather than an independent blocker.
 
 ## Historical items currently considered closed, pending regression sampling
 

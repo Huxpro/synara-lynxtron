@@ -621,6 +621,31 @@ describe('Lynx Menu overlay contract', () => {
     );
   });
 
+  it('dismisses the parent menu when Escape is pressed after its submenu closes', async () => {
+    const onOpenChange = rs.fn();
+    render(
+      <Menu defaultOpen onOpenChange={onOpenChange}>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPopup>
+          <MenuSub defaultOpen>
+            <MenuSubTrigger>Model</MenuSubTrigger>
+            <MenuSubPopup>Models</MenuSubPopup>
+          </MenuSub>
+        </MenuPopup>
+      </Menu>
+    );
+    const trigger = elementTree.root?.querySelector('.LxMenuSubTrigger');
+    fireCatchKeyDown(trigger!, { key: 'Escape' });
+    await waitFor(() =>
+      expect(elementTree.root?.querySelector('.LxMenuSubPopup')).toBeNull()
+    );
+    fireCatchKeyDown(trigger!, { key: 'Escape' });
+    await waitFor(() =>
+      expect(elementTree.root?.querySelector('.LxMenuPopup')).toBeNull()
+    );
+    expect(onOpenChange).toHaveBeenLastCalledWith(false);
+  });
+
   it('notifies a submenu owner before opening from pointer intent', async () => {
     const onOpen = rs.fn();
     render(
