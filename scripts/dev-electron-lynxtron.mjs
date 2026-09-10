@@ -279,6 +279,37 @@ export function ownedElectronPidsFromPs(output, executable, electronUserDataDir)
     .filter((pid) => Number.isSafeInteger(pid) && pid > 1 && pid !== process.pid);
 }
 
+export function ownedWebPidsFromPs(output, webRoot, webPort) {
+  const exactRoot = resolve(webRoot);
+  const port = String(webPort);
+  return output
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .flatMap((line) => {
+      const match = line.match(/^(\d+)\s+(.+)$/);
+      if (!match) return [];
+      const command = match[2];
+      if (!command.includes(exactRoot + "/node_modules/.bin/vite")) return [];
+      const args = command.split(" ");
+      const portIndex = args.indexOf("--port");
+      if (portIndex < 0 || args[portIndex + 1] !== port) return [];
+      return [Number(match[1])];
+    })
+    .filter((pid) => Number.isSafeInteger(pid) && pid > 1 && pid !== process.pid);
+}
+
+function stopExistingOwnedWebRuntime(paths, webPort) {
+  const processes = spawnSync("ps", ["-axo", "pid=,command="], { encoding: "utf8" });
+  if (processes.status !== 0) {
+    throw new Error("Failed to inspect owned Web processes: " + processes.stderr.trim());
+  }
+  for (const pid of ownedWebPidsFromPs(processes.stdout, join(paths.root, "apps", "web"), webPort)) {
+    try { process.kill(pid, "SIGTERM"); }
+    catch (error) { if (error?.code !== "ESRCH") throw error; }
+  }
+}
+
 export function stopExistingOwnedElectronRuntime(paths, electronExecutable) {
   const processes = spawnSync("ps", ["-axo", "pid=,command="], { encoding: "utf8" });
   if (processes.status !== 0) {
@@ -1572,6 +1603,8 @@ async function main() {
     // comparison executable. Reap it on every shutdown so later evidence runs
     // cannot attach to a stale window or DevTool listener.
     stopExistingOwnedLynxtronRuntime(paths);
+    stopExistingOwnedElectronRuntime(paths, electronExecutable);
+    stopExistingOwnedWebRuntime(paths, options.webPort);
   };
 
   const shutdown = (exitCode) => {

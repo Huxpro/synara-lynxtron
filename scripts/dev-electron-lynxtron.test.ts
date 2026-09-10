@@ -32,6 +32,7 @@ import {
   resolveLynxDevtoolReadyTimeoutMs,
   parseDesktopComparisonArgs,
   ownedElectronPidsFromPs,
+  ownedWebPidsFromPs,
   ownedLynxtronPidsFromPs,
   prepareDesktopComparisonHome,
   prepareOwnedLynxtronRuntime,
@@ -666,6 +667,17 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(ownedElectronPidsFromPs(output, executable, profile)).toEqual([101]);
   });
 
+  it("matches only the repo-local Vite process on the comparison port", () => {
+    const root = "/repo/apps/web";
+    const output = [
+      "101 node /repo/apps/web/node_modules/.bin/vite --host 127.0.0.1 --port 8891 --strictPort",
+      "102 node /repo/apps/web/node_modules/.bin/vite --host 127.0.0.1 --port 8892 --strictPort",
+      "103 node /other/apps/web/node_modules/.bin/vite --host 127.0.0.1 --port 8891 --strictPort",
+    ].join("\n");
+
+    expect(ownedWebPidsFromPs(output, root, 8891)).toEqual([101]);
+  });
+
   it("accepts a DevTool listener only when the requested PID owns the requested port", () => {
     const lsof = [
       "COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME",
@@ -737,6 +749,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(source).toContain('detached: false');
     expect(source).toContain('child.kill(signal)');
     expect(source).toContain('stopExistingOwnedLynxtronRuntime(paths)');
+    expect(source).toContain('stopExistingOwnedElectronRuntime(paths, electronExecutable)');
+    expect(source).toContain('stopExistingOwnedWebRuntime(paths, options.webPort)');
     expect(source).toContain('stopAllOwned("SIGKILL")');
     expect(source).not.toContain('process.kill(-child.pid, signal)');
   });
