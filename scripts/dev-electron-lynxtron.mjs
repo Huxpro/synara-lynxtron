@@ -563,7 +563,7 @@ export function comparisonTranscriptReadyExpression(expectation) {
 }
 
 export function comparisonTransientUiReadyExpression() {
-  return `(() => ({ recentViewSwitcherCount: document.querySelectorAll('[role="listbox"][aria-label="Recent views"]').length, selectionToolbarCount: document.querySelectorAll('[data-transcript-selection-action="true"]').length, dialogCount: document.querySelectorAll('[data-slot="dialog-popup"], [data-slot="alert-dialog-popup"], [data-slot="command-dialog-popup"]').length, menuCount: document.querySelectorAll('[data-slot="menu-popup"]').length, notificationCount: document.querySelectorAll('[data-toast-root="true"]').length, resizeOverlayCount: document.querySelectorAll('[data-panel-resize-overlay="true"]').length }))()`;
+  return `(() => { const notifications = Array.from(document.querySelectorAll('[data-toast-root="true"]')); return { recentViewSwitcherCount: document.querySelectorAll('[role="listbox"][aria-label="Recent views"]').length, selectionToolbarCount: document.querySelectorAll('[data-transcript-selection-action="true"]').length, dialogCount: document.querySelectorAll('[data-slot="dialog-popup"], [data-slot="alert-dialog-popup"], [data-slot="command-dialog-popup"]').length, menuCount: document.querySelectorAll('[data-slot="menu-popup"]').length, notificationCount: notifications.length, notificationDetails: notifications.map((node) => ({ text: node.textContent?.trim() ?? '', type: node.getAttribute('data-type'), state: node.getAttribute('data-state') })), resizeOverlayCount: document.querySelectorAll('[data-panel-resize-overlay="true"]').length }; })()`;
 }
 
 function nodeAttributeMap(node) {
@@ -1332,12 +1332,12 @@ async function configureElectronRenderer(
           console.log(
             `[compare:desktop] Electron transcript anchor verified: ${JSON.stringify(transcriptReadiness)}.`,
           );
-          const transientDeadline = Date.now() + 5_000;
+          const transientDeadline = Date.now() + 10_000;
           let transientUi = null;
           let cleanTransientSince = 0;
           while (
-            Date.now() < transientDeadline &&
-            (cleanTransientSince === 0 || Date.now() - cleanTransientSince < 250)
+            (cleanTransientSince === 0 && Date.now() < transientDeadline) ||
+            (cleanTransientSince !== 0 && Date.now() - cleanTransientSince < 250)
           ) {
             requestId += 1;
             transientUi = await evaluateElectronExpression(
@@ -1346,7 +1346,9 @@ async function configureElectronRenderer(
               comparisonTransientUiReadyExpression(),
               "confirming clean Electron transient UI state",
             );
-            const clean = Object.values(transientUi ?? {}).every((count) => count === 0);
+            const clean = Object.values(transientUi ?? {}).every(
+              (value) => typeof value !== "number" || value === 0,
+            );
             cleanTransientSince = clean
               ? cleanTransientSince || Date.now()
               : 0;

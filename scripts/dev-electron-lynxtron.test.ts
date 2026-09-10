@@ -381,6 +381,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(expression).toContain('data-slot="dialog-popup"');
     expect(expression).toContain('data-slot="menu-popup"');
     expect(expression).toContain('data-toast-root="true"');
+    expect(expression).toContain("notificationDetails");
+    expect(expression).toContain("node.getAttribute('data-state')");
 
     expect(nativeTransientUiStateFromDom({
       attributes: ["class", "SliceRoot"],
@@ -406,9 +408,13 @@ describe("Electron and Lynxtron comparison launcher", () => {
       new URL('./dev-electron-lynxtron.mjs', import.meta.url),
       'utf8',
     );
-    expect(source).toContain('const transientDeadline = Date.now() + 5_000');
+    expect(source).toContain('const transientDeadline = Date.now() + 10_000');
+    expect(source).toContain(
+      'cleanTransientSince === 0 && Date.now() < transientDeadline'
+    );
     expect(source).toContain('Date.now() - cleanTransientSince < 250');
     expect(source).toContain('cleanTransientSince = clean');
+    expect(source).toContain('typeof value !== "number" || value === 0');
   });
 
   it("preserves the renderer comparison allowlist while resetting transient state", () => {
