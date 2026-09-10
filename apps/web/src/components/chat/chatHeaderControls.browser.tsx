@@ -49,24 +49,38 @@ describe("SurfaceTabChip selection", () => {
     expect(onSelect).toHaveBeenCalledOnce();
   });
 
-  it("renders deterministic hover anatomy through the production tab primitive", async () => {
+  it("swaps the icon for the close target on real hover and closes from that target", async () => {
+    const onClose = vi.fn();
     await render(
       <SurfaceTabChip
         active
         icon={<span data-resting-icon>TS</span>}
         label="example.ts"
         closeLabel="Close example.ts"
-        onClose={vi.fn()}
-        visualState="hover"
+        onClose={onClose}
       />,
     );
 
-    const root = document.querySelector<HTMLElement>('[data-visual-state="hover"]');
+    const root = document.querySelector<HTMLElement>('[class~="group/dock-tab"]');
     const restingIcon = document.querySelector<HTMLElement>("[data-resting-icon]");
+    const closeIcon = document.querySelector<HTMLElement>(
+      'button[aria-label="Close example.ts"] [data-slot="central-icon"]',
+    );
     const closeButton = page.getByRole("button", { name: "Close example.ts" });
     expect(root).not.toBeNull();
     expect(restingIcon).not.toBeNull();
-    expect(getComputedStyle(restingIcon!.parentElement!).opacity).toBe("0");
+    expect(closeIcon).not.toBeNull();
+    expect(getComputedStyle(restingIcon!.parentElement!).opacity).toBe("1");
+    expect(getComputedStyle(closeIcon!).opacity).toBe("0");
+
+    await page.getByText("example.ts", { exact: true }).hover();
+
+    await vi.waitFor(() => {
+      expect(getComputedStyle(restingIcon!.parentElement!).opacity).toBe("0");
+      expect(getComputedStyle(closeIcon!).opacity).toBe("1");
+    });
     await expect.element(closeButton).toBeVisible();
+    await closeButton.click();
+    expect(onClose).toHaveBeenCalledOnce();
   });
 });
