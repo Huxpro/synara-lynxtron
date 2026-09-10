@@ -92,7 +92,7 @@ export class LynxTextEncoder {
   }
 }
 
-class LynxTextDecoder {
+export class LynxTextDecoder {
   readonly encoding = 'utf-8';
 
   decode(input?: ArrayBufferView | ArrayBuffer | null): string {
@@ -105,13 +105,39 @@ interface TextEncodingGlobal {
   TextEncoder?: typeof TextEncoder;
 }
 
+function supportsTextEncoderEncodeInto(
+  TextEncoderConstructor: typeof TextEncoder | undefined
+): boolean {
+  if (typeof TextEncoderConstructor !== 'function') return false;
+  try {
+    const destination = new Uint8Array(1);
+    const result = new TextEncoderConstructor().encodeInto('A', destination);
+    return (
+      result.read === 1 &&
+      result.written === 1 &&
+      destination[0] === 0x41
+    );
+  } catch {
+    return false;
+  }
+}
+
+function supportsTextDecoderViewBounds(
+  TextDecoderConstructor: typeof TextDecoder | undefined
+): boolean {
+  if (typeof TextDecoderConstructor !== 'function') return false;
+  try {
+    const source = new Uint8Array([0x78, 0x41, 0x79]);
+    return new TextDecoderConstructor().decode(source.subarray(1, 2)) === 'A';
+  } catch {
+    return false;
+  }
+}
+
 export function installTextEncodingPolyfill(
   target: TextEncodingGlobal
 ): void {
-  if (
-    typeof target.TextEncoder === 'undefined' ||
-    typeof target.TextEncoder.prototype?.encodeInto !== 'function'
-  ) {
+  if (!supportsTextEncoderEncodeInto(target.TextEncoder)) {
     Object.defineProperty(target, 'TextEncoder', {
       configurable: true,
       writable: true,
@@ -119,7 +145,7 @@ export function installTextEncodingPolyfill(
     });
   }
 
-  if (typeof target.TextDecoder === 'undefined') {
+  if (!supportsTextDecoderViewBounds(target.TextDecoder)) {
     Object.defineProperty(target, 'TextDecoder', {
       configurable: true,
       writable: true,

@@ -513,6 +513,36 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   and a canonical product failure/retry settlement; positive live-file loading is
   no longer outstanding.
 
+### 2026-09-10 working-tree Diff continuation
+
+- A project created through public `orchestration.dispatchCommand` inside the
+  disposable comparison clone pointed at a real one-file git fixture. Electron
+  and exact-owned Lynxtron 0.0.21 PID `47444` / DevTool `localhost:8903` then
+  opened the same `thread-fc008-small` working tree through product controls.
+  Both rendered `example.ts`, one changed file, +2/-1, and the same removed and
+  added TypeScript lines. Native rendered its hosted 511x774 Diff pane, 46px
+  toolbar, 728px patch body, and 495x712 patch viewport; its real options menu
+  changed Split diff to Stacked diff, and Show file tree exposed the selected
+  `example.ts` row. The exact-client warning/error console was empty.
+- This run first exposed two real Lynx 0.0.21 text-codec compatibility defects.
+  Its `TextEncoder` declares `encodeInto` but throws
+  `TextEncoder().encodeInto not supported`, and its `TextDecoder` ignores a
+  typed-array view's byte offset/length, causing `@pierre/diffs` reusable scratch
+  buffers to append stale bytes and NULs to paths and lines. The existing
+  polyfill only tested method presence. Installation now executes bounded
+  capability probes for both behaviors and replaces incomplete implementations.
+  The focused suite passes 9/9, the complete Lynx build succeeds, and the final
+  exact-owned run reports zero NUL-bearing DOM attributes, a clean `example.ts`
+  path, intact `normalizedName` patch content, and no warning/error console.
+  Bundle SHA-256 was
+  `7e8b1cf2957dc2de6be2f6ea5aaba37e80b1ea909fba5907bd32595957354ac0`.
+- FC-008 is now complete for the normal-size working-tree right-dock path. The
+  full Editor placement and a real checkpoint-backed turn diff remain open. A
+  separate 189-file Synara working tree rendered its patch after the encoding
+  fix but triggered Lynxtron's `CallLepusMethod called too frequently` runtime
+  toast; large-diff batching remains a product/performance issue and is not
+  counted as passing fidelity evidence.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation

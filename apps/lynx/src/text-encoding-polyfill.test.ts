@@ -5,6 +5,7 @@ import {
   encodeUtf8,
   encodeUtf8Into,
   installTextEncodingPolyfill,
+  LynxTextDecoder,
   LynxTextEncoder,
 } from './text-encoding-polyfill';
 
@@ -59,6 +60,57 @@ describe('UTF-8 text encoding polyfill', () => {
 
     expect(target.TextEncoder).toBe(LynxTextEncoder);
     expect(typeof target.TextEncoder.prototype.encodeInto).toBe('function');
+  });
+
+  it('replaces a Lynx-style encoder whose encodeInto method throws', () => {
+    class UnsupportedEncodeIntoTextEncoder {
+      readonly encoding = 'utf-8';
+
+      encode(input = ''): Uint8Array {
+        return encodeUtf8(input);
+      }
+
+      encodeInto(): TextEncoderEncodeIntoResult {
+        throw new TypeError('TextEncoder().encodeInto not supported');
+      }
+    }
+    const target = {
+      TextEncoder: UnsupportedEncodeIntoTextEncoder as unknown as typeof TextEncoder,
+      TextDecoder,
+    };
+
+    installTextEncodingPolyfill(target);
+
+    expect(target.TextEncoder).toBe(LynxTextEncoder);
+    expect(new target.TextEncoder().encodeInto('A', new Uint8Array(1))).toEqual({
+      read: 1,
+      written: 1,
+    });
+  });
+
+  it('replaces a Lynx-style decoder that ignores typed-array view bounds', () => {
+    class UnboundedTextDecoder {
+      readonly encoding = 'utf-8';
+
+      decode(input?: ArrayBufferView | ArrayBuffer | null): string {
+        if (!input) return '';
+        const bytes =
+          input instanceof ArrayBuffer
+            ? new Uint8Array(input)
+            : new Uint8Array(input.buffer);
+        return String.fromCharCode(...bytes);
+      }
+    }
+    const target = {
+      TextEncoder,
+      TextDecoder: UnboundedTextDecoder as unknown as typeof TextDecoder,
+    };
+
+    installTextEncodingPolyfill(target);
+
+    expect(target.TextDecoder).toBe(LynxTextDecoder);
+    const source = new Uint8Array([0x78, 0x41, 0x79]);
+    expect(new target.TextDecoder().decode(source.subarray(1, 2))).toBe('A');
   });
 
   it('preserves an existing complete TextEncoder implementation', () => {
