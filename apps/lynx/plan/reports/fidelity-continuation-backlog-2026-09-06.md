@@ -28,6 +28,10 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
 - **FC-002 is closed for the Native canonical-tail and clean-transient gate.**
   Explicit non-empty recent-history and selection fixtures remain follow-up
   comparison coverage, not a Native loading blocker.
+- **FC-003 is complete.** In addition to the real overview runs, a paired
+  production-composition story now covers default, long-title, draft, and
+  working cards across default, hover, focus, and pressed states in both target
+  themes and sizes.
 - **FC-024 is closed for exact Native thread identity.** The PID-derived DOM
   contained exactly one routed thread row and exactly one active row.
 - **FC-039 is closed and superseded.** The earlier foreground-query conclusion
@@ -369,6 +373,34 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   cleanup preserved only normal Synara `47905/8901` and T3 Code `18465/8902`.
   Together with the existing dark/1440 and overflow/hover evidence, FC-009 is
   complete for its tracked header and right-dock debt.
+
+### 2026-09-10 Kanban card state closure
+
+- Components Lab now includes a physical-shared `kanban/card` story backed by
+  the production `KanbanCardComposition` in both renderers. Its four content
+  variants are default, long-title, draft, and working; its four interaction
+  states are default, hover, focus, and pressed. The optional deterministic
+  state seam only applies the existing product interaction classes and leaves
+  ordinary Kanban consumers unchanged. The catalog now contains 44 paired
+  stories, 88 renderer mappings, 3,216 normalized cells, and 26 interactive
+  stories; the 88-mapping identity audit passes.
+- Exact-owned Lynxtron 0.0.21 PID `22472` / window `83486` covered light/1280.
+  The working/pressed card resolved to `SharedKanbanCard ui-pressed`, measured
+  288x82 with a 262x60 content box, and rendered provider, branch, a working
+  indicator, `Worked for 5m`, and the In Progress glyph. The long-title/focus
+  cell retained its full accessible name, clamped the visible title to two
+  lines, and rendered the focus ring. The draft/hover cell rendered its two-line
+  prompt preview, attachment glyph, branch/provider metadata, Draft glyph, and
+  `SharedKanbanCard ui-hover`.
+- Exact-owned PID `33327` / window `83577` repeated working/pressed,
+  long-title/focus, and draft/hover at dark/1440. DevTool confirmed the same
+  shared classes, maxlines=2 title/preview contract, and 12px attachment icon;
+  the exact-client warning/error console was empty. The staged bundle SHA-256
+  was `ade2a75f2d4a1397c0b6cf1f316395c72f2cc70f94e78b81f90f4e548ffbc7c7`.
+  Shared, Web, and Native focused suites pass 18/18, 27/27, and 8/8, and the
+  production build succeeds. Final cleanup preserved only normal Synara
+  `47905/8901` and T3 Code `18465/8902`. This closes FC-003's remaining
+  long-title/draft/working and focus/pressed matrix debt.
 
 ## Historical items currently considered closed, pending regression sampling
 
