@@ -39,6 +39,9 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
 - **FC-007 and FC-010 are complete for their tracked file-tab and message-row
   debts.** Their real Web interactions and exact-owned Native callbacks are
   certified below; broader Editor anatomy remains FC-023/027 work.
+- **FC-009 is complete for the tracked right-dock/header controls.** The final
+  light/1280 loaded-product run covers Environment data, Add-panel availability,
+  Browser singleton reuse, Diff activation, tab counts, and Collapse behavior.
 - **FC-021 remains partial, but its favourite toggle and disclosure blocker is
   closed.** Remaining work is keyboard, compact placement, model activation,
   overflow, and unsampled cells.
@@ -336,6 +339,36 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   was transformed by the Native input path), so those attempts were discarded
   rather than counted as Browser failures or input certification. FC-026 still
   requires the user's physical mouse/keyboard verification.
+
+### 2026-09-10 loaded-product right-dock/header closure
+
+- The comparison authority previously failed its clean-transient gate because
+  its cloned server settings still enabled provider-update checks before the
+  renderer-local reset. The owned snapshot now disables provider-update and
+  task-completion toasts before server startup while preserving all unrelated
+  settings. The Electron transient probe reports toast text/type/state, waits
+  up to ten seconds for the first clean state, and then requires 250ms of
+  continuously clean chrome. Its focused suite passes 42/42. The product also
+  closes an owned provider-update prompt when that notification component
+  unmounts, preventing an orphaned global toast during ordinary route changes.
+- Fresh exact-owned Lynxtron 0.0.21 PID `67731`, window `83148`, DevTool
+  `localhost:8903`, light/1280 passed the canonical thread identity, exact-tail,
+  and transient-zero gates. The product header exposed Hand off, Add action,
+  Environment, and right-dock controls. Opening Environment rendered Changes,
+  Local, branch state, disabled Commit and Push, `Local Servers 1`,
+  `Codex 95% left`, Editor view, Open in Cursor, Project instructions, and
+  Notepad rather than placeholder counts.
+- `Cmd+Shift+B` opened Browser beside Environment. The right-dock Add panel menu
+  exposed exactly Browser, Diff, Explorer, Terminal, Side, and Git. Choosing
+  Diff produced a two-tab `Browser + Diff` strip and the real no-working-tree
+  state; choosing Browser again activated the existing singleton without adding
+  a duplicate. DevTool measured Add panel and Collapse panel as 28x28 controls.
+  Activating Collapse persisted `open:false` while retaining both pane records
+  and destroyed the Browser view; the independent Environment inspector stayed
+  open, as intended. The PID-derived error/warning console was empty, and final
+  cleanup preserved only normal Synara `47905/8901` and T3 Code `18465/8902`.
+  Together with the existing dark/1440 and overflow/hover evidence, FC-009 is
+  complete for its tracked header and right-dock debt.
 
 ## Historical items currently considered closed, pending regression sampling
 
