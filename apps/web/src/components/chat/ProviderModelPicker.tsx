@@ -422,6 +422,8 @@ type ProviderModelPickerProps = {
 
 export const ProviderModelPicker = function ProviderModelPicker(props: ProviderModelPickerProps) {
   const { onOpenChange, onSelectionCommitted, open } = props;
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const escapeFocusTimerRef = useRef<number | null>(null);
   const [uncontrolledMenuOpen, setUncontrolledMenuOpen] = useState(
     props.initialOpen ?? false,
   );
@@ -457,6 +459,9 @@ export const ProviderModelPicker = function ProviderModelPicker(props: ProviderM
       if (selectionCommitTimerRef.current !== null) {
         clearTimeout(selectionCommitTimerRef.current);
       }
+      if (escapeFocusTimerRef.current !== null) {
+        clearTimeout(escapeFocusTimerRef.current);
+      }
     },
     [],
   );
@@ -468,6 +473,7 @@ export const ProviderModelPicker = function ProviderModelPicker(props: ProviderM
 
   const triggerButton = (
     <PickerTriggerButton
+      ref={triggerRef}
       disabled={props.disabled ?? false}
       compact={props.compact ?? false}
       hideLabel={props.hideLabel ?? false}
@@ -490,12 +496,21 @@ export const ProviderModelPicker = function ProviderModelPicker(props: ProviderM
   return (
     <Menu
       open={isMenuOpen}
-      onOpenChange={(nextOpen) => {
+      onOpenChange={(nextOpen, eventDetails) => {
         if (props.disabled) {
           setMenuOpen(false);
           return;
         }
         setMenuOpen(nextOpen);
+        if (!nextOpen && eventDetails.reason === "escape-key") {
+          if (escapeFocusTimerRef.current !== null) {
+            clearTimeout(escapeFocusTimerRef.current);
+          }
+          escapeFocusTimerRef.current = window.setTimeout(() => {
+            escapeFocusTimerRef.current = null;
+            triggerRef.current?.focus();
+          }, 0);
+        }
       }}
     >
       {props.shortcutLabel ? (

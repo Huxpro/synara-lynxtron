@@ -3,29 +3,31 @@
 // Layer: Chat shell controls
 // Depends on: button primitives, shared picker text styles, and icon slots supplied by callers.
 
-import { type ComponentProps, type ReactNode } from "react";
+import { forwardRef, type ComponentProps, type ReactNode } from "react";
 import { ChevronDownIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 import { Button } from "../ui/button";
 import { COMPOSER_PICKER_TRIGGER_TEXT_CLASS_NAME } from "./composerPickerStyles";
 
-export function PickerTriggerButton(
-  props: {
-    icon: ReactNode;
-    label: ReactNode;
-    compact?: boolean;
-    // Icon-only mode for narrow composers; the label stays available to
-    // assistive tech and as a hover title.
-    hideLabel?: boolean;
-    // Drop the trailing chevron so the trigger reads as a plain label (e.g. the
-    // folder picker) instead of an obvious dropdown.
-    hideChevron?: boolean;
-  } & Omit<ComponentProps<typeof Button>, "children" | "size" | "variant">,
-) {
+type PickerTriggerButtonProps = {
+  icon: ReactNode;
+  label: ReactNode;
+  compact?: boolean;
+  // Icon-only mode for narrow composers; the label stays available to
+  // assistive tech and as a hover title.
+  hideLabel?: boolean;
+  // Drop the trailing chevron so the trigger reads as a plain label (e.g. the
+  // folder picker) instead of an obvious dropdown.
+  hideChevron?: boolean;
+} & Omit<ComponentProps<typeof Button>, "children" | "size" | "variant">;
+
+export const PickerTriggerButton = forwardRef<HTMLButtonElement, PickerTriggerButtonProps>(
+  function PickerTriggerButton(props, ref) {
   const { icon, label, compact, hideLabel, hideChevron, className, ...buttonProps } = props;
 
   return (
     <Button
+      ref={ref}
       {...buttonProps}
       size="sm"
       variant="chrome"
@@ -55,4 +57,5 @@ export function PickerTriggerButton(
       </span>
     </Button>
   );
-}
+  },
+);

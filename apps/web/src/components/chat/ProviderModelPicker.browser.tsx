@@ -1,6 +1,6 @@
 import { type ModelSlug, type ProviderKind, type ServerProviderStatus } from "@synara/contracts";
 import { useState } from "react";
-import { page } from "vitest/browser";
+import { page, userEvent } from "vitest/browser";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 
@@ -284,6 +284,33 @@ describe("ProviderModelPicker", () => {
         "claudeAgent",
         "claude-sonnet-4-6",
       );
+    } finally {
+      await mounted.cleanup();
+    }
+  });
+
+  it("opens and dismisses from the keyboard while restoring trigger focus", async () => {
+    const mounted = await mountPicker({
+      provider: "claudeAgent",
+      model: "claude-opus-4-6",
+      lockedProvider: "claudeAgent",
+    });
+
+    try {
+      const trigger = page.getByRole("button", { name: "Claude Opus 4.6" });
+      await userEvent.tab();
+      await expect.element(trigger).toHaveFocus();
+      await userEvent.keyboard("{Enter}");
+      await expect
+        .element(page.getByRole("menuitemradio", { name: "Claude Sonnet 4.6" }))
+        .toBeVisible();
+
+      await userEvent.keyboard("{Escape}");
+
+      await expect
+        .element(page.getByRole("menuitemradio", { name: "Claude Sonnet 4.6" }))
+        .not.toBeInTheDocument();
+      await expect.element(trigger).toHaveFocus();
     } finally {
       await mounted.cleanup();
     }
