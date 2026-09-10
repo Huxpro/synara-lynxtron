@@ -355,20 +355,15 @@ function HighlightedText(props: { text: string; query: string; className?: strin
 
 export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
   const { activeTheme, resolvedTheme, setCodeThemeId, setTheme, theme } = useTheme();
-  // ReactLynx can deliver cross-bundle props after the shared component's lazy
-  // state initializer has run. Keep the route-provided seed authoritative until
-  // the user actually edits, then let local state (including an empty string)
-  // take ownership. This also avoids a syncing effect that could overwrite live
-  // typing when an equivalent seed prop is reconstructed by a parent.
-  const [queryOverride, setQueryOverride] = useState<string | null>(null);
-  const [searchQueryOverride, setSearchQueryOverride] = useState<string | null>(null);
-  const query = props.query ?? queryOverride ?? props.initialQuery ?? "";
-  const searchQuery = props.query ?? searchQueryOverride ?? props.initialQuery ?? "";
+  const [localQuery, setLocalQuery] = useState(() => props.initialQuery ?? "");
+  const [localSearchQuery, setLocalSearchQuery] = useState(() => props.initialQuery ?? "");
+  const query = props.query ?? localQuery;
+  const searchQuery = props.query ?? localSearchQuery;
   const setQuery = (value: string) => {
     props.onQueryChange?.(value);
-    if (props.query === undefined) setQueryOverride(value);
+    if (props.query === undefined) setLocalQuery(value);
   };
-  const setSearchQuery = setSearchQueryOverride;
+  const setSearchQuery = setLocalSearchQuery;
   const [highlightedItemValue, setHighlightedItemValue] = useState<string | null>(null);
   const [importProviderState, setImportProvider] = useState<ImportProviderKind>(
     props.importProviders[0] ?? "codex",
@@ -402,8 +397,8 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
     // Timeout-0 keeps the reset writes asynchronous (the palette is already
     // hidden), which keeps this component eligible for React Compiler.
     const timeoutId = setTimeout(() => {
-      setQueryOverride(null);
-      setSearchQueryOverride(null);
+      setLocalQuery("");
+      setLocalSearchQuery("");
       setHighlightedItemValue(null);
       setImportProvider(props.importProviders[0] ?? "codex");
       setImportId("");

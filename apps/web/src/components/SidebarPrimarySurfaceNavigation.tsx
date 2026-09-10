@@ -103,7 +103,7 @@ export function SidebarPrimarySurfaceNavigation(props: {
               elementId: props.searchElementId,
               label: "Search",
               active: props.searchOpen,
-              onActivate: props.onOpenSearch,
+              onActivate: props.onOpenSearch ? () => props.onOpenSearch?.() : undefined,
               shortcutLabel: props.searchShortcutLabel,
             }),
           ]
@@ -121,7 +121,7 @@ export function SidebarPrimarySurfaceNavigation(props: {
               elementId: props.searchElementId,
               label: "Search",
               active: props.searchOpen,
-              onActivate: props.onOpenSearch,
+              onActivate: props.onOpenSearch ? () => props.onOpenSearch?.() : undefined,
               shortcutLabel: props.searchShortcutLabel,
             }),
             item({

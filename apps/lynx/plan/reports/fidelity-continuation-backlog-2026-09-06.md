@@ -275,6 +275,24 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   future route-local loading polish is regression sampling rather than a global
   unexplained-blank-window blocker.
 
+### 2026-09-10 normal-route command-palette closure
+
+- The first loaded-route Search probe exposed a separate shared-callback defect:
+  `SidebarPrimarySurfaceNavigation` passed `openSearchPalette(initialQuery?)`
+  directly as a renderer activation handler, so Native supplied its event object
+  as `initialQuery` and the palette crashed at `trim`. The shared navigation now
+  wraps Search activation as an explicit zero-argument call; a source contract
+  prevents renderer events from re-entering the query boundary.
+- After rebuilding, exact-owned PID 50627 / listener 8903 opened Search from the
+  real Kanban sidebar without a LogBox. The populated Suggested and Recent groups
+  rendered, two ArrowDown commands changed keyboard selection, and Escape removed
+  the palette. DevTool then contained only the real
+  `synara-sidebar-search-trigger`; programmatic focus restoration intentionally
+  did not add `ui-focus`, and the exact-client warning/error console was empty.
+  Combined with Settings/thread/Explorer keyboard coverage and the fixed filtered
+  seed cell, FC-004's command-palette behavior is complete. Window drag-region
+  sampling remains general shell regression coverage rather than palette debt.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation
