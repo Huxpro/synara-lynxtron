@@ -63,6 +63,12 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   navigation, history, reload, tabs, screenshot clipboard, and fresh-app
   persistence. The documented WKWebView OAuth-popup and PDF text-layer deltas
   remain runtime boundaries rather than unfinished Browser implementation.
+- **FC-020 is complete for deterministic rendered voice states.** Idle, silence,
+  waveform, and transcribing now have both target theme/size coverage; microphone
+  permission and live transcription flows remain physical/service acceptance.
+- **FC-027 is complete for its tracked monospace-placement debt.** Terminal,
+  Markdown, Diff, and full Editor code now resolve the shared code-font contract
+  in current product surfaces.
 - **FC-039 is complete.** Canonical load, exact identity, transcript delivery,
   dynamic PID-owned DevTool discovery, and delayed transient-UI rejection all
   passed on fresh 0.0.21 cold runs.
