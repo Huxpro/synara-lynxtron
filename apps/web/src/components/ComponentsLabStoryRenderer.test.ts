@@ -162,7 +162,7 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.storyId === "sidebar/command-palette"');
     expect(source).toContain('useEffect(() => setOpen(routeOpen), [routeOpen])');
     expect(source).toContain('<SidebarSearchPalette');
-    expect(source).toContain('initialQuery={props.state === "keyboard-highlight"');
+    expect(source).toContain('query={routeQuery}');
     expect(source).toContain('resolveComponentLabCommandPaletteFixture(props.variant)');
     expect(source).toContain('searchStatus={fixture.searchStatus}');
     expect(source).toContain('fixture.searchStatus === "error"');

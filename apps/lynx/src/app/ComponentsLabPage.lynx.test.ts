@@ -73,6 +73,7 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('fixture.shortcut ?');
     expect(renderer).toContain("props.storyId === 'sidebar/command-palette'");
     expect(renderer).toContain('<SidebarSearchPalette');
+    expect(renderer).toContain('query={routeQuery}');
     expect(renderer).toContain('resolveComponentLabCommandPaletteFixture(props.variant)');
     expect(renderer).toContain('searchStatus={fixture.searchStatus}');
     expect(renderer).toContain("fixture.searchStatus === 'error'");

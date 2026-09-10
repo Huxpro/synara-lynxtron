@@ -244,6 +244,24 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   only for independent focus/pressed and long-title/draft/working fixtures that
   are not present in this seed.
 
+### 2026-09-10 Native command-palette seed delivery
+
+- A fresh direct `sidebar/command-palette`, filtered/open run on 0.0.21 PID
+  66275 confirmed that FC-004's filtered Lab failure survived the FC-039 harness
+  repair: Electron and Lynx-for-Web showed input `settings`, while exact-owned
+  Native still rendered an empty input and Suggested content. This reclassified
+  it as an independent shared-component seed ownership bug.
+- `SidebarSearchPalette` now supports a controlled `query` contract and derives
+  its legacy `initialQuery` until the first user edit instead of depending on a
+  cross-runtime lazy initializer. The deterministic Lab story uses the controlled
+  query because its route is the source of truth; production callers retain the
+  existing uncontrolled behavior. After a complete rebuild, exact-owned PID
+  75793 / listener 8903 exposed Native textarea `default-value=settings` and the
+  filtered Settings result with an empty warning/error console. Focused palette
+  and all-case renderer tests pass 41/41. FC-004 remains partial only for drag
+  suppression, restored-focus sampling on loaded normal routes, and remaining
+  route coverage; filtered seed delivery is closed.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation

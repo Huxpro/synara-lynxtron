@@ -69,8 +69,10 @@ export type SidebarSearchPaletteMode = "search" | "import";
 interface SidebarSearchPaletteProps {
   open: boolean;
   initialQuery?: string;
+  query?: string;
   mode: SidebarSearchPaletteMode;
   onModeChange: (mode: SidebarSearchPaletteMode) => void;
+  onQueryChange?: (query: string) => void;
   onOpenChange: (open: boolean) => void;
   actions: readonly SidebarSearchAction[];
   projects: readonly SidebarSearchProject[];
@@ -353,8 +355,20 @@ function HighlightedText(props: { text: string; query: string; className?: strin
 
 export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
   const { activeTheme, resolvedTheme, setCodeThemeId, setTheme, theme } = useTheme();
-  const [query, setQuery] = useState(() => props.initialQuery ?? "");
-  const [searchQuery, setSearchQuery] = useState(() => props.initialQuery ?? "");
+  // ReactLynx can deliver cross-bundle props after the shared component's lazy
+  // state initializer has run. Keep the route-provided seed authoritative until
+  // the user actually edits, then let local state (including an empty string)
+  // take ownership. This also avoids a syncing effect that could overwrite live
+  // typing when an equivalent seed prop is reconstructed by a parent.
+  const [queryOverride, setQueryOverride] = useState<string | null>(null);
+  const [searchQueryOverride, setSearchQueryOverride] = useState<string | null>(null);
+  const query = props.query ?? queryOverride ?? props.initialQuery ?? "";
+  const searchQuery = props.query ?? searchQueryOverride ?? props.initialQuery ?? "";
+  const setQuery = (value: string) => {
+    props.onQueryChange?.(value);
+    if (props.query === undefined) setQueryOverride(value);
+  };
+  const setSearchQuery = setSearchQueryOverride;
   const [highlightedItemValue, setHighlightedItemValue] = useState<string | null>(null);
   const [importProviderState, setImportProvider] = useState<ImportProviderKind>(
     props.importProviders[0] ?? "codex",
@@ -388,8 +402,8 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
     // Timeout-0 keeps the reset writes asynchronous (the palette is already
     // hidden), which keeps this component eligible for React Compiler.
     const timeoutId = setTimeout(() => {
-      setQuery("");
-      setSearchQuery("");
+      setQueryOverride(null);
+      setSearchQueryOverride(null);
       setHighlightedItemValue(null);
       setImportProvider(props.importProviders[0] ?? "codex");
       setImportId("");

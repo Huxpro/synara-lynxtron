@@ -676,6 +676,7 @@ function TranscriptMessageActionStory(props: {
 function SidebarCommandPaletteStory(props: { readonly state: string; readonly variant?: string }) {
   const fixture = resolveComponentLabCommandPaletteFixture(props.variant);
   const routeOpen = props.state === 'open' || props.state === 'keyboard-highlight';
+  const routeQuery = props.state === 'keyboard-highlight' ? 'settings' : fixture.query;
   const [open, setOpen] = useState(routeOpen);
   const [mode, setMode] = useState<'search' | 'import'>('search');
   useEffect(() => setOpen(routeOpen), [routeOpen]);
@@ -683,7 +684,7 @@ function SidebarCommandPaletteStory(props: { readonly state: string; readonly va
     <view className="ComponentsLabRealStory">
       <Button size="sm" variant="chrome-outline" onClick={() => setOpen(true)}>Search</Button>
       <SidebarSearchPalette
-        open={open} initialQuery={props.state === 'keyboard-highlight' ? 'settings' : fixture.query}
+        open={open} query={routeQuery}
         mode={mode} onModeChange={setMode} onOpenChange={setOpen}
         actions={fixture.actions ? [{ id: 'settings', label: 'Settings', description: 'Configure Synara' }] : []}
         projects={[{ id: 'component-lab-project', name: 'Synara', remoteName: 'synara', folderName: 'synara', localName: null, cwd: '/workspace/synara', spaceName: 'Personal' }]}
