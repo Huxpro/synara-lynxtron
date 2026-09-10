@@ -92,6 +92,15 @@ product changes, other routes, other themes, other sizes, or Native input.
   marks the callback props as background-only. Fresh exact-owned 0.0.21 PID
   29798 / DevTool 8903 selected Alpha, submitted `Move 1 project`, and closed
   the dialog within the next observed frame with an empty error/warning console.
+- FC-009 overflow reachability is now physically verified with the real
+  normalized `right-dock/tab-strip` `variant=overflow` cell on exact-owned
+  0.0.21 PID `32005`. A DevTool horizontal wheel moved the first tab from
+  x=679–760 to x=-21–60 and the final `ComponentStory6.tsx` tab from
+  x=1717–1869 to x=1017–1169, while the 306px scroller frame stayed fixed at
+  x=679–985. The Add panel and Collapse controls remained fixed at x=989–1017
+  and x=1021–1049 respectively, and the exact-client console remained clean.
+  This closes overflow gesture reachability and fixed-control anchoring;
+  hover-to-close, availability gating and full product header counts remain.
 
 ## Historical items currently considered closed, pending regression sampling
 
