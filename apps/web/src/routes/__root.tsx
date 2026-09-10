@@ -484,6 +484,15 @@ function ProviderUpdateNotifications() {
     });
 
   useEffect(() => {
+    return () => {
+      const activeToast = activeToastRef.current;
+      if (activeToast?.kind !== "prompt") return;
+      toastManager.close(activeToast.toastId);
+      activeToastRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
     const activeToast = activeToastRef.current;
     if (activeToast?.kind === "prompt" && activeToast.key !== notificationKey) {
       toastManager.close(activeToast.toastId);

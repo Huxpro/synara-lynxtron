@@ -24,5 +24,7 @@ describe('Electron Components Lab menu navigation', () => {
     expect(root).toContain(
       'componentsLabActive ? null : <TaskCompletionNotifications />'
     );
+    expect(root).toContain('if (activeToast?.kind !== "prompt") return');
+    expect(root).toContain('toastManager.close(activeToast.toastId)');
   });
 });
