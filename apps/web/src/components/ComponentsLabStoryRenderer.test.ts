@@ -272,6 +272,16 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.variant === "query"');
   });
 
+  it("renders real Diff and editor project search headers with focus and disabled states", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('props.storyId === "diff/file-filter"');
+    expect(source).toContain('<ReviewFileTreeSearchHeader');
+    expect(source).toContain('props.storyId === "editor/project-search"');
+    expect(source).toContain('<PickerPanelSearchHeader');
+    expect(source).toContain('autoFocus={props.state === "focus"}');
+    expect(source).toContain('disabled={props.state === "disabled"}');
+  });
+
   it("renders file preview recovery through the shared product composition", () => {
     const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
     expect(source).toContain('props.storyId === "editor/file-preview-error"');

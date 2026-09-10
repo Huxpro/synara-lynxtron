@@ -25,6 +25,37 @@ export interface EditorProjectSwitchGroup {
   readonly items: readonly EditorProjectSwitchOption[];
 }
 
+export function EditorProjectSwitchSearchHeader(props: {
+  readonly autoFocus?: boolean;
+  readonly disabled?: boolean;
+  readonly query: string;
+  readonly onQueryChange: (query: string) => void;
+}) {
+  const searchInputRef = useRef<InputRef>(null);
+  useEffect(() => {
+    if (!props.autoFocus || props.disabled) return;
+    const input = searchInputRef.current;
+    if (!input) return;
+    void input.focus().then(() => input.setSelectionRange(0, props.query.length)).catch(() => undefined);
+  }, [props.autoFocus, props.disabled]);
+  return (
+    <view className="ThreadEditorProjectSwitchSearch">
+      <Input
+        ref={searchInputRef}
+        aria-label="Search projects"
+        className="ThreadEditorProjectSwitchSearchInput"
+        disabled={props.disabled}
+        nativeInput
+        placeholder="Search projects"
+        size="sm"
+        type="search"
+        value={props.query}
+        onChange={(event) => props.onQueryChange(event.target.value)}
+      />
+    </view>
+  );
+}
+
 export function EditorProjectSwitchMenu(props: {
   readonly currentProjectId: string | null;
   readonly groups: readonly EditorProjectSwitchGroup[];
@@ -35,16 +66,6 @@ export function EditorProjectSwitchMenu(props: {
   readonly onQueryChange: (query: string) => void;
 }) {
   const listHeight = resolveEditorProjectSwitchListHeight(props.groups);
-  const searchInputRef = useRef<InputRef>(null);
-  useEffect(() => {
-    if (!props.open) return;
-    const input = searchInputRef.current;
-    if (!input) return;
-    void input
-      .focus()
-      .then(() => input.setSelectionRange(0, props.query.length))
-      .catch(() => undefined);
-  }, [props.open]);
   return (
     <Menu
       autoHighlightFirst={false}
@@ -66,19 +87,11 @@ export function EditorProjectSwitchMenu(props: {
         sideOffset={4}
         style={{ height: `${listHeight + 41}px` }}
       >
-        <view className="ThreadEditorProjectSwitchSearch">
-          <Input
-            ref={searchInputRef}
-            aria-label="Search projects"
-            className="ThreadEditorProjectSwitchSearchInput"
-            nativeInput
-            placeholder="Search projects"
-            size="sm"
-            type="search"
-            value={props.query}
-            onChange={(event) => props.onQueryChange(event.target.value)}
-          />
-        </view>
+        <EditorProjectSwitchSearchHeader
+          autoFocus={props.open}
+          query={props.query}
+          onQueryChange={props.onQueryChange}
+        />
         <scroll-view
           className="ThreadEditorProjectSwitchList"
           scroll-orientation="vertical"

@@ -113,6 +113,12 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain("props.storyId === 'editor/file-search'");
     expect(renderer).toContain('<ExplorerSearchInputHeader');
     expect(renderer).toContain("props.variant === 'query'");
+    expect(renderer).toContain("props.storyId === 'diff/file-filter'");
+    expect(renderer).toContain('<ReviewFileTreeSearchHeader');
+    expect(renderer).toContain("props.storyId === 'editor/project-search'");
+    expect(renderer).toContain('<EditorProjectSwitchSearchHeader');
+    expect(renderer).toContain("autoFocus={props.state === 'focus'}");
+    expect(renderer).toContain("disabled={props.state === 'disabled'}");
     expect(renderer).toContain("props.storyId === 'editor/file-preview-error'");
     expect(renderer).toContain('<WorkspaceFilePreviewErrorState');
     expect(renderer).toContain("props.variant === 'explorer-dock'");

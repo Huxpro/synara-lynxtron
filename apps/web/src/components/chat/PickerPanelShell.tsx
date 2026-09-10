@@ -48,21 +48,6 @@ export function PickerPanelShell(props: {
     bleedParentPadding = false,
     listMaxHeightClassName,
   } = props;
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    if (!autoFocusSearch || !onQueryChange) {
-      return;
-    }
-
-    const frame = requestAnimationFrame(() => {
-      searchInputRef.current?.focus();
-      searchInputRef.current?.select();
-    });
-
-    return () => cancelAnimationFrame(frame);
-  }, [autoFocusSearch, onQueryChange]);
-
   return (
     <div
       className={cn(
@@ -73,36 +58,14 @@ export function PickerPanelShell(props: {
       )}
     >
       {onQueryChange ? (
-        <div
-          className={cn(
-            bleedParentPadding
-              ? cn(COMPOSER_PICKER_SEARCH_HEADER_CLASS_NAME, "-top-1 pt-2")
-              : "sticky top-0 z-20 shrink-0 border-b border-border bg-[var(--composer-surface)] p-1",
-          )}
-        >
-          <Input
-            className={cn(
-              "rounded-md border-border/60 shadow-none before:hidden has-focus-visible:border-neutral-500/15 has-focus-visible:ring-0 [&_input]:font-sans",
-              bleedParentPadding ? COMPOSER_PICKER_SEARCH_INPUT_CLASS_NAME : "bg-background",
-            )}
-            nativeInput
-            ref={searchInputRef}
-            size="sm"
-            type="search"
-            placeholder={searchPlaceholder}
-            value={query}
-            onChange={(event) => onQueryChange(event.target.value)}
-            onKeyDownCapture={
-              stopSearchKeyPropagation
-                ? (event) => {
-                    if (!MENU_NAVIGATION_KEYS.has(event.key)) {
-                      event.stopPropagation();
-                    }
-                  }
-                : undefined
-            }
-          />
-        </div>
+        <PickerPanelSearchHeader
+          autoFocus={autoFocusSearch}
+          bleedParentPadding={bleedParentPadding}
+          placeholder={searchPlaceholder}
+          query={query}
+          stopKeyPropagation={stopSearchKeyPropagation}
+          onQueryChange={onQueryChange}
+        />
       ) : null}
       <div
         className={cn(
@@ -113,6 +76,58 @@ export function PickerPanelShell(props: {
         {children}
       </div>
       {footer ? <div className="border-t p-1">{footer}</div> : null}
+    </div>
+  );
+}
+
+export function PickerPanelSearchHeader(props: {
+  autoFocus?: boolean;
+  bleedParentPadding?: boolean;
+  disabled?: boolean;
+  placeholder?: string;
+  query: string;
+  stopKeyPropagation?: boolean;
+  onQueryChange: (query: string) => void;
+}) {
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    if (!props.autoFocus || props.disabled) return;
+    const frame = requestAnimationFrame(() => {
+      searchInputRef.current?.focus();
+      searchInputRef.current?.select();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [props.autoFocus, props.disabled]);
+
+  return (
+    <div
+      className={cn(
+        props.bleedParentPadding
+          ? cn(COMPOSER_PICKER_SEARCH_HEADER_CLASS_NAME, "-top-1 pt-2")
+          : "sticky top-0 z-20 shrink-0 border-b border-border bg-[var(--composer-surface)] p-1",
+      )}
+    >
+      <Input
+        className={cn(
+          "rounded-md border-border/60 shadow-none before:hidden has-focus-visible:border-neutral-500/15 has-focus-visible:ring-0 [&_input]:font-sans",
+          props.bleedParentPadding ? COMPOSER_PICKER_SEARCH_INPUT_CLASS_NAME : "bg-background",
+        )}
+        disabled={props.disabled}
+        nativeInput
+        ref={searchInputRef}
+        size="sm"
+        type="search"
+        placeholder={props.placeholder ?? "Search"}
+        value={props.query}
+        onChange={(event) => props.onQueryChange(event.target.value)}
+        onKeyDownCapture={
+          props.stopKeyPropagation
+            ? (event) => {
+                if (!MENU_NAVIGATION_KEYS.has(event.key)) event.stopPropagation();
+              }
+            : undefined
+        }
+      />
     </div>
   );
 }

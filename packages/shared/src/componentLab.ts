@@ -220,6 +220,20 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
+    id: "diff/file-filter", title: "Diff file filter", category: "diff", owner: "ReviewFileTreeSearchHeader", fixtureId: "diff-file-filter", variants: ["review-tree"], states: ["default", "query", "focus", "disabled"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: { renderer: "electron", component: "ReviewFileTreeSearchHeader", module: "apps/web/src/components/ReviewFileTreePanel.tsx", consumers: ["diff/review-file-tree"] },
+      lynx: { renderer: "lynx", component: "ReviewFileTreeSearchHeader", module: "apps/lynx/src/app/DiffDock.lynx.tsx", consumers: ["diff/review-file-tree"] },
+    },
+  },
+  {
+    id: "editor/project-search", title: "Editor project search", category: "editor", owner: "ProjectMenuPicker search header", fixtureId: "editor-project-search", variants: ["project-switcher"], states: ["default", "query", "focus", "disabled"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: { renderer: "electron", component: "PickerPanelSearchHeader", module: "apps/web/src/components/chat/PickerPanelShell.tsx", consumers: ["editor/project-switcher", "project-menu-picker"] },
+      lynx: { renderer: "lynx", component: "EditorProjectSwitchSearchHeader", module: "apps/lynx/src/app/EditorProjectSwitchMenu.lynx.tsx", consumers: ["editor/project-switcher", "project-menu-picker"] },
+    },
+  },
+  {
     id: "sidebar/space-project-picker", title: "Space project picker", category: "navigation", owner: "SpaceProjectPickerDialog", fixtureId: "space-project-assignment", variants: ["grouped-projects"], states: ["default"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "SpaceProjectPickerDialog", module: "apps/web/src/components/SpaceProjectPickerDialog.tsx", consumers: ["sidebar/empty-space/move-projects"] },
@@ -408,6 +422,8 @@ export const COMPONENT_LAB_IMPLEMENTED_STORY_IDS = [
   "composer/voice-recorder",
   "terminal/search",
   "editor/file-search",
+  "diff/file-filter",
+  "editor/project-search",
   "sidebar/space-project-picker",
   "editor/file-preview-error",
   "editor/pdf-viewer",

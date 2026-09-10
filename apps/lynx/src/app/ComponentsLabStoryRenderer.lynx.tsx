@@ -65,6 +65,8 @@ import { WorkspaceFilePreviewErrorState } from '@synara-web/components/Workspace
 import { SpaceProjectPickerDialogLynx } from '../components/sidebar/SpaceProjectPickerDialog.lynx';
 import { ExplorerPdfFallback } from './ExplorerPdfFallback.lynx';
 import { buildProjectContextMenuItems, buildThreadContextMenuItems } from '@synara/shared/contextMenu';
+import { ReviewFileTreeSearchHeader } from './DiffDock.lynx';
+import { EditorProjectSwitchSearchHeader } from './EditorProjectSwitchMenu.lynx';
 import './components-lab.css';
 
 const COMPONENT_LAB_SPACE = { id: 'component-lab-focus' as never, name: 'Focus', icon: 'target' as const };
@@ -432,6 +434,32 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
         <ExplorerSearchInputHeader
           query={props.state === 'query' || (props.state === 'default' && props.variant === 'query') ? 'ComposerVoice' : ''}
           onQueryChange={() => {}}
+        />
+      </view>
+    );
+  }
+  if (props.storyId === 'diff/file-filter') {
+    const handleQueryChange = () => { 'background only'; };
+    return (
+      <view className="ComponentsLabDiffFilterStory">
+        <ReviewFileTreeSearchHeader
+          autoFocus={props.state === 'focus'}
+          disabled={props.state === 'disabled'}
+          query={props.state === 'query' ? 'Composer' : ''}
+          onQueryChange={handleQueryChange}
+        />
+      </view>
+    );
+  }
+  if (props.storyId === 'editor/project-search') {
+    const handleQueryChange = () => { 'background only'; };
+    return (
+      <view className="ComponentsLabProjectSearchStory">
+        <EditorProjectSwitchSearchHeader
+          autoFocus={props.state === 'focus'}
+          disabled={props.state === 'disabled'}
+          query={props.state === 'query' ? 'Alpha' : ''}
+          onQueryChange={handleQueryChange}
         />
       </view>
     );

@@ -49,6 +49,9 @@ describe('Native search input geometry', () => {
   it('gives the diff file filter an explicit centered 28px line box', () => {
     const source = readFileSync(new URL('./diff-dock.css', import.meta.url), 'utf8');
     expect(source).toMatch(
+      /\.DiffDockReviewTreeSearchInput\s*\{[^}]*min-width:\s*0;[^}]*height:\s*28px;[^}]*flex:\s*1;[^}]*padding:\s*0;[^}]*border-width:\s*0;/s
+    );
+    expect(source).toMatch(
       /\.DiffDockReviewTreeSearchInput > \.LxInput\s*\{[^}]*height:\s*28px;[^}]*padding:\s*6px 0;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 11px\);[^}]*line-height:\s*16px;/s
     );
   });

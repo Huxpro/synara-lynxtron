@@ -1,4 +1,5 @@
-import { useState, type ReactNode } from '@lynx-js/react';
+import { useEffect, useRef, useState, type ReactNode } from '@lynx-js/react';
+import type { InputRef } from '@lynx-js/lynx-ui';
 import { useQuery } from '@tanstack/react-query';
 import type {
   GitReadWorkingTreeDiffResult,
@@ -1196,6 +1197,48 @@ function ReviewFileTreeNodes(props: {
   );
 }
 
+export function ReviewFileTreeSearchHeader(props: {
+  readonly query: string;
+  readonly disabled?: boolean;
+  readonly autoFocus?: boolean;
+  readonly onClose?: () => void;
+  readonly onQueryChange: (query: string) => void;
+}) {
+  const searchInputRef = useRef<InputRef>(null);
+  useEffect(() => {
+    if (!props.autoFocus || props.disabled) return;
+    void searchInputRef.current?.focus().catch(() => undefined);
+  }, [props.autoFocus, props.disabled]);
+  return (
+    <view className="DiffDockReviewTreeSearch">
+      <view className="DiffDockReviewTreeSearchField">
+        <SearchIcon size={14} color="var(--muted-foreground)" />
+        <Input
+          ref={searchInputRef}
+          className="DiffDockReviewTreeSearchInput"
+          disabled={props.disabled}
+          nativeInput
+          size="sm"
+          variant="soft"
+          type="search"
+          value={props.query}
+          placeholder="Filter files..."
+          aria-label="Filter files"
+          onChange={(event) => props.onQueryChange(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === 'Escape') props.onQueryChange('');
+          }}
+        />
+      </view>
+      {props.onClose ? (
+        <DockHeaderIconButton label="Hide file tree" onActivate={props.onClose}>
+          <XIcon size={14} color="var(--muted-foreground)" />
+        </DockHeaderIconButton>
+      ) : null}
+    </view>
+  );
+}
+
 function ReviewFileTree(props: {
   readonly className: string;
   readonly collapsedPaths: ReadonlySet<string>;
@@ -1210,27 +1253,11 @@ function ReviewFileTree(props: {
 }) {
   return (
     <view className={`DiffDockReviewTree ${props.className}`}>
-      <view className="DiffDockReviewTreeSearch">
-        <view className="DiffDockReviewTreeSearchField">
-          <SearchIcon size={14} color="var(--muted-foreground)" />
-          <Input
-            className="DiffDockReviewTreeSearchInput"
-            size="sm"
-            variant="soft"
-            type="search"
-            value={props.query}
-            placeholder="Filter files..."
-            aria-label="Filter files"
-            onChange={(event) => props.onQueryChange(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === 'Escape') props.onQueryChange('');
-            }}
-          />
-        </view>
-        <DockHeaderIconButton label="Hide file tree" onActivate={props.onClose}>
-          <XIcon size={14} color="var(--muted-foreground)" />
-        </DockHeaderIconButton>
-      </view>
+      <ReviewFileTreeSearchHeader
+        query={props.query}
+        onQueryChange={props.onQueryChange}
+        onClose={props.onClose}
+      />
       <scroll-view className="DiffDockReviewTreeList" scroll-y enable-scroll-bar>
         {props.nodes.length > 0 ? (
           <ReviewFileTreeNodes

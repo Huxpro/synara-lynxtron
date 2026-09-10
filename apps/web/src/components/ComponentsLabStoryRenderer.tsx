@@ -68,6 +68,8 @@ import { nextZoomScale, previousZoomScale, resolvePdfScale, type PdfZoomMode } f
 import { buildProjectContextMenuItems, buildThreadContextMenuItems } from "@synara/shared/contextMenu";
 import { ensureNativeApi } from "~/nativeApi";
 import { SpaceProjectPickerDialog } from "~/components/SpaceProjectPickerDialog";
+import { ReviewFileTreeSearchHeader } from "~/components/ReviewFileTreePanel";
+import { PickerPanelSearchHeader } from "~/components/chat/PickerPanelShell";
 
 const COMPONENT_LAB_SPACE = {
   id: SpaceId.makeUnsafe("component-lab-focus"), name: "Focus", icon: "target" as const,
@@ -545,6 +547,34 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
           search={{ inputQuery: query, fileMatches: [], searchResultsPending: false, searchResultsCurrent: true, isFetching: false, error: null, truncated: false }}
           onQueryChange={() => {}}
           onSelectFile={() => {}}
+        />
+      </div>
+    );
+  }
+  if (props.storyId === "diff/file-filter") {
+    const query = props.state === "query" ? "Composer" : "";
+    return (
+      <div className="w-60 overflow-hidden border border-border bg-background">
+        <ReviewFileTreeSearchHeader
+          autoFocus={props.state === "focus"}
+          disabled={props.state === "disabled"}
+          query={query}
+          onQueryChange={() => {}}
+        />
+      </div>
+    );
+  }
+  if (props.storyId === "editor/project-search") {
+    const query = props.state === "query" ? "Alpha" : "";
+    return (
+      <div className="w-60 overflow-hidden rounded-md border border-border bg-[var(--composer-surface)]">
+        <PickerPanelSearchHeader
+          autoFocus={props.state === "focus"}
+          bleedParentPadding
+          disabled={props.state === "disabled"}
+          placeholder="Search projects"
+          query={query}
+          onQueryChange={() => {}}
         />
       </div>
     );

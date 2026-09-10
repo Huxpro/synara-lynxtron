@@ -30,6 +30,50 @@ import { IconButton } from "./ui/icon-button";
 import { SearchInput } from "./ui/search-input";
 import { Skeleton } from "./ui/skeleton";
 
+export function ReviewFileTreeSearchHeader(props: {
+  query: string;
+  disabled?: boolean;
+  autoFocus?: boolean;
+  onQueryChange: (query: string) => void;
+  onClose?: () => void;
+}) {
+  const handleSearchKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Escape" && props.query.length > 0) {
+      event.stopPropagation();
+      props.onQueryChange("");
+    }
+  };
+
+  return (
+    <div className="flex shrink-0 items-center gap-1.5 border-b border-border/65 p-2">
+      <SearchInput
+        autoFocus={props.autoFocus}
+        disabled={props.disabled}
+        value={props.query}
+        spellCheck={false}
+        autoCorrect="off"
+        autoCapitalize="off"
+        placeholder="Filter files..."
+        aria-label="Filter files"
+        onChange={(event) => props.onQueryChange(event.target.value)}
+        onKeyDown={handleSearchKeyDown}
+      />
+      {props.onClose ? (
+        <IconButton
+          variant="ghost"
+          size="icon-xs"
+          className="shrink-0 text-muted-foreground hover:text-foreground"
+          label="Hide file tree"
+          title="Hide file tree"
+          onClick={props.onClose}
+        >
+          <XIcon className="size-3.5" />
+        </IconButton>
+      ) : null}
+    </div>
+  );
+}
+
 // Forwards its ref and spreads incoming props so directory rows can act as the
 // Collapsible trigger (Base UI injects onClick/aria/data + ref onto this element).
 const ReviewTreeRow = forwardRef<
@@ -182,13 +226,6 @@ export const ReviewFileTreePanel = function ReviewFileTreePanel(props: {
       return next;
     });
   };
-  const handleSearchKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Escape" && query.length > 0) {
-      event.stopPropagation();
-      setQuery("");
-    }
-  };
-
   const hasFiles = props.files.length > 0;
   const showLoadingRows = (props.isLoading ?? false) && !hasFiles;
 
@@ -200,30 +237,11 @@ export const ReviewFileTreePanel = function ReviewFileTreePanel(props: {
       )}
       aria-label="Review files"
     >
-      <div className="flex shrink-0 items-center gap-1.5 border-b border-border/65 p-2">
-        <SearchInput
-          value={query}
-          spellCheck={false}
-          autoCorrect="off"
-          autoCapitalize="off"
-          placeholder="Filter files..."
-          aria-label="Filter files"
-          onChange={(event) => setQuery(event.target.value)}
-          onKeyDown={handleSearchKeyDown}
-        />
-        {props.onClose ? (
-          <IconButton
-            variant="ghost"
-            size="icon-xs"
-            className="shrink-0 text-muted-foreground hover:text-foreground"
-            label="Hide file tree"
-            title="Hide file tree"
-            onClick={props.onClose}
-          >
-            <XIcon className="size-3.5" />
-          </IconButton>
-        ) : null}
-      </div>
+      <ReviewFileTreeSearchHeader
+        query={query}
+        onQueryChange={setQuery}
+        onClose={props.onClose}
+      />
       <div
         className={cn(
           "min-h-0 flex-1 overflow-auto px-1 py-1",
