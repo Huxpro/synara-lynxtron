@@ -33,8 +33,9 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
 - **FC-039 is closed and superseded.** The earlier foreground-query conclusion
   was disproved by the fresh exact-owned run after fixing dynamic DevTool port
   discovery and delayed notification sampling in the harness.
-- **FC-006 remains partial.** Canonical-tail entry now passes; switch-away/return,
-  restart, and explicit-message-anchor behavior still require direct coverage.
+- **FC-006 is complete.** Canonical-tail entry, switch-away/return, a real
+  pinned-message anchor jump, and a fresh cold restart now have exact-owned
+  Native evidence.
 
 | ID | Severity | Surface | Finding | State | Required closure |
 | --- | --- | --- | --- | --- | --- |
@@ -185,6 +186,32 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   thread identity gate, and FC-039's foreground query-commit blocker. FC-006
   still needs switch-away/return and explicit-anchor coverage; the isolated seed
   currently contains only one visible ordinary-project thread.
+
+### 2026-09-10 transcript restoration closure
+
+- This supersedes FC-006's remaining-work note above. Exact-owned Lynxtron
+  0.0.21 PID 12314 on PID-derived listener 8903 switched from the canonical
+  ordinary-project thread to existing Home thread
+  `lynx-landing-thread-1787370014213-81076675fcf5a8`, where the routed row was
+  uniquely active and its own exact assistant tail was attached. Switching back
+  through the real sidebar restored exactly one active canonical row, one
+  `TranscriptList`, and exact tail
+  `assistant:msg_058e391468708391016a88048a290087d0ad8e12363b8cd9b6`.
+- The explicit-anchor path was exercised through product controls in the existing
+  11-message Home thread. A real `Pin to panel` activation persisted the selected
+  first assistant message through the public orchestration command. Opening the
+  real Environment panel and activating `Jump to pinned message: Hi! How can I
+  help?` moved that target row from y=16 to y=62, directly below the fixed header,
+  while the tail row remained attached at y=561. The exact-client warning/error
+  console stayed empty. All mutations were confined to the disposable comparison
+  clone; the seed database was never written.
+- A second cold launch recreated the clone from the unchanged seed and passed the
+  complete canonical gate on fresh PID 39288 / listener 8903: one active routed
+  row, one `TranscriptList`, the exact tail, and stable-zero transient UI. The
+  exact-client warning/error console was empty. The staged bundle SHA-256 was
+  `afc6aaf2da1d454ae1715fd3c9217617a6c4d369e5ead7efefe86ca098215916`.
+  FC-006 is therefore complete for route entry, switch-away/return, explicit
+  pinned-message anchor, and cold restart restoration.
 
 ## Historical items currently considered closed, pending regression sampling
 
