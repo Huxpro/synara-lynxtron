@@ -280,7 +280,10 @@ Every continuation must record:
   and leaves the pre-existing persisted preference bytes untouched. Native
   mounts the corresponding production favourite control and controlled callback;
   an exact-owned Lynxtron 0.0.21 click remains required before claiming Native
-  interaction certification.
+  interaction certification. Fresh PID `17190` loaded the rebuilt route and
+  emitted `shellUiReady`, but the runtime did not expose the launcher's required
+  PID-derived DevTool listener on port 8903; the launcher terminated the owned
+  run and rejected it as evidence.
 - State fidelity audit: transcript actions now distinguish the product's hidden
   default cluster from revealed/interactive/disabled states instead of rendering
   every state visibly. The Native thread-row specimen also uses the production
