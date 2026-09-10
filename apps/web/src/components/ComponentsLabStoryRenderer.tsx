@@ -281,6 +281,42 @@ function FileTabStory(props: { readonly state: string }) {
   );
 }
 
+function MessageRowStory(props: { readonly state: string; readonly variant?: string }) {
+  const [result, setResult] = useState('Awaiting message action');
+  const revealed = props.state !== "default";
+  const footerClassName = `flex min-h-6 items-center gap-2 text-[10px] text-muted-foreground/45 ${
+    revealed ? "opacity-100" : MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME
+  }`;
+  const actions = (
+    <>
+      <MessageActionButton label="Copy message" tooltip="Copy message" onClick={() => setResult('Message copied')}>
+        <CopyIcon className={MESSAGE_ACTION_ICON_CLASS_NAME} />
+      </MessageActionButton>
+      <MessageActionButton label="Reference message" tooltip="Reference message" onClick={() => setResult('Message referenced')}>
+        <MessageCircleIcon className={MESSAGE_ACTION_ICON_CLASS_NAME} />
+      </MessageActionButton>
+    </>
+  );
+  return (
+    <div className="w-full max-w-xl" data-message-row-state={props.state}>
+      {props.variant === "user" ? (
+        <MessageUserRowComposition>
+          <MessageUserBubbleComposition>
+            <p className="text-sm leading-[1.55]">Please align this preview with Electron.</p>
+          </MessageUserBubbleComposition>
+          <div className={`${footerClassName} justify-end pr-0.5`}><span>9:41 AM</span>{actions}</div>
+        </MessageUserRowComposition>
+      ) : (
+        <MessageAssistantRowComposition>
+          <p className="text-sm leading-[1.55]">The shared message row keeps actions quiet until the row is active.</p>
+          <div className={footerClassName}>{actions}<span>9:41 AM</span></div>
+        </MessageAssistantRowComposition>
+      )}
+      <p aria-live="polite" className="text-[11px] text-muted-foreground">{result}</p>
+    </div>
+  );
+}
+
 export function ComponentsLabStoryRenderer(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
   if (props.storyId === "ui/alert") {
     const selected = props.state === "default" ? props.variant ?? "default" : props.state;
@@ -717,39 +753,7 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     );
   }
   if (props.storyId === "transcript/message-row") {
-    const revealed = props.state !== "default";
-    const footerClassName = `flex min-h-6 items-center gap-2 text-[10px] text-muted-foreground/45 ${
-      revealed ? "opacity-100" : MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME
-    }`;
-    const actions = (
-      <>
-        <MessageActionButton label="Copy message" tooltip="Copy message">
-          <CopyIcon className={MESSAGE_ACTION_ICON_CLASS_NAME} />
-        </MessageActionButton>
-        <MessageActionButton label="Reference message" tooltip="Reference message">
-          <MessageCircleIcon className={MESSAGE_ACTION_ICON_CLASS_NAME} />
-        </MessageActionButton>
-      </>
-    );
-    return (
-      <div className="w-full max-w-xl" data-message-row-state={props.state}>
-        {props.variant === "user" ? (
-          <MessageUserRowComposition>
-            <MessageUserBubbleComposition>
-              <p className="text-sm leading-[1.55]">Please align this preview with Electron.</p>
-            </MessageUserBubbleComposition>
-            <div className={`${footerClassName} justify-end pr-0.5`}>
-              <span>9:41 AM</span>{actions}
-            </div>
-          </MessageUserRowComposition>
-        ) : (
-          <MessageAssistantRowComposition>
-            <p className="text-sm leading-[1.55]">The shared message row keeps actions quiet until the row is active.</p>
-            <div className={footerClassName}>{actions}<span>9:41 AM</span></div>
-          </MessageAssistantRowComposition>
-        )}
-      </div>
-    );
+    return <MessageRowStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
   }
   if (props.storyId === "sidebar/project-row") {
     return <SidebarProjectRowSpecimen state={props.state as Parameters<typeof SidebarProjectRowSpecimen>[0]["state"]} variant={props.variant as Parameters<typeof SidebarProjectRowSpecimen>[0]["variant"]} onContextMenu={(position) => { void ensureNativeApi().contextMenu.show(componentLabProjectContextMenuItems(props.variant), position); }} />;

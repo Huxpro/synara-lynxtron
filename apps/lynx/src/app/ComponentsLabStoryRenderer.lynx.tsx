@@ -528,31 +528,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     return <TranscriptMessageActionsStory state={props.state} variant={props.variant} />;
   }
   if (props.storyId === 'transcript/message-row') {
-    const visualState = ['hover', 'focus', 'pressed'].includes(props.state)
-      ? ` ui-${props.state}`
-      : '';
-    const actions = (
-      <>
-        <TranscriptMessageActionStory label="Copy message" disabled={false} persistent={false} pressed={false} visualState=""><CopyIcon className="TranscriptMessageActionIcon" size={13} /></TranscriptMessageActionStory>
-        <TranscriptMessageActionStory label="Reference message" disabled={false} persistent={false} pressed={false} visualState=""><MessageCircleIcon className="TranscriptMessageActionIcon" size={13} /></TranscriptMessageActionStory>
-      </>
-    );
-    const footerClassName = `TranscriptMessageFooter${props.state === 'default' ? '' : ' TranscriptMessageFooter--persistent'}`;
-    return (
-      <view className={`ComponentsLabMessageRowStory TranscriptMessageHoverRegion${visualState}`}>
-        {props.variant === 'user' ? (
-          <MessageUserRowComposition>
-            <MessageUserBubbleComposition><text>Please align this preview with Electron.</text></MessageUserBubbleComposition>
-            <view className={`${footerClassName} TranscriptMessageFooter--user`}><text className="TranscriptMessageTimestamp">9:41 AM</text>{actions}</view>
-          </MessageUserRowComposition>
-        ) : (
-          <MessageAssistantRowComposition>
-            <text>The shared message row keeps actions quiet until the row is active.</text>
-            <view className={footerClassName}>{actions}<text className="TranscriptMessageTimestamp">9:41 AM</text></view>
-          </MessageAssistantRowComposition>
-        )}
-      </view>
-    );
+    return <MessageRowStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
   }
   if (props.storyId === 'sidebar/project-row') {
     return <ProjectRowContextMenuStory state={props.state as Parameters<typeof SidebarProjectRowSpecimen>[0]['state']} variant={props.variant as Parameters<typeof SidebarProjectRowSpecimen>[0]['variant']} />;
@@ -590,6 +566,36 @@ function FileTabStory(props: { readonly state: string }) {
       ) : (
         <text aria-live="polite">Tab closed</text>
       )}
+    </view>
+  );
+}
+
+function MessageRowStory(props: { readonly state: string; readonly variant?: string }) {
+  const [result, setResult] = useState('Awaiting message action');
+  const visualState = ['hover', 'focus', 'pressed'].includes(props.state)
+    ? ` ui-${props.state}`
+    : '';
+  const actions = (
+    <>
+      <TranscriptMessageActionStory label="Copy message" disabled={false} persistent={false} pressed={false} visualState="" onActivate={() => setResult('Message copied')}><CopyIcon className="TranscriptMessageActionIcon" size={13} /></TranscriptMessageActionStory>
+      <TranscriptMessageActionStory label="Reference message" disabled={false} persistent={false} pressed={false} visualState="" onActivate={() => setResult('Message referenced')}><MessageCircleIcon className="TranscriptMessageActionIcon" size={13} /></TranscriptMessageActionStory>
+    </>
+  );
+  const footerClassName = `TranscriptMessageFooter${props.state === 'default' ? '' : ' TranscriptMessageFooter--persistent'}`;
+  return (
+    <view className={`ComponentsLabMessageRowStory TranscriptMessageHoverRegion${visualState}`}>
+      {props.variant === 'user' ? (
+        <MessageUserRowComposition>
+          <MessageUserBubbleComposition><text>Please align this preview with Electron.</text></MessageUserBubbleComposition>
+          <view className={`${footerClassName} TranscriptMessageFooter--user`}><text className="TranscriptMessageTimestamp">9:41 AM</text>{actions}</view>
+        </MessageUserRowComposition>
+      ) : (
+        <MessageAssistantRowComposition>
+          <text>The shared message row keeps actions quiet until the row is active.</text>
+          <view className={footerClassName}>{actions}<text className="TranscriptMessageTimestamp">9:41 AM</text></view>
+        </MessageAssistantRowComposition>
+      )}
+      <text aria-live="polite">{result}</text>
     </view>
   );
 }
@@ -640,6 +646,7 @@ function TranscriptMessageActionStory(props: {
   readonly persistent: boolean;
   readonly pressed: boolean;
   readonly visualState: string;
+  readonly onActivate?: () => void;
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: `TranscriptMessageAction${
@@ -647,7 +654,7 @@ function TranscriptMessageActionStory(props: {
     }`,
     accessibleLabel: props.label,
     disabled: props.disabled,
-    onActivate: () => {},
+    onActivate: props.onActivate ?? (() => {}),
   });
   return (
     <MessageActionButtonLynx

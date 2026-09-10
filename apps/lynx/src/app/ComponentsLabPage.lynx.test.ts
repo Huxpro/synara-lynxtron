@@ -81,6 +81,8 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('<MessageUserRowComposition>');
     expect(renderer).toContain('<MessageUserBubbleComposition>');
     expect(renderer).toContain('<MessageAssistantRowComposition>');
+    expect(renderer).toContain("onActivate={() => setResult('Message copied')}");
+    expect(renderer).toContain('<text aria-live="polite">{result}</text>');
     expect(renderer).toContain('<MessageActionButtonLynx');
     expect(renderer).toContain("const revealed = props.state !== 'default'");
     expect(renderer).toContain('ComponentsLabMessageActions--hidden');

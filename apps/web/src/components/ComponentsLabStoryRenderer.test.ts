@@ -191,6 +191,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('<MessageUserRowComposition>');
     expect(source).toContain('<MessageUserBubbleComposition>');
     expect(source).toContain('<MessageAssistantRowComposition>');
+    expect(source).toContain("onClick={() => setResult('Message copied')}");
+    expect(source).toContain('>{result}</p>');
     expect(source).toContain('data-message-row-state={props.state}');
   });
 

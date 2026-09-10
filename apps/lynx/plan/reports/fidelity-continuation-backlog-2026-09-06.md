@@ -128,6 +128,13 @@ product changes, other routes, other themes, other sizes, or Native input.
   press/release removed the tab and rendered Tab closed with a clean console.
   Together with the real Chromium hover/close run and retained product preview
   evidence, FC-007 is complete and remains regression-only.
+- This supersedes FC-010's isolated-story Native action debt. The paired
+  message-row fixture now reports its real Copy/Reference callbacks instead of
+  discarding them. Exact-owned 0.0.21 PID 35904 owned port 8903 and loaded bundle
+  SHA-256 5d034d35c16f80f4172bb0496d693d00e36d7cb87103825bff6a2704f410d175.
+  DevTool measured the real Copy message action at 24x24; a supported
+  press/release rendered Message copied and the exact-client error/warning
+  console remained empty. Product-message mutations remain gated by FC-039.
 
 ## Historical items currently considered closed, pending regression sampling
 
