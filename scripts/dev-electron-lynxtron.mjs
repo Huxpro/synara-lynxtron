@@ -1332,14 +1332,27 @@ async function configureElectronRenderer(
           console.log(
             `[compare:desktop] Electron transcript anchor verified: ${JSON.stringify(transcriptReadiness)}.`,
           );
-          requestId += 1;
-          const transientUi = await evaluateElectronExpression(
-            socket,
-            requestId,
-            comparisonTransientUiReadyExpression(),
-            "confirming clean Electron transient UI state",
-          );
-          if (Object.values(transientUi ?? {}).some((count) => count !== 0)) {
+          const transientDeadline = Date.now() + 5_000;
+          let transientUi = null;
+          let cleanTransientSince = 0;
+          while (
+            Date.now() < transientDeadline &&
+            (cleanTransientSince === 0 || Date.now() - cleanTransientSince < 250)
+          ) {
+            requestId += 1;
+            transientUi = await evaluateElectronExpression(
+              socket,
+              requestId,
+              comparisonTransientUiReadyExpression(),
+              "confirming clean Electron transient UI state",
+            );
+            const clean = Object.values(transientUi ?? {}).every((count) => count === 0);
+            cleanTransientSince = clean
+              ? cleanTransientSince || Date.now()
+              : 0;
+            await new Promise((resolveWait) => setTimeout(resolveWait, 50));
+          }
+          if (cleanTransientSince === 0 || Date.now() - cleanTransientSince < 250) {
             throw new Error(
               `Electron comparison retained transient UI: ${JSON.stringify(transientUi)}.`,
             );

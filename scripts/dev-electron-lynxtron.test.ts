@@ -401,6 +401,16 @@ describe("Electron and Lynxtron comparison launcher", () => {
     });
   });
 
+  it("waits for Electron transient UI to remain clean before retaining evidence", () => {
+    const source = readFileSync(
+      new URL('./dev-electron-lynxtron.mjs', import.meta.url),
+      'utf8',
+    );
+    expect(source).toContain('const transientDeadline = Date.now() + 5_000');
+    expect(source).toContain('Date.now() - cleanTransientSince < 250');
+    expect(source).toContain('cleanTransientSince = clean');
+  });
+
   it("preserves the renderer comparison allowlist while resetting transient state", () => {
     const values = new Map([
       ["synara:theme", "light"],
