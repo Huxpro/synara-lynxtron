@@ -95,6 +95,16 @@ const OPENCODE_FAVORITE_SORT_MODELS = [
   },
 ] satisfies ReadonlyArray<ProviderModelOption & { slug: ModelSlug }>;
 
+const OPENCODE_COLLAPSIBLE_MODELS = [
+  ...OPENCODE_FAVORITE_SORT_MODELS,
+  {
+    slug: "google/gemini-group-disclosure" as ModelSlug,
+    name: "Gemini Group Disclosure",
+    upstreamProviderId: "google",
+    upstreamProviderName: "Google",
+  },
+] satisfies ReadonlyArray<ProviderModelOption & { slug: ModelSlug }>;
+
 const MANY_CURSOR_MODELS = Array.from({ length: 16 }, (_, index) => ({
   slug: `cursor-model-${index + 1}` as ModelSlug,
   name: `${index % 2 === 0 ? "GPT" : "Claude"} Cursor ${index + 1}`,
@@ -464,6 +474,45 @@ describe("ProviderModelPicker", () => {
       expect(webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS.opencode)).toBe(persistedValue);
     } finally {
       await screen.unmount();
+    }
+  });
+
+  it("expands collapsed model groups through the real disclosure control", async () => {
+    webStorage.setItem(
+      FAVORITE_MODEL_STORAGE_KEYS.opencode,
+      JSON.stringify(["openai/gpt-favorite-sort"]),
+    );
+    const mounted = await mountPicker({
+      provider: "opencode",
+      model: "anthropic/claude-favorite-sort",
+      lockedProvider: "opencode",
+      modelOptionsByProvider: {
+        ...MODEL_OPTIONS_BY_PROVIDER,
+        opencode: OPENCODE_COLLAPSIBLE_MODELS,
+      },
+    });
+
+    try {
+      await page.getByRole("button").click();
+
+      const favoritesGroup = page.getByRole("button", { name: "Favourites" });
+      const activeGroup = page.getByRole("button", { name: "Anthropic" });
+      const collapsedGroup = page.getByRole("button", { name: "Google" });
+      await expect.element(favoritesGroup).toHaveAttribute("aria-expanded", "true");
+      await expect.element(activeGroup).toHaveAttribute("aria-expanded", "true");
+      await expect.element(collapsedGroup).toHaveAttribute("aria-expanded", "false");
+      await expect
+        .element(page.getByRole("menuitemradio", { name: "Gemini Group Disclosure" }))
+        .not.toBeInTheDocument();
+
+      await collapsedGroup.click();
+
+      await expect.element(collapsedGroup).toHaveAttribute("aria-expanded", "true");
+      await expect
+        .element(page.getByRole("menuitemradio", { name: "Gemini Group Disclosure" }))
+        .toBeVisible();
+    } finally {
+      await mounted.cleanup();
     }
   });
 
