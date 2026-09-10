@@ -489,6 +489,20 @@ export function comparisonWebUrl(options) {
         url.searchParams.append(key, value);
       }
     }
+    if (route.searchParams.get("editor") === "open") {
+      route.searchParams.set("view", "editor");
+      if (
+        route.searchParams.get("editorMode") === "file" &&
+        route.searchParams.get("explorerPath")
+      ) {
+        route.searchParams.set(
+          "editorFilePath",
+          route.searchParams.get("explorerPath"),
+        );
+      } else {
+        route.searchParams.delete("editorFilePath");
+      }
+    }
     if (/^\/settings\/[^/]+$/.test(route.pathname)) {
       const section = decodeURIComponent(route.pathname.slice("/settings/".length));
       route.pathname = "/settings";

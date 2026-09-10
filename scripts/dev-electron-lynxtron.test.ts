@@ -187,6 +187,27 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(comparisonThreadId(options)).toBe("thread-two");
   });
 
+  it("maps Native Editor deep-link state onto the Web route contract", () => {
+    const fileOptions = parseDesktopComparisonArgs([
+      "--route",
+      "/thread/thread-two?editor=open&editorMode=file&explorerPath=src/example.ts",
+    ]);
+    expect(comparisonWebUrl(fileOptions)).toContain(
+      "#/thread-two?editor=open&editorMode=file&explorerPath=src%2Fexample.ts&view=editor&editorFilePath=src%2Fexample.ts",
+    );
+    expect(comparisonLynxDeepLink(fileOptions)).toBe(
+      "synara://thread/thread-two?editor=open&editorMode=file&explorerPath=src%2Fexample.ts",
+    );
+
+    const diffOptions = parseDesktopComparisonArgs([
+      "--route",
+      "/thread/thread-two?editor=open&editorMode=diff",
+    ]);
+    expect(comparisonWebUrl(diffOptions)).toContain(
+      "#/thread-two?editor=open&editorMode=diff&view=editor",
+    );
+  });
+
   it("opens the same Explorer path through the canonical Electron dock and rendered rows", () => {
     const options = parseDesktopComparisonArgs([
       "--route",

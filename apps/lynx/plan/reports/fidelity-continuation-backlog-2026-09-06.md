@@ -581,11 +581,19 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   JetBrains Mono stack. Its exact-client warning/error console was empty and the
   staged bundle SHA-256 was
   `6d38ec704e29a235a0b0ecbda8a8b0d734f8f4cea74ab25dec4d81c7b0ad0f0b`.
-- Electron remained in the right-dock preview despite the matching deep-link
-  query, so this run closes the Native full-Editor geometry/typography cell but
-  not paired full-Editor parity. Electron route-state synchronization remains a
-  comparison-harness gap; FC-027 is not marked complete from this Native-only
-  evidence.
+- Electron initially remained in the right-dock preview because the comparison
+  harness forwarded Native's `editor=open&editorMode=file&explorerPath=...`
+  parameters unchanged, while the Web router's real contract is
+  `view=editor&editorFilePath=...`. The Web URL adapter now translates those
+  fields while leaving the Native deep link unchanged. A fresh paired run put
+  Electron's preview at x=272 instead of the prior right-dock x=1009 and kept
+  Native in its full Editor composition. Electron computed code as the shared
+  JetBrains Mono stack at 11px/18.15px; Native resolved the same stack at
+  11px/17px, its engine-rounded line rhythm. Both rendered the same real file and
+  the exact-client Native console was clean; final bundle SHA-256 was
+  `567dfe17eadb813d50923890a4a707a1a7a8249a70db8a715dbf8dd31d4a7851`.
+  Together with retained Terminal and Markdown/Diff evidence, FC-027's tracked
+  monospace-placement debt is complete.
 
 ## Historical items currently considered closed, pending regression sampling
 
