@@ -37,6 +37,7 @@ export function KanbanCardRootElement(props: ChildrenProps & {
   readonly accessibleLabel: string;
   readonly isOverlay: boolean;
   readonly isDragSource: boolean;
+  readonly visualState?: 'default' | 'hover' | 'focus' | 'pressed';
   readonly onActivate?: () => void;
   readonly onContextMenu?: (
     event: React.MouseEvent,
@@ -48,7 +49,11 @@ export function KanbanCardRootElement(props: ChildrenProps & {
   const interaction = useLynxInteractiveState({
     baseClassName: `SharedKanbanCard${
       props.isOverlay ? ' SharedKanbanCard--overlay' : ''
-    }${props.isDragSource ? ' SharedKanbanCard--drag-source' : ''}`,
+    }${props.isDragSource ? ' SharedKanbanCard--drag-source' : ''}${
+      props.visualState && props.visualState !== 'default'
+        ? ` ui-${props.visualState}`
+        : ''
+    }`,
     accessibleLabel: props.accessibleLabel,
     onActivate: props.onActivate,
   });

@@ -17,6 +17,13 @@ const INTERACTIVE_STATES = [
 
 export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
   {
+    id: "kanban/card", title: "Kanban card", category: "kanban", owner: "KanbanCardComposition", fixtureId: "kanban-card-states", variants: ["default", "long-title", "draft", "working"], states: [...INTERACTIVE_STATES], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: { renderer: "electron", component: "KanbanCardComposition", module: "apps/web/src/components/kanban/KanbanCardComposition.tsx", consumers: ["kanban/overview", "kanban/project"] },
+      lynx: { renderer: "lynx", component: "KanbanCardComposition", module: "apps/web/src/components/kanban/KanbanCardComposition.tsx", consumers: ["kanban/overview", "kanban/project"] },
+    },
+  },
+  {
     id: "editor-rail/add-menu",
     title: "Editor rail add menu",
     category: "editor-rail",

@@ -259,6 +259,14 @@ describe("Components Lab story renderer", () => {
     expect(dockSource).toContain('<RightDockTabs');
   });
 
+  it("renders deterministic Kanban states through the shared production card", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('props.storyId === "kanban/card"');
+    expect(source).toContain('<KanbanCardComposition');
+    expect(source).toContain('resolveComponentLabKanbanCardFixture');
+    expect(source).toContain('visualState={props.state as');
+  });
+
   it("renders real idle, waveform, and transcribing voice controls", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),

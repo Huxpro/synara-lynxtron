@@ -230,6 +230,21 @@ export const COMPONENT_LAB_VOICE_SILENCE_LEVELS = Array.from(
   () => 0.04
 );
 
+export const COMPONENT_LAB_KANBAN_CARD_BY_VARIANT = {
+  default: { column: 'done', title: 'Verify the release', draftPrompt: '', activeWorkStartedAt: null, isOptimisticDispatch: false },
+  'long-title': { column: 'done', title: 'Verify the complete cross-renderer release workflow without truncating important context', draftPrompt: '', activeWorkStartedAt: null, isOptimisticDispatch: false },
+  draft: { column: 'draft', title: 'Prepare release notes', draftPrompt: 'Capture validation evidence and unresolved runtime boundaries.', activeWorkStartedAt: null, isOptimisticDispatch: false },
+  working: { column: 'inProgress', title: 'Run Native certification', draftPrompt: '', activeWorkStartedAt: '2026-01-01T00:00:00.000Z', isOptimisticDispatch: true },
+} as const;
+
+export function resolveComponentLabKanbanCardFixture(variant: string | undefined) {
+  return COMPONENT_LAB_KANBAN_CARD_BY_VARIANT[
+    variant && variant in COMPONENT_LAB_KANBAN_CARD_BY_VARIANT
+      ? variant as keyof typeof COMPONENT_LAB_KANBAN_CARD_BY_VARIANT
+      : 'default'
+  ];
+}
+
 export const COMPONENT_LAB_VOICE_WAVEFORM_LEVELS = Array.from(
   { length: 72 },
   (_, index) => {

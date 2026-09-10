@@ -51,6 +51,7 @@ export interface KanbanCardCompositionProps {
   readonly isOverlay?: boolean;
   readonly isDragSource?: boolean;
   readonly nowMs?: number;
+  readonly visualState?: 'default' | 'hover' | 'focus' | 'pressed';
 }
 
 const REDUNDANT_COLUMN_PILL_LABELS = new Set([
@@ -68,6 +69,7 @@ export function KanbanCardComposition({
   isOverlay = false,
   isDragSource = false,
   nowMs,
+  visualState = 'default',
 }: KanbanCardCompositionProps) {
   const showDraftPreview =
     card.column === "draft" &&
@@ -107,6 +109,7 @@ export function KanbanCardComposition({
       }`}
       isOverlay={isOverlay}
       isDragSource={isDragSource}
+      visualState={visualState}
       onActivate={onOpen ? () => onOpen(card) : undefined}
       onContextMenu={
         onContextMenu

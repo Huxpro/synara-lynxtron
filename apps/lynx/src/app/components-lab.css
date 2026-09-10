@@ -72,3 +72,6 @@
 .ComponentsLabMessageActions--hidden { opacity: 0; pointer-events: none; }
 .ComponentsLabPendingStory { min-height: 160px; display: flex; align-items: center; justify-content: center; }
 .ComponentsLabError { color: var(--destructive); }
+.ComponentsLabKanbanCardStory {
+  width: 288px;
+}

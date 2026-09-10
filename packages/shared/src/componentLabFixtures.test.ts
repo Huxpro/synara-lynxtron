@@ -17,6 +17,7 @@ import {
   resolveComponentLabContextWindowFixture,
   resolveComponentLabCommandPaletteFixture,
   resolveComponentLabNavigationRow,
+  resolveComponentLabKanbanCardFixture,
 } from './componentLabFixtures';
 
 describe('Components Lab model fixture', () => {
@@ -80,6 +81,16 @@ describe('Components Lab model fixture', () => {
     expect(Math.max(...COMPONENT_LAB_VOICE_SILENCE_LEVELS)).toBe(0.04);
     expect(COMPONENT_LAB_VOICE_WAVEFORM_LEVELS).toHaveLength(72);
     expect(Math.max(...COMPONENT_LAB_VOICE_WAVEFORM_LEVELS)).toBe(1);
+  });
+
+  it('keeps Kanban content variants deterministic', () => {
+    expect(resolveComponentLabKanbanCardFixture('long-title').title.length).toBeGreaterThan(60);
+    expect(resolveComponentLabKanbanCardFixture('draft')).toMatchObject({ column: 'draft' });
+    expect(resolveComponentLabKanbanCardFixture('draft').draftPrompt).not.toBe('');
+    expect(resolveComponentLabKanbanCardFixture('working')).toMatchObject({
+      column: 'inProgress',
+      isOptimisticDispatch: true,
+    });
   });
 
   it('keeps the typography diff fixture deterministic', () => {

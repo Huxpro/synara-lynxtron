@@ -28,7 +28,10 @@ import {
   COMPONENT_LAB_RIGHT_DOCK_OVERFLOW_PANES,
   COMPONENT_LAB_VOICE_SILENCE_LEVELS,
   COMPONENT_LAB_VOICE_WAVEFORM_LEVELS,
+  resolveComponentLabKanbanCardFixture,
 } from "@synara/shared/componentLabFixtures";
+import { KanbanCardComposition } from "~/components/kanban/KanbanCardComposition";
+import type { KanbanCard } from "~/components/kanban/kanban.logic";
 import { ContextWindowMeter } from "~/components/chat/ContextWindowMeter";
 import { SEMANTIC_ICON_TONES } from "@synara/shared/semanticIconTone";
 import { SemanticIconTone } from "~/components/ui/SemanticIconTone";
@@ -571,6 +574,19 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
         />
       </div>
     );
+  }
+  if (props.storyId === "kanban/card") {
+    const fixture = resolveComponentLabKanbanCardFixture(props.variant);
+    const card = {
+      cardId: `thread:component-lab-kanban-${props.variant ?? "default"}`,
+      threadId: `component-lab-kanban-${props.variant ?? "default"}`,
+      projectId: "component-lab-project",
+      provider: "codex", isTerminal: false, branch: "feature/fidelity",
+      envMode: null, worktreePath: null, thread: null,
+      draftHasAttachments: fixture.column === "draft", sortTimestamp: 0,
+      timestamp: null, ...fixture,
+    } as KanbanCard;
+    return <div className="w-72"><KanbanCardComposition card={card} nowMs={Date.parse('2026-01-01T00:05:00.000Z')} visualState={props.state as 'default' | 'hover' | 'focus' | 'pressed'} /></div>;
   }
   if (props.storyId === "composer/voice-recorder") {
     const selected = props.state === "default"

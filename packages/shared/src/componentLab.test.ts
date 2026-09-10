@@ -14,6 +14,7 @@ describe("component lab manifest", () => {
   it("keeps every seeded story paired and reusable", () => {
     expect(validateComponentLabStories(COMPONENT_LAB_STORIES)).toEqual([]);
     expect(COMPONENT_LAB_STORIES.map((story) => story.id)).toEqual([
+      "kanban/card",
       "editor-rail/add-menu",
       "composer/model-effort-picker",
       "composer/context-window-meter",
@@ -138,7 +139,9 @@ describe("component lab manifest", () => {
   });
 
   it("rejects duplicate IDs and divergent consumer mappings", () => {
-    const source = COMPONENT_LAB_STORIES[0]!;
+    const source = COMPONENT_LAB_STORIES.find(
+      (story) => story.id === "editor-rail/add-menu",
+    )!;
     const invalid: ComponentLabStory = {
       ...source,
       states: ["open"],
@@ -185,10 +188,10 @@ describe("component lab manifest", () => {
 
   it("reports the complete renderer/theme/viewport/state matrix", () => {
     expect(summarizeComponentLabCoverage(COMPONENT_LAB_STORIES)).toEqual({
-      stories: 43,
-      rendererMappings: 86,
-      matrixCells: 3088,
-      interactiveStories: 25,
+      stories: 44,
+      rendererMappings: 88,
+      matrixCells: 3216,
+      interactiveStories: 26,
     });
   });
 
@@ -202,7 +205,9 @@ describe("component lab manifest", () => {
   });
 
   it("rejects duplicated semantic values across variant and state axes", () => {
-    const source = COMPONENT_LAB_STORIES[0]!;
+    const source = COMPONENT_LAB_STORIES.find(
+      (story) => story.id === "editor-rail/add-menu",
+    )!;
     const invalid: ComponentLabStory = {
       ...source,
       id: "test/duplicate-axes",

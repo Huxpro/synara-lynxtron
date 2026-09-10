@@ -23,7 +23,10 @@ import {
   COMPONENT_LAB_VOICE_SILENCE_LEVELS,
   COMPONENT_LAB_VOICE_WAVEFORM_LEVELS,
   COMPONENT_LAB_PROVIDER_STATUSES,
+  resolveComponentLabKanbanCardFixture,
 } from '@synara/shared/componentLabFixtures';
+import { KanbanCardComposition } from '@synara-web/components/kanban/KanbanCardComposition';
+import type { KanbanCard } from '@synara-web/components/kanban/kanban.logic';
 import { deriveContextWindowMeterDisplay } from '@synara-web/lib/contextWindow';
 import { ComposerContextWindowMeterElement } from '../adapters/ComposerInputCompositionElements.lynx';
 import { SEMANTIC_ICON_TONES } from '@synara/shared/semanticIconTone';
@@ -390,6 +393,19 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
         />
       </view>
     );
+  }
+  if (props.storyId === 'kanban/card') {
+    const fixture = resolveComponentLabKanbanCardFixture(props.variant);
+    const card = {
+      cardId: `thread:component-lab-kanban-${props.variant ?? 'default'}`,
+      threadId: `component-lab-kanban-${props.variant ?? 'default'}`,
+      projectId: 'component-lab-project',
+      provider: 'codex', isTerminal: false, branch: 'feature/fidelity',
+      envMode: null, worktreePath: null, thread: null,
+      draftHasAttachments: fixture.column === 'draft', sortTimestamp: 0,
+      timestamp: null, ...fixture,
+    } as KanbanCard;
+    return <view className="ComponentsLabKanbanCardStory"><KanbanCardComposition card={card} nowMs={Date.parse('2026-01-01T00:05:00.000Z')} visualState={props.state as 'default' | 'hover' | 'focus' | 'pressed'} /></view>;
   }
   if (props.storyId === 'composer/voice-recorder') {
     const selected = props.state === 'default'

@@ -32,6 +32,7 @@ export function KanbanCardRootElement(props: ChildrenProps & {
   readonly accessibleLabel: string;
   readonly isOverlay: boolean;
   readonly isDragSource: boolean;
+  readonly visualState?: 'default' | 'hover' | 'focus' | 'pressed';
   readonly onActivate?: () => void;
   readonly onContextMenu?: (event: React.MouseEvent) => void;
   readonly onDragPointerStart?: (point: KanbanDragPoint) => void;
@@ -53,8 +54,12 @@ export function KanbanCardRootElement(props: ChildrenProps & {
         RAISED_SURFACE_CHROME_CLASS_NAME,
         "dark:border dark:border-white/[0.05]",
         "hover:bg-card focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none",
+        (props.visualState === "hover" || props.visualState === "pressed") &&
+          "bg-card",
+        props.visualState === "focus" && "ring-1 ring-ring outline-none",
         props.isOverlay && "bg-card shadow-lg dark:shadow-lg",
         props.isDragSource && "opacity-40",
+        props.visualState !== "default" && `ui-${props.visualState}`,
       )}
     >
       {props.children}

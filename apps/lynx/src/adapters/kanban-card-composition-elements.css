@@ -24,7 +24,8 @@
   opacity: 0.4;
 }
 
-.SharedKanbanCard.ui-hover {
+.SharedKanbanCard.ui-hover,
+.SharedKanbanCard.ui-pressed {
   background-color: var(--card);
 }
 

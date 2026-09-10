@@ -116,7 +116,7 @@ describe('Kanban card metadata icon fidelity', () => {
       /\.SliceRoot--theme-dark \.SharedKanbanCard\s*\{[^}]*border-color:\s*rgba\(255, 255, 255, 0\.05\);[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0, 0, 0, 0\.3\);/s
     );
     expect(styles).toMatch(
-      /\.SharedKanbanCard\.ui-hover\s*\{[^}]*background-color:\s*var\(--card\);/s
+      /\.SharedKanbanCard\.ui-hover,[\s\S]*?\{[^}]*background-color:\s*var\(--card\);/s
     );
     expect(styles).not.toMatch(
       /\.SharedKanbanCard\.ui-hover\s*\{[^}]*border-color:\s*var\(--ring\);/s

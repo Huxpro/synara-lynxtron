@@ -108,6 +108,9 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('COMPONENT_LAB_PROVIDER_UPDATE_COPY');
     expect(renderer).toContain("progress: 'updating'");
     expect(renderer).toContain("props.storyId === 'right-dock/tab-strip'");
+    expect(renderer).toContain("props.storyId === 'kanban/card'");
+    expect(renderer).toContain('<KanbanCardComposition');
+    expect(renderer).toContain('resolveComponentLabKanbanCardFixture');
     expect(renderer).toContain('<ThreadRightDockTabs');
     expect(renderer).toContain("defaultAddMenuOpen={selected === 'add-menu-open'}");
     expect(renderer).toContain('COMPONENT_LAB_RIGHT_DOCK_OVERFLOW_PANES');
