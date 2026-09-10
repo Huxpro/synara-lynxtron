@@ -497,7 +497,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
         SYNARA_SKIP_SHELL_ENVIRONMENT_SYNC: "1",
         SYNARA_SKIP_MEDIA_PERMISSION_SETUP: "1",
         VITE_DEV_SERVER_URL:
-          "http://127.0.0.1:8891/#/lynx-landing-thread-1787254540864-987357febecef",
+          "http://127.0.0.1:8891/#/lynx-landing-thread-1787298664226-1b47e02983941",
       },
     });
     expect(commands.electron.args).toContain("--remote-debugging-port=9223");
@@ -509,7 +509,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
         "/repo/.synara-desktop-comparison/runtime/Synara Comparison Lynxtron.app/Contents/MacOS/lynxtron",
       args: [
         "/repo/apps/lynx/dist/desktop",
-        "synara://thread/lynx-landing-thread-1787254540864-987357febecef",
+        "synara://thread/lynx-landing-thread-1787298664226-1b47e02983941",
       ],
       env: {
         NODE_ENV: "production",
@@ -732,15 +732,18 @@ describe("Electron and Lynxtron comparison launcher", () => {
       "sqlite3",
       [
         join(paths.electronHome, "dev", "state.sqlite"),
-        "create table projection_threads(thread_id text primary key, deleted_at text); insert into projection_threads values('thread-live', null);",
+        "create table projection_projects(project_id text primary key, kind text, deleted_at text); create table projection_threads(thread_id text primary key, project_id text, deleted_at text); insert into projection_projects values('project-live', 'project', null), ('project-chat', 'chat', null); insert into projection_threads values('thread-live', 'project-live', null), ('thread-chat', 'project-chat', null);",
       ],
       { encoding: "utf8" },
     );
     expect(sqlite.status).toBe(0);
 
     expect(() => assertComparisonThreadAvailable(paths, "thread-live")).not.toThrow();
+    expect(() => assertComparisonThreadAvailable(paths, "thread-chat")).toThrow(
+      "does not belong to a visible ordinary project",
+    );
     expect(() => assertComparisonThreadAvailable(paths, "thread-missing")).toThrow(
-      "Comparison thread thread-missing is missing from the seed snapshot.",
+      "Comparison thread thread-missing is missing from the seed snapshot or does not belong to a visible ordinary project.",
     );
   });
 

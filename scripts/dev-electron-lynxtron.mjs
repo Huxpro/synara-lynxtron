@@ -27,7 +27,7 @@ export const COMPARISON_RENDERER_STORAGE_KEYS = Object.freeze([
 ]);
 
 export const DEFAULT_DESKTOP_COMPARISON_OPTIONS = Object.freeze({
-  threadId: "lynx-landing-thread-1787254540864-987357febecef",
+  threadId: "lynx-landing-thread-1787298664226-1b47e02983941",
   route: null,
   width: 1079,
   height: 803,
@@ -397,7 +397,7 @@ export function assertComparisonThreadAvailable(paths, threadId) {
     "sqlite3",
     [
       databasePath,
-      `select 1 from projection_threads where thread_id = '${escapedThreadId}' and deleted_at is null limit 1;`,
+      `select 1 from projection_threads t join projection_projects p on p.project_id = t.project_id where t.thread_id = '${escapedThreadId}' and t.deleted_at is null and p.deleted_at is null and p.kind = 'project' limit 1;`,
     ],
     { encoding: "utf8" },
   );
@@ -405,7 +405,9 @@ export function assertComparisonThreadAvailable(paths, threadId) {
     throw new Error(`Failed to verify comparison thread ${threadId}: ${query.stderr.trim()}`);
   }
   if (query.stdout.trim() !== "1") {
-    throw new Error(`Comparison thread ${threadId} is missing from the seed snapshot.`);
+    throw new Error(
+      `Comparison thread ${threadId} is missing from the seed snapshot or does not belong to a visible ordinary project.`,
+    );
   }
 }
 
