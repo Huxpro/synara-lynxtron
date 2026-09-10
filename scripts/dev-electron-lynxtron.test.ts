@@ -794,12 +794,21 @@ describe("Electron and Lynxtron comparison launcher", () => {
       { encoding: "utf8" },
     );
     expect(sqlite.status).toBe(0);
-    writeFileSync(join(paths.seedHome, "dev", "settings.json"), "{}");
+    writeFileSync(
+      join(paths.seedHome, "dev", "settings.json"),
+      '{"keepFixtureSetting":true,"enableProviderUpdateChecks":true}',
+    );
     writeFileSync(join(paths.seedHome, "dev", "server-runtime.json"), "{\"pid\":1}");
 
     prepareDesktopComparisonHome(paths);
 
-    expect(readFileSync(join(paths.electronHome, "dev", "settings.json"), "utf8")).toBe("{}");
+    expect(
+      JSON.parse(readFileSync(join(paths.electronHome, "dev", "settings.json"), "utf8")),
+    ).toEqual({
+      keepFixtureSetting: true,
+      enableProviderUpdateChecks: false,
+      enableTaskCompletionToasts: false,
+    });
     expect(
       spawnSync(
         "sqlite3",

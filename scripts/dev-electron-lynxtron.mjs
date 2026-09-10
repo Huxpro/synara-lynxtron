@@ -408,6 +408,22 @@ export function prepareDesktopComparisonHome(paths) {
     const source = join(sourceDev, fileName);
     if (existsSync(source)) copyFileSync(source, join(targetDev, fileName));
   }
+  const comparisonSettingsPath = join(targetDev, "settings.json");
+  const comparisonSettings = existsSync(comparisonSettingsPath)
+    ? JSON.parse(readFileSync(comparisonSettingsPath, "utf8"))
+    : {};
+  writeFileSync(
+    comparisonSettingsPath,
+    `${JSON.stringify(
+      {
+        ...comparisonSettings,
+        enableProviderUpdateChecks: false,
+        enableTaskCompletionToasts: false,
+      },
+      null,
+      2,
+    )}\n`,
+  );
   for (const directoryName of ["provider-status", "secrets"]) {
     const source = join(sourceDev, directoryName);
     if (existsSync(source)) {
