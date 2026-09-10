@@ -611,18 +611,30 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
   const [selection, setSelection] = useState<ModelSelection>(
     COMPONENT_LAB_MODEL_SELECTION
   );
+  const [catalogProvider, setCatalogProvider] = useState(selection.provider);
   const submenuOpen = props.state === 'submenu-open' || props.state === 'overflow';
   const providerList = props.state === 'provider-list';
-  const runtimeModels = props.state === 'overflow'
+  const runtimeModels = catalogProvider === 'opencode'
+    ? COMPONENT_LAB_OPENCODE_MODELS
+    : props.state === 'overflow'
       ? COMPONENT_LAB_OVERFLOW_CODEX_MODELS
       : COMPONENT_LAB_CODEX_MODELS;
+  const handleCatalogProviderChange = (provider: ModelSelection['provider']) => {
+    'background only';
+    setCatalogProvider(provider);
+  };
+  const handleModelSelectionChange = (nextSelection: ModelSelection) => {
+    'background only';
+    setSelection(nextSelection);
+    setCatalogProvider(nextSelection.provider);
+  };
   return (
     <view className="ComponentsLabRealStory">
       <ComposerModelControl
         key={props.state}
         modelSelection={selection}
         catalogModelSelection={selection}
-        catalogProvider={selection.provider}
+        catalogProvider={catalogProvider}
         runtimeModels={runtimeModels}
         modelOptionsOverride={runtimeModels}
         modelsLoading={false}
@@ -634,8 +646,8 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
         initialSearchQuery=""
         disabled={props.state === 'disabled'}
         splitTraits={props.variant === 'landing' || providerList}
-        onCatalogProviderChange={() => {}}
-        onModelSelectionChange={setSelection}
+        onCatalogProviderChange={handleCatalogProviderChange}
+        onModelSelectionChange={handleModelSelectionChange}
       />
     </view>
   );

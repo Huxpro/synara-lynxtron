@@ -494,13 +494,15 @@ export function ComposerModelControl(props: {
             ) : (
               <MenuSub
                 open={submenuProvider === item.provider}
-                onOpenChange={(open) =>
-                  setSubmenuProvider(open ? item.provider : null)
-                }
+                onOpenChange={(open) => {
+                  'background only';
+                  setSubmenuProvider(open ? item.provider : null);
+                }}
               >
                 <MenuSubTrigger
                   className="ComposerProviderSubTriggerLynx"
                   onOpen={() => {
+                    'background only';
                     setModelSearchQuery('');
                     props.onCatalogProviderChange(item.provider);
                     setSubmenuProvider(item.provider);

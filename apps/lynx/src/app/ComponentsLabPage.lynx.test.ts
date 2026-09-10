@@ -55,7 +55,7 @@ describe('paired Components Lab route', () => {
       'const [selection, setSelection] = useState<ModelSelection>'
     );
     expect(renderer).toContain('key={props.state}');
-    expect(renderer).toContain('onModelSelectionChange={setSelection}');
+    expect(renderer).toContain('onModelSelectionChange={handleModelSelectionChange}');
     expect(renderer).toContain('modelOptionsOverride={runtimeModels}');
     expect(renderer).toContain("compact={props.variant === 'compact'}");
     expect(renderer).toContain("splitTraits={props.variant === 'landing' || providerList}");
@@ -224,5 +224,9 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('onOpenChange={handleOpenChange}');
     expect(renderer).toContain('onSubmit={handleSubmit}');
     expect(renderer).not.toContain('<SpaceProjectPickerDialogLynx activeSpaceId={null} open projects=');
+    expect(renderer).toContain('const [catalogProvider, setCatalogProvider] = useState(selection.provider)');
+    expect(renderer).toContain('catalogProvider={catalogProvider}');
+    expect(renderer).toContain('onCatalogProviderChange={handleCatalogProviderChange}');
+    expect(renderer).toContain('onModelSelectionChange={handleModelSelectionChange}');
   });
 });

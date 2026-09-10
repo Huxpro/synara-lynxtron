@@ -120,6 +120,12 @@ describe('Composer token icon fidelity', () => {
     expect(source).toContain('open={submenuProvider === item.provider}');
     expect(source).toContain('setSubmenuProvider(open ? item.provider : null)');
     expect(source).toContain('props.onCatalogProviderChange(item.provider);');
+    expect(source).toMatch(
+      /onOpenChange=\{\(open\) => \{\s*'background only';\s*setSubmenuProvider/s
+    );
+    expect(source).toMatch(
+      /onOpen=\{\(\) => \{\s*'background only';\s*setModelSearchQuery/s
+    );
     expect(source).toContain('useSinglePanelModelNavigation');
     expect(source).toContain(
       "useSinglePanelModelNavigation &&\n            popupContent !== 'providers'"
