@@ -105,6 +105,8 @@ export function ComposerModelControl(props: {
   readonly initialOpen?: boolean;
   readonly initialSubmenuOpen?: boolean;
   readonly initialSearchQuery?: string;
+  readonly favoriteModelSlugsOverride?: Partial<Record<FavoriteModelProvider, ReadonlyArray<string>>>;
+  readonly onFavoriteModelSlugsChange?: (provider: FavoriteModelProvider, slugs: ReadonlyArray<string>) => void;
   readonly runtimeModels: ReadonlyArray<ProviderModelDescriptor>;
   readonly modelOptionsOverride?: ReadonlyArray<ProviderModelOption>;
   readonly modelsLoading: boolean;
@@ -202,9 +204,12 @@ export function ComposerModelControl(props: {
   const favoriteModelSlugSet = useMemo(
     () =>
       favoriteProvider
-        ? new Set(favoriteModelSlugsByProvider[favoriteProvider])
+        ? new Set(
+            props.favoriteModelSlugsOverride?.[favoriteProvider] ??
+              favoriteModelSlugsByProvider[favoriteProvider]
+          )
         : undefined,
-    [favoriteModelSlugsByProvider, favoriteProvider]
+    [favoriteModelSlugsByProvider, favoriteProvider, props.favoriteModelSlugsOverride]
   );
   const groupedOptions = useMemo(
     () =>
@@ -313,6 +318,17 @@ export function ComposerModelControl(props: {
     slug: string
   ) {
     'background only';
+    if (
+      props.favoriteModelSlugsOverride &&
+      provider in props.favoriteModelSlugsOverride
+    ) {
+      const override = props.favoriteModelSlugsOverride[provider] ?? [];
+      props.onFavoriteModelSlugsChange?.(
+        provider,
+        toggleFavoriteModelSlug(override, slug)
+      );
+      return;
+    }
     const nextSlugs = toggleFavoriteModelSlug(
       favoriteModelSlugsByProvider[provider],
       slug

@@ -171,6 +171,10 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
   );
   const submenuOpen = props.state === "submenu-open" || props.state === "overflow";
   const providerList = props.state === "provider-list";
+  const favoriteState = props.state === "favourite";
+  const [favoriteModelSlugs, setFavoriteModelSlugs] = useState<ReadonlyArray<string>>(() =>
+    favoriteState ? ["open-model-02"] : [],
+  );
   const runtimeModels = search
     ? COMPONENT_LAB_OPENCODE_MODELS
     : props.state === "overflow"
@@ -183,6 +187,9 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
   const selectModel = (provider: ModelSelection["provider"], model: ModelSelection["model"]) =>
     setSelection((current) => ({ ...current, provider, model }));
 
+  if (favoriteState) {
+    return <ProviderModelPicker provider="opencode" model={"open-model-01" as ModelSelection["model"]} lockedProvider="opencode" providers={COMPONENT_LAB_PROVIDER_STATUSES} modelOptionsByProvider={COMPONENT_LAB_MODEL_OPTIONS_BY_PROVIDER} initialOpen favoriteModelSlugsOverride={{ opencode: favoriteModelSlugs }} onFavoriteModelSlugsChange={(_provider, slugs) => setFavoriteModelSlugs(slugs)} onProviderModelChange={selectModel} />;
+  }
   if (props.variant === "landing") {
     return (
       <div className="flex items-center justify-center gap-2">

@@ -112,6 +112,11 @@ type ProviderModelMenuItemsProps = {
   // menus and refocus the composer.
   onAfterSelection?: () => void;
   initialSearchQuery?: string;
+  favoriteModelSlugsOverride?: Partial<Record<FavoriteModelProvider, ReadonlyArray<string>>>;
+  onFavoriteModelSlugsChange?: (
+    provider: FavoriteModelProvider,
+    slugs: ReadonlyArray<string>,
+  ) => void;
 };
 
 // Renders only the popup body of the provider/model picker. Designed to be
@@ -168,10 +173,10 @@ export const ProviderModelMenuItems = function ProviderModelMenuItems(
   const cursorFavoriteModelSlugSet = new Set(cursorFavoriteModelSlugs);
   const piFavoriteModelSlugSet = new Set(piFavoriteModelSlugs);
   const favoriteModelSlugSets = {
-    cursor: cursorFavoriteModelSlugSet,
-    kilo: kiloFavoriteModelSlugSet,
-    opencode: openCodeFavoriteModelSlugSet,
-    pi: piFavoriteModelSlugSet,
+    cursor: new Set(props.favoriteModelSlugsOverride?.cursor ?? cursorFavoriteModelSlugSet),
+    kilo: new Set(props.favoriteModelSlugsOverride?.kilo ?? kiloFavoriteModelSlugSet),
+    opencode: new Set(props.favoriteModelSlugsOverride?.opencode ?? openCodeFavoriteModelSlugSet),
+    pi: new Set(props.favoriteModelSlugsOverride?.pi ?? piFavoriteModelSlugSet),
   };
   const handleModelChange = (provider: ProviderKind, value: string) => {
     if (props.disabled) return;
@@ -186,6 +191,11 @@ export const ProviderModelMenuItems = function ProviderModelMenuItems(
     onAfterSelection?.();
   };
   const toggleFavoriteModel = (provider: FavoriteModelProvider, slug: string) => {
+    if (props.favoriteModelSlugsOverride && provider in props.favoriteModelSlugsOverride) {
+      const override = props.favoriteModelSlugsOverride[provider] ?? [];
+      props.onFavoriteModelSlugsChange?.(provider, toggleFavoriteModelSlug(override, slug));
+      return;
+    }
     const setFavoriteModelSlugs =
       provider === "cursor"
         ? setCursorFavoriteModelSlugs
@@ -404,6 +414,8 @@ type ProviderModelPickerProps = {
   initialOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   onSelectionCommitted?: () => void;
+  favoriteModelSlugsOverride?: Partial<Record<FavoriteModelProvider, ReadonlyArray<string>>>;
+  onFavoriteModelSlugsChange?: ProviderModelMenuItemsProps["onFavoriteModelSlugsChange"];
   shortcutLabel?: string | null;
   onProviderModelChange: (provider: ProviderKind, model: ModelSlug) => void;
 };
@@ -522,6 +534,8 @@ export const ProviderModelPicker = function ProviderModelPicker(props: ProviderM
           {...(props.providerOrder ? { providerOrder: props.providerOrder } : {})}
           {...(props.disabled !== undefined ? { disabled: props.disabled } : {})}
           onProviderModelChange={props.onProviderModelChange}
+          {...(props.favoriteModelSlugsOverride ? { favoriteModelSlugsOverride: props.favoriteModelSlugsOverride } : {})}
+          {...(props.onFavoriteModelSlugsChange ? { onFavoriteModelSlugsChange: props.onFavoriteModelSlugsChange } : {})}
           onAfterSelection={handleAfterSelection}
         />
       </ComposerPickerMenuPopup>

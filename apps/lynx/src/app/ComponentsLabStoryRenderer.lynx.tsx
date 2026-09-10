@@ -686,6 +686,10 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
   const [catalogProvider, setCatalogProvider] = useState(selection.provider);
   const submenuOpen = props.state === 'submenu-open' || props.state === 'overflow';
   const providerList = props.state === 'provider-list';
+  const favoriteState = props.state === 'favourite';
+  const [favoriteModelSlugs, setFavoriteModelSlugs] = useState<ReadonlyArray<string>>(() =>
+    favoriteState ? ['open-model-02'] : []
+  );
   const runtimeModels = catalogProvider === 'opencode'
     ? COMPONENT_LAB_OPENCODE_MODELS
     : props.state === 'overflow'
@@ -700,24 +704,33 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
     setSelection(nextSelection);
     setCatalogProvider(nextSelection.provider);
   };
+  const handleFavoriteModelSlugsChange = (
+    _provider: 'cursor' | 'kilo' | 'opencode' | 'pi',
+    slugs: ReadonlyArray<string>
+  ) => {
+    'background only';
+    setFavoriteModelSlugs(slugs);
+  };
   return (
     <view className="ComponentsLabRealStory">
       <ComposerModelControl
         key={props.state}
-        modelSelection={selection}
-        catalogModelSelection={selection}
-        catalogProvider={catalogProvider}
-        runtimeModels={runtimeModels}
-        modelOptionsOverride={runtimeModels}
+        modelSelection={favoriteState ? COMPONENT_LAB_OPENCODE_SELECTION : selection}
+        catalogModelSelection={favoriteState ? COMPONENT_LAB_OPENCODE_SELECTION : selection}
+        catalogProvider={favoriteState ? 'opencode' : catalogProvider}
+        runtimeModels={favoriteState ? COMPONENT_LAB_OPENCODE_MODELS : runtimeModels}
+        modelOptionsOverride={favoriteState ? COMPONENT_LAB_OPENCODE_MODELS : runtimeModels}
         modelsLoading={false}
         compact={props.variant === 'compact'}
         providers={COMPONENT_LAB_PROVIDER_STATUSES}
         initialPanel={providerList ? 'providers' : undefined}
-        initialOpen={props.state === 'open' || providerList || submenuOpen}
+        initialOpen={props.state === 'open' || providerList || submenuOpen || favoriteState}
         initialSubmenuOpen={submenuOpen}
         initialSearchQuery=""
         disabled={props.state === 'disabled'}
         splitTraits={props.variant === 'landing' || providerList}
+        favoriteModelSlugsOverride={{ opencode: favoriteModelSlugs }}
+        onFavoriteModelSlugsChange={handleFavoriteModelSlugsChange}
         onCatalogProviderChange={handleCatalogProviderChange}
         onModelSelectionChange={handleModelSelectionChange}
       />

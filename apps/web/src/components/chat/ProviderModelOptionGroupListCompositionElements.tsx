@@ -86,6 +86,8 @@ export function ProviderModelRadioItemElement(props: {
         supportsFavorites ? (
           <button
             type="button"
+            role="checkbox"
+            aria-checked={props.isFavorite}
             aria-label={
               props.isFavorite
                 ? `Remove ${props.modelName} from favourites`

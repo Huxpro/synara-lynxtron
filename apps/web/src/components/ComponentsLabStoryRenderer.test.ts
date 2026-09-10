@@ -70,6 +70,9 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.state === "overflow"');
     expect(source).toContain('props.state === "search"');
     expect(source).toContain('props.state === "provider-list"');
+    expect(source).toContain('props.state === "favourite"');
+    expect(source).toContain('favoriteModelSlugsOverride={{ opencode: favoriteModelSlugs }}');
+    expect(source).toContain('onFavoriteModelSlugsChange={(_provider, slugs) => setFavoriteModelSlugs(slugs)}');
     expect(source).toContain('disabled={props.state === "disabled"}');
     expect(source).toContain('COMPONENT_LAB_OVERFLOW_CODEX_MODELS');
     expect(source).toContain('COMPONENT_LAB_OPENCODE_MODELS');

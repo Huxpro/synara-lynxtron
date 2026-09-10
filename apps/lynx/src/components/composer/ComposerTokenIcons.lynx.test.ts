@@ -120,6 +120,8 @@ describe('Composer token icon fidelity', () => {
     expect(source).toContain('open={submenuProvider === item.provider}');
     expect(source).toContain('setSubmenuProvider(open ? item.provider : null)');
     expect(source).toContain('props.onCatalogProviderChange(item.provider);');
+    expect(source).toContain('props.favoriteModelSlugsOverride?.[favoriteProvider]');
+    expect(source).toContain('props.onFavoriteModelSlugsChange?.(');
     expect(source).toMatch(
       /onOpenChange=\{\(open\) => \{\s*'background only';\s*setSubmenuProvider/s
     );

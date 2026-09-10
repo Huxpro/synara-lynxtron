@@ -1,10 +1,12 @@
 import { type ModelSlug, type ProviderKind, type ServerProviderStatus } from "@synara/contracts";
+import { useState } from "react";
 import { page } from "vitest/browser";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 
 import { ProviderModelPicker } from "./ProviderModelPicker";
 import type { ProviderModelOption } from "../../providerModelOptions";
+import { FAVORITE_MODEL_STORAGE_KEYS } from "../../lib/modelFavorites.logic";
 
 import { webStorage } from "~/platform/storage";
 const MODEL_OPTIONS_BY_PROVIDER = {
@@ -129,6 +131,45 @@ const PI_FAVORITE_SORT_MODELS = [
     upstreamProviderName: "OpenAI",
   },
 ] satisfies ReadonlyArray<ProviderModelOption & { slug: ModelSlug }>;
+
+function ControlledFavoritePickerHarness(props: {
+  readonly onFavoriteModelSlugsChange: (slugs: ReadonlyArray<string>) => void;
+}) {
+  const [favoriteModelSlugs, setFavoriteModelSlugs] = useState<ReadonlyArray<string>>([
+    "open-model-02",
+  ]);
+  return (
+    <ProviderModelPicker
+      provider="opencode"
+      model={"open-model-01" as ModelSlug}
+      lockedProvider="opencode"
+      modelOptionsByProvider={{
+        ...MODEL_OPTIONS_BY_PROVIDER,
+        opencode: [
+          {
+            slug: "open-model-01" as ModelSlug,
+            name: "Open Model 01",
+            upstreamProviderId: "open",
+            upstreamProviderName: "Open",
+          },
+          {
+            slug: "open-model-02" as ModelSlug,
+            name: "Open Model 02",
+            upstreamProviderId: "open",
+            upstreamProviderName: "Open",
+          },
+        ],
+      }}
+      initialOpen
+      favoriteModelSlugsOverride={{ opencode: favoriteModelSlugs }}
+      onFavoriteModelSlugsChange={(_provider, slugs) => {
+        props.onFavoriteModelSlugsChange(slugs);
+        setFavoriteModelSlugs(slugs);
+      }}
+      onProviderModelChange={vi.fn()}
+    />
+  );
+}
 
 async function mountPicker(props: {
   provider: ProviderKind;
@@ -372,7 +413,7 @@ describe("ProviderModelPicker", () => {
         expect(text.indexOf("Anthropic")).toBeLessThan(text.indexOf("OpenAI"));
       });
 
-      await page.getByRole("button", { name: "Add GPT Favorite Sort to favourites" }).click();
+      await page.getByRole("checkbox", { name: "Add GPT Favorite Sort to favourites" }).click();
 
       await vi.waitFor(() => {
         const text = document.body.textContent ?? "";
@@ -390,6 +431,39 @@ describe("ProviderModelPicker", () => {
       ).toHaveLength(1);
     } finally {
       await mounted.cleanup();
+    }
+  });
+
+  it("toggles controlled OpenCode favourites without mutating persisted preferences", async () => {
+    const persistedValue = JSON.stringify(["persisted-model"]);
+    webStorage.setItem(FAVORITE_MODEL_STORAGE_KEYS.opencode, persistedValue);
+    const onFavoriteModelSlugsChange = vi.fn();
+    const screen = await render(
+      <ControlledFavoritePickerHarness
+        onFavoriteModelSlugsChange={onFavoriteModelSlugsChange}
+      />,
+    );
+
+    try {
+      await expect.element(page.getByText("Favourites", { exact: true })).toBeVisible();
+      const favoriteToggle = page.getByRole("checkbox", {
+        name: "Remove Open Model 02 from favourites",
+      });
+      await expect.element(favoriteToggle).toHaveAttribute("aria-checked", "true");
+      await favoriteToggle.click();
+
+      await vi.waitFor(() => {
+        expect(onFavoriteModelSlugsChange).toHaveBeenCalledWith([]);
+      });
+      await expect
+        .element(page.getByText("Favourites", { exact: true }))
+        .not.toBeInTheDocument();
+      await expect
+        .element(page.getByRole("checkbox", { name: "Add Open Model 02 to favourites" }))
+        .toHaveAttribute("aria-checked", "false");
+      expect(webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS.opencode)).toBe(persistedValue);
+    } finally {
+      await screen.unmount();
     }
   });
 
@@ -443,7 +517,7 @@ describe("ProviderModelPicker", () => {
       });
 
       await page
-        .getByRole("button", { name: "Add GPT Cursor Favorite Sort to favourites" })
+        .getByRole("checkbox", { name: "Add GPT Cursor Favorite Sort to favourites" })
         .click();
 
       await vi.waitFor(() => {
@@ -486,7 +560,7 @@ describe("ProviderModelPicker", () => {
         expect(text.indexOf("Anthropic")).toBeLessThan(text.indexOf("OpenAI"));
       });
 
-      await page.getByRole("button", { name: "Add GPT Pi Favorite Sort to favourites" }).click();
+      await page.getByRole("checkbox", { name: "Add GPT Pi Favorite Sort to favourites" }).click();
 
       await vi.waitFor(() => {
         const text = document.body.textContent ?? "";

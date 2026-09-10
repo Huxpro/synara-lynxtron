@@ -46,6 +46,9 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain("props.state === 'overflow'");
     expect(renderer).toContain("props.state === 'search'");
     expect(renderer).toContain("props.state === 'provider-list'");
+    expect(renderer).toContain("props.state === 'favourite'");
+    expect(renderer).toContain('favoriteModelSlugsOverride={{ opencode: favoriteModelSlugs }}');
+    expect(renderer).toContain('onFavoriteModelSlugsChange={handleFavoriteModelSlugsChange}');
     expect(renderer).toContain("disabled={props.state === 'disabled'}");
     expect(renderer).toContain('COMPONENT_LAB_OVERFLOW_CODEX_MODELS');
     expect(renderer).toContain('COMPONENT_LAB_OPENCODE_MODELS');
@@ -56,7 +59,7 @@ describe('paired Components Lab route', () => {
     );
     expect(renderer).toContain('key={props.state}');
     expect(renderer).toContain('onModelSelectionChange={handleModelSelectionChange}');
-    expect(renderer).toContain('modelOptionsOverride={runtimeModels}');
+    expect(renderer).toContain("modelOptionsOverride={favoriteState ? COMPONENT_LAB_OPENCODE_MODELS : runtimeModels}");
     expect(renderer).toContain("compact={props.variant === 'compact'}");
     expect(renderer).toContain("splitTraits={props.variant === 'landing' || providerList}");
     expect(renderer).toContain("initialOpen={props.state === 'open'}");
@@ -242,7 +245,8 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('onSubmit={handleSubmit}');
     expect(renderer).not.toContain('<SpaceProjectPickerDialogLynx activeSpaceId={null} open projects=');
     expect(renderer).toContain('const [catalogProvider, setCatalogProvider] = useState(selection.provider)');
-    expect(renderer).toContain('catalogProvider={catalogProvider}');
+    expect(renderer).toContain("catalogProvider={favoriteState ? 'opencode' : catalogProvider}");
+    expect(renderer).toContain('catalogModelSelection={favoriteState ? COMPONENT_LAB_OPENCODE_SELECTION : selection}');
     expect(renderer).toContain('onCatalogProviderChange={handleCatalogProviderChange}');
     expect(renderer).toContain('onModelSelectionChange={handleModelSelectionChange}');
   });
