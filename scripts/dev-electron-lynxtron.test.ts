@@ -20,7 +20,9 @@ import {
   comparisonThreadId,
   comparisonThreadIdentityReadyExpression,
   comparisonTranscriptReadyExpression,
+  comparisonTransientUiReadyExpression,
   nativeThreadIdentityFromDom,
+  nativeTransientUiStateFromDom,
   comparisonWebUrl,
   desktopComparisonCommands,
   electronEvaluationError,
@@ -365,6 +367,30 @@ describe("Electron and Lynxtron comparison launcher", () => {
     }, "thread-live", "tail-message")).toMatchObject({
       transcriptListCount: 1,
       lastMessageRendered: true,
+    });
+  });
+
+  it("rejects transient overlays before retaining comparison evidence", () => {
+    const expression = comparisonTransientUiReadyExpression();
+    expect(expression).toContain('aria-label="Recent views"');
+    expect(expression).toContain('data-transcript-selection-action="true"');
+    expect(expression).toContain('data-panel-resize-overlay="true"');
+    expect(expression).toContain('data-slot="dialog-popup"');
+    expect(expression).toContain('data-slot="menu-popup"');
+
+    expect(nativeTransientUiStateFromDom({
+      attributes: ["class", "SliceRoot"],
+      children: [
+        { attributes: ["class", "LxDialogOverlay"] },
+        { attributes: ["class", "TranscriptSelectionToolbar"] },
+        { attributes: ["class", "RightPanelResizeOverlay"] },
+        { attributes: ["class", "LxMenuLayer"] },
+      ],
+    })).toEqual({
+      dialogCount: 1,
+      menuLayerCount: 1,
+      resizeOverlayCount: 1,
+      selectionToolbarCount: 1,
     });
   });
 

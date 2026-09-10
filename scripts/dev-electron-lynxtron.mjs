@@ -536,6 +536,10 @@ export function comparisonTranscriptReadyExpression(expectation) {
   return `(() => { const scroll = document.querySelector('[data-chat-scroll-container="true"]'); const messages = Array.from(document.querySelectorAll('[data-timeline-row-kind="message"][data-message-id]')); const last = ${JSON.stringify(expectation.lastMessageId)} === null ? null : document.querySelector('[data-message-id=' + CSS.escape(${JSON.stringify(expectation.lastMessageId)}) + ']'); const scrollRect = scroll?.getBoundingClientRect(); const lastRect = last?.getBoundingClientRect(); const emptyStateRendered = ${expectation.messageCount} === 0 && document.body.innerText.includes('Send a message to start the conversation.'); const distanceFromBottom = scroll ? Math.max(0, scroll.scrollHeight - scroll.clientHeight - scroll.scrollTop) : null; return { expectedMessageCount: ${expectation.messageCount}, renderedMessageCount: messages.length, lastMessageId: ${JSON.stringify(expectation.lastMessageId)}, lastMessageRendered: ${JSON.stringify(expectation.lastMessageId)} === null || last !== null, lastMessageVisible: ${JSON.stringify(expectation.lastMessageId)} === null || Boolean(lastRect && scrollRect && lastRect.bottom > scrollRect.top && lastRect.top < scrollRect.bottom), emptyStateRendered, scrollTop: scroll?.scrollTop ?? null, clientHeight: scroll?.clientHeight ?? null, scrollHeight: scroll?.scrollHeight ?? null, distanceFromBottom }; })()`;
 }
 
+export function comparisonTransientUiReadyExpression() {
+  return `(() => ({ recentViewSwitcherCount: document.querySelectorAll('[role="listbox"][aria-label="Recent views"]').length, selectionToolbarCount: document.querySelectorAll('[data-transcript-selection-action="true"]').length, dialogCount: document.querySelectorAll('[data-slot="dialog-popup"], [data-slot="alert-dialog-popup"], [data-slot="command-dialog-popup"]').length, menuCount: document.querySelectorAll('[data-slot="menu-popup"]').length, resizeOverlayCount: document.querySelectorAll('[data-panel-resize-overlay="true"]').length }))()`;
+}
+
 function nodeAttributeMap(node) {
   const attributes = node?.attributes ?? [];
   if (attributes.length > 0 && typeof attributes[0] === "object") {
@@ -587,6 +591,28 @@ export function nativeThreadIdentityFromDom(root, threadId, lastMessageId = null
     emptyStateRendered,
     matches,
   };
+}
+
+export function nativeTransientUiStateFromDom(root) {
+  const queue = [root];
+  const counts = {
+    dialogCount: 0,
+    menuLayerCount: 0,
+    resizeOverlayCount: 0,
+    selectionToolbarCount: 0,
+  };
+  while (queue.length > 0) {
+    const node = queue.shift();
+    const classes = nodeAttributeMap(node).class?.split(/\s+/) ?? [];
+    if (classes.includes("LxDialogOverlay")) counts.dialogCount += 1;
+    if (classes.includes("LxMenuLayer")) counts.menuLayerCount += 1;
+    if (classes.some((name) => name.endsWith("ResizeOverlay"))) counts.resizeOverlayCount += 1;
+    if (classes.includes("TranscriptSelectionToolbar")) counts.selectionToolbarCount += 1;
+    queue.push(...(node?.children ?? []));
+    queue.push(...(node?.shadowRoots ?? []));
+    if (node?.contentDocument) queue.push(node.contentDocument);
+  }
+  return counts;
 }
 
 export function comparisonExplorerOpenExpression(options) {
@@ -889,11 +915,16 @@ async function verifyOwnedNativeThreadIdentity(
       threadId,
       transcriptExpectation.lastMessageId,
     );
+    const transientUi = nativeTransientUiStateFromDom(
+      document?.result?.root ?? document?.root ?? document?.result ?? document,
+    );
+    lastIdentity = { ...lastIdentity, transientUi };
     if (
       lastIdentity.count >= 1 &&
       lastIdentity.activeCount === 1 &&
       ((transcriptExpectation.messageCount === 0 && lastIdentity.emptyStateRendered) ||
-        (lastIdentity.transcriptListCount === 1 && lastIdentity.lastMessageRendered))
+        (lastIdentity.transcriptListCount === 1 && lastIdentity.lastMessageRendered)) &&
+      Object.values(transientUi).every((count) => count === 0)
     ) {
       console.log(
         `[compare:desktop] Native thread/transcript anchor verified: ${JSON.stringify(lastIdentity)}.`,
@@ -1227,6 +1258,21 @@ async function configureElectronRenderer(
           }
           console.log(
             `[compare:desktop] Electron transcript anchor verified: ${JSON.stringify(transcriptReadiness)}.`,
+          );
+          requestId += 1;
+          const transientUi = await evaluateElectronExpression(
+            socket,
+            requestId,
+            comparisonTransientUiReadyExpression(),
+            "confirming clean Electron transient UI state",
+          );
+          if (Object.values(transientUi ?? {}).some((count) => count !== 0)) {
+            throw new Error(
+              `Electron comparison retained transient UI: ${JSON.stringify(transientUi)}.`,
+            );
+          }
+          console.log(
+            `[compare:desktop] Electron transient UI verified clean: ${JSON.stringify(transientUi)}.`,
           );
         }
         const explorerExpression = comparisonExplorerOpenExpression(options);
