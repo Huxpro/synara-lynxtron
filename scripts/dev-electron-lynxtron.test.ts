@@ -5,6 +5,7 @@ import {
   DEFAULT_DESKTOP_COMPARISON_OPTIONS,
   COMPARISON_RENDERER_STORAGE_KEYS,
   assertComparisonThreadAvailable,
+  readComparisonTranscriptExpectation,
   comparisonLynxDeepLink,
   comparisonExplorerOpenExpression,
   comparisonDiffOpenExpression,
@@ -18,6 +19,7 @@ import {
   comparisonRouteRestoreExpression,
   comparisonThreadId,
   comparisonThreadIdentityReadyExpression,
+  comparisonTranscriptReadyExpression,
   nativeThreadIdentityFromDom,
   comparisonWebUrl,
   desktopComparisonCommands,
@@ -329,10 +331,40 @@ describe("Electron and Lynxtron comparison launcher", () => {
       threadId: "thread-a",
       count: 2,
       activeCount: 1,
+      transcriptListCount: 0,
+      lastMessageId: null,
+      lastMessageRendered: true,
+      emptyStateRendered: false,
       matches: [
         { nodeId: 2, active: false },
         { nodeId: 3, active: true },
       ],
+    });
+  });
+
+  it("derives transcript readiness from the seed and requires the exact tail message", () => {
+    const root = mkdtempSync(join(tmpdir(), "synara-comparison-transcript-"));
+    const paths = resolveDesktopComparisonPaths(root);
+    mkdirSync(join(paths.electronHome, "dev"), { recursive: true });
+    const sqlite = spawnSync("sqlite3", [
+      join(paths.electronHome, "dev", "state.sqlite"),
+      "create table projection_thread_messages(message_id text, thread_id text, sequence integer); insert into projection_thread_messages values('first', 'thread-live', 1), ('tail-message', 'thread-live', 2);",
+    ], { encoding: "utf8" });
+    expect(sqlite.status).toBe(0);
+
+    const expectation = readComparisonTranscriptExpectation(paths, "thread-live");
+    expect(expectation).toEqual({ messageCount: 2, lastMessageId: "tail-message" });
+    const expression = comparisonTranscriptReadyExpression(expectation);
+    expect(expression).toContain('[data-chat-scroll-container="true"]');
+    expect(expression).toContain('CSS.escape("tail-message")');
+    expect(expression).toContain('distanceFromBottom');
+
+    expect(nativeThreadIdentityFromDom({
+      attributes: ["class", "TranscriptList"],
+      children: [{ attributes: ["item-key", "tail-message"] }],
+    }, "thread-live", "tail-message")).toMatchObject({
+      transcriptListCount: 1,
+      lastMessageRendered: true,
     });
   });
 
@@ -620,7 +652,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(source).toContain("await waitForOwnedDevtoolListener(");
     expect(source).toContain("verified LISTEN");
     expect(source).toContain("is an assertion, not a runtime override");
-    expect(source).toContain("may also have been built without ENABLE_INSPECTOR");
+    expect(source).toContain("may also lack an inspector-capable devtool variant");
     expect(source).not.toContain("SYNARA_LYNX_DEVTOOL_PORT:");
   });
 

@@ -409,6 +409,28 @@ export function assertComparisonThreadAvailable(paths, threadId) {
   }
 }
 
+export function readComparisonTranscriptExpectation(paths, threadId) {
+  const databasePath = join(paths.electronHome, "dev", "state.sqlite");
+  const escapedThreadId = threadId.replaceAll("'", "''");
+  const query = spawnSync(
+    "sqlite3",
+    [
+      "-json",
+      databasePath,
+      `select count(*) as messageCount, (select message_id from projection_thread_messages where thread_id = '${escapedThreadId}' order by sequence desc, rowid desc limit 1) as lastMessageId from projection_thread_messages where thread_id = '${escapedThreadId}';`,
+    ],
+    { encoding: "utf8" },
+  );
+  if (query.status !== 0) {
+    throw new Error(`Failed to inspect comparison transcript ${threadId}: ${query.stderr.trim()}`);
+  }
+  const [row] = JSON.parse(query.stdout || "[]");
+  return {
+    messageCount: Number(row?.messageCount ?? 0),
+    lastMessageId: typeof row?.lastMessageId === "string" ? row.lastMessageId : null,
+  };
+}
+
 export function comparisonRoute(threadId) {
   return `/thread/${encodeURIComponent(threadId)}`;
 }
@@ -508,6 +530,10 @@ export function comparisonThreadIdentityReadyExpression(threadId) {
   )}, count: rows.length, activeCount: activeRows.length, visibleActiveCount: activeRows.filter((row) => { const rect = row.getBoundingClientRect(); return rect.width > 0 && rect.height > 0; }).length }; })()`;
 }
 
+export function comparisonTranscriptReadyExpression(expectation) {
+  return `(() => { const scroll = document.querySelector('[data-chat-scroll-container="true"]'); const messages = Array.from(document.querySelectorAll('[data-timeline-row-kind="message"][data-message-id]')); const last = ${JSON.stringify(expectation.lastMessageId)} === null ? null : document.querySelector('[data-message-id=' + CSS.escape(${JSON.stringify(expectation.lastMessageId)}) + ']'); const scrollRect = scroll?.getBoundingClientRect(); const lastRect = last?.getBoundingClientRect(); const emptyStateRendered = ${expectation.messageCount} === 0 && document.body.innerText.includes('Send a message to start the conversation.'); const distanceFromBottom = scroll ? Math.max(0, scroll.scrollHeight - scroll.clientHeight - scroll.scrollTop) : null; return { expectedMessageCount: ${expectation.messageCount}, renderedMessageCount: messages.length, lastMessageId: ${JSON.stringify(expectation.lastMessageId)}, lastMessageRendered: ${JSON.stringify(expectation.lastMessageId)} === null || last !== null, lastMessageVisible: ${JSON.stringify(expectation.lastMessageId)} === null || Boolean(lastRect && scrollRect && lastRect.bottom > scrollRect.top && lastRect.top < scrollRect.bottom), emptyStateRendered, scrollTop: scroll?.scrollTop ?? null, clientHeight: scroll?.clientHeight ?? null, scrollHeight: scroll?.scrollHeight ?? null, distanceFromBottom }; })()`;
+}
+
 function nodeAttributeMap(node) {
   const attributes = node?.attributes ?? [];
   if (attributes.length > 0 && typeof attributes[0] === "object") {
@@ -523,9 +549,12 @@ function nodeAttributeMap(node) {
   );
 }
 
-export function nativeThreadIdentityFromDom(root, threadId) {
+export function nativeThreadIdentityFromDom(root, threadId, lastMessageId = null) {
   const queue = [root];
   const matches = [];
+  let transcriptListCount = 0;
+  let lastMessageRendered = lastMessageId === null;
+  let emptyStateRendered = false;
   while (queue.length > 0) {
     const node = queue.shift();
     const attributes = nodeAttributeMap(node);
@@ -535,6 +564,13 @@ export function nativeThreadIdentityFromDom(root, threadId) {
         active: attributes["data-active"] === "true",
       });
     }
+    if (attributes.class?.split(/\s+/).includes("TranscriptList")) transcriptListCount += 1;
+    if (lastMessageId !== null && attributes["item-key"] === lastMessageId) {
+      lastMessageRendered = true;
+    }
+    if (attributes.text === "Send a message to start the conversation.") {
+      emptyStateRendered = true;
+    }
     queue.push(...(node?.children ?? []));
     queue.push(...(node?.shadowRoots ?? []));
     if (node?.contentDocument) queue.push(node.contentDocument);
@@ -543,6 +579,10 @@ export function nativeThreadIdentityFromDom(root, threadId) {
     threadId,
     count: matches.length,
     activeCount: matches.filter((match) => match.active).length,
+    transcriptListCount,
+    lastMessageId,
+    lastMessageRendered,
+    emptyStateRendered,
     matches,
   };
 }
@@ -808,7 +848,12 @@ async function waitForOwnedDevtoolListener(child, port, timeoutMs = 10_000) {
   );
 }
 
-async function verifyOwnedNativeThreadIdentity(port, threadId, timeoutMs = 20_000) {
+async function verifyOwnedNativeThreadIdentity(
+  port,
+  threadId,
+  transcriptExpectation,
+  timeoutMs = 20_000,
+) {
   const connectorPath =
     process.env.LYNX_DEVTOOL_CONNECTOR?.trim() || defaultLynxDevtoolConnector;
   if (!existsSync(connectorPath)) {
@@ -840,14 +885,23 @@ async function verifyOwnedNativeThreadIdentity(port, threadId, timeoutMs = 20_00
     lastIdentity = nativeThreadIdentityFromDom(
       document?.result?.root ?? document?.root ?? document?.result ?? document,
       threadId,
+      transcriptExpectation.lastMessageId,
     );
-    if (lastIdentity.count >= 1 && lastIdentity.activeCount === 1) {
+    if (
+      lastIdentity.count >= 1 &&
+      lastIdentity.activeCount === 1 &&
+      ((transcriptExpectation.messageCount === 0 && lastIdentity.emptyStateRendered) ||
+        (lastIdentity.transcriptListCount === 1 && lastIdentity.lastMessageRendered))
+    ) {
+      console.log(
+        `[compare:desktop] Native thread/transcript anchor verified: ${JSON.stringify(lastIdentity)}.`,
+      );
       return lastIdentity;
     }
     await new Promise((resolveWait) => setTimeout(resolveWait, 100));
   }
   throw new Error(
-    `Timed out confirming Native sidebar identity ${threadId}: ${JSON.stringify(lastIdentity)}.`,
+    `Timed out confirming Native thread/transcript identity ${threadId}: ${JSON.stringify(lastIdentity)}.`,
   );
 }
 
@@ -874,7 +928,12 @@ async function waitForRuntimeState(runtimePath, launchedAt, timeoutMs = 90_000) 
   throw new Error(`Timed out waiting for a fresh Electron runtime at ${runtimePath}.`);
 }
 
-async function configureElectronRenderer(cdpPort, options, timeoutMs = 30_000) {
+async function configureElectronRenderer(
+  cdpPort,
+  options,
+  transcriptExpectation = null,
+  timeoutMs = 30_000,
+) {
   const expectedUrl = comparisonWebUrl(options);
   const theme = options.theme;
   const deadline = Date.now() + timeoutMs;
@@ -1132,6 +1191,41 @@ async function configureElectronRenderer(cdpPort, options, timeoutMs = 30_000) {
               `Timed out confirming Electron sidebar identity ${identityThreadId}: ${JSON.stringify(identity)}.`,
             );
           }
+          const transcriptDeadline = Date.now() + 15_000;
+          let transcriptReadiness = null;
+          while (Date.now() < transcriptDeadline) {
+            requestId += 1;
+            transcriptReadiness = await evaluateElectronExpression(
+              socket,
+              requestId,
+              comparisonTranscriptReadyExpression(transcriptExpectation),
+              `confirming Electron transcript anchor ${transcriptExpectation.lastMessageId ?? '<empty>'}`,
+            );
+            if (
+              ((transcriptExpectation.messageCount === 0 &&
+                transcriptReadiness?.emptyStateRendered === true) ||
+                (transcriptReadiness?.lastMessageRendered === true &&
+                  transcriptReadiness?.lastMessageVisible === true &&
+                  transcriptReadiness?.clientHeight > 0 &&
+                  transcriptReadiness?.scrollHeight >= transcriptReadiness?.clientHeight))
+            ) break;
+            await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+          }
+          if (
+            !((transcriptExpectation.messageCount === 0 &&
+              transcriptReadiness?.emptyStateRendered === true) ||
+              (transcriptReadiness?.lastMessageRendered === true &&
+                transcriptReadiness?.lastMessageVisible === true &&
+                transcriptReadiness?.clientHeight > 0 &&
+                transcriptReadiness?.scrollHeight >= transcriptReadiness?.clientHeight))
+          ) {
+            throw new Error(
+              `Timed out confirming Electron transcript anchor: ${JSON.stringify(transcriptReadiness)}.`,
+            );
+          }
+          console.log(
+            `[compare:desktop] Electron transcript anchor verified: ${JSON.stringify(transcriptReadiness)}.`,
+          );
         }
         const explorerExpression = comparisonExplorerOpenExpression(options);
         if (explorerExpression) {
@@ -1428,6 +1522,9 @@ async function main() {
     prepareOwnedLynxtronRuntime(paths);
     const routedThreadId = comparisonThreadId(options);
     if (routedThreadId) assertComparisonThreadAvailable(paths, routedThreadId);
+    const transcriptExpectation = routedThreadId
+      ? readComparisonTranscriptExpectation(paths, routedThreadId)
+      : null;
     writeComparisonWindowStates(paths, options);
 
     const web = startOwned(commands.web);
@@ -1459,6 +1556,7 @@ async function main() {
     const rendererState = await configureElectronRenderer(
       options.electronCdpPort,
       options,
+      transcriptExpectation,
     );
     writeComparisonRendererState(paths, rendererState, options.theme);
 
@@ -1469,7 +1567,11 @@ async function main() {
       ? null
       : await waitForOwnedDevtoolListener(lynx, options.lynxDevtoolPort);
     if (lynxDevtoolPid !== null && routedThreadId) {
-      await verifyOwnedNativeThreadIdentity(options.lynxDevtoolPort, routedThreadId);
+      await verifyOwnedNativeThreadIdentity(
+        options.lynxDevtoolPort,
+        routedThreadId,
+        transcriptExpectation,
+      );
     }
 
     console.log(
