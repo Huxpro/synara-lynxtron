@@ -544,6 +544,25 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   toast; large-diff batching remains a product/performance issue and is not
   counted as passing fidelity evidence.
 
+### 2026-09-10 dark voice-state continuation
+
+- Three fresh exact-owned Lynxtron 0.0.21 dark/1440 Components Lab runs closed
+  the deterministic visual states that remained after the earlier waveform
+  sample. PID `7210` rendered the idle 28x28 Record voice note control with its
+  16x16 microphone glyph. PID `11151` rendered recording silence as a 534x28
+  recorder bar: a 410x28 waveform region, 36 baseline bars at 2x4px, `0:08`, and
+  enabled 28x28 Stop and Send actions. PID `15435` rendered the same geometry in
+  transcribing state, applied the transcribing class to every waveform bar, and
+  replaced both action glyphs with 10x10 loading spinners while exposing both
+  actions as disabled `Transcribing voice note` controls.
+- All three PID-derived warning/error consoles were empty. The final staged
+  bundle SHA-256 was
+  `98b7e55d8407fbe6d2c934eb9468f74bdbe2a64e7c34312a24d157aacb4607ee`.
+  FC-020's deterministic light/dark component-state matrix is complete; real
+  microphone permission denial, cancel/transcript insertion, auth refresh,
+  capability loss, and provider-switch stale-result suppression remain physical
+  and service-state acceptance work rather than missing rendered states.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation
