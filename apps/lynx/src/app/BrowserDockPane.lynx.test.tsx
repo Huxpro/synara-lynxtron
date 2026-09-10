@@ -37,6 +37,9 @@ describe('Native Browser right-dock pane', () => {
     expect(router).toContain("queryKey: ['browser-view-capability']");
     expect(router).toContain('browserViewState?.supported === true');
     expect(router).toContain("command !== 'browser.toggle' || !browserSupported");
+    expect(
+      router.indexOf("command !== 'browser.toggle' || !browserSupported")
+    ).toBeLessThan(router.indexOf('function ThreadPage('));
     expect(router).toContain("paneId: 'browser'");
     expect(router).toContain("browserSupported ? ['browser' as const] : []");
     expect(router).toContain("pane.kind === 'browser'");
