@@ -73,6 +73,7 @@ import { PickerPanelSearchHeader } from "~/components/chat/PickerPanelShell";
 import { SurfaceChipIcon, SurfaceTabChip } from "~/components/chat/chatHeaderControls";
 import { FileIcon } from "~/lib/icons";
 import {
+  MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
   MessageAssistantRowComposition,
   MessageUserBubbleComposition,
   MessageUserRowComposition,
@@ -708,8 +709,8 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
   }
   if (props.storyId === "transcript/message-row") {
     const revealed = props.state !== "default";
-    const footerClassName = `flex min-h-6 items-center gap-2 text-[10px] text-muted-foreground/45 transition-opacity ${
-      revealed ? "opacity-100" : "pointer-events-none opacity-0"
+    const footerClassName = `flex min-h-6 items-center gap-2 text-[10px] text-muted-foreground/45 ${
+      revealed ? "opacity-100" : MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME
     }`;
     const actions = (
       <>

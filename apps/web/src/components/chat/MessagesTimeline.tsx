@@ -75,6 +75,7 @@ import { InlineAgentChip } from "./InlineAgentChip";
 import { MessageActionButton, MESSAGE_ACTION_ICON_CLASS_NAME } from "./MessageActionButton";
 import { MessageCopyButton } from "./MessageCopyButton";
 import {
+  MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
   MessageAssistantRowComposition,
   MessageUserBubbleComposition,
   MessageUserRowComposition,
@@ -171,8 +172,6 @@ const MAX_VISIBLE_CHANGED_FILES = 5;
 // The composer overlaps the transcript by design, so the list needs extra tail
 // space beyond the overlap to keep final cards from sitting flush against it.
 const BOTTOM_CONTENT_INSET_PX = 64;
-const MESSAGE_HOVER_REVEAL_CLASS_NAME =
-  "opacity-0 transition-opacity pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto";
 // How long a jumped-to message keeps its highlight tint before fading back out.
 const JUMP_HIGHLIGHT_DURATION_MS = 1200;
 const MARKER_FINE_SCROLL_RETRY_TIMEOUT_MS = 900;
@@ -1230,14 +1229,14 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                       className="flex items-center justify-end gap-2 pr-0.5 font-system-ui font-normal text-muted-foreground/45"
                       style={chatMessageFooterStyle}
                     >
-                      <p className={cn("tabular-nums", MESSAGE_HOVER_REVEAL_CLASS_NAME)}>
+                      <p className={cn("tabular-nums", MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME)}>
                         {formatShortTimestamp(row.message.createdAt, timestampFormat)}
                       </p>
                       <div className="flex items-center gap-2">
                         {displayedUserMessage.copyText && (
                           <MessageCopyButton
                             text={displayedUserMessage.copyText}
-                            className={MESSAGE_HOVER_REVEAL_CLASS_NAME}
+                            className={MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME}
                           />
                         )}
                         {showEditUserMessage && (
@@ -1246,7 +1245,7 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                             tooltip="Edit and resend"
                             disabled={isRevertingCheckpoint}
                             className={cn(
-                              MESSAGE_HOVER_REVEAL_CLASS_NAME,
+                              MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
                               "disabled:text-muted-foreground/35",
                             )}
                             onClick={() => startUserMessageEdit(row.message.id)}
@@ -1260,7 +1259,7 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                             tooltip="Revert to this message"
                             disabled={isRevertingCheckpoint || isWorking}
                             className={cn(
-                              MESSAGE_HOVER_REVEAL_CLASS_NAME,
+                              MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
                               "disabled:text-muted-foreground/35",
                             )}
                             onClick={() => onRevertUserMessage(row.message.id)}
@@ -1680,7 +1679,7 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                         className={
                           messagePinned
                             ? "text-muted-foreground/80"
-                            : MESSAGE_HOVER_REVEAL_CLASS_NAME
+                            : MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME
                         }
                         onClick={() => onTogglePinMessage?.(row.message.id)}
                       >
@@ -1690,11 +1689,11 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                     {assistantCopyState.visible ? (
                       <MessageCopyButton
                         text={assistantCopyState.text ?? ""}
-                        className={MESSAGE_HOVER_REVEAL_CLASS_NAME}
+                        className={MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME}
                       />
                     ) : null}
                     {assistantMeta.length > 0 ? (
-                      <p className={cn("tabular-nums", MESSAGE_HOVER_REVEAL_CLASS_NAME)}>
+                      <p className={cn("tabular-nums", MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME)}>
                         {assistantMeta}
                       </p>
                     ) : null}

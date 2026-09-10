@@ -12,6 +12,9 @@ import {
   MessageUserRowElement,
 } from "~/components/chat/MessageRowCompositionElements";
 
+export const MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME =
+  "opacity-0 transition-opacity pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto";
+
 export function MessageUserRowComposition(props: {
   readonly fullWidth?: boolean;
   readonly children?: ReactNode;
