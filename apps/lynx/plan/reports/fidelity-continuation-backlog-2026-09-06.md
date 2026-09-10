@@ -36,6 +36,20 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
 - **FC-006 is complete.** Canonical-tail entry, switch-away/return, a real
   pinned-message anchor jump, and a fresh cold restart now have exact-owned
   Native evidence.
+- **FC-007 and FC-010 are complete for their tracked file-tab and message-row
+  debts.** Their real Web interactions and exact-owned Native callbacks are
+  certified below; broader Editor anatomy remains FC-023/027 work.
+- **FC-021 remains partial, but its favourite toggle and disclosure blocker is
+  closed.** Remaining work is keyboard, compact placement, model activation,
+  overflow, and unsampled cells.
+- **FC-028 is complete for single-line geometry.** Remaining IME semantics are
+  owned by FC-025/026 rather than this layout item.
+- **FC-037 is complete.** The final product-message mutation was exercised in
+  the FC-006 run: a real assistant `Pin to panel` persisted through orchestration
+  and the resulting Environment row performed a real message jump.
+- **FC-039 is complete.** Canonical load, exact identity, transcript delivery,
+  dynamic PID-owned DevTool discovery, and delayed transient-UI rejection all
+  passed on fresh 0.0.21 cold runs.
 
 | ID | Severity | Surface | Finding | State | Required closure |
 | --- | --- | --- | --- | --- | --- |
@@ -212,6 +226,23 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   `afc6aaf2da1d454ae1715fd3c9217617a6c4d369e5ead7efefe86ca098215916`.
   FC-006 is therefore complete for route entry, switch-away/return, explicit
   pinned-message anchor, and cold restart restoration.
+
+### 2026-09-10 Kanban full-frame unblock
+
+- FC-003 is no longer blocked by FC-039. The real shared snapshot rendered the
+  same three Done cards in Electron authority and exact-owned Lynxtron 0.0.21 at
+  dark/1280 and light/1440. Dark/1280 Native PID 48352 and light/1440 PID 57190
+  each owned DevTool 8903 and had empty warning/error consoles.
+- Electron's dark card measured 280x64.375px with 10px radius, 10px/12px
+  padding, 6px row gap, 5% white border and the shared 0 6px 24px -10px shadow.
+  Native measured 280x65px at the outer border (subpixel height rounded by the
+  engine), 254x43px content, 10px/12px padding, 6px row gap, 10px corner radii,
+  `rgba(255,255,255,.047)` border and the same shadow. Project counts, the
+  unknown-provider fallback, and purple Done glyph were present in both cells;
+  the Done check correctly changed from dark ink to white in light mode.
+- The old transport-blocked full-frame cell is closed. FC-003 remains partial
+  only for independent focus/pressed and long-title/draft/working fixtures that
+  are not present in this seed.
 
 ## Historical items currently considered closed, pending regression sampling
 
