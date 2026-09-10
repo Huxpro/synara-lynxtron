@@ -229,6 +229,7 @@ function SidebarCommandPaletteStory(props: { readonly state: string; readonly va
   const fixture = resolveComponentLabCommandPaletteFixture(props.variant);
   const routeOpen = props.state === "open" || props.state === "keyboard-highlight";
   const routeQuery = props.state === "keyboard-highlight" ? "settings" : fixture.query;
+  const [queryOverride, setQueryOverride] = useState<string | null>(null);
   const [open, setOpen] = useState(routeOpen);
   const [mode, setMode] = useState<"search" | "import">("search");
   useEffect(() => setOpen(routeOpen), [routeOpen]);
@@ -236,7 +237,7 @@ function SidebarCommandPaletteStory(props: { readonly state: string; readonly va
     <div className="flex min-h-64 items-center justify-center">
       <button type="button" className="rounded-lg border border-border px-3 py-2 text-xs" onClick={() => setOpen(true)}>Search</button>
       <SidebarSearchPalette
-        open={open} query={routeQuery}
+        open={open} query={queryOverride ?? routeQuery} onQueryChange={setQueryOverride}
         mode={mode} onModeChange={setMode} onOpenChange={setOpen}
         actions={fixture.actions ? [{ id: "settings", label: "Settings", description: "Configure Synara" }] : []}
         projects={[{ id: "component-lab-project", name: "Synara", remoteName: "synara", folderName: "synara", localName: null, cwd: "/workspace/synara", spaceName: "Personal" }]}
