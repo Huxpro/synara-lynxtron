@@ -46,6 +46,10 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
 - **FC-009 is complete for the tracked right-dock/header controls.** The final
   light/1280 loaded-product run covers Environment data, Add-panel availability,
   Browser singleton reuse, Diff activation, tab counts, and Collapse behavior.
+- **FC-005 is complete for the tracked Settings-shell debt.** One exact-owned
+  Native session exercised all 15 sections, and a proven wheel path confirms the
+  same scroll ownership as Electron: sidebar search remains fixed while the
+  panel header scrolls with its content.
 - **FC-021 is complete for the tracked model-picker behavior.** Native favourite
   toggling, provider disclosure followed by model activation, nested Escape,
   compact placement, and overflow-to-final-row reachability are all certified.
@@ -456,6 +460,37 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   deliver Lynx `bindmouseenter`, matching the established background-pointer
   harness limitation. The 150ms open / immediate leave-close contract remains
   source- and focused-test-backed pending a real pointer correlation.
+
+### 2026-09-10 Settings shell and scroll closure
+
+- One exact-owned Lynxtron 0.0.21 session exercised the complete Settings
+  navigation rather than isolated Lab stories. Host routing confirmed General
+  plus `/settings/profile`, `/settings/appearance`, `/settings/notifications`,
+  `/settings/behavior`, `/settings/appsnap`, `/settings/shortcuts`,
+  `/settings/worktrees`, `/settings/archived`, `/settings/models`,
+  `/settings/providers`, `/settings/skills`, `/settings/usage`,
+  `/settings/integrations`, and `/settings/advanced`. Each activation rendered
+  the corresponding product panel in the same 256px-sidebar shell.
+- Fresh light/1280 exact-owned PID `55144`, window `84477`, and PID-derived
+  DevTool `localhost:8903` loaded
+  `apps/lynx/dist/desktop/main.lynx.bundle` from the comparison runtime. Before
+  scrolling Providers, the content owner occupied x=256-1280/y=0-820, sidebar
+  search occupied x=6-250/y=94-122, the panel header occupied
+  x=456-1080/y=32-86, `Pi` was below the viewport at y=904-950, and Provider
+  tools began at y=985. A real 700px DevTool wheel inside that content owner
+  moved `Pi` to y=204-250 and Provider tools to y=285-310 while sidebar search
+  remained y=94-122. The panel header moved to y=-668--614.
+- That header movement is parity, not a sticky regression. The Electron
+  authority uses the same non-sticky header inside its `overflow-y-auto` content
+  owner. Its own real 700px wheel moved the header from y=32-86 to
+  y=-629--575 while sidebar search remained y=95.5-116.5; on the Providers
+  panel at the bottom of the range, `Pi` and the header continued moving by the
+  same 47.5px residual delta while search stayed fixed. Thus the actual contract
+  is fixed sidebar search plus independently scrolling panel content, and Native
+  matches it. The exact-client warning/error console was empty; bundle SHA-256
+  was `4edacf347377daface151ded86615982340880f97fc32db75ccf51320bbfc09e`.
+  Together with the retained light/1280 and dark/1440 shell geometry, this closes
+  FC-005.
 
 ## Historical items currently considered closed, pending regression sampling
 
