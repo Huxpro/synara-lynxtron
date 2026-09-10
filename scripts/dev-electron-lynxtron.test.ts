@@ -28,6 +28,7 @@ import {
   electronEvaluationError,
   electronComparisonUrlMatches,
   lsofShowsPidListeningOnPort,
+  pidOwnedDevtoolPortsFromLsof,
   resolveLynxDevtoolReadyTimeoutMs,
   parseDesktopComparisonArgs,
   ownedElectronPidsFromPs,
@@ -378,6 +379,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(expression).toContain('data-panel-resize-overlay="true"');
     expect(expression).toContain('data-slot="dialog-popup"');
     expect(expression).toContain('data-slot="menu-popup"');
+    expect(expression).toContain('data-toast-root="true"');
 
     expect(nativeTransientUiStateFromDom({
       attributes: ["class", "SliceRoot"],
@@ -386,10 +388,13 @@ describe("Electron and Lynxtron comparison launcher", () => {
         { attributes: ["class", "TranscriptSelectionToolbar"] },
         { attributes: ["class", "RightPanelResizeOverlay"] },
         { attributes: ["class", "LxMenuLayer"] },
+        { attributes: ["class", "ProviderUpdatePrompt"] },
+        { attributes: ["class", "TaskCompletionToast"] },
       ],
     })).toEqual({
       dialogCount: 1,
       menuLayerCount: 1,
+      notificationCount: 2,
       resizeOverlayCount: 1,
       selectionToolbarCount: 1,
     });
@@ -419,7 +424,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
 
     expect(Object.fromEntries(values)).toEqual({
       "synara:theme": "dark",
-      "synara:app-settings:v1": '{"density":"compact"}',
+      "synara:app-settings:v1":
+        '{"density":"compact","enableProviderUpdateChecks":false,"enableTaskCompletionToasts":false}',
       "synara:appsnap-welcome:v1": '{"acknowledged":true}',
       "synara:terminal-state:v1": '{"state":{"terminal":true}}',
       "synara:right-dock-state:v1": '{"state":{"browser":true}}',
@@ -466,6 +472,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(JSON.parse(values.get("synara:app-settings:v1")!)).toEqual({
       uiDensity: "compact",
       chatFontSizePx: 18,
+      enableProviderUpdateChecks: false,
+      enableTaskCompletionToasts: false,
     });
   });
 
@@ -670,6 +678,18 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(lsofShowsPidListeningOnPort(lsof, 101, 8903)).toBe(false);
   });
 
+  it("discovers the unique DevTool port owned by the launched PID", () => {
+    const lsof = [
+      "COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME",
+      "lynxtron  101 user   20u  IPv4  0x01      0t0  TCP *:8904 (LISTEN)",
+      "lynxtron  202 user   21u  IPv4  0x02      0t0  TCP *:8903 (LISTEN)",
+      "lynxtron  101 user   22u  IPv4  0x03      0t0  TCP *:9222 (LISTEN)",
+    ].join("\n");
+
+    expect(pidOwnedDevtoolPortsFromLsof(lsof, 101)).toEqual([8904]);
+    expect(pidOwnedDevtoolPortsFromLsof(lsof, 202)).toEqual([8903]);
+  });
+
   it("allows slow DevTool registration without weakening PID ownership", () => {
     expect(resolveLynxDevtoolReadyTimeoutMs()).toBe(30_000);
     expect(resolveLynxDevtoolReadyTimeoutMs("45000")).toBe(45_000);
@@ -685,7 +705,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
 
     expect(source).toContain("await waitForOwnedDevtoolListener(");
     expect(source).toContain("verified LISTEN");
-    expect(source).toContain("is an assertion, not a runtime override");
+    expect(source).toContain("reserves a preferred free slot but is not a runtime override");
+    expect(source).toContain("lynxDevtool.port");
     expect(source).toContain("may also lack an inspector-capable devtool variant");
     expect(source).not.toContain("SYNARA_LYNX_DEVTOOL_PORT:");
   });

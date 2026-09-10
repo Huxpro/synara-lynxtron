@@ -456,6 +456,8 @@ export function ToastSurfaceFixture(props: {
     <Toast.Provider toastManager={toastManager}>
       <Toast.Root
         className={toastRootClassName('top-center', false)}
+        data-toast-root="true"
+        data-slot="toast-root"
         toast={props.toast}
       >
         <ToastSurface
@@ -595,6 +597,8 @@ function Toasts({ position = "top-center" }: { position: ToastPosition }) {
                 "data-ending-style:pointer-events-none data-limited:pointer-events-none",
               )}
               data-position={position}
+              data-toast-root="true"
+              data-slot="toast-root"
               key={toast.id}
               style={
                 {
@@ -685,6 +689,7 @@ function AnchoredToasts() {
                         ? COMPACT_NOTIFICATION_SURFACE_CLASS_NAME
                         : EXPANDED_NOTIFICATION_SURFACE_CLASS_NAME,
                   )}
+                  data-toast-root="true"
                   data-slot="toast-popup"
                   toast={toast}
                 >

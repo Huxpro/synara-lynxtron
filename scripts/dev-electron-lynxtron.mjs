@@ -507,7 +507,7 @@ export function comparisonRendererResetExpression(
 ) {
   return `(() => { const state = Object.fromEntries(${JSON.stringify(
     COMPARISON_RENDERER_STORAGE_KEYS,
-  )}.flatMap((key) => { const value = localStorage.getItem(key); return value === null ? [] : [[key, value]]; })); const appSettings = JSON.parse(state['synara:app-settings:v1'] ?? '{}'); if (${JSON.stringify(chatFontSize)} !== null) appSettings.chatFontSizePx = ${JSON.stringify(chatFontSize)}; state['synara:app-settings:v1'] = JSON.stringify(appSettings); localStorage.clear(); for (const [key, value] of Object.entries(state)) localStorage.setItem(key, value); localStorage.setItem('synara:theme', ${JSON.stringify(theme)}); if (${JSON.stringify(appSnap)} === 'welcome') localStorage.removeItem('synara:appsnap-welcome:v1'); else localStorage.setItem('synara:appsnap-welcome:v1', '{"acknowledged":true}'); location.reload(); })(); undefined`;
+  )}.flatMap((key) => { const value = localStorage.getItem(key); return value === null ? [] : [[key, value]]; })); const appSettings = JSON.parse(state['synara:app-settings:v1'] ?? '{}'); appSettings.enableProviderUpdateChecks = false; appSettings.enableTaskCompletionToasts = false; if (${JSON.stringify(chatFontSize)} !== null) appSettings.chatFontSizePx = ${JSON.stringify(chatFontSize)}; state['synara:app-settings:v1'] = JSON.stringify(appSettings); localStorage.clear(); for (const [key, value] of Object.entries(state)) localStorage.setItem(key, value); localStorage.setItem('synara:theme', ${JSON.stringify(theme)}); if (${JSON.stringify(appSnap)} === 'welcome') localStorage.removeItem('synara:appsnap-welcome:v1'); else localStorage.setItem('synara:appsnap-welcome:v1', '{"acknowledged":true}'); location.reload(); })(); undefined`;
 }
 
 export function comparisonTerminalOpenExpression(threadId) {
@@ -537,7 +537,7 @@ export function comparisonTranscriptReadyExpression(expectation) {
 }
 
 export function comparisonTransientUiReadyExpression() {
-  return `(() => ({ recentViewSwitcherCount: document.querySelectorAll('[role="listbox"][aria-label="Recent views"]').length, selectionToolbarCount: document.querySelectorAll('[data-transcript-selection-action="true"]').length, dialogCount: document.querySelectorAll('[data-slot="dialog-popup"], [data-slot="alert-dialog-popup"], [data-slot="command-dialog-popup"]').length, menuCount: document.querySelectorAll('[data-slot="menu-popup"]').length, resizeOverlayCount: document.querySelectorAll('[data-panel-resize-overlay="true"]').length }))()`;
+  return `(() => ({ recentViewSwitcherCount: document.querySelectorAll('[role="listbox"][aria-label="Recent views"]').length, selectionToolbarCount: document.querySelectorAll('[data-transcript-selection-action="true"]').length, dialogCount: document.querySelectorAll('[data-slot="dialog-popup"], [data-slot="alert-dialog-popup"], [data-slot="command-dialog-popup"]').length, menuCount: document.querySelectorAll('[data-slot="menu-popup"]').length, notificationCount: document.querySelectorAll('[data-toast-root="true"]').length, resizeOverlayCount: document.querySelectorAll('[data-panel-resize-overlay="true"]').length }))()`;
 }
 
 function nodeAttributeMap(node) {
@@ -598,6 +598,7 @@ export function nativeTransientUiStateFromDom(root) {
   const counts = {
     dialogCount: 0,
     menuLayerCount: 0,
+    notificationCount: 0,
     resizeOverlayCount: 0,
     selectionToolbarCount: 0,
   };
@@ -606,6 +607,9 @@ export function nativeTransientUiStateFromDom(root) {
     const classes = nodeAttributeMap(node).class?.split(/\s+/) ?? [];
     if (classes.includes("LxDialogOverlay")) counts.dialogCount += 1;
     if (classes.includes("LxMenuLayer")) counts.menuLayerCount += 1;
+    if (classes.includes("ProviderUpdatePrompt") || classes.includes("TaskCompletionToast")) {
+      counts.notificationCount += 1;
+    }
     if (classes.some((name) => name.endsWith("ResizeOverlay"))) counts.resizeOverlayCount += 1;
     if (classes.includes("TranscriptSelectionToolbar")) counts.selectionToolbarCount += 1;
     queue.push(...(node?.children ?? []));
@@ -848,14 +852,32 @@ export function lsofShowsPidListeningOnPort(output, pid, port) {
     });
 }
 
-function isPidListeningOnPort(pid, port) {
+export function pidOwnedDevtoolPortsFromLsof(output, pid) {
+  const expectedPid = String(pid);
+  return Array.from(
+    new Set(
+      output
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .flatMap((line) => {
+          const columns = line.split(/\s+/);
+          if (columns[1] !== expectedPid) return [];
+          const match = line.match(/TCP (?:\*|127\.0\.0\.1):(89(?:0[1-9]|1[0-9]|20)) \(LISTEN\)/);
+          return match ? [Number(match[1])] : [];
+        }),
+    ),
+  ).sort((left, right) => left - right);
+}
+
+function pidOwnedDevtoolPorts(pid) {
   const listeners = spawnSync(
     "lsof",
-    ["-nP", "-a", "-p", String(pid), `-iTCP:${port}`, "-sTCP:LISTEN"],
+    ["-nP", "-a", "-p", String(pid), "-iTCP", "-sTCP:LISTEN"],
     { encoding: "utf8" },
   );
   if (listeners.error) throw listeners.error;
-  return lsofShowsPidListeningOnPort(listeners.stdout, pid, port);
+  return pidOwnedDevtoolPortsFromLsof(listeners.stdout, pid);
 }
 
 export function resolveLynxDevtoolReadyTimeoutMs(
@@ -867,22 +889,30 @@ export function resolveLynxDevtoolReadyTimeoutMs(
 
 async function waitForOwnedDevtoolListener(
   child,
-  port,
+  preferredPort,
   timeoutMs = resolveLynxDevtoolReadyTimeoutMs()
 ) {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     if (child.exitCode !== null || child.signalCode !== null) {
       throw new Error(
-        `Lynxtron exited before its DevTool listener became ready on expected port ${port}.`,
+        `Lynxtron exited before its DevTool listener became ready near preferred port ${preferredPort}.`,
       );
     }
-    if (child.pid && isPidListeningOnPort(child.pid, port)) return child.pid;
+    if (child.pid) {
+      const ports = pidOwnedDevtoolPorts(child.pid);
+      if (ports.length === 1) return { pid: child.pid, port: ports[0] };
+      if (ports.length > 1) {
+        throw new Error(
+          `Owned Lynxtron PID ${child.pid} opened multiple DevTool listeners: ${ports.join(', ')}.`,
+        );
+      }
+    }
     await new Promise((resolveWait) => setTimeout(resolveWait, 100));
   }
   throw new Error(
-    `Owned Lynxtron PID ${child.pid ?? "<unavailable>"} did not open the expected DevTool listener on 127.0.0.1:${port}. ` +
-      "Desktop DebugRouter chooses the first free port in 8901-8920; --lynx-devtool-port is an assertion, not a runtime override. " +
+    `Owned Lynxtron PID ${child.pid ?? "<unavailable>"} did not open a DevTool listener in 8901-8920 near preferred port ${preferredPort}. ` +
+      "Desktop DebugRouter chooses the first free port in 8901-8920; --lynx-devtool-port reserves a preferred free slot but is not a runtime override. " +
       "The installed @lynx-js/lynxtron runtime may also lack an inspector-capable devtool variant; SYNARA_ENABLE_DEVTOOL cannot add inspector support to a release-only binary.",
   );
 }
@@ -903,6 +933,8 @@ async function verifyOwnedNativeThreadIdentity(
   const clientId = `localhost:${port}`;
   const deadline = Date.now() + timeoutMs;
   let lastIdentity = null;
+  let cleanSince = null;
+  const stableCleanWindowMs = 1_500;
   while (Date.now() < deadline) {
     const clients = await connector.listClients();
     if (!clients.some((client) => client.id === clientId)) {
@@ -930,13 +962,17 @@ async function verifyOwnedNativeThreadIdentity(
       document?.result?.root ?? document?.root ?? document?.result ?? document,
     );
     lastIdentity = { ...lastIdentity, transientUi };
-    if (
+    const ready =
       lastIdentity.count >= 1 &&
       lastIdentity.activeCount === 1 &&
       ((transcriptExpectation.messageCount === 0 && lastIdentity.emptyStateRendered) ||
         (lastIdentity.transcriptListCount === 1 && lastIdentity.lastMessageRendered)) &&
-      Object.values(transientUi).every((count) => count === 0)
-    ) {
+      Object.values(transientUi).every((count) => count === 0);
+    if (!ready) {
+      cleanSince = null;
+    } else if (cleanSince === null) {
+      cleanSince = Date.now();
+    } else if (Date.now() - cleanSince >= stableCleanWindowMs) {
       console.log(
         `[compare:desktop] Native thread/transcript anchor verified: ${JSON.stringify(lastIdentity)}.`,
       );
@@ -1622,12 +1658,12 @@ async function main() {
     commands.lynx.env.SYNARA_WS_URL = socketUrl.toString();
     const lynx = startOwned(commands.lynx);
     ownedChildren.push(lynx);
-    const lynxDevtoolPid = options.skipLynxDevtool
+    const lynxDevtool = options.skipLynxDevtool
       ? null
       : await waitForOwnedDevtoolListener(lynx, options.lynxDevtoolPort);
-    if (lynxDevtoolPid !== null && routedThreadId) {
+    if (lynxDevtool !== null && routedThreadId) {
       await verifyOwnedNativeThreadIdentity(
-        options.lynxDevtoolPort,
+        lynxDevtool.port,
         routedThreadId,
         transcriptExpectation,
       );
@@ -1639,9 +1675,9 @@ async function main() {
       } at ${options.width}x${options.height}.`,
     );
     console.log(
-      lynxDevtoolPid === null
+      lynxDevtool === null
         ? `[compare:desktop] Web ${options.webPort}, Electron CDP ${options.electronCdpPort}; Lynx DevTool certification explicitly skipped. Press Ctrl-C to stop owned processes.`
-        : `[compare:desktop] Web ${options.webPort}, Electron CDP ${options.electronCdpPort}, Lynx DevTool ${options.lynxDevtoolPort} (owned PID ${lynxDevtoolPid}, verified LISTEN). Press Ctrl-C to stop owned processes.`,
+        : `[compare:desktop] Web ${options.webPort}, Electron CDP ${options.electronCdpPort}, Lynx DevTool ${lynxDevtool.port} (owned PID ${lynxDevtool.pid}, verified LISTEN; preferred ${options.lynxDevtoolPort}). Press Ctrl-C to stop owned processes.`,
     );
 
     for (const [name, child] of [

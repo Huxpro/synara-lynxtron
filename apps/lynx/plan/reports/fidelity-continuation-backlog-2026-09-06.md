@@ -20,6 +20,22 @@ product changes, other routes, other themes, other sizes, or Native input.
 
 ## Current findings
 
+### Current status overrides
+
+The dated evidence below supersedes stale blocker wording retained in the original
+rows for investigation history. As of the 2026-09-10 canonical cold run:
+
+- **FC-002 is closed for the Native canonical-tail and clean-transient gate.**
+  Explicit non-empty recent-history and selection fixtures remain follow-up
+  comparison coverage, not a Native loading blocker.
+- **FC-024 is closed for exact Native thread identity.** The PID-derived DOM
+  contained exactly one routed thread row and exactly one active row.
+- **FC-039 is closed and superseded.** The earlier foreground-query conclusion
+  was disproved by the fresh exact-owned run after fixing dynamic DevTool port
+  discovery and delayed notification sampling in the harness.
+- **FC-006 remains partial.** Canonical-tail entry now passes; switch-away/return,
+  restart, and explicit-message-anchor behavior still require direct coverage.
+
 | ID | Severity | Surface | Finding | State | Required closure |
 | --- | --- | --- | --- | --- | --- |
 | FC-001 | P0 | Pull Requests / system announcements | A partial-repository warning passed React text fragments to a boundary typed as `string`; Native called `.trim()` on the fragment array and opened LogBox with `TypeError: r.trim is not a function`. | FIXED, NATIVE VERIFIED | Keep focused fragment-normalization tests and clean exact-client console evidence. |
@@ -144,6 +160,31 @@ product changes, other routes, other themes, other sizes, or Native input.
   computed outer opacity 0.55; its console also remained clean. FC-028's
   remaining work is the real IME behavior tracked by FC-025/026, not another
   single-line geometry cell.
+
+### 2026-09-10 canonical thread gate recovery
+
+- This supersedes FC-039's runtime-blocked status. The previous failures mixed a
+  real renderer investigation with two harness defects: the comparison launcher
+  assumed its preferred DevTool port would remain free during the Native build,
+  and it accepted a single clean transient-UI sample before delayed notifications
+  appeared. The launcher now discovers the unique listener owned by the exact
+  Lynxtron PID across ports 8901-8920, waits up to 30 seconds, disables provider
+  update and task-completion notifications only in the isolated comparison
+  profile, counts Web and Native notification roots as transient UI, and requires
+  the Native identity/tail/overlay state to remain clean for 1.5 seconds.
+- A fresh 0.0.21 cold run then passed the complete canonical gate on PID 93256
+  and dynamically discovered listener 8904. Electron and Native both rendered
+  exactly two messages from the ordinary github project thread, including exact
+  tail assistant:msg_058e391468708391016a88048a290087d0ad8e12363b8cd9b6.
+  Native reported one matching thread row, one active row, one TranscriptList,
+  the exact tail, and zero dialogs, menus, notifications, resize overlays, or
+  selection toolbars. An independent delayed DOM read about 37 seconds after
+  launch returned the same zero-overlay state; the exact-client console was clean.
+  Bundle SHA-256 was e795e5d88ee1e112048f7c34ef7866ee65bf9999c210af92d6db74176ac32973.
+  This closes FC-002's Native canonical-tail/transient gate, FC-024's exact Native
+  thread identity gate, and FC-039's foreground query-commit blocker. FC-006
+  still needs switch-away/return and explicit-anchor coverage; the isolated seed
+  currently contains only one visible ordinary-project thread.
 
 ## Historical items currently considered closed, pending regression sampling
 
