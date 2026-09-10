@@ -262,6 +262,19 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   suppression, restored-focus sampling on loaded normal routes, and remaining
   route coverage; filtered seed delivery is closed.
 
+### 2026-09-10 ordinary startup timing
+
+- FC-016 is no longer blocked by FC-039. Fresh exact-owned 0.0.21 launches
+  recorded `shellUiReady` for the canonical thread in 950-1,829ms, Kanban in
+  371-379ms, and Components Lab filtered/keyboard-highlight routes in 397-426ms.
+  Each route rendered its local product content before the 15-second watchdog;
+  no `renderer ui ready timeout` followed any of these launches. The canonical
+  runs also passed exact identity/transcript and clean-transient gates.
+- Together with the already certified timeout, Reload, Quit, and route-preserving
+  recovery paths, this closes the ordinary cold-start portion of FC-016. Any
+  future route-local loading polish is regression sampling rather than a global
+  unexplained-blank-window blocker.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation
