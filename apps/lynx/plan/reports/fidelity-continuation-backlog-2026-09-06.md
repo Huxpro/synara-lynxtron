@@ -492,6 +492,27 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   Together with the retained light/1280 and dark/1440 shell geometry, this closes
   FC-005.
 
+### 2026-09-10 live file-preview continuation
+
+- FC-023 now has a canonical positive product-file path in addition to its
+  recovery-state evidence. The shared ordinary project is rooted at
+  `/Users/bytedance/github`; both Electron and Native selected
+  `synara/apps/lynx/src/app/DiffDock.lynx.tsx` through the real Explorer tree.
+  Electron passed its selected-row plus `.editor-file-viewer__highlight`
+  readiness gate. Exact-owned Lynxtron 0.0.21 PID `95152`, window `84564`, and
+  PID-derived DevTool `localhost:8903` issued `projects.readFile` followed by
+  `host.syntaxHighlightCode` for the same path and rendered the real TypeScript
+  source, breadcrumb, file tab, Explorer tree, and enabled Open-in-editor owner.
+- Native's hosted preview occupied x=1009-1280/y=46-820, with a 40px file header,
+  710px visible code viewport, `DiffDock.lynx.tsx` breadcrumb, and enabled 68x28
+  Open control. The exact-client warning/error console was empty; bundle SHA-256
+  was `8fd35311dafbca03675bf26735bc791aed9ad69a8eeef1f95881d4bc259155bc`.
+  The external-editor launch was deliberately not invoked because its production
+  implementation spawns and foregrounds the configured desktop editor. FC-023
+  therefore remains partial only for non-intrusive proof of that Open execution
+  and a canonical product failure/retry settlement; positive live-file loading is
+  no longer outstanding.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation
