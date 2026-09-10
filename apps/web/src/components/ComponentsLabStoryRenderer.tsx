@@ -191,6 +191,20 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
   );
 }
 
+function SpaceProjectPickerStory() {
+  const [open, setOpen] = useState(true);
+  return (
+    <SpaceProjectPickerDialog
+      open={open}
+      targetSpace={COMPONENT_LAB_SPACE}
+      projects={COMPONENT_LAB_SPACE_PROJECTS}
+      spaces={[COMPONENT_LAB_SPACE, COMPONENT_LAB_OTHER_SPACE]}
+      onOpenChange={setOpen}
+      onSubmit={() => []}
+    />
+  );
+}
+
 function SidebarCommandPaletteStory(props: { readonly state: string; readonly variant?: string }) {
   const fixture = resolveComponentLabCommandPaletteFixture(props.variant);
   const routeOpen = props.state === "open" || props.state === "keyboard-highlight";
@@ -536,7 +550,7 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     );
   }
   if (props.storyId === "sidebar/space-project-picker") {
-    return <SpaceProjectPickerDialog open targetSpace={COMPONENT_LAB_SPACE} projects={COMPONENT_LAB_SPACE_PROJECTS} spaces={[COMPONENT_LAB_SPACE, COMPONENT_LAB_OTHER_SPACE]} onOpenChange={() => {}} onSubmit={() => []} />;
+    return <SpaceProjectPickerStory />;
   }
   if (props.storyId === "editor/file-preview-error") {
     return <FilePreviewErrorStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;

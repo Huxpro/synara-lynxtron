@@ -355,4 +355,12 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.storyId === "ui/alert"');
     expect(source).toContain('<Alert className="max-w-lg"');
   });
+
+  it("keeps the Space project picker story controlled after submit", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain("function SpaceProjectPickerStory()");
+    expect(source).toContain("const [open, setOpen] = useState(true)");
+    expect(source).toContain("onOpenChange={setOpen}");
+    expect(source).not.toContain("<SpaceProjectPickerDialog open targetSpace=");
+  });
 });

@@ -437,7 +437,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     );
   }
   if (props.storyId === 'sidebar/space-project-picker') {
-    return <SpaceProjectPickerDialogLynx activeSpaceId={null} open projects={COMPONENT_LAB_SPACE_PROJECTS} spaces={[COMPONENT_LAB_SPACE, COMPONENT_LAB_OTHER_SPACE]} targetSpace={COMPONENT_LAB_SPACE} onOpenChange={() => {}} onSubmit={async () => []} />;
+    return <SpaceProjectPickerStory />;
   }
   if (props.storyId === 'editor/file-preview-error') {
     return <FilePreviewErrorStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
@@ -638,6 +638,29 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
         onModelSelectionChange={setSelection}
       />
     </view>
+  );
+}
+
+function SpaceProjectPickerStory() {
+  const [open, setOpen] = useState(true);
+  const handleOpenChange = (nextOpen: boolean) => {
+    'background only';
+    setOpen(nextOpen);
+  };
+  const handleSubmit = async () => {
+    'background only';
+    return [] as const;
+  };
+  return (
+    <SpaceProjectPickerDialogLynx
+      activeSpaceId={null}
+      open={open}
+      projects={COMPONENT_LAB_SPACE_PROJECTS}
+      spaces={[COMPONENT_LAB_SPACE, COMPONENT_LAB_OTHER_SPACE]}
+      targetSpace={COMPONENT_LAB_SPACE}
+      onOpenChange={handleOpenChange}
+      onSubmit={handleSubmit}
+    />
   );
 }
 

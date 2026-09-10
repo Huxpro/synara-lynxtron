@@ -84,6 +84,14 @@ product changes, other routes, other themes, other sizes, or Native input.
   Alpha selected the real checkbox row and changed the footer action to
   `Move 1 project`. This closes the Space-project geometry/selection portion of
   FC-028 without claiming text entry or IME.
+- Completing that same real action initially left the Native story at
+  `Moving…`. This was not a Lynxtron 0.0.21 regression: the production dialog
+  correctly closes by calling its controlled `onOpenChange(false)` after a
+  successful submit, while both Lab stories had hard-coded `open` and no-op
+  close handlers. The paired fixtures now own real open state; Native also
+  marks the callback props as background-only. Fresh exact-owned 0.0.21 PID
+  29798 / DevTool 8903 selected Alpha, submitted `Move 1 project`, and closed
+  the dialog within the next observed frame with an empty error/warning console.
 
 ## Historical items currently considered closed, pending regression sampling
 

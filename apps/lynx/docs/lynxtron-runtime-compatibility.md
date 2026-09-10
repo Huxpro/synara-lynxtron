@@ -172,6 +172,10 @@ not a runtime behavior regression.
 - Browser/Lynx-for-Web and Native evidence are different tiers. A pass in the
   `/lynx/` iframe does not certify Native input, focus, AX, window, menu,
   persistence, gesture or host integration behavior.
+- A Components Lab Space Project Picker that remained on `Moving…` after a
+  successful submit was a controlled-story bug, not a runtime regression. The
+  real dialog expects its owner to commit `onOpenChange(false)`; a permanently
+  true `open` prop prevents the successful submit path from unmounting.
 
 ## Removal policy
 

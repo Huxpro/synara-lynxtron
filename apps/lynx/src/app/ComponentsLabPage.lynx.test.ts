@@ -219,5 +219,10 @@ describe('paired Components Lab route', () => {
     expect(styles).toMatch(
       /\.ComponentsLabSidebarContent\s*\{[^}]*flex-shrink:\s*0;/s
     );
+    expect(renderer).toContain('function SpaceProjectPickerStory()');
+    expect(renderer).toContain('const [open, setOpen] = useState(true)');
+    expect(renderer).toContain('onOpenChange={handleOpenChange}');
+    expect(renderer).toContain('onSubmit={handleSubmit}');
+    expect(renderer).not.toContain('<SpaceProjectPickerDialogLynx activeSpaceId={null} open projects=');
   });
 });
