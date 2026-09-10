@@ -67,6 +67,7 @@ import { ExplorerPdfFallback } from './ExplorerPdfFallback.lynx';
 import { buildProjectContextMenuItems, buildThreadContextMenuItems } from '@synara/shared/contextMenu';
 import { ReviewFileTreeSearchHeader } from './DiffDock.lynx';
 import { EditorProjectSwitchSearchHeader } from './EditorProjectSwitchMenu.lynx';
+import { ExplorerFileTab } from './ExplorerFileTab.lynx';
 import './components-lab.css';
 
 const COMPONENT_LAB_SPACE = { id: 'component-lab-focus' as never, name: 'Focus', icon: 'target' as const };
@@ -434,6 +435,17 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
         <ExplorerSearchInputHeader
           query={props.state === 'query' || (props.state === 'default' && props.variant === 'query') ? 'ComposerVoice' : ''}
           onQueryChange={() => {}}
+        />
+      </view>
+    );
+  }
+  if (props.storyId === 'editor/file-tab') {
+    return (
+      <view className="ComponentsLabFileTabStory">
+        <ExplorerFileTab
+          path="src/example.ts"
+          visualState={props.state as 'default' | 'hover' | 'focus' | 'pressed'}
+          onClose={() => {}}
         />
       </view>
     );

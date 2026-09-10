@@ -48,4 +48,25 @@ describe("SurfaceTabChip selection", () => {
     selectButton?.click();
     expect(onSelect).toHaveBeenCalledOnce();
   });
+
+  it("renders deterministic hover anatomy through the production tab primitive", async () => {
+    await render(
+      <SurfaceTabChip
+        active
+        icon={<span data-resting-icon>TS</span>}
+        label="example.ts"
+        closeLabel="Close example.ts"
+        onClose={vi.fn()}
+        visualState="hover"
+      />,
+    );
+
+    const root = document.querySelector<HTMLElement>('[data-visual-state="hover"]');
+    const restingIcon = document.querySelector<HTMLElement>("[data-resting-icon]");
+    const closeButton = page.getByRole("button", { name: "Close example.ts" });
+    expect(root).not.toBeNull();
+    expect(restingIcon).not.toBeNull();
+    expect(getComputedStyle(restingIcon!.parentElement!).opacity).toBe("0");
+    await expect.element(closeButton).toBeVisible();
+  });
 });

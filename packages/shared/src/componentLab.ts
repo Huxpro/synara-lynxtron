@@ -220,6 +220,13 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
+    id: "editor/file-tab", title: "Editor file tab", category: "editor", owner: "SurfaceTabChip", fixtureId: "editor-file-tab", variants: ["typescript"], states: ["default", "hover", "focus", "pressed", "active"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: { renderer: "electron", component: "SurfaceTabChip", module: "apps/web/src/components/chat/chatHeaderControls.tsx", consumers: ["editor/file-preview-tab", "right-dock/tab-strip"] },
+      lynx: { renderer: "lynx", component: "ExplorerFileTab", module: "apps/lynx/src/app/ExplorerFileTab.lynx.tsx", consumers: ["editor/file-preview-tab", "right-dock/tab-strip"] },
+    },
+  },
+  {
     id: "diff/file-filter", title: "Diff file filter", category: "diff", owner: "ReviewFileTreeSearchHeader", fixtureId: "diff-file-filter", variants: ["review-tree"], states: ["default", "query", "focus", "disabled"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "ReviewFileTreeSearchHeader", module: "apps/web/src/components/ReviewFileTreePanel.tsx", consumers: ["diff/review-file-tree"] },
@@ -422,6 +429,7 @@ export const COMPONENT_LAB_IMPLEMENTED_STORY_IDS = [
   "composer/voice-recorder",
   "terminal/search",
   "editor/file-search",
+  "editor/file-tab",
   "diff/file-filter",
   "editor/project-search",
   "sidebar/space-project-picker",

@@ -272,6 +272,14 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.variant === "query"');
   });
 
+  it("renders editor file-tab states through the shared surface tab", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('props.storyId === "editor/file-tab"');
+    expect(source).toContain('<SurfaceTabChip');
+    expect(source).toContain('closeLabel="Close example.ts"');
+    expect(source).toContain('visualState={props.state as');
+  });
+
   it("renders real Diff and editor project search headers with focus and disabled states", () => {
     const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
     expect(source).toContain('props.storyId === "diff/file-filter"');

@@ -29,6 +29,7 @@ describe("component lab manifest", () => {
       "composer/voice-recorder",
       "terminal/search",
       "editor/file-search",
+      "editor/file-tab",
       "diff/file-filter",
       "editor/project-search",
       "sidebar/space-project-picker",
@@ -75,6 +76,7 @@ describe("component lab manifest", () => {
       "composer/voice-recorder",
       "terminal/search",
       "editor/file-search",
+      "editor/file-tab",
       "diff/file-filter",
       "editor/project-search",
       "sidebar/space-project-picker",
@@ -181,10 +183,10 @@ describe("component lab manifest", () => {
 
   it("reports the complete renderer/theme/viewport/state matrix", () => {
     expect(summarizeComponentLabCoverage(COMPONENT_LAB_STORIES)).toEqual({
-      stories: 41,
-      rendererMappings: 82,
-      matrixCells: 2960,
-      interactiveStories: 23,
+      stories: 42,
+      rendererMappings: 84,
+      matrixCells: 3000,
+      interactiveStories: 24,
     });
   });
 

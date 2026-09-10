@@ -70,6 +70,8 @@ import { ensureNativeApi } from "~/nativeApi";
 import { SpaceProjectPickerDialog } from "~/components/SpaceProjectPickerDialog";
 import { ReviewFileTreeSearchHeader } from "~/components/ReviewFileTreePanel";
 import { PickerPanelSearchHeader } from "~/components/chat/PickerPanelShell";
+import { SurfaceChipIcon, SurfaceTabChip } from "~/components/chat/chatHeaderControls";
+import { FileIcon } from "~/lib/icons";
 
 const COMPONENT_LAB_SPACE = {
   id: SpaceId.makeUnsafe("component-lab-focus"), name: "Focus", icon: "target" as const,
@@ -550,6 +552,20 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
           search={{ inputQuery: query, fileMatches: [], searchResultsPending: false, searchResultsCurrent: true, isFetching: false, error: null, truncated: false }}
           onQueryChange={() => {}}
           onSelectFile={() => {}}
+        />
+      </div>
+    );
+  }
+  if (props.storyId === "editor/file-tab") {
+    return (
+      <div className="flex h-12 w-72 items-center border border-border bg-background px-2">
+        <SurfaceTabChip
+          active={props.state === "active"}
+          closeLabel="Close example.ts"
+          icon={<SurfaceChipIcon icon={FileIcon} />}
+          label="example.ts"
+          onClose={() => {}}
+          visualState={props.state as "default" | "hover" | "focus" | "pressed"}
         />
       </div>
     );

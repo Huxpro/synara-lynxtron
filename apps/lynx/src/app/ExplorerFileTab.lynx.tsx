@@ -8,6 +8,7 @@ function fileName(path: string): string {
 export function ExplorerFileTab(props: {
   readonly path: string;
   readonly onClose: () => void;
+  readonly visualState?: 'default' | 'hover' | 'focus' | 'pressed';
 }) {
   return (
     <EditorSurfaceTab
@@ -18,6 +19,7 @@ export function ExplorerFileTab(props: {
       label={fileName(props.path)}
       labelClassName="ExplorerDockTitle"
       onClose={props.onClose}
+      visualState={props.visualState}
     />
   );
 }

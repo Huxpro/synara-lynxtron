@@ -119,11 +119,11 @@ export const DOCK_TAB_ICON_SLOT_CLASS_NAME =
 /** Dock-only extra: fade the resting glyph out so the hover X can swap in.
  *  Layered on top of {@link SurfaceChipIcon}'s shared size/strength. */
 export const DOCK_TAB_ICON_HOVER_HIDE_CLASS_NAME =
-  "transition-opacity group-hover/dock-tab:opacity-0 group-focus-within/dock-tab:opacity-0";
+  "transition-opacity group-hover/dock-tab:opacity-0 group-focus-within/dock-tab:opacity-0 group-data-[visual-state=hover]/dock-tab:opacity-0 group-data-[visual-state=focus]/dock-tab:opacity-0";
 
 /** Hover glyph: thicker X centered inside the disc. */
 export const DOCK_TAB_CLOSE_GLYPH_CLASS_NAME =
-  "absolute size-3.5 shrink-0 opacity-0 transition-opacity group-hover/dock-tab:opacity-100 group-focus-within/dock-tab:opacity-100";
+  "absolute size-3.5 shrink-0 opacity-0 transition-opacity group-hover/dock-tab:opacity-100 group-focus-within/dock-tab:opacity-100 group-data-[visual-state=hover]/dock-tab:opacity-100 group-data-[visual-state=focus]/dock-tab:opacity-100";
 
 /**
  * Shared flat tab chip for every chat surface that renders a row of closable tabs —
@@ -154,6 +154,7 @@ export function SurfaceTabChip({
   closeLabel,
   onSelect,
   onClose,
+  visualState,
 }: {
   icon: ReactNode;
   label: ReactNode;
@@ -166,6 +167,7 @@ export function SurfaceTabChip({
   closeLabel?: string | undefined;
   onSelect?: (() => void) | undefined;
   onClose?: (() => void) | undefined;
+  visualState?: "default" | "hover" | "focus" | "pressed" | undefined;
 }) {
   return (
     <div
@@ -173,8 +175,11 @@ export function SurfaceTabChip({
         "group/dock-tab",
         DOCK_TAB_CHIP_CLASS_NAME,
         active && CHAT_SURFACE_CONTROL_ACTIVE_CLASS_NAME,
+        (visualState === "hover" || visualState === "focus" || visualState === "pressed") &&
+          "bg-[var(--color-background-button-secondary-hover)] text-[var(--color-text-foreground)]",
         className,
       )}
+      data-visual-state={visualState === "default" ? undefined : visualState}
     >
       {onClose ? (
         <button

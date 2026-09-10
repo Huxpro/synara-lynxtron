@@ -76,4 +76,19 @@ describe('Lynx editor surface tab', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
     expect(onSelect).not.toHaveBeenCalled();
   });
+
+  it('accepts a deterministic visual state without replacing live events', () => {
+    render(
+      <EditorSurfaceTab
+        closeLabel="Close Diff"
+        icon={<FileIcon />}
+        label="Diff"
+        visualState="focus"
+        onClose={() => {}}
+      />
+    );
+    expect(elementTree.root?.querySelector('.EditorSurfaceTab')?.getAttribute('class')).toContain(
+      'ui-focus'
+    );
+  });
 });

@@ -23,6 +23,7 @@ export function EditorSurfaceTab(props: {
   readonly leading?: ReactNode;
   readonly onClose: () => void;
   readonly onSelect?: () => void;
+  readonly visualState?: 'default' | 'hover' | 'focus' | 'pressed';
 }) {
   const tab = useLynxInteractiveState({
     baseClassName: `EditorSurfaceTab${
@@ -38,8 +39,12 @@ export function EditorSurfaceTab(props: {
     onActivate: props.onClose,
   });
 
+  const deterministicState =
+    props.visualState && props.visualState !== 'default'
+      ? ` ui-${props.visualState}`
+      : '';
   return (
-    <view className={tab.className} {...tab.eventProps}>
+    <view className={`${tab.className}${deterministicState}`} {...tab.eventProps}>
       {props.leading ? (
         <view className="EditorSurfaceTabLeading">{props.leading}</view>
       ) : null}
