@@ -135,6 +135,15 @@ product changes, other routes, other themes, other sizes, or Native input.
   DevTool measured the real Copy message action at 24x24; a supported
   press/release rendered Message copied and the exact-client error/warning
   console remained empty. Product-message mutations remain gated by FC-039.
+- This supersedes FC-028's pending Space-project geometry wording. Fresh
+  exact-owned 0.0.21 PID 44227 on port 8903 resolved the focus cell to a 392x32
+  outer control, a 370x30 Native textarea with a 370x16 text line box and
+  symmetric 7px vertical inset, focusable=true, disabled=false, and a clean
+  console. A separate direct disabled route on PID 51270 preserved the same
+  geometry while exposing readonly=true, disabled=true, focusable=false and
+  computed outer opacity 0.55; its console also remained clean. FC-028's
+  remaining work is the real IME behavior tracked by FC-025/026, not another
+  single-line geometry cell.
 
 ## Historical items currently considered closed, pending regression sampling
 
