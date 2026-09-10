@@ -28,6 +28,7 @@ import {
   electronEvaluationError,
   electronComparisonUrlMatches,
   lsofShowsPidListeningOnPort,
+  resolveLynxDevtoolReadyTimeoutMs,
   parseDesktopComparisonArgs,
   ownedElectronPidsFromPs,
   ownedLynxtronPidsFromPs,
@@ -667,6 +668,13 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(lsofShowsPidListeningOnPort(lsof, 101, 8902)).toBe(true);
     expect(lsofShowsPidListeningOnPort(lsof, 202, 8902)).toBe(false);
     expect(lsofShowsPidListeningOnPort(lsof, 101, 8903)).toBe(false);
+  });
+
+  it("allows slow DevTool registration without weakening PID ownership", () => {
+    expect(resolveLynxDevtoolReadyTimeoutMs()).toBe(30_000);
+    expect(resolveLynxDevtoolReadyTimeoutMs("45000")).toBe(45_000);
+    expect(resolveLynxDevtoolReadyTimeoutMs("invalid")).toBe(30_000);
+    expect(resolveLynxDevtoolReadyTimeoutMs("0")).toBe(30_000);
   });
 
   it("does not claim Lynx DevTool readiness before PID-owned LISTEN verification", () => {

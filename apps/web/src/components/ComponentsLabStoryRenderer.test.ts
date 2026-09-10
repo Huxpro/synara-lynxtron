@@ -288,6 +288,9 @@ describe("Components Lab story renderer", () => {
     const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
     expect(source).toContain('props.storyId === "editor/file-tab"');
     expect(source).toContain('<SurfaceTabChip');
+    expect(source).toContain('return <FileTabStory key={props.state} state={props.state} />;');
+    expect(source).toContain('onClose={() => setOpen(false)}');
+    expect(source).toContain('>Tab closed</p>');
     expect(source).toContain('closeLabel="Close example.ts"');
     expect(source).toContain('visualState={props.state as');
   });

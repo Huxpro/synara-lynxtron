@@ -858,7 +858,18 @@ function isPidListeningOnPort(pid, port) {
   return lsofShowsPidListeningOnPort(listeners.stdout, pid, port);
 }
 
-async function waitForOwnedDevtoolListener(child, port, timeoutMs = 10_000) {
+export function resolveLynxDevtoolReadyTimeoutMs(
+  raw = process.env.SYNARA_COMPARE_LYNX_DEVTOOL_READY_TIMEOUT_MS
+) {
+  const timeoutMs = Number.parseInt(raw ?? '', 10);
+  return Number.isFinite(timeoutMs) && timeoutMs > 0 ? timeoutMs : 30_000;
+}
+
+async function waitForOwnedDevtoolListener(
+  child,
+  port,
+  timeoutMs = resolveLynxDevtoolReadyTimeoutMs()
+) {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     if (child.exitCode !== null || child.signalCode !== null) {

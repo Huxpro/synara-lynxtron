@@ -261,6 +261,26 @@ function FilePreviewErrorStory(props: { readonly state: string; readonly variant
   return <div className={`flex min-h-40 w-full ${placement} flex-col rounded-xl border border-border bg-background`} data-file-preview-placement={props.variant ?? "editor"}><WorkspaceFilePreviewErrorState detail={props.variant === "detailed-error" ? "ENOENT: src/components/Missing.tsx" : null} retrying={props.state === "retrying"} onRetry={() => setResult("Retry requested")} onClose={ownsClose ? () => setResult("Preview closed") : undefined} /><p aria-live="polite" className="px-3 pb-3 text-[11px] text-muted-foreground">{result}</p></div>;
 }
 
+function FileTabStory(props: { readonly state: string }) {
+  const [open, setOpen] = useState(true);
+  return (
+    <div className="flex h-12 w-72 items-center border border-border bg-background px-2">
+      {open ? (
+        <SurfaceTabChip
+          active={props.state === "active"}
+          closeLabel="Close example.ts"
+          icon={<SurfaceChipIcon icon={FileIcon} />}
+          label="example.ts"
+          onClose={() => setOpen(false)}
+          visualState={props.state as "default" | "hover" | "focus" | "pressed"}
+        />
+      ) : (
+        <p aria-live="polite" className="text-[11px] text-muted-foreground">Tab closed</p>
+      )}
+    </div>
+  );
+}
+
 export function ComponentsLabStoryRenderer(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
   if (props.storyId === "ui/alert") {
     const selected = props.state === "default" ? props.variant ?? "default" : props.state;
@@ -570,18 +590,7 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     );
   }
   if (props.storyId === "editor/file-tab") {
-    return (
-      <div className="flex h-12 w-72 items-center border border-border bg-background px-2">
-        <SurfaceTabChip
-          active={props.state === "active"}
-          closeLabel="Close example.ts"
-          icon={<SurfaceChipIcon icon={FileIcon} />}
-          label="example.ts"
-          onClose={() => {}}
-          visualState={props.state as "default" | "hover" | "focus" | "pressed"}
-        />
-      </div>
-    );
+    return <FileTabStory key={props.state} state={props.state} />;
   }
   if (props.storyId === "diff/file-filter") {
     const query = props.state === "query" ? "Composer" : "";

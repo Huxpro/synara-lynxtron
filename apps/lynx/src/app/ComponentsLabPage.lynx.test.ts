@@ -122,6 +122,9 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain("props.variant === 'query'");
     expect(renderer).toContain("props.storyId === 'editor/file-tab'");
     expect(renderer).toContain('<ExplorerFileTab');
+    expect(renderer).toContain("return <FileTabStory key={props.state} state={props.state} />;");
+    expect(renderer).toContain('setOpen(false);');
+    expect(renderer).toContain('>Tab closed</text>');
     expect(renderer).toContain("visualState={props.state as 'default' | 'hover' | 'focus' | 'pressed'}");
     expect(renderer).toContain("props.storyId === 'diff/file-filter'");
     expect(renderer).toContain('<ReviewFileTreeSearchHeader');

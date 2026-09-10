@@ -445,15 +445,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     );
   }
   if (props.storyId === 'editor/file-tab') {
-    return (
-      <view className="ComponentsLabFileTabStory">
-        <ExplorerFileTab
-          path="src/example.ts"
-          visualState={props.state as 'default' | 'hover' | 'focus' | 'pressed'}
-          onClose={() => {}}
-        />
-      </view>
-    );
+    return <FileTabStory key={props.state} state={props.state} />;
   }
   if (props.storyId === 'diff/file-filter') {
     const handleQueryChange = () => { 'background only'; };
@@ -580,6 +572,26 @@ function FilePreviewErrorStory(props: { readonly state: string; readonly variant
       : '';
   const ownsClose = props.state !== 'no-close-owner' && props.variant !== 'explorer-dock';
   return <view className={`ComponentsLabFileErrorStory${placementClass}`} data-file-preview-placement={props.variant ?? 'editor'}><WorkspaceFilePreviewErrorState detail={props.variant === 'detailed-error' ? 'ENOENT: src/components/Missing.tsx' : null} retrying={props.state === 'retrying'} onRetry={() => setResult('Retry requested')} onClose={ownsClose ? () => setResult('Preview closed') : undefined} /><text className="ComponentsLabFileErrorResult">{result}</text></view>;
+}
+
+function FileTabStory(props: { readonly state: string }) {
+  const [open, setOpen] = useState(true);
+  return (
+    <view className="ComponentsLabFileTabStory">
+      {open ? (
+        <ExplorerFileTab
+          path="src/example.ts"
+          visualState={props.state as 'default' | 'hover' | 'focus' | 'pressed'}
+          onClose={() => {
+            'background only';
+            setOpen(false);
+          }}
+        />
+      ) : (
+        <text aria-live="polite">Tab closed</text>
+      )}
+    </view>
+  );
 }
 
 function TranscriptMessageActionsStory(props: { readonly state: string; readonly variant?: string }) {

@@ -104,6 +104,31 @@ product changes, other routes, other themes, other sizes, or Native input.
   This closes overflow gesture reachability and fixed-control anchoring;
   hover-to-close, availability gating and full product header counts remain.
 
+### 2026-09-10 slow DevTool readiness and Native interaction closure
+
+- The exact-owned comparison launcher now waits 30 seconds for the requested
+  PID-owned DevTool listener, with a positive environment override and strict
+  fallback validation. The prior 10-second timeout rejected a valid 0.0.21
+  client before its DebugRouter finished registering. Launcher tests pass 39/39.
+- This supersedes the earlier FC-021 listener-blocked wording. Exact-owned
+  0.0.21 PID 90003 owned port 8903 and loaded the staged production bundle at
+  its exact file URL, SHA-256
+  4018dc6f4c83db682e8dcd421a10cfafdbfb04f762e06ea339934089076d853b.
+  DevTool opened the production OpenCode submenu and found the 24x24 favourite
+  control for Open Model 02 with checked state true. A supported press/release
+  changed it to unchecked, removed the Favourites group, and a second activation
+  restored it. The exact-client error/warning console stayed empty. Remaining
+  FC-021 work is Native keyboard behavior, compact interaction, and unsampled
+  theme/size cells; favourite interaction is complete.
+- This also supersedes FC-007's pending Native file-tab wording. The paired
+  story now owns a real close state instead of a no-op callback. Exact-owned
+  0.0.21 PID 16686 owned port 8903 and loaded bundle SHA-256
+  bfd39a5701ce216e4a3d8590ab8ceaf50a7c06615d4455606d9ca9ba16c6a8e7.
+  DevTool measured the hover-state close target at 16x16; a supported
+  press/release removed the tab and rendered Tab closed with a clean console.
+  Together with the real Chromium hover/close run and retained product preview
+  evidence, FC-007 is complete and remains regression-only.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation
