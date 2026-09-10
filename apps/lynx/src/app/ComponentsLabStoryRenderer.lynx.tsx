@@ -68,6 +68,11 @@ import { buildProjectContextMenuItems, buildThreadContextMenuItems } from '@syna
 import { ReviewFileTreeSearchHeader } from './DiffDock.lynx';
 import { EditorProjectSwitchSearchHeader } from './EditorProjectSwitchMenu.lynx';
 import { ExplorerFileTab } from './ExplorerFileTab.lynx';
+import {
+  MessageAssistantRowComposition,
+  MessageUserBubbleComposition,
+  MessageUserRowComposition,
+} from '@synara-web/components/chat/MessageRowComposition';
 import './components-lab.css';
 
 const COMPONENT_LAB_SPACE = { id: 'component-lab-focus' as never, name: 'Focus', icon: 'target' as const };
@@ -529,6 +534,33 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
   }
   if (props.storyId === 'transcript/message-actions') {
     return <TranscriptMessageActionsStory state={props.state} variant={props.variant} />;
+  }
+  if (props.storyId === 'transcript/message-row') {
+    const visualState = ['hover', 'focus', 'pressed'].includes(props.state)
+      ? ` ui-${props.state}`
+      : '';
+    const actions = (
+      <>
+        <TranscriptMessageActionStory label="Copy message" disabled={false} persistent={false} pressed={false} visualState=""><CopyIcon className="TranscriptMessageActionIcon" size={13} /></TranscriptMessageActionStory>
+        <TranscriptMessageActionStory label="Reference message" disabled={false} persistent={false} pressed={false} visualState=""><MessageCircleIcon className="TranscriptMessageActionIcon" size={13} /></TranscriptMessageActionStory>
+      </>
+    );
+    const footerClassName = `TranscriptMessageFooter${props.state === 'default' ? '' : ' TranscriptMessageFooter--persistent'}`;
+    return (
+      <view className={`ComponentsLabMessageRowStory TranscriptMessageHoverRegion${visualState}`}>
+        {props.variant === 'user' ? (
+          <MessageUserRowComposition>
+            <MessageUserBubbleComposition><text>Please align this preview with Electron.</text></MessageUserBubbleComposition>
+            <view className={`${footerClassName} TranscriptMessageFooter--user`}><text className="TranscriptMessageTimestamp">9:41 AM</text>{actions}</view>
+          </MessageUserRowComposition>
+        ) : (
+          <MessageAssistantRowComposition>
+            <text>The shared message row keeps actions quiet until the row is active.</text>
+            <view className={footerClassName}>{actions}<text className="TranscriptMessageTimestamp">9:41 AM</text></view>
+          </MessageAssistantRowComposition>
+        )}
+      </view>
+    );
   }
   if (props.storyId === 'sidebar/project-row') {
     return <ProjectRowContextMenuStory state={props.state as Parameters<typeof SidebarProjectRowSpecimen>[0]['state']} variant={props.variant as Parameters<typeof SidebarProjectRowSpecimen>[0]['variant']} />;

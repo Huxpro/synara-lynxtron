@@ -182,6 +182,15 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('action.persistent ? "text-muted-foreground/80"');
   });
 
+  it("renders assistant and user rows through the shared row compositions", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('props.storyId === "transcript/message-row"');
+    expect(source).toContain('<MessageUserRowComposition>');
+    expect(source).toContain('<MessageUserBubbleComposition>');
+    expect(source).toContain('<MessageAssistantRowComposition>');
+    expect(source).toContain('data-message-row-state={props.state}');
+  });
+
   it("renders project and thread rows through shared product specimens", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),

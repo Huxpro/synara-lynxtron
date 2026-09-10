@@ -74,6 +74,10 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('searchStatus={fixture.searchStatus}');
     expect(renderer).toContain("fixture.searchStatus === 'error'");
     expect(renderer).toContain("props.storyId === 'transcript/message-actions'");
+    expect(renderer).toContain("props.storyId === 'transcript/message-row'");
+    expect(renderer).toContain('<MessageUserRowComposition>');
+    expect(renderer).toContain('<MessageUserBubbleComposition>');
+    expect(renderer).toContain('<MessageAssistantRowComposition>');
     expect(renderer).toContain('<MessageActionButtonLynx');
     expect(renderer).toContain("const revealed = props.state !== 'default'");
     expect(renderer).toContain('ComponentsLabMessageActions--hidden');

@@ -72,6 +72,11 @@ import { ReviewFileTreeSearchHeader } from "~/components/ReviewFileTreePanel";
 import { PickerPanelSearchHeader } from "~/components/chat/PickerPanelShell";
 import { SurfaceChipIcon, SurfaceTabChip } from "~/components/chat/chatHeaderControls";
 import { FileIcon } from "~/lib/icons";
+import {
+  MessageAssistantRowComposition,
+  MessageUserBubbleComposition,
+  MessageUserRowComposition,
+} from "~/components/chat/MessageRowComposition";
 
 const COMPONENT_LAB_SPACE = {
   id: SpaceId.makeUnsafe("component-lab-focus"), name: "Focus", icon: "target" as const,
@@ -691,6 +696,41 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
             {actionIcon[action.icon]}
           </MessageActionButton>
         ))}
+      </div>
+    );
+  }
+  if (props.storyId === "transcript/message-row") {
+    const revealed = props.state !== "default";
+    const footerClassName = `flex min-h-6 items-center gap-2 text-[10px] text-muted-foreground/45 transition-opacity ${
+      revealed ? "opacity-100" : "pointer-events-none opacity-0"
+    }`;
+    const actions = (
+      <>
+        <MessageActionButton label="Copy message" tooltip="Copy message">
+          <CopyIcon className={MESSAGE_ACTION_ICON_CLASS_NAME} />
+        </MessageActionButton>
+        <MessageActionButton label="Reference message" tooltip="Reference message">
+          <MessageCircleIcon className={MESSAGE_ACTION_ICON_CLASS_NAME} />
+        </MessageActionButton>
+      </>
+    );
+    return (
+      <div className="w-full max-w-xl" data-message-row-state={props.state}>
+        {props.variant === "user" ? (
+          <MessageUserRowComposition>
+            <MessageUserBubbleComposition>
+              <p className="text-sm leading-[1.55]">Please align this preview with Electron.</p>
+            </MessageUserBubbleComposition>
+            <div className={`${footerClassName} justify-end pr-0.5`}>
+              <span>9:41 AM</span>{actions}
+            </div>
+          </MessageUserRowComposition>
+        ) : (
+          <MessageAssistantRowComposition>
+            <p className="text-sm leading-[1.55]">The shared message row keeps actions quiet until the row is active.</p>
+            <div className={footerClassName}>{actions}<span>9:41 AM</span></div>
+          </MessageAssistantRowComposition>
+        )}
       </div>
     );
   }

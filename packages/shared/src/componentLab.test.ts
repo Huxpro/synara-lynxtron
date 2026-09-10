@@ -23,6 +23,7 @@ describe("component lab manifest", () => {
       "sidebar/project-row",
       "sidebar/thread-row",
       "transcript/message-actions",
+      "transcript/message-row",
       "system/semantic-icon-tones",
       "notifications/provider-update",
       "right-dock/tab-strip",
@@ -69,6 +70,7 @@ describe("component lab manifest", () => {
       "sidebar/navigation-row",
       "sidebar/command-palette",
       "transcript/message-actions",
+      "transcript/message-row",
       "sidebar/project-row",
       "sidebar/thread-row",
       "notifications/provider-update",
@@ -183,10 +185,10 @@ describe("component lab manifest", () => {
 
   it("reports the complete renderer/theme/viewport/state matrix", () => {
     expect(summarizeComponentLabCoverage(COMPONENT_LAB_STORIES)).toEqual({
-      stories: 42,
-      rendererMappings: 84,
-      matrixCells: 3000,
-      interactiveStories: 24,
+      stories: 43,
+      rendererMappings: 86,
+      matrixCells: 3064,
+      interactiveStories: 25,
     });
   });
 
