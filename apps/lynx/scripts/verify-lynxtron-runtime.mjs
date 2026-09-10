@@ -8,39 +8,56 @@ const requireFromApp = createRequire(import.meta.url);
 
 export function resolveLynxtronRuntimePaths(
   packageJsonPath,
-  platform = process.platform
+  platform = process.platform,
+  exists = existsSync
 ) {
   const pathApi = platform === 'win32' ? path.win32 : path;
   const packageRoot = pathApi.dirname(packageJsonPath);
   const distRoot = pathApi.join(packageRoot, 'dist');
   if (platform === 'darwin') {
-    const appRoot = pathApi.join(distRoot, 'lynxtron.app');
+    const variantAppRoot = pathApi.join(distRoot, 'devtool', 'Lynxtron.app');
+    const legacyAppRoot = pathApi.join(distRoot, 'lynxtron.app');
+    const appRoot = exists(
+      pathApi.join(variantAppRoot, 'Contents', 'MacOS', 'lynxtron')
+    )
+      ? variantAppRoot
+      : legacyAppRoot;
     return {
       executable: pathApi.join(appRoot, 'Contents', 'MacOS', 'lynxtron'),
-      inspectorResources: pathApi.join(
-        appRoot,
-        'Contents',
-        'Resources',
-        'LynxDebugResources.bundle'
-      ),
+      inspectorResourceCandidates: [
+        pathApi.join(appRoot, 'Contents', 'Resources', 'LynxDebugResources.bundle'),
+        pathApi.join(appRoot, 'Contents', 'Resources', 'LynxResources.bundle'),
+      ],
     };
   }
   if (platform === 'win32') {
+    const variantExecutable = pathApi.join(distRoot, 'devtool', 'lynxtron.exe');
+    const runtimeRoot = exists(variantExecutable)
+      ? pathApi.join(distRoot, 'devtool')
+      : distRoot;
     return {
-      executable: pathApi.join(distRoot, 'lynxtron.exe'),
-      inspectorResources: pathApi.join(distRoot, 'resources', 'logbox'),
+      executable: pathApi.join(runtimeRoot, 'lynxtron.exe'),
+      inspectorResourceCandidates: [pathApi.join(runtimeRoot, 'resources', 'logbox')],
     };
   }
+  const variantExecutable = pathApi.join(distRoot, 'devtool', 'lynxtron');
+  const runtimeRoot = exists(variantExecutable)
+    ? pathApi.join(distRoot, 'devtool')
+    : distRoot;
   return {
-    executable: pathApi.join(distRoot, 'lynxtron'),
-    inspectorResources: pathApi.join(distRoot, 'resources', 'logbox'),
+    executable: pathApi.join(runtimeRoot, 'lynxtron'),
+    inspectorResourceCandidates: [pathApi.join(runtimeRoot, 'resources', 'logbox')],
   };
 }
 
 export function verifyLynxtronRuntime(paths, exists = existsSync) {
-  const missing = Object.entries(paths)
-    .filter(([, filePath]) => !exists(filePath))
-    .map(([name, filePath]) => `${name}: ${filePath}`);
+  const missing = [];
+  if (!exists(paths.executable)) missing.push(`executable: ${paths.executable}`);
+  if (!paths.inspectorResourceCandidates.some((filePath) => exists(filePath))) {
+    missing.push(
+      `inspectorResources: ${paths.inspectorResourceCandidates.join(' or ')}`
+    );
+  }
   if (missing.length > 0) {
     throw new Error(
       [
@@ -59,6 +76,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const paths = resolveLynxtronRuntimePaths(packageJsonPath);
   verifyLynxtronRuntime(paths);
   console.log(
-    `[verify-lynxtron-runtime] inspector-capable runtime ready: ${paths.executable}`
+    `[verify-lynxtron-runtime] runtime and inspector resources ready: ${paths.executable}`
   );
 }

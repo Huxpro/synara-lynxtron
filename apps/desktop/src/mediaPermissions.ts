@@ -19,3 +19,7 @@ export function shouldAllowMediaPermissionRequest(details: unknown): boolean {
   }
   return mediaTypes.includes("audio");
 }
+
+export function shouldConfigureMediaPermissions(skipSetup: string | undefined): boolean {
+  return skipSetup !== "1";
+}

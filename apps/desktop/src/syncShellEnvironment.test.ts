@@ -1,8 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { syncShellEnvironment } from "./syncShellEnvironment";
+import { shouldSyncShellEnvironment, syncShellEnvironment } from "./syncShellEnvironment";
 
 describe("syncShellEnvironment", () => {
+  it("skips login-shell probing only when explicitly requested", () => {
+    expect(shouldSyncShellEnvironment(undefined)).toBe(true);
+    expect(shouldSyncShellEnvironment("0")).toBe(true);
+    expect(shouldSyncShellEnvironment("1")).toBe(false);
+  });
+
   it("hydrates PATH and missing SSH_AUTH_SOCK from the login shell on macOS", () => {
     const env: NodeJS.ProcessEnv = {
       SHELL: "/bin/zsh",

@@ -5,9 +5,15 @@
 
 import { describe, expect, it } from "vitest";
 
-import { shouldAllowMediaPermissionRequest } from "./mediaPermissions";
+import { shouldAllowMediaPermissionRequest, shouldConfigureMediaPermissions } from "./mediaPermissions";
 
 describe("shouldAllowMediaPermissionRequest", () => {
+  it("skips TCC setup only for an explicit isolated comparison", () => {
+    expect(shouldConfigureMediaPermissions(undefined)).toBe(true);
+    expect(shouldConfigureMediaPermissions("0")).toBe(true);
+    expect(shouldConfigureMediaPermissions("1")).toBe(false);
+  });
+
   it("allows requests when Electron omits mediaTypes", () => {
     expect(shouldAllowMediaPermissionRequest({})).toBe(true);
   });

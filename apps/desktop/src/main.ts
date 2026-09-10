@@ -95,14 +95,14 @@ import {
 } from "./macIconCacheRefresh";
 import { collectMacUpdateDiagnostics } from "./macUpdateDiagnostics";
 import { openInitialBackendWindow } from "./initialBackendWindowOpen";
-import { shouldAllowMediaPermissionRequest } from "./mediaPermissions";
+import { shouldAllowMediaPermissionRequest, shouldConfigureMediaPermissions } from "./mediaPermissions";
 import {
   installResumableUpdateDownloader,
   type ResumableDownloaderTarget,
 } from "./resumableUpdateDownload";
 import { hardenElectronUpdater } from "./electronUpdaterSecurity";
 import { ServerListeningDetector } from "./serverListeningDetector";
-import { syncShellEnvironment } from "./syncShellEnvironment";
+import { shouldSyncShellEnvironment, syncShellEnvironment } from "./syncShellEnvironment";
 import {
   type DownloadProgressSample,
   getAutoUpdateDisabledReason,
@@ -172,6 +172,7 @@ import {
   repairBrowserProfileFromBridgeManifest,
   resolveDesktopAppDataBase,
   resolveDesktopUserDataPath,
+  shouldAcquireDesktopSingleInstanceLock,
 } from "./desktopUserDataProfile";
 import { isBrokenPipeError } from "./desktopProcessErrors";
 import { createDesktopStaticProtocolResolver } from "./desktopStaticProtocol";
@@ -199,7 +200,9 @@ import {
 // baseline, so a replacement during startup cannot silently become "normal."
 const startupBundleIdentity = captureStartupBundleIdentity();
 
-syncShellEnvironment();
+if (shouldSyncShellEnvironment(process.env.SYNARA_SKIP_SHELL_ENVIRONMENT_SYNC)) {
+  syncShellEnvironment();
+}
 
 const IPC = DESKTOP_IPC_CHANNELS;
 const MAX_CLIPBOARD_IMAGE_DATA_URL_LENGTH = 16 * 1024 * 1024;
@@ -230,7 +233,9 @@ const DESKTOP_BACKEND_SHUTDOWN_TOKEN = Crypto.randomBytes(32).toString("hex");
 // for the same lock even when they use the same Electron executable.
 const userDataPath = resolveUserDataPath();
 app.setPath("userData", userDataPath);
-const hasSingleInstanceLock = app.requestSingleInstanceLock();
+const hasSingleInstanceLock =
+  !shouldAcquireDesktopSingleInstanceLock(process.env.SYNARA_ALLOW_PARALLEL_INSTANCE) ||
+  app.requestSingleInstanceLock();
 const AUTO_UPDATE_STARTUP_DELAY_MS = 15_000;
 const AUTO_UPDATE_POLL_INTERVAL_MS = 4 * 60 * 60 * 1000;
 const AUTO_UPDATE_FOREGROUND_RECHECK_MIN_INTERVAL_MS = 5 * 60 * 1000;
@@ -3666,7 +3671,9 @@ if (hasSingleInstanceLock) {
       configureAppIdentity();
       applyLegacyMacDockIcon();
       refreshMacIconCacheOnVersionChange();
-      configureMediaPermissions();
+      if (shouldConfigureMediaPermissions(process.env.SYNARA_SKIP_MEDIA_PERMISSION_SETUP)) {
+        configureMediaPermissions();
+      }
       initializeDesktopAppSnap();
       configureApplicationMenu();
       try {

@@ -23,6 +23,10 @@ const LOGIN_SHELL_ENV_NAMES = [
   "XDG_DATA_HOME",
 ] as const;
 
+export function shouldSyncShellEnvironment(skipSync: string | undefined): boolean {
+  return skipSync !== "1";
+}
+
 function logShellEnvironmentWarning(message: string, error?: unknown): void {
   console.warn(`[desktop] ${message}`, error instanceof Error ? error.message : (error ?? ""));
 }

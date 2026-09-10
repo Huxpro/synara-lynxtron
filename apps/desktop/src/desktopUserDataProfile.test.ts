@@ -7,6 +7,7 @@ import {
   repairBrowserProfileFromBridgeManifest,
   resolveDesktopAppDataBase,
   resolveDesktopUserDataPath,
+  shouldAcquireDesktopSingleInstanceLock,
 } from "./desktopUserDataProfile";
 
 const tempDirs = new Set<string>();
@@ -25,6 +26,12 @@ afterEach(() => {
 });
 
 describe("desktopUserDataProfile", () => {
+  it("bypasses the single-instance lock only for an explicit isolated run", () => {
+    expect(shouldAcquireDesktopSingleInstanceLock(undefined)).toBe(true);
+    expect(shouldAcquireDesktopSingleInstanceLock("0")).toBe(true);
+    expect(shouldAcquireDesktopSingleInstanceLock("1")).toBe(false);
+  });
+
   it("resolves the canonical Synara profile names", () => {
     const appDataBase = "/Users/tester/Library/Application Support";
     expect(resolveDesktopUserDataPath({ appDataBase, userDataDirectoryName: "synara-dev" })).toBe(

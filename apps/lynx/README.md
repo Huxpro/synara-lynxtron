@@ -20,7 +20,10 @@ atomically.
 The migration SSOT, audit scripts, historical evidence, and screenshots remain
 in the adjacent `synara-lynx` control-plane repository. Historical notes under
 `docs/` describe the compiler probes and packaging gates that established the
-current implementation.
+current implementation. See
+[`docs/lynxtron-runtime-compatibility.md`](docs/lynxtron-runtime-compatibility.md)
+for the current runtime version, vendor-patch inventory, Synara-side
+workarounds, and the 0.0.21 regression status.
 
 ## Commands
 
@@ -44,6 +47,6 @@ Never use `bun test`; it bypasses the configured Rstest command.
   platform ports, and host Elements adapters are explicit platform splits.
 - Terminal, browser, and PDF remain first-release placeholders/hard islands;
   this app does not imitate unavailable runtimes.
-- Lynxtron 0.0.7 does not expose Lynx content as macOS accessibility children,
-  so application accessibility semantics are verified independently from the
-  host screen-reader gap.
+- Lynxtron 0.0.21 still does not expose Lynx content as macOS accessibility
+  children, so application accessibility semantics are verified independently
+  from the host screen-reader gap.

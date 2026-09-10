@@ -64,6 +64,12 @@ export function resolveDesktopUserDataPath(input: {
   return Path.join(input.appDataBase, input.userDataDirectoryName);
 }
 
+export function shouldAcquireDesktopSingleInstanceLock(
+  allowParallelInstance: string | undefined,
+): boolean {
+  return allowParallelInstance !== "1";
+}
+
 function readBridgeProfileSourcePath(targetPath: string): string | null {
   const manifestPath = Path.join(targetPath, BRIDGE_PROFILE_MANIFEST_FILE_NAME);
   if (!FS.existsSync(manifestPath)) return null;
