@@ -531,9 +531,10 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   buffers to append stale bytes and NULs to paths and lines. The existing
   polyfill only tested method presence. Installation now executes bounded
   capability probes for both behaviors and replaces incomplete implementations.
-  The focused suite passes 9/9, the complete Lynx build succeeds, and the final
-  exact-owned run reports zero NUL-bearing DOM attributes, a clean `example.ts`
-  path, intact `normalizedName` patch content, and no warning/error console.
+  The focused suite passes 9/9, the complete Lynx build succeeds, and final
+  exact-owned PID `81549` reports zero NUL-bearing DOM attributes, a clean
+  `example.ts` path, intact old/new code in the host syntax-highlight requests,
+  and no warning/error console.
   Bundle SHA-256 was
   `7e8b1cf2957dc2de6be2f6ea5aaba37e80b1ea909fba5907bd32595957354ac0`.
 - FC-008 is now complete for the normal-size working-tree right-dock path. The
