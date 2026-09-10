@@ -1566,6 +1566,12 @@ async function main() {
   let shuttingDown = false;
   const stopAllOwned = (signal) => {
     for (const child of ownedChildren.toReversed()) stopOwned(child, signal);
+    // Lynxtron may hand off to a replacement process and let the originally
+    // spawned child exit successfully. That replacement is no longer present
+    // in ownedChildren, but it is still uniquely identified by the copied
+    // comparison executable. Reap it on every shutdown so later evidence runs
+    // cannot attach to a stale window or DevTool listener.
+    stopExistingOwnedLynxtronRuntime(paths);
   };
 
   const shutdown = (exitCode) => {

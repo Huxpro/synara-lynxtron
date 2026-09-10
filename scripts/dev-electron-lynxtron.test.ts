@@ -736,6 +736,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
     );
     expect(source).toContain('detached: false');
     expect(source).toContain('child.kill(signal)');
+    expect(source).toContain('stopExistingOwnedLynxtronRuntime(paths)');
     expect(source).toContain('stopAllOwned("SIGKILL")');
     expect(source).not.toContain('process.kill(-child.pid, signal)');
   });
