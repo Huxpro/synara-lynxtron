@@ -195,6 +195,8 @@ describe('Composer token icon fidelity', () => {
     expect(elements).toContain('}, 150);');
     expect(elements).toContain('style={{ height: `${popoverHeight}px` }}');
     expect(elements).toContain('useState(props.initialOpen ?? false)');
+    expect(elements).toContain('initialOpenRef.current === props.initialOpen');
+    expect(elements).toContain('setOpen(props.initialOpen)');
     expect(styles).toMatch(
       /\.ComposerContextWindowMeterLynx svg\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;/s
     );

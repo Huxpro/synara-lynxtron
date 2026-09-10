@@ -105,6 +105,7 @@ export function ComposerContextWindowMeterElement(props: {
   readonly initialOpen?: boolean;
 }) {
   const [open, setOpen] = useState(props.initialOpen ?? false);
+  const initialOpenRef = useRef(props.initialOpen);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { semanticIconColor } = useTheme();
   const radius = 6;
@@ -162,6 +163,11 @@ export function ComposerContextWindowMeterElement(props: {
     hoverTimerRef.current = null;
   };
   useEffect(() => clearHoverTimer, []);
+  useEffect(() => {
+    if (initialOpenRef.current === props.initialOpen) return;
+    initialOpenRef.current = props.initialOpen;
+    if (props.initialOpen !== undefined) setOpen(props.initialOpen);
+  }, [props.initialOpen]);
 
   return (
     <view

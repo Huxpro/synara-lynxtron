@@ -435,6 +435,28 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   This closes FC-021's concrete picker debt; unsampled permutations remain
   ordinary FC-017 matrix coverage rather than an independent blocker.
 
+### 2026-09-10 context-window responsive continuation
+
+- A direct narrow `composer/context-window-meter` route exposed that Native only
+  read `initialOpen` during its first render. Route hydration can deliver the
+  selected state after that render, leaving `state=open` collapsed. The shared
+  Native adapter now synchronizes only defined changes to `initialOpen`; ordinary
+  product consumers that omit the prop keep their user-driven state. Focused
+  Native/Web suites pass 8/8 and 43/43, and the full production build succeeds.
+- Fresh exact-owned Lynxtron 0.0.21 PID `28709`, window `84291`, and DevTool
+  `localhost:8903` rendered the `optional-rows/open` cell at 864x620. The meter
+  resolved Expanded at 18x18. Its complete seven-row popover measured 323x194 at
+  x=498-821 and y=264-458, safely inside the 864x620 viewport; Current session,
+  7.4% / 15k/200k, Model window, Next turn, Total processed, auto-compaction,
+  and session cost all remained visible. The exact-client warning/error console
+  was empty; bundle SHA-256 was
+  `db84a4281e308c0206b3325a367c9f5d227caf1f4f87feb34be523bbf5025682`.
+- Responsive clipping is therefore closed for FC-029. Physical hover timing is
+  still not certified: both DevTool mouse-move and Computer Use hover failed to
+  deliver Lynx `bindmouseenter`, matching the established background-pointer
+  harness limitation. The 150ms open / immediate leave-close contract remains
+  source- and focused-test-backed pending a real pointer correlation.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation
