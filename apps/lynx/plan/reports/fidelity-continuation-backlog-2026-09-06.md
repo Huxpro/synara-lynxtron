@@ -563,6 +563,30 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   capability loss, and provider-switch stale-result suppression remain physical
   and service-state acceptance work rather than missing rendered states.
 
+### 2026-09-10 full Editor Native continuation
+
+- The comparison launcher's canonical Native identity gate previously required
+  one visible active sidebar row even for `editor=open`, although full Editor
+  intentionally hides the product sidebar. It now treats that explicit route as
+  a distinct shell contract: zero sidebar rows are required while one
+  `TranscriptList`, the exact tail message, and zero transient overlays remain
+  mandatory. The ordinary route still requires a uniquely active sidebar row.
+  Focused launcher coverage passes 43/43.
+- With that false negative removed, exact-owned Lynxtron 0.0.21 PID `35235` /
+  DevTool `localhost:8903` loaded the real
+  `synara/apps/lynx/src/app/DiffDock.lynx.tsx` preview in full Editor mode at
+  light/1280. The 1280x820 shell had a 46px Editor header, 848px center column,
+  623x774 file preview, and 599x710 code viewport. Native computed line-number
+  typography as 10px/17px and code as 11px/17px; both resolve to the shared
+  JetBrains Mono stack. Its exact-client warning/error console was empty and the
+  staged bundle SHA-256 was
+  `6d38ec704e29a235a0b0ecbda8a8b0d734f8f4cea74ab25dec4d81c7b0ad0f0b`.
+- Electron remained in the right-dock preview despite the matching deep-link
+  query, so this run closes the Native full-Editor geometry/typography cell but
+  not paired full-Editor parity. Electron route-state synchronization remains a
+  comparison-harness gap; FC-027 is not marked complete from this Native-only
+  evidence.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation

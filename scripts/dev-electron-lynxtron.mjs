@@ -661,6 +661,22 @@ export function nativeTransientUiStateFromDom(root) {
   return counts;
 }
 
+export function nativeThreadIdentityIsReady(
+  identity,
+  transcriptExpectation,
+  requireSidebarIdentity = true,
+) {
+  const sidebarIdentityReady = requireSidebarIdentity
+    ? identity.count >= 1 && identity.activeCount === 1
+    : identity.count === 0 && identity.activeCount === 0;
+  return (
+    sidebarIdentityReady &&
+    ((transcriptExpectation.messageCount === 0 && identity.emptyStateRendered) ||
+      (identity.transcriptListCount === 1 && identity.lastMessageRendered)) &&
+    Object.values(identity.transientUi).every((count) => count === 0)
+  );
+}
+
 export function comparisonExplorerOpenExpression(options) {
   if (options.route === null) return null;
   const route = new URL(options.route, "http://synara.local");
@@ -963,6 +979,7 @@ async function verifyOwnedNativeThreadIdentity(
   port,
   threadId,
   transcriptExpectation,
+  requireSidebarIdentity = true,
   timeoutMs = 20_000,
 ) {
   const connectorPath =
@@ -1004,12 +1021,11 @@ async function verifyOwnedNativeThreadIdentity(
       document?.result?.root ?? document?.root ?? document?.result ?? document,
     );
     lastIdentity = { ...lastIdentity, transientUi };
-    const ready =
-      lastIdentity.count >= 1 &&
-      lastIdentity.activeCount === 1 &&
-      ((transcriptExpectation.messageCount === 0 && lastIdentity.emptyStateRendered) ||
-        (lastIdentity.transcriptListCount === 1 && lastIdentity.lastMessageRendered)) &&
-      Object.values(transientUi).every((count) => count === 0);
+    const ready = nativeThreadIdentityIsReady(
+      lastIdentity,
+      transcriptExpectation,
+      requireSidebarIdentity,
+    );
     if (!ready) {
       cleanSince = null;
     } else if (cleanSince === null) {
@@ -1727,10 +1743,14 @@ async function main() {
       ? null
       : await waitForOwnedDevtoolListener(lynx, options.lynxDevtoolPort);
     if (lynxDevtool !== null && routedThreadId) {
+      const route = options.route === null
+        ? null
+        : new URL(options.route, "http://synara.local");
       await verifyOwnedNativeThreadIdentity(
         lynxDevtool.port,
         routedThreadId,
         transcriptExpectation,
+        route?.searchParams.get("editor") !== "open",
       );
     }
 

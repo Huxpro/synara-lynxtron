@@ -22,6 +22,7 @@ import {
   comparisonTranscriptReadyExpression,
   comparisonTransientUiReadyExpression,
   nativeThreadIdentityFromDom,
+  nativeThreadIdentityIsReady,
   nativeTransientUiStateFromDom,
   comparisonWebUrl,
   desktopComparisonCommands,
@@ -345,6 +346,30 @@ describe("Electron and Lynxtron comparison launcher", () => {
         { nodeId: 3, active: true },
       ],
     });
+  });
+
+  it("allows the intentionally hidden sidebar only for Editor-mode identity checks", () => {
+    const identity = {
+      threadId: "thread-editor",
+      count: 0,
+      activeCount: 0,
+      transcriptListCount: 1,
+      lastMessageId: "tail",
+      lastMessageRendered: true,
+      emptyStateRendered: false,
+      matches: [],
+      transientUi: {
+        dialogCount: 0,
+        menuLayerCount: 0,
+        notificationCount: 0,
+        resizeOverlayCount: 0,
+        selectionToolbarCount: 0,
+      },
+    };
+    const expectation = { messageCount: 2, lastMessageId: "tail" };
+
+    expect(nativeThreadIdentityIsReady(identity, expectation, true)).toBe(false);
+    expect(nativeThreadIdentityIsReady(identity, expectation, false)).toBe(true);
   });
 
   it("derives transcript readiness from the seed and requires the exact tail message", () => {
