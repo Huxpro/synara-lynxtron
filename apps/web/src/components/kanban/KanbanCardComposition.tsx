@@ -38,7 +38,11 @@ import type { KanbanDragPoint } from "./kanbanDnd.logic";
 export interface KanbanCardCompositionProps {
   readonly card: KanbanCard;
   readonly onOpen?: (card: KanbanCard) => void;
-  readonly onContextMenu?: (card: KanbanCard, event: React.MouseEvent) => void;
+  readonly onContextMenu?: (
+    card: KanbanCard,
+    event: React.MouseEvent,
+    restoreFocus?: () => void,
+  ) => void;
   readonly onOpenActions?: (card: KanbanCard, event: React.MouseEvent) => void;
   readonly onDragPointerStart?: (
     card: KanbanCard,
@@ -105,7 +109,9 @@ export function KanbanCardComposition({
       isDragSource={isDragSource}
       onActivate={onOpen ? () => onOpen(card) : undefined}
       onContextMenu={
-        onContextMenu ? (event) => onContextMenu(card, event) : undefined
+        onContextMenu
+          ? (event, restoreFocus) => onContextMenu(card, event, restoreFocus)
+          : undefined
       }
       onDragPointerStart={
         onDragPointerStart ? (point) => onDragPointerStart(card, point) : undefined

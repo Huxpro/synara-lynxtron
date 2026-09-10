@@ -1,0 +1,61 @@
+.EmbeddedSidechatPane {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  background-color: var(--background);
+}
+
+.EmbeddedSidechatPaneTranscript {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+}
+
+.EmbeddedSidechatPaneHeader {
+  height: 46px;
+  min-height: 46px;
+}
+
+.EmbeddedSidechatPaneHeader .SharedChatHeaderIdentity {
+  min-width: 0;
+  flex: 1;
+  padding: 0 6px;
+}
+
+.EmbeddedSidechatPaneHeader .SharedChatHeaderIdentityTitle {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.EmbeddedSidechatPaneClose {
+  display: flex;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  min-height: 20px;
+  margin-left: 6px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--muted-foreground);
+}
+
+.EmbeddedSidechatPaneClose.ui-hover,
+.EmbeddedSidechatPaneClose.ui-focus,
+.EmbeddedSidechatPaneClose.ui-pressed {
+  color: var(--foreground);
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.EmbeddedSidechatPaneComposer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  flex-shrink: 0;
+  padding: 0 12px 12px;
+}

@@ -399,12 +399,10 @@ describe('Lynx Automations route', () => {
     expect(editSource).toContain(
       'isAutomationTimeOfDay(timedSchedule.timeOfDay)'
     );
-    expect(timeInputSource).toContain('nativeInput');
-    expect(timeInputSource).toContain('defaultValue={defaultValue}');
-    expect(timeInputSource).toContain('inputFilter="[0-9:]*"');
-    expect(timeInputSource).toContain(
-      'accessibleLabel="Automation time"'
-    );
+    expect(timeInputSource).toContain("import { TimePicker } from '../components/ui/time-picker.lynx';");
+    expect(timeInputSource).toContain('<MenuTrigger ariaLabel="Automation time"');
+    expect(timeInputSource).toContain('<TimePicker');
+    expect(timeInputSource).toContain('value={defaultValue}');
     expect(editSource).toContain('timedSchedule?.timezone === undefined');
     expect(editSource).toContain('accessibleLabel="Automation timezone"');
     expect(editSource).toContain('defaultValue={timedSchedule.timezone}');

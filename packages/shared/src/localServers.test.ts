@@ -3,11 +3,31 @@ import { describe, expect, it } from "vitest";
 import type { ServerLocalServerProcess } from "@synara/contracts";
 
 import {
+  browserLocalServerUrl,
   localServerAddressLabel,
   localServerFolderLabel,
   localServerMatchesRun,
   localServerPrimaryLabel,
 } from "./localServers";
+
+describe("browserLocalServerUrl", () => {
+  it("prefers a resolved URL and falls back to the first detected port", () => {
+    expect(
+      browserLocalServerUrl(
+        makeServer({
+          ports: [5733],
+          addresses: [
+            { host: "127.0.0.1", port: 5733, family: "tcp4", url: "http://127.0.0.1:5733/" },
+          ],
+        }),
+      ),
+    ).toBe("http://127.0.0.1:5733/");
+    expect(browserLocalServerUrl(makeServer({ ports: [8891] }))).toBe(
+      "http://localhost:8891/",
+    );
+    expect(browserLocalServerUrl(makeServer({}))).toBeNull();
+  });
+});
 
 function makeServer(overrides: Partial<ServerLocalServerProcess>): ServerLocalServerProcess {
   return {

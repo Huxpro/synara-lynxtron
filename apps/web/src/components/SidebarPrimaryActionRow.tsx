@@ -18,6 +18,7 @@ export interface SidebarPrimaryActionRowProps {
   readonly onActivate?: (() => void) | undefined;
   readonly onMouseEnter?: (() => void) | undefined;
   readonly onFocus?: (() => void) | undefined;
+  readonly visualState?: "default" | "hover" | "focus" | "pressed";
 }
 
 export function SidebarPrimaryActionRow({
@@ -30,6 +31,7 @@ export function SidebarPrimaryActionRow({
   onActivate,
   onMouseEnter,
   onFocus,
+  visualState = "default",
 }: SidebarPrimaryActionRowProps) {
   return (
     <SidebarPrimaryActionItemElement>
@@ -41,6 +43,7 @@ export function SidebarPrimaryActionRow({
         onActivate={onActivate}
         onMouseEnter={onMouseEnter}
         onFocus={onFocus}
+        visualState={visualState}
       >
         <SidebarPrimaryActionLeadingElement>{icon}</SidebarPrimaryActionLeadingElement>
         <SidebarPrimaryActionLabelElement>{label}</SidebarPrimaryActionLabelElement>

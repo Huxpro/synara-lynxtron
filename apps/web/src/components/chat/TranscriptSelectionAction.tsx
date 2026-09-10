@@ -5,11 +5,13 @@
 import type { ReactNode } from "react";
 import { MessageCircleIcon, PencilIcon, TextWrapIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
+import { TRANSCRIPT_SELECTION_ACTION_WIDTH_PX } from "@synara/shared/selectionActionLayout";
 
 interface TranscriptSelectionActionProps {
   left: number;
   top: number;
   placement: "top" | "bottom";
+  width: number;
   // Highlight/underline only make sense for transcript text; read-only code
   // surfaces (file preview, diff view) omit them and get an add-only toolbar.
   onHighlight?: (() => void) | undefined;
@@ -53,13 +55,14 @@ export function TranscriptSelectionAction(props: TranscriptSelectionActionProps)
     <div
       data-transcript-selection-action="true"
       className="pointer-events-none fixed z-50"
-      style={{ left: props.left, top: props.top }}
+      style={{ left: props.left, top: props.top, width: props.width }}
       role="toolbar"
       aria-label="Selection actions"
     >
       <div
         className={cn(
-          "pointer-events-auto inline-flex items-center gap-0.5 rounded-full border border-[color:var(--color-border)] bg-[var(--color-background-elevated-primary-opaque)] p-0.5 shadow-xl backdrop-blur-xl transition-transform duration-150 hover:scale-[1.01]",
+          "pointer-events-auto inline-flex w-full items-center justify-center gap-0.5 rounded-full border border-[color:var(--color-border)] bg-[var(--color-background-elevated-primary-opaque)] p-0.5 shadow-xl backdrop-blur-xl transition-transform duration-150 hover:scale-[1.01]",
+          props.width < TRANSCRIPT_SELECTION_ACTION_WIDTH_PX && "[&_button_span]:sr-only",
           props.placement === "top" ? "origin-bottom" : "origin-top",
         )}
       >

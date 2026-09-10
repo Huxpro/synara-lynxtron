@@ -8,12 +8,31 @@ export interface SystemStateAnnouncementDecision {
   readonly nextKey: string | null;
 }
 
+export type SystemStateAnnouncementInput =
+  | string
+  | number
+  | null
+  | undefined
+  | readonly SystemStateAnnouncementInput[];
+
+export function normalizeSystemStateAnnouncement(
+  announcement: unknown
+): string {
+  if (typeof announcement === 'string' || typeof announcement === 'number') {
+    return String(announcement);
+  }
+  if (Array.isArray(announcement)) {
+    return announcement.map(normalizeSystemStateAnnouncement).join('');
+  }
+  return '';
+}
+
 export function resolveNextSystemStateAnnouncement(input: {
   readonly previousKey: string | null;
   readonly intent: SystemStateIntent;
-  readonly announcement?: string;
+  readonly announcement?: SystemStateAnnouncementInput;
 }): SystemStateAnnouncementDecision {
-  const content = input.announcement?.trim() ?? '';
+  const content = normalizeSystemStateAnnouncement(input.announcement).trim();
   if (!resolveSystemStateSemantics(input.intent).announce || content.length === 0) {
     return { content: null, nextKey: null };
   }

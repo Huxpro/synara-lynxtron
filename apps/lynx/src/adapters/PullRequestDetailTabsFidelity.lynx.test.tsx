@@ -25,7 +25,7 @@ describe('Pull Request detail tabs fidelity', () => {
     const tab = elementTree.root?.querySelector('.SharedPrDetailTab');
     expect(root?.getAttribute('aria-label')).toBe('Pull request detail tabs');
     expect(root?.getAttribute('accessibility-element')).toBe('false');
-    expect(tab?.getAttribute('accessibility-traits')).toBe('button');
+    expect(tab?.getAttribute('accessibility-trait')).toBe('button');
     expect(tab?.getAttribute('accessibility-value')).toBe('Selected');
     expect(tab?.getAttribute('aria-pressed')).toBe('true');
     expect(tab?.getAttribute('accessibility-state')).toBe(

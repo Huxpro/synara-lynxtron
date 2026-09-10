@@ -119,5 +119,6 @@ describe("git working tree diff query options", () => {
 
     expect(GIT_WORKING_TREE_DIFF_LIVE_REFETCH_INTERVAL_MS).toBe(4_000);
     expect(options.refetchInterval).toBe(GIT_WORKING_TREE_DIFF_LIVE_REFETCH_INTERVAL_MS);
+    expect(options.networkMode).toBe("always");
   });
 });

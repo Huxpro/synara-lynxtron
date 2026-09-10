@@ -27,6 +27,7 @@ type ChildrenProps = {
 interface CommandKeyboardEvent {
   readonly key: string;
   readonly shiftKey?: boolean;
+  readonly __synaraCommandHandled?: boolean;
   preventDefault?: () => void;
   stopPropagation?: () => void;
 }
@@ -77,6 +78,7 @@ export function CommandDialog(props: {
 export function CommandDialogPopup(props: ChildrenProps) {
   return (
     <DialogPopup
+      bottomStickOnMobile={false}
       className={cx('LxCommandDialogPopup', props.className)}
       viewportClassName="LxCommandDialogViewport"
       showCloseButton={false}
@@ -126,6 +128,7 @@ export function Command(props: ChildrenProps & {
   );
   const handleKeyDown = useCallback(
     (event: CommandKeyboardEvent): boolean => {
+      if (event.__synaraCommandHandled) return true;
       const intent = resolveCommandNavigation({
         activeValue: highlightedValue,
         enabledValues: [...entriesRef.current.keys()],
@@ -133,6 +136,7 @@ export function Command(props: ChildrenProps & {
         shiftKey: event.shiftKey,
       });
       if (intent.type === 'none') return false;
+      Object.assign(event, { __synaraCommandHandled: true });
       event.preventDefault?.();
       event.stopPropagation?.();
       // A command palette keeps keyboard focus in its search input. Moving
@@ -185,7 +189,12 @@ export function Command(props: ChildrenProps & {
         setHighlightedValue,
       }}
     >
-      <view className={cx('LxCommand', props.className)}>{props.children}</view>
+      <view
+        className={cx('LxCommand', props.className)}
+        global-bindkeydown={handleKeyDown}
+      >
+        {props.children}
+      </view>
     </CommandContext.Provider>
   );
 }
@@ -233,7 +242,7 @@ export function CommandInput(props: {
   };
 
   return (
-    <view className="LxCommandInput">
+    <view className="LxCommandInput" catchkeydown={handleKeyDown}>
       {props.startAddon}
       <textarea
         ref={inputRef}
@@ -248,6 +257,7 @@ export function CommandInput(props: {
         maxlines={1}
         confirm-type="search"
         show-soft-input-on-focus={true}
+        bindkeydown={handleKeyDown}
         bindinput={(event) => {
           'background only';
           nativeValueRef.current = event.detail.value;

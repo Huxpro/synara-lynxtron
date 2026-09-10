@@ -84,7 +84,7 @@ describe('Lynx sidebar disclosure', () => {
       /\.SidebarResizeSash\s*\{[^}]*right:\s*-3px;[^}]*width:\s*10px;[^}]*background-color:\s*rgba\(128,\s*128,\s*128,\s*0\.02\);[^}]*cursor:\s*col-resize;/s
     );
     expect(styles).toMatch(
-      /\.SidebarResizeSashLine\s*\{[^}]*left:\s*3px;[^}]*width:\s*1px;[^}]*height:\s*100%;[^}]*background-color:\s*transparent;/s
+      /\.SidebarResizeSashLine\s*\{[^}]*top:\s*14px;[^}]*bottom:\s*14px;[^}]*left:\s*3px;[^}]*width:\s*1px;[^}]*background-color:\s*transparent;/s
     );
     expect(styles).toMatch(
       /\.SidebarResizeOverlay\s*\{[^}]*position:\s*fixed;[^}]*width:\s*100vw;[^}]*height:\s*100vh;[^}]*cursor:\s*col-resize;/s
@@ -186,7 +186,9 @@ describe('Lynx sidebar disclosure', () => {
       'utf8'
     );
 
-    expect(routerSource).toContain('<SidebarDisclosure open={sidebarOpen}>');
+    expect(routerSource).toContain(
+      '<SidebarDisclosure open={sidebarOpen && !editorModeOpen}>'
+    );
     expect(settingsSource).toContain('<SidebarDisclosure open={sidebarOpen}>');
     expect(sidebarStyles).toMatch(/\.AppSidebar\s*\{[^}]*width:\s*100%;/s);
     expect(appStyles).toMatch(/\.SettingsSidebar\s*\{[^}]*width:\s*100%;/s);

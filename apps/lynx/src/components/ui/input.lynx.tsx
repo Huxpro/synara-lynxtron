@@ -26,7 +26,10 @@ export interface LynxInputChangeEvent {
 export interface LynxInputFocusEvent extends LynxInputChangeEvent {}
 
 export interface LynxInputKeyEvent {
+  readonly altKey?: boolean;
+  readonly ctrlKey?: boolean;
   readonly key: string;
+  readonly metaKey?: boolean;
   readonly shiftKey?: boolean;
   preventDefault?: () => void;
   stopPropagation?: () => void;
@@ -43,6 +46,8 @@ export interface InputProps
   variant?: 'default' | 'soft';
   unstyled?: boolean;
   nativeInput?: boolean;
+  multiline?: boolean;
+  maxLines?: number;
   disabled?: boolean;
   type?: LynxInputProps['type'] | 'search';
   onInput?: LynxInputProps['onInput'];
@@ -60,7 +65,7 @@ interface RawInputEvent {
     readonly selectionStart: number;
     readonly value: string;
   };
-  readonly currentTarget: {
+  readonly currentTarget?: {
     setAttribute(name: string, value: boolean): void;
   };
 }
@@ -75,6 +80,7 @@ interface KeyboardInputProps {
   readonly id?: string;
   readonly inputFilter?: string;
   readonly maxLength?: number;
+  readonly maxLines?: number;
   readonly onBlur?: LynxInputProps['onBlur'];
   readonly onConfirm?: LynxInputProps['onConfirm'];
   readonly onFocus?: LynxInputProps['onFocus'];
@@ -99,16 +105,20 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
     params?: Record<string, unknown>
   ): Promise<unknown> =>
     new Promise((resolve, reject) => {
-      inputRef.current
-        ?.invoke({
-          method,
-          params,
-          success: resolve,
-          fail: (result: { code: number; data: string }) => {
-            reject(new InvokeRejectError(result.code, result.data));
-          },
-        } as never)
-        .exec();
+      try {
+        inputRef.current
+          ?.invoke({
+            method,
+            params,
+            success: resolve,
+            fail: (result: { code: number; data: string }) => {
+              reject(new InvokeRejectError(result.code, result.data));
+            },
+          } as never)
+          .exec();
+      } catch (error) {
+        reject(error);
+      }
     });
 
   const setValue = (value: string): Promise<void> =>
@@ -149,11 +159,18 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
     unlockInteraction: boolean
   ) => {
     props.onInput?.(value, selectionStart, selectionEnd, isComposing);
-    if (unlockInteraction) setNativePropsByRef(inputRef, { readonly: false });
+    if (unlockInteraction) {
+      try {
+        setNativePropsByRef(inputRef, { readonly: false });
+      } catch {
+        // Older/test hosts may not expose native prop mutation. The controlled
+        // value update remains authoritative and the next mount resets readonly.
+      }
+    }
   };
   const handleInput = (event: RawInputEvent) => {
     'main thread';
-    if (controlled.current) event.currentTarget.setAttribute('readonly', true);
+    if (controlled.current) event.currentTarget?.setAttribute('readonly', true);
     runOnBackground(sendInputEvent)(
       event.detail.value,
       event.detail.selectionStart,
@@ -169,55 +186,52 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
     [blur, focus, getValue, setSelectionRange, setValue]
   );
 
-  return (
-    <input
-      ref={inputRef}
-      id={props.id}
-      aria-label={props.accessibleLabel}
-      aria-invalid={props.ariaInvalid}
-      aria-disabled={props.disabled || undefined}
-      accessibility-element={props.accessibleLabel ? true : undefined}
-      accessibility-label={props.accessibleLabel}
-      accessibility-state={props.disabled ? { disabled: true } : undefined}
-      readonly={props.disabled || props.readonly}
-      disabled={props.disabled}
-      focusable={!props.disabled}
-      ignore-focus={true}
-      default-value={props.defaultValue}
-      value={props.value ?? props.defaultValue}
-      placeholder={props.placeholder}
-      confirm-type={props.confirmType}
-      type={props.type}
-      input-filter={props.inputFilter}
-      maxlength={props.maxLength ?? 140}
-      show-soft-input-on-focus={props.showSoftInputOnFocus ?? true}
-      main-thread:bindinput={props.disabled ? undefined : handleInput}
-      bindfocus={
-        props.disabled
-          ? undefined
-          : (event) => props.onFocus?.(event.detail.value)
-      }
-      bindblur={
-        props.disabled
-          ? undefined
-          : (event) => props.onBlur?.(event.detail.value)
-      }
-      bindconfirm={
-        props.disabled
-          ? undefined
-          : (event) => props.onConfirm?.(event.detail.value)
-      }
-      bindselection={(event) =>
-        props.onSelectionChange?.(
-          event.detail.selectionStart,
-          event.detail.selectionEnd
-        )
-      }
-      catchkeydown={props.disabled ? undefined : props.onKeyDown}
-      className={props.className}
-      style={props.style}
-    />
-  );
+  const sharedProps = {
+    ref: inputRef,
+    id: props.id,
+    'aria-label': props.accessibleLabel,
+    'aria-invalid': props.ariaInvalid,
+    'aria-disabled': props.disabled || undefined,
+    'accessibility-element': props.accessibleLabel ? true : undefined,
+    'accessibility-label': props.accessibleLabel,
+    'accessibility-state': props.disabled ? { disabled: true } : undefined,
+    readonly: props.disabled || props.readonly,
+    disabled: props.disabled,
+    focusable: !props.disabled,
+    'ignore-focus': true,
+    'default-value': props.defaultValue,
+    value: props.value ?? props.defaultValue,
+    placeholder: props.placeholder,
+    'confirm-type': props.confirmType,
+    'input-filter': props.inputFilter ?? (props.type === 'number' ? '[0-9.]*' : undefined),
+    maxlength: props.maxLength ?? 140,
+    'show-soft-input-on-focus': props.showSoftInputOnFocus ?? true,
+    'main-thread:bindinput': props.disabled ? undefined : handleInput,
+    bindfocus: props.disabled
+      ? undefined
+      : (event: { detail: { value: string } }) => props.onFocus?.(event.detail.value),
+    bindblur: props.disabled
+      ? undefined
+      : (event: { detail: { value: string } }) => props.onBlur?.(event.detail.value),
+    bindconfirm: props.disabled
+      ? undefined
+      : (event: { detail: { value: string } }) => props.onConfirm?.(event.detail.value),
+    bindselection: (event: {
+      detail: { selectionStart: number; selectionEnd: number };
+    }) =>
+      props.onSelectionChange?.(
+        event.detail.selectionStart,
+        event.detail.selectionEnd
+      ),
+    catchkeydown: props.disabled ? undefined : props.onKeyDown,
+    className: props.className,
+    style: props.style,
+  } as const;
+
+  // Lynxtron 0.0.21 still aborts when ordinary text reaches a focused single-line
+  // <input>. A one-line textarea retains real Native editing, IME, selection,
+  // filtering, and confirmation behavior without that host text-model crash.
+  return <textarea {...sharedProps} maxlines={props.maxLines ?? 1} />;
   }
 );
 
@@ -228,6 +242,8 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
     variant = 'default',
     unstyled = false,
     nativeInput = false,
+    multiline = false,
+    maxLines,
     disabled,
     type = 'text',
     onInput,
@@ -295,6 +311,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
           confirmType={type === 'search' ? 'search' : props.confirmType ?? 'send'}
           inputFilter={props.inputFilter}
           maxLength={props.maxLength}
+          maxLines={multiline ? (maxLines ?? 5) : 1}
           defaultValue={props.defaultValue}
           value={props.value}
           showSoftInputOnFocus={props.showSoftInputOnFocus}

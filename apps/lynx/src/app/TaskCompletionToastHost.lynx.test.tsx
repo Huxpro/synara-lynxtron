@@ -23,6 +23,22 @@ function summary(
 }
 
 describe('Lynx task completion toast host', () => {
+  it('matches the Web max-sm notification width without expanding at compact viewports', () => {
+    const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
+    expect(styles).toMatch(
+      /\.AppNotificationStack\s*\{[^}]*width:\s*384px;[^}]*max-width:\s*calc\(100vw - 24px\);/s
+    );
+    expect(styles).toMatch(
+      /\.TaskCompletionToast\s*\{[^}]*position:\s*relative;[^}]*width:\s*100%;/s
+    );
+    expect(styles).toMatch(
+      /\.ProviderUpdatePrompt\s*\{[^}]*position:\s*relative;[^}]*width:\s*100%;/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--viewport-compact \.AppNotificationStack\s*\{[^}]*top:\s*8px;[^}]*\}/s
+    );
+  });
+
   it('keeps slow completion detail delivery alive across later shell polls', () => {
     const source = readFileSync(
       new URL('./TaskCompletionToastHost.lynx.tsx', import.meta.url),

@@ -36,13 +36,13 @@ export function ComposerModelTriggerProviderIconElement(props: {
 }
 
 export function ComposerModelTriggerModelLabelElement(props: {
-  readonly children: ReactNode;
   readonly hidden: boolean;
+  readonly modelLabel: string;
 }) {
   return props.hidden ? (
-    <span className="sr-only">{props.children}</span>
+    <span className="sr-only">{props.modelLabel}</span>
   ) : (
-    <span className="min-w-0 truncate text-[var(--color-text-foreground)]">{props.children}</span>
+    <span className="min-w-0 truncate text-[var(--color-text-foreground)]">{props.modelLabel}</span>
   );
 }
 

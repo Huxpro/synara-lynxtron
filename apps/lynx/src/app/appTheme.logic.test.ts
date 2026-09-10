@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { DEFAULT_THEME_STATE } from '@synara-web/theme/theme.logic';
 
 import {
+  resolveSliceCodeFontFamily,
   resolveSliceUiFontFamily,
   resolveSliceThemeVariables,
   resolveSliceThemeVariant,
@@ -72,6 +73,66 @@ describe('slice root theme projection', () => {
     ).toBe('system-ui');
   });
 
+  it('projects a concrete monospace stack instead of a nested CSS variable', () => {
+    expect(resolveSliceCodeFontFamily(DEFAULT_THEME_STATE)).toContain(
+      '"JetBrains Mono Variable"'
+    );
+    const variables = resolveSliceThemeVariables(DEFAULT_THEME_STATE);
+    expect(variables['--font-chat-code-family']).toBe(
+      variables['--font-mono-family']
+    );
+    expect(variables['--font-chat-code-family']).toContain('monospace');
+    expect(variables['--font-chat-code-family']).not.toContain('var(');
+
+    const customState = {
+      ...DEFAULT_THEME_STATE,
+      chromeThemes: {
+        ...DEFAULT_THEME_STATE.chromeThemes,
+        light: {
+          ...DEFAULT_THEME_STATE.chromeThemes.light,
+          fonts: {
+            ...DEFAULT_THEME_STATE.chromeThemes.light.fonts,
+            code: 'Fira Code',
+          },
+        },
+      },
+    };
+    expect(resolveSliceCodeFontFamily(customState)).toMatch(
+      /^"Fira Code", /
+    );
+  });
+
+  it('registers the bundled Native code face with supported descriptors only', () => {
+    const fontStyles = readFileSync(
+      new URL('./native-fonts.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(fontStyles).toContain('font-family: "JetBrains Mono Variable"');
+    expect(fontStyles).toContain(
+      '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2'
+    );
+    expect(fontStyles).not.toContain('font-weight:');
+    expect(fontStyles).not.toContain('font-style:');
+    expect(fontStyles).not.toContain('unicode-range:');
+  });
+
+  it('does not use the Web-only undefined font-mono alias in Native styles', () => {
+    const environmentStyles = readFileSync(
+      new URL('./environment-panel.css', import.meta.url),
+      'utf8'
+    );
+    const integrationStyles = readFileSync(
+      new URL('./settings-integrations-panel.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(environmentStyles).not.toContain('var(--font-mono)');
+    expect(integrationStyles).not.toContain('var(--font-mono)');
+    expect(environmentStyles).toContain('var(--font-mono-family)');
+    expect(integrationStyles).toContain('var(--font-mono-family)');
+  });
+
   it('projects the active theme pack into root color tokens', () => {
     const customState = {
       ...DEFAULT_THEME_STATE,
@@ -91,6 +152,9 @@ describe('slice root theme projection', () => {
     expect(variables['--codex-base-accent']).toBe('#ff3366');
     expect(variables['--codex-base-ink']).toBe('#112233');
     expect(variables['--codex-base-surface']).toBe('#fefefe');
+    expect(variables['--app-sidebar-surface']).toBe(
+      customState.chromeThemes.light.card
+    );
     expect(variables['--foreground']).not.toBe(
       DEFAULT_THEME_STATE.chromeThemes.light.ink
     );
@@ -126,9 +190,14 @@ describe('slice root theme projection', () => {
     );
     expect(routerSource).toContain('resolvedTheme={resolvedTheme}');
     expect(appSource).toContain(
-      'return onGlobalEvent(SYSTEM_APPEARANCE_EVENT, (value: unknown) =>'
+      'const dispose = onGlobalEvent(SYSTEM_APPEARANCE_EVENT, (value: unknown) =>'
     );
-    expect(appSource).toContain('const next = readSystemDarkEvent(value);');
-    expect(appSource).toContain('if (next !== null) setSystemDark(next);');
+    expect(appSource).toContain(
+      "void bridgeCall('runtimeGetSystemAppearance')"
+    );
+    expect(appSource).toContain(
+      'const next = readSystemAppearanceResponse(value);'
+    );
+    expect(appSource).toContain('!receivedTransition && next !== null');
   });
 });

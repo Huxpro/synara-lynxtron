@@ -3,19 +3,34 @@ import {
   LOCAL_PDF_PAGE_ROUTE_PATH,
 } from '@synara/shared/localPreviewFiles';
 
+export function buildRuntimeHttpUrl(input: {
+  readonly path: string;
+  readonly query?: Readonly<Record<string, string>>;
+  readonly wsUrl: string;
+}): string {
+  const endpoint = new URL(input.wsUrl);
+  if (endpoint.protocol !== 'ws:' && endpoint.protocol !== 'wss:') {
+    throw new Error('Synara runtime URL must use ws: or wss:.');
+  }
+  endpoint.protocol = endpoint.protocol === 'wss:' ? 'https:' : 'http:';
+  endpoint.pathname = input.path;
+  endpoint.hash = '';
+  for (const [key, value] of Object.entries(input.query ?? {})) {
+    endpoint.searchParams.set(key, value);
+  }
+  return endpoint.toString();
+}
+
 export function buildWorkspaceLocalPreviewUrl(input: {
   readonly cwd: string;
   readonly path: string;
   readonly wsUrl: string;
 }): string {
-  const match = input.wsUrl.match(/^(ws|wss):\/\/([^/?#]+)/);
-  if (!match) throw new Error('Synara preview URL must use ws: or wss:.');
-  const protocol = match[1] === 'wss' ? 'https' : 'http';
-  const query = [
-    `path=${encodeURIComponent(input.path).replace(/%20/g, '+')}`,
-    `cwd=${encodeURIComponent(input.cwd).replace(/%20/g, '+')}`,
-  ].join('&');
-  return `${protocol}://${match[2]}${LOCAL_IMAGE_ROUTE_PATH}?${query}`;
+  return buildRuntimeHttpUrl({
+    wsUrl: input.wsUrl,
+    path: LOCAL_IMAGE_ROUTE_PATH,
+    query: { path: input.path, cwd: input.cwd },
+  });
 }
 
 export function buildPdfPagePreviewUrl(input: {

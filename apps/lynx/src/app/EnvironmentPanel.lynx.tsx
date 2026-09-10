@@ -53,7 +53,6 @@ import githubSvg from '@synara-central-icons/github.svg?raw';
 import arrowUpRightSvg from '@synara-central-icons/arrow-up-right.svg?raw';
 import bubbleAlertSvg from '@synara-central-icons/bubble-alert.svg?raw';
 import circleCheckSvg from '@synara-central-icons/circle-check.svg?raw';
-import checkmarkSvg from '@synara-central-icons/checkmark-2-small.svg?raw';
 import differenceSvg from '@synara-central-icons/difference-modified.svg?raw';
 import editSvg from '@synara-central-icons/edit-small-2.svg?raw';
 import closeSvg from '@synara-central-icons/close-circle-dashed.svg?raw';
@@ -64,6 +63,8 @@ import pushSvg from '@synara-central-icons/cloud-simple-upload.svg?raw';
 
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
+import { CheckboxIndicator } from '../components/ui/checkbox.lynx';
+import { Skeleton } from '../components/ui/skeleton.lynx';
 import {
   ChevronDownIcon,
   ChevronRightIcon,
@@ -83,6 +84,7 @@ import {
 } from '../platform/motion.lynx';
 import {
   buildMenuItems,
+  resolveQuickAction,
   resolvePullActionAvailability,
   resolveDefaultBranchActionDialogCopy,
   requiresDefaultBranchConfirmation,
@@ -119,6 +121,7 @@ import {
   DialogTitle,
 } from '../components/ui/dialog.lynx';
 import { Button } from '../components/ui/button.lynx';
+import { Separator } from '../components/ui/separator.lynx';
 import {
   retainLocalServerStopFeedback,
   type LocalServerStopFeedback,
@@ -205,7 +208,7 @@ export function EnvironmentToggle(props: {
   readonly open: boolean;
   readonly onChange: (open: boolean) => void;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: `EnvironmentToggle${
       props.open ? ' EnvironmentToggle--open' : ''
@@ -224,7 +227,7 @@ export function EnvironmentToggle(props: {
         className="EnvironmentToggleIcon"
         content={colorizeLynxSvg(
           windowSvg,
-          props.open ? svgColors.foreground : svgColors.secondaryForeground
+          semanticIconColor(props.open ? 'primary' : 'secondary')
         )}
       />
     </view>
@@ -290,7 +293,7 @@ function EnvironmentLocalServers(props: {
   readonly bootstrapOnly: boolean;
   readonly initialData: EnvironmentBootstrapData['localServers'];
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [stoppingPid, setStoppingPid] = useState<number | null>(null);
   const [stopFeedback, setStopFeedback] =
@@ -355,7 +358,7 @@ function EnvironmentLocalServers(props: {
           icon={
             <svg
               className="EnvironmentCanonicalIcon"
-              content={colorizeLynxSvg(globeSvg, svgColors.foreground)}
+              content={colorizeLynxSvg(globeSvg, semanticIconColor('primary'))}
             />
           }
           label="Local Servers"
@@ -442,7 +445,7 @@ function EnvironmentLocalServers(props: {
                         stopSvg,
                         server.isStoppable
                           ? 'var(--destructive)'
-                          : svgColors.mutedForeground
+                          : semanticIconColor('disabled')
                       )}
                     />
                   )}
@@ -465,6 +468,7 @@ function EnvironmentChanges(props: {
   readonly onStatusChange: (status: GitStatusResult | null) => void;
   readonly workspaceRoot: string;
 }) {
+  const { semanticIconColor } = useTheme();
   const [refreshGeneration, setRefreshGeneration] = useState(0);
   const [statusState, setStatusState] = useState<{
     readonly data: GitStatusLocalResult | GitStatusResult | null;
@@ -552,7 +556,7 @@ function EnvironmentChanges(props: {
               className="EnvironmentCanonicalIcon"
               content={colorizeLynxSvg(
                 differenceSvg,
-                'var(--foreground)'
+                semanticIconColor('primary')
               )}
             />
           )
@@ -581,14 +585,16 @@ function EnvironmentChanges(props: {
   );
 }
 
-function EnvironmentGitAction(props: {
+export function EnvironmentGitAction(props: {
   readonly branch: string | null;
   readonly gitStatus: GitStatusResult | null;
   readonly open: boolean;
   readonly onCompleted: () => void;
+  readonly presentation?: 'environment' | 'toolbar';
   readonly threadId: string;
   readonly workspaceRoot: string;
 }) {
+  const { semanticIconColor } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogAction, setDialogAction] = useState<GitStackedAction | null>(
@@ -643,6 +649,22 @@ function EnvironmentGitAction(props: {
   const pullAvailability = resolvePullActionAvailability({
     gitStatus: props.gitStatus,
     isBusy: running,
+  });
+  const quickAction = resolveQuickAction(
+    props.gitStatus,
+    running,
+    isDefaultBranch,
+    branchList?.hasOriginRemote ?? false,
+    false,
+    defaultBranch
+  );
+  const quickActionInteraction = useLynxInteractiveState({
+    baseClassName: `DiffDockGitQuickAction${
+      quickAction.disabled ? ' DiffDockGitQuickAction--disabled' : ''
+    }`,
+    accessibleLabel: quickAction.label,
+    disabled: quickAction.disabled,
+    onActivate: runQuickAction,
   });
   const hasRunnableCommitPushAction = menuItems.some(
     (item) =>
@@ -785,8 +807,70 @@ function EnvironmentGitAction(props: {
     void runAction(action);
   }
 
+  function runQuickAction(): void {
+    'background only';
+    if (quickAction.disabled) return;
+    if (quickAction.kind === 'open_pr') {
+      if (props.gitStatus?.pr?.url) openExternalBestEffort(props.gitStatus.pr.url);
+      return;
+    }
+    if (quickAction.kind === 'run_pull') {
+      void runPull();
+      return;
+    }
+    if (quickAction.kind === 'run_action' && quickAction.action) {
+      void runAction(quickAction.action);
+    }
+  }
+
   return (
     <>
+      {props.presentation === 'toolbar' ? (
+        <view className="DiffDockGitSplitControl">
+          <view
+            className={quickActionInteraction.className}
+            {...quickActionInteraction.eventProps}
+          >
+            <svg
+              className="DiffDockGitQuickActionIcon"
+              content={colorizeLynxSvg(
+                quickAction.kind === 'open_pr' ? githubSvg : pushSvg,
+                semanticIconColor('primary')
+              )}
+            />
+          </view>
+          <view className="DiffDockGitSplitDivider" />
+          <Menu open={menuOpen} onOpenChange={setMenuOpen}>
+            <MenuTrigger
+              ariaLabel="Git action options"
+              className="DiffDockGitMenuTrigger"
+              disabled={running}
+            >
+              <ChevronDownIcon size={14} color="var(--foreground)" />
+            </MenuTrigger>
+            <MenuPopup align="end" side="bottom" className="EnvironmentGitActionPopup">
+              <text className="EnvironmentGitActionMenuLabel">Git actions</text>
+              {menuItems.map((item) => (
+                <MenuItem
+                  className="EnvironmentGitActionMenuItem"
+                  disabled={item.disabled}
+                  key={item.id}
+                  onClick={() => selectMenuItem(item)}
+                >
+                  {item.label}
+                </MenuItem>
+              ))}
+              <MenuItem
+                className="EnvironmentGitActionMenuItem"
+                disabled={!pullAvailability.canRun}
+                onClick={() => void runPull()}
+              >
+                Pull
+              </MenuItem>
+            </MenuPopup>
+          </Menu>
+        </view>
+      ) : (
       <Menu open={menuOpen} onOpenChange={setMenuOpen}>
         <MenuTrigger
           ariaLabel="Commit and Push"
@@ -800,14 +884,14 @@ function EnvironmentGitAction(props: {
             icon={
               <svg
                 className="EnvironmentCanonicalIcon"
-                content={colorizeLynxSvg(pushSvg, 'var(--foreground)')}
+                content={colorizeLynxSvg(pushSvg, semanticIconColor('primary'))}
               />
             }
             label={running ? progressLabel ?? 'Working…' : 'Commit and Push'}
             trailingIcon={
               <ChevronDownIcon
                 size={12}
-                color="var(--muted-foreground)"
+                color="var(--color-icon-secondary)"
               />
             }
           />
@@ -864,6 +948,7 @@ function EnvironmentGitAction(props: {
           )}
         </MenuPopup>
       </Menu>
+      )}
       {resultLabel ? (
         <text className="EnvironmentGitActionStatus EnvironmentGitActionStatus--success">
           {resultLabel}
@@ -923,27 +1008,7 @@ function EnvironmentGitAction(props: {
                   )
                 }
               >
-                <view
-                  className={`EnvironmentGitActionCheckbox${
-                    allSelected
-                      ? ' EnvironmentGitActionCheckbox--checked'
-                      : noneSelected
-                        ? ''
-                        : ' EnvironmentGitActionCheckbox--mixed'
-                  }`}
-                >
-                  {allSelected ? (
-                    <svg
-                      className="EnvironmentGitActionCheckboxIcon"
-                      content={colorizeLynxSvg(
-                        checkmarkSvg,
-                        'var(--primary-foreground)'
-                      )}
-                    />
-                  ) : noneSelected ? null : (
-                    <view className="EnvironmentGitActionCheckboxMixedBar" />
-                  )}
-                </view>
+                <CheckboxIndicator checked={allSelected} mixed={!allSelected && !noneSelected} size="sm" className="EnvironmentGitActionCheckbox" />
                 <text className="EnvironmentGitActionSelectAllLabel">
                   {allSelected ? 'Exclude all' : 'Include all'}
                 </text>
@@ -977,23 +1042,7 @@ function EnvironmentGitAction(props: {
                   }
                 >
                   {editingFiles ? (
-                    <view
-                      className={`EnvironmentGitActionCheckbox${
-                        excludedFiles.has(file.path)
-                          ? ''
-                          : ' EnvironmentGitActionCheckbox--checked'
-                      }`}
-                    >
-                      {!excludedFiles.has(file.path) ? (
-                        <svg
-                          className="EnvironmentGitActionCheckboxIcon"
-                          content={colorizeLynxSvg(
-                            checkmarkSvg,
-                            'var(--primary-foreground)'
-                          )}
-                        />
-                      ) : null}
-                    </view>
+                    <CheckboxIndicator checked={!excludedFiles.has(file.path)} size="sm" className="EnvironmentGitActionCheckbox" />
                   ) : null}
                   <text className="EnvironmentGitActionFilePath">
                     {file.path}
@@ -1258,7 +1307,7 @@ function EnvironmentEditor(props: {
 
   return (
     <view className="EnvironmentLabeledSection">
-      <view className="EnvironmentDivider" />
+      <Separator className="EnvironmentDivider" />
       <EnvironmentSectionLabel>Editor</EnvironmentSectionLabel>
       <EnvironmentInteractiveRow
         baseClassName="EnvironmentEditorTrigger"
@@ -1332,6 +1381,7 @@ function EnvironmentRepository(props: {
   readonly open: boolean;
   readonly workspaceRoot: string;
 }) {
+  const { semanticIconColor } = useTheme();
   const [openError, setOpenError] = useState(false);
   const repositoryQuery = useQuery({
     queryKey: ['environment-github-repository', props.workspaceRoot],
@@ -1373,7 +1423,7 @@ function EnvironmentRepository(props: {
           icon={
             <svg
               className="EnvironmentCanonicalIcon"
-              content={colorizeLynxSvg(githubSvg, 'var(--foreground)')}
+              content={colorizeLynxSvg(githubSvg, semanticIconColor('primary'))}
             />
           }
           label={repository.nameWithOwner}
@@ -1382,7 +1432,7 @@ function EnvironmentRepository(props: {
               className="EnvironmentRepositoryExternalIcon"
               content={colorizeLynxSvg(
                 arrowUpRightSvg,
-                'var(--muted-foreground)'
+                semanticIconColor('secondary')
               )}
             />
           }
@@ -1410,7 +1460,7 @@ function EnvironmentPullRequest(props: {
   readonly pullRequest: OrchestrationThreadPullRequest;
   readonly workspaceRoot: string;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const [checksOpen, setChecksOpen] = useState(false);
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [snapshotState, setSnapshotState] = useState<{
@@ -1509,7 +1559,7 @@ function EnvironmentPullRequest(props: {
           icon={
             <svg
               className="EnvironmentCanonicalIcon"
-              content={colorizeLynxSvg(pullRequestSvg, svgColors.foreground)}
+              content={colorizeLynxSvg(pullRequestSvg, semanticIconColor('primary'))}
             />
           }
           label={`#${livePullRequest.number} ${livePullRequest.title}`}
@@ -1521,7 +1571,7 @@ function EnvironmentPullRequest(props: {
               className="EnvironmentRepositoryExternalIcon"
               content={colorizeLynxSvg(
                 arrowUpRightSvg,
-                svgColors.mutedForeground
+                semanticIconColor('secondary')
               )}
             />
           }
@@ -1536,7 +1586,7 @@ function EnvironmentPullRequest(props: {
           icon={
             <svg
               className="EnvironmentCanonicalIcon"
-              content={colorizeLynxSvg(differenceSvg, svgColors.foreground)}
+              content={colorizeLynxSvg(differenceSvg, semanticIconColor('primary'))}
             />
           }
           label={diffLabel}
@@ -1545,7 +1595,7 @@ function EnvironmentPullRequest(props: {
               className="EnvironmentRepositoryExternalIcon"
               content={colorizeLynxSvg(
                 arrowUpRightSvg,
-                svgColors.mutedForeground
+                semanticIconColor('secondary')
               )}
             />
           }
@@ -1573,7 +1623,7 @@ function EnvironmentPullRequest(props: {
                 className="EnvironmentRepositoryExternalIcon"
                 content={colorizeLynxSvg(
                   arrowUpRightSvg,
-                  svgColors.mutedForeground
+                  semanticIconColor('secondary')
                 )}
               />
             }
@@ -1607,7 +1657,7 @@ function EnvironmentPullRequest(props: {
                       : circleCheckSvg,
                     checksSummary.tone === 'failure'
                       ? 'var(--destructive)'
-                      : svgColors.mutedForeground
+                      : semanticIconColor('secondary')
                   )}
                 />
               )
@@ -1673,7 +1723,7 @@ function EnvironmentPullRequest(props: {
                 className="EnvironmentCanonicalIcon"
                 content={colorizeLynxSvg(
                   bubbleAlertSvg,
-                  svgColors.mutedForeground
+                  semanticIconColor('secondary')
                 )}
               />
             }
@@ -1794,8 +1844,8 @@ function EnvironmentRecap(props: {
         </view>
       ) : (
         <view className="EnvironmentRecapSkeleton" aria-hidden="true">
-          <view className="EnvironmentRecapSkeletonLine" />
-          <view className="EnvironmentRecapSkeletonLine EnvironmentRecapSkeletonLine--short" />
+          <Skeleton className="EnvironmentRecapSkeletonLine" />
+          <Skeleton className="EnvironmentRecapSkeletonLine EnvironmentRecapSkeletonLine--short" />
         </view>
       )}
     </view>
@@ -2009,7 +2059,7 @@ function EnvironmentPinnedRow(props: {
   readonly onRename: (label: string | null) => void;
   readonly pin: PinnedMessage;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const [editing, setEditing] = useState(false);
   const [draftLabel, setDraftLabel] = useState('');
   const editInputRef = useRef<React.ElementRef<'input'>>(null);
@@ -2075,12 +2125,7 @@ function EnvironmentPinnedRow(props: {
         aria-checked={done}
         {...checkbox.eventProps}
       >
-        {done ? (
-          <svg
-            className="EnvironmentPinnedCheckIcon"
-            content={colorizeLynxSvg(checkmarkSvg, svgColors.foreground)}
-          />
-        ) : null}
+        <CheckboxIndicator checked={done} size="sm" />
       </view>
       {editing ? (
         <input
@@ -2107,13 +2152,13 @@ function EnvironmentPinnedRow(props: {
       <view className={rename.className} {...rename.eventProps}>
         <svg
           className="EnvironmentPinnedActionIcon"
-          content={colorizeLynxSvg(editSvg, svgColors.mutedForeground)}
+          content={colorizeLynxSvg(editSvg, semanticIconColor('secondary'))}
         />
       </view>
       <view className={remove.className} {...remove.eventProps}>
         <svg
           className="EnvironmentPinnedActionIcon"
-          content={colorizeLynxSvg(closeSvg, svgColors.mutedForeground)}
+          content={colorizeLynxSvg(closeSvg, semanticIconColor('secondary'))}
         />
       </view>
       {props.error ? (
@@ -2257,7 +2302,7 @@ function EnvironmentMarkerRow(props: {
   readonly onRemove: () => void;
   readonly onRename: (label: string | null) => void;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const [editing, setEditing] = useState(false);
   const [draftLabel, setDraftLabel] = useState('');
   const editInputRef = useRef<React.ElementRef<'input'>>(null);
@@ -2325,12 +2370,7 @@ function EnvironmentMarkerRow(props: {
         aria-checked={done}
         {...checkbox.eventProps}
       >
-        {done ? (
-          <svg
-            className="EnvironmentPinnedCheckIcon"
-            content={colorizeLynxSvg(checkmarkSvg, svgColors.foreground)}
-          />
-        ) : null}
+        <CheckboxIndicator checked={done} size="sm" />
       </view>
       <view
         className={`EnvironmentMarkerSwatch EnvironmentMarkerSwatch--${props.marker.color}`}
@@ -2360,13 +2400,13 @@ function EnvironmentMarkerRow(props: {
       <view className={rename.className} {...rename.eventProps}>
         <svg
           className="EnvironmentPinnedActionIcon"
-          content={colorizeLynxSvg(editSvg, svgColors.mutedForeground)}
+          content={colorizeLynxSvg(editSvg, semanticIconColor('secondary'))}
         />
       </view>
       <view className={remove.className} {...remove.eventProps}>
         <svg
           className="EnvironmentPinnedActionIcon"
-          content={colorizeLynxSvg(closeSvg, svgColors.mutedForeground)}
+          content={colorizeLynxSvg(closeSvg, semanticIconColor('secondary'))}
         />
       </view>
       {props.error ? (
@@ -2676,7 +2716,7 @@ export function EnvironmentPanel(props: {
   readonly threadMarkers: readonly ThreadMarker[];
   readonly workspaceRoot: string | null;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const visibility = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
   );
@@ -2733,7 +2773,7 @@ export function EnvironmentPanel(props: {
                   className="EnvironmentSettingsIcon"
                   content={colorizeLynxSvg(
                     settingsSvg,
-                    svgColors.mutedForeground
+                    semanticIconColor('secondary')
                   )}
                 />
               </view>

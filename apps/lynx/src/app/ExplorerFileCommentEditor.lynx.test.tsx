@@ -1,7 +1,15 @@
-import { describe, expect, it, rs } from '@rstest/core';
+import { beforeEach, describe, expect, it, rs } from '@rstest/core';
 import { fireEvent, render, waitFor } from '@lynx-js/react/testing-library';
 
 import { ExplorerFileCommentEditor } from './ExplorerFileCommentEditor.lynx';
+
+beforeEach(() => {
+  Object.assign(lynx, {
+    createSelectorQuery() {
+      return { select() { return this; }, invoke() { return this; }, exec() {} };
+    },
+  });
+});
 
 describe('Explorer file comment editor', () => {
   it('matches Web copy and submits only normalized non-empty comments', async () => {
@@ -24,9 +32,9 @@ describe('Explorer file comment editor', () => {
     expect(
       elementTree.root?.querySelector('.ExplorerDockCommentBadgeMark')
         ?.getAttribute('accessibility-label')
-    ).toBe('Synara');
+    ).toBe('Lynx logo');
     const textarea = elementTree.root?.querySelector(
-      '.ExplorerDockCommentInput'
+      '.ExplorerDockCommentInput textarea'
     );
     expect(textarea?.getAttribute('placeholder')).toBe('Request change');
 
@@ -34,12 +42,16 @@ describe('Explorer file comment editor', () => {
     fireEvent.tap(buttons[1]!);
     expect(onSubmit).not.toHaveBeenCalled();
 
-    textarea?.dispatchEvent(
-      new CustomEvent('bindEvent:input', {
-        bubbles: true,
-        detail: { value: '\n  Rename this value.  \n' },
-      })
-    );
+    const inputEvent = new Event('bindEvent:input', { bubbles: true });
+    Object.assign(inputEvent, {
+      detail: {
+        value: '\n  Rename this value.  \n',
+        selectionStart: 24,
+        selectionEnd: 24,
+        isComposing: false,
+      },
+    });
+    textarea?.dispatchEvent(inputEvent);
     await waitFor(() => {
       const currentButtons =
         elementTree.root?.querySelectorAll('.LxButton') ?? [];

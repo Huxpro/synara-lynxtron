@@ -6,13 +6,15 @@
 
 import {
   BROWSER_BLANK_URL,
-  BROWSER_SEARCH_URL_PREFIX,
+  buildBrowserAddressSuggestions,
   normalizeBrowserUrlInput,
+  type BrowserAddressSuggestion,
+} from "@synara/shared/browserSession";
+export {
+  buildBrowserAddressSuggestions,
+  type BrowserAddressSuggestion,
 } from "@synara/shared/browserSession";
 import type { BrowserTabState } from "@synara/contracts";
-import type { BrowserHistoryEntry } from "../browserStateStore";
-
-const BROWSER_SUGGESTION_LIMIT = 6;
 
 interface ResolveBrowserAddressSyncInput {
   activeTabId: string | null;
@@ -33,23 +35,6 @@ type BrowserAddressSyncDecision =
       syncedValue: string | undefined;
     };
 
-export interface BrowserAddressSuggestion {
-  id: string;
-  kind: "navigate" | "tab" | "history";
-  title: string;
-  detail: string;
-  url: string;
-  tabId?: string;
-  faviconUrl?: string | null;
-}
-
-interface BuildBrowserAddressSuggestionsInput {
-  query: string;
-  activeTabId: string | null;
-  tabs: Array<Pick<BrowserTabState, "id" | "title" | "url" | "faviconUrl" | "lastCommittedUrl">>;
-  recentHistory: BrowserHistoryEntry[];
-}
-
 export interface BrowserChromeStatus {
   tone: "default" | "error";
   label: string;
@@ -65,95 +50,6 @@ export function browserAddressDisplayValue(
 
 // Component-facing alias for the shared desktop/web browser URL normalizer.
 export const normalizeBrowserAddressInput = normalizeBrowserUrlInput;
-
-function normalizeQuery(value: string): string {
-  return value.trim().toLowerCase();
-}
-
-function displaySuggestionUrl(value: string): string {
-  return value.trim().replace(/^about:blank$/i, "");
-}
-
-function suggestionMatches(query: string, candidate: string): boolean {
-  if (query.length === 0) {
-    return true;
-  }
-  return normalizeQuery(candidate).includes(query);
-}
-
-function pushSuggestion(
-  suggestions: BrowserAddressSuggestion[],
-  seenUrls: Set<string>,
-  suggestion: BrowserAddressSuggestion,
-): void {
-  if (suggestions.length >= BROWSER_SUGGESTION_LIMIT || seenUrls.has(suggestion.url)) {
-    return;
-  }
-
-  seenUrls.add(suggestion.url);
-  suggestions.push(suggestion);
-}
-
-// Builds browser-like suggestions from the typed query, open tabs, and recent history.
-export function buildBrowserAddressSuggestions(
-  input: BuildBrowserAddressSuggestionsInput,
-): BrowserAddressSuggestion[] {
-  const query = normalizeQuery(input.query);
-  const suggestions: BrowserAddressSuggestion[] = [];
-  const seenUrls = new Set<string>();
-  const directTarget = normalizeBrowserAddressInput(input.query);
-
-  if (query.length > 0) {
-    const directTitle = directTarget.startsWith(BROWSER_SEARCH_URL_PREFIX)
-      ? `Search the web for "${input.query.trim()}"`
-      : `Open ${directTarget}`;
-    pushSuggestion(suggestions, seenUrls, {
-      id: `direct:${directTarget}`,
-      kind: "navigate",
-      title: directTitle,
-      detail: directTarget,
-      url: directTarget,
-    });
-  }
-
-  for (const tab of input.tabs) {
-    const tabUrl = displaySuggestionUrl(tab.lastCommittedUrl ?? tab.url);
-    if (tabUrl.length === 0 || tab.id === input.activeTabId) {
-      continue;
-    }
-    if (!suggestionMatches(query, `${tab.title} ${tabUrl}`)) {
-      continue;
-    }
-    pushSuggestion(suggestions, seenUrls, {
-      id: `tab:${tab.id}`,
-      kind: "tab",
-      title: tab.title || tabUrl,
-      detail: tabUrl,
-      url: tabUrl,
-      tabId: tab.id,
-      faviconUrl: tab.faviconUrl,
-    });
-  }
-
-  for (const entry of input.recentHistory) {
-    const entryUrl = displaySuggestionUrl(entry.url);
-    if (entryUrl.length === 0) {
-      continue;
-    }
-    if (!suggestionMatches(query, `${entry.title} ${entryUrl}`)) {
-      continue;
-    }
-    pushSuggestion(suggestions, seenUrls, {
-      id: `history:${entry.url}`,
-      kind: "history",
-      title: entry.title || entryUrl,
-      detail: entryUrl,
-      url: entryUrl,
-    });
-  }
-
-  return suggestions.slice(0, BROWSER_SUGGESTION_LIMIT);
-}
 
 // Only shows transient browser state; the address field already reflects the active URL.
 export function resolveBrowserChromeStatus(input: {

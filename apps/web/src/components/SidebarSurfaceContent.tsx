@@ -29,9 +29,7 @@ export function SidebarSurfaceContent(props: {
     <SidebarContentFrameElement>
       {props.prelude}
       {props.settingsNavigation ? (
-        <SidebarScrollRegionElement>
-          {props.settingsNavigation}
-        </SidebarScrollRegionElement>
+        props.settingsNavigation
       ) : (
         <>
           <SidebarFixedRegionElement>

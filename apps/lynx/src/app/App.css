@@ -34,6 +34,20 @@
   font-family: var(--font-ui-family);
 }
 
+.AppHydrationState {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background);
+}
+
+.AppHydrationLogo {
+  width: 96px;
+  height: 96px;
+}
+
 .AppWindowDragRegion {
   -x-app-region: drag;
 }
@@ -240,12 +254,12 @@
   justify-content: center;
   gap: 6px;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 10px;
   background-color: var(--color-background-elevated-primary);
 }
 
 .TransportStatusNotice--offline {
-  border-color: var(--color-text-status-error);
+  border-color: var(--color-border);
 }
 
 .TransportStatusNoticeText {
@@ -255,24 +269,38 @@
 }
 
 .TransportStatusNotice--offline .TransportStatusNoticeText {
-  color: var(--color-text-status-error);
+  color: var(--color-text-status-neutral);
 }
 
 .TransportStatusRetry {
   min-height: 20px;
   padding: 1px 6px;
-  color: var(--color-text-status-error);
+  color: var(--foreground);
   font-size: 11px;
+  opacity: 0.82;
 }
 
-.TaskCompletionToast {
+.AppNotificationStack {
   position: fixed;
   top: 12px;
   left: 50%;
   z-index: 1001;
   display: flex;
-  width: 420px;
+  width: 384px;
   max-width: calc(100vw - 24px);
+  flex-direction: column;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+
+.AppNotificationStack--hidden {
+  display: none;
+}
+
+.TaskCompletionToast {
+  position: relative;
+  display: flex;
+  width: 100%;
   min-height: 54px;
   padding: 10px 10px 10px 14px;
   align-items: center;
@@ -282,11 +310,62 @@
   border-color: var(--color-border);
   border-radius: 12px;
   background-color: var(--color-background-elevated-primary);
-  transform: translateX(-50%);
 }
 
 .TaskCompletionToast--warning {
   border-color: var(--warning);
+}
+
+.VoiceNotificationToast {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 54px;
+  padding: 10px 10px 10px 14px;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background-color: var(--color-background-elevated-primary);
+  box-shadow: 0 4px 18px -6px rgba(13, 13, 13, 0.07);
+}
+
+.SliceRoot--theme-dark .VoiceNotificationToast {
+  box-shadow: 0 6px 24px -10px rgba(0, 0, 0, 0.3);
+}
+
+.VoiceNotificationToastIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--foreground);
+}
+
+.VoiceNotificationToastCopy {
+  flex: 1;
+  min-width: 0;
+}
+
+.VoiceNotificationToastTitle,
+.VoiceNotificationToastDescription {
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.VoiceNotificationToastTitle {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.VoiceNotificationToastDescription {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
 }
 
 .TaskCompletionToastCopy {
@@ -304,13 +383,9 @@
 }
 
 .ProviderUpdatePrompt {
-  position: fixed;
-  top: 16px;
-  left: 50%;
-  z-index: 1000;
+  position: relative;
   display: flex;
-  width: 384px;
-  max-width: calc(100vw - 32px);
+  width: 100%;
   min-height: 122px;
   padding: 12px 40px 12px 14px;
   align-items: flex-start;
@@ -320,11 +395,60 @@
   border-radius: 18px;
   background-color: #17212b;
   box-shadow: 0 4px 18px -6px rgba(0, 0, 0, 0.3);
-  transform: translateX(-50%);
 }
 
-.ProviderUpdatePrompt--failure {
-  min-height: 162px;
+.LxDialogPopup.AppSnapWelcomeDialog {
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  border-radius: 20px;
+  padding: 0;
+}
+
+.AppSnapWelcomeBody {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.AppSnapWelcomeHero {
+  display: flex;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 32px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background-color: var(--muted);
+}
+
+.AppSnapWelcomeHeroIcon {
+  width: 32px;
+  height: 32px;
+}
+
+.AppSnapWelcomeHeader {
+  gap: 8px;
+  padding: 0;
+}
+
+.AppSnapWelcomeTitle {
+  font-size: 19px;
+  line-height: 24px;
+}
+
+.AppSnapWelcomeDescription {
+  font-size: 14px;
+  line-height: 19.5px;
+}
+
+.AppSnapWelcomeFooter {
+  gap: 8px;
+  padding: 12px 0 0;
+}
+
+.AppSnapWelcomeFooter .LxButton {
+  border-radius: 10px;
 }
 
 .SliceRoot--theme-light .ProviderUpdatePrompt {
@@ -341,6 +465,22 @@
   opacity: 0.92;
 }
 
+.ProviderUpdatePromptIcon--updating {
+  animation: ProviderUpdatePromptSpin 900ms linear infinite;
+}
+
+@keyframes ProviderUpdatePromptSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ProviderUpdatePromptIcon--updating {
+    animation: none;
+  }
+}
+
 .ProviderUpdatePromptContent,
 .ProviderUpdatePromptCopy {
   display: flex;
@@ -353,19 +493,9 @@
   height: 96px;
 }
 
-.ProviderUpdatePrompt--failure .ProviderUpdatePromptContent {
-  height: auto;
-  min-height: 136px;
-}
-
 .ProviderUpdatePromptCopy {
   height: 62px;
   gap: 2px;
-}
-
-.ProviderUpdatePrompt--failure .ProviderUpdatePromptCopy {
-  height: auto;
-  min-height: 102px;
 }
 
 .ProviderUpdatePromptActions {
@@ -391,14 +521,9 @@
   opacity: 0.72;
 }
 
-.ProviderUpdatePrompt--failure .ProviderUpdatePromptDescription {
-  height: auto;
-  min-height: 80px;
-}
-
 .ProviderUpdatePromptAction {
   border-color: rgba(252, 252, 252, 0.2);
-  border-radius: 8px;
+  border-radius: 10px;
   background-color: rgba(252, 252, 252, 0.1);
 }
 
@@ -460,9 +585,8 @@
   line-height: 16px;
 }
 
-.SliceRoot--viewport-compact .TaskCompletionToast {
+.SliceRoot--viewport-compact .AppNotificationStack {
   top: 8px;
-  width: calc(100vw - 16px);
 }
 
 .ThreadsLanding {
@@ -470,6 +594,15 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.ThreadsLandingHeader {
+  display: flex;
+  width: 100%;
+  height: 46px;
+  min-height: 46px;
+  flex-shrink: 0;
+  align-items: center;
 }
 
 .ThreadsLandingBody {
@@ -515,7 +648,10 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex: 1;
+  width: 100%;
   min-width: 0;
+  overflow: hidden;
 }
 
 .SharedChatHeaderIdentityIcon {
@@ -525,6 +661,14 @@
 }
 
 .SharedChatHeaderIdentityTitle {
+  flex: 1;
+  flex-shrink: 1;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--foreground);
   font-size: 12px;
   line-height: 18px;
@@ -560,15 +704,28 @@
   position: relative;
   overflow: hidden;
   padding: 0;
-  transition: padding-right 300ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.ThreadPage--diff-open {
-  padding-right: 50%;
+.ThreadPageMain {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  flex-direction: column;
+  transition: width 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.ThreadPrimaryTerminal {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ThreadPage {
+  .ThreadPageMain {
     transition-duration: 0.01ms;
   }
 }
@@ -579,82 +736,70 @@
   flex: 1;
 }
 
-.LxButton.ThreadEditorHistoryTrigger {
+.ThreadHeaderTerminalIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.LxMenuTrigger.ThreadEditorProjectSwitchTrigger {
   display: flex;
-  width: 24px;
-  min-width: 24px;
-  height: 24px;
-  min-height: 24px;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  min-height: 28px;
   padding: 0;
   align-items: center;
   justify-content: center;
   border-radius: 6px;
 }
 
-.LxButton.ThreadEditorHistoryTrigger.ui-hover,
-.LxButton.ThreadEditorHistoryTrigger.ui-focus,
-.LxButton.ThreadEditorHistoryTrigger.ui-pressed {
+.LxMenuTrigger.ThreadEditorProjectSwitchTrigger.ui-hover,
+.LxMenuTrigger.ThreadEditorProjectSwitchTrigger.ui-focus,
+.LxMenuTrigger.ThreadEditorProjectSwitchTrigger.ui-pressed,
+.LxMenuTrigger.ThreadEditorProjectSwitchTrigger--open {
   background-color: var(--secondary);
 }
 
-.LxButton.ThreadEditorProjectSwitchTrigger {
-  display: flex;
-  width: 24px;
-  min-width: 24px;
-  height: 24px;
-  min-height: 24px;
+.ThreadEditorProjectSwitchPopup {
+  width: 240px;
+  min-height: 0;
+  max-height: 320px;
   padding: 0;
+  overflow: hidden;
+}
+
+.ThreadEditorProjectSwitchSearch {
+  padding: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ThreadEditorProjectSwitchSearchInput {
+  width: 100%;
+  height: 28px;
+  padding: 0 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--input);
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--foreground);
+  font-size: 12px;
+}
+
+.ThreadEditorProjectSwitchList {
+  max-height: 264px;
+  padding: 6px;
+}
+
+.ThreadEditorProjectSwitchEmpty {
+  display: flex;
+  min-height: 76px;
+  padding: 20px 12px;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-}
-
-.LxButton.ThreadEditorProjectSwitchTrigger.ui-hover,
-.LxButton.ThreadEditorProjectSwitchTrigger.ui-focus,
-.LxButton.ThreadEditorProjectSwitchTrigger.ui-pressed {
-  background-color: var(--secondary);
-}
-
-.LxButton.ThreadEditorNewTrigger {
-  display: flex;
-  width: 24px;
-  min-width: 24px;
-  height: 24px;
-  min-height: 24px;
-  padding: 0;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-}
-
-.LxButton.ThreadEditorNewTrigger.ui-hover,
-.LxButton.ThreadEditorNewTrigger.ui-focus,
-.LxButton.ThreadEditorNewTrigger.ui-pressed {
-  background-color: var(--secondary);
-}
-
-.ThreadEditorRailTabs {
-  display: flex;
-  min-height: 34px;
-  padding: 4px 8px;
-  align-items: center;
-  gap: 4px;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: var(--border);
-}
-
-.LxButton.ThreadEditorRailTab {
-  min-height: 24px;
-  padding: 3px 9px;
-  border-radius: 7px;
   color: var(--muted-foreground);
   font-size: 11px;
-}
-
-.LxButton.ThreadEditorRailTab--active {
-  background-color: var(--secondary);
-  color: var(--foreground);
+  line-height: 16px;
 }
 
 .ThreadEditorChatSurface,
@@ -728,7 +873,7 @@
 .ThreadEditorNewTerminalGlyph {
   width: 15px;
   color: var(--muted-foreground);
-  font-family: "SFMono-Regular", ui-monospace, monospace;
+  font-family: var(--font-mono-family);
   font-size: 10px;
 }
 
@@ -761,105 +906,6 @@
   border-radius: 24px;
   background-color: var(--popover);
   color: var(--popover-foreground);
-}
-
-.ThreadEditorProjectSwitchViewport {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 110;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-}
-
-.ThreadEditorProjectSwitchBackdrop {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-.ThreadEditorProjectSwitchDialog {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  width: 420px;
-  max-width: calc(100vw - 32px);
-  max-height: calc(100vh - 48px);
-  padding: 18px 16px 16px;
-  flex-direction: column;
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--border);
-  border-radius: 24px;
-  background-color: var(--popover);
-  color: var(--popover-foreground);
-}
-
-.LxButton.ThreadEditorProjectSwitchClose {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  width: 28px;
-  min-width: 28px;
-  height: 28px;
-  min-height: 28px;
-  padding: 0;
-  border-radius: 8px;
-}
-
-.ThreadEditorProjectSwitchHeading {
-  padding: 0 34px 0 4px;
-  color: var(--foreground);
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 22px;
-}
-
-.ThreadEditorProjectSwitchDescription {
-  padding: 4px 34px 12px 4px;
-  color: var(--muted-foreground);
-  font-size: 12px;
-  line-height: 18px;
-}
-
-.ThreadEditorProjectSwitchPanel {
-  max-height: 320px;
-}
-
-.LxButton.ThreadEditorProjectSwitchItem {
-  display: flex;
-  width: 100%;
-  min-height: 34px;
-  padding: 6px 8px;
-  align-items: center;
-  gap: 8px;
-  text-align: left;
-}
-
-.LxButton.ThreadEditorProjectSwitchItem--active {
-  background-color: var(--secondary);
-}
-
-.ThreadEditorProjectSwitchTitle {
-  flex: 1;
-  min-width: 0;
-  color: var(--foreground);
-  font-size: 12px;
-  line-height: 18px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.ThreadEditorProjectSwitchMeta {
-  color: var(--muted-foreground);
-  font-size: 11px;
-  line-height: 18px;
 }
 
 .ThreadEditorHistoryViewport {
@@ -990,9 +1036,15 @@
   width: 28px;
   min-width: 28px;
   height: 28px;
+  padding: 0 6px;
   align-items: center;
   justify-content: center;
+  gap: 5px;
   border-radius: 8px;
+}
+
+.ThreadDiffToggle--with-stats {
+  width: auto;
 }
 
 .ThreadDiffToggle.ui-hover,
@@ -1012,6 +1064,35 @@
   opacity: 0.7;
 }
 
+.ThreadDiffToggleStats {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ThreadDiffToggleAddition,
+.ThreadDiffToggleDeletion {
+  font-family: var(--font-ui-family);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.ThreadDiffToggleAddition {
+  color: var(--success);
+}
+
+.ThreadDiffToggleDeletion {
+  color: var(--destructive);
+}
+
+.ThreadTranscriptViewport {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+
 .ThreadTranscriptColumn {
   display: flex;
   flex: 1;
@@ -1021,7 +1102,10 @@
 }
 
 .ThreadComposerDock {
+  display: flex;
+  width: 100%;
   flex-shrink: 0;
+  flex-direction: column;
   padding-bottom: 16px;
 }
 
@@ -1094,6 +1178,35 @@
   font-weight: 500;
 }
 
+.LxButton.ThreadEditorChatToggle {
+  width: 34px;
+  min-width: 34px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.LxButton.ThreadEditorExitButton {
+  width: 88px;
+  min-width: 88px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0 9px;
+  gap: 6px;
+  border-radius: 10px;
+}
+
+.LxButton.ThreadEditorExitButton .LxButton__text {
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.ThreadEditorHeaderIcon {
+  width: 14px;
+  height: 14px;
+}
+
 .ThreadEditorBody {
   display: flex;
   flex: 1;
@@ -1114,23 +1227,44 @@
 }
 
 .ThreadEditorActivityItem {
+  position: relative;
   display: flex;
   width: 48px;
   height: 48px;
   align-items: center;
   justify-content: center;
-  opacity: 0.68;
+  color: var(--muted-foreground);
+}
+
+.ThreadEditorActivityItem.ui-hover,
+.ThreadEditorActivityItem.ui-focus {
+  color: var(--foreground);
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .ThreadEditorActivityItem--active {
-  opacity: 1;
-  box-shadow: inset 2px 0 0 var(--foreground);
+  color: var(--foreground);
+  background-color: var(--color-background-button-secondary);
 }
 
-.ThreadEditorActivityGlyph {
-  color: var(--foreground);
-  font-size: 18px;
-  font-weight: 600;
+.ThreadEditorActivityIndicator {
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 2px;
+  height: 24px;
+  border-top-right-radius: 999px;
+  border-bottom-right-radius: 999px;
+  background-color: transparent;
+}
+
+.ThreadEditorActivityIndicator--active {
+  background-color: var(--foreground);
+}
+
+.ThreadEditorActivityIcon {
+  width: 20px;
+  height: 20px;
 }
 
 .ThreadEditorCenter {
@@ -1156,7 +1290,7 @@
   bottom: auto;
   z-index: auto;
   width: 100%;
-  max-width: none;
+  max-width: 100%;
   min-width: 0;
   height: 100%;
   border-left-width: 0;
@@ -1171,23 +1305,33 @@
   flex-direction: column;
 }
 
+/* The editor chat lives in the compact second-row rail header from the shared
+   Web composition. It must reserve its limited width for the thread identity
+   before the rail actions, and never grow vertically for a long title. */
+.ThreadEditorChat > .AppWindowDragRegion {
+  min-height: 40px;
+  padding: 0 12px;
+}
+
+.ThreadEditorChat .ThreadHeaderIdentity,
+.ThreadEditorChat .SharedChatHeaderIdentity {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.ThreadEditorChat .SharedChatHeaderIdentityTitle {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .ThreadEditorChat--hidden {
   display: none;
 }
 
 .ThreadEditorChat .ThreadTranscriptColumn {
   padding-top: 8px;
-}
-
-.SliceRoot--viewport-compact .ThreadEditorBody,
-.SliceRoot--viewport-medium .ThreadEditorBody {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  grid-template-rows: minmax(0, 5fr) minmax(0, 3fr);
-}
-
-.SliceRoot--viewport-short-height .ThreadEditorBody {
-  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
 }
 
 .SliceRoot--viewport-short-height
@@ -1217,69 +1361,9 @@
   height: 8px;
 }
 
-.SliceRoot--viewport-compact
-  .ThreadEditorChat
-  .CenteredEmptyLandingFrame,
-.SliceRoot--viewport-medium
-  .ThreadEditorChat
-  .CenteredEmptyLandingFrame,
-.SliceRoot--viewport-compact
-  .ThreadEditorChat
-  .EmptyThreadContextTray,
-.SliceRoot--viewport-medium
-  .ThreadEditorChat
-  .EmptyThreadContextTray {
-  display: none;
-}
-
-.SliceRoot--viewport-compact
-  .ThreadEditorChat
-  .ProviderHealthBannerFrame,
-.SliceRoot--viewport-medium
-  .ThreadEditorChat
-  .ProviderHealthBannerFrame {
-  display: none;
-}
-
-.SliceRoot--viewport-compact .ThreadEditorPath,
-.SliceRoot--viewport-medium .ThreadEditorPath,
-.SliceRoot--viewport-compact .ThreadEditorModeLabel,
-.SliceRoot--viewport-medium .ThreadEditorModeLabel {
-  display: none;
-}
-
-.SliceRoot--viewport-compact .ThreadEditorActivityRail,
-.SliceRoot--viewport-medium .ThreadEditorActivityRail {
-  grid-column: 1;
-  grid-row: 1 / 3;
-}
-
-.SliceRoot--viewport-compact .ThreadEditorCenter,
-.SliceRoot--viewport-medium .ThreadEditorCenter {
-  grid-column: 2;
-  grid-row: 1;
-  min-height: 50%;
-  border-right-width: 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.SliceRoot--viewport-compact .ThreadEditorChat,
-.SliceRoot--viewport-medium .ThreadEditorChat {
-  grid-column: 2;
-  grid-row: 2;
-  width: 100%;
-  min-width: 0;
-  min-height: 50%;
-}
-
 .SliceRoot--viewport-compact .ThreadEditorHistoryDialog {
   width: calc(100vw - 24px);
   max-width: none;
-}
-
-.SliceRoot--viewport-compact .ThreadEditorCenter--chat-hidden,
-.SliceRoot--viewport-medium .ThreadEditorCenter--chat-hidden {
-  grid-row: 1 / 3;
 }
 
 .FeaturePage {
@@ -1802,6 +1886,109 @@
   height: 80px;
 }
 
+.TranscriptMessageTrail {
+  position: absolute;
+  left: 0;
+  top: 10%;
+  bottom: 10%;
+  z-index: 20;
+  display: flex;
+  width: 56px;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: visible;
+}
+
+.TranscriptMessageTrailTrack {
+  display: flex;
+  width: 56px;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  overflow: visible;
+}
+
+.TranscriptMessageTrailItem {
+  position: relative;
+  display: flex;
+  width: 56px;
+  height: 10px;
+  align-items: center;
+  padding-left: 14px;
+  overflow: visible;
+}
+
+.TranscriptMessageTrailTick {
+  width: 6px;
+  height: 2px;
+  border-radius: 999px;
+  background-color: var(--foreground);
+  opacity: 0.2;
+  transition: width 90ms ease-out, opacity 90ms ease-out;
+}
+
+.TranscriptMessageTrailTick--visible .TranscriptMessageTrailTick {
+  opacity: 0.52;
+}
+
+.TranscriptMessageTrailTick--active .TranscriptMessageTrailTick {
+  opacity: 0.9;
+}
+
+.TranscriptMessageTrailItem--focused .TranscriptMessageTrailTick {
+  width: 30px;
+  opacity: 1;
+}
+
+.TranscriptMessageTrailItem--near .TranscriptMessageTrailTick {
+  width: 20px;
+}
+
+.TranscriptMessageTrailItem--far .TranscriptMessageTrailTick {
+  width: 12px;
+}
+
+.TranscriptMessageTrailTooltip {
+  position: absolute;
+  left: 50px;
+  top: -26px;
+  display: flex;
+  width: 256px;
+  min-height: 56px;
+  padding: 8px;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--popover);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.TranscriptMessageTrailItem--focused .TranscriptMessageTrailTooltip {
+  opacity: 1;
+}
+
+.TranscriptMessageTrailPreview,
+.TranscriptMessageTrailResponse {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.TranscriptMessageTrailPreview {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.TranscriptMessageTrailResponse {
+  color: var(--muted-foreground);
+}
+
 .TranscriptMessageRow {
   width: 100%;
   margin-left: -1px;
@@ -1837,10 +2024,157 @@
 
 .TranscriptCollapsedNarration {
   color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 19px;
+}
+
+.TranscriptCollapsedNarration .MdHeading,
+.TranscriptCollapsedNarration .MdParagraph,
+.TranscriptCollapsedNarration .MdList,
+.TranscriptCollapsedNarration .MdBlockquote {
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.TranscriptReasoningEntry {
+  width: 100%;
+  min-width: 0;
+  color: color-mix(in srgb, var(--muted-foreground) 72%, transparent);
+  font-size: 11px;
+  line-height: 19px;
+}
+
+.TranscriptReasoningEntry .MdHeading,
+.TranscriptReasoningEntry .MdParagraph,
+.TranscriptReasoningEntry .MdList,
+.TranscriptReasoningEntry .MdBlockquote {
+  color: color-mix(in srgb, var(--muted-foreground) 72%, transparent);
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: 400;
+}
+
+.TranscriptToolDetailsDisclosure {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.TranscriptToolDetailsTrigger {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: row;
+  align-items: center;
+}
+
+.TranscriptToolDetailsTrigger > .SharedTimelineStatusRow {
+  flex: 1;
+}
+
+.TranscriptToolDetailsChevron {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  opacity: 0.55;
+}
+
+.TranscriptToolDetailsPanel {
+  min-width: 0;
+  padding-top: 8px;
+  padding-left: 20px;
+}
+
+.TranscriptToolDetailsContent {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.TranscriptToolDetailsMarkdown .MdCodeBlockText {
+  font-size: var(--transcript-tool-details-font-size);
+  line-height: var(--transcript-tool-details-line-height);
+}
+
+.TranscriptToolGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.TranscriptToolGroupTrigger {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-width: 0;
+  gap: 6px;
+  min-height: 20px;
+  color: var(--muted-foreground);
+}
+
+.TranscriptToolGroupLabel {
+  min-width: 0;
+  color: inherit;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.TranscriptToolGroupChevron {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  color: inherit;
+  opacity: 0.72;
+}
+
+.TranscriptToolGroupEntries {
+  padding-top: 2px;
+  padding-left: 20px;
 }
 
 .TranscriptUserText {
+  width: 100%;
+  min-width: 0;
   color: var(--foreground);
+}
+
+.TranscriptUserEditForm {
+  display: flex;
+  width: 100%;
+  padding: 8px 12px;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: var(--radius-user-message);
+  background-color: var(--app-user-message-background);
+}
+
+.TranscriptUserEditTextarea {
+  width: 100%;
+  min-height: 48px;
+  max-height: 240px;
+  padding: 0;
+  border-width: 0;
+  background-color: transparent;
+  color: var(--foreground);
+  font-family: var(--font-ui-family);
+}
+
+.TranscriptUserEditError {
+  color: var(--destructive);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.TranscriptUserEditActions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 .TranscriptAssistantContent {
@@ -1892,13 +2226,13 @@
   height: 24px;
   border-radius: 999px;
   background-color: transparent;
-  color: var(--color-text-foreground-tertiary);
+  color: var(--color-icon-secondary);
 }
 
 .TranscriptMessageActionIcon {
   width: 13px;
   height: 13px;
-  color: var(--color-text-foreground-tertiary);
+  color: var(--color-icon-secondary);
 }
 
 .TranscriptMessageTimestamp {
@@ -1909,11 +2243,6 @@
 
 .TranscriptMessageAction.ui-hover {
   background-color: var(--color-background-button-tertiary-hover);
-}
-
-.TranscriptMessageAction.ui-hover .TranscriptMessageActionIcon,
-.TranscriptMessageAction.ui-focus .TranscriptMessageActionIcon {
-  color: var(--color-text-foreground-secondary);
 }
 
 .TranscriptMessageAction.ui-focus {
@@ -1932,6 +2261,8 @@
   position: fixed;
   z-index: 80;
   display: flex;
+  width: 292px;
+  min-height: 38px;
   flex-direction: row;
   align-items: center;
   gap: 2px;
@@ -1940,6 +2271,21 @@
   border-radius: 999px;
   background-color: var(--color-background-elevated-primary-opaque);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.TranscriptSelectionToolbar .TranscriptSelectionAction {
+  flex: 1;
+  min-width: 0;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.TranscriptSelectionToolbar--top {
+  transform-origin: center bottom;
+}
+
+.TranscriptSelectionToolbar--bottom {
+  transform-origin: center top;
 }
 
 .TranscriptSelectionAction {
@@ -1964,7 +2310,6 @@
   color: var(--foreground);
 }
 
-.TranscriptSelectionActionGlyph,
 .TranscriptSelectionActionLabel {
   color: var(--foreground);
   font-size: 11px;
@@ -2046,12 +2391,18 @@
   width: 100%;
 }
 
+.SettingsSidebarFixedChrome {
+  flex-shrink: 0;
+  width: 100%;
+  padding: 8px 6px 0;
+}
+
 .SettingsSidebarBodyInner {
   display: flex;
   min-height: 100%;
   width: 100%;
   flex-direction: column;
-  padding: 8px 6px 6px;
+  padding: 0 6px 6px;
 }
 
 .SettingsContent {

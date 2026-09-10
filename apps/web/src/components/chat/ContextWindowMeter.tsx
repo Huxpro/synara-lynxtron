@@ -11,6 +11,7 @@ export function ContextWindowMeter(props: {
   cumulativeCostUsd?: number | null | undefined;
   activeWindowLabel?: string | null | undefined;
   pendingWindowLabel?: string | null | undefined;
+  initialOpen?: boolean | undefined;
 }) {
   const { usage, cumulativeCostUsd, activeWindowLabel, pendingWindowLabel } = props;
   const display = deriveContextWindowMeterDisplay(usage);
@@ -19,7 +20,7 @@ export function ContextWindowMeter(props: {
   const dashOffset = circumference - (display.normalizedPercentage / 100) * circumference;
 
   return (
-    <Popover>
+    <Popover defaultOpen={props.initialOpen ?? false}>
       <PopoverTrigger
         openOnHover
         delay={150}

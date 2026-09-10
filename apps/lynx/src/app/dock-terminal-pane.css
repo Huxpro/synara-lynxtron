@@ -1,0 +1,223 @@
+.DockTerminalPane {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.DockTerminalPaneToolbar {
+  display: flex;
+  width: 100%;
+  height: 36px;
+  min-height: 36px;
+  padding: 0 6px;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.DockTerminalPaneGroupScroller {
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  min-height: 36px;
+  border-bottom: 1px solid var(--border);
+}
+
+.DockTerminalPaneGroups {
+  display: flex;
+  min-width: 100%;
+  height: 36px;
+  padding: 4px 6px;
+  align-items: center;
+  gap: 4px;
+}
+
+.DockTerminalPaneGroupTab {
+  min-width: 92px;
+  max-width: 160px;
+}
+
+.DockTerminalPaneTabScroller {
+  min-width: 0;
+  flex: 1;
+}
+
+.DockTerminalPaneTabs {
+  display: flex;
+  min-width: 100%;
+  align-items: center;
+  gap: 4px;
+}
+
+.DockTerminalPaneTab {
+  min-width: 92px;
+  max-width: 160px;
+}
+
+.DockTerminalPaneIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.DockTerminalPaneActivity {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background-color: var(--muted-foreground);
+}
+
+.DockTerminalPaneActivity--running {
+  background-color: var(--color-text-success);
+}
+
+.DockTerminalPaneActivity--attention {
+  background-color: var(--destructive);
+}
+
+.DockTerminalPaneActivity--review {
+  background-color: var(--color-text-warning);
+}
+
+.DockTerminalPaneToolbarButton {
+  display: flex;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  min-height: 28px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--muted-foreground);
+}
+
+.DockTerminalPaneToolbarButton.ui-hover,
+.DockTerminalPaneToolbarButton.ui-focus,
+.DockTerminalPaneToolbarButton.ui-pressed {
+  color: var(--foreground);
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.DockTerminalPaneBody,
+.DockTerminalPaneSplit,
+.DockTerminalPaneSplitChild,
+.DockTerminalPaneLeaf,
+.DockTerminalPaneSession {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+}
+
+.DockTerminalPaneLeaf {
+  flex-direction: column;
+}
+
+.DockTerminalPaneLeafBody {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+}
+
+.DockTerminalPaneSplitChild {
+  flex-basis: 0;
+}
+
+.DockTerminalPaneSplit--horizontal {
+  flex-direction: row;
+}
+
+.DockTerminalPaneSplit--vertical {
+  flex-direction: column;
+}
+
+.DockTerminalPaneSplitHandle {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.DockTerminalPaneSplitHandle--horizontal {
+  width: 1px;
+}
+
+.DockTerminalPaneSplitHandle--vertical {
+  height: 1px;
+}
+
+.DockTerminalPaneSplitHandleLine {
+  width: 100%;
+  height: 100%;
+  background-color: var(--border);
+}
+
+.DockTerminalPaneSplitHandle--horizontal .DockTerminalPaneSplitHandleLine {
+  width: 5px;
+}
+
+.DockTerminalPaneSplitHandle--vertical .DockTerminalPaneSplitHandleLine {
+  height: 5px;
+}
+
+.DockTerminalPaneSplitHandle.ui-hover .DockTerminalPaneSplitHandleLine {
+  background-color: var(--sidebar-accent);
+}
+
+.DockTerminalPaneSplitResizeOverlay {
+  position: absolute;
+  z-index: 30;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.DockTerminalPaneSession--hidden {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.DockTerminalPaneGroupBody {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+}
+
+.DockTerminalPaneGroupBody--hidden {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.DockTerminalPaneSession > .ThreadTerminal {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+  border-top-width: 0;
+}

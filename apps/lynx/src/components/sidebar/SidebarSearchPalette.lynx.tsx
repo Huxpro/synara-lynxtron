@@ -7,7 +7,6 @@ import {
   type SidebarSearchPaletteMode,
   type ImportProviderKind,
 } from '@synara-web/components/SidebarSearchPalette';
-import { buildSidebarSearchActions } from '@synara-web/components/SidebarSearchActions.logic';
 import { newCommandId } from '@synara-web/lib/utils';
 import {
   APP_SETTINGS_STORAGE_KEY,
@@ -19,18 +18,8 @@ import {
   buildNativeSearchImportThreadCreateCommand,
   buildNativeSearchProjectCreateCommand,
 } from './sidebarSearchActions.logic';
-import { LYNX_PRIMARY_SHORTCUT_LABELS } from './sidebarShortcuts';
-
-const LYNX_SEARCH_ACTIONS = buildSidebarSearchActions({
-  newChatShortcutLabel: LYNX_PRIMARY_SHORTCUT_LABELS.newThread,
-  includeNewThread: true,
-  includeAddProject: true,
-  includeImportThread: true,
-  includeFeedback: false,
-  includeUsageSettings: true,
-  includeSpaces: false,
-  includeNewSpace: false,
-});
+import { buildLynxSidebarSearchActions } from './sidebarSearchSpaceActions.logic';
+import { FeedbackDialogLynx } from './FeedbackDialog.lynx';
 
 const IMPORT_PROVIDERS: readonly ImportProviderKind[] = [
   'codex',
@@ -42,6 +31,7 @@ const IMPORT_PROVIDERS: readonly ImportProviderKind[] = [
 
 export function SidebarSearchPaletteLynx(props: {
   readonly open: boolean;
+  readonly activeThreadId?: string | null;
   readonly initialQuery?: string;
   readonly snapshot: SidebarSnapshot | undefined;
   readonly searchStatus: 'ready' | 'loading' | 'error';
@@ -52,12 +42,18 @@ export function SidebarSearchPaletteLynx(props: {
   readonly onOpenThread: (threadId: string) => void;
   readonly onCreateThread: () => void;
   readonly onCreateProjectThread: (projectId: string) => void;
+  readonly onCreateSpace: () => void;
   readonly onOpenSettings: (section?: 'usage') => void;
 }) {
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const generalSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
   );
   const [mode, setMode] = useState<SidebarSearchPaletteMode>('search');
+  const actions = useMemo(
+    () => buildLynxSidebarSearchActions(props.onCreateSpace),
+    [props.onCreateSpace]
+  );
   const projects = useMemo(
     () =>
       (props.snapshot?.searchProjects ?? []).filter((project) =>
@@ -152,14 +148,42 @@ export function SidebarSearchPaletteLynx(props: {
     }
   };
 
+  const activeThread = props.snapshot?.threads.find(
+    (thread) => thread.id === props.activeThreadId
+  );
+  const activeProject = activeThread
+    ? props.snapshot?.projects.find(
+        (project) => project.id === activeThread.projectId
+      )
+    : null;
+  const feedbackContext = useMemo(
+    () => ({
+      provider: activeThread?.provider ?? null,
+      model: null,
+      projectKind: activeProject?.kind ?? null,
+      environmentMode: null,
+      runtimeMode: null,
+      interactionMode: null,
+      sessionStatus: activeThread?.sessionStatus ?? null,
+      latestTurnState: activeThread?.latestTurnState ?? null,
+      messageCount: activeThread?.messageCount ?? 0,
+      activityCount: 0,
+      hasPendingApproval: activeThread?.hasPendingApprovals === true,
+      hasPendingUserInput: activeThread?.hasPendingUserInput === true,
+      hasThreadError: false,
+    }),
+    [activeProject?.kind, activeThread]
+  );
+
   return (
-    <SidebarSearchPalette
+    <>
+      <SidebarSearchPalette
       open={props.open}
       initialQuery={props.initialQuery}
       mode={mode}
       onModeChange={setMode}
       onOpenChange={props.onOpenChange}
-      actions={LYNX_SEARCH_ACTIONS}
+      actions={actions}
       projects={projects}
       threads={threads}
       searchStatus={props.searchStatus}
@@ -173,7 +197,7 @@ export function SidebarSearchPaletteLynx(props: {
       onAddProjectPath={addProjectPath}
       homeDir={null}
       onOpenSettings={props.onOpenSettings}
-      onOpenFeedback={() => {}}
+      onOpenFeedback={() => setFeedbackOpen(true)}
       onOpenUsageSettings={() => props.onOpenSettings('usage')}
       onOpenProject={props.onOpenProject}
       onOpenThread={props.onOpenThread}
@@ -188,6 +212,13 @@ export function SidebarSearchPaletteLynx(props: {
       }}
       filesystemBrowseEnabled
       appearanceEnabled
-    />
+      />
+      <FeedbackDialogLynx
+        activeThreadId={props.activeThreadId}
+        open={feedbackOpen}
+        fallbackContext={feedbackContext}
+        onOpenChange={setFeedbackOpen}
+      />
+    </>
   );
 }

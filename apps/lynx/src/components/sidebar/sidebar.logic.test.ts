@@ -1,13 +1,38 @@
 import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
-import { deriveSidebarSections } from './sidebar.logic';
+import { deriveSidebarSections, resolveNativeSidebarSpaceId } from './sidebar.logic';
 import { pruneProjectThreadListPagingForCollapsedProjects } from '@synara-web/components/SidebarProjectPaging.logic';
 import { resolveSettingsBackTarget } from '@synara-web/components/SidebarSettingsBack.logic';
 import { resolvePullRequestReviewBadge } from '@synara-web/components/SidebarActionBadges.logic';
 import { resolveSidebarPrimarySurface } from '@synara-web/components/SidebarSurface.logic';
 
 describe('deriveSidebarProjectGroups', () => {
+  it('uses the routed thread Space immediately and falls stale stored ids back to Void', () => {
+    const projects = [
+      { id: 'project', kind: 'project' as const, title: 'Project', workspaceRoot: '/work', spaceId: 'space-a' as never },
+    ];
+    const threads = [
+      { id: 'thread', title: 'Thread', projectId: 'project', project: 'Project', messageCount: 1, updatedAt: '2026-01-01', live: false },
+    ];
+    const spaces = [{ id: 'space-a' as never }];
+
+    expect(resolveNativeSidebarSpaceId({
+      activeThreadId: 'thread',
+      projects,
+      spaces,
+      storedActiveSpaceId: null,
+      threads,
+    })).toBe('space-a');
+    expect(resolveNativeSidebarSpaceId({
+      activeThreadId: null,
+      projects,
+      spaces,
+      storedActiveSpaceId: 'stale-space' as never,
+      threads,
+    })).toBeNull();
+  });
+
   it('keeps project order and sorts rows newest first', () => {
     const { projectGroups: groups } = deriveSidebarSections({
       projects: [
@@ -199,6 +224,27 @@ describe('deriveSidebarProjectGroups', () => {
     });
 
     expect(sections.projectGroups.map((project) => project.id)).toEqual(['two', 'one']);
+  });
+
+  it('filters ordinary projects and pinned threads to the active Space', () => {
+    const sections = deriveSidebarSections({
+      projects: [
+        { id: 'void-project', kind: 'project', title: 'Void', workspaceRoot: '/void', spaceId: null },
+        { id: 'space-project', kind: 'project', title: 'Space', workspaceRoot: '/space', spaceId: 'space-a' as never },
+        { id: 'chat', kind: 'chat', title: 'Home', workspaceRoot: '/home', spaceId: null },
+      ],
+      threads: [
+        { id: 'void-thread', title: 'Void thread', projectId: 'void-project', project: 'Void', messageCount: 1, updatedAt: '2026-01-01', live: false, isPinned: true },
+        { id: 'space-thread', title: 'Space thread', projectId: 'space-project', project: 'Space', messageCount: 1, updatedAt: '2026-01-02', live: false, isPinned: true },
+        { id: 'chat-thread', title: 'Chat', projectId: 'chat', project: 'Home', messageCount: 1, updatedAt: '2026-01-03', live: false },
+      ],
+      activeSpaceId: 'space-a' as never,
+    });
+
+    expect(sections.projectGroups.map((project) => project.id)).toEqual(['space-project']);
+    expect(sections.projectGroups[0]?.spaceId).toBe('space-a');
+    expect(sections.pinnedThreads.map((thread) => thread.id)).toEqual(['space-thread']);
+    expect(sections.chatThreads.map((thread) => thread.id)).toEqual(['chat-thread']);
   });
 });
 

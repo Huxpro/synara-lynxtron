@@ -169,6 +169,8 @@ function RootRouteView() {
   useNativeFontSmoothing();
   useSyncDesktopTopBarTrafficLightGutterZoom();
   useTheme();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const componentsLabActive = pathname === "/components-lab";
   const [compatibilityIssue, setCompatibilityIssue] = useState<WsCompatibilityError | null>(() =>
     readLatestWsCompatibilityIssue(),
   );
@@ -225,23 +227,39 @@ function RootRouteView() {
     <>
       <ToastProvider position="top-center">
         <AnchoredToastProvider>
-          <GitProgressToastPreviewDev />
-          <EventRouter />
-          <ProviderStatusRefreshCoordinator />
-          <GlobalShortcutsDialog />
-          <GlobalFeedbackDialog />
-          <GlobalWhatsNewSurface />
-          <TaskCompletionNotifications />
-          <AppSnapWelcomeDialog />
-          <AppSnapCoordinator />
-          <ProviderUpdateNotifications />
-          <DesktopProjectBootstrap />
+          {componentsLabActive ? null : <GitProgressToastPreviewDev />}
+          {componentsLabActive ? null : <EventRouter />}
+          {componentsLabActive ? null : <ProviderStatusRefreshCoordinator />}
+          <GlobalComponentsLabMenuNavigation />
+          {componentsLabActive ? null : <GlobalShortcutsDialog />}
+          {componentsLabActive ? null : <GlobalFeedbackDialog />}
+          {componentsLabActive ? null : <GlobalWhatsNewSurface />}
+          {componentsLabActive ? null : <TaskCompletionNotifications />}
+          {componentsLabActive ? null : <AppSnapWelcomeDialog />}
+          {componentsLabActive ? null : <AppSnapCoordinator />}
+          {componentsLabActive ? null : <ProviderUpdateNotifications />}
+          {componentsLabActive ? null : <DesktopProjectBootstrap />}
           <Outlet />
         </AnchoredToastProvider>
       </ToastProvider>
       {desktopWindowControls}
     </>
   );
+}
+
+function GlobalComponentsLabMenuNavigation() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const onMenuAction = getDesktopBridge()?.onMenuAction;
+    if (typeof onMenuAction !== "function") return;
+    return onMenuAction((action) => {
+      if (action !== "open-components-lab") return;
+      void navigate({ to: "/components-lab", search: {} });
+    });
+  }, [navigate]);
+
+  return null;
 }
 
 function TransportCompatibilityView({ issue }: { issue: WsCompatibilityError }) {

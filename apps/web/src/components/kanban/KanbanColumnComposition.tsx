@@ -35,6 +35,7 @@ export function KanbanColumnComposition(props: {
   readonly onCardContextMenu?: (
     card: KanbanCard,
     event: React.MouseEvent,
+    restoreFocus?: () => void,
   ) => void;
   readonly onCardActions?: (
     card: KanbanCard,

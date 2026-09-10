@@ -5,6 +5,10 @@ export interface ComposerNativeEditorSnapshot {
   readonly value: string;
 }
 
+type NativeEditorValueResult = Partial<ComposerNativeEditorSnapshot> & {
+  readonly selectionBegin?: unknown;
+};
+
 function selectionOffset(value: string, candidate: unknown): number {
   if (typeof candidate !== 'number' || !Number.isFinite(candidate)) {
     return value.length;
@@ -13,12 +17,12 @@ function selectionOffset(value: string, candidate: unknown): number {
 }
 
 export function normalizeComposerNativeEditorSnapshot(
-  candidate: Partial<ComposerNativeEditorSnapshot> | null | undefined
+  candidate: NativeEditorValueResult | null | undefined
 ): ComposerNativeEditorSnapshot | null {
   if (!candidate || typeof candidate.value !== 'string') return null;
   const selectionStart = selectionOffset(
     candidate.value,
-    candidate.selectionStart
+    candidate.selectionStart ?? candidate.selectionBegin
   );
   return {
     value: candidate.value,

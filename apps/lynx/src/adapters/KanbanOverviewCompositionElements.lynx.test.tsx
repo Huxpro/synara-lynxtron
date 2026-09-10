@@ -40,5 +40,28 @@ describe('Kanban overview fidelity', () => {
     expect(styles).toMatch(
       /\.SharedKanbanOverviewProjectChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*margin-left:\s*auto;/s
     );
+    expect(styles).toMatch(
+      /\.SharedKanbanOverviewProjectChevron\s*\{[^}]*opacity:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedKanbanOverviewProjectHeader\.ui-hover[^{]*\.SharedKanbanOverviewProjectChevron,[^{]*\.SharedKanbanOverviewProjectHeader\.ui-focus[^{]*\.SharedKanbanOverviewProjectChevron\s*\{[^}]*opacity:\s*1;/s
+    );
+  });
+
+  it('matches Electron project-count and chevron semantic tones', () => {
+    const styles = readFileSync(
+      new URL('./kanban-overview-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SharedKanbanOverviewProjectCount\s*\{[^}]*color:\s*color-mix\(in srgb, var\(--muted-foreground\) 70%, transparent\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedKanbanOverviewProjectChevron\s*\{[^}]*color:\s*color-mix\(in srgb, var\(--muted-foreground\) 50%, transparent\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedKanbanOverviewProjectTitle\s*\{[^}]*flex:\s*1;/s
+    );
   });
 });

@@ -120,6 +120,11 @@ export default defineConfig({
           __dirname,
           'src/adapters/ComposerInputCompositionElements.lynx.tsx'
         ),
+      '~/components/chat/EditorRailAddMenuCompositionElements$':
+        path.resolve(
+          __dirname,
+          'src/adapters/EditorRailAddMenuCompositionElements.lynx.tsx'
+        ),
       '~/components/chat/ComposerLifecycleStatusElements$':
         path.resolve(
           __dirname,
@@ -320,6 +325,10 @@ export default defineConfig({
           rootPath,
           './src/adapters/PullRequestCodeCompositionElements.lynx.tsx'
         ),
+      '~/components/WorkspaceFilePreviewErrorStateElements$': path.resolve(
+        rootPath,
+        './src/adapters/WorkspaceFilePreviewErrorStateElements.lynx.tsx'
+      ),
       '~/components/pullRequest/PullRequestTimelineCompositionElements$':
         path.resolve(
           rootPath,

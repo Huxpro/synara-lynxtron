@@ -11,12 +11,61 @@ import {
   computeTickStyles,
   computeTrailGeometry,
   createActiveTrailStore,
+  isMessageTrailEligible,
+  resolveMessageTrailPaneEdgeOffset,
+  resolveVisibleRowRangeFromAttachedCells,
   deriveMessageTrailItems,
   resolveActiveTrailMessageId,
   resolveActiveTrailSnapshot,
   type MessageTrailAnchor,
   type TrailGeometry,
 } from "./messageTrail.logic";
+
+describe("isMessageTrailEligible", () => {
+  it("requires both a wide pane and a genuinely lengthy thread", () => {
+    expect(isMessageTrailEligible({ itemCount: 4, paneWidth: 864 })).toBe(true);
+    expect(isMessageTrailEligible({ itemCount: 3, paneWidth: 864 })).toBe(false);
+    expect(isMessageTrailEligible({ itemCount: 4, paneWidth: 863 })).toBe(false);
+  });
+});
+
+describe("resolveMessageTrailPaneEdgeOffset", () => {
+  it("moves a centered 736px Native transcript rail back to the pane edge", () => {
+    expect(resolveMessageTrailPaneEdgeOffset(736)).toBe(0);
+    expect(resolveMessageTrailPaneEdgeOffset(864)).toBe(-64);
+    expect(resolveMessageTrailPaneEdgeOffset(1280)).toBe(-272);
+  });
+
+  it("does not invent an offset for narrow or invalid geometry", () => {
+    expect(resolveMessageTrailPaneEdgeOffset(640)).toBe(0);
+    expect(resolveMessageTrailPaneEdgeOffset(Number.NaN)).toBe(0);
+  });
+});
+
+describe('resolveVisibleRowRangeFromAttachedCells', () => {
+  it('filters attached buffer cells to the actual viewport', () => {
+    expect(
+      resolveVisibleRowRangeFromAttachedCells({
+        listHeight: 400,
+        attachedCells: [
+          { index: 2, top: -80, bottom: -1 },
+          { index: 3, top: -10, bottom: 40 },
+          { index: 4, top: 40, bottom: 300 },
+          { index: 5, top: 400, bottom: 480 },
+        ],
+      })
+    ).toEqual({ top: 3, bottom: 4 });
+  });
+
+  it('rejects missing geometry without guessing', () => {
+    expect(
+      resolveVisibleRowRangeFromAttachedCells({
+        listHeight: undefined,
+        attachedCells: [{ index: 1, top: 0, bottom: 20 }],
+      })
+    ).toBeNull();
+  });
+});
 
 function messageEntry(
   id: string,

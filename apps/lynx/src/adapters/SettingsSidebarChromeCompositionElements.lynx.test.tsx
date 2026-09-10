@@ -20,7 +20,7 @@ describe('Lynx Settings search input', () => {
     expect(search?.getAttribute('accessibility-label')).toBe(
       'Search settings unavailable'
     );
-    expect(search?.getAttribute('accessibility-traits')).toBe('search');
+    expect(search?.getAttribute('accessibility-trait')).toBe('search');
     expect(search?.getAttribute('accessibility-state')).toBe(
       '{"disabled":true}'
     );
@@ -62,6 +62,9 @@ describe('Lynx Settings search input', () => {
     );
     expect(styles).toMatch(
       /\.SharedSettingsSidebarSearchInput\s*\{[^}]*padding-left:\s*32px;[^}]*padding-right:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.SharedSettingsSidebarSearchInput > \.LxInput\s*\{[^}]*height:\s*26px;[^}]*padding-top:\s*5px;[^}]*padding-bottom:\s*5px;[^}]*line-height:\s*16px;/s
     );
     expect(styles).toMatch(
       /\.SharedSettingsSidebarSearch\s*>\s*\.SharedSettingsSidebarSearchIcon\s*\{[^}]*left:\s*10px;/s

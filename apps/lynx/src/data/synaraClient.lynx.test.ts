@@ -29,6 +29,23 @@ describe('Lynx Synara relay state', () => {
       "_tag: 'NativeRpcResult'"
     );
     expect(clientSource).toContain("parsed._tag === 'NativeRpcResult'");
+    expect(clientSource).toContain(
+      "'orchestration.subscribeShell'"
+    );
+    expect(clientSource).toContain(
+      "const ORCHESTRATION_SHELL_EVENT = 'synara:orchestration-shell-event'"
+    );
+    expect(mainSource).toContain(
+      "rpcData.tag === 'orchestration.subscribeShell'"
+    );
+    expect(mainSource).toContain('ORCHESTRATION_SHELL_EVENT');
+    const nativeHostSource = readFileSync(
+      new URL('../main/desktop/nativeRpcHost.ts', import.meta.url),
+      'utf8'
+    );
+    expect(nativeHostSource).toContain(
+      "tag !== 'orchestration.subscribeShell'"
+    );
   });
 
   it('leaves connection lifecycle state to the Web relay socket owner', () => {
@@ -136,6 +153,34 @@ describe('Lynx Synara relay state', () => {
     expect(source).toContain(
       "transportRequest('automation.delete', input)"
     );
+  });
+
+  it('uses canonical project dev-server registry tags', () => {
+    const source = readFileSync(
+      new URL('./synaraClient.lynx.ts', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain(
+      "transportRequest<ProjectListDevServersResult>('projects.listDevServers', {})"
+    );
+    expect(source).toContain(
+      "transportRequest<ProjectStopDevServerResult>('projects.stopDevServer', input)"
+    );
+    expect(source).toContain(
+      "transportRequest<ProjectDiscoverScriptsResult>('projects.discoverScripts', input)"
+    );
+    expect(source).toContain(
+      "transportRequest<ProjectRunDevServerResult>('projects.runDevServer', input)"
+    );
+  });
+
+  it('exposes the canonical keybinding mutation for Native action editors', () => {
+    const source = readFileSync(
+      new URL('./synaraClient.lynx.ts', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain("transportRequest('server.upsertKeybinding', rule)");
+    expect(source).toContain("transportRequest('server.removeKeybinding', { command })");
   });
 
 });

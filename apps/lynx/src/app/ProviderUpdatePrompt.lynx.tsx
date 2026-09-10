@@ -5,6 +5,8 @@ import {
   getVisibleProviderUpdateStatuses,
   providerUpdateOutcomeCopy,
   providerUpdateNotificationKey,
+  PROVIDER_UPDATE_INITIAL_REFRESH_DELAY_MS,
+  PROVIDER_UPDATE_REFRESH_INTERVAL_MS,
   runProviderUpdateBatch,
 } from '@synara-web/providerUpdates';
 import {
@@ -13,10 +15,13 @@ import {
 } from '@synara-web/appSettingsStorageProjection.logic';
 
 import { Button } from '../components/ui/button';
-import { TriangleAlertIcon, XIcon } from '../lib/icons.lynx';
+import { IconButton } from '../components/ui/icon-button.lynx';
+import { CircleAlertIcon, TriangleAlertIcon, XIcon } from '../lib/icons.lynx';
 import { webStorage } from '../platform/storage';
 import {
-  fetchProviderUpdatePromptData,
+  fetchProviderUpdatePromptServerConfig,
+  fetchProviderUpdatePromptServerSettings,
+  refreshProviderUpdatePromptServerConfig,
   queryClient,
   updatePromptProvider,
 } from './queries';
@@ -49,28 +54,133 @@ export function providerUpdatePromptCopy(input: {
   };
 }
 
+export function ProviderUpdatePromptSurface(props: {
+  readonly title: string;
+  readonly description: string;
+  readonly state: 'default' | 'multiple' | 'updating' | 'failure' | 'succeeded';
+  readonly copyText?: string;
+  readonly onCopy?: () => void;
+  readonly onDismiss: () => void;
+  readonly onReview: () => void;
+  readonly onUpdateAll: () => void;
+}) {
+  const failed = props.state === 'failure';
+  const updating = props.state === 'updating';
+  const succeeded = props.state === 'succeeded';
+  return (
+    <view
+      className={`ProviderUpdatePrompt${failed ? ' ProviderUpdatePrompt--failure' : ''}`}
+      accessibility-element
+      accessibility-label={`${props.title}. ${props.description}`}
+    >
+      {failed ? (
+        <CircleAlertIcon
+          className="ProviderUpdatePromptIcon"
+          size={16}
+          accessibilityLabel="error"
+        />
+      ) : (
+        <TriangleAlertIcon
+          className={`ProviderUpdatePromptIcon${
+            updating ? ' ProviderUpdatePromptIcon--updating' : ''
+          }`}
+          size={16}
+          accessibilityLabel={updating ? 'updating' : 'warning'}
+        />
+      )}
+      <view className="ProviderUpdatePromptContent">
+        <view className="ProviderUpdatePromptCopy">
+          <text className="ProviderUpdatePromptTitle">{props.title}</text>
+          <text className="ProviderUpdatePromptDescription">
+            {props.description}
+          </text>
+        </view>
+        <view className="ProviderUpdatePromptActions">
+          {succeeded ? (
+            <Button className="ProviderUpdatePromptAction" size="xs" variant="outline" onClick={props.onDismiss}>
+              Done
+            </Button>
+          ) : updating ? (
+            <Button className="ProviderUpdatePromptAction" size="xs" variant="outline" disabled>
+              Updating…
+            </Button>
+          ) : failed ? (
+            <>
+              {props.copyText ? (
+                <Button className="ProviderUpdatePromptAction" size="xs" variant="outline" onClick={props.onCopy}>
+                  Copy
+                </Button>
+              ) : null}
+              <Button className="ProviderUpdatePromptAction" size="xs" variant="outline" onClick={props.onReview}>
+                Review providers
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button className="ProviderUpdatePromptAction" size="xs" variant="outline" onClick={props.onReview}>
+                Review updates
+              </Button>
+              <Button className="ProviderUpdatePromptAction" size="xs" variant="outline" onClick={props.onUpdateAll}>
+                Update all
+              </Button>
+            </>
+          )}
+        </view>
+      </view>
+      <IconButton className="ProviderUpdatePromptDismiss" label="Dismiss provider updates" onClick={props.onDismiss}>
+        <XIcon size={12} />
+      </IconButton>
+    </view>
+  );
+}
+
 export function ProviderUpdatePrompt(props: {
   readonly onReview: () => void;
 }) {
-  const data = useQuery({
-    queryKey: ['provider-update-prompt'],
-    queryFn: () => {
-      'background only';
-      return fetchProviderUpdatePromptData();
-    },
+  const config = useQuery({
+    queryKey: ['server-config'],
+    queryFn: fetchProviderUpdatePromptServerConfig,
   });
+  const serverSettings = useQuery({
+    queryKey: ['server-settings'],
+    queryFn: fetchProviderUpdatePromptServerSettings,
+  });
+  useEffect(() => {
+    if (serverSettings.data?.enableProviderUpdateChecks !== true) return;
+    let disposed = false;
+    const refresh = () => {
+      void refreshProviderUpdatePromptServerConfig()
+        .then((nextConfig) => {
+          if (!disposed) queryClient.setQueryData(['server-config'], nextConfig);
+        })
+        .catch(() => undefined);
+    };
+    const initialRefreshId = setTimeout(
+      refresh,
+      PROVIDER_UPDATE_INITIAL_REFRESH_DELAY_MS
+    );
+    const refreshIntervalId = setInterval(
+      refresh,
+      PROVIDER_UPDATE_REFRESH_INTERVAL_MS
+    );
+    return () => {
+      disposed = true;
+      clearTimeout(initialRefreshId);
+      clearInterval(refreshIntervalId);
+    };
+  }, [serverSettings.data?.enableProviderUpdateChecks]);
   const hiddenProviders = readSettingsProviderPickerProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
   ).hiddenProviders;
   const providers = useMemo(
     () =>
       getVisibleProviderUpdateStatuses({
-        providers: data.data?.config.providers ?? [],
+        providers: config.data?.providers ?? [],
         hiddenProviders,
-        serverSettings: data.data?.settings,
+        serverSettings: serverSettings.data,
         oneClickOnly: true,
       }),
-    [data.data, hiddenProviders]
+    [config.data, hiddenProviders, serverSettings.data]
   );
   const key = providerUpdateNotificationKey(providers);
   const [dismissedKey, setDismissedKey] = useState<string | null>(null);
@@ -119,106 +229,46 @@ export function ProviderUpdatePrompt(props: {
   };
 
   return (
-    <view
-      className={`ProviderUpdatePrompt${activeOutcome && activeOutcome.status !== 'succeeded' ? ' ProviderUpdatePrompt--failure' : ''}`}
-      accessibility-element
-      accessibility-label={`${title}. ${description}`}
-    >
-      <TriangleAlertIcon
-        className="ProviderUpdatePromptIcon"
-        size={16}
-        accessibilityLabel="warning"
-      />
-      <view className="ProviderUpdatePromptContent">
-        <view className="ProviderUpdatePromptCopy">
-          <text className="ProviderUpdatePromptTitle">{title}</text>
-          <text className="ProviderUpdatePromptDescription">{description}</text>
-        </view>
-        <view className="ProviderUpdatePromptActions">
-          {activeOutcome?.status === 'succeeded' ? (
-            <Button
-              className="ProviderUpdatePromptAction"
-              size="xs"
-              variant="outline"
-              onClick={() => setUpdateOutcome(null)}
-            >
-              Done
-            </Button>
-          ) : (
-            <>
-              <Button
-                className="ProviderUpdatePromptAction"
-                size="xs"
-                variant="outline"
-                onClick={() => {
-                  if (key) {
-                    setDismissedKey(key);
-                  }
-                  props.onReview();
-                }}
-              >
-                Review updates
-              </Button>
-              <Button
-                className="ProviderUpdatePromptAction"
-                size="xs"
-                variant="outline"
-                disabled={updating}
-                onClick={() => {
-                  if (!key) {
-                    return;
-                  }
-                  setUpdating(true);
-                  setUpdateOutcome(null);
-                  void runProviderUpdateBatch({
-                    providers,
-                    updateProvider: updatePromptProvider,
-                  }).then((outcome) => {
-                    setUpdating(false);
-                    setUpdateOutcome({
-                      status: outcome.status,
-                      copy: providerUpdateOutcomeCopy(outcome),
-                    });
-                    void queryClient.invalidateQueries({
-                      queryKey: ['provider-update-prompt'],
-                    });
-                    void queryClient.invalidateQueries({
-                      queryKey: ['server-config'],
-                    });
-                  });
-                }}
-              >
-                {updating ? 'Updating…' : 'Update all'}
-              </Button>
-              {activeOutcome?.copy.copyText ? (
-                <Button
-                  className="ProviderUpdatePromptAction"
-                  size="xs"
-                  variant="outline"
-                  onClick={copyUpdateCommands}
-                >
-                  Copy command
-                  {activeOutcome.copy.copyText.includes('\n') ? 's' : ''}
-                </Button>
-              ) : null}
-            </>
-          )}
-        </view>
-      </view>
-      <Button
-        className="ProviderUpdatePromptDismiss"
-        size="icon-xs"
-        variant="ghost"
-        aria-label="Dismiss provider updates"
-        onClick={() => {
-          setUpdateOutcome(null);
-          if (key) {
-            setDismissedKey(key);
-          }
-        }}
-      >
-        <XIcon size={12} />
-      </Button>
-    </view>
+    <ProviderUpdatePromptSurface
+      title={title}
+      description={description}
+      state={
+        activeOutcome?.status === 'succeeded'
+          ? 'succeeded'
+          : activeOutcome
+            ? 'failure'
+            : updating
+              ? 'updating'
+              : providers.length > 1
+                ? 'multiple'
+                : 'default'
+      }
+      copyText={activeOutcome?.copy.copyText}
+      onCopy={copyUpdateCommands}
+      onDismiss={() => {
+        setUpdateOutcome(null);
+        if (key) setDismissedKey(key);
+      }}
+      onReview={() => {
+        if (key) setDismissedKey(key);
+        props.onReview();
+      }}
+      onUpdateAll={() => {
+        if (!key || updating) return;
+        setUpdating(true);
+        setUpdateOutcome(null);
+        void runProviderUpdateBatch({
+          providers,
+          updateProvider: updatePromptProvider,
+        }).then((outcome) => {
+          setUpdating(false);
+          setUpdateOutcome({
+            status: outcome.status,
+            copy: providerUpdateOutcomeCopy(outcome),
+          });
+          void queryClient.invalidateQueries({ queryKey: ['server-config'] });
+        });
+      }}
+    />
   );
 }

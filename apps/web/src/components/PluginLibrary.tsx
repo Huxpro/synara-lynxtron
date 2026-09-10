@@ -66,6 +66,7 @@ import {
 import { Skeleton } from "./ui/skeleton";
 import { resolveProviderDiscoveryStatus } from "@synara/shared/providerDiscoveryPresentation";
 import { providerPluginDiscoveryWarnings } from "@synara/shared/providerDiscoveryPresentation";
+import { providerDiscoveryItemHue } from "@synara/shared/providerDiscoveryPresentation";
 
 import { useDebouncedValue } from "@tanstack/react-pacer";
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -147,13 +148,7 @@ function resolvePluginBrand(plugin: ProviderPluginDescriptor): PluginBrandArtwor
 }
 
 /** Stable hue 0–359 from a string, for consistent per-item icon colors. */
-function nameToHue(name: string): number {
-  let h = 0;
-  for (let i = 0; i < name.length; i++) {
-    h = name.charCodeAt(i) + ((h << 5) - h);
-  }
-  return Math.abs(h) % 360;
-}
+const nameToHue = providerDiscoveryItemHue;
 
 // ── Icon glyphs ────────────────────────────────────────────────────────────
 

@@ -38,6 +38,15 @@ function fireCatchKeyDown(
   fireEvent(element, event);
 }
 
+function fireGlobalKeyDown(
+  element: Element,
+  payload: { readonly key: string; readonly shiftKey?: boolean }
+) {
+  const event = new Event('globalEvent:keydown', { bubbles: true });
+  Object.assign(event, payload);
+  fireEvent(element, event);
+}
+
 function RerenderingCommand(props: {
   readonly firstAction: () => void;
   readonly lastAction: () => void;
@@ -65,21 +74,44 @@ describe('Lynx CommandItem interaction contract', () => {
       new URL('./primitives.css', import.meta.url),
       'utf8'
     );
+    const sidebarStyles = readFileSync(
+      new URL('../../app/sidebar-disclosure.css', import.meta.url),
+      'utf8'
+    );
 
     expect(commandSource).toContain("className={cx('LxCommandTextarea', props.className)}");
     expect(commandSource).toContain('<textarea');
     expect(commandSource).toContain('confirm-type="search"');
+    expect(commandSource).toContain('global-bindkeydown={handleKeyDown}');
+    expect(commandSource).toContain("className={cx('LxCommandList', props.className)}");
+    expect(commandSource).toContain('scroll-orientation="vertical"');
+    expect(commandSource).toContain(
+      '<view className="LxCommandInput" catchkeydown={handleKeyDown}>'
+    );
+    expect(commandSource).toMatch(
+      /<textarea[\s\S]*?bindkeydown=\{handleKeyDown\}/
+    );
     expect(commandSource).toContain('bindconfirm={() => {');
     expect(commandSource).not.toContain('<Input');
     expect(primitiveStyles).toContain('.LxCommandTextarea');
     expect(primitiveStyles).toMatch(
-      /\.LxCommandTextarea\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+      /\.LxCommandTextarea\s*\{[^}]*height:\s*36px;[^}]*box-sizing:\s*border-box;[^}]*padding-top:\s*9px;[^}]*padding-bottom:\s*9px;[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxCommandInput > svg\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*flex-shrink:\s*0;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxCommandInput\s*\{[^}]*flex-shrink:\s*0;[^}]*height:\s*48px;[^}]*min-height:\s*48px;[^}]*box-sizing:\s*border-box;/s
     );
     expect(commandSource).toContain(
       'viewportClassName="LxCommandDialogViewport"'
     );
+    expect(commandSource).toContain('bottomStickOnMobile={false}');
     expect(primitiveStyles).toMatch(
-      /\.LxDialogViewport\.LxCommandDialogViewport\s*\{[^}]*padding-top:\s*4vh;[^}]*padding-bottom:\s*15vh;/s
+      /\.LxDialogViewport\.LxCommandDialogViewport\s*\{[^}]*z-index:\s*2100;[^}]*padding-top:\s*4vh;[^}]*padding-bottom:\s*15vh;/s
+    );
+    expect(sidebarStyles).toMatch(
+      /\.SidebarResizeOverlay\s*\{[^}]*z-index:\s*2000;/s
     );
     expect(primitiveStyles).toMatch(
       /\.LxDialogPopup\.LxCommandDialogPopup\s*\{[^}]*border-radius:\s*18px;[^}]*box-shadow:\s*0 10px 15px -3px rgba\(0,\s*0,\s*0,\s*0\.05\),\s*0 4px 6px -4px rgba\(0,\s*0,\s*0,\s*0\.05\);/s
@@ -97,10 +129,13 @@ describe('Lynx CommandItem interaction contract', () => {
       /\.SliceRoot--viewport-short-height \.LxCommandList\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;/s
     );
     expect(primitiveStyles).toMatch(
+      /\.LxCommandList\s*\{[^}]*margin-top:\s*7px;/s
+    );
+    expect(primitiveStyles).toMatch(
       /\.LxCommandPanel\s*\{[^}]*border-top-left-radius:\s*14px;[^}]*border-top-right-radius:\s*14px;[^}]*box-shadow:\s*0 1px 2px 0 rgba\(0,\s*0,\s*0,\s*0\.05\);/s
     );
     expect(primitiveStyles).toMatch(
-      /\.LxCommandItem\s*\{[^}]*border-radius:\s*10px;/s
+      /\.LxCommand \.LxCommandItem\s*\{[^}]*padding:\s*6px 10px;[^}]*border-radius:\s*10px;/s
     );
     expect(primitiveStyles).toMatch(
       /\.LxCommandGroupLabel__text\s*\{[^}]*font-size:\s*12px;[^}]*font-weight:\s*500;[^}]*line-height:\s*16px;/s
@@ -289,8 +324,8 @@ describe('Lynx CommandItem interaction contract', () => {
     );
 
     const items = elementTree.root?.querySelectorAll('.LxCommandItem') ?? [];
-    const keyboardTarget = items[0];
-    if (!keyboardTarget) throw new Error('expected CommandItem');
+    const keyboardTarget = elementTree.root?.querySelector('.LxCommandInput');
+    if (!keyboardTarget) throw new Error('expected CommandInput keyboard owner');
     expect(items[0]?.getAttribute('class')).toContain(
       'LxCommandItem--highlighted'
     );
@@ -329,7 +364,9 @@ describe('Lynx CommandItem interaction contract', () => {
       </CommandDialog>
     );
 
-    fireCatchKeyDown(commandItem(), { key: 'Escape' });
+    const input = elementTree.root?.querySelector('.LxCommandInput');
+    if (!input) throw new Error('expected CommandInput keyboard owner');
+    fireCatchKeyDown(input, { key: 'Escape' });
     expect(onOpenChange).toHaveBeenLastCalledWith(false);
   });
 

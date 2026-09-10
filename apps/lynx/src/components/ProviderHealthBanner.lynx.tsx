@@ -4,6 +4,7 @@ import { resolveProviderHealthBannerPresentation } from "@synara-web/components/
 import { CircleAlertIcon, TriangleAlertIcon, XIcon } from "../lib/icons.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { useLynxInteractiveState } from "./ui/interactive-state.lynx";
+import { Alert, AlertDescription, AlertTitle } from './ui/alert.lynx';
 
 import "./provider-health-banner.css";
 
@@ -23,10 +24,10 @@ export function ProviderHealthBanner(props: {
   const Icon = presentation.tone === "error" ? CircleAlertIcon : TriangleAlertIcon;
   return (
     <view className="ProviderHealthBannerFrame">
-      <view
+      <Alert
         className={`ProviderHealthBanner ProviderHealthBanner--${presentation.tone}`}
-        accessibility-element={true}
-        accessibility-label={`${presentation.title}. ${presentation.message}`}
+        accessibilityLabel={`${presentation.title}. ${presentation.message}`}
+        variant={presentation.tone}
       >
         <Icon
           className="ProviderHealthBannerIcon"
@@ -39,15 +40,15 @@ export function ProviderHealthBanner(props: {
           accessibilityLabel={presentation.tone}
         />
         <view className="ProviderHealthBannerCopy">
-          <text className="ProviderHealthBannerTitle">{presentation.title}</text>
-          <text className="ProviderHealthBannerDescription">{presentation.message}</text>
+          <AlertTitle className="ProviderHealthBannerTitle">{presentation.title}</AlertTitle>
+          <AlertDescription className="ProviderHealthBannerDescription"><text>{presentation.message}</text></AlertDescription>
         </view>
         {props.onDismiss ? (
           <view className={dismiss.className} {...dismiss.eventProps}>
             <XIcon className="ProviderHealthBannerDismissIcon" size={14} />
           </view>
         ) : null}
-      </view>
+      </Alert>
     </view>
   );
 }

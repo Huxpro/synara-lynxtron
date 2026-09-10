@@ -2,8 +2,11 @@ import type { ReactNode } from '@lynx-js/react';
 
 import {
   formatGitPathForDisplay,
+  type PullRequestCodeSyntaxToken,
   type PullRequestDiffLineKind,
 } from '@synara-web/components/pullRequest/pullRequestCode.logic';
+import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
+import { useTheme } from './useTheme.lynx';
 import { ChevronRightIcon } from '../lib/icons.lynx';
 import {
   disclosureChevronClassName,
@@ -14,6 +17,11 @@ import './pull-request-code-composition-elements.css';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 type ChildrenProps = { readonly children?: ReactNode };
+
+const DIFF_BUFFER_PATTERN_SVG = `
+<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+  <path d="M-2 2L2-2M0 8L8 0M6 10L10 6" fill="none" stroke="currentColor" stroke-width="1"/>
+</svg>`;
 
 export function PullRequestCodeRootElement(props: ChildrenProps) {
   return <view className="SharedPrCodeRoot">{props.children}</view>;
@@ -66,9 +74,14 @@ export function PullRequestCodeFileHeaderElement(props: {
   readonly additions: number;
   readonly deletions: number;
   readonly expanded: boolean;
+  readonly pathPresentation?: 'full' | 'basename-first';
+  readonly trailingActions?: ReactNode;
   readonly onActivate: () => void;
 }) {
   const path = formatGitPathForDisplay(props.path);
+  const slash = path.lastIndexOf('/');
+  const basename = slash === -1 ? path : path.slice(slash + 1);
+  const directory = slash === -1 ? '' : path.slice(0, slash + 1);
   const previousPath = props.previousPath
     ? formatGitPathForDisplay(props.previousPath)
     : null;
@@ -84,14 +97,20 @@ export function PullRequestCodeFileHeaderElement(props: {
       aria-expanded={props.expanded}
       {...interaction.eventProps}
     >
-      <ChevronRightIcon
-        className={disclosureChevronClassName(
-          props.expanded,
-          'SharedPrCodeFileChevron'
-        )}
-        size={10}
-      />
-      <text className="SharedPrCodeFilePath">{path}</text>
+      {props.pathPresentation === 'basename-first' ? (
+        <FileEntryIcon
+          className="SharedPrCodeFileTypeIcon"
+          pathValue={path}
+        />
+      ) : null}
+      <view className="SharedPrCodeFileIdentity">
+        <text className="SharedPrCodeFilePath">
+          {props.pathPresentation === 'basename-first' ? basename : path}
+        </text>
+        {props.pathPresentation === 'basename-first' && directory ? (
+          <text className="SharedPrCodeFileDirectory">{directory}</text>
+        ) : null}
+      </view>
       {previousPath ? (
         <text className="SharedPrCodeFilePrevious">
           {props.relation === 'copied'
@@ -104,6 +123,14 @@ export function PullRequestCodeFileHeaderElement(props: {
       ) : null}
       <text className="SharedPrCodeStatsAddition">+{props.additions}</text>
       <text className="SharedPrCodeStatsDeletion">-{props.deletions}</text>
+      {props.trailingActions}
+      <ChevronRightIcon
+        className={disclosureChevronClassName(
+          props.expanded,
+          'SharedPrCodeFileChevron'
+        )}
+        size={10}
+      />
     </view>
   );
 }
@@ -150,9 +177,12 @@ export function PullRequestCodeLineElement(props: {
   readonly kind: PullRequestDiffLineKind;
   readonly oldLine: number | null;
   readonly newLine: number | null;
+  readonly side?: 'left' | 'right';
+  readonly syntaxTokens?: readonly PullRequestCodeSyntaxToken[];
   readonly text: string;
   readonly wordWrap: boolean;
 }) {
+  const { codeFontFamily } = useTheme();
   const prefix =
     props.kind === 'addition'
       ? '+'
@@ -167,12 +197,91 @@ export function PullRequestCodeLineElement(props: {
     <view
       className={`SharedPrCodeLine SharedPrCodeLine--${props.kind}${
         props.wordWrap ? ' SharedPrCodeLine--wrap' : ''
-      }`}
+      }${props.side ? ` SharedPrCodeLine--split-${props.side}` : ''}`}
     >
-      <text className="SharedPrCodeLineNumber">{props.oldLine ?? ''}</text>
-      <text className="SharedPrCodeLineNumber">{props.newLine ?? ''}</text>
-      <text className="SharedPrCodeLinePrefix">{prefix}</text>
-      <text className="SharedPrCodeLineText">{props.text || ' '}</text>
+      {props.side === 'right' ? null : (
+        <text className="SharedPrCodeLineNumber" style={{ fontFamily: codeFontFamily }}>
+          {props.oldLine ?? ''}
+        </text>
+      )}
+      {props.side === 'left' ? null : (
+        <text className="SharedPrCodeLineNumber" style={{ fontFamily: codeFontFamily }}>
+          {props.newLine ?? ''}
+        </text>
+      )}
+      {props.side ? null : (
+        <text className="SharedPrCodeLinePrefix" style={{ fontFamily: codeFontFamily }}>
+          {prefix}
+        </text>
+      )}
+      <text className="SharedPrCodeLineText" style={{ fontFamily: codeFontFamily }}>
+        {props.syntaxTokens?.length
+          ? props.syntaxTokens.map((token, tokenIndex) => (
+              <text
+                key={`${tokenIndex}:${token.content}`}
+                style={{
+                  color: token.color,
+                  ...(token.emphasized
+                    ? {
+                        backgroundColor:
+                          props.kind === 'addition'
+                            ? 'rgba(0, 162, 64, 0.2)'
+                            : 'rgba(224, 46, 42, 0.2)',
+                        borderRadius: '3px',
+                      }
+                    : {}),
+                  ...(token.fontStyle & 1 ? { fontStyle: 'italic' } : {}),
+                  ...(token.fontStyle & 2 ? { fontWeight: 700 } : {}),
+                  ...(token.fontStyle & 4
+                    ? { textDecoration: 'underline' }
+                    : {}),
+                }}
+              >
+                {token.content}
+              </text>
+            ))
+          : props.text || ' '}
+      </text>
+    </view>
+  );
+}
+
+export function PullRequestCodeSplitRowElement(props: {
+  readonly left?: ReactNode;
+  readonly right?: ReactNode;
+}) {
+  const leftEmpty = !props.left;
+  const rightEmpty = !props.right;
+  return (
+    <view className="SharedPrCodeSplitRow">
+      <view
+        className={`SharedPrCodeSplitSide SharedPrCodeSplitSide--left${
+          leftEmpty ? ' SharedPrCodeSplitSide--empty' : ''
+        }`}
+      >
+        {props.left ?? (
+          <view className="SharedPrCodeSplitBuffer">
+            <svg
+              className="SharedPrCodeSplitBufferPattern"
+              content={DIFF_BUFFER_PATTERN_SVG}
+            />
+          </view>
+        )}
+      </view>
+      <view
+        className={`SharedPrCodeSplitSide${
+          rightEmpty ? ' SharedPrCodeSplitSide--empty' : ''
+        }`}
+      >
+        {props.right ?? (
+          <view className="SharedPrCodeSplitBuffer">
+            <svg
+              className="SharedPrCodeSplitBufferPattern"
+              content={DIFF_BUFFER_PATTERN_SVG}
+            />
+          </view>
+        )}
+      </view>
     </view>
   );
 }

@@ -2,6 +2,8 @@
   display: flex;
   width: calc(100% - 24px);
   max-width: 736px;
+  margin-left: 0;
+  margin-right: 0;
   align-self: center;
   flex-direction: column;
 }

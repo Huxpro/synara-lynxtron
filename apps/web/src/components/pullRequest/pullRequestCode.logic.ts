@@ -45,6 +45,13 @@ export interface PullRequestDiffLineView {
   readonly text: string;
 }
 
+export interface PullRequestCodeSyntaxToken {
+  readonly color: string;
+  readonly content: string;
+  readonly emphasized?: boolean;
+  readonly fontStyle: number;
+}
+
 export interface PullRequestDiffFileView {
   readonly key: string;
   readonly path: string;

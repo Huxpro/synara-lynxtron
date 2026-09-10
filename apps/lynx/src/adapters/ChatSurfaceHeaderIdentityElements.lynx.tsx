@@ -25,6 +25,7 @@ export function ChatSurfaceHeaderIdentityIconElement(props: {
 
 export function ChatSurfaceHeaderIdentityTitleElement(props: {
   readonly title: string;
+  readonly displayTitle?: string;
   readonly onRename?: () => void;
 }) {
   const rename = useLynxInteractiveState({
@@ -38,9 +39,10 @@ export function ChatSurfaceHeaderIdentityTitleElement(props: {
   return (
     <text
       className={rename.className}
+      maxlines={1}
       {...rename.eventProps}
     >
-      {props.title}
+      {props.displayTitle ?? props.title}
     </text>
   );
 }

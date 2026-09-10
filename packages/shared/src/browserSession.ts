@@ -9,6 +9,31 @@
 const RESERVED_FRAME_NAMES = new Set(["", "_blank", "_self", "_parent", "_top"]);
 export const BROWSER_BLANK_URL = "about:blank";
 export const BROWSER_SEARCH_URL_PREFIX = "https://www.google.com/search?q=";
+export const BROWSER_SUGGESTION_LIMIT = 6;
+
+export interface BrowserAddressSuggestionTab {
+  readonly faviconUrl?: string | null;
+  readonly id: string;
+  readonly lastCommittedUrl?: string | null;
+  readonly title: string;
+  readonly url: string;
+}
+
+export interface BrowserAddressHistoryEntry {
+  readonly tabId: string;
+  readonly title: string;
+  readonly url: string;
+}
+
+export interface BrowserAddressSuggestion {
+  readonly detail: string;
+  readonly faviconUrl?: string | null;
+  readonly id: string;
+  readonly kind: "navigate" | "tab" | "history";
+  readonly tabId?: string;
+  readonly title: string;
+  readonly url: string;
+}
 
 // Dedicated auth hosts are safe popup signals. Multi-purpose hosts such as github.com need
 // path checks below so ordinary _blank links still open as tabs.
@@ -78,6 +103,73 @@ export function normalizeBrowserUrlInput(input: string | undefined): string {
   }
 
   return `${BROWSER_SEARCH_URL_PREFIX}${encodeURIComponent(trimmed)}`;
+}
+
+function displaySuggestionUrl(value: string): string {
+  return value.trim().replace(/^about:blank$/i, "");
+}
+
+function pushBrowserAddressSuggestion(
+  suggestions: BrowserAddressSuggestion[],
+  seenUrls: Set<string>,
+  suggestion: BrowserAddressSuggestion,
+): void {
+  if (suggestions.length >= BROWSER_SUGGESTION_LIMIT || seenUrls.has(suggestion.url)) return;
+  seenUrls.add(suggestion.url);
+  suggestions.push(suggestion);
+}
+
+export function buildBrowserAddressSuggestions(input: {
+  readonly activeTabId: string | null;
+  readonly query: string;
+  readonly recentHistory: readonly BrowserAddressHistoryEntry[];
+  readonly tabs: readonly BrowserAddressSuggestionTab[];
+}): BrowserAddressSuggestion[] {
+  const query = input.query.trim().toLowerCase();
+  const suggestions: BrowserAddressSuggestion[] = [];
+  const seenUrls = new Set<string>();
+  const directTarget = normalizeBrowserUrlInput(input.query);
+
+  if (query.length > 0) {
+    pushBrowserAddressSuggestion(suggestions, seenUrls, {
+      id: `direct:${directTarget}`,
+      kind: "navigate",
+      title: directTarget.startsWith(BROWSER_SEARCH_URL_PREFIX)
+        ? `Search the web for "${input.query.trim()}"`
+        : `Open ${directTarget}`,
+      detail: directTarget,
+      url: directTarget,
+    });
+  }
+
+  for (const tab of input.tabs) {
+    const tabUrl = displaySuggestionUrl(tab.lastCommittedUrl ?? tab.url);
+    if (!tabUrl || tab.id === input.activeTabId) continue;
+    if (query && !`${tab.title} ${tabUrl}`.toLowerCase().includes(query)) continue;
+    pushBrowserAddressSuggestion(suggestions, seenUrls, {
+      id: `tab:${tab.id}`,
+      kind: "tab",
+      title: tab.title || tabUrl,
+      detail: tabUrl,
+      url: tabUrl,
+      tabId: tab.id,
+      faviconUrl: tab.faviconUrl,
+    });
+  }
+
+  for (const entry of input.recentHistory) {
+    const entryUrl = displaySuggestionUrl(entry.url);
+    if (!entryUrl || (query && !`${entry.title} ${entryUrl}`.toLowerCase().includes(query))) continue;
+    pushBrowserAddressSuggestion(suggestions, seenUrls, {
+      id: `history:${entry.url}`,
+      kind: "history",
+      title: entry.title || entryUrl,
+      detail: entryUrl,
+      url: entryUrl,
+    });
+  }
+
+  return suggestions.slice(0, BROWSER_SUGGESTION_LIMIT);
 }
 
 export interface BrowserTabUrlLike {

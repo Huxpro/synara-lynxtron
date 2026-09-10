@@ -13,7 +13,7 @@ export function renderSlot(render: ReactNode | undefined, children: ReactNode): 
 
 export function textContent(children: ReactNode, className: string): ReactNode {
   return typeof children === 'string' || typeof children === 'number' ? (
-    <text className={className}>{String(children)}</text>
+    <text accessibility-element={false} className={className}>{String(children)}</text>
   ) : (
     children
   );

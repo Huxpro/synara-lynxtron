@@ -3,13 +3,15 @@
 // Layer: Terminal runtime infrastructure
 
 import { Terminal, type ITheme } from "@xterm/xterm";
+import {
+  TERMINAL_BOLD_FONT_WEIGHT,
+  TERMINAL_FONT_WEIGHT,
+} from "@synara/shared/terminalThreads";
 
 import { isBrowser, getComputedStyleSafe, getDocumentElement } from "~/platform/env";
+const FALLBACK_TERMINAL_FONT_SIZE_PX = 12;
 const FALLBACK_MONO_FONT_FAMILY =
   '"JetBrains Mono", "JetBrainsMono NFM", "JetBrainsMono NF", monospace';
-const FALLBACK_TERMINAL_FONT_SIZE_PX = 12;
-const TERMINAL_FONT_WEIGHT = 300;
-const TERMINAL_BOLD_FONT_WEIGHT = 500;
 
 const DARK_TERMINAL_THEME_FALLBACK = {
   background: "rgb(14, 18, 24)",

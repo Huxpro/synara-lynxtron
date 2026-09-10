@@ -105,6 +105,26 @@ interface ProjectScriptsControlProps {
   onAddScript: (input: NewProjectScriptInput) => Promise<void> | void;
   onUpdateScript: (scriptId: string, input: NewProjectScriptInput) => Promise<void> | void;
   onDeleteScript: (scriptId: string) => Promise<void> | void;
+  initialDialogOpen?: boolean;
+  initialEditingScriptId?: string | null;
+  initialSaving?: boolean;
+  initialValidationError?: string | null;
+}
+
+export function resolveInitialProjectScriptEditorState(
+  scripts: readonly ProjectScript[],
+  keybindings: ResolvedKeybindingsConfig,
+  initialEditingScriptId: string | null,
+) {
+  const script = initialEditingScriptId
+    ? scripts.find((candidate) => candidate.id === initialEditingScriptId) ?? null
+    : null;
+  return {
+    script,
+    keybinding: script
+      ? keybindingValueForCommand(keybindings, commandForProjectScript(script.id)) ?? ""
+      : "",
+  };
 }
 
 function normalizeShortcutKeyToken(key: string): string | null {
@@ -168,17 +188,34 @@ export default function ProjectScriptsControl({
   onAddScript,
   onUpdateScript,
   onDeleteScript,
+  initialDialogOpen = false,
+  initialEditingScriptId = null,
+  initialSaving = false,
+  initialValidationError = null,
 }: ProjectScriptsControlProps) {
   const addScriptFormId = useUniqueId();
-  const [editingScriptId, setEditingScriptId] = useState<string | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [command, setCommand] = useState("");
-  const [icon, setIcon] = useState<ProjectScriptIcon>("play");
+  const initialEditor = resolveInitialProjectScriptEditorState(
+    scripts,
+    keybindings,
+    initialEditingScriptId,
+  );
+  const initialEditingScript = initialEditor.script;
+  const [editingScriptId, setEditingScriptId] = useState<string | null>(
+    initialEditingScript?.id ?? null,
+  );
+  const [dialogOpen, setDialogOpen] = useState(initialDialogOpen);
+  const [name, setName] = useState(initialEditingScript?.name ?? "");
+  const [command, setCommand] = useState(initialEditingScript?.command ?? "");
+  const [icon, setIcon] = useState<ProjectScriptIcon>(initialEditingScript?.icon ?? "play");
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
-  const [runOnWorktreeCreate, setRunOnWorktreeCreate] = useState(false);
-  const [keybinding, setKeybinding] = useState("");
-  const [validationError, setValidationError] = useState<string | null>(null);
+  const [runOnWorktreeCreate, setRunOnWorktreeCreate] = useState(
+    initialEditingScript?.runOnWorktreeCreate ?? false,
+  );
+  const [keybinding, setKeybinding] = useState(initialEditor.keybinding);
+  const [validationError, setValidationError] = useState<string | null>(
+    initialValidationError,
+  );
+  const [saving, setSaving] = useState(initialSaving);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   // Manual memoization kept: this file does not compile under React Compiler (see compile-report).
@@ -207,6 +244,7 @@ export default function ProjectScriptsControl({
 
   const submitAddScript = async (event: FormEvent) => {
     event.preventDefault();
+    if (saving) return;
     const trimmedName = name.trim();
     const trimmedCommand = command.trim();
     if (trimmedName.length === 0) {
@@ -219,6 +257,7 @@ export default function ProjectScriptsControl({
     }
 
     setValidationError(null);
+    setSaving(true);
     try {
       const scriptIdForValidation =
         editingScriptId ??
@@ -246,6 +285,8 @@ export default function ProjectScriptsControl({
       setIconPickerOpen(false);
     } catch (error) {
       setValidationError(error instanceof Error ? error.message : "Failed to save action.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -421,6 +462,7 @@ export default function ProjectScriptsControl({
                           variant="outline"
                           className="size-9 shrink-0 hover:bg-popover active:bg-popover data-pressed:bg-popover"
                           aria-label="Choose icon"
+                          disabled={saving}
                         />
                       }
                     >
@@ -457,6 +499,7 @@ export default function ProjectScriptsControl({
                     autoFocus
                     placeholder="Test"
                     value={name}
+                    disabled={saving}
                     onChange={(event) => setName(event.target.value)}
                   />
                 </div>
@@ -468,6 +511,7 @@ export default function ProjectScriptsControl({
                   placeholder="Press shortcut"
                   value={keybinding}
                   readOnly
+                  disabled={saving}
                   onKeyDown={captureKeybinding}
                 />
                 <p className="text-xs text-muted-foreground">
@@ -480,6 +524,7 @@ export default function ProjectScriptsControl({
                   id="script-command"
                   placeholder="bun test"
                   value={command}
+                  disabled={saving}
                   onChange={(event) => setCommand(event.target.value)}
                 />
               </div>
@@ -487,6 +532,7 @@ export default function ProjectScriptsControl({
                 <span>Run automatically on worktree creation</span>
                 <Switch
                   checked={runOnWorktreeCreate}
+                  disabled={saving}
                   onCheckedChange={(checked) => setRunOnWorktreeCreate(Boolean(checked))}
                 />
               </label>
@@ -508,14 +554,15 @@ export default function ProjectScriptsControl({
               type="button"
               variant="outline"
               size="sm"
+              disabled={saving}
               onClick={() => {
                 setDialogOpen(false);
               }}
             >
               Cancel
             </Button>
-            <Button form={addScriptFormId} type="submit" size="sm">
-              {isEditing ? "Save changes" : "Save action"}
+            <Button form={addScriptFormId} type="submit" size="sm" disabled={saving}>
+              {saving ? "Saving…" : isEditing ? "Save changes" : "Save action"}
             </Button>
           </DialogFooter>
         </DialogPopup>

@@ -5,6 +5,13 @@
 
 import { type ProjectId, ThreadId } from "@synara/contracts";
 import { pluralize } from "@synara/shared/text";
+import {
+  deleteProjectThreadsSequentially,
+  deriveProjectThreadArchivePlan,
+  projectThreadDeleteConfirmation,
+  projectThreadArchiveConfirmation,
+  projectThreadArchiveResultMessage,
+} from "@synara/shared/projectThreadArchive";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -52,6 +59,7 @@ interface DeleteProjectThreadsOptions {
   readonly confirmMessage?: string | null;
   readonly showEmptyToast?: boolean;
   readonly showResultToast?: boolean;
+  readonly threadIds?: readonly ThreadId[];
   readonly worktreeCleanupMode?: "prompt" | "skip";
 }
 
@@ -546,8 +554,19 @@ export function useSidebarThreadActions(input: {
         });
         return;
       }
-      const archivableThreads = projectThreads.filter((thread) => !isThreadRunningTurn(thread));
-      const runningCount = projectThreads.length - archivableThreads.length;
+      const archivePlan = deriveProjectThreadArchivePlan(
+        projectThreads.map((thread) => ({
+          id: thread.id,
+          archivedAt: thread.archivedAt ?? null,
+          sessionStatus: thread.session?.status ?? null,
+          activeTurnId: thread.session?.activeTurnId ?? null,
+        })),
+      );
+      const archivableThreadIdSet = new Set(archivePlan.archivableThreadIds);
+      const archivableThreads = projectThreads.filter((thread) =>
+        archivableThreadIdSet.has(thread.id),
+      );
+      const runningCount = archivePlan.runningCount;
       if (archivableThreads.length === 0) {
         toastManager.add({
           type: "error",
@@ -559,19 +578,14 @@ export function useSidebarThreadActions(input: {
         });
         return;
       }
-      const archiveLines = [
-        `Archive ${archivableThreads.length} ${pluralize(archivableThreads.length, "thread")} in "${project.name}"?`,
-        "Archived threads are hidden from the sidebar but can be restored later.",
-      ];
-      if (runningCount > 0) {
-        archiveLines.push(
-          "",
-          `${runningCount} running ${pluralize(runningCount, "thread is", "threads are")} currently active and will be skipped.`,
-        );
-      }
+      const confirmationMessage = projectThreadArchiveConfirmation({
+        projectName: project.name,
+        archivableCount: archivableThreads.length,
+        runningCount,
+      });
       const confirmed = api
-        ? await dialogs.confirm(archiveLines.join("\n"))
-        : await showConfirmDialogFallback(archiveLines.join("\n"));
+        ? await dialogs.confirm(confirmationMessage)
+        : await showConfirmDialogFallback(confirmationMessage);
       if (!confirmed) return;
 
       let archivedCount = 0;
@@ -591,25 +605,28 @@ export function useSidebarThreadActions(input: {
       }
       removeFromSelection(archivableThreads.map((thread) => thread.id));
       if (archivedCount > 0) {
-        const skippedDescription =
-          runningCount > 0
-            ? ` Skipped ${runningCount} running ${pluralize(runningCount, "thread")}.`
-            : "";
+        const resultDescription = projectThreadArchiveResultMessage({
+          archivedCount,
+          failureCount,
+          projectName: project.name,
+          runningCount,
+        });
         toastManager.add({
           type: failureCount > 0 ? "warning" : "success",
           title: archivedCount === 1 ? "Thread archived" : `Archived ${archivedCount} threads`,
-          description:
-            failureCount > 0
-              ? `Failed to archive ${failureCount} ${pluralize(failureCount, "thread")}.${skippedDescription}`
-              : runningCount > 0
-                ? skippedDescription.trim()
-                : `"${project.name}" cleared.`,
+          description: resultDescription ?? `"${project.name}" cleared.`,
         });
       } else if (failureCount > 0) {
         toastManager.add({
           type: "error",
           title: "Failed to archive threads",
-          description: `Could not archive ${failureCount} ${pluralize(failureCount, "thread")} in "${project.name}".`,
+          description:
+            projectThreadArchiveResultMessage({
+              archivedCount,
+              failureCount,
+              projectName: project.name,
+              runningCount,
+            }) ?? `"${project.name}" cleared.`,
         });
       }
     },
@@ -621,7 +638,9 @@ export function useSidebarThreadActions(input: {
       const api = readNativeApi();
       const project = projectById.get(projectId);
       if (!api || !project) return null;
-      const projectThreads = sidebarThreads.filter((thread) => thread.projectId === projectId);
+      const projectThreads = options?.threadIds
+        ? options.threadIds.map((id) => ({ id }))
+        : sidebarThreads.filter((thread) => thread.projectId === projectId);
       if (projectThreads.length === 0) {
         if (options?.showEmptyToast ?? true) {
           toastManager.add({
@@ -639,10 +658,10 @@ export function useSidebarThreadActions(input: {
       }
       const confirmationMessage =
         options?.confirmMessage === undefined
-          ? [
-              `Delete ${projectThreads.length} ${pluralize(projectThreads.length, "thread")} in "${project.name}"?`,
-              "This permanently clears conversation history for these threads.",
-            ].join("\n")
+          ? projectThreadDeleteConfirmation({
+              projectName: project.name,
+              threadCount: projectThreads.length,
+            })
           : options.confirmMessage;
       if (confirmationMessage !== null) {
         const confirmed = await dialogs.confirm(confirmationMessage);
@@ -650,11 +669,9 @@ export function useSidebarThreadActions(input: {
       }
 
       const deletedIds = new Set<ThreadId>(projectThreads.map((thread) => thread.id));
-      const successfullyDeletedIds: ThreadId[] = [];
-      let deletedCount = 0;
-      let failureCount = 0;
-      for (const thread of projectThreads) {
-        try {
+      const result = await deleteProjectThreadsSequentially({
+        threads: projectThreads,
+        deleteThread: async (thread) => {
           await deleteThread(thread.id, {
             deletedThreadIds: deletedIds,
             reconcileDeletedThread: false,
@@ -662,17 +679,18 @@ export function useSidebarThreadActions(input: {
               ? { worktreeCleanupMode: options.worktreeCleanupMode }
               : {}),
           });
-          successfullyDeletedIds.push(thread.id);
-          deletedCount += 1;
-        } catch (error) {
-          failureCount += 1;
+        },
+        onFailure: (thread, error) => {
           console.error("Failed to delete thread during bulk delete", {
             threadId: thread.id,
             projectId,
             error,
           });
-        }
-      }
+        },
+      });
+      const successfullyDeletedIds = result.deletedThreadIds;
+      const deletedCount = successfullyDeletedIds.length;
+      const { failureCount } = result;
       void reconcileDeletedThreadsFromClient({
         threadIds: successfullyDeletedIds,
         removeDeletedThreadFromClientState: useStore.getState().removeDeletedThreadFromClientState,

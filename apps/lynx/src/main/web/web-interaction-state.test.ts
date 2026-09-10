@@ -365,12 +365,10 @@ describe('Lynx-for-Web interaction state bridge', () => {
     const root = control.getRootNode() as ShadowRoot;
     const header = document.createElement('div');
     header.classList.add('ExplorerDockPreviewHeader');
-    const path = document.createElement('div');
-    path.classList.add('ExplorerDockPreviewPath');
-    path.textContent = 'src/action.ts';
+    header.setAttribute('accessibility-label', 'File path src/action.ts');
     const trigger = document.createElement('div');
     trigger.classList.add('ExplorerDockPreviewActions');
-    header.append(path, trigger);
+    header.append(trigger);
     root.append(header);
 
     for (const target of [trigger]) {
@@ -497,6 +495,22 @@ describe('Lynx-for-Web interaction state bridge', () => {
       "reducedMotionQuery.removeEventListener('change', publishReducedMotion)"
     );
     expect(source).toContain('initialSystemDark,');
+    expect(source).toContain('initialThemeMode,');
+    expect(source).toContain("new URLSearchParams(globalThis.location.search).get(");
+    expect(source).toContain("pendingInitialRoute?.startsWith('/components-lab')");
+    expect(source).toContain(
+      "if (method === 'runtimeGetSystemAppearance')"
+    );
+    expect(source).toContain(
+      'return { dark: systemAppearanceQuery.matches };'
+    );
+    expect(source).toContain(
+      "if (method === 'runtimeGetEditorIcon')"
+    );
+    expect(source).toContain(
+      'const endpoint = new URL(configuredRelayBaseUrl());'
+    );
+    expect(source).toContain('reader.readAsDataURL(blob);');
     expect(source).toContain('initialComposerModelMenuOpen,');
     expect(source).toContain(
       "root,\n        '.ComposerModelPopupLynx'"

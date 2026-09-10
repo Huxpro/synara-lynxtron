@@ -30,7 +30,7 @@ export function PanelStateMessageElement(props: {
         className="SharedPanelStateMessageText"
         accessibility-element={namedState || undefined}
         accessibility-label={namedState ? props.announcement : undefined}
-        accessibility-traits={
+        accessibility-trait={
           namedState
             ? props.intent === 'status'
               ? 'updating'

@@ -142,6 +142,8 @@ import type {
   ServerUpdateSettingsResult,
   ServerUpsertKeybindingInput,
   ServerUpsertKeybindingResult,
+  ServerRemoveKeybindingInput,
+  ServerRemoveKeybindingResult,
   ServerVoiceTranscriptionInput,
   ServerVoiceTranscriptionResult,
 } from "./server";
@@ -209,6 +211,12 @@ export interface ContextMenuItem<T extends string = string> {
   /** Starts a new visual group before this actionable row. */
   separatorBefore?: boolean;
   destructive?: boolean;
+  enabled?: boolean;
+  visible?: boolean;
+  checked?: boolean;
+  type?: 'normal' | 'checkbox' | 'radio';
+  accelerator?: string;
+  submenu?: readonly ContextMenuItem<T>[];
 }
 
 export type DesktopUpdateStatus =
@@ -684,6 +692,7 @@ export interface NativeApi {
       input: ServerVoiceTranscriptionInput,
     ) => Promise<ServerVoiceTranscriptionResult>;
     upsertKeybinding: (input: ServerUpsertKeybindingInput) => Promise<ServerUpsertKeybindingResult>;
+    removeKeybinding: (input: ServerRemoveKeybindingInput) => Promise<ServerRemoveKeybindingResult>;
   };
   stats: {
     getProfileStats: (input: StatsGetProfileStatsInput) => Promise<StatsGetProfileStatsResult>;

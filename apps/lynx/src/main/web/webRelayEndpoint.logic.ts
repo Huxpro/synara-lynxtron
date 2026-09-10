@@ -1,12 +1,11 @@
 export function resolveWebRelayEndpoint(
-  runtimeValue: unknown,
-  buildValue: unknown,
-  fallback: string
+  ...candidates: readonly unknown[]
 ): string {
-  const runtime = String(runtimeValue ?? '').trim();
-  if (runtime) return runtime;
-  const build = String(buildValue ?? '').trim();
-  return build || fallback;
+  for (const candidate of candidates) {
+    const normalized = String(candidate ?? '').trim();
+    if (normalized) return normalized;
+  }
+  return '';
 }
 
 export function normalizeWebRelayUrl(value: unknown): string {

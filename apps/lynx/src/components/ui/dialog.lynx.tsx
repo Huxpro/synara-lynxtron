@@ -6,7 +6,6 @@ import {
 } from '@lynx-js/lynx-ui';
 import {
   createContext,
-  Fragment,
   useCallback,
   useContext,
   useEffect,
@@ -140,12 +139,19 @@ export function DialogClose(props: {
 }
 
 export function DialogBackdrop(props: { className?: string }) {
+  const dialog = useContext(DialogDismissContext);
   return (
     <LynxDialogBackdrop
       className={cx('LxDialogBackdrop', props.className)}
-      clickToClose
+      clickToClose={false}
       transition
-    />
+    >
+      <view
+        aria-hidden="true"
+        className="LxDialogBackdropTapTarget"
+        catchtap={dialog.close}
+      />
+    </LynxDialogBackdrop>
   );
 }
 
@@ -161,6 +167,7 @@ export function DialogPopup({
   className,
   children,
   showCloseButton = true,
+  bottomStickOnMobile = true,
   viewportClassName,
 }: {
   className?: string;
@@ -180,10 +187,19 @@ export function DialogPopup({
     dialog.close();
   };
   return (
-    <DialogViewport className={viewportClassName}>
+    <DialogViewport
+      className={cx(
+        bottomStickOnMobile && 'LxDialogViewport--bottom-stick-mobile',
+        viewportClassName
+      )}
+    >
       <DialogBackdrop />
       <LynxDialogContent
-        className={cx('LxDialogPopup', className)}
+        className={cx(
+          'LxDialogPopup',
+          bottomStickOnMobile && 'LxDialogPopup--bottom-stick-mobile',
+          className
+        )}
         dialogContentProps={{
           'aria-modal': true,
           bindkeydown: handleKeyDown,
@@ -220,7 +236,7 @@ export function DialogTitle(props: { children?: ReactNode; className?: string })
       className={cx('LxDialogTitle', props.className)}
       accessibility-element
       accessibility-heading
-      accessibility-traits="header"
+      accessibility-trait="header"
     >
       {props.children}
     </text>
@@ -244,7 +260,11 @@ export function DialogPanel(props: {
 }
 
 export function DialogPortal(props: { children?: ReactNode }) {
-  return <Fragment>{props.children}</Fragment>;
+  return (
+    <overlay className="LxDialogOverlay" visible>
+      <view className="LxDialogOverlayContent">{props.children}</view>
+    </overlay>
+  );
 }
 
 export const DialogCreateHandle = undefined;

@@ -12,7 +12,8 @@ import {
   type ResolvedKeybindingsConfig,
   type ThreadId,
 } from "@synara/contracts";
-import { isGenericChatThreadTitle } from "@synara/shared/chatThreads";
+import { resolveThreadHeaderIconKind } from "@synara/shared/threadHeaderIdentity";
+import { resolveThreadHeaderActionState } from "@synara/shared/threadHeaderActions";
 import React, { type Dispatch, type SetStateAction, useEffect, useRef, useState } from "react";
 import { FiGitBranch } from "react-icons/fi";
 import { HiMiniArrowsPointingOut } from "react-icons/hi2";
@@ -64,6 +65,7 @@ import { ProviderIcon } from "../ProviderIcon";
 import { ProviderUsageMenuControl } from "../ProviderUsageMenuControl";
 import { ChatSurfaceHeaderIdentity } from "./ChatSurfaceHeaderIdentity";
 import { EnvironmentToggle, type EnvironmentToggleState } from "./environment/EnvironmentToggle";
+import { EditorRailAddMenuComposition } from "./EditorRailAddMenuComposition";
 
 /**
  * Width (px) below which collapsible header controls drop their text labels and
@@ -416,14 +418,10 @@ function EditorRailTabs(props: {
             sideOffset={6}
             className="w-44 min-w-44"
           >
-            <MenuItem onClick={props.onNewChat}>
-              <MessageCircleIcon className="size-3.5 shrink-0 text-muted-foreground" />
-              <span>New chat</span>
-            </MenuItem>
-            <MenuItem onClick={newTerminalTab}>
-              <TerminalIcon className="size-3.5 shrink-0 text-muted-foreground" />
-              <span>New terminal</span>
-            </MenuItem>
+            <EditorRailAddMenuComposition
+              onNewChat={props.onNewChat}
+              onNewTerminal={newTerminalTab}
+            />
           </ComposerPickerMenuPopup>
         </Menu>
         <EditorChatHistoryMenu
@@ -477,18 +475,6 @@ function EditorRailTabs(props: {
       ) : null}
     </div>
   );
-}
-
-export type ChatHeaderThreadIconKind = "none" | "provider" | "terminal";
-
-export function resolveChatHeaderThreadIconKind(
-  entryPoint: ThreadPrimarySurface,
-  title?: string,
-): ChatHeaderThreadIconKind {
-  if (entryPoint === "chat" && isGenericChatThreadTitle(title)) {
-    return "none";
-  }
-  return entryPoint === "terminal" ? "terminal" : "provider";
 }
 
 export function ChatHeader({
@@ -545,6 +531,22 @@ export function ChatHeader({
     deletions: diffDeletions,
     hasChanges: showDiffTotals,
   } = diffTotals;
+  const actionState = resolveThreadHeaderActionState({
+    diffDisabledReason,
+    diffOpen,
+    diffTotals,
+    environmentEnabled: environment !== null,
+    hasProject: Boolean(activeProjectName),
+    hasProjectActionSurface: activeProjectScripts !== undefined,
+    isGitRepo,
+    gitActionsAvailable: showGitActions,
+    surface: {
+      kind: editorChatControls ? "editor-rail" : "thread",
+      layout: surfaceMode,
+      primary: hideHandoffControls && !editorChatControls ? "terminal" : "chat",
+      sidechat: isSidechat,
+    },
+  });
 
   // Own the open-favorite editor shortcut here so it survives regardless of which editor UI
   // is mounted (the legacy Open-in button, the Environment panel's Editor section, or
@@ -560,7 +562,7 @@ export function ChatHeader({
   // Split-chat creation moved to a shortcut only; the header keeps just the inline
   // "maximize" affordance for an already-split focused pane.
   const inlineChatLayoutAction = chatLayoutAction?.kind === "maximize" ? chatLayoutAction : null;
-  const threadIconKind = resolveChatHeaderThreadIconKind(activeThreadEntryPoint, activeThreadTitle);
+  const threadIconKind = resolveThreadHeaderIconKind(activeThreadEntryPoint, activeThreadTitle);
   const showSidechatTitleChip = isSidechat && compact;
 
   useEffect(() => {
@@ -588,7 +590,7 @@ export function ChatHeader({
   // the header in both layouts — beside the Environment button when that is enabled, and
   // inside the legacy cluster otherwise — so the familiar right-sidebar control is always a
   // single click away. Declared once here to avoid duplicating the markup across branches.
-  const diffToggleControl = showDiffToggle ? (
+  const diffToggleControl = actionState.showDiff ? (
     <Tooltip>
       <TooltipTrigger
         render={
@@ -602,9 +604,9 @@ export function ChatHeader({
             aria-label="Toggle diff panel"
             variant="default"
             size="xs"
-            disabled={!isGitRepo || (diffDisabledReason !== null && !diffOpen)}
+            disabled={actionState.diffDisabled}
           >
-            {showDiffTotals ? (
+            {actionState.diffStats ? (
               <span className="inline-flex items-center gap-1">
                 <span className="font-system-ui text-[length:var(--app-font-size-ui-sm,11px)] sm:text-[length:var(--app-font-size-ui-xs,10px)] font-normal tracking-normal tabular-nums text-success">
                   +{diffAdditions}
@@ -747,10 +749,10 @@ export function ChatHeader({
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-2 [-webkit-app-region:no-drag]">
-        {!hideHandoffControls && !environment ? (
+        {actionState.showProviderUsage ? (
           <ProviderUsageMenuControl provider={activeProvider} />
         ) : null}
-        {!hideHandoffControls ? (
+        {actionState.showHandoff ? (
           <Menu modal={false}>
             <Tooltip>
               <TooltipTrigger
@@ -784,7 +786,7 @@ export function ChatHeader({
             </ComposerPickerMenuPopup>
           </Menu>
         ) : null}
-        {activeProjectScripts ? (
+        {actionState.showProjectActions && activeProjectScripts ? (
           <ProjectScriptsControl
             scripts={activeProjectScripts}
             keybindings={keybindings}
@@ -836,7 +838,7 @@ export function ChatHeader({
             Environment panel. The right-side diff toggle stays beside it so the familiar
             "open the diff on the right" control is preserved. Falls back to the legacy split
             controls when no environment is resolved. */}
-        {environment ? (
+        {actionState.showEnvironment && environment ? (
           <>
             <EnvironmentToggle environment={environment} />
             {diffToggleControl}
@@ -845,7 +847,7 @@ export function ChatHeader({
           <>
             {/* Open in editor: dedicated split-button with an editor switcher; the project
                 action control now lives beside Hand off as its own project command surface. */}
-            {activeProjectName ? (
+            {actionState.showLegacyOpenIn ? (
               <OpenInPicker
                 keybindings={keybindings}
                 availableEditors={availableEditors}
@@ -853,7 +855,7 @@ export function ChatHeader({
               />
             ) : null}
 
-            {activeProjectName && showGitActions ? (
+            {actionState.showGitActions ? (
               <GitActionsControl
                 gitCwd={gitCwd}
                 activeThreadId={activeThreadId}

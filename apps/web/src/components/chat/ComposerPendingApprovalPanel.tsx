@@ -19,7 +19,10 @@ import {
   shortenApprovalPath,
   type ParsedApproval,
 } from "./ComposerPendingApprovalPanel.logic";
-import { COMPOSER_INPUT_SURFACE_CLASS_NAME } from "./composerPickerStyles";
+import {
+  COMPOSER_DECISION_PANEL_CLASS_NAME,
+  COMPOSER_INPUT_SURFACE_CLASS_NAME,
+} from "./composerPickerStyles";
 
 interface ComposerPendingApprovalPanelProps {
   approval: PendingApproval;
@@ -64,7 +67,11 @@ export const ComposerPendingApprovalPanel = function ComposerPendingApprovalPane
   return (
     <div
       onKeyDown={handleKeyDown}
-      className={cn(COMPOSER_INPUT_SURFACE_CLASS_NAME, "overflow-hidden px-3.5 py-3")}
+      className={cn(
+        COMPOSER_INPUT_SURFACE_CLASS_NAME,
+        COMPOSER_DECISION_PANEL_CLASS_NAME,
+        "px-3.5 py-3",
+      )}
     >
       <div className="flex items-start justify-between gap-3">
         <p className="min-w-0 text-[13px] font-medium leading-snug text-foreground/90">

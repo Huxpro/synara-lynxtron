@@ -9,8 +9,12 @@ describe('Lynx workspace surface', () => {
   it('rehydrates the shared workspace identity after the Lynx storage mirror', () => {
     const appSource = source('./App.tsx');
     expect(appSource).toContain('useWorkspaceStore.persist.rehydrate()');
+    expect(appSource).toContain('useTerminalStateStore.persist.rehydrate()');
     expect(appSource.indexOf('await hydrateStorage()')).toBeLessThan(
       appSource.indexOf('useWorkspaceStore.persist.rehydrate()')
+    );
+    expect(appSource.indexOf('await hydrateStorage()')).toBeLessThan(
+      appSource.indexOf('useTerminalStateStore.persist.rehydrate()')
     );
   });
 
@@ -37,6 +41,7 @@ describe('Lynx workspace surface', () => {
     expect(pageSource).toContain('presentationMode="workspace"');
     expect(pageSource).toContain('workspaceTerminalIdsForPreset');
     expect(pageSource).toContain('terminalId={terminalId}');
+    expect(pageSource).toContain('active={terminalIndex === 0}');
     expect(pageSource).toContain('aria-label="Workspace settings"');
     expect(pageSource).toContain('<Dialog open={settingsOpen}');
     expect(pageSource).toContain('<DialogTitle>Workspace settings</DialogTitle>');

@@ -76,10 +76,12 @@ export function ComposerChoiceRow({
           {shortcut}
         </span>
       ) : null}
-      <div className="min-w-0 flex-1 leading-snug">
-        <span className="text-[13px] font-medium text-foreground/90">{label}</span>
+      <div className="min-w-0 flex-1 break-words leading-snug">
+        <span className="break-words text-[13px] font-medium text-foreground/90">{label}</span>
         {description && description !== label ? (
-          <span className="ml-1.5 text-[12px] text-muted-foreground/55">{description}</span>
+          <span className="ml-1.5 break-words text-[12px] text-muted-foreground/55">
+            {description}
+          </span>
         ) : null}
       </div>
       {trailing}

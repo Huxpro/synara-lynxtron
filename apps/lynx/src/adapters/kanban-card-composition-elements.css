@@ -7,6 +7,12 @@
   border: 1px solid var(--border);
   border-radius: 10px;
   background-color: color-mix(in srgb, var(--card) 70%, transparent);
+  box-shadow: 0 4px 18px -6px color-mix(in srgb, var(--foreground) 7%, transparent);
+}
+
+.SliceRoot--theme-dark .SharedKanbanCard {
+  border-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 6px 24px -10px rgba(0, 0, 0, 0.3);
 }
 
 .SharedKanbanCard--overlay {
@@ -20,7 +26,6 @@
 
 .SharedKanbanCard.ui-hover {
   background-color: var(--card);
-  border-color: var(--ring);
 }
 
 .SharedKanbanCard.ui-focus {
@@ -47,9 +52,9 @@
   border-radius: 5px;
 }
 
-.SharedKanbanCardActions--hover,
-.SharedKanbanCardActions--pressed,
-.SharedKanbanCardActions--focus-visible {
+.SharedKanbanCardActions.ui-hover,
+.SharedKanbanCardActions.ui-pressed,
+.SharedKanbanCardActions.ui-focus {
   background-color: var(--muted);
 }
 
@@ -99,6 +104,14 @@
 .SharedKanbanCardProvider .OpenAIProviderIcon {
   width: 14px;
   height: 14px;
+}
+
+.SharedKanbanCardProviderFallback {
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  border: 1px dashed color-mix(in srgb, var(--muted-foreground) 40%, transparent);
+  border-radius: 7px;
 }
 
 .SharedKanbanCardBranch {
@@ -171,8 +184,7 @@
   margin-right: 8px;
 }
 
-.SharedKanbanCardStatusDot,
-.SharedKanbanCardColumnDot {
+.SharedKanbanCardStatusDot {
   width: 6px;
   height: 6px;
   margin-right: 5px;
@@ -180,18 +192,8 @@
   background-color: var(--muted-foreground);
 }
 
-.SharedKanbanCardStatusDot--working,
-.SharedKanbanCardColumnDot--inProgress {
+.SharedKanbanCardStatusDot--working {
   background-color: var(--primary);
-}
-
-.SharedKanbanCardColumnDot--done {
-  background-color: var(--status-open, #22a06b);
-}
-
-.SharedKanbanCardColumnDot--terminal {
-  border: 1px solid var(--muted-foreground);
-  background-color: transparent;
 }
 
 .SharedKanbanCardTimestamp {
@@ -200,5 +202,12 @@
 }
 
 .SharedKanbanCardColumnStatus {
+  flex-shrink: 0;
+}
+
+.SharedKanbanCardColumnIcon {
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
   flex-shrink: 0;
 }

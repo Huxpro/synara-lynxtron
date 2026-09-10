@@ -60,7 +60,6 @@ import {
 import { ProjectMenuPicker, type ProjectMenuPickerOption } from "./ProjectMenuPicker";
 import { WorkspaceFilePreview } from "./WorkspaceFilePreview";
 
-import { webStorage } from "~/platform/storage";
 import { isBrowser } from "~/platform/env";
 import {
   clampEditorChatPaneWidth,
@@ -69,8 +68,10 @@ import {
   EDITOR_CHAT_PANE_MIN_WIDTH,
   readEditorChatPaneVisible,
   readEditorChatPaneWidth,
+  readEditorSidebarVisible,
   storeEditorChatPaneWidth,
   storeEditorChatPaneVisible,
+  storeEditorSidebarVisible,
 } from "~/editorViewState";
 import { raf, cancelRaf } from "~/platform/frame";
 import {
@@ -83,7 +84,6 @@ import { addWindowEventListener, removeWindowEventListener } from "~/platform/ev
 type EditorCenterMode = "file" | "diff";
 type EditorActivityBarItem = EditorCenterMode | "search";
 
-const EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY = "synara.editor.sidebarVisible";
 const EDITOR_CHAT_PANE_KEYBOARD_STEP = 24;
 
 interface EditorWorkspaceViewProps {
@@ -101,6 +101,7 @@ interface EditorWorkspaceViewProps {
   diffPanel: ReactNode;
   chatPanel: ReactNode;
   onSelectFile: (path: string) => void;
+  onCloseFilePreview?: () => void;
   onSelectDiffFile: (path: string) => void;
   onToggleDirectory: (path: string) => void;
   onCenterModeChange: (mode: EditorCenterMode) => void;
@@ -109,28 +110,6 @@ interface EditorWorkspaceViewProps {
   onAskWhyInChat?: (reference: ChatFileReference) => void;
   onCommentInChat?: (comment: FileCommentSelection) => void;
   onSelectProject?: (projectId: ProjectId) => void;
-}
-
-function readStoredEditorVisibility(key: string): boolean {
-  if (!isBrowser()) {
-    return true;
-  }
-  try {
-    return webStorage.getItem(key) !== "false";
-  } catch {
-    return true;
-  }
-}
-
-function storeEditorVisibility(key: string, visible: boolean): void {
-  if (!isBrowser()) {
-    return;
-  }
-  try {
-    webStorage.setItem(key, String(visible));
-  } catch {
-    // Best-effort preference persistence only.
-  }
 }
 
 interface EditorChatPaneResizeState {
@@ -346,7 +325,7 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
   // style), and the header chat toggle hides the chat pane (kept mounted so
   // the chat runtime survives).
   const [sidebarVisible, setSidebarVisible] = useState(() =>
-    readStoredEditorVisibility(EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY),
+    readEditorSidebarVisible(),
   );
   const [chatPaneVisible, setChatPaneVisible] = useState(() =>
     readEditorChatPaneVisible(),
@@ -365,12 +344,12 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
       (item === "search" ? searchPaneActive : !searchPaneActive && centerMode === item);
     if (itemActive) {
       setSidebarVisible(false);
-      storeEditorVisibility(EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY, false);
+      storeEditorSidebarVisible(false);
       return;
     }
     if (!sidebarVisible) {
       setSidebarVisible(true);
-      storeEditorVisibility(EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY, true);
+      storeEditorSidebarVisible(true);
     }
     if (item === "search") {
       setSearchPaneActive(true);
@@ -605,6 +584,7 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
                   onReferenceInChat={props.onReferenceInChat}
                   onAskWhyInChat={props.onAskWhyInChat}
                   onCommentInChat={props.onCommentInChat}
+                  onClosePreview={props.onCloseFilePreview}
                 />
               </div>
             ) : null}

@@ -201,7 +201,7 @@ export function SettingsSkillsPanel() {
             className="SettingsSkillsEmptyRow"
             accessibility-element
             accessibility-label="No skills found. Add a skill folder containing a SKILL.md to the Synara skills folder above, or install skills for any supported provider."
-            accessibility-traits="text"
+            accessibility-trait="text"
           >
             <text className="SettingsSkillsRowTitle">No skills found</text>
             <text className="SettingsSkillsRowDescription">

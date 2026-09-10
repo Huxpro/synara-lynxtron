@@ -37,6 +37,7 @@ export function ResizableRightPanel(props: {
   readonly minWidth: number;
   readonly onWidthChange?: ((width: number) => void) | undefined;
   readonly resizable: boolean;
+  readonly hosted?: boolean;
   readonly storageKey?: string | undefined;
 }) {
   const viewport = useViewportLayout();
@@ -58,14 +59,15 @@ export function ResizableRightPanel(props: {
     }
   );
   const canResize =
+    !props.hosted &&
     props.resizable &&
     !viewport.compact &&
     !viewport.medium &&
     availableWidth > props.minWidth;
 
   useEffect(() => {
-    props.onWidthChange?.(canResize ? width : 0);
-  }, [canResize, props.onWidthChange, width]);
+    if (!props.hosted) props.onWidthChange?.(canResize ? width : 0);
+  }, [canResize, props.hosted, props.onWidthChange, width]);
 
   const stopResize = () => {
     const session = sessionRef.current;
@@ -111,7 +113,13 @@ export function ResizableRightPanel(props: {
   return (
     <view
       className={props.className}
-      style={canResize ? { width: `${width}px` } : undefined}
+      style={
+        props.hosted
+          ? { width: '100%' }
+          : canResize
+            ? { width: `${width}px` }
+            : undefined
+      }
     >
       {canResize ? (
         <view
@@ -121,7 +129,7 @@ export function ResizableRightPanel(props: {
           aria-label="Resize panel"
           accessibility-element={true}
           accessibility-label="Resize panel"
-          accessibility-traits="adjustable"
+          accessibility-trait="adjustable"
           bindmousedown={startResize}
           bindmousemove={moveResize}
           bindmouseup={stopResize}

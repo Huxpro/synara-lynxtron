@@ -1,13 +1,41 @@
 import 'background-only';
 
 import type {
+  TerminalAckOutputInput,
   TerminalCloseInput,
   TerminalOpenInput,
+  TerminalResizeInput,
   TerminalSessionSnapshot,
   TerminalWriteInput,
 } from '@synara/contracts';
 
 import { bridgeCall } from './bridge';
+
+interface NativeRpcResult<T> {
+  readonly _tag: 'NativeRpcResult';
+  readonly value: T;
+}
+
+export function unwrapTerminalBridgeResult<T>(
+  result: T | NativeRpcResult<T>
+): T {
+  return result &&
+    typeof result === 'object' &&
+    '_tag' in result &&
+    result._tag === 'NativeRpcResult' &&
+    'value' in result
+    ? result.value
+    : result;
+}
+
+async function callTerminalBridge<T>(
+  name: string,
+  input: Record<string, unknown>
+): Promise<T> {
+  return unwrapTerminalBridgeResult(
+    await bridgeCall<T | NativeRpcResult<T>>(name, input)
+  );
+}
 
 async function withTerminalRuntimeEndpoint<T extends Record<string, unknown>>(
   input: T
@@ -21,18 +49,33 @@ async function withTerminalRuntimeEndpoint<T extends Record<string, unknown>>(
 }
 
 export const platformTerminal = {
+  ackOutput: async (input: TerminalAckOutputInput): Promise<void> => {
+    await callTerminalBridge(
+      'terminalAckOutput',
+      await withTerminalRuntimeEndpoint(input)
+    );
+  },
   open: async (
     input: TerminalOpenInput
   ): Promise<TerminalSessionSnapshot> =>
-    bridgeCall('terminalOpen', await withTerminalRuntimeEndpoint(input)),
+    callTerminalBridge(
+      'terminalOpen',
+      await withTerminalRuntimeEndpoint(input)
+    ),
   write: async (input: TerminalWriteInput): Promise<void> => {
-    await bridgeCall(
+    await callTerminalBridge(
       'terminalWrite',
       await withTerminalRuntimeEndpoint(input)
     );
   },
+  resize: async (input: TerminalResizeInput): Promise<void> => {
+    await callTerminalBridge(
+      'terminalResize',
+      await withTerminalRuntimeEndpoint(input)
+    );
+  },
   close: async (input: TerminalCloseInput): Promise<void> => {
-    await bridgeCall(
+    await callTerminalBridge(
       'terminalClose',
       await withTerminalRuntimeEndpoint(input)
     );

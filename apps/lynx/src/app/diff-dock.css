@@ -1,6 +1,6 @@
 .DiffDock {
   position: absolute;
-  top: 46px;
+  top: 0;
   right: 0;
   bottom: 0;
   z-index: 18;
@@ -18,6 +18,70 @@
     transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
+.DiffDockTabHeader {
+  display: flex;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 6px;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.DiffDockTabList {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 4px;
+}
+
+.DiffDockTab {
+  max-width: 160px;
+}
+
+.DiffDockTabTitle {
+  font-size: var(--app-font-size-ui-sm, 11px);
+}
+
+.DiffDockTabIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.DiffDockTabActions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 2px;
+}
+
+.DiffDockHeaderIconButton,
+.LxMenuTrigger.DiffDockHeaderIconButton {
+  display: flex;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--muted-foreground);
+}
+
+.DiffDockHeaderIconButton.ui-hover,
+.DiffDockHeaderIconButton.ui-focus,
+.DiffDockHeaderIconButton.ui-pressed,
+.LxMenuTrigger.DiffDockHeaderIconButton.ui-hover,
+.LxMenuTrigger.DiffDockHeaderIconButton.ui-focus,
+.LxMenuTrigger.DiffDockHeaderIconButton.ui-pressed {
+  color: var(--foreground);
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.DiffDockAddPanelMenu {
+  width: 176px;
+}
+
 .DiffDock--closed {
   pointer-events: none;
   opacity: 0;
@@ -32,20 +96,159 @@
 
 .DiffDockHeader {
   display: flex;
-  height: 44px;
-  min-height: 44px;
-  padding: 0 12px;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 8px;
   align-items: center;
+  gap: 8px;
   justify-content: space-between;
   border-bottom: 1px solid var(--border);
 }
 
 .DiffDockBody {
+  position: relative;
   display: flex;
   width: 100%;
   flex: 1;
+  flex-direction: row;
+  min-width: 0;
+  height: calc(100vh - 124px);
+  min-height: 0;
+}
+
+.DiffDockReviewTree {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  width: 176px;
+  max-width: 176px;
+  min-width: 176px;
+  height: calc(100vh - 124px);
+  min-height: 0;
+  flex: none;
+  align-self: stretch;
+  flex-shrink: 0;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  background-color: var(--color-background-surface);
+}
+
+.DiffDockPatchViewportFrame {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 0;
   min-width: 0;
   min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.DiffDockPatchViewportFrame--with-review-tree {
+  width: calc(100% - 176px);
+  flex: none;
+}
+
+.DiffDockPatchViewportFrame > .DiffDockScroller {
+  width: 100%;
+  min-width: 0;
+}
+
+.DiffDockReviewTreeMotion {
+  transform: translateX(0);
+}
+
+.DiffDockReviewTreeMotion.LynxDisclosureMotion--closed {
+  transform: translateX(8px);
+}
+
+.DiffDockReviewTreeSearch {
+  display: flex;
+  min-height: 44px;
+  padding: 8px;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+}
+
+.DiffDockReviewTreeSearchField {
+  display: flex;
+  min-width: 0;
+  height: 28px;
+  flex: 1;
+  padding: 0 8px;
+  align-items: center;
+  gap: 6px;
+  border-radius: 7px;
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.DiffDockReviewTreeSearchInput > .LxInput {
+  min-width: 0;
+  height: 28px;
+  flex: 1;
+  padding: 6px 0;
+  border-width: 0;
+  background-color: transparent;
+  font-size: var(--app-font-size-ui-sm, 11px);
+  line-height: 16px;
+}
+
+.DiffDockReviewTreeList {
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  padding: 4px;
+}
+
+.DiffDockReviewTreeRow {
+  display: flex;
+  width: 100%;
+  height: 28px;
+  padding-right: 8px;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+}
+
+.DiffDockReviewTreeRow.ui-hover,
+.DiffDockReviewTreeRow.ui-focus,
+.DiffDockReviewTreeRow.ui-pressed,
+.DiffDockReviewTreeRow--selected {
+  background-color: var(--color-background-button-secondary);
+}
+
+.DiffDockReviewTreeChevron {
+  display: flex;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.DiffDockReviewTreeFileIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.DiffDockReviewTreeRowLabel {
+  min-width: 0;
+  color: color-mix(in srgb, var(--foreground) 82%, transparent);
+  font-size: var(--app-font-size-ui-sm, 11px);
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.DiffDockReviewTreeState {
+  padding: 12px 8px;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm, 11px);
+  line-height: 16px;
 }
 
 .DiffDockFileSidebar {
@@ -68,6 +271,12 @@
   border-bottom: 1px solid var(--border);
 }
 
+.DiffDockFileSidebarIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
 .DiffDockFileSidebarTitle {
   min-width: 0;
   flex: 1;
@@ -82,6 +291,43 @@
   color: var(--muted-foreground);
   background-color: var(--muted);
   font-size: 10px;
+}
+
+.LxMenuTrigger.DiffDockEditorOptionsTrigger {
+  display: flex;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+}
+
+.DiffDockFileSidebarStats {
+  display: flex;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 12px;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.DiffDockFileSidebarAddition,
+.DiffDockFileSidebarDeletion {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  line-height: 16px;
+}
+
+.DiffDockFileSidebarAddition {
+  color: var(--success);
+}
+
+.DiffDockFileSidebarDeletion {
+  color: var(--destructive);
 }
 
 .DiffDockFileSidebarList {
@@ -101,6 +347,12 @@
   border-radius: 6px;
 }
 
+.DiffDockFileIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
 .DiffDockFileRow.ui-hover,
 .DiffDockFileRow.ui-focus,
 .DiffDockFileRow.ui-pressed,
@@ -117,37 +369,132 @@
 }
 
 .DiffDockFileName {
-  color: var(--foreground);
-  font-size: 12px;
+  color: color-mix(in srgb, var(--foreground) 85%, transparent);
+  font-size: 11.5px;
   font-weight: 500;
 }
 
 .DiffDockFileDirectory {
   min-width: 0;
-  color: var(--muted-foreground);
-  font-size: 10px;
+  color: color-mix(in srgb, var(--muted-foreground) 55%, transparent);
+  font-size: 11px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.DiffDockFileStats {
+  display: flex;
+  flex-shrink: 0;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.DiffDockFileAddition,
+.DiffDockFileDeletion {
+  font-size: 10px;
+  line-height: 16px;
+}
+
+.DiffDockFileAddition {
+  color: var(--success);
+}
+
+.DiffDockFileDeletion {
+  color: var(--destructive);
 }
 
 .DiffDockIdentity {
   display: flex;
   min-width: 0;
+  flex: 1;
   align-items: center;
   gap: 8px;
+  overflow: hidden;
 }
 
 .DiffDockTitle {
+  min-width: 0;
+  overflow: hidden;
   color: var(--foreground);
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .DiffDockStats {
   color: var(--muted-foreground);
   font-size: 11px;
   line-height: 16.5px;
+}
+
+.DiffDockActiveStats {
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.LxMenuTrigger.DiffDockPickerTrigger,
+.LxMenuTrigger.DiffDockTurnTrigger {
+  display: flex;
+  min-width: 0;
+  height: 32px;
+  min-height: 32px;
+  padding: 0;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.LxMenuTrigger.DiffDockPickerTrigger {
+  max-width: 176px;
+}
+
+.LxMenuTrigger.DiffDockTurnTrigger {
+  max-width: 152px;
+}
+
+.DiffDockPickerContent {
+  display: flex;
+  min-width: 0;
+  width: 100%;
+  height: 32px;
+  padding: 0 8px 0 6px;
+  align-items: center;
+  gap: 6px;
+}
+
+.DiffDockPickerLabel {
+  min-width: 0;
+  flex: 1;
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui, 12px);
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.DiffDockPickerCount {
+  padding: 1px 6px;
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  background-color: var(--muted);
+  font-size: 10px;
+}
+
+.DiffDockSourceMenu {
+  width: 224px;
+}
+
+.DiffDockTurnsMenu {
+  width: 240px;
+}
+
+.DiffDockToolbarDivider {
+  width: 1px;
+  height: 16px;
+  margin: 0 4px;
+  flex-shrink: 0;
+  background-color: color-mix(in srgb, var(--border) 60%, transparent);
 }
 
 .DiffDockClose {
@@ -161,17 +508,86 @@
 
 .DiffDockHeaderActions {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: 2px;
 }
 
-.LxButton.DiffDockFileJumpTrigger {
+.DiffDockGitSplitControl {
+  display: flex;
+  height: 28px;
+  flex-shrink: 0;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--background);
+}
+
+.DiffDockGitQuickAction,
+.LxMenuTrigger.DiffDockGitMenuTrigger {
+  display: flex;
+  width: 27px;
+  min-width: 27px;
+  height: 26px;
+  min-height: 26px;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+}
+
+.DiffDockGitQuickAction.ui-hover,
+.DiffDockGitQuickAction.ui-focus,
+.DiffDockGitQuickAction.ui-pressed,
+.LxMenuTrigger.DiffDockGitMenuTrigger.ui-hover,
+.LxMenuTrigger.DiffDockGitMenuTrigger.ui-focus,
+.LxMenuTrigger.DiffDockGitMenuTrigger.ui-pressed {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.DiffDockGitQuickAction--disabled {
+  opacity: 0.55;
+}
+
+.DiffDockGitQuickActionIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.DiffDockGitSplitDivider {
+  width: 1px;
+  height: 16px;
+  flex-shrink: 0;
+  background-color: var(--border);
+}
+
+.LxButton.DiffDockFileJumpTrigger,
+.LxMenuTrigger.DiffDockToolbarMenuTrigger {
+  display: flex;
   width: 28px;
   min-width: 28px;
   height: 28px;
   min-height: 28px;
   padding: 0;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
+}
+
+.DiffDockOptionsMenu {
+  width: 256px;
+  min-width: 256px;
+  min-height: 0;
+}
+
+.DiffDockOptionLabel {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
 }
 
 .DiffDockClose.ui-hover,
@@ -181,10 +597,72 @@
 }
 
 .DiffDockScroller {
+  display: flex;
+  width: 100%;
   flex: 1;
   min-width: 0;
   min-height: 0;
-  padding: 12px;
+  padding: 8px;
+}
+
+/* Both the ordinary right dock and full Editor Changes render through this
+   viewport. A horizontal Lynx scroll-view otherwise keeps short split rows at
+   their intrinsic code width instead of stretching them across the panel. */
+.DiffDockPatchViewport .SharedPrCodeRoot,
+.DiffDockPatchViewport .SharedPrCodeFile,
+.DiffDockPatchViewport .SharedPrCodeDisclosure,
+.DiffDockPatchViewport .SharedPrCodeLines,
+.DiffDockPatchViewport .SharedPrCodeLinesContent,
+.DiffDockPatchViewport .SharedPrCodeSplitRow {
+  width: 100%;
+  min-width: 100%;
+}
+
+.DiffDockPatchViewport .SharedPrCodeRoot {
+  flex: 1;
+}
+
+.DiffDockPatchViewport .SharedPrCodeSplitRow {
+  flex: 1;
+}
+
+.ThreadPage > .DiffDock .SharedPrCodeRoot {
+  gap: 16px;
+  padding: 0;
+}
+
+.ThreadPage > .DiffDock .SharedPrCodeFile {
+  border-radius: 8px;
+}
+
+.ThreadPage > .DiffDock .SharedPrCodeFileHeader {
+  min-height: 38px;
+  padding: 10px 12px;
+}
+
+/* The editor owns the full center column. Its patch viewport already provides
+   the shared 8px gutter, so do not layer the portable composition's padding
+   and dock spacing on top of it. This aligns the first card with the Web
+   editor's x=280/y=54 anchor at the common 1098x803 content viewport. */
+.ThreadEditorChanges .DiffDockScroller {
+  padding: 0;
+}
+
+.ThreadEditorChanges .SharedPrCodeRoot {
+  gap: 8px;
+  padding: 8px;
+}
+
+/* Web's editor cards use a 36px title row with a small code-area tail. Lynx
+   otherwise gives the title row four extra pixels and leaves no equivalent
+   tail, so each card ends five pixels short of the shared Web composition. */
+.ThreadEditorChanges .SharedPrCodeFileHeader {
+  min-height: 36px;
+  padding: 6px 12px;
+}
+
+.ThreadEditorChanges .SharedPrCodeDisclosure {
+  padding-bottom: 9px;
 }
 
 .SliceRoot--viewport-compact .ThreadEditorChanges .DiffDockBody,
@@ -228,6 +706,23 @@
 
 .SliceRoot--viewport-short-height
   .ThreadEditorChanges
+  .DiffDockFileSidebarIcon {
+  width: 12px;
+  height: 12px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadEditorChanges
+  .LxMenuTrigger.DiffDockEditorOptionsTrigger {
+  display: flex;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  min-height: 20px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadEditorChanges
   .DiffDockFileSidebarTitle {
   font-size: 10px;
 }
@@ -237,6 +732,25 @@
   .DiffDockFileSidebarCount {
   padding: 0 4px;
   font-size: 9px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadEditorChanges
+  .DiffDockFileSidebarStats {
+  height: 20px;
+  min-height: 20px;
+  padding: 0 6px;
+  gap: 4px;
+}
+
+.SliceRoot--viewport-short-height
+  .ThreadEditorChanges
+  .DiffDockFileSidebarAddition,
+.SliceRoot--viewport-short-height
+  .ThreadEditorChanges
+  .DiffDockFileSidebarDeletion {
+  font-size: 10px;
+  line-height: 12px;
 }
 
 .SliceRoot--viewport-short-height
@@ -398,7 +912,7 @@
   flex: 1;
   overflow: hidden;
   color: var(--foreground);
-  font-family: var(--font-chat-code-family);
+  font-family: var(--font-mono-family);
   font-size: 11px;
   line-height: 16px;
   text-overflow: ellipsis;

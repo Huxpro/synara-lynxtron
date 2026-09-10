@@ -112,7 +112,6 @@ async function openFeatureSocket(): Promise<WebSocket> {
 const featureManager = createManager(openFeatureSocket, {
   closeWhenIdle: false,
 });
-
 export function subscribeNativeRpcTransportState(
   listener: (state: RpcTransportState) => void
 ): () => void {
@@ -133,7 +132,12 @@ export async function handleNativeRpc(
     if (method === 'synaraRpcStream') {
       const events: unknown[] = [];
       await featureManager.requestStream(tag, data.payload, (event) => {
-        if (tag !== 'terminal.subscribeEvents') events.push(event);
+        if (
+          tag !== 'terminal.subscribeEvents' &&
+          tag !== 'orchestration.subscribeShell'
+        ) {
+          events.push(event);
+        }
         onProgress?.(event);
       });
       return events;

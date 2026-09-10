@@ -20,6 +20,11 @@ import {
   nativeImage,
   shell,
 } from '@lynx-js/lynxtron';
+import {
+  buildNativeContextMenuTemplate,
+  normalizeContextMenuItems,
+  type NormalizedContextMenuItem,
+} from '@synara/shared/contextMenu';
 import fs from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import path from 'node:path';
@@ -33,6 +38,7 @@ import {
   ATTACHMENT_UPLOAD_ROUTE_PATH,
 } from '@synara/shared/binaryTransfer';
 import { WebSocketServer } from 'ws';
+import { submitFeedbackPayload } from '@synara/shared/feedbackDelivery';
 import {
   resolveShellPaths,
   resolveShellUserDataDir,
@@ -247,7 +253,12 @@ export function handleContextMenu(
     );
   }
 
-  const items = Array.isArray(data?.items) ? data.items : [];
+  const items = normalizeContextMenuItems(
+    Array.isArray(data?.items) ? data.items : []
+  );
+  if (items.length === 0) {
+    return Promise.resolve(JSON.stringify({ id: null }));
+  }
   const position = data?.position ?? {};
   return new Promise((resolve) => {
     let settled = false;
@@ -256,18 +267,25 @@ export function handleContextMenu(
       settled = true;
       resolve(JSON.stringify({ id }));
     };
-    const template: any[] = [];
-    for (const item of items) {
-      if (item?.separatorBefore && template.length > 0) {
-        template.push({ type: 'separator' });
-      }
-      template.push({
-        id: String(item?.id ?? ''),
-        label: String(item?.label ?? ''),
-        click: () => finish(String(item?.id ?? '')),
+    const toTemplate = (
+      menuItems: readonly NormalizedContextMenuItem[]
+    ): any[] =>
+      buildNativeContextMenuTemplate(menuItems).map((item) => {
+        if (item.type === 'separator') return { type: 'separator' };
+        return {
+          id: item.id,
+          label: item.label,
+          type: item.submenu ? 'submenu' : item.type,
+          enabled: item.enabled,
+          visible: item.visible,
+          checked: item.checked,
+          accelerator: item.accelerator,
+          ...(item.submenu
+            ? { submenu: toTemplate(item.submenu) }
+            : { click: () => finish(item.id) }),
+        };
       });
-    }
-    const menu = Menu.buildFromTemplate(template);
+    const menu = Menu.buildFromTemplate(toTemplate(items));
     menu.popup({
       window: w,
       x: Math.max(0, Math.round(Number(position.x) || 0)),
@@ -682,6 +700,24 @@ export async function handleShell(
         return JSON.stringify({ opened: false });
       }
       await shell.openExternal(parsed.toString());
+      return JSON.stringify({ opened: true });
+    }
+    case 'feedbackSubmit': {
+      const submission = data?.submission as
+        | { readonly details?: unknown }
+        | undefined;
+      if (!submission || typeof submission.details !== 'string') {
+        return JSON.stringify({ error: 'Feedback submission is required.' });
+      }
+      await submitFeedbackPayload(submission);
+      return JSON.stringify({ ok: true });
+    }
+    case 'shellShowInFolder': {
+      const target = String(data.path ?? '').trim();
+      if (!target || !path.isAbsolute(target)) {
+        return JSON.stringify({ opened: false });
+      }
+      shell.showItemInFolder(target);
       return JSON.stringify({ opened: true });
     }
     default:

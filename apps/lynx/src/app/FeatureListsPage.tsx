@@ -492,7 +492,11 @@ export function KanbanProjectPage({
     });
   };
 
-  const openKanbanCardMenu = async (card: KanbanCard, event: React.MouseEvent) => {
+  const openKanbanCardMenu = async (
+    card: KanbanCard,
+    event: React.MouseEvent,
+    restoreFocus?: () => void
+  ) => {
     'background only';
     event.preventDefault();
     event.stopPropagation();
@@ -518,7 +522,8 @@ export function KanbanProjectPage({
           ...(candidate.destructive ? { destructive: true } : {}),
           ...(index > 0 ? { separatorBefore: true } : {}),
         })),
-        { x: event.clientX, y: event.clientY }
+        { x: event.clientX, y: event.clientY },
+        { restoreFocus }
       );
       if (!action) return;
       await selectKanbanMutationAction(card, action);

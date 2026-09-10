@@ -84,7 +84,7 @@ export function SidebarChatsEmptyElement(props: {
       className="AppSidebarState"
       accessibility-element={semantics.announce}
       accessibility-label={props.announcement}
-      accessibility-traits="text"
+      accessibility-trait="text"
     >
       {props.children}
     </text>

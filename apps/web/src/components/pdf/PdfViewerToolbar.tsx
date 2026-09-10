@@ -39,6 +39,7 @@ interface PdfViewerToolbarProps {
   onFitWidth: () => void;
   onFitPage: () => void;
   openInTarget: string | null;
+  initialZoomMenuOpen?: boolean;
 }
 
 function zoomSelectionValue(mode: PdfZoomMode, scale: number): string {
@@ -102,7 +103,7 @@ export const PdfViewerToolbar = function PdfViewerToolbar(props: PdfViewerToolba
           <ChatHeaderIconButton label="Zoom out" tone="plain" onClick={props.onZoomOut}>
             <MinusIcon aria-hidden="true" className="size-4" />
           </ChatHeaderIconButton>
-          <Menu>
+          <Menu defaultOpen={props.initialZoomMenuOpen}>
             <MenuTrigger
               render={
                 <ChatHeaderButton tone="plain" className="min-w-16 justify-center gap-1 px-2" />

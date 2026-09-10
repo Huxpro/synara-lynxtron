@@ -54,7 +54,7 @@ export function PullRequestsUnavailableState(props: {
         className="SharedPrUnavailableCopy"
         accessibility-element={true}
         accessibility-label={announcement}
-        accessibility-traits="text"
+        accessibility-trait="text"
       >
         <TriangleAlertIcon
           className="SharedPrUnavailableIcon"

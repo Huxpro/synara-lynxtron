@@ -11,6 +11,7 @@ import { isBrowser } from "~/platform/env";
 const EDITOR_VIEW_STATE_STORAGE_KEY = "synara.editor.viewStateByThreadId";
 const EDITOR_RAIL_CHAT_TABS_STORAGE_KEY = "synara.editor.railChatTabsByProjectId";
 const EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY = "synara.editor.chatPaneVisible";
+const EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY = "synara.editor.sidebarVisible";
 export const EDITOR_CHAT_PANE_STORAGE_KEY = "synara.editor.chatPaneWidth";
 export const EDITOR_CHAT_PANE_DEFAULT_WIDTH = 384;
 export const EDITOR_CHAT_PANE_MIN_WIDTH = 320;
@@ -105,6 +106,24 @@ export function storeEditorChatPaneVisible(visible: boolean): void {
   }
   try {
     webStorage.setItem(EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY, String(visible));
+  } catch {
+    // Best-effort preference persistence only.
+  }
+}
+
+export function readEditorSidebarVisible(): boolean {
+  if (!isBrowser()) return true;
+  try {
+    return webStorage.getItem(EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY) !== "false";
+  } catch {
+    return true;
+  }
+}
+
+export function storeEditorSidebarVisible(visible: boolean): void {
+  if (!isBrowser()) return;
+  try {
+    webStorage.setItem(EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY, String(visible));
   } catch {
     // Best-effort preference persistence only.
   }

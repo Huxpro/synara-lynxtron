@@ -1,0 +1,52 @@
+.BrowserDockPane { position: relative; display: flex; width: 100%; min-width: 0; min-height: 0; flex: 1; flex-direction: column; background-color: var(--background); }
+.BrowserDockPane--hidden { position: absolute; top: 0; right: 0; bottom: 0; left: 0; pointer-events: none; opacity: 0; }
+.BrowserDockToolbar { position: relative; z-index: 3; display: flex; height: 40px; min-height: 40px; padding: 4px 6px; align-items: center; gap: 4px; border-bottom: 1px solid var(--border); }
+.BrowserDockRefreshIcon--loading { animation: BrowserDockSpin 1s linear infinite; }
+@keyframes BrowserDockSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .BrowserDockRefreshIcon--loading { animation: none; } }
+.BrowserDockAddress { display: block; flex: 1; min-width: 0; height: 30px; padding: 5px 9px; border: 1px solid var(--border); border-radius: 7px; background-color: var(--secondary); color: var(--foreground); font-family: var(--font-ui-family); font-size: 12px; line-height: 18px; }
+.BrowserDockAddressSuggestions { position: absolute; top: 40px; right: 6px; left: 90px; z-index: 4; display: flex; max-height: 256px; padding: 4px; overflow: hidden; flex-direction: column; border: 1px solid var(--border); border-radius: 8px; background-color: var(--popover); box-shadow: 0 10px 30px rgba(0,0,0,0.28); }
+.LxButton.BrowserDockAddressSuggestion { display: flex; width: 100%; min-width: 0; min-height: 34px; padding: 5px 8px; align-items: center; justify-content: flex-start; gap: 8px; border-radius: 6px; color: var(--foreground); }
+.LxButton.BrowserDockAddressSuggestion.ui-hover, .LxButton.BrowserDockAddressSuggestion.ui-focus, .LxButton.BrowserDockAddressSuggestion.ui-pressed { background-color: var(--sidebar-accent); }
+.BrowserDockAddressSuggestionIcon { display: flex; width: 16px; height: 16px; flex-shrink: 0; align-items: center; justify-content: center; color: var(--muted-foreground); }
+.BrowserDockAddressSuggestionIcon image { width: 12px; height: 12px; border-radius: 2px; }
+.BrowserDockAddressSuggestionCopy { display: flex; min-width: 0; flex: 1; flex-direction: column; }
+.BrowserDockAddressSuggestionTitle { color: var(--foreground); font-size: 12px; line-height: 16px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.BrowserDockAddressSuggestionDetail { color: var(--muted-foreground); font-size: 11px; line-height: 15px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.BrowserDockActionTrigger { width: 28px; height: 28px; color: var(--muted-foreground); }
+.BrowserDockActionsPopup { width: 208px; min-width: 208px; }
+.BrowserDockTabBar { display: flex; height: 40px; min-height: 40px; padding: 5px 8px; align-items: center; gap: 6px; border-bottom: 1px solid var(--border); }
+.BrowserDockTabScroller { flex: 1; min-width: 0; }
+.BrowserDockTabList { display: flex; min-width: 100%; align-items: center; gap: 6px; }
+.BrowserDockTab { display: flex; width: 150px; height: 30px; padding-left: 9px; align-items: center; border: 1px solid transparent; border-radius: 7px; color: var(--muted-foreground); }
+.BrowserDockTab--active { border-color: var(--border); background-color: var(--background); color: var(--foreground); }
+.BrowserDockTabSelect { display: flex; flex: 1; min-width: 0; align-items: center; gap: 7px; }
+.BrowserDockTabFavicon { width: 12px; height: 12px; flex-shrink: 0; border-radius: 2px; }
+.BrowserDockTabLabel { flex: 1; min-width: 0; font-size: 12px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.BrowserDockError { padding: 6px 10px; color: var(--destructive); font-size: 11px; }
+.BrowserDockStatus { position: absolute; top: 40px; right: 0; left: 0; z-index: 2; height: 21px; padding: 4px 10px; background-color: var(--background); color: var(--muted-foreground); font-size: 11px; }
+.BrowserDockState { padding: 16px; color: var(--muted-foreground); font-size: 12px; text-align: center; }
+.BrowserDockContentSlot { flex: 1; width: 100%; min-width: 0; min-height: 0; }
+.BrowserDockHome { position: absolute; top: 40px; right: 0; bottom: 0; left: 0; z-index: 1; display: flex; flex-direction: column; padding: 30px 32px 24px; background-color: #0d0d0d; }
+.BrowserDockHome--withTabs { top: 80px; }
+.BrowserDockHomeHeader { display: flex; min-height: 32px; align-items: center; justify-content: space-between; }
+.BrowserDockHomeTitle { color: rgba(255,255,255,0.35); font-size: 15px; font-weight: 500; }
+.BrowserDockHomeEmpty { display: flex; flex: 1; min-height: 0; align-items: center; justify-content: center; flex-direction: column; }
+.BrowserDockHomeEmptyIcon { margin-bottom: 16px; color: rgba(255,255,255,0.25); }
+.BrowserDockHomeEmptyTitle { color: #fff; font-size: 16px; font-weight: 600; }
+.BrowserDockHomeEmptyDetail { margin-top: 8px; color: rgba(255,255,255,0.35); font-size: 14px; }
+.BrowserDockServerList { flex: 1; min-height: 0; margin-top: 16px; padding-bottom: 24px; }
+.BrowserDockServerCard { display: flex; width: 100%; min-width: 0; min-height: 70px; margin-bottom: 8px; padding: 10px 12px; align-items: center; gap: 14px; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; }
+.BrowserDockServerCard--disabled { opacity: 0.45; }
+.BrowserDockServerThumbnail { display: flex; width: 72px; height: 48px; flex-shrink: 0; padding: 6px; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; background-color: #f7f7f2; flex-direction: column; overflow: hidden; }
+.BrowserDockServerTrafficLights { display: flex; gap: 3px; }
+.BrowserDockServerLight { width: 3px; height: 3px; border-radius: 2px; }
+.BrowserDockServerLight--red { background-color: #ff6b65; }
+.BrowserDockServerLight--yellow { background-color: #f4c047; }
+.BrowserDockServerLight--green { background-color: #45cf77; }
+.BrowserDockServerThumbnailTitle { margin-top: 7px; color: #2a2a2a; font-size: 7px; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.BrowserDockServerThumbnailAddress { margin-top: 2px; color: #9a9a9a; font-size: 6px; font-weight: 500; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.BrowserDockServerIdentity { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 4px; }
+.BrowserDockServerTitle { color: rgba(255,255,255,0.9); font-size: 13px; font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.BrowserDockServerDetail { color: rgba(255,255,255,0.35); font-size: 11px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.BrowserDockServerOnline { width: 8px; height: 8px; margin-right: 4px; flex-shrink: 0; border-radius: 4px; background-color: #36d07b; box-shadow: 0 0 0 3px rgba(54,208,123,0.16); }

@@ -163,7 +163,7 @@ export function PullRequestRowPinElement(props: {
   readonly pinned: boolean;
   readonly onActivate: () => void;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: `SharedPrPin ${
       props.pinned ? 'SharedPrPin--pinned' : 'SharedPrPin--unpinned'
@@ -187,13 +187,13 @@ export function PullRequestRowPinElement(props: {
         }`}
         content={colorizeLynxSvg(
           props.pinned ? pinFilledSvg : pinSvg,
-          props.pinned ? svgColors.foreground : svgColors.mutedForeground
+          semanticIconColor(props.pinned ? 'primary' : 'secondary')
         )}
       />
       {props.pinned ? null : (
         <svg
           className="SharedPrPinIcon SharedPrPinIcon--foreground"
-          content={colorizeLynxSvg(pinSvg, svgColors.foreground)}
+          content={colorizeLynxSvg(pinSvg, semanticIconColor('primary'))}
         />
       )}
     </view>

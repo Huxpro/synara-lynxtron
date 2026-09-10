@@ -100,7 +100,7 @@ export function SettingsSidebarSearchUnavailableElement(props: ChildrenProps) {
       aria-disabled="true"
       accessibility-element
       accessibility-label="Search settings unavailable"
-      accessibility-traits="search"
+      accessibility-trait="search"
       accessibility-state={{ disabled: true }}
       focusable={false}
     >

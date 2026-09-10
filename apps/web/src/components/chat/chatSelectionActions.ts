@@ -3,6 +3,7 @@
 // Layer: Chat transcript interaction helpers
 
 import { getViewportHeight, getViewportWidth, isBrowser } from "~/platform/env";
+import { resolveSelectionActionLayout } from "@synara/shared/selectionActionLayout";
 export { resolveTranscriptMarkerRange } from "@synara/shared/threadMarkers";
 
 import { getWindowSelection } from "./chatSelectionDom";
@@ -17,9 +18,18 @@ export interface TranscriptSelectionActionLayout {
   placement: "top" | "bottom";
 }
 
-const TRANSCRIPT_SELECTION_ACTION_WIDTH_PX = 292;
-const TRANSCRIPT_SELECTION_ACTION_HEIGHT_PX = 32;
-const TRANSCRIPT_SELECTION_ACTION_GAP_PX = 8;
+export function resolveSelectionViewportElement(
+  container: HTMLElement | null,
+): HTMLElement | null {
+  let candidate = container;
+  while (candidate) {
+    const rect = candidate.getBoundingClientRect();
+    if (rect.width > 0 && rect.height > 0) return candidate;
+    candidate = candidate.parentElement;
+  }
+  return null;
+}
+
 function getSelectionRect(selection: Selection): DOMRect | null {
   if (selection.rangeCount === 0 || selection.isCollapsed) {
     return null;
@@ -108,7 +118,7 @@ export function readTranscriptAssistantSelection(input: {
 export function resolveTranscriptSelectionActionLayout(input: {
   selectionRect: DOMRect | null;
   pointer: { x: number; y: number };
-  viewport?: { width: number; height: number } | null;
+  viewport?: { left?: number; top?: number; width: number; height: number } | null;
 }): TranscriptSelectionActionLayout {
   const viewportWidth =
     input.viewport?.width ??
@@ -117,39 +127,21 @@ export function resolveTranscriptSelectionActionLayout(input: {
     input.viewport?.height ??
     (isBrowser() ? getViewportHeight() : input.pointer.y + 8);
 
-  const anchorCenterX =
-    input.selectionRect !== null
-      ? input.selectionRect.left + input.selectionRect.width / 2
-      : input.pointer.x;
-  const selectionTop = input.selectionRect?.top ?? input.pointer.y;
-  const selectionBottom = input.selectionRect?.bottom ?? input.pointer.y;
-  const availableAbove = selectionTop;
-  const availableBelow = viewportHeight - selectionBottom;
-  const placement =
-    availableAbove >= TRANSCRIPT_SELECTION_ACTION_HEIGHT_PX + TRANSCRIPT_SELECTION_ACTION_GAP_PX ||
-    availableAbove >= availableBelow
-      ? "top"
-      : "bottom";
-  const unclampedTop =
-    placement === "top"
-      ? selectionTop - TRANSCRIPT_SELECTION_ACTION_HEIGHT_PX - TRANSCRIPT_SELECTION_ACTION_GAP_PX
-      : selectionBottom + TRANSCRIPT_SELECTION_ACTION_GAP_PX;
-
-  return {
-    left: Math.max(
-      8,
-      Math.min(
-        Math.round(anchorCenterX - TRANSCRIPT_SELECTION_ACTION_WIDTH_PX / 2),
-        Math.max(viewportWidth - TRANSCRIPT_SELECTION_ACTION_WIDTH_PX - 8, 8),
-      ),
-    ),
-    top: Math.max(
-      8,
-      Math.min(
-        Math.round(unclampedTop),
-        Math.max(viewportHeight - TRANSCRIPT_SELECTION_ACTION_HEIGHT_PX - 8, 8),
-      ),
-    ),
-    placement,
-  };
+  return resolveSelectionActionLayout({
+    selectionRect: input.selectionRect
+      ? {
+          left: input.selectionRect.left,
+          top: input.selectionRect.top,
+          width: input.selectionRect.width,
+          height: input.selectionRect.height,
+        }
+      : null,
+    pointer: input.pointer,
+    viewport: {
+      ...(input.viewport?.left !== undefined ? { left: input.viewport.left } : {}),
+      ...(input.viewport?.top !== undefined ? { top: input.viewport.top } : {}),
+      width: viewportWidth,
+      height: viewportHeight,
+    },
+  });
 }

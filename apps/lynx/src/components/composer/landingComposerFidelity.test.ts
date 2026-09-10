@@ -69,6 +69,7 @@ describe('landing composer fidelity contract', () => {
     );
     expect(routerSource).toContain('<ComposerColumnFrameSurface>');
     expect(routerSource).toContain('<LandingComposer');
+    expect(landingSource).toContain('<Composer\n        voiceInputEnabled');
     expect(routerSource).toContain(
       '<scroll-view\n        className="ThreadsLandingBody"\n        scroll-orientation="vertical"'
     );
@@ -133,13 +134,11 @@ describe('landing composer fidelity contract', () => {
     expect(landingSource).toContain('localFoldersError');
     expect(landingSource.match(/serverConfig:\s*config/g)).toHaveLength(3);
     expect(clientSource).toContain(
-      "return transportRequest('server.refreshProviders', {});"
-    );
-    expect(clientSource).toContain(
       'export async function fetchFreshServerConfig()'
     );
     expect(clientSource).toContain('providers: providerStatuses.providers');
-    expect(landingSource).toContain('fetchFreshServerConfig()');
+    expect(landingSource).toContain('fetchServerConfig()');
+    expect(landingSource).not.toContain('fetchFreshServerConfig()');
     expect(landingSource).toContain('fetchServerSettings().catch(() => null)');
     expect(landingSource).toContain(
       'serverSettings?.defaultThreadEnvMode'
@@ -197,7 +196,8 @@ describe('landing composer fidelity contract', () => {
     expect(landingSource).not.toContain("provider: 'codex'");
     expect(landingSource).not.toContain("getDefaultModel('codex')");
     expect(landingSource).not.toContain('onProviderStatusesChange');
-    expect(composerSource).toContain('fetchFreshServerConfig()');
+    expect(composerSource).toContain('fetchServerConfig()');
+    expect(composerSource).not.toContain('fetchFreshServerConfig()');
     expect(landingSource).toContain('onRetry=');
     expect(landingSource).not.toContain('.catch(() => [])');
     expect(landingSource).not.toContain('<MenuItem');
@@ -245,6 +245,9 @@ describe('landing composer fidelity contract', () => {
     expect(landingStyles).not.toMatch(/\.LandingComposer\s*\{[^}]*margin-top:/s);
     expect(frameStyles).toMatch(
       /\.ComposerColumnFrameSurfaceLynx[^}]*width:\s*calc\(100% - 24px\);[^}]*max-width:\s*736px;/s
+    );
+    expect(frameStyles).toMatch(
+      /\.ComposerColumnFrameSurfaceLynx\.ComposerColumnFrameSurfaceLynx\s*\{[^}]*margin-left:\s*0;[^}]*margin-right:\s*0;[^}]*align-self:\s*center;/s
     );
   });
 

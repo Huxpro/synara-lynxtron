@@ -19,6 +19,25 @@ describe('Native Composer model initial-open state', () => {
     expect(controlSource).toContain(
       'initData.initialComposerModelMenuOpen === true'
     );
+    expect(controlSource).toContain(
+      'initData.initialComposerModelSubmenuOpen === true'
+    );
+    expect(controlSource).toContain(
+      'props.initialOpen ?? false'
+    );
+    expect(controlSource).toContain(
+      'props.initialOpen || initData.initialComposerModelMenuOpen === true'
+    );
+    expect(controlSource).toContain(
+      'props.initialSubmenuOpen ?? initData.initialComposerModelSubmenuOpen === true'
+    );
+    expect(controlSource).toContain("ComposerModelTriggerLynx--disabled");
+    expect(controlSource).toContain(
+      '? props.catalogProvider\n      : null'
+    );
+    expect(controlSource).toContain(
+      'props.splitTraits && !useSinglePanelModelNavigation'
+    );
     expect(composerSource).toContain(
       'providers={providerStatuses ?? serverConfig?.providers ?? []}'
     );

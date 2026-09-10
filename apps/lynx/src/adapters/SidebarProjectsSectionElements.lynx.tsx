@@ -31,7 +31,7 @@ export function SidebarProjectsStateElement(props: {
       className="SharedSidebarProjectsState"
       accessibility-element={semantics.announce}
       accessibility-label={props.announcement}
-      accessibility-traits={props.intent === 'status' ? 'updating' : 'text'}
+      accessibility-trait={props.intent === 'status' ? 'updating' : 'text'}
     >
       {props.children}
     </text>

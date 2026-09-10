@@ -7,7 +7,7 @@ import {
   shortenApprovalPath,
 } from '@synara-web/components/chat/ComposerPendingApprovalPanel.logic';
 
-import { Button } from '../ui/button.lynx';
+import { ComposerChoiceRow } from './ComposerChoiceRow.lynx';
 import './pending-approval-panel.css';
 
 export function PendingApprovalPanel(props: {
@@ -31,14 +31,24 @@ export function PendingApprovalPanel(props: {
       : null;
 
   return (
-    <view className="PendingApprovalPanelLynx">
+    <scroll-view
+      className="PendingApprovalPanelLynx ComposerDecisionPanelLynx"
+      scroll-orientation="vertical"
+      scroll-y
+      enable-scroll-bar
+    >
       <view className="PendingApprovalHeaderLynx">
-        <text className="PendingApprovalTitleLynx">
-          {APPROVAL_KIND_PROMPT[props.approval.requestKind]}
+        <text className="PendingApprovalHeadingLynx">
+          <text className="PendingApprovalTitleLynx">
+            {APPROVAL_KIND_PROMPT[props.approval.requestKind]}
+          </text>
+          {parsed.tool ? (
+            <text className="PendingApprovalToolLynx">
+              {'  '}
+              {parsed.tool}
+            </text>
+          ) : null}
         </text>
-        {parsed.tool ? (
-          <text className="PendingApprovalToolLynx">{parsed.tool}</text>
-        ) : null}
         {props.pendingCount > 1 ? (
           <text className="PendingApprovalCountLynx">
             1/{props.pendingCount}
@@ -53,35 +63,25 @@ export function PendingApprovalPanel(props: {
       </view>
       <view className="PendingApprovalActionsLynx">
         {APPROVAL_ACTIONS.map((action, index) => (
-          <Button
+          <ComposerChoiceRow
             key={action.decision}
-            variant="ghost"
-            size="sm"
+            shortcut={index + 1}
+            label={action.label}
+            description={action.description}
+            tone={action.tone}
             disabled={props.responding}
-            className={`PendingApprovalActionLynx PendingApprovalActionLynx--${action.tone}`}
-            aria-label={action.label}
-            onClick={() =>
+            onSelect={() =>
               props.onRespond(
                 action.decision,
                 props.approval.lifecycleGeneration
               )
             }
-          >
-            <text className="PendingApprovalShortcutLynx">{index + 1}</text>
-            <view className="PendingApprovalActionCopyLynx">
-              <text className="PendingApprovalActionLabelLynx">
-                {action.label}
-              </text>
-              <text className="PendingApprovalActionDescriptionLynx">
-                {action.description}
-              </text>
-            </view>
-          </Button>
+          />
         ))}
       </view>
       <text className="PendingApprovalHintLynx">
         Resolve this approval request to continue
       </text>
-    </view>
+    </scroll-view>
   );
 }

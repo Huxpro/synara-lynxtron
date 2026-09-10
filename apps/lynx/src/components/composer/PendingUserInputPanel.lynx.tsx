@@ -11,6 +11,7 @@ import { useState } from '@lynx-js/react';
 
 import { Button } from '../ui/button.lynx';
 import { Input } from '../ui/input.lynx';
+import { ComposerChoiceRow } from './ComposerChoiceRow.lynx';
 import './pending-user-input-panel.css';
 
 export function PendingUserInputPanel(props: {
@@ -67,7 +68,12 @@ export function PendingUserInputPanel(props: {
   };
 
   return (
-    <view className="PendingUserInputPanelLynx">
+    <scroll-view
+      className="PendingUserInputPanelLynx ComposerDecisionPanelLynx"
+      scroll-orientation="vertical"
+      scroll-y
+      enable-scroll-bar
+    >
       <view className="PendingUserInputHeaderLynx">
         <text className="PendingUserInputTitleLynx">{question.question}</text>
         {props.prompt.questions.length > 1 ? (
@@ -90,29 +96,15 @@ export function PendingUserInputPanel(props: {
               option.label
             );
             return (
-              <Button
+              <ComposerChoiceRow
                 key={`${question.id}:${option.label}`}
-                variant="ghost"
-                size="sm"
+                shortcut={index + 1}
+                label={option.label}
+                description={option.description}
+                selected={selected}
                 disabled={props.responding}
-                className={`PendingUserInputOptionLynx${
-                  selected ? ' PendingUserInputOptionLynx--selected' : ''
-                }`}
-                aria-label={`${index + 1} ${option.label}`}
-                onClick={() => selectOption(option.label)}
-              >
-                <text className="PendingUserInputShortcutLynx">
-                  {index + 1}
-                </text>
-                <view className="PendingUserInputOptionCopyLynx">
-                  <text className="PendingUserInputOptionLabelLynx">
-                    {option.label}
-                  </text>
-                  <text className="PendingUserInputOptionDescriptionLynx">
-                    {option.description}
-                  </text>
-                </view>
-              </Button>
+                onSelect={() => selectOption(option.label)}
+              />
             );
           })}
         </view>
@@ -176,6 +168,6 @@ export function PendingUserInputPanel(props: {
           </Button>
         )}
       </view>
-    </view>
+    </scroll-view>
   );
 }

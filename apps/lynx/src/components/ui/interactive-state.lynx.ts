@@ -1,5 +1,6 @@
 import { useState } from '@lynx-js/react';
 import { useLynxInteractionDisabled } from './interaction-scope.lynx';
+import { consumeProgrammaticLynxFocus } from './focus.lynx';
 
 export interface LynxInteractiveState {
   readonly focused: boolean;
@@ -44,7 +45,7 @@ export function lynxInteractiveAccessibilityProps(
   return {
     'accessibility-element': accessibilityElement,
     'accessibility-label': options.accessibleLabel,
-    'accessibility-traits':
+    'accessibility-trait':
       options.accessibilityTraits ??
       (accessibilityElement ? 'button' : undefined),
     'accessibility-value': options.accessibilityValue,
@@ -101,6 +102,7 @@ export function useLynxInteractiveState(options: {
   readonly baseClassName: string;
   readonly disabled?: boolean;
   readonly focusable?: boolean;
+  readonly programmaticFocusId?: string;
 } & LynxInteractiveAccessibilityOptions) {
   const scopeDisabled = useLynxInteractionDisabled();
   const disabled = scopeDisabled || (options.disabled ?? false);
@@ -137,7 +139,11 @@ export function useLynxInteractiveState(options: {
       bindfocus: disabled
         ? undefined
         : () => {
-            setFocused(true);
+            setFocused(
+              options.programmaticFocusId
+                ? !consumeProgrammaticLynxFocus(options.programmaticFocusId)
+                : true
+            );
             options.onIntent?.();
           },
       bindblur: disabled

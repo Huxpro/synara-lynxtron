@@ -80,7 +80,10 @@ export function ComposerFooterContentComposition(props: {
         </ComposerFooterLeadingElement>
       ) : null}
       {actionsVisible ? (
-        <ComposerFooterActionsElement voiceBusy={props.voiceBusy ?? false}>
+        <ComposerFooterActionsElement
+          compact={props.compact ?? false}
+          voiceBusy={props.voiceBusy ?? false}
+        >
           {props.actions}
         </ComposerFooterActionsElement>
       ) : null}

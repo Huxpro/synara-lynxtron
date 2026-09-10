@@ -19,9 +19,14 @@ import type {
   GitRunStackedActionResult,
   GitStatusLocalResult,
   GitStatusResult,
+  GitStageFilesResult,
+  GitUnstageFilesResult,
   ModelSelection,
   OrchestrationImportThreadInput,
   OrchestrationImportThreadResult,
+  OrchestrationShellStreamItem,
+  OrchestrationGetFullThreadDiffResult,
+  OrchestrationGetTurnDiffResult,
   OrchestrationLatestTurn,
   OrchestrationMessage,
   OrchestrationReadModel,
@@ -32,6 +37,13 @@ import type {
   OrchestrationSession,
   OrchestrationThreadActivity,
   ProjectId,
+  ProjectDiscoverScriptsInput,
+  ProjectDiscoverScriptsResult,
+  ProjectListDevServersResult,
+  ProjectRunDevServerInput,
+  ProjectRunDevServerResult,
+  ProjectStopDevServerInput,
+  ProjectStopDevServerResult,
   ProjectCreateLocalFilePreviewGrantResult,
   ProjectListDirectoriesInput,
   ProjectListDirectoriesResult,
@@ -67,11 +79,15 @@ import type {
   ServerListProviderUsageResult,
   ServerListLocalServersResult,
   ServerRefreshProvidersResult,
+  ServerVoiceTranscriptionInput,
+  ServerVoiceTranscriptionResult,
   ServerStopLocalServerInput,
   ServerStopLocalServerResult,
   ServerSettingsPatch,
   ServerSettingsView,
   ServerProviderUpdateResult,
+  KeybindingRule,
+  ServerUpsertKeybindingResult,
   TerminalEvent,
   EditorId,
   ExternalMcpCapability,
@@ -141,6 +157,7 @@ export interface SynaraPullRequestListResult {
 const OFFLINE_RETRY_DELAY_MS = 5_000;
 const TRANSPORT_STATE_EVENT = 'synara:transport-state';
 const GIT_ACTION_PROGRESS_EVENT = 'synara:git-action-progress';
+const ORCHESTRATION_SHELL_EVENT = 'synara:orchestration-shell-event';
 
 let relayState: RpcTransportState = 'idle';
 let relayEverConnected = false;
@@ -151,8 +168,13 @@ const gitActionProgressListeners = new Map<
   (event: GitActionProgressEvent) => void
 >();
 const terminalEventListeners = new Set<(event: TerminalEvent) => void>();
+const orchestrationShellEventListeners = new Set<
+  (event: OrchestrationShellStreamItem) => void
+>();
 let terminalEventStream: Promise<void> | null = null;
 let terminalEventRetry: ReturnType<typeof setTimeout> | null = null;
+let orchestrationShellEventStream: Promise<void> | null = null;
+let orchestrationShellEventRetry: ReturnType<typeof setTimeout> | null = null;
 
 function setRelayState(state: RpcTransportState): void {
   if (relayState === state) return;
@@ -189,6 +211,12 @@ onGlobalEvent(GIT_ACTION_PROGRESS_EVENT, (event: unknown) => {
     event as GitActionProgressEvent
   );
 });
+onGlobalEvent(ORCHESTRATION_SHELL_EVENT, (event: unknown) => {
+  if (!event || typeof event !== 'object') return;
+  for (const listener of orchestrationShellEventListeners) {
+    listener(event as OrchestrationShellStreamItem);
+  }
+});
 function describeRelayError(error: unknown): string {
   if (error instanceof Error) return error.message;
   return String(error);
@@ -214,6 +242,7 @@ function hostBridgeRequest<A>(
   method: string,
   params: Record<string, unknown>
 ): Promise<A> {
+  'background only';
   return new Promise((resolve, reject) => {
     try {
       NativeModules.bridge.call(
@@ -332,6 +361,30 @@ function ensureTerminalEventStream(): void {
     });
 }
 
+function ensureOrchestrationShellEventStream(): void {
+  if (
+    orchestrationShellEventStream ||
+    orchestrationShellEventListeners.size === 0
+  ) {
+    return;
+  }
+  orchestrationShellEventStream = relayStreamRequest<OrchestrationShellStreamItem>(
+    'orchestration.subscribeShell',
+    {}
+  )
+    .then(() => undefined)
+    .catch(() => undefined)
+    .finally(() => {
+      orchestrationShellEventStream = null;
+      if (orchestrationShellEventListeners.size === 0) return;
+      orchestrationShellEventRetry = setTimeout(() => {
+        orchestrationShellEventRetry = null;
+        ensureOrchestrationShellEventStream();
+      }, 1_000);
+    });
+}
+
+
 function transportRequest<A>(tag: string, payload: unknown): Promise<A> {
   return relayRequest<A>(tag, payload);
 }
@@ -371,6 +424,24 @@ export function subscribeTerminalEvents(
     }
   };
 }
+
+export function subscribeOrchestrationShellEvents(
+  listener: (event: OrchestrationShellStreamItem) => void
+): () => void {
+  orchestrationShellEventListeners.add(listener);
+  ensureOrchestrationShellEventStream();
+  return () => {
+    orchestrationShellEventListeners.delete(listener);
+    if (
+      orchestrationShellEventListeners.size === 0 &&
+      orchestrationShellEventRetry
+    ) {
+      clearTimeout(orchestrationShellEventRetry);
+      orchestrationShellEventRetry = null;
+    }
+  };
+}
+
 
 export async function fetchSynaraSnapshot(): Promise<SynaraSnapshot> {
   return transportRequest<SynaraSnapshot>('orchestration.getSnapshot', {});
@@ -575,6 +646,18 @@ export async function fetchServerConfig(): Promise<ServerConfig> {
   return transportRequest('server.getConfig', {});
 }
 
+export async function upsertKeybinding(
+  rule: KeybindingRule
+): Promise<ServerUpsertKeybindingResult> {
+  return transportRequest('server.upsertKeybinding', rule);
+}
+
+export async function removeKeybinding(
+  command: KeybindingRule['command']
+): Promise<ServerUpsertKeybindingResult> {
+  return transportRequest('server.removeKeybinding', { command });
+}
+
 export async function refreshProviderStatuses(): Promise<ServerRefreshProvidersResult> {
   return transportRequest('server.refreshProviders', {});
 }
@@ -588,6 +671,12 @@ export async function fetchFreshServerConfig(): Promise<ServerConfig> {
     ...config,
     providers: providerStatuses.providers,
   };
+}
+
+export async function transcribeVoice(
+  input: ServerVoiceTranscriptionInput
+): Promise<ServerVoiceTranscriptionResult> {
+  return transportRequest('server.transcribeVoice', input);
 }
 
 export async function generateThreadRecap(
@@ -637,12 +726,44 @@ export async function pullGitBranch(cwd: string): Promise<GitPullResult> {
 }
 
 export async function fetchWorkingTreeDiff(
-  cwd: string
+  cwd: string,
+  scope: 'branch' | 'staged' | 'unstaged' | 'workingTree' = 'workingTree'
 ): Promise<GitReadWorkingTreeDiffResult> {
   return transportRequest('git.readWorkingTreeDiff', {
     cwd,
-    scope: 'workingTree',
+    scope,
   });
+}
+
+export async function stageGitFiles(
+  cwd: string,
+  paths: readonly string[]
+): Promise<GitStageFilesResult> {
+  return transportRequest('git.stageFiles', { cwd, paths: [...paths] });
+}
+
+export async function unstageGitFiles(
+  cwd: string,
+  paths: readonly string[]
+): Promise<GitUnstageFilesResult> {
+  return transportRequest('git.unstageFiles', { cwd, paths: [...paths] });
+}
+
+export async function fetchTurnDiff(input: {
+  readonly fromTurnCount: number;
+  readonly ignoreWhitespace: boolean;
+  readonly threadId: string;
+  readonly toTurnCount: number;
+}): Promise<OrchestrationGetTurnDiffResult> {
+  return transportRequest('orchestration.getTurnDiff', input);
+}
+
+export async function fetchFullThreadDiff(input: {
+  readonly ignoreWhitespace: boolean;
+  readonly threadId: string;
+  readonly toTurnCount: number;
+}): Promise<OrchestrationGetFullThreadDiffResult> {
+  return transportRequest('orchestration.getFullThreadDiff', input);
 }
 
 export async function fetchGitBranches(cwd: string): Promise<GitListBranchesResult> {
@@ -756,6 +877,28 @@ export async function fetchLocalServers(): Promise<ServerListLocalServersResult>
     'server.listLocalServers',
     {}
   );
+}
+
+export async function fetchProjectDevServers(): Promise<ProjectListDevServersResult> {
+  return transportRequest<ProjectListDevServersResult>('projects.listDevServers', {});
+}
+
+export async function discoverProjectScripts(
+  input: ProjectDiscoverScriptsInput
+): Promise<ProjectDiscoverScriptsResult> {
+  return transportRequest<ProjectDiscoverScriptsResult>('projects.discoverScripts', input);
+}
+
+export async function runProjectDevServer(
+  input: ProjectRunDevServerInput
+): Promise<ProjectRunDevServerResult> {
+  return transportRequest<ProjectRunDevServerResult>('projects.runDevServer', input);
+}
+
+export async function stopProjectDevServer(
+  input: ProjectStopDevServerInput
+): Promise<ProjectStopDevServerResult> {
+  return transportRequest<ProjectStopDevServerResult>('projects.stopDevServer', input);
 }
 
 export async function stopLocalServer(

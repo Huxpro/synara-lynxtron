@@ -9,7 +9,7 @@ export function SettingsHeadingElement(props: {
       className={props.className}
       accessibility-element
       accessibility-heading
-      accessibility-traits="header"
+      accessibility-trait="header"
     >
       {props.children}
     </text>

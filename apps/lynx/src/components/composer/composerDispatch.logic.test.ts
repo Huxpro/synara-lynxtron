@@ -13,6 +13,27 @@ import {
 import { createPastedTextDraft } from '@synara-web/lib/composerPastedText';
 
 describe('composer dispatch logic', () => {
+  it('materializes terminal context placeholders into the canonical send block', () => {
+    expect(
+      buildComposerSendText({
+        prompt: '\uFFFC Explain the failure',
+        pastedTexts: [],
+        fileComments: [],
+        terminalContexts: [
+          {
+            terminalId: 'terminal-1',
+            terminalLabel: 'Terminal 1',
+            lineStart: 7,
+            lineEnd: 8,
+            text: 'error: failed\nexit 1',
+          },
+        ],
+      })
+    ).toBe(
+      '@terminal-1:7-8 Explain the failure\n\n<terminal_context>\n- Terminal 1 lines 7-8:\n  7 | error: failed\n  8 | exit 1\n</terminal_context>'
+    );
+  });
+
   it('serializes file comments into the canonical prompt block on send', () => {
     expect(
       buildComposerSendText({

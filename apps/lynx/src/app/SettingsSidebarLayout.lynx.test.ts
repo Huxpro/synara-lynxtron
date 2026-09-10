@@ -38,7 +38,10 @@ describe('Lynx Settings sidebar layout', () => {
       /\.SettingsSidebarBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*width:\s*100%;/s
     );
     expect(styles).toMatch(
-      /\.SettingsSidebarBodyInner\s*\{[^}]*min-height:\s*100%;[^}]*padding:\s*8px 6px 6px;/s
+      /\.SettingsSidebarFixedChrome\s*\{[^}]*flex-shrink:\s*0;[^}]*padding:\s*8px 6px 0;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsSidebarBodyInner\s*\{[^}]*min-height:\s*100%;[^}]*padding:\s*0 6px 6px;/s
     );
   });
 
@@ -51,6 +54,14 @@ describe('Lynx Settings sidebar layout', () => {
     expect(source).toContain('className="SettingsSidebarBody"');
     expect(source).toContain('scroll-orientation="vertical"');
     expect(source).toContain('className="SettingsSidebarBodyInner"');
+    expect(source.indexOf('className="SettingsSidebarFixedChrome"')).toBeLessThan(
+      source.indexOf('className="SettingsSidebarBody"')
+    );
+    const scrollBody = source.slice(
+      source.indexOf('className="SettingsSidebarBody"'),
+      source.indexOf('</scroll-view>', source.indexOf('className="SettingsSidebarBody"'))
+    );
+    expect(scrollBody).not.toContain('<SettingsSidebarChromeComposition');
   });
 
   it('overlays the Settings sidebar instead of squeezing compact content', () => {

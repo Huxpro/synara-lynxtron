@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 
 import type { ThreadTranscriptRow } from './queries';
 import {
@@ -24,6 +25,34 @@ describe('transcript work-entry presentation', () => {
     ).toBe('Planning GitHub verification approach');
   });
 
+  it('routes reasoning entries through rich Markdown while ordinary tools stay compact', () => {
+    const source = readFileSync(new URL('./Transcript.tsx', import.meta.url), 'utf8');
+    const workEntrySource = source.slice(
+      source.indexOf('function TranscriptWorkEntry'),
+      source.indexOf('function TranscriptWorkEntries')
+    );
+    expect(workEntrySource).toContain('isReasoningUpdateWorkEntry(entry)');
+    expect(workEntrySource).toContain('formatAgentActivityEntryPreview(entry)');
+    expect(workEntrySource).toContain('<ChatMarkdown cwd={workspaceRoot} text={reasoningText} />');
+    expect(workEntrySource).toContain('<TimelineStatusRowComposition');
+    expect(source).toContain('chunkCollapsedTurnItems(collapsedTurnItems).map');
+    expect(source).toContain('summarizeToolCallGroup(props.entries)');
+    expect(source).toContain("baseClassName: 'TranscriptToolGroupTrigger'");
+    expect(source).toContain('classifyToolCallSummaryCategory(props.entry)');
+    expect(source).toContain('<SearchIcon className="TranscriptStatusIcon" size={13} />');
+    expect(source).toContain('<PencilIcon className="TranscriptStatusIcon" size={13} />');
+    const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
+    expect(styles).toMatch(
+      /\.TranscriptReasoningEntry\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*19px;/s
+    );
+    expect(styles).toMatch(
+      /\.TranscriptReasoningEntry \.MdHeading,[\s\S]*?font-size:\s*inherit;[\s\S]*?line-height:\s*inherit;/
+    );
+    expect(styles).toMatch(
+      /\.TranscriptCollapsedNarration \.MdHeading,[\s\S]*?font-size:\s*12px;[\s\S]*?line-height:\s*19px;/
+    );
+  });
+
   it('keeps ordinary work rows in label-detail form', () => {
     expect(
       resolveTranscriptWorkEntryDisplayText({
@@ -33,6 +62,27 @@ describe('transcript work-entry presentation', () => {
         tone: 'tool',
       } as never)
     ).toBe('Read src/index.ts');
+  });
+
+  it('uses Electron file-change wording and basenames for edit rows', () => {
+    expect(
+      resolveTranscriptWorkEntryDisplayText({
+        id: 'edit-1',
+        label: 'File change',
+        tone: 'tool',
+        itemType: 'file_change',
+        changedFiles: ['/tmp/workspace/example.js'],
+      } as never)
+    ).toBe('Edited example.js');
+    expect(
+      resolveTranscriptWorkEntryDisplayText({
+        id: 'edit-2',
+        label: 'File change',
+        tone: 'tool',
+        itemType: 'file_change',
+        changedFiles: ['/tmp/a.ts', '/tmp/b.ts'],
+      } as never)
+    ).toBe('Edited 2 files');
   });
 });
 

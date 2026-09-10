@@ -21,6 +21,7 @@ export function useDockPaneRuntimeActivation(input: {
 }) {
   const immediateHydrationKindRef = useRef<RightDockPaneKind | "any" | null>(null);
   const [hydratedPaneKey, setHydratedPaneKey] = useState<string | null>(null);
+  const activePaneKind = input.activePane?.kind ?? null;
 
   const activePaneKey = useMemo(
     () =>
@@ -40,7 +41,7 @@ export function useDockPaneRuntimeActivation(input: {
           kind: input.activePane.kind,
           reason:
             immediateHydrationKindRef.current === "any" ||
-            immediateHydrationKindRef.current === input.activePane.kind
+            immediateHydrationKindRef.current === activePaneKind
               ? "explicit"
               : "restore",
           hydrated: hydratedPaneKey === activePaneKey,
@@ -60,9 +61,9 @@ export function useDockPaneRuntimeActivation(input: {
   useLayoutEffect(() => {
     activePaneRef.current = {
       key: activePaneKey,
-      kind: input.activePane?.kind ?? null,
+      kind: activePaneKind,
     };
-  }, [activePaneKey, input.activePane]);
+  }, [activePaneKey, activePaneKind]);
 
   const requestImmediateHydration = useCallback((kind?: RightDockPaneKind) => {
     immediateHydrationKindRef.current = kind ?? "any";
@@ -81,7 +82,7 @@ export function useDockPaneRuntimeActivation(input: {
   }, []);
 
   useLayoutEffect(() => {
-    if (!input.activePane || !activePaneKey) {
+    if (!activePaneKind || !activePaneKey) {
       immediateHydrationKindRef.current = null;
       setHydratedPaneKey(null);
       return;
@@ -89,7 +90,7 @@ export function useDockPaneRuntimeActivation(input: {
 
     const reason =
       immediateHydrationKindRef.current === "any" ||
-      immediateHydrationKindRef.current === input.activePane.kind
+      immediateHydrationKindRef.current === activePaneKind
         ? "explicit"
         : "restore";
     if (reason === "explicit") {
@@ -97,7 +98,7 @@ export function useDockPaneRuntimeActivation(input: {
     }
 
     const nextRuntimeMode = resolveDockPaneRuntimeMode({
-      kind: input.activePane.kind,
+      kind: activePaneKind,
       reason,
       hydrated: hydratedPaneKey === activePaneKey,
     });
@@ -131,7 +132,11 @@ export function useDockPaneRuntimeActivation(input: {
         cancelRaf(frameId);
       }
     };
-  }, [activePaneKey, hydratedPaneKey, input.activePane]);
+  // Depend on the pane's semantic identity, not the store object's reference.
+  // Projection updates may recreate an equivalent pane object every render; if
+  // that restarts this effect, the two-frame restore timer can be cancelled
+  // forever and leave a persisted Terminal stuck in preview mode.
+  }, [activePaneKey, activePaneKind, hydratedPaneKey]);
 
   return {
     activePaneRuntimeMode,

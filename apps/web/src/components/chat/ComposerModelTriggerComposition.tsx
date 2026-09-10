@@ -19,9 +19,10 @@ export function ComposerModelTriggerComposition(props: {
   return (
     <ComposerModelTriggerFrameElement>
       <ComposerModelTriggerProviderIconElement provider={props.provider} />
-      <ComposerModelTriggerModelLabelElement hidden={props.hideModelLabel}>
-        {props.modelLabel}
-      </ComposerModelTriggerModelLabelElement>
+      <ComposerModelTriggerModelLabelElement
+        hidden={props.hideModelLabel}
+        modelLabel={props.modelLabel}
+      />
       {props.showFastBadge ? <ComposerModelTriggerFastBadgeElement /> : null}
       {props.statusLabel ? (
         props.hideStatusLabel ? (

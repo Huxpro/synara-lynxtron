@@ -14,11 +14,17 @@ describe('native thread context actions', () => {
       y: 5,
     });
     expect(
+      resolveSecondaryPointerOffset({ button: 0, buttons: 2, x: 6, y: 7 })
+    ).toEqual({ x: 6, y: 7 });
+    expect(
+      resolveSecondaryPointerOffset({ button: 0, buttons: 1, x: 6, y: 7 })
+    ).toBeNull();
+    expect(
       resolveSecondaryPointerOffset({ button: 2, x: Number.NaN, y: 5 })
     ).toBeNull();
   });
 
-  it('builds server-authoritative pin, archive, and delete commands', () => {
+  it('builds server-authoritative pin and archive commands while reserving delete for cleanup', () => {
     expect(
       buildNativeThreadContextCommand({
         action: 'toggle-pin',
@@ -51,11 +57,7 @@ describe('native thread context actions', () => {
         isPinned: false,
         threadId: 'thread-1',
       })
-    ).toEqual({
-      type: 'thread.delete',
-      commandId: 'command-3',
-      threadId: 'thread-1',
-    });
+    ).toBeNull();
   });
 
   it('requires confirmation only for destructive visibility changes', () => {

@@ -2,16 +2,13 @@ import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
 describe('Thread sidebar bootstrap', () => {
-  it('seeds the shared sidebar query before thread-specific fetches', () => {
-    const source = readFileSync(new URL('./App.tsx', import.meta.url), 'utf8');
-    const sidebarIndex = source.indexOf('fetchSidebarSnapshot()');
-    const seedIndex = source.indexOf(
-      "queryClient.setQueryData(['sidebar-snapshot'], snapshot)"
+  it('owns one shared sidebar query in the product route', () => {
+    const source = readFileSync(
+      new URL('./FeatureListsPage.tsx', import.meta.url),
+      'utf8'
     );
-    const threadIndex = source.indexOf('fetchThreadTranscriptRows(threadMatch[1])');
 
-    expect(sidebarIndex).toBeGreaterThan(-1);
-    expect(seedIndex).toBeGreaterThan(sidebarIndex);
-    expect(threadIndex).toBeGreaterThan(seedIndex);
+    expect(source).toContain("queryKey: ['sidebar-snapshot']");
+    expect(source).toContain('queryFn: fetchSidebarSnapshot');
   });
 });

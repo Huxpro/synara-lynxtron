@@ -9,6 +9,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 import { randomUUID } from "./lib/utils";
 import {
+  RIGHT_DOCK_STORAGE_KEY,
   type OpenPaneInput,
   type RightDockPane,
   type RightDockThreadState,
@@ -23,7 +24,6 @@ import {
 } from "./rightDockStore.logic";
 
 import { webStorage } from "~/platform/storage";
-const RIGHT_DOCK_STORAGE_KEY = "synara:right-dock-state:v1";
 
 interface RightDockStore {
   dockStateByThreadId: Record<string, RightDockThreadState | undefined>;

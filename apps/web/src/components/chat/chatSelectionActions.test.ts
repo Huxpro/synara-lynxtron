@@ -1,8 +1,36 @@
 import { describe, expect, it } from "vitest";
 
-import { resolveTranscriptMarkerRange } from "./chatSelectionActions";
+import {
+  resolveTranscriptSelectionActionLayout,
+  resolveSelectionViewportElement,
+  resolveTranscriptMarkerRange,
+} from "./chatSelectionActions";
 
 describe("chatSelectionActions", () => {
+  it("skips zero-sized display-contents containers for pane bounds", () => {
+    const pane = {
+      parentElement: null,
+      getBoundingClientRect: () => ({ width: 192, height: 483 }),
+    } as unknown as HTMLElement;
+    const contents = {
+      parentElement: pane,
+      getBoundingClientRect: () => ({ width: 0, height: 0 }),
+    } as unknown as HTMLElement;
+    expect(resolveSelectionViewportElement(contents)).toBe(pane);
+    expect(
+      resolveTranscriptSelectionActionLayout({
+        selectionRect: {
+          left: 280,
+          top: 137,
+          width: 134,
+          height: 19.5,
+        } as DOMRect,
+        pointer: { x: 405, y: 147 },
+        viewport: { left: 256, top: 46, width: 192, height: 483 },
+      }),
+    ).toEqual({ left: 264, top: 97, placement: "top", width: 176 });
+  });
+
   it("resolves an exact unique transcript selection to raw message offsets", () => {
     expect(
       resolveTranscriptMarkerRange({

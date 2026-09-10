@@ -32,6 +32,8 @@ import {
   computeSigma,
   computeTickStyles,
   computeTrailGeometry,
+  isMessageTrailEligible,
+  MESSAGE_TRAIL_MIN_PANE_WIDTH_PX,
   type ActiveTrailStore,
   type MessageTrailItem,
   type TickStyle,
@@ -50,7 +52,6 @@ interface MessageTrailProps {
 // Rail only renders once the centered transcript column (max 46rem) leaves a left
 // gutter wide enough for the rail to sit clear of message text. Measured off the
 // pane so a docked side panel / the sidebar is accounted for.
-const MIN_PANE_WIDTH_PX = 864;
 // Fixed rail box. Ticks grow rightward inside it (left-aligned, like the Dock).
 const RAIL_WIDTH_PX = 56;
 // Cap the scrollable tick viewport a bit below the full pane height so the rail
@@ -109,7 +110,12 @@ export function MessageTrail({ items, activeStore, onSelect }: MessageTrailProps
   });
   const visibleIndexSet = new Set(visibleIndexes);
 
-  const visible = hasGutter && items.length > 1;
+  const visible =
+    hasGutter &&
+    isMessageTrailEligible({
+      itemCount: items.length,
+      paneWidth: MESSAGE_TRAIL_MIN_PANE_WIDTH_PX,
+    });
 
   // Tick layout depends only on the message count (fixed spacing, natural content
   // height) — never on the measured viewport — so the capped/scrolling viewport
@@ -343,7 +349,7 @@ export function MessageTrail({ items, activeStore, onSelect }: MessageTrailProps
     let pendingRaf: number | null = null;
     const measure = () => {
       pendingRaf = null;
-      setHasGutter(pane.clientWidth >= MIN_PANE_WIDTH_PX);
+      setHasGutter(pane.clientWidth >= MESSAGE_TRAIL_MIN_PANE_WIDTH_PX);
     };
     const schedule = () => {
       if (pendingRaf === null) {

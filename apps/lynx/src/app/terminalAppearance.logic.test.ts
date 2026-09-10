@@ -9,6 +9,7 @@ describe('resolveLynxTerminalTypography', () => {
     ).toEqual({
       fontFamily: '"SFMono-Regular", ui-monospace, monospace',
       fontSize: '12px',
+      fontWeight: '300',
       lineHeight: '18px',
     });
   });
@@ -22,6 +23,7 @@ describe('resolveLynxTerminalTypography', () => {
     ).toEqual({
       fontFamily: 'JetBrains Mono, monospace',
       fontSize: '22px',
+      fontWeight: '300',
       lineHeight: '33px',
     });
   });

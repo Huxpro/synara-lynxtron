@@ -38,61 +38,45 @@
   }
 }
 
-.SliceRoot--viewport-compact
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-compact .ExplorerDock
   .ExplorerDockSidebar {
   width: 50%;
   min-width: 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   > .ExplorerDockHeader {
   height: 28px;
   min-height: 28px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockSearch {
   padding: 4px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockSearchIcon {
   left: 14px;
   top: 11px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreviewContent {
   padding: 4px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockEntries {
   padding: 3px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockEntryPath {
   display: none;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreview--pdf
   .ExplorerDockPreviewHeader {
   position: absolute;
@@ -106,86 +90,62 @@
   border-bottom-width: 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreview--pdf
   .ExplorerDockPreviewHeader
-  .ExplorerDockPreviewPath {
+  .ExplorerDockBreadcrumb {
   display: none;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreview--pdf
   .ExplorerDockPreviewContent {
   height: 100%;
   padding: 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdfToolbar {
   min-height: 32px;
   padding: 2px 4px;
   gap: 2px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdf {
   position: relative;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdfIdentity,
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdfPrevious,
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdfNext {
   display: none;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdfControls {
   width: 100%;
   padding-right: 32px;
   justify-content: space-between;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdfPageFrame {
   padding: 2px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdfOpen {
   margin-left: 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfPrevious,
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfNext {
   display: flex;
@@ -194,24 +154,18 @@
   padding: 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfPrevious
   .ExplorerDockPdfNavLabel,
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfNext
   .ExplorerDockPdfNavLabel {
   display: none;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfCompactNav {
   display: flex;
@@ -219,9 +173,7 @@
   line-height: 18px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfOpen {
   width: 28px;
@@ -230,26 +182,20 @@
   padding: 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfControls {
   padding-right: 0;
   gap: 2px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfOpenLabel {
   display: none;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfCompactOpen {
   display: flex;
@@ -257,9 +203,7 @@
   line-height: 18px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreview--image
   .ExplorerDockPreviewHeader {
   position: absolute;
@@ -273,39 +217,29 @@
   border-bottom-width: 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreview--image
-  .ExplorerDockPreviewPath,
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+  .ExplorerDockBreadcrumb,
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreview--image
   .ExplorerDockImageName {
   display: none;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreview--image
   .ExplorerDockPreviewContent {
   height: 100%;
   padding: 2px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreview--image
   .ExplorerDockImageFrame {
   gap: 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreview--markdown
   .ExplorerDockPreviewHeader {
   position: absolute;
@@ -319,9 +253,7 @@
   border-bottom-width: 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreview--markdown.ExplorerDockPreview--truncated
   .ExplorerDockPreviewHeader {
   width: 84px;
@@ -329,17 +261,13 @@
   gap: 4px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreview--markdown
-  .ExplorerDockPreviewPath {
+  .ExplorerDockBreadcrumb {
   display: none;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockPreview--markdown
   .ExplorerDockPreviewContent {
   height: 100%;
@@ -357,6 +285,23 @@
   max-width: none;
   height: 100%;
   border-left-width: 0;
+}
+
+.ExplorerDock--single-file {
+  top: 0;
+}
+
+.ExplorerDock--single-file .ExplorerDockHeader {
+  height: 46px;
+  min-height: 46px;
+}
+
+.ExplorerDock--single-file .ExplorerDockSidebar {
+  display: none;
+}
+
+.ExplorerDock--single-file .ExplorerDockPreview {
+  width: 100%;
 }
 
 .ExplorerDock--editor .ExplorerDockSidebar {
@@ -450,11 +395,12 @@
   border-bottom: 1px solid var(--border);
 }
 
+.ExplorerDockFileTab {
+  max-width: 176px;
+}
+
 .ExplorerDockTitle {
-  color: var(--foreground);
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 18px;
+  font-size: var(--app-font-size-ui-sm, 11px);
 }
 
 .ExplorerDockClose {
@@ -533,9 +479,7 @@
   line-height: 14px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockSearchTruncated {
   height: 14px;
   padding: 0 4px;
@@ -543,9 +487,7 @@
   line-height: 14px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockEntries--truncated {
   padding: 0;
 }
@@ -594,9 +536,7 @@
   line-height: 14px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
+.SliceRoot--viewport-short-height .ExplorerDock
   .ExplorerDockDirectoryState {
   height: 12px;
   min-height: 12px;
@@ -665,16 +605,74 @@
   border-bottom: 1px solid var(--border);
 }
 
-.ExplorerDockPreviewPath {
+.ExplorerDockBreadcrumb {
+  display: flex;
   min-width: 0;
   flex: 1;
+  align-items: center;
+  overflow: hidden;
+}
+
+.ExplorerDockBreadcrumbPrefix {
+  display: flex;
+  min-width: 0;
+  flex-grow: 0;
+  flex-shrink: 9999;
+  flex-basis: auto;
+  align-items: center;
+  overflow: hidden;
+}
+
+.ExplorerDockBreadcrumbPart {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.ExplorerDockBreadcrumbDirectory {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-family: var(--font-ui-family);
+  font-size: 12px;
+  line-height: 16px;
+  opacity: 0.8;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ExplorerDockBreadcrumbChevron {
+  width: 12px;
+  height: 12px;
+  margin: 0 2px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  opacity: 0.4;
+}
+
+.ExplorerDockBreadcrumbFile {
+  min-width: 0;
+  flex-shrink: 1;
   overflow: hidden;
   color: var(--foreground);
+  font-family: var(--font-ui-family);
   font-size: 12px;
   font-weight: 500;
   line-height: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.ExplorerDockPreviewHeaderActions,
+.ExplorerDockOpenGroup {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ExplorerDockPreviewHeaderActions {
+  gap: 6px;
 }
 
 .ExplorerDockPreviewTruncated {
@@ -701,6 +699,56 @@
 
 .ExplorerDockPreviewActionsPopup {
   width: 208px;
+  min-height: 0;
+}
+
+.ExplorerDockOpenGroup {
+  height: 28px;
+}
+
+.LxButton.ExplorerDockOpenButton {
+  height: 28px;
+  min-height: 28px;
+  padding: 0 9px;
+  gap: 6px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.LxButton.ExplorerDockOpenButton .LxButton__text {
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.ExplorerDockEditorIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.LxMenuTrigger.ExplorerDockOpenMenuTrigger {
+  display: flex;
+  width: 34px;
+  min-width: 34px;
+  height: 28px;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-left-width: 0;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.LxMenuTrigger.ExplorerDockOpenMenuTrigger.ui-hover,
+.LxMenuTrigger.ExplorerDockOpenMenuTrigger.ui-focus,
+.LxMenuTrigger.ExplorerDockOpenMenuTrigger.ui-pressed {
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.ExplorerDockOpenPopup {
+  width: 176px;
+  min-height: 0;
 }
 
 .ExplorerDockPreviewContent {
@@ -797,11 +845,54 @@
 }
 
 .ExplorerDockPdfPage {
-  min-width: 44px;
+  display: flex;
+  min-width: 58px;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
   color: var(--muted-foreground);
   font-size: 10px;
   line-height: 14px;
+}
+
+.ExplorerDockPdfPageInputSlot {
+  position: relative;
+  display: flex;
+  width: 28px;
+  height: 24px;
+  min-height: 24px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.ExplorerDockPdfPageInput {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 3px 4px;
+  border-width: 0;
+  background-color: transparent;
+  color: transparent;
+  font-size: 10px;
+  line-height: 16px;
   text-align: center;
+}
+
+.ExplorerDockPdfPageInputValue {
+  pointer-events: none;
+  color: var(--foreground);
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.ExplorerDockPdfPageTotal {
+  font-size: 10px;
+  line-height: 14px;
 }
 
 .ExplorerDockPdfPageFrame {
@@ -809,15 +900,81 @@
   width: 100%;
   min-height: 0;
   flex: 1;
+  overflow: hidden;
+}
+
+.ExplorerDockPdfPageImage {
+  flex-shrink: 0;
+  background-color: white;
+  border: 1px solid var(--border);
+}
+
+.ExplorerDockPdfVerticalScroll {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.ExplorerDockPdfHorizontalScroll {
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+  flex-shrink: 0;
+}
+
+.ExplorerDockPdfPageCanvas {
+  display: flex;
+  min-width: 100%;
+  min-height: 100%;
   padding: 12px;
   align-items: center;
   justify-content: center;
 }
 
-.ExplorerDockPdfPageImage {
-  width: 100%;
-  height: 100%;
-  min-height: 0;
+.ExplorerDockPdfZoomControls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.ExplorerDockPdfZoomStep {
+  width: 28px;
+  min-width: 28px;
+  padding: 0;
+}
+
+.ExplorerDockPdfZoomGlyph {
+  color: var(--muted-foreground);
+  font-size: 16px;
+  line-height: 18px;
+}
+
+.ExplorerDockPdfZoomMenuTrigger.LxMenuTrigger {
+  display: flex;
+  min-width: 66px;
+  height: 28px;
+  padding: 0 7px;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border-radius: 5px;
+  color: var(--muted-foreground);
+}
+
+.ExplorerDockPdfZoomMenuTrigger.LxMenuTrigger.ui-hover,
+.ExplorerDockPdfZoomMenuTrigger.LxMenuTrigger.ui-pressed {
+  background-color: var(--secondary);
+}
+
+.ExplorerDockPdfZoomPercent {
+  font-size: 10px;
+  line-height: 14px;
+}
+
+.ExplorerDockPdfZoomPopup.LxMenuPopup {
+  width: 160px;
+  min-width: 160px;
 }
 
 .ExplorerDockPdfError {
@@ -839,6 +996,19 @@
 }
 
 .ExplorerDockPdfCompactNav {
+  display: flex;
+  font-size: 16px;
+  line-height: 18px;
+}
+
+.ExplorerDockPdfPrevious,
+.ExplorerDockPdfNext {
+  width: 28px;
+  min-width: 28px;
+  padding: 0;
+}
+
+.ExplorerDockPdfNavLabel {
   display: none;
 }
 
@@ -872,12 +1042,15 @@
 .ExplorerDockSyntax {
   display: flex;
   min-width: 100%;
+  width: max-content;
   flex-direction: column;
 }
 
 .ExplorerDockSyntaxLine {
   display: flex;
+  width: max-content;
   min-height: 17px;
+  min-width: 100%;
   flex-direction: row;
   align-items: flex-start;
 }
@@ -885,6 +1058,7 @@
 .ExplorerDockSyntaxLineGroup {
   display: flex;
   min-width: 100%;
+  width: max-content;
   flex-direction: column;
 }
 
@@ -903,13 +1077,14 @@
   align-items: center;
   justify-content: flex-end;
   color: var(--muted-foreground);
-  font-family: var(--font-ui-family);
+  font-family: var(--font-mono-family);
   font-size: 10px;
   line-height: 17px;
   opacity: 0.65;
 }
 
 .ExplorerDockSyntaxLineNumberText {
+  font-family: var(--font-mono-family);
   font-size: 10px;
   line-height: 17px;
 }
@@ -955,20 +1130,11 @@
 }
 
 .ExplorerDockSyntaxCode {
-  min-width: 0;
-  flex: 1;
+  flex-shrink: 0;
   font-family: var(--font-chat-code-family);
   font-size: var(--app-font-size-chat-code, 11px);
   line-height: 17px;
   white-space: pre;
-}
-
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ExplorerDock
-  .ExplorerDockSyntaxCode {
-  white-space: pre-wrap;
-  word-break: break-word;
 }
 
 .ExplorerDockCommentEditor {

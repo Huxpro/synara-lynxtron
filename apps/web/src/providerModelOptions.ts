@@ -37,6 +37,24 @@ export interface ProviderModelOption {
   upstreamProviderName?: string;
 }
 
+export const SEARCHABLE_MODEL_PICKER_THRESHOLD = 15;
+
+export function buildModelSearchText(option: ProviderModelOption): string {
+  return [
+    option.name,
+    option.slug,
+    option.description,
+    option.upstreamProviderName,
+    option.upstreamProviderId,
+  ]
+    .filter(
+      (value): value is string =>
+        typeof value === 'string' && value.trim().length > 0
+    )
+    .join(' ')
+    .toLowerCase();
+}
+
 export interface ProviderModelOptionGroup {
   key: string;
   label: string | null;

@@ -37,6 +37,7 @@ describe('Lynx composer draft attachment subset', () => {
       prompt: '',
       pastedTexts: [pastedText],
       skills: [],
+      terminalContexts: [],
     });
 
     useComposerDraftStore.getState().removePastedText('thread-1', 'paste-1');
@@ -84,6 +85,9 @@ describe('Lynx composer draft attachment subset', () => {
       prompt: '',
       pastedTexts: [],
       skills: [],
+      terminalContexts: [],
+      runtimeMode: undefined,
+      interactionMode: undefined,
       modelSelection: {
         provider: 'codex',
         model: 'gpt-5.6-sol',
@@ -196,6 +200,69 @@ describe('Lynx composer draft attachment subset', () => {
     ]);
 
     useComposerDraftStore.getState().removeFileComments('thread-1');
+    expect(
+      useComposerDraftStore.getState().draftsByThreadId['thread-1']
+    ).toBeUndefined();
+  });
+
+  it('persists terminal context metadata with one atomic prompt placeholder', () => {
+    const context = {
+      id: 'terminal-context-1',
+      threadId: 'thread-1' as never,
+      terminalId: ' terminal-1 ',
+      terminalLabel: ' Terminal 1 ',
+      lineStart: 0,
+      lineEnd: 2,
+      text: '\nfirst\nsecond\n',
+      createdAt: '2026-08-29T00:00:00.000Z',
+    };
+
+    useComposerDraftStore.getState().addTerminalContext('thread-1', context);
+    useComposerDraftStore.getState().addTerminalContext('thread-1', context);
+
+    const draft = useComposerDraftStore.getState().draftsByThreadId['thread-1'];
+    expect(draft?.prompt).toBe('\uFFFC');
+    expect(draft?.terminalContexts).toEqual([
+      {
+        ...context,
+        terminalId: 'terminal-1',
+        terminalLabel: 'Terminal 1',
+        lineStart: 1,
+        lineEnd: 2,
+        text: 'first\nsecond',
+      },
+    ]);
+    const persisted = JSON.parse(
+      webStorage.getItem(LYNX_COMPOSER_DRAFT_STORAGE_KEY) ?? '{}'
+    ) as Record<string, { terminalContexts?: Array<Record<string, unknown>> }>;
+    expect(persisted['thread-1']?.terminalContexts?.[0]).toMatchObject({
+      id: 'terminal-context-1',
+      terminalId: 'terminal-1',
+      terminalLabel: 'Terminal 1',
+      lineStart: 1,
+      lineEnd: 2,
+    });
+    expect(persisted['thread-1']?.terminalContexts?.[0]).not.toHaveProperty(
+      'text'
+    );
+    expect(
+      parsePersistedLynxComposerDrafts(
+        webStorage.getItem(LYNX_COMPOSER_DRAFT_STORAGE_KEY)
+      )['thread-1']?.terminalContexts
+    ).toEqual([{
+      id: 'terminal-context-1',
+      threadId: 'thread-1',
+      createdAt: '2026-08-29T00:00:00.000Z',
+      terminalId: 'terminal-1',
+      terminalLabel: 'Terminal 1',
+      lineStart: 1,
+      lineEnd: 2,
+      text: '',
+    }]);
+
+    useComposerDraftStore
+      .getState()
+      .removeTerminalContext('thread-1', 'terminal-context-1');
     expect(
       useComposerDraftStore.getState().draftsByThreadId['thread-1']
     ).toBeUndefined();
@@ -519,6 +586,7 @@ describe('Lynx composer draft attachment subset', () => {
         images: [],
         nonPersistedImageIds: [],
         pastedTexts: [],
+        terminalContexts: [],
       },
     });
   });

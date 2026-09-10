@@ -29,7 +29,7 @@ export function KanbanStateElement(props: {
         className="SharedKanbanStateCopy"
         accessibility-element={semantics.announce}
         accessibility-label={props.announcement}
-        accessibility-traits={props.intent === 'status' ? 'updating' : 'text'}
+        accessibility-trait={props.intent === 'status' ? 'updating' : 'text'}
       >
         <text
           className="SharedKanbanStateTitle"

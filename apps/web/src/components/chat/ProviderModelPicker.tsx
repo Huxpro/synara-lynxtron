@@ -8,7 +8,11 @@ import { resolveSelectableModel } from "@synara/shared/model";
 import * as Schema from "effect/Schema";
 import { useEffect, useRef, useState } from "react";
 import { type ProviderPickerKind } from "../../session-logic";
-import { formatProviderModelOptionName } from "../../providerModelOptions";
+import {
+  buildModelSearchText,
+  formatProviderModelOptionName,
+  SEARCHABLE_MODEL_PICKER_THRESHOLD,
+} from "../../providerModelOptions";
 import {
   Menu,
   MenuItem,
@@ -62,7 +66,6 @@ function providerIconClassName(
     : fallbackClassName;
 }
 
-const SEARCHABLE_MODEL_PICKER_THRESHOLD = 15;
 const FavoriteModelSlugs = Schema.Array(Schema.String);
 const EMPTY_FAVORITE_MODEL_SLUGS: ReadonlyArray<string> = [];
 
@@ -94,19 +97,6 @@ function resolveSelectedModelLabel(input: {
   });
 }
 
-function buildModelSearchText(option: ProviderModelOption): string {
-  return [
-    option.name,
-    option.slug,
-    option.description,
-    option.upstreamProviderName,
-    option.upstreamProviderId,
-  ]
-    .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
-    .join(" ")
-    .toLowerCase();
-}
-
 type ProviderModelMenuItemsProps = {
   provider: ProviderKind;
   model: ModelSlug;
@@ -121,6 +111,7 @@ type ProviderModelMenuItemsProps = {
   // Invoked after a model selection commits so callers can close ancestor
   // menus and refocus the composer.
   onAfterSelection?: () => void;
+  initialSearchQuery?: string;
 };
 
 // Renders only the popup body of the provider/model picker. Designed to be
@@ -130,7 +121,9 @@ export const ProviderModelMenuItems = function ProviderModelMenuItems(
   props: ProviderModelMenuItemsProps,
 ) {
   const { onAfterSelection } = props;
-  const [modelSearchQuery, setModelSearchQuery] = useState("");
+  const [modelSearchQuery, setModelSearchQuery] = useState(
+    props.initialSearchQuery ?? "",
+  );
   const [kiloFavoriteModelSlugs, setKiloFavoriteModelSlugs] = useLocalStorage(
     FAVORITE_MODEL_STORAGE_KEYS.kilo,
     EMPTY_FAVORITE_MODEL_SLUGS,
@@ -408,6 +401,7 @@ type ProviderModelPickerProps = {
   hideLabel?: boolean;
   disabled?: boolean;
   open?: boolean;
+  initialOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   onSelectionCommitted?: () => void;
   shortcutLabel?: string | null;
@@ -416,7 +410,9 @@ type ProviderModelPickerProps = {
 
 export const ProviderModelPicker = function ProviderModelPicker(props: ProviderModelPickerProps) {
   const { onOpenChange, onSelectionCommitted, open } = props;
-  const [uncontrolledMenuOpen, setUncontrolledMenuOpen] = useState(false);
+  const [uncontrolledMenuOpen, setUncontrolledMenuOpen] = useState(
+    props.initialOpen ?? false,
+  );
   const selectionCommitTimerRef = useRef<number | null>(null);
   const isMenuOpen = open ?? uncontrolledMenuOpen;
   const activeProvider = props.lockedProvider ?? props.provider;

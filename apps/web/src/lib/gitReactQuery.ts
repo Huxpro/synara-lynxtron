@@ -206,6 +206,10 @@ export function gitWorkingTreeDiffQueryOptions(input: {
       }
       return api.git.readWorkingTreeDiff({ cwd: input.cwd, scope });
     },
+    // This is a local WebSocket RPC. Browser online/offline heuristics do not
+    // describe whether Synara's local server is reachable and can otherwise
+    // leave the header badge and an opened diff panel permanently paused.
+    networkMode: "always",
     enabled: (input.enabled ?? true) && input.cwd !== null,
     staleTime: GIT_WORKING_TREE_DIFF_STALE_TIME_MS,
     ...(refetchInterval !== undefined ? { refetchInterval } : {}),

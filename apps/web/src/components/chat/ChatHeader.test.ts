@@ -5,18 +5,18 @@
 
 import { describe, expect, it } from "vitest";
 
-import { resolveChatHeaderThreadIconKind } from "./ChatHeader";
+import { resolveThreadHeaderIconKind } from "@synara/shared/threadHeaderIdentity";
 
-describe("resolveChatHeaderThreadIconKind", () => {
+describe("resolveThreadHeaderIconKind", () => {
   it("uses the terminal icon for terminal-first threads", () => {
-    expect(resolveChatHeaderThreadIconKind("terminal", "New terminal")).toBe("terminal");
+    expect(resolveThreadHeaderIconKind("terminal", "New terminal")).toBe("terminal");
   });
 
   it("keeps provider branding for chat-first threads", () => {
-    expect(resolveChatHeaderThreadIconKind("chat", "Fix auth flow")).toBe("provider");
+    expect(resolveThreadHeaderIconKind("chat", "Fix auth flow")).toBe("provider");
   });
 
   it("hides provider branding for untouched new chat threads", () => {
-    expect(resolveChatHeaderThreadIconKind("chat", "New thread")).toBe("none");
+    expect(resolveThreadHeaderIconKind("chat", "New thread")).toBe("none");
   });
 });

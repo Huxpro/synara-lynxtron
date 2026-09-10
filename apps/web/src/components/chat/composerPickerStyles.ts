@@ -149,6 +149,12 @@ export const RAISED_SURFACE_CHROME_CLASS_NAME = `border ${COMPOSER_SURFACE_BORDE
  *  of dropping to shadow-only separation. */
 export const COMPOSER_INPUT_SURFACE_CLASS_NAME = `chat-composer-surface border ${COMPOSER_SURFACE_BORDER_CLASS_NAME} dark:border-border ${COMPOSER_SURFACE_SHADOW_CLASS_NAME} transition-colors duration-200`;
 
+/** Detached approval/question cards must remain reachable when a dock leaves a
+ * narrow chat pane or the window is short. Keep scrolling local to the card so
+ * the app shell and transcript do not acquire a second page-level scrollbar. */
+export const COMPOSER_DECISION_PANEL_CLASS_NAME =
+  "max-h-[calc(100vh-210px)] overflow-x-hidden overflow-y-auto overscroll-contain";
+
 /** Shadcn default-translucent shell for floating menus, pickers, and popovers. */
 export const APP_TRANSLUCENT_POPUP_SURFACE_BASE_CLASS_NAME =
   "relative overflow-hidden border border-border bg-popover/70 text-popover-foreground before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150";

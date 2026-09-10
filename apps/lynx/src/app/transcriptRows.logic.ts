@@ -7,6 +7,8 @@ import {
   formatAgentActivityEntryPreview,
   isReasoningUpdateWorkEntry,
 } from '@synara-web/components/chat/agentActivity.logic';
+import { isFileChangeWorkLogEntry } from '@synara-web/session-logic';
+import { basenameOfPath } from '@synara-web/file-icons';
 
 export type MessageTranscriptRow = Extract<ThreadTranscriptRow, { kind: 'message' }>;
 export type WorkLogEntry = Extract<ThreadTranscriptRow, { kind: 'work' }>['groupedEntries'][number];
@@ -16,6 +18,12 @@ export function resolveTranscriptWorkEntryDisplayText(
 ): string {
   if (isReasoningUpdateWorkEntry(entry)) {
     return formatAgentActivityEntryPreview(entry) ?? entry.label;
+  }
+  if (isFileChangeWorkLogEntry(entry) && (entry.changedFiles?.length ?? 0) > 0) {
+    const changedFiles = entry.changedFiles ?? [];
+    return changedFiles.length === 1
+      ? `Edited ${basenameOfPath(changedFiles[0] ?? '')}`
+      : `Edited ${changedFiles.length} files`;
   }
   return entry.detail ? `${entry.label} ${entry.detail}` : entry.label;
 }

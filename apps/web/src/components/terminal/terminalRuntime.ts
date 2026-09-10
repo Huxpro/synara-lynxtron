@@ -14,6 +14,7 @@ import {
   consumeTerminalIdentityInput,
 } from "@synara/shared/terminalThreads";
 import { describeErrorMessage } from "@synara/shared/errorMessages";
+import { normalizeTerminalClipboardText } from "@synara/shared/terminalTextProjection";
 import {
   TERMINAL_MAX_COLS,
   TERMINAL_MAX_ROWS,
@@ -850,7 +851,7 @@ export function createRuntimeEntry(config: TerminalRuntimeConfig): TerminalRunti
   const handleCopy = (event: ClipboardEvent) => {
     const selection = terminal.getSelection();
     if (!selection) return;
-    const trimmed = selection.replace(/[^\S\n]+$/gm, "");
+    const trimmed = normalizeTerminalClipboardText(selection);
     if (trimmed === selection) return;
 
     if (event.clipboardData) {

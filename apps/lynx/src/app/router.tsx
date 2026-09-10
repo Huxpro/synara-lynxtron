@@ -16,6 +16,7 @@ import {
   useInitData,
   useRef,
   useState,
+  type ReactNode,
 } from '@lynx-js/react';
 import type { InputRef } from '@lynx-js/lynx-ui';
 import { useQuery } from '@tanstack/react-query';
@@ -25,12 +26,34 @@ import type {
   ProviderKind,
   ServerProviderStatus,
 } from '@synara/contracts';
+import { MAC_DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_PX } from '@synara/shared/desktopChrome';
+import {
+  RIGHT_DOCK_MIN_WIDTH_PX,
+  closePaneInState,
+  openPaneInState,
+  resolveActivePane,
+  setActivePaneInState,
+  setDockOpenInState,
+  type RightDockThreadState,
+} from '@synara/shared/rightDock';
+import { resolveThreadHeaderActionState } from '@synara/shared/threadHeaderActions';
+import { resolveThreadHeaderIconKind } from '@synara/shared/threadHeaderIdentity';
+import { buildPullRequestCodeView } from '@synara-web/components/pullRequest/pullRequestCode.logic';
 import type { SettingsAppearanceValues } from '@synara-web/components/settings/SettingsAppearanceComposition.logic';
 import type { ThemeState } from '@synara-web/theme/theme.logic';
 import type { SettingsSectionId } from '@synara-web/settingsNavigation';
 import type { Project } from '@synara-web/types';
 import { useStore } from '@synara-web/store';
+import { useSpacesUiStore } from '@synara-web/spacesUiStore';
 import { useWorkspaceStore } from '@synara-web/workspaceStore';
+import { dockTerminalThreadId } from '@synara-web/lib/dockTerminalScope';
+import { quotePosixShellArgument } from '@synara-web/lib/shellQuote';
+import { DEFAULT_THREAD_TERMINAL_ID } from '@synara-web/types';
+import {
+  flushTerminalStatePersistence,
+  selectThreadTerminalState,
+  useTerminalStateStore,
+} from '@synara-web/terminalStateStore';
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsGeneralProjection,
@@ -45,6 +68,10 @@ import {
 } from '@synara/shared/localPreviewFiles';
 import { VIEWPORT_BREAKPOINTS } from '@synara-web/responsiveLayout.logic';
 import panelRightCloseSvg from '@synara-central-icons/sidebar-hidden-right-wide.svg?raw';
+import changesSvg from '@synara-central-icons/changes.svg?raw';
+import foldersSvg from '@synara-central-icons/folders.svg?raw';
+import bubbleTextSvg from '@synara-central-icons/bubble-text.svg?raw';
+import terminalSvg from '@synara-central-icons/console.svg?raw';
 
 import {
   fetchExplorerDirectory,
@@ -60,6 +87,7 @@ import {
   type ThreadSummary,
 } from './queries';
 import { resolveStudioRestoreRoute } from './studioRoute.logic';
+import { buildThreadRelaunchUrl } from './relaunchSurface.logic';
 import {
   parseSettingsRouteLocation,
   settingsRouteLocation,
@@ -86,9 +114,18 @@ import { Composer } from '../components/composer/Composer.lynx';
 import { PendingApprovalPanel } from '../components/composer/PendingApprovalPanel.lynx';
 import { PendingUserInputPanel } from '../components/composer/PendingUserInputPanel.lynx';
 import { Button } from '../components/ui/button';
+import type { RpcTransportState } from '../data/rpcTransport.logic';
 import { Input } from '../components/ui/input.lynx';
-import { dispatchSynaraCommand } from '../data/synaraClient.lynx';
+import { platformTerminal } from '../platform/terminal';
+import {
+  dispatchSynaraCommand,
+  fetchGitBranches,
+  fetchWorkingTreeDiff,
+} from '../data/synaraClient.lynx';
+import { subscribeOrchestrationShellEvents } from '../data/synaraClient.lynx';
 import { Sidebar } from '../components/sidebar/Sidebar.lynx';
+import { SidebarSearchPaletteHost } from '../components/sidebar/SidebarSearchPaletteHost.lynx';
+import { focusLynxElementById } from '../components/ui/focus.lynx';
 import { CenteredEmptyLanding } from '@synara-web/components/CenteredEmptyLanding';
 import { CenteredEmptyLandingStack } from '@synara-web/components/CenteredEmptyLandingStack';
 import { AppShellFrame } from '@synara-web/components/AppShellFrame';
@@ -116,17 +153,38 @@ import {
   threadErrorDismissKey,
   visibleThreadError,
 } from './threadErrorBanner.logic';
-import { resolveDefaultEnvironmentPanelOpen } from '@synara-web/components/ChatView.logic';
+import {
+  resolveDefaultEnvironmentPanelOpen,
+  resolveEnvironmentPanelLayout,
+} from '@synara-web/components/ChatView.logic';
 import {
   readEditorChatPaneVisible,
+  readEditorSidebarVisible,
   readEditorViewState,
   storeEditorChatPaneVisible,
+  storeEditorSidebarVisible,
   storeEditorViewState,
 } from '@synara-web/editorViewState';
 import { sleepOnHost } from '../platform/timer';
 import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
 import { ThreadTerminal } from './ThreadTerminal.lynx';
+import { DockTerminalPane } from './DockTerminalPane.lynx';
+import { GitDockPane } from './GitDockPane.lynx';
+import { BrowserDockPane } from './BrowserDockPane.lynx';
+import { browserView } from '../platform/browserView.lynx';
+import { EmbeddedSidechatPane } from './EmbeddedSidechatPane.lynx';
+import {
+  buildLynxSidechatCreateCommand,
+  canCreateLynxSidechat,
+} from './sidechatCreate.logic';
+import { newCommandId, newThreadId } from '@synara-web/lib/utils';
 import { DiffDock } from './DiffDock.lynx';
+import { ThreadRightDockTabs } from './ThreadRightDockTabs.lynx';
+import { ThreadRightDockHost } from './ThreadRightDockHost.lynx';
+import {
+  readRightDockThreadState,
+  storeRightDockThreadState,
+} from './rightDockState.lynx';
 import {
   EXPLORER_DOCK_MIN_WIDTH,
   ExplorerDock,
@@ -148,7 +206,6 @@ import { SidebarDisclosure } from './SidebarDisclosure.lynx';
 import {
   ClockIcon,
   ChevronDownIcon,
-  FolderIcon,
   MessageCircleIcon,
   PlusIcon,
   SearchIcon,
@@ -160,6 +217,7 @@ import { webStorage } from '../platform/storage';
 import { formatRelativeTime } from '@synara-web/lib/relativeTime';
 import { resolveEditorChatHistoryThreads } from './editorChatHistory.logic';
 import {
+  groupEditorProjectSwitchOptions,
   resolveEditorProjectSwitchOptions,
   resolveEditorProjectSwitchTarget,
 } from './editorProjectSwitch.logic';
@@ -170,8 +228,20 @@ import {
 import { readPersistedLastThreadRouteFallback } from './routerPersistence.logic';
 import { resolveResponsiveSidebarOpen } from './sidebarVisibility.logic';
 import { TaskCompletionToastHost } from './TaskCompletionToastHost.lynx';
+import { VoiceNotificationHost } from './VoiceNotificationHost.lynx';
+import { ComponentsLabPageLynx } from './ComponentsLabPage.lynx';
 import { ProviderUpdatePrompt } from './ProviderUpdatePrompt.lynx';
 import { AppSnapCoordinator } from './AppSnapCoordinator.lynx';
+import { AppSnapWelcomeDialogLynx } from './AppSnapWelcomeDialog.lynx';
+import { EditorRailTabs } from './EditorRailTabs.lynx';
+import { ThreadHeaderActions } from './ThreadHeaderActions.lynx';
+import {
+  consumeOpenThreadPathInTerminal,
+  executeOpenThreadPathInTerminal,
+  resolveOpenThreadPathTerminalTarget,
+  subscribeOpenThreadPathInTerminal,
+} from './threadTerminalIntent.lynx';
+import { EditorProjectSwitchMenu } from './EditorProjectSwitchMenu.lynx';
 export const history = createMemoryHistory({ initialEntries: ['/'] });
 
 async function readPersistedLastThreadRoute(): Promise<LastThreadRoute | null> {
@@ -212,7 +282,7 @@ interface RouteState {
 }
 
 function parseRoute(pathname: string): RouteState {
-  const [routePathname] = pathname.split('?', 2);
+  const [routePathname, routeSearch = ''] = pathname.split('?', 2);
   const threadMatch = routePathname.match(/^\/thread\/([^/]+)$/);
   if (threadMatch) {
     return { pathname: '/thread/$threadId', params: { threadId: threadMatch[1] } };
@@ -236,6 +306,18 @@ function parseRoute(pathname: string): RouteState {
   }
   if (routePathname === '/studio') {
     return { pathname: '/studio', params: {} };
+  }
+  if (routePathname === '/components-lab') {
+    const search = new URLSearchParams(routeSearch);
+    return {
+      pathname: '/components-lab',
+      params: {
+        ...(search.get('story') ? { story: search.get('story')! } : {}),
+        ...(search.get('state') ? { state: search.get('state')! } : {}),
+        ...(search.get('variant') ? { variant: search.get('variant')! } : {}),
+        ...(search.get('embed') === '1' ? { embed: '1' } : {}),
+      },
+    };
   }
   const workspaceMatch = routePathname.match(/^\/workspace\/([^/]+)$/);
   if (workspaceMatch) {
@@ -326,6 +408,20 @@ function useProviderHealthBanner(
 }
 
 // --- pages ----------------------------------------------------------------------
+function ThreadsLandingHeader(props: { readonly title?: 'New Chat' | 'New thread' }) {
+  return (
+    <ChatSurfaceHeaderFrame className="ThreadsLandingHeader">
+      <view className="ThreadsLandingHeaderIdentity">
+        <ChatSurfaceHeaderIdentity
+          title={props.title ?? 'New Chat'}
+          icon={<OpenAIProviderIcon />}
+          iconTitle="Codex"
+        />
+      </view>
+    </ChatSurfaceHeaderFrame>
+  );
+}
+
 function ThreadsLandingPage(props: {
   readonly containerKind?: 'chat' | 'studio';
   readonly initialProjectId?: string | null;
@@ -365,15 +461,7 @@ function ThreadsLandingPage(props: {
   });
   return (
     <view className="ThreadsLanding">
-      <ChatSurfaceHeaderFrame className="ThreadsLandingHeader">
-        <view className="ThreadsLandingHeaderIdentity">
-          <ChatSurfaceHeaderIdentity
-            title={routePresentation.headerTitle}
-            icon={<OpenAIProviderIcon />}
-            iconTitle="Codex"
-          />
-        </view>
-      </ChatSurfaceHeaderFrame>
+      <ThreadsLandingHeader title={routePresentation.headerTitle} />
       <ProviderHealthBanner
         status={providerHealth.status}
         onDismiss={providerHealth.dismiss}
@@ -426,6 +514,7 @@ interface ThreadPageProps {
   >['file'] | null;
   readonly explorerFileError: boolean;
   readonly explorerFilePending: boolean;
+  readonly explorerFileRetrying: boolean;
   readonly explorerFileSyntaxHighlight: Awaited<
     ReturnType<typeof fetchExplorerFile>
   >['syntaxHighlight'];
@@ -433,15 +522,22 @@ interface ThreadPageProps {
   readonly explorerLocalPreviewError: boolean;
   readonly explorerLocalPreviewPending: boolean;
   readonly explorerPdfPageCount: number;
+  readonly explorerPdfPageHeight: number;
+  readonly explorerPdfPageWidth: number;
   readonly explorerPdfMetadataError: boolean;
   readonly explorerPdfMetadataPending: boolean;
   readonly explorerQuery: string;
   readonly explorerSelectedPath: string | null;
   readonly initialEnvironmentOpen: boolean;
+  readonly initialDiffOpen: boolean;
+  readonly initialDiffTurnId: string | null;
+  readonly initialDiffFilePath: string | null;
+  readonly initialDiffFileTreeOpen: boolean;
   readonly initialEditorOpen: boolean;
-  readonly initialEditorCenterMode: 'file' | 'diff';
+  readonly initialEditorCenterMode: 'file' | 'diff' | null;
   readonly initialEditorChatOpen: boolean | null;
   readonly initialEditorSearchOpen: boolean;
+  readonly initialEditorProjectMenuOpen: boolean;
   readonly initialWorkingTreeDiff: GitReadWorkingTreeDiffResult | null;
   readonly initialWorkingTreeDiffUnavailableLabel: string | null;
   readonly initialRenameOpen: boolean;
@@ -449,17 +545,22 @@ interface ThreadPageProps {
   readonly initialTemporaryOpen: boolean;
   readonly initialExplorerWidth: number | null;
   readonly initialExplorerOpen: boolean;
+  readonly initialExplorerPresentationMode: 'dock' | 'single-file';
+  readonly initialExplorerActionMenuOpen: boolean;
   readonly initialExplorerCommentLine: number | null;
   readonly isPending: boolean;
   readonly onExplorerQueryChange: (query: string) => void;
+  readonly onExplorerRetryFile: () => void;
   readonly onExplorerSelectPath: (path: string) => void;
   readonly onExplorerToggleDirectory: (path: string) => void;
+  readonly onEditorModeChange: (open: boolean) => void;
   readonly onNavigateToThread: (threadId: string) => void;
   readonly projects: readonly Project[];
   readonly threadId: string;
   readonly threads: readonly ThreadSummary[];
   readonly resolvedTheme: 'dark' | 'light';
   readonly viewportWidth: number;
+  readonly viewportHeight: number;
 }
 
 function ThreadRightDocks(
@@ -477,18 +578,27 @@ function ThreadRightDocks(
     | 'explorerFile'
     | 'explorerFileError'
     | 'explorerFilePending'
+    | 'explorerFileRetrying'
     | 'explorerFileSyntaxHighlight'
     | 'explorerLocalPreviewError'
     | 'explorerLocalPreviewPending'
     | 'explorerLocalPreviewUrl'
     | 'explorerPdfPageCount'
+    | 'explorerPdfPageHeight'
+    | 'explorerPdfPageWidth'
     | 'explorerPdfMetadataError'
     | 'explorerPdfMetadataPending'
     | 'explorerQuery'
     | 'explorerSelectedPath'
+    | 'initialDiffOpen'
+    | 'initialDiffTurnId'
+    | 'initialDiffFilePath'
     | 'initialExplorerWidth'
     | 'initialExplorerCommentLine'
+    | 'initialExplorerActionMenuOpen'
+    | 'initialDiffFileTreeOpen'
     | 'onExplorerQueryChange'
+    | 'onExplorerRetryFile'
     | 'onExplorerSelectPath'
     | 'onExplorerToggleDirectory'
     | 'resolvedTheme'
@@ -496,13 +606,45 @@ function ThreadRightDocks(
   > & {
     readonly diffOpen: boolean;
     readonly explorerOpen: boolean;
+    readonly terminalOpen: boolean;
+    readonly terminalFontFamily: string;
+    readonly terminalFontSizePx: number;
+    readonly chatFontSizePx: number;
+    readonly timestampFormat: 'locale' | '12-hour' | '24-hour';
+    readonly viewportHeight: number;
+    readonly explorerPresentationMode: 'dock' | 'single-file';
+    readonly rightDockState: RightDockThreadState;
+    readonly onDiffFileTreeOpenChange: (open: boolean) => void;
     readonly threadPageWidth: number;
-    readonly setDiffDockWidth: (width: number | null) => void;
-    readonly setDiffOpen: (open: boolean) => void;
-    readonly setExplorerDockWidth: (width: number | null) => void;
-    readonly setExplorerOpen: (open: boolean) => void;
+    readonly setRightDockWidth: (width: number | null) => void;
+    readonly setExplorerPresentationMode: (
+      mode: 'dock' | 'single-file'
+    ) => void;
+    readonly updateRightDockState: (
+      transform: (state: RightDockThreadState) => RightDockThreadState
+    ) => void;
   }
 ) {
+  const [sidechatCreateError, setSidechatCreateError] = useState<string | null>(
+    null
+  );
+  const [paneLabelOverrides, setPaneLabelOverrides] = useState<
+    Readonly<Record<string, string>>
+  >({});
+  const [hydratedTerminalKey, setHydratedTerminalKey] = useState<string | null>(
+    null
+  );
+  const [terminalCloseRequestVersion, setTerminalCloseRequestVersion] =
+    useState(0);
+  const { data: browserViewState } = useQuery({
+    queryKey: ['browser-view-capability'],
+    queryFn: () => {
+      'background only';
+      return browserView.getState();
+    },
+    staleTime: Number.POSITIVE_INFINITY,
+  });
+  const browserSupported = browserViewState?.supported === true;
   const {
     currentThread,
     diffOpen,
@@ -517,43 +659,181 @@ function ThreadRightDocks(
     explorerFile,
     explorerFileError,
     explorerFilePending,
+    explorerFileRetrying,
     explorerFileSyntaxHighlight,
     explorerLocalPreviewError,
     explorerLocalPreviewPending,
     explorerLocalPreviewUrl,
     explorerPdfPageCount,
+    explorerPdfPageHeight,
+    explorerPdfPageWidth,
     explorerPdfMetadataError,
     explorerPdfMetadataPending,
     explorerOpen,
+    terminalOpen,
+    terminalFontFamily,
+    terminalFontSizePx,
+    chatFontSizePx,
+    timestampFormat,
+    viewportHeight,
+    explorerPresentationMode,
+    rightDockState,
     explorerQuery,
     explorerSelectedPath,
     initialExplorerWidth,
     initialExplorerCommentLine,
+    initialExplorerActionMenuOpen,
+    initialDiffFileTreeOpen,
+    onDiffFileTreeOpenChange,
     onExplorerQueryChange,
+    onExplorerRetryFile,
     onExplorerSelectPath,
     onExplorerToggleDirectory,
     resolvedTheme,
-    setDiffDockWidth,
-    setDiffOpen,
-    setExplorerDockWidth,
-    setExplorerOpen,
+    setRightDockWidth,
+    setExplorerPresentationMode,
+    updateRightDockState,
     threadPageWidth,
     viewportWidth,
   } = props;
   const availableWidth = threadPageWidth || viewportWidth;
+  const activePane = resolveActivePane(rightDockState);
+  const terminalPane = rightDockState.panes.find(
+    (pane) => pane.kind === 'terminal'
+  );
+  const browserPane = rightDockState.panes.find(
+    (pane) => pane.kind === 'browser'
+  );
+  const browserOpen = rightDockState.open && activePane?.kind === 'browser';
+  const gitOpen = rightDockState.open && activePane?.kind === 'git';
+  const terminalKey = terminalPane
+    ? `${currentThread?.id ?? ''}\0${terminalPane.id}`
+    : null;
+  const terminalHydrated =
+    terminalOpen ||
+    (terminalKey !== null && hydratedTerminalKey === terminalKey);
+  useEffect(() => {
+    if (terminalOpen && terminalKey !== null) {
+      setHydratedTerminalKey(terminalKey);
+    }
+  }, [terminalKey, terminalOpen]);
+  const dockTabs = (
+    <ThreadRightDockTabs
+      activePaneId={rightDockState.activePaneId}
+      paneLabelOverrides={paneLabelOverrides}
+      addMenuKinds={
+        currentThread?.workspaceRoot
+          ? canCreateLynxSidechat(currentThread)
+            ? [...(browserSupported ? ['browser' as const] : []), 'diff', 'explorer', 'terminal', 'sidechat', 'git']
+            : [...(browserSupported ? ['browser' as const] : []), 'diff', 'explorer', 'terminal', 'git']
+          : canCreateLynxSidechat(currentThread)
+            ? [...(browserSupported ? ['browser' as const] : []), 'diff', 'explorer', 'sidechat']
+            : [...(browserSupported ? ['browser' as const] : []), 'diff', 'explorer']
+      }
+      panes={rightDockState.panes.filter(
+        (pane) =>
+          pane.kind === 'browser' ||
+          pane.kind === 'diff' ||
+          pane.kind === 'explorer' ||
+          pane.kind === 'file' ||
+          pane.kind === 'terminal' ||
+          pane.kind === 'sidechat' ||
+          pane.kind === 'git'
+      )}
+      onAddPane={(kind) => {
+        'background only';
+        if (kind === 'sidechat') {
+          if (!currentThread || !canCreateLynxSidechat(currentThread)) return;
+          const sidechatThreadId = newThreadId();
+          setSidechatCreateError(null);
+          void dispatchSynaraCommand(
+            buildLynxSidechatCreateCommand({
+              commandId: newCommandId(),
+              createdAt: new Date().toISOString(),
+              source: currentThread,
+              threadId: sidechatThreadId,
+            })
+          )
+            .then(async () => {
+              await queryClient.invalidateQueries({ queryKey: ['threads'] });
+              await queryClient.invalidateQueries({
+                queryKey: ['thread-detail', sidechatThreadId],
+              });
+              updateRightDockState((current) =>
+                openPaneInState(current, {
+                  paneId: 'sidechat:' + sidechatThreadId,
+                  kind: 'sidechat',
+                  threadId: sidechatThreadId,
+                })
+              );
+            })
+            .catch((error) =>
+              setSidechatCreateError(
+                error instanceof Error ? error.message : String(error)
+              )
+            );
+          return;
+        }
+        if (kind === 'explorer') setExplorerPresentationMode('dock');
+        updateRightDockState((current) =>
+          openPaneInState(current, { paneId: kind, kind })
+        );
+      }}
+      onClosePane={(paneId) => {
+        const pane = rightDockState.panes.find(
+          (candidate) => candidate.id === paneId
+        );
+        if (pane?.kind === 'terminal') {
+          if (!terminalHydrated) {
+            updateRightDockState((current) =>
+              closePaneInState(current, paneId)
+            );
+            return;
+          }
+          setTerminalCloseRequestVersion((current) => current + 1);
+          return;
+        }
+        updateRightDockState((current) => closePaneInState(current, paneId));
+      }}
+      onCollapse={() =>
+        updateRightDockState((current) => setDockOpenInState(current, false))
+      }
+      onSelectPane={(paneId) =>
+        updateRightDockState((current) =>
+          setActivePaneInState(current, paneId)
+        )
+      }
+    />
+  );
   return (
-    <>
-      <DiffDock
+    <ThreadRightDockHost
+      availableWidth={availableWidth}
+      onWidthChange={setRightDockWidth}
+      open={rightDockState.open && Boolean(rightDockState.activePaneId)}
+      tabs={dockTabs}
+    >
+      {diffOpen ? <DiffDock
         availableWidth={availableWidth}
         open={diffOpen}
+        initialFileTreeOpen={initialDiffFileTreeOpen}
+        initialDiffSource={
+          activePane?.diffTurnId ? `turn:${activePane.diffTurnId}` : undefined
+        }
+        initialSelectedFilePath={activePane?.diffFilePath}
+        checkpoints={currentThread?.checkpoints ?? []}
+        onFileTreeOpenChange={onDiffFileTreeOpenChange}
+        presentation="hosted"
+        threadId={currentThread?.id ?? ''}
         workspaceRoot={currentThread?.workspaceRoot ?? null}
         onClose={() => {
-          setDiffOpen(false);
-          setDiffDockWidth(null);
+          updateRightDockState((current) => {
+            const pane = current.panes.find((candidate) => candidate.kind === 'diff');
+            return pane ? closePaneInState(current, pane.id) : current;
+          });
         }}
-        onWidthChange={setDiffDockWidth}
-      />
-      <ExplorerDock
+        onWidthChange={() => {}}
+      /> : null}
+      {explorerOpen ? <ExplorerDock
         availableWidth={availableWidth}
         entries={explorerEntries}
         entriesError={explorerEntriesError}
@@ -565,32 +845,152 @@ function ThreadRightDocks(
         expandedDirectories={explorerExpandedDirectories}
         initialWidth={initialExplorerWidth}
         initialCommentLine={initialExplorerCommentLine}
+        initialActionMenuOpen={initialExplorerActionMenuOpen}
         file={explorerFile}
         fileError={explorerFileError}
         filePending={explorerFilePending}
+        fileRetrying={explorerFileRetrying}
         fileSyntaxHighlight={explorerFileSyntaxHighlight}
         localPreviewUrl={explorerLocalPreviewUrl}
         localPreviewError={explorerLocalPreviewError}
         localPreviewPending={explorerLocalPreviewPending}
         pdfPageCount={explorerPdfPageCount}
+        pdfPageHeight={explorerPdfPageHeight}
+        pdfPageWidth={explorerPdfPageWidth}
         pdfMetadataError={explorerPdfMetadataError}
         pdfMetadataPending={explorerPdfMetadataPending}
         open={explorerOpen}
+        hosted
+        presentationMode={explorerPresentationMode}
         query={explorerQuery}
         selectedPath={explorerSelectedPath}
         threadId={currentThread?.id ?? ''}
         theme={resolvedTheme}
         workspaceRoot={currentThread?.workspaceRoot ?? null}
-        onWidthChange={setExplorerDockWidth}
+        onWidthChange={() => {}}
         onQueryChange={onExplorerQueryChange}
+        onRetryFile={onExplorerRetryFile}
         onSelectPath={onExplorerSelectPath}
         onToggleDirectory={onExplorerToggleDirectory}
         onClose={() => {
-          setExplorerOpen(false);
-          setExplorerDockWidth(null);
+          updateRightDockState((current) => {
+            const pane = current.panes.find(
+              (candidate) => candidate.id === current.activePaneId
+            );
+            return pane ? closePaneInState(current, pane.id) : current;
+          });
         }}
+      /> : null}
+      {terminalPane && terminalHydrated &&
+      currentThread?.workspaceRoot ? (
+        <view
+          className={`ThreadRightDockTerminalPane${
+            terminalOpen ? '' : ' ThreadRightDockTerminalPane--hidden'
+          }`}
+        >
+          <DockTerminalPane
+            isActive={terminalOpen}
+            closeRequestVersion={terminalCloseRequestVersion}
+            fontFamily={terminalFontFamily}
+            fontSizePx={terminalFontSizePx}
+            threadId={currentThread.id}
+            workspaceRoot={currentThread.workspaceRoot}
+            onClosePane={() => {
+              updateRightDockState((current) => {
+                const pane = current.panes.find(
+                  (candidate) => candidate.kind === 'terminal'
+                );
+                return pane ? closePaneInState(current, pane.id) : current;
+              });
+            }}
+          />
+        </view>
+      ) : null}
+      {gitOpen && currentThread?.workspaceRoot ? (
+        <GitDockPane
+          threadId={currentThread.id}
+          workspaceRoot={currentThread.workspaceRoot}
+        />
+      ) : null}
+      {browserPane && currentThread ? (
+        <BrowserDockPane
+          key={currentThread.id}
+          active={browserOpen}
+          supported={browserSupported}
+          threadId={currentThread.id}
+          onClose={() => {
+            updateRightDockState((current) =>
+              closePaneInState(current, browserPane.id)
+            );
+          }}
+          onTitleChange={(title) => {
+            if (!title || paneLabelOverrides[browserPane.id] === title) return;
+            setPaneLabelOverrides((current) => ({
+              ...current,
+              [browserPane.id]: title,
+            }));
+          }}
+        />
+      ) : null}
+      {rightDockState.open && activePane?.kind === 'sidechat' ? (
+        activePane.threadId ? (
+          <EmbeddedSidechatPane
+            chatFontSizePx={chatFontSizePx}
+            threadId={activePane.threadId}
+            timestampFormat={timestampFormat}
+            viewportHeight={viewportHeight}
+            viewportWidth={availableWidth}
+            onTitleChange={(title) => {
+              setPaneLabelOverrides((current) =>
+                current[activePane.id] === title
+                  ? current
+                  : { ...current, [activePane.id]: title }
+              );
+            }}
+            onClose={() =>
+              updateRightDockState((current) =>
+                closePaneInState(current, activePane.id)
+              )
+            }
+          />
+        ) : (
+          <PanelStateMessage fill="flex" intent="alert">
+            Side thread is unavailable.
+          </PanelStateMessage>
+        )
+      ) : null}
+      {sidechatCreateError ? (
+        <view className="ThreadRightDockCreateError">
+          <text>{sidechatCreateError}</text>
+        </view>
+      ) : null}
+    </ThreadRightDockHost>
+  );
+}
+
+function EditorActivityItem(props: {
+  readonly active: boolean;
+  readonly children: ReactNode;
+  readonly label: string;
+  readonly onActivate: () => void;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName: `ThreadEditorActivityItem${
+      props.active ? ' ThreadEditorActivityItem--active' : ''
+    }`,
+    accessibleLabel: props.label,
+    accessibilityValue: props.active ? 'Selected' : 'Not selected',
+    onActivate: props.onActivate,
+  });
+  return (
+    <view className={interaction.className} {...interaction.eventProps}>
+      <view
+        className={`ThreadEditorActivityIndicator${
+          props.active ? ' ThreadEditorActivityIndicator--active' : ''
+        }`}
       />
-    </>
+      {props.children}
+    </view>
   );
 }
 
@@ -618,11 +1018,14 @@ function ThreadPage(props: ThreadPageProps) {
     explorerFile,
     explorerFileError,
     explorerFilePending,
+    explorerFileRetrying,
     explorerFileSyntaxHighlight,
     explorerLocalPreviewUrl,
     explorerLocalPreviewError,
     explorerLocalPreviewPending,
     explorerPdfPageCount,
+    explorerPdfPageHeight,
+    explorerPdfPageWidth,
     explorerPdfMetadataError,
     explorerPdfMetadataPending,
     explorerQuery,
@@ -632,6 +1035,7 @@ function ThreadPage(props: ThreadPageProps) {
     initialEditorCenterMode,
     initialEditorChatOpen,
     initialEditorSearchOpen,
+    initialEditorProjectMenuOpen,
     initialWorkingTreeDiff,
     initialWorkingTreeDiffUnavailableLabel,
     initialRenameOpen,
@@ -639,21 +1043,34 @@ function ThreadPage(props: ThreadPageProps) {
     initialTemporaryOpen,
     initialExplorerWidth,
     initialExplorerCommentLine,
+    initialExplorerActionMenuOpen,
     initialExplorerOpen,
+    initialExplorerPresentationMode,
     isPending,
     onExplorerQueryChange,
     onExplorerSelectPath,
     onExplorerToggleDirectory,
+    onEditorModeChange,
     onNavigateToThread,
     threadId,
     threads,
     resolvedTheme,
     viewportWidth,
+    viewportHeight,
   } = props;
   const { temporary, toggleTemporary } = useTemporaryThreadLifecycle(
     threadId,
     initialTemporaryOpen
   );
+  const terminalPrimaryState = useTerminalStateStore((state) =>
+    selectThreadTerminalState(
+      state.terminalStateByThreadId,
+      threadId as import('@synara/contracts').ThreadId
+    )
+  );
+  const terminalPrimary =
+    terminalPrimaryState.entryPoint === 'terminal' &&
+    terminalPrimaryState.workspaceLayout === 'terminal-only';
   const [providerStatuses, setProviderStatuses] = useState<
     readonly ServerProviderStatus[]
   >([]);
@@ -663,12 +1080,210 @@ function ThreadPage(props: ThreadPageProps) {
   const [environmentUserOverride, setEnvironmentUserOverride] = useState<
     boolean | null
   >(initialEnvironmentOpen ? true : null);
-  const [diffOpen, setDiffOpen] = useState(false);
-  const [explorerOpen, setExplorerOpen] = useState(initialExplorerOpen);
-  const [terminalOpen, setTerminalOpen] = useState(initialTerminalOpen);
+  const [diffFileTreeOpen, setDiffFileTreeOpen] = useState(
+    props.initialDiffFileTreeOpen
+  );
+  const [rightDockState, setRightDockState] = useState<RightDockThreadState>(
+    () => {
+      const stored = readRightDockThreadState(threadId);
+      const withDiff = props.initialDiffOpen && !initialEditorOpen
+        ? openPaneInState(stored, {
+            paneId: 'diff',
+            kind: 'diff',
+            diffTurnId: props.initialDiffTurnId,
+            diffFilePath: props.initialDiffFilePath,
+          })
+        : stored;
+      const withExplorer = initialExplorerOpen
+        ? openPaneInState(
+            withDiff,
+            initialExplorerPresentationMode === 'single-file'
+              ? {
+                  paneId: `file:${explorerSelectedPath ?? 'empty'}`,
+                  kind: 'file',
+                  filePath: explorerSelectedPath,
+                }
+              : { paneId: 'explorer', kind: 'explorer' }
+          )
+        : withDiff;
+      return initialTerminalOpen && !initialEditorOpen
+        ? openPaneInState(withExplorer, {
+            paneId: 'terminal',
+            kind: 'terminal',
+          })
+        : withExplorer;
+    }
+  );
+  const rightDockThreadIdRef = useRef(threadId);
+  const activeRightDockPane = resolveActivePane(rightDockState);
+  const diffOpen =
+    rightDockState.open && activeRightDockPane?.kind === 'diff';
+  const explorerOpen =
+    rightDockState.open &&
+    (activeRightDockPane?.kind === 'explorer' ||
+      activeRightDockPane?.kind === 'file');
+  const updateRightDockState = useCallback(
+    (transform: (state: RightDockThreadState) => RightDockThreadState) => {
+      setRightDockState((current) => {
+        const next = transform(current);
+        if (next !== current) storeRightDockThreadState(threadId, next);
+        return next;
+      });
+    },
+    [threadId]
+  );
+  const setDiffOpen = useCallback(
+    (open: boolean) =>
+      updateRightDockState((current) =>
+        open
+          ? openPaneInState(current, { paneId: 'diff', kind: 'diff' })
+          : setDockOpenInState(current, false)
+      ),
+    [updateRightDockState]
+  );
+  const setExplorerOpen = useCallback(
+    (open: boolean) =>
+      updateRightDockState((current) =>
+        open
+          ? openPaneInState(current, { paneId: 'explorer', kind: 'explorer' })
+          : setDockOpenInState(current, false)
+      ),
+    [updateRightDockState]
+  );
+  const [explorerPresentationMode, setExplorerPresentationMode] = useState<
+    'dock' | 'single-file'
+  >(initialExplorerPresentationMode);
+  useEffect(() => {
+    if (activeRightDockPane?.kind === 'file' && activeRightDockPane.filePath) {
+      if (explorerSelectedPath !== activeRightDockPane.filePath) {
+        onExplorerSelectPath(activeRightDockPane.filePath);
+      }
+      setExplorerPresentationMode('single-file');
+    } else if (activeRightDockPane?.kind === 'explorer') {
+      setExplorerPresentationMode('dock');
+    }
+  }, [
+    activeRightDockPane?.filePath,
+    activeRightDockPane?.kind,
+    explorerSelectedPath,
+    onExplorerSelectPath,
+  ]);
+  useEffect(() => {
+    if (rightDockThreadIdRef.current === threadId) return;
+    rightDockThreadIdRef.current = threadId;
+    setRightDockState(readRightDockThreadState(threadId));
+  }, [threadId]);
+  useEffect(() => {
+    if (activeRightDockPane?.kind === 'file' && activeRightDockPane.filePath) {
+      if (explorerSelectedPath !== activeRightDockPane.filePath) {
+        onExplorerSelectPath(activeRightDockPane.filePath);
+      }
+      setExplorerPresentationMode('single-file');
+    } else if (activeRightDockPane?.kind === 'explorer') {
+      setExplorerPresentationMode('dock');
+    }
+  }, [
+    activeRightDockPane?.filePath,
+    activeRightDockPane?.kind,
+    explorerSelectedPath,
+    onExplorerSelectPath,
+  ]);
+  const terminalOpen =
+    rightDockState.open && activeRightDockPane?.kind === 'terminal';
+  const setTerminalOpen = useCallback(
+    (open: boolean) =>
+      updateRightDockState((current) =>
+        open
+          ? openPaneInState(current, { paneId: 'terminal', kind: 'terminal' })
+          : setDockOpenInState(current, false)
+      ),
+    [updateRightDockState]
+  );
+  useEffect(() => {
+    'background only';
+    const handleIntent = async () => {
+      const intent = consumeOpenThreadPathInTerminal(threadId);
+      if (!intent) return;
+      const scopeId = dockTerminalThreadId(threadId as never);
+      const terminalStore = useTerminalStateStore.getState();
+      const state = selectThreadTerminalState(
+        terminalStore.terminalStateByThreadId,
+        scopeId
+      );
+      const { shouldCreateNewTerminal, terminalId } =
+        resolveOpenThreadPathTerminalTarget({
+          activeTerminalId: state.activeTerminalId,
+          createTerminalId: () =>
+            'terminal-' + Date.now() + '-' + Math.random().toString(16).slice(2),
+          runningTerminalIds: state.runningTerminalIds,
+          terminalIds: state.terminalIds,
+          terminalOpen: state.terminalOpen,
+        });
+      const previousTerminalOpen = state.terminalOpen;
+      const previousPresentationMode = state.presentationMode;
+      const previousActiveTerminalId = state.activeTerminalId;
+      const previousRightDockState = rightDockState;
+      try {
+        await executeOpenThreadPathInTerminal({
+          activateTerminal: (nextTerminalId) =>
+            terminalStore.setActiveTerminal(scopeId, nextTerminalId),
+          addTerminal: (nextTerminalId) =>
+            terminalStore.newTerminal(scopeId, nextTerminalId),
+          closeHostTerminal: (nextTerminalId) =>
+            platformTerminal.close({ threadId: scopeId, terminalId: nextTerminalId }),
+          closeTerminal: (nextTerminalId) =>
+            terminalStore.closeTerminal(scopeId, nextTerminalId),
+          flush: flushTerminalStatePersistence,
+          openDock: () => setTerminalOpen(true),
+          openHostTerminal: async (nextTerminalId) => {
+            await platformTerminal.open({
+            threadId: scopeId,
+              terminalId: nextTerminalId,
+            cwd: intent.cwd,
+            cols: 120,
+            rows: 30,
+            });
+          },
+          restoreDock: () => {
+            setRightDockState(previousRightDockState);
+            storeRightDockThreadState(threadId, previousRightDockState);
+          },
+          restoreTerminalState: () => {
+            terminalStore.setTerminalPresentationMode(
+              scopeId,
+              previousPresentationMode
+            );
+            terminalStore.setTerminalOpen(scopeId, previousTerminalOpen);
+            if (previousActiveTerminalId) {
+              terminalStore.setActiveTerminal(scopeId, previousActiveTerminalId);
+            }
+          },
+          target: { shouldCreateNewTerminal, terminalId },
+          writePath: (nextTerminalId) =>
+            platformTerminal.write({
+              threadId: scopeId,
+              terminalId: nextTerminalId,
+              data: 'cd ' + quotePosixShellArgument(intent.cwd) + '\r',
+            }),
+        });
+      } catch (cause) {
+        setSidechatCreateError(
+          cause instanceof Error ? cause.message : 'Could not open path in Terminal.'
+        );
+      }
+    };
+    const dispose = subscribeOpenThreadPathInTerminal((intent) => {
+      if (intent.threadId === threadId) void handleIntent();
+    });
+    void handleIntent();
+    return dispose;
+  }, [rightDockState, setTerminalOpen, threadId]);
   const [editorMode, setEditorMode] = useState(initialEditorOpen);
   const [editorSearchActive, setEditorSearchActive] = useState(
     initialEditorSearchOpen
+  );
+  const [editorSidebarVisible, setEditorSidebarVisible] = useState(
+    readEditorSidebarVisible
   );
   const [editorChatOpen, setEditorChatOpen] = useState(
     () => initialEditorChatOpen ?? readEditorChatPaneVisible()
@@ -676,13 +1291,16 @@ function ThreadPage(props: ThreadPageProps) {
   const [editorChatHistoryOpen, setEditorChatHistoryOpen] = useState(
     initData.initialEditorHistoryOpen === true
   );
-  const [editorProjectSwitchOpen, setEditorProjectSwitchOpen] = useState(false);
-  const [editorRailNewOpen, setEditorRailNewOpen] = useState(
-    initData.initialEditorNewOpen === true
+  const [editorProjectSwitchOpen, setEditorProjectSwitchOpen] = useState(
+    initialEditorProjectMenuOpen
   );
+  const [editorProjectSwitchQuery, setEditorProjectSwitchQuery] = useState('');
   const [editorRailSurface, setEditorRailSurface] = useState<
     'chat' | 'terminal'
   >(initialEditorOpen && initialTerminalOpen ? 'terminal' : 'chat');
+  const [editorTerminalOpen, setEditorTerminalOpen] = useState(
+    initialEditorOpen && initialTerminalOpen
+  );
   const [editorRailDraftProjectId, setEditorRailDraftProjectId] = useState<
     string | null
   >(
@@ -695,10 +1313,17 @@ function ThreadPage(props: ThreadPageProps) {
   );
   const [editorCenterMode, setEditorCenterMode] = useState<'file' | 'diff'>(
     () =>
-      initialEditorCenterMode === 'diff'
-        ? 'diff'
-        : readEditorViewState(threadId)?.centerMode ?? 'file'
+      initialEditorCenterMode === 'file'
+        ? 'file'
+        : initialEditorCenterMode === 'diff'
+          ? 'diff'
+          : readEditorViewState(threadId)?.centerMode ?? 'file'
   );
+  useEffect(() => {
+    if (initialEditorCenterMode !== null) {
+      setEditorCenterMode(initialEditorCenterMode);
+    }
+  }, [initialEditorCenterMode]);
   const [renamingThread, setRenamingThread] = useState(initialRenameOpen);
   const [threadTitleDraft, setThreadTitleDraft] = useState(
     currentThread?.title ?? ''
@@ -710,11 +1335,11 @@ function ThreadPage(props: ThreadPageProps) {
   const [dismissedThreadErrorKey, setDismissedThreadErrorKey] = useState<
     string | null
   >(null);
+  const [localThreadError, setLocalThreadError] = useState<string | null>(null);
   const threadRenameInputRef = useRef<InputRef>(null);
   const threadRenameTouchedRef = useRef(false);
   const [threadPageWidth, setThreadPageWidth] = useState(0);
-  const [diffDockWidth, setDiffDockWidth] = useState<number | null>(null);
-  const [explorerDockWidth, setExplorerDockWidth] = useState<number | null>(() =>
+  const [rightDockWidth, setRightDockWidth] = useState<number | null>(() =>
     initialExplorerOpen && viewportWidth > 0
       ? clampSidebarWidth(
           initialExplorerWidth ?? Math.round(viewportWidth / 2),
@@ -740,6 +1365,10 @@ function ThreadPage(props: ThreadPageProps) {
   );
   const providerHealthVisible =
     resolveProviderHealthBannerPresentation(providerHealth.status) !== null;
+  const editorProjectSpaces = useStore((state) => state.spaces);
+  const editorActiveSpaceId = useSpacesUiStore(
+    (state) => state.activeSpaceId
+  );
   const editorChatHistoryThreads = currentThread
     ? resolveEditorChatHistoryThreads({
         projectId: currentThread.projectId,
@@ -753,9 +1382,16 @@ function ThreadPage(props: ThreadPageProps) {
       id: project.id,
       kind: project.kind,
       title: project.name,
+      spaceId: project.spaceId ?? null,
     })),
     sortOrder: environmentSettings.sidebarThreadSortOrder,
     threads,
+  });
+  const editorProjectSwitchGroups = groupEditorProjectSwitchOptions({
+    activeSpaceId: editorActiveSpaceId,
+    options: editorProjectSwitchOptions,
+    query: editorProjectSwitchQuery,
+    spaces: editorProjectSpaces,
   });
   const editorRailDraftProject =
     editorRailDraftProjectId === null
@@ -763,6 +1399,63 @@ function ThreadPage(props: ThreadPageProps) {
       : props.projects.find(
           (project) => project.id === editorRailDraftProjectId
         ) ?? null;
+  const currentProject = currentThread
+    ? props.projects.find((project) => project.id === currentThread.projectId) ??
+      null
+    : null;
+  const headerGitState = useQuery({
+    queryKey: ['thread-header-git-state', currentThread?.workspaceRoot ?? null],
+    queryFn: async () => {
+      'background only';
+      const workspaceRoot = currentThread?.workspaceRoot;
+      if (!workspaceRoot) return { isGitRepo: false, patch: '' };
+      const branches = await fetchGitBranches(workspaceRoot);
+      if (!branches.isRepo) return { isGitRepo: false, patch: '' };
+      const diff = await fetchWorkingTreeDiff(workspaceRoot);
+      return { isGitRepo: true, patch: diff.patch };
+    },
+    enabled: Boolean(currentThread?.workspaceRoot),
+    initialData:
+      environmentData?.branches && initialWorkingTreeDiff
+        ? {
+            isGitRepo: environmentData.branches.isRepo,
+            patch: initialWorkingTreeDiff.patch,
+          }
+        : undefined,
+    refetchInterval: diffOpen ? false : 2_000,
+  });
+  const headerDiffView = buildPullRequestCodeView(
+    headerGitState.data?.patch,
+    `thread-header:${currentThread?.workspaceRoot ?? 'none'}`
+  );
+  const headerDiffTotals =
+    headerDiffView.kind === 'files'
+      ? {
+          additions: headerDiffView.additions,
+          deletions: headerDiffView.deletions,
+          hasChanges:
+            headerDiffView.additions > 0 || headerDiffView.deletions > 0,
+        }
+      : { additions: 0, deletions: 0, hasChanges: false };
+  const threadHeaderActionState = resolveThreadHeaderActionState({
+    diffDisabledReason:
+      currentThread?.workspaceRoot && headerGitState.isPending
+        ? 'Checking Git repository…'
+        : null,
+    diffOpen,
+    diffTotals: headerDiffTotals,
+    environmentEnabled: currentThread !== undefined,
+    hasProject: currentProject !== null,
+    hasProjectActionSurface: currentProject?.kind === 'project',
+    isGitRepo: headerGitState.data?.isGitRepo === true,
+    gitActionsAvailable: true,
+    surface: {
+      kind: 'thread',
+      layout: 'single',
+      primary: terminalPrimary ? 'terminal' : 'chat',
+      sidechat: currentThread?.sidechatSourceThreadId != null,
+    },
+  });
   const bodyState = resolveThreadPageBodyState({
     isPending,
     error,
@@ -773,10 +1466,17 @@ function ThreadPage(props: ThreadPageProps) {
     resolveDefaultEnvironmentPanelOpen({
       environmentEnabled: currentThread !== undefined,
       isCenteredEmptyLanding: bodyState.kind === 'empty',
-      isTerminalPrimarySurface: false,
+      isTerminalPrimarySurface: terminalPrimary,
       isConstrainedChatLayout: false,
       settingsDefaultOpen: environmentSettings.environmentPanelDefaultOpen,
     });
+  const environmentPanelLayout = resolveEnvironmentPanelLayout({
+    environmentEnabled: currentThread !== undefined,
+    environmentPanelOpen: resolvedEnvironmentOpen,
+    isCenteredEmptyLanding: bodyState.kind === 'empty',
+    isConstrainedChatLayout:
+      viewportWidth < VIEWPORT_BREAKPOINTS.lg || diffOpen || explorerOpen,
+  });
   const setEnvironmentVisibility = useCallback((open: boolean) => {
     'background only';
     setEnvironmentUserOverride(open);
@@ -803,60 +1503,67 @@ function ThreadPage(props: ThreadPageProps) {
   const closeEnvironmentForAction = useCallback(() => {
     setEnvironmentUserOverride(false);
   }, []);
-  const setExplorerVisibility = useCallback((open: boolean) => {
-    closeEnvironmentForAction();
-    setDiffOpen(false);
-    setDiffDockWidth(null);
-    setExplorerDockWidth(null);
-    setExplorerOpen(open);
-  }, [closeEnvironmentForAction]);
   const openExplorerFileReference = useCallback(
     (relativePath: string) => {
       onExplorerQueryChange('');
       onExplorerSelectPath(relativePath);
-      setExplorerVisibility(true);
+      setExplorerPresentationMode('single-file');
+      closeEnvironmentForAction();
+      updateRightDockState((current) =>
+        openPaneInState(current, {
+          paneId: `file:${relativePath}`,
+          kind: 'file',
+          filePath: relativePath,
+        })
+      );
     },
     [
+      closeEnvironmentForAction,
       onExplorerQueryChange,
       onExplorerSelectPath,
-      setExplorerVisibility,
+      updateRightDockState,
     ]
   );
   const diffToggle = useLynxInteractiveState({
     baseClassName: `ThreadDiffToggle${
       diffOpen ? ' ThreadDiffToggle--active' : ''
+    }${
+      threadHeaderActionState.diffStats ? ' ThreadDiffToggle--with-stats' : ''
     }`,
     accessibleLabel: 'Toggle diff panel',
-    disabled: !currentThread?.workspaceRoot,
+    disabled: threadHeaderActionState.diffDisabled,
     accessibilityValue: diffOpen ? 'On' : 'Off',
     onActivate: () => {
       closeEnvironmentForAction();
       setExplorerOpen(false);
-      setExplorerDockWidth(null);
       setDiffOpen(!diffOpen);
     },
   });
   const availableDockWidth = threadPageWidth || viewportWidth;
-  const rightDockWidth = explorerOpen ? explorerDockWidth : diffDockWidth;
   const measuredRightDockWidth =
     rightDockWidth !== null && rightDockWidth > 0 ? rightDockWidth : null;
-  const effectiveRightDockWidth = explorerOpen
+  const rightDockOverlaysMainContent =
+    viewportWidth > 0 && viewportWidth < VIEWPORT_BREAKPOINTS.md;
+  const effectiveRightDockWidth =
+    rightDockState.open &&
+    Boolean(rightDockState.activePaneId) &&
+    !rightDockOverlaysMainContent
     ? (measuredRightDockWidth ??
-      clampSidebarWidth(initialExplorerWidth ?? Math.round(availableDockWidth / 2), {
-        maxWidth: 960,
-        minWidth: EXPLORER_DOCK_MIN_WIDTH,
-        minimumContentWidth: 320,
-        viewportWidth: availableDockWidth,
-      }))
-    : diffOpen
-      ? (measuredRightDockWidth ??
-        clampSidebarWidth(Math.round(availableDockWidth / 2), {
-          maxWidth: 720,
-          minWidth: 320,
+      clampSidebarWidth(
+        initialExplorerWidth ?? Math.round(availableDockWidth / 2),
+        {
+          maxWidth: 960,
+          minWidth: RIGHT_DOCK_MIN_WIDTH_PX,
           minimumContentWidth: 320,
           viewportWidth: availableDockWidth,
-        }))
-      : null;
+        }
+      ))
+    : null;
+  const threadHeaderAvailableWidth = Math.max(
+    0,
+    (threadPageWidth || viewportWidth) - (effectiveRightDockWidth ?? 0)
+  );
+  const compactThreadHeader = threadHeaderAvailableWidth < 700;
   const [respondingApprovalRequestId, setRespondingApprovalRequestId] =
     useState<string | null>(null);
   const [respondingUserInputRequestId, setRespondingUserInputRequestId] =
@@ -947,6 +1654,11 @@ function ThreadPage(props: ThreadPageProps) {
         />
       ) : null}
       <Composer
+        activities={currentThread?.activities ?? []}
+        availableWidth={threadHeaderAvailableWidth}
+        chatFontSizePx={appearance.chatFontSizePx}
+        voiceInputEnabled
+        pendingUserInputCount={currentThread?.pendingUserInputs.length ?? 0}
         threadId={threadId}
         modelSelection={currentThread?.modelSelection}
         runtimeMode={currentThread?.runtimeMode}
@@ -1036,29 +1748,52 @@ function ThreadPage(props: ThreadPageProps) {
   ) : (
     <ChatSurfaceHeaderIdentity
       title={currentThread?.title ?? 'Thread'}
-      icon={<OpenAIProviderIcon provider={currentThread?.provider} />}
-      iconTitle={currentThread?.project ?? 'Synara'}
+      icon={
+        resolveThreadHeaderIconKind(
+          terminalPrimary ? 'terminal' : 'chat',
+          currentThread?.title
+        ) === 'terminal' ? (
+          <svg
+            className="ThreadHeaderTerminalIcon"
+            content={colorizeLynxSvg(terminalSvg, svgColors.accent)}
+          />
+        ) : (
+          <OpenAIProviderIcon provider={currentThread?.provider} />
+        )
+      }
+      iconTitle={terminalPrimary ? 'Terminal' : currentThread?.project ?? 'Synara'}
       onRename={currentThread ? beginThreadRename : undefined}
     />
   );
   const chatBody =
     bodyState.kind === 'transcript' ? (
-      <ComposerColumnFrameSurface className="ThreadTranscriptColumn">
-        <Transcript
-          chatFontSizePx={appearance.chatFontSizePx}
-          workspaceRoot={currentThread?.workspaceRoot ?? null}
-          pinnedMessageIds={
-            new Set(
-              currentThread?.pinnedMessages.map((pin) => pin.messageId) ?? []
-            )
-          }
-          rows={bodyState.rows}
-          threadId={threadId}
-          timestampFormat={appearance.timestampFormat}
-          onController={registerTranscriptController}
-          onOpenFileReference={openExplorerFileReference}
-        />
-      </ComposerColumnFrameSurface>
+      <view className="ThreadTranscriptViewport">
+        <view className="ThreadTranscriptColumn">
+          <Transcript
+            activeTurnId={currentThread?.activeTurnId ?? null}
+            chatFontSizePx={appearance.chatFontSizePx}
+            interactionMode={currentThread?.interactionMode ?? null}
+            modelSelection={currentThread?.modelSelection ?? null}
+            workspaceRoot={currentThread?.workspaceRoot ?? null}
+            pinnedMessageIds={
+              new Set(
+                currentThread?.pinnedMessages.map((pin) => pin.messageId) ?? []
+              )
+            }
+            rows={bodyState.rows}
+            threadId={threadId}
+            timestampFormat={appearance.timestampFormat}
+            viewportLeft={Math.max(0, viewportWidth - threadPageWidth)}
+            viewportWidth={threadHeaderAvailableWidth}
+            viewportHeight={viewportHeight}
+            onController={registerTranscriptController}
+            onOpenFileReference={openExplorerFileReference}
+            onThreadError={setLocalThreadError}
+            runtimeMode={currentThread?.runtimeMode ?? null}
+            sessionStatus={currentThread?.sessionStatus ?? null}
+          />
+        </view>
+      </view>
     ) : bodyState.kind === 'empty' ? (
       <CenteredEmptyLandingStack>
         <CenteredEmptyLanding projectName={currentThread?.project} />
@@ -1098,6 +1833,7 @@ function ThreadPage(props: ThreadPageProps) {
     setExplorerOpen(false);
     setDiffOpen(false);
     setTerminalOpen(false);
+    setEditorTerminalOpen(false);
     setEditorMode(true);
   };
   const exitEditorMode = () => {
@@ -1106,16 +1842,45 @@ function ThreadPage(props: ThreadPageProps) {
   };
   const showEditorFiles = () => {
     'background only';
+    if (
+      editorSidebarVisible &&
+      editorCenterMode === 'file' &&
+      !editorSearchActive
+    ) {
+      setEditorSidebarVisible(false);
+      storeEditorSidebarVisible(false);
+      return;
+    }
+    setEditorSidebarVisible(true);
+    storeEditorSidebarVisible(true);
     setEditorSearchActive(false);
     setEditorCenterMode('file');
   };
   const showEditorChanges = () => {
     'background only';
+    if (
+      editorSidebarVisible &&
+      editorCenterMode === 'diff' &&
+      !editorSearchActive
+    ) {
+      setEditorSidebarVisible(false);
+      storeEditorSidebarVisible(false);
+      return;
+    }
+    setEditorSidebarVisible(true);
+    storeEditorSidebarVisible(true);
     setEditorSearchActive(false);
     setEditorCenterMode('diff');
   };
   const showEditorSearch = () => {
     'background only';
+    if (editorSidebarVisible && editorSearchActive) {
+      setEditorSidebarVisible(false);
+      storeEditorSidebarVisible(false);
+      return;
+    }
+    setEditorSidebarVisible(true);
+    storeEditorSidebarVisible(true);
     setEditorSearchActive(true);
     setEditorCenterMode('file');
   };
@@ -1134,22 +1899,20 @@ function ThreadPage(props: ThreadPageProps) {
   };
   const openEditorTerminal = () => {
     'background only';
-    setEditorRailNewOpen(false);
     setEditorRailDraftOpen(false);
     setEditorRailDraftProjectId(null);
-    setTerminalOpen(true);
+    setEditorTerminalOpen(true);
     setEditorRailSurface('terminal');
   };
   const openEditorNewChat = () => {
     'background only';
-    setEditorRailNewOpen(false);
     setEditorRailDraftOpen(true);
     setEditorRailDraftProjectId(currentThread?.projectId ?? null);
     setEditorRailSurface('chat');
   };
   const closeEditorTerminal = () => {
     'background only';
-    setTerminalOpen(false);
+    setEditorTerminalOpen(false);
     setEditorRailSurface('chat');
   };
   useEffect(() => {
@@ -1159,95 +1922,209 @@ function ThreadPage(props: ThreadPageProps) {
       expandedDirectories: [...explorerExpandedDirectories],
     });
   }, [editorCenterMode, editorMode, explorerExpandedDirectories, threadId]);
-
-  if (editorMode && !currentThread) {
-    return (
-      <view className="ThreadEditorView">
-        <view className="ThreadTranscriptState">
-          <PanelStateMessage
-            fill="flex"
-            intent="status"
-            announcement="Opening editor view"
-          >
-            Opening editor view…
-          </PanelStateMessage>
-        </view>
-      </view>
-    );
-  }
+  useEffect(() => {
+    onEditorModeChange(editorMode);
+    return () => onEditorModeChange(false);
+  }, [editorMode, onEditorModeChange]);
+  useEffect(() => {
+    'background only';
+    const relaunchUrl = buildThreadRelaunchUrl({
+      threadId,
+      editorMode,
+      editorCenterMode,
+      editorChatOpen,
+      editorSearchActive,
+      environmentOpen: resolvedEnvironmentOpen,
+      diffFileTreeOpen,
+      terminalOpen: editorMode ? editorTerminalOpen : terminalOpen,
+      explorerOpen,
+      explorerPresentationMode,
+      explorerPath: explorerSelectedPath,
+      explorerQuery,
+      explorerExpandedDirectories: [...explorerExpandedDirectories],
+    });
+    void import(/* webpackMode: "eager" */ '../platform/bridge')
+      .then(({ bridgeCall }) =>
+        bridgeCall('shellRouteChanged', {
+          route: `/thread/${threadId}`,
+          relaunchUrl,
+        })
+      )
+      .catch(() => {
+        // Web and older hosts do not need the desktop reload surface mirror.
+      });
+  }, [
+    editorCenterMode,
+    editorChatOpen,
+    editorMode,
+    editorSearchActive,
+    explorerExpandedDirectories,
+    explorerOpen,
+    explorerPresentationMode,
+    explorerQuery,
+    explorerSelectedPath,
+    resolvedEnvironmentOpen,
+    diffFileTreeOpen,
+    editorTerminalOpen,
+    terminalOpen,
+    threadId,
+  ]);
 
   if (editorMode) {
     return (
       <>
         <view className="ThreadEditorView">
           <view className="ThreadEditorHeader AppWindowDragRegion">
-            <view className="ThreadEditorIdentity">
+            <view
+              className="ThreadEditorIdentity"
+              style={{
+                paddingLeft: `${MAC_DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_PX}px`,
+              }}
+            >
               <text className="ThreadEditorProject">
                 {currentThread?.project ?? 'Workspace'}
               </text>
               <text className="ThreadEditorPath">
                 {currentThread?.workspaceRoot ?? 'No workspace'}
               </text>
+              {editorProjectSwitchOptions.length > 0 ? (
+                <EditorProjectSwitchMenu
+                  currentProjectId={currentThread?.projectId ?? null}
+                  groups={editorProjectSwitchGroups}
+                  open={editorProjectSwitchOpen}
+                  onOpenChange={(open) => {
+                    setEditorProjectSwitchOpen(open);
+                    if (!open) setEditorProjectSwitchQuery('');
+                  }}
+                  query={editorProjectSwitchQuery}
+                  onQueryChange={setEditorProjectSwitchQuery}
+                  onProjectIdChange={(projectId) => {
+                    const option = editorProjectSwitchOptions.find(
+                      (candidate) => candidate.id === projectId
+                    );
+                    if (!option) return;
+                    const target = resolveEditorProjectSwitchTarget(option);
+                    if (target.kind === 'current') return;
+                    if (target.kind === 'thread') {
+                      setEditorRailDraftOpen(false);
+                      setEditorRailDraftProjectId(null);
+                      onNavigateToThread(target.threadId);
+                    } else {
+                      setEditorRailDraftOpen(true);
+                      setEditorRailDraftProjectId(target.projectId);
+                      setEditorChatOpen(true);
+                      setEditorRailSurface('chat');
+                    }
+                  }}
+                />
+              ) : null}
             </view>
-            {editorProjectSwitchOptions.length > 0 ? (
-              <Button
-                aria-label="Switch project"
-                className="ThreadEditorProjectSwitchTrigger"
-                variant="ghost"
-                onClick={() => setEditorProjectSwitchOpen(true)}
-              >
-                <ChevronDownIcon size={14} color="var(--muted-foreground)" />
-              </Button>
-            ) : null}
-            <text className="ThreadEditorModeLabel">
-              {editorCenterMode === 'file' ? 'Files' : 'Changes'}
-            </text>
-            <Button size="xs" variant="outline" onClick={toggleEditorChat}>
-              {editorChatOpen ? 'Hide chat' : 'Show chat'}
+            <Button
+              aria-label={editorChatOpen ? 'Hide chat panel' : 'Show chat panel'}
+              className="ThreadEditorChatToggle"
+              size="icon-xs"
+              variant="outline"
+              onClick={toggleEditorChat}
+            >
+              <svg
+                className="ThreadEditorHeaderIcon"
+                content={colorizeLynxSvg(
+                  panelRightCloseSvg,
+                  svgColors.foreground
+                )}
+              />
             </Button>
-            <Button size="xs" variant="outline" onClick={exitEditorMode}>
-              Chat
+            <Button
+              className="ThreadEditorExitButton"
+              size="xs"
+              variant="outline"
+              onClick={exitEditorMode}
+            >
+              <svg
+                className="ThreadEditorHeaderIcon"
+                content={colorizeLynxSvg(
+                  bubbleTextSvg,
+                  svgColors.foreground
+                )}
+              />
+              <text className="LxButton__text">Chat</text>
             </Button>
           </view>
           <view className="ThreadEditorBody">
           <view className="ThreadEditorActivityRail">
-            <view
-              className={`ThreadEditorActivityItem${
-                editorCenterMode === 'file' && !editorSearchActive
-                  ? ' ThreadEditorActivityItem--active'
-                  : ''
-              }`}
-              accessibility-element
-              accessibility-label="Files"
-              accessibility-traits="button"
-              bindtap={showEditorFiles}
+            <EditorActivityItem
+              active={
+                editorSidebarVisible &&
+                editorCenterMode === 'file' &&
+                !editorSearchActive
+              }
+              label={
+                editorSidebarVisible &&
+                editorCenterMode === 'file' &&
+                !editorSearchActive
+                  ? 'Hide files sidebar'
+                  : 'Files'
+              }
+              onActivate={showEditorFiles}
             >
-              <FolderIcon size={18} color="var(--foreground)" />
-            </view>
-            <view
-              className={`ThreadEditorActivityItem${
-                editorCenterMode === 'diff' && !editorSearchActive
-                  ? ' ThreadEditorActivityItem--active'
-                  : ''
-              }`}
-              accessibility-element
-              accessibility-label="Changes"
-              accessibility-traits="button"
-              bindtap={showEditorChanges}
+              <svg
+                className="ThreadEditorActivityIcon"
+                content={colorizeLynxSvg(
+                  foldersSvg,
+                  editorSidebarVisible &&
+                  editorCenterMode === 'file' &&
+                  !editorSearchActive
+                    ? svgColors.foreground
+                    : svgColors.mutedForeground
+                )}
+              />
+            </EditorActivityItem>
+            <EditorActivityItem
+              active={
+                editorSidebarVisible &&
+                editorCenterMode === 'diff' &&
+                !editorSearchActive
+              }
+              label={
+                editorSidebarVisible &&
+                editorCenterMode === 'diff' &&
+                !editorSearchActive
+                  ? 'Hide diff sidebar'
+                  : 'Diff'
+              }
+              onActivate={showEditorChanges}
             >
-              <text className="ThreadEditorActivityGlyph">±</text>
-            </view>
-            <view
-              className={`ThreadEditorActivityItem${
-                editorSearchActive ? ' ThreadEditorActivityItem--active' : ''
-              }`}
-              accessibility-element
-              accessibility-label="Search files"
-              accessibility-traits="button"
-              bindtap={showEditorSearch}
+              <svg
+                className="ThreadEditorActivityIcon"
+                content={colorizeLynxSvg(
+                  changesSvg,
+                  editorSidebarVisible &&
+                  editorCenterMode === 'diff' &&
+                  !editorSearchActive
+                    ? svgColors.foreground
+                    : svgColors.mutedForeground
+                )}
+              />
+            </EditorActivityItem>
+            <EditorActivityItem
+              active={editorSidebarVisible && editorSearchActive}
+              label={
+                editorSidebarVisible && editorSearchActive
+                  ? 'Hide search sidebar'
+                  : 'Search files'
+              }
+              onActivate={showEditorSearch}
             >
-              <SearchIcon size={18} color="var(--foreground)" />
-            </view>
+              <SearchIcon
+                className="ThreadEditorActivityIcon"
+                size={20}
+                color={
+                  editorSidebarVisible && editorSearchActive
+                    ? svgColors.foreground
+                    : svgColors.mutedForeground
+                }
+              />
+            </EditorActivityItem>
           </view>
           <view
             className={`ThreadEditorCenter${
@@ -1270,23 +2147,28 @@ function ThreadPage(props: ThreadPageProps) {
               expandedDirectories={explorerExpandedDirectories}
               initialWidth={initialExplorerWidth}
               initialCommentLine={initialExplorerCommentLine}
+              initialActionMenuOpen={initialExplorerActionMenuOpen}
               file={explorerFile}
               fileError={explorerFileError}
               filePending={explorerFilePending}
+              fileRetrying={explorerFileRetrying}
               fileSyntaxHighlight={explorerFileSyntaxHighlight}
               localPreviewUrl={explorerLocalPreviewUrl}
               localPreviewError={explorerLocalPreviewError}
               localPreviewPending={explorerLocalPreviewPending}
               pdfPageCount={explorerPdfPageCount}
+              pdfPageHeight={explorerPdfPageHeight}
+              pdfPageWidth={explorerPdfPageWidth}
               pdfMetadataError={explorerPdfMetadataError}
               pdfMetadataPending={explorerPdfMetadataPending}
               open
               presentationMode={editorSearchActive ? 'editor-search' : 'editor'}
+              sidebarVisible={editorSidebarVisible}
               query={explorerQuery}
               selectedPath={explorerSelectedPath}
               threadId={threadId}
               theme={resolvedTheme}
-              workspaceRoot={currentThread.workspaceRoot}
+              workspaceRoot={currentThread?.workspaceRoot ?? null}
               onWidthChange={() => {}}
               onQueryChange={onExplorerQueryChange}
               onSelectPath={onExplorerSelectPath}
@@ -1298,12 +2180,16 @@ function ThreadPage(props: ThreadPageProps) {
                 <DiffDock
                   availableWidth={threadPageWidth || viewportWidth}
                   initialDiff={initialWorkingTreeDiff ?? undefined}
+                  initialActionMenuOpen={initialExplorerActionMenuOpen}
+                  checkpoints={currentThread?.checkpoints ?? []}
                   initialSelectedFilePath={explorerSelectedPath}
                   unavailableLabel={initialWorkingTreeDiffUnavailableLabel}
                   onClose={() => setEditorCenterMode('file')}
                   onWidthChange={() => undefined}
                   open
                   presentation="editor"
+                  sidebarVisible={editorSidebarVisible}
+                  threadId={threadId}
                   workspaceRoot={currentThread?.workspaceRoot ?? null}
                 />
               </view>
@@ -1323,7 +2209,7 @@ function ThreadPage(props: ThreadPageProps) {
             }
             storageKey={EDITOR_CHAT_PANE_STORAGE_KEY}
             >
-              <ChatSurfaceHeaderFrame>
+              <ChatSurfaceHeaderFrame editorRail>
                 <view className="ThreadHeaderIdentity">
                   {editorRailDraftOpen ? (
                     <ChatSurfaceHeaderIdentity
@@ -1335,52 +2221,28 @@ function ThreadPage(props: ThreadPageProps) {
                     threadHeaderIdentity
                   )}
                 </view>
-                <Button
-                  aria-label="New editor rail item"
-                  className="ThreadEditorNewTrigger"
-                  variant="ghost"
-                  onClick={() => setEditorRailNewOpen(true)}
-                >
-                  <PlusIcon size={15} color="var(--muted-foreground)" />
-                </Button>
-                <Button
-                  aria-label="Chat history"
-                  className="ThreadEditorHistoryTrigger"
-                  variant="ghost"
-                  onClick={() => setEditorChatHistoryOpen(true)}
-                >
-                  <ClockIcon size={15} color="var(--muted-foreground)" />
-                </Button>
-                {terminalOpen ? (
-                  <view className="ThreadEditorRailTabs">
-                  <Button
-                    className={`ThreadEditorRailTab${
-                      editorRailSurface === 'chat'
-                        ? ' ThreadEditorRailTab--active'
-                        : ''
-                    }`}
-                    variant="ghost"
-                    onClick={() => {
-                      setEditorRailDraftOpen(false);
-                      setEditorRailDraftProjectId(null);
-                      setEditorRailSurface('chat');
-                    }}
-                  >
-                    Chat
-                  </Button>
-                  <Button
-                    className={`ThreadEditorRailTab${
-                      editorRailSurface === 'terminal'
-                        ? ' ThreadEditorRailTab--active'
-                        : ''
-                    }`}
-                    variant="ghost"
-                    onClick={() => setEditorRailSurface('terminal')}
-                  >
-                    Terminal
-                  </Button>
-                  </view>
-                ) : null}
+                <EditorRailTabs
+                  activeProvider={currentThread?.provider ?? 'codex'}
+                  activeSurface={editorRailSurface}
+                  activeThreadId={threadId}
+                  activeThreadTitle={currentThread?.title ?? 'New chat'}
+                  projectId={currentThread?.projectId ?? ''}
+                  terminalAvailable={editorTerminalOpen}
+                  threads={editorChatHistoryThreads}
+                  onNewChat={openEditorNewChat}
+                  onNewTerminal={openEditorTerminal}
+                  onHistory={() => setEditorChatHistoryOpen(true)}
+                  onOpenChat={(nextThreadId) => {
+                    setEditorRailDraftOpen(false);
+                    setEditorRailDraftProjectId(null);
+                    setEditorRailSurface('chat');
+                    if (nextThreadId !== threadId) {
+                      onNavigateToThread(nextThreadId);
+                    }
+                  }}
+                  onOpenTerminal={() => setEditorRailSurface('terminal')}
+                  onCloseTerminal={closeEditorTerminal}
+                />
               </ChatSurfaceHeaderFrame>
               <view
                 className={`ThreadEditorChatSurface${
@@ -1419,7 +2281,7 @@ function ThreadPage(props: ThreadPageProps) {
                   </>
                 )}
               </view>
-              {terminalOpen && currentThread?.workspaceRoot ? (
+              {editorTerminalOpen && currentThread?.workspaceRoot ? (
                 <view
                   className={`ThreadEditorTerminalSurface${
                     editorRailSurface === 'terminal'
@@ -1428,10 +2290,11 @@ function ThreadPage(props: ThreadPageProps) {
                   }`}
                 >
                   <ThreadTerminal
+                    active={editorRailSurface === 'terminal'}
                     autoOpen
                     fontFamily={appearance.terminalFontFamily}
                     fontSizePx={appearance.terminalFontSizePx}
-                    open={terminalOpen}
+                    open={editorTerminalOpen}
                     presentationMode="workspace"
                     terminalId="lynx-editor-rail"
                     threadId={threadId}
@@ -1450,7 +2313,7 @@ function ThreadPage(props: ThreadPageProps) {
             className="ThreadEditorHistoryViewport"
             accessibility-element
             accessibility-label="Chat history dialog"
-            accessibility-traits="dialog"
+            accessibility-trait="dialog"
             bindkeydown={(event: { readonly key?: string }) => {
               'background only';
               if (event.key === 'Escape') setEditorChatHistoryOpen(false);
@@ -1465,7 +2328,7 @@ function ThreadPage(props: ThreadPageProps) {
               className="ThreadEditorHistoryDialog"
               accessibility-element
               accessibility-label="Chat history"
-              accessibility-traits="dialog"
+              accessibility-trait="dialog"
             >
               <Button
                 aria-label="Close chat history"
@@ -1519,131 +2382,6 @@ function ThreadPage(props: ThreadPageProps) {
             </view>
           </view>
         ) : null}
-        {editorProjectSwitchOpen ? (
-          <view
-            className="ThreadEditorProjectSwitchViewport"
-            accessibility-element
-            accessibility-label="Switch project dialog"
-            accessibility-traits="dialog"
-            bindkeydown={(event: { readonly key?: string }) => {
-              'background only';
-              if (event.key === 'Escape') setEditorProjectSwitchOpen(false);
-            }}
-            tabindex={0}
-          >
-            <view
-              className="ThreadEditorProjectSwitchBackdrop"
-              bindtap={() => setEditorProjectSwitchOpen(false)}
-            />
-            <view
-              className="ThreadEditorProjectSwitchDialog"
-              accessibility-element
-              accessibility-label="Switch project"
-              accessibility-traits="dialog"
-            >
-              <Button
-                aria-label="Close project switcher"
-                className="ThreadEditorProjectSwitchClose"
-                variant="ghost"
-                onClick={() => setEditorProjectSwitchOpen(false)}
-              >
-                ×
-              </Button>
-              <text className="ThreadEditorProjectSwitchHeading">
-                Switch project
-              </text>
-              <text className="ThreadEditorProjectSwitchDescription">
-                Open the latest chat or start a new one.
-              </text>
-              <scroll-view
-                className="ThreadEditorProjectSwitchPanel"
-                scroll-orientation="vertical"
-              >
-                {editorProjectSwitchOptions.map((option) => (
-                  <Button
-                    key={option.id}
-                    className={`ThreadEditorProjectSwitchItem${
-                      option.selected
-                        ? ' ThreadEditorProjectSwitchItem--active'
-                        : ''
-                    }`}
-                    variant="ghost"
-                    onClick={() => {
-                      setEditorProjectSwitchOpen(false);
-                      const target =
-                        resolveEditorProjectSwitchTarget(option);
-                      if (target.kind === 'current') return;
-                      if (target.kind === 'thread') {
-                        setEditorRailDraftOpen(false);
-                        setEditorRailDraftProjectId(null);
-                        onNavigateToThread(target.threadId);
-                      } else {
-                        setEditorRailDraftOpen(true);
-                        setEditorRailDraftProjectId(target.projectId);
-                        setEditorChatOpen(true);
-                        setEditorRailSurface('chat');
-                      }
-                    }}
-                  >
-                    <text className="ThreadEditorProjectSwitchTitle">
-                      {option.title}
-                    </text>
-                    <text className="ThreadEditorProjectSwitchMeta">
-                      {option.selected
-                        ? '✓'
-                        : option.threadId
-                          ? 'Open'
-                          : 'New chat'}
-                    </text>
-                  </Button>
-                ))}
-              </scroll-view>
-            </view>
-          </view>
-        ) : null}
-        {editorRailNewOpen ? (
-          <view
-            className="ThreadEditorNewViewport"
-            accessibility-element
-            accessibility-label="New editor rail item dialog"
-            accessibility-traits="dialog"
-            bindkeydown={(event: { readonly key?: string }) => {
-              'background only';
-              if (event.key === 'Escape') setEditorRailNewOpen(false);
-            }}
-            tabindex={0}
-          >
-            <view
-              className="ThreadEditorNewBackdrop"
-              bindtap={() => setEditorRailNewOpen(false)}
-            />
-            <view className="ThreadEditorNewDialog">
-              <text className="ThreadEditorNewHeading">
-                New editor rail item
-              </text>
-              <Button
-                className="ThreadEditorNewItem"
-                variant="ghost"
-                onClick={openEditorNewChat}
-              >
-                <MessageCircleIcon
-                  size={15}
-                  color="var(--muted-foreground)"
-                />
-                New chat
-              </Button>
-              <Button
-                className="ThreadEditorNewItem"
-                variant="ghost"
-                disabled={!currentThread?.workspaceRoot}
-                onClick={openEditorTerminal}
-              >
-                <text className="ThreadEditorNewTerminalGlyph">&gt;_</text>
-                New terminal
-              </Button>
-            </view>
-          </view>
-        ) : null}
       </>
     );
   }
@@ -1651,7 +2389,13 @@ function ThreadPage(props: ThreadPageProps) {
   return (
     <view
       className={`Page ThreadPage${
-        resolvedEnvironmentOpen ? ' ThreadPage--environment-open' : ''
+        environmentPanelLayout.visible
+          ? ` ThreadPage--environment-open${
+              environmentPanelLayout.variant === 'docked'
+                ? ' ThreadPage--environment-docked'
+                : ' ThreadPage--environment-floating'
+            }`
+          : ''
       }${diffOpen ? ' ThreadPage--diff-open' : ''}${
         explorerOpen ? ' ThreadPage--explorer-open' : ''
       }${
@@ -1663,45 +2407,91 @@ function ThreadPage(props: ThreadPageProps) {
         const width = event.detail?.width;
         if (typeof width === 'number' && width > 0) setThreadPageWidth(width);
       }}
-      style={
-        effectiveRightDockWidth !== null
-          ? { paddingRight: `${effectiveRightDockWidth}px` }
-          : undefined
-      }
     >
+      <view
+        className="ThreadPageMain"
+        style={
+          effectiveRightDockWidth !== null
+            ? {
+                width: `${Math.max(
+                  0,
+                  (threadPageWidth || viewportWidth) - effectiveRightDockWidth
+                )}px`,
+              }
+            : undefined
+        }
+      >
       <ChatSurfaceHeaderFrame className="ThreadPageHeader">
         <view className="ThreadHeaderIdentity">
           {threadHeaderIdentity}
         </view>
         <view className="ThreadHeaderControls">
-          <EnvironmentToggle
-            open={resolvedEnvironmentOpen}
-            onChange={setEnvironmentVisibility}
+          <ThreadHeaderActions
+            actionState={threadHeaderActionState}
+            compact={compactThreadHeader}
+            project={
+              currentProject
+                ? {
+                    id: currentProject.id,
+                    cwd: currentProject.cwd,
+                    defaultModelSelection:
+                      currentProject.defaultModelSelection,
+                    scripts: currentProject.scripts,
+                  }
+                : null
+            }
+            thread={currentThread}
+            onNavigateToThread={onNavigateToThread}
+            onOpenTerminal={() => {
+              setTerminalOpen(true);
+            }}
           />
-          <view
-            className={`${diffToggle.className}${
-              diffToggle.disabled ? ' ui-disabled' : ''
-            }`}
-            aria-pressed={diffOpen}
-            {...diffToggle.eventProps}
-          >
-            <svg
-              className="ThreadDiffToggleIcon"
-              content={colorizeLynxSvg(
-                panelRightCloseSvg,
-                diffOpen ? svgColors.foreground : svgColors.secondaryForeground
-              )}
+          {threadHeaderActionState.showEnvironment ? (
+            <EnvironmentToggle
+              open={environmentPanelLayout.visible}
+              onChange={setEnvironmentVisibility}
             />
-          </view>
+          ) : null}
+          {threadHeaderActionState.showDiff ? (
+            <view
+              className={`${diffToggle.className}${
+                threadHeaderActionState.diffDisabled ? ' ui-disabled' : ''
+              }`}
+              aria-pressed={diffOpen}
+              {...diffToggle.eventProps}
+            >
+              {threadHeaderActionState.diffStats ? (
+                <view className="ThreadDiffToggleStats">
+                  <text className="ThreadDiffToggleAddition">
+                    +{threadHeaderActionState.diffStats.additions}
+                  </text>
+                  <text className="ThreadDiffToggleDeletion">
+                    -{threadHeaderActionState.diffStats.deletions}
+                  </text>
+                </view>
+              ) : null}
+              <svg
+                className="ThreadDiffToggleIcon"
+                content={colorizeLynxSvg(
+                  panelRightCloseSvg,
+                  diffOpen ? svgColors.foreground : svgColors.secondaryForeground
+                )}
+              />
+            </view>
+          ) : null}
         </view>
       </ChatSurfaceHeaderFrame>
       <ThreadErrorBanner
-        error={visibleThreadError({
-          dismissedKey: dismissedThreadErrorKey,
-          error: currentThread?.error,
-          revision: currentThread?.errorRevision,
-        })}
+        error={
+          localThreadError ??
+          visibleThreadError({
+            dismissedKey: dismissedThreadErrorKey,
+            error: currentThread?.error,
+            revision: currentThread?.errorRevision,
+          })
+        }
         onDismiss={() => {
+          setLocalThreadError(null);
           setDismissedThreadErrorKey(
             threadErrorDismissKey({
               error: currentThread?.error,
@@ -1714,20 +2504,24 @@ function ThreadPage(props: ThreadPageProps) {
         status={providerHealth.status}
         onDismiss={providerHealth.dismiss}
       />
-      {chatBody}
-      {bodyState.kind === 'empty' ? null : (
-        <view className="ThreadComposerDock">{composer}</view>
+      {terminalPrimary && currentThread?.workspaceRoot ? (
+        <view className="ThreadPrimaryTerminal">
+          <DockTerminalPane
+            closeRequestVersion={0}
+            fontFamily={appearance.terminalFontFamily}
+            fontSizePx={appearance.terminalFontSizePx}
+            isActive
+            scope="thread"
+            threadId={threadId}
+            workspaceRoot={currentThread.workspaceRoot}
+            onClosePane={() => {}}
+          />
+        </view>
+      ) : (
+        chatBody
       )}
-      {currentThread?.workspaceRoot ? (
-        <ThreadTerminal
-          autoOpen
-          fontFamily={appearance.terminalFontFamily}
-          fontSizePx={appearance.terminalFontSizePx}
-          open={terminalOpen}
-          threadId={threadId}
-          workspaceRoot={currentThread.workspaceRoot}
-          onOpenChange={setTerminalOpen}
-        />
+      {!terminalPrimary && bodyState.kind !== 'empty' ? (
+        <view className="ThreadComposerDock">{composer}</view>
       ) : null}
       {currentThread ? (
         <EnvironmentPanel
@@ -1735,7 +2529,7 @@ function ThreadPage(props: ThreadPageProps) {
             initialEnvironmentOpen && environmentData !== null
           }
           initialData={environmentData}
-          open={resolvedEnvironmentOpen}
+          open={environmentPanelLayout.visible}
           threadId={threadId}
           projectId={currentThread.projectId}
           pinnedMessages={currentThread.pinnedMessages}
@@ -1760,8 +2554,6 @@ function ThreadPage(props: ThreadPageProps) {
           onOpenChanges={() => {
             closeEnvironmentForAction();
             setExplorerOpen(false);
-            setExplorerDockWidth(null);
-            setDiffDockWidth(null);
             setDiffOpen(true);
           }}
           onOpenEditorView={enterEditorMode}
@@ -1771,6 +2563,7 @@ function ThreadPage(props: ThreadPageProps) {
           }}
         />
       ) : null}
+      </view>
       <ThreadRightDocks
         currentThread={currentThread}
         diffOpen={diffOpen}
@@ -1785,26 +2578,39 @@ function ThreadPage(props: ThreadPageProps) {
         explorerFile={explorerFile}
         explorerFileError={explorerFileError}
         explorerFilePending={explorerFilePending}
+        explorerFileRetrying={explorerFileRetrying}
         explorerFileSyntaxHighlight={explorerFileSyntaxHighlight}
         explorerLocalPreviewError={explorerLocalPreviewError}
         explorerLocalPreviewPending={explorerLocalPreviewPending}
         explorerLocalPreviewUrl={explorerLocalPreviewUrl}
         explorerPdfPageCount={explorerPdfPageCount}
+        explorerPdfPageHeight={explorerPdfPageHeight}
+        explorerPdfPageWidth={explorerPdfPageWidth}
         explorerPdfMetadataError={explorerPdfMetadataError}
         explorerPdfMetadataPending={explorerPdfMetadataPending}
         explorerOpen={explorerOpen}
+        explorerPresentationMode={explorerPresentationMode}
+        rightDockState={rightDockState}
+        terminalOpen={terminalOpen}
+        terminalFontFamily={appearance.terminalFontFamily}
+        terminalFontSizePx={appearance.terminalFontSizePx}
+        chatFontSizePx={appearance.chatFontSizePx}
+        timestampFormat={appearance.timestampFormat}
+        viewportHeight={viewportHeight}
         explorerQuery={explorerQuery}
         explorerSelectedPath={explorerSelectedPath}
         initialExplorerWidth={initialExplorerWidth}
         initialExplorerCommentLine={initialExplorerCommentLine}
+        initialExplorerActionMenuOpen={initialExplorerActionMenuOpen}
+        initialDiffFileTreeOpen={diffFileTreeOpen}
         onExplorerQueryChange={onExplorerQueryChange}
         onExplorerSelectPath={onExplorerSelectPath}
         onExplorerToggleDirectory={onExplorerToggleDirectory}
         resolvedTheme={resolvedTheme}
-        setDiffDockWidth={setDiffDockWidth}
-        setDiffOpen={setDiffOpen}
-        setExplorerDockWidth={setExplorerDockWidth}
-        setExplorerOpen={setExplorerOpen}
+        setRightDockWidth={setRightDockWidth}
+        setExplorerPresentationMode={setExplorerPresentationMode}
+        updateRightDockState={updateRightDockState}
+        onDiffFileTreeOpenChange={setDiffFileTreeOpen}
         threadPageWidth={threadPageWidth}
         viewportWidth={viewportWidth}
       />
@@ -1814,10 +2620,14 @@ function ThreadPage(props: ThreadPageProps) {
 
 export function SliceRouter({
   appearance,
+  initialDiffOpen,
+  initialDiffTurnId,
+  initialDiffFilePath,
   initialEditorOpen,
   initialEditorCenterMode,
   initialEditorChatOpen,
   initialEditorSearchOpen,
+  initialEditorProjectMenuOpen,
   initialEnvironmentOpen,
   initialRenameOpen,
   initialTerminalOpen,
@@ -1825,8 +2635,10 @@ export function SliceRouter({
   initialSettingsTarget,
   initialWorkspaceVisible,
   initialRoute,
-  initialThreadBootstrap,
   initialExplorerOpen,
+  initialExplorerPresentationMode,
+  initialExplorerActionMenuOpen,
+  initialDiffFileTreeOpen,
   initialExplorerCommentLine,
   initialExplorerExpandedDirectories,
   initialExplorerPath,
@@ -1834,51 +2646,32 @@ export function SliceRouter({
   initialExplorerWidth,
   resolvedTheme,
   viewportWidth,
+  viewportHeight,
   onAppearanceChange,
   onThemeStateChange,
+  transportState,
+  onRetryTransport,
 }: {
   readonly appearance: SettingsAppearanceValues;
+  readonly initialDiffOpen: boolean;
+  readonly initialDiffTurnId: string | null;
+  readonly initialDiffFilePath: string | null;
   readonly initialEditorOpen: boolean;
-  readonly initialEditorCenterMode: 'file' | 'diff';
+  readonly initialEditorCenterMode: 'file' | 'diff' | null;
   readonly initialEditorChatOpen: boolean | null;
   readonly initialEditorSearchOpen: boolean;
+  readonly initialEditorProjectMenuOpen: boolean;
   readonly initialEnvironmentOpen: boolean;
+  readonly initialDiffFileTreeOpen: boolean;
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
   readonly initialSettingsTarget: string | null;
   readonly initialWorkspaceVisible: boolean;
   readonly initialRoute: string | null;
-  readonly initialThreadBootstrap: {
-    readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>>;
-    readonly environment: EnvironmentBootstrapData | null;
-    readonly explorerEntries: {
-      readonly value: Awaited<ReturnType<typeof fetchExplorerEntries>> | null;
-      readonly error: boolean;
-    };
-    readonly explorerFile: {
-      readonly value: Awaited<ReturnType<typeof fetchExplorerFile>> | null;
-      readonly error: boolean;
-    };
-    readonly explorerLocalPreview: {
-      readonly value: string | null;
-      readonly error: boolean;
-    };
-    readonly explorerPdfMetadata: {
-      readonly value: Awaited<ReturnType<typeof fetchExplorerPdfMetadata>> | null;
-      readonly error: boolean;
-    };
-    readonly explorerDirectories: readonly (readonly [
-      string,
-      ExplorerEntriesResult['entries'],
-      boolean,
-    ])[];
-    readonly workingTreeDiff: GitReadWorkingTreeDiffResult | null;
-    readonly workingTreeDiffUnavailableLabel: string | null;
-    readonly summary: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
-    readonly threadId: string;
-  } | null;
   readonly initialExplorerOpen: boolean;
+  readonly initialExplorerPresentationMode: 'dock' | 'single-file';
+  readonly initialExplorerActionMenuOpen: boolean;
   readonly initialExplorerCommentLine: number | null;
   readonly initialExplorerExpandedDirectories: readonly string[];
   readonly initialExplorerPath: string | null;
@@ -1886,11 +2679,50 @@ export function SliceRouter({
   readonly initialExplorerWidth: number | null;
   readonly resolvedTheme: 'dark' | 'light';
   readonly viewportWidth: number;
+  readonly viewportHeight: number;
   readonly onAppearanceChange: (appearance: SettingsAppearanceValues) => void;
   readonly onThemeStateChange: (state: ThemeState) => void;
+  readonly transportState: RpcTransportState;
+  readonly onRetryTransport: () => void;
 }) {
   const [route, setRoute] = useRoute(initialRoute);
+  const componentsLabRoute = route.pathname === '/components-lab';
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchPaletteKey, setSearchPaletteKey] = useState(0);
+  const [searchInitialQuery, setSearchInitialQuery] = useState('');
+  const [searchReturnFocusElementId, setSearchReturnFocusElementId] = useState(
+    'synara-sidebar-search-trigger'
+  );
   const navigation = useMemoryNavigationState();
+  const setSearchPaletteOpen = useCallback(
+    (open: boolean) => {
+      'background only';
+      setSearchOpen(open);
+      void import(/* webpackMode: "eager" */ '../platform/bridge')
+        .then(({ bridgeCall }) =>
+          bridgeCall('shellSetSearchNavigationEnabled', { enabled: open })
+        )
+        .catch(() => {
+          // The Web host has no native application-menu accelerators.
+        });
+      if (!open && route.pathname !== '/settings') {
+        focusLynxElementById(searchReturnFocusElementId);
+      }
+    },
+    [route.pathname, searchReturnFocusElementId]
+  );
+  const openSearchPalette = useCallback(
+    (
+      initialQuery = '',
+      returnFocusElementId = 'synara-sidebar-search-trigger'
+    ) => {
+      setSearchInitialQuery(initialQuery);
+      setSearchReturnFocusElementId(returnFocusElementId);
+      setSearchPaletteKey((current) => current + 1);
+      setSearchPaletteOpen(true);
+    },
+    [setSearchPaletteOpen]
+  );
   useEffect(() => {
     'background only';
     let cancelled = false;
@@ -1899,13 +2731,14 @@ export function SliceRouter({
       .then(({ bridgeCall }) => {
         if (cancelled) return;
         const publishRoute = () => {
+          const location = history.location.href;
           void bridgeCall('shellRouteChanged', {
-            route: history.location.href,
+            route: location,
+            clearRelaunchUrl: !location.startsWith('/thread/'),
           }).catch(() => {
             // Web and older hosts do not need the desktop reload route mirror.
           });
         };
-        publishRoute();
         unsubscribe = history.subscribe(publishRoute);
       })
       .catch(() => {
@@ -1938,8 +2771,28 @@ export function SliceRouter({
   } = useQuery({
     queryKey: ['threads'],
     queryFn: fetchThreads,
+    enabled: !componentsLabRoute,
     refetchInterval: 5_000,
   });
+  useEffect(() => {
+    if (componentsLabRoute) return;
+    let active = true;
+    let invalidateTimer: ReturnType<typeof setTimeout> | null = null;
+    const unsubscribe = subscribeOrchestrationShellEvents((item) => {
+      if (item.kind !== 'snapshot' && item.kind !== 'thread-upserted') return;
+      if (invalidateTimer !== null) return;
+      invalidateTimer = setTimeout(() => {
+        invalidateTimer = null;
+        if (!active) return;
+        void queryClient.invalidateQueries({ queryKey: ['threads'] });
+      }, 50);
+    });
+    return () => {
+      active = false;
+      unsubscribe();
+      if (invalidateTimer !== null) clearTimeout(invalidateTimer);
+    };
+  }, [componentsLabRoute]);
   const routeProjects = useStore((state) => state.projects);
   const workspacePages = useWorkspaceStore((state) => state.workspacePages);
   const studioSettings = readSettingsGeneralProjection(
@@ -1953,22 +2806,42 @@ export function SliceRouter({
       : initialRoute
         ? parseRoute(initialRoute).params.threadId ?? null
         : null;
-  const taskCompletionToast = (
-    <TaskCompletionToastHost
-      activeThreadId={activeThreadId}
-      threads={routeThreads ?? []}
-      onOpenThread={(threadId) => history.push(`/thread/${threadId}`)}
-    />
+  const appNotifications = (
+    <view
+      className={`AppNotificationStack${
+        route.pathname === '/components-lab'
+          ? ' AppNotificationStack--hidden'
+          : ''
+      }`}
+    >
+      <VoiceNotificationHost />
+      <TaskCompletionToastHost
+        activeThreadId={activeThreadId}
+        threads={routeThreads ?? []}
+        onOpenThread={(threadId) => history.push(`/thread/${threadId}`)}
+      />
+      <ProviderUpdatePrompt
+        onReview={() => history.push('/settings/providers')}
+      />
+    </view>
   );
+  const transportNotice =
+    !componentsLabRoute &&
+    (transportState === 'reconnecting' || transportState === 'offline') ? (
+      <view className={`TransportStatusNotice TransportStatusNotice--${transportState}`}>
+        <text className="TransportStatusNoticeText" accessibility-element accessibility-label={transportState === 'reconnecting' ? 'Reconnecting to Synara' : 'Synara is offline'} accessibility-trait="updating">{transportState === 'reconnecting' ? 'Reconnecting…' : 'Offline'}</text>
+        {transportState === 'offline' ? <Button className="TransportStatusRetry" variant="ghost" size="xs" aria-label="Retry connecting to Synara" onClick={onRetryTransport}>Retry</Button> : null}
+      </view>
+    ) : null;
   const appSnapCoordinator = (
     <AppSnapCoordinator
       activeThreadId={activeThreadId}
       onOpenThread={(threadId) => history.push(`/thread/${threadId}`)}
     />
   );
-  const providerUpdatePrompt = (
-    <ProviderUpdatePrompt
-      onReview={() => history.push('/settings/providers')}
+  const appSnapWelcomeDialog = (
+    <AppSnapWelcomeDialogLynx
+      onOpenSettings={() => history.push('/settings/appsnap')}
     />
   );
   const [explorerQuery, setExplorerQuery] = useState(initialExplorerQuery);
@@ -1986,16 +2859,9 @@ export function SliceRouter({
   const {
     data: activeThreadData,
     error: activeThreadError,
-    isFetching: activeThreadFetching,
     isPending: activeThreadPending,
   } = useQuery({
-    queryKey: [
-      'thread-detail',
-      activeThreadId,
-      explorerTrimmedQuery,
-      explorerSelectedPath,
-      explorerExpandedDirectoryPaths.join('\0'),
-    ],
+    queryKey: ['thread-detail', activeThreadId],
     queryFn: async () => {
       'background only';
       const threadId = activeThreadId;
@@ -2004,135 +2870,144 @@ export function SliceRouter({
         fetchThreadTranscriptRows(threadId),
         fetchThreadHeaderSummary(threadId),
       ]);
-      const explorerEntries = summary?.workspaceRoot
-        ? await fetchExplorerEntries({
-            workspaceRoot: summary.workspaceRoot,
-            query: explorerTrimmedQuery,
-          }).then(
-            (value) => ({ value, error: false }),
-            () => ({ value: null, error: true })
-          )
-        : { value: null, error: false };
-      const explorerFile =
-        summary?.workspaceRoot &&
-        explorerSelectedPath &&
-        !isSupportedLocalPreviewFilePath(explorerSelectedPath)
-          ? await fetchExplorerFile({
-              workspaceRoot: summary.workspaceRoot,
-              relativePath: explorerSelectedPath,
-            }).then(
-              (value) => ({ value, error: false }),
-              () => ({ value: null, error: true })
-            )
-          : { value: null, error: false };
-      const explorerLocalPreview =
-        summary?.workspaceRoot &&
-        explorerSelectedPath &&
-        isSupportedLocalPreviewFilePath(explorerSelectedPath)
-          ? await fetchExplorerLocalPreviewUrl({
-              workspaceRoot: summary.workspaceRoot,
-              relativePath: explorerSelectedPath,
-            }).then(
-              (value) => ({ value, error: false }),
-              () => ({ value: null, error: true })
-            )
-          : { value: null, error: false };
-      const explorerPdfMetadata =
-        summary?.workspaceRoot &&
-        explorerSelectedPath &&
-        isSupportedLocalPdfPath(explorerSelectedPath)
-          ? await fetchExplorerPdfMetadata({
-              workspaceRoot: summary.workspaceRoot,
-              relativePath: explorerSelectedPath,
-            }).then(
-              (value) => ({ value, error: false }),
-              () => ({ value: null, error: true })
-            )
-          : { value: null, error: false };
-      const explorerDirectories =
-        summary?.workspaceRoot && explorerTrimmedQuery.length === 0
-          ? await Promise.all(
-              explorerExpandedDirectoryPaths.map(async (path) => {
-                try {
-                  const result = await fetchExplorerDirectory({
-                    workspaceRoot: summary.workspaceRoot!,
-                    relativePath: path,
-                  });
-                  return [path, result.entries, false] as const;
-                } catch {
-                  return [path, [], true] as const;
-                }
-              })
-            )
-          : [];
-      return {
-        data,
-        environment: null,
-        explorerDirectories,
-        explorerEntries,
-        explorerFile,
-        explorerLocalPreview,
-        explorerPdfMetadata,
-        summary,
-      };
+      return { data, summary };
     },
     enabled: activeThreadId !== null,
     refetchInterval: 500,
     retry: false,
   });
-  const matchingInitialThreadBootstrap =
-    initialThreadBootstrap?.threadId === activeThreadId
-      ? initialThreadBootstrap
-      : null;
-  const resolvedActiveThreadData = activeThreadData
-    ? {
-        ...activeThreadData,
-        environment:
-          activeThreadData.environment ??
-          matchingInitialThreadBootstrap?.environment ??
-          null,
-        explorerEntries:
-          activeThreadData.explorerEntries.value ||
-          activeThreadData.explorerEntries.error
-            ? activeThreadData.explorerEntries
-            : matchingInitialThreadBootstrap?.explorerEntries ??
-              activeThreadData.explorerEntries,
-        explorerFile:
-          activeThreadData.explorerFile.value ||
-          activeThreadData.explorerFile.error
-            ? activeThreadData.explorerFile
-            : matchingInitialThreadBootstrap?.explorerFile ??
-              activeThreadData.explorerFile,
-        explorerLocalPreview:
-          activeThreadData.explorerLocalPreview.value ||
-          activeThreadData.explorerLocalPreview.error
-            ? activeThreadData.explorerLocalPreview
-            : matchingInitialThreadBootstrap?.explorerLocalPreview ??
-              activeThreadData.explorerLocalPreview,
-        explorerPdfMetadata:
-          activeThreadData.explorerPdfMetadata.value ||
-          activeThreadData.explorerPdfMetadata.error
-            ? activeThreadData.explorerPdfMetadata
-            : matchingInitialThreadBootstrap?.explorerPdfMetadata ??
-              activeThreadData.explorerPdfMetadata,
-        explorerDirectories: activeThreadData.explorerDirectories,
-        workingTreeDiff:
-          matchingInitialThreadBootstrap?.workingTreeDiff ?? null,
-        workingTreeDiffUnavailableLabel:
-          matchingInitialThreadBootstrap?.workingTreeDiffUnavailableLabel ??
-          null,
-      }
-    : matchingInitialThreadBootstrap ?? undefined;
+  useEffect(() => {
+    if (!activeThreadId) return;
+    let active = true;
+    let invalidateTimer: ReturnType<typeof setTimeout> | null = null;
+    const unsubscribe = subscribeOrchestrationShellEvents((item) => {
+      if (
+        item.kind !== 'snapshot' &&
+        (item.kind !== 'thread-upserted' || item.thread.id !== activeThreadId)
+      ) return;
+      if (invalidateTimer !== null) return;
+      invalidateTimer = setTimeout(() => {
+        invalidateTimer = null;
+        if (!active) return;
+        void queryClient.invalidateQueries({
+          queryKey: ['thread-detail', activeThreadId],
+        });
+      }, 50);
+    });
+    return () => {
+      active = false;
+      unsubscribe();
+      if (invalidateTimer !== null) clearTimeout(invalidateTimer);
+    };
+  }, [activeThreadId]);
+  const resolvedActiveThreadData = activeThreadData;
+  const workspaceRoot = resolvedActiveThreadData?.summary?.workspaceRoot ?? null;
+  const explorerEntriesQuery = useQuery({
+    queryKey: ['explorer-entries', activeThreadId, workspaceRoot, explorerTrimmedQuery],
+    queryFn: async () => {
+      'background only';
+      if (!workspaceRoot) return null;
+      return fetchExplorerEntries({ workspaceRoot, query: explorerTrimmedQuery });
+    },
+    enabled: workspaceRoot !== null,
+    retry: false,
+  });
+  const explorerFileQuery = useQuery({
+    queryKey: ['explorer-file', activeThreadId, workspaceRoot, explorerSelectedPath],
+    queryFn: async () => {
+      'background only';
+      if (!workspaceRoot || !explorerSelectedPath) return null;
+      return fetchExplorerFile({
+        workspaceRoot,
+        relativePath: explorerSelectedPath,
+      });
+    },
+    enabled:
+      workspaceRoot !== null &&
+      explorerSelectedPath !== null &&
+      !isSupportedLocalPreviewFilePath(explorerSelectedPath),
+    retry: false,
+  });
+  const explorerLocalPreviewQuery = useQuery({
+    queryKey: [
+      'explorer-local-preview',
+      activeThreadId,
+      workspaceRoot,
+      explorerSelectedPath,
+    ],
+    queryFn: async () => {
+      'background only';
+      if (!workspaceRoot || !explorerSelectedPath) return null;
+      return fetchExplorerLocalPreviewUrl({
+        workspaceRoot,
+        relativePath: explorerSelectedPath,
+      });
+    },
+    enabled:
+      workspaceRoot !== null &&
+      explorerSelectedPath !== null &&
+      isSupportedLocalPreviewFilePath(explorerSelectedPath),
+    retry: false,
+  });
+  const explorerPdfMetadataQuery = useQuery({
+    queryKey: [
+      'explorer-pdf-metadata',
+      activeThreadId,
+      workspaceRoot,
+      explorerSelectedPath,
+    ],
+    queryFn: async () => {
+      'background only';
+      if (!workspaceRoot || !explorerSelectedPath) return null;
+      return fetchExplorerPdfMetadata({
+        workspaceRoot,
+        relativePath: explorerSelectedPath,
+      });
+    },
+    enabled:
+      workspaceRoot !== null &&
+      explorerSelectedPath !== null &&
+      isSupportedLocalPdfPath(explorerSelectedPath),
+    retry: false,
+  });
+  const expandedDirectoryKey = explorerExpandedDirectoryPaths.join('\0');
+  const explorerDirectoriesQuery = useQuery({
+    queryKey: [
+      'explorer-directories',
+      activeThreadId,
+      workspaceRoot,
+      expandedDirectoryKey,
+    ],
+    queryFn: async () => {
+      'background only';
+      if (!workspaceRoot || explorerTrimmedQuery.length > 0) return [];
+      return Promise.all(
+        explorerExpandedDirectoryPaths.map(async (path) => {
+          try {
+            const result = await fetchExplorerDirectory({
+              workspaceRoot,
+              relativePath: path,
+            });
+            return [path, result.entries, false] as const;
+          } catch {
+            return [path, [], true] as const;
+          }
+        })
+      );
+    },
+    enabled: workspaceRoot !== null && explorerTrimmedQuery.length === 0,
+    retry: false,
+  });
   const resolvedActiveThreadPending =
     resolvedActiveThreadData === undefined && activeThreadPending;
   const {
     entriesByPath: explorerDirectoryData,
     errorPaths: explorerDirectoryErrors,
   } = projectExplorerDirectories(
-    resolvedActiveThreadData?.explorerDirectories ?? []
+    explorerDirectoriesQuery.data ?? []
   );
   const explorerDirectoryPending = new Set(
-    activeThreadFetching
+    explorerDirectoriesQuery.isFetching
       ? [...explorerExpandedDirectories].filter(
           (path) =>
             explorerDirectoryData[path] === undefined &&
@@ -2152,8 +3027,13 @@ export function SliceRouter({
   const [lastRouteHydrated, setLastRouteHydrated] = useState(false);
   const [coldStartRoutePending, setColdStartRoutePending] = useState(true);
   const [studioLandingReady, setStudioLandingReady] = useState(false);
-  const [editorContinuationThreadId, setEditorContinuationThreadId] =
-    useState<string | null>(null);
+  // Editor entry is an explicit, single-use navigation intent. The startup
+  // flag belongs only to the initially addressed thread; ordinary sidebar
+  // navigation must never inherit it when ThreadPage remounts for another id.
+  const [editorEntryThreadId, setEditorEntryThreadId] = useState<string | null>(
+    () => (initialEditorOpen ? activeThreadId : null)
+  );
+  const [editorModeOpen, setEditorModeOpen] = useState(initialEditorOpen);
 
   useEffect(() => {
     'background only';
@@ -2271,11 +3151,11 @@ export function SliceRouter({
   useEffect(() => {
     if (
       route.pathname === '/thread/$threadId' &&
-      route.params.threadId === editorContinuationThreadId
+      route.params.threadId === editorEntryThreadId
     ) {
-      setEditorContinuationThreadId(null);
+      setEditorEntryThreadId(null);
     }
-  }, [editorContinuationThreadId, route.params.threadId, route.pathname]);
+  }, [editorEntryThreadId, route.params.threadId, route.pathname]);
 
   const navigate = useCallback((to: string) => {
     const threadMatch = to.match(/^\/thread\/([^/]+)$/);
@@ -2285,6 +3165,14 @@ export function SliceRouter({
     }
     history.push(to);
   }, []);
+  const navigateToChat = useCallback(
+    (to: string) => {
+      setEditorEntryThreadId(null);
+      setEditorModeOpen(false);
+      navigate(to);
+    },
+    [navigate]
+  );
   const renderTitlebarControls = (
     placement: 'open' | 'closed'
   ) => (
@@ -2337,7 +3225,9 @@ export function SliceRouter({
           (command: unknown) => {
             if (command === 'sidebar.toggle') {
               setSidebarOpen((open) => !open);
+              return;
             }
+            if (command === 'sidebar.search') openSearchPalette();
           }
         );
         void bridgeCall<{ readonly route?: unknown }>('shellRendererReady')
@@ -2363,10 +3253,32 @@ export function SliceRouter({
       disposeHistory?.();
       disposeCommand?.();
     };
-  }, [setRoute]);
+  }, [openSearchPalette, setRoute]);
 
   let page: React.ReactNode;
-  if (route.pathname === '/settings') {
+  if (route.pathname === '/components-lab') {
+    page = (
+      <ComponentsLabPageLynx
+        embedded={route.params.embed === '1'}
+        selectedStoryId={route.params.story ?? null}
+        selectedState={route.params.state ?? null}
+        selectedVariant={route.params.variant ?? null}
+        onSelectStory={(storyId) =>
+          history.push(
+            `/components-lab?story=${encodeURIComponent(storyId)}&state=default`
+          )
+        }
+        onSelectState={(state) =>
+          history.push(
+            `/components-lab?story=${encodeURIComponent(route.params.story ?? COMPONENT_LAB_STORIES[0]!.id)}&state=${encodeURIComponent(state)}&variant=${encodeURIComponent(route.params.variant ?? COMPONENT_LAB_STORIES.find((story) => story.id === route.params.story)?.variants[0] ?? 'default')}`
+          )
+        }
+        onSelectVariant={(variant) =>
+          history.push(`/components-lab?story=${encodeURIComponent(route.params.story ?? COMPONENT_LAB_STORIES[0]!.id)}&state=${encodeURIComponent(route.params.state ?? 'default')}&variant=${encodeURIComponent(variant)}`)
+        }
+      />
+    );
+  } else if (route.pathname === '/settings') {
     page = (
       <SettingsPage
         initialSection={
@@ -2392,93 +3304,87 @@ export function SliceRouter({
         appearance={appearance}
         currentThread={resolvedActiveThreadData?.summary}
         data={resolvedActiveThreadData?.data}
-        environmentData={resolvedActiveThreadData?.environment ?? null}
+        environmentData={null}
         error={activeThreadError}
-        explorerEntries={
-          resolvedActiveThreadData?.explorerEntries.value?.entries ?? []
+        explorerEntries={explorerEntriesQuery.data?.entries ?? []}
+        explorerEntriesError={explorerEntriesQuery.isError}
+        explorerEntriesPending={
+          workspaceRoot !== null && explorerEntriesQuery.isPending
         }
-        explorerEntriesError={
-          resolvedActiveThreadData?.explorerEntries.error ?? false
-        }
-        explorerEntriesPending={resolvedActiveThreadPending}
-        explorerEntriesTruncated={
-          resolvedActiveThreadData?.explorerEntries.value?.truncated ?? false
-        }
+        explorerEntriesTruncated={explorerEntriesQuery.data?.truncated ?? false}
         explorerDirectoryEntries={explorerDirectoryData}
         explorerDirectoryErrors={explorerDirectoryErrors}
         explorerDirectoryPending={explorerDirectoryPending}
         explorerExpandedDirectories={explorerExpandedDirectories}
-        explorerFile={
-          resolvedActiveThreadData?.explorerFile.value?.file ?? null
-        }
-        explorerFileError={
-          resolvedActiveThreadData?.explorerFile.error ?? false
-        }
+        explorerFile={explorerFileQuery.data?.file ?? null}
+        explorerFileError={explorerFileQuery.isError}
         explorerFilePending={
           explorerSelectedPath !== null &&
           !isSupportedLocalPreviewFilePath(explorerSelectedPath) &&
-          resolvedActiveThreadPending
+          workspaceRoot !== null &&
+          explorerFileQuery.isPending
         }
-        explorerFileSyntaxHighlight={
-          resolvedActiveThreadData?.explorerFile.value?.syntaxHighlight ?? null
+        explorerFileRetrying={
+          explorerFileQuery.isError && explorerFileQuery.isFetching
         }
-        explorerLocalPreviewUrl={
-          resolvedActiveThreadData?.explorerLocalPreview.value ?? null
-        }
-        explorerLocalPreviewError={
-          resolvedActiveThreadData?.explorerLocalPreview.error ?? false
-        }
+        explorerFileSyntaxHighlight={explorerFileQuery.data?.syntaxHighlight ?? null}
+        explorerLocalPreviewUrl={explorerLocalPreviewQuery.data ?? null}
+        explorerLocalPreviewError={explorerLocalPreviewQuery.isError}
         explorerLocalPreviewPending={
           explorerSelectedPath !== null &&
           isSupportedLocalPreviewFilePath(explorerSelectedPath) &&
-          resolvedActiveThreadPending
+          workspaceRoot !== null &&
+          explorerLocalPreviewQuery.isPending
         }
-        explorerPdfPageCount={
-          resolvedActiveThreadData?.explorerPdfMetadata.value?.pageCount ?? 0
-        }
-        explorerPdfMetadataError={
-          resolvedActiveThreadData?.explorerPdfMetadata.error ?? false
-        }
+        explorerPdfPageCount={explorerPdfMetadataQuery.data?.pageCount ?? 0}
+        explorerPdfPageHeight={explorerPdfMetadataQuery.data?.height ?? 0}
+        explorerPdfPageWidth={explorerPdfMetadataQuery.data?.width ?? 0}
+        explorerPdfMetadataError={explorerPdfMetadataQuery.isError}
         explorerPdfMetadataPending={
           explorerSelectedPath !== null &&
           isSupportedLocalPdfPath(explorerSelectedPath) &&
-          resolvedActiveThreadPending
+          workspaceRoot !== null &&
+          explorerPdfMetadataQuery.isPending
         }
         explorerQuery={explorerQuery}
         explorerSelectedPath={explorerSelectedPath}
         initialEnvironmentOpen={initialEnvironmentOpen}
+        initialDiffOpen={initialDiffOpen}
+        initialDiffTurnId={initialDiffTurnId}
+        initialDiffFilePath={initialDiffFilePath}
+        initialDiffFileTreeOpen={initialDiffFileTreeOpen}
         initialEditorOpen={
-          initialEditorOpen ||
-          editorContinuationThreadId === route.params.threadId
+          editorEntryThreadId === route.params.threadId
         }
         initialEditorCenterMode={initialEditorCenterMode}
         initialEditorChatOpen={initialEditorChatOpen}
         initialEditorSearchOpen={initialEditorSearchOpen}
-        initialWorkingTreeDiff={
-          resolvedActiveThreadData?.workingTreeDiff ?? null
-        }
-        initialWorkingTreeDiffUnavailableLabel={
-          resolvedActiveThreadData?.workingTreeDiffUnavailableLabel ?? null
-        }
+        initialEditorProjectMenuOpen={initialEditorProjectMenuOpen}
+        initialWorkingTreeDiff={null}
+        initialWorkingTreeDiffUnavailableLabel={null}
         initialRenameOpen={initialRenameOpen}
         initialTerminalOpen={initialTerminalOpen}
         initialTemporaryOpen={initialTemporaryOpen}
         initialExplorerWidth={initialExplorerWidth}
         initialExplorerOpen={initialExplorerOpen}
+        initialExplorerPresentationMode={initialExplorerPresentationMode}
+        initialExplorerActionMenuOpen={initialExplorerActionMenuOpen}
         initialExplorerCommentLine={initialExplorerCommentLine}
         isPending={resolvedActiveThreadPending}
         onExplorerQueryChange={(query) => {
           setExplorerQuery(query);
           setExplorerSelectedPath(null);
         }}
+        onExplorerRetryFile={() => void explorerFileQuery.refetch()}
         onExplorerSelectPath={setExplorerSelectedPath}
         onExplorerToggleDirectory={(path) =>
           setExplorerExpandedDirectories((current) =>
             toggleExpandedDirectory(current, path)
           )
         }
+        onEditorModeChange={setEditorModeOpen}
         onNavigateToThread={(threadId) => {
-          setEditorContinuationThreadId(threadId);
+          setEditorEntryThreadId(threadId);
           navigate(`/thread/${threadId}`);
         }}
         projects={routeProjects}
@@ -2486,6 +3392,7 @@ export function SliceRouter({
         threads={routeThreads ?? []}
         resolvedTheme={resolvedTheme}
         viewportWidth={viewportWidth}
+        viewportHeight={viewportHeight}
       />
     );
   } else if (route.pathname === '/studio') {
@@ -2497,6 +3404,7 @@ export function SliceRouter({
       />
     ) : (
       <view className="ThreadsLanding">
+        <ThreadsLandingHeader />
         <view className="ThreadsLandingBody">
           <view className="ThreadsLandingBodyInner">
             <PanelStateMessage
@@ -2591,8 +3499,8 @@ export function SliceRouter({
   }
 
   const sidebar =
-    route.pathname !== '/settings' ? (
-      <SidebarDisclosure open={sidebarOpen}>
+    route.pathname !== '/settings' && route.pathname !== '/components-lab' ? (
+      <SidebarDisclosure open={sidebarOpen && !editorModeOpen}>
         <Sidebar
           activeThreadId={
             route.pathname === '/thread/$threadId' ? route.params.threadId : null
@@ -2609,7 +3517,9 @@ export function SliceRouter({
                 ? '/workspace'
                 : route.pathname
           }
-          navigate={navigate}
+          navigate={navigateToChat}
+          searchOpen={searchOpen}
+          onOpenSearch={openSearchPalette}
           titlebarControls={openTitlebarControls}
         />
       </SidebarDisclosure>
@@ -2618,27 +3528,52 @@ export function SliceRouter({
     return (
       <>
         {page}
+        <SidebarSearchPaletteHost
+          activeThreadId={activeThreadId}
+          initialQuery={searchInitialQuery}
+          navigate={navigateToChat}
+          onOpenChange={setSearchPaletteOpen}
+          open={searchOpen}
+          paletteKey={searchPaletteKey}
+        />
         {appSnapCoordinator}
-        {taskCompletionToast}
-        {providerUpdatePrompt}
+        {appSnapWelcomeDialog}
+        {appNotifications}
+      </>
+    );
+  }
+  if (route.pathname === '/components-lab') {
+    return (
+      <>
+        {page}
+        <view className="AppNotificationStack AppNotificationStack--hidden" />
       </>
     );
   }
   return (
     <>
+      {transportNotice}
       <AppShellFrame sidebar={sidebar}>
         <view
           className={`AppMain AppMain--sidebar-${
-            sidebarOpen ? 'open' : 'closed'
+            sidebarOpen && !editorModeOpen ? 'open' : 'closed'
           }`}
         >
-          {sidebarOpen ? null : closedTitlebarControls}
+          {sidebarOpen || editorModeOpen ? null : closedTitlebarControls}
           {page}
         </view>
       </AppShellFrame>
+      <SidebarSearchPaletteHost
+        activeThreadId={activeThreadId}
+        initialQuery={searchInitialQuery}
+        navigate={navigateToChat}
+        onOpenChange={setSearchPaletteOpen}
+        open={searchOpen}
+        paletteKey={searchPaletteKey}
+      />
       {appSnapCoordinator}
-      {taskCompletionToast}
-      {providerUpdatePrompt}
+      {appSnapWelcomeDialog}
+      {appNotifications}
     </>
   );
 }

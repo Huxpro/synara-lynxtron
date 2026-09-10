@@ -2,11 +2,15 @@
 // Purpose: Searchable bulk assignment flow for populating an empty Space.
 
 import type { ProjectId } from "@synara/contracts";
+import {
+  deriveSpaceProjectPickerGroups,
+  spaceProjectPickerFailureMessage,
+  toggleSpaceProjectSelection,
+} from "@synara/shared/spaceProjectPicker";
 import { useEffect, useMemo, useState } from "react";
 
 import type { Project, Space } from "~/types";
 import { CheckIcon } from "~/lib/icons";
-import { groupItemsBySpace, spaceDisplayName } from "~/lib/spaceGrouping";
 import { isOrdinarySpaceProject } from "~/lib/spaces";
 import { cn } from "~/lib/utils";
 import { useSpacesUiStore } from "~/spacesUiStore";
@@ -67,30 +71,25 @@ export function SpaceProjectPickerDialog(props: {
       ),
     [chatWorkspaceRoot, homeDir, props.projects, studioWorkspaceRoot, targetSpaceId],
   );
-  const candidates = useMemo(() => {
-    const normalizedQuery = query.trim().toLocaleLowerCase();
-    return movableProjects
-      .filter(
-        (project) =>
-          normalizedQuery.length === 0 ||
-          project.name.toLocaleLowerCase().includes(normalizedQuery) ||
-          project.cwd.toLocaleLowerCase().includes(normalizedQuery) ||
-          spaceDisplayName(project.spaceId, props.spaces)
-            .toLocaleLowerCase()
-            .includes(normalizedQuery),
-      )
-      .toSorted((left, right) => left.name.localeCompare(right.name));
-  }, [movableProjects, props.spaces, query]);
-  const candidateGroups = useMemo(
+  const picker = useMemo(
     () =>
-      groupItemsBySpace({
-        items: candidates,
-        spaces: props.spaces,
+      deriveSpaceProjectPickerGroups({
         activeSpaceId,
-        spaceIdOf: (project) => project.spaceId ?? null,
+        projects: movableProjects.map((project) => ({
+          project,
+          id: project.id,
+          name: project.name,
+          path: project.cwd,
+          spaceId: project.spaceId ?? null,
+        })),
+        query,
+        spaces: props.spaces,
+        targetSpaceId,
       }),
-    [activeSpaceId, candidates, props.spaces],
+    [activeSpaceId, movableProjects, props.spaces, query, targetSpaceId],
   );
+  const candidates = picker.candidates;
+  const candidateGroups = picker.groups;
 
   const submit = async () => {
     if (selectedIds.size === 0 || submitting) return;
@@ -101,7 +100,10 @@ export function SpaceProjectPickerDialog(props: {
       if (failedProjectIds.length > 0) {
         setSelectedIds(new Set(failedProjectIds));
         setError(
-          `${failedProjectIds.length} could not be moved. Projects processed before the failure remain in ${props.targetSpace?.name ?? "the target space"}. Try again.`,
+          spaceProjectPickerFailureMessage(
+            failedProjectIds.length,
+            props.targetSpace?.name ?? "the target space",
+          ),
         );
         setSubmitting(false);
         return;
@@ -150,7 +152,7 @@ export function SpaceProjectPickerDialog(props: {
                     <span className="min-w-0 truncate">{group.label}</span>
                   </p>
                   <div className="space-y-1">
-                    {group.items.map((project) => {
+                    {group.items.map(({ project }) => {
                       const selected = selectedIds.has(project.id);
                       return (
                         <button
@@ -160,10 +162,7 @@ export function SpaceProjectPickerDialog(props: {
                           aria-checked={selected}
                           onClick={() =>
                             setSelectedIds((current) => {
-                              const next = new Set(current);
-                              if (next.has(project.id)) next.delete(project.id);
-                              else next.add(project.id);
-                              return next;
+                              return toggleSpaceProjectSelection(current, project.id);
                             })
                           }
                           className={cn(

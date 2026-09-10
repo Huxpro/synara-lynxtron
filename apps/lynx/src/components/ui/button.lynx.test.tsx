@@ -30,8 +30,13 @@ describe('Lynx Button accessibility contract', () => {
 
     const button = elementTree.root?.querySelector('.LxButton');
     expect(button?.getAttribute('accessibility-element')).toBe('true');
-    expect(button?.getAttribute('accessibility-traits')).toBe('button');
+    expect(button?.getAttribute('accessibility-trait')).toBe('button');
     expect(button?.textContent).toBe('Save');
+    expect(
+      button?.querySelector('.LxButton__text')?.getAttribute(
+        'accessibility-element'
+      )
+    ).toBe('false');
   });
 
   it('honors explicit passive accessibility ownership', () => {
@@ -43,7 +48,7 @@ describe('Lynx Button accessibility contract', () => {
 
     const button = elementTree.root?.querySelector('.LxButton');
     expect(button?.getAttribute('accessibility-element')).toBe('false');
-    expect(button?.getAttribute('accessibility-traits')).toBeNull();
+    expect(button?.getAttribute('accessibility-trait')).toBeNull();
   });
 
   it('publishes disabled state and remains inert', () => {

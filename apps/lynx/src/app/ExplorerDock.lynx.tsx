@@ -1,47 +1,71 @@
 import type { ProjectReadFileResult } from '@synara/contracts';
-import { useInitData, useState } from '@lynx-js/react';
+import { useRef, type ReactNode } from '@lynx-js/react';
 import {
   isSupportedLocalImagePath,
   isSupportedLocalPdfPath,
 } from '@synara/shared/localPreviewFiles';
+import { RIGHT_DOCK_MIN_WIDTH_PX } from '@synara/shared/rightDock';
+import { buildFileContextMenuItems } from '@synara/shared/fileContextMenu';
+import { getRectByRef } from '@lynx-js/lynx-ui';
+import type { NodesRef } from '@lynx-js/types';
 
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown';
+import { WorkspaceFilePreviewErrorState } from '@synara-web/components/WorkspaceFilePreviewErrorState';
 import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
 import { Input } from '../components/ui/input';
 import {
   ChevronRightIcon,
-  EllipsisIcon,
   SearchIcon,
   XIcon,
 } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
-import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
 import {
   disclosureChevronClassName,
   disclosureContentClassName,
   useLynxDisclosurePresence,
 } from '../platform/motion.lynx';
-import {
-  Menu,
-  MenuItem,
-  MenuPopup,
-  MenuTrigger,
-} from '../components/ui/menu.lynx';
 import type { ExplorerEntriesResult } from './queries';
 import type { NativeSyntaxHighlightThemes } from '../main/syntaxHighlightingContract.logic';
 import { ResizableRightPanel } from './ResizableRightPanel.lynx';
 import { ExplorerPdfFallback } from './ExplorerPdfFallback.lynx';
 import { ExplorerImagePreview } from './ExplorerImagePreview.lynx';
-import {
-  applyExplorerChatAction,
-  applyExplorerFileComment,
-} from './explorerChatActions.logic';
+import { applyExplorerFileComment } from './explorerChatActions.logic';
 import { visibleExplorerEntries } from './explorerTree.logic';
 import { ExplorerSyntaxPreview } from './ExplorerSyntaxPreview.lynx';
 import './explorer-dock.css';
+import { ExplorerPreviewHeader } from './ExplorerPreviewHeader.lynx';
+import { ExplorerFileTab } from './ExplorerFileTab.lynx';
+import { resolveSecondaryPointerOffset } from '../components/sidebar/threadContextActions.logic';
+import { focusLynxNode } from '../components/ui/focus.lynx';
 
-export const EXPLORER_DOCK_MIN_WIDTH = 416;
+export const EXPLORER_DOCK_MIN_WIDTH = RIGHT_DOCK_MIN_WIDTH_PX;
 const EXPLORER_DOCK_TRANSITION_MS = 300;
+
+export function ExplorerSearchInputHeader(props: {
+  readonly query: string;
+  readonly onQueryChange: (query: string) => void;
+}) {
+  return (
+    <view className="ExplorerDockSearch">
+      <view className="ExplorerDockSearchIcon">
+        <SearchIcon size={14} color="var(--muted-foreground)" />
+      </view>
+      <Input
+        className="ExplorerDockSearchInput"
+        size="sm"
+        variant="soft"
+        type="search"
+        defaultValue={props.query}
+        placeholder="Search files..."
+        aria-label="Search files"
+        onChange={(event) => props.onQueryChange(event.target.value)}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') props.onQueryChange('');
+        }}
+      />
+    </view>
+  );
+}
 
 function isMarkdownPath(path: string): boolean {
   return /\.(?:md|mdx|markdown)$/i.test(path);
@@ -57,61 +81,6 @@ function directoryPath(path: string): string {
   return separator < 0 ? '' : normalized.slice(0, separator + 1);
 }
 
-function ExplorerPreviewHeader(props: {
-  readonly path: string;
-  readonly threadId: string;
-  readonly truncated: boolean;
-}) {
-  const initData = useInitData() as {
-    readonly initialExplorerActionMenuOpen?: unknown;
-  };
-  const [menuOpen, setMenuOpen] = useState(
-    initData.initialExplorerActionMenuOpen === true
-  );
-  const runAction = (action: 'ask-why' | 'reference') => {
-    'background only';
-    applyExplorerChatAction({
-      action,
-      path: props.path,
-      store: useComposerDraftStore.getState(),
-      threadId: props.threadId,
-    });
-  };
-  return (
-    <view className="ExplorerDockPreviewHeader">
-      <text className="ExplorerDockPreviewPath">{props.path}</text>
-      {props.truncated ? (
-        <text
-          className="ExplorerDockPreviewTruncated"
-          accessibility-label="Preview truncated at 1 MB."
-        >
-          Partial
-        </text>
-      ) : null}
-      <Menu open={menuOpen} onOpenChange={setMenuOpen}>
-        <MenuTrigger
-          ariaLabel="More actions"
-          className="ExplorerDockPreviewActions"
-        >
-          <EllipsisIcon size={14} color="var(--muted-foreground)" />
-        </MenuTrigger>
-        <MenuPopup
-          align="end"
-          side="bottom"
-          className="ExplorerDockPreviewActionsPopup"
-        >
-          <MenuItem onClick={() => runAction('reference')}>
-            Reference in chat
-          </MenuItem>
-          <MenuItem onClick={() => runAction('ask-why')}>
-            Ask why this changed
-          </MenuItem>
-        </MenuPopup>
-      </Menu>
-    </view>
-  );
-}
-
 type ExplorerEntry = ExplorerEntriesResult['entries'][number];
 
 function ExplorerEntryRow(props: {
@@ -119,10 +88,16 @@ function ExplorerEntryRow(props: {
   readonly entry: ExplorerEntry;
   readonly expanded: boolean;
   readonly onSelect: (path: string) => void;
+  readonly onContextMenu: (
+    path: string,
+    position: { x: number; y: number },
+    restoreFocus: () => void
+  ) => void;
   readonly onToggleDirectory: (path: string) => void;
   readonly selected: boolean;
   readonly showPath: boolean;
 }) {
+  const rowRef = useRef<NodesRef>(null);
   const directory = props.entry.kind === 'directory';
   const row = useLynxInteractiveState({
     baseClassName: `ExplorerDockEntry${
@@ -145,10 +120,28 @@ function ExplorerEntryRow(props: {
   });
   return (
     <view
+      ref={rowRef}
       className={row.className}
       style={{ paddingLeft: `${8 + props.depth * 12}px` }}
       aria-expanded={directory ? props.expanded : undefined}
       {...row.eventProps}
+      bindmousedown={(event: {
+        readonly button?: number;
+        readonly buttons?: number;
+        readonly x?: number;
+        readonly y?: number;
+      }) => {
+        row.eventProps.bindmousedown?.();
+        const offset = resolveSecondaryPointerOffset(event);
+        if (!offset || directory) return;
+        void getRectByRef(rowRef, true).then((rect) =>
+          props.onContextMenu(
+            props.entry.path,
+            { x: rect.left + offset.x, y: rect.top + offset.y },
+            () => focusLynxNode(rowRef)
+          )
+        ).catch(() => undefined);
+      }}
     >
       {directory ? (
         <ChevronRightIcon
@@ -189,8 +182,14 @@ type ExplorerDirectoryProps = {
   readonly entries: ExplorerEntriesResult['entries'];
   readonly expandedDirectories: ReadonlySet<string>;
   readonly onSelectPath: (path: string) => void;
+  readonly onContextMenu: (
+    path: string,
+    position: { x: number; y: number },
+    restoreFocus: () => void
+  ) => void;
   readonly onToggleDirectory: (path: string) => void;
   readonly selectedPath: string | null;
+  readonly sidebarVisible?: boolean;
   readonly showPaths: boolean;
 };
 
@@ -212,6 +211,7 @@ function ExplorerDirectoryEntry(
         selected={props.entry.path === props.selectedPath}
         showPath={props.showPaths}
         onSelect={props.onSelectPath}
+        onContextMenu={props.onContextMenu}
         onToggleDirectory={props.onToggleDirectory}
       />
       {props.entry.kind === 'directory' && childrenPresent ? (
@@ -245,6 +245,7 @@ function ExplorerDirectoryEntry(
               entries={props.directoryEntries[props.entry.path] ?? []}
               expandedDirectories={props.expandedDirectories}
               onSelectPath={props.onSelectPath}
+              onContextMenu={props.onContextMenu}
               onToggleDirectory={props.onToggleDirectory}
               selectedPath={props.selectedPath}
               showPaths={props.showPaths}
@@ -269,6 +270,7 @@ function ExplorerDirectory(props: ExplorerDirectoryProps) {
           directoryPending={props.directoryPending}
           expandedDirectories={props.expandedDirectories}
           onSelectPath={props.onSelectPath}
+          onContextMenu={props.onContextMenu}
           onToggleDirectory={props.onToggleDirectory}
           selectedPath={props.selectedPath}
           showPaths={props.showPaths}
@@ -292,68 +294,107 @@ export function ExplorerDock(props: {
   readonly expandedDirectories: ReadonlySet<string>;
   readonly initialWidth: number | null;
   readonly initialCommentLine: number | null;
+  readonly initialActionMenuOpen?: boolean;
   readonly file: ProjectReadFileResult | null;
   readonly fileError: boolean;
   readonly filePending: boolean;
+  readonly fileRetrying: boolean;
   readonly fileSyntaxHighlight: NativeSyntaxHighlightThemes | null;
   readonly localPreviewUrl: string | null;
   readonly localPreviewError: boolean;
   readonly localPreviewPending: boolean;
   readonly onClose: () => void;
+  readonly dockTabHeader?: ReactNode;
+  readonly hosted?: boolean;
   readonly onQueryChange: (query: string) => void;
+  readonly onRetryFile: () => void;
   readonly onSelectPath: (path: string) => void;
   readonly onToggleDirectory: (path: string) => void;
   readonly onWidthChange: (width: number) => void;
   readonly open: boolean;
-  readonly presentationMode?: 'dock' | 'editor' | 'editor-search';
+  readonly presentationMode?:
+    | 'dock'
+    | 'single-file'
+    | 'editor'
+    | 'editor-search';
   readonly pdfMetadataError: boolean;
   readonly pdfMetadataPending: boolean;
   readonly pdfPageCount: number;
+  readonly pdfPageHeight: number;
+  readonly pdfPageWidth: number;
   readonly query: string;
   readonly selectedPath: string | null;
   readonly threadId: string;
   readonly theme: 'dark' | 'light';
   readonly workspaceRoot: string | null;
 }) {
+  const singleFile = props.presentationMode === 'single-file';
   const close = useLynxInteractiveState({
     baseClassName: 'ExplorerDockClose',
-    accessibleLabel: 'Close files',
+    accessibleLabel:
+      singleFile && props.selectedPath
+        ? `Close ${fileName(props.selectedPath)}`
+        : 'Close files',
     onActivate: props.onClose,
   });
   const present = useLynxDisclosurePresence(props.open, {
     transitionMs: EXPLORER_DOCK_TRANSITION_MS,
   });
+  const openFileContextMenu = async (
+    path: string,
+    position: { readonly x: number; readonly y: number },
+    restoreFocus: () => void
+  ) => {
+    'background only';
+    const { showContextMenu } = await import(
+      /* webpackMode: "eager" */ '../platform/contextMenu'
+    );
+    const action = await showContextMenu(
+      buildFileContextMenuItems({
+        referenceAvailable: true,
+        askWhyAvailable: true,
+      }),
+      position,
+      { restoreFocus }
+    );
+    if (action === 'reference-in-chat' || action === 'ask-why-in-chat') {
+      applyExplorerChatAction({
+        action: action === 'reference-in-chat' ? 'reference' : 'ask-why',
+        path,
+        store: useComposerDraftStore.getState(),
+        threadId: props.threadId,
+      });
+      return;
+    }
+    if (action === 'copy-path') {
+      const { clipboard } = await import(
+        /* webpackMode: "eager" */ '../platform/clipboard'
+      );
+      await clipboard.writeText(path);
+    }
+  };
   if (!present) return null;
   const content = (
     <>
-      <view className="ExplorerDockHeader">
-        <text className="ExplorerDockTitle">Files</text>
-        {props.presentationMode?.startsWith('editor') ? null : (
+      {props.hosted ? null : props.dockTabHeader ?? <view className="ExplorerDockHeader">
+        {singleFile && props.selectedPath ? (
+          <ExplorerFileTab path={props.selectedPath} onClose={props.onClose} />
+        ) : (
+          <text className="ExplorerDockTitle">Files</text>
+        )}
+        {props.presentationMode?.startsWith('editor') || singleFile ? null : (
           <view className={close.className} {...close.eventProps}>
             <XIcon size={14} color="var(--muted-foreground)" />
           </view>
         )}
-      </view>
+      </view>}
       <view className="ExplorerDockBody">
-        <view className="ExplorerDockSidebar">
-          <view className="ExplorerDockSearch">
-            <view className="ExplorerDockSearchIcon">
-              <SearchIcon size={14} color="var(--muted-foreground)" />
-            </view>
-            <Input
-              className="ExplorerDockSearchInput"
-              size="sm"
-              variant="soft"
-              type="search"
-              defaultValue={props.query}
-              placeholder="Search files..."
-              aria-label="Search files"
-              onChange={(event) => props.onQueryChange(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === 'Escape') props.onQueryChange('');
-              }}
-            />
-          </view>
+        {props.sidebarVisible === false ? null : (
+          <view className="ExplorerDockSidebar">
+          <ExplorerSearchInputHeader
+            query={props.query}
+            onQueryChange={props.onQueryChange}
+          />
           <scroll-view
             className={`ExplorerDockEntries${
               props.query.trim() &&
@@ -385,6 +426,9 @@ export function ExplorerDock(props: {
                 entries={props.entries}
                 expandedDirectories={props.expandedDirectories}
                 onSelectPath={props.onSelectPath}
+                onContextMenu={(path, position, restoreFocus) =>
+                  void openFileContextMenu(path, position, restoreFocus)
+                }
                 onToggleDirectory={props.onToggleDirectory}
                 selectedPath={props.selectedPath}
                 showPaths={Boolean(props.query.trim())}
@@ -398,7 +442,8 @@ export function ExplorerDock(props: {
               Showing top matches. Refine search.
             </text>
           ) : null}
-        </view>
+          </view>
+        )}
         <view
           className={`ExplorerDockPreview${
             props.selectedPath &&
@@ -415,9 +460,11 @@ export function ExplorerDock(props: {
         >
           {props.selectedPath ? (
             <ExplorerPreviewHeader
+              actionMenuDefaultOpen={props.initialActionMenuOpen}
               path={props.selectedPath}
               threadId={props.threadId}
               truncated={props.file?.truncated ?? false}
+              workspaceRoot={props.workspaceRoot}
             />
           ) : null}
           <view className="ExplorerDockPreviewContent">
@@ -435,6 +482,8 @@ export function ExplorerDock(props: {
                 metadataError={props.pdfMetadataError}
                 metadataPending={props.pdfMetadataPending}
                 pageCount={props.pdfPageCount}
+                pageHeight={props.pdfPageHeight}
+                pageWidth={props.pdfPageWidth}
                 workspaceRoot={props.workspaceRoot}
               />
             ) : isSupportedLocalImagePath(props.selectedPath) ? (
@@ -454,9 +503,12 @@ export function ExplorerDock(props: {
             ) : props.filePending ? (
               <text className="ExplorerDockState">Loading file…</text>
             ) : props.fileError ? (
-              <text className="ExplorerDockState ExplorerDockState--error">
-                Could not read this file.
-              </text>
+              <WorkspaceFilePreviewErrorState
+                detail={null}
+                retrying={props.fileRetrying}
+                onRetry={props.onRetryFile}
+                onClose={props.onClose}
+              />
             ) : props.file?.contents.length === 0 ? (
               <text className="ExplorerDockState">Empty file.</text>
             ) : isMarkdownPath(props.selectedPath) ? (
@@ -513,6 +565,10 @@ export function ExplorerDock(props: {
     <ResizableRightPanel
       availableWidth={props.availableWidth}
       className={`ExplorerDock${
+        props.hosted ? ' ExplorerDock--hosted' : ''
+      }${
+        singleFile ? ' ExplorerDock--single-file' : ''
+      }${
         props.open ? ' ExplorerDock--open' : ' ExplorerDock--closed'
       }`}
       defaultWidth={
@@ -525,7 +581,8 @@ export function ExplorerDock(props: {
       minimumMainWidth={320}
       minWidth={EXPLORER_DOCK_MIN_WIDTH}
       onWidthChange={props.onWidthChange}
-      resizable
+      hosted={props.hosted}
+      resizable={!props.hosted}
     >
       {content}
     </ResizableRightPanel>

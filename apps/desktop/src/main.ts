@@ -51,6 +51,12 @@ import {
 import type { ContextMenuItem } from "@synara/contracts";
 import { getMacTrafficLightPosition } from "@synara/shared/desktopChrome";
 import {
+  buildContentContextMenuItems,
+  buildNativeContextMenuTemplate,
+  normalizeContextMenuItems,
+  type NormalizedContextMenuItem,
+} from "@synara/shared/contextMenu";
+import {
   SYNARA_DESKTOP_UPDATE_CHANNEL,
   resolveSynaraDesktopFlavor,
   synaraDesktopIdentity,
@@ -1391,6 +1397,11 @@ function configureApplicationMenu(): void {
           label: "Toggle Browser",
           ...acceleratorProps("CmdOrCtrl+Shift+B"),
           click: () => dispatchMenuAction("toggle-browser"),
+        },
+        { type: "separator" },
+        {
+          label: "Components Lab…",
+          click: () => dispatchMenuAction("open-components-lab"),
         },
         { type: "separator" },
         { role: "reload" },
@@ -3080,14 +3091,7 @@ function registerIpcHandlers(): void {
   ipcMain.handle(
     IPC.contextMenu,
     async (_event, items: ContextMenuItem[], position?: { x: number; y: number }) => {
-      const normalizedItems = items
-        .filter((item) => typeof item.id === "string" && typeof item.label === "string")
-        .map((item) => ({
-          id: item.id,
-          label: item.label,
-          separatorBefore: item.separatorBefore === true,
-          destructive: item.destructive === true,
-        }));
+      const normalizedItems = normalizeContextMenuItems(items);
       if (normalizedItems.length === 0) {
         return null;
       }
@@ -3108,32 +3112,32 @@ function registerIpcHandlers(): void {
       if (!window) return null;
 
       return new Promise<string | null>((resolve) => {
-        const template: MenuItemConstructorOptions[] = [];
-        let hasInsertedDestructiveSeparator = false;
-        for (const item of normalizedItems) {
-          const shouldInsertSeparator =
-            item.separatorBefore ||
-            (item.destructive && !hasInsertedDestructiveSeparator && template.length > 0);
-          if (shouldInsertSeparator && template.length > 0) {
-            template.push({ type: "separator" });
-          }
-          if (item.destructive) {
-            hasInsertedDestructiveSeparator = true;
-          }
-          const itemOption: MenuItemConstructorOptions = {
-            label: item.label,
-            click: () => resolve(item.id),
-          };
-          if (item.destructive) {
-            const destructiveIcon = getDestructiveMenuIcon();
-            if (destructiveIcon) {
-              itemOption.icon = destructiveIcon;
+        const toTemplate = (
+          menuItems: readonly NormalizedContextMenuItem[],
+        ): MenuItemConstructorOptions[] =>
+          buildNativeContextMenuTemplate(menuItems).map((item) => {
+            if (item.type === "separator") return { type: "separator" };
+            const itemOption: MenuItemConstructorOptions = {
+              label: item.label,
+              type: item.submenu ? "submenu" : item.type,
+              enabled: item.enabled,
+              visible: item.visible,
+              checked: item.checked,
+              accelerator: item.accelerator,
+              ...(item.submenu
+                ? { submenu: toTemplate(item.submenu) }
+                : { click: () => resolve(item.id) }),
+            };
+            if (item.destructive) {
+              const destructiveIcon = getDestructiveMenuIcon();
+              if (destructiveIcon) {
+                itemOption.icon = destructiveIcon;
+              }
             }
-          }
-          template.push(itemOption);
-        }
+            return itemOption;
+          });
 
-        const menu = Menu.buildFromTemplate(template);
+        const menu = Menu.buildFromTemplate(toTemplate(normalizedItems));
         menu.popup({
           window,
           ...popupPosition,
@@ -3398,35 +3402,40 @@ function createWindow(): BrowserWindow {
 
   window.webContents.on("context-menu", (event, params) => {
     event.preventDefault();
-
-    const menuTemplate: MenuItemConstructorOptions[] = [];
-
-    if (params.misspelledWord) {
-      for (const suggestion of params.dictionarySuggestions.slice(0, 5)) {
-        menuTemplate.push({
-          label: suggestion,
-          click: () => window.webContents.replaceMisspelling(suggestion),
-        });
-      }
-      if (params.dictionarySuggestions.length === 0) {
-        menuTemplate.push({ label: "No suggestions", enabled: false });
-      }
-      menuTemplate.push({ type: "separator" });
-    }
-
-    if (params.mediaType === "image") {
-      menuTemplate.push({
-        label: "Copy Image",
-        click: () => window.webContents.copyImageAt(params.x, params.y),
-      });
-      menuTemplate.push({ type: "separator" });
-    }
-
-    menuTemplate.push(
-      { role: "cut", enabled: params.editFlags.canCut },
-      { role: "copy", enabled: params.editFlags.canCopy },
-      { role: "paste", enabled: params.editFlags.canPaste },
-      { role: "selectAll", enabled: params.editFlags.canSelectAll },
+    const items = normalizeContextMenuItems(
+      buildContentContextMenuItems({
+        dictionarySuggestions: params.dictionarySuggestions,
+        misspelledWord: Boolean(params.misspelledWord),
+        image: params.mediaType === "image",
+        canCut: params.editFlags.canCut,
+        canCopy: params.editFlags.canCopy,
+        canPaste: params.editFlags.canPaste,
+        canSelectAll: params.editFlags.canSelectAll,
+      }),
+    );
+    const menuTemplate: MenuItemConstructorOptions[] = buildNativeContextMenuTemplate(items).map(
+      (item) => {
+        if (item.type === "separator") return { type: "separator" };
+        if (item.id.startsWith("spellcheck:")) {
+          const suggestion = params.dictionarySuggestions[Number(item.id.slice(11))];
+          return {
+            label: item.label,
+            enabled: item.enabled,
+            click: () => suggestion && window.webContents.replaceMisspelling(suggestion),
+          };
+        }
+        if (item.id === "copy-image") {
+          return {
+            label: item.label,
+            click: () => window.webContents.copyImageAt(params.x, params.y),
+          };
+        }
+        if (item.id === "no-spelling-suggestions") {
+          return { label: item.label, enabled: false };
+        }
+        const role = item.id === "select-all" ? "selectAll" : item.id;
+        return { role, enabled: item.enabled };
+      },
     );
 
     Menu.buildFromTemplate(menuTemplate).popup({ window });

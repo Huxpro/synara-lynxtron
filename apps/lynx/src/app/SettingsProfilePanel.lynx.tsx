@@ -15,6 +15,7 @@ import {
 } from '@synara-web/components/profile/profileSelectors';
 
 import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge.lynx';
 import {
   Dialog,
   DialogFooter,
@@ -180,21 +181,21 @@ function persistProfileValue(key: string, value: string): void {
 }
 
 function ProfileEditActionIcon() {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   return (
     <svg
       className="SettingsProfileActionIcon"
-      content={colorizeLynxSvg(pencilSvg, svgColors.foreground)}
+      content={colorizeLynxSvg(pencilSvg, semanticIconColor('secondary'))}
     />
   );
 }
 
 function ProfileShareActionIcon() {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   return (
     <svg
       className="SettingsProfileActionIcon"
-      content={colorizeLynxSvg(shareSvg, svgColors.foreground)}
+      content={colorizeLynxSvg(shareSvg, semanticIconColor('secondary'))}
     />
   );
 }
@@ -270,7 +271,7 @@ function StatTile(props: {
       className={`SettingsProfileStat SettingsProfileStat--${props.index}`}
       accessibility-element
       accessibility-label={`${props.label}: ${props.value}`}
-      accessibility-traits="text"
+      accessibility-trait="text"
     >
       <text className="SettingsProfileStatValue">{props.value}</text>
       <text className="SettingsProfileStatLabel">{props.label}</text>
@@ -287,7 +288,7 @@ function InsightRow(props: {
       className="SettingsProfileInsightRow"
       accessibility-element
       accessibility-label={`${props.label}: ${props.value}`}
-      accessibility-traits="text"
+      accessibility-trait="text"
     >
       <text className="SettingsProfileInsightLabel">{props.label}</text>
       <text className="SettingsProfileInsightValue" maxlines={1}>
@@ -526,7 +527,7 @@ function ProfileContent(props: {
               {handle}
             </text>
             <text className="SettingsProfileDot">·</text>
-            <text className="SettingsProfileBadge">Synara</text>
+            <Badge className="SettingsProfileBadge" shape="capsule" variant="outline">Synara</Badge>
           </view>
         </view>
       </view>
@@ -657,7 +658,7 @@ function ProfileContent(props: {
                   key={`${skill.kind}:${skill.name}`}
                   accessibility-element
                   accessibility-label={`${skill.displayName}: ${formatNumber(skill.runCount)} runs`}
-                  accessibility-traits="text"
+                  accessibility-trait="text"
                 >
                   <view className="SettingsProfilePluginIdentity">
                     <view className="SettingsProfilePluginIcon">
@@ -693,7 +694,7 @@ function ProfileContent(props: {
                 key={`${entry.provider}:${entry.model}`}
                 accessibility-element
                 accessibility-label={`${entry.model}: ${entry.percent}%`}
-                accessibility-traits="text"
+                accessibility-trait="text"
               >
                 <view className="SettingsProfileModelLine">
                   <view className="SettingsProfileModelIdentity">

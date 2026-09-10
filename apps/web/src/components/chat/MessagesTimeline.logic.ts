@@ -387,6 +387,33 @@ export function buildTurnDiffSummaryByAssistantMessageId(input: {
   return byMessageId;
 }
 
+export function buildRevertTurnCountByUserMessageId(input: {
+  readonly timelineEntries: ReadonlyArray<TimelineEntry>;
+  readonly turnDiffSummaryByAssistantMessageId: ReadonlyMap<MessageId, TurnDiffSummary>;
+  readonly inferredCheckpointTurnCountByTurnId: Readonly<Record<string, number>>;
+}): Map<MessageId, number> {
+  const byUserMessageId = new Map<MessageId, number>();
+  for (let index = 0; index < input.timelineEntries.length; index += 1) {
+    const entry = input.timelineEntries[index];
+    if (!entry || entry.kind !== "message" || entry.message.role !== "user") continue;
+    for (let nextIndex = index + 1; nextIndex < input.timelineEntries.length; nextIndex += 1) {
+      const nextEntry = input.timelineEntries[nextIndex];
+      if (!nextEntry || nextEntry.kind !== "message") continue;
+      if (nextEntry.message.role === "user") break;
+      const summary = input.turnDiffSummaryByAssistantMessageId.get(nextEntry.message.id);
+      if (!summary) continue;
+      const turnCount =
+        summary.checkpointTurnCount ??
+        input.inferredCheckpointTurnCountByTurnId[summary.turnId];
+      if (typeof turnCount === "number") {
+        byUserMessageId.set(entry.message.id, Math.max(0, turnCount - 1));
+      }
+      break;
+    }
+  }
+  return byUserMessageId;
+}
+
 // Keeps multi-turn provider responses from losing earlier "Files changed" rows
 // when several turn-diff summaries anchor to the same final assistant message.
 function mergeTurnDiffSummaries(

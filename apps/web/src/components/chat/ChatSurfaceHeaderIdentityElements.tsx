@@ -38,6 +38,7 @@ export function ChatSurfaceHeaderIdentityIconElement(props: {
 
 export function ChatSurfaceHeaderIdentityTitleElement(props: {
   readonly title: string;
+  readonly displayTitle?: string;
   readonly onRename?: () => void;
 }) {
   return (
@@ -46,7 +47,7 @@ export function ChatSurfaceHeaderIdentityTitleElement(props: {
       title={props.title}
       onDoubleClick={props.onRename}
     >
-      {props.title}
+      {props.displayTitle ?? props.title}
     </h2>
   );
 }

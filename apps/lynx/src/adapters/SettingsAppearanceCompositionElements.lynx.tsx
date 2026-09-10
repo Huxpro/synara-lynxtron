@@ -3,6 +3,7 @@ import { TERMINAL_FONT_FAMILY_SUGGESTIONS } from '@synara-web/components/setting
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { Switch } from '../components/ui/switch.lynx';
 import {
   ChevronDownIcon,
   DeviceLaptopIcon,
@@ -176,25 +177,8 @@ export function SettingsAppearanceBooleanControlElement(props: {
   readonly ariaLabel: string;
   readonly onChange: (checked: boolean) => void;
 }) {
-  const interaction = useLynxInteractiveState({
-    baseClassName: `SharedSettingsAppearanceSwitch${
-      props.checked ? ' SharedSettingsAppearanceSwitch--on' : ''
-    }`,
-    accessibleLabel: props.ariaLabel,
-    accessibilityValue: props.checked ? 'On' : 'Off',
-    onActivate: () => props.onChange(!props.checked),
-  });
   return (
-    <view
-      className={interaction.className}
-      aria-label={props.ariaLabel}
-      aria-checked={props.checked}
-      accessibility-role="switch"
-      accessibility-state={{ checked: props.checked }}
-      {...interaction.eventProps}
-    >
-      <view className="SharedSettingsAppearanceSwitchThumb" />
-    </view>
+    <Switch checked={props.checked} ariaLabel={props.ariaLabel} className={`SharedSettingsAppearanceSwitch${props.checked ? ' SharedSettingsAppearanceSwitch--on' : ''}`} thumbClassName="SharedSettingsAppearanceSwitchThumb" onCheckedChange={props.onChange} />
   );
 }
 

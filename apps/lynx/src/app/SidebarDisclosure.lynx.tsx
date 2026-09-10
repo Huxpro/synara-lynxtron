@@ -20,22 +20,22 @@ import {
   isLynxSidebarPrimaryPointer,
   moveLynxSidebarResizeSession,
   readLynxSidebarPointerX,
-  resolveLynxSidebarWidth,
+  resolveLynxSidebarPresentedWidth,
   type LynxSidebarPointerEvent,
   type LynxSidebarResizeSession,
 } from './sidebarResize.lynx.logic';
 import './sidebar-disclosure.css';
 
-function readPersistedSidebarWidth(): number {
+function readPersistedSidebarWidth(): number | null {
   try {
     const raw = webStorage.getItem(THREAD_SIDEBAR_WIDTH_STORAGE_KEY);
-    if (!raw) return THREAD_SIDEBAR_DEFAULT_WIDTH;
+    if (!raw) return null;
     const value = JSON.parse(raw) as unknown;
     return typeof value === 'number' && Number.isFinite(value)
       ? value
-      : THREAD_SIDEBAR_DEFAULT_WIDTH;
+      : null;
   } catch {
-    return THREAD_SIDEBAR_DEFAULT_WIDTH;
+    return null;
   }
 }
 
@@ -54,8 +54,8 @@ export function SidebarDisclosure(props: {
   const resizeSessionRef = useRef<LynxSidebarResizeSession | null>(null);
   const effectiveViewportWidth =
     viewport.width > 0 ? viewport.width : 1280;
-  const width = resolveLynxSidebarWidth({
-    requestedWidth: persistedWidth,
+  const width = resolveLynxSidebarPresentedWidth({
+    requestedWidth: persistedWidth ?? THREAD_SIDEBAR_DEFAULT_WIDTH,
     viewportWidth: effectiveViewportWidth,
   });
   const resizable = props.open && !viewport.compact;
@@ -137,7 +137,7 @@ export function SidebarDisclosure(props: {
           aria-label="Resize Sidebar"
           accessibility-element={true}
           accessibility-label="Resize Sidebar"
-          accessibility-traits="adjustable"
+          accessibility-trait="adjustable"
           bindmousedown={startResize}
           bindmousemove={moveResize}
           bindmouseup={stopResize}

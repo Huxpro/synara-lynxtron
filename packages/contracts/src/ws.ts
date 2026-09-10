@@ -70,7 +70,7 @@ import {
   TerminalRestartInput,
   TerminalWriteInput,
 } from "./terminal";
-import { KeybindingRule } from "./keybindings";
+import { KeybindingCommand, KeybindingRule } from "./keybindings";
 import {
   ProjectCreateLocalFilePreviewGrantInput,
   ProjectDevServerEvent,
@@ -220,6 +220,7 @@ export const WS_METHODS = {
   serverGenerateThreadRecap: "server.generateThreadRecap",
   serverGenerateAutomationIntent: "server.generateAutomationIntent",
   serverUpsertKeybinding: "server.upsertKeybinding",
+  serverRemoveKeybinding: "server.removeKeybinding",
   subscribeServerLifecycle: "server.subscribeLifecycle",
   subscribeServerConfig: "server.subscribeConfig",
   subscribeServerProviderStatuses: "server.subscribeProviderStatuses",
@@ -401,6 +402,10 @@ const WebSocketRequestBody = Schema.Union([
   tagRequestBody(WS_METHODS.serverGenerateThreadRecap, ServerGenerateThreadRecapInput),
   tagRequestBody(WS_METHODS.serverGenerateAutomationIntent, ServerGenerateAutomationIntentInput),
   tagRequestBody(WS_METHODS.serverUpsertKeybinding, KeybindingRule),
+  tagRequestBody(
+    WS_METHODS.serverRemoveKeybinding,
+    Schema.Struct({ command: KeybindingCommand }),
+  ),
 
   // Provider discovery
   tagRequestBody(WS_METHODS.providerGetComposerCapabilities, ProviderGetComposerCapabilitiesInput),

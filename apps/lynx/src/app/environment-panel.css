@@ -1,5 +1,6 @@
 .ThreadHeaderControls {
   display: flex;
+  gap: 8px;
   align-items: center;
   -x-app-region: no-drag;
 }
@@ -33,6 +34,11 @@
   width: 16px;
   height: 16px;
   opacity: 0.7;
+  color: var(--color-icon-secondary);
+}
+
+.EnvironmentToggle--open .EnvironmentToggleIcon {
+  color: var(--color-icon-primary);
 }
 
 .EnvironmentOverlay {
@@ -136,6 +142,7 @@
 .EnvironmentSettingsIcon {
   width: 14px;
   height: 14px;
+  color: var(--color-icon-secondary);
 }
 
 .EnvironmentRow {
@@ -162,6 +169,7 @@
 .EnvironmentCanonicalIcon {
   width: 16px;
   height: 16px;
+  color: var(--color-icon-primary);
 }
 
 .EnvironmentChangesTrigger {
@@ -399,36 +407,7 @@
 }
 
 .EnvironmentGitActionCheckbox {
-  display: flex;
-  width: 14px;
-  height: 14px;
   flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background-color: transparent;
-}
-
-.EnvironmentGitActionCheckbox--checked {
-  border-color: var(--primary);
-  background-color: var(--primary);
-}
-
-.EnvironmentGitActionCheckbox--mixed {
-  border-color: var(--primary);
-  background-color: var(--primary);
-}
-
-.EnvironmentGitActionCheckboxMixedBar {
-  width: 6px;
-  height: 1px;
-  background-color: var(--primary-foreground);
-}
-
-.EnvironmentGitActionCheckboxIcon {
-  width: 10px;
-  height: 10px;
 }
 
 .EnvironmentGitActionFiles {
@@ -465,7 +444,7 @@
   flex: 1;
   overflow: hidden;
   color: var(--foreground);
-  font-family: var(--font-mono);
+  font-family: var(--font-mono-family);
   font-size: 11px;
   line-height: 16.5px;
   text-overflow: ellipsis;
@@ -475,7 +454,7 @@
 .EnvironmentGitActionFileStats {
   flex-shrink: 0;
   color: var(--muted-foreground);
-  font-family: var(--font-mono);
+  font-family: var(--font-mono-family);
   font-size: 10px;
   line-height: 15px;
 }
@@ -675,6 +654,7 @@
   align-items: center;
   justify-content: center;
   opacity: 0.6;
+  color: var(--color-icon-secondary);
 }
 
 .EnvironmentDivider {
@@ -747,6 +727,7 @@
 .EnvironmentRepositoryExternalIcon {
   width: 12px;
   height: 12px;
+  color: var(--color-icon-secondary);
 }
 
 .EnvironmentPullRequestMenuTrigger {
@@ -961,18 +942,6 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-}
-
-.EnvironmentPinnedCheckbox--checked {
-  border-color: var(--foreground);
-  background-color: var(--foreground);
-}
-
-.EnvironmentPinnedCheckIcon {
-  width: 10px;
-  height: 10px;
 }
 
 .EnvironmentMarkerSwatch {
@@ -1058,6 +1027,7 @@
 .EnvironmentPinnedActionIcon {
   width: 12px;
   height: 12px;
+  color: var(--color-icon-secondary);
 }
 
 .EnvironmentPinnedError {
@@ -1132,32 +1102,19 @@
   margin-top: 2px;
 }
 
-.ThreadPage--environment-open:not(.ThreadPage--diff-open):not(
-    .ThreadPage--explorer-open
-  )
-  .ThreadTranscriptColumn,
-.ThreadPage--environment-open:not(.ThreadPage--diff-open):not(
-    .ThreadPage--explorer-open
-  )
-  .ThreadComposerDock {
+.ThreadPage--environment-docked .ThreadTranscriptViewport,
+.ThreadPage--environment-docked .ThreadComposerDock {
   padding-right: 312px;
 }
 
-.SliceRoot--viewport-compact .ThreadPage--environment-open .ThreadTranscriptColumn,
-.SliceRoot--viewport-compact
-  .ThreadPage--environment-open
-  .ThreadComposerDock {
-  padding-right: 0;
-}
-
-.ThreadTranscriptColumn,
+.ThreadTranscriptViewport,
 .ThreadComposerDock {
   transition: padding-right 300ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .EnvironmentOverlay,
-  .ThreadTranscriptColumn,
+  .ThreadTranscriptViewport,
   .ThreadComposerDock {
     transition-duration: 0.01ms;
   }

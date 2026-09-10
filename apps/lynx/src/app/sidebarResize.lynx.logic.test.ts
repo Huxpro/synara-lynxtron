@@ -5,6 +5,7 @@ import {
   isLynxSidebarPrimaryPointer,
   moveLynxSidebarResizeSession,
   readLynxSidebarPointerX,
+  resolveLynxSidebarPresentedWidth,
   resolveLynxSidebarWidth,
 } from './sidebarResize.lynx.logic';
 
@@ -35,6 +36,27 @@ describe('Lynx sidebar resize logic', () => {
     ).toBe(384);
     expect(
       resolveLynxSidebarWidth({ requestedWidth: 256, viewportWidth: 600 })
+    ).toBe(588);
+  });
+
+  it('preserves the Web default width until the user persists a resize', () => {
+    expect(
+      resolveLynxSidebarPresentedWidth({
+        requestedWidth: 420,
+        viewportWidth: 1024,
+      })
+    ).toBe(420);
+    expect(
+      resolveLynxSidebarPresentedWidth({
+        requestedWidth: 100,
+        viewportWidth: 864,
+      })
+    ).toBe(208);
+    expect(
+      resolveLynxSidebarPresentedWidth({
+        requestedWidth: 256,
+        viewportWidth: 600,
+      })
     ).toBe(588);
   });
 

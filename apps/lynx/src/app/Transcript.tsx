@@ -1,16 +1,60 @@
-import { useEffect, useRef, useState } from '@lynx-js/react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from '@lynx-js/react';
 import botSvg from '@synara-central-icons/robot.svg?raw';
 import toolSvg from '@synara-central-icons/zap.svg?raw';
 import arrowDownSvg from '@tabler/icons/outline/arrow-down.svg?raw';
 
-import { PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from '@synara/contracts';
+import {
+  PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
+  type ModelSelection,
+  type ProviderInteractionMode,
+  type RuntimeMode,
+} from '@synara/contracts';
+import {
+  formatOutgoingComposerPrompt,
+  resolveLatestTailUserMessageEditTarget,
+  resolvePromptEffortFromModelSelection,
+} from '@synara/shared/conversationEdit';
 import { resolveAssistantMessageDisplayText } from '@synara-web/components/chat/MessagesTimeline.logic';
+import {
+  chunkCollapsedTurnItems,
+} from '@synara-web/components/chat/MessagesTimeline.logic';
+import {
+  classifyToolCallSummaryCategory,
+  summarizeToolCallGroup,
+} from '@synara-web/components/chat/toolCallGroup.logic';
+import {
+  createActiveTrailStore,
+  deriveMessageTrailItems,
+  isMessageTrailEligible,
+  resolveActiveTrailSnapshot,
+  resolveMessageTrailPaneEdgeOffset,
+  resolveVisibleRowRangeFromAttachedCells,
+  type ActiveTrailStore,
+  type MessageTrailAnchor,
+} from '@synara-web/components/chat/messageTrail.logic';
+import {
+  appendOriginalComposerPromptBlocks,
+  deriveDisplayedUserMessageState,
+} from '@synara-web/lib/terminalContext';
 import { resolveTranscriptMarkerRange } from '@synara/shared/threadMarkers';
+import { resolveSelectionActionLayout } from '@synara/shared/selectionActionLayout';
 import { formatShortTimestamp } from '@synara-web/timestampFormat';
+import {
+  createMarkdownCodeFence,
+  formatShellTranscript,
+  formatToolOutputText,
+} from '@synara-web/lib/toolCallDetailsFormatting';
 // Same transcript typography math the Web bubbles use (font-size, line-height,
 // footer size), so both targets derive geometry from one source instead of
 // hand-tuned CSS on each side.
 import {
+  getChatTranscriptLineHeightPx,
   getChatTranscriptTextStyle,
   getChatTranscriptUserMessageTextStyle,
 } from '@synara-web/components/chat/chatTypography';
@@ -22,19 +66,29 @@ import {
 } from '@synara-web/components/chat/MessageRowComposition';
 import { CollapsedWorkComposition } from '@synara-web/components/chat/CollapsedWorkComposition';
 import { TimelineStatusRowComposition } from '@synara-web/components/chat/TimelineStatusRowComposition';
+import {
+  formatAgentActivityEntryPreview,
+  isReasoningUpdateWorkEntry,
+} from '@synara-web/components/chat/agentActivity.logic';
 
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { useTheme } from '../adapters/useTheme.lynx';
 import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
 import {
   CheckIcon,
+  ChevronRightIcon,
   CircleAlertIcon,
   CopyIcon,
   MessageCircleIcon,
+  NewThreadIcon,
+  PencilIcon,
+  SearchIcon,
   TextWrapIcon,
+  Undo2Icon,
 } from '../lib/icons.lynx';
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import pinSvg from '@synara-central-icons/pin.svg?raw';
+import { MessageActionButtonLynx } from '../components/ui/MessageActionButton.lynx';
 import {
   ChatMarkdown,
   type MarkdownTextSelection,
@@ -45,6 +99,7 @@ import {
 } from '@synara-web/lib/assistantSelections';
 import { bridgeCall } from '../platform/bridge';
 import { queryClient, type ThreadTranscriptRow } from './queries';
+import { TranscriptUserMessageEditForm } from './TranscriptUserMessageEditForm.lynx';
 import {
   buildTranscriptScrollToBottomParams,
   estimateTranscriptRowMainAxisSize,
@@ -57,6 +112,11 @@ import {
   type WorkLogEntry,
 } from './transcriptRows.logic';
 import { TRANSCRIPT_KEYBOARD_LANDMARK_PROPS } from './transcriptFocus.logic';
+import {
+  disclosureChevronClassName,
+  disclosureContentClassName,
+  useLynxDisclosurePresence,
+} from '../platform/motion.lynx';
 
 const BOTTOM_EPSILON = 30;
 const SCROLL_EVENT_SOURCE = 2;
@@ -65,6 +125,111 @@ const SCROLL_EVENT_SOURCE = 2;
 // explicit list chrome so the final message-to-composer geometry matches.
 const TRANSCRIPT_BOTTOM_CONTENT_INSET_PX = 80;
 const IS_WEB_RELAY_MODE = process.env.SYNARA_LYNX_WEB_RELAY === '1';
+
+function TranscriptMessageTrailItem(props: {
+  readonly active: boolean;
+  readonly focusDistance: number | null;
+  readonly index: number;
+  readonly item: ReturnType<typeof deriveMessageTrailItems>[number];
+  readonly onActivate: () => void;
+  readonly onHoverChange: (index: number | null) => void;
+  readonly visible: boolean;
+}) {
+  const tick = useLynxInteractiveState({
+    baseClassName: `TranscriptMessageTrailItem${
+      props.active ? ' TranscriptMessageTrailTick--active' : ''
+    }${props.visible ? ' TranscriptMessageTrailTick--visible' : ''}${
+      props.focusDistance === 0
+        ? ' TranscriptMessageTrailItem--focused'
+        : props.focusDistance === 1
+          ? ' TranscriptMessageTrailItem--near'
+          : props.focusDistance === 2
+            ? ' TranscriptMessageTrailItem--far'
+            : ''
+    }`,
+    accessibleLabel: `Message ${props.item.ordinal}: ${props.item.preview.slice(0, 60)}`,
+    onIntent: () => props.onHoverChange(props.index),
+    onActivate: props.onActivate,
+  });
+  return (
+    <view
+      className={tick.className}
+      {...tick.eventProps}
+      bindmouseleave={() => {
+        tick.eventProps.bindmouseleave?.();
+        props.onHoverChange(null);
+      }}
+      bindblur={() => {
+        tick.eventProps.bindblur?.();
+        props.onHoverChange(null);
+      }}
+    >
+      <view className="TranscriptMessageTrailTick" />
+      <view className="TranscriptMessageTrailTooltip">
+        <text className="TranscriptMessageTrailPreview">
+          {props.item.preview}
+        </text>
+        {props.item.responsePreview ? (
+          <text className="TranscriptMessageTrailResponse">
+            {props.item.responsePreview}
+          </text>
+        ) : null}
+      </view>
+    </view>
+  );
+}
+
+function TranscriptMessageTrail(props: {
+  readonly activeStore: ActiveTrailStore;
+  readonly onSelect: (messageId: string) => void;
+  readonly rows: readonly ThreadTranscriptRow[];
+  readonly viewportWidth: number;
+}) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const items = deriveMessageTrailItems(props.rows);
+  const activeSnapshot = useSyncExternalStore(
+    props.activeStore.subscribe,
+    props.activeStore.get,
+    props.activeStore.get
+  );
+  const visibleIds = new Set(activeSnapshot.visibleIds);
+  if (
+    !isMessageTrailEligible({
+      itemCount: items.length,
+      paneWidth: props.viewportWidth,
+    })
+  ) {
+    return null;
+  }
+  return (
+    <view
+      className="TranscriptMessageTrail"
+      style={{
+        left: `${resolveMessageTrailPaneEdgeOffset(props.viewportWidth)}px`,
+      }}
+      accessibility-element
+      accessibility-label="Message navigation"
+      accessibility-trait="summary"
+    >
+      <view className="TranscriptMessageTrailTrack">
+        {items.map((item, index) => (
+          <TranscriptMessageTrailItem
+            key={item.id}
+            active={activeSnapshot.currentId === item.id}
+            focusDistance={
+              hoveredIndex === null ? null : Math.abs(index - hoveredIndex)
+            }
+            index={index}
+            item={item}
+            onActivate={() => props.onSelect(item.id)}
+            onHoverChange={setHoveredIndex}
+            visible={visibleIds.has(item.id)}
+          />
+        ))}
+      </view>
+    </view>
+  );
+}
 
 function TranscriptStatusIcon(props: {
   readonly tone: 'thinking' | 'tool' | 'info' | 'error';
@@ -87,6 +252,17 @@ function TranscriptStatusIcon(props: {
   );
 }
 
+function TranscriptWorkIcon(props: { readonly entry: WorkLogEntry }) {
+  const category = classifyToolCallSummaryCategory(props.entry);
+  if (category === 'read' || category === 'search') {
+    return <SearchIcon className="TranscriptStatusIcon" size={13} />;
+  }
+  if (category === 'edit') {
+    return <PencilIcon className="TranscriptStatusIcon" size={13} />;
+  }
+  return <TranscriptStatusIcon tone={props.entry.tone} />;
+}
+
 function TranscriptJumpIcon() {
   const { svgColors } = useTheme();
   return (
@@ -97,28 +273,196 @@ function TranscriptJumpIcon() {
   );
 }
 
-function TranscriptWorkEntry({ entry }: { entry: WorkLogEntry }) {
+function TranscriptWorkEntry({
+  chatFontSizePx,
+  entry,
+  workspaceRoot,
+}: {
+  readonly chatFontSizePx: number;
+  readonly entry: WorkLogEntry;
+  readonly workspaceRoot: string | null;
+}) {
+  if (isReasoningUpdateWorkEntry(entry)) {
+    const reasoningText =
+      formatAgentActivityEntryPreview(entry) ?? entry.preview ?? entry.detail ?? entry.label;
+    return (
+      <view
+        className="TranscriptReasoningEntry"
+        style={{
+          fontSize: `${Math.max(11, chatFontSizePx - 1)}px`,
+          lineHeight: '19px',
+        }}
+      >
+        <ChatMarkdown cwd={workspaceRoot} text={reasoningText} />
+      </view>
+    );
+  }
+  if (entry.toolDetails) {
+    return (
+      <TranscriptToolDetailsDisclosure
+        chatFontSizePx={chatFontSizePx}
+        entry={entry}
+        workspaceRoot={workspaceRoot}
+      />
+    );
+  }
   return (
     <TimelineStatusRowComposition
       displayText={resolveTranscriptWorkEntryDisplayText(entry)}
-      fontSizePx={12}
-      icon={<TranscriptStatusIcon tone={entry.tone} />}
+      fontSizePx={chatFontSizePx}
+      icon={<TranscriptWorkIcon entry={entry} />}
       tone={entry.tone}
     />
   );
 }
 
+function TranscriptToolDetailsContent(props: {
+  readonly chatFontSizePx: number;
+  readonly entry: WorkLogEntry;
+  readonly workspaceRoot: string | null;
+}) {
+  const details = props.entry.toolDetails;
+  if (!details) return null;
+  const blocks: Array<{ readonly language: string; readonly text: string }> = [];
+  if (details.command) {
+    blocks.push({
+      language: 'bash',
+      text: formatShellTranscript(details.command, details.output),
+    });
+  } else {
+    const output = formatToolOutputText(details.output);
+    if (output) blocks.push({ language: 'text', text: output });
+  }
+  if (details.content) blocks.push({ language: 'text', text: details.content });
+  if (details.diff) blocks.push({ language: 'diff', text: details.diff });
+  if (details.files?.length) {
+    blocks.push({ language: 'text', text: details.files.join('\n') });
+  }
+  if (blocks.length === 0) return null;
+  return (
+    <view
+      className="TranscriptToolDetailsContent"
+      style={{
+        '--transcript-tool-details-font-size': `${props.chatFontSizePx}px`,
+        '--transcript-tool-details-line-height': `${getChatTranscriptLineHeightPx(props.chatFontSizePx)}px`,
+      } as Record<string, string>}
+    >
+      {blocks.map((block, index) => (
+        <ChatMarkdown
+          key={`${block.language}:${index}`}
+          className="TranscriptToolDetailsMarkdown"
+          cwd={props.workspaceRoot}
+          text={createMarkdownCodeFence(block.language, block.text)}
+        />
+      ))}
+    </view>
+  );
+}
+
+function TranscriptToolDetailsDisclosure(props: {
+  readonly chatFontSizePx: number;
+  readonly entry: WorkLogEntry;
+  readonly workspaceRoot: string | null;
+}) {
+  const [open, setOpen] = useState(false);
+  const present = useLynxDisclosurePresence(open);
+  const label = resolveTranscriptWorkEntryDisplayText(props.entry);
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'TranscriptToolDetailsTrigger',
+    accessibleLabel: `${open ? 'Collapse' : 'Expand'} ${label}`,
+    accessibilityValue: open ? 'Expanded' : 'Collapsed',
+    onActivate: () => setOpen((current) => !current),
+  });
+  return (
+    <view className="TranscriptToolDetailsDisclosure">
+      <view className={interaction.className} aria-expanded={open} {...interaction.eventProps}>
+        <TimelineStatusRowComposition
+          compact
+          displayText={label}
+          fontSizePx={props.chatFontSizePx}
+          icon={<TranscriptWorkIcon entry={props.entry} />}
+          tone={props.entry.tone}
+        />
+        <ChevronRightIcon
+          className={disclosureChevronClassName(open, 'TranscriptToolDetailsChevron')}
+          size={12}
+        />
+      </view>
+      {present ? (
+        <view
+          className={disclosureContentClassName(
+            open,
+            'TranscriptToolDetailsPanel'
+          )}
+        >
+          <TranscriptToolDetailsContent
+            chatFontSizePx={props.chatFontSizePx}
+            entry={props.entry}
+            workspaceRoot={props.workspaceRoot}
+          />
+        </view>
+      ) : null}
+    </view>
+  );
+}
+
 function TranscriptWorkEntries({
+  chatFontSizePx,
   entries,
+  workspaceRoot,
 }: {
+  readonly chatFontSizePx: number;
   readonly entries: readonly WorkLogEntry[];
+  readonly workspaceRoot: string | null;
 }) {
   if (entries.length === 0) return null;
   return (
     <view className="TranscriptWorkEntries">
       {entries.map((entry) => (
-        <TranscriptWorkEntry key={entry.id} entry={entry} />
+        <TranscriptWorkEntry
+          key={entry.id}
+          chatFontSizePx={chatFontSizePx}
+          entry={entry}
+          workspaceRoot={workspaceRoot}
+        />
       ))}
+    </view>
+  );
+}
+
+function TranscriptToolGroup(props: {
+  readonly chatFontSizePx: number;
+  readonly entries: readonly WorkLogEntry[];
+  readonly workspaceRoot: string | null;
+}) {
+  const [open, setOpen] = useState(false);
+  const summary = summarizeToolCallGroup(props.entries);
+  if (!summary) {
+    return (
+      <TranscriptWorkEntries chatFontSizePx={props.chatFontSizePx} entries={props.entries} workspaceRoot={props.workspaceRoot} />
+    );
+  }
+  const interaction = useLynxInteractiveState({
+    baseClassName: 'TranscriptToolGroupTrigger',
+    accessibleLabel: `${open ? 'Collapse' : 'Expand'} ${summary.label}`,
+    accessibilityValue: open ? 'Expanded' : 'Collapsed',
+    onActivate: () => setOpen((current) => !current),
+  });
+  return (
+    <view className="TranscriptToolGroup">
+      <view className={interaction.className} aria-expanded={open} {...interaction.eventProps}>
+        <TranscriptWorkIcon entry={summary.iconEntry} />
+        <text className="TranscriptToolGroupLabel">{summary.label}</text>
+        <ChevronRightIcon
+          className={disclosureChevronClassName(open, 'TranscriptToolGroupChevron')}
+          size={12}
+        />
+      </view>
+      {open ? (
+        <view className="TranscriptToolGroupEntries">
+          <TranscriptWorkEntries chatFontSizePx={props.chatFontSizePx} entries={props.entries} workspaceRoot={props.workspaceRoot} />
+        </view>
+      ) : null}
     </view>
   );
 }
@@ -128,44 +472,111 @@ function TranscriptSelectionAction(props: {
   readonly onHighlight: () => void;
   readonly onUnderline: () => void;
   readonly selection: MarkdownTextSelection;
+  readonly viewport: { readonly left: number; readonly top: number; readonly width: number; readonly height: number };
 }) {
+  const highlightPointerActivationRef = useRef(false);
+  const underlinePointerActivationRef = useRef(false);
+  const addToChatPointerActivationRef = useRef(false);
+  const pointerActivate = (
+    lock: { current: boolean },
+    activate: () => void,
+    beginPress?: () => void
+  ) => {
+    'background only';
+    if (lock.current) return;
+    lock.current = true;
+    beginPress?.();
+    activate();
+    setTimeout(() => {
+      lock.current = false;
+    }, 300);
+  };
   const highlight = useLynxInteractiveState({
     baseClassName: 'TranscriptSelectionAction',
     accessibleLabel: 'Highlight',
-    onActivate: props.onHighlight,
+    onActivate: () => {
+      if (!highlightPointerActivationRef.current) props.onHighlight();
+    },
   });
   const underline = useLynxInteractiveState({
     baseClassName: 'TranscriptSelectionAction',
     accessibleLabel: 'Underline',
-    onActivate: props.onUnderline,
+    onActivate: () => {
+      if (!underlinePointerActivationRef.current) props.onUnderline();
+    },
   });
   const addToChat = useLynxInteractiveState({
     baseClassName: 'TranscriptSelectionAction',
     accessibleLabel: 'Add to chat',
-    onActivate: props.onAddToChat,
+    onActivate: () => {
+      if (!addToChatPointerActivationRef.current) props.onAddToChat();
+    },
   });
+  const layout = resolveSelectionActionLayout({
+    selectionRect: props.selection,
+    pointer: { x: props.selection.left, y: props.selection.top },
+    viewport: props.viewport,
+  });
+  const compact = layout.width < 292;
   return (
     <view
-      className="TranscriptSelectionToolbar"
+      className={`TranscriptSelectionToolbar TranscriptSelectionToolbar--${layout.placement}`}
       style={{
-        left: `${props.selection.left}px`,
-        top: `${props.selection.top + 8}px`,
+        left: `${layout.left}px`,
+        top: `${layout.top}px`,
+        width: `${layout.width}px`,
       }}
       accessibility-element
       accessibility-label="Selection actions"
-      accessibility-traits="summary"
+      accessibility-trait="summary"
     >
-      <view className={highlight.className} {...highlight.eventProps}>
-        <text className="TranscriptSelectionActionGlyph">✎</text>
-        <text className="TranscriptSelectionActionLabel">Highlight</text>
+      <view
+        className={highlight.className}
+        {...highlight.eventProps}
+        catchmousedown={() =>
+          pointerActivate(
+            highlightPointerActivationRef,
+            props.onHighlight,
+            highlight.eventProps.bindmousedown
+          )
+        }
+      >
+        <PencilIcon className="TranscriptSelectionActionIcon" size={14} />
+        {compact ? null : (
+          <text className="TranscriptSelectionActionLabel">Highlight</text>
+        )}
       </view>
-      <view className={underline.className} {...underline.eventProps}>
+      <view
+        className={underline.className}
+        {...underline.eventProps}
+        catchmousedown={() =>
+          pointerActivate(
+            underlinePointerActivationRef,
+            props.onUnderline,
+            underline.eventProps.bindmousedown
+          )
+        }
+      >
         <TextWrapIcon className="TranscriptSelectionActionIcon" size={13} />
-        <text className="TranscriptSelectionActionLabel">Underline</text>
+        {compact ? null : (
+          <text className="TranscriptSelectionActionLabel">Underline</text>
+        )}
       </view>
-      <view className={addToChat.className} {...addToChat.eventProps}>
+      <view
+        className={addToChat.className}
+        {...addToChat.eventProps}
+        catchmousedown={() =>
+          pointerActivate(
+            addToChatPointerActivationRef,
+            props.onAddToChat,
+            addToChat.eventProps.bindmousedown
+          )
+        }
+      >
         <MessageCircleIcon className="TranscriptSelectionActionIcon" size={13} />
-        <text className="TranscriptSelectionActionLabel">Add to chat</text>
+        {compact ? null : (
+          <text className="TranscriptSelectionActionLabel">Add to chat</text>
+        )}
       </view>
     </view>
   );
@@ -173,26 +584,51 @@ function TranscriptSelectionAction(props: {
 
 function TranscriptMessage({
   chatFontSizePx,
+  editDraft,
+  editError,
+  editing,
+  editSubmitting,
+  editable,
+  activeTextSelection,
+  onCancelEdit,
+  onEditDraftChange,
+  onStartEdit,
+  onSubmitEdit,
+  onTextSelectionChange,
+  onThreadError,
   onOpenFileReference,
   pinnedMessageIds,
   row,
   threadId,
   timestampFormat,
+  selectionViewport,
   workspaceRoot,
 }: {
   readonly chatFontSizePx: number;
+  readonly editDraft: string;
+  readonly editError: string | null;
+  readonly editing: boolean;
+  readonly editSubmitting: boolean;
+  readonly editable: boolean;
+  readonly activeTextSelection: MarkdownTextSelection | null;
+  readonly onCancelEdit: () => void;
+  readonly onEditDraftChange: (value: string) => void;
+  readonly onStartEdit: (messageId: string, text: string) => void;
+  readonly onSubmitEdit: () => void;
+  readonly onTextSelectionChange: (selection: MarkdownTextSelection | null) => void;
+  readonly onThreadError?: (error: string | null) => void;
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly pinnedMessageIds: ReadonlySet<string>;
   row: MessageTranscriptRow;
   threadId: string;
   readonly timestampFormat: 'locale' | '12-hour' | '24-hour';
+  readonly selectionViewport: { readonly left: number; readonly top: number; readonly width: number; readonly height: number };
   readonly workspaceRoot: string | null;
 }) {
+  const { svgColors } = useTheme();
   const { message } = row;
   const isUser = message.role === 'user';
   const [collapsedWorkOpen, setCollapsedWorkOpen] = useState(false);
-  const [textSelection, setTextSelection] =
-    useState<MarkdownTextSelection | null>(null);
   const {
     collapsedTurnItems,
     hasCollapsedWork,
@@ -232,7 +668,10 @@ function TranscriptMessage({
     },
   });
   const messageHover = useLynxInteractiveState({
-    baseClassName: `TranscriptMessageHoverRegion ${
+    // The Web host maps DOM mouseover onto Lynx's ui-hover state only for
+    // focusable controls or explicit hover owners. Message rows intentionally
+    // stay out of the tab order, so mark this non-focusable region explicitly.
+    baseClassName: `TranscriptMessageHoverRegion LynxWebHoverOwner ${
       isUser
         ? 'TranscriptMessageHoverRegion--user'
         : 'TranscriptMessageHoverRegion--assistant'
@@ -249,6 +688,59 @@ function TranscriptMessage({
       void import(/* webpackMode: "eager" */ '../platform/clipboard').then(
         ({ clipboard }) => clipboard.writeText(text)
       );
+    },
+  });
+  const revertTurnCount = row.revertTurnCount;
+  const revert = useLynxInteractiveState({
+    baseClassName: 'TranscriptMessageAction',
+    accessibleLabel: 'Revert to this message',
+    disabled: revertTurnCount === undefined,
+    onActivate: () => {
+      'background only';
+      if (revertTurnCount === undefined) return;
+      void import(/* webpackMode: "eager" */ '../platform/dialogs').then(
+        async ({ dialogs }) => {
+          const confirmed = await dialogs.confirm(
+            [
+              `Revert this thread to checkpoint ${revertTurnCount}?`,
+              'This will discard newer messages and turn diffs in this thread.',
+              'This action cannot be undone.',
+            ].join('\n')
+          );
+          if (!confirmed) return;
+          try {
+            await dispatchSynaraCommand({
+              type: 'thread.checkpoint.revert',
+              commandId: `lynx-command-${Date.now()}-${Math.random()
+                .toString(16)
+                .slice(2)}` as never,
+              threadId: threadId as never,
+              turnCount: revertTurnCount,
+              scope: 'thread',
+              createdAt: new Date().toISOString(),
+            });
+            await queryClient.invalidateQueries({
+              queryKey: ['thread-detail', threadId],
+            });
+          } catch (error) {
+            onThreadError?.(
+              error instanceof Error ? error.message : 'Failed to revert message.'
+            );
+          }
+        }
+      );
+    },
+  });
+  const displayedUserMessage = isUser
+    ? deriveDisplayedUserMessageState(message.text)
+    : null;
+  const edit = useLynxInteractiveState({
+    baseClassName: 'TranscriptMessageAction',
+    accessibleLabel: 'Edit message',
+    disabled: !editable || editSubmitting,
+    onActivate: () => {
+      if (!displayedUserMessage?.copyText.trim()) return;
+      onStartEdit(message.id, displayedUserMessage.copyText);
     },
   });
   const pinned = pinnedMessageIds.has(message.id);
@@ -284,20 +776,20 @@ function TranscriptMessage({
   );
   function addSelectedTextToChat() {
     'background only';
-    if (!textSelection) return;
+    if (!activeTextSelection) return;
     const selection = createAssistantSelectionAttachment({
       assistantMessageId: message.id,
-      text: textSelection.text,
+      text: activeTextSelection.text,
     });
     if (selection) addAssistantSelection(threadId, selection);
-    setTextSelection(null);
+    onTextSelectionChange(null);
   }
   function addMarker(style: 'highlight' | 'underline') {
     'background only';
-    if (!textSelection || assistantText === null) return;
+    if (!activeTextSelection || assistantText === null) return;
     const range = resolveTranscriptMarkerRange({
       messageText: assistantText,
-      selectedText: textSelection.text,
+      selectedText: activeTextSelection.text,
     });
     if (!range) return;
     const now = Date.now();
@@ -315,11 +807,11 @@ function TranscriptMessage({
           messageId: message.id,
           startOffset: range.startOffset,
           endOffset: range.endOffset,
-          selectedText: textSelection.text,
+          selectedText: activeTextSelection.text,
           style,
           color: style === 'highlight' ? 'yellow' : 'blue',
         }).then(() => {
-          setTextSelection(null);
+          onTextSelectionChange(null);
           return queryClient.invalidateQueries({
             queryKey: ['thread-detail', threadId],
           });
@@ -331,7 +823,7 @@ function TranscriptMessage({
       <view className="TranscriptMessageRow TranscriptMessageRowStatus">
         <TimelineStatusRowComposition
           displayText={message.text || 'System'}
-          fontSizePx={12}
+          fontSizePx={chatFontSizePx}
           statusOnly
           tone="info"
         />
@@ -343,7 +835,18 @@ function TranscriptMessage({
       className={`TranscriptMessageRow TranscriptMessageRowUser ${messageHover.className}`}
       {...messageHover.eventProps}
     >
-      <MessageUserRowComposition>
+      <MessageUserRowComposition fullWidth={editing}>
+        {editing ? (
+          <TranscriptUserMessageEditForm
+            chatFontSizePx={chatFontSizePx}
+            disabled={editSubmitting}
+            draft={editDraft}
+            error={editError}
+            onCancel={onCancelEdit}
+            onDraftChange={onEditDraftChange}
+            onSubmit={onSubmitEdit}
+          />
+        ) : (
         <MessageUserBubbleComposition>
           <view
             className="TranscriptUserText"
@@ -363,12 +866,25 @@ function TranscriptMessage({
             />
           </view>
         </MessageUserBubbleComposition>
+        )}
+        {editing ? null : (
         <view className="TranscriptMessageFooter TranscriptMessageFooter--user">
           <text className="TranscriptMessageTimestamp">{timestamp}</text>
-          <view className={copy.className} {...copy.eventProps}>
+          <MessageActionButtonLynx className={copy.className} eventProps={copy.eventProps}>
             <CopyIcon className="TranscriptMessageActionIcon" size={13} />
-          </view>
+          </MessageActionButtonLynx>
+          {editable && displayedUserMessage?.copyText.trim() ? (
+            <MessageActionButtonLynx className={edit.className} eventProps={edit.eventProps}>
+              <NewThreadIcon className="TranscriptMessageActionIcon" size={13} />
+            </MessageActionButtonLynx>
+          ) : null}
+          {revertTurnCount === undefined ? null : (
+            <MessageActionButtonLynx className={revert.className} eventProps={revert.eventProps}>
+              <Undo2Icon className="TranscriptMessageActionIcon" size={13} />
+            </MessageActionButtonLynx>
+          )}
         </view>
+        )}
       </MessageUserRowComposition>
     </view>
   ) : (
@@ -382,15 +898,27 @@ function TranscriptMessage({
           open={collapsedWorkOpen}
           onOpenChange={setCollapsedWorkOpen}
         >
-          {collapsedTurnItems.map((item) =>
-            item.kind === 'work' ? (
-              <TranscriptWorkEntry key={item.id} entry={item.entry} />
+          {chunkCollapsedTurnItems(collapsedTurnItems).map((chunk) =>
+            chunk.kind === 'tool-group' ? (
+              <TranscriptToolGroup
+                key={`tool-group:${chunk.id}`}
+                chatFontSizePx={chatFontSizePx}
+                entries={chunk.entries}
+                workspaceRoot={workspaceRoot}
+              />
+            ) : chunk.item.kind === 'work' ? (
+              <TranscriptWorkEntry
+                key={chunk.item.id}
+                chatFontSizePx={chatFontSizePx}
+                entry={chunk.item.entry}
+                workspaceRoot={workspaceRoot}
+              />
             ) : (
-              <view key={item.id} className="TranscriptCollapsedNarration">
+              <view key={chunk.item.id} className="TranscriptCollapsedNarration">
                 <ChatMarkdown
                   cwd={workspaceRoot}
                   onOpenFileReference={onOpenFileReference}
-                  text={item.message.text}
+                  text={chunk.item.message.text}
                 />
               </view>
             )
@@ -398,7 +926,11 @@ function TranscriptMessage({
         </CollapsedWorkComposition>
       ) : null}
       <MessageAssistantRowComposition>
-        <TranscriptWorkEntries entries={leadingWorkEntries} />
+        <TranscriptWorkEntries
+          chatFontSizePx={chatFontSizePx}
+          entries={leadingWorkEntries}
+          workspaceRoot={workspaceRoot}
+        />
         {assistantText === null ? null : (
           <view className="TranscriptAssistantContent">
             <view
@@ -412,20 +944,25 @@ function TranscriptMessage({
               <ChatMarkdown
                 cwd={workspaceRoot}
                 onOpenFileReference={onOpenFileReference}
-                onTextSelection={setTextSelection}
+                onTextSelection={onTextSelectionChange}
                 selectable
                 text={assistantText}
               />
             </view>
           </view>
         )}
-        <TranscriptWorkEntries entries={inlineWorkEntries} />
-        {textSelection ? (
+        <TranscriptWorkEntries
+          chatFontSizePx={chatFontSizePx}
+          entries={inlineWorkEntries}
+          workspaceRoot={workspaceRoot}
+        />
+        {activeTextSelection ? (
           <TranscriptSelectionAction
-            selection={textSelection}
+            selection={activeTextSelection}
             onAddToChat={addSelectedTextToChat}
             onHighlight={() => addMarker('highlight')}
             onUnderline={() => addMarker('underline')}
+            viewport={selectionViewport}
           />
         ) : null}
         {assistantText === null ? null : (
@@ -434,15 +971,15 @@ function TranscriptMessage({
               pinned ? ' TranscriptMessageFooter--persistent' : ''
             }`}
           >
-            <view className={pin.className} {...pin.eventProps}>
+            <MessageActionButtonLynx className={pin.className} eventProps={pin.eventProps}>
               <svg
                 className="TranscriptMessageActionIcon"
-                content={colorizeLynxSvg(pinSvg, 'var(--muted-foreground)')}
+                content={colorizeLynxSvg(pinSvg, svgColors.iconSecondary)}
               />
-            </view>
-            <view className={copy.className} {...copy.eventProps}>
+            </MessageActionButtonLynx>
+            <MessageActionButtonLynx className={copy.className} eventProps={copy.eventProps}>
               <CopyIcon className="TranscriptMessageActionIcon" size={13} />
-            </view>
+            </MessageActionButtonLynx>
             <view
               className={`${addToChat.className}${
                 addToChat.disabled ? ' ui-disabled' : ''
@@ -460,31 +997,79 @@ function TranscriptMessage({
 }
 
 function TranscriptRowContent({
+  editDraft,
+  editError,
+  editingMessageId,
+  editSubmitting,
+  editableMessageId,
+  selectedAssistantMessageId,
+  textSelection,
   chatFontSizePx,
+  onCancelEdit,
+  onEditDraftChange,
+  onStartEdit,
+  onSubmitEdit,
+  onTextSelectionChange,
+  onThreadError,
   onOpenFileReference,
   pinnedMessageIds,
   row,
   threadId,
   timestampFormat,
+  selectionViewport,
   workspaceRoot,
 }: {
+  readonly editDraft: string;
+  readonly editError: string | null;
+  readonly editingMessageId: string | null;
+  readonly editSubmitting: boolean;
+  readonly editableMessageId: string | null;
+  readonly selectedAssistantMessageId: string | null;
+  readonly textSelection: MarkdownTextSelection | null;
   readonly chatFontSizePx: number;
+  readonly onCancelEdit: () => void;
+  readonly onEditDraftChange: (value: string) => void;
+  readonly onStartEdit: (messageId: string, text: string) => void;
+  readonly onSubmitEdit: () => void;
+  readonly onTextSelectionChange: (
+    messageId: string,
+    selection: MarkdownTextSelection | null
+  ) => void;
+  readonly onThreadError?: (error: string | null) => void;
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly pinnedMessageIds: ReadonlySet<string>;
   row: ThreadTranscriptRow;
   threadId: string;
   readonly timestampFormat: 'locale' | '12-hour' | '24-hour';
+  readonly selectionViewport: { readonly left: number; readonly top: number; readonly width: number; readonly height: number };
   readonly workspaceRoot: string | null;
 }) {
   if (row.kind === 'message') {
     return (
       <TranscriptMessage
         chatFontSizePx={chatFontSizePx}
+        editDraft={editDraft}
+        editError={editError}
+        editing={editingMessageId === row.message.id}
+        editSubmitting={editSubmitting}
+        editable={editableMessageId === row.message.id}
+        activeTextSelection={
+          selectedAssistantMessageId === row.message.id ? textSelection : null
+        }
+        onCancelEdit={onCancelEdit}
+        onEditDraftChange={onEditDraftChange}
+        onStartEdit={onStartEdit}
+        onSubmitEdit={onSubmitEdit}
+        onTextSelectionChange={(selection) =>
+          onTextSelectionChange(row.message.id, selection)
+        }
+        onThreadError={onThreadError}
         onOpenFileReference={onOpenFileReference}
         pinnedMessageIds={pinnedMessageIds}
         row={row}
         threadId={threadId}
         timestampFormat={timestampFormat}
+        selectionViewport={selectionViewport}
         workspaceRoot={workspaceRoot}
       />
     );
@@ -493,7 +1078,12 @@ function TranscriptRowContent({
     return (
       <view className="TranscriptMessageRow TranscriptMessageRowStatus">
         {row.groupedEntries.map((entry) => (
-          <TranscriptWorkEntry key={entry.id} entry={entry} />
+          <TranscriptWorkEntry
+            key={entry.id}
+            chatFontSizePx={chatFontSizePx}
+            entry={entry}
+            workspaceRoot={workspaceRoot}
+          />
         ))}
       </view>
     );
@@ -503,7 +1093,7 @@ function TranscriptRowContent({
       <view className="TranscriptMessageRow TranscriptMessageRowStatus">
         <TimelineStatusRowComposition
           displayText={row.kind === 'working-header' ? 'Working…' : 'Thinking'}
-          fontSizePx={12}
+          fontSizePx={chatFontSizePx}
           statusOnly
           tone="thinking"
         />
@@ -515,7 +1105,7 @@ function TranscriptRowContent({
       <view className="TranscriptMessageRow TranscriptMessageRowStatus">
         <TimelineStatusRowComposition
           displayText="Plan ready"
-          fontSizePx={12}
+          fontSizePx={chatFontSizePx}
           statusOnly
           tone="info"
         />
@@ -539,27 +1129,178 @@ export interface TranscriptController {
 }
 
 export function Transcript({
+  activeTurnId,
   chatFontSizePx,
+  interactionMode,
+  modelSelection,
   onOpenFileReference,
   pinnedMessageIds,
   rows,
   threadId,
   timestampFormat,
   onController,
+  onThreadError,
+  runtimeMode,
+  sessionStatus,
+  viewportHeight,
+  viewportLeft = 0,
+  viewportWidth,
   workspaceRoot,
 }: {
+  readonly activeTurnId: string | null;
   readonly chatFontSizePx: number;
+  readonly interactionMode: ProviderInteractionMode | null;
+  readonly modelSelection: ModelSelection | null;
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly pinnedMessageIds: ReadonlySet<string>;
   readonly rows: readonly ThreadTranscriptRow[];
   readonly threadId: string;
   readonly timestampFormat: 'locale' | '12-hour' | '24-hour';
   readonly onController?: (controller: TranscriptController | null) => void;
+  readonly onThreadError?: (error: string | null) => void;
+  readonly runtimeMode: RuntimeMode | null;
+  readonly sessionStatus: string | null;
+  readonly viewportHeight: number;
+  readonly viewportLeft?: number;
+  readonly viewportWidth: number;
   readonly workspaceRoot: string | null;
 }) {
   const listRef = useRef<React.ElementRef<'list'>>(null);
   const pinnedRef = useRef(true);
   const [pinned, setPinned] = useState(true);
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+  const [editDraft, setEditDraft] = useState('');
+  const [editError, setEditError] = useState<string | null>(null);
+  const [editSubmitting, setEditSubmitting] = useState(false);
+  const [selectedAssistantMessageId, setSelectedAssistantMessageId] =
+    useState<string | null>(null);
+  const [textSelection, setTextSelection] =
+    useState<MarkdownTextSelection | null>(null);
+  const [selectionViewport, setSelectionViewport] = useState({
+    left: viewportLeft,
+    top: 0,
+    width: viewportWidth,
+    height: viewportHeight,
+  });
+  const [activeTrailStore] = useState(createActiveTrailStore);
+  const userMessageAnchors = useMemo<MessageTrailAnchor[]>(() => {
+    const anchors: MessageTrailAnchor[] = [];
+    rows.forEach((row, rowIndex) => {
+      if (row.kind === 'message' && row.message.role === 'user') {
+        anchors.push({ id: row.message.id as never, rowIndex });
+      }
+    });
+    return anchors;
+  }, [rows]);
+  const transcriptMessages = useMemo(
+    () => rows.flatMap((row) => (row.kind === 'message' ? [row.message] : [])),
+    [rows]
+  );
+  const latestEditTarget = useMemo(
+    () =>
+      resolveLatestTailUserMessageEditTarget({
+        messages: transcriptMessages,
+        activeTurnId,
+      }),
+    [activeTurnId, transcriptMessages]
+  );
+  const editableMessageId =
+    latestEditTarget.editable &&
+    modelSelection !== null &&
+    runtimeMode !== null &&
+    interactionMode !== null
+      ? latestEditTarget.messageId
+      : null;
+
+  function cancelUserMessageEdit() {
+    'background only';
+    if (editSubmitting) return;
+    setEditingMessageId(null);
+    setEditDraft('');
+    setEditError(null);
+    onThreadError?.(null);
+  }
+
+  function startUserMessageEdit(messageId: string, text: string) {
+    'background only';
+    if (editSubmitting) return;
+    setEditingMessageId(messageId);
+    setEditDraft(text);
+    setEditError(null);
+    onThreadError?.(null);
+  }
+
+  async function submitUserMessageEdit() {
+    'background only';
+    const messageId = editingMessageId;
+    const trimmedDraft = editDraft.trim();
+    if (
+      !messageId ||
+      !trimmedDraft ||
+      editSubmitting ||
+      !modelSelection ||
+      !runtimeMode ||
+      !interactionMode
+    ) return;
+    const target = resolveLatestTailUserMessageEditTarget({
+      messages: transcriptMessages,
+      activeTurnId,
+    });
+    if (!target.editable || target.messageId !== messageId) {
+      const message = 'Only the latest rollbackable user message can be edited.';
+      setEditError(message);
+      onThreadError?.(message);
+      return;
+    }
+    if (sessionStatus === 'starting' || sessionStatus === 'running') {
+      const message = 'Wait for the current send to finish before editing.';
+      setEditError(message);
+      onThreadError?.(message);
+      return;
+    }
+    const originalMessage = transcriptMessages[target.messageIndex];
+    if (!originalMessage || originalMessage.role !== 'user') return;
+    const textWithOriginalContext = appendOriginalComposerPromptBlocks({
+      editedPrompt: trimmedDraft,
+      originalPrompt: originalMessage.text,
+    });
+    const outgoingText = formatOutgoingComposerPrompt({
+      provider: modelSelection.provider,
+      model: modelSelection.model,
+      effort: resolvePromptEffortFromModelSelection(modelSelection),
+      text: textWithOriginalContext,
+    });
+    setEditSubmitting(true);
+    setEditError(null);
+    try {
+      await dispatchSynaraCommand({
+        type: 'thread.message.edit-and-resend',
+        commandId: `lynx-command-${Date.now()}-${Math.random()
+          .toString(16)
+          .slice(2)}` as never,
+        threadId: threadId as never,
+        messageId: messageId as never,
+        text: outgoingText,
+        modelSelection,
+        runtimeMode,
+        interactionMode,
+        createdAt: new Date().toISOString(),
+      });
+      setEditingMessageId(null);
+      setEditDraft('');
+      onThreadError?.(null);
+      await queryClient.invalidateQueries({
+        queryKey: ['thread-detail', threadId],
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to edit message.';
+      setEditError(message);
+      onThreadError?.(message);
+    } finally {
+      setEditSubmitting(false);
+    }
+  }
 
   function scrollToBottom() {
     'background only';
@@ -615,9 +1356,30 @@ export function Transcript({
   }
 
   function handleScroll(event: {
-    detail?: Parameters<typeof handleScrollDetail>[0];
+    detail?: Parameters<typeof handleScrollDetail>[0] & {
+      attachedCells?: readonly {
+        index?: number;
+        top?: number;
+        bottom?: number;
+      }[];
+    };
   }) {
     'background only';
+    setSelectedAssistantMessageId(null);
+    setTextSelection(null);
+    const visibleRange = resolveVisibleRowRangeFromAttachedCells({
+      attachedCells: event.detail?.attachedCells ?? [],
+      listHeight: event.detail?.listHeight,
+    });
+    if (visibleRange) {
+      activeTrailStore.set(
+        resolveActiveTrailSnapshot(
+          userMessageAnchors,
+          visibleRange.top,
+          visibleRange.bottom
+        )
+      );
+    }
     handleScrollDetail(event.detail);
   }
 
@@ -633,6 +1395,18 @@ export function Transcript({
     'background only';
     if (pinnedRef.current) scrollToBottom();
   }, [rows.length, transcriptRowVersion(rows[rows.length - 1])]);
+
+  useEffect(() => {
+    'background only';
+    // Transcript is reused across route changes. A manual upward scroll belongs
+    // to the thread that received it; carrying pinned=false into the next
+    // thread makes Native enter at an arbitrary inherited offset while Electron
+    // canonically enters a thread at its tail. Explicit message jumps still run
+    // through scrollToMessage after this route-entry reset.
+    pinnedRef.current = true;
+    setPinned(true);
+    scrollToBottom();
+  }, [threadId]);
 
   useEffect(() => {
     'background only';
@@ -696,7 +1470,28 @@ export function Transcript({
   });
 
   return (
-    <view className="TranscriptShell">
+    <view
+      className="TranscriptShell"
+      bindlayoutchange={(event: {
+        readonly detail?: { left?: number; top?: number; width?: number; height?: number };
+      }) => {
+        'background only';
+        const detail = event.detail ?? {};
+        if (
+          typeof detail.left === 'number' &&
+          typeof detail.top === 'number' &&
+          typeof detail.width === 'number' &&
+          typeof detail.height === 'number'
+        ) {
+          setSelectionViewport({
+            left: viewportLeft + detail.left,
+            top: detail.top,
+            width: detail.width,
+            height: detail.height,
+          });
+        }
+      }}
+    >
       <list
         ref={listRef}
         className="TranscriptList"
@@ -712,6 +1507,7 @@ export function Transcript({
           <list-item
             item-key={row.id}
             key={row.id}
+            className="TranscriptListItem"
             estimated-main-axis-size-px={estimateTranscriptRowMainAxisSize(
               row,
               chatFontSizePx
@@ -719,12 +1515,29 @@ export function Transcript({
           >
             <ComposerColumnFrameSurface className="TranscriptRowFrame">
               <TranscriptRowContent
+                editDraft={editDraft}
+                editError={editError}
+                editingMessageId={editingMessageId}
+                editSubmitting={editSubmitting}
+                editableMessageId={editableMessageId}
+                selectedAssistantMessageId={selectedAssistantMessageId}
+                textSelection={textSelection}
                 chatFontSizePx={chatFontSizePx}
+                onCancelEdit={cancelUserMessageEdit}
+                onEditDraftChange={setEditDraft}
+                onStartEdit={startUserMessageEdit}
+                onSubmitEdit={() => void submitUserMessageEdit()}
+                onTextSelectionChange={(messageId, selection) => {
+                  setSelectedAssistantMessageId(selection ? messageId : null);
+                  setTextSelection(selection);
+                }}
+                onThreadError={onThreadError}
                 onOpenFileReference={onOpenFileReference}
                 pinnedMessageIds={pinnedMessageIds}
                 row={row}
                 threadId={threadId}
                 timestampFormat={timestampFormat}
+                selectionViewport={selectionViewport}
                 workspaceRoot={workspaceRoot}
               />
             </ComposerColumnFrameSurface>
@@ -737,6 +1550,12 @@ export function Transcript({
           <view className="TranscriptBottomInset" />
         </list-item>
       </list>
+      <TranscriptMessageTrail
+        activeStore={activeTrailStore}
+        rows={rows}
+        viewportWidth={viewportWidth}
+        onSelect={scrollToMessage}
+      />
       {!pinned ? (
         <view
           className={jumpInteraction.className}

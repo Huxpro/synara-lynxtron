@@ -35,6 +35,16 @@ export function getNavigatorLanguage(): string {
   return 'en-US';
 }
 
+/** Native callers with an exact viewport should pass it explicitly. */
+export function getViewportWidth(): number {
+  return 0;
+}
+
+/** Native callers with an exact viewport should pass it explicitly. */
+export function getViewportHeight(): number {
+  return 0;
+}
+
 export function matchMediaSafe(): null {
   return null;
 }

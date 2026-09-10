@@ -1,0 +1,70 @@
+.LynxBrandMark {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.LynxBrandMarkLynx,
+.LynxBrandMarkLynxtron {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition-property: opacity, transform;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.LynxBrandMarkLynx {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.LynxBrandMarkLynxtron {
+  opacity: 0;
+  transform: scale(0.88);
+}
+
+.LynxBrandMarkLynxtron--light {
+  display: none;
+}
+
+.SliceRoot--theme-dark .LynxBrandMarkLynxtron--dark {
+  display: none;
+}
+
+.SliceRoot--theme-dark .LynxBrandMarkLynxtron--light {
+  display: block;
+}
+
+.LynxBrandMark.ui-hover .LynxBrandMarkLynx {
+  opacity: 0;
+  transform: rotate(8deg) scale(0.9);
+}
+
+.LynxBrandMark.ui-hover .LynxBrandMarkLynxtron {
+  opacity: 1;
+  animation: lynx-brand-mark-spin 1.8s linear infinite;
+}
+
+@keyframes lynx-brand-mark-spin {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+
+  to {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .LynxBrandMarkLynx,
+  .LynxBrandMarkLynxtron {
+    animation: none;
+    transition-duration: 0.01ms;
+    transform: none;
+  }
+}

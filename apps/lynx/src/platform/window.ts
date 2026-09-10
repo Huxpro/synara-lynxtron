@@ -18,6 +18,7 @@ export interface WindowPort {
   readonly onViewportResize: (listener: (size: ViewportSize) => void) => () => void;
   readonly onWindowState: (listener: (state: DesktopWindowState) => void) => () => void;
   readonly openExternal: (url: string) => Promise<boolean>;
+  readonly showInFolder: (path: string) => Promise<boolean>;
   readonly openWindow: (url: string) => void;
   readonly getZoomFactor: () => number;
   readonly onZoomFactorChange: (listener: (zoomFactor: number) => void) => () => void;
@@ -60,6 +61,13 @@ export const platformWindow: WindowPort = {
     const result = await bridgeCall<{ readonly opened: boolean }>('shellOpenExternal', {
       url,
     });
+    return result.opened;
+  },
+  showInFolder: async (path) => {
+    const result = await bridgeCall<{ readonly opened: boolean }>(
+      'shellShowInFolder',
+      { path }
+    );
     return result.opened;
   },
   openWindow: (url) => {

@@ -1,0 +1,65 @@
+.ThreadHeaderTextAction {
+  height: 28px;
+  min-height: 28px;
+  padding: 0 10px;
+  gap: 6px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  -x-app-region: no-drag;
+}
+
+.ThreadHeaderTextAction .LxButton__text,
+.ThreadHeaderTextActionLabel {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.ThreadHeaderTextActionIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--color-icon-primary);
+  opacity: 0.8;
+}
+
+.ThreadHeaderActionMenu {
+  width: 208px;
+  min-width: 208px;
+}
+
+.ThreadHeaderActionMenu .OpenAIProviderIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.ThreadHeaderActionDialog {
+  width: min(420px, calc(100vw - 32px));
+  border-radius: 18px;
+}
+
+.ThreadHeaderActionDialogPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ThreadHeaderActionError,
+.ThreadHeaderActionInlineError {
+  color: var(--destructive);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.ThreadHeaderActionInlineError {
+  position: fixed;
+  top: 42px;
+  right: 12px;
+  z-index: 60;
+  max-width: 320px;
+  padding: 6px 8px;
+  border: 1px solid var(--destructive);
+  border-radius: 8px;
+  background-color: var(--popover);
+}

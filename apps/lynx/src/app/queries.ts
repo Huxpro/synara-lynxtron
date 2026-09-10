@@ -13,6 +13,7 @@ import type {
   OrchestrationThreadPullRequest,
   PinnedMessage,
   ProjectId,
+  OrchestrationSpaceShell,
   ProviderKind,
   ThreadMarker,
   PullRequestDetail,
@@ -35,13 +36,21 @@ import type {
   ProjectListDirectoriesResult,
   ProjectReadFileResult,
   ProjectSearchEntriesResult,
+  OrchestrationMessage,
+  OrchestrationSidebarSearchSnapshot,
+  OrchestrationCheckpointSummary,
+  OrchestrationThreadActivity,
+  ThreadHandoff,
 } from '@synara/contracts';
 import type { SidebarStatusPresentation } from '@synara-web/components/SidebarStatus.logic';
 import { resolveThreadStatusPill } from '@synara-web/components/SidebarThreadStatus.logic';
 import {
+  buildRevertTurnCountByUserMessageId,
+  buildTurnDiffSummaryByAssistantMessageId,
   deriveMessagesTimelineRows,
   type MessagesTimelineRow,
 } from '@synara-web/components/chat/MessagesTimeline.logic';
+import { filterSidechatTranscriptMessages } from '@synara-web/components/ChatView.logic';
 import {
   derivePendingApprovals,
   derivePendingUserInputs,
@@ -75,7 +84,9 @@ import {
 } from '@synara-web/lib/threadRecap';
 import type { NativeSyntaxHighlightThemes } from '../main/syntaxHighlightingContract.logic';
 import { isLocalAbsolutePath } from '@synara/shared/path';
-import { projectActiveThreadSummaries } from './threadSummaryProjection.logic';
+import {
+  projectActiveThreadSummaries,
+} from './threadSummaryProjection.logic';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -89,6 +100,9 @@ export const queryClient = new QueryClient({
 export interface ThreadSummary {
   readonly id: string;
   readonly title: string;
+  readonly remoteName: string;
+  readonly folderName: string;
+  readonly localName: string | null;
   readonly projectId: string;
   readonly project: string;
   readonly messageCount: number;
@@ -100,6 +114,7 @@ export interface ThreadSummary {
   readonly provider?: ProviderKind;
   readonly isPinned?: boolean;
   readonly sessionStatus?: string | null;
+  readonly activeTurnId?: string | null;
   readonly hasPendingApprovals?: boolean;
   readonly hasPendingUserInput?: boolean;
   readonly latestTurnCompletedAt?: string | null;
@@ -111,6 +126,11 @@ export interface ThreadSummary {
   readonly forkSourceThreadId?: string | null;
   readonly sidechatSourceThreadId?: string | null;
   readonly handoffSourceProvider?: string | null;
+  readonly envMode?: 'local' | 'worktree';
+  readonly branch?: string | null;
+  readonly worktreePath?: string | null;
+  readonly associatedWorktreePath?: string | null;
+  readonly associatedWorktreeBranch?: string | null;
   readonly status?: SidebarStatusPresentation | null;
 }
 
@@ -120,7 +140,9 @@ export interface ProjectSummary {
   readonly title: string;
   readonly workspaceRoot: string;
   readonly defaultModelSelection: ModelSelection | null;
+  readonly scripts: readonly import('@synara/contracts').ProjectScript[];
   readonly isPinned?: boolean;
+  readonly spaceId?: import('@synara/contracts').SpaceId | null;
 }
 
 export interface WorktreeThreadSummary {
@@ -138,6 +160,14 @@ export interface ThreadHeaderSummary {
   readonly project: string;
   readonly branch: string | null;
   readonly envMode: 'local' | 'worktree';
+  readonly handoff: ThreadHandoff | null;
+  readonly messages: readonly OrchestrationMessage[];
+  readonly activities: readonly OrchestrationThreadActivity[];
+  readonly worktreePath: string | null;
+  readonly associatedWorktreePath: string | null;
+  readonly associatedWorktreeBranch: string | null;
+  readonly associatedWorktreeRef: string | null;
+  readonly createBranchFlowCompleted: boolean;
   readonly provider?: ProviderKind;
   readonly modelSelection: ModelSelection;
   readonly runtimeMode: 'full-access' | 'approval-required';
@@ -146,6 +176,7 @@ export interface ThreadHeaderSummary {
   readonly error: string | null;
   readonly errorRevision: string | null;
   readonly activeTurnId: string | null;
+  readonly sidechatSourceThreadId: string | null;
   readonly latestTurnState: string | null;
   readonly workspaceRoot: string | null;
   readonly notes: string;
@@ -157,6 +188,7 @@ export interface ThreadHeaderSummary {
   readonly lastKnownPr: OrchestrationThreadPullRequest | null;
   readonly pendingApprovals: readonly PendingApproval[];
   readonly pendingUserInputs: readonly PendingUserInput[];
+  readonly checkpoints: readonly OrchestrationCheckpointSummary[];
 }
 
 export interface ThreadRecapSummary {
@@ -175,6 +207,8 @@ export interface ThreadRecapPlan {
 }
 
 export interface SidebarSnapshot {
+  readonly snapshotSequence: number;
+  readonly spaces: readonly OrchestrationSpaceShell[];
   readonly projects: readonly ProjectSummary[];
   readonly threads: readonly ThreadSummary[];
   readonly archivedThreads: readonly ThreadSummary[];
@@ -199,16 +233,28 @@ export async function fetchAutomations(): Promise<AutomationListResult> {
   return fetchAutomationList();
 }
 
-export async function fetchProviderUpdatePromptData() {
+export async function fetchProviderUpdatePromptServerConfig() {
   'background only';
-  const { fetchServerConfig, fetchServerSettings } = await import(
+  const { fetchServerConfig } = await import(
     /* webpackMode: "eager" */ '../data/synaraClient'
   );
-  const [config, settings] = await Promise.all([
-    fetchServerConfig(),
-    fetchServerSettings(),
-  ]);
-  return { config, settings };
+  return fetchServerConfig();
+}
+
+export async function fetchProviderUpdatePromptServerSettings() {
+  'background only';
+  const { fetchServerSettings } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return fetchServerSettings();
+}
+
+export async function refreshProviderUpdatePromptServerConfig() {
+  'background only';
+  const { fetchFreshServerConfig } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return fetchFreshServerConfig();
 }
 
 export async function updatePromptProvider(provider: ProviderKind) {
@@ -342,6 +388,31 @@ let sidebarSnapshotCache:
       readonly value: SidebarSnapshot;
     }
   | undefined;
+let sidebarSearchSnapshotCache: OrchestrationSidebarSearchSnapshot | undefined;
+let sidebarSearchSnapshotRequest: Promise<void> | null = null;
+
+function refreshSidebarSearchSnapshotInBackground(
+  fetchSnapshot: () => Promise<OrchestrationSidebarSearchSnapshot>
+): void {
+  if (sidebarSearchSnapshotRequest !== null) return;
+  sidebarSearchSnapshotRequest = fetchSnapshot()
+    .then((snapshot) => {
+      sidebarSearchSnapshotCache = snapshot;
+      sidebarSnapshotCache = undefined;
+    })
+    .catch((error) => {
+      console.warn('[slice] sidebar search projection unavailable', String(error));
+    })
+    .finally(() => {
+      sidebarSearchSnapshotRequest = null;
+    });
+}
+/** Renderer-local presentation changes (for example a project alias) do not
+ * advance the server sequence, so callers must clear this projection memo
+ * before refetching the same authoritative shell snapshot. */
+export function invalidateSidebarSnapshotProjectionCache(): void {
+  sidebarSnapshotCache = undefined;
+}
 
 const transcriptRowsByThreadId = new Map<
   string,
@@ -371,11 +442,15 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
     import(/* webpackMode: "eager" */ '../platform/storage'),
     import(/* webpackMode: "eager" */ '@synara-web/components/Sidebar.uiState'),
   ]);
-  const [snapshot, searchSnapshot] = await Promise.all([
-    fetchSynaraSidebarShellSnapshot(),
-    fetchSynaraSidebarSearchSnapshot(),
-    hydrateStorage(),
-  ]);
+  const snapshot = await fetchSynaraSidebarShellSnapshot();
+  await hydrateStorage();
+  const searchSnapshot = sidebarSearchSnapshotCache ?? {
+    snapshotSequence: snapshot.snapshotSequence,
+    threads: [],
+  };
+  refreshSidebarSearchSnapshotInBackground(
+    fetchSynaraSidebarSearchSnapshot
+  );
   if (
     sidebarSnapshotCache?.shellSnapshotSequence === snapshot.snapshotSequence &&
     sidebarSnapshotCache.searchSnapshotSequence === searchSnapshot.snapshotSequence
@@ -438,6 +513,7 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
       provider: thread.session?.provider ?? thread.modelSelection.provider,
       isPinned: thread.isPinned,
       sessionStatus: thread.session?.status ?? null,
+      activeTurnId: thread.session?.activeTurnId ?? null,
       parentThreadId: thread.parentThreadId ?? null,
       subagentAgentId: thread.subagentAgentId ?? null,
       subagentNickname: thread.subagentNickname ?? null,
@@ -445,6 +521,11 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
       forkSourceThreadId: thread.forkSourceThreadId ?? null,
       sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
       handoffSourceProvider: thread.handoff?.sourceProvider ?? null,
+      envMode: thread.envMode,
+      branch: thread.branch,
+      worktreePath: thread.worktreePath,
+      associatedWorktreePath: thread.associatedWorktreePath,
+      associatedWorktreeBranch: thread.associatedWorktreeBranch,
       status: resolveThreadStatusPill({
         thread: {
           ...thread,
@@ -504,13 +585,20 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
     }),
   });
   const value = {
+    snapshotSequence: snapshot.snapshotSequence,
+    spaces: snapshot.spaces,
     projects: normalized.projects.map((project) => ({
       id: project.id,
       kind: project.kind,
       title: project.name,
+      remoteName: project.remoteName,
+      folderName: project.folderName,
+      localName: project.localName,
       workspaceRoot: project.cwd,
       defaultModelSelection: project.defaultModelSelection,
+      scripts: project.scripts,
       isPinned: project.isPinned,
+      spaceId: project.spaceId ?? null,
     })),
     threads,
     archivedThreads,
@@ -651,10 +739,31 @@ export async function fetchExplorerLocalPreviewUrl(input: {
   });
 }
 
+export async function fetchEditorIconUrl(editorId: string): Promise<string> {
+  'background only';
+  const { bridgeCall } = await import(
+    /* webpackMode: "eager" */ '../platform/bridge'
+  );
+  const response = await bridgeCall<{ readonly dataUrl?: unknown }>(
+    'runtimeGetEditorIcon',
+    { editorId }
+  );
+  const dataUrl =
+    typeof response?.dataUrl === 'string' ? response.dataUrl.trim() : '';
+  if (!dataUrl.startsWith('data:image/')) {
+    throw new Error('Editor icon is unavailable.');
+  }
+  return dataUrl;
+}
+
 export async function fetchExplorerPdfMetadata(input: {
   readonly relativePath: string;
   readonly workspaceRoot: string;
-}): Promise<{ readonly pageCount: number }> {
+}): Promise<{
+  readonly pageCount: number;
+  readonly width: number;
+  readonly height: number;
+}> {
   'background only';
   const { inspectProjectPdf } = await import(
     /* webpackMode: "eager" */ '../data/synaraClient'
@@ -716,6 +825,14 @@ export async function fetchThreadHeaderSummary(
     project: project?.title ?? 'Synara',
     branch: thread.branch,
     envMode: thread.envMode,
+    handoff: thread.handoff,
+    messages: thread.messages,
+    activities: thread.activities,
+    worktreePath: thread.worktreePath,
+    associatedWorktreePath: thread.associatedWorktreePath,
+    associatedWorktreeBranch: thread.associatedWorktreeBranch,
+    associatedWorktreeRef: thread.associatedWorktreeRef,
+    createBranchFlowCompleted: thread.createBranchFlowCompleted,
     provider: thread.session?.provider ?? thread.modelSelection.provider,
     modelSelection: thread.modelSelection,
     runtimeMode: thread.runtimeMode,
@@ -724,6 +841,7 @@ export async function fetchThreadHeaderSummary(
     error: thread.session?.lastError ?? null,
     errorRevision: thread.session?.updatedAt ?? null,
     activeTurnId: thread.session?.activeTurnId ?? null,
+    sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
     latestTurnState: thread.latestTurn?.state ?? null,
     workspaceRoot: project?.workspaceRoot ?? null,
     notes: thread.notes ?? '',
@@ -749,6 +867,7 @@ export async function fetchThreadHeaderSummary(
       thread.activities,
       thread.pendingInteractions
     ),
+    checkpoints: thread.checkpoints,
   };
 }
 
@@ -788,8 +907,12 @@ export async function fetchThreadTranscriptRows(
     return [];
   }
 
+  const visibleMessages = filterSidechatTranscriptMessages(
+    thread.messages,
+    Boolean(thread.sidechatSourceThreadId)
+  );
   const visibleTurnIds = new Set(
-    thread.messages.flatMap((message) =>
+    visibleMessages.flatMap((message) =>
       message.turnId ? [message.turnId] : []
     )
   );
@@ -802,11 +925,31 @@ export async function fetchThreadTranscriptRows(
     { visibleTurnIds }
   );
   const timelineEntries = deriveTimelineEntries(
-    thread.messages as Parameters<typeof deriveTimelineEntries>[0],
+    visibleMessages as Parameters<typeof deriveTimelineEntries>[0],
     thread.proposedPlans as Parameters<typeof deriveTimelineEntries>[1],
     workEntries
   );
   const activeTurnInProgress = thread.latestTurn?.state === 'running';
+  const turnDiffSummaryByAssistantMessageId =
+    buildTurnDiffSummaryByAssistantMessageId({
+      turnDiffSummaries: thread.turnDiffSummaries,
+      messages: visibleMessages.map((message) => ({
+        id: message.id,
+        role: message.role,
+        turnId: message.turnId ?? null,
+      })),
+    });
+  const inferredCheckpointTurnCountByTurnId = Object.fromEntries(
+    [...thread.turnDiffSummaries]
+      .sort((left, right) => left.completedAt.localeCompare(right.completedAt))
+      .map((summary, index) => [summary.turnId, index + 1])
+  );
+  const revertTurnCountByUserMessageId =
+    buildRevertTurnCountByUserMessageId({
+      timelineEntries,
+      turnDiffSummaryByAssistantMessageId,
+      inferredCheckpointTurnCountByTurnId,
+    });
   const rows = deriveMessagesTimelineRows({
     timelineEntries,
     isWorking: activeTurnInProgress,
@@ -815,8 +958,8 @@ export async function fetchThreadTranscriptRows(
     activeTurnInProgress,
     activeTurnId: thread.latestTurn?.turnId ?? null,
     activeTurnStartedAt: thread.latestTurn?.startedAt ?? null,
-    turnDiffSummaryByAssistantMessageId: new Map(),
-    revertTurnCountByUserMessageId: new Map(),
+    turnDiffSummaryByAssistantMessageId,
+    revertTurnCountByUserMessageId,
   });
   transcriptRowsByThreadId.set(threadId, {
     snapshotSequence: snapshot.snapshotSequence,

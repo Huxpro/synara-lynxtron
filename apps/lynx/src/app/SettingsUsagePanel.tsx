@@ -79,7 +79,7 @@ function UsageLimitRow(props: {
           aria-valuemax={100}
           accessibility-element
           accessibility-label={`${display.label}: ${Math.round(display.remainingPercent)}% remaining`}
-          accessibility-traits="text"
+          accessibility-trait="text"
           accessibility-value={`${Math.round(display.remainingPercent)}%`}
         >
           <view
@@ -189,7 +189,7 @@ export function SettingsUsagePanel() {
                   accessibility-label={`${providerName}${
                     statusText ? `: ${statusText}` : ''
                   }`}
-                  accessibility-traits="text"
+                  accessibility-trait="text"
                 >
                   <view className="SettingsUsageProviderIdentity">
                     <view className="SettingsUsageProviderIcon">
@@ -214,7 +214,7 @@ export function SettingsUsagePanel() {
                         className="SettingsUsageNotice"
                         accessibility-element
                         accessibility-label={snapshot.detail}
-                        accessibility-traits="text"
+                        accessibility-trait="text"
                       >
                         <TriangleAlertIcon
                           className="SettingsUsageNoticeIcon"
@@ -255,7 +255,7 @@ export function SettingsUsagePanel() {
                             accessibility-label={`${line.label}: ${line.value}${
                               line.subtitle ? `. ${line.subtitle}` : ''
                             }`}
-                            accessibility-traits="text"
+                            accessibility-trait="text"
                           >
                             <view className="SettingsUsageLineHeader">
                               <text className="SettingsUsageLabel">

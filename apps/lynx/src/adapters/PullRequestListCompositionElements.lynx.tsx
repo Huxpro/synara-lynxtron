@@ -20,7 +20,7 @@ export function PullRequestListGroupTitleElement(
         props.separated ? ' SharedPrGroupTitle--separated' : ''
       }`}
       accessibility-element={true}
-      accessibility-traits="header"
+      accessibility-trait="header"
     >
       {props.children}
     </text>
@@ -41,7 +41,7 @@ export function PullRequestListLoadingElement(props: {
       className="SharedPrLoading"
       accessibility-element={semantics.announce}
       accessibility-label={props.label}
-      accessibility-traits="updating"
+      accessibility-trait="updating"
     >
       {Array.from({ length: props.rowCount }, (_, index) => (
         <view key={index} className="SharedPrLoadingRow" />
@@ -66,7 +66,7 @@ export function PullRequestListEmptyElement(props: {
       className="SharedPrEmpty"
       accessibility-element={semantics.announce}
       accessibility-label={announcement}
-      accessibility-traits="text"
+      accessibility-trait="text"
     >
       <text className="SharedPrEmptyTitle">{props.title}</text>
       <text className="SharedPrEmptyDescription">{props.description}</text>

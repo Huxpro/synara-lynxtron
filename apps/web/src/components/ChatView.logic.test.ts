@@ -27,6 +27,7 @@ import {
   resolveCommittedProviderModel,
   resolveCycledModelSlug,
   resolveDefaultEnvironmentPanelOpen,
+  resolveEnvironmentPanelLayout,
   resolveEnvironmentPanelOpen,
   resolveEnvironmentPanelPreferenceAfterFirstSend,
   resolveEnvironmentPanelPreferenceUpdate,
@@ -683,6 +684,30 @@ describe("voice helpers", () => {
     ).toBe("The transcription response did not include any text.");
   });
 
+  it("extracts the actionable message from a nested RPC failure envelope", () => {
+    expect(
+      sanitizeVoiceErrorMessage(
+        'Synara RPC server.transcribeVoice failed: [{"_tag":"Fail","error":{"_tag":"WsRpcError","message":"Provider adapter request failed (codex) for voice/transcribe: Outbound request failed.","cause":{"message":"Outbound request failed."}}}]',
+      ),
+    ).toBe("Outbound request failed.");
+  });
+
+  it("strips a plain Synara RPC transport prefix", () => {
+    expect(
+      sanitizeVoiceErrorMessage(
+        "Synara RPC server.transcribeVoice failed: socket closed",
+      ),
+    ).toBe("socket closed");
+  });
+
+  it("strips a plain provider adapter voice prefix", () => {
+    expect(
+      sanitizeVoiceErrorMessage(
+        "Error: Provider adapter request failed (codex) for voice/transcribe: Outbound request failed.",
+      ),
+    ).toBe("Outbound request failed.");
+  });
+
   it("detects auth-expired copy in sanitized voice errors", () => {
     expect(isVoiceAuthExpiredMessage("Sign in again to ChatGPT")).toBe(true);
     expect(isVoiceAuthExpiredMessage("The microphone could not be opened.")).toBe(false);
@@ -725,6 +750,45 @@ describe("voice helpers", () => {
 });
 
 describe("environment panel visibility", () => {
+  it("docks only populated unconstrained chat surfaces", () => {
+    expect(
+      resolveEnvironmentPanelLayout({
+        environmentEnabled: true,
+        environmentPanelOpen: true,
+        isCenteredEmptyLanding: false,
+        isConstrainedChatLayout: false,
+      }),
+    ).toEqual({
+      visible: true,
+      variant: "docked",
+      appliesContentInset: true,
+    });
+    expect(
+      resolveEnvironmentPanelLayout({
+        environmentEnabled: true,
+        environmentPanelOpen: true,
+        isCenteredEmptyLanding: true,
+        isConstrainedChatLayout: false,
+      }),
+    ).toEqual({
+      visible: true,
+      variant: "docked",
+      appliesContentInset: false,
+    });
+    expect(
+      resolveEnvironmentPanelLayout({
+        environmentEnabled: true,
+        environmentPanelOpen: true,
+        isCenteredEmptyLanding: false,
+        isConstrainedChatLayout: true,
+      }),
+    ).toEqual({
+      visible: true,
+      variant: "floating",
+      appliesContentInset: false,
+    });
+  });
+
   it("keeps normal chat threads closed by default unless the setting opts in", () => {
     expect(
       resolveDefaultEnvironmentPanelOpen({

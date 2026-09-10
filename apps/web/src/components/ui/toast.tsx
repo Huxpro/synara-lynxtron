@@ -384,7 +384,7 @@ function ArchiveUndoToastSurface({
   );
 }
 
-function ToastSurface({
+export function ToastSurface({
   toast,
   compact,
   hideCollapsedContent,
@@ -446,6 +446,26 @@ function ToastSurface({
 
       <ToastCloseButton compact={compact} onClose={toast.data?.onClose} onDismiss={onDismiss} />
     </Toast.Content>
+  );
+}
+
+export function ToastSurfaceFixture(props: {
+  readonly toast: ToastObject<ThreadToastData>;
+}) {
+  return (
+    <Toast.Provider toastManager={toastManager}>
+      <Toast.Root
+        className={toastRootClassName('top-center', false)}
+        toast={props.toast}
+      >
+        <ToastSurface
+          compact={false}
+          hideCollapsedContent={false}
+          onDismiss={() => {}}
+          toast={props.toast}
+        />
+      </Toast.Root>
+    </Toast.Provider>
   );
 }
 

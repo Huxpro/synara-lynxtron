@@ -51,6 +51,8 @@ export function KanbanOverviewProjectHeaderElement(props: ChildrenProps & {
   return (
     <view
       className={interaction.className}
+      data-project-header-hovered={interaction.hovered ? 'true' : 'false'}
+      data-project-header-focused={interaction.focused ? 'true' : 'false'}
       {...interaction.eventProps}
     >
       {props.children}

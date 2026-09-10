@@ -12,7 +12,10 @@ import {
 import { CheckIcon, ChevronLeftIcon, ChevronRightIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 import { ComposerChoiceRow } from "./ComposerChoiceRow";
-import { COMPOSER_INPUT_SURFACE_CLASS_NAME } from "./composerPickerStyles";
+import {
+  COMPOSER_DECISION_PANEL_CLASS_NAME,
+  COMPOSER_INPUT_SURFACE_CLASS_NAME,
+} from "./composerPickerStyles";
 
 import { addDocumentEventListener, removeDocumentEventListener } from "~/platform/events";
 interface PendingUserInputPanelProps {
@@ -155,7 +158,13 @@ function ComposerPendingUserInputCard({
   const canGoForward = !progress.isLastQuestion && progress.canAdvance;
 
   return (
-    <div className={cn(COMPOSER_INPUT_SURFACE_CLASS_NAME, "overflow-hidden px-3.5 py-3")}>
+    <div
+      className={cn(
+        COMPOSER_INPUT_SURFACE_CLASS_NAME,
+        COMPOSER_DECISION_PANEL_CLASS_NAME,
+        "px-3.5 py-3",
+      )}
+    >
       <div className="flex items-start justify-between gap-3">
         <p className="min-w-0 text-[13px] font-medium leading-snug text-foreground/90">
           {activeQuestion.question}

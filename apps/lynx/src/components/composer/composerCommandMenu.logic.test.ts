@@ -1,7 +1,9 @@
 import { describe, expect, it } from '@rstest/core';
 
 import {
+  buildLynxAgentMentionItems,
   buildLynxSlashCommandItems,
+  resolveLynxAgentMentionSelection,
   resolveLynxSkillSelection,
   resolveLynxSlashCommandSelection,
   resolveLynxThreadMentionSelection,
@@ -15,6 +17,31 @@ const TRIGGER = {
 } as const;
 
 describe('Lynx composer command menu bridge', () => {
+  it('reuses provider agent aliases for mention autocomplete and insertion', () => {
+    const items = buildLynxAgentMentionItems('codex', 'mini');
+    expect(items[0]).toMatchObject({
+      type: 'agent',
+      alias: 'mini',
+      label: '@mini',
+    });
+    expect(
+      resolveLynxAgentMentionSelection({
+        item: items[0]!,
+        prompt: '@min',
+        trigger: {
+          kind: 'mention',
+          query: 'min',
+          rangeStart: 0,
+          rangeEnd: 4,
+        },
+      })
+    ).toEqual({
+      prompt: '@mini()',
+      selectionStart: 6,
+      selectionEnd: 6,
+    });
+  });
+
   it('offers only commands backed by real Lynx actions', () => {
     expect(buildLynxSlashCommandItems('').map((item) => item.id)).toEqual([
       'slash:plan',
@@ -125,6 +152,41 @@ describe('Lynx composer command menu bridge', () => {
       skill: {
         name: 'review',
         path: '/workspace/.codex/skills/review/SKILL.md',
+      },
+    });
+  });
+
+  it('selects provider skills from the shared slash-command lane', () => {
+    expect(
+      resolveLynxSkillSelection({
+        item: {
+          id: 'skill:/workspace/.codex/skills/polish/SKILL.md',
+          type: 'skill',
+          skill: {
+            name: 'polish',
+            description: 'Polish the current change',
+            path: '/workspace/.codex/skills/polish/SKILL.md',
+            scope: 'codex',
+          },
+          label: 'polish',
+          description: 'Polish the current change',
+        },
+        prompt: '/pol',
+        provider: 'codex',
+        trigger: {
+          kind: 'slash-command',
+          query: 'pol',
+          rangeStart: 0,
+          rangeEnd: 4,
+        },
+      })
+    ).toEqual({
+      prompt: '/polish ',
+      selectionStart: 8,
+      selectionEnd: 8,
+      skill: {
+        name: 'polish',
+        path: '/workspace/.codex/skills/polish/SKILL.md',
       },
     });
   });

@@ -2,7 +2,10 @@ import { useEffect, useRef } from '@lynx-js/react';
 
 import type { SystemStateIntent } from '@synara-web/components/systemStateSemantics';
 
-import { resolveNextSystemStateAnnouncement } from './system-state-announcement.logic';
+import {
+  resolveNextSystemStateAnnouncement,
+  type SystemStateAnnouncementInput,
+} from './system-state-announcement.logic';
 
 interface LynxAccessibilityApi {
   accessibilityAnnounce?: (
@@ -13,7 +16,7 @@ interface LynxAccessibilityApi {
 
 export function useLynxSystemStateAnnouncement(input: {
   readonly intent: SystemStateIntent;
-  readonly announcement?: string;
+  readonly announcement?: SystemStateAnnouncementInput;
 }) {
   const previousKeyRef = useRef<string | null>(null);
 

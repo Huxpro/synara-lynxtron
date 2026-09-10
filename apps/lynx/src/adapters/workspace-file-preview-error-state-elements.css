@@ -1,0 +1,5 @@
+.SharedFilePreviewErrorState { display: flex; min-height: 0; flex: 1; padding: 12px; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 8px; }
+.SharedFilePreviewErrorTitle { color: var(--destructive); font-size: 11px; font-weight: 500; line-height: 16px; }
+.SharedFilePreviewErrorDescription { color: var(--muted-foreground); font-size: 11px; line-height: 16px; }
+.SharedFilePreviewErrorDetail { max-width: 100%; color: var(--muted-foreground); font-family: var(--font-mono-family); font-size: 10px; line-height: 16px; opacity: 0.8; }
+.SharedFilePreviewErrorActions { display: flex; flex-direction: row; align-items: center; gap: 8px; }

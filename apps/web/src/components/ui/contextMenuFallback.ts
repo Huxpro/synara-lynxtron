@@ -99,7 +99,6 @@ export function showContextMenuFallback<T extends string>(
       const label = document.createElement("span");
       label.textContent = item.label;
       btn.appendChild(label);
-
       btn.addEventListener("click", () => cleanup(item.id));
       btn.addEventListener("mouseenter", () =>
         focusItem(buttons.length > 0 ? buttons.indexOf(btn) : 0),

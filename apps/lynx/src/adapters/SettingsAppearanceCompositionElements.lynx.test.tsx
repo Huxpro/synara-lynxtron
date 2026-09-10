@@ -24,6 +24,10 @@ describe('Settings Appearance fidelity', () => {
       new URL('../app/App.css', import.meta.url),
       'utf8'
     );
+    const primitiveStyles = readFileSync(
+      new URL('../components/ui/primitives.css', import.meta.url),
+      'utf8'
+    );
 
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceRoot\s*\{[^}]*gap:\s*24px;/s
@@ -59,16 +63,14 @@ describe('Settings Appearance fidelity', () => {
     expect(source).toContain('MoonIcon');
     expect(source).toContain('DeviceLaptopIcon');
     expect(source).toContain('<text className="LxButton__text">{option.label}</text>');
-    expect(styles).toMatch(
-      /\.SharedSettingsAppearanceSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border:\s*1px solid var\(--settings-switch-border\);/s
+    expect(primitiveStyles).toMatch(
+      /\.LxSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border:\s*1px solid var\(--settings-switch-border\);/s
     );
     expect(source).toContain('role="radiogroup"');
     expect(source).toContain('role="radio"');
     expect(source).toContain('aria-checked={active}');
-    expect(source).toContain('accessibility-role="switch"');
-    expect(source).toContain(
-      'accessibility-state={{ checked: props.checked }}'
-    );
+    expect(source).toContain("import { Switch } from '../components/ui/switch.lynx';");
+    expect(source).toContain('<Switch checked={props.checked}');
     expect(source).toContain(
       "'accessibility-state': { selected: active }"
     );

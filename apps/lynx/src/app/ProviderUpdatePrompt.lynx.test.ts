@@ -15,13 +15,32 @@ describe('Lynx provider update prompt copy', () => {
     expect(source).toContain('className="ProviderUpdatePromptContent"');
     expect(source).toContain('className="ProviderUpdatePromptActions"');
     expect(source).toContain('className="ProviderUpdatePromptDismiss"');
+    expect(source).toContain('export function ProviderUpdatePromptSurface');
+    expect(source).toContain('<ProviderUpdatePromptSurface');
+    expect(source).toContain('<CircleAlertIcon');
+    expect(source).toContain(") : updating ? (");
+    expect(source).toContain(") : failed ? (");
+    expect(source).toContain('Review providers');
+    expect(source).toContain('Copy');
+    expect(styles).toMatch(
+      /\.ProviderUpdatePromptIcon--updating\s*\{[^}]*animation:\s*ProviderUpdatePromptSpin 900ms linear infinite;/s
+    );
     expect(source).toContain('runProviderUpdateBatch({');
     expect(source).toContain('providerUpdateOutcomeCopy(outcome)');
+    expect(source).toContain("queryKey: ['server-config']");
+    expect(source).toContain("queryKey: ['server-settings']");
+    expect(source).not.toContain("queryKey: ['provider-update-prompt']");
+    expect(source).toContain('PROVIDER_UPDATE_INITIAL_REFRESH_DELAY_MS');
+    expect(source).toContain('PROVIDER_UPDATE_REFRESH_INTERVAL_MS');
+    expect(source).toContain('refreshProviderUpdatePromptServerConfig()');
+    expect(source).toContain("queryClient.setQueryData(['server-config'], nextConfig)");
     expect(source).toContain("activeOutcome?.status === 'succeeded'");
-    expect(source).toContain('Copy command');
+    expect(source).toContain('Copy');
+    expect(source).toContain('Review providers');
+    expect(source).toContain('Updating…');
     expect(source).not.toContain('Promise.allSettled');
     expect(styles).toMatch(
-      /\.ProviderUpdatePrompt\s*\{[^}]*width:\s*384px;[^}]*min-height:\s*122px;[^}]*border-radius:\s*18px;/s
+      /\.ProviderUpdatePrompt\s*\{[^}]*width:\s*100%;[^}]*min-height:\s*122px;[^}]*border-radius:\s*18px;/s
     );
     expect(styles).toMatch(
       /\.ProviderUpdatePromptTitle\s*\{[^}]*font-size:\s*14px;[^}]*font-weight:\s*400;[^}]*line-height:\s*20px;/s
@@ -38,11 +57,9 @@ describe('Lynx provider update prompt copy', () => {
     expect(styles).toMatch(
       /\.ProviderUpdatePromptAction \+ \.ProviderUpdatePromptAction\s*\{[^}]*margin-left:\s*6px;/s
     );
-    expect(styles).toMatch(
-      /\.ProviderUpdatePrompt--failure\s*\{[^}]*min-height:\s*162px;/s
-    );
-    expect(styles).toMatch(
-      /\.ProviderUpdatePrompt--failure \.ProviderUpdatePromptDescription\s*\{[^}]*height:\s*auto;[^}]*min-height:\s*80px;/s
+    expect(styles).not.toContain('.ProviderUpdatePrompt--failure {');
+    expect(styles).not.toContain(
+      '.ProviderUpdatePrompt--failure .ProviderUpdatePromptDescription'
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-compact \.ProviderUpdatePrompt\s*\{[^}]*min-height:\s*126px;/s

@@ -5,6 +5,8 @@ import {
   useRef,
   useState,
 } from '@lynx-js/react';
+import { getRectByRef } from '@lynx-js/lynx-ui';
+import type { NodesRef } from '@lynx-js/types';
 import { useQuery } from '@tanstack/react-query';
 import type {
   ModelSelection,
@@ -12,20 +14,41 @@ import type {
   ProviderMentionReference,
   ProviderSkillReference,
   ServerProviderStatus,
+  OrchestrationThreadActivity,
 } from '@synara/contracts';
 import agentMentionSvg from '@synara-central-icons/robot.svg?raw';
 import skillSvg from '@synara-central-icons/building-blocks.svg?raw';
 import terminalSvg from '@synara-central-icons/console.svg?raw';
+import {
+  DEFAULT_CHAT_COMPOSER_PLACEHOLDER,
+  resolveEmptyComposerEditorMinHeightPx,
+} from '@synara/shared/composerPlaceholder';
+import {
+  appendVoiceTranscriptToPrompt,
+  deriveComposerVoiceState,
+  describeVoiceRecordingStartError,
+  isVoiceRecorderActionArmed,
+  resolveVoiceRecordingStartGuard,
+  resolveVoiceTranscriptionFailure,
+} from '@synara/shared/composerVoice';
+import {
+  DEFAULT_CHAT_FONT_SIZE_PX,
+  normalizeChatFontSizePx,
+} from '@synara-web/chatFontSize';
 
 import { useComposerDraftStore } from '../../adapters/composerDraftStore.lynx';
+import { resolveNativeComposerMaxLines } from './composerNativeLines.logic';
 import { useTheme } from '../../adapters/useTheme.lynx';
 import { ClockIcon, ExternalLinkIcon } from '../../lib/icons.lynx';
 import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
 import { dialogs } from '../../platform/dialogs';
-import { onGlobalEvent } from '../../platform/bridge';
+import { bridgeCall, onGlobalEvent } from '../../platform/bridge';
+import { claimComposerInputFocus, subscribeTerminalInputFocusOwner } from '../../platform/inputFocusOwnership.lynx';
 import { clipboard as clipboardPort } from '../../platform/clipboard';
 import { sleepOnHost } from '../../platform/timer';
+import { nativeVoiceRecorder } from '../../platform/voiceRecorder.lynx';
 import { fetchSidebarSnapshot } from '../../app/queries';
+import { useLynxVoiceNotificationStore } from '../../app/voiceNotificationStore.lynx';
 import {
   splitPromptIntoComposerSegments,
   type ComposerPromptSegment,
@@ -52,6 +75,13 @@ import {
 } from '@synara-web/lib/providerDiscovery';
 import { resolveRuntimeModelDescriptor } from '@synara-web/components/chat/runtimeModelCapabilities';
 import { ComposerRuntimeModeControlComposition } from '@synara-web/components/chat/ComposerRuntimeModeControlComposition';
+import { shouldUseCompactComposerFooter } from '@synara-web/components/composerFooterLayout';
+import {
+  deriveCumulativeCostUsd,
+  deriveContextWindowMeterDisplay,
+  deriveLatestContextWindowSnapshot,
+} from '@synara-web/lib/contextWindow';
+import { ComposerContextWindowMeterElement } from '../../adapters/ComposerInputCompositionElements.lynx';
 import { ComposerReferenceAttachmentsComposition } from '@synara-web/components/chat/ComposerReferenceAttachmentsComposition';
 import {
   ComposerEditorRegionComposition,
@@ -76,11 +106,14 @@ import {
   createPastedTextDraft,
   type PastedTextDraft,
 } from '@synara-web/lib/composerPastedText';
+import type { TerminalContextDraft } from '@synara-web/lib/terminalContext';
 import {
   dispatchSynaraCommand,
-  fetchFreshServerConfig,
+  fetchServerConfig,
   fetchProviderModels,
   fetchProviderSkills,
+  refreshProviderStatuses,
+  transcribeVoice,
 } from '../../data/synaraClient.lynx';
 import {
   buildComposerInteractionModeSetCommand,
@@ -126,13 +159,20 @@ import {
 } from './composerAttachments.lynx';
 import { ComposerModelControl } from './ComposerModelControl.lynx';
 import {
+  ComposerVoiceButton,
+  ComposerVoiceRecorderBar,
+} from './ComposerVoiceControls.lynx';
+import { scaleNativeVoiceWaveformLevel } from './composerVoiceWaveform.logic';
+import {
   ExpandedImageOverlay,
   type NativeExpandedImagePreview,
 } from './ExpandedImageOverlay.lynx';
 import { FileEntryIcon } from '../FileEntryIcon.lynx';
 import { Button } from '../ui/button';
 import {
+  buildLynxAgentMentionItems,
   buildLynxSlashCommandItems,
+  resolveLynxAgentMentionSelection,
   resolveLynxSkillSelection,
   resolveLynxSlashCommandSelection,
   resolveLynxThreadMentionSelection,
@@ -156,11 +196,13 @@ const EMPTY_IMAGES: ReadonlyArray<NativeComposerImageAttachment> = [];
 const EMPTY_NON_PERSISTED_IMAGE_IDS: ReadonlyArray<string> = [];
 const EMPTY_FILE_COMMENTS = [];
 const EMPTY_SKILLS: ReadonlyArray<ProviderSkillReference> = [];
+const EMPTY_TERMINAL_CONTEXTS: ReadonlyArray<TerminalContextDraft> = [];
 const EMPTY_COMMAND_ITEMS: ReadonlyArray<ComposerCommandItem> = [];
 interface ComposerEditorHistoryContext {
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
   readonly skills: ReadonlyArray<ProviderSkillReference>;
+  readonly terminalContexts: ReadonlyArray<TerminalContextDraft>;
 }
 function segmentLabel(segment: ComposerTokenSegment): string {
   if (segment.type === 'mention') return segment.path.split(/[\\/]/).pop() || segment.path;
@@ -182,7 +224,7 @@ function ComposerTokenIcon(props: {
   readonly pathValue?: string;
   readonly color?: string;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   if (props.kind === 'mention') {
     return (
       <FileEntryIcon
@@ -222,7 +264,7 @@ function ComposerTokenIcon(props: {
         content,
         props.color ??
           (props.kind === 'terminal-context'
-            ? svgColors.foreground
+            ? semanticIconColor('primary')
             : 'var(--info-foreground)')
       )}
     />
@@ -266,8 +308,10 @@ function ComposerChip({
 }
 
 function ComposerProjectionChip({
+  fontSizePx,
   token,
 }: {
+  readonly fontSizePx: number;
   readonly token: NativeComposerDisplayToken;
 }) {
   return (
@@ -280,14 +324,18 @@ function ComposerProjectionChip({
             : undefined
         }
       />
-      <text className="ComposerChipLabel">{token.label}</text>
+      <text className="ComposerChipLabel" style={{ fontSize: `${fontSizePx}px` }}>
+        {token.label}
+      </text>
     </view>
   );
 }
 
 function ComposerProjectedVisualContent({
+  fontSizePx,
   projection,
 }: {
+  readonly fontSizePx: number;
   readonly projection: ReturnType<typeof createNativeComposerDraftProjection>;
 }) {
   return (
@@ -298,10 +346,16 @@ function ComposerProjectedVisualContent({
           key={`plain:${index}`}
         >
           {plain ? (
-            <text className="ComposerProjectedVisualText">{plain}</text>
+            <text
+              className="ComposerProjectedVisualText"
+              style={{ fontSize: `${fontSizePx}px` }}
+            >
+              {plain}
+            </text>
           ) : null}
           {projection.displayTokens[index] ? (
             <ComposerProjectionChip
+              fontSizePx={fontSizePx}
               token={projection.displayTokens[index]!}
             />
           ) : null}
@@ -312,6 +366,8 @@ function ComposerProjectedVisualContent({
 }
 
 interface ComposerProps {
+  readonly availableWidth?: number | null;
+  readonly chatFontSizePx?: number;
   readonly activeTurnId: string | null;
   readonly interactionMode: 'default' | 'plan' | undefined;
   readonly modelSelection: ModelSelection | undefined;
@@ -321,7 +377,10 @@ interface ComposerProps {
   readonly draftId?: string;
   readonly workspaceRoot?: string | null;
   readonly emptyLanding?: boolean;
+  readonly voiceInputEnabled?: boolean;
   readonly providerStatuses?: readonly ServerProviderStatus[];
+  readonly pendingUserInputCount?: number;
+  readonly activities?: readonly OrchestrationThreadActivity[];
   readonly onBeforeSend?: (input: {
     readonly interactionMode: 'default' | 'plan';
     readonly modelSelection: ModelSelection;
@@ -346,6 +405,8 @@ function createComposerDispatchId(kind: 'command' | 'message'): string {
 }
 
 export function Composer({
+  availableWidth = null,
+  chatFontSizePx = DEFAULT_CHAT_FONT_SIZE_PX,
   activeTurnId,
   interactionMode,
   modelSelection,
@@ -355,13 +416,40 @@ export function Composer({
   draftId,
   workspaceRoot,
   emptyLanding = false,
+  voiceInputEnabled = false,
   providerStatuses,
+  pendingUserInputCount = 0,
+  activities = [],
   onBeforeSend,
   onProviderStatusesChange,
   onSetInteractionMode,
   onSetRuntimeMode,
   onSendSucceeded,
 }: ComposerProps) {
+  const compactFooter = shouldUseCompactComposerFooter(availableWidth);
+  const contextWindow = useMemo(
+    () => deriveLatestContextWindowSnapshot(activities),
+    [activities]
+  );
+  const contextWindowDisplay = useMemo(
+    () =>
+      contextWindow === null
+        ? null
+        : deriveContextWindowMeterDisplay(contextWindow),
+    [contextWindow]
+  );
+  const cumulativeCostUsd = useMemo(
+    () => deriveCumulativeCostUsd(activities),
+    [activities]
+  );
+  const normalizedChatFontSizePx = normalizeChatFontSizePx(chatFontSizePx);
+  const emptyEditorMinHeightPx = resolveEmptyComposerEditorMinHeightPx({
+    availableWidthPx: availableWidth,
+    chatFontSizePx: normalizedChatFontSizePx,
+    placeholder: emptyLanding
+      ? 'Ask for follow-up changes or attach images'
+      : DEFAULT_CHAT_COMPOSER_PLACEHOLDER,
+  });
   const initData = useInitData() as {
     readonly initialComposerModelProvider?: unknown;
   };
@@ -372,6 +460,8 @@ export function Composer({
       : null;
   const { resolvedTheme, svgColors } = useTheme();
   const textareaRef = useRef<React.ElementRef<'textarea'>>(null);
+  const editorRegionRef = useRef<NodesRef>(null);
+  const nativeFocusRequestPendingRef = useRef(false);
   const brandedThreadId = (draftId ?? threadId) as never;
   const draft = useComposerDraftStore(
     (state) => state.draftsByThreadId[brandedThreadId]?.prompt ?? ''
@@ -413,15 +503,26 @@ export function Composer({
   const skills = useComposerDraftStore(
     (state) => state.draftsByThreadId[brandedThreadId]?.skills ?? EMPTY_SKILLS
   );
+  const terminalContexts = useComposerDraftStore(
+    (state) =>
+      state.draftsByThreadId[brandedThreadId]?.terminalContexts ??
+      EMPTY_TERMINAL_CONTEXTS
+  );
   const draftProjection = useMemo(
     () =>
       createNativeComposerDraftProjection({
         canonicalText: draft,
         mentions,
         skills,
+        terminalContexts,
       }),
-    [draft, mentions, skills]
+    [draft, mentions, skills, terminalContexts]
   );
+  const nativeEditorMaxLines = resolveNativeComposerMaxLines({
+    availableWidthPx: availableWidth,
+    chatFontSizePx: normalizedChatFontSizePx,
+    text: draftProjection.displayText,
+  });
   const draftModelSelection = useComposerDraftStore(
     (state) =>
       state.draftsByThreadId[brandedThreadId]?.modelSelection
@@ -451,11 +552,27 @@ export function Composer({
   );
   const setMentions = useComposerDraftStore((state) => state.setMentions);
   const setSkills = useComposerDraftStore((state) => state.setSkills);
+  const setTerminalContexts = useComposerDraftStore(
+    (state) => state.setTerminalContexts
+  );
   const [focused, setFocused] = useState(false);
+  const [nativeEditorFocusEpoch, setNativeEditorFocusEpoch] = useState(0);
   const [isSending, setIsSending] = useState(false);
   const sendInFlightRef = useRef(false);
   const [isStopping, setIsStopping] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
+  const showVoiceNotification = useLynxVoiceNotificationStore(
+    (state) => state.show
+  );
+  const [voiceHostSupported, setVoiceHostSupported] = useState(false);
+  const [isVoiceRecording, setIsVoiceRecording] = useState(false);
+  const [isVoiceTranscribing, setIsVoiceTranscribing] = useState(false);
+  const [voiceDurationMs, setVoiceDurationMs] = useState(0);
+  const [voiceWaveformLevels, setVoiceWaveformLevels] = useState<readonly number[]>([]);
+  const voiceRequestIdRef = useRef(0);
+  const voiceThreadIdRef = useRef(brandedThreadId);
+  const voiceProviderRef = useRef<ProviderKind | undefined>(undefined);
+  const voiceStartedAtRef = useRef<number | null>(null);
   const [expandedImage, setExpandedImage] =
     useState<NativeExpandedImagePreview | null>(null);
   const [composerTrigger, setComposerTrigger] =
@@ -486,6 +603,47 @@ export function Composer({
   >(null);
   useEffect(() => {
     'background only';
+    if (!voiceInputEnabled) {
+      setVoiceHostSupported(false);
+      return;
+    }
+    voiceThreadIdRef.current = brandedThreadId;
+    voiceRequestIdRef.current += 1;
+    voiceStartedAtRef.current = null;
+    setIsVoiceRecording(false);
+    setIsVoiceTranscribing(false);
+    setVoiceDurationMs(0);
+    setVoiceWaveformLevels([]);
+    void nativeVoiceRecorder.cancel();
+    void nativeVoiceRecorder.getState().then((state) => {
+      if (voiceThreadIdRef.current === brandedThreadId) {
+        setVoiceHostSupported(state?.supported === true);
+      }
+    }).catch(() => setVoiceHostSupported(false));
+    return () => {
+      voiceRequestIdRef.current += 1;
+      void nativeVoiceRecorder.cancel();
+    };
+  }, [brandedThreadId, voiceInputEnabled]);
+  useEffect(() => {
+    'background only';
+    if (!isVoiceRecording || voiceStartedAtRef.current === null) return;
+    const timer = setInterval(() => {
+      const startedAt = voiceStartedAtRef.current;
+      if (startedAt !== null) setVoiceDurationMs(Math.max(0, Date.now() - startedAt));
+      void nativeVoiceRecorder.getState().then((state) => {
+        if (state?.recording) {
+          setVoiceWaveformLevels((current) => [
+            ...current,
+            scaleNativeVoiceWaveformLevel(state.level ?? 0),
+          ].slice(-160));
+        }
+      }).catch(() => undefined);
+    }, 50);
+    return () => clearInterval(timer);
+  }, [isVoiceRecording]);
+  useEffect(() => {
+    'background only';
     const prompt =
       useComposerDraftStore.getState().draftsByThreadId[brandedThreadId]
         ?.prompt ?? '';
@@ -495,6 +653,7 @@ export function Composer({
       canonicalText: prompt,
       mentions: current?.mentions ?? EMPTY_MENTIONS,
       skills: current?.skills ?? EMPTY_SKILLS,
+      terminalContexts: current?.terminalContexts ?? EMPTY_TERMINAL_CONTEXTS,
     });
     const selection = {
       selectionStart: projection.displayText.length,
@@ -514,6 +673,7 @@ export function Composer({
   }, [brandedThreadId]);
   const activeModelSelection = draftModelSelection ?? modelSelection;
   const activeProvider = activeModelSelection?.provider as ProviderKind | undefined;
+  voiceProviderRef.current = activeProvider;
   const discoveryProvider = modelCatalogProvider ?? activeProvider;
   const { data: mentionSnapshot } = useQuery({
     queryKey: ['sidebar-snapshot'],
@@ -547,11 +707,33 @@ export function Composer({
     queryKey: ['server-config'],
     queryFn: () => {
       'background only';
-      return fetchFreshServerConfig();
+      return fetchServerConfig();
     },
     staleTime: 15_000,
     retry: false,
   });
+  const voiceProviderStatus = (
+    providerStatuses ?? serverConfig?.providers ?? []
+  ).find((status) => status.provider === 'codex');
+  const voiceState = deriveComposerVoiceState({
+    authStatus: voiceProviderStatus?.authStatus,
+    voiceTranscriptionAvailable: voiceProviderStatus?.voiceTranscriptionAvailable,
+    isRecording: isVoiceRecording,
+    isTranscribing: isVoiceTranscribing,
+  });
+  const showVoiceNotesControl =
+    voiceHostSupported && voiceState.showVoiceNotesControl;
+  useEffect(() => {
+    'background only';
+    if (voiceState.canStartVoiceNotes || !isVoiceRecording) return;
+    voiceRequestIdRef.current += 1;
+    voiceStartedAtRef.current = null;
+    setIsVoiceRecording(false);
+    setIsVoiceTranscribing(false);
+    setVoiceDurationMs(0);
+    setVoiceWaveformLevels([]);
+    void nativeVoiceRecorder.cancel();
+  }, [isVoiceRecording, voiceState.canStartVoiceNotes]);
   useEffect(() => {
     if (serverConfig) {
       onProviderStatusesChange?.(serverConfig.providers);
@@ -579,7 +761,8 @@ export function Composer({
       });
     },
     enabled:
-      composerTrigger?.kind === 'skill' &&
+      (composerTrigger?.kind === 'skill' ||
+        composerTrigger?.kind === 'slash-command') &&
       Boolean(activeProvider) &&
       Boolean(workspaceRoot),
     staleTime: 30_000,
@@ -670,8 +853,18 @@ export function Composer({
         : [],
     [composerTrigger, mentionProjects, mentionThreads, threadId]
   );
+  const agentMentionItems = useMemo(
+    () =>
+      composerTrigger?.kind === 'mention' && activeProvider
+        ? buildLynxAgentMentionItems(activeProvider, composerTrigger.query)
+        : [],
+    [activeProvider, composerTrigger]
+  );
   const skillItems = useMemo<ComposerCommandItem[]>(() => {
-    if (composerTrigger?.kind !== 'skill') return [];
+    if (
+      composerTrigger?.kind !== 'skill' &&
+      composerTrigger?.kind !== 'slash-command'
+    ) return [];
     return rankProviderDiscoveryItems(
       providerSkillsCatalog?.skills ?? [],
       composerTrigger.query,
@@ -687,11 +880,11 @@ export function Composer({
   }, [composerTrigger, providerSkillsCatalog?.skills]);
   const composerMenuItems =
     composerTrigger?.kind === 'slash-command'
-      ? slashCommandItems
+      ? [...slashCommandItems, ...skillItems]
       : composerTrigger?.kind === 'skill'
         ? skillItems
         : composerTrigger?.kind === 'mention'
-          ? threadMentionItems
+          ? [...threadMentionItems, ...agentMentionItems]
           : EMPTY_COMMAND_ITEMS;
   const activeComposerMenuItemId = resolveComposerMenuActiveItemId({
     activeItemId: composerHighlightedItemId,
@@ -720,6 +913,7 @@ export function Composer({
       canonicalText: canonicalValue,
       mentions: current?.mentions ?? EMPTY_MENTIONS,
       skills: current?.skills ?? EMPTY_SKILLS,
+      terminalContexts: current?.terminalContexts ?? EMPTY_TERMINAL_CONTEXTS,
     });
     draftProjectionRef.current = projection;
     const safeCanonicalSelectionStart = Math.max(
@@ -764,11 +958,104 @@ export function Composer({
 
   function restoreNativeFocus() {
     'background only';
-    textareaRef.current?.invoke({ method: 'focus' }).exec();
-    textareaRef.current
-      ?.invoke({ method: 'setSelectionRange', params: nativeSelectionRef.current })
-      .exec();
+    claimComposerInputFocus();
+    if (nativeFocusRequestPendingRef.current) return;
+    nativeFocusRequestPendingRef.current = true;
+    const focusComposer = () => {
+      const textarea = textareaRef.current;
+      if (!textarea) {
+        nativeFocusRequestPendingRef.current = false;
+        return;
+      }
+      const restoreSelection = () => {
+        textarea
+          .invoke({
+            method: 'setSelectionRange',
+            params: nativeSelectionRef.current,
+            success: () => {
+              nativeFocusRequestPendingRef.current = false;
+            },
+            fail: () => {
+              nativeFocusRequestPendingRef.current = false;
+            },
+          })
+          .exec();
+      };
+      textarea
+        .invoke({
+          method: 'focus',
+          success: restoreSelection,
+          fail: () => {
+            setTimeout(() => {
+              textarea
+                .invoke({
+                  method: 'focus',
+                  success: restoreSelection,
+                  fail: () => {
+                    nativeFocusRequestPendingRef.current = false;
+                  },
+                })
+                .exec();
+            }, 0);
+          },
+        })
+        .exec();
+    };
+    void bridgeCall('shellReleaseTerminalInputFocus')
+      .then(focusComposer, focusComposer);
   }
+
+  function claimComposerInputOwnership() {
+    'background only';
+    claimComposerInputFocus();
+    void bridgeCall('shellClaimComposerInputFocus', {
+      owner: brandedThreadId,
+    }).catch(() => undefined);
+  }
+
+  function releaseComposerInputOwnership() {
+    'background only';
+    void bridgeCall('shellSetComposerInputFocused', {
+      enabled: false,
+      owner: brandedThreadId,
+    }).catch(() => undefined);
+  }
+
+  useEffect(() => {
+    'background only';
+    return subscribeTerminalInputFocusOwner((owner) => {
+      if (owner === null) return;
+      releaseComposerInputOwnership();
+      nativeFocusRequestPendingRef.current = false;
+      setFocused(false);
+      setNativeEditorFocusEpoch((current) => current + 1);
+    });
+  }, []);
+  useEffect(() => {
+    'background only';
+    return releaseComposerInputOwnership;
+  }, [brandedThreadId]);
+  useEffect(() => {
+    'background only';
+    const publishBounds = () => {
+      void getRectByRef(editorRegionRef, true)
+        .then((rect) =>
+          bridgeCall('shellSetComposerInputBounds', {
+            x: rect.left,
+            y: rect.top,
+            width: rect.width,
+            height: rect.height,
+          })
+        )
+        .catch(() => undefined);
+    };
+    const timers = [0, 80, 240].map((delay) => setTimeout(publishBounds, delay));
+    const dispose = onGlobalEvent('viewport:resize', publishBounds);
+    return () => {
+      for (const timer of timers) clearTimeout(timer);
+      dispose();
+    };
+  }, []);
 
   useEffect(() => {
     'background only';
@@ -818,6 +1105,7 @@ export function Composer({
           canonicalText: fallbackPrompt,
           mentions,
           skills,
+          terminalContexts,
         });
     const trackedSnapshot = nativeEditorSnapshotRef.current;
     const fallback: ComposerNativeEditorSnapshot =
@@ -878,6 +1166,7 @@ export function Composer({
         mentions: [...edit.mentions],
         pastedTexts: [...(current?.pastedTexts ?? EMPTY_PASTED_TEXTS)],
         skills: [...edit.skills],
+        terminalContexts: [...edit.terminalContexts],
       },
     };
   }
@@ -906,6 +1195,7 @@ export function Composer({
     }
     setMentions(brandedThreadId, snapshot.context.mentions);
     setSkills(brandedThreadId, snapshot.context.skills);
+    setTerminalContexts(brandedThreadId, snapshot.context.terminalContexts);
     setPrompt(brandedThreadId, snapshot.value);
     const nextTrigger = detectComposerTrigger(
       snapshot.value,
@@ -939,17 +1229,21 @@ export function Composer({
     if (transition.snapshot) restoreEditorHistorySnapshot(transition.snapshot);
   }
 
-  function selectAllNativeEditorText() {
+  async function selectAllNativeEditorText() {
     'background only';
     if (!focused) return;
-    const selected = selectAllComposerNativeEditor(
-      nativeEditorSnapshotRef.current
-    );
-    setNativeValue(
-      selected.value,
-      selected.selectionStart,
-      selected.selectionEnd
-    );
+    const editor = await readNativeEditorSnapshot();
+    const selected = selectAllComposerNativeEditor(editor);
+    nativeSelectionRef.current = {
+      selectionStart: selected.selectionStart,
+      selectionEnd: selected.selectionEnd,
+    };
+    nativeEditorSnapshotRef.current = selected;
+    textareaRef.current
+      ?.invoke({
+        method: 'select',
+      })
+      .exec();
   }
 
   async function copyOrCutNativeEditorText(cut: boolean) {
@@ -989,6 +1283,7 @@ export function Composer({
     setPrompt(brandedThreadId, edit.canonicalText);
     setMentions(brandedThreadId, edit.mentions);
     setSkills(brandedThreadId, edit.skills);
+    setTerminalContexts(brandedThreadId, edit.terminalContexts);
     const nextTrigger = detectComposerTrigger(
       edit.canonicalText,
       edit.canonicalSelectionStart
@@ -1048,6 +1343,28 @@ export function Composer({
     ];
     setPrompt(brandedThreadId, transition.prompt);
     setMentions(brandedThreadId, nextMentions);
+    setNativeValue(
+      transition.prompt,
+      transition.selectionStart,
+      transition.selectionEnd
+    );
+    setComposerTrigger(null);
+  }
+
+  function selectAgentMention(item: ComposerCommandItem) {
+    'background only';
+    if (!composerTrigger) return;
+    const currentPrompt =
+      useComposerDraftStore.getState().draftsByThreadId[brandedThreadId]
+        ?.prompt ?? '';
+    const transition = resolveLynxAgentMentionSelection({
+      item,
+      prompt: currentPrompt,
+      trigger: composerTrigger,
+    });
+    if (!transition) return;
+    recordEditorHistory();
+    setPrompt(brandedThreadId, transition.prompt);
     setNativeValue(
       transition.prompt,
       transition.selectionStart,
@@ -1128,10 +1445,12 @@ export function Composer({
     if (!item) return;
     event.preventDefault();
     event.stopPropagation();
-    if (composerTrigger?.kind === 'slash-command') {
-      selectSlashCommand(item);
-    } else if (composerTrigger?.kind === 'skill') {
+    if (item.type === 'skill') {
       selectSkill(item);
+    } else if (composerTrigger?.kind === 'slash-command') {
+      selectSlashCommand(item);
+    } else if (item.type === 'agent') {
+      selectAgentMention(item);
     } else if (composerTrigger?.kind === 'mention') {
       selectThreadMention(item);
     }
@@ -1209,6 +1528,7 @@ export function Composer({
     setPrompt(brandedThreadId, transition.prompt);
     setMentions(brandedThreadId, projected.mentions);
     setSkills(brandedThreadId, projected.skills);
+    setTerminalContexts(brandedThreadId, projected.terminalContexts);
     if (transition.kind === 'collapsed-paste') {
       addPastedText(
         brandedThreadId,
@@ -1254,7 +1574,7 @@ export function Composer({
       activateEditorHistory('redo');
     });
     const disposeSelectAll = onGlobalEvent('composer:select-all', () => {
-      selectAllNativeEditorText();
+      void selectAllNativeEditorText();
     });
     const disposeCopy = onGlobalEvent('composer:copy', () => {
       void copyOrCutNativeEditorText(false);
@@ -1396,11 +1716,13 @@ export function Composer({
       setPrompt(brandedThreadId, projectedEditor.canonicalText);
       setMentions(brandedThreadId, projectedEditor.mentions);
       setSkills(brandedThreadId, projectedEditor.skills);
+      setTerminalContexts(brandedThreadId, projectedEditor.terminalContexts);
     }
     const text = buildComposerSendText({
       prompt: projectedEditor.canonicalText,
       pastedTexts,
       fileComments,
+      terminalContexts: projectedEditor.terminalContexts,
     });
     if (
       (!text &&
@@ -1512,6 +1834,122 @@ export function Composer({
     }
   }
 
+  async function startVoiceRecording() {
+    'background only';
+    const guard = resolveVoiceRecordingStartGuard({
+      authStatus: voiceProviderStatus?.authStatus,
+      canStartVoiceNotes: voiceState.canStartVoiceNotes,
+      hasWorkspace: Boolean(workspaceRoot),
+      isRecording: isVoiceRecording,
+      isTranscribing: isVoiceTranscribing,
+      pendingUserInputCount,
+    });
+    if (guard.kind === 'ignore') return;
+    if (guard.kind === 'notify') {
+      showVoiceNotification({ title: guard.title });
+      return;
+    }
+    setSendError(null);
+    try {
+      const state = await nativeVoiceRecorder.start();
+      if (!state?.recording) throw new Error('The microphone could not be opened.');
+      voiceStartedAtRef.current = Date.now();
+      setVoiceDurationMs(0);
+      setVoiceWaveformLevels([]);
+      setIsVoiceRecording(true);
+    } catch (error) {
+      showVoiceNotification({
+        title: 'Could not start recording',
+        description: describeVoiceRecordingStartError(error),
+      });
+    }
+  }
+
+  function isVoiceActionArmed() {
+    'background only';
+    return isVoiceRecorderActionArmed({
+      nowMs: Date.now(),
+      startedAtMs: voiceStartedAtRef.current,
+    });
+  }
+
+  function cancelVoiceRecording() {
+    'background only';
+    if (!isVoiceActionArmed()) return;
+    voiceRequestIdRef.current += 1;
+    voiceStartedAtRef.current = null;
+    setIsVoiceRecording(false);
+    setIsVoiceTranscribing(false);
+    setVoiceDurationMs(0);
+    setVoiceWaveformLevels([]);
+    void nativeVoiceRecorder.cancel();
+    restoreNativeFocus();
+  }
+
+  async function submitVoiceRecording() {
+    'background only';
+    if (!workspaceRoot || !isVoiceRecording || isVoiceTranscribing) return;
+    if (!isVoiceActionArmed()) return;
+    const requestId = voiceRequestIdRef.current + 1;
+    voiceRequestIdRef.current = requestId;
+    const requestThreadId = brandedThreadId;
+    const requestProvider = activeProvider;
+    const isCurrentVoiceRequest = () =>
+      voiceRequestIdRef.current === requestId &&
+      voiceThreadIdRef.current === requestThreadId &&
+      voiceProviderRef.current === requestProvider;
+    setIsVoiceRecording(false);
+    setIsVoiceTranscribing(true);
+    setVoiceDurationMs(0);
+    setSendError(null);
+    try {
+      const payload = await nativeVoiceRecorder.stop();
+      if (!payload) {
+        showVoiceNotification({ title: 'No audio was captured.' });
+        return;
+      }
+      const result = await transcribeVoice({
+        provider: 'codex',
+        cwd: workspaceRoot,
+        threadId: threadId as never,
+        ...payload,
+      });
+      if (!isCurrentVoiceRequest()) return;
+      const currentPrompt = useComposerDraftStore.getState().draftsByThreadId[requestThreadId]?.prompt ?? '';
+      const nextPrompt = appendVoiceTranscriptToPrompt(currentPrompt, result.text);
+      if (nextPrompt !== null) {
+        setPrompt(requestThreadId, nextPrompt);
+        setNativeValue(nextPrompt);
+      }
+    } catch (error) {
+      if (isCurrentVoiceRequest()) {
+        const failure = resolveVoiceTranscriptionFailure(error, {
+          transcriptionFailedTitle: "Couldn't transcribe voice note",
+        });
+        const refreshStatuses = () => {
+          void refreshProviderStatuses().then((result) => {
+            onProviderStatusesChange?.(result.providers);
+          });
+        };
+        if (failure.authExpired) refreshStatuses();
+        showVoiceNotification({
+          title: failure.title,
+          description: failure.description,
+          ...(failure.actionLabel
+            ? { actionLabel: failure.actionLabel, onAction: refreshStatuses }
+            : {}),
+        });
+      }
+    } finally {
+      if (isCurrentVoiceRequest()) {
+        voiceStartedAtRef.current = null;
+        setVoiceDurationMs(0);
+        setIsVoiceTranscribing(false);
+        restoreNativeFocus();
+      }
+    }
+  }
+
   const isRunning = isRunningComposerSession(sessionStatus);
   const isConnecting = isConnectingComposerSession(sessionStatus);
   const sendDisabled =
@@ -1530,15 +1968,16 @@ export function Composer({
       <ComposerEditorRegionComposition>
         {composerTrigger?.kind === 'slash-command' ? (
           <ComposerCommandMenuComposition
-            items={slashCommandItems}
+            items={composerMenuItems}
             resolvedTheme={resolvedTheme}
-            isLoading={false}
+            isLoading={providerSkillsPending}
             triggerKind="slash-command"
             activeItemId={activeComposerMenuItemId}
             onHighlightedItemChange={setComposerHighlightedItemId}
             onSelect={(item) => {
               'background only';
-              selectSlashCommand(item);
+              if (item.type === 'skill') selectSkill(item);
+              else selectSlashCommand(item);
             }}
           />
         ) : composerTrigger?.kind === 'skill' ? (
@@ -1556,7 +1995,7 @@ export function Composer({
           />
         ) : composerTrigger?.kind === 'mention' ? (
           <ComposerCommandMenuComposition
-            items={threadMentionItems}
+            items={composerMenuItems}
             resolvedTheme={resolvedTheme}
             isLoading={false}
             triggerKind="mention"
@@ -1564,7 +2003,8 @@ export function Composer({
             onHighlightedItemChange={setComposerHighlightedItemId}
             onSelect={(item) => {
               'background only';
-              selectThreadMention(item);
+              if (item.type === 'agent') selectAgentMention(item);
+              else selectThreadMention(item);
             }}
           />
         ) : null}
@@ -1614,17 +2054,39 @@ export function Composer({
             </view>
           </scroll-view>
         ) : null}
-        <view className="ComposerProjectedEditorFlow">
+        <view
+          ref={editorRegionRef}
+          className={`ComposerProjectedEditorFlow${
+            draftProjection.displayText.length === 0
+              ? ' ComposerProjectedEditorFlow--empty'
+              : ''
+          }`}
+          style={{
+            '--type-composer-editor-size': `${normalizedChatFontSizePx}px`,
+            '--composer-empty-editor-height': `${emptyEditorMinHeightPx}px`,
+          } as Record<string, string>}
+          capture-bindtap={restoreNativeFocus}
+          bindtap={restoreNativeFocus}
+        >
           {draftProjection.displayTokens.length > 0 ? (
-            <ComposerProjectedVisualContent projection={draftProjection} />
+            <ComposerProjectedVisualContent
+              fontSizePx={normalizedChatFontSizePx}
+              projection={draftProjection}
+            />
           ) : null}
           <textarea
+            key={nativeEditorFocusEpoch}
             ref={textareaRef}
             className={`ComposerTextarea${
               draftProjection.displayTokens.length > 0
                 ? ' ComposerTextarea--projected'
                 : ''
+            }${
+              draftProjection.displayText.length === 0
+                ? ' ComposerTextarea--empty'
+                : ''
             }`}
+            style={{ fontSize: `${normalizedChatFontSizePx}px` }}
             aria-label="Message composer"
             accessibility-element={true}
             accessibility-label="Message composer"
@@ -1633,10 +2095,10 @@ export function Composer({
             placeholder={
               emptyLanding
                 ? 'Ask for follow-up changes or attach images'
-                : 'Ask anything, @mention a path, or use $skill'
+                : DEFAULT_CHAT_COMPOSER_PLACEHOLDER
             }
             maxlength={8000}
-            maxlines={6}
+            maxlines={nativeEditorMaxLines}
             enable-scroll-bar={true}
             confirm-type="send"
             bindconfirm={() => {
@@ -1651,10 +2113,12 @@ export function Composer({
             catchkeydown={handleComposerMenuKey}
             bindfocus={() => {
             'background only';
+            claimComposerInputOwnership();
             setFocused(true);
           }}
             bindblur={() => {
             'background only';
+            releaseComposerInputOwnership();
             setFocused(false);
           }}
             bindselection={(event) => {
@@ -1725,6 +2189,7 @@ export function Composer({
             setPrompt(brandedThreadId, transition.prompt);
             setMentions(brandedThreadId, projected.mentions);
             setSkills(brandedThreadId, projected.skills);
+            setTerminalContexts(brandedThreadId, projected.terminalContexts);
             if (transition.kind === 'collapsed-paste') {
               addPastedText(
                 brandedThreadId,
@@ -1754,8 +2219,10 @@ export function Composer({
           />
         </view>
       </ComposerEditorRegionComposition>
-      <ComposerFooterRowComposition>
+      <ComposerFooterRowComposition compact={compactFooter}>
         <ComposerFooterContentComposition
+          compact={compactFooter}
+          voiceBusy={isVoiceRecording || isVoiceTranscribing}
           leading={
             <>
               <ComposerExtrasMenuComposition
@@ -1779,13 +2246,16 @@ export function Composer({
                   void setPlanMode(enabled);
                 }}
               />
-              <ComposerRuntimeModeControlComposition
-                runtimeMode={runtimeMode}
-                onRuntimeModeChange={(nextRuntimeMode) => {
-                  'background only';
-                  void setRuntimeMode(nextRuntimeMode);
-                }}
-              />
+              {!isVoiceRecording && !isVoiceTranscribing ? (
+                <ComposerRuntimeModeControlComposition
+                  hideLabel={compactFooter}
+                  runtimeMode={runtimeMode}
+                  onRuntimeModeChange={(nextRuntimeMode) => {
+                    'background only';
+                    void setRuntimeMode(nextRuntimeMode);
+                  }}
+                />
+              ) : null}
               {sendError ? (
                 <text className="ComposerSendError">{sendError}</text>
               ) : null}
@@ -1793,8 +2263,33 @@ export function Composer({
           }
           actions={
             <>
-              {activeModelSelection ? (
+              {!isVoiceRecording &&
+              !isVoiceTranscribing &&
+              contextWindowDisplay ? (
+                <ComposerContextWindowMeterElement
+                  display={contextWindowDisplay}
+                  usage={contextWindow}
+                  cumulativeCostUsd={cumulativeCostUsd}
+                />
+              ) : null}
+              {isVoiceRecording || isVoiceTranscribing ? (
+                <ComposerVoiceRecorderBar
+                  durationLabel={`${Math.floor(voiceDurationMs / 60000)}:${Math.floor((voiceDurationMs % 60000) / 1000).toString().padStart(2, '0')}`}
+                  waveformLevels={voiceWaveformLevels}
+                  transcribing={isVoiceTranscribing}
+                  onCancel={() => {
+                    if (isVoiceRecording) {
+                      void submitVoiceRecording();
+                      return;
+                    }
+                    cancelVoiceRecording();
+                  }}
+                  onSubmit={() => void submitVoiceRecording()}
+                />
+              ) : null}
+              {!isVoiceRecording && !isVoiceTranscribing && activeModelSelection ? (
                 <ComposerModelControl
+                  compact={compactFooter}
                   modelSelection={activeModelSelection as never}
                   catalogProvider={discoveryProvider ?? activeModelSelection.provider}
                   catalogModelSelection={resolveCatalogModelSelection({
@@ -1827,6 +2322,13 @@ export function Composer({
                   }}
                 />
               ) : null}
+              {!isVoiceRecording && !isVoiceTranscribing && showVoiceNotesControl ? (
+                <ComposerVoiceButton
+                  disabled={isSending || isConnecting || !workspaceRoot}
+                  onActivate={() => void startVoiceRecording()}
+                />
+              ) : null}
+              {!isVoiceRecording && !isVoiceTranscribing ? (
               <ComposerPrimaryActionComposition
                 mode={
                   isRunning
@@ -1842,6 +2344,7 @@ export function Composer({
                   void activatePrimaryAction();
                 }}
               />
+              ) : null}
             </>
           }
         />

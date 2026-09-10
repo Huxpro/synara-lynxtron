@@ -132,39 +132,6 @@
   opacity: 0.8;
 }
 
-.SharedSettingsAppearanceSwitch {
-  width: 32px;
-  height: 20px;
-  padding: 1px;
-  border: 1px solid var(--settings-switch-border);
-  border-radius: 10px;
-  background-color: var(--settings-switch-off);
-}
-
-.SharedSettingsAppearanceSwitch--on {
-  border-color: var(--color-text-accent);
-  background-color: var(--color-text-accent);
-}
-
-.SharedSettingsAppearanceSwitch.ui-hover {
-  box-shadow: 0 0 0 1px var(--border);
-}
-
-.SharedSettingsAppearanceSwitch.ui-focus {
-  box-shadow: 0 0 0 2px var(--ring);
-}
-
-.SharedSettingsAppearanceSwitchThumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 8px;
-  background-color: #ffffff;
-}
-
-.SharedSettingsAppearanceSwitch--on .SharedSettingsAppearanceSwitchThumb {
-  transform: translateX(12px);
-}
-
 .SharedSettingsAppearanceInputLine {
   gap: 8px;
 }

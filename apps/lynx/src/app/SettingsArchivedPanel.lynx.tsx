@@ -1,5 +1,8 @@
-import { useState } from '@lynx-js/react';
+import { useRef, useState, type ReactNode } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
+import { getRectByRef } from '@lynx-js/lynx-ui';
+import type { NodesRef } from '@lynx-js/types';
+import { buildArchivedThreadContextMenuItems } from '@synara/shared/contextMenu';
 import { SettingsSection } from '@synara-web/components/settings/SettingsSection';
 import { formatRelativeTime } from '@synara-web/lib/relativeTime';
 
@@ -7,6 +10,9 @@ import { Button } from '../components/ui/button';
 import { ArchiveIcon } from '../lib/icons.lynx';
 import { dispatchSynaraCommand } from '../data/synaraClient.lynx';
 import { dialogs } from '../platform/dialogs';
+import { showContextMenu } from '../platform/contextMenu';
+import { resolveSecondaryPointerOffset } from '../components/sidebar/threadContextActions.logic';
+import { focusLynxNode } from '../components/ui/focus.lynx';
 import { fetchSidebarSnapshot, queryClient } from './queries';
 import {
   createDeleteArchivedThreadCommand,
@@ -20,6 +26,53 @@ function newCommandId(): string {
   return `lynx-archived-${Date.now()}-${Math.random()
     .toString(16)
     .slice(2)}`;
+}
+
+function ArchivedThreadRow(props: {
+  readonly children: ReactNode;
+  readonly className: string;
+  readonly onContextMenu: (
+    position: { readonly x: number; readonly y: number },
+    restoreFocus: () => void
+  ) => void;
+}) {
+  const rowRef = useRef<NodesRef>(null);
+  const openAtOffset = (offset: { readonly x: number; readonly y: number }) => {
+    'background only';
+    void getRectByRef(rowRef, true)
+      .then((rect) =>
+        props.onContextMenu(
+          { x: rect.left + offset.x, y: rect.top + offset.y },
+          () => focusLynxNode(rowRef)
+        )
+      )
+      .catch(() => {
+        // A menu at invented coordinates is worse than no menu.
+      });
+  };
+  return (
+    <view
+      ref={rowRef}
+      className={props.className}
+      bindmousedown={(event: {
+        readonly button?: number;
+        readonly buttons?: number;
+        readonly x?: number;
+        readonly y?: number;
+      }) => {
+        const offset = resolveSecondaryPointerOffset(event);
+        if (offset) openAtOffset(offset);
+      }}
+      bindlongpress={(event: { readonly x?: number; readonly y?: number }) =>
+        openAtOffset({
+          x: Number.isFinite(event.x) ? event.x! : 12,
+          y: Number.isFinite(event.y) ? event.y! : 12,
+        })
+      }
+    >
+      {props.children}
+    </view>
+  );
 }
 
 export function SettingsArchivedPanel() {
@@ -86,6 +139,23 @@ export function SettingsArchivedPanel() {
     }
   }
 
+  async function openArchivedThreadContextMenu(
+    threadId: string,
+    threadTitle: string,
+    position: { readonly x: number; readonly y: number },
+    restoreFocus: () => void
+  ) {
+    'background only';
+    if (pendingAction) return;
+    const action = await showContextMenu(
+      buildArchivedThreadContextMenuItems(),
+      position,
+      { restoreFocus }
+    );
+    if (action === 'restore') await restoreThread(threadId);
+    if (action === 'delete') await deleteThread(threadId, threadTitle);
+  }
+
   if (snapshotQuery.isPending) {
     return (
       <view className="SettingsArchivedState">
@@ -128,7 +198,7 @@ export function SettingsArchivedPanel() {
         className="SettingsArchivedEmpty"
         accessibility-element
         accessibility-label="No archived threads. Archived threads will appear here and can be restored to the sidebar."
-        accessibility-traits="text"
+        accessibility-trait="text"
       >
         <view className="SettingsArchivedEmptyIconShell">
           <ArchiveIcon
@@ -164,11 +234,19 @@ export function SettingsArchivedPanel() {
           title={group.title}
         >
           {group.threads.map((thread, index) => (
-            <view
+            <ArchivedThreadRow
               key={thread.id}
               className={`SettingsArchivedRow${
                 index > 0 ? ' SettingsArchivedRow--divided' : ''
               }`}
+              onContextMenu={(position, restoreFocus) =>
+                void openArchivedThreadContextMenu(
+                  thread.id,
+                  thread.title,
+                  position,
+                  restoreFocus
+                )
+              }
             >
               <view className="SettingsArchivedRowCopy">
                 <text className="SettingsArchivedRowTitle">{thread.title}</text>
@@ -208,7 +286,7 @@ export function SettingsArchivedPanel() {
                     : 'Delete'}
                 </Button>
               </view>
-            </view>
+            </ArchivedThreadRow>
           ))}
         </SettingsSection>
       ))}

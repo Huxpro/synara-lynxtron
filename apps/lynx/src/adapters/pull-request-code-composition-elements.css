@@ -84,20 +84,88 @@
   color: var(--muted-foreground);
 }
 
+.SharedPrCodeFileTypeIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
 .SharedPrCodeDisclosure {
   width: 100%;
 }
 
-.SharedPrCodeFilePath {
+.SharedPrCodeFileIdentity {
+  display: flex;
   flex: 1;
   min-width: 0;
+  align-items: baseline;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.SharedPrCodeFilePath {
+  flex-shrink: 0;
   color: var(--foreground);
-  font-family: var(--font-chat-code-family);
+  font-family: var(--font-mono-family);
   font-size: 12px;
   line-height: 16px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.SharedPrCodeFileDirectory {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.DiffDockFileActions {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.LxMenuTrigger.DiffDockFileActionsTrigger {
+  display: flex;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+}
+
+.DiffDockFileActionsMenu {
+  width: 240px;
+  min-width: 240px;
+  padding: 4px;
+}
+
+.DiffDockFileActionsMenu .LxMenuItem {
+  min-height: 26px;
+  padding: 3px 8px;
+}
+
+.ExplorerFileActionItemContent {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.ExplorerFileActionItemIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
 }
 
 .SharedPrCodeFilePrevious {
@@ -125,6 +193,7 @@
 }
 
 .SharedPrCodeLine {
+  width: 100%;
   min-width: 100%;
   min-height: 20px;
   display: flex;
@@ -132,16 +201,89 @@
   align-items: stretch;
 }
 
+.SharedPrCodeSplitRow {
+  display: flex;
+  width: 100%;
+  min-width: 100%;
+  flex-direction: row;
+}
+
+.SharedPrCodeSplitSide {
+  display: flex;
+  width: 50%;
+  min-width: 0;
+  max-width: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.SharedPrCodeSplitBuffer {
+  width: 100%;
+  min-height: 20px;
+  overflow: hidden;
+  color: var(--foreground);
+}
+
+.SharedPrCodeSplitBufferPattern {
+  width: 100%;
+  height: 100%;
+  opacity: 0.08;
+}
+
+.SharedPrCodeSplitSide--left {
+  border-right: 1px solid var(--border);
+}
+
+.SharedPrCodeSplitSide--empty {
+  background-color: var(--background);
+  background-image: linear-gradient(
+    -45deg,
+    transparent 0,
+    transparent 42%,
+    rgba(13, 13, 13, 0.08) 42%,
+    rgba(13, 13, 13, 0.08) 56%,
+    transparent 56%,
+    transparent 100%
+  );
+  background-repeat: repeat;
+  background-position: 5px 0;
+  background-size: 8px 8px;
+}
+
+.SliceRoot--theme-dark .SharedPrCodeSplitSide--empty {
+  background-color: var(--background);
+  background-image: linear-gradient(
+    -45deg,
+    transparent 0,
+    transparent 42%,
+    rgba(252, 252, 252, 0.08) 42%,
+    rgba(252, 252, 252, 0.08) 56%,
+    transparent 56%,
+    transparent 100%
+  );
+  background-repeat: repeat;
+}
+
+.SharedPrCodeSplitSide .SharedPrCodeLine {
+  min-width: 0;
+}
+
 .SharedPrCodeLine--wrap {
   min-width: 0;
 }
 
 .SharedPrCodeLine--addition {
-  background-color: rgba(0, 162, 64, 0.1);
+  background-color: rgba(0, 162, 64, 0.01);
+  background-color: color-mix(in srgb, var(--background) 92%, var(--success));
 }
 
 .SharedPrCodeLine--deletion {
-  background-color: rgba(224, 46, 42, 0.1);
+  background-color: rgba(224, 46, 42, 0.01);
+  background-color: color-mix(
+    in srgb,
+    var(--background) 92%,
+    var(--destructive)
+  );
 }
 
 .SharedPrCodeLine--hunk {
@@ -180,6 +322,67 @@
   text-align: center;
 }
 
+/* Match @pierre/diffs' split anatomy: its line-number column is intrinsic
+   (~24.6px for this font), the +/- indicator is a 2px gutter rail, and code
+   begins after a 6.6px inset. Stacked rows retain the explicit +/- column. */
+.SharedPrCodeSplitSide .SharedPrCodeLineNumber {
+  width: 25px;
+  padding: 0 7px 0 8px;
+  border-right: 2px solid transparent;
+}
+
+.SharedPrCodeSplitSide
+  .SharedPrCodeLine--addition
+  .SharedPrCodeLineNumber {
+  color: var(--success);
+  border-right-color: var(--success);
+  background-color: rgba(0, 162, 64, 0.011);
+  background-color: color-mix(
+    in srgb,
+    var(--background) 88%,
+    var(--success)
+  );
+}
+
+.SharedPrCodeSplitSide
+  .SharedPrCodeLine--deletion
+  .SharedPrCodeLineNumber {
+  color: var(--destructive);
+  border-right-color: var(--destructive);
+  background-color: rgba(224, 46, 42, 0.011);
+  background-color: color-mix(
+    in srgb,
+    var(--background) 88%,
+    var(--destructive)
+  );
+}
+
+.SharedPrCodeSplitSide .SharedPrCodeLineText {
+  padding-left: 7px;
+}
+
+.SliceRoot--theme-dark .SharedPrCodeLine--addition {
+  background-color: rgba(94, 204, 113, 0.016);
+}
+
+.SliceRoot--theme-dark .SharedPrCodeLine--deletion {
+  background-color: rgba(255, 103, 98, 0.016);
+}
+
+.SliceRoot--theme-dark
+  .SharedPrCodeSplitSide
+  .SharedPrCodeLine--addition
+  .SharedPrCodeLineNumber {
+  background-color: rgba(94, 204, 113, 0.018);
+}
+
+.SliceRoot--theme-dark
+  .SharedPrCodeSplitSide
+  .SharedPrCodeLine--deletion
+  .SharedPrCodeLineNumber {
+  background-color: rgba(255, 103, 98, 0.018);
+}
+
 .SharedPrCodeLine--addition .SharedPrCodeLinePrefix {
   color: var(--success);
 }
@@ -189,8 +392,7 @@
 }
 
 .SharedPrCodeLineText {
-  flex: 1;
-  min-width: 0;
+  flex-shrink: 0;
   padding-right: 12px;
   color: var(--foreground);
   font-family: var(--font-chat-code-family);
@@ -200,6 +402,8 @@
 }
 
 .SharedPrCodeLine--wrap .SharedPrCodeLineText {
+  flex: 1;
+  min-width: 0;
   white-space: pre-wrap;
 }
 

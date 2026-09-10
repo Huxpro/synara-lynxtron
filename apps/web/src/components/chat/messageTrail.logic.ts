@@ -7,6 +7,15 @@
 import { type MessageId } from "@synara/contracts";
 import { type TimelineEntry } from "../../session-logic";
 
+export type MessageTrailEntry = Pick<TimelineEntry, "kind"> & {
+  readonly message?: {
+    readonly id: MessageId;
+    readonly role: "user" | "assistant" | "system";
+    readonly text: string;
+    readonly attachments?: readonly unknown[];
+  };
+};
+
 /** One tick on the navigation trail — a single message the user sent. */
 export interface MessageTrailItem {
   id: MessageId;
@@ -23,6 +32,34 @@ export interface MessageTrailItem {
   responsePreview: string;
   /** Number of attachments on the message (rendered as a small hint). */
   attachmentCount: number;
+}
+
+export const MESSAGE_TRAIL_MIN_PANE_WIDTH_PX = 864;
+export const MESSAGE_TRAIL_MIN_ITEM_COUNT = 4;
+export const MESSAGE_TRAIL_CONTENT_MAX_WIDTH_PX = 736;
+
+/**
+ * Native mounts the trail inside the centered transcript column, while Web mounts
+ * it against the full pane. Move the Native rail back across only the centering
+ * gutter so both renderers share the pane's left edge without changing message
+ * width. Narrow panes never produce a negative offset.
+ */
+export function resolveMessageTrailPaneEdgeOffset(paneWidth: number): number {
+  if (!Number.isFinite(paneWidth)) return 0;
+  const gutter = Math.max(0, (paneWidth - MESSAGE_TRAIL_CONTENT_MAX_WIDTH_PX) / 2);
+  return gutter === 0 ? 0 : -gutter;
+}
+
+export function isMessageTrailEligible(input: {
+  readonly itemCount: number;
+  readonly paneWidth: number;
+}): boolean {
+  return (
+    Number.isFinite(input.paneWidth) &&
+    input.paneWidth >= MESSAGE_TRAIL_MIN_PANE_WIDTH_PX &&
+    Number.isInteger(input.itemCount) &&
+    input.itemCount >= MESSAGE_TRAIL_MIN_ITEM_COUNT
+  );
 }
 
 /** Hard cap so a pathological paste can't bloat the hover-card payload. */
@@ -43,14 +80,14 @@ function normalizePreview(text: string): string {
  * yet keeps an empty `responsePreview`.
  */
 export function deriveMessageTrailItems(
-  timelineEntries: readonly TimelineEntry[],
+  timelineEntries: readonly MessageTrailEntry[],
 ): MessageTrailItem[] {
   const items: MessageTrailItem[] = [];
   // Index of the user item whose turn we're inside; every non-empty assistant row
   // overwrites its response so the last one (the end-of-turn message) wins.
   let currentTurnIndex = -1;
   for (const entry of timelineEntries) {
-    if (entry.kind !== "message") {
+    if (entry.kind !== "message" || !entry.message) {
       continue;
     }
     const { role } = entry.message;
@@ -111,6 +148,36 @@ export function resolveActiveTrailMessageId(
 export interface ActiveTrailSnapshot {
   currentId: MessageId | null;
   visibleIds: readonly MessageId[];
+}
+
+export interface AttachedListCell {
+  readonly index?: number;
+  readonly top?: number;
+  readonly bottom?: number;
+}
+
+export function resolveVisibleRowRangeFromAttachedCells(input: {
+  readonly attachedCells: readonly AttachedListCell[];
+  readonly listHeight: number | undefined;
+}): { readonly top: number; readonly bottom: number } | null {
+  if (typeof input.listHeight !== 'number' || !Number.isFinite(input.listHeight)) {
+    return null;
+  }
+  const indexes = input.attachedCells
+    .filter(
+      (cell) =>
+        typeof cell.index === 'number' &&
+        Number.isFinite(cell.index) &&
+        typeof cell.top === 'number' &&
+        typeof cell.bottom === 'number' &&
+        cell.top < input.listHeight &&
+        cell.bottom > 0
+    )
+    .map((cell) => cell.index as number)
+    .sort((left, right) => left - right);
+  return indexes.length > 0
+    ? { top: indexes[0]!, bottom: indexes[indexes.length - 1]! }
+    : null;
 }
 
 export const EMPTY_ACTIVE_TRAIL_SNAPSHOT: ActiveTrailSnapshot = {

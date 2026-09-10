@@ -68,6 +68,9 @@ type ComposerModelEffortPickerProps = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   shortcutLabel?: string | null;
+  initialOpen?: boolean;
+  initialSubmenuOpen?: boolean;
+  initialSearchQuery?: string;
 };
 
 // Renders a single composer trigger that combines model selection, reasoning
@@ -76,7 +79,7 @@ type ComposerModelEffortPickerProps = {
 // header); the model is reachable via a sub-menu so the footer stays compact.
 export function ComposerModelEffortPicker(props: ComposerModelEffortPickerProps) {
   const { onOpenChange, open } = props;
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(props.initialOpen ?? false);
   const isMenuOpen = open ?? uncontrolledOpen;
 
   const setMenuOpen = (nextOpen: boolean) => {
@@ -219,7 +222,7 @@ export function ComposerModelEffortPicker(props: ComposerModelEffortPickerProps)
 
         {hasTraitsTopSection ? <MenuSeparator /> : null}
 
-        <MenuSub>
+        <MenuSub defaultOpen={props.initialSubmenuOpen ?? false}>
           <MenuSubTrigger>
             <ProviderIcon
               aria-hidden="true"
@@ -245,6 +248,7 @@ export function ComposerModelEffortPicker(props: ComposerModelEffortPickerProps)
               {...(props.disabled !== undefined ? { disabled: props.disabled } : {})}
               onProviderModelChange={props.onProviderModelChange}
               onAfterSelection={handleAfterModelSelection}
+              initialSearchQuery={props.initialSearchQuery}
             />
           </ComposerPickerMenuSubPopup>
         </MenuSub>

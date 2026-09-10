@@ -203,7 +203,7 @@ export function AutomationsPage({
           className="AutomationDetailNotFound"
           accessibility-element={true}
           accessibility-label="Loading automation"
-          accessibility-traits="updating"
+          accessibility-trait="updating"
         >
           <text className="AutomationDetailNotFoundText">
             Loading automation...
@@ -301,7 +301,7 @@ export function AutomationsPage({
               className="AutomationsState"
               accessibility-element={true}
               accessibility-label="Loading automations"
-              accessibility-traits="updating"
+              accessibility-trait="updating"
             >
               <text className="AutomationsStateText">
                 Loading automations...
@@ -312,7 +312,7 @@ export function AutomationsPage({
               className="AutomationsState"
               accessibility-element={true}
               accessibility-label="Automations could not be loaded"
-              accessibility-traits="text"
+              accessibility-trait="text"
             >
               <text className="AutomationsStateTitle">
                 Automations could not be loaded
@@ -335,7 +335,7 @@ export function AutomationsPage({
               className="AutomationsState"
               accessibility-element={true}
               accessibility-label="No automations yet. Schedule a prompt to run on its own, or wake an existing thread on a loop."
-              accessibility-traits="text"
+              accessibility-trait="text"
             >
               <text className="AutomationsStateTitle">No automations yet</text>
               <text className="AutomationsStateText">

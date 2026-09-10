@@ -117,13 +117,14 @@ export function ComposerFooterLeadingElement(
 }
 
 export function ComposerFooterActionsElement(
-  props: ComposerHostElementProps & { readonly voiceBusy: boolean },
+  props: ComposerHostElementProps & { readonly compact: boolean; readonly voiceBusy: boolean },
 ) {
   return (
     <div
       data-chat-composer-actions="right"
       className={cn(
-        "flex items-center gap-2",
+        "flex items-center",
+        props.compact ? "gap-0.5" : "gap-2",
         props.voiceBusy ? "min-w-0 flex-1" : "shrink-0",
       )}
     >

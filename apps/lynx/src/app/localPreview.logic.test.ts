@@ -7,6 +7,7 @@ import {
 
 import {
   buildPdfPagePreviewUrl,
+  buildRuntimeHttpUrl,
   buildWorkspaceLocalPreviewUrl,
 } from './localPreview.logic';
 
@@ -19,7 +20,7 @@ describe('workspace local preview URL', () => {
         path: 'images/preview one.png',
       })
     ).toBe(
-      'http://127.0.0.1:58090/api/local-image?path=images%2Fpreview+one.png&cwd=%2Ftmp%2Fproject'
+      'http://127.0.0.1:58090/api/local-image?token=x&path=images%2Fpreview+one.png&cwd=%2Ftmp%2Fproject'
     );
     expect(
       buildWorkspaceLocalPreviewUrl({
@@ -30,6 +31,16 @@ describe('workspace local preview URL', () => {
     ).toBe(
       'https://synara.example/api/local-image?path=image.webp&cwd=%2Frepo'
     );
+  });
+
+  it('preserves runtime auth when building other HTTP asset routes', () => {
+    expect(
+      buildRuntimeHttpUrl({
+        wsUrl: 'ws://127.0.0.1:53742/?token=secret',
+        path: '/api/editor-icon',
+        query: { id: 'vscode' },
+      })
+    ).toBe('http://127.0.0.1:53742/api/editor-icon?token=secret&id=vscode');
   });
 
   it('keeps the static image regex aligned with the canonical allowlist', () => {

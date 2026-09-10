@@ -64,6 +64,22 @@ export function localServerMatchesRun(
   return Boolean(server.cwd && isWorkspaceRootWithin(server.cwd, run.cwd));
 }
 
+export function firstLocalServerUrl(server: ServerLocalServerProcess): string | null {
+  return server.addresses.find((address) => address.url)?.url ?? null;
+}
+
+// Browser launchers can still navigate when the monitor found a listening port
+// before it resolved a canonical address URL. Keep this fallback identical in
+// every renderer.
+export function browserLocalServerUrl(server: ServerLocalServerProcess): string | null {
+  const resolved = firstLocalServerUrl(server);
+  if (resolved) {
+    return resolved;
+  }
+  const port = server.ports[0];
+  return port ? `http://localhost:${port}/` : null;
+}
+
 function firstAddressPort(server: ServerLocalServerProcess): readonly number[] {
   for (const address of server.addresses) {
     if (address.port > 0) {

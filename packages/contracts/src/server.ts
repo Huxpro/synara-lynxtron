@@ -7,7 +7,7 @@ import {
   ThreadId,
   TrimmedNonEmptyString,
 } from "./baseSchemas";
-import { KeybindingRule, ResolvedKeybindingsConfig } from "./keybindings";
+import { KeybindingCommand, KeybindingRule, ResolvedKeybindingsConfig } from "./keybindings";
 import { EditorId } from "./editor";
 import { ModelSelection, ProviderKind, ProviderStartOptions } from "./orchestration";
 import { ServerSettingsPatch, ServerSettingsView } from "./settings";
@@ -339,6 +339,13 @@ export const ServerUpsertKeybindingResult = Schema.Struct({
   issues: ServerConfigIssues,
 });
 export type ServerUpsertKeybindingResult = typeof ServerUpsertKeybindingResult.Type;
+
+export const ServerRemoveKeybindingInput = Schema.Struct({
+  command: KeybindingCommand,
+});
+export type ServerRemoveKeybindingInput = typeof ServerRemoveKeybindingInput.Type;
+export const ServerRemoveKeybindingResult = ServerUpsertKeybindingResult;
+export type ServerRemoveKeybindingResult = typeof ServerRemoveKeybindingResult.Type;
 
 export const ServerConfigUpdatedPayload = Schema.Struct({
   issues: ServerConfigIssues,

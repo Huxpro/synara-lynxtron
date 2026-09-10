@@ -4,6 +4,8 @@
 // Exports: command parsing plus resolved terminal presentation metadata for web/server consumers.
 
 export const GENERIC_TERMINAL_THREAD_TITLE = "New terminal";
+export const TERMINAL_FONT_WEIGHT = 300;
+export const TERMINAL_BOLD_FONT_WEIGHT = 500;
 export type TerminalCliKind = "codex" | "claude" | "antigravity";
 export type TerminalIconKey = "terminal" | "openai" | "claude" | "antigravity";
 export type TerminalActivityState = "running" | "attention" | "review";

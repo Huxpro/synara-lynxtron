@@ -44,6 +44,21 @@ describe('native editor send snapshot', () => {
     });
   });
 
+  it('accepts the selectionBegin field returned by native getValue', () => {
+    expect(
+      normalizeComposerNativeEditorSnapshot({
+        value: 'native selection',
+        selectionBegin: 3,
+        selectionEnd: 9,
+      })
+    ).toEqual({
+      value: 'native selection',
+      selectionStart: 3,
+      selectionEnd: 9,
+      isComposing: false,
+    });
+  });
+
   it('fails closed when the host does not return a string value', () => {
     expect(
       normalizeComposerNativeEditorSnapshot({

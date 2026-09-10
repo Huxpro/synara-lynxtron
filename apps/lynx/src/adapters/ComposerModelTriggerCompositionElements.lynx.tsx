@@ -23,20 +23,22 @@ export function ComposerModelTriggerProviderIconElement(props: {
 }
 
 export function ComposerModelTriggerModelLabelElement(props: {
-  readonly children: ReactNode;
   readonly hidden: boolean;
+  readonly modelLabel: string;
 }) {
   return props.hidden ? null : (
-    <text className="ComposerModelTriggerLabelLynx">{props.children}</text>
+    <text className="ComposerModelTriggerLabelLynx">
+      {props.modelLabel}
+    </text>
   );
 }
 
 export function ComposerModelTriggerFastBadgeElement() {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   return (
     <svg
       className="ComposerModelTriggerFastIconLynx"
-      content={colorizeLynxSvg(fastModeSvg, svgColors.mutedForeground)}
+      content={colorizeLynxSvg(fastModeSvg, semanticIconColor('secondary'))}
     />
   );
 }

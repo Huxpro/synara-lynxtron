@@ -2,6 +2,7 @@ import { CheckpointRef, MessageId, OrchestrationProposedPlanId, TurnId } from "@
 import { describe, expect, it } from "vitest";
 import {
   buildTurnDiffSummaryByAssistantMessageId,
+  buildRevertTurnCountByUserMessageId,
   capOpenWorkEntryRenderChunks,
   chunkCollapsedTurnItems,
   chunkWorkEntries,
@@ -35,6 +36,26 @@ function makeSummary(
     assistantMessageId: null,
     ...rest,
   } as TurnDiffSummary;
+}
+
+function checkpointMessageEntry(
+  id: string,
+  role: "user" | "assistant",
+  text: string,
+): TimelineEntry {
+  return {
+    id,
+    kind: "message",
+    createdAt: "2026-01-01T00:00:00Z",
+    message: {
+      id: MessageId.makeUnsafe(id),
+      role,
+      text,
+      streaming: false,
+      turnId: null,
+      createdAt: "2026-01-01T00:00:00Z",
+    },
+  } as TimelineEntry;
 }
 
 describe("computeMessageDurationStart", () => {
@@ -678,6 +699,53 @@ describe("buildTurnDiffSummaryByAssistantMessageId", () => {
     });
 
     expect(result.size).toBe(0);
+  });
+});
+
+describe("buildRevertTurnCountByUserMessageId", () => {
+  it("maps each user message to the checkpoint preceding its response", () => {
+    const timelineEntries = [
+      checkpointMessageEntry("u-1", "user", "first"),
+      checkpointMessageEntry("a-1", "assistant", "first reply"),
+      checkpointMessageEntry("u-2", "user", "second"),
+      checkpointMessageEntry("a-2", "assistant", "second reply"),
+    ];
+    const summaries = new Map([
+      [MessageId.makeUnsafe("a-1"), makeSummary({ turnId: "turn-1", checkpointTurnCount: 1 })],
+      [MessageId.makeUnsafe("a-2"), makeSummary({ turnId: "turn-2", checkpointTurnCount: 2 })],
+    ]);
+
+    expect(
+      buildRevertTurnCountByUserMessageId({
+        timelineEntries,
+        turnDiffSummaryByAssistantMessageId: summaries,
+        inferredCheckpointTurnCountByTurnId: {},
+      }),
+    ).toEqual(
+      new Map([
+        [MessageId.makeUnsafe("u-1"), 0],
+        [MessageId.makeUnsafe("u-2"), 1],
+      ]),
+    );
+  });
+
+  it("uses inferred counts and does not cross into the next user turn", () => {
+    const timelineEntries = [
+      checkpointMessageEntry("u-1", "user", "first"),
+      checkpointMessageEntry("u-2", "user", "second"),
+      checkpointMessageEntry("a-2", "assistant", "second reply"),
+    ];
+    const summaries = new Map([
+      [MessageId.makeUnsafe("a-2"), makeSummary({ turnId: "turn-2", checkpointTurnCount: undefined })],
+    ]);
+
+    expect(
+      buildRevertTurnCountByUserMessageId({
+        timelineEntries,
+        turnDiffSummaryByAssistantMessageId: summaries,
+        inferredCheckpointTurnCountByTurnId: { [TurnId.makeUnsafe("turn-2")]: 3 },
+      }),
+    ).toEqual(new Map([[MessageId.makeUnsafe("u-2"), 2]]));
   });
 });
 

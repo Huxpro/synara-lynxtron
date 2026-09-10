@@ -19,6 +19,16 @@ const polishSkill = {
   name: 'polish',
   path: '/skills/polish/SKILL.md',
 };
+const terminalContext = {
+  id: 'terminal-context-1',
+  threadId: 'thread-1' as never,
+  terminalId: 'terminal-1',
+  terminalLabel: 'Terminal 1',
+  lineStart: 4,
+  lineEnd: 5,
+  text: 'first\nsecond',
+  createdAt: '2026-08-29T00:00:00.000Z',
+};
 
 function projection(
   canonicalText: string,
@@ -109,6 +119,35 @@ describe('native Composer draft projection', () => {
 
     expect(edit.canonicalText).toBe('Use  now');
     expect(edit.skills).toEqual([]);
+  });
+
+  it('projects and atomically removes terminal context placeholders', () => {
+    const current = createNativeComposerDraftProjection({
+      canonicalText: '\uFFFC explain this output',
+      mentions: [],
+      skills: [],
+      terminalContexts: [terminalContext],
+    });
+
+    expect(current.displayTokens[0]).toEqual({
+      canonicalText: '\uFFFC',
+      key: 'terminal-context:terminal-context-1',
+      kind: 'terminal-context',
+      label: 'Terminal 1 lines 4-5',
+    });
+    const nextDisplay = current.displayText.replace(
+      NATIVE_COMPOSER_TOKEN_ANCHOR,
+      ''
+    );
+    const edit = applyNativeComposerDisplayEdit({
+      projection: current,
+      displayText: nextDisplay,
+      displaySelectionStart: 0,
+      displaySelectionEnd: 0,
+    });
+
+    expect(edit.canonicalText).toBe(' explain this output');
+    expect(edit.terminalContexts).toEqual([]);
   });
 
   it('deletes a selection spanning text and multiple tokens atomically', () => {

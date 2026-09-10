@@ -26,6 +26,7 @@ export function SidebarPrimaryActionButtonElement({
   onActivate,
   onMouseEnter,
   onFocus,
+  visualState,
   children,
 }: ChildrenProps & {
   readonly active: boolean;
@@ -35,6 +36,7 @@ export function SidebarPrimaryActionButtonElement({
   readonly onActivate?: (() => void) | undefined;
   readonly onMouseEnter?: (() => void) | undefined;
   readonly onFocus?: (() => void) | undefined;
+  readonly visualState?: "default" | "hover" | "focus" | "pressed";
 }) {
   return (
     <SidebarMenuButton
@@ -45,6 +47,9 @@ export function SidebarPrimaryActionButtonElement({
       aria-current={active ? "page" : undefined}
       className={cn(
         "group/sidebar-primary-action",
+        visualState === "hover" && "bg-[var(--sidebar-accent)] text-[var(--sidebar-accent-foreground)]",
+        visualState === "pressed" && "bg-[var(--sidebar-accent-active)] text-[var(--sidebar-accent-foreground)]",
+        visualState === "focus" && "ring-1 ring-inset ring-ring",
         SIDEBAR_HEADER_ROW_CLASS_NAME,
         active
           ? SIDEBAR_ROW_ACTIVE_CLASS_NAME

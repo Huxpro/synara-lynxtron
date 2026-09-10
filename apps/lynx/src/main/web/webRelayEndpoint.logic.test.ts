@@ -57,6 +57,17 @@ describe('Lynx-for-Web relay endpoint', () => {
     ).toBe('ws://127.0.0.1:58090');
   });
 
+  it('supports the session handoff between runtime HTML and build endpoint', () => {
+    expect(
+      resolveWebRelayEndpoint(
+        undefined,
+        ' ws://127.0.0.1:55342/?token=owned ',
+        'ws://127.0.0.1:59999',
+        'ws://127.0.0.1:58090'
+      )
+    ).toBe('ws://127.0.0.1:55342/?token=owned');
+  });
+
   it('injects the isolated endpoint into both Web renderer bundles', () => {
     const rsbuildConfig = fs.readFileSync(
       new URL('../../../rsbuild.config.ts', import.meta.url),
@@ -81,6 +92,9 @@ describe('Lynx-for-Web relay endpoint', () => {
       'utf8'
     );
     expect(host).toContain('return process.env.SYNARA_WS_URL;');
+    expect(host).toContain(
+      'relaySocketBaseUrl ?? relayReadyBaseUrl ?? configuredRelayBaseUrl()'
+    );
     expect(host).not.toContain(
       "if (typeof process === 'undefined') return undefined;"
     );

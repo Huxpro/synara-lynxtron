@@ -1,4 +1,5 @@
 import type { ProjectSummary, ThreadSummary } from '../../app/queries';
+import type { SpaceId } from '@synara/contracts';
 import { deriveSidebarSectionCollections } from '@synara-web/components/SidebarSections.logic';
 import {
   derivePinnedThreadIdsForSidebar,
@@ -20,6 +21,8 @@ import {
 
 export interface SidebarProjectGroup {
   readonly id: string;
+  readonly isPinned?: boolean;
+  readonly spaceId?: SpaceId | null;
   readonly title: string;
   readonly workspaceRoot: string;
   readonly threads: readonly ThreadSummary[];
@@ -30,6 +33,28 @@ export interface SidebarSections {
   readonly pinnedThreads: readonly ThreadSummary[];
   readonly chatThreads: readonly ThreadSummary[];
   readonly studioThreads: readonly ThreadSummary[];
+}
+
+export function resolveNativeSidebarSpaceId(input: {
+  readonly activeThreadId: string | null;
+  readonly projects: readonly ProjectSummary[];
+  readonly spaces: readonly { readonly id: SpaceId }[];
+  readonly storedActiveSpaceId: SpaceId | null;
+  readonly threads: readonly ThreadSummary[];
+}): SpaceId | null {
+  if (input.activeThreadId) {
+    const thread = input.threads.find(
+      (candidate) => candidate.id === input.activeThreadId
+    );
+    const project = thread
+      ? input.projects.find((candidate) => candidate.id === thread.projectId)
+      : null;
+    if (project?.kind === 'project') return project.spaceId ?? null;
+  }
+  return input.storedActiveSpaceId !== null &&
+    input.spaces.some((space) => space.id === input.storedActiveSpaceId)
+    ? input.storedActiveSpaceId
+    : null;
 }
 
 /**
@@ -44,24 +69,39 @@ export function deriveSidebarSections(input: {
   readonly persistedPinnedProjectIds?: readonly string[];
   readonly projectSortOrder?: SidebarProjectSortOrderValue;
   readonly threadSortOrder?: SidebarThreadSortOrderValue;
+  readonly activeSpaceId?: SpaceId | null;
 }): SidebarSections {
   const projects = input.projects.map((project) => ({
     ...project,
     name: project.title,
   }));
+  const visibleProjects = projects.filter(
+    (project) =>
+      project.kind !== 'project' ||
+      (project.spaceId ?? null) === (input.activeSpaceId ?? null)
+  );
   const pinnedProjectIds = derivePinnedProjectIdsForSidebar({
     projects: projects.filter((project) => project.kind === 'project'),
     persistedPinnedProjectIds: input.persistedPinnedProjectIds ?? [],
     optimisticPinnedStateByProjectId: new Map(),
   });
-  const orderedProjects = orderPinnedProjectsForSidebar(projects, pinnedProjectIds);
+  const orderedProjects = orderPinnedProjectsForSidebar(visibleProjects, pinnedProjectIds);
   const pinnedThreadIds = derivePinnedThreadIdsForSidebar({
     threads: input.threads,
     persistedPinnedThreadIds: input.persistedPinnedThreadIds ?? [],
     optimisticPinnedStateByThreadId: new Map(),
   });
-  const pinnedThreads = getPinnedThreadsForSidebar(input.threads, pinnedThreadIds);
-  const listThreads = getUnpinnedThreadsForSidebar(input.threads, pinnedThreadIds);
+  const projectById = new Map(projects.map((project) => [project.id, project] as const));
+  const visibleThreads = input.threads.filter((thread) => {
+    const project = projectById.get(thread.projectId);
+    return (
+      project === undefined ||
+      project.kind !== 'project' ||
+      (project.spaceId ?? null) === (input.activeSpaceId ?? null)
+    );
+  });
+  const pinnedThreads = getPinnedThreadsForSidebar(visibleThreads, pinnedThreadIds);
+  const listThreads = getUnpinnedThreadsForSidebar(visibleThreads, pinnedThreadIds);
   const threads = listThreads.map((thread) => ({
     ...thread,
     createdAt: thread.createdAt ?? thread.updatedAt,
@@ -82,6 +122,8 @@ export function deriveSidebarSections(input: {
   });
   const groups = sections.projectPartitions.projects.map((project) => ({
     id: project.id,
+    isPinned: project.isPinned,
+    spaceId: project.spaceId ?? null,
     title: project.title.trim() || 'Untitled project',
     workspaceRoot: project.workspaceRoot,
     threads: sections.sortedThreadsByProjectId.get(project.id) ?? [],

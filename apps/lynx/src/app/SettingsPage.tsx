@@ -94,6 +94,7 @@ import {
   type SettingsPersistOutcome,
 } from './settingsPersistence.logic';
 import { Button } from '../components/ui/button';
+import { IconButton } from '../components/ui/icon-button.lynx';
 import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
 import { SettingsResetIcon } from '../adapters/SettingsResetIcon.lynx';
 import type {
@@ -134,14 +135,12 @@ function renderSettingsResetAction(args: {
   readonly onReset: () => void;
 }) {
   return args.changed ? (
-    <Button
-      variant="ghost"
-      size="icon-xs"
-      aria-label={`Reset ${args.label} to default`}
+    <IconButton
+      label={`Reset ${args.label} to default`}
       onClick={args.onReset}
     >
       <SettingsResetIcon />
-    </Button>
+    </IconButton>
   ) : null;
 }
 
@@ -781,11 +780,7 @@ export function SettingsPage({
         <view className="SettingsSidebarTitlebar AppWindowDragRegion">
           {openTitlebarControls}
         </view>
-        <scroll-view
-          className="SettingsSidebarBody"
-          scroll-orientation="vertical"
-        >
-          <view className="SettingsSidebarBodyInner">
+        <view className="SettingsSidebarFixedChrome">
           <SettingsSidebarChromeComposition
             onBack={onBack}
             searchCapability="available"
@@ -797,6 +792,12 @@ export function SettingsPage({
             }}
             onEscapeSearch={() => setSearchQuery('')}
           />
+        </view>
+        <scroll-view
+          className="SettingsSidebarBody"
+          scroll-orientation="vertical"
+        >
+          <view className="SettingsSidebarBodyInner">
           {searchQuery.trim() ? (
             <SettingsSearchResults
               results={searchResults}

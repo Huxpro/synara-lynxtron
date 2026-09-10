@@ -13,6 +13,8 @@ interface TerminalSearchProps {
   searchAddon: SearchAddon | null;
   isOpen: boolean;
   onClose: () => void;
+  initialQuery?: string;
+  initialCaseSensitive?: boolean;
 }
 
 const SEARCH_DECORATIONS = {
@@ -25,12 +27,20 @@ const SEARCH_DECORATIONS = {
 } satisfies NonNullable<ISearchOptions["decorations"]>;
 const SEARCH_DEBOUNCE_MS = 90;
 
-export function TerminalSearch({ searchAddon, isOpen, onClose }: TerminalSearchProps) {
+export function TerminalSearch({
+  searchAddon,
+  isOpen,
+  onClose,
+  initialQuery = "",
+  initialCaseSensitive = false,
+}: TerminalSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const searchTimerRef = useRef<number | null>(null);
-  const [query, setQuery] = useState("");
-  const [hasResults, setHasResults] = useState<boolean | null>(null);
-  const [caseSensitive, setCaseSensitive] = useState(false);
+  const [query, setQuery] = useState(initialQuery);
+  const [hasResults, setHasResults] = useState<boolean | null>(
+    initialQuery ? false : null,
+  );
+  const [caseSensitive, setCaseSensitive] = useState(initialCaseSensitive);
 
   const searchOptions: ISearchOptions = {
     caseSensitive,

@@ -10,6 +10,7 @@ import {
   Menu,
   MenuCheckboxItem,
   MenuItem,
+  MenuOverlayProvider,
   MenuPopup,
   MenuRadioGroup,
   MenuRadioItem,
@@ -17,7 +18,9 @@ import {
   MenuSubPopup,
   MenuSubTrigger,
   MenuTrigger,
+  menuPlacementRequiresPopupSize,
   resolveMenuCoordinates,
+  resolveSubmenuCoordinates,
 } from './menu.lynx';
 
 function menuTrigger(): Element {
@@ -45,6 +48,122 @@ async function openMenu(): Promise<Element> {
 }
 
 describe('Lynx Menu overlay contract', () => {
+  it('portals popup layers into the shared viewport overlay host', async () => {
+    render(
+      <MenuOverlayProvider>
+        <view className="ClippingScrollAncestor">
+          <Menu defaultOpen>
+            <MenuTrigger>Open</MenuTrigger>
+            <MenuPopup>Action</MenuPopup>
+          </Menu>
+        </view>
+      </MenuOverlayProvider>
+    );
+
+    await waitFor(() => {
+      expect(elementTree.root?.querySelector('.LxMenuOverlayHost')).not.toBeNull();
+      expect(elementTree.root?.querySelector('.LxMenuLayer')).not.toBeNull();
+    });
+    const source = readFileSync(
+      new URL('./menu.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain(
+      'createPortal(<Fragment>{props.children}</Fragment>, hostRef.current)'
+    );
+    expect(source).toContain('<MenuPortal>');
+    const primitiveStyles = readFileSync(
+      new URL('./primitives.css', import.meta.url),
+      'utf8'
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuOverlayHost\s*\{[^}]*z-index:\s*1100;[^}]*width:\s*0;[^}]*height:\s*0;[^}]*overflow:\s*visible;[^}]*pointer-events:\s*none;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuLayer\s*\{[^}]*z-index:\s*1100;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuItem__row\s*\{[^}]*justify-content:\s*flex-start;[^}]*gap:\s*8px;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuItem__trailing\s*\{[^}]*margin-left:\s*auto;/s
+    );
+    expect(source).toContain('if (byId && hasMenuRectSize(byId)) return byId;');
+    expect(source).toContain('return getRectByRef(ref, true);');
+  });
+
+  it('clamps tall submenus vertically and flips them at the right viewport edge', () => {
+    expect(
+      resolveSubmenuCoordinates({
+        align: 'start',
+        anchor: { x: 700, y: 650, width: 220, height: 32 },
+        popup: { x: 0, y: 0, width: 260, height: 310 },
+        viewport: { x: 0, y: 0, width: 1280, height: 788 },
+      })
+    ).toEqual({ left: 226, top: -180 });
+    expect(
+      resolveSubmenuCoordinates({
+        align: 'end',
+        anchor: { x: 700, y: 650, width: 220, height: 32 },
+        popup: { x: 0, y: 0, width: 260, height: 310 },
+        viewport: { x: 0, y: 0, width: 1280, height: 788 },
+      })
+    ).toEqual({ left: 226, top: -278 });
+    const primitiveStyles = readFileSync(
+      new URL('./primitives.css', import.meta.url),
+      'utf8'
+    );
+    const primitiveSource = readFileSync(
+      new URL('./menu.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuSubPopup--align-end\s*\{[^}]*top:\s*auto;[^}]*bottom:\s*0;/s
+    );
+    expect(primitiveSource).toMatch(
+      /top:\s*\x60\$\{Math\.round\(coordinates\.top\)\}px\x60/s
+    );
+    expect(primitiveSource).toContain(
+      "props.align === 'end' ? { bottom: 'auto' } : {}"
+    );
+    expect(
+      resolveSubmenuCoordinates({
+        anchor: { x: 1050, y: 100, width: 220, height: 32 },
+        popup: { x: 0, y: 0, width: 260, height: 310 },
+        viewport: { x: 0, y: 0, width: 1280, height: 788 },
+      })
+    ).toEqual({ left: -266, top: 0 });
+    expect(
+      resolveSubmenuCoordinates({
+        align: 'start',
+        side: 'left',
+        anchor: { x: 700, y: 100, width: 208, height: 26 },
+        popup: { x: 0, y: 0, width: 208, height: 319 },
+        viewport: { x: 0, y: 0, width: 1280, height: 820 },
+      })
+    ).toEqual({ left: -214, top: 0 });
+    expect(
+      resolveSubmenuCoordinates({
+        align: 'start',
+        anchor: { x: 96, y: 146, width: 208, height: 26 },
+        popup: { x: 0, y: 0, width: 208, height: 286 },
+        viewport: { x: 0, y: 0, width: 468, height: 620 },
+      })
+    ).toEqual({ left: 0, top: 26 });
+  });
+
+  it('shows bottom-start menus as soon as the anchor is measured', () => {
+    expect(
+      menuPlacementRequiresPopupSize({ align: 'start', side: 'bottom' })
+    ).toBe(false);
+    expect(
+      menuPlacementRequiresPopupSize({ align: 'end', side: 'bottom' })
+    ).toBe(true);
+    expect(
+      menuPlacementRequiresPopupSize({ align: 'start', side: 'top' })
+    ).toBe(true);
+  });
+
   it('matches the shared Web option text line box', () => {
     const source = readFileSync(
       new URL('./menu.lynx.tsx', import.meta.url),
@@ -77,7 +196,29 @@ describe('Lynx Menu overlay contract', () => {
       /\.LxMenuTrigger--disabled\s*\{[^}]*opacity:\s*0\.48;/s
     );
     expect(source).toContain(
-      'if (!menu.open) return;\n    void refreshAnchorRect();'
+      'attempt < MENU_ANCHOR_RETRY_COUNT'
+    );
+    expect(source).toContain('if (await refreshAnchorRect()) return;');
+    expect(source).toContain(
+      'await sleepOnHost(MENU_ANCHOR_RETRY_DELAY_MS)'
+    );
+    expect(source).toContain(
+      'if (menu.anchorRect.width > 0 && menu.anchorRect.height > 0) return;'
+    );
+    expect(source).toContain('const nextRect = menuRectFromLayout(event);');
+    expect(source).not.toContain('menuLayoutHasGlobalPosition(event)');
+    expect(source).toContain('void refreshAnchorRect();');
+    expect(source).toContain('synara-menu-sub-trigger-');
+    expect(source).toMatch(
+      /<view[\s\S]{0,120}ref=\{menu\.triggerRef\}[\s\S]{0,80}flatten=\{false\}/
+    );
+    expect(source).toContain(
+      'resolveMenuTriggerRect(\n        triggerIdRef.current!,\n        menu.triggerRef'
+    );
+    expect(source).toContain('opacity: positioned ? 1 : 0');
+    expect(source).toContain('...props.style');
+    expect(source).not.toContain(
+      "visibility: positioned ? 'visible' : 'hidden'"
     );
   });
 
@@ -456,4 +597,83 @@ describe('Lynx Menu overlay contract', () => {
     expect(trigger.getAttribute('aria-expanded')).toBe('true');
     expect(popup.getAttribute('role')).toBe('menu');
   });
+
+  it('opens submenus on pointer intent and supports directional keyboard dismissal', async () => {
+    render(
+      <Menu defaultOpen>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPopup>
+          <MenuSub>
+            <MenuSubTrigger>Model</MenuSubTrigger>
+            <MenuSubPopup>Models</MenuSubPopup>
+          </MenuSub>
+        </MenuPopup>
+      </Menu>
+    );
+    const trigger = elementTree.root?.querySelector('.LxMenuSubTrigger');
+    fireEvent(trigger!, new Event('bindEvent:mouseenter', { bubbles: true }));
+    await waitFor(() =>
+      expect(elementTree.root?.querySelector('.LxMenuSubPopup')).not.toBeNull()
+    );
+    fireCatchKeyDown(trigger!, { key: 'ArrowLeft' });
+    await waitFor(() =>
+      expect(elementTree.root?.querySelector('.LxMenuSubPopup')).toBeNull()
+    );
+  });
+
+  it('notifies a submenu owner before opening from pointer intent', async () => {
+    const onOpen = rs.fn();
+    render(
+      <Menu defaultOpen>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPopup>
+          <MenuSub>
+            <MenuSubTrigger onOpen={onOpen}>Model</MenuSubTrigger>
+            <MenuSubPopup>Models</MenuSubPopup>
+          </MenuSub>
+        </MenuPopup>
+      </Menu>
+    );
+    const trigger = elementTree.root?.querySelector('.LxMenuSubTrigger');
+    fireEvent(trigger!, new Event('bindEvent:mouseenter', { bubbles: true }));
+    await waitFor(() => expect(onOpen).toHaveBeenCalledTimes(1));
+  });
+
+  it('supports controlled submenu ownership', async () => {
+    const onOpenChange = rs.fn();
+    render(
+      <Menu defaultOpen>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPopup>
+          <MenuSub open={false} onOpenChange={onOpenChange}>
+            <MenuSubTrigger>Model</MenuSubTrigger>
+            <MenuSubPopup>Models</MenuSubPopup>
+          </MenuSub>
+        </MenuPopup>
+      </Menu>
+    );
+    const trigger = elementTree.root?.querySelector('.LxMenuSubTrigger');
+    fireEvent.tap(trigger!);
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+    expect(elementTree.root?.querySelector('.LxMenuSubPopup')).toBeNull();
+  });
+
+  it('uses the viewport-clamped top coordinate for end-aligned submenus', () => {
+    const source = readFileSync(new URL('./menu.lynx.tsx', import.meta.url), 'utf8');
+    expect(source).toMatch(/top:\s*\x60\$\{Math\.round\(coordinates\.top\)\}px\x60/);
+    expect(source).toContain("props.align === 'end' ? { bottom: 'auto' } : {}");
+  });
+
+  it('normalizes Native popup-local trigger rectangles before portal placement', () => {
+    const source = readFileSync(new URL('./menu.lynx.tsx', import.meta.url), 'utf8');
+    const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
+    expect(source).toContain('parentOrigin.x + rect.left');
+    expect(source).toContain('parentOrigin.y + rect.top');
+    expect(source).toContain('props.portaled ? (');
+    expect(source).toContain('className="LxMenuSubLayer" catchtap={menu.close}');
+    expect(styles).toMatch(
+      /\.LxMenuSubLayer\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*1102;[^}]*width:\s*100vw;[^}]*height:\s*100vh;/s
+    );
+  });
+
 });

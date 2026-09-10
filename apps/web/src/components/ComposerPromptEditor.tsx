@@ -520,6 +520,7 @@ interface ComposerPromptEditorProps {
   disabled: boolean;
   placeholder: string;
   className?: string;
+  emptyMinHeightPx?: number;
   onRemoveTerminalContext: (contextId: string) => void;
   /**
    * Invoked when a sufficiently large text paste should collapse into an attachment
@@ -940,6 +941,7 @@ function ComposerPromptEditorInner({
   disabled,
   placeholder,
   className,
+  emptyMinHeightPx,
   onRemoveTerminalContext,
   onCollapsePastedText,
   onChange,
@@ -1196,7 +1198,14 @@ function ComposerPromptEditorInner({
 
   return (
     <ComposerRemoveTerminalContextContext.Provider value={onRemoveTerminalContext}>
-      <div className="relative">
+      <div
+        className="relative"
+        style={
+          value.length === 0 && emptyMinHeightPx !== undefined
+            ? { minHeight: `${emptyMinHeightPx}px` }
+            : undefined
+        }
+      >
         <PlainTextPlugin
           contentEditable={
             <ContentEditable
@@ -1258,6 +1267,7 @@ export const ComposerPromptEditor = forwardRef<
     disabled,
     placeholder,
     className,
+    emptyMinHeightPx,
     onRemoveTerminalContext,
     onCollapsePastedText,
     onChange,
@@ -1296,6 +1306,7 @@ export const ComposerPromptEditor = forwardRef<
         mentionReferences={normalizedMentionReferences}
         disabled={disabled}
         placeholder={placeholder}
+        emptyMinHeightPx={emptyMinHeightPx}
         onRemoveTerminalContext={onRemoveTerminalContext}
         onChange={onChange}
         onPaste={onPaste}

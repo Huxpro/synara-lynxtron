@@ -1287,6 +1287,7 @@ interface TerminalStateStoreState {
     terminalIds: readonly string[],
   ) => void;
   clearTerminalState: (threadId: ThreadId) => void;
+  removeTerminalState: (threadId: ThreadId) => void;
   removeOrphanedTerminalStates: (activeThreadIds: Set<ThreadId>) => void;
 }
 
@@ -1308,6 +1309,10 @@ const terminalPersistStorage = createDeferredPersistStorage<
 // Flush pending terminal-state writes before the page goes away so at most one
 // debounce window of changes can be lost.
 flushStorageBeforePageHide(() => terminalPersistStorage.flush());
+
+export function flushTerminalStatePersistence(): void {
+  terminalPersistStorage.flush();
+}
 
 export const useTerminalStateStore = create<TerminalStateStoreState>()(
   persist(
@@ -1397,6 +1402,13 @@ export const useTerminalStateStore = create<TerminalStateStoreState>()(
           ),
         clearTerminalState: (threadId) =>
           updateTerminal(threadId, () => createDefaultThreadTerminalState()),
+        removeTerminalState: (threadId) =>
+          set((state) => {
+            if (!Object.hasOwn(state.terminalStateByThreadId, threadId)) return state;
+            const next = { ...state.terminalStateByThreadId };
+            delete next[threadId];
+            return { terminalStateByThreadId: next };
+          }),
         removeOrphanedTerminalStates: (activeThreadIds) =>
           set((state) => {
             const orphanedIds = Object.keys(state.terminalStateByThreadId).filter(

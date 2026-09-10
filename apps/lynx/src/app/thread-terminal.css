@@ -1,4 +1,5 @@
 .ThreadTerminal {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 260px;
@@ -44,49 +45,221 @@
   flex: 1;
 }
 
+.ThreadTerminalOutputViewport {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.ThreadTerminalInputProxyAnchor {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ThreadTerminalInputProxy {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .ThreadTerminalOutputScroller {
   flex: 1;
   min-height: 0;
-  padding: 10px 14px;
-  background-color: #101010;
+  padding: 12px 32px 14px 12px;
+  background-color: var(--color-token-terminal-background);
+}
+
+.ThreadTerminalScreen {
+  position: relative;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+@keyframes ThreadTerminalCursorBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.ThreadTerminalCursor {
+  position: absolute;
+  background-color: var(--color-token-terminal-foreground);
+  pointer-events: none;
+}
+
+.ThreadTerminalCursor--blink {
+  animation: ThreadTerminalCursorBlink 1s step-end infinite;
+}
+
+.ThreadTerminalCursorText {
+  color: var(--color-token-terminal-background);
+  white-space: pre;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ThreadTerminalCursor--blink {
+    animation: none;
+  }
+}
+
+.ThreadTerminalSearch {
+  position: absolute;
+  z-index: 10;
+  top: 4px;
+  right: 4px;
+  display: flex;
+  max-width: calc(100% - 8px);
+  min-height: 24px;
+  padding: 0 2px 0 8px;
+  align-items: center;
+  border: 1px solid var(--color-border-light);
+  border-radius: 4px;
+  background-color: var(--popover);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+.ThreadTerminalSearchInput {
+  display: flex;
+  width: 112px;
+  min-width: 0;
+  height: 24px;
+  background-color: transparent;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 24px;
+  text-align: left;
+}
+
+.ThreadTerminalSearchEmpty {
+  padding: 0 4px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.ThreadTerminalSearchButton {
+  display: flex;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  color: var(--muted-foreground);
+}
+
+.ThreadTerminalSearchButton.ui-hover,
+.ThreadTerminalSearchButton.ui-focus,
+.ThreadTerminalSearchButton.ui-pressed {
+  color: var(--foreground);
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.ThreadTerminalSearchButton--active {
+  background-color: var(--color-background-button-secondary);
+  color: var(--foreground);
+}
+
+.ThreadTerminalSearchButtonText {
+  color: currentColor;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
 }
 
 .ThreadTerminalOutput {
-  color: #e8e8e8;
-  font-family: "SFMono-Regular", ui-monospace, monospace;
+  color: var(--color-token-terminal-foreground);
+  font-family: var(--font-mono-family);
   font-size: 12px;
   line-height: 18px;
   white-space: pre-wrap;
+}
+
+.ThreadTerminalOutputLine {
+  color: var(--color-token-terminal-foreground);
+  font-family: var(--font-mono-family);
+  font-size: 12px;
+  line-height: 18px;
+  white-space: pre;
+}
+
+.ThreadTerminalRun--fg-terminal-foreground { color: var(--color-token-terminal-foreground); }
+.ThreadTerminalRun--fg-terminal-background { color: var(--color-token-terminal-background); }
+.ThreadTerminalRun--bg-terminal-foreground { background-color: var(--color-token-terminal-foreground); }
+.ThreadTerminalRun--bg-terminal-background { background-color: var(--color-token-terminal-background); }
+.ThreadTerminalRun--fg-black { color: var(--color-token-terminal-ansi-black); }
+.ThreadTerminalRun--fg-red { color: var(--color-token-terminal-ansi-red); }
+.ThreadTerminalRun--fg-green { color: var(--color-token-terminal-ansi-green); }
+.ThreadTerminalRun--fg-yellow { color: var(--color-token-terminal-ansi-yellow); }
+.ThreadTerminalRun--fg-blue { color: var(--color-token-terminal-ansi-blue); }
+.ThreadTerminalRun--fg-magenta { color: var(--color-token-terminal-ansi-magenta); }
+.ThreadTerminalRun--fg-cyan { color: var(--color-token-terminal-ansi-cyan); }
+.ThreadTerminalRun--fg-white { color: var(--color-token-terminal-ansi-white); }
+.ThreadTerminalRun--fg-bright-black { color: var(--color-token-terminal-ansi-bright-black); }
+.ThreadTerminalRun--fg-bright-red { color: var(--color-token-terminal-ansi-bright-red); }
+.ThreadTerminalRun--fg-bright-green { color: var(--color-token-terminal-ansi-bright-green); }
+.ThreadTerminalRun--fg-bright-yellow { color: var(--color-token-terminal-ansi-bright-yellow); }
+.ThreadTerminalRun--fg-bright-blue { color: var(--color-token-terminal-ansi-bright-blue); }
+.ThreadTerminalRun--fg-bright-magenta { color: var(--color-token-terminal-ansi-bright-magenta); }
+.ThreadTerminalRun--fg-bright-cyan { color: var(--color-token-terminal-ansi-bright-cyan); }
+.ThreadTerminalRun--fg-bright-white { color: var(--color-token-terminal-ansi-bright-white); }
+.ThreadTerminalRun--bg-black { background-color: var(--color-token-terminal-ansi-black); }
+.ThreadTerminalRun--bg-red { background-color: var(--color-token-terminal-ansi-red); }
+.ThreadTerminalRun--bg-green { background-color: var(--color-token-terminal-ansi-green); }
+.ThreadTerminalRun--bg-yellow { background-color: var(--color-token-terminal-ansi-yellow); }
+.ThreadTerminalRun--bg-blue { background-color: var(--color-token-terminal-ansi-blue); }
+.ThreadTerminalRun--bg-magenta { background-color: var(--color-token-terminal-ansi-magenta); }
+.ThreadTerminalRun--bg-cyan { background-color: var(--color-token-terminal-ansi-cyan); }
+.ThreadTerminalRun--bg-white { background-color: var(--color-token-terminal-ansi-white); }
+.ThreadTerminalRun--bg-bright-black { background-color: var(--color-token-terminal-ansi-bright-black); }
+.ThreadTerminalRun--bg-bright-red { background-color: var(--color-token-terminal-ansi-bright-red); }
+.ThreadTerminalRun--bg-bright-green { background-color: var(--color-token-terminal-ansi-bright-green); }
+.ThreadTerminalRun--bg-bright-yellow { background-color: var(--color-token-terminal-ansi-bright-yellow); }
+.ThreadTerminalRun--bg-bright-blue { background-color: var(--color-token-terminal-ansi-bright-blue); }
+.ThreadTerminalRun--bg-bright-magenta { background-color: var(--color-token-terminal-ansi-bright-magenta); }
+.ThreadTerminalRun--bg-bright-cyan { background-color: var(--color-token-terminal-ansi-bright-cyan); }
+.ThreadTerminalRun--bg-bright-white { background-color: var(--color-token-terminal-ansi-bright-white); }
+
+.ThreadTerminalJump {
+  position: absolute;
+  z-index: 9;
+  left: 50%;
+  bottom: 54px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.ThreadTerminalJump.ui-hover,
+.ThreadTerminalJump.ui-focus,
+.ThreadTerminalJump.ui-pressed {
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.ThreadTerminalJumpIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--foreground);
 }
 
 .ThreadTerminalError {
   padding: 6px 14px;
   color: var(--destructive);
   font-size: 11px;
-}
-
-.ThreadTerminalCommandRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 6px 10px 6px 14px;
-  border-top-width: 1px;
-  border-top-style: solid;
-  border-top-color: var(--border);
-}
-
-.ThreadTerminalCommandInput {
-  flex: 1;
-  min-width: 0;
-  height: 32px;
-  padding: 6px 10px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--input);
-  border-radius: 7px;
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: "SFMono-Regular", ui-monospace, monospace;
-  font-size: 12px;
 }

@@ -4,6 +4,7 @@
 
 import '@lynx-js/web-core/client';
 import { setupSymmetricHost } from '@lynx-js/lynxtron/web-host';
+import { COMPONENT_LAB_RELAY_STORAGE_KEY } from '@synara/shared/componentLab';
 import { installLynxWebInteractionStateBridge } from './web-interaction-state';
 import {
   type LynxWebInteractionEvent,
@@ -18,6 +19,7 @@ import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from '../syntaxHighlightingContract.l
 import { REDUCED_MOTION_EVENT } from '../reducedMotionEvent.logic';
 import { normalizeLynxRpcPayload } from '../rpcPayload.logic';
 import { SYSTEM_APPEARANCE_EVENT } from '../systemAppearanceEvent.logic';
+import { EDITOR_ICON_ROUTE_PATH } from '@synara/shared/editorIcons';
 import {
   describeWebRpcDefect,
   parseWebRpcResponse,
@@ -156,10 +158,19 @@ function configuredRelayBaseUrl(): string {
   return normalizeSynaraWsUrl(
     resolveWebRelayEndpoint(
       globalThis.__SYNARA_LYNX_RUNTIME__?.wsUrl,
+      readComponentsLabRelayUrl(),
       buildTimeSynaraWsUrl(),
       DEFAULT_SYNARA_WS_URL
     )
   );
+}
+
+function readComponentsLabRelayUrl(): string {
+  try {
+    return globalThis.sessionStorage?.getItem(COMPONENT_LAB_RELAY_STORAGE_KEY)?.trim() ?? '';
+  } catch {
+    return '';
+  }
 }
 
 function normalizeSynaraWsUrl(value: unknown): string {
@@ -543,6 +554,7 @@ async function synaraRpc(
   const baseUrl = normalizeSynaraWsUrl(
     resolveWebRelayEndpoint(
       globalThis.__SYNARA_LYNX_RUNTIME__?.wsUrl,
+      readComponentsLabRelayUrl(),
       baseUrlValue,
       DEFAULT_SYNARA_WS_URL
     )
@@ -735,6 +747,20 @@ async function handleBridgeCall(
         params
       );
     }
+    if (method === 'terminalResize') {
+      return await synaraRpc(
+        params.baseUrl,
+        'terminal.resize',
+        params
+      );
+    }
+    if (method === 'terminalAckOutput') {
+      return await synaraRpc(
+        params.baseUrl,
+        'terminal.ackOutput',
+        params
+      );
+    }
     if (method === 'terminalClose') {
       return await synaraRpc(
         params.baseUrl,
@@ -762,6 +788,29 @@ async function handleBridgeCall(
           relayReadyBaseUrl ??
           configuredRelayBaseUrl(),
       };
+    }
+    if (method === 'runtimeGetSystemAppearance') {
+      return { dark: systemAppearanceQuery.matches };
+    }
+    if (method === 'runtimeGetEditorIcon') {
+      const editorId = String(params.editorId ?? '').trim();
+      if (!editorId) return { dataUrl: null };
+      const endpoint = new URL(configuredRelayBaseUrl());
+      endpoint.protocol = endpoint.protocol === 'wss:' ? 'https:' : 'http:';
+      endpoint.pathname = EDITOR_ICON_ROUTE_PATH;
+      endpoint.hash = '';
+      endpoint.searchParams.set('id', editorId);
+      const response = await fetch(endpoint);
+      if (!response.ok) return { dataUrl: null };
+      const blob = await response.blob();
+      if (!blob.type.startsWith('image/')) return { dataUrl: null };
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => resolve(String(reader.result ?? '')), { once: true });
+        reader.addEventListener('error', () => reject(reader.error), { once: true });
+        reader.readAsDataURL(blob);
+      });
+      return { dataUrl };
     }
     if (method === 'shellRendererReady') {
       const route = pendingInitialRoute;
@@ -843,6 +892,9 @@ async function handleBridgeCall(
         // isolated Lynx-for-Web harness interaction deterministic.
       }
       return null;
+    }
+    if (method === 'shellShowInFolder') {
+      return { opened: false };
     }
     if (method === 'clipboardReadText') {
       try {
@@ -956,7 +1008,9 @@ const initialEditorOpen =
 const initialEditorCenterMode =
   new URLSearchParams(globalThis.location.search).get('editorMode') === 'diff'
     ? 'diff'
-    : 'file';
+    : new URLSearchParams(globalThis.location.search).get('editorMode') === 'file'
+      ? 'file'
+      : null;
 const initialEditorChatOpen =
   new URLSearchParams(globalThis.location.search).get('editorChat') === 'hidden'
     ? false
@@ -965,6 +1019,9 @@ const initialEditorChatOpen =
       : null;
 const initialEditorSearchOpen =
   new URLSearchParams(globalThis.location.search).get('editorSearch') === 'open';
+const initialEditorProjectMenuOpen =
+  new URLSearchParams(globalThis.location.search).get('editorProjectMenu') ===
+  'open';
 const initialEditorHistoryOpen =
   new URLSearchParams(globalThis.location.search).get('editorHistory') ===
   'open';
@@ -982,11 +1039,26 @@ const initialTemporaryOpen =
 const initialWorkspaceSettingsOpen =
   new URLSearchParams(globalThis.location.search).get('workspaceSettings') ===
   'open';
+const initialDiffFileTreeOpen =
+  new URLSearchParams(globalThis.location.search).get('diffFileTree') ===
+  'open';
+const initialDiffOpen = ['open', '1'].includes(
+  new URLSearchParams(globalThis.location.search).get('diff') ?? ''
+);
+const initialDiffTurnId =
+  new URLSearchParams(globalThis.location.search).get('diffTurnId');
+const initialDiffFilePath =
+  new URLSearchParams(globalThis.location.search).get('diffFilePath');
 const initialWorkspaceVisible =
   new URLSearchParams(globalThis.location.search).get('workspaceVisible') ===
   'open';
 const initialExplorerOpen =
   new URLSearchParams(globalThis.location.search).get('explorer') === 'open';
+const initialExplorerPresentationMode =
+  new URLSearchParams(globalThis.location.search).get('explorerMode') ===
+  'single-file'
+    ? 'single-file'
+    : 'dock';
 const initialExplorerActionMenuOpen =
   new URLSearchParams(globalThis.location.search).get('explorerActionMenu') ===
   'open';
@@ -1015,6 +1087,10 @@ const initialComposerModelMenuOpen =
   new URLSearchParams(globalThis.location.search).get(
     COMPOSER_MODEL_MENU_QUERY
   ) === 'open';
+const initialComposerModelSubmenuOpen =
+  new URLSearchParams(globalThis.location.search).get(
+    'composerModelSubmenu'
+  ) === 'open';
 const initialComposerModelProvider =
   new URLSearchParams(globalThis.location.search).get(
     COMPOSER_MODEL_PROVIDER_QUERY
@@ -1022,7 +1098,18 @@ const initialComposerModelProvider =
 const systemAppearanceQuery = globalThis.matchMedia(
   '(prefers-color-scheme: dark)'
 );
-const initialSystemDark = systemAppearanceQuery.matches;
+const requestedLabTheme = new URLSearchParams(globalThis.location.search).get(
+  'theme'
+);
+const initialThemeMode =
+  pendingInitialRoute?.startsWith('/components-lab') &&
+  (requestedLabTheme === 'light' || requestedLabTheme === 'dark')
+    ? requestedLabTheme
+    : null;
+const initialSystemDark =
+  initialThemeMode !== null
+    ? initialThemeMode === 'dark'
+    : systemAppearanceQuery.matches;
 const reducedMotionQuery = globalThis.matchMedia(
   '(prefers-reduced-motion: reduce)'
 );
@@ -1032,11 +1119,17 @@ webDocument.body.innerHTML = `
   id="root-view"
   style="height:100vh; width:100vw;"
   init-data='${JSON.stringify({
+    initialDiffOpen,
+    initialThemeMode,
+    initialDiffTurnId,
+    initialDiffFilePath,
+    initialDiffFileTreeOpen,
     initialEnvironmentOpen,
     initialEditorOpen,
     initialEditorCenterMode,
     initialEditorChatOpen,
     initialEditorSearchOpen,
+    initialEditorProjectMenuOpen,
     initialEditorHistoryOpen,
     initialEditorNewOpen,
     initialEditorNewChatOpen,
@@ -1046,6 +1139,7 @@ webDocument.body.innerHTML = `
     initialWorkspaceSettingsOpen,
     initialWorkspaceVisible,
     initialExplorerOpen,
+    initialExplorerPresentationMode,
     initialExplorerActionMenuOpen,
     initialExplorerPath,
     initialExplorerCommentLine,
@@ -1053,6 +1147,7 @@ webDocument.body.innerHTML = `
     initialExplorerExpandedDirectories,
     initialExplorerWidth,
     initialComposerModelMenuOpen,
+    initialComposerModelSubmenuOpen,
     initialComposerModelProvider,
     initialReducedMotion,
     initialSystemDark,
@@ -1079,7 +1174,8 @@ globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => {
     }))
   );
   return {
-    configuredBaseUrl: configuredRelayBaseUrl(),
+    configuredBaseUrl:
+      relaySocketBaseUrl ?? relayReadyBaseUrl ?? configuredRelayBaseUrl(),
     activeBaseUrl: relaySocketBaseUrl,
     readyBaseUrl: relayReadyBaseUrl,
     socketState: relaySocket?.readyState ?? null,
@@ -1241,6 +1337,12 @@ const publishViewportSize = () => {
   ]);
 };
 const publishSystemAppearance = (event: MediaQueryListEvent) => {
+  if (
+    pendingInitialRoute?.startsWith('/components-lab') &&
+    (requestedLabTheme === 'light' || requestedLabTheme === 'dark')
+  ) {
+    return;
+  }
   lynxView.sendGlobalEvent?.(SYSTEM_APPEARANCE_EVENT, [event.matches]);
 };
 const publishReducedMotion = (event: MediaQueryListEvent) => {

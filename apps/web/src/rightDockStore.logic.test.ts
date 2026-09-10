@@ -57,6 +57,27 @@ describe("isRightDockPaneKind", () => {
 });
 
 describe("pull request pane", () => {
+  it("preserves PR identity when a bare singleton reopen only restores visibility", () => {
+    const first = openPaneInState(createDefaultRightDockState(), {
+      paneId: "pr-1",
+      kind: "pullRequest",
+      pullRequestProjectId: "project-1" as never,
+      pullRequestRepository: "acme/one",
+      pullRequestNumber: 12,
+      pullRequestInitialTab: "code",
+    });
+    const reopened = openPaneInState(
+      { ...first, open: false },
+      { paneId: "ignored", kind: "pullRequest" },
+    );
+    expect(reopened.panes[0]).toMatchObject({
+      pullRequestProjectId: "project-1",
+      pullRequestRepository: "acme/one",
+      pullRequestNumber: 12,
+      pullRequestInitialTab: "code",
+    });
+  });
+
   it("reuses the singleton pane and updates its PR identity", () => {
     const first = openPaneInState(createDefaultRightDockState(), {
       paneId: "pr-1",

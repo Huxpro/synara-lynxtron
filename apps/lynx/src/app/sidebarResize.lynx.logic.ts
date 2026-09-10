@@ -101,6 +101,19 @@ export function resolveLynxSidebarWidth(input: {
   });
 }
 
+export function resolveLynxSidebarPresentedWidth(input: {
+  readonly requestedWidth: number;
+  readonly viewportWidth: number;
+}): number {
+  if (input.viewportWidth <= 0) return THREAD_SIDEBAR_DEFAULT_WIDTH;
+  if (input.viewportWidth < 768) {
+    return Math.max(0, input.viewportWidth - 12);
+  }
+  return clampSidebarWidth(input.requestedWidth, {
+    minWidth: THREAD_SIDEBAR_MIN_WIDTH,
+  });
+}
+
 export function createLynxSidebarResizeSession(input: {
   readonly side?: 'left' | 'right';
   readonly startWidth: number;

@@ -11,6 +11,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { RIGHT_DOCK_MIN_WIDTH_PX } from "@synara/shared/rightDock";
 
 import { cn } from "~/lib/utils";
 import {
@@ -53,7 +54,7 @@ import { raf, cancelRaf } from "~/platform/frame";
 // Shared sizing defaults for dock hosts: the resize floor for a single readable pane and the
 // "half the shell, but never cramped" opening width. The thread route tunes its own values
 // around the composer; simpler hosts (e.g. the /pull-requests route) use these as-is.
-export const RIGHT_DOCK_MIN_WIDTH = 26 * 16;
+export const RIGHT_DOCK_MIN_WIDTH = RIGHT_DOCK_MIN_WIDTH_PX;
 export const RIGHT_DOCK_DEFAULT_WIDTH = "max(28rem, calc(50vw - 8rem))";
 
 interface RightDockProps {
@@ -103,6 +104,65 @@ function RightDockTab(props: {
   );
 }
 
+export function RightDockTabs(props: {
+  readonly activePaneId: string | null;
+  readonly addMenuKinds: readonly RightDockPaneKind[];
+  readonly defaultAddMenuOpen?: boolean;
+  readonly paneIconOverrides?: Record<string, ReactNode | undefined>;
+  readonly paneLabelOverrides?: Record<string, string | undefined>;
+  readonly panes: readonly RightDockPane[];
+  readonly onAddPane: (kind: RightDockPaneKind) => void;
+  readonly onClosePane: (paneId: string) => void;
+  readonly onCollapse: () => void;
+  readonly onSelectPane?: ((paneId: string) => void) | undefined;
+}) {
+  const desktopTopBarWindowControlsGutterClassName =
+    useDesktopTopBarWindowControlsGutterClassName();
+  return (
+    <div
+      className={cn(
+        CHAT_SURFACE_HEADER_ROW_CLASS_NAME,
+        "gap-1 px-1.5",
+        desktopTopBarWindowControlsGutterClassName,
+      )}
+    >
+      <div className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
+        {props.panes.map((pane) => (
+          <RightDockTab
+            key={pane.id}
+            pane={pane}
+            label={resolveRightDockPaneLabel(pane, props.paneLabelOverrides)}
+            icon={props.paneIconOverrides?.[pane.id]}
+            active={pane.id === props.activePaneId}
+            onSelect={props.onSelectPane ? () => props.onSelectPane?.(pane.id) : undefined}
+            onClose={() => props.onClosePane(pane.id)}
+          />
+        ))}
+      </div>
+      {props.addMenuKinds.length > 0 ? (
+        <Menu defaultOpen={props.defaultAddMenuOpen} modal={false}>
+          <MenuTrigger
+            render={
+              <Button variant="chrome" size="icon-xs" aria-label="Add panel" title="Add panel" className={DOCK_HEADER_ICON_BUTTON_CLASS} />
+            }
+          >
+            <PlusIcon className="size-3.5" />
+          </MenuTrigger>
+          <ComposerPickerMenuPopup align="end" side="bottom" className="w-44 min-w-44">
+            {props.addMenuKinds.map((kind) => {
+              const { Icon, label } = getRightDockPaneMeta(kind);
+              return <MenuItem key={kind} onClick={() => props.onAddPane(kind)}><Icon className="size-3.5 shrink-0" /><span>{label}</span></MenuItem>;
+            })}
+          </ComposerPickerMenuPopup>
+        </Menu>
+      ) : null}
+      <IconButton variant="chrome" size="icon-xs" label="Collapse panel" tooltip="Collapse panel" tooltipSide="bottom" className={DOCK_HEADER_ICON_BUTTON_CLASS} onClick={props.onCollapse}>
+        <PanelRightCloseIcon />
+      </IconButton>
+    </div>
+  );
+}
+
 // Persist which keep-mounted panes (e.g. terminals) have been activated so they
 // stay in the DOM while another tab is selected, pruned to live panes so closed
 // panes drop out and the set never leaks across thread switches. The set is
@@ -147,9 +207,6 @@ export function RightDock(props: RightDockProps) {
   const activePaneRuntimeMode = props.activePaneRuntimeMode ?? "live";
   // The dock is the right-most surface when open, so its header sits under the
   // fixed Windows caption cluster — reserve the same gutter the chat header uses.
-  const desktopTopBarWindowControlsGutterClassName =
-    useDesktopTopBarWindowControlsGutterClassName();
-
   const keepMountedPaneIds = useKeepMountedPaneIds(props.state.panes, activePane);
   // The dock must open as an exact 50/50 split of the chat shell. The CSS
   // default can only approximate half (it cannot observe the resizable left
@@ -231,66 +288,17 @@ export function RightDock(props: RightDockProps) {
           data-right-dock-content
           className="flex h-full min-h-0 w-full flex-col"
         >
-          <div
-            className={cn(
-              CHAT_SURFACE_HEADER_ROW_CLASS_NAME,
-              "gap-1 px-1.5",
-              desktopTopBarWindowControlsGutterClassName,
-            )}
-          >
-            <div className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
-              {props.state.panes.map((pane) => (
-                <RightDockTab
-                  key={pane.id}
-                  pane={pane}
-                  label={resolveRightDockPaneLabel(pane, props.paneLabelOverrides)}
-                  icon={props.paneIconOverrides?.[pane.id]}
-                  active={pane.id === props.state.activePaneId}
-                  onSelect={onSelectPane ? () => onSelectPane(pane.id) : undefined}
-                  onClose={() => props.onClosePane(pane.id)}
-                />
-              ))}
-            </div>
-            {props.addMenuKinds.length > 0 ? (
-              <Menu modal={false}>
-                <MenuTrigger
-                  render={
-                    <Button
-                      variant="chrome"
-                      size="icon-xs"
-                      aria-label="Add panel"
-                      title="Add panel"
-                      className={DOCK_HEADER_ICON_BUTTON_CLASS}
-                    />
-                  }
-                >
-                  <PlusIcon className="size-3.5" />
-                </MenuTrigger>
-                <ComposerPickerMenuPopup align="end" side="bottom" className="w-44 min-w-44">
-                  {props.addMenuKinds.map((kind) => {
-                    const { Icon, label } = getRightDockPaneMeta(kind);
-                    return (
-                      <MenuItem key={kind} onClick={() => props.onAddPane(kind)}>
-                        <Icon className="size-3.5 shrink-0" />
-                        <span>{label}</span>
-                      </MenuItem>
-                    );
-                  })}
-                </ComposerPickerMenuPopup>
-              </Menu>
-            ) : null}
-            <IconButton
-              variant="chrome"
-              size="icon-xs"
-              label="Collapse panel"
-              tooltip="Collapse panel"
-              tooltipSide="bottom"
-              className={DOCK_HEADER_ICON_BUTTON_CLASS}
-              onClick={props.onCollapse}
-            >
-              <PanelRightCloseIcon />
-            </IconButton>
-          </div>
+          <RightDockTabs
+            activePaneId={props.state.activePaneId}
+            addMenuKinds={props.addMenuKinds}
+            paneIconOverrides={props.paneIconOverrides}
+            paneLabelOverrides={props.paneLabelOverrides}
+            panes={props.state.panes}
+            onAddPane={props.onAddPane}
+            onClosePane={props.onClosePane}
+            onCollapse={props.onCollapse}
+            onSelectPane={onSelectPane}
+          />
           <div className="relative min-h-0 flex-1">
             {renderedPanes.map((pane) => {
               const isActive = pane.id === activePane?.id;

@@ -1,6 +1,6 @@
 export function scrollLynxElementIntoViewById(
   id: string,
-  block: 'nearest' | 'start' = 'start'
+  block: 'end' | 'nearest' | 'start' = 'start'
 ): boolean {
   if (!id.trim()) return false;
   try {

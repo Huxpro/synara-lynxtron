@@ -29,7 +29,10 @@ import {
   XIcon,
 } from "~/lib/icons";
 
-import { localServerPrimaryLabel } from "@synara/shared/localServers";
+import {
+  browserLocalServerUrl,
+  localServerPrimaryLabel,
+} from "@synara/shared/localServers";
 import {
   BROWSER_BLANK_URL,
   isBlankBrowserTabUrl,
@@ -374,19 +377,6 @@ function BrowserRuntimePreview(props: { title: string; detail: string }) {
       </div>
     </div>
   );
-}
-
-function browserLocalServerUrl(server: ServerLocalServerProcess): string | null {
-  const addressWithUrl = server.addresses.find((address) => address.url);
-  if (addressWithUrl?.url) {
-    return addressWithUrl.url;
-  }
-
-  const port = server.ports[0];
-  if (!port) {
-    return null;
-  }
-  return `http://localhost:${port}/`;
 }
 
 // Paints a tiny browser-preview tile without fetching screenshots or adding network work.

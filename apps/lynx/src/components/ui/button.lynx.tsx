@@ -103,8 +103,8 @@ export function Button({
   const existingAccessibilityState = buttonProps?.['accessibility-state'];
   const accessibilityElement =
     buttonProps?.['accessibility-element'] ?? true;
-  const accessibilityTraits =
-    buttonProps?.['accessibility-traits'] ??
+  const accessibilityTrait =
+    buttonProps?.['accessibility-trait'] ??
     (accessibilityElement ? ('button' as const) : undefined);
   const accessibilityState = disabled
     ? {
@@ -124,8 +124,8 @@ export function Button({
       buttonProps={{
         ...buttonProps,
         'accessibility-element': accessibilityElement,
-        ...(accessibilityTraits
-          ? { 'accessibility-traits': accessibilityTraits }
+        ...(accessibilityTrait
+          ? { 'accessibility-trait': accessibilityTrait }
           : {}),
         ...(accessibilityState
           ? { 'accessibility-state': accessibilityState }

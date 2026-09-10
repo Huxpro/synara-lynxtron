@@ -62,6 +62,8 @@ export interface MarkdownTextSelection {
   readonly text: string;
   readonly left: number;
   readonly top: number;
+  readonly width: number;
+  readonly height: number;
 }
 
 interface MarkdownRenderContext {
@@ -105,6 +107,8 @@ function SelectableMarkdownText(props: {
     const selectionRect = new Promise<{
       readonly left: number;
       readonly top: number;
+      readonly width: number;
+      readonly height: number;
     } | null>((resolve) => {
       textRef.current
         ?.invoke({
@@ -113,7 +117,9 @@ function SelectableMarkdownText(props: {
           success: (result) =>
             resolve({
               left: result.boundingRect.left,
-              top: result.boundingRect.bottom,
+              top: result.boundingRect.top,
+              width: result.boundingRect.width,
+              height: result.boundingRect.height,
             }),
           fail: () => resolve(null),
         })
@@ -129,6 +135,8 @@ function SelectableMarkdownText(props: {
           text,
           left: elementRect.left + localRect.left,
           top: elementRect.top + localRect.top,
+          width: localRect.width,
+          height: localRect.height,
         });
       })
       .catch(() => props.context.onTextSelection?.(null));
@@ -249,26 +257,26 @@ function renderInlineChildren(
   );
 }
 
-function renderTable(
-  node: MarkdownNode,
-  key: string,
-  context: MarkdownRenderContext
-) {
+function MarkdownTable(props: {
+  readonly node: MarkdownNode;
+  readonly nodeKey: string;
+  readonly context: MarkdownRenderContext;
+}) {
   return (
-    <scroll-view className="MdTableScroller" scroll-x key={key}>
+    <view className="MdTableScroller">
       <view className="MdTable">
-        {(node.children ?? []).map((row, rowIndex) => (
-          <view className="MdTableRow" key={`${key}.row.${rowIndex}`}>
+        {(props.node.children ?? []).map((row, rowIndex) => (
+          <view className="MdTableRow" key={`${props.nodeKey}.row.${rowIndex}`}>
             {(row.children ?? []).map((cell, cellIndex) => (
               <view
                 className={rowIndex === 0 ? 'MdTableCell MdTableHeaderCell' : 'MdTableCell'}
-                key={`${key}.cell.${rowIndex}.${cellIndex}`}
+                key={`${props.nodeKey}.cell.${rowIndex}.${cellIndex}`}
               >
                 <text className={rowIndex === 0 ? 'MdTableHeaderText' : 'MdTableCellText'}>
                   {renderInlineChildren(
                     cell,
-                    `${key}.inline.${rowIndex}.${cellIndex}`,
-                    context
+                    `${props.nodeKey}.inline.${rowIndex}.${cellIndex}`,
+                    props.context
                   )}
                 </text>
               </view>
@@ -276,8 +284,16 @@ function renderTable(
           </view>
         ))}
       </view>
-    </scroll-view>
+    </view>
   );
+}
+
+function renderTable(
+  node: MarkdownNode,
+  key: string,
+  context: MarkdownRenderContext
+) {
+  return <MarkdownTable context={context} key={key} node={node} nodeKey={key} />;
 }
 
 function MarkdownLink({
@@ -416,8 +432,7 @@ function MarkdownTaskCheckbox(props: { readonly checked: boolean }) {
 function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; readonly nodeKey: string }) {
   const [copied, setCopied] = useState(false);
   const [wrap, setWrap] = useState(false);
-  const [highlighted, setHighlighted] =
-    useState<NativeSyntaxHighlightResult | null>(null);
+  const [highlighted, setHighlighted] = useState<NativeSyntaxHighlightResult | null>(null);
   const copyGenerationRef = useRef(0);
   const { codeFontFamily, resolvedTheme } = useTheme();
   const presentation = resolveMarkdownCodeBlockPresentation({
@@ -429,21 +444,9 @@ function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; rea
     'background only';
     let active = true;
     setHighlighted(null);
-    if (!presentation.code || !node.lang) {
-      return () => {
-        active = false;
-      };
-    }
-    const extension =
-      node.lang === 'javascript'
-        ? 'js'
-        : node.lang === 'typescript'
-          ? 'ts'
-          : node.lang;
-    void highlightExplorerCode({
-      code: presentation.code,
-      path: `snippet.${extension}`,
-    })
+    if (!presentation.code || !node.lang) return () => { active = false; };
+    const path = `snippet.${node.lang === 'javascript' ? 'js' : node.lang === 'typescript' ? 'ts' : node.lang}`;
+    void highlightExplorerCode({ code: presentation.code, path })
       .then((themes) => {
         if (active) setHighlighted(themes?.[resolvedTheme] ?? null);
       })
@@ -526,23 +529,15 @@ function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; rea
           >
             {highlighted
               ? highlighted.lines.map((line, lineIndex) => (
-                  <text
-                    key={`${lineIndex}:${line.map((token) => token.content).join('')}`}
-                  >
+                  <text key={`${lineIndex}:${line.map((token) => token.content).join('')}`}>
                     {line.map((token, tokenIndex) => (
                       <text
                         key={`${tokenIndex}:${token.content}`}
                         style={{
                           color: token.color,
-                          ...(token.fontStyle & 1
-                            ? { fontStyle: 'italic' }
-                            : {}),
-                          ...(token.fontStyle & 2
-                            ? { fontWeight: 700 }
-                            : {}),
-                          ...(token.fontStyle & 4
-                            ? { textDecoration: 'underline' }
-                            : {}),
+                          ...(token.fontStyle & 1 ? { fontStyle: 'italic' } : {}),
+                          ...(token.fontStyle & 2 ? { fontWeight: 700 } : {}),
+                          ...(token.fontStyle & 4 ? { textDecoration: 'underline' } : {}),
                         }}
                       >
                         {token.content}

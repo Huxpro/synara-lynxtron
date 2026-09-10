@@ -19,6 +19,7 @@ export function SidebarPrimaryActionButtonElement({
   onActivate,
   onMouseEnter,
   onFocus,
+  visualState,
   children,
 }: ChildrenProps & {
   readonly active: boolean;
@@ -28,14 +29,18 @@ export function SidebarPrimaryActionButtonElement({
   readonly onActivate?: (() => void) | undefined;
   readonly onMouseEnter?: (() => void) | undefined;
   readonly onFocus?: (() => void) | undefined;
+  readonly visualState?: 'default' | 'hover' | 'focus' | 'pressed';
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: `SharedSidebarPrimaryActionButton${
       active ? ' SharedSidebarPrimaryActionButton--active' : ''
-    }${disabled ? ' SharedSidebarPrimaryActionButton--disabled' : ''}`,
+    }${disabled ? ' SharedSidebarPrimaryActionButton--disabled' : ''}${
+      visualState && visualState !== 'default' ? ` ui-${visualState}` : ''
+    }`,
     accessibleLabel,
     accessibilityValue: active ? 'Current page' : undefined,
     disabled,
+    programmaticFocusId: elementId,
     onActivate,
   });
   const eventProps = {

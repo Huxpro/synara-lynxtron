@@ -19,7 +19,7 @@ describe('composer project picker trigger icon', () => {
       'className="ComposerProjectPickerTriggerIconLynx"'
     );
     expect(source).toContain(
-      'content={colorizeLynxSvg(folderSvg, svgColors.mutedForeground)}'
+      "content={colorizeLynxSvg(folderSvg, semanticIconColor('secondary'))}"
     );
     expect(source).not.toContain(
       '<FolderIcon className="ComposerProjectPickerTriggerIconLynx"'
@@ -27,7 +27,7 @@ describe('composer project picker trigger icon', () => {
     expect(source).toMatch(
       /import\s*\{[^}]*FolderIcon,[^}]*\}\s*from '\.\.\/lib\/icons\.lynx';/s
     );
-    expect(source).toMatch(/\?\s*PaletteIcon\s*:\s*FolderIcon\s*;/s);
+    expect(source).toContain('const Icon = icons[props.icon] ?? FolderIcon;');
     expect(styles).toMatch(
       /\.ComposerProjectPickerTriggerIconLynx\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*flex-shrink:\s*0;/s
     );

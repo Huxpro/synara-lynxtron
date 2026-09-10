@@ -102,44 +102,6 @@
   flex-shrink: 0;
 }
 
-.SharedSettingsGeneralSwitch {
-  width: 32px;
-  height: 20px;
-  padding: 1px;
-  border: 1px solid var(--settings-switch-border);
-  border-radius: 10px;
-  background-color: var(--settings-switch-off);
-}
-
-.SharedSettingsGeneralSwitch--on {
-  border-color: var(--color-text-accent);
-  background-color: var(--color-text-accent);
-}
-
-.SharedSettingsGeneralSwitch.ui-hover {
-  box-shadow: 0 0 0 1px var(--border);
-}
-
-.SharedSettingsGeneralSwitch.ui-focus {
-  box-shadow: 0 0 0 2px var(--ring);
-}
-
-.SharedSettingsGeneralSwitch--disabled {
-  opacity: 0.48;
-}
-
-.SharedSettingsGeneralSwitchThumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 8px;
-  background-color: #ffffff;
-  transform: translateX(0);
-}
-
-.SharedSettingsGeneralSwitch--on .SharedSettingsGeneralSwitchThumb {
-  transform: translateX(12px);
-}
-
 .SharedSettingsGeneralSelectTrigger {
   width: 176px;
   height: 32px;

@@ -58,7 +58,7 @@ describe('ThemePack boolean interaction contract', () => {
     const title = elementTree.root?.querySelector('.SharedThemePackTitle');
     expect(title?.getAttribute('accessibility-element')).toBe('true');
     expect(title?.getAttribute('accessibility-heading')).toBe('true');
-    expect(title?.getAttribute('accessibility-traits')).toBe('header');
+    expect(title?.getAttribute('accessibility-trait')).toBe('header');
   });
 
   it('matches the Web two-row header and row typography', () => {
@@ -68,6 +68,10 @@ describe('ThemePack boolean interaction contract', () => {
     );
     const styles = readFileSync(
       new URL('./theme-pack-editor-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    const primitiveStyles = readFileSync(
+      new URL('../components/ui/primitives.css', import.meta.url),
       'utf8'
     );
 
@@ -216,15 +220,9 @@ describe('ThemePack boolean interaction contract', () => {
     expect(source).toContain("import { SettingsResetIcon } from './SettingsResetIcon.lynx';");
     expect(source).toContain('<SettingsResetIcon />');
     expect(source).not.toContain('↶');
-    expect(styles).toMatch(
-      /\.SharedThemePackSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*padding:\s*1px;[^}]*border:\s*1px solid var\(--settings-switch-border\);[^}]*background-color:\s*var\(--settings-switch-off\);/s
-    );
-    expect(styles).toMatch(
-      /\.SharedThemePackSwitchThumb\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*background-color:\s*#ffffff;/s
-    );
-    expect(styles).toMatch(
-      /\.SharedThemePackSwitch--on \.SharedThemePackSwitchThumb\s*\{[^}]*transform:\s*translateX\(12px\);/s
-    );
+    expect(primitiveStyles).toMatch(/\.LxSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*padding:\s*1px;[^}]*border:\s*1px solid var\(--settings-switch-border\);[^}]*background-color:\s*var\(--settings-switch-off\);/s);
+    expect(primitiveStyles).toMatch(/\.LxSwitchThumb\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*background-color:\s*#ffffff;/s);
+    expect(primitiveStyles).toMatch(/\.LxSwitch--checked \.LxSwitchThumb\s*\{[^}]*transform:\s*translateX\(12px\);/s);
     expect(styles).toMatch(
       /\.SharedThemePackCodeSwatch\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*6px;/s
     );
@@ -264,7 +262,7 @@ describe('ThemePack boolean interaction contract', () => {
       /\.SharedThemePackColorIndicator\s*\{[^}]*left:\s*8px;[^}]*top:\s*5px;[^}]*width:\s*20px;[^}]*height:\s*20px;/s
     );
     expect(styles).toMatch(
-      /\.SharedThemePackColorInput \.LxInput\s*\{[^}]*font-family:\s*var\(--font-chat-code-family\);[^}]*font-size:\s*12px;/s
+      /\.SharedThemePackColorInput \.LxInput\s*\{[^}]*font-family:\s*var\(--font-mono-family\);[^}]*font-size:\s*12px;/s
     );
     expect(source).toContain('value={props.color.toUpperCase()}');
     expect(readableThemeColor('#ffffff')).toBe('#1a1c1f');
@@ -619,7 +617,7 @@ describe('ThemePack boolean interaction contract', () => {
     );
     if (!track) throw new Error('expected contrast track');
     expect(track.getAttribute('focusable')).toBe('true');
-    expect(track.getAttribute('accessibility-traits')).toBe('adjustable');
+    expect(track.getAttribute('accessibility-trait')).toBe('adjustable');
     expect(track.getAttribute('aria-valuenow')).toBe('50');
     expect(
       elementTree.root?.querySelector('.SharedThemePackContrastValue')

@@ -22,6 +22,7 @@ export function TranscriptSelectionActionLayer(props: TranscriptSelectionActionL
       left={props.action.left}
       top={props.action.top}
       placement={props.action.placement}
+      width={props.action.width}
       onHighlight={props.onHighlight}
       onUnderline={props.onUnderline}
       onAddToChat={props.onAddToChat}

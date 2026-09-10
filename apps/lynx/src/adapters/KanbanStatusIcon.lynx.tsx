@@ -18,11 +18,14 @@ function statusIconContent(input: {
 
 export function KanbanStatusIcon(props: {
   readonly column: KanbanColumnKey;
+  readonly className?: string;
 }) {
   const { activeTheme, svgColors } = useTheme();
   return (
     <svg
-      className="SharedKanbanColumnStatusIcon"
+      className={`SharedKanbanColumnStatusIcon${
+        props.className ? ` ${props.className}` : ''
+      }`}
       content={statusIconContent({
         column: props.column,
         muted: svgColors.mutedForeground,

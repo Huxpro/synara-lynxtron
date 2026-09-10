@@ -456,7 +456,7 @@
   padding: 7px 0;
   color: var(--foreground);
   background-color: transparent;
-  font-family: system-ui;
+  font-family: var(--font-ui-family);
   font-size: var(--app-font-size-ui-lg);
   line-height: 20px;
 }

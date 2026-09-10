@@ -126,7 +126,7 @@ describe('Lynx pull request comment composer', () => {
       /\.SharedPrCommentComposerControl\s*\{[^}]*min-height:\s*42px;[^}]*gap:\s*8px;[^}]*padding:\s*4px 6px 4px 12px;[^}]*border-radius:\s*22px;/s
     );
     expect(styles).toMatch(
-      /\.SharedPrCommentComposerInput\s*\{[^}]*min-height:\s*34px;[^}]*max-height:\s*126px;[^}]*padding:\s*7px 0;[^}]*font-family:\s*system-ui;[^}]*font-size:\s*var\(--app-font-size-ui-lg\);[^}]*line-height:\s*20px;/s
+      /\.SharedPrCommentComposerInput\s*\{[^}]*min-height:\s*34px;[^}]*max-height:\s*126px;[^}]*padding:\s*7px 0;[^}]*font-family:\s*var\(--font-ui-family\);[^}]*font-size:\s*var\(--app-font-size-ui-lg\);[^}]*line-height:\s*20px;/s
     );
     expect(styles).toMatch(
       /\.SharedPrCommentComposerSubmit\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*border-radius:\s*14px;/s

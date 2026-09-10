@@ -39,6 +39,7 @@ import { IoIosGitCompare } from "react-icons/io";
 import { GoRepoForked } from "react-icons/go";
 import { HiOutlineArchiveBox } from "react-icons/hi2";
 import {
+  Fragment,
   useCallback,
   useEffect,
   lazy,
@@ -83,6 +84,14 @@ import {
   type ResolvedKeybindingsConfig,
 } from "@synara/contracts";
 import { isGenericChatThreadTitle } from "@synara/shared/chatThreads";
+import { deriveSpaceActivityById } from "@synara/shared/spaceActivity";
+import {
+  buildProjectContextMenuItems,
+  buildSelectedThreadsContextMenuItems,
+  type ProjectContextMenuAction,
+  type ProjectContextMenuCommand,
+} from "@synara/shared/contextMenu";
+import { projectRemoveConfirmation } from "@synara/shared/projectThreadArchive";
 import { getDefaultModel } from "@synara/shared/model";
 import { pluralize } from "@synara/shared/text";
 import { resolveThreadWorkspaceCwd } from "@synara/shared/threadEnvironment";
@@ -289,7 +298,6 @@ import {
   partitionSidebarThreadsByProjectIds,
   recoverExistingAddProjectTarget,
   DEBUG_FEATURE_FLAGS_MENU_STORAGE_KEY,
-  resolveProjectStatusIndicator,
   resolveSidebarNewThreadEnvMode,
   resolveThreadHoverCardMetadata,
   resolveThreadRowClassName,
@@ -444,18 +452,7 @@ const DebugFeatureFlagsMenu = import.meta.env.DEV
     )
   : null;
 
-type ProjectContextMenuId =
-  | "open-in-finder"
-  | "open-in-kanban"
-  | "copy-path"
-  | "start-dev"
-  | "stop-dev"
-  | "open-dev-server"
-  | "rename"
-  | "toggle-pin"
-  | "archive-threads"
-  | "delete-threads"
-  | "delete";
+type ProjectContextMenuId = ProjectContextMenuCommand;
 
 type ProjectContextMenuState = {
   projectId: ProjectId;
@@ -470,6 +467,26 @@ const PROJECT_CONTEXT_MENU_ICON_CLASS_NAME = SIDEBAR_CONTEXT_MENU_ICON_CLASS_NAM
 
 function ProjectContextMenuIcon({ icon }: { icon: LucideIcon }) {
   return <SidebarContextMenuIcon icon={icon} />;
+}
+
+const PROJECT_CONTEXT_MENU_ICONS: Readonly<Record<ProjectContextMenuCommand, LucideIcon>> = {
+  "open-in-finder": FolderOpenIcon,
+  "open-in-kanban": KanbanIcon,
+  "copy-path": CopyIcon,
+  "start-dev": PlayIcon,
+  "stop-dev": StopFilledIcon,
+  "open-dev-server": ExternalLinkIcon,
+  rename: PencilIcon,
+  "toggle-pin": PinIcon,
+  "archive-threads": ArchiveIcon,
+  "delete-threads": Trash2,
+  delete: XIcon,
+};
+
+function isProjectContextMenuCommand(
+  action: ProjectContextMenuAction,
+): action is ProjectContextMenuCommand {
+  return action in PROJECT_CONTEXT_MENU_ICONS;
 }
 
 type DebugFeatureFlagsWindow = {
@@ -1261,8 +1278,10 @@ export default function Sidebar() {
   const visualActiveSidebarThreadId = optimisticActiveThreadId ?? routeThreadId;
   const selectSidebarThreads = useMemo(() => createSidebarThreadSummariesSelector(), []);
   const selectSidebarTreeThreads = useMemo(() => createSidebarTreeThreadsSelector(), []);
+  const selectAllProjectThreads = useMemo(() => createAllThreadsSelector(), []);
   const sidebarThreads = useStore(selectSidebarThreads);
   const sidebarTreeThreads = useStore(selectSidebarTreeThreads);
+  const allProjectThreads = useStore(selectAllProjectThreads);
   const studioProjectIdSet = useMemo(
     () => collectStudioProjectIds(projects, { homeDir, chatWorkspaceRoot, studioWorkspaceRoot }),
     [chatWorkspaceRoot, homeDir, projects, studioWorkspaceRoot],
@@ -2803,11 +2822,7 @@ export default function Sidebar() {
       const count = ids.length;
 
       const clicked = await api.contextMenu.show(
-        [
-          { id: "mark-unread", label: `Mark unread (${count})` },
-          { id: "archive", label: `Archive (${count})` },
-          { id: "delete", label: `Delete (${count})`, destructive: true },
-        ],
+        buildSelectedThreadsContextMenuItems(count),
         position,
       );
 
@@ -3063,14 +3078,12 @@ export default function Sidebar() {
       }
       if (clicked !== "delete") return;
 
-      const projectThreads = sidebarThreads.filter((thread) => thread.projectId === projectId);
+      const projectThreads = allProjectThreads.filter((thread) => thread.projectId === projectId);
       const confirmed = await dialogs.confirm(
-        projectThreads.length > 0
-          ? [
-              `Remove project "${project.name}"?`,
-              `This will delete ${projectThreads.length} ${pluralize(projectThreads.length, "thread")} in this folder and remove the project.`,
-            ].join("\n")
-          : `Remove project "${project.name}"?`,
+        projectRemoveConfirmation({
+          projectName: project.name,
+          threadCount: projectThreads.length,
+        }),
       );
       if (!confirmed) return;
 
@@ -3080,6 +3093,7 @@ export default function Sidebar() {
           confirmMessage: null,
           showEmptyToast: false,
           showResultToast: false,
+          threadIds: projectThreads.map((thread) => thread.id),
           worktreeCleanupMode: "skip",
         });
         if (deletionResult === null) {
@@ -3120,6 +3134,7 @@ export default function Sidebar() {
     },
     [
       archiveAllThreadsInProject,
+      allProjectThreads,
       clearProjectDraftThreads,
       copyPathToClipboard,
       deleteProjectThreads,
@@ -3303,31 +3318,20 @@ export default function Sidebar() {
     [projectPartitions.projects],
   );
   const spaceActivityById = useMemo(() => {
-    const priority: Record<SpaceActivityTone, number> = {
-      attention: 3,
-      running: 2,
-      completed: 1,
-    };
-    const activity = new Map<SpaceId | null, SpaceActivityTone>();
-    for (const project of allStandardProjectsBase) {
-      const status = resolveProjectStatusIndicator(
-        (sidebarThreadsByProjectId.get(project.id) ?? []).map(resolveThreadStatusForSidebar),
-      );
-      if (!status) continue;
-      const tone: SpaceActivityTone =
-        status.label === "Working" || status.label === "Connecting"
+    return deriveSpaceActivityById({
+      projects: allStandardProjectsBase,
+      threads: sidebarThreads,
+      resolveTone: (thread): SpaceActivityTone | null => {
+        const status = resolveThreadStatusForSidebar(thread);
+        if (!status) return null;
+        return status.label === "Working" || status.label === "Connecting"
           ? "running"
           : status.label === "Completed"
             ? "completed"
             : "attention";
-      const projectSpaceId = project.spaceId ?? null;
-      const current = activity.get(projectSpaceId);
-      if (!current || priority[tone] > priority[current]) {
-        activity.set(projectSpaceId, tone);
-      }
-    }
-    return activity;
-  }, [allStandardProjectsBase, resolveThreadStatusForSidebar, sidebarThreadsByProjectId]);
+      },
+    });
+  }, [allStandardProjectsBase, resolveThreadStatusForSidebar, sidebarThreads]);
   const standardProjectsBase = useMemo(
     () => allStandardProjectsBase.filter((project) => (project.spaceId ?? null) === activeSpaceId),
     [activeSpaceId, allStandardProjectsBase],
@@ -3723,7 +3727,7 @@ export default function Sidebar() {
         // Match the pin and the right-side meta chips (shared trailing-icon size); subagent
         // rows stay on the denser "compact" scale.
         iconClassName={compact ? sidebarGlyphClass("compact") : SIDEBAR_TRAILING_ICON_CLASS}
-        className={cn("hover:text-foreground/89", toneClassName)}
+        className={cn("text-[var(--color-icon-secondary)] hover:text-[var(--color-icon-secondary)]", toneClassName)}
         onMouseDown={(event) => {
           event.preventDefault();
           event.stopPropagation();
@@ -3928,6 +3932,9 @@ export default function Sidebar() {
             role="button"
             tabIndex={0}
             data-thread-item
+            data-thread-id={thread.id}
+            data-project-id={thread.projectId}
+            data-active={isActive}
             className={cn(
               SIDEBAR_HEADER_ROW_CLASS_NAME,
               // Match the normal thread row: a flex row whose title claims all free
@@ -4105,6 +4112,8 @@ export default function Sidebar() {
             render={
               <SidebarMenuSubButton
                 render={<div role="button" tabIndex={0} />}
+                data-thread-id={thread.id}
+                data-project-id={thread.projectId}
                 data-thread-entry-point={threadEntryPoint}
                 size="sm"
                 isActive={isActive}
@@ -4279,6 +4288,7 @@ export default function Sidebar() {
             }
           >
             <SidebarMenuButton
+              data-project-id={project.id}
               ref={isManualProjectSorting ? dragHandleProps?.setActivatorNodeRef : undefined}
               size="sm"
               className={cn(
@@ -4351,7 +4361,7 @@ export default function Sidebar() {
               aria-pressed={isProjectPinned}
               title={pinActionLabel(project.name, isProjectPinned)}
               className={cn(
-                "sidebar-icon-button absolute left-2 top-1/2 z-20 inline-flex size-4 -translate-y-1/2 cursor-pointer items-center justify-center rounded-sm transition-opacity hover:text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring",
+                "sidebar-icon-button absolute left-2 top-1/2 z-20 inline-flex size-4 -translate-y-1/2 cursor-pointer items-center justify-center rounded-sm text-[var(--color-icon-secondary)] transition-opacity hover:text-[var(--color-icon-secondary)] focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring",
                 SIDEBAR_ROW_LABEL_TEXT_CLASS_NAME,
                 isProjectPinned
                   ? "pointer-events-auto opacity-100"
@@ -5147,6 +5157,31 @@ export default function Sidebar() {
     : null;
   const projectContextMenuHasOpenServer =
     projectContextMenuServer !== null && firstLocalServerUrl(projectContextMenuServer) !== null;
+  const projectContextMenuSpaceById = useMemo(
+    () => new Map(spaces.map((space) => [space.id, space] as const)),
+    [spaces],
+  );
+  const projectContextMenuItems = useMemo(
+    () =>
+      buildProjectContextMenuItems({
+        isPinned: projectContextMenuIsPinned,
+        isRunning: projectContextMenuIsRunning,
+        hasOpenServer: projectContextMenuHasOpenServer,
+        hasArchivableThreads: projectContextMenuHasArchivableThreads,
+        hasAnyThreads: projectContextMenuHasAnyThreads,
+        currentSpaceId: projectContextMenuProject?.spaceId ?? null,
+        spaces: spaces.map((space) => ({ id: space.id, label: space.name })),
+      }),
+    [
+      projectContextMenuHasAnyThreads,
+      projectContextMenuHasArchivableThreads,
+      projectContextMenuHasOpenServer,
+      projectContextMenuIsPinned,
+      projectContextMenuIsRunning,
+      projectContextMenuProject?.spaceId,
+      spaces,
+    ],
+  );
 
   return (
     <>
@@ -5192,7 +5227,7 @@ export default function Sidebar() {
         }
         settingsNavigation={
           isOnSettings ? (
-          <SidebarGroup className="p-0">
+          <SidebarGroup className="min-h-0 flex-1 p-0">
             <SettingsSidebarNav
               activeSection={activeSettingsSection}
               onBack={handleBackToAppFromSettings}
@@ -5710,194 +5745,90 @@ export default function Sidebar() {
             className={PROJECT_CONTEXT_MENU_PANEL_CLASS_NAME}
           >
             <MenuGroup>
-              <MenuItem
-                className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
-                onClick={() =>
-                  void handleProjectContextMenuAction(
-                    projectContextMenuState.projectId,
-                    "open-in-finder",
-                  )
-                }
-              >
-                <ProjectContextMenuIcon icon={FolderOpenIcon} />
-                <span>Open in Finder</span>
-              </MenuItem>
-              <MenuItem
-                className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
-                onClick={() =>
-                  void handleProjectContextMenuAction(
-                    projectContextMenuState.projectId,
-                    "open-in-kanban",
-                  )
-                }
-              >
-                <ProjectContextMenuIcon icon={KanbanIcon} />
-                <span>Open in Kanban</span>
-              </MenuItem>
-              <MenuItem
-                className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
-                onClick={() =>
-                  void handleProjectContextMenuAction(
-                    projectContextMenuState.projectId,
-                    "copy-path",
-                  )
-                }
-              >
-                <ProjectContextMenuIcon icon={CopyIcon} />
-                <span>Copy Path</span>
-              </MenuItem>
-              <MenuSeparator />
-              {projectContextMenuIsRunning ? (
-                <MenuItem
-                  className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
-                  onClick={() =>
-                    void handleProjectContextMenuAction(
-                      projectContextMenuState.projectId,
-                      "stop-dev",
-                    )
-                  }
-                >
-                  <ProjectContextMenuIcon icon={StopFilledIcon} />
-                  <span>Stop dev</span>
-                </MenuItem>
-              ) : (
-                <MenuItem
-                  className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
-                  onClick={() =>
-                    void handleProjectContextMenuAction(
-                      projectContextMenuState.projectId,
-                      "start-dev",
-                    )
-                  }
-                >
-                  <ProjectContextMenuIcon icon={PlayIcon} />
-                  <span>Start dev</span>
-                </MenuItem>
-              )}
-              {projectContextMenuHasOpenServer ? (
-                <MenuItem
-                  className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
-                  onClick={() =>
-                    void handleProjectContextMenuAction(
-                      projectContextMenuState.projectId,
-                      "open-dev-server",
-                    )
-                  }
-                >
-                  <ProjectContextMenuIcon icon={ExternalLinkIcon} />
-                  <span>Open dev server</span>
-                </MenuItem>
-              ) : null}
-              <MenuSub keepOpenOnFocusOut>
-                <MenuSubTrigger className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}>
-                  {/* The glyph is the project's current space, so the row doubles as a
-                      read-out of where it lives today. It wears the same secondary tone
-                      as every other leading glyph in this menu. */}
-                  <span className={PROJECT_CONTEXT_MENU_ICON_CLASS_NAME}>
-                    <SpaceIcon icon={spaceDisplayIcon(projectContextMenuProject.spaceId, spaces)} />
-                  </span>
-                  <span>Move to space</span>
-                </MenuSubTrigger>
-                <ComposerPickerMenuSubPopup className="min-w-48">
-                  <MenuRadioGroup
-                    value={spaceKey(projectContextMenuProject.spaceId ?? null)}
-                    onValueChange={(value) => {
-                      void handleMoveProjectToSpace(
-                        projectContextMenuProject.id,
-                        value === VOID_SPACE_KEY ? null : SpaceId.makeUnsafe(value),
-                      );
-                    }}
-                  >
-                    <MenuRadioItem value={VOID_SPACE_KEY}>
-                      <SpaceIcon icon={VOID_SPACE_ICON} className="size-3.5" />
-                      <span className="min-w-0 truncate">Void</span>
-                    </MenuRadioItem>
-                    {spaces.map((space) => (
-                      <MenuRadioItem key={space.id} value={space.id}>
-                        <SpaceIcon icon={space.icon} className="size-3.5" />
-                        <span className="min-w-0 truncate">{space.name}</span>
-                      </MenuRadioItem>
-                    ))}
-                  </MenuRadioGroup>
-                  <MenuSeparator />
-                  <MenuItem
-                    className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
-                    onClick={() => {
-                      const projectId = projectContextMenuProject.id;
-                      setProjectContextMenuState(null);
-                      openSpaceCreator(projectId);
-                    }}
-                  >
-                    <span className={PROJECT_CONTEXT_MENU_ICON_CLASS_NAME}>
-                      <AddPlusIcon />
-                    </span>
-                    <span>New space…</span>
-                  </MenuItem>
-                </ComposerPickerMenuSubPopup>
-              </MenuSub>
-              <MenuSeparator />
-              <MenuItem
-                className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
-                onClick={() =>
-                  void handleProjectContextMenuAction(projectContextMenuState.projectId, "rename")
-                }
-              >
-                <ProjectContextMenuIcon icon={PencilIcon} />
-                <span>Edit name</span>
-              </MenuItem>
-              <MenuItem
-                className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
-                onClick={() =>
-                  void handleProjectContextMenuAction(
-                    projectContextMenuState.projectId,
-                    "toggle-pin",
-                  )
-                }
-              >
-                <ProjectContextMenuIcon icon={PinIcon} />
-                <span>{pinActionLabel("project", projectContextMenuIsPinned)}</span>
-              </MenuItem>
-              {projectContextMenuHasArchivableThreads || projectContextMenuHasAnyThreads ? (
-                <MenuSeparator />
-              ) : null}
-              {projectContextMenuHasArchivableThreads ? (
-                <MenuItem
-                  className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
-                  onClick={() =>
-                    void handleProjectContextMenuAction(
-                      projectContextMenuState.projectId,
-                      "archive-threads",
-                    )
-                  }
-                >
-                  <ProjectContextMenuIcon icon={ArchiveIcon} />
-                  <span>Archive threads</span>
-                </MenuItem>
-              ) : null}
-              {projectContextMenuHasAnyThreads ? (
-                <MenuItem
-                  className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
-                  onClick={() =>
-                    void handleProjectContextMenuAction(
-                      projectContextMenuState.projectId,
-                      "delete-threads",
-                    )
-                  }
-                >
-                  <ProjectContextMenuIcon icon={Trash2} />
-                  <span>Delete threads</span>
-                </MenuItem>
-              ) : null}
-              <MenuSeparator />
-              <MenuItem
-                className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
-                onClick={() =>
-                  void handleProjectContextMenuAction(projectContextMenuState.projectId, "delete")
-                }
-              >
-                <ProjectContextMenuIcon icon={XIcon} />
-                <span>Remove</span>
-              </MenuItem>
+              {projectContextMenuItems.map((item) => (
+                <Fragment key={item.id}>
+                  {item.separatorBefore ? <MenuSeparator /> : null}
+                  {item.id === "move-to-space" ? (
+                    <MenuSub keepOpenOnFocusOut>
+                      <MenuSubTrigger className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}>
+                        <span className={PROJECT_CONTEXT_MENU_ICON_CLASS_NAME}>
+                          <SpaceIcon
+                            icon={spaceDisplayIcon(projectContextMenuProject.spaceId, spaces)}
+                          />
+                        </span>
+                        <span>{item.label}</span>
+                      </MenuSubTrigger>
+                      <ComposerPickerMenuSubPopup className="min-w-48">
+                        <MenuRadioGroup
+                          value={spaceKey(projectContextMenuProject.spaceId ?? null)}
+                          onValueChange={(value) => {
+                            void handleMoveProjectToSpace(
+                              projectContextMenuProject.id,
+                              value === VOID_SPACE_KEY ? null : SpaceId.makeUnsafe(value),
+                            );
+                          }}
+                        >
+                          {item.submenu
+                            ?.filter((subitem) => subitem.type === "radio")
+                            .map((subitem) => {
+                              const spaceId = subitem.id.startsWith("move-to-space:")
+                                ? subitem.id.slice("move-to-space:".length)
+                                : null;
+                              const space = spaceId
+                                ? projectContextMenuSpaceById.get(spaceId)
+                                : null;
+                              return (
+                                <MenuRadioItem
+                                  key={subitem.id}
+                                  value={spaceId ?? VOID_SPACE_KEY}
+                                >
+                                  <SpaceIcon
+                                    icon={space?.icon ?? VOID_SPACE_ICON}
+                                    className="size-3.5"
+                                  />
+                                  <span className="min-w-0 truncate">{subitem.label}</span>
+                                </MenuRadioItem>
+                              );
+                            })}
+                        </MenuRadioGroup>
+                        {item.submenu?.find((subitem) => subitem.id === "new-space") ? (
+                          <>
+                            <MenuSeparator />
+                            <MenuItem
+                              className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
+                              onClick={() => {
+                                const projectId = projectContextMenuProject.id;
+                                setProjectContextMenuState(null);
+                                openSpaceCreator(projectId);
+                              }}
+                            >
+                              <span className={PROJECT_CONTEXT_MENU_ICON_CLASS_NAME}>
+                                <AddPlusIcon />
+                              </span>
+                              <span>
+                                {item.submenu.find((subitem) => subitem.id === "new-space")?.label}
+                              </span>
+                            </MenuItem>
+                          </>
+                        ) : null}
+                      </ComposerPickerMenuSubPopup>
+                    </MenuSub>
+                  ) : isProjectContextMenuCommand(item.id) ? (
+                    <MenuItem
+                      className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
+                      onClick={() =>
+                        void handleProjectContextMenuAction(
+                          projectContextMenuState.projectId,
+                          item.id,
+                        )
+                      }
+                    >
+                      <ProjectContextMenuIcon icon={PROJECT_CONTEXT_MENU_ICONS[item.id]} />
+                      <span>{item.label}</span>
+                    </MenuItem>
+                  ) : null}
+                </Fragment>
+              ))}
             </MenuGroup>
           </ComposerPickerMenuPopup>
         </Menu>

@@ -21,7 +21,16 @@ import { useTheme } from './useTheme.lynx';
 export function ProviderModelOptionListFrameElement(props: {
   readonly children: ReactNode;
 }) {
-  return <scroll-view className="ComposerModelOptionListLynx" scroll-orientation="vertical">{props.children}</scroll-view>;
+  return (
+    <scroll-view
+      className="ComposerModelOptionListLynx"
+      scroll-orientation="vertical"
+      scroll-y
+      enable-scroll-bar
+    >
+      {props.children}
+    </scroll-view>
+  );
 }
 
 export function ProviderModelGroupElement(props: {

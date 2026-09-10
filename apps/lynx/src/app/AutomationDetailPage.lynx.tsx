@@ -141,7 +141,7 @@ export function AutomationDetailPage({
             className="AutomationDetailBreadcrumb"
             accessibility-element={true}
             accessibility-label="Back to automations"
-            accessibility-traits="button"
+            accessibility-trait="button"
             focusable={true}
             bindtap={() => navigate('/automations')}
           >
@@ -219,7 +219,7 @@ export function AutomationDetailPage({
                 accessibility-label={`Automation action failed. ${
                   updateError ?? deleteError
                 }`}
-                accessibility-traits="text"
+                accessibility-trait="text"
               >
                 <text className="AutomationDetailUpdateErrorText">
                   Automation action failed. {updateError ?? deleteError}
@@ -256,7 +256,7 @@ export function AutomationDetailPage({
                     }`}
                     accessibility-element={true}
                     accessibility-label={`${row.title}. ${row.detail}. ${row.meta}`}
-                    accessibility-traits={
+                    accessibility-trait={
                       row.run.threadId ? 'button' : 'text'
                     }
                     focusable={row.run.threadId !== null}

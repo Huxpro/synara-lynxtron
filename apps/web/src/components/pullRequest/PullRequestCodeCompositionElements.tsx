@@ -4,9 +4,11 @@ import type { ReactNode } from "react";
 
 import { DisclosureChevron } from "~/components/ui/DisclosureChevron";
 import { DisclosureRegion } from "~/components/ui/DisclosureRegion";
+import { FileEntryIcon } from "~/components/chat/FileEntryIcon";
 import { cn } from "~/lib/utils";
 import {
   formatGitPathForDisplay,
+  type PullRequestCodeSyntaxToken,
   type PullRequestDiffLineKind,
 } from "./pullRequestCode.logic";
 
@@ -49,9 +51,14 @@ export function PullRequestCodeFileHeaderElement(props: {
   readonly additions: number;
   readonly deletions: number;
   readonly expanded: boolean;
+  readonly pathPresentation?: "full" | "basename-first";
+  readonly trailingActions?: ReactNode;
   readonly onActivate: () => void;
 }) {
   const path = formatGitPathForDisplay(props.path);
+  const slash = path.lastIndexOf("/");
+  const basename = slash === -1 ? path : path.slice(slash + 1);
+  const directory = slash === -1 ? "" : path.slice(0, slash + 1);
   const previousPath = props.previousPath
     ? formatGitPathForDisplay(props.previousPath)
     : null;
@@ -63,8 +70,17 @@ export function PullRequestCodeFileHeaderElement(props: {
       aria-label={`${props.expanded ? "Collapse" : "Expand"} ${path}`}
       onClick={props.onActivate}
     >
-      <DisclosureChevron open={props.expanded} className="size-2.5 shrink-0 text-muted-foreground" />
-      <span className="min-w-0 flex-1 truncate font-mono">{path}</span>
+      {props.pathPresentation === "basename-first" ? (
+        <FileEntryIcon pathValue={path} kind="file" className="size-3.5 shrink-0" />
+      ) : null}
+      <span className="flex min-w-0 flex-1 items-baseline gap-1.5 overflow-hidden">
+        <span className="shrink-0 truncate font-mono">
+          {props.pathPresentation === "basename-first" ? basename : path}
+        </span>
+        {props.pathPresentation === "basename-first" && directory ? (
+          <span className="min-w-0 truncate text-muted-foreground">{directory}</span>
+        ) : null}
+      </span>
       {previousPath ? (
         <span className="truncate text-muted-foreground">
           {props.relation === "copied" ? "copied from" : props.relation === "renamed" ? "renamed from" : "from"}{" "}
@@ -73,6 +89,15 @@ export function PullRequestCodeFileHeaderElement(props: {
       ) : null}
       <span className="text-success">+{props.additions}</span>
       <span className="text-destructive">-{props.deletions}</span>
+      {props.trailingActions ? (
+        <span
+          className="inline-flex"
+          onClick={(event) => event.stopPropagation()}
+        >
+          {props.trailingActions}
+        </span>
+      ) : null}
+      <DisclosureChevron open={props.expanded} className="size-2.5 shrink-0 text-muted-foreground" />
     </button>
   );
 }
@@ -102,6 +127,8 @@ export function PullRequestCodeLineElement(props: {
   readonly kind: PullRequestDiffLineKind;
   readonly oldLine: number | null;
   readonly newLine: number | null;
+  readonly side?: "left" | "right";
+  readonly syntaxTokens?: readonly PullRequestCodeSyntaxToken[];
   readonly text: string;
   readonly wordWrap: boolean;
 }) {
@@ -117,8 +144,12 @@ export function PullRequestCodeLineElement(props: {
             : " ";
   return (
     <div className={cn("flex", props.wordWrap ? "min-w-0" : "min-w-max", props.kind === "addition" && "bg-success/10", props.kind === "deletion" && "bg-destructive/10", props.kind === "hunk" && "bg-muted/60 text-muted-foreground", props.kind.startsWith("no-newline-") && "italic text-muted-foreground")}>
-      <span className="w-10 shrink-0 select-none px-1 text-right text-muted-foreground">{props.oldLine ?? ""}</span>
-      <span className="w-10 shrink-0 select-none px-1 text-right text-muted-foreground">{props.newLine ?? ""}</span>
+      {props.side === "right" ? null : (
+        <span className="w-10 shrink-0 select-none px-1 text-right text-muted-foreground">{props.oldLine ?? ""}</span>
+      )}
+      {props.side === "left" ? null : (
+        <span className="w-10 shrink-0 select-none px-1 text-right text-muted-foreground">{props.newLine ?? ""}</span>
+      )}
       <span className="w-5 shrink-0 select-none text-center">{prefix}</span>
       <span
         className={cn(
@@ -126,8 +157,52 @@ export function PullRequestCodeLineElement(props: {
           props.wordWrap ? "whitespace-pre-wrap wrap-break-word" : "whitespace-pre",
         )}
       >
-        {props.text}
+        {props.syntaxTokens?.length
+          ? props.syntaxTokens.map((token, index) => (
+              <span
+                key={`${index}:${token.content}`}
+                style={{
+                  color: token.color,
+                  ...(token.emphasized
+                    ? {
+                        backgroundColor:
+                          props.kind === "addition"
+                            ? "var(--diffs-bg-addition-emphasis, rgba(0, 162, 64, 0.2))"
+                            : "var(--diffs-bg-deletion-emphasis, rgba(224, 46, 42, 0.2))",
+                        borderRadius: 3,
+                      }
+                    : {}),
+                  ...(token.fontStyle & 1 ? { fontStyle: "italic" } : {}),
+                  ...(token.fontStyle & 2 ? { fontWeight: 700 } : {}),
+                  ...(token.fontStyle & 4 ? { textDecoration: "underline" } : {}),
+                }}
+              >
+                {token.content}
+              </span>
+            ))
+          : props.text}
       </span>
+    </div>
+  );
+}
+
+export function PullRequestCodeSplitRowElement(props: {
+  readonly left?: ReactNode;
+  readonly right?: ReactNode;
+}) {
+  return (
+    <div className="grid min-w-full grid-cols-2">
+      <div
+        className={cn(
+          "min-w-0 overflow-hidden border-r border-border/50",
+          !props.left && "bg-muted/20",
+        )}
+      >
+        {props.left}
+      </div>
+      <div className={cn("min-w-0 overflow-hidden", !props.right && "bg-muted/20")}>
+        {props.right}
+      </div>
     </div>
   );
 }

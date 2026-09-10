@@ -4,6 +4,7 @@ import { getRectByRef } from '@lynx-js/lynx-ui';
 import type { NodesRef } from '@lynx-js/types';
 import forkSvg from '@synara-central-icons/fork.svg?raw';
 import pinFilledSvg from '@synara-central-icons-fill/pin.svg?raw';
+import terminalSvg from '@synara-central-icons/console.svg?raw';
 import worktreeSvg from '@synara-central-icons/arrow-split-right.svg?raw';
 
 import type { PrStatePresentation } from '@synara-web/components/pullRequest/pullRequestStatePresentation.logic';
@@ -21,12 +22,14 @@ import {
 
 import './kanban-card-composition-elements.css';
 import { PullRequestStateIcon } from './PullRequestStateIcon.lynx';
+import { KanbanStatusIcon } from './KanbanStatusIcon.lynx';
 import { useTheme } from './useTheme.lynx';
 import {
   lynxNestedInteractiveEventProps,
   useLynxInteractiveState,
 } from './useLynxInteractiveState';
 import { resolveSecondaryPointerOffset } from '../components/sidebar/threadContextActions.logic';
+import { focusLynxNode } from '../components/ui/focus.lynx';
 
 type ChildrenProps = { readonly children?: ReactNode };
 
@@ -35,7 +38,10 @@ export function KanbanCardRootElement(props: ChildrenProps & {
   readonly isOverlay: boolean;
   readonly isDragSource: boolean;
   readonly onActivate?: () => void;
-  readonly onContextMenu?: (event: React.MouseEvent) => void;
+  readonly onContextMenu?: (
+    event: React.MouseEvent,
+    restoreFocus: () => void
+  ) => void;
   readonly onDragPointerStart?: (point: KanbanDragPoint) => void;
 }) {
   const rootRef = useRef<NodesRef>(null);
@@ -51,12 +57,15 @@ export function KanbanCardRootElement(props: ChildrenProps & {
     if (!props.onContextMenu) return;
     void getRectByRef(rootRef, true)
       .then((rect) => {
-        props.onContextMenu?.({
-          clientX: rect.left + offset.x,
-          clientY: rect.top + offset.y,
-          preventDefault() {},
-          stopPropagation() {},
-        } as React.MouseEvent);
+        props.onContextMenu?.(
+          {
+            clientX: rect.left + offset.x,
+            clientY: rect.top + offset.y,
+            preventDefault() {},
+            stopPropagation() {},
+          } as React.MouseEvent,
+          () => focusLynxNode(rootRef)
+        );
       })
       .catch(() => {
         // A menu at invented coordinates is worse than no menu.
@@ -168,9 +177,12 @@ export function KanbanCardMetaRowElement(props: ChildrenProps) {
 export function KanbanCardProviderElement(props: {
   readonly provider: ProviderKind | null;
 }) {
+  if (props.provider === null) {
+    return <view className="SharedKanbanCardProviderFallback" />;
+  }
   return (
     <view className="SharedKanbanCardProvider">
-      <OpenAIProviderIcon provider={props.provider ?? 'codex'} />
+      <OpenAIProviderIcon provider={props.provider} />
     </view>
   );
 }
@@ -272,13 +284,20 @@ export function KanbanCardColumnStatusElement(props: {
   readonly label: string;
   readonly isTerminal: boolean;
 }) {
+  const { svgColors } = useTheme();
   return (
     <view className="SharedKanbanCardColumnStatus">
-      <view
-        className={`SharedKanbanCardColumnDot SharedKanbanCardColumnDot--${
-          props.isTerminal ? 'terminal' : props.column
-        }`}
-      />
+      {props.isTerminal ? (
+        <svg
+          className="SharedKanbanCardColumnIcon"
+          content={colorizeLynxSvg(terminalSvg, svgColors.mutedForeground)}
+        />
+      ) : (
+        <KanbanStatusIcon
+          className="SharedKanbanCardColumnIcon"
+          column={props.column}
+        />
+      )}
       <text className="SharedKanbanCardColumnLabel">{props.label}</text>
     </view>
   );

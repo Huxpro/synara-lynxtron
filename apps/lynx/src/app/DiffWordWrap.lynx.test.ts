@@ -41,6 +41,18 @@ describe('Lynx diff word wrap setting', () => {
       'webStorage.getItem(APP_SETTINGS_STORAGE_KEY)'
     );
     expect(diffDockSource).toContain('wordWrap={diffWordWrap}');
+    expect(diffDockSource).toContain(
+      "const [diffRenderMode, setDiffRenderMode] = useState<'stacked' | 'split'>"
+    );
+    expect(diffDockSource).toContain(
+      "props.presentation !== 'editor' ? diffRenderMode : 'split'"
+    );
+    expect(diffDockSource).toContain(
+      'onDiffWordWrapChange={setDiffWordWrap}'
+    );
+    expect(diffDockSource).toContain(
+      'onCheckedChange={props.onDiffWordWrapChange}'
+    );
   });
 
   it('keeps word wrapping in the host-neutral code composition contract', () => {
@@ -64,8 +76,23 @@ describe('Lynx diff word wrap setting', () => {
     expect(lynxElementsSource).toContain(
       "props.wordWrap ? ' SharedPrCodeLine--wrap' : ''"
     );
+    expect(lynxElementsSource).toContain(
+      'export function PullRequestCodeSplitRowElement'
+    );
     expect(lynxStyles).toMatch(
-      /\.SharedPrCodeLine--wrap \.SharedPrCodeLineText\s*\{[^}]*white-space:\s*pre-wrap;/s
+      /\.SharedPrCodeSplitRow\s*\{[^}]*display:\s*flex;[^}]*width:\s*100%;[^}]*flex-direction:\s*row;/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeSplitSide\s*\{[^}]*width:\s*50%;[^}]*min-width:\s*0;[^}]*overflow:\s*hidden;/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeLine\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*100%;/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeLineText\s*\{[^}]*flex-shrink:\s*0;[^}]*white-space:\s*pre;/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeLine--wrap \.SharedPrCodeLineText\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*white-space:\s*pre-wrap;/s
     );
   });
 });

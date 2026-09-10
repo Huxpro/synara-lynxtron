@@ -19,7 +19,7 @@ import { useComposerDraftStore } from '../../adapters/composerDraftStore.lynx';
 import {
   dispatchSynaraCommand,
   browseFilesystem,
-  fetchFreshServerConfig,
+  fetchServerConfig,
   fetchServerSettings,
   fetchSynaraSidebarShellSnapshot,
 } from '../../data/synaraClient.lynx';
@@ -66,7 +66,7 @@ export async function loadLandingBootstrap(
   const [snapshot, , config, serverSettings] = await Promise.all([
     fetchSynaraSidebarShellSnapshot(),
     fetchSidebarSnapshot(),
-    fetchFreshServerConfig(),
+    fetchServerConfig(),
     fetchServerSettings().catch(() => null),
   ]);
   const generalSettings = readSettingsGeneralProjection(
@@ -490,6 +490,7 @@ export function LandingComposer(props: {
         </view>
       ) : null}
       <Composer
+        voiceInputEnabled
         draftId={draftId}
         threadId={threadIdRef.current}
         modelSelection={modelSelection}

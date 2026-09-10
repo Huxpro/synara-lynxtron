@@ -227,6 +227,7 @@ export function WorkspacePage({
               }`}
             >
               <ThreadTerminal
+                active={terminalIndex === 0}
                 autoOpen
                 fontFamily={appearance.terminalFontFamily}
                 fontSizePx={appearance.terminalFontSizePx}

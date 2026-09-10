@@ -13,6 +13,7 @@ import {
   TriangleAlertIcon,
 } from "~/lib/icons";
 import { type ThreadId } from "@synara/contracts";
+import { buildTerminalSelectionContextMenuItems } from "@synara/shared/contextMenu";
 import { type TerminalActivityState, type TerminalCliKind } from "@synara/shared/terminalThreads";
 import { Terminal } from "@xterm/xterm";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -370,7 +371,7 @@ function TerminalViewport({
     // Promise chain instead of async/try-finally: React Compiler does not yet
     // support try/finally, and it would skip optimizing this whole component.
     void api.contextMenu
-      .show([{ id: "add-to-chat", label: "Add to chat" }], nextAction.position)
+      .show(buildTerminalSelectionContextMenuItems(), nextAction.position)
       .then((clicked) => {
         if (requestId !== selectionActionRequestIdRef.current || clicked !== "add-to-chat") {
           return;

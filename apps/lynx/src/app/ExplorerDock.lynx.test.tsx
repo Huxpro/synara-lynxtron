@@ -2,6 +2,155 @@ import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
 describe('Lynx Explorer dock', () => {
+  it('offers bounded recovery when a selected file cannot be read', () => {
+    const source = readFileSync(
+      new URL('./ExplorerDock.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const routerSource = readFileSync(
+      new URL('./router.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain('<WorkspaceFilePreviewErrorState');
+    expect(source).toContain('onRetry={props.onRetryFile}');
+    expect(source).toContain('retrying={props.fileRetrying}');
+    expect(source).toContain('onClose={props.onClose}');
+    const composition = readFileSync(
+      new URL('../../../web/src/components/WorkspaceFilePreviewErrorState.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(composition).toContain('The file may have moved, changed, or become unavailable.');
+    expect(composition).toContain('onClose={props.onClose}');
+    expect(source).not.toContain('ExplorerDockFileErrorState');
+    expect(source.indexOf('<ExplorerPreviewHeader')).toBeLessThan(
+      source.indexOf('<WorkspaceFilePreviewErrorState')
+    );
+    const header = readFileSync(
+      new URL('./ExplorerPreviewHeader.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(header).toContain('await openPathInEditor({ cwd: openTarget, editor })');
+    expect(routerSource).toContain(
+      'onExplorerRetryFile={() => void explorerFileQuery.refetch()}'
+    );
+    expect(routerSource).toContain(
+      'explorerFileQuery.isError && explorerFileQuery.isFetching'
+    );
+  });
+
+  it('restores the exact file row after its native context menu closes', () => {
+    const source = readFileSync(
+      new URL('./ExplorerDock.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain('() => focusLynxNode(rowRef)');
+    expect(source).toContain('{ restoreFocus }');
+  });
+
+  it('keeps single-file panes on the shared resizable dock width contract', () => {
+    const source = readFileSync(
+      new URL('./ExplorerDock.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain(
+      "import { RIGHT_DOCK_MIN_WIDTH_PX } from '@synara/shared/rightDock';"
+    );
+    expect(source).toContain(
+      'export const EXPLORER_DOCK_MIN_WIDTH = RIGHT_DOCK_MIN_WIDTH_PX'
+    );
+    expect(source).toContain('props.initialWidth ??');
+    expect(source).toContain('Math.round(props.availableWidth / 2)');
+    expect(source).toContain('minWidth={EXPLORER_DOCK_MIN_WIDTH}');
+    expect(source).not.toContain('EXPLORER_SINGLE_FILE_DOCK_MIN_WIDTH');
+  });
+
+  it('opens transcript file references as a single-file dock', () => {
+    const source = readFileSync(
+      new URL('./ExplorerDock.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const routerSource = readFileSync(
+      new URL('./router.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL('./explorer-dock.css', import.meta.url),
+      'utf8'
+    );
+    const fileTabSource = readFileSync(
+      new URL('./ExplorerFileTab.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const surfaceTabSource = readFileSync(
+      new URL('./EditorSurfaceTab.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const surfaceTabStyles = readFileSync(
+      new URL('./editor-surface-tab.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(routerSource).toContain(
+      "const [explorerPresentationMode, setExplorerPresentationMode] = useState<"
+    );
+    expect(routerSource).toContain(
+      "setExplorerPresentationMode('single-file');"
+    );
+    expect(routerSource).toContain(
+      'presentationMode={explorerPresentationMode}'
+    );
+    expect(routerSource).toContain(
+      'initialExplorerActionMenuOpen={initialExplorerActionMenuOpen}'
+    );
+    expect(source).toContain(
+      'actionMenuDefaultOpen={props.initialActionMenuOpen}'
+    );
+    expect(routerSource).not.toMatch(
+      /openExplorerFileReference[\s\S]{0,300}setEditorMode\(true\)/
+    );
+    expect(source).toContain("| 'single-file'");
+    expect(source).toContain(
+      "const singleFile = props.presentationMode === 'single-file';"
+    );
+    expect(source).toContain('singleFile && props.selectedPath');
+    expect(source).toContain('`Close ${fileName(props.selectedPath)}`');
+    expect(source).toContain('<ExplorerFileTab');
+    expect(fileTabSource).toContain('<EditorSurfaceTab');
+    expect(fileTabSource).toContain('icon={<FileEntryIcon pathValue={props.path} />}');
+    expect(surfaceTabSource).toContain(
+      'className={`${close.className} EditorSurfaceTabIconSlot`}'
+    );
+    expect(surfaceTabSource).toContain(
+      '...lynxNestedInteractiveEventProps(close.eventProps)'
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDock--single-file\s*\{[^}]*top:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDock--single-file \.ExplorerDockHeader\s*\{[^}]*height:\s*46px;[^}]*min-height:\s*46px;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDock--single-file \.ExplorerDockSidebar\s*\{[^}]*display:\s*none;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDock--single-file \.ExplorerDockPreview\s*\{[^}]*width:\s*100%;/s
+    );
+    expect(surfaceTabStyles).toMatch(
+      /\.EditorSurfaceTabIconSlot,[^}]*\{[^}]*position:\s*relative;[^}]*width:\s*16px;[^}]*height:\s*16px;/s
+    );
+    expect(surfaceTabStyles).toMatch(
+      /\.EditorSurfaceTabCloseGlyph\s*\{[^}]*opacity:\s*0;/s
+    );
+    expect(surfaceTabStyles).toMatch(
+      /\.EditorSurfaceTab\.ui-hover \.EditorSurfaceTabRestingIcon,[^}]*opacity:\s*0;/s
+    );
+    expect(surfaceTabStyles).toMatch(
+      /\.EditorSurfaceTab\.ui-hover \.EditorSurfaceTabCloseGlyph,[^}]*opacity:\s*1;/s
+    );
+  });
+
   it('uses real project RPCs and a resizable right-panel surface', () => {
     const source = readFileSync(
       new URL('./ExplorerDock.lynx.tsx', import.meta.url),
@@ -39,6 +188,10 @@ describe('Lynx Explorer dock', () => {
       new URL('./ExplorerImagePreview.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const previewHeaderSource = readFileSync(
+      new URL('./ExplorerPreviewHeader.lynx.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(clientSource).toContain("'projects.listDirectories'");
     expect(clientSource).toContain("'projects.searchEntries'");
@@ -59,7 +212,13 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('onQueryChange: (query: string) => void');
     expect(routerSource).toContain('fetchExplorerEntries({');
     expect(routerSource).toContain(
-      'resolvedActiveThreadData?.explorerEntries.value?.truncated ?? false'
+      'explorerEntriesTruncated={explorerEntriesQuery.data?.truncated ?? false}'
+    );
+    expect(routerSource).toContain(
+      "queryKey: ['explorer-entries', activeThreadId, workspaceRoot, explorerTrimmedQuery]"
+    );
+    expect(routerSource).toContain(
+      "queryKey: ['explorer-file', activeThreadId, workspaceRoot, explorerSelectedPath]"
     );
     expect(routerSource).toContain(
       'entriesTruncated={explorerEntriesTruncated}'
@@ -89,12 +248,24 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('<ExplorerPreviewHeader');
     expect(source).toContain('truncated={props.file?.truncated ?? false}');
     expect(source).toContain("' ExplorerDockPreview--truncated'");
-    expect(source).toContain('className="ExplorerDockPreviewTruncated"');
-    expect(source).toContain('accessibility-label="Preview truncated at 1 MB."');
-    expect(source).toContain('ariaLabel="More actions"');
-    expect(source).toContain('Reference in chat');
-    expect(source).toContain('Ask why this changed');
-    expect(source).toContain('applyExplorerChatAction({');
+    expect(previewHeaderSource).toContain(
+      'className="ExplorerDockPreviewTruncated"'
+    );
+    expect(previewHeaderSource).toContain(
+      'accessibility-label="Preview truncated at 1 MB."'
+    );
+    expect(previewHeaderSource).toContain(
+      "ariaLabel={props.triggerLabel ?? 'More actions'}"
+    );
+    expect(previewHeaderSource).toContain('Reference in chat');
+    expect(previewHeaderSource).toContain('Ask why this changed');
+    expect(previewHeaderSource).toContain('applyExplorerChatAction({');
+    expect(previewHeaderSource).toContain(
+      'export function ExplorerFileActionsMenu'
+    );
+    expect(previewHeaderSource).toContain('deriveFilePreviewBreadcrumb({');
+    expect(previewHeaderSource).not.toContain('function pathSegments(');
+    expect(previewHeaderSource).toContain('props.includeCopyPath');
     expect(source).toContain('<ExplorerImagePreview');
     expect(source).toContain('key={props.localPreviewUrl}');
     expect(imageSource).toContain('className="ExplorerDockImage"');
@@ -158,15 +329,14 @@ describe('Lynx Explorer dock', () => {
     expect(routerSource).toContain(
       'Array.from(explorerExpandedDirectories).toSorted()'
     );
-    expect(routerSource).toContain('explorerDirectories,');
-    expect(appSource).toContain(
-      'initialExplorerExpandedDirectories.map(async (path)'
+    expect(routerSource).toContain(
+      'explorerDirectoriesQuery.data ?? []'
     );
-    expect(appSource).toContain('fetchExplorerDirectory({');
-    expect(appSource).toContain('fetchExplorerLocalPreviewUrl({');
-    expect(appSource).toContain(
-      '!isSupportedLocalPreviewFilePath(initialExplorerPath)'
+    expect(routerSource).toContain(
+      'explorerExpandedDirectoryPaths.map(async (path)'
     );
+    expect(routerSource).toContain('fetchExplorerDirectory({');
+    expect(routerSource).toContain('fetchExplorerLocalPreviewUrl({');
     expect(routerSource).toContain(
       '!isSupportedLocalPreviewFilePath(explorerSelectedPath)'
     );
@@ -195,7 +365,17 @@ describe('Lynx Explorer dock', () => {
     expect(pdfSource).toContain('className="ExplorerDockPdfCompactOpen"');
     expect(pdfSource).toContain('aria-label="Previous PDF page"');
     expect(pdfSource).toContain('aria-label="Next PDF page"');
-    expect(pdfPageSource).toContain('mode="aspectFit"');
+    expect(pdfPageSource).toContain('mode="scaleToFill"');
+    expect(pdfSource).toContain("from '@synara/shared/pdfZoom'");
+    expect(pdfSource).toContain('value="fit-width"');
+    expect(pdfSource).toContain('value="fit-page"');
+    expect(pdfSource).toContain('previousZoomScale(scale)');
+    expect(pdfSource).toContain('nextZoomScale(scale)');
+    expect(pdfSource).toContain('width: rasterWidth');
+    expect(pdfSource).toContain('clampExplorerPdfPage({');
+    expect(pdfSource).toContain('aria-label="Current PDF page"');
+    expect(pdfSource).toContain('scroll-orientation="horizontal"');
+    expect(pdfSource).toContain('scroll-orientation="vertical"');
     expect(pdfSource).not.toContain('<webview');
     expect(webHostSource).toContain(
       'relaySocketBaseUrl ??\n          relayReadyBaseUrl ??\n          configuredRelayBaseUrl()'
@@ -212,12 +392,16 @@ describe('Lynx Explorer dock', () => {
     );
     expect(routerSource).toContain("onExplorerQueryChange('')");
     expect(routerSource).toContain('onExplorerSelectPath(relativePath)');
-    expect(routerSource).toContain('setExplorerVisibility(true)');
     expect(routerSource).toContain(
-      'useState(initialExplorerOpen)'
+      "openPaneInState(current, { paneId: 'explorer', kind: 'explorer' })"
     );
-    expect(routerSource).toContain('setDiffOpen(false)');
-    expect(routerSource).toContain('setExplorerOpen(false)');
+    expect(routerSource).toContain(
+      'const [rightDockState, setRightDockState] = useState<RightDockThreadState>'
+    );
+    expect(routerSource).toMatch(
+      /const withExplorer = initialExplorerOpen[\s\S]{0,320}openPaneInState/
+    );
+    expect(routerSource).toContain('setDockOpenInState(current, false)');
   });
 
   it('matches the Web dock explorer split anatomy', () => {
@@ -251,28 +435,28 @@ describe('Lynx Explorer dock', () => {
       /\.SliceRoot--viewport-compact \.ThreadPage > \.ExplorerDock\s*\{[^}]*left:\s*0;[^}]*top:\s*92px;[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*max-width:\s*none;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-compact\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockSidebar\s*\{[^}]*width:\s*50%;[^}]*min-width:\s*0;/s
+      /\.SliceRoot--viewport-compact\s+\.ExplorerDock\s+\.ExplorerDockSidebar\s*\{[^}]*width:\s*50%;[^}]*min-width:\s*0;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+>\s+\.ExplorerDockHeader\s*\{[^}]*height:\s*28px;[^}]*min-height:\s*28px;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+>\s+\.ExplorerDockHeader\s*\{[^}]*height:\s*28px;[^}]*min-height:\s*28px;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockSearch\s*\{[^}]*padding:\s*4px;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockSearch\s*\{[^}]*padding:\s*4px;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreviewContent\s*\{[^}]*padding:\s*4px;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockPreviewContent\s*\{[^}]*padding:\s*4px;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockEntries\s*\{[^}]*padding:\s*3px;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockEntries\s*\{[^}]*padding:\s*3px;/s
     );
     expect(styles).toMatch(
       /\.ExplorerDockSearchTruncated\s*\{[^}]*height:\s*22px;[^}]*padding:\s*4px 8px;[^}]*border-top:\s*1px solid var\(--border\);/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockSearchTruncated\s*\{[^}]*height:\s*14px;[^}]*padding:\s*0 4px;[^}]*font-size:\s*9px;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockSearchTruncated\s*\{[^}]*height:\s*14px;[^}]*padding:\s*0 4px;[^}]*font-size:\s*9px;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockEntries--truncated\s*\{[^}]*padding:\s*0;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockEntries--truncated\s*\{[^}]*padding:\s*0;/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ExplorerDock--editor-search\s+\.ExplorerDockSidebar\s*\{[^}]*height:\s*100%;[^}]*min-height:\s*0;/s
@@ -284,19 +468,19 @@ describe('Lynx Explorer dock', () => {
       /\.SliceRoot--viewport-short-height\s+\.ExplorerDock--editor-search\s+\.ExplorerDockPreview\s*\{[^}]*display:\s*none;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockEntryPath\s*\{[^}]*display:\s*none;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockEntryPath\s*\{[^}]*display:\s*none;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockDirectoryState\s*\{[^}]*height:\s*12px;[^}]*min-height:\s*12px;[^}]*font-size:\s*9px;[^}]*line-height:\s*12px;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockDirectoryState\s*\{[^}]*height:\s*12px;[^}]*min-height:\s*12px;[^}]*font-size:\s*9px;[^}]*line-height:\s*12px;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreview--pdf\s+\.ExplorerDockPreviewHeader\s*\{[^}]*position:\s*absolute;[^}]*right:\s*4px;[^}]*top:\s*32px;[^}]*width:\s*28px;[^}]*height:\s*28px;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockPreview--pdf\s+\.ExplorerDockPreviewHeader\s*\{[^}]*position:\s*absolute;[^}]*right:\s*4px;[^}]*top:\s*32px;[^}]*width:\s*28px;[^}]*height:\s*28px;/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height[\s\S]*?\.ExplorerDockPdfIdentity,[\s\S]*?\.ExplorerDockPdfPrevious,[\s\S]*?\.ExplorerDockPdfNext\s*\{[^}]*display:\s*none;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPdfControls\s*\{[^}]*width:\s*100%;[^}]*padding-right:\s*32px;[^}]*justify-content:\s*space-between;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockPdfControls\s*\{[^}]*width:\s*100%;[^}]*padding-right:\s*32px;[^}]*justify-content:\s*space-between;/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height[\s\S]*?\.ExplorerDockPdf--multi-page[\s\S]*?\.ExplorerDockPdfPrevious,[\s\S]*?\.ExplorerDockPdfNext\s*\{[^}]*display:\s*flex;[^}]*width:\s*28px;[^}]*min-width:\s*28px;/s
@@ -305,19 +489,19 @@ describe('Lynx Explorer dock', () => {
       /\.SliceRoot--viewport-short-height[\s\S]*?\.ExplorerDockPdf--multi-page[\s\S]*?\.ExplorerDockPdfOpen\s*\{[^}]*width:\s*28px;[^}]*min-width:\s*28px;[^}]*margin-left:\s*0;[^}]*padding:\s*0;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreview--image\s+\.ExplorerDockPreviewHeader\s*\{[^}]*position:\s*absolute;[^}]*right:\s*4px;[^}]*top:\s*4px;[^}]*width:\s*28px;[^}]*height:\s*28px;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockPreview--image\s+\.ExplorerDockPreviewHeader\s*\{[^}]*position:\s*absolute;[^}]*right:\s*4px;[^}]*top:\s*4px;[^}]*width:\s*28px;[^}]*height:\s*28px;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height[\s\S]*?\.ExplorerDockPreview--image[\s\S]*?\.ExplorerDockPreviewPath,[\s\S]*?\.ExplorerDockImageName\s*\{[^}]*display:\s*none;/s
+      /\.SliceRoot--viewport-short-height[\s\S]*?\.ExplorerDockPreview--image[\s\S]*?\.ExplorerDockBreadcrumb,[\s\S]*?\.ExplorerDockImageName\s*\{[^}]*display:\s*none;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreview--markdown\s+\.ExplorerDockPreviewHeader\s*\{[^}]*position:\s*absolute;[^}]*right:\s*4px;[^}]*top:\s*4px;[^}]*width:\s*28px;[^}]*height:\s*28px;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockPreview--markdown\s+\.ExplorerDockPreviewHeader\s*\{[^}]*position:\s*absolute;[^}]*right:\s*4px;[^}]*top:\s*4px;[^}]*width:\s*28px;[^}]*height:\s*28px;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreview--markdown\.ExplorerDockPreview--truncated\s+\.ExplorerDockPreviewHeader\s*\{[^}]*width:\s*84px;[^}]*padding:\s*0 4px;[^}]*gap:\s*4px;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockPreview--markdown\.ExplorerDockPreview--truncated\s+\.ExplorerDockPreviewHeader\s*\{[^}]*width:\s*84px;[^}]*padding:\s*0 4px;[^}]*gap:\s*4px;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockPreview--markdown\s+\.ExplorerDockPreviewContent\s*\{[^}]*height:\s*100%;[^}]*padding:\s*2px;/s
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockPreview--markdown\s+\.ExplorerDockPreviewContent\s*\{[^}]*height:\s*100%;[^}]*padding:\s*2px;/s
     );
     expect(styles).toMatch(
       /\.ExplorerDockSidebar\s*\{[^}]*width:\s*240px;[^}]*min-width:\s*240px;[^}]*border-right:\s*1px solid var\(--border\);/s
@@ -379,7 +563,10 @@ describe('Lynx Explorer dock', () => {
       /\.ExplorerDockPreviewHeader\s*\{[^}]*height:\s*40px;[^}]*min-height:\s*40px;[^}]*padding:\s*0 12px;[^}]*border-bottom:\s*1px solid var\(--border\);/s
     );
     expect(styles).toMatch(
-      /\.ExplorerDockPreviewPath\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*1;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
+      /\.ExplorerDockBreadcrumb\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*1;[^}]*overflow:\s*hidden;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockBreadcrumbPrefix\s*\{[^}]*flex-grow:\s*0;[^}]*flex-shrink:\s*9999;[^}]*flex-basis:\s*auto;[^}]*overflow:\s*hidden;/s
     );
     expect(styles).toMatch(
       /\.ExplorerDockPreviewTruncated\s*\{[^}]*flex-shrink:\s*0;[^}]*font-size:\s*10px;[^}]*line-height:\s*14px;/s
@@ -387,8 +574,8 @@ describe('Lynx Explorer dock', () => {
     expect(styles).toMatch(
       /\.ExplorerDockPreviewContent\s*\{[^}]*flex:\s*1;[^}]*padding:\s*12px;/s
     );
-    expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ThreadPage\s+>\s+\.ExplorerDock\s+\.ExplorerDockSyntaxCode\s*\{[^}]*white-space:\s*pre-wrap;[^}]*word-break:\s*break-word;/s
+    expect(styles).not.toMatch(
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockSyntaxCode\s*\{[^}]*white-space:\s*pre-wrap;/s
     );
   });
 

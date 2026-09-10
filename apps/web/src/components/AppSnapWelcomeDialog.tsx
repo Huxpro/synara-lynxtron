@@ -11,7 +11,6 @@
 // reads translucent over the desktop, since the Electron window itself is
 // transparent under macOS vibrancy.
 
-import { Schema } from "effect";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
@@ -28,20 +27,17 @@ import {
 } from "./ui/dialog";
 
 import { getDesktopBridge } from "~/platform/desktopBridge";
-const APP_SNAP_WELCOME_STORAGE_KEY = "synara:appsnap-welcome:v1";
-
-const AppSnapWelcomeStorageSchema = Schema.Struct({
-  acknowledged: Schema.Boolean,
-});
-type AppSnapWelcomeStorage = typeof AppSnapWelcomeStorageSchema.Type;
-
-const INITIAL_STORAGE: AppSnapWelcomeStorage = { acknowledged: false };
+import {
+  APP_SNAP_WELCOME_STORAGE_KEY,
+  AppSnapWelcomeStorageSchema,
+  INITIAL_APP_SNAP_WELCOME_STORAGE,
+} from "./AppSnapWelcomeDialog.logic";
 
 export function AppSnapWelcomeDialog() {
   const navigate = useNavigate();
   const [storage, setStorage] = useLocalStorage(
     APP_SNAP_WELCOME_STORAGE_KEY,
-    INITIAL_STORAGE,
+    INITIAL_APP_SNAP_WELCOME_STORAGE,
     AppSnapWelcomeStorageSchema,
   );
   const [open, setOpen] = useState(false);

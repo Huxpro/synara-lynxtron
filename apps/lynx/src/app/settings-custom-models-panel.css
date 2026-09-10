@@ -184,7 +184,7 @@
   flex: 1;
   overflow: hidden;
   color: var(--foreground);
-  font-family: var(--font-chat-code-family);
+  font-family: var(--font-mono-family);
   font-size: 14px;
   line-height: 20px;
   text-overflow: ellipsis;

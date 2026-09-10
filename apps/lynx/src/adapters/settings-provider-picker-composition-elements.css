@@ -114,37 +114,5 @@
 }
 
 .SharedSettingsProviderPickerSwitch {
-  width: 32px;
-  height: 20px;
   margin-left: 4px;
-  padding: 1px;
-  border: 1px solid var(--settings-switch-border);
-  border-radius: 10px;
-  background-color: var(--settings-switch-off);
-}
-
-.SharedSettingsProviderPickerSwitch--on {
-  border-color: var(--color-text-accent);
-  background-color: var(--color-text-accent);
-}
-
-.SharedSettingsProviderPickerSwitch.ui-hover {
-  box-shadow: 0 0 0 1px var(--border);
-}
-
-.SharedSettingsProviderPickerSwitch.ui-focus {
-  box-shadow: 0 0 0 2px var(--ring);
-}
-
-.SharedSettingsProviderPickerSwitchThumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 8px;
-  background-color: #ffffff;
-  transform: translateX(0);
-}
-
-.SharedSettingsProviderPickerSwitch--on
-  .SharedSettingsProviderPickerSwitchThumb {
-  transform: translateX(12px);
 }

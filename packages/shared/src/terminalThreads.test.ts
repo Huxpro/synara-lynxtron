@@ -10,8 +10,17 @@ import {
   deriveTerminalProcessIdentity,
   deriveTerminalTitleSignalIdentity,
   resolveTerminalVisualIdentity,
+  TERMINAL_BOLD_FONT_WEIGHT,
+  TERMINAL_FONT_WEIGHT,
   terminalCliKindFromValue,
 } from "./terminalThreads";
+
+describe("terminal typography", () => {
+  it("keeps normal and bold weights aligned across renderers", () => {
+    expect(TERMINAL_FONT_WEIGHT).toBe(300);
+    expect(TERMINAL_BOLD_FONT_WEIGHT).toBe(500);
+  });
+});
 
 describe("Antigravity CLI identity", () => {
   it.each(["agy", "antigravity", "antigravity-cli"])("detects the %s command", (command) => {

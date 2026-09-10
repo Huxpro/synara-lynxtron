@@ -10,8 +10,20 @@ import {
   goBackInAppHistory,
   goForwardInAppHistory,
   resolveAppNavigationState,
+  shouldUseHashHistory,
   syncAppNavigationState,
 } from "./appNavigation";
+
+describe("shouldUseHashHistory", () => {
+  it("recognizes the browser Components Lab entry without changing normal web routing", () => {
+    expect(shouldUseHashHistory("#/components-lab")).toBe(true);
+    expect(shouldUseHashHistory("#/components-lab?story=editor-rail%2Fadd-menu&state=open")).toBe(
+      true,
+    );
+    expect(shouldUseHashHistory("#/settings")).toBe(false);
+    expect(shouldUseHashHistory("")).toBe(false);
+  });
+});
 
 describe("resolveAppNavigationState", () => {
   it("tracks back and forward availability from the TanStack history index", () => {

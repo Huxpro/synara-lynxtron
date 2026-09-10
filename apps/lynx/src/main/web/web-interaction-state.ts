@@ -309,14 +309,11 @@ export function installLynxWebInteractionStateBridge(
         const previewHeader = previewActionTarget?.closest<HTMLElement>(
           '.ExplorerDockPreviewHeader'
         );
-        const path =
-          previewHeader
-            ?.querySelector<HTMLElement>('.ExplorerDockPreviewPath')
-            ?.textContent?.trim() ??
-          root
-            .querySelector<HTMLElement>('.ExplorerDockPreviewPath')
-            ?.textContent?.trim() ??
-          '';
+        const previewHeaderLabel =
+          previewHeader?.getAttribute('accessibility-label') ?? '';
+        const path = previewHeaderLabel.startsWith('File path ')
+          ? previewHeaderLabel.slice('File path '.length).trim()
+          : '';
         if (previewActionTarget && path) {
           explorerPreviewActionPointer = {
             action: 'toggle-menu',

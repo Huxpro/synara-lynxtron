@@ -15,14 +15,22 @@ import {
   appendFileCommentsToPrompt,
   type FileCommentSelection,
 } from '@synara-web/lib/fileComments';
+import {
+  appendTerminalContextsToPrompt,
+  type TerminalContextSelection,
+} from '@synara-web/lib/terminalContext';
 
 export function buildComposerSendText(input: {
   readonly fileComments: ReadonlyArray<FileCommentSelection>;
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
+  readonly terminalContexts?: ReadonlyArray<TerminalContextSelection>;
   readonly prompt: string;
 }): string {
   return appendFileCommentsToPrompt(
-    appendPastedTextsToPrompt(input.prompt, input.pastedTexts),
+    appendPastedTextsToPrompt(
+      appendTerminalContextsToPrompt(input.prompt, input.terminalContexts ?? []),
+      input.pastedTexts
+    ),
     input.fileComments
   ).trim();
 }

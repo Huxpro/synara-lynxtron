@@ -174,6 +174,8 @@ export type ProjectInspectPdfInput = typeof ProjectInspectPdfInput.Type;
 
 export const ProjectInspectPdfResult = Schema.Struct({
   pageCount: PositiveInt,
+  width: Schema.Number.check(Schema.isGreaterThan(0)),
+  height: Schema.Number.check(Schema.isGreaterThan(0)),
 });
 export type ProjectInspectPdfResult = typeof ProjectInspectPdfResult.Type;
 // ── Dev Server Process Manager ───────────────────────────────────────

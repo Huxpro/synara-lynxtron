@@ -5,6 +5,7 @@ import {
   buildPullRequestCodeView,
   formatGitPathForDisplay,
 } from "./pullRequestCode.logic";
+import { pairPullRequestCodeLines } from "./PullRequestCodeComposition";
 
 const PATCH = [
   "diff --git a/src/z.ts b/src/z.ts",
@@ -462,5 +463,35 @@ describe("buildPullRequestCodeView", () => {
     const raw = buildPullRequestCodeView("not a unified diff");
     expect(raw.kind).toBe("raw");
     if (raw.kind === "raw") expect(raw.lines[0]?.text).toBe("not a unified diff");
+  });
+});
+
+describe("pairPullRequestCodeLines", () => {
+  it("pairs changed lines while mirroring context and preserving one-sided rows", () => {
+    const view = buildPullRequestCodeView(PATCH, "pull-request:split-row-test");
+    expect(view.kind).toBe("files");
+    if (view.kind !== "files") return;
+
+    expect(
+      pairPullRequestCodeLines(view.files[1]!.lines).map((row) =>
+        row.kind === "shared"
+          ? ["shared", row.line.kind, row.line.text]
+          : ["paired", row.left?.kind ?? null, row.right?.kind ?? null],
+      ),
+    ).toEqual([
+      ["paired", "context", "context"],
+      ["paired", "deletion", "addition"],
+      ["paired", "context", "context"],
+    ]);
+
+    expect(
+      pairPullRequestCodeLines(view.files[0]!.lines).map((row) =>
+        row.kind === "shared"
+          ? ["shared", row.line.kind]
+          : ["paired", row.left?.kind ?? null, row.right?.kind ?? null],
+      ),
+    ).toEqual([
+      ["paired", null, "addition"],
+    ]);
   });
 });

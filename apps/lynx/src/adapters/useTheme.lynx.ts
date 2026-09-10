@@ -1,6 +1,7 @@
 import { useEffect, useState } from '@lynx-js/react';
 import {
   DEFAULT_THEME_STATE,
+  buildResolvedThemeTokens,
   resolveThemePack,
   resolveTextForegroundSecondary,
   resolveThemeVariant,
@@ -11,6 +12,15 @@ import {
   type ThemeVariant,
 } from '@synara-web/theme/theme.logic';
 import { THEME_STORAGE_KEY } from '@synara-web/appSettingsStorageProjection.logic';
+import {
+  DEFAULT_MONOSPACE_FONT_FAMILY_STACK,
+  normalizeMonospaceFontFamilyCssValue,
+} from '@synara-web/lib/fontFamily';
+import {
+  resolveSemanticIconTone,
+  type SemanticIconPalette,
+  type SemanticIconTone,
+} from '@synara/shared/semanticIconTone';
 
 let currentThemeState = DEFAULT_THEME_STATE;
 let currentSystemDark = false;
@@ -66,12 +76,31 @@ export function useTheme() {
 
   const resolvedTheme = resolveThemeVariant(themeState.mode, currentSystemDark);
   const activeTheme = resolveThemePack(themeState, resolvedTheme);
+  const codeFontFamily =
+    normalizeMonospaceFontFamilyCssValue(activeTheme.theme.fonts.code) ??
+    DEFAULT_MONOSPACE_FONT_FAMILY_STACK;
+  const resolvedTokens = buildResolvedThemeTokens(activeTheme, resolvedTheme);
+  const semanticIconPalette: SemanticIconPalette = {
+    accent: resolvedTokens.derived.iconAccent,
+    disabled: resolvedTokens.aliases['--color-token-disabled-foreground'],
+    inverse: resolvedTokens.derived.textButtonPrimary,
+    primary: resolvedTokens.derived.iconPrimary,
+    secondary: resolvedTokens.derived.iconSecondary,
+    tertiary: resolvedTokens.derived.iconTertiary,
+  };
   return {
     activeTheme,
+    codeFontFamily,
     resolvedTheme,
     svgColors: {
       foreground: activeTheme.theme.ink,
       mutedForeground: withOpacity(activeTheme.theme.ink, 0.6),
+      iconAccent: semanticIconPalette.accent,
+      iconPrimary: semanticIconPalette.primary,
+      iconSecondary: semanticIconPalette.secondary,
+      iconTertiary: semanticIconPalette.tertiary,
+      inverse: semanticIconPalette.inverse,
+      disabled: semanticIconPalette.disabled,
       secondaryForeground: resolveTextForegroundSecondary(
         activeTheme.theme,
         resolvedTheme
@@ -79,6 +108,8 @@ export function useTheme() {
       surface: activeTheme.theme.surface,
       warning: resolvedTheme === 'dark' ? '#f5b44a' : '#d97706',
     },
+    semanticIconColor: (tone: SemanticIconTone) =>
+      resolveSemanticIconTone(tone, semanticIconPalette),
     theme: themeState.mode,
     setTheme: (mode: ThemeMode) =>
       updateLynxThemeState((state) => ({ ...state, mode })),

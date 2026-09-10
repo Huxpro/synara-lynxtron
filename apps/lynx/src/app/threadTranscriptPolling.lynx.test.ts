@@ -13,9 +13,12 @@ describe('Lynx thread transcript polling', () => {
     );
 
     expect(routerSource).not.toContain('function useThreadTranscriptPolling');
-    expect(routerOwnerSource).toContain("'thread-detail'");
-    expect(routerOwnerSource).toContain('explorerTrimmedQuery');
-    expect(routerOwnerSource).toContain('explorerSelectedPath');
+    expect(routerOwnerSource).toContain(
+      "queryKey: ['thread-detail', activeThreadId]"
+    );
+    expect(routerOwnerSource).not.toContain(
+      "'thread-detail',\n      activeThreadId,\n      explorerTrimmedQuery"
+    );
     expect(routerOwnerSource).toContain(
       'parseRoute(initialRoute).params.threadId ?? null'
     );
@@ -24,6 +27,19 @@ describe('Lynx thread transcript polling', () => {
     expect(routerOwnerSource).toContain('fetchThreadHeaderSummary(threadId)');
     expect(routerOwnerSource).toContain('refetchInterval: 500');
     expect(routerOwnerSource).toContain('retry: false');
+    expect(routerOwnerSource).toContain(
+      'subscribeOrchestrationShellEvents((item) => {'
+    );
+    expect(routerOwnerSource).toContain(
+      "void queryClient.invalidateQueries({ queryKey: ['threads'] });"
+    );
+    expect(routerOwnerSource).toContain('className={`AppNotificationStack${');
+    expect(routerOwnerSource).toContain("route.pathname === '/components-lab'");
+    expect(routerOwnerSource).toContain(
+      "queryKey: ['thread-detail', activeThreadId]"
+    );
+    expect(routerOwnerSource).toContain("item.kind !== 'thread-upserted'");
+    expect(routerOwnerSource).toContain('item.thread.id !== activeThreadId');
   });
 
   it('passes the query state into the thread surface', () => {
@@ -40,6 +56,7 @@ describe('Lynx thread transcript polling', () => {
   });
 
   it('delivers the startup route back to the background router', () => {
+    const appSource = readFileSync(new URL('./App.tsx', import.meta.url), 'utf8');
     const routerSource = readFileSync(
       new URL('./router.tsx', import.meta.url),
       'utf8'
@@ -47,6 +64,9 @@ describe('Lynx thread transcript polling', () => {
 
     expect(routerSource).toContain(
       "bridgeCall<{ readonly route?: unknown }>('shellRendererReady')"
+    );
+    expect(appSource).toContain(
+      "bridgeCall('shellUiReady', { route: initialRoute ?? '/' })"
     );
     expect(routerSource).toContain(
       'Memory-history navigation remains available without shell events.'
@@ -64,15 +84,27 @@ describe('Lynx thread transcript polling', () => {
 
     expect(appSource).toContain('const initData = useInitData()');
     expect(appSource).toContain('initialRoute={initialRoute}');
-    expect(appSource).toContain('initialThreadBootstrap={initialThreadBootstrap}');
+    expect(appSource).not.toContain('initialThreadBootstrap=');
     expect(appSource).toContain('initialExplorerPath={initialExplorerPath}');
     expect(appSource).toContain('initialExplorerQuery={initialExplorerQuery}');
-    expect(appSource).toContain('fetchThreadTranscriptRows(threadMatch[1])');
-    expect(appSource).toContain('fetchThreadHeaderSummary(threadMatch[1])');
-    expect(appSource).toContain('fetchExplorerEntries({');
-    expect(appSource).toContain('fetchExplorerFile({');
+    expect(appSource).not.toContain('fetchThreadTranscriptRows(');
+    expect(appSource).not.toContain('fetchThreadHeaderSummary(');
+    expect(appSource).not.toContain('fetchExplorerEntries(');
+    expect(appSource).not.toContain('fetchExplorerFile(');
+    expect(appSource).not.toContain('queryClient.fetchQuery(');
+    expect(appSource).toContain(
+      'readPersistedAppearanceFallback(readPersistedAppearance).then('
+    );
+    expect(appSource).not.toContain(
+      'Promise.all([\n      readPersistedAppearanceFallback(readPersistedAppearance)'
+    );
+    expect(appSource).not.toContain('Preparing Synara…');
+    expect(appSource).toContain(
+      '<SynaraLogo className="AppHydrationLogo" aria-label="Synara" />'
+    );
     expect(routerSource).toContain('readonly initialRoute: string | null');
     expect(routerSource).toContain('useRoute(initialRoute)');
     expect(routerSource).toContain('resolvedActiveThreadData');
+    expect(routerSource).not.toContain('matchingInitialThreadBootstrap');
   });
 });

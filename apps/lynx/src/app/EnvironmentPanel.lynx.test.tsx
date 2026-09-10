@@ -141,6 +141,8 @@ describe('Lynx Environment panel', () => {
       '!props.bootstrapOnly && visibility.showEnvironmentUsage ? ('
     );
     expect(routerSource).toContain('className="ThreadHeaderControls"');
+    expect(routerSource).toContain('(effectiveRightDockWidth ?? 0)');
+    expect(routerSource).toContain(') < 700');
     expect(routerSource).toContain('ThreadPage--environment-open');
     expect(routerSource).toContain('ThreadPage--provider-health-visible');
     expect(routerSource).toContain(
@@ -315,16 +317,13 @@ describe('Lynx Environment panel', () => {
     expect(queriesSource).toContain('threadMarkers: thread.threadMarkers ?? []');
     expect(panelSource).toContain('onOpenViewer={props.onOpenChanges}');
     expect(diffDockSource).toContain(
-      'return fetchWorkingTreeDiff(props.workspaceRoot);'
+      'return fetchWorkingTreeDiff(props.workspaceRoot, diffRequest.scope);'
     );
+    expect(diffDockSource).toContain("'working-tree-diff',");
+    expect(diffDockSource).toContain('diffSource,');
+    expect(diffDockSource).toContain('diffIgnoreWhitespace,');
     expect(diffDockSource).toContain(
-      "queryKey: ['working-tree-diff', props.workspaceRoot, refreshGeneration]"
-    );
-    expect(diffDockSource).toContain(
-      "queryFn: () => {\n      'background only';\n      return fetchWorkingTreeDiff(props.workspaceRoot);"
-    );
-    expect(diffDockSource).toContain(
-      'initialData: refreshGeneration === 0 ? props.initialDiff : undefined'
+      "refreshGeneration === 0 && diffSource === 'workingTree'"
     );
     expect(diffDockSource).toContain('function OpenDiffDock(');
     expect(diffDockSource).not.toContain(
@@ -345,10 +344,10 @@ describe('Lynx Environment panel', () => {
       'open={diffOpen}\n        presentation="editor"'
     );
     expect(routerSource).toContain(
-      "{ paddingRight: `${effectiveRightDockWidth}px` }"
+      '(threadPageWidth || viewportWidth) - effectiveRightDockWidth'
     );
     expect(appStyles).toMatch(
-      /\.ThreadPage--diff-open\s*\{[^}]*padding-right:\s*50%;/s
+      /\.ThreadPageMain\s*\{[^}]*display:\s*flex;[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*height:\s*100%;/s
     );
     expect(appStyles).toMatch(
       /\.ThreadPage\s*\{[^}]*position:\s*relative;[^}]*overflow:\s*hidden;[^}]*padding:\s*0;/s
@@ -392,6 +391,14 @@ describe('Lynx Environment panel', () => {
       new URL('./environment-panel.css', import.meta.url),
       'utf8'
     );
+    const primitiveStyles = readFileSync(
+      new URL('../components/ui/primitives.css', import.meta.url),
+      'utf8'
+    );
+    const source = readFileSync(
+      new URL('./EnvironmentPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
 
     expect(styles).toMatch(
       /\.ThreadHeaderControls\s*\{[^}]*-x-app-region:\s*no-drag;/s
@@ -410,14 +417,21 @@ describe('Lynx Environment panel', () => {
     );
     expect(routerSource).toContain('rightInsetPx={');
     expect(routerSource).toContain('effectiveRightDockWidth');
-    expect(styles).toContain(
-      '.ThreadPage--environment-open:not(.ThreadPage--diff-open):not('
+    expect(routerSource).toContain('resolveEnvironmentPanelLayout({');
+    expect(routerSource).toContain(
+      "bodyState.kind === 'empty'"
     );
+    expect(routerSource).toContain(
+      "viewportWidth < VIEWPORT_BREAKPOINTS.lg || diffOpen || explorerOpen"
+    );
+    expect(routerSource).toContain('ThreadPage--environment-docked');
+    expect(routerSource).toContain('ThreadPage--environment-floating');
+    expect(styles).toContain('.ThreadPage--environment-docked');
     expect(styles).toContain(
       '.ThreadComposerDock'
     );
     expect(styles).toMatch(
-      /\.ThreadTranscriptColumn,[^{]*\.ThreadComposerDock\s*\{[^}]*transition:\s*padding-right 300ms cubic-bezier\(0\.32,\s*0\.72,\s*0,\s*1\);/s
+      /\.ThreadTranscriptViewport,[^{]*\.ThreadComposerDock\s*\{[^}]*transition:\s*padding-right 300ms cubic-bezier\(0\.32,\s*0\.72,\s*0,\s*1\);/s
     );
     expect(styles).toMatch(
       /\.ThreadPage--provider-health-visible \.EnvironmentOverlay\s*\{[^}]*top:\s*126px;/s
@@ -469,7 +483,10 @@ describe('Lynx Environment panel', () => {
     expect(styles).toMatch(
       /\.EnvironmentRecapSkeletonLine\s*\{[^}]*background-color:\s*var\(--accent\);/s
     );
-    expect(styles).toContain('padding-right: 312px;');
+    expect(styles).toMatch(
+      /\.ThreadPage--environment-docked \.ThreadTranscriptViewport,[\s\S]*?\.ThreadPage--environment-docked \.ThreadComposerDock\s*\{[^}]*padding-right:\s*312px;/s
+    );
+    expect(routerSource).toContain('className="ThreadTranscriptViewport"');
     expect(styles).toMatch(
       /\.LxMenuPopup\.EnvironmentLocalServersPopup\s*\{[^}]*width:\s*288px;[^}]*padding:\s*6px;/s
     );
@@ -509,8 +526,10 @@ describe('Lynx Environment panel', () => {
     expect(styles).toMatch(
       /\.EnvironmentGitActionMessage\s*\{[^}]*min-height:\s*72px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*transparent;[^}]*color:\s*var\(--foreground\);/s
     );
-    expect(styles).toMatch(
-      /\.EnvironmentGitActionCheckbox\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*border-radius:\s*4px;/s
+    expect(source).toContain('<CheckboxIndicator checked={allSelected}');
+    expect(source).toContain('mixed={!allSelected && !noneSelected}');
+    expect(primitiveStyles).toMatch(
+      /\.LxCheckboxIndicator--sm\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
     );
     expect(styles).toMatch(
       /\.EnvironmentGitActionFile--excluded\s*\{[^}]*opacity:\s*0\.55;/s
@@ -551,8 +570,9 @@ describe('Lynx Environment panel', () => {
     expect(styles).toMatch(
       /\.EnvironmentPinnedRow\s*\{[^}]*min-height:\s*26px;[^}]*padding:\s*4px 8px;[^}]*gap:\s*6px;/s
     );
-    expect(styles).toMatch(
-      /\.EnvironmentPinnedCheckbox\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*border-radius:\s*4px;/s
+    expect(source).toContain('<CheckboxIndicator checked={done} size="sm" />');
+    expect(primitiveStyles).toMatch(
+      /\.LxCheckboxIndicator--sm\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
     );
     expect(styles).toMatch(
       /\.EnvironmentMarkerSwatch\s*\{[^}]*width:\s*10px;[^}]*height:\s*10px;[^}]*border-radius:\s*999px;/s
@@ -637,7 +657,7 @@ describe('Lynx Environment panel', () => {
     expect(routerSource).toContain(
       'Keep the explicit session override.'
     );
-    expect(routerSource).toContain('open={resolvedEnvironmentOpen}');
+    expect(routerSource).toContain('open={environmentPanelLayout.visible}');
     expect(routerSource).toContain('onChange={setEnvironmentVisibility}');
   });
 });

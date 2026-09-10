@@ -24,7 +24,7 @@ function expectNativeHeading(selector: string) {
   for (const heading of headings) {
     expect(heading.getAttribute('accessibility-element')).toBe('true');
     expect(heading.getAttribute('accessibility-heading')).toBe('true');
-    expect(heading.getAttribute('accessibility-traits')).toBe('header');
+    expect(heading.getAttribute('accessibility-trait')).toBe('header');
   }
 }
 

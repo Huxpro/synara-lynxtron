@@ -2,6 +2,49 @@ import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
 describe('Composer model picker icon fidelity', () => {
+  it('matches Electron combined effort menu with a nested model submenu', () => {
+    const controlSource = readFileSync(
+      new URL('../components/composer/ComposerModelControl.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL('../components/composer/composer.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(controlSource).toContain('<MenuSub');
+    expect(controlSource).toContain(
+      '<MenuSubTrigger className="ComposerModelSubTriggerLynx">'
+    );
+    expect(controlSource).toContain('align="end"');
+    expect(controlSource).toContain('className="ComposerModelSubPopupLynx"');
+    expect(controlSource).toContain(
+      'renderTraitSections(() => setModelOpen(false))'
+    );
+    expect(controlSource).toContain('renderModelCatalog(() => {');
+    expect(styles).toMatch(
+      /\.ComposerModelPopupLynx\s*\{[^}]*overflow:\s*visible;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerModelSubPopupLynx\s*\{[^}]*width:\s*208px;[^}]*min-width:\s*208px;[^}]*height:\s*320px;[^}]*max-height:\s*320px;[^}]*box-sizing:\s*border-box;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerModelSubPopupLynx \.ComposerModelOptionListLynx\s*\{[^}]*height:\s*312px;[^}]*max-height:\s*312px;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerModelOptionLynx\s*\{[^}]*min-height:\s*27px;[^}]*padding:\s*4px 8px;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerModelSubPopupLynx \.ComposerModelSearchPanelLynx\s*\{[^}]*height:\s*100%;/s
+    );
+    expect(controlSource).toContain(
+      'props.initialSubmenuOpen ?? initData.initialComposerModelSubmenuOpen === true'
+    );
+    expect(controlSource).toContain(
+      'if (props.initialOpen || initData.initialComposerModelMenuOpen === true) setModelOpen(true)'
+    );
+  });
+
   it('uses canonical Settings, Back, disclosure, and selection icons', () => {
     const triggerSource = readFileSync(
       new URL('./ComposerModelTriggerCompositionElements.lynx.tsx', import.meta.url),
@@ -14,6 +57,8 @@ describe('Composer model picker icon fidelity', () => {
       ),
       'utf8'
     );
+    expect(groupSource).toContain('scroll-y');
+    expect(groupSource).toContain('enable-scroll-bar');
     const controlSource = readFileSync(
       new URL('../components/composer/ComposerModelControl.lynx.tsx', import.meta.url),
       'utf8'

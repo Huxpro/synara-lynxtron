@@ -4,6 +4,7 @@ import { type NativeSyntaxHighlightThemes } from '../main/syntaxHighlightingCont
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { PlusIcon } from '../lib/icons.lynx';
 import { ExplorerFileCommentEditor } from './ExplorerFileCommentEditor.lynx';
+import { useTheme } from '../adapters/useTheme.lynx';
 
 function tokenStyle(fontStyle: number): Record<string, string | number> {
   return {
@@ -31,7 +32,9 @@ export function ExplorerSyntaxPreview(props: {
   return (
     <scroll-view
       className="ExplorerDockPreviewScroll"
-      scroll-orientation="vertical"
+      scroll-x
+      scroll-y
+      enable-scroll-bar
     >
       {highlighted ? (
         <view
@@ -72,6 +75,7 @@ export function ExplorerSyntaxLine(props: {
   readonly onCancel: () => void;
   readonly onSubmit: (text: string) => void;
 }) {
+  const { codeFontFamily } = useTheme();
   const lineNumber = useLynxInteractiveState({
     baseClassName: `ExplorerDockSyntaxLineNumber${
       props.active ? ' ExplorerDockSyntaxLineNumber--active' : ''
@@ -97,15 +101,19 @@ export function ExplorerSyntaxLine(props: {
             />
           </view>
         </view>
-        <text className="ExplorerDockSyntaxCode">
+        <text
+          className="ExplorerDockSyntaxCode"
+          style={{ fontFamily: codeFontFamily }}
+        >
           {props.line.length === 0 ? (
-            <text> </text>
+            <text style={{ fontFamily: codeFontFamily }}> </text>
           ) : (
             props.line.map((token, tokenIndex) => (
               <text
                 key={`${tokenIndex}:${token.content}`}
                 style={{
                   color: token.color,
+                  fontFamily: codeFontFamily,
                   ...tokenStyle(token.fontStyle),
                 }}
               >

@@ -5,6 +5,7 @@ import { SPACE_NAME_MAX_LENGTH, type SpaceIconName } from "@synara/contracts";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 
 import { suggestSpaceIcon } from "~/lib/spaceIconSuggestion";
+import { validateSpaceName } from "@synara/shared/spacePresentation";
 
 import { Button } from "./ui/button";
 import {
@@ -79,17 +80,7 @@ export function SpaceEditorDialog(props: {
   }, [props.initialValue?.icon, props.initialValue?.name, props.mode, props.open]);
 
   const trimmedName = name.trim();
-  const duplicateName = props.existingNames.some(
-    (existingName) => existingName.trim().toLowerCase() === trimmedName.toLowerCase(),
-  );
-  const nameError =
-    trimmedName.length === 0
-      ? "Enter a space name."
-      : trimmedName.toLowerCase() === "void"
-        ? "Void is reserved for unassigned projects."
-        : duplicateName
-          ? "A space with this name already exists."
-          : null;
+  const nameError = validateSpaceName(trimmedName, props.existingNames);
   // An empty field is a starting point, not a mistake — only speak up once there is input.
   const visibleNameError = name.length > 0 ? nameError : null;
 

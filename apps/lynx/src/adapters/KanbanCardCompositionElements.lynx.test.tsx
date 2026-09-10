@@ -6,11 +6,20 @@ import {
   KanbanCardAttachmentElement,
   KanbanCardForkElement,
   KanbanCardPinElement,
+  KanbanCardProviderElement,
   KanbanCardPullRequestElement,
   KanbanCardWorktreeElement,
 } from './KanbanCardCompositionElements.lynx';
 
 describe('Kanban card metadata icon fidelity', () => {
+  it('returns focus to the exact card after its native context menu closes', () => {
+    const source = readFileSync(
+      new URL('./KanbanCardCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain('() => focusLynxNode(rootRef)');
+  });
+
   it('uses canonical pin, worktree, fork, attachment, and PR identities', () => {
     render(
       <view>
@@ -84,5 +93,48 @@ describe('Kanban card metadata icon fidelity', () => {
     expect(styles).toMatch(
       /\.SharedKanbanCardPrIcon\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;/s
     );
+  });
+
+  it('uses the Electron fallback instead of inventing Codex for an unknown provider', () => {
+    render(<KanbanCardProviderElement provider={null} />);
+
+    expect(
+      elementTree.root?.querySelector('.SharedKanbanCardProviderFallback')
+    ).toBeTruthy();
+    expect(
+      elementTree.root?.querySelector('.SharedKanbanCardProvider')
+    ).toBeFalsy();
+  });
+
+  it('matches raised-surface and interaction chrome semantics', () => {
+    const styles = readFileSync(
+      new URL('./kanban-card-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-dark \.SharedKanbanCard\s*\{[^}]*border-color:\s*rgba\(255, 255, 255, 0\.05\);[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0, 0, 0, 0\.3\);/s
+    );
+    expect(styles).toMatch(
+      /\.SharedKanbanCard\.ui-hover\s*\{[^}]*background-color:\s*var\(--card\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.SharedKanbanCard\.ui-hover\s*\{[^}]*border-color:\s*var\(--ring\);/s
+    );
+    expect(styles).toContain('.SharedKanbanCardActions.ui-hover');
+  });
+
+  it('reuses the canonical status icon instead of a substitute dot', () => {
+    const source = readFileSync(
+      new URL('./KanbanCardCompositionElements.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain('<KanbanStatusIcon');
+    expect(source).toContain('className="SharedKanbanCardColumnIcon"');
+    expect(source).toContain(
+      "import terminalSvg from '@synara-central-icons/console.svg?raw';"
+    );
+    expect(source).not.toContain('SharedKanbanCardColumnDot');
   });
 });

@@ -8,6 +8,7 @@ import {
 const palette = {
   foreground: '#fcfcfc',
   mutedForeground: 'rgba(252, 252, 252, 0.6)',
+  iconSecondary: 'rgba(252, 252, 252, 0.58)',
 };
 
 describe('Lynx SVG theme projection', () => {
@@ -16,6 +17,9 @@ describe('Lynx SVG theme projection', () => {
     expect(resolveLynxSvgColor('var(--foreground)', palette)).toBe('#fcfcfc');
     expect(resolveLynxSvgColor('var(--muted-foreground)', palette)).toBe(
       'rgba(252, 252, 252, 0.6)'
+    );
+    expect(resolveLynxSvgColor('var(--color-icon-secondary)', palette)).toBe(
+      'rgba(252, 252, 252, 0.58)'
     );
     expect(resolveLynxSvgColor('#22a06b', palette)).toBe('#22a06b');
   });

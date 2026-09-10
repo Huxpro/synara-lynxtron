@@ -4,14 +4,33 @@ import type { InputRef } from '@lynx-js/lynx-ui';
 import { useEffect, useRef, type ReactNode } from '@lynx-js/react';
 
 import {
+  BackpackIcon,
+  BookIcon,
+  BriefcaseIcon,
   BlocksIcon,
   BrainIcon,
+  CameraIcon,
+  ChartIcon,
   CheckIcon,
+  CloudIcon,
+  CodeIcon,
   DeviceLaptopIcon,
+  FlaskIcon,
   FolderIcon,
+  GameControllerIcon,
+  GlobeIcon,
+  HammerIcon,
+  HeartIcon,
+  HomeIcon,
+  LightBulbIcon,
   PaletteIcon,
   PlusIcon,
   RefreshCwIcon,
+  RocketIcon,
+  SchoolIcon,
+  StarIcon,
+  TargetIcon,
+  TreeIcon,
   XIcon,
 } from '../lib/icons.lynx';
 import { Input } from '../components/ui/input.lynx';
@@ -30,12 +49,12 @@ function ComposerProjectPickerTriggerElement(props: {
   readonly secondaryLabel: string | null;
   readonly className?: string;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   return (
     <view className="ComposerProjectPickerTriggerContentLynx">
       <svg
         className="ComposerProjectPickerTriggerIconLynx"
-        content={colorizeLynxSvg(folderSvg, svgColors.mutedForeground)}
+        content={colorizeLynxSvg(folderSvg, semanticIconColor('secondary'))}
       />
       <view className="ComposerProjectPickerTriggerCopyLynx">
         <text className="ComposerProjectPickerTriggerLabelLynx">
@@ -150,26 +169,50 @@ export function ComposerProjectPickerGroupLabelElement(props: {
   readonly children?: ReactNode;
   readonly icon: SpaceIconName | 'black-hole';
 }) {
-  const Icon =
-    props.icon === 'black-hole'
-      ? BlocksIcon
-      : props.icon === 'home'
-      ? DeviceLaptopIcon
-      : props.icon === 'code-brackets'
-        ? BlocksIcon
-        : props.icon === 'light-bulb'
-          ? BrainIcon
-          : props.icon === 'color-palette'
-            ? PaletteIcon
-            : FolderIcon;
   return (
     <view className="ComposerProjectPickerGroupLabelLynx">
-      <Icon className="ComposerProjectPickerSpaceIconLynx" size={12} />
+      <LynxSpaceIcon
+        className="ComposerProjectPickerSpaceIconLynx"
+        icon={props.icon}
+        size={12}
+      />
       <text className="ComposerProjectPickerGroupLabelTextLynx">
         {props.children}
       </text>
     </view>
   );
+}
+
+export function LynxSpaceIcon(props: {
+  readonly className?: string;
+  readonly icon: SpaceIconName | 'black-hole';
+  readonly size?: number;
+}) {
+  const icons = {
+    'black-hole': BlocksIcon,
+    bag: BriefcaseIcon,
+    home: HomeIcon,
+    'code-brackets': CodeIcon,
+    rocket: RocketIcon,
+    'light-bulb': LightBulbIcon,
+    'color-palette': PaletteIcon,
+    book: BookIcon,
+    lab: FlaskIcon,
+    heart: HeartIcon,
+    star: StarIcon,
+    globe: GlobeIcon,
+    cloud: CloudIcon,
+    hammer: HammerIcon,
+    'chart-2': ChartIcon,
+    gamecontroller: GameControllerIcon,
+    'camera-1': CameraIcon,
+    target: TargetIcon,
+    tree: TreeIcon,
+    school: SchoolIcon,
+    backpack: BackpackIcon,
+  } as const;
+  const Icon = icons[props.icon] ?? FolderIcon;
+  return <Icon className={props.className} size={props.size ?? 12} />;
 }
 
 export function ComposerProjectPickerOptionElement(props: {

@@ -14,8 +14,19 @@
 
 .PendingApprovalHeaderLynx {
   display: flex;
-  align-items: center;
+  min-width: 0;
+  align-items: flex-start;
   min-height: 18px;
+  gap: 8px;
+}
+
+.PendingApprovalHeadingLynx {
+  min-width: 0;
+  flex: 1;
+  color: var(--foreground);
+  font-size: 13px;
+  line-height: 18px;
+  word-break: break-word;
 }
 
 .PendingApprovalTitleLynx {
@@ -25,13 +36,14 @@
 }
 
 .PendingApprovalToolLynx {
-  margin-left: 6px;
   color: var(--muted-foreground);
   font-size: 11px;
+  line-height: 18px;
+  font-weight: 400;
 }
 
 .PendingApprovalCountLynx {
-  margin-left: auto;
+  flex-shrink: 0;
   padding: 1px 4px;
   border-radius: 4px;
   background-color: var(--muted);
@@ -40,6 +52,7 @@
 }
 
 .PendingApprovalDetailLynx {
+  min-width: 0;
   margin-top: 8px;
   padding: 6px 10px;
   border-radius: 6px;
@@ -56,64 +69,21 @@
 }
 
 .PendingApprovalPathLynx {
+  min-width: 0;
   margin-top: 2px;
+  overflow: hidden;
   color: var(--muted-foreground);
   font-family: var(--font-mono-family);
   font-size: 10.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .PendingApprovalActionsLynx {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   margin-top: 10px;
-}
-
-.PendingApprovalActionLynx.LxButton {
-  justify-content: flex-start;
-  width: 100%;
-  min-height: 34px;
-  padding: 6px 8px;
-}
-
-.PendingApprovalShortcutLynx {
-  width: 18px;
-  height: 18px;
-  margin-right: 10px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  color: var(--muted-foreground);
-  font-size: 11px;
-  text-align: center;
-}
-
-.PendingApprovalActionLynx--primary .PendingApprovalShortcutLynx {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-.PendingApprovalActionLynx--destructive .PendingApprovalShortcutLynx,
-.PendingApprovalActionLynx--destructive .PendingApprovalActionLabelLynx {
-  color: var(--destructive);
-}
-
-.PendingApprovalActionCopyLynx {
-  display: flex;
-  flex: 1;
-  min-width: 0;
-  flex-direction: row;
-  align-items: center;
-}
-
-.PendingApprovalActionLabelLynx {
-  color: var(--foreground);
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.PendingApprovalActionDescriptionLynx {
-  margin-left: 6px;
-  color: var(--muted-foreground);
-  font-size: 12px;
 }
 
 .PendingApprovalHintLynx {

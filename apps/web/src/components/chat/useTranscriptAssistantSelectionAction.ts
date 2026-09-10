@@ -21,6 +21,7 @@ import {
 } from "../../lib/assistantSelections";
 import {
   readTranscriptAssistantSelection,
+  resolveSelectionViewportElement,
   resolveTranscriptSelectionActionLayout,
   type TranscriptAssistantSelection,
 } from "./chatSelectionActions";
@@ -33,6 +34,7 @@ export interface PendingTranscriptSelectionAction {
   left: number;
   top: number;
   placement: "top" | "bottom";
+  width: number;
 }
 
 interface UseTranscriptAssistantSelectionActionOptions {
@@ -171,12 +173,17 @@ export function useTranscriptAssistantSelectionAction(
       const layout = resolveTranscriptSelectionActionLayout({
         selectionRect: selectionState.selectionRect,
         pointer: { x: clientX, y: clientY },
+        viewport: (() => {
+          const rect = (resolveSelectionViewportElement(container) ?? container).getBoundingClientRect();
+          return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
+        })(),
       });
       setPendingTranscriptSelectionAction({
         selection: selectionState.selection,
         left: layout.left,
         top: layout.top,
         placement: layout.placement,
+        width: layout.width,
       });
     });
   };

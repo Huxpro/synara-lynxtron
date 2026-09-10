@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { SidebarPrimaryNavigationShortcutElement } from './SidebarPrimaryNavigationElements.lynx';
 import { SidebarPrimaryActionButtonElement } from './SidebarPrimaryActionElements.lynx';
 import { SidebarChatsSectionHeaderElement } from './SidebarChatsSectionElements.lynx';
+import { markProgrammaticLynxFocus } from '../components/ui/focus.lynx';
 
 describe('sidebar primary navigation shortcut', () => {
   it('renders each shortcut part as a separate key pill', () => {
@@ -87,6 +88,9 @@ describe('sidebar primary navigation shortcut', () => {
       /\.AppSidebar\s*\{[^}]*border-right:/s
     );
     expect(sidebarStyles).toMatch(
+      /\.AppSidebar\s*\{[^}]*background-color:\s*var\(--app-sidebar-surface, var\(--sidebar\)\);/s
+    );
+    expect(sidebarStyles).toMatch(
       /\.AppSidebar\s*\{[^}]*box-shadow:\s*inset 0 1px 0 rgba\(0,\s*0,\s*0,\s*0\.03\);/s
     );
     expect(sidebarStyles).toMatch(
@@ -98,6 +102,10 @@ describe('sidebar primary navigation shortcut', () => {
     expect(primaryActionStyles).toMatch(
       /\.SharedSidebarPrimaryActionButton\.ui-focus\s*\{[^}]*outline:\s*none;[^}]*box-shadow:\s*inset 0 0 0 1px var\(--ring\);/s
     );
+    expect(primaryActionStyles).toMatch(
+      /\.SharedSidebarPrimaryActionButton\s*\{[^}]*border-radius:\s*8px;/s
+    );
+    expect(primaryActionStyles).not.toContain('var(--radius-md)');
     expect(primaryActionStyles).toMatch(
       /\.SharedSidebarPrimaryActionButton\.ui-pressed\s*\{[^}]*color:\s*var\(--sidebar-accent-foreground\);[^}]*background-color:\s*var\(--sidebar-accent-active\);/s
     );
@@ -137,6 +145,32 @@ describe('sidebar primary navigation shortcut', () => {
 
     fireEvent(row, new Event('bindEvent:mouseenter', { bubbles: true }));
     expect(row.getAttribute('class')).toContain('ui-hover');
+    fireEvent.focus(row);
+    expect(row.getAttribute('class')).toContain('ui-focus');
+  });
+
+  it('keeps programmatic palette-close focus without painting a focus-visible ring', () => {
+    render(
+      <SidebarPrimaryActionButtonElement
+        active={false}
+        elementId="synara-sidebar-search-trigger"
+        accessibleLabel="Search"
+        disabled={false}
+        onActivate={rs.fn()}
+      >
+        Search
+      </SidebarPrimaryActionButtonElement>
+    );
+    const row = elementTree.root?.querySelector(
+      '.SharedSidebarPrimaryActionButton'
+    );
+    if (!row) throw new Error('expected Search row');
+
+    markProgrammaticLynxFocus('synara-sidebar-search-trigger');
+    fireEvent.focus(row);
+    expect(row.getAttribute('class')).not.toContain('ui-focus');
+
+    fireEvent.blur(row);
     fireEvent.focus(row);
     expect(row.getAttribute('class')).toContain('ui-focus');
   });

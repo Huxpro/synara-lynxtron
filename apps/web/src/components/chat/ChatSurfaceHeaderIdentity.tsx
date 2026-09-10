@@ -11,6 +11,7 @@ import {
 
 export function ChatSurfaceHeaderIdentity(props: {
   readonly title: string;
+  readonly displayTitle?: string;
   readonly icon?: ReactNode;
   readonly iconTitle?: string;
   readonly highlighted?: boolean;
@@ -28,6 +29,7 @@ export function ChatSurfaceHeaderIdentity(props: {
       ) : null}
       <ChatSurfaceHeaderIdentityTitleElement
         title={props.title}
+        displayTitle={props.displayTitle}
         onRename={props.onRename}
       />
       {props.suffix}

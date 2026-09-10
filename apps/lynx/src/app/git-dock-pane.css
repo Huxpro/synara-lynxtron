@@ -1,0 +1,22 @@
+.GitDockPane { display: flex; width: 100%; min-width: 0; min-height: 0; flex: 1; flex-direction: column; }
+.GitDockHeader { display: flex; height: 36px; min-height: 36px; padding: 0 8px 0 12px; align-items: center; border-bottom: 1px solid var(--border); }
+.GitDockTitle { color: var(--foreground); font-size: 12px; font-weight: 600; }
+.GitDockHeaderSpacer { flex: 1; }
+.GitDockRefresh { width: 28px; min-width: 28px; height: 28px; min-height: 28px; }
+.GitDockFileList { max-height: 48%; min-height: 96px; padding: 8px 6px; border-bottom: 1px solid var(--border); }
+.GitDockSection { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
+.GitDockSectionHeader { display: flex; min-height: 28px; padding: 4px 6px; align-items: center; gap: 8px; }
+.GitDockSectionTitle { color: var(--muted-foreground); font-size: 11px; font-weight: 600; }
+.GitDockSectionCount { min-width: 18px; padding: 1px 5px; border-radius: 999px; background-color: var(--muted); color: var(--muted-foreground); font-size: 10px; text-align: center; }
+.GitDockSectionAction { margin-left: auto; }
+.GitDockSectionEmpty, .GitDockState { padding: 6px; color: var(--muted-foreground); font-size: 11px; }
+.GitDockState { text-align: center; }
+.GitDockError { padding: 6px; color: var(--destructive); font-size: 11px; }
+.GitDockFileRow { display: flex; min-height: 30px; padding: 3px 6px; align-items: center; gap: 6px; border-radius: 6px; }
+.GitDockFileRow.ui-hover, .GitDockFileRow.ui-focus, .GitDockFileRow--selected { background-color: var(--sidebar-accent); }
+.GitDockFileIcon { width: 14px; height: 14px; flex-shrink: 0; }
+.GitDockFilePath { flex: 1; min-width: 0; overflow: hidden; color: var(--foreground); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.GitDockFileAdditions { color: var(--success); font-size: 11px; }
+.GitDockFileDeletions { color: var(--destructive); font-size: 11px; }
+.GitDockFileAction { flex-shrink: 0; }
+.GitDockDiff { flex: 1; min-width: 0; min-height: 0; }

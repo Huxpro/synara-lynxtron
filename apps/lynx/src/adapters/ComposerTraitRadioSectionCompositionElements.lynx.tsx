@@ -11,7 +11,7 @@ export function ComposerTraitFastModeToggleElement(props: {
   readonly enabled: boolean;
   readonly onToggle: () => void;
 }) {
-  const { resolvedTheme, svgColors } = useTheme();
+  const { resolvedTheme, semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: `ComposerTraitFastModeToggleLynx${
       props.enabled ? ' ComposerTraitFastModeToggleLynx--active' : ''
@@ -39,7 +39,7 @@ export function ComposerTraitFastModeToggleElement(props: {
             ? resolvedTheme === 'dark'
               ? '#fbbf24'
               : '#f59e0b'
-            : svgColors.mutedForeground
+            : semanticIconColor('secondary')
         )}
       />
     </view>
@@ -92,7 +92,12 @@ export function ComposerTraitRadioItemElement(props: {
       props.active ? ' ComposerTraitOptionLynx--active' : ''
     }${props.disabled ? ' ComposerTraitOptionLynx--disabled' : ''}`,
     accessibleLabel: props.label,
-    accessibilityValue: props.active ? 'Selected' : undefined,
+    accessibilityValue: [
+      props.active ? 'Selected' : null,
+      props.description,
+    ]
+      .filter(Boolean)
+      .join('. ') || undefined,
     disabled: props.disabled,
     onActivate: activate,
   });
@@ -103,19 +108,14 @@ export function ComposerTraitRadioItemElement(props: {
       aria-selected={props.active}
       {...interaction.eventProps}
     >
-      <view className="ComposerTraitOptionCheckLynx">
-        {props.active ? <CheckIcon size={12} /> : null}
-      </view>
       <view className="ComposerTraitOptionCopyLynx">
         <text className="ComposerTraitOptionLabelLynx">
           {props.label}
           {props.isDefault ? ' (default)' : ''}
         </text>
-        {props.description ? (
-          <text className="ComposerTraitOptionDescriptionLynx">
-            {props.description}
-          </text>
-        ) : null}
+      </view>
+      <view className="ComposerTraitOptionCheckLynx">
+        {props.active ? <CheckIcon size={12} /> : null}
       </view>
     </view>
   );

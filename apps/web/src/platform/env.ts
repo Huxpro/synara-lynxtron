@@ -66,6 +66,14 @@ export function getLocationHostname(): string {
   return typeof window === "undefined" ? "" : window.location.hostname;
 }
 
+export function getLocationSearch(): string {
+  return typeof window === "undefined" ? "" : window.location.search;
+}
+
+export function getLocationHash(): string {
+  return typeof window === "undefined" ? "" : window.location.hash;
+}
+
 /** window.location.assign with an environment guard. */
 export function assignLocation(url: string): void {
   if (typeof window === "undefined") return;

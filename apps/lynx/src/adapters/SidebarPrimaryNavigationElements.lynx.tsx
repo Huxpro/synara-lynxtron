@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Badge } from '../components/ui/badge.lynx';
 
 export function SidebarPrimaryNavigationRootElement({
   children,
@@ -14,7 +15,7 @@ export function SidebarPrimaryNavigationBadgeElement({
   readonly text: string;
   readonly accessibleLabel: string;
 }) {
-  return <text className="SharedSidebarPrimaryNavigationBadge">{text}</text>;
+  return <Badge className="SharedSidebarPrimaryNavigationBadge" variant="secondary">{text}</Badge>;
 }
 
 export function SidebarPrimaryNavigationShortcutElement({

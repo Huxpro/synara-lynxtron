@@ -1,0 +1,107 @@
+.ThreadRightDockHost {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 18;
+  display: flex;
+  width: 50%;
+  min-width: 416px;
+  max-width: 960px;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  background-color: var(--background);
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 300ms cubic-bezier(0.32, 0.72, 0, 1),
+    transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.ThreadRightDockHost--closed {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.SliceRoot--viewport-compact .ThreadPage > .ThreadRightDockHost {
+  left: 0;
+  top: 92px;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.ThreadRightDockHostBody {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.ThreadRightDockCreateError {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  z-index: 2;
+  padding: 8px 10px;
+  border: 1px solid var(--destructive);
+  border-radius: 8px;
+  background-color: var(--popover);
+  color: var(--destructive);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.ThreadRightDockTerminalPane {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+}
+
+.ThreadRightDockTerminalPane--hidden {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.ThreadRightDockTerminalPane > .ThreadTerminal {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+  border-top-width: 0;
+}
+
+.ThreadRightDockHostBody > .DiffDock--hosted,
+.ThreadRightDockHostBody > .ExplorerDock--hosted {
+  position: relative;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  z-index: auto;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: 100%;
+  border-left-width: 0;
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ThreadRightDockHost {
+    transition-duration: 0.01ms;
+  }
+}

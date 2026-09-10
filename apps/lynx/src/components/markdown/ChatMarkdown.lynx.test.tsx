@@ -5,6 +5,78 @@ import { readFileSync } from 'node:fs';
 import { MarkdownFileReferenceToken } from './MarkdownFileReferenceToken.lynx';
 
 describe('Lynx markdown file reference token', () => {
+  it('inherits transcript typography instead of overriding the configured chat size', () => {
+    const styles = readFileSync(
+      new URL('./markdown.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.MdParagraph\s*\{[^}]*font-size:\s*inherit;[^}]*line-height:\s*inherit;/s
+    );
+    expect(styles).toMatch(
+      /\.MdRoot--user \.MdParagraph\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*white-space:\s*pre-wrap;[^}]*word-break:\s*break-word;/s
+    );
+    const rowStyles = readFileSync(
+      new URL('../../adapters/message-row-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    const appStyles = readFileSync(new URL('../../app/App.css', import.meta.url), 'utf8');
+    expect(rowStyles).toMatch(
+      /\.SharedMessageUserColumn\s*\{[^}]*width:\s*80%;[^}]*min-width:\s*0;[^}]*max-width:\s*80%;/s
+    );
+    expect(rowStyles).toMatch(
+      /\.SharedMessageUserBubble\s*\{[^}]*width:\s*max-content;[^}]*max-width:\s*100%;[^}]*min-width:\s*0;/s
+    );
+    expect(appStyles).toMatch(
+      /\.TranscriptUserText\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s
+    );
+    expect(rowStyles).toMatch(
+      /\.SharedMessageAssistantRow\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s
+    );
+    expect(appStyles).toMatch(
+      /\.TranscriptAssistantContent\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s
+    );
+    expect(appStyles).toMatch(
+      /\.TranscriptAssistantTypography\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.MdListMarker\s*\{[^}]*font-size:\s*inherit;[^}]*line-height:\s*inherit;/s
+    );
+    expect(styles).toMatch(
+      /\.MdTableHeaderText,\s*\.MdTableCellText\s*\{[^}]*font-size:\s*inherit;[^}]*line-height:\s*inherit;/s
+    );
+    expect(styles).toMatch(
+      /\.MdTable\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.MdTableHeaderCell,\s*\.MdTableCell\s*\{[^}]*min-width:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.MdTableRow\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s
+    );
+    expect(styles).toMatch(
+      /\.MdTableRow\s*\{[^}]*display:\s*flex;/s
+    );
+    expect(styles).toMatch(
+      /\.MdTableHeaderCell,\s*\.MdTableCell\s*\{[^}]*width:\s*0;[^}]*min-width:\s*0;[^}]*flex:\s*1;/s
+    );
+    expect(styles).toMatch(
+      /\.MdTableHeaderText,\s*\.MdTableCellText\s*\{[^}]*display:\s*block;[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*white-space:\s*normal;[^}]*overflow-wrap:\s*anywhere;/s
+    );
+    const source = readFileSync(
+      new URL('./ChatMarkdown.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain('return <MarkdownTable context={context} key={key} node={node} nodeKey={key} />;');
+    expect(source).not.toContain('<scroll-view className="MdTableScroller"');
+    expect(styles).toMatch(
+      /\.MdTableHeaderText,\s*\.MdTableCellText\s*\{[^}]*word-break:\s*break-word;/s
+    );
+    expect(styles).not.toContain('min-width: 460px');
+    expect(styles).not.toContain('width: 153px');
+  });
+
   it('publishes an accessible file-open action', () => {
     const openedPaths: string[] = [];
     const onOpenFileReference = (relativePath: string) => {
@@ -42,7 +114,7 @@ describe('Lynx markdown file reference token', () => {
     );
 
     const reference = elementTree.root?.querySelector('.MdInlineToken--file');
-    expect(reference?.getAttribute('accessibility-traits')).toBe('text');
+    expect(reference?.getAttribute('accessibility-trait')).toBe('text');
     expect(reference?.getAttribute('focusable')).not.toBe('true');
   });
 
@@ -69,9 +141,9 @@ describe('Lynx markdown file reference token', () => {
       "import { highlightExplorerCode } from '../../data/synaraClient.lynx'"
     );
     expect(source).toContain(
-      'useState<NativeSyntaxHighlightResult | null>(null)'
+      'const [highlighted, setHighlighted] = useState<NativeSyntaxHighlightResult | null>(null)'
     );
-    expect(source).toContain('highlightExplorerCode({');
+    expect(source).toContain('highlightExplorerCode({ code: presentation.code, path })');
     expect(source).toContain('color: token.color');
   });
 });

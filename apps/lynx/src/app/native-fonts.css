@@ -1,0 +1,7 @@
+/* Lynx only consumes the supported family/src subset of @font-face reliably.
+ * Keep this declaration minimal so Clay Desktop registers the bundled face
+ * instead of silently falling back to the proportional system font. */
+@font-face {
+  font-family: "JetBrains Mono Variable";
+  src: url("../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2");
+}

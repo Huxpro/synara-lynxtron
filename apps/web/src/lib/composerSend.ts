@@ -7,19 +7,19 @@ import {
   type ChatFileAttachment,
   type ChatImageAttachment,
   MessageId,
-  type ModelSelection,
   PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   PROVIDER_SEND_TURN_MAX_FILE_BYTES,
   PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
-  type ClaudeCodeEffort,
-  type ProviderKind,
   type UploadChatAttachment,
 } from "@synara/contracts";
 import {
   ATTACHMENT_CANCEL_ROUTE_PATH,
   ATTACHMENT_UPLOAD_ROUTE_PATH,
 } from "@synara/shared/binaryTransfer";
-import { applyClaudePromptEffortPrefix, getModelCapabilities } from "@synara/shared/model";
+export {
+  formatOutgoingComposerPrompt,
+  resolvePromptEffortFromModelSelection,
+} from "@synara/shared/conversationEdit";
 
 import {
   cloneComposerImageAttachment,
@@ -171,44 +171,6 @@ export function readFileAsDataUrl(file: File): Promise<string> {
     });
     reader.readAsDataURL(file);
   });
-}
-
-// Provider-specific prompt massaging. Claude prompt-injected efforts must be
-// applied before filtering skill/mention references and before dispatch.
-export function formatOutgoingComposerPrompt(params: {
-  provider: ProviderKind;
-  model: string | null;
-  effort: string | null;
-  text: string;
-}): string {
-  const caps = getModelCapabilities(params.provider, params.model);
-  if (params.effort && caps.promptInjectedEffortLevels.includes(params.effort)) {
-    return applyClaudePromptEffortPrefix(params.text, params.effort as ClaudeCodeEffort | null);
-  }
-  return params.text;
-}
-
-export function resolvePromptEffortFromModelSelection(
-  modelSelection: ModelSelection,
-): string | null {
-  switch (modelSelection.provider) {
-    case "antigravity":
-      return null;
-    case "codex":
-      return modelSelection.options?.reasoningEffort ?? null;
-    case "claudeAgent":
-      return modelSelection.options?.effort ?? null;
-    case "cursor":
-      return modelSelection.options?.reasoningEffort ?? null;
-    case "grok":
-    case "droid":
-      return modelSelection.options?.reasoningEffort ?? null;
-    case "pi":
-      return modelSelection.options?.thinkingLevel ?? null;
-    case "kilo":
-    case "opencode":
-      return null;
-  }
 }
 
 export interface StagedComposerAttachments {

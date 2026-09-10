@@ -7,6 +7,7 @@ import {
 } from '@synara-web/lib/fileComments';
 import { SynaraLogo } from '~/components/SynaraLogo';
 import { Button } from '../components/ui/button';
+import { Textarea } from '../components/ui/textarea.lynx';
 
 export function ExplorerFileCommentEditor(props: {
   readonly lineNumber: number;
@@ -39,19 +40,15 @@ export function ExplorerFileCommentEditor(props: {
           })}
         </text>
       </view>
-      <textarea
+      <Textarea
         className="ExplorerDockCommentInput"
-        accessibility-element
-        accessibility-label={`Comment on line ${props.lineNumber}`}
-        focusable
+        aria-label={`Comment on line ${props.lineNumber}`}
+        nativeInput
         placeholder="Request change"
-        maxlength={FILE_COMMENT_TEXT_MAX_CHARS}
-        maxlines={4}
-        show-soft-input-on-focus
-        bindinput={(event) => {
-          'background only';
-          setValue(event.detail.value);
-        }}
+        maxLength={FILE_COMMENT_TEXT_MAX_CHARS}
+        maxLines={4}
+        value={value}
+        onChange={(event) => setValue(event.target.value)}
       />
       <view className="ExplorerDockCommentActions">
         <Button size="sm" variant="ghost" onClick={props.onCancel}>

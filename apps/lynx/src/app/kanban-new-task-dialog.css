@@ -106,7 +106,7 @@
   border-radius: 10px;
   color: var(--foreground);
   background-color: var(--background);
-  font-family: system-ui;
+  font-family: var(--font-ui-family);
   font-size: var(--app-font-size-ui);
   line-height: 20px;
 }

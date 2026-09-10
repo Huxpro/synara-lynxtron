@@ -68,10 +68,10 @@ describe('Pull Request Code disclosure fidelity', () => {
       /\.SharedPrCodeMoreText\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
     );
     expect(lynxStyles).toMatch(
-      /\.SharedPrCodeLine--addition\s*\{[^}]*background-color:\s*rgba\(0,\s*162,\s*64,\s*0\.1\);/s
+      /\.SharedPrCodeLine--addition\s*\{[^}]*background-color:\s*rgba\(0,\s*162,\s*64,\s*0\.01\);[^}]*background-color:\s*color-mix\(in srgb, var\(--background\) 92%, var\(--success\)\);/s
     );
     expect(lynxStyles).toMatch(
-      /\.SharedPrCodeLine--deletion\s*\{[^}]*background-color:\s*rgba\(224,\s*46,\s*42,\s*0\.1\);/s
+      /\.SharedPrCodeLine--deletion\s*\{[^}]*background-color:\s*rgba\(224,\s*46,\s*42,\s*0\.01\);[^}]*background-color:\s*color-mix\([\s\S]*?var\(--background\) 92%,[\s\S]*?var\(--destructive\)[\s\S]*?\);/s
     );
     expect(lynxStyles).toMatch(
       /\.SharedPrCodeLine--hunk\s*\{[^}]*background-color:\s*rgba\(13,\s*13,\s*13,\s*0\.024\);/s
@@ -106,7 +106,7 @@ describe('Pull Request Code disclosure fidelity', () => {
       /\.SharedPrCodeLine\s*\{[^}]*min-width:\s*100%;/s
     );
     expect(lynxStyles).not.toMatch(
-      /\.SharedPrCodeLine\s*\{[^}]*\n\s*width:\s*100%;/s
+      /\.SharedPrCodeDisclosure\s*\{[^}]*(?:height|max-height):/s
     );
     expect(lynxStyles).not.toMatch(
       /\.SharedPrCodeLine\s*\{[^}]*border-left:/
@@ -119,6 +119,12 @@ describe('Pull Request Code disclosure fidelity', () => {
     );
     expect(lynxStyles).toMatch(
       /\.SharedPrCodeLineText\s*\{[^}]*padding-right:\s*12px;[^}]*line-height:\s*20px;/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeSplitSide \.SharedPrCodeLineNumber\s*\{[^}]*width:\s*25px;[^}]*border-right:\s*2px solid transparent;/s
+    );
+    expect(lynxStyles).toMatch(
+      /\.SharedPrCodeSplitSide \.SharedPrCodeLineText\s*\{[^}]*padding-left:\s*7px;/s
     );
     expect(lynxStyles).not.toMatch(
       /\.SharedPrCodeFileHeader\.ui-(?:hover|pressed)[^{]*\{[^}]*background-color:/s

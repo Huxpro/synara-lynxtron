@@ -6,6 +6,7 @@ import type {
 
 import { ChevronDownIcon } from '../lib/icons.lynx';
 import { Button } from '../components/ui/button';
+import { Switch } from '../components/ui/switch.lynx';
 import {
   OpenAIProviderIcon,
   hasLynxProviderIcon,
@@ -94,29 +95,8 @@ export function SettingsGeneralBooleanControlElement(props: {
   readonly ariaLabel: string;
   readonly onChange: (checked: boolean) => void;
 }) {
-  const interaction = useLynxInteractiveState({
-    baseClassName: `SharedSettingsGeneralSwitch${
-      props.checked ? ' SharedSettingsGeneralSwitch--on' : ''
-    }${props.disabled ? ' SharedSettingsGeneralSwitch--disabled' : ''}`,
-    accessibleLabel: props.ariaLabel,
-    accessibilityValue: props.checked ? 'On' : 'Off',
-    disabled: props.disabled,
-    onActivate: () => props.onChange(!props.checked),
-  });
   return (
-    <view
-      className={interaction.className}
-      aria-label={props.ariaLabel}
-      aria-checked={props.checked}
-      accessibility-role="switch"
-      accessibility-state={{
-        checked: props.checked,
-        disabled: props.disabled ?? false,
-      }}
-      {...interaction.eventProps}
-    >
-      <view className="SharedSettingsGeneralSwitchThumb" />
-    </view>
+    <Switch checked={props.checked} disabled={props.disabled} ariaLabel={props.ariaLabel} className={`SharedSettingsGeneralSwitch${props.checked ? ' SharedSettingsGeneralSwitch--on' : ''}${props.disabled ? ' SharedSettingsGeneralSwitch--disabled' : ''}`} thumbClassName="SharedSettingsGeneralSwitchThumb" onCheckedChange={props.onChange} />
   );
 }
 

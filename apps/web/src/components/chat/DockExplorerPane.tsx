@@ -73,6 +73,7 @@ export const DockExplorerPane = function DockExplorerPane(props: {
           onReferenceInChat={props.onReferenceInChat}
           onAskWhyInChat={props.onAskWhyInChat}
           onCommentInChat={props.onCommentInChat}
+          onClosePreview={() => setSelectedFilePath(null)}
         />
       </div>
     </div>

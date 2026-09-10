@@ -17,6 +17,52 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain('onClick={exitEditorMode}');
   });
 
+  it('matches the Web header action order and handoff behavior', () => {
+    const routerSource = source('./router.tsx');
+    const actionsSource = source('./ThreadHeaderActions.lynx.tsx');
+    expect(actionsSource).toContain('readonly compact: boolean;');
+    expect(actionsSource.match(/!props.compact ?/g)).toHaveLength(3);
+    expect(routerSource).toContain('const compactThreadHeader = threadHeaderAvailableWidth < 700');
+    expect(routerSource).not.toContain('threadHeaderAvailableWidth < 240');
+    expect(routerSource).not.toContain('displayTitle={compactThreadTitle}');
+    const environmentSource = source('./EnvironmentPanel.lynx.tsx');
+
+    const handoffIndex = routerSource.indexOf('<ThreadHeaderActions');
+    const environmentIndex = routerSource.indexOf('<EnvironmentToggle');
+    const diffIndex = routerSource.indexOf('className="ThreadDiffToggleIcon"');
+    expect(handoffIndex).toBeGreaterThan(-1);
+    expect(environmentIndex).toBeGreaterThan(handoffIndex);
+    expect(diffIndex).toBeGreaterThan(environmentIndex);
+    expect(actionsSource).toContain('Hand off');
+    expect(actionsSource).toContain('Add action');
+    expect(actionsSource).toContain('export function ProjectActionAddButton');
+    expect(actionsSource).toContain(
+      '<text className="ThreadHeaderTextActionLabel">Hand off</text>'
+    );
+    expect(actionsSource).toContain(
+      '<text className="ThreadHeaderTextActionLabel">Add action</text>'
+    );
+    expect(actionsSource).toContain('resolveNativeThreadHandoffTargets(thread)');
+    expect(actionsSource).toContain('await createNativeThreadHandoff({');
+    expect(routerSource).toContain('subscribeOpenThreadPathInTerminal(');
+    expect(routerSource).toContain('consumeOpenThreadPathInTerminal(threadId)');
+    expect(routerSource).toContain("data: 'cd ' + quotePosixShellArgument(intent.cwd) + '\\r'");
+    expect(actionsSource).toContain("type: 'project.meta.update'");
+    expect(actionsSource).toContain('<ProjectActionEditor');
+    expect(actionsSource).toContain('addProjectAction(project.scripts');
+    expect(actionsSource).toContain('updateProjectAction(project.scripts');
+    expect(actionsSource).toContain('deleteProjectAction(project.scripts');
+    expect(actionsSource).toContain('await upsertKeybinding(');
+    expect(actionsSource).toContain('await removeKeybinding(');
+    expect(actionsSource).toContain('aria-label={`Edit ${script.name}`}');
+    expect(actionsSource).toContain(
+      "props.actionState.showProjectActions && (project?.scripts.length ?? 0) > 0"
+    );
+    expect(actionsSource).toContain(') : props.actionState.showProjectActions ? (');
+    expect(actionsSource).toContain('onClick={openActionEditor}');
+    expect(environmentSource).toContain('Toggle environment panel');
+  });
+
   it('reuses the real explorer preview beside the live chat rail', () => {
     const routerSource = source('./router.tsx');
     const editorStateSource = source('../../../web/src/editorViewState.ts');
@@ -54,8 +100,13 @@ describe('Lynx Editor view', () => {
       'initialEditorChatOpen ?? readEditorChatPaneVisible()'
     );
     expect(routerSource).toContain(
-      "{editorChatOpen ? 'Hide chat' : 'Show chat'}"
+      "aria-label={editorChatOpen ? 'Hide chat panel' : 'Show chat panel'}"
     );
+    expect(routerSource).toContain('className="ThreadEditorChatToggle"');
+    expect(routerSource).toContain('content={colorizeLynxSvg(');
+    expect(routerSource).toContain('panelRightCloseSvg');
+    expect(routerSource).toContain('className="ThreadEditorExitButton"');
+    expect(routerSource).toContain('bubbleTextSvg');
     expect(routerSource).toContain('storeEditorChatPaneVisible(next)');
     expect(routerSource).toContain('ThreadEditorChat--hidden');
     expect(routerSource).toContain('<ResizableRightPanel');
@@ -67,21 +118,18 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain(
       'editorChatOpen && viewportWidth >= VIEWPORT_BREAKPOINTS.lg'
     );
+    expect(routerSource).toContain('<ChatSurfaceHeaderFrame editorRail>');
     expect(routerSource).toContain(
       'storeEditorViewState(threadId, {\n      centerMode: editorCenterMode'
     );
   });
 
-  it('provides project-scoped chat history navigation without the Menu primitive', () => {
+  it('provides project-scoped chat history navigation through a stable overlay', () => {
     const routerSource = source('./router.tsx');
+    const railTabsSource = source('./EditorRailTabs.lynx.tsx');
     const historySource = source('./editorChatHistory.logic.ts');
-    const appStyles = source('./App.css');
-    expect(routerSource).toContain('aria-label="Chat history"');
     expect(routerSource).toContain(
-      'className="ThreadEditorHistoryTrigger"'
-    );
-    expect(routerSource).toContain(
-      'onClick={() => setEditorChatHistoryOpen(true)}'
+      'onHistory={() => setEditorChatHistoryOpen(true)}'
     );
     expect(routerSource).toContain(
       'className="ThreadEditorHistoryDialog"'
@@ -102,10 +150,15 @@ describe('Lynx Editor view', () => {
       'onNavigateToThread={(threadId) => {'
     );
     expect(routerSource).toContain(
-      'setEditorContinuationThreadId(threadId);'
+      'setEditorEntryThreadId(threadId);'
     );
     expect(routerSource).toContain('navigate(`/thread/${threadId}`);');
-    expect(routerSource).not.toContain('<Menu');
+    const historyOverlaySource = routerSource.slice(
+      routerSource.indexOf('{editorChatHistoryOpen ? ('),
+      routerSource.indexOf('{editorRailNewOpen ? (')
+    );
+    expect(historyOverlaySource).not.toContain('<Menu');
+    expect(railTabsSource).toContain('label="Chat history"');
     expect(historySource).toContain(
       'thread.projectId === input.projectId'
     );
@@ -115,22 +168,33 @@ describe('Lynx Editor view', () => {
     expect(historySource).toContain(
       'export const EDITOR_CHAT_HISTORY_LIMIT = 30'
     );
-    expect(appStyles).toMatch(
-      /\.LxButton\.ThreadEditorHistoryTrigger\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s
-    );
-    expect(appStyles).toMatch(
-      /\.ThreadEditorHistoryDialog\s*\{[^}]*width:\s*420px;/s
-    );
   });
 
-  it('switches Editor projects through a stable fixed overlay', () => {
+  it('switches Editor projects through the shared anchored picker', () => {
     const routerSource = source('./router.tsx');
     const projectSwitchSource = source('./editorProjectSwitch.logic.ts');
+    const projectSwitchMenuSource = source('./EditorProjectSwitchMenu.lynx.tsx');
     const appStyles = source('./App.css');
 
-    expect(routerSource).toContain('aria-label="Switch project"');
-    expect(routerSource).toContain('className="ThreadEditorProjectSwitchDialog"');
+    expect(routerSource).toContain('<EditorProjectSwitchMenu');
+    expect(projectSwitchMenuSource).toContain('ariaLabel="Switch project"');
+    expect(projectSwitchMenuSource).toContain(
+      'className="ThreadEditorProjectSwitchPopup"'
+    );
+    expect(projectSwitchMenuSource).toContain('placeholder="Search projects"');
+    expect(projectSwitchMenuSource).toContain('<MenuRadioGroup');
+    expect(projectSwitchMenuSource).toContain('<MenuRadioItem');
     expect(routerSource).toContain('resolveEditorProjectSwitchOptions({');
+    expect(routerSource).toContain('groupEditorProjectSwitchOptions({');
+    expect(routerSource).toMatch(
+      /useSpacesUiStore\(\s*\(state\) => state\.activeSpaceId\s*\)/s
+    );
+    expect(routerSource).toContain('useStore((state) => state.spaces)');
+    expect(routerSource).toContain('spaceId: project.spaceId ?? null');
+    expect(projectSwitchMenuSource).toContain('<ComposerProjectPickerGroupElement');
+    expect(projectSwitchMenuSource).toContain(
+      '<ComposerProjectPickerGroupLabelElement'
+    );
     expect(routerSource).toContain(
       'resolveEditorProjectSwitchTarget(option);'
     );
@@ -139,7 +203,7 @@ describe('Lynx Editor view', () => {
     );
     expect(routerSource).toContain("setEditorRailSurface('chat')");
     expect(routerSource).not.toContain('disabled={option.threadId === null}');
-    expect(routerSource).not.toContain('<ProjectMenuPicker');
+    expect(routerSource).not.toContain('ThreadEditorProjectSwitchBackdrop');
     expect(projectSwitchSource).toContain('sortThreadsForSidebar(');
     expect(projectSwitchSource).toContain(
       "return { kind: 'draft', projectId: option.id };"
@@ -147,35 +211,72 @@ describe('Lynx Editor view', () => {
     expect(projectSwitchSource).toContain("project.kind !== 'project'");
     expect(projectSwitchSource).toContain('thread.archivedAt == null');
     expect(appStyles).toMatch(
-      /\.ThreadEditorProjectSwitchDialog\s*\{[^}]*width:\s*420px;[\s\S]*?border-radius:\s*24px;/s
+      /\.ThreadEditorProjectSwitchPopup\s*\{[^}]*width:\s*240px;[^}]*max-height:\s*320px;/s
+    );
+    expect(appStyles).toMatch(
+      /\.LxMenuTrigger\.ThreadEditorProjectSwitchTrigger\s*\{[^}]*width:\s*28px;[^}]*min-width:\s*28px;[^}]*height:\s*28px;[^}]*min-height:\s*28px;/s
+    );
+  });
+
+  it('lets an explicit startup file or diff mode override persisted Editor state', () => {
+    const routerSource = source('./router.tsx');
+    expect(routerSource).toMatch(
+      /initialEditorCenterMode === 'file'[\s\S]*?\? 'file'[\s\S]*?initialEditorCenterMode === 'diff'[\s\S]*?\? 'diff'[\s\S]*?readEditorViewState\(threadId\)\?\.centerMode/s
+    );
+    expect(routerSource).toContain(
+      'if (initialEditorCenterMode !== null)'
+    );
+    expect(routerSource).toContain(
+      'setEditorCenterMode(initialEditorCenterMode);'
     );
   });
 
   it('opens real chat and terminal surfaces from the Editor rail', () => {
     const routerSource = source('./router.tsx');
+    const railTabsSource = source('./EditorRailTabs.lynx.tsx');
+    const railTabsStyles = source('./editor-rail-tabs.css');
     const appStyles = source('./App.css');
-    expect(routerSource).toContain('aria-label="New editor rail item"');
     expect(routerSource).toContain(
-      'onClick={() => setEditorRailNewOpen(true)}'
+      'onNewChat={openEditorNewChat}'
     );
-    expect(routerSource).toContain('onClick={openEditorTerminal}');
+    expect(routerSource).not.toContain('onClick={openEditorTerminal}');
     expect(routerSource).toContain("setEditorRailSurface('terminal')");
+    expect(routerSource).toContain('onNewTerminal={openEditorTerminal}');
+    expect(routerSource).not.toContain('ThreadEditorNewDialog');
+    expect(railTabsSource).toContain('<EditorRailAddMenu');
     expect(routerSource).toContain("setEditorRailSurface('chat')");
     expect(routerSource).toContain('presentationMode="workspace"');
     expect(routerSource).toContain('terminalId="lynx-editor-rail"');
-    expect(routerSource).toContain('className="ThreadEditorRailTabs"');
+    expect(routerSource).toContain('<EditorRailTabs');
+    expect(railTabsSource).toContain('label="New editor rail item"');
+    expect(railTabsSource).toContain('className="ThreadEditorRailTabsRoot"');
+    expect(railTabsSource).toContain('<EditorSurfaceTab');
+    expect(railTabsSource).toContain('readEditorRailChatTabs(');
+    expect(railTabsSource).toContain('storeEditorRailChatTabs(');
     expect(routerSource).toContain('className={`ThreadEditorChatSurface${');
     expect(routerSource).toContain(
       'className={`ThreadEditorTerminalSurface${'
     );
     expect(routerSource).toContain(
-      '{terminalOpen && currentThread?.workspaceRoot ? ('
+      '{editorTerminalOpen && currentThread?.workspaceRoot ? ('
     );
     expect(routerSource).not.toContain(
       "{editorRailSurface === 'terminal' &&\n              currentThread?.workspaceRoot ? ("
     );
-    expect(routerSource).toContain('New terminal');
-    expect(routerSource).toContain('onClick={openEditorNewChat}');
+    const addMenuSource = source('./EditorRailAddMenu.lynx.tsx');
+    expect(addMenuSource).toContain('EditorRailAddMenuComposition');
+    expect(addMenuSource).toContain('onNewTerminal');
+    expect(routerSource).toContain('onNewTerminal={openEditorTerminal}');
+    expect(routerSource).toContain("terminalPrimaryState.entryPoint === 'terminal'");
+    expect(routerSource).toContain("terminalPrimaryState.workspaceLayout === 'terminal-only'");
+    expect(routerSource).toContain(
+      "primary: terminalPrimary ? 'terminal' : 'chat'"
+    );
+    expect(routerSource).toContain('scope="thread"');
+    expect(routerSource).toContain('resolveThreadHeaderIconKind(');
+    expect(routerSource).toContain('className="ThreadHeaderTerminalIcon"');
+    expect(routerSource).not.toContain('onClick={openEditorNewChat}');
+    expect(routerSource).toContain('onNewChat={openEditorNewChat}');
     expect(routerSource).toContain('<LandingComposer');
     expect(routerSource).toContain(
       'initialProjectId={editorRailDraftProject?.id ?? null}'
@@ -187,13 +288,22 @@ describe('Lynx Editor view', () => {
       'projectName={editorRailDraftProject?.name ?? null}'
     );
     expect(routerSource).toContain(
-      'setEditorContinuationThreadId(threadId)'
+      'setEditorEntryThreadId(threadId)'
     );
     expect(routerSource).toContain(
-      'editorContinuationThreadId === route.params.threadId'
+      'editorEntryThreadId === route.params.threadId'
     );
-    expect(appStyles).toMatch(
-      /\.LxButton\.ThreadEditorNewTrigger\s*\{[^}]*width:\s*24px;[^}]*height:\s*24px;[^}]*padding:\s*0;/s
+    expect(railTabsStyles).toMatch(
+      /\.ThreadEditorRailTabChip\s*\{[^}]*max-width:\s*132px;/s
+    );
+    expect(source('./editor-surface-tab.css')).toMatch(
+      /\.EditorSurfaceTab\s*\{[^}]*height:\s*28px;/s
+    );
+    expect(source('./editor-surface-tab.css')).toMatch(
+      /\.EditorSurfaceTab\.ui-hover \.EditorSurfaceTabRestingIcon,[^}]*opacity:\s*0;/s
+    );
+    expect(source('./editor-surface-tab.css')).toMatch(
+      /\.EditorSurfaceTab\.ui-hover \.EditorSurfaceTabCloseGlyph,[^}]*opacity:\s*1;/s
     );
     expect(appStyles).toMatch(
       /\.ThreadEditorNewDialog\s*\{[^}]*width:\s*240px;/s
@@ -203,15 +313,60 @@ describe('Lynx Editor view', () => {
     );
   });
 
+  it('keeps Editor entry intent out of ordinary sidebar thread navigation', () => {
+    const routerSource = source('./router.tsx');
+
+    expect(routerSource).toContain(
+      '() => (initialEditorOpen ? activeThreadId : null)'
+    );
+    expect(routerSource).toContain(
+      'initialEditorOpen={\n          editorEntryThreadId === route.params.threadId'
+    );
+    expect(routerSource).not.toContain(
+      'initialEditorOpen ||\n          editorEntryThreadId === route.params.threadId'
+    );
+    expect(routerSource).toContain('const navigateToChat = useCallback(');
+    expect(routerSource).toContain('setEditorEntryThreadId(null);');
+    expect(routerSource).toContain('setEditorModeOpen(false);');
+    expect(routerSource).toContain('navigate={navigateToChat}');
+  });
+
+  it('keeps thread data and the Editor shell stable while local resources refresh', () => {
+    const routerSource = source('./router.tsx');
+
+    expect(routerSource).toContain(
+      "queryKey: ['thread-detail', activeThreadId]"
+    );
+    expect(routerSource).toContain(
+      "queryKey: ['explorer-entries', activeThreadId, workspaceRoot, explorerTrimmedQuery]"
+    );
+    expect(routerSource).toContain(
+      "queryKey: ['explorer-file', activeThreadId, workspaceRoot, explorerSelectedPath]"
+    );
+    expect(routerSource).not.toContain(
+      "'thread-detail',\n      activeThreadId,\n      explorerTrimmedQuery"
+    );
+    expect(routerSource).not.toContain('if (editorMode && !currentThread)');
+    expect(routerSource).not.toContain('ThreadEditorCenterLoading');
+    expect(routerSource).not.toContain('Loading editor content…');
+  });
+
   it('reuses the real Changes renderer as an Editor activity mode', () => {
     const routerSource = source('./router.tsx');
     const appStyles = source('./App.css');
     expect(routerSource).toContain(
       "readEditorViewState(threadId)?.centerMode ?? 'file'"
     );
-    expect(routerSource).toContain('accessibility-label="Changes"');
-    expect(routerSource).toContain('accessibility-label="Search files"');
-    expect(routerSource).toContain('bindtap={showEditorSearch}');
+    expect(routerSource).toContain('<EditorActivityItem');
+    expect(routerSource).toContain('changesSvg');
+    expect(routerSource).toContain('foldersSvg');
+    expect(routerSource).toContain('className="ThreadEditorActivityIcon"');
+    expect(routerSource).toContain("? 'Hide search sidebar'");
+    expect(routerSource).toContain(": 'Search files'");
+    expect(routerSource).toContain('onActivate={showEditorSearch}');
+    expect(routerSource).toContain('readEditorSidebarVisible');
+    expect(routerSource).toContain('storeEditorSidebarVisible(false)');
+    expect(routerSource).toContain('sidebarVisible={editorSidebarVisible}');
     expect(routerSource).toContain(
       "presentationMode={editorSearchActive ? 'editor-search' : 'editor'}"
     );
@@ -230,7 +385,7 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain('<DiffDock');
     const diffDockSource = source('./DiffDock.lynx.tsx');
     expect(diffDockSource).toContain(
-      "props.presentation === 'editor' ? null : []"
+      "const [expandedFileKeys, setExpandedFileKeys] = useState<string[] | null>(\n    null"
     );
     expect(diffDockSource).toContain(
       "resizable={props.presentation === 'dock'}"
@@ -239,19 +394,94 @@ describe('Lynx Editor view', () => {
       "{props.presentation === 'dock' ? ("
     );
     expect(diffDockSource).toContain(
-      '(selectedFile ? [selectedFile.key] : [])'
+      "? view.files.map((file) => file.key)"
     );
     expect(diffDockSource).toContain('className="DiffDockFileSidebar"');
+    expect(diffDockSource).toContain('className="DiffDockFileSidebarStats"');
+    expect(diffDockSource).toContain('className="DiffDockFileSidebarIcon"');
+    expect(diffDockSource).toContain('<EditorDiffOptionsMenu');
+    expect(diffDockSource).toContain('<MenuGroupLabel>Source</MenuGroupLabel>');
+    expect(diffDockSource).toContain(
+      '<MenuRadioItem value="workingTree">Working tree</MenuRadioItem>'
+    );
+    expect(diffDockSource).toContain(
+      '<MenuRadioItem value="unstaged">Unstaged changes</MenuRadioItem>'
+    );
+    expect(diffDockSource).toContain(
+      '<MenuRadioItem value="staged">Staged changes</MenuRadioItem>'
+    );
+    expect(diffDockSource).toContain(
+      '<MenuRadioItem value="branch">Branch changes</MenuRadioItem>'
+    );
+    expect(diffDockSource).toContain('Ignore whitespace-only changes');
+    expect(diffDockSource).toContain(
+      'fetchWorkingTreeDiff(props.workspaceRoot, diffRequest.scope)'
+    );
+    expect(diffDockSource).toContain(
+      "props.diffCopied ? 'Copied diff' : 'Copy diff'"
+    );
+    expect(diffDockSource).toContain('+{view.additions}');
+    expect(diffDockSource).toContain('-{view.deletions}');
+    expect(diffDockSource).toContain(
+      "showSummary={props.presentation !== 'editor'}"
+    );
+    expect(diffDockSource).toContain('className="DiffDockTabHeader"');
+    expect(diffDockSource).toContain('<EditorSurfaceTab');
+    expect(diffDockSource).toContain('label="Diff"');
+    expect(diffDockSource).toContain('<DiffSourcePicker');
+    expect(diffDockSource).toContain("return 'Working tree'");
     expect(diffDockSource).toContain(
       'emptyLabel="No working tree changes."'
     );
     expect(diffDockSource).toContain('<EditorDiffFileRow');
-    expect(diffDockSource).toContain('files: [selectedFile],');
+    expect(diffDockSource).toContain('className="DiffDockFileIcon"');
+    expect(diffDockSource).toContain('className="DiffDockFileStats"');
+    expect(diffDockSource).toContain('syntaxTokensByLineId={syntaxTokensByLineId}');
+    expect(diffDockSource).not.toContain('files: [selectedFile],');
+    expect(diffDockSource).toContain('const visibleView = view;');
+    expect(diffDockSource).not.toContain("line.kind !== 'hunk'");
+    expect(diffDockSource).toContain(
+      "props.presentation !== 'editor' ? diffRenderMode : 'split'"
+    );
+    expect(diffDockSource).toContain(
+      'filePathPresentation="basename-first"'
+    );
+    expect(diffDockSource).toContain('renderFileActions={');
+    expect(diffDockSource).toContain('<DiffFileActionsMenu');
     expect(diffDockSource).toContain('setSelectedFilePath(file.path)');
     expect(appStyles).toMatch(
-      /\.ThreadEditorChanges\s+\.DiffDock\s*\{[^}]*position:\s*relative;[^}]*width:\s*100%;[^}]*height:\s*100%;/s
+      /\.ThreadEditorChanges\s+\.DiffDock\s*\{[^}]*position:\s*relative;[^}]*width:\s*100%;[^}]*max-width:\s*100%;[^}]*height:\s*100%;/s
     );
     const diffDockStyles = source('./diff-dock.css');
+    expect(diffDockStyles).toContain(`.ThreadEditorChanges .DiffDockScroller {
+  padding: 0;
+}`);
+    expect(diffDockStyles).toMatch(
+      /\.DiffDockScroller\s*\{[^}]*width:\s*100%;[^}]*flex:\s*1;/s
+    );
+    expect(diffDockStyles).toContain(`.ThreadEditorChanges .SharedPrCodeRoot {
+  gap: 8px;
+  padding: 8px;
+}`);
+    expect(diffDockStyles).toContain(`.ThreadEditorChanges .SharedPrCodeFileHeader {
+  min-height: 36px;
+  padding: 6px 12px;
+}`);
+    expect(diffDockStyles).toContain(`.ThreadEditorChanges .SharedPrCodeDisclosure {
+  padding-bottom: 9px;
+}`);
+    expect(diffDockStyles).toMatch(
+      /\.DiffDockPatchViewport \.SharedPrCodeRoot,[\s\S]*?\.DiffDockPatchViewport \.SharedPrCodeSplitRow\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*100%;/s
+    );
+    expect(diffDockStyles).toMatch(
+      /\.DiffDockPatchViewport \.SharedPrCodeSplitRow\s*\{[^}]*flex:\s*1;/s
+    );
+    expect(diffDockStyles).toMatch(
+      /\.DiffDock\s*\{[^}]*top:\s*0;[^}]*width:\s*50%;/s
+    );
+    expect(diffDockStyles).toMatch(
+      /\.DiffDockTabHeader\s*\{[^}]*height:\s*46px;[^}]*min-height:\s*46px;/s
+    );
     expect(diffDockStyles).toMatch(
       /\.DiffDockFileSidebar\s*\{[^}]*width:\s*224px;[^}]*min-width:\s*224px;/s
     );
@@ -269,7 +499,33 @@ describe('Lynx Editor view', () => {
     );
   });
 
+  it('uses the shared Web right-dock state policy for Native pane tabs', () => {
+    const routerSource = source('./router.tsx');
+    const tabsSource = source('./ThreadRightDockTabs.lynx.tsx');
+    const sharedSource = source('../../../../packages/shared/src/rightDock.ts');
+    const webPolicySource = source('../../../web/src/rightDockStore.logic.ts');
+
+    for (const transition of [
+      'openPaneInState',
+      'closePaneInState',
+      'setActivePaneInState',
+      'setDockOpenInState',
+    ]) {
+      expect(routerSource).toContain(transition);
+      expect(sharedSource).toContain(`function ${transition}`);
+    }
+    expect(webPolicySource).toContain(
+      "export * from '@synara/shared/rightDock'"
+    );
+    expect(routerSource).toContain('<ThreadRightDockTabs');
+    expect(routerSource).toContain("kind: 'file'");
+    expect(tabsSource).toContain('<EditorSurfaceTab');
+    expect(tabsSource).toContain('ariaLabel="Add panel"');
+    expect(tabsSource).toContain("accessibleLabel: 'Collapse panel'");
+  });
+
   it('matches the Web authority rail boundaries', () => {
+    const routerSource = source('./router.tsx');
     const appStyles = source('./App.css');
     const explorerStyles = source('./explorer-dock.css');
     const explorerSource = source('./ExplorerDock.lynx.tsx');
@@ -277,10 +533,33 @@ describe('Lynx Editor view', () => {
       /\.ThreadEditorActivityRail\s*\{[^}]*width:\s*48px;[^}]*min-width:\s*48px;/s
     );
     expect(appStyles).toMatch(
-      /\.ThreadEditorProject\s*\{[^}]*white-space:\s*nowrap;/s
+      /\.ThreadEditorActivityIndicator\s*\{[^}]*top:\s*12px;[^}]*width:\s*2px;[^}]*height:\s*24px;/s
     );
     expect(appStyles).toMatch(
-      /\.SliceRoot--viewport-compact\s+\.ThreadEditorPath,[\s\S]*?\.SliceRoot--viewport-medium\s+\.ThreadEditorModeLabel\s*\{[^}]*display:\s*none;/s
+      /\.ThreadEditorProject\s*\{[^}]*white-space:\s*nowrap;/s
+    );
+    expect(routerSource).toContain(
+      'MAC_DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_PX'
+    );
+    expect(routerSource).not.toContain('className="ThreadEditorModeLabel"');
+    expect(appStyles).toMatch(
+      /\.LxButton\.ThreadEditorChatToggle\s*\{[^}]*width:\s*34px;[^}]*height:\s*28px;/s
+    );
+    expect(appStyles).toMatch(
+      /\.LxButton\.ThreadEditorExitButton\s*\{[^}]*width:\s*88px;[^}]*height:\s*28px;/s
+    );
+    expect(routerSource).toContain('className="ThreadEditorView"');
+    expect(routerSource).not.toContain('ThreadEditorView--stacked');
+    expect(routerSource).toContain(
+      '<SidebarDisclosure open={sidebarOpen && !editorModeOpen}>'
+    );
+    expect(routerSource).toContain('onEditorModeChange={setEditorModeOpen}');
+    expect(appStyles).toContain(
+      '.ThreadEditorChat > .AppWindowDragRegion {'
+    );
+    expect(appStyles).toContain('min-height: 40px;');
+    expect(appStyles).toContain(
+      '.ThreadEditorChat .SharedChatHeaderIdentityTitle {'
     );
     expect(appStyles).toMatch(
       /\.ThreadEditorChat\s*\{[^}]*width:\s*384px;[^}]*min-width:\s*320px;/s
@@ -303,12 +582,7 @@ describe('Lynx Editor view', () => {
     expect(explorerStyles).toMatch(
       /\.SliceRoot--viewport-compact[\s\S]*?\.ExplorerDock--editor[\s\S]*?\.ExplorerDockSidebar,[\s\S]*?width:\s*100%;[\s\S]*?min-width:\s*0;[\s\S]*?height:\s*176px;/s
     );
-    expect(appStyles).toMatch(
-      /\.SliceRoot--viewport-compact\s+\.ThreadEditorBody,[\s\S]*?grid-template-columns:\s*48px minmax\(0,\s*1fr\);[\s\S]*?grid-template-rows:\s*minmax\(0,\s*5fr\) minmax\(0,\s*3fr\);/s
-    );
-    expect(appStyles).toMatch(
-      /\.SliceRoot--viewport-short-height \.ThreadEditorBody\s*\{[^}]*grid-template-rows:\s*minmax\(0,\s*1fr\) minmax\(0,\s*1fr\);/s
-    );
+    expect(appStyles).not.toContain('.ThreadEditorView--stacked');
     expect(appStyles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ThreadEditorChat\s+>\s+\.AppWindowDragRegion,[\s\S]*?\.SliceRoot--viewport-short-height\s+\.ThreadEditorChat\s+\.ProviderHealthBannerFrame\s*\{[^}]*display:\s*none;/s
     );
@@ -316,22 +590,7 @@ describe('Lynx Editor view', () => {
       /\.SliceRoot--viewport-short-height \.ThreadEditorChat\s*\{[^}]*--app-density-composer-editor-min-height:\s*20px;/s
     );
     expect(appStyles).toMatch(
-      /\.SliceRoot--viewport-compact\s+\.ThreadEditorChat\s+\.CenteredEmptyLandingFrame,[\s\S]*?\.SliceRoot--viewport-medium\s+\.ThreadEditorChat\s+\.EmptyThreadContextTray\s*\{[^}]*display:\s*none;/s
-    );
-    expect(appStyles).toMatch(
-      /\.SliceRoot--viewport-compact\s+\.ThreadEditorChat\s+\.ProviderHealthBannerFrame,[\s\S]*?\.SliceRoot--viewport-medium\s+\.ThreadEditorChat\s+\.ProviderHealthBannerFrame\s*\{[^}]*display:\s*none;/s
-    );
-    expect(appStyles).toMatch(
-      /\.SliceRoot--viewport-compact\s+\.ThreadEditorActivityRail,[\s\S]*?grid-column:\s*1;[\s\S]*?grid-row:\s*1\s*\/\s*3;/s
-    );
-    expect(appStyles).not.toMatch(
-      /\.SliceRoot--viewport-compact\s+\.ThreadEditorActivityRail,[^}]*display:\s*none;/s
-    );
-    expect(appStyles).toMatch(
       /\.ThreadEditorChat--hidden\s*\{[^}]*display:\s*none;/s
-    );
-    expect(appStyles).toMatch(
-      /\.SliceRoot--viewport-compact\s+\.ThreadEditorCenter--chat-hidden,[\s\S]*?grid-row:\s*1\s*\/\s*3;/s
     );
   });
 
@@ -344,11 +603,10 @@ describe('Lynx Editor view', () => {
     expect(appSource).toContain(
       'const initialEditorOpen = initData.initialEditorOpen === true'
     );
-    expect(appSource).toContain(
+    expect(appSource).toContain('await hydrateStorage()');
+    expect(appSource).toContain('useTerminalStateStore.persist.rehydrate()');
+    expect(appSource).not.toContain(
       'Promise.all([fetchSidebarSnapshot(), fetchThreads()])'
-    );
-    expect(appSource).toContain(
-      "queryClient.setQueryData(['threads'], threads)"
     );
     expect(webHostSource).toContain("get('editor') === 'open'");
     expect(webHostSource).toContain("get('editorMode') === 'diff'");
@@ -360,11 +618,8 @@ describe('Lynx Editor view', () => {
     expect(routerSource).toContain(
       'initData.initialEditorHistoryOpen === true'
     );
-    expect(appSource).toContain('await fetchWorkingTreeDiff(');
-    expect(appSource).toContain('await fetchGitBranches(summary.workspaceRoot)');
-    expect(appSource).toContain(
-      "'Changes are unavailable because this workspace is not a Git repository.'"
-    );
+    expect(appSource).not.toContain('await fetchWorkingTreeDiff(');
+    expect(appSource).not.toContain('await fetchGitBranches(summary.workspaceRoot)');
     expect(diffDockSource).toContain('enabled: !props.unavailableLabel');
     expect(diffDockSource).toContain(
       '<text className="DiffDockStateText">{props.unavailableLabel}</text>'

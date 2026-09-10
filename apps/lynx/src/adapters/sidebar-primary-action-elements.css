@@ -10,7 +10,7 @@
   flex-direction: row;
   align-items: center;
   padding: 0 8px;
-  border-radius: var(--radius-md);
+  border-radius: 8px;
   color: var(--sidebar-foreground);
 }
 

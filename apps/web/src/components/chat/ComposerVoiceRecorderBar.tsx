@@ -9,6 +9,7 @@ import { IoStopSharp } from "react-icons/io5";
 
 import { Loader2Icon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
+import { COMPOSER_VOICE_LABELS } from "./composerVoiceLabels";
 
 interface ComposerVoiceRecorderBarProps {
   disabled?: boolean;
@@ -91,7 +92,11 @@ export function ComposerVoiceRecorderBar(props: ComposerVoiceRecorderBarProps) {
       <button
         type="button"
         className="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full bg-zinc-200/80 text-zinc-700 transition-colors hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white/10 dark:text-zinc-100 dark:hover:bg-white/15 sm:h-7 sm:w-7"
-        aria-label={props.isTranscribing ? "Transcribing voice note" : "Cancel voice note"}
+        aria-label={
+          props.isTranscribing
+            ? COMPOSER_VOICE_LABELS.transcribing
+            : COMPOSER_VOICE_LABELS.stopAndTranscribe
+        }
         disabled={props.disabled || props.isTranscribing}
         onClick={props.onCancel}
       >
@@ -105,7 +110,11 @@ export function ComposerVoiceRecorderBar(props: ComposerVoiceRecorderBarProps) {
       <button
         type="button"
         className="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full bg-foreground text-background transition-transform duration-150 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100 sm:h-7 sm:w-7"
-        aria-label={props.isTranscribing ? "Transcribing voice note" : "Send voice note"}
+        aria-label={
+          props.isTranscribing
+            ? COMPOSER_VOICE_LABELS.transcribing
+            : COMPOSER_VOICE_LABELS.send
+        }
         disabled={props.disabled || props.isTranscribing}
         onClick={props.onSubmit}
       >

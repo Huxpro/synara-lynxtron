@@ -63,6 +63,7 @@ describe("ComposerInputComposition", () => {
     );
     expect(markup).toContain('aria-label="Send message"');
     expect(markup).toContain("gap-1.5");
+    expect(markup).toContain("gap-0.5");
   });
 
   it("omits absent footer clusters and owns the stop presentation", () => {

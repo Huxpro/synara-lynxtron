@@ -51,6 +51,23 @@ describe('Pull Request warning banner fidelity', () => {
     );
   });
 
+  it('flattens mixed JSX text fragments into one visible and accessible label', () => {
+    render(
+      <PullRequestWarningBanner>
+        {1} project {'repository was'} unavailable.{' '}
+        Healthy repositories are still shown.
+      </PullRequestWarningBanner>
+    );
+
+    const banner = elementTree.root?.querySelector('.SharedPrWarningBanner');
+    const expected =
+      '1 project repository was unavailable. Healthy repositories are still shown.';
+    expect(banner?.getAttribute('accessibility-label')).toBe(expected);
+    expect(
+      banner?.querySelector('.SharedPrWarningBannerText')?.textContent
+    ).toBe(expected);
+  });
+
   it('keeps cached detail visible when only the background refresh failed', () => {
     const source = readFileSync(
       new URL('../app/FeatureListsPage.tsx', import.meta.url),

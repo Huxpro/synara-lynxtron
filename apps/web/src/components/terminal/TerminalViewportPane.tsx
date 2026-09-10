@@ -30,13 +30,12 @@ import type {
   ThreadTerminalPresentationMode,
   ThreadTerminalSplitNode,
 } from "../../types";
+import { resizeTerminalSplitWeights } from "../../terminalPaneLayout";
 import TerminalActivityIndicator from "./TerminalActivityIndicator";
 import TerminalIdentityIcon from "./TerminalIdentityIcon";
 
 import { raf, cancelRaf } from "~/platform/frame";
 import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
-const MIN_TERMINAL_PANE_SIZE_PX = 180;
-
 interface TerminalViewportPaneProps {
   groupId: string;
   layout: ThreadTerminalLayoutNode;
@@ -273,8 +272,6 @@ export default function TerminalViewportPane({
     }
 
     const weights = normalizeWeights(node.weights);
-    const totalWeight =
-      weights.reduce((sum, weight) => sum + weight, 0) || node.children.length || 1;
 
     const beginResize = (
       splitNode: ThreadTerminalSplitNode,
@@ -291,10 +288,6 @@ export default function TerminalViewportPane({
 
       const startCoordinate = splitNode.direction === "horizontal" ? event.clientX : event.clientY;
       const startWeights = normalizeWeights(splitNode.weights);
-      const currentWeight = startWeights[handleIndex] ?? 1;
-      const nextWeight = startWeights[handleIndex + 1] ?? 1;
-      const pairWeight = currentWeight + nextWeight;
-      const minWeight = Math.max((pairWeight * MIN_TERMINAL_PANE_SIZE_PX) / totalSize, 0.1);
       let resizeFrame = 0;
       let pendingWeights: number[] | null = null;
 
@@ -309,17 +302,13 @@ export default function TerminalViewportPane({
       const onPointerMove = (moveEvent: PointerEvent) => {
         const currentCoordinate =
           splitNode.direction === "horizontal" ? moveEvent.clientX : moveEvent.clientY;
-        const delta = currentCoordinate - startCoordinate;
-        const deltaWeight = (delta / totalSize) * totalWeight;
-        const resizedCurrent = Math.min(
-          Math.max(currentWeight + deltaWeight, minWeight),
-          pairWeight - minWeight,
-        );
-        const resizedNext = pairWeight - resizedCurrent;
-        const nextWeights = [...startWeights];
-        nextWeights[handleIndex] = resizedCurrent;
-        nextWeights[handleIndex + 1] = resizedNext;
-        pendingWeights = nextWeights;
+        pendingWeights = resizeTerminalSplitWeights({
+          currentCoordinate,
+          handleIndex,
+          startCoordinate,
+          totalSize,
+          weights: startWeights,
+        });
         if (resizeFrame === 0) {
           resizeFrame = raf(flushResize);
         }

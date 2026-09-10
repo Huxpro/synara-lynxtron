@@ -9,13 +9,16 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Project } from "../../types";
 import { formatVoiceRecordingDuration, useVoiceRecorder } from "../../lib/voiceRecorder";
 import { readNativeApi } from "../../nativeApi";
+import {
+  isVoiceRecorderActionArmed,
+  resolveVoiceRecordingStartGuard,
+  resolveVoiceTranscriptionFailure,
+} from "@synara/shared/composerVoice";
 import type { RefreshProviderStatusesNow } from "../../hooks/useProviderStatusRefresh";
 import { toastManager } from "../ui/toast";
 import {
   deriveComposerVoiceState,
   describeVoiceRecordingStartError,
-  isVoiceAuthExpiredMessage,
-  sanitizeVoiceErrorMessage,
 } from "../ChatView.logic";
 
 export interface ComposerVoiceFailureCopy {
@@ -153,13 +156,18 @@ export function useComposerVoiceController(
   ]);
 
   const isVoiceActionArmed = () => {
-    if (actionArmDelayMs <= 0 || voiceRecordingStartedAtRef.current === null) {
+    const nowMs = performance.now();
+    const startedAtMs = voiceRecordingStartedAtRef.current;
+    if (
+      isVoiceRecorderActionArmed({
+        actionArmDelayMs,
+        nowMs,
+        startedAtMs,
+      })
+    ) {
       return true;
     }
-    const recordedForMs = Math.round(performance.now() - voiceRecordingStartedAtRef.current);
-    if (recordedForMs < 0 || recordedForMs >= actionArmDelayMs) {
-      return true;
-    }
+    const recordedForMs = Math.round(nowMs - (startedAtMs ?? nowMs));
     onGuardWarning?.("ignored recorder action immediately after start", {
       recordedForMs,
     });
@@ -167,28 +175,17 @@ export function useComposerVoiceController(
   };
 
   const startComposerVoiceRecording = async () => {
-    if (!activeProject) {
-      return;
-    }
-    if (activeProviderStatus?.authStatus === "unauthenticated") {
-      toastManager.add({
-        type: "error",
-        title: "Sign in to ChatGPT in Codex before using voice notes.",
-      });
-      return;
-    }
-    if (!canStartVoiceNotes) {
-      toastManager.add({
-        type: "error",
-        title: "Voice notes require a ChatGPT-authenticated Codex session.",
-      });
-      return;
-    }
-    if (pendingUserInputCount > 0) {
-      toastManager.add({
-        type: "error",
-        title: "Answer plan questions before recording a voice note.",
-      });
+    const guard = resolveVoiceRecordingStartGuard({
+      authStatus: activeProviderStatus?.authStatus,
+      canStartVoiceNotes,
+      hasWorkspace: Boolean(activeProject),
+      isRecording: isVoiceRecording,
+      isTranscribing: isVoiceTranscribing,
+      pendingUserInputCount,
+    });
+    if (guard.kind === "ignore") return;
+    if (guard.kind === "notify") {
+      toastManager.add({ type: "error", title: guard.title });
       return;
     }
 
@@ -265,22 +262,18 @@ export function useComposerVoiceController(
           return;
         }
 
-        const description =
-          error instanceof Error
-            ? sanitizeVoiceErrorMessage(error.message)
-            : failureCopy.fallbackDescription;
-        const authExpired = isVoiceAuthExpiredMessage(description);
-        if (authExpired) {
+        const failure = resolveVoiceTranscriptionFailure(error, failureCopy);
+        if (failure.authExpired) {
           void refreshVoiceStatus();
         }
         toastManager.add({
           type: "error",
-          title: authExpired ? failureCopy.authExpiredTitle : failureCopy.transcriptionFailedTitle,
-          description: authExpired ? failureCopy.authExpiredDescription : description,
-          ...(authExpired
+          title: failure.title,
+          description: failure.description,
+          ...(failure.actionLabel
             ? {
                 actionProps: {
-                  children: failureCopy.refreshActionLabel,
+                  children: failure.actionLabel,
                   onClick: () => {
                     void refreshVoiceStatus();
                   },

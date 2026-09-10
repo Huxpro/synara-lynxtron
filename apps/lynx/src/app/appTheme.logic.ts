@@ -5,13 +5,13 @@ import {
   type ThemeState,
   type ThemeVariant,
 } from '@synara-web/theme/theme.logic';
-import { normalizeFontFamilyCssValue } from '@synara-web/lib/fontFamily';
+import {
+  DEFAULT_MONOSPACE_FONT_FAMILY_STACK,
+  normalizeFontFamilyCssValue,
+  normalizeMonospaceFontFamilyCssValue,
+} from '@synara-web/lib/fontFamily';
 
-/**
- * Lynxtron does not currently expose a reliable native appearance event to the
- * product graph. Explicit light/dark modes remain canonical; system mode uses
- * the documented light fallback until that host signal exists.
- */
+/** Resolve the shared theme mode against the host-provided system appearance. */
 export function resolveSliceThemeVariant(
   themeState: Pick<ThemeState, 'mode'>,
   systemDark = false
@@ -39,17 +39,41 @@ export function resolveSliceUiFontFamily(
   );
 }
 
+export function resolveSliceCodeFontFamily(
+  themeState: ThemeState,
+  systemDark = false
+): string {
+  const variant = resolveSliceThemeVariant(themeState, systemDark);
+  return (
+    normalizeMonospaceFontFamilyCssValue(
+      resolveThemePack(themeState, variant).theme.fonts.code
+    ) ?? DEFAULT_MONOSPACE_FONT_FAMILY_STACK
+  );
+}
+
 export function resolveSliceThemeVariables(
   themeState: ThemeState,
   systemDark = false
 ): Record<string, string> {
   const variant = resolveSliceThemeVariant(themeState, systemDark);
+  const codeFontFamily = resolveSliceCodeFontFamily(themeState, systemDark);
+  const theme = resolveThemePack(themeState, variant);
+  const variables = buildThemeCssVariables(theme, variant, {
+    electron: false,
+    isMac: true,
+    systemUiFont: themeState.systemUiFont,
+  }).variables;
   return {
-    ...buildThemeCssVariables(resolveThemePack(themeState, variant), variant, {
-      electron: false,
-      isMac: true,
-      systemUiFont: themeState.systemUiFont,
-    }).variables,
+    ...variables,
+    // Lynxtron has no macOS vibrancy behind the sidebar. Use the shared card
+    // surface as the opaque visual equivalent of Electron's translucent
+    // sidebar material (#f5f5f5 light / #111111 dark by default).
+    '--app-sidebar-surface': theme.theme.card,
     '--font-ui-family': resolveSliceUiFontFamily(themeState, systemDark),
+    // Lynx Desktop currently leaves nested var() fallbacks unresolved in
+    // font-family. Project the concrete stack at the root so every code surface
+    // uses the same theme-selected monospace family as Web.
+    '--font-mono-family': codeFontFamily,
+    '--font-chat-code-family': codeFontFamily,
   };
 }

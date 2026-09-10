@@ -39,6 +39,15 @@ function withProtocol(url, protocol) {
   return parsed;
 }
 
+export function buildProbeSocketUrl(serverUrl, pathname, query = {}) {
+  const url = new URL(serverUrl);
+  url.pathname = pathname;
+  for (const [key, value] of Object.entries(query)) {
+    url.searchParams.set(key, String(value));
+  }
+  return url.toString();
+}
+
 async function fetchOk(url) {
   const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}`);
@@ -96,8 +105,10 @@ function request(socket, tag, payload, requestId) {
 }
 
 async function probeRpc(serverUrl, origin, label) {
-  const base = new URL(serverUrl).origin;
-  const bootstrap = await openSocket(`${base}/ws/bootstrap`, origin);
+  const bootstrap = await openSocket(
+    buildProbeSocketUrl(serverUrl, '/ws/bootstrap'),
+    origin,
+  );
   let compatibility;
   try {
     compatibility = await request(
@@ -115,13 +126,16 @@ async function probeRpc(serverUrl, origin, label) {
   } finally {
     bootstrap.close();
   }
-  const query = new URLSearchParams({
+  const query = {
     "x-synara-client-build": CLIENT_BUILD,
     "x-synara-protocol-epoch": String(compatibility.protocolEpoch),
     "x-synara-protocol-revision": String(compatibility.negotiatedRevision),
     "x-synara-server-instance": compatibility.serverInstanceId,
-  });
-  const feature = await openSocket(`${base}/ws?${query}`, origin);
+  };
+  const feature = await openSocket(
+    buildProbeSocketUrl(serverUrl, '/ws', query),
+    origin,
+  );
   try {
     const snapshot = await request(
       feature,

@@ -212,6 +212,10 @@ describe('Lynx Settings section labels', () => {
       new URL('./settings-provider-picker-composition-elements.css', import.meta.url),
       'utf8'
     );
+    const primitiveStyles = readFileSync(
+      new URL('../components/ui/primitives.css', import.meta.url),
+      'utf8'
+    );
 
     expect(providerStyles).toMatch(
       /\.SharedSettingsProviderPickerTitle\s*\{[^}]*font-size:\s*var\(--type-settings-row-title-size\);[^}]*line-height:\s*var\(--type-settings-row-title-line-height\);/s
@@ -243,23 +247,12 @@ describe('Lynx Settings section labels', () => {
     expect(providerSource).toContain('<ChevronDownIcon');
     expect(providerSource).not.toContain('↑');
     expect(providerSource).not.toContain('↓');
-    expect(providerSource).toContain('accessibility-role="switch"');
-    expect(providerSource).toContain('accessibility-state={{ checked }}');
-    expect(providerStyles).toMatch(
-      /\.SharedSettingsProviderPickerSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;/s
-    );
-    expect(providerStyles).toMatch(
-      /\.SharedSettingsProviderPickerSwitchThumb\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*border-radius:\s*8px;/s
-    );
-    expect(providerStyles).toMatch(
-      /\.SharedSettingsProviderPickerSwitch\s*\{[^}]*padding:\s*1px;[^}]*border:\s*1px solid var\(--settings-switch-border\);[^}]*background-color:\s*var\(--settings-switch-off\);/s
-    );
-    expect(providerStyles).toMatch(
-      /\.SharedSettingsProviderPickerSwitchThumb\s*\{[^}]*background-color:\s*#ffffff;/s
-    );
-    expect(providerStyles).toMatch(
-      /\.SharedSettingsProviderPickerSwitch\.ui-focus\s*\{[^}]*box-shadow:\s*0 0 0 2px var\(--ring\);/s
-    );
+    expect(providerSource).toContain("import { Switch } from '../components/ui/switch.lynx';");
+    expect(providerSource).toContain('<Switch checked={checked}');
+    expect(providerStyles).toMatch(/\.SharedSettingsProviderPickerSwitch\s*\{[^}]*margin-left:\s*4px;/s);
+    expect(primitiveStyles).toMatch(/\.LxSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;/s);
+    expect(primitiveStyles).toMatch(/\.LxSwitchThumb\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*border-radius:\s*8px;[^}]*background-color:\s*#ffffff;/s);
+    expect(primitiveStyles).toMatch(/\.LxSwitch\.ui-focus\s*\{[^}]*box-shadow:\s*0 0 0 2px var\(--ring\);/s);
   });
 
   it('uses one generated reset icon across Settings owners', () => {

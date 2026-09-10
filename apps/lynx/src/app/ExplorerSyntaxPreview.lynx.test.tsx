@@ -5,6 +5,44 @@ import { readFileSync } from 'node:fs';
 import { ExplorerSyntaxLine } from './ExplorerSyntaxPreview.lynx';
 
 describe('Explorer syntax preview', () => {
+  it('uses the shared code font for source text and line numbers', () => {
+    const styles = readFileSync(
+      new URL('./explorer-dock.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.ExplorerDockCode\s*\{[^}]*font-family:\s*var\(--font-mono-family\);/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockSyntaxLineNumber\s*\{[^}]*font-family:\s*var\(--font-mono-family\);/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockSyntaxLineNumberText\s*\{[^}]*font-family:\s*var\(--font-mono-family\);/s
+    );
+  });
+
+  it('preserves fixed-column source lines behind one two-axis viewport', () => {
+    const source = readFileSync(
+      new URL('./ExplorerSyntaxPreview.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(
+      new URL('./explorer-dock.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain('scroll-x');
+    expect(source).toContain('scroll-y');
+    expect(source).toContain('enable-scroll-bar');
+    expect(styles).toMatch(
+      /\.ExplorerDockSyntaxCode\s*\{[^}]*flex-shrink:\s*0;[^}]*white-space:\s*pre;/s
+    );
+    expect(styles).not.toContain(
+      '.SliceRoot--viewport-short-height .ExplorerDock\n  .ExplorerDockSyntaxCode'
+    );
+  });
+
   it('uses a Host-owned token stream with a plain-text fallback', () => {
     const source = readFileSync(
       new URL('./ExplorerSyntaxPreview.lynx.tsx', import.meta.url),
@@ -45,6 +83,10 @@ describe('Explorer syntax preview', () => {
     );
     expect(source).toContain('<ExplorerFileCommentEditor');
     expect(source).toContain('color: token.color');
+    expect(source).toContain('fontFamily: codeFontFamily');
+    expect(source).toContain(
+      '<text style={{ fontFamily: codeFontFamily }}> </text>'
+    );
     expect(source).toContain('className="ExplorerDockCode"');
     expect(source).not.toContain('ExplorerDockTruncated');
     expect(desktopSource).toContain(

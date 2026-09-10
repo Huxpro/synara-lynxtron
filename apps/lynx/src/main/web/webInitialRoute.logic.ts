@@ -1,6 +1,7 @@
 const ALLOWED_WEB_INITIAL_ROUTES = new Set([
   '/',
   '/automations',
+  '/components-lab',
   '/kanban',
   '/plugins',
   '/pull-requests',
@@ -13,7 +14,8 @@ const ALLOWED_WEB_INITIAL_ROUTES = new Set([
 export function resolveWebInitialRoute(search: string): string | null {
   const candidate = new URLSearchParams(search).get('route')?.trim();
   if (!candidate || !candidate.startsWith('/')) return null;
-  if (ALLOWED_WEB_INITIAL_ROUTES.has(candidate)) return candidate;
+  const route = new URL(candidate, 'http://synara.local');
+  if (ALLOWED_WEB_INITIAL_ROUTES.has(route.pathname)) return candidate;
   if (
     /^\/(?:automations|kanban|new-thread|thread|workspace)\/[^/]+$/.test(
       candidate

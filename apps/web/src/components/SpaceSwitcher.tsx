@@ -11,6 +11,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 import { SPACE_NAME_MAX_LENGTH, type ProjectId, type SpaceId } from "@synara/contracts";
+import { buildSpaceContextMenuItems } from "@synara/shared/contextMenu";
 import {
   useCallback,
   useEffect,
@@ -46,7 +47,8 @@ import { Menu, MenuGroup, MenuItem } from "./ui/menu";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "./ui/tooltip";
 
 import { getDocumentActiveElement } from "~/platform/env";
-export type SpaceActivityTone = "attention" | "running" | "completed";
+export type { SpaceActivityTone } from "@synara/shared/spaceActivity";
+import type { SpaceActivityTone } from "@synara/shared/spaceActivity";
 
 /** HTML5 drag payload for filing a project by dropping it onto a space tab. */
 export const PROJECT_SPACE_DRAG_MIME = "application/x-synara-project";
@@ -106,6 +108,11 @@ const SPACE_TAB_CLASS_NAME =
  */
 const SPACE_TAB_ACTIVE_CLASS_NAME =
   "bg-[var(--sidebar-accent-active)] text-[var(--sidebar-accent-foreground)] ring-1 ring-border/70 ring-inset";
+
+const SPACE_CONTEXT_MENU_ICONS = {
+  edit: PencilIcon,
+  delete: Trash2,
+} as const;
 
 function SpaceActivityDot({ tone }: { tone: SpaceActivityTone }) {
   return (
@@ -408,6 +415,7 @@ function SpaceSwitcherStrip(props: SpaceSwitcherProps) {
   );
   const spaceOrderKey = props.spaces.map((space) => space.id).join();
   const scrollerRef = useTabStripOverflow(spaceOrderKey);
+  const contextMenuItems = buildSpaceContextMenuItems();
   /**
    * `activeSpaceId` can name a Space this strip has no tab for: the selection is restored
    * from session storage synchronously on reload while `spaces` is still empty, and another
@@ -576,29 +584,20 @@ function SpaceSwitcherStrip(props: SpaceSwitcherProps) {
             className={SIDEBAR_CONTEXT_MENU_PANEL_CLASS_NAME}
           >
             <MenuGroup>
-              <MenuItem
-                className={SIDEBAR_CONTEXT_MENU_ITEM_CLASS_NAME}
-                onClick={() => {
-                  setContextState(null);
-                  props.onEdit(contextState.space);
-                }}
-              >
-                <SidebarContextMenuIcon icon={PencilIcon} />
-                <span>Edit space…</span>
-              </MenuItem>
-              {/* Neutral, not red: deleting a space only files its projects back into
-                  Void, and the sibling project menu keeps its harder "Delete project"
-                  neutral too. Reddening the milder action would invert the hierarchy. */}
-              <MenuItem
-                className={SIDEBAR_CONTEXT_MENU_ITEM_CLASS_NAME}
-                onClick={() => {
-                  setContextState(null);
-                  props.onDelete(contextState.space);
-                }}
-              >
-                <SidebarContextMenuIcon icon={Trash2} />
-                <span>Delete space</span>
-              </MenuItem>
+              {contextMenuItems.map((item) => (
+                <MenuItem
+                  key={item.id}
+                  className={SIDEBAR_CONTEXT_MENU_ITEM_CLASS_NAME}
+                  onClick={() => {
+                    setContextState(null);
+                    if (item.id === "edit") props.onEdit(contextState.space);
+                    else props.onDelete(contextState.space);
+                  }}
+                >
+                  <SidebarContextMenuIcon icon={SPACE_CONTEXT_MENU_ICONS[item.id]} />
+                  <span>{item.label}</span>
+                </MenuItem>
+              ))}
             </MenuGroup>
           </ComposerPickerMenuPopup>
         </Menu>

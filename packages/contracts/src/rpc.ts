@@ -85,7 +85,7 @@ import {
   PullRequestsListResult,
   PullRequestsUnavailableError,
 } from "./pullRequests";
-import { KeybindingRule } from "./keybindings";
+import { KeybindingCommand, KeybindingRule } from "./keybindings";
 import {
   ClientOrchestrationCommand,
   ORCHESTRATION_WS_METHODS,
@@ -165,6 +165,7 @@ import {
   ServerUpdateSettingsInput,
   ServerUpdateSettingsResult,
   ServerUpsertKeybindingResult,
+  ServerRemoveKeybindingResult,
   ServerVoiceTranscriptionInput,
   ServerVoiceTranscriptionResult,
 } from "./server";
@@ -844,6 +845,12 @@ export const WsServerUpsertKeybindingRpc = Rpc.make(WS_METHODS.serverUpsertKeybi
   error: WsRpcError,
 });
 
+export const WsServerRemoveKeybindingRpc = Rpc.make(WS_METHODS.serverRemoveKeybinding, {
+  payload: Schema.Struct({ command: KeybindingCommand }),
+  success: ServerRemoveKeybindingResult,
+  error: WsRpcError,
+});
+
 export const WsSubscribeServerLifecycleRpc = Rpc.make(WS_METHODS.subscribeServerLifecycle, {
   payload: Schema.Struct({}),
   success: ServerLifecycleStreamEvent,
@@ -1084,6 +1091,7 @@ export const WsFeatureRpcGroup = RpcGroup.make(
   WsServerGenerateThreadRecapRpc,
   WsServerGenerateAutomationIntentRpc,
   WsServerUpsertKeybindingRpc,
+  WsServerRemoveKeybindingRpc,
   WsSubscribeServerLifecycleRpc,
   WsSubscribeServerConfigRpc,
   WsSubscribeServerProviderStatusesRpc,

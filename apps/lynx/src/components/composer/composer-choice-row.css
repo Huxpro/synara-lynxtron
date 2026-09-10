@@ -1,0 +1,66 @@
+.ComposerDecisionPanelLynx {
+  max-height: calc(100vh - 210px);
+  overflow-x: hidden;
+}
+
+.ComposerChoiceRowLynx.LxButton {
+  width: 100%;
+  min-width: 0;
+  min-height: 34px;
+  padding: 6px 8px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.ComposerChoiceShortcutLynx {
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.ComposerChoiceRowLynx--selected .ComposerChoiceShortcutLynx {
+  border-color: var(--foreground);
+  background-color: var(--foreground);
+  color: var(--background);
+}
+
+.ComposerChoiceRowLynx--primary .ComposerChoiceShortcutLynx {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.ComposerChoiceRowLynx--destructive .ComposerChoiceShortcutLynx,
+.ComposerChoiceRowLynx--destructive .ComposerChoiceLabelLynx {
+  color: var(--destructive);
+}
+
+.ComposerChoiceCopyLynx {
+  min-width: 0;
+  flex: 1;
+  color: var(--foreground);
+  font-size: 13px;
+  line-height: 18px;
+  word-break: break-word;
+}
+
+.ComposerChoiceLabelLynx {
+  color: inherit;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+}
+
+.ComposerChoiceDescriptionLynx {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+}

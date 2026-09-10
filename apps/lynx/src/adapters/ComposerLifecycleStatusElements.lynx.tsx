@@ -12,7 +12,7 @@ export function ComposerLifecycleStatusElement(props: {
       className="ComposerLifecycleStatusLynx"
       accessibility-element={true}
       accessibility-label={props.announcement}
-      accessibility-traits={props.intent === 'status' ? 'updating' : 'text'}
+      accessibility-trait={props.intent === 'status' ? 'updating' : 'text'}
     >
       {props.announcement}
     </text>

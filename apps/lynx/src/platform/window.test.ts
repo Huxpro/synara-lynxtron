@@ -7,6 +7,7 @@ describe('Lynx window external navigation', () => {
     expect(source).toContain(
       'void platformWindow.openExternal(url).catch(() => undefined);'
     );
+    expect(source).toContain("'shellShowInFolder'");
     expect(source).toContain('openWindow: (url) => {\n    openExternalBestEffort(url);');
   });
 });

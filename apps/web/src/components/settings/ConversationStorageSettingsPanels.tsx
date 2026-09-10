@@ -12,6 +12,9 @@ import { Button } from "~/components/ui/button";
 import { gitRemoveWorktreeMutationOptions } from "~/lib/gitReactQuery";
 import { ArchiveIcon } from "~/lib/icons";
 import {
+  buildArchivedThreadContextMenuItems,
+} from "@synara/shared/contextMenu";
+import {
   deleteArchivedThreadFromClient,
   deleteArchivedThreadsFromClient,
 } from "~/lib/archivedThreadDelete";
@@ -364,10 +367,7 @@ export function ArchivedSettingsPanel({ active }: { readonly active: boolean }) 
       const api = readNativeApi();
       if (!api) return;
       const clicked = await api.contextMenu.show(
-        [
-          { id: "restore", label: "Restore" },
-          { id: "delete", label: "Delete", destructive: true },
-        ],
+        buildArchivedThreadContextMenuItems(),
         position,
       );
       if (clicked === "restore") {

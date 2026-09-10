@@ -16,7 +16,7 @@ import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGenera
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { CheckIcon, ChevronRightIcon } from '../lib/icons.lynx';
+import { ChevronRightIcon } from '../lib/icons.lynx';
 import {
   disclosureChevronClassName,
   disclosureContentClassName,
@@ -39,6 +39,7 @@ import {
   integrationStatus,
 } from './settingsIntegrations.logic';
 import { copyIntegrationText } from './settingsIntegrationsClipboard.logic';
+import { CheckboxIndicator } from '../components/ui/checkbox.lynx';
 
 import './settings-integrations-panel.css';
 
@@ -64,17 +65,7 @@ function ProjectChoice(props: {
       {...interaction.eventProps}
     >
       <text className="SettingsIntegrationsProjectTitle">{props.title}</text>
-      <view
-        className={`SettingsIntegrationsCheckbox${
-          props.checked ? ' SettingsIntegrationsCheckbox--checked' : ''
-        }`}
-      >
-        {props.checked ? (
-          <view className="SettingsIntegrationsCheckmark">
-            <CheckIcon size={12} color="var(--primary-foreground)" />
-          </view>
-        ) : null}
-      </view>
+      <CheckboxIndicator checked={props.checked} className="SettingsIntegrationsCheckbox" />
     </view>
   );
 }
@@ -815,7 +806,7 @@ export function SettingsIntegrationsPanel() {
             className="SettingsIntegrationsEmpty"
             accessibility-element
             accessibility-label="No connected agents. Connect Codex, Claude, or another local MCP agent to create and follow Synara tasks."
-            accessibility-traits="text"
+            accessibility-trait="text"
           >
             <text className="SettingsIntegrationsRowTitle">
               No connected agents

@@ -12,6 +12,8 @@ import type {
   ProviderKind,
   ProviderSkillReference,
 } from '@synara/contracts';
+import { getAgentMentionAutocompleteAliases } from '@synara/contracts';
+import { rankProviderDiscoveryItems } from '@synara-web/lib/providerDiscovery';
 import {
   buildSubagentsPrompt,
   filterComposerSlashCommands,
@@ -61,13 +63,64 @@ export interface LynxSkillTransition {
   readonly skill: ProviderSkillReference;
 }
 
+export function buildLynxAgentMentionItems(
+  provider: ProviderKind,
+  query: string
+): ComposerCommandItem[] {
+  return rankProviderDiscoveryItems(
+    getAgentMentionAutocompleteAliases(provider),
+    query,
+    ({ alias, displayName }) => [{ value: alias }, { value: displayName }]
+  ).map(({ alias, displayName, color }) => ({
+    id: `agent:${provider}:${alias}`,
+    type: 'agent' as const,
+    provider,
+    alias,
+    color,
+    label: `@${alias}`,
+    description: `${displayName} delegate task to subagent`,
+  }));
+}
+
+export function resolveLynxAgentMentionSelection(input: {
+  readonly item: ComposerCommandItem;
+  readonly prompt: string;
+  readonly trigger: ComposerTrigger;
+}): {
+  readonly prompt: string;
+  readonly selectionEnd: number;
+  readonly selectionStart: number;
+} | null {
+  if (input.item.type !== 'agent' || input.trigger.kind !== 'mention') return null;
+  const replacement = ensureLeadingSpaceForReplacement(
+    input.prompt,
+    input.trigger.rangeStart,
+    `@${input.item.alias}()`
+  );
+  const next = replaceTextRange(
+    input.prompt,
+    input.trigger.rangeStart,
+    input.trigger.rangeEnd,
+    replacement
+  );
+  const cursor = next.cursor - 1;
+  return {
+    prompt: next.text,
+    selectionStart: cursor,
+    selectionEnd: cursor,
+  };
+}
+
 export function resolveLynxSkillSelection(input: {
   readonly item: ComposerCommandItem;
   readonly prompt: string;
   readonly provider: ProviderKind;
   readonly trigger: ComposerTrigger;
 }): LynxSkillTransition | null {
-  if (input.item.type !== 'skill' || input.trigger.kind !== 'skill') return null;
+  if (
+    input.item.type !== 'skill' ||
+    (input.trigger.kind !== 'skill' && input.trigger.kind !== 'slash-command')
+  ) return null;
   const replacement = ensureLeadingSpaceForReplacement(
     input.prompt,
     input.trigger.rangeStart,

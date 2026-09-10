@@ -238,6 +238,43 @@ const RETRYABLE_STREAM_CAPACITY_ERROR_CODES = new Set([
 ]);
 const DEFAULT_STREAM_CAPACITY_RETRY_MS = 1_000;
 const MAX_STREAM_CAPACITY_RETRY_MS = 10_000;
+const RETRYABLE_REQUEST_CAPACITY_ERROR_CODES = new Set([
+  "RPC_REQUEST_CAPACITY_EXCEEDED",
+  "RPC_EXPENSIVE_READ_CAPACITY_EXCEEDED",
+]);
+const DEFAULT_REQUEST_CAPACITY_RETRY_MS = 250;
+const MAX_REQUEST_CAPACITY_RETRY_MS = 5_000;
+
+export function getRequestCapacityRetryDelayMs(error: unknown): number | null {
+  if (!error || typeof error !== "object") return null;
+  const code = "code" in error ? error.code : undefined;
+  if (
+    typeof code !== "string" ||
+    !RETRYABLE_REQUEST_CAPACITY_ERROR_CODES.has(code) ||
+    ("retryable" in error && error.retryable === false)
+  ) {
+    return null;
+  }
+  const retryAfterMs = "retryAfterMs" in error ? error.retryAfterMs : undefined;
+  return typeof retryAfterMs === "number" && retryAfterMs > 0
+    ? Math.min(retryAfterMs, MAX_REQUEST_CAPACITY_RETRY_MS)
+    : DEFAULT_REQUEST_CAPACITY_RETRY_MS;
+}
+
+function delayWithAbort(delayMs: number, signal: AbortSignal | undefined): Promise<void> {
+  if (signal?.aborted) return Promise.reject(signal.reason);
+  return new Promise<void>((resolve, reject) => {
+    const timeoutId = globalThis.setTimeout(() => {
+      signal?.removeEventListener("abort", onAbort);
+      resolve();
+    }, delayMs);
+    const onAbort = () => {
+      globalThis.clearTimeout(timeoutId);
+      reject(signal?.reason);
+    };
+    signal?.addEventListener("abort", onAbort, { once: true });
+  });
+}
 
 /**
  * Capacity rejections are admission failures the server marks retryable: the
@@ -387,10 +424,18 @@ export class WsTransport {
       )[method];
       if (!call) throw new WsTransportRpcError({ message: `Unknown RPC method: ${method}` });
       const clientRuntime = this.getClientRuntime(client);
-      return (await clientRuntime.runPromise(
-        call(normalizedRpcInput),
-        abortScope.signal ? { signal: abortScope.signal } : undefined,
-      )) as T;
+      for (;;) {
+        try {
+          return (await clientRuntime.runPromise(
+            call(normalizedRpcInput),
+            abortScope.signal ? { signal: abortScope.signal } : undefined,
+          )) as T;
+        } catch (error) {
+          const retryDelayMs = getRequestCapacityRetryDelayMs(error);
+          if (retryDelayMs === null) throw error;
+          await delayWithAbort(retryDelayMs, abortScope.signal);
+        }
+      }
     } catch (error) {
       if (abortScope.didTimeout()) {
         throw new WsTransportRequestInterruptedError({

@@ -2,6 +2,15 @@ import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
 describe('Settings Archived fidelity', () => {
+  it('restores the exact archived row after its native context menu closes', () => {
+    const source = readFileSync(
+      new URL('./SettingsArchivedPanel.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain('() => focusLynxNode(rowRef)');
+    expect(source).toContain('{ restoreFocus }');
+  });
+
   it('routes a real archived panel backed by the shell snapshot', () => {
     const settingsSource = readFileSync(
       new URL('./SettingsPage.tsx', import.meta.url),
@@ -59,6 +68,12 @@ describe('Settings Archived fidelity', () => {
     expect(panelSource).toContain('Restore ${thread.title}');
     expect(panelSource).toContain('Delete ${thread.title}');
     expect(panelSource).toContain('variant="destructive"');
+    expect(panelSource).toContain('buildArchivedThreadContextMenuItems()');
+    expect(panelSource).toContain('resolveSecondaryPointerOffset(event)');
+    expect(panelSource).toContain('getRectByRef(rowRef, true)');
+    expect(panelSource).toContain('bindlongpress=');
+    expect(panelSource).toContain("action === 'restore'");
+    expect(panelSource).toContain("action === 'delete'");
     expect(logicSource).toContain("type: 'thread.delete' as const");
   });
 

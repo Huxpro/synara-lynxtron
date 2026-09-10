@@ -69,7 +69,7 @@ describe('Pull Request list state fidelity', () => {
 
     const title = elementTree.root?.querySelector('.SharedPrGroupTitle');
     expect(title?.getAttribute('accessibility-element')).toBe('true');
-    expect(title?.getAttribute('accessibility-traits')).toBe('header');
+    expect(title?.getAttribute('accessibility-trait')).toBe('header');
     expect(title?.getAttribute('class')).toContain(
       'SharedPrGroupTitle--separated'
     );

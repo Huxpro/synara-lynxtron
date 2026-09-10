@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { randomUUID } from 'node:crypto';
 import type { KeybindingCommand } from '@synara/contracts';
 
 export interface ShellRectangle {
@@ -28,6 +29,12 @@ export interface ViewportProbeSize {
   readonly height: number;
 }
 
+// Keep the native shell's resizing contract aligned with Electron. A wider
+// Lynx-only minimum prevents exact-size fidelity comparisons and hides the
+// responsive states that the product supports in the source renderer.
+export const SHELL_WINDOW_MIN_WIDTH = 840;
+export const SHELL_WINDOW_MIN_HEIGHT = 620;
+
 export function parseViewportProbeSequence(
   value: string | undefined
 ): readonly ViewportProbeSize[] {
@@ -38,8 +45,8 @@ export function parseViewportProbeSequence(
       const match = entry.trim().match(/^(\d+)x(\d+)$/);
       if (!match) return null;
       return {
-        width: Math.max(900, Number(match[1])),
-        height: Math.max(650, Number(match[2])),
+        width: Math.max(SHELL_WINDOW_MIN_WIDTH, Number(match[1])),
+        height: Math.max(SHELL_WINDOW_MIN_HEIGHT, Number(match[2])),
       };
     })
     .filter((entry): entry is ViewportProbeSize => entry !== null);
@@ -144,6 +151,112 @@ export interface SearchNavigationMenuItem {
   readonly acceleratorWorksWhenHidden: true;
   readonly registerAccelerator: true;
   readonly click: () => void;
+}
+
+export function buildTerminalSearchMenuItems(
+  enabled: boolean,
+  dispatch: () => void
+): readonly {
+  readonly label: 'Find in Terminal';
+  readonly accelerator: 'CmdOrCtrl+F';
+  readonly visible: false;
+  readonly acceleratorWorksWhenHidden: true;
+  readonly registerAccelerator: true;
+  readonly click: () => void;
+}[] {
+  if (!enabled) return [];
+  return [
+    {
+      label: 'Find in Terminal',
+      accelerator: 'CmdOrCtrl+F',
+      visible: false,
+      acceleratorWorksWhenHidden: true,
+      registerAccelerator: true,
+      click: dispatch,
+    },
+  ];
+}
+
+export function buildTerminalSearchNavigationMenuItems(
+  enabled: boolean,
+  dispatch: (event: { readonly key: "Enter" | "Escape"; readonly shiftKey?: true }) => void
+): readonly {
+  readonly label: string;
+  readonly accelerator: "Enter" | "Shift+Enter" | "Esc";
+  readonly visible: false;
+  readonly acceleratorWorksWhenHidden: true;
+  readonly registerAccelerator: true;
+  readonly click: () => void;
+}[] {
+  if (!enabled) return [];
+  return [
+    { label: "Terminal search next", accelerator: "Enter", key: "Enter" },
+    { label: "Terminal search previous", accelerator: "Shift+Enter", key: "Enter", shiftKey: true },
+    { label: "Terminal search close", accelerator: "Esc", key: "Escape" },
+  ].map(({ label, accelerator, key, shiftKey }) => ({
+    label,
+    accelerator,
+    visible: false,
+    acceleratorWorksWhenHidden: true,
+    registerAccelerator: true,
+    click: () => dispatch({ key, ...(shiftKey ? { shiftKey: true } : {}) }),
+  }));
+}
+
+export interface TerminalInputAccelerator {
+  readonly accelerator:
+    | "Enter"
+    | "Up"
+    | "Down"
+    | "Left"
+    | "Right"
+    | "Tab"
+    | "Esc"
+    | "Ctrl+C"
+    | "Ctrl+L";
+  readonly data: string;
+  readonly label: string;
+}
+
+export const TERMINAL_INPUT_ACCELERATORS: readonly TerminalInputAccelerator[] = [
+  { label: "Terminal input Enter", accelerator: "Enter", data: "\r" },
+  { label: "Terminal input up", accelerator: "Up", data: "\u001b[A" },
+  { label: "Terminal input down", accelerator: "Down", data: "\u001b[B" },
+  { label: "Terminal input right", accelerator: "Right", data: "\u001b[C" },
+  { label: "Terminal input left", accelerator: "Left", data: "\u001b[D" },
+  { label: "Terminal input tab", accelerator: "Tab", data: "\t" },
+  { label: "Terminal input escape", accelerator: "Esc", data: "\u001b" },
+];
+
+const MAC_TERMINAL_CONTROL_ACCELERATORS: readonly TerminalInputAccelerator[] = [
+  { label: "Terminal interrupt", accelerator: "Ctrl+C", data: "\u0003" },
+  { label: "Terminal clear", accelerator: "Ctrl+L", data: "\u000c" },
+];
+
+export function buildTerminalInputMenuItems(
+  enabled: boolean,
+  includeControlAccelerators: boolean,
+  dispatch: (data: string) => void
+): readonly {
+  readonly label: string;
+  readonly accelerator: TerminalInputAccelerator['accelerator'];
+  readonly visible: false;
+  readonly acceleratorWorksWhenHidden: true;
+  readonly registerAccelerator: true;
+  readonly click: () => void;
+}[] {
+  if (!enabled) return [];
+  const accelerators = includeControlAccelerators
+    ? [...TERMINAL_INPUT_ACCELERATORS, ...MAC_TERMINAL_CONTROL_ACCELERATORS]
+    : TERMINAL_INPUT_ACCELERATORS;
+  return accelerators.map((input) => ({
+    label: input.label,
+    accelerator: input.accelerator,
+    visible: false,
+    acceleratorWorksWhenHidden: true,
+    registerAccelerator: true,
+    click: () => dispatch(input.data),
+  }));
 }
 
 export function buildSearchNavigationMenuItems(
@@ -262,8 +375,14 @@ export function resolveRestoredBounds(
   saved: ShellRectangle | null,
   workArea: ShellRectangle
 ): ShellRectangle {
-  const width = Math.min(Math.max(saved?.width ?? 1280, 900), workArea.width);
-  const height = Math.min(Math.max(saved?.height ?? 820, 650), workArea.height);
+  const width = Math.min(
+    Math.max(saved?.width ?? 1280, SHELL_WINDOW_MIN_WIDTH),
+    workArea.width
+  );
+  const height = Math.min(
+    Math.max(saved?.height ?? 820, SHELL_WINDOW_MIN_HEIGHT),
+    workArea.height
+  );
   const fallbackX = workArea.x + Math.round((workArea.width - width) / 2);
   const fallbackY = workArea.y + Math.round((workArea.height - height) / 2);
   if (!saved) {
@@ -294,10 +413,23 @@ export function readWindowState(filePath: string): ShellWindowState | null {
 }
 
 export function writeJsonAtomic(filePath: string, value: unknown): void {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  const temporary = `${filePath}.tmp`;
-  fs.writeFileSync(temporary, JSON.stringify(value), 'utf8');
-  fs.renameSync(temporary, filePath);
+  const directory = path.dirname(filePath);
+  fs.mkdirSync(directory, { recursive: true });
+  // A fixed `.tmp` path lets overlapping writers rename each other's file.
+  // Keep the temporary beside the destination so the final rename remains
+  // atomic, but give every attempt its own collision-safe path.
+  const temporary = path.join(
+    directory,
+    `.${path.basename(filePath)}.${process.pid}.${randomUUID()}.tmp`
+  );
+  try {
+    fs.writeFileSync(temporary, JSON.stringify(value), 'utf8');
+    fs.renameSync(temporary, filePath);
+  } finally {
+    // The rename removes the temporary on success; force cleanup covers a
+    // failed write or rename without masking the original error.
+    fs.rmSync(temporary, { force: true });
+  }
 }
 
 export function migrateLegacyShellFiles(userDataDir: string, paths: ShellPaths): string[] {
@@ -355,7 +487,8 @@ export function parseSynaraRelaunchRoute(raw: string): string | null {
 export function buildSynaraRelaunchArguments(
   argv: readonly string[],
   applicationPath: string,
-  route: string | null
+  route: string | null,
+  relaunchUrl?: string | null
 ): string[] {
   const processArguments = argv.slice(1);
   const args = processArguments
@@ -372,27 +505,39 @@ export function buildSynaraRelaunchArguments(
         parseSynaraDeepLinkInitData(argument) === null
     );
   args.unshift(applicationPath);
-  if (route) {
+  if (relaunchUrl && parseSynaraDeepLinkInitData(relaunchUrl)) {
+    args.push(relaunchUrl);
+  } else if (route) {
     args.push(`${SYNARA_RELAUNCH_ROUTE_PREFIX}${encodeURIComponent(route)}`);
   }
   return args;
 }
 
 export interface SynaraDeepLinkInitData {
+  readonly initialDiffOpen: boolean;
+  readonly initialDiffTurnId: string | null;
+  readonly initialDiffFilePath: string | null;
+  readonly initialDiffFileTreeOpen: boolean;
+  readonly initialComposerModelMenuOpen: boolean;
+  readonly initialComposerModelSubmenuOpen: boolean;
+  readonly initialComposerModelProvider: string | null;
   readonly initialEnvironmentOpen: boolean;
   readonly initialEditorOpen: boolean;
-  readonly initialEditorCenterMode: 'file' | 'diff';
+  readonly initialEditorCenterMode: 'file' | 'diff' | null;
   readonly initialEditorChatOpen: boolean | null;
   readonly initialEditorHistoryOpen: boolean;
   readonly initialEditorNewOpen: boolean;
   readonly initialEditorNewChatOpen: boolean;
   readonly initialEditorSearchOpen: boolean;
+  readonly initialEditorProjectMenuOpen: boolean;
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
   readonly initialSettingsTarget: string | null;
   readonly initialWorkspaceSettingsOpen: boolean;
   readonly initialWorkspaceVisible: boolean;
   readonly initialExplorerOpen: boolean;
+  readonly initialExplorerPresentationMode: 'dock' | 'single-file';
+  readonly initialExplorerActionMenuOpen: boolean;
   readonly initialExplorerCommentLine: number | null;
   readonly initialExplorerExpandedDirectories: readonly string[];
   readonly initialExplorerPath: string | null;
@@ -415,6 +560,16 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
         ? `/settings/${encodeURIComponent(decodeURIComponent(section))}${search}`
         : '/settings';
     } else if (url.hostname === 'studio') initialRoute = '/studio';
+    else if (url.hostname === 'components-lab') {
+      const story = url.searchParams.get('story')?.trim();
+      const state = url.searchParams.get('state')?.trim();
+      const variant = url.searchParams.get('variant')?.trim();
+      const search = new URLSearchParams();
+      if (story) search.set('story', story);
+      if (state) search.set('state', state);
+      if (variant) search.set('variant', variant);
+      initialRoute = `/components-lab${search.size > 0 ? `?${search.toString()}` : ''}`;
+    }
     else if (url.hostname === 'update') initialRoute = '/update';
     else if (url.hostname === 'pull-requests') initialRoute = '/pull-requests';
     else if (url.hostname === 'plugins') initialRoute = '/plugins';
@@ -450,10 +605,27 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
     const explorerCommentLineValue = Number(url.searchParams.get('explorerCommentLine'));
     const explorerWidthValue = Number(url.searchParams.get('explorerWidth'));
     return {
+      initialDiffOpen:
+        url.searchParams.get('diff') === 'open' ||
+        url.searchParams.get('diff') === '1',
+      initialDiffTurnId: url.searchParams.get('diffTurnId')?.trim() || null,
+      initialDiffFilePath: url.searchParams.get('diffFilePath')?.trim() || null,
+      initialDiffFileTreeOpen:
+        url.searchParams.get('diffFileTree') === 'open',
+      initialComposerModelMenuOpen:
+        url.searchParams.get('composerModelMenu') === 'open',
+      initialComposerModelSubmenuOpen:
+        url.searchParams.get('composerModelSubmenu') === 'open',
+      initialComposerModelProvider:
+        url.searchParams.get('composerModelProvider')?.trim() || null,
       initialEnvironmentOpen: url.searchParams.get('environment') === 'open',
       initialEditorOpen: url.searchParams.get('editor') === 'open',
       initialEditorCenterMode:
-        url.searchParams.get('editorMode') === 'diff' ? 'diff' : 'file',
+        url.searchParams.get('editorMode') === 'diff'
+          ? 'diff'
+          : url.searchParams.get('editorMode') === 'file'
+            ? 'file'
+            : null,
       initialEditorChatOpen:
         url.searchParams.get('editorChat') === 'hidden'
           ? false
@@ -468,6 +640,8 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
         url.searchParams.get('editorNewChat') === 'open',
       initialEditorSearchOpen:
         url.searchParams.get('editorSearch') === 'open',
+      initialEditorProjectMenuOpen:
+        url.searchParams.get('editorProjectMenu') === 'open',
       initialRenameOpen: url.searchParams.get('rename') === 'open',
       initialTerminalOpen: url.searchParams.get('terminal') === 'open',
       initialSettingsTarget: url.searchParams.get('target')?.trim() || null,
@@ -476,6 +650,12 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
       initialWorkspaceVisible:
         url.searchParams.get('workspaceVisible') === 'open',
       initialExplorerOpen: url.searchParams.get('explorer') === 'open',
+      initialExplorerPresentationMode:
+        url.searchParams.get('explorerMode') === 'single-file'
+          ? 'single-file'
+          : 'dock',
+      initialExplorerActionMenuOpen:
+        url.searchParams.get('explorerActionMenu') === 'open',
       initialExplorerCommentLine:
         Number.isInteger(explorerCommentLineValue) && explorerCommentLineValue > 0
           ? explorerCommentLineValue

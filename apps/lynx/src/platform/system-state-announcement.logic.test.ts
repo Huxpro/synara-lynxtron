@@ -1,8 +1,39 @@
 import { describe, expect, it } from '@rstest/core';
 
-import { resolveNextSystemStateAnnouncement } from './system-state-announcement.logic';
+import {
+  normalizeSystemStateAnnouncement,
+  resolveNextSystemStateAnnouncement,
+} from './system-state-announcement.logic';
 
 describe('resolveNextSystemStateAnnouncement', () => {
+  it('normalizes ReactLynx text fragments without calling string methods on arrays', () => {
+    const fragments = [
+      1,
+      ' project ',
+      ['repository was', ' unavailable. '],
+      null,
+      false,
+      { ignored: true },
+      'Healthy repositories are still shown.',
+    ];
+
+    expect(normalizeSystemStateAnnouncement(fragments)).toBe(
+      '1 project repository was unavailable. Healthy repositories are still shown.'
+    );
+    expect(
+      resolveNextSystemStateAnnouncement({
+        previousKey: null,
+        intent: 'status',
+        announcement: fragments,
+      })
+    ).toEqual({
+      content:
+        '1 project repository was unavailable. Healthy repositories are still shown.',
+      nextKey:
+        'status:1 project repository was unavailable. Healthy repositories are still shown.',
+    });
+  });
+
   it('keeps plain hints and empty labels out of the announcement channel', () => {
     expect(
       resolveNextSystemStateAnnouncement({

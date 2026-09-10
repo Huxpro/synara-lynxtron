@@ -8,6 +8,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   ORCHESTRATION_WS_METHODS,
   WS_CHANNELS,
+  WS_METHODS,
   WS_COMPATIBILITY_QUERY,
   WS_PROTOCOL_EPOCH,
   WS_PROTOCOL_MAX_REVISION,
@@ -17,6 +18,7 @@ import {
 
 import {
   shouldKeepServerLifecycleStream,
+  getRequestCapacityRetryDelayMs,
   getStreamCapacityRetryDelayMs,
   getTerminalCompatibilityError,
   isTerminalCompatibilityFailure,
@@ -81,12 +83,17 @@ class MockWebSocket {
 const originalWebSocket = globalThis.WebSocket;
 
 interface WsTransportInternals {
+  disposed: boolean;
   readonly streamCleanups: Map<string, () => void>;
   readonly streamSettled: Map<string, Promise<void>>;
   readonly streamCapacityRetries: Map<string, number>;
   readonly streamCapacityRetryTimers: Map<string, number>;
   readonly activeThreadStreamInputs: Map<string, unknown>;
   readonly threadSubscriptions: Map<string, unknown>;
+  getClient(): Promise<unknown>;
+  getClientRuntime(client: unknown): {
+    runPromise(effect: unknown, options?: { signal: AbortSignal }): Promise<unknown>;
+  };
   startThreadStream(client: unknown, threadId: string, input: unknown): Promise<void>;
 }
 
@@ -131,6 +138,76 @@ afterEach(() => {
 });
 
 describe("WsTransport", () => {
+  it("retries only server-declared request capacity failures", () => {
+    expect(
+      getRequestCapacityRetryDelayMs({
+        code: "RPC_EXPENSIVE_READ_CAPACITY_EXCEEDED",
+        retryable: true,
+        retryAfterMs: 250,
+      }),
+    ).toBe(250);
+    expect(
+      getRequestCapacityRetryDelayMs({
+        code: "RPC_REQUEST_CAPACITY_EXCEEDED",
+        retryable: true,
+      }),
+    ).toBe(250);
+    expect(
+      getRequestCapacityRetryDelayMs({
+        code: "RPC_EXPENSIVE_READ_CAPACITY_EXCEEDED",
+        retryable: true,
+        retryAfterMs: 60_000,
+      }),
+    ).toBe(5_000);
+    expect(
+      getRequestCapacityRetryDelayMs({
+        code: "RPC_EXPENSIVE_READ_CAPACITY_EXCEEDED",
+        retryable: false,
+        retryAfterMs: 250,
+      }),
+    ).toBeNull();
+    expect(
+      getRequestCapacityRetryDelayMs({
+        code: "WS_PROTOCOL_INCOMPATIBLE",
+        retryable: true,
+        retryAfterMs: 250,
+      }),
+    ).toBeNull();
+    expect(getRequestCapacityRetryDelayMs(new Error("transient"))).toBeNull();
+  });
+
+  it("retries a capacity-rejected request in place", async () => {
+    vi.useFakeTimers();
+    try {
+      const { transport, internals } = makeBareTransport();
+      internals.disposed = false;
+      const call = vi.fn().mockReturnValue({ kind: "request-effect" });
+      const client = { [WS_METHODS.gitReadWorkingTreeDiff]: call };
+      const runPromise = vi
+        .fn()
+        .mockRejectedValueOnce({
+          code: "RPC_EXPENSIVE_READ_CAPACITY_EXCEEDED",
+          retryable: true,
+          retryAfterMs: 250,
+        })
+        .mockResolvedValueOnce({ patch: "diff --git" });
+      internals.getClient = vi.fn().mockResolvedValue(client);
+      internals.getClientRuntime = vi.fn().mockReturnValue({ runPromise });
+
+      const request = transport.request(WS_METHODS.gitReadWorkingTreeDiff, {
+        cwd: "/repo",
+        scope: "workingTree",
+      });
+      await vi.advanceTimersByTimeAsync(250);
+
+      await expect(request).resolves.toEqual({ patch: "diff --git" });
+      expect(call).toHaveBeenCalledTimes(2);
+      expect(runPromise).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("does not reconnect the socket for typed stream-admission failures", () => {
     expect(
       shouldReconnectAfterStreamFailure(

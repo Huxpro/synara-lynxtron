@@ -1,0 +1,71 @@
+.ComponentsLab { display: flex; width: 100%; height: 100%; flex-direction: row; background-color: var(--color-background-surface-under); color: var(--foreground); }
+.ComponentsLabEmbedded { width: 100%; height: 100%; min-height: 320px; display: flex; align-items: center; justify-content: center; background-color: var(--color-background-elevated-primary-opaque); color: var(--foreground); }
+.ComponentsLabSidebar { width: 288px; height: 100%; padding: 0 12px 16px; overflow-y: auto; border-right: 1px solid var(--border); }
+.ComponentsLabSidebarContent { width: 100%; display: flex; flex-direction: column; flex-shrink: 0; }
+.ComponentsLabSidebarHeader { min-height: 52px; padding: 10px 0 6px 70px; display: flex; flex-direction: column; justify-content: center; }
+.ComponentsLabMain { position: relative; flex: 1; height: 100%; padding: 52px 24px 24px; }
+.ComponentsLabMainDragRegion { position: absolute; top: 0; left: 0; right: 0; height: 40px; }
+.ComponentsLabTitle { font-size: 14px; line-height: 20px; font-weight: 600; }
+.ComponentsLabMeta,.ComponentsLabCategory,.ComponentsLabStoryId { color: var(--muted-foreground); font-size: 11px; line-height: 16px; }
+.ComponentsLabStoryLink { display: flex; margin-top: 4px; padding: 8px 10px; flex-direction: column; border-radius: 10px; }
+.ComponentsLabStoryLink, .ComponentsLabState { -x-app-region: no-drag; }
+.ComponentsLabStoryLink--active { background-color: var(--color-background-button-secondary-hover); }
+.ComponentsLabStoryTitle { font-size: 12px; line-height: 18px; font-weight: 500; }
+.ComponentsLabHeading { margin-top: 4px; font-size: 20px; line-height: 26px; font-weight: 600; }
+.ComponentsLabStory { display: flex; flex-direction: column; }
+.ComponentsLabStates { display: flex; margin-top: 20px; flex-direction: row; flex-wrap: wrap; gap: 8px; }
+.ComponentsLabState { padding: 4px 8px; border-radius: 8px; color: var(--muted-foreground); background-color: var(--muted); font-size: 11px; }
+.ComponentsLabState--active { color: var(--background); background-color: var(--foreground); }
+.ComponentsLabEntries { display: flex; margin-top: 20px; flex-direction: row; gap: 16px; }
+.ComponentsLabEntry { width: 50%; min-height: 128px; padding: 16px; border: 1px solid var(--border); border-radius: 12px; }
+.ComponentsLabEntryRenderer { color: var(--muted-foreground); font-size: 10px; }
+.ComponentsLabEntryComponent { margin-top: 8px; font-size: 13px; font-weight: 500; }
+.ComponentsLabRenderTarget { min-height: 180px; margin-top: 20px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--border); border-radius: 12px; color: var(--muted-foreground); }
+.ComponentsLabRealStory { min-width: 240px; min-height: 160px; display: flex; align-items: center; justify-content: center; }
+.ComponentsLabContextMeterStory { width: 100%; padding-right: 24px; justify-content: flex-end; }
+.ComponentsLabEditorRailAddTrigger { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--color-icon-secondary); background-color: var(--color-background-button-secondary-hover); }
+.ComponentsLabIconToneGrid { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; }
+.ComponentsLabNotificationStory { width: 384px; max-width: calc(100vw - 48px); }
+.ComponentsLabRightDockStory { width: 560px; max-width: calc(100vw - 48px); border: 1px solid var(--border); background-color: var(--background); }
+.ComponentsLabRightDockStory--narrow { width: 384px; }
+.ComponentsLabVoiceStory { width: 560px; max-width: calc(100vw - 48px); padding: 12px; border: 1px solid var(--border); border-radius: 16px; background-color: var(--background); }
+.ComponentsLabTerminalStory { position: relative; width: 560px; max-width: calc(100vw - 48px); height: 96px; border-radius: 8px; background-color: var(--color-token-terminal-background); }
+.ComponentsLabEditorSearchStory { width: 240px; overflow: hidden; border: 1px solid var(--border); background-color: var(--background); }
+.ComponentsLabFileErrorStory { display: flex; width: 560px; max-width: calc(100vw - 48px); min-height: 160px; flex-direction: column; border: 1px solid var(--border); border-radius: 12px; background-color: var(--background); }
+.ComponentsLabFileErrorStory--explorer { width: 320px; }
+.ComponentsLabFileErrorStory--pane { width: 448px; }
+.ComponentsLabFileErrorResult { padding: 0 12px 12px; color: var(--muted-foreground); font-size: 11px; line-height: 16px; }
+.ComponentsLabPdfStory { width: 760px; max-width: calc(100vw - 48px); height: 420px; display: flex; overflow: hidden; border: 1px solid var(--border); background-color: var(--background); }
+.ComponentsLabTypographyStory { width: 560px; max-width: calc(100vw - 48px); padding: 16px; border: 1px solid var(--border); border-radius: 12px; background-color: var(--background); }
+.ComponentsLabDiffTypographyStory { padding: 0; overflow: hidden; }
+.ComponentsLabSearchableModelFixture { display: flex; align-items: center; justify-content: center; }
+.ComponentsLabPrimitiveGrid { width: 520px; max-width: calc(100vw - 48px); display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; }
+.ComponentsLabInputGrid { width: 320px; display: flex; flex-direction: column; gap: 12px; }
+.ComponentsLabPrimitiveFocus { border-color: var(--color-border-focus); box-shadow: 0 0 0 1px var(--color-border-focus); }
+.ComponentsLabPrimitiveMenu { width: 208px; }
+.ComponentsLabPrimitiveCopy { color: var(--foreground); font-size: 12px; line-height: 18px; }
+.ComponentsLabCollapsible { width: 288px; padding: 8px; border: 1px solid var(--border); border-radius: 12px; background-color: var(--background); }
+.ComponentsLabCollapsibleTrigger { width: 100%; min-height: 32px; padding: 6px 8px; display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-radius: 10px; color: var(--foreground); font-size: 12px; }
+.ComponentsLabCollapsibleContent { padding: 8px 8px 0; color: var(--muted-foreground); font-size: 11px; line-height: 16px; }
+.ComponentsLabCommandPanel { width: 320px; overflow: hidden; }
+.ComponentsLabScrollArea { width: 288px; height: 128px; border: 1px solid var(--border); border-radius: 12px; background-color: var(--background); }
+.ComponentsLabScrollContent { width: 100%; padding: 12px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+.ComponentsLabScrollContent--horizontal { width: 560px; flex-direction: row; }
+.ComponentsLabScrollItem { min-width: 112px; padding: 8px 12px; border-radius: 10px; background-color: var(--muted); color: var(--foreground); font-size: 11px; line-height: 16px; }
+.ComponentsLabTextarea { width: 320px; min-height: 70px; }
+.ComponentsLabSkeletonGrid { width: 288px; display: flex; flex-direction: column; gap: 8px; }
+.ComponentsLabSkeletonLine { width: 100%; height: 12px; }
+.ComponentsLabSkeletonLine--short { width: 80%; }
+.ComponentsLabHorizontalSeparator { width: 288px; display: flex; flex-direction: column; gap: 12px; color: var(--foreground); font-size: 11px; }
+.ComponentsLabVerticalSeparator { height: 80px; display: flex; flex-direction: row; align-items: center; gap: 16px; color: var(--foreground); font-size: 11px; }
+.ComponentsLabAlert { width: 512px; max-width: calc(100vw - 48px); }
+.SemanticIconToneLynx { width: 96px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.SemanticIconToneGlyphLynx { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background-color: var(--color-background-button-secondary); }
+.SemanticIconToneGlyphLynx--inverse { background-color: var(--color-background-button-primary); }
+.SemanticIconToneLabelLynx { color: var(--muted-foreground); font-size: 10px; line-height: 14px; }
+.ComponentsLabSidebarRowStory { width: 224px; padding: 12px; background-color: var(--color-background-sidebar); }
+.ComponentsLabSidebarShortcut { color: var(--muted-foreground); font-size: 10px; line-height: 14px; }
+.ComponentsLabMessageActions { display: flex; flex-direction: row; align-items: center; gap: 8px; }
+.ComponentsLabMessageActions--hidden { opacity: 0; pointer-events: none; }
+.ComponentsLabPendingStory { min-height: 160px; display: flex; align-items: center; justify-content: center; }
+.ComponentsLabError { color: var(--destructive); }

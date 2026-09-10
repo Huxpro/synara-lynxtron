@@ -4,8 +4,9 @@ import type {
   ProviderModelDescriptor,
   ServerProviderStatus,
 } from '@synara/contracts';
-import { useInitData, useMemo, useState } from '@lynx-js/react';
+import { useEffect, useInitData, useMemo, useState } from '@lynx-js/react';
 import fastModeSvg from '@synara-central-icons-fill/zap.svg?raw';
+import { VIEWPORT_HEIGHT_BREAKPOINTS } from '@synara-web/responsiveLayout.logic';
 
 import {
   buildComposerProviderPickerItems,
@@ -20,11 +21,14 @@ import { ProviderModelOptionGroupListComposition } from '@synara-web/components/
 import { getComposerTraitSelection } from '@synara-web/components/chat/composerTraits';
 import { resolveRuntimeModelDescriptor } from '@synara-web/components/chat/runtimeModelCapabilities';
 import {
+  buildModelSearchText,
   buildModelSelection,
   buildNextProviderOptions,
   formatProviderModelOptionName,
   groupProviderModelOptions,
   groupProviderModelOptionsWithFavorites,
+  SEARCHABLE_MODEL_PICKER_THRESHOLD,
+  type ProviderModelOption,
 } from '@synara-web/providerModelOptions';
 import {
   FAVORITE_MODEL_STORAGE_KEYS,
@@ -35,14 +39,21 @@ import {
 } from '@synara-web/lib/modelFavorites.logic';
 import { webStorage } from '../../platform/storage';
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
-import { ArrowLeftIcon, ChevronDownIcon } from '../../lib/icons.lynx';
+import { ArrowLeftIcon, ChevronDownIcon, SearchIcon } from '../../lib/icons.lynx';
+import { OpenAIProviderIcon } from '../OpenAIProviderIcon.lynx';
 import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
 import { useTheme } from '../../adapters/useTheme.lynx';
+import { useViewportLayout } from '../../hooks/useViewportLayout.lynx';
 import {
   Menu,
   MenuPopup,
+  MenuSeparator,
+  MenuSub,
+  MenuSubPopup,
+  MenuSubTrigger,
   MenuTrigger,
 } from '../ui/menu.lynx';
+import { Input } from '../ui/input.lynx';
 import { resolveLynxProviderModelOptions } from './composerModelCatalog.logic';
 import {
   resolveComposerModelPopupContent,
@@ -85,11 +96,17 @@ function ComposerProviderOptionElement(props: {
 }
 
 export function ComposerModelControl(props: {
+  readonly compact?: boolean;
+  readonly disabled?: boolean;
   readonly modelSelection: ModelSelection;
   readonly catalogModelSelection?: ModelSelection;
   readonly catalogProvider: ProviderKind;
   readonly initialPanel?: ComposerModelPopupPanel;
+  readonly initialOpen?: boolean;
+  readonly initialSubmenuOpen?: boolean;
+  readonly initialSearchQuery?: string;
   readonly runtimeModels: ReadonlyArray<ProviderModelDescriptor>;
+  readonly modelOptionsOverride?: ReadonlyArray<ProviderModelOption>;
   readonly modelsLoading: boolean;
   readonly providers: ReadonlyArray<ServerProviderStatus>;
   readonly onCatalogProviderChange: (provider: ProviderKind) => void;
@@ -98,12 +115,23 @@ export function ComposerModelControl(props: {
 }) {
   const initData = useInitData() as {
     readonly initialComposerModelMenuOpen?: unknown;
+    readonly initialComposerModelSubmenuOpen?: unknown;
   };
-  const { svgColors } = useTheme();
-  const [modelOpen, setModelOpen] = useState(
-    initData.initialComposerModelMenuOpen === true
+  const { semanticIconColor } = useTheme();
+  const viewport = useViewportLayout();
+  const [modelOpen, setModelOpen] = useState(props.initialOpen ?? false);
+  const [submenuProvider, setSubmenuProvider] = useState<ProviderKind | null>(
+    (props.initialSubmenuOpen ?? initData.initialComposerModelSubmenuOpen === true)
+      ? props.catalogProvider
+      : null
   );
+  useEffect(() => {
+    if (props.initialOpen || initData.initialComposerModelMenuOpen === true) setModelOpen(true);
+  }, [initData.initialComposerModelMenuOpen, props.initialOpen]);
   const [traitsOpen, setTraitsOpen] = useState(false);
+  const [modelSearchQuery, setModelSearchQuery] = useState(
+    props.initialSearchQuery ?? ''
+  );
   const [panel, setPanel] = useState<ComposerModelPopupPanel>(
     props.initialPanel ?? 'providers'
   );
@@ -120,14 +148,38 @@ export function ComposerModelControl(props: {
         ? props.modelSelection
         : null;
   const catalogCurrentModel = catalogModelSelection?.model ?? null;
+  const catalogActiveModel =
+    catalogProvider === activeProvider ? catalogCurrentModel : null;
   const options = useMemo(
     () =>
+      props.modelOptionsOverride ??
       resolveLynxProviderModelOptions({
         provider: catalogProvider,
-        currentModel: catalogCurrentModel,
+        currentModel: catalogActiveModel,
         dynamicModels: props.runtimeModels,
       }),
-    [catalogCurrentModel, catalogProvider, props.runtimeModels]
+    [
+      catalogActiveModel,
+      catalogProvider,
+      props.modelOptionsOverride,
+      props.runtimeModels,
+    ]
+  );
+  const shouldShowModelSearch =
+    (catalogProvider === 'kilo' ||
+      catalogProvider === 'opencode' ||
+      catalogProvider === 'cursor' ||
+      catalogProvider === 'pi') &&
+    options.length >= SEARCHABLE_MODEL_PICKER_THRESHOLD;
+  const normalizedModelSearchQuery = modelSearchQuery.trim().toLowerCase();
+  const filteredOptions = useMemo(
+    () =>
+      shouldShowModelSearch && normalizedModelSearchQuery.length > 0
+        ? options.filter((option) =>
+            buildModelSearchText(option).includes(normalizedModelSearchQuery)
+          )
+        : options,
+    [normalizedModelSearchQuery, options, shouldShowModelSearch]
   );
   const [favoriteModelSlugsByProvider, setFavoriteModelSlugsByProvider] =
     useState<Record<FavoriteModelProvider, ReadonlyArray<string>>>(() => ({
@@ -158,11 +210,11 @@ export function ComposerModelControl(props: {
     () =>
       favoriteModelSlugSet
         ? groupProviderModelOptionsWithFavorites({
-            options,
+            options: filteredOptions,
             favoriteSlugs: favoriteModelSlugSet,
           })
-        : groupProviderModelOptions(options),
-    [favoriteModelSlugSet, options]
+        : groupProviderModelOptions(filteredOptions),
+    [favoriteModelSlugSet, filteredOptions]
   );
   const modelLabel =
     (catalogProvider === activeProvider
@@ -225,6 +277,9 @@ export function ComposerModelControl(props: {
     panel,
     modelsLoading: props.modelsLoading,
   });
+  const useSinglePanelModelNavigation =
+    viewport.compact ||
+    (viewport.height > 0 && viewport.height < VIEWPORT_HEIGHT_BREAKPOINTS.short);
 
   function selectPrimaryTrait(value: string) {
     'background only';
@@ -276,7 +331,15 @@ export function ComposerModelControl(props: {
     'background only';
     if (next) {
       setPanel('providers');
+      setModelSearchQuery('');
       props.onCatalogProviderChange(activeProvider);
+      setSubmenuProvider(
+        (props.initialSubmenuOpen ?? initData.initialComposerModelSubmenuOpen === true)
+          ? activeProvider
+          : null
+      );
+    } else {
+      setSubmenuProvider(null);
     }
     setModelOpen(next);
   }
@@ -331,111 +394,235 @@ export function ComposerModelControl(props: {
     );
   }
 
+  function renderModelCatalog(onSelectionComplete: () => void) {
+    if (props.modelsLoading) {
+      return (
+        <view className="ComposerModelLoadingLynx" aria-label="Loading models" role="status">
+          {Array.from({ length: 6 }, (_, index) => (
+            <view key={index} className="ComposerModelLoadingRowLynx">
+              <view className="ComposerModelLoadingDotLynx" />
+              <view
+                className={`ComposerModelLoadingLineLynx${
+                  index % 3 === 0 ? ' ComposerModelLoadingLineLynx--short' : ''
+                }`}
+              />
+            </view>
+          ))}
+        </view>
+      );
+    }
+    const list = groupedOptions.length > 0 ? (
+      <ProviderModelOptionGroupListComposition
+        groupedOptions={groupedOptions}
+        provider={catalogProvider}
+        activeModel={catalogActiveModel ?? ''}
+        isSearching={normalizedModelSearchQuery.length > 0}
+        favoriteProvider={favoriteProvider}
+        favoriteModelSlugSet={favoriteModelSlugSet}
+        onToggleFavorite={toggleFavoriteModel}
+        onSelectModel={(nextModel) => {
+          props.onModelSelectionChange(
+            buildModelSelection(
+              catalogProvider,
+              nextModel,
+              catalogModelSelection?.options
+            )
+          );
+          onSelectionComplete();
+        }}
+      />
+    ) : (
+      <text className="ComposerModelEmptyLynx">
+        {catalogProvider === 'pi' && normalizedModelSearchQuery.length === 0
+          ? 'No Pi models found'
+          : 'No matches'}
+      </text>
+    );
+    return shouldShowModelSearch ? (
+      <view className="ComposerModelSearchPanelLynx">
+        <view className="ComposerModelSearchHeaderLynx">
+          <SearchIcon className="ComposerModelSearchIconLynx" size={14} />
+          <Input
+            nativeInput
+            className="ComposerModelSearchInputLynx"
+            aria-label="Search models or providers"
+            placeholder="Search models or providers"
+            value={modelSearchQuery}
+            onChange={(event) => setModelSearchQuery(event.target.value)}
+          />
+        </view>
+        <view className="ComposerModelSearchResultsLynx">{list}</view>
+      </view>
+    ) : list;
+  }
+
+  function renderProviderList() {
+    return (
+      <scroll-view
+        className="ComposerProviderOptionListLynx"
+        scroll-orientation="vertical"
+      >
+        {providerItems.map((item) => (
+          <ComposerProviderOptionElement
+            key={item.provider}
+            item={item}
+            onSelect={() => {
+              'background only';
+              setModelSearchQuery('');
+              props.onCatalogProviderChange(item.provider);
+              setPanel('models');
+            }}
+          />
+        ))}
+      </scroll-view>
+    );
+  }
+
+  function renderProviderSubmenuList() {
+    const unavailableStart = providerItems.findIndex(
+      (item) => item.kind === 'coming-soon'
+    );
+    return (
+      <view className="ComposerProviderSubmenuListLynx">
+        {providerItems.map((item, index) => (
+          <view key={item.provider} className="ComposerProviderMenuEntryLynx">
+            {index === unavailableStart && unavailableStart > 0 ? (
+              <MenuSeparator />
+            ) : null}
+            {item.disabled ? (
+              <ComposerProviderOptionElement item={item} onSelect={() => {}} />
+            ) : (
+              <MenuSub
+                open={submenuProvider === item.provider}
+                onOpenChange={(open) =>
+                  setSubmenuProvider(open ? item.provider : null)
+                }
+              >
+                <MenuSubTrigger
+                  className="ComposerProviderSubTriggerLynx"
+                  onOpen={() => {
+                    setModelSearchQuery('');
+                    props.onCatalogProviderChange(item.provider);
+                    setSubmenuProvider(item.provider);
+                  }}
+                >
+                  <view className="ComposerProviderSubTriggerContentLynx">
+                    <OpenAIProviderIcon provider={item.provider} />
+                    <text className="ComposerProviderSubTriggerLabelLynx">
+                      {item.label}
+                    </text>
+                  </view>
+                </MenuSubTrigger>
+                <MenuSubPopup
+                  align="start"
+                  side="left"
+                  portaled
+                  className="ComposerModelSubPopupLynx"
+                >
+                  {catalogProvider === item.provider
+                    ? renderModelCatalog(() => {
+                        setModelOpen(false);
+                        setPanel('providers');
+                      })
+                    : null}
+                </MenuSubPopup>
+              </MenuSub>
+            )}
+          </view>
+        ))}
+      </view>
+    );
+  }
+
   return (
     <view className="ComposerModelControlLynx">
       <Menu open={modelOpen} onOpenChange={setPopupOpen}>
         <MenuTrigger
-          className="ComposerModelTriggerLynx"
+          className={`ComposerModelTriggerLynx${props.disabled ? ' ComposerModelTriggerLynx--disabled' : ''}`}
           ariaLabel="Choose model"
+          disabled={props.disabled}
         >
           <ComposerModelTriggerComposition
             provider={activeProvider}
             modelLabel={modelLabel}
             statusLabel={props.splitTraits ? null : effortLabel}
             showFastBadge={!props.splitTraits && traitSelection.fastModeEnabled}
-            hideModelLabel={false}
-            hideStatusLabel={props.splitTraits ?? false}
+            hideModelLabel={props.compact ?? false}
+            hideStatusLabel={(props.splitTraits ?? false) || (props.compact ?? false)}
           />
         </MenuTrigger>
         <MenuPopup
-          className="ComposerModelPopupLynx"
+          className={`ComposerModelPopupLynx${
+            props.splitTraits &&
+            useSinglePanelModelNavigation &&
+            popupContent !== 'providers'
+              ? ' ComposerModelPopupLynx--models'
+              : ''
+          }`}
           side="top"
           align="end"
           sideOffset={6}
         >
-          {popupContent === 'providers' ? (
-            <scroll-view
-              className="ComposerProviderOptionListLynx"
-              scroll-orientation="vertical"
-            >
-              {props.splitTraits
-                ? null
-                : renderTraitSections(() => setModelOpen(false))}
-              {providerItems.map((item) => (
-                <ComposerProviderOptionElement
-                  key={item.provider}
-                  item={item}
-                  onSelect={() => {
-                    'background only';
-                    props.onCatalogProviderChange(item.provider);
-                    setPanel('models');
-                  }}
-                />
-              ))}
-            </scroll-view>
-          ) : (
-            <>
-              <view
-                className={providerBackInteraction.className}
-                aria-label="Back to providers"
-                {...providerBackInteraction.eventProps}
-              >
-                <ArrowLeftIcon
-                  className="ComposerProviderBackIconLynx"
-                  size={14}
-                />
-                <text className="ComposerProviderBackLabelLynx">
-                  Providers
-                </text>
-              </view>
-              {popupContent === 'loading' ? (
-                <view
-                  className="ComposerModelLoadingLynx"
-                  aria-label="Loading models"
-                  role="status"
-                >
-                  {Array.from({ length: 6 }, (_, index) => (
-                    <view
-                      key={index}
-                      className="ComposerModelLoadingRowLynx"
-                    >
-                      <view className="ComposerModelLoadingDotLynx" />
-                      <view
-                        className={`ComposerModelLoadingLineLynx${
-                          index % 3 === 0
-                            ? ' ComposerModelLoadingLineLynx--short'
-                            : ''
-                        }`}
-                      />
-                    </view>
-                  ))}
-                </view>
-              ) : (
-                <ProviderModelOptionGroupListComposition
-                  groupedOptions={groupedOptions}
-                  provider={catalogProvider}
-                  activeModel={
-                    catalogModelSelection?.model ?? ''
+          {props.splitTraits && !useSinglePanelModelNavigation ? (
+            renderProviderSubmenuList()
+          ) : popupContent === 'providers' ? (
+            props.splitTraits ? (
+              renderProviderList()
+            ) : (
+              <view className="ComposerModelEffortMenuLynx">
+                {renderTraitSections(() => setModelOpen(false))}
+                <MenuSeparator className="ComposerModelEffortSeparatorLynx" />
+                <MenuSub
+                  defaultOpen={
+                    (props.initialSubmenuOpen ?? initData.initialComposerModelSubmenuOpen === true)
                   }
-                  isSearching={false}
-                  favoriteProvider={favoriteProvider}
-                  favoriteModelSlugSet={favoriteModelSlugSet}
-                  onToggleFavorite={toggleFavoriteModel}
-                  onSelectModel={(nextModel) => {
-                    props.onModelSelectionChange(
-                      buildModelSelection(
-                        catalogProvider,
-                        nextModel,
-                        catalogModelSelection?.options
-                      )
-                    );
-                    setModelOpen(false);
-                    setPanel('providers');
-                  }}
-                />
-              )}
-            </>
-          )}
+                >
+                    <MenuSubTrigger className="ComposerModelSubTriggerLynx">
+                      <view className="ComposerModelSubTriggerContentLynx">
+                        <OpenAIProviderIcon provider={activeProvider} />
+                        <text className="ComposerModelSubTriggerLabelLynx">
+                          {modelLabel}
+                        </text>
+                      </view>
+                    </MenuSubTrigger>
+                    <MenuSubPopup
+                      align="end"
+                      className="ComposerModelSubPopupLynx"
+                    >
+                      {renderModelCatalog(() => {
+                        setModelOpen(false);
+                        setPanel('providers');
+                      })}
+                    </MenuSubPopup>
+                </MenuSub>
+              </view>
+            )
+          ) : useSinglePanelModelNavigation ? (
+            <view className="ComposerModelBrowserLynx">
+              <view className="ComposerModelCatalogPaneLynx">
+                <view
+                  className={providerBackInteraction.className}
+                  aria-label="Back to providers"
+                  {...providerBackInteraction.eventProps}
+                >
+                  <ArrowLeftIcon
+                    className="ComposerProviderBackIconLynx"
+                    size={14}
+                  />
+                  <text className="ComposerProviderBackLabelLynx">
+                    Providers
+                  </text>
+                </view>
+                {renderModelCatalog(() => {
+                  setModelOpen(false);
+                  setPanel('providers');
+                })}
+              </view>
+              <view className="ComposerModelProviderPaneLynx">
+                {renderProviderList()}
+              </view>
+            </view>
+          ) : null}
         </MenuPopup>
       </Menu>
       {props.splitTraits && effortLabel ? (
@@ -450,7 +637,7 @@ export function ComposerModelControl(props: {
                 className="ComposerTraitsTriggerFastLynx"
                 content={colorizeLynxSvg(
                   fastModeSvg,
-                  svgColors.mutedForeground
+                  semanticIconColor('secondary')
                 )}
               />
             ) : null}

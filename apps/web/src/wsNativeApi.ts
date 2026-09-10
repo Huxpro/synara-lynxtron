@@ -634,6 +634,7 @@ export function createWsNativeApi(): NativeApi {
         return requestVoiceTranscriptionUpload(input);
       },
       upsertKeybinding: (input) => transport.request(WS_METHODS.serverUpsertKeybinding, input),
+      removeKeybinding: (input) => transport.request(WS_METHODS.serverRemoveKeybinding, input),
     },
     stats: {
       getProfileStats: (input) => transport.request(WS_METHODS.statsGetProfileStats, input),

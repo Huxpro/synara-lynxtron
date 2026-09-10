@@ -60,6 +60,54 @@
       "types": "./src/desktopIdentity.ts",
       "import": "./src/desktopIdentity.ts"
     },
+    "./threadHeaderActions": {
+      "types": "./src/threadHeaderActions.ts",
+      "import": "./src/threadHeaderActions.ts"
+    },
+    "./threadHeaderIdentity": {
+      "types": "./src/threadHeaderIdentity.ts",
+      "import": "./src/threadHeaderIdentity.ts"
+    },
+    "./projectActionScripts": {
+      "types": "./src/projectActionScripts.ts",
+      "import": "./src/projectActionScripts.ts"
+    },
+    "./rightDock": {
+      "types": "./src/rightDock.ts",
+      "import": "./src/rightDock.ts"
+    },
+    "./contextMenu": {
+      "types": "./src/contextMenu.ts",
+      "import": "./src/contextMenu.ts"
+    },
+    "./spacePresentation": {
+      "types": "./src/spacePresentation.ts",
+      "import": "./src/spacePresentation.ts"
+    },
+    "./spaceActivity": {
+      "types": "./src/spaceActivity.ts",
+      "import": "./src/spaceActivity.ts"
+    },
+    "./spaceProjectPicker": {
+      "types": "./src/spaceProjectPicker.ts",
+      "import": "./src/spaceProjectPicker.ts"
+    },
+    "./projectThreadArchive": {
+      "types": "./src/projectThreadArchive.ts",
+      "import": "./src/projectThreadArchive.ts"
+    },
+    "./filePreviewBreadcrumb": {
+      "types": "./src/filePreviewBreadcrumb.ts",
+      "import": "./src/filePreviewBreadcrumb.ts"
+    },
+    "./fileContextMenu": {
+      "types": "./src/fileContextMenu.ts",
+      "import": "./src/fileContextMenu.ts"
+    },
+    "./pathTree": {
+      "types": "./src/pathTree.ts",
+      "import": "./src/pathTree.ts"
+    },
     "./Net": {
       "types": "./src/Net.ts",
       "import": "./src/Net.ts"
@@ -108,6 +156,10 @@
       "types": "./src/terminalThreads.ts",
       "import": "./src/terminalThreads.ts"
     },
+    "./terminalTextProjection": {
+      "types": "./src/terminalTextProjection.ts",
+      "import": "./src/terminalTextProjection.ts"
+    },
     "./threadEnvironment": {
       "types": "./src/threadEnvironment.ts",
       "import": "./src/threadEnvironment.ts"
@@ -127,6 +179,10 @@
     "./threadMarkers": {
       "types": "./src/threadMarkers.ts",
       "import": "./src/threadMarkers.ts"
+    },
+    "./selectionActionLayout": {
+      "types": "./src/selectionActionLayout.ts",
+      "import": "./src/selectionActionLayout.ts"
     },
     "./threadWorkspace": {
       "types": "./src/threadWorkspace.ts",
@@ -180,6 +236,10 @@
       "types": "./src/composerSlashCommands.ts",
       "import": "./src/composerSlashCommands.ts"
     },
+    "./composerPlaceholder": {
+      "types": "./src/composerPlaceholder.ts",
+      "import": "./src/composerPlaceholder.ts"
+    },
     "./threadExport": {
       "types": "./src/threadExport.ts",
       "import": "./src/threadExport.ts"
@@ -232,6 +292,10 @@
       "types": "./src/commandNavigation.ts",
       "import": "./src/commandNavigation.ts"
     },
+    "./feedbackDelivery": {
+      "types": "./src/feedbackDelivery.ts",
+      "import": "./src/feedbackDelivery.ts"
+    },
     "./workspaceExplorer": {
       "types": "./src/workspaceExplorer.ts",
       "import": "./src/workspaceExplorer.ts"
@@ -239,6 +303,30 @@
     "./automationList": {
       "types": "./src/automationList.ts",
       "import": "./src/automationList.ts"
+    },
+    "./componentLab": {
+      "types": "./src/componentLab.ts",
+      "import": "./src/componentLab.ts"
+    },
+    "./componentLabFixtures": {
+      "types": "./src/componentLabFixtures.ts",
+      "import": "./src/componentLabFixtures.ts"
+    },
+    "./timePicker": {
+      "types": "./src/timePicker.ts",
+      "import": "./src/timePicker.ts"
+    },
+    "./semanticIconTone": {
+      "types": "./src/semanticIconTone.ts",
+      "import": "./src/semanticIconTone.ts"
+    },
+    "./pdfZoom": {
+      "types": "./src/pdfZoom.ts",
+      "import": "./src/pdfZoom.ts"
+    },
+    "./composerVoice": {
+      "types": "./src/composerVoice.ts",
+      "import": "./src/composerVoice.ts"
     }
   },
   "scripts": {

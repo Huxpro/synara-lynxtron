@@ -2,7 +2,9 @@ import { useState } from '@lynx-js/react';
 
 export function ExplorerPdfPageImage(props: {
   readonly accessibilityLabel: string;
+  readonly height: number;
   readonly pageUrl: string;
+  readonly width: number;
 }) {
   const [renderFailed, setRenderFailed] = useState(false);
   if (renderFailed) {
@@ -18,7 +20,8 @@ export function ExplorerPdfPageImage(props: {
     <image
       className="ExplorerDockPdfPageImage"
       src={props.pageUrl}
-      mode="aspectFit"
+      mode="scaleToFill"
+      style={{ width: `${props.width}px`, height: `${props.height}px` }}
       accessibility-element={true}
       accessibility-label={props.accessibilityLabel}
       binderror={() => {

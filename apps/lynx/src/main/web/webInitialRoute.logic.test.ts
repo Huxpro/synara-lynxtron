@@ -13,6 +13,11 @@ describe('Lynx-for-Web initial route harness', () => {
     );
     expect(resolveWebInitialRoute('?route=%2Fplugins')).toBe('/plugins');
     expect(
+      resolveWebInitialRoute(
+        '?route=%2Fcomponents-lab%3Fstory%3Deditor-rail%252Fadd-menu%26state%3Dopen%26embed%3D1'
+      )
+    ).toBe('/components-lab?story=editor-rail%2Fadd-menu&state=open&embed=1');
+    expect(
       resolveWebInitialRoute('?route=%2Fautomations%2Fautomation%253A1')
     ).toBe('/automations/automation%3A1');
     expect(resolveWebInitialRoute('?route=%2Fsettings%2Fappearance')).toBe(

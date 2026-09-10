@@ -5,6 +5,7 @@
 // Exports: showFileReferenceContextMenu
 
 import { formatSelectionLabel, type ChatFileReference } from "~/lib/chatReferences";
+import { buildFileContextMenuItems } from "@synara/shared/fileContextMenu";
 import { readNativeApi } from "~/nativeApi";
 
 import { clipboard } from "~/platform/clipboard";
@@ -30,29 +31,16 @@ export async function showFileReferenceContextMenu(input: {
   const rangeLabel = formatSelectionLabel(reference);
   const hasSnippet = typeof reference.snippet === "string" && reference.snippet.trim().length > 0;
   const clicked = await api.contextMenu.show(
-    [
-      ...(input.onReferenceInChat
-        ? [
-            {
-              id: "reference-in-chat" as const,
-              label: rangeLabel
-                ? `Reference ${rangeLabel} in chat`
-                : hasSnippet
-                  ? "Reference selection in chat"
-                  : "Reference in chat",
-            },
-          ]
-        : []),
-      ...(input.onAskWhyInChat
-        ? [
-            {
-              id: "ask-why-in-chat" as const,
-              label: rangeLabel ? `Ask why ${rangeLabel} changed` : "Ask why this changed",
-            },
-          ]
-        : []),
-      { id: "copy-path" as const, label: "Copy path" },
-    ],
+    buildFileContextMenuItems({
+      referenceAvailable: Boolean(input.onReferenceInChat),
+      askWhyAvailable: Boolean(input.onAskWhyInChat),
+      referenceLabel: rangeLabel
+        ? `Reference ${rangeLabel} in chat`
+        : hasSnippet
+          ? "Reference selection in chat"
+          : "Reference in chat",
+      askWhyLabel: rangeLabel ? `Ask why ${rangeLabel} changed` : "Ask why this changed",
+    }),
     input.position,
   );
   if (clicked === "reference-in-chat") {

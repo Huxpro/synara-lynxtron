@@ -92,7 +92,7 @@ describe('Lynx interactive state adapter', () => {
       /bindmouseenter:[\s\S]*?setHovered\(true\);[\s\S]*?options\.onIntent\?\.\(\);[\s\S]*?bindmouseleave:/
     );
     expect(source).toMatch(
-      /bindfocus:[\s\S]*?setFocused\(true\);[\s\S]*?options\.onIntent\?\.\(\);[\s\S]*?bindblur:/
+      /bindfocus:[\s\S]*?setFocused\([\s\S]*?options\.onIntent\?\.\(\);[\s\S]*?bindblur:/
     );
   });
 
@@ -108,20 +108,20 @@ describe('Lynx interactive state adapter', () => {
     ).toEqual({
       'accessibility-element': true,
       'accessibility-label': 'Open settings',
-      'accessibility-traits': 'button',
+      'accessibility-trait': 'button',
       'accessibility-value': 'Current page',
     });
     expect(lynxInteractiveAccessibilityProps({})).toEqual({
       'accessibility-element': undefined,
       'accessibility-label': undefined,
-      'accessibility-traits': undefined,
+      'accessibility-trait': undefined,
       'accessibility-value': undefined,
     });
     expect(
       lynxInteractiveAccessibilityProps({ onActivate })
     ).toMatchObject({
       'accessibility-element': true,
-      'accessibility-traits': 'button',
+      'accessibility-trait': 'button',
     });
     expect(
       lynxInteractiveAccessibilityProps({
@@ -129,7 +129,7 @@ describe('Lynx interactive state adapter', () => {
       })
     ).toMatchObject({
       'accessibility-element': true,
-      'accessibility-traits': 'button',
+      'accessibility-trait': 'button',
     });
   });
 
@@ -144,7 +144,7 @@ describe('Lynx interactive state adapter', () => {
     ).toMatchObject({
       'accessibility-element': false,
       'accessibility-label': 'Open documentation',
-      'accessibility-traits': 'link',
+      'accessibility-trait': 'link',
     });
   });
 
@@ -159,7 +159,7 @@ describe('Lynx interactive state adapter', () => {
     const nested = lynxNestedInteractiveEventProps({
       'accessibility-element': true,
       'accessibility-label': 'Nested action',
-      'accessibility-traits': 'button',
+      'accessibility-trait': 'button',
       'accessibility-value': undefined,
       focusable: true,
       'aria-disabled': false,
@@ -186,7 +186,7 @@ describe('Lynx interactive state adapter', () => {
       bindkeydown: onKeyDown,
       'accessibility-element': true,
       'accessibility-label': 'Nested action',
-      'accessibility-traits': 'button',
+      'accessibility-trait': 'button',
     });
     expect('bindmousedown' in nested).toBe(false);
     expect('bindtouchstart' in nested).toBe(false);

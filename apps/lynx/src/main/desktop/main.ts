@@ -23,11 +23,15 @@ import {
   registerAppSnapPickedImage,
 } from './hostServices';
 import { resolveSynaraWsUrl } from './runtimeEndpoint.logic';
+import { fetchEditorIconDataUrl } from './editorIcon';
 import path from 'path';
 import {
   appendShellLog,
   buildSynaraRelaunchArguments,
   buildSearchNavigationMenuItems,
+  buildTerminalInputMenuItems,
+  buildTerminalSearchMenuItems,
+  buildTerminalSearchNavigationMenuItems,
   INITIAL_SHELL_ROUTE_DELIVERY_STATE,
   dispatchRendererGlobalEvent,
   migrateLegacyShellFiles,
@@ -42,6 +46,8 @@ import {
   resolveShellPaths,
   resolveShellUserDataDir,
   resolveShellWindowPresentation,
+  SHELL_WINDOW_MIN_HEIGHT,
+  SHELL_WINDOW_MIN_WIDTH,
   shouldAcquireShellSingleInstanceLock,
   type ShellRouteDeliveryState,
   type ShellWindowState,
@@ -70,14 +76,33 @@ import type {
   DesktopAppSnapErrorEvent,
   DesktopAppSnapState,
 } from '@synara/contracts';
+import { SYSTEM_APPEARANCE_EVENT } from '../systemAppearanceEvent.logic';
+import {
+  createSystemAppearanceWatcher,
+  parseSystemAppearanceProbeSequence,
+  readMacSystemDark,
+} from './systemAppearance';
+import {
+  createSearchKeyMonitor,
+  terminalInputDataForSearchKeyEvent,
+} from './searchKeyMonitor';
+import { createBrowserViewHost } from './browserViewProbe';
+import { createNativeVoiceRecorder } from './voiceRecorder';
 const isDev = process.env.NODE_ENV === 'development';
 const isDevtoolEnabled =
   isDev || process.env.SYNARA_ENABLE_DEVTOOL === '1';
 const isBackgroundLaunch =
   process.env.SYNARA_BACKGROUND_LAUNCH === '1';
+const ignoreRendererUiReadyForProbe =
+  process.env.SYNARA_UI_READY_PROBE_IGNORE_ACK === '1';
+const rendererUiReadyTimeoutMs = Math.max(
+  1,
+  Number(process.env.SYNARA_UI_READY_TIMEOUT_MS) || 15_000
+);
 const hostInputProbeReportPath =
   process.env.SYNARA_HOST_INPUT_PROBE_REPORT?.trim() || null;
 const TERMINAL_EVENT = 'synara:terminal-event';
+const ORCHESTRATION_SHELL_EVENT = 'synara:orchestration-shell-event';
 const APPSNAP_CAPTURE_EVENT = 'synara:appsnap-captured';
 const APPSNAP_ERROR_EVENT = 'synara:appsnap-error';
 const APPSNAP_STATE_EVENT = 'synara:appsnap-state';
@@ -88,11 +113,62 @@ const nativeLynxtron = require('lynxtron') as {
 
 let mainWindow: LynxWindow | null = null;
 let searchNavigationEnabled = false;
+let terminalInputOwner: string | null = null;
+let terminalSelectionOwner: string | null = null;
+let terminalSelectionText = '';
+let composerInputOwner: string | null = null;
+let terminalSearchEnabled = false;
+let terminalSearchNavigationEnabled = false;
+let suppressMenuDismissEscapeUntil = 0;
 let routeDeliveryState: ShellRouteDeliveryState =
   INITIAL_SHELL_ROUTE_DELIVERY_STATE;
 let rendererRoute: string | null = null;
+let rendererRelaunchUrl: string | null = null;
 let viewportProbeStarted = false;
+let systemAppearanceProbeStarted = false;
 let relaunchRequested = false;
+let rendererUiReadyStartedAt = 0;
+let rendererUiReadyTimer: ReturnType<typeof setTimeout> | null = null;
+let systemAppearanceWatcher: ReturnType<
+  typeof createSystemAppearanceWatcher
+> | null = null;
+let searchKeyMonitor: ReturnType<typeof createSearchKeyMonitor> | null = null;
+let browserViewHost: ReturnType<typeof createBrowserViewHost> | null = null;
+let voiceRecorder: ReturnType<typeof createNativeVoiceRecorder> | null = null;
+const systemAppearanceProbeSequence = parseSystemAppearanceProbeSequence(
+  process.env.SYNARA_SYSTEM_APPEARANCE_PROBE_SEQUENCE
+);
+const systemAppearanceProbeIntervalMs = Math.max(
+  100,
+  Number(process.env.SYNARA_SYSTEM_APPEARANCE_PROBE_INTERVAL_MS) || 30_000
+);
+let systemAppearanceProbeIndex = 0;
+const systemAppearanceProbeTimers: Array<ReturnType<typeof setTimeout>> = [];
+
+function readCurrentSystemDark(): boolean {
+  return (
+    systemAppearanceProbeSequence[systemAppearanceProbeIndex] ??
+    readMacSystemDark()
+  );
+}
+
+function startSystemAppearanceProbe(w: LynxWindow, logFile: string): void {
+  if (systemAppearanceProbeStarted || systemAppearanceProbeSequence.length < 2)
+    return;
+  systemAppearanceProbeStarted = true;
+  systemAppearanceProbeSequence.slice(1).forEach((dark, index) => {
+    const timer = setTimeout(() => {
+      if (w.isDestroyed()) return;
+      systemAppearanceProbeIndex = index + 1;
+      dispatchShellEvent(SYSTEM_APPEARANCE_EVENT, dark);
+      appendShellLog(
+        logFile,
+        `system appearance probe step=${index + 1} dark=${dark}`
+      );
+    }, systemAppearanceProbeIntervalMs * (index + 1));
+    systemAppearanceProbeTimers.push(timer);
+  });
+}
 
 function startViewportProbe(w: LynxWindow): void {
   if (viewportProbeStarted) return;
@@ -234,6 +310,24 @@ function initDataFromArguments(argv: readonly string[]) {
 }
 
 function loadLynxBundle(w: LynxWindow): void {
+  if (
+    searchNavigationEnabled ||
+    terminalInputOwner !== null ||
+    terminalSelectionOwner !== null ||
+    composerInputOwner !== null ||
+    terminalSearchEnabled ||
+    terminalSearchNavigationEnabled
+  ) {
+    searchKeyMonitor?.setMode('disabled');
+    searchNavigationEnabled = false;
+    terminalInputOwner = null;
+    terminalSelectionOwner = null;
+    terminalSelectionText = '';
+    composerInputOwner = null;
+    terminalSearchEnabled = false;
+    terminalSearchNavigationEnabled = false;
+    installApplicationMenu(w);
+  }
   const startupInitData = initDataFromArguments(process.argv);
   const route =
     rendererRoute ??
@@ -253,22 +347,55 @@ function loadLynxBundle(w: LynxWindow): void {
     data: {
       ...(startupInitData ?? {}),
       initialRoute: route,
+      initialSystemDark: readCurrentSystemDark(),
     },
   };
+  if (rendererUiReadyTimer) clearTimeout(rendererUiReadyTimer);
+  rendererUiReadyStartedAt = Date.now();
+  const shellLogFile = resolveShellPaths(
+    resolveShellUserDataDir(
+      app.getPath('userData'),
+      process.env.SYNARA_LYNX_USER_DATA_DIR
+    ),
+  ).logFile;
+  rendererUiReadyTimer = setTimeout(() => {
+    rendererUiReadyTimer = null;
+    appendShellLog(
+      shellLogFile,
+      'renderer ui ready timeout route=' +
+        (route ?? '/') +
+        ' elapsedMs=' +
+        String(Date.now() - rendererUiReadyStartedAt),
+    );
+    if (isBackgroundLaunch || w.isDestroyed()) return;
+    void dialog
+      .showMessageBox(w, {
+        type: 'error',
+        title: 'Synara could not finish starting',
+        message: 'The interface did not become ready.',
+        detail: 'Reload Synara to try again. If this keeps happening, check the desktop log for the renderer ui ready timeout entry.',
+        buttons: ['Reload', 'Quit'],
+        defaultId: 0,
+        cancelId: 1,
+      })
+      .then(({ response }) => {
+        if (response === 0) relaunchApp();
+        else app.quit();
+      })
+      .catch((error) =>
+        appendShellLog(
+          shellLogFile,
+          'renderer ui ready dialog failed error=' +
+            (error instanceof Error ? error.message : String(error)),
+        ),
+      );
+  }, rendererUiReadyTimeoutMs);
   if (isDev) {
     w.loadURL('http://localhost:5971/main.lynx.bundle', loadOptions);
   } else {
     w.loadFile(LYNX_BUNDLE_PATH, loadOptions);
   }
-  appendShellLog(
-    resolveShellPaths(
-      resolveShellUserDataDir(
-        app.getPath('userData'),
-        process.env.SYNARA_LYNX_USER_DATA_DIR
-      )
-    ).logFile,
-    `renderer reload requested route=${route ?? '/'}`
-  );
+  appendShellLog(shellLogFile, 'renderer reload requested route=' + (route ?? '/'));
 }
 
 function relaunchApp(): void {
@@ -294,14 +421,19 @@ function relaunchApp(): void {
       process.env.SYNARA_LYNX_USER_DATA_DIR
     )
   ).logFile;
-  const args = buildSynaraRelaunchArguments(process.argv, __dirname, route);
+  const args = buildSynaraRelaunchArguments(
+    process.argv,
+    __dirname,
+    route,
+    rendererRelaunchUrl
+  );
   if (acquireSingleInstanceLock) {
     app.releaseSingleInstanceLock();
   }
   let replacement: ReturnType<typeof spawn>;
   try {
     replacement = spawn(process.execPath, args, {
-      detached: true,
+      detached: process.env.SYNARA_MANAGED_RELAUNCH !== '1',
       env: process.env,
       stdio: 'ignore',
     });
@@ -373,40 +505,78 @@ function installApplicationMenu(w: LynxWindow): void {
     {
       label: 'Edit',
       submenu: [
-        {
-          label: 'Undo',
-          accelerator: 'CmdOrCtrl+Z',
-          click: () => w.sendGlobalEvent('composer:undo'),
-        },
-        {
-          label: 'Redo',
-          accelerator: 'CmdOrCtrl+Shift+Z',
-          click: () => w.sendGlobalEvent('composer:redo'),
-        },
+        composerInputOwner !== null
+          ? {
+              label: 'Undo',
+              accelerator: 'CmdOrCtrl+Z',
+              click: () => w.sendGlobalEvent('composer:undo'),
+            }
+          : { role: 'undo' },
+        composerInputOwner !== null
+          ? {
+              label: 'Redo',
+              accelerator: 'CmdOrCtrl+Shift+Z',
+              click: () => w.sendGlobalEvent('composer:redo'),
+            }
+          : { role: 'redo' },
         { type: 'separator' },
-        {
-          label: 'Cut',
-          accelerator: 'CmdOrCtrl+X',
-          click: () => w.sendGlobalEvent('composer:cut'),
-        },
-        {
-          label: 'Copy',
-          accelerator: 'CmdOrCtrl+C',
-          click: () => w.sendGlobalEvent('composer:copy'),
-        },
-        {
-          label: 'Paste',
-          accelerator: 'CmdOrCtrl+V',
-          click: () => {
-            const text = clipboard.readText();
-            if (text) w.sendGlobalEvent('composer:paste-text', { text });
-          },
-        },
-        {
-          label: 'Select All',
-          accelerator: 'CmdOrCtrl+A',
-          click: () => w.sendGlobalEvent('composer:select-all'),
-        },
+        composerInputOwner !== null
+          ? {
+              label: 'Cut',
+              accelerator: 'CmdOrCtrl+X',
+              click: () => w.sendGlobalEvent('composer:cut'),
+            }
+          : { role: 'cut' },
+        terminalSelectionOwner !== null
+          ? {
+              label: 'Copy',
+              accelerator: 'CmdOrCtrl+C',
+              click: () => {
+                if (terminalSelectionText) clipboard.writeText(terminalSelectionText);
+                else dispatchShellEvent('terminal:copy-selection');
+              },
+            }
+          : composerInputOwner !== null
+            ? {
+                label: 'Copy',
+                accelerator: 'CmdOrCtrl+C',
+                click: () => dispatchShellEvent('composer:copy'),
+              }
+            : { role: 'copy' },
+        terminalInputOwner !== null
+          ? {
+              label: 'Paste',
+              accelerator: 'CmdOrCtrl+V',
+              click: () => {
+                const text = clipboard.readText();
+                if (text) dispatchShellEvent('terminal:input-key', { data: text });
+              },
+            }
+          : composerInputOwner !== null
+            ? {
+                label: 'Paste',
+                accelerator: 'CmdOrCtrl+V',
+                click: () => {
+                  const text = clipboard.readText();
+                  if (text) w.sendGlobalEvent('composer:paste-text', { text });
+                },
+              }
+            : { role: 'paste' },
+        { role: 'selectAll' },
+        ...buildTerminalSearchMenuItems(terminalSearchEnabled, () =>
+          dispatchShellEvent('terminal:search')
+        ),
+        ...buildTerminalSearchNavigationMenuItems(
+          terminalSearchNavigationEnabled && !searchNavigationEnabled,
+          (event) => dispatchShellEvent('terminal:search-key', event)
+        ),
+        ...buildTerminalInputMenuItems(
+          terminalInputOwner !== null &&
+            !searchNavigationEnabled &&
+            !terminalSearchNavigationEnabled,
+          process.platform === 'darwin',
+          (data) => dispatchShellEvent('terminal:input-key', { data })
+        ),
       ],
     },
     {
@@ -455,6 +625,11 @@ function installApplicationMenu(w: LynxWindow): void {
           label: 'Pull Requests',
           accelerator: 'CmdOrCtrl+3',
           click: () => dispatchRoute('/pull-requests'),
+        },
+        { type: 'separator' },
+        {
+          label: 'Components Lab…',
+          click: () => dispatchRoute('/components-lab'),
         },
         { type: 'separator' },
         {
@@ -585,8 +760,8 @@ app.whenReady().then(() => {
   const windowPresentation = resolveShellWindowPresentation(isBackgroundLaunch);
   const w = new LynxWindow({
     ...bounds,
-    minWidth: 900,
-    minHeight: 650,
+    minWidth: SHELL_WINDOW_MIN_WIDTH,
+    minHeight: SHELL_WINDOW_MIN_HEIGHT,
     center: false,
     show: windowPresentation.showOnCreate,
     title: 'Synara',
@@ -596,6 +771,55 @@ app.whenReady().then(() => {
     },
   });
   mainWindow = w;
+  searchKeyMonitor?.dispose();
+  searchKeyMonitor = createSearchKeyMonitor({
+    nativeViewHandle: w.getNativeWindowHandle(),
+    onKey: (event) => {
+      if (suppressMenuDismissEscapeUntil > 0) {
+        const suppressDismissEscape =
+          event.key === 'Escape' &&
+          Date.now() < suppressMenuDismissEscapeUntil;
+        suppressMenuDismissEscapeUntil = 0;
+        if (suppressDismissEscape) return;
+      }
+      if (searchNavigationEnabled) {
+        dispatchShellEvent('shell:search-key', event);
+      } else if (event.key === 'Reload' || event.key === 'ForceReload') {
+        relaunchApp();
+      } else if (terminalSearchNavigationEnabled) {
+        if (event.key === 'Enter' || event.key === 'Escape') {
+          dispatchShellEvent('terminal:search-key', event);
+        }
+      } else if (terminalInputOwner !== null) {
+        if (event.key === 'FocusComposer') {
+          dispatchShellCommand('composer.focus.toggle');
+        } else if (event.key === 'Find') {
+          dispatchShellEvent('terminal:search');
+        } else {
+          dispatchShellEvent('terminal:input-key', {
+            data: terminalInputDataForSearchKeyEvent(event),
+          });
+        }
+      }
+    },
+  });
+  browserViewHost?.dispose();
+  browserViewHost = createBrowserViewHost({
+    nativeViewHandle: w.getNativeWindowHandle(),
+    onStateChange: (state) => dispatchShellEvent('browser:view-state', state),
+    onCopyLink: () => dispatchShellEvent('browser:copy-link'),
+    onOpenWindow: (request) => dispatchShellEvent('browser:open-window', request),
+  });
+  voiceRecorder?.dispose();
+  voiceRecorder = createNativeVoiceRecorder();
+  const initialSystemDark = readCurrentSystemDark();
+  systemAppearanceWatcher?.dispose();
+  systemAppearanceWatcher = createSystemAppearanceWatcher({
+    initialDark: initialSystemDark,
+    readDark: readCurrentSystemDark,
+    onChange: (dark) =>
+      dispatchShellEvent(SYSTEM_APPEARANCE_EVENT, dark),
+  });
   routeDeliveryState = reduceShellRouteDelivery(routeDeliveryState, {
     type: 'renderer-reset',
   }).state;
@@ -612,6 +836,7 @@ app.whenReady().then(() => {
     const bounds = w.getContentBounds();
     w.sendGlobalEvent('viewport:resize', bounds.width, bounds.height);
   });
+  w.on('focus', () => systemAppearanceWatcher?.refresh());
   installApplicationMenu(w);
   if (hostInputProbeReportPath) {
     w.on('focus', () => {
@@ -643,6 +868,8 @@ app.whenReady().then(() => {
           name === 'synaraRpcStream' ||
           name === 'terminalOpen' ||
           name === 'terminalWrite' ||
+          name === 'terminalResize' ||
+          name === 'terminalAckOutput' ||
           name === 'terminalClose'
         ) {
           const rpcName =
@@ -650,6 +877,10 @@ app.whenReady().then(() => {
               ? 'terminal.open'
               : name === 'terminalWrite'
                 ? 'terminal.write'
+                : name === 'terminalResize'
+                  ? 'terminal.resize'
+                : name === 'terminalAckOutput'
+                  ? 'terminal.ackOutput'
                 : name === 'terminalClose'
                   ? 'terminal.close'
                   : data.tag;
@@ -677,12 +908,13 @@ app.whenReady().then(() => {
                   name === 'synaraRpcStream' ? 'synaraRpcStream' : 'synaraRpc',
                   rpcData,
                   (event) => {
-                    w.sendGlobalEvent(
+                    const channel =
                       rpcData.tag === 'terminal.subscribeEvents'
                         ? TERMINAL_EVENT
-                        : 'synara:git-action-progress',
-                      event
-                    );
+                        : rpcData.tag === 'orchestration.subscribeShell'
+                          ? ORCHESTRATION_SHELL_EVENT
+                          : 'synara:git-action-progress';
+                    w.sendGlobalEvent(channel, event);
                   }
                 );
           callback.sendReply(
@@ -701,6 +933,21 @@ app.whenReady().then(() => {
           callback.sendReply(
             JSON.stringify({
               wsUrl: resolveSynaraWsUrl(process.env.SYNARA_WS_URL),
+            })
+          );
+        } else if (name === 'runtimeGetSystemAppearance') {
+          callback.sendReply(
+            JSON.stringify({
+              dark: readCurrentSystemDark(),
+            })
+          );
+        } else if (name === 'runtimeGetEditorIcon') {
+          callback.sendReply(
+            JSON.stringify({
+              dataUrl: await fetchEditorIconDataUrl({
+                editorId: typeof data?.editorId === 'string' ? data.editorId : '',
+                wsUrl: process.env.SYNARA_WS_URL,
+              }),
             })
           );
         } else if (name === 'notificationsIsSupported') {
@@ -785,26 +1032,56 @@ app.whenReady().then(() => {
         } else if (name.startsWith('dialogs')) {
           callback.sendReply(await handleDialogs(w, name, data));
         } else if (name.startsWith('contextMenu')) {
+          suppressMenuDismissEscapeUntil = Date.now() + 1_000;
           callback.sendReply(await handleContextMenu(w, name, data));
+          suppressMenuDismissEscapeUntil = Date.now() + 1_000;
         } else if (name === 'shellRendererReady') {
-          if (searchNavigationEnabled) {
-            searchNavigationEnabled = false;
-            installApplicationMenu(w);
-          }
           const delivery = reduceShellRouteDelivery(routeDeliveryState, {
             type: 'renderer-ready',
           });
           routeDeliveryState = delivery.state;
           startViewportProbe(w);
+          startSystemAppearanceProbe(w, shellPaths.logFile);
           callback.sendReply(
             JSON.stringify({ ok: true, route: delivery.routeToDispatch })
           );
+        } else if (name === 'shellUiReady') {
+          if (ignoreRendererUiReadyForProbe) {
+            appendShellLog(
+              shellPaths.logFile,
+              'renderer ui ready acknowledgement ignored by explicit probe'
+            );
+            callback.sendReply(JSON.stringify({ ok: true, ignored: true }));
+            return;
+          }
+          if (rendererUiReadyTimer) clearTimeout(rendererUiReadyTimer);
+          rendererUiReadyTimer = null;
+          appendShellLog(
+            shellPaths.logFile,
+            'renderer ui ready route=' +
+              (typeof data?.route === 'string'
+                ? data.route
+                : rendererRoute ?? '/') +
+              ' elapsedMs=' +
+              String(Math.max(0, Date.now() - rendererUiReadyStartedAt)),
+          );
+          callback.sendReply(JSON.stringify({ ok: true }));
         } else if (name === 'shellRouteChanged') {
           const route =
             typeof data?.route === 'string' && data.route.startsWith('/')
               ? data.route
               : null;
           if (route) rendererRoute = route;
+          const relaunchUrl =
+            typeof data?.relaunchUrl === 'string' &&
+            parseSynaraDeepLinkInitData(data.relaunchUrl)
+              ? data.relaunchUrl
+              : null;
+          if (relaunchUrl) {
+            rendererRelaunchUrl = relaunchUrl;
+          } else if (data?.clearRelaunchUrl === true) {
+            rendererRelaunchUrl = null;
+          }
           callback.sendReply(JSON.stringify({ ok: true }));
         } else if (name === 'shellReload') {
           callback.sendReply(JSON.stringify({ ok: true }));
@@ -813,8 +1090,165 @@ app.whenReady().then(() => {
           const enabled = data?.enabled === true;
           if (searchNavigationEnabled !== enabled) {
             searchNavigationEnabled = enabled;
+            searchKeyMonitor?.setMode(
+              enabled
+                ? 'search'
+                : terminalSearchNavigationEnabled || terminalInputOwner
+                  ? 'terminal'
+                  : 'disabled'
+            );
             installApplicationMenu(w);
           }
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (name === 'shellSetTerminalSearchEnabled') {
+          const enabled = data?.enabled === true;
+          if (terminalSearchEnabled !== enabled) {
+            terminalSearchEnabled = enabled;
+            installApplicationMenu(w);
+          }
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (name === 'shellSetTerminalInputEnabled') {
+          const enabled = data?.enabled === true;
+          const owner = typeof data?.owner === 'string' ? data.owner : '';
+          const nextOwner = enabled
+            ? owner || null
+            : terminalInputOwner === owner
+              ? null
+              : terminalInputOwner;
+          if (terminalInputOwner !== nextOwner) {
+            terminalInputOwner = nextOwner;
+            if (nextOwner !== null) composerInputOwner = null;
+            searchKeyMonitor?.setMode(
+              searchNavigationEnabled
+                ? 'search'
+                : terminalSearchNavigationEnabled || nextOwner
+                  ? 'terminal'
+                  : 'disabled'
+            );
+            installApplicationMenu(w);
+          }
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (name === 'shellReleaseTerminalInputFocus') {
+          terminalInputOwner = null;
+          searchKeyMonitor?.setMode(
+            searchNavigationEnabled
+              ? 'search'
+              : terminalSearchNavigationEnabled
+                ? 'terminal'
+                : 'disabled'
+          );
+          installApplicationMenu(w);
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (name === 'shellSetComposerInputBounds') {
+          searchKeyMonitor?.setComposerBounds({
+            x: Number(data?.x ?? 0),
+            y: Number(data?.y ?? 0),
+            width: Number(data?.width ?? 0),
+            height: Number(data?.height ?? 0),
+          });
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (name === 'shellClaimComposerInputFocus') {
+          const owner = typeof data?.owner === 'string' ? data.owner : '';
+          terminalInputOwner = null;
+          terminalSelectionOwner = null;
+          terminalSelectionText = '';
+          composerInputOwner = owner || null;
+          searchKeyMonitor?.setMode(
+            searchNavigationEnabled
+              ? 'search'
+              : terminalSearchNavigationEnabled
+                ? 'terminal'
+                : 'disabled'
+          );
+          installApplicationMenu(w);
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (name === 'shellSetComposerInputFocused') {
+          const enabled = data?.enabled === true;
+          const owner = typeof data?.owner === 'string' ? data.owner : '';
+          const nextOwner = enabled
+            ? owner || null
+            : composerInputOwner === owner
+              ? null
+              : composerInputOwner;
+          if (composerInputOwner !== nextOwner) {
+            composerInputOwner = nextOwner;
+            installApplicationMenu(w);
+          }
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (name === 'shellSetTerminalSelectionEnabled') {
+          const enabled = data?.enabled === true;
+          const owner = typeof data?.owner === 'string' ? data.owner : '';
+          const text = typeof data?.text === 'string' ? data.text.slice(0, 1_000_000) : '';
+          const nextOwner = enabled
+            ? owner || null
+            : terminalSelectionOwner === owner
+              ? null
+              : terminalSelectionOwner;
+          if (terminalSelectionOwner !== nextOwner) {
+            terminalSelectionOwner = nextOwner;
+            installApplicationMenu(w);
+          }
+          terminalSelectionText = nextOwner ? text : '';
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (name === 'shellSetTerminalSearchNavigationEnabled') {
+          const enabled = data?.enabled === true;
+          if (terminalSearchNavigationEnabled !== enabled) {
+            terminalSearchNavigationEnabled = enabled;
+            searchKeyMonitor?.setMode(
+              searchNavigationEnabled
+                ? 'search'
+                : enabled || terminalInputOwner
+                  ? 'terminal'
+                  : 'disabled'
+            );
+            installApplicationMenu(w);
+          }
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (name === 'browserViewAttach') {
+          callback.sendReply(JSON.stringify({
+            ok: browserViewHost?.attach(
+              data.bounds,
+              String(data.tabId ?? 'browser-tab-1'),
+              String(data.url ?? 'about:blank')
+            ) === true,
+          }));
+        } else if (name === 'browserViewSetBounds') {
+          callback.sendReply(JSON.stringify({ ok: browserViewHost?.setBounds(data.bounds) === true }));
+        } else if (name === 'browserViewSetVisible') {
+          callback.sendReply(JSON.stringify({ ok: browserViewHost?.setVisible(data.visible === true) === true }));
+        } else if (name === 'browserViewNavigate') {
+          callback.sendReply(JSON.stringify({ ok: browserViewHost?.navigate(String(data.url ?? '')) === true }));
+        } else if (name === 'browserViewGoBack') {
+          callback.sendReply(JSON.stringify({ ok: browserViewHost?.goBack() === true }));
+        } else if (name === 'browserViewGoForward') {
+          callback.sendReply(JSON.stringify({ ok: browserViewHost?.goForward() === true }));
+        } else if (name === 'browserViewReload') {
+          callback.sendReply(JSON.stringify({ ok: browserViewHost?.reload() === true }));
+        } else if (name === 'browserViewNewTab') {
+          callback.sendReply(JSON.stringify({
+            ok: browserViewHost?.newTab(String(data.tabId ?? ''), String(data.url ?? 'about:blank')) === true,
+          }));
+        } else if (name === 'browserViewSelectTab') {
+          callback.sendReply(JSON.stringify({ ok: browserViewHost?.selectTab(String(data.tabId ?? '')) === true }));
+        } else if (name === 'browserViewCloseTab') {
+          callback.sendReply(JSON.stringify({ ok: browserViewHost?.closeTab(String(data.tabId ?? '')) === true }));
+        } else if (name === 'browserViewCopyScreenshot') {
+          callback.sendReply(JSON.stringify({
+            ok: await browserViewHost?.copyScreenshotToClipboard() === true,
+          }));
+        } else if (name === 'browserViewGetState') {
+          callback.sendReply(JSON.stringify(browserViewHost?.getState() ?? null));
+        } else if (name === 'browserViewDestroy') {
+          browserViewHost?.dispose();
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (name === 'voiceGetState') {
+          callback.sendReply(JSON.stringify(voiceRecorder?.getState() ?? null));
+        } else if (name === 'voiceStartRecording') {
+          callback.sendReply(JSON.stringify(await voiceRecorder?.start() ?? null));
+        } else if (name === 'voiceStopRecording') {
+          callback.sendReply(JSON.stringify(voiceRecorder?.stop() ?? null));
+        } else if (name === 'voiceCancelRecording') {
+          voiceRecorder?.cancel();
           callback.sendReply(JSON.stringify({ ok: true }));
         } else if (name === 'shellSearchNavigationHandled') {
           appendShellLog(
@@ -831,7 +1265,11 @@ app.whenReady().then(() => {
           });
           writeJsonAtomic(hostInputProbeReportPath, data?.matrix ?? null);
           callback.sendReply(JSON.stringify({ ok: true }));
-        } else if (name.startsWith('window') || name.startsWith('shell')) {
+        } else if (
+          name === 'feedbackSubmit' ||
+          name.startsWith('window') ||
+          name.startsWith('shell')
+        ) {
           callback.sendReply(await handleShell(w, name, data));
         } else if (name.startsWith('updater')) {
           callback.sendReply(await handleUpdater(name));
@@ -848,6 +1286,24 @@ app.whenReady().then(() => {
           callback.sendReply(JSON.stringify({ error: `unknown bridge method ${name}` }));
         }
       } catch (error) {
+        if (
+          name === 'synaraRpc' ||
+          name === 'synaraRpcStream' ||
+          name === 'terminalOpen' ||
+          name === 'terminalWrite' ||
+          name === 'terminalResize' ||
+          name === 'terminalAckOutput' ||
+          name === 'terminalClose'
+        ) {
+          appendShellLog(
+            shellPaths.logFile,
+            `rpc failed method=${name} tag=${String(data?.tag ?? name)} kind=${
+              error && typeof error === 'object' && 'errorKind' in error
+                ? String(error.errorKind)
+                : 'unknown'
+            } message=${error instanceof Error ? error.message : String(error)}`
+          );
+        }
         callback.sendReply(
           JSON.stringify({
             error: error instanceof Error ? error.message : String(error),
@@ -875,6 +1331,18 @@ app.whenReady().then(() => {
   } else if (windowPresentation.showAfterSetup) {
     w.show();
   }
+  if (process.env.SYNARA_BROWSER_VIEW_PROBE_URL?.trim()) {
+    setTimeout(() => {
+      const attached = browserViewHost?.attach(
+        { x: 448, y: 92, width: 416, height: 960 },
+        process.env.SYNARA_BROWSER_VIEW_PROBE_URL!.trim()
+      ) === true;
+      appendShellLog(
+        shellPaths.logFile,
+        `browser view probe attached=${attached}`
+      );
+    }, 250);
+  }
   if (savedState?.maximized) w.maximize();
   if (savedState?.fullscreen) w.setFullScreen(true);
   flushWindowState();
@@ -897,6 +1365,19 @@ app.whenReady().then(() => {
     disposeNativeRpcHost();
     appSnapManager?.dispose();
     appSnapManager = null;
+    systemAppearanceWatcher?.dispose();
+    systemAppearanceWatcher = null;
+    searchKeyMonitor?.dispose();
+    searchKeyMonitor = null;
+    browserViewHost?.dispose();
+    browserViewHost = null;
+    voiceRecorder?.dispose();
+    voiceRecorder = null;
+    for (const timer of systemAppearanceProbeTimers.splice(0)) {
+      clearTimeout(timer);
+    }
+    if (rendererUiReadyTimer) clearTimeout(rendererUiReadyTimer);
+    rendererUiReadyTimer = null;
     flushWindowState();
     appendShellLog(shellPaths.logFile, 'window closed');
     mainWindow = null;

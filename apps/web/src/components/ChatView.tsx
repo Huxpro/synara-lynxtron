@@ -40,6 +40,10 @@ import {
 import { getModelCapabilities, normalizeModelSlug } from "@synara/shared/model";
 import { resolveTailUserMessageEditTarget } from "@synara/shared/conversationEdit";
 import { threadExportBlockedReason } from "@synara/shared/threadExport";
+import {
+  DEFAULT_CHAT_COMPOSER_PLACEHOLDER,
+  resolveEmptyComposerEditorMinHeightPx,
+} from "@synara/shared/composerPlaceholder";
 import { pendingRequestInstanceKey } from "@synara/shared/threadSummary";
 import {
   buildPromptThreadTitleFallback,
@@ -172,9 +176,9 @@ import {
   resolveCycledModelSlug,
   resolveDefaultEnvironmentPanelOpen,
   resolveEnvironmentPanelOpen,
+  resolveEnvironmentPanelLayout,
   resolveEnvironmentPanelPreferenceAfterFirstSend,
   resolveEnvironmentPanelPreferenceUpdate,
-  resolveEnvironmentPanelVisible,
   resolveGitRepoUiState,
   resolveProjectScriptTerminalTarget,
   resolvePromptHistoryNavigation,
@@ -435,7 +439,10 @@ import {
 } from "../routes/-automations.shared";
 import { ChatTranscriptPane } from "./chat/ChatTranscriptPane";
 import type { MessagesTimelineController } from "./chat/MessagesTimeline";
-import { buildTurnDiffSummaryByAssistantMessageId } from "./chat/MessagesTimeline.logic";
+import {
+  buildRevertTurnCountByUserMessageId,
+  buildTurnDiffSummaryByAssistantMessageId,
+} from "./chat/MessagesTimeline.logic";
 import { deriveAgentActivityTimelineState } from "./chat/agentActivity.logic";
 import { ExpandedImagePreview } from "./chat/ExpandedImagePreview";
 import {
@@ -1304,6 +1311,9 @@ export default function ChatView({
   const [subagentStripCompact, setSubagentStripCompact] = useState(false);
   const [workflowRunCardCompact, setWorkflowRunCardCompact] = useState(false);
   const [isComposerFooterCompact, setIsComposerFooterCompact] = useState(false);
+  const [composerFormWidth, setComposerFormWidth] = useState(736);
+  const [composerMeasuredChatFontSizePx, setComposerMeasuredChatFontSizePx] =
+    useState(settings.chatFontSizePx);
   // Width-aware visibility for the footer picker cluster (context meter,
   // model name, traits label). Inputs live in a ref so the resize observer
   // can re-plan without re-subscribing; the sync function is exposed via ref
@@ -3123,36 +3133,11 @@ export default function ChatView({
     });
   }, [inferredCheckpointTurnCountByTurnId, turnDiffSummaries, timelineMessages]);
   const revertTurnCountByUserMessageId = useMemo(() => {
-    const byUserMessageId = new Map<MessageId, number>();
-    for (let index = 0; index < timelineEntries.length; index += 1) {
-      const entry = timelineEntries[index];
-      if (!entry || entry.kind !== "message" || entry.message.role !== "user") {
-        continue;
-      }
-
-      for (let nextIndex = index + 1; nextIndex < timelineEntries.length; nextIndex += 1) {
-        const nextEntry = timelineEntries[nextIndex];
-        if (!nextEntry || nextEntry.kind !== "message") {
-          continue;
-        }
-        if (nextEntry.message.role === "user") {
-          break;
-        }
-        const summary = turnDiffSummaryByAssistantMessageId.get(nextEntry.message.id);
-        if (!summary) {
-          continue;
-        }
-        const turnCount =
-          summary.checkpointTurnCount ?? inferredCheckpointTurnCountByTurnId[summary.turnId];
-        if (typeof turnCount !== "number") {
-          break;
-        }
-        byUserMessageId.set(entry.message.id, Math.max(0, turnCount - 1));
-        break;
-      }
-    }
-
-    return byUserMessageId;
+    return buildRevertTurnCountByUserMessageId({
+      timelineEntries,
+      turnDiffSummaryByAssistantMessageId,
+      inferredCheckpointTurnCountByTurnId,
+    });
   }, [inferredCheckpointTurnCountByTurnId, timelineEntries, turnDiffSummaryByAssistantMessageId]);
 
   const threadWorkspaceCwd = activeProject
@@ -4006,10 +3991,13 @@ export default function ChatView({
     defaultOpen: environmentDefaultOpen,
     userPreferenceOpen: environmentPanelPreferenceOpen,
   });
-  const environmentPanelVisible = resolveEnvironmentPanelVisible({
+  const environmentPanelLayout = resolveEnvironmentPanelLayout({
     environmentEnabled,
     environmentPanelOpen,
+    isCenteredEmptyLanding,
+    isConstrainedChatLayout: environmentUsesFloatingOverlay,
   });
+  const environmentPanelVisible = environmentPanelLayout.visible;
   const githubRepositoryQuery = useQuery(
     gitGithubRepositoryQueryOptions(gitBranchSourceCwd, environmentPanelVisible),
   );
@@ -4275,6 +4263,9 @@ export default function ChatView({
 
       if (isElectron && keybindingRule) {
         await api.server.upsertKeybinding(keybindingRule);
+        await queryClient.invalidateQueries({ queryKey: serverQueryKeys.all });
+      } else if (isElectron && !keybindingRule) {
+        await api.server.removeKeybinding({ command: input.keybindingCommand });
         await queryClient.invalidateQueries({ queryKey: serverQueryKeys.all });
       }
     },
@@ -4800,6 +4791,17 @@ export default function ChatView({
     const measureComposerFormWidth = () => composerForm.clientWidth;
     const syncComposerFooterLayout = () => {
       const composerFormWidth = measureComposerFormWidth();
+      setComposerFormWidth((previous) =>
+        previous === composerFormWidth ? previous : composerFormWidth,
+      );
+      const resolvedChatFontSizePx = Number.parseFloat(
+        getComputedStyle(composerForm).getPropertyValue('--app-font-size-chat'),
+      );
+      if (Number.isFinite(resolvedChatFontSizePx)) {
+        setComposerMeasuredChatFontSizePx((previous) =>
+          previous === resolvedChatFontSizePx ? previous : resolvedChatFontSizePx,
+        );
+      }
       const nextCompact = shouldUseCompactComposerFooter(composerFormWidth, {
         hasWideActions: composerFooterHasWideActions,
       });
@@ -4820,6 +4822,7 @@ export default function ChatView({
           leadingCluster.scrollWidth > leadingCluster.clientWidth + 1;
         const nextStep = resolveNextComposerFooterTier({
           currentTier: composerFooterTierRef.current,
+          minimumTier: nextCompact ? 3 : 0,
           clientWidth: footerRow.clientWidth,
           isOverflowing: rowOverflows || leadingClips,
           demotionWidths: composerFooterDemotionWidthsRef.current,
@@ -4863,7 +4866,13 @@ export default function ChatView({
     return () => {
       observer.disconnect();
     };
-  }, [activeThread?.id, composerFooterHasWideActions, isInactiveSplitPane]);
+  }, [
+    activeThread?.id,
+    composerFooterHasWideActions,
+    isInactiveSplitPane,
+    secondaryChromeReady,
+    shouldRenderChatPaneContent,
+  ]);
 
   useLayoutEffect(() => {
     if (isInactiveSplitPane || typeof ResizeObserver === "undefined") return;
@@ -10013,8 +10022,9 @@ export default function ChatView({
   // Full-width single chat: overlay plus transcript/composer inset. Floating overlay when the
   // column is already narrow — right dock open or a split pane (same as header compact mode).
   // Terminal surfaces always float so opening Environment never resizes the terminal workspace.
-  const environmentAppliesContentInset = environmentPanelVisible && !environmentUsesFloatingOverlay;
-  const environmentOverlayVariant = environmentUsesFloatingOverlay ? "floating" : "docked";
+  const environmentAppliesContentInset =
+    environmentPanelLayout.appliesContentInset;
+  const environmentOverlayVariant = environmentPanelLayout.variant;
   const environmentHeaderState = environmentEnabled
     ? {
         open: environmentPanelVisible,
@@ -10032,6 +10042,26 @@ export default function ChatView({
     ? (activeBackgroundTasks?.taskIds.filter((taskId) => !workflowRunState.taskIds.includes(taskId))
         .length ?? 0)
     : (activeBackgroundTasks?.activeCount ?? 0);
+  const composerPlaceholder = isComposerApprovalState
+    ? "Resolve this approval request to continue"
+    : activePendingProgress
+      ? activePendingProgress.activeQuestion?.options.length === 0
+        ? "Type your answer to continue"
+        : "Type your own answer, or leave this blank to use the selected option"
+      : showPlanFollowUpPrompt && activeProposedPlan
+        ? "Add feedback to refine the plan, or leave this blank to implement it"
+        : activeThread?.parentThreadId
+          ? "Message this subagent while it works"
+          : hasLiveTurn
+            ? "Ask for follow-up changes"
+            : phase === "disconnected"
+              ? "Ask for follow-up changes or attach images"
+              : DEFAULT_CHAT_COMPOSER_PLACEHOLDER;
+  const emptyComposerEditorMinHeightPx = resolveEmptyComposerEditorMinHeightPx({
+    availableWidthPx: composerFormWidth,
+    chatFontSizePx: composerMeasuredChatFontSizePx,
+    placeholder: composerPlaceholder,
+  });
 
   // Composer layout keeps the task list and footer actions in one render path so
   // follow-up prompts and normal chat mode stay visually in sync.
@@ -10246,6 +10276,7 @@ export default function ChatView({
                           : prompt
                     }
                     cursor={composerCursor}
+                    emptyMinHeightPx={emptyComposerEditorMinHeightPx}
                     terminalContexts={
                       !isComposerApprovalState && pendingUserInputs.length === 0
                         ? composerTerminalContexts
@@ -10259,23 +10290,7 @@ export default function ChatView({
                     {...(canCollapsePastedTextToDraft
                       ? { onCollapsePastedText: addPastedTextToDraft }
                       : {})}
-                    placeholder={
-                      isComposerApprovalState
-                        ? "Resolve this approval request to continue"
-                        : activePendingProgress
-                          ? activePendingProgress.activeQuestion?.options.length === 0
-                            ? "Type your answer to continue"
-                            : "Type your own answer, or leave this blank to use the selected option"
-                          : showPlanFollowUpPrompt && activeProposedPlan
-                            ? "Add feedback to refine the plan, or leave this blank to implement it"
-                            : activeThread?.parentThreadId
-                              ? "Message this subagent while it works"
-                              : hasLiveTurn
-                                ? "Ask for follow-up changes"
-                                : phase === "disconnected"
-                                  ? "Ask for follow-up changes or attach images"
-                                  : "Ask anything, @tag files/folders, or use / to show available commands"
-                    }
+                    placeholder={composerPlaceholder}
                     disabled={isComposerEditorDisabled}
                   />
                 </ComposerEditorRegionComposition>
@@ -10291,7 +10306,9 @@ export default function ChatView({
                         <>
                           {relocateComposerLeadingControls
                             ? null
-                            : renderComposerLeadingControls({ iconOnly: false })}
+                            : renderComposerLeadingControls({
+                                iconOnly: isComposerFooterCompact,
+                              })}
 
                           {!isVoiceRecording && !isVoiceTranscribing ? (
                             <>

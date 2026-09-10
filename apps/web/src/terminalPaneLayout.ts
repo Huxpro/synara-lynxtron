@@ -71,6 +71,39 @@ function normalizeSplitWeights(childrenCount: number, weights: number[] | undefi
   return nextWeights.length > 0 ? nextWeights : [1];
 }
 
+export const MIN_TERMINAL_PANE_SIZE_PX = 180;
+
+export function resizeTerminalSplitWeights(input: {
+  currentCoordinate: number;
+  handleIndex: number;
+  startCoordinate: number;
+  totalSize: number;
+  weights: number[];
+}): number[] {
+  const startWeights = input.weights.map((weight) => normalizedWeight(weight));
+  const currentWeight = startWeights[input.handleIndex] ?? 1;
+  const nextWeight = startWeights[input.handleIndex + 1] ?? 1;
+  const pairWeight = currentWeight + nextWeight;
+  const totalWeight =
+    startWeights.reduce((sum, weight) => sum + weight, 0) ||
+    startWeights.length ||
+    1;
+  const minWeight = Math.max(
+    (pairWeight * MIN_TERMINAL_PANE_SIZE_PX) / input.totalSize,
+    0.1,
+  );
+  const deltaWeight =
+    ((input.currentCoordinate - input.startCoordinate) / input.totalSize) * totalWeight;
+  const resizedCurrent = Math.min(
+    Math.max(currentWeight + deltaWeight, minWeight),
+    pairWeight - minWeight,
+  );
+  const nextWeights = [...startWeights];
+  nextWeights[input.handleIndex] = resizedCurrent;
+  nextWeights[input.handleIndex + 1] = pairWeight - resizedCurrent;
+  return nextWeights;
+}
+
 function flattenSplitChildren(
   direction: ThreadTerminalSplitDirection,
   children: ThreadTerminalLayoutNode[],

@@ -25,7 +25,15 @@ function createAppHistory(): RouterHistory {
     return createMemoryHistory({ initialEntries: ["/"] });
   }
   // Electron loads the app from a file-backed shell, so hash history avoids path resolution issues.
-  return isElectron ? createHashHistory() : createBrowserHistory();
+  // Components Lab deliberately supports the same copy-pasteable hash URL in a
+  // regular browser. Keep normal product navigation on browser history.
+  return isElectron || shouldUseHashHistory(window.location.hash)
+    ? createHashHistory()
+    : createBrowserHistory();
+}
+
+export function shouldUseHashHistory(hash: string): boolean {
+  return hash === "#/components-lab" || hash.startsWith("#/components-lab?");
 }
 
 export const appHistory: RouterHistory = createAppHistory();

@@ -85,15 +85,15 @@
 }
 
 .SharedKanbanOverviewProjectTitle {
-  flex: 1;
   min-width: 0;
+  max-width: 220px;
   color: var(--foreground);
   font-size: 13px;
   font-weight: 650;
 }
 
 .SharedKanbanOverviewProjectCount {
-  color: var(--muted-foreground);
+  color: color-mix(in srgb, var(--muted-foreground) 70%, transparent);
   font-size: 12px;
 }
 
@@ -105,7 +105,15 @@
   width: 14px;
   height: 14px;
   margin-left: auto;
-  color: var(--muted-foreground);
+  color: color-mix(in srgb, var(--muted-foreground) 50%, transparent);
+  opacity: 0;
+}
+
+.SharedKanbanOverviewProjectHeader.ui-hover
+  .SharedKanbanOverviewProjectChevron,
+.SharedKanbanOverviewProjectHeader.ui-focus
+  .SharedKanbanOverviewProjectChevron {
+  opacity: 1;
 }
 
 .SharedKanbanOverviewNewTask {

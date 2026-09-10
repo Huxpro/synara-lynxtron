@@ -646,6 +646,12 @@
   line-height: 18px;
 }
 
+.LxMenuPopup.AutomationTimePickerPopup {
+  width: 188px;
+  min-height: 0;
+  padding: 6px;
+}
+
 .AutomationCreateProjects {
   display: flex;
   flex-direction: row;

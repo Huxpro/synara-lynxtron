@@ -151,6 +151,32 @@
   padding-right: 6px;
 }
 
+.LxButton--icon-chip,
+.LxButton--icon-xs {
+  width: 24px;
+  min-width: 24px;
+}
+
+.LxButton--icon-sm {
+  width: 28px;
+  min-width: 28px;
+}
+
+.LxButton--icon {
+  width: 32px;
+  min-width: 32px;
+}
+
+.LxButton--icon-lg {
+  width: 36px;
+  min-width: 36px;
+}
+
+.LxButton--icon-xl {
+  width: 40px;
+  min-width: 40px;
+}
+
 .LxInputControl {
   display: flex;
   min-height: 32px;
@@ -184,11 +210,116 @@
 }
 
 .LxInput {
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
+  padding-top: 7px;
+  padding-bottom: 7px;
   color: var(--foreground);
   font-size: 12px;
+  line-height: 16px;
   background-color: transparent;
+}
+
+.LxInputControl--sm > .LxInput {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 11px;
+  line-height: 16.5px;
+}
+
+.LxInputControl--lg > .LxInput {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
+.LxSwitch {
+  width: 32px;
+  height: 20px;
+  padding: 1px;
+  border: 1px solid var(--settings-switch-border);
+  border-radius: 10px;
+  background-color: var(--settings-switch-off);
+}
+
+.LxSwitch--checked {
+  border-color: var(--color-text-accent);
+  background-color: var(--color-text-accent);
+}
+
+.LxSwitch.ui-hover { box-shadow: 0 0 0 1px var(--border); }
+.LxSwitch.ui-focus { box-shadow: 0 0 0 2px var(--ring); }
+.LxSwitch.ui-disabled { opacity: 0.48; }
+
+.LxSwitchThumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  transform: translateX(0);
+}
+
+.LxSwitch--checked .LxSwitchThumb { transform: translateX(12px); }
+
+.LxCheckboxIndicator {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.LxCheckboxIndicator--sm { width: 14px; height: 14px; }
+.LxCheckboxIndicator--selected { border-color: var(--primary); background-color: var(--primary); }
+.LxCheckboxIndicatorIcon { width: 12px; height: 12px; }
+.LxCheckboxIndicator--sm .LxCheckboxIndicatorIcon { width: 10px; height: 10px; }
+.LxCheckboxIndicatorMixedBar { width: 6px; height: 1px; background-color: var(--primary-foreground); }
+
+.LxSkeleton {
+  border-radius: 6px;
+  background-color: var(--muted);
+  opacity: 0.45;
+}
+
+.LxSeparator { flex-shrink: 0; background-color: var(--border); }
+.LxSeparator--horizontal { width: 100%; height: 1px; }
+.LxSeparator--vertical { width: 1px; align-self: stretch; }
+
+.LxBadge { min-width: 18px; height: 18px; padding: 0 3px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 6px; background-color: var(--primary); }
+.LxBadge__text { color: var(--primary-foreground); font-size: 10px; font-weight: 500; line-height: 16px; }
+.LxBadge--sm { min-width: 16px; height: 16px; border-radius: 4px; }
+.LxBadge--sm .LxBadge__text { font-size: 9px; line-height: 14px; }
+.LxBadge--lg { min-width: 22px; height: 22px; padding: 0 5px; }
+.LxBadge--lg .LxBadge__text { font-size: 11px; }
+.LxBadge--secondary { background-color: var(--secondary); }
+.LxBadge--secondary .LxBadge__text, .LxBadge--outline .LxBadge__text { color: var(--muted-foreground); }
+.LxBadge--outline { border-color: var(--border); background-color: transparent; }
+.LxBadge--destructive { background-color: var(--destructive); }
+.LxBadge--error, .LxBadge--warning, .LxBadge--info, .LxBadge--success { background-color: var(--secondary); }
+.LxBadge--error .LxBadge__text { color: var(--destructive); }
+.LxBadge--capsule { border-radius: 999px; }
+
+.LxTimePicker { width: 176px; height: 176px; display: flex; flex-direction: row; align-items: stretch; gap: 4px; }
+.LxTimePickerColumn { min-width: 0; flex: 1; height: 176px; }
+.LxTimePickerColumnContent { padding: 4px; display: flex; flex-direction: column; gap: 2px; }
+.LxTimePickerOption { width: 100%; flex-shrink: 0; justify-content: center; }
+
+.LxAlert { position: relative; width: 100%; display: flex; flex-direction: row; align-items: flex-start; gap: 8px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; color: var(--foreground); background-color: transparent; }
+.LxAlert--sm { padding: 6px 10px; border-radius: 8px; }
+.LxAlert--error { border-color: var(--destructive); background-color: var(--secondary); }
+.LxAlert--info, .LxAlert--success, .LxAlert--warning { background-color: var(--secondary); }
+.LxAlertTitle { color: var(--foreground); font-size: 12px; font-weight: 500; line-height: 18px; }
+.LxAlertDescription { min-width: 0; flex: 1; color: var(--muted-foreground); font-size: 12px; line-height: 18px; }
+.LxAlertAction { flex-shrink: 0; }
+
+.LxSpinner {
+  border: 1px solid var(--foreground);
+  border-right-color: transparent;
+  border-radius: 999px;
 }
 
 .LxKbdGroup {
@@ -229,6 +360,7 @@
 }
 
 .LxDialogViewport.LxCommandDialogViewport {
+  z-index: 2100;
   padding-top: 4vh;
   padding-bottom: 15vh;
 }
@@ -289,16 +421,28 @@
 .LxCommandInput {
   display: flex;
   flex-direction: row;
+  flex-shrink: 0;
   align-items: center;
   gap: 8px;
+  height: 48px;
   min-height: 48px;
+  box-sizing: border-box;
   padding: 6px 10px;
+}
+
+.LxCommandInput > svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 .LxCommandTextarea {
   flex: 1;
   min-width: 0;
   height: 36px;
+  box-sizing: border-box;
+  padding-top: 9px;
+  padding-bottom: 9px;
   padding-left: 0;
   padding-right: 0;
   border-width: 0;
@@ -311,6 +455,7 @@
 
 .LxCommandList {
   max-height: 384px;
+  margin-top: 7px;
   padding-left: 6px;
   padding-right: 6px;
   padding-bottom: 6px;
@@ -332,7 +477,7 @@
   line-height: 16px;
 }
 
-.LxCommandItem {
+.LxCommand .LxCommandItem {
   min-height: 28px;
   display: flex;
   flex-direction: row;
@@ -342,9 +487,9 @@
   border-radius: 10px;
 }
 
-.LxCommandItem.ui-hover,
-.LxCommandItem--highlighted,
-.LxCommandItem.ui-pressed {
+.LxCommand .LxCommandItem.ui-hover,
+.LxCommand .LxCommandItem--highlighted,
+.LxCommand .LxCommandItem.ui-pressed {
   background-color: var(--color-background-button-secondary-hover);
 }
 
@@ -394,6 +539,19 @@
   z-index: 50;
 }
 
+.LxDialogOverlay {
+  position: fixed;
+}
+
+.LxDialogOverlayContent {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
 .LxDialogBackdrop {
   position: absolute;
   left: 0;
@@ -401,6 +559,14 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
+}
+
+.LxDialogBackdropTapTarget {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .LxDialogBackdrop.ui-entering,
@@ -418,7 +584,7 @@
   border-width: 1px;
   border-style: solid;
   border-color: var(--border);
-  border-radius: 24px;
+  border-radius: 22px;
   background-color: var(--popover);
   color: var(--popover-foreground);
   padding: 16px;
@@ -473,6 +639,34 @@
   margin-top: 14px;
 }
 
+.SliceRoot--viewport-compact .LxDialogViewport--bottom-stick-mobile {
+  align-items: flex-end;
+  padding-top: 48px;
+}
+
+.SliceRoot--viewport-compact .LxDialogPopup--bottom-stick-mobile {
+  width: 100%;
+  max-width: none;
+  max-height: calc(100vh - 48px);
+  border-left-width: 0;
+  border-right-width: 0;
+  border-bottom-width: 0;
+  border-radius: 0;
+}
+
+.SliceRoot--viewport-compact
+  .LxDialogPopup--bottom-stick-mobile
+  .LxDialogFooter {
+  flex-direction: column-reverse;
+}
+
+.SliceRoot--viewport-compact
+  .LxDialogPopup--bottom-stick-mobile
+  .LxDialogFooter
+  > .LxButton {
+  width: 100%;
+}
+
 .LxMenuRoot,
 .LxTooltipRoot {
   position: relative;
@@ -482,9 +676,24 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 60;
+  z-index: 1100;
   width: 100vw;
   height: 100vh;
+}
+
+.LxMenuOverlayHost {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1100;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.LxMenuOverlayHost .LxMenuLayer {
+  pointer-events: auto;
 }
 
 .LxMenuBackdrop {
@@ -517,7 +726,7 @@
   border-width: 1px;
   border-style: solid;
   border-color: var(--border);
-  border-radius: 10px;
+  border-radius: 18px;
   background-color: var(--popover);
 }
 
@@ -531,6 +740,21 @@
   display: flex;
   flex-direction: column;
   padding: 6px;
+}
+
+.LxMenuSubLayer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1102;
+  width: 100vw;
+  height: 100vh;
+  overflow: visible;
+}
+
+.LxMenuSubPopup--align-end {
+  top: auto;
+  bottom: 0;
 }
 
 .LxMenuSubRoot {
@@ -616,7 +840,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.LxMenuItem__trailing {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .LxMenuItem__text {

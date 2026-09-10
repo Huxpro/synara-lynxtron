@@ -10,10 +10,9 @@
 // Layer: Chat/editor file-preview UI
 // Exports: WorkspaceFilePreviewHeader
 
-import { isWorkspaceRelativePathSafe, joinWorkspaceRelativePath } from "@synara/shared/path";
+import { deriveFilePreviewBreadcrumb } from "@synara/shared/filePreviewBreadcrumb";
 import { Fragment } from "react";
 
-import { basenameOfPath } from "~/file-icons";
 import type { ChatFileReference } from "~/lib/chatReferences";
 import { ChevronRightIcon, EllipsisIcon, EyeIcon, FileIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
@@ -62,26 +61,8 @@ export const WorkspaceFilePreviewHeader = function WorkspaceFilePreviewHeader(
 
   // Out-of-workspace previews (e.g. a session's scratch directory under the
   // OS temp dir) arrive as absolute paths; everything in-workspace is relative.
-  const fileIsOutsideWorkspace = !isWorkspaceRelativePathSafe(filePath);
-
-  // Breadcrumb segments: project folder name, then each path part. Splitting
-  // here (vs. rendering the raw string) lets the directory prefix collapse
-  // first under width pressure while the filename stays pinned. Absolute
-  // paths drop the project prefix — they live outside the workspace.
-  const projectName =
-    fileIsOutsideWorkspace || !workspaceRoot ? null : basenameOfPath(workspaceRoot);
-  const relativeSegments = filePath
-    .replace(/\\/g, "/")
-    .split("/")
-    .filter((segment) => segment.length > 0);
-  const segments = projectName ? [projectName, ...relativeSegments] : relativeSegments;
-  // Key each crumb by its cumulative path so repeated folder names (e.g. two
-  // `src` dirs at different depths) still get stable, unique React keys.
-  const prefixSegments = segments.slice(0, -1).map((name, index) => ({
-    name,
-    key: segments.slice(0, index + 1).join("/"),
-  }));
-  const fileSegment = segments.at(-1) ?? filePath;
+  const { fileSegment, openTarget, prefixSegments } =
+    deriveFilePreviewBreadcrumb({ filePath, workspaceRoot });
 
   const { onReferenceInChat, onAskWhyInChat } = props;
   const referenceWholeFile = () => {
@@ -189,11 +170,7 @@ export const WorkspaceFilePreviewHeader = function WorkspaceFilePreviewHeader(
             `header-actions` container declared on this header, so it shows on a
             wide pane and collapses to the editor icon when the pane is narrow. */}
         <OpenInPicker
-          openInTarget={
-            fileIsOutsideWorkspace || !workspaceRoot
-              ? filePath
-              : joinWorkspaceRelativePath(workspaceRoot, filePath)
-          }
+          openInTarget={openTarget}
         />
       </div>
     </div>

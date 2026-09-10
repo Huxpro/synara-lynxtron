@@ -87,15 +87,17 @@ describe('desktop titlebar controls', () => {
       "const sidebar =\n    route.pathname !== '/settings' ? ("
     );
     expect(routerSource).toContain(
-      '<SidebarDisclosure open={sidebarOpen}>'
+      '<SidebarDisclosure open={sidebarOpen && !editorModeOpen}>'
     );
     expect(routerSource).toContain(
-      '{sidebarOpen ? null : closedTitlebarControls}'
+      '{sidebarOpen || editorModeOpen ? null : closedTitlebarControls}'
     );
     expect(routerSource).toContain(
       "className={`AppMain AppMain--sidebar-${"
     );
-    expect(routerSource).toContain("sidebarOpen ? 'open' : 'closed'");
+    expect(routerSource).toContain(
+      "sidebarOpen && !editorModeOpen ? 'open' : 'closed'"
+    );
     expect(appStyles).toMatch(
       /\.SliceRoot--viewport-md-up \.AppMain--sidebar-open\s*\{[^}]*border-top-left-radius:\s*14\.4px;[^}]*border-bottom-left-radius:\s*14\.4px;[^}]*box-shadow:\s*inset 1px 0 0 rgba\(0,\s*0,\s*0,\s*0\.08\),\s*-6\.5px 0 12px -10px rgba\(0,\s*0,\s*0,\s*0\.1\);[^}]*overflow:\s*hidden;/s
     );
@@ -109,7 +111,7 @@ describe('desktop titlebar controls', () => {
 
   it('keeps Settings inside the same global shell and titlebar ownership', () => {
     expect(routerSource).toContain("if (route.pathname === '/settings')");
-    expect(routerSource).not.toContain(
+    expect(routerSource).toContain(
       "if (route.pathname === '/settings') {\n    return ("
     );
     expect(routerSource).toContain('sidebarOpen={sidebarOpen}');

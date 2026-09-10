@@ -39,6 +39,12 @@ describe('native composer trait picker contract', () => {
     );
     expect(source).toContain('<CheckIcon size={12} />');
     expect(source).not.toContain("{props.active ? '✓' : ''}");
+    expect(source.indexOf('ComposerTraitOptionCopyLynx')).toBeLessThan(
+      source.indexOf('ComposerTraitOptionCheckLynx')
+    );
+    expect(composerStyles).toMatch(
+      /\.ComposerTraitOptionCheckLynx\s*\{[^}]*margin-left:\s*auto;/s
+    );
   });
 
   it('matches the shared Web geometry and accessibility identity', () => {

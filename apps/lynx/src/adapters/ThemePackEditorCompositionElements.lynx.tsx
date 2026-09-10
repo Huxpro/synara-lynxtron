@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from '../components/ui/dialog';
 import { Input } from '../components/ui/input';
+import { Switch } from '../components/ui/switch.lynx';
 import { ChevronDownIcon, XIcon } from '../lib/icons.lynx';
 import {
   Menu,
@@ -451,27 +452,8 @@ export function ThemePackBooleanControlElement(props: {
   readonly ariaLabel: string;
   readonly onChange: (checked: boolean) => void;
 }) {
-  const interaction = useLynxInteractiveState({
-    baseClassName: `SharedThemePackSwitch${
-      props.checked ? ' SharedThemePackSwitch--on' : ''
-    }`,
-    accessibleLabel: props.ariaLabel,
-    accessibilityValue: props.checked ? 'On' : 'Off',
-    onActivate: () => {
-      'background only';
-      props.onChange(!props.checked);
-    },
-  });
   return (
-    <view
-      className={interaction.className}
-      aria-checked={props.checked}
-      accessibility-role="switch"
-      accessibility-state={{ checked: props.checked }}
-      {...interaction.eventProps}
-    >
-      <view className="SharedThemePackSwitchThumb" />
-    </view>
+    <Switch checked={props.checked} ariaLabel={props.ariaLabel} className={`SharedThemePackSwitch${props.checked ? ' SharedThemePackSwitch--on' : ''}`} thumbClassName="SharedThemePackSwitchThumb" onCheckedChange={props.onChange} />
   );
 }
 

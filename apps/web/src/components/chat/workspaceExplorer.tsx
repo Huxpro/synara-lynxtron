@@ -400,7 +400,7 @@ function WorkspaceSearchResultRow(props: {
   );
 }
 
-interface WorkspaceFileSearchState {
+export interface WorkspaceFileSearchState {
   // Trimmed live input — drives the "is the box empty?" decision (tree vs results).
   inputQuery: string;
   fileMatches: ReadonlyArray<ProjectEntry>;
@@ -451,7 +451,7 @@ function useWorkspaceFileSearch(
 
 // Search-box header: a fixed, full-width input that selects the top match on
 // Enter and clears (returning to the tree, in the combined sidebar) on Escape.
-function WorkspaceSearchInputHeader(props: {
+export function WorkspaceSearchInputHeader(props: {
   query: string;
   search: WorkspaceFileSearchState;
   autoFocus?: boolean;

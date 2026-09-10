@@ -5,6 +5,7 @@ import type {
 } from '@synara-web/components/settings/SettingsProviderPickerComposition.logic';
 
 import { Button } from '../components/ui/button';
+import { Switch } from '../components/ui/switch.lynx';
 import { ChevronDownIcon } from '../lib/icons.lynx';
 import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
 import { SettingsResetIcon } from './SettingsResetIcon.lynx';
@@ -15,26 +16,8 @@ function ProviderVisibilitySwitch(props: {
   readonly onHiddenChange: (provider: ProviderKind, hidden: boolean) => void;
 }) {
   const checked = !props.item.hidden;
-  const interaction = useLynxInteractiveState({
-    baseClassName: `SharedSettingsProviderPickerSwitch${
-      checked ? ' SharedSettingsProviderPickerSwitch--on' : ''
-    }`,
-    accessibleLabel: `Show ${props.item.title} in the provider picker`,
-    accessibilityValue: checked ? 'On' : 'Off',
-    onActivate: () =>
-      props.onHiddenChange(props.item.provider, checked),
-  });
   return (
-    <view
-      className={interaction.className}
-      aria-label={`Show ${props.item.title} in the provider picker`}
-      aria-checked={checked}
-      accessibility-role="switch"
-      accessibility-state={{ checked }}
-      {...interaction.eventProps}
-    >
-      <view className="SharedSettingsProviderPickerSwitchThumb" />
-    </view>
+    <Switch checked={checked} ariaLabel={`Show ${props.item.title} in the provider picker`} className={`SharedSettingsProviderPickerSwitch${checked ? ' SharedSettingsProviderPickerSwitch--on' : ''}`} thumbClassName="SharedSettingsProviderPickerSwitchThumb" onCheckedChange={(next) => props.onHiddenChange(props.item.provider, !next)} />
   );
 }
 

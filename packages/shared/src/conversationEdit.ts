@@ -1,7 +1,11 @@
 // FILE: conversationEdit.ts
 // Purpose: Shared policy for deciding whether a user message can be edited and replayed.
 // Layer: Shared orchestration utility
-// Exports: collectTailTurnIds, resolveTailUserMessageEditTarget, resolveLatestTailUserMessageEditTarget
+// Exports: edit eligibility plus provider-aware prompt formatting for replay.
+
+import type { ClaudeCodeEffort, ModelSelection, ProviderKind } from '@synara/contracts';
+
+import { applyClaudePromptEffortPrefix, getModelCapabilities } from './model';
 
 type TurnMessageLike<TTurnId extends string = string> = {
   readonly id: string;
@@ -135,4 +139,46 @@ export function resolveLatestTailUserMessageEditTarget(input: {
     messageId: latestNativeUserMessage.id,
     activeTurnId: input.activeTurnId,
   });
+}
+
+export function formatOutgoingComposerPrompt(params: {
+  readonly provider: ProviderKind;
+  readonly model: string | null;
+  readonly effort: string | null;
+  readonly text: string;
+}): string {
+  const capabilities = getModelCapabilities(params.provider, params.model);
+  if (
+    params.effort &&
+    capabilities.promptInjectedEffortLevels.includes(params.effort)
+  ) {
+    return applyClaudePromptEffortPrefix(
+      params.text,
+      params.effort as ClaudeCodeEffort | null
+    );
+  }
+  return params.text;
+}
+
+export function resolvePromptEffortFromModelSelection(
+  modelSelection: ModelSelection
+): string | null {
+  switch (modelSelection.provider) {
+    case 'antigravity':
+      return null;
+    case 'codex':
+      return modelSelection.options?.reasoningEffort ?? null;
+    case 'claudeAgent':
+      return modelSelection.options?.effort ?? null;
+    case 'cursor':
+      return modelSelection.options?.reasoningEffort ?? null;
+    case 'grok':
+    case 'droid':
+      return modelSelection.options?.reasoningEffort ?? null;
+    case 'pi':
+      return modelSelection.options?.thinkingLevel ?? null;
+    case 'kilo':
+    case 'opencode':
+      return null;
+  }
 }

@@ -3,6 +3,7 @@ import type { NodesRef } from '@lynx-js/types';
 
 import {
   focusLynxElementById,
+  consumeProgrammaticLynxFocus,
   focusLynxElementBySelector,
   focusLynxNode,
 } from './focus.lynx';
@@ -29,12 +30,19 @@ beforeEach(() => {
       };
     },
   });
+
   select.mockClear();
   invoke.mockClear();
   exec.mockClear();
 });
 
 describe('Lynx focus helpers', () => {
+  it('marks id-based focus restoration as programmatic exactly once', () => {
+    expect(focusLynxElementById('settings-search')).toBe(true);
+    expect(consumeProgrammaticLynxFocus('settings-search')).toBe(true);
+    expect(consumeProgrammaticLynxFocus('settings-search')).toBe(false);
+  });
+
   it('focuses an existing node through the native setFocus command', () => {
     const nodeInvoke = rs.fn();
     const nodeExec = rs.fn();

@@ -27,6 +27,13 @@ import {
   normalizeFileCommentSelection,
   type FileCommentDraft,
 } from '@synara-web/lib/fileComments';
+import {
+  countInlineTerminalContextPlaceholders,
+  ensureInlineTerminalContextPlaceholders,
+  normalizeTerminalContextSelection,
+  removeInlineTerminalContextPlaceholder,
+  type TerminalContextDraft,
+} from '@synara-web/lib/terminalContext';
 import type { KanbanComposerDraftSnapshot } from '@synara-web/components/kanban/kanban.logic';
 import type {
   NativeComposerFileAttachment,
@@ -49,6 +56,7 @@ interface LynxComposerDraft {
   readonly runtimeMode?: 'full-access' | 'approval-required';
   readonly interactionMode?: 'default' | 'plan';
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
+  readonly terminalContexts: ReadonlyArray<TerminalContextDraft>;
   readonly prompt: string;
   readonly skills: ReadonlyArray<ProviderSkillReference>;
 }
@@ -60,6 +68,7 @@ interface LynxComposerDraftStoreState {
     selection: ChatAssistantSelectionAttachment
   ) => void;
   readonly addPastedText: (threadId: string, pastedText: PastedTextDraft) => void;
+  readonly addTerminalContext: (threadId: string, context: TerminalContextDraft) => void;
   readonly addFiles: (
     threadId: string,
     files: ReadonlyArray<NativeComposerFileAttachment>
@@ -75,6 +84,7 @@ interface LynxComposerDraftStoreState {
   readonly clearDraft: (threadId: string) => void;
   readonly discardDraft: (threadId: string) => void;
   readonly removePastedText: (threadId: string, pastedTextId: string) => void;
+  readonly removeTerminalContext: (threadId: string, contextId: string) => void;
   readonly removeFile: (threadId: string, fileId: string) => void;
   readonly removeImage: (threadId: string, imageId: string) => void;
   readonly removeFileComments: (threadId: string) => void;
@@ -96,6 +106,10 @@ interface LynxComposerDraftStoreState {
     mentions: ReadonlyArray<ProviderMentionReference>
   ) => void;
   readonly setPrompt: (threadId: string, prompt: string) => void;
+  readonly setTerminalContexts: (
+    threadId: string,
+    contexts: ReadonlyArray<TerminalContextDraft>
+  ) => void;
   readonly setSkills: (
     threadId: string,
     skills: ReadonlyArray<ProviderSkillReference>
@@ -115,6 +129,7 @@ export function projectLynxKanbanComposerDrafts(
           draft.images.length > 0 ||
           draft.assistantSelections.length > 0 ||
           draft.fileComments.length > 0 ||
+          draft.terminalContexts.length > 0 ||
           draft.pastedTexts.length > 0,
         provider: draft.modelSelection?.provider ?? null,
       },
@@ -279,6 +294,36 @@ export function parsePersistedLynxComposerDrafts(
         pastedTexts: Array.isArray(candidate.pastedTexts)
           ? (candidate.pastedTexts as PastedTextDraft[])
           : [],
+        terminalContexts: Array.isArray(candidate.terminalContexts)
+          ? candidate.terminalContexts.flatMap((entry) => {
+              if (
+                !isStringRecord(entry) ||
+                typeof entry.id !== 'string' ||
+                typeof entry.threadId !== 'string' ||
+                typeof entry.createdAt !== 'string' ||
+                typeof entry.terminalId !== 'string' ||
+                typeof entry.terminalLabel !== 'string' ||
+                typeof entry.lineStart !== 'number' ||
+                typeof entry.lineEnd !== 'number'
+              ) return [];
+              const terminalId = entry.terminalId.trim();
+              const terminalLabel = entry.terminalLabel.trim();
+              if (!entry.id || !entry.threadId || !entry.createdAt || !terminalId || !terminalLabel) {
+                return [];
+              }
+              const lineStart = Math.max(1, Math.floor(entry.lineStart));
+              return [{
+                id: entry.id,
+                threadId: entry.threadId as never,
+                createdAt: entry.createdAt,
+                terminalId,
+                terminalLabel,
+                lineStart,
+                lineEnd: Math.max(lineStart, Math.floor(entry.lineEnd)),
+                text: '',
+              }];
+            })
+          : [],
         prompt: candidate.prompt,
         skills: Array.isArray(candidate.skills)
           ? (candidate.skills as ProviderSkillReference[])
@@ -300,6 +345,7 @@ function emptyDraft(): LynxComposerDraft {
     fileComments: [],
     mentions: [],
     pastedTexts: [],
+    terminalContexts: [],
     prompt: '',
     skills: [],
   };
@@ -314,6 +360,7 @@ function shouldRemoveDraft(draft: LynxComposerDraft): boolean {
     draft.fileComments.length === 0 &&
     draft.mentions.length === 0 &&
     draft.pastedTexts.length === 0 &&
+    draft.terminalContexts.length === 0 &&
     draft.skills.length === 0 &&
     draft.modelSelection === undefined &&
     Object.keys(draft.modelSelectionByProvider ?? {}).length === 0 &&
@@ -492,6 +539,32 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
           },
         };
       }),
+    addTerminalContext: (threadId, context) =>
+      set((state) => {
+        const normalized = normalizeTerminalContextSelection(context);
+        if (!normalized) return state;
+        const current = state.draftsByThreadId[threadId] ?? emptyDraft();
+        if (current.terminalContexts.some((entry) => entry.id === context.id)) {
+          return state;
+        }
+        const terminalContexts = [
+          ...current.terminalContexts,
+          { ...context, ...normalized, threadId: threadId as never },
+        ];
+        return {
+          draftsByThreadId: {
+            ...state.draftsByThreadId,
+            [threadId]: {
+              ...current,
+              prompt: ensureInlineTerminalContextPlaceholders(
+                current.prompt,
+                terminalContexts.length
+              ),
+              terminalContexts,
+            },
+          },
+        };
+      }),
     clearDraft: (threadId) =>
       set((state) => {
         const current = state.draftsByThreadId[threadId];
@@ -510,6 +583,7 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
             runtimeMode: current.runtimeMode,
             interactionMode: current.interactionMode,
             pastedTexts: [],
+            terminalContexts: [],
             prompt: '',
             skills: [],
           };
@@ -540,6 +614,27 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
         } else {
           draftsByThreadId[threadId] = nextDraft;
         }
+        return { draftsByThreadId };
+      }),
+    removeTerminalContext: (threadId, contextId) =>
+      set((state) => {
+        const current = state.draftsByThreadId[threadId];
+        if (!current) return state;
+        const index = current.terminalContexts.findIndex(
+          (entry) => entry.id === contextId
+        );
+        if (index < 0) return state;
+        const terminalContexts = current.terminalContexts.filter(
+          (entry) => entry.id !== contextId
+        );
+        const { prompt } = removeInlineTerminalContextPlaceholder(
+          current.prompt,
+          index
+        );
+        const nextDraft = { ...current, prompt, terminalContexts };
+        const draftsByThreadId = { ...state.draftsByThreadId };
+        if (shouldRemoveDraft(nextDraft)) delete draftsByThreadId[threadId];
+        else draftsByThreadId[threadId] = nextDraft;
         return { draftsByThreadId };
       }),
     removeFile: (threadId, fileId) =>
@@ -686,16 +781,21 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
           nextDraft.skills,
           nextDraft.modelSelection?.provider ?? 'codex'
         );
+        const terminalContexts = nextDraft.terminalContexts.slice(
+          0,
+          countInlineTerminalContextPlaceholders(prompt)
+        );
         if (
           providerMentionReferencesEqual(nextDraft.mentions, mentions) &&
-          providerSkillReferencesEqual(nextDraft.skills, skills)
+          providerSkillReferencesEqual(nextDraft.skills, skills) &&
+          terminalContexts.length === nextDraft.terminalContexts.length
         ) {
           return { draftsByThreadId };
         }
         return {
           draftsByThreadId: {
             ...draftsByThreadId,
-            [threadId]: { ...nextDraft, mentions, skills },
+            [threadId]: { ...nextDraft, mentions, skills, terminalContexts },
           },
         };
       }),
@@ -710,6 +810,34 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()(
         } else {
           draftsByThreadId[threadId] = nextDraft;
         }
+        return { draftsByThreadId };
+      }),
+    setTerminalContexts: (threadId, contexts) =>
+      set((state) => {
+        const current = state.draftsByThreadId[threadId] ?? emptyDraft();
+        const normalizedContexts = contexts.flatMap((context) => {
+          const normalized = normalizeTerminalContextSelection(context);
+          return normalized ? [{ ...context, ...normalized }] : [];
+        });
+        if (
+          current.terminalContexts.length === normalizedContexts.length &&
+          current.terminalContexts.every(
+            (context, index) => context.id === normalizedContexts[index]?.id
+          )
+        ) {
+          return state;
+        }
+        const nextDraft = {
+          ...current,
+          prompt: ensureInlineTerminalContextPlaceholders(
+            current.prompt,
+            normalizedContexts.length
+          ),
+          terminalContexts: normalizedContexts,
+        };
+        const draftsByThreadId = { ...state.draftsByThreadId };
+        if (shouldRemoveDraft(nextDraft)) delete draftsByThreadId[threadId];
+        else draftsByThreadId[threadId] = nextDraft;
         return { draftsByThreadId };
       }),
   })
@@ -732,8 +860,17 @@ export async function hydrateLynxComposerDraftStore(): Promise<void> {
 
 useComposerDraftStore.subscribe((state, previousState) => {
   if (state.draftsByThreadId === previousState.draftsByThreadId) return;
+  const persistedDrafts = Object.fromEntries(
+    Object.entries(state.draftsByThreadId).map(([threadId, draft]) => [
+      threadId,
+      {
+        ...draft,
+        terminalContexts: draft.terminalContexts.map(({ text: _text, ...context }) => context),
+      },
+    ])
+  );
   webStorage.setItem(
     LYNX_COMPOSER_DRAFT_STORAGE_KEY,
-    JSON.stringify(state.draftsByThreadId)
+    JSON.stringify(persistedDrafts)
   );
 });

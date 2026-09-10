@@ -2,6 +2,11 @@ import type {
   ProviderMentionReference,
   ProviderSkillReference,
 } from '@synara/contracts';
+import {
+  formatTerminalContextLabel,
+  INLINE_TERMINAL_CONTEXT_PLACEHOLDER,
+  type TerminalContextDraft,
+} from '@synara-web/lib/terminalContext';
 import { formatComposerSkillChipLabel } from '@synara-web/components/composerInlineChip.logic';
 
 export const NATIVE_COMPOSER_TOKEN_ANCHOR = '\u2063';
@@ -9,7 +14,7 @@ export const NATIVE_COMPOSER_TOKEN_ANCHOR = '\u2063';
 export interface NativeComposerDisplayToken {
   readonly canonicalText: string;
   readonly key: string;
-  readonly kind: 'mention' | 'skill';
+  readonly kind: 'mention' | 'skill' | 'terminal-context';
   readonly label: string;
 }
 
@@ -20,6 +25,7 @@ export interface NativeComposerDraftProjection {
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly plainSegments: ReadonlyArray<string>;
   readonly skills: ReadonlyArray<ProviderSkillReference>;
+  readonly terminalContexts: ReadonlyArray<TerminalContextDraft>;
 }
 
 export interface NativeComposerProjectionEdit {
@@ -31,13 +37,14 @@ export interface NativeComposerProjectionEdit {
   readonly displayText: string;
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly skills: ReadonlyArray<ProviderSkillReference>;
+  readonly terminalContexts: ReadonlyArray<TerminalContextDraft>;
 }
 
 interface TokenRange {
   readonly canonicalText: string;
   readonly end: number;
   readonly key: string;
-  readonly kind: 'mention' | 'skill';
+  readonly kind: 'mention' | 'skill' | 'terminal-context';
   readonly label: string;
   readonly start: number;
 }
@@ -103,6 +110,29 @@ function collectSkillRanges(
   return ranges;
 }
 
+function collectTerminalContextRanges(
+  canonicalText: string,
+  terminalContexts: ReadonlyArray<TerminalContextDraft>
+): TokenRange[] {
+  const ranges: TokenRange[] = [];
+  let contextIndex = 0;
+  for (let index = 0; index < canonicalText.length; index += 1) {
+    if (canonicalText[index] !== INLINE_TERMINAL_CONTEXT_PLACEHOLDER) continue;
+    const context = terminalContexts[contextIndex];
+    contextIndex += 1;
+    if (!context) continue;
+    ranges.push({
+      canonicalText: INLINE_TERMINAL_CONTEXT_PLACEHOLDER,
+      end: index + 1,
+      key: `terminal-context:${context.id}`,
+      kind: 'terminal-context',
+      label: formatTerminalContextLabel(context),
+      start: index,
+    });
+  }
+  return ranges;
+}
+
 function nonOverlappingRanges(ranges: ReadonlyArray<TokenRange>): TokenRange[] {
   const sorted = [...ranges].sort(
     (left, right) =>
@@ -122,8 +152,13 @@ export function createNativeComposerDraftProjection(input: {
   readonly canonicalText: string;
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly skills: ReadonlyArray<ProviderSkillReference>;
+  readonly terminalContexts?: ReadonlyArray<TerminalContextDraft>;
 }): NativeComposerDraftProjection {
   const ranges = nonOverlappingRanges([
+    ...collectTerminalContextRanges(
+      input.canonicalText,
+      input.terminalContexts ?? []
+    ),
     ...collectMentionRanges(input.canonicalText, input.mentions),
     ...collectSkillRanges(input.canonicalText, input.skills),
   ]);
@@ -148,6 +183,7 @@ export function createNativeComposerDraftProjection(input: {
     mentions: input.mentions,
     plainSegments,
     skills: input.skills,
+    terminalContexts: input.terminalContexts ?? [],
   };
 }
 
@@ -288,6 +324,9 @@ export function applyNativeComposerDisplayEdit(input: {
     ),
     skills: input.projection.skills.filter((skill) =>
       retainedKeys.has(`skill:${skill.path}`)
+    ),
+    terminalContexts: input.projection.terminalContexts.filter((context) =>
+      retainedKeys.has(`terminal-context:${context.id}`)
     ),
   };
 }

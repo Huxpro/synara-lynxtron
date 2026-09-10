@@ -116,6 +116,9 @@ describe('native composer attachment menu item', () => {
       /\.SliceRoot--theme-dark \.ComposerInputSurfaceLynx\s*\{[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0,\s*0,\s*0,\s*0\.3\);/s
     );
     expect(composerStyles).toMatch(
+      /\.ComposerInputSurfaceLynx--focused\s*\{[^}]*border-color:\s*var\(--border\);/s
+    );
+    expect(composerStyles).toMatch(
       /\.ComposerRuntimeTriggerLynx--full-access\s*\{[^}]*color:\s*var\(--runtime-full-access-accent\);/s
     );
     expect(composerStyles).toMatch(
@@ -213,7 +216,12 @@ describe('native composer attachment menu item', () => {
       new URL('../components/composer/Composer.lynx.tsx', import.meta.url),
       'utf8'
     );
-    expect(composerSource).not.toContain('ComposerVoiceButtonLynx');
+    expect(composerSource).toContain('<ComposerVoiceButton');
+    expect(composerSource).toContain('voiceInputEnabled = false');
+    expect(composerSource).toContain('voiceHostSupported && voiceState.showVoiceNotesControl');
+    expect(composerSource).toContain('await nativeVoiceRecorder.start()');
+    expect(composerSource).toContain('const result = await transcribeVoice({');
+    expect(composerSource).toContain('appendVoiceTranscriptToPrompt(currentPrompt, result.text)');
     expect(composerSource).not.toContain(
       'Record voice note (unavailable in Lynx for Web)'
     );

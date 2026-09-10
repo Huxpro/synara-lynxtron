@@ -57,6 +57,7 @@ import { FileLineCommentBox } from "./chat/FileLineCommentBox";
 import { PanelStateMessage } from "./chat/PanelStateMessage";
 import { useFileLineCommenting } from "./chat/useFileLineCommenting";
 import { WorkspaceFilePreviewHeader } from "./chat/WorkspaceFilePreviewHeader";
+import { WorkspaceFilePreviewErrorState } from "./WorkspaceFilePreviewErrorState";
 import { TranscriptSelectionAction } from "./chat/TranscriptSelectionAction";
 import { useCodeSelectionAction } from "./chat/useCodeSelectionAction";
 import { LocalImagePreview } from "./LocalImagePreview";
@@ -298,6 +299,7 @@ export interface WorkspaceFilePreviewProps {
   onReferenceInChat?: ((reference: ChatFileReference) => void) | undefined;
   onAskWhyInChat?: ((reference: ChatFileReference) => void) | undefined;
   onCommentInChat?: ((comment: FileCommentSelection) => void) | undefined;
+  onClosePreview?: (() => void) | undefined;
 }
 
 export function WorkspaceFilePreview(props: WorkspaceFilePreviewProps) {
@@ -561,11 +563,12 @@ export function WorkspaceFilePreview(props: WorkspaceFilePreviewProps) {
       ) : fileQuery.isLoading ? (
         <FilePreviewLoadingState />
       ) : fileQuery.error ? (
-        <PanelStateMessage density="compact" fill="flex" className="items-start justify-start p-3">
-          <p className="text-left text-[11px] text-destructive/85">
-            {fileQuery.error instanceof Error ? fileQuery.error.message : "Could not read file."}
-          </p>
-        </PanelStateMessage>
+        <WorkspaceFilePreviewErrorState
+          detail={fileQuery.error instanceof Error ? fileQuery.error.message : null}
+          retrying={fileQuery.isFetching}
+          onRetry={() => void fileQuery.refetch()}
+          onClose={props.onClosePreview}
+        />
       ) : fileContents.length === 0 ? (
         <PanelStateMessage density="compact" fill="flex">
           <p>Empty file.</p>

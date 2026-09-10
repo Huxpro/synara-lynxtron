@@ -86,7 +86,7 @@ describe('Settings Profile fidelity', () => {
       'accessibility-label={`${props.label}: ${props.value}`}'
     );
     expect(
-      profileSource.match(/accessibility-traits="text"/g)
+      profileSource.match(/accessibility-trait="text"/g)
     ).toHaveLength(4);
     expect(profileSource).toContain(
       'accessibility-label={`${skill.displayName}: ${formatNumber(skill.runCount)} runs`}'

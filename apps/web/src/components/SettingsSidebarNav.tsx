@@ -99,22 +99,25 @@ export function SettingsSidebarNav(props: {
   };
 
   return (
-    <div className="px-1.5 py-1.5">
-      <SettingsSidebarChromeComposition
-        onBack={props.onBack}
-        searchCapability="available"
-        searchValue={query}
-        onSearchValueChange={setQuery}
-        onSubmitSearch={() => {
-          const topMatch = results[0];
-          if (topMatch) handleSelectResult(topMatch);
-        }}
-        onEscapeSearch={() => {
-          if (query.length > 0) setQuery("");
-        }}
-      />
+    <div className="flex h-full min-h-0 flex-1 flex-col">
+      <div className="shrink-0 px-1.5 pt-1.5">
+        <SettingsSidebarChromeComposition
+          onBack={props.onBack}
+          searchCapability="available"
+          searchValue={query}
+          onSearchValueChange={setQuery}
+          onSubmitSearch={() => {
+            const topMatch = results[0];
+            if (topMatch) handleSelectResult(topMatch);
+          }}
+          onEscapeSearch={() => {
+            if (query.length > 0) setQuery("");
+          }}
+        />
+      </div>
 
-      {isSearching ? (
+      <div className="min-h-0 flex-1 overflow-y-auto px-1.5 pb-1.5">
+        {isSearching ? (
         results.length === 0 ? (
           <p className={SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME}>No matching settings.</p>
         ) : (
@@ -132,7 +135,8 @@ export function SettingsSidebarNav(props: {
           activeSection={props.activeSection}
           onSelectSection={props.onSelectSection}
         />
-      )}
+        )}
+      </div>
     </div>
   );
 }
