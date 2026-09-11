@@ -605,6 +605,21 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   Together with retained Terminal and Markdown/Diff evidence, FC-027's tracked
   monospace-placement debt is complete.
 
+### 2026-09-10 navigation-row focusability continuation
+
+- The real paired `sidebar/navigation-row` story previously omitted
+  `onActivate`, causing the shared production primitive to expose
+  `focusable=false` in its default state. Both renderer specimens now receive a
+  no-op activation callback, preserving product event ownership without causing
+  story navigation. Web renderer coverage passes 26/26, the Native renderer
+  contract passes, and the complete Lynx production build succeeds.
+- Fresh exact-owned Lynxtron 0.0.21 PID `45879`, window `85271`, and DevTool
+  `localhost:8903` resolved the dark/1440 New thread specimen as
+  `focusable=true`. A real pointer click delivered the production hover path and
+  added `ui-hover` without navigating. Native Tab delivery still did not move
+  focus into the Lynx node, so FC-034's keyboard-focus requirement remains open
+  rather than being inferred from deterministic `state=focus` styling.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation

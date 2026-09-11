@@ -135,6 +135,7 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.storyId === "sidebar/navigation-row"');
     expect(source).toContain('<SidebarPrimaryActionRow');
     expect(source).toContain('active={props.state === "active"}');
+    expect(source).toContain('onActivate={() => {}}');
     expect(source).toContain('visualState={visualState');
     expect(source).toContain('resolveComponentLabNavigationRow(props.variant)');
     expect(source).toContain('label={fixture.label}');

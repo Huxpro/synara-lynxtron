@@ -68,6 +68,7 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('<SemanticIconTone');
     expect(renderer).toContain("props.storyId === 'sidebar/navigation-row'");
     expect(renderer).toContain('<SidebarPrimaryActionRow');
+    expect(renderer).toContain('onActivate={() => {}}');
     expect(renderer).toContain('resolveComponentLabNavigationRow(props.variant)');
     expect(renderer).toContain('label={fixture.label}');
     expect(renderer).toContain('fixture.shortcut ?');

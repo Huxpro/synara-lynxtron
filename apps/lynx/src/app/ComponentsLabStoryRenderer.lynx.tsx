@@ -531,6 +531,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
           icon={icon}
           label={fixture.label}
           active={props.state === 'active'}
+          onActivate={() => {}}
           visualState={visualState as 'default' | 'hover' | 'focus' | 'pressed'}
           trailing={fixture.shortcut ? <text className="ComponentsLabSidebarShortcut">{fixture.shortcut}</text> : undefined}
         />

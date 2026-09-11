@@ -726,6 +726,7 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
             icon={icon}
             label={fixture.label}
             active={props.state === "active"}
+            onActivate={() => {}}
             visualState={visualState as "default" | "hover" | "focus" | "pressed"}
             trailing={fixture.shortcut ? <span className="text-[10px]">{fixture.shortcut}</span> : undefined}
           />
