@@ -191,6 +191,7 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('<Input aria-invalid={invalid}');
     expect(renderer).toContain("props.variant === 'small' ? 'sm'");
     expect(renderer).toContain("props.storyId === 'ui/menu'");
+    expect(renderer).toContain("<MenuCheckboxItem checked className={visualClass} disabled={props.state === 'disabled'}");
     expect(renderer).toContain('<MenuPopupBase align="start"');
     expect(renderer).toContain("props.variant === 'checkbox'");
     expect(renderer).toContain("props.variant === 'separator'");

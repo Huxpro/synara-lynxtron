@@ -280,9 +280,9 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
           <MenuPopupBase align="start" className="ComponentsLabPrimitiveMenu">
             <MenuGroupLabel>Actions</MenuGroupLabel>
             {props.variant === 'checkbox' ? (
-              <MenuCheckboxItem checked onCheckedChange={() => {}}>Show terminal</MenuCheckboxItem>
+              <MenuCheckboxItem checked className={visualClass} disabled={props.state === 'disabled'} onCheckedChange={() => {}}>Show terminal</MenuCheckboxItem>
             ) : props.variant === 'separator' ? (
-              <><MenuItem onClick={() => {}}>New chat</MenuItem><MenuSeparator /><MenuItem onClick={() => {}}>Remove</MenuItem></>
+              <><MenuItem className={visualClass} disabled={props.state === 'disabled'} onClick={() => {}}>New chat</MenuItem><MenuSeparator /><MenuItem onClick={() => {}}>Remove</MenuItem></>
             ) : (
               <MenuItem className={visualClass} disabled={props.state === 'disabled'} trailing={props.variant === 'shortcut' ? <MenuShortcut>⌘N</MenuShortcut> : undefined} onClick={() => {}}>New chat</MenuItem>
             )}

@@ -479,9 +479,9 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
           <MenuPopupBase align="start" className="w-52">
             <MenuGroupLabel>Actions</MenuGroupLabel>
             {props.variant === "checkbox" ? (
-              <MenuCheckboxItem checked>Show terminal</MenuCheckboxItem>
+              <MenuCheckboxItem checked className={visualClass} disabled={props.state === "disabled"}>Show terminal</MenuCheckboxItem>
             ) : props.variant === "separator" ? (
-              <><MenuItem>New chat</MenuItem><MenuSeparator /><MenuItem variant="destructive">Remove</MenuItem></>
+              <><MenuItem className={visualClass} disabled={props.state === "disabled"}>New chat</MenuItem><MenuSeparator /><MenuItem variant="destructive">Remove</MenuItem></>
             ) : (
               <MenuItem className={visualClass} disabled={props.state === "disabled"}>New chat{props.variant === "shortcut" ? <MenuShortcut>⌘N</MenuShortcut> : null}</MenuItem>
             )}

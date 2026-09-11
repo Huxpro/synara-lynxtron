@@ -393,6 +393,7 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.storyId === "ui/menu"');
     expect(source).toContain('<MenuPopupBase align="start"');
     expect(source).toContain('props.variant === "checkbox"');
+    expect(source).toContain('<MenuCheckboxItem checked className={visualClass} disabled={props.state === "disabled"}>');
     expect(source).toContain('props.variant === "separator"');
     expect(source).toContain('props.variant === "shortcut"');
     expect(source).toContain('props.storyId === "ui/dialog"');

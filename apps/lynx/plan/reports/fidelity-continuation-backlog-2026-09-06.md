@@ -254,6 +254,12 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   Native now use state only for query/result semantics and give right-dock a
   real 320px container versus the thread/editor placements. Web Lab 28/28,
   Native route contract 1/1, and both production builds pass.
+- Menu truthfulness now applies hover/focus/pressed/disabled state to the real
+  representative item in every `ui/menu` variant. Checkbox and separator
+  previously ignored those states while ordinary item/shortcut cells honored
+  them. Both renderers now drive the production checkbox item or the first
+  separated item with the same state class and disabled prop; Web Lab 28/28
+  and the Native route contract pass.
 
 - The exact-owned comparison launcher now waits 30 seconds for the requested
   PID-owned DevTool listener, with a positive environment override and strict
