@@ -620,6 +620,19 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   focus into the Lynx node, so FC-034's keyboard-focus requirement remains open
   rather than being inferred from deterministic `state=focus` styling.
 
+### 2026-09-10 model-search continuation
+
+- Fresh exact-owned Lynxtron 0.0.21 PID `83549`, window `85405`, and DevTool
+  `localhost:8903` opened the real thread-placement model picker with a seeded
+  `model 12` search. The Native input retained that value and the filtered result
+  set contained only `Open Model 12`, with its independent Add to favourites
+  action. The exact-client warning/error console was empty. This closes FC-031's
+  deterministic search-result debt.
+- Computer Use ArrowDown/Enter did not move selection or activate that result,
+  matching the current Native keyboard-delivery limitation also observed in
+  FC-026/030/034. Keyboard selection remains physical-input acceptance; it is not
+  inferred from the correct filtered DOM or replaced by a pointer activation.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation
