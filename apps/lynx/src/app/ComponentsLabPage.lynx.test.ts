@@ -73,6 +73,7 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('label={fixture.label}');
     expect(renderer).toContain('fixture.shortcut ?');
     expect(renderer).toContain("props.storyId === 'sidebar/command-palette'");
+    expect(renderer).toContain("props.state === 'keyboard-highlight' && fixture.actions");
     expect(renderer).toContain('<SidebarSearchPalette');
     expect(renderer).toContain('query={queryOverride ?? routeQuery}');
     expect(renderer).toContain('onQueryChange={setQueryOverride}');

@@ -65,6 +65,17 @@ function RerenderingCommand(props: {
 }
 
 describe('Lynx CommandItem interaction contract', () => {
+  it('keeps the command-row radius on the rendered Native node', () => {
+    render(
+      <Command>
+        <CommandItem value="recent" onClick={() => {}}>Recent</CommandItem>
+      </Command>
+    );
+    expect(
+      elementTree.root?.querySelector('.LxCommandItem')?.getAttribute('style')
+    ).toContain('border-radius: 10px');
+  });
+
   it('keeps the command search row transparent and the footer horizontally split', () => {
     const commandSource = readFileSync(
       new URL('./command.lynx.tsx', import.meta.url),

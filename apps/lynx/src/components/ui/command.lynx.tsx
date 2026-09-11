@@ -366,6 +366,7 @@ export function CommandItem(props: ChildrenProps & {
   return (
     <view
       className={interaction.className}
+      style={{ borderRadius: '10px' }}
       {...interaction.eventProps}
       aria-label={props['aria-label']}
       aria-selected={command.highlightedValue === props.value}

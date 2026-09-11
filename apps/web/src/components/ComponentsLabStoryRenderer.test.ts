@@ -166,6 +166,7 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('query={queryOverride ?? routeQuery}');
     expect(source).toContain('onQueryChange={setQueryOverride}');
     expect(source).toContain('resolveComponentLabCommandPaletteFixture(props.variant)');
+    expect(source).toContain('props.state === "keyboard-highlight" && fixture.actions');
     expect(source).toContain('searchStatus={fixture.searchStatus}');
     expect(source).toContain('fixture.searchStatus === "error"');
   });

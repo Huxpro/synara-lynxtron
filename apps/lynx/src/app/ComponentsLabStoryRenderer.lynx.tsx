@@ -693,7 +693,10 @@ function TranscriptMessageActionStory(props: {
 function SidebarCommandPaletteStory(props: { readonly state: string; readonly variant?: string }) {
   const fixture = resolveComponentLabCommandPaletteFixture(props.variant);
   const routeOpen = props.state === 'open' || props.state === 'keyboard-highlight';
-  const routeQuery = props.state === 'keyboard-highlight' ? 'settings' : fixture.query;
+  const routeQuery =
+    props.state === 'keyboard-highlight' && fixture.actions
+      ? 'settings'
+      : fixture.query;
   const [queryOverride, setQueryOverride] = useState<string | null>(null);
   const [open, setOpen] = useState(routeOpen);
   const [mode, setMode] = useState<'search' | 'import'>('search');

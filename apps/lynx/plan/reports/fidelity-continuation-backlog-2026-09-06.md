@@ -722,6 +722,27 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   context-meter coverage passes 7/7 and the production build passes. Physical
   150ms hover timing/dismissal remains pointer-delivery acceptance.
 
+### 2026-09-11 Command Palette recent/highlight continuation
+
+- FC-030's `recent + keyboard-highlight` Lab cell was a false positive: the
+  state unconditionally replaced every variant query with `settings`, while the
+  recent fixture intentionally contains only a thread. Both renderers therefore
+  showed `No matches` and exercised no highlighted row. The shared paired story
+  now preserves a variant's own query when it has no action fixture, so recent
+  highlights the real `Component fidelity` thread while action-bearing variants
+  can still seed Settings. Web renderer coverage passes 26/26 and the Native Lab
+  contract passes.
+- Fresh exact-owned Lynxtron 0.0.21 PID `22047` / DevTool `localhost:8903`
+  rendered the recent thread as the only real command item with
+  `aria-selected=true` and `LxCommandItem--highlighted`. Its measured border box
+  was 562x30 with 10px horizontal / 6px vertical padding and the dark selected
+  fill resolved to `rgba(252,252,252,.0352941)`. The engine's aggregate
+  `border-radius` field reports `0px`, but all four computed corner radii and the
+  rendered inline contract resolve to 10px. The exact-client warning/error
+  console was empty. Physical hover remains pointer-delivery acceptance; the
+  deterministic keyboard-highlight geometry and recent-history state are no
+  longer missing.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation
