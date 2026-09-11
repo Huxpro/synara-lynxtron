@@ -742,6 +742,13 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   console was empty. Physical hover remains pointer-delivery acceptance; the
   deterministic keyboard-highlight geometry and recent-history state are no
   longer missing.
+- The Native command row now pins its 10px radius on the rendered node because
+  Lynxtron dropped the stylesheet shorthand even while retaining padding and
+  background. Fresh rebuilt PID `22047` resolved the highlighted recent thread
+  at a 562x30 border box with 10px/6px padding, all four corner radii at 10px,
+  and the dark hover/selection fill `rgba(252,252,252,.0352941)`. The exact-client
+  warning/error console was empty; bundle SHA-256 was
+  `f4ada31bcd713227231e0537783c1f932a773ea85429f02d865d0afe0b71ee02`.
 
 ## Historical items currently considered closed, pending regression sampling
 
