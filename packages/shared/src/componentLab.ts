@@ -243,6 +243,12 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
   },
   {
     id: "transcript/message-actions", title: "Transcript message actions", category: "transcript", owner: "MessageActions", fixtureId: "assistant-and-user-messages", variants: ["assistant", "user", "tool", "pinned"], states: [...INTERACTIVE_STATES, "revealed", "disabled"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    cases: [
+      ...["assistant", "user", "pinned"].flatMap((variant) =>
+        [...INTERACTIVE_STATES, "revealed", "disabled"].map((state) => ({ variant, state }))
+      ),
+      { variant: "tool", state: "default" },
+    ],
     renderers: {
       electron: { renderer: "electron", component: "MessageActionButton", module: "apps/web/src/components/chat/MessageActionButton.tsx", consumers: ["transcript/assistant-actions", "transcript/user-actions"] },
       lynx: { renderer: "lynx", component: "MessageActionButtonLynx", module: "apps/lynx/src/components/ui/MessageActionButton.lynx.tsx", consumers: ["transcript/assistant-actions", "transcript/user-actions"] },
@@ -377,6 +383,12 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
   },
   {
     id: "ui/menu", title: "Menu primitives", category: "design-system", owner: "Menu", fixtureId: "menu-items", variants: ["item", "checkbox", "separator", "shortcut"], states: ["default", "open", "hover", "focus", "pressed", "disabled"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    cases: [
+      { variant: "item", state: "default" },
+      ...["item", "checkbox", "separator", "shortcut"].flatMap((variant) =>
+        ["open", "hover", "focus", "pressed", "disabled"].map((state) => ({ variant, state }))
+      ),
+    ],
     renderers: {
       electron: { renderer: "electron", component: "Menu", module: "apps/web/src/components/ui/menu.tsx", consumers: ["global/menu", "composer/menu", "toolbar/menu"] },
       lynx: { renderer: "lynx", component: "Menu", module: "apps/lynx/src/components/ui/menu.lynx.tsx", consumers: ["global/menu", "composer/menu", "toolbar/menu"] },
@@ -391,6 +403,11 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
   },
   {
     id: "ui/tooltip", title: "Tooltip primitives", category: "design-system", owner: "Tooltip", fixtureId: "tooltip-copy", variants: ["default", "picker"], states: ["default", "open"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    cases: [
+      { variant: "default", state: "default" },
+      { variant: "default", state: "open" },
+      { variant: "picker", state: "open" },
+    ],
     renderers: {
       electron: { renderer: "electron", component: "Tooltip", module: "apps/web/src/components/ui/tooltip.tsx", consumers: ["global/tooltip", "toolbar/tooltip", "composer/tooltip"] },
       lynx: { renderer: "lynx", component: "Tooltip", module: "apps/lynx/src/components/ui/tooltip.lynx.tsx", consumers: ["global/tooltip", "toolbar/tooltip", "composer/tooltip"] },

@@ -276,6 +276,11 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   disabled. Command palette retains one closed suggested trigger plus open
   content variants and the suggested keyboard-highlight cell. Current identity
   audit passes 92 mappings with 3,240 normalized cells.
+- Menu, tooltip, and tool-message cases now omit combinations whose distinguishing
+  content is not mounted: one closed menu trigger replaces four identical
+  anatomy variants, picker tooltip is retained only while open, and the tool
+  message keeps one canonical no-footer case. Coverage is now 3,168 generated
+  cells while preserving every declared variant and state at least once.
 - Explicit cases are now validated as a coverage contract: duplicate cases,
   unknown variants/states, and any declared variant or state omitted from all
   cases are hard errors. This prevents future pruning from hiding a supported

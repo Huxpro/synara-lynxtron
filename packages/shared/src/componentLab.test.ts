@@ -195,7 +195,7 @@ describe("component lab manifest", () => {
     expect(summarizeComponentLabCoverage(COMPONENT_LAB_STORIES)).toEqual({
       stories: 46,
       rendererMappings: 92,
-      matrixCells: 3240,
+      matrixCells: 3168,
       interactiveStories: 26,
     });
   });
