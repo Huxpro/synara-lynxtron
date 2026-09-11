@@ -141,10 +141,12 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain("'strong-waveform': 'recording-waveform'");
     expect(renderer).toContain("props.storyId === 'terminal/search'");
     expect(renderer).toContain('<ThreadTerminalSearchBar');
-    expect(renderer).toContain("'case-sensitive': 'match-case'");
+    expect(renderer).toContain("props.variant === 'right-dock' ? ' ComponentsLabTerminalStory--rightDock' : ''");
+    expect(renderer).toContain("props.variant === 'right-dock' ? ' ComponentsLabEditorSearchStory--rightDock' : ''");
+    expect(renderer).toContain('const selected = props.state;');
     expect(renderer).toContain("props.storyId === 'editor/file-search'");
     expect(renderer).toContain('<ExplorerSearchInputHeader');
-    expect(renderer).toContain("props.variant === 'query'");
+    expect(renderer).toContain("query={props.state === 'query' ? 'ComposerVoice' : ''}");
     expect(renderer).toContain("props.storyId === 'editor/file-tab'");
     expect(renderer).toContain('<ExplorerFileTab');
     expect(renderer).toContain("return <FileTabStory key={props.state} state={props.state} />;");

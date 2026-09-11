@@ -246,6 +246,14 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   the Lab drives those real state hooks rather than substituting markup. A
   guarded Chromium computed-style assertion passes 1/1, the Web Lab suite
   remains 28/28, and the Web production build succeeds.
+- Placement truthfulness now also separates `terminal/search` and
+  `editor/file-search` variants from their content states. The previous
+  renderers tried to map obsolete `empty` / `query` / `case-sensitive` variant
+  names even though the manifest variants are `thread` / `right-dock` and
+  `editor` / `right-dock`, making each placement pair identical. Both Web and
+  Native now use state only for query/result semantics and give right-dock a
+  real 320px container versus the thread/editor placements. Web Lab 28/28,
+  Native route contract 1/1, and both production builds pass.
 
 - The exact-owned comparison launcher now waits 30 seconds for the requested
   PID-owned DevTool listener, with a positive environment override and strict

@@ -645,12 +645,10 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     );
   }
   if (props.storyId === "terminal/search") {
-    const selected = props.state === "default"
-      ? ({ empty: "default", query: "no-results", "case-sensitive": "match-case" }[props.variant ?? "empty"] ?? "default")
-      : props.state;
+    const selected = props.state;
     const query = selected === "default" ? "" : "missing-command";
     return (
-      <div className="relative h-24 w-full max-w-xl rounded-lg bg-zinc-950">
+      <div className={`relative h-24 rounded-lg bg-zinc-950 ${props.variant === "right-dock" ? "w-80" : "w-full max-w-xl"}`}>
         <TerminalSearch
           key={props.state}
           isOpen
@@ -663,9 +661,9 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     );
   }
   if (props.storyId === "editor/file-search") {
-    const query = props.state === "query" || (props.state === "default" && props.variant === "query") ? "ComposerVoice" : "";
+    const query = props.state === "query" ? "ComposerVoice" : "";
     return (
-      <div className="w-60 overflow-hidden border border-border bg-background">
+      <div className={`${props.variant === "right-dock" ? "w-80" : "w-60"} overflow-hidden border border-border bg-background`}>
         <WorkspaceSearchInputHeader
           query={query}
           search={{ inputQuery: query, fileMatches: [], searchResultsPending: false, searchResultsCurrent: true, isFetching: false, error: null, truncated: false }}

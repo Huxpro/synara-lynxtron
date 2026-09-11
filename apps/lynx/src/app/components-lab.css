@@ -34,7 +34,9 @@
 .ComponentsLabRightDockStory--narrow { width: 384px; }
 .ComponentsLabVoiceStory { width: 560px; max-width: calc(100vw - 48px); padding: 12px; border: 1px solid var(--border); border-radius: 16px; background-color: var(--background); }
 .ComponentsLabTerminalStory { position: relative; width: 560px; max-width: calc(100vw - 48px); height: 96px; border-radius: 8px; background-color: var(--color-token-terminal-background); }
+.ComponentsLabTerminalStory--rightDock { width: 320px; }
 .ComponentsLabEditorSearchStory { width: 240px; overflow: hidden; border: 1px solid var(--border); background-color: var(--background); }
+.ComponentsLabEditorSearchStory--rightDock { width: 320px; }
 .ComponentsLabFileTabStory { display: flex; width: 288px; height: 48px; padding: 0 8px; align-items: center; border: 1px solid var(--border); background-color: var(--background); }
 .ComponentsLabFilePreviewHeaderStory { width: 680px; max-width: calc(100vw - 48px); overflow: hidden; border: 1px solid var(--border); background-color: var(--background); }
 .ComponentsLabFilePreviewHeaderStory--narrow { width: 320px; }

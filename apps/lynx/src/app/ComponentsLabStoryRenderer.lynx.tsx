@@ -444,12 +444,10 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     );
   }
   if (props.storyId === 'terminal/search') {
-    const selected = props.state === 'default'
-      ? ({ empty: 'default', query: 'no-results', 'case-sensitive': 'match-case' }[props.variant ?? 'empty'] ?? 'default')
-      : props.state;
+    const selected = props.state;
     const query = selected === 'default' ? '' : 'missing-command';
     return (
-      <view className="ComponentsLabTerminalStory">
+      <view className={`ComponentsLabTerminalStory${props.variant === 'right-dock' ? ' ComponentsLabTerminalStory--rightDock' : ''}`}>
         <ThreadTerminalSearchBar
           query={query}
           hasResults={query ? false : null}
@@ -465,9 +463,9 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
   }
   if (props.storyId === 'editor/file-search') {
     return (
-      <view className="ComponentsLabEditorSearchStory">
+      <view className={`ComponentsLabEditorSearchStory${props.variant === 'right-dock' ? ' ComponentsLabEditorSearchStory--rightDock' : ''}`}>
         <ExplorerSearchInputHeader
-          query={props.state === 'query' || (props.state === 'default' && props.variant === 'query') ? 'ComposerVoice' : ''}
+          query={props.state === 'query' ? 'ComposerVoice' : ''}
           onQueryChange={() => {}}
         />
       </view>

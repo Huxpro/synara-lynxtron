@@ -309,7 +309,8 @@ describe("Components Lab story renderer", () => {
     const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
     expect(source).toContain('props.storyId === "terminal/search"');
     expect(source).toContain('<TerminalSearch');
-    expect(source).toContain('"case-sensitive": "match-case"');
+    expect(source).toContain('props.variant === "right-dock" ? "w-80" : "w-full max-w-xl"');
+    expect(source).toContain('const selected = props.state;');
     expect(source).toContain('initialCaseSensitive={selected === "match-case"}');
   });
 
@@ -317,7 +318,8 @@ describe("Components Lab story renderer", () => {
     const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
     expect(source).toContain('props.storyId === "editor/file-search"');
     expect(source).toContain('<WorkspaceSearchInputHeader');
-    expect(source).toContain('props.variant === "query"');
+    expect(source).toContain('props.variant === "right-dock" ? "w-80" : "w-60"');
+    expect(source).toContain('const query = props.state === "query" ? "ComposerVoice" : "";');
   });
 
   it("renders editor file-tab states through the shared surface tab", () => {
