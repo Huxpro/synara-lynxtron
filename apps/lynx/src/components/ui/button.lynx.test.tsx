@@ -12,16 +12,19 @@ describe('Lynx Button accessibility contract', () => {
     );
 
     expect(styles).toMatch(
-      /\.LxButton\.ui-active\s*\{[^}]*opacity:\s*1;[^}]*transform:\s*none;/s
+      /\.LxButton\.ui-active,\s*\.LxButton\.ui-hover,\s*\.LxButton\.ui-pressed\s*\{[^}]*opacity:\s*1;[^}]*transform:\s*none;/s
     );
     expect(styles).toMatch(
-      /\.LxButton--ghost\.ui-active\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s
+      /\.LxButton--ghost\.ui-hover\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+    );
+    expect(styles).toMatch(
+      /\.LxButton--ghost\.ui-active,\s*\.LxButton--ghost\.ui-pressed\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s
     );
     expect(styles).toMatch(
       /\.LxButton--chrome\.ui-active,[^{]*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
     );
     expect(styles).not.toMatch(
-      /\.LxButton\.ui-active\s*\{[^}]*(?:opacity:\s*0\.|scale\(0\.)/s
+      /\.LxButton\.ui-(?:active|hover|pressed)[^{]*\{[^}]*(?:opacity:\s*0\.|scale\(0\.)/s
     );
   });
 

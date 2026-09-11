@@ -260,6 +260,12 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   them. Both renderers now drive the production checkbox item or the first
   separated item with the same state class and disabled prop; Web Lab 28/28
   and the Native route contract pass.
+- Button truthfulness no longer aliases hover and pressed to one synthetic
+  active state. Web Button/IconButton cells use a deterministic hover treatment
+  and the real `data-pressed` hook separately. Native cells now emit distinct
+  `ui-hover` / `ui-pressed` classes; the shared primitive keeps pressed ghost
+  paint on the stronger secondary fill while hover uses the hover token. Native
+  button/Lab tests pass 6/6 and Web Lab remains 28/28.
 
 - The exact-owned comparison launcher now waits 30 seconds for the requested
   PID-owned DevTool listener, with a positive environment override and strict

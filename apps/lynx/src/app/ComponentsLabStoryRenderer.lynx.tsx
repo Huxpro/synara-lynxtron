@@ -190,8 +190,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     return <Textarea aria-invalid={props.state === 'invalid'} className={`ComponentsLabTextarea${props.state === 'focus' ? ' ComponentsLabPrimitiveFocus' : ''}`} defaultValue={props.state === 'filled' ? 'Describe the requested component change.' : undefined} disabled={props.state === 'disabled'} nativeInput placeholder="Describe the change" size={size} />;
   }
   if (props.storyId === 'ui/icon-button') {
-    const active = props.state === 'hover' || props.state === 'pressed';
-    const stateClass = `${active ? ' ui-active' : ''}${props.state === 'focus' ? ' ComponentsLabPrimitiveFocus' : ''}`;
+    const stateClass = `${props.state === 'hover' ? ' ui-hover' : props.state === 'pressed' ? ' ui-pressed' : ''}${props.state === 'focus' ? ' ComponentsLabPrimitiveFocus' : ''}`;
     const size = props.variant === 'xs' ? 'icon-xs' : props.variant === 'sm' ? 'icon-sm' : 'icon';
     return <view className="ComponentsLabPrimitiveGrid"><IconButton className={stateClass} disabled={props.state === 'disabled' || props.variant === 'disabled'} label="Add item" size={size}><PlusIcon size={14} /></IconButton></view>;
   }
@@ -292,9 +291,8 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     );
   }
   if (props.storyId === 'ui/button') {
-    const active = props.state === 'hover' || props.state === 'pressed';
     const disabled = props.state === 'disabled';
-    const stateClass = `${active ? ' ui-active' : ''}${props.state === 'focus' ? ' ComponentsLabPrimitiveFocus' : ''}`;
+    const stateClass = `${props.state === 'hover' ? ' ui-hover' : props.state === 'pressed' ? ' ui-pressed' : ''}${props.state === 'focus' ? ' ComponentsLabPrimitiveFocus' : ''}`;
     if (props.variant === 'icon') return <Button aria-label="Add item" className={stateClass} disabled={disabled} size="icon-xs" variant="ghost"><PlusIcon size={14} /></Button>;
     const variant = props.variant === 'primary' ? 'default' : props.variant as 'default' | 'secondary' | 'outline' | 'ghost' | 'destructive';
     const label = props.variant === 'primary' ? 'Primary' : `${props.variant?.slice(0, 1).toUpperCase()}${props.variant?.slice(1)}`;

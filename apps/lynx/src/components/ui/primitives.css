@@ -13,13 +13,20 @@
   background-color: var(--primary);
 }
 
-.LxButton.ui-active {
+.LxButton.ui-active,
+.LxButton.ui-hover,
+.LxButton.ui-pressed {
   opacity: 1;
   transform: none;
 }
 
-.LxButton--ghost.ui-active {
+.LxButton--ghost.ui-active,
+.LxButton--ghost.ui-pressed {
   background-color: var(--color-background-button-secondary);
+}
+
+.LxButton--ghost.ui-hover {
+  background-color: var(--color-background-button-secondary-hover);
 }
 
 .LxButton--chrome.ui-active,

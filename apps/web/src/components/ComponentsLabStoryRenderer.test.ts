@@ -420,6 +420,7 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.storyId === "ui/checkbox"');
     expect(source).toContain('<Checkbox aria-label="Select project"');
     expect(source).toContain('props.storyId === "ui/icon-button"');
+    expect(source).toContain('data-pressed={props.state === "pressed" || undefined}');
     expect(source).toContain('props.variant === "xs" ? "icon-xs"');
     expect(source).toContain('props.storyId === "ui/textarea"');
     expect(source).toContain('<Textarea aria-invalid=');

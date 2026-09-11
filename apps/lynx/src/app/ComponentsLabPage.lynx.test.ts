@@ -219,6 +219,7 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain("props.storyId === 'ui/checkbox'");
     expect(renderer).toContain('<CheckboxIndicator checked=');
     expect(renderer).toContain("props.storyId === 'ui/icon-button'");
+    expect(renderer).toContain("props.state === 'hover' ? ' ui-hover' : props.state === 'pressed' ? ' ui-pressed'");
     expect(renderer).toContain("props.variant === 'xs' ? 'icon-xs'");
     expect(renderer).toContain("props.storyId === 'ui/textarea'");
     expect(renderer).toContain('<Textarea aria-invalid=');

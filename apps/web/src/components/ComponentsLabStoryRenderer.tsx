@@ -383,10 +383,9 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     return <Textarea aria-invalid={props.state === "invalid"} className={`w-80 ${props.state === "focus" ? "border-foreground/30 ring-1 ring-ring/60" : ""}`} defaultValue={props.state === "filled" ? "Describe the requested component change." : undefined} disabled={props.state === "disabled"} placeholder="Describe the change" size={size} />;
   }
   if (props.storyId === "ui/icon-button") {
-    const active = props.state === "hover" || props.state === "pressed";
-    const stateClass = props.state === "focus" ? "ring-1 ring-ring/60 ring-offset-1 ring-offset-background" : "";
+    const stateClass = props.state === "hover" ? "bg-[var(--color-background-button-secondary-hover)]" : props.state === "focus" ? "ring-1 ring-ring/60 ring-offset-1 ring-offset-background" : "";
     const size = props.variant === "xs" ? "icon-xs" : props.variant === "sm" ? "icon-sm" : "icon";
-    return <IconButton className={stateClass} data-pressed={active || undefined} disabled={props.state === "disabled" || props.variant === "disabled"} label="Add item" size={size}><PlusIcon /></IconButton>;
+    return <IconButton className={stateClass} data-pressed={props.state === "pressed" || undefined} disabled={props.state === "disabled" || props.variant === "disabled"} label="Add item" size={size}><PlusIcon /></IconButton>;
   }
   if (props.storyId === "ui/checkbox") {
     const selected = props.state === "default" ? props.variant ?? "unchecked" : props.state;
@@ -491,13 +490,12 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     );
   }
   if (props.storyId === "ui/button") {
-    const active = props.state === "hover" || props.state === "pressed";
     const disabled = props.state === "disabled";
-    const stateClass = props.state === "focus" ? "ring-1 ring-ring/60 ring-offset-1 ring-offset-background" : "";
-    if (props.variant === "icon") return <IconButton className={stateClass} data-pressed={active || undefined} disabled={disabled} label="Add item"><PlusIcon /></IconButton>;
+    const stateClass = props.state === "hover" ? "brightness-95" : props.state === "focus" ? "ring-1 ring-ring/60 ring-offset-1 ring-offset-background" : "";
+    if (props.variant === "icon") return <IconButton className={stateClass} data-pressed={props.state === "pressed" || undefined} disabled={disabled} label="Add item"><PlusIcon /></IconButton>;
     const variant = props.variant === "primary" ? "default" : props.variant as "default" | "secondary" | "outline" | "ghost" | "destructive";
     const label = props.variant === "primary" ? "Primary" : `${props.variant?.slice(0, 1).toUpperCase()}${props.variant?.slice(1)}`;
-    return <Button className={stateClass} data-pressed={active || undefined} disabled={disabled} variant={variant}>{label}</Button>;
+    return <Button className={stateClass} data-pressed={props.state === "pressed" || undefined} disabled={disabled} variant={variant}>{label}</Button>;
   }
   if (props.storyId === "ui/input") {
     const value = props.state === "filled" ? "Component fidelity" : undefined;
