@@ -63,6 +63,13 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
 - **FC-037 is complete.** The final product-message mutation was exercised in
   the FC-006 run: a real assistant `Pin to panel` persisted through orchestration
   and the resulting Environment row performed a real message jump.
+- **FC-033 is complete for component identity and truthful case coverage.** The
+  current catalog has 46 paired stories, 92 validated renderer mappings, and
+  3,152 generated meaningful cells. Primitive inventory reports 21 direct pairs,
+  16 evidence-backed adapters, and zero missing or unrepresented counterparts.
+  Manifest case validation, inline SSR signatures, and guarded Chromium overlay
+  tests prevent unsupported or byte-identical cases from inflating coverage.
+  Full theme/size execution remains FC-017 rather than duplicate FC-033 work.
 - **FC-019 is complete for the implementable Native Browser contract.** A fresh
   exact-owned 0.0.21 run now covers the product shortcut, real WebView
   navigation, history, reload, tabs, screenshot clipboard, and fresh-app
