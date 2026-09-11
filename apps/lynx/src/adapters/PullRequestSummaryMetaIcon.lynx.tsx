@@ -64,7 +64,7 @@ export function PullRequestSummaryMetaIcon(props: {
   readonly checks?: ReadonlyArray<PullRequestCheck>;
   readonly kind: 'checks' | 'comments' | 'merge' | 'reviewers';
 }) {
-  const { activeTheme, svgColors } = useTheme();
+  const { activeTheme, semanticIconColor, svgColors } = useTheme();
   if (props.kind === 'checks') {
     return (
       <svg
@@ -75,7 +75,7 @@ export function PullRequestSummaryMetaIcon(props: {
             success: activeTheme.theme.semanticColors.diffAdded,
             failure: activeTheme.theme.semanticColors.diffRemoved,
             pending: svgColors.warning,
-            neutral: svgColors.mutedForeground,
+            neutral: semanticIconColor('secondary'),
           },
         })}
         accessibility-element={false}
@@ -91,7 +91,7 @@ export function PullRequestSummaryMetaIcon(props: {
   const color =
     props.kind === 'merge'
       ? activeTheme.theme.semanticColors.diffRemoved
-      : svgColors.mutedForeground;
+      : semanticIconColor('secondary');
   return (
     <svg
       className="SharedPrSummaryMetaLabelIcon"

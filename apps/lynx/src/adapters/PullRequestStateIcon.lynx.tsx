@@ -20,7 +20,7 @@ export function PullRequestStateIcon(props: {
   readonly className: string;
   readonly presentation: PrStatePresentation;
 }) {
-  const { resolvedTheme, svgColors } = useTheme();
+  const { resolvedTheme, semanticIconColor } = useTheme();
   const color =
     props.presentation.iconKind === 'pull-request'
       ? '#00a240'
@@ -30,7 +30,7 @@ export function PullRequestStateIcon(props: {
           ? resolvedTheme === 'dark'
             ? '#e3433f'
             : '#e02e2a'
-          : svgColors.mutedForeground;
+          : semanticIconColor('secondary');
   return (
     <svg
       className={props.className}

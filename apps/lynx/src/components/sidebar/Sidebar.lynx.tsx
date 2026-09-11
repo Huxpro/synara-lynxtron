@@ -463,7 +463,7 @@ function SidebarThreadTrailing({
 }: {
   readonly thread: ThreadSummary;
 }) {
-  const { resolvedTheme, svgColors } = useTheme();
+  const { resolvedTheme, semanticIconColor } = useTheme();
   const providerShown =
     shouldShowSidebarThreadProviderIdentity(thread.title) &&
     Boolean(thread.provider);
@@ -512,7 +512,7 @@ function SidebarThreadTrailing({
                             className="AppSidebarThreadMetaIcon"
                             content={colorizeLynxSvg(
                               worktreeSvg,
-                              svgColors.mutedForeground
+                              semanticIconColor('secondary')
                             )}
                           />
                         )

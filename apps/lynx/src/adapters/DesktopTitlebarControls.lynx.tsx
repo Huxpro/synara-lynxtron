@@ -52,9 +52,9 @@ export function DesktopTitlebarControls(props: {
   readonly onGoForward: () => void;
   readonly onToggleSidebar: () => void;
 }) {
-  const { svgColors } = useTheme();
-  const secondary = svgColors.secondaryForeground;
-  const foreground = svgColors.foreground;
+  const { semanticIconColor } = useTheme();
+  const secondary = semanticIconColor('secondary');
+  const foreground = semanticIconColor('primary');
   const sidebarSecondary = colorizeLynxSvg(sidebarToggleSvg, secondary);
   const sidebarForeground = colorizeLynxSvg(sidebarToggleSvg, foreground);
   const arrowSecondary = colorizeLynxSvg(arrowForwardSvg, secondary);

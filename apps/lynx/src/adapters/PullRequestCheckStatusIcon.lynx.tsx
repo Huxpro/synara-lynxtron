@@ -9,7 +9,7 @@ import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 export function PullRequestCheckStatusIcon(props: {
   readonly status: PullRequestCheckStatus;
 }) {
-  const { activeTheme, svgColors } = useTheme();
+  const { activeTheme, semanticIconColor, svgColors } = useTheme();
   if (props.status === 'skipped' || props.status === 'neutral') {
     return (
       <view
@@ -37,7 +37,7 @@ export function PullRequestCheckStatusIcon(props: {
           ? ' SharedPrSummaryCheckStatusIcon--pending'
           : ''
       }`}
-      content={colorizeLynxSvg(content, color ?? svgColors.mutedForeground)}
+      content={colorizeLynxSvg(content, color ?? semanticIconColor('secondary'))}
       accessibility-element={false}
     />
   );

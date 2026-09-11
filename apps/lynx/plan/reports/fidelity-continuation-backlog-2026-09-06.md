@@ -675,6 +675,13 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   where pending/success/failure colors are status semantics rather than neutral
   chrome. Focused semantic/Kanban coverage passes 12/12 and the production build
   remains clean.
+- The final mixed-state pass classified provider identities, Profile usage glyphs,
+  titlebar controls, unfavourited model stars, inactive Temporary chat, Sidebar
+  worktree metadata, Markdown skill/agent/terminal tokens, and neutral PR state/meta
+  fallbacks. Their explicit selected/accent/inverse and success/failure/warning
+  branches remain intact. The scoped source scan now has zero direct neutral
+  `foreground` / `mutedForeground` / `secondaryForeground` raw-SVG consumers;
+  focused semantic/provider/PR suites pass 11/11 and the production build passes.
 
 ## Historical items currently considered closed, pending regression sampling
 

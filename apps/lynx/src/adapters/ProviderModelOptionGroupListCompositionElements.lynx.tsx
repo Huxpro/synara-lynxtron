@@ -111,7 +111,7 @@ export function ProviderModelRadioItemElement(props: {
   readonly onSelect: () => void;
   readonly onToggleFavorite: () => void;
 }) {
-  const { resolvedTheme, svgColors } = useTheme();
+  const { resolvedTheme, semanticIconColor } = useTheme();
   const optionInteraction = useLynxInteractiveState({
     baseClassName: `ComposerModelOptionLynx${
       props.active ? ' ComposerModelOptionLynx--active' : ''
@@ -174,7 +174,7 @@ export function ProviderModelRadioItemElement(props: {
                 ? resolvedTheme === 'dark'
                   ? '#fbbf24'
                   : '#f59e0b'
-                : svgColors.mutedForeground
+                : semanticIconColor('secondary')
             )}
           />
         </view>

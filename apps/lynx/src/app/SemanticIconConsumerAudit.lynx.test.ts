@@ -130,6 +130,16 @@ describe('semantic icon consumer audit', () => {
       ['../adapters/PullRequestCommentComposer.lynx.tsx', "semanticIconColor('secondary')"],
       ['../adapters/SidebarListSectionHeaderElements.lynx.tsx', "semanticIconColor('secondary')"],
       ['../components/markdown/ExternalLinkIcon.lynx.tsx', "semanticIconColor('secondary')"],
+      ['../components/OpenAIProviderIcon.lynx.tsx', "semanticIconColor('secondary')"],
+      ['./ProfileUsageKindIcon.lynx.tsx', "semanticIconColor('secondary')"],
+      ['../adapters/DesktopTitlebarControls.lynx.tsx', "semanticIconColor('primary')"],
+      ['../adapters/ProviderModelOptionGroupListCompositionElements.lynx.tsx', "semanticIconColor('secondary')"],
+      ['./EmptyThreadContextTray.lynx.tsx', "semanticIconColor('secondary')"],
+      ['../components/sidebar/Sidebar.lynx.tsx', "semanticIconColor('secondary')"],
+      ['../components/markdown/MarkdownInlineTokenIcon.lynx.tsx', "semanticIconColor('secondary')"],
+      ['../adapters/PullRequestStateIcon.lynx.tsx', "semanticIconColor('secondary')"],
+      ['../adapters/PullRequestSummaryMetaIcon.lynx.tsx', "semanticIconColor('secondary')"],
+      ['../adapters/PullRequestCheckStatusIcon.lynx.tsx', "semanticIconColor('secondary')"],
     ] as const) {
       const source = readFileSync(new URL(relativePath, import.meta.url), 'utf8');
       expect(source).toContain(expected);

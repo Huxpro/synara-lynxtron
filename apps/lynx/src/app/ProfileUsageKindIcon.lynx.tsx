@@ -7,13 +7,13 @@ import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 export function ProfileUsageKindIcon(props: {
   readonly kind: 'agent' | 'skill';
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   return (
     <svg
       className="SettingsProfilePluginGlyph"
       content={colorizeLynxSvg(
         props.kind === 'agent' ? agentSvg : buildingBlocksSvg,
-        svgColors.mutedForeground
+        semanticIconColor('secondary')
       )}
     />
   );

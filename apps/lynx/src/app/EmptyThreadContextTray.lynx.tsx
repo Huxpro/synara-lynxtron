@@ -18,7 +18,7 @@ export function EmptyThreadContextTray(props: {
   readonly projectName: string;
   readonly temporary: boolean;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor, svgColors } = useTheme();
 
   return (
     <view className="EmptyThreadContextTray">
@@ -58,7 +58,7 @@ export function EmptyThreadContextTray(props: {
             temporaryThreadSvg,
             props.temporary
               ? svgColors.accentForeground
-              : svgColors.mutedForeground
+              : semanticIconColor('secondary')
           )}
         />
         <text className="EmptyThreadTemporaryLabel">Temporary</text>

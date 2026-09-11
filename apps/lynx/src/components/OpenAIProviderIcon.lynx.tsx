@@ -34,10 +34,10 @@ export function OpenAIProviderIcon({
   readonly provider?: string;
   readonly color?: string;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const content = colorizeLynxSvg(
     PROVIDER_SVG[provider] ?? openAiSvg,
-    color ?? svgColors.mutedForeground
+    color ?? semanticIconColor('secondary')
   );
   return (
     <svg

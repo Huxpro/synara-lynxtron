@@ -14,7 +14,7 @@ export function MarkdownInlineTokenIcon(props: {
   readonly color?: string;
   readonly segment: MarkdownInlineTokenSegment;
 }) {
-  const { activeTheme, svgColors } = useTheme();
+  const { activeTheme, semanticIconColor } = useTheme();
   if (props.segment.type === 'mention') {
     if (threadIdFromThreadMentionPath(props.segment.path)) {
       return (
@@ -58,7 +58,7 @@ export function MarkdownInlineTokenIcon(props: {
         props.color ??
           (props.segment.type === 'skill'
             ? activeTheme.theme.accent
-            : svgColors.mutedForeground)
+            : semanticIconColor('secondary'))
       )}
       accessibility-element={false}
     />
