@@ -381,6 +381,7 @@
   bottom: 26px;
   display: flex;
   width: 323px;
+  max-width: calc(100vw - 32px);
   padding: 8px 12px;
   flex-direction: column;
   border: 1px solid var(--border);

@@ -185,6 +185,9 @@ describe('Composer token icon fidelity', () => {
     expect(source).toContain('deriveLatestContextWindowSnapshot(activities)');
     expect(source).toContain('deriveContextWindowMeterDisplay(contextWindow)');
     expect(source).toContain('<ComposerContextWindowMeterElement');
+    expect(source).toContain(
+      '!isVoiceTranscribing &&\n              !compactFooter &&\n              contextWindowDisplay'
+    );
     expect(source).toContain('usage={contextWindow}');
     expect(source).toContain('deriveCumulativeCostUsd(activities)');
     expect(elements).toContain('<path d=\"M 8 2 A');
@@ -201,6 +204,9 @@ describe('Composer token icon fidelity', () => {
       /\.ComposerContextWindowMeterLynx svg\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;/s
     );
     expect(styles).toContain('.ComposerContextWindowPopoverLynx {');
+    expect(styles).toMatch(
+      /\.ComposerContextWindowPopoverLynx\s*\{[^}]*width:\s*323px;[^}]*max-width:\s*calc\(100vw - 32px\);/s
+    );
     expect(styles).toContain('padding: 8px 12px;');
     expect(styles).toContain('border-radius: 12px;');
     expect(styles).toContain('width: 323px;');

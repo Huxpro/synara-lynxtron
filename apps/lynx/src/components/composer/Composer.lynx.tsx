@@ -2265,6 +2265,7 @@ export function Composer({
             <>
               {!isVoiceRecording &&
               !isVoiceTranscribing &&
+              !compactFooter &&
               contextWindowDisplay ? (
                 <ComposerContextWindowMeterElement
                   display={contextWindowDisplay}

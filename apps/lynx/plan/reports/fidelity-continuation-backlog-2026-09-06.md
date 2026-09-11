@@ -710,6 +710,18 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   Native. Launcher coverage passes 45/45, Native shell/overlay coverage passes
   24/24, shared MRU logic passes 6/6, and the complete production build passes.
 
+### 2026-09-10 context-window responsive continuation
+
+- FC-029's remaining footer-clipping debt exposed a deterministic renderer
+  mismatch: Electron's shared progressive footer plan hides the context meter at
+  the first compact tier, while Native kept the 18px meter after switching its
+  labels to compact mode. Native now follows the same first-degradation rule and
+  omits the meter when `compactFooter` is active. The independently rendered
+  hover card also retains its calibrated 323px desktop width while capping itself
+  to `100vw - 32px`, so a narrow story/container cannot clip its border. Focused
+  context-meter coverage passes 7/7 and the production build passes. Physical
+  150ms hover timing/dismissal remains pointer-delivery acceptance.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation
