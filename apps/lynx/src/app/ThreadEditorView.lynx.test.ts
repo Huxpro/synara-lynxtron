@@ -438,7 +438,13 @@ describe('Lynx Editor view', () => {
     expect(diffDockSource).toContain('className="DiffDockFileStats"');
     expect(diffDockSource).toContain('syntaxTokensByLineId={syntaxTokensByLineId}');
     expect(diffDockSource).not.toContain('files: [selectedFile],');
-    expect(diffDockSource).toContain('const visibleView = view;');
+    expect(diffDockSource).toContain(
+      'visibleDiffFiles(view.files, visibleFileCount, selectedFile?.path ?? null)'
+    );
+    expect(diffDockSource).toContain('{ ...view, files: visibleFiles }');
+    expect(diffDockSource).toContain(
+      "visibleFiles.map((file) => file.key).join('\\0')"
+    );
     expect(diffDockSource).not.toContain("line.kind !== 'hunk'");
     expect(diffDockSource).toContain(
       "props.presentation !== 'editor' ? diffRenderMode : 'split'"
