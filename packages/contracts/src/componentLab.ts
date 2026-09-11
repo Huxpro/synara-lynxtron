@@ -32,5 +32,6 @@ export interface ComponentLabStory {
   readonly title: string;
   readonly variants: readonly string[];
   readonly viewports: readonly ComponentLabViewport[];
+  readonly cases?: readonly { readonly state: string; readonly variant: string }[];
   readonly platformDeltas?: readonly ComponentLabPlatformDelta[];
 }

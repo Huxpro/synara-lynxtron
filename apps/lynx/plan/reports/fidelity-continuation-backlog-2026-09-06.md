@@ -220,8 +220,10 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
 ### 2026-09-10 slow DevTool readiness and Native interaction closure
 
 - The later FC-021 three-group disclosure state raises the current Components
-  Lab catalog to 46 stories, 92 renderer mappings, and 3,440 normalized cells;
-  this supersedes older 3,416-cell status text retained in the historical row.
+  Lab catalog to 46 stories and 92 renderer mappings. A later meaningful-case
+  gate removes invalid Project Action cartesian combinations, so current
+  normalized coverage is 3,392 cells; this supersedes older 3,416/3,440-cell
+  status text retained in the historical row.
 - Exact-owned Native PID `82029` / window `91543`, PID-derived DevTool
   `localhost:8903` session 1, and bundle
   `dfa9528fac581d136bd0df583eb5b1c067b45a303c00b79800bf2d55217152e1`
@@ -260,6 +262,13 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   them. Both renderers now drive the production checkbox item or the first
   separated item with the same state class and disabled prop; Web Lab 28/28
   and the Native route contract pass.
+- The shared manifest now supports explicit meaningful `cases` rather than
+  requiring every story to claim a full variants × states cartesian product.
+  Project Action is the first adopter: create/edit retain four states each,
+  while validation-error and shortcut-conflict retain only their one canonical
+  case, reducing inflated coverage by 48 renderer/theme/viewport cells. The
+  automation runner and coverage summary consume the same case list; shared
+  manifest tests pass 8/8, Web Lab 28/28, and Native route contract 1/1.
 - Button truthfulness no longer aliases hover and pressed to one synthetic
   active state. Web Button/IconButton cells use a deterministic hover treatment
   and the real `data-pressed` hook separately. Native cells now emit distinct

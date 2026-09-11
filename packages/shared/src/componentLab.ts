@@ -131,6 +131,18 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     fixtureId: "project-action-new",
     variants: ["create", "edit", "validation-error", "shortcut-conflict"],
     states: ["default", "open", "saving", "error"],
+    cases: [
+      { variant: "create", state: "default" },
+      { variant: "create", state: "open" },
+      { variant: "create", state: "saving" },
+      { variant: "create", state: "error" },
+      { variant: "edit", state: "default" },
+      { variant: "edit", state: "open" },
+      { variant: "edit", state: "saving" },
+      { variant: "edit", state: "error" },
+      { variant: "validation-error", state: "default" },
+      { variant: "shortcut-conflict", state: "default" },
+    ],
     themes: ["light", "dark"],
     viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
@@ -528,8 +540,9 @@ export interface ComponentLabCase {
 }
 
 export function componentLabCases(
-  story: Pick<ComponentLabStory, 'states' | 'variants'>
+  story: Pick<ComponentLabStory, 'cases' | 'states' | 'variants'>
 ): readonly ComponentLabCase[] {
+  if (story.cases) return story.cases;
   return story.variants.flatMap((variant) =>
     story.states.map((state) => ({ state, variant }))
   );
@@ -543,7 +556,7 @@ export function summarizeComponentLabCoverage(
     rendererMappings: stories.length * 2,
     matrixCells: stories.reduce(
       (total, story) =>
-        total + story.variants.length * story.states.length * story.themes.length * story.viewports.length * 2,
+        total + componentLabCases(story).length * story.themes.length * story.viewports.length * 2,
       0
     ),
     interactiveStories: stories.filter((story) =>
@@ -565,6 +578,14 @@ export function validateComponentLabStories(
     ids.add(story.id);
     if (!story.states.includes("default")) {
       errors.push(`${story.id}: missing default state`);
+    }
+    for (const item of story.cases ?? []) {
+      if (!story.variants.includes(item.variant)) {
+        errors.push(`${story.id}: unknown case variant ${item.variant}`);
+      }
+      if (!story.states.includes(item.state)) {
+        errors.push(`${story.id}: unknown case state ${item.state}`);
+      }
     }
     const duplicateAxes = story.variants.filter(
       (variant) => variant !== "default" && story.states.includes(variant)

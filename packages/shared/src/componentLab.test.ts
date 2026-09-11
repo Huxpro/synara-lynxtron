@@ -195,7 +195,7 @@ describe("component lab manifest", () => {
     expect(summarizeComponentLabCoverage(COMPONENT_LAB_STORIES)).toEqual({
       stories: 46,
       rendererMappings: 92,
-      matrixCells: 3440,
+      matrixCells: 3392,
       interactiveStories: 26,
     });
   });
@@ -206,6 +206,22 @@ describe("component lab manifest", () => {
       { variant: "a", state: "y" },
       { variant: "b", state: "x" },
       { variant: "b", state: "y" },
+    ]);
+  });
+
+  it("uses explicit meaningful cases instead of inflating a cartesian matrix", () => {
+    expect(componentLabCases({
+      variants: ["create", "validation-error"],
+      states: ["default", "open"],
+      cases: [
+        { variant: "create", state: "default" },
+        { variant: "create", state: "open" },
+        { variant: "validation-error", state: "default" },
+      ],
+    })).toEqual([
+      { variant: "create", state: "default" },
+      { variant: "create", state: "open" },
+      { variant: "validation-error", state: "default" },
     ]);
   });
 
