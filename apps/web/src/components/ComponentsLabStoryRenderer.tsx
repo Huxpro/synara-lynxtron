@@ -394,7 +394,12 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
   }
   if (props.storyId === "ui/switch") {
     const selected = props.state === "default" ? props.variant ?? "off" : props.state;
-    return <Switch aria-label="Enable notifications" checked={selected === "on" || selected === "checked"} disabled={selected === "disabled"} className={selected === "focus" ? "ring-2 ring-[color:var(--color-border-focus)]/60 ring-offset-1 ring-offset-background" : ""} onCheckedChange={() => {}} />;
+    const stateClass = selected === "hover"
+      ? "ring-1 ring-[color:var(--color-border)]"
+      : selected === "focus"
+        ? "ring-2 ring-[color:var(--color-border-focus)]/60 ring-offset-1 ring-offset-background"
+        : "";
+    return <Switch aria-label="Enable notifications" checked={selected === "on" || selected === "checked"} data-pressed={selected === "pressed" || undefined} disabled={selected === "disabled"} className={stateClass} onCheckedChange={() => {}} />;
   }
   if (props.storyId === "ui/scroll-area") {
     const selected = props.state === "default" ? props.variant ?? "vertical" : props.state;

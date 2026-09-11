@@ -413,6 +413,7 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('<ScrollArea className=');
     expect(source).toContain('props.storyId === "ui/switch"');
     expect(source).toContain('<Switch aria-label="Enable notifications"');
+    expect(source).toContain('data-pressed={selected === "pressed" || undefined}');
     expect(source).toContain('props.storyId === "ui/checkbox"');
     expect(source).toContain('<Checkbox aria-label="Select project"');
     expect(source).toContain('props.storyId === "ui/icon-button"');

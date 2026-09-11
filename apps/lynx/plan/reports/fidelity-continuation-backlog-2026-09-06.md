@@ -239,6 +239,13 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   `LxCommandItem--highlighted` on `New chat` with an empty warning/error
   console. The staged bundle was
   `6ef9cd8ffdb2bac0cd3560603f0f2739e4f4a6770e52a726cd0b036a412629bc`.
+- The same audit found Web `ui/switch` hover and pressed cells reused default
+  presentation while Native already exposed its real interactive states. The
+  shared Web Switch now owns a subtle hover/pressed ring and accepts the Base
+  UI `data-pressed` state for the same thumb deformation as a physical press;
+  the Lab drives those real state hooks rather than substituting markup. A
+  guarded Chromium computed-style assertion passes 1/1, the Web Lab suite
+  remains 28/28, and the Web production build succeeds.
 
 - The exact-owned comparison launcher now waits 30 seconds for the requested
   PID-owned DevTool listener, with a positive environment override and strict
