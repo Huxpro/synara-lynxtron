@@ -594,6 +594,16 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   Diff suites pass 13/13 and the production build succeeds. A fresh canonical
   190-file Native stress run remains required before closing the load-robustness
   portion of FC-008.
+- That stress run is now complete. A disposable git repository with 190 tracked
+  files and 380 additions / 190 deletions was registered as
+  `project-fc008-large` with `thread-fc008-large` through public
+  `orchestration.dispatchCommand` calls. Exact-owned Lynxtron loaded the real
+  working-tree Diff without `CallLepusMethod called too frequently`; host logs
+  show exactly the first 24 files generating 48 old/new syntax-highlight calls
+  while `projects.listDirectories` retained the full tree. The project and thread
+  were deleted through the same public command path, and the temporary repo/home
+  were removed. Large working-tree load robustness is therefore closed; a real
+  checkpoint-backed turn diff remains separate FC-008 work.
 
 ### 2026-09-10 dark voice-state continuation
 
