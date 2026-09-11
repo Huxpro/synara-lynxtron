@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from '@lynx-js/react';
+import { useCallback, useMemo, useRef, useState } from '@lynx-js/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
   ProjectId,
@@ -26,20 +26,6 @@ import {
   resolveKanbanDragColumn,
   type KanbanDragRect,
 } from '@synara-web/components/kanban/kanbanDnd.logic';
-import {
-  KANBAN_MUTATION_COPY,
-  createKanbanMutationGate,
-  resolveKanbanCardActions,
-  resolveKanbanMutationActions,
-  type KanbanCardActionId,
-  type KanbanMutationActionId,
-} from '@synara-web/components/kanban/kanbanMutation.logic';
-import { isKanbanDraftOnlyCard } from '@synara-web/components/kanban/kanban.logic';
-import {
-  APP_SETTINGS_STORAGE_KEY,
-  readSettingsBehaviorProjection,
-} from '@synara-web/appSettingsStorageProjection.logic';
-import { resolveThreadWorkspaceCwd } from '@synara/shared/threadEnvironment';
 import {
   PullRequestListComposition,
   PullRequestListEmptyComposition,
@@ -71,7 +57,6 @@ import {
   fetchPullRequestDiff,
   fetchPullRequests,
   fetchSidebarSnapshot,
-  fetchThreadHeaderSummary,
   performPullRequestAction,
   queryClient,
   setPullRequestPinned,
@@ -81,12 +66,6 @@ import {
   projectLynxKanbanComposerDrafts,
   useComposerDraftStore,
 } from '../adapters/composerDraftStore.lynx';
-import {
-  buildNativeKanbanArchiveCommand,
-  buildNativeKanbanRenameCommand,
-  buildNativeKanbanStartCommand,
-  resolveNativeKanbanMutationError,
-} from './kanbanMutation.logic';
 import {
   createNativeKanbanDragSession,
   moveNativeKanbanDragSession,
@@ -111,11 +90,7 @@ import { KanbanNewTaskDialog } from './KanbanNewTaskDialog.lynx';
 import { PullRequestsUnavailableState } from '../adapters/PullRequestsUnavailableState.lynx';
 import { PullRequestDetailExternalButtonElement } from '../adapters/PullRequestDetailCloseCompositionElements.lynx';
 import { PullRequestWarningBanner } from '../adapters/PullRequestWarningBanner.lynx';
-import { webStorage } from '../platform/storage';
-import {
-  buildNativeThreadContextCommand,
-  nativeThreadContextConfirmation,
-} from '../components/sidebar/threadContextActions.logic';
+import { useNativeKanbanCardActions } from './useNativeKanbanCardActions.lynx';
 
 export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => void }) {
   const [newTaskProjectId, setNewTaskProjectId] =
@@ -152,6 +127,11 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
     isPending,
     error,
   });
+  const cardActions = useNativeKanbanCardActions({
+    projectWorkspaceRoot: (projectId) =>
+      data?.projects.find((candidate) => candidate.id === projectId)
+        ?.workspaceRoot ?? null,
+  });
   return (
     <view className="FeaturePage FeaturePage--overview">
       <KanbanRouteHeaderComposition
@@ -166,6 +146,7 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
           setNewTaskOpen(true);
         }}
       />
+      {cardActions.actionPanels}
       {routeState.kind === 'loading' ? (
         <KanbanStateComposition kind="loading-overview" />
       ) : routeState.kind === 'offline' || routeState.kind === 'error' ? (
@@ -191,6 +172,7 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
               navigate(`/kanban/${projectId}`)
             }
             onOpenCard={(card) => navigate(`/thread/${card.threadId}`)}
+            onCardContextMenu={cardActions.openCardContextMenu}
             onNewTask={(projectId) => {
               setNewTaskProjectId(projectId);
               setNewTaskOpen(true);
@@ -215,13 +197,6 @@ const KANBAN_COLUMNS: readonly KanbanColumnKey[] = [
   'inProgress',
   'done',
 ];
-
-interface KanbanMutationTarget {
-  readonly action: KanbanMutationActionId;
-  readonly card: KanbanCard;
-  readonly value: string;
-  readonly error: string | null;
-}
 
 interface KanbanColumnLayoutEvent {
   readonly detail?: {
@@ -265,12 +240,6 @@ function kanbanDragRectFromLayout(
   return { column, left: left!, top: top!, right, bottom };
 }
 
-function newKanbanCommandId(kind: string): string {
-  return `lynx-kanban-${kind}-${Date.now()}-${Math.random()
-    .toString(16)
-    .slice(2)}`;
-}
-
 export function KanbanProjectPage({
   navigate,
   projectId,
@@ -278,12 +247,6 @@ export function KanbanProjectPage({
   readonly navigate: (to: string) => void;
   readonly projectId: string;
 }) {
-  const [mutationTarget, setMutationTarget] =
-    useState<KanbanMutationTarget | null>(null);
-  const [mutationPending, setMutationPending] = useState(false);
-  const [mutationNotice, setMutationNotice] = useState<string | null>(null);
-  const [mutationChooserCard, setMutationChooserCard] =
-    useState<KanbanCard | null>(null);
   const [newTaskOpen, setNewTaskOpen] = useState(false);
   const lynxDraftsByThreadId = useComposerDraftStore(
     (store) => store.draftsByThreadId
@@ -292,8 +255,6 @@ export function KanbanProjectPage({
     () => projectLynxKanbanComposerDrafts(lynxDraftsByThreadId),
     [lynxDraftsByThreadId]
   );
-  const mutationGateRef = useRef(createKanbanMutationGate());
-  const mutationTextareaRef = useRef<React.ElementRef<'textarea'>>(null);
   const kanbanColumnRectsRef = useRef<Partial<Record<KanbanColumnKey, KanbanDragRect>>>({});
   const nativeDragRef = useRef<NativeKanbanDragSession | null>(null);
   const [nativeDrag, setNativeDrag] = useState<NativeKanbanDragSession | null>(null);
@@ -311,248 +272,15 @@ export function KanbanProjectPage({
     [composerDraftByThreadId, data, projectId]
   );
   const project = data?.projects.find((candidate) => candidate.id === projectId);
+  const cardActions = useNativeKanbanCardActions({
+    projectWorkspaceRoot: () => project?.workspaceRoot ?? null,
+  });
   const routeState = resolveKanbanProjectRouteState({
     hasSnapshot: data !== undefined,
     projectFound: projectBoard !== null,
     isPending,
     error,
   });
-
-  const executeKanbanMutation = async (target: KanbanMutationTarget) => {
-    'background only';
-    const { card, action } = target;
-    if (!mutationGateRef.current.tryAcquire(card.threadId)) return;
-    setMutationPending(true);
-    setMutationTarget({ ...target, error: null });
-    try {
-      const { dispatchSynaraCommand } = await import(
-        /* webpackMode: "eager" */ '../data/synaraClient'
-      );
-      let command;
-      if (action === 'start') {
-        const text = target.value.trim();
-        if (text.length === 0) {
-          throw new Error('Write a prompt before starting this task.');
-        }
-        const summary = await fetchThreadHeaderSummary(card.threadId);
-        if (!summary) throw new Error('This task is no longer available.');
-        const createdAt = new Date().toISOString();
-        command = buildNativeKanbanStartCommand({
-          commandId: newKanbanCommandId('start'),
-          createdAt,
-          interactionMode: summary.interactionMode,
-          messageId: newKanbanCommandId('message'),
-          modelSelection: summary.modelSelection,
-          runtimeMode: summary.runtimeMode,
-          text,
-          threadId: card.threadId,
-        });
-      } else if (action === 'rename') {
-        const title = target.value.trim();
-        if (title.length === 0) throw new Error('Task name cannot be empty.');
-        command = buildNativeKanbanRenameCommand({
-          commandId: newKanbanCommandId('rename'),
-          threadId: card.threadId,
-          title,
-        });
-      } else {
-        command = buildNativeKanbanArchiveCommand({
-          commandId: newKanbanCommandId('archive'),
-          threadId: card.threadId,
-        });
-      }
-      await dispatchSynaraCommand(command);
-      await queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] });
-      setMutationNotice(KANBAN_MUTATION_COPY[action].success);
-      setMutationTarget(null);
-    } catch (mutationError) {
-      setMutationTarget({
-        ...target,
-        error: resolveNativeKanbanMutationError(mutationError),
-      });
-    } finally {
-      mutationGateRef.current.release(card.threadId);
-      setMutationPending(false);
-    }
-  };
-
-  const selectKanbanMutationAction = async (
-    card: KanbanCard,
-    action: KanbanCardActionId
-  ) => {
-    'background only';
-    setMutationChooserCard(null);
-    setMutationNotice(null);
-    const isDraftOnly = isKanbanDraftOnlyCard(card);
-    const workspacePath = resolveThreadWorkspaceCwd({
-      projectCwd: project?.workspaceRoot ?? null,
-      envMode: card.envMode,
-      worktreePath: card.worktreePath,
-    });
-    try {
-      if (action === 'copy-path' || action === 'copy-thread-id') {
-        const { clipboard } = await import(
-          /* webpackMode: "eager" */ '../platform/clipboard'
-        );
-        await clipboard.writeText(
-          action === 'copy-path' ? workspacePath ?? '' : card.threadId
-        );
-        setMutationNotice(
-          action === 'copy-path' ? 'Task path copied' : 'Task ID copied'
-        );
-        return;
-      }
-      if (action === 'delete' && (card.thread === null || isDraftOnly)) {
-        const behaviorSettings = readSettingsBehaviorProjection(
-          webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
-        );
-        if (behaviorSettings.confirmThreadDelete) {
-          const { dialogs } = await import(
-            /* webpackMode: "eager" */ '../platform/dialogs'
-          );
-          if (
-            !(await dialogs.confirm(
-              'Delete this draft? This removes its unsent prompt.'
-            ))
-          ) {
-            return;
-          }
-        }
-        if (card.thread === null) {
-          useComposerDraftStore.getState().discardDraft(card.threadId);
-        } else {
-          useComposerDraftStore.getState().clearDraft(card.threadId);
-        }
-        setMutationNotice('Draft deleted');
-        return;
-      }
-      if (action === 'toggle-pin' || action === 'delete') {
-        const behaviorSettings = readSettingsBehaviorProjection(
-          webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
-        );
-        const confirmation = nativeThreadContextConfirmation(
-          action,
-          card.title,
-          behaviorSettings
-        );
-        if (confirmation) {
-          const { dialogs } = await import(
-            /* webpackMode: "eager" */ '../platform/dialogs'
-          );
-          if (!(await dialogs.confirm(confirmation))) return;
-        }
-        const command = buildNativeThreadContextCommand({
-          action,
-          commandId: newKanbanCommandId(action),
-          isPinned: card.thread?.isPinned ?? false,
-          threadId: card.threadId,
-        });
-        if (!command) return;
-        const { dispatchSynaraCommand } = await import(
-          /* webpackMode: "eager" */ '../data/synaraClient'
-        );
-        await dispatchSynaraCommand(command);
-        await queryClient.invalidateQueries({
-          queryKey: ['sidebar-snapshot'],
-        });
-        setMutationNotice(
-          action === 'toggle-pin'
-            ? card.thread?.isPinned
-              ? 'Task unpinned'
-              : 'Task pinned'
-            : 'Task deleted'
-        );
-        return;
-      }
-    } catch (actionError) {
-      setMutationNotice(resolveNativeKanbanMutationError(actionError));
-      return;
-    }
-    if (action === 'archive') {
-      const { dialogs } = await import(
-        /* webpackMode: "eager" */ '../platform/dialogs'
-      );
-      const confirmed = await dialogs.confirm(
-        [
-          `Archive task "${card.title}"?`,
-          'Archived tasks leave this board and can be restored later.',
-        ].join('\n')
-      );
-      if (!confirmed) return;
-      const target = { action, card, value: '', error: null } as const;
-      setMutationTarget(target);
-      await executeKanbanMutation(target);
-      return;
-    }
-    setMutationTarget({
-      action,
-      card,
-      value: action === 'rename' ? card.title : '',
-      error: null,
-    });
-  };
-
-  const openKanbanCardMenu = async (
-    card: KanbanCard,
-    event: React.MouseEvent,
-    restoreFocus?: () => void
-  ) => {
-    'background only';
-    event.preventDefault();
-    event.stopPropagation();
-    await (async () => {
-      const actions = resolveKanbanCardActions(card, {
-        canSupplyStartPrompt: true,
-        deleteAvailable: card.column !== 'inProgress',
-        copyPathAvailable:
-          resolveThreadWorkspaceCwd({
-            projectCwd: project?.workspaceRoot ?? null,
-            envMode: card.envMode,
-            worktreePath: card.worktreePath,
-          }) !== null,
-      });
-      if (actions.length === 0) return;
-      const { showContextMenu } = await import(
-        /* webpackMode: "eager" */ '../platform/contextMenu'
-      );
-      const action = await showContextMenu(
-        actions.map((candidate, index) => ({
-          id: candidate.id,
-          label: candidate.label,
-          ...(candidate.destructive ? { destructive: true } : {}),
-          ...(index > 0 ? { separatorBefore: true } : {}),
-        })),
-        { x: event.clientX, y: event.clientY },
-        { restoreFocus }
-      );
-      if (!action) return;
-      await selectKanbanMutationAction(card, action);
-    })();
-  };
-
-  const mutationCopy = mutationTarget
-    ? KANBAN_MUTATION_COPY[mutationTarget.action]
-    : null;
-
-  useEffect(() => {
-    'background only';
-    if (
-      !mutationTarget ||
-      (mutationTarget.action !== 'start' && mutationTarget.action !== 'rename')
-    ) {
-      return;
-    }
-    const value = mutationTarget.value;
-    mutationTextareaRef.current
-      ?.invoke({ method: 'setValue', params: { value } })
-      .exec();
-    mutationTextareaRef.current
-      ?.invoke({
-        method: 'setSelectionRange',
-        params: { selectionStart: value.length, selectionEnd: value.length },
-      })
-      .exec();
-  }, [mutationTarget?.action, mutationTarget?.card.threadId]);
 
   const setNativeDragSession = useCallback((session: NativeKanbanDragSession | null) => {
     nativeDragRef.current = session;
@@ -562,20 +290,17 @@ export function KanbanProjectPage({
   const cancelNativeKanbanDrag = useCallback((notice?: string) => {
     'background only';
     setNativeDragSession(null);
-    if (notice) setMutationNotice(notice);
-  }, [setNativeDragSession]);
+    if (notice) cardActions.showNotice(notice);
+  }, [cardActions.showNotice, setNativeDragSession]);
 
   const startNativeKanbanDrag = useCallback((
     card: KanbanCard,
     point: { readonly x: number; readonly y: number }
   ) => {
     'background only';
-    if (nativeDragRef.current || mutationPending) return;
-    setMutationTarget(null);
-    setMutationChooserCard(null);
-    setMutationNotice(null);
+    if (nativeDragRef.current || cardActions.mutationPending) return;
     setNativeDragSession(createNativeKanbanDragSession(card, point, Date.now()));
-  }, [mutationPending, setNativeDragSession]);
+  }, [cardActions.mutationPending, setNativeDragSession]);
 
   const moveNativeKanbanDrag = useCallback((event: NativeKanbanPointerEvent) => {
     'background only';
@@ -622,21 +347,14 @@ export function KanbanProjectPage({
       return;
     }
     if (policy.kind === 'dispatch') {
-      const target = {
-        action: 'start',
-        card: current.card,
-        value: current.card.draftPrompt,
-        error: null,
-      } as const;
-      setMutationTarget(target);
-      void executeKanbanMutation(target);
+      void cardActions.startCard(current.card, current.card.draftPrompt);
       return;
     }
     if (policy.kind === 'prompt-required') {
-      void selectKanbanMutationAction(current.card, 'start');
+      void cardActions.selectAction(current.card, 'start');
       return;
     }
-    if (policy.kind === 'invalid') setMutationNotice(policy.label);
+    if (policy.kind === 'invalid') cancelNativeKanbanDrag(policy.label);
   }, [navigate, setNativeDragSession]);
 
   const nativeDragTargetColumn = nativeDrag?.activated
@@ -668,158 +386,7 @@ export function KanbanProjectPage({
         newTaskShortcutParts={[]}
         onNewTask={() => setNewTaskOpen(true)}
       />
-      {mutationNotice ? (
-        <view
-          className="KanbanMutationNotice"
-          accessibility-element
-          accessibility-label={mutationNotice}
-        >
-          <text className="KanbanMutationNoticeText">{mutationNotice}</text>
-        </view>
-      ) : null}
-      {mutationChooserCard ? (
-        <view
-          className="KanbanMutationPanel"
-          accessibility-element
-          accessibility-label={`Actions for ${mutationChooserCard.title}`}
-        >
-          <view className="KanbanMutationPanelHeader">
-            <text className="KanbanMutationPanelTitle">Task actions</text>
-            <text className="KanbanMutationPanelTask" maxlines={1}>
-              {mutationChooserCard.title}
-            </text>
-          </view>
-          <view className="KanbanMutationActions KanbanMutationActions--chooser">
-            {resolveKanbanCardActions(mutationChooserCard, {
-              canSupplyStartPrompt: true,
-              deleteAvailable: mutationChooserCard.column !== 'inProgress',
-              copyPathAvailable:
-                resolveThreadWorkspaceCwd({
-                  projectCwd: project?.workspaceRoot ?? null,
-                  envMode: mutationChooserCard.envMode,
-                  worktreePath: mutationChooserCard.worktreePath,
-                }) !== null,
-            }).map((action) => (
-              <Button
-                key={action.id}
-                size="sm"
-                variant={action.destructive ? 'destructive-outline' : 'outline'}
-                onClick={() =>
-                  void selectKanbanMutationAction(mutationChooserCard, action.id)
-                }
-              >
-                {action.label}
-              </Button>
-            ))}
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => setMutationChooserCard(null)}
-            >
-              Cancel
-            </Button>
-          </view>
-        </view>
-      ) : null}
-      {mutationTarget ? (
-        <view
-          className="KanbanMutationPanel"
-          accessibility-element
-          accessibility-label={`${mutationTarget.action} ${mutationTarget.card.title}`}
-        >
-          <view className="KanbanMutationPanelHeader">
-            <text className="KanbanMutationPanelTitle">
-              {mutationTarget.action === 'start'
-                ? 'Start task'
-                : mutationTarget.action === 'rename'
-                  ? 'Rename task'
-                  : mutationPending
-                    ? mutationCopy?.pending
-                    : mutationCopy?.error}
-            </text>
-            <text className="KanbanMutationPanelTask" maxlines={1}>
-              {mutationTarget.card.title}
-            </text>
-          </view>
-          {mutationTarget.action === 'start' || mutationTarget.action === 'rename' ? (
-            <textarea
-              ref={mutationTextareaRef}
-              key={`${mutationTarget.action}:${mutationTarget.card.threadId}`}
-              className={`KanbanMutationTextarea${
-                mutationTarget.error ? ' KanbanMutationTextarea--invalid' : ''
-              }`}
-              default-value={mutationTarget.value}
-              readonly={mutationPending}
-              aria-label={
-                mutationTarget.action === 'start'
-                  ? 'Task instructions'
-                  : 'Task name'
-              }
-              aria-invalid={Boolean(mutationTarget.error)}
-              accessibility-element
-              accessibility-label={
-                mutationTarget.action === 'start'
-                  ? 'Task instructions'
-                  : 'Task name'
-              }
-              placeholder={
-                mutationTarget.action === 'start'
-                  ? 'What should the agent do?'
-                  : 'Task name'
-              }
-              maxlength={8000}
-              maxlines={4}
-              bindinput={(inputEvent) => {
-                'background only';
-                setMutationTarget((current) =>
-                  current
-                    ? { ...current, value: inputEvent.detail.value, error: null }
-                    : current
-                );
-              }}
-            />
-          ) : null}
-          {mutationTarget.error ? (
-            <text
-              className="KanbanMutationError"
-              accessibility-element
-              accessibility-role="alert"
-            >
-              {mutationTarget.error}
-            </text>
-          ) : null}
-          <view className="KanbanMutationActions">
-            <Button
-              size="sm"
-              variant="ghost"
-              disabled={mutationPending}
-              onClick={() => setMutationTarget(null)}
-            >
-              Cancel
-            </Button>
-            <Button
-              size="sm"
-              disabled={
-                mutationPending ||
-                ((mutationTarget.action === 'start' ||
-                  mutationTarget.action === 'rename') &&
-                  mutationTarget.value.trim().length === 0)
-              }
-              onClick={() => void executeKanbanMutation(mutationTarget)}
-            >
-              {mutationPending
-                ? mutationCopy?.pending
-                : mutationTarget.error
-                  ? KANBAN_MUTATION_COPY.retry
-                  : mutationTarget.action === 'start'
-                    ? 'Start'
-                    : mutationTarget.action === 'rename'
-                      ? 'Save'
-                      : KANBAN_MUTATION_COPY.retry}
-            </Button>
-          </view>
-        </view>
-      ) : null}
+      {cardActions.actionPanels}
       {routeState.kind === 'loading' ? (
         <KanbanStateComposition kind="loading-project" />
       ) : routeState.kind === 'offline' ||
@@ -884,7 +451,7 @@ export function KanbanProjectPage({
                       : undefined
                   }
                   onOpenCard={(card) => navigate(`/thread/${card.threadId}`)}
-                  onCardContextMenu={openKanbanCardMenu}
+                  onCardContextMenu={cardActions.openCardContextMenu}
                   onCardDragPointerStart={startNativeKanbanDrag}
                   dragSourceCardId={
                     nativeDrag?.activated ? nativeDrag.card.cardId : null
@@ -892,9 +459,7 @@ export function KanbanProjectPage({
                   showDispatchTarget={columnIsValid}
                   dispatchTargetLabel={columnPolicy?.label}
                   onCardActions={(card) => {
-                    setMutationTarget(null);
-                    setMutationNotice(null);
-                    setMutationChooserCard(card);
+                    cardActions.openCardActions(card);
                   }}
                 />
               </view>
