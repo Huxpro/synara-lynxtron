@@ -1021,7 +1021,7 @@ function EditorActivityItem(props: {
 }
 
 function ThreadPage(props: ThreadPageProps) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const initData = useInitData() as {
     readonly initialEditorHistoryOpen?: unknown;
     readonly initialEditorNewChatOpen?: unknown;
@@ -1781,7 +1781,7 @@ function ThreadPage(props: ThreadPageProps) {
         ) === 'terminal' ? (
           <svg
             className="ThreadHeaderTerminalIcon"
-            content={colorizeLynxSvg(terminalSvg, svgColors.accent)}
+            content={colorizeLynxSvg(terminalSvg, semanticIconColor('accent'))}
           />
         ) : (
           <OpenAIProviderIcon provider={currentThread?.provider} />
@@ -2056,7 +2056,7 @@ function ThreadPage(props: ThreadPageProps) {
                 className="ThreadEditorHeaderIcon"
                 content={colorizeLynxSvg(
                   panelRightCloseSvg,
-                  svgColors.foreground
+                  semanticIconColor('primary')
                 )}
               />
             </Button>
@@ -2070,7 +2070,7 @@ function ThreadPage(props: ThreadPageProps) {
                 className="ThreadEditorHeaderIcon"
                 content={colorizeLynxSvg(
                   bubbleTextSvg,
-                  svgColors.foreground
+                  semanticIconColor('primary')
                 )}
               />
               <text className="LxButton__text">Chat</text>
@@ -2100,8 +2100,8 @@ function ThreadPage(props: ThreadPageProps) {
                   editorSidebarVisible &&
                   editorCenterMode === 'file' &&
                   !editorSearchActive
-                    ? svgColors.foreground
-                    : svgColors.mutedForeground
+                    ? semanticIconColor('primary')
+                    : semanticIconColor('secondary')
                 )}
               />
             </EditorActivityItem>
@@ -2127,8 +2127,8 @@ function ThreadPage(props: ThreadPageProps) {
                   editorSidebarVisible &&
                   editorCenterMode === 'diff' &&
                   !editorSearchActive
-                    ? svgColors.foreground
-                    : svgColors.mutedForeground
+                    ? semanticIconColor('primary')
+                    : semanticIconColor('secondary')
                 )}
               />
             </EditorActivityItem>
@@ -2146,8 +2146,8 @@ function ThreadPage(props: ThreadPageProps) {
                 size={20}
                 color={
                   editorSidebarVisible && editorSearchActive
-                    ? svgColors.foreground
-                    : svgColors.mutedForeground
+                    ? semanticIconColor('primary')
+                    : semanticIconColor('secondary')
                 }
               />
             </EditorActivityItem>
@@ -2500,7 +2500,9 @@ function ThreadPage(props: ThreadPageProps) {
                 className="ThreadDiffToggleIcon"
                 content={colorizeLynxSvg(
                   panelRightCloseSvg,
-                  diffOpen ? svgColors.foreground : svgColors.secondaryForeground
+                  diffOpen
+                    ? semanticIconColor('primary')
+                    : semanticIconColor('secondary')
                 )}
               />
             </view>

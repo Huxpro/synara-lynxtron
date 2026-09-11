@@ -234,7 +234,7 @@ function TranscriptMessageTrail(props: {
 function TranscriptStatusIcon(props: {
   readonly tone: 'thinking' | 'tool' | 'info' | 'error';
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   if (props.tone === 'error') {
     return <CircleAlertIcon className="TranscriptStatusIcon" size={13} />;
   }
@@ -246,7 +246,7 @@ function TranscriptStatusIcon(props: {
       className="TranscriptStatusIcon"
       content={colorizeLynxSvg(
         props.tone === 'thinking' ? botSvg : toolSvg,
-        svgColors.mutedForeground
+        semanticIconColor('secondary')
       )}
     />
   );
@@ -264,11 +264,11 @@ function TranscriptWorkIcon(props: { readonly entry: WorkLogEntry }) {
 }
 
 function TranscriptJumpIcon() {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   return (
     <svg
       className="TranscriptJumpIcon"
-      content={colorizeLynxSvg(arrowDownSvg, svgColors.foreground)}
+      content={colorizeLynxSvg(arrowDownSvg, semanticIconColor('primary'))}
     />
   );
 }

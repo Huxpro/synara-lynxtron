@@ -657,6 +657,18 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   FC-026/030/034. Keyboard selection remains physical-input acceptance; it is not
   inferred from the correct filtered DOM or replaced by a pointer activation.
 
+### 2026-09-10 route-local semantic icon continuation
+
+- FC-038's recursive consumer gate now includes the remaining neutral raw-SVG
+  families in the Transcript, Diff, and full Editor route. Transcript thinking/tool
+  status icons map to `secondary`, its jump affordance maps to `primary`, Diff tab
+  and changed-files icons map to `secondary`, and Editor terminal/activity/diff
+  controls map explicitly to `accent`, `primary`, or `secondary` by state. No
+  `foreground`, `mutedForeground`, or `secondaryForeground` raw-SVG references
+  remain in those three route owners. The focused semantic audit passes 5/5 and
+  the complete Lynx production build succeeds. Status-specific success/error and
+  warning colors remain intentionally outside this neutral-role normalization.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation

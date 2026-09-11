@@ -98,4 +98,26 @@ describe('semantic icon consumer audit', () => {
       expect(source).toContain(expected);
     }
   });
+
+  it('classifies transcript, Diff, and full Editor raw SVG icons', () => {
+    const transcript = readFileSync(
+      new URL('./Transcript.tsx', import.meta.url),
+      'utf8'
+    );
+    const diff = readFileSync(
+      new URL('./DiffDock.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const router = readFileSync(
+      new URL('./router.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(transcript).toContain("semanticIconColor('primary')");
+    expect(transcript).toContain("semanticIconColor('secondary')");
+    expect(diff.match(/semanticIconColor\('secondary'\)/g)).toHaveLength(2);
+    expect(router).toContain("semanticIconColor('accent')");
+    expect(router.match(/semanticIconColor\('primary'\)/g)?.length).toBeGreaterThanOrEqual(6);
+    expect(router.match(/semanticIconColor\('secondary'\)/g)?.length).toBeGreaterThanOrEqual(4);
+  });
 });

@@ -176,7 +176,7 @@ function OpenDiffDock(props: {
   readonly unavailableLabel?: string | null;
   readonly workspaceRoot: string;
 }) {
-  const { resolvedTheme, svgColors } = useTheme();
+  const { resolvedTheme, semanticIconColor } = useTheme();
   const [refreshGeneration, setRefreshGeneration] = useState(0);
   const [expandedFileKeys, setExpandedFileKeys] = useState<string[] | null>(
     null
@@ -417,7 +417,7 @@ function OpenDiffDock(props: {
                     className="DiffDockTabIcon"
                     content={colorizeLynxSvg(
                       differenceSvg,
-                      svgColors.mutedForeground
+                      semanticIconColor('secondary')
                     )}
                   />
                 }
@@ -555,7 +555,7 @@ function OpenDiffDock(props: {
                 className="DiffDockFileSidebarIcon"
                 content={colorizeLynxSvg(
                   differenceSvg,
-                  svgColors.mutedForeground
+                  semanticIconColor('secondary')
                 )}
               />
               <text className="DiffDockFileSidebarTitle">Changed files</text>
