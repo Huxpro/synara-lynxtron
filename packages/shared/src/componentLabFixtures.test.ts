@@ -6,6 +6,9 @@ import {
   COMPONENT_LAB_COMMAND_PALETTE_BY_VARIANT,
   COMPONENT_LAB_DIFF_CODE_VIEW,
   COMPONENT_LAB_MODEL_SELECTION,
+  COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_FAVORITES,
+  COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS,
+  COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_SELECTION,
   COMPONENT_LAB_MESSAGE_ACTIONS_BY_VARIANT,
   COMPONENT_LAB_NAVIGATION_ROW_BY_VARIANT,
   COMPONENT_LAB_OVERFLOW_CODEX_MODELS,
@@ -37,6 +40,21 @@ describe('Components Lab model fixture', () => {
     expect(COMPONENT_LAB_OVERFLOW_MODEL_OPTIONS_BY_PROVIDER.codex).toHaveLength(
       COMPONENT_LAB_OVERFLOW_CODEX_MODELS.length
     );
+  });
+
+  it('keeps the provider-group disclosure fixture deterministic', () => {
+    expect(COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_SELECTION).toMatchObject({
+      provider: 'opencode',
+      model: 'anthropic/claude-favorite-sort',
+    });
+    expect(COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_FAVORITES).toEqual([
+      'openai/gpt-favorite-sort',
+    ]);
+    expect(
+      COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS.map(
+        (model) => model.upstreamProviderName
+      )
+    ).toEqual(['Anthropic', 'OpenAI', 'Google']);
   });
 
   it('keeps the context meter partial ring and optional rows deterministic', () => {

@@ -17,6 +17,7 @@ import { useState } from "react";
 
 import { cn } from "~/lib/utils";
 import { type ProviderModelOption } from "../../providerModelOptions";
+import type { FavoriteModelProvider } from "../../lib/modelFavorites";
 import { Button } from "../ui/button";
 import { Menu, MenuSeparator, MenuSub, MenuSubTrigger, MenuTrigger } from "../ui/menu";
 import { ShortcutKbd } from "../ui/shortcut-kbd";
@@ -71,6 +72,11 @@ type ComposerModelEffortPickerProps = {
   initialOpen?: boolean;
   initialSubmenuOpen?: boolean;
   initialSearchQuery?: string;
+  favoriteModelSlugsOverride?: Partial<Record<FavoriteModelProvider, ReadonlyArray<string>>>;
+  onFavoriteModelSlugsChange?: (
+    provider: FavoriteModelProvider,
+    slugs: ReadonlyArray<string>,
+  ) => void;
 };
 
 // Renders a single composer trigger that combines model selection, reasoning
@@ -249,6 +255,12 @@ export function ComposerModelEffortPicker(props: ComposerModelEffortPickerProps)
               onProviderModelChange={props.onProviderModelChange}
               onAfterSelection={handleAfterModelSelection}
               initialSearchQuery={props.initialSearchQuery}
+              {...(props.favoriteModelSlugsOverride
+                ? { favoriteModelSlugsOverride: props.favoriteModelSlugsOverride }
+                : {})}
+              {...(props.onFavoriteModelSlugsChange
+                ? { onFavoriteModelSlugsChange: props.onFavoriteModelSlugsChange }
+                : {})}
             />
           </ComposerPickerMenuSubPopup>
         </MenuSub>

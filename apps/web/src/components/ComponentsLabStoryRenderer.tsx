@@ -22,6 +22,9 @@ import {
   COMPONENT_LAB_OVERFLOW_MODEL_OPTIONS_BY_PROVIDER,
   COMPONENT_LAB_OPENCODE_MODELS,
   COMPONENT_LAB_OPENCODE_SELECTION,
+  COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_FAVORITES,
+  COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS,
+  COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_SELECTION,
   COMPONENT_LAB_PROVIDER_STATUSES,
   COMPONENT_LAB_PROVIDER_UPDATE_COPY,
   COMPONENT_LAB_RIGHT_DOCK_PANES,
@@ -179,25 +182,37 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
   const submenuOpen = props.state === "submenu-open" || props.state === "overflow";
   const providerList = props.state === "provider-list";
   const favoriteState = props.state === "favourite";
+  const groupDisclosureState = props.state === "group-disclosure";
   const [favoriteModelSlugs, setFavoriteModelSlugs] = useState<ReadonlyArray<string>>(() =>
-    favoriteState ? ["open-model-02"] : [],
+    groupDisclosureState
+      ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_FAVORITES
+      : favoriteState
+        ? ["open-model-02"]
+        : [],
   );
-  const runtimeModels = search
+  const runtimeModels = groupDisclosureState
+    ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS
+    : search
     ? COMPONENT_LAB_OPENCODE_MODELS
     : props.state === "overflow"
       ? COMPONENT_LAB_OVERFLOW_CODEX_MODELS
       : COMPONENT_LAB_CODEX_MODELS;
   const modelOptionsByProvider =
-    props.state === "overflow"
+    groupDisclosureState
+      ? { ...COMPONENT_LAB_MODEL_OPTIONS_BY_PROVIDER, opencode: COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS }
+      : props.state === "overflow"
       ? COMPONENT_LAB_OVERFLOW_MODEL_OPTIONS_BY_PROVIDER
       : COMPONENT_LAB_MODEL_OPTIONS_BY_PROVIDER;
   const selectModel = (provider: ModelSelection["provider"], model: ModelSelection["model"]) =>
     setSelection((current) => ({ ...current, provider, model }));
+  const effectiveSelection = groupDisclosureState
+    ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_SELECTION
+    : selection;
 
   if (favoriteState) {
     return <ProviderModelPicker provider="opencode" model={"open-model-01" as ModelSelection["model"]} lockedProvider="opencode" providers={COMPONENT_LAB_PROVIDER_STATUSES} modelOptionsByProvider={COMPONENT_LAB_MODEL_OPTIONS_BY_PROVIDER} initialOpen favoriteModelSlugsOverride={{ opencode: favoriteModelSlugs }} onFavoriteModelSlugsChange={(_provider, slugs) => setFavoriteModelSlugs(slugs)} onProviderModelChange={selectModel} />;
   }
-  if (props.variant === "landing") {
+  if (props.variant === "landing" && !groupDisclosureState) {
     return (
       <div className="flex items-center justify-center gap-2">
         <ProviderModelPicker compact={false} provider={selection.provider} model={selection.model} lockedProvider={selection.provider} providers={COMPONENT_LAB_PROVIDER_STATUSES} modelOptionsByProvider={modelOptionsByProvider} initialOpen={props.state === "open" || providerList || submenuOpen || search} onProviderModelChange={selectModel} />
@@ -210,7 +225,7 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
   }
   const compact = props.variant === "compact";
   return (
-    <ComposerModelEffortPicker key={props.state} compact={compact} hideModelLabel={compact} hideStatusLabel={compact} provider={selection.provider} model={selection.model} lockedProvider={selection.provider} providers={COMPONENT_LAB_PROVIDER_STATUSES} modelOptionsByProvider={modelOptionsByProvider} threadId={ThreadId.makeUnsafe("component-lab-model-picker")} runtimeModel={runtimeModels.find((model) => model.slug === selection.model)} runtimeModels={runtimeModels} modelOptions={selection.options} prompt="" disabled={props.state === "disabled"} initialOpen={props.state === "open" || submenuOpen || search} initialSubmenuOpen={submenuOpen || search} initialSearchQuery={search ? "model 12" : ""} onPromptChange={() => {}} onProviderModelChange={selectModel} />
+    <ComposerModelEffortPicker key={props.state} compact={compact} hideModelLabel={compact} hideStatusLabel={compact} provider={effectiveSelection.provider} model={effectiveSelection.model} lockedProvider={effectiveSelection.provider} providers={COMPONENT_LAB_PROVIDER_STATUSES} modelOptionsByProvider={modelOptionsByProvider} threadId={ThreadId.makeUnsafe("component-lab-model-picker")} runtimeModel={runtimeModels.find((model) => model.slug === effectiveSelection.model)} runtimeModels={runtimeModels} modelOptions={effectiveSelection.options} prompt="" disabled={props.state === "disabled"} initialOpen={props.state === "open" || submenuOpen || search || groupDisclosureState} initialSubmenuOpen={submenuOpen || search || groupDisclosureState} initialSearchQuery={search ? "model 12" : ""} favoriteModelSlugsOverride={{ opencode: favoriteModelSlugs }} onFavoriteModelSlugsChange={(_provider, slugs) => setFavoriteModelSlugs(slugs)} onPromptChange={() => {}} onProviderModelChange={selectModel} />
   );
 }
 

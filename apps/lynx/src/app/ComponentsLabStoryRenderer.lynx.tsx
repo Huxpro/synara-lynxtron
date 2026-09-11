@@ -17,6 +17,9 @@ import {
   COMPONENT_LAB_OVERFLOW_CODEX_MODELS,
   COMPONENT_LAB_OPENCODE_MODELS,
   COMPONENT_LAB_OPENCODE_SELECTION,
+  COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_FAVORITES,
+  COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS,
+  COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_SELECTION,
   COMPONENT_LAB_PROVIDER_UPDATE_COPY,
   COMPONENT_LAB_RIGHT_DOCK_PANES,
   COMPONENT_LAB_RIGHT_DOCK_OVERFLOW_PANES,
@@ -803,10 +806,17 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
   const submenuOpen = props.state === 'submenu-open' || props.state === 'overflow';
   const providerList = props.state === 'provider-list';
   const favoriteState = props.state === 'favourite';
+  const groupDisclosureState = props.state === 'group-disclosure';
   const [favoriteModelSlugs, setFavoriteModelSlugs] = useState<ReadonlyArray<string>>(() =>
-    favoriteState ? ['open-model-02'] : []
+    groupDisclosureState
+      ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_FAVORITES
+      : favoriteState
+        ? ['open-model-02']
+        : []
   );
-  const runtimeModels = catalogProvider === 'opencode'
+  const runtimeModels = groupDisclosureState
+    ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS
+    : catalogProvider === 'opencode'
     ? COMPONENT_LAB_OPENCODE_MODELS
     : props.state === 'overflow'
       ? COMPONENT_LAB_OVERFLOW_CODEX_MODELS
@@ -831,17 +841,17 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
     <view className="ComponentsLabRealStory">
       <ComposerModelControl
         key={props.state}
-        modelSelection={favoriteState ? COMPONENT_LAB_OPENCODE_SELECTION : selection}
-        catalogModelSelection={favoriteState ? COMPONENT_LAB_OPENCODE_SELECTION : selection}
-        catalogProvider={favoriteState ? 'opencode' : catalogProvider}
-        runtimeModels={favoriteState ? COMPONENT_LAB_OPENCODE_MODELS : runtimeModels}
-        modelOptionsOverride={favoriteState ? COMPONENT_LAB_OPENCODE_MODELS : runtimeModels}
+        modelSelection={groupDisclosureState ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_SELECTION : favoriteState ? COMPONENT_LAB_OPENCODE_SELECTION : selection}
+        catalogModelSelection={groupDisclosureState ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_SELECTION : favoriteState ? COMPONENT_LAB_OPENCODE_SELECTION : selection}
+        catalogProvider={groupDisclosureState || favoriteState ? 'opencode' : catalogProvider}
+        runtimeModels={groupDisclosureState ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS : favoriteState ? COMPONENT_LAB_OPENCODE_MODELS : runtimeModels}
+        modelOptionsOverride={groupDisclosureState ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS : favoriteState ? COMPONENT_LAB_OPENCODE_MODELS : runtimeModels}
         modelsLoading={false}
         compact={props.variant === 'compact'}
         providers={COMPONENT_LAB_PROVIDER_STATUSES}
         initialPanel={providerList ? 'providers' : undefined}
-        initialOpen={props.state === 'open' || providerList || submenuOpen || favoriteState}
-        initialSubmenuOpen={submenuOpen}
+        initialOpen={props.state === 'open' || providerList || submenuOpen || favoriteState || groupDisclosureState}
+        initialSubmenuOpen={submenuOpen || groupDisclosureState}
         initialSearchQuery=""
         disabled={props.state === 'disabled'}
         splitTraits={props.variant === 'landing' || providerList}

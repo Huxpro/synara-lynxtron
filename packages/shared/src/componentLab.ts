@@ -80,7 +80,7 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     owner: "ComposerModelControl",
     fixtureId: "codex-model-catalog",
     variants: ["thread", "landing", "compact"],
-    states: ["default", "open", "provider-list", "submenu-open", "overflow", "search", "favourite", "disabled"],
+    states: ["default", "open", "provider-list", "submenu-open", "overflow", "search", "favourite", "group-disclosure", "disabled"],
     themes: ["light", "dark"],
     viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {

@@ -9,6 +9,9 @@ import type { ProviderModelOption } from "../../providerModelOptions";
 import { FAVORITE_MODEL_STORAGE_KEYS } from "../../lib/modelFavorites.logic";
 
 import { webStorage } from "~/platform/storage";
+import {
+  COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS,
+} from "@synara/shared/componentLabFixtures";
 const MODEL_OPTIONS_BY_PROVIDER = {
   claudeAgent: [
     { slug: "claude-opus-4-6", name: "Claude Opus 4.6" },
@@ -92,16 +95,6 @@ const OPENCODE_FAVORITE_SORT_MODELS = [
     name: "GPT Favorite Sort",
     upstreamProviderId: "openai",
     upstreamProviderName: "OpenAI",
-  },
-] satisfies ReadonlyArray<ProviderModelOption & { slug: ModelSlug }>;
-
-const OPENCODE_COLLAPSIBLE_MODELS = [
-  ...OPENCODE_FAVORITE_SORT_MODELS,
-  {
-    slug: "google/gemini-group-disclosure" as ModelSlug,
-    name: "Gemini Group Disclosure",
-    upstreamProviderId: "google",
-    upstreamProviderName: "Google",
   },
 ] satisfies ReadonlyArray<ProviderModelOption & { slug: ModelSlug }>;
 
@@ -515,7 +508,7 @@ describe("ProviderModelPicker", () => {
       lockedProvider: "opencode",
       modelOptionsByProvider: {
         ...MODEL_OPTIONS_BY_PROVIDER,
-        opencode: OPENCODE_COLLAPSIBLE_MODELS,
+        opencode: COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS,
       },
     });
 

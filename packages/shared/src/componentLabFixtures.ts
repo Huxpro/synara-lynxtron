@@ -183,6 +183,40 @@ export const COMPONENT_LAB_OPENCODE_SELECTION: ModelSelection = {
   options: {},
 };
 
+// Three upstream groups are intentional: with one favourite, the production
+// grouping policy opens Favourites and the active Anthropic group while Google
+// remains available through its real disclosure control.
+export const COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS: readonly ProviderModelDescriptor[] = [
+  {
+    slug: 'anthropic/claude-favorite-sort',
+    name: 'Claude Favorite Sort',
+    upstreamProviderId: 'anthropic',
+    upstreamProviderName: 'Anthropic',
+  },
+  {
+    slug: 'openai/gpt-favorite-sort',
+    name: 'GPT Favorite Sort',
+    upstreamProviderId: 'openai',
+    upstreamProviderName: 'OpenAI',
+  },
+  {
+    slug: 'google/gemini-group-disclosure',
+    name: 'Gemini Group Disclosure',
+    upstreamProviderId: 'google',
+    upstreamProviderName: 'Google',
+  },
+];
+
+export const COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_SELECTION: ModelSelection = {
+  provider: 'opencode',
+  model: 'anthropic/claude-favorite-sort',
+  options: {},
+};
+
+export const COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_FAVORITES = [
+  'openai/gpt-favorite-sort',
+] as const;
+
 export const COMPONENT_LAB_PROVIDER_UPDATE_COPY = {
   default: {
     title: 'Claude update available',
