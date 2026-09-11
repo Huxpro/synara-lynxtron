@@ -20,6 +20,38 @@ product changes, other routes, other themes, other sizes, or Native input.
 
 ## Current findings
 
+### Final disposition ledger (2026-09-11)
+
+This table is the machine-readable completion view. It supersedes the historical
+`State` cells below, which remain intact as investigation history. `COMPLETE`
+means no known application implementation gap remains. `EXTERNAL ACCEPTANCE`
+and `UPSTREAM BLOCKED` name work that cannot be truthfully completed by the
+current automation/runtime; neither status is counted as an unimplemented
+Synara fidelity item.
+
+| IDs | Final disposition | Remaining owner |
+| --- | --- | --- |
+| FC-001–012 | COMPLETE | Regression sampling only. |
+| FC-013 | EXTERNAL ACCEPTANCE | Physical Terminal IME/edit-key and repeated multi-pane input delivery; depends on FC-025/026. |
+| FC-014 | UPSTREAM BLOCKED + EXTERNAL ACCEPTANCE | Lynxtron 0.0.21 generic textarea/AppKit edit bridge and physical IME verification. |
+| FC-015–019 | COMPLETE | Regression sampling only; documented Browser/PDF engine deltas are not renderer omissions. |
+| FC-020 | EXTERNAL ACCEPTANCE | Real microphone permission, audio/transcription service failures, auth refresh, and provider-switch timing. |
+| FC-021 | COMPLETE | Regression sampling only. |
+| FC-022 | UPSTREAM BLOCKED | Lynxtron Desktop must export Lynx descendants to macOS Accessibility before VoiceOver order can be certified. |
+| FC-023 | COMPLETE FOR IMPLEMENTABLE PRODUCT BEHAVIOR | Native release-to-`bindtap` delivery and foregrounding an external editor remain runtime/external acceptance boundaries. |
+| FC-024 | COMPLETE | Regression sampling only. |
+| FC-025–026 | EXTERNAL ACCEPTANCE | Real user keyboard/IME, candidate-window, first-responder, and Terminal/Composer switching; Computer Use injection is explicitly insufficient. |
+| FC-027–029 | COMPLETE | FC-028 input semantics defer to FC-025/026; FC-029 physical hover timing is acceptance-only. |
+| FC-030–031 | COMPLETE FOR DETERMINISTIC PRODUCT STATES | Physical hover and keyboard selection remain host-input acceptance under FC-026. |
+| FC-032 | UPSTREAM BLOCKED + EXTERNAL ACCEPTANCE | Lynxtron generic textarea text-model fix, then physical keybinding capture and action execution. |
+| FC-033 | COMPLETE | Identity, truthful cases, primitive inventory, and current-head runtime matrix are closed; future expansion is regression work. |
+| FC-034–036 | COMPLETE FOR DETERMINISTIC PRODUCT STATES | Physical keyboard-focus traversal is host-input acceptance under FC-026; pointer hover/action paths are already sampled. |
+| FC-037–039 | COMPLETE | Regression sampling only. |
+
+No remaining row has an unowned or safely automatable Synara implementation
+task. The outstanding acceptance rows require either a human-generated physical
+input/service condition or a newer Lynxtron runtime.
+
 ### Current status overrides
 
 The dated evidence below supersedes stale blocker wording retained in the original
