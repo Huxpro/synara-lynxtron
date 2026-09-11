@@ -1,7 +1,10 @@
 import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
-import { resolveNativeThreadHandoffTargets } from './threadHandoff.lynx';
+import {
+  buildNativeThreadHandoffCreateCommand,
+  resolveNativeThreadHandoffTargets,
+} from './threadHandoff.lynx';
 
 const eligibleThread = {
   id: 'thread-1',
@@ -53,5 +56,33 @@ describe('Native thread handoff service', () => {
     expect(source).toContain('buildThreadHandoffImportedActivities(');
     expect(source).toContain("type: 'thread.handoff.create'");
     expect(source).toContain("type: 'thread.activity.append'");
+  });
+
+  it('inherits the source project id even when thread titles are ambiguous', () => {
+    const command = buildNativeThreadHandoffCreateCommand({
+      createdAt: '2026-09-11T00:00:00.000Z',
+      nextThreadId: 'thread-handoff',
+      project: {
+        id: 'project-other',
+        defaultModelSelection: {
+          provider: 'claudeAgent',
+          model: 'claude-sonnet-5',
+        },
+      },
+      targetProvider: 'claudeAgent',
+      thread: {
+        ...eligibleThread,
+        id: 'thread-source',
+        title: 'New chat',
+        projectId: 'project-source',
+      },
+    });
+
+    expect(command).toMatchObject({
+      type: 'thread.handoff.create',
+      threadId: 'thread-handoff',
+      sourceThreadId: 'thread-source',
+      projectId: 'project-source',
+    });
   });
 });

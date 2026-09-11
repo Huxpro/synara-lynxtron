@@ -1,4 +1,8 @@
-import type { ModelSelection, ProviderKind } from '@synara/contracts';
+import type {
+  ClientOrchestrationCommand,
+  ModelSelection,
+  ProviderKind,
+} from '@synara/contracts';
 import {
   buildThreadHandoffImportedActivities,
   buildThreadHandoffImportedMessages,
@@ -36,29 +40,17 @@ export function resolveNativeThreadHandoffTargets(
   return resolveAvailableHandoffTargetProviders(thread.modelSelection.provider);
 }
 
-export async function createNativeThreadHandoff(input: {
+export function buildNativeThreadHandoffCreateCommand(input: {
+  readonly createdAt: string;
+  readonly nextThreadId: string;
   readonly project: NativeThreadHandoffProject;
   readonly targetProvider: ProviderKind;
   readonly thread: ThreadHeaderSummary;
-}): Promise<string> {
-  'background only';
-  const targets = resolveNativeThreadHandoffTargets(input.thread);
-  if (!targets.includes(input.targetProvider)) {
-    throw new Error('This handoff target is not available for the current thread.');
-  }
-  const config = await fetchFreshServerConfig();
-  const availability = resolveProviderSendAvailability({
-    provider: input.targetProvider,
-    statuses: config.providers,
-  });
-  if (!availability.usable) throw new Error(availability.unavailableReason);
-
-  const nextThreadId = newThreadId();
-  const createdAt = new Date().toISOString();
-  await dispatchSynaraCommand({
+}): Extract<ClientOrchestrationCommand, { type: 'thread.handoff.create' }> {
+  return {
     type: 'thread.handoff.create',
     commandId: newCommandId(),
-    threadId: nextThreadId,
+    threadId: input.nextThreadId as never,
     sourceThreadId: input.thread.id as never,
     projectId: input.thread.projectId as never,
     title: resolveThreadHandoffTitle(input.thread),
@@ -78,8 +70,38 @@ export async function createNativeThreadHandoff(input: {
     associatedWorktreeRef: input.thread.associatedWorktreeRef,
     createBranchFlowCompleted: input.thread.createBranchFlowCompleted,
     importedMessages: [...buildThreadHandoffImportedMessages(input.thread as never)],
-    createdAt,
+    createdAt: input.createdAt as never,
+  };
+}
+
+export async function createNativeThreadHandoff(input: {
+  readonly project: NativeThreadHandoffProject;
+  readonly targetProvider: ProviderKind;
+  readonly thread: ThreadHeaderSummary;
+}): Promise<string> {
+  'background only';
+  const targets = resolveNativeThreadHandoffTargets(input.thread);
+  if (!targets.includes(input.targetProvider)) {
+    throw new Error('This handoff target is not available for the current thread.');
+  }
+  const config = await fetchFreshServerConfig();
+  const availability = resolveProviderSendAvailability({
+    provider: input.targetProvider,
+    statuses: config.providers,
   });
+  if (!availability.usable) throw new Error(availability.unavailableReason);
+
+  const nextThreadId = newThreadId();
+  const createdAt = new Date().toISOString();
+  await dispatchSynaraCommand(
+    buildNativeThreadHandoffCreateCommand({
+      createdAt,
+      nextThreadId,
+      project: input.project,
+      targetProvider: input.targetProvider,
+      thread: input.thread,
+    })
+  );
   for (const activity of buildThreadHandoffImportedActivities(input.thread as never)) {
     await dispatchSynaraCommand({
       type: 'thread.activity.append',

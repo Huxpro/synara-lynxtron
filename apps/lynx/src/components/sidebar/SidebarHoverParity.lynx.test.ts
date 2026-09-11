@@ -54,6 +54,20 @@ describe('Lynx sidebar hover parity', () => {
     expect(source).toContain('lynxNestedInteractiveEventProps');
     expect(source).toContain('data-project-id={props.projectId}');
     expect(source).toContain('data-thread-id={props.threadId}');
+    const projectIdentityIndex = source.indexOf(
+      'data-project-id={props.projectId}'
+    );
+    const threadIdentityIndex = source.indexOf(
+      'data-thread-id={props.threadId}',
+      projectIdentityIndex
+    );
+    const activeIdentityIndex = source.indexOf(
+      'data-active={props.active}',
+      threadIdentityIndex
+    );
+    expect(projectIdentityIndex).toBeGreaterThanOrEqual(0);
+    expect(threadIdentityIndex).toBeGreaterThan(projectIdentityIndex);
+    expect(activeIdentityIndex).toBeGreaterThan(threadIdentityIndex);
     expect(source.match(/threadId=\{thread.id\}/g)).toHaveLength(3);
     expect(source).toContain('projectId={group.id}');
     expect(source).toContain("void performThreadAction(thread, '', 'toggle-pin')");
