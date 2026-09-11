@@ -119,6 +119,8 @@ const NATIVE_RENDERER_COMMANDS = new Set<KeybindingCommand>([
   'chat.visible.previous',
   'chat.visible.next',
   'composer.focus.toggle',
+  'view.recent.next',
+  'view.recent.previous',
 ]);
 
 export function resolveNativeRendererCommand(
@@ -152,6 +154,31 @@ export interface SearchNavigationMenuItem {
   readonly acceleratorWorksWhenHidden: true;
   readonly registerAccelerator: true;
   readonly click: () => void;
+}
+
+export function buildRecentViewNavigationMenuItems(
+  enabled: boolean,
+  dispatch: (event: 'commit' | 'cancel') => void
+): readonly {
+  readonly label: string;
+  readonly accelerator: 'Enter' | 'Esc';
+  readonly visible: false;
+  readonly acceleratorWorksWhenHidden: true;
+  readonly registerAccelerator: true;
+  readonly click: () => void;
+}[] {
+  if (!enabled) return [];
+  return [
+    { label: 'Open recent view', accelerator: 'Enter', event: 'commit' as const },
+    { label: 'Cancel recent views', accelerator: 'Esc', event: 'cancel' as const },
+  ].map(({ label, accelerator, event }) => ({
+    label,
+    accelerator,
+    visible: false as const,
+    acceleratorWorksWhenHidden: true as const,
+    registerAccelerator: true as const,
+    click: () => dispatch(event),
+  }));
 }
 
 export function buildTerminalSearchMenuItems(

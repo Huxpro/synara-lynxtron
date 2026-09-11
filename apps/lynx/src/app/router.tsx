@@ -14,6 +14,7 @@ import {
   useCallback,
   useEffect,
   useInitData,
+  useMemo,
   useRef,
   useState,
   type ReactNode,
@@ -46,6 +47,15 @@ import type { Project } from '@synara-web/types';
 import { useStore } from '@synara-web/store';
 import { useSpacesUiStore } from '@synara-web/spacesUiStore';
 import { useWorkspaceStore } from '@synara-web/workspaceStore';
+import { useRecentViewsStore } from '@synara-web/recentViewsStore';
+import {
+  buildRecentViewDisplayEntries,
+  deriveCurrentRecentView,
+  pruneRecentViews,
+  recentViewKey,
+  resolveRecentViewNavigationIndex,
+  type RecentView,
+} from '@synara-web/recentViews.logic';
 import { dockTerminalThreadId } from '@synara-web/lib/dockTerminalScope';
 import { quotePosixShellArgument } from '@synara-web/lib/shellQuote';
 import { DEFAULT_THREAD_TERMINAL_ID } from '@synara-web/types';
@@ -110,6 +120,7 @@ import { AutomationsPage } from './AutomationsPage.lynx';
 import { PluginLibraryPage } from './PluginLibraryPage.lynx';
 import { resolveLandingRoutePresentation } from './landingRoutePresentation.logic';
 import { WorkspacePage } from './WorkspacePage.lynx';
+import { RecentViewSwitcherLynx } from './RecentViewSwitcher.lynx';
 import { Composer } from '../components/composer/Composer.lynx';
 import { PendingApprovalPanel } from '../components/composer/PendingApprovalPanel.lynx';
 import { PendingUserInputPanel } from '../components/composer/PendingUserInputPanel.lynx';
@@ -2823,6 +2834,17 @@ export function SliceRouter({
   }, [componentsLabRoute]);
   const routeProjects = useStore((state) => state.projects);
   const workspacePages = useWorkspaceStore((state) => state.workspacePages);
+  const recentViews = useRecentViewsStore((state) => state.recentViews);
+  const recordRecentView = useRecentViewsStore((state) => state.recordRecentView);
+  const pruneRecentViewsStore = useRecentViewsStore(
+    (state) => state.pruneRecentViews
+  );
+  const [recentViewSelection, setRecentViewSelection] = useState<{
+    readonly selectedIndex: number;
+    readonly selectedKey: string;
+  } | null>(null);
+  const recentViewsRef = useRef(recentViews);
+  const recentViewSelectionRef = useRef(recentViewSelection);
   const studioSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
   );
@@ -2834,6 +2856,76 @@ export function SliceRouter({
       : initialRoute
         ? parseRoute(initialRoute).params.threadId ?? null
         : null;
+  const currentRecentView = deriveCurrentRecentView({
+    pathname: route.pathname,
+    routeThreadId:
+      route.pathname === '/thread/$threadId'
+        ? (route.params.threadId as import('@synara/contracts').ThreadId)
+        : null,
+    activeThreadId:
+      route.pathname === '/thread/$threadId'
+        ? (route.params.threadId as import('@synara/contracts').ThreadId)
+        : null,
+    routeWorkspaceId:
+      route.pathname === '/workspace/$workspaceId'
+        ? route.params.workspaceId ?? null
+        : null,
+    settingsSection:
+      route.pathname === '/settings' ? route.params.section : undefined,
+  });
+  const currentRecentViewKey = currentRecentView
+    ? recentViewKey(currentRecentView)
+    : null;
+  const recentViewAvailability = useMemo(
+    () => ({
+      availableThreadIds: new Set(
+        (routeThreads ?? []).map(
+          (thread) => thread.id as import('@synara/contracts').ThreadId
+        )
+      ),
+      availableWorkspaceIds: new Set(
+        workspacePages.map((workspace) => workspace.id)
+      ),
+      availableSplitViewIds: new Set<string>(),
+    }),
+    [routeThreads, workspacePages]
+  );
+  const recentViewEntries = useMemo(
+    () =>
+      buildRecentViewDisplayEntries({
+        recentViews,
+        currentView: currentRecentView,
+        threadsById: Object.fromEntries(
+          (routeThreads ?? []).map((thread) => [thread.id, thread])
+        ),
+        projects: routeProjects,
+        pinnedThreadIds: (routeThreads ?? [])
+          .filter((thread) => thread.isPinned)
+          .map((thread) => thread.id as import('@synara/contracts').ThreadId),
+        workspacePages,
+      }),
+    [currentRecentViewKey, recentViews, routeProjects, routeThreads, workspacePages]
+  );
+  useEffect(() => {
+    recentViewsRef.current = recentViews;
+  }, [recentViews]);
+  useEffect(() => {
+    recentViewSelectionRef.current = recentViewSelection;
+    void import(/* webpackMode: "eager" */ '../platform/bridge')
+      .then(({ bridgeCall }) =>
+        bridgeCall('shellSetRecentViewNavigationEnabled', {
+          enabled: recentViewSelection !== null,
+        })
+      )
+      .catch(() => undefined);
+  }, [recentViewSelection]);
+  useEffect(() => {
+    if (currentRecentView) recordRecentView(currentRecentView);
+  }, [currentRecentViewKey, recordRecentView]);
+  useEffect(() => {
+    if (routeThreadsPending) return;
+    pruneRecentViewsStore(recentViewAvailability);
+  }, [pruneRecentViewsStore, recentViewAvailability, routeThreadsPending]);
   const appNotifications = (
     <view
       className={`AppNotificationStack${
@@ -3201,6 +3293,60 @@ export function SliceRouter({
     },
     [navigate]
   );
+  const activateRecentView = useCallback(
+    (view: RecentView) => {
+      if (view.kind === 'thread') {
+        navigateToChat(`/thread/${view.threadId}`);
+        return;
+      }
+      if (view.kind === 'workspace') {
+        navigateToChat(`/workspace/${view.workspaceId}`);
+        return;
+      }
+      if (view.kind === 'settings') {
+        navigateToChat(settingsRouteLocation(
+          (view.section as SettingsSectionId | undefined) ?? 'general'
+        ));
+        return;
+      }
+      navigateToChat('/plugins');
+    },
+    [navigateToChat]
+  );
+  const commitRecentViewSelection = useCallback(() => {
+    const selection = recentViewSelectionRef.current;
+    if (!selection) return;
+    const views = recentViewsRef.current;
+    const view =
+      views.find((candidate) => recentViewKey(candidate) === selection.selectedKey) ??
+      views[selection.selectedIndex];
+    setRecentViewSelection(null);
+    if (view) activateRecentView(view);
+  }, [activateRecentView]);
+  const openOrAdvanceRecentViews = useCallback(
+    (direction: 'next' | 'previous') => {
+      const currentSelection = recentViewSelectionRef.current;
+      let views = recentViewsRef.current;
+      if (currentSelection === null) {
+        views = pruneRecentViews(views, recentViewAvailability);
+        pruneRecentViewsStore(recentViewAvailability);
+      }
+      const selectedIndex = resolveRecentViewNavigationIndex({
+        recentViews: views,
+        currentView: currentRecentView,
+        selectedKey: currentSelection?.selectedKey,
+        direction,
+      });
+      if (selectedIndex === null) return;
+      const selectedView = views[selectedIndex];
+      if (!selectedView) return;
+      setRecentViewSelection({
+        selectedIndex,
+        selectedKey: recentViewKey(selectedView),
+      });
+    },
+    [currentRecentViewKey, pruneRecentViewsStore, recentViewAvailability]
+  );
   const renderTitlebarControls = (
     placement: 'open' | 'closed'
   ) => (
@@ -3233,6 +3379,7 @@ export function SliceRouter({
     let disposeNavigate: (() => void) | null = null;
     let disposeHistory: (() => void) | null = null;
     let disposeCommand: (() => void) | null = null;
+    let disposeRecentViewKey: (() => void) | null = null;
     void import(/* webpackMode: "eager" */ '../platform/bridge')
       .then(({ bridgeCall, onGlobalEvent }) => {
         if (cancelled) return;
@@ -3255,7 +3402,24 @@ export function SliceRouter({
               setSidebarOpen((open) => !open);
               return;
             }
-            if (command === 'sidebar.search') openSearchPalette();
+            if (command === 'sidebar.search') {
+              openSearchPalette();
+              return;
+            }
+            if (command === 'view.recent.next') {
+              openOrAdvanceRecentViews('next');
+              return;
+            }
+            if (command === 'view.recent.previous') {
+              openOrAdvanceRecentViews('previous');
+            }
+          }
+        );
+        disposeRecentViewKey = onGlobalEvent(
+          'shell:recent-view-key',
+          (event: unknown) => {
+            if (event === 'commit') commitRecentViewSelection();
+            if (event === 'cancel') setRecentViewSelection(null);
           }
         );
         void bridgeCall<{ readonly route?: unknown }>('shellRendererReady')
@@ -3280,8 +3444,9 @@ export function SliceRouter({
       disposeNavigate?.();
       disposeHistory?.();
       disposeCommand?.();
+      disposeRecentViewKey?.();
     };
-  }, [openSearchPalette, setRoute]);
+  }, [commitRecentViewSelection, openOrAdvanceRecentViews, openSearchPalette, setRoute]);
 
   let page: React.ReactNode;
   if (route.pathname === '/components-lab') {
@@ -3564,6 +3729,12 @@ export function SliceRouter({
           open={searchOpen}
           paletteKey={searchPaletteKey}
         />
+        {recentViewSelection ? (
+          <RecentViewSwitcherLynx
+            entries={recentViewEntries}
+            selectedIndex={recentViewSelection.selectedIndex}
+          />
+        ) : null}
         {appSnapCoordinator}
         {appSnapWelcomeDialog}
         {appNotifications}
@@ -3599,6 +3770,12 @@ export function SliceRouter({
         open={searchOpen}
         paletteKey={searchPaletteKey}
       />
+      {recentViewSelection ? (
+        <RecentViewSwitcherLynx
+          entries={recentViewEntries}
+          selectedIndex={recentViewSelection.selectedIndex}
+        />
+      ) : null}
       {appSnapCoordinator}
       {appSnapWelcomeDialog}
       {appNotifications}

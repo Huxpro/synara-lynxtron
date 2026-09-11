@@ -8,7 +8,7 @@ import type {
   ResolvedTerminalVisualIdentity,
   TerminalIconKey,
 } from "@synara/shared/terminalThreads";
-import type { Project, SidebarThreadSummary } from "./types";
+import type { Project } from "./types";
 
 export const MAX_RECENT_VIEWS = 5;
 
@@ -63,6 +63,15 @@ export interface RecentViewThreadDraftSummary {
   projectId: ProjectId;
   title?: string | undefined;
   isPinned?: boolean | undefined;
+}
+
+export interface RecentViewThreadSummary {
+  id: ThreadId;
+  projectId: ProjectId;
+  title: string;
+  isPinned?: boolean | undefined;
+  modelSelection?: { readonly provider: ProviderKind } | undefined;
+  provider?: ProviderKind | undefined;
 }
 
 export interface RecentViewAvailability {
@@ -239,7 +248,7 @@ export function resolveRecentViewNavigationIndex(input: {
 export function buildRecentViewDisplayEntries(input: {
   recentViews: readonly RecentView[];
   currentView: RecentView | null;
-  threadsById: Readonly<Record<string, SidebarThreadSummary | undefined>>;
+  threadsById: Readonly<Record<string, RecentViewThreadSummary | undefined>>;
   draftThreadsById?: Readonly<Record<string, RecentViewThreadDraftSummary | undefined>>;
   projects: readonly Project[];
   pinnedThreadIds: readonly ThreadId[];
@@ -273,7 +282,7 @@ export function buildRecentViewDisplayEntries(input: {
         const summary = input.threadsById[view.threadId];
         const thread = summary ?? input.draftThreadsById?.[view.threadId];
         const projectName = thread ? projectNameById.get(thread.projectId) : null;
-        const provider = summary?.modelSelection.provider;
+        const provider = summary?.provider ?? summary?.modelSelection?.provider;
         const title = normalizeOptionalId(thread?.title) ?? "New chat";
         const subtitleParts = [
           projectName ?? "Chat",

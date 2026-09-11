@@ -514,6 +514,38 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(values.has("synara:appsnap-welcome:v1")).toBe(false);
   });
 
+  it("seeds a canonical non-empty recent-view history for thread comparisons", () => {
+    const values = new Map<string, string>();
+    const localStorage = {
+      clear: () => values.clear(),
+      getItem: (key: string) => values.get(key) ?? null,
+      removeItem: (key: string) => values.delete(key),
+      setItem: (key: string, value: string) => values.set(key, value),
+    };
+    const location = { reload() {} };
+
+    Function(
+      "localStorage",
+      "location",
+      comparisonRendererResetExpression(
+        "dark",
+        "acknowledged",
+        null,
+        "thread-canonical",
+      ),
+    )(localStorage, location);
+
+    expect(JSON.parse(values.get("synara:recent-views:v1")!)).toEqual({
+      state: {
+        recentViews: [
+          { kind: "thread", threadId: "thread-canonical" },
+          { kind: "settings", section: "general" },
+        ],
+      },
+      version: 0,
+    });
+  });
+
   it("pins an explicit chat font size into the copied renderer settings", () => {
     const values = new Map([
       ["synara:app-settings:v1", '{"uiDensity":"compact","chatFontSizePx":12}'],
@@ -898,6 +930,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       "synara:appsnap-welcome:v1",
       "synara:terminal-state:v1",
       "synara:right-dock-state:v1",
+      "synara:recent-views:v1",
     ]);
     writeComparisonRendererState(paths, {
       "synara:theme": "dark",
@@ -905,6 +938,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       "synara:appsnap-welcome:v1": '{"acknowledged":true}',
       "synara:terminal-state:v1": '{"state":{"terminalStateByThreadId":{}}}',
       "synara:right-dock-state:v1": '{"state":{"dockStateByThreadId":{}}}',
+      "synara:recent-views:v1": undefined,
       "synara:composer-drafts:v1": "must-not-copy",
       "synara:renderer-state:v8": "must-not-copy",
     });

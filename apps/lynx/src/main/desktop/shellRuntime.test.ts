@@ -7,6 +7,7 @@ import {
   INITIAL_SHELL_ROUTE_DELIVERY_STATE,
   buildSynaraRelaunchArguments,
   buildSearchNavigationMenuItems,
+  buildRecentViewNavigationMenuItems,
   buildTerminalInputMenuItems,
   buildTerminalSearchMenuItems,
   buildTerminalSearchNavigationMenuItems,
@@ -356,7 +357,23 @@ describe('shellRuntime', () => {
     expect(resolveNativeRendererCommand('composer.focus.toggle')).toBe(
       'composer.focus.toggle'
     );
+    expect(resolveNativeRendererCommand('view.recent.next')).toBe(
+      'view.recent.next'
+    );
+    expect(resolveNativeRendererCommand('view.recent.previous')).toBe(
+      'view.recent.previous'
+    );
     expect(resolveNativeRendererCommand('terminal.toggle')).toBeNull();
+  });
+
+  it('registers commit and cancel accelerators only while recent views are open', () => {
+    expect(buildRecentViewNavigationMenuItems(false, () => {})).toEqual([]);
+    const events: string[] = [];
+    const items = buildRecentViewNavigationMenuItems(true, (event) => events.push(event));
+    expect(items.map((item) => item.accelerator)).toEqual(['Enter', 'Esc']);
+    items[0]?.click();
+    items[1]?.click();
+    expect(events).toEqual(['commit', 'cancel']);
   });
 
   it('delivers renderer events without activating the native window', () => {

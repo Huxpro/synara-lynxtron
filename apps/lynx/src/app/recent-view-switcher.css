@@ -1,0 +1,94 @@
+.RecentViewSwitcherOverlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 90;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 14vh;
+  pointer-events: none;
+}
+
+.RecentViewSwitcherPopup {
+  width: 544px;
+  max-width: calc(100vw - 32px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+}
+
+.RecentViewSwitcherList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+}
+
+.RecentViewSwitcherRow {
+  display: flex;
+  height: 56px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px;
+  border-radius: 8px;
+  color: var(--foreground);
+}
+
+.RecentViewSwitcherRow--selected { background-color: var(--color-background-button-secondary-hover); }
+
+.RecentViewSwitcherIcon {
+  display: flex;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-icon-secondary);
+}
+
+.RecentViewSwitcherIcon .OpenAIProviderIcon { width: 18px; height: 18px; }
+
+.RecentViewSwitcherCopy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.RecentViewSwitcherTitleLine {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.RecentViewSwitcherTitle {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.RecentViewSwitcherCurrent {
+  flex-shrink: 0;
+  padding: 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 16px;
+}
+
+.RecentViewSwitcherSubtitle,
+.RecentViewSwitcherFooter { color: var(--muted-foreground); font-size: 11px; line-height: 16px; }
+.RecentViewSwitcherSubtitle { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.RecentViewSwitcherFooter { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 12px; border-top: 1px solid var(--border); }

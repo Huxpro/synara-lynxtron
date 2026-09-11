@@ -683,6 +683,28 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   `foreground` / `mutedForeground` / `secondaryForeground` raw-SVG consumers;
   focused semantic/provider/PR suites pass 11/11 and the production build passes.
 
+### 2026-09-10 Native recent-view continuation
+
+- FC-002's non-empty Recent Views gap was a real renderer capability gap, not
+  only harness drift: Web owned the shared MRU logic/store and Ctrl+Tab overlay,
+  while Native ignored the existing `view.recent.next` / `view.recent.previous`
+  commands. Native now reuses the shared MRU persistence, pruning, navigation,
+  and display-entry projection; renders a Native overlay; and wires Ctrl+Tab,
+  Ctrl+Shift+Tab, Enter, and Escape through the desktop command/menu bridge.
+  Split-pane restoration remains Web-only because Native has no split workspace.
+- Exact-owned Lynxtron 0.0.21 PID `13852`, window `86863`, and PID-derived
+  DevTool `localhost:8903` recorded a real thread, visited Settings, returned to
+  the thread, and opened a two-entry switcher with Ctrl+Tab. `New chat` remained
+  marked Current and Settings became the selected row. The owned KV persisted
+  the same two entries in MRU order, and the exact-client console stayed clean
+  after correcting an initial `currentView` variable typo found by this run.
+  Computer Use could not deliver the final Enter key, so commit/cancel remain
+  host-keyboard acceptance rather than being inferred from the open overlay.
+- The comparison launcher now seeds the same canonical current-thread + General
+  Settings MRU into Electron before copying its allowlisted renderer state into
+  Native. Launcher coverage passes 45/45, Native shell/overlay coverage passes
+  24/24, shared MRU logic passes 6/6, and the complete production build passes.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation

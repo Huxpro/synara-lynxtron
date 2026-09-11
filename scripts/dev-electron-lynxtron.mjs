@@ -24,6 +24,7 @@ export const COMPARISON_RENDERER_STORAGE_KEYS = Object.freeze([
   "synara:appsnap-welcome:v1",
   "synara:terminal-state:v1",
   "synara:right-dock-state:v1",
+  "synara:recent-views:v1",
 ]);
 
 export const DEFAULT_DESKTOP_COMPARISON_OPTIONS = Object.freeze({
@@ -560,10 +561,11 @@ export function comparisonRendererResetExpression(
   theme,
   appSnap = "acknowledged",
   chatFontSize = null,
+  threadId = null,
 ) {
   return `(() => { const state = Object.fromEntries(${JSON.stringify(
     COMPARISON_RENDERER_STORAGE_KEYS,
-  )}.flatMap((key) => { const value = localStorage.getItem(key); return value === null ? [] : [[key, value]]; })); const appSettings = JSON.parse(state['synara:app-settings:v1'] ?? '{}'); appSettings.enableProviderUpdateChecks = false; appSettings.enableTaskCompletionToasts = false; if (${JSON.stringify(chatFontSize)} !== null) appSettings.chatFontSizePx = ${JSON.stringify(chatFontSize)}; state['synara:app-settings:v1'] = JSON.stringify(appSettings); localStorage.clear(); for (const [key, value] of Object.entries(state)) localStorage.setItem(key, value); localStorage.setItem('synara:theme', ${JSON.stringify(theme)}); if (${JSON.stringify(appSnap)} === 'welcome') localStorage.removeItem('synara:appsnap-welcome:v1'); else localStorage.setItem('synara:appsnap-welcome:v1', '{"acknowledged":true}'); location.reload(); })(); undefined`;
+  )}.flatMap((key) => { const value = localStorage.getItem(key); return value === null ? [] : [[key, value]]; })); const appSettings = JSON.parse(state['synara:app-settings:v1'] ?? '{}'); appSettings.enableProviderUpdateChecks = false; appSettings.enableTaskCompletionToasts = false; if (${JSON.stringify(chatFontSize)} !== null) appSettings.chatFontSizePx = ${JSON.stringify(chatFontSize)}; state['synara:app-settings:v1'] = JSON.stringify(appSettings); if (${JSON.stringify(threadId)} !== null) state['synara:recent-views:v1'] = JSON.stringify({ state: { recentViews: [{ kind: 'thread', threadId: ${JSON.stringify(threadId)} }, { kind: 'settings', section: 'general' }] }, version: 0 }); localStorage.clear(); for (const [key, value] of Object.entries(state)) localStorage.setItem(key, value); localStorage.setItem('synara:theme', ${JSON.stringify(theme)}); if (${JSON.stringify(appSnap)} === 'welcome') localStorage.removeItem('synara:appsnap-welcome:v1'); else localStorage.setItem('synara:appsnap-welcome:v1', '{"acknowledged":true}'); location.reload(); })(); undefined`;
 }
 
 export function comparisonTerminalOpenExpression(threadId) {
@@ -1168,6 +1170,7 @@ async function configureElectronRenderer(
               theme,
               options.appSnap,
               options.chatFontSize,
+              comparisonThreadId(options),
             ),
           returnByValue: true,
         },

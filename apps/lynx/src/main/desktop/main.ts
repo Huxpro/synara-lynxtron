@@ -29,6 +29,7 @@ import {
   appendShellLog,
   buildSynaraRelaunchArguments,
   buildSearchNavigationMenuItems,
+  buildRecentViewNavigationMenuItems,
   buildTerminalInputMenuItems,
   buildTerminalSearchMenuItems,
   buildTerminalSearchNavigationMenuItems,
@@ -113,6 +114,7 @@ const nativeLynxtron = require('lynxtron') as {
 
 let mainWindow: LynxWindow | null = null;
 let searchNavigationEnabled = false;
+let recentViewNavigationEnabled = false;
 let terminalInputOwner: string | null = null;
 let terminalSelectionOwner: string | null = null;
 let terminalSelectionText = '';
@@ -312,6 +314,7 @@ function initDataFromArguments(argv: readonly string[]) {
 function loadLynxBundle(w: LynxWindow): void {
   if (
     searchNavigationEnabled ||
+    recentViewNavigationEnabled ||
     terminalInputOwner !== null ||
     terminalSelectionOwner !== null ||
     composerInputOwner !== null ||
@@ -320,6 +323,7 @@ function loadLynxBundle(w: LynxWindow): void {
   ) {
     searchKeyMonitor?.setMode('disabled');
     searchNavigationEnabled = false;
+    recentViewNavigationEnabled = false;
     terminalInputOwner = null;
     terminalSelectionOwner = null;
     terminalSelectionText = '';
@@ -612,6 +616,22 @@ function installApplicationMenu(w: LynxWindow): void {
           accelerator: 'CmdOrCtrl+]',
           click: () => dispatchShellEvent('shell:navigate-history', 'forward'),
         },
+        {
+          label: 'Next Recent View',
+          accelerator: 'Ctrl+Tab',
+          registerAccelerator: true,
+          click: () => dispatchShellCommand('view.recent.next'),
+        },
+        {
+          label: 'Previous Recent View',
+          accelerator: 'Ctrl+Shift+Tab',
+          registerAccelerator: true,
+          click: () => dispatchShellCommand('view.recent.previous'),
+        },
+        ...buildRecentViewNavigationMenuItems(
+          recentViewNavigationEnabled,
+          (event) => dispatchShellEvent('shell:recent-view-key', event)
+        ),
         ...buildSearchNavigationMenuItems(searchNavigationEnabled, (event) =>
           dispatchShellEvent('shell:search-key', event)
         ),
@@ -1102,6 +1122,13 @@ app.whenReady().then(() => {
                   ? 'terminal'
                   : 'disabled'
             );
+            installApplicationMenu(w);
+          }
+          callback.sendReply(JSON.stringify({ ok: true }));
+        } else if (name === 'shellSetRecentViewNavigationEnabled') {
+          const enabled = data?.enabled === true;
+          if (recentViewNavigationEnabled !== enabled) {
+            recentViewNavigationEnabled = enabled;
             installApplicationMenu(w);
           }
           callback.sendReply(JSON.stringify({ ok: true }));
