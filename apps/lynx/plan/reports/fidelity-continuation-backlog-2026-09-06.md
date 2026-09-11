@@ -276,6 +276,10 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   disabled. Command palette retains one closed suggested trigger plus open
   content variants and the suggested keyboard-highlight cell. Current identity
   audit passes 92 mappings with 3,240 normalized cells.
+- Explicit cases are now validated as a coverage contract: duplicate cases,
+  unknown variants/states, and any declared variant or state omitted from all
+  cases are hard errors. This prevents future pruning from hiding a supported
+  capability merely to reduce the matrix count; shared manifest tests pass 9/9.
 - Button truthfulness no longer aliases hover and pressed to one synthetic
   active state. Web Button/IconButton cells use a deterministic hover treatment
   and the real `data-pressed` hook separately. Native cells now emit distinct

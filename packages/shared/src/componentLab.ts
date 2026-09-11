@@ -606,12 +606,30 @@ export function validateComponentLabStories(
     if (!story.states.includes("default")) {
       errors.push(`${story.id}: missing default state`);
     }
+    const explicitCaseKeys = new Set<string>();
     for (const item of story.cases ?? []) {
+      const key = `${item.variant}:${item.state}`;
+      if (explicitCaseKeys.has(key)) {
+        errors.push(`${story.id}: duplicate case ${key}`);
+      }
+      explicitCaseKeys.add(key);
       if (!story.variants.includes(item.variant)) {
         errors.push(`${story.id}: unknown case variant ${item.variant}`);
       }
       if (!story.states.includes(item.state)) {
         errors.push(`${story.id}: unknown case state ${item.state}`);
+      }
+    }
+    if (story.cases) {
+      for (const variant of story.variants) {
+        if (!story.cases.some((item) => item.variant === variant)) {
+          errors.push(`${story.id}: cases omit variant ${variant}`);
+        }
+      }
+      for (const state of story.states) {
+        if (!story.cases.some((item) => item.state === state)) {
+          errors.push(`${story.id}: cases omit state ${state}`);
+        }
       }
     }
     const duplicateAxes = story.variants.filter(

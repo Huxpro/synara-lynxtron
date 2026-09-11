@@ -225,6 +225,33 @@ describe("component lab manifest", () => {
     ]);
   });
 
+  it("rejects invalid, duplicated, and incomplete explicit cases", () => {
+    const source = COMPONENT_LAB_STORIES.find(
+      (story) => story.id === "editor-rail/add-menu",
+    )!;
+    const invalid: ComponentLabStory = {
+      ...source,
+      id: "test/invalid-cases",
+      variants: ["menu", "toolbar"],
+      states: ["default", "open"],
+      cases: [
+        { variant: "menu", state: "default" },
+        { variant: "menu", state: "default" },
+        { variant: "unknown", state: "missing" },
+      ],
+    };
+
+    expect(validateComponentLabStories([invalid])).toEqual(
+      expect.arrayContaining([
+        "test/invalid-cases: duplicate case menu:default",
+        "test/invalid-cases: unknown case variant unknown",
+        "test/invalid-cases: unknown case state missing",
+        "test/invalid-cases: cases omit variant toolbar",
+        "test/invalid-cases: cases omit state open",
+      ]),
+    );
+  });
+
   it("rejects duplicated semantic values across variant and state axes", () => {
     const source = COMPONENT_LAB_STORIES.find(
       (story) => story.id === "editor-rail/add-menu",
