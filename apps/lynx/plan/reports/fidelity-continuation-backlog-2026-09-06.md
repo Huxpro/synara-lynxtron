@@ -281,6 +281,10 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   anatomy variants, picker tooltip is retained only while open, and the tool
   message keeps one canonical no-footer case. Coverage is now 3,168 generated
   cells while preserving every declared variant and state at least once.
+- File-preview recovery now omits two invisible combinations: explorer-dock
+  already has no Close owner, and detailed-error does not need a second
+  no-close-owner cell. All placements, retrying, detail copy, and explicit
+  no-close ownership remain represented; coverage is 3,152 cells.
 - Explicit cases are now validated as a coverage contract: duplicate cases,
   unknown variants/states, and any declared variant or state omitted from all
   cases are hard errors. This prevents future pruning from hiding a supported

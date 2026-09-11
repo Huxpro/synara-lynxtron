@@ -340,6 +340,18 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
   },
   {
     id: "editor/file-preview-error", title: "File preview recovery", category: "editor", owner: "WorkspaceFilePreviewErrorState", fixtureId: "missing-workspace-file", variants: ["editor", "explorer-dock", "file-pane", "detailed-error"], states: ["default", "retrying", "no-close-owner"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    cases: [
+      { variant: "editor", state: "default" },
+      { variant: "editor", state: "retrying" },
+      { variant: "editor", state: "no-close-owner" },
+      { variant: "explorer-dock", state: "default" },
+      { variant: "explorer-dock", state: "retrying" },
+      { variant: "file-pane", state: "default" },
+      { variant: "file-pane", state: "retrying" },
+      { variant: "file-pane", state: "no-close-owner" },
+      { variant: "detailed-error", state: "default" },
+      { variant: "detailed-error", state: "retrying" },
+    ],
     renderers: {
       electron: { renderer: "electron", component: "WorkspaceFilePreviewErrorState", module: "apps/web/src/components/WorkspaceFilePreviewErrorState.tsx", consumers: ["editor/file-preview", "right-dock/explorer-preview", "right-dock/file-preview"] },
       lynx: { renderer: "lynx", component: "WorkspaceFilePreviewErrorState", module: "apps/web/src/components/WorkspaceFilePreviewErrorState.tsx", consumers: ["editor/file-preview", "right-dock/explorer-preview", "right-dock/file-preview"] },
