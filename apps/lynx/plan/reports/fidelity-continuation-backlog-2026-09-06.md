@@ -25,9 +25,10 @@ product changes, other routes, other themes, other sizes, or Native input.
 The dated evidence below supersedes stale blocker wording retained in the original
 rows for investigation history. As of the 2026-09-10 canonical cold run:
 
-- **FC-002 is closed for the Native canonical-tail and clean-transient gate.**
-  Explicit non-empty recent-history and selection fixtures remain follow-up
-  comparison coverage, not a Native loading blocker.
+- **FC-002 is closed for canonical-tail, clean-transient, and non-empty Recent
+  Views synchronization.** Native now owns the shared persisted MRU and a real
+  Ctrl+Tab overlay; the launcher seeds the same current-thread + Settings history
+  in both renderers. Final Enter/Escape delivery remains keyboard acceptance.
 - **FC-003 is complete.** In addition to the real overview runs, a paired
   production-composition story now covers default, long-title, draft, and
   working cards across default, hover, focus, and pressed states in both target
@@ -73,6 +74,10 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
 - **FC-027 is complete for its tracked monospace-placement debt.** Terminal,
   Markdown, Diff, and full Editor code now resolve the shared code-font contract
   in current product surfaces.
+- **FC-038 is complete for the implementable semantic icon-tone contract.** The
+  repository-wide neutral raw-SVG scan is empty; selected/inverse and explicit
+  warning/error/success branches remain intentionally semantic. Physical pointer
+  sampling is regression acceptance, not an unclassified source-system gap.
 - **FC-039 is complete.** Canonical load, exact identity, transcript delivery,
   dynamic PID-owned DevTool discovery, and delayed transient-UI rejection all
   passed on fresh 0.0.21 cold runs.
