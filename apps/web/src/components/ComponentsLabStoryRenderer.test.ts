@@ -275,10 +275,11 @@ describe("Components Lab story renderer", () => {
       "utf8",
     );
     expect(source).toContain('props.storyId === "right-dock/tab-strip"');
+    expect(source).toContain('defaultAddMenuOpen={props.state === "add-menu-open"}');
+    expect(source).toContain('props.variant === "singleton-filtering" ? ["diff", "git"]');
     expect(source).toContain('<RightDockTabs');
-    expect(source).toContain('defaultAddMenuOpen={selected === "add-menu-open"}');
     expect(source).toContain('COMPONENT_LAB_RIGHT_DOCK_OVERFLOW_PANES');
-    expect(source).toContain('"singleton-filtering": "add-menu-open"');
+    expect(source).toContain('"singleton-filtering": "default"');
     expect(source).toContain('selected === "single-pane"');
     expect(dockSource).toContain('export function RightDockTabs');
     expect(dockSource).toContain('<RightDockTabs');

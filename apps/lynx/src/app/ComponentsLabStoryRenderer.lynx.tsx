@@ -384,9 +384,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     );
   }
   if (props.storyId === 'right-dock/tab-strip') {
-    const selected = props.state === 'default'
-      ? ({ empty: 'empty', 'single-pane': 'single-pane', 'multi-pane': 'default', overflow: 'overflow', 'singleton-filtering': 'add-menu-open' }[props.variant ?? 'multi-pane'] ?? 'default')
-      : props.state;
+    const selected = ({ empty: 'empty', 'single-pane': 'single-pane', 'multi-pane': 'default', overflow: 'overflow', 'singleton-filtering': 'default' }[props.variant ?? 'multi-pane'] ?? 'default');
     const panes =
       selected === 'empty'
         ? []
@@ -400,8 +398,8 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
         <ThreadRightDockTabs
           key={`${props.variant}:${props.state}`}
           activePaneId="terminal"
-          addMenuKinds={['diff', 'browser', 'git']}
-          defaultAddMenuOpen={selected === 'add-menu-open'}
+          addMenuKinds={props.variant === 'singleton-filtering' ? ['diff', 'git'] : ['diff', 'browser', 'git']}
+          defaultAddMenuOpen={props.state === 'add-menu-open'}
           paneLabelOverrides={{ 'sidechat:component-lab': 'Side chat' }}
           panes={panes}
           onAddPane={() => {}}

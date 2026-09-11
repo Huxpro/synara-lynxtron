@@ -126,13 +126,14 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('COMPONENT_LAB_PROVIDER_UPDATE_COPY');
     expect(renderer).toContain("progress: 'updating'");
     expect(renderer).toContain("props.storyId === 'right-dock/tab-strip'");
+    expect(renderer).toContain("defaultAddMenuOpen={props.state === 'add-menu-open'}");
+    expect(renderer).toContain("props.variant === 'singleton-filtering' ? ['diff', 'git']");
     expect(renderer).toContain("props.storyId === 'kanban/card'");
     expect(renderer).toContain('<KanbanCardComposition');
     expect(renderer).toContain('resolveComponentLabKanbanCardFixture');
     expect(renderer).toContain('<ThreadRightDockTabs');
-    expect(renderer).toContain("defaultAddMenuOpen={selected === 'add-menu-open'}");
     expect(renderer).toContain('COMPONENT_LAB_RIGHT_DOCK_OVERFLOW_PANES');
-    expect(renderer).toContain("'singleton-filtering': 'add-menu-open'");
+    expect(renderer).toContain("'singleton-filtering': 'default'");
     expect(renderer).toContain("selected === 'single-pane'");
     expect(renderer).toContain("props.storyId === 'composer/voice-recorder'");
     expect(renderer).toContain('<ComposerVoiceButton');

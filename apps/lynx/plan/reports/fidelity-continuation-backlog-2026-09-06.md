@@ -277,6 +277,12 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   adds the same real `DialogPanel` pressure content instead of silently
   collapsing to ordinary open. Web Lab 28/28 and the Native route contract
   pass.
+- Right-dock truthfulness now keeps tab population and Add-menu visibility
+  independent. `state=add-menu-open` opens the real menu on empty, single,
+  multi, overflow, and singleton-filtering variants without replacing their
+  pane lists. The singleton fixture removes Browser from its available kinds
+  while retaining the mounted panes, instead of aliasing its default cell to an
+  unrelated open-menu state. Web Lab 28/28 and the Native route contract pass.
 
 - The exact-owned comparison launcher now waits 30 seconds for the requested
   PID-owned DevTool listener, with a positive environment override and strict
