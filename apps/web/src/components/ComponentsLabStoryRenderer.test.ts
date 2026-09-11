@@ -442,6 +442,7 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('<TimePicker value="09:30"');
     expect(source).toContain('props.storyId === "ui/alert"');
     expect(source).toContain('<Alert className="max-w-lg"');
+    expect(source).toContain('const selected = props.state;');
   });
 
   it("keeps the Space project picker story controlled after submit", () => {

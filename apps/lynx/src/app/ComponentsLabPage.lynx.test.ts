@@ -240,6 +240,7 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain("props.storyId === 'ui/time-picker'");
     expect(renderer).toContain('<TimePicker value="09:30"');
     expect(renderer).toContain("props.storyId === 'ui/alert'");
+    expect(renderer).toContain('const selected = props.state;');
     expect(renderer).toContain('<Alert className="ComponentsLabAlert"');
     const rowSpecimen = readFileSync(
       new URL('./SidebarRowSpecimen.lynx.tsx', import.meta.url),

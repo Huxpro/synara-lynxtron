@@ -158,7 +158,7 @@ function ThreadRowContextMenuStory(props: {
 
 export function ComponentsLabStoryRendererLynx(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
   if (props.storyId === 'ui/alert') {
-    const selected = props.state === 'default' ? props.variant ?? 'default' : props.state;
+    const selected = props.state;
     const variant = selected as 'default' | 'warning' | 'error' | 'success' | 'info';
     return <Alert className="ComponentsLabAlert" variant={variant} accessibilityLabel="Provider status. Review this status before starting the next turn."><view><AlertTitle>Provider status</AlertTitle><AlertDescription><text>Review this status before starting the next turn.</text></AlertDescription></view></Alert>;
   }

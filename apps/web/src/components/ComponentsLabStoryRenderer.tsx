@@ -351,7 +351,7 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     return <FilePreviewHeaderStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
   }
   if (props.storyId === "ui/alert") {
-    const selected = props.state === "default" ? props.variant ?? "default" : props.state;
+    const selected = props.state;
     const variant = selected as "default" | "warning" | "error" | "success" | "info";
     return <Alert className="max-w-lg" variant={variant}><AlertTitle>Provider status</AlertTitle><AlertDescription>Review this status before starting the next turn.</AlertDescription></Alert>;
   }

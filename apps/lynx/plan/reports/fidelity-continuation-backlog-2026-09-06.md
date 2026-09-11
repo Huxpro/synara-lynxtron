@@ -266,6 +266,11 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   `ui-hover` / `ui-pressed` classes; the shared primitive keeps pressed ghost
   paint on the stronger secondary fill while hover uses the hover token. Native
   button/Lab tests pass 6/6 and Web Lab remains 28/28.
+- Alert truthfulness now treats the manifest's sole `status` variant as an
+  anatomy label rather than passing it as an unsupported visual variant. Both
+  renderers resolve default directly from state, while warning/error/success/
+  info remain explicit production Alert states. Web Lab 28/28 and the Native
+  route contract pass.
 - Tooltip truthfulness now keeps its axes independent: only `state=open` opens
   the popup, while `variant=picker` selects picker styling. Previously the
   default-state picker variant was opened merely because its variant string was
