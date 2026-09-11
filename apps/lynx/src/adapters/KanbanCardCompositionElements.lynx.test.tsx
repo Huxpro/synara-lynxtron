@@ -118,6 +118,9 @@ describe('Kanban card metadata icon fidelity', () => {
     expect(styles).toMatch(
       /\.SharedKanbanCard\.ui-hover,[\s\S]*?\{[^}]*background-color:\s*var\(--card\);/s
     );
+    expect(styles).toMatch(
+      /\.SharedKanbanCardTitle\s*\{[^}]*max-height:\s*35\.75px;[^}]*overflow:\s*hidden;/s
+    );
     expect(styles).not.toMatch(
       /\.SharedKanbanCard\.ui-hover\s*\{[^}]*border-color:\s*var\(--ring\);/s
     );

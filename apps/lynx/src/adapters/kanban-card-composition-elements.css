@@ -68,6 +68,8 @@
 .SharedKanbanCardTitle {
   flex: 1;
   min-width: 0;
+  max-height: 35.75px;
+  overflow: hidden;
   color: var(--foreground);
   font-size: 13px;
   font-weight: 500;
