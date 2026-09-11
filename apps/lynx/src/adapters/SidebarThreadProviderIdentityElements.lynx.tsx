@@ -45,10 +45,10 @@ export function SidebarThreadProviderIdentityIconElement({
   readonly provider: string;
   readonly placement: 'single' | 'source' | 'target';
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const source = PROVIDER_SVG[provider];
   const content = source
-    ? colorizeLynxSvg(source, svgColors.foreground)
+    ? colorizeLynxSvg(source, semanticIconColor('primary'))
     : undefined;
   return (
     <view

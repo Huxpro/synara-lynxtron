@@ -668,6 +668,13 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   remain in those three route owners. The focused semantic audit passes 5/5 and
   the complete Lynx production build succeeds. Status-specific success/error and
   warning colors remain intentionally outside this neutral-role normalization.
+- A follow-up repository-wide raw-SVG scan moved AppSnap welcome, PR project
+  filter/comment identity, Sidebar provider/section-header, Markdown external-link,
+  and Kanban pin/worktree/terminal glyphs onto the same semantic resolver. The
+  only remaining direct muted fallback belongs to `PullRequestCheckStatusIcon`,
+  where pending/success/failure colors are status semantics rather than neutral
+  chrome. Focused semantic/Kanban coverage passes 12/12 and the production build
+  remains clean.
 
 ## Historical items currently considered closed, pending regression sampling
 

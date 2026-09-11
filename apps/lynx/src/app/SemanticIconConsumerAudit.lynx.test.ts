@@ -120,4 +120,19 @@ describe('semantic icon consumer audit', () => {
     expect(router.match(/semanticIconColor\('primary'\)/g)?.length).toBeGreaterThanOrEqual(6);
     expect(router.match(/semanticIconColor\('secondary'\)/g)?.length).toBeGreaterThanOrEqual(4);
   });
+
+  it('classifies remaining route and shared-adapter neutral SVG icons', () => {
+    for (const [relativePath, expected] of [
+      ['./AppSnapWelcomeDialog.lynx.tsx', "semanticIconColor('primary')"],
+      ['../adapters/PullRequestRouteControlsCompositionElements.lynx.tsx', "semanticIconColor('primary')"],
+      ['../adapters/SidebarThreadProviderIdentityElements.lynx.tsx', "semanticIconColor('primary')"],
+      ['../adapters/KanbanCardCompositionElements.lynx.tsx', "semanticIconColor('secondary')"],
+      ['../adapters/PullRequestCommentComposer.lynx.tsx', "semanticIconColor('secondary')"],
+      ['../adapters/SidebarListSectionHeaderElements.lynx.tsx', "semanticIconColor('secondary')"],
+      ['../components/markdown/ExternalLinkIcon.lynx.tsx', "semanticIconColor('secondary')"],
+    ] as const) {
+      const source = readFileSync(new URL(relativePath, import.meta.url), 'utf8');
+      expect(source).toContain(expected);
+    }
+  });
 });

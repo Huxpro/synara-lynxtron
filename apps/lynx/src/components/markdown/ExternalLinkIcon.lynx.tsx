@@ -10,14 +10,14 @@ import {
 } from './siteFavicon.lynx';
 
 export function ExternalLinkIcon(props: { readonly url: string }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const faviconUrl = buildSiteFaviconUrl(props.url);
   const [failedFaviconUrl, setFailedFaviconUrl] = useState<string | null>(null);
   if (isGitHubExternalLink(props.url)) {
     return (
       <svg
         className="MdLinkTargetIcon"
-        content={colorizeLynxSvg(githubSvg, svgColors.mutedForeground)}
+        content={colorizeLynxSvg(githubSvg, semanticIconColor('secondary'))}
         accessibility-element={false}
       />
     );
@@ -39,7 +39,7 @@ export function ExternalLinkIcon(props: { readonly url: string }) {
   return (
     <svg
       className="MdLinkTargetIcon"
-      content={colorizeLynxSvg(globeSvg, svgColors.mutedForeground)}
+      content={colorizeLynxSvg(globeSvg, semanticIconColor('secondary'))}
       accessibility-element={false}
     />
   );

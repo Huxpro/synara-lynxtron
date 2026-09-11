@@ -197,7 +197,7 @@ export function PullRequestProjectFilterElement(props: {
     props.projects.find(([projectId]) => projectId === props.value)?.[1] ??
     'All projects';
   const active = props.value !== undefined;
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const triggerLabel = `Filter pull requests by project: ${selectedName}`;
   return (
     <Menu>
@@ -215,7 +215,10 @@ export function PullRequestProjectFilterElement(props: {
           <view className="SharedPrProjectFilterIconSlot">
             <svg
               className="SharedPrProjectFilterIcon"
-              content={colorizeLynxSvg(filterSvg, svgColors.foreground)}
+              content={colorizeLynxSvg(
+                filterSvg,
+                semanticIconColor('primary')
+              )}
             />
           </view>
           {active ? <view className="SharedPrProjectFilterDot" /> : null}

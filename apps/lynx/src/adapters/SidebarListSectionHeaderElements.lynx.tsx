@@ -31,16 +31,19 @@ interface ChildrenProps {
 function SidebarListSectionHeaderActionIcon(props: {
   readonly content: string;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   return (
     <>
       <svg
         className="SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--muted"
-        content={colorizeLynxSvg(props.content, svgColors.mutedForeground)}
+        content={colorizeLynxSvg(
+          props.content,
+          semanticIconColor('secondary')
+        )}
       />
       <svg
         className="SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--foreground"
-        content={colorizeLynxSvg(props.content, svgColors.foreground)}
+        content={colorizeLynxSvg(props.content, semanticIconColor('primary'))}
       />
     </>
   );

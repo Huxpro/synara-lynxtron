@@ -23,7 +23,7 @@ import {
 export function AppSnapWelcomeDialogLynx(props: {
   readonly onOpenSettings: () => void;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const [open, setOpen] = useState(false);
   const acknowledged = readAppSnapWelcomeStorage(
     webStorage.getItem(APP_SNAP_WELCOME_STORAGE_KEY)
@@ -62,7 +62,10 @@ export function AppSnapWelcomeDialogLynx(props: {
           <view className="AppSnapWelcomeHero" aria-hidden="true">
             <svg
               className="AppSnapWelcomeHeroIcon"
-              content={colorizeLynxSvg(screenCaptureSvg, svgColors.foreground)}
+              content={colorizeLynxSvg(
+                screenCaptureSvg,
+                semanticIconColor('primary')
+              )}
             />
           </view>
           <DialogHeader className="AppSnapWelcomeHeader">

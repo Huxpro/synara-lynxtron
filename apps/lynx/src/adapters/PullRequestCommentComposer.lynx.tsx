@@ -69,7 +69,7 @@ export function PullRequestCommentComposer(props: {
   const bodyRef = useRef('');
   const isComposingRef = useRef(false);
   const submittingRef = useRef(false);
-  const { activeTheme, svgColors } = useTheme();
+  const { activeTheme, semanticIconColor } = useTheme();
   const postComment = props.postComment ?? postPullRequestComment;
   const normalizedBody = body.trim();
   const canSubmit =
@@ -156,7 +156,10 @@ export function PullRequestCommentComposer(props: {
         >
           <svg
             className="SharedPrCommentComposerAccountIcon"
-            content={colorizeLynxSvg(githubSvg, svgColors.mutedForeground)}
+            content={colorizeLynxSvg(
+              githubSvg,
+              semanticIconColor('secondary')
+            )}
           />
         </view>
         <NativeCommentTextarea

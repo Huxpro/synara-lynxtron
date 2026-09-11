@@ -158,11 +158,11 @@ export function KanbanCardTitleElement(props: ChildrenProps) {
 }
 
 export function KanbanCardPinElement() {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   return (
     <svg
       className="SharedKanbanCardPin"
-      content={colorizeLynxSvg(pinFilledSvg, svgColors.mutedForeground)}
+      content={colorizeLynxSvg(pinFilledSvg, semanticIconColor('secondary'))}
     />
   );
 }
@@ -204,11 +204,11 @@ export function KanbanCardBranchElement(props: { readonly label: string }) {
 }
 
 export function KanbanCardWorktreeElement(_props: { readonly label: string }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   return (
     <svg
       className="SharedKanbanCardMetaIcon"
-      content={colorizeLynxSvg(worktreeSvg, svgColors.mutedForeground)}
+      content={colorizeLynxSvg(worktreeSvg, semanticIconColor('secondary'))}
     />
   );
 }
@@ -289,13 +289,13 @@ export function KanbanCardColumnStatusElement(props: {
   readonly label: string;
   readonly isTerminal: boolean;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   return (
     <view className="SharedKanbanCardColumnStatus">
       {props.isTerminal ? (
         <svg
           className="SharedKanbanCardColumnIcon"
-          content={colorizeLynxSvg(terminalSvg, svgColors.mutedForeground)}
+          content={colorizeLynxSvg(terminalSvg, semanticIconColor('secondary'))}
         />
       ) : (
         <KanbanStatusIcon
