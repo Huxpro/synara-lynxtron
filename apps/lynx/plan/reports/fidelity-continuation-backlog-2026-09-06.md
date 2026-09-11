@@ -70,6 +70,17 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   Manifest case validation, inline SSR signatures, and guarded Chromium overlay
   tests prevent unsupported or byte-identical cases from inflating coverage.
   Full theme/size execution remains FC-017 rather than duplicate FC-033 work.
+- **FC-017 is complete as a composite current-head matrix.** The exhaustive
+  layer validates all 46 stories, 92 renderer mappings, and 3,152 meaningful
+  cases without unsupported or byte-identical case inflation. Fresh exact-owned
+  Native runtime cells cover all four size/theme coordinates with deliberately
+  different high-risk surfaces: light/1280 product full Editor + working-tree
+  Diff, dark/1280 Command Palette overlay + keyboard highlight, light/1440 deep
+  file-header breadcrumb pressure, and dark/1440 right-dock tab overflow. Current
+  product evidence for Settings scrolling, Browser, Terminal, transcript outline,
+  and dialog/menu overlays completes the surface set. This is a composite
+  regression matrix, not a claim that every one of 3,152 cases was screenshotted
+  in Native.
 - **FC-019 is complete for the implementable Native Browser contract.** A fresh
   exact-owned 0.0.21 run now covers the product shortcut, real WebView
   navigation, history, reload, tabs, screenshot clipboard, and fresh-app
@@ -124,12 +135,6 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   region. The exact-client warning/error console remained empty. Structural
   tests already cover the one-shot programmatic-focus marker and the global
   no-drag rule for focusable descendants.
-- **FC-033's current catalog is 44 paired stories, 88 real renderer mappings,
-  and 3,216 normalized cells.** The current identity audit passes all 88
-  mappings, and the primitive inventory reports 37 Web primitives: 21 directly
-  covered, 16 evidence-backed mapped adapters, and zero missing or
-  unrepresented Native counterparts. Older 43/86/3,088 and 38/76/2,864 counts
-  below remain dated historical snapshots rather than the active baseline.
 - **FC-024 is complete for stable creation and migration association.** Native
   sidebar rows expose thread ID, project ID, and active identity on the same
   rendered node. New terminal, landing, Kanban, and imported threads all carry
@@ -784,6 +789,30 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   were deleted through the same public command path, and the temporary repo/home
   were removed. Large working-tree load robustness is therefore closed; a real
   checkpoint-backed turn diff remains separate FC-008 work.
+
+### 2026-09-11 current-head responsive matrix closure
+
+- The exhaustive current-head gates pass for 46 paired stories, 92 real
+  renderer mappings, 3,152 meaningful cases, and all 37 Web primitive
+  counterparts (21 direct pairs plus 16 evidence-backed adapters, with zero
+  missing or unrepresented Native counterparts). The focused Native Components
+  Lab route suite also passes.
+- Four fresh exact-owned runtime cells cover every requested size/theme
+  coordinate without retaining screenshots: light/1280 product full Editor +
+  working-tree Diff (PID `21984`, window `91928`); dark/1280 Recent Command
+  Palette with keyboard highlight (PID `51966`, window `92040`); light/1440
+  deep-path file-preview header under truncation pressure (PID `55488`, window
+  `92057`); and dark/1440 right-dock tab overflow (PID `46093`, window `92013`).
+  Each used PID-derived DevTool `localhost:8903`, exact viewport/theme root
+  attributes, and an empty warning/error console. The final staged bundle
+  SHA-256 was
+  `23f40691a155597367eecdda3fd09246a39369217f4fbc4086432ccddf241f47`.
+- The fresh cells intentionally target high-risk layout classes while current
+  exact-owned product evidence covers Settings scrolling, Browser, Terminal,
+  transcript outline, and modal/menu overlays. Together these form the current
+  composite full-surface matrix; they do not misrepresent 3,152 structural
+  cases as 3,152 Native screenshots. Browser cleanup passed between runs and at
+  exit, with no retained screenshots. FC-017 is complete.
 
 ### 2026-09-11 full Editor working-tree Diff certification
 
