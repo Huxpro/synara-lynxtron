@@ -46,6 +46,10 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
 - **FC-009 is complete for the tracked right-dock/header controls.** The final
   light/1280 loaded-product run covers Environment data, Add-panel availability,
   Browser singleton reuse, Diff activation, tab counts, and Collapse behavior.
+- **FC-016 is complete for its tracked startup/restart debt.** Ordinary product
+  cold starts across canonical thread, Kanban, and Components Lab routes stay
+  below the watchdog, and timeout, Reload, Quit, and route-preserving recovery
+  paths are already certified.
 - **FC-005 is complete for the tracked Settings-shell debt.** One exact-owned
   Native session exercised all 15 sections, and a proven wheel path confirms the
   same scroll ownership as Electron: sidebar search remains fixed while the
