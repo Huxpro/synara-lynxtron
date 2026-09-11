@@ -254,6 +254,11 @@ describe('Lynx Explorer dock', () => {
     expect(source).toContain('<ChatMarkdown');
     expect(source).toContain('onOpenFileReference={props.onSelectPath}');
     expect(source).toContain('<ExplorerPreviewHeader');
+    expect(source).toContain('isMarkdown={fileIsMarkdown}');
+    expect(source).toContain("markdownPreviewEnabled={markdownMode === 'preview'}");
+    expect(source).toContain('setMarkdownModeOverride({');
+    expect(source).toContain("fileIsMarkdown && markdownMode === 'preview'");
+    expect(source).toContain('<ExplorerSyntaxPreview');
     expect(source).toContain('truncated={props.file?.truncated ?? false}');
     expect(source).toContain("' ExplorerDockPreview--truncated'");
     expect(previewHeaderSource).toContain(
@@ -272,6 +277,11 @@ describe('Lynx Explorer dock', () => {
       'export function ExplorerFileActionsMenu'
     );
     expect(previewHeaderSource).toContain('deriveFilePreviewBreadcrumb({');
+    expect(previewHeaderSource).toContain('accessibility-label="Markdown view"');
+    expect(previewHeaderSource).toContain('aria-label="Source view"');
+    expect(previewHeaderSource).toContain('aria-label="Preview markdown"');
+    expect(previewHeaderSource).toContain('props.onMarkdownPreviewChange(false)');
+    expect(previewHeaderSource).toContain('props.onMarkdownPreviewChange(true)');
     expect(previewHeaderSource).not.toContain('function pathSegments(');
     expect(previewHeaderSource).toContain('props.includeCopyPath');
     expect(source).toContain('<ExplorerImagePreview');
@@ -578,6 +588,9 @@ describe('Lynx Explorer dock', () => {
     );
     expect(styles).toMatch(
       /\.ExplorerDockPreviewTruncated\s*\{[^}]*flex-shrink:\s*0;[^}]*font-size:\s*10px;[^}]*line-height:\s*14px;/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockMarkdownModes\s*\{[^}]*height:\s*28px;[^}]*flex-shrink:\s*0;[^}]*border-radius:\s*8px;/s
     );
     expect(styles).toMatch(
       /\.ExplorerDockPreviewContent\s*\{[^}]*flex:\s*1;[^}]*padding:\s*12px;/s

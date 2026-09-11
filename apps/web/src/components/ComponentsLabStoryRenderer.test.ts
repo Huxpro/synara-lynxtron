@@ -209,6 +209,16 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.variant === "chat" ? "start" : "end"');
   });
 
+  it("renders the real file-preview header with controlled markdown modes", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('props.storyId === "editor/file-preview-header"');
+    expect(source).toContain('<WorkspaceFilePreviewHeader');
+    expect(source).toContain('defaultFilePreviewMode({');
+    expect(source).toContain('actionMenuDefaultOpen={props.state === "menu-open"}');
+    expect(source).toContain('props.variant === "narrow"');
+    expect(source).toContain('mode === "preview" ? "Preview mode" : "Source mode"');
+  });
+
   it("renders project and thread rows through shared product specimens", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),

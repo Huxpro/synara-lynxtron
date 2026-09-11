@@ -33,6 +33,7 @@ describe("component lab manifest", () => {
       "terminal/search",
       "editor/file-search",
       "editor/file-tab",
+      "editor/file-preview-header",
       "diff/file-filter",
       "editor/project-search",
       "sidebar/space-project-picker",
@@ -82,6 +83,7 @@ describe("component lab manifest", () => {
       "terminal/search",
       "editor/file-search",
       "editor/file-tab",
+      "editor/file-preview-header",
       "diff/file-filter",
       "editor/project-search",
       "sidebar/space-project-picker",
@@ -191,9 +193,9 @@ describe("component lab manifest", () => {
 
   it("reports the complete renderer/theme/viewport/state matrix", () => {
     expect(summarizeComponentLabCoverage(COMPONENT_LAB_STORIES)).toEqual({
-      stories: 45,
-      rendererMappings: 90,
-      matrixCells: 3288,
+      stories: 46,
+      rendererMappings: 92,
+      matrixCells: 3416,
       interactiveStories: 26,
     });
   });

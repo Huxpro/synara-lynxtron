@@ -7,8 +7,10 @@ import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
 import {
   ChevronDownIcon,
   ChevronRightIcon,
+  CodeIcon,
   DeviceLaptopIcon,
   EllipsisIcon,
+  FileIcon,
   MessageCircleIcon,
   CopyIcon,
 } from '../lib/icons.lynx';
@@ -111,6 +113,9 @@ export function ExplorerFileActionsMenu(props: {
 
 export function ExplorerPreviewHeader(props: {
   readonly actionMenuDefaultOpen?: boolean;
+  readonly isMarkdown: boolean;
+  readonly markdownPreviewEnabled: boolean;
+  readonly onMarkdownPreviewChange: (rendered: boolean) => void;
   readonly path: string;
   readonly threadId: string;
   readonly truncated: boolean;
@@ -177,6 +182,36 @@ export function ExplorerPreviewHeader(props: {
         <text className="ExplorerDockPreviewTruncated" accessibility-label="Preview truncated at 1 MB.">Partial</text>
       ) : null}
       <view className="ExplorerDockPreviewHeaderActions">
+        {props.isMarkdown ? (
+          <view
+            className="ExplorerDockMarkdownModes"
+            accessibility-element
+            accessibility-label="Markdown view"
+          >
+            <Button
+              aria-label="Source view"
+              className={`ExplorerDockMarkdownMode${
+                props.markdownPreviewEnabled ? '' : ' ExplorerDockMarkdownMode--active'
+              }`}
+              size="icon-xs"
+              variant="chrome"
+              onClick={() => props.onMarkdownPreviewChange(false)}
+            >
+              <FileIcon size={14} />
+            </Button>
+            <Button
+              aria-label="Preview markdown"
+              className={`ExplorerDockMarkdownMode${
+                props.markdownPreviewEnabled ? ' ExplorerDockMarkdownMode--active' : ''
+              }`}
+              size="icon-xs"
+              variant="chrome"
+              onClick={() => props.onMarkdownPreviewChange(true)}
+            >
+              <CodeIcon size={14} />
+            </Button>
+          </view>
+        ) : null}
         <ExplorerFileActionsMenu
           defaultOpen={props.actionMenuDefaultOpen}
           path={props.path}

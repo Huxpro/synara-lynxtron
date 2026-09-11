@@ -8,8 +8,11 @@
 import {
   isSupportedLocalImagePath,
   isSupportedLocalPdfPath,
-  lowerCaseExtensionOf,
 } from "@synara/shared/localPreviewFiles";
+import {
+  isMarkdownPreviewablePath,
+  resolveFilePreviewMode,
+} from "@synara/shared/filePreviewMode";
 import {
   isLocalAbsolutePath,
   isWorkspaceRelativePathSafe,
@@ -64,12 +67,7 @@ import { LocalImagePreview } from "./LocalImagePreview";
 import { PdfFilePreview } from "./PdfFilePreview";
 import { Skeleton } from "./ui/skeleton";
 
-const MARKDOWN_PREVIEW_EXTENSIONS = new Set([".markdown", ".md", ".mdx"]);
-
-export function isMarkdownPreviewablePath(filePath: string): boolean {
-  const extension = lowerCaseExtensionOf(filePath);
-  return extension !== null && MARKDOWN_PREVIEW_EXTENSIONS.has(extension);
-}
+export { isMarkdownPreviewablePath } from "@synara/shared/filePreviewMode";
 
 function parentDirectoryFromPath(path: string): string | null {
   const normalized = path.replace(/\\/g, "/");
@@ -328,10 +326,16 @@ export function WorkspaceFilePreview(props: WorkspaceFilePreviewProps) {
     filePath: string | null;
     rendered: boolean;
   } | null>(null);
-  const markdownPreviewEnabled =
-    markdownPreviewOverride !== null && markdownPreviewOverride.filePath === filePath
-      ? markdownPreviewOverride.rendered
-      : markdownPreviewDefault;
+  const markdownPreviewEnabled = filePath !== null && resolveFilePreviewMode({
+    defaultMode: markdownPreviewDefault ? "preview" : "source",
+    filePath,
+    override: markdownPreviewOverride === null
+      ? null
+      : {
+          filePath: markdownPreviewOverride.filePath ?? "",
+          mode: markdownPreviewOverride.rendered ? "preview" : "source",
+        },
+  }) === "preview";
   const localPreviewGrantQuery = useQuery(
     projectLocalPreviewGrantQueryOptions({
       path: filePath,

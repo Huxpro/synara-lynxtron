@@ -10,6 +10,16 @@ import { describe, expect, it } from "vitest";
 import { WorkspaceFilePreviewHeader } from "./WorkspaceFilePreviewHeader";
 
 describe("WorkspaceFilePreviewHeader", () => {
+  it("keeps the Source/Preview control wired to the owning file mode", () => {
+    const source = readFileSync(
+      new URL("./WorkspaceFilePreviewHeader.tsx", import.meta.url),
+      "utf8",
+    );
+    expect(source).toContain('role="radiogroup"');
+    expect(source).toContain('aria-label="Markdown view"');
+    expect(source).toContain('onMarkdownPreviewChange(segment.rendered)');
+    expect(source).toContain('defaultOpen={props.actionMenuDefaultOpen}');
+  });
   it("keeps partial-read disclosure available at every header width", () => {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },

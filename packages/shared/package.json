@@ -104,6 +104,10 @@
       "types": "./src/filePreviewBreadcrumb.ts",
       "import": "./src/filePreviewBreadcrumb.ts"
     },
+    "./filePreviewMode": {
+      "types": "./src/filePreviewMode.ts",
+      "import": "./src/filePreviewMode.ts"
+    },
     "./fileContextMenu": {
       "types": "./src/fileContextMenu.ts",
       "import": "./src/fileContextMenu.ts"

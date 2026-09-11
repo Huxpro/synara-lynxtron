@@ -6,6 +6,12 @@ import {
 } from '@synara/shared/localPreviewFiles';
 import { RIGHT_DOCK_MIN_WIDTH_PX } from '@synara/shared/rightDock';
 import { buildFileContextMenuItems } from '@synara/shared/fileContextMenu';
+import {
+  defaultFilePreviewMode,
+  isMarkdownPreviewablePath,
+  resolveFilePreviewMode,
+  type FilePreviewMode,
+} from '@synara/shared/filePreviewMode';
 import { getRectByRef } from '@lynx-js/lynx-ui';
 import type { NodesRef } from '@lynx-js/types';
 
@@ -65,10 +71,6 @@ export function ExplorerSearchInputHeader(props: {
       />
     </view>
   );
-}
-
-function isMarkdownPath(path: string): boolean {
-  return /\.(?:md|mdx|markdown)$/i.test(path);
 }
 
 function fileName(path: string): string {
@@ -329,6 +331,23 @@ export function ExplorerDock(props: {
   readonly workspaceRoot: string | null;
 }) {
   const singleFile = props.presentationMode === 'single-file';
+  const selectedPath = props.selectedPath ?? '';
+  const fileIsMarkdown = isMarkdownPreviewablePath(selectedPath);
+  const defaultMarkdownMode = defaultFilePreviewMode({
+    filePath: selectedPath,
+    presentation: props.presentationMode?.startsWith('editor')
+      ? 'editor'
+      : 'dock',
+  });
+  const [markdownModeOverride, setMarkdownModeOverride] = useState<{
+    readonly filePath: string;
+    readonly mode: FilePreviewMode;
+  } | null>(null);
+  const markdownMode = resolveFilePreviewMode({
+    defaultMode: defaultMarkdownMode,
+    filePath: selectedPath,
+    override: markdownModeOverride,
+  });
   const close = useLynxInteractiveState({
     baseClassName: 'ExplorerDockClose',
     accessibleLabel:
@@ -453,7 +472,7 @@ export function ExplorerDock(props: {
                   isSupportedLocalImagePath(props.selectedPath)
                 ? ' ExplorerDockPreview--image'
                 : props.selectedPath &&
-                    isMarkdownPath(props.selectedPath)
+                    isMarkdownPreviewablePath(props.selectedPath)
                   ? ' ExplorerDockPreview--markdown'
                   : ''
           }${props.file?.truncated ? ' ExplorerDockPreview--truncated' : ''}`}
@@ -462,6 +481,14 @@ export function ExplorerDock(props: {
             <ExplorerPreviewHeader
               actionMenuDefaultOpen={props.initialActionMenuOpen}
               path={props.selectedPath}
+              isMarkdown={fileIsMarkdown}
+              markdownPreviewEnabled={markdownMode === 'preview'}
+              onMarkdownPreviewChange={(rendered) =>
+                setMarkdownModeOverride({
+                  filePath: props.selectedPath!,
+                  mode: rendered ? 'preview' : 'source',
+                })
+              }
               threadId={props.threadId}
               truncated={props.file?.truncated ?? false}
               workspaceRoot={props.workspaceRoot}
@@ -511,7 +538,7 @@ export function ExplorerDock(props: {
               />
             ) : props.file?.contents.length === 0 ? (
               <text className="ExplorerDockState">Empty file.</text>
-            ) : isMarkdownPath(props.selectedPath) ? (
+            ) : fileIsMarkdown && markdownMode === 'preview' ? (
               <scroll-view className="ExplorerDockPreviewScroll" scroll-orientation="vertical">
                 <ChatMarkdown
                   cwd={props.workspaceRoot}

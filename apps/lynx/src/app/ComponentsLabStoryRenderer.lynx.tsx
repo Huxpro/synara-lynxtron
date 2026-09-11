@@ -65,12 +65,14 @@ import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert.lynx
 import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
 import { PullRequestCodeComposition } from '@synara-web/components/pullRequest/PullRequestCodeComposition';
 import { WorkspaceFilePreviewErrorState } from '@synara-web/components/WorkspaceFilePreviewErrorState';
+import { defaultFilePreviewMode, type FilePreviewMode } from '@synara/shared/filePreviewMode';
 import { SpaceProjectPickerDialogLynx } from '../components/sidebar/SpaceProjectPickerDialog.lynx';
 import { ExplorerPdfFallback } from './ExplorerPdfFallback.lynx';
 import { buildProjectContextMenuItems, buildThreadContextMenuItems } from '@synara/shared/contextMenu';
 import { ReviewFileTreeSearchHeader } from './DiffDock.lynx';
 import { EditorProjectSwitchSearchHeader } from './EditorProjectSwitchMenu.lynx';
 import { ExplorerFileTab } from './ExplorerFileTab.lynx';
+import { ExplorerPreviewHeader } from './ExplorerPreviewHeader.lynx';
 import { IndependentTabRow } from './IndependentTabRow.lynx';
 import { EditorSurfaceTab } from './EditorSurfaceTab.lynx';
 import {
@@ -312,6 +314,9 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
   }
   if (props.storyId === 'editor-rail/independent-tabs') {
     return <IndependentTabsStory state={props.state} variant={props.variant} />;
+  }
+  if (props.storyId === 'editor/file-preview-header') {
+    return <FilePreviewHeaderStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
   }
   if (props.storyId === 'project-actions/add-editor') {
     return <ProjectActionEditorStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
@@ -598,6 +603,30 @@ function IndependentTabsStory(props: { readonly state: string; readonly variant?
         )}
       />
       <text className="ComponentsLabIndependentTabsResult" aria-live="polite">{result}</text>
+    </view>
+  );
+}
+
+function FilePreviewHeaderStory(props: { readonly state: string; readonly variant?: string }) {
+  const presentation = props.variant === 'editor' ? 'editor' : 'dock';
+  const [mode, setMode] = useState<FilePreviewMode>(() =>
+    props.state === 'source' || props.state === 'preview'
+      ? props.state
+      : defaultFilePreviewMode({ filePath: 'docs/guides/reference/README.md', presentation })
+  );
+  return (
+    <view className={`ComponentsLabFilePreviewHeaderStory${props.variant === 'narrow' ? ' ComponentsLabFilePreviewHeaderStory--narrow' : ''}`}>
+      <ExplorerPreviewHeader
+        actionMenuDefaultOpen={props.state === 'menu-open'}
+        path="docs/guides/reference/README.md"
+        isMarkdown
+        markdownPreviewEnabled={mode === 'preview'}
+        onMarkdownPreviewChange={(rendered) => setMode(rendered ? 'preview' : 'source')}
+        threadId="component-lab-thread"
+        truncated={props.variant === 'truncated'}
+        workspaceRoot="/workspace/synara"
+      />
+      <text className="ComponentsLabFilePreviewHeaderResult" aria-live="polite">{mode === 'preview' ? 'Preview mode' : 'Source mode'}</text>
     </view>
   );
 }

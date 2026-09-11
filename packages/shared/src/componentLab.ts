@@ -266,6 +266,13 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
+    id: "editor/file-preview-header", title: "File preview header", category: "editor", owner: "WorkspaceFilePreviewHeader", fixtureId: "deep-markdown-path", variants: ["editor", "dock", "narrow", "truncated"], states: ["default", "source", "preview", "menu-open"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: { renderer: "electron", component: "WorkspaceFilePreviewHeader", module: "apps/web/src/components/chat/WorkspaceFilePreviewHeader.tsx", consumers: ["editor/file-preview", "right-dock/explorer-preview", "right-dock/file-preview"] },
+      lynx: { renderer: "lynx", component: "ExplorerPreviewHeader", module: "apps/lynx/src/app/ExplorerPreviewHeader.lynx.tsx", consumers: ["editor/file-preview", "right-dock/explorer-preview", "right-dock/file-preview"] },
+    },
+  },
+  {
     id: "diff/file-filter", title: "Diff file filter", category: "diff", owner: "ReviewFileTreeSearchHeader", fixtureId: "diff-file-filter", variants: ["review-tree"], states: ["default", "query", "focus", "disabled"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "ReviewFileTreeSearchHeader", module: "apps/web/src/components/ReviewFileTreePanel.tsx", consumers: ["diff/review-file-tree"] },
@@ -471,6 +478,7 @@ export const COMPONENT_LAB_IMPLEMENTED_STORY_IDS = [
   "terminal/search",
   "editor/file-search",
   "editor/file-tab",
+  "editor/file-preview-header",
   "diff/file-filter",
   "editor/project-search",
   "sidebar/space-project-picker",

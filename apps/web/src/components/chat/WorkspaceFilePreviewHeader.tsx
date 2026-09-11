@@ -22,6 +22,7 @@ import { ComposerPickerMenuPopup } from "./ComposerPickerMenuPopup";
 import { OpenInPicker } from "./OpenInPicker";
 
 interface WorkspaceFilePreviewHeaderProps {
+  actionMenuDefaultOpen?: boolean;
   workspaceRoot: string | null;
   filePath: string;
   /** Markdown files get an inline Source/Preview segmented switcher. */
@@ -151,7 +152,7 @@ export const WorkspaceFilePreviewHeader = function WorkspaceFilePreviewHeader(
         ) : null}
 
         {hasChatActions ? (
-          <Menu>
+          <Menu defaultOpen={props.actionMenuDefaultOpen}>
             <MenuTrigger render={<ChatHeaderIconButton label="More actions" tone="plain" />}>
               <EllipsisIcon aria-hidden="true" className="size-3.5" />
             </MenuTrigger>

@@ -66,6 +66,8 @@ import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import ChatMarkdown from "~/components/ChatMarkdown";
 import { PullRequestCodeComposition } from "~/components/pullRequest/PullRequestCodeComposition";
 import { WorkspaceFilePreviewErrorState } from "~/components/WorkspaceFilePreviewErrorState";
+import { WorkspaceFilePreviewHeader } from "~/components/chat/WorkspaceFilePreviewHeader";
+import { defaultFilePreviewMode, type FilePreviewMode } from "@synara/shared/filePreviewMode";
 import { PdfViewerToolbar } from "~/components/pdf/PdfViewerToolbar";
 import { nextZoomScale, previousZoomScale, resolvePdfScale, type PdfZoomMode } from "@synara/shared/pdfZoom";
 import { buildProjectContextMenuItems, buildThreadContextMenuItems } from "@synara/shared/contextMenu";
@@ -329,6 +331,9 @@ function MessageRowStory(props: { readonly state: string; readonly variant?: str
 export function ComponentsLabStoryRenderer(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
   if (props.storyId === "editor-rail/independent-tabs") {
     return <IndependentTabsStory state={props.state} variant={props.variant} />;
+  }
+  if (props.storyId === "editor/file-preview-header") {
+    return <FilePreviewHeaderStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
   }
   if (props.storyId === "ui/alert") {
     const selected = props.state === "default" ? props.variant ?? "default" : props.state;
@@ -836,6 +841,31 @@ function IndependentTabsStory(props: { readonly state: string; readonly variant?
         )}
       />
       <p aria-live="polite" className="text-[11px] text-muted-foreground">{result}</p>
+    </div>
+  );
+}
+
+function FilePreviewHeaderStory(props: { readonly state: string; readonly variant?: string }) {
+  const presentation = props.variant === "editor" ? "editor" : "dock";
+  const [mode, setMode] = useState<FilePreviewMode>(() =>
+    props.state === "source" || props.state === "preview"
+      ? props.state
+      : defaultFilePreviewMode({ filePath: "docs/guides/reference/README.md", presentation }),
+  );
+  return (
+    <div className={props.variant === "narrow" ? "w-80 overflow-hidden border border-border" : "w-[680px] max-w-[calc(100vw-3rem)] overflow-hidden border border-border"}>
+      <WorkspaceFilePreviewHeader
+        actionMenuDefaultOpen={props.state === "menu-open"}
+        workspaceRoot="/workspace/synara"
+        filePath="docs/guides/reference/README.md"
+        isMarkdown
+        markdownPreviewEnabled={mode === "preview"}
+        onMarkdownPreviewChange={(rendered) => setMode(rendered ? "preview" : "source")}
+        onReferenceInChat={() => {}}
+        onAskWhyInChat={() => {}}
+        truncated={props.variant === "truncated"}
+      />
+      <p aria-live="polite" className="px-3 py-2 text-[11px] text-muted-foreground">{mode === "preview" ? "Preview mode" : "Source mode"}</p>
     </div>
   );
 }

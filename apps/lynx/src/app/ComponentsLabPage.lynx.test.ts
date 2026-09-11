@@ -148,6 +148,12 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('setOpen(false);');
     expect(renderer).toContain('>Tab closed</text>');
     expect(renderer).toContain("visualState={props.state as 'default' | 'hover' | 'focus' | 'pressed'}");
+    expect(renderer).toContain("props.storyId === 'editor/file-preview-header'");
+    expect(renderer).toContain('<FilePreviewHeaderStory');
+    expect(renderer).toContain('<ExplorerPreviewHeader');
+    expect(renderer).toContain("props.variant === 'narrow'");
+    expect(renderer).toContain("mode === 'preview' ? 'Preview mode' : 'Source mode'");
+    expect(styles).toContain('.ComponentsLabFilePreviewHeaderStory--narrow');
     expect(renderer).toContain("props.storyId === 'diff/file-filter'");
     expect(renderer).toContain('<ReviewFileTreeSearchHeader');
     expect(renderer).toContain("props.storyId === 'editor/project-search'");

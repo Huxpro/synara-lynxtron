@@ -675,6 +675,32 @@
   gap: 6px;
 }
 
+.ExplorerDockMarkdownModes {
+  display: flex;
+  height: 28px;
+  padding: 2px;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+  border-radius: 8px;
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.LxButton.ExplorerDockMarkdownMode {
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  padding: 0;
+  border-radius: 6px;
+}
+
+.LxButton.ExplorerDockMarkdownMode--active {
+  color: var(--foreground);
+  background-color: var(--color-background-button-secondary);
+}
+
 .ExplorerDockPreviewTruncated {
   flex-shrink: 0;
   color: var(--muted-foreground);
