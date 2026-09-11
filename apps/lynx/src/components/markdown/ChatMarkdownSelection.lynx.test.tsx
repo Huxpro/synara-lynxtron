@@ -27,9 +27,12 @@ describe('Lynx transcript text selection', () => {
     expect(markdownSource).toContain(
       'className="MdParagraph"\n          context={context}'
     );
-    expect(transcriptSource).toContain('<ChatMarkdown\n              cwd={workspaceRoot}\n              selectable');
+    expect(transcriptSource).toContain('<ChatMarkdown\n              cwd={workspaceRoot}');
     expect(transcriptSource).toContain(
-      'onOpenFileReference={onOpenFileReference}\n                onTextSelection={onTextSelectionChange}\n                selectable'
+      'onOpenFileReference={onOpenFileReference}\n                onTextSelection={onTextSelectionChange}'
+    );
+    expect(transcriptSource).toContain(
+      'preparsedTree={row.markdownTree}\n                selectable'
     );
     expect(transcriptSource).toContain('<TranscriptSelectionAction');
     expect(transcriptSource).toContain('resolveSelectionActionLayout({');

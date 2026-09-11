@@ -276,10 +276,12 @@ function TranscriptJumpIcon() {
 function TranscriptWorkEntry({
   chatFontSizePx,
   entry,
+  markdownTree,
   workspaceRoot,
 }: {
   readonly chatFontSizePx: number;
   readonly entry: WorkLogEntry;
+  readonly markdownTree?: import('../components/markdown/markdownAst.lynx').MarkdownNode | null;
   readonly workspaceRoot: string | null;
 }) {
   if (isReasoningUpdateWorkEntry(entry)) {
@@ -293,7 +295,7 @@ function TranscriptWorkEntry({
           lineHeight: '19px',
         }}
       >
-        <ChatMarkdown cwd={workspaceRoot} text={reasoningText} />
+        <ChatMarkdown cwd={workspaceRoot} preparsedTree={markdownTree} text={reasoningText} />
       </view>
     );
   }
@@ -409,10 +411,12 @@ function TranscriptToolDetailsDisclosure(props: {
 function TranscriptWorkEntries({
   chatFontSizePx,
   entries,
+  markdownTreesByWorkEntryId,
   workspaceRoot,
 }: {
   readonly chatFontSizePx: number;
   readonly entries: readonly WorkLogEntry[];
+  readonly markdownTreesByWorkEntryId?: Readonly<Record<string, import('../components/markdown/markdownAst.lynx').MarkdownNode | null>>;
   readonly workspaceRoot: string | null;
 }) {
   if (entries.length === 0) return null;
@@ -423,6 +427,7 @@ function TranscriptWorkEntries({
           key={entry.id}
           chatFontSizePx={chatFontSizePx}
           entry={entry}
+          markdownTree={markdownTreesByWorkEntryId?.[entry.id]}
           workspaceRoot={workspaceRoot}
         />
       ))}
@@ -433,13 +438,14 @@ function TranscriptWorkEntries({
 function TranscriptToolGroup(props: {
   readonly chatFontSizePx: number;
   readonly entries: readonly WorkLogEntry[];
+  readonly markdownTreesByWorkEntryId?: Readonly<Record<string, import('../components/markdown/markdownAst.lynx').MarkdownNode | null>>;
   readonly workspaceRoot: string | null;
 }) {
   const [open, setOpen] = useState(false);
   const summary = summarizeToolCallGroup(props.entries);
   if (!summary) {
     return (
-      <TranscriptWorkEntries chatFontSizePx={props.chatFontSizePx} entries={props.entries} workspaceRoot={props.workspaceRoot} />
+      <TranscriptWorkEntries chatFontSizePx={props.chatFontSizePx} entries={props.entries} markdownTreesByWorkEntryId={props.markdownTreesByWorkEntryId} workspaceRoot={props.workspaceRoot} />
     );
   }
   const interaction = useLynxInteractiveState({
@@ -460,7 +466,7 @@ function TranscriptToolGroup(props: {
       </view>
       {open ? (
         <view className="TranscriptToolGroupEntries">
-          <TranscriptWorkEntries chatFontSizePx={props.chatFontSizePx} entries={props.entries} workspaceRoot={props.workspaceRoot} />
+          <TranscriptWorkEntries chatFontSizePx={props.chatFontSizePx} entries={props.entries} markdownTreesByWorkEntryId={props.markdownTreesByWorkEntryId} workspaceRoot={props.workspaceRoot} />
         </view>
       ) : null}
     </view>
@@ -597,6 +603,7 @@ function TranscriptMessage({
   onTextSelectionChange,
   onThreadError,
   onOpenFileReference,
+  onOpenTurnDiff,
   pinnedMessageIds,
   row,
   threadId,
@@ -618,6 +625,7 @@ function TranscriptMessage({
   readonly onTextSelectionChange: (selection: MarkdownTextSelection | null) => void;
   readonly onThreadError?: (error: string | null) => void;
   readonly onOpenFileReference?: (relativePath: string) => void;
+  readonly onOpenTurnDiff?: (turnId: string) => void;
   readonly pinnedMessageIds: ReadonlySet<string>;
   row: MessageTranscriptRow;
   threadId: string;
@@ -774,6 +782,22 @@ function TranscriptMessage({
     message.createdAt,
     timestampFormat
   );
+  const turnSummary = row.assistantTurnDiffSummary;
+  const turnChangedFileCount = turnSummary?.files.length ?? 0;
+  const turnAdditions =
+    turnSummary?.files.reduce((sum, file) => sum + (file.additions ?? 0), 0) ?? 0;
+  const turnDeletions =
+    turnSummary?.files.reduce((sum, file) => sum + (file.deletions ?? 0), 0) ?? 0;
+  const reviewTurnChanges = useLynxInteractiveState({
+    baseClassName: 'TranscriptTurnChangesCard',
+    accessibleLabel: turnSummary
+      ? `Review changes for turn ${turnSummary.turnId}`
+      : 'Review changes',
+    disabled: !turnSummary || turnChangedFileCount === 0 || !onOpenTurnDiff,
+    onActivate: () => {
+      if (turnSummary) onOpenTurnDiff?.(turnSummary.turnId);
+    },
+  });
   function addSelectedTextToChat() {
     'background only';
     if (!activeTextSelection) return;
@@ -858,6 +882,7 @@ function TranscriptMessage({
           >
             <ChatMarkdown
               cwd={workspaceRoot}
+              preparsedTree={row.markdownTree}
               selectable
               text={message.text}
               variant="user"
@@ -904,6 +929,7 @@ function TranscriptMessage({
                 key={`tool-group:${chunk.id}`}
                 chatFontSizePx={chatFontSizePx}
                 entries={chunk.entries}
+                markdownTreesByWorkEntryId={row.markdownTreesByWorkEntryId}
                 workspaceRoot={workspaceRoot}
               />
             ) : chunk.item.kind === 'work' ? (
@@ -911,6 +937,7 @@ function TranscriptMessage({
                 key={chunk.item.id}
                 chatFontSizePx={chatFontSizePx}
                 entry={chunk.item.entry}
+                markdownTree={row.markdownTreesByWorkEntryId?.[chunk.item.entry.id]}
                 workspaceRoot={workspaceRoot}
               />
             ) : (
@@ -918,6 +945,9 @@ function TranscriptMessage({
                 <ChatMarkdown
                   cwd={workspaceRoot}
                   onOpenFileReference={onOpenFileReference}
+                  preparsedTree={
+                    row.markdownTreesByMessageId?.[chunk.item.message.id]
+                  }
                   text={chunk.item.message.text}
                 />
               </view>
@@ -929,6 +959,7 @@ function TranscriptMessage({
         <TranscriptWorkEntries
           chatFontSizePx={chatFontSizePx}
           entries={leadingWorkEntries}
+          markdownTreesByWorkEntryId={row.markdownTreesByWorkEntryId}
           workspaceRoot={workspaceRoot}
         />
         {assistantText === null ? null : (
@@ -945,15 +976,35 @@ function TranscriptMessage({
                 cwd={workspaceRoot}
                 onOpenFileReference={onOpenFileReference}
                 onTextSelection={onTextSelectionChange}
+                preparsedTree={row.markdownTree}
                 selectable
                 text={assistantText}
               />
             </view>
           </view>
         )}
+        {!row.assistantTurnInProgress && turnSummary && turnChangedFileCount > 0 ? (
+          <view
+            className={reviewTurnChanges.className}
+            {...reviewTurnChanges.eventProps}
+          >
+            <view className="TranscriptTurnChangesSummary">
+              <text className="TranscriptTurnChangesLabel">
+                {`Edited ${turnChangedFileCount} ${turnChangedFileCount === 1 ? 'file' : 'files'}`}
+              </text>
+              <text className="TranscriptTurnChangesStats">
+                <text className="TranscriptTurnChangesAdditions">{`+${turnAdditions}`}</text>
+                {' '}
+                <text className="TranscriptTurnChangesDeletions">{`-${turnDeletions}`}</text>
+              </text>
+            </view>
+            <text className="TranscriptTurnChangesReview">Review</text>
+          </view>
+        ) : null}
         <TranscriptWorkEntries
           chatFontSizePx={chatFontSizePx}
           entries={inlineWorkEntries}
+          markdownTreesByWorkEntryId={row.markdownTreesByWorkEntryId}
           workspaceRoot={workspaceRoot}
         />
         {activeTextSelection ? (
@@ -1012,6 +1063,7 @@ function TranscriptRowContent({
   onTextSelectionChange,
   onThreadError,
   onOpenFileReference,
+  onOpenTurnDiff,
   pinnedMessageIds,
   row,
   threadId,
@@ -1037,6 +1089,7 @@ function TranscriptRowContent({
   ) => void;
   readonly onThreadError?: (error: string | null) => void;
   readonly onOpenFileReference?: (relativePath: string) => void;
+  readonly onOpenTurnDiff?: (turnId: string) => void;
   readonly pinnedMessageIds: ReadonlySet<string>;
   row: ThreadTranscriptRow;
   threadId: string;
@@ -1065,6 +1118,7 @@ function TranscriptRowContent({
         }
         onThreadError={onThreadError}
         onOpenFileReference={onOpenFileReference}
+        onOpenTurnDiff={onOpenTurnDiff}
         pinnedMessageIds={pinnedMessageIds}
         row={row}
         threadId={threadId}
@@ -1082,6 +1136,7 @@ function TranscriptRowContent({
             key={entry.id}
             chatFontSizePx={chatFontSizePx}
             entry={entry}
+            markdownTree={row.markdownTreesByWorkEntryId?.[entry.id]}
             workspaceRoot={workspaceRoot}
           />
         ))}
@@ -1134,6 +1189,7 @@ export function Transcript({
   interactionMode,
   modelSelection,
   onOpenFileReference,
+  onOpenTurnDiff,
   pinnedMessageIds,
   rows,
   threadId,
@@ -1152,6 +1208,7 @@ export function Transcript({
   readonly interactionMode: ProviderInteractionMode | null;
   readonly modelSelection: ModelSelection | null;
   readonly onOpenFileReference?: (relativePath: string) => void;
+  readonly onOpenTurnDiff?: (turnId: string) => void;
   readonly pinnedMessageIds: ReadonlySet<string>;
   readonly rows: readonly ThreadTranscriptRow[];
   readonly threadId: string;
@@ -1533,6 +1590,7 @@ export function Transcript({
                 }}
                 onThreadError={onThreadError}
                 onOpenFileReference={onOpenFileReference}
+                 onOpenTurnDiff={onOpenTurnDiff}
                 pinnedMessageIds={pinnedMessageIds}
                 row={row}
                 threadId={threadId}

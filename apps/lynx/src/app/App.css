@@ -2190,6 +2190,57 @@
   min-width: 0;
 }
 
+.TranscriptTurnChangesCard {
+  display: flex;
+  width: 100%;
+  min-height: 46px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  padding: 7px 10px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--color-border-light);
+  border-radius: 10px;
+  background-color: var(--color-background-surface);
+}
+
+.TranscriptTurnChangesSummary {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.TranscriptTurnChangesLabel,
+.TranscriptTurnChangesStats,
+.TranscriptTurnChangesReview {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.TranscriptTurnChangesLabel,
+.TranscriptTurnChangesReview {
+  color: var(--foreground);
+}
+
+.TranscriptTurnChangesStats {
+  font-family: var(--font-system-ui);
+}
+
+.TranscriptTurnChangesAdditions {
+  color: var(--color-editor-added);
+}
+
+.TranscriptTurnChangesDeletions {
+  color: var(--color-editor-deleted);
+}
+
+.TranscriptTurnChangesReview {
+  padding: 3px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
 .TranscriptMessageFooter {
   display: flex;
   flex-direction: row;

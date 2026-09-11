@@ -52,6 +52,10 @@ import {
 } from '@synara-web/components/chat/MessagesTimeline.logic';
 import { filterSidechatTranscriptMessages } from '@synara-web/components/ChatView.logic';
 import {
+  formatAgentActivityEntryPreview,
+  isReasoningUpdateWorkEntry,
+} from '@synara-web/components/chat/agentActivity.logic';
+import {
   derivePendingApprovals,
   derivePendingUserInputs,
   deriveTimelineEntries,
@@ -87,6 +91,7 @@ import { isLocalAbsolutePath } from '@synara/shared/path';
 import {
   projectActiveThreadSummaries,
 } from './threadSummaryProjection.logic';
+import { parseMarkdown, type MarkdownNode } from '../components/markdown/markdownAst.lynx';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -219,7 +224,11 @@ export interface SidebarSnapshot {
   readonly kanbanThreads: readonly SidebarThreadSummary[];
 }
 
-export type ThreadTranscriptRow = MessagesTimelineRow;
+export type ThreadTranscriptRow = MessagesTimelineRow & {
+  readonly markdownTree?: MarkdownNode | null;
+  readonly markdownTreesByMessageId?: Readonly<Record<string, MarkdownNode | null>>;
+  readonly markdownTreesByWorkEntryId?: Readonly<Record<string, MarkdownNode | null>>;
+};
 
 export type ExplorerEntriesResult =
   | ProjectListDirectoriesResult
@@ -955,7 +964,7 @@ export async function fetchThreadTranscriptRows(
       turnDiffSummaryByAssistantMessageId,
       inferredCheckpointTurnCountByTurnId,
     });
-  const rows = deriveMessagesTimelineRows({
+  const derivedRows = deriveMessagesTimelineRows({
     timelineEntries,
     isWorking: activeTurnInProgress,
     worktreeSetup: null,
@@ -965,6 +974,100 @@ export async function fetchThreadTranscriptRows(
     activeTurnStartedAt: thread.latestTurn?.startedAt ?? null,
     turnDiffSummaryByAssistantMessageId,
     revertTurnCountByUserMessageId,
+  });
+  const markdownMessages = derivedRows.flatMap((row) =>
+    row.kind === 'message'
+      ? [
+          row.message,
+          ...(row.collapsedTurnItems ?? []).flatMap((item) =>
+            item.kind === 'narration' ? [item.message] : []
+          ),
+        ]
+      : []
+  );
+  const markdownWorkEntries = derivedRows.flatMap((row) => {
+    const entries =
+      row.kind === 'work'
+        ? row.groupedEntries
+        : row.kind === 'message'
+          ? [
+              ...(row.leadingWorkEntries ?? []),
+              ...(row.inlineWorkEntries ?? []),
+              ...(row.collapsedTurnItems ?? []).flatMap((item) =>
+                item.kind === 'work' ? [item.entry] : []
+              ),
+            ]
+          : [];
+    return entries.filter(isReasoningUpdateWorkEntry);
+  });
+  const parsedMarkdownTrees = [
+    ...markdownMessages.map((message) =>
+      parseMarkdown(
+        message.text,
+        message.role === 'user' ? 'user' : 'assistant'
+      )
+    ),
+    ...markdownWorkEntries.map((entry) =>
+      parseMarkdown(
+        formatAgentActivityEntryPreview(entry) ??
+          entry.preview ??
+          entry.detail ??
+          entry.label,
+        'assistant'
+      )
+    ),
+  ];
+  const parsedTreeByMessageId = new Map(
+    markdownMessages.map((message, index) => [
+      message.id,
+      parsedMarkdownTrees[index] ?? null,
+    ])
+  );
+  const parsedTreeByWorkEntryId = new Map(
+    markdownWorkEntries.map((entry, index) => [
+      entry.id,
+      parsedMarkdownTrees[markdownMessages.length + index] ?? null,
+    ])
+  );
+  const rows = derivedRows.map((row): ThreadTranscriptRow => {
+    const rowWorkEntries =
+      row.kind === 'work'
+        ? row.groupedEntries
+        : row.kind === 'message'
+          ? [
+              ...(row.leadingWorkEntries ?? []),
+              ...(row.inlineWorkEntries ?? []),
+              ...(row.collapsedTurnItems ?? []).flatMap((item) =>
+                item.kind === 'work' ? [item.entry] : []
+              ),
+            ]
+          : [];
+    const markdownTreesByWorkEntryId = Object.fromEntries(
+      rowWorkEntries
+        .filter(isReasoningUpdateWorkEntry)
+        .map((entry) => [entry.id, parsedTreeByWorkEntryId.get(entry.id) ?? null])
+    );
+    if (row.kind !== 'message') {
+      return Object.keys(markdownTreesByWorkEntryId).length > 0
+        ? { ...row, markdownTreesByWorkEntryId }
+        : row;
+    }
+    const messages = [
+      row.message,
+      ...(row.collapsedTurnItems ?? []).flatMap((item) =>
+        item.kind === 'narration' ? [item.message] : []
+      ),
+    ];
+    const markdownTreesByMessageId: Record<string, MarkdownNode | null> = {};
+    for (const message of messages)
+      markdownTreesByMessageId[message.id] =
+        parsedTreeByMessageId.get(message.id) ?? null;
+    return {
+      ...row,
+      markdownTree: markdownTreesByMessageId[row.message.id] ?? null,
+      markdownTreesByMessageId,
+      markdownTreesByWorkEntryId,
+    };
   });
   transcriptRowsByThreadId.set(threadId, {
     snapshotSequence: snapshot.snapshotSequence,

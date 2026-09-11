@@ -48,6 +48,9 @@ describe('Native stable right dock host', () => {
       'activePane?.diffTurnId ? `turn:${activePane.diffTurnId}` : undefined'
     );
     expect(router).toContain(
+      "openPaneInState(current, {\n          paneId: 'diff',\n          kind: 'diff',\n          diffTurnId: turnId as never"
+    );
+    expect(router).toContain(
       'initialSelectedFilePath={activePane?.diffFilePath}'
     );
     expect(router).not.toContain('diffDockWidth');

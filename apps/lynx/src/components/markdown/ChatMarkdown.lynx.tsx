@@ -56,6 +56,7 @@ export interface ChatMarkdownProps {
   readonly onTextSelection?: (
     selection: MarkdownTextSelection | null
   ) => void;
+  readonly preparsedTree?: MarkdownNode | null;
 }
 
 export interface MarkdownTextSelection {
@@ -227,6 +228,9 @@ function renderUserText(
   key: string,
   context: MarkdownRenderContext
 ): React.ReactNode {
+  if (!/[@$/]|https?:\/\//i.test(value)) {
+    return <text key={key}>{value}</text>;
+  }
   const occurrences = new Map<string, number>();
   return splitPromptIntoDisplaySegments(value, context.mentionReferences).map(
     (segment) => {
@@ -699,18 +703,21 @@ export function ChatMarkdown({
   mentionReferences = [],
   onOpenFileReference,
   onTextSelection,
+  preparsedTree,
 }: ChatMarkdownProps) {
-  const [tree, setTree] = useState<MarkdownNode | null>(null);
+  const [parsedTree, setParsedTree] = useState<MarkdownNode | null>(null);
+  const hasPreparsedTree = preparsedTree !== undefined;
+  const tree = hasPreparsedTree ? preparsedTree : parsedTree;
 
   useEffect(() => {
     'background only';
+    if (hasPreparsedTree) return;
     try {
-      const parsed = parseMarkdown(text, variant);
-      setTree(parsed);
+      setParsedTree(parseMarkdown(text, variant));
     } catch (error) {
       console.error('[markdown] parse failed', String(error), error);
     }
-  }, [text, variant]);
+  }, [hasPreparsedTree, text, variant]);
 
   const context: MarkdownRenderContext = {
     allowComposerChips: variant === 'user',

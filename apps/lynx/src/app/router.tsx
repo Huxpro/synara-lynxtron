@@ -1178,6 +1178,18 @@ function ThreadPage(props: ThreadPageProps) {
       ),
     [updateRightDockState]
   );
+  const openTurnDiff = useCallback(
+    (turnId: string) => {
+      updateRightDockState((current) =>
+        openPaneInState(current, {
+          paneId: 'diff',
+          kind: 'diff',
+          diffTurnId: turnId as never,
+        })
+      );
+    },
+    [updateRightDockState]
+  );
   const setExplorerOpen = useCallback(
     (open: boolean) =>
       updateRightDockState((current) =>
@@ -1825,6 +1837,7 @@ function ThreadPage(props: ThreadPageProps) {
             viewportHeight={viewportHeight}
             onController={registerTranscriptController}
             onOpenFileReference={openExplorerFileReference}
+            onOpenTurnDiff={openTurnDiff}
             onThreadError={setLocalThreadError}
             runtimeMode={currentThread?.runtimeMode ?? null}
             sessionStatus={currentThread?.sessionStatus ?? null}

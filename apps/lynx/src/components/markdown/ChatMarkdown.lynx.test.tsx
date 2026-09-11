@@ -5,6 +5,32 @@ import { readFileSync } from 'node:fs';
 import { MarkdownFileReferenceToken } from './MarkdownFileReferenceToken.lynx';
 
 describe('Lynx markdown file reference token', () => {
+  it('preparses every initial transcript markdown surface before rendering list cells', () => {
+    const source = readFileSync(
+      new URL('./ChatMarkdown.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const querySource = readFileSync(
+      new URL('../../app/queries.ts', import.meta.url),
+      'utf8'
+    );
+    const transcriptSource = readFileSync(
+      new URL('../../app/Transcript.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain('readonly preparsedTree?: MarkdownNode | null;');
+    expect(source).toContain('if (hasPreparsedTree) return;');
+    expect(source).toContain('const tree = hasPreparsedTree ? preparsedTree : parsedTree;');
+    expect(querySource).toContain('...markdownWorkEntries.map((entry) =>');
+    expect(querySource).toContain('parseMarkdown(');
+    expect(querySource).toContain('markdownTree: markdownTreesByMessageId[row.message.id] ?? null');
+    expect(source).toContain('setParsedTree(parseMarkdown(text, variant));');
+    expect(transcriptSource).toContain('preparsedTree={row.markdownTree}');
+    expect(transcriptSource).toContain('row.markdownTreesByMessageId?.[chunk.item.message.id]');
+    expect(transcriptSource).toContain('markdownTree={row.markdownTreesByWorkEntryId?.[entry.id]}');
+  });
+
   it('inherits transcript typography instead of overriding the configured chat size', () => {
     const styles = readFileSync(
       new URL('./markdown.css', import.meta.url),
@@ -116,6 +142,24 @@ describe('Lynx markdown file reference token', () => {
     const reference = elementTree.root?.querySelector('.MdInlineToken--file');
     expect(reference?.getAttribute('accessibility-trait')).toBe('text');
     expect(reference?.getAttribute('focusable')).not.toBe('true');
+  });
+
+  it('uses a stable inline-file glyph without mounting the full file icon component', () => {
+    const source = readFileSync(
+      new URL('./MarkdownFileReferenceToken.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain("import fileTextSvg from '@synara-central-icons/file-text.svg?raw'");
+    expect(source).toContain('content={colorizeLynxSvg(fileTextSvg, svgColors.iconSecondary)}');
+    expect(source).not.toContain('FileEntryIcon');
+  });
+
+  it('skips composer token parsing for ordinary user text', () => {
+    const source = readFileSync(
+      new URL('./ChatMarkdown.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source).toContain("if (!/[@$/]|https?:\\/\\//i.test(value))");
   });
 
   it('wires external links to the shared favicon slot instead of a text arrow', () => {

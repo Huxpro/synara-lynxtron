@@ -1,7 +1,9 @@
 import type { ReactNode } from '@lynx-js/react';
+import fileTextSvg from '@synara-central-icons/file-text.svg?raw';
 
-import { FileEntryIcon } from '../FileEntryIcon.lynx';
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
+import { useTheme } from '../../adapters/useTheme.lynx';
+import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
 
 export function MarkdownFileReferenceToken(props: {
   readonly children: ReactNode;
@@ -10,6 +12,7 @@ export function MarkdownFileReferenceToken(props: {
   readonly relativePath: string;
   readonly showGlyph?: boolean;
 }) {
+  const { svgColors } = useTheme();
   const activate = props.onOpenFileReference
     ? () => {
         'background only';
@@ -27,9 +30,9 @@ export function MarkdownFileReferenceToken(props: {
   return (
     <text className={interaction.className} {...interaction.eventProps}>
       {props.showGlyph ? (
-        <FileEntryIcon
+        <svg
           className="MdInlineTokenFileIcon"
-          pathValue={props.relativePath}
+          content={colorizeLynxSvg(fileTextSvg, svgColors.iconSecondary)}
         />
       ) : null}
       {props.children}

@@ -33,7 +33,9 @@ describe('transcript work-entry presentation', () => {
     );
     expect(workEntrySource).toContain('isReasoningUpdateWorkEntry(entry)');
     expect(workEntrySource).toContain('formatAgentActivityEntryPreview(entry)');
-    expect(workEntrySource).toContain('<ChatMarkdown cwd={workspaceRoot} text={reasoningText} />');
+    expect(workEntrySource).toContain(
+      '<ChatMarkdown cwd={workspaceRoot} preparsedTree={markdownTree} text={reasoningText} />'
+    );
     expect(workEntrySource).toContain('<TimelineStatusRowComposition');
     expect(source).toContain('chunkCollapsedTurnItems(collapsedTurnItems).map');
     expect(source).toContain('summarizeToolCallGroup(props.entries)');
@@ -51,6 +53,17 @@ describe('transcript work-entry presentation', () => {
     expect(styles).toMatch(
       /\.TranscriptCollapsedNarration \.MdHeading,[\s\S]*?font-size:\s*12px;[\s\S]*?line-height:\s*19px;/
     );
+  });
+
+  it('opens the end-of-turn changes card with the real provider turn id', () => {
+    const source = readFileSync(new URL('./Transcript.tsx', import.meta.url), 'utf8');
+    expect(source).toContain(
+      'accessibleLabel: turnSummary\n      ? `Review changes for turn ${turnSummary.turnId}`'
+    );
+    expect(source).toContain(
+      'if (turnSummary) onOpenTurnDiff?.(turnSummary.turnId);'
+    );
+    expect(source).toContain('onOpenTurnDiff={onOpenTurnDiff}');
   });
 
   it('keeps ordinary work rows in label-detail form', () => {
