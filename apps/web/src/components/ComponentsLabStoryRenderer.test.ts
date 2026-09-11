@@ -404,6 +404,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.variant === "footer"');
     expect(source).toContain('props.storyId === "ui/tooltip"');
     expect(source).toContain('<TooltipPopup variant=');
+    expect(source).toContain('const open = props.state === "open";');
+    expect(source).toContain('variant={props.variant === "picker" ? "picker" : "default"}');
     expect(source).toContain('props.storyId === "ui/kbd"');
     expect(source).toContain('<KbdGroup>');
     expect(source).toContain('props.variant === "single"');

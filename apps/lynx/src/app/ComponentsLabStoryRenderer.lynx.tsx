@@ -245,12 +245,12 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     );
   }
   if (props.storyId === 'ui/tooltip') {
-    const selected = props.state === 'default' ? props.variant ?? 'default' : props.state;
+    const open = props.state === 'open';
     return (
       <view className="ComponentsLabRealStory">
-        <Tooltip key={`${props.variant}:${props.state}`} defaultOpen={selected !== 'default'}>
+        <Tooltip key={`${props.variant}:${props.state}`} defaultOpen={open}>
           <TooltipTrigger><Button aria-label="Copy" size="icon-xs" variant="ghost"><CopyIcon size={14} /></Button></TooltipTrigger>
-          <TooltipPopup variant={selected === 'picker' ? 'picker' : 'default'}>Copy to clipboard</TooltipPopup>
+          <TooltipPopup variant={props.variant === 'picker' ? 'picker' : 'default'}>Copy to clipboard</TooltipPopup>
         </Tooltip>
       </view>
     );

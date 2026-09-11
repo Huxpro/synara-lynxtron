@@ -442,12 +442,12 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     );
   }
   if (props.storyId === "ui/tooltip") {
-    const selected = props.state === "default" ? props.variant ?? "default" : props.state;
+    const open = props.state === "open";
     return (
       <div className="flex min-h-36 items-center justify-center">
-        <Tooltip key={`${props.variant}:${props.state}`} defaultOpen={selected !== "default"}>
+        <Tooltip key={`${props.variant}:${props.state}`} defaultOpen={open}>
           <TooltipTrigger render={<IconButton label="Copy"><CopyIcon /></IconButton>} />
-          <TooltipPopup variant={selected === "picker" ? "picker" : "default"}>Copy to clipboard</TooltipPopup>
+          <TooltipPopup variant={props.variant === "picker" ? "picker" : "default"}>Copy to clipboard</TooltipPopup>
         </Tooltip>
       </div>
     );

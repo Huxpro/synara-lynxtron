@@ -203,6 +203,8 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain("props.variant === 'panel'");
     expect(renderer).toContain("props.variant === 'footer'");
     expect(renderer).toContain("props.storyId === 'ui/tooltip'");
+    expect(renderer).toContain("const open = props.state === 'open';");
+    expect(renderer).toContain("variant={props.variant === 'picker' ? 'picker' : 'default'}");
     expect(renderer).toContain('<TooltipPopup variant=');
     expect(renderer).toContain("props.storyId === 'ui/kbd'");
     expect(renderer).toContain('<KbdGroup>');
