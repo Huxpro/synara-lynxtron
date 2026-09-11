@@ -155,6 +155,14 @@ export function projectReadFileQueryOptions(input: {
       });
     },
     enabled: (input.enabled ?? true) && effectiveCwd !== null && input.relativePath !== null,
+    // File reads use Synara's WebSocket transport rather than browser fetch.
+    // Let that transport report failures so the preview can expose Retry even
+    // when TanStack Query's browser online heuristic is temporarily offline.
+    networkMode: "always",
+    // The preview owns an explicit Retry action. Automatic retries can pause
+    // while the desktop window is inactive and leave a missing file looking
+    // permanently pending instead of surfacing its actionable error.
+    retry: false,
     staleTime: input.staleTime ?? DEFAULT_READ_FILE_STALE_TIME,
   });
 }

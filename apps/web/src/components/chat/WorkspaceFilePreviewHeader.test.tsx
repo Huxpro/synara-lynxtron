@@ -50,7 +50,10 @@ describe("WorkspaceFilePreviewHeader", () => {
       "utf8",
     );
 
-    expect(previewSource).toContain("fileContents.length === 0");
+    expect(previewSource).toContain("fileQuery.isPending");
+    expect(previewSource).toContain(
+      "fileQuery.data !== undefined && fileContents.length === 0",
+    );
     expect(previewSource).toContain("<p>Empty file.</p>");
   });
 });

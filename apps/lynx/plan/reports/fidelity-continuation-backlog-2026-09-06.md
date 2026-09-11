@@ -81,6 +81,17 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   and dialog/menu overlays completes the surface set. This is a composite
   regression matrix, not a claim that every one of 3,152 cases was screenshotted
   in Native.
+- **FC-023 is complete for all implementable product behavior.** Positive live
+  file loading and Native recovery anatomy/callback ownership were already
+  certified. A fresh Electron product route exposed and fixed two remaining
+  query-state defects: an unresolved file read was mislabeled as `Empty file.`,
+  and TanStack Query's browser online/focus retry policy could leave the local
+  WebSocket read permanently paused. File reads now use `networkMode: always`,
+  disable hidden automatic retries in favor of the visible Retry action, and
+  reserve `Empty file.` for successful zero-byte reads. The canonical ENOENT →
+  create file → visible Retry flow settled to success and rendered the recovered
+  source. Native activation remains a documented Lynxtron 0.0.21 bindtap-delivery
+  boundary after repeated identical attempts, not missing application wiring.
 - **FC-019 is complete for the implementable Native Browser contract.** A fresh
   exact-owned 0.0.21 run now covers the product shortcut, real WebView
   navigation, history, reload, tabs, screenshot clipboard, and fresh-app
@@ -789,6 +800,32 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   were deleted through the same public command path, and the temporary repo/home
   were removed. Large working-tree load robustness is therefore closed; a real
   checkpoint-backed turn diff remains separate FC-008 work.
+
+### 2026-09-11 canonical file-preview settlement closure
+
+- A fresh disposable project/thread rooted at
+  `/tmp/synara-fc023-recovery-20260911` opened the canonical Electron full
+  Editor route for absent `recovered.ts`. The backing `projects.readFile` RPC
+  correctly returned ENOENT, but the UI initially rendered `Empty file.` because
+  a pending query with no data fell through the zero-byte success branch. After
+  switching the loading branch to `isPending`, the same state truthfully rendered
+  `Loading file...`.
+- The query was then found in `pending/paused` despite `navigator.onLine=true`.
+  Project file reads use Synara's WebSocket transport, not browser fetch, so they
+  now set `networkMode: always`; automatic retry is disabled because the preview
+  owns a visible Retry action and a background/inactive window can otherwise
+  pause the retryer indefinitely. Successful zero-byte copy is shown only when
+  `fileQuery.data` exists. Focused Web query/header/recovery/error coverage passes
+  11/11.
+- The corrected product route displayed `Could not read this file.`, the real
+  ENOENT detail, Retry, and Close preview. After `recovered.ts` was created on
+  disk, clicking the rendered Retry control removed the error, moved the query
+  to `success`, and rendered `export const recovered = true;`. The disposable
+  project/thread were deleted through public commands and the fixture was moved
+  to Trash. Native has equivalent cache eviction and Retry ownership coverage;
+  its remaining inability to synthesize release→bindtap on that exact recovery
+  node has reproduced across three 0.0.21 audits and remains an upstream input
+  delivery boundary. FC-023 has no remaining application implementation gap.
 
 ### 2026-09-11 current-head responsive matrix closure
 

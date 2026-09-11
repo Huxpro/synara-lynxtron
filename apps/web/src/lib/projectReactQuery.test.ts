@@ -5,7 +5,20 @@ import {
   LOCAL_PREVIEW_GRANT_MAX_REFETCH_INTERVAL_MS,
   localPreviewGrantRefetchIntervalMs,
   projectLocalPreviewGrantQueryOptions,
+  projectReadFileQueryOptions,
 } from "./projectReactQuery";
+
+describe("project file query options", () => {
+  it("uses the WebSocket transport even when browser network status is offline", () => {
+    const options = projectReadFileQueryOptions({
+      cwd: "/workspace",
+      relativePath: "src/recovered.ts",
+    });
+
+    expect(options.networkMode).toBe("always");
+    expect(options.retry).toBe(false);
+  });
+});
 
 describe("local preview grant query options", () => {
   it("refreshes active preview grants before the server-side token expires", () => {

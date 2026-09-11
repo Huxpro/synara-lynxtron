@@ -564,7 +564,7 @@ export function WorkspaceFilePreview(props: WorkspaceFilePreviewProps) {
             imageClassName="max-h-[calc(100vh-13rem)]"
           />
         </div>
-      ) : fileQuery.isLoading ? (
+      ) : fileQuery.isPending ? (
         <FilePreviewLoadingState />
       ) : fileQuery.error ? (
         <WorkspaceFilePreviewErrorState
@@ -573,7 +573,7 @@ export function WorkspaceFilePreview(props: WorkspaceFilePreviewProps) {
           onRetry={() => void fileQuery.refetch()}
           onClose={props.onClosePreview}
         />
-      ) : fileContents.length === 0 ? (
+      ) : fileQuery.data !== undefined && fileContents.length === 0 ? (
         <PanelStateMessage density="compact" fill="flex">
           <p>Empty file.</p>
         </PanelStateMessage>
