@@ -3,7 +3,7 @@ import { CopyIcon, KanbanIcon, MessageCircleIcon, NewThreadIcon, PinIcon, PlusIc
 import { EditorRailAddMenuComposition } from "~/components/chat/EditorRailAddMenuComposition";
 import { ComposerPickerMenuPopup } from "~/components/chat/ComposerPickerMenuPopup";
 import { IconButton } from "~/components/ui/icon-button";
-import { Menu, MenuCheckboxItem, MenuGroupLabel, MenuItem, MenuPopupBase, MenuSeparator, MenuShortcut, MenuTrigger } from "~/components/ui/menu";
+import { Menu, MenuCheckboxItem, MenuGroup, MenuGroupLabel, MenuItem, MenuPopupBase, MenuSeparator, MenuShortcut, MenuTrigger } from "~/components/ui/menu";
 import ProjectScriptsControl from "~/components/ProjectScriptsControl";
 import { ComposerModelEffortPicker } from "~/components/chat/ComposerModelEffortPicker";
 import { ProviderModelPicker } from "~/components/chat/ProviderModelPicker";
@@ -484,14 +484,16 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
         <Menu key={props.state} defaultOpen={open}>
           <MenuTrigger render={<Button variant="outline">Open menu</Button>} />
           <MenuPopupBase align="start" className="w-52">
-            <MenuGroupLabel>Actions</MenuGroupLabel>
-            {props.variant === "checkbox" ? (
-              <MenuCheckboxItem checked className={visualClass} disabled={props.state === "disabled"}>Show terminal</MenuCheckboxItem>
-            ) : props.variant === "separator" ? (
-              <><MenuItem className={visualClass} disabled={props.state === "disabled"}>New chat</MenuItem><MenuSeparator /><MenuItem variant="destructive">Remove</MenuItem></>
-            ) : (
-              <MenuItem className={visualClass} disabled={props.state === "disabled"}>New chat{props.variant === "shortcut" ? <MenuShortcut>⌘N</MenuShortcut> : null}</MenuItem>
-            )}
+            <MenuGroup>
+              <MenuGroupLabel>Actions</MenuGroupLabel>
+              {props.variant === "checkbox" ? (
+                <MenuCheckboxItem checked className={visualClass} disabled={props.state === "disabled"}>Show terminal</MenuCheckboxItem>
+              ) : props.variant === "separator" ? (
+                <><MenuItem className={visualClass} disabled={props.state === "disabled"}>New chat</MenuItem><MenuSeparator /><MenuItem variant="destructive">Remove</MenuItem></>
+              ) : (
+                <MenuItem className={visualClass} disabled={props.state === "disabled"}>New chat{props.variant === "shortcut" ? <MenuShortcut>⌘N</MenuShortcut> : null}</MenuItem>
+              )}
+            </MenuGroup>
           </MenuPopupBase>
         </Menu>
       </div>

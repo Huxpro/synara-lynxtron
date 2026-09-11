@@ -293,6 +293,12 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   real button state hooks, and compact checkbox keeps its size while focus is
   applied (Native also passes `size=sm` to the real indicator). The Web suite is
   now 29/29 with the signature gate active.
+- A guarded Chromium overlay gate now exercises tooltip visibility/style axes,
+  closed dialog anatomy labels, and checkbox menu interaction state against the
+  actual portal DOM. Its first run exposed that Web Lab placed
+  `MenuGroupLabel` outside `MenuGroup`: SSR passed, but Base UI crashed in the
+  browser. The story now uses the required production menu context, and the
+  overlay suite passes 3/3 with final browser ownership cleanup empty.
 - Explicit cases are now validated as a coverage contract: duplicate cases,
   unknown variants/states, and any declared variant or state omitted from all
   cases are hard errors. This prevents future pruning from hiding a supported
