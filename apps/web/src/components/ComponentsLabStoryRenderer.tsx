@@ -389,7 +389,8 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
   }
   if (props.storyId === "ui/checkbox") {
     const selected = props.state === "default" ? props.variant ?? "unchecked" : props.state;
-    return <Checkbox aria-label="Select project" checked={selected === "mixed" ? "indeterminate" : selected === "checked"} disabled={selected === "disabled"} className={selected === "focus" ? "ring-2 ring-ring ring-offset-1 ring-offset-background" : props.variant === "compact" ? "scale-90" : ""} onCheckedChange={() => {}} />;
+    const stateClass = `${selected === "focus" ? "ring-2 ring-ring ring-offset-1 ring-offset-background " : ""}${props.variant === "compact" ? "scale-90" : ""}`;
+    return <Checkbox aria-label="Select project" checked={selected === "mixed" ? "indeterminate" : selected === "checked"} disabled={selected === "disabled"} className={stateClass} onCheckedChange={() => {}} />;
   }
   if (props.storyId === "ui/switch") {
     const selected = props.state === "default" ? props.variant ?? "off" : props.state;
@@ -773,6 +774,11 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
   if (props.storyId === "transcript/message-actions") {
     const disabled = props.state === "disabled";
     const revealed = props.state !== "default";
+    const visualClass = props.state === "hover"
+      ? "bg-[var(--color-background-button-secondary-hover)]"
+      : props.state === "focus"
+        ? "ring-1 ring-ring/60"
+        : "";
     const actions = resolveComponentLabMessageActions(props.variant);
     const actionIcon = {
       copy: <CopyIcon className={MESSAGE_ACTION_ICON_CLASS_NAME} />,
@@ -795,8 +801,8 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
             label={action.label}
             tooltip={action.tooltip}
             disabled={disabled}
-            aria-pressed={action.pressed}
-            className={action.persistent ? "text-muted-foreground/80" : undefined}
+            aria-pressed={action.pressed || props.state === "pressed"}
+            className={`${action.persistent ? "text-muted-foreground/80 " : ""}${visualClass}`}
           >
             {actionIcon[action.icon]}
           </MessageActionButton>

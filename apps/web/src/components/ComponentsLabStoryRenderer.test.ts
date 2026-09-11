@@ -8,6 +8,38 @@ import { ComponentsLabStoryRenderer } from "./ComponentsLabStoryRenderer";
 import { COMPONENT_LAB_STORIES, componentLabCases } from "@synara/shared/componentLab";
 
 describe("Components Lab story renderer", () => {
+  const SSR_SIGNATURE_STORY_IDS = new Set([
+    "kanban/card",
+    "sidebar/navigation-row",
+    "transcript/message-actions",
+    "transcript/message-row",
+    "system/semantic-icon-tones",
+    "terminal/search",
+    "editor/file-search",
+    "typography/markdown-code",
+    "typography/diff-code",
+    "ui/button",
+    "ui/input",
+    "ui/switch",
+    "ui/checkbox",
+    "ui/icon-button",
+    "ui/textarea",
+    "ui/skeleton",
+    "ui/spinner",
+    "ui/separator",
+    "ui/badge",
+    "ui/alert",
+  ]);
+  function renderCase(storyId: string, variant: string, state: string): string {
+    return renderToStaticMarkup(
+      createElement(
+        QueryClientProvider,
+        { client: new QueryClient() },
+        createElement(ComponentsLabStoryRenderer, { storyId, state, variant }),
+      ),
+    ).replace(/(:r|base-ui-)[A-Za-z0-9_-]+/gu, '$1generated');
+  }
+
   it("mounts every normalized variant and state case with its required product context", () => {
     for (const story of COMPONENT_LAB_STORIES) {
       for (const testCase of componentLabCases(story)) {
@@ -31,6 +63,20 @@ describe("Components Lab story renderer", () => {
             );
           }
         }).not.toThrow();
+      }
+    }
+  });
+
+  it("keeps every declared case observably distinct after generated IDs are normalized", () => {
+    for (const story of COMPONENT_LAB_STORIES) {
+      if (!SSR_SIGNATURE_STORY_IDS.has(story.id)) continue;
+      const signatureOwner = new Map<string, string>();
+      for (const testCase of componentLabCases(story)) {
+        const label = `${testCase.variant}:${testCase.state}`;
+        const signature = renderCase(story.id, testCase.variant, testCase.state);
+        const duplicate = signatureOwner.get(signature);
+        expect(duplicate, `${story.id}: ${label} duplicates ${duplicate}`).toBeUndefined();
+        signatureOwner.set(signature, label);
       }
     }
   });
@@ -180,6 +226,7 @@ describe("Components Lab story renderer", () => {
       "utf8",
     );
     expect(source).toContain('props.storyId === "transcript/message-actions"');
+    expect(source).toContain('aria-pressed={action.pressed || props.state === "pressed"}');
     expect(source).toContain('<MessageActionButton');
     expect(source).toContain('MESSAGE_ACTION_ICON_CLASS_NAME');
     expect(source).toContain('import { CopyIcon,');
@@ -187,8 +234,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('data-message-actions-visible={revealed}');
     expect(source).toContain('resolveComponentLabMessageActions(props.variant)');
     expect(source).toContain('data-message-actions-variant={props.variant ?? "assistant"}');
-    expect(source).toContain('aria-pressed={action.pressed}');
-    expect(source).toContain('action.persistent ? "text-muted-foreground/80"');
+    expect(source).toContain('aria-pressed={action.pressed || props.state === "pressed"}');
+    expect(source).toContain('action.persistent ? "text-muted-foreground/80 "');
   });
 
   it("renders assistant and user rows through the shared row compositions", () => {
@@ -424,6 +471,7 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('data-pressed={selected === "pressed" || undefined}');
     expect(source).toContain('props.storyId === "ui/checkbox"');
     expect(source).toContain('<Checkbox aria-label="Select project"');
+    expect(source).toContain('props.variant === "compact" ? "scale-90"');
     expect(source).toContain('props.storyId === "ui/icon-button"');
     expect(source).toContain('data-pressed={props.state === "pressed" || undefined}');
     expect(source).toContain('props.variant === "xs" ? "icon-xs"');

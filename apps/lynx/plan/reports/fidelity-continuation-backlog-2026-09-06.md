@@ -285,6 +285,14 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   already has no Close owner, and detailed-error does not need a second
   no-close-owner cell. All placements, retrying, detail copy, and explicit
   no-close ownership remain represented; coverage is 3,152 cells.
+- A renderer-level SSR signature gate now mounts every declared case for inline
+  stories, normalizes generated IDs, and rejects byte-identical output within a
+  story. Overlay and post-mount focus stories stay under browser/Native runtime
+  gates rather than being misclassified by SSR. Its first execution found two
+  real gaps: Web transcript actions now distinguish hover/focus/pressed through
+  real button state hooks, and compact checkbox keeps its size while focus is
+  applied (Native also passes `size=sm` to the real indicator). The Web suite is
+  now 29/29 with the signature gate active.
 - Explicit cases are now validated as a coverage contract: duplicate cases,
   unknown variants/states, and any declared variant or state omitted from all
   cases are hard errors. This prevents future pruning from hiding a supported

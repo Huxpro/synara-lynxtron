@@ -196,7 +196,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
   }
   if (props.storyId === 'ui/checkbox') {
     const selected = props.state === 'default' ? props.variant ?? 'unchecked' : props.state;
-    return <view className={`${selected === 'focus' ? 'ComponentsLabPrimitiveFocus' : ''}${props.variant === 'compact' ? ' ComponentsLabPrimitiveCompact' : ''}`} style={{ opacity: selected === 'disabled' ? 0.64 : 1 }}><CheckboxIndicator checked={selected === 'checked'} mixed={selected === 'mixed'} /></view>;
+    return <view className={`${selected === 'focus' ? 'ComponentsLabPrimitiveFocus' : ''}${props.variant === 'compact' ? ' ComponentsLabPrimitiveCompact' : ''}`} style={{ opacity: selected === 'disabled' ? 0.64 : 1 }}><CheckboxIndicator checked={selected === 'checked'} mixed={selected === 'mixed'} size={props.variant === 'compact' ? 'sm' : 'default'} /></view>;
   }
   if (props.storyId === 'ui/switch') {
     const selected = props.state === 'default' ? props.variant ?? 'off' : props.state;

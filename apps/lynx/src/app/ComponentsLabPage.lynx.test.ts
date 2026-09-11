@@ -222,6 +222,7 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain("props.storyId === 'ui/switch'");
     expect(renderer).toContain('<Switch ariaLabel="Enable notifications"');
     expect(renderer).toContain("props.storyId === 'ui/checkbox'");
+    expect(renderer).toContain("size={props.variant === 'compact' ? 'sm' : 'default'}");
     expect(renderer).toContain('<CheckboxIndicator checked=');
     expect(renderer).toContain("props.storyId === 'ui/icon-button'");
     expect(renderer).toContain("props.state === 'hover' ? ' ui-hover' : props.state === 'pressed' ? ' ui-pressed'");
