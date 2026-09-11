@@ -13,6 +13,8 @@ describe('Native Kanban context-menu coverage', () => {
       source.match(/onCardContextMenu=\{cardActions\.openCardContextMenu\}/g)
     ).toHaveLength(2);
     expect(source.match(/\{cardActions\.actionPanels\}/g)).toHaveLength(2);
+    expect(source).toContain('cardActions.selectAction,');
+    expect(source).toContain('cardActions.startCard,');
   });
 
   it('keeps menu policy, host transport, mutation dispatch, and focus restoration together', () => {

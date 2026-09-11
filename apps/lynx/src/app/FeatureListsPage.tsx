@@ -355,7 +355,13 @@ export function KanbanProjectPage({
       return;
     }
     if (policy.kind === 'invalid') cancelNativeKanbanDrag(policy.label);
-  }, [navigate, setNativeDragSession]);
+  }, [
+    cancelNativeKanbanDrag,
+    cardActions.selectAction,
+    cardActions.startCard,
+    navigate,
+    setNativeDragSession,
+  ]);
 
   const nativeDragTargetColumn = nativeDrag?.activated
     ? resolveKanbanDragColumn(
