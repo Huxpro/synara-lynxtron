@@ -715,6 +715,15 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
 - The disposable recovery path was removed after the run. Positive live-file
   loading remains certified above; external Open remains intentionally uninvoked
   because it foregrounds Cursor.
+- A current-head retry of the Markdown product-body route
+  `/thread/lynx-landing-thread-1787298664226-1b47e02983941?editor=open&editorMode=file&explorerPath=synara%2FREADME.md`
+  reproduced the same Native startup failure as the earlier attempt: the owned
+  renderer exited before `shellUiReady` or any `projects.readFile` request and
+  printed `Cannot find 'error' field in json`; the launcher correctly rejected
+  zero thread/transcript nodes. This is now a repeated runtime/host blocker. Per
+  the exact-owned restart rule, do not reopen it again until that decoder/startup
+  failure changes; the focused mode/body tests and positive live-file route remain
+  the available evidence.
 
 ### 2026-09-10 working-tree Diff continuation
 
