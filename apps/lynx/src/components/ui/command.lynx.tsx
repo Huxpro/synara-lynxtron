@@ -110,6 +110,7 @@ export function Command(props: ChildrenProps & {
       entriesRef.current.set(value, entry);
       setHighlightedValueState((current) => {
         if (current !== null && entriesRef.current.has(current)) return current;
+        if (props.autoHighlight === false) return null;
         const next = entriesRef.current.keys().next().value ?? null;
         onItemHighlightedRef.current?.(next);
         return next;
@@ -124,7 +125,7 @@ export function Command(props: ChildrenProps & {
         });
       };
     },
-    []
+    [props.autoHighlight]
   );
   const handleKeyDown = useCallback(
     (event: CommandKeyboardEvent): boolean => {

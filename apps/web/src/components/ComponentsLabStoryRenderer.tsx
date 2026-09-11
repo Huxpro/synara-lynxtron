@@ -411,7 +411,7 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     const selected = props.state === "default" ? props.variant ?? "results" : props.state;
     const empty = selected === "empty";
     return (
-      <Command value="">
+      <Command autoHighlight={selected === "highlighted" ? "always" : false} value="">
         <CommandPanel className="w-80 overflow-hidden">
           <CommandInput placeholder="Search commands" />
           <CommandList>

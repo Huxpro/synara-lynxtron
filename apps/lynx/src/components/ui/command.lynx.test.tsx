@@ -65,6 +65,27 @@ function RerenderingCommand(props: {
 }
 
 describe('Lynx CommandItem interaction contract', () => {
+  it('honors an explicitly disabled initial highlight', () => {
+    render(
+      <Command autoHighlight={false}>
+        <CommandItem value="first" onClick={() => {}}>
+          <text>First</text>
+        </CommandItem>
+        <CommandItem value="last" onClick={() => {}}>
+          <text>Last</text>
+        </CommandItem>
+      </Command>
+    );
+
+    const items = elementTree.root?.querySelectorAll('.LxCommandItem') ?? [];
+    expect(items[0]?.getAttribute('class')).not.toContain(
+      'LxCommandItem--highlighted'
+    );
+    expect(items[1]?.getAttribute('class')).not.toContain(
+      'LxCommandItem--highlighted'
+    );
+  });
+
   it('keeps the command-row radius on the rendered Native node', () => {
     render(
       <Command>

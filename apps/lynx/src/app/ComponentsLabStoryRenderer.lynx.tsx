@@ -219,7 +219,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     const selected = props.state === 'default' ? props.variant ?? 'results' : props.state;
     const empty = selected === 'empty';
     return (
-      <Command>
+      <Command autoHighlight={selected === 'highlighted' ? 'always' : false}>
         <CommandPanel className="ComponentsLabCommandPanel">
           <CommandInput placeholder="Search commands" />
           <CommandList>

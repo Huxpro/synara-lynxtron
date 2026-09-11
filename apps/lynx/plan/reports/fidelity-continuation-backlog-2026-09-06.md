@@ -229,6 +229,16 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   `Gemini Group Disclosure`. Favourites, active Anthropic, and Google then all
   reported `aria-expanded=true`; the exact-client warning/error console was
   empty. This closes the last concrete FC-021 Native disclosure gap.
+- A follow-up Components Lab truthfulness audit found `ui/command` declared a
+  `highlighted` state while Web fixed an empty value and Native ignored its
+  existing `autoHighlight` prop, so the state could duplicate default output.
+  Native now honors `autoHighlight=false`; both stories explicitly use false
+  for default and `always` for highlighted. Guarded Chromium runtime assertions
+  pass 2/2, Native command/Lab tests pass 12/12, and exact-owned light/1280 PID
+  `10581` on PID-derived `localhost:8903` session 1 exposed
+  `LxCommandItem--highlighted` on `New chat` with an empty warning/error
+  console. The staged bundle was
+  `6ef9cd8ffdb2bac0cd3560603f0f2739e4f4a6770e52a726cd0b036a412629bc`.
 
 - The exact-owned comparison launcher now waits 30 seconds for the requested
   PID-owned DevTool listener, with a positive environment override and strict

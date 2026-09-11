@@ -208,6 +208,7 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('<CollapsiblePanel>');
     expect(renderer).toContain("props.storyId === 'ui/command'");
     expect(renderer).toContain('<CommandPanel className=');
+    expect(renderer).toContain("autoHighlight={selected === 'highlighted' ? 'always' : false}");
     expect(renderer).toContain("props.storyId === 'ui/scroll-area'");
     expect(renderer).toContain('<ScrollArea className=');
     expect(renderer).toContain("props.storyId === 'ui/switch'");

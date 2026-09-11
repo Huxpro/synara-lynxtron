@@ -408,6 +408,7 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('<CollapsiblePanel>');
     expect(source).toContain('props.storyId === "ui/command"');
     expect(source).toContain('<CommandPanel className=');
+    expect(source).toContain('autoHighlight={selected === "highlighted" ? "always" : false}');
     expect(source).toContain('props.storyId === "ui/scroll-area"');
     expect(source).toContain('<ScrollArea className=');
     expect(source).toContain('props.storyId === "ui/switch"');
