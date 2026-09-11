@@ -198,6 +198,8 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain("props.variant === 'shortcut' ? <MenuShortcut>⌘N</MenuShortcut>");
     expect(renderer).not.toContain('value="new-chat" onActivate');
     expect(renderer).toContain("props.storyId === 'ui/dialog'");
+    expect(renderer).toContain("'title-description': 'Open title dialog'");
+    expect(renderer).toContain("props.state === 'long-content' && props.variant !== 'panel'");
     expect(renderer).toContain("showCloseButton={props.variant === 'close'}");
     expect(renderer).toContain("props.variant === 'title-description'");
     expect(renderer).toContain("props.variant === 'panel'");

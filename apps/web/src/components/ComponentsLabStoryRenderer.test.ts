@@ -399,6 +399,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.storyId === "ui/dialog"');
     expect(source).toContain('<DialogPopup showCloseButton=');
     expect(source).toContain('showCloseButton={props.variant === "close"}');
+    expect(source).toContain('"Open title dialog"');
+    expect(source).toContain('props.state === "long-content" && props.variant !== "panel"');
     expect(source).toContain('props.variant === "title-description"');
     expect(source).toContain('props.variant === "panel"');
     expect(source).toContain('props.variant === "footer"');

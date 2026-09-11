@@ -271,6 +271,12 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   default-state picker variant was opened merely because its variant string was
   not `default`, duplicating the explicit open cell. Web Lab 28/28 and the
   Native route contract pass after the correction.
+- Dialog truthfulness now keeps closed cells and long-content cells distinct
+  across all four anatomy variants. Closed triggers name the title, panel,
+  footer, or closable dialog they own, and every non-panel long-content cell
+  adds the same real `DialogPanel` pressure content instead of silently
+  collapsing to ordinary open. Web Lab 28/28 and the Native route contract
+  pass.
 
 - The exact-owned comparison launcher now waits 30 seconds for the requested
   PID-owned DevTool listener, with a positive environment override and strict

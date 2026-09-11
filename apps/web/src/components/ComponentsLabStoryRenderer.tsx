@@ -454,15 +454,22 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
   }
   if (props.storyId === "ui/dialog") {
     const open = props.state !== "default";
+    const dialogLabel = {
+      "title-description": "Open title dialog",
+      panel: "Open panel dialog",
+      footer: "Open footer dialog",
+      close: "Open closable dialog",
+    }[props.variant ?? "title-description"];
     return (
       <div className="flex min-h-52 items-center justify-center">
-        <Button>Open dialog</Button>
+        <Button>{dialogLabel}</Button>
         <Dialog key={`${props.variant}:${props.state}`} defaultOpen={open}>
           <DialogPopup showCloseButton={props.variant === "close"}>
             {props.variant === "title-description" ? <DialogHeader><DialogTitle>Component settings</DialogTitle><DialogDescription>Shared dialog anatomy across both renderers.</DialogDescription></DialogHeader> : null}
             {props.variant === "panel" ? <DialogPanel><p className="text-sm">{props.state === "long-content" ? "This longer content verifies panel spacing and scrolling. ".repeat(12) : "Dialog panel content"}</p></DialogPanel> : null}
             {props.variant === "footer" ? <DialogFooter><Button variant="outline">Cancel</Button><Button>Save</Button></DialogFooter> : null}
             {props.variant === "close" ? <DialogHeader><DialogTitle>Closable dialog</DialogTitle></DialogHeader> : null}
+            {props.state === "long-content" && props.variant !== "panel" ? <DialogPanel><p className="text-sm">{"This longer content verifies panel spacing and scrolling. ".repeat(12)}</p></DialogPanel> : null}
           </DialogPopup>
         </Dialog>
       </div>
