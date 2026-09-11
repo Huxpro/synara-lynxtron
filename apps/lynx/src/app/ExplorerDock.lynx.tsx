@@ -1,5 +1,5 @@
 import type { ProjectReadFileResult } from '@synara/contracts';
-import { useRef, type ReactNode } from '@lynx-js/react';
+import { useRef, useState, type ReactNode } from '@lynx-js/react';
 import {
   isSupportedLocalImagePath,
   isSupportedLocalPdfPath,
