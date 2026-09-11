@@ -6,6 +6,10 @@ describe('paired Components Lab route', () => {
     const page = readFileSync(new URL('./ComponentsLabPage.lynx.tsx', import.meta.url), 'utf8');
     const router = readFileSync(new URL('./router.tsx', import.meta.url), 'utf8');
     const styles = readFileSync(new URL('./components-lab.css', import.meta.url), 'utf8');
+    const sidebarStyles = readFileSync(
+      new URL('../components/sidebar/sidebar.css', import.meta.url),
+      'utf8'
+    );
     const renderer = readFileSync(
       new URL('./ComponentsLabStoryRenderer.lynx.tsx', import.meta.url),
       'utf8'
@@ -67,6 +71,9 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('SEMANTIC_ICON_TONES.includes(props.variant as never)');
     expect(renderer).toContain('<SemanticIconTone');
     expect(renderer).toContain("props.storyId === 'sidebar/navigation-row'");
+    expect(sidebarStyles).toMatch(
+      /\.AppSidebarPrimaryNav\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*gap:\s*2px;/s
+    );
     expect(renderer).toContain('<SidebarPrimaryActionRow');
     expect(renderer).toContain('onActivate={() => {}}');
     expect(renderer).toContain('resolveComponentLabNavigationRow(props.variant)');

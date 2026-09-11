@@ -750,6 +750,18 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   warning/error console was empty; bundle SHA-256 was
   `f4ada31bcd713227231e0537783c1f932a773ea85429f02d865d0afe0b71ee02`.
 
+### 2026-09-11 Sidebar primary-row placement continuation
+
+- FC-034's first/last placement audit found Native encoded the 2px row rhythm
+  as `margin-bottom` on every item, while Electron's `gap-0.5` belongs to the
+  list container. That left an extra trailing 2px after the final primary row
+  and made footer placement depend on a special override. Native now owns the
+  same column `gap:2px` on `AppSidebarPrimaryNav`, with no per-item bottom
+  margin; the first row keeps the container's 4px top inset and the final row
+  ends before its 6px bottom inset exactly like Electron. Focused Components Lab
+  coverage passes and the production build succeeds. Focus activation itself
+  remains part of the existing Native key-delivery acceptance boundary.
+
 ## Historical items currently considered closed, pending regression sampling
 
 ### 2026-09-08 component identity and physical-hover continuation
