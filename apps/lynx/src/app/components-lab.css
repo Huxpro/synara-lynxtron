@@ -24,6 +24,10 @@
 .ComponentsLabRealStory { min-width: 240px; min-height: 160px; display: flex; align-items: center; justify-content: center; }
 .ComponentsLabContextMeterStory { width: 100%; padding-right: 24px; justify-content: flex-end; }
 .ComponentsLabEditorRailAddTrigger { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--color-icon-secondary); background-color: var(--color-background-button-secondary-hover); }
+.ComponentsLabIndependentTabsStory { width: 520px; max-width: calc(100vw - 48px); display: flex; flex-direction: column; gap: 12px; }
+.ComponentsLabIndependentTabsRow { height: 40px; padding: 5px 6px; border: 1px solid var(--border); background-color: var(--background); }
+.ComponentsLabIndependentTab { min-width: 108px; max-width: 132px; }
+.ComponentsLabIndependentTabsResult { color: var(--muted-foreground); font-size: 11px; line-height: 16px; }
 .ComponentsLabIconToneGrid { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; }
 .ComponentsLabNotificationStory { width: 384px; max-width: calc(100vw - 48px); }
 .ComponentsLabRightDockStory { width: 560px; max-width: calc(100vw - 48px); border: 1px solid var(--border); background-color: var(--background); }

@@ -74,6 +74,7 @@ import { SpaceProjectPickerDialog } from "~/components/SpaceProjectPickerDialog"
 import { ReviewFileTreeSearchHeader } from "~/components/ReviewFileTreePanel";
 import { PickerPanelSearchHeader } from "~/components/chat/PickerPanelShell";
 import { SurfaceChipIcon, SurfaceTabChip } from "~/components/chat/chatHeaderControls";
+import { IndependentTabRow } from "~/components/chat/IndependentTabRow";
 import { FileIcon } from "~/lib/icons";
 import {
   MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
@@ -326,6 +327,9 @@ function MessageRowStory(props: { readonly state: string; readonly variant?: str
 }
 
 export function ComponentsLabStoryRenderer(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
+  if (props.storyId === "editor-rail/independent-tabs") {
+    return <IndependentTabsStory state={props.state} variant={props.variant} />;
+  }
   if (props.storyId === "ui/alert") {
     const selected = props.state === "default" ? props.variant ?? "default" : props.state;
     const variant = selected as "default" | "warning" | "error" | "success" | "info";
@@ -791,6 +795,47 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
           {props.storyId} is in the shared inventory, but this state is not yet backed by the real product component.
         </p>
       </div>
+    </div>
+  );
+}
+
+function IndependentTabsStory(props: { readonly state: string; readonly variant?: string }) {
+  const [result, setResult] = useState("Awaiting tab action");
+  const terminal = props.variant !== "chat";
+  const tabCount = props.state === "overflow" ? 8 : 3;
+  const tabs = Array.from({ length: tabCount }, (_, index) => (
+    <SurfaceTabChip
+      key={`${props.variant ?? "chat"}-${index}`}
+      active={index === 1}
+      title={`${terminal ? "Terminal" : "Chat"} ${index + 1}`}
+      label={`${terminal ? "Terminal" : "Chat"} ${index + 1}`}
+      labelClassName="max-w-24"
+      icon={<FileIcon className="size-3.5" />}
+      closeLabel={`Close ${terminal ? "Terminal" : "Chat"} ${index + 1}`}
+      onClose={() => setResult(`Closed tab ${index + 1}`)}
+      onSelect={() => setResult(`Selected tab ${index + 1}`)}
+    />
+  ));
+  return (
+    <div className="grid w-[520px] max-w-[calc(100vw-3rem)] gap-3">
+      <IndependentTabRow
+        actionPlacement={props.variant === "chat" ? "start" : "end"}
+        className="h-10 border border-border bg-background px-1.5 py-1"
+        defaultCollapsed={props.state === "collapsed"}
+        owner={(props.variant ?? "chat") as "chat" | "terminal-pane" | "terminal-groups"}
+        tabs={tabs}
+        actions={(
+          <>
+            <IconButton label="Add tab" size="icon-xs" variant="chrome" onClick={() => setResult("Added tab")}>
+              <PlusIcon className="size-3.5" />
+            </IconButton>
+            <IconButton label="Split right" size="icon-xs" variant="chrome" onClick={() => setResult("Split right")}>
+              <span>Ⅱ</span>
+            </IconButton>
+          </>
+        )}
+      />
+      <p aria-live="polite" className="text-[11px] text-muted-foreground">{result}</p>
     </div>
   );
 }

@@ -199,6 +199,16 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('data-message-row-state={props.state}');
   });
 
+  it("renders the independent chat and terminal tab-row contract", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('props.storyId === "editor-rail/independent-tabs"');
+    expect(source).toContain('<IndependentTabsStory');
+    expect(source).toContain('<IndependentTabRow');
+    expect(source).toContain('defaultCollapsed={props.state === "collapsed"}');
+    expect(source).toContain('const tabCount = props.state === "overflow" ? 8 : 3;');
+    expect(source).toContain('props.variant === "chat" ? "start" : "end"');
+  });
+
   it("renders project and thread rows through shared product specimens", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),

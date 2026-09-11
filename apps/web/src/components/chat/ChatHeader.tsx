@@ -66,6 +66,7 @@ import { ProviderUsageMenuControl } from "../ProviderUsageMenuControl";
 import { ChatSurfaceHeaderIdentity } from "./ChatSurfaceHeaderIdentity";
 import { EnvironmentToggle, type EnvironmentToggleState } from "./environment/EnvironmentToggle";
 import { EditorRailAddMenuComposition } from "./EditorRailAddMenuComposition";
+import { IndependentTabRow } from "./IndependentTabRow";
 
 /**
  * Width (px) below which collapsible header controls drop their text labels and
@@ -351,8 +352,6 @@ function EditorRailTabs(props: {
       : openChatTabs;
   const chatTabs = orderedOpenTabs.map((thread) => sidebarThreadById.get(thread.id) ?? thread);
   const terminalTabVisible = terminalTabOpen || props.terminalAvailable;
-  const tabCount = chatTabs.length + (terminalTabVisible ? 1 : 0);
-  const shouldShowTabs = tabCount > 1;
   const newTerminalTab = () => {
     setTerminalTabOpen(true);
     props.onNewTerminal();
@@ -396,45 +395,47 @@ function EditorRailTabs(props: {
   };
 
   return (
-    <div className="flex min-w-0 flex-1 items-center gap-2 [-webkit-app-region:no-drag]">
-      <div className="flex shrink-0 items-center gap-0.5">
-        <Menu modal={false}>
-          <MenuTrigger
-            render={
-              <IconButton
-                variant="ghost"
-                size="icon-xs"
-                label="New editor rail item"
-                title="New"
-                className="size-5 shrink-0 text-muted-foreground hover:text-foreground"
-              >
-                <PlusIcon className="size-3.5" />
-              </IconButton>
-            }
-          />
-          <ComposerPickerMenuPopup
-            align="start"
-            side="bottom"
-            sideOffset={6}
-            className="w-44 min-w-44"
-          >
-            <EditorRailAddMenuComposition
-              onNewChat={props.onNewChat}
-              onNewTerminal={newTerminalTab}
+    <IndependentTabRow
+      actionPlacement="start"
+      className="flex-1 gap-2 [-webkit-app-region:no-drag]"
+      owner="chat"
+      actions={(
+        <>
+          <Menu modal={false}>
+            <MenuTrigger
+              render={
+                <IconButton
+                  variant="ghost"
+                  size="icon-xs"
+                  label="New editor rail item"
+                  title="New"
+                  className="size-5 shrink-0 text-muted-foreground hover:text-foreground"
+                >
+                  <PlusIcon className="size-3.5" />
+                </IconButton>
+              }
             />
-          </ComposerPickerMenuPopup>
-        </Menu>
-        <EditorChatHistoryMenu
-          projectId={props.projectId}
-          activeThreadId={props.activeThreadId}
-          onNavigateToThread={openChatTab}
-        />
-      </div>
-      {shouldShowTabs ? (
-        // Same chip tabs as the right dock's pane strip so every tab row in the
-        // app reads identically. Pushed to the header's right edge (ml-auto) so the
-        // title and new/history controls stay grouped on the left.
-        <div className="ml-auto flex min-w-0 items-center gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <ComposerPickerMenuPopup
+              align="start"
+              side="bottom"
+              sideOffset={6}
+              className="w-44 min-w-44"
+            >
+              <EditorRailAddMenuComposition
+                onNewChat={props.onNewChat}
+                onNewTerminal={newTerminalTab}
+              />
+            </ComposerPickerMenuPopup>
+          </Menu>
+          <EditorChatHistoryMenu
+            projectId={props.projectId}
+            activeThreadId={props.activeThreadId}
+            onNavigateToThread={openChatTab}
+          />
+        </>
+      )}
+      tabs={(
+        <>
           {chatTabs.map((thread, index) => (
             <SurfaceTabChip
               key={thread.id}
@@ -471,9 +472,10 @@ function EditorRailTabs(props: {
               onClose={closeTerminalTab}
             />
           ) : null}
-        </div>
-      ) : null}
-    </div>
+        </>
+      )}
+      tabsClassName="justify-end"
+    />
   );
 }
 

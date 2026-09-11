@@ -49,6 +49,31 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
+    id: "editor-rail/independent-tabs",
+    title: "Independent tab rows",
+    category: "editor-rail",
+    owner: "IndependentTabRow",
+    fixtureId: "chat-and-terminal-tab-rows",
+    variants: ["chat", "terminal-pane", "terminal-groups"],
+    states: ["default", "collapsed", "overflow"],
+    themes: ["light", "dark"],
+    viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: {
+        renderer: "electron",
+        component: "IndependentTabRow",
+        module: "apps/web/src/components/chat/IndependentTabRow.tsx",
+        consumers: ["editor-view/chat-tabs", "terminal/pane-tabs", "terminal/group-tabs"],
+      },
+      lynx: {
+        renderer: "lynx",
+        component: "IndependentTabRow",
+        module: "apps/lynx/src/app/IndependentTabRow.lynx.tsx",
+        consumers: ["editor-view/chat-tabs", "terminal/pane-tabs", "terminal/group-tabs"],
+      },
+    },
+  },
+  {
     id: "composer/model-effort-picker",
     title: "Composer model and effort picker",
     category: "composer",
@@ -429,6 +454,7 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
 
 export const COMPONENT_LAB_IMPLEMENTED_STORY_IDS = [
   "editor-rail/add-menu",
+  "editor-rail/independent-tabs",
   "composer/model-effort-picker",
   "composer/context-window-meter",
   "project-actions/add-editor",

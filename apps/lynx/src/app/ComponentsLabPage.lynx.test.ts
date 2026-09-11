@@ -32,6 +32,12 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain(
       "key={props.state} defaultOpen={props.state === 'open'}"
     );
+    expect(renderer).toContain("props.storyId === 'editor-rail/independent-tabs'");
+    expect(renderer).toContain('<IndependentTabsStory');
+    expect(renderer).toContain('<IndependentTabRow');
+    expect(renderer).toContain("defaultCollapsed={props.state === 'collapsed'}");
+    expect(renderer).toContain("const tabCount = props.state === 'overflow' ? 8 : 3;");
+    expect(styles).toContain('.ComponentsLabIndependentTabsStory');
     expect(renderer).toContain('<ProjectActionEditorStory key={`${props.variant}:${props.state}`}');
     expect(renderer).toContain("props.state === 'saving'");
     expect(renderer).toContain("busy={props.state === 'saving'}");

@@ -3,10 +3,8 @@
 // Layer: Terminal presentation components
 // Depends on: terminal visual identities plus shared popover/button styling.
 //
-// Note: raw <button> usage in this file is intentional. These are tab-strip and
-// list-row affordances (activate tab, close tab, terminal row, group header)
-// rather than generic action buttons, so they live outside the shadcn Button
-// taxonomy. When/if we introduce a shared Tabs primitive, these can migrate.
+// Workspace group tabs use the shared independent tab-row boundary. Sidebar
+// rows remain compact list affordances rather than horizontal tab strips.
 
 import type { ReactNode } from "react";
 
@@ -19,6 +17,7 @@ import { cn } from "~/lib/utils";
 import { selectRepresentativeTerminalVisualIdentity } from "~/terminalVisualIdentity";
 
 import { DOCK_HEADER_ICON_BUTTON_CLASS, SurfaceTabChip } from "../chat/chatHeaderControls";
+import { IndependentTabRow } from "../chat/IndependentTabRow";
 import type { ResolvedTerminalGroupLayout } from "./TerminalLayout";
 import TerminalActivityIndicator from "./TerminalActivityIndicator";
 import TerminalIdentityIcon from "./TerminalIdentityIcon";
@@ -73,8 +72,11 @@ export function TerminalWorkspaceTabBar(props: {
 }) {
   const canCloseGroups = props.terminalGroups.length > 1;
   return (
-    <div className="flex min-h-9 min-w-0 items-center gap-1 bg-[var(--color-background-surface)] px-1.5 py-1">
-      <div className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <IndependentTabRow
+      className="min-h-9 bg-[var(--color-background-surface)] px-1.5 py-1"
+      owner="terminal-groups"
+      tabs={(
+        <>
         {props.terminalGroups.map((terminalGroup) => {
           const isActive = terminalGroup.id === props.activeGroupId;
           const visualIdentity = selectRepresentativeTerminalVisualIdentity({
@@ -118,11 +120,10 @@ export function TerminalWorkspaceTabBar(props: {
             />
           );
         })}
-      </div>
-      <div className="flex shrink-0 items-center">
-        <TerminalChromeActions actions={props.actions} variant="workspace" />
-      </div>
-    </div>
+        </>
+      )}
+      actions={<TerminalChromeActions actions={props.actions} variant="workspace" />}
+    />
   );
 }
 

@@ -1,0 +1,49 @@
+.IndependentTabRow {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.IndependentTabRowScroller {
+  min-width: 0;
+  flex: 1;
+}
+
+.IndependentTabRowList,
+.IndependentTabRowActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.IndependentTabRowList {
+  min-width: 100%;
+}
+
+.IndependentTabRowActions {
+  flex-shrink: 0;
+}
+
+.IndependentTabRowToggle {
+  display: flex;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--color-icon-secondary);
+}
+
+.IndependentTabRowToggle.ui-hover,
+.IndependentTabRowToggle.ui-focus,
+.IndependentTabRowToggle.ui-pressed {
+  color: var(--foreground);
+  background-color: var(--color-background-button-secondary-hover);
+}

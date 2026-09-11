@@ -1,9 +1,5 @@
 .ThreadEditorRailTabsRoot {
-  display: flex;
-  min-width: 0;
   flex: 1;
-  flex-direction: row;
-  align-items: center;
   gap: 8px;
   -x-app-region: no-drag;
 }

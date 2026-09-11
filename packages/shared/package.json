@@ -76,6 +76,10 @@
       "types": "./src/rightDock.ts",
       "import": "./src/rightDock.ts"
     },
+    "./independentTabs": {
+      "types": "./src/independentTabs.ts",
+      "import": "./src/independentTabs.ts"
+    },
     "./contextMenu": {
       "types": "./src/contextMenu.ts",
       "import": "./src/contextMenu.ts"

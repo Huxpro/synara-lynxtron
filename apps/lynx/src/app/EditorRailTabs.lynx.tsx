@@ -12,6 +12,7 @@ import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import type { ThreadSummary } from './queries';
 import { EditorSurfaceTab } from './EditorSurfaceTab.lynx';
 import { EditorRailAddMenu } from './EditorRailAddMenu.lynx';
+import { IndependentTabRow } from './IndependentTabRow.lynx';
 
 import './editor-rail-tabs.css';
 
@@ -144,8 +145,6 @@ export function EditorRailTabs(props: {
         }
       : tab;
   });
-  const showTabs = tabs.length + (props.terminalAvailable ? 1 : 0) > 1;
-
   function closeChat(threadId: string) {
     const next = tabs.find((tab) => tab.id !== threadId);
     updateTabs((current) => current.filter((tab) => tab.id !== threadId));
@@ -159,57 +158,59 @@ export function EditorRailTabs(props: {
   }
 
   return (
-    <view className="ThreadEditorRailTabsRoot">
-      <view className="ThreadEditorRailTabActions">
-        <EditorRailAddMenu
-          onNewChat={props.onNewChat}
-          onNewTerminal={props.onNewTerminal}
-          terminalDisabled={!props.projectId}
-          trigger={
-            <EditorRailIconButton
-              icon="plus"
-              label="New editor rail item"
-              onActivate={() => {}}
+    <IndependentTabRow
+      actionPlacement="start"
+      className="ThreadEditorRailTabsRoot"
+      listClassName="ThreadEditorRailTabList"
+      owner="chat"
+      scrollerClassName="ThreadEditorRailTabScroller"
+      actions={(
+        <view className="ThreadEditorRailTabActions">
+          <EditorRailAddMenu
+            onNewChat={props.onNewChat}
+            onNewTerminal={props.onNewTerminal}
+            terminalDisabled={!props.projectId}
+            trigger={
+              <EditorRailIconButton
+                icon="plus"
+                label="New editor rail item"
+                onActivate={() => {}}
+              />
+            }
+          />
+          <EditorRailIconButton
+            icon="history"
+            label="Chat history"
+            onActivate={props.onHistory}
+          />
+        </view>
+      )}
+      tabs={(
+        <>
+          {tabs.map((tab, index) => (
+            <EditorRailTab
+              key={tab.id}
+              active={
+                props.activeSurface === 'chat' &&
+                tab.id === props.activeThreadId
+              }
+              label={`Chat ${index + 1}`}
+              provider={tab.provider}
+              onSelect={() => props.onOpenChat(tab.id)}
+              onClose={() => closeChat(tab.id)}
             />
-          }
-        />
-        <EditorRailIconButton
-          icon="history"
-          label="Chat history"
-          onActivate={props.onHistory}
-        />
-      </view>
-      {showTabs ? (
-        <scroll-view
-          className="ThreadEditorRailTabScroller"
-          scroll-orientation="horizontal"
-        >
-          <view className="ThreadEditorRailTabList">
-            {tabs.map((tab, index) => (
-              <EditorRailTab
-                key={tab.id}
-                active={
-                  props.activeSurface === 'chat' &&
-                  tab.id === props.activeThreadId
-                }
-                label={`Chat ${index + 1}`}
-                provider={tab.provider}
-                onSelect={() => props.onOpenChat(tab.id)}
-                onClose={() => closeChat(tab.id)}
-              />
-            ))}
-            {props.terminalAvailable ? (
-              <EditorRailTab
-                active={props.activeSurface === 'terminal'}
-                label="Terminal"
-                terminal
-                onSelect={props.onOpenTerminal}
-                onClose={props.onCloseTerminal}
-              />
-            ) : null}
-          </view>
-        </scroll-view>
-      ) : null}
-    </view>
+          ))}
+          {props.terminalAvailable ? (
+            <EditorRailTab
+              active={props.activeSurface === 'terminal'}
+              label="Terminal"
+              terminal
+              onSelect={props.onOpenTerminal}
+              onClose={props.onCloseTerminal}
+            />
+          ) : null}
+        </>
+      )}
+    />
   );
 }

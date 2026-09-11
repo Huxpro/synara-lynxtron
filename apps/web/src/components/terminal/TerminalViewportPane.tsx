@@ -3,9 +3,8 @@
 // Layer: Terminal presentation components
 // Depends on: caller-provided viewport renderer so xterm lifecycle can stay external.
 //
-// Note: pane-tab activate and close buttons are intentionally raw <button>; they
-// are tab-strip affordances, not shadcn Buttons. See TerminalChrome.tsx for the
-// same rationale.
+// Pane tabs and toolbar actions share the independent tab-row boundary: tabs
+// scroll on their own while actions and the tabs-only toggle stay fixed.
 
 import type { PointerEvent as ReactPointerEvent, ReactNode } from "react";
 
@@ -25,6 +24,7 @@ import {
 import { cn } from "~/lib/utils";
 
 import { DOCK_HEADER_ICON_BUTTON_CLASS, SurfaceTabChip } from "../chat/chatHeaderControls";
+import { IndependentTabRow } from "../chat/IndependentTabRow";
 import type {
   ThreadTerminalLayoutNode,
   ThreadTerminalPresentationMode,
@@ -141,8 +141,11 @@ export default function TerminalViewportPane({
             }
           }}
         >
-          <div className="flex min-h-9 items-center gap-1 bg-[var(--color-background-surface)] px-1.5 py-1">
-            <div className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <IndependentTabRow
+            className="min-h-9 bg-[var(--color-background-surface)] px-1.5 py-1"
+            owner="terminal-pane"
+            tabs={(
+              <>
               {node.terminalIds.map((terminalId) => {
                 const visualIdentity = terminalVisualIdentityById.get(terminalId);
                 const isActiveTab = terminalId === activePaneTerminalId;
@@ -178,6 +181,10 @@ export default function TerminalViewportPane({
                 );
               })}
 
+              </>
+            )}
+            actions={(
+              <>
               {onNewTerminalTab ? (
                 <PaneActionButton
                   label="New terminal tab"
@@ -186,9 +193,6 @@ export default function TerminalViewportPane({
                   <Plus className="size-3.5" />
                 </PaneActionButton>
               ) : null}
-            </div>
-
-            <div className="flex shrink-0 items-center gap-0.5">
               {canMoveActiveTerminalToGroup ? (
                 <PaneActionButton
                   label="Move to its own terminal tab"
@@ -245,8 +249,9 @@ export default function TerminalViewportPane({
                   <Trash2 className="size-3.5" />
                 </PaneActionButton>
               ) : null}
-            </div>
-          </div>
+              </>
+            )}
+          />
 
           <div className="relative min-h-0 min-w-0 flex-1 bg-[var(--color-background-surface)]">
             {node.terminalIds.map((terminalId) => {

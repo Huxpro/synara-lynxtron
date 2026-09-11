@@ -19,6 +19,7 @@ import {
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import { useTheme } from '../adapters/useTheme.lynx';
 import { EditorSurfaceTab } from './EditorSurfaceTab.lynx';
+import { IndependentTabRow } from './IndependentTabRow.lynx';
 import { ThreadTerminal } from './ThreadTerminal.lynx';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import type { ThreadTerminalLayoutNode } from '@synara-web/types';
@@ -474,12 +475,13 @@ export function DockTerminalPane(props: {
       : leafTabs[0]?.id ?? activeId;
     return (
       <view className="DockTerminalPaneLeaf">
-        <view className="DockTerminalPaneToolbar">
-          <scroll-view
-            className="DockTerminalPaneTabScroller"
-            scroll-orientation="horizontal"
-          >
-            <view className="DockTerminalPaneTabs">
+        <IndependentTabRow
+          className="DockTerminalPaneToolbar"
+          listClassName="DockTerminalPaneTabs"
+          owner="terminal-pane"
+          scrollerClassName="DockTerminalPaneTabScroller"
+          tabs={(
+            <>
               {leafTabs.map((tab) => {
                 const identity =
                   resolvedLayout.terminalVisualIdentityById.get(tab.id) ??
@@ -500,6 +502,10 @@ export function DockTerminalPane(props: {
                   />
                 );
               })}
+            </>
+          )}
+          actions={(
+            <>
               <ToolbarButton
                 disabled={node.terminalIds.length >= MAX_TERMINALS_PER_GROUP}
                 label="New terminal tab"
@@ -509,57 +515,57 @@ export function DockTerminalPane(props: {
               >
                 <PlusIcon size={14} />
               </ToolbarButton>
-            </view>
-          </scroll-view>
-          {node.terminalIds.length > 1 ? (
-            <ToolbarButton
-              label="Move to its own terminal tab"
-              onActivate={() =>
-                moveTerminalToGroup(leafActiveId, node.terminalIds.length)
-              }
-            >
-              <TerminalIcon />
-            </ToolbarButton>
-          ) : null}
-          <ToolbarButton
-            disabled={
-              resolvedLayout.visibleTerminalIds.length >=
-              MAX_TERMINALS_PER_GROUP
-            }
-            label="Split right"
-            onActivate={() =>
-              splitTerminal(
-                leafActiveId,
-                resolvedLayout.visibleTerminalIds.length,
-                'right'
-              )
-            }
-          >
-            <LayoutColumnsIcon size={14} />
-          </ToolbarButton>
-          <ToolbarButton
-            disabled={
-              resolvedLayout.visibleTerminalIds.length >=
-              MAX_TERMINALS_PER_GROUP
-            }
-            label="Split down"
-            onActivate={() =>
-              splitTerminal(
-                leafActiveId,
-                resolvedLayout.visibleTerminalIds.length,
-                'bottom'
-              )
-            }
-          >
-            <LayoutRowsIcon size={14} />
-          </ToolbarButton>
-          <ToolbarButton
-            label="Close active terminal tab"
-            onActivate={() => requestClose(leafActiveId)}
-          >
-            <Trash2 size={14} />
-          </ToolbarButton>
-        </view>
+              {node.terminalIds.length > 1 ? (
+                <ToolbarButton
+                  label="Move to its own terminal tab"
+                  onActivate={() =>
+                    moveTerminalToGroup(leafActiveId, node.terminalIds.length)
+                  }
+                >
+                  <TerminalIcon />
+                </ToolbarButton>
+              ) : null}
+              <ToolbarButton
+                disabled={
+                  resolvedLayout.visibleTerminalIds.length >=
+                  MAX_TERMINALS_PER_GROUP
+                }
+                label="Split right"
+                onActivate={() =>
+                  splitTerminal(
+                    leafActiveId,
+                    resolvedLayout.visibleTerminalIds.length,
+                    'right'
+                  )
+                }
+              >
+                <LayoutColumnsIcon size={14} />
+              </ToolbarButton>
+              <ToolbarButton
+                disabled={
+                  resolvedLayout.visibleTerminalIds.length >=
+                  MAX_TERMINALS_PER_GROUP
+                }
+                label="Split down"
+                onActivate={() =>
+                  splitTerminal(
+                    leafActiveId,
+                    resolvedLayout.visibleTerminalIds.length,
+                    'bottom'
+                  )
+                }
+              >
+                <LayoutRowsIcon size={14} />
+              </ToolbarButton>
+              <ToolbarButton
+                label="Close active terminal tab"
+                onActivate={() => requestClose(leafActiveId)}
+              >
+                <Trash2 size={14} />
+              </ToolbarButton>
+            </>
+          )}
+        />
         <view className="DockTerminalPaneLeafBody">
         {node.terminalIds.map((terminalId) => {
           const tab = allTabs.find((candidate) => candidate.id === terminalId);
@@ -610,11 +616,13 @@ export function DockTerminalPane(props: {
   return (
     <view className="DockTerminalPane">
       {resolvedLayout.resolvedTerminalGroups.length > 1 ? (
-        <scroll-view
-          className="DockTerminalPaneGroupScroller"
-          scroll-orientation="horizontal"
-        >
-          <view className="DockTerminalPaneGroups">
+        <IndependentTabRow
+          className="DockTerminalPaneGroupRow"
+          listClassName="DockTerminalPaneGroups"
+          owner="terminal-groups"
+          scrollerClassName="DockTerminalPaneGroupScroller"
+          tabs={(
+            <>
             {resolvedLayout.resolvedTerminalGroups.map((terminalGroup) => {
               const identity =
                 resolvedLayout.terminalVisualIdentityById.get(
@@ -644,6 +652,10 @@ export function DockTerminalPane(props: {
                 />
               );
             })}
+            </>
+          )}
+          actions={(
+            <>
             <ToolbarButton
               disabled={tabs.length >= MAX_TERMINALS_PER_GROUP}
               label="Split right"
@@ -674,8 +686,9 @@ export function DockTerminalPane(props: {
             >
               <Trash2 size={14} />
             </ToolbarButton>
-          </view>
-        </scroll-view>
+            </>
+          )}
+        />
       ) : null}
       <view className="DockTerminalPaneBody">
         {resolvedLayout.resolvedTerminalGroups.map((terminalGroup) => (

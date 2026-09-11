@@ -71,6 +71,8 @@ import { buildProjectContextMenuItems, buildThreadContextMenuItems } from '@syna
 import { ReviewFileTreeSearchHeader } from './DiffDock.lynx';
 import { EditorProjectSwitchSearchHeader } from './EditorProjectSwitchMenu.lynx';
 import { ExplorerFileTab } from './ExplorerFileTab.lynx';
+import { IndependentTabRow } from './IndependentTabRow.lynx';
+import { EditorSurfaceTab } from './EditorSurfaceTab.lynx';
 import {
   MessageAssistantRowComposition,
   MessageUserBubbleComposition,
@@ -307,6 +309,9 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
         <EditorRailAddMenu key={props.state} defaultOpen={props.state === 'open'} onNewChat={() => {}} onNewTerminal={() => {}} trigger={<view className="ComponentsLabEditorRailAddTrigger"><PlusIcon size={14} /></view>} />
       </view>
     );
+  }
+  if (props.storyId === 'editor-rail/independent-tabs') {
+    return <IndependentTabsStory state={props.state} variant={props.variant} />;
   }
   if (props.storyId === 'project-actions/add-editor') {
     return <ProjectActionEditorStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
@@ -554,6 +559,47 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     return <ThreadRowContextMenuStory state={props.state as Parameters<typeof SidebarThreadRowSpecimen>[0]['state']} variant={props.variant as Parameters<typeof SidebarThreadRowSpecimen>[0]['variant']} />;
   }
   return <view className="ComponentsLabPendingStory"><text>Renderer pending · {props.storyId} · {props.state}</text></view>;
+}
+
+function IndependentTabsStory(props: { readonly state: string; readonly variant?: string }) {
+  const [result, setResult] = useState('Awaiting tab action');
+  const terminal = props.variant !== 'chat';
+  const tabCount = props.state === 'overflow' ? 8 : 3;
+  const tabs = Array.from({ length: tabCount }, (_, index) => (
+    <EditorSurfaceTab
+      key={`${props.variant ?? 'chat'}-${index}`}
+      active={index === 1}
+      className="ComponentsLabIndependentTab"
+      closeLabel={`Close ${terminal ? 'Terminal' : 'Chat'} ${index + 1}`}
+      icon={terminal ? <text className="ThreadEditorRailTerminalGlyph">&gt;_</text> : <OpenAIProviderIcon provider="codex" />}
+      label={`${terminal ? 'Terminal' : 'Chat'} ${index + 1}`}
+      onClose={() => setResult(`Closed tab ${index + 1}`)}
+      onSelect={() => setResult(`Selected tab ${index + 1}`)}
+    />
+  ));
+  const actionPlacement = props.variant === 'chat' ? 'start' : 'end';
+  return (
+    <view className="ComponentsLabIndependentTabsStory">
+      <IndependentTabRow
+        actionPlacement={actionPlacement}
+        className="ComponentsLabIndependentTabsRow"
+        defaultCollapsed={props.state === 'collapsed'}
+        owner={(props.variant ?? 'chat') as 'chat' | 'terminal-pane' | 'terminal-groups'}
+        tabs={tabs}
+        actions={(
+          <>
+            <Button size="icon-xs" variant="chrome" aria-label="Add tab" onClick={() => setResult('Added tab')}>
+              <PlusIcon size={14} />
+            </Button>
+            <Button size="icon-xs" variant="chrome" aria-label="Split right" onClick={() => setResult('Split right')}>
+              <text>Ⅱ</text>
+            </Button>
+          </>
+        )}
+      />
+      <text className="ComponentsLabIndependentTabsResult" aria-live="polite">{result}</text>
+    </view>
+  );
 }
 
 function FilePreviewErrorStory(props: { readonly state: string; readonly variant?: string }) {

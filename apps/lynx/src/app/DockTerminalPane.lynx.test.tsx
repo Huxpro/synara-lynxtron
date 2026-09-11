@@ -47,6 +47,9 @@ describe('Native dock terminal pane', () => {
       /\.DockTerminalPaneToolbarButton\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;/s
     );
     expect(source).toContain('label="New terminal tab"');
+    expect(source).toContain('<IndependentTabRow');
+    expect(source).toContain('scrollerClassName="DockTerminalPaneTabScroller"');
+    expect(source).toContain('scrollerClassName="DockTerminalPaneGroupScroller"');
     expect(source).toContain('label="Move to its own terminal tab"');
     expect(source).toContain('newTerminalGroup(scopeId, terminalId)');
     expect(source).toContain('const leafTabs = node.terminalIds');
