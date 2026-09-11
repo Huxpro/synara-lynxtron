@@ -938,6 +938,18 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
 
 ### 2026-09-11 Sidebar primary-row placement continuation
 
+- FC-030 current-head light/1280 evidence now covers the explicit
+  `keyboard-highlight` state on exact-owned PID `22835`, window `91612`,
+  PID-derived DevTool `localhost:8903` session 1, and bundle
+  `9d2ffe603a4b5fedd209132eeba4dcffc981711bd11db486744ff38ce8619f7c`.
+  The highlighted Settings row resolved to a 562x30 border box with 542x18
+  content, 10px/6px horizontal/vertical padding, four 10px corner radii, and
+  light selection fill `rgba(13,13,13,0.0392157)`. Computer Use hover-only and
+  the supported DevTool mouse-move command still did not publish `mouseenter`,
+  so physical hover/pressed remain an input-delivery boundary rather than a
+  product failure or claimed pass. The exact-client warning/error console was
+  empty.
+
 - FC-034's first/last placement audit found Native encoded the 2px row rhythm
   as `margin-bottom` on every item, while Electron's `gap-0.5` belongs to the
   list container. That left an extra trailing 2px after the final primary row
