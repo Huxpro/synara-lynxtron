@@ -116,6 +116,14 @@
   min-height: 0;
 }
 
+.DiffDockShowMoreFiles {
+  width: 100%;
+  min-height: 32px;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--muted-foreground);
+}
+
 .DiffDockReviewTree {
   position: relative;
   z-index: 3;

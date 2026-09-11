@@ -3,7 +3,9 @@ import { describe, expect, it } from '@rstest/core';
 import type { PullRequestDiffFileView } from '@synara-web/components/pullRequest/pullRequestCode.logic';
 import {
   buildDiffSyntaxHighlightRequests,
+  DIFF_INITIAL_VISIBLE_FILE_COUNT,
   mergeDiffSyntaxHighlightResults,
+  visibleDiffFiles,
 } from './diffSyntaxHighlighting.logic';
 
 const file: PullRequestDiffFileView = {
@@ -26,6 +28,20 @@ const file: PullRequestDiffFileView = {
 };
 
 describe('diff syntax highlighting projection', () => {
+  it('keeps small diffs intact and progressively reveals large file sets', () => {
+    const files = Array.from({ length: 40 }, (_, index) => ({
+      ...file,
+      key: `file-${index}`,
+      path: `src/file-${index}.ts`,
+    }));
+    expect(visibleDiffFiles(files.slice(0, 3), DIFF_INITIAL_VISIBLE_FILE_COUNT, null)).toHaveLength(3);
+    expect(visibleDiffFiles(files, DIFF_INITIAL_VISIBLE_FILE_COUNT, null)).toHaveLength(24);
+    expect(visibleDiffFiles(files, DIFF_INITIAL_VISIBLE_FILE_COUNT, 'src/file-31.ts').map((item) => item.path)).toEqual([
+      ...files.slice(0, 24).map((item) => item.path),
+      'src/file-31.ts',
+    ]);
+  });
+
   it('reconstructs old and new source streams without patch metadata', () => {
     expect(buildDiffSyntaxHighlightRequests([file])).toEqual([
       {

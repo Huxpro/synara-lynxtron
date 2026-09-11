@@ -79,7 +79,10 @@ import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import { useTheme } from '../adapters/useTheme.lynx';
 import {
   buildDiffSyntaxHighlightRequests,
+  DIFF_INITIAL_VISIBLE_FILE_COUNT,
+  DIFF_MORE_VISIBLE_FILE_COUNT,
   mergeDiffSyntaxHighlightResults,
+  visibleDiffFiles,
 } from './diffSyntaxHighlighting.logic';
 import {
   resolveEditorDiffRequest,
@@ -190,6 +193,10 @@ function OpenDiffDock(props: {
   const [rawVisibleLineCount, setRawVisibleLineCount] = useState(
     PULL_REQUEST_DIFF_INITIAL_LINE_COUNT
   );
+  const [visibleFileCount, setVisibleFileCount] = useState(
+    DIFF_INITIAL_VISIBLE_FILE_COUNT
+  );
+  const pendingFileJumpKeyRef = useRef<string | null>(null);
   const [fileJumpOpen, setFileJumpOpen] = useState(false);
   const [fileJumpQuery, setFileJumpQuery] = useState('');
   const [fileTreeOpen, setFileTreeOpen] = useState(
@@ -298,7 +305,20 @@ function OpenDiffDock(props: {
   // The file sidebar is a navigator for the complete diff, never a filter.
   // Preserve hunk metadata in Editor mode too: Web's diff renderer keeps these
   // rows in both dock and workspace presentations to anchor the two line grids.
-  const visibleView = view;
+  const visibleFiles =
+    view.kind === 'files'
+      ? visibleDiffFiles(view.files, visibleFileCount, selectedFile?.path ?? null)
+      : [];
+  const visibleView =
+    view.kind === 'files'
+      ? { ...view, files: visibleFiles }
+      : view;
+  useEffect(() => {
+    const fileKey = pendingFileJumpKeyRef.current;
+    if (!fileKey || !visibleFiles.some((file) => file.key === fileKey)) return;
+    pendingFileJumpKeyRef.current = null;
+    scrollLynxElementIntoViewById(fileElementId(fileKey));
+  }, [visibleFiles]);
   const syntaxHighlightRequests =
     visibleView.kind === 'files'
       ? buildDiffSyntaxHighlightRequests(visibleView.files)
@@ -309,6 +329,7 @@ function OpenDiffDock(props: {
       props.workspaceRoot,
       refreshGeneration,
       diff.data?.patch ?? '',
+      visibleFiles.map((file) => file.key).join('\0'),
     ],
     queryFn: () => {
       'background only';
@@ -369,8 +390,8 @@ function OpenDiffDock(props: {
   const jumpToFile = (file: PullRequestDiffFileView) => {
     setSelectedFilePath(file.path);
     setExpandedFileKeys([file.key]);
+    pendingFileJumpKeyRef.current = file.key;
     closeFileJump();
-    scrollLynxElementIntoViewById(fileElementId(file.key));
   };
   const closeInteraction = useLynxInteractiveState({
     baseClassName: 'DiffDockClose',
@@ -648,6 +669,7 @@ function OpenDiffDock(props: {
             </view>
           </view>
         ) : (
+          <>
           <PullRequestCodeComposition
             emptyLabel="No working tree changes."
             // Both the editor center and the dock follow the same compact file
@@ -701,6 +723,26 @@ function OpenDiffDock(props: {
               )
             }
           />
+          {view.kind === 'files' && visibleFiles.length < view.files.length ? (
+            <Button
+              className="DiffDockShowMoreFiles"
+              variant="ghost"
+              onClick={() =>
+                setVisibleFileCount((current) =>
+                  Math.min(
+                    view.files.length,
+                    current + DIFF_MORE_VISIBLE_FILE_COUNT
+                  )
+                )
+              }
+            >
+              Show {Math.min(
+                DIFF_MORE_VISIBLE_FILE_COUNT,
+                view.files.length - visibleFiles.length
+              )} more files
+            </Button>
+          ) : null}
+          </>
         )}
         </scroll-view>
         </view>

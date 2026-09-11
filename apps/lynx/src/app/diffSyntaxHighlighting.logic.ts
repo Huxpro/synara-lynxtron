@@ -11,6 +11,23 @@ export interface DiffSyntaxHighlightRequest {
   readonly path: string;
 }
 
+export const DIFF_INITIAL_VISIBLE_FILE_COUNT = 24;
+export const DIFF_MORE_VISIBLE_FILE_COUNT = 24;
+
+export function visibleDiffFiles(
+  files: readonly PullRequestDiffFileView[],
+  visibleFileCount: number,
+  selectedPath: string | null
+): readonly PullRequestDiffFileView[] {
+  const boundedCount = Math.max(0, Math.min(files.length, visibleFileCount));
+  const selectedIndex = selectedPath
+    ? files.findIndex((file) => file.path === selectedPath)
+    : -1;
+  const visible = files.slice(0, boundedCount);
+  if (selectedIndex >= boundedCount) visible.push(files[selectedIndex]!);
+  return visible;
+}
+
 function isSourceLine(kind: string): boolean {
   return kind !== 'hunk' && !kind.startsWith('no-newline-');
 }

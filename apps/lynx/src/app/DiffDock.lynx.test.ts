@@ -234,7 +234,11 @@ describe('Diff Dock chrome fidelity', () => {
       'utf8'
     );
 
-    expect(source).toContain('const visibleView = view;');
+    expect(source).toContain('visibleDiffFiles(');
+    expect(source).toContain('? { ...view, files: visibleFiles }');
+    expect(source).toContain('view.files.map((file) => (');
+    expect(source).toContain('Show {Math.min(');
+    expect(source).toContain("visibleFiles.map((file) => file.key).join('\\0')");
     expect(source).not.toContain("line.kind !== 'hunk'");
     expect(elements).toContain('className="SharedPrCodeLinePrefix"');
     expect(elements).not.toContain('SharedPrCodeLineMarker--${props.kind}');

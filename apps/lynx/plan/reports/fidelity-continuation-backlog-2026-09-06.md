@@ -582,6 +582,18 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   fix but triggered Lynxtron's `CallLepusMethod called too frequently` runtime
   toast; large-diff batching remains a product/performance issue and is not
   counted as passing fidelity evidence.
+- The large-diff renderer now uses a bounded progressive file window instead of
+  mounting and syntax-highlighting every changed file at once. Diffs with at
+  most 24 files retain the previous complete behavior; larger diffs render the
+  first 24 and expose `Show more files` in 24-file increments. The complete file
+  tree and jump picker remain available. Jumping to a file outside the window
+  adds only that target (maximum 25 mounted files before explicit expansion),
+  preserves source order, and scrolls after the target has mounted. Syntax query
+  identity includes the visible file-key set, so newly revealed files receive
+  highlighting without reusing an incomplete infinite-stale result. Focused
+  Diff suites pass 13/13 and the production build succeeds. A fresh canonical
+  190-file Native stress run remains required before closing the load-robustness
+  portion of FC-008.
 
 ### 2026-09-10 dark voice-state continuation
 
