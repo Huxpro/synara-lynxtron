@@ -714,6 +714,11 @@ export async function fetchExplorerFile(input: {
     expiresAt: Date.now() + EXPLORER_CACHE_TTL_MS,
     result,
   });
+  void result.catch(() => {
+    if (explorerFileCache.get(cacheKey)?.result === result) {
+      explorerFileCache.delete(cacheKey);
+    }
+  });
   return result;
 }
 

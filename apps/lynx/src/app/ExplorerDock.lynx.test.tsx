@@ -11,6 +11,10 @@ describe('Lynx Explorer dock', () => {
       new URL('./router.tsx', import.meta.url),
       'utf8'
     );
+    const queriesSource = readFileSync(
+      new URL('./queries.ts', import.meta.url),
+      'utf8'
+    );
 
     expect(source).toContain('<WorkspaceFilePreviewErrorState');
     expect(source).toContain('onRetry={props.onRetryFile}');
@@ -37,6 +41,10 @@ describe('Lynx Explorer dock', () => {
     expect(routerSource).toContain(
       'explorerFileQuery.isError && explorerFileQuery.isFetching'
     );
+    expect(queriesSource).toContain(
+      'if (explorerFileCache.get(cacheKey)?.result === result)'
+    );
+    expect(queriesSource).toContain('explorerFileCache.delete(cacheKey)');
   });
 
   it('restores the exact file row after its native context menu closes', () => {

@@ -11,6 +11,23 @@ describe('WorkspaceFilePreviewErrorState Native adapter', () => {
     expect(elementTree.root?.textContent).toContain('Close preview');
     expect(elementTree.root?.textContent).toContain('ENOENT: missing.ts');
     expect(elementTree.root?.querySelector('.SharedFilePreviewErrorState')).not.toBeNull();
+    expect(
+      elementTree.root
+        ?.querySelector('.SharedFilePreviewErrorState')
+        ?.getAttribute('accessibility-element')
+    ).toBe('false');
+    expect(
+      elementTree.root
+        ?.querySelector('.SharedFilePreviewErrorTitle')
+        ?.getAttribute('accessibility-label')
+    ).toBe(
+      'Could not read this file. The file may have moved, changed, or become unavailable. ENOENT: missing.ts'
+    );
+    const actions = elementTree.root?.querySelectorAll('.LxButton') ?? [];
+    expect(actions[0]?.getAttribute('accessibility-label')).toBe('Retry');
+    expect(actions[0]?.getAttribute('focusable')).toBe('true');
+    expect(actions[1]?.getAttribute('accessibility-label')).toBe('Close preview');
+    expect(actions[1]?.getAttribute('focusable')).toBe('true');
     const composition = readFileSync(
       new URL('../../../web/src/components/WorkspaceFilePreviewErrorState.tsx', import.meta.url),
       'utf8'

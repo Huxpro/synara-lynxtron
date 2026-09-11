@@ -523,6 +523,30 @@ rows for investigation history. As of the 2026-09-10 canonical cold run:
   and a canonical product failure/retry settlement; positive live-file loading is
   no longer outstanding.
 
+### 2026-09-10 canonical file-preview recovery continuation
+
+- The canonical missing-file route exposed a real retry defect below React
+  Query: `fetchExplorerFile` cached its rejected Promise for the full explorer
+  TTL, so `explorerFileQuery.refetch()` immediately received the same failure
+  after the file became available. The file cache now evicts only the still-current
+  rejected Promise, matching the existing directory-cache ownership and preserving
+  newer requests. Focused Native recovery tests pass 7/7, and the complete
+  production build passes.
+- Exact-owned Lynxtron 0.0.21 PID `95689`, window `86021`, and PID-derived
+  DevTool `localhost:8903` loaded the missing path through a real
+  `projects.readFile` request. The recovery adapter now exposes the error copy as
+  text plus independently named, focusable `Retry` and `Close preview` buttons;
+  DevTool confirms `focusable=true`, the button trait, and the real `bindtap`
+  listener. A measured DevTool press reaches the product node and applies
+  `ui-active`, but this runtime does not synthesize the corresponding `bindtap`
+  on release and macOS Accessibility still omits the Lynx descendants. Therefore
+  Native query settlement remains an explicit 0.0.21 input-delivery blocker, not
+  a claimed pass. The exact-client warning/error console was empty; bundle
+  SHA-256 was `a957e349ed81748aa87f10ed0f4946972a227a2718d35a81b14e9d078c4ef72e`.
+- The disposable recovery path was removed after the run. Positive live-file
+  loading remains certified above; external Open remains intentionally uninvoked
+  because it foregrounds Cursor.
+
 ### 2026-09-10 working-tree Diff continuation
 
 - A project created through public `orchestration.dispatchCommand` inside the
