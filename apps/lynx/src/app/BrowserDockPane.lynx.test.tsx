@@ -150,7 +150,19 @@ describe('Native Browser right-dock pane', () => {
     expect(source).toContain('No local servers');
     expect(source).toContain('browserView.setVisible(showNativeView)');
     expect(styles).toContain('.BrowserDockServerThumbnail');
-    expect(styles).toContain('background-color: #f7f7f2');
+    expect(styles).toContain('background-color: var(--browser-home-thumbnail-surface)');
+    for (const token of [
+      '--browser-home-surface',
+      '--browser-home-foreground',
+      '--browser-home-foreground-secondary',
+      '--browser-home-card-border',
+      '--browser-home-thumbnail-surface',
+      '--browser-home-online',
+    ]) {
+      expect(styles).toContain(`var(${token})`);
+    }
+    expect(styles).not.toContain('#0d0d0d');
+    expect(styles).not.toContain('rgba(255,255,255');
   });
 
 });

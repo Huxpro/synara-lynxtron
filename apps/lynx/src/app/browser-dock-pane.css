@@ -27,26 +27,26 @@
 .BrowserDockStatus { position: absolute; top: 40px; right: 0; left: 0; z-index: 2; height: 21px; padding: 4px 10px; background-color: var(--background); color: var(--muted-foreground); font-size: 11px; }
 .BrowserDockState { padding: 16px; color: var(--muted-foreground); font-size: 12px; text-align: center; }
 .BrowserDockContentSlot { flex: 1; width: 100%; min-width: 0; min-height: 0; }
-.BrowserDockHome { position: absolute; top: 40px; right: 0; bottom: 0; left: 0; z-index: 1; display: flex; flex-direction: column; padding: 30px 32px 24px; background-color: #0d0d0d; }
+.BrowserDockHome { position: absolute; top: 40px; right: 0; bottom: 0; left: 0; z-index: 1; display: flex; flex-direction: column; padding: 30px 32px 24px; background-color: var(--browser-home-surface); }
 .BrowserDockHome--withTabs { top: 80px; }
 .BrowserDockHomeHeader { display: flex; min-height: 32px; align-items: center; justify-content: space-between; }
-.BrowserDockHomeTitle { color: rgba(255,255,255,0.35); font-size: 15px; font-weight: 500; }
+.BrowserDockHomeTitle { color: var(--browser-home-foreground-secondary); font-size: 15px; font-weight: 500; }
 .BrowserDockHomeEmpty { display: flex; flex: 1; min-height: 0; align-items: center; justify-content: center; flex-direction: column; }
-.BrowserDockHomeEmptyIcon { margin-bottom: 16px; color: rgba(255,255,255,0.25); }
-.BrowserDockHomeEmptyTitle { color: #fff; font-size: 16px; font-weight: 600; }
-.BrowserDockHomeEmptyDetail { margin-top: 8px; color: rgba(255,255,255,0.35); font-size: 14px; }
+.BrowserDockHomeEmptyIcon { margin-bottom: 16px; color: var(--browser-home-icon-muted); }
+.BrowserDockHomeEmptyTitle { color: var(--browser-home-foreground); font-size: 16px; font-weight: 600; }
+.BrowserDockHomeEmptyDetail { margin-top: 8px; color: var(--browser-home-foreground-secondary); font-size: 14px; }
 .BrowserDockServerList { flex: 1; min-height: 0; margin-top: 16px; padding-bottom: 24px; }
-.BrowserDockServerCard { display: flex; width: 100%; min-width: 0; min-height: 70px; margin-bottom: 8px; padding: 10px 12px; align-items: center; gap: 14px; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; }
+.BrowserDockServerCard { display: flex; width: 100%; min-width: 0; min-height: 70px; margin-bottom: 8px; padding: 10px 12px; align-items: center; gap: 14px; border: 1px solid var(--browser-home-card-border); border-radius: 12px; }
 .BrowserDockServerCard--disabled { opacity: 0.45; }
-.BrowserDockServerThumbnail { display: flex; width: 72px; height: 48px; flex-shrink: 0; padding: 6px; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; background-color: #f7f7f2; flex-direction: column; overflow: hidden; }
+.BrowserDockServerThumbnail { display: flex; width: 72px; height: 48px; flex-shrink: 0; padding: 6px; border: 1px solid var(--browser-home-thumbnail-border); border-radius: 6px; background-color: var(--browser-home-thumbnail-surface); flex-direction: column; overflow: hidden; box-shadow: var(--browser-home-thumbnail-shadow); }
 .BrowserDockServerTrafficLights { display: flex; gap: 3px; }
 .BrowserDockServerLight { width: 3px; height: 3px; border-radius: 2px; }
-.BrowserDockServerLight--red { background-color: #ff6b65; }
-.BrowserDockServerLight--yellow { background-color: #f4c047; }
-.BrowserDockServerLight--green { background-color: #45cf77; }
-.BrowserDockServerThumbnailTitle { margin-top: 7px; color: #2a2a2a; font-size: 7px; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-.BrowserDockServerThumbnailAddress { margin-top: 2px; color: #9a9a9a; font-size: 6px; font-weight: 500; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.BrowserDockServerLight--red { background-color: var(--browser-home-traffic-red); }
+.BrowserDockServerLight--yellow { background-color: var(--browser-home-traffic-yellow); }
+.BrowserDockServerLight--green { background-color: var(--browser-home-traffic-green); }
+.BrowserDockServerThumbnailTitle { margin-top: 7px; color: var(--browser-home-thumbnail-title); font-size: 7px; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.BrowserDockServerThumbnailAddress { margin-top: 2px; color: var(--browser-home-thumbnail-meta); font-size: 6px; font-weight: 500; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
 .BrowserDockServerIdentity { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 4px; }
-.BrowserDockServerTitle { color: rgba(255,255,255,0.9); font-size: 13px; font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-.BrowserDockServerDetail { color: rgba(255,255,255,0.35); font-size: 11px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-.BrowserDockServerOnline { width: 8px; height: 8px; margin-right: 4px; flex-shrink: 0; border-radius: 4px; background-color: #36d07b; box-shadow: 0 0 0 3px rgba(54,208,123,0.16); }
+.BrowserDockServerTitle { color: var(--browser-home-foreground); font-size: 13px; font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.BrowserDockServerDetail { color: var(--browser-home-foreground-secondary); font-size: 11px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.BrowserDockServerOnline { width: 8px; height: 8px; margin-right: 4px; flex-shrink: 0; border-radius: 4px; background-color: var(--browser-home-online); box-shadow: 0 0 0 3px var(--browser-home-online-ring); }

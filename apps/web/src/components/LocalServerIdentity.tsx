@@ -39,11 +39,11 @@ const IDENTITY_TONE: Record<LocalServerIdentityTone, LocalServerIdentityToneToke
     folder: "text-muted-foreground/45",
   },
   browser: {
-    primary: "text-[14px] font-semibold text-white",
-    meta: "text-[12px] text-white/35",
+    primary: "text-[14px] font-semibold text-[var(--browser-home-foreground)]",
+    meta: "text-[12px] text-[var(--browser-home-foreground-secondary)]",
     address: "",
-    separator: "text-white/20",
-    folder: "text-white/30",
+    separator: "text-[var(--browser-home-icon-muted)]",
+    folder: "text-[var(--browser-home-foreground-tertiary)]",
   },
 };
 

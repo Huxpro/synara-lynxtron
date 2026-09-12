@@ -40,7 +40,10 @@ describe('Lynx plugin library', () => {
     expect(pageSource).toContain('provider={candidate}');
     expect(pageSource).toContain('providerDiscoveryItemAccent(props.label)');
     expect(pageSource).toContain('className="PluginLibraryProviderLabel"');
-    expect(pageSource).toContain('<ListChecksIcon size={20}');
+    expect(pageSource).toContain('<ListChecksIcon');
+    expect(pageSource).toContain('size={20}');
+    expect(pageSource).toContain("color={semanticIconColor('inverse')}");
+    expect(pageSource).not.toContain('color="rgba(255, 255, 255, 0.8)"');
     const iconsSource = readFileSync(
       new URL('../lib/icons.lynx.tsx', import.meta.url),
       'utf8'

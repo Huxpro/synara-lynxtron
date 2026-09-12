@@ -2224,7 +2224,7 @@
 }
 
 .TranscriptTurnChangesStats {
-  font-family: var(--font-system-ui);
+  font-family: var(--font-ui-family);
 }
 
 .TranscriptTurnChangesAdditions {

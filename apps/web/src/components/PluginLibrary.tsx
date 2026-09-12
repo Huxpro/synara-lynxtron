@@ -218,7 +218,7 @@ function SkillGlyph({ skill }: { skill: ProviderSkillDescriptor }) {
         boxShadow: `0 0 0 0.5px hsl(${hue} 40% 30% / 0.35)`,
       }}
     >
-      <ListChecksIcon className="size-5 text-white/80" />
+      <ListChecksIcon className="size-5 text-[var(--color-text-button-primary)] opacity-80" />
     </span>
   );
 }

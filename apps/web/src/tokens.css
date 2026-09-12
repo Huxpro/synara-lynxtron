@@ -32,6 +32,28 @@
   );
   --font-chat-code-family: var(--theme-font-code-family, var(--font-mono-family));
   --terminal-font-family: "JetBrainsMono NFM", "JetBrainsMono NF", "JetBrains Mono", monospace;
+  /* The Browser local-server launcher is intentionally an always-dark canvas
+     in Electron. Keep its fixed preview palette semantic and shared so Native
+     matches the authority without duplicating literal white-on-dark values. */
+  --browser-home-surface: #0d0d0d;
+  --browser-home-foreground: #ffffff;
+  --browser-home-foreground-secondary: rgba(255, 255, 255, 0.35);
+  --browser-home-foreground-tertiary: rgba(255, 255, 255, 0.3);
+  --browser-home-icon-muted: rgba(255, 255, 255, 0.2);
+  --browser-home-hover-foreground: rgba(255, 255, 255, 0.7);
+  --browser-home-card-border: rgba(255, 255, 255, 0.07);
+  --browser-home-card-border-hover: rgba(255, 255, 255, 0.14);
+  --browser-home-card-hover: rgba(255, 255, 255, 0.04);
+  --browser-home-thumbnail-surface: #f7f7f2;
+  --browser-home-thumbnail-border: rgba(255, 255, 255, 0.12);
+  --browser-home-thumbnail-title: #2a2a2a;
+  --browser-home-thumbnail-meta: #9a9a9a;
+  --browser-home-thumbnail-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  --browser-home-traffic-red: #ff6b65;
+  --browser-home-traffic-yellow: #f4c047;
+  --browser-home-traffic-green: #45cf77;
+  --browser-home-online: #36d07b;
+  --browser-home-online-ring: rgba(54, 208, 123, 0.16);
   /* Cross-platform product typography roles. These describe visual jobs rather
      than host elements so Web, Lynx-for-Web, and Native can share line boxes
      even when their engines disagree on `normal`. */

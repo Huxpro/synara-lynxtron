@@ -61,6 +61,7 @@ function DiscoveryRow(props: {
   readonly meta: string;
   readonly kind?: 'plugin' | 'skill';
 }) {
+  const { semanticIconColor } = useTheme();
   const skill = props.kind === 'skill';
   return (
     <view className="PluginLibraryRow">
@@ -75,7 +76,11 @@ function DiscoveryRow(props: {
         }
       >
         {skill ? (
-          <ListChecksIcon size={20} color="rgba(255, 255, 255, 0.8)" />
+          <ListChecksIcon
+            size={20}
+            color={semanticIconColor('inverse')}
+            style={{ opacity: 0.8 }}
+          />
         ) : (
           <PuzzleIcon size={16} color="var(--muted-foreground)" />
         )}
