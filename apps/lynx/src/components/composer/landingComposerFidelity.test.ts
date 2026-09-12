@@ -67,6 +67,10 @@ describe('landing composer fidelity contract', () => {
     expect(routerSource).toContain(
       'title={routePresentation.headerTitle}'
     );
+    expect(routerSource).toContain(
+      "actionState={{ showHandoff: true, showProjectActions: project?.kind === 'project' }}"
+    );
+    expect(routerSource).toContain('thread={undefined}');
     expect(routerSource).toContain('<ComposerColumnFrameSurface>');
     expect(routerSource).toContain('<LandingComposer');
     expect(landingSource).toContain('<Composer\n        voiceInputEnabled');

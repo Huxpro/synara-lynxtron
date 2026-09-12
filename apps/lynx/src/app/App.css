@@ -645,6 +645,9 @@
 }
 
 .ThreadsLandingHeaderIdentity {
+  display: flex;
+  flex: 1;
+  min-width: 0;
   margin-left: 0;
 }
 

@@ -36,6 +36,9 @@ describe('chat surface header identity fidelity', () => {
       /\.SharedChatHeaderIdentityTitle\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;/s
     );
     expect(routerSource).toContain('title={routePresentation.headerTitle}');
+    expect(styles).toMatch(
+      /\.ThreadsLandingHeaderIdentity\s*\{[^}]*display:\s*flex;[^}]*flex:\s*1;[^}]*min-width:\s*0;/s
+    );
     expect(routerSource).toContain(
       "title={currentThread?.title ?? 'Thread'}"
     );
@@ -51,8 +54,11 @@ describe('chat surface header identity fidelity', () => {
       new URL('../app/router.tsx', import.meta.url),
       'utf8'
     );
+    expect(adapterSource).toContain('function RenamableChatSurfaceHeaderIdentityTitle(');
     expect(adapterSource).toContain('onActivate: props.onRename');
     expect(adapterSource).toContain('`Rename thread ${props.title}`');
+    expect(adapterSource).toContain('if (!props.onRename) {');
+    expect(adapterSource).not.toContain('disabled: !props.onRename');
     expect(routerSource).toContain("type: 'thread.meta.update'");
     expect(routerSource).toContain('onRename={currentThread ? beginThreadRename');
     expect(routerSource).toContain('onConfirm={() => void commitThreadRename()}');

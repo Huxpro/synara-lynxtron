@@ -94,6 +94,7 @@ import {
   fetchThreads,
   queryClient,
   type ExplorerEntriesResult,
+  type ProjectSummary,
   type ThreadSummary,
 } from './queries';
 import { resolveStudioRestoreRoute } from './studioRoute.logic';
@@ -419,14 +420,35 @@ function useProviderHealthBanner(
 }
 
 // --- pages ----------------------------------------------------------------------
-function ThreadsLandingHeader(props: { readonly title?: 'New Chat' | 'New thread' }) {
+function ThreadsLandingHeader(props: {
+  readonly project: ProjectSummary | null;
+  readonly title?: 'New Chat' | 'New thread';
+}) {
+  const project = props.project;
   return (
     <ChatSurfaceHeaderFrame className="ThreadsLandingHeader">
       <view className="ThreadsLandingHeaderIdentity">
         <ChatSurfaceHeaderIdentity
           title={props.title ?? 'New Chat'}
-          icon={<OpenAIProviderIcon />}
-          iconTitle="Codex"
+        />
+      </view>
+      <view className="ThreadHeaderControls">
+        <ThreadHeaderActions
+          actionState={{ showHandoff: true, showProjectActions: project?.kind === 'project' }}
+          compact={false}
+          project={
+            project
+              ? {
+                  id: project.id,
+                  cwd: project.workspaceRoot,
+                  defaultModelSelection: project.defaultModelSelection,
+                  scripts: project.scripts,
+                }
+              : null
+          }
+          thread={undefined}
+          onNavigateToThread={() => {}}
+          onOpenTerminal={() => {}}
         />
       </view>
     </ChatSurfaceHeaderFrame>
@@ -473,9 +495,15 @@ function ThreadsLandingPage(props: {
     initialProjectId: selectedProjectId,
     projects: landingBootstrap?.projects ?? [],
   });
+  const selectedProject = selectedProjectId
+    ? landingBootstrap?.projects.find((project) => project.id === selectedProjectId) ?? null
+    : null;
   return (
     <view className="ThreadsLanding">
-      <ThreadsLandingHeader title={routePresentation.headerTitle} />
+      <ThreadsLandingHeader
+        project={selectedProject}
+        title={routePresentation.headerTitle}
+      />
       <ProviderHealthBanner
         status={providerHealth.status}
         onDismiss={providerHealth.dismiss}
@@ -3627,7 +3655,7 @@ export function SliceRouter({
       />
     ) : (
       <view className="ThreadsLanding">
-        <ThreadsLandingHeader />
+        <ThreadsLandingHeader project={null} />
         <view className="ThreadsLandingBody">
           <view className="ThreadsLandingBodyInner">
             <PanelStateMessage

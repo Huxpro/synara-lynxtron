@@ -23,26 +23,41 @@ export function ChatSurfaceHeaderIdentityIconElement(props: {
   return <view className="SharedChatHeaderIdentityIcon">{props.children}</view>;
 }
 
-export function ChatSurfaceHeaderIdentityTitleElement(props: {
+interface ChatSurfaceHeaderIdentityTitleProps {
   readonly title: string;
   readonly displayTitle?: string;
   readonly onRename?: () => void;
-}) {
+}
+
+function RenamableChatSurfaceHeaderIdentityTitle(
+  props: ChatSurfaceHeaderIdentityTitleProps & { readonly onRename: () => void }
+) {
   const rename = useLynxInteractiveState({
     baseClassName: 'SharedChatHeaderIdentityTitle',
-    accessibleLabel: props.onRename
-      ? `Rename thread ${props.title}`
-      : props.title,
-    disabled: !props.onRename,
-    onActivate: props.onRename ?? (() => {}),
+    accessibleLabel: `Rename thread ${props.title}`,
+    onActivate: props.onRename,
   });
   return (
-    <text
-      className={rename.className}
-      maxlines={1}
-      {...rename.eventProps}
-    >
+    <text className={rename.className} maxlines={1} {...rename.eventProps}>
       {props.displayTitle ?? props.title}
     </text>
+  );
+}
+
+export function ChatSurfaceHeaderIdentityTitleElement(
+  props: ChatSurfaceHeaderIdentityTitleProps
+) {
+  if (!props.onRename) {
+    return (
+      <text className="SharedChatHeaderIdentityTitle" maxlines={1}>
+        {props.displayTitle ?? props.title}
+      </text>
+    );
+  }
+  return (
+    <RenamableChatSurfaceHeaderIdentityTitle
+      {...props}
+      onRename={props.onRename}
+    />
   );
 }

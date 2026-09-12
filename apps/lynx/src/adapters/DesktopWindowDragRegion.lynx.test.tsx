@@ -58,8 +58,8 @@ describe('desktop window drag regions', () => {
     expect(routerSource).toContain(
       '<ChatSurfaceHeaderFrame className="ThreadsLandingHeader">'
     );
-    expect(routerSource).toContain('<ThreadsLandingHeader title={routePresentation.headerTitle} />');
-    expect(routerSource).toContain('<ThreadsLandingHeader />');
+    expect(routerSource).toContain('title={routePresentation.headerTitle}');
+    expect(routerSource).toContain('<ThreadsLandingHeader project={null} />');
     expect(appStyles).toMatch(
       /\.ThreadsLandingHeader\s*\{[^}]*height:\s*46px;[^}]*min-height:\s*46px;[^}]*flex-shrink:\s*0;/s
     );
