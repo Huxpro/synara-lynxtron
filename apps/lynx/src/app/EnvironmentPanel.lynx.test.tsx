@@ -59,16 +59,8 @@ describe('Lynx Environment panel', () => {
       new URL('./EnvironmentPanel.lynx.tsx', import.meta.url),
       'utf8'
     );
-    const appSource = readFileSync(
-      new URL('./App.tsx', import.meta.url),
-      'utf8'
-    );
     const appStyles = readFileSync(
       new URL('./App.css', import.meta.url),
-      'utf8'
-    );
-    const bootstrapSource = readFileSync(
-      new URL('./environmentBootstrap.lynx.ts', import.meta.url),
       'utf8'
     );
     expect(routerSource).toContain('<EnvironmentToggle');
@@ -82,23 +74,12 @@ describe('Lynx Environment panel', () => {
     expect(routerSource).toContain(
       'const resolvedEnvironmentOpen ='
     );
-    expect(appSource).toContain(
-      'await fetchEnvironmentBootstrapData(summary.workspaceRoot)'
-    );
-    expect(bootstrapSource).toContain(
-      'const ENVIRONMENT_BOOTSTRAP_TIMEOUT_MS = 3_000'
-    );
-    expect(bootstrapSource.match(/await Promise\.all\(\[/g)).toHaveLength(2);
-    expect(bootstrapSource).not.toContain('fetchAllProviderUsage');
-    expect(bootstrapSource).toContain('fetchGitStatusLocal');
-    expect(bootstrapSource).not.toContain('fetchGitStatus(');
+    expect(routerSource).toContain('environmentData={null}');
+    expect(routerSource).toContain('open={environmentPanelLayout.visible}');
     expect(panelSource).toContain(
       "label={props.envMode === 'worktree' ? 'Worktree' : 'Local'}"
     );
     expect(panelSource).not.toContain('EnvironmentWorkspace');
-    expect(routerSource).toContain(
-      'matchingInitialThreadBootstrap?.environment'
-    );
     expect(panelSource).toContain(
       'initialData: EnvironmentBootstrapData | null'
     );
@@ -141,8 +122,10 @@ describe('Lynx Environment panel', () => {
       '!props.bootstrapOnly && visibility.showEnvironmentUsage ? ('
     );
     expect(routerSource).toContain('className="ThreadHeaderControls"');
-    expect(routerSource).toContain('(effectiveRightDockWidth ?? 0)');
-    expect(routerSource).toContain(') < 700');
+    expect(routerSource).toContain('resolveEnvironmentPanelLayout({');
+    expect(routerSource).toContain(
+      'viewportWidth < VIEWPORT_BREAKPOINTS.lg || diffOpen || explorerOpen'
+    );
     expect(routerSource).toContain('ThreadPage--environment-open');
     expect(routerSource).toContain('ThreadPage--provider-health-visible');
     expect(routerSource).toContain(

@@ -63,9 +63,9 @@
         "@lynx-js/config-rsbuild-plugin": "0.2.0",
         "@lynx-js/css-serializer": "0.1.7",
         "@lynx-js/lynx-core": "0.1.4",
-        "@lynx-js/lynxtron": "0.0.21",
-        "@lynx-js/lynxtron-builder": "0.0.21",
-        "@lynx-js/lynxtron-dev-plugins": "0.0.21",
+        "@lynx-js/lynxtron": "0.0.22",
+        "@lynx-js/lynxtron-builder": "0.0.22",
+        "@lynx-js/lynxtron-dev-plugins": "0.0.22",
         "@lynx-js/preact-devtools": "5.0.1-20260721114100-d7da994",
         "@lynx-js/react": "0.123.1",
         "@lynx-js/react-rsbuild-plugin": "0.18.1",
@@ -836,11 +836,11 @@
 
     "@lynx-js/lynx-ui-switch": ["@lynx-js/lynx-ui-switch@3.135.3", "", { "dependencies": { "@lynx-js/lynx-ui-common": "3.135.3", "@lynx-js/react-use": "0.2.2", "clsx": "^2.1.1" }, "peerDependencies": { "@lynx-js/react": ">=0.100.0", "@lynx-js/types": "*", "@types/react": "^18" } }, "sha512-QSu6EXFUmwQmu1xu8n1gpSmC7o/thpeeCiJpSohKZMt7blTcwz4qDmn9oktLgiqAHXwMqzJwScEKkrT9FIGOrg=="],
 
-    "@lynx-js/lynxtron": ["@lynx-js/lynxtron@0.0.21", "", { "dependencies": { "node-fetch": "3.3.2", "proper-lockfile": "4.1.2", "zip-lib": "1.4.0" }, "bin": { "lynxtron": "cli.js", "lynxtron-fuses": "fuses-cli.js" } }, "sha512-ndBXBYS5iK61fC2Ihy7/FmQvtNQVMU7AwbUG4cy31Kv36u1YtXE1kQUI+9iY3Mx8d+9LivLDHt/QRO+9+3guQw=="],
+    "@lynx-js/lynxtron": ["@lynx-js/lynxtron@0.0.22", "", { "dependencies": { "node-fetch": "3.3.2", "proper-lockfile": "4.1.2", "zip-lib": "1.4.0" }, "bin": { "lynxtron": "cli.js", "lynxtron-fuses": "fuses-cli.js" } }, "sha512-h3qFDpm696L4cRPYAO2YdyH6QVdiIqWDkKyxpCwFV7e6xm74BjpHkMWVdXhZLBu4rfv7ZCIjdqWPEbF1I2ID+A=="],
 
-    "@lynx-js/lynxtron-builder": ["@lynx-js/lynxtron-builder@0.0.21", "", { "dependencies": { "@electron/universal": "^1.3.0", "app-builder-lib": "26.13.0", "dmg-builder": "26.13.0", "electron-builder": "26.13.0", "js-yaml": "^4.1.0", "patch-package": "^6.4.7" }, "bin": { "lynxtron-builder": "cli.js" } }, "sha512-C7aGJ+hSNKpsh835LLKhJOb+/rWWr4R6v54BB06URVHC5BH+KtPXMfGtvfo5X0nhghKa/j4yc0sKXKTxVUt/RQ=="],
+    "@lynx-js/lynxtron-builder": ["@lynx-js/lynxtron-builder@0.0.22", "", { "dependencies": { "@electron/universal": "^1.3.0", "app-builder-lib": "26.13.0", "dmg-builder": "26.13.0", "electron-builder": "26.13.0", "js-yaml": "^4.1.0", "patch-package": "^6.4.7" }, "bin": { "lynxtron-builder": "cli.js" } }, "sha512-5w9jfsfN7CLma6X2FbK4iHOjFhXBwexJNbb7U2EdvMSFkfrd3of28HRTkZV/JW2hPQCGuY3BJAIta+JCGd8CTw=="],
 
-    "@lynx-js/lynxtron-dev-plugins": ["@lynx-js/lynxtron-dev-plugins@0.0.21", "", { "dependencies": { "cross-spawn": "^7.0.6" }, "peerDependencies": { "@rsbuild/core": "^2.1.5" }, "bin": { "dev-ready-rspeedy": "bin/cli-rspeedy.js" } }, "sha512-A/XAS0Iq9qfJZGxsHG6bu/UJ2T9vyTU2+5trtfkrAEuUGvEJinMCGy2bIuOI62bQx+kRAzsnvCWqaMshEaRfBQ=="],
+    "@lynx-js/lynxtron-dev-plugins": ["@lynx-js/lynxtron-dev-plugins@0.0.22", "", { "dependencies": { "cross-spawn": "^7.0.6" }, "peerDependencies": { "@rsbuild/core": "^2.1.5" }, "bin": { "dev-ready-rspeedy": "bin/cli-rspeedy.js" } }, "sha512-0wdsUbtsmnMUdJuoj383ZCT0C7NiH4pHmyLTFjGeQ++p9IyccWQ2uS2FJef3rR485cn5DeWEBA+0stLXltO4hg=="],
 
     "@lynx-js/motion": ["@lynx-js/motion@0.0.3", "", { "dependencies": { "framer-motion": "12.34.1", "motion-dom": "12.23.12", "motion-utils": "12.23.6" }, "peerDependencies": { "@lynx-js/react": "*", "@lynx-js/types": "*" }, "optionalPeers": ["@lynx-js/types"] }, "sha512-Kujwj1grxFTPjwr3IEO4Qca5YRsoJCeTctsEaUcVFYC5Ekb52LuUavJicMqUuswzW/HrARpJw9npLSiTjfcwYQ=="],
 

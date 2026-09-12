@@ -1,6 +1,6 @@
 # Lynxtron runtime compatibility and local patches
 
-Last updated: 2026-09-10
+Last updated: 2026-09-12
 
 This document records the runtime-specific changes required to run Synara on
 Lynxtron, and separates confirmed Lynxtron behavior from application bugs and
@@ -12,11 +12,11 @@ Lynxtron process counts as Desktop runtime evidence.
 
 Synara currently pins these packages together:
 
-- `@lynx-js/lynxtron`: `0.0.21`
-- `@lynx-js/lynxtron-builder`: `0.0.21`
-- `@lynx-js/lynxtron-dev-plugins`: `0.0.21`
+- `@lynx-js/lynxtron`: `0.0.22`
+- `@lynx-js/lynxtron-builder`: `0.0.22`
+- `@lynx-js/lynxtron-dev-plugins`: `0.0.22`
 
-The lockfile resolves all three to `0.0.21`. The installed macOS runtime is the
+The lockfile resolves all three to `0.0.22`. The installed macOS runtime is the
 DevTool variant at:
 
 ```text
@@ -75,7 +75,26 @@ verification guard. None modifies the downloaded Lynxtron binary or framework.
 | `0.0.9` | Upgraded runtime/builder/dev plugins together while resolving the Native template-context startup blocker. A known-good reduced dependency graph painted successfully on the same host, confirming that the immediate blocker was the imported module graph rather than package version alone. |
 | `0.0.12-dev` | Used for CSS flag, transform-origin and primary-mouse-button experiments; the main runtime was ahead of the still-0.0.9 builder/dev plugins during that period. |
 | `0.0.16` | Used by later fidelity and physical-input work. Generic single-line input crash and several Desktop input/AX limitations were still present. |
-| `0.0.21` | Current synchronized runtime, builder and dev-plugin version. Provides the new variant-aware runtime installation and restores inspectable Native sessions. |
+| `0.0.21` | Introduced synchronized variant-aware runtime installation and restored inspectable Native sessions. Historical evidence below was collected on this version. |
+| `0.0.22` | Current synchronized runtime, builder and dev-plugin version. Upgrade all three together and re-certify the retained 0.0.21 workarounds before removing any of them. |
+
+## 0.0.22 upgrade verification
+
+- npm resolves runtime, builder, and development plugins to `0.0.22` with the
+  registry-published integrity values recorded in `bun.lock`.
+- A fresh download of the official
+  `lynxtron-v0.0.22-darwin-arm64-devtool.zip` matched the installed runtime
+  byte-for-byte: executable SHA-256
+  `dccabe3471bf0343cce4e241d8dde4abb090d44984c590c2904f6b5241d00aea`
+  and Framework SHA-256
+  `3709ffdcf94815569e577dde7de79148fc1a4d1470049d9b02d6510d2373f0b0`.
+- The exact-owned comparison process PID `3233` loaded the rebuilt
+  `apps/lynx/dist/desktop` bundle. Its copied app reports both source and bundle
+  version `0.0.22`; its Framework `__TEXT,__text` bytes match the installed
+  official 0.0.22 runtime, and its PID-derived DevTool console is clean.
+- The complete Lynx production build, runtime verifier (6/6), and focused
+  Environment contract suite (8/8) pass. Existing compatibility layers remain
+  until their behavior is independently re-certified on 0.0.22.
 
 ## What 0.0.21 improved
 
