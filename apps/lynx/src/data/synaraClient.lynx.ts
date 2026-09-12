@@ -715,6 +715,10 @@ export async function fetchGitStatus(cwd: string): Promise<GitStatusResult> {
   return transportRequest('git.status', { cwd });
 }
 
+export async function initializeGit(cwd: string): Promise<void> {
+  await transportRequest('git.init', { cwd });
+}
+
 export async function fetchGitStatusLocal(
   cwd: string
 ): Promise<GitStatusLocalResult> {

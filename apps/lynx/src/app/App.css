@@ -612,12 +612,24 @@
 .ThreadsLandingBody {
   flex: 1;
   min-height: 0;
+  padding-right: 0;
+  transition: padding-right 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.ThreadsLanding--environment-open .ThreadsLandingBody {
+  padding-right: 312px;
 }
 
 .ThreadsLandingBodyInner {
   display: flex;
   min-height: 100%;
   align-items: center;
+}
+
+.SliceRoot--viewport-compact
+  .ThreadsLanding--environment-open
+  .ThreadsLandingBody {
+  padding-right: 0;
 }
 
 .SliceRoot--viewport-short-height

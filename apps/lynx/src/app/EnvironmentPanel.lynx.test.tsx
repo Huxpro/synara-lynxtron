@@ -109,6 +109,12 @@ describe('Lynx Environment panel', () => {
     );
     expect(panelSource.match(/open=\{liveQueriesEnabled\}/g)).toHaveLength(6);
     expect(panelSource).toContain('open={props.open}');
+    expect(panelSource).toContain('initializeGit(props.workspaceRoot)');
+    expect(panelSource).toContain("\'Retry Initialize Git\' : \'Initialize Git\'");
+    expect(panelSource).toContain('const isGitRepo = repositoryQuery.data?.isRepo === true');
+    expect(panelSource).toContain('props.onNotesChange(next)');
+    expect(panelSource).toContain('props.onBranchChange(branch)');
+    expect(panelSource).toContain('props.onBranchChange(result.branch.name)');
     expect(panelSource).not.toContain(
       'if (!props.open || props.bootstrapOnly) return;'
     );

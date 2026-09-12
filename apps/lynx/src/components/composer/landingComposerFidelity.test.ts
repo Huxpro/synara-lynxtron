@@ -178,6 +178,15 @@ describe('landing composer fidelity contract', () => {
     expect(routerSource).toContain(
       'landingBootstrap?.serverConfig.providers ?? []'
     );
+    expect(routerSource).toContain(
+      'useProviderHealthBanner(\n    initialModelProvider,'
+    );
+    expect(routerSource).toContain('<EnvironmentPanel');
+    expect(routerSource).toContain('threadId={null}');
+    expect(routerSource).toContain('<LandingDiffToggle />');
+    expect(appStyles).toMatch(
+      /\.ThreadsLanding--environment-open \.ThreadsLandingBody\s*\{[^}]*padding-right:\s*312px;/s
+    );
     expect(landingSource).not.toContain('fetchProviderModels');
     expect(landingSource).not.toContain('initialModelCatalog');
     expect(composerSource).not.toContain('initialModelCatalog');
@@ -197,16 +206,21 @@ describe('landing composer fidelity contract', () => {
     expect(landingSource).toContain(
       'generalSettings.defaultThreadEnvMode'
     );
-    expect(landingSource).toContain('envModeTouchedRef.current = true');
+    expect(routerSource).toContain('envModeTouchedRef.current = true');
     expect(landingSource).toContain('<EmptyThreadContextTray');
-    expect(landingSource).toContain('onEnvModeChange={(nextEnvMode) => {');
+    expect(routerSource).toContain('onEnvModeChange={(nextEnvMode) => {');
     expect(landingSource).toContain(
-      'onTemporaryChange={() => setTemporary((current) => !current)}'
+      'props.onTemporaryChange ??'
+    );
+    expect(routerSource).toContain(
+      'setTemporary((current) => !current)'
     );
     expect(landingSource).toContain(
       'props.onThreadCreated(threadIdRef.current, { temporary })'
     );
-    expect(landingSource).not.toContain("envMode: 'local'");
+    expect(landingSource).not.toMatch(
+      /type: 'thread\.create'[\s\S]{0,600}envMode: 'local'/
+    );
     expect(landingSource).not.toContain("provider: 'codex'");
     expect(landingSource).not.toContain("getDefaultModel('codex')");
     expect(landingSource).not.toContain('onProviderStatusesChange');

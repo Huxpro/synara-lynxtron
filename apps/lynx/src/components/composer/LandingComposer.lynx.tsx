@@ -178,14 +178,20 @@ export async function loadLandingBootstrap(
 }
 
 export function LandingComposer(props: {
+  readonly branch?: string | null;
   readonly containerKind?: 'chat' | 'studio';
+  readonly envMode?: 'local' | 'worktree';
   readonly initialModelProvider?: ProviderKind | null;
   readonly initialProjectId?: string | null;
+  readonly notes?: string;
+  readonly onEnvModeChange?: (envMode: 'local' | 'worktree') => void;
   readonly onProjectSelectionChange?: (projectId: string | null) => void;
+  readonly onTemporaryChange?: () => void;
   readonly onThreadCreated: (
     threadId: string,
     options: { readonly temporary: boolean }
   ) => void;
+  readonly temporary?: boolean;
 }) {
   const generalSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
@@ -205,11 +211,12 @@ export function LandingComposer(props: {
     setSelectedProjectId(props.initialProjectId ?? null);
   }, [props.initialProjectId]);
   const [studioFolderPath, setStudioFolderPath] = useState<string | null>(null);
-  const [envMode, setEnvMode] = useState<'local' | 'worktree'>(
+  const [internalEnvMode, setInternalEnvMode] = useState<'local' | 'worktree'>(
     generalSettings.defaultThreadEnvMode
   );
-  const envModeTouchedRef = useRef(false);
-  const [temporary, setTemporary] = useState(false);
+  const [internalTemporary, setInternalTemporary] = useState(false);
+  const envMode = props.envMode ?? internalEnvMode;
+  const temporary = props.temporary ?? internalTemporary;
   const interactionMode =
     useComposerDraftStore(
       (state) => state.draftsByThreadId[draftId]?.interactionMode
@@ -246,10 +253,10 @@ export function LandingComposer(props: {
     }
   }, [data?.serverConfig]);
   useEffect(() => {
-    if (!envModeTouchedRef.current && data?.generalSettings.defaultThreadEnvMode) {
-      setEnvMode(data.generalSettings.defaultThreadEnvMode);
+    if (props.envMode === undefined && data?.generalSettings.defaultThreadEnvMode) {
+      setInternalEnvMode(data.generalSettings.defaultThreadEnvMode);
     }
-  }, [data?.generalSettings.defaultThreadEnvMode]);
+  }, [data?.generalSettings.defaultThreadEnvMode, props.envMode]);
   const modelSelection = useMemo<ModelSelection>(() => {
     const selectedProject = data?.projects.find(
       (project) => project.id === selectedProjectId
@@ -447,7 +454,7 @@ export function LandingComposer(props: {
           runtimeMode: input.runtimeMode,
           interactionMode: input.interactionMode,
           envMode,
-          branch: null,
+          branch: props.branch ?? null,
           worktreePath: workspaceContext.worktreePath,
           createdAt: new Date().toISOString(),
         });
@@ -457,6 +464,14 @@ export function LandingComposer(props: {
           (thread) => thread.id === threadId
         ),
     });
+    if ((props.notes ?? '').trim().length > 0) {
+      await dispatchSynaraCommand({
+        type: 'thread.meta.update',
+        commandId: landingId('command') as never,
+        threadId: threadId as never,
+        notes: props.notes ?? '',
+      }).catch(() => undefined);
+    }
   }
 
   if (isPending && !data) {
@@ -533,14 +548,14 @@ export function LandingComposer(props: {
         }}
       />
       <EmptyThreadContextTray
-        branch={null}
+        branch={props.branch ?? null}
         className="LandingComposerTray"
         envMode={envMode}
-        onEnvModeChange={(nextEnvMode) => {
-          envModeTouchedRef.current = true;
-          setEnvMode(nextEnvMode);
-        }}
-        onTemporaryChange={() => setTemporary((current) => !current)}
+        onEnvModeChange={props.onEnvModeChange ?? setInternalEnvMode}
+        onTemporaryChange={
+          props.onTemporaryChange ??
+          (() => setInternalTemporary((current) => !current))
+        }
         projectName={targetProject.title}
         temporary={temporary}
         projectControl={

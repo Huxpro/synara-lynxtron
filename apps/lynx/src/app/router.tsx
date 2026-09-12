@@ -149,6 +149,7 @@ import {
   LandingComposer,
   loadLandingBootstrap,
 } from '../components/composer/LandingComposer.lynx';
+import { landingDraftId } from '../components/composer/landingDraftIdentity.logic';
 import { resolveLandingModelProvider } from '../components/composer/landingModelProvider.logic';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { ProviderHealthBanner } from '../components/ProviderHealthBanner.lynx';
@@ -421,6 +422,9 @@ function useProviderHealthBanner(
 
 // --- pages ----------------------------------------------------------------------
 function ThreadsLandingHeader(props: {
+  readonly environmentOpen: boolean;
+  readonly environmentAvailable: boolean;
+  readonly onEnvironmentOpenChange: (open: boolean) => void;
   readonly project: ProjectSummary | null;
   readonly title?: 'New Chat' | 'New thread';
 }) {
@@ -450,8 +454,35 @@ function ThreadsLandingHeader(props: {
           onNavigateToThread={() => {}}
           onOpenTerminal={() => {}}
         />
+        {props.environmentAvailable ? (
+          <EnvironmentToggle
+            open={props.environmentOpen}
+            onChange={props.onEnvironmentOpenChange}
+          />
+        ) : null}
+        <LandingDiffToggle />
       </view>
     </ChatSurfaceHeaderFrame>
+  );
+}
+
+function LandingDiffToggle() {
+  const { semanticIconColor } = useTheme();
+  const diffToggle = useLynxInteractiveState({
+    baseClassName: 'ThreadDiffToggle ui-disabled',
+    accessibleLabel: 'Toggle diff panel',
+    disabled: true,
+  });
+  return (
+    <view className={diffToggle.className} {...diffToggle.eventProps}>
+      <svg
+        className="ThreadDiffToggleIcon"
+        content={colorizeLynxSvg(
+          panelRightCloseSvg,
+          semanticIconColor('secondary')
+        )}
+      />
+    </view>
   );
 }
 
@@ -466,12 +497,20 @@ function ThreadsLandingPage(props: {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
     props.initialProjectId ?? null
   );
+  const [environmentOpen, setEnvironmentOpen] = useState(false);
+  const [branch, setBranch] = useState<string | null>(null);
+  const [notes, setNotes] = useState('');
+  const [temporary, setTemporary] = useState(false);
   const initData = useInitData() as {
     readonly initialComposerModelProvider?: unknown;
   };
   const generalSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
   );
+  const [envMode, setEnvMode] = useState<'local' | 'worktree'>(
+    generalSettings.defaultThreadEnvMode
+  );
+  const envModeTouchedRef = useRef(false);
   const initialModelProvider = resolveLandingModelProvider(
     initData.initialComposerModelProvider,
     generalSettings.defaultProvider
@@ -490,7 +529,10 @@ function ThreadsLandingPage(props: {
     staleTime: 30_000,
   });
   const providerStatuses = landingBootstrap?.serverConfig.providers ?? [];
-  const providerHealth = useProviderHealthBanner('codex', providerStatuses);
+  const providerHealth = useProviderHealthBanner(
+    initialModelProvider,
+    providerStatuses
+  );
   const routePresentation = resolveLandingRoutePresentation({
     initialProjectId: selectedProjectId,
     projects: landingBootstrap?.projects ?? [],
@@ -498,9 +540,27 @@ function ThreadsLandingPage(props: {
   const selectedProject = selectedProjectId
     ? landingBootstrap?.projects.find((project) => project.id === selectedProjectId) ?? null
     : null;
+  const environmentProject = selectedProject ?? landingBootstrap?.homeProject ?? null;
+  const environmentVisible = environmentOpen && environmentProject !== null;
+  useEffect(() => {
+    if (
+      !envModeTouchedRef.current &&
+      landingBootstrap?.generalSettings.defaultThreadEnvMode
+    ) {
+      setEnvMode(landingBootstrap.generalSettings.defaultThreadEnvMode);
+    }
+  }, [landingBootstrap?.generalSettings.defaultThreadEnvMode]);
+  const landingThreadId = landingDraftId(props.containerKind);
   return (
-    <view className="ThreadsLanding">
+    <view
+      className={`ThreadsLanding${
+        environmentVisible ? ' ThreadsLanding--environment-open' : ''
+      }`}
+    >
       <ThreadsLandingHeader
+        environmentOpen={environmentOpen}
+        environmentAvailable={environmentProject !== null}
+        onEnvironmentOpenChange={setEnvironmentOpen}
         project={selectedProject}
         title={routePresentation.headerTitle}
       />
@@ -520,15 +580,51 @@ function ThreadsLandingPage(props: {
             <ComposerColumnFrameSurface>
               <LandingComposer
                 containerKind={props.containerKind}
+                branch={branch}
+                envMode={envMode}
                 initialModelProvider={initialModelProvider}
                 initialProjectId={selectedProjectId}
+                notes={notes}
+                onEnvModeChange={(nextEnvMode) => {
+                  envModeTouchedRef.current = true;
+                  setEnvMode(nextEnvMode);
+                }}
                 onProjectSelectionChange={setSelectedProjectId}
+                onTemporaryChange={() =>
+                  setTemporary((current) => !current)
+                }
                 onThreadCreated={props.onThreadCreated}
+                temporary={temporary}
               />
             </ComposerColumnFrameSurface>
           </CenteredEmptyLandingStack>
         </view>
       </scroll-view>
+      {environmentProject ? (
+        <EnvironmentPanel
+          branch={branch}
+          bootstrapOnly={false}
+          initialData={null}
+          envMode={envMode}
+          notes={notes}
+          onBranchChange={setBranch}
+          onNotesChange={setNotes}
+          onOpenSettings={() => history.push('/settings/general')}
+          onJumpToPinnedMessage={() => {}}
+          onOpenChanges={() => {}}
+          onOpenEditorView={() => {}}
+          open={environmentVisible}
+          pinnedMessages={[]}
+          pinnedMessageTextById={{}}
+          projectId={environmentProject.id}
+          provider={initialModelProvider}
+          pullRequest={null}
+          recapRevision="0:empty:0:settled:no-turn"
+          threadId={null}
+          threadMarkers={[]}
+          workspaceRoot={environmentProject.workspaceRoot}
+        />
+      ) : null}
     </view>
   );
 }

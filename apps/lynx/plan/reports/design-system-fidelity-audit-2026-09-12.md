@@ -159,3 +159,29 @@ values and unresolved Native custom properties.
   confirm prominent disabled paint at 0.2 opacity, resolved light input-focus
   border `hsla(0,0%,5%,.3)`, and dark picker-tooltip geometry `110x27`
   versus Electron `111x26.5`; all retained Native console checks were clean.
+- The project-scoped New Thread comparison now enters Electron through the
+  rendered project action, verifies the resulting project-owned draft, and only
+  then launches Native. This replaces the invalid direct `/new-thread/:id` Web
+  mapping and prevents a Not Found page or synthetic draft from becoming visual
+  authority.
+- Native now renders the canonical Synara mark from the same shared SVG paths as
+  Electron. The former hover-only Lynxtron logo swap and its two packaged PNGs
+  were removed; exact-owned runtime reported the shared `0 0 470 504` viewBox.
+- Project Landing now reuses the real Thread header actions and empty-thread
+  context tray. The visible header order matches Electron: static `New thread`,
+  disabled Handoff, real project Add action, Environment, then disabled Diff.
+  Off-canvas Add/Collapse dock controls were measured outside the 1280px viewport
+  (`x=1726/1758`) and correctly excluded from the visible Native header.
+- Landing env mode, branch, temporary state, and notes are page-owned inputs to
+  the real first `thread.create`; Environment edits use draft-safe callbacks and
+  transfer to the created Thread lifecycle. Native Local → Worktree and Temporary
+  interactions were exercised physically; DevTool reported `aria-label=Worktree`
+  and `aria-pressed=true`.
+- Landing Environment now reuses the production panel with the same non-repo
+  `Initialize Git`, Local Servers, Usage, Editor, Project instructions, and
+  Notepad sequence as Electron. At 1280×820, Electron measured a 312px panel
+  footprint with a 288px surface; Native measured a 288px overlay surface and
+  reduced the 1024px main pane to 712px, preserving the same 312px docked inset.
+  The Native Environment toggle is 28×28, Diff remains disabled, and the
+  error/warning console is empty. The staged bundle SHA-256 is
+  `0ac1b0670a532978c249cb866aef1e792a340fd753f9e6d5a70b0efd7f064cd2`.

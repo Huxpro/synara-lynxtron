@@ -98,6 +98,7 @@ import {
   fetchGitHubRepository,
   fetchGitPullRequestSnapshot,
   fetchGitStatus,
+  initializeGit,
   pullGitBranch,
   fetchGitBranches,
   openPathInEditor,
@@ -588,10 +589,11 @@ function EnvironmentChanges(props: {
 export function EnvironmentGitAction(props: {
   readonly branch: string | null;
   readonly gitStatus: GitStatusResult | null;
+  readonly onBranchChange?: (branch: string) => void;
   readonly open: boolean;
   readonly onCompleted: () => void;
   readonly presentation?: 'environment' | 'toolbar';
-  readonly threadId: string;
+  readonly threadId: string | null;
   readonly workspaceRoot: string;
 }) {
   const { semanticIconColor } = useTheme();
@@ -743,13 +745,17 @@ export function EnvironmentGitAction(props: {
       });
       const summary = summarizeGitResult(result);
       if (result.branch.status === 'created' && result.branch.name) {
-        await dispatchSynaraCommand({
-          type: 'thread.meta.update',
-          commandId: environmentCommandId() as never,
-          threadId: props.threadId as never,
-          branch: result.branch.name,
-          createBranchFlowCompleted: true,
-        });
+        if (props.onBranchChange) {
+          props.onBranchChange(result.branch.name);
+        } else if (props.threadId) {
+          await dispatchSynaraCommand({
+            type: 'thread.meta.update',
+            commandId: environmentCommandId() as never,
+            threadId: props.threadId as never,
+            branch: result.branch.name,
+            createBranchFlowCompleted: true,
+          });
+        }
       }
       setResultLabel(
         summary.description
@@ -1125,7 +1131,8 @@ function EnvironmentBranch(props: {
   readonly envMode: 'local' | 'worktree';
   readonly initialBranches: EnvironmentBootstrapData['branches'];
   readonly open: boolean;
-  readonly threadId: string;
+  readonly onBranchChange?: (branch: string) => void;
+  readonly threadId: string | null;
   readonly workspaceRoot: string;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -1154,12 +1161,16 @@ function EnvironmentBranch(props: {
     setError(false);
     try {
       await checkoutGitBranch({ cwd: props.workspaceRoot, branch });
-      await dispatchSynaraCommand({
-        type: 'thread.meta.update',
-        commandId: environmentCommandId() as never,
-        threadId: props.threadId as never,
-        branch,
-      });
+      if (props.onBranchChange) {
+        props.onBranchChange(branch);
+      } else if (props.threadId) {
+        await dispatchSynaraCommand({
+          type: 'thread.meta.update',
+          commandId: environmentCommandId() as never,
+          threadId: props.threadId as never,
+          branch,
+        });
+      }
       await branchesQuery.refetch();
       setMenuOpen(false);
     } catch {
@@ -1854,8 +1865,9 @@ function EnvironmentRecap(props: {
 
 function EnvironmentProjectInstructions(props: {
   readonly notes: string;
+  readonly onNotesChange?: (notes: string) => void | Promise<void>;
   readonly projectId: string;
-  readonly threadId: string;
+  readonly threadId: string | null;
 }) {
   const textareaRef = useRef<React.ElementRef<'textarea'>>(null);
   const storedInstructions = useProjectInstructionsStore(
@@ -1962,12 +1974,18 @@ function EnvironmentProjectInstructions(props: {
     if (nextNotes === currentNotes) return;
     setCopyState('saving');
     try {
-      await dispatchSynaraCommand({
-        type: 'thread.meta.update',
-        commandId: environmentCommandId() as never,
-        threadId: props.threadId as never,
-        notes: nextNotes,
-      });
+      if (props.onNotesChange) {
+        await props.onNotesChange(nextNotes);
+      } else if (props.threadId) {
+        await dispatchSynaraCommand({
+          type: 'thread.meta.update',
+          commandId: environmentCommandId() as never,
+          threadId: props.threadId as never,
+          notes: nextNotes,
+        });
+      } else {
+        return;
+      }
       copiedNotesRef.current = nextNotes;
       setCopyState('idle');
     } catch {
@@ -1981,7 +1999,10 @@ function EnvironmentProjectInstructions(props: {
       props.notes.trim().length === 0
         ? 'Copy project instructions to notepad'
         : 'Append project instructions to notepad',
-    disabled: value.trim().length === 0 || copyState === 'saving',
+    disabled:
+      value.trim().length === 0 ||
+      copyState === 'saving' ||
+      (!props.threadId && !props.onNotesChange),
     onActivate: () => void copyToNotepad(),
   });
 
@@ -2548,7 +2569,8 @@ function EnvironmentMarkers(props: {
 
 function EnvironmentNotepad(props: {
   readonly notes: string;
-  readonly threadId: string;
+  readonly onNotesChange?: (notes: string) => void | Promise<void>;
+  readonly threadId: string | null;
 }) {
   const textareaRef = useRef<React.ElementRef<'textarea'>>(null);
   const [open, setOpen] = useState(true);
@@ -2607,12 +2629,18 @@ function EnvironmentNotepad(props: {
     saveInFlightRef.current = true;
     setSaveState('saving');
     try {
-      await dispatchSynaraCommand({
-        type: 'thread.meta.update',
-        commandId: environmentCommandId() as never,
-        threadId: props.threadId as never,
-        notes: next,
-      });
+      if (props.onNotesChange) {
+        await props.onNotesChange(next);
+      } else if (props.threadId) {
+        await dispatchSynaraCommand({
+          type: 'thread.meta.update',
+          commandId: environmentCommandId() as never,
+          threadId: props.threadId as never,
+          notes: next,
+        });
+      } else {
+        return;
+      }
       committedRef.current = next;
       pendingLocalEchoRef.current = {
         value: next,
@@ -2700,6 +2728,8 @@ export function EnvironmentPanel(props: {
   readonly initialData: EnvironmentBootstrapData | null;
   readonly envMode: 'local' | 'worktree';
   readonly notes: string;
+  readonly onBranchChange?: (branch: string) => void;
+  readonly onNotesChange?: (notes: string) => void | Promise<void>;
   readonly onOpenSettings: () => void;
   readonly onJumpToPinnedMessage: (messageId: string) => void;
   readonly onOpenChanges: () => void;
@@ -2711,7 +2741,7 @@ export function EnvironmentPanel(props: {
   readonly provider: ProviderKind;
   readonly pullRequest: OrchestrationThreadPullRequest | null;
   readonly recapRevision: string;
-  readonly threadId: string;
+  readonly threadId: string | null;
   readonly threadMarkers: readonly ThreadMarker[];
   readonly workspaceRoot: string | null;
 }) {
@@ -2722,6 +2752,34 @@ export function EnvironmentPanel(props: {
   const liveQueriesEnabled = props.open && !props.bootstrapOnly;
   const [gitStatus, setGitStatus] = useState<GitStatusResult | null>(null);
   const [gitRefreshGeneration, setGitRefreshGeneration] = useState(0);
+  const repositoryQuery = useQuery({
+    queryKey: ['environment-git-branches', props.workspaceRoot],
+    queryFn: () => {
+      'background only';
+      return fetchGitBranches(props.workspaceRoot!);
+    },
+    enabled: liveQueriesEnabled && Boolean(props.workspaceRoot),
+    initialData: props.initialData?.branches ?? undefined,
+    staleTime: 15_000,
+  });
+  const [initializingGit, setInitializingGit] = useState(false);
+  const [initializeGitError, setInitializeGitError] = useState(false);
+  const isGitRepo = repositoryQuery.data?.isRepo === true;
+  const initializeRepository = async () => {
+    'background only';
+    if (!props.workspaceRoot || initializingGit) return;
+    setInitializingGit(true);
+    setInitializeGitError(false);
+    try {
+      await initializeGit(props.workspaceRoot);
+      await repositoryQuery.refetch();
+      setGitRefreshGeneration((current) => current + 1);
+    } catch {
+      setInitializeGitError(true);
+    } finally {
+      setInitializingGit(false);
+    }
+  };
   const usageQuery = useQuery({
     queryKey: ['environment-provider-usage', props.provider],
     queryFn: () => {
@@ -2773,7 +2831,7 @@ export function EnvironmentPanel(props: {
               </view>
             </view>
 
-            {props.workspaceRoot ? (
+            {props.workspaceRoot && isGitRepo ? (
               <EnvironmentChanges
                 bootstrapOnly={props.bootstrapOnly}
                 initialLoadCompleted={
@@ -2788,21 +2846,23 @@ export function EnvironmentPanel(props: {
               />
             ) : null}
 
-            {props.workspaceRoot ? (
+            {props.workspaceRoot && isGitRepo ? (
               <EnvironmentBranch
                 branch={props.branch}
                 bootstrapOnly={props.bootstrapOnly}
                 envMode={props.envMode}
                 initialBranches={props.initialData?.branches ?? null}
                 open={liveQueriesEnabled}
+                onBranchChange={props.onBranchChange}
                 threadId={props.threadId}
                 workspaceRoot={props.workspaceRoot}
               />
             ) : null}
-            {props.workspaceRoot ? (
+            {props.workspaceRoot && isGitRepo ? (
               <EnvironmentGitAction
                 branch={props.branch}
                 gitStatus={gitStatus}
+                onBranchChange={props.onBranchChange}
                 open={liveQueriesEnabled}
                 threadId={props.threadId}
                 workspaceRoot={props.workspaceRoot}
@@ -2810,6 +2870,28 @@ export function EnvironmentPanel(props: {
                   setGitRefreshGeneration((current) => current + 1)
                 }
               />
+            ) : null}
+            {props.workspaceRoot &&
+            !repositoryQuery.isPending &&
+            !isGitRepo ? (
+              <EnvironmentInteractiveRow
+                accessibleLabel={
+                  initializeGitError ? 'Retry Initialize Git' : 'Initialize Git'
+                }
+                baseClassName="EnvironmentInitializeGit"
+                disabled={initializingGit}
+                onActivate={() => void initializeRepository()}
+              >
+                <EnvironmentRow
+                  icon={<GitBranchIcon size={16} color="var(--foreground)" />}
+                  label={initializingGit ? 'Initializing…' : 'Initialize Git'}
+                />
+              </EnvironmentInteractiveRow>
+            ) : null}
+            {initializeGitError ? (
+              <text className="EnvironmentGitActionStatus EnvironmentGitActionStatus--error">
+                Could not initialize Git
+              </text>
             ) : null}
 
             <EnvironmentLocalServers
@@ -2864,7 +2946,9 @@ export function EnvironmentPanel(props: {
               />
             ) : null}
 
-            {props.workspaceRoot && visibility.showEnvironmentRecap ? (
+            {props.workspaceRoot &&
+            props.threadId &&
+            visibility.showEnvironmentRecap ? (
               <EnvironmentRecap
                 open={liveQueriesEnabled}
                 revision={props.recapRevision}
@@ -2873,7 +2957,8 @@ export function EnvironmentPanel(props: {
               />
             ) : null}
 
-            {visibility.showEnvironmentPinned &&
+            {props.threadId &&
+            visibility.showEnvironmentPinned &&
             props.pinnedMessages.length > 0 ? (
               <>
                 <view className="EnvironmentDivider" />
@@ -2886,7 +2971,8 @@ export function EnvironmentPanel(props: {
               </>
             ) : null}
 
-            {visibility.showEnvironmentMarkers &&
+            {props.threadId &&
+            visibility.showEnvironmentMarkers &&
             props.threadMarkers.length > 0 ? (
               <>
                 <view className="EnvironmentDivider" />
@@ -2907,6 +2993,7 @@ export function EnvironmentPanel(props: {
                   projectId={props.projectId}
                   threadId={props.threadId}
                   notes={props.notes}
+                  onNotesChange={props.onNotesChange}
                 />
               </>
             ) : null}
@@ -2918,6 +3005,7 @@ export function EnvironmentPanel(props: {
                   key={props.threadId}
                   threadId={props.threadId}
                   notes={props.notes}
+                  onNotesChange={props.onNotesChange}
                 />
               </>
             ) : null}
