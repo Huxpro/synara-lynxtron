@@ -47,10 +47,32 @@ Synara fidelity item.
 | FC-033 | COMPLETE | Identity, truthful cases, primitive inventory, and current-head runtime matrix are closed; future expansion is regression work. |
 | FC-034–036 | COMPLETE FOR DETERMINISTIC PRODUCT STATES | Physical keyboard-focus traversal is host-input acceptance under FC-026; pointer hover/action paths are already sampled. |
 | FC-037–039 | COMPLETE | Regression sampling only. |
+| FC-040 | COMPLETE | Environment panel was positioned inside the already narrowed `ThreadPageMain` but also received the right-dock width as an inline right inset, subtracting the dock twice and pushing the panel over the application sidebar. The redundant inset is removed and guarded by focused tests; exact-owned 0.0.22 geometry keeps the panel within the thread content when Environment and Explorer are open together. |
 
-No remaining row has an unowned or safely automatable Synara implementation
-task. The outstanding acceptance rows require either a human-generated physical
+No remaining row has an unowned, safely automatable Synara implementation task.
+The outstanding acceptance rows require either a human-generated physical
 input/service condition or a newer Lynxtron runtime.
+
+### FC-040 Environment overlay anchoring closure
+
+- The reported frame showed Environment at the left edge while a 512px
+  Explorer/file pane occupied the right side. Native had already narrowed
+  `.ThreadPageMain` by the visible dock width, but `EnvironmentPanel` also
+  applied that same width as an inline `right` inset. The duplicate subtraction
+  moved the overlay out of its owning chat column and across the 256px app
+  sidebar. Web authority does not apply a second inset because Environment is
+  already mounted inside its narrowed chat column.
+- `rightInsetPx` and its inline override are removed. The Environment overlay
+  remains `right:0` within `.ThreadPageMain`; the dock continues to own only the
+  main-column width reduction. Focused Environment coverage passes 8/8 and now
+  rejects reintroducing the redundant inset.
+- Exact-owned Lynxtron 0.0.22 PID `20095`, PID-derived DevTool
+  `localhost:8902`, and bundle
+  `a57ce0f558e3f6560014c99456d11c6f068afcd3d8c0729c9571b26d5a2e4797`
+  verified the reported combination at 1280x820: Sidebar x=0–256,
+  ThreadPageMain x=256–768, Environment x=456–768, and Explorer x=768–1280.
+  Environment no longer intersects the application sidebar and the exact-client
+  warning/error console is empty.
 
 ### Current status overrides
 

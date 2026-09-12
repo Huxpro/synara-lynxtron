@@ -392,14 +392,15 @@ describe('Lynx Environment panel', () => {
     expect(styles).toMatch(
       /\.EnvironmentOverlay\s*\{[^}]*right:\s*0;[^}]*flex-direction:\s*column;[^}]*padding:\s*12px;[^}]*transition:[^}]*300ms cubic-bezier\(0\.32,\s*0\.72,\s*0,\s*1\)/s
     );
-    expect(panelSource).toContain('readonly rightInsetPx?: number | null');
-    expect(panelSource).toContain("{ right: `${props.rightInsetPx}px` }");
+    expect(panelSource).not.toContain('rightInsetPx');
     expect(routerSource).toContain('const effectiveRightDockWidth =');
     expect(routerSource).toContain(
       'rightDockWidth !== null && rightDockWidth > 0'
     );
-    expect(routerSource).toContain('rightInsetPx={');
-    expect(routerSource).toContain('effectiveRightDockWidth');
+    expect(routerSource).not.toContain('rightInsetPx={');
+    expect(routerSource).toContain(
+      '(threadPageWidth || viewportWidth) - effectiveRightDockWidth'
+    );
     expect(routerSource).toContain('resolveEnvironmentPanelLayout({');
     expect(routerSource).toContain(
       "bodyState.kind === 'empty'"

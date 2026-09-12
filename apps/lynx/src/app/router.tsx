@@ -2589,9 +2589,6 @@ function ThreadPage(props: ThreadPageProps) {
           threadMarkers={currentThread.threadMarkers}
           pullRequest={currentThread.lastKnownPr}
           provider={currentThread.provider ?? 'codex'}
-          rightInsetPx={
-            effectiveRightDockWidth
-          }
           recapRevision={threadRecapRevision(
             data ?? [],
             currentThread.latestTurnState
