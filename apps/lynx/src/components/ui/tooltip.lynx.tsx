@@ -64,7 +64,13 @@ export function TooltipPopup(props: {
   const tooltip = useContext(TooltipContext);
   if (!tooltip.open) return null;
   return (
-    <view className={cx('LxTooltipPopup', props.className)}>
+    <view
+      className={cx(
+        'LxTooltipPopup',
+        props.variant === 'picker' && 'LxTooltipPopup--picker',
+        props.className
+      )}
+    >
       {textContent(props.children, 'LxTooltipText')}
     </view>
   );

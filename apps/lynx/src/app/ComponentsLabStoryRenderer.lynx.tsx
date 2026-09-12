@@ -190,7 +190,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     return <Textarea aria-invalid={props.state === 'invalid'} className={`ComponentsLabTextarea${props.state === 'focus' ? ' ComponentsLabPrimitiveFocus' : ''}`} defaultValue={props.state === 'filled' ? 'Describe the requested component change.' : undefined} disabled={props.state === 'disabled'} nativeInput placeholder="Describe the change" size={size} />;
   }
   if (props.storyId === 'ui/icon-button') {
-    const stateClass = `${props.state === 'hover' ? ' ui-hover' : props.state === 'pressed' ? ' ui-pressed' : ''}${props.state === 'focus' ? ' ComponentsLabPrimitiveFocus' : ''}`;
+    const stateClass = `${props.state === 'hover' ? ' ui-hover' : props.state === 'pressed' ? ' ui-pressed' : ''}${props.state === 'focus' ? ' ui-focus' : ''}`;
     const size = props.variant === 'xs' ? 'icon-xs' : props.variant === 'sm' ? 'icon-sm' : 'icon';
     return <view className="ComponentsLabPrimitiveGrid"><IconButton className={stateClass} disabled={props.state === 'disabled' || props.variant === 'disabled'} label="Add item" size={size}><PlusIcon size={14} /></IconButton></view>;
   }
@@ -299,9 +299,9 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
   }
   if (props.storyId === 'ui/button') {
     const disabled = props.state === 'disabled';
-    const stateClass = `${props.state === 'hover' ? ' ui-hover' : props.state === 'pressed' ? ' ui-pressed' : ''}${props.state === 'focus' ? ' ComponentsLabPrimitiveFocus' : ''}`;
+    const stateClass = `${props.state === 'hover' ? ' ui-hover' : props.state === 'pressed' ? ' ui-pressed' : ''}${props.state === 'focus' ? ' ui-focus' : ''}`;
     if (props.variant === 'icon') return <Button aria-label="Add item" className={stateClass} disabled={disabled} size="icon-xs" variant="ghost"><PlusIcon size={14} /></Button>;
-    const variant = props.variant === 'primary' ? 'default' : props.variant as 'default' | 'secondary' | 'outline' | 'ghost' | 'destructive';
+    const variant = props.variant === 'primary' ? 'default' : props.variant as 'default' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'prominent';
     const label = props.variant === 'primary' ? 'Primary' : `${props.variant?.slice(0, 1).toUpperCase()}${props.variant?.slice(1)}`;
     return <Button className={stateClass} disabled={disabled} variant={variant}>{label}</Button>;
   }
@@ -309,7 +309,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     const value = props.state === 'filled' ? 'Component fidelity' : undefined;
     const disabled = props.state === 'disabled';
     const invalid = props.state === 'invalid';
-    const focusClass = props.state === 'focus' ? 'ComponentsLabPrimitiveFocus' : '';
+    const focusClass = props.state === 'focus' ? 'ui-focus' : '';
     const size = props.variant === 'small' ? 'sm' : props.variant === 'large' ? 'lg' : 'default';
     return <view className="ComponentsLabInputGrid"><Input aria-invalid={invalid} className={focusClass} defaultValue={value} disabled={disabled} placeholder={`${props.variant ?? 'default'} input`} size={size} variant={props.variant === 'soft' ? 'soft' : 'default'} /></view>;
   }

@@ -50,4 +50,20 @@ describe('Lynx Input accessibility contract', () => {
       /<LynxInput[\s\S]{0,260}aria-invalid=\{ariaInvalid\}/
     );
   });
+
+  it('projects real input focus onto the shared control shell', () => {
+    const source = readFileSync(
+      new URL('./input.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
+
+    expect(source).toContain('const [focused, setFocused] = useState(false);');
+    expect(source).toContain('setFocused(true);');
+    expect(source).toContain('setFocused(false);');
+    expect(source).toContain("focused && 'ui-focus'");
+    expect(styles).toMatch(
+      /\.LxInputControl\.ui-focus\s*\{[^}]*border-color:\s*var\(--control-input-focus-border\);/s
+    );
+  });
 });

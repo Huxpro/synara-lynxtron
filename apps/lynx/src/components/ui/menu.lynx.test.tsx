@@ -193,7 +193,7 @@ describe('Lynx Menu overlay contract', () => {
       /\.LxMenuTrigger\.ui-(?:hover|focus|pressed)\s*\{/
     );
     expect(primitiveStyles).toMatch(
-      /\.LxMenuTrigger--disabled\s*\{[^}]*opacity:\s*0\.48;/s
+      /\.LxMenuTrigger--disabled\s*\{[^}]*opacity:\s*var\(--control-disabled-opacity\);/s
     );
     expect(source).toContain(
       'attempt < MENU_ANCHOR_RETRY_COUNT'

@@ -32,6 +32,9 @@
   );
   --font-chat-code-family: var(--theme-font-code-family, var(--font-mono-family));
   --terminal-font-family: "JetBrainsMono NFM", "JetBrainsMono NF", "JetBrains Mono", monospace;
+  --control-disabled-opacity: 0.64;
+  --control-focus-ring-color: color-mix(in srgb, var(--color-border-focus) 60%, transparent);
+  --control-input-focus-border: color-mix(in srgb, var(--foreground) 30%, transparent);
   /* The Browser local-server launcher is intentionally an always-dark canvas
      in Electron. Keep its fixed preview palette semantic and shared so Native
      matches the authority without duplicating literal white-on-dark values. */

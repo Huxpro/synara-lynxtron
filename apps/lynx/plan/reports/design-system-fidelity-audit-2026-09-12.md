@@ -18,7 +18,7 @@ values and unresolved Native custom properties.
 - Medium: 2
 - Low: 2
 - Existing strengths: 46 paired real-component stories, 92 renderer mappings,
-  3,152 meaningful cases, zero missing primitive counterparts, and broad
+  3,192 meaningful cases, zero missing primitive counterparts, and broad
   semantic-icon consumer coverage.
 
 ## Findings
@@ -104,3 +104,28 @@ values and unresolved Native custom properties.
 - Focused regression result: 17/17 Native assertions and 1/1 Web assertion pass.
 - The complete workspace production build passes and stages Lynx bundle SHA-256
   c6d8613d01989910622e28c8f4a3be3bba149313ca71bd4cec5c113b9c104e9c.
+
+## Primitive state follow-up
+
+- Button, Input, Textarea, Select, Combobox, InputGroup, Toggle, Checkbox,
+  Switch, Badge, Menu, and Command disabled paint now share
+  `--control-disabled-opacity: 0.64`; the prominent action keeps Electron's
+  deliberate `0.2` disabled exception.
+- Native Button focus now uses the shared action-focus ring role, while Native
+  Input focus uses the quieter input-border role that matches Electron.
+- Native `prominent` buttons now implement Electron's inverse capsule paint
+  instead of silently falling back to the default primary variant.
+- Native Tooltip now distinguishes the default 10px surface from the 10.4px
+  composer-picker surface and matches their respective insets and shadows.
+- Exact-owned 0.0.22 Component Lab checks verified the prominent disabled
+  button at 0.2 opacity with inverse black/white paint; light Input focus now
+  resolves to `hsla(0,0%,5%,.3)` instead of leaking an unsupported
+  `color-mix(...)` expression; the dark picker Tooltip measures `110x27`
+  versus Electron `111x26.5`. All retained Native console checks were clean.
+- The post-normalization workspace build passes with staged Lynx bundle SHA-256
+  `b3d1cc6965f84343b87a7a277004bd618abb034d983f1dd29f6d12ec1f40934a`.
+- Exact-owned Lynxtron 0.0.22 runtime checks on staged bundle
+  `72b48d964334c81178559ded6d80f716d6d15d905131487f79782cdc837f8e03`
+  confirm prominent disabled paint at 0.2 opacity, resolved light input-focus
+  border `hsla(0,0%,5%,.3)`, and dark picker-tooltip geometry `110x27`
+  versus Electron `111x26.5`; all retained Native console checks were clean.

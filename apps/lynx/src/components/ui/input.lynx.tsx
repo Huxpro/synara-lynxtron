@@ -11,6 +11,7 @@ import {
   useEffect,
   useImperativeHandle,
   useRef,
+  useState,
 } from '@lynx-js/react';
 import type { NodesRef } from '@lynx-js/types';
 
@@ -260,6 +261,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
 ) {
   const scopeDisabled = useLynxInteractionDisabled();
   const resolvedDisabled = scopeDisabled || Boolean(disabled);
+  const [focused, setFocused] = useState(false);
   const eventForValue = (value: string): LynxInputFocusEvent => ({
     target: { value },
     currentTarget: { value },
@@ -279,10 +281,12 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
   };
   const handleFocus: NonNullable<LynxInputProps['onFocus']> = (value) => {
     'background only';
+    setFocused(true);
     onFocus?.(eventForValue(value));
   };
   const handleBlur: NonNullable<LynxInputProps['onBlur']> = (value) => {
     'background only';
+    setFocused(false);
     onBlur?.(eventForValue(value));
   };
 
@@ -294,6 +298,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
         variant === 'soft' && 'LxInputControl--soft',
         resolvedDisabled && 'LxInputControl--disabled',
         ariaInvalid && 'LxInputControl--invalid',
+        focused && 'ui-focus',
         className
       )}
     >

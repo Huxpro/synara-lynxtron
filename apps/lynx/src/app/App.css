@@ -65,6 +65,8 @@
 }
 
 .SliceRoot--theme-light {
+  --control-focus-ring-color: rgba(1, 105, 204, 0.6);
+  --control-input-focus-border: rgba(13, 13, 13, 0.3);
   --pr-avatar-ring: rgba(13, 13, 13, 0.0345);
   --pr-comment-divider: rgba(13, 13, 13, 0.0345);
   --pr-comment-error-border: rgba(224, 46, 42, 0.3);
@@ -91,6 +93,8 @@
 }
 
 .SliceRoot--theme-dark {
+  --control-focus-ring-color: rgba(51, 134, 214, 0.378);
+  --control-input-focus-border: rgba(252, 252, 252, 0.3);
   --pr-avatar-ring: rgba(252, 252, 252, 0.036);
   --pr-comment-divider: rgba(252, 252, 252, 0.036);
   --pr-comment-error-border: rgba(227, 67, 63, 0.3);

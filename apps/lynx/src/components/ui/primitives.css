@@ -20,6 +20,10 @@
   transform: none;
 }
 
+.LxButton.ui-focus {
+  box-shadow: 0 0 0 1px var(--background), 0 0 0 2px var(--control-focus-ring-color);
+}
+
 .LxButton--ghost.ui-active,
 .LxButton--ghost.ui-pressed {
   background-color: var(--color-background-button-secondary);
@@ -41,7 +45,7 @@
 }
 
 .LxButton.ui-disabled {
-  opacity: 0.48;
+  opacity: var(--control-disabled-opacity);
 }
 
 .LxButton__text {
@@ -89,6 +93,25 @@
 
 .LxButton--destructive-outline .LxButton__text {
   color: var(--destructive);
+}
+
+.LxButton--prominent {
+  border-radius: 999px;
+  background-color: var(--foreground);
+  color: var(--background);
+}
+
+.LxButton--prominent .LxButton__text {
+  color: var(--background);
+}
+
+.LxButton--prominent.ui-hover {
+  transform: scale(1.05);
+}
+
+.LxButton--prominent.ui-disabled {
+  opacity: 0.2;
+  transform: none;
 }
 
 .LxButton--ghost,
@@ -209,7 +232,11 @@
 }
 
 .LxInputControl--disabled {
-  opacity: 0.55;
+  opacity: var(--control-disabled-opacity);
+}
+
+.LxInputControl.ui-focus {
+  border-color: var(--control-input-focus-border);
 }
 
 .LxInputControl--invalid {
@@ -256,7 +283,7 @@
 
 .LxSwitch.ui-hover { box-shadow: 0 0 0 1px var(--border); }
 .LxSwitch.ui-focus { box-shadow: 0 0 0 2px var(--ring); }
-.LxSwitch.ui-disabled { opacity: 0.48; }
+.LxSwitch.ui-disabled { opacity: var(--control-disabled-opacity); }
 
 .LxSwitchThumb {
   width: 16px;
@@ -505,7 +532,7 @@
 }
 
 .LxCommandItem--disabled {
-  opacity: 0.48;
+  opacity: var(--control-disabled-opacity);
 }
 
 .LxCommandSeparator {
@@ -590,11 +617,16 @@
   flex-direction: column;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--border);
+  border-color: var(--color-border-light);
   border-radius: 22px;
   background-color: var(--popover);
   color: var(--popover-foreground);
   padding: 16px;
+  box-shadow: 0 16px 50px -12px rgba(0, 0, 0, 0.34);
+}
+
+.SliceRoot--theme-dark .LxDialogPopup {
+  box-shadow: 0 16px 50px -12px rgba(0, 0, 0, 0.7);
 }
 
 .LxDialogPopup.ui-entering,
@@ -719,7 +751,7 @@
 }
 
 .LxMenuTrigger--disabled {
-  opacity: 0.48;
+  opacity: var(--control-disabled-opacity);
 }
 
 .LxMenuPopup {
@@ -735,6 +767,7 @@
   border-color: var(--border);
   border-radius: 18px;
   background-color: var(--popover);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
 .LxMenuSubPopup {
@@ -839,7 +872,7 @@
 }
 
 .LxMenuItem--disabled {
-  opacity: 0.48;
+  opacity: var(--control-disabled-opacity);
 }
 
 .LxMenuItem__row {
@@ -902,17 +935,28 @@
   left: 0;
   bottom: 100%;
   z-index: 60;
-  width: 220px;
+  width: max-content;
   max-width: 260px;
-  padding: 6px 9px;
+  padding: 4px 8px;
   border-width: 1px;
   border-style: solid;
   border-color: var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   background-color: var(--popover);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.LxTooltipPopup--picker {
+  border-radius: 10.4px;
+  box-shadow: 0 4px 18px -6px rgba(13, 13, 13, 0.07);
+}
+
+.SliceRoot--theme-dark .LxTooltipPopup--picker {
+  box-shadow: 0 6px 24px -10px rgba(0, 0, 0, 0.3);
 }
 
 .LxTooltipText {
   color: var(--popover-foreground);
   font-size: 11px;
+  line-height: 16.5px;
 }
