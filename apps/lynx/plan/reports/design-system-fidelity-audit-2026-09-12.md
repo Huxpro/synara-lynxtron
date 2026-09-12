@@ -185,3 +185,22 @@ values and unresolved Native custom properties.
   The Native Environment toggle is 28×28, Diff remains disabled, and the
   error/warning console is empty. The staged bundle SHA-256 is
   `0ac1b0670a532978c249cb866aef1e792a340fd753f9e6d5a70b0efd7f064cd2`.
+- Follow-up validation used the Electron project's rendered New thread action
+  rather than a synthesized draft route. The final Native header reuses the
+  production Handoff/Add action controls, exposes a functional Environment
+  toggle, and keeps Diff disabled before a git-backed thread exists. Native
+  Environment now uses the same repo gate as Electron: non-repositories show
+  `Initialize Git` instead of invalid Changes/Branch rows. Landing-owned env,
+  branch, notes, and temporary state are transferred into the real thread
+  creation/lifecycle path. The open panel retained the 312px docked footprint
+  (288px surface plus 12px gutters) and the exact visible section order. The
+  off-canvas Add/Collapse controls were measured at x=1726/1758 outside the
+  1280px viewport and were not treated as visible residuals. Focused Native
+  suites pass 34/34, the production build passes, and the final staged bundle
+  SHA-256 is
+  `c90fa4e26e9e9585522db3f1ed395a573c0037c7d43a6eb934641ebfc1f50f0c`.
+- Current-head project Kanban at light 1280×820 has no actionable composition
+  residual: both renderers use a 984×46 route header, three equal columns,
+  315px inner card tracks (Electron 314.67px fractional layout), 50px empty
+  states, and the same single Done card hierarchy. Native error/warning console
+  output is empty; the 1–2px outer-column difference is grid rounding.
