@@ -5,6 +5,7 @@ import { projectAutomationList } from '@synara/shared/automationList';
 
 import { Button } from '../components/ui/button';
 import { PlusIcon, RefreshCwIcon } from '../lib/icons';
+import { useTheme } from '../adapters/useTheme.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { sleepOnHost } from '../platform/timer';
 import {
@@ -142,6 +143,7 @@ export function AutomationsPage({
   readonly automationId?: string | null;
   readonly navigate: (to: string) => void;
 }) {
+  const { semanticIconColor } = useTheme();
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const automations = useQuery({
@@ -275,7 +277,7 @@ export function AutomationsPage({
           aria-label="Refresh"
           onClick={() => void automations.refetch()}
         >
-          <RefreshCwIcon size={16} color="var(--foreground)" />
+          <RefreshCwIcon size={16} color={semanticIconColor('secondary')} />
         </Button>
         <Button
           className="AutomationsNewAction"
@@ -284,7 +286,11 @@ export function AutomationsPage({
           aria-label="New automation"
           onClick={() => setCreateOpen(true)}
         >
-          <PlusIcon className="AutomationsNewActionIcon" size={14} />
+          <PlusIcon
+            className="AutomationsNewActionIcon"
+            color={semanticIconColor('inverse')}
+            size={14}
+          />
           <text className="LxButton__text AutomationsNewActionText">
             New automation
           </text>

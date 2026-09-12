@@ -312,6 +312,10 @@
       "types": "./src/automationList.ts",
       "import": "./src/automationList.ts"
     },
+    "./automationTemplates": {
+      "types": "./src/automationTemplates.ts",
+      "import": "./src/automationTemplates.ts"
+    },
     "./componentLab": {
       "types": "./src/componentLab.ts",
       "import": "./src/componentLab.ts"

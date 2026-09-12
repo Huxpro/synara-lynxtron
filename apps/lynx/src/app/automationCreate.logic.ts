@@ -51,6 +51,7 @@ export function resolveAutomationModelSelectionForProjectChange(input: {
 }
 
 export function buildAutomationCreateInput(input: {
+  readonly acknowledgeLocalCheckout: boolean;
   readonly interactionMode: ProviderInteractionMode;
   readonly completionPolicy: AutomationCompletionPolicy;
   readonly maxIterations: number | null;
@@ -95,7 +96,11 @@ export function buildAutomationCreateInput(input: {
     misfirePolicy: 'coalesce',
     acknowledgedRisks: [
       ...(input.runtimeMode === 'full-access' ? ['full-access' as const] : []),
-      ...(input.worktreeMode === 'local' ? ['local-checkout' as const] : []),
+      ...(input.mode === 'standalone' &&
+      input.acknowledgeLocalCheckout &&
+      (input.worktreeMode === 'auto' || input.worktreeMode === 'local')
+        ? ['local-checkout' as const]
+        : []),
     ],
   };
 }

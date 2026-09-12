@@ -97,6 +97,7 @@ function ComposerProviderOptionElement(props: {
 
 export function ComposerModelControl(props: {
   readonly compact?: boolean;
+  readonly hideStatusLabel?: boolean;
   readonly disabled?: boolean;
   readonly modelSelection: ModelSelection;
   readonly catalogModelSelection?: ModelSelection;
@@ -566,7 +567,11 @@ export function ComposerModelControl(props: {
             statusLabel={props.splitTraits ? null : effortLabel}
             showFastBadge={!props.splitTraits && traitSelection.fastModeEnabled}
             hideModelLabel={props.compact ?? false}
-            hideStatusLabel={(props.splitTraits ?? false) || (props.compact ?? false)}
+            hideStatusLabel={
+              (props.splitTraits ?? false) ||
+              (props.compact ?? false) ||
+              (props.hideStatusLabel ?? false)
+            }
           />
         </MenuTrigger>
         <MenuPopup

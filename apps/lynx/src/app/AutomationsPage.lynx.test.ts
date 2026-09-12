@@ -166,9 +166,8 @@ describe('Lynx Automations route', () => {
 
     expect(pageSource).toContain('className="AutomationsNewAction"');
     expect(pageSource).toContain('aria-label="New automation"');
-    expect(pageSource).toContain(
-      '<PlusIcon className="AutomationsNewActionIcon" size={14} />'
-    );
+    expect(pageSource).toContain('className="AutomationsNewActionIcon"');
+    expect(pageSource).toContain("color={semanticIconColor('inverse')}");
     expect(styles).toMatch(
       /\.SliceRoot--viewport-compact \.AutomationsNewAction\s*\{[^}]*width:\s*32px;/s
     );
@@ -229,9 +228,12 @@ describe('Lynx Automations route', () => {
     expect(createLogicSource).toContain(
       'export type CreateWorktreeMode = AutomationWorktreeMode'
     );
-    expect(dialogSource).toContain('label="Local"');
-    expect(dialogSource).toContain("setWorktreeMode('local')");
-    expect(dialogSource).toContain("'Local checkout'");
+    expect(dialogSource).toContain('<MenuRadioItem value="local">Local</MenuRadioItem>');
+    expect(dialogSource).toContain('setWorktreeMode(value as CreateWorktreeMode)');
+    expect(dialogSource).toContain('buildAutomationDraftWarnings({');
+    expect(dialogSource).toContain(
+      "acknowledgedWarningIds.has('local-checkout')"
+    );
     expect(createLogicSource).toContain('worktreeMode: input.worktreeMode');
     expect(createLogicSource).toContain('maxIterations: input.maxIterations');
     expect(createLogicSource).toContain('stopOnError: input.stopOnError');
@@ -240,45 +242,54 @@ describe('Lynx Automations route', () => {
     );
     expect(dialogSource).toContain('Max iterations');
     expect(dialogSource).toContain('Stop on error');
-    expect(dialogSource).toContain('Interaction mode');
     expect(dialogSource).toContain('Permissions');
-    expect(dialogSource).toContain('label="Standalone"');
-    expect(dialogSource).toContain('label="Heartbeat"');
+    expect(dialogSource).toContain('<MenuRadioItem value="standalone">Standalone</MenuRadioItem>');
+    expect(dialogSource).toContain('<MenuRadioItem value="heartbeat">Heartbeat</MenuRadioItem>');
     expect(dialogSource).toContain('Target thread');
     expect(dialogSource).toContain('Stop when');
     expect(dialogSource).toContain(
       '<DialogPanel className="AutomationCreatePanel">'
     );
     expect(styles).toMatch(
-      /\.LxDialogPopup\.AutomationCreateDialog\s*\{[^}]*width:\s*560px;[^}]*max-width:\s*calc\(100vw - 32px\);[^}]*height:\s*calc\(100vh - 32px\);[^}]*max-height:\s*680px;/s
+      /\.LxDialogPopup\.AutomationCreateDialog\s*\{[^}]*width:\s*768px;[^}]*max-width:\s*calc\(100vw - 32px\);[^}]*height:\s*465px;[^}]*max-height:\s*calc\(100vh - 32px\);/s
+    );
+    expect(styles).toMatch(
+      /\.LxDialogPopup\.AutomationCreateDialog--expanded\s*\{[^}]*height:\s*503px;/s
+    );
+    expect(styles).toMatch(
+      /\.LxDialogPopup\.AutomationCreateDialog--expanded-more\s*\{[^}]*height:\s*541px;/s
+    );
+    expect(dialogSource).toContain(
+      "? ' AutomationCreateDialog--expanded-more'"
+    );
+    expect(dialogSource).toContain(
+      "? ' AutomationCreateDialog--expanded'"
     );
     expect(styles).toMatch(
       /\.AutomationCreatePanel\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;/s
     );
     expect(styles).toMatch(
-      /\.LxDialogPopup\.AutomationCreateDialog\s*>\s*\.AutomationCreatePanel\s*\{[^}]*max-height:\s*520px;/s
+      /\.LxDialogPopup\.AutomationCreateDialog\s*>\s*\.AutomationCreatePanel\s*\{[^}]*max-height:\s*none;/s
     );
     expect(dialogSource).toContain(
-      '<view className="AutomationCreateOptionsGrid">'
+      '<view className="AutomationCreateToolbar">'
     );
     expect(styles).toMatch(
-      /\.AutomationCreateOptionsGrid\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);/s
+      /\.AutomationCreateToolbar\s*\{[^}]*display:\s*flex;[^}]*flex:\s*1;[^}]*flex-direction:\s*row;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-compact \.AutomationCreateOptionsGrid\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\);/s
+      /\.AutomationCreatePrompt\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*240px;[^}]*border-width:\s*0;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-medium \.AutomationCreatePanel,[^{]*\{[^}]*gap:\s*8px;/s
+      /\.AutomationCreateName\s*\{[^}]*flex:\s*1;[^}]*border-width:\s*0;[^}]*font-size:\s*18px;[^}]*line-height:\s*28px;/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-medium[\s\S]*?\.AutomationCreateDialog[\s\S]*?> \.LxDialogDescription\s*\{[^}]*display:\s*none;/s
+      /\.AutomationCreateFooter\s*\{[^}]*flex-shrink:\s*0;[^}]*height:\s*52px;[^}]*margin-top:\s*0;[^}]*padding:\s*4px 16px 16px;/s
     );
-    expect(styles).toMatch(
-      /\.SliceRoot--viewport-medium[\s\S]*?\.AutomationCreateDialog[\s\S]*?> \.AutomationCreateFooter\s*\{[^}]*flex-shrink:\s*0;[^}]*margin-top:\s*4px;/s
-    );
-    expect(styles).toMatch(
-      /\.SliceRoot--viewport-medium \.AutomationCreatePrompt,[^{]*\{[^}]*height:\s*56px;[^}]*min-height:\s*56px;/s
-    );
+    expect(dialogSource).toContain('AutomationCreateWarnings');
+    expect(dialogSource).toContain('acknowledgedWarningIds');
+    expect(dialogSource).toContain('buildAutomationDraftWarnings({');
+    expect(dialogSource).toContain('AUTOMATION_TEMPLATES.map');
     expect(dialogSource).toContain('Heartbeat stop condition');
     expect(dialogSource).toContain('completionPolicyFromStopWhen(stopWhen)');
     expect(dialogSource).toContain('No threads in this project');
@@ -288,11 +299,18 @@ describe('Lynx Automations route', () => {
     expect(dialogSource).toContain(
       'thread.id === targetThreadId && thread.projectId === projectId'
     );
-    expect(dialogSource).toContain('label="Approval required"');
-    expect(dialogSource).toContain('label="Full access"');
-    expect(dialogSource).toContain('await dialogs.confirm(');
     expect(dialogSource).toContain(
-      'Scheduled full-access runs can make changes without per-step approval.'
+      '<MenuRadioItem value="approval-required">Approval required</MenuRadioItem>'
+    );
+    expect(dialogSource).toContain(
+      '<MenuRadioItem value="full-access">Full access</MenuRadioItem>'
+    );
+    expect(dialogSource).toContain('hasUnacknowledgedWarning');
+    expect(dialogSource).toContain('warning.requiresAcknowledgement');
+    expect(dialogSource).toContain('function InteractiveAutomationWarningRow');
+    expect(dialogSource).toContain('accessibility-trait="text"');
+    expect(dialogSource).toContain(
+      "'AutomationCreateWarning AutomationCreateWarning--interactive'"
     );
     expect(createLogicSource).toContain('runtimeMode: input.runtimeMode');
     expect(createLogicSource).toContain(
@@ -307,12 +325,16 @@ describe('Lynx Automations route', () => {
     );
     expect(dialogSource).toContain('resolveAutomationModelSelection({');
     expect(dialogSource).toContain(
+      'initialProjectModelSelection ?? AUTOMATION_DEFAULT_MODEL_SELECTION'
+    );
+    expect(dialogSource).toContain(
       'resolveAutomationModelSelectionForProjectChange({'
     );
     expect(dialogSource).toContain(
       'defaultProvider: generalSettings.defaultProvider'
     );
     expect(dialogSource).toContain('<ComposerModelControl');
+    expect(dialogSource).toContain('hideStatusLabel');
     expect(dialogSource).toContain('fetchAutomationCreateServerConfig');
     expect(dialogSource).toContain('fetchAutomationCreateModels');
     expect(queriesSource).toContain(
@@ -327,7 +349,7 @@ describe('Lynx Automations route', () => {
       dialogSource.indexOf('export function AutomationCreateDialog')
     );
     expect(dialogSource).toContain('Boolean(project)');
-    expect(dialogSource).toContain('Create automation');
+    expect(dialogSource).toContain("pending ? 'Creating...' : 'Create'");
     expect(dialogSource).not.toContain("model: 'gpt-");
   });
 

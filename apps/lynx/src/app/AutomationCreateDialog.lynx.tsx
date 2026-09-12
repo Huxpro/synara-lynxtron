@@ -1,5 +1,9 @@
-import { createElement, useEffect, useState } from '@lynx-js/react';
+import { useEffect, useState } from '@lynx-js/react';
 import { useQuery } from '@tanstack/react-query';
+import {
+  AUTOMATION_DEFAULT_MODEL_SELECTION,
+  AUTOMATION_TEMPLATES,
+} from '@synara/shared/automationTemplates';
 import type {
   AutomationCreateInput,
   ModelSelection,
@@ -10,6 +14,10 @@ import {
   readSettingsGeneralProjection,
 } from '@synara-web/appSettingsStorageProjection.logic';
 import { completionPolicyFromStopWhen } from '@synara-web/lib/automationCompletionPolicy';
+import {
+  buildAutomationDraftWarnings,
+  type AutomationDraftWarningId,
+} from '@synara-web/lib/automationDraft';
 
 import {
   fetchAutomationCreateModels,
@@ -18,19 +26,44 @@ import {
   type ThreadSummary,
 } from './queries';
 import { webStorage } from '../platform/storage';
-import { dialogs } from '../platform/dialogs';
 import { ComposerModelControl } from '../components/composer/ComposerModelControl.lynx';
 import { Button } from '../components/ui/button';
+import { CheckboxIndicator } from '../components/ui/checkbox.lynx';
+import { Input } from '../components/ui/input.lynx';
+import { Textarea } from '../components/ui/textarea.lynx';
 import {
   Dialog,
-  DialogDescription,
   DialogFooter,
   DialogPanel,
   DialogPopup,
   DialogTitle,
 } from '../components/ui/dialog.lynx';
+import {
+  Menu,
+  MenuCheckboxItem,
+  MenuGroup,
+  MenuGroupLabel,
+  MenuItem,
+  MenuPopup,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuSeparator,
+  MenuTrigger,
+} from '../components/ui/menu.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { AutomationChoiceOption as ChoiceOption } from './AutomationChoiceOption.lynx';
+import { useTheme } from '../adapters/useTheme.lynx';
+import {
+  BrainIcon,
+  ChevronDownIcon,
+  ClockIcon,
+  FolderIcon,
+  XIcon,
+} from '../lib/icons.lynx';
+import infoSvg from '@synara-central-icons/info-simple.svg?raw';
+import modeSvg from '@synara-central-icons/building-blocks.svg?raw';
+import worktreeSvg from '@synara-central-icons/arrow-split-right.svg?raw';
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import {
   buildAutomationCreateInput,
   resolveAutomationModelSelection,
@@ -49,68 +82,122 @@ interface NativeTextInputEvent {
 
 function NativeNameInput({
   disabled,
+  value,
   onInput,
 }: {
   readonly disabled: boolean;
+  readonly value: string;
   readonly onInput: (event: NativeTextInputEvent) => void;
 }) {
-  return createElement('input', {
-    className: 'AutomationCreateName',
-    'accessibility-element': true,
-    'accessibility-label': 'Automation name',
-    disabled,
-    focusable: !disabled,
-    maxlength: 160,
-    placeholder: 'Daily release review',
-    'send-composing-input': true,
-    bindinput: onInput,
+  return (
+    <Input
+      className="AutomationCreateName"
+      nativeInput
+      unstyled
+      aria-label="Automation title"
+      disabled={disabled}
+      maxLength={160}
+      placeholder="Automation title"
+      value={value}
+      onChange={(event) => onInput({ detail: { value: event.target.value } })}
+    />
+  );
+}
+
+function AutomationToolbarIcon(props: {
+  readonly className: string;
+  readonly content: string;
+}) {
+  const { semanticIconColor } = useTheme();
+  return (
+    <svg
+      className={props.className}
+      content={colorizeLynxSvg(
+        props.content,
+        semanticIconColor('secondary')
+      )}
+      accessibility-element={false}
+    />
+  );
+}
+
+function AutomationWarningRow(props: {
+  readonly checked?: boolean;
+  readonly detail: string;
+  readonly onToggle?: () => void;
+  readonly title: string;
+}) {
+  if (!props.onToggle) {
+    return (
+      <view
+        className="AutomationCreateWarning"
+        accessibility-element={true}
+        accessibility-label={`${props.title}. ${props.detail}`}
+        accessibility-trait="text"
+      >
+        <view className="AutomationCreateWarningDot" />
+        <view className="AutomationCreateWarningCopy">
+          <text className="AutomationCreateWarningTitle">{props.title}</text>
+          <text className="AutomationCreateWarningDetail">{props.detail}</text>
+        </view>
+      </view>
+    );
+  }
+
+  return <InteractiveAutomationWarningRow {...props} onToggle={props.onToggle} />;
+}
+
+function InteractiveAutomationWarningRow(props: {
+  readonly checked?: boolean;
+  readonly detail: string;
+  readonly onToggle: () => void;
+  readonly title: string;
+}) {
+  const interaction = useLynxInteractiveState({
+    baseClassName:
+      'AutomationCreateWarning AutomationCreateWarning--interactive',
+    accessibleLabel: `${props.title}. ${props.detail}`,
+    accessibilityValue:
+      props.checked === undefined
+        ? undefined
+        : props.checked
+          ? 'Checked'
+          : 'Unchecked',
+    accessibilityTraits: 'button',
+    onActivate: props.onToggle,
   });
+  return (
+    <view className={interaction.className} {...interaction.eventProps}>
+      <CheckboxIndicator checked={props.checked} size="sm" />
+      <view className="AutomationCreateWarningCopy">
+        <text className="AutomationCreateWarningTitle">{props.title}</text>
+        <text className="AutomationCreateWarningDetail">{props.detail}</text>
+      </view>
+    </view>
+  );
 }
 
 function NativeStopWhenInput({
   disabled,
+  value,
   onInput,
 }: {
   readonly disabled: boolean;
+  readonly value: string;
   readonly onInput: (event: NativeTextInputEvent) => void;
 }) {
-  return createElement('input', {
-    className: 'AutomationCreateName',
-    'accessibility-element': true,
-    'accessibility-label': 'Heartbeat stop condition',
-    disabled,
-    focusable: !disabled,
-    maxlength: 2000,
-    placeholder: 'PR is ready to merge',
-    'send-composing-input': true,
-    bindinput: onInput,
-  });
-}
-
-function ProjectOption({
-  disabled,
-  project,
-  selected,
-  onSelect,
-}: {
-  readonly disabled: boolean;
-  readonly project: ProjectSummary;
-  readonly selected: boolean;
-  readonly onSelect: () => void;
-}) {
-  const interaction = useLynxInteractiveState({
-    baseClassName: `AutomationCreateProject${
-      selected ? ' AutomationCreateProject--selected' : ''
-    }`,
-    accessibleLabel: `Create automation in ${project.title}`,
-    accessibilityValue: selected ? 'Selected' : undefined,
-    disabled,
-    onActivate: onSelect,
-  });
   return (
-    <view className={interaction.className} {...interaction.eventProps}>
-      <text className="AutomationCreateProjectText">{project.title}</text>
-    </view>
+    <Input
+      className="AutomationCreateName"
+      nativeInput
+      unstyled
+      aria-label="Heartbeat stop condition"
+      disabled={disabled}
+      maxLength={2000}
+      placeholder="PR is ready to merge"
+      value={value}
+      onChange={(event) => onInput({ detail: { value: event.target.value } })}
+    />
   );
 }
 
@@ -140,7 +227,8 @@ export function AutomationCreateDialog({
   const initialProjectModelSelection = projects[0]?.defaultModelSelection;
   const [modelSelection, setModelSelection] = useState<ModelSelection>(() =>
     resolveAutomationModelSelection({
-      projectModelSelection: initialProjectModelSelection,
+      projectModelSelection:
+        initialProjectModelSelection ?? AUTOMATION_DEFAULT_MODEL_SELECTION,
       defaultProvider: generalSettings.defaultProvider,
     })
   );
@@ -162,6 +250,9 @@ export function AutomationCreateDialog({
   >('approval-required');
   const [worktreeMode, setWorktreeMode] =
     useState<CreateWorktreeMode>('auto');
+  const [acknowledgedWarningIds, setAcknowledgedWarningIds] = useState<
+    ReadonlySet<AutomationDraftWarningId>
+  >(() => new Set());
   const serverConfig = useQuery({
     queryKey: ['automation-create', 'server-config'],
     queryFn: fetchAutomationCreateServerConfig,
@@ -187,13 +278,41 @@ export function AutomationCreateDialog({
     staleTime: 30_000,
   });
   useEffect(() => {
+    if (!open) return;
+    const firstProject = projects[0];
+    const nextModelSelection = resolveAutomationModelSelection({
+      projectModelSelection:
+        firstProject?.defaultModelSelection ??
+        AUTOMATION_DEFAULT_MODEL_SELECTION,
+      defaultProvider: generalSettings.defaultProvider,
+    });
+    setName('');
+    setPrompt('');
+    setProjectId(firstProject?.id ?? '');
+    setModelSelection(nextModelSelection);
+    setModelCatalogProvider(nextModelSelection.provider);
+    setMode('standalone');
+    setTargetThreadId('');
+    setStopWhen('');
+    setSchedule('daily');
+    setTimeOfDay('09:00');
+    setMaxIterations(null);
+    setStopOnError(true);
+    setInteractionMode('default');
+    setRuntimeMode('approval-required');
+    setWorktreeMode('auto');
+    setAcknowledgedWarningIds(new Set());
+  }, [open]);
+  useEffect(() => {
     if (
       projects.length > 0 &&
       !projects.some((project) => project.id === projectId)
     ) {
       const firstProject = projects[0]!;
       const nextModelSelection = resolveAutomationModelSelection({
-        projectModelSelection: firstProject.defaultModelSelection,
+        projectModelSelection:
+          firstProject.defaultModelSelection ??
+          AUTOMATION_DEFAULT_MODEL_SELECTION,
         defaultProvider: generalSettings.defaultProvider,
       });
       setProjectId(firstProject.id);
@@ -226,8 +345,11 @@ export function AutomationCreateDialog({
     );
     const nextModelSelection = resolveAutomationModelSelectionForProjectChange({
       currentModelSelection: modelSelection,
-      currentProjectModelSelection: currentProject?.defaultModelSelection,
-      nextProjectModelSelection: nextProject?.defaultModelSelection,
+      currentProjectModelSelection:
+        currentProject?.defaultModelSelection ??
+        AUTOMATION_DEFAULT_MODEL_SELECTION,
+      nextProjectModelSelection:
+        nextProject?.defaultModelSelection ?? AUTOMATION_DEFAULT_MODEL_SELECTION,
       defaultProvider: generalSettings.defaultProvider,
     });
     setProjectId(nextProjectId);
@@ -241,10 +363,36 @@ export function AutomationCreateDialog({
     (schedule === 'manual' || isAutomationTimeOfDay(timeOfDay)) &&
     Boolean(project) &&
     (mode === 'standalone' || targetThreadId.length > 0);
+  const warnings = buildAutomationDraftWarnings({
+    schedule:
+      schedule === 'manual'
+        ? { type: 'manual' }
+        : { type: schedule, timeOfDay },
+    mode,
+    runtimeMode,
+    worktreeMode,
+    hasEphemeralContext: false,
+    generatedConfidence: null,
+    generatedNeedsConfirmation: false,
+    prompt,
+  });
+  const hasUnacknowledgedWarning = warnings.some(
+    (warning) =>
+      warning.requiresAcknowledgement &&
+      !acknowledgedWarningIds.has(warning.id)
+  );
+  const toggleWarning = (id: AutomationDraftWarningId) =>
+    setAcknowledgedWarningIds((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
 
   const submit = () => {
-    if (!canCreate || !project) return;
+    if (!canCreate || hasUnacknowledgedWarning || !project) return;
     onCreate(buildAutomationCreateInput({
+      acknowledgeLocalCheckout: acknowledgedWarningIds.has('local-checkout'),
       completionPolicy: completionPolicyFromStopWhen(stopWhen),
       projectId: project.id as AutomationCreateInput['projectId'],
       interactionMode,
@@ -264,274 +412,151 @@ export function AutomationCreateDialog({
       worktreeMode,
     }));
   };
-  const selectFullAccess = async () => {
-    'background only';
-    const confirmed = await dialogs.confirm(
-      'Allow this automation to run with full access?\n\nScheduled full-access runs can make changes without per-step approval.'
-    );
-    if (confirmed) setRuntimeMode('full-access');
+  const applyTemplate = (template: (typeof AUTOMATION_TEMPLATES)[number]) => {
+    if (!name.trim()) setName(template.name);
+    setPrompt(template.prompt);
   };
-
+  const selectedProjectLabel = project?.title ?? 'Select project';
+  const worktreeModeLabel =
+    worktreeMode === 'auto'
+      ? 'Auto'
+      : worktreeMode === 'worktree'
+        ? 'Worktree'
+        : 'Local';
+  const cadenceLabel =
+    schedule === 'manual'
+      ? 'Manual'
+      : `${schedule === 'daily' ? 'Daily' : 'Weekdays'} at ${timeOfDay}`;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogPopup className="AutomationCreateDialog">
-        <DialogTitle>New automation</DialogTitle>
-        <DialogDescription>
-          Schedule a prompt to run every day at 9:00.
-        </DialogDescription>
-        <DialogPanel className="AutomationCreatePanel">
-          <view className="AutomationCreateField">
-            <text className="AutomationCreateLabel">Name</text>
-            <NativeNameInput
+      <DialogPopup
+        className={`AutomationCreateDialog${
+          warnings.length > 3
+            ? ' AutomationCreateDialog--expanded-more'
+            : warnings.length > 2
+              ? ' AutomationCreateDialog--expanded'
+              : ''
+        }`}
+        showCloseButton={false}
+      >
+        <DialogTitle className="AutomationCreateAccessibleTitle">
+          New automation
+        </DialogTitle>
+        <view className="AutomationCreateHeader">
+          <NativeNameInput
+            disabled={pending}
+            value={name}
+            onInput={(event) => setName(event.detail.value)}
+          />
+          <view className="AutomationCreateHeaderActions">
+            <Button
+              className="AutomationCreateHeaderIconButton"
+              variant="ghost"
+              size="icon-sm"
+              aria-label="About automations"
+            >
+              <AutomationToolbarIcon
+                className="AutomationCreateHeaderIcon"
+                content={infoSvg}
+              />
+            </Button>
+            <Menu>
+              <MenuTrigger ariaLabel="Use template" disabled={pending}>
+                <Button
+                  className="AutomationCreateTemplateButton"
+                  variant="outline"
+                  size="sm"
+                  disabled={pending}
+                  buttonProps={{ 'accessibility-element': false }}
+                >
+                  Use template
+                </Button>
+              </MenuTrigger>
+              <MenuPopup
+                align="end"
+                className="AutomationCreateTemplateMenu"
+              >
+                {AUTOMATION_TEMPLATES.map((template) => (
+                  <MenuItem
+                    key={template.label}
+                    onClick={() => applyTemplate(template)}
+                  >
+                    {template.label}
+                  </MenuItem>
+                ))}
+              </MenuPopup>
+            </Menu>
+            <Button
+              className="AutomationCreateHeaderIconButton"
+              variant="ghost"
+              size="icon-sm"
               disabled={pending}
-              onInput={(event) => setName(event.detail.value)}
-            />
+              aria-label="Close"
+              onClick={() => onOpenChange(false)}
+            >
+              <XIcon size={16} color="var(--color-icon-secondary)" />
+            </Button>
           </view>
-          <view className="AutomationCreateField">
-            <text className="AutomationCreateLabel">Prompt</text>
-            {createElement('textarea', {
-              className: 'AutomationCreatePrompt',
-              'accessibility-element': true,
-              'accessibility-label': 'Automation prompt',
-              disabled: pending,
-              focusable: !pending,
-              maxlength: 64000,
-              maxlines: 8,
-              placeholder: 'Describe what the automation should do',
-              'send-composing-input': true,
-              bindinput: (event: NativeTextInputEvent) =>
-                setPrompt(event.detail.value),
-            })}
-          </view>
-          <view className="AutomationCreateField">
-            <text className="AutomationCreateLabel">Project</text>
-            <view className="AutomationCreateProjects">
-              {projects.map((candidate) => (
-                <ProjectOption
-                  key={candidate.id}
-                  disabled={pending}
-                  project={candidate}
-                  selected={candidate.id === projectId}
-                  onSelect={() => chooseProject(candidate.id)}
-                />
-              ))}
-            </view>
-          </view>
-          <view className="AutomationCreateField">
-            <text className="AutomationCreateLabel">Model</text>
-            <ComposerModelControl
-              modelSelection={modelSelection}
-              catalogProvider={modelCatalogProvider}
-              runtimeModels={modelCatalog.data?.models ?? []}
-              modelsLoading={
-                modelCatalog.isPending ||
-                (modelCatalog.isFetching && !modelCatalog.data)
-              }
-              providers={serverConfig.data?.providers ?? []}
-              onCatalogProviderChange={setModelCatalogProvider}
-              onModelSelectionChange={(selection) => {
-                setModelSelection(selection);
-                setModelCatalogProvider(selection.provider);
-              }}
-            />
-          </view>
-          <view className="AutomationCreateOptionsGrid">
-          <view className="AutomationCreateField">
-            <text className="AutomationCreateLabel">Repeats</text>
-            <view className="AutomationCreateChoices">
-              {(
-                [
-                  ['manual', 'Manual'],
-                  ['daily', 'Daily'],
-                  ['weekdays', 'Weekdays'],
-                ] as const
-              ).map(([value, label]) => (
-                <ChoiceOption
-                  key={value}
-                  disabled={pending}
-                  label={label}
-                  selected={schedule === value}
-                  onSelect={() => setSchedule(value)}
-                />
-              ))}
-            </view>
-          </view>
-          <view className="AutomationCreateField">
-            <text className="AutomationCreateLabel">Runs in</text>
-            <view className="AutomationCreateChoices">
-              <ChoiceOption
-                disabled={pending}
-                label="Auto"
-                selected={worktreeMode === 'auto'}
-                onSelect={() => setWorktreeMode('auto')}
-              />
-              <ChoiceOption
-                disabled={pending}
-                label="Worktree"
-                selected={worktreeMode === 'worktree'}
-                onSelect={() => setWorktreeMode('worktree')}
-              />
-              <ChoiceOption
-                disabled={pending}
-                label="Local"
-                selected={worktreeMode === 'local'}
-                onSelect={() => setWorktreeMode('local')}
-              />
-            </view>
-          </view>
-          <view className="AutomationCreateField">
-            <text className="AutomationCreateLabel">Mode</text>
-            <view className="AutomationCreateChoices">
-              <ChoiceOption
-                disabled={pending}
-                label="Standalone"
-                selected={mode === 'standalone'}
-                onSelect={() => setMode('standalone')}
-              />
-              <ChoiceOption
-                disabled={pending}
-                label="Heartbeat"
-                selected={mode === 'heartbeat'}
-                onSelect={() => setMode('heartbeat')}
-              />
-            </view>
-          </view>
+        </view>
+        <DialogPanel className="AutomationCreatePanel">
+          <Textarea
+            className="AutomationCreatePrompt"
+            nativeInput
+            unstyled
+            aria-label="Automation prompt"
+            disabled={pending}
+            maxLength={64000}
+            maxLines={10}
+            placeholder="Add prompt e.g. look for crashes in $sentry"
+            value={prompt}
+            onChange={(event) => setPrompt(event.target.value)}
+          />
           {mode === 'heartbeat' ? (
-            <>
-              <view className="AutomationCreateField">
-                <text className="AutomationCreateLabel">Target thread</text>
-                <view className="AutomationCreateProjects">
-                  {projectThreads.length === 0 ? (
-                    <text className="AutomationCreateLabel">
-                      No threads in this project
-                    </text>
-                  ) : (
-                    projectThreads.map((thread) => (
-                      <ChoiceOption
-                        key={thread.id}
-                        disabled={pending}
-                        label={thread.title.trim() || 'New thread'}
-                        selected={targetThreadId === thread.id}
-                        onSelect={() => setTargetThreadId(thread.id)}
-                      />
-                    ))
-                  )}
-                </view>
+            <view className="AutomationCreateHeartbeatFields">
+              <text className="AutomationCreateLabel">Target thread</text>
+              <view className="AutomationCreateProjects">
+                {projectThreads.length === 0 ? (
+                  <text className="AutomationCreateMutedText">
+                    No threads in this project
+                  </text>
+                ) : (
+                  projectThreads.map((thread) => (
+                    <ChoiceOption
+                      key={thread.id}
+                      disabled={pending}
+                      label={thread.title.trim() || 'New thread'}
+                      selected={targetThreadId === thread.id}
+                      onSelect={() => setTargetThreadId(thread.id)}
+                    />
+                  ))
+                )}
               </view>
-              <view className="AutomationCreateField">
-                <text className="AutomationCreateLabel">Stop when</text>
-                <NativeStopWhenInput
-                  disabled={pending}
-                  onInput={(event) => setStopWhen(event.detail.value)}
-                />
-              </view>
-            </>
+              <text className="AutomationCreateLabel">Stop when</text>
+              <NativeStopWhenInput
+                disabled={pending}
+                value={stopWhen}
+                onInput={(event) => setStopWhen(event.detail.value)}
+              />
+            </view>
           ) : null}
-          {schedule === 'manual' ? null : (
-            <view className="AutomationCreateField">
-              <text className="AutomationCreateLabel">Time</text>
-              <AutomationTimeInput
-                defaultValue={timeOfDay}
-                disabled={pending}
-                onChange={setTimeOfDay}
+          <view className="AutomationCreateWarnings">
+            {warnings.map((warning) => (
+              <AutomationWarningRow
+                key={warning.id}
+                checked={
+                  warning.requiresAcknowledgement
+                    ? acknowledgedWarningIds.has(warning.id)
+                    : undefined
+                }
+                title={warning.title}
+                detail={warning.detail}
+                onToggle={
+                  warning.requiresAcknowledgement
+                    ? () => toggleWarning(warning.id)
+                    : undefined
+                }
               />
-            </view>
-          )}
-          <view className="AutomationCreateField">
-            <text className="AutomationCreateLabel">Max iterations</text>
-            <view className="AutomationCreateChoices">
-              {(
-                [
-                  [null, 'Unlimited'],
-                  [10, '10 runs'],
-                  [25, '25 runs'],
-                ] as const
-              ).map(([value, label]) => (
-                <ChoiceOption
-                  key={label}
-                  disabled={pending}
-                  label={label}
-                  selected={maxIterations === value}
-                  onSelect={() => setMaxIterations(value)}
-                />
-              ))}
-            </view>
-          </view>
-          <view className="AutomationCreateField">
-            <text className="AutomationCreateLabel">Stop on error</text>
-            <view className="AutomationCreateChoices">
-              <ChoiceOption
-                disabled={pending}
-                label="On"
-                selected={stopOnError}
-                onSelect={() => setStopOnError(true)}
-              />
-              <ChoiceOption
-                disabled={pending}
-                label="Off"
-                selected={!stopOnError}
-                onSelect={() => setStopOnError(false)}
-              />
-            </view>
-          </view>
-          <view className="AutomationCreateField">
-            <text className="AutomationCreateLabel">Interaction mode</text>
-            <view className="AutomationCreateChoices">
-              <ChoiceOption
-                disabled={pending}
-                label="Default"
-                selected={interactionMode === 'default'}
-                onSelect={() => setInteractionMode('default')}
-              />
-              <ChoiceOption
-                disabled={pending}
-                label="Plan"
-                selected={interactionMode === 'plan'}
-                onSelect={() => setInteractionMode('plan')}
-              />
-            </view>
-          </view>
-          <view className="AutomationCreateField">
-            <text className="AutomationCreateLabel">Permissions</text>
-            <view className="AutomationCreateChoices">
-              <ChoiceOption
-                disabled={pending}
-                label="Approval required"
-                selected={runtimeMode === 'approval-required'}
-                onSelect={() => setRuntimeMode('approval-required')}
-              />
-              <ChoiceOption
-                disabled={pending}
-                label="Full access"
-                selected={runtimeMode === 'full-access'}
-                onSelect={() => void selectFullAccess()}
-              />
-            </view>
-          </view>
-          </view>
-          <view className="AutomationCreateSummary">
-            <text className="AutomationCreateSummaryText">
-              {schedule === 'manual'
-                ? 'Manual'
-                : schedule === 'daily'
-                  ? `Daily at ${timeOfDay}`
-                  : `Weekdays at ${timeOfDay}`}{' '}
-              ·{' '}
-              {worktreeMode === 'auto'
-                ? 'Auto workspace'
-                : worktreeMode === 'worktree'
-                  ? 'New worktree'
-                  : 'Local checkout'}{' '}
-              ·{' '}
-              {modelSelection?.model ?? 'Choose a project model'} ·{' '}
-              {maxIterations === null
-                ? 'Unlimited runs'
-                : `${maxIterations} runs`}{' '}
-              · {stopOnError ? 'Stops on error' : 'Continues after errors'}
-              {' '}· {interactionMode === 'plan' ? 'Plan mode' : 'Default mode'}
-              {' '}· {runtimeMode === 'full-access' ? 'Full access' : 'Approval required'}
-              {' '}· {mode === 'heartbeat' ? 'Heartbeat' : 'Standalone'}
-            </text>
+            ))}
           </view>
           {error ? (
             <view className="AutomationCreateError" accessibility-element>
@@ -540,16 +565,123 @@ export function AutomationCreateDialog({
           ) : null}
         </DialogPanel>
         <DialogFooter className="AutomationCreateFooter">
-          <Button
-            variant="ghost"
-            disabled={pending}
-            onClick={() => onOpenChange(false)}
-          >
-            Cancel
-          </Button>
-          <Button disabled={!canCreate} onClick={submit}>
-            {pending ? 'Creating...' : 'Create automation'}
-          </Button>
+          <view className="AutomationCreateToolbar">
+            <Menu>
+              <MenuTrigger ariaLabel={`Runs in ${worktreeMode}`} disabled={pending}>
+                <Button className="AutomationCreateChip" variant="ghost" size="sm" disabled={pending} buttonProps={{ 'accessibility-element': false }}>
+                  <AutomationToolbarIcon className="AutomationCreateChipIcon" content={worktreeSvg} />
+                  <text className="AutomationCreateChipText">{worktreeModeLabel}</text>
+                  <ChevronDownIcon className="AutomationCreateChipChevron" color="var(--color-icon-secondary)" size={12} />
+                </Button>
+              </MenuTrigger>
+              <MenuPopup align="start" className="AutomationCreateMenu">
+                <MenuRadioGroup value={worktreeMode} onValueChange={(value) => { setWorktreeMode(value as CreateWorktreeMode); setAcknowledgedWarningIds(new Set()); }}>
+                  <MenuRadioItem value="auto">Auto</MenuRadioItem>
+                  <MenuRadioItem value="worktree">Worktree</MenuRadioItem>
+                  <MenuRadioItem value="local">Local</MenuRadioItem>
+                </MenuRadioGroup>
+              </MenuPopup>
+            </Menu>
+            <Menu>
+              <MenuTrigger ariaLabel={`Project ${selectedProjectLabel}`} disabled={pending}>
+                <Button className="AutomationCreateChip" variant="ghost" size="sm" disabled={pending} buttonProps={{ 'accessibility-element': false }}>
+                  <FolderIcon className="AutomationCreateChipIcon" color="var(--color-icon-secondary)" size={16} />
+                  <text className="AutomationCreateChipText AutomationCreateProjectLabel">{selectedProjectLabel}</text>
+                  <ChevronDownIcon className="AutomationCreateChipChevron" color="var(--color-icon-secondary)" size={12} />
+                </Button>
+              </MenuTrigger>
+              <MenuPopup align="start" className="AutomationCreateProjectMenu">
+                <MenuRadioGroup value={projectId} onValueChange={chooseProject}>
+                  {projects.map((candidate) => (
+                    <MenuRadioItem key={candidate.id} value={candidate.id}>
+                      {candidate.title}
+                    </MenuRadioItem>
+                  ))}
+                </MenuRadioGroup>
+              </MenuPopup>
+            </Menu>
+            <ComposerModelControl
+              hideStatusLabel
+              modelSelection={modelSelection}
+              catalogProvider={modelCatalogProvider}
+              runtimeModels={modelCatalog.data?.models ?? []}
+              modelsLoading={modelCatalog.isPending || (modelCatalog.isFetching && !modelCatalog.data)}
+              providers={serverConfig.data?.providers ?? []}
+              onCatalogProviderChange={setModelCatalogProvider}
+              onModelSelectionChange={(selection) => { setModelSelection(selection); setModelCatalogProvider(selection.provider); }}
+            />
+            <Menu>
+              <MenuTrigger ariaLabel={`Schedule ${cadenceLabel}`} disabled={pending}>
+                <Button className="AutomationCreateChip" variant="ghost" size="sm" disabled={pending} buttonProps={{ 'accessibility-element': false }}>
+                  <ClockIcon className="AutomationCreateChipIcon" color="var(--color-icon-secondary)" size={16} />
+                  <text className="AutomationCreateChipText">{cadenceLabel}</text>
+                  <ChevronDownIcon className="AutomationCreateChipChevron" color="var(--color-icon-secondary)" size={12} />
+                </Button>
+              </MenuTrigger>
+              <MenuPopup align="start" className="AutomationCreateScheduleMenu">
+                <MenuRadioGroup value={schedule} onValueChange={(value) => setSchedule(value as CreateSchedule)}>
+                  <MenuRadioItem value="manual">Manual</MenuRadioItem>
+                  <MenuRadioItem value="daily">Daily</MenuRadioItem>
+                  <MenuRadioItem value="weekdays">Weekdays</MenuRadioItem>
+                </MenuRadioGroup>
+                {schedule === 'manual' ? null : (
+                  <>
+                    <MenuSeparator />
+                    <MenuGroup>
+                      <MenuGroupLabel>Time</MenuGroupLabel>
+                      <AutomationTimeInput defaultValue={timeOfDay} disabled={pending} onChange={setTimeOfDay} />
+                    </MenuGroup>
+                  </>
+                )}
+              </MenuPopup>
+            </Menu>
+            <Menu>
+              <MenuTrigger ariaLabel="Run mode" disabled={pending}>
+                <Button className="AutomationCreateIconChip" variant="ghost" size="icon-sm" disabled={pending} buttonProps={{ 'accessibility-element': false }}>
+                  <AutomationToolbarIcon className="AutomationCreateChipIcon" content={modeSvg} />
+                </Button>
+              </MenuTrigger>
+              <MenuPopup align="start" className="AutomationCreateModeMenu">
+                <MenuGroup><MenuGroupLabel>Mode</MenuGroupLabel>
+                  <MenuRadioGroup value={mode} onValueChange={(value) => setMode(value as AutomationCreateInput['mode'])}>
+                    <MenuRadioItem value="standalone">Standalone</MenuRadioItem>
+                    <MenuRadioItem value="heartbeat">Heartbeat</MenuRadioItem>
+                  </MenuRadioGroup>
+                </MenuGroup>
+                <MenuSeparator />
+                <MenuGroup><MenuGroupLabel>Max iterations</MenuGroupLabel>
+                  <MenuRadioGroup value={maxIterations === null ? 'unlimited' : String(maxIterations)} onValueChange={(value) => setMaxIterations(value === 'unlimited' ? null : Number(value))}>
+                    <MenuRadioItem value="unlimited">Unlimited</MenuRadioItem>
+                    <MenuRadioItem value="10">10 runs</MenuRadioItem>
+                    <MenuRadioItem value="25">25 runs</MenuRadioItem>
+                  </MenuRadioGroup>
+                </MenuGroup>
+                {mode === 'heartbeat' ? (
+                  <>
+                    <MenuSeparator />
+                    <MenuCheckboxItem checked={stopOnError} onCheckedChange={setStopOnError}>Stop on error</MenuCheckboxItem>
+                  </>
+                ) : null}
+              </MenuPopup>
+            </Menu>
+            <Menu>
+              <MenuTrigger ariaLabel="Permissions" disabled={pending}>
+                <Button className="AutomationCreateIconChip" variant="ghost" size="icon-sm" disabled={pending} buttonProps={{ 'accessibility-element': false }}>
+                  <BrainIcon className="AutomationCreateChipIcon" color="var(--color-icon-secondary)" size={16} />
+                </Button>
+              </MenuTrigger>
+              <MenuPopup align="start" className="AutomationCreatePermissionsMenu">
+                <MenuRadioGroup value={runtimeMode} onValueChange={(value) => { setRuntimeMode(value as AutomationCreateInput['runtimeMode']); setAcknowledgedWarningIds(new Set()); }}>
+                  <MenuRadioItem value="approval-required">Approval required</MenuRadioItem>
+                  <MenuRadioItem value="full-access">Full access</MenuRadioItem>
+                </MenuRadioGroup>
+              </MenuPopup>
+            </Menu>
+          </view>
+          <view className="AutomationCreateFooterActions">
+            <Button variant="ghost" disabled={pending} onClick={() => onOpenChange(false)}>Cancel</Button>
+            <Button disabled={!canCreate || hasUnacknowledgedWarning} onClick={submit}>{pending ? 'Creating...' : 'Create'}</Button>
+          </view>
         </DialogFooter>
       </DialogPopup>
     </Dialog>

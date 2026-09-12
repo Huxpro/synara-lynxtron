@@ -214,3 +214,21 @@ values and unresolved Native custom properties.
   pass 12/12, the exact-owned client is workspace Lynxtron 0.0.22, the
   error/warning console is empty, and the staged bundle SHA-256 is
   `4cab00eba475c02879a0c7b84e63fd198c16eacc7ad6f428027cd01cb202804b`.
+- Automations now uses the Electron authority's composer-style creation dialog
+  instead of the former labeled 560×680 form. The Native surface shares the
+  starter templates and `gpt-5-codex` default with Web, keeps controlled title
+  and prompt values after template selection, and matches the authority's
+  768×465 default / 768×503 three-warning geometry, 56px header, 240px prompt,
+  32px warning rows, and 52px footer.
+- Automation toolbar and route actions now use semantic icon roles: secondary
+  for neutral controls and inverse for the primary New automation glyph. The
+  inverse glyph resolves to white on the light-theme black action and `#111111`
+  on the dark-theme white action. Static warning rows are exposed as text only;
+  the local-checkout acknowledgment alone retains button, focus, keyboard, and
+  tap behavior.
+- Exact-owned Lynxtron 0.0.22 verification at light and dark 1280×820 confirmed
+  template title/prompt propagation, `GPT-5 Codex`, disabled-to-enabled Create
+  behavior after acknowledgment, and a clean error/warning console. Focused
+  Native tests pass 31/31, the shared Web automation suite passes 33/33, and the
+  production bundle SHA-256 is
+  `097bb0e3800261fc65719662b713bddbc2a21b6797c956444427c55546df653f`.

@@ -16,6 +16,7 @@ import {
 } from "@synara/contracts";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { AUTOMATION_TEMPLATES } from "@synara/shared/automationTemplates";
 
 import { useAppSettings } from "~/appSettings";
 import type { Thread } from "~/types";
@@ -131,30 +132,7 @@ export {
   type ScheduleKind,
 };
 
-/** Starter prompts surfaced behind the composer's "Use template" button. */
-export const AUTOMATION_TEMPLATES: readonly {
-  readonly label: string;
-  readonly name: string;
-  readonly prompt: string;
-}[] = [
-  {
-    label: "Triage new crashes",
-    name: "Triage crashes",
-    prompt: "Look for new crashes in $sentry and open a fix PR for the most impactful one.",
-  },
-  {
-    label: "Update dependencies",
-    name: "Update dependencies",
-    prompt:
-      "Check for outdated dependencies, bump the safe minor and patch versions, then run the tests.",
-  },
-  {
-    label: "Daily standup summary",
-    name: "Daily summary",
-    prompt:
-      "Summarize what changed on the main branch in the last 24 hours as a short standup update.",
-  },
-];
+export { AUTOMATION_TEMPLATES };
 
 export function formatRelativeTime(iso: string | null): string {
   if (!iso) return "";

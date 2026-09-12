@@ -67,6 +67,7 @@ describe('Automation create payload', () => {
   ] as const)('maps %s schedules to the canonical contract', (schedule, expected) => {
     expect(
       buildAutomationCreateInput({
+        acknowledgeLocalCheckout: false,
         completionPolicy: { type: 'none' },
         interactionMode: 'plan',
         projectId: 'project-1',
@@ -102,6 +103,7 @@ describe('Automation create payload', () => {
     'preserves the %s workspace mode',
     (worktreeMode) => {
       const result = buildAutomationCreateInput({
+          acknowledgeLocalCheckout: worktreeMode === 'local',
           completionPolicy: { type: 'none' },
           interactionMode: 'default',
           projectId: 'project-1',
@@ -134,6 +136,7 @@ describe('Automation create payload', () => {
     'maps %s with %s workspace to the required risk acknowledgements',
     (runtimeMode, worktreeMode, acknowledgedRisks) => {
       const result = buildAutomationCreateInput({
+        acknowledgeLocalCheckout: worktreeMode === 'local',
         completionPolicy: { type: 'none' },
         interactionMode: 'default',
         projectId: 'project-1',
@@ -157,6 +160,7 @@ describe('Automation create payload', () => {
 
   it('keeps a heartbeat target and clears standalone targets', () => {
     const base = {
+      acknowledgeLocalCheckout: true,
       completionPolicy: {
         type: 'ai-evaluated' as const,
         stopWhen: 'PR is ready to merge',
