@@ -8,7 +8,8 @@ import type {
 import { PROVIDER_DISPLAY_NAMES } from '@synara/contracts';
 import {
   normalizeProviderDiscoveryText,
-  providerDiscoveryItemAccent,
+  providerDiscoveryItemGradient,
+  providerDiscoveryItemRing,
   providerPluginDiscoveryWarnings,
   resolveProviderDiscoveryStatus,
 } from '@synara/shared/providerDiscoveryPresentation';
@@ -58,7 +59,7 @@ function DiscoveryRow(props: {
   readonly description: string;
   readonly enabled: boolean;
   readonly label: string;
-  readonly meta: string;
+  readonly brandColor?: string;
   readonly kind?: 'plugin' | 'skill';
 }) {
   const { semanticIconColor } = useTheme();
@@ -67,13 +68,13 @@ function DiscoveryRow(props: {
     <view className="PluginLibraryRow">
       <view
         className={`PluginLibraryGlyph${skill ? ' PluginLibraryGlyph--skill' : ''}`}
-        style={
-          skill
-            ? {
-                backgroundColor: providerDiscoveryItemAccent(props.label),
-              }
-            : undefined
-        }
+        style={{
+          backgroundImage: providerDiscoveryItemGradient(
+            props.label,
+            props.brandColor
+          ),
+          boxShadow: providerDiscoveryItemRing(props.label, props.brandColor),
+        }}
       >
         {skill ? (
           <ListChecksIcon
@@ -82,7 +83,11 @@ function DiscoveryRow(props: {
             style={{ opacity: 0.8 }}
           />
         ) : (
-          <PuzzleIcon size={16} color="var(--muted-foreground)" />
+          <PuzzleIcon
+            size={20}
+            color={semanticIconColor('inverse')}
+            style={{ opacity: 0.8 }}
+          />
         )}
       </view>
       <view className="PluginLibraryRowCopy">
@@ -91,21 +96,11 @@ function DiscoveryRow(props: {
           {props.description}
         </text>
       </view>
-      {skill ? (
-        props.enabled ? (
-          <view className="PluginLibraryInstalled">
-            <CheckIcon size={14} />
-          </view>
-        ) : null
-      ) : (
-        <text
-          className={`PluginLibraryRowStatus${
-            props.enabled ? ' PluginLibraryRowStatus--enabled' : ''
-          }`}
-        >
-          {props.meta}
-        </text>
-      )}
+      {props.enabled ? (
+        <view className="PluginLibraryInstalled">
+          <CheckIcon size={14} color={semanticIconColor('secondary')} />
+        </view>
+      ) : null}
     </view>
   );
 }
@@ -312,7 +307,7 @@ export function PluginLibraryPage() {
                       description={pluginDescription(plugin)}
                       enabled={plugin.enabled}
                       label={pluginLabel(plugin)}
-                      meta={marketplace}
+                      brandColor={plugin.interface?.brandColor}
                     />
                   ))
                 : (
@@ -326,7 +321,6 @@ export function PluginLibraryPage() {
                             enabled={skill.enabled}
                             kind="skill"
                             label={skillLabel(skill)}
-                            meta={skill.scope ?? 'Skill'}
                           />
                         ))}
                       </view>

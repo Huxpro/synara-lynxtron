@@ -66,7 +66,10 @@ import {
 import { Skeleton } from "./ui/skeleton";
 import { resolveProviderDiscoveryStatus } from "@synara/shared/providerDiscoveryPresentation";
 import { providerPluginDiscoveryWarnings } from "@synara/shared/providerDiscoveryPresentation";
-import { providerDiscoveryItemHue } from "@synara/shared/providerDiscoveryPresentation";
+import {
+  providerDiscoveryItemGradient,
+  providerDiscoveryItemRing,
+} from "@synara/shared/providerDiscoveryPresentation";
 
 import { useDebouncedValue } from "@tanstack/react-pacer";
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -147,25 +150,22 @@ function resolvePluginBrand(plugin: ProviderPluginDescriptor): PluginBrandArtwor
   return undefined;
 }
 
-/** Stable hue 0–359 from a string, for consistent per-item icon colors. */
-const nameToHue = providerDiscoveryItemHue;
-
 // ── Icon glyphs ────────────────────────────────────────────────────────────
 
 function PluginGlyph({ plugin }: { plugin: ProviderPluginDescriptor }) {
   const accent = resolvePluginAccent(plugin);
   const logo = resolvePluginLogo(plugin);
   const brand = resolvePluginBrand(plugin);
-  const hue = nameToHue(plugin.interface?.displayName ?? plugin.name);
+  const label = plugin.interface?.displayName ?? plugin.name;
   const [logoFailed, setLogoFailed] = useState(false);
   const style = accent
     ? {
-        background: `linear-gradient(145deg, ${accent}cc, ${accent}77)`,
-        boxShadow: `0 0 0 0.5px ${accent}35`,
+        background: providerDiscoveryItemGradient(label, accent),
+        boxShadow: providerDiscoveryItemRing(label, accent),
       }
     : {
-        background: `linear-gradient(145deg, hsl(${hue} 55% 30%), hsl(${hue} 45% 18%))`,
-        boxShadow: `0 0 0 0.5px hsl(${hue} 40% 30% / 0.35)`,
+        background: providerDiscoveryItemGradient(label),
+        boxShadow: providerDiscoveryItemRing(label),
       };
 
   // Prefer metadata-provided artwork so marketplace plugins keep their own branding.
@@ -209,13 +209,12 @@ function PluginGlyph({ plugin }: { plugin: ProviderPluginDescriptor }) {
 }
 
 function SkillGlyph({ skill }: { skill: ProviderSkillDescriptor }) {
-  const hue = nameToHue(skill.interface?.displayName ?? skill.name);
   return (
     <span
       className="inline-flex size-11 shrink-0 items-center justify-center rounded-[14px]"
       style={{
-        background: `linear-gradient(145deg, hsl(${hue} 55% 30%), hsl(${hue} 45% 18%))`,
-        boxShadow: `0 0 0 0.5px hsl(${hue} 40% 30% / 0.35)`,
+        background: providerDiscoveryItemGradient(skill.interface?.displayName ?? skill.name),
+        boxShadow: providerDiscoveryItemRing(skill.interface?.displayName ?? skill.name),
       }}
     >
       <ListChecksIcon className="size-5 text-[var(--color-text-button-primary)] opacity-80" />

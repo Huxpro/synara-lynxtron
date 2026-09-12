@@ -6,6 +6,8 @@ import {
   providerPluginDiscoveryWarnings,
   providerDiscoveryItemHue,
   providerDiscoveryItemAccent,
+  providerDiscoveryItemGradient,
+  providerDiscoveryItemRing,
   resolveProviderDiscoveryStatus,
 } from "./providerDiscoveryPresentation";
 
@@ -17,6 +19,20 @@ describe("provider discovery presentation", () => {
     expect(providerDiscoveryItemAccent("agent-browser")).toBe("#713f12");
     expect(providerDiscoveryItemHue("react-doctor")).toBe(
       providerDiscoveryItemHue("react-doctor"),
+    );
+  });
+  it("shares plugin and skill glyph paint across renderers", () => {
+    expect(providerDiscoveryItemGradient("adapt")).toBe(
+      "linear-gradient(145deg, hsl(282 55% 30%), hsl(282 45% 18%))",
+    );
+    expect(providerDiscoveryItemRing("adapt")).toBe(
+      "0 0 0 0.5px hsl(282 40% 30% / 0.35)",
+    );
+    expect(providerDiscoveryItemGradient("Documents", "#6699ff")).toBe(
+      "linear-gradient(145deg, #6699ffcc, #6699ff77)",
+    );
+    expect(providerDiscoveryItemRing("Documents", "#6699ff")).toBe(
+      "0 0 0 0.5px #6699ff35",
     );
   });
   it("keeps a provider failure ahead of placeholder empty data", () => {

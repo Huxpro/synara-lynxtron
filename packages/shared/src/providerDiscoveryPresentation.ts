@@ -32,6 +32,28 @@ export function providerDiscoveryItemAccent(name: string): string {
   ];
 }
 
+export function providerDiscoveryItemGradient(
+  name: string,
+  brandColor?: string
+): string {
+  const accent = brandColor?.trim();
+  if (accent) {
+    return `linear-gradient(145deg, ${accent}cc, ${accent}77)`;
+  }
+  const hue = providerDiscoveryItemHue(name);
+  return `linear-gradient(145deg, hsl(${hue} 55% 30%), hsl(${hue} 45% 18%))`;
+}
+
+export function providerDiscoveryItemRing(
+  name: string,
+  brandColor?: string
+): string {
+  const accent = brandColor?.trim();
+  if (accent) return `0 0 0 0.5px ${accent}35`;
+  const hue = providerDiscoveryItemHue(name);
+  return `0 0 0 0.5px hsl(${hue} 40% 30% / 0.35)`;
+}
+
 export type ProviderDiscoveryStatus =
   | { readonly kind: "loading" }
   | { readonly kind: "error"; readonly message: string }

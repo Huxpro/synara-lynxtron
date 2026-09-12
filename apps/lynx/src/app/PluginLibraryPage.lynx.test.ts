@@ -38,7 +38,9 @@ describe('Lynx plugin library', () => {
     expect(pageSource).toContain("useState<ProviderKind>('codex')");
     expect(pageSource).toContain('DEFAULT_PROVIDER_ORDER.map');
     expect(pageSource).toContain('provider={candidate}');
-    expect(pageSource).toContain('providerDiscoveryItemAccent(props.label)');
+    expect(pageSource).toContain('providerDiscoveryItemGradient(');
+    expect(pageSource).toContain('providerDiscoveryItemRing(props.label, props.brandColor)');
+    expect(pageSource).toContain('brandColor={plugin.interface?.brandColor}');
     expect(pageSource).toContain('className="PluginLibraryProviderLabel"');
     expect(pageSource).toContain('<ListChecksIcon');
     expect(pageSource).toContain('size={20}');
@@ -51,6 +53,9 @@ describe('Lynx plugin library', () => {
     expect(iconsSource).toContain('icon-tabler-list-check');
     expect(iconsSource).not.toContain('icon-tabler-checklist');
     expect(pageSource).toContain('className="PluginLibraryInstalled"');
+    expect(pageSource).toContain('<PuzzleIcon');
+    expect(pageSource).toContain("color={semanticIconColor('inverse')}");
+    expect(pageSource).not.toContain('PluginLibraryRowStatus');
     expect(pageSource).toContain('className="PluginLibrarySectionTitle">Skills</text>');
     expect(pageSource).toContain('PROVIDER_DISPLAY_NAMES[provider]');
     expect(pageSource).toContain(

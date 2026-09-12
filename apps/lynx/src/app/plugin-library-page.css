@@ -231,11 +231,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
-  border-radius: 13px;
-  background-color: var(--secondary);
+  border-radius: 14px;
 }
 
 .PluginLibraryGlyph--skill {
@@ -286,16 +285,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.PluginLibraryRowStatus {
-  flex-shrink: 0;
-  color: var(--muted-foreground);
-  font-size: 11px;
-}
-
-.PluginLibraryRowStatus--enabled {
-  color: #10b981;
 }
 
 .PluginLibraryState {

@@ -139,6 +139,21 @@ values and unresolved Native custom properties.
   their meaningful per-type colors.
 - Focused row/tab tests pass and the staged Native bundle SHA-256 is
   `93b1fd1fcfe4dd241e8069629ef3970640782bcb67d74ef3283d6e89d23f2a9f`.
+
+## Whole-page follow-up
+
+- Current-head Settings Behavior is compositionally aligned at light
+  1280x820: both renderers use the 256px sidebar, the same content origin,
+  header/description spacing, 624px cards, row heights, and switch positions.
+  The remaining visible difference is platform text rasterization, not an
+  actionable CSS offset.
+- Plugin Library's Native Plugins view now matches Electron's row semantics:
+  shared metadata-aware accent gradients, 44px inverse plugin glyphs, and 28px
+  installed checks replace the gray fallback tile and marketplace status text.
+  Exact-owned 0.0.22 runtime exposed five 44x44 glyphs and five 28x28 checks;
+  the first metadata color resolved to a `#2563eb` gradient and the console
+  was clean. Staged bundle SHA-256:
+  `3bcfc7dc24d149cf87682e1f3aa45dc0283d7bf8317895c979856f81b0a6408f`.
 - Exact-owned Lynxtron 0.0.22 runtime checks on staged bundle
   `72b48d964334c81178559ded6d80f716d6d15d905131487f79782cdc837f8e03`
   confirm prominent disabled paint at 0.2 opacity, resolved light input-focus
