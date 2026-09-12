@@ -31,12 +31,11 @@
 
 .SharedPrEmpty {
   width: 100%;
-  min-height: 180px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 64px 24px;
+  padding: 48px 24px;
 }
 
 .SliceRoot--viewport-compact.SliceRoot--viewport-constrained-height

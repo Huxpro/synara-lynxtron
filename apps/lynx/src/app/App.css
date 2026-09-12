@@ -1417,6 +1417,10 @@
   padding: 16px 28px 48px;
 }
 
+.FeaturePageInner--pullRequests > .SharedPrWarningBanner--callout {
+  margin-top: 16px;
+}
+
 .SharedPrRoutePage {
   display: flex;
   flex-direction: column;

@@ -167,5 +167,8 @@ describe('pull request route controls fidelity', () => {
     expect(appStyles).toMatch(
       /\.FeaturePageInner--pullRequests\s*\{[^}]*padding:\s*16px 28px 48px;/s
     );
+    expect(appStyles).toMatch(
+      /\.FeaturePageInner--pullRequests > \.SharedPrWarningBanner--callout\s*\{[^}]*margin-top:\s*16px;/s
+    );
   });
 });

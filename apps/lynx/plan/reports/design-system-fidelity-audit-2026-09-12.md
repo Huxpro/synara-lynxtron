@@ -204,3 +204,13 @@ values and unresolved Native custom properties.
   315px inner card tracks (Electron 314.67px fractional layout), 50px empty
   states, and the same single Done card hierarchy. Native error/warning console
   output is empty; the 1–2px outer-column difference is grid rounding.
+- Pull Requests at light 1280×820 now matches the Electron authority's empty
+  result composition. The shared Native empty primitive was normalized from an
+  obsolete 180px minimum with 64px vertical padding to the authority's 148px
+  footprint with 48px padding; its title and description now land at y=192 and
+  y=224 in both renderers. The shared warning primitive now uses the 12px/18px
+  fine-text role and the route stack restores the authority's 16px separation,
+  placing the 968×36 callout at y=308 in both renderers. Focused Native tests
+  pass 12/12, the exact-owned client is workspace Lynxtron 0.0.22, the
+  error/warning console is empty, and the staged bundle SHA-256 is
+  `4cab00eba475c02879a0c7b84e63fd198c16eacc7ad6f428027cd01cb202804b`.

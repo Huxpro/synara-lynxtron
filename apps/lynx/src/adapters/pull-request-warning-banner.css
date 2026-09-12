@@ -23,7 +23,7 @@
 
 .SharedPrWarningBannerText {
   color: var(--foreground);
-  font-size: var(--app-font-size-ui);
+  font-size: var(--app-font-size-ui-sm);
   line-height: 18px;
 }
 

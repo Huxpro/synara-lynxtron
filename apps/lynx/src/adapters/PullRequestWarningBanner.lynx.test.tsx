@@ -41,7 +41,7 @@ describe('Pull Request warning banner fidelity', () => {
       /\.SharedPrWarningBanner--note\s*\{[^}]*margin-bottom:\s*8px;[^}]*padding:\s*6px 8px;[^}]*border:\s*1px solid var\(--pr-warning-border\);[^}]*border-radius:\s*6px;/s
     );
     expect(styles).toMatch(
-      /\.SharedPrWarningBannerText\s*\{[^}]*color:\s*var\(--foreground\);[^}]*font-size:\s*var\(--app-font-size-ui\);[^}]*line-height:\s*18px;/s
+      /\.SharedPrWarningBannerText\s*\{[^}]*color:\s*var\(--foreground\);[^}]*font-size:\s*var\(--app-font-size-ui-sm\);[^}]*line-height:\s*18px;/s
     );
     expect(appStyles).toContain(
       '--pr-warning-surface: rgba(217, 119, 6, 0.04);'

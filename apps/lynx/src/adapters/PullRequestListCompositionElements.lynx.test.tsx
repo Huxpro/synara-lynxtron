@@ -28,8 +28,10 @@ describe('Pull Request list state fidelity', () => {
       'utf8'
     );
     expect(styles).toMatch(
-      /\.SharedPrEmpty\s*\{[^}]*width:\s*100%;[^}]*min-height:\s*180px;[^}]*padding:\s*64px 24px;/s
+      /\.SharedPrEmpty\s*\{[^}]*width:\s*100%;[^}]*padding:\s*48px 24px;/s
     );
+    const baseEmptyRule = styles.match(/\.SharedPrEmpty\s*\{([^}]*)\}/s)?.[1];
+    expect(baseEmptyRule).not.toContain('min-height:');
     expect(styles).toMatch(
       /\.SharedPrEmptyTitle\s*\{[^}]*font-size:\s*20px;[^}]*line-height:\s*28px;[^}]*font-weight:\s*600;/s
     );
