@@ -189,8 +189,18 @@ describe('landing composer fidelity contract', () => {
     expect(landingSource).toContain(
       'model: getDefaultModel(initialModelProvider)'
     );
+    expect(landingSource).toContain('envMode,');
     expect(landingSource).toContain(
-      'envMode: data.generalSettings.defaultThreadEnvMode'
+      'generalSettings.defaultThreadEnvMode'
+    );
+    expect(landingSource).toContain('envModeTouchedRef.current = true');
+    expect(landingSource).toContain('<EmptyThreadContextTray');
+    expect(landingSource).toContain('onEnvModeChange={(nextEnvMode) => {');
+    expect(landingSource).toContain(
+      'onTemporaryChange={() => setTemporary((current) => !current)}'
+    );
+    expect(landingSource).toContain(
+      'props.onThreadCreated(threadIdRef.current, { temporary })'
     );
     expect(landingSource).not.toContain("envMode: 'local'");
     expect(landingSource).not.toContain("provider: 'codex'");

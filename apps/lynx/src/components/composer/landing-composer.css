@@ -6,17 +6,10 @@
   transform: translateY(-1px);
 }
 
-.LandingComposerTray {
-  position: relative;
-  display: flex;
+.EmptyThreadContextTray.LandingComposerTray {
   width: 100%;
-  min-height: 58px;
+  max-width: none;
   margin-top: -20px;
-  padding: 24px 8px 6px;
-  align-items: center;
-  border-bottom-left-radius: 19.2px;
-  border-bottom-right-radius: 19.2px;
-  background-color: var(--color-background-elevated-secondary);
 }
 
 .ComposerProjectPickerTriggerLynx {

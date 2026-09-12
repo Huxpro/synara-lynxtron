@@ -32,6 +32,19 @@
   opacity: 0.8;
 }
 
+.EmptyThreadContextStatus--interactive {
+  -x-app-region: no-drag;
+}
+
+.EmptyThreadContextStatus--interactive.ui-hover,
+.EmptyThreadContextStatus--interactive.ui-pressed {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.EmptyThreadContextStatus--interactive.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
 .EmptyThreadContextIcon {
   width: 14px;
   height: 14px;

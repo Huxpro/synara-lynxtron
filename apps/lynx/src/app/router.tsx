@@ -436,7 +436,10 @@ function ThreadsLandingHeader(props: { readonly title?: 'New Chat' | 'New thread
 function ThreadsLandingPage(props: {
   readonly containerKind?: 'chat' | 'studio';
   readonly initialProjectId?: string | null;
-  readonly onThreadCreated: (threadId: string) => void;
+  readonly onThreadCreated: (
+    threadId: string,
+    options: { readonly temporary: boolean }
+  ) => void;
 }) {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
     props.initialProjectId ?? null
@@ -2735,6 +2738,17 @@ export function SliceRouter({
   readonly onRetryTransport: () => void;
 }) {
   const [route, setRoute] = useRoute(initialRoute);
+  const [landingTemporaryThreadId, setLandingTemporaryThreadId] = useState<
+    string | null
+  >(null);
+  useEffect(() => {
+    if (
+      route.pathname === '/thread/$threadId' &&
+      route.params.threadId === landingTemporaryThreadId
+    ) {
+      setLandingTemporaryThreadId(null);
+    }
+  }, [landingTemporaryThreadId, route]);
   const componentsLabRoute = route.pathname === '/components-lab';
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchPaletteKey, setSearchPaletteKey] = useState(0);
@@ -3567,7 +3581,10 @@ export function SliceRouter({
         initialWorkingTreeDiffUnavailableLabel={null}
         initialRenameOpen={initialRenameOpen}
         initialTerminalOpen={initialTerminalOpen}
-        initialTemporaryOpen={initialTemporaryOpen}
+        initialTemporaryOpen={
+          initialTemporaryOpen ||
+          landingTemporaryThreadId === route.params.threadId
+        }
         initialExplorerWidth={initialExplorerWidth}
         initialExplorerOpen={initialExplorerOpen}
         initialExplorerPresentationMode={initialExplorerPresentationMode}
@@ -3603,7 +3620,10 @@ export function SliceRouter({
       <ThreadsLandingPage
         key="studio"
         containerKind="studio"
-        onThreadCreated={(threadId) => navigate(`/thread/${threadId}`)}
+        onThreadCreated={(threadId, options) => {
+          setLandingTemporaryThreadId(options.temporary ? threadId : null);
+          navigate(`/thread/${threadId}`);
+        }}
       />
     ) : (
       <view className="ThreadsLanding">
@@ -3645,7 +3665,10 @@ export function SliceRouter({
       />
     ) : (
       <ThreadsLandingPage
-        onThreadCreated={(threadId) => navigate(`/thread/${threadId}`)}
+        onThreadCreated={(threadId, options) => {
+          setLandingTemporaryThreadId(options.temporary ? threadId : null);
+          navigate(`/thread/${threadId}`);
+        }}
       />
     );
   } else if (
@@ -3696,7 +3719,10 @@ export function SliceRouter({
             ? route.params.projectId
             : null
         }
-        onThreadCreated={(threadId) => navigate(`/thread/${threadId}`)}
+        onThreadCreated={(threadId, options) => {
+          setLandingTemporaryThreadId(options.temporary ? threadId : null);
+          navigate(`/thread/${threadId}`);
+        }}
       />
     );
   }

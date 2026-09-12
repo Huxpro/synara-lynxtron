@@ -37,4 +37,26 @@ describe('empty Thread context tray', () => {
     expect(statuses).toHaveLength(2);
     expect(elementTree.root?.textContent).toContain('feature/fidelity');
   });
+
+  it('renders live environment and temporary controls for landing drafts', () => {
+    const onEnvModeChange = rs.fn();
+    const onTemporaryChange = rs.fn();
+    render(
+      <EmptyThreadContextTray
+        {...defaultProps}
+        onEnvModeChange={onEnvModeChange}
+        onTemporaryChange={onTemporaryChange}
+        projectControl={<text className="ProjectControl">github</text>}
+      />
+    );
+
+    expect(elementTree.root?.querySelector('.ProjectControl')?.textContent).toBe(
+      'github'
+    );
+    expect(elementTree.root?.textContent).toContain('Local');
+    expect(elementTree.root?.textContent).toContain('Temporary');
+    expect(
+      elementTree.root?.querySelector('.EmptyThreadContextStatus--interactive')
+    ).not.toBeNull();
+  });
 });

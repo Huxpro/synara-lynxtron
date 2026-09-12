@@ -15,6 +15,7 @@ import {
 } from '@synara-web/appSettingsStorageProjection.logic';
 
 import { fetchSidebarSnapshot, queryClient } from '../../app/queries';
+import { EmptyThreadContextTray } from '../../app/EmptyThreadContextTray.lynx';
 import { useComposerDraftStore } from '../../adapters/composerDraftStore.lynx';
 import {
   dispatchSynaraCommand,
@@ -181,7 +182,10 @@ export function LandingComposer(props: {
   readonly initialModelProvider?: ProviderKind | null;
   readonly initialProjectId?: string | null;
   readonly onProjectSelectionChange?: (projectId: string | null) => void;
-  readonly onThreadCreated: (threadId: string) => void;
+  readonly onThreadCreated: (
+    threadId: string,
+    options: { readonly temporary: boolean }
+  ) => void;
 }) {
   const generalSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
@@ -201,6 +205,11 @@ export function LandingComposer(props: {
     setSelectedProjectId(props.initialProjectId ?? null);
   }, [props.initialProjectId]);
   const [studioFolderPath, setStudioFolderPath] = useState<string | null>(null);
+  const [envMode, setEnvMode] = useState<'local' | 'worktree'>(
+    generalSettings.defaultThreadEnvMode
+  );
+  const envModeTouchedRef = useRef(false);
+  const [temporary, setTemporary] = useState(false);
   const interactionMode =
     useComposerDraftStore(
       (state) => state.draftsByThreadId[draftId]?.interactionMode
@@ -236,6 +245,11 @@ export function LandingComposer(props: {
       queryClient.setQueryData(['server-config'], data.serverConfig);
     }
   }, [data?.serverConfig]);
+  useEffect(() => {
+    if (!envModeTouchedRef.current && data?.generalSettings.defaultThreadEnvMode) {
+      setEnvMode(data.generalSettings.defaultThreadEnvMode);
+    }
+  }, [data?.generalSettings.defaultThreadEnvMode]);
   const modelSelection = useMemo<ModelSelection>(() => {
     const selectedProject = data?.projects.find(
       (project) => project.id === selectedProjectId
@@ -432,7 +446,7 @@ export function LandingComposer(props: {
           modelSelection: input.modelSelection,
           runtimeMode: input.runtimeMode,
           interactionMode: input.interactionMode,
-          envMode: data.generalSettings.defaultThreadEnvMode,
+          envMode,
           branch: null,
           worktreePath: workspaceContext.worktreePath,
           createdAt: new Date().toISOString(),
@@ -510,7 +524,7 @@ export function LandingComposer(props: {
         }
         onSendSucceeded={() => {
           'background only';
-          props.onThreadCreated(threadIdRef.current);
+          props.onThreadCreated(threadIdRef.current, { temporary });
           void Promise.all([
             queryClient.invalidateQueries({ queryKey: ['threads'] }),
             queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] }),
@@ -518,8 +532,19 @@ export function LandingComposer(props: {
           ]);
         }}
       />
-      <view className="LandingComposerTray">
-        <ComposerProjectPickerComposition
+      <EmptyThreadContextTray
+        branch={null}
+        className="LandingComposerTray"
+        envMode={envMode}
+        onEnvModeChange={(nextEnvMode) => {
+          envModeTouchedRef.current = true;
+          setEnvMode(nextEnvMode);
+        }}
+        onTemporaryChange={() => setTemporary((current) => !current)}
+        projectName={targetProject.title}
+        temporary={temporary}
+        projectControl={
+          <ComposerProjectPickerComposition
           model={projectPickerModel}
           open={projectPickerOpen}
           align="start"
@@ -627,8 +652,9 @@ export function LandingComposer(props: {
             setProjectPickerOpen(false);
           }}
           triggerClassName="LandingComposerProjectTrigger"
-        />
-      </view>
+          />
+        }
+      />
     </view>
   );
 }
