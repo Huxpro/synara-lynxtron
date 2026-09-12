@@ -480,6 +480,19 @@ export function comparisonRoute(threadId) {
   return `/thread/${encodeURIComponent(threadId)}`;
 }
 
+export function comparisonNewThreadProjectId(options) {
+  if (options.route === null) return null;
+  const pathname = new URL(options.route, "http://synara.local").pathname;
+  const match = /^\/new-thread\/([^/]+)$/.exec(pathname);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+export function comparisonElectronAnchorThreadId(options) {
+  return comparisonNewThreadProjectId(options) === null
+    ? comparisonThreadId(options)
+    : options.threadId;
+}
+
 export function comparisonWebUrl(options) {
   const url = new URL(`http://127.0.0.1:${options.webPort}/`);
   if (options.terminal === "open") url.searchParams.set("terminal", "open");
@@ -510,12 +523,18 @@ export function comparisonWebUrl(options) {
       url.searchParams.set("section", section);
     } else if (/^\/thread\/[^/]+$/.test(route.pathname)) {
       route.pathname = `/${route.pathname.slice("/thread/".length)}`;
+    } else if (comparisonNewThreadProjectId(options) !== null) {
+      route.pathname = `/${encodeURIComponent(options.threadId)}`;
     }
     url.hash = route.pathname + route.search;
   } else {
     url.hash = `/${encodeURIComponent(options.threadId)}`;
   }
   return url.toString();
+}
+
+export function comparisonElectronStartupUrl(options) {
+  return comparisonWebUrl(options);
 }
 
 export function comparisonLynxDeepLink(options) {
@@ -534,6 +553,18 @@ export function comparisonLynxDeepLink(options) {
 export function comparisonRouteRestoreExpression(expectedUrl) {
   const expectedHash = new URL(expectedUrl).hash;
   return `location.hash = ${JSON.stringify(expectedHash)}; undefined`;
+}
+
+export function comparisonNewThreadOpenExpression(options) {
+  const projectId = comparisonNewThreadProjectId(options);
+  if (projectId === null) return null;
+  return `(() => { const projectId = ${JSON.stringify(projectId)}; const trigger = Array.from(document.querySelectorAll('[data-testid=\"new-thread-button\"][data-project-id]')).find((node) => node.getAttribute('data-project-id') === projectId); if (!(trigger instanceof HTMLButtonElement)) return { clicked: false, projectId }; trigger.click(); return { clicked: true, projectId }; })()`;
+}
+
+export function comparisonNewThreadLandingReadyExpression(options) {
+  const projectId = comparisonNewThreadProjectId(options);
+  if (projectId === null) return null;
+  return `import('/src/composerDraftStore.ts').then(({ useComposerDraftStore }) => { const pathname = location.hash.slice(1).split('?')[0]; const threadId = decodeURIComponent(pathname.slice(1)); const draft = useComposerDraftStore.getState().draftThreadsByThreadId[threadId] ?? null; const composer = document.querySelector('[data-empty-landing-composer-block=\"true\"]'); const localControl = Array.from(document.querySelectorAll('button')).find((node) => node.textContent?.trim() === 'Local'); const temporaryControl = document.querySelector('button[aria-label=\"Temporary chat\"]'); const projectTrigger = document.querySelector('[data-testid=\"project-picker-trigger\"]'); return { projectId: draft?.projectId ?? null, threadId, pathname, composerRendered: composer !== null && composer.getBoundingClientRect().width > 0, localControlRendered: localControl !== undefined && localControl.getBoundingClientRect().width > 0, temporaryControlRendered: temporaryControl !== null && temporaryControl.getBoundingClientRect().width > 0, projectTriggerRendered: projectTrigger !== null && projectTrigger.getBoundingClientRect().width > 0, notFound: document.body.innerText.includes('Not Found') }; })`;
 }
 
 export function electronComparisonUrlMatches(candidateUrl, expectedUrl) {
@@ -753,7 +784,7 @@ export function comparisonTerminalReadyExpression(threadId) {
 }
 
 export function desktopComparisonCommands(options, paths, authToken, electronExecutable) {
-  const webUrl = comparisonWebUrl(options);
+  const webUrl = comparisonElectronStartupUrl(options);
   return {
     preRuntimeBuild: [
       {
@@ -1089,6 +1120,7 @@ async function configureElectronRenderer(
   timeoutMs = 30_000,
 ) {
   const expectedUrl = comparisonWebUrl(options);
+  const startupUrl = comparisonElectronStartupUrl(options);
   const theme = options.theme;
   const deadline = Date.now() + timeoutMs;
   let target = null;
@@ -1100,7 +1132,7 @@ async function configureElectronRenderer(
       target = targets.find(
         (candidate) =>
           candidate.type === "page" &&
-          electronComparisonUrlMatches(candidate.url, expectedUrl) &&
+          new URL(candidate.url).origin === new URL(startupUrl).origin &&
           typeof candidate.webSocketDebuggerUrl === "string",
       );
       if (target) break;
@@ -1170,7 +1202,7 @@ async function configureElectronRenderer(
               theme,
               options.appSnap,
               options.chatFontSize,
-              comparisonThreadId(options),
+              comparisonElectronAnchorThreadId(options),
             ),
           returnByValue: true,
         },
@@ -1326,7 +1358,7 @@ async function configureElectronRenderer(
             `Timed out restoring the Electron comparison route ${expectedUrl}; last observed ${lastObservedRoute ?? "<unavailable>"}.`,
           );
         }
-        const identityThreadId = comparisonThreadId(options);
+        const identityThreadId = comparisonElectronAnchorThreadId(options);
         if (identityThreadId) {
           const identityDeadline = Date.now() + 15_000;
           let identity = null;
@@ -1410,6 +1442,56 @@ async function configureElectronRenderer(
           }
           console.log(
             `[compare:desktop] Electron transient UI verified clean: ${JSON.stringify(transientUi)}.`,
+          );
+        }
+        const newThreadLandingExpression = comparisonNewThreadLandingReadyExpression(options);
+        if (newThreadLandingExpression) {
+          requestId += 1;
+          const openResult = await evaluateElectronExpression(
+            socket,
+            requestId,
+            comparisonNewThreadOpenExpression(options),
+            "opening the Electron project landing through its rendered New thread action",
+          );
+          if (openResult?.clicked !== true) {
+            throw new Error(
+              `Unable to activate the Electron project New thread action: ${JSON.stringify(openResult)}.`,
+            );
+          }
+          const landingDeadline = Date.now() + 15_000;
+          let landingReadiness = null;
+          while (Date.now() < landingDeadline) {
+            requestId += 1;
+            landingReadiness = await evaluateElectronExpression(
+              socket,
+              requestId,
+              newThreadLandingExpression,
+              "confirming the Electron project landing",
+            );
+            if (
+              landingReadiness?.projectId === comparisonNewThreadProjectId(options) &&
+              landingReadiness?.composerRendered === true &&
+              landingReadiness?.localControlRendered === true &&
+              landingReadiness?.temporaryControlRendered === true &&
+              landingReadiness?.projectTriggerRendered === true &&
+              landingReadiness?.notFound === false
+            ) break;
+            await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+          }
+          if (
+            landingReadiness?.projectId !== comparisonNewThreadProjectId(options) ||
+            landingReadiness?.composerRendered !== true ||
+            landingReadiness?.localControlRendered !== true ||
+            landingReadiness?.temporaryControlRendered !== true ||
+            landingReadiness?.projectTriggerRendered !== true ||
+            landingReadiness?.notFound !== false
+          ) {
+            throw new Error(
+              `Timed out confirming Electron project landing: ${JSON.stringify(landingReadiness)}.`,
+            );
+          }
+          console.log(
+            `[compare:desktop] Electron project landing verified: ${JSON.stringify(landingReadiness)}.`,
           );
         }
         const explorerExpression = comparisonExplorerOpenExpression(options);
@@ -1650,7 +1732,7 @@ async function main() {
   const paths = resolveDesktopComparisonPaths();
   const authToken =
     process.env.SYNARA_COMPARE_AUTH_TOKEN?.trim() || "synara-local-desktop-comparison";
-  const electronExecutable = await resolveElectronExecutable(comparisonWebUrl(options));
+  const electronExecutable = await resolveElectronExecutable(comparisonElectronStartupUrl(options));
   const commands = desktopComparisonCommands(options, paths, authToken, electronExecutable);
   const ownedChildren = [];
   let shuttingDown = false;
@@ -1714,9 +1796,13 @@ async function main() {
     prepareDesktopComparisonHome(paths);
     prepareOwnedLynxtronRuntime(paths);
     const routedThreadId = comparisonThreadId(options);
+    const electronAnchorThreadId = comparisonElectronAnchorThreadId(options);
     if (routedThreadId) assertComparisonThreadAvailable(paths, routedThreadId);
-    const transcriptExpectation = routedThreadId
-      ? readComparisonTranscriptExpectation(paths, routedThreadId)
+    if (electronAnchorThreadId && electronAnchorThreadId !== routedThreadId) {
+      assertComparisonThreadAvailable(paths, electronAnchorThreadId);
+    }
+    const transcriptExpectation = electronAnchorThreadId
+      ? readComparisonTranscriptExpectation(paths, electronAnchorThreadId)
       : null;
     writeComparisonWindowStates(paths, options);
 

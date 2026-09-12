@@ -7,6 +7,8 @@ import {
   assertComparisonThreadAvailable,
   readComparisonTranscriptExpectation,
   comparisonLynxDeepLink,
+  comparisonElectronAnchorThreadId,
+  comparisonElectronStartupUrl,
   comparisonExplorerOpenExpression,
   comparisonDiffOpenExpression,
   comparisonDiffReadyExpression,
@@ -17,6 +19,9 @@ import {
   comparisonTerminalOpenExpression,
   comparisonTerminalReadyExpression,
   comparisonRouteRestoreExpression,
+  comparisonNewThreadLandingReadyExpression,
+  comparisonNewThreadOpenExpression,
+  comparisonNewThreadProjectId,
   comparisonThreadId,
   comparisonThreadIdentityReadyExpression,
   comparisonTranscriptReadyExpression,
@@ -318,6 +323,37 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(comparisonLynxDeepLink({ ...options, terminal: "open" })).toBe(
       "synara://settings/advanced?target=environment-panel&terminal=open",
     );
+  });
+
+  it("opens a project-scoped Electron draft through the rendered project action", () => {
+    const options = {
+      ...DEFAULT_DESKTOP_COMPARISON_OPTIONS,
+      route: "/new-thread/project%20one",
+    };
+    expect(comparisonNewThreadProjectId(options)).toBe("project one");
+    expect(comparisonElectronAnchorThreadId(options)).toBe(options.threadId);
+    expect(comparisonElectronStartupUrl(options)).toBe(
+      `http://127.0.0.1:8891/#/${options.threadId}`,
+    );
+    expect(comparisonWebUrl(options)).toBe(
+      `http://127.0.0.1:8891/#/${options.threadId}`,
+    );
+    expect(comparisonLynxDeepLink(options)).toBe(
+      "synara://new-thread/project%20one",
+    );
+
+    const openExpression = comparisonNewThreadOpenExpression(options);
+    expect(openExpression).toContain("new-thread-button");
+    expect(openExpression).toContain("data-project-id");
+    expect(openExpression).toContain("trigger.click()");
+    expect(openExpression).toContain(JSON.stringify("project one"));
+
+    const readyExpression = comparisonNewThreadLandingReadyExpression(options);
+    expect(readyExpression).toContain("data-empty-landing-composer-block");
+    expect(readyExpression).toContain("project-picker-trigger");
+    expect(readyExpression).toContain("Temporary chat");
+    expect(readyExpression).toContain("Local");
+    expect(readyExpression).toContain("Not Found");
   });
 
   it("opens the same Components Lab story, state, and variant in both renderers", () => {
@@ -1013,6 +1049,9 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(source).toContain("const routeDeadline = Date.now() + 30_000");
     expect(source).toContain('params: { expression: "location.href", returnByValue: true }');
     expect(source).toContain("Timed out reasserting the Electron comparison route.");
+    expect(configureSource).toContain(
+      "new URL(candidate.url).origin === new URL(startupUrl).origin",
+    );
     expect(source).toContain('["Web", options.webPort]');
     expect(source).toContain('message?.result?.exceptionDetails');
     expect(source).toContain('Failed ${activity}: ${description}');

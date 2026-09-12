@@ -4424,6 +4424,7 @@ export default function Sidebar() {
                 }
                 tooltipSide="top"
                 data-testid="new-thread-button"
+                data-project-id={project.id}
                 onMouseEnter={() => {
                   prefetchModelsForProjectNewThread(project.id, { includeDroid: true });
                 }}
