@@ -69,7 +69,10 @@ function PaneIcon(props: { readonly kind: RightDockPaneKind }) {
 }
 
 function RightDockPaneIcon(props: { readonly pane: RightDockPane }) {
-  if (props.pane.kind === 'browser') return <GlobeIcon size={14} />;
+  const { semanticIconColor } = useTheme();
+  if (props.pane.kind === 'browser') {
+    return <GlobeIcon color={semanticIconColor('secondary')} size={14} />;
+  }
   if (props.pane.kind === 'file' && props.pane.filePath) {
     return <FileEntryIcon pathValue={props.pane.filePath} />;
   }
@@ -77,6 +80,7 @@ function RightDockPaneIcon(props: { readonly pane: RightDockPane }) {
 }
 
 function CollapseButton(props: { readonly onCollapse: () => void }) {
+  const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: 'ThreadRightDockHeaderButton',
     accessibleLabel: 'Collapse panel',
@@ -84,7 +88,7 @@ function CollapseButton(props: { readonly onCollapse: () => void }) {
   });
   return (
     <view className={interaction.className} {...interaction.eventProps}>
-      <PanelRightCloseIcon size={14} />
+      <PanelRightCloseIcon color={semanticIconColor('secondary')} size={14} />
     </view>
   );
 }
@@ -100,6 +104,7 @@ export function ThreadRightDockTabs(props: {
   readonly onCollapse: () => void;
   readonly onSelectPane: (paneId: string) => void;
 }) {
+  const { semanticIconColor } = useTheme();
   const addKinds = props.addMenuKinds ?? DEFAULT_ADD_KINDS;
   return (
     <view className="ThreadRightDockTabHeader">
@@ -125,14 +130,18 @@ export function ThreadRightDockTabs(props: {
       {addKinds.length > 0 ? (
         <Menu defaultOpen={props.defaultAddMenuOpen}>
           <MenuTrigger ariaLabel="Add panel" className="ThreadRightDockHeaderButton">
-            <PlusIcon size={14} />
+            <PlusIcon color={semanticIconColor('secondary')} size={14} />
           </MenuTrigger>
           <MenuPopup align="end" side="bottom" className="ThreadRightDockAddMenu">
             <MenuGroup>
               <MenuGroupLabel>Panel</MenuGroupLabel>
               {addKinds.map((kind) => (
                 <MenuItem key={kind} onClick={() => props.onAddPane(kind)}>
-                  {kind === 'browser' ? <GlobeIcon size={14} /> : <PaneIcon kind={kind} />}
+                  {kind === 'browser' ? (
+                    <GlobeIcon color={semanticIconColor('secondary')} size={14} />
+                  ) : (
+                    <PaneIcon kind={kind} />
+                  )}
                   <text>{
                     kind === 'browser'
                       ? 'Browser'

@@ -18,7 +18,7 @@ values and unresolved Native custom properties.
 - Medium: 2
 - Low: 2
 - Existing strengths: 46 paired real-component stories, 92 renderer mappings,
-  3,192 meaningful cases, zero missing primitive counterparts, and broad
+  3,144 meaningful cases, zero missing primitive counterparts, and broad
   semantic-icon consumer coverage.
 
 ## Findings
@@ -124,6 +124,21 @@ values and unresolved Native custom properties.
   versus Electron `111x26.5`. All retained Native console checks were clean.
 - The post-normalization workspace build passes with staged Lynx bundle SHA-256
   `b3d1cc6965f84343b87a7a277004bd618abb034d983f1dd29f6d12ec1f40934a`.
+
+## Row and tab follow-up
+
+- Native Sidebar project/thread/chat focus now uses the same inset ring as
+  Electron, preventing a 2px content-box shift when keyboard focus enters a row.
+- Active Native thread rows now retain `--sidebar-accent-active` through hover
+  and pressed states instead of falling back to the ordinary hover surface.
+- Project rows do not have a product-level selected state, so their synthetic
+  `active` and `active-hover` Component Lab cells were removed; the matrix now
+  contains 3,144 meaningful cells.
+- Generic tab close, Browser, Add, and Collapse glyphs now resolve the semantic
+  secondary icon color before Native SVG paint; file and provider icons retain
+  their meaningful per-type colors.
+- Focused row/tab tests pass and the staged Native bundle SHA-256 is
+  `93b1fd1fcfe4dd241e8069629ef3970640782bcb67d74ef3283d6e89d23f2a9f`.
 - Exact-owned Lynxtron 0.0.22 runtime checks on staged bundle
   `72b48d964334c81178559ded6d80f716d6d15d905131487f79782cdc837f8e03`
   confirm prominent disabled paint at 0.2 opacity, resolved light input-focus

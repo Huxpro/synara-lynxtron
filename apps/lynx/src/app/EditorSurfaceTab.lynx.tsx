@@ -5,6 +5,7 @@ import {
   useLynxInteractiveState,
 } from '../adapters/useLynxInteractiveState';
 import { XIcon } from '../lib/icons.lynx';
+import { useTheme } from '../adapters/useTheme.lynx';
 
 import './editor-surface-tab.css';
 
@@ -25,6 +26,7 @@ export function EditorSurfaceTab(props: {
   readonly onSelect?: () => void;
   readonly visualState?: 'default' | 'hover' | 'focus' | 'pressed';
 }) {
+  const { semanticIconColor } = useTheme();
   const tab = useLynxInteractiveState({
     baseClassName: `EditorSurfaceTab${
       props.active ? ' EditorSurfaceTab--active' : ''
@@ -54,7 +56,11 @@ export function EditorSurfaceTab(props: {
       >
         <view className="EditorSurfaceTabRestingIcon">{props.icon}</view>
         <view className="EditorSurfaceTabCloseGlyph">
-          <XIcon className="EditorSurfaceTabCloseIcon" size={14} />
+          <XIcon
+            className="EditorSurfaceTabCloseIcon"
+            color={semanticIconColor('secondary')}
+            size={14}
+          />
         </view>
       </view>
       <text

@@ -228,7 +228,7 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
-    id: "sidebar/project-row", title: "Sidebar project row", category: "navigation", owner: "SidebarProjectRow", fixtureId: "sidebar-project-running", variants: ["default", "running", "pinned"], states: [...INTERACTIVE_STATES, "active", "active-hover"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    id: "sidebar/project-row", title: "Sidebar project row", category: "navigation", owner: "SidebarProjectRow", fixtureId: "sidebar-project-running", variants: ["default", "running", "pinned"], states: [...INTERACTIVE_STATES], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "SidebarProjectSummary", module: "apps/web/src/components/Sidebar.tsx", consumers: ["sidebar/project-row"] },
       lynx: { renderer: "lynx", component: "SidebarNavigationRow", module: "apps/lynx/src/components/sidebar/Sidebar.lynx.tsx", consumers: ["sidebar/project-row"] },

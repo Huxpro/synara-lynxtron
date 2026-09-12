@@ -80,6 +80,11 @@ describe('Lynx thread right dock tabs', () => {
     expect(dockStyles).not.toMatch(
       /ThreadRightDockHeaderButton\.ui-hover[\s\S]{0,500}color:\s*var\(--foreground\)/s
     );
+    const source = readFileSync(
+      new URL('./ThreadRightDockTabs.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(source.match(/semanticIconColor\('secondary'\)/g)?.length).toBeGreaterThanOrEqual(5);
   });
 
   it('renders shared selectable tabs and closes without selecting the parent', async () => {

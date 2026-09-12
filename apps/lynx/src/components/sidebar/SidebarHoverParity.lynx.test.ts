@@ -215,6 +215,18 @@ describe('Lynx sidebar hover parity', () => {
     expect(styles).toMatch(
       /\.AppSidebarRowHoverActions\s*\{[^}]*background-color:\s*transparent;/s
     );
+    expect(styles).toMatch(
+      /\.AppSidebarProjectHeader\.ui-focus,[\s\S]*?\.SharedSidebarChatsPaginationAction\.ui-focus\s*\{[^}]*box-shadow:\s*inset 0 0 0 1px var\(--ring\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.AppSidebarProjectHeader\.ui-focus,[\s\S]*?\.SharedSidebarChatsPaginationAction\.ui-focus\s*\{[^}]*border:\s*1px/s
+    );
+    expect(styles).toMatch(
+      /\.AppSidebarThread--active\s*\{[^}]*background-color:\s*var\(--sidebar-accent-active\);/s
+    );
+    expect(styles).toMatch(
+      /\.AppSidebarThread--active\.ui-hover,[\s\S]*?\.AppSidebarThread--active\.ui-pressed\s*\{[^}]*background-color:\s*var\(--sidebar-accent-active\);/s
+    );
     const summaryStyles = readFileSync(
       new URL('../../adapters/sidebar-project-summary-elements.css', import.meta.url),
       'utf8'

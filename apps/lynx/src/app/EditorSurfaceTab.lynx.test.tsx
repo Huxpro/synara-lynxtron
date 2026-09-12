@@ -17,7 +17,7 @@ describe('Lynx editor surface tab', () => {
     );
 
     expect(source).toContain(
-      '<XIcon className="EditorSurfaceTabCloseIcon" size={14} />'
+      "color={semanticIconColor('secondary')}"
     );
     expect(source).toContain(
       'className={`${close.className} EditorSurfaceTabIconSlot`}'
