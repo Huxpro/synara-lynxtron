@@ -95,7 +95,8 @@ export type AutomationProjectModelSelectionSource = {
 };
 
 function localTimezone(): string {
-  return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  const dateTimeFormat = globalThis.Intl?.DateTimeFormat;
+  return dateTimeFormat?.().resolvedOptions().timeZone || "UTC";
 }
 
 function scheduleTimezone(schedule: AutomationSchedule, fallbackTimezone: string): string {
@@ -206,18 +207,18 @@ export function updateWeeklyScheduleTime(
   return { ...schedule, timeOfDay };
 }
 
-const DATE_TIME_FORMATTER = new Intl.DateTimeFormat(undefined, {
-  month: "short",
-  day: "numeric",
-  hour: "numeric",
-  minute: "2-digit",
-});
-
 export function formatDateTime(value: string | null): string {
   if (!value) return "Not scheduled";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
-  return DATE_TIME_FORMATTER.format(date);
+  const DateTimeFormat = globalThis.Intl?.DateTimeFormat;
+  if (!DateTimeFormat) return date.toISOString();
+  return new DateTimeFormat(undefined, {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
 }
 
 function timezoneSuffix(schedule: AutomationSchedule): string {

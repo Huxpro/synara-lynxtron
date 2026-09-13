@@ -232,3 +232,26 @@ values and unresolved Native custom properties.
   Native tests pass 31/31, the shared Web automation suite passes 33/33, and the
   production bundle SHA-256 is
   `097bb0e3800261fc65719662b713bddbc2a21b6797c956444427c55546df653f`.
+- The continuation audit closed the remaining automation create/edit/detail
+  divergence. Create and Edit now share Native composer primitives and the same
+  eight-choice schedule contract as Electron; footer menus open upward and stay
+  within the 1280×820 window. The detail page now exposes the authority's
+  Pause/Delete icon actions, primary Run now action, lifecycle status dot, and
+  compact inline controls, including the production model picker.
+- The Settings/ordinary shell transition now uses route-specific reconciliation
+  keys. Repeated exact-owned route transitions resolved to one Settings sidebar
+  and zero ordinary sidebars on Settings, then the exact inverse on product
+  routes, with one shell in both cases. This closes the reported intermittent
+  Settings-in-the-left-sidebar failure.
+- Final focused results are 39/39 Native and 33/33 Web; React Doctor 0.9.11
+  reported zero changed-line diagnostics across the affected Native/Web source.
+  The final exact-owned
+  workspace Lynxtron 0.0.22 client was PID `38396` on PID-derived
+  `localhost:8901`, session 1. Native measured the shared Edit shell at
+  766×463 content inside its 768×465 bordered surface. The exact-client
+  error/warning console was empty, and the staged bundle SHA-256 was
+  `0154aff177b6147cb769d7e9ccab5b54b007e3fb027e3fa3b68e7f68df3773c0`.
+- The canonical server rejected a legacy local-checkout definition without
+  explicit consent, so the impossible blocked state was not fabricated for a
+  screenshot. Approval-needed actions remain covered by the focused contract,
+  and no approval or Run now action was invoked during certification.

@@ -3622,6 +3622,7 @@ export function SliceRouter({
   } else if (route.pathname === '/settings') {
     page = (
       <SettingsPage
+        key="settings-route-shell"
         initialSection={
           (route.params.section as SettingsSectionId | undefined) ?? 'general'
         }
@@ -3912,7 +3913,7 @@ export function SliceRouter({
   return (
     <>
       {transportNotice}
-      <AppShellFrame sidebar={sidebar}>
+      <AppShellFrame key="product-route-shell" sidebar={sidebar}>
         <view
           className={`AppMain AppMain--sidebar-${
             sidebarOpen && !editorModeOpen ? 'open' : 'closed'

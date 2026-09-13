@@ -14,6 +14,7 @@ import {
   fetchAutomations,
   fetchSidebarSnapshot,
   queryClient,
+  runAutomationNow,
   updateAutomation,
 } from './queries';
 import { AutomationCreateDialog } from './AutomationCreateDialog.lynx';
@@ -175,6 +176,12 @@ export function AutomationsPage({
       navigate(`/automations/${encodeURIComponent(definition.id)}`);
     },
   });
+  const runNowMutation = useMutation({
+    mutationFn: runAutomationNow,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['automations'] });
+    },
+  });
   useHostPolling(automations.refetch, 5_000);
   const projection = useMemo(
     () =>
@@ -218,18 +225,8 @@ export function AutomationsPage({
         automationId={automationId}
         definitions={automations.data?.definitions ?? []}
         runs={automations.data?.runs ?? []}
-        projects={
-          sidebar.data?.projects.map((project) => ({
-            id: project.id,
-            name: project.title,
-          })) ?? []
-        }
-        threads={
-          sidebar.data?.threads.map((thread) => ({
-            id: thread.id,
-            title: thread.title,
-          })) ?? []
-        }
+        projects={sidebar.data?.projects ?? []}
+        threads={sidebar.data?.threads ?? []}
         updateError={
           updateMutation.error instanceof Error
             ? updateMutation.error.message
@@ -245,6 +242,7 @@ export function AutomationsPage({
             onSuccess: () => setEditOpen(false),
           })
         }
+        onPatch={(input) => updateMutation.mutate(input)}
         deleteError={
           deleteMutation.error instanceof Error
             ? deleteMutation.error.message
@@ -262,6 +260,31 @@ export function AutomationsPage({
             enabled: !definition.enabled,
           })
         }
+        runNowError={
+          runNowMutation.error instanceof Error
+            ? runNowMutation.error.message
+            : runNowMutation.error
+              ? String(runNowMutation.error)
+              : null
+        }
+        runNowPending={runNowMutation.isPending}
+        onRunNow={(definition) =>
+          runNowMutation.mutate({ automationId: definition.id })
+        }
+        onApproveRisks={async (definition, acknowledgedRisks, maxIterations, runAfter) => {
+          try {
+            await updateMutation.mutateAsync({
+              id: definition.id,
+              acknowledgedRisks,
+              ...(maxIterations !== undefined ? { maxIterations } : {}),
+            });
+            if (runAfter) {
+              await runNowMutation.mutateAsync({ automationId: definition.id });
+            }
+          } catch {
+            // Both mutations surface their errors through the detail action banner.
+          }
+        }}
         navigate={navigate}
       />
     );

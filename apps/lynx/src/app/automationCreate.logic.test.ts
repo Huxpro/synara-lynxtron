@@ -62,11 +62,17 @@ describe('Automation create payload', () => {
 
   it.each([
     ['manual', { type: 'manual' }],
-    ['daily', { type: 'daily', timeOfDay: '09:00' }],
-    ['weekdays', { type: 'weekdays', timeOfDay: '09:00' }],
-  ] as const)('maps %s schedules to the canonical contract', (schedule, expected) => {
+    ['once', { type: 'once', runAt: '2026-09-14T13:00:00.000Z' }],
+    ['hourly', { type: 'interval', everySeconds: 3600 }],
+    ['daily', { type: 'daily', timeOfDay: '14:30', timezone: 'America/New_York' }],
+    ['weekdays', { type: 'weekdays', timeOfDay: '14:30', timezone: 'America/New_York' }],
+    ['weekly', { type: 'weekly', dayOfWeek: 1, timeOfDay: '14:30', timezone: 'America/New_York' }],
+    ['custom', { type: 'interval', everySeconds: 1800 }],
+    ['cron', { type: 'cron', expression: '0 9 * * *', timezone: 'America/New_York' }],
+  ] as const)('preserves the %s schedule contract', (_label, schedule) => {
     expect(
       buildAutomationCreateInput({
+        acknowledgeFastInterval: false,
         acknowledgeLocalCheckout: false,
         completionPolicy: { type: 'none' },
         interactionMode: 'plan',
@@ -80,17 +86,13 @@ describe('Automation create payload', () => {
         schedule,
         stopOnError: false,
         targetThreadId: null,
-        timeOfDay: '14:30',
         worktreeMode: 'worktree',
       }),
     ).toMatchObject({
       projectId: 'project-1',
       name: 'Release review',
       prompt: 'Check regressions.',
-      schedule:
-        schedule === 'manual'
-          ? expected
-          : { ...expected, timeOfDay: '14:30' },
+      schedule,
       worktreeMode: 'worktree',
       runtimeMode: 'approval-required',
       interactionMode: 'plan',
@@ -103,6 +105,7 @@ describe('Automation create payload', () => {
     'preserves the %s workspace mode',
     (worktreeMode) => {
       const result = buildAutomationCreateInput({
+          acknowledgeFastInterval: false,
           acknowledgeLocalCheckout: worktreeMode === 'local',
           completionPolicy: { type: 'none' },
           interactionMode: 'default',
@@ -113,10 +116,9 @@ describe('Automation create payload', () => {
           name: 'Workspace mode',
           prompt: 'Check the selected workspace mode.',
           runtimeMode: 'approval-required',
-          schedule: 'manual',
+          schedule: { type: 'manual' },
           stopOnError: true,
           targetThreadId: null,
-          timeOfDay: '09:00',
           worktreeMode,
         });
 
@@ -136,6 +138,7 @@ describe('Automation create payload', () => {
     'maps %s with %s workspace to the required risk acknowledgements',
     (runtimeMode, worktreeMode, acknowledgedRisks) => {
       const result = buildAutomationCreateInput({
+        acknowledgeFastInterval: false,
         acknowledgeLocalCheckout: worktreeMode === 'local',
         completionPolicy: { type: 'none' },
         interactionMode: 'default',
@@ -146,10 +149,9 @@ describe('Automation create payload', () => {
         name: 'Permission mode',
         prompt: 'Verify automation permissions.',
         runtimeMode,
-        schedule: 'manual',
+        schedule: { type: 'manual' },
         stopOnError: true,
         targetThreadId: null,
-        timeOfDay: '09:00',
         worktreeMode,
       });
 
@@ -160,6 +162,7 @@ describe('Automation create payload', () => {
 
   it('keeps a heartbeat target and clears standalone targets', () => {
     const base = {
+      acknowledgeFastInterval: false,
       acknowledgeLocalCheckout: true,
       completionPolicy: {
         type: 'ai-evaluated' as const,
@@ -173,9 +176,8 @@ describe('Automation create payload', () => {
       name: 'Continue a thread',
       prompt: 'Keep working.',
       runtimeMode: 'approval-required' as const,
-      schedule: 'manual' as const,
+      schedule: { type: 'manual' as const },
       stopOnError: true,
-      timeOfDay: '09:00',
       worktreeMode: 'auto' as const,
     };
 
@@ -205,5 +207,27 @@ describe('Automation create payload', () => {
       mode: 'standalone',
       targetThreadId: null,
     });
+  });
+
+  it('persists fast-interval acknowledgement for short custom schedules', () => {
+    const result = buildAutomationCreateInput({
+      acknowledgeFastInterval: true,
+      acknowledgeLocalCheckout: false,
+      completionPolicy: { type: 'none' },
+      interactionMode: 'default',
+      projectId: 'project-1',
+      maxIterations: 10,
+      mode: 'standalone',
+      modelSelection,
+      name: 'Fast loop',
+      prompt: 'Check frequently.',
+      runtimeMode: 'approval-required',
+      schedule: { type: 'interval', everySeconds: 30 },
+      stopOnError: true,
+      targetThreadId: null,
+      worktreeMode: 'worktree',
+    });
+
+    expect(result.acknowledgedRisks).toEqual(['fast-interval']);
   });
 });

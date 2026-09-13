@@ -5,6 +5,8 @@ import type {
   AutomationDefinition,
   AutomationCreateInput,
   AutomationDeleteInput,
+  AutomationRunNowInput,
+  AutomationRunNowResult,
   AutomationUpdateInput,
   ClientOrchestrationCommand,
   FilesystemBrowseInput,
@@ -488,6 +490,12 @@ export async function deleteAutomation(
   input: AutomationDeleteInput
 ): Promise<void> {
   await transportRequest('automation.delete', input);
+}
+
+export async function runAutomationNow(
+  input: AutomationRunNowInput
+): Promise<AutomationRunNowResult> {
+  return transportRequest<AutomationRunNowResult>('automation.runNow', input);
 }
 
 export async function fetchSynaraThreadDetailSnapshot(

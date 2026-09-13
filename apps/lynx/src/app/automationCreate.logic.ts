@@ -2,6 +2,7 @@ import type {
   AutomationMode,
   AutomationCompletionPolicy,
   AutomationCreateInput,
+  AutomationSchedule,
   AutomationWorktreeMode,
   ModelSelection,
   ProviderInteractionMode,
@@ -11,7 +12,6 @@ import type {
 } from '@synara/contracts';
 import { getDefaultModel } from '@synara/shared/model';
 
-export type CreateSchedule = 'daily' | 'manual' | 'weekdays';
 export type CreateWorktreeMode = AutomationWorktreeMode;
 
 export function resolveAutomationModelSelection(input: {
@@ -52,6 +52,7 @@ export function resolveAutomationModelSelectionForProjectChange(input: {
 
 export function buildAutomationCreateInput(input: {
   readonly acknowledgeLocalCheckout: boolean;
+  readonly acknowledgeFastInterval: boolean;
   readonly interactionMode: ProviderInteractionMode;
   readonly completionPolicy: AutomationCompletionPolicy;
   readonly maxIterations: number | null;
@@ -61,10 +62,9 @@ export function buildAutomationCreateInput(input: {
   readonly projectId: ProjectId;
   readonly prompt: string;
   readonly runtimeMode: RuntimeMode;
-  readonly schedule: CreateSchedule;
+  readonly schedule: AutomationSchedule;
   readonly stopOnError: boolean;
   readonly targetThreadId: AutomationCreateInput['targetThreadId'];
-  readonly timeOfDay: string;
   readonly worktreeMode: CreateWorktreeMode;
 }): AutomationCreateInput {
   return {
@@ -72,10 +72,7 @@ export function buildAutomationCreateInput(input: {
     sourceThreadId: null,
     name: input.name.trim(),
     prompt: input.prompt.trim(),
-    schedule:
-      input.schedule === 'manual'
-        ? { type: 'manual' }
-        : { type: input.schedule, timeOfDay: input.timeOfDay },
+    schedule: input.schedule,
     enabled: true,
     modelSelection: input.modelSelection,
     runtimeMode: input.runtimeMode,
@@ -101,6 +98,7 @@ export function buildAutomationCreateInput(input: {
       (input.worktreeMode === 'auto' || input.worktreeMode === 'local')
         ? ['local-checkout' as const]
         : []),
+      ...(input.acknowledgeFastInterval ? ['fast-interval' as const] : []),
     ],
   };
 }

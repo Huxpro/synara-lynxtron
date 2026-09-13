@@ -361,7 +361,94 @@
 
 .AutomationDetailActionsHeader {
   justify-content: flex-end;
+  gap: 4px;
   padding: 0 12px;
+}
+
+.AutomationDetailHeaderActionIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.AutomationDetailInlineControl {
+  min-width: 0;
+  max-width: 176px;
+  gap: 4px;
+  padding-left: 8px;
+  padding-right: 6px;
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.AutomationDetailInlineControlText {
+  min-width: 0;
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.AutomationDetailInlineChevron {
+  transform: rotate(90deg);
+}
+
+.LxMenuPopup.AutomationDetailInlineMenu {
+  width: 192px;
+  min-height: 0;
+}
+
+.AutomationDetailInlineInput {
+  width: 160px;
+  height: 28px;
+  padding: 4px 8px;
+  border-width: 0;
+  background-color: transparent;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
+  text-align: right;
+}
+
+.AutomationDetailInlineInput > .LxInput {
+  height: 28px;
+  padding: 4px 8px;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: right;
+}
+
+.AutomationDetailInlineInput--mono {
+  font-family: var(--font-mono-family);
+}
+
+.AutomationDetailStatusValue {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.AutomationDetailStatusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background-color: var(--muted-foreground);
+}
+
+.AutomationDetailStatusDot--active {
+  background-color: var(--success);
+}
+
+.AutomationDetailStatusDot--paused {
+  background-color: var(--warning);
+}
+
+.AutomationDetailStatusDot--scheduled {
+  background-color: var(--color-accent-blue);
 }
 
 .AutomationDetailAsideScroller {
@@ -388,6 +475,47 @@
     var(--destructive) 6%,
     transparent
   );
+}
+
+.AutomationDetailApproval {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--warning) 30%, transparent);
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--warning) 8%, transparent);
+}
+
+.AutomationDetailApprovalTitle,
+.AutomationDetailApprovalWarningTitle {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.AutomationDetailApprovalDescription,
+.AutomationDetailApprovalWarningDetail {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.AutomationDetailApprovalWarning {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.AutomationDetailApprovalActions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 2px;
 }
 
 .AutomationDetailUpdateErrorText {
@@ -565,15 +693,11 @@
 }
 
 .LxDialogPopup.AutomationEditDialog {
-  width: min(560px, calc(100vw - 32px));
-  max-height: min(620px, calc(100vh - 32px));
-}
-
-.AutomationEditPanel {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-top: 16px;
+  width: 768px;
+  max-width: calc(100vw - 32px);
+  height: 465px;
+  max-height: calc(100vh - 32px);
+  padding: 0;
 }
 
 .AutomationCreatePanel {
@@ -927,40 +1051,6 @@
 .LxMenuPopup.AutomationCreatePermissionsMenu {
   width: 192px;
   min-height: 0;
-}
-
-.SliceRoot--viewport-short-height
-  .LxDialogPopup.AutomationEditDialog {
-  height: calc(100vh - 32px);
-  max-height: calc(100vh - 32px);
-}
-
-.SliceRoot--viewport-short-height
-  .AutomationEditDialog
-  > .LxDialogTitle {
-  flex-shrink: 0;
-  min-height: 21px;
-}
-
-.SliceRoot--viewport-short-height
-  .AutomationEditDialog
-  > .LxDialogDescription {
-  display: none;
-}
-
-.SliceRoot--viewport-short-height .AutomationEditPanel {
-  flex: 1;
-  min-height: 0;
-  padding-top: 8px;
-}
-
-.SliceRoot--viewport-short-height
-  .AutomationEditDialog
-  > .AutomationCreateFooter {
-  flex-shrink: 0;
-  height: 40px;
-  margin-top: 0;
-  padding-top: 4px;
 }
 
 .SliceRoot--viewport-medium

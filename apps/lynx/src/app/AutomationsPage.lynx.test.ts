@@ -54,7 +54,7 @@ describe('Lynx Automations route', () => {
     );
   });
 
-  it('opens list rows into the read-only detail surface', () => {
+  it('opens list rows into the actionable detail surface', () => {
     const pageSource = readFileSync(
       new URL('./AutomationsPage.lynx.tsx', import.meta.url),
       'utf8'
@@ -77,6 +77,7 @@ describe('Lynx Automations route', () => {
     expect(detailSource).toContain("'Pause' : 'Resume'");
     expect(pageSource).toContain('mutationFn: updateAutomation');
     expect(pageSource).toContain('mutationFn: deleteAutomation');
+    expect(pageSource).toContain('mutationFn: runAutomationNow');
     expect(pageSource).toContain(
       "invalidateQueries({ queryKey: ['automations'] })"
     );
@@ -87,7 +88,14 @@ describe('Lynx Automations route', () => {
     expect(pageSource).toContain("navigate('/automations')");
     expect(detailSource).not.toContain('automation.update');
     expect(detailSource).not.toContain('automation.delete');
-    expect(detailSource).not.toContain('automation.runNow');
+    expect(detailSource).toContain("runNowPending ? 'Running...' : 'Run now'");
+    expect(detailSource).toContain('<InlineDetailSelect');
+    expect(detailSource).toContain('label="Repeats"');
+    expect(detailSource).toContain("schedule.type === 'interval'");
+    expect(detailSource).toContain("schedule.type === 'once'");
+    expect(detailSource).toContain("schedule.type === 'cron'");
+    expect(detailSource).toContain("schedule.type === 'weekly'");
+    expect(detailSource).not.toContain('aria-label="Edit"');
   });
 
   it('stacks automation detail panes at compact widths', () => {
@@ -185,12 +193,12 @@ describe('Lynx Automations route', () => {
       new URL('./AutomationCreateDialog.lynx.tsx', import.meta.url),
       'utf8'
     );
-    const createLogicSource = readFileSync(
-      new URL('./automationCreate.logic.ts', import.meta.url),
+    const composerPrimitivesSource = readFileSync(
+      new URL('./AutomationComposerPrimitives.lynx.tsx', import.meta.url),
       'utf8'
     );
-    const timeLogicSource = readFileSync(
-      new URL('./automationTime.logic.ts', import.meta.url),
+    const createLogicSource = readFileSync(
+      new URL('./automationCreate.logic.ts', import.meta.url),
       'utf8'
     );
     const queriesSource = readFileSync(
@@ -209,22 +217,23 @@ describe('Lynx Automations route', () => {
       'navigate(`/automations/${encodeURIComponent(definition.id)}`)'
     );
     expect(dialogSource).toContain('buildAutomationCreateInput({');
-    expect(createLogicSource).toContain(
-      "export type CreateSchedule = 'daily' | 'manual' | 'weekdays'"
+    expect(createLogicSource).toContain('readonly schedule: AutomationSchedule');
+    expect(createLogicSource).toContain('schedule: input.schedule');
+    expect(dialogSource).toContain('SCHEDULE_KIND_OPTIONS.map');
+    expect(dialogSource).toContain(
+      '<MenuPopup align="start" side="top" className="AutomationCreateScheduleMenu">'
     );
-    expect(createLogicSource).toContain("input.schedule === 'manual'");
-    expect(createLogicSource).toContain(
-      '{ type: input.schedule, timeOfDay: input.timeOfDay }'
+    expect(dialogSource).toContain('scheduleFromForm(formForValidation)');
+    expect(dialogSource).toContain('isFormSubmittable(formForValidation)');
+    expect(dialogSource).toContain("scheduleForm.scheduleKind === 'once'");
+    expect(dialogSource).toContain("scheduleForm.scheduleKind === 'custom'");
+    expect(dialogSource).toContain("scheduleForm.scheduleKind === 'weekly'");
+    expect(dialogSource).toContain("scheduleForm.scheduleKind === 'cron'");
+    expect(dialogSource).toContain(
+      "import { Input } from '../components/ui/input.lynx'"
     );
     expect(dialogSource).toContain('<AutomationTimeInput');
-    expect(dialogSource).toContain('defaultValue={timeOfDay}');
-    expect(dialogSource).not.toContain("defaultValue: '09:00'");
-    expect(dialogSource).toContain(
-      'isAutomationTimeOfDay(timeOfDay)'
-    );
-    expect(timeLogicSource).toContain(
-      '/^(?:[01]\\d|2[0-3]):[0-5]\\d$/u.test(value)'
-    );
+    expect(dialogSource).toContain('defaultValue={scheduleForm.timeOfDay}');
     expect(createLogicSource).toContain(
       'export type CreateWorktreeMode = AutomationWorktreeMode'
     );
@@ -290,12 +299,13 @@ describe('Lynx Automations route', () => {
     expect(dialogSource).toContain('acknowledgedWarningIds');
     expect(dialogSource).toContain('buildAutomationDraftWarnings({');
     expect(dialogSource).toContain('AUTOMATION_TEMPLATES.map');
-    expect(dialogSource).toContain('Heartbeat stop condition');
+    expect(dialogSource).toContain('<AutomationComposerStopWhenInput');
+    expect(composerPrimitivesSource).toContain(
+      'aria-label="Heartbeat stop condition"'
+    );
     expect(dialogSource).toContain('completionPolicyFromStopWhen(stopWhen)');
     expect(dialogSource).toContain('No threads in this project');
-    expect(dialogSource).toContain(
-      "mode === 'standalone' || targetThreadId.length > 0"
-    );
+    expect(dialogSource).toContain('isFormSubmittable(formForValidation)');
     expect(dialogSource).toContain(
       'thread.id === targetThreadId && thread.projectId === projectId'
     );
@@ -307,9 +317,11 @@ describe('Lynx Automations route', () => {
     );
     expect(dialogSource).toContain('hasUnacknowledgedWarning');
     expect(dialogSource).toContain('warning.requiresAcknowledgement');
-    expect(dialogSource).toContain('function InteractiveAutomationWarningRow');
-    expect(dialogSource).toContain('accessibility-trait="text"');
-    expect(dialogSource).toContain(
+    expect(composerPrimitivesSource).toContain(
+      'function InteractiveAutomationComposerWarningRow'
+    );
+    expect(composerPrimitivesSource).toContain('accessibility-trait="text"');
+    expect(composerPrimitivesSource).toContain(
       "'AutomationCreateWarning AutomationCreateWarning--interactive'"
     );
     expect(createLogicSource).toContain('runtimeMode: input.runtimeMode');
@@ -353,7 +365,7 @@ describe('Lynx Automations route', () => {
     expect(dialogSource).not.toContain("model: 'gpt-");
   });
 
-  it('edits automation name and prompt through the canonical update mutation', () => {
+  it('edits automations through the canonical composer form contract', () => {
     const pageSource = readFileSync(
       new URL('./AutomationsPage.lynx.tsx', import.meta.url),
       'utf8'
@@ -366,16 +378,8 @@ describe('Lynx Automations route', () => {
       new URL('./AutomationEditDialog.lynx.tsx', import.meta.url),
       'utf8'
     );
-    const editLogicSource = readFileSync(
-      new URL('./automationEdit.logic.ts', import.meta.url),
-      'utf8'
-    );
     const timeInputSource = readFileSync(
       new URL('./AutomationTimeInput.lynx.tsx', import.meta.url),
-      'utf8'
-    );
-    const timezoneLogicSource = readFileSync(
-      new URL('./automationTimezone.logic.ts', import.meta.url),
       'utf8'
     );
     const styles = readFileSync(
@@ -385,73 +389,45 @@ describe('Lynx Automations route', () => {
 
     expect(pageSource).toContain('onEdit={(input) =>');
     expect(pageSource).toContain('updateMutation.mutate(input, {');
+    expect(pageSource).toContain('projects={sidebar.data?.projects ?? []}');
+    expect(pageSource).toContain('threads={sidebar.data?.threads ?? []}');
     expect(detailSource).toContain('<AutomationEditDialog');
+    expect(detailSource).toContain('projects={projects}');
+    expect(detailSource).toContain('threads={threads}');
     expect(detailSource).toContain('onEditOpenChange(true)');
-    expect(editSource).toContain('<DialogTitle>Edit automation</DialogTitle>');
-    expect(editSource).toContain('buildAutomationEditInput({');
+    expect(editSource).toContain('Edit automation');
+    expect(editSource).toContain('formFromDefinition(definition');
+    expect(editSource).toContain('updateInputFromForm(');
+    expect(editSource).toContain('providerOptionsForAutomationEdit(');
+    expect(editSource).toContain('<AutomationComposerNameInput');
+    expect(editSource).toContain('<AutomationComposerStopWhenInput');
+    expect(editSource).toContain('<AutomationComposerWarningRow');
     expect(editSource).toContain('<ComposerModelControl');
+    expect(editSource).toContain('modelSelection={form.modelSelection}');
+    expect(editSource).toContain('SCHEDULE_KIND_OPTIONS.map');
     expect(editSource).toContain(
-      'modelSelection={modelSelection}'
+      '<MenuPopup align="start" side="top" className="AutomationCreateScheduleMenu">'
     );
-    expect(editSource).toContain(
-      "queryKey: ['automation-edit', 'server-config']"
-    );
-    expect(editSource).toContain(
-      "queryKey: ['automation-edit', 'models', modelCatalogProvider]"
-    );
-    expect(editLogicSource).toContain(
-      '? { modelSelection: input.modelSelection }'
-    );
-    expect(editSource).toContain('default-value={definition.prompt}');
-    expect(editSource).toContain('automationEditStopWhen(definition)');
-    expect(editSource).toContain("definition.mode === 'heartbeat'");
-    expect(editSource).toContain('accessibleLabel="Heartbeat stop condition"');
-    expect(editSource).toContain('<AutomationChoiceOption');
-    expect(editSource).toContain(
-      'automationEditScheduleForKind('
-    );
-    expect(editSource).toContain("['manual', 'Manual']");
-    expect(editSource).toContain("['daily', 'Daily']");
-    expect(editSource).toContain("['weekdays', 'Weekdays']");
+    expect(editSource).toContain("form.scheduleKind === 'once'");
+    expect(editSource).toContain("form.scheduleKind === 'custom'");
+    expect(editSource).toContain("form.scheduleKind === 'cron'");
+    expect(editSource).toContain("form.scheduleKind === 'weekly'");
     expect(editSource).toContain('<AutomationTimeInput');
-    expect(editSource).toContain('defaultValue={timedSchedule.timeOfDay}');
-    expect(editSource).toContain(
-      'setSchedule({ ...timedSchedule, timeOfDay })'
+    expect(editSource).toContain('defaultValue={form.timeOfDay}');
+    expect(editSource).toContain('accessibleLabel="Automation timezone"');
+    expect(editSource).toContain('MAX_ITERATION_OPTIONS');
+    expect(editSource).toContain('buildAutomationFormWarnings(form)');
+    expect(editSource).toContain('hasBlockingAutomationDraftWarnings(');
+    expect(editSource).toContain('acknowledgedRiskIdsForFormWarnings(');
+    expect(editSource).toContain("pending ? 'Saving...' : 'Save'");
+    expect(timeInputSource).toContain(
+      "import { TimePicker } from '../components/ui/time-picker.lynx';"
     );
-    expect(editSource).toContain(
-      'isAutomationTimeOfDay(timedSchedule.timeOfDay)'
-    );
-    expect(timeInputSource).toContain("import { TimePicker } from '../components/ui/time-picker.lynx';");
     expect(timeInputSource).toContain('<MenuTrigger ariaLabel="Automation time"');
     expect(timeInputSource).toContain('<TimePicker');
     expect(timeInputSource).toContain('value={defaultValue}');
-    expect(editSource).toContain('timedSchedule?.timezone === undefined');
-    expect(editSource).toContain('accessibleLabel="Automation timezone"');
-    expect(editSource).toContain('defaultValue={timedSchedule.timezone}');
-    expect(editSource).toContain('timezone: event.target.value');
-    expect(editSource).toContain(
-      'isAutomationTimezone(timedSchedule.timezone)'
-    );
-    expect(timezoneLogicSource).toContain('trimmed.length <= 128');
-    expect(editSource).toContain("[10, '10 runs']");
-    expect(editLogicSource).toContain(
-      'completionPolicyFromStopWhen(stopWhen)'
-    );
-    expect(editSource).not.toContain('sleepOnHost(0)');
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.LxDialogPopup\.AutomationEditDialog\s*\{[^}]*height:\s*calc\(100vh - 32px\);[^}]*max-height:\s*calc\(100vh - 32px\);/s
-    );
-    expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.AutomationEditDialog\s+>\s+\.LxDialogTitle\s*\{[^}]*flex-shrink:\s*0;[^}]*min-height:\s*21px;/s
-    );
-    expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.AutomationEditDialog\s+>\s+\.LxDialogDescription\s*\{[^}]*display:\s*none;/s
-    );
-    expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height \.AutomationEditPanel\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*padding-top:\s*8px;/s
-    );
-    expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.AutomationEditDialog\s+>\s+\.AutomationCreateFooter\s*\{[^}]*flex-shrink:\s*0;[^}]*height:\s*40px;[^}]*margin-top:\s*0;/s
+      /\.LxDialogPopup\.AutomationEditDialog\s*\{[^}]*width:\s*768px;[^}]*max-width:\s*calc\(100vw - 32px\);[^}]*height:\s*465px;[^}]*max-height:\s*calc\(100vh - 32px\);/s
     );
   });
 });

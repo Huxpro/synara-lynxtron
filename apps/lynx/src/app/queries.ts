@@ -8,6 +8,8 @@ import type {
   AutomationCreateInput,
   AutomationDeleteInput,
   AutomationUpdateInput,
+  AutomationRunNowInput,
+  AutomationRunNowResult,
   MessageId,
   ModelSelection,
   OrchestrationThreadPullRequest,
@@ -282,6 +284,16 @@ export async function createAutomation(
     /* webpackMode: "eager" */ '../data/synaraClient'
   );
   return createAutomationDefinition(input);
+}
+
+export async function runAutomationNow(
+  input: AutomationRunNowInput
+): Promise<AutomationRunNowResult> {
+  'background only';
+  const { runAutomationNow: runNow } = await import(
+    /* webpackMode: "eager" */ '../data/synaraClient'
+  );
+  return runNow(input);
 }
 
 export async function updateAutomation(
