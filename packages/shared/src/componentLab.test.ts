@@ -15,6 +15,7 @@ describe("component lab manifest", () => {
     expect(validateComponentLabStories(COMPONENT_LAB_STORIES)).toEqual([]);
     expect(COMPONENT_LAB_STORIES.map((story) => story.id)).toEqual([
       "automation/composer-dialog",
+      "automation/detail-page",
       "kanban/card",
       "editor-rail/add-menu",
       "editor-rail/independent-tabs",
@@ -67,6 +68,7 @@ describe("component lab manifest", () => {
   it("reports real renderer coverage without treating seeded placeholders as complete", () => {
     expect(COMPONENT_LAB_IMPLEMENTED_STORY_IDS).toEqual([
       "automation/composer-dialog",
+      "automation/detail-page",
       "editor-rail/add-menu",
       "editor-rail/independent-tabs",
       "composer/model-effort-picker",
@@ -115,6 +117,7 @@ describe("component lab manifest", () => {
     ]);
     expect(isComponentLabStoryImplemented("editor-rail/add-menu")).toBe(true);
     expect(isComponentLabStoryImplemented("automation/composer-dialog")).toBe(true);
+    expect(isComponentLabStoryImplemented("automation/detail-page")).toBe(true);
     expect(isComponentLabStoryImplemented("editor-rail/independent-tabs")).toBe(true);
     expect(isComponentLabStoryImplemented("composer/model-effort-picker")).toBe(true);
     expect(isComponentLabStoryImplemented("composer/context-window-meter")).toBe(true);
@@ -196,9 +199,9 @@ describe("component lab manifest", () => {
 
   it("reports the complete renderer/theme/viewport/state matrix", () => {
     expect(summarizeComponentLabCoverage(COMPONENT_LAB_STORIES)).toEqual({
-      stories: 47,
-      rendererMappings: 94,
-      matrixCells: 3176,
+      stories: 48,
+      rendererMappings: 96,
+      matrixCells: 3192,
       interactiveStories: 26,
     });
   });

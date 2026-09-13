@@ -20,6 +20,17 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('busy={props.state === "saving"}');
   });
 
+  it("renders populated automation details through the production composition", () => {
+    const source = readFileSync(
+      new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),
+      "utf8",
+    );
+    expect(source).toContain('props.storyId === "automation/detail-page"');
+    expect(source).toContain('<AutomationDetailComposition');
+    expect(source).toContain('<AutomationDetailGroup title="Details">');
+    expect(source).toContain('COMPONENT_LAB_AUTOMATION_DEFINITION');
+  });
+
   const SSR_SIGNATURE_STORY_IDS = new Set([
     "kanban/card",
     "sidebar/navigation-row",
@@ -70,7 +81,7 @@ describe("Components Lab story renderer", () => {
             );
           } catch (error) {
             throw new Error(
-              `Failed to render ${story.id}:${testCase.variant}:${testCase.state}`,
+              `Failed to render ${story.id}:${testCase.variant}:${testCase.state}: ${String(error)}`,
               { cause: error },
             );
           }

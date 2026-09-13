@@ -11,17 +11,15 @@ import {
   getProviderOptionCurrentValue,
   getProviderOptionDescriptors,
 } from "@synara/shared/model";
-import { formatAutomationRunTimestamp } from "@synara/shared/automationList";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { getProviderStartOptions, useAppSettings } from "~/appSettings";
 import {
-  CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
-  CHAT_SURFACE_HEADER_HEIGHT_CLASS,
-  CHAT_SURFACE_HEADER_PADDING_X_CLASS,
-} from "~/components/chat/chatHeaderControls";
-import { CHAT_BACKGROUND_CLASS_NAME } from "~/components/chat/composerPickerStyles";
+  AutomationDetailComposition,
+  AutomationDetailGroup as DetailGroup,
+  AutomationDetailRow as DetailRow,
+} from "~/components/automation/AutomationDetailComposition";
 import { SidebarHeaderNavigationControls } from "~/components/SidebarHeaderNavigationControls";
 import { Button } from "~/components/ui/button";
 import { RouteInsetSurface } from "~/components/RouteInsetSurface";
@@ -38,10 +36,6 @@ import {
   stopWhenFromCompletionPolicy,
 } from "~/lib/automationCompletionPolicy";
 import { automationLifecycleState, canPauseAutomation } from "~/lib/automationStatus";
-import {
-  useDesktopTopBarTrafficLightGutterClassName,
-  useDesktopTopBarWindowControlsGutterClassName,
-} from "~/hooks/useDesktopTopBarGutter";
 import { CentralIcon } from "~/lib/central-icons";
 import { cn } from "~/lib/utils";
 import {
@@ -144,9 +138,6 @@ function AutomationDetailView() {
   const { automationId } = Route.useParams();
   const navigate = useNavigate();
   const { settings } = useAppSettings();
-  const desktopTopBarTrafficLightGutterClassName = useDesktopTopBarTrafficLightGutterClassName();
-  const desktopTopBarWindowControlsGutterClassName =
-    useDesktopTopBarWindowControlsGutterClassName();
   const projects = useStore((state) => state.projects);
   const threads = useStore(selectAllThreads);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -328,76 +319,15 @@ function AutomationDetailView() {
   };
 
   return (
-    <RouteInsetSurface>
-      <div
-        className={cn(
-          "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden sm:flex-row",
-          CHAT_BACKGROUND_CLASS_NAME,
-        )}
-      >
-        {/* Left column: breadcrumb header + the prompt. */}
-        <div className="flex h-[200px] min-h-0 min-w-0 shrink-0 flex-col overflow-hidden sm:h-auto sm:flex-1">
-          <header
-            className={cn(
-              CHAT_SURFACE_HEADER_PADDING_X_CLASS,
-              CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
-              "drag-region",
-              desktopTopBarTrafficLightGutterClassName,
-            )}
-          >
-            <div
-              className={cn("flex items-center gap-2 sm:gap-3", CHAT_SURFACE_HEADER_HEIGHT_CLASS)}
-            >
-              <SidebarHeaderNavigationControls />
-              <div className="flex min-w-0 flex-1 items-center gap-1.5 text-sm [-webkit-app-region:no-drag]">
-                <button
-                  type="button"
-                  onClick={() => void navigate({ to: "/automations" })}
-                  className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  Automations
-                </button>
-                <CentralIcon
-                  name="chevron-right-small"
-                  className="size-3.5 shrink-0 text-muted-foreground"
-                />
-                <span className="truncate font-heading font-medium">{definition.name}</span>
-              </div>
-            </div>
-          </header>
-
-          <main className="min-h-0 flex-1 overflow-y-auto px-6 py-8 sm:px-8">
-            <div className="max-w-3xl space-y-4">
-              <h1 className="font-heading text-2xl font-normal text-foreground">
-                {definition.name}
-              </h1>
-              <p className="whitespace-pre-wrap text-[0.9375rem] leading-relaxed text-muted-foreground">
-                {definition.prompt}
-              </p>
-            </div>
-          </main>
-        </div>
-
-        {/* Right column: action header + details panel. The header carries the shared bottom
-            hairline (horizontal), and the body below carries the vertical seam — so the vertical
-            line starts at the header's bottom edge instead of running up through it. Both use the
-            same --app-surface-divider token and meet cleanly at the corner. */}
-        <div className="flex min-h-0 w-full flex-1 flex-col overflow-hidden sm:w-80 sm:flex-none">
-          <header
-            className={cn(
-              CHAT_SURFACE_HEADER_PADDING_X_CLASS,
-              CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
-              "drag-region",
-              desktopTopBarWindowControlsGutterClassName,
-            )}
-          >
-            <div
-              className={cn(
-                "flex items-center justify-end gap-2 sm:gap-3",
-                CHAT_SURFACE_HEADER_HEIGHT_CLASS,
-              )}
-            >
-              <div className="flex shrink-0 items-center gap-1 [-webkit-app-region:no-drag]">
+    <AutomationDetailComposition
+      name={definition.name}
+      prompt={definition.prompt}
+      status={status}
+      nextRunAt={definition.enabled ? definition.nextRunAt : null}
+      lastRunAt={lastRun?.finishedAt ?? lastRun?.startedAt ?? null}
+      onBack={() => void navigate({ to: "/automations" })}
+      actions={
+        <>
                 {canPauseAutomation(definition) ? (
                   <Button
                     type="button"
@@ -442,12 +372,9 @@ function AutomationDetailView() {
                   <CentralIcon name="play" className="size-4" />
                   Run now
                 </Button>
-              </div>
-            </div>
-          </header>
-
-          <div className="min-h-0 flex-1 overflow-y-auto border-t border-[var(--app-surface-divider)] sm:border-l sm:border-t-0">
-            <div className="flex flex-col gap-6 px-4 py-8">
+        </>
+      }
+    >
               <AutomationApprovalBanner
                 warnings={approvalGaps.warnings}
                 busy={approvalBusy}
@@ -456,33 +383,6 @@ function AutomationDetailView() {
                 onApprove={() => void approveAutomationRisks().catch(() => undefined)}
                 onApproveAndRun={() => void handleApproveAndRunNow()}
               />
-              <DetailGroup title="Status">
-                <DetailRow label="Status">
-                  <StatusValue>
-                    <span className={cn("size-1.5 rounded-full", status.dotClassName)} />
-                    {status.label}
-                  </StatusValue>
-                </DetailRow>
-                <DetailRow label="Next run">
-                  {definition.enabled && definition.nextRunAt ? (
-                    <StatusValue tone="muted">
-                      {formatAutomationRunTimestamp(definition.nextRunAt)}
-                    </StatusValue>
-                  ) : (
-                    "—"
-                  )}
-                </DetailRow>
-                <DetailRow label="Last ran">
-                  {lastRun ? (
-                    <StatusValue tone="muted">
-                      {formatAutomationRunTimestamp(lastRun.finishedAt ?? lastRun.startedAt)}
-                    </StatusValue>
-                  ) : (
-                    "—"
-                  )}
-                </DetailRow>
-              </DetailGroup>
-
               <DetailGroup title="Details">
                 {definition.mode === "heartbeat" ? (
                   <DetailRow label="Runs in">Thread</DetailRow>
@@ -728,10 +628,6 @@ function AutomationDetailView() {
                   </div>
                 )}
               </DetailGroup>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {form ? (
         <AutomationDialog
@@ -749,59 +645,7 @@ function AutomationDetailView() {
           busy={updateMutation.isPending}
         />
       ) : null}
-    </RouteInsetSurface>
-  );
-}
-
-function DetailGroup({
-  title,
-  children,
-}: {
-  readonly title: string;
-  readonly children: React.ReactNode;
-}) {
-  return (
-    <section className="space-y-0.5">
-      <h2 className="px-1.5 pb-1 text-xs font-medium text-muted-foreground/70">{title}</h2>
-      <div className="flex flex-col">{children}</div>
-    </section>
-  );
-}
-
-function DetailRow({
-  label,
-  children,
-}: {
-  readonly label: React.ReactNode;
-  readonly children: React.ReactNode;
-}) {
-  return (
-    <div className="flex items-center justify-between gap-3 rounded-md px-1.5 py-1.5 text-xs">
-      <span className="flex shrink-0 items-center gap-1 text-muted-foreground">{label}</span>
-      <span className="min-w-0 truncate text-right text-foreground">{children}</span>
-    </div>
-  );
-}
-
-// Read-only Status group values (Active/Next run/Last ran). The reference renders these as
-// plain right-aligned text — the status as foreground, timestamps muted — with no chip behind
-// them, so the value column stays quiet and flush to the right.
-function StatusValue({
-  tone = "default",
-  children,
-}: {
-  readonly tone?: "default" | "muted";
-  readonly children: React.ReactNode;
-}) {
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-1.5",
-        tone === "muted" ? "text-muted-foreground" : "text-foreground",
-      )}
-    >
-      {children}
-    </span>
+    </AutomationDetailComposition>
   );
 }
 

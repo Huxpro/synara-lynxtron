@@ -36,6 +36,11 @@ import {
   resolveComponentLabKanbanCardFixture,
 } from "@synara/shared/componentLabFixtures";
 import { AutomationDialog } from "~/routes/-automations.shared";
+import {
+  AutomationDetailComposition,
+  AutomationDetailGroup,
+  AutomationDetailRow,
+} from "~/components/automation/AutomationDetailComposition";
 import { buildAutomationFormWarnings, formFromDefinition } from "~/lib/automationForm";
 import type { Project } from "~/types";
 import { KanbanCardComposition } from "~/components/kanban/KanbanCardComposition";
@@ -86,6 +91,7 @@ import { PickerPanelSearchHeader } from "~/components/chat/PickerPanelShell";
 import { SurfaceChipIcon, SurfaceTabChip } from "~/components/chat/chatHeaderControls";
 import { IndependentTabRow } from "~/components/chat/IndependentTabRow";
 import { FileIcon } from "~/lib/icons";
+import { CentralIcon } from "~/lib/central-icons";
 import {
   MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
   MessageAssistantRowComposition,
@@ -153,6 +159,55 @@ function AutomationComposerDialogStory(props: {
       onSubmit={() => {}}
       busy={props.state === "saving"}
     />
+  );
+}
+
+function AutomationDetailPageStory(props: { readonly variant?: string }) {
+  const paused = props.variant === "paused";
+  return (
+    <div className="h-[520px] w-[880px] max-w-[calc(100vw-2rem)] overflow-hidden border border-border bg-background">
+    <SidebarProvider defaultOpen={false}>
+    <AutomationDetailComposition
+      name={COMPONENT_LAB_AUTOMATION_DEFINITION.name}
+      prompt={COMPONENT_LAB_AUTOMATION_DEFINITION.prompt}
+      status={{
+        label: paused ? "Paused" : "Active",
+        dotClassName: paused ? "bg-amber-500" : "bg-emerald-500",
+      }}
+      nextRunAt={paused ? null : COMPONENT_LAB_AUTOMATION_DEFINITION.nextRunAt}
+      lastRunAt={null}
+      onBack={() => {}}
+      actions={
+        <>
+          <Button type="button" size="icon-sm" variant="ghost" aria-label={paused ? "Resume" : "Pause"}>
+            <CentralIcon name={paused ? "play" : "pause"} className="size-4" />
+          </Button>
+          <Button type="button" size="icon-sm" variant="ghost" aria-label="Delete">
+            <CentralIcon name="trash-can-simple" className="size-4" />
+          </Button>
+          <Button type="button" size="sm" className="ml-1.5">
+            <CentralIcon name="play" className="size-4" />
+            Run now
+          </Button>
+        </>
+      }
+    >
+      <AutomationDetailGroup title="Details">
+        <AutomationDetailRow label="Runs in">Worktree</AutomationDetailRow>
+        <AutomationDetailRow label="Project">Synara</AutomationDetailRow>
+        <AutomationDetailRow label="Repeats">Daily</AutomationDetailRow>
+        <AutomationDetailRow label="Time">09:00</AutomationDetailRow>
+        <AutomationDetailRow label="Timezone">America/New_York</AutomationDetailRow>
+        <AutomationDetailRow label="Model">GPT-5 Codex</AutomationDetailRow>
+        <AutomationDetailRow label="Mode">Standalone</AutomationDetailRow>
+        <AutomationDetailRow label="Max iterations">Unlimited</AutomationDetailRow>
+      </AutomationDetailGroup>
+      <AutomationDetailGroup title="Previous runs">
+        <div className="px-1.5 py-1 text-xs text-muted-foreground">No runs yet.</div>
+      </AutomationDetailGroup>
+    </AutomationDetailComposition>
+    </SidebarProvider>
+    </div>
   );
 }
 
@@ -401,6 +456,9 @@ function MessageRowStory(props: { readonly state: string; readonly variant?: str
 export function ComponentsLabStoryRenderer(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
   if (props.storyId === "automation/composer-dialog") {
     return <AutomationComposerDialogStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
+  }
+  if (props.storyId === "automation/detail-page") {
+    return <AutomationDetailPageStory variant={props.variant} />;
   }
   if (props.storyId === "editor-rail/independent-tabs") {
     return <IndependentTabsStory state={props.state} variant={props.variant} />;

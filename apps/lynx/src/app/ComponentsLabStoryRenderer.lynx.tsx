@@ -31,6 +31,7 @@ import {
   resolveComponentLabKanbanCardFixture,
 } from '@synara/shared/componentLabFixtures';
 import { AutomationCreateDialog } from './AutomationCreateDialog.lynx';
+import { AutomationDetailPage } from './AutomationDetailPage.lynx';
 import { AutomationEditDialog } from './AutomationEditDialog.lynx';
 import { KanbanCardComposition } from '@synara-web/components/kanban/KanbanCardComposition';
 import type { KanbanCard } from '@synara-web/components/kanban/kanban.logic';
@@ -196,6 +197,42 @@ function ThreadRowContextMenuStory(props: {
 export function ComponentsLabStoryRendererLynx(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
   if (props.storyId === 'automation/composer-dialog') {
     return <AutomationComposerDialogStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
+  }
+  if (props.storyId === 'automation/detail-page') {
+    const definition = {
+      ...COMPONENT_LAB_AUTOMATION_DEFINITION,
+      enabled: props.variant !== 'paused',
+      nextRunAt:
+        props.variant === 'paused'
+          ? null
+          : COMPONENT_LAB_AUTOMATION_DEFINITION.nextRunAt,
+    };
+    return (
+      <view className="ComponentsLabAutomationDetailStory">
+      <AutomationDetailPage
+        automationId={definition.id}
+        definitions={[definition]}
+        runs={[]}
+        projects={[COMPONENT_LAB_AUTOMATION_LYNX_PROJECT]}
+        threads={[]}
+        deleteError={null}
+        deletePending={false}
+        editOpen={false}
+        onEdit={() => {}}
+        onEditOpenChange={() => {}}
+        onPatch={() => {}}
+        onDelete={() => {}}
+        updateError={null}
+        updatePending={false}
+        onToggleEnabled={() => {}}
+        runNowError={null}
+        runNowPending={false}
+        onRunNow={() => {}}
+        onApproveRisks={async () => {}}
+        navigate={() => {}}
+      />
+      </view>
+    );
   }
   if (props.storyId === 'ui/alert') {
     const selected = props.state;

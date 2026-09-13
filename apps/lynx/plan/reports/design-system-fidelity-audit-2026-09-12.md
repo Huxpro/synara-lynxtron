@@ -255,10 +255,17 @@ values and unresolved Native custom properties.
   explicit consent, so the impossible blocked state was not fabricated for a
   screenshot. Approval-needed actions remain covered by the focused contract,
   and no approval or Run now action was invoked during certification.
-- Components Lab now retains the automation composer as a first-class paired
-  regression surface. Its Create/Edit variants mount the production dialog on
-  each renderer from one shared typed fixture, raising coverage to 47 stories,
-  94 renderer mappings, and 3,176 meaningful cells. Both exact-owned Native
+- Components Lab now retains the automation composer and populated detail page
+  as first-class paired regression surfaces. Create/Edit variants mount the
+  production dialog on each renderer from one shared typed fixture; the detail
+  story mounts the production Native page and an Electron composition extracted
+  from the real route. Coverage is 48 stories, 96 renderer mappings, and 3,192
+  meaningful cells. Both exact-owned Native composer
   variants rendered from bundle
   `bb34539b125df9ce6a4103c357e3f4953765a8413bcf4c3a4c51b4792720e7a9`
   with an empty error/warning console.
+- The detail story uses an 880×520 page canvas instead of the generic component
+  target. Active and paused variants retain the full split pane, 11 detail
+  labels, action-header state, status dot, and Previous runs surface. Its final
+  staged bundle SHA-256 is
+  `97f654208241aa65591d552f872d0b98e3cd407ab3c8f53a0be37398b75b99be`.

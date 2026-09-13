@@ -42,6 +42,31 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
+    id: "automation/detail-page",
+    title: "Automation detail page",
+    category: "automation",
+    owner: "AutomationDetailComposition",
+    fixtureId: "automation-detail-populated",
+    variants: ["active", "paused"],
+    states: ["default"],
+    themes: ["light", "dark"],
+    viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: {
+        renderer: "electron",
+        component: "AutomationDetailComposition",
+        module: "apps/web/src/components/automation/AutomationDetailComposition.tsx",
+        consumers: ["automations/detail"],
+      },
+      lynx: {
+        renderer: "lynx",
+        component: "AutomationDetailPage",
+        module: "apps/lynx/src/app/AutomationDetailPage.lynx.tsx",
+        consumers: ["automations/detail"],
+      },
+    },
+  },
+  {
     id: "kanban/card", title: "Kanban card", category: "kanban", owner: "KanbanCardComposition", fixtureId: "kanban-card-states", variants: ["default", "long-title", "draft", "working"], states: [...INTERACTIVE_STATES], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "KanbanCardComposition", module: "apps/web/src/components/kanban/KanbanCardComposition.tsx", consumers: ["kanban/overview", "kanban/project"] },
@@ -554,6 +579,7 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
 
 export const COMPONENT_LAB_IMPLEMENTED_STORY_IDS = [
   "automation/composer-dialog",
+  "automation/detail-page",
   "editor-rail/add-menu",
   "editor-rail/independent-tabs",
   "composer/model-effort-picker",

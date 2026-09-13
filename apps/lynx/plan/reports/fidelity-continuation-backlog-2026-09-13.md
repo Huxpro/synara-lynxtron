@@ -13,7 +13,7 @@ state is absent from the paired component matrix.
 
 ## Current audit signals
 
-- Component identity: 47 stories, 94 renderer mappings, 3,176 meaningful
+- Component identity: 48 stories, 96 renderer mappings, 3,192 meaningful
   matrix cells, zero missing renderer identities.
 - Primitive inventory: 37 Web primitives, 22 Native primitives, zero missing
   Native counterparts and zero counterparts omitted from the Lab.
@@ -98,10 +98,21 @@ state is absent from the paired component matrix.
   `AutomationCreateDialog` / `AutomationEditDialog`, not a display-only replica.
 - Create and Edit variants share one typed fixture and expose deterministic
   default/saving states in light/dark at both desktop viewports. Coverage is now
-  47 stories, 94 renderer mappings, and 3,176 meaningful matrix cells.
+  48 stories, 96 renderer mappings, and 3,192 meaningful matrix cells.
 - Exact-owned Native rendered both variants from the staged production bundle;
   the Edit story preserved the populated title/prompt, Worktree, Synara project,
   GPT-5 Codex, Daily at 9:00, one warning, and Save action with an empty console.
+
+### AF-005 — COMPLETE
+
+- The populated automation detail now has a paired Components Lab story with
+  active and paused variants. Native mounts the production
+  `AutomationDetailPage`; Electron's route and Lab story share the extracted
+  production `AutomationDetailComposition` for the page shell and Status group.
+- Page-level previews use an explicit 880×520 canvas, so the split pane, complete
+  Details group, and Previous runs area remain visible instead of being clipped
+  by the component-sized target. Exact-owned Native confirmed the active and
+  paused status/action changes and 11 detail labels with an empty console.
 
 ### AF-001 — COMPLETE
 
@@ -156,7 +167,7 @@ state is absent from the paired component matrix.
 - Focused Web automation: 33/33 passed.
 - React Doctor 0.9.11 changed-lines scan: zero errors and zero warnings
   across 12 changed Native files and the shared Web form helper.
-- Component identity: 92/92 mappings across 46 stories.
+- Component identity: 96/96 mappings across 48 stories.
 - Primitive inventory: zero missing Native counterparts and zero counterparts
   omitted from the Lab.
 - Production build passed. Final staged bundle SHA-256:
