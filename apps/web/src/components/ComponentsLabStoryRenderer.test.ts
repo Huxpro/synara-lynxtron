@@ -8,6 +8,18 @@ import { ComponentsLabStoryRenderer } from "./ComponentsLabStoryRenderer";
 import { COMPONENT_LAB_STORIES, componentLabCases } from "@synara/shared/componentLab";
 
 describe("Components Lab story renderer", () => {
+  it("renders create and edit automation stories through the production dialog", () => {
+    const source = readFileSync(
+      new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),
+      "utf8",
+    );
+    expect(source).toContain('props.storyId === "automation/composer-dialog"');
+    expect(source).toContain('<AutomationDialog');
+    expect(source).toContain('COMPONENT_LAB_AUTOMATION_DEFINITION');
+    expect(source).toContain('editing={editing}');
+    expect(source).toContain('busy={props.state === "saving"}');
+  });
+
   const SSR_SIGNATURE_STORY_IDS = new Set([
     "kanban/card",
     "sidebar/navigation-row",

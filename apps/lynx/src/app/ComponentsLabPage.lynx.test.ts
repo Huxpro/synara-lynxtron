@@ -33,6 +33,10 @@ describe('paired Components Lab route', () => {
       "key={props.state} defaultOpen={props.state === 'open'}"
     );
     expect(renderer).toContain("props.storyId === 'editor-rail/independent-tabs'");
+    expect(renderer).toContain("props.storyId === 'automation/composer-dialog'");
+    expect(renderer).toContain('<AutomationCreateDialog');
+    expect(renderer).toContain('<AutomationEditDialog');
+    expect(renderer).toContain('COMPONENT_LAB_AUTOMATION_DEFINITION');
     expect(renderer).toContain('<IndependentTabsStory');
     expect(renderer).toContain('<IndependentTabRow');
     expect(renderer).toContain("defaultCollapsed={props.state === 'collapsed'}");

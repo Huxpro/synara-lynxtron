@@ -17,6 +17,31 @@ const INTERACTIVE_STATES = [
 
 export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
   {
+    id: "automation/composer-dialog",
+    title: "Automation composer dialog",
+    category: "automation",
+    owner: "AutomationDialog",
+    fixtureId: "automation-composer",
+    variants: ["create", "edit"],
+    states: ["default", "saving"],
+    themes: ["light", "dark"],
+    viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: {
+        renderer: "electron",
+        component: "AutomationDialog",
+        module: "apps/web/src/routes/-automations.shared.tsx",
+        consumers: ["automations/create", "automations/edit"],
+      },
+      lynx: {
+        renderer: "lynx",
+        component: "AutomationCreateDialog / AutomationEditDialog",
+        module: "apps/lynx/src/app/AutomationCreateDialog.lynx.tsx",
+        consumers: ["automations/create", "automations/edit"],
+      },
+    },
+  },
+  {
     id: "kanban/card", title: "Kanban card", category: "kanban", owner: "KanbanCardComposition", fixtureId: "kanban-card-states", variants: ["default", "long-title", "draft", "working"], states: [...INTERACTIVE_STATES], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "KanbanCardComposition", module: "apps/web/src/components/kanban/KanbanCardComposition.tsx", consumers: ["kanban/overview", "kanban/project"] },
@@ -528,6 +553,7 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
 ];
 
 export const COMPONENT_LAB_IMPLEMENTED_STORY_IDS = [
+  "automation/composer-dialog",
   "editor-rail/add-menu",
   "editor-rail/independent-tabs",
   "composer/model-effort-picker",

@@ -13,7 +13,7 @@ state is absent from the paired component matrix.
 
 ## Current audit signals
 
-- Component identity: 46 stories, 92 renderer mappings, 3,144 meaningful
+- Component identity: 47 stories, 94 renderer mappings, 3,176 meaningful
   matrix cells, zero missing renderer identities.
 - Primitive inventory: 37 Web primitives, 22 Native primitives, zero missing
   Native counterparts and zero counterparts omitted from the Lab.
@@ -90,6 +90,18 @@ state is absent from the paired component matrix.
 - Existing user-owned baseline/report changes remain isolated from this work.
 
 ## Completion update
+
+### AF-004 — COMPLETE
+
+- The previously route-only automation composer now has a paired Components Lab
+  story backed by the production Electron `AutomationDialog` and Native
+  `AutomationCreateDialog` / `AutomationEditDialog`, not a display-only replica.
+- Create and Edit variants share one typed fixture and expose deterministic
+  default/saving states in light/dark at both desktop viewports. Coverage is now
+  47 stories, 94 renderer mappings, and 3,176 meaningful matrix cells.
+- Exact-owned Native rendered both variants from the staged production bundle;
+  the Edit story preserved the populated title/prompt, Worktree, Synara project,
+  GPT-5 Codex, Daily at 9:00, one warning, and Save action with an empty console.
 
 ### AF-001 — COMPLETE
 

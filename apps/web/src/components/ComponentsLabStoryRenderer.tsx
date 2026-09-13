@@ -10,6 +10,8 @@ import { ProviderModelPicker } from "~/components/chat/ProviderModelPicker";
 import { TraitsPicker } from "~/components/chat/TraitsPicker";
 import { ProjectId, SpaceId, ThreadId, type ModelSelection } from "@synara/contracts";
 import {
+  COMPONENT_LAB_AUTOMATION_DEFINITION,
+  COMPONENT_LAB_AUTOMATION_PROJECT,
   COMPONENT_LAB_CODEX_MODELS,
   COMPONENT_LAB_DIFF_CODE_VIEW,
   COMPONENT_LAB_MODEL_OPTIONS_BY_PROVIDER,
@@ -33,6 +35,9 @@ import {
   COMPONENT_LAB_VOICE_WAVEFORM_LEVELS,
   resolveComponentLabKanbanCardFixture,
 } from "@synara/shared/componentLabFixtures";
+import { AutomationDialog } from "~/routes/-automations.shared";
+import { buildAutomationFormWarnings, formFromDefinition } from "~/lib/automationForm";
+import type { Project } from "~/types";
 import { KanbanCardComposition } from "~/components/kanban/KanbanCardComposition";
 import type { KanbanCard } from "~/components/kanban/kanban.logic";
 import { ContextWindowMeter } from "~/components/chat/ContextWindowMeter";
@@ -100,6 +105,56 @@ const COMPONENT_LAB_SPACE_PROJECTS = [
   { id: ProjectId.makeUnsafe("component-lab-alpha"), kind: "project", name: "Alpha", remoteName: "alpha", folderName: "alpha", localName: null, cwd: "/work/alpha", defaultModelSelection: null, expanded: true, spaceId: null, scripts: [] },
   { id: ProjectId.makeUnsafe("component-lab-beta"), kind: "project", name: "Beta", remoteName: "beta", folderName: "beta", localName: null, cwd: "/work/beta", defaultModelSelection: null, expanded: false, spaceId: COMPONENT_LAB_OTHER_SPACE.id, scripts: [] },
 ] as const;
+
+const COMPONENT_LAB_AUTOMATION_WEB_PROJECT: Project = {
+  id: COMPONENT_LAB_AUTOMATION_PROJECT.id,
+  kind: "project",
+  name: COMPONENT_LAB_AUTOMATION_PROJECT.name,
+  remoteName: "synara",
+  folderName: "synara",
+  localName: null,
+  cwd: COMPONENT_LAB_AUTOMATION_PROJECT.workspaceRoot,
+  defaultModelSelection: COMPONENT_LAB_AUTOMATION_DEFINITION.modelSelection,
+  expanded: true,
+  spaceId: null,
+  scripts: [],
+};
+
+function AutomationComposerDialogStory(props: {
+  readonly state: string;
+  readonly variant?: string;
+}) {
+  const editing = props.variant === "edit";
+  const [form, setForm] = useState(() => {
+    const initial = formFromDefinition(
+      editing ? COMPONENT_LAB_AUTOMATION_DEFINITION : null,
+      COMPONENT_LAB_AUTOMATION_PROJECT.id,
+      COMPONENT_LAB_AUTOMATION_DEFINITION.modelSelection,
+    );
+    return editing
+      ? initial
+      : {
+          ...initial,
+          name: "Review renderer fidelity",
+          prompt: "Compare the current automation surfaces and report any visual drift.",
+          worktreeMode: "worktree" as const,
+        };
+  });
+  return (
+    <AutomationDialog
+      open
+      editing={editing}
+      form={form}
+      projects={[COMPONENT_LAB_AUTOMATION_WEB_PROJECT]}
+      threads={[]}
+      warnings={buildAutomationFormWarnings(form)}
+      onOpenChange={() => {}}
+      onFormChange={setForm}
+      onSubmit={() => {}}
+      busy={props.state === "saving"}
+    />
+  );
+}
 
 function componentLabProjectContextMenuItems(variant: string | undefined) {
   return buildProjectContextMenuItems({
@@ -344,6 +399,9 @@ function MessageRowStory(props: { readonly state: string; readonly variant?: str
 }
 
 export function ComponentsLabStoryRenderer(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
+  if (props.storyId === "automation/composer-dialog") {
+    return <AutomationComposerDialogStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
+  }
   if (props.storyId === "editor-rail/independent-tabs") {
     return <IndependentTabsStory state={props.state} variant={props.variant} />;
   }

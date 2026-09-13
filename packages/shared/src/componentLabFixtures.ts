@@ -1,10 +1,49 @@
 import type {
+  AutomationDefinition,
   ModelSelection,
   ProviderKind,
   ProviderModelDescriptor,
   ServerProviderStatus,
 } from '@synara/contracts';
+import { AutomationId, ProjectId } from '@synara/contracts';
 import type { RightDockPane } from './rightDock';
+
+export const COMPONENT_LAB_AUTOMATION_PROJECT = {
+  id: ProjectId.makeUnsafe('component-lab-automation-project'),
+  name: 'Synara',
+  workspaceRoot: '/workspace/synara',
+} as const;
+
+export const COMPONENT_LAB_AUTOMATION_DEFINITION: AutomationDefinition = {
+  id: AutomationId.makeUnsafe('component-lab-automation'),
+  projectId: COMPONENT_LAB_AUTOMATION_PROJECT.id,
+  sourceThreadId: null,
+  name: 'Review renderer fidelity',
+  prompt: 'Compare the current automation surfaces and report any visual drift.',
+  schedule: { type: 'daily', timeOfDay: '09:00', timezone: 'America/New_York' },
+  enabled: true,
+  nextRunAt: '2026-09-14T13:00:00.000Z',
+  modelSelection: { provider: 'codex', model: 'gpt-5-codex' },
+  runtimeMode: 'approval-required',
+  interactionMode: 'default',
+  worktreeMode: 'worktree',
+  mode: 'standalone',
+  targetThreadId: null,
+  maxIterations: null,
+  stopOnError: true,
+  completionPolicy: { type: 'none' },
+  completionPolicyVersion: 1,
+  completionPolicyUpdatedAt: '2026-09-13T12:00:00.000Z',
+  minimumIntervalSeconds: 60,
+  maxRuntimeSeconds: 3600,
+  retryPolicy: { type: 'none' },
+  misfirePolicy: 'coalesce',
+  acknowledgedRisks: [],
+  iterationCount: 0,
+  createdAt: '2026-09-13T12:00:00.000Z',
+  updatedAt: '2026-09-13T12:00:00.000Z',
+  archivedAt: null,
+};
 
 export type ComponentLabMessageActionsVariant =
   | 'assistant'

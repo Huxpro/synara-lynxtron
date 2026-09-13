@@ -7,6 +7,8 @@ import { ProjectActionEditor } from './ProjectActionEditor.lynx';
 import { Button } from '../components/ui/button';
 import { ComposerModelControl } from '../components/composer/ComposerModelControl.lynx';
 import {
+  COMPONENT_LAB_AUTOMATION_DEFINITION,
+  COMPONENT_LAB_AUTOMATION_PROJECT,
   COMPONENT_LAB_CODEX_MODELS,
   COMPONENT_LAB_DIFF_CODE_VIEW,
   COMPONENT_LAB_MODEL_SELECTION,
@@ -28,6 +30,8 @@ import {
   COMPONENT_LAB_PROVIDER_STATUSES,
   resolveComponentLabKanbanCardFixture,
 } from '@synara/shared/componentLabFixtures';
+import { AutomationCreateDialog } from './AutomationCreateDialog.lynx';
+import { AutomationEditDialog } from './AutomationEditDialog.lynx';
 import { KanbanCardComposition } from '@synara-web/components/kanban/KanbanCardComposition';
 import type { KanbanCard } from '@synara-web/components/kanban/kanban.logic';
 import { deriveContextWindowMeterDisplay } from '@synara-web/lib/contextWindow';
@@ -91,6 +95,39 @@ const COMPONENT_LAB_SPACE_PROJECTS = [
   { id: 'component-lab-alpha', kind: 'project' as const, title: 'Alpha', workspaceRoot: '/work/alpha', defaultModelSelection: null, scripts: [], spaceId: null },
   { id: 'component-lab-beta', kind: 'project' as const, title: 'Beta', workspaceRoot: '/work/beta', defaultModelSelection: null, scripts: [], spaceId: COMPONENT_LAB_OTHER_SPACE.id },
 ];
+
+const COMPONENT_LAB_AUTOMATION_LYNX_PROJECT = {
+  id: COMPONENT_LAB_AUTOMATION_PROJECT.id,
+  kind: 'project' as const,
+  title: COMPONENT_LAB_AUTOMATION_PROJECT.name,
+  workspaceRoot: COMPONENT_LAB_AUTOMATION_PROJECT.workspaceRoot,
+  defaultModelSelection: COMPONENT_LAB_AUTOMATION_DEFINITION.modelSelection,
+  scripts: [],
+  spaceId: null,
+};
+
+function AutomationComposerDialogStory(props: {
+  readonly state: string;
+  readonly variant?: string;
+}) {
+  const common = {
+    open: true,
+    projects: [COMPONENT_LAB_AUTOMATION_LYNX_PROJECT],
+    threads: [],
+    pending: props.state === 'saving',
+    error: null,
+    onOpenChange: () => {},
+  };
+  return props.variant === 'edit' ? (
+    <AutomationEditDialog
+      {...common}
+      definition={COMPONENT_LAB_AUTOMATION_DEFINITION}
+      onSave={() => {}}
+    />
+  ) : (
+    <AutomationCreateDialog {...common} onCreate={() => {}} />
+  );
+}
 
 function ProjectRowContextMenuStory(props: {
   readonly state: Parameters<typeof SidebarProjectRowSpecimen>[0]['state'];
@@ -157,6 +194,9 @@ function ThreadRowContextMenuStory(props: {
 }
 
 export function ComponentsLabStoryRendererLynx(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
+  if (props.storyId === 'automation/composer-dialog') {
+    return <AutomationComposerDialogStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
+  }
   if (props.storyId === 'ui/alert') {
     const selected = props.state;
     const variant = selected as 'default' | 'warning' | 'error' | 'success' | 'info';

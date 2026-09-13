@@ -255,3 +255,10 @@ values and unresolved Native custom properties.
   explicit consent, so the impossible blocked state was not fabricated for a
   screenshot. Approval-needed actions remain covered by the focused contract,
   and no approval or Run now action was invoked during certification.
+- Components Lab now retains the automation composer as a first-class paired
+  regression surface. Its Create/Edit variants mount the production dialog on
+  each renderer from one shared typed fixture, raising coverage to 47 stories,
+  94 renderer mappings, and 3,176 meaningful cells. Both exact-owned Native
+  variants rendered from bundle
+  `bb34539b125df9ce6a4103c357e3f4953765a8413bcf4c3a4c51b4792720e7a9`
+  with an empty error/warning console.
