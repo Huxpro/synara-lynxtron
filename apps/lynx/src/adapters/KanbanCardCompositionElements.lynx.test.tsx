@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 
 import {
   KanbanCardAttachmentElement,
+  KanbanCardBranchElement,
   KanbanCardForkElement,
   KanbanCardPinElement,
   KanbanCardProviderElement,
@@ -24,6 +25,7 @@ describe('Kanban card metadata icon fidelity', () => {
     render(
       <view>
         <KanbanCardPinElement />
+        <KanbanCardBranchElement label="feature/fidelity" />
         <KanbanCardWorktreeElement label="/worktrees/task" />
         <KanbanCardForkElement />
         <KanbanCardAttachmentElement />
@@ -46,6 +48,16 @@ describe('Kanban card metadata icon fidelity', () => {
     expect(
       elementTree.root?.querySelectorAll('.SharedKanbanCardMetaIcon')
     ).toHaveLength(2);
+    expect(
+      elementTree.root
+        ?.querySelector('.SharedKanbanCardBranchIcon')
+        ?.getAttribute('content')
+    ).toContain('rgba(13, 13, 13, 0.598)');
+    expect(
+      elementTree.root
+        ?.querySelector('.SharedKanbanCardMetaIcon')
+        ?.getAttribute('content')
+    ).toContain('rgba(13, 13, 13, 0.598)');
     expect(
       elementTree.root
         ?.querySelector('.SharedKanbanCardPrIcon')

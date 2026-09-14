@@ -391,3 +391,14 @@ values and unresolved Native custom properties.
   DOM/computed styles were used as Electron evidence. No screenshot was retained.
   The staged bundle SHA-256 is
   `89b0dafb02ee710128020f917b943ce8b48f1a325a84bb0e59e0be171a7040b3`.
+
+## Kanban metadata icon follow-up
+
+- Native Kanban branch and attachment icons now receive the semantic secondary
+  role at SVG generation time, matching Electron's muted metadata hierarchy.
+  Dedicated fork, pull-request, and status colors remain unchanged.
+- Focused tests pass 6/6. Exact-owned Lynxtron 0.0.22 PID `54033`, window
+  `104803`, PID-derived `localhost:8901`, session 1, exposed both strokes at
+  `rgba(13, 13, 13, 0.598)` with an empty console. No screenshot was retained.
+  The staged bundle SHA-256 is
+  `8a7f6976fd2dce0989983c62161fdf4cf9d66c4547fcd50789b6b9965adb0034`.

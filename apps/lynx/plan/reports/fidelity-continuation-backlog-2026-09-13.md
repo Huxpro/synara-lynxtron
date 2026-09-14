@@ -352,3 +352,17 @@ state is absent from the paired component matrix.
   capture remained a harness-only blank-compositing failure, so it was not used as
   product evidence. No new screenshot was retained. The staged bundle SHA-256 is
   `89b0dafb02ee710128020f917b943ce8b48f1a325a84bb0e59e0be171a7040b3`.
+
+### DS-019 — COMPLETE
+
+- Native Kanban cards now pass semantic secondary paint directly to generated
+  branch and attachment SVGs. This matches Electron's
+  `text-muted-foreground/70` metadata contract and the existing Native CSS role
+  instead of rendering both icons as primary foreground. Fork, pull-request, and
+  status icons keep their dedicated semantic colors.
+- Focused metadata tests pass 6/6. Exact-owned Lynxtron 0.0.22 PID `54033`,
+  window `104803`, PID-derived DevTool `localhost:8901`, session 1, rendered the
+  paired `kanban/card` draft fixture with both GitBranch and Paperclip strokes at
+  `rgba(13, 13, 13, 0.598)` and an empty error/warning console. No screenshot was
+  retained. The staged bundle SHA-256 is
+  `8a7f6976fd2dce0989983c62161fdf4cf9d66c4547fcd50789b6b9965adb0034`.

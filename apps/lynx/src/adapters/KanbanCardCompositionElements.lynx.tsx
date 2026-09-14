@@ -193,9 +193,14 @@ export function KanbanCardProviderElement(props: {
 }
 
 export function KanbanCardBranchElement(props: { readonly label: string }) {
+  const { semanticIconColor } = useTheme();
   return (
     <view className="SharedKanbanCardBranch">
-      <GitBranchIcon className="SharedKanbanCardBranchIcon" size={12} />
+      <GitBranchIcon
+        className="SharedKanbanCardBranchIcon"
+        color={semanticIconColor('secondary')}
+        size={12}
+      />
       <text className="SharedKanbanCardMetaText" maxlines={1}>
         {props.label}
       </text>
@@ -243,7 +248,14 @@ export function KanbanCardPullRequestElement(props: {
 }
 
 export function KanbanCardAttachmentElement() {
-  return <PaperclipIcon className="SharedKanbanCardMetaIcon" size={12} />;
+  const { semanticIconColor } = useTheme();
+  return (
+    <PaperclipIcon
+      className="SharedKanbanCardMetaIcon"
+      color={semanticIconColor('secondary')}
+      size={12}
+    />
+  );
 }
 
 export function KanbanCardTrailingElement(props: ChildrenProps) {
