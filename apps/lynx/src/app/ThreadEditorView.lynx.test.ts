@@ -158,6 +158,10 @@ describe('Lynx Editor view', () => {
       routerSource.indexOf('{editorRailNewOpen ? (')
     );
     expect(historyOverlaySource).not.toContain('<Menu');
+    expect(historyOverlaySource).toContain(
+      "<XIcon color={semanticIconColor('secondary')} size={14} />"
+    );
+    expect(historyOverlaySource).not.toContain('>\n                ×\n              </Button>');
     expect(railTabsSource).toContain('label="Chat history"');
     expect(historySource).toContain(
       'thread.projectId === input.projectId'

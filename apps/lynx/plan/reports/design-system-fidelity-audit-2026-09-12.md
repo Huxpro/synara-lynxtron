@@ -288,3 +288,9 @@ values and unresolved Native custom properties.
   three icon nodes plus one text label, and had an empty exact-client console.
   Its staged bundle SHA-256 is
   `48b48ee375287a6d4b1c4837f384b44e6ebf8b4b88165f04204ec1081ead23b7`.
+- Native Chat history and Diff file-jump close controls now use the same 14px
+  semantic secondary XIcon as Electron instead of a font glyph. Exact-owned
+  Chat history verified the icon in the real overlay while retaining the active
+  row's check as semantic content; scoped Editor/Diff tests pass 23/23 and the
+  final staged bundle SHA-256 is
+  `b741b39a52a67bda5dfad056dde0b3175bdc5b10ba650ecc688ed3b1650d4e5b`.

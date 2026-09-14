@@ -222,6 +222,7 @@ import {
   MessageCircleIcon,
   PlusIcon,
   SearchIcon,
+  XIcon,
 } from '../lib/icons.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { useTheme } from '../adapters/useTheme.lynx';
@@ -2513,7 +2514,7 @@ function ThreadPage(props: ThreadPageProps) {
                 variant="ghost"
                 onClick={() => setEditorChatHistoryOpen(false)}
               >
-                ×
+                <XIcon color={semanticIconColor('secondary')} size={14} />
               </Button>
               <text className="ThreadEditorHistoryHeading">Chat history</text>
               <text className="ThreadEditorHistoryDescription">

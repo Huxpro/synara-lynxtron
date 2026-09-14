@@ -798,7 +798,7 @@ function OpenDiffDock(props: {
               variant="ghost"
               onClick={closeFileJump}
             >
-              ×
+              <XIcon color={semanticIconColor('secondary')} size={14} />
             </Button>
             <text className="DiffDockFileJumpHeading">Jump to file</text>
             <Input

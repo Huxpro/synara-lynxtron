@@ -136,6 +136,16 @@ state is absent from the paired component matrix.
   `Aa / up / down / close`; PID-derived Native DOM reported three icon nodes and
   one text node, with an empty error/warning console.
 
+### DS-008 — COMPLETE
+
+- Native Chat history and Diff file-jump overlays no longer use a font `×` as
+  their close affordance. Both now reuse the 14px `XIcon` with the semantic
+  secondary icon role, matching Electron and removing font/baseline drift.
+- Exact-owned Chat history showed the real XIcon while preserving the current
+  row's check status as content. Diff and Editor focused suites pass 23/23; the
+  Diff picker remains source/contract verified because the isolated snapshot had
+  no canonical working diff to open. The exact-client console was empty.
+
 ### AF-001 — COMPLETE
 
 - Native Create and Edit now share the same composer primitives for title,

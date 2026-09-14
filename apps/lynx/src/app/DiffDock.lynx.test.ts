@@ -97,6 +97,10 @@ describe('Diff Dock chrome fidelity', () => {
       source.indexOf('{fileJumpOpen ? ('),
       source.indexOf('function EditorDiffOptionsMenu')
     );
+    expect(fileJumpOverlaySource).toContain(
+      "<XIcon color={semanticIconColor('secondary')} size={14} />"
+    );
+    expect(fileJumpOverlaySource).not.toContain('>\n              ×\n            </Button>');
     expect(fileJumpOverlaySource).not.toContain('<Menu');
     expect(styles).toMatch(
       /\.DiffDockFileJumpViewport\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*120;/s
