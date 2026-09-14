@@ -78,6 +78,7 @@ export function PullRequestCodeFileHeaderElement(props: {
   readonly trailingActions?: ReactNode;
   readonly onActivate: () => void;
 }) {
+  const { semanticIconColor } = useTheme();
   const path = formatGitPathForDisplay(props.path);
   const slash = path.lastIndexOf('/');
   const basename = slash === -1 ? path : path.slice(slash + 1);
@@ -129,6 +130,7 @@ export function PullRequestCodeFileHeaderElement(props: {
           props.expanded,
           'SharedPrCodeFileChevron'
         )}
+        color={semanticIconColor('secondary')}
         size={10}
       />
     </view>

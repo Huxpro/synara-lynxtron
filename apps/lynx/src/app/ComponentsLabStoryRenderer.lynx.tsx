@@ -90,6 +90,7 @@ import { EditorSurfaceTab } from './EditorSurfaceTab.lynx';
 import { RecentViewSwitcherLynx } from './RecentViewSwitcher.lynx';
 import { ComposerReferenceAttachmentsComposition } from '@synara-web/components/chat/ComposerReferenceAttachmentsComposition';
 import { ThreadErrorBanner } from '../components/ThreadErrorBanner.lynx';
+import { CollapsedWorkComposition } from '@synara-web/components/chat/CollapsedWorkComposition';
 import {
   MessageAssistantRowComposition,
   MessageUserBubbleComposition,
@@ -536,6 +537,19 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
           error="The coding agent stopped before the turn completed."
           onDismiss={() => {}}
         />
+      </view>
+    );
+  }
+  if (props.storyId === 'transcript/collapsed-work') {
+    return (
+      <view className="ComponentsLabCollapsedWorkStory">
+        <CollapsedWorkComposition
+          elapsed="8.4s"
+          open={props.state === 'open'}
+          onOpenChange={() => {}}
+        >
+          <text className="ComponentsLabCollapsedWorkCopy">Read 3 files and updated the implementation.</text>
+        </CollapsedWorkComposition>
       </view>
     );
   }

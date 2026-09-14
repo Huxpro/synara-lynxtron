@@ -1,7 +1,30 @@
 import { describe, expect, it } from '@rstest/core';
+import { render } from '@lynx-js/react/testing-library';
 import { readFileSync } from 'node:fs';
 
+import { PullRequestCodeFileHeaderElement } from './PullRequestCodeCompositionElements.lynx';
+
 describe('Pull Request Code disclosure fidelity', () => {
+  it('embeds the semantic secondary paint in the generated file chevron', () => {
+    render(
+      <PullRequestCodeFileHeaderElement
+        path="src/example.ts"
+        previousPath={null}
+        relation={null}
+        additions={2}
+        deletions={1}
+        expanded={false}
+        onActivate={() => {}}
+      />
+    );
+
+    expect(
+      elementTree.root
+        ?.querySelector('.SharedPrCodeFileChevron')
+        ?.getAttribute('content')
+    ).toContain('rgba(13, 13, 13, 0.598)');
+  });
+
   it('uses the shared SVG and 220ms disclosure contract', () => {
     const lynxElements = readFileSync(
       new URL('./PullRequestCodeCompositionElements.lynx.tsx', import.meta.url),
@@ -28,6 +51,7 @@ describe('Pull Request Code disclosure fidelity', () => {
 
     expect(lynxElements).toContain('<ChevronRightIcon');
     expect(lynxElements).toContain('disclosureChevronClassName(');
+    expect(lynxElements).toContain("color={semanticIconColor('secondary')}");
     expect(lynxElements).toContain(
       'useLynxDisclosurePresence(props.expanded)'
     );

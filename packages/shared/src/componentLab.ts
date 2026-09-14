@@ -374,6 +374,13 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
+    id: "transcript/collapsed-work", title: "Collapsed work disclosure", category: "transcript", owner: "CollapsedWorkComposition", fixtureId: "settled-work-summary", variants: ["settled"], states: ["default", "open"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: { renderer: "electron", component: "CollapsedWorkComposition", module: "apps/web/src/components/chat/CollapsedWorkComposition.tsx", consumers: ["thread/transcript/settled-work"] },
+      lynx: { renderer: "lynx", component: "CollapsedWorkComposition", module: "apps/web/src/components/chat/CollapsedWorkComposition.tsx", consumers: ["thread/transcript/settled-work"] },
+    },
+  },
+  {
     id: "system/semantic-icon-tones", title: "Semantic icon tones", category: "design-system", owner: "SemanticIconTone", fixtureId: "icon-tone-matrix", variants: ["primary", "secondary", "tertiary", "accent", "inverse", "disabled"], states: ["default"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "SemanticIconTone", module: "apps/web/src/components/ui/SemanticIconTone.tsx", consumers: ["composer/actions", "transcript/actions", "sidebar/actions", "header/actions", "environment/actions"] },
@@ -662,6 +669,7 @@ export const COMPONENT_LAB_IMPLEMENTED_STORY_IDS = [
   "sidebar/command-palette",
   "transcript/message-actions",
   "transcript/message-row",
+  "transcript/collapsed-work",
   "sidebar/project-row",
   "sidebar/thread-row",
   "notifications/provider-update",

@@ -60,11 +60,19 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('The coding agent stopped before the turn completed.');
   });
 
+  it("renders the production collapsed-work disclosure", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('props.storyId === "transcript/collapsed-work"');
+    expect(source).toContain('<CollapsedWorkComposition');
+    expect(source).toContain('open={props.state === "open"}');
+  });
+
   const SSR_SIGNATURE_STORY_IDS = new Set([
     "kanban/card",
     "sidebar/navigation-row",
     "transcript/message-actions",
     "transcript/message-row",
+    "transcript/collapsed-work",
     "system/semantic-icon-tones",
     "notifications/thread-error",
     "composer/reference-attachments",

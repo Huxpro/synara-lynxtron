@@ -37,7 +37,7 @@
   height: 12px;
   flex-shrink: 0;
   color: var(--muted-foreground);
-  opacity: 0.72;
+  opacity: 0.55;
 }
 
 .SharedCollapsedWorkPanel {

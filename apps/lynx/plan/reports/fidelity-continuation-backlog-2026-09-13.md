@@ -401,3 +401,25 @@ state is absent from the paired component matrix.
   resolved its alert at `rgb(224, 46, 42)` and dismiss X at the same destructive
   color with 0.6 alpha. No screenshot was retained. The staged bundle SHA-256 is
   `a785e229e4fcbbdd102327530ef358a6f08abad677d94a6ca02daa45359a56c7`.
+
+### DS-022 — COMPLETE
+
+- Native Collapsed Work and Pull Request file disclosure chevrons now embed the
+  semantic secondary stroke instead of retaining primary foreground under muted
+  CSS. The Collapsed Work opacity is calibrated to `0.55`; combined with the
+  secondary stroke it matches Electron's computed `text-muted-foreground/55`
+  alpha instead of becoming too dark. PR summary-section and comment chevrons
+  remain primary because Electron inherits foreground there.
+- A paired production `transcript/collapsed-work` story raises Components Lab to
+  53 stories, 106 renderer mappings, 3,280 cells, and 27 interactive stories.
+  Focused Native suites pass 4/4; shared manifest passes 9/9; Web story and
+  composition suites pass 38/38. Identity audit passes all 106 mappings and the
+  primitive inventory remains zero missing.
+- Exact-owned Lynxtron 0.0.22 PID `60213`, window `105014`, PID-derived DevTool
+  `localhost:8901`, session 1, measured the Collapsed Work chevron at secondary
+  `rgba(13, 13, 13, 0.596078)` with opacity `0.55`; Electron CDP measured the
+  authority at effective alpha `0.327843`. A separate final production run on PID
+  `80605`, window `105156`, confirmed the PR file chevron at semantic secondary
+  `rgba(13, 13, 13, 0.598)`. Both exact-client consoles were empty. No screenshot
+  was retained. The staged bundle SHA-256 is
+  `9a40474141fcf84778b17cbd22e96486e9a84a5b75048701b92c2f7a04d03297`.

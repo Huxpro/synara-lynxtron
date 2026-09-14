@@ -8,6 +8,7 @@ import {
   useLynxDisclosurePresence,
 } from '../platform/motion.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
+import { useTheme } from './useTheme.lynx';
 
 type ChildrenProps = { readonly children?: ReactNode };
 
@@ -49,12 +50,14 @@ export function CollapsedWorkLabelElement(props: ChildrenProps) {
 }
 
 export function CollapsedWorkChevronElement(props: { readonly open: boolean }) {
+  const { semanticIconColor } = useTheme();
   return (
     <ChevronRightIcon
       className={disclosureChevronClassName(
         props.open,
         'SharedCollapsedWorkChevron'
       )}
+      color={semanticIconColor('secondary')}
       size={12}
     />
   );

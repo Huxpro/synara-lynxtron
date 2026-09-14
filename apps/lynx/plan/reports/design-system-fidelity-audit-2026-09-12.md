@@ -430,3 +430,17 @@ values and unresolved Native custom properties.
   on the authority dismiss icon. No screenshot was retained. The staged bundle
   SHA-256 is
   `a785e229e4fcbbdd102327530ef358a6f08abad677d94a6ca02daa45359a56c7`.
+
+## Disclosure chevron follow-up
+
+- Native Collapsed Work and Pull Request file disclosure chevrons now embed the
+  semantic secondary stroke. Collapsed Work also uses `0.55` opacity so its
+  effective light paint matches Electron's measured alpha `0.327843`; PR summary
+  and comment chevrons intentionally remain foreground, matching their authority.
+- The new paired Collapsed Work production story brings the catalog to 53 stories,
+  106 mappings, 3,280 cells, and 27 interactive stories. Exact-owned Lynxtron
+  0.0.22 PID `60213` / window `105014` verified secondary stroke plus `0.55`
+  opacity; final PID `80605` / window `105156` verified the PR file chevron at
+  `rgba(13, 13, 13, 0.598)`. Both PID-derived `localhost:8901` sessions had empty
+  consoles. No screenshot was retained. The staged bundle SHA-256 is
+  `9a40474141fcf84778b17cbd22e96486e9a84a5b75048701b92c2f7a04d03297`.

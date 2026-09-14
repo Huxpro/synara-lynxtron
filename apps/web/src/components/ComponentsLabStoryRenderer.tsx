@@ -100,6 +100,7 @@ import { CentralIcon } from "~/lib/central-icons";
 import { RecentViewSwitcher } from "~/components/RecentViewSwitcher";
 import { ComposerReferenceAttachmentsComposition } from "~/components/chat/ComposerReferenceAttachmentsComposition";
 import { ThreadErrorBanner } from "~/components/chat/ThreadErrorBanner";
+import { CollapsedWorkComposition } from "~/components/chat/CollapsedWorkComposition";
 import {
   MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
   MessageAssistantRowComposition,
@@ -775,6 +776,19 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
           error="The coding agent stopped before the turn completed."
           onDismiss={() => {}}
         />
+      </div>
+    );
+  }
+  if (props.storyId === "transcript/collapsed-work") {
+    return (
+      <div className="w-[560px] max-w-full">
+        <CollapsedWorkComposition
+          elapsed="8.4s"
+          open={props.state === "open"}
+          onOpenChange={() => {}}
+        >
+          <p className="text-xs text-muted-foreground">Read 3 files and updated the implementation.</p>
+        </CollapsedWorkComposition>
       </div>
     );
   }

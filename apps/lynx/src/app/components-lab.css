@@ -34,6 +34,8 @@
 .ComponentsLabNotificationStory { width: 384px; max-width: calc(100vw - 48px); }
 .ComponentsLabThreadErrorStory { width: 776px; max-width: calc(100vw - 48px); }
 .ComponentsLabThreadErrorStory .ThreadErrorBannerFrame { height: auto; padding: 0; }
+.ComponentsLabCollapsedWorkStory { width: 560px; max-width: calc(100vw - 48px); }
+.ComponentsLabCollapsedWorkCopy { color: var(--muted-foreground); font-size: 12px; line-height: 18px; }
 .ComponentsLabRightDockStory { width: 560px; max-width: calc(100vw - 48px); border: 1px solid var(--border); background-color: var(--background); }
 .ComponentsLabRightDockStory--narrow { width: 384px; }
 .ComponentsLabVoiceStory { width: 560px; max-width: calc(100vw - 48px); padding: 12px; border: 1px solid var(--border); border-radius: 16px; background-color: var(--background); }
