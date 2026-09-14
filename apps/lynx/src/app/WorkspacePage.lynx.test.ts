@@ -145,5 +145,13 @@ describe('Lynx workspace surface', () => {
     expect(sidebarSource).toContain(
       'reorderWorkspace(workspace.id, workspaceIndex + 1)'
     );
+    expect(sidebarSource).toContain(
+      'className="AppSidebarWorkspaceOrderIcon AppSidebarWorkspaceOrderIcon--up"'
+    );
+    expect(sidebarSource).toContain(
+      'className="AppSidebarWorkspaceOrderIcon"'
+    );
+    expect(sidebarSource).not.toContain('>\n                      ↑\n');
+    expect(sidebarSource).not.toContain('>\n                      ↓\n');
   });
 });

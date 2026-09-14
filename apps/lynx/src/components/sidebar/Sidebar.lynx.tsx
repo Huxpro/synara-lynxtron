@@ -123,6 +123,7 @@ import {
 import {
   ArchiveIcon,
   ClockIcon,
+  ChevronDownIcon,
   FolderIcon,
   FolderOpenIcon,
   GitBranchIcon,
@@ -1991,7 +1992,11 @@ export function Sidebar({
                         reorderWorkspace(workspace.id, workspaceIndex - 1)
                       }
                     >
-                      ↑
+                      <ChevronDownIcon
+                        className="AppSidebarWorkspaceOrderIcon AppSidebarWorkspaceOrderIcon--up"
+                        color={sidebarSecondaryIconColor}
+                        size={14}
+                      />
                     </Button>
                     <Button
                       variant="ghost"
@@ -2002,7 +2007,11 @@ export function Sidebar({
                         reorderWorkspace(workspace.id, workspaceIndex + 1)
                       }
                     >
-                      ↓
+                      <ChevronDownIcon
+                        className="AppSidebarWorkspaceOrderIcon"
+                        color={sidebarSecondaryIconColor}
+                        size={14}
+                      />
                     </Button>
                   </view>
                 </SidebarNavigationRow>

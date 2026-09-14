@@ -294,3 +294,9 @@ values and unresolved Native custom properties.
   row's check as semantic content; scoped Editor/Diff tests pass 23/23 and the
   final staged bundle SHA-256 is
   `b741b39a52a67bda5dfad056dde0b3175bdc5b10ba650ecc688ed3b1650d4e5b`.
+- Native Workspace retains explicit reorder buttons as the registered fallback
+  for Electron's drag interaction, but now uses shared 14px semantic chevrons
+  instead of font arrows. Exact-owned PID `48871` exposed one normal and one
+  180-degree icon with both accessible Move labels and an empty console. The
+  final staged bundle SHA-256 is
+  `abee843819e3983fc4c513f05b9e6be4bda29d54dc9f392c62fb8eb5bb96b2ac`.

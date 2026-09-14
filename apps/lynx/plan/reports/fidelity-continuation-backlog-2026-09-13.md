@@ -146,6 +146,16 @@ state is absent from the paired component matrix.
   Diff picker remains source/contract verified because the isolated snapshot had
   no canonical working diff to open. The exact-client console was empty.
 
+### DS-009 — COMPLETE
+
+- Native keeps explicit up/down Workspace reorder buttons as the documented
+  platform substitute for Electron drag reordering, but their regressed font
+  arrows were replaced with the shared 14px semantic ChevronDown icon; the up
+  action uses a fixed 180-degree transform.
+- Exact-owned Workspace showed both disabled boundary controls for its single
+  row. PID-derived DOM exposed one normal and one rotated icon with preserved
+  `Move Workspace 1 up/down` labels; the error/warning console was empty.
+
 ### AF-001 — COMPLETE
 
 - Native Create and Edit now share the same composer primitives for title,
