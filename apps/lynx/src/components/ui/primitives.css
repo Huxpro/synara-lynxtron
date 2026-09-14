@@ -896,17 +896,17 @@
   flex-shrink: 0;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--border);
+  border-color: var(--settings-switch-border);
   border-radius: 8px;
-  background-color: var(--muted);
+  background-color: var(--settings-switch-off);
   transition-property: background-color, border-color, box-shadow;
   transition-duration: 200ms;
   transition-timing-function: ease-out;
 }
 
 .LxMenuSwitch--checked {
-  border-color: var(--primary);
-  background-color: var(--primary);
+  border-color: var(--color-text-accent);
+  background-color: var(--color-text-accent);
 }
 
 .LxMenuSwitch__thumb {

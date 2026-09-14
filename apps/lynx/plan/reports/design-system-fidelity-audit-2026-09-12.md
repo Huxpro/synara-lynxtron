@@ -1083,6 +1083,19 @@ values and unresolved Native custom properties.
   ease-out. The exact Native console was empty. No screenshot was retained; staged
   bundle SHA-256 is `0a74ddd295cc528d0db4ec878da173c51656a23b2f91de3e6adcfe3c50d8f964`.
 
+## Shared Menu switch color-role follow-up
+
+- Native Menu switches now share Electron's accent checked state and the same
+  unchecked border/off-surface tokens as the full-size Switch. This replaces the
+  local primary-black checked state and generic muted unchecked treatment.
+- Focused Menu/Switch tests pass 25/25 and the affected Lynx/Desktop build passes
+  on Lynxtron 0.0.22. Exact-owned PID `17450` / window `107917`, PID-derived
+  `localhost:8901`, session 1, resolved checked track/border to `#0169cc`; after a
+  real click, unchecked resolved to `#cfcfcf` with `hsla(0,0%,5%,.14)` border and
+  retained the 200ms transform transition. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `47f8dfb351f59ce86c6275165c5c3321e1d7bf17a45fd574b528976f274b5f70`.
+
 ## Shared Menu destructive-role follow-up
 
 - Native `MenuItem` now exposes the same default/destructive variant axis as

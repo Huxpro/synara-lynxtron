@@ -1151,6 +1151,21 @@ state is absent from the paired component matrix.
   no screenshot was retained. Staged bundle SHA-256 is
   `0a74ddd295cc528d0db4ec878da173c51656a23b2f91de3e6adcfe3c50d8f964`.
 
+### DS-065 — COMPLETE
+
+- Native Menu switches now reuse the same color roles as Electron and the shared
+  full-size Switch: checked track/border use accent blue, while unchecked uses the
+  14% switch border and platform off surface. The previous Menu-only palette used
+  primary black and generic muted/border tokens.
+- Focused Menu and Switch suites pass 25/25, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `17450`, window `107917`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered checked background/border `#0169cc`; after
+  a real row click, unchecked resolved to `#cfcfcf` with `hsla(0,0%,5%,.14)`
+  border while retaining the 200ms transform transition. The exact Native console
+  was empty and no screenshot was retained. The final staged bundle SHA-256 is
+  `47f8dfb351f59ce86c6275165c5c3321e1d7bf17a45fd574b528976f274b5f70`.
+
 ### DS-064 — COMPLETE
 
 - Shared Native `MenuItem` now supports Electron's destructive variant, routing
