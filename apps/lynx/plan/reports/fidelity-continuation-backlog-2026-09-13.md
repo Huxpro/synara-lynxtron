@@ -582,6 +582,23 @@ state is absent from the paired component matrix.
 
 ### DS-031 — COMPLETE
 
+- Native Plugin Library provider-discovery warnings now embed the resolved
+  warning color in their generated Circle Alert SVG instead of retaining primary
+  ink under a warning-colored CSS parent. The warning row is isolated as a small
+  component so its render output can be tested without loading the page query
+  graph.
+- The complete focused Plugin Library suite passes 4/4, including a direct-render
+  assertion for light-theme warning `#d97706`. The Lynx/Desktop production build
+  passes on the pinned Lynxtron 0.0.22 runtime.
+- Exact-owned `/plugins` PID `30621`, window `105852`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real provider library with an empty
+  error/warning console. Its current Codex discovery state contained zero warning
+  rows, so the warning glyph is certified by direct-render evidence rather than a
+  claimed live warning. No screenshot was retained. The staged bundle SHA-256 is
+  `827b907881a7d58359c3226956099e281185c00b04c52ff0c04997c5228400f3`.
+
+### DS-031 — COMPLETE
+
 - Native Plugin Library provider-discovery warnings now embed the theme warning
   color in the generated Circle Alert SVG instead of retaining primary ink under
   a warning-colored CSS parent. The warning row was extracted into a small
