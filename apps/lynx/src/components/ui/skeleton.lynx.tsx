@@ -4,5 +4,10 @@ import { cx } from './shared.lynx';
 import './primitives.css';
 
 export function Skeleton(props: { readonly children?: ReactNode; readonly className?: string }) {
-  return <view aria-hidden="true" className={cx('LxSkeleton', props.className)}>{props.children}</view>;
+  return (
+    <view aria-hidden="true" className={cx('LxSkeleton', props.className)}>
+      <view className="LxSkeletonShimmer" />
+      {props.children}
+    </view>
+  );
 }

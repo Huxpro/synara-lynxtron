@@ -997,3 +997,23 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `acc31bc6212ba20d147d4daa8fc90e90ebb98959cfc0240bdb7380293e02d54f`.
+
+### DS-055 — COMPLETE
+
+- Shared Native Skeleton now matches Electron's moving highlight material instead
+  of rendering a static muted block at an extra 0.45 opacity. Native uses the
+  same 2s / -1s linear cadence, 64% light and 4% dark white highlight, and a
+  reduced-motion static fallback.
+- Lynx marks `background-position` as non-animatable, so the Native primitive uses
+  an absolutely positioned gradient layer with an animatable transform rather
+  than copying Electron's unsupported background-position keyframe. The focused
+  loading suite passes 2/2 and the complete production build reports 6/6 tasks
+  successful on npm Lynxtron 0.0.22.
+- Exact-owned light PID `18413` / window `107503` and dark PID `49111` / window
+  `107569`, both PID-derived DevTool `localhost:8901`, session 1, rendered the
+  stacked Skeleton story. Light shimmer x advanced 509→629→754 across 250ms
+  samples; dark advanced 877→416 across a loop boundary. Dark computed style
+  resolved the highlight to `#ffffff0a`, animation state was running, and both
+  exact Native consoles were empty. No screenshot was retained. The final staged
+  bundle SHA-256 is
+  `f6322581960fd00497d2e1d1dbbfaf0227138ba5f9561ae6d7cd6c1ba9fd256d`.

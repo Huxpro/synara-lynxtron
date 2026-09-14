@@ -944,3 +944,21 @@ values and unresolved Native custom properties.
   454px column center. The exact Native error/warning console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `acc31bc6212ba20d147d4daa8fc90e90ebb98959cfc0240bdb7380293e02d54f`.
+
+## Shared Skeleton loading-material follow-up
+
+- Native Skeleton now has Electron's animated highlight hierarchy instead of a
+  static muted rectangle with an extra 0.45 opacity. Both renderers use a 2s
+  linear sweep starting at -1s, 64% white highlight in light, 4% white in dark,
+  and the shared muted base; Native disables the overlay under reduced motion.
+- Official Lynx CSS metadata marks `background-position` non-animatable on every
+  platform, while gradients and transform keyframes are supported on Clay macOS.
+  The Native primitive therefore translates a clipped gradient child rather than
+  duplicating Electron's background-position implementation.
+- The focused loading suite passes 2/2 and the complete production build reports
+  6/6 tasks successful on Lynxtron 0.0.22. Exact-owned light PID `18413` and dark
+  PID `49111`, both PID-derived `localhost:8901`, session 1, showed the real
+  transform sweep: light x=509→629→754 and dark x=877→416 across a loop boundary.
+  Dark computed style resolved `#ffffff0a` with a running animation; both exact
+  Native consoles were empty. No screenshot was retained; staged bundle SHA-256
+  is `f6322581960fd00497d2e1d1dbbfaf0227138ba5f9561ae6d7cd6c1ba9fd256d`.
