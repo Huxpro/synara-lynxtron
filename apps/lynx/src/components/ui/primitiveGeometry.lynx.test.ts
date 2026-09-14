@@ -13,11 +13,18 @@ describe('shared primitive geometry', () => {
   });
 
   it('matches Electron horizontal insets across text button sizes', () => {
-    expect(css).toMatch(/\.LxButton\s*\{[^}]*padding:\s*7px 11px;/s);
+    expect(css).toMatch(/\.LxButton\s*\{[^}]*padding:\s*6px 11px;/s);
     expect(css).toMatch(/\.LxButton--xs\s*\{[^}]*padding-left:\s*7px;[^}]*padding-right:\s*7px;/s);
-    expect(css).toMatch(/\.LxButton--sm,[^{]*\{[^}]*padding:\s*5px 9px;/s);
+    expect(css).toMatch(/\.LxButton--sm,[^{]*\{[^}]*padding:\s*4px 9px;/s);
     expect(css).toMatch(/\.LxButton--lg\s*\{[^}]*padding-left:\s*13px;[^}]*padding-right:\s*13px;/s);
     expect(css).toMatch(/\.LxButton--xl\s*\{[^}]*padding-left:\s*15px;[^}]*padding-right:\s*15px;/s);
+  });
+
+  it('matches the Electron text line boxes across the Button size axis', () => {
+    expect(css).toMatch(/\.LxButton__text\s*\{[^}]*font-size:\s*12px;[^}]*font-weight:\s*500;[^}]*line-height:\s*18px;/s);
+    expect(css).toMatch(/\.LxButton--xs \.LxButton__text\s*\{[^}]*font-size:\s*10px;[^}]*line-height:\s*15px;/s);
+    expect(css).toMatch(/\.LxButton--xl \.LxButton__text\s*\{[^}]*font-size:\s*13px;[^}]*line-height:\s*19\.5px;/s);
+    expect(css).toMatch(/\.LxButton--chip \.LxButton__text\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s);
   });
 
   it('matches the Electron radius tokens for generic menus and dialogs', () => {
@@ -58,7 +65,7 @@ describe('shared primitive geometry', () => {
       /\.LxInputControl\.ui-focus\s*\{[^}]*border-color:\s*var\(--control-input-focus-border\);/s
     );
     expect(css).toMatch(
-      /\.LxButton--prominent\s*\{[^}]*border-radius:\s*999px;[^}]*background-color:\s*var\(--foreground\);[^}]*color:\s*var\(--background\);/s
+      /\.LxButton--prominent\s*\{[^}]*border-radius:\s*999px;[^}]*background-color:\s*var\(--foreground\);[^}]*color:\s*var\(--color-background-surface\);/s
     );
     expect(css).toMatch(
       /\.LxButton--prominent\.ui-disabled\s*\{[^}]*opacity:\s*0\.2;[^}]*transform:\s*none;/s

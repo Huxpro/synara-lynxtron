@@ -1523,3 +1523,20 @@ state is absent from the paired component matrix.
   console was empty. No screenshot was retained, and the final staged bundle
   SHA-256 is
   `54404a9a57e52080eb69baa9c677133e29c7bc2f035e13fcfc3ff4c6d10cd2de`.
+
+### DS-085 — COMPLETE
+
+- Native Button text now matches Electron's line-height scale instead of relying
+  on the tighter platform default: 12px/18px for default, small, and large;
+  10px/15px for extra-small; 13px/19.5px for extra-large; and 11px/16.5px for
+  chip. Default and small vertical padding each decrease by 1px so their verified
+  32px and 28px outer heights remain stable.
+- Native primitive/Button/Lab focused tests pass 13/13, including the previously
+  stale prominent inverse-text assertion, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `48271`, window `108993`, PID-derived DevTool
+  `localhost:8901`, session 1, measured default Button text at 12px/18px medium,
+  11px horizontal padding, and an unchanged 69x32 outer box. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `542e764dad64152be8b9f7691047b57fb4446147587c47bd203645c26163b529`.

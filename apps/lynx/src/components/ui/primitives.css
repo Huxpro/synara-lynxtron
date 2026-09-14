@@ -5,7 +5,7 @@
   justify-content: center;
   gap: 8px;
   min-height: 32px;
-  padding: 7px 11px;
+  padding: 6px 11px;
   border-width: 1px;
   border-style: solid;
   border-color: transparent;
@@ -77,6 +77,7 @@
   color: var(--primary-foreground);
   font-size: 12px;
   font-weight: 500;
+  line-height: 18px;
 }
 
 .LxButton--secondary,
@@ -226,7 +227,7 @@
 .LxButton--sm,
 .LxButton--icon-sm {
   min-height: 28px;
-  padding: 5px 9px;
+  padding: 4px 9px;
 }
 
 .LxButton--sm {
@@ -251,6 +252,22 @@
 .LxButton--xl {
   padding-left: 15px;
   padding-right: 15px;
+}
+
+.LxButton--xl .LxButton__text {
+  font-size: 13px;
+  line-height: 19.5px;
+}
+
+.LxButton--chip {
+  min-height: 0;
+  padding: 2px 8px;
+  gap: 4px;
+}
+
+.LxButton--chip .LxButton__text {
+  font-size: 11px;
+  line-height: 16.5px;
 }
 
 .LxButton--icon,

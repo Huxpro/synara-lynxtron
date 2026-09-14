@@ -1417,3 +1417,19 @@ values and unresolved Native custom properties.
   focus added `ui-focus` without a crash or attribute loss. The exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `54404a9a57e52080eb69baa9c677133e29c7bc2f035e13fcfc3ff4c6d10cd2de`.
+
+## Shared Button typography follow-up
+
+- Native Button text now follows Electron's size-specific line boxes: 12px/18px
+  for default, small, and large; 10px/15px for extra-small; 13px/19.5px for
+  extra-large; and 11px/16.5px for chip. Default and small vertical padding each
+  decrease by 1px so established outer heights do not change.
+- Native primitive/Button/Lab focused tests pass 13/13, including an updated
+  assertion for the already-verified prominent inverse surface role. The affected
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `48271` / window `108993`, PID-derived `localhost:8901`,
+  session 1, measured default Button text at 12px/18px medium, 11px horizontal
+  padding, and an unchanged 69x32 outer box. Electron's desktop source contract is
+  the same 12px/18px/11px combination. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `542e764dad64152be8b9f7691047b57fb4446147587c47bd203645c26163b529`.
