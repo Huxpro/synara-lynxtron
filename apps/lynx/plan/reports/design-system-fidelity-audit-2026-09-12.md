@@ -355,3 +355,11 @@ values and unresolved Native custom properties.
   secondary menu icons, fixed Local-home paint, and an empty console. The final
   staged bundle SHA-256 is
   `f7c107c36117bbb3540f13e90d9e49c7600eb9b0c3d54d1aefbb9d7d12bafad9`.
+- Composer's compact model trigger now passes semantic secondary paint directly
+  to its status Settings icon instead of relying on CSS inheritance after SVG
+  generation. The adjacent chevron remains foreground with 0.6 opacity, matching
+  Electron's distinct treatment. Focused suites pass 3/3. Exact-owned Lynxtron
+  0.0.22 PID `36471`, window `104448`, PID-derived DevTool `localhost:8901`,
+  session 1, confirmed the two effective paints and an empty console. The final
+  staged bundle SHA-256 is
+  `1e9086442cfaf1b726d8eb635e8ccd2c66783b9487dada5cc56b2f70b3ce9a63`.

@@ -69,7 +69,10 @@ describe('Composer model picker icon fidelity', () => {
     );
 
     expect(triggerSource).toContain(
-      '<SettingsIcon className="ComposerModelTriggerStatusIconLynx" size={14} />'
+      "color={semanticIconColor('secondary')}"
+    );
+    expect(triggerSource).toContain(
+      'className="ComposerModelTriggerStatusIconLynx"'
     );
     expect(controlSource).toContain('<ArrowLeftIcon');
     expect(controlSource).toContain('useInitData()');

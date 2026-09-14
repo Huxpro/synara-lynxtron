@@ -46,13 +46,18 @@ export function ComposerModelTriggerFastBadgeElement() {
 export function ComposerModelTriggerStatusIconElement(props: {
   readonly accessibleLabel: string;
 }) {
+  const { semanticIconColor } = useTheme();
   return (
     <view
       className="ComposerModelTriggerStatusLynx"
       accessibility-element
       accessibility-label={props.accessibleLabel}
     >
-      <SettingsIcon className="ComposerModelTriggerStatusIconLynx" size={14} />
+      <SettingsIcon
+        className="ComposerModelTriggerStatusIconLynx"
+        color={semanticIconColor('secondary')}
+        size={14}
+      />
     </view>
   );
 }

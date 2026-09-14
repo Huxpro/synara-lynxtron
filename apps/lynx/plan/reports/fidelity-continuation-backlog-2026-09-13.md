@@ -290,6 +290,19 @@ state is absent from the paired component matrix.
   final staged bundle SHA-256 is
   `f7c107c36117bbb3540f13e90d9e49c7600eb9b0c3d54d1aefbb9d7d12bafad9`.
 
+### DS-016 — COMPLETE
+
+- Native Composer model trigger now passes semantic secondary paint directly to
+  the compact status Settings icon. The generated SVG no longer ignores the
+  existing CSS role and render as foreground.
+- The disclosure chevron intentionally remains foreground with its existing 0.6
+  opacity, matching Electron rather than applying a blanket secondary rewrite.
+  Focused model/Lab suites pass 3/3. Exact-owned Lynxtron 0.0.22 PID `36471`,
+  window `104448`, on PID-derived `localhost:8901`, session 1, exposed the gear
+  at `rgba(13, 13, 13, 0.598)` and the chevron at `#0d0d0d`, with an empty
+  console. The final staged bundle SHA-256 is
+  `1e9086442cfaf1b726d8eb635e8ccd2c66783b9487dada5cc56b2f70b3ce9a63`.
+
 - Exact-owned Native: workspace Lynxtron `0.0.22`, PID `38396`, PID-derived
   DevTool `localhost:8901`, session 1, 1280×820 light product states.
 - Focused Native: 39/39 passed.
