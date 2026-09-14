@@ -598,6 +598,14 @@
   gap: 6px;
 }
 
+.SettingsProfilePhotoActionIcon {
+  opacity: 0.8;
+}
+
+.SettingsProfilePhotoAction--remove .LxButton__text {
+  color: var(--muted-foreground);
+}
+
 .SettingsProfileColorOptions {
   display: flex;
   flex-direction: row;

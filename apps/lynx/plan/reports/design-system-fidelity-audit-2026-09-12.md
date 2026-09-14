@@ -717,3 +717,18 @@ values and unresolved Native custom properties.
   exposed the 16px Refresh SVG at `rgba(13, 13, 13, 0.598)` with an empty
   exact-client console. No screenshot was retained; staged bundle SHA-256:
   `99c2358b300158551546b79c222e448788380c132d235b42b8a2b0d7175c1834`.
+
+## Profile action icon follow-up
+
+- Native Profile action glyphs now preserve the two Electron Button hierarchies:
+  Share/Edit and Upload use foreground source with `0.8` icon opacity, while
+  Remove uses muted source with `0.8` opacity and a matching muted label. The
+  profile's avatar, provider, status, and exported-card colors are unchanged.
+- The focused Profile suite passes 5/5 and the complete production build passes
+  on Lynxtron 0.0.22. Exact-owned PID `115` / window `106603`, PID-derived
+  `localhost:8901`, session 1, exposed Share/Edit at encoded `#0d0d0d` plus
+  computed `0.8` opacity and the real Edit-dialog Upload glyph at the same
+  hierarchy. No saved avatar was present, so Remove remains source/test evidence.
+  The exact-client console was empty, no screenshot was retained, and staged
+  bundle SHA-256 is
+  `7ab8a34b486c55e2c90c5b231e322a6be1c0dbec4bec74542cbfdc0790c6050a`.

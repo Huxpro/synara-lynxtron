@@ -181,21 +181,21 @@ function persistProfileValue(key: string, value: string): void {
 }
 
 function ProfileEditActionIcon() {
-  const { semanticIconColor } = useTheme();
+  const { svgColors } = useTheme();
   return (
     <svg
       className="SettingsProfileActionIcon"
-      content={colorizeLynxSvg(pencilSvg, semanticIconColor('secondary'))}
+      content={colorizeLynxSvg(pencilSvg, svgColors.foreground)}
     />
   );
 }
 
 function ProfileShareActionIcon() {
-  const { semanticIconColor } = useTheme();
+  const { svgColors } = useTheme();
   return (
     <svg
       className="SettingsProfileActionIcon"
-      content={colorizeLynxSvg(shareSvg, semanticIconColor('secondary'))}
+      content={colorizeLynxSvg(shareSvg, svgColors.foreground)}
     />
   );
 }
@@ -319,6 +319,7 @@ function ProfileContent(props: {
   readonly tokenStats: ProfileTokenStats | null;
   readonly tokensPending: boolean;
 }) {
+  const { svgColors } = useTheme();
   const heatmap = selectProfileHeatmap(props.stats, props.tokenStats);
   const topProvider = selectProfileTopProvider(props.stats, props.tokenStats);
   const modelUsage = selectProfileModelUsage(props.stats, props.tokenStats);
@@ -757,7 +758,11 @@ function ProfileContent(props: {
                 className="SettingsProfilePhotoAction"
                 onClick={pickProfileImage}
               >
-                <ScreenshotIcon size={14} />
+                <ScreenshotIcon
+                  className="SettingsProfilePhotoActionIcon"
+                  color={svgColors.foreground}
+                  size={14}
+                />
                 <text className="LxButton__text">
                   {draftImage ? 'Replace photo' : 'Upload photo'}
                 </text>
@@ -766,10 +771,14 @@ function ProfileContent(props: {
                 <Button
                   size="xs"
                   variant="ghost"
-                  className="SettingsProfilePhotoAction"
+                  className="SettingsProfilePhotoAction SettingsProfilePhotoAction--remove"
                   onClick={() => setDraftImage(null)}
                 >
-                  <Trash2 size={14} />
+                  <Trash2
+                    className="SettingsProfilePhotoActionIcon"
+                    color={svgColors.mutedForeground}
+                    size={14}
+                  />
                   <text className="LxButton__text">Remove</text>
                 </Button>
               ) : null}

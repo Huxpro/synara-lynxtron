@@ -146,6 +146,17 @@ describe('Settings Profile fidelity', () => {
       "accessibilityValue: props.active ? 'Selected' : 'Not selected'"
     );
     expect(profileSource).toContain('dialogs.pickProfileImage()');
+    expect(
+      profileSource.match(/colorizeLynxSvg([^,]+, svgColors.foreground)/g)
+    ).toHaveLength(2);
+    expect(profileSource).toContain('color={svgColors.foreground}');
+    expect(profileSource).toContain('color={svgColors.mutedForeground}');
+    expect(styles).toMatch(
+      /\.SettingsProfilePhotoActionIcon\s*\{[^}]*opacity:\s*0\.8;/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsProfilePhotoAction--remove \.LxButton__text\s*\{[^}]*color:\s*var\(--muted-foreground\);/s
+    );
     expect(profileSource).toContain('mode="aspectFill"');
     expect(profileSource).toMatch(
       /className="SettingsProfileAvatarImage"[\s\S]{0,160}accessibility-element=\{false\}/

@@ -753,3 +753,20 @@ state is absent from the paired component matrix.
   exact-client error/warning console was empty. No screenshot was retained. The
   staged bundle SHA-256 is
   `99c2358b300158551546b79c222e448788380c132d235b42b8a2b0d7175c1834`.
+
+### DS-041 — COMPLETE
+
+- Native Profile action icons now match their Electron Button variants instead
+  of flattening the family into one tone. Top-level Share/Edit and Edit-dialog
+  Upload use foreground source with the shared `0.8` icon opacity; Remove uses
+  muted source with the same opacity and a muted label.
+- The focused Profile suite passes 5/5 and the full Lynx/Desktop production build
+  passes on the npm Lynxtron 0.0.22 runtime. The export-card, avatar, provider,
+  and status colors remain unchanged.
+- Exact-owned Lynxtron PID `115`, window `106603`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Profile page and Edit dialog.
+  Share/Edit encoded `#0d0d0d` at computed opacity `0.8`; Upload did the same at
+  14px. The snapshot had no avatar, so Remove remained source/test verified. The
+  exact-client console was empty. No screenshot was retained. The staged bundle
+  SHA-256 is
+  `7ab8a34b486c55e2c90c5b231e322a6be1c0dbec4bec74542cbfdc0790c6050a`.
