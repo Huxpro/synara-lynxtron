@@ -6,6 +6,10 @@ import {
 } from '@lynx-js/react';
 
 import { cx, renderSlot } from './shared.lynx';
+import {
+  disclosureContentClassName,
+  useLynxDisclosurePresence,
+} from '../../platform/motion.lynx';
 import './primitives.css';
 
 interface CollapsibleContextValue {
@@ -66,13 +70,14 @@ export function CollapsiblePanel(props: {
   keepMounted?: boolean;
 }) {
   const collapsible = useContext(CollapsibleContext);
-  if (!collapsible.open && !props.keepMounted) return null;
+  const present = useLynxDisclosurePresence(collapsible.open);
+  if (!present && !props.keepMounted) return null;
   return (
     <view
-      className={cx(
-        'LxCollapsiblePanel',
-        !collapsible.open && 'LxCollapsiblePanel--closed',
-        props.className
+      aria-hidden={!collapsible.open}
+      className={disclosureContentClassName(
+        collapsible.open,
+        cx('LxCollapsiblePanel', props.className)
       )}
     >
       {props.children}

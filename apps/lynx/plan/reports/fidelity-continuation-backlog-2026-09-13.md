@@ -1034,3 +1034,20 @@ state is absent from the paired component matrix.
   The exact Native error/warning console was empty, no screenshot was retained,
   and the final staged bundle SHA-256 is
   `48dcf5623cb50a6de82f5ffac52589dc301803d8cdf657cfe486d39ed967b597`.
+
+### DS-057 — COMPLETE
+
+- Shared Native Collapsible panels now reuse the repository's single 220ms
+  ease-out disclosure motion instead of mounting/unmounting instantly. Closed
+  panels remain present through the existing 260ms transition-plus-cleanup window,
+  expose `aria-hidden`, then unmount; reduced-motion still removes immediately.
+- The implementation composes the existing `useLynxDisclosurePresence` and
+  `disclosureContentClassName` helpers, so it adds no second animation contract.
+  Focused Collapsible and motion suites pass 5/5; the complete production build
+  reports 6/6 tasks successful on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `88604`, window `107625`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the open Collapsible story with
+  `LynxDisclosureMotion--open`. A real trigger click closed the panel and it was
+  absent after the shared cleanup window; the exact Native error/warning console
+  was empty. No screenshot was retained. The final staged bundle SHA-256 is
+  `299de57e70abb652f0ed2ccb959bb9f8bc0e43d7eba3c932fe0dfdf6e59171fa`.

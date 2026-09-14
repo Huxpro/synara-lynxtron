@@ -978,3 +978,18 @@ values and unresolved Native custom properties.
   segment. The exact Native console was empty. No screenshot was retained; staged
   bundle SHA-256 is
   `48dcf5623cb50a6de82f5ffac52589dc301803d8cdf657cfe486d39ed967b597`.
+
+## Shared Collapsible motion follow-up
+
+- Native `CollapsiblePanel` now uses the same centralized disclosure helpers as
+  other Native sections and Electron's shared Collapsible primitive. Open/close
+  therefore follows the 220ms ease-out transform/opacity contract instead of an
+  immediate mount/unmount, and the existing presence hook owns the 40ms cleanup
+  buffer plus reduced-motion behavior.
+- Focused Collapsible and motion suites pass 5/5; the complete production build
+  reports 6/6 tasks successful on Lynxtron 0.0.22. Exact-owned PID `88604` /
+  window `107625`, PID-derived `localhost:8901`, session 1, exposed the open
+  panel as `LynxDisclosureMotion--open`; a real trigger click removed it after
+  the shared cleanup window. The exact Native console was empty. No screenshot
+  was retained; staged bundle SHA-256 is
+  `299de57e70abb652f0ed2ccb959bb9f8bc0e43d7eba3c932fe0dfdf6e59171fa`.
