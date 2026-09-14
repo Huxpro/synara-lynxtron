@@ -704,3 +704,16 @@ values and unresolved Native custom properties.
   `rgba(13, 13, 13, 0.48)` with an empty exact-client console. No screenshot was
   retained; staged bundle SHA-256:
   `1daa312c0fc158f88b65ac29cfe2085fd5e74c272c7b9ca1daadfe55b87be049`.
+
+## Pull Request route Refresh icon follow-up
+
+- Native Pull Requests header Refresh now resolves to the semantic secondary
+  icon role at SVG render time, matching Electron's ghost IconButton default
+  state rather than retaining full foreground. PR filter and status colors are
+  unchanged.
+- The focused route-controls suite passes 5/5 and the complete production build
+  passes on Lynxtron 0.0.22. Exact-owned PID `72173` / window `106528`,
+  PID-derived `localhost:8901`, session 1, rendered the real empty PR route and
+  exposed the 16px Refresh SVG at `rgba(13, 13, 13, 0.598)` with an empty
+  exact-client console. No screenshot was retained; staged bundle SHA-256:
+  `99c2358b300158551546b79c222e448788380c132d235b42b8a2b0d7175c1834`.

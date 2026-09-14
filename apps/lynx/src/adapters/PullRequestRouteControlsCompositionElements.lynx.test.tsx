@@ -1,5 +1,8 @@
 import { describe, expect, it } from '@rstest/core';
+import { render } from '@lynx-js/react/testing-library';
 import { readFileSync } from 'node:fs';
+
+import { PullRequestRouteHeaderRefreshElement } from './PullRequestRouteControlsCompositionElements.lynx';
 
 describe('pull request route controls fidelity', () => {
   it('matches the Web title, pill, and project-filter anatomy', () => {
@@ -64,6 +67,7 @@ describe('pull request route controls fidelity', () => {
     expect(source).toContain('scroll-orientation="vertical"');
     expect(source).not.toContain('{selectedName}</Button>');
     expect(source).toContain('<RefreshCwIcon');
+    expect(source).toContain('color={svgColors.iconSecondary}');
     expect(source).not.toContain("{props.refreshing ? '…' : '↻'}");
     expect(source).toContain(
       'onIntent={() => props.onIntent?.(option.value)}'
@@ -88,6 +92,23 @@ describe('pull request route controls fidelity', () => {
     expect(styles).toMatch(
       /\.SharedPrProjectFilterPopup \.LxMenuIndicatorIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
     );
+  });
+
+  it('embeds secondary paint in the generated Refresh glyph', () => {
+    render(
+      <PullRequestRouteHeaderRefreshElement
+        disabled={false}
+        refreshing={false}
+        title="Refresh pull requests"
+        onActivate={() => {}}
+      />
+    );
+
+    expect(
+      elementTree.root
+        ?.querySelector('.SharedPrRouteRefreshIcon')
+        ?.getAttribute('content')
+    ).toContain('stroke="rgba(13, 13, 13, 0.598)"');
   });
 
   it('maps the Web search control to the shared Lynx input primitive', () => {

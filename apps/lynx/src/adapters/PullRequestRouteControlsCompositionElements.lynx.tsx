@@ -58,6 +58,7 @@ export function PullRequestRouteHeaderRefreshElement(props: {
   readonly title: string;
   readonly onActivate: () => void;
 }) {
+  const { svgColors } = useTheme();
   return (
     <Button
       size="icon-sm"
@@ -71,6 +72,7 @@ export function PullRequestRouteHeaderRefreshElement(props: {
         className={`SharedPrRouteRefreshIcon${
           props.refreshing ? ' animate-spin' : ''
         }`}
+        color={svgColors.iconSecondary}
         size={16}
       />
     </Button>

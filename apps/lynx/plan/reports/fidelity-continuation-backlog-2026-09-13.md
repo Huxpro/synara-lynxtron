@@ -738,3 +738,18 @@ state is absent from the paired component matrix.
   error/warning console was empty. No screenshot was retained. The staged bundle
   SHA-256 is
   `1daa312c0fc158f88b65ac29cfe2085fd5e74c272c7b9ca1daadfe55b87be049`.
+
+### DS-040 — COMPLETE
+
+- Native Pull Requests route Refresh now embeds semantic secondary paint in its
+  generated SVG, matching Electron's ghost IconButton default hierarchy. Search,
+  filter, warning, and PR status glyphs retain their independent roles.
+- The focused PR route controls suite passes 5/5, including direct-render
+  verification of `rgba(13, 13, 13, 0.598)`. The full Lynx/Desktop production
+  build passes on the npm Lynxtron 0.0.22 runtime.
+- Exact-owned Lynxtron PID `72173`, window `106528`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real empty Pull Requests route and
+  exposed the 16px Refresh glyph at the same `.598` encoded stroke. The
+  exact-client error/warning console was empty. No screenshot was retained. The
+  staged bundle SHA-256 is
+  `99c2358b300158551546b79c222e448788380c132d235b42b8a2b0d7175c1834`.
