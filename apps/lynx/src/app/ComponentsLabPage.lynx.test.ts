@@ -139,6 +139,9 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain("props.storyId === 'notifications/provider-update'");
     expect(renderer).toContain('<ProviderUpdatePromptSurface');
     expect(renderer).toContain('COMPONENT_LAB_PROVIDER_UPDATE_COPY');
+    expect(renderer).toContain("props.storyId === 'notifications/thread-error'");
+    expect(renderer).toContain('<ThreadErrorBanner');
+    expect(styles).toContain('.ComponentsLabThreadErrorStory');
     expect(renderer).toContain("progress: 'updating'");
     expect(renderer).toContain("props.storyId === 'right-dock/tab-strip'");
     expect(renderer).toContain("defaultAddMenuOpen={props.state === 'add-menu-open'}");

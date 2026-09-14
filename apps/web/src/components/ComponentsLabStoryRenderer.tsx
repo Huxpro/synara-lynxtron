@@ -99,6 +99,7 @@ import { FileIcon } from "~/lib/icons";
 import { CentralIcon } from "~/lib/central-icons";
 import { RecentViewSwitcher } from "~/components/RecentViewSwitcher";
 import { ComposerReferenceAttachmentsComposition } from "~/components/chat/ComposerReferenceAttachmentsComposition";
+import { ThreadErrorBanner } from "~/components/chat/ThreadErrorBanner";
 import {
   MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
   MessageAssistantRowComposition,
@@ -766,6 +767,16 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
       ? ({ single: "default", multiple: "multiple", progress: "updating", failure: "failure" }[props.variant ?? "single"] ?? "default")
       : props.state;
     return <ProviderUpdateNotificationStory key={`${props.variant}:${props.state}`} state={selected} />;
+  }
+  if (props.storyId === "notifications/thread-error") {
+    return (
+      <div className="w-[776px] max-w-full">
+        <ThreadErrorBanner
+          error="The coding agent stopped before the turn completed."
+          onDismiss={() => {}}
+        />
+      </div>
+    );
   }
   if (props.storyId === "right-dock/tab-strip") {
     const selected = ({ empty: "empty", "single-pane": "single-pane", "multi-pane": "default", overflow: "overflow", "singleton-filtering": "default" }[props.variant ?? "multi-pane"] ?? "default");

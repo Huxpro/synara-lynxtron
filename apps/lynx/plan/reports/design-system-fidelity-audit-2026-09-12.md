@@ -416,3 +416,17 @@ values and unresolved Native custom properties.
   `rgba(13, 13, 13, 0.398)` strokes and an empty console. No screenshot was
   retained. The staged bundle SHA-256 is
   `291d5f4406b7b2ddbed80a3f393c8aeaec1c4f3d3ae089051d568fd3e1c79e2e`.
+
+## Thread error dismiss follow-up
+
+- Native Thread Error Banner now embeds the theme destructive color in its
+  generated dismiss X instead of leaving a foreground SVG under a destructive
+  CSS parent. The existing dismiss opacity preserves Electron's destructive/60
+  hierarchy; Provider Health intentionally retains foreground/65.
+- The new paired production story raises the catalog to 52 stories, 104 mappings,
+  and 3,264 cells. Exact-owned Lynxtron 0.0.22 PID `10025`, window `104907`,
+  PID-derived `localhost:8901`, session 1, exposed both error icons at `#e02e2a`
+  with an empty console. Electron CDP confirmed `rgb(224, 46, 42)` and 0.6 alpha
+  on the authority dismiss icon. No screenshot was retained. The staged bundle
+  SHA-256 is
+  `a785e229e4fcbbdd102327530ef358a6f08abad677d94a6ca02daa45359a56c7`.

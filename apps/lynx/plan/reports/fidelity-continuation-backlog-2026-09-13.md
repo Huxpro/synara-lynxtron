@@ -383,3 +383,21 @@ state is absent from the paired component matrix.
   `rgba(13, 13, 13, 0.398)`. The exact-client console was empty and no screenshot
   was retained. The staged bundle SHA-256 is
   `291d5f4406b7b2ddbed80a3f393c8aeaec1c4f3d3ae089051d568fd3e1c79e2e`.
+
+### DS-021 — COMPLETE
+
+- Native Thread Error Banner now passes the theme destructive color directly to
+  its generated dismiss X. The icon no longer stays black under a CSS
+  `color: var(--destructive)` parent; its existing dismiss opacity continues to
+  match Electron's destructive/60 treatment. Provider-health dismiss remains
+  foreground/65 by design and was not changed.
+- A paired production `notifications/thread-error` story raises Components Lab
+  coverage to 52 stories, 104 renderer mappings, and 3,264 cells. Focused shared,
+  Web, and Native suites pass 9/9, 35/35, and 3/3; identity audit passes all 104
+  mappings and primitive inventory remains zero missing.
+- Exact-owned Lynxtron 0.0.22 PID `10025`, window `104907`, PID-derived DevTool
+  `localhost:8901`, session 1, exposed both the alert and dismiss X at the light
+  destructive token `#e02e2a`, with an empty error/warning console. Electron CDP
+  resolved its alert at `rgb(224, 46, 42)` and dismiss X at the same destructive
+  color with 0.6 alpha. No screenshot was retained. The staged bundle SHA-256 is
+  `a785e229e4fcbbdd102327530ef358a6f08abad677d94a6ca02daa45359a56c7`.

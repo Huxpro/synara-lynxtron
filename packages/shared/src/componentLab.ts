@@ -388,6 +388,13 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
+    id: "notifications/thread-error", title: "Thread error banner", category: "notifications", owner: "ThreadErrorBanner", fixtureId: "thread-runtime-error", variants: ["runtime"], states: ["default"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: { renderer: "electron", component: "ThreadErrorBanner", module: "apps/web/src/components/chat/ThreadErrorBanner.tsx", consumers: ["thread/error"] },
+      lynx: { renderer: "lynx", component: "ThreadErrorBanner", module: "apps/lynx/src/components/ThreadErrorBanner.lynx.tsx", consumers: ["thread/error"] },
+    },
+  },
+  {
     id: "right-dock/tab-strip", title: "Right dock tabs and add menu", category: "right-dock", owner: "RightDockTabs", fixtureId: "explorer-terminal-sidechat", variants: ["empty", "single-pane", "multi-pane", "overflow", "singleton-filtering"], states: ["default", "add-menu-open"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "RightDockTabs", module: "apps/web/src/components/chat/RightDock.tsx", consumers: ["thread/right-dock-header"] },
@@ -658,6 +665,7 @@ export const COMPONENT_LAB_IMPLEMENTED_STORY_IDS = [
   "sidebar/project-row",
   "sidebar/thread-row",
   "notifications/provider-update",
+  "notifications/thread-error",
   "right-dock/tab-strip",
   "composer/voice-recorder",
   "terminal/search",

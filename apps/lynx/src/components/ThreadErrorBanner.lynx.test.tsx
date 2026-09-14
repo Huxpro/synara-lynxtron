@@ -20,6 +20,11 @@ describe('Lynx ThreadErrorBanner', () => {
       '[accessibility-label="Dismiss error"]'
     );
     if (!dismiss) throw new Error('expected dismiss control');
+    expect(
+      dismiss
+        .querySelector('.ThreadErrorBannerDismissIcon')
+        ?.getAttribute('content')
+    ).toContain('#e02e2a');
     fireEvent.tap(dismiss);
     expect(onDismiss).toHaveBeenCalledTimes(1);
   });

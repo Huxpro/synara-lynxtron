@@ -89,6 +89,7 @@ import { IndependentTabRow } from './IndependentTabRow.lynx';
 import { EditorSurfaceTab } from './EditorSurfaceTab.lynx';
 import { RecentViewSwitcherLynx } from './RecentViewSwitcher.lynx';
 import { ComposerReferenceAttachmentsComposition } from '@synara-web/components/chat/ComposerReferenceAttachmentsComposition';
+import { ThreadErrorBanner } from '../components/ThreadErrorBanner.lynx';
 import {
   MessageAssistantRowComposition,
   MessageUserBubbleComposition,
@@ -524,6 +525,16 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
           onDismiss={() => {}}
           onReview={() => {}}
           onUpdateAll={() => {}}
+        />
+      </view>
+    );
+  }
+  if (props.storyId === 'notifications/thread-error') {
+    return (
+      <view className="ComponentsLabThreadErrorStory">
+        <ThreadErrorBanner
+          error="The coding agent stopped before the turn completed."
+          onDismiss={() => {}}
         />
       </view>
     );

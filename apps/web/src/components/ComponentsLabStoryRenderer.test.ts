@@ -53,12 +53,20 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('nonPersistedImageIdSet={new Set(fixture.nonPersistedImageIds)}');
   });
 
+  it("renders the production thread error banner", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('props.storyId === "notifications/thread-error"');
+    expect(source).toContain('<ThreadErrorBanner');
+    expect(source).toContain('The coding agent stopped before the turn completed.');
+  });
+
   const SSR_SIGNATURE_STORY_IDS = new Set([
     "kanban/card",
     "sidebar/navigation-row",
     "transcript/message-actions",
     "transcript/message-row",
     "system/semantic-icon-tones",
+    "notifications/thread-error",
     "composer/reference-attachments",
     "terminal/search",
     "editor/file-search",

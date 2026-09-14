@@ -32,7 +32,11 @@ export function ThreadErrorBanner(props: {
         <text className="ThreadErrorBannerText">{props.error}</text>
         {props.onDismiss ? (
           <view className={dismiss.className} {...dismiss.eventProps}>
-            <XIcon className="ThreadErrorBannerDismissIcon" size={14} />
+            <XIcon
+              className="ThreadErrorBannerDismissIcon"
+              color={activeTheme.theme.semanticColors.diffRemoved}
+              size={14}
+            />
           </view>
         ) : null}
       </view>
