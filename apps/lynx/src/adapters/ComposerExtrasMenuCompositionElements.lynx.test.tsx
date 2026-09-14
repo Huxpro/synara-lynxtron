@@ -41,12 +41,21 @@ describe('native composer attachment menu item', () => {
       </>
     );
 
-    expect(
-      elementTree.root?.querySelector('.ComposerExtrasTriggerIconLynx')
-    ).not.toBeNull();
-    expect(
-      elementTree.root?.querySelectorAll('.ComposerExtrasItemIconLynx')
-    ).toHaveLength(3);
+    const triggerIcon = elementTree.root?.querySelector(
+      '.ComposerExtrasTriggerIconLynx'
+    );
+    expect(triggerIcon?.getAttribute('content')).toContain(
+      'stroke="rgba(13, 13, 13, 0.598)"'
+    );
+    const itemIcons = elementTree.root?.querySelectorAll(
+      '.ComposerExtrasItemIconLynx'
+    );
+    expect(itemIcons).toHaveLength(3);
+    for (const icon of itemIcons ?? []) {
+      expect(icon.getAttribute('content')).toContain(
+        'stroke="rgba(13, 13, 13, 0.598)"'
+      );
+    }
     expect(elementTree.root?.textContent).not.toContain('+');
   });
 
@@ -229,10 +238,10 @@ describe('native composer attachment menu item', () => {
       /\.LxMenuItem\s*\{[^}]*border-radius:\s*8px;/s
     );
     expect(composerStyles).toMatch(
-      /\.ComposerModelPopupLynx\.LxMenuPopup,\s*\.ComposerTraitsPopupLynx\.LxMenuPopup,\s*\.ComposerRuntimePopupLynx\.LxMenuPopup,\s*\.ComposerExtrasPopupLynx\.LxMenuPopup,\s*\.ComposerExtrasPopupLynx \.LxMenuSubPopup\s*\{[^}]*border-radius:\s*10\.4px;[^}]*box-shadow:\s*0 4px 18px -6px rgba\(13,\s*13,\s*13,\s*0\.07\);/s
+      /\.ComposerModelPopupLynx\.LxMenuPopup,\s*\.ComposerModelSubPopupLynx\.LxMenuSubPopup,\s*\.ComposerTraitsPopupLynx\.LxMenuPopup,\s*\.ComposerRuntimePopupLynx\.LxMenuPopup,\s*\.ComposerExtrasPopupLynx\.LxMenuPopup,\s*\.ComposerExtrasPopupLynx \.LxMenuSubPopup\s*\{[^}]*border-radius:\s*10\.4px;[^}]*box-shadow:\s*0 4px 18px -6px rgba\(13,\s*13,\s*13,\s*0\.07\);/s
     );
     expect(composerStyles).toMatch(
-      /\.SliceRoot--theme-dark \.ComposerModelPopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerTraitsPopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerRuntimePopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerExtrasPopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerExtrasPopupLynx \.LxMenuSubPopup\s*\{[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0,\s*0,\s*0,\s*0\.3\);/s
+      /\.SliceRoot--theme-dark \.ComposerModelPopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerModelSubPopupLynx\.LxMenuSubPopup,\s*\.SliceRoot--theme-dark \.ComposerTraitsPopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerRuntimePopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerExtrasPopupLynx\.LxMenuPopup,\s*\.SliceRoot--theme-dark \.ComposerExtrasPopupLynx \.LxMenuSubPopup\s*\{[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0,\s*0,\s*0,\s*0\.3\);/s
     );
     expect(composerStyles).toMatch(
       /\.ComposerProviderOptionLynx\s*\{[^}]*border-radius:\s*8px;/s

@@ -7,6 +7,7 @@ import {
   BlocksIcon,
 } from '../lib/icons.lynx';
 import { Button } from '../components/ui/button.lynx';
+import { useTheme } from './useTheme.lynx';
 import {
   MenuTrigger,
   MenuItem,
@@ -15,6 +16,7 @@ import {
 } from '../components/ui/menu.lynx';
 
 export function ComposerExtrasMenuTriggerElement() {
+  const { semanticIconColor } = useTheme();
   return (
     <Button
       size="icon-sm"
@@ -22,7 +24,10 @@ export function ComposerExtrasMenuTriggerElement() {
       className="ComposerExtrasTriggerLynx"
       aria-label="Composer extras"
     >
-      <PlusIcon className="ComposerExtrasTriggerIconLynx" />
+      <PlusIcon
+        className="ComposerExtrasTriggerIconLynx"
+        color={semanticIconColor('secondary')}
+      />
     </Button>
   );
 }
@@ -61,13 +66,17 @@ export function ComposerExtrasImageItemElement(props: {
   readonly onPickAttachments?: (() => void) | undefined;
   readonly onAddPhotos: (files: File[]) => void;
 }) {
+  const { semanticIconColor } = useTheme();
   return (
     <MenuItem
       disabled={!props.available || !props.onPickAttachments}
       onClick={props.onPickAttachments}
     >
       <view className="ComposerExtrasItemLabelLynx">
-        <PaperclipIcon className="ComposerExtrasItemIconLynx" />
+        <PaperclipIcon
+          className="ComposerExtrasItemIconLynx"
+          color={semanticIconColor('secondary')}
+        />
         <text>
           {props.available ? 'Add files' : 'Add files — unavailable'}
         </text>
@@ -77,18 +86,26 @@ export function ComposerExtrasImageItemElement(props: {
 }
 
 export function ComposerExtrasPlanLabelElement() {
+  const { semanticIconColor } = useTheme();
   return (
     <view className="ComposerExtrasItemLabelLynx">
-      <BlocksIcon className="ComposerExtrasItemIconLynx" />
+      <BlocksIcon
+        className="ComposerExtrasItemIconLynx"
+        color={semanticIconColor('secondary')}
+      />
       <text>Plan mode</text>
     </view>
   );
 }
 
 export function ComposerExtrasFastLabelElement() {
+  const { semanticIconColor } = useTheme();
   return (
     <view className="ComposerExtrasItemLabelLynx">
-      <GaugeIcon className="ComposerExtrasItemIconLynx" />
+      <GaugeIcon
+        className="ComposerExtrasItemIconLynx"
+        color={semanticIconColor('secondary')}
+      />
       <text>Fast</text>
     </view>
   );

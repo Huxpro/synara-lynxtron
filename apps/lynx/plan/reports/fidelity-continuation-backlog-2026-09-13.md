@@ -469,3 +469,22 @@ state is absent from the paired component matrix.
   so hover-card paint is certified by direct render tests rather than claimed as
   Native pointer evidence. No screenshot was retained. The staged bundle SHA-256
   is `dd1438098a373c517361b6f98f66b323b582dff0e682e5f880aad95f6c498eae`.
+
+### DS-025 — COMPLETE
+
+- Native Composer extras no longer leaves its generated Plus, attachment, Plan,
+  and Fast SVGs at primary ink while their CSS containers declare secondary.
+  All four glyphs now receive semantic secondary paint during JSX render,
+  matching Electron's chrome trigger and menu hierarchy.
+- The focused Native suite now asserts actual encoded SVG strokes rather than
+  icon presence alone and passes 4/4. Its pre-existing popup selector assertion
+  was refreshed to include the current shared model-submenu selector already
+  present in production CSS.
+- Exact-owned Lynxtron 0.0.22 PID `70010`, window `105456`, PID-derived DevTool
+  `localhost:8901`, session 1, opened the real Composer extras menu through
+  Computer Use and exposed Plus, Paperclip, Blocks, and Gauge strokes at
+  `rgba(13, 13, 13, 0.598)`. Electron CDP resolved both icon-secondary and its
+  chrome foreground-secondary authority to the same `.598` value. The Native
+  error/warning console was empty, no screenshot was retained, and the staged
+  bundle SHA-256 is
+  `0f76dec08422ea406c6b5a3a0a139a6c5d3d919a5a4b10a13a4a2f248f2cdf08`.
