@@ -1150,3 +1150,17 @@ state is absent from the paired component matrix.
   the real row click while retaining 200ms/ease-out. The Native console was empty;
   no screenshot was retained. Staged bundle SHA-256 is
   `0a74ddd295cc528d0db4ec878da173c51656a23b2f91de3e6adcfe3c50d8f964`.
+
+### DS-064 — COMPLETE
+
+- Shared Native `MenuItem` now supports Electron's destructive variant, routing
+  destructive labels through `--destructive` instead of ordinary foreground. The
+  paired separator story's Remove action now exercises the real shared variant.
+- Native Menu/Lab focused tests pass 23/23 and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `4112`, window `107889`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the separator story. Remove resolved to
+  destructive `rgb(224,46,42)` while retaining the shared 12px/18px item type.
+  The exact Native error/warning console was empty and no screenshot was retained.
+  The final staged bundle SHA-256 is
+  `0b03edfa4ca69951084d983a65f1b74e48a1b5046795a89500b2fcac1b872f0d`.

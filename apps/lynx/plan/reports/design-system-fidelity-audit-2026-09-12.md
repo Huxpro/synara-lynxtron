@@ -1082,3 +1082,17 @@ values and unresolved Native custom properties.
   `translateX(8px)` to `translateX(0)` via the real row with computed 200ms
   ease-out. The exact Native console was empty. No screenshot was retained; staged
   bundle SHA-256 is `0a74ddd295cc528d0db4ec878da173c51656a23b2f91de3e6adcfe3c50d8f964`.
+
+## Shared Menu destructive-role follow-up
+
+- Native `MenuItem` now exposes the same default/destructive variant axis as
+  Electron. Destructive rows paint their text with the readable destructive role
+  token rather than ordinary foreground, preserving the semantics of Remove and
+  Delete actions without changing neutral menu rows.
+- The paired separator story now mounts the real destructive variant. Native
+  Menu/Lab focused tests pass 23/23 and the affected Lynx/Desktop build passes on
+  Lynxtron 0.0.22. Exact-owned PID `4112` / window `107889`, PID-derived
+  `localhost:8901`, session 1, resolved Remove to `rgb(224,46,42)` at the shared
+  12px/18px item tier. The exact Native console was empty. No screenshot was
+  retained; staged bundle SHA-256 is
+  `0b03edfa4ca69951084d983a65f1b74e48a1b5046795a89500b2fcac1b872f0d`.

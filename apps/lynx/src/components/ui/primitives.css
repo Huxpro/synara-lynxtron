@@ -989,6 +989,10 @@
   line-height: 18px;
 }
 
+.LxMenuItem--destructive .LxMenuItem__text {
+  color: var(--destructive);
+}
+
 .LxMenuIndicator {
   width: 12px;
   height: 12px;

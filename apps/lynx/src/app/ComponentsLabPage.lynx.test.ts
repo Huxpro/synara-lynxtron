@@ -225,6 +225,7 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('<MenuSwitchStory state={props.state} />');
     expect(renderer).toContain('variant="switch" onCheckedChange={setChecked}');
     expect(renderer).toContain("props.variant === 'separator'");
+    expect(renderer).toContain('<MenuItem variant="destructive"');
     expect(renderer).toContain("props.variant === 'shortcut' ? <MenuShortcut>⌘N</MenuShortcut>");
     expect(renderer).not.toContain('value="new-chat" onActivate');
     expect(renderer).toContain("props.storyId === 'ui/dialog'");

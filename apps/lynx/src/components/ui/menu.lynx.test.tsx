@@ -178,6 +178,9 @@ describe('Lynx Menu overlay contract', () => {
       /\.LxMenuItem__text\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s
     );
     expect(primitiveStyles).toMatch(
+      /\.LxMenuItem--destructive \.LxMenuItem__text\s*\{[^}]*color:\s*var\(--destructive\);/s
+    );
+    expect(primitiveStyles).toMatch(
       /\.LxMenuGroupLabel\s*\{[^}]*padding:\s*6px 8px;[^}]*font-size:\s*12px;[^}]*font-weight:\s*400;[^}]*line-height:\s*16px;[^}]*opacity:\s*0\.45;/s
     );
     expect(primitiveStyles).toMatch(
@@ -226,6 +229,22 @@ describe('Lynx Menu overlay contract', () => {
     expect(source).not.toContain(
       "visibility: positioned ? 'visible' : 'hidden'"
     );
+  });
+
+  it('marks destructive items with the semantic text role', async () => {
+    render(
+      <Menu defaultOpen>
+        <MenuTrigger><text>Open</text></MenuTrigger>
+        <MenuPopup><MenuItem variant="destructive" onClick={() => {}}>Remove</MenuItem></MenuPopup>
+      </Menu>
+    );
+
+    const item = await waitFor(() => {
+      const element = elementTree.root?.querySelector('.LxMenuItem--destructive');
+      if (!element) throw new Error('expected destructive menu item');
+      return element;
+    });
+    expect(item.textContent).toBe('Remove');
   });
 
   it('normalizes global anchors into a nested Web layer viewport', () => {

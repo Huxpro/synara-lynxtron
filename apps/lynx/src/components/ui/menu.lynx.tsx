@@ -587,6 +587,7 @@ export function MenuItem(props: {
   closeOnClick?: boolean;
   selectionRole?: 'radio' | 'checkbox' | 'switch';
   selected?: boolean;
+  variant?: 'default' | 'destructive';
 }) {
   const menu = useContext(MenuContext);
   const valueRef = useRef<string | null>(null);
@@ -605,6 +606,7 @@ export function MenuItem(props: {
       'LxButton--ghost',
       'LxButton--default',
       'LxMenuItem',
+      props.variant === 'destructive' && 'LxMenuItem--destructive',
       props.inset && 'LxMenuItem--inset',
       props.className,
       menu.highlightedValue === valueRef.current && 'LxMenuItem--highlighted',
