@@ -27,6 +27,11 @@ describe('shared primitive geometry', () => {
     expect(css).toMatch(/\.LxButton--chip \.LxButton__text\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s);
   });
 
+  it('matches the Electron capsule shape typography', () => {
+    expect(css).toMatch(/\.LxButton--capsule\s*\{[^}]*border-radius:\s*999px;/s);
+    expect(css).toMatch(/\.LxButton--capsule \.LxButton__text\s*\{[^}]*font-weight:\s*400;/s);
+  });
+
   it('matches the Electron radius tokens for generic menus and dialogs', () => {
     expect(css).toMatch(
       /\.LxMenuPopup\s*\{[^}]*border-radius:\s*18px;[^}]*box-shadow:/s

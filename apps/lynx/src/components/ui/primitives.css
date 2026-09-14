@@ -204,6 +204,10 @@
   border-radius: 999px;
 }
 
+.LxButton--capsule .LxButton__text {
+  font-weight: 400;
+}
+
 .LxButton--xs,
 .LxButton--icon-xs {
   min-height: 24px;

@@ -1433,3 +1433,16 @@ values and unresolved Native custom properties.
   the same 12px/18px/11px combination. The exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `542e764dad64152be8b9f7691047b57fb4446147587c47bd203645c26163b529`.
+
+## Shared Button capsule typography follow-up
+
+- Native Button capsules now apply Electron's `font-normal` shape treatment in
+  addition to the existing full radius, while icon-only capsule buttons remain
+  unaffected. Native primitive geometry and Button focused tests pass 13/13, and
+  the full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `67637` / window `109029`, PID-derived `localhost:8901`,
+  session 1, entered the real transcript edit state through Computer Use. Native
+  DevTool resolved both `Cancel` and `Send` text to 10px/15px at weight 400; the
+  exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `b747d222a43f941475fba83a17928692321ce6d059a504dee79263e6735019ba`.

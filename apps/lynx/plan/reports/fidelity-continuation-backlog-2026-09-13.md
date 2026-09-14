@@ -1541,3 +1541,19 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `542e764dad64152be8b9f7691047b57fb4446147587c47bd203645c26163b529`.
+
+### DS-086 — COMPLETE
+
+- Native Button capsules now match Electron's orthogonal shape contract by
+  applying regular 400 text weight in addition to the existing fully rounded
+  geometry. This covers the transcript edit actions and any other text-bearing
+  capsule without changing icon-only capsules.
+- Native primitive geometry and Button focused tests pass 13/13, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `67637`, window `109029`, PID-derived DevTool
+  `localhost:8901`, session 1, entered the real transcript user-message edit
+  state through Computer Use. The rendered `Cancel` and `Send` capsule text
+  resolved to 10px/15px regular, with 49x24 and 41x24 outer boxes respectively.
+  The exact Native error/warning console was empty, no screenshot was retained,
+  and the final staged bundle SHA-256 is
+  `b747d222a43f941475fba83a17928692321ce6d059a504dee79263e6735019ba`.
