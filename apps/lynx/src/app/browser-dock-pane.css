@@ -2,6 +2,7 @@
 .BrowserDockPane--hidden { position: absolute; top: 0; right: 0; bottom: 0; left: 0; pointer-events: none; opacity: 0; }
 .BrowserDockToolbar { position: relative; z-index: 3; display: flex; height: 40px; min-height: 40px; padding: 4px 6px; align-items: center; gap: 4px; border-bottom: 1px solid var(--border); }
 .BrowserDockRefreshIcon--loading { animation: BrowserDockSpin 1s linear infinite; }
+.BrowserDockToolbarIcon { width: 14px; height: 14px; }
 @keyframes BrowserDockSpin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .BrowserDockRefreshIcon--loading { animation: none; } }
 .BrowserDockAddress { display: block; flex: 1; min-width: 0; height: 30px; padding: 5px 9px; border: 1px solid var(--border); border-radius: 7px; background-color: var(--secondary); color: var(--foreground); font-family: var(--font-ui-family); font-size: 12px; line-height: 18px; }

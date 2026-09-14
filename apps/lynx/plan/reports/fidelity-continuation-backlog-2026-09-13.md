@@ -273,6 +273,23 @@ state is absent from the paired component matrix.
   bundle SHA-256 is
   `136e99ced87c7a05bfe9eed40511e528e7a5b361fd4de0193f52a60fc6f9aece`.
 
+### DS-015 — COMPLETE
+
+- Native Browser chrome now matches Electron's icon identities: Forward uses
+  ArrowRight instead of ChevronRight, and Copy link uses the shared Central
+  chain-link asset instead of Copy. Toolbar controls resolve foreground paint;
+  action-menu and suggestion icons resolve semantic secondary paint; inactive
+  tab icons remain secondary while active tabs use primary ink.
+- The intentionally always-dark Local home now passes its fixed white-alpha
+  hierarchy directly to Refresh/Scanning/empty Globe icons, including Electron's
+  1.5px empty-state globe stroke. Focused Browser/icon suites pass 8/8. Exact-owned
+  Lynxtron 0.0.22 PID `14159`, window `104403`, on PID-derived
+  `localhost:8901`, session 1, opened Browser through real `Cmd+Shift+B`; DOM
+  exposed arrow-left, arrow-right, refresh, camera, Central chain-link, and dots
+  toolbar identities plus four secondary menu icons and a clean console. The
+  final staged bundle SHA-256 is
+  `f7c107c36117bbb3540f13e90d9e49c7600eb9b0c3d54d1aefbb9d7d12bafad9`.
+
 - Exact-owned Native: workspace Lynxtron `0.0.22`, PID `38396`, PID-derived
   DevTool `localhost:8901`, session 1, 1280×820 light product states.
 - Focused Native: 39/39 passed.

@@ -345,3 +345,13 @@ values and unresolved Native custom properties.
   PID-derived DevTool `localhost:8901`, session 1, confirmed secondary Local and
   Temporary SVG paint with an empty console. The final staged bundle SHA-256 is
   `136e99ced87c7a05bfe9eed40511e528e7a5b361fd4de0193f52a60fc6f9aece`.
+- Browser chrome now uses Electron's ArrowRight and Central chain-link identities
+  rather than ChevronRight and Copy. Native explicitly resolves foreground
+  toolbar paint, secondary action-menu/suggestion/inactive-tab paint, primary
+  active-tab paint, and the always-dark Local home's fixed white-alpha icon
+  hierarchy. Focused Browser/icon suites pass 8/8. Exact-owned Lynxtron 0.0.22
+  PID `14159`, window `104403`, opened Browser via real `Cmd+Shift+B`; PID-derived
+  DevTool `localhost:8901`, session 1, confirmed the toolbar identities, four
+  secondary menu icons, fixed Local-home paint, and an empty console. The final
+  staged bundle SHA-256 is
+  `f7c107c36117bbb3540f13e90d9e49c7600eb9b0c3d54d1aefbb9d7d12bafad9`.

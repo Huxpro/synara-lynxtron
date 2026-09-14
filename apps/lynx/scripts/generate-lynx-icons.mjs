@@ -18,6 +18,7 @@ const icons = {
   ArchiveIcon: 'archive',
   ArrowDownToLineIcon: 'arrow-down-to-arc',
   ArrowLeftIcon: 'arrow-left',
+  ArrowRightIcon: 'arrow-right',
   BackpackIcon: 'backpack',
   BellIcon: 'bell',
   BookIcon: 'book',

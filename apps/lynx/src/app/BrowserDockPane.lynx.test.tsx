@@ -87,6 +87,11 @@ describe('Native Browser right-dock pane', () => {
     expect(nativeHost).toContain('[WKWebsiteDataStore defaultDataStore]');
     expect(source).toContain('className="BrowserDockTabFavicon"');
     expect(source).toContain('ariaLabel="Browser actions"');
+    expect(source).toContain('<ArrowRightIcon color={primaryIconColor} size={14} />');
+    expect(source).not.toContain('<ChevronRightIcon size={14} />');
+    expect(source).toContain("import linkSvg from '@synara-central-icons/chain-link-3.svg?raw'");
+    expect(source).toContain('content={colorizeLynxSvg(linkSvg, primaryIconColor)}');
+    expect(source).toContain("const secondaryIconColor = semanticIconColor('secondary')");
     expect(source).toContain('platformWindow.openExternal(copyableUrl)');
     expect(source).toContain('Close browser panel');
     expect(source).toContain('<text>Capture screenshot</text>');

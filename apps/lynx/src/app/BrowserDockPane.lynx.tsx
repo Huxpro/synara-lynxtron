@@ -2,9 +2,12 @@ import { useEffect, useRef, useState } from '@lynx-js/react';
 import { getRectByRef } from '@lynx-js/lynx-ui';
 import type { NodesRef } from '@lynx-js/types';
 import { useQuery } from '@tanstack/react-query';
+import linkSvg from '@synara-central-icons/chain-link-3.svg?raw';
 
+import { useTheme } from '../adapters/useTheme.lynx';
 import { Button } from '../components/ui/button.lynx';
-import { ArrowLeftIcon, CameraIcon, ChevronRightIcon, CopyIcon, EllipsisIcon, ExternalLinkIcon, GlobeIcon, PlusIcon, RefreshCwIcon, XIcon } from '../lib/icons.lynx';
+import { ArrowLeftIcon, ArrowRightIcon, CameraIcon, EllipsisIcon, ExternalLinkIcon, GlobeIcon, PlusIcon, RefreshCwIcon, XIcon } from '../lib/icons.lynx';
+import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import {
   Menu,
   MenuItem,
@@ -76,6 +79,9 @@ export function BrowserDockPane(props: {
   readonly onClose?: () => void;
   readonly onTitleChange?: (title: string) => void;
 }) {
+  const { semanticIconColor, svgColors } = useTheme();
+  const primaryIconColor = svgColors.foreground;
+  const secondaryIconColor = semanticIconColor('secondary');
   const paneRef = useRef<NodesRef>(null);
   const contentRef = useRef<NodesRef>(null);
   const addressRef = useRef<NodesRef>(null);
@@ -479,13 +485,13 @@ export function BrowserDockPane(props: {
           'background only';
           void browserView.goBack();
         }}>
-          <ArrowLeftIcon size={14} />
+          <ArrowLeftIcon color={primaryIconColor} size={14} />
         </Button>
         <Button aria-label="Go forward" disabled={!state?.canGoForward} size="icon-xs" variant="ghost" onClick={() => {
           'background only';
           void browserView.goForward();
         }}>
-          <ChevronRightIcon size={14} />
+          <ArrowRightIcon color={primaryIconColor} size={14} />
         </Button>
         <Button aria-label="Reload page" size="icon-xs" variant="ghost" onClick={() => {
           'background only';
@@ -495,6 +501,7 @@ export function BrowserDockPane(props: {
             className={
               state?.isLoading ? 'BrowserDockRefreshIcon--loading' : undefined
             }
+            color={primaryIconColor}
             size={14}
           />
         </Button>
@@ -542,7 +549,7 @@ export function BrowserDockPane(props: {
             );
           }}
         >
-          <CameraIcon size={14} />
+          <CameraIcon color={primaryIconColor} size={14} />
         </Button>
         <Button
           aria-label="Copy link"
@@ -554,15 +561,18 @@ export function BrowserDockPane(props: {
             void copyLink().catch(() => showCopyStatus('Could not copy link.'));
           }}
         >
-          <CopyIcon size={14} />
+          <svg
+            className="BrowserDockToolbarIcon"
+            content={colorizeLynxSvg(linkSvg, primaryIconColor)}
+          />
         </Button>
         <Menu open={actionsOpen} onOpenChange={setActionsOpen}>
           <MenuTrigger ariaLabel="Browser actions" className="BrowserDockActionTrigger">
-            <EllipsisIcon size={14} />
+            <EllipsisIcon color={primaryIconColor} size={14} />
           </MenuTrigger>
           <MenuPopup align="end" side="bottom" className="BrowserDockActionsPopup">
             <MenuItem onClick={() => void createTab()}>
-              <PlusIcon size={14} />
+              <PlusIcon color={secondaryIconColor} size={14} />
               <text>New tab</text>
             </MenuItem>
             <MenuItem
@@ -574,7 +584,7 @@ export function BrowserDockPane(props: {
                 );
               }}
             >
-              <CameraIcon size={14} />
+              <CameraIcon color={secondaryIconColor} size={14} />
               <text>Capture screenshot</text>
             </MenuItem>
             <MenuItem
@@ -587,12 +597,12 @@ export function BrowserDockPane(props: {
                 });
               }}
             >
-              <ExternalLinkIcon size={14} />
+              <ExternalLinkIcon color={secondaryIconColor} size={14} />
               <text>Open externally</text>
             </MenuItem>
             <MenuSeparator />
             <MenuItem onClick={() => props.onClose?.()}>
-              <XIcon size={14} />
+              <XIcon color={secondaryIconColor} size={14} />
               <text>Close browser panel</text>
             </MenuItem>
           </MenuPopup>
@@ -613,11 +623,11 @@ export function BrowserDockPane(props: {
             >
               <view className="BrowserDockAddressSuggestionIcon">
                 {suggestion.kind === 'navigate' ? (
-                  <ExternalLinkIcon size={12} />
+                  <ExternalLinkIcon color={secondaryIconColor} size={12} />
                 ) : suggestion.faviconUrl ? (
                   <image src={suggestion.faviconUrl} />
                 ) : (
-                  <GlobeIcon size={12} />
+                  <GlobeIcon color={secondaryIconColor} size={12} />
                 )}
               </view>
               <view className="BrowserDockAddressSuggestionCopy">
@@ -650,7 +660,14 @@ export function BrowserDockPane(props: {
                   {tab.faviconUrl ? (
                     <image className="BrowserDockTabFavicon" src={tab.faviconUrl} />
                   ) : (
-                    <GlobeIcon size={12} />
+                    <GlobeIcon
+                      color={
+                        tab.id === activeTabId
+                          ? primaryIconColor
+                          : secondaryIconColor
+                      }
+                      size={12}
+                    />
                   )}
                   <text className="BrowserDockTabLabel">{tab.title || 'Untitled'}</text>
                 </view>
@@ -663,7 +680,7 @@ export function BrowserDockPane(props: {
                     void closeTab(tab.id);
                   }}
                 >
-                  <XIcon size={12} />
+                  <XIcon color={secondaryIconColor} size={12} />
                 </Button>
               </view>
             ))}
@@ -678,7 +695,7 @@ export function BrowserDockPane(props: {
             void createTab();
           }}
         >
-          <PlusIcon size={13} />
+          <PlusIcon color={primaryIconColor} size={13} />
         </Button>
       </view>
       {copyStatus ? <text className="BrowserDockStatus">{copyStatus}</text> : null}
@@ -703,6 +720,7 @@ export function BrowserDockPane(props: {
                     ? 'BrowserDockRefreshIcon--loading'
                     : undefined
                 }
+                color="rgba(255, 255, 255, 0.35)"
                 size={14}
               />
             </Button>
@@ -711,6 +729,7 @@ export function BrowserDockPane(props: {
             <view className="BrowserDockHomeEmpty">
               <RefreshCwIcon
                 className="BrowserDockHomeEmptyIcon BrowserDockRefreshIcon--loading"
+                color="rgba(255, 255, 255, 0.2)"
                 size={42}
               />
               <text className="BrowserDockHomeEmptyTitle">Scanning local servers</text>
@@ -718,7 +737,12 @@ export function BrowserDockPane(props: {
             </view>
           ) : localServers.length === 0 ? (
             <view className="BrowserDockHomeEmpty">
-              <GlobeIcon className="BrowserDockHomeEmptyIcon" size={52} />
+              <GlobeIcon
+                className="BrowserDockHomeEmptyIcon"
+                color="rgba(255, 255, 255, 0.3)"
+                size={52}
+                strokeWidth={1.5}
+              />
               <text className="BrowserDockHomeEmptyTitle">No local servers</text>
               <text className="BrowserDockHomeEmptyDetail">Try another browser URL</text>
             </view>
