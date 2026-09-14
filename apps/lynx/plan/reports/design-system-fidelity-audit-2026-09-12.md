@@ -962,3 +962,19 @@ values and unresolved Native custom properties.
   Dark computed style resolved `#ffffff0a` with a running animation; both exact
   Native consoles were empty. No screenshot was retained; staged bundle SHA-256
   is `f6322581960fd00497d2e1d1dbbfaf0227138ba5f9561ae6d7cd6c1ba9fd256d`.
+
+## Shared Spinner motion follow-up
+
+- Native Spinner retains the catalogued platform substitution—CSS ring instead
+  of Electron's Loader2 path—but now restores the essential loading rotation. It
+  matches Electron's 1s linear infinite cadence and disables animation for
+  reduced motion. Existing 12px/16px size variants and semantic status labeling
+  are unchanged.
+- The focused loading suite passes 2/2 and the complete production build reports
+  6/6 tasks successful on Lynxtron 0.0.22. Exact-owned PID `62777` / window
+  `107597`, PID-derived `localhost:8901`, session 1, rendered the default story at
+  a 16px outer diameter. DevTool resolved a running 1000ms linear infinite
+  `LxSpinnerSpin` keyframe with foreground ring paint and a transparent right
+  segment. The exact Native console was empty. No screenshot was retained; staged
+  bundle SHA-256 is
+  `48dcf5623cb50a6de82f5ffac52589dc301803d8cdf657cfe486d39ed967b597`.

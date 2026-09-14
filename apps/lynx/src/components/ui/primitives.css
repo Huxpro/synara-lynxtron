@@ -419,6 +419,15 @@
   border: 1px solid var(--foreground);
   border-right-color: transparent;
   border-radius: 999px;
+  animation: LxSpinnerSpin 1s linear infinite;
+}
+
+@keyframes LxSpinnerSpin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .LxSpinner { animation: none; }
 }
 
 .LxKbdGroup {

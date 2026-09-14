@@ -29,5 +29,11 @@ describe('loading primitives', () => {
     const spinner = elementTree.root?.querySelector('.LxSpinner');
     expect(spinner?.getAttribute('accessibility-label')).toBe('Loading');
     expect(spinner?.getAttribute('accessibility-trait')).toBe('updating');
+
+    const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
+    expect(styles).toContain('animation: LxSpinnerSpin 1s linear infinite;');
+    expect(styles).toMatch(
+      /@media \(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*\.LxSpinner\s*\{\s*animation:\s*none;/
+    );
   });
 });
