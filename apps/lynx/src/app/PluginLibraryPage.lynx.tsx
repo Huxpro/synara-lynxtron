@@ -17,7 +17,7 @@ import { DEFAULT_PROVIDER_ORDER } from '@synara-web/providerOrdering';
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
-import { CheckIcon, CircleAlertIcon, ListChecksIcon, PuzzleIcon, SearchIcon } from '../lib/icons.lynx';
+import { CheckIcon, ListChecksIcon, PuzzleIcon, SearchIcon } from '../lib/icons.lynx';
 import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
 import { useTheme } from '../adapters/useTheme.lynx';
 import {
@@ -26,6 +26,7 @@ import {
   fetchPluginLibrarySkills,
 } from './queries';
 import './plugin-library-page.css';
+import { PluginLibraryWarning } from './PluginLibraryWarning.lynx';
 
 type DiscoveryTab = 'plugins' | 'skills';
 
@@ -268,13 +269,7 @@ export function PluginLibraryPage() {
           {pluginWarnings.length > 0 ? (
             <view className="PluginLibraryWarnings">
               {pluginWarnings.map((warning) => (
-                <view className="PluginLibraryWarning" key={warning}>
-                  <CircleAlertIcon
-                    className="PluginLibraryWarningIcon"
-                    size={15}
-                  />
-                  <text className="PluginLibraryWarningText">{warning}</text>
-                </view>
+                <PluginLibraryWarning key={warning} message={warning} />
               ))}
             </view>
           ) : null}

@@ -1,7 +1,20 @@
+import { render } from '@lynx-js/react/testing-library';
 import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
+import { PluginLibraryWarning } from './PluginLibraryWarning.lynx';
+
 describe('Lynx plugin library', () => {
+  it('embeds warning paint in provider discovery warning SVGs', () => {
+    render(<PluginLibraryWarning message="Marketplace unavailable" />);
+
+    expect(
+      elementTree.root
+        ?.querySelector('.PluginLibraryWarningIcon')
+        ?.getAttribute('content')
+    ).toContain('stroke="#d97706"');
+  });
+
   it('uses real provider discovery contracts', () => {
     const pageSource = readFileSync(
       new URL('./PluginLibraryPage.lynx.tsx', import.meta.url),
@@ -13,6 +26,10 @@ describe('Lynx plugin library', () => {
     );
     const clientSource = readFileSync(
       new URL('../data/synaraClient.lynx.ts', import.meta.url),
+      'utf8'
+    );
+    const warningSource = readFileSync(
+      new URL('./PluginLibraryWarning.lynx.tsx', import.meta.url),
       'utf8'
     );
 
@@ -34,7 +51,9 @@ describe('Lynx plugin library', () => {
     expect(pageSource).toContain('providerPluginDiscoveryWarnings');
     expect(pageSource).toContain('plugins.data?.remoteSyncError ?? null');
     expect(pageSource).toContain('plugins.data?.marketplaceLoadErrors ?? []');
-    expect(pageSource).toContain('className="PluginLibraryWarning"');
+    expect(pageSource).toContain('<PluginLibraryWarning');
+    expect(warningSource).toContain('className="PluginLibraryWarning"');
+    expect(warningSource).toContain('color={svgColors.warning}');
     expect(pageSource).toContain("useState<ProviderKind>('codex')");
     expect(pageSource).toContain('DEFAULT_PROVIDER_ORDER.map');
     expect(pageSource).toContain('provider={candidate}');
