@@ -846,18 +846,3 @@ values and unresolved Native custom properties.
   title bottom at y=403 and description top at y=409, an exact 6px gap, with an
   empty Native console. No screenshot was retained; staged bundle SHA-256 is
   `327771d5a3284cf91ba78cd187b95070c3d6e0a0ded7582451387b5e15e485d1`.
-
-## Project Action form typography follow-up
-
-- Native Project Action form labels, hint, and validation copy now match the
-  Electron type tiers: 12px/16px medium labels, 12px/16px muted helper text, and
-  14px/20px destructive errors. This replaces the mixed 12px/18px and 11px/16px
-  Native values that weakened the authority's form hierarchy.
-- The focused Project Action editor contract passes 1/1 and directly locks all
-  three tiers. The complete Lynx/Desktop production build passes on Lynxtron
-  0.0.22.
-- Exact-owned PID `11265` / window `106855`, PID-derived `localhost:8901`,
-  session 1, rendered the error story and measured the three labels, hint, and
-  error at the intended resolved sizes and semantic colors. The exact Native
-  console was empty. No screenshot was retained; staged bundle SHA-256 is
-  `2322c400f5a2c24c1abacac4b7b88e59e3ed63b4be58597a70738d84f132aaf5`.
