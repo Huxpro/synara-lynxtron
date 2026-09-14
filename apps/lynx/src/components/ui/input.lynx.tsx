@@ -90,6 +90,7 @@ interface KeyboardInputProps {
   readonly onKeyDown?: (event: LynxInputKeyEvent) => void;
   readonly onSelectionChange?: LynxInputProps['onSelectionChange'];
   readonly placeholder?: string;
+  readonly placeholderColor?: string;
   readonly readonly?: boolean;
   readonly showSoftInputOnFocus?: boolean;
   readonly style?: LynxInputProps['style'];
@@ -204,6 +205,7 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
     'default-value': props.defaultValue,
     value: props.value ?? props.defaultValue,
     placeholder: props.placeholder,
+    'placeholder-color': props.placeholderColor,
     'confirm-type': props.confirmType,
     'input-filter': props.inputFilter ?? (props.type === 'number' ? '[0-9.]*' : undefined),
     maxlength: props.maxLength ?? 140,
@@ -310,7 +312,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
           : undefined
       }
     >
-      {nativeInput || onKeyDown ? (
+      {nativeInput || onKeyDown || props.placeholder !== undefined ? (
         <KeyboardInput
           ref={forwardedRef}
           accessibleLabel={accessibilityLabel ?? ariaLabel}
@@ -320,6 +322,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
           readonly={props.readonly}
           disabled={resolvedDisabled}
           placeholder={props.placeholder}
+          placeholderColor={svgColors.placeholderForeground}
           type={type === 'search' ? 'text' : type}
           confirmType={type === 'search' ? 'search' : props.confirmType ?? 'send'}
           inputFilter={props.inputFilter}
@@ -345,6 +348,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
           disabled={resolvedDisabled}
           focusable={!resolvedDisabled}
           aria-invalid={ariaInvalid}
+          placeholder-color={svgColors.placeholderForeground}
           type={type === 'search' ? 'text' : type}
           confirmType={type === 'search' ? 'search' : props.confirmType}
           onInput={resolvedDisabled ? undefined : handleInput}

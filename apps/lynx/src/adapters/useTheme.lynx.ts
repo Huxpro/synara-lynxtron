@@ -43,6 +43,16 @@ function withOpacity(color: string, opacity: number): string {
   return `rgba(${rgbMatch[1]}, ${rgbMatch[2]}, ${rgbMatch[3]}, ${opacity})`;
 }
 
+function scaleOpacity(color: string, multiplier: number): string {
+  const rgbaMatch = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([0-9.]+)\s*\)$/i.exec(
+    color
+  );
+  if (!rgbaMatch) return withOpacity(color, multiplier);
+  return `rgba(${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]}, ${
+    Number(rgbaMatch[4]) * multiplier
+  })`;
+}
+
 export function setLynxThemeState(
   state: ThemeState,
   systemDark = currentSystemDark
@@ -112,6 +122,10 @@ export function useTheme() {
       foreground65: withOpacity(activeTheme.theme.ink, 0.65),
       foreground80: withOpacity(activeTheme.theme.ink, 0.8),
       mutedForeground: withOpacity(activeTheme.theme.ink, 0.6),
+      placeholderForeground: scaleOpacity(
+        resolvedTokens.derived.textForegroundSecondary,
+        0.72
+      ),
       mutedForeground55: withOpacity(activeTheme.theme.ink, 0.33),
       mutedForeground70: withOpacity(activeTheme.theme.ink, 0.42),
       mutedForeground80: withOpacity(activeTheme.theme.ink, 0.48),

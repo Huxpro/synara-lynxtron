@@ -13,6 +13,22 @@ describe('Lynx Input accessibility contract', () => {
     );
   });
 
+  it('projects the Electron placeholder tone into both Native input paths', () => {
+    const source = readFileSync(new URL('./input.lynx.tsx', import.meta.url), 'utf8');
+    expect(source).toContain(
+      "'placeholder-color': props.placeholderColor"
+    );
+    expect(source).toContain(
+      'placeholderColor={svgColors.placeholderForeground}'
+    );
+    expect(source).toContain(
+      'placeholder-color={svgColors.placeholderForeground}'
+    );
+    expect(source).toContain(
+      'nativeInput || onKeyDown || props.placeholder !== undefined'
+    );
+  });
+
   it('centers the one-line textarea through shared size metrics', () => {
     const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
 
@@ -79,7 +95,9 @@ describe('Lynx Input accessibility contract', () => {
     expect(source).toContain(
       "void setValue(props.defaultValue ?? '').catch(() => undefined)"
     );
-    expect(source).toContain('{nativeInput || onKeyDown ? (');
+    expect(source).toContain(
+      '{nativeInput || onKeyDown || props.placeholder !== undefined ? ('
+    );
     expect(source).toContain(
       '<textarea {...sharedProps} maxlines={props.maxLines ?? 1} />'
     );

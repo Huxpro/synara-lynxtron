@@ -1502,3 +1502,24 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `d0f4d8102a725a976ec80eaa1b174baf1806e77719b7bbe77ed619eb8df0e54a`.
+
+### DS-084 — COMPLETE
+
+- Native Input and Textarea placeholders now match Electron's
+  muted-foreground/72 hierarchy instead of using the platform default placeholder
+  color. The resolved color is derived from the active Theme Pack and reaches
+  both multiline and one-line crash-safe textarea paths.
+- The upstream `@lynx-js/lynx-ui` Input wrapper only forwards a fixed prop list
+  and dropped `placeholder-color`, so inputs with placeholders now use the
+  existing local `KeyboardInput` path, which already owns value, IME, selection,
+  focus, confirmation, disabled, and accessibility behavior. Native
+  Input/Textarea/Checkbox/theme/Lab focused tests pass 21/21, and the affected
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `27472`, window `108957`, PID-derived DevTool
+  `localhost:8901`, session 1, exposed the real Native `TEXTAREA` node with
+  `placeholder-color=rgba(252,252,252,0.4176)`. Electron's `::placeholder`
+  resolved to the equivalent 41.79% white. A real click added `ui-focus` without
+  crashing or losing the placeholder attribute; the exact Native error/warning
+  console was empty. No screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `54404a9a57e52080eb69baa9c677133e29c7bc2f035e13fcfc3ff4c6d10cd2de`.
