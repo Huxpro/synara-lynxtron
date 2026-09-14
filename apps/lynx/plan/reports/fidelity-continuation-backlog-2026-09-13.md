@@ -1115,3 +1115,20 @@ state is absent from the paired component matrix.
   absent after the shared cleanup window. The exact Native error/warning console
   was empty and no screenshot was retained. The final staged bundle SHA-256 is
   `28dda140331a399efde1e68e8c0a8d43027fa90210e9a63a7a83cb0ab965d201`.
+
+### DS-062 — COMPLETE
+
+- Native switch-style Menu items now match Electron's desktop override at a
+  24×16px track, 12×12px thumb, and 8px checked travel. The previous Native
+  implementation used a 26×16px track with a 10px thumb and 10px travel.
+- The real switch variant is now a paired `ui/menu` Components Lab case instead
+  of remaining visible only inside Diff/Extras product menus. Coverage grows from
+  3,328 to 3,368 meaningful cells. Native Menu/Lab tests pass 22/22, Web Lab
+  tests pass 37/37, shared manifest tests pass 9/9, and the complete production
+  build reports 6/6 tasks successful on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `64016`, window `107795`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the checked switch story. Native measured
+  a 24×16px track border box and 12×12px thumb; the checked thumb's CSS left was
+  9px versus 1px unchecked, proving 8px travel. The exact Native error/warning
+  console was empty and no screenshot was retained. The final staged bundle
+  SHA-256 is `9ee03495a1e94f598c6ed53e883c29fbc481a066ffcbc9ede8b27d5c4129cf86`.

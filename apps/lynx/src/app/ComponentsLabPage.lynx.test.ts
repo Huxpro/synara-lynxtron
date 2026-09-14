@@ -221,6 +221,8 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain("<MenuCheckboxItem checked className={visualClass} disabled={props.state === 'disabled'}");
     expect(renderer).toContain('<MenuPopupBase align="start"');
     expect(renderer).toContain("props.variant === 'checkbox'");
+    expect(renderer).toContain("props.variant === 'switch'");
+    expect(renderer).toContain('variant="switch" onCheckedChange');
     expect(renderer).toContain("props.variant === 'separator'");
     expect(renderer).toContain("props.variant === 'shortcut' ? <MenuShortcut>⌘N</MenuShortcut>");
     expect(renderer).not.toContain('value="new-chat" onActivate');

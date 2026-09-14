@@ -414,6 +414,8 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
             <MenuGroupLabel>Actions</MenuGroupLabel>
             {props.variant === 'checkbox' ? (
               <MenuCheckboxItem checked className={visualClass} disabled={props.state === 'disabled'} onCheckedChange={() => {}}>Show terminal</MenuCheckboxItem>
+            ) : props.variant === 'switch' ? (
+              <MenuCheckboxItem checked className={visualClass} disabled={props.state === 'disabled'} variant="switch" onCheckedChange={() => {}}>Show terminal</MenuCheckboxItem>
             ) : props.variant === 'separator' ? (
               <><MenuItem className={visualClass} disabled={props.state === 'disabled'} onClick={() => {}}>New chat</MenuItem><MenuSeparator /><MenuItem onClick={() => {}}>Remove</MenuItem></>
             ) : (

@@ -650,6 +650,8 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
               <MenuGroupLabel>Actions</MenuGroupLabel>
               {props.variant === "checkbox" ? (
                 <MenuCheckboxItem checked className={visualClass} disabled={props.state === "disabled"}>Show terminal</MenuCheckboxItem>
+              ) : props.variant === "switch" ? (
+                <MenuCheckboxItem checked className={visualClass} disabled={props.state === "disabled"} variant="switch">Show terminal</MenuCheckboxItem>
               ) : props.variant === "separator" ? (
                 <><MenuItem className={visualClass} disabled={props.state === "disabled"}>New chat</MenuItem><MenuSeparator /><MenuItem variant="destructive">Remove</MenuItem></>
               ) : (

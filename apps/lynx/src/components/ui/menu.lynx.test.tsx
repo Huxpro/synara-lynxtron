@@ -491,6 +491,19 @@ describe('Lynx Menu overlay contract', () => {
     expect(
       elementTree.root?.querySelector('.LxMenuIndicator')
     ).toBeNull();
+    const primitiveStyles = readFileSync(
+      new URL('./primitives.css', import.meta.url),
+      'utf8'
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuSwitch\s*\{[^}]*width:\s*24px;[^}]*height:\s*16px;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuSwitch__thumb\s*\{[^}]*left:\s*1px;[^}]*top:\s*1px;[^}]*width:\s*12px;[^}]*height:\s*12px;/s
+    );
+    expect(primitiveStyles).toMatch(
+      /\.LxMenuSwitch--checked \.LxMenuSwitch__thumb\s*\{[^}]*left:\s*9px;/s
+    );
     const item = elementTree.root?.querySelector('.LxMenuItem--switch');
     if (!item) throw new Error('expected switch menu item');
     expect(item.getAttribute('role')).toBe('menuitemcheckbox');

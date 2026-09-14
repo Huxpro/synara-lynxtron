@@ -527,10 +527,10 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
-    id: "ui/menu", title: "Menu primitives", category: "design-system", owner: "Menu", fixtureId: "menu-items", variants: ["item", "checkbox", "separator", "shortcut"], states: ["default", "open", "hover", "focus", "pressed", "disabled"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    id: "ui/menu", title: "Menu primitives", category: "design-system", owner: "Menu", fixtureId: "menu-items", variants: ["item", "checkbox", "switch", "separator", "shortcut"], states: ["default", "open", "hover", "focus", "pressed", "disabled"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     cases: [
       { variant: "item", state: "default" },
-      ...["item", "checkbox", "separator", "shortcut"].flatMap((variant) =>
+      ...["item", "checkbox", "switch", "separator", "shortcut"].flatMap((variant) =>
         ["open", "hover", "focus", "pressed", "disabled"].map((state) => ({ variant, state }))
       ),
     ],

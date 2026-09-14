@@ -1051,3 +1051,18 @@ values and unresolved Native custom properties.
   it after the shared cleanup window on the second click. The exact Native console
   was empty. No screenshot was retained; staged bundle SHA-256 is
   `28dda140331a399efde1e68e8c0a8d43027fa90210e9a63a7a83cb0ab965d201`.
+
+## Shared Menu switch geometry follow-up
+
+- Native switch-style Menu rows now reuse Electron's desktop switch proportions:
+  24×16px track, 12×12px thumb, and 8px checked travel. This removes the former
+  26×16px / 10px-thumb local geometry without changing the full-size 32×20px
+  Settings/Project Action Switch primitive.
+- `switch` is now a first-class paired `ui/menu` variant, increasing meaningful
+  matrix coverage from 3,328 to 3,368 cells. Native Menu/Lab tests pass 22/22,
+  Web Lab 37/37, shared manifest 9/9, and the production build reports 6/6 tasks
+  successful on Lynxtron 0.0.22.
+- Exact-owned PID `64016` / window `107795`, PID-derived `localhost:8901`, session
+  1, measured a 24×16px track and 12×12px thumb with 8px checked travel. The
+  exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is `9ee03495a1e94f598c6ed53e883c29fbc481a066ffcbc9ede8b27d5c4129cf86`.
