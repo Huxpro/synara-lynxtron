@@ -85,6 +85,9 @@ describe('Settings Custom Models fidelity', () => {
       /\.SettingsCustomModelsProviderTrigger\s*\{[^}]*width:\s*100%;[^}]*height:\s*28px;[^}]*border-radius:\s*8px;/s
     );
     expect(styles).toMatch(
+      /\.SettingsCustomModelsChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*opacity:\s*0\.5;/s
+    );
+    expect(styles).toMatch(
       /\.SettingsCustomModelsInput\s*\{[^}]*height:\s*28px;[^}]*flex:\s*1;/s
     );
     expect(styles).toMatch(

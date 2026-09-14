@@ -526,6 +526,13 @@ describe('ThemePack boolean interaction contract', () => {
       elementTree.root?.querySelector('.SharedThemePackCodeLabel')?.textContent
     ).toBe('Linear');
     expect(elementTree.root?.querySelector('.SharedThemePackCodeChevron')).not.toBeNull();
+    const styles = readFileSync(
+      new URL('./theme-pack-editor-composition-elements.css', import.meta.url),
+      'utf8'
+    );
+    expect(styles).toMatch(
+      /\.SharedThemePackCodeChevron\s*\{[^}]*opacity:\s*0\.5;/s
+    );
 
     fireEvent.tap(trigger);
     const menuItem = elementTree.root?.querySelector('.SharedThemePackCodeMenuItem');

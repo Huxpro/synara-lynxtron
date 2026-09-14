@@ -702,3 +702,21 @@ state is absent from the paired component matrix.
   current Providers snapshot had no update action, so no update was fabricated or
   invoked. No screenshot was retained. The staged bundle SHA-256 is
   `592468ee2bff25f58107b81fdd8068a8b3956f4ae14c3c6704c47815bf2b209f`.
+
+### DS-038 — COMPLETE
+
+- Native Appearance, Theme Pack code-theme, and Custom Models provider Select
+  chevrons now match the established General/Git Writing and Electron Select
+  contract: full foreground is encoded into the generated SVG and the element
+  applies `0.5` opacity. Font-combobox, reorder, and disclosure chevrons keep
+  their separate semantics.
+- Appearance and Theme Pack focused suites pass 12/12. The Custom Models suite
+  remains blocked before execution by the existing generated `lynx-ui-button`
+  vendor parse error; its source/style contract and the complete Lynx/Desktop
+  production build pass on Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `35544`, window `106406`, PID-derived DevTool
+  `localhost:8901`, session 1, opened the real Models page and measured both the
+  existing Git Writing and newly normalized Custom Models chevrons at encoded
+  `#0d0d0d` with computed opacity `0.5`. The exact-client error/warning console
+  was empty. No screenshot was retained. The staged bundle SHA-256 is
+  `62754b32144140259a176e5a7f536ceabdbae54dc273383c54bb5b11533c8658`.

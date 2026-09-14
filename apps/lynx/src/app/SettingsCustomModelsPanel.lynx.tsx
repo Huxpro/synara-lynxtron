@@ -210,7 +210,7 @@ export function SettingsCustomModelsPanel(props: {
                   <ChevronDownIcon
                     className="SettingsCustomModelsChevron"
                     size={14}
-                    color="var(--muted-foreground)"
+                    color="var(--foreground)"
                   />
                 </Button>
               </MenuTrigger>

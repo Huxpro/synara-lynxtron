@@ -318,7 +318,7 @@ export function ThemePackCodeThemeControlElement(props: {
           <ChevronDownIcon
             className="SharedThemePackCodeChevron"
             size={14}
-            color="var(--muted-foreground)"
+            color="var(--foreground)"
           />
         </Button>
       </MenuTrigger>

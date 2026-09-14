@@ -142,8 +142,9 @@ describe('Settings Appearance fidelity', () => {
       /\.SharedSettingsAppearanceSelectLabel\s*\{[^}]*font-size:\s*12px;[^}]*text-align:\s*left;[^}]*text-overflow:\s*ellipsis;/s
     );
     expect(styles).toMatch(
-      /\.SharedSettingsAppearanceSelectChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
+      /\.SharedSettingsAppearanceSelectChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*opacity:\s*0\.5;/s
     );
+    expect(source).toContain('color="var(--foreground)"');
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceSelectPopup\s*\{[^}]*width:\s*160px;/s
     );

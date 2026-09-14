@@ -672,3 +672,19 @@ values and unresolved Native custom properties.
   snapshot exposed no update action, so no fake state or external update was
   triggered. No screenshot was retained; staged bundle SHA-256:
   `592468ee2bff25f58107b81fdd8068a8b3956f4ae14c3c6704c47815bf2b209f`.
+
+## Settings Select chevron follow-up
+
+- Native Appearance, Theme Pack code-theme, and Custom Models provider Selects
+  now use the same foreground-source plus `0.5` element-opacity Chevron contract
+  as Electron and the already-aligned General/Git Writing controls. Other
+  chevron families retain their own muted, reorder, or disclosure semantics.
+- Appearance and Theme Pack focused suites pass 12/12. The Custom Models suite is
+  still blocked before execution by the known Rstest generated `lynx-ui-button`
+  parse issue; its source/style assertion and the full production build pass on
+  Lynxtron 0.0.22.
+- Exact-owned PID `35544` / window `106406`, PID-derived `localhost:8901`, session
+  1, rendered the real Models page with Git Writing and Custom Models chevrons
+  both encoded at `#0d0d0d` and computed at `opacity: 0.5`. The exact-client
+  console was empty, no screenshot was retained, and staged bundle SHA-256 is
+  `62754b32144140259a176e5a7f536ceabdbae54dc273383c54bb5b11533c8658`.
