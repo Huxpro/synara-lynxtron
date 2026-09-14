@@ -880,17 +880,17 @@ values and unresolved Native custom properties.
 
 ## Shared Checkbox border follow-up
 
-- Native Checkbox now matches Electron's quiet unchecked outline by using
-  `--color-border-light`; selected and mixed states keep their primary border and
-  fill hierarchy. The declaration is split into width/style/color because Lynx
-  preserves variable-backed border color more reliably in that form.
+- Native Checkbox now uses Electron's quiet `--color-border-light` outline in
+  the unchecked state. Selected and mixed states preserve their primary border
+  and fill hierarchy. The declaration uses explicit width/style/color so the
+  Native rule retains the variable-backed color.
 - The focused Checkbox suite passes 3/3 and the complete Lynx/Desktop production
   build passes on Lynxtron 0.0.22.
 - Exact-owned PID `37624` / window `107195`, PID-derived `localhost:8901`,
   session 1, rendered unchecked and checked states. The unchecked matched rule
-  uses the light-border token and aggregate computed color resolves to
-  `hsla(0,0%,5%,.06)`; checked remains primary `#0d0d0d`. DevTool's per-side color
-  serializer reports current color for the translucent token, so evidence uses the
-  parsed rule and aggregate property. The exact Native console was empty and no
-  screenshot was retained; staged bundle SHA-256 is
+  parsed the light-border token and aggregate computed border resolved to
+  `hsla(0,0%,5%,.06)`; checked remained primary `#0d0d0d`. DevTool's per-side
+  color serializer reports current color for the translucent token, so evidence
+  uses the parsed rule and aggregate computed property. The exact Native console
+  was empty and no screenshot was retained; staged bundle SHA-256 is
   `673e0c8b8e0e41838afa1a8656b2e166f3359dc3f8e668f9885e1ab27c53b25b`.
