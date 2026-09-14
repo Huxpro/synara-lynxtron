@@ -25,13 +25,23 @@ describe('ProjectActionEditor', () => {
     expect(source).toContain('props.onDelete');
     expect(source).toContain('SCRIPT_ICONS.map');
     expect(source).toContain('icon={entry.id}');
-    expect(source).toContain('svgColors.iconSecondary');
+    expect(source).toContain(
+      "props.role === 'trigger' ? svgColors.foreground80 : svgColors.foreground"
+    );
+    expect(source).toContain("props.role === 'trigger' ? 18 : 16");
+    expect(source).toContain('<ScriptIcon icon={icon} role="trigger" />');
+    expect(source).toContain(
+      '<ScriptIcon icon={props.icon} role="option" />'
+    );
+    expect(source).not.toContain('svgColors.iconSecondary');
     expect(source).not.toContain("colorizeLynxSvg(playSvg, 'var(--color-icon-secondary)')");
     expect(source).toContain('ProjectActionEditorIconPopup');
     expect(source).toContain('setIconPickerOpen(false)');
     expect(source).toContain('<DialogHeader className="ProjectActionEditorHeader">');
     expect(source).toContain('className="ProjectActionEditorCommandInput"');
-    expect(source).toContain('multiline maxLines={5}');
+    expect(source).toMatch(
+      /<Textarea[^>]*nativeInput[^>]*maxLines=\{5\}/s
+    );
     expect(source).toContain('maxLength={8000}');
   });
 });

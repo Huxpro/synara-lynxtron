@@ -37,15 +37,30 @@ const SCRIPT_ICONS: ReadonlyArray<{ readonly id: ProjectScriptIcon; readonly lab
   { id: 'debug', label: 'Debug' },
 ];
 
-function ScriptIcon(props: { readonly icon: ProjectScriptIcon }) {
+type ScriptIconRole = 'trigger' | 'option';
+
+function ScriptIcon(props: {
+  readonly icon: ProjectScriptIcon;
+  readonly role: ScriptIconRole;
+}) {
   const { svgColors } = useTheme();
-  const iconProps = { size: 16, color: svgColors.iconSecondary } as const;
+  const color =
+    props.role === 'trigger' ? svgColors.foreground80 : svgColors.foreground;
+  const size = props.role === 'trigger' ? 18 : 16;
+  const className = `ProjectActionEditorScriptIcon ProjectActionEditorScriptIcon--${props.role}`;
+  const iconProps = { className, size, color } as const;
   if (props.icon === 'test') return <FlaskIcon {...iconProps} />;
   if (props.icon === 'lint') return <ListChecksIcon {...iconProps} />;
   if (props.icon === 'configure') return <SettingsIcon {...iconProps} />;
   if (props.icon === 'build') return <HammerIcon {...iconProps} />;
   if (props.icon === 'debug') return <BugIcon {...iconProps} />;
-  return <svg content={colorizeLynxSvg(playSvg, svgColors.iconSecondary)} style={{ width: '16px', height: '16px' }} />;
+  return (
+    <svg
+      className={className}
+      content={colorizeLynxSvg(playSvg, color)}
+      style={{ width: `${size}px`, height: `${size}px` }}
+    />
+  );
 }
 
 function ActionIconOption(props: {
@@ -67,7 +82,7 @@ function ActionIconOption(props: {
       accessibility-state={{ selected: props.active }}
       {...interaction.eventProps}
     >
-      <ScriptIcon icon={props.icon} />
+      <ScriptIcon icon={props.icon} role="option" />
       <text className="ProjectActionEditorIconLabel">{props.label}</text>
     </view>
   );
@@ -146,7 +161,7 @@ export function ProjectActionEditor(props: {
             <view className="ProjectActionEditorNameRow">
               <view className="ProjectActionEditorIconPicker">
                 <Button size="icon-sm" variant="outline" aria-label="Choose icon" disabled={props.busy} onClick={() => setIconPickerOpen((current) => !current)}>
-                  <ScriptIcon icon={icon} />
+                  <ScriptIcon icon={icon} role="trigger" />
                 </Button>
                 {iconPickerOpen ? (
                   <view className="ProjectActionEditorIconPopup">

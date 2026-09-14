@@ -770,3 +770,22 @@ state is absent from the paired component matrix.
   exact-client console was empty. No screenshot was retained. The staged bundle
   SHA-256 is
   `7ab8a34b486c55e2c90c5b231e322a6be1c0dbec4bec74542cbfdc0790c6050a`.
+
+### DS-042 — COMPLETE
+
+- Native Project Action editor icons now preserve Electron's two visual roles
+  instead of applying semantic secondary to the entire picker. The outline
+  `Choose icon` trigger renders foreground/80 at 18px; the six picker options
+  render full foreground at 16px.
+- The focused Project Action editor contract passes 1/1, including the current
+  Native textarea contract, and the full Lynx/Desktop production build passes
+  on the npm Lynxtron 0.0.22 runtime.
+- Exact-owned Lynxtron PID `37494`, window `106652`, PID-derived DevTool
+  `localhost:8901`, session 1, physically opened the Add Action dialog and icon
+  picker. DevTool found one trigger SVG encoded at
+  `rgba(13, 13, 13, 0.8)` with an 18px style and six option SVGs encoded at
+  `#0d0d0d` with 16px geometry. The exact Native error/warning console was empty.
+  Electron's live reference exposed the same 18px trigger source contract and
+  16px full-foreground options. No screenshot was retained. The staged bundle
+  SHA-256 is
+  `e65818085a6c68021d986e4b7b29e1b6dd28aa568d65d8cc8a77322cbe00a801`.

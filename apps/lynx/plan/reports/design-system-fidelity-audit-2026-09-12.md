@@ -732,3 +732,20 @@ values and unresolved Native custom properties.
   The exact-client console was empty, no screenshot was retained, and staged
   bundle SHA-256 is
   `7ab8a34b486c55e2c90c5b231e322a6be1c0dbec4bec74542cbfdc0790c6050a`.
+
+## Project Action editor icon-role follow-up
+
+- Native now matches the Electron Project Action icon picker's two-level
+  hierarchy: the outline trigger uses foreground/80 at 18px, while all six raw
+  picker options use full foreground at 16px. Generated SVG paint is resolved
+  explicitly per role rather than inherited from a parent CSS color.
+- The focused Project Action editor contract passes 1/1, and its stale textarea
+  source assertion now follows the existing `nativeInput` contract. The complete
+  Lynx/Desktop production build passes on Lynxtron 0.0.22.
+- Exact-owned PID `37494` / window `106652`, PID-derived `localhost:8901`,
+  session 1, physically opened the real Add Action dialog and picker. Native
+  measured one trigger at encoded `rgba(13, 13, 13, 0.8)` with an 18px style and
+  six options at encoded `#0d0d0d` with 16px geometry. Electron's live reference
+  exposed the matching trigger and option hierarchy. The exact Native console
+  was empty, no screenshot was retained, and staged bundle SHA-256 is
+  `e65818085a6c68021d986e4b7b29e1b6dd28aa568d65d8cc8a77322cbe00a801`.
