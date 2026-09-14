@@ -1574,3 +1574,20 @@ state is absent from the paired component matrix.
   text. The exact Native error/warning console was empty, no screenshot was
   retained, and the final staged bundle SHA-256 is
   `a9f526ef8951d26d1c1181a66decd8f677545562593fd77691cfca69bf553e50`.
+
+### DS-088 — COMPLETE
+
+- Native default and large Input text now match Electron's current
+  `leading-normal` contract at 12px/18px instead of retaining the historical
+  12px/16px line box. Their single-line vertical padding decreases by 1px per
+  side so the established 32px and 36px outer heights remain stable; the small
+  11px/16.5px tier and Textarea's independent inset axis are unchanged.
+- Native Input and primitive geometry focused tests pass 13/13, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `11957`, window `109184`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real filled `ui/input` story. The
+  default control remained 320x32 with a 294x30 inner textarea, while its text
+  resolved to 12px/18px with symmetric 6px vertical padding. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `70947bf02fe4e72ccd15cbe7762db12c3deb54d98011bb0404678c033a1a6e48`.

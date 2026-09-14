@@ -1461,3 +1461,18 @@ values and unresolved Native custom properties.
   the exact Native console was empty. No screenshot was retained; staged bundle
   SHA-256 is
   `a9f526ef8951d26d1c1181a66decd8f677545562593fd77691cfca69bf553e50`.
+
+## Shared Input line-box follow-up
+
+- Native default and large Input text now follow Electron's current
+  `leading-normal` value at 12px/18px. Single-line vertical padding decreases by
+  1px per side to preserve the existing 32px and 36px control heights; small
+  Input and the separate Textarea inset contract are unchanged. Native Input and
+  primitive geometry focused tests pass 13/13, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `11957` / window `109184`, PID-derived `localhost:8901`,
+  session 1, rendered the real filled `ui/input` story. DevTool resolved a
+  320x32 shell, 294x30 inner textarea, 12px/18px text, and symmetric 6px vertical
+  padding; the exact Native console was empty. No screenshot was retained; staged
+  bundle SHA-256 is
+  `70947bf02fe4e72ccd15cbe7762db12c3deb54d98011bb0404678c033a1a6e48`.
