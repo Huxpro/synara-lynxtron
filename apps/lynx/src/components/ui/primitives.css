@@ -271,6 +271,39 @@
   padding-bottom: 9px;
 }
 
+.LxInputControl--multiline {
+  min-height: 70px;
+  padding-left: 11px;
+  padding-right: 11px;
+}
+
+.LxInputControl--multiline > .LxInput {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.LxInputControl--multiline.LxInputControl--sm {
+  min-height: 66px;
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
+.LxInputControl--multiline.LxInputControl--sm > .LxInput {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.LxInputControl--multiline.LxInputControl--lg {
+  min-height: 74px;
+  padding-left: 11px;
+  padding-right: 11px;
+}
+
+.LxInputControl--multiline.LxInputControl--lg > .LxInput {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
 .LxSwitch {
   width: 32px;
   height: 20px;

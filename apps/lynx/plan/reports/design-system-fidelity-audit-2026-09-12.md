@@ -861,3 +861,19 @@ values and unresolved Native custom properties.
   min-height/horizontal inset. The exact Native console was empty. No screenshot
   was retained; staged bundle SHA-256 is
   `a9931468fb38a2bcd18a22b53f774746fee5db1ddcde04230e7eebbe11117a5d`.
+
+## Shared Textarea size-axis follow-up
+
+- Native Textarea now has an explicit multiline role and matches Electron's three
+  sizes: default 70px with 11px/5px insets, small 66px with 9px/3px, and large
+  74px with 11px/7px. The Components Lab's fixed 70px min-height was removed so
+  it exposes rather than hides the shared size contract.
+- Project Action keeps its intentional 96px command field and 10px horizontal
+  inset. Focused Input and Project Action suites pass 5/5, and the complete
+  Lynx/Desktop production build passes on Lynxtron 0.0.22.
+- Exact-owned PID `87588` / window `107018`, PID-derived `localhost:8901`,
+  session 1, switched the real `ui/textarea` story through default, small, and
+  large. DevTool measured 70px/11px, 66px/9px, and 74px/11px for
+  min-height/horizontal inset; the exact Native console was empty. No screenshot
+  was retained; staged bundle SHA-256 is
+  `6d2dd190272e8a70649d5d9fcefe4f8963479e938d0aa546a584e2b3ea51eb2f`.

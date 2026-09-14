@@ -25,6 +25,28 @@ describe('Lynx Input accessibility contract', () => {
     );
   });
 
+  it('matches the Electron textarea size axis', () => {
+    const source = readFileSync(
+      new URL('./input.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
+
+    expect(source).toContain("multiline && 'LxInputControl--multiline'");
+    expect(styles).toMatch(
+      /\.LxInputControl--multiline\s*\{[^}]*min-height:\s*70px;[^}]*padding-left:\s*11px;[^}]*padding-right:\s*11px;/s
+    );
+    expect(styles).toMatch(
+      /\.LxInputControl--multiline > \.LxInput\s*\{[^}]*padding-top:\s*5px;[^}]*padding-bottom:\s*5px;/s
+    );
+    expect(styles).toMatch(
+      /\.LxInputControl--multiline\.LxInputControl--sm\s*\{[^}]*min-height:\s*66px;[^}]*padding-left:\s*9px;[^}]*padding-right:\s*9px;/s
+    );
+    expect(styles).toMatch(
+      /\.LxInputControl--multiline\.LxInputControl--lg\s*\{[^}]*min-height:\s*74px;[^}]*padding-left:\s*11px;[^}]*padding-right:\s*11px;/s
+    );
+  });
+
   it('forwards normalized labels through the keyboard-input branch', () => {
     const source = readFileSync(
       new URL('./input.lynx.tsx', import.meta.url),

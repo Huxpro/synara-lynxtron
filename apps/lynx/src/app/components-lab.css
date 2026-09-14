@@ -71,7 +71,7 @@
 .ComponentsLabScrollContent { width: 100%; padding: 12px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
 .ComponentsLabScrollContent--horizontal { width: 560px; flex-direction: row; }
 .ComponentsLabScrollItem { min-width: 112px; padding: 8px 12px; border-radius: 10px; background-color: var(--muted); color: var(--foreground); font-size: 11px; line-height: 16px; }
-.ComponentsLabTextarea { width: 320px; min-height: 70px; }
+.ComponentsLabTextarea { width: 320px; }
 .ComponentsLabSkeletonGrid { width: 288px; display: flex; flex-direction: column; gap: 8px; }
 .ComponentsLabSkeletonLine { width: 100%; height: 12px; }
 .ComponentsLabSkeletonLine--short { width: 80%; }

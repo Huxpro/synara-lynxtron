@@ -295,6 +295,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
       className={cx(
         !unstyled && 'LxInputControl',
         `LxInputControl--${typeof size === 'number' ? 'default' : size}`,
+        multiline && 'LxInputControl--multiline',
         variant === 'soft' && 'LxInputControl--soft',
         resolvedDisabled && 'LxInputControl--disabled',
         ariaInvalid && 'LxInputControl--invalid',

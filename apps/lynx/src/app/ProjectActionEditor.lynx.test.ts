@@ -49,6 +49,9 @@ describe('ProjectActionEditor', () => {
     );
     expect(source).toContain('maxLength={8000}');
     expect(styles).toMatch(
+      /\.ProjectActionEditorCommandInput\s*\{[^}]*min-height:\s*96px;[^}]*padding-left:\s*10px;[^}]*padding-right:\s*10px;/s
+    );
+    expect(styles).toMatch(
       /\.ProjectActionEditorIconPopup\s*\{[^}]*top:\s*40px;[^}]*width:\s*266px;[^}]*padding:\s*16px;/s
     );
     expect(styles).toMatch(

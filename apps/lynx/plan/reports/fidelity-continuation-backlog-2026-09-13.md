@@ -911,3 +911,19 @@ state is absent from the paired component matrix.
   14px. The exact Native error/warning console was empty. No screenshot was
   retained. The staged bundle SHA-256 is
   `a9931468fb38a2bcd18a22b53f774746fee5db1ddcde04230e7eebbe11117a5d`.
+
+### DS-050 — COMPLETE
+
+- Shared Native Textarea now has a real multiline size axis instead of inheriting
+  one-line Input heights while the Components Lab masked the issue with a fixed
+  70px fixture. Default, small, and large now match Electron at 70/66/74px
+  minimum heights, 11/9/11px horizontal insets, and 5/3/7px vertical insets.
+- Project Action retains its product-specific 96px command field and explicit
+  10px horizontal inset. The focused Input plus Project Action suites pass 5/5,
+  and the complete Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `87588`, window `107018`, PID-derived DevTool
+  `localhost:8901`, session 1, used the visible `ui/textarea` variant controls and
+  measured default 70px/11px, small 66px/9px, and large 74px/11px for
+  min-height/horizontal inset. The exact Native error/warning console was empty.
+  No screenshot was retained. The staged bundle SHA-256 is
+  `6d2dd190272e8a70649d5d9fcefe4f8963479e938d0aa546a584e2b3ea51eb2f`.
