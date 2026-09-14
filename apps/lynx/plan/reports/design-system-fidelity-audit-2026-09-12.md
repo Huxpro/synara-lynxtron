@@ -539,3 +539,15 @@ values and unresolved Native custom properties.
   not provide a reachable Diff data state, so that half is source-contract
   evidence only. No screenshot was retained; staged bundle SHA-256:
   `343c67cffa2686908fc69cfe69b954f30f6a039f44311d44dcc74f075ee229cd`.
+
+## Sidebar Space-switcher icon follow-up
+
+- Native Space tabs now embed their state-specific authority paint: inactive
+  tabs use muted/70, active uses primary, and New space uses muted/55. Status
+  activity dots remain independent semantic colors. This avoids flattening three
+  deliberately distinct hierarchy levels into one inherited SVG color.
+- Focused Native/theme suites pass 7/7 and the Lynx/Desktop production build
+  passes on Lynxtron 0.0.22. The isolated snapshot has no stored Spaces, so the
+  strip correctly remains absent and no artificial data was created for visual
+  evidence. No screenshot was retained; staged bundle SHA-256:
+  `0d8f200241dc733100ad02d34eaa4c92a15240a688e91c5587437afb0697c429`.

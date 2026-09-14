@@ -44,6 +44,12 @@ describe('Native Space switcher', () => {
       'Alpha · Active · Needs attention'
     );
     expect(tabs[1]?.querySelector('.AppSidebarSpaceActivityDot--attention')).toBeTruthy();
+    expect(
+      tabs[0]?.querySelector('svg')?.getAttribute('content')
+    ).toContain('rgba(13, 13, 13, 0.42)');
+    expect(
+      tabs[1]?.querySelector('svg')?.getAttribute('content')
+    ).toContain('#0d0d0d');
     if (tabs[0]) fireEvent.tap(tabs[0]);
     expect(onSelect).toHaveBeenCalledWith(null);
   });
@@ -63,6 +69,9 @@ describe('Native Space switcher', () => {
     const create = elementTree.root?.querySelector('.AppSidebarSpaceCreate');
     expect(create?.getAttribute('accessibility-label')).toBe('New space');
     if (!create) throw new Error('expected New space control');
+    expect(create.querySelector('svg')?.getAttribute('content')).toContain(
+      'rgba(13, 13, 13, 0.33)'
+    );
     fireEvent.tap(create);
     expect(onCreate).toHaveBeenCalledTimes(1);
   });

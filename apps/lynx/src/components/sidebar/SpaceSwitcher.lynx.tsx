@@ -9,6 +9,7 @@ import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
 import { resolveSecondaryPointerOffset } from './threadContextActions.logic';
 import { focusLynxNode } from '../ui/focus.lynx';
 import { PlusIcon } from '../../lib/icons.lynx';
+import { useTheme } from '../../adapters/useTheme.lynx';
 
 export interface NativeSpaceOption {
   readonly id: SpaceId | null;
@@ -39,6 +40,7 @@ function SpaceTab(props: {
   ) => void;
   readonly onSelect: () => void;
 }) {
+  const { semanticIconColor, svgColors } = useTheme();
   const tabRef = useRef<NodesRef>(null);
   const interaction = useLynxInteractiveState({
     baseClassName: `AppSidebarSpaceTab${
@@ -89,6 +91,11 @@ function SpaceTab(props: {
     >
       <LynxSpaceIcon
         className="AppSidebarSpaceTabIcon"
+        color={
+          props.active
+            ? semanticIconColor('primary')
+            : svgColors.mutedForeground70
+        }
         icon={props.option.icon}
         size={14}
       />
@@ -102,6 +109,7 @@ function SpaceTab(props: {
 }
 
 function CreateSpaceButton(props: { readonly onCreate: () => void }) {
+  const { svgColors } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: 'AppSidebarSpaceTab AppSidebarSpaceCreate',
     accessibleLabel: 'New space',
@@ -109,7 +117,11 @@ function CreateSpaceButton(props: { readonly onCreate: () => void }) {
   });
   return (
     <view className={interaction.className} {...interaction.eventProps}>
-      <PlusIcon className="AppSidebarSpaceTabIcon" size={14} />
+      <PlusIcon
+        className="AppSidebarSpaceTabIcon"
+        color={svgColors.mutedForeground55}
+        size={14}
+      />
     </view>
   );
 }

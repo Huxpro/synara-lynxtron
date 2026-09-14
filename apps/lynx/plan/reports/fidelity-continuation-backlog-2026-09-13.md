@@ -544,3 +544,20 @@ state is absent from the paired component matrix.
   limited to its focused production source contract rather than a claimed Native
   cell. No screenshot was retained. The staged bundle SHA-256 is
   `343c67cffa2686908fc69cfe69b954f30f6a039f44311d44dcc74f075ee229cd`.
+
+### DS-029 — COMPLETE
+
+- Native Sidebar Space switcher now embeds three distinct Electron-authority
+  tones instead of relying on `currentColor` after SVG encoding: inactive tabs
+  use muted-foreground/70 (`.42` light source alpha), the active tab uses primary,
+  and New space uses muted-foreground/55 (`.33`). Activity dots retain their
+  separate attention/running/completed status colors.
+- Focused Native tests render the complete switcher and assert inactive `.42`,
+  active primary `#0d0d0d`, and create `.33`; the suite passes 7/7 with the theme
+  SVG regression tests. The full production build passes on Lynxtron 0.0.22.
+- The isolated comparison snapshot contains zero stored Spaces, where both
+  renderers intentionally hide the strip. No records were injected merely to
+  manufacture a Native frame, so this slice is certified by direct-render tests
+  and build rather than a claimed real-sidebar cell. No screenshot was retained.
+  The staged bundle SHA-256 is
+  `0d8f200241dc733100ad02d34eaa4c92a15240a688e91c5587437afb0697c429`.
