@@ -176,7 +176,7 @@ describe('Lynx CommandItem interaction contract', () => {
       /\.LxKbd__text\s*\{[^}]*font-size:\s*12px;[^}]*font-weight:\s*500;[^}]*line-height:\s*16px;/s
     );
     expect(primitiveStyles).toMatch(
-      /\.LxCommandShortcut\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*12px;[^}]*font-weight:\s*500;[^}]*letter-spacing:\s*1\.2px;[^}]*opacity:\s*0\.72;/s
+      /\.LxCommandShortcut\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*12px;[^}]*font-weight:\s*500;[^}]*line-height:\s*18px;[^}]*letter-spacing:\s*1\.2px;[^}]*opacity:\s*0\.72;/s
     );
     expect(primitiveStyles).toMatch(
       /\.LxCommandFooter\s*\{[^}]*flex-direction:\s*row;[^}]*justify-content:\s*space-between;[^}]*border-bottom-left-radius:\s*17px;[^}]*border-bottom-right-radius:\s*17px;/s

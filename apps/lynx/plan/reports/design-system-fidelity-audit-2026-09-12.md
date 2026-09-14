@@ -1572,3 +1572,17 @@ values and unresolved Native custom properties.
   Use retained `rgba(245,180,74,0.317647)` on all four edges. The exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `eaf54fbe59c339b11966e734d7cc3f491f2f0ca58425487e9164b3f9ccca7029`.
+
+## Shared Menu and Command shortcut line-box follow-up
+
+- Native Menu and Command shortcut labels now explicitly inherit Electron's
+  18px option-row line box. Their distinct font sizes, tracking, medium weight,
+  muted opacity, and trailing alignment remain unchanged. Native Menu and
+  Command focused suites pass 33/33, and the full Lynx/Desktop production build
+  passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `33615` / window `109905`, PID-derived `localhost:8901`,
+  session 1, rendered the real open `ui/menu` shortcut state. DevTool resolved
+  10px/18px/500 text, 1px tracking, 0.72 opacity, and an 18px physical text box;
+  the exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `3525e0b2e871e78a2bd0f77d489e750e9b47e8fe46054a6d1ead30f544953702`.

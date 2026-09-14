@@ -1702,3 +1702,18 @@ state is absent from the paired component matrix.
   Native error/warning console was empty, no screenshot was retained, and the
   final staged bundle SHA-256 is
   `eaf54fbe59c339b11966e734d7cc3f491f2f0ca58425487e9164b3f9ccca7029`.
+
+### DS-096 — COMPLETE
+
+- Native Menu and Command shortcut labels now explicitly preserve Electron's
+  18px row line box instead of depending on the Native text default. Their
+  existing 10px/1px and 12px/1.2px size/tracking tiers, 500 weight, 72% opacity,
+  and trailing alignment are unchanged.
+- Native Menu and Command focused suites pass 33/33, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `33615`, window `109905`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real open `ui/menu` shortcut state.
+  The shortcut resolved to 10px/18px/500 with 1px tracking and 0.72 opacity, and
+  its physical text box was 18px tall. The exact Native error/warning console was
+  empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `3525e0b2e871e78a2bd0f77d489e750e9b47e8fe46054a6d1ead30f544953702`.

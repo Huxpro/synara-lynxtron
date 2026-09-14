@@ -184,7 +184,7 @@ describe('Lynx Menu overlay contract', () => {
       /\.LxMenuGroupLabel\s*\{[^}]*padding:\s*6px 8px;[^}]*font-size:\s*12px;[^}]*font-weight:\s*400;[^}]*line-height:\s*16px;[^}]*opacity:\s*0\.45;/s
     );
     expect(primitiveStyles).toMatch(
-      /\.LxMenuShortcut\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*10px;[^}]*font-weight:\s*500;[^}]*letter-spacing:\s*1px;[^}]*opacity:\s*0\.72;/s
+      /\.LxMenuShortcut\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*10px;[^}]*font-weight:\s*500;[^}]*line-height:\s*18px;[^}]*letter-spacing:\s*1px;[^}]*opacity:\s*0\.72;/s
     );
     expect(primitiveStyles).toMatch(
       /\.LxMenuItem\s*\{[^}]*min-height:\s*32px;[^}]*padding:\s*6px 10px;/s
