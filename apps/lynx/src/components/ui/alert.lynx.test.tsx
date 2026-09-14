@@ -16,6 +16,9 @@ describe('Alert', () => {
     expect(styles).toMatch(
       /\.LxAlert--sm \.LxAlertTitle, \.LxAlert--sm \.LxAlertDescription\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
     );
+    expect(styles).toMatch(
+      /\.LxAlertTitle \+ \.LxAlertDescription\s*\{[^}]*margin-top:\s*2px;/s
+    );
   });
 
   it('publishes alert semantics and shared anatomy', () => {

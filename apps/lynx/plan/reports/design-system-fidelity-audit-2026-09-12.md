@@ -1503,3 +1503,16 @@ values and unresolved Native custom properties.
   24x24 outer box and 6px on every physical corner longhand; the exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `dde992d463a24d9fb25c347433b72fa2504d379831b7bb52276277efbdd9bc49`.
+
+## Shared Alert copy rhythm follow-up
+
+- Native Alert title-and-description stacks now match Electron's 2px
+  `gap-y-0.5` rhythm through an adjacent-sibling rule, so description-only alerts
+  remain unchanged. The focused Native Alert suite passes 3/3, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `53619` / window `109473`, PID-derived `localhost:8901`,
+  session 1, rendered the real default Component Lab Alert. The title ended at
+  y=453 and description content began at y=455; DevTool resolved the 2px margin
+  while retaining 14px/20px text. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `a24bfbebfcb56339c6ada8c58c5d57c56442ebe73bcce1f7574e3fde15f76bb3`.

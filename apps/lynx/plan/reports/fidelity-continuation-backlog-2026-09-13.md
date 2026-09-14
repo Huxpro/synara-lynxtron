@@ -1622,3 +1622,18 @@ state is absent from the paired component matrix.
   to 6px. The exact Native error/warning console was empty, no screenshot was
   retained, and the final staged bundle SHA-256 is
   `dde992d463a24d9fb25c347433b72fa2504d379831b7bb52276277efbdd9bc49`.
+
+### DS-091 — COMPLETE
+
+- Native Alert title-and-description stacks now preserve Electron's 2px
+  `gap-y-0.5` rhythm. The adjacent-sibling rule applies only when a description
+  follows a title, leaving description-only alerts unchanged.
+- The focused Native Alert suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `53619`, window `109473`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real default Component Lab Alert.
+  The title ended at y=453 and the description content began at y=455; DevTool
+  resolved `margin-top: 2px` while preserving 14px/20px text. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `a24bfbebfcb56339c6ada8c58c5d57c56442ebe73bcce1f7574e3fde15f76bb3`.
