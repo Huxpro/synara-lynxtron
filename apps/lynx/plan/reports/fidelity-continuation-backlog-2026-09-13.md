@@ -159,6 +159,16 @@ state is absent from the paired component matrix.
   row. PID-derived DOM exposed one normal and one rotated icon with preserved
   `Move Workspace 1 up/down` labels; the error/warning console was empty.
 
+### DS-010 — COMPLETE
+
+- The Native non-persisted image warning no longer hardcodes Electron's light
+  amber. It consumes the existing theme-aware warning color, resolving to
+  `#d97706` in light and `#f5b44a` in dark while preserving the 12px warning
+  icon and accessible label.
+- The attachment interaction suite passes 4/4 after also updating its stale
+  expectation for the already-normalized ghost remove icon token. Production
+  build and changed-lines Doctor pass.
+
 ### AF-001 — COMPLETE
 
 - Native Create and Edit now share the same composer primitives for title,

@@ -13,6 +13,7 @@ import {
   lynxNestedInteractiveEventProps,
   useLynxInteractiveState,
 } from './useLynxInteractiveState';
+import { useTheme } from './useTheme.lynx';
 
 interface SummaryEntry {
   readonly id?: string;
@@ -207,6 +208,7 @@ export function ComposerImageAttachmentElement({
   }) => void;
   readonly onRemoveImage: (imageId: string) => void;
 }) {
+  const { svgColors } = useTheme();
   function expandImage() {
     'background only';
     const previewableImages = images.filter((entry) => entry.previewUrl.length > 0);
@@ -249,7 +251,7 @@ export function ComposerImageAttachmentElement({
         >
           <CircleAlertIcon
             className="ComposerReferenceImageWarningIconLynx"
-            color="#d97706"
+            color={svgColors.warning}
             size={12}
           />
         </view>

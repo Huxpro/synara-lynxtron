@@ -304,3 +304,8 @@ values and unresolved Native custom properties.
   180-degree icon with both accessible Move labels and an empty console. The
   final staged bundle SHA-256 is
   `abee843819e3983fc4c513f05b9e6be4bda29d54dc9f392c62fb8eb5bb96b2ac`.
+- The non-persisted composer image warning now consumes the theme-aware warning
+  SVG color (`#d97706` light / `#f5b44a` dark) rather than pinning the light
+  amber in both themes. Its full attachment interaction suite passes 4/4, the
+  Native production build passes, and React Doctor reports zero changed-line
+  diagnostics.

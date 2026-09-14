@@ -39,6 +39,15 @@ describe('composer reference attachment interaction contract', () => {
     expect(source).toContain('<FileEntryIcon');
     expect(source).toContain('<ChevronRightIcon');
     expect(source).toContain('<CircleAlertIcon');
+    expect(source).toContain('color={svgColors.warning}');
+    expect(source).not.toContain('color="#d97706"');
+    const themeSource = readFileSync(
+      new URL('./useTheme.lynx.ts', import.meta.url),
+      'utf8'
+    );
+    expect(themeSource).toContain(
+      "warning: resolvedTheme === 'dark' ? '#f5b44a' : '#d97706'"
+    );
     expect(source).toContain(
       'accessibility-label="Draft attachment may not persist"'
     );
@@ -60,7 +69,7 @@ describe('composer reference attachment interaction contract', () => {
       /\.ComposerReferenceRemoveLynx--ghost\s*\{[^}]*top:\s*2px;[^}]*right:\s*3px;[^}]*background-color:\s*transparent;/s
     );
     expect(styles).toMatch(
-      /\.ComposerReferenceRemoveLynx--ghost \.ComposerReferenceRemoveIconLynx\s*\{[^}]*color:\s*var\(--muted-foreground\);/s
+      /\.ComposerReferenceRemoveLynx--ghost \.ComposerReferenceRemoveIconLynx\s*\{[^}]*color:\s*var\(--color-icon-secondary\);/s
     );
     expect(styles).toMatch(
       /\.ComposerReferenceImageLynx\s*\{[^}]*border:\s*1px solid var\(--color-border-light\);[^}]*border-radius:\s*12px;[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
