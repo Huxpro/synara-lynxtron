@@ -506,3 +506,21 @@ state is absent from the paired component matrix.
   `34983`, window `105626`, measured Mic at `.598`. Both exact-client consoles
   were empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `e9410550d12d777ce7c3a43167789d7d887faa0a9ea6af869799d5fb9d211bcd`.
+
+### DS-027 — COMPLETE
+
+- Native Composer project-picker group, project-option, and footer-action glyphs
+  now embed muted-foreground paint instead of retaining primary foreground under
+  muted CSS. Existing `0.45` and `0.70` CSS opacity preserve Electron's group
+  label and option/action hierarchy; the selected Check remains primary.
+- The focused Native suite renders the actual group, selected option, and add
+  action and passes 2/2, including concrete muted strokes and a primary selected
+  check. Exact-owned Lynxtron 0.0.22 PID `58112`, window `105689`, PID-derived
+  DevTool `localhost:8901`, session 1, opened the real landing Composer project
+  picker and exposed all visible group, option, and footer-action strokes at
+  `rgba(13, 13, 13, 0.6)` before their CSS opacity. The exact-client console was
+  empty. Electron source authority uses `text-muted-foreground/70` for option and
+  footer icons; the comparison snapshot did not expose the project-picker trigger,
+  so no Electron interaction result is claimed. No screenshot was retained. The
+  staged bundle SHA-256 is
+  `464872c249e0e97b72ce7da40892e65ad604842d1eb73a20be9ce07a779fc9ac`.

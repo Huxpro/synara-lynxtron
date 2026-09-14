@@ -1,7 +1,48 @@
+import { render } from '@lynx-js/react/testing-library';
 import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
+import {
+  ComposerProjectPickerActionElement,
+  ComposerProjectPickerGroupLabelElement,
+  ComposerProjectPickerOptionElement,
+} from './ComposerProjectPickerCompositionElements.lynx';
+
 describe('composer project picker trigger icon', () => {
+  it('embeds muted paint in group, option, and footer action glyphs', () => {
+    render(
+      <>
+        <ComposerProjectPickerGroupLabelElement icon="home">
+          Personal
+        </ComposerProjectPickerGroupLabelElement>
+        <ComposerProjectPickerOptionElement
+          primaryLabel="Synara"
+          secondaryLabel="~/github/synara"
+          selected
+          onSelect={() => {}}
+        />
+        <ComposerProjectPickerActionElement kind="add" onActivate={() => {}}>
+          New project
+        </ComposerProjectPickerActionElement>
+      </>
+    );
+
+    for (const className of [
+      'ComposerProjectPickerSpaceIconLynx',
+      'ComposerProjectPickerOptionIconLynx',
+      'ComposerProjectPickerActionIconLynx',
+    ]) {
+      expect(
+        elementTree.root?.querySelector(`.${className}`)?.getAttribute('content')
+      ).toContain('stroke="rgba(13, 13, 13, 0.6)"');
+    }
+    expect(
+      elementTree.root
+        ?.querySelector('.ComposerProjectPickerCheckLynx svg')
+        ?.getAttribute('content')
+    ).toContain('stroke="#0d0d0d"');
+  });
+
   it('uses the exact shared folder-2 asset at the canonical size', () => {
     const source = readFileSync(
       new URL('./ComposerProjectPickerCompositionElements.lynx.tsx', import.meta.url),

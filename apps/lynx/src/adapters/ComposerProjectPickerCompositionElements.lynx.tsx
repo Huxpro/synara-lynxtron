@@ -169,10 +169,12 @@ export function ComposerProjectPickerGroupLabelElement(props: {
   readonly children?: ReactNode;
   readonly icon: SpaceIconName | 'black-hole';
 }) {
+  const { svgColors } = useTheme();
   return (
     <view className="ComposerProjectPickerGroupLabelLynx">
       <LynxSpaceIcon
         className="ComposerProjectPickerSpaceIconLynx"
+        color={svgColors.mutedForeground}
         icon={props.icon}
         size={12}
       />
@@ -185,6 +187,7 @@ export function ComposerProjectPickerGroupLabelElement(props: {
 
 export function LynxSpaceIcon(props: {
   readonly className?: string;
+  readonly color?: string;
   readonly icon: SpaceIconName | 'black-hole';
   readonly size?: number;
 }) {
@@ -212,7 +215,13 @@ export function LynxSpaceIcon(props: {
     backpack: BackpackIcon,
   } as const;
   const Icon = icons[props.icon] ?? FolderIcon;
-  return <Icon className={props.className} size={props.size ?? 12} />;
+  return (
+    <Icon
+      className={props.className}
+      color={props.color}
+      size={props.size ?? 12}
+    />
+  );
 }
 
 export function ComposerProjectPickerOptionElement(props: {
@@ -221,6 +230,7 @@ export function ComposerProjectPickerOptionElement(props: {
   readonly selected: boolean;
   readonly onSelect: () => void;
 }) {
+  const { svgColors } = useTheme();
   return (
     <MenuItem
       className={`ComposerProjectPickerOptionLynx${
@@ -229,7 +239,11 @@ export function ComposerProjectPickerOptionElement(props: {
       onClick={props.onSelect}
     >
       <view className="ComposerProjectPickerOptionContentLynx">
-        <FolderIcon className="ComposerProjectPickerOptionIconLynx" size={14} />
+        <FolderIcon
+          className="ComposerProjectPickerOptionIconLynx"
+          color={svgColors.mutedForeground}
+          size={14}
+        />
         <view className="ComposerProjectPickerOptionCopyLynx">
           <text className="ComposerProjectPickerOptionTitleLynx">
             {props.primaryLabel}
@@ -282,6 +296,7 @@ export function ComposerProjectPickerActionElement(props: {
   readonly disabled?: boolean;
   readonly onActivate: () => void;
 }) {
+  const { svgColors } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: 'ComposerProjectPickerActionLynx',
     accessibleLabel:
@@ -297,7 +312,11 @@ export function ComposerProjectPickerActionElement(props: {
         : RefreshCwIcon;
   return (
     <view className={interaction.className} {...interaction.eventProps}>
-      <Icon className="ComposerProjectPickerActionIconLynx" size={14} />
+      <Icon
+        className="ComposerProjectPickerActionIconLynx"
+        color={svgColors.mutedForeground}
+        size={14}
+      />
       <text className="ComposerProjectPickerActionTextLynx">
         {props.children}
       </text>
