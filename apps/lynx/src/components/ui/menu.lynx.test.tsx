@@ -499,10 +499,10 @@ describe('Lynx Menu overlay contract', () => {
       /\.LxMenuSwitch\s*\{[^}]*width:\s*24px;[^}]*height:\s*16px;/s
     );
     expect(primitiveStyles).toMatch(
-      /\.LxMenuSwitch__thumb\s*\{[^}]*left:\s*1px;[^}]*top:\s*1px;[^}]*width:\s*12px;[^}]*height:\s*12px;/s
+      /\.LxMenuSwitch__thumb\s*\{[^}]*left:\s*1px;[^}]*top:\s*1px;[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*transform:\s*translateX\(0\);[^}]*transition-property:\s*transform;[^}]*transition-duration:\s*200ms;/s
     );
     expect(primitiveStyles).toMatch(
-      /\.LxMenuSwitch--checked \.LxMenuSwitch__thumb\s*\{[^}]*left:\s*9px;/s
+      /\.LxMenuSwitch--checked \.LxMenuSwitch__thumb\s*\{[^}]*transform:\s*translateX\(8px\);/s
     );
     const item = elementTree.root?.querySelector('.LxMenuItem--switch');
     if (!item) throw new Error('expected switch menu item');

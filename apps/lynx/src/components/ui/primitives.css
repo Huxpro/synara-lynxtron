@@ -311,6 +311,9 @@
   border: 1px solid var(--settings-switch-border);
   border-radius: 10px;
   background-color: var(--settings-switch-off);
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
 }
 
 .LxSwitch--checked {
@@ -328,6 +331,9 @@
   border-radius: 8px;
   background-color: #ffffff;
   transform: translateX(0);
+  transition-property: transform;
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
 }
 
 .LxSwitch--checked .LxSwitchThumb { transform: translateX(12px); }
@@ -893,6 +899,9 @@
   border-color: var(--border);
   border-radius: 8px;
   background-color: var(--muted);
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
 }
 
 .LxMenuSwitch--checked {
@@ -908,10 +917,23 @@
   height: 12px;
   border-radius: 6px;
   background-color: var(--background);
+  transform: translateX(0);
+  transition-property: transform;
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
 }
 
 .LxMenuSwitch--checked .LxMenuSwitch__thumb {
-  left: 9px;
+  transform: translateX(8px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .LxSwitch,
+  .LxSwitchThumb,
+  .LxMenuSwitch,
+  .LxMenuSwitch__thumb {
+    transition-duration: 0.01ms;
+  }
 }
 
 .LxMenuItem {

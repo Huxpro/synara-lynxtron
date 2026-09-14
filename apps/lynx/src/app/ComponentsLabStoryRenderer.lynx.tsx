@@ -205,6 +205,22 @@ function ThreadRowContextMenuStory(props: {
   );
 }
 
+function MenuSwitchStory(props: { readonly state: string }) {
+  const [checked, setChecked] = useState(true);
+  const visualClass = props.state === 'hover' ? 'ui-hover' : props.state === 'focus' ? 'ui-focus' : props.state === 'pressed' ? 'ui-pressed' : '';
+  return (
+    <view className="ComponentsLabRealStory">
+      <Menu key={props.state} defaultOpen={props.state !== 'default'}>
+        <MenuTrigger><Button variant="outline">Open menu</Button></MenuTrigger>
+        <MenuPopupBase align="start" className="ComponentsLabPrimitiveMenu">
+          <MenuGroupLabel>Actions</MenuGroupLabel>
+          <MenuCheckboxItem checked={checked} className={visualClass} disabled={props.state === 'disabled'} variant="switch" onCheckedChange={setChecked}>Show terminal</MenuCheckboxItem>
+        </MenuPopupBase>
+      </Menu>
+    </view>
+  );
+}
+
 export function ComponentsLabStoryRendererLynx(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
   if (props.storyId === 'navigation/recent-view-switcher') {
     return (
@@ -405,6 +421,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     );
   }
   if (props.storyId === 'ui/menu') {
+    if (props.variant === 'switch') return <MenuSwitchStory state={props.state} />;
     const visualClass = props.state === 'hover' ? 'ui-hover' : props.state === 'focus' ? 'ui-focus' : props.state === 'pressed' ? 'ui-pressed' : '';
     return (
       <view className="ComponentsLabRealStory">
@@ -414,8 +431,6 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
             <MenuGroupLabel>Actions</MenuGroupLabel>
             {props.variant === 'checkbox' ? (
               <MenuCheckboxItem checked className={visualClass} disabled={props.state === 'disabled'} onCheckedChange={() => {}}>Show terminal</MenuCheckboxItem>
-            ) : props.variant === 'switch' ? (
-              <MenuCheckboxItem checked className={visualClass} disabled={props.state === 'disabled'} variant="switch" onCheckedChange={() => {}}>Show terminal</MenuCheckboxItem>
             ) : props.variant === 'separator' ? (
               <><MenuItem className={visualClass} disabled={props.state === 'disabled'} onClick={() => {}}>New chat</MenuItem><MenuSeparator /><MenuItem onClick={() => {}}>Remove</MenuItem></>
             ) : (

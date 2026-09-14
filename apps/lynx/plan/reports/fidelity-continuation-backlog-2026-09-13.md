@@ -1132,3 +1132,21 @@ state is absent from the paired component matrix.
   9px versus 1px unchecked, proving 8px travel. The exact Native error/warning
   console was empty and no screenshot was retained. The final staged bundle
   SHA-256 is `9ee03495a1e94f598c6ed53e883c29fbc481a066ffcbc9ede8b27d5c4129cf86`.
+
+### DS-063 — COMPLETE
+
+- Native full-size and Menu switches now use Electron's 200ms ease-out state
+  transition for track color/border/shadow and thumb movement instead of jumping
+  instantly. Reduced-motion shortens all four transition surfaces to 0.01ms.
+- Menu thumb state now animates with `translateX(8px)` rather than changing the
+  left layout property, preserving the DS-062 geometry while matching Electron's
+  transform-based path. The paired Menu switch story is now genuinely controlled
+  in both renderers, so a rendered click changes state instead of exercising a
+  static no-op fixture.
+- Native Switch/Menu/Lab focused tests pass 25/25, Web Lab tests pass 37/37, and
+  the complete production build reports 6/6 tasks successful on Lynxtron 0.0.22.
+  Exact-owned PID `88132` / window `107856`, PID-derived `localhost:8901`, session
+  1, changed the checked thumb from `translateX(8px)` to `translateX(0)` through
+  the real row click while retaining 200ms/ease-out. The Native console was empty;
+  no screenshot was retained. Staged bundle SHA-256 is
+  `0a74ddd295cc528d0db4ec878da173c51656a23b2f91de3e6adcfe3c50d8f964`.

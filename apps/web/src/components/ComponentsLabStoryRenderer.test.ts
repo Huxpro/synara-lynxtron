@@ -514,7 +514,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.variant === "checkbox"');
     expect(source).toContain('<MenuCheckboxItem checked className={visualClass} disabled={props.state === "disabled"}>');
     expect(source).toContain('props.variant === "switch"');
-    expect(source).toContain('variant="switch">Show terminal');
+    expect(source).toContain('<MenuSwitchStory state={props.state} />');
+    expect(source).toContain('onCheckedChange={setChecked} variant="switch"');
     expect(source).toContain('props.variant === "separator"');
     expect(source).toContain('props.variant === "shortcut"');
     expect(source).toContain('props.storyId === "ui/dialog"');

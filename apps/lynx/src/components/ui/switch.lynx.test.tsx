@@ -1,4 +1,5 @@
 import { describe, expect, it, rs } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 import { fireEvent, render } from '@lynx-js/react/testing-library';
 
 import { Switch } from './switch.lynx';
@@ -18,5 +19,18 @@ describe('Switch', () => {
     if (!control) throw new Error('expected switch');
     fireEvent.tap(control);
     expect(onCheckedChange).toHaveBeenCalledWith(true);
+  });
+
+  it('matches the Electron 200ms state transition', () => {
+    const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
+    expect(styles).toMatch(
+      /\.LxSwitch\s*\{[^}]*transition-property:\s*background-color, border-color, box-shadow;[^}]*transition-duration:\s*200ms;[^}]*transition-timing-function:\s*ease-out;/s
+    );
+    expect(styles).toMatch(
+      /\.LxSwitchThumb\s*\{[^}]*transition-property:\s*transform;[^}]*transition-duration:\s*200ms;[^}]*transition-timing-function:\s*ease-out;/s
+    );
+    expect(styles).toMatch(
+      /@media \(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*\.LxSwitch,[\s\S]*transition-duration:\s*0\.01ms;/
+    );
   });
 });

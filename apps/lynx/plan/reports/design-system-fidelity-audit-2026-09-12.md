@@ -1066,3 +1066,19 @@ values and unresolved Native custom properties.
   1, measured a 24×16px track and 12×12px thumb with 8px checked travel. The
   exact Native console was empty. No screenshot was retained; staged bundle
   SHA-256 is `9ee03495a1e94f598c6ed53e883c29fbc481a066ffcbc9ede8b27d5c4129cf86`.
+
+## Shared Switch state-motion follow-up
+
+- Native Switch and Menu switch tracks now transition background, border, and
+  ring state over Electron's 200ms ease-out interval; both thumb variants use a
+  matching transform transition. Reduced motion collapses these durations to
+  0.01ms.
+- The Menu switch's checked travel is expressed as `translateX(8px)` instead of
+  a layout-changing left offset. Its paired Lab story now holds real checked state
+  in Electron and Native, allowing the visible row to exercise the transition.
+- Native focused suites pass 25/25, Web Lab passes 37/37, and the complete build
+  reports 6/6 tasks successful on Lynxtron 0.0.22. Exact-owned PID `88132` /
+  window `107856`, PID-derived `localhost:8901`, session 1, changed the thumb from
+  `translateX(8px)` to `translateX(0)` via the real row with computed 200ms
+  ease-out. The exact Native console was empty. No screenshot was retained; staged
+  bundle SHA-256 is `0a74ddd295cc528d0db4ec878da173c51656a23b2f91de3e6adcfe3c50d8f964`.

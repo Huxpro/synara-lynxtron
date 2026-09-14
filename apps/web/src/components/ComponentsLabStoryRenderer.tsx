@@ -488,6 +488,25 @@ function MessageRowStory(props: { readonly state: string; readonly variant?: str
   );
 }
 
+function MenuSwitchStory(props: { readonly state: string }) {
+  const [checked, setChecked] = useState(true);
+  const open = props.state !== "default";
+  const visualClass = props.state === "hover" ? "bg-[var(--color-background-button-secondary-hover)]" : props.state === "focus" ? "ring-1 ring-ring/60" : props.state === "pressed" ? "bg-[var(--color-background-button-secondary)]" : "";
+  return (
+    <div className="flex min-h-52 items-center justify-center">
+      <Menu key={props.state} defaultOpen={open}>
+        <MenuTrigger render={<Button variant="outline">Open menu</Button>} />
+        <MenuPopupBase align="start" className="w-52">
+          <MenuGroup>
+            <MenuGroupLabel>Actions</MenuGroupLabel>
+            <MenuCheckboxItem checked={checked} className={visualClass} disabled={props.state === "disabled"} onCheckedChange={setChecked} variant="switch">Show terminal</MenuCheckboxItem>
+          </MenuGroup>
+        </MenuPopupBase>
+      </Menu>
+    </div>
+  );
+}
+
 export function ComponentsLabStoryRenderer(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
   if (props.storyId === "navigation/recent-view-switcher") {
     return (
@@ -639,6 +658,7 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     );
   }
   if (props.storyId === "ui/menu") {
+    if (props.variant === "switch") return <MenuSwitchStory state={props.state} />;
     const open = props.state !== "default";
     const visualClass = props.state === "hover" ? "bg-[var(--color-background-button-secondary-hover)]" : props.state === "focus" ? "ring-1 ring-ring/60" : props.state === "pressed" ? "bg-[var(--color-background-button-secondary)]" : "";
     return (
@@ -650,8 +670,6 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
               <MenuGroupLabel>Actions</MenuGroupLabel>
               {props.variant === "checkbox" ? (
                 <MenuCheckboxItem checked className={visualClass} disabled={props.state === "disabled"}>Show terminal</MenuCheckboxItem>
-              ) : props.variant === "switch" ? (
-                <MenuCheckboxItem checked className={visualClass} disabled={props.state === "disabled"} variant="switch">Show terminal</MenuCheckboxItem>
               ) : props.variant === "separator" ? (
                 <><MenuItem className={visualClass} disabled={props.state === "disabled"}>New chat</MenuItem><MenuSeparator /><MenuItem variant="destructive">Remove</MenuItem></>
               ) : (
