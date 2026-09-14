@@ -91,6 +91,8 @@ import { RecentViewSwitcherLynx } from './RecentViewSwitcher.lynx';
 import { ComposerReferenceAttachmentsComposition } from '@synara-web/components/chat/ComposerReferenceAttachmentsComposition';
 import { ThreadErrorBanner } from '../components/ThreadErrorBanner.lynx';
 import { CollapsedWorkComposition } from '@synara-web/components/chat/CollapsedWorkComposition';
+import { TimelineStatusRowComposition, type TimelineStatusTone } from '@synara-web/components/chat/TimelineStatusRowComposition';
+import { TranscriptStatusIcon, type TranscriptStatusIconKind } from './TranscriptStatusIcon.lynx';
 import {
   MessageAssistantRowComposition,
   MessageUserBubbleComposition,
@@ -553,6 +555,20 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
       </view>
     );
   }
+  if (props.storyId === 'transcript/status-row') {
+    const kind = (props.variant ?? 'thinking') as TranscriptStatusIconKind;
+    const tone = (kind === 'error' ? 'error' : kind === 'tool' ? 'tool' : kind === 'thinking' ? 'thinking' : 'info') as TimelineStatusTone;
+    return (
+      <view className="ComponentsLabStatusRowStory">
+        <TimelineStatusRowComposition
+          displayText={`${kind} activity`}
+          fontSizePx={12}
+          icon={<TranscriptStatusIcon kind={kind} tone={tone} />}
+          tone={tone}
+        />
+      </view>
+    );
+  }
   if (props.storyId === 'right-dock/tab-strip') {
     const selected = ({ empty: 'empty', 'single-pane': 'single-pane', 'multi-pane': 'default', overflow: 'overflow', 'singleton-filtering': 'default' }[props.variant ?? 'multi-pane'] ?? 'default');
     const panes =
@@ -837,14 +853,15 @@ function FileTabStory(props: { readonly state: string }) {
 }
 
 function MessageRowStory(props: { readonly state: string; readonly variant?: string }) {
+  const { svgColors } = useTheme();
   const [result, setResult] = useState('Awaiting message action');
   const visualState = ['hover', 'focus', 'pressed'].includes(props.state)
     ? ` ui-${props.state}`
     : '';
   const actions = (
     <>
-      <TranscriptMessageActionStory label="Copy message" disabled={false} persistent={false} pressed={false} visualState="" onActivate={() => setResult('Message copied')}><CopyIcon className="TranscriptMessageActionIcon" size={13} /></TranscriptMessageActionStory>
-      <TranscriptMessageActionStory label="Reference message" disabled={false} persistent={false} pressed={false} visualState="" onActivate={() => setResult('Message referenced')}><MessageCircleIcon className="TranscriptMessageActionIcon" size={13} /></TranscriptMessageActionStory>
+      <TranscriptMessageActionStory label="Copy message" disabled={false} persistent={false} pressed={false} visualState="" onActivate={() => setResult('Message copied')}><CopyIcon color={svgColors.iconSecondary} className="TranscriptMessageActionIcon" size={13} /></TranscriptMessageActionStory>
+      <TranscriptMessageActionStory label="Reference message" disabled={false} persistent={false} pressed={false} visualState="" onActivate={() => setResult('Message referenced')}><MessageCircleIcon color={svgColors.iconSecondary} className="TranscriptMessageActionIcon" size={13} /></TranscriptMessageActionStory>
     </>
   );
   const footerClassName = `TranscriptMessageFooter${props.state === 'default' ? '' : ' TranscriptMessageFooter--persistent'}`;
@@ -875,11 +892,11 @@ function TranscriptMessageActionsStory(props: { readonly state: string; readonly
     : '';
   const actions = resolveComponentLabMessageActions(props.variant);
   const actionIcon = {
-    copy: <CopyIcon className="TranscriptMessageActionIcon" size={13} />,
-    edit: <NewThreadIcon className="TranscriptMessageActionIcon" size={13} />,
+    copy: <CopyIcon color={svgColors.iconSecondary} className="TranscriptMessageActionIcon" size={13} />,
+    edit: <NewThreadIcon color={svgColors.iconSecondary} className="TranscriptMessageActionIcon" size={13} />,
     pin: <svg className="TranscriptMessageActionIcon" content={colorizeLynxSvg(pinSvg, svgColors.iconSecondary)} />,
-    reference: <MessageCircleIcon className="TranscriptMessageActionIcon" size={13} />,
-    revert: <Undo2Icon className="TranscriptMessageActionIcon" size={13} />,
+    reference: <MessageCircleIcon color={svgColors.iconSecondary} className="TranscriptMessageActionIcon" size={13} />,
+    revert: <Undo2Icon color={svgColors.iconSecondary} className="TranscriptMessageActionIcon" size={13} />,
   };
   return (
     <view

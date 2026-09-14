@@ -423,3 +423,26 @@ state is absent from the paired component matrix.
   `rgba(13, 13, 13, 0.598)`. Both exact-client consoles were empty. No screenshot
   was retained. The staged bundle SHA-256 is
   `9a40474141fcf84778b17cbd22e96486e9a84a5b75048701b92c2f7a04d03297`.
+
+### DS-023 — COMPLETE
+
+- Native transcript status and message-action glyphs no longer depend on CSS
+  `color` after generated SVG content has been encoded. The shared Native theme
+  projection now exposes concrete status-neutral and status-error colors from the
+  same resolved values used by Electron CSS; error rows use status error, ordinary
+  thinking/tool/info/search/edit rows use status neutral, and message footer
+  Copy/Edit/Revert/Add-to-chat actions use semantic secondary. Selection toolbar
+  actions intentionally remain primary, matching Electron.
+- `TranscriptStatusIcon` is now a reusable Native component consumed by the real
+  transcript and a paired `transcript/status-row` story. Components Lab now has
+  54 stories, 108 renderer mappings, and 3,328 cells. Focused shared, Web, and
+  Native suites pass 9/9, 37/37, and 8/8; identity audit passes all 108 mappings
+  and primitive inventory remains zero missing.
+- Exact-owned Lynxtron 0.0.22 PID `52414`, window `105230`, PID-derived DevTool
+  `localhost:8901`, session 1, showed error status `#e02e2a` and search status
+  `#626262`. A second exact-owned run on PID `58603`, window `105269`, confirmed
+  Copy/Edit/Revert message-action strokes at semantic secondary
+  `rgba(13, 13, 13, 0.598)`. Electron CDP resolved its corresponding action icon
+  to `rgba(13, 13, 13, 0.596)`. Both Native consoles were empty, no screenshot was
+  retained, and the staged bundle SHA-256 is
+  `de58e7772f13642994d8770127c389ac916ba55511525f74d4429320876671d9`.

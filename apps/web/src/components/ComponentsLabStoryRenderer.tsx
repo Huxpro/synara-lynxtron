@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CopyIcon, KanbanIcon, MessageCircleIcon, NewThreadIcon, PinIcon, PlusIcon, SearchIcon as SearchStoryIcon, SettingsIcon, Undo2Icon } from "~/lib/icons";
+import { BotIcon, CheckIcon, CircleAlertIcon, CopyIcon, KanbanIcon, MessageCircleIcon, NewThreadIcon, PencilIcon, PinIcon, PlusIcon, SearchIcon as SearchStoryIcon, SettingsIcon, Undo2Icon, ZapIcon } from "~/lib/icons";
 import { EditorRailAddMenuComposition } from "~/components/chat/EditorRailAddMenuComposition";
 import { ComposerPickerMenuPopup } from "~/components/chat/ComposerPickerMenuPopup";
 import { IconButton } from "~/components/ui/icon-button";
@@ -101,6 +101,7 @@ import { RecentViewSwitcher } from "~/components/RecentViewSwitcher";
 import { ComposerReferenceAttachmentsComposition } from "~/components/chat/ComposerReferenceAttachmentsComposition";
 import { ThreadErrorBanner } from "~/components/chat/ThreadErrorBanner";
 import { CollapsedWorkComposition } from "~/components/chat/CollapsedWorkComposition";
+import { TimelineStatusRowComposition, type TimelineStatusTone } from "~/components/chat/TimelineStatusRowComposition";
 import {
   MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
   MessageAssistantRowComposition,
@@ -791,6 +792,12 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
         </CollapsedWorkComposition>
       </div>
     );
+  }
+  if (props.storyId === "transcript/status-row") {
+    const variant = props.variant ?? "thinking";
+    const Icon = variant === "error" ? CircleAlertIcon : variant === "info" ? CheckIcon : variant === "search" ? SearchStoryIcon : variant === "edit" ? PencilIcon : variant === "tool" ? ZapIcon : BotIcon;
+    const tone = (variant === "error" ? "error" : variant === "tool" ? "tool" : variant === "thinking" ? "thinking" : "info") as TimelineStatusTone;
+    return <div className="w-[560px] max-w-full"><TimelineStatusRowComposition displayText={`${variant} activity`} fontSizePx={12} icon={<Icon className="size-4" />} tone={tone} /></div>;
   }
   if (props.storyId === "right-dock/tab-strip") {
     const selected = ({ empty: "empty", "single-pane": "single-pane", "multi-pane": "default", overflow: "overflow", "singleton-filtering": "default" }[props.variant ?? "multi-pane"] ?? "default");

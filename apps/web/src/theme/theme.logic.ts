@@ -113,6 +113,10 @@ export interface ResolvedThemeTokens {
     surfaceUnder: string;
   };
   derived: ThemeDerivedTokens;
+  status: {
+    error: string;
+    neutral: string;
+  };
 }
 
 type ChromeThemeSeedPatch = Partial<
@@ -721,11 +725,6 @@ export function buildThemeCssVariables(
     variant,
     resolvedTokens.computed.panel,
   );
-  const informativeForeground = ensureReadableTextColor(
-    mixHex(pack.theme.surface, pack.theme.ink, 0.65),
-    pack.theme.surface,
-    pack.theme.ink,
-  );
   // Shared surface for the user message bubble and fenced code blocks so both
   // read as the same "input/source" affordance inside the transcript. Sourced
   // from the user-message token so code blocks pick up the bubble's color.
@@ -782,12 +781,8 @@ export function buildThemeCssVariables(
     // Keep legacy app-level "info" consumers on Codex's accent-text path so
     // links, file labels, and similar affordances inherit the real light/dark logic.
     "--info-foreground": readCodexVariable("--color-text-accent"),
-    "--color-text-status-error": ensureReadableTextColor(
-      pack.theme.semanticColors.diffRemoved,
-      pack.theme.surface,
-      pack.theme.ink,
-    ),
-    "--color-text-status-neutral": informativeForeground,
+    "--color-text-status-error": resolvedTokens.status.error,
+    "--color-text-status-neutral": resolvedTokens.status.neutral,
     "--color-text-status-success": ensureReadableTextColor(
       pack.theme.semanticColors.diffAdded,
       pack.theme.surface,
@@ -858,6 +853,18 @@ export function buildResolvedThemeTokens(
       surfaceUnder: computedTheme.surfaceUnder,
     },
     derived,
+    status: {
+      error: ensureReadableTextColor(
+        pack.theme.semanticColors.diffRemoved,
+        pack.theme.surface,
+        pack.theme.ink,
+      ),
+      neutral: ensureReadableTextColor(
+        mixHex(pack.theme.surface, pack.theme.ink, 0.65),
+        pack.theme.surface,
+        pack.theme.ink,
+      ),
+    },
   };
 }
 

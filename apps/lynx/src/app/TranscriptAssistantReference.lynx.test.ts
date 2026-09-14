@@ -64,6 +64,12 @@ describe('Lynx assistant message actions', () => {
     expect(source).toContain(
       'colorizeLynxSvg(pinSvg, svgColors.iconSecondary)'
     );
+    expect(source.match(/color=\{svgColors\.iconSecondary\}/g)?.length).toBeGreaterThanOrEqual(5);
+    const labSource = readFileSync(
+      new URL('./ComponentsLabStoryRenderer.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+    expect(labSource.match(/color=\{svgColors\.iconSecondary\}/g)?.length).toBeGreaterThanOrEqual(5);
     expect(styles).not.toMatch(
       /\.TranscriptMessageAction\.ui-(?:hover|focus)[^{]*\s+\.TranscriptMessageActionIcon\s*\{[^}]*color:/s
     );

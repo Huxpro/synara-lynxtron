@@ -361,6 +361,12 @@ describe("buildThemeCssVariables", () => {
       ]) {
         expect(contrastRatio(variables[name]!, theme.surface)).toBeGreaterThanOrEqual(4.5);
       }
+      const resolved = buildResolvedThemeTokens(
+        { codeThemeId: "codex", theme },
+        variant,
+      );
+      expect(variables["--color-text-status-neutral"]).toBe(resolved.status.neutral);
+      expect(variables["--color-text-status-error"]).toBe(resolved.status.error);
     }
   });
 

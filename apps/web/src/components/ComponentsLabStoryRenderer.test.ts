@@ -67,12 +67,20 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('open={props.state === "open"}');
   });
 
+  it("renders transcript status variants through the production composition", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('props.storyId === "transcript/status-row"');
+    expect(source).toContain('<TimelineStatusRowComposition');
+    expect(source).toContain('variant === "error" ? CircleAlertIcon');
+  });
+
   const SSR_SIGNATURE_STORY_IDS = new Set([
     "kanban/card",
     "sidebar/navigation-row",
     "transcript/message-actions",
     "transcript/message-row",
     "transcript/collapsed-work",
+    "transcript/status-row",
     "system/semantic-icon-tones",
     "notifications/thread-error",
     "composer/reference-attachments",
@@ -291,7 +299,7 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('aria-pressed={action.pressed || props.state === "pressed"}');
     expect(source).toContain('<MessageActionButton');
     expect(source).toContain('MESSAGE_ACTION_ICON_CLASS_NAME');
-    expect(source).toContain('import { CopyIcon,');
+    expect(source).toMatch(/import \{[^}]*\bCopyIcon\b[^}]*\} from "~\/lib\/icons";/s);
     expect(source).toContain('const revealed = props.state !== "default"');
     expect(source).toContain('data-message-actions-visible={revealed}');
     expect(source).toContain('resolveComponentLabMessageActions(props.variant)');

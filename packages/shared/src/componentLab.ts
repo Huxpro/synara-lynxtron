@@ -381,6 +381,13 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
+    id: "transcript/status-row", title: "Transcript status row", category: "transcript", owner: "TimelineStatusRowComposition", fixtureId: "status-tone-icons", variants: ["thinking", "tool", "info", "error", "search", "edit"], states: ["default"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: { renderer: "electron", component: "TimelineStatusRowComposition", module: "apps/web/src/components/chat/TimelineStatusRowComposition.tsx", consumers: ["thread/transcript/status", "thread/transcript/tool"] },
+      lynx: { renderer: "lynx", component: "TimelineStatusRowComposition", module: "apps/web/src/components/chat/TimelineStatusRowComposition.tsx", consumers: ["thread/transcript/status", "thread/transcript/tool"] },
+    },
+  },
+  {
     id: "system/semantic-icon-tones", title: "Semantic icon tones", category: "design-system", owner: "SemanticIconTone", fixtureId: "icon-tone-matrix", variants: ["primary", "secondary", "tertiary", "accent", "inverse", "disabled"], states: ["default"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "SemanticIconTone", module: "apps/web/src/components/ui/SemanticIconTone.tsx", consumers: ["composer/actions", "transcript/actions", "sidebar/actions", "header/actions", "environment/actions"] },
@@ -670,6 +677,7 @@ export const COMPONENT_LAB_IMPLEMENTED_STORY_IDS = [
   "transcript/message-actions",
   "transcript/message-row",
   "transcript/collapsed-work",
+  "transcript/status-row",
   "sidebar/project-row",
   "sidebar/thread-row",
   "notifications/provider-update",

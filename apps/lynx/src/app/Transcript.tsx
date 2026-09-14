@@ -5,8 +5,6 @@ import {
   useState,
   useSyncExternalStore,
 } from '@lynx-js/react';
-import botSvg from '@synara-central-icons/robot.svg?raw';
-import toolSvg from '@synara-central-icons/zap.svg?raw';
 import arrowDownSvg from '@tabler/icons/outline/arrow-down.svg?raw';
 
 import {
@@ -75,14 +73,11 @@ import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { useTheme } from '../adapters/useTheme.lynx';
 import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
 import {
-  CheckIcon,
   ChevronRightIcon,
-  CircleAlertIcon,
   CopyIcon,
   MessageCircleIcon,
   NewThreadIcon,
   PencilIcon,
-  SearchIcon,
   TextWrapIcon,
   Undo2Icon,
 } from '../lib/icons.lynx';
@@ -100,6 +95,7 @@ import {
 import { bridgeCall } from '../platform/bridge';
 import { queryClient, type ThreadTranscriptRow } from './queries';
 import { TranscriptUserMessageEditForm } from './TranscriptUserMessageEditForm.lynx';
+import { TranscriptStatusIcon } from './TranscriptStatusIcon.lynx';
 import {
   buildTranscriptScrollToBottomParams,
   estimateTranscriptRowMainAxisSize,
@@ -231,36 +227,15 @@ function TranscriptMessageTrail(props: {
   );
 }
 
-function TranscriptStatusIcon(props: {
-  readonly tone: 'thinking' | 'tool' | 'info' | 'error';
-}) {
-  const { semanticIconColor } = useTheme();
-  if (props.tone === 'error') {
-    return <CircleAlertIcon className="TranscriptStatusIcon" size={13} />;
-  }
-  if (props.tone === 'info') {
-    return <CheckIcon className="TranscriptStatusIcon" size={13} />;
-  }
-  return (
-    <svg
-      className="TranscriptStatusIcon"
-      content={colorizeLynxSvg(
-        props.tone === 'thinking' ? botSvg : toolSvg,
-        semanticIconColor('secondary')
-      )}
-    />
-  );
-}
-
 function TranscriptWorkIcon(props: { readonly entry: WorkLogEntry }) {
   const category = classifyToolCallSummaryCategory(props.entry);
   if (category === 'read' || category === 'search') {
-    return <SearchIcon className="TranscriptStatusIcon" size={13} />;
+    return <TranscriptStatusIcon kind="search" tone={props.entry.tone} />;
   }
   if (category === 'edit') {
-    return <PencilIcon className="TranscriptStatusIcon" size={13} />;
+    return <TranscriptStatusIcon kind="edit" tone={props.entry.tone} />;
   }
-  return <TranscriptStatusIcon tone={props.entry.tone} />;
+  return <TranscriptStatusIcon kind={props.entry.tone} tone={props.entry.tone} />;
 }
 
 function TranscriptJumpIcon() {
@@ -896,16 +871,16 @@ function TranscriptMessage({
         <view className="TranscriptMessageFooter TranscriptMessageFooter--user">
           <text className="TranscriptMessageTimestamp">{timestamp}</text>
           <MessageActionButtonLynx className={copy.className} eventProps={copy.eventProps}>
-            <CopyIcon className="TranscriptMessageActionIcon" size={13} />
+            <CopyIcon color={svgColors.iconSecondary} className="TranscriptMessageActionIcon" size={13} />
           </MessageActionButtonLynx>
           {editable && displayedUserMessage?.copyText.trim() ? (
             <MessageActionButtonLynx className={edit.className} eventProps={edit.eventProps}>
-              <NewThreadIcon className="TranscriptMessageActionIcon" size={13} />
+              <NewThreadIcon color={svgColors.iconSecondary} className="TranscriptMessageActionIcon" size={13} />
             </MessageActionButtonLynx>
           ) : null}
           {revertTurnCount === undefined ? null : (
             <MessageActionButtonLynx className={revert.className} eventProps={revert.eventProps}>
-              <Undo2Icon className="TranscriptMessageActionIcon" size={13} />
+              <Undo2Icon color={svgColors.iconSecondary} className="TranscriptMessageActionIcon" size={13} />
             </MessageActionButtonLynx>
           )}
         </view>
@@ -1029,7 +1004,7 @@ function TranscriptMessage({
               />
             </MessageActionButtonLynx>
             <MessageActionButtonLynx className={copy.className} eventProps={copy.eventProps}>
-              <CopyIcon className="TranscriptMessageActionIcon" size={13} />
+              <CopyIcon color={svgColors.iconSecondary} className="TranscriptMessageActionIcon" size={13} />
             </MessageActionButtonLynx>
             <view
               className={`${addToChat.className}${
@@ -1037,7 +1012,7 @@ function TranscriptMessage({
               }`}
               {...addToChat.eventProps}
             >
-              <MessageCircleIcon className="TranscriptMessageActionIcon" size={13} />
+              <MessageCircleIcon color={svgColors.iconSecondary} className="TranscriptMessageActionIcon" size={13} />
             </view>
             <text className="TranscriptMessageTimestamp">{timestamp}</text>
           </view>

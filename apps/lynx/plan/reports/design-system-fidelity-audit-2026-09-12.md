@@ -444,3 +444,20 @@ values and unresolved Native custom properties.
   `rgba(13, 13, 13, 0.598)`. Both PID-derived `localhost:8901` sessions had empty
   consoles. No screenshot was retained. The staged bundle SHA-256 is
   `9a40474141fcf84778b17cbd22e96486e9a84a5b75048701b92c2f7a04d03297`.
+
+## Transcript icon follow-up
+
+- Native now consumes the exact resolved status-neutral and status-error theme
+  values for transcript SVGs. Error activity is no longer rendered with primary
+  ink, ordinary work/search/edit activity uses the neutral status role, and all
+  message footer actions explicitly use semantic secondary. The selection toolbar
+  remains primary by design.
+- The extracted `TranscriptStatusIcon` is mounted by both the production
+  transcript and a paired status-row story. Components Lab now reports 54 stories,
+  108 mappings, and 3,328 cells. Exact-owned Lynxtron 0.0.22 PID `52414` / window
+  `105230` resolved error `#e02e2a` and neutral `#626262`; PID `58603` / window
+  `105269` resolved Copy/Edit/Revert to secondary
+  `rgba(13, 13, 13, 0.598)`. Electron CDP reported the corresponding action color
+  as `rgba(13, 13, 13, 0.596)`. Exact-client consoles were empty and no screenshot
+  was retained. The staged bundle SHA-256 is
+  `de58e7772f13642994d8770127c389ac916ba55511525f74d4429320876671d9`.

@@ -146,6 +146,10 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('<CollapsedWorkComposition');
     expect(renderer).toContain("open={props.state === 'open'}");
     expect(styles).toContain('.ComponentsLabCollapsedWorkStory');
+    expect(renderer).toContain("props.storyId === 'transcript/status-row'");
+    expect(renderer).toContain('<TimelineStatusRowComposition');
+    expect(renderer).toContain('<TranscriptStatusIcon kind={kind} tone={tone} />');
+    expect(styles).toContain('.ComponentsLabStatusRowStory');
     expect(renderer).toContain("progress: 'updating'");
     expect(renderer).toContain("props.storyId === 'right-dock/tab-strip'");
     expect(renderer).toContain("defaultAddMenuOpen={props.state === 'add-menu-open'}");

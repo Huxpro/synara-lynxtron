@@ -101,6 +101,8 @@ export function useTheme() {
       iconTertiary: semanticIconPalette.tertiary,
       inverse: semanticIconPalette.inverse,
       disabled: semanticIconPalette.disabled,
+      statusError: resolvedTokens.status.error,
+      statusNeutral: resolvedTokens.status.neutral,
       secondaryForeground: resolveTextForegroundSecondary(
         activeTheme.theme,
         resolvedTheme
