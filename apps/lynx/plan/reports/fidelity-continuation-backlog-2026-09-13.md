@@ -1637,3 +1637,18 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `a24bfbebfcb56339c6ada8c58c5d57c56442ebe73bcce1f7574e3fde15f76bb3`.
+
+### DS-092 — COMPLETE
+
+- Native Dialog titles now explicitly match Electron's heading line box at
+  18px/22.5px semibold instead of relying on the Native platform's unspecified
+  normal line height. Existing title color, weight, header gap, and description
+  metrics are unchanged.
+- The focused Native Dialog suite passes 12/12, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `69428`, window `109581`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Component Lab
+  title-description dialog. Its title resolved to 18px/22.5px/600 with a 23px
+  physical text box. The exact Native error/warning console was empty, no
+  screenshot was retained, and the final staged bundle SHA-256 is
+  `cbd3e6cd4b457c6f9ac1fa814d83e2306148746a1d507f72954fc888fab2caa7`.

@@ -140,6 +140,9 @@ describe('Lynx Dialog dismiss contract', () => {
   it('matches the Electron dialog description type tier', () => {
     const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
     expect(styles).toMatch(
+      /\.LxDialogTitle\s*\{[^}]*font-size:\s*18px;[^}]*font-weight:\s*600;[^}]*line-height:\s*22\.5px;/s
+    );
+    expect(styles).toMatch(
       /\.LxDialogHeader\s*\{[^}]*flex-direction:\s*column;[^}]*gap:\s*6px;/s
     );
     expect(styles).toMatch(

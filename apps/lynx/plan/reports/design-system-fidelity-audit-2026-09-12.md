@@ -1516,3 +1516,16 @@ values and unresolved Native custom properties.
   while retaining 14px/20px text. The exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `a24bfbebfcb56339c6ada8c58c5d57c56442ebe73bcce1f7574e3fde15f76bb3`.
+
+## Shared Dialog title line-box follow-up
+
+- Native Dialog titles now explicitly match Electron's 18px/22.5px semibold
+  heading contract instead of inheriting an unspecified platform line height.
+  Existing title color, header gap, and description metrics remain unchanged.
+  The focused Native Dialog suite passes 12/12, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `69428` / window `109581`, PID-derived `localhost:8901`,
+  session 1, rendered the real Component Lab title-description dialog. DevTool
+  resolved 18px/22.5px/600 title text with a 23px physical text box; the exact
+  Native console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `cbd3e6cd4b457c6f9ac1fa814d83e2306148746a1d507f72954fc888fab2caa7`.
