@@ -234,6 +234,12 @@ describe('Lynx thread terminal', () => {
     expect(terminalSource).toContain('scroll-y={true}');
     expect(terminalSource).toContain('terminalBottomId(threadId, terminalId)');
     expect(terminalSource).toContain("accessibleLabel: 'Scroll to bottom'");
+    expect(terminalSource).toContain(
+      'color={svgColors.mutedForeground}'
+    );
+    expect(terminalCss).toMatch(
+      /\.ThreadTerminalJumpIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*opacity:\s*0\.8;/s
+    );
     expect(terminalSource).toContain('platformTerminal.ackOutput({');
     expect(terminalSource).toContain("'synara:terminal-event'");
     expect(terminalSource).toContain(

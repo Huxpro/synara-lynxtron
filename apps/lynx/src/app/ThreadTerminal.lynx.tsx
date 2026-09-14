@@ -284,6 +284,7 @@ export function ThreadTerminal({
   readonly onAddTerminalContext?: (selection: TerminalContextSelection) => void;
   readonly showHeader?: boolean;
 }) {
+  const { svgColors } = useTheme();
   const [pending, setPending] = useState(false);
   const [confirmingClose, setConfirmingClose] = useState(false);
   const [snapshot, setSnapshot] = useState<TerminalSessionSnapshot | null>(null);
@@ -1193,7 +1194,10 @@ export function ThreadTerminal({
           className={jumpInteraction.className}
           {...jumpInteraction.eventProps}
         >
-          <ArrowDownIcon className="ThreadTerminalJumpIcon" />
+          <ArrowDownIcon
+            className="ThreadTerminalJumpIcon"
+            color={svgColors.mutedForeground}
+          />
         </view>
       ) : null}
       {searchOpen ? (

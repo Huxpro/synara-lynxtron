@@ -622,3 +622,19 @@ values and unresolved Native custom properties.
   exact-client console was empty, no screenshot was retained, and the staged
   bundle SHA-256 is
   `c398c847492cbff9ac1e7a4854503be09ccda96cd7fc866aad934d6b16edaaf3`.
+
+## Terminal jump icon follow-up
+
+- Native terminal Scroll-to-bottom now encodes muted foreground in the generated
+  Arrow Down SVG and applies `0.8` element opacity, matching Electron's outlined
+  IconButton plus shared icon-child opacity. The terminal action shell, border,
+  hover background, and focus behavior remain unchanged.
+- The targeted terminal contract test passes and the full production build passes
+  on Lynxtron 0.0.22. The same file's unrelated router-wiring assertion remains
+  stale against the current pane configuration and is not attributed to this slice.
+- Exact-owned PID `62611` / window `106196`, PID-derived `localhost:8901`, session
+  1, loaded the real workspace Terminal with an empty exact-client console. The
+  fresh PTY had no scrollable history and Native input focus could not be acquired
+  through the available accessibility surface, so no artificial output or live
+  jump-control claim was made. No screenshot was retained; staged bundle SHA-256:
+  `2a74f3c0a352ba414807bdc06726e12108b0b1d3f4f8ccf7ebbc34e58aa728d5`.

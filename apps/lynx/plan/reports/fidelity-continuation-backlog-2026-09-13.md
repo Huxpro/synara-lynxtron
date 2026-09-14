@@ -650,3 +650,21 @@ state is absent from the paired component matrix.
   and 18px square geometry. The exact-client error/warning console was empty. No
   screenshot was retained. The staged bundle SHA-256 is
   `c398c847492cbff9ac1e7a4854503be09ccda96cd7fc866aad934d6b16edaaf3`.
+
+### DS-035 — COMPLETE
+
+- Native terminal Scroll-to-bottom now embeds muted-foreground paint in its
+  generated Arrow Down SVG and applies the shared icon-child `0.8` opacity,
+  matching Electron's outlined IconButton treatment. The previous Native arrow
+  remained full foreground because its CSS color could not recolor SVG content.
+- The targeted terminal contract test passes; the containing test file's other
+  router-wiring assertion remains independently stale because it expects a
+  removed hard-coded pane array. The full Lynx/Desktop production build passes
+  on Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `62611`, window `106196`, PID-derived DevTool
+  `localhost:8901`, session 1, loaded the real workspace Terminal with an empty
+  error/warning console. Its fresh PTY contained only the prompt and both Native
+  input-focus attempts remained uncommitted, so the jump control could not be
+  reached without synthetic state; no live glyph claim and no screenshot were
+  retained. The staged bundle SHA-256 is
+  `2a74f3c0a352ba414807bdc06726e12108b0b1d3f4f8ccf7ebbc34e58aa728d5`.
