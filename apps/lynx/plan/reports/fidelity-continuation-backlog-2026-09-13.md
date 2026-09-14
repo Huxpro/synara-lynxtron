@@ -826,3 +826,20 @@ state is absent from the paired component matrix.
   32×20 shared Switch contract. No screenshot was retained. The staged bundle
   SHA-256 is
   `f2a1c03629c9bc1a8c4834032025164ca50c9dff7cfcafb1984c04af0970e521`.
+
+### DS-045 — COMPLETE
+
+- Native Project Action form copy now uses Electron's established typography
+  hierarchy: field labels are 12px/16px, the keybinding hint is 12px/16px muted,
+  and validation copy is 14px/20px destructive. The previous 18px label line
+  height and 11px hint/error text made the form both looser and less legible than
+  the authority.
+- The focused Project Action editor contract passes 1/1 and the complete
+  Lynx/Desktop production build passes on the npm Lynxtron 0.0.22 runtime.
+- Exact-owned Lynxtron PID `11265`, window `106855`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the error story and measured all three
+  labels at 12px/16px, the hint at 12px/16px with muted foreground, and the
+  validation error at 14px/20px with the destructive token. The exact Native
+  error/warning console was empty. No screenshot was retained. The staged bundle
+  SHA-256 is
+  `2322c400f5a2c24c1abacac4b7b88e59e3ed63b4be58597a70738d84f132aaf5`.

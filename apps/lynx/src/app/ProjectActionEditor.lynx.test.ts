@@ -66,5 +66,14 @@ describe('ProjectActionEditor', () => {
     expect(styles).toMatch(
       /\.ProjectActionEditorSwitchThumb\s*\{[^}]*left:\s*2px;[^}]*top:\s*2px;[^}]*width:\s*16px;[^}]*height:\s*16px;/s
     );
+    expect(styles).toMatch(
+      /\.ProjectActionEditorLabel\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
+    );
+    expect(styles).toMatch(
+      /\.ProjectActionEditorHint\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
+    );
+    expect(styles).toMatch(
+      /\.ProjectActionEditorError\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
+    );
   });
 });
