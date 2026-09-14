@@ -1476,3 +1476,17 @@ values and unresolved Native custom properties.
   padding; the exact Native console was empty. No screenshot was retained; staged
   bundle SHA-256 is
   `70947bf02fe4e72ccd15cbe7762db12c3deb54d98011bb0404678c033a1a6e48`.
+
+## Shared Badge line-box follow-up
+
+- Native Badge text now follows Electron's inherited 1.5 line-height at every
+  desktop size: 10px/15px default, 9px/13.5px small, and 11px/16.5px large.
+  Existing 18px, 16px, and 22px outer heights remain unchanged. Native Badge and
+  primitive geometry focused tests pass 10/10, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `23507` / window `109221`, PID-derived `localhost:8901`,
+  session 1, rendered the real Component Lab default and outline/small states
+  selected through Computer Use. DevTool resolved 10px/15px/500 and
+  9px/13.5px/500 text respectively; the exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `4725542ff214549385ecafe1512276bbc9cb432d8e753f5c64fba3d4c9462d4c`.

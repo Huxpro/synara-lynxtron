@@ -1591,3 +1591,19 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `70947bf02fe4e72ccd15cbe7762db12c3deb54d98011bb0404678c033a1a6e48`.
+
+### DS-089 — COMPLETE
+
+- Native Badge text now matches Electron's inherited 1.5 line-height across the
+  desktop size axis: default is 10px/15px, small is 9px/13.5px, and large is
+  11px/16.5px. The established 18px, 16px, and 22px badge outer heights remain
+  unchanged.
+- Native Badge and primitive geometry focused tests pass 10/10, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `23507`, window `109221`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Component Lab default and
+  outline/small states selected through Computer Use. DevTool resolved the text
+  to 10px/15px/500 and 9px/13.5px/500 respectively, with the existing badge
+  shells preserved. The exact Native error/warning console was empty, no
+  screenshot was retained, and the final staged bundle SHA-256 is
+  `4725542ff214549385ecafe1512276bbc9cb432d8e753f5c64fba3d4c9462d4c`.

@@ -520,11 +520,11 @@
 .LxSeparator--vertical { width: 1px; align-self: stretch; }
 
 .LxBadge { min-width: 18px; height: 18px; padding: 0 3px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 6px; background-color: var(--primary); }
-.LxBadge__text { color: var(--primary-foreground); font-size: 10px; font-weight: 500; line-height: 16px; }
+.LxBadge__text { color: var(--primary-foreground); font-size: 10px; font-weight: 500; line-height: 15px; }
 .LxBadge--sm { min-width: 16px; height: 16px; border-radius: 4px; }
-.LxBadge--sm .LxBadge__text { font-size: 9px; line-height: 14px; }
+.LxBadge--sm .LxBadge__text { font-size: 9px; line-height: 13.5px; }
 .LxBadge--lg { min-width: 22px; height: 22px; padding: 0 5px; }
-.LxBadge--lg .LxBadge__text { font-size: 11px; }
+.LxBadge--lg .LxBadge__text { font-size: 11px; line-height: 16.5px; }
 .LxBadge--secondary { background-color: var(--secondary); }
 .LxBadge--secondary .LxBadge__text { color: var(--secondary-foreground); }
 .LxBadge--outline { border-color: var(--border); background-color: var(--color-background-elevated-primary-opaque); }
