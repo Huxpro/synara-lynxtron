@@ -1,4 +1,4 @@
-.ProjectActionEditorDialog { width: min(512px, calc(100vw - 32px)); border-radius: 24px; padding: 0; }
+.ProjectActionEditorDialog { width: 512px; max-width: calc(100vw - 32px); border-radius: 24px; padding: 0; }
 .ProjectActionEditorHeader { margin-bottom: 0; padding: 16px 40px 4px 16px; }
 .ProjectActionEditorPanel { display: flex; flex-direction: column; gap: 16px; padding: 0 16px 12px; }
 .ProjectActionEditorField { display: flex; flex-direction: column; gap: 6px; }

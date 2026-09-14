@@ -801,6 +801,21 @@ values and unresolved Native custom properties.
   SHA-256 is
   `2322c400f5a2c24c1abacac4b7b88e59e3ed63b4be58597a70738d84f132aaf5`.
 
+## Project Action dialog width follow-up
+
+- Native now expresses Electron's 512px Project Action dialog as a supported
+  fixed width plus viewport max-width. The earlier CSS `min()` declaration was
+  ignored by the Native engine, causing a silent fallback to the shared 420px
+  dialog width and compressing every field and footer row.
+- The focused Project Action editor contract passes 1/1 and guards the supported
+  width/max-width pair. The complete Lynx/Desktop production build passes on
+  Lynxtron 0.0.22.
+- Exact-owned PID `24998` / window `106887`, PID-derived `localhost:8901`,
+  session 1, rendered the open story and measured a 510px content box plus two
+  one-pixel borders: the intended 512px outer width. The exact Native console was
+  empty. No screenshot was retained; staged bundle SHA-256 is
+  `314229f9735563cafb51044988dc3cb26b0a8d53d384fc545241c63fd8128f38`.
+
 ## Project Action form typography follow-up
 
 - Native Project Action form labels, hint, and validation copy now match the

@@ -52,6 +52,9 @@ describe('ProjectActionEditor', () => {
       /\.ProjectActionEditorIconPopup\s*\{[^}]*top:\s*40px;[^}]*width:\s*266px;[^}]*padding:\s*16px;/s
     );
     expect(styles).toMatch(
+      /\.ProjectActionEditorDialog\s*\{[^}]*width:\s*512px;[^}]*max-width:\s*calc\(100vw - 32px\);/s
+    );
+    expect(styles).toMatch(
       /\.ProjectActionEditorIconOption\s*\{[^}]*width:\s*72px;[^}]*height:\s*56px;[^}]*gap:\s*8px;/s
     );
     expect(styles).toMatch(

@@ -844,6 +844,22 @@ state is absent from the paired component matrix.
   was empty. No screenshot was retained. The staged bundle SHA-256 is
   `2322c400f5a2c24c1abacac4b7b88e59e3ed63b4be58597a70738d84f132aaf5`.
 
+### DS-046 — COMPLETE
+
+- Native Project Action dialog now reaches Electron's 512px desktop width. The
+  previous `width: min(512px, calc(100vw - 32px))` declaration was not applied by
+  the Native engine, so the shell silently fell back to the shared 420px Dialog
+  width despite appearing correct in source. The rule is now expressed as the
+  supported `width: 512px` plus `max-width: calc(100vw - 32px)` pair.
+- The focused Project Action editor contract passes 1/1 and the complete
+  Lynx/Desktop production build passes on the npm Lynxtron 0.0.22 runtime.
+- Exact-owned Lynxtron PID `24998`, window `106887`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the open Add Action story and measured the
+  dialog content box at 510px and border box at exactly 512px. The exact Native
+  error/warning console was empty. No screenshot was retained. The staged bundle
+  SHA-256 is
+  `314229f9735563cafb51044988dc3cb26b0a8d53d384fc545241c63fd8128f38`.
+
 ### DS-045 — COMPLETE
 
 - Native Project Action form copy now uses Electron's established typography
