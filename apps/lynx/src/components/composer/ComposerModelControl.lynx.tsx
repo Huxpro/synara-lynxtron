@@ -458,7 +458,11 @@ export function ComposerModelControl(props: {
     return shouldShowModelSearch ? (
       <view className="ComposerModelSearchPanelLynx">
         <view className="ComposerModelSearchHeaderLynx">
-          <SearchIcon className="ComposerModelSearchIconLynx" size={14} />
+          <SearchIcon
+            className="ComposerModelSearchIconLynx"
+            color={semanticIconColor('secondary')}
+            size={14}
+          />
           <Input
             nativeInput
             className="ComposerModelSearchInputLynx"
@@ -630,6 +634,7 @@ export function ComposerModelControl(props: {
                 >
                   <ArrowLeftIcon
                     className="ComposerProviderBackIconLynx"
+                    color={semanticIconColor('secondary')}
                     size={14}
                   />
                   <text className="ComposerProviderBackLabelLynx">
@@ -666,6 +671,7 @@ export function ComposerModelControl(props: {
             ) : null}
             <ChevronDownIcon
               className="ComposerTraitsTriggerChevronLynx"
+              color={semanticIconColor('secondary')}
               size={12}
             />
           </MenuTrigger>

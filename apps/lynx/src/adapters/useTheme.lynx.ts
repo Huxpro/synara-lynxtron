@@ -95,6 +95,7 @@ export function useTheme() {
     svgColors: {
       foreground: activeTheme.theme.ink,
       mutedForeground: withOpacity(activeTheme.theme.ink, 0.6),
+      mutedForeground80: withOpacity(activeTheme.theme.ink, 0.48),
       iconAccent: semanticIconPalette.accent,
       iconPrimary: semanticIconPalette.primary,
       iconSecondary: semanticIconPalette.secondary,

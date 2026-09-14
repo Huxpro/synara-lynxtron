@@ -494,3 +494,17 @@ values and unresolved Native custom properties.
   icon-secondary and chrome foreground-secondary. The exact-client console was
   empty, no screenshot was retained, and the staged bundle SHA-256 is
   `0f76dec08422ea406c6b5a3a0a139a6c5d3d919a5a4b10a13a4a2f248f2cdf08`.
+
+## Composer navigation chrome follow-up
+
+- Native Mic, model trigger/search/back, and traits-chevron SVGs now embed
+  semantic secondary paint. Model-group disclosure chevrons use a dedicated
+  resolved `mutedForeground80` value plus their existing `0.5` opacity, matching
+  Electron's `text-muted-foreground/80` × `opacity-50` effective hierarchy.
+  Primary selection checks and provider identity are intentionally unchanged.
+- Focused Native suites pass 6/6. Exact-owned Lynxtron 0.0.22 PID `30074` /
+  window `105594` verified secondary `.598` trigger/search paint and encoded
+  `.48` group chevrons. PID `34983` / window `105626` verified Mic at `.598`.
+  Both PID-derived `localhost:8901` sessions had empty consoles, no screenshot
+  was retained, and the final staged bundle SHA-256 is
+  `e9410550d12d777ce7c3a43167789d7d887faa0a9ea6af869799d5fb9d211bcd`.

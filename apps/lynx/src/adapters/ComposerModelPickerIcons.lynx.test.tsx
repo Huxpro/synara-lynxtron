@@ -82,7 +82,14 @@ describe('Composer model picker icon fidelity', () => {
     expect(controlSource).toContain(
       'className="ComposerProviderBackIconLynx"'
     );
+    expect(
+      controlSource.match(/color=\{semanticIconColor\('secondary'\)\}/g)
+    ).toHaveLength(3);
+    expect(triggerSource).toContain(
+      'className="ComposerModelTriggerChevronLynx"'
+    );
     expect(groupSource).toContain('<ChevronRightIcon');
+    expect(groupSource).toContain('color={svgColors.mutedForeground80}');
     expect(groupSource).toContain('disclosureChevronClassName(');
     expect(groupSource).toContain(
       'useLynxDisclosurePresence(props.open)'

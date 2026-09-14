@@ -69,5 +69,12 @@ export function ComposerModelTriggerStatusLabelElement(props: {
 }
 
 export function ComposerModelTriggerChevronElement() {
-  return <ChevronDownIcon className="ComposerModelTriggerChevronLynx" size={12} />;
+  const { semanticIconColor } = useTheme();
+  return (
+    <ChevronDownIcon
+      className="ComposerModelTriggerChevronLynx"
+      color={semanticIconColor('secondary')}
+      size={12}
+    />
+  );
 }

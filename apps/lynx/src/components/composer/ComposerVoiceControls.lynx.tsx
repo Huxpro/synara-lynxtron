@@ -14,6 +14,7 @@ export function ComposerVoiceButton(props: {
   readonly disabled: boolean;
   readonly onActivate: () => void;
 }) {
+  const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: `ComposerVoiceButtonLynx${props.disabled ? ' ComposerVoiceButtonLynx--disabled' : ''}`,
     accessibleLabel: COMPOSER_VOICE_LABELS.record,
@@ -22,7 +23,11 @@ export function ComposerVoiceButton(props: {
   });
   return (
     <view className={interaction.className} {...interaction.eventProps}>
-      <MicIcon className="ComposerVoiceIconLynx" size={16} />
+      <MicIcon
+        className="ComposerVoiceIconLynx"
+        color={semanticIconColor('secondary')}
+        size={16}
+      />
     </view>
   );
 }

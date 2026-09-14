@@ -488,3 +488,21 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the staged
   bundle SHA-256 is
   `0f76dec08422ea406c6b5a3a0a139a6c5d3d919a5a4b10a13a4a2f248f2cdf08`.
+
+### DS-026 — COMPLETE
+
+- Native Composer navigation chrome now passes concrete paint into generated
+  Mic, model-trigger Chevron, model-search, provider-Back, and traits-Chevron
+  SVGs. These controls use semantic secondary; selection checks and provider
+  identity retain their existing primary or branded roles.
+- Model-group disclosure chevrons now encode the Electron authority's
+  `text-muted-foreground/80` source alpha (`0.48` in light mode), then retain the
+  shared `0.5` chevron opacity for an effective alpha near `0.24`. This avoids
+  both the original primary stroke and an over-dark plain-muted replacement.
+- Focused Native suites pass 6/6. Exact-owned Lynxtron 0.0.22 PID `30074`,
+  window `105594`, PID-derived DevTool `localhost:8901`, session 1, measured the
+  model trigger at secondary `.598` and group chevrons at encoded `.48`; the
+  earlier search cell measured Search at `.598`. A separate voice cell on PID
+  `34983`, window `105626`, measured Mic at `.598`. Both exact-client consoles
+  were empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `e9410550d12d777ce7c3a43167789d7d887faa0a9ea6af869799d5fb9d211bcd`.

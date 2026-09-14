@@ -1,7 +1,20 @@
+import { render } from '@lynx-js/react/testing-library';
 import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
+import { ComposerVoiceButton } from './ComposerVoiceControls.lynx';
+
 describe('Native composer voice controls', () => {
+  it('embeds semantic secondary paint in the generated microphone SVG', () => {
+    render(<ComposerVoiceButton disabled={false} onActivate={() => {}} />);
+
+    expect(
+      elementTree.root
+        ?.querySelector('.ComposerVoiceIconLynx')
+        ?.getAttribute('content')
+    ).toContain('stroke="rgba(13, 13, 13, 0.598)"');
+  });
+
   it('matches source action anatomy and exposes recording controls', () => {
     const source = readFileSync(new URL('./ComposerVoiceControls.lynx.tsx', import.meta.url), 'utf8');
     const styles = readFileSync(new URL('./composer.css', import.meta.url), 'utf8');

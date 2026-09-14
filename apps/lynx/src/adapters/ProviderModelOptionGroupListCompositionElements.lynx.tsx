@@ -52,6 +52,7 @@ export function ProviderModelCollapsibleGroupElement(props: {
   readonly open: boolean;
   readonly onOpenChange: (open: boolean) => void;
 }) {
+  const { svgColors } = useTheme();
   const contentPresent = useLynxDisclosurePresence(props.open);
   const interaction = useLynxInteractiveState({
     baseClassName: `ComposerModelGroupHeaderLynx${
@@ -77,6 +78,7 @@ export function ProviderModelCollapsibleGroupElement(props: {
             props.open,
             'ComposerModelGroupChevronLynx'
           )}
+          color={svgColors.mutedForeground80}
           size={12}
         />
         <text className="ComposerModelGroupLabelLynx">{props.label}</text>
