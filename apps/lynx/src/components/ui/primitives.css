@@ -890,6 +890,19 @@
   margin-top: 14px;
 }
 
+.LxDialogFooter
+  > .LxButton:not(.LxButton--icon-chip):not(.LxButton--icon-xs):not(.LxButton--icon-sm):not(.LxButton--icon):not(.LxButton--icon-lg):not(.LxButton--icon-xl):not(.LxButton--capsule) {
+  min-height: 28px;
+  padding: 4px 12px;
+  border-radius: 8px;
+}
+
+.LxDialogFooter
+  > .LxButton:not(.LxButton--icon-chip):not(.LxButton--icon-xs):not(.LxButton--icon-sm):not(.LxButton--icon):not(.LxButton--icon-lg):not(.LxButton--icon-xl):not(.LxButton--capsule)
+  .LxButton__text {
+  font-weight: 400;
+}
+
 .SliceRoot--viewport-compact .LxDialogViewport--bottom-stick-mobile {
   align-items: flex-end;
   padding-top: 48px;

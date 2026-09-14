@@ -1557,3 +1557,20 @@ state is absent from the paired component matrix.
   The exact Native error/warning console was empty, no screenshot was retained,
   and the final staged bundle SHA-256 is
   `b747d222a43f941475fba83a17928692321ce6d059a504dee79263e6735019ba`.
+
+### DS-087 — COMPLETE
+
+- Native Dialog footers now apply Electron's shared action-button contract to
+  text buttons automatically: 28px minimum height, 12px horizontal and 4px
+  vertical padding, 8px corners, and regular 400 text. The descendant rule
+  explicitly excludes every icon-only size and capsule shape, matching the Web
+  footer selector's ownership boundary.
+- Native Dialog, Button, and primitive geometry focused tests pass 25/25, and
+  the full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `97246`, window `109135`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the open Component Lab footer through
+  the real Native route. `Cancel` and `Save` both resolved to the intended
+  28px height, 12px/4px insets, 8px corner longhands, and 12px/18px regular
+  text. The exact Native error/warning console was empty, no screenshot was
+  retained, and the final staged bundle SHA-256 is
+  `a9f526ef8951d26d1c1181a66decd8f677545562593fd77691cfca69bf553e50`.

@@ -150,6 +150,19 @@ describe('Lynx Dialog dismiss contract', () => {
     );
   });
 
+  it('applies the Electron action geometry to text buttons in dialog footers', () => {
+    const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
+    const footerButtonSelector =
+      /\.LxDialogFooter\s*> \.LxButton:not\(\.LxButton--icon-chip\):not\(\.LxButton--icon-xs\):not\(\.LxButton--icon-sm\):not\(\.LxButton--icon\):not\(\.LxButton--icon-lg\):not\(\.LxButton--icon-xl\):not\(\.LxButton--capsule\)/;
+
+    expect(styles).toMatch(
+      new RegExp(`${footerButtonSelector.source}\\s*\\{[^}]*min-height:\\s*28px;[^}]*padding:\\s*4px 12px;[^}]*border-radius:\\s*8px;`, 's')
+    );
+    expect(styles).toMatch(
+      new RegExp(`${footerButtonSelector.source}\\s+\\.LxButton__text\\s*\\{[^}]*font-weight:\\s*400;`, 's')
+    );
+  });
+
   it('names and activates default and custom close owners', async () => {
     const onOpenChange = rs.fn();
     render(

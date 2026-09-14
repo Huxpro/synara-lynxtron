@@ -1446,3 +1446,18 @@ values and unresolved Native custom properties.
   exact Native console was empty. No screenshot was retained; staged bundle
   SHA-256 is
   `b747d222a43f941475fba83a17928692321ce6d059a504dee79263e6735019ba`.
+
+## Shared Dialog action-button follow-up
+
+- Native Dialog footers now automatically apply Electron's text-action geometry
+  and typography: 28px minimum height, 12px horizontal and 4px vertical padding,
+  8px corners, and regular 400 text. Icon-only sizes and capsule shapes remain
+  outside that override. Native Dialog, Button, and primitive geometry focused
+  tests pass 25/25, and the full Lynx/Desktop production build passes on npm
+  Lynxtron 0.0.22.
+- Exact-owned PID `97246` / window `109135`, PID-derived `localhost:8901`,
+  session 1, rendered the open Component Lab footer through the real Native
+  route. Both actions resolved to the intended geometry and 12px/18px/400 text;
+  the exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `a9f526ef8951d26d1c1181a66decd8f677545562593fd77691cfca69bf553e50`.
