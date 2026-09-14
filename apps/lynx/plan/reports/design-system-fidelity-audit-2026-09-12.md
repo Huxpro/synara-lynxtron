@@ -511,6 +511,22 @@ values and unresolved Native custom properties.
 
 ## Composer project-picker icon follow-up
 
+- Native landing project-picker group, option, and footer-action SVGs now embed
+  the resolved muted-foreground value. Their existing `0.45` and `0.70` opacity
+  matches Electron's deliberately quieter group and
+  `text-muted-foreground/70` option/action hierarchy. The selected Check remains
+  primary.
+- Focused Native tests pass 2/2. Exact-owned Lynxtron 0.0.22 PID `58112` /
+  window `105689`, PID-derived `localhost:8901`, session 1, opened the real
+  landing Composer picker and measured all visible group/option/action source
+  strokes at `rgba(13, 13, 13, 0.6)` with an empty console. The Electron
+  comparison snapshot lacked that trigger, so authority was verified from the
+  production Web classes rather than a claimed interaction. No screenshot was
+  retained; staged bundle SHA-256:
+  `464872c249e0e97b72ce7da40892e65ad604842d1eb73a20be9ce07a779fc9ac`.
+
+## Composer project-picker icon follow-up
+
 - Native project-picker space/group, option, and footer-action SVGs now embed the
   resolved muted-foreground value. Their existing `0.45` and `0.70` opacity
   matches Electron's deliberately quieter group and `text-muted-foreground/70`

@@ -509,6 +509,24 @@ state is absent from the paired component matrix.
 
 ### DS-027 — COMPLETE
 
+- Native landing Composer project-picker group, project-option, and footer-action
+  glyphs now embed muted-foreground paint instead of retaining primary ink under
+  muted CSS. Existing `0.45` and `0.70` opacity preserve the intended effective
+  hierarchy; selected Check glyphs intentionally remain primary.
+- The focused Native suite renders a group, selected option, and footer action,
+  verifies all muted SVG source strokes plus the primary Check, and passes 2/2.
+- Exact-owned Lynxtron 0.0.22 PID `58112`, window `105689`, PID-derived DevTool
+  `localhost:8901`, session 1, opened the real landing Composer picker and
+  exposed all visible group, option, and footer-action source strokes at
+  `rgba(13, 13, 13, 0.6)`, producing effective `.27` / `.42` alpha after CSS.
+  The exact-client console was empty. Electron source authority uses
+  `text-muted-foreground/70` for option and footer icons; the comparison snapshot
+  did not expose the project-picker trigger, so no Electron interaction result is
+  claimed. No screenshot was retained. The staged bundle SHA-256 is
+  `464872c249e0e97b72ce7da40892e65ad604842d1eb73a20be9ce07a779fc9ac`.
+
+### DS-027 — COMPLETE
+
 - Native Composer project-picker group, project-option, and footer-action glyphs
   now embed muted-foreground paint instead of retaining primary foreground under
   muted CSS. Existing `0.45` and `0.70` CSS opacity preserve Electron's group
