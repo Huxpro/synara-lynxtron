@@ -577,16 +577,3 @@ values and unresolved Native custom properties.
   warnings in the current real snapshot and an empty console, so no live-warning
   claim is made. No screenshot was retained; staged bundle SHA-256:
   `827b907881a7d58359c3226956099e281185c00b04c52ff0c04997c5228400f3`.
-
-## Plugin Library warning icon follow-up
-
-- Native provider-discovery warning rows now use a small reusable component that
-  writes the resolved warning token into the generated Circle Alert SVG. This
-  closes the prior mismatch where the container was warning-colored but the icon
-  content stayed foreground.
-- The Plugin Library focused suite passes 4/4 with a direct-render `#d97706`
-  assertion, and the production build passes on Lynxtron 0.0.22. Exact-owned
-  `/plugins` PID `30621` / window `105852` had no warnings in the real snapshot
-  and an empty console, so no live-warning claim is made. No screenshot was
-  retained; staged bundle SHA-256:
-  `827b907881a7d58359c3226956099e281185c00b04c52ff0c04997c5228400f3`.
