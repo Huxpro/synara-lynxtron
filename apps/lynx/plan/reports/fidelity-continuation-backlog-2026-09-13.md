@@ -1668,3 +1668,20 @@ state is absent from the paired component matrix.
   The exact Native error/warning console was empty, no screenshot was retained,
   and the final staged bundle SHA-256 is
   `917e71749815d1f7fe63624022c9a37aaee1cd6fa0ebb8f31a065d7523e0aa8d`.
+
+### DS-094 — COMPLETE
+
+- Native default Alert now matches Electron's theme behavior: light remains
+  transparent, while dark uses the 32% `--input` control surface. A dedicated
+  `alertDefaultSurface` projection keeps this role independent from form
+  controls; semantic error/info/success/warning alerts retain their 4% status
+  surfaces and 32% borders.
+- Native Alert and Checkbox/theme focused tests pass 8/8, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `93740`, window `109675`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the default Component Lab Alert at
+  `rgba(23,23,23,0.317647)`. A real Computer Use switch to warning preserved its
+  semantic `rgba(245,180,74,0.0392157)` surface. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `697ea2222dc863a6ed8bf685a0a1b305f981bf9c8135554f3479007e359687b2`.

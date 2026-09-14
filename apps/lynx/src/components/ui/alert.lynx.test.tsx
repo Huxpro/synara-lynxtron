@@ -1,8 +1,10 @@
 import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 import { render } from '@lynx-js/react/testing-library';
+import { DEFAULT_THEME_STATE } from '@synara-web/theme/theme.logic';
 
 import { Alert, AlertDescription, AlertTitle } from './alert.lynx';
+import { setLynxThemeState } from '../../adapters/useTheme.lynx';
 
 describe('Alert', () => {
   it('matches the Electron default and compact type tiers', () => {
@@ -45,5 +47,20 @@ describe('Alert', () => {
     expect(alerts[2]?.getAttribute('style')).toContain('border-color: rgba(0, 162, 64, 0.32)');
     expect(alerts[3]?.getAttribute('style')).toContain('background-color: rgba(217, 119, 6, 0.04)');
     expect(alerts[3]?.getAttribute('style')).toContain('border-color: rgba(217, 119, 6, 0.32)');
+  });
+
+  it('uses Electron dark input tint for the default surface only', () => {
+    setLynxThemeState({ ...DEFAULT_THEME_STATE, mode: 'dark' });
+    render(<Alert />);
+    expect(elementTree.root?.querySelector('.LxAlert')?.getAttribute('style')).toContain(
+      'background-color: rgba(23, 23, 23, 0.32)'
+    );
+
+    setLynxThemeState({ ...DEFAULT_THEME_STATE, mode: 'light' });
+    render(<Alert />);
+    expect(elementTree.root?.querySelector('.LxAlert')?.getAttribute('style')).toContain(
+      'background-color: transparent'
+    );
+    setLynxThemeState(DEFAULT_THEME_STATE);
   });
 });

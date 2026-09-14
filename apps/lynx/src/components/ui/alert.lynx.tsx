@@ -7,6 +7,7 @@ import './primitives.css';
 export function Alert(props: { readonly children?: ReactNode; readonly className?: string; readonly size?: 'sm' | 'default'; readonly variant?: 'default' | 'error' | 'info' | 'success' | 'warning'; readonly accessibilityLabel?: string }) {
   const { svgColors } = useTheme();
   const semanticStyle = {
+    default: { backgroundColor: svgColors.alertDefaultSurface },
     error: { backgroundColor: svgColors.alertErrorSurface, borderColor: svgColors.alertErrorBorder },
     info: { backgroundColor: svgColors.alertInfoSurface, borderColor: svgColors.alertInfoBorder },
     success: { backgroundColor: svgColors.alertSuccessSurface, borderColor: svgColors.alertSuccessBorder },

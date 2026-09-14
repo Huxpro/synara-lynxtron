@@ -1543,3 +1543,18 @@ values and unresolved Native custom properties.
   8px. The exact Native console was empty. No screenshot was retained; staged
   bundle SHA-256 is
   `917e71749815d1f7fe63624022c9a37aaee1cd6fa0ebb8f31a065d7523e0aa8d`.
+
+## Shared Alert default-surface follow-up
+
+- Native default Alert now mirrors Electron's theme-specific surface: light is
+  transparent and dark uses the 32% `--input` control tint. A separately named
+  theme projection keeps this role independent from form controls, while all
+  semantic Alert surfaces remain unchanged. Native Alert and Checkbox/theme
+  focused tests pass 8/8, and the full Lynx/Desktop production build passes on
+  npm Lynxtron 0.0.22.
+- Exact-owned PID `93740` / window `109675`, PID-derived `localhost:8901`,
+  session 1, resolved the default Lab Alert to
+  `rgba(23,23,23,0.317647)`. Switching to warning through Computer Use retained
+  `rgba(245,180,74,0.0392157)`. The exact Native console was empty. No screenshot
+  was retained; staged bundle SHA-256 is
+  `697ea2222dc863a6ed8bf685a0a1b305f981bf9c8135554f3479007e359687b2`.

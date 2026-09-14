@@ -155,6 +155,10 @@ export function useTheme() {
       ),
       alertErrorBorder: withOpacity(errorColor, alertBorderOpacity),
       alertErrorSurface: withOpacity(errorColor, alertSurfaceOpacity),
+      alertDefaultSurface:
+        resolvedTheme === 'dark'
+          ? withOpacity(resolvedTokens.derived.controlBackgroundOpaque, 0.32)
+          : 'transparent',
       alertInfoBorder: withOpacity(infoColor, alertBorderOpacity),
       alertInfoSurface: withOpacity(infoColor, alertSurfaceOpacity),
       alertSuccessBorder: withOpacity(successColor, alertBorderOpacity),
