@@ -95,6 +95,7 @@ export function useTheme() {
     svgColors: {
       foreground: activeTheme.theme.ink,
       foreground65: withOpacity(activeTheme.theme.ink, 0.65),
+      foreground80: withOpacity(activeTheme.theme.ink, 0.8),
       mutedForeground: withOpacity(activeTheme.theme.ink, 0.6),
       mutedForeground55: withOpacity(activeTheme.theme.ink, 0.33),
       mutedForeground70: withOpacity(activeTheme.theme.ink, 0.42),

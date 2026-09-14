@@ -613,3 +613,22 @@ state is absent from the paired component matrix.
   triggered for a retained Native frame. No screenshot was retained. The staged
   bundle SHA-256 is
   `2b2c0102051df08899ac35a5ebaa78e4dfcb41ae65d643195a7dded940a870be`.
+
+### DS-033 — COMPLETE
+
+- Native shared Menu submenu chevrons now embed the Electron authority's
+  foreground/80 paint during JSX render instead of retaining full foreground
+  while an ineffective inherited CSS color declared muted foreground. Selection
+  Check indicators intentionally remain full foreground.
+- The Composer provider submenu no longer applies a second `0.8` opacity to the
+  already-resolved Chevron, avoiding an unintended effective `.64` tone. Focused
+  shared Menu and Composer model-picker suites pass 23/23; the Web submenu browser
+  fixture passes 2/2; the full Lynx/Desktop production build passes on Lynxtron
+  0.0.22.
+- Electron CDP measured the real Composer submenu Chevron as foreground with
+  `opacity: 0.8`. Exact-owned Lynxtron PID `8589`, window `105997`, PID-derived
+  DevTool `localhost:8901`, session 1, opened the same real model submenu and
+  measured encoded stroke `rgba(13, 13, 13, 0.8)` with computed opacity `1`; the
+  exact-client error/warning console was empty. No screenshot was retained. The
+  staged bundle SHA-256 is
+  `181499d0b39033af038ccf3960bb868375952c0db4e710140f439a8f57ca9759`.

@@ -125,6 +125,12 @@ describe('Composer model picker icon fidelity', () => {
       /\.ComposerModelGroupChevronLynx\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*opacity:\s*0\.5;/s
     );
     expect(styles).toMatch(
+      /\.ComposerProviderSubTriggerLynx \.LxMenuSubTrigger__chevron\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*margin-left:\s*auto;/s
+    );
+    expect(styles).not.toMatch(
+      /\.ComposerProviderSubTriggerLynx \.LxMenuSubTrigger__chevron\s*\{[^}]*opacity:/s
+    );
+    expect(styles).toMatch(
       /\.ComposerModelGroupLynx\s*\{[^}]*gap:\s*1px;[^}]*padding-right:\s*2px;[^}]*padding-left:\s*2px;/s
     );
     expect(styles).toMatch(

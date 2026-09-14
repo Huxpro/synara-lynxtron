@@ -530,7 +530,7 @@ describe('Lynx Menu overlay contract', () => {
     expect(items[2]?.getAttribute('aria-checked')).toBe('true');
   });
 
-  it('uses generated Check and Chevron identities for shared menu states', () => {
+  it('embeds the shared Web paint hierarchy in generated menu state icons', () => {
     render(
       <Menu defaultOpen>
         <MenuTrigger>
@@ -548,15 +548,20 @@ describe('Lynx Menu overlay contract', () => {
     );
 
     expect(
-      elementTree.root?.querySelector('.LxMenuIndicatorIcon')
-    ).not.toBeNull();
+      elementTree.root
+        ?.querySelector('.LxMenuIndicatorIcon')
+        ?.getAttribute('content')
+    ).toContain('stroke="#0d0d0d"');
     expect(
-      elementTree.root?.querySelector('.LxMenuSubTrigger__chevron')
-    ).not.toBeNull();
+      elementTree.root
+        ?.querySelector('.LxMenuSubTrigger__chevron')
+        ?.getAttribute('content')
+    ).toContain('stroke="rgba(13, 13, 13, 0.8)"');
     const source = readFileSync(
       new URL('./menu.lynx.tsx', import.meta.url),
       'utf8'
     );
+    expect(source).toContain('color={svgColors.foreground80}');
     expect(source).not.toContain("{props.checked ? '✓' : ''}");
     expect(source).not.toContain('>›</text>');
   });

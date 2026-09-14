@@ -590,3 +590,19 @@ values and unresolved Native custom properties.
   not a product failure. No synthetic toast was retained and no screenshot was
   added. Staged bundle SHA-256:
   `2b2c0102051df08899ac35a5ebaa78e4dfcb41ae65d643195a7dded940a870be`.
+
+## Shared Menu submenu Chevron follow-up
+
+- Native shared Menu submenu chevrons now encode foreground/80 directly in the
+  generated SVG, matching Electron's foreground Chevron with `opacity: 0.8`.
+  Selection checks remain primary, preserving the menu's selected-state hierarchy.
+- Removed the Composer provider-list's duplicate `0.8` opacity, which otherwise
+  compounded the encoded `.8` into an effective `.64`. Focused Native suites pass
+  23/23, the Web submenu browser fixture passes 2/2, and the production build
+  passes on Lynxtron 0.0.22.
+- Exact-owned PID `8589` / window `105997`, PID-derived `localhost:8901`, session
+  1, opened the real Composer model submenu and measured encoded Chevron stroke
+  `rgba(13, 13, 13, 0.8)` with computed opacity `1`; Electron CDP measured its
+  counterpart at foreground plus `opacity: 0.8`. The exact-client console was
+  empty, no screenshot was retained, and the staged bundle SHA-256 is
+  `181499d0b39033af038ccf3960bb868375952c0db4e710140f439a8f57ca9759`.

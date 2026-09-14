@@ -15,6 +15,7 @@ import type { NodesRef } from '@lynx-js/types';
 import { resolveCommandNavigation } from '@synara/shared/commandNavigation';
 
 import { CheckIcon, ChevronRightIcon } from '../../lib/icons.lynx';
+import { useTheme } from '../../adapters/useTheme.lynx';
 import { useLynxInteractiveState } from './interactive-state.lynx';
 import { focusLynxNode, type LynxFocusableRef } from './focus.lynx';
 import { cx, renderSlot, textContent } from './shared.lynx';
@@ -823,6 +824,7 @@ export function MenuSubTrigger(props: {
   disabled?: boolean;
   onOpen?: () => void;
 }) {
+  const { svgColors } = useTheme();
   const menu = useContext(MenuContext);
   const submenu = useContext(MenuSubContext);
   const triggerRef = useRef<NodesRef>(null);
@@ -933,6 +935,7 @@ export function MenuSubTrigger(props: {
         {textContent(props.children, 'LxMenuItem__text')}
         <ChevronRightIcon
           className="LxMenuSubTrigger__chevron"
+          color={svgColors.foreground80}
           size={14}
         />
       </view>
