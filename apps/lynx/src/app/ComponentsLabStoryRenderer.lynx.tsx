@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from '@lynx-js/react';
 import type { ModelSelection } from '@synara/contracts';
+import { projectAutomationList } from '@synara/shared/automationList';
 import { CopyIcon, KanbanIcon, MessageCircleIcon, NewThreadIcon, PlusIcon, SearchIcon, SettingsIcon, Undo2Icon } from '../lib/icons.lynx';
 import pinSvg from '@synara-central-icons/pin.svg?raw';
 import { EditorRailAddMenu } from './EditorRailAddMenu.lynx';
@@ -9,6 +10,7 @@ import { ComposerModelControl } from '../components/composer/ComposerModelContro
 import {
   COMPONENT_LAB_AUTOMATION_DEFINITION,
   COMPONENT_LAB_AUTOMATION_PROJECT,
+  COMPONENT_LAB_PAUSED_AUTOMATION_DEFINITION,
   COMPONENT_LAB_CODEX_MODELS,
   COMPONENT_LAB_DIFF_CODE_VIEW,
   COMPONENT_LAB_MODEL_SELECTION,
@@ -32,6 +34,7 @@ import {
 } from '@synara/shared/componentLabFixtures';
 import { AutomationCreateDialog } from './AutomationCreateDialog.lynx';
 import { AutomationDetailPage } from './AutomationDetailPage.lynx';
+import { AutomationsListContent } from './AutomationsPage.lynx';
 import { AutomationEditDialog } from './AutomationEditDialog.lynx';
 import { KanbanCardComposition } from '@synara-web/components/kanban/KanbanCardComposition';
 import type { KanbanCard } from '@synara-web/components/kanban/kanban.logic';
@@ -231,6 +234,37 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
         onApproveRisks={async () => {}}
         navigate={() => {}}
       />
+      </view>
+    );
+  }
+  if (props.storyId === 'automation/list-page') {
+    const definitions =
+      props.variant === 'mixed'
+        ? [
+            COMPONENT_LAB_AUTOMATION_DEFINITION,
+            COMPONENT_LAB_PAUSED_AUTOMATION_DEFINITION,
+          ]
+        : [COMPONENT_LAB_AUTOMATION_DEFINITION];
+    const projection = projectAutomationList({
+      data: { definitions, runs: [] },
+      projects: [
+        {
+          id: COMPONENT_LAB_AUTOMATION_PROJECT.id,
+          name: COMPONENT_LAB_AUTOMATION_PROJECT.name,
+        },
+      ],
+      threads: [],
+    });
+    return (
+      <view className="ComponentsLabAutomationDetailStory">
+        <AutomationsListContent
+          definitionsCount={definitions.length}
+          error={false}
+          isLoading={props.state === 'loading'}
+          onOpen={() => {}}
+          onRetry={() => {}}
+          projection={projection}
+        />
       </view>
     );
   }

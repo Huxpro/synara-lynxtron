@@ -67,6 +67,36 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
+    id: "automation/list-page",
+    title: "Automation list page",
+    category: "automation",
+    owner: "AutomationListComposition",
+    fixtureId: "automation-list-populated",
+    variants: ["current", "mixed"],
+    states: ["default", "loading"],
+    cases: [
+      { variant: "current", state: "default" },
+      { variant: "mixed", state: "default" },
+      { variant: "current", state: "loading" },
+    ],
+    themes: ["light", "dark"],
+    viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: {
+        renderer: "electron",
+        component: "AutomationListComposition",
+        module: "apps/web/src/components/automation/AutomationListComposition.tsx",
+        consumers: ["automations/list"],
+      },
+      lynx: {
+        renderer: "lynx",
+        component: "AutomationsListContent",
+        module: "apps/lynx/src/app/AutomationsPage.lynx.tsx",
+        consumers: ["automations/list"],
+      },
+    },
+  },
+  {
     id: "kanban/card", title: "Kanban card", category: "kanban", owner: "KanbanCardComposition", fixtureId: "kanban-card-states", variants: ["default", "long-title", "draft", "working"], states: [...INTERACTIVE_STATES], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "KanbanCardComposition", module: "apps/web/src/components/kanban/KanbanCardComposition.tsx", consumers: ["kanban/overview", "kanban/project"] },
@@ -580,6 +610,7 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
 export const COMPONENT_LAB_IMPLEMENTED_STORY_IDS = [
   "automation/composer-dialog",
   "automation/detail-page",
+  "automation/list-page",
   "editor-rail/add-menu",
   "editor-rail/independent-tabs",
   "composer/model-effort-picker",

@@ -45,6 +45,23 @@ export const COMPONENT_LAB_AUTOMATION_DEFINITION: AutomationDefinition = {
   archivedAt: null,
 };
 
+export const COMPONENT_LAB_PAUSED_AUTOMATION_DEFINITION: AutomationDefinition = {
+  ...COMPONENT_LAB_AUTOMATION_DEFINITION,
+  id: AutomationId.makeUnsafe('component-lab-paused-automation'),
+  name: 'Weekly dependency review',
+  prompt: 'Review dependency updates and summarize changes that need attention.',
+  schedule: {
+    type: 'weekly',
+    dayOfWeek: 1,
+    timeOfDay: '10:30',
+    timezone: 'America/New_York',
+  },
+  enabled: false,
+  nextRunAt: null,
+  createdAt: '2026-09-13T12:05:00.000Z',
+  updatedAt: '2026-09-13T12:05:00.000Z',
+};
+
 export type ComponentLabMessageActionsVariant =
   | 'assistant'
   | 'pinned'

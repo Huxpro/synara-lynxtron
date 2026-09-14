@@ -269,3 +269,15 @@ values and unresolved Native custom properties.
   labels, action-header state, status dot, and Previous runs surface. Its final
   staged bundle SHA-256 is
   `97f654208241aa65591d552f872d0b98e3cd407ab3c8f53a0be37398b75b99be`.
+- The populated list is now the third paired Automations surface. Electron and
+  Native routes share their production list compositions with current, mixed,
+  and loading Lab cases; the shared fixture yields one active and one paused row
+  with the authority's title/detail/meta hierarchy. Coverage is now 49 stories,
+  98 renderer mappings, and 3,216 meaningful cells. Exact-owned Native used PID
+  `99940` on PID-derived `localhost:8901`, had an empty error/warning console,
+  and staged bundle SHA-256
+  `beeaa2abfdda57ae141b3a6e98786ba175064cc551d59609f9de420584d6cf3d`.
+- The list extraction also removed the inherited nested interactive semantics:
+  row navigation and hover Delete are sibling buttons rather than a button-like
+  ancestor containing a second focusable control. React Doctor reports zero
+  changed-line errors or warnings after the correction.

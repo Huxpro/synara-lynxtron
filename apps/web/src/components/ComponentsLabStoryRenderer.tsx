@@ -12,6 +12,7 @@ import { ProjectId, SpaceId, ThreadId, type ModelSelection } from "@synara/contr
 import {
   COMPONENT_LAB_AUTOMATION_DEFINITION,
   COMPONENT_LAB_AUTOMATION_PROJECT,
+  COMPONENT_LAB_PAUSED_AUTOMATION_DEFINITION,
   COMPONENT_LAB_CODEX_MODELS,
   COMPONENT_LAB_DIFF_CODE_VIEW,
   COMPONENT_LAB_MODEL_OPTIONS_BY_PROVIDER,
@@ -43,6 +44,8 @@ import {
 } from "~/components/automation/AutomationDetailComposition";
 import { buildAutomationFormWarnings, formFromDefinition } from "~/lib/automationForm";
 import type { Project } from "~/types";
+import { projectAutomationList } from "@synara/shared/automationList";
+import { AutomationListComposition } from "~/components/automation/AutomationListComposition";
 import { KanbanCardComposition } from "~/components/kanban/KanbanCardComposition";
 import type { KanbanCard } from "~/components/kanban/kanban.logic";
 import { ContextWindowMeter } from "~/components/chat/ContextWindowMeter";
@@ -207,6 +210,31 @@ function AutomationDetailPageStory(props: { readonly variant?: string }) {
       </AutomationDetailGroup>
     </AutomationDetailComposition>
     </SidebarProvider>
+    </div>
+  );
+}
+
+function AutomationListPageStory(props: { readonly state: string; readonly variant?: string }) {
+  const definitions = props.variant === "mixed"
+    ? [COMPONENT_LAB_AUTOMATION_DEFINITION, COMPONENT_LAB_PAUSED_AUTOMATION_DEFINITION]
+    : [COMPONENT_LAB_AUTOMATION_DEFINITION];
+  const projection = projectAutomationList({
+    data: { definitions, runs: [] },
+    projects: [{ id: COMPONENT_LAB_AUTOMATION_PROJECT.id, name: COMPONENT_LAB_AUTOMATION_PROJECT.name }],
+    threads: [],
+  });
+  return (
+    <div className="h-[520px] w-[880px] max-w-[calc(100vw-2rem)] overflow-hidden border border-border bg-background">
+      <AutomationListComposition
+        definitionsCount={definitions.length}
+        isLoading={props.state === "loading"}
+        projection={projection}
+        triageFilter="unread"
+        onDelete={() => {}}
+        onOpen={() => {}}
+        onOpenThread={() => {}}
+        onTriageFilterChange={() => {}}
+      />
     </div>
   );
 }
@@ -459,6 +487,9 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
   }
   if (props.storyId === "automation/detail-page") {
     return <AutomationDetailPageStory variant={props.variant} />;
+  }
+  if (props.storyId === "automation/list-page") {
+    return <AutomationListPageStory state={props.state} variant={props.variant} />;
   }
   if (props.storyId === "editor-rail/independent-tabs") {
     return <IndependentTabsStory state={props.state} variant={props.variant} />;

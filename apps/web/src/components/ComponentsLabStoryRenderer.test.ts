@@ -31,6 +31,13 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('COMPONENT_LAB_AUTOMATION_DEFINITION');
   });
 
+  it("renders populated automation lists through the production composition", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('props.storyId === "automation/list-page"');
+    expect(source).toContain('<AutomationListComposition');
+    expect(source).toContain('COMPONENT_LAB_PAUSED_AUTOMATION_DEFINITION');
+  });
+
   const SSR_SIGNATURE_STORY_IDS = new Set([
     "kanban/card",
     "sidebar/navigation-row",

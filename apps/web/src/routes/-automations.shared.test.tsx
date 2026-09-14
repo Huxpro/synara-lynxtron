@@ -130,7 +130,7 @@ function definitionWith(overrides: Partial<AutomationDefinition>): AutomationDef
 describe("automation shared route helpers", () => {
   it("stacks detail panes before the small-screen breakpoint", () => {
     const detailRouteSource = readFileSync(
-      new URL("./_chat.automations.$automationId.tsx", import.meta.url),
+      new URL("../components/automation/AutomationDetailComposition.tsx", import.meta.url),
       "utf8",
     );
 

@@ -13,7 +13,7 @@ state is absent from the paired component matrix.
 
 ## Current audit signals
 
-- Component identity: 48 stories, 96 renderer mappings, 3,192 meaningful
+- Component identity: 49 stories, 98 renderer mappings, 3,216 meaningful
   matrix cells, zero missing renderer identities.
 - Primitive inventory: 37 Web primitives, 22 Native primitives, zero missing
   Native counterparts and zero counterparts omitted from the Lab.
@@ -114,6 +114,18 @@ state is absent from the paired component matrix.
   by the component-sized target. Exact-owned Native confirmed the active and
   paused status/action changes and 11 detail labels with an empty console.
 
+### AF-006 — COMPLETE
+
+- The populated automation list now has a paired Components Lab story backed by
+  extracted production list compositions in Electron and Native. The real routes
+  consume those same compositions; orphan triage rows retain their thread fallback.
+- Current, mixed current/paused, and loading cases use the shared typed automation
+  fixtures. Exact-owned Native confirmed one active row and one muted paused row,
+  two section titles, and matching title/detail/meta columns with an empty console.
+- React Doctor caught and drove removal of the inherited nested-interactive Web
+  row pattern: the primary row action and hover Delete action are now sibling
+  buttons, preserving independent keyboard and screen-reader semantics.
+
 ### AF-001 — COMPLETE
 
 - Native Create and Edit now share the same composer primitives for title,
@@ -167,7 +179,7 @@ state is absent from the paired component matrix.
 - Focused Web automation: 33/33 passed.
 - React Doctor 0.9.11 changed-lines scan: zero errors and zero warnings
   across 12 changed Native files and the shared Web form helper.
-- Component identity: 96/96 mappings across 48 stories.
+- Component identity: 98/98 mappings across 49 stories.
 - Primitive inventory: zero missing Native counterparts and zero counterparts
   omitted from the Lab.
 - Production build passed. Final staged bundle SHA-256:

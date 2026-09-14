@@ -45,7 +45,7 @@ function useHostPolling(poll: () => Promise<unknown>, delayMs: number): void {
   }, [delayMs]);
 }
 
-function AutomationStatusDot({
+export function AutomationStatusDot({
   tone,
 }: {
   readonly tone: AutomationDefinitionRow['tone'] | 'triage';
@@ -57,7 +57,7 @@ function AutomationStatusDot({
   );
 }
 
-function AutomationRow({
+export function AutomationRow({
   row,
   onOpen,
 }: {
@@ -84,7 +84,7 @@ function AutomationRow({
   );
 }
 
-function AutomationTriageListRow({
+export function AutomationTriageListRow({
   row,
   onOpen,
 }: {
@@ -111,7 +111,7 @@ function AutomationTriageListRow({
   );
 }
 
-function AutomationSection({
+export function AutomationSection({
   title,
   rows,
   onOpen,
@@ -134,6 +134,54 @@ function AutomationSection({
         ))}
       </view>
     </view>
+  );
+}
+
+export function AutomationsListContent({
+  definitionsCount,
+  error,
+  isLoading,
+  onOpen,
+  onRetry,
+  projection,
+}: {
+  readonly definitionsCount: number;
+  readonly error: boolean;
+  readonly isLoading: boolean;
+  readonly onOpen: (automationId: string) => void;
+  readonly onRetry: () => void;
+  readonly projection: ReturnType<typeof projectAutomationList> | null;
+}) {
+  return (
+    <scroll-view className="AutomationsScroller" scroll-orientation="vertical">
+      <view className="AutomationsContent">
+        <text className="AutomationsTitle">Automations</text>
+        {isLoading ? (
+          <view className="AutomationsState" accessibility-element accessibility-label="Loading automations" accessibility-trait="updating">
+            <text className="AutomationsStateText">Loading automations...</text>
+          </view>
+        ) : error ? (
+          <view className="AutomationsState" accessibility-element accessibility-label="Automations could not be loaded" accessibility-trait="text">
+            <text className="AutomationsStateTitle">Automations could not be loaded</text>
+            <text className="AutomationsStateText">Check the server connection and try again.</text>
+            <Button variant="outline" size="sm" onClick={onRetry}>Try again</Button>
+          </view>
+        ) : definitionsCount === 0 ? (
+          <view className="AutomationsState" accessibility-element accessibility-label="No automations yet. Schedule a prompt to run on its own, or wake an existing thread on a loop." accessibility-trait="text">
+            <text className="AutomationsStateTitle">No automations yet</text>
+            <text className="AutomationsStateText">Schedule a prompt to run on its own, or wake an existing thread on a loop.</text>
+          </view>
+        ) : projection ? (
+          <view className="AutomationsSections">
+            {projection.triage.length > 0 ? (
+              <view className="AutomationsSection"><view className="AutomationsSectionHeader"><text className="AutomationsSectionTitle">Needs review</text><text className="AutomationsSectionCount">Unread {projection.unreadTriageCount}</text></view><view className="AutomationsRows">{projection.triage.map((row) => <AutomationTriageListRow key={row.run.id} row={row} onOpen={onOpen} />)}</view></view>
+            ) : null}
+            <AutomationSection title="Current" rows={projection.current} onOpen={onOpen} />
+            <AutomationSection title="Paused" rows={projection.paused} onOpen={onOpen} />
+          </view>
+        ) : null}
+      </view>
+    </scroll-view>
   );
 }
 
@@ -319,96 +367,14 @@ export function AutomationsPage({
           </text>
         </Button>
       </view>
-      <scroll-view
-        className="AutomationsScroller"
-        scroll-orientation="vertical"
-      >
-        <view className="AutomationsContent">
-          <text className="AutomationsTitle">Automations</text>
-          {automations.isPending ? (
-            <view
-              className="AutomationsState"
-              accessibility-element={true}
-              accessibility-label="Loading automations"
-              accessibility-trait="updating"
-            >
-              <text className="AutomationsStateText">
-                Loading automations...
-              </text>
-            </view>
-          ) : automations.error ? (
-            <view
-              className="AutomationsState"
-              accessibility-element={true}
-              accessibility-label="Automations could not be loaded"
-              accessibility-trait="text"
-            >
-              <text className="AutomationsStateTitle">
-                Automations could not be loaded
-              </text>
-              <text className="AutomationsStateText">
-                Check the server connection and try again.
-              </text>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => void automations.refetch()}
-              >
-                Try again
-              </Button>
-            </view>
-          ) : projection &&
-            projection.current.length === 0 &&
-            projection.paused.length === 0 ? (
-            <view
-              className="AutomationsState"
-              accessibility-element={true}
-              accessibility-label="No automations yet. Schedule a prompt to run on its own, or wake an existing thread on a loop."
-              accessibility-trait="text"
-            >
-              <text className="AutomationsStateTitle">No automations yet</text>
-              <text className="AutomationsStateText">
-                Schedule a prompt to run on its own, or wake an existing thread
-                on a loop.
-              </text>
-            </view>
-          ) : projection ? (
-            <view className="AutomationsSections">
-              {projection.triage.length > 0 ? (
-                <view className="AutomationsSection">
-                  <view className="AutomationsSectionHeader">
-                    <text className="AutomationsSectionTitle">
-                      Needs review
-                    </text>
-                    <text className="AutomationsSectionCount">
-                      Unread {projection.unreadTriageCount}
-                    </text>
-                  </view>
-                  <view className="AutomationsRows">
-                    {projection.triage.map((row) => (
-                      <AutomationTriageListRow
-                        key={row.run.id}
-                        row={row}
-                        onOpen={openAutomation}
-                      />
-                    ))}
-                  </view>
-                </view>
-              ) : null}
-              <AutomationSection
-                title="Current"
-                rows={projection.current}
-                onOpen={openAutomation}
-              />
-              <AutomationSection
-                title="Paused"
-                rows={projection.paused}
-                onOpen={openAutomation}
-              />
-            </view>
-          ) : null}
-        </view>
-      </scroll-view>
+      <AutomationsListContent
+        definitionsCount={automations.data?.definitions.length ?? 0}
+        error={Boolean(automations.error)}
+        isLoading={automations.isPending}
+        onOpen={openAutomation}
+        onRetry={() => void automations.refetch()}
+        projection={projection}
+      />
       <AutomationCreateDialog
         open={createOpen}
         projects={sidebar.data?.projects ?? []}
