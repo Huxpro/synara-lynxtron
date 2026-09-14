@@ -1,9 +1,21 @@
 import { describe, expect, it, rs } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 import { fireEvent, render } from '@lynx-js/react/testing-library';
 
-import { TimePicker } from './time-picker.lynx';
+import { TimePicker, timePickerInitialScrollOffset } from './time-picker.lynx';
 
 describe('TimePicker', () => {
+  it('centers the initial hour and minute without child scrollIntoView calls', () => {
+    expect(timePickerInitialScrollOffset(0)).toBe(0);
+    expect(timePickerInitialScrollOffset(9)).toBe(200);
+    expect(timePickerInitialScrollOffset(30)).toBe(830);
+    const source = readFileSync(new URL('./time-picker.lynx.tsx', import.meta.url), 'utf8');
+    expect(source).toContain(
+      'initial-scroll-offset={timePickerInitialScrollOffset(props.selected)}'
+    );
+    expect(source).not.toContain('scrollLynxElementIntoViewById');
+  });
+
   it('renders complete hour/minute columns with selected semantics', () => {
     render(<TimePicker value="09:30" onChange={() => {}} />);
     expect(elementTree.root?.querySelectorAll('.LxTimePickerOption')).toHaveLength(84);

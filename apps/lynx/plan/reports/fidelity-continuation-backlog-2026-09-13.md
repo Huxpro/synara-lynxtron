@@ -979,3 +979,21 @@ state is absent from the paired component matrix.
   render/source tests because the catalog status case exposes success only. The
   exact Native console was empty and no screenshot was retained. The staged bundle
   SHA-256 is `5b22014f0d9d4254e99c72329c7aca68d7bd2e32cdbf9b4aa1a6e0458dd54cd5`.
+
+### DS-054 — COMPLETE
+
+- Native TimePicker now opens with the current hour and minute centered in their
+  176px scroll columns, matching Electron instead of always exposing the first
+  rows. The implementation uses the container's one-shot pixel
+  `initial-scroll-offset`; it does not invoke child `scrollIntoView`, whose Native
+  failure previously surfaced a LogBox error.
+- The focused TimePicker suite passes 3/3 and directly locks offsets 0/200/830 for
+  values 0/9/30 plus the no-`scrollIntoView` contract. The complete Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `84722`, window `107467`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the `09:30` story. Both columns measured
+  y=366–542 (176px), while both selected rows measured y=440–468; their centers
+  are exactly y=454, equal to the column center. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `acc31bc6212ba20d147d4daa8fc90e90ebb98959cfc0240bdb7380293e02d54f`.

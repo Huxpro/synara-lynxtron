@@ -927,3 +927,20 @@ values and unresolved Native custom properties.
   exposes success only. The exact Native console was empty and no screenshot was
   retained; staged bundle SHA-256 is
   `5b22014f0d9d4254e99c72329c7aca68d7bd2e32cdbf9b4aa1a6e0458dd54cd5`.
+
+## Shared TimePicker initial-position follow-up
+
+- Native TimePicker now presents its current hour and minute at the vertical
+  center on first render, matching Electron. The shared column computes a
+  one-shot pixel `initial-scroll-offset` from the selected index, option height,
+  gap, content padding, and 176px viewport. This keeps scroll ownership on the
+  container and avoids the failing child `scrollIntoView` path.
+- The focused TimePicker suite passes 3/3, including 0/200/830 offset checks for
+  values 0/9/30 and a source guard against `scrollIntoView`. The complete
+  Lynx/Desktop production build passes on Lynxtron 0.0.22.
+- Exact-owned PID `84722` / window `107467`, PID-derived `localhost:8901`, session
+  1, rendered `ui/time-picker` with `09:30`. Each scroll column measured y=366–542
+  and each selected row y=440–468, placing both selected centers exactly at the
+  454px column center. The exact Native error/warning console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `acc31bc6212ba20d147d4daa8fc90e90ebb98959cfc0240bdb7380293e02d54f`.
