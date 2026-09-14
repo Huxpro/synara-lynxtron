@@ -1412,3 +1412,18 @@ state is absent from the paired component matrix.
   exact Native error/warning console was empty, no screenshot was retained, and
   the final staged bundle SHA-256 is
   `edf7dd3408855b139eca4451f0171f32f9cfd942af701055e7c5ca5e768ef648`.
+
+### DS-079 — COMPLETE
+
+- Native prominent Button now animates its existing hover scale with Electron's
+  150ms transform/opacity transition instead of jumping instantly. The shared
+  reduced-motion branch collapses the transition to 0.01ms, while disabled hover
+  remains unscaled.
+- Native Button/Lab focused tests pass 7/7, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `30219`, window `108628`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered prominent hover at `scale(1.05)` with
+  `[transform, opacity]`, 150ms, ease-out transition metadata. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `fba6385fc105566679b3134397c56cebe4c2dc9e9d462f3298b5154df9dce061`.

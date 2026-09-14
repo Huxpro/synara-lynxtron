@@ -160,6 +160,9 @@
   border-radius: 999px;
   background-color: var(--foreground);
   color: var(--background);
+  transition-property: transform, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
 }
 
 .LxButton--prominent .LxButton__text {
@@ -1000,6 +1003,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .LxButton--prominent,
   .LxSwitch,
   .LxSwitchThumb,
   .LxMenuSwitch,

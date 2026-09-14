@@ -1318,3 +1318,17 @@ values and unresolved Native custom properties.
   exact Native console was empty. No screenshot was retained; staged bundle
   SHA-256 is
   `edf7dd3408855b139eca4451f0171f32f9cfd942af701055e7c5ca5e768ef648`.
+
+## Shared Button prominent-motion follow-up
+
+- Native prominent Button now applies Electron's 150ms transform/opacity
+  transition to its existing 1.05 hover scale instead of changing size
+  immediately. Reduced motion shortens the transition to 0.01ms, and disabled
+  hover remains unscaled.
+- Native Button/Lab focused tests pass 7/7, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `30219` / window `108628`, PID-derived `localhost:8901`,
+  session 1, exposed `scale(1.05)`, `[transform, opacity]`, 150ms, and ease-out
+  through computed styles. The exact Native console was empty. No screenshot was
+  retained; staged bundle SHA-256 is
+  `fba6385fc105566679b3134397c56cebe4c2dc9e9d462f3298b5154df9dce061`.
