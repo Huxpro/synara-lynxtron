@@ -212,6 +212,7 @@
 .LxButton--icon-xs {
   min-height: 24px;
   padding: 4px 8px;
+  border-radius: 6px;
 }
 
 .LxButton--xs {

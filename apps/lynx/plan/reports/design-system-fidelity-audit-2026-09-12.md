@@ -1490,3 +1490,16 @@ values and unresolved Native custom properties.
   9px/13.5px/500 text respectively; the exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `4725542ff214549385ecafe1512276bbc9cb432d8e753f5c64fba3d4c9462d4c`.
+
+## Shared Button extra-small radius follow-up
+
+- Native extra-small text and icon-only Buttons now match Electron's 6px
+  `rounded-sm` corners instead of inheriting the 10px default radius. Later
+  product-specific `chrome-outline` overrides retain their existing 8px or split
+  geometry. Native Button and primitive geometry focused tests pass 14/14, and
+  the full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `40038` / window `109358`, PID-derived `localhost:8901`,
+  session 1, rendered the real Component Lab icon-xs Button. DevTool measured a
+  24x24 outer box and 6px on every physical corner longhand; the exact Native
+  console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `dde992d463a24d9fb25c347433b72fa2504d379831b7bb52276277efbdd9bc49`.

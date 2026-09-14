@@ -12,6 +12,12 @@ describe('shared primitive geometry', () => {
     expect(css).toMatch(/\.LxButton--icon-xl\s*\{[^}]*width:\s*40px;[^}]*min-width:\s*40px;/s);
   });
 
+  it('matches the Electron extra-small corner radius', () => {
+    expect(css).toMatch(
+      /\.LxButton--xs,\s*\.LxButton--icon-xs\s*\{[^}]*min-height:\s*24px;[^}]*border-radius:\s*6px;/s
+    );
+  });
+
   it('matches Electron horizontal insets across text button sizes', () => {
     expect(css).toMatch(/\.LxButton\s*\{[^}]*padding:\s*6px 11px;/s);
     expect(css).toMatch(/\.LxButton--xs\s*\{[^}]*padding-left:\s*7px;[^}]*padding-right:\s*7px;/s);

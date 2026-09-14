@@ -1607,3 +1607,18 @@ state is absent from the paired component matrix.
   shells preserved. The exact Native error/warning console was empty, no
   screenshot was retained, and the final staged bundle SHA-256 is
   `4725542ff214549385ecafe1512276bbc9cb432d8e753f5c64fba3d4c9462d4c`.
+
+### DS-090 — COMPLETE
+
+- Native extra-small text and icon-only Buttons now use Electron's 6px
+  `rounded-sm` corners instead of inheriting the 10px default radius. Existing
+  product-specific `chrome-outline` consumers keep their later 8px or split
+  corner overrides.
+- Native Button and primitive geometry focused tests pass 14/14, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `40038`, window `109358`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Component Lab icon-xs Button.
+  Its outer box remained 24x24 and all four physical corner longhands resolved
+  to 6px. The exact Native error/warning console was empty, no screenshot was
+  retained, and the final staged bundle SHA-256 is
+  `dde992d463a24d9fb25c347433b72fa2504d379831b7bb52276277efbdd9bc49`.
