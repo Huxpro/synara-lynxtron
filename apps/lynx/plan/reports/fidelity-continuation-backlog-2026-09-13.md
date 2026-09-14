@@ -1213,3 +1213,19 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `a3958eb35feb8924f19d9117fa0e8f02694eae94eccc4242365f49c72df5f43f`.
+
+### DS-068 — COMPLETE
+
+- Native destructive Button now preserves Electron's fixed white foreground in
+  dark theme instead of using the semantic destructive text token, which resolves
+  to near-black for destructive text on neutral surfaces. The token remains
+  unchanged for menu labels and destructive-outline controls.
+- Native Button/Lab focused tests pass 6/6, shared manifest tests pass 9/9, and
+  the affected Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `71799`, window `108025`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the dark destructive story with
+  background `rgb(224,46,42)` and text `rgb(255,255,255)` at the shared 12px
+  medium tier. Electron independently resolved the same red and white pair. The
+  exact Native error/warning console was empty, no screenshot was retained, and
+  the final staged bundle SHA-256 is
+  `7034be2fc98b72c1d9ff6760cc284263fcfcef9d908158ac7ca370c51444dc20`.

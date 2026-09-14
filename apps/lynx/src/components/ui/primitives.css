@@ -88,7 +88,7 @@
 }
 
 .LxButton--destructive .LxButton__text {
-  color: var(--destructive-foreground);
+  color: #ffffff;
 }
 
 .LxButton--destructive-outline .LxButton__text {

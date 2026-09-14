@@ -21,6 +21,9 @@ describe('Lynx Button accessibility contract', () => {
       /\.LxButton--ghost\.ui-active,\s*\.LxButton--ghost\.ui-pressed\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s
     );
     expect(styles).toMatch(
+      /\.LxButton--destructive \.LxButton__text\s*\{[^}]*color:\s*#ffffff;/s
+    );
+    expect(styles).toMatch(
       /\.LxButton--chrome\.ui-active,[^{]*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
     );
     expect(styles).not.toMatch(

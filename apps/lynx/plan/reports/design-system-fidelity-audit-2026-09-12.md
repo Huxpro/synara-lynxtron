@@ -1141,3 +1141,18 @@ values and unresolved Native custom properties.
   `rgb(255,255,255)`. The exact Native console was empty. No screenshot was
   retained; staged bundle SHA-256 is
   `a3958eb35feb8924f19d9117fa0e8f02694eae94eccc4242365f49c72df5f43f`.
+
+## Shared Button destructive-foreground follow-up
+
+- Native destructive Button now matches Electron's fixed white foreground over
+  the destructive fill. The dark theme's `--destructive-foreground` is a red text
+  role for neutral surfaces and resolves near-black; it is intentionally retained
+  for those consumers instead of being globally redefined.
+- Native Button/Lab tests pass 6/6, shared manifest tests pass 9/9, and the
+  affected Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `71799` / window `108025`, PID-derived `localhost:8901`,
+  session 1, measured background `rgb(224,46,42)` and foreground
+  `rgb(255,255,255)` at 12px medium. Electron independently resolved the same
+  color pair. The exact Native console was empty. No screenshot was retained;
+  staged bundle SHA-256 is
+  `7034be2fc98b72c1d9ff6760cc284263fcfcef9d908158ac7ca370c51444dc20`.
