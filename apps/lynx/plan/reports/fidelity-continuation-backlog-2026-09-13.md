@@ -829,6 +829,23 @@ state is absent from the paired component matrix.
 
 ### DS-045 — COMPLETE
 
+- Native Project Action form copy now matches Electron's established type tiers:
+  12px/16px medium field labels, 12px/16px muted keybinding guidance, and
+  14px/20px destructive validation copy. The previous Native values mixed an
+  over-loose 18px label line height with undersized 11px hint and error text.
+- The focused Project Action editor contract passes 1/1 and the complete
+  Lynx/Desktop production build passes on the npm Lynxtron 0.0.22 runtime. The
+  remaining field-group, input, textarea, and footer geometry already matches the
+  Electron authority, so no further component-local geometry change is warranted.
+- Exact-owned Lynxtron PID `11265`, window `106855`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the error story and measured all three
+  labels at 12px/16px, the hint at 12px/16px with muted foreground, and the error
+  at 14px/20px with the destructive token. The exact Native error/warning console
+  was empty. No screenshot was retained. The staged bundle SHA-256 is
+  `2322c400f5a2c24c1abacac4b7b88e59e3ed63b4be58597a70738d84f132aaf5`.
+
+### DS-045 — COMPLETE
+
 - Native Project Action form copy now uses Electron's established typography
   hierarchy: field labels are 12px/16px, the keybinding hint is 12px/16px muted,
   and validation copy is 14px/20px destructive. The previous 18px label line
