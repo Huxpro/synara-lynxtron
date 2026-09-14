@@ -260,6 +260,19 @@ state is absent from the paired component matrix.
   staged bundle SHA-256 is
   `5f2115b8721e4f616047900495e6417e4d1ae83e72ba5ab67abf8986a00a07d4`.
 
+### DS-014 — COMPLETE
+
+- Native Landing context-tray project, environment, branch, and environment-menu
+  icons now receive explicit semantic secondary paint instead of relying on CSS
+  inheritance after generated SVG colors have already been resolved.
+- The Temporary icon no longer reads the nonexistent `svgColors.accentForeground`;
+  it resolves to the accent role when active and secondary when inactive, matching
+  Electron's text-state contract. Focused landing suites pass 8/8. Exact-owned
+  Lynxtron 0.0.22 PID `92511` on PID-derived `localhost:8901`, session 1, exposed
+  secondary Local and Temporary SVG paint with an empty console. The final staged
+  bundle SHA-256 is
+  `136e99ced87c7a05bfe9eed40511e528e7a5b361fd4de0193f52a60fc6f9aece`.
+
 - Exact-owned Native: workspace Lynxtron `0.0.22`, PID `38396`, PID-derived
   DevTool `localhost:8901`, session 1, 1280×820 light product states.
 - Focused Native: 39/39 passed.

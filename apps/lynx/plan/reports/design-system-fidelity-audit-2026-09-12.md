@@ -337,3 +337,11 @@ values and unresolved Native custom properties.
   one selected row, and an empty error/warning console. The final staged bundle
   SHA-256 is
   `5f2115b8721e4f616047900495e6417e4d1ae83e72ba5ab67abf8986a00a07d4`.
+- The Landing context tray now passes explicit semantic secondary paint to its
+  generated project, environment, branch, and menu icons. The Temporary icon's
+  active state now uses the accent role instead of the nonexistent
+  `svgColors.accentForeground`, while its inactive state remains secondary.
+  Focused landing suites pass 8/8. Exact-owned Lynxtron 0.0.22 PID `92511`,
+  PID-derived DevTool `localhost:8901`, session 1, confirmed secondary Local and
+  Temporary SVG paint with an empty console. The final staged bundle SHA-256 is
+  `136e99ced87c7a05bfe9eed40511e528e7a5b361fd4de0193f52a60fc6f9aece`.

@@ -23,13 +23,18 @@ export function EmptyThreadContextTray(props: {
   readonly projectName: string;
   readonly temporary: boolean;
 }) {
-  const { semanticIconColor, svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
+  const secondaryIconColor = semanticIconColor('secondary');
 
   return (
     <view className={`EmptyThreadContextTray${props.className ? ` ${props.className}` : ''}`}>
       {props.projectControl ?? (
         <view className="EmptyThreadContextIdentity">
-          <FolderIcon className="EmptyThreadContextIcon" size={14} />
+          <FolderIcon
+            className="EmptyThreadContextIcon"
+            color={secondaryIconColor}
+            size={14}
+          />
           <text className="EmptyThreadContextLabel">{props.projectName}</text>
         </view>
       )}
@@ -37,7 +42,11 @@ export function EmptyThreadContextTray(props: {
         <Menu>
           <MenuTrigger ariaLabel={props.envMode === 'local' ? 'Local' : 'Worktree'}>
             <view className="EmptyThreadContextStatus EmptyThreadContextStatus--interactive">
-              <DeviceLaptopIcon className="EmptyThreadContextIcon" size={14} />
+              <DeviceLaptopIcon
+                className="EmptyThreadContextIcon"
+                color={secondaryIconColor}
+                size={14}
+              />
               <text className="EmptyThreadContextLabel">
                 {props.envMode === 'local' ? 'Local' : 'Worktree'}
               </text>
@@ -45,18 +54,22 @@ export function EmptyThreadContextTray(props: {
           </MenuTrigger>
           <MenuPopup align="start" side="top">
             <MenuItem onClick={() => props.onEnvModeChange?.('local')}>
-              <DeviceLaptopIcon size={14} />
+              <DeviceLaptopIcon color={secondaryIconColor} size={14} />
               <text>Local</text>
             </MenuItem>
             <MenuItem onClick={() => props.onEnvModeChange?.('worktree')}>
-              <GitBranchIcon size={14} />
+              <GitBranchIcon color={secondaryIconColor} size={14} />
               <text>Worktree</text>
             </MenuItem>
           </MenuPopup>
         </Menu>
       ) : (
         <view className="EmptyThreadContextStatus">
-          <DeviceLaptopIcon className="EmptyThreadContextIcon" size={14} />
+          <DeviceLaptopIcon
+            className="EmptyThreadContextIcon"
+            color={secondaryIconColor}
+            size={14}
+          />
           <text className="EmptyThreadContextLabel">
             {props.envMode === 'local' ? 'Local' : 'Worktree'}
           </text>
@@ -64,7 +77,11 @@ export function EmptyThreadContextTray(props: {
       )}
       {props.branch ? (
         <view className="EmptyThreadContextStatus">
-          <GitBranchIcon className="EmptyThreadContextIcon" size={14} />
+          <GitBranchIcon
+            className="EmptyThreadContextIcon"
+            color={secondaryIconColor}
+            size={14}
+          />
           <text className="EmptyThreadContextLabel">{props.branch}</text>
         </view>
       ) : null}
@@ -87,8 +104,8 @@ export function EmptyThreadContextTray(props: {
           content={colorizeLynxSvg(
             temporaryThreadSvg,
             props.temporary
-              ? svgColors.accentForeground
-              : semanticIconColor('secondary')
+              ? semanticIconColor('accent')
+              : secondaryIconColor
           )}
         />
         <text className="EmptyThreadTemporaryLabel">Temporary</text>

@@ -1,5 +1,6 @@
 import { render } from '@lynx-js/react/testing-library';
 import { describe, expect, it, rs } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 
 import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
 
@@ -58,5 +59,19 @@ describe('empty Thread context tray', () => {
     expect(
       elementTree.root?.querySelector('.EmptyThreadContextStatus--interactive')
     ).not.toBeNull();
+  });
+
+  it('resolves toolbar icon paint explicitly instead of relying on SVG inheritance', () => {
+    const source = readFileSync(
+      new URL('./EmptyThreadContextTray.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain(
+      "const secondaryIconColor = semanticIconColor('secondary')"
+    );
+    expect(source.match(/color=\{secondaryIconColor\}/g)).toHaveLength(6);
+    expect(source).toContain("? semanticIconColor('accent')");
+    expect(source).not.toContain('svgColors.accentForeground');
   });
 });
