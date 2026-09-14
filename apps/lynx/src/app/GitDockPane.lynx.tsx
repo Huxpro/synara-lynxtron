@@ -14,6 +14,7 @@ import {
 import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
 import { Button } from '../components/ui/button.lynx';
 import { RefreshCwIcon } from '../lib/icons.lynx';
+import { useTheme } from '../adapters/useTheme.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import {
   fetchWorkingTreeDiff,
@@ -133,6 +134,7 @@ export function GitDockPane(props: {
   readonly threadId: string;
   readonly workspaceRoot: string;
 }) {
+  const { semanticIconColor } = useTheme();
   const [refreshGeneration, setRefreshGeneration] = useState(0);
   const [selected, setSelected] = useState<SelectedGitFile | null>(null);
   const [visibleLineCounts, setVisibleLineCounts] = useState<Record<string, number>>({});
@@ -217,7 +219,10 @@ export function GitDockPane(props: {
           variant="ghost"
           onClick={() => setRefreshGeneration((current) => current + 1)}
         >
-          <RefreshCwIcon size={14} />
+          <RefreshCwIcon
+            color={semanticIconColor('secondary')}
+            size={14}
+          />
         </Button>
       </view>
       <scroll-view className="GitDockFileList" scroll-y enable-scroll-bar>

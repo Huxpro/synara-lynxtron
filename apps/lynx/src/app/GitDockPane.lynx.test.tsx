@@ -12,6 +12,9 @@ describe('Native Git right-dock pane', () => {
     expect(source).toContain('stageGitFiles(props.workspaceRoot, input.paths)');
     expect(source).toContain('unstageGitFiles(props.workspaceRoot, input.paths)');
     expect(source).toContain('fallbackSection');
+    expect(source).toContain(
+      "color={semanticIconColor('secondary')}"
+    );
     expect(source).toContain("selectedResolved?.section === 'staged'");
     expect(source).toContain("selectedResolved?.section === 'unstaged'");
     expect(client).toContain("transportRequest('git.stageFiles'");

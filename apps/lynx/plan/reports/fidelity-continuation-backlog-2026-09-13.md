@@ -561,3 +561,21 @@ state is absent from the paired component matrix.
   and build rather than a claimed real-sidebar cell. No screenshot was retained.
   The staged bundle SHA-256 is
   `0d8f200241dc733100ad02d34eaa4c92a15240a688e91c5587437afb0697c429`.
+
+### DS-030 — COMPLETE
+
+- Native repository chrome no longer depends on parent CSS for two generated
+  glyphs: Git dock Refresh now embeds semantic secondary, while the Pull Request
+  summary Branches glyph embeds muted-foreground to match its metadata label.
+  PR check rings, merge state, diff stats, and other status colors remain
+  unchanged.
+- Focused Native suites pass 3/3, including direct-render verification of the PR
+  branch stroke. The full Lynx/Desktop production build passes on Lynxtron
+  0.0.22.
+- Exact-owned Lynxtron PID `13709`, window `105799`, PID-derived DevTool
+  `localhost:8901`, session 1, opened the real Git dock and measured Refresh at
+  `rgba(13, 13, 13, 0.598)` with an empty error/warning console. The snapshot
+  had no PR summary data, so that half retains focused direct-render evidence
+  rather than a claimed Native screen. No screenshot was retained. The staged
+  bundle SHA-256 is
+  `b2681b6717f7957b59bc979a0a1dac28c13c00ff4f67a07c4bfb00f71ad4b1da`.

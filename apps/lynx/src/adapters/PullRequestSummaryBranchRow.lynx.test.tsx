@@ -16,8 +16,10 @@ describe('Pull Request summary branch row fidelity', () => {
     );
 
     expect(
-      elementTree.root?.querySelector('.SharedPrSummaryMetaLabelIcon')
-    ).not.toBeNull();
+      elementTree.root
+        ?.querySelector('.SharedPrSummaryMetaLabelIcon')
+        ?.getAttribute('content')
+    ).toContain('stroke="rgba(13, 13, 13, 0.6)"');
     const branches = Array.from(
       elementTree.root?.querySelectorAll('.SharedPrSummaryBranchName') ?? []
     );

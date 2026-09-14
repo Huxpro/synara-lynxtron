@@ -551,3 +551,17 @@ values and unresolved Native custom properties.
   strip correctly remains absent and no artificial data was created for visual
   evidence. No screenshot was retained; staged bundle SHA-256:
   `0d8f200241dc733100ad02d34eaa4c92a15240a688e91c5587437afb0697c429`.
+
+## Repository metadata icon follow-up
+
+- Native Git dock Refresh now embeds semantic secondary paint, and the Pull
+  Request summary Branches glyph embeds muted-foreground paint alongside its
+  muted label. Dedicated PR status, merge, check-ring, and diff-stat colors are
+  intentionally untouched.
+- Focused Native suites pass 3/3 and the Lynx/Desktop production build passes on
+  Lynxtron 0.0.22. Exact-owned PID `13709` / window `105799`, PID-derived
+  `localhost:8901`, session 1, opened the real Git dock and measured Refresh at
+  `rgba(13, 13, 13, 0.598)` with an empty console. PR Branch remains
+  direct-render evidence because the snapshot has no PR summary state. No
+  screenshot was retained; staged bundle SHA-256:
+  `b2681b6717f7957b59bc979a0a1dac28c13c00ff4f67a07c4bfb00f71ad4b1da`.

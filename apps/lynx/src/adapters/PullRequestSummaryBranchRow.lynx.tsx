@@ -1,4 +1,5 @@
 import { GitBranchIcon } from '../lib/icons.lynx';
+import { useTheme } from './useTheme.lynx';
 
 export function PullRequestSummaryBranchRow(props: {
   readonly additions: number;
@@ -7,11 +8,13 @@ export function PullRequestSummaryBranchRow(props: {
   readonly headBranch: string;
   readonly label: string;
 }) {
+  const { svgColors } = useTheme();
   return (
     <view className="SharedPrSummaryMetaRow">
       <view className="SharedPrSummaryMetaLabel SharedPrSummaryMetaLabel--icon">
         <GitBranchIcon
           className="SharedPrSummaryMetaLabelIcon"
+          color={svgColors.mutedForeground}
           size={14}
         />
         <text className="SharedPrSummaryMetaLabelText">{props.label}</text>
