@@ -1234,3 +1234,20 @@ values and unresolved Native custom properties.
   corresponding roles. The exact Native console was empty. No screenshot was
   retained; staged bundle SHA-256 is
   `4732e1e0c27b308901cfd966597af8cdebe6d9b64fa0213aacd90bf7c3118ed0`.
+
+## Shared Button variant-namespace follow-up
+
+- Native Button variant and size selectors now have distinct namespaces. The
+  default size keeps `LxButton--default` for compatibility, while every visual
+  variant also emits `LxButton--variant-*`; filled-primary state rules target the
+  latter. This prevents default-size outline buttons from inheriting primary fill
+  during hover, active, or pressed states.
+- Native Button/Lab focused tests pass 7/7, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `66103` / window `108382`, PID-derived `localhost:8901`,
+  session 1, rendered primary-outline hover with the new variant marker and
+  retained dark elevated `rgb(23,23,23)` background, standard border, and full
+  foreground. The pre-fix discovery cell rendered an incorrect bright primary
+  fill in the same state. The exact Native console was empty. No screenshot was
+  retained; staged bundle SHA-256 is
+  `9608016bc321c4be4f4d076faec6b89cdcbd36b77eb3d4c6ab0cd2ed18e0f0c8`.

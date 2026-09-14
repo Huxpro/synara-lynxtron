@@ -1319,3 +1319,23 @@ state is absent from the paired component matrix.
   The exact Native error/warning console was empty, no screenshot was retained,
   and the final staged bundle SHA-256 is
   `4732e1e0c27b308901cfd966597af8cdebe6d9b64fa0213aacd90bf7c3118ed0`.
+
+### DS-074 — COMPLETE
+
+- Native Button now exposes an explicit `LxButton--variant-*` namespace in
+  addition to its existing size class. Previously both the default variant and
+  default size emitted `LxButton--default`, so the new filled hover selector also
+  matched every default-size outline button and painted primary-outline hover as
+  a bright filled primary action.
+- Filled primary state selectors now target `LxButton--variant-default`; all
+  existing size classes remain unchanged. Native Button/Lab focused tests pass
+  7/7, and the affected Lynx/Desktop production build passes on npm Lynxtron
+  0.0.22.
+- Exact-owned Lynxtron PID `66103`, window `108382`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered primary-outline hover with both
+  `LxButton--variant-primary-outline` and the existing size class. Its surface
+  remained dark elevated `rgb(23,23,23)` with the standard light border and full
+  foreground instead of the erroneous primary fill. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `9608016bc321c4be4f4d076faec6b89cdcbd36b77eb3d4c6ab0cd2ed18e0f0c8`.

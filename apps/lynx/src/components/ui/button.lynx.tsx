@@ -76,6 +76,7 @@ export function buttonVariants(input: {
   return cx(
     'LxButton',
     `LxButton--${input.variant ?? 'default'}`,
+    `LxButton--variant-${input.variant ?? 'default'}`,
     `LxButton--${input.size ?? 'default'}`,
     input.shape === 'capsule' && 'LxButton--capsule',
     input.className

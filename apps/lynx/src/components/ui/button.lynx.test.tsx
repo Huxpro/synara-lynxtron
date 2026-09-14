@@ -18,7 +18,7 @@ describe('Lynx Button accessibility contract', () => {
       /\.LxButton--ghost\.ui-hover\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
     );
     expect(styles).toMatch(
-      /\.LxButton--default\.ui-hover,[^{]*\.LxButton--default\.ui-pressed\s*\{[^}]*background-color:\s*var\(--primary-hover-fill\);/s
+      /\.LxButton--variant-default\.ui-hover,[^{]*\.LxButton--variant-default\.ui-pressed\s*\{[^}]*background-color:\s*var\(--primary-hover-fill\);/s
     );
     expect(styles).toMatch(
       /\.LxButton--destructive\.ui-hover,[^{]*\.LxButton--destructive\.ui-pressed\s*\{[^}]*background-color:\s*var\(--destructive-hover-fill\);/s
@@ -55,12 +55,27 @@ describe('Lynx Button accessibility contract', () => {
     const button = elementTree.root?.querySelector('.LxButton');
     expect(button?.getAttribute('accessibility-element')).toBe('true');
     expect(button?.getAttribute('accessibility-trait')).toBe('button');
+    expect(button?.getAttribute('class')).toContain(
+      'LxButton--variant-default'
+    );
     expect(button?.textContent).toBe('Save');
     expect(
       button?.querySelector('.LxButton__text')?.getAttribute(
         'accessibility-element'
       )
     ).toBe('false');
+  });
+
+  it('keeps size and variant class namespaces distinct', () => {
+    render(<Button size="default" variant="primary-outline">Save</Button>);
+    const button = elementTree.root?.querySelector('.LxButton');
+    expect(button?.getAttribute('class')).toContain('LxButton--default');
+    expect(button?.getAttribute('class')).toContain(
+      'LxButton--variant-primary-outline'
+    );
+    expect(button?.getAttribute('class')).not.toContain(
+      'LxButton--variant-default'
+    );
   });
 
   it('honors explicit passive accessibility ownership', () => {
