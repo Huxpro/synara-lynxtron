@@ -1171,3 +1171,18 @@ values and unresolved Native custom properties.
   fill and Electron authority. White text remained intact and the exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `4b5144308953c8fdbeb139413a560c6bbad664e9fe2d0b37508d140aae3c024a`.
+
+## Shared Button ghost/chrome hierarchy follow-up
+
+- Native ghost and chrome Button labels now match Electron's state hierarchy:
+  secondary foreground at rest, full foreground on hover, active, or pressed.
+  They previously stayed at full foreground in every state, making passive
+  toolbar actions visually compete with active content.
+- Link buttons retain full foreground. Native Button/Lab tests pass 6/6, and the
+  affected Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `92632` / window `108114`, PID-derived `localhost:8901`,
+  session 1, measured default ghost text at `rgba(252,252,252,0.576471)` versus
+  Electron's `rgba(252,252,252,0.58)`. A real Lab state click applied
+  `ui-hover`, full `rgb(252,252,252)` text, and the hover surface. The exact
+  Native console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `3338c7a4353df56dc5396c963b4963a7fb0a76ba94d47a671776010e87e00f4f`.

@@ -1246,3 +1246,21 @@ state is absent from the paired component matrix.
   edges. White foreground remained intact, the exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `4b5144308953c8fdbeb139413a560c6bbad664e9fe2d0b37508d140aae3c024a`.
+
+### DS-070 — COMPLETE
+
+- Native ghost and chrome Button labels now start at Electron's secondary
+  foreground level and promote to full foreground only for hover, active, and
+  pressed states. Link buttons retain their full foreground role. This restores
+  hierarchy for toolbar and secondary actions that previously appeared active at
+  rest.
+- Native Button/Lab focused tests pass 6/6, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `92632`, window `108114`, PID-derived DevTool
+  `localhost:8901`, session 1, measured default ghost text at
+  `rgba(252,252,252,0.576471)`, matching Electron's 58% secondary foreground. A
+  real click on the Lab hover state changed the rendered class to `ui-hover`,
+  promoted text to `rgb(252,252,252)`, and applied the 3.5% hover surface. The
+  exact Native error/warning console was empty, no screenshot was retained, and
+  the final staged bundle SHA-256 is
+  `3338c7a4353df56dc5396c963b4963a7fb0a76ba94d47a671776010e87e00f4f`.

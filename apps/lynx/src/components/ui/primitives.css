@@ -125,7 +125,16 @@
 }
 
 .LxButton--ghost .LxButton__text,
-.LxButton--chrome .LxButton__text,
+.LxButton--chrome .LxButton__text {
+  color: var(--color-text-foreground-secondary);
+}
+
+.LxButton--ghost.ui-hover .LxButton__text,
+.LxButton--ghost.ui-active .LxButton__text,
+.LxButton--ghost.ui-pressed .LxButton__text,
+.LxButton--chrome.ui-hover .LxButton__text,
+.LxButton--chrome.ui-active .LxButton__text,
+.LxButton--chrome.ui-pressed .LxButton__text,
 .LxButton--link .LxButton__text {
   color: var(--foreground);
 }
