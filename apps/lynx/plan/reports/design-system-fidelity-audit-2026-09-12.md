@@ -1332,3 +1332,19 @@ values and unresolved Native custom properties.
   through computed styles. The exact Native console was empty. No screenshot was
   retained; staged bundle SHA-256 is
   `fba6385fc105566679b3134397c56cebe4c2dc9e9d462f3298b5154df9dce061`.
+
+## Shared Button size-inset follow-up
+
+- Native text Button horizontal insets now follow Electron's desktop size axis:
+  11px default, 9px small, 13px large, and 15px extra-large. The previous Native
+  values widened default/small by 2px and collapsed large/extra-large onto the
+  same 12px inset. Extra-small and icon-only sizes keep their verified geometry.
+- Native primitive/Button/Lab focused tests pass 12/12, and the affected
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `42730`, PID-derived `localhost:8901`, session 1, measured the
+  default destructive Button at 11px left/right padding and a 91x32px outer box,
+  with red fill/border, white text, and 12px medium type intact. Electron resolved
+  the same horizontal inset; its nested preview was in the responsive 36px-height
+  tier, so unlike height contexts were not conflated. The exact Native console was
+  empty. No screenshot was retained; staged bundle SHA-256 is
+  `4c18d39a1b0678061a7e71f39c8c981c0a217e8be1cff25e130c9410a4a00fbe`.

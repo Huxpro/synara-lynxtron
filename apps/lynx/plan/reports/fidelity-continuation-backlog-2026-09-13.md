@@ -1427,3 +1427,22 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `fba6385fc105566679b3134397c56cebe4c2dc9e9d462f3298b5154df9dce061`.
+
+### DS-080 — COMPLETE
+
+- Native text Button horizontal insets now match Electron's desktop size axis:
+  default 11px, small 9px, large 13px, and extra-large 15px. The previous Native
+  values were 12px, 10px, 12px, and 12px respectively, widening common actions
+  and compressing the intended scale progression. Extra-small and icon-only
+  geometry remain unchanged.
+- Native primitive/Button/Lab focused tests pass 12/12, and the affected
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `42730`, PID-derived DevTool `localhost:8901`, session
+  1, measured the default destructive Button at 11px left/right padding and a
+  91x32px outer border box while retaining red fill/border, white text, and the
+  12px medium type. Electron independently resolved the same 11px horizontal
+  inset. Its paired iframe used the responsive 36px-height tier, so height was not
+  compared across unlike viewport contexts. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `4c18d39a1b0678061a7e71f39c8c981c0a217e8be1cff25e130c9410a4a00fbe`.

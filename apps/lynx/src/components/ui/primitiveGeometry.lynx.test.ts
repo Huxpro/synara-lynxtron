@@ -12,6 +12,14 @@ describe('shared primitive geometry', () => {
     expect(css).toMatch(/\.LxButton--icon-xl\s*\{[^}]*width:\s*40px;[^}]*min-width:\s*40px;/s);
   });
 
+  it('matches Electron horizontal insets across text button sizes', () => {
+    expect(css).toMatch(/\.LxButton\s*\{[^}]*padding:\s*7px 11px;/s);
+    expect(css).toMatch(/\.LxButton--xs\s*\{[^}]*padding-left:\s*7px;[^}]*padding-right:\s*7px;/s);
+    expect(css).toMatch(/\.LxButton--sm,[^{]*\{[^}]*padding:\s*5px 9px;/s);
+    expect(css).toMatch(/\.LxButton--lg\s*\{[^}]*padding-left:\s*13px;[^}]*padding-right:\s*13px;/s);
+    expect(css).toMatch(/\.LxButton--xl\s*\{[^}]*padding-left:\s*15px;[^}]*padding-right:\s*15px;/s);
+  });
+
   it('matches the Electron radius tokens for generic menus and dialogs', () => {
     expect(css).toMatch(
       /\.LxMenuPopup\s*\{[^}]*border-radius:\s*18px;[^}]*box-shadow:/s
