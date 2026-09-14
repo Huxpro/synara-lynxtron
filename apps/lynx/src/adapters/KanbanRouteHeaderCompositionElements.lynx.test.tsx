@@ -1,6 +1,7 @@
 import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
+
 describe('Kanban route header fidelity', () => {
   it('matches the Web header rail, rhythm, and action anatomy', () => {
     const styles = readFileSync(
@@ -34,12 +35,9 @@ describe('Kanban route header fidelity', () => {
     expect(styles).toMatch(
       /\.SharedKanbanRouteNewTask--disabled\s*\{[^}]*opacity:\s*0\.64;/s
     );
-    expect(source).toContain(
-      '<PlusIcon className="SharedKanbanRouteNewTaskIcon" size={14} />'
-    );
-    expect(source).toContain(
-      '<ArrowLeftIcon className="SharedKanbanRouteBackIcon" size={14} />'
-    );
+    expect(source).toContain('className="SharedKanbanRouteNewTaskIcon"');
+    expect(source).toContain('className="SharedKanbanRouteBackIcon"');
+    expect(source.match(/color=\{semanticIconColor\('secondary'\)\}/g)?.length).toBe(2);
     expect(source).not.toContain('SharedKanbanRouteBackGlyph');
     expect(source).not.toContain('＋ New task');
     expect(appStyles).toMatch(

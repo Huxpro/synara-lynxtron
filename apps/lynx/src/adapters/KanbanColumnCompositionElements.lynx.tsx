@@ -5,6 +5,7 @@ import type { KanbanColumnKey } from '@synara-web/components/kanban/kanban.logic
 import { PlusIcon } from '../lib/icons.lynx';
 import { KanbanStatusIcon } from './KanbanStatusIcon.lynx';
 import './kanban-column-composition-elements.css';
+import { useTheme } from './useTheme.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 type ChildrenProps = { readonly children?: ReactNode };
@@ -37,6 +38,7 @@ export function KanbanColumnNewCardElement(props: {
   readonly label: string;
   readonly onActivate: () => void;
 }) {
+  const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedKanbanColumnNewCard',
     accessibleLabel: props.label,
@@ -48,7 +50,11 @@ export function KanbanColumnNewCardElement(props: {
       aria-label={props.label}
       {...interaction.eventProps}
     >
-      <PlusIcon className="SharedKanbanColumnNewCardIcon" size={14} />
+      <PlusIcon
+        className="SharedKanbanColumnNewCardIcon"
+        color={semanticIconColor('secondary')}
+        size={14}
+      />
     </view>
   );
 }

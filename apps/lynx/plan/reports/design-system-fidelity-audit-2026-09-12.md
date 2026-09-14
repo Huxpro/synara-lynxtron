@@ -402,3 +402,17 @@ values and unresolved Native custom properties.
   `rgba(13, 13, 13, 0.598)` with an empty console. No screenshot was retained.
   The staged bundle SHA-256 is
   `8a7f6976fd2dce0989983c62161fdf4cf9d66c4547fcd50789b6b9965adb0034`.
+
+## Kanban action icon follow-up
+
+- Native Kanban overview, column, and project-route action glyphs now pass the
+  same default semantic paint that Electron assigns through its Button variants:
+  New task, Back, and column-add actions are secondary, while the hover-only
+  overview disclosure chevron is tertiary. Content/status symbols keep their
+  dedicated colors.
+- Focused tests pass 5/5. Exact-owned Lynxtron 0.0.22 PID `86971`, window
+  `104862`, PID-derived `localhost:8901`, session 1, verified both live Kanban
+  routes with secondary `rgba(13, 13, 13, 0.598)` and tertiary
+  `rgba(13, 13, 13, 0.398)` strokes and an empty console. No screenshot was
+  retained. The staged bundle SHA-256 is
+  `291d5f4406b7b2ddbed80a3f393c8aeaec1c4f3d3ae089051d568fd3e1c79e2e`.

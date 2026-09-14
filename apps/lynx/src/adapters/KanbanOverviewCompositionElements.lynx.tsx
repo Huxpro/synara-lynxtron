@@ -2,6 +2,7 @@ import type { ReactNode } from '@lynx-js/react';
 
 import { ChevronRightIcon, PlusIcon } from '../lib/icons.lynx';
 import './kanban-overview-composition-elements.css';
+import { useTheme } from './useTheme.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 type ChildrenProps = { readonly children?: ReactNode };
@@ -73,9 +74,11 @@ export function KanbanOverviewProjectCountElement(props: ChildrenProps) {
 }
 
 export function KanbanOverviewProjectChevronElement() {
+  const { semanticIconColor } = useTheme();
   return (
     <ChevronRightIcon
       className="SharedKanbanOverviewProjectChevron"
+      color={semanticIconColor('tertiary')}
       size={14}
     />
   );
@@ -85,6 +88,7 @@ export function KanbanOverviewNewTaskElement(props: {
   readonly label: string;
   readonly onActivate: () => void;
 }) {
+  const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedKanbanOverviewNewTask',
     accessibleLabel: props.label,
@@ -96,7 +100,11 @@ export function KanbanOverviewNewTaskElement(props: {
       aria-label={props.label}
       {...interaction.eventProps}
     >
-      <PlusIcon className="SharedKanbanOverviewNewTaskIcon" size={14} />
+      <PlusIcon
+        className="SharedKanbanOverviewNewTaskIcon"
+        color={semanticIconColor('secondary')}
+        size={14}
+      />
     </view>
   );
 }

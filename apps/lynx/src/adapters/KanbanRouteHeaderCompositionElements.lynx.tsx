@@ -2,6 +2,7 @@ import type { ReactNode } from '@lynx-js/react';
 
 import { ArrowLeftIcon, PlusIcon } from '../lib/icons.lynx';
 import './kanban-route-header-composition-elements.css';
+import { useTheme } from './useTheme.lynx';
 import { useLynxInteractiveState } from './useLynxInteractiveState';
 
 type ChildrenProps = { readonly children?: ReactNode };
@@ -23,6 +24,7 @@ export function KanbanRouteHeaderNavigationElement() {
 export function KanbanRouteHeaderBackElement(props: {
   readonly onActivate: () => void;
 }) {
+  const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: 'SharedKanbanRouteBack',
     accessibleLabel: 'Back to Kanban',
@@ -34,7 +36,11 @@ export function KanbanRouteHeaderBackElement(props: {
       aria-label="Back to Kanban"
       {...interaction.eventProps}
     >
-      <ArrowLeftIcon className="SharedKanbanRouteBackIcon" size={14} />
+      <ArrowLeftIcon
+        className="SharedKanbanRouteBackIcon"
+        color={semanticIconColor('secondary')}
+        size={14}
+      />
     </view>
   );
 }
@@ -60,6 +66,7 @@ export function KanbanRouteHeaderNewTaskElement(props: {
   readonly shortcutParts: readonly string[];
   readonly onActivate: () => void;
 }) {
+  const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: `SharedKanbanRouteNewTask${
       props.disabled ? ' SharedKanbanRouteNewTask--disabled' : ''
@@ -74,7 +81,11 @@ export function KanbanRouteHeaderNewTaskElement(props: {
       aria-label="New task"
       {...interaction.eventProps}
     >
-      <PlusIcon className="SharedKanbanRouteNewTaskIcon" size={14} />
+      <PlusIcon
+        className="SharedKanbanRouteNewTaskIcon"
+        color={semanticIconColor('secondary')}
+        size={14}
+      />
       <text className="SharedKanbanRouteNewTaskText">New task</text>
     </view>
   );

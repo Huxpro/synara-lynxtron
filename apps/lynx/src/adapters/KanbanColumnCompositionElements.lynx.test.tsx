@@ -1,6 +1,7 @@
 import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
+
 describe('Kanban column icon fidelity', () => {
   it('uses real Plus and Web-matched status SVG identities', () => {
     const source = readFileSync(
@@ -16,9 +17,8 @@ describe('Kanban column icon fidelity', () => {
       'utf8'
     );
 
-    expect(source).toContain(
-      '<PlusIcon className="SharedKanbanColumnNewCardIcon" size={14} />'
-    );
+    expect(source).toContain('className="SharedKanbanColumnNewCardIcon"');
+    expect(source).toContain("color={semanticIconColor('secondary')}");
     expect(source).toContain('<KanbanStatusIcon column={props.column} />');
     expect(source).not.toMatch(/[＋✓◐◌]/);
     expect(statusSource).toContain(

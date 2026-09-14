@@ -1,6 +1,7 @@
 import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
+
 describe('Kanban overview fidelity', () => {
   it('matches the Web empty-state width and text rhythm', () => {
     const styles = readFileSync(
@@ -33,9 +34,9 @@ describe('Kanban overview fidelity', () => {
     expect(source).toContain(
       'className="SharedKanbanOverviewProjectChevron"'
     );
-    expect(source).toContain(
-      '<PlusIcon className="SharedKanbanOverviewNewTaskIcon" size={14} />'
-    );
+    expect(source).toContain('className="SharedKanbanOverviewNewTaskIcon"');
+    expect(source).toContain("color={semanticIconColor('tertiary')}");
+    expect(source).toContain("color={semanticIconColor('secondary')}");
     expect(source).not.toMatch(/[›＋]/);
     expect(styles).toMatch(
       /\.SharedKanbanOverviewProjectChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*margin-left:\s*auto;/s

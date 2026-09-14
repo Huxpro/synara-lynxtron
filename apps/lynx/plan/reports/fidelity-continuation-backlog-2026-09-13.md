@@ -366,3 +366,20 @@ state is absent from the paired component matrix.
   `rgba(13, 13, 13, 0.598)` and an empty error/warning console. No screenshot was
   retained. The staged bundle SHA-256 is
   `8a7f6976fd2dce0989983c62161fdf4cf9d66c4547fcd50789b6b9965adb0034`.
+
+### DS-020 — COMPLETE
+
+- Native Kanban action glyphs now resolve their default paint at SVG generation
+  time instead of relying on ignored CSS inheritance. Overview and column New
+  task plus icons, project-route Back, and the header New task icon use semantic
+  secondary; the hover-only project disclosure chevron uses tertiary, matching
+  Electron's quieter `text-muted-foreground/50` hierarchy. Status, provider,
+  fork, and pull-request content symbols remain unchanged.
+- Focused column/overview/route suites pass 5/5. Exact-owned Lynxtron 0.0.22 PID
+  `86971`, window `104862`, PID-derived DevTool `localhost:8901`, session 1,
+  verified the live `/kanban` and project board routes: Overview New task, route
+  Back/New task, and Column New card strokes resolve to
+  `rgba(13, 13, 13, 0.598)` while overview chevrons resolve to
+  `rgba(13, 13, 13, 0.398)`. The exact-client console was empty and no screenshot
+  was retained. The staged bundle SHA-256 is
+  `291d5f4406b7b2ddbed80a3f393c8aeaec1c4f3d3ae089051d568fd3e1c79e2e`.
