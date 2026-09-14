@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from '@lynx-js/react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from '@lynx-js/react';
 import { getRectById, getRectByRef, type InputRef } from '@lynx-js/lynx-ui';
 import type { NodesRef, SelectionChangeEvent } from '@lynx-js/types';
 import type { TerminalEvent, TerminalSessionSnapshot } from '@synara/contracts';
@@ -30,7 +30,8 @@ import { buildTerminalSelectionContextMenuItems } from '@synara/shared/contextMe
 
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input.lynx';
-import { ArrowDownIcon } from '@synara-web/lib/icons';
+import { ChevronDownIcon, XIcon } from '../lib/icons.lynx';
+import { useTheme } from '../adapters/useTheme.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import { dialogs } from '../platform/dialogs';
 import { clipboard } from '../platform/clipboard';
@@ -168,8 +169,8 @@ function terminalSearchRunStyle(
 
 function TerminalSearchButton(props: {
   readonly active?: boolean;
+  readonly children: ReactNode;
   readonly label: string;
-  readonly text: string;
   readonly onActivate: () => void;
 }) {
   const interaction = useLynxInteractiveState({
@@ -181,7 +182,7 @@ function TerminalSearchButton(props: {
   });
   return (
     <view className={interaction.className} {...interaction.eventProps}>
-      <text className="ThreadTerminalSearchButtonText">{props.text}</text>
+      {props.children}
     </view>
   );
 }
@@ -197,6 +198,7 @@ export function ThreadTerminalSearchBar(props: {
   readonly onQueryChange: (value: string) => void;
   readonly onToggleCase: () => void;
 }) {
+  const { semanticIconColor } = useTheme();
   return (
     <view className="ThreadTerminalSearch">
       <Input
@@ -219,10 +221,30 @@ export function ThreadTerminalSearchBar(props: {
       {props.query && props.hasResults === false ? (
         <text className="ThreadTerminalSearchEmpty">No results</text>
       ) : null}
-      <TerminalSearchButton active={props.activeCaseSensitive} label="Match case" text="Aa" onActivate={props.onToggleCase} />
-      <TerminalSearchButton label="Previous match (Shift+Enter)" text="↑" onActivate={props.onPrevious} />
-      <TerminalSearchButton label="Next match (Enter)" text="↓" onActivate={props.onNext} />
-      <TerminalSearchButton label="Close search (Esc)" text="×" onActivate={props.onClose} />
+      <TerminalSearchButton active={props.activeCaseSensitive} label="Match case" onActivate={props.onToggleCase}>
+        <text className="ThreadTerminalSearchButtonText">Aa</text>
+      </TerminalSearchButton>
+      <TerminalSearchButton label="Previous match (Shift+Enter)" onActivate={props.onPrevious}>
+        <ChevronDownIcon
+          className="ThreadTerminalSearchButtonIcon ThreadTerminalSearchButtonIcon--previous"
+          color={semanticIconColor('secondary')}
+          size={14}
+        />
+      </TerminalSearchButton>
+      <TerminalSearchButton label="Next match (Enter)" onActivate={props.onNext}>
+        <ChevronDownIcon
+          className="ThreadTerminalSearchButtonIcon"
+          color={semanticIconColor('secondary')}
+          size={14}
+        />
+      </TerminalSearchButton>
+      <TerminalSearchButton label="Close search (Esc)" onActivate={props.onClose}>
+        <XIcon
+          className="ThreadTerminalSearchButtonIcon"
+          color={semanticIconColor('secondary')}
+          size={14}
+        />
+      </TerminalSearchButton>
     </view>
   );
 }

@@ -176,6 +176,15 @@
   line-height: 14px;
 }
 
+.ThreadTerminalSearchButtonIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.ThreadTerminalSearchButtonIcon--previous {
+  transform: rotate(180deg);
+}
+
 .ThreadTerminalOutput {
   color: var(--color-token-terminal-foreground);
   font-family: var(--font-mono-family);

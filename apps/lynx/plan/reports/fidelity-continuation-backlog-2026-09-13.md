@@ -126,6 +126,16 @@ state is absent from the paired component matrix.
   row pattern: the primary row action and hover Delete action are now sibling
   buttons, preserving independent keyboard and screen-reader semantics.
 
+### AF-007 — COMPLETE
+
+- Native Terminal Search no longer uses font glyphs for Previous, Next, and
+  Close. It now reuses the 14px ChevronDown/X icon primitives and the semantic
+  secondary icon role used by Electron; Previous is the same chevron rotated
+  180 degrees. `Aa` remains text because it is the intentional match-case label.
+- The existing paired `terminal/search` story verified the final visible order
+  `Aa / up / down / close`; PID-derived Native DOM reported three icon nodes and
+  one text node, with an empty error/warning console.
+
 ### AF-001 — COMPLETE
 
 - Native Create and Edit now share the same composer primitives for title,

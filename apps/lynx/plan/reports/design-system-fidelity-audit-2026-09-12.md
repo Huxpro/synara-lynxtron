@@ -281,3 +281,10 @@ values and unresolved Native custom properties.
   row navigation and hover Delete are sibling buttons rather than a button-like
   ancestor containing a second focusable control. React Doctor reports zero
   changed-line errors or warnings after the correction.
+- Native Terminal Search now matches Electron's icon contract: Previous/Next
+  use 14px semantic secondary chevrons and Close uses the 14px semantic X icon
+  instead of font glyphs whose baseline and shape depended on the UI face. The
+  paired story retained `Aa` as the intentional text affordance, exposed exactly
+  three icon nodes plus one text label, and had an empty exact-client console.
+  Its staged bundle SHA-256 is
+  `48b48ee375287a6d4b1c4837f384b44e6ebf8b4b88165f04204ec1081ead23b7`.
