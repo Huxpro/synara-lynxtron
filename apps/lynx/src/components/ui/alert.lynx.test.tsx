@@ -10,6 +10,9 @@ describe('Alert', () => {
   it('matches the Electron default and compact type tiers', () => {
     const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
     expect(styles).toMatch(
+      /\.LxAlert\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
       /\.LxAlertTitle\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
     );
     expect(styles).toMatch(

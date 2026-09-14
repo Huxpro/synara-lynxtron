@@ -1685,3 +1685,20 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `697ea2222dc863a6ed8bf685a0a1b305f981bf9c8135554f3479007e359687b2`.
+
+### DS-095 — COMPLETE
+
+- Native Alert now declares its shared border width, style, and four physical
+  colors separately. This avoids Lynx's custom-property shorthand failure, which
+  had parsed `border: 1px solid var(--border)` but painted every default Alert
+  edge pure black. Semantic variants continue to override their border color
+  through theme-aware inline paint.
+- The focused Native Alert suite passes 4/4, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `15482`, window `109819`, PID-derived DevTool
+  `localhost:8901`, session 1, resolved all four default Alert edges to
+  `rgba(252,252,252,0.0705882)`. Switching to warning through Computer Use
+  preserved all four semantic edges at `rgba(245,180,74,0.317647)`. The exact
+  Native error/warning console was empty, no screenshot was retained, and the
+  final staged bundle SHA-256 is
+  `eaf54fbe59c339b11966e734d7cc3f491f2f0ca58425487e9164b3f9ccca7029`.

@@ -1558,3 +1558,17 @@ values and unresolved Native custom properties.
   `rgba(245,180,74,0.0392157)`. The exact Native console was empty. No screenshot
   was retained; staged bundle SHA-256 is
   `697ea2222dc863a6ed8bf685a0a1b305f981bf9c8135554f3479007e359687b2`.
+
+## Shared Alert border follow-up
+
+- Native Alert now expresses its 1px shared border and all four physical colors
+  separately, avoiding the Lynx custom-property shorthand path that painted the
+  default border pure black. Semantic variants retain their theme-aware inline
+  border colors. The focused Native Alert suite passes 4/4, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `15482` / window `109819`, PID-derived `localhost:8901`,
+  session 1, resolved every default Alert edge to
+  `rgba(252,252,252,0.0705882)`. The real warning state selected through Computer
+  Use retained `rgba(245,180,74,0.317647)` on all four edges. The exact Native
+  console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `eaf54fbe59c339b11966e734d7cc3f491f2f0ca58425487e9164b3f9ccca7029`.
