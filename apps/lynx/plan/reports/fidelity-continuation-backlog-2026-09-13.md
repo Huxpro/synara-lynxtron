@@ -1067,3 +1067,21 @@ state is absent from the paired component matrix.
   title remained 14px/20px medium, the exact Native error/warning console was
   empty, and no screenshot was retained. The final staged bundle SHA-256 is
   `3b6ec3854aa7c2865d1a74f5c985ee226c993fd1dddbfb7142d9f76c8fdba5fd`.
+
+### DS-059 — COMPLETE
+
+- Shared Native Menu and Command now preserve Electron's two auxiliary-copy
+  roles instead of flattening both to full-strength 10px muted text. Menu group
+  labels use 12px/16px regular type, 8×6px insets, and 45% secondary opacity;
+  Menu and Command shortcuts use 10px medium type, 1px tracking, auto-leading
+  alignment, and 72% muted opacity.
+- Focused Menu and Command suites pass 32/32. The complete production build
+  reports 6/6 tasks successful on npm Lynxtron 0.0.22; the existing Project Sort
+  popup's local 12px/16px medium label override remains intact.
+- Exact-owned Lynxtron PID `22902`, window `107694`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the shortcut menu. Native computed the
+  Actions label at 12px/16px, weight 400, 8×6px inset, opacity 0.45, and the ⌘N
+  shortcut at 10px, weight 500, 1px tracking, opacity 0.72. The exact Native
+  error/warning console was empty and no screenshot was retained. The final
+  staged bundle SHA-256 is
+  `b1cdce27247d4de6141ef9487f46ef4fef81df4e04bb587ecc73ae08af01b7bf`.
