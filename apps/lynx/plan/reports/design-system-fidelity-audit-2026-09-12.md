@@ -833,6 +833,20 @@ values and unresolved Native custom properties.
   empty. No screenshot was retained; staged bundle SHA-256 is
   `4db0f79a3ee064b28320269731f0a3805838f7c7349283fb060366c7eeed30e2`.
 
+## Shared Dialog header rhythm follow-up
+
+- Native Dialog headers now use the same explicit 6px title-description gap as
+  Electron's shared primitive. Removing the description's old 4px margin returns
+  spacing ownership to the header and keeps title-only dialogs free of compensating
+  child rules.
+- The focused shared Dialog suite passes 11/11 and the complete Lynx/Desktop
+  production build passes on Lynxtron 0.0.22.
+- Exact-owned PID `49765` / window `106949`, PID-derived `localhost:8901`,
+  session 1, rendered `ui/dialog` title-description/open. DevTool measured the
+  title bottom at y=403 and description top at y=409, an exact 6px gap, with an
+  empty Native console. No screenshot was retained; staged bundle SHA-256 is
+  `327771d5a3284cf91ba78cd187b95070c3d6e0a0ded7582451387b5e15e485d1`.
+
 ## Project Action form typography follow-up
 
 - Native Project Action form labels, hint, and validation copy now match the

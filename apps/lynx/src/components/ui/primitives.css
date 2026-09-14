@@ -654,6 +654,7 @@
 .LxDialogHeader {
   display: flex;
   flex-direction: column;
+  gap: 6px;
   padding-right: 24px;
   margin-bottom: 10px;
 }
@@ -668,7 +669,6 @@
   color: var(--muted-foreground);
   font-size: 14px;
   line-height: 20px;
-  margin-top: 4px;
 }
 
 .LxDialogPanel {

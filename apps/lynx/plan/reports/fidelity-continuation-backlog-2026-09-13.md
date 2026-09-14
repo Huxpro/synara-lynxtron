@@ -879,6 +879,22 @@ state is absent from the paired component matrix.
   screenshot was retained. The staged bundle SHA-256 is
   `4db0f79a3ee064b28320269731f0a3805838f7c7349283fb060366c7eeed30e2`.
 
+### DS-048 — COMPLETE
+
+- Shared Native Dialog headers now own Electron's 6px title-to-description gap.
+  The previous primitive put a 4px top margin on the description child, producing
+  tighter rhythm and splitting one layout contract across parent and child. The
+  title-only case remains unaffected.
+- The focused shared Dialog suite passes 11/11 and the complete Lynx/Desktop
+  production build passes on the npm Lynxtron 0.0.22 runtime.
+- Exact-owned Lynxtron PID `49765`, window `106949`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the shared `ui/dialog`
+  title-description/open story. The title box ended at y=403 and the description
+  began at y=409, proving the resolved 6px gap; their measured heights were 22px
+  and 20px. The exact Native error/warning console was empty. No screenshot was
+  retained. The staged bundle SHA-256 is
+  `327771d5a3284cf91ba78cd187b95070c3d6e0a0ded7582451387b5e15e485d1`.
+
 ### DS-045 — COMPLETE
 
 - Native Project Action form copy now uses Electron's established typography
