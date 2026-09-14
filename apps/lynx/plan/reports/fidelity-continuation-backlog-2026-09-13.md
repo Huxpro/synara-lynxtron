@@ -894,3 +894,20 @@ state is absent from the paired component matrix.
   and 20px. The exact Native error/warning console was empty. No screenshot was
   retained. The staged bundle SHA-256 is
   `327771d5a3284cf91ba78cd187b95070c3d6e0a0ded7582451387b5e15e485d1`.
+
+### DS-049 — COMPLETE
+
+- Shared Native Input now preserves Electron's size-specific horizontal insets:
+  default uses 12px, small uses 10px, and large uses 14px. The previous Native
+  primitive flattened all three sizes to 10px, making default and large fields
+  read too dense across forms and settings. Textarea's dialog-specific 10px
+  content inset remains independent.
+- The focused Input suite passes 3/3 and the complete Lynx/Desktop production
+  build passes on the npm Lynxtron 0.0.22 runtime.
+- Exact-owned Lynxtron PID `72043`, window `106977`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the `ui/input` filled story and switched
+  through all three size variants using visible controls. Native measured default
+  at 32px min-height / 12px insets, small at 28px / 10px, and large at 36px /
+  14px. The exact Native error/warning console was empty. No screenshot was
+  retained. The staged bundle SHA-256 is
+  `a9931468fb38a2bcd18a22b53f774746fee5db1ddcde04230e7eebbe11117a5d`.

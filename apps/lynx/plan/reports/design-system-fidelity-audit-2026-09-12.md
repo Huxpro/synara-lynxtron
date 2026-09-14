@@ -846,3 +846,18 @@ values and unresolved Native custom properties.
   title bottom at y=403 and description top at y=409, an exact 6px gap, with an
   empty Native console. No screenshot was retained; staged bundle SHA-256 is
   `327771d5a3284cf91ba78cd187b95070c3d6e0a0ded7582451387b5e15e485d1`.
+
+## Shared Input size-inset follow-up
+
+- Native Input now mirrors Electron's size axis instead of giving every field the
+  same 10px horizontal inset: default is 12px, small remains 10px, and large is
+  14px. Shared heights and 12px/16px default type were already aligned. Textarea
+  keeps its separate component and dialog-specific inset rules.
+- The focused Input suite passes 3/3 and the complete Lynx/Desktop production
+  build passes on Lynxtron 0.0.22.
+- Exact-owned PID `72043` / window `106977`, PID-derived `localhost:8901`,
+  session 1, rendered `ui/input` and used the visible default/small/large controls.
+  DevTool measured 32px/12px, 28px/10px, and 36px/14px respectively for
+  min-height/horizontal inset. The exact Native console was empty. No screenshot
+  was retained; staged bundle SHA-256 is
+  `a9931468fb38a2bcd18a22b53f774746fee5db1ddcde04230e7eebbe11117a5d`.

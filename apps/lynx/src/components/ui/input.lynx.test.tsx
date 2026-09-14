@@ -6,6 +6,15 @@ describe('Lynx Input accessibility contract', () => {
     const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
 
     expect(styles).toMatch(
+      /\.LxInputControl\s*\{[^}]*padding-left:\s*12px;[^}]*padding-right:\s*12px;/s
+    );
+    expect(styles).toMatch(
+      /\.LxInputControl--sm\s*\{[^}]*padding-left:\s*10px;[^}]*padding-right:\s*10px;/s
+    );
+    expect(styles).toMatch(
+      /\.LxInputControl--lg\s*\{[^}]*padding-left:\s*14px;[^}]*padding-right:\s*14px;/s
+    );
+    expect(styles).toMatch(
       /\.LxInput\s*\{[^}]*box-sizing:\s*border-box;[^}]*padding-top:\s*7px;[^}]*padding-bottom:\s*7px;[^}]*line-height:\s*16px;/s
     );
     expect(styles).toMatch(
