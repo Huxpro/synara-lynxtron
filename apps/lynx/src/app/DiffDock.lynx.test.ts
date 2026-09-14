@@ -30,7 +30,12 @@ describe('Diff Dock chrome fidelity', () => {
     expect(source).toContain('closeLabel="Close Diff"');
     expect(source).toContain('ariaLabel="Add panel"');
     expect(source).toContain('label="Collapse panel"');
-    expect(source).toContain('<PanelRightCloseIcon size={14} />');
+    expect(source).toContain(
+      "<PanelRightCloseIcon\n                  color={semanticIconColor('secondary')}"
+    );
+    expect(source).toContain(
+      "<PlusIcon\n                      color={semanticIconColor('secondary')}"
+    );
     expect(fileTabSource).toContain('<EditorSurfaceTab');
     expect(railTabsSource).toContain('<EditorSurfaceTab');
   });

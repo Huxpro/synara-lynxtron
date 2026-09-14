@@ -57,6 +57,10 @@ describe('Native dock terminal pane', () => {
     expect(source).toContain('label="Close active terminal tab"');
     expect(source).toContain('label="Split right"');
     expect(source).toContain('label="Split down"');
+    expect(source).toContain(
+      "const toolbarIconColor = semanticIconColor('secondary')"
+    );
+    expect(source.match(/color=\{toolbarIconColor\}/g)).toHaveLength(8);
     expect(source).toContain('splitTerminalRight(scopeId, terminalId)');
     expect(source).toContain('splitTerminalDown(scopeId, terminalId)');
     expect(source).toContain(

@@ -100,6 +100,8 @@ export function DockTerminalPane(props: {
   readonly isActive?: boolean;
   readonly scope?: 'dock' | 'thread';
 }) {
+  const { semanticIconColor } = useTheme();
+  const toolbarIconColor = semanticIconColor('secondary');
   const scopeId =
     props.scope === 'thread'
       ? (props.threadId as ThreadId)
@@ -513,7 +515,7 @@ export function DockTerminalPane(props: {
                   addTerminalTab(leafActiveId, node.terminalIds.length)
                 }
               >
-                <PlusIcon size={14} />
+                <PlusIcon color={toolbarIconColor} size={14} />
               </ToolbarButton>
               {node.terminalIds.length > 1 ? (
                 <ToolbarButton
@@ -539,7 +541,7 @@ export function DockTerminalPane(props: {
                   )
                 }
               >
-                <LayoutColumnsIcon size={14} />
+                <LayoutColumnsIcon color={toolbarIconColor} size={14} />
               </ToolbarButton>
               <ToolbarButton
                 disabled={
@@ -555,13 +557,13 @@ export function DockTerminalPane(props: {
                   )
                 }
               >
-                <LayoutRowsIcon size={14} />
+                <LayoutRowsIcon color={toolbarIconColor} size={14} />
               </ToolbarButton>
               <ToolbarButton
                 label="Close active terminal tab"
                 onActivate={() => requestClose(leafActiveId)}
               >
-                <Trash2 size={14} />
+                <Trash2 color={toolbarIconColor} size={14} />
               </ToolbarButton>
             </>
           )}
@@ -663,7 +665,7 @@ export function DockTerminalPane(props: {
                 splitTerminal(activeId, tabs.length, 'right')
               }
             >
-              <LayoutColumnsIcon size={14} />
+              <LayoutColumnsIcon color={toolbarIconColor} size={14} />
             </ToolbarButton>
             <ToolbarButton
               disabled={tabs.length >= MAX_TERMINALS_PER_GROUP}
@@ -672,19 +674,19 @@ export function DockTerminalPane(props: {
                 splitTerminal(activeId, tabs.length, 'bottom')
               }
             >
-              <LayoutRowsIcon size={14} />
+              <LayoutRowsIcon color={toolbarIconColor} size={14} />
             </ToolbarButton>
             <ToolbarButton
               label="New terminal"
               onActivate={addTerminalGroup}
             >
-              <PlusIcon size={14} />
+              <PlusIcon color={toolbarIconColor} size={14} />
             </ToolbarButton>
             <ToolbarButton
               label="Close active terminal tab"
               onActivate={() => requestClose(activeId)}
             >
-              <Trash2 size={14} />
+              <Trash2 color={toolbarIconColor} size={14} />
             </ToolbarButton>
             </>
           )}

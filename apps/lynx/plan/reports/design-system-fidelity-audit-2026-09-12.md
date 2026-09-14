@@ -524,3 +524,18 @@ values and unresolved Native custom properties.
   production Web classes rather than a claimed interaction. No screenshot was
   retained; staged bundle SHA-256:
   `464872c249e0e97b72ce7da40892e65ad604842d1eb73a20be9ce07a779fc9ac`.
+
+## Dock toolbar icon follow-up
+
+- Native Terminal toolbar New/Move/Split/Close and Diff header Add/Collapse
+  glyphs now embed semantic secondary paint for their default state, matching
+  Electron chrome buttons. Menu content and selected identity glyphs retain their
+  existing roles. Dynamic hover stroke recoloring is not claimed because encoded
+  Lynx SVG content does not reliably follow parent CSS color changes.
+- Focused Native Terminal/Diff suites pass 13/13. Exact-owned Lynxtron 0.0.22
+  PID `89190` / window `105747`, PID-derived `localhost:8901`, session 1, opened
+  the real Terminal dock and measured New, Split-right, Split-down, and Close at
+  `rgba(13, 13, 13, 0.598)` with an empty exact-client console. The snapshot did
+  not provide a reachable Diff data state, so that half is source-contract
+  evidence only. No screenshot was retained; staged bundle SHA-256:
+  `343c67cffa2686908fc69cfe69b954f30f6a039f44311d44dcc74f075ee229cd`.

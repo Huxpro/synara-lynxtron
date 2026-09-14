@@ -524,3 +524,23 @@ state is absent from the paired component matrix.
   did not expose the project-picker trigger, so no Electron interaction result is
   claimed. No screenshot was retained. The staged bundle SHA-256 is
   `464872c249e0e97b72ce7da40892e65ad604842d1eb73a20be9ce07a779fc9ac`.
+
+### DS-028 — COMPLETE
+
+- Native Terminal pane toolbar and Diff dock header chrome now pass semantic
+  secondary paint directly into their generated default-state action SVGs. The
+  affected Terminal controls are New tab, move-to-group identity, Split right,
+  Split down, and Close; Diff covers Add panel and Collapse panel. Menu content
+  icons and selected/tab identity roles remain unchanged.
+- Dynamic hover recoloring is not claimed: Lynx generated SVG content does not
+  reliably re-encode from parent CSS state. This slice closes the Electron
+  default chrome hierarchy while preserving the existing hover background/focus
+  affordances. Focused Terminal and Diff suites pass 13/13.
+- Exact-owned Lynxtron 0.0.22 PID `89190`, window `105747`, PID-derived DevTool
+  `localhost:8901`, session 1, opened the real Terminal dock and measured New,
+  Split right, Split down, and Close strokes at semantic secondary
+  `rgba(13, 13, 13, 0.598)`. The exact-client error/warning console was empty.
+  The comparison snapshot lacked a reachable Diff data state, so Diff evidence is
+  limited to its focused production source contract rather than a claimed Native
+  cell. No screenshot was retained. The staged bundle SHA-256 is
+  `343c67cffa2686908fc69cfe69b954f30f6a039f44311d44dcc74f075ee229cd`.

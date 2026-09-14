@@ -454,7 +454,10 @@ function OpenDiffDock(props: {
                     ariaLabel="Add panel"
                     className="DiffDockHeaderIconButton"
                   >
-                    <PlusIcon size={14} />
+                    <PlusIcon
+                      color={semanticIconColor('secondary')}
+                      size={14}
+                    />
                   </MenuTrigger>
                   <MenuPopup
                     side="bottom"
@@ -475,7 +478,10 @@ function OpenDiffDock(props: {
                 label="Collapse panel"
                 onActivate={props.onClose}
               >
-                <PanelRightCloseIcon size={14} />
+                <PanelRightCloseIcon
+                  color={semanticIconColor('secondary')}
+                  size={14}
+                />
               </DockHeaderIconButton>
             </view>
           </view>}
