@@ -40,6 +40,21 @@ describe("Components Lab overlay truthfulness", () => {
     }
   });
 
+  it("keeps the shared dialog close glyph at secondary foreground times 80%", async () => {
+    const screen = await renderStory("ui/dialog", "close", "open");
+    try {
+      const close = page.getByRole("button", { name: "Close" });
+      await expect.element(close).toBeVisible();
+      const button = close.element();
+      const glyph = button.querySelector("svg");
+      expect(getComputedStyle(button).color).toBe("rgba(13, 13, 13, 0.596)");
+      expect(glyph).not.toBeNull();
+      expect(getComputedStyle(glyph!).opacity).toBe("0.8");
+    } finally {
+      await screen.unmount();
+    }
+  });
+
   it("applies interaction state to checkbox menu anatomy", async () => {
     const screen = await renderStory("ui/menu", "checkbox", "pressed");
     try {

@@ -606,3 +606,19 @@ values and unresolved Native custom properties.
   counterpart at foreground plus `opacity: 0.8`. The exact-client console was
   empty, no screenshot was retained, and the staged bundle SHA-256 is
   `181499d0b39033af038ccf3960bb868375952c0db4e710140f439a8f57ca9759`.
+
+## Shared Dialog close icon follow-up
+
+- Standard Native dialogs now encode the secondary-foreground stroke directly
+  into their generated close X and retain a child `0.8` opacity, matching the
+  Electron ghost icon-button contract. The previous muted CSS declaration did
+  not affect SVG content and left the Native glyph at full foreground.
+- The focused Native Dialog suite passes 10/10; the Electron Components Lab
+  browser authority suite passes 4/4 and explicitly verifies secondary foreground
+  plus `0.8` child opacity. The full production build passes on Lynxtron 0.0.22.
+- Exact-owned PID `43531` / window `106088`, PID-derived `localhost:8901`, session
+  1, rendered the closable-dialog story with encoded X stroke
+  `rgba(13, 13, 13, 0.598)`, computed opacity `0.8`, and 18px geometry. The
+  exact-client console was empty, no screenshot was retained, and the staged
+  bundle SHA-256 is
+  `c398c847492cbff9ac1e7a4854503be09ccda96cd7fc866aad934d6b16edaaf3`.

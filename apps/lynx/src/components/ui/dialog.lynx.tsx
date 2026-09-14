@@ -15,6 +15,7 @@ import {
 } from '@lynx-js/react';
 
 import { XIcon } from '../../lib/icons';
+import { useTheme } from '../../adapters/useTheme.lynx';
 import { focusLynxElementBySelector } from './focus.lynx';
 import { useLynxInteractiveState } from './interactive-state.lynx';
 import { cx, renderSlot, textContent } from './shared.lynx';
@@ -177,6 +178,7 @@ export function DialogPopup({
   viewportClassName?: string;
 }) {
   const dialog = useContext(DialogDismissContext);
+  const { svgColors } = useTheme();
   const handleKeyDown = (event: {
     readonly key: string;
     preventDefault?: () => void;
@@ -210,7 +212,11 @@ export function DialogPopup({
         {children}
         {showCloseButton && (
           <DialogClose className="LxDialogClose" ariaLabel="Close dialog">
-            <XIcon className="LxDialogClose__icon" size={18} />
+            <XIcon
+              className="LxDialogClose__icon"
+              color={svgColors.secondaryForeground}
+              size={18}
+            />
           </DialogClose>
         )}
       </LynxDialogContent>

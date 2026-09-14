@@ -155,6 +155,15 @@ describe('Lynx Dialog dismiss contract', () => {
     expect(defaultClose?.getAttribute('accessibility-label')).toBe(
       'Close dialog'
     );
+    expect(
+      defaultClose
+        ?.querySelector('.LxDialogClose__icon')
+        ?.getAttribute('content')
+    ).toContain('stroke="rgba(13, 13, 13, 0.598)"');
+    const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
+    expect(styles).toMatch(
+      /\.LxDialogClose__icon\s*\{[^}]*opacity:\s*0\.8;/s
+    );
     expect(customClose?.getAttribute('accessibility-label')).toBe(
       'Close custom dialog'
     );

@@ -644,8 +644,11 @@
 
 .LxDialogClose__text,
 .LxDialogClose__icon {
-  color: var(--muted-foreground);
   font-size: 20px;
+}
+
+.LxDialogClose__icon {
+  opacity: 0.8;
 }
 
 .LxDialogHeader {

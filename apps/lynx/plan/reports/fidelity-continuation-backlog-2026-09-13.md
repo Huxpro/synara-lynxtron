@@ -632,3 +632,21 @@ state is absent from the paired component matrix.
   exact-client error/warning console was empty. No screenshot was retained. The
   staged bundle SHA-256 is
   `181499d0b39033af038ccf3960bb868375952c0db4e710140f439a8f57ca9759`.
+
+### DS-034 — COMPLETE
+
+- Native shared Dialog close actions now embed the resolved secondary-foreground
+  stroke in their generated X SVG and apply the same child `0.8` opacity as
+  Electron's shared ghost icon button. The previous muted CSS declaration could
+  not recolor generated SVG content, leaving every standard Native dialog close
+  at full foreground.
+- The focused Native Dialog suite passes 10/10. A focused Electron browser test
+  renders the same Components Lab closable-dialog story and locks its close
+  button to secondary foreground plus child opacity `0.8`; that suite passes 4/4.
+  The full Lynx/Desktop production build passes on Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `43531`, window `106088`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Components Lab closable dialog
+  and measured encoded stroke `rgba(13, 13, 13, 0.598)`, computed opacity `0.8`,
+  and 18px square geometry. The exact-client error/warning console was empty. No
+  screenshot was retained. The staged bundle SHA-256 is
+  `c398c847492cbff9ac1e7a4854503be09ccda96cd7fc866aad934d6b16edaaf3`.
