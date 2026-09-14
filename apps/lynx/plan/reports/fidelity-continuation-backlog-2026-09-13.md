@@ -1502,22 +1502,3 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `d0f4d8102a725a976ec80eaa1b174baf1806e77719b7bbe77ed619eb8df0e54a`.
-
-### DS-083 — COMPLETE
-
-- Native Input and Textarea invalid borders now match Electron's separate state
-  hierarchy instead of using a fully opaque destructive border: Input uses 30%
-  at rest and 50% while focused; Textarea uses 36% and 64%. The colors derive
-  from the active Theme Pack's destructive role.
-- All four sides are declared explicitly because Native can parse a variable-backed
-  aggregate `border-color` without applying it to rendered edges. Native
-  Input/Textarea/theme/Lab focused tests pass 16/16, and the affected Lynx/Desktop
-  production build passes on npm Lynxtron 0.0.22.
-- Exact-owned Lynxtron PID `84925`, window `108855`, PID-derived DevTool
-  `localhost:8901`, session 1, measured invalid Input borders at
-  `rgba(224,46,42,0.298039)` on all four sides. A real click into the invalid
-  field added `ui-focus` and raised every side to
-  `rgba(224,46,42,0.498039)`. Textarea's 36%/64% branch is covered by shared
-  selector tests. The exact Native error/warning console was empty, no screenshot
-  was retained, and the final staged bundle SHA-256 is
-  `d0f4d8102a725a976ec80eaa1b174baf1806e77719b7bbe77ed619eb8df0e54a`.

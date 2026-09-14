@@ -1399,20 +1399,3 @@ values and unresolved Native custom properties.
   click. Textarea's 36%/64% branch is source/test verified. The exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `d0f4d8102a725a976ec80eaa1b174baf1806e77719b7bbe77ed619eb8df0e54a`.
-
-## Shared form invalid-border follow-up
-
-- Native Input and Textarea now preserve Electron's distinct invalid border
-  intensities: Input 30% at rest / 50% focused, Textarea 36% / 64%. The prior
-  shared rule used fully opaque destructive red for both controls and allowed the
-  generic focus border to override invalid focus.
-- Theme-derived error colors are registered in both Native theme blocks, and the
-  four border sides are explicit to avoid the Lynx variable-backed shorthand
-  failure. Native Input/Textarea/theme/Lab tests pass 16/16, and the affected
-  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
-- Exact-owned PID `84925` / window `108855`, PID-derived `localhost:8901`,
-  session 1, measured every invalid Input edge at 30% red, then at 50% red after
-  a real focus click. Textarea's 36%/64% specificity is source/test verified. The
-  exact Native console was empty. No screenshot was retained; staged bundle
-  SHA-256 is
-  `d0f4d8102a725a976ec80eaa1b174baf1806e77719b7bbe77ed619eb8df0e54a`.
