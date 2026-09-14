@@ -88,6 +88,7 @@ export function useTheme() {
     secondary: resolvedTokens.derived.iconSecondary,
     tertiary: resolvedTokens.derived.iconTertiary,
   };
+  const statusSurfaceOpacity = resolvedTheme === 'dark' ? 0.16 : 0.08;
   return {
     activeTheme,
     codeFontFamily,
@@ -107,7 +108,23 @@ export function useTheme() {
       inverse: semanticIconPalette.inverse,
       disabled: semanticIconPalette.disabled,
       statusError: resolvedTokens.status.error,
+      statusErrorSurface: withOpacity(
+        activeTheme.theme.semanticColors.diffRemoved,
+        statusSurfaceOpacity
+      ),
+      statusInfoSurface: withOpacity(
+        activeTheme.theme.accent,
+        statusSurfaceOpacity
+      ),
       statusNeutral: resolvedTokens.status.neutral,
+      statusSuccessSurface: withOpacity(
+        activeTheme.theme.semanticColors.diffAdded,
+        statusSurfaceOpacity
+      ),
+      statusWarningSurface: withOpacity(
+        resolvedTheme === 'dark' ? '#f5b44a' : '#d97706',
+        statusSurfaceOpacity
+      ),
       secondaryForeground: resolveTextForegroundSecondary(
         activeTheme.theme,
         resolvedTheme

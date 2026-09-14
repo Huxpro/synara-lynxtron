@@ -372,8 +372,10 @@
 .LxBadge--secondary .LxBadge__text, .LxBadge--outline .LxBadge__text { color: var(--muted-foreground); }
 .LxBadge--outline { border-color: var(--border); background-color: transparent; }
 .LxBadge--destructive { background-color: var(--destructive); }
-.LxBadge--error, .LxBadge--warning, .LxBadge--info, .LxBadge--success { background-color: var(--secondary); }
 .LxBadge--error .LxBadge__text { color: var(--destructive); }
+.LxBadge--info .LxBadge__text { color: var(--info-foreground); }
+.LxBadge--success .LxBadge__text { color: var(--success); }
+.LxBadge--warning .LxBadge__text { color: var(--warning); }
 .LxBadge--capsule { border-radius: 999px; }
 
 .LxTimePicker { width: 176px; height: 176px; display: flex; flex-direction: row; align-items: stretch; gap: 4px; }

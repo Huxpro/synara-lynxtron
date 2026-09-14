@@ -908,3 +908,22 @@ values and unresolved Native custom properties.
   case, so its 12px/16px tier is source/test evidence only. The exact Native
   console was empty and no screenshot was retained; staged bundle SHA-256 is
   `42531e6a36be6952f264fe6ea773c197e93455a9c152f1aaa464b680ad670756`.
+
+## Shared Badge status-tone follow-up
+
+- Native Badge now keeps Electron's distinct error/info/success/warning
+  hierarchy. Theme-aware 8% light and 16% dark background tints are generated as
+  concrete rgba values from the active Theme Pack; text keeps its semantic status
+  color.
+- A CSS `color-mix()` attempt was rejected by runtime evidence: Lynx DevTool
+  parsed the rule but Native painted a transparent background. Computing the rgba
+  in `useTheme()` preserves custom themes and gives the Native renderer executable
+  paint.
+- The focused Badge suite passes 2/2 and the complete Lynx/Desktop production
+  build passes on Lynxtron 0.0.22. Exact-owned PID `36980` / window `107383`,
+  PID-derived `localhost:8901`, session 1, rendered success with inline
+  `#00a24014`, computed `rgba(0,162,64,0.0784314)`, and success text `#00a240`.
+  Other status variants remain direct-render/source evidence because the catalog
+  exposes success only. The exact Native console was empty and no screenshot was
+  retained; staged bundle SHA-256 is
+  `5b22014f0d9d4254e99c72329c7aca68d7bd2e32cdbf9b4aa1a6e0458dd54cd5`.
