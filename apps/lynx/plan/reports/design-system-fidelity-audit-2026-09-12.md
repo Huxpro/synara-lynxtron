@@ -655,3 +655,20 @@ values and unresolved Native custom properties.
   state was rejected rather than retained as false visual evidence. No screenshot
   was retained; staged bundle SHA-256:
   `9267a0238d8ac7a158b5e4e4d9d10e877ab8e3d7269618d8e3fff7a9aef5066c`.
+
+## Settings outline action icon follow-up
+
+- Native Provider Update, Usage Refresh, and Custom Models Add actions now encode
+  foreground/80 in their generated SVGs, matching Electron's outline Button icon
+  hierarchy. Select disclosure, reset, and warning glyphs retain their distinct
+  muted or status semantics.
+- Provider Tools plus Settings label suites pass 10/10. Custom Models remains
+  blocked before execution by the known Rstest generated `lynx-ui-button` vendor
+  module parse failure; its source contract and the complete production build
+  pass on Lynxtron 0.0.22.
+- Exact-owned PID `19464` / window `106356`, PID-derived `localhost:8901`, session
+  1, rendered the real Usage Refresh SVG with stroke
+  `rgba(13, 13, 13, 0.8)` and an empty exact-client console. The current provider
+  snapshot exposed no update action, so no fake state or external update was
+  triggered. No screenshot was retained; staged bundle SHA-256:
+  `592468ee2bff25f58107b81fdd8068a8b3956f4ae14c3c6704c47815bf2b209f`.

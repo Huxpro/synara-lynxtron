@@ -118,6 +118,9 @@ describe('Settings Provider tools fidelity', () => {
     expect(source).toContain('id={SETTINGS_TARGETS.providerUpdates}');
     expect(source).toContain('Installed CLIs');
     expect(source.match(/<text className="LxButton__text">/g)).toHaveLength(2);
+    expect(
+      source.match(/color={svgColors.foreground80}/g)
+    ).toHaveLength(2);
     expect(source.match(/\{props\.updating \? 'Updating…' : 'Update'\}/g)).toHaveLength(
       2
     );

@@ -31,6 +31,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
 import { SettingsResetIcon } from '../adapters/SettingsResetIcon.lynx';
+import { useTheme } from '../adapters/useTheme.lynx';
 import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
 import {
   fetchServerConfig,
@@ -85,6 +86,7 @@ function ProviderStatusRow(props: {
   readonly updating: boolean;
   readonly divided: boolean;
 }) {
+  const { svgColors } = useTheme();
   const canUpdate = shouldOfferProviderUpdateAction(props.status);
   return (
     <view
@@ -112,7 +114,7 @@ function ProviderStatusRow(props: {
           <ArrowDownToLineIcon
             className="SettingsProviderToolsUpdateIcon"
             size={12}
-            color="var(--foreground)"
+            color={svgColors.foreground80}
           />
           <text className="LxButton__text">
             {props.updating ? 'Updating…' : 'Update'}
@@ -212,6 +214,7 @@ function ProviderToolRow(props: {
   readonly onUpdate: (provider: ProviderKind) => void;
   readonly onSettingsPatch: (patch: ServerSettingsPatch) => void;
 }) {
+  const { svgColors } = useTheme();
   const present = useLynxDisclosurePresence(props.open);
   const trigger = useLynxInteractiveState({
     baseClassName: 'SettingsProviderToolsDisclosureTrigger',
@@ -288,7 +291,7 @@ function ProviderToolRow(props: {
             <ArrowDownToLineIcon
               className="SettingsProviderToolsUpdateIcon"
               size={12}
-              color="var(--foreground)"
+              color={svgColors.foreground80}
             />
             <text className="LxButton__text">
               {props.updating ? 'Updating…' : 'Update'}

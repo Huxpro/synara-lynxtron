@@ -685,3 +685,20 @@ state is absent from the paired component matrix.
   mismatched route was used as visual evidence and no screenshot was retained.
   The staged bundle SHA-256 is
   `9267a0238d8ac7a158b5e4e4d9d10e877ab8e3d7269618d8e3fff7a9aef5066c`.
+
+### DS-037 — COMPLETE
+
+- Native Settings outline actions now embed Electron's foreground/80 icon paint
+  instead of full foreground. The shared family covers both Provider Update
+  placements, Provider Usage Refresh, and Custom Models Add; select chevrons,
+  reset glyphs, and warning icons keep their separate contracts.
+- Provider Tools and Settings label suites pass 10/10. The Custom Models suite
+  remains blocked before test execution by the existing Rstest-generated
+  `lynx-ui-button` vendor parse error, while its focused source assertion and the
+  full Lynx/Desktop production build pass on Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `19464`, window `106356`, PID-derived DevTool
+  `localhost:8901`, session 1, opened the real Usage page and measured Refresh at
+  encoded stroke `rgba(13, 13, 13, 0.8)` with an empty error/warning console. The
+  current Providers snapshot had no update action, so no update was fabricated or
+  invoked. No screenshot was retained. The staged bundle SHA-256 is
+  `592468ee2bff25f58107b81fdd8068a8b3956f4ae14c3c6704c47815bf2b209f`.

@@ -97,6 +97,7 @@ describe('Lynx Settings section labels', () => {
       '<OpenAIProviderIcon provider={snapshot.provider} />'
     );
     expect(usageSource).toContain('<RefreshCwIcon');
+    expect(usageSource).toContain('color={svgColors.foreground80}');
     expect(usageSource).toContain('mutationFn: () => loadProviderUsage(true)');
     expect(usageSource).toContain(
       'return fetchAllProviderUsage(forceRefresh ? { forceRefresh: true } : {});'

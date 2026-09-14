@@ -23,6 +23,7 @@ import {
   updateServerSettings,
 } from '../data/synaraClient.lynx';
 import { SettingsResetIcon } from '../adapters/SettingsResetIcon.lynx';
+import { useTheme } from '../adapters/useTheme.lynx';
 import { queryClient } from './queries';
 
 import './settings-custom-models-panel.css';
@@ -78,6 +79,7 @@ export function customModelsForProvider(
 export function SettingsCustomModelsPanel(props: {
   readonly onSettingsChange?: (settings: ServerSettingsView) => void;
 }) {
+  const { svgColors } = useTheme();
   const [provider, setProvider] = useState<CustomModelProvider>('codex');
   const [input, setInput] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -260,7 +262,7 @@ export function SettingsCustomModelsPanel(props: {
               disabled={!settings || updateMutation.isPending}
               onClick={addModel}
             >
-              <PlusIcon size={14} color="var(--foreground)" />
+              <PlusIcon size={14} color={svgColors.foreground80} />
               <text className="LxButton__text">Add</text>
               </Button>
             </view>

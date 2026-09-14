@@ -124,7 +124,7 @@ function UsageLimitRow(props: {
 
 export function SettingsUsagePanel() {
   const queryClient = useQueryClient();
-  const { resolvedTheme } = useTheme();
+  const { resolvedTheme, svgColors } = useTheme();
   const usageQuery = useQuery({
     queryKey: SETTINGS_PROVIDER_USAGE_QUERY_KEY,
     queryFn: () => loadProviderUsage(),
@@ -164,7 +164,7 @@ export function SettingsUsagePanel() {
           <RefreshCwIcon
             className={isRefreshing ? 'animate-spin' : undefined}
             size={14}
-            color="var(--foreground)"
+            color={svgColors.foreground80}
           />
           <text className="LxButton__text">Refresh</text>
         </Button>

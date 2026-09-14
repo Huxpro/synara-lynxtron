@@ -50,6 +50,7 @@ describe('Settings Custom Models fidelity', () => {
     expect(source).toContain('updateServerSettings(patch)');
     expect(source).toContain('confirmType="send"');
     expect(source).toContain('onConfirm={addModel}');
+    expect(source).toContain('color={svgColors.foreground80}');
     expect(source).toContain('aria-invalid={Boolean(error)}');
     expect(source).toContain('<Input\n                nativeInput');
     expect(source).toContain(
