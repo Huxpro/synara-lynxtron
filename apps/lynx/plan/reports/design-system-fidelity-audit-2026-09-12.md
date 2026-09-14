@@ -1096,6 +1096,20 @@ values and unresolved Native custom properties.
   screenshot was retained; staged bundle SHA-256 is
   `47f8dfb351f59ce86c6275165c5c3321e1d7bf17a45fd574b528976f274b5f70`.
 
+## Shared Badge outline hierarchy follow-up
+
+- Native outline Badge now uses Electron's elevated opaque surface and foreground
+  text rather than a transparent surface with muted text. The shared border token
+  remains unchanged, so the variant reads as a compact outlined label instead of
+  disabled metadata.
+- The focused Badge suite passes 2/2 and the affected Lynx/Desktop build passes on
+  Lynxtron 0.0.22. Exact-owned PID `31468` / window `107967`, PID-derived
+  `localhost:8901`, session 1, measured a white opaque surface,
+  `hsla(0,0%,5%,.069)` border, foreground `rgb(13,13,13)`, and 9px/14px medium
+  small text. The exact Native console was empty. No screenshot was retained;
+  staged bundle SHA-256 is
+  `9b206fb4ead7ca1d9e17fe02553c89922ae249acf510bf280b1d4a14895b826f`.
+
 ## Shared Menu destructive-role follow-up
 
 - Native `MenuItem` now exposes the same default/destructive variant axis as

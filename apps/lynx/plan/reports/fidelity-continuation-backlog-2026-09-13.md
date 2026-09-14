@@ -1166,6 +1166,20 @@ state is absent from the paired component matrix.
   was empty and no screenshot was retained. The final staged bundle SHA-256 is
   `47f8dfb351f59ce86c6275165c5c3321e1d7bf17a45fd574b528976f274b5f70`.
 
+### DS-066 — COMPLETE
+
+- Native outline Badge now matches Electron's hierarchy: elevated opaque surface,
+  standard border, and full foreground text. It previously used a transparent
+  surface with muted copy, making file-type and identity badges read too faint.
+- The focused Badge suite passes 2/2 and the affected Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `31468`, window `107967`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the small outline story with white opaque
+  surface, `hsla(0,0%,5%,.069)` border, foreground `rgb(13,13,13)`, and 9px/14px
+  medium text. The exact Native error/warning console was empty and no screenshot
+  was retained. The final staged bundle SHA-256 is
+  `9b206fb4ead7ca1d9e17fe02553c89922ae249acf510bf280b1d4a14895b826f`.
+
 ### DS-064 — COMPLETE
 
 - Shared Native `MenuItem` now supports Electron's destructive variant, routing

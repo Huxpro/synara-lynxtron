@@ -26,5 +26,12 @@ describe('Badge', () => {
     expect(badge?.getAttribute('class')).toContain('LxBadge--outline');
     expect(badge?.getAttribute('class')).toContain('LxBadge--capsule');
     expect(badge?.textContent).toBe('PDF');
+    const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
+    expect(styles).toMatch(
+      /\.LxBadge--outline\s*\{[^}]*border-color:\s*var\(--border\);[^}]*background-color:\s*var\(--color-background-elevated-primary-opaque\);/s
+    );
+    expect(styles).toMatch(
+      /\.LxBadge--outline \.LxBadge__text\s*\{[^}]*color:\s*var\(--color-text-foreground\);/s
+    );
   });
 });

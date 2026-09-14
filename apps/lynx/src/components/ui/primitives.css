@@ -398,8 +398,9 @@
 .LxBadge--lg { min-width: 22px; height: 22px; padding: 0 5px; }
 .LxBadge--lg .LxBadge__text { font-size: 11px; }
 .LxBadge--secondary { background-color: var(--secondary); }
-.LxBadge--secondary .LxBadge__text, .LxBadge--outline .LxBadge__text { color: var(--muted-foreground); }
-.LxBadge--outline { border-color: var(--border); background-color: transparent; }
+.LxBadge--secondary .LxBadge__text { color: var(--secondary-foreground); }
+.LxBadge--outline { border-color: var(--border); background-color: var(--color-background-elevated-primary-opaque); }
+.LxBadge--outline .LxBadge__text { color: var(--color-text-foreground); }
 .LxBadge--destructive { background-color: var(--destructive); }
 .LxBadge--error .LxBadge__text { color: var(--destructive); }
 .LxBadge--info .LxBadge__text { color: var(--info-foreground); }
