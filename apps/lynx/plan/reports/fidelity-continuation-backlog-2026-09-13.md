@@ -1100,3 +1100,18 @@ state is absent from the paired component matrix.
   trailing auto margin. The exact Native error/warning console was empty and no
   screenshot was retained. The final staged bundle SHA-256 is
   `25e1173c404bb309f4cc5c82209c5d417360187bf83e8d476af7a99aef4aa1be`.
+
+### DS-061 — COMPLETE
+
+- Shared Native Tooltip popups now reuse the centralized 220ms disclosure
+  motion/presence contract rather than appearing and disappearing instantly. The
+  former `ui-entering/ui-leaving` CSS selectors were dead because Tooltip never
+  applied those classes; they were removed.
+- Focused Tooltip, disclosure-motion, and primitive-geometry suites pass 9/9, and
+  the affected Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `46129`, window `107750`, PID-derived DevTool
+  `localhost:8901`, session 1, used the rendered Copy trigger. The open popup
+  exposed `LynxDisclosureMotion--open`; a second real click closed it and it was
+  absent after the shared cleanup window. The exact Native error/warning console
+  was empty and no screenshot was retained. The final staged bundle SHA-256 is
+  `28dda140331a399efde1e68e8c0a8d43027fa90210e9a63a7a83cb0ab965d201`.

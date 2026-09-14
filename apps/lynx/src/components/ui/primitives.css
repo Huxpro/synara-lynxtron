@@ -914,12 +914,6 @@
   left: 12px;
 }
 
-.LxTooltipPopup.ui-entering,
-.LxTooltipPopup.ui-leaving {
-  opacity: 0;
-  transform: scale(0.98);
-}
-
 .LxMenuItem {
   width: 100%;
   min-height: 32px;

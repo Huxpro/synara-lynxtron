@@ -6,6 +6,10 @@ import {
   type ReactNode,
 } from '@lynx-js/react';
 
+import {
+  disclosureContentClassName,
+  useLynxDisclosurePresence,
+} from '../../platform/motion.lynx';
 import { cx, renderSlot, textContent } from './shared.lynx';
 import './primitives.css';
 
@@ -62,13 +66,18 @@ export function TooltipPopup(props: {
   variant?: 'default' | 'picker';
 }) {
   const tooltip = useContext(TooltipContext);
-  if (!tooltip.open) return null;
+  const present = useLynxDisclosurePresence(tooltip.open);
+  if (!present) return null;
   return (
     <view
-      className={cx(
-        'LxTooltipPopup',
-        props.variant === 'picker' && 'LxTooltipPopup--picker',
-        props.className
+      aria-hidden={!tooltip.open}
+      className={disclosureContentClassName(
+        tooltip.open,
+        cx(
+          'LxTooltipPopup',
+          props.variant === 'picker' && 'LxTooltipPopup--picker',
+          props.className
+        )
       )}
     >
       {textContent(props.children, 'LxTooltipText')}

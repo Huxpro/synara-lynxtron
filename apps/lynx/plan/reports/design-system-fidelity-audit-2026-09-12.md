@@ -1037,3 +1037,17 @@ values and unresolved Native custom properties.
   tracking, and opacity 0.72 with an empty Native console. No screenshot was
   retained; staged bundle SHA-256 is
   `25e1173c404bb309f4cc5c82209c5d417360187bf83e8d476af7a99aef4aa1be`.
+
+## Shared Tooltip motion follow-up
+
+- Native Tooltip now enters and exits through the same centralized 220ms
+  transform/opacity disclosure contract as other toggle surfaces. The previous
+  primitive declared bespoke `ui-entering/ui-leaving` selectors but never emitted
+  either class, so runtime behavior was an immediate mount/unmount.
+- Focused Tooltip, disclosure-motion, and geometry suites pass 9/9 and the
+  affected Lynx/Desktop production build passes on Lynxtron 0.0.22. Exact-owned
+  PID `46129` / window `107750`, PID-derived `localhost:8901`, session 1, opened
+  the popup through its real trigger with `LynxDisclosureMotion--open` and removed
+  it after the shared cleanup window on the second click. The exact Native console
+  was empty. No screenshot was retained; staged bundle SHA-256 is
+  `28dda140331a399efde1e68e8c0a8d43027fa90210e9a63a7a83cb0ab965d201`.
