@@ -1586,3 +1586,17 @@ values and unresolved Native custom properties.
   the exact Native console was empty. No screenshot was retained; staged bundle
   SHA-256 is
   `3525e0b2e871e78a2bd0f77d489e750e9b47e8fe46054a6d1ead30f544953702`.
+
+## Shared Badge physical-border follow-up
+
+- Native outline Badge now declares all four physical border colors explicitly.
+  The former aggregate `border-color` parsed correctly but left every physical
+  edge transparent, so DS-066's aggregate check did not prove visible paint. The
+  focused Native Badge suite passes 3/3, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `52006` / window `109998`, PID-derived `localhost:8901`,
+  session 1, rendered the real outline/small Component Lab Badge. All four edges
+  resolved to `rgba(252,252,252,0.0705882)` over the unchanged `rgb(23,23,23)`
+  surface; the exact Native console was empty. No screenshot was retained; staged
+  bundle SHA-256 is
+  `d3bdb4aa3a252d52847f0165845e30a0327d6d63f6956879c9eb03e1521595df`.

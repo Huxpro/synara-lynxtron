@@ -528,7 +528,7 @@
 .LxBadge--lg .LxBadge__text { font-size: 11px; line-height: 16.5px; }
 .LxBadge--secondary { background-color: var(--secondary); }
 .LxBadge--secondary .LxBadge__text { color: var(--secondary-foreground); }
-.LxBadge--outline { border-color: var(--border); background-color: var(--color-background-elevated-primary-opaque); }
+.LxBadge--outline { border-top-color: var(--border); border-right-color: var(--border); border-bottom-color: var(--border); border-left-color: var(--border); background-color: var(--color-background-elevated-primary-opaque); }
 .LxBadge--outline .LxBadge__text { color: var(--color-text-foreground); }
 .LxBadge--destructive { background-color: var(--destructive); }
 .LxBadge--destructive .LxBadge__text { color: #ffffff; }

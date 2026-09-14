@@ -1717,3 +1717,19 @@ state is absent from the paired component matrix.
   its physical text box was 18px tall. The exact Native error/warning console was
   empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `3525e0b2e871e78a2bd0f77d489e750e9b47e8fe46054a6d1ead30f544953702`.
+
+### DS-097 — COMPLETE
+
+- Native outline Badge now declares all four physical border colors explicitly.
+  The prior `border-color: var(--border)` aggregate parsed in DevTool but left
+  every rendered side transparent, so the elevated outline badge had no visible
+  edge despite the earlier aggregate-style check.
+- The focused Native Badge suite passes 3/3, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `52006`, window `109998`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real outline/small Component Lab
+  Badge. All four physical edges resolved to
+  `rgba(252,252,252,0.0705882)` while the elevated surface remained
+  `rgb(23,23,23)`. The exact Native error/warning console was empty, no screenshot
+  was retained, and the final staged bundle SHA-256 is
+  `d3bdb4aa3a252d52847f0165845e30a0327d6d63f6956879c9eb03e1521595df`.
