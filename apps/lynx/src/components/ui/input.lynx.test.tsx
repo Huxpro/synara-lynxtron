@@ -2,6 +2,17 @@ import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 
 describe('Lynx Input accessibility contract', () => {
+  it('uses the shared dark control surface while preserving soft fill ownership', () => {
+    const source = readFileSync(new URL('./input.lynx.tsx', import.meta.url), 'utf8');
+    expect(source).toContain('const { svgColors } = useTheme();');
+    expect(source).toContain(
+      "!unstyled && variant === 'default'"
+    );
+    expect(source).toContain(
+      '{ backgroundColor: svgColors.formControlSurface }'
+    );
+  });
+
   it('centers the one-line textarea through shared size metrics', () => {
     const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
 

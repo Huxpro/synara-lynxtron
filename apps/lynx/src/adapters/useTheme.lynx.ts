@@ -147,10 +147,10 @@ export function useTheme() {
       alertSuccessSurface: withOpacity(successColor, alertSurfaceOpacity),
       alertWarningBorder: withOpacity(warningColor, alertBorderOpacity),
       alertWarningSurface: withOpacity(warningColor, alertSurfaceOpacity),
-      checkboxUncheckedSurface:
+      formControlSurface:
         resolvedTheme === 'dark'
           ? withOpacity(resolvedTokens.derived.controlBackgroundOpaque, 0.32)
-          : 'transparent',
+          : resolvedTokens.computed.surfaceUnder,
       secondaryForeground: resolveTextForegroundSecondary(
         activeTheme.theme,
         resolvedTheme

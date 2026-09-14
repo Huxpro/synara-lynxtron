@@ -1461,3 +1461,25 @@ state is absent from the paired component matrix.
   prominent transition remained intact, the exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `6bfd85df78e84beadda59d3f3ef6eb8fbd6bf1b3efe87893afa3d8b3914a6ef3`.
+
+### DS-082 — COMPLETE
+
+- Native default Input and Textarea shells now share Electron's dark-theme
+  `input/32` control surface with Checkbox instead of blending into the page
+  background. The surface is derived from the active Theme Pack's opaque control
+  color; light mode remains the page surface, and the soft variant retains its
+  own secondary fill.
+- Native Input/Textarea/Checkbox/theme/Lab focused tests pass 20/20. The Input
+  assertion stays source-based because Rstest's Lynx `NodesRef.invoke` stub throws
+  before a real textarea mount completes; the shared derived color is directly
+  rendered and asserted through Checkbox. The affected Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `69501`, window `108800`, PID-derived DevTool
+  `localhost:8901`, session 1, measured the dark default Input surface at
+  `rgba(23,23,23,0.317647)`, the standard light border at
+  `hsla(0,0%,99%,.072)`, and a 320x32 outer box. Textarea reuses the same Input
+  shell and is covered by source/focused tests because the Native sidebar could
+  not be scrolled through the available inspection controls. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `b88c41b5d1bcc16a6c70cc4920c4c77c6972a93cf086617dd9148e2ab15404e7`.

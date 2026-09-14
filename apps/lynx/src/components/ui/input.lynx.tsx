@@ -16,6 +16,7 @@ import {
 import type { NodesRef } from '@lynx-js/types';
 
 import { useLynxInteractionDisabled } from './interaction-scope.lynx';
+import { useTheme } from '../../adapters/useTheme.lynx';
 import { cx } from './shared.lynx';
 import './primitives.css';
 
@@ -259,6 +260,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
   },
   forwardedRef
 ) {
+  const { svgColors } = useTheme();
   const scopeDisabled = useLynxInteractionDisabled();
   const resolvedDisabled = scopeDisabled || Boolean(disabled);
   const [focused, setFocused] = useState(false);
@@ -302,6 +304,11 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
         focused && 'ui-focus',
         className
       )}
+      style={
+        !unstyled && variant === 'default'
+          ? { backgroundColor: svgColors.formControlSurface }
+          : undefined
+      }
     >
       {nativeInput || onKeyDown ? (
         <KeyboardInput

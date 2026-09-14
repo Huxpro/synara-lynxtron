@@ -1362,3 +1362,23 @@ values and unresolved Native custom properties.
   `rgb(17,17,17)` at 12px medium while retaining the 150ms transition. The exact
   Native console was empty. No screenshot was retained; staged bundle SHA-256 is
   `6bfd85df78e84beadda59d3f3ef6eb8fbd6bf1b3efe87893afa3d8b3914a6ef3`.
+
+## Shared form-control surface follow-up
+
+- Native default Input and Textarea shells now use the same Theme Pack-derived
+  dark `input/32` control surface as Electron and the already-aligned Checkbox.
+  Light mode stays on the page surface, while the soft Input variant continues to
+  own its secondary fill.
+- Native Input/Textarea/Checkbox/theme/Lab focused tests pass 20/20. The Input
+  test uses source-contract coverage because Rstest's Native `NodesRef.invoke`
+  stub fails before textarea mount; Checkbox directly renders and validates the
+  shared dark surface value. The affected Lynx/Desktop production build passes on
+  npm Lynxtron 0.0.22.
+- Exact-owned PID `69501` / window `108800`, PID-derived `localhost:8901`,
+  session 1, measured the default Input at dark surface
+  `rgba(23,23,23,0.317647)`, standard border `hsla(0,0%,99%,.072)`, and 320x32
+  outer geometry. Textarea reuses the same shared shell; the Native sidebar could
+  not be scrolled to its story through the available inspection controls, so no
+  separate live Textarea claim is made. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `b88c41b5d1bcc16a6c70cc4920c4c77c6972a93cf086617dd9148e2ab15404e7`.
