@@ -1,7 +1,9 @@
 import { describe, expect, it } from '@rstest/core';
 import { readFileSync } from 'node:fs';
 import { render } from '@lynx-js/react/testing-library';
+import { DEFAULT_THEME_STATE } from '@synara-web/theme/theme.logic';
 
+import { setLynxThemeState } from '../../adapters/useTheme.lynx';
 import { CheckboxIndicator } from './checkbox.lynx';
 
 describe('CheckboxIndicator', () => {
@@ -13,6 +15,17 @@ describe('CheckboxIndicator', () => {
     expect(styles).toMatch(
       /\.LxCheckboxIndicator--selected\s*\{[^}]*border-color:\s*var\(--primary\);/s
     );
+  });
+
+  it('uses the Electron dark unchecked control surface', () => {
+    setLynxThemeState({ ...DEFAULT_THEME_STATE, mode: 'dark' });
+    render(<CheckboxIndicator />);
+    expect(
+      elementTree.root
+        ?.querySelector('.LxCheckboxIndicator')
+        ?.getAttribute('style')
+    ).toContain('background-color: rgba(23, 23, 23, 0.32)');
+    setLynxThemeState(DEFAULT_THEME_STATE);
   });
 
   it('renders the shared selected visual', () => {

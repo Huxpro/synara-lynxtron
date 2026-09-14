@@ -27,12 +27,20 @@ let currentSystemDark = false;
 const listeners = new Set<(state: ThemeState) => void>();
 
 function withOpacity(color: string, opacity: number): string {
-  const match = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(color);
-  if (!match) return color;
-  return `rgba(${Number.parseInt(match[1], 16)}, ${Number.parseInt(
-    match[2],
-    16
-  )}, ${Number.parseInt(match[3], 16)}, ${opacity})`;
+  const hexMatch = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(
+    color
+  );
+  if (hexMatch) {
+    return `rgba(${Number.parseInt(hexMatch[1], 16)}, ${Number.parseInt(
+      hexMatch[2],
+      16
+    )}, ${Number.parseInt(hexMatch[3], 16)}, ${opacity})`;
+  }
+  const rgbMatch = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i.exec(
+    color
+  );
+  if (!rgbMatch) return color;
+  return `rgba(${rgbMatch[1]}, ${rgbMatch[2]}, ${rgbMatch[3]}, ${opacity})`;
 }
 
 export function setLynxThemeState(
@@ -139,6 +147,10 @@ export function useTheme() {
       alertSuccessSurface: withOpacity(successColor, alertSurfaceOpacity),
       alertWarningBorder: withOpacity(warningColor, alertBorderOpacity),
       alertWarningSurface: withOpacity(warningColor, alertSurfaceOpacity),
+      checkboxUncheckedSurface:
+        resolvedTheme === 'dark'
+          ? withOpacity(resolvedTokens.derived.controlBackgroundOpaque, 0.32)
+          : 'transparent',
       secondaryForeground: resolveTextForegroundSecondary(
         activeTheme.theme,
         resolvedTheme

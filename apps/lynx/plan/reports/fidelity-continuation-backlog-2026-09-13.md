@@ -1264,3 +1264,21 @@ state is absent from the paired component matrix.
   exact Native error/warning console was empty, no screenshot was retained, and
   the final staged bundle SHA-256 is
   `3338c7a4353df56dc5396c963b4963a7fb0a76ba94d47a671776010e87e00f4f`.
+
+### DS-071 — COMPLETE
+
+- Native unchecked Checkbox now carries Electron's dark-theme `input/32`
+  control surface instead of remaining transparent. The surface is derived from
+  the active Theme Pack's opaque control background, so custom themes retain the
+  same contract without a default-theme color literal. Light unchecked remains
+  transparent, and checked/mixed states still use primary fill.
+- Native Checkbox/theme/Lab focused tests pass 14/14, and the affected
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `5542`, window `108155`, PID-derived DevTool
+  `localhost:8901`, session 1, measured unchecked dark background
+  `rgba(23,23,23,0.317647)`, light border `hsla(0,0%,99%,.046)`, and the existing
+  16x16 box. A real Lab state click changed checked fill and border to primary
+  `rgb(252,252,252)`. Electron independently resolved its unchecked surface to
+  the equivalent 32% control color. The exact Native error/warning console was
+  empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `40db41a16b0767fc207a26160206ed4cfaa1fa0d1b10e5614f9ac351ad8d0ef8`.

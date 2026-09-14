@@ -12,7 +12,7 @@ export function CheckboxIndicator(props: {
   const { svgColors } = useTheme();
   const selected = props.checked || props.mixed;
   return (
-    <view className={cx('LxCheckboxIndicator', `LxCheckboxIndicator--${props.size ?? 'default'}`, selected && 'LxCheckboxIndicator--selected', props.mixed && 'LxCheckboxIndicator--mixed', props.className)}>
+    <view className={cx('LxCheckboxIndicator', `LxCheckboxIndicator--${props.size ?? 'default'}`, selected && 'LxCheckboxIndicator--selected', props.mixed && 'LxCheckboxIndicator--mixed', props.className)} style={selected ? undefined : { backgroundColor: svgColors.checkboxUncheckedSurface }}>
       {props.checked ? <CheckIcon className="LxCheckboxIndicatorIcon" color={svgColors.inverse ?? 'var(--primary-foreground)'} size={props.size === 'sm' ? 10 : 12} /> : null}
       {props.mixed ? <view className="LxCheckboxIndicatorMixedBar" /> : null}
     </view>

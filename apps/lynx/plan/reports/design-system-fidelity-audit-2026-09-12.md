@@ -1186,3 +1186,19 @@ values and unresolved Native custom properties.
   `ui-hover`, full `rgb(252,252,252)` text, and the hover surface. The exact
   Native console was empty. No screenshot was retained; staged bundle SHA-256 is
   `3338c7a4353df56dc5396c963b4963a7fb0a76ba94d47a671776010e87e00f4f`.
+
+## Shared Checkbox dark-surface follow-up
+
+- Native unchecked Checkbox now matches Electron's dark `bg-input/32` control
+  surface instead of remaining transparent. The color is derived from the active
+  Theme Pack's resolved control background, preserving custom-theme behavior;
+  light unchecked remains transparent and selected states keep primary fill.
+- Native Checkbox/theme/Lab tests pass 14/14, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `5542` / window `108155`, PID-derived `localhost:8901`,
+  session 1, measured `rgba(23,23,23,0.317647)` on the dark unchecked surface,
+  `hsla(0,0%,99%,.046)` border, and the existing 16x16 geometry. A real Lab state
+  click restored primary `rgb(252,252,252)` for checked fill and border. Electron
+  independently resolved the equivalent 32% control surface. The exact Native
+  console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `40db41a16b0767fc207a26160206ed4cfaa1fa0d1b10e5614f9ac351ad8d0ef8`.
