@@ -19,9 +19,12 @@ describe('EditorRailAddMenu component identity', () => {
     expect(composition).toContain('label="New terminal"');
     expect(composition).toContain('EditorRailAddMenuChatIconElement');
     expect(composition).toContain('EditorRailAddMenuTerminalIconElement');
-    expect(adapter).toContain('MessageCircleIcon size={14}');
+    expect(adapter).toContain(
+      "<MessageCircleIcon color={semanticIconColor('primary')} size={14} />"
+    );
     expect(adapter).toContain('@synara-central-icons/console.svg?raw');
-    expect(adapter).toContain('svgColors.iconSecondary');
+    expect(adapter.match(/semanticIconColor\('primary'\)/g)).toHaveLength(2);
+    expect(adapter).not.toContain('svgColors.iconSecondary');
     expect(adapter).toContain('className="ThreadEditorAddMenuSvgIcon"');
     expect(tabs).toContain('<EditorRailAddMenu');
     expect(router).not.toContain('ThreadEditorNewDialog');

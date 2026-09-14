@@ -303,6 +303,17 @@ state is absent from the paired component matrix.
   console. The final staged bundle SHA-256 is
   `1e9086442cfaf1b726d8eb635e8ccd2c66783b9487dada5cc56b2f70b3ce9a63`.
 
+### DS-017 — COMPLETE
+
+- The paired Editor Rail Add Menu now gives both New chat and New terminal the
+  same primary icon role as Electron. Native's Central terminal SVG no longer
+  remains secondary while the adjacent generated chat SVG is primary, and the
+  adapter's CSS now documents the effective role rather than an ignored one.
+- Focused menu/Lab suites pass 2/2. Exact-owned Lynxtron 0.0.22 PID `57242`,
+  window `104514`, on PID-derived `localhost:8901`, session 1, exposed both icon
+  strokes as `#0d0d0d` with an empty console. The final staged bundle SHA-256 is
+  `42a4504ffcf0404f31ac44ab901941e3c237033d90f38e0bdeec82ae2c1fae60`.
+
 - Exact-owned Native: workspace Lynxtron `0.0.22`, PID `38396`, PID-derived
   DevTool `localhost:8901`, session 1, 1280×820 light product states.
 - Focused Native: 39/39 passed.

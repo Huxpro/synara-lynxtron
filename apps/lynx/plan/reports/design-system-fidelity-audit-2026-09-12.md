@@ -363,3 +363,11 @@ values and unresolved Native custom properties.
   session 1, confirmed the two effective paints and an empty console. The final
   staged bundle SHA-256 is
   `1e9086442cfaf1b726d8eb635e8ccd2c66783b9487dada5cc56b2f70b3ce9a63`.
+- Editor Rail Add Menu now paints both New chat and New terminal with Electron's
+  primary icon role. The Central terminal SVG no longer diverges to secondary
+  beside a primary generated chat glyph, and the adapter CSS reflects its actual
+  paint contract. Focused suites pass 2/2. Exact-owned Lynxtron 0.0.22 PID
+  `57242`, window `104514`, PID-derived DevTool `localhost:8901`, session 1,
+  confirmed both strokes at `#0d0d0d` with an empty console. The final staged
+  bundle SHA-256 is
+  `42a4504ffcf0404f31ac44ab901941e3c237033d90f38e0bdeec82ae2c1fae60`.

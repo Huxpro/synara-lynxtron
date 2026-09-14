@@ -6,15 +6,16 @@ import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
 import { useTheme } from './useTheme.lynx';
 
 export function EditorRailAddMenuChatIconElement() {
-  return <MessageCircleIcon size={14} />;
+  const { semanticIconColor } = useTheme();
+  return <MessageCircleIcon color={semanticIconColor('primary')} size={14} />;
 }
 
 export function EditorRailAddMenuTerminalIconElement() {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   return (
     <svg
       className="ThreadEditorAddMenuSvgIcon"
-      content={colorizeLynxSvg(terminalSvg, svgColors.iconSecondary)}
+      content={colorizeLynxSvg(terminalSvg, semanticIconColor('primary'))}
     />
   );
 }
