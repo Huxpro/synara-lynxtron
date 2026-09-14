@@ -1008,13 +1008,21 @@
   opacity: 0.45;
 }
 
-.LxMenuShortcut,
-.LxCommandShortcut {
+.LxMenuShortcut {
   margin-left: auto;
   color: var(--muted-foreground);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 1px;
+  opacity: 0.72;
+}
+
+.LxCommandShortcut {
+  margin-left: auto;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.2px;
   opacity: 0.72;
 }
 

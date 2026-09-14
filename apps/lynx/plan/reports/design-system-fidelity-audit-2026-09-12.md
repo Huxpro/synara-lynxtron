@@ -1013,10 +1013,10 @@ values and unresolved Native custom properties.
 ## Shared Menu and Command auxiliary-copy follow-up
 
 - Native Menu group labels now match Electron's section-heading tier: 12px/16px
-  regular text, 8×6px insets, and 45% secondary opacity. Native Menu and Command
-  shortcuts share Electron's separate 10px medium tier with 1px tracking, 72%
-  muted opacity, and trailing auto alignment. The former combined Native rule
-  rendered both roles as full-strength 10px muted text.
+  regular text, 8×6px insets, and 45% secondary opacity. Native Menu shortcuts
+  use the separate 10px medium tier with 1px tracking, 72% muted opacity, and
+  trailing auto alignment. The former combined Native rule rendered both roles
+  as full-strength 10px muted text.
 - Focused Menu and Command suites pass 32/32; the complete production build
   reports 6/6 tasks successful on Lynxtron 0.0.22. Existing component-specific
   group-label overrides continue to win through later, more-specific selectors.
@@ -1025,3 +1025,15 @@ values and unresolved Native custom properties.
   0.45, and ⌘N at 10px, weight 500, 1px tracking, opacity 0.72. The exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `b1cdce27247d4de6141ef9487f46ef4fef81df4e04bb587ecc73ae08af01b7bf`.
+
+## Shared Command shortcut scale follow-up
+
+- Command shortcut text now preserves Electron's `text-xs` 12px scale and 0.1em
+  tracking separately from Menu's custom 10px role. It retains the 72% muted
+  opacity, medium weight, and trailing auto alignment restored in DS-059.
+- Focused Menu and Command suites pass 32/32 and the affected Lynx/Desktop build
+  passes on Lynxtron 0.0.22. Exact-owned PID `33644` / window `107722`,
+  PID-derived `localhost:8901`, session 1, measured 12px, weight 500, 1.2px
+  tracking, and opacity 0.72 with an empty Native console. No screenshot was
+  retained; staged bundle SHA-256 is
+  `25e1173c404bb309f4cc5c82209c5d417360187bf83e8d476af7a99aef4aa1be`.

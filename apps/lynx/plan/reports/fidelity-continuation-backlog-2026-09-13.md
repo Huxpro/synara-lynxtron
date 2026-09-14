@@ -1073,8 +1073,8 @@ state is absent from the paired component matrix.
 - Shared Native Menu and Command now preserve Electron's two auxiliary-copy
   roles instead of flattening both to full-strength 10px muted text. Menu group
   labels use 12px/16px regular type, 8×6px insets, and 45% secondary opacity;
-  Menu and Command shortcuts use 10px medium type, 1px tracking, auto-leading
-  alignment, and 72% muted opacity.
+  Menu shortcuts use 10px medium type, 1px tracking, auto-leading alignment, and
+  72% muted opacity.
 - Focused Menu and Command suites pass 32/32. The complete production build
   reports 6/6 tasks successful on npm Lynxtron 0.0.22; the existing Project Sort
   popup's local 12px/16px medium label override remains intact.
@@ -1085,3 +1085,18 @@ state is absent from the paired component matrix.
   error/warning console was empty and no screenshot was retained. The final
   staged bundle SHA-256 is
   `b1cdce27247d4de6141ef9487f46ef4fef81df4e04bb587ecc73ae08af01b7bf`.
+
+### DS-060 — COMPLETE
+
+- Native Command shortcuts now match Electron's distinct `text-xs` role at 12px
+  with 0.1em/1.2px tracking. DS-059 correctly restored the shared 72% muted,
+  medium-weight trailing hierarchy, but initially reused Menu's intentionally
+  smaller 10px/1px size instead of preserving Command's separate scale.
+- Focused Menu and Command suites pass 32/32, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `33644`, window `107722`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the highlighted Command story. Native
+  computed shortcut type at 12px, weight 500, 1.2px tracking, opacity 0.72, and
+  trailing auto margin. The exact Native error/warning console was empty and no
+  screenshot was retained. The final staged bundle SHA-256 is
+  `25e1173c404bb309f4cc5c82209c5d417360187bf83e8d476af7a99aef4aa1be`.
