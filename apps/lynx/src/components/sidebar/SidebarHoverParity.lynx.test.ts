@@ -176,6 +176,7 @@ describe('Lynx sidebar hover parity', () => {
     expect(source).toContain(
       'colorizeLynxSvg(pinSvg, sidebarSecondaryIconColor)'
     );
+    expect(source).toContain('color={sidebarSecondaryIconColor}');
     expect(source).toContain(
       'terminalSvg,\n                                sidebarSecondaryIconColor'
     );
@@ -241,6 +242,10 @@ describe('Lynx sidebar hover parity', () => {
       new URL('./Sidebar.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const hoverCardSource = readFileSync(
+      new URL('./SidebarHoverCards.lynx.tsx', import.meta.url),
+      'utf8'
+    );
     const styles = readFileSync(
       new URL('./sidebar.css', import.meta.url),
       'utf8'
@@ -255,9 +260,19 @@ describe('Lynx sidebar hover parity', () => {
     expect(source).toContain('branch={metadata.branch}');
     expect(source).toContain('sourceProjectName={metadata.sourceProjectName}');
     expect(source).toContain('worktreeName={metadata.worktreeName}');
-    expect(source).toContain('props.sourceProjectName ? (');
-    expect(source).toContain('props.branch ? (');
-    expect(source).toContain('props.worktreeName ? (');
+    expect(hoverCardSource).toContain('props.sourceProjectName ? (');
+    expect(hoverCardSource).toContain('props.branch ? (');
+    expect(hoverCardSource).toContain('props.worktreeName ? (');
+    expect(hoverCardSource).toContain(
+      'const metadataIconColor = svgColors.mutedForeground'
+    );
+    expect(hoverCardSource).toContain('color={metadataIconColor}');
+    expect(hoverCardSource).toContain(
+      'content={colorizeLynxSvg(worktreeSvg, metadataIconColor)}'
+    );
+    expect(styles).toMatch(
+      /\.AppSidebarThreadHoverCard \.AppSidebarHoverCardIcon\s*\{[^}]*opacity:\s*0\.75;/s
+    );
   });
 
   it('reuses the row-owned hover portal for the complete project summary card', () => {
@@ -265,18 +280,32 @@ describe('Lynx sidebar hover parity', () => {
       new URL('./Sidebar.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const hoverCardSource = readFileSync(
+      new URL('./SidebarHoverCards.lynx.tsx', import.meta.url),
+      'utf8'
+    );
     const styles = readFileSync(
       new URL('./sidebar.css', import.meta.url),
       'utf8'
     );
 
-    expect(source).toContain('function SidebarProjectHoverCard');
+    expect(hoverCardSource).toContain('function SidebarProjectHoverCard');
     expect(source).toContain('hoverCard={');
     expect(source).toContain('chatCount={group.threads.length}');
     expect(source).toContain('abbreviateHomePath(');
-    expect(source).toContain('<FolderOpenIcon className="AppSidebarHoverCardIcon"');
-    expect(source).toContain('<MessageCircleIcon className="AppSidebarHoverCardIcon"');
-    expect(source).toContain('<text className="AppSidebarHoverCardMeta">Edit project</text>');
+    expect(hoverCardSource).toMatch(
+      /<FolderOpenIcon[\s\S]*?className="AppSidebarHoverCardIcon"[\s\S]*?color=\{metadataIconColor\}/
+    );
+    expect(hoverCardSource).toMatch(
+      /<MessageCircleIcon[\s\S]*?className="AppSidebarHoverCardIcon"[\s\S]*?color=\{metadataIconColor\}/
+    );
+    expect(hoverCardSource).toContain('<text className="AppSidebarHoverCardMeta">Edit project</text>');
+    expect(hoverCardSource).toContain(
+      "? semanticIconColor('primary')"
+    );
+    expect(styles).toMatch(
+      /\.AppSidebarHoverCardPin--pinned\s*\{[^}]*opacity:\s*1;/s
+    );
     expect(styles).toMatch(
       /\.AppSidebarProjectHoverCard \.AppSidebarHoverCardHeader,[\s\S]*?min-height:\s*26px;[\s\S]*?gap:\s*10px;/s
     );

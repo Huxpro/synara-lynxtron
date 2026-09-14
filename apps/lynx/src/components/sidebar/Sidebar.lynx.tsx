@@ -57,7 +57,6 @@ import {
 import { firstLocalServerUrl, localServerMatchesRun } from '@synara/shared/localServers';
 import { newCommandId, newSpaceId, newThreadId } from '@synara-web/lib/utils';
 import { getDefaultModel } from '@synara/shared/model';
-import { formatRelativeTime } from '@synara-web/lib/relativeTime';
 import { abbreviateHomePath } from '@synara-web/components/sidebarHoverCardAnchors';
 import {
   SIDEBAR_THREAD_PREVIEW_LIMIT,
@@ -127,7 +126,6 @@ import {
   FolderIcon,
   FolderOpenIcon,
   GitBranchIcon,
-  MessageCircleIcon,
   PlusIcon,
   SettingsIcon,
 } from '../../lib/icons';
@@ -136,7 +134,6 @@ import { useTheme } from '../../adapters/useTheme.lynx';
 import { useComposerDraftStore } from '../../adapters/composerDraftStore.lynx';
 import { Button } from '../ui/button';
 import { MenuOverlayPortal } from '../ui/menu.lynx';
-import { Separator } from '../ui/separator.lynx';
 import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
 import { lynxNestedInteractiveEventProps } from '../ui/interactive-state.lynx';
 import { deriveSidebarSections, resolveNativeSidebarSpaceId } from './sidebar.logic';
@@ -179,6 +176,10 @@ import {
 } from './projectDeletion.lynx.logic';
 import './sidebar.css';
 import { PullRequestCompareIcon } from './PullRequestCompareIcon.lynx';
+import {
+  SidebarProjectHoverCard,
+  SidebarThreadHoverCard,
+} from './SidebarHoverCards.lynx';
 import { LYNX_SIDEBAR_PRIMARY_ICONS } from './SidebarPrimaryIcons.lynx';
 import pinSvg from '@synara-central-icons/pin.svg?raw';
 import pinFilledSvg from '@synara-central-icons-fill/pin.svg?raw';
@@ -329,93 +330,6 @@ export function SidebarHoverAction(props: {
       {...lynxNestedInteractiveEventProps(interaction.eventProps)}
     >
       {props.children}
-    </view>
-  );
-}
-
-function SidebarThreadHoverCard(props: {
-  readonly branch: string | null;
-  readonly projectName: string | null;
-  readonly sourceProjectName: string | null;
-  readonly thread: ThreadSummary;
-  readonly worktreeName: string | null;
-}) {
-  return (
-    <view className="AppSidebarHoverCardSurface">
-      <view className="AppSidebarHoverCardHeader">
-        <text className="AppSidebarHoverCardTitle">{props.thread.title}</text>
-        <text className="AppSidebarHoverCardTime">
-          {formatRelativeTime(props.thread.updatedAt ?? props.thread.createdAt ?? '')}
-        </text>
-      </view>
-      {props.projectName ? (
-        <view className="AppSidebarHoverCardMetaRow">
-          <FolderIcon className="AppSidebarHoverCardIcon" size={14} />
-          <text className="AppSidebarHoverCardMeta">{props.projectName}</text>
-        </view>
-      ) : null}
-      {props.sourceProjectName ? (
-        <view className="AppSidebarHoverCardMetaRow">
-          <FolderIcon className="AppSidebarHoverCardIcon" size={14} />
-          <text className="AppSidebarHoverCardMeta">{props.sourceProjectName}</text>
-        </view>
-      ) : null}
-      {props.branch ? (
-        <view className="AppSidebarHoverCardMetaRow">
-          <GitBranchIcon className="AppSidebarHoverCardIcon" size={14} />
-          <text className="AppSidebarHoverCardMeta">{props.branch}</text>
-        </view>
-      ) : null}
-      {props.worktreeName ? (
-        <view className="AppSidebarHoverCardMetaRow">
-          <svg
-            className="AppSidebarHoverCardIcon"
-            content={colorizeLynxSvg(worktreeSvg, 'var(--muted-foreground)')}
-          />
-          <text className="AppSidebarHoverCardMeta">{props.worktreeName}</text>
-        </view>
-      ) : null}
-    </view>
-  );
-}
-
-function SidebarProjectHoverCard(props: {
-  readonly chatCount: number;
-  readonly isPinned: boolean;
-  readonly name: string;
-  readonly path: string;
-}) {
-  return (
-    <view className="AppSidebarHoverCardSurface AppSidebarProjectHoverCard">
-      <view className="AppSidebarHoverCardHeader">
-        <FolderOpenIcon className="AppSidebarHoverCardIcon" size={14} />
-        <text className="AppSidebarHoverCardTitle">{props.name}</text>
-        <svg
-          className="AppSidebarHoverCardPin"
-          content={colorizeLynxSvg(
-            props.isPinned ? pinFilledSvg : pinSvg,
-            'var(--muted-foreground)'
-          )}
-        />
-      </view>
-      <view className="AppSidebarHoverCardMetaRow">
-        <MessageCircleIcon className="AppSidebarHoverCardIcon" size={14} />
-        <text className="AppSidebarHoverCardMeta">
-          {props.chatCount} {props.chatCount === 1 ? 'chat' : 'chats'}
-        </text>
-      </view>
-      <Separator className="AppSidebarHoverCardSeparator" />
-      <view className="AppSidebarHoverCardMetaRow">
-        <FolderIcon className="AppSidebarHoverCardIcon" size={14} />
-        <text className="AppSidebarHoverCardMeta AppSidebarHoverCardPath">
-          {props.path}
-        </text>
-      </view>
-      <Separator className="AppSidebarHoverCardSeparator" />
-      <view className="AppSidebarHoverCardMetaRow">
-        <SettingsIcon className="AppSidebarHoverCardIcon" size={14} />
-        <text className="AppSidebarHoverCardMeta">Edit project</text>
-      </view>
     </view>
   );
 }
@@ -1576,7 +1490,11 @@ export function Sidebar({
             label="Archive thread"
             onActivate={() => void performThreadAction(thread, '', 'archive')}
           >
-            <ArchiveIcon className="AppSidebarHoverActionIcon" size={13} />
+            <ArchiveIcon
+              className="AppSidebarHoverActionIcon"
+              color={sidebarSecondaryIconColor}
+              size={13}
+            />
           </SidebarHoverAction>
         ) : null}
       </>
@@ -2231,6 +2149,7 @@ export function Sidebar({
                           >
                             <PullRequestCompareIcon
                               className="AppSidebarHoverActionIcon"
+                              color={sidebarSecondaryIconColor}
                             />
                           </SidebarHoverAction>
                           <SidebarHoverAction
@@ -2257,6 +2176,7 @@ export function Sidebar({
                           >
                             <PlusIcon
                               className="AppSidebarHoverActionIcon"
+                              color={sidebarSecondaryIconColor}
                               size={13}
                             />
                           </SidebarHoverAction>

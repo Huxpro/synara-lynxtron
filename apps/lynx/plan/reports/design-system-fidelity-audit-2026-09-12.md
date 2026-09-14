@@ -461,3 +461,22 @@ values and unresolved Native custom properties.
   as `rgba(13, 13, 13, 0.596)`. Exact-client consoles were empty and no screenshot
   was retained. The staged bundle SHA-256 is
   `de58e7772f13642994d8770127c389ac916ba55511525f74d4429320876671d9`.
+
+## Sidebar hover icon follow-up
+
+- Native Sidebar row actions now embed semantic secondary paint for generated
+  Plus, Archive, and pull-request compare SVGs instead of relying on inherited
+  CSS color. The paired project/thread specimens use the same paint contract.
+- Hover-card metadata uses the Electron authority's muted-foreground value, with
+  the additional `0.75` thread-card opacity preserved. Project pins now retain
+  their state hierarchy: unpinned is muted at `0.55`; pinned is primary at full
+  opacity. The shared hover-card composition has focused direct-render coverage
+  for both states and all metadata glyph families.
+- Focused Native suites pass 10/10. Exact-owned Lynxtron 0.0.22 PID `48269` /
+  window `105424`, PID-derived `localhost:8901`, session 1, resolved project-row
+  Plus and Archive strokes to `rgba(13, 13, 13, 0.598)`; Electron CDP reported
+  its secondary token as `rgba(13, 13, 13, 0.596)`. The exact-client console was
+  empty. Native mouse-move automation did not expose the hover card, so that
+  interaction is recorded as a harness limitation rather than a product pass or
+  failure. No screenshot was retained. The staged bundle SHA-256 is
+  `dd1438098a373c517361b6f98f66b323b582dff0e682e5f880aad95f6c498eae`.

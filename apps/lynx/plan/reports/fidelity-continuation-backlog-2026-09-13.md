@@ -446,3 +446,26 @@ state is absent from the paired component matrix.
   to `rgba(13, 13, 13, 0.596)`. Both Native consoles were empty, no screenshot was
   retained, and the staged bundle SHA-256 is
   `de58e7772f13642994d8770127c389ac916ba55511525f74d4429320876671d9`.
+
+### DS-024 — COMPLETE
+
+- Native Sidebar hover actions and hover-card metadata no longer rely on parent
+  CSS `color` after generated SVG content has been encoded. Project-row pull
+  request, terminal, new-thread, thread archive, and paired-specimen actions use
+  semantic secondary paint. Hover-card metadata uses Electron's exact
+  `muted-foreground` source paint; thread metadata retains the authority's extra
+  `0.75` opacity.
+- Project hover-card pin hierarchy is state-aware: the unpinned outline uses
+  muted paint with `0.55` opacity, while the pinned filled glyph uses primary
+  paint at full opacity. The hover-card composition was extracted into a focused
+  Native module so direct-render tests can verify all four metadata glyphs and
+  both pin states without loading the full Sidebar runtime.
+- Focused Native suites pass 10/10. Exact-owned Lynxtron 0.0.22 PID `48269`,
+  window `105424`, PID-derived DevTool `localhost:8901`, session 1, exposed the
+  project-row Plus and Archive strokes at semantic secondary
+  `rgba(13, 13, 13, 0.598)` with an empty error/warning console. Electron CDP
+  resolved the corresponding secondary token to `rgba(13, 13, 13, 0.596)`.
+  Computer Use and DevTool mouse-move delivery did not open the real hover card,
+  so hover-card paint is certified by direct render tests rather than claimed as
+  Native pointer evidence. No screenshot was retained. The staged bundle SHA-256
+  is `dd1438098a373c517361b6f98f66b323b582dff0e682e5f880aad95f6c498eae`.

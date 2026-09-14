@@ -32,11 +32,12 @@ export function SidebarProjectRowSpecimen(props: {
     restoreFocus: () => void
   ) => void;
 }) {
+  const { svgColors } = useTheme();
   const pinned = props.variant === 'pinned' || props.state === 'pinned';
   const running = props.variant === 'running';
   return (
     <view className="ComponentsLabSidebarRowStory">
-      <SidebarNavigationRow className={`AppSidebarProjectHeader${stateClass(props.state)}`} label="Synara" onActivate={() => {}} onContextMenu={props.onContextMenu} actions={<Actions><SidebarHoverAction label="New thread" onActivate={() => {}}><PlusIcon className="AppSidebarHoverActionIcon" size={13} /></SidebarHoverAction><SidebarHoverAction label="Archive project" onActivate={() => {}}><ArchiveIcon className="AppSidebarHoverActionIcon" size={13} /></SidebarHoverAction></Actions>}>
+      <SidebarNavigationRow className={`AppSidebarProjectHeader${stateClass(props.state)}`} label="Synara" onActivate={() => {}} onContextMenu={props.onContextMenu} actions={<Actions><SidebarHoverAction label="New thread" onActivate={() => {}}><PlusIcon className="AppSidebarHoverActionIcon" color={svgColors.iconSecondary} size={13} /></SidebarHoverAction><SidebarHoverAction label="Archive project" onActivate={() => {}}><ArchiveIcon className="AppSidebarHoverActionIcon" color={svgColors.iconSecondary} size={13} /></SidebarHoverAction></Actions>}>
         <ProjectPinAction pinned={pinned} onActivate={() => {}} />
         <SidebarProjectSummary
           leading={<FolderIcon size={16} />}
@@ -62,7 +63,7 @@ export function SidebarThreadRowSpecimen(props: {
   const pinned = props.variant === 'pinned' || props.state === 'pinned';
   return (
     <view className="ComponentsLabSidebarRowStory">
-      <SidebarNavigationRow className={`AppSidebarThread${active ? ' AppSidebarThread--active' : ''}${stateClass(props.state)}`} label="Component fidelity" onActivate={() => {}} onContextMenu={props.onContextMenu} actions={<Actions><SidebarHoverAction label={pinned ? 'Unpin thread' : 'Pin thread'} onActivate={() => {}}><svg className="AppSidebarHoverActionIcon" content={colorizeLynxSvg(pinned ? pinFilledSvg : pinSvg, svgColors.iconSecondary)} /></SidebarHoverAction><SidebarHoverAction label="Archive thread" onActivate={() => {}}><ArchiveIcon className="AppSidebarHoverActionIcon" size={13} /></SidebarHoverAction></Actions>}>
+      <SidebarNavigationRow className={`AppSidebarThread${active ? ' AppSidebarThread--active' : ''}${stateClass(props.state)}`} label="Component fidelity" onActivate={() => {}} onContextMenu={props.onContextMenu} actions={<Actions><SidebarHoverAction label={pinned ? 'Unpin thread' : 'Pin thread'} onActivate={() => {}}><svg className="AppSidebarHoverActionIcon" content={colorizeLynxSvg(pinned ? pinFilledSvg : pinSvg, svgColors.iconSecondary)} /></SidebarHoverAction><SidebarHoverAction label="Archive thread" onActivate={() => {}}><ArchiveIcon className="AppSidebarHoverActionIcon" color={svgColors.iconSecondary} size={13} /></SidebarHoverAction></Actions>}>
         <SidebarThreadRowPresentation active={active} title="Component fidelity" />
       </SidebarNavigationRow>
     </view>
