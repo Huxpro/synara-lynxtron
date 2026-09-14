@@ -809,3 +809,20 @@ state is absent from the paired component matrix.
   its source defines `size-9`, `grid-cols-3`, 8px gaps, and 8px option padding. No
   screenshot was retained. The staged bundle SHA-256 is
   `729857c0c213084f0745ac8bf2d77a9d5ad64a43814c926668aaa90b05e122f6`.
+
+### DS-044 — COMPLETE
+
+- Native Project Action auto-run control now matches Electron's desktop row
+  anatomy instead of shrinking both copy and switch. The row uses 12px horizontal
+  padding, the label is 14px/20px, and the off/on control uses the same 32×20px
+  track with a 16×16px thumb.
+- The focused Project Action editor contract passes 1/1 and the complete
+  Lynx/Desktop production build passes on the npm Lynxtron 0.0.22 runtime.
+- Exact-owned Lynxtron PID `99420`, window `106823`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the open Add Action story. Native measured
+  the row at 12px left/right padding, its label at 258×20 with 14px/20px type, the
+  track at 32×20, and the thumb at 16×16. The exact Native error/warning console
+  was empty. Electron authority uses the same desktop `text-sm`, `px-3 py-2`, and
+  32×20 shared Switch contract. No screenshot was retained. The staged bundle
+  SHA-256 is
+  `f2a1c03629c9bc1a8c4834032025164ca50c9dff7cfcafb1984c04af0970e521`.

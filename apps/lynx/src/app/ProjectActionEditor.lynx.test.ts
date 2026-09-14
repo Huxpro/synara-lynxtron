@@ -54,5 +54,17 @@ describe('ProjectActionEditor', () => {
     expect(styles).toMatch(
       /\.ProjectActionEditorIconOption\s*\{[^}]*width:\s*72px;[^}]*height:\s*56px;[^}]*gap:\s*8px;/s
     );
+    expect(styles).toMatch(
+      /\.ProjectActionEditorSwitch\s*\{[^}]*min-height:\s*38px;[^}]*padding:\s*8px 12px;[^}]*gap:\s*12px;/s
+    );
+    expect(styles).toMatch(
+      /\.ProjectActionEditorSwitchLabel\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
+    );
+    expect(styles).toMatch(
+      /\.ProjectActionEditorSwitchTrack\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;/s
+    );
+    expect(styles).toMatch(
+      /\.ProjectActionEditorSwitchThumb\s*\{[^}]*left:\s*2px;[^}]*top:\s*2px;[^}]*width:\s*16px;[^}]*height:\s*16px;/s
+    );
   });
 });

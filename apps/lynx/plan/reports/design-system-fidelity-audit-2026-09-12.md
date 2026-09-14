@@ -767,3 +767,19 @@ values and unresolved Native custom properties.
   composition and its authority source defines the same size, columns, padding,
   and gap. No screenshot was retained; staged bundle SHA-256 is
   `729857c0c213084f0745ac8bf2d77a9d5ad64a43814c926668aaa90b05e122f6`.
+
+## Project Action auto-run row follow-up
+
+- Native now matches Electron's auto-run row hierarchy: 12px horizontal padding,
+  a 14px/20px label, and a 32×20px switch track with a 16×16px thumb. The previous
+  row used 10px horizontal padding, 12px/18px type, and a 28×16px switch, making
+  the control visibly denser than the authority.
+- The focused Project Action editor contract passes 1/1 and locks both row type
+  and control geometry. The complete Lynx/Desktop production build passes on
+  Lynxtron 0.0.22.
+- Exact-owned PID `99420` / window `106823`, PID-derived `localhost:8901`,
+  session 1, rendered the open Add Action story and measured the label at 258×20
+  with 14px/20px type, the track at 32×20, the thumb at 16×16, and 12px row
+  padding. The exact Native console was empty. No screenshot was retained; staged
+  bundle SHA-256 is
+  `f2a1c03629c9bc1a8c4834032025164ca50c9dff7cfcafb1984c04af0970e521`.
