@@ -264,6 +264,10 @@ values and unresolved Native custom properties.
   variants rendered from bundle
   `bb34539b125df9ce6a4103c357e3f4953765a8413bcf4c3a4c51b4792720e7a9`
   with an empty error/warning console.
+- Native Create/Edit now pass through one production `AutomationDialog` variant
+  wrapper. The current identity audit passes all 98 renderer mappings without a
+  composer-specific override; primitive inventory remains zero missing and zero
+  omitted counterparts.
 - The detail story uses an 880×520 page canvas instead of the generic component
   target. Active and paused variants retain the full split pane, 11 detail
   labels, action-header state, status dot, and Previous runs surface. Its final

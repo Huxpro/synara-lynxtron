@@ -34,8 +34,7 @@ describe('paired Components Lab route', () => {
     );
     expect(renderer).toContain("props.storyId === 'editor-rail/independent-tabs'");
     expect(renderer).toContain("props.storyId === 'automation/composer-dialog'");
-    expect(renderer).toContain('<AutomationCreateDialog');
-    expect(renderer).toContain('<AutomationEditDialog');
+    expect(renderer).toContain('<AutomationDialog');
     expect(renderer).toContain("props.storyId === 'automation/detail-page'");
     expect(renderer).toContain('<AutomationDetailPage');
     expect(styles).toContain('.ComponentsLabAutomationDetailStory');

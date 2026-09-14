@@ -35,8 +35,8 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
       },
       lynx: {
         renderer: "lynx",
-        component: "AutomationCreateDialog / AutomationEditDialog",
-        module: "apps/lynx/src/app/AutomationCreateDialog.lynx.tsx",
+        component: "AutomationDialog",
+        module: "apps/lynx/src/app/AutomationDialog.lynx.tsx",
         consumers: ["automations/create", "automations/edit"],
       },
     },

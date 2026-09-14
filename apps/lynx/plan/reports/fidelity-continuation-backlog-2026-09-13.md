@@ -102,6 +102,9 @@ state is absent from the paired component matrix.
 - Exact-owned Native rendered both variants from the staged production bundle;
   the Edit story preserved the populated title/prompt, Worktree, Synara project,
   GPT-5 Codex, Daily at 9:00, one warning, and Save action with an empty console.
+- Native now exposes one production `AutomationDialog` variant wrapper consumed
+  by Create, Edit, and Components Lab. The identity audit therefore verifies the
+  real shared boundary directly instead of relying on a compound manifest name.
 
 ### AF-005 — COMPLETE
 

@@ -32,10 +32,9 @@ import {
   COMPONENT_LAB_PROVIDER_STATUSES,
   resolveComponentLabKanbanCardFixture,
 } from '@synara/shared/componentLabFixtures';
-import { AutomationCreateDialog } from './AutomationCreateDialog.lynx';
 import { AutomationDetailPage } from './AutomationDetailPage.lynx';
 import { AutomationsListContent } from './AutomationsPage.lynx';
-import { AutomationEditDialog } from './AutomationEditDialog.lynx';
+import { AutomationDialog } from './AutomationDialog.lynx';
 import { KanbanCardComposition } from '@synara-web/components/kanban/KanbanCardComposition';
 import type { KanbanCard } from '@synara-web/components/kanban/kanban.logic';
 import { deriveContextWindowMeterDisplay } from '@synara-web/lib/contextWindow';
@@ -123,13 +122,14 @@ function AutomationComposerDialogStory(props: {
     onOpenChange: () => {},
   };
   return props.variant === 'edit' ? (
-    <AutomationEditDialog
+    <AutomationDialog
       {...common}
+      variant="edit"
       definition={COMPONENT_LAB_AUTOMATION_DEFINITION}
       onSave={() => {}}
     />
   ) : (
-    <AutomationCreateDialog {...common} onCreate={() => {}} />
+    <AutomationDialog {...common} variant="create" onCreate={() => {}} />
   );
 }
 

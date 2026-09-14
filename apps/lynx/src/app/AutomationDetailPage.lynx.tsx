@@ -27,7 +27,7 @@ import playSvg from '@synara-central-icons/play.svg?raw';
 import pauseSvg from '@synara-central-icons/pause.svg?raw';
 import { useTheme } from '../adapters/useTheme.lynx';
 import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { AutomationEditDialog } from './AutomationEditDialog.lynx';
+import { AutomationDialog } from './AutomationDialog.lynx';
 import type { ProjectSummary, ThreadSummary } from './queries';
 import { AutomationTimeInput } from './AutomationTimeInput.lynx';
 import { ComposerModelControl } from '../components/composer/ComposerModelControl.lynx';
@@ -785,7 +785,8 @@ export function AutomationDetailPage({
           </view>
         </scroll-view>
       </view>
-      <AutomationEditDialog
+      <AutomationDialog
+        variant="edit"
         definition={definition}
         projects={projects}
         threads={threads}

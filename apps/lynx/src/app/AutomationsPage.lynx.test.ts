@@ -211,7 +211,7 @@ describe('Lynx Automations route', () => {
     );
 
     expect(pageSource).toContain('mutationFn: createAutomation');
-    expect(pageSource).toContain('<AutomationCreateDialog');
+    expect(pageSource).toContain('<AutomationDialog');
     expect(pageSource).toContain('threads={sidebar.data?.threads ?? []}');
     expect(pageSource).toContain(
       'navigate(`/automations/${encodeURIComponent(definition.id)}`)'
@@ -391,7 +391,7 @@ describe('Lynx Automations route', () => {
     expect(pageSource).toContain('updateMutation.mutate(input, {');
     expect(pageSource).toContain('projects={sidebar.data?.projects ?? []}');
     expect(pageSource).toContain('threads={sidebar.data?.threads ?? []}');
-    expect(detailSource).toContain('<AutomationEditDialog');
+    expect(detailSource).toContain('<AutomationDialog');
     expect(detailSource).toContain('projects={projects}');
     expect(detailSource).toContain('threads={threads}');
     expect(detailSource).toContain('onEditOpenChange(true)');

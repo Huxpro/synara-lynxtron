@@ -17,7 +17,7 @@ import {
   runAutomationNow,
   updateAutomation,
 } from './queries';
-import { AutomationCreateDialog } from './AutomationCreateDialog.lynx';
+import { AutomationDialog } from './AutomationDialog.lynx';
 import { AutomationDetailPage } from './AutomationDetailPage.lynx';
 import './automations-page.css';
 
@@ -375,7 +375,8 @@ export function AutomationsPage({
         onRetry={() => void automations.refetch()}
         projection={projection}
       />
-      <AutomationCreateDialog
+      <AutomationDialog
+        variant="create"
         open={createOpen}
         projects={sidebar.data?.projects ?? []}
         threads={sidebar.data?.threads ?? []}
