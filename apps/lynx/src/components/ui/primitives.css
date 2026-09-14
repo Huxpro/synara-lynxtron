@@ -101,6 +101,16 @@
   color: var(--primary);
 }
 
+.LxButton--primary-outline.ui-hover,
+.LxButton--primary-outline.ui-active,
+.LxButton--primary-outline.ui-pressed {
+  border-top-color: var(--primary-outline-state-border);
+  border-right-color: var(--primary-outline-state-border);
+  border-bottom-color: var(--primary-outline-state-border);
+  border-left-color: var(--primary-outline-state-border);
+  background-color: var(--primary-outline-state-surface);
+}
+
 .LxButton--destructive {
   border-top-color: var(--destructive);
   border-right-color: var(--destructive);
@@ -115,6 +125,16 @@
 
 .LxButton--destructive-outline .LxButton__text {
   color: var(--destructive);
+}
+
+.LxButton--destructive-outline.ui-hover,
+.LxButton--destructive-outline.ui-active,
+.LxButton--destructive-outline.ui-pressed {
+  border-top-color: var(--destructive-outline-state-border);
+  border-right-color: var(--destructive-outline-state-border);
+  border-bottom-color: var(--destructive-outline-state-border);
+  border-left-color: var(--destructive-outline-state-border);
+  background-color: var(--destructive-outline-state-surface);
 }
 
 .LxButton--prominent {

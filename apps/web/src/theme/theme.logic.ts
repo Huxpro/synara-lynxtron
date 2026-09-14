@@ -780,6 +780,14 @@ export function buildThemeCssVariables(
       pack.theme.semanticColors.diffRemoved,
       0.9,
     ),
+    "--destructive-outline-state-border": formatRgba(
+      parseHexColor(pack.theme.semanticColors.diffRemoved),
+      0.32,
+    ),
+    "--destructive-outline-state-surface": formatRgba(
+      parseHexColor(pack.theme.semanticColors.diffRemoved),
+      0.04,
+    ),
     "--destructive-foreground": pack.theme.surface,
     "--foreground": readCodexVariable("--color-text-foreground"),
     "--info": pack.theme.accent,
@@ -808,6 +816,14 @@ export function buildThemeCssVariables(
       resolvedTokens.computed.surfaceUnder,
       readCodexVariable("--color-background-button-primary"),
       0.9,
+    ),
+    "--primary-outline-state-border": formatRgba(
+      parseHexColor(readCodexVariable("--color-background-button-primary")),
+      0.32,
+    ),
+    "--primary-outline-state-surface": formatRgba(
+      parseHexColor(readCodexVariable("--color-background-button-primary")),
+      0.04,
     ),
     "--primary-foreground": readCodexVariable("--color-text-button-primary"),
     "--ring": readCodexVariable("--color-border-focus"),

@@ -1339,3 +1339,21 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `9608016bc321c4be4f4d076faec6b89cdcbd36b77eb3d4c6ab0cd2ed18e0f0c8`.
+
+### DS-075 — COMPLETE
+
+- Native primary-outline and destructive-outline Buttons now match Electron's
+  semantic hover/active/pressed paint: a 4% role tint over the elevated default
+  surface and a 32% role border. The role colors are derived from the active
+  Theme Pack and registered for Native custom-property resolution.
+- Border colors use explicit top/right/bottom/left declarations because Lynx can
+  parse an aggregate variable-backed `border-color` without applying it to the
+  rendered sides. Native Button/theme/Lab focused tests pass 16/16, and the
+  affected Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `74929`, window `108410`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered destructive-outline hover with 4% red
+  surface `rgba(224,46,42,0.0392157)`, four 1px 32% red borders
+  `rgba(224,46,42,0.317647)`, and destructive-red text. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `f3883440c1c0623539678fdff9a0c6231072d0e14ff3e4b0f39f0fe677b9ed72`.

@@ -1251,3 +1251,19 @@ values and unresolved Native custom properties.
   fill in the same state. The exact Native console was empty. No screenshot was
   retained; staged bundle SHA-256 is
   `9608016bc321c4be4f4d076faec6b89cdcbd36b77eb3d4c6ab0cd2ed18e0f0c8`.
+
+## Shared Button semantic-outline interaction follow-up
+
+- Native primary-outline and destructive-outline Buttons now match Electron's
+  role-specific hover/active/pressed states: 4% semantic surface tint plus 32%
+  semantic border. Both values derive from the active Theme Pack, and static
+  light/dark declarations register the dynamic properties with Lynx.
+- Explicit per-side border declarations avoid the Native shorthand failure
+  observed during DS-069. Native Button/theme/Lab tests pass 16/16, and the
+  affected Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `74929` / window `108410`, PID-derived `localhost:8901`,
+  session 1, measured destructive-outline hover surface
+  `rgba(224,46,42,0.0392157)`, four 1px borders at
+  `rgba(224,46,42,0.317647)`, and destructive text `rgb(224,46,42)`. The exact
+  Native console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `f3883440c1c0623539678fdff9a0c6231072d0e14ff3e4b0f39f0fe677b9ed72`.

@@ -165,6 +165,18 @@ describe('slice root theme projection', () => {
     expect(variables['--destructive-hover-fill']).toBe(
       '#e3433f'
     );
+    expect(variables['--primary-outline-state-surface']).toBe(
+      'rgba(17, 34, 51, 0.04)'
+    );
+    expect(variables['--primary-outline-state-border']).toBe(
+      'rgba(17, 34, 51, 0.32)'
+    );
+    expect(variables['--destructive-outline-state-surface']).toBe(
+      'rgba(224, 46, 42, 0.04)'
+    );
+    expect(variables['--destructive-outline-state-border']).toBe(
+      'rgba(224, 46, 42, 0.32)'
+    );
     expect(appStyles).toContain('--primary-hover-fill: #252525;');
     expect(appStyles).toContain('--primary-hover-fill: #e5e5e5;');
     expect(appStyles).toContain('--destructive-hover-fill: #e33531;');
