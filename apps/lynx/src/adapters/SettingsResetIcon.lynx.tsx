@@ -1,5 +1,7 @@
 import { Undo2Icon } from '../lib/icons.lynx';
+import { useTheme } from './useTheme.lynx';
 
 export function SettingsResetIcon() {
-  return <Undo2Icon size={14} color="var(--muted-foreground)" />;
+  const { svgColors } = useTheme();
+  return <Undo2Icon size={14} color={svgColors.mutedForeground80} />;
 }

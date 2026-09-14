@@ -720,3 +720,21 @@ state is absent from the paired component matrix.
   `#0d0d0d` with computed opacity `0.5`. The exact-client error/warning console
   was empty. No screenshot was retained. The staged bundle SHA-256 is
   `62754b32144140259a176e5a7f536ceabdbae54dc273383c54bb5b11533c8658`.
+
+### DS-039 — COMPLETE
+
+- Every Native Settings row reset action now reuses one generated Undo glyph
+  with the Electron default-state effective tone: muted foreground multiplied by
+  the shared Button icon opacity, resolved to `.48` in the light theme. This
+  covers General, Appearance, Git Writing, Provider Picker/Tools, Theme Pack,
+  Custom Models, and other Settings owners of `SettingsResetIcon`.
+- The shared Settings suite directly renders the icon and verifies encoded stroke
+  `rgba(13, 13, 13, 0.48)`; all 6/6 assertions pass. The full Lynx/Desktop
+  production build passes on Lynxtron 0.0.22. Dynamic hover recoloring is not
+  claimed because generated SVG content does not re-encode from parent CSS state.
+- Exact-owned Lynxtron PID `53122`, window `106464`, PID-derived DevTool
+  `localhost:8901`, session 1, opened the real Appearance page and measured its
+  visible Theme reset glyph at the same `.48` encoded stroke. The exact-client
+  error/warning console was empty. No screenshot was retained. The staged bundle
+  SHA-256 is
+  `1daa312c0fc158f88b65ac29cfe2085fd5e74c272c7b9ca1daadfe55b87be049`.

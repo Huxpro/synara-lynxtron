@@ -688,3 +688,19 @@ values and unresolved Native custom properties.
   both encoded at `#0d0d0d` and computed at `opacity: 0.5`. The exact-client
   console was empty, no screenshot was retained, and staged bundle SHA-256 is
   `62754b32144140259a176e5a7f536ceabdbae54dc273383c54bb5b11533c8658`.
+
+## Settings reset icon follow-up
+
+- All Native Settings reset actions now resolve their shared Undo glyph to
+  muted-foreground/80 (`.48` in the light theme), matching Electron's muted
+  reset button plus shared SVG `0.8` opacity. This remains a single reusable
+  `SettingsResetIcon` rather than per-panel overrides.
+- The shared Settings test directly renders and checks the encoded `.48` stroke;
+  all 6/6 assertions pass and the full production build passes on Lynxtron
+  0.0.22. Dynamic hover stroke changes remain outside the claim because Native
+  generated SVG content does not follow parent CSS color changes.
+- Exact-owned PID `53122` / window `106464`, PID-derived `localhost:8901`, session
+  1, rendered the real Appearance Theme reset glyph at
+  `rgba(13, 13, 13, 0.48)` with an empty exact-client console. No screenshot was
+  retained; staged bundle SHA-256:
+  `1daa312c0fc158f88b65ac29cfe2085fd5e74c272c7b9ca1daadfe55b87be049`.

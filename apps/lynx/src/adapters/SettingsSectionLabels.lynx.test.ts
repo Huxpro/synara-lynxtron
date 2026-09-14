@@ -1,5 +1,8 @@
 import { describe, expect, it } from '@rstest/core';
+import { render } from '@lynx-js/react/testing-library';
 import { readFileSync } from 'node:fs';
+
+import { SettingsResetIcon } from './SettingsResetIcon.lynx';
 
 describe('Lynx Settings section labels', () => {
   it('uses the shared Web section-label identity across native owners', () => {
@@ -257,6 +260,7 @@ describe('Lynx Settings section labels', () => {
   });
 
   it('uses one generated reset icon across Settings owners', () => {
+    render(<SettingsResetIcon />);
     const resetIcon = readFileSync(
       new URL('./SettingsResetIcon.lynx.tsx', import.meta.url),
       'utf8'
@@ -271,6 +275,10 @@ describe('Lynx Settings section labels', () => {
     );
 
     expect(resetIcon).toContain('<Undo2Icon size={14}');
+    expect(resetIcon).toContain('color={svgColors.mutedForeground80}');
+    expect(
+      elementTree.root?.querySelector('svg')?.getAttribute('content')
+    ).toContain('stroke="rgba(13, 13, 13, 0.48)"');
     for (const source of owners) {
       expect(source).toContain('<SettingsResetIcon />');
       expect(source).not.toContain('↶');
