@@ -107,5 +107,17 @@ describe('Lynx Input accessibility contract', () => {
     expect(styles).toMatch(
       /\.LxInputControl\.ui-focus\s*\{[^}]*border-color:\s*var\(--control-input-focus-border\);/s
     );
+    expect(styles).toMatch(
+      /\.LxInputControl--invalid\s*\{[^}]*border-top-color:\s*var\(--input-invalid-border\);[^}]*border-left-color:\s*var\(--input-invalid-border\);/s
+    );
+    expect(styles).toMatch(
+      /\.LxInputControl--invalid\.ui-focus\s*\{[^}]*border-top-color:\s*var\(--input-invalid-focus-border\);[^}]*border-left-color:\s*var\(--input-invalid-focus-border\);/s
+    );
+    expect(styles).toMatch(
+      /\.LxInputControl--multiline\.LxInputControl--invalid\s*\{[^}]*border-top-color:\s*var\(--textarea-invalid-border\);/s
+    );
+    expect(styles).toMatch(
+      /\.LxInputControl--multiline\.LxInputControl--invalid\.ui-focus\s*\{[^}]*border-top-color:\s*var\(--textarea-invalid-focus-border\);/s
+    );
   });
 });

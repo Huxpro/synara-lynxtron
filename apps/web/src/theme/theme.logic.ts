@@ -788,6 +788,22 @@ export function buildThemeCssVariables(
       parseHexColor(pack.theme.semanticColors.diffRemoved),
       0.04,
     ),
+    "--input-invalid-border": formatRgba(
+      parseHexColor(pack.theme.semanticColors.diffRemoved),
+      0.3,
+    ),
+    "--input-invalid-focus-border": formatRgba(
+      parseHexColor(pack.theme.semanticColors.diffRemoved),
+      0.5,
+    ),
+    "--textarea-invalid-border": formatRgba(
+      parseHexColor(pack.theme.semanticColors.diffRemoved),
+      0.36,
+    ),
+    "--textarea-invalid-focus-border": formatRgba(
+      parseHexColor(pack.theme.semanticColors.diffRemoved),
+      0.64,
+    ),
     "--destructive-foreground": pack.theme.surface,
     "--foreground": readCodexVariable("--color-text-foreground"),
     "--info": pack.theme.accent,

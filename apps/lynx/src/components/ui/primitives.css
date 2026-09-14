@@ -327,7 +327,31 @@
 }
 
 .LxInputControl--invalid {
-  border-color: var(--destructive);
+  border-top-color: var(--input-invalid-border);
+  border-right-color: var(--input-invalid-border);
+  border-bottom-color: var(--input-invalid-border);
+  border-left-color: var(--input-invalid-border);
+}
+
+.LxInputControl--invalid.ui-focus {
+  border-top-color: var(--input-invalid-focus-border);
+  border-right-color: var(--input-invalid-focus-border);
+  border-bottom-color: var(--input-invalid-focus-border);
+  border-left-color: var(--input-invalid-focus-border);
+}
+
+.LxInputControl--multiline.LxInputControl--invalid {
+  border-top-color: var(--textarea-invalid-border);
+  border-right-color: var(--textarea-invalid-border);
+  border-bottom-color: var(--textarea-invalid-border);
+  border-left-color: var(--textarea-invalid-border);
+}
+
+.LxInputControl--multiline.LxInputControl--invalid.ui-focus {
+  border-top-color: var(--textarea-invalid-focus-border);
+  border-right-color: var(--textarea-invalid-focus-border);
+  border-bottom-color: var(--textarea-invalid-focus-border);
+  border-left-color: var(--textarea-invalid-focus-border);
 }
 
 .LxInput {

@@ -177,6 +177,18 @@ describe('slice root theme projection', () => {
     expect(variables['--destructive-outline-state-border']).toBe(
       'rgba(224, 46, 42, 0.32)'
     );
+    expect(variables['--input-invalid-border']).toBe(
+      'rgba(224, 46, 42, 0.3)'
+    );
+    expect(variables['--input-invalid-focus-border']).toBe(
+      'rgba(224, 46, 42, 0.5)'
+    );
+    expect(variables['--textarea-invalid-border']).toBe(
+      'rgba(224, 46, 42, 0.36)'
+    );
+    expect(variables['--textarea-invalid-focus-border']).toBe(
+      'rgba(224, 46, 42, 0.64)'
+    );
     expect(variables['--secondary-outline-state-surface']).toBe(
       '#fdfdfd'
     );
