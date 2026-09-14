@@ -513,7 +513,7 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
-    id: "ui/button", title: "Button primitives", category: "design-system", owner: "Button", fixtureId: "button-variants", variants: ["primary", "secondary", "outline", "ghost", "destructive", "prominent", "icon"], states: [...INTERACTIVE_STATES, "disabled"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    id: "ui/button", title: "Button primitives", category: "design-system", owner: "Button", fixtureId: "button-variants", variants: ["primary", "secondary", "outline", "primary-outline", "secondary-outline", "destructive-outline", "ghost", "destructive", "prominent", "icon"], states: [...INTERACTIVE_STATES, "disabled"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "Button", module: "apps/web/src/components/ui/button.tsx", consumers: ["global/button", "dialog/actions", "toolbar/icon-button"] },
       lynx: { renderer: "lynx", component: "Button", module: "apps/lynx/src/components/ui/button.lynx.tsx", consumers: ["global/button", "dialog/actions", "toolbar/icon-button"] },

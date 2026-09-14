@@ -1218,3 +1218,19 @@ values and unresolved Native custom properties.
   borders. The exact Native console was empty. No screenshot was retained;
   staged bundle SHA-256 is
   `29602c151d6fd8a2a0d610f9e96b78ff04d407d888043cfb607784546379eacb`.
+
+## Shared Button semantic-outline follow-up
+
+- Native primary-outline, secondary-outline, and destructive-outline Button
+  variants now match Electron's elevated opaque default surface instead of
+  rendering transparently. Their border and text roles remain variant-specific.
+- All three variants are now paired Component Lab cases. Meaningful coverage grows
+  from 3,376 to 3,496 cells; Native Button/Lab tests pass 6/6, Web Lab tests pass
+  37/37, shared manifest tests pass 9/9, and the affected Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `46091` / window `108280`, PID-derived `localhost:8901`,
+  session 1, measured destructive-outline background `rgb(23,23,23)`, text
+  `rgb(224,46,42)`, and border `hsla(0,0%,99%,.072)`, matching Electron's
+  corresponding roles. The exact Native console was empty. No screenshot was
+  retained; staged bundle SHA-256 is
+  `4732e1e0c27b308901cfd966597af8cdebe6d9b64fa0213aacd90bf7c3118ed0`.

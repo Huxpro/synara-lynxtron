@@ -1301,3 +1301,21 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `29602c151d6fd8a2a0d610f9e96b78ff04d407d888043cfb607784546379eacb`.
+
+### DS-073 — COMPLETE
+
+- Native primary-outline, secondary-outline, and destructive-outline Buttons
+  now use Electron's elevated opaque surface instead of a transparent fill. The
+  variants are exposed in the paired Button Lab matrix so their theme/state
+  contracts are directly inspectable rather than only reachable through product
+  consumers.
+- Coverage grows from 3,376 to 3,496 meaningful cells. Native Button/Lab tests
+  pass 6/6, Web Lab tests pass 37/37, shared manifest tests pass 9/9, and the
+  affected Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `46091`, window `108280`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered destructive-outline with dark elevated
+  surface `rgb(23,23,23)`, destructive text `rgb(224,46,42)`, and the shared
+  approximately 7% border. Electron independently resolved the same three roles.
+  The exact Native error/warning console was empty, no screenshot was retained,
+  and the final staged bundle SHA-256 is
+  `4732e1e0c27b308901cfd966597af8cdebe6d9b64fa0213aacd90bf7c3118ed0`.

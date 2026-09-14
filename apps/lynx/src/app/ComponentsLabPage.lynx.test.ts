@@ -213,6 +213,7 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('view={COMPONENT_LAB_DIFF_CODE_VIEW}');
     expect(renderer).toContain("props.storyId === 'ui/button'");
     expect(renderer).toContain('<Button className={stateClass}');
+    expect(renderer).toContain("'primary-outline' | 'secondary-outline' | 'destructive-outline'");
     expect(renderer).toContain("props.variant === 'icon'");
     expect(renderer).toContain("props.storyId === 'ui/input'");
     expect(renderer).toContain('<Input aria-invalid={invalid}');

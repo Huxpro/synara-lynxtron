@@ -502,6 +502,7 @@ describe("Components Lab story renderer", () => {
   it("renders real button and input primitive matrices", () => {
     const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
     expect(source).toContain('props.storyId === "ui/button"');
+    expect(source).toContain('"primary-outline" | "secondary-outline" | "destructive-outline"');
     expect(source).toContain('<Button className={stateClass}');
     expect(source).toContain('<IconButton className={stateClass}');
     expect(source).toContain('props.variant === "icon"');

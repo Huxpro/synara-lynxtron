@@ -85,6 +85,12 @@
   background-color: transparent;
 }
 
+.LxButton--primary-outline,
+.LxButton--secondary-outline,
+.LxButton--destructive-outline {
+  background-color: var(--color-background-elevated-primary-opaque);
+}
+
 .LxButton--outline .LxButton__text,
 .LxButton--secondary-outline .LxButton__text,
 .LxButton--chrome-outline .LxButton__text {

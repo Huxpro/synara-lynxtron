@@ -446,7 +446,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
     const disabled = props.state === 'disabled';
     const stateClass = `${props.state === 'hover' ? ' ui-hover' : props.state === 'pressed' ? ' ui-pressed' : ''}${props.state === 'focus' ? ' ui-focus' : ''}`;
     if (props.variant === 'icon') return <Button aria-label="Add item" className={stateClass} disabled={disabled} size="icon-xs" variant="ghost"><PlusIcon size={14} /></Button>;
-    const variant = props.variant === 'primary' ? 'default' : props.variant as 'default' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'prominent';
+    const variant = props.variant === 'primary' ? 'default' : props.variant as 'default' | 'secondary' | 'outline' | 'primary-outline' | 'secondary-outline' | 'destructive-outline' | 'ghost' | 'destructive' | 'prominent';
     const label = props.variant === 'primary' ? 'Primary' : `${props.variant?.slice(0, 1).toUpperCase()}${props.variant?.slice(1)}`;
     return <Button className={stateClass} disabled={disabled} variant={variant}>{label}</Button>;
   }

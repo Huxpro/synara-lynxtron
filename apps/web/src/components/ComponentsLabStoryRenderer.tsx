@@ -686,7 +686,7 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
     const disabled = props.state === "disabled";
     const stateClass = props.state === "hover" ? "brightness-95" : props.state === "focus" ? "ring-1 ring-ring/60 ring-offset-1 ring-offset-background" : "";
     if (props.variant === "icon") return <IconButton className={stateClass} data-pressed={props.state === "pressed" || undefined} disabled={disabled} label="Add item"><PlusIcon /></IconButton>;
-    const variant = props.variant === "primary" ? "default" : props.variant as "default" | "secondary" | "outline" | "ghost" | "destructive" | "prominent";
+    const variant = props.variant === "primary" ? "default" : props.variant as "default" | "secondary" | "outline" | "primary-outline" | "secondary-outline" | "destructive-outline" | "ghost" | "destructive" | "prominent";
     const label = props.variant === "primary" ? "Primary" : `${props.variant?.slice(0, 1).toUpperCase()}${props.variant?.slice(1)}`;
     return <Button className={stateClass} data-pressed={props.state === "pressed" || undefined} disabled={disabled} variant={variant}>{label}</Button>;
   }
