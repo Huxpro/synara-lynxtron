@@ -25,6 +25,7 @@ import { deleteWorkspaceWithTerminalCleanup } from './workspaceDeletion.logic';
 import { platformTerminal } from '../platform/terminal';
 import { workspaceTerminalIdsForPreset } from './workspaceLayout.logic';
 import { PlusIcon, SettingsIcon, Trash2 } from '../lib/icons.lynx';
+import { useTheme } from '../adapters/useTheme.lynx';
 import './workspace-page.css';
 
 export function WorkspacePage({
@@ -39,6 +40,7 @@ export function WorkspacePage({
   readonly workspaceId: string;
   readonly navigate: (to: string) => void;
 }) {
+  const { svgColors } = useTheme();
   const workspacePages = useWorkspaceStore((state) => state.workspacePages);
   const workspace = workspacePages.find((entry) => entry.id === workspaceId);
   const fallbackWorkspaceId = workspacePages[0]?.id ?? null;
@@ -144,7 +146,11 @@ export function WorkspacePage({
             aria-label="New terminal"
             onClick={() => setTerminalOpen(true)}
           >
-            <PlusIcon className="WorkspacePageHeaderActionIcon" size={12} />
+            <PlusIcon
+              className="WorkspacePageHeaderActionIcon"
+              color={svgColors.foreground80}
+              size={12}
+            />
             <text className="LxButton__text WorkspacePageHeaderActionText">
               Terminal
             </text>
@@ -156,7 +162,11 @@ export function WorkspacePage({
             aria-label="Workspace settings"
             onClick={() => setSettingsOpen(true)}
           >
-            <SettingsIcon className="WorkspacePageHeaderActionIcon" size={12} />
+            <SettingsIcon
+              className="WorkspacePageHeaderActionIcon"
+              color={svgColors.foreground80}
+              size={12}
+            />
             <text className="LxButton__text WorkspacePageHeaderActionText">
               Settings
             </text>
@@ -168,7 +178,11 @@ export function WorkspacePage({
             aria-label="Delete workspace"
             onClick={() => void removeWorkspace()}
           >
-            <Trash2 className="WorkspacePageHeaderActionIcon" size={12} />
+            <Trash2
+              className="WorkspacePageHeaderActionIcon"
+              color={svgColors.foreground80}
+              size={12}
+            />
             <text className="LxButton__text WorkspacePageHeaderActionText">
               Delete workspace
             </text>

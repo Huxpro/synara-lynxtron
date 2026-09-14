@@ -86,6 +86,9 @@ describe('Lynx workspace surface', () => {
       3
     );
     expect(pageSource.match(/WorkspacePageHeaderActionText/g)).toHaveLength(3);
+    expect(
+      pageSource.match(/color={svgColors.foreground80}/g)
+    ).toHaveLength(3);
     expect(pageStyles).toMatch(
       /\.WorkspacePageTitleButton\s*\{[^}]*min-width:\s*0;[^}]*flex-shrink:\s*1;/s
     );

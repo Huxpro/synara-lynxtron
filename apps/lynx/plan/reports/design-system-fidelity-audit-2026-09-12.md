@@ -638,3 +638,20 @@ values and unresolved Native custom properties.
   through the available accessibility surface, so no artificial output or live
   jump-control claim was made. No screenshot was retained; staged bundle SHA-256:
   `2a74f3c0a352ba414807bdc06726e12108b0b1d3f4f8ccf7ebbc34e58aa728d5`.
+
+## Workspace header action icon follow-up
+
+- Native Workspace header action glyphs now encode foreground/80 directly,
+  matching Electron's outline Button icon contract instead of rendering the
+  generated SVGs at full foreground. This covers Terminal, Settings, and the
+  currently Native-only Delete action.
+- Delete remains intentionally available in the Native header because the Native
+  Workspace sidebar does not yet provide Electron's hover deletion affordance;
+  removing it in a paint-only slice would regress functionality. The focused
+  Workspace suite passes 6/6 and the full production build passes on Lynxtron
+  0.0.22.
+- The isolated snapshot had no persisted Workspace and Electron redirected the
+  requested `/workspace` route to a new thread during preflight. That harness
+  state was rejected rather than retained as false visual evidence. No screenshot
+  was retained; staged bundle SHA-256:
+  `9267a0238d8ac7a158b5e4e4d9d10e877ab8e3d7269618d8e3fff7a9aef5066c`.

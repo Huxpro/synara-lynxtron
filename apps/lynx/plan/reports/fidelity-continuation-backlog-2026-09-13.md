@@ -668,3 +668,20 @@ state is absent from the paired component matrix.
   reached without synthetic state; no live glyph claim and no screenshot were
   retained. The staged bundle SHA-256 is
   `2a74f3c0a352ba414807bdc06726e12108b0b1d3f4f8ccf7ebbc34e58aa728d5`.
+
+### DS-036 — COMPLETE
+
+- Native Workspace header Terminal, Settings, and current renderer-only Delete
+  actions now embed foreground/80 paint in their generated icons, matching the
+  Electron outline Button's inherited foreground plus shared icon `0.8` opacity.
+  The Native Delete action remains because its Sidebar does not yet expose
+  Electron's hover-only workspace deletion control; this paint slice does not
+  remove the only available capability.
+- The focused Workspace suite passes 6/6 and locks all three header glyphs to the
+  resolved foreground/80 value. The full Lynx/Desktop production build passes on
+  the npm Lynxtron 0.0.22 runtime.
+- The isolated comparison snapshot had no persisted Workspace. Its `/workspace`
+  route redirected Electron to a newly created thread during preflight, so no
+  mismatched route was used as visual evidence and no screenshot was retained.
+  The staged bundle SHA-256 is
+  `9267a0238d8ac7a158b5e4e4d9d10e877ab8e3d7269618d8e3fff7a9aef5066c`.
