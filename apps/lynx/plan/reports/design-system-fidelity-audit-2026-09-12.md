@@ -1283,3 +1283,21 @@ values and unresolved Native custom properties.
   resolved to transparent at runtime. The exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `808a9b53399b1d00161612a32b60f8b952919a58ccbe31e939ffad95ae9bc38f`.
+
+## Shared Button outline/chrome interaction follow-up
+
+- Native outline, chrome-outline, and chrome Buttons now apply Electron's
+  elevated-secondary surface in hover, active, and pressed states. The shared
+  theme builder composites that translucent role into the active surface and
+  emits an opaque Native token, preventing low-alpha quantization while retaining
+  custom Theme Pack behavior.
+- The token is registered in both Native theme blocks. Native Button/theme/Lab
+  focused tests pass 16/16, and the affected Lynx/Desktop production build passes
+  on npm Lynxtron 0.0.22.
+- Exact-owned PID `7940` / window `108535`, PID-derived `localhost:8901`,
+  session 1, measured dark outline hover at `rgb(17,17,17)` with the standard
+  light border and full foreground. Electron's real pointer hover used the
+  equivalent 0.8% white surface; the rejected Native alpha implementation only
+  painted 0.4%. The exact Native console was empty. No screenshot was retained;
+  staged bundle SHA-256 is
+  `78c2ffd456f5ec1bd3e5036e9ed2e9294208309d8b5f6057ccd24c8cd474a65e`.

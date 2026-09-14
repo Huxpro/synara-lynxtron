@@ -45,10 +45,16 @@
   background-color: var(--color-background-button-secondary-hover);
 }
 
+.LxButton--chrome.ui-hover,
 .LxButton--chrome.ui-active,
+.LxButton--chrome.ui-pressed,
+.LxButton--outline.ui-hover,
 .LxButton--outline.ui-active,
-.LxButton--chrome-outline.ui-active {
-  background-color: var(--color-background-elevated-secondary);
+.LxButton--outline.ui-pressed,
+.LxButton--chrome-outline.ui-hover,
+.LxButton--chrome-outline.ui-active,
+.LxButton--chrome-outline.ui-pressed {
+  background-color: var(--outline-button-state-surface);
 }
 
 .LxButton--secondary.ui-active,

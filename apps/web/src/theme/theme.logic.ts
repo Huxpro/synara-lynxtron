@@ -809,6 +809,11 @@ export function buildThemeCssVariables(
     "--input": readCodexVariable("--color-background-control-opaque"),
     "--muted": readCodexVariable("--color-background-elevated-secondary"),
     "--muted-foreground": readCodexVariable("--color-text-foreground-secondary"),
+    "--outline-button-state-surface": compositeScaledColorOverSurface(
+      resolvedTokens.derived.elevatedSecondary,
+      resolvedTokens.computed.surfaceUnder,
+      1,
+    ),
     "--popover": readCodexVariable("--color-background-elevated-primary-opaque"),
     "--popover-foreground": readCodexVariable("--color-text-foreground"),
     "--primary": readCodexVariable("--color-background-button-primary"),

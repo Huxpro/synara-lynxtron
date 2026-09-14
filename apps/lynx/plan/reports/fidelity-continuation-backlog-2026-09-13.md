@@ -1375,3 +1375,22 @@ state is absent from the paired component matrix.
   final run. The exact Native error/warning console was empty, no screenshot was
   retained, and the final staged bundle SHA-256 is
   `808a9b53399b1d00161612a32b60f8b952919a58ccbe31e939ffad95ae9bc38f`.
+
+### DS-077 — COMPLETE
+
+- Native outline, chrome-outline, and chrome Buttons now expose Electron's
+  elevated-secondary surface for hover, active, and pressed states instead of
+  applying it only during active. The effective translucent color is composited
+  into the active Theme Pack surface before Native rendering, avoiding Lynx's
+  low-alpha quantization.
+- The dedicated dynamic token has static light/dark declarations for Native
+  registration. Native Button/theme/Lab focused tests pass 16/16, and the
+  affected Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `7940`, window `108535`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered dark outline hover at opaque
+  `rgb(17,17,17)` with the standard light border and full foreground. Electron's
+  real pointer hover resolved to the equivalent 0.8% white surface over
+  `#101010`; the prior Native alpha path rendered only 0.4% and was rejected. The
+  exact Native error/warning console was empty, no screenshot was retained, and
+  the final staged bundle SHA-256 is
+  `78c2ffd456f5ec1bd3e5036e9ed2e9294208309d8b5f6057ccd24c8cd474a65e`.
