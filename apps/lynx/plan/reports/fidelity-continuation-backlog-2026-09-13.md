@@ -860,6 +860,25 @@ state is absent from the paired component matrix.
   SHA-256 is
   `314229f9735563cafb51044988dc3cb26b0a8d53d384fc545241c63fd8128f38`.
 
+### DS-047 — COMPLETE
+
+- Shared Native `DialogDescription` now matches Electron's standard `text-sm`
+  dialog tier at 14px/20px instead of rendering every unoverridden description
+  at 12px with an implicit line height. This corrects the primitive for Project
+  Action, rename, workspace, Space, Settings, and other standard dialog consumers
+  while preserving their explicit local overrides.
+- The direct shared Dialog suite passes 11/11 and the Project Action contract
+  passes 1/1. The broader filename-matched Rstest run also surfaced two existing
+  unrelated failures: a generated `lynx-ui` vendor parse failure and a stale
+  AppSnap source-string assertion. The complete Lynx/Desktop production build
+  passes on the npm Lynxtron 0.0.22 runtime.
+- Exact-owned Lynxtron PID `36818`, window `106917`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the shared `ui/dialog`
+  title-description/open story and measured `LxDialogDescription` at 14px/20px
+  with muted foreground. The exact Native error/warning console was empty. No
+  screenshot was retained. The staged bundle SHA-256 is
+  `4db0f79a3ee064b28320269731f0a3805838f7c7349283fb060366c7eeed30e2`.
+
 ### DS-045 — COMPLETE
 
 - Native Project Action form copy now uses Electron's established typography

@@ -816,6 +816,23 @@ values and unresolved Native custom properties.
   empty. No screenshot was retained; staged bundle SHA-256 is
   `314229f9735563cafb51044988dc3cb26b0a8d53d384fc545241c63fd8128f38`.
 
+## Shared Dialog description typography follow-up
+
+- Native `DialogDescription` now uses Electron's shared 14px/20px muted text
+  tier. The previous 12px declaration undersized every standard dialog that did
+  not add a local override; the correction remains in the shared primitive rather
+  than being repeated in Project Action or individual feature dialogs.
+- The direct Dialog suite passes 11/11 and Project Action passes 1/1. A broad
+  filename-matched Rstest invocation additionally found the existing generated
+  `lynx-ui` vendor parse failure and stale AppSnap icon formatting assertion;
+  neither is caused by this CSS change. The full production build passes on
+  Lynxtron 0.0.22.
+- Exact-owned PID `36818` / window `106917`, PID-derived `localhost:8901`,
+  session 1, rendered `ui/dialog` title-description/open and measured the shared
+  description at 14px/20px with muted foreground. The exact Native console was
+  empty. No screenshot was retained; staged bundle SHA-256 is
+  `4db0f79a3ee064b28320269731f0a3805838f7c7349283fb060366c7eeed30e2`.
+
 ## Project Action form typography follow-up
 
 - Native Project Action form labels, hint, and validation copy now match the

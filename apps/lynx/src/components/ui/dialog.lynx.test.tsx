@@ -137,6 +137,13 @@ describe('Lynx Dialog dismiss contract', () => {
     expect(title?.getAttribute('accessibility-trait')).toBe('header');
   });
 
+  it('matches the Electron dialog description type tier', () => {
+    const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
+    expect(styles).toMatch(
+      /\.LxDialogDescription\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s
+    );
+  });
+
   it('names and activates default and custom close owners', async () => {
     const onOpenChange = rs.fn();
     render(
