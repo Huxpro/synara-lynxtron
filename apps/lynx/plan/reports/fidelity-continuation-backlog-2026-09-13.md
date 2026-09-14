@@ -927,3 +927,20 @@ state is absent from the paired component matrix.
   min-height/horizontal inset. The exact Native error/warning console was empty.
   No screenshot was retained. The staged bundle SHA-256 is
   `6d2dd190272e8a70649d5d9fcefe4f8963479e938d0aa546a584e2b3ea51eb2f`.
+
+### DS-051 — COMPLETE
+
+- Shared Native Checkbox now uses Electron's `--color-border-light` token for
+  its unchecked outline instead of the heavier generic border token. Checked and
+  mixed states retain the primary border/background override.
+- The focused Checkbox suite passes 3/3 and the complete Lynx/Desktop production
+  build passes on the npm Lynxtron 0.0.22 runtime.
+- Exact-owned Lynxtron PID `37624`, window `107195`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the unchecked and checked stories. The
+  unchecked matched rule parsed `border-color: var(--color-border-light)` and the
+  aggregate computed border resolved to `hsla(0,0%,5%,.06)`; checked resolved its
+  border and fill to primary `#0d0d0d`. Lynx DevTool's per-side border field still
+  serializes the translucent variable as current color, so the matched rule plus
+  aggregate computed property are the authoritative evidence. The exact Native
+  console was empty and no screenshot was retained. The staged bundle SHA-256 is
+  `673e0c8b8e0e41838afa1a8656b2e166f3359dc3f8e668f9885e1ab27c53b25b`.
