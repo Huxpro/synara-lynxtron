@@ -89,6 +89,12 @@ export function useTheme() {
     tertiary: resolvedTokens.derived.iconTertiary,
   };
   const statusSurfaceOpacity = resolvedTheme === 'dark' ? 0.16 : 0.08;
+  const alertSurfaceOpacity = 0.04;
+  const alertBorderOpacity = 0.32;
+  const warningColor = resolvedTheme === 'dark' ? '#f5b44a' : '#d97706';
+  const errorColor = activeTheme.theme.semanticColors.diffRemoved;
+  const infoColor = activeTheme.theme.accent;
+  const successColor = activeTheme.theme.semanticColors.diffAdded;
   return {
     activeTheme,
     codeFontFamily,
@@ -109,28 +115,36 @@ export function useTheme() {
       disabled: semanticIconPalette.disabled,
       statusError: resolvedTokens.status.error,
       statusErrorSurface: withOpacity(
-        activeTheme.theme.semanticColors.diffRemoved,
+        errorColor,
         statusSurfaceOpacity
       ),
       statusInfoSurface: withOpacity(
-        activeTheme.theme.accent,
+        infoColor,
         statusSurfaceOpacity
       ),
       statusNeutral: resolvedTokens.status.neutral,
       statusSuccessSurface: withOpacity(
-        activeTheme.theme.semanticColors.diffAdded,
+        successColor,
         statusSurfaceOpacity
       ),
       statusWarningSurface: withOpacity(
-        resolvedTheme === 'dark' ? '#f5b44a' : '#d97706',
+        warningColor,
         statusSurfaceOpacity
       ),
+      alertErrorBorder: withOpacity(errorColor, alertBorderOpacity),
+      alertErrorSurface: withOpacity(errorColor, alertSurfaceOpacity),
+      alertInfoBorder: withOpacity(infoColor, alertBorderOpacity),
+      alertInfoSurface: withOpacity(infoColor, alertSurfaceOpacity),
+      alertSuccessBorder: withOpacity(successColor, alertBorderOpacity),
+      alertSuccessSurface: withOpacity(successColor, alertSurfaceOpacity),
+      alertWarningBorder: withOpacity(warningColor, alertBorderOpacity),
+      alertWarningSurface: withOpacity(warningColor, alertSurfaceOpacity),
       secondaryForeground: resolveTextForegroundSecondary(
         activeTheme.theme,
         resolvedTheme
       ),
       surface: activeTheme.theme.surface,
-      warning: resolvedTheme === 'dark' ? '#f5b44a' : '#d97706',
+      warning: warningColor,
     },
     semanticIconColor: (tone: SemanticIconTone) =>
       resolveSemanticIconTone(tone, semanticIconPalette),

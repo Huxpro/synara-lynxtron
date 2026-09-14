@@ -993,3 +993,19 @@ values and unresolved Native custom properties.
   the shared cleanup window. The exact Native console was empty. No screenshot
   was retained; staged bundle SHA-256 is
   `299de57e70abb652f0ed2ccb959bb9f8bc0e43d7eba3c932fe0dfdf6e59171fa`.
+
+## Shared Alert semantic-surface follow-up
+
+- Native Alert now mirrors Electron's error/info/success/warning surface system:
+  every semantic role owns a 4% background tint and 32% border tint. The former
+  Native rules used generic secondary fill for all four roles and provided no
+  semantic border for info, success, or warning.
+- Theme-aware concrete rgba values are derived beside Badge status surfaces, so
+  custom themes remain supported without relying on Native `color-mix()` paint.
+  Alert and Badge focused suites pass 5/5; the complete production build reports
+  6/6 tasks successful on Lynxtron 0.0.22.
+- Exact-owned PID `6142` / window `107662`, PID-derived `localhost:8901`, session
+  1, rendered success with computed `rgba(0,162,64,0.0392157)` background and
+  `rgba(0,162,64,0.317647)` border while retaining 14px/20px medium title type.
+  The exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is `3b6ec3854aa7c2865d1a74f5c985ee226c993fd1dddbfb7142d9f76c8fdba5fd`.

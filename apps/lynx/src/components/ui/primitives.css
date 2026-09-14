@@ -408,8 +408,6 @@
 
 .LxAlert { position: relative; width: 100%; display: flex; flex-direction: row; align-items: flex-start; gap: 8px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; color: var(--foreground); background-color: transparent; }
 .LxAlert--sm { padding: 6px 10px; border-radius: 8px; }
-.LxAlert--error { border-color: var(--destructive); background-color: var(--secondary); }
-.LxAlert--info, .LxAlert--success, .LxAlert--warning { background-color: var(--secondary); }
 .LxAlertTitle { color: var(--foreground); font-size: 14px; font-weight: 500; line-height: 20px; }
 .LxAlertDescription { min-width: 0; flex: 1; color: var(--muted-foreground); font-size: 14px; line-height: 20px; }
 .LxAlert--sm .LxAlertTitle, .LxAlert--sm .LxAlertDescription { font-size: 12px; line-height: 16px; }

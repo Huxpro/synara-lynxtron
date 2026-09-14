@@ -1051,3 +1051,19 @@ state is absent from the paired component matrix.
   absent after the shared cleanup window; the exact Native error/warning console
   was empty. No screenshot was retained. The final staged bundle SHA-256 is
   `299de57e70abb652f0ed2ccb959bb9f8bc0e43d7eba3c932fe0dfdf6e59171fa`.
+
+### DS-058 — COMPLETE
+
+- Native Alert semantic variants now preserve Electron's role-specific 4%
+  surfaces and 32% borders instead of flattening error/info/success/warning onto
+  the generic secondary surface. Values are computed from the active Theme Pack
+  as concrete rgba, avoiding unsupported Native `color-mix()` paint.
+- The focused Alert plus Badge regression suites pass 5/5 and cover all four
+  light-theme variants. The complete production build reports 6/6 tasks
+  successful on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `6142`, window `107662`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the success story with computed
+  `rgba(0,162,64,0.0392157)` surface and `rgba(0,162,64,0.317647)` border. The
+  title remained 14px/20px medium, the exact Native error/warning console was
+  empty, and no screenshot was retained. The final staged bundle SHA-256 is
+  `3b6ec3854aa7c2865d1a74f5c985ee226c993fd1dddbfb7142d9f76c8fdba5fd`.
