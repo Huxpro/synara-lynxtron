@@ -1348,3 +1348,17 @@ values and unresolved Native custom properties.
   tier, so unlike height contexts were not conflated. The exact Native console was
   empty. No screenshot was retained; staged bundle SHA-256 is
   `4c18d39a1b0678061a7e71f39c8c981c0a217e8be1cff25e130c9410a4a00fbe`.
+
+## Shared Button prominent inverse-text follow-up
+
+- Native prominent Button now takes its inverse text from Electron's
+  `--color-background-surface` role instead of `--background` / surface-under.
+  This removes the default dark `#101010` versus `#111111` mismatch without
+  changing the foreground fill or custom-theme behavior.
+- Native Button/Lab focused tests pass 7/7, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `50510` / window `108760`, PID-derived `localhost:8901`,
+  session 1, measured foreground fill `rgb(252,252,252)` and text
+  `rgb(17,17,17)` at 12px medium while retaining the 150ms transition. The exact
+  Native console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `6bfd85df78e84beadda59d3f3ef6eb8fbd6bf1b3efe87893afa3d8b3914a6ef3`.

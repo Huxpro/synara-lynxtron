@@ -1446,3 +1446,18 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `4c18d39a1b0678061a7e71f39c8c981c0a217e8be1cff25e130c9410a4a00fbe`.
+
+### DS-081 — COMPLETE
+
+- Native prominent Button now uses Electron's inverse surface role for its text
+  instead of the deeper surface-under background. This removes the subtle dark
+  text mismatch on the high-contrast foreground fill while preserving custom
+  Theme Pack behavior.
+- Native Button/Lab focused tests pass 7/7, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `50510`, window `108760`, PID-derived DevTool
+  `localhost:8901`, session 1, measured foreground fill `rgb(252,252,252)` and
+  inverse text `rgb(17,17,17)` at the shared 12px medium tier. The 150ms
+  prominent transition remained intact, the exact Native error/warning console
+  was empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `6bfd85df78e84beadda59d3f3ef6eb8fbd6bf1b3efe87893afa3d8b3914a6ef3`.

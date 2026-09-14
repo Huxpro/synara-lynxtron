@@ -159,14 +159,14 @@
 .LxButton--prominent {
   border-radius: 999px;
   background-color: var(--foreground);
-  color: var(--background);
+  color: var(--color-background-surface);
   transition-property: transform, opacity;
   transition-duration: 150ms;
   transition-timing-function: ease-out;
 }
 
 .LxButton--prominent .LxButton__text {
-  color: var(--background);
+  color: var(--color-background-surface);
 }
 
 .LxButton--prominent.ui-hover {

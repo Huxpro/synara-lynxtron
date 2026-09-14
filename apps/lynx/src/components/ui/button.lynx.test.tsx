@@ -42,6 +42,9 @@ describe('Lynx Button accessibility contract', () => {
       /\.LxButton--prominent\s*\{[^}]*transition-property:\s*transform, opacity;[^}]*transition-duration:\s*150ms;[^}]*transition-timing-function:\s*ease-out;/s
     );
     expect(styles).toMatch(
+      /\.LxButton--prominent \.LxButton__text\s*\{[^}]*color:\s*var\(--color-background-surface\);/s
+    );
+    expect(styles).toMatch(
       /@media \(prefers-reduced-motion: reduce\)\s*\{[^}]*\.LxButton--prominent,[^}]*transition-duration:\s*0\.01ms;/s
     );
     expect(styles).toMatch(
