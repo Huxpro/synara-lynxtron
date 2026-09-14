@@ -970,10 +970,9 @@
   padding: 0;
 }
 
-.ExplorerDockPdfZoomGlyph {
-  color: var(--muted-foreground);
-  font-size: 16px;
-  line-height: 18px;
+.ExplorerDockPdfToolbarIcon {
+  width: 16px;
+  height: 16px;
 }
 
 .ExplorerDockPdfZoomMenuTrigger.LxMenuTrigger {

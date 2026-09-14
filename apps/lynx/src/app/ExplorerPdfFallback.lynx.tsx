@@ -19,7 +19,15 @@ import {
   MenuSeparator,
   MenuTrigger,
 } from '../components/ui/menu.lynx';
-import { ChevronDownIcon } from '../lib/icons.lynx';
+import {
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ExternalLinkIcon,
+  MinusIcon,
+  PlusIcon,
+} from '../lib/icons.lynx';
+import { useTheme } from '../adapters/useTheme.lynx';
 import { openPathInEditor } from '../data/synaraClient.lynx';
 import { resolveExplorerPdfOpenTarget } from './explorerPdf.logic';
 import { clampExplorerPdfPage } from './explorerPdfPage.logic';
@@ -45,6 +53,7 @@ export function ExplorerPdfFallback(props: {
   readonly zoomMenuDefaultOpen?: boolean;
   readonly pagePreviewUrlBuilder?: (input: { readonly page: number; readonly width: number }) => string;
 }) {
+  const { semanticIconColor } = useTheme();
   const [opening, setOpening] = useState(false);
   const [openError, setOpenError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
@@ -143,7 +152,11 @@ export function ExplorerPdfFallback(props: {
               navigateToPage(page - 1);
             }}
           >
-            <text className="ExplorerDockPdfCompactNav">‹</text>
+            <ChevronLeftIcon
+              className="ExplorerDockPdfToolbarIcon"
+              color={semanticIconColor('secondary')}
+              size={16}
+            />
             <text className="ExplorerDockPdfNavLabel">Previous</text>
           </Button>
           <view className="ExplorerDockPdfPage">
@@ -176,7 +189,11 @@ export function ExplorerPdfFallback(props: {
               navigateToPage(page + 1);
             }}
           >
-            <text className="ExplorerDockPdfCompactNav">›</text>
+            <ChevronRightIcon
+              className="ExplorerDockPdfToolbarIcon"
+              color={semanticIconColor('secondary')}
+              size={16}
+            />
             <text className="ExplorerDockPdfNavLabel">Next</text>
           </Button>
           <view className="ExplorerDockPdfZoomControls">
@@ -190,7 +207,11 @@ export function ExplorerPdfFallback(props: {
                 setZoomMode({ type: 'custom', scale: previousZoomScale(scale) });
               }}
             >
-              <text className="ExplorerDockPdfZoomGlyph">−</text>
+              <MinusIcon
+                className="ExplorerDockPdfToolbarIcon"
+                color={semanticIconColor('secondary')}
+                size={16}
+              />
             </Button>
             <Menu defaultOpen={props.zoomMenuDefaultOpen}>
               <MenuTrigger
@@ -245,7 +266,11 @@ export function ExplorerPdfFallback(props: {
                 setZoomMode({ type: 'custom', scale: nextZoomScale(scale) });
               }}
             >
-              <text className="ExplorerDockPdfZoomGlyph">+</text>
+              <PlusIcon
+                className="ExplorerDockPdfToolbarIcon"
+                color={semanticIconColor('secondary')}
+                size={16}
+              />
             </Button>
           </view>
           <Button
@@ -259,7 +284,11 @@ export function ExplorerPdfFallback(props: {
               void openInDefaultApp();
             }}
           >
-            <text className="ExplorerDockPdfCompactOpen">↗</text>
+            <ExternalLinkIcon
+              className="ExplorerDockPdfCompactOpen"
+              color={semanticIconColor('secondary')}
+              size={14}
+            />
             <text className="ExplorerDockPdfOpenLabel">
               {opening ? 'Opening…' : 'Open'}
             </text>

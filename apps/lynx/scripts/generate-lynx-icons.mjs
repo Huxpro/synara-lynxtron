@@ -59,6 +59,7 @@ const icons = {
   LightBulbIcon: 'bulb',
   MessageCircleIcon: 'message-circle',
   MicIcon: 'microphone',
+  MinusIcon: 'minus',
   ListChecksIcon: 'list-check',
   MoonIcon: 'moon',
   NewThreadIcon: 'edit',

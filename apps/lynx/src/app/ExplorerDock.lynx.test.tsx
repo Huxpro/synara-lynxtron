@@ -381,6 +381,17 @@ describe('Lynx Explorer dock', () => {
     expect(pdfSource).toContain('className="ExplorerDockPdfNext"');
     expect(pdfSource).toContain("' ExplorerDockPdf--multi-page'");
     expect(pdfSource).toContain('className="ExplorerDockPdfCompactOpen"');
+    expect(pdfSource).toContain('<ChevronLeftIcon');
+    expect(pdfSource).toContain('<ChevronRightIcon');
+    expect(pdfSource).toContain('<MinusIcon');
+    expect(pdfSource).toContain('<PlusIcon');
+    expect(pdfSource).toContain('<ExternalLinkIcon');
+    expect(pdfSource).toContain("color={semanticIconColor('secondary')}");
+    expect(pdfSource).not.toContain('>‹</text>');
+    expect(pdfSource).not.toContain('>›</text>');
+    expect(pdfSource).not.toContain('>−</text>');
+    expect(pdfSource).not.toContain('>+</text>');
+    expect(pdfSource).not.toContain('>↗</text>');
     expect(pdfSource).toContain('aria-label="Previous PDF page"');
     expect(pdfSource).toContain('aria-label="Next PDF page"');
     expect(pdfPageSource).toContain('mode="scaleToFill"');

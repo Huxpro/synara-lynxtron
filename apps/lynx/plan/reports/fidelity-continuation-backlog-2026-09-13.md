@@ -169,6 +169,19 @@ state is absent from the paired component matrix.
   expectation for the already-normalized ghost remove icon token. Production
   build and changed-lines Doctor pass.
 
+### DS-011 — COMPLETE
+
+- Native PDF Previous, Next, Zoom out, Zoom in, and Open controls no longer use
+  the font glyphs `‹`, `›`, `−`, `+`, and `↗`. They now reuse the generated
+  16px chevron/minus/plus and 14px external-link icons with the semantic
+  secondary icon role, matching Electron's toolbar contract and removing
+  font-dependent shape and baseline drift.
+- Focused PDF and icon suites pass 11/11. Exact-owned Lynxtron 0.0.22 PID
+  `76827` on PID-derived `localhost:8901`, session 1, exposed the five expected
+  SVG identities and no error/warning console output. The final staged bundle
+  SHA-256 is
+  `3bacd0fbfa26ac5ba4ae22413f3f11ac678b5a7f782d74056e7208d7fcc8a396`.
+
 ### AF-001 — COMPLETE
 
 - Native Create and Edit now share the same composer primitives for title,

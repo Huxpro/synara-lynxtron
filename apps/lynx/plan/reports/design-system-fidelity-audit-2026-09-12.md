@@ -309,3 +309,12 @@ values and unresolved Native custom properties.
   amber in both themes. Its full attachment interaction suite passes 4/4, the
   Native production build passes, and React Doctor reports zero changed-line
   diagnostics.
+- The PDF toolbar no longer depends on UI-font glyphs for Previous, Next, Zoom
+  out, Zoom in, or Open. Native now uses generated chevron-left, chevron-right,
+  minus, plus, and external-link icons with the semantic secondary icon role,
+  matching Electron's icon system at 16px (14px for Open). Focused PDF/icon
+  suites pass 11/11. Exact-owned Lynxtron 0.0.22 PID `76827`, resolved through
+  PID-derived DevTool `localhost:8901`, session 1, exposed all five SVG
+  identities with an empty error/warning console. The final staged bundle
+  SHA-256 is
+  `3bacd0fbfa26ac5ba4ae22413f3f11ac678b5a7f782d74056e7208d7fcc8a396`.
