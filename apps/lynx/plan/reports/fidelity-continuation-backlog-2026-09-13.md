@@ -1229,3 +1229,20 @@ state is absent from the paired component matrix.
   exact Native error/warning console was empty, no screenshot was retained, and
   the final staged bundle SHA-256 is
   `7034be2fc98b72c1d9ff6760cc284263fcfcef9d908158ac7ca370c51444dc20`.
+
+### DS-069 — COMPLETE
+
+- Native destructive Button now gives all four 1px border edges the same
+  destructive red as Electron and the fill. The inherited transparent border
+  previously changed edge antialiasing and disabled/focus blending despite the
+  center surface looking similar.
+- The implementation uses explicit side colors because Lynx parsed the
+  `border-color` shorthand but left all four rendered side colors transparent.
+  The focused Native Button suite passes 5/5, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `85036`, window `108082`, PID-derived DevTool
+  `localhost:8901`, session 1, measured 1px top/right/bottom/left borders at
+  `rgb(224,46,42)`, matching both the Native fill and Electron's four rendered
+  edges. White foreground remained intact, the exact Native error/warning console
+  was empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `4b5144308953c8fdbeb139413a560c6bbad664e9fe2d0b37508d140aae3c024a`.

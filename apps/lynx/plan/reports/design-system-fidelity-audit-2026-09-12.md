@@ -1156,3 +1156,18 @@ values and unresolved Native custom properties.
   color pair. The exact Native console was empty. No screenshot was retained;
   staged bundle SHA-256 is
   `7034be2fc98b72c1d9ff6760cc284263fcfcef9d908158ac7ca370c51444dc20`.
+
+## Shared Button destructive-border follow-up
+
+- Native destructive Button now matches Electron's red 1px border on every edge
+  instead of retaining the shared transparent border. This preserves the filled
+  button's edge treatment through focus and disabled compositing.
+- Native requires explicit top/right/bottom/left color declarations here: a
+  direct `border-color` shorthand resolved at the shorthand level but left all
+  four rendered side colors transparent. The focused Button suite passes 5/5,
+  and the affected Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `85036` / window `108082`, PID-derived `localhost:8901`,
+  session 1, measured all four borders at 1px and `rgb(224,46,42)`, matching the
+  fill and Electron authority. White text remained intact and the exact Native
+  console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `4b5144308953c8fdbeb139413a560c6bbad664e9fe2d0b37508d140aae3c024a`.
