@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@rstest/core';
 import { render } from '@lynx-js/react/testing-library';
+import { readFileSync } from 'node:fs';
 
 import { RecentViewSwitcherLynx } from './RecentViewSwitcher.lynx';
 
@@ -21,5 +22,49 @@ describe('Native recent-view switcher', () => {
     expect(
       elementTree.root?.querySelectorAll('.RecentViewSwitcherRow--selected')
     ).toHaveLength(1);
+    expect(elementTree.root?.querySelectorAll('.LxKbd')).toHaveLength(4);
+    expect(
+      elementTree.root?.querySelector('[accessibility-label="Pinned"]')
+    ).toBeNull();
+  });
+
+  it('uses Electron-authority icon identities with explicit secondary paint', () => {
+    const source = readFileSync(
+      new URL('./RecentViewSwitcher.lynx.tsx', import.meta.url),
+      'utf8'
+    );
+
+    expect(source).toContain("import consoleSvg from '@synara-central-icons/console.svg?raw'");
+    expect(source).toContain("import chatSvg from '@synara-central-icons/bubble-text.svg?raw'");
+    expect(source).toContain("import pluginSvg from '@synara-central-icons/puzzle.svg?raw'");
+    expect(source).toContain("import settingsSvg from '@synara-central-icons/settings-gear-4.svg?raw'");
+    expect(source).toContain("import windowSvg from '@synara-central-icons/window.svg?raw'");
+    expect(source).toContain("import splitViewSvg from '@synara-central-icons/sidebar-simple-left-wide.svg?raw'");
+    expect(source).toContain("import pinFilledSvg from '@synara-central-icons-fill/pin.svg?raw'");
+    expect(source).toContain("const secondary = semanticIconColor('secondary')");
+    expect(source).toContain("colorizeLynxSvg(consoleSvg, primary)");
+    expect(source).toContain("colorizeLynxSvg(chatSvg, secondary)");
+    expect(source).not.toContain('<LayoutColumnsIcon');
+    expect(source).not.toContain('<PuzzleIcon');
+    expect(source).not.toContain('<SettingsIcon');
+  });
+
+  it('preserves pinned and split view metadata as visible trailing icons', () => {
+    render(
+      <RecentViewSwitcherLynx
+        selectedIndex={0}
+        entries={[
+          { key: 'thread:pin', view: { kind: 'thread', threadId: 'pin' as never }, kind: 'thread', icon: { kind: 'chat' }, title: 'Pinned', subtitle: 'Project · Chat', isCurrent: false, isPinned: true, isSplit: false, isTerminal: false },
+          { key: 'thread:split', view: { kind: 'thread', threadId: 'split' as never }, kind: 'thread', icon: { kind: 'terminal', iconKey: 'terminal' }, title: 'Split', subtitle: 'Project · Terminal', isCurrent: false, isPinned: false, isSplit: true, isTerminal: true },
+        ]}
+      />
+    );
+
+    expect(
+      elementTree.root?.querySelector('[accessibility-label="Pinned"]')
+    ).not.toBeNull();
+    expect(
+      elementTree.root?.querySelector('[accessibility-label="Split view"]')
+    ).not.toBeNull();
   });
 });

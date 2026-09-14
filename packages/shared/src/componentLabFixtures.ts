@@ -5,7 +5,7 @@ import type {
   ProviderModelDescriptor,
   ServerProviderStatus,
 } from '@synara/contracts';
-import { AutomationId, ProjectId } from '@synara/contracts';
+import { AutomationId, ProjectId, ThreadId } from '@synara/contracts';
 import type { RightDockPane } from './rightDock';
 
 export const COMPONENT_LAB_AUTOMATION_PROJECT = {
@@ -13,6 +13,15 @@ export const COMPONENT_LAB_AUTOMATION_PROJECT = {
   name: 'Synara',
   workspaceRoot: '/workspace/synara',
 } as const;
+
+export const COMPONENT_LAB_RECENT_VIEW_ENTRIES = [
+  { key: 'thread:chat', view: { kind: 'thread', threadId: ThreadId.makeUnsafe('component-lab-chat') }, kind: 'thread', icon: { kind: 'chat' }, title: 'Review renderer fidelity', subtitle: 'Synara · Chat', isCurrent: true, isPinned: false, isSplit: false, isTerminal: false },
+  { key: 'thread:codex', view: { kind: 'thread', threadId: ThreadId.makeUnsafe('component-lab-codex') }, kind: 'thread', icon: { kind: 'provider', provider: 'codex' }, title: 'Implement icon normalization', subtitle: 'Synara · Codex', isCurrent: false, isPinned: true, isSplit: false, isTerminal: false },
+  { key: 'thread:terminal', view: { kind: 'thread', threadId: ThreadId.makeUnsafe('component-lab-terminal') }, kind: 'thread', icon: { kind: 'terminal', iconKey: 'terminal' }, title: 'Development server', subtitle: 'Synara · Terminal', isCurrent: false, isPinned: false, isSplit: true, isTerminal: true },
+  { key: 'workspace:one', view: { kind: 'workspace', workspaceId: 'component-lab-workspace' }, kind: 'workspace', icon: { kind: 'workspace' }, title: 'Workspace 1', subtitle: 'Workspace', isCurrent: false, isPinned: false, isSplit: false, isTerminal: false },
+  { key: 'settings:appearance', view: { kind: 'settings', section: 'appearance' }, kind: 'settings', icon: { kind: 'settings' }, title: 'Settings', subtitle: 'Appearance', isCurrent: false, isPinned: false, isSplit: false, isTerminal: false },
+  { key: 'plugins', view: { kind: 'plugins' }, kind: 'plugins', icon: { kind: 'plugins' }, title: 'Plugins', subtitle: 'Plugin Library', isCurrent: false, isPinned: false, isSplit: false, isTerminal: false },
+] as const;
 
 export const COMPONENT_LAB_AUTOMATION_DEFINITION: AutomationDefinition = {
   id: AutomationId.makeUnsafe('component-lab-automation'),

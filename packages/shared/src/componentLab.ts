@@ -17,6 +17,13 @@ const INTERACTIVE_STATES = [
 
 export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
   {
+    id: "navigation/recent-view-switcher", title: "Recent view switcher", category: "navigation", owner: "RecentViewSwitcher", fixtureId: "recent-view-identities", variants: ["mixed"], states: ["default", "middle-selected"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    renderers: {
+      electron: { renderer: "electron", component: "RecentViewSwitcher", module: "apps/web/src/components/RecentViewSwitcher.tsx", consumers: ["global/recent-view-switcher"] },
+      lynx: { renderer: "lynx", component: "RecentViewSwitcherLynx", module: "apps/lynx/src/app/RecentViewSwitcher.lynx.tsx", consumers: ["global/recent-view-switcher"] },
+    },
+  },
+  {
     id: "automation/composer-dialog",
     title: "Automation composer dialog",
     category: "automation",
@@ -608,6 +615,7 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
 ];
 
 export const COMPONENT_LAB_IMPLEMENTED_STORY_IDS = [
+  "navigation/recent-view-switcher",
   "automation/composer-dialog",
   "automation/detail-page",
   "automation/list-page",

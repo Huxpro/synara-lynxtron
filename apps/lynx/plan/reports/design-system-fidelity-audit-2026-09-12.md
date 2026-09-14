@@ -17,8 +17,8 @@ values and unresolved Native custom properties.
 - High: 1
 - Medium: 2
 - Low: 2
-- Existing strengths: 46 paired real-component stories, 92 renderer mappings,
-  3,144 meaningful cases, zero missing primitive counterparts, and broad
+- Existing strengths: 50 paired real-component stories, 100 renderer mappings,
+  3,232 meaningful cases, zero missing primitive counterparts, and broad
   semantic-icon consumer coverage.
 
 ## Findings
@@ -327,3 +327,13 @@ values and unresolved Native custom properties.
   empty error/warning console. Focused source/icon tests pass 6/6 and the final
   staged bundle SHA-256 is
   `ba4e8b597487d7eb539ec7fa1efa63984328c874476f6071de8ad4bc1be3d153`.
+- Recent View Switcher now shares Electron's Central icon identities and
+  effective semantic paint for chat, terminal, workspace, Settings, and Plugins.
+  Native also restores the authority's pinned/split trailing metadata and four
+  separate Kbd hints instead of a compressed shortcut string. The new paired
+  story increases coverage to 50 stories, 100 renderer mappings, and 3,232
+  cells. Exact-owned Lynxtron 0.0.22 PID `75188`, PID-derived DevTool
+  `localhost:8901`, session 1, exposed 6 entry icons, 2 trailing icons, 4 keycaps,
+  one selected row, and an empty error/warning console. The final staged bundle
+  SHA-256 is
+  `5f2115b8721e4f616047900495e6417e4d1ae83e72ba5ab67abf8986a00a07d4`.

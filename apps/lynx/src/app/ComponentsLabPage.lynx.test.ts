@@ -33,6 +33,8 @@ describe('paired Components Lab route', () => {
       "key={props.state} defaultOpen={props.state === 'open'}"
     );
     expect(renderer).toContain("props.storyId === 'editor-rail/independent-tabs'");
+    expect(renderer).toContain("props.storyId === 'navigation/recent-view-switcher'");
+    expect(renderer).toContain('<RecentViewSwitcherLynx');
     expect(renderer).toContain("props.storyId === 'automation/composer-dialog'");
     expect(renderer).toContain('<AutomationDialog');
     expect(renderer).toContain("props.storyId === 'automation/detail-page'");

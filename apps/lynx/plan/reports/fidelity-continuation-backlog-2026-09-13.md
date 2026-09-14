@@ -13,7 +13,7 @@ state is absent from the paired component matrix.
 
 ## Current audit signals
 
-- Component identity: 49 stories, 98 renderer mappings, 3,216 meaningful
+- Component identity: 50 stories, 100 renderer mappings, 3,232 meaningful
   matrix cells, zero missing renderer identities.
 - Primitive inventory: 37 Web primitives, 22 Native primitives, zero missing
   Native counterparts and zero counterparts omitted from the Lab.
@@ -244,13 +244,29 @@ state is absent from the paired component matrix.
 
 ## Verification
 
+### DS-013 — COMPLETE
+
+- Native Recent View Switcher now uses Electron's Central icon identities for
+  chat, terminal, workspace, Settings, and Plugins instead of conflating chat
+  and terminal or substituting unrelated Tabler glyphs. Neutral entries resolve
+  the semantic secondary role explicitly; the generic terminal keeps the
+  authority's primary tone, and provider identities retain branded glyphs.
+- Pinned and split metadata are no longer omitted, and the footer now renders
+  four shared Kbd primitives instead of one compressed text string. A new paired
+  production-component story raises coverage to 50 stories, 100 renderer
+  mappings, and 3,232 cells. Exact-owned Lynxtron 0.0.22 PID `75188` on
+  PID-derived `localhost:8901`, session 1, exposed 6 entry icons, 2 trailing
+  state icons, 4 keycaps, and one selected row with an empty console. The final
+  staged bundle SHA-256 is
+  `5f2115b8721e4f616047900495e6417e4d1ae83e72ba5ab67abf8986a00a07d4`.
+
 - Exact-owned Native: workspace Lynxtron `0.0.22`, PID `38396`, PID-derived
   DevTool `localhost:8901`, session 1, 1280×820 light product states.
 - Focused Native: 39/39 passed.
 - Focused Web automation: 33/33 passed.
 - React Doctor 0.9.11 changed-lines scan: zero errors and zero warnings
   across 12 changed Native files and the shared Web form helper.
-- Component identity: 98/98 mappings across 49 stories.
+- Component identity: 100/100 mappings across 50 stories.
 - Primitive inventory: zero missing Native counterparts and zero counterparts
   omitted from the Lab.
 - Production build passed. Final staged bundle SHA-256:

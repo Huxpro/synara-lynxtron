@@ -14,6 +14,7 @@ describe("component lab manifest", () => {
   it("keeps every seeded story paired and reusable", () => {
     expect(validateComponentLabStories(COMPONENT_LAB_STORIES)).toEqual([]);
     expect(COMPONENT_LAB_STORIES.map((story) => story.id)).toEqual([
+      "navigation/recent-view-switcher",
       "automation/composer-dialog",
       "automation/detail-page",
       "automation/list-page",
@@ -68,6 +69,7 @@ describe("component lab manifest", () => {
 
   it("reports real renderer coverage without treating seeded placeholders as complete", () => {
     expect(COMPONENT_LAB_IMPLEMENTED_STORY_IDS).toEqual([
+      "navigation/recent-view-switcher",
       "automation/composer-dialog",
       "automation/detail-page",
       "automation/list-page",
@@ -202,9 +204,9 @@ describe("component lab manifest", () => {
 
   it("reports the complete renderer/theme/viewport/state matrix", () => {
     expect(summarizeComponentLabCoverage(COMPONENT_LAB_STORIES)).toEqual({
-      stories: 49,
-      rendererMappings: 98,
-      matrixCells: 3216,
+      stories: 50,
+      rendererMappings: 100,
+      matrixCells: 3232,
       interactiveStories: 26,
     });
   });

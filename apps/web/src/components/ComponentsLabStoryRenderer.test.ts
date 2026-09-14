@@ -8,6 +8,13 @@ import { ComponentsLabStoryRenderer } from "./ComponentsLabStoryRenderer";
 import { COMPONENT_LAB_STORIES, componentLabCases } from "@synara/shared/componentLab";
 
 describe("Components Lab story renderer", () => {
+  it("renders the production recent-view overlay with all shared identities", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('props.storyId === "navigation/recent-view-switcher"');
+    expect(source).toContain('<RecentViewSwitcher');
+    expect(source).toContain('COMPONENT_LAB_RECENT_VIEW_ENTRIES');
+  });
+
   it("renders create and edit automation stories through the production dialog", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),

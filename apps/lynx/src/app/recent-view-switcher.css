@@ -53,6 +53,7 @@
 }
 
 .RecentViewSwitcherIcon .OpenAIProviderIcon { width: 18px; height: 18px; }
+.RecentViewSwitcherIconSvg { width: 18px; height: 18px; }
 
 .RecentViewSwitcherCopy {
   display: flex;
@@ -91,4 +92,7 @@
 .RecentViewSwitcherSubtitle,
 .RecentViewSwitcherFooter { color: var(--muted-foreground); font-size: 11px; line-height: 16px; }
 .RecentViewSwitcherSubtitle { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.RecentViewSwitcherTrailing { display: flex; flex-shrink: 0; flex-direction: row; align-items: center; gap: 6px; }
+.RecentViewSwitcherTrailingIcon { width: 14px; height: 14px; }
 .RecentViewSwitcherFooter { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 12px; border-top: 1px solid var(--border); }
+.RecentViewSwitcherFooterKeys { display: flex; flex-direction: row; align-items: center; gap: 8px; }

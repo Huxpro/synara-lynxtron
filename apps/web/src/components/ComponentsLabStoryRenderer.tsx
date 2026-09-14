@@ -29,6 +29,7 @@ import {
   COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS,
   COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_SELECTION,
   COMPONENT_LAB_PROVIDER_STATUSES,
+  COMPONENT_LAB_RECENT_VIEW_ENTRIES,
   COMPONENT_LAB_PROVIDER_UPDATE_COPY,
   COMPONENT_LAB_RIGHT_DOCK_PANES,
   COMPONENT_LAB_RIGHT_DOCK_OVERFLOW_PANES,
@@ -95,6 +96,7 @@ import { SurfaceChipIcon, SurfaceTabChip } from "~/components/chat/chatHeaderCon
 import { IndependentTabRow } from "~/components/chat/IndependentTabRow";
 import { FileIcon } from "~/lib/icons";
 import { CentralIcon } from "~/lib/central-icons";
+import { RecentViewSwitcher } from "~/components/RecentViewSwitcher";
 import {
   MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
   MessageAssistantRowComposition,
@@ -482,6 +484,14 @@ function MessageRowStory(props: { readonly state: string; readonly variant?: str
 }
 
 export function ComponentsLabStoryRenderer(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
+  if (props.storyId === "navigation/recent-view-switcher") {
+    return (
+      <RecentViewSwitcher
+        entries={COMPONENT_LAB_RECENT_VIEW_ENTRIES}
+        selectedIndex={props.state === "middle-selected" ? 2 : 0}
+      />
+    );
+  }
   if (props.storyId === "automation/composer-dialog") {
     return <AutomationComposerDialogStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
   }

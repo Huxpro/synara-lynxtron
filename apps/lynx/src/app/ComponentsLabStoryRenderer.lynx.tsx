@@ -30,6 +30,7 @@ import {
   COMPONENT_LAB_VOICE_SILENCE_LEVELS,
   COMPONENT_LAB_VOICE_WAVEFORM_LEVELS,
   COMPONENT_LAB_PROVIDER_STATUSES,
+  COMPONENT_LAB_RECENT_VIEW_ENTRIES,
   resolveComponentLabKanbanCardFixture,
 } from '@synara/shared/componentLabFixtures';
 import { AutomationDetailPage } from './AutomationDetailPage.lynx';
@@ -85,6 +86,7 @@ import { ExplorerFileTab } from './ExplorerFileTab.lynx';
 import { ExplorerPreviewHeader } from './ExplorerPreviewHeader.lynx';
 import { IndependentTabRow } from './IndependentTabRow.lynx';
 import { EditorSurfaceTab } from './EditorSurfaceTab.lynx';
+import { RecentViewSwitcherLynx } from './RecentViewSwitcher.lynx';
 import {
   MessageAssistantRowComposition,
   MessageUserBubbleComposition,
@@ -198,6 +200,14 @@ function ThreadRowContextMenuStory(props: {
 }
 
 export function ComponentsLabStoryRendererLynx(props: { readonly state: string; readonly storyId: string; readonly variant?: string }) {
+  if (props.storyId === 'navigation/recent-view-switcher') {
+    return (
+      <RecentViewSwitcherLynx
+        entries={COMPONENT_LAB_RECENT_VIEW_ENTRIES}
+        selectedIndex={props.state === 'middle-selected' ? 2 : 0}
+      />
+    );
+  }
   if (props.storyId === 'automation/composer-dialog') {
     return <AutomationComposerDialogStory key={`${props.variant}:${props.state}`} state={props.state} variant={props.variant} />;
   }
