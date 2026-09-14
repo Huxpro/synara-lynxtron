@@ -944,3 +944,19 @@ state is absent from the paired component matrix.
   are the valid evidence. The exact Native console was empty and no screenshot was
   retained. The staged bundle SHA-256 is
   `673e0c8b8e0e41838afa1a8656b2e166f3359dc3f8e668f9885e1ab27c53b25b`.
+
+### DS-052 — COMPLETE
+
+- Shared Native Alert now matches Electron's size-dependent typography instead
+  of flattening both sizes into one 12px/18px tier. Default title and description
+  use 14px/20px; compact alerts use 12px/16px. Alert padding, radius, semantic
+  colors, and action layout remain unchanged.
+- The focused Alert suite passes 2/2 and the complete Lynx/Desktop production
+  build passes on the npm Lynxtron 0.0.22 runtime.
+- Exact-owned Lynxtron PID `85904`, PID-derived DevTool `localhost:8901`, session
+  1, rendered the `ui/alert` default story. Title resolved to foreground at
+  14px/20px and description to muted foreground at 14px/20px. The catalog does
+  not currently expose `size=sm`, so compact 12px/16px remains direct source/test
+  evidence rather than a claimed Native story cell. The exact Native console was
+  empty and no screenshot was retained. The staged bundle SHA-256 is
+  `42531e6a36be6952f264fe6ea773c197e93455a9c152f1aaa464b680ad670756`.

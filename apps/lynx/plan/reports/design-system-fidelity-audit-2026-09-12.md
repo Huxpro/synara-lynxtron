@@ -894,3 +894,17 @@ values and unresolved Native custom properties.
   uses the parsed rule and aggregate computed property. The exact Native console
   was empty and no screenshot was retained; staged bundle SHA-256 is
   `673e0c8b8e0e41838afa1a8656b2e166f3359dc3f8e668f9885e1ab27c53b25b`.
+
+## Shared Alert typography follow-up
+
+- Native Alert now preserves Electron's type hierarchy across sizes: default
+  title/description are 14px/20px and compact alerts are 12px/16px. Existing
+  padding, radius, semantic colors, and actions are unchanged.
+- The focused Alert suite passes 2/2 and the complete Lynx/Desktop production
+  build passes on Lynxtron 0.0.22.
+- Exact-owned PID `85904`, PID-derived `localhost:8901`, session 1, rendered the
+  default `ui/alert` story and measured both title and description at 14px/20px
+  with foreground/muted-foreground colors. The catalog lacks a compact Alert
+  case, so its 12px/16px tier is source/test evidence only. The exact Native
+  console was empty and no screenshot was retained; staged bundle SHA-256 is
+  `42531e6a36be6952f264fe6ea773c197e93455a9c152f1aaa464b680ad670756`.
