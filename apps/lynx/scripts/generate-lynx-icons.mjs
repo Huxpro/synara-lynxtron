@@ -38,6 +38,7 @@ const icons = {
   DeviceLaptopIcon: 'device-laptop',
   GameControllerIcon: 'device-gamepad',
   EllipsisIcon: 'dots',
+  EyeIcon: 'eye',
   ExternalLinkIcon: 'external-link',
   FileIcon: 'file',
   FolderIcon: 'folder',

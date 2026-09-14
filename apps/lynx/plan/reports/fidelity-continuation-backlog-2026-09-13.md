@@ -182,6 +182,21 @@ state is absent from the paired component matrix.
   SHA-256 is
   `3bacd0fbfa26ac5ba4ae22413f3f11ac678b5a7f782d74056e7208d7fcc8a396`.
 
+### DS-012 — COMPLETE
+
+- Native file-preview header icons no longer rely on CSS `color` inheritance
+  after the generated SVG component has already resolved `currentColor`. The
+  breadcrumb chevrons now receive semantic secondary paint explicitly; Source
+  and Preview switch between foreground and secondary paint with selection;
+  overflow/editor controls keep explicit foreground paint.
+- Native Preview now uses the same Eye icon as Electron instead of the unrelated
+  Code/brackets icon. Exact-owned Lynxtron 0.0.22 PID `12549` on PID-derived
+  `localhost:8901`, session 1, exposed four secondary chevrons, foreground File,
+  secondary Eye, foreground Ellipsis, and foreground ChevronDown SVGs with an
+  empty error/warning console. Focused source/icon tests pass 6/6; production
+  build passes. The final staged bundle SHA-256 is
+  `ba4e8b597487d7eb539ec7fa1efa63984328c874476f6071de8ad4bc1be3d153`.
+
 ### AF-001 — COMPLETE
 
 - Native Create and Edit now share the same composer primitives for title,

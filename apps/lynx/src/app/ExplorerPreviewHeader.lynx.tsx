@@ -10,10 +10,12 @@ import {
   CodeIcon,
   DeviceLaptopIcon,
   EllipsisIcon,
+  EyeIcon,
   FileIcon,
   MessageCircleIcon,
   CopyIcon,
 } from '../lib/icons.lynx';
+import { useTheme } from '../adapters/useTheme.lynx';
 import { Button } from '../components/ui/button.lynx';
 import {
   Menu,
@@ -46,6 +48,7 @@ export function ExplorerFileActionsMenu(props: {
   readonly triggerClassName: string;
   readonly triggerLabel?: string;
 }) {
+  const { semanticIconColor, svgColors } = useTheme();
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (props.defaultOpen) {
@@ -71,9 +74,17 @@ export function ExplorerFileActionsMenu(props: {
     props.showActionIcons ? (
       <view className="ExplorerFileActionItemContent">
         {icon === 'chat' ? (
-          <MessageCircleIcon className="ExplorerFileActionItemIcon" size={14} />
+          <MessageCircleIcon
+            className="ExplorerFileActionItemIcon"
+            color={semanticIconColor('secondary')}
+            size={14}
+          />
         ) : (
-          <CopyIcon className="ExplorerFileActionItemIcon" size={14} />
+          <CopyIcon
+            className="ExplorerFileActionItemIcon"
+            color={semanticIconColor('secondary')}
+            size={14}
+          />
         )}
         <text className="LxMenuItem__text">{label}</text>
       </view>
@@ -86,7 +97,7 @@ export function ExplorerFileActionsMenu(props: {
         ariaLabel={props.triggerLabel ?? 'More actions'}
         className={props.triggerClassName}
       >
-        <EllipsisIcon size={14} color="var(--muted-foreground)" />
+        <EllipsisIcon size={14} color={svgColors.foreground} />
       </MenuTrigger>
       <MenuPopup
         align="end"
@@ -121,6 +132,7 @@ export function ExplorerPreviewHeader(props: {
   readonly truncated: boolean;
   readonly workspaceRoot: string | null;
 }) {
+  const { semanticIconColor, svgColors } = useTheme();
   const [editorIconFailed, setEditorIconFailed] = useState(false);
   const config = useQuery({
     queryKey: ['server-config'],
@@ -172,7 +184,11 @@ export function ExplorerPreviewHeader(props: {
           {prefixSegments.map((segment) => (
             <view className="ExplorerDockBreadcrumbPart" key={segment.key}>
               <text className="ExplorerDockBreadcrumbDirectory">{segment.name}</text>
-              <ChevronRightIcon className="ExplorerDockBreadcrumbChevron" size={12} />
+              <ChevronRightIcon
+                className="ExplorerDockBreadcrumbChevron"
+                color={semanticIconColor('secondary')}
+                size={12}
+              />
             </view>
           ))}
         </view>
@@ -197,7 +213,14 @@ export function ExplorerPreviewHeader(props: {
               variant="chrome"
               onClick={() => props.onMarkdownPreviewChange(false)}
             >
-              <FileIcon size={14} />
+              <FileIcon
+                color={
+                  props.markdownPreviewEnabled
+                    ? semanticIconColor('secondary')
+                    : svgColors.foreground
+                }
+                size={14}
+              />
             </Button>
             <Button
               aria-label="Preview markdown"
@@ -208,7 +231,14 @@ export function ExplorerPreviewHeader(props: {
               variant="chrome"
               onClick={() => props.onMarkdownPreviewChange(true)}
             >
-              <CodeIcon size={14} />
+              <EyeIcon
+                color={
+                  props.markdownPreviewEnabled
+                    ? svgColors.foreground
+                    : semanticIconColor('secondary')
+                }
+                size={14}
+              />
             </Button>
           </view>
         ) : null}
@@ -235,13 +265,13 @@ export function ExplorerPreviewHeader(props: {
                 binderror={() => setEditorIconFailed(true)}
               />
             ) : (
-              <DeviceLaptopIcon size={14} />
+              <DeviceLaptopIcon color={svgColors.foreground} size={14} />
             )}
             <text className="LxButton__text">Open</text>
           </Button>
           <Menu>
             <MenuTrigger ariaLabel="Editor options" className="ExplorerDockOpenMenuTrigger">
-              <ChevronDownIcon size={14} />
+              <ChevronDownIcon color={svgColors.foreground} size={14} />
             </MenuTrigger>
             <MenuPopup align="end" side="bottom" className="ExplorerDockOpenPopup">
               {editorOptions.length === 0 ? (

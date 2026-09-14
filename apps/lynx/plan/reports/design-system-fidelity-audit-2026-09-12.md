@@ -318,3 +318,12 @@ values and unresolved Native custom properties.
   identities with an empty error/warning console. The final staged bundle
   SHA-256 is
   `3bacd0fbfa26ac5ba4ae22413f3f11ac678b5a7f782d74056e7208d7fcc8a396`.
+- The file-preview header no longer assumes generated Native SVGs inherit CSS
+  color after render. Breadcrumb, Markdown mode, overflow, and editor-picker
+  icons now receive their authority roles explicitly; Preview also uses
+  Electron's Eye icon instead of Code/brackets. Exact-owned Lynxtron 0.0.22 PID
+  `12549` on PID-derived `localhost:8901`, session 1, confirmed the expected
+  chevron/file/eye/dots/chevron-down identities and resolved paints with an
+  empty error/warning console. Focused source/icon tests pass 6/6 and the final
+  staged bundle SHA-256 is
+  `ba4e8b597487d7eb539ec7fa1efa63984328c874476f6071de8ad4bc1be3d153`.
