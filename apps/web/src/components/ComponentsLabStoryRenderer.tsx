@@ -544,6 +544,7 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
       default: <Badge>3</Badge>,
       secondary: <Badge variant="secondary">Beta</Badge>,
       outline: <Badge size="sm" variant="outline">PDF</Badge>,
+      destructive: <Badge variant="destructive">Failed</Badge>,
       status: <Badge variant="success">Ready</Badge>,
       capsule: <Badge className="rounded-full" variant="outline">Synara</Badge>,
     }[props.variant ?? "default"];

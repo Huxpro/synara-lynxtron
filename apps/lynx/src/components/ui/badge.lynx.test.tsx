@@ -17,6 +17,7 @@ describe('Badge', () => {
     expect(styles).toMatch(/\.LxBadge--info \.LxBadge__text\s*\{[^}]*color:\s*var\(--info-foreground\);/s);
     expect(styles).toMatch(/\.LxBadge--success \.LxBadge__text\s*\{[^}]*color:\s*var\(--success\);/s);
     expect(styles).toMatch(/\.LxBadge--warning \.LxBadge__text\s*\{[^}]*color:\s*var\(--warning\);/s);
+    expect(styles).toMatch(/\.LxBadge--destructive \.LxBadge__text\s*\{[^}]*color:\s*#ffffff;/s);
   });
 
   it('renders explicit size, variant, and shape classes', () => {

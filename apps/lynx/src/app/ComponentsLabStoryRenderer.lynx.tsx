@@ -313,6 +313,7 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
       default: <Badge>3</Badge>,
       secondary: <Badge variant="secondary">Beta</Badge>,
       outline: <Badge size="sm" variant="outline">PDF</Badge>,
+      destructive: <Badge variant="destructive">Failed</Badge>,
       status: <Badge variant="success">Ready</Badge>,
       capsule: <Badge shape="capsule" variant="outline">Synara</Badge>,
     }[props.variant ?? 'default'];

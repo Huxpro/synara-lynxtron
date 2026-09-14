@@ -638,7 +638,7 @@ export const COMPONENT_LAB_STORIES: readonly ComponentLabStory[] = [
     },
   },
   {
-    id: "ui/badge", title: "Badge primitives", category: "design-system", owner: "Badge", fixtureId: "badge-variants", variants: ["default", "secondary", "outline", "status", "capsule"], states: ["default"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
+    id: "ui/badge", title: "Badge primitives", category: "design-system", owner: "Badge", fixtureId: "badge-variants", variants: ["default", "secondary", "outline", "destructive", "status", "capsule"], states: ["default"], themes: ["light", "dark"], viewports: COMPONENT_LAB_VIEWPORTS,
     renderers: {
       electron: { renderer: "electron", component: "Badge", module: "apps/web/src/components/ui/badge.tsx", consumers: ["sidebar/count", "editor/file-type", "profile/identity"] },
       lynx: { renderer: "lynx", component: "Badge", module: "apps/lynx/src/components/ui/badge.lynx.tsx", consumers: ["sidebar/count", "editor/file-type", "profile/identity"] },

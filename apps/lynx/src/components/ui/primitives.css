@@ -402,6 +402,7 @@
 .LxBadge--outline { border-color: var(--border); background-color: var(--color-background-elevated-primary-opaque); }
 .LxBadge--outline .LxBadge__text { color: var(--color-text-foreground); }
 .LxBadge--destructive { background-color: var(--destructive); }
+.LxBadge--destructive .LxBadge__text { color: #ffffff; }
 .LxBadge--error .LxBadge__text { color: var(--destructive); }
 .LxBadge--info .LxBadge__text { color: var(--info-foreground); }
 .LxBadge--success .LxBadge__text { color: var(--success); }

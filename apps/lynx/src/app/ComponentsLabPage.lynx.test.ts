@@ -267,6 +267,7 @@ describe('paired Components Lab route', () => {
     expect(renderer).toContain('<Separator orientation="vertical"');
     expect(renderer).toContain("props.storyId === 'ui/badge'");
     expect(renderer).toContain('<Badge size="sm" variant="outline">PDF</Badge>');
+    expect(renderer).toContain('<Badge variant="destructive">Failed</Badge>');
     expect(renderer).toContain("}[props.variant ?? 'default']");
     expect(renderer).toContain("props.storyId === 'ui/time-picker'");
     expect(renderer).toContain('<TimePicker value="09:30"');

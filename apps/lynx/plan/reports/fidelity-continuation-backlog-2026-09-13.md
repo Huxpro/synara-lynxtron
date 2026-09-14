@@ -1193,3 +1193,23 @@ state is absent from the paired component matrix.
   The exact Native error/warning console was empty and no screenshot was retained.
   The final staged bundle SHA-256 is
   `0b03edfa4ca69951084d983a65f1b74e48a1b5046795a89500b2fcac1b872f0d`.
+
+### DS-067 — COMPLETE
+
+- Native destructive Badge now preserves Electron's white foreground in dark
+  theme instead of inheriting the near-black primary foreground over the
+  destructive red surface. The override is scoped to destructive Badge text, so
+  the other Badge hierarchy and semantic status variants remain unchanged.
+- The paired `ui/badge` catalog now exposes the destructive variant in both
+  renderers, increasing meaningful matrix coverage from 3,368 to 3,376 cells.
+  Native Badge/Lab tests pass 3/3, Web Lab tests pass 37/37, shared manifest
+  tests pass 9/9, and the affected Lynx/Desktop production build passes on npm
+  Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `59559`, window `107997`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the dark destructive story with
+  background `rgb(224,46,42)` and text `rgb(255,255,255)`. Native retained its
+  compact 10px/16px medium type and 29x16px content box; Electron independently
+  resolved the destructive foreground to the same white. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `a3958eb35feb8924f19d9117fa0e8f02694eae94eccc4242365f49c72df5f43f`.

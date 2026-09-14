@@ -1123,3 +1123,21 @@ values and unresolved Native custom properties.
   12px/18px item tier. The exact Native console was empty. No screenshot was
   retained; staged bundle SHA-256 is
   `0b03edfa4ca69951084d983a65f1b74e48a1b5046795a89500b2fcac1b872f0d`.
+
+## Shared Badge destructive-foreground follow-up
+
+- Native destructive Badge now explicitly uses white text over the destructive
+  surface, matching Electron's `bg-destructive text-white` contract. Previously
+  the Badge background was correct, but its text inherited the dark-theme
+  primary foreground and rendered near-black on red.
+- The paired destructive story is now present in both renderers. Native
+  Badge/Lab tests pass 3/3, Web Lab tests pass 37/37, shared manifest tests pass
+  9/9, and meaningful matrix coverage grows from 3,368 to 3,376 cells. The
+  affected Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `59559` / window `107997`, PID-derived `localhost:8901`,
+  session 1, measured destructive background `rgb(224,46,42)` and text
+  `rgb(255,255,255)` with the existing 10px/16px medium Native Badge type and
+  29x16px content box. Electron independently resolved its destructive text to
+  `rgb(255,255,255)`. The exact Native console was empty. No screenshot was
+  retained; staged bundle SHA-256 is
+  `a3958eb35feb8924f19d9117fa0e8f02694eae94eccc4242365f49c72df5f43f`.

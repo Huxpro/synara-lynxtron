@@ -559,6 +559,7 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('<Separator orientation="vertical"');
     expect(source).toContain('props.storyId === "ui/badge"');
     expect(source).toContain('<Badge size="sm" variant="outline">PDF</Badge>');
+    expect(source).toContain('<Badge variant="destructive">Failed</Badge>');
     expect(source).toContain('}[props.variant ?? "default"]');
     expect(source).toContain('props.storyId === "ui/time-picker"');
     expect(source).toContain('<TimePicker value="09:30"');
