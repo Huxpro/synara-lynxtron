@@ -160,7 +160,7 @@ export function ProjectActionEditor(props: {
             <text className="ProjectActionEditorLabel">Name</text>
             <view className="ProjectActionEditorNameRow">
               <view className="ProjectActionEditorIconPicker">
-                <Button size="icon-sm" variant="outline" aria-label="Choose icon" disabled={props.busy} onClick={() => setIconPickerOpen((current) => !current)}>
+                <Button size="icon-lg" variant="outline" aria-label="Choose icon" disabled={props.busy} onClick={() => setIconPickerOpen((current) => !current)}>
                   <ScriptIcon icon={icon} role="trigger" />
                 </Button>
                 {iconPickerOpen ? (

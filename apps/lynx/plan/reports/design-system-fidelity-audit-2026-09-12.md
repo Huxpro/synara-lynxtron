@@ -749,3 +749,21 @@ values and unresolved Native custom properties.
   exposed the matching trigger and option hierarchy. The exact Native console
   was empty, no screenshot was retained, and staged bundle SHA-256 is
   `e65818085a6c68021d986e4b7b29e1b6dd28aa568d65d8cc8a77322cbe00a801`.
+
+## Project Action picker geometry follow-up
+
+- Native now preserves Electron's full Project Action picker rhythm: a 36px
+  outline trigger, 4px anchor offset, 16px popup padding, and six 72×56px
+  choices in a three-column grid with 8px gaps. The previous 28px trigger and
+  248px popup forced the same six choices into a denser two-column layout.
+- The focused Project Action editor contract passes 1/1 and directly locks the
+  trigger size plus popup/option geometry. The complete Lynx/Desktop production
+  build passes on Lynxtron 0.0.22.
+- Exact-owned PID `71635` / window `106720`, PID-derived `localhost:8901`,
+  session 1, physically opened the real Add Action dialog and picker. DevTool
+  measured a 36×36 trigger and 232px grid content, with first-row option x
+  positions 465/545/625 and a 64px row stride. The exact Native console was
+  empty. Electron's live reference visibly exposed the same 36px / three-column
+  composition and its authority source defines the same size, columns, padding,
+  and gap. No screenshot was retained; staged bundle SHA-256 is
+  `729857c0c213084f0745ac8bf2d77a9d5ad64a43814c926668aaa90b05e122f6`.

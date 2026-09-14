@@ -789,3 +789,23 @@ state is absent from the paired component matrix.
   16px full-foreground options. No screenshot was retained. The staged bundle
   SHA-256 is
   `e65818085a6c68021d986e4b7b29e1b6dd28aa568d65d8cc8a77322cbe00a801`.
+
+### DS-043 — COMPLETE
+
+- Native Project Action picker geometry now matches Electron's spatial contract
+  instead of presenting a denser two-column reinterpretation. The outline
+  trigger is 36px, the popup is anchored 4px below it with Electron's 16px
+  viewport padding, and the six 72×56px choices form a stable three-column grid
+  with 8px column, row, and icon-label gaps.
+- The focused Project Action editor contract passes 1/1 and the complete
+  Lynx/Desktop production build passes on the npm Lynxtron 0.0.22 runtime.
+- Exact-owned Lynxtron PID `71635`, window `106720`, PID-derived DevTool
+  `localhost:8901`, session 1, physically opened the Add Action dialog and picker.
+  Native measured the trigger at 36×36, grid content at 232px wide, three first-row
+  options at x=465/545/625, and the second row 64px below the first. Lynx reports
+  each option content box at 70×54 because its one-pixel border yields the intended
+  72×56 border box. The exact Native error/warning console was empty. Electron's
+  live reference visibly exposed the same 36px trigger and three-column grid, and
+  its source defines `size-9`, `grid-cols-3`, 8px gaps, and 8px option padding. No
+  screenshot was retained. The staged bundle SHA-256 is
+  `729857c0c213084f0745ac8bf2d77a9d5ad64a43814c926668aaa90b05e122f6`.

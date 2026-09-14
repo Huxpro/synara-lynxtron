@@ -7,6 +7,10 @@ describe('ProjectActionEditor', () => {
       new URL('./ProjectActionEditor.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const styles = readFileSync(
+      new URL('./project-action-editor.css', import.meta.url),
+      'utf8'
+    );
     expect(source).toContain('Add Action');
     expect(source).toContain('Actions are project-scoped commands you can run from the top bar or keybindings.');
     expect(source).toContain('aria-label="Action name"');
@@ -30,6 +34,7 @@ describe('ProjectActionEditor', () => {
     );
     expect(source).toContain("props.role === 'trigger' ? 18 : 16");
     expect(source).toContain('<ScriptIcon icon={icon} role="trigger" />');
+    expect(source).toContain('size="icon-lg"');
     expect(source).toContain(
       '<ScriptIcon icon={props.icon} role="option" />'
     );
@@ -43,5 +48,11 @@ describe('ProjectActionEditor', () => {
       /<Textarea[^>]*nativeInput[^>]*maxLines=\{5\}/s
     );
     expect(source).toContain('maxLength={8000}');
+    expect(styles).toMatch(
+      /\.ProjectActionEditorIconPopup\s*\{[^}]*top:\s*40px;[^}]*width:\s*266px;[^}]*padding:\s*16px;/s
+    );
+    expect(styles).toMatch(
+      /\.ProjectActionEditorIconOption\s*\{[^}]*width:\s*72px;[^}]*height:\s*56px;[^}]*gap:\s*8px;/s
+    );
   });
 });
