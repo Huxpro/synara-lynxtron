@@ -24,6 +24,18 @@
   box-shadow: 0 0 0 1px var(--background), 0 0 0 2px var(--control-focus-ring-color);
 }
 
+.LxButton--default.ui-hover,
+.LxButton--default.ui-active,
+.LxButton--default.ui-pressed {
+  background-color: var(--primary-hover-fill);
+}
+
+.LxButton--destructive.ui-hover,
+.LxButton--destructive.ui-active,
+.LxButton--destructive.ui-pressed {
+  background-color: var(--destructive-hover-fill);
+}
+
 .LxButton--ghost.ui-active,
 .LxButton--ghost.ui-pressed {
   background-color: var(--color-background-button-secondary);

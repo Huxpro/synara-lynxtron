@@ -775,6 +775,11 @@ export function buildThemeCssVariables(
     "--card-foreground": readCodexVariable("--color-text-foreground"),
     "--composer-surface": composerSurface,
     "--destructive": pack.theme.semanticColors.diffRemoved,
+    "--destructive-hover-fill": mixHex(
+      resolvedTokens.computed.surfaceUnder,
+      pack.theme.semanticColors.diffRemoved,
+      0.9,
+    ),
     "--destructive-foreground": pack.theme.surface,
     "--foreground": readCodexVariable("--color-text-foreground"),
     "--info": pack.theme.accent,
@@ -799,6 +804,11 @@ export function buildThemeCssVariables(
     "--popover": readCodexVariable("--color-background-elevated-primary-opaque"),
     "--popover-foreground": readCodexVariable("--color-text-foreground"),
     "--primary": readCodexVariable("--color-background-button-primary"),
+    "--primary-hover-fill": mixHex(
+      resolvedTokens.computed.surfaceUnder,
+      readCodexVariable("--color-background-button-primary"),
+      0.9,
+    ),
     "--primary-foreground": readCodexVariable("--color-text-button-primary"),
     "--ring": readCodexVariable("--color-border-focus"),
     "--secondary": readCodexVariable("--color-background-button-secondary"),

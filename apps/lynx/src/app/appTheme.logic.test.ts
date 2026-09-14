@@ -134,6 +134,7 @@ describe('slice root theme projection', () => {
   });
 
   it('projects the active theme pack into root color tokens', () => {
+    const appStyles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
     const customState = {
       ...DEFAULT_THEME_STATE,
       mode: 'light' as const,
@@ -158,6 +159,16 @@ describe('slice root theme projection', () => {
     expect(variables['--foreground']).not.toBe(
       DEFAULT_THEME_STATE.chromeThemes.light.ink
     );
+    expect(variables['--primary-hover-fill']).toBe(
+      '#293847'
+    );
+    expect(variables['--destructive-hover-fill']).toBe(
+      '#e3433f'
+    );
+    expect(appStyles).toContain('--primary-hover-fill: #252525;');
+    expect(appStyles).toContain('--primary-hover-fill: #e5e5e5;');
+    expect(appStyles).toContain('--destructive-hover-fill: #e33531;');
+    expect(appStyles).toContain('--destructive-hover-fill: #cc2b28;');
   });
 
   it('memoizes the root token map outside unrelated App rerenders', () => {

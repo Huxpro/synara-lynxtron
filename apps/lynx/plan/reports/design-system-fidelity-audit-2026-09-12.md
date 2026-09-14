@@ -1202,3 +1202,19 @@ values and unresolved Native custom properties.
   independently resolved the equivalent 32% control surface. The exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `40db41a16b0767fc207a26160206ed4cfaa1fa0d1b10e5614f9ac351ad8d0ef8`.
+
+## Shared Button filled-state follow-up
+
+- Native primary and destructive filled Buttons now match Electron's 90%
+  hover/pressed surface feedback. The colors are precomposited from the active
+  Theme Pack's surface and fill, preserving custom themes while avoiding Lynx's
+  incorrect rendering of alpha colors stored in dynamic CSS variables.
+- Static light/dark declarations register both dynamic properties with the Native
+  style engine. Native Button/theme/Lab tests pass 15/15, and the affected
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `35152` / window `108239`, PID-derived `localhost:8901`,
+  session 1, measured primary hover at opaque `rgb(229,229,229)` and destructive
+  pressed at `rgb(204,43,40)` while retaining white text and destructive-red
+  borders. The exact Native console was empty. No screenshot was retained;
+  staged bundle SHA-256 is
+  `29602c151d6fd8a2a0d610f9e96b78ff04d407d888043cfb607784546379eacb`.

@@ -1282,3 +1282,22 @@ state is absent from the paired component matrix.
   the equivalent 32% control color. The exact Native error/warning console was
   empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `40db41a16b0767fc207a26160206ed4cfaa1fa0d1b10e5614f9ac351ad8d0ef8`.
+
+### DS-072 — COMPLETE
+
+- Native primary and destructive filled Buttons now expose Electron's 90%
+  hover/pressed fill feedback instead of remaining visually static. Theme-derived
+  opaque colors reproduce alpha compositing against the active surface while
+  avoiding Lynx's incorrect rendering of alpha colors stored in dynamic CSS
+  variables.
+- The two dynamic tokens also have static light/dark declarations because Lynx
+  drops root custom properties that are not registered in a stylesheet. Native
+  Button/theme/Lab focused tests pass 15/15, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `35152`, window `108239`, PID-derived DevTool
+  `localhost:8901`, session 1, measured primary hover at opaque
+  `rgb(229,229,229)` and destructive pressed at `rgb(204,43,40)`. The latter
+  retained white text and four destructive-red border edges. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `29602c151d6fd8a2a0d610f9e96b78ff04d407d888043cfb607784546379eacb`.
