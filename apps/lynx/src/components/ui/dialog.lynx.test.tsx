@@ -164,6 +164,9 @@ describe('Lynx Dialog dismiss contract', () => {
     expect(styles).toMatch(
       new RegExp(`${footerButtonSelector.source}\\s+\\.LxButton__text\\s*\\{[^}]*font-weight:\\s*400;`, 's')
     );
+    expect(styles).toMatch(
+      /\.LxDialogFooter\s*\{[^}]*flex-direction:\s*row;[^}]*justify-content:\s*flex-end;[^}]*gap:\s*8px;/s
+    );
   });
 
   it('names and activates default and custom close owners', async () => {

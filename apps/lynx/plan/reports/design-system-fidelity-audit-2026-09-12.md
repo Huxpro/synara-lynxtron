@@ -1529,3 +1529,17 @@ values and unresolved Native custom properties.
   resolved 18px/22.5px/600 title text with a 23px physical text box; the exact
   Native console was empty. No screenshot was retained; staged bundle SHA-256 is
   `cbd3e6cd4b457c6f9ac1fa814d83e2306148746a1d507f72954fc888fab2caa7`.
+
+## Shared Dialog footer-gap follow-up
+
+- Native Dialog footers now match Electron's 8px `gap-2` separation between
+  adjacent actions, including compact column-reverse layouts. Existing action
+  geometry, typography, and capsule/icon exclusions remain unchanged. The
+  focused Native Dialog suite passes 12/12, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `80810` / window `109634`, PID-derived `localhost:8901`,
+  session 1, rendered the real Component Lab footer. DevTool resolved 8px row
+  and column gaps, and the two action border boxes were physically separated by
+  8px. The exact Native console was empty. No screenshot was retained; staged
+  bundle SHA-256 is
+  `917e71749815d1f7fe63624022c9a37aaee1cd6fa0ebb8f31a065d7523e0aa8d`.

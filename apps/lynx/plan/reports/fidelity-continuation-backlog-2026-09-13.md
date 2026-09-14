@@ -1652,3 +1652,19 @@ state is absent from the paired component matrix.
   physical text box. The exact Native error/warning console was empty, no
   screenshot was retained, and the final staged bundle SHA-256 is
   `cbd3e6cd4b457c6f9ac1fa814d83e2306148746a1d507f72954fc888fab2caa7`.
+
+### DS-093 — COMPLETE
+
+- Native Dialog footers now preserve Electron's 8px `gap-2` spacing between
+  adjacent actions in both desktop rows and compact column-reverse layouts.
+  Existing action dimensions, typography, and capsule/icon exclusions are
+  unchanged.
+- The focused Native Dialog suite passes 12/12, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `80810`, window `109634`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Component Lab footer. DevTool
+  resolved both row and column gap to 8px; the `Cancel` border ended at x=671
+  and the `Save` border began at x=679, proving the physical 8px separation.
+  The exact Native error/warning console was empty, no screenshot was retained,
+  and the final staged bundle SHA-256 is
+  `917e71749815d1f7fe63624022c9a37aaee1cd6fa0ebb8f31a065d7523e0aa8d`.
