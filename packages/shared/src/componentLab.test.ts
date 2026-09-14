@@ -23,6 +23,7 @@ describe("component lab manifest", () => {
       "editor-rail/independent-tabs",
       "composer/model-effort-picker",
       "composer/context-window-meter",
+      "composer/reference-attachments",
       "project-actions/add-editor",
       "sidebar/command-palette",
       "sidebar/navigation-row",
@@ -77,6 +78,7 @@ describe("component lab manifest", () => {
       "editor-rail/independent-tabs",
       "composer/model-effort-picker",
       "composer/context-window-meter",
+      "composer/reference-attachments",
       "project-actions/add-editor",
       "system/semantic-icon-tones",
       "sidebar/navigation-row",
@@ -126,6 +128,7 @@ describe("component lab manifest", () => {
     expect(isComponentLabStoryImplemented("editor-rail/independent-tabs")).toBe(true);
     expect(isComponentLabStoryImplemented("composer/model-effort-picker")).toBe(true);
     expect(isComponentLabStoryImplemented("composer/context-window-meter")).toBe(true);
+    expect(isComponentLabStoryImplemented("composer/reference-attachments")).toBe(true);
     expect(isComponentLabStoryImplemented("system/semantic-icon-tones")).toBe(true);
     expect(isComponentLabStoryImplemented("sidebar/navigation-row")).toBe(true);
     expect(isComponentLabStoryImplemented("sidebar/command-palette")).toBe(true);
@@ -204,9 +207,9 @@ describe("component lab manifest", () => {
 
   it("reports the complete renderer/theme/viewport/state matrix", () => {
     expect(summarizeComponentLabCoverage(COMPONENT_LAB_STORIES)).toEqual({
-      stories: 50,
-      rendererMappings: 100,
-      matrixCells: 3232,
+      stories: 51,
+      rendererMappings: 102,
+      matrixCells: 3256,
       interactiveStories: 26,
     });
   });

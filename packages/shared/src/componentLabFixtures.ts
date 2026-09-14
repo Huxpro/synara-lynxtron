@@ -23,6 +23,103 @@ export const COMPONENT_LAB_RECENT_VIEW_ENTRIES = [
   { key: 'plugins', view: { kind: 'plugins' }, kind: 'plugins', icon: { kind: 'plugins' }, title: 'Plugins', subtitle: 'Plugin Library', isCurrent: false, isPinned: false, isSplit: false, isTerminal: false },
 ] as const;
 
+const COMPONENT_LAB_IMAGE_PREVIEW_URL =
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAFgwJ/lvONNwAAAABJRU5ErkJggg==';
+
+export const COMPONENT_LAB_COMPOSER_REFERENCE_ATTACHMENTS_BY_VARIANT = {
+  summary: {
+    assistantSelections: [
+      {
+        type: 'assistant-selection',
+        id: 'component-lab-selection-1',
+        assistantMessageId: 'component-lab-assistant-message',
+        text: 'Use the Electron attachment treatment as the renderer authority.',
+      },
+      {
+        type: 'assistant-selection',
+        id: 'component-lab-selection-2',
+        assistantMessageId: 'component-lab-assistant-message',
+        text: 'Keep generated icon paint explicit on Native.',
+      },
+    ],
+    fileComments: [
+      {
+        id: 'component-lab-comment-1',
+        path: 'apps/lynx/src/components/FileEntryIcon.lynx.tsx',
+        startLine: 42,
+        endLine: 45,
+        text: 'Match the attachment-aware icon identity and secondary tone.',
+      },
+    ],
+    pastedTexts: [],
+    files: [],
+    images: [],
+    nonPersistedImageIds: [],
+  },
+  documents: {
+    assistantSelections: [],
+    fileComments: [],
+    pastedTexts: [
+      {
+        id: 'component-lab-pasted-text',
+        createdAt: '2026-09-13T12:00:00.000Z',
+        text: 'Composer reference attachments should preserve production identity and paint.',
+        lineCount: 28,
+        charCount: 4120,
+      },
+    ],
+    files: [
+      {
+        type: 'file',
+        id: 'component-lab-pdf',
+        name: 'renderer-fidelity.pdf',
+        mimeType: 'application/pdf',
+        sizeBytes: 184320,
+      },
+      {
+        type: 'file',
+        id: 'component-lab-markdown',
+        name: 'audit-notes.md',
+        mimeType: 'text/markdown',
+        sizeBytes: 4096,
+      },
+    ],
+    images: [],
+    nonPersistedImageIds: [],
+  },
+  'image-warning': {
+    assistantSelections: [],
+    fileComments: [],
+    pastedTexts: [],
+    files: [],
+    images: [
+      {
+        type: 'image',
+        id: 'component-lab-image',
+        name: 'fidelity-reference.png',
+        mimeType: 'image/png',
+        sizeBytes: 68,
+        previewUrl: COMPONENT_LAB_IMAGE_PREVIEW_URL,
+      },
+    ],
+    nonPersistedImageIds: ['component-lab-image'],
+  },
+} as const;
+
+export type ComponentLabComposerReferenceAttachmentsVariant =
+  keyof typeof COMPONENT_LAB_COMPOSER_REFERENCE_ATTACHMENTS_BY_VARIANT;
+
+export function resolveComponentLabComposerReferenceAttachmentsFixture(
+  variant: string | undefined
+) {
+  if (variant && variant in COMPONENT_LAB_COMPOSER_REFERENCE_ATTACHMENTS_BY_VARIANT) {
+    return COMPONENT_LAB_COMPOSER_REFERENCE_ATTACHMENTS_BY_VARIANT[
+      variant as ComponentLabComposerReferenceAttachmentsVariant
+    ];
+  }
+  return COMPONENT_LAB_COMPOSER_REFERENCE_ATTACHMENTS_BY_VARIANT.summary;
+}
+
 export const COMPONENT_LAB_AUTOMATION_DEFINITION: AutomationDefinition = {
   id: AutomationId.makeUnsafe('component-lab-automation'),
   projectId: COMPONENT_LAB_AUTOMATION_PROJECT.id,

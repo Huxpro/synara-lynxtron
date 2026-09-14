@@ -23,6 +23,7 @@
 .ComponentsLabRenderTarget { min-height: 180px; margin-top: 20px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--border); border-radius: 12px; color: var(--muted-foreground); }
 .ComponentsLabRealStory { min-width: 240px; min-height: 160px; display: flex; align-items: center; justify-content: center; }
 .ComponentsLabContextMeterStory { width: 100%; padding-right: 24px; justify-content: flex-end; }
+.ComponentsLabReferenceAttachmentsStory { width: 640px; max-width: calc(100vw - 48px); padding: 16px; border: 1px solid var(--border); border-radius: 16px; background-color: var(--background); }
 .ComponentsLabAutomationDetailStory { width: 880px; max-width: calc(100vw - 336px); height: 520px; overflow: hidden; border: 1px solid var(--border); background-color: var(--background); }
 .ComponentsLabEditorRailAddTrigger { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: var(--color-icon-secondary); background-color: var(--color-background-button-secondary-hover); }
 .ComponentsLabIndependentTabsStory { width: 520px; max-width: calc(100vw - 48px); display: flex; flex-direction: column; gap: 12px; }

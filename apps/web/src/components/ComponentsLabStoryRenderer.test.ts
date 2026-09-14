@@ -45,12 +45,21 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('COMPONENT_LAB_PAUSED_AUTOMATION_DEFINITION');
   });
 
+  it("renders composer reference attachment variants through the production composition", () => {
+    const source = readFileSync(new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url), "utf8");
+    expect(source).toContain('props.storyId === "composer/reference-attachments"');
+    expect(source).toContain('<ComposerReferenceAttachmentsComposition');
+    expect(source).toContain('resolveComponentLabComposerReferenceAttachmentsFixture(props.variant)');
+    expect(source).toContain('nonPersistedImageIdSet={new Set(fixture.nonPersistedImageIds)}');
+  });
+
   const SSR_SIGNATURE_STORY_IDS = new Set([
     "kanban/card",
     "sidebar/navigation-row",
     "transcript/message-actions",
     "transcript/message-row",
     "system/semantic-icon-tones",
+    "composer/reference-attachments",
     "terminal/search",
     "editor/file-search",
     "typography/markdown-code",

@@ -104,6 +104,10 @@
       "types": "./src/filePreviewBreadcrumb.ts",
       "import": "./src/filePreviewBreadcrumb.ts"
     },
+    "./fileAttachmentPresentation": {
+      "types": "./src/fileAttachmentPresentation.ts",
+      "import": "./src/fileAttachmentPresentation.ts"
+    },
     "./filePreviewMode": {
       "types": "./src/filePreviewMode.ts",
       "import": "./src/filePreviewMode.ts"

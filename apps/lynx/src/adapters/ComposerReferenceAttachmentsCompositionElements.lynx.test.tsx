@@ -3,6 +3,7 @@ import { fireEvent, render } from '@lynx-js/react/testing-library';
 import { readFileSync } from 'node:fs';
 
 import {
+  ComposerFileAttachmentElement,
   ComposerImageAttachmentElement,
   ComposerPastedTextAttachmentElement,
 } from './ComposerReferenceAttachmentsCompositionElements.lynx';
@@ -27,15 +28,11 @@ describe('composer reference attachment interaction contract', () => {
       'utf8'
     );
 
-    expect(source).toContain(
-      '<MessageCircleIcon className="ComposerReferenceGlyphLynx" size={12} />'
-    );
-    expect(source).toContain(
-      '<XIcon className="ComposerReferenceRemoveIconLynx" size={12} />'
-    );
-    expect(source).toContain(
-      '<FileIcon className="ComposerReferenceTileIconLynx" size={16} />'
-    );
+    expect(source.match(/semanticIconColor\('secondary'\)/g)?.length).toBeGreaterThanOrEqual(4);
+    expect(source).toContain("semanticIconColor('tertiary')");
+    expect(source).toContain('svgColors.surface');
+    expect(source).toContain('colorMode="inherit"');
+    expect(source).toContain('mimeType={file.mimeType}');
     expect(source).toContain('<FileEntryIcon');
     expect(source).toContain('<ChevronRightIcon');
     expect(source).toContain('<CircleAlertIcon');
@@ -122,6 +119,22 @@ describe('composer reference attachment interaction contract', () => {
     fireEvent.keydown(remove, { key: ' ' });
     fireEvent(remove, new Event('catchEvent:tap', { bubbles: true }));
     expect(onRemove).toHaveBeenCalledTimes(2);
+  });
+
+  it('uses the shared compact type label for file attachment cards', () => {
+    render(
+      <ComposerFileAttachmentElement
+        file={{
+          id: 'pdf-1',
+          mimeType: 'application/pdf',
+          name: 'renderer-fidelity.pdf',
+          sizeBytes: 2048,
+        }}
+        onRemove={() => {}}
+      />
+    );
+
+    expect(findElement('.ComposerReferenceCardMetaLynx').textContent).toBe('PDF');
   });
 
   it('keeps nested image removal separate from image preview activation', () => {

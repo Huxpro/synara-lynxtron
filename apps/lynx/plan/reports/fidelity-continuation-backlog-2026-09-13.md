@@ -328,3 +328,27 @@ state is absent from the paired component matrix.
 - `audit:style:check` and `audit:reuse:check` remain excluded from the green
   gate because their generated baselines are pre-existing user-owned changes;
   neither baseline was rewritten by this task.
+
+### DS-018 — COMPLETE
+
+- Native composer reference attachments no longer rely on post-render CSS color
+  inheritance for generated SVGs. Summary MessageCircle glyphs, pasted-text File
+  and ChevronRight glyphs, ghost remove X icons, solid remove X icons, and file
+  attachment glyphs now receive Electron's semantic secondary, tertiary, inverse,
+  or warning paint directly at render time. File attachments also use the same
+  MIME-aware icon identity as Electron.
+- Electron and Native now share `fileAttachmentTypeLabel`, so Native cards show
+  compact `PDF` / `MD` labels instead of leaking `application/pdf` /
+  `text/markdown`. A paired production-composition story covers summary,
+  documents, and non-persisted image-warning variants; coverage is now 51
+  stories, 102 renderer mappings, and 3,256 cells.
+- Exact-owned Lynxtron 0.0.22 PID `15978`, window `104614`, PID-derived DevTool
+  `localhost:8901`, session 1, confirmed PDF and Markdown identities at semantic
+  secondary `rgba(13, 13, 13, 0.598)`, summary glyphs at the same secondary role,
+  ghost X icons at tertiary `rgba(13, 13, 13, 0.398)`, solid X icons at `#ffffff`,
+  and the light warning glyph at `#d97706`. The exact-client error/warning console
+  was empty. Electron CDP confirmed the authority iframe rendered the matching
+  `PDF` / `MD` labels and secondary/inverse icon roles; its macOS outer-window
+  capture remained a harness-only blank-compositing failure, so it was not used as
+  product evidence. No new screenshot was retained. The staged bundle SHA-256 is
+  `89b0dafb02ee710128020f917b943ce8b48f1a325a84bb0e59e0be171a7040b3`.

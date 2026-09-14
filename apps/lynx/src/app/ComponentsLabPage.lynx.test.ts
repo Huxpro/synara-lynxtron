@@ -63,6 +63,11 @@ describe('paired Components Lab route', () => {
     expect(renderer).toMatch(
       /storyId === 'composer\/context-window-meter'[\s\S]*?className="ComponentsLabRealStory ComponentsLabContextMeterStory"/
     );
+    expect(renderer).toContain("props.storyId === 'composer/reference-attachments'");
+    expect(renderer).toContain('<ComposerReferenceAttachmentsComposition');
+    expect(renderer).toContain('resolveComponentLabComposerReferenceAttachmentsFixture(props.variant)');
+    expect(renderer).toContain('nonPersistedImageIdSet={new Set(fixture.nonPersistedImageIds)}');
+    expect(styles).toContain('.ComponentsLabReferenceAttachmentsStory');
     expect(renderer).toContain("props.state === 'overflow'");
     expect(renderer).toContain("props.state === 'search'");
     expect(renderer).toContain("props.state === 'provider-list'");

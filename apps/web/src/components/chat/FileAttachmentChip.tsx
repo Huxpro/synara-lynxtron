@@ -4,8 +4,8 @@
 // Depends on: shared byte formatting, chat attachment types, and compact chip styles.
 
 import { formatBytes } from "@synara/shared/formatBytes";
+import { fileAttachmentTypeLabel } from "@synara/shared/fileAttachmentPresentation";
 
-import { basenameOfPath } from "~/file-icons";
 import { FileIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 import { type ChatFileAttachment } from "../../types";
@@ -21,79 +21,12 @@ import { FileEntryIcon } from "./FileEntryIcon";
 
 type FileAttachmentChipVariant = "pill" | "card";
 
-const MIME_TYPE_LABEL_BY_TYPE: Record<string, string> = {
-  "application/gzip": "GZ",
-  "application/json": "JSON",
-  "application/msword": "DOC",
-  "application/pdf": "PDF",
-  "application/rtf": "RTF",
-  "application/vnd.ms-excel": "XLS",
-  "application/vnd.ms-powerpoint": "PPT",
-  "application/vnd.ms-word": "DOC",
-  "application/vnd.oasis.opendocument.presentation": "ODP",
-  "application/vnd.oasis.opendocument.spreadsheet": "ODS",
-  "application/vnd.oasis.opendocument.text": "ODT",
-  "application/vnd.openxmlformats-officedocument.presentationml.presentation": "PPTX",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "XLSX",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "DOCX",
-  "application/x-7z-compressed": "7Z",
-  "application/x-tar": "TAR",
-  "application/xml": "XML",
-  "application/zip": "ZIP",
-  "audio/mpeg": "MP3",
-  "image/jpeg": "JPG",
-  "text/calendar": "ICS",
-  "text/csv": "CSV",
-  "text/html": "HTML",
-  "text/markdown": "MD",
-  "text/plain": "TXT",
-  "text/tab-separated-values": "TSV",
-  "text/xml": "XML",
-};
-
 interface FileAttachmentChipProps {
   file: ChatFileAttachment;
   onRemove?: ((fileId: string) => void) | undefined;
   className?: string;
   nonPersisted?: boolean;
   variant?: FileAttachmentChipVariant;
-}
-
-// Builds the short sub-label shown on composer cards, preferring precise
-// extensions before MIME fallbacks so long vendor MIME strings never leak into UI.
-function fileAttachmentTypeLabel(file: ChatFileAttachment): string {
-  const basename = basenameOfPath(file.name).trim();
-  const extensionStart = basename.startsWith(".") ? -1 : basename.indexOf(".");
-  if (extensionStart > 0 && extensionStart < basename.length - 1) {
-    const compoundExtension = basename.slice(extensionStart + 1).toUpperCase();
-    if (compoundExtension.length <= 12) {
-      return compoundExtension;
-    }
-
-    const finalExtension = compoundExtension.split(".").pop();
-    if (finalExtension) {
-      return finalExtension;
-    }
-  }
-
-  const mimeType = file.mimeType.trim().toLowerCase();
-  const mappedMimeType = MIME_TYPE_LABEL_BY_TYPE[mimeType];
-  if (mappedMimeType) {
-    return mappedMimeType;
-  }
-
-  const mimeSubtype = mimeType.split("/")[1]?.trim();
-  if (mimeSubtype && mimeSubtype !== "octet-stream") {
-    const fallback = mimeSubtype
-      .replace(/[^a-z0-9]+/g, " ")
-      .trim()
-      .toUpperCase();
-    if (fallback.length > 0 && fallback.length <= 12) {
-      return fallback;
-    }
-  }
-
-  return "FILE";
 }
 
 function fileAttachmentDetail(file: ChatFileAttachment): string {

@@ -28,4 +28,20 @@ describe('Lynx file entry icon', () => {
       'M9.75 20.25L14.25 3.75'
     );
   });
+
+  it('uses attachment-aware identity with inherited secondary paint', () => {
+    render(
+      <FileEntryIcon
+        className="AttachmentIcon"
+        colorMode="inherit"
+        kind="file"
+        mimeType="application/pdf"
+        pathValue="report.pdf"
+      />
+    );
+    const icon = elementTree.root?.querySelector('.AttachmentIcon');
+    expect(icon?.getAttribute('content')).toContain('stroke="rgba(13, 13, 13, 0.598)"');
+    expect(icon?.getAttribute('content')).toContain('M3.75 20.25V14.75H5.75');
+    expect(icon?.getAttribute('content')).not.toContain('M9.75 20.25L14.25 3.75');
+  });
 });

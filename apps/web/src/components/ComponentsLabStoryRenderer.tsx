@@ -19,6 +19,7 @@ import {
   COMPONENT_LAB_MODEL_SELECTION,
   resolveComponentLabMessageActions,
   resolveComponentLabContextWindowFixture,
+  resolveComponentLabComposerReferenceAttachmentsFixture,
   resolveComponentLabNavigationRow,
   resolveComponentLabCommandPaletteFixture,
   COMPONENT_LAB_OVERFLOW_CODEX_MODELS,
@@ -97,6 +98,7 @@ import { IndependentTabRow } from "~/components/chat/IndependentTabRow";
 import { FileIcon } from "~/lib/icons";
 import { CentralIcon } from "~/lib/central-icons";
 import { RecentViewSwitcher } from "~/components/RecentViewSwitcher";
+import { ComposerReferenceAttachmentsComposition } from "~/components/chat/ComposerReferenceAttachmentsComposition";
 import {
   MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
   MessageAssistantRowComposition,
@@ -725,6 +727,28 @@ export function ComponentsLabStoryRenderer(props: { readonly state: string; read
           activeWindowLabel={fixture.activeWindowLabel}
           pendingWindowLabel={fixture.pendingWindowLabel}
           initialOpen={props.state === "open"}
+        />
+      </div>
+    );
+  }
+  if (props.storyId === "composer/reference-attachments") {
+    const fixture = resolveComponentLabComposerReferenceAttachmentsFixture(props.variant);
+    return (
+      <div className="w-[640px] max-w-[calc(100vw-48px)] rounded-2xl border border-border bg-background p-4">
+        <ComposerReferenceAttachmentsComposition
+          assistantSelections={[...fixture.assistantSelections]}
+          fileComments={[...fixture.fileComments]}
+          pastedTexts={[...fixture.pastedTexts]}
+          files={fixture.files.map((file) => ({ ...file, file: null as never }))}
+          images={fixture.images.map((image) => ({ ...image, file: null as never }))}
+          nonPersistedImageIdSet={new Set(fixture.nonPersistedImageIds)}
+          onExpandImage={() => {}}
+          onRemoveAssistantSelections={() => {}}
+          onRemoveFileComments={() => {}}
+          onRemovePastedText={() => {}}
+          onShowPastedTextInField={() => {}}
+          onRemoveFile={() => {}}
+          onRemoveImage={() => {}}
         />
       </div>
     );

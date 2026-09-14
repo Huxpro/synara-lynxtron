@@ -1,4 +1,8 @@
-import { getFileIconColor, getFileIconName } from '@synara-web/file-icons';
+import {
+  getAttachmentIconName,
+  getFileIconColor,
+  getFileIconName,
+} from '@synara-web/file-icons';
 
 import audioSvg from '@synara-central-icons/audio.svg?raw';
 import bunSvg from '@synara-central-icons/bun.svg?raw';
@@ -74,12 +78,24 @@ const FILE_ICON_SVG_BY_NAME: Readonly<Record<string, string>> = {
 
 export function FileEntryIcon(props: {
   readonly className?: string;
+  readonly colorMode?: 'file' | 'inherit';
+  readonly kind?: 'file' | 'directory';
+  readonly mimeType?: string | null;
   readonly pathValue: string;
 }) {
   const { svgColors } = useTheme();
-  const iconName = getFileIconName(props.pathValue);
+  const iconName =
+    props.mimeType === undefined
+      ? getFileIconName(props.pathValue)
+      : getAttachmentIconName({
+          name: props.pathValue,
+          mimeType: props.mimeType,
+        });
   const svg = FILE_ICON_SVG_BY_NAME[iconName] ?? codeBracketsSvg;
-  const color = resolveLynxSvgColor(getFileIconColor(iconName), svgColors);
+  const color =
+    props.colorMode === 'inherit'
+      ? svgColors.iconSecondary
+      : resolveLynxSvgColor(getFileIconColor(iconName), svgColors);
   return (
     <svg
       className={props.className}

@@ -371,3 +371,23 @@ values and unresolved Native custom properties.
   confirmed both strokes at `#0d0d0d` with an empty console. The final staged
   bundle SHA-256 is
   `42a4504ffcf0404f31ac44ab901941e3c237033d90f38e0bdeec82ae2c1fae60`.
+
+## Composer reference attachment follow-up
+
+- Composer reference attachments now pass semantic SVG paint at render time: the
+  summary and document glyphs use secondary ink, ghost removal uses tertiary,
+  solid removal uses inverse surface ink, and non-persisted image warnings use the
+  warning role. File cards also share Electron's attachment-aware icon selection
+  and the extracted `fileAttachmentTypeLabel`, eliminating full MIME strings from
+  Native subtitles.
+- The new paired production-composition story covers summary, documents, and
+  image-warning variants and raises the catalog to 51 stories, 102 mappings, and
+  3,256 cells. Exact-owned Lynxtron 0.0.22 PID `15978`, window `104614`,
+  PID-derived `localhost:8901`, session 1, exposed secondary
+  `rgba(13, 13, 13, 0.598)`, tertiary `rgba(13, 13, 13, 0.398)`, inverse
+  `#ffffff`, and warning `#d97706` strokes with an empty console. Electron CDP
+  confirmed matching `PDF` / `MD` copy and semantic icon roles. Its outer-window
+  capture had a harness-only blank-compositing failure, so only the live iframe
+  DOM/computed styles were used as Electron evidence. No screenshot was retained.
+  The staged bundle SHA-256 is
+  `89b0dafb02ee710128020f917b943ce8b48f1a325a84bb0e59e0be171a7040b3`.

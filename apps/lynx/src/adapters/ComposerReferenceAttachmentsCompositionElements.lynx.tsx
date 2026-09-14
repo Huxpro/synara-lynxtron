@@ -1,6 +1,7 @@
 import { type ReactNode } from '@lynx-js/react';
 
 import { formatPastedTextCountLabel, pastedTextTitle } from '@synara-web/lib/composerPastedText';
+import { fileAttachmentTypeLabel } from '@synara/shared/fileAttachmentPresentation';
 import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
 import {
   ChevronRightIcon,
@@ -48,6 +49,7 @@ function ComposerReferenceRemoveButton(props: {
   readonly onRemove: () => void;
   readonly tone?: 'solid' | 'ghost';
 }) {
+  const { semanticIconColor, svgColors } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: `ComposerReferenceRemoveLynx ComposerReferenceRemoveLynx--${
       props.tone ?? 'solid'
@@ -61,7 +63,15 @@ function ComposerReferenceRemoveButton(props: {
       className={interaction.className}
       {...eventProps}
     >
-      <XIcon className="ComposerReferenceRemoveIconLynx" size={12} />
+      <XIcon
+        className="ComposerReferenceRemoveIconLynx"
+        color={
+          props.tone === 'ghost'
+            ? semanticIconColor('tertiary')
+            : svgColors.surface
+        }
+        size={12}
+      />
     </view>
   );
 }
@@ -81,11 +91,16 @@ export function ComposerAssistantSelectionsAttachmentElement({
   readonly selections: ReadonlyArray<SummaryEntry>;
   readonly onRemove?: (() => void) | undefined;
 }) {
+  const { semanticIconColor } = useTheme();
   if (selections.length === 0) return null;
   const label = `${selections.length} selection${selections.length === 1 ? '' : 's'}`;
   return (
     <view className="ComposerReferenceSummaryLynx">
-      <MessageCircleIcon className="ComposerReferenceGlyphLynx" size={12} />
+      <MessageCircleIcon
+        className="ComposerReferenceGlyphLynx"
+        color={semanticIconColor('secondary')}
+        size={12}
+      />
       <text className="ComposerReferenceLabelLynx">{label}</text>
       {onRemove ? (
         <ComposerReferenceRemoveButton
@@ -105,11 +120,16 @@ export function ComposerFileCommentsAttachmentElement({
   readonly comments: ReadonlyArray<FileCommentEntry>;
   readonly onRemove?: (() => void) | undefined;
 }) {
+  const { semanticIconColor } = useTheme();
   if (comments.length === 0) return null;
   const label = `${comments.length} comment${comments.length === 1 ? '' : 's'}`;
   return (
     <view className="ComposerReferenceSummaryLynx">
-      <MessageCircleIcon className="ComposerReferenceGlyphLynx" size={12} />
+      <MessageCircleIcon
+        className="ComposerReferenceGlyphLynx"
+        color={semanticIconColor('secondary')}
+        size={12}
+      />
       <text className="ComposerReferenceLabelLynx">{label}</text>
       {onRemove ? (
         <ComposerReferenceRemoveButton
@@ -131,6 +151,7 @@ export function ComposerPastedTextAttachmentElement({
   readonly onShowInTextField: () => void;
   readonly onRemove: () => void;
 }) {
+  const { semanticIconColor } = useTheme();
   const title = pastedTextTitle(pastedText.text);
   const showInteraction = useLynxInteractiveState({
     baseClassName: 'ComposerReferenceCardActionLynx',
@@ -140,7 +161,11 @@ export function ComposerPastedTextAttachmentElement({
   return (
     <view className="ComposerReferenceCardLynx ComposerReferencePastedTextLynx">
       <view className="ComposerReferenceTileLynx">
-        <FileIcon className="ComposerReferenceTileIconLynx" size={16} />
+        <FileIcon
+          className="ComposerReferenceTileIconLynx"
+          color={semanticIconColor('secondary')}
+          size={16}
+        />
       </view>
       <view className="ComposerReferenceCardCopyLynx">
         <text className="ComposerReferenceCardTitleLynx">{title}</text>
@@ -153,6 +178,7 @@ export function ComposerPastedTextAttachmentElement({
           </text>
           <ChevronRightIcon
             className="ComposerReferenceActionChevronLynx"
+            color={semanticIconColor('secondary')}
             size={10}
           />
         </view>
@@ -177,12 +203,15 @@ export function ComposerFileAttachmentElement({
       <view className="ComposerReferenceTileLynx">
         <FileEntryIcon
           className="ComposerReferenceTileIconLynx"
+          colorMode="inherit"
+          kind="file"
+          mimeType={file.mimeType}
           pathValue={file.name}
         />
       </view>
       <view className="ComposerReferenceCardCopyLynx">
         <text className="ComposerReferenceCardTitleLynx">{file.name}</text>
-        <text className="ComposerReferenceCardMetaLynx">{file.mimeType || 'FILE'}</text>
+        <text className="ComposerReferenceCardMetaLynx">{fileAttachmentTypeLabel(file)}</text>
       </view>
       <ComposerReferenceRemoveButton
         label={`Remove ${file.name}`}

@@ -16,6 +16,7 @@ import {
   COMPONENT_LAB_MODEL_SELECTION,
   resolveComponentLabMessageActions,
   resolveComponentLabContextWindowFixture,
+  resolveComponentLabComposerReferenceAttachmentsFixture,
   resolveComponentLabNavigationRow,
   resolveComponentLabCommandPaletteFixture,
   COMPONENT_LAB_OVERFLOW_CODEX_MODELS,
@@ -87,6 +88,7 @@ import { ExplorerPreviewHeader } from './ExplorerPreviewHeader.lynx';
 import { IndependentTabRow } from './IndependentTabRow.lynx';
 import { EditorSurfaceTab } from './EditorSurfaceTab.lynx';
 import { RecentViewSwitcherLynx } from './RecentViewSwitcher.lynx';
+import { ComposerReferenceAttachmentsComposition } from '@synara-web/components/chat/ComposerReferenceAttachmentsComposition';
 import {
   MessageAssistantRowComposition,
   MessageUserBubbleComposition,
@@ -469,6 +471,28 @@ export function ComponentsLabStoryRendererLynx(props: { readonly state: string; 
           activeWindowLabel={fixture.activeWindowLabel}
           pendingWindowLabel={fixture.pendingWindowLabel}
           initialOpen={props.state === 'open'}
+        />
+      </view>
+    );
+  }
+  if (props.storyId === 'composer/reference-attachments') {
+    const fixture = resolveComponentLabComposerReferenceAttachmentsFixture(props.variant);
+    return (
+      <view className="ComponentsLabReferenceAttachmentsStory">
+        <ComposerReferenceAttachmentsComposition
+          assistantSelections={[...fixture.assistantSelections]}
+          fileComments={[...fixture.fileComments]}
+          pastedTexts={[...fixture.pastedTexts]}
+          files={fixture.files.map((file) => ({ ...file, file: null as never }))}
+          images={fixture.images.map((image) => ({ ...image, file: null as never }))}
+          nonPersistedImageIdSet={new Set(fixture.nonPersistedImageIds)}
+          onExpandImage={() => {}}
+          onRemoveAssistantSelections={() => {}}
+          onRemoveFileComments={() => {}}
+          onRemovePastedText={() => {}}
+          onShowPastedTextInField={() => {}}
+          onRemoveFile={() => {}}
+          onRemoveImage={() => {}}
         />
       </view>
     );
