@@ -1357,3 +1357,21 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `f3883440c1c0623539678fdff9a0c6231072d0e14ff3e4b0f39f0fe677b9ed72`.
+
+### DS-076 — COMPLETE
+
+- Native secondary-outline Button now implements Electron's subtle
+  `secondary/12` hover/active/pressed surface instead of remaining on the
+  elevated default surface. The effective secondary alpha is composited into the
+  active Theme Pack's surface before reaching Lynx, avoiding Native's quantization
+  of the default dark 0.312% alpha to transparent.
+- Static light/dark declarations register the dynamic token with the Native style
+  engine. Native Button/theme/Lab focused tests pass 16/16, and the affected
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `92545`, window `108476`, PID-derived DevTool
+  `localhost:8901`, session 1, measured dark secondary-outline hover at opaque
+  `rgb(17,17,17)` with the standard light border and full foreground. The first
+  alpha-token attempt rendered fully transparent and was rejected before this
+  final run. The exact Native error/warning console was empty, no screenshot was
+  retained, and the final staged bundle SHA-256 is
+  `808a9b53399b1d00161612a32b60f8b952919a58ccbe31e939ffad95ae9bc38f`.

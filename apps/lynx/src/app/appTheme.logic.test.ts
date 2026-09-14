@@ -177,6 +177,9 @@ describe('slice root theme projection', () => {
     expect(variables['--destructive-outline-state-border']).toBe(
       'rgba(224, 46, 42, 0.32)'
     );
+    expect(variables['--secondary-outline-state-surface']).toBe(
+      '#fdfdfd'
+    );
     expect(appStyles).toContain('--primary-hover-fill: #252525;');
     expect(appStyles).toContain('--primary-hover-fill: #e5e5e5;');
     expect(appStyles).toContain('--destructive-hover-fill: #e33531;');

@@ -828,6 +828,11 @@ export function buildThemeCssVariables(
     "--primary-foreground": readCodexVariable("--color-text-button-primary"),
     "--ring": readCodexVariable("--color-border-focus"),
     "--secondary": readCodexVariable("--color-background-button-secondary"),
+    "--secondary-outline-state-surface": compositeScaledColorOverSurface(
+      resolvedTokens.derived.buttonSecondaryBackground,
+      resolvedTokens.computed.surfaceUnder,
+      0.12,
+    ),
     "--secondary-foreground": readCodexVariable("--color-text-button-secondary"),
     "--sidebar": readCodexVariable("--color-background-surface"),
     "--sidebar-accent": readCodexVariable("--color-background-button-secondary-hover"),
@@ -1504,6 +1509,30 @@ function formatOpaqueRgb(color: RgbColor): string {
 
 function formatRgba(color: RgbColor, opacity: number): string {
   return `rgba(${color.red}, ${color.green}, ${color.blue}, ${formatAlpha(opacity)})`;
+}
+
+function compositeScaledColorOverSurface(
+  color: string,
+  surface: string,
+  multiplier: number,
+): string {
+  const rgbaMatch = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([0-9.]+)\s*\)$/i.exec(
+    color,
+  );
+  if (rgbaMatch) {
+    return formatHex(
+      mixRgb(
+        parseHexColor(surface),
+        {
+          red: Number(rgbaMatch[1]),
+          green: Number(rgbaMatch[2]),
+          blue: Number(rgbaMatch[3]),
+        },
+        Number(rgbaMatch[4]) * multiplier,
+      ),
+    );
+  }
+  return mixHex(surface, color, multiplier);
 }
 
 function formatHexChannel(value: number): string {

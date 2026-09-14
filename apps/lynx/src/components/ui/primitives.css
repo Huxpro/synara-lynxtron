@@ -111,6 +111,12 @@
   background-color: var(--primary-outline-state-surface);
 }
 
+.LxButton--secondary-outline.ui-hover,
+.LxButton--secondary-outline.ui-active,
+.LxButton--secondary-outline.ui-pressed {
+  background-color: var(--secondary-outline-state-surface);
+}
+
 .LxButton--destructive {
   border-top-color: var(--destructive);
   border-right-color: var(--destructive);
