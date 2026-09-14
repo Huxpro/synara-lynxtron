@@ -1,8 +1,17 @@
+import { render } from '@lynx-js/react/testing-library';
 import { readFileSync } from 'node:fs';
 
 import { describe, expect, it } from '@rstest/core';
+import { NotificationDismissIcon } from './NotificationDismissIcon.lynx';
 
 describe('Lynx voice notification presentation', () => {
+  it('matches the shared Web toast close strength', () => {
+    render(<NotificationDismissIcon />);
+    expect(elementTree.root?.querySelector('svg')?.getAttribute('content')).toContain(
+      'stroke="rgba(13, 13, 13, 0.65)"'
+    );
+  });
+
   it('uses the app notification stack instead of composer error copy', () => {
     const composerSource = readFileSync(
       new URL('../components/composer/Composer.lynx.tsx', import.meta.url),
@@ -45,6 +54,7 @@ describe('Lynx voice notification presentation', () => {
     expect(notificationHost).toContain('<CircleAlertIcon');
     expect(notificationHost).toContain('notification.description');
     expect(notificationHost).toContain('notification.actionLabel');
+    expect(notificationHost).toContain('<NotificationDismissIcon />');
     expect(styles).toMatch(
       /\.VoiceNotificationToast\s*\{[^}]*min-height:\s*54px;[^}]*border:\s*1px solid var\(--color-border\);[^}]*border-radius:\s*12px;/s
     );

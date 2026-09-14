@@ -2,8 +2,9 @@ import { useEffect } from '@lynx-js/react';
 
 import { IconButton } from '../components/ui/icon-button.lynx';
 import { Button } from '../components/ui/button.lynx';
-import { CircleAlertIcon, XIcon } from '../lib/icons.lynx';
+import { CircleAlertIcon } from '../lib/icons.lynx';
 import { useLynxVoiceNotificationStore } from './voiceNotificationStore.lynx';
+import { NotificationDismissIcon } from './NotificationDismissIcon.lynx';
 
 const VOICE_NOTIFICATION_VISIBLE_MS = 8_000;
 
@@ -52,7 +53,7 @@ export function VoiceNotificationHost() {
         label="Dismiss voice notification"
         onClick={dismiss}
       >
-        <XIcon size={12} />
+        <NotificationDismissIcon />
       </IconButton>
     </view>
   );

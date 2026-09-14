@@ -596,3 +596,20 @@ state is absent from the paired component matrix.
   rows, so the warning glyph is certified by direct-render evidence rather than a
   claimed live warning. No screenshot was retained. The staged bundle SHA-256 is
   `827b907881a7d58359c3226956099e281185c00b04c52ff0c04997c5228400f3`.
+
+### DS-032 — COMPLETE
+
+- Native Voice and task-completion toast dismiss actions now reuse one
+  `NotificationDismissIcon` that embeds `foreground/65`, matching Electron's
+  shared `notification-fg/65` close treatment. Provider Update retains its
+  existing container-level `0.65`; Provider Health retains its independently
+  verified foreground/65 rule; Sidechat close remains crisp header foreground.
+- The isolated direct-render/theme suites pass 4/4 and verify the generated X
+  stroke at `rgba(13, 13, 13, 0.65)`. The full Lynx/Desktop production build
+  passes on Lynxtron 0.0.22. The large Task host suite remains blocked before
+  test execution by its existing Rstest-generated lynx-ui vendor parse failure,
+  so this slice does not claim that unrelated suite.
+- Voice and task toasts are transient async surfaces and were not artificially
+  triggered for a retained Native frame. No screenshot was retained. The staged
+  bundle SHA-256 is
+  `2b2c0102051df08899ac35a5ebaa78e4dfcb41ae65d643195a7dded940a870be`.

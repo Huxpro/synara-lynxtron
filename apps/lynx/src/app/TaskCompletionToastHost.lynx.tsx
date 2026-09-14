@@ -12,7 +12,7 @@ import {
 
 import { Button } from '../components/ui/button';
 import { subscribeTerminalEvents } from '../data/synaraClient.lynx';
-import { XIcon } from '../lib/icons.lynx';
+import { NotificationDismissIcon } from './NotificationDismissIcon.lynx';
 import { onGlobalEvent } from '../platform/bridge';
 import { webStorage } from '../platform/storage';
 import {
@@ -255,7 +255,7 @@ export function TaskCompletionToastHost(props: {
           setDismissedTerminalVersion(terminalEventQuery.data.version);
         }}
       >
-        <XIcon size={12} />
+        <NotificationDismissIcon />
       </Button>
     </view>
   );

@@ -577,3 +577,16 @@ values and unresolved Native custom properties.
   warnings in the current real snapshot and an empty console, so no live-warning
   claim is made. No screenshot was retained; staged bundle SHA-256:
   `827b907881a7d58359c3226956099e281185c00b04c52ff0c04997c5228400f3`.
+
+## Notification dismiss icon follow-up
+
+- Native Voice and task-completion toast dismiss X glyphs now share a concrete
+  resolved foreground/65 component, matching Electron's notification close
+  hierarchy. Existing Provider Update, Provider Health, and Sidechat-specific
+  treatments remain unchanged to avoid double opacity or flattening header chrome.
+- Isolated direct-render/theme tests pass 4/4 and the production build passes on
+  Lynxtron 0.0.22. The large Task host suite still fails before test execution in
+  an existing generated lynx-ui vendor module; this is recorded as harness noise,
+  not a product failure. No synthetic toast was retained and no screenshot was
+  added. Staged bundle SHA-256:
+  `2b2c0102051df08899ac35a5ebaa78e4dfcb41ae65d643195a7dded940a870be`.
