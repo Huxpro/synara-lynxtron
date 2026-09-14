@@ -1301,3 +1301,20 @@ values and unresolved Native custom properties.
   painted 0.4%. The exact Native console was empty. No screenshot was retained;
   staged bundle SHA-256 is
   `78c2ffd456f5ec1bd3e5036e9ed2e9294208309d8b5f6057ccd24c8cd474a65e`.
+
+## Shared Button secondary/subtle interaction follow-up
+
+- Native secondary Button hover/active/pressed now uses Electron's 90%-of-own-
+  fill surface, and subtle Button uses the dedicated secondary-hover role across
+  all three states. The former implementation omitted secondary hover entirely
+  and used the stronger generic hover color only for active.
+- Both colors are composited into the active Theme Pack surface and emitted as
+  opaque Native tokens. Native Button/theme/Lab focused tests pass 16/16, and the
+  affected Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `17071` / window `108563`, PID-derived `localhost:8901`,
+  session 1, measured secondary hover and pressed at `rgb(22,22,22)` with the
+  existing secondary foreground `rgb(104,104,104)`. Subtle state is covered by
+  the shared selector and token tests because the Lab has no subtle variant. The
+  exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `edf7dd3408855b139eca4451f0171f32f9cfd942af701055e7c5ca5e768ef648`.

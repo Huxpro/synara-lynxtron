@@ -57,9 +57,16 @@
   background-color: var(--outline-button-state-surface);
 }
 
+.LxButton--secondary.ui-hover,
 .LxButton--secondary.ui-active,
-.LxButton--subtle.ui-active {
-  background-color: var(--color-background-button-secondary-hover);
+.LxButton--secondary.ui-pressed {
+  background-color: var(--secondary-button-state-surface);
+}
+
+.LxButton--subtle.ui-hover,
+.LxButton--subtle.ui-active,
+.LxButton--subtle.ui-pressed {
+  background-color: var(--subtle-button-state-surface);
 }
 
 .LxButton.ui-disabled {

@@ -180,6 +180,8 @@ describe('slice root theme projection', () => {
     expect(variables['--secondary-outline-state-surface']).toBe(
       '#fdfdfd'
     );
+    expect(variables['--secondary-button-state-surface']).toBe('#f5f6f7');
+    expect(variables['--subtle-button-state-surface']).toBe('#f5f5f6');
     expect(variables['--outline-button-state-surface']).toBe('#f5f5f6');
     expect(appStyles).toContain('--primary-hover-fill: #252525;');
     expect(appStyles).toContain('--primary-hover-fill: #e5e5e5;');

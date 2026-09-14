@@ -74,7 +74,9 @@
   --primary-hover-fill: #252525;
   --primary-outline-state-border: rgba(13, 13, 13, 0.32);
   --primary-outline-state-surface: rgba(13, 13, 13, 0.04);
+  --secondary-button-state-surface: #f6f6f6;
   --secondary-outline-state-surface: #fafafa;
+  --subtle-button-state-surface: #f5f5f5;
   --pr-avatar-ring: rgba(13, 13, 13, 0.0345);
   --pr-comment-divider: rgba(13, 13, 13, 0.0345);
   --pr-comment-error-border: rgba(224, 46, 42, 0.3);
@@ -110,7 +112,9 @@
   --primary-hover-fill: #e5e5e5;
   --primary-outline-state-border: rgba(252, 252, 252, 0.32);
   --primary-outline-state-surface: rgba(252, 252, 252, 0.04);
+  --secondary-button-state-surface: #161616;
   --secondary-outline-state-surface: #111111;
+  --subtle-button-state-surface: #191919;
   --pr-avatar-ring: rgba(252, 252, 252, 0.036);
   --pr-comment-divider: rgba(252, 252, 252, 0.036);
   --pr-comment-error-border: rgba(227, 67, 63, 0.3);

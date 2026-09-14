@@ -51,6 +51,12 @@ describe('Lynx Button accessibility contract', () => {
       /\.LxButton--secondary-outline\.ui-hover,[^{]*\.LxButton--secondary-outline\.ui-pressed\s*\{[^}]*background-color:\s*var\(--secondary-outline-state-surface\);/s
     );
     expect(styles).toMatch(
+      /\.LxButton--secondary\.ui-hover,[^{]*\.LxButton--secondary\.ui-pressed\s*\{[^}]*background-color:\s*var\(--secondary-button-state-surface\);/s
+    );
+    expect(styles).toMatch(
+      /\.LxButton--subtle\.ui-hover,[^{]*\.LxButton--subtle\.ui-pressed\s*\{[^}]*background-color:\s*var\(--subtle-button-state-surface\);/s
+    );
+    expect(styles).toMatch(
       /\.LxButton--chrome\.ui-hover,[^{]*\.LxButton--outline\.ui-hover,[^{]*\.LxButton--chrome-outline\.ui-pressed\s*\{[^}]*background-color:\s*var\(--outline-button-state-surface\);/s
     );
     expect(styles).not.toMatch(

@@ -1394,3 +1394,21 @@ state is absent from the paired component matrix.
   exact Native error/warning console was empty, no screenshot was retained, and
   the final staged bundle SHA-256 is
   `78c2ffd456f5ec1bd3e5036e9ed2e9294208309d8b5f6057ccd24c8cd474a65e`.
+
+### DS-078 — COMPLETE
+
+- Native secondary Buttons now match Electron's 90%-of-secondary hover and
+  pressed surface instead of staying at the default fill on hover and jumping to
+  the stronger generic hover token on pressed. Subtle Buttons use the dedicated
+  secondary-hover surface for all three interaction states.
+- Both state colors are precomposited into the active Theme Pack surface and
+  registered in Native theme blocks, avoiding low-alpha quantization. Native
+  Button/theme/Lab focused tests pass 16/16, and the affected Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `17071`, window `108563`, PID-derived DevTool
+  `localhost:8901`, session 1, measured both secondary hover and pressed at
+  opaque `rgb(22,22,22)` with secondary foreground `rgb(104,104,104)`. Subtle
+  state remains source/test evidence because it has no dedicated Lab variant. The
+  exact Native error/warning console was empty, no screenshot was retained, and
+  the final staged bundle SHA-256 is
+  `edf7dd3408855b139eca4451f0171f32f9cfd942af701055e7c5ca5e768ef648`.

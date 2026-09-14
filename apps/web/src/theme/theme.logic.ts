@@ -833,12 +833,22 @@ export function buildThemeCssVariables(
     "--primary-foreground": readCodexVariable("--color-text-button-primary"),
     "--ring": readCodexVariable("--color-border-focus"),
     "--secondary": readCodexVariable("--color-background-button-secondary"),
+    "--secondary-button-state-surface": compositeScaledColorOverSurface(
+      resolvedTokens.derived.buttonSecondaryBackground,
+      resolvedTokens.computed.surfaceUnder,
+      0.9,
+    ),
     "--secondary-outline-state-surface": compositeScaledColorOverSurface(
       resolvedTokens.derived.buttonSecondaryBackground,
       resolvedTokens.computed.surfaceUnder,
       0.12,
     ),
     "--secondary-foreground": readCodexVariable("--color-text-button-secondary"),
+    "--subtle-button-state-surface": compositeScaledColorOverSurface(
+      resolvedTokens.derived.buttonSecondaryBackgroundHover,
+      resolvedTokens.computed.surfaceUnder,
+      1,
+    ),
     "--sidebar": readCodexVariable("--color-background-surface"),
     "--sidebar-accent": readCodexVariable("--color-background-button-secondary-hover"),
     "--sidebar-accent-active": readCodexVariable("--color-background-button-secondary-hover"),
