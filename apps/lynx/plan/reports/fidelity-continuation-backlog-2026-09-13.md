@@ -2195,3 +2195,21 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `9d6af68252208942c6cf62867ce48f9fef5e3f9e696f0b2a0e19f3155e0c0335`.
+
+### DS-126 — COMPLETE
+
+- Native Custom models cards now declare the shared border token on all four
+  physical sides. The former aggregate declaration painted the persistent card's
+  1px outline black in dark mode. Existing transparent surface, editor controls,
+  spacing, and radius remain unchanged.
+- Pure custom-model provider helpers moved to `custom-model-settings.ts`, so the
+  focused suite no longer loads the complete Lynx UI vendor graph merely to test
+  settings patches. The focused Settings Custom Models suite passes 2/2 after
+  this decoupling, and the full Lynx/Desktop production build passes on npm
+  Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `74991`, window `112843`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real `/settings/models` route. The
+  Custom models card resolved every physical edge to
+  `rgba(252,252,252,0.0705882)` at 1px. The exact Native error/warning console
+  was empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `951b6c4b7b179bb18fe2b3d8ec84472f17b765d23ec67be944b6b2ddbc3d9f12`.

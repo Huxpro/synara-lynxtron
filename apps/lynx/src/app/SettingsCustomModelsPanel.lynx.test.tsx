@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import {
   customModelsForProvider,
   customModelsProviderPatch,
-} from './SettingsCustomModelsPanel.lynx';
+} from './custom-model-settings';
 import { DEFAULT_SERVER_SETTINGS_VIEW } from '@synara/contracts';
 
 describe('Settings Custom Models fidelity', () => {
@@ -36,6 +36,10 @@ describe('Settings Custom Models fidelity', () => {
       new URL('./SettingsCustomModelsPanel.lynx.tsx', import.meta.url),
       'utf8'
     );
+    const settingsHelpers = readFileSync(
+      new URL('./custom-model-settings.ts', import.meta.url),
+      'utf8'
+    );
     const styles = readFileSync(
       new URL('./settings-custom-models-panel.css', import.meta.url),
       'utf8'
@@ -59,8 +63,8 @@ describe('Settings Custom Models fidelity', () => {
     expect(source).toContain('accessibility-role="alert"');
     expect(source).toContain('Remove ${row.slug}');
     expect(source).toContain('Reset custom models to default');
-    expect(source).toContain("provider: 'pi'");
-    expect(source).not.toContain("provider: 'droid'");
+    expect(settingsHelpers).toContain("provider: 'pi'");
+    expect(settingsHelpers).not.toContain("provider: 'droid'");
     expect(settingsSource).toContain('<SettingsCustomModelsPanel');
     expect(settingsSource).toContain('onSettingsChange={applyModelSettings}');
     expect(styles).toMatch(
@@ -70,7 +74,7 @@ describe('Settings Custom Models fidelity', () => {
       /\.SettingsCustomModelsSection\s*\{[^}]*gap:\s*6px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsCustomModelsCard\s*\{[^}]*border-radius:\s*10px;/s
+      /\.SettingsCustomModelsCard\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;/s
     );
     expect(styles).toMatch(
       /\.SettingsCustomModelsRow\s*\{[^}]*padding:\s*10px 12px;/s

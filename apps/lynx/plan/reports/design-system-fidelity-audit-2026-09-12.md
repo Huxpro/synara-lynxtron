@@ -2018,3 +2018,18 @@ values and unresolved Native custom properties.
   edge to `rgba(252,252,252,0.0705882)` at 1px. The exact Native console was
   empty. No screenshot was retained; staged bundle SHA-256 is
   `9d6af68252208942c6cf62867ce48f9fef5e3f9e696f0b2a0e19f3155e0c0335`.
+
+## Settings Custom models card physical-border follow-up
+
+- Native Custom models cards now set the shared border token on all four physical
+  sides. The aggregate declaration had painted the persistent card's 1px outline
+  black in dark mode. Existing transparent surface, editor controls, spacing, and
+  radius remain unchanged. Pure custom-model provider helpers moved to
+  `custom-model-settings.ts`, keeping the focused suite independent from the full
+  Lynx UI vendor graph. The focused suite passes 2/2, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `74991` / window `112843`, PID-derived `localhost:8901`,
+  session 1, rendered the real `/settings/models` route. The Custom models card
+  resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px. The exact
+  Native console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `951b6c4b7b179bb18fe2b3d8ec84472f17b765d23ec67be944b6b2ddbc3d9f12`.
