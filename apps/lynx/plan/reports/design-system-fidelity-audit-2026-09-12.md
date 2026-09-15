@@ -1940,3 +1940,18 @@ values and unresolved Native custom properties.
   resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px. The exact
   Native console was empty. No screenshot was retained; staged bundle SHA-256 is
   `da4fccad0908cf7735eb555e55d0f9b0a11356d0ac5fffeb6d9d4eb8889edfe5`.
+
+## Settings Profile stats-strip physical-border follow-up
+
+- Native Profile stats strips now set their subtle stats-border token on all
+  four physical sides. The aggregate declaration had retained the intended 1px
+  widths while painting every edge pure black in dark mode. Existing wrapping,
+  radius, stat layout, and internal dividers remain unchanged. The focused
+  Settings Profile suite passes 5/5, and the full Lynx/Desktop production build
+  passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `20871` / window `112385`, PID-derived `localhost:8901`,
+  session 1, rendered the real `/settings/profile` route. The stats strip
+  resolved every physical edge to `rgba(252,252,252,0.0392157)` at 1px. The
+  exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `1c06c6f862dba06c187222f4eeec3a71584091361af7f79b6ead447648348d74`.

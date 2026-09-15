@@ -115,7 +115,12 @@
   flex-direction: row;
   flex-wrap: wrap;
   overflow: hidden;
-  border: 1px solid var(--settings-profile-stats-border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--settings-profile-stats-border);
+  border-right-color: var(--settings-profile-stats-border);
+  border-top-color: var(--settings-profile-stats-border);
+  border-bottom-color: var(--settings-profile-stats-border);
   border-radius: 18px;
 }
 

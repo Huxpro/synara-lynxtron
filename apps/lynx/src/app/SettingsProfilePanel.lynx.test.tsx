@@ -213,7 +213,7 @@ describe('Settings Profile fidelity', () => {
       /\.SliceRoot--theme-dark\s*\{[^}]*--settings-profile-stats-border:\s*rgba\(252,\s*252,\s*252,\s*0\.043\);[^}]*--settings-profile-stats-divider:\s*rgba\(252,\s*252,\s*252,\s*0\.036\);/s
     );
     expect(styles).toMatch(
-      /\.SettingsProfileStats\s*\{[^}]*border:\s*1px solid var\(--settings-profile-stats-border\);/s
+      /\.SettingsProfileStats\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--settings-profile-stats-border\);[^}]*border-right-color:\s*var\(--settings-profile-stats-border\);[^}]*border-top-color:\s*var\(--settings-profile-stats-border\);[^}]*border-bottom-color:\s*var\(--settings-profile-stats-border\);/s
     );
     expect(styles).toMatch(
       /\.SettingsProfileStat\s*\{[^}]*border-left:\s*1px solid var\(--settings-profile-stats-divider\);/s
