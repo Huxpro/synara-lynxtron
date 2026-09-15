@@ -2274,3 +2274,19 @@ values and unresolved Native custom properties.
   surfaces respectively. The exact Native console was empty. No screenshot was
   retained; staged bundle SHA-256 is
   `8973d6ff0ff20423c7fc3038a84afeb112d7e6e2341bea428f0791a2cff25991`.
+
+## Transport status notice physical-border follow-up
+
+- Native transport reconnect/offline notices now set the neutral border token on
+  all four physical sides, including the offline override. The aggregate
+  declarations had painted the notice's 1px outline black in dark mode. Existing
+  compact placement, neutral copy, Retry action, and translucent elevated surface
+  remain unchanged. The focused transport-status suite passes 1/1, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- In a fresh isolated comparison run, owned server PID `49775` on port `55933`
+  was stopped while exact-owned Lynxtron PID `51216` / window `114299`,
+  PID-derived `localhost:8901`, session 1, remained alive. The real Reconnecting
+  notice resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px over
+  its unchanged `rgba(23,23,23,0.956863)` surface. The exact Native console was
+  empty. No screenshot was retained; staged bundle SHA-256 is
+  `8e8b1702de352afb481f059ce9abb7e8cacf2ce1a61eb49e05901fcbf2323b9f`.

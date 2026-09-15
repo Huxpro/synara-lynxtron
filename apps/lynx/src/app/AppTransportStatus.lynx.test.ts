@@ -14,10 +14,10 @@ describe('Lynx transport status presentation', () => {
     expect(appSource).toContain('transportState={transportState}');
     expect(appSource).toContain('onRetryTransport={() => void retryActiveSynaraQueries(queryClient)}');
     expect(styles).toMatch(
-      /\.TransportStatusNotice\s*\{[^}]*min-height:\s*28px;[^}]*border:\s*1px solid var\(--color-border\);[^}]*border-radius:\s*10px;/s
+      /\.TransportStatusNotice\s*\{[^}]*min-height:\s*28px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--color-border\);[^}]*border-right-color:\s*var\(--color-border\);[^}]*border-top-color:\s*var\(--color-border\);[^}]*border-bottom-color:\s*var\(--color-border\);[^}]*border-radius:\s*10px;/s
     );
     expect(styles).toMatch(
-      /\.TransportStatusNotice--offline\s*\{[^}]*border-color:\s*var\(--color-border\);/s
+      /\.TransportStatusNotice--offline\s*\{[^}]*border-left-color:\s*var\(--color-border\);[^}]*border-right-color:\s*var\(--color-border\);[^}]*border-top-color:\s*var\(--color-border\);[^}]*border-bottom-color:\s*var\(--color-border\);/s
     );
     expect(styles).toMatch(
       /\.TransportStatusNotice--offline \.TransportStatusNoticeText\s*\{[^}]*color:\s*var\(--color-text-status-neutral\);/s
