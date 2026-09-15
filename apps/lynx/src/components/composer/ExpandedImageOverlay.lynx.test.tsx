@@ -119,7 +119,7 @@ describe('Native expanded image overlay fidelity', () => {
       /\.ComposerExpandedImageBackdropFill\s*\{[^}]*background-color:\s*rgba\(0,\s*0,\s*0,\s*0\.75\);/s
     );
     expect(styles).toMatch(
-      /\.ComposerExpandedImageFrame\s*\{[^}]*border:\s*1px solid var\(--color-border\);[^}]*border-radius:\s*8px;[^}]*background-color:\s*var\(--color-background-elevated-primary-opaque\);/s
+      /\.ComposerExpandedImageFrame\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--color-border\);[^}]*border-right-color:\s*var\(--color-border\);[^}]*border-bottom-color:\s*var\(--color-border\);[^}]*border-left-color:\s*var\(--color-border\);[^}]*border-radius:\s*8px;[^}]*background-color:\s*var\(--color-background-elevated-primary-opaque\);/s
     );
     expect(styles).toMatch(
       /\.ComposerExpandedImageClose\s*\{[^}]*top:\s*8px;[^}]*right:\s*8px;[^}]*width:\s*24px;[^}]*height:\s*24px;/s

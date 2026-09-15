@@ -1839,7 +1839,12 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border: 1px solid var(--color-border);
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: var(--color-border);
+  border-right-color: var(--color-border);
+  border-bottom-color: var(--color-border);
+  border-left-color: var(--color-border);
   border-radius: 8px;
   background-color: var(--color-background-elevated-primary-opaque);
   box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.45);
