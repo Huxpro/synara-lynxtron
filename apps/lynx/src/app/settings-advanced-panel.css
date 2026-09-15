@@ -30,11 +30,15 @@
 }
 
 .SettingsAdvancedRow--keybindings {
-  border-bottom: 1px solid var(--border);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
 }
 
 .SettingsAdvancedRow--version {
-  border-bottom: 1px solid var(--border);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
 }
 
 .SettingsAdvancedMain {
@@ -102,7 +106,9 @@
 .SettingsAdvancedRecoveryDisclosure {
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid var(--settings-project-border);
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--settings-project-border);
 }
 
 .SettingsAdvancedRecoveryTrigger {

@@ -2711,3 +2711,21 @@ state is absent from the paired component matrix.
   zero-width. The exact Native error/warning console was empty, no screenshot was
   retained, and the final staged bundle SHA-256 is
   `e61588ba3b2a3883cefa227f8235c8068419c59cf9e005c560c24b7b2d478f38`.
+
+### DS-156 — COMPLETE
+
+- Native Settings Advanced keybindings and version rows now declare their bottom
+  dividers explicitly, and the recovery disclosure does the same for its top
+  divider. The former physical-side shorthands retained 1px widths but produced
+  black colors and empty styles in dark mode. Existing row geometry, copy,
+  actions, disclosure content, and surrounding cards remain unchanged.
+- The focused Settings Advanced suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `27753`, window `116059`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Settings Advanced route. The
+  keybindings and version bottom edges resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid, and the recovery disclosure top
+  edge resolved to `rgba(252,252,252,0.0470588)` at 1px solid. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `7c76b0a682b604c0878323647688bb0682f81276872333a3180e9ce6b0f015dd`.

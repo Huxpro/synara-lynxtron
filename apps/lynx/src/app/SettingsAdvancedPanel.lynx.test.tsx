@@ -78,7 +78,7 @@ describe('Settings Advanced fidelity', () => {
       /\.SettingsAdvancedRow\s*\{[^}]*padding:\s*var\(--app-density-settings-row-padding-y,\s*10px\) 12px;[^}]*flex-direction:\s*column;/s
     );
     expect(styles).toMatch(
-      /\.SettingsAdvancedRow--keybindings\s*\{[^}]*border-bottom:\s*1px solid var\(--border\);/s
+      /\.SettingsAdvancedRow--keybindings\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedMain\s*\{[^}]*align-items:\s*center;[^}]*justify-content:\s*space-between;[^}]*gap:\s*20px;/s
@@ -96,7 +96,7 @@ describe('Settings Advanced fidelity', () => {
       /\.SettingsAdvancedRecoveryDetails\s*\{[^}]*margin-top:\s*12px;[^}]*padding:\s*12px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsAdvancedRecoveryDisclosure\s*\{[^}]*margin-top:\s*12px;[^}]*padding-top:\s*12px;[^}]*border-top:\s*1px solid var\(--settings-project-border\);/s
+      /\.SettingsAdvancedRecoveryDisclosure\s*\{[^}]*margin-top:\s*12px;[^}]*padding-top:\s*12px;[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*solid;[^}]*border-top-color:\s*var\(--settings-project-border\);/s
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedRecoveryTrigger\s*\{[^}]*height:\s*16px;[^}]*justify-content:\s*space-between;/s
@@ -111,7 +111,7 @@ describe('Settings Advanced fidelity', () => {
       /\.SettingsAdvancedRecoveryDetailsText\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsAdvancedRow--version\s*\{[^}]*border-bottom:\s*1px solid var\(--border\);/s
+      /\.SettingsAdvancedRow--version\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
       /\.LxDialogPopup\.SettingsAdvancedReleaseDialog\s*\{[^}]*width:\s*512px;[^}]*height:\s*626\.390625px;[^}]*border-radius:\s*22px;[^}]*box-shadow:\s*0 16px 50px -12px rgba\(0,\s*0,\s*0,\s*0\.7\);/s
