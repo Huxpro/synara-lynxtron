@@ -2454,3 +2454,21 @@ state is absent from the paired component matrix.
   contract after Native quantization. The exact Native error/warning console was
   empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `afaffc07113bd0615cec7c69bfb39ef3884013a2dbeea7463bdc5a14169919b2`.
+
+### DS-141 — COMPLETE
+
+- Native Explorer PDF page-number slots and rendered page images now declare the
+  shared border token on all four physical sides. Their former aggregate
+  declarations painted both 1px outlines black in dark mode. Existing toolbar,
+  navigation, zoom behavior, transparent input slot, and white page surface
+  remain unchanged. The PDF badge was separately measured as already correct via
+  shared Badge physical sides and was intentionally left untouched.
+- The focused ExplorerDock suite passes 6/6, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `2704`, window `114182`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Explorer PDF fallback in
+  Components Lab. Both page-number slot and page image resolved every physical
+  edge to `rgba(252,252,252,0.0705882)` at 1px while retaining transparent and
+  white surfaces respectively. The exact Native error/warning console was empty,
+  no screenshot was retained, and the final staged bundle SHA-256 is
+  `8973d6ff0ff20423c7fc3038a84afeb112d7e6e2341bea428f0791a2cff25991`.

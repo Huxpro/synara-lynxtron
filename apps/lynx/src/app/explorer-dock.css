@@ -889,7 +889,12 @@
   min-height: 24px;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
   border-radius: 4px;
 }
 
@@ -932,7 +937,12 @@
 .ExplorerDockPdfPageImage {
   flex-shrink: 0;
   background-color: white;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
 }
 
 .ExplorerDockPdfVerticalScroll {

@@ -604,6 +604,12 @@ describe('Lynx Explorer dock', () => {
       /\.ExplorerDockMarkdownModes\s*\{[^}]*height:\s*28px;[^}]*flex-shrink:\s*0;[^}]*border-radius:\s*8px;/s
     );
     expect(styles).toMatch(
+      /\.ExplorerDockPdfPageInputSlot\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.ExplorerDockPdfPageImage\s*\{[^}]*background-color:\s*white;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
       /\.ExplorerDockPreviewContent\s*\{[^}]*flex:\s*1;[^}]*padding:\s*12px;/s
     );
     expect(styles).not.toMatch(
