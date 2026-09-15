@@ -73,7 +73,7 @@ describe('Settings AppSnap capability fidelity', () => {
       /\.SettingsAppSnapStatus\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsAppSnapRow--continued\s*\{[^}]*border-bottom:\s*1px solid var\(--border\);/s
+      /\.SettingsAppSnapRow--continued\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).not.toMatch(
       /\.SettingsAppSnapRow\s*\{[^}]*min-height:/s

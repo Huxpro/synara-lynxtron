@@ -2781,3 +2781,19 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `813e03b292b67630c9d8c78051819ce62026ff66fce34d5858d99369cca60e36`.
+
+### DS-160 — COMPLETE
+
+- Native Settings AppSnap continued rows now declare their bottom dividers with
+  explicit width, style, and shared border color. The former `border-bottom`
+  shorthand retained 1px widths but produced black colors and empty physical
+  styles in dark mode. Existing capture settings, shortcut/destination metadata,
+  sound preview, and macOS permission content remain unchanged.
+- The focused Settings AppSnap suite passes 2/2, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `87887`, window `116391`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Settings AppSnap route. All five
+  continued-row bottom edges resolved to `rgba(252,252,252,0.0705882)` at 1px
+  solid. The exact Native error/warning console was empty, no screenshot was
+  retained, and the final staged bundle SHA-256 is
+  `f6b2c5d6c1968c57f9404d07a7394efb1e750497f263a112b72ed1e1fc89dd63`.
