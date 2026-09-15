@@ -2421,3 +2421,19 @@ state is absent from the paired component matrix.
   `rgba(252,252,252,0.137255)`, all at 1px. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `95a137f61c17661d78140963fcac45f4c220ba5a700171f75da5085327e1189f`.
+
+### DS-139 — COMPLETE
+
+- Native Pull Request code file shells now declare the shared border token on all
+  four physical sides. The former aggregate declaration painted each file's 1px
+  outline black in dark mode. Existing header surface, diff rows, disclosure,
+  code typography, and radius remain unchanged.
+- The focused Pull Request code disclosure suite passes 2/2, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `30079`, window `114071`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Pull Request code composition in
+  the Components Lab diff-code story. The file shell resolved every physical edge
+  to `rgba(252,252,252,0.0705882)` at 1px over its unchanged `rgb(16,16,16)`
+  surface. The exact Native error/warning console was empty, no screenshot was
+  retained, and the final staged bundle SHA-256 is
+  `d8bbe33c3b21a0346b67d5591d48c8979e4d4201571836b43cc9e70d935cb358`.

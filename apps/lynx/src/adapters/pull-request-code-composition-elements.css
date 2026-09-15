@@ -53,7 +53,12 @@
 .SharedPrCodeFile {
   width: 100%;
   overflow: hidden;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
   border-radius: 6px;
   background-color: var(--background);
 }

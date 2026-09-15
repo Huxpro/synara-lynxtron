@@ -65,6 +65,9 @@ describe('Pull Request Code disclosure fidelity', () => {
       /\.SharedPrCodeRoot\s*\{[^}]*gap:\s*12px;[^}]*padding:\s*12px;/s
     );
     expect(lynxStyles).toMatch(
+      /\.SharedPrCodeFile\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*6px;/s
+    );
+    expect(lynxStyles).toMatch(
       /\.SharedPrCodeFileHeader\s*\{[^}]*gap:\s*8px;[^}]*padding:\s*8px 12px;/s
     );
     expect(lynxStyles).toMatch(
