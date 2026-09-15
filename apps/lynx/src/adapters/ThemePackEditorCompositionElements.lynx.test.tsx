@@ -76,7 +76,7 @@ describe('ThemePack boolean interaction contract', () => {
     );
 
     expect(styles).toMatch(
-      /\.SharedThemePackRoot\s*\{[^}]*border-radius:\s*10px;/s
+      /\.SharedThemePackRoot\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;/s
     );
     expect(styles).toMatch(
       /\.SharedThemePackHeader\s*\{[^}]*height:\s*84px;[^}]*flex-wrap:\s*wrap;[^}]*padding:\s*12px 16px;/s
@@ -220,7 +220,7 @@ describe('ThemePack boolean interaction contract', () => {
     expect(source).toContain("import { SettingsResetIcon } from './SettingsResetIcon.lynx';");
     expect(source).toContain('<SettingsResetIcon />');
     expect(source).not.toContain('↶');
-    expect(primitiveStyles).toMatch(/\.LxSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*padding:\s*1px;[^}]*border:\s*1px solid var\(--settings-switch-border\);[^}]*background-color:\s*var\(--settings-switch-off\);/s);
+    expect(primitiveStyles).toMatch(/\.LxSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*padding:\s*1px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--settings-switch-border\);[^}]*border-right-color:\s*var\(--settings-switch-border\);[^}]*border-bottom-color:\s*var\(--settings-switch-border\);[^}]*border-left-color:\s*var\(--settings-switch-border\);[^}]*background-color:\s*var\(--settings-switch-off\);/s);
     expect(primitiveStyles).toMatch(/\.LxSwitchThumb\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*background-color:\s*#ffffff;/s);
     expect(primitiveStyles).toMatch(/\.LxSwitch--checked \.LxSwitchThumb\s*\{[^}]*transform:\s*translateX\(12px\);/s);
     expect(styles).toMatch(

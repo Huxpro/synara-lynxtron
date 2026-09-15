@@ -2094,3 +2094,19 @@ state is absent from the paired component matrix.
   Native error/warning console was empty, no screenshot was retained, and the
   final staged bundle SHA-256 is
   `71849d72761c46f7a94a98b322a99f3f7fcde0fa3c634591069b724fbd772512`.
+
+### DS-120 — COMPLETE
+
+- Native Theme Pack editor roots now declare the shared border token on all four
+  physical sides. The former aggregate declaration painted each 1px editor edge
+  black in dark mode. Existing transparent surface, row separators, radius, and
+  theme controls remain unchanged.
+- The focused Theme Pack suite passes 9/9, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22. The suite's stale Switch shorthand
+  assertion was also aligned with the already-verified physical-side contract.
+- Exact-owned Lynxtron PID `45442`, window `112287`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real `/settings/appearance` route. A
+  Theme Pack root resolved every physical edge to
+  `rgba(252,252,252,0.0705882)` at 1px. The exact Native error/warning console
+  was empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `da4fccad0908cf7735eb555e55d0f9b0a11356d0ac5fffeb6d9d4eb8889edfe5`.

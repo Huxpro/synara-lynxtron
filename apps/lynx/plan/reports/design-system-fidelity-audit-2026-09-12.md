@@ -1927,3 +1927,16 @@ values and unresolved Native custom properties.
   1px over its unchanged white surface. The exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `71849d72761c46f7a94a98b322a99f3f7fcde0fa3c634591069b724fbd772512`.
+
+## Theme Pack editor physical-border follow-up
+
+- Native Theme Pack editor roots now set the shared border token on all four
+  physical sides. The aggregate declaration had painted each 1px editor edge
+  black in dark mode. Existing transparent surface, row separators, radius, and
+  theme controls remain unchanged. The focused Theme Pack suite passes 9/9, and
+  the full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `45442` / window `112287`, PID-derived `localhost:8901`,
+  session 1, rendered the real `/settings/appearance` route. A Theme Pack root
+  resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px. The exact
+  Native console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `da4fccad0908cf7735eb555e55d0f9b0a11356d0ac5fffeb6d9d4eb8889edfe5`.
