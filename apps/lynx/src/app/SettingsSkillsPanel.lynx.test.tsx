@@ -102,11 +102,14 @@ describe('Settings Skills fidelity', () => {
       /\.SettingsSkillsTitleLine\s*\{[^}]*min-height:\s*21px;[^}]*gap:\s*6px;/s
     );
     expect(styles).toMatch(
+      /\.SettingsSkillsCubeFace\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--muted-foreground\);[^}]*border-right-color:\s*var\(--muted-foreground\);[^}]*border-top-color:\s*var\(--muted-foreground\);[^}]*border-bottom-color:\s*var\(--muted-foreground\);/s
+    );
+    expect(styles).toMatch(
       /\.SettingsSkillsControl\s*\{[^}]*flex-shrink:\s*0;[^}]*align-items:\s*flex-end;/s
     );
     expect(source).toContain('<SkillProviderStack providers={group.providers} />');
     expect(styles).toMatch(
-      /\.SettingsSkillsProviderBadge\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*border-radius:\s*8px;/s
+      /\.SettingsSkillsProviderBadge\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--background\);[^}]*border-right-color:\s*var\(--background\);[^}]*border-top-color:\s*var\(--background\);[^}]*border-bottom-color:\s*var\(--background\);[^}]*border-radius:\s*8px;/s
     );
     expect(styles).toMatch(
       /\.SettingsSkillsProviderBadge \.OpenAIProviderIcon\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;/s

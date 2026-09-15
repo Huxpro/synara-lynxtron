@@ -140,7 +140,12 @@
 .SettingsSkillsCubeFace {
   width: 9px;
   height: 9px;
-  border: 1px solid var(--muted-foreground);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--muted-foreground);
+  border-right-color: var(--muted-foreground);
+  border-top-color: var(--muted-foreground);
+  border-bottom-color: var(--muted-foreground);
   border-radius: 2px;
 }
 
@@ -181,7 +186,12 @@
   width: 16px;
   height: 16px;
   justify-content: center;
-  border: 1px solid var(--background);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--background);
+  border-right-color: var(--background);
+  border-top-color: var(--background);
+  border-bottom-color: var(--background);
   border-radius: 8px;
   background-color: var(--background);
 }

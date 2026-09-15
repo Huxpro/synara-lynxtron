@@ -2141,3 +2141,21 @@ state is absent from the paired component matrix.
   to `rgba(252,252,252,0.0705882)` at 1px. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `4c15f00a8b2f644835a168724ffa775a80417df7434f300dd00e6cad840100db`.
+
+### DS-123 — COMPLETE
+
+- Native Settings Skills cube glyphs and provider badges now declare their
+  respective border tokens on all four physical sides. The former aggregate
+  declarations painted both outlines black in dark mode. Existing glyph
+  transform, badge overlap, provider icon, and background semantics remain
+  unchanged.
+- The focused Settings Skills suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `79174`, window `112500`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real populated `/settings/skills`
+  route. The transformed cube face resolved all four edges to
+  `rgba(252,252,252,0.576471)` and the provider badge resolved all four 1px edges
+  plus its surface to `rgb(16,16,16)`, matching Electron. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `60ac9241307dad25d26960f2b46a40129eb4d9045f71f295881b32aa57554916`.

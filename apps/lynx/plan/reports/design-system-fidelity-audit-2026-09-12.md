@@ -1970,3 +1970,19 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.0705882)` at 1px. The exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `4c15f00a8b2f644835a168724ffa775a80417df7434f300dd00e6cad840100db`.
+
+## Settings Skills glyph and provider-badge physical-border follow-up
+
+- Native Settings Skills cube glyphs and provider badges now set their respective
+  border tokens on all four physical sides. The aggregate declarations had
+  painted both outlines black in dark mode. Existing glyph transform, badge
+  overlap, provider icon, and background semantics remain unchanged. The focused
+  Settings Skills suite passes 3/3, and the full Lynx/Desktop production build
+  passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `79174` / window `112500`, PID-derived `localhost:8901`,
+  session 1, rendered the real populated `/settings/skills` route. The transformed
+  cube face resolved all four edges to `rgba(252,252,252,0.576471)` and the
+  provider badge resolved all four 1px edges plus its surface to `rgb(16,16,16)`,
+  matching Electron. The exact Native console was empty. No screenshot was
+  retained; staged bundle SHA-256 is
+  `60ac9241307dad25d26960f2b46a40129eb4d9045f71f295881b32aa57554916`.
