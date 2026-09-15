@@ -73,7 +73,10 @@ describe('composer reference attachment interaction contract', () => {
       /\.ComposerReferenceRemoveLynx--ghost \.ComposerReferenceRemoveIconLynx\s*\{[^}]*color:\s*var\(--color-icon-secondary\);/s
     );
     expect(styles).toMatch(
-      /\.ComposerReferenceImageLynx\s*\{[^}]*border:\s*1px solid var\(--color-border-light\);[^}]*border-radius:\s*12px;[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
+      /\.ComposerReferenceImageLynx\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--color-border-light\);[^}]*border-right-color:\s*var\(--color-border-light\);[^}]*border-top-color:\s*var\(--color-border-light\);[^}]*border-bottom-color:\s*var\(--color-border-light\);[^}]*border-radius:\s*12px;[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerReferenceImageLynx\.ui-hover\s*\{[^}]*border-left-color:\s*var\(--foreground\);[^}]*border-right-color:\s*var\(--foreground\);[^}]*border-top-color:\s*var\(--foreground\);[^}]*border-bottom-color:\s*var\(--foreground\);/s
     );
     expect(styles).toMatch(
       /\.ComposerReferenceImageWarningLynx\s*\{[^}]*left:\s*4px;[^}]*bottom:\s*4px;[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*var\(--composer-surface\);/s

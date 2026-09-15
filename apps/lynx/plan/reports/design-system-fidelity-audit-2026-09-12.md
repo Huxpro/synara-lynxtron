@@ -1807,3 +1807,18 @@ values and unresolved Native custom properties.
   `rgb(23,23,23)`. The exact Native console was empty. No screenshot was retained;
   staged bundle SHA-256 is
   `d17f5681a6db4fb4ba37e35721f36994aa2feca84aa6d5b4a5f30d8e7305caa8`.
+
+## Composer image-attachment physical-border follow-up
+
+- Native Composer image attachments now set the light border token on all four
+  physical sides, with the existing hover foreground override mapped to the same
+  sides. The former shorthand painted every default edge black in dark mode.
+  Existing preview activation, warning badge, surface, radius, and focus ring
+  remain unchanged. The focused reference-attachment suite passes 5/5, and the
+  full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `50948` / window `111273`, PID-derived `localhost:8901`,
+  session 1, rendered the real image-warning fixture. Every default physical edge
+  resolved to `rgba(252,252,252,0.0431373)`, 1px solid, over the unchanged
+  translucent elevated surface. The exact Native console was empty. No screenshot
+  was retained; staged bundle SHA-256 is
+  `95bb6cacceb19a6138c2cd3d6864978e6886cf0a16cb9126bc50620799ee7a2e`.
