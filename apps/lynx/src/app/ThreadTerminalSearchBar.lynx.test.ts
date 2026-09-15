@@ -25,7 +25,9 @@ describe('ThreadTerminalSearchBar', () => {
     expect(styles).toMatch(
       /\.ThreadTerminalSearchButtonIcon--previous\s*\{[^}]*transform:\s*rotate\(180deg\);/s
     );
-    expect(styles).toMatch(/\.ThreadTerminalSearch\s*\{[^}]*align-items:\s*center;/s);
+    expect(styles).toMatch(
+      /\.ThreadTerminalSearch\s*\{[^}]*align-items:\s*center;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--color-border-light\);[^}]*border-right-color:\s*var\(--color-border-light\);[^}]*border-top-color:\s*var\(--color-border-light\);[^}]*border-bottom-color:\s*var\(--color-border-light\);/s
+    );
     expect(styles).toMatch(/\.ThreadTerminalSearchInput\s*\{[^}]*height:\s*24px;[^}]*line-height:\s*24px;/s);
     expect(lab).toContain('<ThreadTerminalSearchBar');
   });

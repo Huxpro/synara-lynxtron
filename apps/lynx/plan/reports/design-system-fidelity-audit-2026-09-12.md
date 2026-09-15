@@ -2190,3 +2190,19 @@ values and unresolved Native custom properties.
   unchanged transparent surface. The exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `472f75d52a9a63b650f1c906686f0b4dc373f78df6fbcc656a62b49d39c3d5dc`.
+
+## Terminal search popup physical-border follow-up
+
+- The production Native Terminal search popup now sets
+  `--color-border-light` on all four physical sides. The aggregate declaration had
+  painted its 1px outline black in dark mode. Existing popover surface, shadow,
+  result label, search input, and action buttons remain unchanged. The focused
+  Terminal search suite passes 1/1, and the full Lynx/Desktop production build
+  passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `72153` / window `113948`, PID-derived `localhost:8901`,
+  session 1, rendered the real `ThreadTerminalSearchBar` in its Components Lab
+  no-results state. Every physical edge resolved to
+  `rgba(252,252,252,0.0431373)` at 1px while retaining the `rgb(23,23,23)` surface
+  and `0 4px 12px #00000028` shadow. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `0b742a95bbfeebaeb2d39033a7a75f49a764e9eba50ec538cd1c71dde20cf3cf`.

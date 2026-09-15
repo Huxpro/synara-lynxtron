@@ -120,7 +120,12 @@
   min-height: 24px;
   padding: 0 2px 0 8px;
   align-items: center;
-  border: 1px solid var(--color-border-light);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--color-border-light);
+  border-right-color: var(--color-border-light);
+  border-top-color: var(--color-border-light);
+  border-bottom-color: var(--color-border-light);
   border-radius: 4px;
   background-color: var(--popover);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
