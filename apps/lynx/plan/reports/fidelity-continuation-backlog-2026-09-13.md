@@ -2178,3 +2178,20 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `170dd36cf374b72d40330ce8fb61d06a9bd82736d2611a4fb425e785d7071957`.
+
+### DS-125 — COMPLETE
+
+- Native Settings Advanced recovery details now declare the shared border token
+  on all four physical sides. The former aggregate declaration painted the
+  expanded panel's 1px outline black in dark mode. Existing shared disclosure
+  motion, transparent surface, spacing, radius, and recovery copy remain
+  unchanged.
+- The focused Settings Advanced suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `35112`, window `112671`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered `/settings/advanced` and opened “What
+  this does” through Computer Use. The revalidated recovery-details node resolved
+  every physical edge to `rgba(252,252,252,0.0705882)` at 1px. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `9d6af68252208942c6cf62867ce48f9fef5e3f9e696f0b2a0e19f3155e0c0335`.

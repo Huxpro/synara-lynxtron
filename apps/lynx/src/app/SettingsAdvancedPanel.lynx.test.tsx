@@ -105,7 +105,7 @@ describe('Settings Advanced fidelity', () => {
       /\.SettingsAdvancedRecoveryChevron\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsAdvancedRecoveryDetails\s*\{[^}]*border-radius:\s*10px;/s
+      /\.SettingsAdvancedRecoveryDetails\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;/s
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedRecoveryDetailsText\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s
