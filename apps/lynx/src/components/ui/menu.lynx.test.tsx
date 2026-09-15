@@ -83,6 +83,9 @@ describe('Lynx Menu overlay contract', () => {
       /\.LxMenuLayer\s*\{[^}]*z-index:\s*1100;/s
     );
     expect(primitiveStyles).toMatch(
+      /\.LxMenuPopup\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(primitiveStyles).toMatch(
       /\.LxMenuItem__row\s*\{[^}]*justify-content:\s*flex-start;[^}]*gap:\s*8px;/s
     );
     expect(primitiveStyles).toMatch(

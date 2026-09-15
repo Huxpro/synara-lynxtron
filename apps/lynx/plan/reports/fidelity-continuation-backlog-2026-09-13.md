@@ -1833,3 +1833,18 @@ state is absent from the paired component matrix.
   `rgb(23,23,23)` surface. The exact Native error/warning console was empty, no
   screenshot was retained, and the final staged bundle SHA-256 is
   `0adbe783a5e7d7724585dc405f0c8f2f6260a412bded5fdcf1f736cd571b21d8`.
+
+### DS-104 — COMPLETE
+
+- Native Menu popups now declare the shared border token on all four physical
+  sides. The former aggregate declaration resolved to the intended token in
+  DevTool but painted every rendered edge black in dark mode; the shared surface,
+  radius, and shadow remain unchanged.
+- The focused Native Menu suite passes 22/22, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `74826`, window `110537`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real open Menu. All four physical
+  edges resolved to `rgba(252,252,252,0.0705882)` over the unchanged
+  `rgb(23,23,23)` surface. The exact Native error/warning console was empty, no
+  screenshot was retained, and the final staged bundle SHA-256 is
+  `e05751ae3ec8e0106244e392797ceed3ac79968af07463e32378fff7f5f08d99`.

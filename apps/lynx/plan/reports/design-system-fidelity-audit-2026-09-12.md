@@ -1690,3 +1690,17 @@ values and unresolved Native custom properties.
   surface; the exact Native console was empty. No screenshot was retained; staged
   bundle SHA-256 is
   `0adbe783a5e7d7724585dc405f0c8f2f6260a412bded5fdcf1f736cd571b21d8`.
+
+## Shared Menu physical-border follow-up
+
+- Native Menu popups now set the shared border token on all four physical sides.
+  The former aggregate declaration parsed to the expected token but left the
+  rendered edges black in dark mode. Existing popover surface, radius, and shadow
+  behavior remain unchanged. The focused Native Menu suite passes 22/22, and the
+  full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `74826` / window `110537`, PID-derived `localhost:8901`,
+  session 1, rendered the real open Menu. Every physical edge resolved to
+  `rgba(252,252,252,0.0705882)` over the unchanged `rgb(23,23,23)` surface; the
+  exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `e05751ae3ec8e0106244e392797ceed3ac79968af07463e32378fff7f5f08d99`.
