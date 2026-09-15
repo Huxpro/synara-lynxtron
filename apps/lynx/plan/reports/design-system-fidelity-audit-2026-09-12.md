@@ -2367,3 +2367,18 @@ values and unresolved Native custom properties.
   The exact Native console was empty. No screenshot was retained; staged bundle
   SHA-256 is
   `273538252dde3241179216ba9d92bfae201656cc767acc702b2d899e3fe819fb`.
+
+## Markdown display-math physical-border follow-up
+
+- Native Markdown display-math blocks now set their primary left accent with
+  explicit width, style, and color. The `border-left` shorthand had retained a
+  3px width but produced a black color and empty physical style in dark mode.
+  Existing math typography, spacing, and muted surface remain unchanged. The
+  focused Markdown suite passes 8/8, and the full Lynx/Desktop production build
+  passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `8496` / window `114839`, PID-derived `localhost:8901`, session
+  1, rendered a real assistant display-math block created through the Native
+  composer/provider path. Its left accent resolved to `rgb(252,252,252)` at 3px
+  solid over the unchanged `rgba(252,252,252,0.00392157)` surface. The exact
+  Native console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `d2ae203e1fb6e62509eae25bad4fd9d41936ebca87d26d6cdfc9aae6b82bb39c`.

@@ -330,7 +330,9 @@
   width: 100%;
   padding: 10px 12px;
   margin-bottom: 10px;
-  border-left: 3px solid var(--primary);
+  border-left-width: 3px;
+  border-left-style: solid;
+  border-left-color: var(--primary);
   background-color: var(--muted);
 }
 

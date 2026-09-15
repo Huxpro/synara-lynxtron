@@ -73,6 +73,9 @@ describe('Lynx markdown file reference token', () => {
       /\.MdBlockquote\s*\{[^}]*border-left-width:\s*2px;[^}]*border-left-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
+      /\.MdMathBlockShell\s*\{[^}]*border-left-width:\s*3px;[^}]*border-left-style:\s*solid;[^}]*border-left-color:\s*var\(--primary\);/s
+    );
+    expect(styles).toMatch(
       /\.MdTaskCheckbox\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--color-border\);[^}]*border-right-color:\s*var\(--color-border\);[^}]*border-bottom-color:\s*var\(--color-border\);[^}]*border-left-color:\s*var\(--color-border\);/s
     );
     expect(styles).toMatch(
