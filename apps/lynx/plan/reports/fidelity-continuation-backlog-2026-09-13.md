@@ -2490,3 +2490,19 @@ state is absent from the paired component matrix.
   `rgba(23,23,23,0.956863)` surface. The exact Native error/warning console was
   empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `8e8b1702de352afb481f059ce9abb7e8cacf2ce1a61eb49e05901fcbf2323b9f`.
+
+### DS-143 — COMPLETE
+
+- Native Markdown table shells now declare the shared border token on all four
+  physical sides. The former aggregate declaration painted the table's 1px
+  outline black in dark mode. Existing table geometry, cell dividers, wrapping,
+  spacing, and header surface remain unchanged.
+- The focused Markdown suite passes 8/8, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `5829`, window `114374`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered two Markdown tables created through the
+  real Native composer/provider path. Both table shells resolved every physical
+  edge to `rgba(252,252,252,0.0705882)` at 1px. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `cb8e833ec35aa347e1c575de3ef0fbd1f33b51db772725f9b6d865c213216b3b`.

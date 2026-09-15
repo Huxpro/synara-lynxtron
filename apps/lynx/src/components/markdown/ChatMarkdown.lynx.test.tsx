@@ -76,6 +76,12 @@ describe('Lynx markdown file reference token', () => {
       /\.MdTable\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s
     );
     expect(styles).toMatch(
+      /\.MdTableScroller\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.MdTableScroller\s*\{[^}]*border:\s*1px solid var\(--border\);/s
+    );
+    expect(styles).toMatch(
       /\.MdTableHeaderCell,\s*\.MdTableCell\s*\{[^}]*min-width:\s*0;/s
     );
     expect(styles).toMatch(
