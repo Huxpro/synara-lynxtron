@@ -2579,3 +2579,20 @@ values and unresolved Native custom properties.
   edges resolved to `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `f6b2c5d6c1968c57f9404d07a7394efb1e750497f263a112b72ed1e1fc89dd63`.
+
+## Settings Profile wide-stats physical-border follow-up
+
+- Native Settings Profile stats now set their wide-layout right dividers with
+  explicit width, style, and shared stats-divider color. The `border-right`
+  shorthand had retained 1px widths but produced black colors and empty physical
+  styles in dark mode. Existing five-column layout, outer shell, values, labels,
+  and last-column zero-width override remain unchanged. Narrow-layout left/top
+  dividers were not modified without a matching Native cell. The focused Settings
+  Profile suite passes 5/5, and the full Lynx/Desktop production build passes on
+  npm Lynxtron 0.0.22.
+- Exact-owned PID `2759` / window `116458`, PID-derived `localhost:8901`, session
+  1, rendered the real Settings Profile route. The first four stat cells resolved
+  their right edges to `rgba(252,252,252,0.0352941)` at 1px solid, while the final
+  cell retained a 0px right edge. The exact Native console was empty. No screenshot
+  was retained; staged bundle SHA-256 is
+  `a697a4eb1f6c42e3c17ed51fbac2c7b686e7517e4c398679cdf694731c666c0e`.

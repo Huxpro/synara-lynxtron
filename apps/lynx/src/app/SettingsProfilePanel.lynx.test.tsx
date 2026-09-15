@@ -219,7 +219,7 @@ describe('Settings Profile fidelity', () => {
       /\.SettingsProfileStat\s*\{[^}]*border-left:\s*1px solid var\(--settings-profile-stats-divider\);/s
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-lg-up \.SettingsProfileStat\s*\{[^}]*border-left-width:\s*0;[^}]*border-right:\s*1px solid var\(--settings-profile-stats-divider\);/s
+      /\.SliceRoot--viewport-lg-up \.SettingsProfileStat\s*\{[^}]*border-left-width:\s*0;[^}]*border-right-width:\s*1px;[^}]*border-right-style:\s*solid;[^}]*border-right-color:\s*var\(--settings-profile-stats-divider\);/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-lg-up \.SettingsProfileStat--4\s*\{[^}]*border-right-width:\s*0;/s
