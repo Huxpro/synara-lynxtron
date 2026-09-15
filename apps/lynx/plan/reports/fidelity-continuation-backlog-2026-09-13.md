@@ -2030,3 +2030,18 @@ state is absent from the paired component matrix.
   its transparent surface. The exact Native error/warning console was empty, no
   screenshot was retained, and the final staged bundle SHA-256 is
   `4f7358c2d80c8f7822bd340c34316cf18861c1437cf6457b720d9fa4e6bb27ce`.
+
+### DS-116 — COMPLETE
+
+- Native Settings Appearance cards now declare the shared border token on all
+  four physical sides. The former aggregate declaration painted the card's 1px
+  outer edge black in dark mode; the existing row separators already use safe
+  bottom longhands and remain unchanged.
+- The focused Settings section-label suite passes 6/6, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `33953`, window `111761`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real `/settings/appearance` route.
+  The card resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px.
+  The exact Native error/warning console was empty, no screenshot was retained,
+  and the final staged bundle SHA-256 is
+  `adb7cc44a9c6763df8fd0909d4ed51409ec50a66e18a15c7265ca2c9b3f5623c`.

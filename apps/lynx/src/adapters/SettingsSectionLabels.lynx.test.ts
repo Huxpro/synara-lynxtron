@@ -58,6 +58,9 @@ describe('Lynx Settings section labels', () => {
     for (const styles of [generalStyles, appearanceStyles, providerStyles]) {
       expect(styles).toMatch(/Card\s*\{[^}]*border-radius:\s*10px;/s);
     }
+    expect(appearanceStyles).toMatch(
+      /\.SharedSettingsAppearanceCard\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
     expect(generalStyles).toMatch(
       /\.SharedSettingsGeneralCard\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
     );
