@@ -2729,3 +2729,20 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `7c76b0a682b604c0878323647688bb0682f81276872333a3180e9ce6b0f015dd`.
+
+### DS-157 — COMPLETE
+
+- The Native Custom Models editor now declares its top divider width, style, and
+  shared border color explicitly. The former `border-top` shorthand retained a
+  1px width but produced a black color and empty physical style in dark mode.
+  Existing Saved model slugs content, provider selector, input, Add action, and
+  card geometry remain unchanged. The saved-list divider was not modified because
+  no saved row was present in the isolated snapshot.
+- The focused Settings Custom Models suite passes 2/2, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `45222`, window `116160`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Settings Models route. The editor
+  top edge resolved to `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `680a1099ed6cce21314732d2f15c83e8efa42a607945bd1b20ffcaeaa3560da0`.

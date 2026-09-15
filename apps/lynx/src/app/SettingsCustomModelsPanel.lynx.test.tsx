@@ -80,7 +80,7 @@ describe('Settings Custom Models fidelity', () => {
       /\.SettingsCustomModelsRow\s*\{[^}]*padding:\s*10px 12px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsCustomModelsEditor\s*\{[^}]*margin-top:\s*16px;[^}]*padding-top:\s*16px;[^}]*border-top:\s*1px solid var\(--border\);/s
+      /\.SettingsCustomModelsEditor\s*\{[^}]*margin-top:\s*16px;[^}]*padding-top:\s*16px;[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
       /\.SettingsCustomModelsEditorRow\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*stretch;/s

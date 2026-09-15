@@ -2516,3 +2516,19 @@ values and unresolved Native custom properties.
   solid. The exact Native console was empty. No screenshot was retained; staged
   bundle SHA-256 is
   `7c76b0a682b604c0878323647688bb0682f81276872333a3180e9ce6b0f015dd`.
+
+## Settings Custom Models editor-divider physical-border follow-up
+
+- The Native Custom Models editor now sets its top divider with explicit width,
+  style, and shared border color. The `border-top` shorthand had retained a 1px
+  width but produced a black color and empty physical style in dark mode. Existing
+  Saved model slugs content, provider selector, input, Add action, and card
+  geometry remain unchanged. The saved-list divider was not modified because no
+  saved row was present in the isolated snapshot. The focused Settings Custom
+  Models suite passes 2/2, and the full Lynx/Desktop production build passes on
+  npm Lynxtron 0.0.22.
+- Exact-owned PID `45222` / window `116160`, PID-derived `localhost:8901`, session
+  1, rendered the real Settings Models route. The editor top edge resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native console was empty.
+  No screenshot was retained; staged bundle SHA-256 is
+  `680a1099ed6cce21314732d2f15c83e8efa42a607945bd1b20ffcaeaa3560da0`.
