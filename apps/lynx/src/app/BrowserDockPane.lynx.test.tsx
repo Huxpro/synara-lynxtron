@@ -156,6 +156,18 @@ describe('Native Browser right-dock pane', () => {
     expect(source).toContain('browserView.setVisible(showNativeView)');
     expect(styles).toContain('.BrowserDockServerThumbnail');
     expect(styles).toContain('background-color: var(--browser-home-thumbnail-surface)');
+    expect(styles).toMatch(
+      /\.BrowserDockAddress\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.BrowserDockTab--active\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.BrowserDockServerCard\s*\{[^}]*border-left-color:\s*var\(--browser-home-card-border\);[^}]*border-right-color:\s*var\(--browser-home-card-border\);[^}]*border-top-color:\s*var\(--browser-home-card-border\);[^}]*border-bottom-color:\s*var\(--browser-home-card-border\);/s
+    );
+    expect(styles).toMatch(
+      /\.BrowserDockServerThumbnail\s*\{[^}]*border-left-color:\s*var\(--browser-home-thumbnail-border\);[^}]*border-right-color:\s*var\(--browser-home-thumbnail-border\);[^}]*border-top-color:\s*var\(--browser-home-thumbnail-border\);[^}]*border-bottom-color:\s*var\(--browser-home-thumbnail-border\);/s
+    );
     for (const token of [
       '--browser-home-surface',
       '--browser-home-foreground',

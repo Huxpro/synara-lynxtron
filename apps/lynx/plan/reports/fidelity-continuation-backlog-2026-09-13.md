@@ -2297,3 +2297,23 @@ state is absent from the paired component matrix.
   `rgba(252,252,252,0.0705882)` at 1px. The exact Native error/warning console was
   empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `12359b378de39321998c2b557ac1e1d62694b94bdde31cba0de93400bacaff95`.
+
+### DS-132 — COMPLETE
+
+- Native Browser dock address fields, active tabs, local-server cards, and server
+  thumbnails now declare their respective border tokens on all four physical
+  sides. The former aggregate declarations painted the address/card/thumbnail
+  outlines black and left the active-tab outline transparent in dark mode.
+  Existing surfaces, tab behavior, server discovery, thumbnail styling, and
+  geometry remain unchanged.
+- The focused Browser dock suite passes 4/4, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `31591`, window `113449`, PID-derived DevTool
+  `localhost:8901`, session 1, loaded a real thread and opened Browser through
+  `Cmd+Shift+B`. Address and active-tab edges resolved to
+  `rgba(252,252,252,0.0705882)`, server-card edges to
+  `rgba(255,255,255,0.0666667)`, and thumbnail edges to
+  `rgba(255,255,255,0.117647)`, all at 1px. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `78a16c325cb9cfb25426c611c45aecbf2c1e725ded6ce7fd9d2794216d890e6e`.
