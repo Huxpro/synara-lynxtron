@@ -25,12 +25,19 @@ describe('loading primitives', () => {
   });
 
   it('announces spinner status', () => {
-    render(<Spinner size={10} />);
+    render(<Spinner color="#123456" size={10} />);
     const spinner = elementTree.root?.querySelector('.LxSpinner');
     expect(spinner?.getAttribute('accessibility-label')).toBe('Loading');
     expect(spinner?.getAttribute('accessibility-trait')).toBe('updating');
+    expect(spinner?.getAttribute('style')).toContain('border-top-color: rgb(18, 52, 86)');
+    expect(spinner?.getAttribute('style')).toContain('border-bottom-color: rgb(18, 52, 86)');
+    expect(spinner?.getAttribute('style')).toContain('border-left-color: rgb(18, 52, 86)');
+    expect(spinner?.getAttribute('style')).not.toContain('border-right-color: rgb(18, 52, 86)');
 
     const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
+    expect(styles).toMatch(
+      /\.LxSpinner\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--foreground\);[^}]*border-right-color:\s*transparent;[^}]*border-bottom-color:\s*var\(--foreground\);[^}]*border-left-color:\s*var\(--foreground\);/s
+    );
     expect(styles).toContain('animation: LxSpinnerSpin 1s linear infinite;');
     expect(styles).toMatch(
       /@media \(prefers-reduced-motion:\s*reduce\)\s*\{[\s\S]*\.LxSpinner\s*\{\s*animation:\s*none;/

@@ -560,8 +560,12 @@
 .LxAlertAction { flex-shrink: 0; }
 
 .LxSpinner {
-  border: 1px solid var(--foreground);
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: var(--foreground);
   border-right-color: transparent;
+  border-bottom-color: var(--foreground);
+  border-left-color: var(--foreground);
   border-radius: 999px;
   animation: LxSpinnerSpin 1s linear infinite;
 }

@@ -1616,3 +1616,17 @@ values and unresolved Native custom properties.
   200ms transition. The exact Native console was empty. No screenshot was
   retained; staged bundle SHA-256 is
   `f0cfa131e025e1cb3ff5343ed77c55d0f1d59196ffcc0d3ce4ae58aa322be387`.
+
+## Shared Spinner physical-border follow-up
+
+- Native Spinner now uses explicit physical border sides: top, bottom, and left
+  use foreground while right stays transparent. The former custom-property
+  shorthand painted the visible ring black in Native dark mode. Custom color
+  props project to the same three sides without closing the transparent segment.
+  The focused Native loading suite passes 2/2, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `13975` / window `110147`, PID-derived `localhost:8901`,
+  session 1, resolved the three visible sides to `rgb(252,252,252)`, the right
+  side to transparent, and retained the 16px ring and 1000ms animation. The exact
+  Native console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `f34eef3eecf343ee97b877607533dbc0288e171c9f722bb3ea83c208c25a7c65`.

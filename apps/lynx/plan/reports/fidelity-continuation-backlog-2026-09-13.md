@@ -1750,3 +1750,20 @@ state is absent from the paired component matrix.
   200ms transition. The exact Native error/warning console was empty, no
   screenshot was retained, and the final staged bundle SHA-256 is
   `f0cfa131e025e1cb3ff5343ed77c55d0f1d59196ffcc0d3ce4ae58aa322be387`.
+
+### DS-099 — COMPLETE
+
+- Native Spinner now declares its ring as explicit physical border sides: top,
+  bottom, and left use foreground while right remains transparent. The prior
+  `border: 1px solid var(--foreground)` shorthand painted the visible ring black
+  in Native dark mode. Custom `color` props now set the same three physical sides
+  without closing the transparent segment.
+- The focused Native loading suite passes 2/2, including custom-color projection,
+  and the full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `13975`, window `110147`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real default Spinner. Its top, left,
+  and bottom borders resolved to `rgb(252,252,252)`, the right border remained
+  transparent, and the 16px ring kept its 1000ms animation. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `f34eef3eecf343ee97b877607533dbc0288e171c9f722bb3ea83c208c25a7c65`.
