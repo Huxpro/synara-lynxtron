@@ -154,6 +154,9 @@ describe('Settings Integrations fidelity', () => {
     expect(styles).toMatch(
       /\.SettingsIntegrationsDisclosureChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s
     );
+    expect(styles).toMatch(
+      /\.SettingsIntegrationsAdvanced\s*\{[^}]*padding-top:\s*12px;[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*gap:\s*16px;/s
+    );
     expect(styles).not.toMatch(
       /\.SettingsIntegrationsSetup,\s*\.SettingsIntegrationsEmpty\s*\{[^}]*min-height:/s
     );

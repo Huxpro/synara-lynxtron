@@ -2867,3 +2867,19 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `15f38a3e10a8d7db603923491eb6fdd0bc4d5197b912b0e2feb04eb152f3f119`.
+
+### DS-165 — COMPLETE
+
+- The Native Settings Integrations Advanced permissions region now declares its
+  top divider with explicit width, style, and shared border color. The former
+  `border-top` shorthand retained a 1px width but produced a black color and empty
+  physical style in dark mode. Existing disclosure motion, permission switches,
+  explanatory copy, and surrounding setup rows remain unchanged.
+- The focused Settings Integrations suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `72075`, window `116746`, PID-derived DevTool
+  `localhost:8901`, session 1, opened Advanced permissions through the real
+  Review control. Its top edge resolved to `rgba(252,252,252,0.0705882)` at 1px
+  solid. The exact Native error/warning console was empty, no screenshot was
+  retained, and the final staged bundle SHA-256 is
+  `1d6230f3023d511ac699284ef8ea1ec7000629cea541367a455b0a6d6441010e`.
