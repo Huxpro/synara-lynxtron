@@ -2746,3 +2746,20 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `680a1099ed6cce21314732d2f15c83e8efa42a607945bd1b20ffcaeaa3560da0`.
+
+### DS-158 — COMPLETE
+
+- Native Settings Usage provider cards now declare the meter-to-history divider
+  with explicit top width, style, and shared border color. The former
+  `border-top` shorthand retained a 1px width but produced a black color and empty
+  physical style in dark mode. Existing quota meters, session totals, provider
+  warnings, card geometry, and refresh behavior remain unchanged.
+- The focused Settings shared-label suite passes 6/6, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `58218`, window `116217`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Settings Usage route. Both the
+  Codex and Claude meter-to-history dividers resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `aa6ffc58cc21f10eb0915bbe7729326d03c5afe1a77f67f47c35c89c4c7e28c1`.

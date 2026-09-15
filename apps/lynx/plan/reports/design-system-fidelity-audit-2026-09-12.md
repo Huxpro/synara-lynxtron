@@ -2532,3 +2532,19 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native console was empty.
   No screenshot was retained; staged bundle SHA-256 is
   `680a1099ed6cce21314732d2f15c83e8efa42a607945bd1b20ffcaeaa3560da0`.
+
+## Settings Usage meter-divider physical-border follow-up
+
+- Native Settings Usage provider cards now set the meter-to-history divider with
+  explicit top width, style, and shared border color. The `border-top` shorthand
+  had retained a 1px width but produced a black color and empty physical style in
+  dark mode. Existing quota meters, session totals, provider warnings, card
+  geometry, and refresh behavior remain unchanged. The focused Settings
+  shared-label suite passes 6/6, and the full Lynx/Desktop production build passes
+  on npm Lynxtron 0.0.22.
+- Exact-owned PID `58218` / window `116217`, PID-derived `localhost:8901`, session
+  1, rendered the real Settings Usage route. Both the Codex and Claude
+  meter-to-history dividers resolved to `rgba(252,252,252,0.0705882)` at 1px solid.
+  The exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `aa6ffc58cc21f10eb0915bbe7729326d03c5afe1a77f67f47c35c89c4c7e28c1`.

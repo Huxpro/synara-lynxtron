@@ -179,7 +179,9 @@
 
 .SettingsUsageLines--after-meters {
   padding-top: 12px;
-  border-top: 1px solid var(--border);
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--border);
 }
 
 .SettingsUsageLine {

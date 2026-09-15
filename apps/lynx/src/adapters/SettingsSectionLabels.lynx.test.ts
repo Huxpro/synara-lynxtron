@@ -86,6 +86,9 @@ describe('Lynx Settings section labels', () => {
       /\.SettingsUsageState\s*\{[^}]*padding:\s*14px 16px;/s
     );
     expect(usageStyles).toMatch(
+      /\.SettingsUsageLines--after-meters\s*\{[^}]*padding-top:\s*12px;[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);/s
+    );
+    expect(usageStyles).toMatch(
       /\.SettingsUsageProviderIcon\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;[^}]*background-color:\s*var\(--settings-provider-icon-surface\);/s
     );
     const usageSource = readFileSync(
