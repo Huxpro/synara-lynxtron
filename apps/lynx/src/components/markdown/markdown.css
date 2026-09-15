@@ -363,7 +363,9 @@
   width: 100%;
   min-width: 0;
   flex-direction: row;
-  border-bottom: 1px solid var(--border);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
 }
 
 .MdTableHeaderCell,
@@ -372,7 +374,9 @@
   min-width: 0;
   flex: 1;
   padding: 5px 7px;
-  border-right: 1px solid var(--border);
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: var(--border);
 }
 
 .MdTableHeaderCell {

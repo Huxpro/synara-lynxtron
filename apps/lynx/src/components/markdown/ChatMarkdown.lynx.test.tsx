@@ -91,13 +91,13 @@ describe('Lynx markdown file reference token', () => {
       /\.MdTableHeaderCell,\s*\.MdTableCell\s*\{[^}]*min-width:\s*0;/s
     );
     expect(styles).toMatch(
-      /\.MdTableRow\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s
+      /\.MdTableRow\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
       /\.MdTableRow\s*\{[^}]*display:\s*flex;/s
     );
     expect(styles).toMatch(
-      /\.MdTableHeaderCell,\s*\.MdTableCell\s*\{[^}]*width:\s*0;[^}]*min-width:\s*0;[^}]*flex:\s*1;/s
+      /\.MdTableHeaderCell,\s*\.MdTableCell\s*\{[^}]*width:\s*0;[^}]*min-width:\s*0;[^}]*flex:\s*1;[^}]*border-right-width:\s*1px;[^}]*border-right-style:\s*solid;[^}]*border-right-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
       /\.MdTableHeaderText,\s*\.MdTableCellText\s*\{[^}]*display:\s*block;[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*white-space:\s*normal;[^}]*overflow-wrap:\s*anywhere;/s

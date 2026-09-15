@@ -2541,3 +2541,20 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `0428f0f88cc2168c88e122824d908b6fdc699611fab9cba282fda4a7d9d67764`.
+
+### DS-146 — COMPLETE
+
+- Native Markdown table row and cell dividers now declare their one physical
+  side as explicit width, style, and shared border color. The former
+  `border-bottom` and `border-right` shorthands retained 1px widths but painted
+  the internal grid black in dark mode. Existing outer shell, geometry, cell
+  layout, wrapping, and header surface remain unchanged.
+- The focused Markdown suite passes 8/8, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `67953`, window `114644`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered real Markdown tables created through the
+  Native composer/provider path. The row bottom dividers and cell right dividers
+  resolved to `rgba(252,252,252,0.0705882)` at 1px solid while all unrelated
+  sides remained zero-width. The exact Native error/warning console was empty,
+  no screenshot was retained, and the final staged bundle SHA-256 is
+  `c88747390ba63be96faea678f2e399126a312262b5ca748e7e3ba924e3916bb2`.
