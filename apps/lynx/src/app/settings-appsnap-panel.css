@@ -56,8 +56,12 @@
   bottom: 5px;
   width: 5px;
   height: 5px;
-  border-right: 1px solid var(--muted-foreground);
-  border-bottom: 1px solid var(--muted-foreground);
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: var(--muted-foreground);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--muted-foreground);
 }
 
 .SettingsAppSnapHeroCopy,

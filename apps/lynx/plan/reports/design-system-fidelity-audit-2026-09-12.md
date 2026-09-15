@@ -2660,3 +2660,18 @@ values and unresolved Native custom properties.
   resolved to `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native console
   was empty. No screenshot was retained; staged bundle SHA-256 is
   `1d6230f3023d511ac699284ef8ea1ec7000629cea541367a455b0a6d6441010e`.
+
+## Settings AppSnap icon-corner physical-border follow-up
+
+- The Native Settings AppSnap hero icon corner now sets its right and bottom
+  strokes with explicit width, style, and muted-foreground color. The physical
+  side shorthands had retained 1px widths but produced black colors and empty
+  styles in dark mode. Existing 5px corner geometry, absolute placement,
+  surrounding icon frame, and hero content remain unchanged. The focused Settings
+  AppSnap suite passes 2/2, and the full Lynx/Desktop production build passes on
+  npm Lynxtron 0.0.22.
+- Exact-owned PID `87200` / window `116837`, PID-derived `localhost:8901`, session
+  1, rendered the real Settings AppSnap route. The icon corner right and bottom
+  edges both resolved to `rgba(252,252,252,0.576471)` at 1px solid. The exact
+  Native console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `e630a82a6a280de2933b8d13783181884b4ba6fccd81cd30d4f526ad747ada7a`.

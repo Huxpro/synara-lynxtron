@@ -2883,3 +2883,20 @@ state is absent from the paired component matrix.
   solid. The exact Native error/warning console was empty, no screenshot was
   retained, and the final staged bundle SHA-256 is
   `1d6230f3023d511ac699284ef8ea1ec7000629cea541367a455b0a6d6441010e`.
+
+### DS-166 — COMPLETE
+
+- The Native Settings AppSnap hero icon corner now declares its right and bottom
+  strokes with explicit width, style, and muted-foreground color. The former
+  physical-side shorthands retained 1px widths but produced black colors and
+  empty styles in dark mode. Existing 5px corner geometry, absolute placement,
+  surrounding icon frame, and hero content remain unchanged.
+- The focused Settings AppSnap suite passes 2/2, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `87200`, window `116837`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Settings AppSnap route. The icon
+  corner right and bottom edges both resolved to
+  `rgba(252,252,252,0.576471)` at 1px solid. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `e630a82a6a280de2933b8d13783181884b4ba6fccd81cd30d4f526ad747ada7a`.

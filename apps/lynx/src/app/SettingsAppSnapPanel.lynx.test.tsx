@@ -55,6 +55,9 @@ describe('Settings AppSnap capability fidelity', () => {
       /\.SettingsAppSnapIconFrame\s*\{[^}]*width:\s*16px;[^}]*height:\s*12px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--muted-foreground\);[^}]*border-right-color:\s*var\(--muted-foreground\);[^}]*border-top-color:\s*var\(--muted-foreground\);[^}]*border-bottom-color:\s*var\(--muted-foreground\);/s
     );
     expect(styles).toMatch(
+      /\.SettingsAppSnapIconCorner\s*\{[^}]*border-right-width:\s*1px;[^}]*border-right-style:\s*solid;[^}]*border-right-color:\s*var\(--muted-foreground\);[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--muted-foreground\);/s
+    );
+    expect(styles).toMatch(
       /\.SettingsAppSnapRow\s*\{[^}]*padding:\s*var\(--app-density-settings-row-padding-y,\s*10px\) 12px;[^}]*flex-direction:\s*column;/s
     );
     expect(styles).toMatch(
