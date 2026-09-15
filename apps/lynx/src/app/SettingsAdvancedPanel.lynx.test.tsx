@@ -120,6 +120,9 @@ describe('Settings Advanced fidelity', () => {
       /\.SettingsAdvancedReleaseTrigger\s*\{[^}]*height:\s*44px;[^}]*padding:\s*12px 0;/s
     );
     expect(styles).toMatch(
+      /\.SettingsAdvancedReleaseEntry--divided\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--settings-project-border\);/s
+    );
+    expect(styles).toMatch(
       /\.SettingsAdvancedReleaseTrigger\.ui-focus\s*\{[^}]*box-shadow:\s*0 0 0 1px var\(--ring\);/s
     );
     expect(styles).toMatch(

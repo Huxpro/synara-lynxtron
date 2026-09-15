@@ -2694,3 +2694,20 @@ state is absent from the paired component matrix.
   Native error/warning console was empty, no screenshot was retained, and the
   final staged bundle SHA-256 is
   `9b50a60f8e21809a64740ca0b4c1f4fed129e167f83f0ff1dc144d1317eefa43`.
+
+### DS-155 — COMPLETE
+
+- Native Settings Advanced release-history entries now declare their bottom
+  divider width, style, and shared project-border color explicitly. The former
+  `border-bottom` shorthand kept the 1px width but produced a black color and
+  empty physical style in dark mode. Existing release content, ordering, scroll,
+  dialog geometry, and close behavior remain unchanged.
+- The focused Settings Advanced suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `84817`, window `115960`, PID-derived DevTool
+  `localhost:8901`, session 1, opened Release history through the real Settings
+  Advanced trigger. A divided release entry resolved its physical bottom edge to
+  `rgba(252,252,252,0.0470588)` at 1px solid while unrelated sides remained
+  zero-width. The exact Native error/warning console was empty, no screenshot was
+  retained, and the final staged bundle SHA-256 is
+  `e61588ba3b2a3883cefa227f8235c8068419c59cf9e005c560c24b7b2d478f38`.

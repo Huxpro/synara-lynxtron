@@ -213,7 +213,9 @@
 }
 
 .SettingsAdvancedReleaseEntry--divided {
-  border-bottom: 1px solid var(--settings-project-border);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--settings-project-border);
 }
 
 .SettingsAdvancedReleaseTrigger {
