@@ -88,10 +88,10 @@ describe('Settings Archived fidelity', () => {
     );
 
     expect(styles).toMatch(
-      /\.SettingsArchivedEmpty,[^}]*\.SettingsArchivedState\s*\{[^}]*padding:\s*40px 20px;[^}]*border:\s*1px dashed var\(--border\);[^}]*border-radius:\s*10px;/s
+      /\.SettingsArchivedEmpty,[^}]*\.SettingsArchivedState\s*\{[^}]*padding:\s*40px 20px;[^}]*border-width:\s*1px;[^}]*border-style:\s*dashed;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsArchivedEmptyIconShell\s*\{[^}]*width:\s*44px;[^}]*height:\s*44px;[^}]*border-radius:\s*22px;/s
+      /\.SettingsArchivedEmptyIconShell\s*\{[^}]*width:\s*44px;[^}]*height:\s*44px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*22px;/s
     );
     expect(styles).toMatch(
       /\.SettingsArchivedEmptyTitle,\s*\.SettingsArchivedEmptyDescription\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s

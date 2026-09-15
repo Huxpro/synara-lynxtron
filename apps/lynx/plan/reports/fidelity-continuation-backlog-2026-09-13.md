@@ -2265,3 +2265,20 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `09822b30d4ea65483e07559ce207e9a52cb289727698684aee69f06b28612b49`.
+
+### DS-130 — COMPLETE
+
+- Native Archived empty/state containers and empty icon shells now declare their
+  border tokens on all four physical sides while preserving dashed versus solid
+  styling. Destructive state and restore-error outlines likewise use explicit
+  physical destructive colors. The former aggregate declarations painted the
+  visible empty container and icon shell black in dark mode.
+- The focused Settings Archived suite passes 4/4, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `77590`, window `113274`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real empty `/settings/archived`
+  route. The empty container resolved every edge to
+  `rgba(252,252,252,0.0705882)` at 1px dashed; its icon shell resolved the same
+  color at 1px solid over `rgb(16,16,16)`. The exact Native error/warning console
+  was empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `b5f19cf67143aeddf98299eaab629148cc3f6af046bedae27114e15dfe73c34f`.
