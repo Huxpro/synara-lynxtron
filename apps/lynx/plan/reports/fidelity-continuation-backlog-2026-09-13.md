@@ -2644,3 +2644,20 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `31c4f897692c87fad0cf7291f726e21419eab7a244080d924fd455c3c2da82f7`.
+
+### DS-152 — COMPLETE
+
+- Native Settings Integrations setup-prompt and example shells now declare the
+  shared border token on all four physical sides. Their former shared aggregate
+  declaration retained 1px widths but produced black colors and empty physical
+  styles in dark mode. Existing setup copy, scrolling, muted surface, disclosure,
+  clipboard actions, and pairing flow remain unchanged.
+- The focused Settings Integrations suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `34611`, window `115631`, PID-derived DevTool
+  `localhost:8901`, session 1, created an isolated connection through the real
+  Settings Integrations flow and rendered its setup prompt. Every physical edge
+  resolved to `rgba(252,252,252,0.0705882)` at 1px solid over the unchanged
+  `rgba(252,252,252,0.00392157)` surface. The exact Native error/warning console
+  was empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `15a86356cd07d61513d6d3c3fe77d1ab0dc2d13b990a50edc2adc270852c552c`.

@@ -258,7 +258,12 @@
 .SettingsIntegrationsExample {
   width: 100%;
   padding: 12px;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: var(--border);
+  border-right-color: var(--border);
+  border-bottom-color: var(--border);
+  border-left-color: var(--border);
   border-radius: var(--radius-lg);
   background-color: var(--muted);
 }
