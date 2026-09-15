@@ -2523,3 +2523,21 @@ state is absent from the paired component matrix.
   `rgba(252,252,252,0.0352941)` surface. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `c049fa556e4c05baa1d386d6b53692415d7b7776b7d15a947727a48a71cbd5d5`.
+
+### DS-145 — COMPLETE
+
+- Native Markdown task checkboxes now declare their base and checked border
+  colors on all four physical sides. The former aggregate declarations painted
+  both unchecked and checked 1px outlines black in dark mode. Existing checkbox
+  size, radius, transparent/primary surfaces, check glyph, and task-list layout
+  remain unchanged.
+- The focused Markdown suite passes 8/8, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `47630`, window `114555`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered real unchecked and checked task items
+  created through the Native composer/provider path. The unchecked shells
+  resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px; checked
+  shells resolved every edge to `rgb(252,252,252)` at 1px. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `0428f0f88cc2168c88e122824d908b6fdc699611fab9cba282fda4a7d9d67764`.

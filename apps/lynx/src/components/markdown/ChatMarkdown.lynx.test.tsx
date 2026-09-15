@@ -70,6 +70,12 @@ describe('Lynx markdown file reference token', () => {
       /\.MdListMarker\s*\{[^}]*font-size:\s*inherit;[^}]*line-height:\s*inherit;/s
     );
     expect(styles).toMatch(
+      /\.MdTaskCheckbox\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--color-border\);[^}]*border-right-color:\s*var\(--color-border\);[^}]*border-bottom-color:\s*var\(--color-border\);[^}]*border-left-color:\s*var\(--color-border\);/s
+    );
+    expect(styles).toMatch(
+      /\.MdTaskCheckbox--checked\s*\{[^}]*border-top-color:\s*var\(--primary\);[^}]*border-right-color:\s*var\(--primary\);[^}]*border-bottom-color:\s*var\(--primary\);[^}]*border-left-color:\s*var\(--primary\);/s
+    );
+    expect(styles).toMatch(
       /\.MdTableHeaderText,\s*\.MdTableCellText\s*\{[^}]*font-size:\s*inherit;[^}]*line-height:\s*inherit;/s
     );
     expect(styles).toMatch(

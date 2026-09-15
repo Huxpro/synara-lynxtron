@@ -146,13 +146,21 @@
   height: 14px;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border);
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: var(--color-border);
+  border-right-color: var(--color-border);
+  border-bottom-color: var(--color-border);
+  border-left-color: var(--color-border);
   border-radius: 3px;
   background-color: transparent;
 }
 
 .MdTaskCheckbox--checked {
-  border-color: var(--primary);
+  border-top-color: var(--primary);
+  border-right-color: var(--primary);
+  border-bottom-color: var(--primary);
+  border-left-color: var(--primary);
   background-color: var(--primary);
 }
 
