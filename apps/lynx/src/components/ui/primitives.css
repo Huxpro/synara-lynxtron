@@ -437,7 +437,12 @@
   width: 32px;
   height: 20px;
   padding: 1px;
-  border: 1px solid var(--settings-switch-border);
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: var(--settings-switch-border);
+  border-right-color: var(--settings-switch-border);
+  border-bottom-color: var(--settings-switch-border);
+  border-left-color: var(--settings-switch-border);
   border-radius: 10px;
   background-color: var(--settings-switch-off);
   transition-property: background-color, border-color, box-shadow;
@@ -446,7 +451,10 @@
 }
 
 .LxSwitch--checked {
-  border-color: var(--color-text-accent);
+  border-top-color: var(--color-text-accent);
+  border-right-color: var(--color-text-accent);
+  border-bottom-color: var(--color-text-accent);
+  border-left-color: var(--color-text-accent);
   background-color: var(--color-text-accent);
 }
 

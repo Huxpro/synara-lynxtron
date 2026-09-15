@@ -1600,3 +1600,19 @@ values and unresolved Native custom properties.
   surface; the exact Native console was empty. No screenshot was retained; staged
   bundle SHA-256 is
   `d3bdb4aa3a252d52847f0165845e30a0327d6d63f6956879c9eb03e1521595df`.
+
+## Shared Switch physical-border follow-up
+
+- Native full-size Switch tracks now use explicit width/style/four-side border
+  declarations in unchecked and checked states. The previous shorthand painted
+  physical edges black despite a plausible aggregate DevTool value; compact Menu
+  switches already used the safe longhand path. Native Switch and Menu focused
+  suites pass 25/25, and the full Lynx/Desktop production build passes on npm
+  Lynxtron 0.0.22.
+- Exact-owned PID `84036` / window `110050`, PID-derived `localhost:8901`,
+  session 1, resolved every unchecked edge to
+  `rgba(252,252,252,0.137255)`. The checked state selected through Computer Use
+  resolved every edge and the surface to `rgb(51,134,214)` with the existing
+  200ms transition. The exact Native console was empty. No screenshot was
+  retained; staged bundle SHA-256 is
+  `f0cfa131e025e1cb3ff5343ed77c55d0f1d59196ffcc0d3ce4ae58aa322be387`.

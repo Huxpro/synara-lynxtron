@@ -1733,3 +1733,20 @@ state is absent from the paired component matrix.
   `rgb(23,23,23)`. The exact Native error/warning console was empty, no screenshot
   was retained, and the final staged bundle SHA-256 is
   `d3bdb4aa3a252d52847f0165845e30a0327d6d63f6956879c9eb03e1521595df`.
+
+### DS-098 — COMPLETE
+
+- Native full-size Switch tracks now declare border width, style, and all four
+  physical colors separately in both unchecked and checked states. The previous
+  custom-property shorthand painted every physical edge black even though the
+  aggregate DevTool property looked correct. Menu switches already used the safe
+  longhand path and remain unchanged.
+- Native Switch and Menu focused suites pass 25/25, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `84036`, window `110050`, PID-derived DevTool
+  `localhost:8901`, session 1, resolved all four unchecked edges to
+  `rgba(252,252,252,0.137255)`. Selecting the checked state through Computer Use
+  resolved every edge and the surface to `rgb(51,134,214)` while retaining the
+  200ms transition. The exact Native error/warning console was empty, no
+  screenshot was retained, and the final staged bundle SHA-256 is
+  `f0cfa131e025e1cb3ff5343ed77c55d0f1d59196ffcc0d3ce4ae58aa322be387`.

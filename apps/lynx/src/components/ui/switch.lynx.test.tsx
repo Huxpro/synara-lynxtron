@@ -24,6 +24,12 @@ describe('Switch', () => {
   it('matches the Electron 200ms state transition', () => {
     const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
     expect(styles).toMatch(
+      /\.LxSwitch\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--settings-switch-border\);[^}]*border-right-color:\s*var\(--settings-switch-border\);[^}]*border-bottom-color:\s*var\(--settings-switch-border\);[^}]*border-left-color:\s*var\(--settings-switch-border\);/s
+    );
+    expect(styles).toMatch(
+      /\.LxSwitch--checked\s*\{[^}]*border-top-color:\s*var\(--color-text-accent\);[^}]*border-right-color:\s*var\(--color-text-accent\);[^}]*border-bottom-color:\s*var\(--color-text-accent\);[^}]*border-left-color:\s*var\(--color-text-accent\);/s
+    );
+    expect(styles).toMatch(
       /\.LxSwitch\s*\{[^}]*transition-property:\s*background-color, border-color, box-shadow;[^}]*transition-duration:\s*200ms;[^}]*transition-timing-function:\s*ease-out;/s
     );
     expect(styles).toMatch(
