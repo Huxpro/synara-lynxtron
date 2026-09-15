@@ -2763,3 +2763,21 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `aa6ffc58cc21f10eb0915bbe7729326d03c5afe1a77f67f47c35c89c4c7e28c1`.
+
+### DS-159 — COMPLETE
+
+- Native Settings Integrations setup-form rows now declare their bottom dividers
+  with explicit width, style, and shared border color. The former
+  `border-bottom` shorthand retained 1px widths but produced black colors and
+  empty physical styles in dark mode. Existing Name, Access all of Synara,
+  Advanced permissions, and Create connection content and behavior remain
+  unchanged. Unrendered advanced/manual/setup dividers were not modified.
+- The focused Settings Integrations suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `73949`, window `116312`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Settings Integrations setup
+  form. All three continued-row bottom edges resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `813e03b292b67630c9d8c78051819ce62026ff66fce34d5858d99369cca60e36`.

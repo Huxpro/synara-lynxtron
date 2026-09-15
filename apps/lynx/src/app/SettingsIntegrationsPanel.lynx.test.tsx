@@ -108,7 +108,7 @@ describe('Settings Integrations fidelity', () => {
       /\.SettingsIntegrationsRowTitle,[^}]*\{[^}]*font-weight:\s*500;/s
     );
     expect(styles).toMatch(
-      /\.SettingsIntegrationsRow--continued\s*\{[^}]*border-bottom:\s*1px solid var\(--border\);/s
+      /\.SettingsIntegrationsRow--continued\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).not.toContain('SettingsIntegrationsRow--divided');
     expect(styles).toMatch(
