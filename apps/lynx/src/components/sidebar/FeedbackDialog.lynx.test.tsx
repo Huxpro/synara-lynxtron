@@ -76,7 +76,10 @@ describe('Native Feedback dialog parity', () => {
       /\.FeedbackDialogLynx\s*\{[^}]*width:\s*576px;[^}]*border-radius:\s*18px;/s
     );
     expect(styles).toMatch(
-      /\.FeedbackDetailsInput\s*\{[^}]*min-height:\s*128px;[^}]*border:\s*1px solid var\(--border\);/s
+      /\.FeedbackCategoryChip\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.FeedbackDetailsInput\s*\{[^}]*min-height:\s*128px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);/s
     );
   });
 

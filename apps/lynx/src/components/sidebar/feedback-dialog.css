@@ -38,7 +38,12 @@
   align-items: center;
   gap: 6px;
   padding: 5px 14px;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: var(--border);
+  border-right-color: var(--border);
+  border-bottom-color: var(--border);
+  border-left-color: var(--border);
   border-radius: 999px;
   background-color: transparent;
 }
@@ -69,7 +74,12 @@
   min-height: 128px;
   max-height: 256px;
   padding: 10px 12px;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: var(--border);
+  border-right-color: var(--border);
+  border-bottom-color: var(--border);
+  border-left-color: var(--border);
   border-radius: 10px;
   background-color: var(--background);
   color: var(--foreground);

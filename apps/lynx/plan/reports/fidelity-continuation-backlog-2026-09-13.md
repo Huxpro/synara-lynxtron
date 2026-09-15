@@ -2609,3 +2609,20 @@ state is absent from the paired component matrix.
   the unchanged `rgb(23,23,23)` surface. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `241b6ebf4cab6b5e6fc6d98235d2fe09ac572a4fd0957dc994d9d6427f02ab2e`.
+
+### DS-150 — COMPLETE
+
+- Native Feedback category chips and the details textarea now declare the shared
+  border token on all four physical sides. Their former aggregate declarations
+  retained 1px widths but produced black colors and empty physical styles in dark
+  mode. Existing dialog geometry, chip selection surfaces, textarea surface,
+  labels, diagnostics copy, and submit behavior remain unchanged.
+- The focused Feedback dialog suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `47983`, window `115342`, PID-derived DevTool
+  `localhost:8901`, session 1, opened the real Feedback form through Sidebar
+  Search. Category chips and the textarea both resolved every physical edge to
+  `rgba(252,252,252,0.0705882)` at 1px solid while retaining transparent and
+  `rgb(16,16,16)` surfaces respectively. The exact Native error/warning console
+  was empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `2f39a8472267d7fcc3fb4a927d0d723477b83597a6a8320a9a9022f826784c55`.
