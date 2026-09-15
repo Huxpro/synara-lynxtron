@@ -2125,3 +2125,19 @@ state is absent from the paired component matrix.
   `rgba(252,252,252,0.0392157)` at 1px. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `1c06c6f862dba06c187222f4eeec3a71584091361af7f79b6ead447648348d74`.
+
+### DS-122 — COMPLETE
+
+- Native Settings Usage cards, transient state panels, and provider-icon shells
+  now declare the shared border token on all four physical sides. Their former
+  aggregate declarations painted the 1px edges black in dark mode. Existing
+  transparent card surfaces, icon tint, spacing, radii, and usage data remain
+  unchanged.
+- The focused Settings section-label suite passes 6/6, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `52580`, window `112456`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real `/settings/usage` route. A
+  populated provider card and its icon shell both resolved every physical edge
+  to `rgba(252,252,252,0.0705882)` at 1px. The exact Native error/warning console
+  was empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `4c15f00a8b2f644835a168724ffa775a80417df7434f300dd00e6cad840100db`.

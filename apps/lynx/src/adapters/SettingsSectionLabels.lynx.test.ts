@@ -65,7 +65,7 @@ describe('Lynx Settings section labels', () => {
       /\.SharedSettingsGeneralCard\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(usageStyles).toMatch(
-      /\.SettingsUsageCard,\s*\.SettingsUsageState\s*\{[^}]*border-radius:\s*10px;/s
+      /\.SettingsUsageCard,\s*\.SettingsUsageState\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;/s
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageCard\s*\{[^}]*gap:\s*14px;[^}]*padding:\s*16px;/s
@@ -86,7 +86,7 @@ describe('Lynx Settings section labels', () => {
       /\.SettingsUsageState\s*\{[^}]*padding:\s*14px 16px;/s
     );
     expect(usageStyles).toMatch(
-      /\.SettingsUsageProviderIcon\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*var\(--settings-provider-icon-surface\);/s
+      /\.SettingsUsageProviderIcon\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;[^}]*background-color:\s*var\(--settings-provider-icon-surface\);/s
     );
     const usageSource = readFileSync(
       new URL('../app/SettingsUsagePanel.tsx', import.meta.url),
