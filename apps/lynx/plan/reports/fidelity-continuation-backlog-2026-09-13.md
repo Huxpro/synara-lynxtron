@@ -2626,3 +2626,21 @@ state is absent from the paired component matrix.
   `rgb(16,16,16)` surfaces respectively. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `2f39a8472267d7fcc3fb4a927d0d723477b83597a6a8320a9a9022f826784c55`.
+
+### DS-151 — COMPLETE
+
+- Native Sidebar project/thread hover cards now declare the shared border token
+  on all four physical sides. The former aggregate declaration retained 1px
+  widths but produced black colors and empty physical styles in dark mode.
+  Existing fixed overlay geometry, content, elevated surface, pointer behavior,
+  and shadow remain unchanged.
+- The focused Sidebar hover-parity suite passes 5/5, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `80273`, window `115455`, PID-derived DevTool
+  `localhost:8901`, session 1, opened the real project hover card from the Sidebar
+  project row. Every physical edge resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid while retaining the `rgb(23,23,23)`
+  surface and `0 8px 28px #00000028` shadow. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `31c4f897692c87fad0cf7291f726e21419eab7a244080d924fd455c3c2da82f7`.

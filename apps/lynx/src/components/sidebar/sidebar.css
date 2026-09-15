@@ -702,7 +702,12 @@
   z-index: 40;
   width: 256px;
   padding: 4px;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: var(--border);
+  border-right-color: var(--border);
+  border-bottom-color: var(--border);
+  border-left-color: var(--border);
   border-radius: 10px;
   background-color: var(--color-background-elevated-primary-opaque);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.16);

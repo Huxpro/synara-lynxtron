@@ -254,7 +254,7 @@ describe('Lynx sidebar hover parity', () => {
     expect(source).toContain('getRectByRef(rowRef, true)');
     expect(source).toContain('className="AppSidebarRowHoverCard"');
     expect(styles).toMatch(
-      /\.AppSidebarRowHoverCard\s*\{[^}]*position:\s*fixed;[^}]*width:\s*256px;/s
+      /\.AppSidebarRowHoverCard\s*\{[^}]*position:\s*fixed;[^}]*width:\s*256px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);/s
     );
     expect(source).toContain('resolveThreadHoverCardMetadata({');
     expect(source).toContain('branch={metadata.branch}');
