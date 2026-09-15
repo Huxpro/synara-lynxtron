@@ -2723,3 +2723,19 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native console was empty.
   No screenshot was retained; staged bundle SHA-256 is
   `161b8fa0bbf1d8cd00b765be5abe6eb5c311324f5d2f2ee21d09a61ae030a25d`.
+
+## Composer trait-section physical-border follow-up
+
+- The Native composer model/effort menu now sets the trait-section bottom
+  divider with explicit width, style, and shared border color. The
+  `border-bottom` shorthand had retained a 1px width but produced a black color
+  and empty physical style in dark mode. Existing effort options, selection
+  state, Fast mode control, model trigger, popup geometry, and menu interaction
+  remain unchanged. The focused Composer trait-section suite passes 2/2, and the
+  full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `8668` / window `117466`, PID-derived `localhost:8901`, session
+  1, opened the model/effort menu through the real composer trigger. The
+  trait-section bottom edge resolved to `rgba(252,252,252,0.0705882)` at 1px
+  solid. The exact Native console was empty. No screenshot was retained; staged
+  bundle SHA-256 is
+  `33a4b088de3f1eb3f76d83eae3e4cad1c363cbcb9ed00e8a7f7d2fde54c14c66`.
