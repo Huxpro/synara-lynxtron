@@ -1801,3 +1801,35 @@ state is absent from the paired component matrix.
   `rgba(252,252,252,0.0705882)`. The exact Native error/warning console was empty,
   no screenshot was retained, and the final staged bundle SHA-256 is
   `04841c11e801c48cab594b4ce0c9d0e537de30dac335a9cfc513952eab7211e8`.
+
+### DS-101 — COMPLETE
+
+- Native outline, primary-outline, secondary-outline, destructive-outline, and
+  chrome-outline Buttons now declare all four physical border colors explicitly.
+  The prior aggregate `border-color` parsed to the expected token but left every
+  rendered side transparent in Native. Existing variant surfaces and interaction
+  overrides remain unchanged.
+- Native Button and primitive geometry focused tests pass 14/14, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `76099`, window `110299`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real default outline Button. Its
+  background remained transparent while all four physical edges resolved to
+  `rgba(252,252,252,0.0705882)`. The exact Native error/warning console was empty,
+  no screenshot was retained, and the final staged bundle SHA-256 is
+  `04841c11e801c48cab594b4ce0c9d0e537de30dac335a9cfc513952eab7211e8`.
+
+### DS-101 — COMPLETE
+
+- Native outline, primary-outline, secondary-outline, destructive-outline, and
+  chrome-outline Buttons now declare all four physical border colors explicitly.
+  The prior aggregate `border-color` parsed to the expected token but left every
+  rendered side transparent in Native. Existing variant surfaces and interaction
+  overrides remain unchanged.
+- Native Button and primitive geometry focused tests pass 14/14, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `76099`, window `110299`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real default outline Button. Its
+  background remained transparent while all four physical edges resolved to
+  `rgba(252,252,252,0.0705882)`. The exact Native error/warning console was empty,
+  no screenshot was retained, and the final staged bundle SHA-256 is
+  `04841c11e801c48cab594b4ce0c9d0e537de30dac335a9cfc513952eab7211e8`.

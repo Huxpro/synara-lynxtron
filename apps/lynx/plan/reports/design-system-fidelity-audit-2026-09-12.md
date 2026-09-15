@@ -1661,3 +1661,33 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.0705882)`. The exact Native console was empty. No screenshot
   was retained; staged bundle SHA-256 is
   `04841c11e801c48cab594b4ce0c9d0e537de30dac335a9cfc513952eab7211e8`.
+
+## Shared Button physical-border follow-up
+
+- Native outline-family Buttons now use explicit four-side shared border colors.
+  The former aggregate declaration parsed to the expected token but left every
+  physical edge transparent in Native. Variant surfaces and hover/pressed
+  overrides remain unchanged. Native Button and primitive geometry focused tests
+  pass 14/14, and the full Lynx/Desktop production build passes on npm Lynxtron
+  0.0.22.
+- Exact-owned PID `76099` / window `110299`, PID-derived `localhost:8901`,
+  session 1, rendered the real default outline Button. Its background remained
+  transparent and every physical edge resolved to
+  `rgba(252,252,252,0.0705882)`. The exact Native console was empty. No screenshot
+  was retained; staged bundle SHA-256 is
+  `04841c11e801c48cab594b4ce0c9d0e537de30dac335a9cfc513952eab7211e8`.
+
+## Shared Button physical-border follow-up
+
+- Native outline-family Buttons now use explicit four-side shared border colors.
+  The former aggregate declaration parsed to the expected token but left every
+  physical edge transparent in Native. Variant surfaces and hover/pressed
+  overrides remain unchanged. Native Button and primitive geometry focused tests
+  pass 14/14, and the full Lynx/Desktop production build passes on npm Lynxtron
+  0.0.22.
+- Exact-owned PID `76099` / window `110299`, PID-derived `localhost:8901`,
+  session 1, rendered the real default outline Button. Its background remained
+  transparent and every physical edge resolved to
+  `rgba(252,252,252,0.0705882)`. The exact Native console was empty. No screenshot
+  was retained; staged bundle SHA-256 is
+  `04841c11e801c48cab594b4ce0c9d0e537de30dac335a9cfc513952eab7211e8`.
