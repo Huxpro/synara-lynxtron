@@ -2707,3 +2707,19 @@ values and unresolved Native custom properties.
   solid. The exact Native console was empty. No screenshot was retained; staged
   bundle SHA-256 is
   `78d934ff6e43a4f7175dfeb370ec6325711b484550045a4c5fec5d5a4ea0ccb3`.
+
+## Settings Integrations manual-divider physical-border follow-up
+
+- The Native Settings Integrations manual-setup region now sets its top divider
+  with explicit width, style, and shared border color. The `border-top` shorthand
+  had retained a 1px width but produced a black color and empty physical style in
+  dark mode. Existing disclosure motion, pairing command, MCP JSON, copy actions,
+  and setup-step geometry remain unchanged. The focused Settings Integrations
+  suite passes 3/3, and the full Lynx/Desktop production build passes on npm
+  Lynxtron 0.0.22.
+- Exact-owned PID `68829` / window `117364`, PID-derived `localhost:8901`, session
+  1, entered pairing setup through Create connection and expanded manual setup
+  through the real Show control. Its top edge resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native console was empty.
+  No screenshot was retained; staged bundle SHA-256 is
+  `161b8fa0bbf1d8cd00b765be5abe6eb5c311324f5d2f2ee21d09a61ae030a25d`.

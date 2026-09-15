@@ -185,6 +185,9 @@ describe('Settings Integrations fidelity', () => {
       /\.SettingsIntegrationsSetupRow--stacked\s*>\s*\.SettingsIntegrationsRowCopy\s*\{[^}]*flex:\s*none;/s
     );
     expect(styles).toMatch(
+      /\.SettingsIntegrationsManual\s*\{[^}]*padding-top:\s*12px;[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*gap:\s*12px;/s
+    );
+    expect(styles).toMatch(
       /\.SettingsIntegrationsSetupActionRow\s*\{[^}]*margin-top:\s*10px;/s
     );
   });
