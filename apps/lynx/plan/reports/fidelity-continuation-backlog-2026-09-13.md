@@ -2437,3 +2437,20 @@ state is absent from the paired component matrix.
   surface. The exact Native error/warning console was empty, no screenshot was
   retained, and the final staged bundle SHA-256 is
   `d8bbe33c3b21a0346b67d5591d48c8979e4d4201571836b43cc9e70d935cb358`.
+
+### DS-140 — COMPLETE
+
+- Native Thread error banners now use the semantic 32% destructive outline and
+  4% destructive surface tokens, with the outline declared on all four physical
+  sides. The former `color-mix()` shorthand was unsupported in Native and dropped
+  both the border widths and background entirely. Existing layout, copy, icon,
+  dismiss action, and responsive behavior remain unchanged.
+- The focused Thread error banner suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `67745`, window `114115`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real Thread error banner in Components
+  Lab. Every physical edge resolved to `rgba(224,46,42,0.317647)` at 1px and the
+  surface to `rgba(224,46,42,0.0392157)`, matching Electron's 32%/4% destructive
+  contract after Native quantization. The exact Native error/warning console was
+  empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `afaffc07113bd0615cec7c69bfb39ef3884013a2dbeea7463bdc5a14169919b2`.

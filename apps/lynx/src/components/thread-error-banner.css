@@ -13,9 +13,14 @@
   flex-direction: row;
   align-items: flex-start;
   padding: 12px 40px 12px 14px;
-  border: 1px solid color-mix(in srgb, var(--destructive) 58%, transparent);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--destructive-outline-state-border);
+  border-right-color: var(--destructive-outline-state-border);
+  border-top-color: var(--destructive-outline-state-border);
+  border-bottom-color: var(--destructive-outline-state-border);
   border-radius: 14px;
-  background-color: color-mix(in srgb, var(--destructive) 7%, transparent);
+  background-color: var(--destructive-outline-state-surface);
 }
 
 .SliceRoot--viewport-medium .ThreadErrorBannerFrame,
