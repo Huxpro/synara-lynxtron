@@ -2143,3 +2143,19 @@ values and unresolved Native custom properties.
   physical edge to `rgba(252,252,252,0.0705882)` at 1px dashed. The exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `99031d6153ebe0646999faa45717dc5c5f36aa92e87fa9222ab8c79405ca311f`.
+
+## Sidebar segmented-picker physical-border follow-up
+
+- The global Sidebar Studio/Projects segmented track and active thumb now set the
+  shared border token on all four physical sides. The aggregate declarations had
+  painted both 1px outlines black in dark mode. Existing selection geometry, dark
+  surfaces, shadows, labels, and interaction behavior remain unchanged. The
+  focused Sidebar segmented-picker suite passes 1/1, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `79998` / window `113661`, PID-derived `localhost:8901`,
+  session 1, rendered the real `/kanban` route. Track and thumb both resolved
+  every physical edge to `rgba(252,252,252,0.0705882)` at 1px while retaining
+  `rgb(16,16,16)` / `rgb(23,23,23)` surfaces and their existing inset and raised
+  shadows. The exact Native console was empty. No screenshot was retained; staged
+  bundle SHA-256 is
+  `f97f9f16c6f70c53961aa564917a1cd04f780c2924300107276d62006473f061`.

@@ -2334,3 +2334,20 @@ state is absent from the paired component matrix.
   dashed. The exact Native error/warning console was empty, no screenshot was
   retained, and the final staged bundle SHA-256 is
   `99031d6153ebe0646999faa45717dc5c5f36aa92e87fa9222ab8c79405ca311f`.
+
+### DS-134 — COMPLETE
+
+- The global Sidebar Studio/Projects segmented track and active thumb now
+  declare the shared border token on all four physical sides. Their former
+  aggregate declarations painted both 1px outlines black in dark mode. Existing
+  selection geometry, dark surfaces, shadows, labels, and interaction behavior
+  remain unchanged.
+- The focused Sidebar segmented-picker suite passes 1/1, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `79998`, window `113661`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real `/kanban` route. Track and thumb
+  both resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px while
+  retaining `rgb(16,16,16)` / `rgb(23,23,23)` surfaces and their existing inset
+  and raised shadows. The exact Native error/warning console was empty, no
+  screenshot was retained, and the final staged bundle SHA-256 is
+  `f97f9f16c6f70c53961aa564917a1cd04f780c2924300107276d62006473f061`.
