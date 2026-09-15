@@ -2481,4 +2481,4 @@ values and unresolved Native custom properties.
   1, rendered the real Settings Providers summary. Its bottom divider resolved to
   `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native console was empty.
   No screenshot was retained; staged bundle SHA-256 is
-  `78d8c7f23548dce03783b94e830ecd0dfc30294ebd52a114f613e555c701b8ea`.
+  `9b50a60f8e21809a64740ca0b4c1f4fed129e167f83f0ff1dc144d1317eefa43`.
