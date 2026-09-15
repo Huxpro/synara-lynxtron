@@ -12,7 +12,12 @@
   padding: 14px 16px;
   align-items: flex-start;
   gap: 12px;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
   border-radius: var(--radius-lg);
 }
 
@@ -24,14 +29,24 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
   border-radius: var(--radius-lg);
 }
 
 .SettingsAppSnapIconFrame {
   width: 16px;
   height: 12px;
-  border: 1px solid var(--muted-foreground);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--muted-foreground);
+  border-right-color: var(--muted-foreground);
+  border-top-color: var(--muted-foreground);
+  border-bottom-color: var(--muted-foreground);
   border-radius: 2px;
 }
 

@@ -2033,3 +2033,18 @@ values and unresolved Native custom properties.
   resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px. The exact
   Native console was empty. No screenshot was retained; staged bundle SHA-256 is
   `951b6c4b7b179bb18fe2b3d8ec84472f17b765d23ec67be944b6b2ddbc3d9f12`.
+
+## Settings AppSnap hero physical-border follow-up
+
+- Native AppSnap hero, icon shell, and inner window frame now set their respective
+  border tokens on all four physical sides. The aggregate declarations had
+  painted all three 1px outlines black in dark mode. Existing hero composition,
+  transparent surfaces, icon geometry, and corner accent remain unchanged. The
+  focused Settings AppSnap suite passes 2/2, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `98579` / window `112903`, PID-derived `localhost:8901`,
+  session 1, rendered the real `/settings/appsnap` route. The hero and icon shell
+  resolved every edge to `rgba(252,252,252,0.0705882)` at 1px; the inner frame
+  resolved every edge to `rgba(252,252,252,0.576471)` at 1px. The exact Native
+  console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `42224cc6c28be745cdbe8a7f34acba0f8b35f349629dff6443db0b6c25c39911`.
