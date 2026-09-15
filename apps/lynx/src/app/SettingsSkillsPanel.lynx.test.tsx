@@ -85,7 +85,7 @@ describe('Settings Skills fidelity', () => {
     expect(source).toContain("' SettingsSkillsRow--continued'");
     expect(source).toContain('index < section.groups.length - 1');
     expect(styles).toMatch(
-      /\.SettingsSkillsRow--continued\s*\{[^}]*border-bottom:\s*1px solid var\(--border\);/s
+      /\.SettingsSkillsRow--continued\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).not.toContain('SettingsSkillsRow--divided');
     expect(styles).toMatch(

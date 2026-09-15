@@ -2612,3 +2612,19 @@ values and unresolved Native custom properties.
   1px solid. The exact Native console was empty. No screenshot was retained;
   staged bundle SHA-256 is
   `4057616f4e5cf0cc751c83c7ba8d8b8b7f5f17653a192c511b16f0d3ad7ec435`.
+
+## Settings Skills row-divider physical-border follow-up
+
+- Native Settings Skills grouped rows now set their bottom dividers with explicit
+  width, style, and shared border color. The `border-bottom` shorthand had
+  retained 1px widths but produced black colors and empty physical styles in dark
+  mode. Existing portable summary, provider badges, metadata, toggles, row
+  geometry, and final-row omission remain unchanged. The focused Settings Skills
+  suite passes 3/3, and the full Lynx/Desktop production build passes on npm
+  Lynxtron 0.0.22.
+- Exact-owned PID `40965` / window `116623`, PID-derived `localhost:8901`, session
+  1, rendered 116 continued rows on the real Settings Skills route. Five sampled
+  row bottom edges resolved to `rgba(252,252,252,0.0705882)` at 1px solid. The
+  exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `5020a220d997b7f70b1c33feffa4d7a9bd2de4c078b4acb676150753a7010d34`.
