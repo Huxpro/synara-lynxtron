@@ -2304,3 +2304,19 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.0705882)` at 1px. The exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `cb8e833ec35aa347e1c575de3ef0fbd1f33b51db772725f9b6d865c213216b3b`.
+
+## Markdown inline-token physical-border follow-up
+
+- Native Markdown inline-token shells now set the light border token on all four
+  physical sides. The aggregate declaration had painted real file-reference
+  tokens' 1px outlines black in dark mode. Existing token padding, radius,
+  elevated surface, icon, label, and file-open interaction remain unchanged. The
+  focused Markdown suite passes 8/8, and the full Lynx/Desktop production build
+  passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `29812` / window `114460`, PID-derived `localhost:8901`, session
+  1, rendered two file-reference tokens created through the real Native composer
+  and provider path. Both token shells resolved every physical edge to
+  `rgba(252,252,252,0.0431373)` at 1px over the unchanged
+  `rgba(252,252,252,0.0352941)` surface. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `c049fa556e4c05baa1d386d6b53692415d7b7776b7d15a947727a48a71cbd5d5`.

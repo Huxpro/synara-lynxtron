@@ -110,6 +110,16 @@ describe('Lynx markdown file reference token', () => {
   });
 
   it('publishes an accessible file-open action', () => {
+    const styles = readFileSync(
+      new URL('./markdown.css', import.meta.url),
+      'utf8'
+    );
+    expect(styles).toMatch(
+      /\.MdInlineToken\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--color-border-light, var\(--border\)\);[^}]*border-right-color:\s*var\(--color-border-light, var\(--border\)\);[^}]*border-bottom-color:\s*var\(--color-border-light, var\(--border\)\);[^}]*border-left-color:\s*var\(--color-border-light, var\(--border\)\);/s
+    );
+    expect(styles).not.toMatch(
+      /\.MdInlineToken\s*\{[^}]*border:\s*1px solid var\(--color-border-light, var\(--border\)\);/s
+    );
     const openedPaths: string[] = [];
     const onOpenFileReference = (relativePath: string) => {
       openedPaths.push(relativePath);

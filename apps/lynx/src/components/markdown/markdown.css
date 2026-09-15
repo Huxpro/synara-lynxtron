@@ -400,7 +400,12 @@
   margin-left: 2px;
   margin-right: 2px;
   padding: 1px 4px;
-  border: 1px solid var(--color-border-light, var(--border));
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: var(--color-border-light, var(--border));
+  border-right-color: var(--color-border-light, var(--border));
+  border-bottom-color: var(--color-border-light, var(--border));
+  border-left-color: var(--color-border-light, var(--border));
   border-radius: 4px;
   background-color: var(--sidebar-accent-active, var(--muted));
   color: var(--foreground);
