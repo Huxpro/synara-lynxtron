@@ -52,16 +52,17 @@ describe('ProjectActionEditor', () => {
       /\.ProjectActionEditorCommandInput\s*\{[^}]*min-height:\s*96px;[^}]*padding-left:\s*10px;[^}]*padding-right:\s*10px;/s
     );
     expect(styles).toMatch(
-      /\.ProjectActionEditorIconPopup\s*\{[^}]*top:\s*40px;[^}]*width:\s*266px;[^}]*padding:\s*16px;/s
+      /\.ProjectActionEditorIconPopup\s*\{[^}]*top:\s*40px;[^}]*width:\s*266px;[^}]*padding:\s*16px;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
       /\.ProjectActionEditorDialog\s*\{[^}]*width:\s*512px;[^}]*max-width:\s*calc\(100vw - 32px\);/s
     );
     expect(styles).toMatch(
-      /\.ProjectActionEditorIconOption\s*\{[^}]*width:\s*72px;[^}]*height:\s*56px;[^}]*gap:\s*8px;/s
+      /\.ProjectActionEditorIconOption\s*\{[^}]*width:\s*72px;[^}]*height:\s*56px;[^}]*gap:\s*8px;[^}]*border-left-color:\s*var\(--color-border-light\);[^}]*border-right-color:\s*var\(--color-border-light\);[^}]*border-top-color:\s*var\(--color-border-light\);[^}]*border-bottom-color:\s*var\(--color-border-light\);/s
     );
+    expect(styles).toMatch(/\.ProjectActionEditorIconOption\.ui-hover,\.ProjectActionEditorIconOption\.ui-focus,\.ProjectActionEditorIconOption--active\s*\{[^}]*border-left-color:\s*var\(--color-border\);[^}]*border-right-color:\s*var\(--color-border\);[^}]*border-top-color:\s*var\(--color-border\);[^}]*border-bottom-color:\s*var\(--color-border\);/s);
     expect(styles).toMatch(
-      /\.ProjectActionEditorSwitch\s*\{[^}]*min-height:\s*38px;[^}]*padding:\s*8px 12px;[^}]*gap:\s*12px;/s
+      /\.ProjectActionEditorSwitch\s*\{[^}]*min-height:\s*38px;[^}]*padding:\s*8px 12px;[^}]*gap:\s*12px;[^}]*border-left-color:\s*var\(--color-border-light\);[^}]*border-right-color:\s*var\(--color-border-light\);[^}]*border-top-color:\s*var\(--color-border-light\);[^}]*border-bottom-color:\s*var\(--color-border-light\);/s
     );
     expect(styles).toMatch(
       /\.ProjectActionEditorSwitchLabel\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s

@@ -1822,3 +1822,20 @@ values and unresolved Native custom properties.
   translucent elevated surface. The exact Native console was empty. No screenshot
   was retained; staged bundle SHA-256 is
   `95bb6cacceb19a6138c2cd3d6864978e6886cf0a16cb9126bc50620799ee7a2e`.
+
+## Project Action picker physical-border follow-up
+
+- Native Project Action icon pickers now set physical border colors for the popup
+  shell, default icon options, active/hover/focus options, and the adjacent
+  worktree-creation switch row. The shorthand and aggregate declarations had
+  painted those edges black in dark mode while their surfaces stayed correct.
+  Existing dimensions, fills, icon paint, and interaction behavior remain
+  unchanged. The focused Project Action editor contract passes 1/1, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `82706` / window `111534`, PID-derived `localhost:8901`,
+  session 1, rendered the edit story and opened the picker through Computer Use.
+  The popup resolved to 7.1% white edges, the default option and switch row to
+  4.3% white edges, and the active option to 7.1% white edges over its unchanged
+  3.5% white fill. The exact Native console was empty. No screenshot was retained;
+  staged bundle SHA-256 is
+  `6b357f35e9473cca4b96157717dd7faf3adccd3460feba775245519a450c1dd2`.
