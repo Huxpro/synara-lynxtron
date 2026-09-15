@@ -320,7 +320,10 @@
   min-height: 32px;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--border);
+  border-top-color: var(--border);
+  border-right-color: var(--border);
+  border-bottom-color: var(--border);
+  border-left-color: var(--border);
   border-radius: 10px;
   background-color: var(--background);
   padding-left: 12px;
@@ -348,7 +351,10 @@
 }
 
 .LxInputControl.ui-focus {
-  border-color: var(--control-input-focus-border);
+  border-top-color: var(--control-input-focus-border);
+  border-right-color: var(--control-input-focus-border);
+  border-bottom-color: var(--control-input-focus-border);
+  border-left-color: var(--control-input-focus-border);
 }
 
 .LxInputControl--invalid {

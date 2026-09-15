@@ -123,7 +123,10 @@ describe('Lynx Input accessibility contract', () => {
     expect(source).toContain('setFocused(false);');
     expect(source).toContain("focused && 'ui-focus'");
     expect(styles).toMatch(
-      /\.LxInputControl\.ui-focus\s*\{[^}]*border-color:\s*var\(--control-input-focus-border\);/s
+      /\.LxInputControl\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.LxInputControl\.ui-focus\s*\{[^}]*border-top-color:\s*var\(--control-input-focus-border\);[^}]*border-right-color:\s*var\(--control-input-focus-border\);[^}]*border-bottom-color:\s*var\(--control-input-focus-border\);[^}]*border-left-color:\s*var\(--control-input-focus-border\);/s
     );
     expect(styles).toMatch(
       /\.LxInputControl--invalid\s*\{[^}]*border-top-color:\s*var\(--input-invalid-border\);[^}]*border-left-color:\s*var\(--input-invalid-border\);/s

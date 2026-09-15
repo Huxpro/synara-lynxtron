@@ -1802,3 +1802,19 @@ state is absent from the paired component matrix.
   `rgba(252,252,252,0.0705882)`. The exact Native error/warning console was empty,
   no screenshot was retained, and the final staged bundle SHA-256 is
   `04841c11e801c48cab594b4ce0c9d0e537de30dac335a9cfc513952eab7211e8`.
+
+### DS-102 — COMPLETE
+
+- Native Input and Textarea shells now declare the default and focus border
+  colors on all four physical sides. This avoids the same Lynx aggregate-color
+  failure found in Button, Badge, Alert, and Checkbox, while keeping the existing
+  explicit invalid and invalid-focus borders at higher specificity.
+- The focused Native Input suite passes 6/6, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `6295`, window `110350`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real filled Input with all four edges
+  at `rgba(252,252,252,0.0705882)`. Selecting the focus state through Computer Use
+  resolved all four edges to `rgba(252,252,252,0.298039)`. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `ca11a570b6eb5908f9d1212c4790bd0dc913d1bac9a670cdd5ac4f247175d98f`.

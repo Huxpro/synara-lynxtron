@@ -1662,3 +1662,17 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.0705882)`. The exact Native console was empty. No screenshot
   was retained; staged bundle SHA-256 is
   `04841c11e801c48cab594b4ce0c9d0e537de30dac335a9cfc513952eab7211e8`.
+
+## Shared Input physical-border follow-up
+
+- Native Input and Textarea shells now set default and focus border colors on
+  all four physical sides. This avoids the same aggregate-color failure found in
+  Button, Badge, Alert, and Checkbox while preserving the already-explicit
+  invalid states. The focused Native Input suite passes 6/6, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `6295` / window `110350`, PID-derived `localhost:8901`,
+  session 1, resolved every default edge to
+  `rgba(252,252,252,0.0705882)`. The real focus state selected through Computer
+  Use resolved every edge to `rgba(252,252,252,0.298039)`. The exact Native
+  console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `ca11a570b6eb5908f9d1212c4790bd0dc913d1bac9a670cdd5ac4f247175d98f`.
