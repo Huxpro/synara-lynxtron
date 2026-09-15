@@ -216,7 +216,10 @@ describe('Settings Profile fidelity', () => {
       /\.SettingsProfileStats\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--settings-profile-stats-border\);[^}]*border-right-color:\s*var\(--settings-profile-stats-border\);[^}]*border-top-color:\s*var\(--settings-profile-stats-border\);[^}]*border-bottom-color:\s*var\(--settings-profile-stats-border\);/s
     );
     expect(styles).toMatch(
-      /\.SettingsProfileStat\s*\{[^}]*border-left:\s*1px solid var\(--settings-profile-stats-divider\);/s
+      /\.SettingsProfileStat\s*\{[^}]*border-left-width:\s*1px;[^}]*border-left-style:\s*solid;[^}]*border-left-color:\s*var\(--settings-profile-stats-divider\);/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsProfileStat--2,\s*\.SettingsProfileStat--3,\s*\.SettingsProfileStat--4\s*\{[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*solid;[^}]*border-top-color:\s*var\(--settings-profile-stats-divider\);/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-lg-up \.SettingsProfileStat\s*\{[^}]*border-left-width:\s*0;[^}]*border-right-width:\s*1px;[^}]*border-right-style:\s*solid;[^}]*border-right-color:\s*var\(--settings-profile-stats-divider\);/s

@@ -2675,3 +2675,19 @@ values and unresolved Native custom properties.
   edges both resolved to `rgba(252,252,252,0.576471)` at 1px solid. The exact
   Native console was empty. No screenshot was retained; staged bundle SHA-256 is
   `e630a82a6a280de2933b8d13783181884b4ba6fccd81cd30d4f526ad747ada7a`.
+
+## Settings Profile narrow-stats physical-border follow-up
+
+- Native Settings Profile stats now set their narrow-layout left dividers and
+  wrapped-row top dividers with explicit width, style, and shared stats-divider
+  color. The physical-side shorthands had retained 1px widths but produced black
+  colors and empty styles in dark mode. Existing two/three-column responsive
+  layout and first/second-row zero-width overrides remain unchanged. The focused
+  Settings Profile suite passes 5/5, and the full Lynx/Desktop production build
+  passes on npm Lynxtron 0.0.22.
+- Exact-owned 700x820 Lynxtron PID `1938`, window `116890`, PID-derived
+  `localhost:8901`, session 1, rendered the real Settings Profile route. The
+  active left and top dividers resolved to `rgba(252,252,252,0.0352941)` at 1px
+  solid while inactive edges retained zero width. The exact Native console was
+  empty. No screenshot was retained; staged bundle SHA-256 is
+  `84eb17f04abe1444d5ec4ec1da9d0ebbdf68719af45eaf0eb9fd4109c6ddb0eb`.

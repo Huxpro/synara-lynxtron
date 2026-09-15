@@ -132,7 +132,9 @@
   align-items: center;
   gap: 2px;
   padding: 12px 6px;
-  border-left: 1px solid var(--settings-profile-stats-divider);
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: var(--settings-profile-stats-divider);
 }
 
 .SettingsProfileStat:first-child {
@@ -142,7 +144,9 @@
 .SettingsProfileStat--2,
 .SettingsProfileStat--3,
 .SettingsProfileStat--4 {
-  border-top: 1px solid var(--settings-profile-stats-divider);
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--settings-profile-stats-divider);
 }
 
 .SettingsProfileStat--2,
