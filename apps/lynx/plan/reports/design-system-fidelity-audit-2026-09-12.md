@@ -1792,3 +1792,18 @@ values and unresolved Native custom properties.
   `rgb(16,16,16)`. The exact Native console was empty. No screenshot was retained;
   staged bundle SHA-256 is
   `75bb8e85a0c00217f393f4aa4ec6213e9d319cd899c4e5edab56877d1e7f9e65`.
+
+## Composer reference-card physical-border follow-up
+
+- Native Composer reference summaries and file/pasted-text cards now use explicit
+  one-pixel solid border geometry and the shared border token on all four physical
+  sides. The former shorthand painted every edge black in dark mode. Existing
+  attachment anatomy, radius, surface, actions, and icon paint remain unchanged.
+  The focused reference-attachment suite passes 5/5, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `25452` / window `111047`, PID-derived `localhost:8901`,
+  session 1, rendered the real documents fixture. Pasted-text and file cards both
+  resolved every physical edge to `rgba(252,252,252,0.0705882)`, 1px solid, over
+  `rgb(23,23,23)`. The exact Native console was empty. No screenshot was retained;
+  staged bundle SHA-256 is
+  `d17f5681a6db4fb4ba37e35721f36994aa2feca84aa6d5b4a5f30d8e7305caa8`.

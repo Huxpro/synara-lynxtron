@@ -1946,3 +1946,21 @@ state is absent from the paired component matrix.
   the unchanged `rgb(16,16,16)` surface. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `75bb8e85a0c00217f393f4aa4ec6213e9d319cd899c4e5edab56877d1e7f9e65`.
+
+### DS-111 — COMPLETE
+
+- Native Composer reference summaries and file/pasted-text cards now share an
+  explicit one-pixel solid border with the shared color on all four physical
+  sides. The former shorthand painted every edge black in dark mode. Existing
+  attachment anatomy, radius, surface, actions, and icon paint remain unchanged.
+- The focused reference-attachment suite passes 5/5, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22. The focused suite's stale
+  warning-color assertion was also aligned with the current equivalent
+  `warningColor` constant projection.
+- Exact-owned Lynxtron PID `25452`, window `111047`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real documents fixture. Both the
+  pasted-text card and file card resolved every physical edge to
+  `rgba(252,252,252,0.0705882)`, 1px solid, over `rgb(23,23,23)`. The exact
+  Native error/warning console was empty, no screenshot was retained, and the
+  final staged bundle SHA-256 is
+  `d17f5681a6db4fb4ba37e35721f36994aa2feca84aa6d5b4a5f30d8e7305caa8`.

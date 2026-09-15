@@ -43,8 +43,9 @@ describe('composer reference attachment interaction contract', () => {
       'utf8'
     );
     expect(themeSource).toContain(
-      "warning: resolvedTheme === 'dark' ? '#f5b44a' : '#d97706'"
+      "const warningColor = resolvedTheme === 'dark' ? '#f5b44a' : '#d97706'"
     );
+    expect(themeSource).toContain('warning: warningColor');
     expect(source).toContain(
       'accessibility-label="Draft attachment may not persist"'
     );
@@ -54,6 +55,9 @@ describe('composer reference attachment interaction contract', () => {
     expect(source).not.toMatch(/[×◌≡▤]/);
     expect(styles).toMatch(
       /\.ComposerReferenceCardActionLynx\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*row;[^}]*gap:\s*2px;/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerReferenceSummaryLynx,\s*\.ComposerReferenceCardLynx\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
       /\.ComposerReferenceCardActionLynx\.ui-pressed \.ComposerReferenceCardActionTextLynx\s*\{[^}]*color:\s*var\(--foreground\);/s
