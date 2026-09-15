@@ -2849,3 +2849,21 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `5020a220d997b7f70b1c33feffa4d7a9bd2de4c078b4acb676150753a7010d34`.
+
+### DS-164 — COMPLETE
+
+- Native Provider Tools disclosure rows now declare their top dividers with
+  explicit width, style, and shared border color. The former `border-top`
+  shorthand retained 1px widths but produced black colors and empty physical
+  styles in dark mode. Existing provider ordering, enable switches, status copy,
+  disclosure interaction, and surrounding picker card remain unchanged.
+  Unrendered update-list and disclosure-content dividers were not modified.
+- The focused Settings Provider Tools suite passes 4/4, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `56585`, window `116683`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered eight divided providers on the real
+  Settings Providers route. Five sampled top edges resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `15f38a3e10a8d7db603923491eb6fdd0bc4d5197b912b0e2feb04eb152f3f119`.

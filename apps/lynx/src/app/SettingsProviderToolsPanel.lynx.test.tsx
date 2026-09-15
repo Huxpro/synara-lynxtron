@@ -176,6 +176,9 @@ describe('Settings Provider tools fidelity', () => {
       /\.SettingsProviderToolsDisclosureMain\s*\{[^}]*min-height:\s*44px;[^}]*padding:\s*8px 12px;/s
     );
     expect(styles).toMatch(
+      /\.SettingsProviderToolsDisclosure--divided\s*\{[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
       /\.SettingsProviderToolsDisclosureContent\s*\{[^}]*padding:\s*12px;[^}]*border-top:\s*1px solid var\(--border\);[^}]*gap:\s*12px;/s
     );
     expect(styles).toMatch(
