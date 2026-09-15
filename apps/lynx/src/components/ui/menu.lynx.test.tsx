@@ -518,10 +518,10 @@ describe('Lynx Menu overlay contract', () => {
       'utf8'
     );
     expect(primitiveStyles).toMatch(
-      /\.LxMenuSwitch\s*\{[^}]*width:\s*24px;[^}]*height:\s*16px;[^}]*border-color:\s*var\(--settings-switch-border\);[^}]*background-color:\s*var\(--settings-switch-off\);/s
+      /\.LxMenuSwitch\s*\{[^}]*width:\s*24px;[^}]*height:\s*16px;[^}]*border-left-color:\s*var\(--settings-switch-border\);[^}]*border-right-color:\s*var\(--settings-switch-border\);[^}]*border-top-color:\s*var\(--settings-switch-border\);[^}]*border-bottom-color:\s*var\(--settings-switch-border\);[^}]*background-color:\s*var\(--settings-switch-off\);/s
     );
     expect(primitiveStyles).toMatch(
-      /\.LxMenuSwitch--checked\s*\{[^}]*border-color:\s*var\(--color-text-accent\);[^}]*background-color:\s*var\(--color-text-accent\);/s
+      /\.LxMenuSwitch--checked\s*\{[^}]*border-left-color:\s*var\(--color-text-accent\);[^}]*border-right-color:\s*var\(--color-text-accent\);[^}]*border-top-color:\s*var\(--color-text-accent\);[^}]*border-bottom-color:\s*var\(--color-text-accent\);[^}]*background-color:\s*var\(--color-text-accent\);/s
     );
     expect(primitiveStyles).toMatch(
       /\.LxMenuSwitch__thumb\s*\{[^}]*left:\s*1px;[^}]*top:\s*1px;[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*transform:\s*translateX\(0\);[^}]*transition-property:\s*transform;[^}]*transition-duration:\s*200ms;/s

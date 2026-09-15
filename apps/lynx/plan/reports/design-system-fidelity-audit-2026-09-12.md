@@ -1718,3 +1718,17 @@ values and unresolved Native custom properties.
   exact Native console was empty. No screenshot was retained; staged bundle
   SHA-256 is
   `e04dfb88db595a919b839fa9fe1107114691e4eb35bc7173fdccdba0653d613e`.
+
+## Compact Menu switch physical-border follow-up
+
+- Native compact Menu switches now set unchecked and checked border tokens on all
+  four physical sides. The aggregate declarations had parsed correctly while the
+  rendered edges stayed black. Existing geometry, fills, thumb movement, and
+  transitions remain unchanged. The focused Native Menu suite passes 22/22, and
+  the full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `4758` / window `110652`, PID-derived `localhost:8901`, session
+  1, rendered the real switch Menu. Checked edges and fill resolved to
+  `rgb(51,134,214)`. Switching off through Computer Use resolved every edge to
+  `rgba(252,252,252,0.137255)` over the unchanged `rgb(69,69,69)` fill. The exact
+  Native console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `ce08677976f70b8081d289fca5a9a5bdab24fd4d60c4f24552fc7f2c0bb1a23c`.

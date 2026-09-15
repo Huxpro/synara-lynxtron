@@ -1863,3 +1863,19 @@ state is absent from the paired component matrix.
   `rgb(23,23,23)` surface. The exact Native error/warning console was empty, no
   screenshot was retained, and the final staged bundle SHA-256 is
   `e04dfb88db595a919b839fa9fe1107114691e4eb35bc7173fdccdba0653d613e`.
+
+### DS-106 — COMPLETE
+
+- Native compact Menu switches now declare unchecked and checked border colors
+  on all four physical sides. The former aggregate declarations resolved to the
+  expected tokens in DevTool but painted every rendered edge black; existing
+  geometry, fills, thumb movement, and transitions remain unchanged.
+- The focused Native Menu suite passes 22/22, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `4758`, window `110652`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real switch Menu. Checked edges and
+  fill resolved to `rgb(51,134,214)`. Switching off through Computer Use resolved
+  every edge to `rgba(252,252,252,0.137255)` and retained the `rgb(69,69,69)`
+  fill. The exact Native error/warning console was empty, no screenshot was
+  retained, and the final staged bundle SHA-256 is
+  `ce08677976f70b8081d289fca5a9a5bdab24fd4d60c4f24552fc7f2c0bb1a23c`.
