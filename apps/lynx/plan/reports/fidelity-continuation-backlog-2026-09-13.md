@@ -2247,3 +2247,21 @@ state is absent from the paired component matrix.
   `rgba(252,252,252,0.0705882)` at 1px. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `b46b696f82111b5c749b6c46c4da4507a5df38235c6b57f5570a8a25481f4fed`.
+
+### DS-129 — COMPLETE
+
+- Native Worktrees empty/loading/error states now declare border colors on all
+  four physical sides while preserving the dashed state shell. Destructive state
+  and deletion-error outlines likewise use explicit physical destructive colors.
+  The former aggregate declarations painted the default empty outline black in
+  dark mode. Existing copy, spacing, radius, and destructive semantics remain
+  unchanged.
+- The focused Settings Worktrees suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `56817`, window `113162`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real empty `/settings/worktrees`
+  state. Every physical edge resolved to `rgba(252,252,252,0.0705882)` at 1px and
+  every physical edge style remained `dashed`. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `09822b30d4ea65483e07559ce207e9a52cb289727698684aee69f06b28612b49`.

@@ -68,7 +68,10 @@ describe('Settings Worktrees fidelity', () => {
     );
 
     expect(styles).toMatch(
-      /\.SettingsWorktreesState\s*\{[^}]*padding:\s*24px 16px;[^}]*border:\s*1px dashed var\(--border\);/s
+      /\.SettingsWorktreesState\s*\{[^}]*padding:\s*24px 16px;[^}]*border-width:\s*1px;[^}]*border-style:\s*dashed;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsWorktreesState--error,\s*\.SettingsWorktreesDeleteError\s*\{[^}]*border-left-color:\s*var\(--destructive\);[^}]*border-right-color:\s*var\(--destructive\);[^}]*border-top-color:\s*var\(--destructive\);[^}]*border-bottom-color:\s*var\(--destructive\);/s
     );
     expect(styles).not.toMatch(
       /\.SettingsWorktreesState\s*\{[^}]*min-height:/s
