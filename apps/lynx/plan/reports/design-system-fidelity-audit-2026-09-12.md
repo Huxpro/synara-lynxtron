@@ -1704,3 +1704,17 @@ values and unresolved Native custom properties.
   exact Native console was empty. No screenshot was retained; staged bundle
   SHA-256 is
   `e05751ae3ec8e0106244e392797ceed3ac79968af07463e32378fff7f5f08d99`.
+
+## Shared Tooltip physical-border follow-up
+
+- Native Tooltip popups now set the shared border token on all four physical
+  sides. The former aggregate declaration parsed to the expected token but left
+  the rendered edges black in dark mode. Existing default and picker geometry,
+  surfaces, and shadows remain unchanged. The focused Native Tooltip suite passes
+  2/2, and the full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `87061` / window `110595`, PID-derived `localhost:8901`,
+  session 1, rendered the real open default Tooltip. Every physical edge resolved
+  to `rgba(252,252,252,0.0705882)` over the unchanged `rgb(23,23,23)` surface; the
+  exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `e04dfb88db595a919b839fa9fe1107114691e4eb35bc7173fdccdba0653d613e`.

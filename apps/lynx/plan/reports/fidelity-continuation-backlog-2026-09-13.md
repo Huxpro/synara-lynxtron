@@ -1848,3 +1848,18 @@ state is absent from the paired component matrix.
   `rgb(23,23,23)` surface. The exact Native error/warning console was empty, no
   screenshot was retained, and the final staged bundle SHA-256 is
   `e05751ae3ec8e0106244e392797ceed3ac79968af07463e32378fff7f5f08d99`.
+
+### DS-105 — COMPLETE
+
+- Native Tooltip popups now declare the shared border token on all four physical
+  sides. The former aggregate declaration resolved to the intended token in
+  DevTool but painted every rendered edge black in dark mode; default and picker
+  geometry, surfaces, and shadows remain unchanged.
+- The focused Native Tooltip suite passes 2/2, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `87061`, window `110595`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real open default Tooltip. All four
+  physical edges resolved to `rgba(252,252,252,0.0705882)` over the unchanged
+  `rgb(23,23,23)` surface. The exact Native error/warning console was empty, no
+  screenshot was retained, and the final staged bundle SHA-256 is
+  `e04dfb88db595a919b839fa9fe1107114691e4eb35bc7173fdccdba0653d613e`.

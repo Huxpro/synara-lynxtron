@@ -1,9 +1,17 @@
 import { act, fireEvent, render } from '@lynx-js/react/testing-library';
 import { describe, expect, it } from '@rstest/core';
+import { readFileSync } from 'node:fs';
 
 import { Tooltip, TooltipPopup, TooltipTrigger } from './tooltip.lynx';
 
 describe('Tooltip', () => {
+  it('declares the popup border color on every physical side', () => {
+    const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
+    expect(styles).toMatch(
+      /\.LxTooltipPopup\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+  });
+
   it('reuses shared disclosure motion while closing', async () => {
     render(
       <Tooltip defaultOpen>
