@@ -2608,3 +2608,20 @@ state is absent from the paired component matrix.
   the unchanged `rgb(23,23,23)` surface. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `241b6ebf4cab6b5e6fc6d98235d2fe09ac572a4fd0957dc994d9d6427f02ab2e`.
+
+### DS-149 — COMPLETE
+
+- The Native composer expanded-image frame now declares the heavy border token
+  on all four physical sides. The former aggregate declaration retained 1px
+  widths but produced black colors and empty physical styles in dark mode.
+  Existing modal backdrop, image sizing, caption, navigation, close behavior,
+  surface, and shadow remain unchanged.
+- The focused expanded-image overlay suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `71904`, window `115102`, PID-derived DevTool
+  `localhost:8901`, session 1, selected a real local PNG through the Native file
+  picker and opened it through the composer thumbnail. The expanded-image frame
+  resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px solid over
+  the unchanged `rgb(23,23,23)` surface. The exact Native error/warning console
+  was empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `241b6ebf4cab6b5e6fc6d98235d2fe09ac572a4fd0957dc994d9d6427f02ab2e`.
