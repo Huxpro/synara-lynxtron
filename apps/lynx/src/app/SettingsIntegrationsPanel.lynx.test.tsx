@@ -134,7 +134,7 @@ describe('Settings Integrations fidelity', () => {
       /\.SettingsIntegrationsConnectionActions\s*\{[^}]*flex-shrink:\s*0;[^}]*justify-content:\s*flex-end;[^}]*margin-top:\s*0;/s
     );
     expect(styles).toMatch(
-      /\.SettingsIntegrationsProject\s*\{[^}]*padding:\s*8px 12px;[^}]*border:\s*1px solid var\(--settings-project-border\);/s
+      /\.SettingsIntegrationsProject\s*\{[^}]*padding:\s*8px 12px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--settings-project-border\);[^}]*border-right-color:\s*var\(--settings-project-border\);[^}]*border-top-color:\s*var\(--settings-project-border\);[^}]*border-bottom-color:\s*var\(--settings-project-border\);/s
     );
     expect(styles).toMatch(
       /\.SettingsIntegrationsProjectGrid\s*\{[^}]*flex-direction:\s*row;[^}]*flex-wrap:\s*wrap;/s
@@ -149,7 +149,7 @@ describe('Settings Integrations fidelity', () => {
       /\.SliceRoot--viewport-compact \.SettingsIntegrationsRow\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*stretch;/s
     );
     expect(styles).toMatch(
-      /\.SettingsIntegrationsProject--checked\s*\{[^}]*border-color:\s*var\(--settings-project-selected-border\);[^}]*background-color:\s*var\(--settings-project-selected-surface\);/s
+      /\.SettingsIntegrationsProject--checked\s*\{[^}]*border-left-color:\s*var\(--settings-project-selected-border\);[^}]*border-right-color:\s*var\(--settings-project-selected-border\);[^}]*border-top-color:\s*var\(--settings-project-selected-border\);[^}]*border-bottom-color:\s*var\(--settings-project-selected-border\);[^}]*background-color:\s*var\(--settings-project-selected-surface\);/s
     );
     expect(styles).toMatch(
       /\.SettingsIntegrationsDisclosureChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s

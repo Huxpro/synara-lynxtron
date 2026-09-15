@@ -1986,3 +1986,20 @@ values and unresolved Native custom properties.
   matching Electron. The exact Native console was empty. No screenshot was
   retained; staged bundle SHA-256 is
   `60ac9241307dad25d26960f2b46a40129eb4d9045f71f295881b32aa57554916`.
+
+## Settings Integrations project-choice physical-border follow-up
+
+- Native Settings Integrations project choices now set both default and selected
+  border tokens on all four physical sides. The aggregate base and selected-color
+  declarations had painted both 1px states black in dark mode. Existing grid
+  layout, checkbox behavior, selected surface, radius, and labels remain
+  unchanged. The focused Settings Integrations suite passes 3/3, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `10705` / window `112570`, PID-derived `localhost:8901`,
+  session 1, rendered `/settings/integrations`. Computer Use disabled global
+  access and selected Home through the real controls. The unchecked project
+  resolved every edge to `rgba(252,252,252,0.0470588)` at 1px; the checked state
+  resolved every edge to `rgba(252,252,252,0.298039)` while retaining
+  `rgba(252,252,252,0.00392157)` surface. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `170dd36cf374b72d40330ce8fb61d06a9bd82736d2611a4fb425e785d7071957`.

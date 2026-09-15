@@ -127,12 +127,20 @@
   width: 100%;
   min-height: 34px;
   padding: 8px 12px;
-  border: 1px solid var(--settings-project-border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--settings-project-border);
+  border-right-color: var(--settings-project-border);
+  border-top-color: var(--settings-project-border);
+  border-bottom-color: var(--settings-project-border);
   border-radius: var(--radius-lg);
 }
 
 .SettingsIntegrationsProject--checked {
-  border-color: var(--settings-project-selected-border);
+  border-left-color: var(--settings-project-selected-border);
+  border-right-color: var(--settings-project-selected-border);
+  border-top-color: var(--settings-project-selected-border);
+  border-bottom-color: var(--settings-project-selected-border);
   background-color: var(--settings-project-selected-surface);
 }
 
