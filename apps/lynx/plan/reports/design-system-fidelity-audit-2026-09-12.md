@@ -2175,3 +2175,18 @@ values and unresolved Native custom properties.
   exact Native console was empty. No screenshot was retained; staged bundle
   SHA-256 is
   `addbaee8b37272e4a9be2bdac0edd3fd83aae70c0cdf3ffc6c554b30b1f04f3a`.
+
+## Shared Settings card physical-border follow-up
+
+- The shared Settings card shell now sets the shared border token on all four
+  physical sides. The aggregate declaration had painted cards black in dark mode
+  on pages without a local override, including Notifications and Behavior.
+  Existing transparent surface, section spacing, row dividers, and radius remain
+  unchanged. The focused shared Settings panel suite passes 1/1, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `28461` / window `113795`, PID-derived `localhost:8901`,
+  session 1, rendered the real `/settings/notifications` route. Its shared card
+  resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px over the
+  unchanged transparent surface. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `472f75d52a9a63b650f1c906686f0b4dc373f78df6fbcc656a62b49d39c3d5dc`.

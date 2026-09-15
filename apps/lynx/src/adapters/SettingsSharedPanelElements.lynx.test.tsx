@@ -79,7 +79,7 @@ describe('Shared Settings panel elements', () => {
       /\.SharedSettingsSectionTitle\s*\{[^}]*font-size:\s*12px;[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.58;/s
     );
     expect(sectionStyles).toMatch(
-      /\.SharedSettingsCard\s*\{[^}]*border-radius:\s*10px;[^}]*background-color:\s*transparent;/s
+      /\.SharedSettingsCard\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;[^}]*background-color:\s*transparent;/s
     );
     expect(rowStyles).toMatch(
       /\.SharedSettingsRow\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*padding:\s*var\(--app-density-settings-row-padding-y,\s*0\.625rem\) 12px;/s

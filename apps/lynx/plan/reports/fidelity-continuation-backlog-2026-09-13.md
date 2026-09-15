@@ -2367,3 +2367,20 @@ state is absent from the paired component matrix.
   `0 24px 48px #0000004c` popup shadow. The exact Native error/warning console was
   empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `addbaee8b37272e4a9be2bdac0edd3fd83aae70c0cdf3ffc6c554b30b1f04f3a`.
+
+### DS-136 — COMPLETE
+
+- The shared Settings card shell now declares the shared border token on all four
+  physical sides. Its former aggregate declaration painted cards black in dark
+  mode on pages without a local override, including Notifications and Behavior.
+  Existing transparent surface, section spacing, row dividers, and radius remain
+  unchanged.
+- The focused shared Settings panel suite passes 1/1, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `28461`, window `113795`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real `/settings/notifications` route.
+  Its shared card resolved every physical edge to
+  `rgba(252,252,252,0.0705882)` at 1px over the unchanged transparent surface.
+  The exact Native error/warning console was empty, no screenshot was retained,
+  and the final staged bundle SHA-256 is
+  `472f75d52a9a63b650f1c906686f0b4dc373f78df6fbcc656a62b49d39c3d5dc`.
