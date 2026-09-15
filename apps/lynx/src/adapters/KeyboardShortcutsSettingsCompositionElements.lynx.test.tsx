@@ -15,13 +15,13 @@ describe('Keyboard Shortcuts settings anatomy', () => {
     );
 
     expect(styles).toMatch(
-      /\.SharedKeyboardShortcutsHeader\s*\{[^}]*padding:\s*8px 12px;[^}]*border-bottom:\s*1px solid var\(--border\);/s
+      /\.SharedKeyboardShortcutsHeader\s*\{[^}]*padding:\s*8px 12px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
       /\.SharedKeyboardShortcutsHeaderText\s*\{[^}]*font-size:\s*11px;[^}]*font-weight:\s*500;[^}]*line-height:\s*16\.5px;/s
     );
     expect(styles).toMatch(
-      /\.SharedKeyboardShortcutsRow\s*\{[^}]*min-height:\s*59px;[^}]*padding:\s*10px 12px;[^}]*border-bottom:\s*1px solid var\(--border\);/s
+      /\.SharedKeyboardShortcutsRow\s*\{[^}]*min-height:\s*59px;[^}]*padding:\s*10px 12px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
       /\.SharedKeyboardShortcutsRow:last-child\s*\{[^}]*border-bottom-width:\s*0;/s

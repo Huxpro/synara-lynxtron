@@ -30,7 +30,9 @@
 
 .SharedKeyboardShortcutsHeader {
   padding: 8px 12px;
-  border-bottom: 1px solid var(--border);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
 }
 
 .SharedKeyboardShortcutsHeaderText {
@@ -43,7 +45,9 @@
 .SharedKeyboardShortcutsRow {
   min-height: 59px;
   padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
 }
 
 .SharedKeyboardShortcutsRow:last-child {

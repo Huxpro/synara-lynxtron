@@ -2596,3 +2596,19 @@ values and unresolved Native custom properties.
   cell retained a 0px right edge. The exact Native console was empty. No screenshot
   was retained; staged bundle SHA-256 is
   `a697a4eb1f6c42e3c17ed51fbac2c7b686e7517e4c398679cdf694731c666c0e`.
+
+## Keyboard Shortcuts divider physical-border follow-up
+
+- Native Keyboard Shortcuts header and command rows now set their bottom dividers
+  with explicit width, style, and shared border color. The `border-bottom`
+  shorthands had retained 1px widths but produced black colors and empty physical
+  styles in dark mode. Existing search, command/keybinding columns, row geometry,
+  muted state, and last-row zero-width override remain unchanged. The focused
+  Keyboard Shortcuts anatomy suite passes 1/1, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `18898` / window `116528`, PID-derived `localhost:8901`, session
+  1, rendered the real Keyboard Shortcuts Settings route. The header and four
+  sampled command-row bottom edges resolved to `rgba(252,252,252,0.0705882)` at
+  1px solid. The exact Native console was empty. No screenshot was retained;
+  staged bundle SHA-256 is
+  `4057616f4e5cf0cc751c83c7ba8d8b8b7f5f17653a192c511b16f0d3ad7ec435`.
