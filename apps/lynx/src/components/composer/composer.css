@@ -9,7 +9,12 @@
 .ComposerInputSurfaceLynx {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
   border-radius: 19.2px;
   background-color: var(--composer-surface);
   box-shadow: 0 4px 18px -6px rgba(13, 13, 13, 0.07);
@@ -20,7 +25,10 @@
 }
 
 .ComposerInputSurfaceLynx--focused {
-  border-color: var(--border);
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
 }
 
 .ComposerEditorRegionLynx {

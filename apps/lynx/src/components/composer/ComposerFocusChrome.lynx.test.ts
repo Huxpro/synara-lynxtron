@@ -48,10 +48,10 @@ describe('Lynx composer focus chrome', () => {
     const styles = readFileSync(new URL('./composer.css', import.meta.url), 'utf8');
 
     expect(styles).toMatch(
-      /\.ComposerInputSurfaceLynx\s*\{[^}]*border:\s*1px solid var\(--border\);/s
+      /\.ComposerInputSurfaceLynx\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
-      /\.ComposerInputSurfaceLynx--focused\s*\{[^}]*border-color:\s*var\(--border\);/s
+      /\.ComposerInputSurfaceLynx--focused\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
     );
   });
 

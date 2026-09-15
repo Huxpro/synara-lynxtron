@@ -1896,3 +1896,20 @@ state is absent from the paired component matrix.
   The exact Native error/warning console was empty, no screenshot was retained,
   and the final staged bundle SHA-256 is
   `2a82079460071b5515cea772b74b03d5bfdb54256272118ad766308bdeddb114`.
+
+### DS-108 — COMPLETE
+
+- The Native thread Composer surface now declares its one-pixel solid border and
+  shared color on all four physical sides in both default and focused states. The
+  former custom-property shorthand rendered every edge black in dark mode even
+  though the intended token is a subtle light outline. Existing radius, surface,
+  shadow, and focus behavior remain unchanged.
+- Focused Composer contracts pass 9/9, and the full Lynx/Desktop production build
+  passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `38522`, window `110767`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered a real populated thread. All four default
+  edges resolved to `rgba(252,252,252,0.0705882)` over `rgb(23,23,23)`. Focusing
+  the real editor through Computer Use activated the focused class while retaining
+  the same four physical colors. The exact Native error/warning console was empty,
+  no screenshot was retained, and the final staged bundle SHA-256 is
+  `c8445a38e3cf73dc74b6f3be7594a6d26fbe84087729c414d3ef5a1338f49085`.

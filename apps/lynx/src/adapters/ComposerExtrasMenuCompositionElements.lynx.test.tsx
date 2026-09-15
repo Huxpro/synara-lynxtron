@@ -125,7 +125,7 @@ describe('native composer attachment menu item', () => {
       /\.SliceRoot--theme-dark \.ComposerInputSurfaceLynx\s*\{[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0,\s*0,\s*0,\s*0\.3\);/s
     );
     expect(composerStyles).toMatch(
-      /\.ComposerInputSurfaceLynx--focused\s*\{[^}]*border-color:\s*var\(--border\);/s
+      /\.ComposerInputSurfaceLynx--focused\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(composerStyles).toMatch(
       /\.ComposerRuntimeTriggerLynx--full-access\s*\{[^}]*color:\s*var\(--runtime-full-access-accent\);/s

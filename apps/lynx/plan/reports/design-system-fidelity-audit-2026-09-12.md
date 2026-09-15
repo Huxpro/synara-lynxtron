@@ -1747,3 +1747,18 @@ values and unresolved Native custom properties.
   bottom edge retaining its 0px width. The exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `2a82079460071b5515cea772b74b03d5bfdb54256272118ad766308bdeddb114`.
+
+## Composer surface physical-border follow-up
+
+- The Native thread Composer surface now uses explicit one-pixel solid border
+  geometry and the shared border token on all four physical sides in default and
+  focused states. The former custom-property shorthand painted every edge black
+  in dark mode. Existing radius, surface, shadow, and focus behavior remain
+  unchanged. Focused Composer contracts pass 9/9, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `38522` / window `110767`, PID-derived `localhost:8901`,
+  session 1, rendered a real populated thread. Every default edge resolved to
+  `rgba(252,252,252,0.0705882)` over `rgb(23,23,23)`. Focusing the real editor
+  through Computer Use retained the same four physical colors. The exact Native
+  console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `c8445a38e3cf73dc74b6f3be7594a6d26fbe84087729c414d3ef5a1338f49085`.
