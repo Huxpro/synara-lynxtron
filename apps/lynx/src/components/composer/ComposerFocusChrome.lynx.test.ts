@@ -55,6 +55,14 @@ describe('Lynx composer focus chrome', () => {
     );
   });
 
+  it('declares the command menu border color on every physical side', () => {
+    const styles = readFileSync(new URL('./composer.css', import.meta.url), 'utf8');
+
+    expect(styles).toMatch(
+      /\.ComposerCommandMenuLynx\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+  });
+
   it('suppresses the native textarea focus decoration in every theme', () => {
     const styles = readFileSync(new URL('./composer.css', import.meta.url), 'utf8');
 

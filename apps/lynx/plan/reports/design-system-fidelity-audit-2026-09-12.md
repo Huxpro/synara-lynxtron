@@ -1762,3 +1762,18 @@ values and unresolved Native custom properties.
   through Computer Use retained the same four physical colors. The exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `c8445a38e3cf73dc74b6f3be7594a6d26fbe84087729c414d3ef5a1338f49085`.
+
+## Composer command-menu physical-border follow-up
+
+- The Native Composer `/` command menu now uses explicit one-pixel solid border
+  geometry and the shared border token on all four physical sides. The former
+  custom-property shorthand painted every edge black in dark mode. Existing menu
+  geometry, radius, and stacking remain unchanged. The focused Composer chrome
+  suite passes 6/6, and the full Lynx/Desktop production build passes on npm
+  Lynxtron 0.0.22.
+- Exact-owned PID `63095` / window `110879`, PID-derived `localhost:8901`,
+  session 1, rendered a real populated thread. Typing `/` through Computer Use
+  opened the real command menu with every physical edge at
+  `rgba(252,252,252,0.0705882)`, 1px solid, over `rgb(23,23,23)`. The exact
+  Native console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `920a12495fd49b8f90eaa2f6c8482b7dc0dee621b30113063afd8ac05ad8836e`.

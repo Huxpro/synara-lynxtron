@@ -1913,3 +1913,20 @@ state is absent from the paired component matrix.
   the same four physical colors. The exact Native error/warning console was empty,
   no screenshot was retained, and the final staged bundle SHA-256 is
   `c8445a38e3cf73dc74b6f3be7594a6d26fbe84087729c414d3ef5a1338f49085`.
+
+### DS-109 — COMPLETE
+
+- The Native Composer `/` command menu now declares a one-pixel solid border and
+  the shared color on all four physical sides. The former custom-property
+  shorthand rendered every edge black in dark mode while the menu surface and
+  content remained correct. Existing geometry, radius, and stacking remain
+  unchanged.
+- The focused Composer chrome suite passes 6/6, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `63095`, window `110879`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered a real populated thread. Typing `/` into
+  the real editor through Computer Use opened the command menu with every physical
+  edge at `rgba(252,252,252,0.0705882)`, 1px solid, over the unchanged
+  `rgb(23,23,23)` surface. The exact Native error/warning console was empty, no
+  screenshot was retained, and the final staged bundle SHA-256 is
+  `920a12495fd49b8f90eaa2f6c8482b7dc0dee621b30113063afd8ac05ad8836e`.
