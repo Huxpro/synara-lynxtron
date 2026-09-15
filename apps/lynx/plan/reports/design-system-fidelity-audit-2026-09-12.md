@@ -1631,20 +1631,6 @@ values and unresolved Native custom properties.
   Native console was empty. No screenshot was retained; staged bundle SHA-256 is
   `f34eef3eecf343ee97b877607533dbc0288e171c9f722bb3ea83c208c25a7c65`.
 
-## Shared Checkbox physical-border follow-up
-
-- Native Checkbox now uses explicit four-side border colors for unchecked and
-  selected states. The former aggregate custom-property color looked correct in
-  DevTool but left the physical Native edges black. Existing geometry, dark
-  unchecked surface, and check/mixed indicators remain unchanged. The focused
-  Native Checkbox suite passes 4/4, and the full Lynx/Desktop production build
-  passes on npm Lynxtron 0.0.22.
-- Exact-owned PID `37895` / window `110189`, PID-derived `localhost:8901`,
-  session 1, resolved each unchecked edge to
-  `rgba(252,252,252,0.0431373)`. The checked state selected through Computer Use
-  resolved every edge and the fill to `rgb(252,252,252)`. The exact Native console
-  was empty. No screenshot was retained; staged bundle SHA-256 is
-  `2c32a5ed2d0045829c0dfe706228288e9310060f01f38d2b733e042acb269812`.
 
 ## Shared Checkbox physical-border follow-up
 
