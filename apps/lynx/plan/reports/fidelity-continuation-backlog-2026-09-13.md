@@ -2062,3 +2062,19 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `aa28a9d2b8cbac015a550e4fd74acf9702ffa63a70eb6fefdb15fa0628b9b0e5`.
+
+### DS-118 — COMPLETE
+
+- Native selected Profile avatar-color swatches now declare the foreground border
+  on all four physical sides. The former aggregate declaration rendered the 2px
+  selection edge black while the swatch fill and outer popover-colored ring were
+  correct. Unselected zero-border swatches remain unchanged.
+- The focused Settings Profile suite passes 5/5, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `88362`, window `112056`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered `/settings/profile` and opened Edit Profile
+  through Computer Use. The selected swatch resolved all four 2px edges to
+  `rgb(252,252,252)` while retaining the `rgb(34,197,94)` fill and
+  `0 0 0 2px #171717` outer ring. The exact Native error/warning console was empty,
+  no screenshot was retained, and the final staged bundle SHA-256 is
+  `023ffd2f55978401e26ca5eafa1b70d1fcdd35b04b00819f4c7375a6956a0cff`.

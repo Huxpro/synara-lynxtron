@@ -1896,3 +1896,19 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.0705882)` at 1px. The exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `aa28a9d2b8cbac015a550e4fd74acf9702ffa63a70eb6fefdb15fa0628b9b0e5`.
+
+## Settings Profile selected-swatch physical-border follow-up
+
+- Native selected Profile avatar-color swatches now set the foreground token on
+  all four physical sides. The aggregate declaration had painted the 2px selected
+  edge black while the swatch fill and outer popover-colored ring stayed correct.
+  Unselected zero-border swatches remain unchanged. The focused Settings Profile
+  suite passes 5/5, and the full Lynx/Desktop production build passes on npm
+  Lynxtron 0.0.22.
+- Exact-owned PID `88362` / window `112056`, PID-derived `localhost:8901`,
+  session 1, rendered `/settings/profile` and opened Edit Profile through Computer
+  Use. The selected swatch resolved all four 2px edges to `rgb(252,252,252)` while
+  retaining the `rgb(34,197,94)` fill and `0 0 0 2px #171717` outer ring. The
+  exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `023ffd2f55978401e26ca5eafa1b70d1fcdd35b04b00819f4c7375a6956a0cff`.

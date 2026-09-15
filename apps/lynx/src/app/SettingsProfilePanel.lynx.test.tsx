@@ -201,6 +201,9 @@ describe('Settings Profile fidelity', () => {
       /\.SettingsProfileColorOption\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;/s
     );
     expect(styles).toMatch(
+      /\.SettingsProfileColorOption--active\s*\{[^}]*border-width:\s*2px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--foreground\);[^}]*border-right-color:\s*var\(--foreground\);[^}]*border-top-color:\s*var\(--foreground\);[^}]*border-bottom-color:\s*var\(--foreground\);/s
+    );
+    expect(styles).toMatch(
       /\.SettingsProfileEditFooterButton\s*\{[^}]*height:\s*44px;[^}]*border-radius:\s*8px;/s
     );
     expect(styles).toMatch(
