@@ -1676,3 +1676,17 @@ values and unresolved Native custom properties.
   Use resolved every edge to `rgba(252,252,252,0.298039)`. The exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `ca11a570b6eb5908f9d1212c4790bd0dc913d1bac9a670cdd5ac4f247175d98f`.
+
+## Shared Dialog physical-border follow-up
+
+- Native Dialog popups now set the shared border token on all four physical
+  sides. The former aggregate declaration parsed to the expected token but left
+  the rendered edges black in dark mode. Existing popover surface, radius, and
+  shadow behavior remain unchanged. The focused Native Dialog suite passes 13/13,
+  and the full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `62343` / window `110497`, PID-derived `localhost:8901`,
+  session 1, rendered the real title-description Dialog. Every physical edge
+  resolved to `rgba(252,252,252,0.0431373)` over the unchanged `rgb(23,23,23)`
+  surface; the exact Native console was empty. No screenshot was retained; staged
+  bundle SHA-256 is
+  `0adbe783a5e7d7724585dc405f0c8f2f6260a412bded5fdcf1f736cd571b21d8`.

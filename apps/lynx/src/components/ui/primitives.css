@@ -851,7 +851,10 @@
   flex-direction: column;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--color-border-light);
+  border-left-color: var(--color-border-light);
+  border-right-color: var(--color-border-light);
+  border-top-color: var(--color-border-light);
+  border-bottom-color: var(--color-border-light);
   border-radius: 22px;
   background-color: var(--popover);
   color: var(--popover-foreground);

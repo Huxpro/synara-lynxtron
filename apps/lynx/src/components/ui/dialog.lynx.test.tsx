@@ -153,6 +153,13 @@ describe('Lynx Dialog dismiss contract', () => {
     );
   });
 
+  it('declares the dialog border color on every physical side', () => {
+    const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
+    expect(styles).toMatch(
+      /\.LxDialogPopup\s*\{[^}]*border-left-color:\s*var\(--color-border-light\);[^}]*border-right-color:\s*var\(--color-border-light\);[^}]*border-top-color:\s*var\(--color-border-light\);[^}]*border-bottom-color:\s*var\(--color-border-light\);/s
+    );
+  });
+
   it('applies the Electron action geometry to text buttons in dialog footers', () => {
     const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
     const footerButtonSelector =

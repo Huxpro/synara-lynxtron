@@ -1818,3 +1818,18 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `ca11a570b6eb5908f9d1212c4790bd0dc913d1bac9a670cdd5ac4f247175d98f`.
+
+### DS-103 — COMPLETE
+
+- Native Dialog popups now declare the shared border token on all four physical
+  sides. The former aggregate declaration resolved to the intended token in
+  DevTool but painted every rendered edge black in dark mode; the shared surface,
+  radius, and shadow remain unchanged.
+- The focused Native Dialog suite passes 13/13, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `62343`, window `110497`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real title-description Dialog. All
+  four physical edges resolved to `rgba(252,252,252,0.0431373)` over the unchanged
+  `rgb(23,23,23)` surface. The exact Native error/warning console was empty, no
+  screenshot was retained, and the final staged bundle SHA-256 is
+  `0adbe783a5e7d7724585dc405f0c8f2f6260a412bded5fdcf1f736cd571b21d8`.
