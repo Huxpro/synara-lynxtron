@@ -2282,3 +2282,18 @@ state is absent from the paired component matrix.
   color at 1px solid over `rgb(16,16,16)`. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `b5f19cf67143aeddf98299eaab629148cc3f6af046bedae27114e15dfe73c34f`.
+
+### DS-131 — COMPLETE
+
+- Native Provider Tools inset lists now declare the shared border token on all
+  four physical sides. The former aggregate declaration painted the list's 1px
+  outline black in dark mode. Existing transparent surface, update rows,
+  disclosures, margins, and radius remain unchanged.
+- The focused Settings Provider Tools suite passes 4/4, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `4692`, window `113374`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real `/settings/providers` route. The
+  Provider Tools list resolved every physical edge to
+  `rgba(252,252,252,0.0705882)` at 1px. The exact Native error/warning console was
+  empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `12359b378de39321998c2b557ac1e1d62694b94bdde31cba0de93400bacaff95`.

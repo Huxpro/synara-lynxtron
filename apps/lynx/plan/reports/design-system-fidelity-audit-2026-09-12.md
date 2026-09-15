@@ -2096,3 +2096,18 @@ values and unresolved Native custom properties.
   exact Native console was empty. No screenshot was retained; staged bundle
   SHA-256 is
   `b5f19cf67143aeddf98299eaab629148cc3f6af046bedae27114e15dfe73c34f`.
+
+## Settings Provider Tools list physical-border follow-up
+
+- Native Provider Tools inset lists now set the shared border token on all four
+  physical sides. The aggregate declaration had painted the list's 1px outline
+  black in dark mode. Existing transparent surface, update rows, disclosures,
+  margins, and radius remain unchanged. The focused Settings Provider Tools suite
+  passes 4/4, and the full Lynx/Desktop production build passes on npm Lynxtron
+  0.0.22.
+- Exact-owned PID `4692` / window `113374`, PID-derived `localhost:8901`,
+  session 1, rendered the real `/settings/providers` route. The Provider Tools
+  list resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px. The
+  exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `12359b378de39321998c2b557ac1e1d62694b94bdde31cba0de93400bacaff95`.

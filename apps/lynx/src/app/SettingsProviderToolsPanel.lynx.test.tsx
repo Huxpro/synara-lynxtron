@@ -164,7 +164,7 @@ describe('Settings Provider tools fidelity', () => {
       /\.SettingsProviderToolsSummaryRow\s*\{[^}]*padding:\s*var\(--app-density-settings-row-padding-y,\s*10px\) 12px;[^}]*gap:\s*20px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsProviderToolsList\s*\{[^}]*margin:\s*6px 12px 12px;[^}]*border-radius:\s*10px;/s
+      /\.SettingsProviderToolsList\s*\{[^}]*margin:\s*6px 12px 12px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;/s
     );
     expect(styles).toMatch(
       /\.SettingsProviderToolsList--updates\s*\{[^}]*margin:\s*16px 0 0;/s
