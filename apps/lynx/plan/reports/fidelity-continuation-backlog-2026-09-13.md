@@ -2015,3 +2015,18 @@ state is absent from the paired component matrix.
   `rgba(252,252,252,0.0705882)` at 1px. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `2550a25c9eb05e4c30f68f5abda35348c63750adfeddcefce878fb73c9693a1a`.
+
+### DS-115 — COMPLETE
+
+- Native Settings General cards now declare the shared border token on all four
+  physical sides. The former aggregate declaration painted the card's 1px outer
+  edge black in dark mode; the existing row separators already used safe bottom
+  longhands and remain unchanged.
+- The focused Settings section-label suite passes 6/6, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `23807`, window `111732`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real `/settings/general` route. The
+  card resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px over
+  its transparent surface. The exact Native error/warning console was empty, no
+  screenshot was retained, and the final staged bundle SHA-256 is
+  `4f7358c2d80c8f7822bd340c34316cf18861c1437cf6457b720d9fa4e6bb27ce`.

@@ -1854,3 +1854,17 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.0705882)` at 1px. The exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `2550a25c9eb05e4c30f68f5abda35348c63750adfeddcefce878fb73c9693a1a`.
+
+## Settings General card physical-border follow-up
+
+- Native Settings General cards now set the shared border token on all four
+  physical sides. The aggregate declaration had painted the 1px outer edge black
+  in dark mode; row separators already used safe bottom longhands and remain
+  unchanged. The focused Settings section-label suite passes 6/6, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `23807` / window `111732`, PID-derived `localhost:8901`,
+  session 1, rendered the real `/settings/general` route. The card resolved every
+  physical edge to `rgba(252,252,252,0.0705882)` at 1px over its transparent
+  surface. The exact Native console was empty. No screenshot was retained; staged
+  bundle SHA-256 is
+  `4f7358c2d80c8f7822bd340c34316cf18861c1437cf6457b720d9fa4e6bb27ce`.
