@@ -205,7 +205,7 @@ describe('Composer token icon fidelity', () => {
     );
     expect(styles).toContain('.ComposerContextWindowPopoverLynx {');
     expect(styles).toMatch(
-      /\.ComposerContextWindowPopoverLynx\s*\{[^}]*width:\s*323px;[^}]*max-width:\s*calc\(100vw - 32px\);/s
+      /\.ComposerContextWindowPopoverLynx\s*\{[^}]*width:\s*323px;[^}]*max-width:\s*calc\(100vw - 32px\);[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).toContain('padding: 8px 12px;');
     expect(styles).toContain('border-radius: 12px;');

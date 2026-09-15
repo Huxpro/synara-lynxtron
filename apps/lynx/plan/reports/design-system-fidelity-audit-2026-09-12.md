@@ -1777,3 +1777,18 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.0705882)`, 1px solid, over `rgb(23,23,23)`. The exact
   Native console was empty. No screenshot was retained; staged bundle SHA-256 is
   `920a12495fd49b8f90eaa2f6c8482b7dc0dee621b30113063afd8ac05ad8836e`.
+
+## Composer context-window popover physical-border follow-up
+
+- The Native Composer context-window popover now uses explicit one-pixel solid
+  border geometry and the shared border token on all four physical sides. The
+  former custom-property shorthand painted every edge black in dark mode while
+  the under-surface fill stayed correct. Existing sizing, radius, rows, and shadow
+  remain unchanged. The focused Composer token-icon suite passes 7/7, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `97576` / window `110944`, PID-derived `localhost:8901`,
+  session 1, rendered the real open context-window meter story. Every physical
+  edge resolved to `rgba(252,252,252,0.0705882)`, 1px solid, over
+  `rgb(16,16,16)`. The exact Native console was empty. No screenshot was retained;
+  staged bundle SHA-256 is
+  `75bb8e85a0c00217f393f4aa4ec6213e9d319cd899c4e5edab56877d1e7f9e65`.

@@ -1930,3 +1930,19 @@ state is absent from the paired component matrix.
   `rgb(23,23,23)` surface. The exact Native error/warning console was empty, no
   screenshot was retained, and the final staged bundle SHA-256 is
   `920a12495fd49b8f90eaa2f6c8482b7dc0dee621b30113063afd8ac05ad8836e`.
+
+### DS-110 — COMPLETE
+
+- The Native Composer context-window popover now declares a one-pixel solid
+  border and the shared color on all four physical sides. The former
+  custom-property shorthand rendered every edge black in dark mode while the
+  under-surface fill remained correct. Existing sizing, radius, rows, and shadow
+  remain unchanged.
+- The focused Composer token-icon suite passes 7/7, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `97576`, window `110944`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real open context-window meter story.
+  Every physical edge resolved to `rgba(252,252,252,0.0705882)`, 1px solid, over
+  the unchanged `rgb(16,16,16)` surface. The exact Native error/warning console
+  was empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `75bb8e85a0c00217f393f4aa4ec6213e9d319cd899c4e5edab56877d1e7f9e65`.
