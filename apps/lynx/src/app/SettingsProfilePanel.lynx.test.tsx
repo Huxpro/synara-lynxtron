@@ -192,6 +192,12 @@ describe('Settings Profile fidelity', () => {
       /\.SettingsProfileEditAvatar\s*\{[^}]*width:\s*80px;[^}]*height:\s*80px;[^}]*border-radius:\s*40px;/s
     );
     expect(styles).toMatch(
+      /\.SettingsProfileEditFields\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.SettingsProfileHandleInput\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
       /\.SettingsProfileColorOption\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;/s
     );
     expect(styles).toMatch(

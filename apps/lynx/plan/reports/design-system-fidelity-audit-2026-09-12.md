@@ -1881,3 +1881,18 @@ values and unresolved Native custom properties.
   every physical edge to `rgba(252,252,252,0.0705882)` at 1px. The exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `adb7cc44a9c6763df8fd0909d4ed51409ec50a66e18a15c7265ca2c9b3f5623c`.
+
+## Settings Profile edit-field physical-border follow-up
+
+- Native Profile edit fields and the composed username handle input now set the
+  shared border token on all four physical sides. The aggregate declarations had
+  painted their 1px outlines black in dark mode. Existing surfaces, internal
+  field separators, radii, and input behavior remain unchanged. The focused
+  Settings Profile suite passes 5/5, and the full Lynx/Desktop production build
+  passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `60150` / window `111909`, PID-derived `localhost:8901`,
+  session 1, rendered `/settings/profile` and opened Edit Profile through Computer
+  Use. The fields container and handle input both resolved every physical edge to
+  `rgba(252,252,252,0.0705882)` at 1px. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `aa28a9d2b8cbac015a550e4fd74acf9702ffa63a70eb6fefdb15fa0628b9b0e5`.
