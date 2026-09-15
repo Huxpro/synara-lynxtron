@@ -186,7 +186,7 @@ describe('Settings Provider tools fidelity', () => {
     );
     expect(panelSource).toContain('<Input\n        nativeInput');
     expect(styles).toMatch(
-      /\.SettingsProviderToolsBooleanField\s*\{[^}]*padding:\s*8px 12px;[^}]*border-radius:\s*6px;/s
+      /\.SettingsProviderToolsBooleanField\s*\{[^}]*padding:\s*8px 12px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);[^}]*border-radius:\s*6px;/s
     );
     expect(styles).not.toContain(':first-child');
     expect(styles).not.toContain(':not(');

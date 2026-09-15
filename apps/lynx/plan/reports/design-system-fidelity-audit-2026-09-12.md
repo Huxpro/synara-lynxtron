@@ -2450,3 +2450,20 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.00392157)` surface. The exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `15a86356cd07d61513d6d3c3fe77d1ab0dc2d13b990a50edc2adc270852c552c`.
+
+## Provider Tools boolean-field physical-border follow-up
+
+- Native Provider Tools boolean fields now set the shared border token on all
+  four physical sides. The aggregate declaration had retained 1px widths but
+  produced black colors and empty physical styles in dark mode. Existing field
+  copy, transparent surface, switch semantics, disclosure layout, and provider
+  settings behavior remain unchanged. The focused Settings Provider Tools suite
+  passes 4/4, and the full Lynx/Desktop production build passes on npm Lynxtron
+  0.0.22.
+- Exact-owned PID `72735` / window `115740`, PID-derived `localhost:8901`, session
+  1, opened the real OpenCode provider-tools disclosure through Settings
+  Providers. Its experimental WebSockets boolean field resolved every physical
+  edge to `rgba(252,252,252,0.0705882)` at 1px solid over the unchanged transparent
+  surface. The exact Native console was empty. No screenshot was retained; staged
+  bundle SHA-256 is
+  `48ce42a66cfd31c990807fa51a5c7ee4d5d42426ec4cacff39ec6487c671f372`.
