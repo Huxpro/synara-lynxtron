@@ -10,10 +10,10 @@ describe('CheckboxIndicator', () => {
   it('uses the Electron light-border token for its unselected outline', () => {
     const styles = readFileSync(new URL('./primitives.css', import.meta.url), 'utf8');
     expect(styles).toMatch(
-      /\.LxCheckboxIndicator\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-color:\s*var\(--color-border-light\);/s
+      /\.LxCheckboxIndicator\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--color-border-light\);[^}]*border-right-color:\s*var\(--color-border-light\);[^}]*border-bottom-color:\s*var\(--color-border-light\);[^}]*border-left-color:\s*var\(--color-border-light\);/s
     );
     expect(styles).toMatch(
-      /\.LxCheckboxIndicator--selected\s*\{[^}]*border-color:\s*var\(--primary\);/s
+      /\.LxCheckboxIndicator--selected\s*\{[^}]*border-top-color:\s*var\(--primary\);[^}]*border-right-color:\s*var\(--primary\);[^}]*border-bottom-color:\s*var\(--primary\);[^}]*border-left-color:\s*var\(--primary\);/s
     );
   });
 

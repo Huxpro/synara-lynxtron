@@ -484,13 +484,16 @@
   justify-content: center;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--color-border-light);
+  border-top-color: var(--color-border-light);
+  border-right-color: var(--color-border-light);
+  border-bottom-color: var(--color-border-light);
+  border-left-color: var(--color-border-light);
   border-radius: 4px;
   background-color: transparent;
 }
 
 .LxCheckboxIndicator--sm { width: 14px; height: 14px; }
-.LxCheckboxIndicator--selected { border-color: var(--primary); background-color: var(--primary); }
+.LxCheckboxIndicator--selected { border-top-color: var(--primary); border-right-color: var(--primary); border-bottom-color: var(--primary); border-left-color: var(--primary); background-color: var(--primary); }
 .LxCheckboxIndicatorIcon { width: 12px; height: 12px; }
 .LxCheckboxIndicator--sm .LxCheckboxIndicatorIcon { width: 10px; height: 10px; }
 .LxCheckboxIndicatorMixedBar { width: 6px; height: 1px; background-color: var(--primary-foreground); }
