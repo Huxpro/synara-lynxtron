@@ -679,7 +679,10 @@
   border-width: 1px;
   border-bottom-width: 0;
   border-style: solid;
-  border-color: var(--color-border-light, var(--border));
+  border-left-color: var(--color-border-light, var(--border));
+  border-right-color: var(--color-border-light, var(--border));
+  border-top-color: var(--color-border-light, var(--border));
+  border-bottom-color: var(--color-border-light, var(--border));
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
   background-color: var(--color-background-surface-under, var(--popover));

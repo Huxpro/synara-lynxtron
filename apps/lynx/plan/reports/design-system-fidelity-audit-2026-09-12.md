@@ -1732,3 +1732,18 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.137255)` over the unchanged `rgb(69,69,69)` fill. The exact
   Native console was empty. No screenshot was retained; staged bundle SHA-256 is
   `ce08677976f70b8081d289fca5a9a5bdab24fd4d60c4f24552fc7f2c0bb1a23c`.
+
+## Shared Command panel physical-border follow-up
+
+- Native Command panels now set the light border token on all four physical
+  sides while retaining the intentional zero-width bottom edge. The aggregate
+  declaration had parsed correctly while the three visible edges stayed black.
+  The outer Command Dialog already inherits the corrected shared Dialog sides.
+  The focused Native Command suite passes 11/11, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `19515` / window `110714`, PID-derived `localhost:8901`,
+  session 1, rendered the real Sidebar command palette. Both outer and inner
+  physical colors resolved to `rgba(252,252,252,0.0431373)`, with the inner
+  bottom edge retaining its 0px width. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `2a82079460071b5515cea772b74b03d5bfdb54256272118ad766308bdeddb114`.

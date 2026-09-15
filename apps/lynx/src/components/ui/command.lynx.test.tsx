@@ -164,7 +164,7 @@ describe('Lynx CommandItem interaction contract', () => {
       /\.LxCommandList\s*\{[^}]*margin-top:\s*7px;/s
     );
     expect(primitiveStyles).toMatch(
-      /\.LxCommandPanel\s*\{[^}]*border-top-left-radius:\s*14px;[^}]*border-top-right-radius:\s*14px;[^}]*box-shadow:\s*0 1px 2px 0 rgba\(0,\s*0,\s*0,\s*0\.05\);/s
+      /\.LxCommandPanel\s*\{[^}]*border-bottom-width:\s*0;[^}]*border-left-color:\s*var\(--color-border-light, var\(--border\)\);[^}]*border-right-color:\s*var\(--color-border-light, var\(--border\)\);[^}]*border-top-color:\s*var\(--color-border-light, var\(--border\)\);[^}]*border-bottom-color:\s*var\(--color-border-light, var\(--border\)\);[^}]*border-top-left-radius:\s*14px;[^}]*border-top-right-radius:\s*14px;[^}]*box-shadow:\s*0 1px 2px 0 rgba\(0,\s*0,\s*0,\s*0\.05\);/s
     );
     expect(primitiveStyles).toMatch(
       /\.LxCommand \.LxCommandItem\s*\{[^}]*padding:\s*6px 10px;[^}]*border-radius:\s*10px;/s

@@ -1879,3 +1879,20 @@ state is absent from the paired component matrix.
   fill. The exact Native error/warning console was empty, no screenshot was
   retained, and the final staged bundle SHA-256 is
   `ce08677976f70b8081d289fca5a9a5bdab24fd4d60c4f24552fc7f2c0bb1a23c`.
+
+### DS-107 — COMPLETE
+
+- Native Command panels now declare the light border token on all four physical
+  sides while retaining a zero-width bottom edge. The former aggregate
+  declaration resolved correctly in DevTool but painted the three visible inner
+  panel edges black. The outer Command Dialog already inherited the corrected
+  shared Dialog sides and remains unchanged.
+- The focused Native Command suite passes 11/11, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `19515`, window `110714`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real open Sidebar command palette.
+  The outer Dialog and inner Command panel both resolved all physical colors to
+  `rgba(252,252,252,0.0431373)`, while the panel retained a 0px bottom border.
+  The exact Native error/warning console was empty, no screenshot was retained,
+  and the final staged bundle SHA-256 is
+  `2a82079460071b5515cea772b74b03d5bfdb54256272118ad766308bdeddb114`.
