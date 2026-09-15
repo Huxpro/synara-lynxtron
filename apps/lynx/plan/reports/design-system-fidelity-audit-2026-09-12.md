@@ -2206,3 +2206,22 @@ values and unresolved Native custom properties.
   and `0 4px 12px #00000028` shadow. The exact Native console was empty. No
   screenshot was retained; staged bundle SHA-256 is
   `0b742a95bbfeebaeb2d39033a7a75f49a764e9eba50ec538cd1c71dde20cf3cf`.
+
+## Kanban New task control physical-border follow-up
+
+- Native Kanban New task project chips, task textarea, and draft switch now set
+  their respective border tokens on all four physical sides. The aggregate
+  declarations had painted all three 1px outlines black in dark mode, including
+  the selected-project override. Existing dialog chrome, selection surface,
+  textarea surface, switch surface/thumb, and interactions remain unchanged. The
+  lightweight focused Kanban control suite passes 2/2, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22. The full dialog suite remains
+  blocked before execution by the upstream Rstest `lynx-ui-dialog` vendor
+  transform issue; no product assertion failed.
+- Exact-owned PID `3535` / window `114012`, PID-derived `localhost:8901`, session
+  1, opened New task through the real `/kanban` action. The selected project
+  resolved every edge to `rgb(252,252,252)`, the textarea to
+  `rgba(252,252,252,0.0705882)`, and the off switch to
+  `rgba(252,252,252,0.137255)`, all at 1px. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `95a137f61c17661d78140963fcac45f4c220ba5a700171f75da5085327e1189f`.

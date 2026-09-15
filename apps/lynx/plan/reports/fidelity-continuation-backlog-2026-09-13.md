@@ -2401,3 +2401,23 @@ state is absent from the paired component matrix.
   and `0 4px 12px #00000028` shadow. The exact Native error/warning console was
   empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `0b742a95bbfeebaeb2d39033a7a75f49a764e9eba50ec538cd1c71dde20cf3cf`.
+
+### DS-138 — COMPLETE
+
+- Native Kanban New task project chips, task textarea, and draft switch now
+  declare their respective border tokens on all four physical sides. The former
+  aggregate declarations painted all three 1px outlines black in dark mode,
+  including the selected-project override. Existing dialog chrome, selection
+  surface, textarea surface, switch surface/thumb, and interactions remain
+  unchanged.
+- The lightweight focused Kanban control suite passes 2/2, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22. The full dialog
+  suite is currently blocked before test execution by the upstream Rstest
+  `lynx-ui-dialog` vendor transform issue; no product assertion failed.
+- Exact-owned Lynxtron PID `3535`, window `114012`, PID-derived DevTool
+  `localhost:8901`, session 1, opened New task through the real `/kanban` action.
+  The selected project resolved every edge to `rgb(252,252,252)`, the textarea to
+  `rgba(252,252,252,0.0705882)`, and the off switch to
+  `rgba(252,252,252,0.137255)`, all at 1px. The exact Native error/warning console
+  was empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `95a137f61c17661d78140963fcac45f4c220ba5a700171f75da5085327e1189f`.

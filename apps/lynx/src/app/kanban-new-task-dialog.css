@@ -72,13 +72,21 @@
   display: flex;
   align-items: center;
   padding: 0 10px;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
   border-radius: 8px;
   background-color: var(--background);
 }
 
 .KanbanNewTaskProject--selected {
-  border-color: var(--foreground);
+  border-left-color: var(--foreground);
+  border-right-color: var(--foreground);
+  border-top-color: var(--foreground);
+  border-bottom-color: var(--foreground);
   background-color: var(--accent);
 }
 
@@ -102,7 +110,12 @@
   min-height: 112px;
   max-height: 224px;
   padding: 10px 12px;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
   border-radius: 10px;
   color: var(--foreground);
   background-color: var(--background);
@@ -142,7 +155,12 @@
   width: 32px;
   height: 20px;
   padding: 1px;
-  border: 1px solid var(--settings-switch-border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--settings-switch-border);
+  border-right-color: var(--settings-switch-border);
+  border-top-color: var(--settings-switch-border);
+  border-bottom-color: var(--settings-switch-border);
   border-radius: 10px;
   background-color: var(--settings-switch-off);
 }
