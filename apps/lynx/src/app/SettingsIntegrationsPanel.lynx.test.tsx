@@ -170,7 +170,7 @@ describe('Settings Integrations fidelity', () => {
       'className="SettingsIntegrationsCodeBlock SettingsIntegrationsSetupPrompt"'
     );
     expect(styles).toMatch(
-      /\.SettingsIntegrationsSetupRow\s*\{[^}]*justify-content:\s*space-between;[^}]*border-bottom:\s*1px solid var\(--border\);/s
+      /\.SettingsIntegrationsSetupRow\s*\{[^}]*justify-content:\s*space-between;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
       /\.SettingsIntegrationsCodeBlock,\s*\.SettingsIntegrationsExample\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);/s

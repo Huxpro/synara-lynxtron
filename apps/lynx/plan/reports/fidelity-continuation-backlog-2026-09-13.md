@@ -2918,3 +2918,20 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `84eb17f04abe1444d5ec4ec1da9d0ebbdf68719af45eaf0eb9fd4109c6ddb0eb`.
+
+### DS-168 — COMPLETE
+
+- Native Settings Integrations pairing setup rows now declare their bottom
+  dividers with explicit width, style, and shared border color. The former
+  `border-bottom` shorthand retained 1px widths but produced black colors and
+  empty physical styles in dark mode. Existing waiting state, setup prompt,
+  manual setup disclosure, example action, and step geometry remain unchanged.
+- The focused Settings Integrations suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `44307`, window `117198`, PID-derived DevTool
+  `localhost:8901`, session 1, entered the pairing setup through the real Create
+  connection action. All four setup-row bottom edges resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `78d934ff6e43a4f7175dfeb370ec6325711b484550045a4c5fec5d5a4ea0ccb3`.

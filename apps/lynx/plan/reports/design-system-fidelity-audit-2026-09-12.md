@@ -2691,3 +2691,19 @@ values and unresolved Native custom properties.
   solid while inactive edges retained zero width. The exact Native console was
   empty. No screenshot was retained; staged bundle SHA-256 is
   `84eb17f04abe1444d5ec4ec1da9d0ebbdf68719af45eaf0eb9fd4109c6ddb0eb`.
+
+## Settings Integrations setup-step physical-border follow-up
+
+- Native Settings Integrations pairing setup rows now set their bottom dividers
+  with explicit width, style, and shared border color. The `border-bottom`
+  shorthand had retained 1px widths but produced black colors and empty physical
+  styles in dark mode. Existing waiting state, setup prompt, manual setup
+  disclosure, example action, and step geometry remain unchanged. The focused
+  Settings Integrations suite passes 3/3, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `44307` / window `117198`, PID-derived `localhost:8901`, session
+  1, entered the pairing setup through the real Create connection action. All
+  four setup-row bottom edges resolved to `rgba(252,252,252,0.0705882)` at 1px
+  solid. The exact Native console was empty. No screenshot was retained; staged
+  bundle SHA-256 is
+  `78d934ff6e43a4f7175dfeb370ec6325711b484550045a4c5fec5d5a4ea0ccb3`.
