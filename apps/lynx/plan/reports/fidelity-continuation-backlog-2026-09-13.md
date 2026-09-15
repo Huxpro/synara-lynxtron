@@ -2078,3 +2078,19 @@ state is absent from the paired component matrix.
   `0 0 0 2px #171717` outer ring. The exact Native error/warning console was empty,
   no screenshot was retained, and the final staged bundle SHA-256 is
   `023ffd2f55978401e26ca5eafa1b70d1fcdd35b04b00819f4c7375a6956a0cff`.
+
+### DS-119 — COMPLETE
+
+- Native Profile Share previews now declare the shared border token on all four
+  physical sides. The former aggregate declaration painted a pure-black 1px edge
+  around the white export canvas in dark mode. Existing preview dimensions, white
+  export surface, radius, and generated card content remain unchanged.
+- The focused Settings Profile suite passes 5/5, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `13387`, window `112187`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered `/settings/profile` and opened Share
+  through Computer Use. The preview resolved every physical edge to
+  `rgba(252,252,252,0.0705882)` at 1px over its unchanged white surface. The exact
+  Native error/warning console was empty, no screenshot was retained, and the
+  final staged bundle SHA-256 is
+  `71849d72761c46f7a94a98b322a99f3f7fcde0fa3c634591069b724fbd772512`.

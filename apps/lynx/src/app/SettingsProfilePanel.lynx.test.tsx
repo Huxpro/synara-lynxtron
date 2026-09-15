@@ -293,7 +293,7 @@ describe('Settings Profile fidelity', () => {
       /\.LxDialogPopup\.SettingsProfileShareDialog\s*\{[^}]*width:\s*560px;[^}]*border-radius:\s*24px;/s
     );
     expect(styles).toMatch(
-      /\.SettingsProfileSharePreview\s*\{[^}]*width:\s*100%;[^}]*height:\s*246px;[^}]*border-radius:\s*16px;/s
+      /\.SettingsProfileSharePreview\s*\{[^}]*width:\s*100%;[^}]*height:\s*246px;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*16px;/s
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.LxDialogPopup\.SettingsProfileShareDialog\s*\{[^}]*height:\s*calc\(100vh - 32px\);[^}]*max-height:\s*calc\(100vh - 32px\);/s
