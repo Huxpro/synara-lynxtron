@@ -2384,21 +2384,6 @@ values and unresolved Native custom properties.
   Native console was empty. No screenshot was retained; staged bundle SHA-256 is
   `d2ae203e1fb6e62509eae25bad4fd9d41936ebca87d26d6cdfc9aae6b82bb39c`.
 
-## Composer expanded-image physical-border follow-up
-
-- The Native composer expanded-image frame now sets the heavy border token on
-  all four physical sides. The aggregate declaration had retained 1px widths but
-  produced black colors and empty physical styles in dark mode. Existing modal
-  backdrop, image sizing, caption, navigation, close behavior, surface, and
-  shadow remain unchanged. The focused expanded-image overlay suite passes 3/3,
-  and the full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
-- Exact-owned PID `71904` / window `115102`, PID-derived `localhost:8901`, session
-  1, selected a real local PNG through the Native file picker and opened it
-  through the composer thumbnail. The frame resolved every physical edge to
-  `rgba(252,252,252,0.0705882)` at 1px solid over the unchanged `rgb(23,23,23)`
-  surface. The exact Native console was empty. No screenshot was retained; staged
-  bundle SHA-256 is
-  `241b6ebf4cab6b5e6fc6d98235d2fe09ac572a4fd0957dc994d9d6427f02ab2e`.
 
 ## Composer expanded-image physical-border follow-up
 
