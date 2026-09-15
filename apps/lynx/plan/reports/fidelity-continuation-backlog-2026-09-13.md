@@ -2000,3 +2000,18 @@ state is absent from the paired component matrix.
   over its unchanged 3.5% white fill. The exact Native error/warning console was
   empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `6b357f35e9473cca4b96157717dd7faf3adccd3460feba775245519a450c1dd2`.
+
+### DS-114 — COMPLETE
+
+- Native Settings provider-picker cards and provider rows now declare the shared
+  border token on all four physical sides. Their previous aggregate declarations
+  painted the 1px edges black in dark mode. Existing transparent surfaces, radii,
+  typography, ordering actions, and Switch controls remain unchanged.
+- The focused Settings section-label suite passes 6/6, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `4883`, window `111601`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real `/settings/providers` route. The
+  outer picker card and a provider row both resolved every physical edge to
+  `rgba(252,252,252,0.0705882)` at 1px. The exact Native error/warning console
+  was empty, no screenshot was retained, and the final staged bundle SHA-256 is
+  `2550a25c9eb05e4c30f68f5abda35348c63750adfeddcefce878fb73c9693a1a`.

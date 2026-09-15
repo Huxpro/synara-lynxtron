@@ -240,7 +240,10 @@ describe('Lynx Settings section labels', () => {
       /\.SharedSettingsProviderPickerList\s*\{[^}]*padding:\s*16px 12px 10px;[^}]*gap:\s*8px;/s
     );
     expect(providerStyles).toMatch(
-      /\.SharedSettingsProviderPickerItem\s*\{[^}]*min-height:\s*42px;[^}]*padding:\s*10px 12px;[^}]*border-radius:\s*10px;/s
+      /\.SharedSettingsProviderPickerCard\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(providerStyles).toMatch(
+      /\.SharedSettingsProviderPickerItem\s*\{[^}]*min-height:\s*42px;[^}]*padding:\s*10px 12px;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;/s
     );
     const providerSource = readFileSync(
       new URL('./SettingsProviderPickerCompositionElements.lynx.tsx', import.meta.url),

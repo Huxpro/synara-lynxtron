@@ -1839,3 +1839,18 @@ values and unresolved Native custom properties.
   3.5% white fill. The exact Native console was empty. No screenshot was retained;
   staged bundle SHA-256 is
   `6b357f35e9473cca4b96157717dd7faf3adccd3460feba775245519a450c1dd2`.
+
+## Settings provider-picker physical-border follow-up
+
+- Native Settings provider-picker cards and provider rows now set the shared
+  border token on all four physical sides. The aggregate declarations had painted
+  their 1px edges black in dark mode. Existing transparent surfaces, radii,
+  typography, ordering actions, and Switch controls remain unchanged. The focused
+  Settings section-label suite passes 6/6, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `4883` / window `111601`, PID-derived `localhost:8901`, session
+  1, rendered the real `/settings/providers` route. The outer picker card and a
+  provider row both resolved every physical edge to
+  `rgba(252,252,252,0.0705882)` at 1px. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `2550a25c9eb05e4c30f68f5abda35348c63750adfeddcefce878fb73c9693a1a`.
