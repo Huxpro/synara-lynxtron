@@ -101,7 +101,9 @@
 .MdBlockquote {
   display: flex;
   flex-direction: column;
-  border-left: 2px solid var(--border);
+  border-left-width: 2px;
+  border-left-style: solid;
+  border-left-color: var(--border);
   padding-left: 13px;
   margin-top: 9px;
   margin-bottom: 9px;

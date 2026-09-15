@@ -2558,3 +2558,19 @@ state is absent from the paired component matrix.
   sides remained zero-width. The exact Native error/warning console was empty,
   no screenshot was retained, and the final staged bundle SHA-256 is
   `c88747390ba63be96faea678f2e399126a312262b5ca748e7e3ba924e3916bb2`.
+
+### DS-147 — COMPLETE
+
+- Native Markdown blockquotes now declare their left accent as explicit width,
+  style, and shared border color. The former `border-left` shorthand retained a
+  2px width but produced a black color and empty physical style in dark mode.
+  Existing quote spacing, muted copy, and layout remain unchanged.
+- The focused Markdown suite passes 8/8, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `87309`, window `114744`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered two blockquotes created through the real
+  Native composer/provider path. Both left accents resolved to
+  `rgba(252,252,252,0.0705882)` at 2px solid. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `273538252dde3241179216ba9d92bfae201656cc767acc702b2d899e3fe819fb`.

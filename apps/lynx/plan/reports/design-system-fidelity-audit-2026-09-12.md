@@ -2352,3 +2352,18 @@ values and unresolved Native custom properties.
   zero-width. The exact Native console was empty. No screenshot was retained;
   staged bundle SHA-256 is
   `c88747390ba63be96faea678f2e399126a312262b5ca748e7e3ba924e3916bb2`.
+
+## Markdown blockquote physical-border follow-up
+
+- Native Markdown blockquotes now set their left accent with explicit width,
+  style, and shared border color. The `border-left` shorthand had retained a 2px
+  width but produced a black color and empty physical style in dark mode. Existing
+  quote spacing, muted copy, and layout remain unchanged. The focused Markdown
+  suite passes 8/8, and the full Lynx/Desktop production build passes on npm
+  Lynxtron 0.0.22.
+- Exact-owned PID `87309` / window `114744`, PID-derived `localhost:8901`, session
+  1, rendered two blockquotes created through the real Native composer/provider
+  path. Both left accents resolved to `rgba(252,252,252,0.0705882)` at 2px solid.
+  The exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `273538252dde3241179216ba9d92bfae201656cc767acc702b2d899e3fe819fb`.
