@@ -1784,3 +1784,20 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `2c32a5ed2d0045829c0dfe706228288e9310060f01f38d2b733e042acb269812`.
+
+### DS-100 — COMPLETE
+
+- Native Checkbox now declares its four physical border colors explicitly in
+  both unchecked and selected states. The prior aggregate custom-property color
+  appeared correct in DevTool but left every physical edge black in Native dark
+  mode. Existing 16px/14px geometry, theme-aware unchecked fill, and check/mixed
+  indicators remain unchanged.
+- The focused Native Checkbox suite passes 4/4, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `37895`, window `110189`, PID-derived DevTool
+  `localhost:8901`, session 1, resolved all four unchecked edges to
+  `rgba(252,252,252,0.0431373)`. Selecting checked through Computer Use resolved
+  all four edges and the fill to `rgb(252,252,252)`. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `2c32a5ed2d0045829c0dfe706228288e9310060f01f38d2b733e042acb269812`.
