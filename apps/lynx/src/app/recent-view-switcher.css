@@ -16,7 +16,12 @@
   width: 544px;
   max-width: calc(100vw - 32px);
   overflow: hidden;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
   border-radius: 12px;
   background-color: var(--popover);
   color: var(--popover-foreground);
@@ -81,7 +86,12 @@
 .RecentViewSwitcherCurrent {
   flex-shrink: 0;
   padding: 0 6px;
-  border: 1px solid var(--border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
   border-radius: 999px;
   background-color: var(--muted);
   color: var(--muted-foreground);

@@ -49,6 +49,20 @@ describe('Native recent-view switcher', () => {
     expect(source).not.toContain('<SettingsIcon');
   });
 
+  it('keeps the popup and current pill on explicit physical borders', () => {
+    const styles = readFileSync(
+      new URL('./recent-view-switcher.css', import.meta.url),
+      'utf8'
+    );
+
+    expect(styles).toMatch(
+      /\.RecentViewSwitcherPopup\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.RecentViewSwitcherCurrent\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+  });
+
   it('preserves pinned and split view metadata as visible trailing icons', () => {
     render(
       <RecentViewSwitcherLynx

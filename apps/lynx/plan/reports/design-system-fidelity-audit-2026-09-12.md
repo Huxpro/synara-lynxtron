@@ -2159,3 +2159,19 @@ values and unresolved Native custom properties.
   shadows. The exact Native console was empty. No screenshot was retained; staged
   bundle SHA-256 is
   `f97f9f16c6f70c53961aa564917a1cd04f780c2924300107276d62006473f061`.
+
+## Recent View switcher physical-border follow-up
+
+- Native Recent View switcher popups and Current pills now set the shared border
+  token on all four physical sides. The aggregate declarations had painted both
+  1px outlines black in dark mode. Existing popover/muted surfaces, row selection,
+  metadata, keyboard hints, and popup shadow remain unchanged. The focused Recent
+  View switcher suite passes 4/4, and the full Lynx/Desktop production build
+  passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `9121` / window `113749`, PID-derived `localhost:8901`, session
+  1, rendered the real Components Lab Recent View switcher. Popup and Current pill
+  both resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px while
+  retaining the existing surfaces and `0 24px 48px #0000004c` popup shadow. The
+  exact Native console was empty. No screenshot was retained; staged bundle
+  SHA-256 is
+  `addbaee8b37272e4a9be2bdac0edd3fd83aae70c0cdf3ffc6c554b30b1f04f3a`.
