@@ -97,7 +97,12 @@
 
 .SharedKanbanColumnEmpty {
   padding: 16px 12px;
-  border: 1px dashed var(--border);
+  border-width: 1px;
+  border-style: dashed;
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
   border-radius: 8px;
 }
 

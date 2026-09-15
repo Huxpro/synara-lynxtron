@@ -2317,3 +2317,20 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `78a16c325cb9cfb25426c611c45aecbf2c1e725ded6ce7fd9d2794216d890e6e`.
+
+### DS-133 — COMPLETE
+
+- Native Kanban empty-column dropzones now declare the shared border token on
+  all four physical sides while preserving the dashed outline. The former
+  aggregate declaration painted empty Draft/In Progress columns black in dark
+  mode. Existing column layout, padding, radius, and empty copy remain unchanged.
+- The focused Kanban column suite passes 1/1, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22. The populated Kanban card was also checked
+  and already resolved its dark override correctly, so it was intentionally left
+  unchanged.
+- Exact-owned Lynxtron PID `57994`, window `113544`, PID-derived DevTool
+  `localhost:8901`, session 1, opened a real project from `/kanban`. An empty
+  column resolved every physical edge to `rgba(252,252,252,0.0705882)` at 1px
+  dashed. The exact Native error/warning console was empty, no screenshot was
+  retained, and the final staged bundle SHA-256 is
+  `99031d6153ebe0646999faa45717dc5c5f36aa92e87fa9222ab8c79405ca311f`.

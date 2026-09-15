@@ -31,5 +31,8 @@ describe('Kanban column icon fidelity', () => {
     expect(styles).toMatch(
       /\.SharedKanbanColumnStatusIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*margin-left:\s*6px;[^}]*flex-shrink:\s*0;/s
     );
+    expect(styles).toMatch(
+      /\.SharedKanbanColumnEmpty\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*dashed;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*8px;/s
+    );
   });
 });
