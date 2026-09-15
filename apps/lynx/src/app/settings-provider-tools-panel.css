@@ -27,7 +27,9 @@
 }
 
 .SettingsProviderToolsSummaryRow--continued {
-  border-bottom: 1px solid var(--border);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
 }
 
 .SettingsProviderToolsSummaryRow--updates {

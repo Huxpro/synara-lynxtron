@@ -2467,3 +2467,18 @@ values and unresolved Native custom properties.
   surface. The exact Native console was empty. No screenshot was retained; staged
   bundle SHA-256 is
   `48ce42a66cfd31c990807fa51a5c7ee4d5d42426ec4cacff39ec6487c671f372`.
+
+## Provider Tools summary-divider physical-border follow-up
+
+- The Native Provider Tools summary divider now sets its bottom width, style,
+  and shared border color explicitly. The `border-bottom` shorthand had kept the
+  1px width but produced a black color and empty physical style in dark mode.
+  Existing update-check content, status copy, spacing, and surrounding card remain
+  unchanged; the empty update list was not modified without a rendered row. The
+  focused Settings Provider Tools suite passes 4/4, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `13336` / window `115830`, PID-derived `localhost:8901`, session
+  1, rendered the real Settings Providers summary. Its bottom divider resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native console was empty.
+  No screenshot was retained; staged bundle SHA-256 is
+  `78d8c7f23548dce03783b94e830ecd0dfc30294ebd52a114f613e555c701b8ea`.
