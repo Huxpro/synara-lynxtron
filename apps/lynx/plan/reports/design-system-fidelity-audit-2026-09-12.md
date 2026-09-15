@@ -2048,3 +2048,18 @@ values and unresolved Native custom properties.
   resolved every edge to `rgba(252,252,252,0.576471)` at 1px. The exact Native
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `42224cc6c28be745cdbe8a7f34acba0f8b35f349629dff6443db0b6c25c39911`.
+
+## Keyboard Shortcuts card physical-border follow-up
+
+- Native Keyboard Shortcuts list cards and their shared empty-state shell now set
+  the shared border token on all four physical sides. The aggregate declaration
+  had painted the populated card's 1px outline black in dark mode. Existing row
+  dividers, header, empty-state dash style, spacing, and radius remain unchanged.
+  The focused Keyboard Shortcuts anatomy suite passes 1/1, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `27086` / window `113043`, PID-derived `localhost:8901`,
+  session 1, entered Keyboard Shortcuts through the real Settings sidebar. The
+  populated list card resolved every physical edge to
+  `rgba(252,252,252,0.0705882)` at 1px. The exact Native console was empty. No
+  screenshot was retained; staged bundle SHA-256 is
+  `b46b696f82111b5c749b6c46c4da4507a5df38235c6b57f5570a8a25481f4fed`.

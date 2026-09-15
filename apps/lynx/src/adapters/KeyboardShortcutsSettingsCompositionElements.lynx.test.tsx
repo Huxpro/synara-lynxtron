@@ -10,6 +10,9 @@ describe('Keyboard Shortcuts settings anatomy', () => {
       ),
       'utf8'
     );
+    expect(styles).toMatch(
+      /\.SharedKeyboardShortcutsCard,\s*\.SharedKeyboardShortcutsEmpty\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*8px;/s
+    );
 
     expect(styles).toMatch(
       /\.SharedKeyboardShortcutsHeader\s*\{[^}]*padding:\s*8px 12px;[^}]*border-bottom:\s*1px solid var\(--border\);/s
