@@ -3170,3 +3170,24 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `f585feb4e836b7f1048bf1b4e665add7c580ccc0942074ac254c8c81d2aeaab9`.
+
+### DS-182 — COMPLETE
+
+- The Native hosted Diff toolbar now declares its bottom hairline with explicit
+  width, style, and shared border color. The former `border-bottom` shorthand
+  retained a 1px width but produced a black color and empty physical style in
+  dark mode. Existing source selection, view options, Git actions, turn picker,
+  close behavior, and empty/diff content states remain unchanged.
+- The focused Diff Dock suite passes 11/11, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `32282`, window `121439`, PID-derived DevTool
+  `localhost:8901`, session 1, opened the real hosted Diff pane through the
+  visible right-dock Add panel menu. Fresh node `496` (`DiffDockHeader`) resolved
+  its bottom edge to `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native
+  error/warning console was empty, no screenshot was retained, and the final
+  staged bundle SHA-256 is
+  `926ad5d429444d7dee5cf48876c4a2533f2395b01886bc3388b98851cdf4cd1a`.
+  The full comparison launcher repeatedly lost its Electron sidecar before
+  Lynxtron launch, so final Native certification used the same comparison-owned
+  production runtime, staged bundle, persisted snapshot, and isolated server
+  without claiming a new paired Electron cell.

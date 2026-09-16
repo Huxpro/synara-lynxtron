@@ -40,6 +40,16 @@ describe('Diff Dock chrome fidelity', () => {
     expect(railTabsSource).toContain('<EditorSurfaceTab');
   });
 
+  it('declares the hosted Diff toolbar divider with physical Native border properties', () => {
+    const styles = readFileSync(
+      new URL('./diff-dock.css', import.meta.url),
+      'utf8'
+    );
+    expect(styles).toMatch(
+      /\.DiffDockHeader\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+  });
+
   it('uses Web neutral hover material for close and retry controls', () => {
     const styles = readFileSync(
       new URL('./diff-dock.css', import.meta.url),
