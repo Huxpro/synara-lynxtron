@@ -3044,3 +3044,20 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `7b24f5d445427ef60cf930a6bb271c1c84597d106d6d233596fac2313170eee8`.
+
+### DS-175 — COMPLETE
+
+- The Native Kanban route header now declares its bottom divider with explicit
+  width, style, and shared border color. The former `border-bottom` shorthand
+  retained a 1px width but produced a black color and empty physical style in
+  dark mode. Existing title/count, New task action, sidebar-open geometry, and
+  compact/medium closed-sidebar responsive header remain unchanged.
+- The focused Kanban Route Header suite passes 1/1, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `31139`, window `119537`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real `/kanban` product route with the
+  isolated three-task snapshot. The header bottom edge resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `15f3ba1ac6221eae8bf5ca69933118f9ffef0f1354c60e77492f250dd52ca09d`.

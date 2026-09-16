@@ -18,7 +18,7 @@ describe('Kanban route header fidelity', () => {
     );
 
     expect(styles).toMatch(
-      /\.SharedKanbanRouteHeader\s*\{[^}]*height:\s*46px;[^}]*padding:\s*0 20px;/s
+      /\.SharedKanbanRouteHeader\s*\{[^}]*height:\s*46px;[^}]*padding:\s*0 20px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
       /\.SharedKanbanRouteHeaderRow\s*\{[^}]*height:\s*46px;[^}]*gap:\s*12px;/s
