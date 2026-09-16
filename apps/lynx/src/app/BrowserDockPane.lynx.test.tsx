@@ -182,4 +182,14 @@ describe('Native Browser right-dock pane', () => {
     expect(styles).not.toContain('rgba(255,255,255');
   });
 
+  it('declares both Browser chrome dividers with physical Native border properties', () => {
+    const styles = readFileSync(new URL('./browser-dock-pane.css', import.meta.url), 'utf8');
+    expect(styles).toMatch(
+      /\.BrowserDockToolbar\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.BrowserDockTabBar\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+  });
+
 });

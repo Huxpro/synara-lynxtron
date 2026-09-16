@@ -3152,3 +3152,21 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `717b747d4eab14c5704a2d9177d564330142d624784f90af7172a556b3bb00d7`.
+
+### DS-181 — COMPLETE
+
+- The Native Browser pane now declares both its navigation toolbar hairline and
+  its tab-bar separator with explicit bottom width, style, and shared border
+  color. The former `border-bottom` shorthands retained 1px widths but produced
+  black colors and empty physical styles in dark mode. Existing address, tab,
+  local-server, embedded-view, and Browser action behavior remain unchanged.
+- The focused Browser Dock suite passes 5/5, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `81942`, window `121273`, PID-derived DevTool
+  `localhost:8901`, session 1, opened the real Browser pane through the visible
+  right-dock Add panel menu. Fresh nodes `479` (`BrowserDockToolbar`) and `484`
+  (`BrowserDockTabBar`) both resolved their bottom edge to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `f585feb4e836b7f1048bf1b4e665add7c580ccc0942074ac254c8c81d2aeaab9`.
