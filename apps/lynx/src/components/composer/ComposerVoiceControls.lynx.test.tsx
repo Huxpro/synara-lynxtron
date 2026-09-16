@@ -31,7 +31,7 @@ describe('Native composer voice controls', () => {
     expect(styles).toMatch(/\.ComposerVoiceButtonLynx,[\s\S]*?width:\s*28px;[\s\S]*?height:\s*28px;/);
     expect(styles).toMatch(/\.ComposerVoiceIconLynx\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;/s);
     expect(styles).toMatch(/\.ComposerVoiceDurationLynx\s*\{[^}]*width:\s*38px;[^}]*flex-shrink:\s*0;/s);
-    expect(styles).toMatch(/\.ComposerVoiceWaveformBaselineLynx\s*\{[^}]*top:\s*14px;/s);
+    expect(styles).toMatch(/\.ComposerVoiceWaveformBaselineLynx\s*\{[^}]*top:\s*14px;[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*dashed;[^}]*border-top-color:\s*var\(--border\);/s);
     expect(styles).toMatch(/\.ComposerVoiceCancelLynx\s*\{[^}]*border-radius:\s*14px;/s);
   });
 });

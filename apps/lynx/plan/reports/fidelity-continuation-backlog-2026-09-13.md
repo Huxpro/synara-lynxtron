@@ -3080,3 +3080,20 @@ state is absent from the paired component matrix.
   The exact Native error/warning console was empty, no screenshot was retained,
   and the final staged bundle SHA-256 is
   `6a821b3491d7027d2f568b22ce4e0b01393d776a710e6b29769c714b8bdfca32`.
+
+### DS-177 — COMPLETE
+
+- The Native composer voice waveform baseline now declares its dashed top stroke
+  with explicit width, style, and shared border color. The former `border-top`
+  shorthand retained a 1px width but produced a black color and empty physical
+  style in dark mode. Existing waveform bars, recording duration, stop/send
+  controls, and transcribing spinner behavior remain unchanged.
+- The focused Composer Voice Controls suite passes 2/2, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `84778`, window `120003`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the canonical `composer/voice-recorder`
+  recording-waveform fixture in Components Lab. The baseline top edge resolved
+  to `rgba(252,252,252,0.0705882)` at 1px dashed. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `cdd21614f5db8ff5b38d654a2e3363783b824a0b0a4a562046047eb34a5f4739`.

@@ -506,7 +506,9 @@
   right: 0;
   top: 14px;
   height: 1px;
-  border-top: 1px dashed var(--border);
+  border-top-width: 1px;
+  border-top-style: dashed;
+  border-top-color: var(--border);
 }
 
 .ComposerVoiceWaveformBarsLynx {
