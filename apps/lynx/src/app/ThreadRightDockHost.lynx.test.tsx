@@ -23,6 +23,16 @@ describe('Native stable right dock host', () => {
     expect(elementTree.root?.querySelector('.HostedPane')).not.toBeNull();
   });
 
+  it('declares the main dock divider with physical Native border properties', () => {
+    const styles = readFileSync(
+      new URL('./thread-right-dock-host.css', import.meta.url),
+      'utf8'
+    );
+    expect(styles).toMatch(
+      /\.ThreadRightDockHost\s*\{[^}]*border-left-width:\s*1px;[^}]*border-left-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);/s
+    );
+  });
+
   it('keeps Diff and Explorer in hosted content mode from one router owner', () => {
     const router = readFileSync(new URL('./router.tsx', import.meta.url), 'utf8');
     const styles = readFileSync(

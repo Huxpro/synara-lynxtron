@@ -3191,3 +3191,22 @@ state is absent from the paired component matrix.
   Lynxtron launch, so final Native certification used the same comparison-owned
   production runtime, staged bundle, persisted snapshot, and isolated server
   without claiming a new paired Electron cell.
+
+### DS-183 — COMPLETE
+
+- The Native shared right-dock host now declares its main left surface divider
+  with explicit width, style, and shared border color. The former `border-left`
+  shorthand retained a 1px width but produced a black color and empty physical
+  style in dark mode. Existing resize ownership, open/close motion, hosted pane
+  sizing, compact overlay layout, and persisted pane state remain unchanged.
+- The focused Right Dock Host suite passes 3/3, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `59834`, window `121528`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real persisted right-dock host against
+  the isolated comparison snapshot. Fresh node `160` (`ThreadRightDockHost`)
+  resolved its left edge to `rgba(252,252,252,0.0705882)` at 1px solid. The exact
+  Native error/warning console was empty, no screenshot was retained, and the
+  final staged bundle SHA-256 is
+  `401135060c0384d367a33d76bd7d1f0cbb72ab11ebe0517a7e96375f830833ef`.
+  Final certification used the comparison-owned production runtime and isolated
+  server directly because the full launcher Electron sidecar remained unstable.

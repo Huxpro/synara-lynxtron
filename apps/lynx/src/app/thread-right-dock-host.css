@@ -9,7 +9,9 @@
   min-width: 416px;
   max-width: 960px;
   flex-direction: column;
-  border-left: 1px solid var(--border);
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: var(--border);
   background-color: var(--background);
   opacity: 1;
   transform: translateX(0);
