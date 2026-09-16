@@ -100,6 +100,14 @@ describe('Lynx Editor project switch menu', () => {
     );
   });
 
+  it('keeps the search header on an explicit physical bottom divider', () => {
+    const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
+
+    expect(styles).toMatch(
+      /\.ThreadEditorProjectSwitchSearch\s*\{[^}]*padding:\s*6px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+  });
+
   it('keeps the empty search result present after opening', () => {
     render(<ProjectSwitchHarness empty />);
     return openMeasuredProjectSwitch().then(() => {

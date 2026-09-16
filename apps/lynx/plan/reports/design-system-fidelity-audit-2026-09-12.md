@@ -2773,3 +2773,21 @@ values and unresolved Native custom properties.
   `3e0f4bf4ddc4984df938583bd86378a6818f127ecf80c04b9772ac473a993616`.
   Product shortcut activation was not claimed because the isolated snapshot
   pruned to one recent view.
+
+## Editor project-search physical-border follow-up
+
+- The Native editor project-switch search header now sets its bottom divider with
+  explicit width, style, and shared border color. The `border-bottom` shorthand
+  had retained a 1px width but produced a black color and empty physical style in
+  dark mode. Existing shared Input geometry, autofocus, project groups, selection
+  state, popup sizing, and empty-result behavior remain unchanged. The dedicated
+  Editor Project Switch suite passes 4/4, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22. The broader search geometry audit retains a
+  pre-existing unrelated Plugin Library 26px-vs-30px expectation.
+- Exact-owned PID `42928` / window `118872`, PID-derived `localhost:8901`, session
+  1, rendered the canonical `editor/project-search` project-switcher fixture in
+  Components Lab. The outer search-header bottom edge resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid, while the shared Input border remained
+  independent. The exact Native console was empty. No screenshot was retained;
+  staged bundle SHA-256 is
+  `347e190e1c1c8bc8d2ae937e63e2be2c4316cbac33ab9def0a7fb3d689510272`.
