@@ -71,6 +71,9 @@ describe('Lynx thread right dock tabs', () => {
     expect(dockStyles).toMatch(
       /\.ThreadRightDockTab\s*\{[^}]*min-width:\s*68px;/s
     );
+    expect(dockStyles).toMatch(
+      /\.ThreadRightDockTabHeader\s*\{[^}]*height:\s*46px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
     expect(sharedStyles).toMatch(
       /\.EditorSurfaceTabRestingIcon\s*\{[^}]*color:\s*var\(--color-icon-secondary\);/s
     );
