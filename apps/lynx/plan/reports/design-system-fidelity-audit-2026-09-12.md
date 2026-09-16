@@ -2891,3 +2891,20 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native error/warning
   console was empty. No screenshot was retained; staged bundle SHA-256 is
   `d207e402f6c86c35fef1b9d3b07dac0eda2dc9ff58292e25429aa6044b9224c5`.
+
+## Source control pane physical-border follow-up
+
+- The Native Source control pane now sets both its header hairline and its
+  file-list/diff separator with explicit bottom width, style, and shared border
+  color. The two `border-bottom` shorthands had retained 1px widths but produced
+  black colors and empty physical styles in dark mode. Existing staging RPCs,
+  refresh behavior, selected-file continuity, empty states, and diff rendering
+  remain unchanged. The focused Git Dock suite passes 3/3, and the full
+  Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `27501` / window `120931`, PID-derived `localhost:8901`,
+  session 1, opened the real Source control pane through the visible right-dock
+  Add panel menu. Fresh nodes `479` (`GitDockHeader`) and `483`
+  (`GitDockFileList`) both resolved their bottom edge to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native error/warning
+  console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `717b747d4eab14c5704a2d9177d564330142d624784f90af7172a556b3bb00d7`.

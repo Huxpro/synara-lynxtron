@@ -27,4 +27,14 @@ describe('Native Git right-dock pane', () => {
     expect(router).toContain("'diff', 'explorer', 'terminal', 'sidechat', 'git'");
     expect(router).toContain('<GitDockPane');
   });
+
+  it('declares both source-control dividers with physical Native border properties', () => {
+    const styles = readFileSync(new URL('./git-dock-pane.css', import.meta.url), 'utf8');
+    expect(styles).toMatch(
+      /\.GitDockHeader\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.GitDockFileList\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+  });
 });

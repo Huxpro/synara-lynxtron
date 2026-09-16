@@ -3133,3 +3133,22 @@ state is absent from the paired component matrix.
   Native error/warning console was empty, no screenshot was retained, and the
   final staged bundle SHA-256 is
   `d207e402f6c86c35fef1b9d3b07dac0eda2dc9ff58292e25429aa6044b9224c5`.
+
+### DS-180 — COMPLETE
+
+- The Native Source control pane now declares both its header hairline and its
+  file-list/diff separator with explicit bottom width, style, and shared border
+  color. The former `border-bottom` shorthands retained 1px widths but produced
+  black colors and empty physical styles in dark mode. Existing staging RPCs,
+  refresh behavior, selected-file continuity, empty states, and diff rendering
+  remain unchanged.
+- The focused Git Dock suite passes 3/3, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `27501`, window `120931`, PID-derived DevTool
+  `localhost:8901`, session 1, opened the real Source control pane through the
+  visible right-dock Add panel menu. Fresh nodes `479` (`GitDockHeader`) and
+  `483` (`GitDockFileList`) both resolved their bottom edge to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `717b747d4eab14c5704a2d9177d564330142d624784f90af7172a556b3bb00d7`.
