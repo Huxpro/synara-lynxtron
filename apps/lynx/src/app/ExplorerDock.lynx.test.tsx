@@ -589,7 +589,7 @@ describe('Lynx Explorer dock', () => {
       /\.ExplorerDockPreview\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*flex-direction:\s*column;/s
     );
     expect(styles).toMatch(
-      /\.ExplorerDockPreviewHeader\s*\{[^}]*height:\s*40px;[^}]*min-height:\s*40px;[^}]*padding:\s*0 12px;[^}]*border-bottom:\s*1px solid var\(--border\);/s
+      /\.ExplorerDockPreviewHeader\s*\{[^}]*height:\s*40px;[^}]*min-height:\s*40px;[^}]*padding:\s*0 12px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
     );
     expect(styles).toMatch(
       /\.ExplorerDockBreadcrumb\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*1;[^}]*overflow:\s*hidden;/s

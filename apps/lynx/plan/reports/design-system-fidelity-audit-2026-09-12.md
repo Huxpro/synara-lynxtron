@@ -2875,3 +2875,19 @@ values and unresolved Native custom properties.
   `27d54124a057236cc1d69c32b99222f78943e9fc2ad774f21169fbf9dd838e48`.
   Product Explorer-route certification was not claimed because that route's
   comparison launcher failed twice before establishing bundle identity.
+
+## Workspace File Preview header physical-border follow-up
+
+- The Native Workspace File Preview header now sets its bottom divider with
+  explicit width, style, and shared border color. The `border-bottom` shorthand
+  had retained a 1px width but produced a black color and empty physical style in
+  dark mode. Existing breadcrumb truncation, preview action ordering, editor
+  launch menu, header geometry, and preview state remain unchanged. The focused
+  Explorer Dock suite passes 6/6, and the full Lynx/Desktop production build
+  passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `51834` / window `120478`, PID-derived `localhost:8901`,
+  session 1, rendered the canonical `editor/file-preview-header` dock fixture in
+  Components Lab. The preview-header bottom edge resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native error/warning
+  console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `d207e402f6c86c35fef1b9d3b07dac0eda2dc9ff58292e25429aa6044b9224c5`.
