@@ -431,14 +431,18 @@
   min-width: 240px;
   min-height: 0;
   flex-direction: column;
-  border-right: 1px solid var(--border);
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: var(--border);
 }
 
 .ExplorerDockSearch {
   position: relative;
   display: flex;
   padding: 8px;
-  border-bottom: 1px solid var(--border);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
 }
 
 .ExplorerDockSearchInput {

@@ -2964,3 +2964,22 @@ values and unresolved Native custom properties.
   `401135060c0384d367a33d76bd7d1f0cbb72ab11ebe0517a7e96375f830833ef`.
   Final certification used the comparison-owned production runtime and isolated
   server directly because the full launcher Electron sidecar remained unstable.
+
+## Hosted Explorer sidebar physical-border follow-up
+
+- The Native hosted Explorer now sets the file-tree sidebar's right divider and
+  the search header's bottom divider with explicit physical width, style, and
+  shared border color. The former shorthands had retained 1px widths but produced
+  black colors and empty physical styles in dark mode. Existing search behavior,
+  tree loading, empty states, file selection, and preview layout remain unchanged.
+  The focused Explorer Dock suite passes 6/6, and the full Lynx/Desktop
+  production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `79448` / window `121776`, PID-derived `localhost:8901`,
+  session 1, rendered the real hosted Explorer pane against the isolated
+  comparison snapshot. Fresh node `206` (`ExplorerDockSidebar`) resolved its
+  right edge and node `210` (`ExplorerDockSearch`) resolved its bottom edge to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native error/warning
+  console was empty. No screenshot was retained; staged bundle SHA-256 is
+  `809d6a667339fd4eb74eddc36bb3ef3b97ca76e9b2486d22f14bd495d834864f`.
+  Final certification used the comparison-owned production runtime and isolated
+  server directly because the full launcher Electron sidecar remained unstable.
