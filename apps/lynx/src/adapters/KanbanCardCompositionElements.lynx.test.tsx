@@ -125,7 +125,10 @@ describe('Kanban card metadata icon fidelity', () => {
     );
 
     expect(styles).toMatch(
-      /\.SliceRoot--theme-dark \.SharedKanbanCard\s*\{[^}]*border-color:\s*rgba\(255, 255, 255, 0\.05\);[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0, 0, 0, 0\.3\);/s
+      /\.SharedKanbanCard\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.SliceRoot--theme-dark \.SharedKanbanCard\s*\{[^}]*border-left-color:\s*rgba\(255, 255, 255, 0\.05\);[^}]*border-right-color:\s*rgba\(255, 255, 255, 0\.05\);[^}]*border-top-color:\s*rgba\(255, 255, 255, 0\.05\);[^}]*border-bottom-color:\s*rgba\(255, 255, 255, 0\.05\);[^}]*box-shadow:\s*0 6px 24px -10px rgba\(0, 0, 0, 0\.3\);/s
     );
     expect(styles).toMatch(
       /\.SharedKanbanCard\.ui-hover,[\s\S]*?\{[^}]*background-color:\s*var\(--card\);/s

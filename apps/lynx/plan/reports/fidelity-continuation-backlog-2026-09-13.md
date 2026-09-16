@@ -3026,3 +3026,21 @@ state is absent from the paired component matrix.
   own physical border remained independent. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `347e190e1c1c8bc8d2ae937e63e2be2c4316cbac33ab9def0a7fb3d689510272`.
+
+### DS-174 — COMPLETE
+
+- Native Kanban cards now declare their 1px border style and four physical edge
+  colors explicitly, including the dark raised-surface override. The former
+  aggregate declaration resolved the intended approximately 5% white color on
+  each edge but left every physical style empty in Native. Existing radius,
+  surface, shadow, metadata, status, overlay, drag-source, and interaction states
+  remain unchanged. The unrendered unknown-provider fallback was not modified.
+- The focused Kanban Card suite passes 6/6, and the full Lynx/Desktop production
+  build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `65630`, window `119094`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the canonical `kanban/card` default
+  fixture in Components Lab. Every physical card edge resolved to
+  `rgba(255,255,255,0.0470588)` at 1px solid. The exact Native error/warning
+  console was empty, no screenshot was retained, and the final staged bundle
+  SHA-256 is
+  `7b24f5d445427ef60cf930a6bb271c1c84597d106d6d233596fac2313170eee8`.
