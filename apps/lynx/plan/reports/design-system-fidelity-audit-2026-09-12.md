@@ -2755,3 +2755,21 @@ values and unresolved Native custom properties.
   `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native console was empty.
   No screenshot was retained; staged bundle SHA-256 is
   `cc9d6489df64ca69dbb346bb3f6b8589c6d43c831a30a79658fbc6a600b5df83`.
+
+## Recent Views footer physical-border follow-up
+
+- The Native Recent Views footer now sets its top divider with explicit width,
+  style, and shared border color. The `border-top` shorthand had retained a 1px
+  width but produced a black color and empty physical style in dark mode. Existing
+  recent-view identities, selection state, pinned/split metadata, keyboard hints,
+  popup geometry, and list layout remain unchanged. The focused Recent Views
+  suite passes 4/4, and the full Lynx/Desktop production build passes on npm
+  Lynxtron 0.0.22.
+- Exact-owned PID `10718` / window `118645`, PID-derived `localhost:8901`, session
+  1, rendered the canonical `navigation/recent-view-switcher` mixed fixture in
+  Components Lab. Its footer top edge resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native console was empty.
+  No screenshot was retained; staged bundle SHA-256 is
+  `3e0f4bf4ddc4984df938583bd86378a6818f127ecf80c04b9772ac473a993616`.
+  Product shortcut activation was not claimed because the isolated snapshot
+  pruned to one recent view.

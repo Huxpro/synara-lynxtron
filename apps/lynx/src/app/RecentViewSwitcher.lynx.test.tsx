@@ -61,6 +61,9 @@ describe('Native recent-view switcher', () => {
     expect(styles).toMatch(
       /\.RecentViewSwitcherCurrent\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
     );
+    expect(styles).toMatch(
+      /\.RecentViewSwitcherFooter\s*\{[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);/s
+    );
   });
 
   it('preserves pinned and split view metadata as visible trailing icons', () => {
