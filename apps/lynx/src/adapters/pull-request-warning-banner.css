@@ -10,7 +10,12 @@
 
 .SharedPrWarningBanner--callout {
   margin-top: 12px;
-  border: 1px solid var(--pr-warning-border);
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--pr-warning-border);
+  border-right-color: var(--pr-warning-border);
+  border-top-color: var(--pr-warning-border);
+  border-bottom-color: var(--pr-warning-border);
   border-radius: 8px;
 }
 

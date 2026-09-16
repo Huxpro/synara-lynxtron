@@ -35,7 +35,7 @@ describe('Pull Request warning banner fidelity', () => {
       /\.SharedPrWarningBanner--banner\s*\{[^}]*border-bottom:\s*1px solid var\(--pr-warning-border\);/s
     );
     expect(styles).toMatch(
-      /\.SharedPrWarningBanner--callout\s*\{[^}]*margin-top:\s*12px;[^}]*border:\s*1px solid var\(--pr-warning-border\);[^}]*border-radius:\s*8px;/s
+      /\.SharedPrWarningBanner--callout\s*\{[^}]*margin-top:\s*12px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--pr-warning-border\);[^}]*border-right-color:\s*var\(--pr-warning-border\);[^}]*border-top-color:\s*var\(--pr-warning-border\);[^}]*border-bottom-color:\s*var\(--pr-warning-border\);[^}]*border-radius:\s*8px;/s
     );
     expect(styles).toMatch(
       /\.SharedPrWarningBanner--note\s*\{[^}]*margin-bottom:\s*8px;[^}]*padding:\s*6px 8px;[^}]*border:\s*1px solid var\(--pr-warning-border\);[^}]*border-radius:\s*6px;/s

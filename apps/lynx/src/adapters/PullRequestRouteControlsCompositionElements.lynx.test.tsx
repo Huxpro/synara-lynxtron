@@ -25,6 +25,9 @@ describe('pull request route controls fidelity', () => {
       /\.SharedPrRouteHeaderTitle\s*\{[^}]*min-width:\s*0;[^}]*flex-shrink:\s*1;[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;[^}]*font-weight:\s*500;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s
     );
     expect(styles).toMatch(
+      /\.SharedPrRouteHeader\s*\{[^}]*height:\s*46px;[^}]*padding:\s*0 20px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
       /\.SharedPrRouteHeaderScope\s*\{[^}]*min-width:\s*0;[^}]*flex-shrink:\s*1;[^}]*overflow:\s*hidden;/s
     );
     expect(styles).toMatch(

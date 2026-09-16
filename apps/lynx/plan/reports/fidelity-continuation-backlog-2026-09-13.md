@@ -3061,3 +3061,22 @@ state is absent from the paired component matrix.
   console was empty, no screenshot was retained, and the final staged bundle
   SHA-256 is
   `15f3ba1ac6221eae8bf5ca69933118f9ffef0f1354c60e77492f250dd52ca09d`.
+
+### DS-176 — COMPLETE
+
+- The Native Pull Requests route header now declares its bottom divider
+  explicitly, and the visible repository-warning callout now declares the warning
+  token on all four physical sides. The former shorthand declarations retained
+  1px widths but produced black colors and empty physical styles in dark mode.
+  Existing filters, refresh action, empty state, warning copy, surface, margin, and
+  radius remain unchanged. Unrendered banner/note warning variants were not
+  modified.
+- The focused Pull Request route-controls and warning-banner suites pass 10/10,
+  and the full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned Lynxtron PID `60461`, window `119725`, PID-derived DevTool
+  `localhost:8901`, session 1, rendered the real `/pull-requests` product route.
+  The header bottom edge resolved to `rgba(252,252,252,0.0705882)` at 1px solid,
+  and every callout edge resolved to `rgba(245,180,74,0.317647)` at 1px solid.
+  The exact Native error/warning console was empty, no screenshot was retained,
+  and the final staged bundle SHA-256 is
+  `6a821b3491d7027d2f568b22ce4e0b01393d776a710e6b29769c714b8bdfca32`.
