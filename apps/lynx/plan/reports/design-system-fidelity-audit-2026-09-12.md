@@ -2739,3 +2739,19 @@ values and unresolved Native custom properties.
   solid. The exact Native console was empty. No screenshot was retained; staged
   bundle SHA-256 is
   `33a4b088de3f1eb3f76d83eae3e4cad1c363cbcb9ed00e8a7f7d2fde54c14c66`.
+
+## Landing Composer project-picker physical-border follow-up
+
+- The Native New thread project picker now sets its search-panel bottom divider
+  and footer top divider with explicit widths, styles, and shared border colors.
+  The physical-side shorthands had retained 1px widths but produced black colors
+  and empty styles in dark mode. Existing search focus, project and folder
+  options, selected state, footer actions, popup geometry, and short-height
+  behavior remain unchanged. The focused Composer project-picker suite passes
+  2/2, and the full Lynx/Desktop production build passes on npm Lynxtron 0.0.22.
+- Exact-owned PID `62077` / window `118216`, PID-derived `localhost:8901`, session
+  1, opened the project picker through the real Work in a project trigger on
+  `/new-thread`. The search bottom edge and footer top edge both resolved to
+  `rgba(252,252,252,0.0705882)` at 1px solid. The exact Native console was empty.
+  No screenshot was retained; staged bundle SHA-256 is
+  `cc9d6489df64ca69dbb346bb3f6b8589c6d43c831a30a79658fbc6a600b5df83`.

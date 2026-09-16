@@ -73,6 +73,12 @@ describe('composer project picker trigger icon', () => {
       /\.ComposerProjectPickerTriggerIconLynx\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*flex-shrink:\s*0;/s
     );
     expect(styles).toMatch(
+      /\.ComposerProjectPickerSearchLynx\s*\{[^}]*padding:\s*8px 6px 6px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
+      /\.ComposerProjectPickerFooterLynx\s*\{[^}]*padding:\s*4px;[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);/s
+    );
+    expect(styles).toMatch(
       /\.ComposerProjectPickerTriggerLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
     );
     expect(styles).not.toContain(

@@ -100,7 +100,9 @@
 .ComposerProjectPickerSearchLynx {
   flex-shrink: 0;
   padding: 8px 6px 6px;
-  border-bottom: 1px solid var(--border);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--border);
   background-color: transparent;
 }
 
@@ -240,7 +242,9 @@
 .ComposerProjectPickerFooterLynx {
   flex-shrink: 0;
   padding: 4px;
-  border-top: 1px solid var(--border);
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--border);
 }
 
 .ComposerProjectPickerActionLynx {
