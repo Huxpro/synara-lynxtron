@@ -58,14 +58,24 @@ for (const renderer of renderers) {
       throw error;
     }
   };
+  // The other renderer, for checks that span clients (opened on demand).
+  let peer = null;
+  const openPeer = async () => {
+    peer ??=
+      renderer === "electron"
+        ? await openNativeDriver(run.native.devtool.port)
+        : await openElectronDriver(run.options.electronCdpPort);
+    return peer;
+  };
   try {
-    const result = await workflow({ driver, backend, step, run });
+    const result = await workflow({ driver, backend, step, run, openPeer });
     report.renderers[renderer] = { ok: true, steps, result };
   } catch (error) {
     failed = true;
     report.renderers[renderer] = { ok: false, steps, error: String(error?.message ?? error) };
   } finally {
     driver.close();
+    peer?.close();
   }
 }
 report.endedAt = new Date().toISOString();

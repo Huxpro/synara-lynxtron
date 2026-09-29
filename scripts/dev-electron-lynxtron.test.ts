@@ -573,7 +573,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(Object.fromEntries(values)).toEqual({
       "synara:theme": "dark",
       "synara:app-settings:v1":
-        '{"density":"compact","enableProviderUpdateChecks":false,"enableTaskCompletionToasts":false}',
+        '{"density":"compact","enableProviderUpdateChecks":false,"enableTaskCompletionToasts":false,"comparisonForwardCompatSentinel":"kept"}',
       "synara:appsnap-welcome:v1": '{"acknowledged":true}',
       "synara:terminal-state:v1": '{"state":{"terminal":true}}',
       "synara:right-dock-state:v1": '{"state":{"browser":true}}',
@@ -650,6 +650,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       chatFontSizePx: 18,
       enableProviderUpdateChecks: false,
       enableTaskCompletionToasts: false,
+      comparisonForwardCompatSentinel: "kept",
     });
   });
 

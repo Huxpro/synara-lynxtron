@@ -48,6 +48,13 @@ export const COMPARISON_RENDERER_STORAGE_KEYS = Object.freeze([
   "synara:recent-views:v1",
 ]);
 
+// A key no app version knows, seeded into app settings so a workflow can prove
+// that saving settings keeps fields it does not understand (forward compat).
+export const COMPARISON_UNKNOWN_SETTING = Object.freeze({
+  key: "comparisonForwardCompatSentinel",
+  value: "kept",
+});
+
 // The pre-fixture seed's only visible ordinary-project thread. Kept for
 // `--seed legacy` reproductions of historical evidence.
 export const LEGACY_COMPARISON_THREAD_ID = "lynx-landing-thread-1787298664226-1b47e02983941";
@@ -654,7 +661,7 @@ export function comparisonRendererResetExpression(
 ) {
   return `(() => { const state = Object.fromEntries(${JSON.stringify(
     COMPARISON_RENDERER_STORAGE_KEYS,
-  )}.flatMap((key) => { const value = localStorage.getItem(key); return value === null ? [] : [[key, value]]; })); const appSettings = JSON.parse(state['synara:app-settings:v1'] ?? '{}'); appSettings.enableProviderUpdateChecks = false; appSettings.enableTaskCompletionToasts = false; if (${JSON.stringify(chatFontSize)} !== null) appSettings.chatFontSizePx = ${JSON.stringify(chatFontSize)}; state['synara:app-settings:v1'] = JSON.stringify(appSettings); if (${JSON.stringify(threadId)} !== null) state['synara:recent-views:v1'] = JSON.stringify({ state: { recentViews: [{ kind: 'thread', threadId: ${JSON.stringify(threadId)} }, { kind: 'settings', section: 'general' }] }, version: 0 }); localStorage.clear(); for (const [key, value] of Object.entries(state)) localStorage.setItem(key, value); localStorage.setItem('synara:theme', ${JSON.stringify(theme)}); if (${JSON.stringify(appSnap)} === 'welcome') localStorage.removeItem('synara:appsnap-welcome:v1'); else localStorage.setItem('synara:appsnap-welcome:v1', '{"acknowledged":true}'); location.reload(); })(); undefined`;
+  )}.flatMap((key) => { const value = localStorage.getItem(key); return value === null ? [] : [[key, value]]; })); const appSettings = JSON.parse(state['synara:app-settings:v1'] ?? '{}'); appSettings.enableProviderUpdateChecks = false; appSettings.enableTaskCompletionToasts = false; appSettings[${JSON.stringify(COMPARISON_UNKNOWN_SETTING.key)}] = ${JSON.stringify(COMPARISON_UNKNOWN_SETTING.value)}; if (${JSON.stringify(chatFontSize)} !== null) appSettings.chatFontSizePx = ${JSON.stringify(chatFontSize)}; state['synara:app-settings:v1'] = JSON.stringify(appSettings); if (${JSON.stringify(threadId)} !== null) state['synara:recent-views:v1'] = JSON.stringify({ state: { recentViews: [{ kind: 'thread', threadId: ${JSON.stringify(threadId)} }, { kind: 'settings', section: 'general' }] }, version: 0 }); localStorage.clear(); for (const [key, value] of Object.entries(state)) localStorage.setItem(key, value); localStorage.setItem('synara:theme', ${JSON.stringify(theme)}); if (${JSON.stringify(appSnap)} === 'welcome') localStorage.removeItem('synara:appsnap-welcome:v1'); else localStorage.setItem('synara:appsnap-welcome:v1', '{"acknowledged":true}'); location.reload(); })(); undefined`;
 }
 
 /** Opens one singleton right-dock pane through the canonical Electron store. */

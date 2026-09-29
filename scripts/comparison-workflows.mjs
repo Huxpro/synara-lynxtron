@@ -6,6 +6,7 @@ import { chmodSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 import { readComparisonFixtureManifest } from "./comparison-fixture.mjs";
+import { COMPARISON_UNKNOWN_SETTING } from "./dev-electron-lynxtron.mjs";
 import { nativeNodesMatchingClasses } from "./comparison-measure.mjs";
 import { waitFor } from "./comparison-workflow.mjs";
 
@@ -966,4 +967,288 @@ export async function workflowJ3(context) {
   return { workspaceRoot };
 }
 
-export const WORKFLOWS = Object.freeze({ J1: workflowJ1, J2: workflowJ2, J3: workflowJ3 });
+const SETTINGS_TARGETS = {
+  open: { electron: { selector: "button", text: "Settings" }, native: { label: "Settings" } },
+  back: { electron: { selector: "button", text: "Back to app" }, native: { label: "Back to app" } },
+  newThread: {
+    electron: { selector: "a, button", text: "New thread" },
+    native: { label: "New thread" },
+  },
+  section: (name) => ({ electron: { selector: "button", text: name }, native: { label: name } }),
+  segment: (group, option) => ({
+    electron: { selector: `[aria-label=${JSON.stringify(group)}] [role="radio"]`, text: option },
+    native: { label: `${group}: ${option}` },
+  }),
+  streaming: {
+    electron: { selector: '[role="switch"][aria-label="Stream assistant messages"]' },
+    native: { label: "Stream assistant messages" },
+  },
+};
+
+/** Scrolls the page content until `target` is on screen. */
+async function scrollIntoView(driver, target, point, maxSteps = 10) {
+  for (let index = 0; index < maxSteps; index += 1) {
+    const box = await driver.find(target);
+    if (box && box.y > 40 && box.y < 760) return box;
+    await driver.scroll(point, box && box.y <= 40 ? -250 : 250);
+    await sleep(350);
+  }
+  throw new Error(`Could not scroll ${JSON.stringify(target)} into view.`);
+}
+
+/** The applied theme variant and UI density as the renderer shows them. */
+async function appliedAppearance(driver) {
+  if (driver.kind === "electron") {
+    return driver.evaluate(
+      `({ theme: document.documentElement.dataset.themeVariant, density: document.documentElement.dataset.uiDensity })`,
+    );
+  }
+  const root = nativeNodesMatchingClasses(await driver.documentRoot(), ".SliceRoot")[0];
+  const attributes = root?.attributes ?? [];
+  let classes = "";
+  for (let index = 0; index + 1 < attributes.length; index += 2) {
+    if (attributes[index] === "class") classes = String(attributes[index + 1]);
+  }
+  return {
+    theme: /SliceRoot--theme-(\w+)/.exec(classes)?.[1],
+    density: /SliceRoot--density-(\w+)/.exec(classes)?.[1],
+  };
+}
+
+/** `synara:theme` is either a bare mode ("dark") or a serialized theme state with `mode`. */
+function parseThemeMode(raw) {
+  if (raw === null || raw === undefined) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    return typeof parsed === "string" ? parsed : (parsed?.mode ?? null);
+  } catch {
+    return raw;
+  }
+}
+
+/** Persisted theme mode, UI density and the unknown sentinel from renderer storage. */
+async function persistedAppearance(driver, run) {
+  let theme;
+  let appSettings;
+  if (driver.kind === "electron") {
+    const raw = await driver.evaluate(
+      `JSON.stringify({ theme: localStorage.getItem("synara:theme"), appSettings: localStorage.getItem("synara:app-settings:v1") })`,
+    );
+    ({ theme, appSettings } = JSON.parse(raw));
+  } else {
+    const kv = JSON.parse(
+      readFileSync(join(run.stateRoot, "lynx", "synara-lynx-slice", "kv.json"), "utf8"),
+    );
+    theme = kv["synara:theme"];
+    appSettings = kv["synara:app-settings:v1"];
+  }
+  const settings = JSON.parse(appSettings ?? "{}");
+  return {
+    themeMode: parseThemeMode(theme),
+    density: settings.uiDensity,
+    sentinel: settings[COMPARISON_UNKNOWN_SETTING.key],
+  };
+}
+
+async function switchIsOn(driver, target) {
+  if (driver.kind === "electron") {
+    return driver.evaluate(
+      `document.querySelector(${JSON.stringify(target.selector)})?.getAttribute("aria-checked") === "true"`,
+    );
+  }
+  const box = await driver.find(target);
+  if (!box) return null;
+  const root = await driver.documentRoot();
+  const queue = [root];
+  while (queue.length > 0) {
+    const node = queue.shift();
+    if (node.nodeId === box.nodeId) {
+      const attributes = node.attributes ?? [];
+      for (let index = 0; index + 1 < attributes.length; index += 2) {
+        if (attributes[index] === "accessibility-value") return attributes[index + 1] === "On";
+      }
+      return null;
+    }
+    queue.push(...(node.children ?? []));
+  }
+  return null;
+}
+
+async function openSettingsSection(driver, section) {
+  if (!(await driver.find(pick(driver, SETTINGS_TARGETS.back))))
+    await driver.tap(pick(driver, SETTINGS_TARGETS.open));
+  await waitFor(() => driver.find(pick(driver, SETTINGS_TARGETS.back)), { label: "Settings" });
+  await driver.tap(pick(driver, SETTINGS_TARGETS.section(section)));
+  await sleep(500);
+}
+
+/**
+ * J4 — page ↔ Settings repeatedly with one correct sidebar → change theme and
+ * density → persisted with unknown settings kept → survives a reload → a
+ * server-backed setting stays consistent across both clients.
+ */
+export async function workflowJ4(context) {
+  const { driver, backend, run, step, openPeer } = context;
+  const contentPoint = { x: 700, y: 420 };
+
+  await step("switch between a thread and Settings with one correct sidebar", async () => {
+    if (await driver.find(pick(driver, SETTINGS_TARGETS.back))) {
+      await driver.tap(pick(driver, SETTINGS_TARGETS.back));
+    }
+    await driver.tap({ attribute: ["data-thread-id", FIXTURE_TRANSCRIPT_THREAD_ID] });
+    const rounds = [];
+    for (let round = 0; round < 3; round += 1) {
+      const openedAt = Date.now();
+      await driver.tap(pick(driver, SETTINGS_TARGETS.open));
+      await waitFor(() => driver.find(pick(driver, SETTINGS_TARGETS.back)), {
+        label: "the Settings sidebar",
+      });
+      if (await driver.find(pick(driver, SETTINGS_TARGETS.newThread)))
+        throw new Error("The app sidebar stayed next to Settings.");
+      if (!(await driver.find(pick(driver, SETTINGS_TARGETS.section("Appearance"))))) {
+        throw new Error("Settings sections are missing.");
+      }
+      const settingsMs = Date.now() - openedAt;
+      await driver.tap(pick(driver, SETTINGS_TARGETS.back));
+      await waitFor(() => driver.find(pick(driver, SETTINGS_TARGETS.newThread)), {
+        label: "the app sidebar",
+      });
+      if (await driver.find(pick(driver, SETTINGS_TARGETS.back)))
+        throw new Error("The Settings sidebar stayed after returning.");
+      const returned = await waitFor(
+        async () => (await activeThreadId(driver)) === FIXTURE_TRANSCRIPT_THREAD_ID,
+        {
+          label: "the thread to be active again",
+        },
+      ).catch(() => false);
+      rounds.push({ settingsMs, returnedToThread: Boolean(returned) });
+    }
+    if (rounds.some((round) => !round.returnedToThread)) {
+      throw new Error(`Back to app did not return to the thread: ${JSON.stringify(rounds)}`);
+    }
+    return { rounds };
+  });
+
+  await step("change theme and density; the app applies them", async () => {
+    const before = await persistedAppearance(driver, run);
+    // Electron re-encodes app settings through its schema on load and drops
+    // unknown keys (recorded, not asserted); Native must keep them.
+    if (driver.kind === "native" && before.sentinel !== COMPARISON_UNKNOWN_SETTING.value) {
+      throw new Error(
+        `The seeded unknown setting is missing before the change: ${JSON.stringify(before)}`,
+      );
+    }
+    await openSettingsSection(driver, "Appearance");
+    await driver.tap(pick(driver, SETTINGS_TARGETS.segment("Theme preference", "Light")));
+    const density = pick(driver, SETTINGS_TARGETS.segment("UI density", "Compact"));
+    await scrollIntoView(driver, density, contentPoint);
+    await driver.tap(density);
+    const applied = await waitFor(
+      async () => {
+        const state = await appliedAppearance(driver);
+        return state.theme === "light" && state.density === "compact" ? state : null;
+      },
+      { label: "light theme and compact density applied" },
+    );
+    return { before, applied };
+  });
+
+  await step("persist the change and keep settings the app does not know", async () => {
+    const persisted = await waitFor(
+      async () => {
+        const state = await persistedAppearance(driver, run);
+        return state.themeMode === "light" && state.density === "compact" ? state : null;
+      },
+      { label: "the persisted appearance" },
+    );
+    const unknownSettingKept = persisted.sentinel === COMPARISON_UNKNOWN_SETTING.value;
+    if (driver.kind === "native" && !unknownSettingKept) {
+      throw new Error(`Saving settings dropped the unknown setting: ${JSON.stringify(persisted)}`);
+    }
+    return { ...persisted, unknownSettingKept };
+  });
+
+  await step("keep the appearance across a renderer reload", async () => {
+    await driver.reload();
+    const applied = await waitFor(
+      async () => {
+        const state = await appliedAppearance(driver).catch(() => ({}));
+        return state.theme === "light" && state.density === "compact" ? state : null;
+      },
+      { label: "the appearance after reload", timeoutMs: 30_000 },
+    );
+    return { applied, persisted: await persistedAppearance(driver, run) };
+  });
+
+  await step("keep a server setting consistent across both clients", async () => {
+    const peer = await openPeer();
+    const readServer = async () =>
+      (await backend.request("server.getSettings", {})).enableAssistantStreaming;
+    if ((await readServer()) !== true) throw new Error("Streaming should start enabled.");
+    const streaming = pick(driver, SETTINGS_TARGETS.streaming);
+    const peerStreaming = pick(peer, SETTINGS_TARGETS.streaming);
+    await openSettingsSection(driver, "Behavior");
+    await openSettingsSection(peer, "Behavior");
+    // A client showing Behavior sees a change made in the other client either
+    // live or, at the latest, when the section is opened again.
+    const observe = async (client, target, expected) => {
+      const live = await waitFor(async () => (await switchIsOn(client, target)) === expected, {
+        label: "a live update",
+        timeoutMs: 8_000,
+      }).catch(() => false);
+      if (live) return "live";
+      await client.tap(pick(client, SETTINGS_TARGETS.section("General")));
+      await openSettingsSection(client, "Behavior");
+      await waitFor(async () => (await switchIsOn(client, target)) === expected, {
+        label: `the ${client.kind} client to show streaming ${expected ? "on" : "off"}`,
+      });
+      return "on reopen";
+    };
+    await driver.tap(streaming);
+    await waitFor(async () => (await readServer()) === false, {
+      label: "the server to store streaming off",
+    });
+    const peerSaw = await observe(peer, peerStreaming, false);
+    await peer.tap(peerStreaming);
+    await waitFor(async () => (await readServer()) === true, {
+      label: "the server to store streaming on",
+    });
+    const driverSaw = await observe(driver, streaming, true);
+    await peer.tap(pick(peer, SETTINGS_TARGETS.back));
+    return {
+      [`${driver.kind}To${peer.kind}`]: peerSaw,
+      [`${peer.kind}To${driver.kind}`]: driverSaw,
+    };
+  });
+
+  await step("restore the canonical appearance", async () => {
+    await openSettingsSection(driver, "Appearance");
+    await scrollIntoView(
+      driver,
+      pick(driver, SETTINGS_TARGETS.segment("Theme preference", "Dark")),
+      contentPoint,
+    );
+    await driver.tap(pick(driver, SETTINGS_TARGETS.segment("Theme preference", "Dark")));
+    const density = pick(driver, SETTINGS_TARGETS.segment("UI density", "Comfortable"));
+    await scrollIntoView(driver, density, contentPoint);
+    await driver.tap(density);
+    await waitFor(
+      async () => {
+        const state = await appliedAppearance(driver);
+        return state.theme === "dark" && state.density === "comfortable";
+      },
+      { label: "the canonical appearance" },
+    );
+    await driver.tap(pick(driver, SETTINGS_TARGETS.back));
+    return await persistedAppearance(driver, run);
+  });
+
+  return {};
+}
+
+export const WORKFLOWS = Object.freeze({
+  J1: workflowJ1,
+  J2: workflowJ2,
+  J3: workflowJ3,
+  J4: workflowJ4,
+});
