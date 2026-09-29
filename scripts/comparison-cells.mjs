@@ -154,6 +154,15 @@ const DIALOG_PROBE = {
  * from a base surface, measured (labelled controls plus popup/dialog boxes), closed.
  */
 export const INCREMENTS = Object.freeze({
+  "landing-diff-dock": {
+    workflow: "J3",
+    base: "landing",
+    // The web landing is the draft thread: its diff toggle opens the right dock.
+    open: (driver) => driver.tap({ label: "Toggle diff panel" }),
+    ready: (driver) => driver.find({ label: "Show file tree" }),
+    probes: [],
+    close: (driver) => driver.tap({ label: "Toggle diff panel" }),
+  },
   "model-menu": {
     workflow: "J1",
     base: "thread",
@@ -207,7 +216,7 @@ export const INCREMENTS = Object.freeze({
       driver.tap(
         pick(driver, {
           electron: { selector: '[role="dialog"] [aria-label="Close"]' },
-          native: { label: "Close dialog" },
+          native: { label: "Close" },
         }),
       ),
   },
