@@ -2,7 +2,7 @@
 
 Plan: [core-goal-review-and-next-phase-2026-09-29.md](core-goal-review-and-next-phase-2026-09-29.md) § N5.
 Evidence: [n5-evidence/](n5-evidence/) (numbers and logs only, no screenshots).
-Commit: `d38f58a8f` (package built from it; no source changes after).
+Commit: `d38f58a8f` (package built from it). Addendum at `e9fb78298`: automation model picker, background comparison launches, matrix rerun (see [Addendum](#addendum-e9fb78298)).
 
 ## Status in two parts
 
@@ -62,12 +62,12 @@ Two screens meet the 70% target; Thread (the composer/transcript/terminal graph)
 
 ## Table 2 — Visual state
 
-| Area                     | Result                                                                                                           | Report                                     |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| Surface dividers         | Listed dividers match Electron role, strength and position (light/dark × both sizes)                             | [N2](n2-divider-calibration-2026-09-29.md) |
-| Six core surfaces        | 24/24 base cells: every paired control ≤2 px and every Electron-named control present, or named exemption        | [N4](n4-matrix-2026-09-29.md)              |
-| State increments (J1–J6) | 24/24: landing dock, model menu, Add panel with Diff dock, Appearance, automation dialog, Kanban New task dialog | [N4](n4-matrix-2026-09-29.md)              |
-| Page errors              | Electron 0 in all runs; Native not observable (DevTool console returns nothing on this build)                    | [N4](n4-matrix-2026-09-29.md)              |
+| Area                     | Result                                                                                                                                                 | Report                                     |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
+| Surface dividers         | Listed dividers match Electron role, strength and position (light/dark × both sizes)                                                                   | [N2](n2-divider-calibration-2026-09-29.md) |
+| Six core surfaces        | 24/24 base cells: every paired control ≤2 px and every Electron-named control present, or named exemption                                              | [N4](n4-matrix-2026-09-29.md)              |
+| State increments (J1–J6) | 28/28 at `e9fb78298`: landing dock, model menu, Add panel with Diff dock, Appearance, automation dialog, automation model menu, Kanban New task dialog | [N4](n4-matrix-2026-09-29.md)              |
+| Page errors              | Electron 0 in all runs; Native not observable (DevTool console returns nothing on this build)                                                          | [N4](n4-matrix-2026-09-29.md)              |
 
 Named exemptions:
 
@@ -76,10 +76,10 @@ Named exemptions:
 
 Registered residuals:
 
-- the automation model picker menu content;
 - the 2D colour picker;
-- Kanban "Send as draft" semantics;
-- `white-space: pre` outside the diff.
+- Kanban "Send as draft" semantics.
+
+Closed after the first report: the automation model picker (now Electron's provider/model picker, measured by the `automation-model-menu` increment), and `white-space: pre` outside the diff (verified unaffected: markdown code blocks sit in a horizontal scroll-view, the Explorer preview scrolls both ways, terminal lines are pre-sized).
 
 Motion, hover, pressed and focus visuals are not part of the N4 matrix; they remain under the fidelity contract (P10 phase 4).
 
@@ -152,3 +152,14 @@ Workspace gates: `bun fmt`, `bun lint` and `bun typecheck` were **not run**, per
 6. From the app menu, open Settings; quit and relaunch; confirm the last thread returns.
 7. Record a voice note, and accept the microphone prompt when asked.
 8. With VoiceOver on, move through the sidebar and composer controls.
+
+## Addendum (`e9fb78298`)
+
+- **Automation model picker.** Automation create/edit dialogs render Electron's provider/model picker: a start-aligned trigger with no reasoning-traits menu.
+- **Matrix rerun on one build.** The run used `e9fb78298` with no concurrent load. Results: 24/24 base cells and 28/28 state increments (7 increments × light/dark × 1280×820/1440×900). The new `automation-model-menu` increment passes 6/6 with the popup ≤2 px in every configuration.
+- **Background comparison launches.** Both harness apps are agent (LSUIElement) bundles, and Electron runs from a separate `(Background)` launcher bundle. Sampling `lsappinfo front` every 0.4–0.5 s through a full session launch gave these results:
+  - The Lynxtron comparison app never became frontmost.
+  - Electron became frontmost for about 1 s only when the launching app was frontmost; with the user in another app it never did.
+  - No JS `show`/`focus` call was involved. The remaining activation is native, when Electron orders in its first window.
+- **Launcher fix.** Node's `cpSync` had rewritten the Electron framework's relative symlinks into absolute links to the source bundle, so helpers failed with `icudtl.dat not found`. Bundles are now copied with `ditto`.
+- **Packaged-app interaction.** Still not driven. Background computer-use control of `com.synara.lynx` was requested and declined, so the manual script above still stands.

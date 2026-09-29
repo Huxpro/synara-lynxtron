@@ -1,5 +1,5 @@
 {
-  "runId": "2026-09-29T21-35-21-825Z-58877",
+  "runId": "2026-09-29T23-10-17-739Z-67062",
   "theme": "dark",
   "window": {
     "width": 1280,
@@ -287,6 +287,7 @@
           "Collapse src/math.ts",
           "Collapse synara-fixture-app",
           "Diff",
+          "File actions",
           "Fixture secondary",
           "Fixture transcript",
           "Local",
@@ -294,7 +295,7 @@
           "Resize panel",
           "Settings"
         ],
-        "repeated": 5
+        "repeated": 4
       },
       "probes": [],
       "pass": true
@@ -597,6 +598,55 @@
             "height": 0
           },
           "worst": 0.5,
+          "match": true
+        }
+      ],
+      "pass": true
+    },
+    "automation-model-menu": {
+      "increment": "automation-model-menu",
+      "workflow": "J5",
+      "base": "automations",
+      "comparison": {
+        "compared": 6,
+        "matched": 6,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": [
+          "Auto fallback may use local checkout. If Synara cannot create a worktree, runs may fall back to editing the active project checkout.",
+          "Change model and reasoning",
+          "Project Home",
+          "Runs in auto",
+          "Schedule Daily at 9:00",
+          "Use template",
+          "Worktree cleanup. Generated worktrees or branches are kept after archiving until you remove them."
+        ],
+        "repeated": 0
+      },
+      "probes": [
+        {
+          "name": "menu popup",
+          "electron": {
+            "x": 456.5,
+            "y": 347.5,
+            "width": 208,
+            "height": 244
+          },
+          "native": {
+            "x": 458,
+            "y": 348,
+            "width": 208,
+            "height": 244
+          },
+          "delta": {
+            "x": 1.5,
+            "y": 0.5,
+            "width": 0,
+            "height": 0
+          },
+          "worst": 1.5,
           "match": true
         }
       ],

@@ -1,5 +1,5 @@
 {
-  "runId": "2026-09-29T21-38-34-910Z-93778",
+  "runId": "2026-09-29T23-14-47-382Z-92345",
   "theme": "dark",
   "window": {
     "width": 1440,
@@ -608,6 +608,55 @@
             "height": 0
           },
           "worst": 0.5,
+          "match": true
+        }
+      ],
+      "pass": true
+    },
+    "automation-model-menu": {
+      "increment": "automation-model-menu",
+      "workflow": "J5",
+      "base": "automations",
+      "comparison": {
+        "compared": 6,
+        "matched": 6,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": [
+          "Auto fallback may use local checkout. If Synara cannot create a worktree, runs may fall back to editing the active project checkout.",
+          "Change model and reasoning",
+          "Project Home",
+          "Runs in auto",
+          "Schedule Daily at 9:00",
+          "Use template",
+          "Worktree cleanup. Generated worktrees or branches are kept after archiving until you remove them."
+        ],
+        "repeated": 0
+      },
+      "probes": [
+        {
+          "name": "menu popup",
+          "electron": {
+            "x": 536.5,
+            "y": 387.5,
+            "width": 208,
+            "height": 244
+          },
+          "native": {
+            "x": 538,
+            "y": 388,
+            "width": 208,
+            "height": 244
+          },
+          "delta": {
+            "x": 1.5,
+            "y": 0.5,
+            "width": 0,
+            "height": 0
+          },
+          "worst": 1.5,
           "match": true
         }
       ],
