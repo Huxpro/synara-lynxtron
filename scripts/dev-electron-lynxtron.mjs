@@ -67,6 +67,7 @@ export const DEFAULT_DESKTOP_COMPARISON_OPTIONS = Object.freeze({
   systemAppearanceSequence: null,
   systemAppearanceIntervalMs: null,
   terminal: "closed",
+  dock: null,
   appSnap: "acknowledged",
   chatFontSize: null,
   skipLynxDevtool: false,
@@ -141,6 +142,11 @@ export function parseDesktopComparisonArgs(argv) {
         throw new Error("--terminal requires open or closed.");
       }
       options.terminal = value;
+    } else if (argument === "--dock") {
+      if (value !== "git" && value !== "browser") {
+        throw new Error("--dock requires git or browser.");
+      }
+      options.dock = value;
     } else if (argument === "--appsnap") {
       if (value !== "acknowledged" && value !== "welcome") {
         throw new Error("--appsnap requires acknowledged or welcome.");
@@ -649,6 +655,25 @@ export function comparisonRendererResetExpression(
   return `(() => { const state = Object.fromEntries(${JSON.stringify(
     COMPARISON_RENDERER_STORAGE_KEYS,
   )}.flatMap((key) => { const value = localStorage.getItem(key); return value === null ? [] : [[key, value]]; })); const appSettings = JSON.parse(state['synara:app-settings:v1'] ?? '{}'); appSettings.enableProviderUpdateChecks = false; appSettings.enableTaskCompletionToasts = false; if (${JSON.stringify(chatFontSize)} !== null) appSettings.chatFontSizePx = ${JSON.stringify(chatFontSize)}; state['synara:app-settings:v1'] = JSON.stringify(appSettings); if (${JSON.stringify(threadId)} !== null) state['synara:recent-views:v1'] = JSON.stringify({ state: { recentViews: [{ kind: 'thread', threadId: ${JSON.stringify(threadId)} }, { kind: 'settings', section: 'general' }] }, version: 0 }); localStorage.clear(); for (const [key, value] of Object.entries(state)) localStorage.setItem(key, value); localStorage.setItem('synara:theme', ${JSON.stringify(theme)}); if (${JSON.stringify(appSnap)} === 'welcome') localStorage.removeItem('synara:appsnap-welcome:v1'); else localStorage.setItem('synara:appsnap-welcome:v1', '{"acknowledged":true}'); location.reload(); })(); undefined`;
+}
+
+/** Opens one singleton right-dock pane through the canonical Electron store. */
+export function comparisonDockOpenExpression(threadId, kind) {
+  return `import('/src/rightDockStore.ts').then(({ useRightDockStore }) => { useRightDockStore.getState().clearThreadDockState(${JSON.stringify(
+    threadId,
+  )}); useRightDockStore.getState().openPane(${JSON.stringify(threadId)}, { paneId: ${JSON.stringify(
+    kind,
+  )}, kind: ${JSON.stringify(kind)} }); })`;
+}
+
+export function comparisonDockReadyExpression(threadId, kind) {
+  return `import('/src/rightDockStore.ts').then(({ useRightDockStore }) => { const dockState = useRightDockStore.getState().dockStateByThreadId[${JSON.stringify(
+    threadId,
+  )}]; const pane = dockState?.panes.find((candidate) => candidate.kind === ${JSON.stringify(
+    kind,
+  )}); return { paneOpen: dockState?.open === true && pane !== undefined && dockState.activePaneId === pane.id, persisted: (localStorage.getItem('synara:right-dock-state:v1') ?? '').includes(${JSON.stringify(
+    `"kind":"${kind}"`,
+  )}) }; })`;
 }
 
 export function comparisonTerminalOpenExpression(threadId) {
@@ -1208,6 +1233,26 @@ export function createElectronCdpClient(socket, trail = []) {
       }
     }
   };
+  // Page lifecycle events explain context loss ("Promise was collected"):
+  // record them in the same trail as the requests they interrupt.
+  const lifecycleEvents = new Set([
+    "Runtime.executionContextDestroyed",
+    "Runtime.executionContextCreated",
+    "Page.frameNavigated",
+    "Page.loadEventFired",
+  ]);
+  socket.addEventListener("message", (event) => {
+    const message = JSON.parse(String(event.data));
+    if (!lifecycleEvents.has(message.method)) return;
+    trail.push({
+      at: new Date().toISOString(),
+      event: message.method,
+      url: message.params?.frame?.url ?? message.params?.context?.origin ?? undefined,
+    });
+  });
+  for (const [offset, method] of ["Runtime.enable", "Page.enable"].entries()) {
+    socket.send(JSON.stringify({ id: 1_000_000 + offset, method }));
+  }
   return { evaluate, trail };
 }
 
@@ -1386,7 +1431,9 @@ async function openElectronNewThreadLanding(cdp, options) {
 async function openElectronExplorer(cdp, options) {
   const explorerExpression = comparisonExplorerOpenExpression(options);
   if (!explorerExpression) return;
-  await cdp.evaluate(explorerExpression, "opening the canonical Electron Explorer fixture");
+  await cdp.evaluate(explorerExpression, "opening the canonical Electron Explorer fixture", {
+    retryTransient: true,
+  });
   const explorerPath = comparisonExplorerPath(options);
   if (!explorerPath) return;
   const segments = explorerPath.split("/").filter(Boolean);
@@ -1417,7 +1464,9 @@ async function openElectronExplorer(cdp, options) {
 async function openElectronDiff(cdp, options) {
   const diffExpression = comparisonDiffOpenExpression(options);
   if (!diffExpression) return;
-  await cdp.evaluate(diffExpression, "opening the canonical Electron Diff fixture");
+  await cdp.evaluate(diffExpression, "opening the canonical Electron Diff fixture", {
+    retryTransient: true,
+  });
   const diff = await pollElectron(
     cdp,
     comparisonDiffReadyExpression(options),
@@ -1432,11 +1481,33 @@ async function openElectronDiff(cdp, options) {
   }
 }
 
+async function openElectronDock(cdp, options) {
+  const threadId = comparisonThreadId(options) ?? options.threadId;
+  await cdp.evaluate(
+    comparisonDockOpenExpression(threadId, options.dock),
+    `opening the canonical Electron ${options.dock} pane`,
+    { retryTransient: true },
+  );
+  const dock = await pollElectron(
+    cdp,
+    comparisonDockReadyExpression(threadId, options.dock),
+    `confirming the canonical Electron ${options.dock} pane`,
+    (value) => value?.paneOpen === true && value?.persisted === true,
+    30_000,
+  );
+  if (!dock.ready) {
+    throw new Error(
+      `Timed out opening the canonical Electron ${options.dock} pane: ${JSON.stringify(dock.value)}.`,
+    );
+  }
+}
+
 async function openElectronTerminal(cdp, options) {
   const terminalThreadId = comparisonThreadId(options) ?? options.threadId;
   await cdp.evaluate(
     comparisonTerminalOpenExpression(terminalThreadId),
     "opening the canonical Electron Terminal pane",
+    { retryTransient: true },
   );
   const terminal = await pollElectron(
     cdp,
@@ -1530,8 +1601,10 @@ async function configureElectronRenderer(
     await openElectronNewThreadLanding(cdp, options);
     await openElectronExplorer(cdp, options);
     await openElectronDiff(cdp, options);
-    if (options.terminal === "open") {
-      await openElectronTerminal(cdp, options);
+    if (options.dock) await openElectronDock(cdp, options);
+    if (options.terminal === "open") await openElectronTerminal(cdp, options);
+    if (options.terminal === "open" || options.dock) {
+      // The dock/terminal state just changed; hand Native the synchronized copy.
       return {
         rendererState: await cdp.evaluate(
           comparisonRendererStateExpression(),
@@ -1544,10 +1617,11 @@ async function configureElectronRenderer(
     return { rendererState, anchor };
   } catch (error) {
     const recent = trail
-      .slice(-8)
-      .map(
-        (entry) =>
-          `#${entry.requestId} ${entry.activity} attempt=${entry.attempt} ${entry.ok ? "ok" : `failed: ${entry.error}`} ${entry.ms ?? "?"}ms`,
+      .slice(-10)
+      .map((entry) =>
+        entry.event
+          ? `${entry.at} event ${entry.event}${entry.url ? ` ${entry.url}` : ""}`
+          : `${entry.at} #${entry.requestId} ${entry.activity} attempt=${entry.attempt} ${entry.ok ? "ok" : `failed: ${entry.error}`} ${entry.ms ?? "?"}ms`,
       );
     throw new Error(
       `${error instanceof Error ? error.message : String(error)}\nRecent Electron activity:\n  ${recent.join("\n  ")}`,

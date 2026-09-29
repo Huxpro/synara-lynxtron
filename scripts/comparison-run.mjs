@@ -37,32 +37,43 @@ function git(root, args) {
 }
 
 /**
- * Commit plus a digest of every uncommitted change (tracked diff and untracked
- * file contents) under `paths`. Two builds with equal identities compiled the
- * same inputs.
+ * Content identity of the Native bundle inputs: a digest over the path and
+ * working-tree content of every non-test file under `sourcePaths` (tracked or
+ * untracked). Equal digests mean the same inputs were compiled, whichever
+ * commit records them; `commit` is informational only.
  */
 export function sourceIdentity(root, sourcePaths = NATIVE_BUNDLE_SOURCE_DIRS) {
   // Tests never reach the bundle; excluding them keeps test-only edits from
   // invalidating an otherwise identical build.
   const paths = [...sourcePaths, ":(exclude,glob)**/*.test.*", ":(exclude,glob)**/*.spec.*"];
-  const commit = git(root, ["rev-parse", "HEAD"]).trim();
-  const diff = git(root, ["diff", "HEAD", "--binary", "--", ...paths]);
-  const untracked = git(root, ["ls-files", "--others", "--exclude-standard", "-z", "--", ...paths])
+  const files = git(root, [
+    "ls-files",
+    "--cached",
+    "--others",
+    "--exclude-standard",
+    "-z",
+    "--",
+    ...paths,
+  ])
     .split("\0")
     .filter(Boolean)
     .sort();
-  const digest = createHash("sha256").update(diff);
-  for (const file of untracked) {
+  const digest = createHash("sha256");
+  let fileCount = 0;
+  for (const file of files) {
+    const filePath = join(root, file);
+    if (!existsSync(filePath)) continue; // deleted in the working tree
     digest.update(`\0${file}\0`);
-    digest.update(readFileSync(join(root, file)));
+    digest.update(readFileSync(filePath));
+    fileCount += 1;
   }
+  const status = git(root, ["status", "--porcelain", "--", ...paths])
+    .split("\n")
+    .filter(Boolean);
   return {
-    commit,
-    dirty: diff.length > 0 || untracked.length > 0,
-    changedFiles: git(root, ["diff", "HEAD", "--name-only", "--", ...paths])
-      .split("\n")
-      .filter(Boolean).length,
-    untrackedFiles: untracked.length,
+    commit: git(root, ["rev-parse", "HEAD"]).trim(),
+    dirtyFiles: status.length,
+    fileCount,
     digest: digest.digest("hex"),
   };
 }
@@ -86,13 +97,8 @@ export function writeNativeBuildStamp(stampPath, stamp) {
 export function nativeBuildStampProblems(stamp, currentSource, currentBundles) {
   if (!stamp) return ["no Native build stamp exists; run without --skip-build"];
   const problems = [];
-  if (stamp.source?.commit !== currentSource.commit) {
-    problems.push(
-      `bundle built from ${stamp.source?.commit}, sources are at ${currentSource.commit}`,
-    );
-  }
   if (stamp.source?.digest !== currentSource.digest) {
-    problems.push("uncommitted Native sources changed since the bundle was built");
+    problems.push("Native sources changed since the bundle was built");
   }
   for (const [key, value] of Object.entries(currentBundles)) {
     if (stamp.bundles?.[key] !== value) problems.push(`${key} differs from the stamped build`);

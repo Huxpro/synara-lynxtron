@@ -45,11 +45,10 @@ describe("comparison run identity", () => {
     expect(nativeBuildStampProblems(null, source, bundles)).toEqual([
       "no Native build stamp exists; run without --skip-build",
     ]);
-    expect(nativeBuildStampProblems(stamp, { commit: "def", digest: "d1" }, bundles)).toEqual([
-      "bundle built from abc, sources are at def",
-    ]);
+    // Committing identical content changes the commit, not the inputs.
+    expect(nativeBuildStampProblems(stamp, { commit: "def", digest: "d1" }, bundles)).toEqual([]);
     expect(nativeBuildStampProblems(stamp, { commit: "abc", digest: "d2" }, bundles)).toEqual([
-      "uncommitted Native sources changed since the bundle was built",
+      "Native sources changed since the bundle was built",
     ]);
     expect(
       nativeBuildStampProblems(stamp, source, { lynxBundle: "other", mainScript: "m1" }),

@@ -1,0 +1,61 @@
+[
+  {
+    "id": "thread-header-hairline",
+    "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+    "edge": "bottom",
+    "electron": {
+      "selector": "header.chat-surface-divider"
+    },
+    "native": {
+      "selector": ".ThreadPageHeader"
+    }
+  },
+  {
+    "id": "right-dock-seam",
+    "role": "right dock seam (--app-surface-divider, 60%)",
+    "edge": "left",
+    "electron": {
+      "selector": "[class~=\"border-[var(--app-surface-divider)]\"]"
+    },
+    "native": {
+      "selector": ".ThreadRightDockHost"
+    }
+  },
+  {
+    "id": "right-dock-tab-header",
+    "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+    "edge": "bottom",
+    "electron": {
+      "within": "[class~=\"border-[var(--app-surface-divider)]\"]",
+      "selector": ".chat-surface-divider",
+      "index": 0
+    },
+    "native": {
+      "selector": ".ThreadRightDockTabHeader"
+    }
+  },
+  {
+    "id": "git-pane-header",
+    "role": "DockPaneHeader hairline (--app-surface-divider, 60%)",
+    "edge": "bottom",
+    "electron": {
+      "within": "[class~=\"border-[var(--app-surface-divider)]\"]",
+      "selector": ".chat-surface-divider",
+      "index": 1
+    },
+    "native": {
+      "selector": ".DockPaneHeader"
+    }
+  },
+  {
+    "id": "git-diff-viewport",
+    "role": "list/diff split (border-border/70)",
+    "edge": "top",
+    "electron": {
+      "selector": "div[class~=\"border-border/70\"]"
+    },
+    "native": {
+      "selector": ".GitDockDiff"
+    }
+  }
+]

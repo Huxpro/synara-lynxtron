@@ -4,6 +4,8 @@ import { spawnSync } from "node:child_process";
 import {
   DEFAULT_DESKTOP_COMPARISON_OPTIONS,
   COMPARISON_RENDERER_STORAGE_KEYS,
+  comparisonDockOpenExpression,
+  comparisonDockReadyExpression,
   LEGACY_COMPARISON_THREAD_ID,
   createElectronCdpClient,
   ownedComparisonPidsFromPs,
@@ -147,11 +149,14 @@ describe("Electron and Lynxtron comparison launcher", () => {
         "--seed",
         "legacy",
         "--exit-after-certify",
+        "--dock",
+        "git",
       ]),
     ).toEqual({
       threadId: "thread-two",
       seed: "legacy",
       exitAfterCertify: true,
+      dock: "git",
       route: "/settings/advanced",
       width: 1280,
       height: 820,
@@ -1076,8 +1081,22 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(source).toContain('["Web", options.webPort]');
   });
 
+  it("opens git and browser panes through the canonical dock store", () => {
+    expect(() => parseDesktopComparisonArgs(["--dock", "terminal"])).toThrow(
+      "--dock requires git or browser.",
+    );
+    const open = comparisonDockOpenExpression("thread-1", "git");
+    expect(open).toContain('clearThreadDockState("thread-1")');
+    expect(open).toContain('openPane("thread-1", { paneId: "git", kind: "git" })');
+    // Readiness requires the persisted state Native restores from.
+    expect(comparisonDockReadyExpression("thread-1", "git")).toContain(
+      "localStorage.getItem('synara:right-dock-state:v1')",
+    );
+  });
+
   it("retries idempotent Electron reads through a reload and records the activity trail", async () => {
     const sent: Array<{ id: number; expression: string }> = [];
+    const enabled: string[] = [];
     const listeners = new Set<(event: { data: string }) => void>();
     let collectNext = true;
     const socket = {
@@ -1087,6 +1106,10 @@ describe("Electron and Lynxtron comparison launcher", () => {
         listeners.delete(listener),
       send: (raw: string) => {
         const message = JSON.parse(raw);
+        if (!message.params) {
+          enabled.push(message.method);
+          return;
+        }
         sent.push({ id: message.id, expression: message.params.expression });
         const reply = collectNext
           ? { id: message.id, error: { message: "Promise was collected" } }
@@ -1103,6 +1126,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
     await expect(
       cdp.evaluate("location.href", "reading route", { retryTransient: true }),
     ).resolves.toBe("ok");
+    // Lifecycle events are subscribed so context loss shows up in the trail.
+    expect(enabled).toEqual(["Runtime.enable", "Page.enable"]);
     expect(sent.map((entry) => entry.id)).toEqual([1, 2]);
     expect(trail).toMatchObject([
       {
