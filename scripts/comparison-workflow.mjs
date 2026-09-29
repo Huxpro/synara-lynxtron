@@ -31,7 +31,7 @@ export async function waitFor(
   throw new Error(`Timed out waiting for ${label}.`);
 }
 
-/** Accessible-label / attribute / class target → matching predicate for a Native DOM node. */
+/** Accessible-label / text / attribute / class target → matching predicate for a Native DOM node. */
 export function nativeTargetMatches(node, target) {
   const attributes = node?.attributes ?? [];
   const read = (name) => {
@@ -44,6 +44,20 @@ export function nativeTargetMatches(node, target) {
     const label = read("accessibility-label") ?? read("aria-label");
     if (label === null) return false;
     return target.label instanceof RegExp ? target.label.test(label) : label === target.label;
+  }
+  if (target.text !== undefined) {
+    // Visible text lives in zero-size RAW-TEXT children; match their TEXT element.
+    if (node?.nodeName !== "TEXT") return false;
+    const text = (node.children ?? [])
+      .map((child) => {
+        const childAttributes = child?.attributes ?? [];
+        for (let index = 0; index + 1 < childAttributes.length; index += 2) {
+          if (childAttributes[index] === "text") return String(childAttributes[index + 1]);
+        }
+        return "";
+      })
+      .join("");
+    return target.text instanceof RegExp ? target.text.test(text) : text === target.text;
   }
   if (target.attribute !== undefined) {
     const [name, value] = target.attribute;
@@ -130,7 +144,8 @@ export async function openElectronDriver(cdpPort) {
       const nodes = Array.from(document.querySelectorAll(${JSON.stringify(electronSelectorFor(target))}));
       const node = nodes.find((candidate) => {
         const r = candidate.getBoundingClientRect();
-        return r.width > 0 && r.height > 0 && (text === null || (candidate.innerText ?? "").includes(text));
+        const inViewport = r.right > 0 && r.bottom > 0 && r.left < innerWidth && r.top < innerHeight;
+        return r.width > 0 && r.height > 0 && inViewport && (text === null || (candidate.innerText ?? "").includes(text));
       });
       if (!node) return null;
       const r = node.getBoundingClientRect();
@@ -223,25 +238,53 @@ export async function openNativeDriver(devtoolPort) {
     const document = await send("DOM.getDocument", { depth: -1 });
     return document?.root ?? document;
   };
+  const boxOf = async (nodeId) => {
+    const quad = (await send("DOM.getBoxModel", { nodeId }))?.model?.border;
+    if (!quad) return null;
+    const xs = [quad[0], quad[2], quad[4], quad[6]];
+    const ys = [quad[1], quad[3], quad[5], quad[7]];
+    return {
+      left: Math.min(...xs),
+      top: Math.min(...ys),
+      right: Math.max(...xs),
+      bottom: Math.max(...ys),
+    };
+  };
   const find = async (target) => {
-    const root = await documentRoot();
+    const documentNode = await documentRoot();
+    // The app root spans the window; off-canvas matches (a closed dock) are skipped.
+    const sliceRoot = nativeNodesMatchingClasses(documentNode, ".SliceRoot")[0];
+    // `within` scopes the search to the first element with those classes (e.g. a menu layer).
+    const root =
+      target.within !== undefined
+        ? nativeNodesMatchingClasses(documentNode, target.within)[0]
+        : documentNode;
+    if (!root) return null;
+    const windowBox = sliceRoot ? await boxOf(sliceRoot.nodeId) : null;
     const candidates =
       target.className !== undefined
         ? nativeNodesMatchingClasses(root, target.className)
         : allNodes(root).filter((node) => nativeTargetMatches(node, target));
     for (const node of candidates) {
-      const model = await send("DOM.getBoxModel", { nodeId: node.nodeId });
-      const quad = model?.model?.border;
-      if (!quad) continue;
-      const xs = [quad[0], quad[2], quad[4], quad[6]];
-      const ys = [quad[1], quad[3], quad[5], quad[7]];
-      const width = Math.max(...xs) - Math.min(...xs);
-      const height = Math.max(...ys) - Math.min(...ys);
+      const box = await boxOf(node.nodeId);
+      if (!box) continue;
+      const width = box.right - box.left;
+      const height = box.bottom - box.top;
       if (width <= 0 || height <= 0) continue;
+      if (
+        windowBox &&
+        (box.right <= windowBox.left ||
+          box.left >= windowBox.right ||
+          box.bottom <= windowBox.top ||
+          box.top >= windowBox.bottom)
+      ) {
+        continue;
+      }
       return {
         nodeId: node.nodeId,
-        x: Math.min(...xs) + width / 2,
-        y: Math.min(...ys) + height / 2,
+        nodeName: node.nodeName,
+        x: box.left + width / 2,
+        y: box.top + height / 2,
         width,
         height,
       };

@@ -22,5 +22,12 @@ describe("comparison workflow targets", () => {
     expect(nativeTargetMatches(node, { attribute: ["data-thread-id", "thread-2"] })).toBe(false);
     expect(nativeTargetMatches(node, { className: ".ComposerCommandRowLynx--active" })).toBe(true);
     expect(nativeTargetMatches({ attributes: [] }, { label: "math.ts" })).toBe(false);
+    const text = {
+      nodeName: "TEXT",
+      attributes: [],
+      children: [{ attributes: ["text", "Explorer"] }],
+    };
+    expect(nativeTargetMatches(text, { text: "Explorer" })).toBe(true);
+    expect(nativeTargetMatches(text, { text: "Diff" })).toBe(false);
   });
 });

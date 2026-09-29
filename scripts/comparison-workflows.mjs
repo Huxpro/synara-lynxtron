@@ -1,6 +1,12 @@
 // Workflow definitions (plan N3) run by scripts/comparison-workflow-run.mjs.
 // Each workflow receives one renderer driver plus the backend and returns a
 // list of verified steps; any failed expectation throws with its context.
+import { execFileSync } from "node:child_process";
+import { chmodSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
+
+import { readComparisonFixtureManifest } from "./comparison-fixture.mjs";
+import { nativeNodesMatchingClasses } from "./comparison-measure.mjs";
 import { waitFor } from "./comparison-workflow.mjs";
 
 const sleep = (ms) => new Promise((resolveSleep) => setTimeout(resolveSleep, ms));
@@ -153,6 +159,7 @@ const COMPOSER_TARGET = {
   native: { label: "Message composer" },
 };
 const FIXTURE_SECONDARY_THREAD_ID = "comparison-fixture-secondary-v2";
+const FIXTURE_TRANSCRIPT_THREAD_ID = "comparison-fixture-transcript-v2";
 
 async function openNewThread(driver) {
   await driver.tap({ label: `Create new thread in ${FIXTURE_PROJECT_TITLE}` });
@@ -240,6 +247,11 @@ async function detachTranscript(driver, viewport, deltaY) {
     }
   }
   throw new Error("The transcript never detached from the end after scrolling up.");
+}
+
+function latestTurnActivityCount(thread) {
+  const turnId = thread.latestTurn.turnId;
+  return (thread.activities ?? []).filter((activity) => activity.turnId === turnId).length;
 }
 
 async function rowTop(driver, id) {
@@ -636,10 +648,7 @@ export async function workflowJ2(context) {
     const detachAttempts = await detachTranscript(driver, viewport, -400);
     const anchor = await pickAnchorRow(driver, viewport);
     const detachedAt = await backend.thread(threadId);
-    const turnActivities = (thread) =>
-      (thread.activities ?? []).filter((activity) => activity.turnId === thread.latestTurn.turnId)
-        .length;
-    const activitiesAtDetach = turnActivities(detachedAt);
+    const activitiesAtDetach = latestTurnActivityCount(detachedAt);
     const drift = [];
     for (;;) {
       const current = await backend.thread(threadId);
@@ -662,7 +671,7 @@ export async function workflowJ2(context) {
     );
     if (userMessagesWith(settled, marker).length !== 1)
       throw new Error(`"${marker}" was not sent exactly once.`);
-    const toolActivitiesWhileDetached = turnActivities(settled) - activitiesAtDetach;
+    const toolActivitiesWhileDetached = latestTurnActivityCount(settled) - activitiesAtDetach;
     if (toolActivitiesWhileDetached <= 0)
       throw new Error("No tool activity arrived while detached.");
     await sleep(800);
@@ -708,4 +717,253 @@ export async function workflowJ2(context) {
   return { threadId, token };
 }
 
-export const WORKFLOWS = Object.freeze({ J1: workflowJ1, J2: workflowJ2 });
+/**
+ * Whether rendered text contains `needle` (Electron: element text; Native: raw
+ * text nodes). `scope` limits the search: "explorer" is the Explorer pane,
+ * whose preview must not be confused with the same text in the transcript.
+ */
+async function renderedTextIncludes(driver, needle, scope = null) {
+  if (driver.kind === "electron") {
+    const root =
+      scope === "explorer"
+        ? `document.querySelector('[aria-label="Search files"]')?.closest("aside")?.parentElement`
+        : "document.body";
+    return driver.evaluate(`(${root})?.innerText.includes(${JSON.stringify(needle)}) === true`);
+  }
+  const documentNode = await driver.documentRoot();
+  const root =
+    scope === "explorer"
+      ? nativeNodesMatchingClasses(documentNode, ".ExplorerDockBody")[0]
+      : documentNode;
+  if (!root) return false;
+  const queue = [root];
+  while (queue.length > 0) {
+    const node = queue.shift();
+    const attributes = node?.attributes ?? [];
+    for (let index = 0; index + 1 < attributes.length; index += 2) {
+      if (attributes[index] === "text" && String(attributes[index + 1]).includes(needle))
+        return true;
+    }
+    queue.push(...(node?.children ?? []));
+  }
+  return false;
+}
+
+const DOCK_TARGETS = {
+  addPanel: { label: "Add panel" },
+  explorerItem: {
+    electron: { selector: '[role="menuitem"]', text: "Explorer" },
+    native: { text: "Explorer", within: ".LxMenuLayer" },
+  },
+  search: { label: "Search files" },
+  retry: {
+    electron: { selector: '[role="alert"] button', text: "Retry" },
+    native: { text: "Retry" },
+  },
+};
+
+function dockTab(driver, title) {
+  return pick(driver, {
+    electron: { selector: `button[title=${JSON.stringify(title)}][aria-pressed]` },
+    native: { label: title },
+  });
+}
+
+function treeRow(driver, path, kind) {
+  return pick(driver, {
+    electron: { selector: `button[title=${JSON.stringify(path)}]` },
+    native: { label: kind === "directory" ? `Expand ${path}` : `Open ${path}` },
+  });
+}
+
+async function openExplorerFromDock(driver) {
+  if (!(await driver.find(DOCK_TARGETS.addPanel))) {
+    await driver.tap({ label: "Toggle diff panel" });
+    await waitFor(() => driver.find(DOCK_TARGETS.addPanel), { label: "the dock" });
+  }
+  await driver.tap(DOCK_TARGETS.addPanel);
+  await driver.tap(pick(driver, DOCK_TARGETS.explorerItem));
+  await waitFor(() => driver.find(DOCK_TARGETS.search), { label: "the Explorer pane" });
+}
+
+async function openTreeFile(driver, path) {
+  const directory = path.split("/").slice(0, -1).join("/");
+  const fileTarget = treeRow(driver, path, "file");
+  const visible = () =>
+    waitFor(() => driver.find(fileTarget), { label: path, timeoutMs: 3_000 }).catch(() => null);
+  if (!(await visible()) && directory) {
+    // Expand only a collapsed directory; tapping an expanded one would close it.
+    const collapsed = pick(driver, {
+      electron: { selector: `button[title=${JSON.stringify(directory)}][aria-expanded="false"]` },
+      native: { label: `Expand ${directory}` },
+    });
+    if (await driver.find(collapsed)) await driver.tap(collapsed);
+  }
+  await driver.tap(fileTarget);
+}
+
+/**
+ * J3 — Explorer: open from the dock → workspace listing → search → select and
+ * preview a real file → Diff → close/reopen and reload persistence → a real
+ * read failure recovered with Retry.
+ */
+export async function workflowJ3(context) {
+  const { driver, run, step } = context;
+  const workspaceRoot =
+    run.seed?.fixture?.workspaceRoot ?? readComparisonFixtureManifest().workspaceRoot;
+
+  await step("open Explorer from the dock on the fixture workspace", async () => {
+    // An existing thread: Native's new-thread landing keeps the dock disabled
+    // (Electron allows it on the draft); recorded as a separate parity gap.
+    // Arrive from another thread so Explorer starts from its reset browse state.
+    await driver.tap({ attribute: ["data-thread-id", FIXTURE_SECONDARY_THREAD_ID] });
+    await waitFor(async () => (await activeThreadId(driver)) === FIXTURE_SECONDARY_THREAD_ID, {
+      label: "the secondary thread",
+    });
+    await driver.tap({ attribute: ["data-thread-id", FIXTURE_TRANSCRIPT_THREAD_ID] });
+    await waitFor(async () => (await activeThreadId(driver)) === FIXTURE_TRANSCRIPT_THREAD_ID, {
+      label: "the fixture transcript thread",
+    });
+    if (!(await driver.find(DOCK_TARGETS.search))) await openExplorerFromDock(driver);
+    const expected = readdirSync(workspaceRoot).filter((name) => !name.startsWith("."));
+    const missing = [];
+    for (const name of expected) {
+      const isDirectory = statSync(join(workspaceRoot, name)).isDirectory();
+      const target = pick(driver, {
+        electron: { selector: `button[title=${JSON.stringify(name)}]` },
+        native: { label: `${isDirectory ? "Expand" : "Open"} ${name}` },
+      });
+      const shown = await waitFor(() => driver.find(target), {
+        label: `the ${name} entry`,
+        timeoutMs: 10_000,
+      }).catch(() => null);
+      if (!shown) missing.push(name);
+    }
+    if (missing.length > 0)
+      throw new Error(`Workspace entries missing from Explorer: ${missing.join(", ")}`);
+    return { workspaceRoot, entries: expected };
+  });
+
+  await step("search the workspace for a file", async () => {
+    await driver.tap(DOCK_TARGETS.search);
+    await driver.type("math");
+    const result = pick(driver, {
+      electron: { selector: 'button[title="src/math.ts"]' },
+      native: { label: "Open src/math.ts" },
+    });
+    await waitFor(() => driver.find(result), { label: "the src/math.ts result" });
+    const excluded = pick(driver, {
+      electron: { selector: 'button[title="src/greeting.ts"]' },
+      native: { label: "Open src/greeting.ts" },
+    });
+    if (await driver.find(excluded)) throw new Error("Search did not filter out greeting.ts.");
+    // Clear the query. Electron: Escape in the field. The DevTool cannot send
+    // keys to Native, whose query resets on a thread switch, so go away and back.
+    if (driver.kind === "electron") {
+      await driver.press("Escape");
+    } else {
+      await driver.tap({ attribute: ["data-thread-id", FIXTURE_SECONDARY_THREAD_ID] });
+      await waitFor(async () => (await activeThreadId(driver)) === FIXTURE_SECONDARY_THREAD_ID, {
+        label: "the secondary thread",
+      });
+      await driver.tap({ attribute: ["data-thread-id", FIXTURE_TRANSCRIPT_THREAD_ID] });
+      await waitFor(() => driver.find(DOCK_TARGETS.search), { label: "Explorer on return" });
+    }
+    await waitFor(
+      async () => (await driver.find(treeRow(driver, "package.json", "file"))) !== null,
+      {
+        label: "the tree after clearing search",
+      },
+    );
+    return { query: "math", cleared: driver.kind === "electron" ? "Escape" : "thread switch" };
+  });
+
+  await step("select a real file and preview its contents", async () => {
+    // Preview another file first so the math.ts content is proven to come from this selection.
+    await openTreeFile(driver, "package.json");
+    await waitFor(() => renderedTextIncludes(driver, "synara-fixture-app", "explorer"), {
+      label: "the package.json preview",
+    });
+    await waitFor(async () => !(await renderedTextIncludes(driver, "clamp", "explorer")), {
+      label: "math.ts to leave the preview",
+    });
+    // A click that lands while the tree is still laying out rows can miss; a
+    // user clicks again, so retry once and record it.
+    let attempts = 0;
+    for (;;) {
+      attempts += 1;
+      await openTreeFile(driver, "src/math.ts");
+      const shown = await waitFor(() => renderedTextIncludes(driver, "clamp", "explorer"), {
+        label: "the math.ts preview",
+        timeoutMs: attempts === 1 ? 5_000 : 15_000,
+      }).catch((error) => (attempts === 1 ? null : Promise.reject(error)));
+      if (shown) break;
+    }
+    const onDisk = readFileSync(join(workspaceRoot, "src/math.ts"), "utf8");
+    if (!onDisk.includes("clamp")) throw new Error("Fixture math.ts changed unexpectedly.");
+    return { path: "src/math.ts", attempts };
+  });
+
+  await step("switch to Diff and see the file's change", async () => {
+    const numstat = execFileSync(
+      "git",
+      ["-C", workspaceRoot, "diff", "--numstat", "--", "src/math.ts"],
+      {
+        encoding: "utf8",
+      },
+    ).trim();
+    const [added, removed] = numstat.split(/\s+/);
+    if (!added) throw new Error("The fixture workspace has no src/math.ts change to show.");
+    await driver.tap(dockTab(driver, "Diff"));
+    await waitFor(
+      () =>
+        driver.kind === "electron"
+          ? renderedTextIncludes(driver, `math.ts\nsrc/\n+${added}\n-${removed}`)
+          : driver.find({ label: "Collapse src/math.ts" }),
+      { label: "src/math.ts in the Diff pane", timeoutMs: 20_000 },
+    );
+    return { file: "src/math.ts", added: Number(added), removed: Number(removed) };
+  });
+
+  await step("close Explorer, reopen it, and keep the dock across a reload", async () => {
+    await driver.tap({ label: "Close Explorer" });
+    await waitFor(async () => !(await driver.find({ label: "Close Explorer" })), {
+      label: "Explorer to close",
+    });
+    await openExplorerFromDock(driver);
+    await driver.reload();
+    await waitFor(
+      async () =>
+        (await driver.find({ label: "Close Explorer" })) &&
+        (await driver.find({ label: "Close Diff" })),
+      { label: "the Explorer and Diff tabs after reload", timeoutMs: 30_000 },
+    );
+    return { persisted: ["Diff", "Explorer"] };
+  });
+
+  await step("recover from a real read failure with Retry", async () => {
+    const target = join(workspaceRoot, "docs/notes.md");
+    const mode = statSync(target).mode & 0o777;
+    chmodSync(target, 0o000);
+    try {
+      await driver.tap(dockTab(driver, "Explorer"));
+      await openTreeFile(driver, "docs/notes.md");
+      await waitFor(() => driver.find(pick(driver, DOCK_TARGETS.retry)), {
+        label: "the read error with Retry",
+        timeoutMs: 20_000,
+      });
+    } finally {
+      chmodSync(target, mode);
+    }
+    await driver.tap(pick(driver, DOCK_TARGETS.retry));
+    await waitFor(() => renderedTextIncludes(driver, "Keep functions small", "explorer"), {
+      label: "notes.md after Retry",
+      timeoutMs: 20_000,
+    });
+    return { path: "docs/notes.md" };
+  });
+
+  return { workspaceRoot };
+}
+
+export const WORKFLOWS = Object.freeze({ J1: workflowJ1, J2: workflowJ2, J3: workflowJ3 });
