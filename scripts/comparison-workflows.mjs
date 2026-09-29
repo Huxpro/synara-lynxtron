@@ -1418,10 +1418,271 @@ export async function workflowJ5(context) {
   return { name };
 }
 
+/**
+ * Kanban cards in board order as the renderer labels them ("<title>, <status>").
+ * Both renderers expose the same accessible card label.
+ */
+async function kanbanCards(driver, knownTitles) {
+  let labels;
+  if (driver.kind === "electron") {
+    labels = await driver.evaluate(
+      `Array.from(document.querySelectorAll("main [aria-label]")).filter((node) => node.getBoundingClientRect().width > 0).map((node) => node.getAttribute("aria-label"))`,
+    );
+  } else {
+    labels = [];
+    const queue = [await driver.documentRoot()];
+    while (queue.length > 0) {
+      const node = queue.shift();
+      const attributes = node?.attributes ?? [];
+      for (let index = 0; index + 1 < attributes.length; index += 2) {
+        if (attributes[index] === "accessibility-label") labels.push(String(attributes[index + 1]));
+      }
+      queue.push(...(node?.children ?? []));
+    }
+  }
+  const cards = [];
+  for (const label of labels) {
+    const split = label.lastIndexOf(", ");
+    if (split < 0) continue;
+    const title = label.slice(0, split);
+    if (!knownTitles.has(title)) continue;
+    cards.push({ title, status: label.slice(split + 2) });
+  }
+  return cards;
+}
+
+// Electron keeps "Send as draft" tasks in its local composer store: client-only,
+// so they are left out when boards are compared with the store or each other.
+function canonicalCards(cards) {
+  return cards.filter((card) => card.status !== "Draft");
+}
+
+function escapeRegExp(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** The canonical board as [{ threadId, status }], matching cards by the current titles. */
+async function boardByThread(driver, backend, projectId) {
+  const threads = await projectThreadTitles(backend, projectId);
+  const idByTitle = new Map(threads.map((thread) => [thread.title, thread.id]));
+  const cards = canonicalCards(await kanbanCards(driver, new Set(idByTitle.keys())));
+  return cards.map((card) => ({ threadId: idByTitle.get(card.title), status: card.status }));
+}
+
+async function projectThreadTitles(backend, projectId) {
+  const snapshot = await backend.snapshot();
+  return snapshot.threads.filter(
+    (thread) => thread.projectId === projectId && !thread.archivedAt && !thread.deletedAt,
+  );
+}
+
+const KANBAN_NEW_TASK = {
+  electron: { selector: "main button", text: "New task" },
+  native: { label: "New task" },
+};
+
+async function openKanban(driver) {
+  if (await driver.find(pick(driver, SETTINGS_TARGETS.back))) {
+    await driver.tap(pick(driver, SETTINGS_TARGETS.back));
+  }
+  await driver.tap(
+    pick(driver, {
+      electron: { selector: "a, button", text: "Kanban" },
+      native: { label: "Kanban" },
+    }),
+  );
+  await waitFor(() => driver.find(pick(driver, KANBAN_NEW_TASK)), { label: "the Kanban board" });
+}
+
+/**
+ * J6 — populated Kanban (counts/order vs the store and the other client) →
+ * create a task that runs a real turn → open it and return → survive a
+ * reconnect; Pull Requests is a named blocked cell without a GitHub remote.
+ */
+export async function workflowJ6(context) {
+  const { driver, backend, run, step, openPeer } = context;
+  const projectId = run.seed?.fixture?.projectId ?? readComparisonFixtureManifest().projectId;
+  const token = `J6-${driver.kind}-${Date.now().toString(36)}`;
+  let createdThreadId = null;
+
+  try {
+    await step("show the populated board as the store and the other client do", async () => {
+      await openKanban(driver);
+      const threads = await projectThreadTitles(backend, projectId);
+      const titles = new Set(threads.map((thread) => thread.title));
+      const cards = await waitFor(
+        async () => {
+          const shown = canonicalCards(await kanbanCards(driver, titles));
+          return shown.length === threads.length ? shown : null;
+        },
+        { label: `${threads.length} canonical cards` },
+      );
+      const peer = await openPeer();
+      await openKanban(peer);
+      const peerCards = canonicalCards(await kanbanCards(peer, titles));
+      if (JSON.stringify(peerCards) !== JSON.stringify(cards)) {
+        throw new Error(
+          `Boards differ: ${JSON.stringify({ [driver.kind]: cards, [peer.kind]: peerCards })}`,
+        );
+      }
+      return { cards, peerMatches: true };
+    });
+
+    await step("create a task that runs a real turn; both clients show it", async () => {
+      await driver.tap(pick(driver, KANBAN_NEW_TASK));
+      await driver.tap(
+        pick(driver, {
+          electron: {
+            selector: '[role="dialog"]:not([data-closed]) [data-testid="composer-editor"]',
+          },
+          native: { label: "Task prompt" },
+        }),
+      );
+      await driver.type(`Reply with exactly one line: ${token} ok`);
+      // Must be off: a draft never reaches the server.
+      const draftOn =
+        driver.kind === "electron"
+          ? await driver.evaluate(
+              `document.querySelector('[role="dialog"]:not([data-closed]) input[type="checkbox"]')?.checked === true`,
+            )
+          : await switchIsOn(driver, { label: "Send as draft" });
+      if (draftOn) throw new Error("Send as draft is on by default.");
+      await driver.tap(
+        pick(driver, {
+          electron: { selector: '[role="dialog"]:not([data-closed]) button', text: "Create task" },
+          native: { text: "Create task" },
+        }),
+      );
+      const created = await waitFor(() => threadWithMessage(backend, token), {
+        label: "the task thread in the store",
+        timeoutMs: 30_000,
+      });
+      createdThreadId = created.id;
+      const settled = await waitForSettled(backend, created.id, "the task turn", null, 180_000);
+      if (settled.latestTurn.state !== "completed")
+        throw new Error(`Task turn ended ${settled.latestTurn.state}.`);
+      const titles = new Set([settled.title]);
+      const completedAt = Date.parse(settled.latestTurn.completedAt);
+      // A completed task card moves to Done; measure how soon each client shows it.
+      const doneLatency = async (client) => {
+        await waitFor(async () => (await kanbanCards(client, titles))[0]?.status === "Done", {
+          label: `the card to show Done on ${client.kind}`,
+          timeoutMs: 20_000,
+          intervalMs: 100,
+        });
+        return Date.now() - completedAt;
+      };
+      const peer = await openPeer();
+      const [driverDoneMs, peerDoneMs] = await Promise.all([
+        doneLatency(driver),
+        doneLatency(peer),
+      ]);
+      return {
+        threadId: created.id,
+        title: settled.title,
+        [`${driver.kind}DoneMs`]: driverDoneMs,
+        [`${peer.kind}DoneMs`]: peerDoneMs,
+      };
+    });
+
+    await step("open the task and return to the board", async () => {
+      const cardFor = (title) =>
+        pick(driver, {
+          electron: { selector: `[aria-label^=${JSON.stringify(`${title}, `)}]` },
+          native: { label: new RegExp(`^${escapeRegExp(title)}, `) },
+        });
+      // The title can change (title generation), so resolve it right before tapping.
+      await waitFor(
+        async () => {
+          const { title } = await backend.thread(createdThreadId);
+          if (!(await driver.find(cardFor(title)))) return false;
+          await driver.tap(cardFor(title));
+          return true;
+        },
+        { label: "the task card", timeoutMs: 20_000 },
+      );
+      const thread = await backend.thread(createdThreadId);
+      await waitFor(
+        async () =>
+          (await activeThreadId(driver)) === createdThreadId &&
+          (await renderedMessageIds(driver)).includes(thread.messages.at(-1).id),
+        { label: "the task transcript", timeoutMs: 20_000 },
+      );
+      await openKanban(driver);
+      await waitFor(
+        async () =>
+          (await boardByThread(driver, backend, projectId)).some(
+            (card) => card.threadId === createdThreadId,
+          ),
+        { label: "the card on the board again" },
+      );
+      return { opened: createdThreadId };
+    });
+
+    await step("keep the board across a reconnect", async () => {
+      // Cards are compared by thread identity: a finished task may be retitled
+      // by title generation at any moment.
+      const before = await boardByThread(driver, backend, projectId);
+      await driver.reload();
+      // Like J1: Electron keeps the route; a LynxView reload returns to the
+      // launch route, so Native reopens Kanban.
+      const routeRestored = await waitFor(() => driver.find(pick(driver, KANBAN_NEW_TASK)), {
+        label: "the board route",
+        timeoutMs: 5_000,
+      })
+        .then(() => true)
+        .catch(() => false);
+      if (!routeRestored) await openKanban(driver);
+      let after = [];
+      await waitFor(
+        async () => {
+          after = await boardByThread(driver, backend, projectId).catch(() => []);
+          return JSON.stringify(after) === JSON.stringify(before);
+        },
+        { label: "the board after reload", timeoutMs: 30_000 },
+      ).catch(() => {
+        throw new Error(`Board changed across reload: ${JSON.stringify({ before, after })}`);
+      });
+      return { cards: after.length, routeRestored };
+    });
+
+    await step("pull requests: same empty state (named blocked cell)", async () => {
+      await driver.tap(
+        pick(driver, {
+          electron: { selector: "a, button", text: "Pull requests" },
+          native: { label: "Pull requests" },
+        }),
+      );
+      const empty = await waitFor(() => renderedTextIncludes(driver, "No pull requests found"), {
+        label: "the pull requests page",
+        timeoutMs: 20_000,
+      });
+      return {
+        blocked:
+          "The fixture workspace has no GitHub remote, so the PR service has nothing to list; populated PR cells need a real repository.",
+        emptyStateShown: empty,
+      };
+    });
+  } finally {
+    if (createdThreadId) {
+      await backend
+        .request("orchestration.dispatchCommand", {
+          type: "thread.delete",
+          commandId: `j6-cleanup-${Date.now()}`,
+          threadId: createdThreadId,
+        })
+        .catch(() => undefined);
+    }
+  }
+
+  return { token };
+}
+
 export const WORKFLOWS = Object.freeze({
   J1: workflowJ1,
   J2: workflowJ2,
   J3: workflowJ3,
   J4: workflowJ4,
   J5: workflowJ5,
+  J6: workflowJ6,
 });
