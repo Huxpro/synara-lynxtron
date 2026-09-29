@@ -121,6 +121,8 @@ function KanbanTaskDraftSwitch(props: {
       props.checked ? " KanbanNewTaskDraftSwitch--checked" : ""
     }`,
     accessibleLabel: "Send as draft",
+    // The focusable control reports its state like the other Native switches.
+    accessibilityValue: props.checked ? "On" : "Off",
     disabled: props.disabled,
     onActivate: () => props.onChange(!props.checked),
   });
