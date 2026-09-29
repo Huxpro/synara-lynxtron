@@ -49,18 +49,18 @@ describe("Native recent-view switcher", () => {
   it("uses Electron-authority icon identities with explicit secondary paint", () => {
     const source = readFileSync(new URL("./RecentViewSwitcher.lynx.tsx", import.meta.url), "utf8");
 
-    expect(source).toContain("import consoleSvg from '@synara-central-icons/console.svg?raw'");
-    expect(source).toContain("import chatSvg from '@synara-central-icons/bubble-text.svg?raw'");
-    expect(source).toContain("import pluginSvg from '@synara-central-icons/puzzle.svg?raw'");
+    expect(source).toContain('import consoleSvg from "@synara-central-icons/console.svg?raw"');
+    expect(source).toContain('import chatSvg from "@synara-central-icons/bubble-text.svg?raw"');
+    expect(source).toContain('import pluginSvg from "@synara-central-icons/puzzle.svg?raw"');
     expect(source).toContain(
-      "import settingsSvg from '@synara-central-icons/settings-gear-4.svg?raw'",
+      'import settingsSvg from "@synara-central-icons/settings-gear-4.svg?raw"',
     );
-    expect(source).toContain("import windowSvg from '@synara-central-icons/window.svg?raw'");
+    expect(source).toContain('import windowSvg from "@synara-central-icons/window.svg?raw"');
     expect(source).toContain(
-      "import splitViewSvg from '@synara-central-icons/sidebar-simple-left-wide.svg?raw'",
+      'import splitViewSvg from "@synara-central-icons/sidebar-simple-left-wide.svg?raw"',
     );
-    expect(source).toContain("import pinFilledSvg from '@synara-central-icons-fill/pin.svg?raw'");
-    expect(source).toContain("const secondary = semanticIconColor('secondary')");
+    expect(source).toContain('import pinFilledSvg from "@synara-central-icons-fill/pin.svg?raw"');
+    expect(source).toContain('const secondary = semanticIconColor("secondary")');
     expect(source).toContain("colorizeLynxSvg(consoleSvg, primary)");
     expect(source).toContain("colorizeLynxSvg(chatSvg, secondary)");
     expect(source).not.toContain("<LayoutColumnsIcon");

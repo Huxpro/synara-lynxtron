@@ -42,7 +42,7 @@ describe("Native stable right dock host", () => {
     expect(router).toContain("terminalHydrated");
     expect(router).toContain("closeRequestVersion={terminalCloseRequestVersion}");
     expect(router).toContain("if (!terminalHydrated)");
-    expect(router).toContain("rightDockState.open && activeRightDockPane?.kind === 'diff'");
+    expect(router).toContain('rightDockState.open && activeRightDockPane?.kind === "diff"');
     expect(router).toContain("props.initialDiffOpen && !initialEditorOpen");
     expect(router).toContain("diffTurnId: props.initialDiffTurnId");
     expect(router).toContain("diffFilePath: props.initialDiffFilePath");
@@ -50,7 +50,10 @@ describe("Native stable right dock host", () => {
       "activePane?.diffTurnId ? `turn:${activePane.diffTurnId}` : undefined",
     );
     expect(router).toContain(
-      "openPaneInState(current, {\n          paneId: 'diff',\n          kind: 'diff',\n          diffTurnId: turnId as never",
+      `openPaneInState(current, {
+          paneId: "diff",
+          kind: "diff",
+          diffTurnId: turnId as never`,
     );
     expect(router).toContain("initialSelectedFilePath={activePane?.diffFilePath}");
     expect(router).not.toContain("diffDockWidth");

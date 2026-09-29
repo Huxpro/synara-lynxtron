@@ -80,14 +80,14 @@ describe("Lynx markdown presentation logic", () => {
     expect(toggleMarkdownCodeWrap(true)).toBe(false);
 
     const source = readFileSync(new URL("./ChatMarkdown.lynx.tsx", import.meta.url), "utf8");
-    expect(source).toContain("label={wrap ? 'Disable soft wrap' : 'Enable soft wrap'}");
-    expect(source).toContain("label={copied ? 'Copied' : 'Copy code'}");
-    expect(source).toContain("variant === 'user' ? ' MdRoot--user' : ''");
+    expect(source).toContain('label={wrap ? "Disable soft wrap" : "Enable soft wrap"}');
+    expect(source).toContain('label={copied ? "Copied" : "Copy code"}');
+    expect(source).toContain('variant === "user" ? " MdRoot--user" : ""');
     expect(source).toContain("resolveLynxMarkdownFileReference({");
     expect(source).toContain("resolveLynxInlineCodeFileReference({");
     expect(source).toContain("<MarkdownFileReferenceToken");
     expect(source).toContain("onOpenFileReference={context.onOpenFileReference}");
-    expect(source).toContain("renderUserText(text, 'fallback', context)");
+    expect(source).toContain('renderUserText(text, "fallback", context)');
     expect(source).toContain('accessibility-role="checkbox"');
     expect(source).toContain("accessibility-state={{ checked: props.checked, disabled: true }}");
     expect(source).toContain('<CheckIcon className="MdTaskCheckboxIcon" size={10} />');
@@ -104,7 +104,7 @@ describe("Lynx markdown presentation logic", () => {
 
   it("keeps user dollar tokens out of the assistant math processor", () => {
     const source = readFileSync(new URL("./markdownAst.lynx.ts", import.meta.url), "utf8");
-    expect(source).toContain("variant === 'user' ? userProcessor : assistantProcessor");
+    expect(source).toContain('variant === "user" ? userProcessor : assistantProcessor');
     expect(source).toMatch(
       /const userProcessor = unified\(\)\s*\.use\(remarkParse\)\s*\.use\(remarkGfm\);/s,
     );

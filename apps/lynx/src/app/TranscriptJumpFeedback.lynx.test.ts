@@ -5,7 +5,7 @@ describe("Transcript jump feedback", () => {
   it("uses a Lynx-safe colorized arrow instead of a currentColor DOM SVG", () => {
     const transcript = readFileSync(new URL("./Transcript.tsx", import.meta.url), "utf8");
     expect(transcript).toContain(
-      "import arrowDownSvg from '@tabler/icons/outline/arrow-down.svg?raw';",
+      'import arrowDownSvg from "@tabler/icons/outline/arrow-down.svg?raw";',
     );
     expect(transcript).not.toContain("import { ArrowDownIcon } from '@synara-web/lib/icons';");
     expect(transcript).toContain("content={colorizeLynxSvg(arrowDownSvg, svgColors.foreground)}");

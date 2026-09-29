@@ -16,7 +16,11 @@ describe("RPC pending cleanup contract", () => {
       "if (recoveryPromise === pending) recoveryPromise = null;\n      })\n      .catch",
     );
     expect(source).toContain(
-      "if (connectionPromise === pending && activeSocket === null) {\n        connectionPromise = null;\n      }\n    }).catch",
+      `if (connectionPromise === pending && activeSocket === null) {
+          connectionPromise = null;
+        }
+      })
+      .catch`,
     );
   });
 });

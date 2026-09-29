@@ -11,7 +11,8 @@ describe("settings persistence presentation", () => {
     expect(resolveSettingsPersistencePresentation({ kind: "loaded" })).toBeNull();
     const settingsPageSource = readFileSync(new URL("./SettingsPage.tsx", import.meta.url), "utf8");
     expect(settingsPageSource).toContain(
-      "section !== 'archived' &&\n              persistencePresentation ? (",
+      `section !== "archived" &&
+                persistencePresentation ?`,
     );
   });
 

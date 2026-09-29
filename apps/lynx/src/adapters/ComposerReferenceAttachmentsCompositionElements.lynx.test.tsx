@@ -25,8 +25,10 @@ describe("composer reference attachment interaction contract", () => {
       "utf8",
     );
 
-    expect(source.match(/semanticIconColor\('secondary'\)/g)?.length).toBeGreaterThanOrEqual(4);
-    expect(source).toContain("semanticIconColor('tertiary')");
+    expect(source.match(/semanticIconColor\(["']secondary["']\)/g)?.length).toBeGreaterThanOrEqual(
+      4,
+    );
+    expect(source).toContain('semanticIconColor("tertiary")');
     expect(source).toContain("svgColors.surface");
     expect(source).toContain('colorMode="inherit"');
     expect(source).toContain("mimeType={file.mimeType}");
@@ -37,7 +39,7 @@ describe("composer reference attachment interaction contract", () => {
     expect(source).not.toContain('color="#d97706"');
     const themeSource = readFileSync(new URL("./useTheme.lynx.ts", import.meta.url), "utf8");
     expect(themeSource).toContain(
-      "const warningColor = resolvedTheme === 'dark' ? '#f5b44a' : '#d97706'",
+      'const warningColor = resolvedTheme === "dark" ? "#f5b44a" : "#d97706"',
     );
     expect(themeSource).toContain("warning: warningColor");
     expect(source).toContain('accessibility-label="Draft attachment may not persist"');

@@ -50,10 +50,10 @@ describe("Lynx pending user-input capability", () => {
   });
 
   it("dispatches the canonical response and refreshes the thread", () => {
-    expect(routerSource).toContain("type: 'thread.user-input.respond'");
+    expect(routerSource).toContain('type: "thread.user-input.respond"');
     expect(routerSource).toContain("requestId: activePendingUserInput.requestId");
     expect(routerSource).toContain("answers,");
     expect(routerSource).toContain("<PendingUserInputPanel");
-    expect(routerSource).toContain("queryKey: ['thread-detail', threadId]");
+    expect(routerSource).toContain('queryKey: ["thread-detail", threadId]');
   });
 });

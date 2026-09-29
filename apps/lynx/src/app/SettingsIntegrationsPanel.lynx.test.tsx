@@ -13,13 +13,13 @@ describe("Settings Integrations fidelity", () => {
       "utf8",
     );
 
-    expect(settingsSource).toContain("'integrations',");
-    expect(settingsSource).toContain("section === 'integrations'");
+    expect(settingsSource).toContain('"integrations",');
+    expect(settingsSource).toContain('section === "integrations"');
     expect(settingsSource).toContain("<SettingsIntegrationsPanel />");
-    expect(clientSource).toContain("'server.listExternalMcpIntegrations'");
-    expect(clientSource).toContain("'server.createExternalMcpIntegration'");
-    expect(clientSource).toContain("'server.revokeExternalMcpIntegration'");
-    expect(clientSource).toContain("'server.refreshExternalMcpPairing'");
+    expect(clientSource).toContain('"server.listExternalMcpIntegrations"');
+    expect(clientSource).toContain('"server.createExternalMcpIntegration"');
+    expect(clientSource).toContain('"server.revokeExternalMcpIntegration"');
+    expect(clientSource).toContain('"server.refreshExternalMcpPairing"');
     expect(panelSource).toContain("Connect a coding agent");
     expect(panelSource).toContain("Connected agents");
     expect(panelSource).toContain("No connected agents");
@@ -27,7 +27,7 @@ describe("Settings Integrations fidelity", () => {
       'accessibility-label="No connected agents. Connect Codex, Claude, or another local MCP agent to create and follow Synara tasks."',
     );
     expect(panelSource).toContain(
-      "import { CheckboxIndicator } from '../components/ui/checkbox.lynx';",
+      'import { CheckboxIndicator } from "../components/ui/checkbox.lynx";',
     );
     expect(panelSource).toContain("<CheckboxIndicator checked={props.checked}");
     expect(panelSource).not.toContain(">✓<");
@@ -38,9 +38,9 @@ describe("Settings Integrations fidelity", () => {
     expect(panelSource).toContain("disclosureContentClassName(");
     expect(panelSource).toContain("disclosureChevronClassName(");
     expect(panelSource).toContain("aria-expanded={advancedOpen}");
-    expect(panelSource).toContain("'accessibility-value': advancedOpen");
-    expect(panelSource).toContain("? 'Expanded'");
-    expect(panelSource).toContain(": 'Collapsed'");
+    expect(panelSource).toContain('"accessibility-value": advancedOpen');
+    expect(panelSource).toContain('? "Expanded"');
+    expect(panelSource).toContain(': "Collapsed"');
     expect(panelSource).toContain('<text className="LxButton__text">Review</text>');
   });
 
@@ -65,13 +65,14 @@ describe("Settings Integrations fidelity", () => {
     ]) {
       expect(panelSource).toContain(successMessage);
     }
-    expect(panelSource).toContain("from '@synara-web/components/settings/externalMcpSetup'");
+    expect(panelSource).toContain('from "@synara-web/components/settings/externalMcpSetup"');
     expect(panelSource).toContain("buildExternalMcpClientConfiguration(");
     expect(panelSource).toContain("buildExternalMcpExamplePrompt(");
     expect(panelSource).toContain("buildExternalMcpSetupPrompt(");
     expect(panelSource).toContain("externalMcpSetupAction({");
     expect(panelSource).toContain(
-      "queryClient.invalidateQueries({\n        queryKey: ['external-mcp-integrations']",
+      `queryClient.invalidateQueries({
+        queryKey: ["external-mcp-integrations"]`,
     );
   });
 

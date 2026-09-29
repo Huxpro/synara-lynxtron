@@ -13,13 +13,13 @@ describe("shared interactive accessible names", () => {
     const control = source("../components/composer/ComposerModelControl.lynx.tsx");
 
     expect(command).toContain("accessibleLabel: props.title");
-    expect(command).toContain("accessibilityValue: props.active ? 'Selected' : undefined");
-    expect(traits).toContain("accessibleLabel: 'Fast mode'");
-    expect(traits).toContain("accessibilityValue: props.enabled ? 'On' : 'Off'");
+    expect(command).toContain('accessibilityValue: props.active ? "Selected" : undefined');
+    expect(traits).toContain('accessibleLabel: "Fast mode"');
+    expect(traits).toContain('accessibilityValue: props.enabled ? "On" : "Off"');
     expect(models).toContain("accessibleLabel: `Select ${props.modelName}`");
-    expect(models).toContain("accessibilityValue: props.isFavorite ? 'On' : 'Off'");
+    expect(models).toContain('accessibilityValue: props.isFavorite ? "On" : "Off"');
     expect(control).toContain("accessibleLabel: `Browse ${props.item.label} models`");
-    expect(control).toContain("accessibleLabel: 'Back to providers'");
+    expect(control).toContain('accessibleLabel: "Back to providers"');
   });
 
   it("routes Kanban and pull request names through the native interaction owner", () => {
@@ -32,12 +32,12 @@ describe("shared interactive accessible names", () => {
     const chats = source("./SidebarChatsSectionElements.lynx.tsx");
 
     expect(column.match(/accessibleLabel: props\.label/g)).toHaveLength(2);
-    expect(route).toContain("accessibleLabel: 'Back to Kanban'");
-    expect(route).toContain("accessibleLabel: 'New task'");
+    expect(route).toContain('accessibleLabel: "Back to Kanban"');
+    expect(route).toContain('accessibleLabel: "New task"');
     expect(overview.match(/accessibleLabel: props\.label/g)).toHaveLength(2);
     expect(tabs).toContain("accessibleLabel: props.label");
     expect(close).toContain("accessibleLabel: props.accessibleLabel");
-    expect(summary).toContain("accessibilityValue: open ? 'Expanded' : 'Collapsed'");
+    expect(summary).toContain('accessibilityValue: open ? "Expanded" : "Collapsed"');
     expect(chats).toContain("accessibleLabel: props.label");
   });
 });

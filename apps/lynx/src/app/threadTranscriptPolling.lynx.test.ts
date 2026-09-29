@@ -10,24 +10,24 @@ describe("Lynx thread transcript polling", () => {
     );
 
     expect(routerSource).not.toContain("function useThreadTranscriptPolling");
-    expect(routerOwnerSource).toContain("queryKey: ['thread-detail', activeThreadId]");
+    expect(routerOwnerSource).toContain('queryKey: ["thread-detail", activeThreadId]');
     expect(routerOwnerSource).not.toContain(
       "'thread-detail',\n      activeThreadId,\n      explorerTrimmedQuery",
     );
     expect(routerOwnerSource).toContain("parseRoute(initialRoute).params.threadId ?? null");
-    expect(routerOwnerSource).toContain("'background only'");
+    expect(routerOwnerSource).toContain('"background only"');
     expect(routerOwnerSource).toContain("fetchThreadTranscriptRows(threadId)");
     expect(routerOwnerSource).toContain("fetchThreadHeaderSummary(threadId)");
     expect(routerOwnerSource).toContain("refetchInterval: 500");
     expect(routerOwnerSource).toContain("retry: false");
     expect(routerOwnerSource).toContain("subscribeOrchestrationShellEvents((item) => {");
     expect(routerOwnerSource).toContain(
-      "void queryClient.invalidateQueries({ queryKey: ['threads'] });",
+      'void queryClient.invalidateQueries({ queryKey: ["threads"] });',
     );
     expect(routerOwnerSource).toContain("className={`AppNotificationStack${");
-    expect(routerOwnerSource).toContain("route.pathname === '/components-lab'");
-    expect(routerOwnerSource).toContain("queryKey: ['thread-detail', activeThreadId]");
-    expect(routerOwnerSource).toContain("item.kind !== 'thread-upserted'");
+    expect(routerOwnerSource).toContain('route.pathname === "/components-lab"');
+    expect(routerOwnerSource).toContain('queryKey: ["thread-detail", activeThreadId]');
+    expect(routerOwnerSource).toContain('item.kind !== "thread-upserted"');
     expect(routerOwnerSource).toContain("item.thread.id !== activeThreadId");
   });
 
@@ -44,9 +44,9 @@ describe("Lynx thread transcript polling", () => {
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
 
     expect(routerSource).toContain(
-      "bridgeCall<{ readonly route?: unknown }>('shellRendererReady')",
+      'bridgeCall<{ readonly route?: unknown }>("shellRendererReady")',
     );
-    expect(appSource).toContain("bridgeCall('shellUiReady', { route: initialRoute ?? '/' })");
+    expect(appSource).toContain('bridgeCall("shellUiReady", { route: initialRoute ?? "/" })');
     expect(routerSource).toContain(
       "Memory-history navigation remains available without shell events.",
     );

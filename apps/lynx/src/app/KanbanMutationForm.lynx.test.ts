@@ -9,7 +9,7 @@ describe("Kanban mutation form accessibility", () => {
     );
 
     expect(source).toMatch(
-      /mutationTarget\.action === 'start'\s*\? 'Task instructions'\s*: 'Task name'/,
+      /mutationTarget\.action === ["']start["']\s*\? ["']Task instructions["']\s*: ["']Task name["']/,
     );
     expect(source).toContain("accessibility-element");
     expect(source).toContain("aria-invalid={Boolean(mutationTarget.error)}");

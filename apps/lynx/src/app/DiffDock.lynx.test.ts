@@ -6,7 +6,7 @@ describe("Diff Dock chrome fidelity", () => {
     const source = readFileSync(new URL("./DiffDock.lynx.tsx", import.meta.url), "utf8");
 
     expect(source).toContain("readonly initialDiffSource?: DiffSource");
-    expect(source).toContain("props.initialDiffSource ?? 'workingTree'");
+    expect(source).toContain('props.initialDiffSource ?? "workingTree"');
   });
 
   it("reuses the universal closable tab and keeps dock management separate", () => {
@@ -24,12 +24,8 @@ describe("Diff Dock chrome fidelity", () => {
     expect(source).toContain('closeLabel="Close Diff"');
     expect(source).toContain('ariaLabel="Add panel"');
     expect(source).toContain('label="Collapse panel"');
-    expect(source).toContain(
-      "<PanelRightCloseIcon\n                  color={semanticIconColor('secondary')}",
-    );
-    expect(source).toContain(
-      "<PlusIcon\n                      color={semanticIconColor('secondary')}",
-    );
+    expect(source).toContain('<PanelRightCloseIcon color={semanticIconColor("secondary")}');
+    expect(source).toContain('<PlusIcon color={semanticIconColor("secondary")}');
     expect(fileTabSource).toContain("<EditorSurfaceTab");
     expect(railTabsSource).toContain("<EditorSurfaceTab");
   });
@@ -67,14 +63,14 @@ describe("Diff Dock chrome fidelity", () => {
     const source = readFileSync(new URL("./DiffDock.lynx.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./diff-dock.css", import.meta.url), "utf8");
 
-    expect(source).toContain("props.presentation === 'dock'");
+    expect(source).toContain('props.presentation === "dock"');
     expect(source).toContain("view.files.length > 1");
     expect(source).toContain('aria-label="Jump to file"');
     expect(source).toContain('className="DiffDockFileJumpViewport"');
     expect(source).toContain('accessibility-label="Search changed files"');
     expect(source).toContain("file.path.toLowerCase().includes(");
     expect(source).toContain("const closeFileJump = () => {");
-    expect(source).toContain("setFileJumpQuery('')");
+    expect(source).toContain('setFileJumpQuery("")');
     expect(source).toContain("bindtap={closeFileJump}");
     expect(source).toContain("onClick={closeFileJump}");
     expect(source).toContain("setExpandedFileKeys([file.key])");
@@ -92,7 +88,7 @@ describe("Diff Dock chrome fidelity", () => {
       source.indexOf("function EditorDiffOptionsMenu"),
     );
     expect(fileJumpOverlaySource).toContain(
-      "<XIcon color={semanticIconColor('secondary')} size={14} />",
+      '<XIcon color={semanticIconColor("secondary")} size={14} />',
     );
     expect(fileJumpOverlaySource).not.toContain(">\n              ×\n            </Button>");
     expect(fileJumpOverlaySource).not.toContain("<Menu");
@@ -108,8 +104,8 @@ describe("Diff Dock chrome fidelity", () => {
     const source = readFileSync(new URL("./DiffDock.lynx.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./diff-dock.css", import.meta.url), "utf8");
 
-    expect(source).toContain("from '@synara/shared/pathTree'");
-    expect(source).toContain("label={fileTreeOpen ? 'Hide file tree' : 'Show file tree'}");
+    expect(source).toContain('from "@synara/shared/pathTree"');
+    expect(source).toContain('label={fileTreeOpen ? "Hide file tree" : "Show file tree"}');
     expect(source).toContain("<FoldersIcon");
     expect(source).toContain("<ReviewFileTree");
     expect(source).toContain('placeholder="Filter files..."');
@@ -155,7 +151,7 @@ describe("Diff Dock chrome fidelity", () => {
     const styles = readFileSync(new URL("./diff-dock.css", import.meta.url), "utf8");
 
     expect(source).toContain("import { EnvironmentGitAction }");
-    expect(source).toContain("queryKey: ['diff-dock-git-status'");
+    expect(source).toContain('queryKey: ["diff-dock-git-status"');
     expect(source).toContain('presentation="toolbar"');
     expect(environmentSource).toContain("export function EnvironmentGitAction");
     expect(environmentSource).toContain("resolveQuickAction(");
@@ -189,10 +185,10 @@ describe("Diff Dock chrome fidelity", () => {
     expect(source).toContain("fetchFullThreadDiff({");
     expect(source).toContain("fetchTurnDiff({");
     expect(source).toContain("ignoreWhitespace: diffIgnoreWhitespace");
-    expect(source).toContain("'Copied diff' : 'Copy diff'");
+    expect(source).toContain('"Copied diff" : "Copy diff"');
     expect(source).toContain("fetchWorkingTreeDiff(props.workspaceRoot, diffRequest.scope)");
     expect(clientSource).toContain(
-      "scope: 'branch' | 'staged' | 'unstaged' | 'workingTree' = 'workingTree'",
+      'scope: "branch" | "staged" | "unstaged" | "workingTree" = "workingTree"',
     );
     expect(clientSource).toContain("scope,");
   });
@@ -207,8 +203,8 @@ describe("Diff Dock chrome fidelity", () => {
     expect(source).toContain("visibleDiffFiles(");
     expect(source).toContain("? { ...view, files: visibleFiles }");
     expect(source).toContain("view.files.map((file) => (");
-    expect(source).toContain("Show {Math.min(");
-    expect(source).toContain("visibleFiles.map((file) => file.key).join('\\0')");
+    expect(source).toMatch(/Show(?:\{" "\}| )\s*\{Math\.min\(/);
+    expect(source).toContain('visibleFiles.map((file) => file.key).join("\\0")');
     expect(source).not.toContain("line.kind !== 'hunk'");
     expect(elements).toContain('className="SharedPrCodeLinePrefix"');
     expect(elements).not.toContain("SharedPrCodeLineMarker--${props.kind}");

@@ -42,18 +42,18 @@ describe("Settings Custom Models fidelity", () => {
     const settingsSource = readFileSync(new URL("./SettingsPage.tsx", import.meta.url), "utf8");
 
     expect(source).toContain("validateCustomModelInput");
-    expect(source).toContain("queryKey: ['server-settings']");
+    expect(source).toContain('queryKey: ["server-settings"]');
     expect(source).toContain("updateServerSettings(patch)");
     expect(source).toContain('confirmType="send"');
     expect(source).toContain("onConfirm={addModel}");
     expect(source).toContain("color={svgColors.foreground80}");
     expect(source).toContain("aria-invalid={Boolean(error)}");
     expect(source).toContain("<Input\n                nativeInput");
-    expect(source).toContain("buttonProps={{ 'accessibility-element': false }}");
+    expect(source).toContain('buttonProps={{ "accessibility-element": false }}');
     expect(source).toContain('accessibility-role="alert"');
     expect(source).toContain("Remove ${row.slug}");
     expect(source).toContain("Reset custom models to default");
-    expect(settingsHelpers).toContain("provider: 'pi'");
+    expect(settingsHelpers).toContain('provider: "pi"');
     expect(settingsHelpers).not.toContain("provider: 'droid'");
     expect(settingsSource).toContain("<SettingsCustomModelsPanel");
     expect(settingsSource).toContain("onSettingsChange={applyModelSettings}");

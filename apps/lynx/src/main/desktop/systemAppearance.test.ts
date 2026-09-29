@@ -49,7 +49,7 @@ describe("desktop system appearance", () => {
 
   it("desktop bridge exposes the current system appearance on demand", () => {
     const source = readFileSync(new URL("./main.ts", import.meta.url), "utf8");
-    expect(source).toMatch(/name === 'runtimeGetSystemAppearance'/);
+    expect(source).toMatch(/name === ["']runtimeGetSystemAppearance["']/);
     expect(source).toMatch(/dark: readCurrentSystemDark()/);
     expect(source).toMatch(/readDark: readCurrentSystemDark/);
     expect(source).toContain("startSystemAppearanceProbe(w, shellPaths.logFile)");

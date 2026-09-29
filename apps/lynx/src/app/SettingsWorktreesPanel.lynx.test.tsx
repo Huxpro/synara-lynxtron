@@ -14,14 +14,14 @@ describe("Settings Worktrees fidelity", () => {
       "utf8",
     );
 
-    expect(settingsSource).toContain("'worktrees',");
-    expect(settingsSource).toContain("section === 'worktrees'");
+    expect(settingsSource).toContain('"worktrees",');
+    expect(settingsSource).toContain('section === "worktrees"');
     expect(settingsSource).toContain("<SettingsWorktreesPanel />");
-    expect(clientSource).toContain("'server.listWorktrees'");
-    expect(clientSource).toContain("'git.removeWorktree'");
+    expect(clientSource).toContain('"server.listWorktrees"');
+    expect(clientSource).toContain('"git.removeWorktree"');
     expect(queriesSource).toContain("readonly workspaceThreads:");
     expect(queriesSource).toContain("associatedWorktreePath:");
-    expect(panelSource).toContain("queryKey: ['managed-worktrees']");
+    expect(panelSource).toContain('queryKey: ["managed-worktrees"]');
     expect(panelSource).toContain("No app-managed worktrees found yet.");
     expect(panelSource).toContain("No conversations linked to this worktree.");
     expect(panelSource).toMatch(
@@ -36,9 +36,7 @@ describe("Settings Worktrees fidelity", () => {
     );
 
     expect(panelSource).toContain("const snapshot = await fetchSidebarSnapshot()");
-    expect(panelSource).toContain(
-      "linkedThreadsForWorktree(\n        snapshot.workspaceThreads,\n        input.path",
-    );
+    expect(panelSource).toContain("linkedThreadsForWorktree(snapshot.workspaceThreads, input.path");
     expect(panelSource).toContain(
       "Could not verify linked conversations. Retry once the app reconnects to the server.",
     );
@@ -48,10 +46,10 @@ describe("Settings Worktrees fidelity", () => {
     expect(panelSource).toContain("await removeManagedWorktree({");
     expect(panelSource).toContain("force: true");
     expect(panelSource).toContain(
-      "queryClient.invalidateQueries({ queryKey: ['managed-worktrees'] })",
+      'queryClient.invalidateQueries({ queryKey: ["managed-worktrees"] })',
     );
     expect(panelSource).toContain(
-      "queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] })",
+      'queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] })',
     );
   });
 

@@ -8,7 +8,7 @@ describe("Lynx transport status presentation", () => {
     const source = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
 
-    expect(source).toContain(": 'Offline'");
+    expect(source).toContain(': "Offline"');
     expect(source).toContain('aria-label="Retry connecting to Synara"');
     expect(source).toContain("!componentsLabRoute &&");
     expect(appSource).toContain("transportState={transportState}");

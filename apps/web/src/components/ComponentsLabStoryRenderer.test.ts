@@ -91,7 +91,8 @@ describe("Components Lab story renderer", () => {
     );
     expect(source).toContain('props.storyId === "transcript/status-row"');
     expect(source).toContain("<TimelineStatusRowComposition");
-    expect(source).toContain('variant === "error" ? CircleAlertIcon');
+    expect(source).toContain(`variant === "error"
+        ? CircleAlertIcon`);
   });
 
   const SSR_SIGNATURE_STORY_IDS = new Set([
@@ -233,7 +234,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.state === "saving"');
     expect(source).toContain('initialSaving={props.state === "saving"}');
     expect(source).toContain(
-      'initialEditingScriptId={editing && (props.state !== "default" || props.variant === "shortcut-conflict")',
+      `initialEditingScriptId={
+          editing && (props.state !== "default" || props.variant === "shortcut-conflict")`,
     );
     expect(source).toContain('props.variant === "shortcut-conflict"');
     expect(source).toContain('command: "script.component-lab-test.run"');
@@ -338,8 +340,10 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain("<MessageUserRowComposition>");
     expect(source).toContain("<MessageUserBubbleComposition>");
     expect(source).toContain("<MessageAssistantRowComposition>");
-    expect(source).toContain("onClick={() => setResult('Message copied')}");
-    expect(source).toContain(">{result}</p>");
+    expect(source).toContain('onClick={() => setResult("Message copied")}');
+    expect(source).toContain(`>
+        {result}
+      </p>`);
     expect(source).toContain("data-message-row-state={props.state}");
   });
 
@@ -385,13 +389,14 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain("componentLabProjectContextMenuItems(props.variant)");
     expect(source).toContain("componentLabThreadContextMenuItems(props.variant)");
     expect(specimens).toContain(
-      "const pinned = props.variant === 'pinned' || props.state === 'pinned';",
+      'const pinned = props.variant === "pinned" || props.state === "pinned";',
     );
-    expect(specimens).toContain("const running = props.variant === 'running';");
+    expect(specimens).toContain('const running = props.variant === "running";');
     expect(specimens).toContain(
-      "const active = props.variant === 'active' || props.state === 'active'",
+      `const active =
+    props.variant === "active" || props.state === "active"`,
     );
-    expect(specimens).toContain("aria-label={pinned ? 'Unpin project' : 'Pin project'}");
+    expect(specimens).toContain('aria-label={pinned ? "Unpin project" : "Pin project"}');
     expect(specimens).toContain("<Actions reveal={reveal}>");
   });
 
@@ -482,7 +487,9 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain("<SurfaceTabChip");
     expect(source).toContain("return <FileTabStory key={props.state} state={props.state} />;");
     expect(source).toContain("onClose={() => setOpen(false)}");
-    expect(source).toContain(">Tab closed</p>");
+    expect(source).toContain(`>
+          Tab closed
+        </p>`);
     expect(source).toContain('closeLabel="Close example.ts"');
     expect(source).toContain("visualState={props.state as");
   });
@@ -556,23 +563,33 @@ describe("Components Lab story renderer", () => {
       "utf8",
     );
     expect(source).toContain('props.storyId === "ui/button"');
-    expect(source).toContain('"primary-outline" | "secondary-outline" | "destructive-outline"');
-    expect(source).toContain("<Button className={stateClass}");
-    expect(source).toContain("<IconButton className={stateClass}");
+    expect(source).toContain(`"primary-outline"
+            | "secondary-outline"
+            | "destructive-outline"`);
+    expect(source).toContain(`<Button
+        className={stateClass}`);
+    expect(source).toContain(`<IconButton
+        className={stateClass}`);
     expect(source).toContain('props.variant === "icon"');
     expect(source).toContain('props.storyId === "ui/input"');
-    expect(source).toContain("<Input aria-invalid={invalid}");
+    expect(source).toContain(`<Input
+          aria-invalid={invalid}`);
     expect(source).toContain('props.variant === "small" ? "sm"');
     expect(source).toContain('props.storyId === "ui/menu"');
     expect(source).toContain("<MenuGroup>");
     expect(source).toContain('<MenuPopupBase align="start"');
     expect(source).toContain('props.variant === "checkbox"');
     expect(source).toContain(
-      '<MenuCheckboxItem checked className={visualClass} disabled={props.state === "disabled"}>',
+      `<MenuCheckboxItem
+                  checked
+                  className={visualClass}
+                  disabled={props.state === "disabled"}
+                >`,
     );
     expect(source).toContain('props.variant === "switch"');
     expect(source).toContain("<MenuSwitchStory state={props.state} />");
-    expect(source).toContain('onCheckedChange={setChecked} variant="switch"');
+    expect(source).toContain(`onCheckedChange={setChecked}
+              variant="switch"`);
     expect(source).toContain('props.variant === "separator"');
     expect(source).toContain('props.variant === "shortcut"');
     expect(source).toContain('props.storyId === "ui/dialog"');
@@ -596,18 +613,22 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain("<CommandPanel className=");
     expect(source).toContain('autoHighlight={selected === "highlighted" ? "always" : false}');
     expect(source).toContain('props.storyId === "ui/scroll-area"');
-    expect(source).toContain("<ScrollArea className=");
+    expect(source).toContain(`<ScrollArea
+        className=`);
     expect(source).toContain('props.storyId === "ui/switch"');
-    expect(source).toContain('<Switch aria-label="Enable notifications"');
+    expect(source).toContain(`<Switch
+        aria-label="Enable notifications"`);
     expect(source).toContain('data-pressed={selected === "pressed" || undefined}');
     expect(source).toContain('props.storyId === "ui/checkbox"');
-    expect(source).toContain('<Checkbox aria-label="Select project"');
+    expect(source).toContain(`<Checkbox
+        aria-label="Select project"`);
     expect(source).toContain('props.variant === "compact" ? "scale-90"');
     expect(source).toContain('props.storyId === "ui/icon-button"');
     expect(source).toContain('data-pressed={props.state === "pressed" || undefined}');
     expect(source).toContain('props.variant === "xs" ? "icon-xs"');
     expect(source).toContain('props.storyId === "ui/textarea"');
-    expect(source).toContain("<Textarea aria-invalid=");
+    expect(source).toContain(`<Textarea
+        aria-invalid=`);
     expect(source).toContain('props.storyId === "ui/skeleton"');
     expect(source).toContain('props.storyId === "ui/spinner"');
     expect(source).toContain('props.variant === "compact" ? "size-3" : "size-4"');
@@ -615,7 +636,9 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.storyId === "ui/separator"');
     expect(source).toContain('<Separator orientation="vertical"');
     expect(source).toContain('props.storyId === "ui/badge"');
-    expect(source).toContain('<Badge size="sm" variant="outline">PDF</Badge>');
+    expect(source).toContain(`<Badge size="sm" variant="outline">
+          PDF
+        </Badge>`);
     expect(source).toContain('<Badge variant="destructive">Failed</Badge>');
     expect(source).toContain('}[props.variant ?? "default"]');
     expect(source).toContain('props.storyId === "ui/time-picker"');

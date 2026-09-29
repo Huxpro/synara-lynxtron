@@ -14,15 +14,15 @@ describe("Lynx sidebar primary icons", () => {
 
   it("renders the four Central sidebar glyphs as Native SVG content", () => {
     expect(adapterSource).toContain(
-      "import newThreadSvg from '@synara-central-icons/compose-pencil.svg?raw';",
+      'import newThreadSvg from "@synara-central-icons/compose-pencil.svg?raw";',
     );
     expect(adapterSource).toContain(
-      "import searchSvg from '@synara-central-icons/magnifying-glass.svg?raw';",
+      'import searchSvg from "@synara-central-icons/magnifying-glass.svg?raw";',
     );
     expect(adapterSource).toContain(
-      "import kanbanSvg from '@synara-central-icons/columns-3-wide.svg?raw';",
+      'import kanbanSvg from "@synara-central-icons/columns-3-wide.svg?raw";',
     );
-    expect(adapterSource).toContain("import clockSvg from '@synara-central-icons/clock.svg?raw';");
+    expect(adapterSource).toContain('import clockSvg from "@synara-central-icons/clock.svg?raw";');
     expect(adapterSource).toContain("content={colorizeLynxSvg(content, activeTheme.theme.ink)}");
   });
 

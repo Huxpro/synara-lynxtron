@@ -9,8 +9,8 @@ describe("Settings AppSnap capability fidelity", () => {
       "utf8",
     );
 
-    expect(settingsSource).toContain("'appsnap',");
-    expect(settingsSource).toContain("section === 'appsnap'");
+    expect(settingsSource).toContain('"appsnap",');
+    expect(settingsSource).toContain('section === "appsnap"');
     expect(settingsSource).toContain("<SettingsAppSnapPanel />");
     expect(panelSource).toContain("AppSnap requires the Synara desktop app on macOS.");
     expect(panelSource).toContain("appSnap.onState");
@@ -20,7 +20,8 @@ describe("Settings AppSnap capability fidelity", () => {
     expect(panelSource).toContain("Custom global chords are not available in this Lynxtron build.");
     expect(panelSource).toContain("device until you send the message.");
     expect(panelSource).toContain("Snaps attach to the active thread.");
-    expect(panelSource).toContain("capture stays pending until you open one.");
+    expect(panelSource).toContain(`capture stays pending
+              until you open one.`);
     expect(panelSource).toContain("await appSnap.setEnabled(false);");
     expect(panelSource).toContain('ariaLabel="Enable AppSnap"');
     expect(panelSource).toContain("onChange={setEnabled}");

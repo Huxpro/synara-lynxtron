@@ -64,13 +64,13 @@ describe("Settings load error semantics", () => {
     );
 
     expect(advancedSource).toContain(
-      "accessibility-role={notice.intent === 'error' ? 'alert' : undefined}",
+      'accessibility-role={notice.intent === "error" ? "alert" : undefined}',
     );
     expect(integrationsSource).toContain(
-      "accessibility-role={notice.intent === 'error' ? 'alert' : undefined}",
+      'accessibility-role={notice.intent === "error" ? "alert" : undefined}',
     );
     expect(integrationsSource).toContain("await copyIntegrationText({");
-    expect(integrationsSource).toContain("successMessage: 'Setup prompt copied.'");
+    expect(integrationsSource).toContain('successMessage: "Setup prompt copied."');
     expect(providerToolsSource).toMatch(
       /className="SettingsProviderToolsNotice"[\s\S]{0,120}accessibility-role="alert"/,
     );

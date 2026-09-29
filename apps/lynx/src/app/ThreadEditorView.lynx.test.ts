@@ -12,7 +12,7 @@ describe("Lynx Editor view", () => {
     expect(routerSource).toContain('className="ThreadEditorView"');
     expect(routerSource).toContain('className="ThreadEditorActivityRail"');
     expect(routerSource).toContain(
-      "presentationMode={editorSearchActive ? 'editor-search' : 'editor'}",
+      'presentationMode={editorSearchActive ? "editor-search" : "editor"}',
     );
     expect(routerSource).toContain("onClick={exitEditorMode}");
   });
@@ -46,8 +46,8 @@ describe("Lynx Editor view", () => {
     expect(actionsSource).toContain("await createNativeThreadHandoff({");
     expect(routerSource).toContain("subscribeOpenThreadPathInTerminal(");
     expect(routerSource).toContain("consumeOpenThreadPathInTerminal(threadId)");
-    expect(routerSource).toContain("data: 'cd ' + quotePosixShellArgument(intent.cwd) + '\\r'");
-    expect(actionsSource).toContain("type: 'project.meta.update'");
+    expect(routerSource).toContain('data: "cd " + quotePosixShellArgument(intent.cwd) + "\\r"');
+    expect(actionsSource).toContain('type: "project.meta.update"');
     expect(actionsSource).toContain("<ProjectActionEditor");
     expect(actionsSource).toContain("addProjectAction(project.scripts");
     expect(actionsSource).toContain("updateProjectAction(project.scripts");
@@ -67,8 +67,8 @@ describe("Lynx Editor view", () => {
     const routerSource = source("./router.tsx");
     const editorStateSource = source("../../../web/src/editorViewState.ts");
     const webEditorSource = source("../../../web/src/components/EditorWorkspaceView.tsx");
-    expect(routerSource).toContain("editorChatOpen ? '' : ' ThreadEditorCenter--chat-hidden'");
-    expect(routerSource).toContain("editorChatOpen ? '' : ' ThreadEditorChat--hidden'");
+    expect(routerSource).toContain('editorChatOpen ? "" : " ThreadEditorCenter--chat-hidden"');
+    expect(routerSource).toContain('editorChatOpen ? "" : " ThreadEditorChat--hidden"');
     expect(routerSource).toContain("explorerFileSyntaxHighlight");
     expect(routerSource).toContain("onSelectPath={onExplorerSelectPath}");
     expect(routerSource).toContain("{chatBody}");
@@ -86,7 +86,7 @@ describe("Lynx Editor view", () => {
     expect(webEditorSource).toContain("storeEditorChatPaneVisible(next)");
     expect(routerSource).toContain("initialEditorChatOpen ?? readEditorChatPaneVisible()");
     expect(routerSource).toContain(
-      "aria-label={editorChatOpen ? 'Hide chat panel' : 'Show chat panel'}",
+      'aria-label={editorChatOpen ? "Hide chat panel" : "Show chat panel"}',
     );
     expect(routerSource).toContain('className="ThreadEditorChatToggle"');
     expect(routerSource).toContain("content={colorizeLynxSvg(");
@@ -114,7 +114,7 @@ describe("Lynx Editor view", () => {
     expect(routerSource).toContain('className="ThreadEditorHistoryDialog"');
     expect(routerSource).toContain('className="ThreadEditorHistoryViewport"');
     expect(routerSource).toContain('className="ThreadEditorHistoryBackdrop"');
-    expect(routerSource).toContain("if (event.key === 'Escape') setEditorChatHistoryOpen(false)");
+    expect(routerSource).toContain('if (event.key === "Escape") setEditorChatHistoryOpen(false)');
     expect(routerSource).toContain("resolveEditorChatHistoryThreads({");
     expect(routerSource).toContain("onNavigateToThread={(threadId) => {");
     expect(routerSource).toContain("setEditorEntryThreadId(threadId);");
@@ -125,7 +125,7 @@ describe("Lynx Editor view", () => {
     );
     expect(historyOverlaySource).not.toContain("<Menu");
     expect(historyOverlaySource).toContain(
-      "<XIcon color={semanticIconColor('secondary')} size={14} />",
+      '<XIcon color={semanticIconColor("secondary")} size={14} />',
     );
     expect(historyOverlaySource).not.toContain(">\n                ×\n              </Button>");
     expect(railTabsSource).toContain('label="Chat history"');
@@ -155,12 +155,12 @@ describe("Lynx Editor view", () => {
     expect(projectSwitchMenuSource).toContain("<ComposerProjectPickerGroupLabelElement");
     expect(routerSource).toContain("resolveEditorProjectSwitchTarget(option);");
     expect(routerSource).toContain("setEditorRailDraftProjectId(target.projectId);");
-    expect(routerSource).toContain("setEditorRailSurface('chat')");
+    expect(routerSource).toContain('setEditorRailSurface("chat")');
     expect(routerSource).not.toContain("disabled={option.threadId === null}");
     expect(routerSource).not.toContain("ThreadEditorProjectSwitchBackdrop");
     expect(projectSwitchSource).toContain("sortThreadsForSidebar(");
-    expect(projectSwitchSource).toContain("return { kind: 'draft', projectId: option.id };");
-    expect(projectSwitchSource).toContain("project.kind !== 'project'");
+    expect(projectSwitchSource).toContain('return { kind: "draft", projectId: option.id };');
+    expect(projectSwitchSource).toContain('project.kind !== "project"');
     expect(projectSwitchSource).toContain("thread.archivedAt == null");
     expect(appStyles).toMatch(
       /\.ThreadEditorProjectSwitchPopup\s*\{[^}]*width:\s*240px;[^}]*max-height:\s*320px;/s,
@@ -173,7 +173,7 @@ describe("Lynx Editor view", () => {
   it("lets an explicit startup file or diff mode override persisted Editor state", () => {
     const routerSource = source("./router.tsx");
     expect(routerSource).toMatch(
-      /initialEditorCenterMode === 'file'[\s\S]*?\? 'file'[\s\S]*?initialEditorCenterMode === 'diff'[\s\S]*?\? 'diff'[\s\S]*?readEditorViewState\(threadId\)\?\.centerMode/s,
+      /initialEditorCenterMode === ["']file["'][\s\S]*?\? ["']file["'][\s\S]*?initialEditorCenterMode === ["']diff["'][\s\S]*?\? ["']diff["'][\s\S]*?readEditorViewState\(threadId\)\?\.centerMode/s,
     );
     expect(routerSource).toContain("if (initialEditorCenterMode !== null)");
     expect(routerSource).toContain("setEditorCenterMode(initialEditorCenterMode);");
@@ -186,11 +186,11 @@ describe("Lynx Editor view", () => {
     const appStyles = source("./App.css");
     expect(routerSource).toContain("onNewChat={openEditorNewChat}");
     expect(routerSource).not.toContain("onClick={openEditorTerminal}");
-    expect(routerSource).toContain("setEditorRailSurface('terminal')");
+    expect(routerSource).toContain('setEditorRailSurface("terminal")');
     expect(routerSource).toContain("onNewTerminal={openEditorTerminal}");
     expect(routerSource).not.toContain("ThreadEditorNewDialog");
     expect(railTabsSource).toContain("<EditorRailAddMenu");
-    expect(routerSource).toContain("setEditorRailSurface('chat')");
+    expect(routerSource).toContain('setEditorRailSurface("chat")');
     expect(routerSource).toContain('presentationMode="workspace"');
     expect(routerSource).toContain('terminalId="lynx-editor-rail"');
     expect(routerSource).toContain("<EditorRailTabs");
@@ -209,9 +209,9 @@ describe("Lynx Editor view", () => {
     expect(addMenuSource).toContain("EditorRailAddMenuComposition");
     expect(addMenuSource).toContain("onNewTerminal");
     expect(routerSource).toContain("onNewTerminal={openEditorTerminal}");
-    expect(routerSource).toContain("terminalPrimaryState.entryPoint === 'terminal'");
-    expect(routerSource).toContain("terminalPrimaryState.workspaceLayout === 'terminal-only'");
-    expect(routerSource).toContain("primary: terminalPrimary ? 'terminal' : 'chat'");
+    expect(routerSource).toContain('terminalPrimaryState.entryPoint === "terminal"');
+    expect(routerSource).toContain('terminalPrimaryState.workspaceLayout === "terminal-only"');
+    expect(routerSource).toContain('primary: terminalPrimary ? "terminal" : "chat"');
     expect(routerSource).toContain('scope="thread"');
     expect(routerSource).toContain("resolveThreadHeaderIconKind(");
     expect(routerSource).toContain('className="ThreadHeaderTerminalIcon"');
@@ -219,9 +219,7 @@ describe("Lynx Editor view", () => {
     expect(routerSource).toContain("onNewChat={openEditorNewChat}");
     expect(routerSource).toContain("<LandingComposer");
     expect(routerSource).toContain("initialProjectId={editorRailDraftProject?.id ?? null}");
-    expect(routerSource).toContain(
-      "onProjectSelectionChange={\n                            setEditorRailDraftProjectId",
-    );
+    expect(routerSource).toContain("onProjectSelectionChange={setEditorRailDraftProjectId");
     expect(routerSource).toContain("projectName={editorRailDraftProject?.name ?? null}");
     expect(routerSource).toContain("setEditorEntryThreadId(threadId)");
     expect(routerSource).toContain("editorEntryThreadId === route.params.threadId");
@@ -244,9 +242,9 @@ describe("Lynx Editor view", () => {
   it("keeps Editor entry intent out of ordinary sidebar thread navigation", () => {
     const routerSource = source("./router.tsx");
 
-    expect(routerSource).toContain("() => (initialEditorOpen ? activeThreadId : null)");
+    expect(routerSource).toMatch(/\(\) =>\s*\(?initialEditorOpen \? activeThreadId : null\)?/);
     expect(routerSource).toContain(
-      "initialEditorOpen={\n          editorEntryThreadId === route.params.threadId",
+      "initialEditorOpen={editorEntryThreadId === route.params.threadId",
     );
     expect(routerSource).not.toContain(
       "initialEditorOpen ||\n          editorEntryThreadId === route.params.threadId",
@@ -260,12 +258,12 @@ describe("Lynx Editor view", () => {
   it("keeps thread data and the Editor shell stable while local resources refresh", () => {
     const routerSource = source("./router.tsx");
 
-    expect(routerSource).toContain("queryKey: ['thread-detail', activeThreadId]");
+    expect(routerSource).toContain('queryKey: ["thread-detail", activeThreadId]');
     expect(routerSource).toContain(
-      "queryKey: ['explorer-entries', activeThreadId, workspaceRoot, explorerTrimmedQuery]",
+      'queryKey: ["explorer-entries", activeThreadId, workspaceRoot, explorerTrimmedQuery]',
     );
     expect(routerSource).toContain(
-      "queryKey: ['explorer-file', activeThreadId, workspaceRoot, explorerSelectedPath]",
+      'queryKey: ["explorer-file", activeThreadId, workspaceRoot, explorerSelectedPath]',
     );
     expect(routerSource).not.toContain(
       "'thread-detail',\n      activeThreadId,\n      explorerTrimmedQuery",
@@ -278,21 +276,21 @@ describe("Lynx Editor view", () => {
   it("reuses the real Changes renderer as an Editor activity mode", () => {
     const routerSource = source("./router.tsx");
     const appStyles = source("./App.css");
-    expect(routerSource).toContain("readEditorViewState(threadId)?.centerMode ?? 'file'");
+    expect(routerSource).toContain('readEditorViewState(threadId)?.centerMode ?? "file"');
     expect(routerSource).toContain("<EditorActivityItem");
     expect(routerSource).toContain("changesSvg");
     expect(routerSource).toContain("foldersSvg");
     expect(routerSource).toContain('className="ThreadEditorActivityIcon"');
-    expect(routerSource).toContain("? 'Hide search sidebar'");
-    expect(routerSource).toContain(": 'Search files'");
+    expect(routerSource).toContain('? "Hide search sidebar"');
+    expect(routerSource).toContain(': "Search files"');
     expect(routerSource).toContain("onActivate={showEditorSearch}");
     expect(routerSource).toContain("readEditorSidebarVisible");
     expect(routerSource).toContain("storeEditorSidebarVisible(false)");
     expect(routerSource).toContain("sidebarVisible={editorSidebarVisible}");
     expect(routerSource).toContain(
-      "presentationMode={editorSearchActive ? 'editor-search' : 'editor'}",
+      'presentationMode={editorSearchActive ? "editor-search" : "editor"}',
     );
-    expect(routerSource).toContain("setEditorCenterMode('diff')");
+    expect(routerSource).toContain('setEditorCenterMode("diff")');
     expect(routerSource).toContain("<DiffDock");
     expect(routerSource).toContain("initialDiff={initialWorkingTreeDiff ?? undefined}");
     expect(routerSource).toContain("initialSelectedFilePath={explorerSelectedPath}");
@@ -301,10 +299,10 @@ describe("Lynx Editor view", () => {
     expect(routerSource).toContain("<DiffDock");
     const diffDockSource = source("./DiffDock.lynx.tsx");
     expect(diffDockSource).toContain(
-      "const [expandedFileKeys, setExpandedFileKeys] = useState<string[] | null>(\n    null",
+      "const [expandedFileKeys, setExpandedFileKeys] = useState<string[] | null>(null",
     );
-    expect(diffDockSource).toContain("resizable={props.presentation === 'dock'}");
-    expect(diffDockSource).toContain("{props.presentation === 'dock' ? (");
+    expect(diffDockSource).toContain('resizable={props.presentation === "dock"}');
+    expect(diffDockSource).toContain('{props.presentation === "dock" ?');
     expect(diffDockSource).toContain("? view.files.map((file) => file.key)");
     expect(diffDockSource).toContain('className="DiffDockFileSidebar"');
     expect(diffDockSource).toContain('className="DiffDockFileSidebarStats"');
@@ -327,15 +325,15 @@ describe("Lynx Editor view", () => {
     expect(diffDockSource).toContain(
       "fetchWorkingTreeDiff(props.workspaceRoot, diffRequest.scope)",
     );
-    expect(diffDockSource).toContain("props.diffCopied ? 'Copied diff' : 'Copy diff'");
+    expect(diffDockSource).toContain('props.diffCopied ? "Copied diff" : "Copy diff"');
     expect(diffDockSource).toContain("+{view.additions}");
     expect(diffDockSource).toContain("-{view.deletions}");
-    expect(diffDockSource).toContain("showSummary={props.presentation !== 'editor'}");
+    expect(diffDockSource).toContain('showSummary={props.presentation !== "editor"}');
     expect(diffDockSource).toContain('className="DiffDockTabHeader"');
     expect(diffDockSource).toContain("<EditorSurfaceTab");
     expect(diffDockSource).toContain('label="Diff"');
     expect(diffDockSource).toContain("<DiffSourcePicker");
-    expect(diffDockSource).toContain("return 'Working tree'");
+    expect(diffDockSource).toContain('return "Working tree"');
     expect(diffDockSource).toContain('emptyLabel="No working tree changes."');
     expect(diffDockSource).toContain("<EditorDiffFileRow");
     expect(diffDockSource).toContain('className="DiffDockFileIcon"');
@@ -346,9 +344,9 @@ describe("Lynx Editor view", () => {
       "visibleDiffFiles(view.files, visibleFileCount, selectedFile?.path ?? null)",
     );
     expect(diffDockSource).toContain("{ ...view, files: visibleFiles }");
-    expect(diffDockSource).toContain("visibleFiles.map((file) => file.key).join('\\0')");
+    expect(diffDockSource).toContain('visibleFiles.map((file) => file.key).join("\\0")');
     expect(diffDockSource).not.toContain("line.kind !== 'hunk'");
-    expect(diffDockSource).toContain("props.presentation !== 'editor' ? diffRenderMode : 'split'");
+    expect(diffDockSource).toContain('props.presentation !== "editor" ? diffRenderMode : "split"');
     expect(diffDockSource).toContain('filePathPresentation="basename-first"');
     expect(diffDockSource).toContain("renderFileActions={");
     expect(diffDockSource).toContain("<DiffFileActionsMenu");
@@ -414,12 +412,12 @@ describe("Lynx Editor view", () => {
       expect(routerSource).toContain(transition);
       expect(sharedSource).toContain(`function ${transition}`);
     }
-    expect(webPolicySource).toContain("export * from '@synara/shared/rightDock'");
+    expect(webPolicySource).toContain('export * from "@synara/shared/rightDock"');
     expect(routerSource).toContain("<ThreadRightDockTabs");
-    expect(routerSource).toContain("kind: 'file'");
+    expect(routerSource).toContain('kind: "file"');
     expect(tabsSource).toContain("<EditorSurfaceTab");
     expect(tabsSource).toContain('ariaLabel="Add panel"');
-    expect(tabsSource).toContain("accessibleLabel: 'Collapse panel'");
+    expect(tabsSource).toContain('accessibleLabel: "Collapse panel"');
   });
 
   it("matches the Web authority rail boundaries", () => {
@@ -461,7 +459,7 @@ describe("Lynx Editor view", () => {
     expect(explorerStyles).toMatch(
       /\.ExplorerDock--editor:not\(\.ExplorerDock--editor-search\)\s+\.ExplorerDockSearch\s*\{[^}]*display:\s*none;/s,
     );
-    expect(explorerSource).toContain("props.presentationMode === 'editor-search'");
+    expect(explorerSource).toContain('props.presentationMode === "editor-search"');
     expect(explorerStyles).toMatch(
       /\.SliceRoot--viewport-compact[\s\S]*?\.ExplorerDock--editor[\s\S]*?\.ExplorerDockBody,[\s\S]*?flex-direction:\s*column;/s,
     );
@@ -488,13 +486,13 @@ describe("Lynx Editor view", () => {
     expect(appSource).toContain("await hydrateStorage()");
     expect(appSource).toContain("useTerminalStateStore.persist.rehydrate()");
     expect(appSource).not.toContain("Promise.all([fetchSidebarSnapshot(), fetchThreads()])");
-    expect(webHostSource).toContain("get('editor') === 'open'");
-    expect(webHostSource).toContain("get('editorMode') === 'diff'");
-    expect(webHostSource).toContain("get('editorChat') === 'hidden'");
-    expect(webHostSource).toContain("get('editorHistory') ===");
-    expect(webHostSource).toContain("get('editorNew') === 'open'");
-    expect(webHostSource).toContain("get('editorNewChat') ===");
-    expect(webHostSource).toContain("get('editorSearch') === 'open'");
+    expect(webHostSource).toContain('get("editor") === "open"');
+    expect(webHostSource).toContain('get("editorMode") === "diff"');
+    expect(webHostSource).toContain('get("editorChat") === "hidden"');
+    expect(webHostSource).toContain('get("editorHistory") ===');
+    expect(webHostSource).toContain('get("editorNew") === "open"');
+    expect(webHostSource).toContain('get("editorNewChat") ===');
+    expect(webHostSource).toContain('get("editorSearch") === "open"');
     expect(routerSource).toContain("initData.initialEditorHistoryOpen === true");
     expect(appSource).not.toContain("await fetchWorkingTreeDiff(");
     expect(appSource).not.toContain("await fetchGitBranches(summary.workspaceRoot)");
@@ -502,11 +500,11 @@ describe("Lynx Editor view", () => {
     expect(diffDockSource).toContain(
       '<text className="DiffDockStateText">{props.unavailableLabel}</text>',
     );
-    expect(desktopSource).toContain("initialEditorOpen: url.searchParams.get('editor') === 'open'");
-    expect(desktopSource).toContain("url.searchParams.get('editorMode') === 'diff'");
-    expect(desktopSource).toContain("url.searchParams.get('editorHistory') === 'open'");
-    expect(desktopSource).toContain("url.searchParams.get('editorNew') === 'open'");
-    expect(desktopSource).toContain("url.searchParams.get('editorNewChat') === 'open'");
-    expect(desktopSource).toContain("url.searchParams.get('editorSearch') === 'open'");
+    expect(desktopSource).toContain('initialEditorOpen: url.searchParams.get("editor") === "open"');
+    expect(desktopSource).toContain('url.searchParams.get("editorMode") === "diff"');
+    expect(desktopSource).toContain('url.searchParams.get("editorHistory") === "open"');
+    expect(desktopSource).toContain('url.searchParams.get("editorNew") === "open"');
+    expect(desktopSource).toContain('url.searchParams.get("editorNewChat") === "open"');
+    expect(desktopSource).toContain('url.searchParams.get("editorSearch") === "open"');
   });
 });

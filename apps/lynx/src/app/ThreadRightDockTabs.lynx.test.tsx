@@ -75,7 +75,9 @@ describe("Lynx thread right dock tabs", () => {
       /ThreadRightDockHeaderButton\.ui-hover[\s\S]{0,500}color:\s*var\(--foreground\)/s,
     );
     const source = readFileSync(new URL("./ThreadRightDockTabs.lynx.tsx", import.meta.url), "utf8");
-    expect(source.match(/semanticIconColor\('secondary'\)/g)?.length).toBeGreaterThanOrEqual(5);
+    expect(source.match(/semanticIconColor\(["']secondary["']\)/g)?.length).toBeGreaterThanOrEqual(
+      5,
+    );
   });
 
   it("renders shared selectable tabs and closes without selecting the parent", async () => {
@@ -124,7 +126,7 @@ describe("Lynx thread right dock tabs", () => {
     expect(tabs[2]?.querySelector(".ThreadRightDockTabIcon")).not.toBeNull();
 
     const source = readFileSync(new URL("./ThreadRightDockTabs.lynx.tsx", import.meta.url), "utf8");
-    expect(source).toContain("'terminal',");
+    expect(source).toContain('"terminal",');
     expect(source).toContain("terminalSvg");
   });
 

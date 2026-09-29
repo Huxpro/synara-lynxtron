@@ -43,14 +43,14 @@ describe("landing composer fidelity contract", () => {
     expect(routerSource).toContain("projectName={routePresentation.projectName}");
     expect(routerSource).toContain("title={routePresentation.headerTitle}");
     expect(routerSource).toContain(
-      "actionState={{ showHandoff: true, showProjectActions: project?.kind === 'project' }}",
+      'actionState={{ showHandoff: true, showProjectActions: project?.kind === "project" }}',
     );
     expect(routerSource).toContain("thread={undefined}");
     expect(routerSource).toContain("<ComposerColumnFrameSurface>");
     expect(routerSource).toContain("<LandingComposer");
     expect(landingSource).toContain("<Composer\n        voiceInputEnabled");
     expect(routerSource).toContain(
-      '<scroll-view\n        className="ThreadsLandingBody"\n        scroll-orientation="vertical"',
+      '<scroll-view className="ThreadsLandingBody" scroll-orientation="vertical"',
     );
     expect(routerSource).toContain('<view className="ThreadsLandingBodyInner">');
     expect(appStyles).toMatch(/\.ThreadsLandingBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;/s);
@@ -59,9 +59,7 @@ describe("landing composer fidelity contract", () => {
     );
     expect(routerSource).toContain("initialProjectId={selectedProjectId}");
     expect(routerSource).toContain("onProjectSelectionChange={setSelectedProjectId}");
-    expect(routerSource).toContain(
-      "onProjectSelectionChange={\n                            setEditorRailDraftProjectId",
-    );
+    expect(routerSource).toContain("onProjectSelectionChange={setEditorRailDraftProjectId");
     expect(routerSource).toContain(
       "const [editorRailDraftOpen, setEditorRailDraftOpen] = useState(",
     );
@@ -71,11 +69,11 @@ describe("landing composer fidelity contract", () => {
     expect(landingSource).toContain("draftId={draftId}");
     expect(landingSource).toContain("const draftId = landingDraftId(props.containerKind)");
     expect(landingSource).toContain("buildComposerProjectPickerModel");
-    expect(landingSource).toContain("'Search folders'");
-    expect(landingSource).toContain("'Search projects'");
+    expect(landingSource).toContain('"Search folders"');
+    expect(landingSource).toContain('"Search projects"');
     expect(landingSource).toContain('"Don\'t use a folder"');
     expect(landingSource).toContain('"Don\'t work in a project"');
-    expect(landingSource).toContain("'Use a folder'");
+    expect(landingSource).toContain('"Use a folder"');
     expect(landingSource).toContain("props.onProjectSelectionChange?.(projectId)");
     expect(landingSource).toContain("setSelectedProjectId(props.initialProjectId ?? null)");
     expect(landingSource).toContain("selectProject(option.projectId)");
@@ -84,10 +82,10 @@ describe("landing composer fidelity contract", () => {
     expect(landingSource).toContain("selectProject(null)");
     expect(landingSource).not.toContain("setSelectedProjectId(option.projectId)");
     expect(landingSource).toMatch(
-      /if \(props\.containerKind === 'studio'\) \{\s+setStudioFolderPath\(option\.workspaceRoot\);/,
+      /if \(props\.containerKind === ["']studio["']\) \{\s+setStudioFolderPath\(option\.workspaceRoot\);/,
     );
     expect(landingSource).toMatch(
-      /if \(props\.containerKind === 'studio'\) \{\s+setStudioFolderPath\(workspaceRoot\);/,
+      /if \(props\.containerKind === ["']studio["']\) \{\s+setStudioFolderPath\(workspaceRoot\);/,
     );
     expect(landingSource).toContain("worktreePath: workspaceContext.worktreePath");
     expect(landingSource).toContain("localFoldersError");
@@ -101,15 +99,15 @@ describe("landing composer fidelity contract", () => {
     expect(landingSource).toContain("export async function loadLandingBootstrap(");
     expect(routerSource).toContain("const initialModelProvider = resolveLandingModelProvider(");
     expect(landingSource).toContain("function landingBootstrapQueryKey(");
-    expect(landingSource).toContain("'landing-composer-bootstrap',\n    initialModelProvider,");
+    expect(landingSource).toContain('"landing-composer-bootstrap", initialModelProvider,');
     expect(landingSource).toContain("queryKey: landingBootstrapQueryKey(");
     expect(landingSource).toContain("queryClient.setQueryData(\n        landingBootstrapQueryKey(");
     expect(landingSource).not.toContain("queryClient.setQueryData(['landing-composer-bootstrap']");
-    expect(routerSource).toContain("'landing-composer-bootstrap',\n      initialModelProvider,");
+    expect(routerSource).toContain('"landing-composer-bootstrap", initialModelProvider,');
     expect(landingSource).toContain("loadLandingBootstrap(\n        initialModelProvider,");
     expect(routerSource).toContain("initialModelProvider={initialModelProvider}");
     expect(routerSource).toContain("landingBootstrap?.serverConfig.providers ?? []");
-    expect(routerSource).toContain("useProviderHealthBanner(\n    initialModelProvider,");
+    expect(routerSource).toContain("useProviderHealthBanner(initialModelProvider,");
     expect(routerSource).toContain("<EnvironmentPanel");
     expect(routerSource).toContain("threadId={null}");
     expect(routerSource).toContain("<LandingDiffToggle />");
@@ -133,7 +131,9 @@ describe("landing composer fidelity contract", () => {
     expect(landingSource).toContain("props.onTemporaryChange ??");
     expect(routerSource).toContain("setTemporary((current) => !current)");
     expect(landingSource).toContain("props.onThreadCreated(threadIdRef.current, { temporary })");
-    expect(landingSource).not.toMatch(/type: 'thread\.create'[\s\S]{0,600}envMode: 'local'/);
+    expect(landingSource).not.toMatch(
+      /type: ["']thread\.create["'][\s\S]{0,600}envMode: ["']local["']/,
+    );
     expect(landingSource).not.toContain("provider: 'codex'");
     expect(landingSource).not.toContain("getDefaultModel('codex')");
     expect(landingSource).not.toContain("onProviderStatusesChange");
@@ -190,7 +190,7 @@ describe("landing composer fidelity contract", () => {
     expect(appStyles).toMatch(/\.SliceRoot\s*\{[^}]*--type-ui-row-size:\s*12px;/s);
     expect(appStyles).toMatch(/\.SliceRoot\s*\{[^}]*--type-composer-editor-size:\s*12px;/s);
     expect(headingStyles).toContain("var(--engine-landing-heading-letter-spacing, -1.8px)");
-    expect(webHostSource).toContain("'--engine-landing-heading-letter-spacing'");
-    expect(webHostSource).toContain("'-0.45px'");
+    expect(webHostSource).toContain('"--engine-landing-heading-letter-spacing"');
+    expect(webHostSource).toContain('"-0.45px"');
   });
 });

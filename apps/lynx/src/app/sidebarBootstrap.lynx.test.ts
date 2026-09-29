@@ -5,7 +5,7 @@ describe("Thread sidebar bootstrap", () => {
   it("owns one shared sidebar query in the product route", () => {
     const source = readFileSync(new URL("./FeatureListsPage.tsx", import.meta.url), "utf8");
 
-    expect(source).toContain("queryKey: ['sidebar-snapshot']");
+    expect(source).toContain('queryKey: ["sidebar-snapshot"]');
     expect(source).toContain("queryFn: fetchSidebarSnapshot");
   });
 });

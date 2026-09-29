@@ -69,7 +69,7 @@ describe("Kanban project typography fidelity", () => {
     const source = readFileSync(new URL("../app/FeatureListsPage.tsx", import.meta.url), "utf8");
 
     expect(source).toContain(
-      '<scroll-view\n          className="KanbanScroller"\n          scroll-orientation="horizontal"',
+      '<scroll-view className="KanbanScroller" scroll-orientation="horizontal"',
     );
     expect(appStyles).toMatch(
       /\.SliceRoot--viewport-compact \.KanbanColumns\s*\{[^}]*width:\s*824px;/s,

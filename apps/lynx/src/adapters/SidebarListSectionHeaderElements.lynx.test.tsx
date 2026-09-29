@@ -84,9 +84,9 @@ describe("sidebar list section header actions", () => {
     expect(
       readFileSync(new URL("./SidebarListSectionHeaderElements.lynx.tsx", import.meta.url), "utf8"),
     ).toContain("SharedSidebarListSectionHeader LynxWebHoverOwner");
-    expect(sidebarSource).toContain("openSearchPalette('~/', ADD_PROJECT_TRIGGER_ELEMENT_ID)");
+    expect(sidebarSource).toContain("openSearchPalette('~/', ADD_PROJECT_TRIGGER_ELEMENT_ID");
     expect(sidebarSource).toContain(
-      "const [searchInitialQuery, setSearchInitialQuery] = useState('')",
+      'const [searchInitialQuery, setSearchInitialQuery] = useState("")',
     );
     expect(sidebarSource).toContain("key={searchPaletteKey}");
     expect(sidebarSource).toContain("initialQuery={searchInitialQuery}");

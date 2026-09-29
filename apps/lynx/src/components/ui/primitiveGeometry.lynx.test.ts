@@ -94,7 +94,7 @@ describe("shared primitive geometry", () => {
       /\.LxTooltipPopup--picker\s*\{[^}]*border-radius:\s*10\.4px;[^}]*box-shadow:/s,
     );
     expect(css).toMatch(/\.LxTooltipText\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s);
-    expect(tooltip).toContain("props.variant === 'picker' && 'LxTooltipPopup--picker'");
+    expect(tooltip).toContain('props.variant === "picker" && "LxTooltipPopup--picker"');
   });
 
   it("maps the shared ScrollArea orientation to the native direction property", () => {

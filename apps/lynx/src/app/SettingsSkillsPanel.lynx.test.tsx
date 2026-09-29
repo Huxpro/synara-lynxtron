@@ -13,12 +13,12 @@ describe("Settings Skills fidelity", () => {
       "utf8",
     );
 
-    expect(settingsSource).toContain("'skills',");
-    expect(settingsSource).toContain("section === 'skills'");
+    expect(settingsSource).toContain('"skills",');
+    expect(settingsSource).toContain('section === "skills"');
     expect(settingsSource).toContain("<SettingsSkillsPanel />");
-    expect(clientSource).toContain("'provider.listSkillsCatalog'");
-    expect(panelSource).toContain("queryKey: ['skills-catalog']");
-    expect(panelSource).toContain("queryKey: ['server-settings']");
+    expect(clientSource).toContain('"provider.listSkillsCatalog"');
+    expect(panelSource).toContain('queryKey: ["skills-catalog"]');
+    expect(panelSource).toContain('queryKey: ["server-settings"]');
     expect(panelSource).toContain("Synara skills folder");
     expect(panelSource).toContain("No skills found");
     expect(panelSource).toContain(
@@ -39,11 +39,11 @@ describe("Settings Skills fidelity", () => {
     expect(panelSource).toContain("await updateServerSettings({");
     expect(panelSource).toContain("skills: { disabled: [...next] }");
     expect(panelSource).toContain(
-      "queryClient.invalidateQueries({ queryKey: ['provider-skills'] })",
+      'queryClient.invalidateQueries({ queryKey: ["provider-skills"] })',
     );
     expect(panelSource).toContain("setDisabledNames(previous)");
     expect(panelSource).toContain(
-      "queryClient.invalidateQueries({ queryKey: ['server-settings'] })",
+      'queryClient.invalidateQueries({ queryKey: ["server-settings"] })',
     );
   });
 
@@ -63,7 +63,7 @@ describe("Settings Skills fidelity", () => {
     expect(source).toContain('className="SettingsSkillsMain SettingsSkillsMain--portable"');
     expect(source).toContain('className="SettingsSkillsMetadata SettingsSkillsMetadata--portable"');
     expect(source).toContain('className="SettingsSkillsControl SettingsSkillsControl--skill"');
-    expect(source).toContain("' SettingsSkillsRow--continued'");
+    expect(source).toContain('" SettingsSkillsRow--continued"');
     expect(source).toContain("index < section.groups.length - 1");
     expect(styles).toMatch(
       /\.SettingsSkillsRow--continued\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,

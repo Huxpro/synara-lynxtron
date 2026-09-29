@@ -8,17 +8,17 @@ describe("Native embedded Side-chat pane", () => {
       "utf8",
     );
     const router = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
-    expect(source).toContain("queryKey: ['thread-detail', props.threadId]");
+    expect(source).toContain('queryKey: ["thread-detail", props.threadId]');
     expect(source).toContain("return { data: rows, summary };");
     expect(source).toContain("<Transcript");
     expect(source).toContain("<Composer");
     expect(source).toContain("<ChatSurfaceHeaderFrame");
     expect(source).toContain("<ChatSurfaceHeaderIdentity");
-    expect(source).toContain("accessibleLabel: 'Close selected Side'");
+    expect(source).toContain('accessibleLabel: "Close selected Side"');
     expect(source).toContain("threadId={props.threadId}");
     expect(source).toContain("props.onTitleChange?.(summary.title)");
     expect(source).not.toContain("history.push");
-    expect(router).toContain("activePane?.kind === 'sidechat'");
+    expect(router).toContain('activePane?.kind === "sidechat"');
     expect(router).toContain("threadId={activePane.threadId}");
   });
 

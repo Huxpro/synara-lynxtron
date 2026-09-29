@@ -9,7 +9,7 @@ describe("Lynx composer focus chrome", () => {
     expect(source).toMatch(
       /className={`ComposerProjectedEditorFlow[\s\S]*?bindtap={restoreNativeFocus}/,
     );
-    expect(source).toContain("bridgeCall('shellReleaseTerminalInputFocus')");
+    expect(source).toContain('bridgeCall("shellReleaseTerminalInputFocus")');
     expect(source).toContain(".then(focusComposer, focusComposer)");
     expect(source).toContain("success: restoreSelection");
     expect(source).toContain("nativeFocusRequestPendingRef.current = true");
@@ -22,7 +22,7 @@ describe("Lynx composer focus chrome", () => {
     expect(source).toContain("setFocused(false);");
     expect(source).toContain("setNativeEditorFocusEpoch((current) => current + 1);");
     expect(source).toContain("key={nativeEditorFocusEpoch}");
-    expect(source).toContain("bridgeCall('shellSetComposerInputBounds'");
+    expect(source).toContain('bridgeCall("shellSetComposerInputBounds"');
     expect(source).toContain("ref={editorRegionRef}");
     expect(source).not.toContain("ComposerNativeFocusCatcher");
   });
@@ -34,7 +34,7 @@ describe("Lynx composer focus chrome", () => {
     const selectAllSource = source.slice(selectAllStart, selectAllEnd);
 
     expect(selectAllSource).toContain("await readNativeEditorSnapshot()");
-    expect(selectAllSource).toContain("method: 'select'");
+    expect(selectAllSource).toContain('method: "select"');
     expect(selectAllSource).not.toContain("method: 'setSelectionRange'");
     expect(selectAllSource).not.toContain("setNativeValue(");
     expect(source).toContain("void selectAllNativeEditorText();");

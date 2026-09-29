@@ -104,7 +104,7 @@ describe("Lynx Menu overlay contract", () => {
       /\.LxMenuSubPopup--align-end\s*\{[^}]*top:\s*auto;[^}]*bottom:\s*0;/s,
     );
     expect(primitiveSource).toMatch(/top:\s*\x60\$\{Math\.round\(coordinates\.top\)\}px\x60/s);
-    expect(primitiveSource).toContain("props.align === 'end' ? { bottom: 'auto' } : {}");
+    expect(primitiveSource).toContain('props.align === "end" ? { bottom: "auto" } : {}');
     expect(
       resolveSubmenuCoordinates({
         anchor: { x: 1050, y: 100, width: 220, height: 32 },
@@ -180,9 +180,7 @@ describe("Lynx Menu overlay contract", () => {
     expect(source).toMatch(
       /<view[\s\S]{0,120}ref=\{menu\.triggerRef\}[\s\S]{0,80}flatten=\{false\}/,
     );
-    expect(source).toContain(
-      "resolveMenuTriggerRect(\n        triggerIdRef.current!,\n        menu.triggerRef",
-    );
+    expect(source).toContain("resolveMenuTriggerRect(triggerIdRef.current!, menu.triggerRef");
     expect(source).toContain("opacity: positioned ? 1 : 0");
     expect(source).toContain("...props.style");
     expect(source).not.toContain("visibility: positioned ? 'visible' : 'hidden'");
@@ -663,7 +661,7 @@ describe("Lynx Menu overlay contract", () => {
   it("uses the viewport-clamped top coordinate for end-aligned submenus", () => {
     const source = readFileSync(new URL("./menu.lynx.tsx", import.meta.url), "utf8");
     expect(source).toMatch(/top:\s*\x60\$\{Math\.round\(coordinates\.top\)\}px\x60/);
-    expect(source).toContain("props.align === 'end' ? { bottom: 'auto' } : {}");
+    expect(source).toContain('props.align === "end" ? { bottom: "auto" } : {}');
   });
 
   it("normalizes Native popup-local trigger rectangles before portal placement", () => {

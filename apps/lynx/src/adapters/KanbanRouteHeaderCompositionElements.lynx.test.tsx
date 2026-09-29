@@ -31,7 +31,7 @@ describe("Kanban route header fidelity", () => {
     expect(styles).toMatch(/\.SharedKanbanRouteNewTask--disabled\s*\{[^}]*opacity:\s*0\.64;/s);
     expect(source).toContain('className="SharedKanbanRouteNewTaskIcon"');
     expect(source).toContain('className="SharedKanbanRouteBackIcon"');
-    expect(source.match(/color=\{semanticIconColor\('secondary'\)\}/g)?.length).toBe(2);
+    expect(source.match(/color=\{semanticIconColor\(["']secondary["']\)\}/g)?.length).toBe(2);
     expect(source).not.toContain("SharedKanbanRouteBackGlyph");
     expect(source).not.toContain("＋ New task");
     expect(appStyles).toMatch(

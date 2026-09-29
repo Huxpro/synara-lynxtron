@@ -351,10 +351,10 @@ describe("shared sidebar surface routing", () => {
     expect(source).toContain(
       "const workspaceSectionVisible = initialSortSettings.showWorkspaceSection",
     );
-    expect(source).toContain("...(studioSectionVisible ? (['studio'] as const) : [])");
+    expect(source).toContain('...(studioSectionVisible ? (["studio"] as const) : [])');
     expect(source).toContain("chatsSectionVisible &&");
     expect(source).toContain(
-      "fetchPullRequests({\n        state: 'open',\n        projectId: null,",
+      'fetchPullRequests({\n        state: "open",\n        projectId: null,',
     );
     expect(source).not.toContain("queryFn: fetchPullRequests");
   });

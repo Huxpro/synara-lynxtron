@@ -86,7 +86,7 @@ describe("shared settings navigation projection", () => {
       expect(source).toContain(`section === '${section}'`);
       expect(source).toContain(ownerMarkers[section]);
     }
-    expect(source).toContain("section === 'providers' ? (");
+    expect(source).toContain('section === "providers" ?');
     expect(source).toContain(") : null}");
     expect(source).toContain("renderResetAction={renderSettingsResetAction}");
     expect(source).toContain("<SettingsResetIcon />");
@@ -105,7 +105,7 @@ describe("shared settings navigation projection", () => {
     expect(source).toContain("onSelectSection={(nextSection) => onNavigate(nextSection)}");
     expect(source).toContain("onNavigate(entry.section, target)");
     expect(source).toContain("await runOnMainThread(scrollSettingsTargetOnMainThread)(targetId)");
-    expect(source).toContain("target.invoke('scrollIntoView'");
+    expect(source).toContain('target.invoke("scrollIntoView"');
     expect(source).toContain('id="settings-content-scroll"');
     expect(source).toContain("await sleepOnHost(100)");
     expect(source).toContain("for (let attempt = 0; attempt < 3; attempt += 1)");
@@ -117,7 +117,7 @@ describe("shared settings navigation projection", () => {
     expect(routerSource).toContain("{taskCompletionToast}");
     expect(source).toContain("includeDesktopShellShortcuts");
     expect(source).toContain(
-      "'Desktop app notifications use your operating system notification center.'",
+      '"Desktop app notifications use your operating system notification center."',
     );
     expect(source).toContain("showCodeThemeSelection={false}");
     expect(source).toContain("showFontSmoothing={false}");

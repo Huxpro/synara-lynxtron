@@ -25,11 +25,11 @@ describe("desktop titlebar controls", () => {
     expect(source).toContain("M295.6 163.7");
     expect(source).toContain("M216.4 163.7");
     expect(source).not.toContain("arrow-rounded.svg");
-    expect(desktopMainSource).toContain("accelerator: 'CmdOrCtrl+B'");
-    expect(desktopMainSource).toContain("accelerator: 'CmdOrCtrl+['");
-    expect(desktopMainSource).toContain("accelerator: 'CmdOrCtrl+]'");
-    expect(routerSource).toContain("'shell:navigate-history'");
-    expect(routerSource).toContain("command === 'sidebar.toggle'");
+    expect(desktopMainSource).toContain('accelerator: "CmdOrCtrl+B"');
+    expect(desktopMainSource).toContain('accelerator: "CmdOrCtrl+["');
+    expect(desktopMainSource).toContain('accelerator: "CmdOrCtrl+]"');
+    expect(routerSource).toContain('"shell:navigate-history"');
+    expect(routerSource).toContain('command === "sidebar.toggle"');
     expect(styles).not.toContain(".DesktopTitlebarControl--back .DesktopTitlebarControlIcon");
   });
 
@@ -56,9 +56,9 @@ describe("desktop titlebar controls", () => {
 
   it("keeps one action owner across distinct open and closed placements", () => {
     expect(routerSource).toContain("const renderTitlebarControls = (");
-    expect(routerSource).toContain("const openTitlebarControls = renderTitlebarControls('open')");
+    expect(routerSource).toContain('const openTitlebarControls = renderTitlebarControls("open")');
     expect(routerSource).toContain(
-      "const closedTitlebarControls = renderTitlebarControls('closed')",
+      'const closedTitlebarControls = renderTitlebarControls("closed")',
     );
     expect(routerSource).toContain("const sidebar =\n    route.pathname !== '/settings' ? (");
     expect(routerSource).toContain("<SidebarDisclosure open={sidebarOpen && !editorModeOpen}>");
@@ -66,7 +66,7 @@ describe("desktop titlebar controls", () => {
       "{sidebarOpen || editorModeOpen ? null : closedTitlebarControls}",
     );
     expect(routerSource).toContain("className={`AppMain AppMain--sidebar-${");
-    expect(routerSource).toContain("sidebarOpen && !editorModeOpen ? 'open' : 'closed'");
+    expect(routerSource).toContain('sidebarOpen && !editorModeOpen ? "open" : "closed"');
     expect(appStyles).toMatch(
       /\.SliceRoot--viewport-md-up \.AppMain--sidebar-open\s*\{[^}]*border-top-left-radius:\s*14\.4px;[^}]*border-bottom-left-radius:\s*14\.4px;[^}]*box-shadow:\s*inset 1px 0 0 rgba\(0,\s*0,\s*0,\s*0\.08\),\s*-6\.5px 0 12px -10px rgba\(0,\s*0,\s*0,\s*0\.1\);[^}]*overflow:\s*hidden;/s,
     );
@@ -79,15 +79,17 @@ describe("desktop titlebar controls", () => {
   });
 
   it("keeps Settings inside the same global shell and titlebar ownership", () => {
-    expect(routerSource).toContain("if (route.pathname === '/settings')");
-    expect(routerSource).toContain("if (route.pathname === '/settings') {\n    return (");
+    expect(routerSource).toContain('if (route.pathname === "/settings")');
+    expect(routerSource).toContain(`if (route.pathname === "/settings") {
+    return`);
     expect(routerSource).toContain("sidebarOpen={sidebarOpen}");
     expect(routerSource).toContain("openTitlebarControls={openTitlebarControls}");
     expect(routerSource).toContain("closedTitlebarControls={closedTitlebarControls}");
     expect(settingsSource).toContain("<AppShellFrame sidebar={settingsSidebar}>");
     expect(settingsSource).toContain("{sidebarOpen ? null : closedTitlebarControls}");
     expect(settingsSource).toContain(
-      "SettingsPage--sidebar-${\n          sidebarOpen ? 'open' : 'closed'",
+      `SettingsPage--sidebar-\${
+          sidebarOpen ? "open" : "closed"`,
     );
     expect(settingsSource).toContain("<SidebarDisclosure open={sidebarOpen}>");
     expect(settingsSource).toContain("<SettingsSidebarChromeComposition");

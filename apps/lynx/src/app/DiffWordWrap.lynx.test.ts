@@ -31,9 +31,9 @@ describe("Lynx diff word wrap setting", () => {
     expect(diffDockSource).toContain("webStorage.getItem(APP_SETTINGS_STORAGE_KEY)");
     expect(diffDockSource).toContain("wordWrap={diffWordWrap}");
     expect(diffDockSource).toContain(
-      "const [diffRenderMode, setDiffRenderMode] = useState<'stacked' | 'split'>",
+      'const [diffRenderMode, setDiffRenderMode] = useState<"stacked" | "split">',
     );
-    expect(diffDockSource).toContain("props.presentation !== 'editor' ? diffRenderMode : 'split'");
+    expect(diffDockSource).toContain('props.presentation !== "editor" ? diffRenderMode : "split"');
     expect(diffDockSource).toContain("onDiffWordWrapChange={setDiffWordWrap}");
     expect(diffDockSource).toContain("onCheckedChange={props.onDiffWordWrapChange}");
   });
@@ -54,7 +54,7 @@ describe("Lynx diff word wrap setting", () => {
     expect(lynxElementsSource).toContain(
       '<view className="SharedPrCodeLines SharedPrCodeLines--wrap">',
     );
-    expect(lynxElementsSource).toContain("props.wordWrap ? ' SharedPrCodeLine--wrap' : ''");
+    expect(lynxElementsSource).toContain('props.wordWrap ? " SharedPrCodeLine--wrap" : ""');
     expect(lynxElementsSource).toContain("export function PullRequestCodeSplitRowElement");
     expect(lynxStyles).toMatch(
       /\.SharedPrCodeSplitRow\s*\{[^}]*display:\s*flex;[^}]*width:\s*100%;[^}]*flex-direction:\s*row;/s,

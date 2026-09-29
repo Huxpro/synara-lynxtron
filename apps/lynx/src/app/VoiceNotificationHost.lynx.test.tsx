@@ -31,8 +31,8 @@ describe("Lynx voice notification presentation", () => {
     expect(composerSource).toContain(
       "if (voiceState.canStartVoiceNotes || !isVoiceRecording) return;",
     );
-    expect(composerSource).toContain("title: 'Could not start recording'");
-    expect(composerSource).toContain("title: 'No audio was captured.'");
+    expect(composerSource).toContain('title: "Could not start recording"');
+    expect(composerSource).toContain('title: "No audio was captured."');
     expect(composerSource).not.toContain(
       "sanitizedMessage.startsWith('Provider adapter request failed')",
     );

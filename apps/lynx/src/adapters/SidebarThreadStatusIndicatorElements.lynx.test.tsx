@@ -22,7 +22,7 @@ describe("Sidebar thread status icon fidelity", () => {
       "utf8",
     );
     expect(source).toContain(
-      "import circleCheckSvg from '@synara-central-icons-fill/circle-check.svg?raw';",
+      'import circleCheckSvg from "@synara-central-icons-fill/circle-check.svg?raw";',
     );
     expect(source).not.toContain(">✓</text>");
     expect(styles).toMatch(

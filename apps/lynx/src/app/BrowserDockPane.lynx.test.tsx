@@ -14,14 +14,14 @@ describe("Native Browser right-dock pane", () => {
     expect(source).toContain("<textarea");
     expect(source).toContain("maxlines={1}");
     expect(source).toContain("default-value={displayedAddress}");
-    expect(source).toContain("method: 'setValue'");
+    expect(source).toContain('method: "setValue"');
     expect(source).toContain("nativeAddressRef.current === displayedAddress");
     expect(source).not.toContain("<Input");
     expect(source).toContain("browserView.setVisible(false)");
     expect(source).toContain("browserView.setBounds(bounds)");
     expect(source).toContain("browserView.destroy()");
     expect(source).not.toContain("await refreshState()");
-    expect(router).toContain("activePane?.kind === 'browser'");
+    expect(router).toContain('activePane?.kind === "browser"');
     expect(router).toContain("browserPane && currentThread ? (");
     expect(router).toContain("<BrowserDockPane");
     expect(router).toContain("active={browserOpen}");
@@ -34,15 +34,15 @@ describe("Native Browser right-dock pane", () => {
   it("advertises Browser only on supported hosts and preserves an unavailable persisted pane", () => {
     const source = readFileSync(new URL("./BrowserDockPane.lynx.tsx", import.meta.url), "utf8");
     const router = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
-    expect(router).toContain("queryKey: ['browser-view-capability']");
+    expect(router).toContain('queryKey: ["browser-view-capability"]');
     expect(router).toContain("browserViewState?.supported === true");
-    expect(router).toContain("command !== 'browser.toggle' || !browserSupported");
+    expect(router).toContain('command !== "browser.toggle" || !browserSupported');
     expect(router.indexOf("command !== 'browser.toggle' || !browserSupported")).toBeLessThan(
       router.indexOf("function ThreadPage("),
     );
-    expect(router).toContain("paneId: 'browser'");
-    expect(router).toContain("browserSupported ? ['browser' as const] : []");
-    expect(router).toContain("pane.kind === 'browser'");
+    expect(router).toContain('paneId: "browser"');
+    expect(router).toContain('browserSupported ? ["browser" as const] : []');
+    expect(router).toContain('pane.kind === "browser"');
     expect(source).toContain("if (!props.supported)");
     expect(source).toContain("The embedded browser is unavailable on this platform.");
   });
@@ -69,7 +69,7 @@ describe("Native Browser right-dock pane", () => {
     expect(source).toContain("browserView.onStateChange(applyState)");
     expect(source).toContain("const stateTabId = next.tabId || activeTabIdRef.current");
     expect(source).toContain("tab.id === stateTabId");
-    expect(source).toContain("props.onTitleChange?.('Browser')");
+    expect(source).toContain('props.onTitleChange?.("Browser")');
     expect(source).toContain("setError(next.lastError)");
     expect(source).toContain("if (next.url) setAddress(next.url)");
     expect(source).toContain("props.onTitleChange?.(next.title)");
@@ -96,9 +96,9 @@ describe("Native Browser right-dock pane", () => {
     expect(source).toContain('ariaLabel="Browser actions"');
     expect(source).toContain("<ArrowRightIcon color={primaryIconColor} size={14} />");
     expect(source).not.toContain("<ChevronRightIcon size={14} />");
-    expect(source).toContain("import linkSvg from '@synara-central-icons/chain-link-3.svg?raw'");
+    expect(source).toContain('import linkSvg from "@synara-central-icons/chain-link-3.svg?raw"');
     expect(source).toContain("content={colorizeLynxSvg(linkSvg, primaryIconColor)}");
-    expect(source).toContain("const secondaryIconColor = semanticIconColor('secondary')");
+    expect(source).toContain('const secondaryIconColor = semanticIconColor("secondary")');
     expect(source).toContain("platformWindow.openExternal(copyableUrl)");
     expect(source).toContain("Close browser panel");
     expect(source).toContain("<text>Capture screenshot</text>");
@@ -125,7 +125,7 @@ describe("Native Browser right-dock pane", () => {
     expect(source).toContain("browserView.onOpenWindow");
     expect(source).toContain("classifyBrowserWindowOpen");
     expect(source).toContain("void createTab(request.url)");
-    expect(source).toContain("features: request.hasFeatures ? 'native-window-features' : ''");
+    expect(source).toContain('features: request.hasFeatures ? "native-window-features" : ""');
     expect(source).toContain("requires the CEF browser backend");
     expect(source).toContain('className="BrowserDockTabBar"');
     expect(source).toContain('aria-label="New tab"');

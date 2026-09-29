@@ -18,15 +18,15 @@ describe("Lynx responsive layout contract", () => {
     expect(hook).toContain(".getViewportSize()");
     expect(hook).toContain(".catch(() => {");
     expect(hook).toContain("platformWindow.onViewportResize");
-    expect(host).toContain("w.sendGlobalEvent('viewport:resize'");
+    expect(host).toContain('w.sendGlobalEvent("viewport:resize"');
     expect(host).toContain("process.env.SYNARA_VIEWPORT_PROBE_SEQUENCE");
     expect(host).toContain("w.setContentSize(size.width, size.height)");
-    expect(services).toContain("case 'windowGetViewport'");
+    expect(services).toContain('case "windowGetViewport"');
     expect(services).toContain("w.getContentBounds()");
-    expect(webHost).toContain("if (method === 'windowGetViewport')");
-    expect(webHost).toContain("lynxView.sendGlobalEvent?.('viewport:resize'");
-    expect(webHost).toContain("globalThis.addEventListener('resize', publishViewportSize)");
-    expect(webHost).toContain("globalThis.removeEventListener('resize', publishViewportSize)");
+    expect(webHost).toContain('if (method === "windowGetViewport")');
+    expect(webHost).toContain('lynxView.sendGlobalEvent?.("viewport:resize"');
+    expect(webHost).toContain('globalThis.addEventListener("resize", publishViewportSize)');
+    expect(webHost).toContain('globalThis.removeEventListener("resize", publishViewportSize)');
   });
 
   it("projects root viewport classes and replaces unsupported media-query layout", () => {
@@ -48,7 +48,8 @@ describe("Lynx responsive layout contract", () => {
     expect(app).toContain("viewportLayoutClassName(viewportLayout)");
     expect(app).toContain("viewportBreakpointClassNames(viewportLayout)");
     expect(app).toContain("viewportHeightClassNames(viewportLayout)");
-    expect(app).toContain(".filter(Boolean)\n          .join(' ')");
+    expect(app).toContain(`.filter(Boolean)
+          .join(" ")`);
     expect(app).toContain("data-viewport-width={viewportLayout.width}");
     expect(composerElement).not.toContain("maxWidth: '736px'");
     expect(composer).toContain("width: calc(100% - 24px)");

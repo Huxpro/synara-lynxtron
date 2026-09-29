@@ -63,7 +63,7 @@ describe("Pull Request detail close fidelity", () => {
       new URL("./PullRequestDetailCloseCompositionElements.lynx.tsx", import.meta.url),
       "utf8",
     );
-    expect(source).toContain("'background only';");
+    expect(source).toContain('"background only";');
     expect(source).toContain("openExternalBestEffort(props.url);");
     expect(styles).toMatch(/\.SharedPrDetailExternalButton\s*\{[^}]*margin-left:\s*0;/s);
     expect(styles).not.toMatch(/\.SharedPrDetailExternalButton\s*\{[^}]*margin-right:/);

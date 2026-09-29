@@ -30,8 +30,8 @@ describe("Kanban overview fidelity", () => {
     expect(source).toContain("<ChevronRightIcon");
     expect(source).toContain('className="SharedKanbanOverviewProjectChevron"');
     expect(source).toContain('className="SharedKanbanOverviewNewTaskIcon"');
-    expect(source).toContain("color={semanticIconColor('tertiary')}");
-    expect(source).toContain("color={semanticIconColor('secondary')}");
+    expect(source).toContain('color={semanticIconColor("tertiary")}');
+    expect(source).toContain('color={semanticIconColor("secondary")}');
     expect(source).not.toMatch(/[›＋]/);
     expect(styles).toMatch(
       /\.SharedKanbanOverviewProjectChevron\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*margin-left:\s*auto;/s,

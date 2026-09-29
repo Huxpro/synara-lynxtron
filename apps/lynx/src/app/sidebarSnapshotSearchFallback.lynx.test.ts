@@ -7,7 +7,7 @@ describe("sidebar snapshot search fallback", () => {
     const shell = source.indexOf("const snapshot = await fetchSynaraSidebarShellSnapshot()");
     const fallback = source.indexOf("const searchSnapshot = sidebarSearchSnapshotCache ??", shell);
     const refresh = source.indexOf(
-      "refreshSidebarSearchSnapshotInBackground(\n    fetchSynaraSidebarSearchSnapshot",
+      "refreshSidebarSearchSnapshotInBackground(fetchSynaraSidebarSearchSnapshot)",
       fallback,
     );
 
@@ -16,7 +16,7 @@ describe("sidebar snapshot search fallback", () => {
     expect(refresh).toBeGreaterThan(fallback);
     expect(source).toContain("threads: []");
     expect(source).toContain(
-      "refreshSidebarSearchSnapshotInBackground(\n    fetchSynaraSidebarSearchSnapshot\n  )",
+      "refreshSidebarSearchSnapshotInBackground(fetchSynaraSidebarSearchSnapshot)",
     );
     expect(source).toContain("fetchSnapshot: () => Promise<OrchestrationSidebarSearchSnapshot>");
     expect(source).toContain("sidebarSearchSnapshotRequest = fetchSnapshot()");

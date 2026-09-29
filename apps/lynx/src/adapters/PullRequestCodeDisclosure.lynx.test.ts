@@ -51,7 +51,7 @@ describe('Pull Request Code disclosure fidelity', () => {
 
     expect(lynxElements).toContain('<ChevronRightIcon');
     expect(lynxElements).toContain('disclosureChevronClassName(');
-    expect(lynxElements).toContain("color={semanticIconColor('secondary')}");
+    expect(lynxElements).toContain('color={semanticIconColor("secondary")}');
     expect(lynxElements).toContain(
       'useLynxDisclosurePresence(props.expanded)'
     );
@@ -107,9 +107,9 @@ describe('Pull Request Code disclosure fidelity', () => {
       /\.SliceRoot--theme-dark \.SharedPrCodeLine--hunk\s*\{[^}]*background-color:\s*rgba\(252,\s*252,\s*252,\s*0\.0036\);/s
     );
     expect(lynxElements).toContain(
-      "props.kind.startsWith('no-newline-')"
+      'props.kind.startsWith("no-newline-")'
     );
-    expect(lynxElements).toContain("? '\\\\'");
+    expect(lynxElements).toContain('? "\\\\"');
     expect(lynxStyles).toMatch(
       /\.SharedPrCodeLine--no-newline-addition,[^{]*\{[^}]*color:\s*var\(--muted-foreground\);[^}]*font-style:\s*italic;/s
     );
@@ -185,10 +185,10 @@ describe('Pull Request Code disclosure fidelity', () => {
       'file.lifecycle === "added" ? "File added." : "File deleted."'
     );
     expect(composition).toContain('relation={file.relation}');
-    expect(lynxElements).toContain("props.relation === 'copied'");
-    expect(lynxElements).toContain("'copied from'");
-    expect(lynxElements).toContain("props.relation === 'renamed'");
-    expect(lynxElements).toContain("'renamed from'");
+    expect(lynxElements).toContain('props.relation === "copied"');
+    expect(lynxElements).toContain('"copied from"');
+    expect(lynxElements).toContain('props.relation === "renamed"');
+    expect(lynxElements).toContain('"renamed from"');
     expect(webElements).toContain('props.relation === "copied"');
     expect(webElements).toContain('"copied from"');
     expect(webElements).toContain('props.relation === "renamed"');

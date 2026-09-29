@@ -47,13 +47,13 @@ describe("Settings Profile fidelity", () => {
       "utf8",
     );
 
-    expect(settingsSource).toContain("'profile',");
-    expect(settingsSource).toContain("section === 'profile'");
+    expect(settingsSource).toContain('"profile",');
+    expect(settingsSource).toContain('section === "profile"');
     expect(settingsSource).toContain("<SettingsProfilePanel />");
-    expect(settingsSource).toContain("section !== 'profile'");
+    expect(settingsSource).toContain('section !== "profile"');
     expect(settingsSource).toContain("SettingsContentInner--profile");
-    expect(clientSource).toContain("'stats.getProfileStats'");
-    expect(clientSource).toContain("'stats.getProfileTokenStats'");
+    expect(clientSource).toContain('"stats.getProfileStats"');
+    expect(clientSource).toContain('"stats.getProfileTokenStats"');
     expect(profileSource).toContain("selectProfileHeatmap");
     expect(profileSource).toContain("selectProfileModelUsage");
     expect(profileSource).toContain("selectProfileTopProvider");
@@ -68,7 +68,7 @@ describe("Settings Profile fidelity", () => {
     expect(profileSource).toContain("Most used plugins");
     expect(profileSource).toContain("Model usage");
     expect(profileSource).toContain(
-      "import { SettingsHeadingElement } from '../adapters/SettingsHeadingElement.lynx';",
+      'import { SettingsHeadingElement } from "../adapters/SettingsHeadingElement.lynx";',
     );
     expect(profileSource).toContain('<SettingsHeadingElement className="SettingsProfileName">');
     expect(
@@ -83,9 +83,9 @@ describe("Settings Profile fidelity", () => {
     expect(profileSource).toMatch(
       /className="SettingsProfileEditError"[\s\S]{0,120}accessibility-role="alert"/,
     );
-    expect(profileSource).toContain("readonly intent: 'success' | 'neutral' | 'error';");
-    expect(profileSource).toContain("shareStatus.intent === 'error' ? 'alert' : undefined");
-    expect(profileSource).toContain("intent: path ? 'success' : 'neutral'");
+    expect(profileSource).toContain('readonly intent: "success" | "neutral" | "error";');
+    expect(profileSource).toContain('shareStatus.intent === "error" ? "alert" : undefined');
+    expect(profileSource).toContain('intent: path ? "success" : "neutral"');
   });
 
   it("implements the canonical local Edit profile contract", () => {
@@ -103,16 +103,16 @@ describe("Settings Profile fidelity", () => {
 
     expect(normalizeProfileHandle(" @@hello world ")).toBe("@helloworld");
     expect(normalizeProfileHandle("   ")).toBe("");
-    expect(profileSource).toContain("'synara:profile:name:v1'");
-    expect(profileSource).toContain("'synara:profile:handle:v1'");
-    expect(profileSource).toContain("'synara:profile:avatarColor:v1'");
-    expect(profileSource).toContain("'synara:profile:avatarImage:v1'");
+    expect(profileSource).toContain('"synara:profile:name:v1"');
+    expect(profileSource).toContain('"synara:profile:handle:v1"');
+    expect(profileSource).toContain('"synara:profile:avatarColor:v1"');
+    expect(profileSource).toContain('"synara:profile:avatarImage:v1"');
     expect(profileSource).toContain('className="SettingsProfileEditAction"');
     expect(profileSource).toContain('className="SettingsProfileEditDialog"');
     expect(profileSource).toContain('<DialogPanel className="SettingsProfileEditBody">');
     expect(profileSource).toContain("<ProfileColorOption");
     expect(profileSource).toContain(
-      "accessibilityValue: props.active ? 'Selected' : 'Not selected'",
+      'accessibilityValue: props.active ? "Selected" : "Not selected"',
     );
     expect(profileSource).toContain("dialogs.pickProfileImage()");
     expect(profileSource.match(/colorizeLynxSvg([^,]+, svgColors.foreground)/g)).toHaveLength(2);
@@ -130,14 +130,14 @@ describe("Settings Profile fidelity", () => {
       /className="SettingsProfileEditAvatarImage"[\s\S]{0,160}accessibility-element=\{false\}/,
     );
     expect(profileSource).toContain(
-      "import pencilSvg from '@synara-central-icons/pencil.svg?raw';",
+      'import pencilSvg from "@synara-central-icons/pencil.svg?raw";',
     );
     expect(profileSource.match(/<Input\s+nativeInput/g)).toHaveLength(2);
     expect(dialogSource).toContain("pickProfileImage: () =>");
-    expect(desktopHostSource).toContain("case 'dialogsPickProfileImage':");
+    expect(desktopHostSource).toContain('case "dialogsPickProfileImage":');
     expect(desktopHostSource).toContain("nativeImage.createFromPath(filePath)");
     expect(desktopHostSource).toContain("image.resize({");
-    expect(webHostSource).toContain("method === 'dialogsPickProfileImage'");
+    expect(webHostSource).toContain('method === "dialogsPickProfileImage"');
     expect(styles).toMatch(
       /\.LxDialogPopup\.SettingsProfileEditDialog\s*\{[^}]*width:\s*500px;[^}]*border-radius:\s*24px;/s,
     );
@@ -224,7 +224,7 @@ describe("Settings Profile fidelity", () => {
     expect(shareSource).toContain("createProfileShareCardSvg");
     expect(shareSource).toContain("selectProfileHeatmap");
     expect(profileSource).toContain(
-      "import shareSvg from '@synara-central-icons/share-os.svg?raw';",
+      'import shareSvg from "@synara-central-icons/share-os.svg?raw";',
     );
     expect(profileSource).toContain('className="SettingsProfileShareDialog"');
     expect(profileSource).toContain('<DialogPanel className="SettingsProfileShareBody">');
@@ -232,18 +232,18 @@ describe("Settings Profile fidelity", () => {
     expect(profileSource).toContain("dialogs.saveProfileShareCard({");
     expect(profileSource).toContain("platformWindow.openExternal(urls[target])");
     expect(profileSource).toContain(
-      "if (!opened) throw new Error('Host did not open the share page.')",
+      'if (!opened) throw new Error("Host did not open the share page.")',
     );
-    expect(profileSource).toContain("message: 'Could not open the share page.'");
-    expect(clipboardSource).toContain("bridgeCall('profileShareExport'");
-    expect(dialogsSource).toContain("'dialogsSaveProfileShareCard'");
-    expect(desktopHostSource).toContain("await import('sharp')");
+    expect(profileSource).toContain('message: "Could not open the share page."');
+    expect(clipboardSource).toContain('bridgeCall("profileShareExport"');
+    expect(dialogsSource).toContain('"dialogsSaveProfileShareCard"');
+    expect(desktopHostSource).toContain('await import("sharp")');
     expect(desktopHostSource).toContain(".png()");
     expect(desktopHostSource).toContain("clipboard.writeImage(image)");
     expect(desktopHostSource).toContain("fs.writeFileSync(filePath, png)");
     expect(desktopMainSource).toContain("callback.sendReply(await handleClipboard(name, data))");
     expect(webHostSource).toContain("renderSvgToPngBlob");
-    expect(webHostSource).toContain("new ClipboardItem({ 'image/png': blob })");
+    expect(webHostSource).toContain('new ClipboardItem({ "image/png": blob })');
     expect(styles).toMatch(
       /\.LxDialogPopup\.SettingsProfileShareDialog\s*\{[^}]*width:\s*560px;[^}]*border-radius:\s*24px;/s,
     );
@@ -336,10 +336,10 @@ describe("Settings Profile fidelity", () => {
     expect(source).toContain("<ProfileUsageKindIcon kind={skill.kind} />");
     expect(source).not.toContain("skill.kind === 'agent' ? 'A' : 'S'");
     expect(usageIconSource).toContain(
-      "import agentSvg from '@synara-central-icons/agent.svg?raw';",
+      'import agentSvg from "@synara-central-icons/agent.svg?raw";',
     );
     expect(usageIconSource).toContain(
-      "import buildingBlocksSvg from '@synara-central-icons/building-blocks.svg?raw';",
+      'import buildingBlocksSvg from "@synara-central-icons/building-blocks.svg?raw";',
     );
     expect(styles).toMatch(
       /\.SettingsProfilePluginGlyph\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;/s,

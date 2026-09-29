@@ -143,7 +143,7 @@ describe("Lynx Dialog dismiss contract", () => {
   it("applies the Electron action geometry to text buttons in dialog footers", () => {
     const styles = readFileSync(new URL("./primitives.css", import.meta.url), "utf8");
     const footerButtonSelector =
-      /\.LxDialogFooter\s*> \.LxButton:not\(\.LxButton--icon-chip\):not\(\.LxButton--icon-xs\):not\(\.LxButton--icon-sm\):not\(\.LxButton--icon\):not\(\.LxButton--icon-lg\):not\(\.LxButton--icon-xl\):not\(\.LxButton--capsule\)/;
+      /\.LxDialogFooter\s*> \.LxButton:not\(\s*\.LxButton--icon-chip\s*\):not\(\s*\.LxButton--icon-xs\s*\):not\(\s*\.LxButton--icon-sm\s*\):not\(\s*\.LxButton--icon\s*\):not\(\s*\.LxButton--icon-lg\s*\):not\(\s*\.LxButton--icon-xl\s*\):not\(\s*\.LxButton--capsule\s*\)/;
 
     expect(styles).toMatch(
       new RegExp(

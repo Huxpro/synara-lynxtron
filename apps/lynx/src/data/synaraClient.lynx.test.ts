@@ -13,25 +13,27 @@ describe("Lynx Synara relay state", () => {
     expect(hostSource).toContain(
       "const featureManager = createManager(openFeatureSocket, {\n  closeWhenIdle: false,",
     );
-    expect(hostSource).toContain("{ maxReconnectAttempts: 0 }");
+    expect(hostSource).toContain(`{
+    maxReconnectAttempts: 0,
+  }`);
     expect(hostSource).toContain("manager.dispose()");
     expect(clientSource).not.toContain("LynxWebSocketModule");
     expect(clientSource).not.toContain("featureManager");
 
     const mainSource = readFileSync(new URL("../main/desktop/main.ts", import.meta.url), "utf8");
-    expect(mainSource).toContain("_tag: 'NativeRpcResult'");
-    expect(clientSource).toContain("parsed._tag === 'NativeRpcResult'");
-    expect(clientSource).toContain("'orchestration.subscribeShell'");
+    expect(mainSource).toContain('_tag: "NativeRpcResult"');
+    expect(clientSource).toContain('parsed._tag === "NativeRpcResult"');
+    expect(clientSource).toContain('"orchestration.subscribeShell"');
     expect(clientSource).toContain(
-      "const ORCHESTRATION_SHELL_EVENT = 'synara:orchestration-shell-event'",
+      'const ORCHESTRATION_SHELL_EVENT = "synara:orchestration-shell-event"',
     );
-    expect(mainSource).toContain("rpcData.tag === 'orchestration.subscribeShell'");
+    expect(mainSource).toContain('rpcData.tag === "orchestration.subscribeShell"');
     expect(mainSource).toContain("ORCHESTRATION_SHELL_EVENT");
     const nativeHostSource = readFileSync(
       new URL("../main/desktop/nativeRpcHost.ts", import.meta.url),
       "utf8",
     );
-    expect(nativeHostSource).toContain("tag !== 'orchestration.subscribeShell'");
+    expect(nativeHostSource).toContain('tag !== "orchestration.subscribeShell"');
   });
 
   it("leaves connection lifecycle state to the Web relay socket owner", () => {
@@ -45,8 +47,8 @@ describe("Lynx Synara relay state", () => {
     expect(relayRequest).not.toContain(
       "setRelayState(relayEverConnected ? 'reconnecting' : 'connecting')",
     );
-    expect(relayRequest).toContain("setRelayState('offline')");
-    expect(relayRequest).toContain("setRelayState('connected')");
+    expect(relayRequest).toContain('setRelayState("offline")');
+    expect(relayRequest).toContain('setRelayState("connected")');
   });
 
   it("settles connection-level RPC defects without taking the socket offline", () => {
@@ -63,7 +65,7 @@ describe("Lynx Synara relay state", () => {
       messageHandler.indexOf("const pending = relayPending.get(message.requestId)"),
     );
 
-    expect(messageHandler).toContain("message._tag === 'Defect'");
+    expect(messageHandler).toContain('message._tag === "Defect"');
     expect(messageHandler).toContain("rejectPendingRpcDefect(");
     expect(messageHandler.indexOf("message._tag === 'Defect'")).toBeLessThan(
       messageHandler.indexOf("relayPending.get(message.requestId)"),
@@ -75,15 +77,15 @@ describe("Lynx Synara relay state", () => {
     const hostSource = readFileSync(new URL("../main/web/web-host.ts", import.meta.url), "utf8");
     const clientSource = readFileSync(new URL("./synaraClient.lynx.ts", import.meta.url), "utf8");
 
-    expect(hostSource).toContain("message._tag === 'Chunk'");
-    expect(hostSource).toContain("_tag: 'Ack'");
+    expect(hostSource).toContain('message._tag === "Chunk"');
+    expect(hostSource).toContain('_tag: "Ack"');
     expect(hostSource).toContain("publishRelayGitActionProgress?.(value)");
     expect(hostSource).toContain("const timer = stream");
     expect(hostSource).toContain("? undefined");
-    expect(clientSource).toContain("'synaraRpcStream'");
+    expect(clientSource).toContain('"synaraRpcStream"');
     expect(clientSource).toContain("gitActionProgressListeners.get(event.actionId)");
-    expect(clientSource).toContain("event.kind === 'action_finished'");
-    expect(clientSource).toContain("'Git action stream completed without a final result'");
+    expect(clientSource).toContain('event.kind === "action_finished"');
+    expect(clientSource).toContain('"Git action stream completed without a final result"');
   });
 
   it("keeps Native terminal delivery on the component-owned main-thread listener", () => {
@@ -103,30 +105,30 @@ describe("Lynx Synara relay state", () => {
 
   it("uses canonical automation mutation tags", () => {
     const source = readFileSync(new URL("./synaraClient.lynx.ts", import.meta.url), "utf8");
-    expect(source).toContain("transportRequest<AutomationDefinition>('automation.update', input)");
-    expect(source).toContain("transportRequest<AutomationDefinition>('automation.create', input)");
-    expect(source).toContain("transportRequest('automation.delete', input)");
+    expect(source).toContain('transportRequest<AutomationDefinition>("automation.update", input)');
+    expect(source).toContain('transportRequest<AutomationDefinition>("automation.create", input)');
+    expect(source).toContain('transportRequest("automation.delete", input)');
   });
 
   it("uses canonical project dev-server registry tags", () => {
     const source = readFileSync(new URL("./synaraClient.lynx.ts", import.meta.url), "utf8");
     expect(source).toContain(
-      "transportRequest<ProjectListDevServersResult>('projects.listDevServers', {})",
+      'transportRequest<ProjectListDevServersResult>("projects.listDevServers", {})',
     );
     expect(source).toContain(
-      "transportRequest<ProjectStopDevServerResult>('projects.stopDevServer', input)",
+      'transportRequest<ProjectStopDevServerResult>("projects.stopDevServer", input)',
     );
     expect(source).toContain(
-      "transportRequest<ProjectDiscoverScriptsResult>('projects.discoverScripts', input)",
+      'transportRequest<ProjectDiscoverScriptsResult>("projects.discoverScripts", input)',
     );
     expect(source).toContain(
-      "transportRequest<ProjectRunDevServerResult>('projects.runDevServer', input)",
+      'transportRequest<ProjectRunDevServerResult>("projects.runDevServer", input)',
     );
   });
 
   it("exposes the canonical keybinding mutation for Native action editors", () => {
     const source = readFileSync(new URL("./synaraClient.lynx.ts", import.meta.url), "utf8");
-    expect(source).toContain("transportRequest('server.upsertKeybinding', rule)");
-    expect(source).toContain("transportRequest('server.removeKeybinding', { command })");
+    expect(source).toContain('transportRequest("server.upsertKeybinding", rule)');
+    expect(source).toContain('transportRequest("server.removeKeybinding", { command })');
   });
 });

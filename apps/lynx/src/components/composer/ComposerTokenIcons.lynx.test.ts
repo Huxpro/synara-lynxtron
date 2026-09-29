@@ -7,9 +7,9 @@ describe("Composer token icon fidelity", () => {
 
     expect(source).toContain("? [...slashCommandItems, ...skillItems]");
     expect(source).toContain(
-      "composerTrigger?.kind === 'skill' ||\n        composerTrigger?.kind === 'slash-command'",
+      'composerTrigger?.kind === "skill" || composerTrigger?.kind === "slash-command"',
     );
-    expect(source).toContain("if (item.type === 'skill') {");
+    expect(source).toContain('if (item.type === "skill") {');
     expect(source).toContain("selectSkill(item);");
   });
 
@@ -17,14 +17,14 @@ describe("Composer token icon fidelity", () => {
     const source = readFileSync(new URL("./Composer.lynx.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./composer.css", import.meta.url), "utf8");
 
-    expect(source).toContain("import agentMentionSvg from '@synara-central-icons/robot.svg?raw';");
+    expect(source).toContain('import agentMentionSvg from "@synara-central-icons/robot.svg?raw";');
     expect(source).toContain(
-      "import skillSvg from '@synara-central-icons/building-blocks.svg?raw';",
+      'import skillSvg from "@synara-central-icons/building-blocks.svg?raw";',
     );
-    expect(source).toContain("import terminalSvg from '@synara-central-icons/console.svg?raw';");
+    expect(source).toContain('import terminalSvg from "@synara-central-icons/console.svg?raw";');
     expect(source).toContain("<FileEntryIcon");
     expect(source).toContain("<ExternalLinkIcon");
-    expect(source).toContain("token.key.slice('mention:'.length)");
+    expect(source).toContain('token.key.slice("mention:".length)');
     expect(source).toContain("<ClockIcon");
     expect(source).not.toContain("function segmentGlyph");
     expect(source).not.toContain("return '◆'");
@@ -90,20 +90,18 @@ describe("Composer token icon fidelity", () => {
     expect(source).toContain("props.favoriteModelSlugsOverride?.[favoriteProvider]");
     expect(source).toContain("props.onFavoriteModelSlugsChange?.(");
     expect(source).toMatch(
-      /onOpenChange=\{\(open\) => \{\s*'background only';\s*setSubmenuProvider/s,
+      /onOpenChange=\{\(open\) => \{\s*["']background only["'];\s*setSubmenuProvider/s,
     );
-    expect(source).toMatch(/onOpen=\{\(\) => \{\s*'background only';\s*setModelSearchQuery/s);
+    expect(source).toMatch(/onOpen=\{\(\) => \{\s*["']background only["'];\s*setModelSearchQuery/s);
     expect(source).toContain("useSinglePanelModelNavigation");
-    expect(source).toContain(
-      "useSinglePanelModelNavigation &&\n            popupContent !== 'providers'",
-    );
+    expect(source).toContain('useSinglePanelModelNavigation && popupContent !== "providers"');
     expect(source).toContain("SEARCHABLE_MODEL_PICKER_THRESHOLD");
     expect(source).toContain("buildModelSearchText(option)");
     expect(source).toContain('placeholder="Search models or providers"');
-    expect(source).toContain("? 'No Pi models found'");
-    expect(source).toContain(": 'No matches'");
+    expect(source).toContain('? "No Pi models found"');
+    expect(source).toContain(': "No matches"');
     expect(source).toContain("catalogProvider === activeProvider ? catalogCurrentModel : null");
-    expect(source).toContain("activeModel={catalogActiveModel ?? ''}");
+    expect(source).toContain('activeModel={catalogActiveModel ?? ""}');
     expect(styles).toMatch(
       /\.ComposerModelPopupLynx\s*\{[^}]*width:\s*208px;[^}]*min-width:\s*208px;[^}]*max-height:\s*min\(320px, 55vh\);/s,
     );
@@ -111,7 +109,7 @@ describe("Composer token icon fidelity", () => {
       /\.ComposerModelSubPopupLynx\s*\{[^}]*width:\s*208px;[^}]*min-width:\s*208px;[^}]*height:\s*320px;[^}]*max-height:\s*320px;/s,
     );
     expect(source).toMatch(
-      /popupContent === 'providers'[\s\S]*?props\.splitTraits \? \(\s*renderProviderList\(\)/s,
+      /popupContent === ["']providers["'][\s\S]*?props\.splitTraits \? \(\s*renderProviderList\(\)/s,
     );
   });
 

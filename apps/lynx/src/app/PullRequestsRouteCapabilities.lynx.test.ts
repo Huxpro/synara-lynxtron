@@ -5,8 +5,8 @@ describe("Lynx Pull Requests detail capabilities", () => {
   it("wires Summary, Timeline, and Code to real detail and diff data", () => {
     const source = readFileSync(new URL("./FeatureListsPage.tsx", import.meta.url), "utf8");
 
-    expect(source).toContain("availableTabs={['summary', 'timeline', 'code']}");
-    expect(source).toContain("enabled: selectedInput !== null && activeDetailTab === 'code'");
+    expect(source).toContain('availableTabs={["summary", "timeline", "code"]}');
+    expect(source).toContain('enabled: selectedInput !== null && activeDetailTab === "code"');
     expect(source).toContain("return fetchPullRequestDiff(selectedInput)");
     expect(source).toContain("buildPullRequestCodeView(");
     expect(source).toContain('<PullRequestCodeStateComposition kind="loading"');
@@ -30,9 +30,9 @@ describe("Lynx Pull Requests detail capabilities", () => {
     expect(queries).toContain("fetchSynaraPullRequestDiff");
     expect(queries).toContain("export async function postPullRequestComment");
     expect(queries).toContain("postSynaraPullRequestComment");
-    expect(client).toContain("transportRequest<PullRequestDiffResult>('pullRequests.diff', input)");
+    expect(client).toContain('transportRequest<PullRequestDiffResult>("pullRequests.diff", input)');
     expect(client).toContain(
-      "transportRequest<PullRequestActionResult>('pullRequests.comment', input)",
+      'transportRequest<PullRequestActionResult>("pullRequests.comment", input)',
     );
   });
 });

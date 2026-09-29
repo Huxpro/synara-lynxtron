@@ -16,7 +16,7 @@ describe("Native dock terminal pane", () => {
     expect(source).toContain("addTerminalContext(props.threadId");
     expect(source).toContain("threadId={scopeId}");
     expect(source).toContain("showHeader={false}");
-    expect(source).toContain("' DockTerminalPaneSession--hidden'");
+    expect(source).toContain('" DockTerminalPaneSession--hidden"');
     expect(source).toContain("terminalId={tab.id}");
     expect(source).toContain("threadId={scopeId}");
     expect(source).not.toContain("threadId={props.threadId}");
@@ -44,7 +44,7 @@ describe("Native dock terminal pane", () => {
     expect(source).toContain('label="Close active terminal tab"');
     expect(source).toContain('label="Split right"');
     expect(source).toContain('label="Split down"');
-    expect(source).toContain("const toolbarIconColor = semanticIconColor('secondary')");
+    expect(source).toContain('const toolbarIconColor = semanticIconColor("secondary")');
     expect(source.match(/color=\{toolbarIconColor\}/g)).toHaveLength(8);
     expect(source).toContain("splitTerminalRight(scopeId, terminalId)");
     expect(source).toContain("splitTerminalDown(scopeId, terminalId)");
@@ -63,28 +63,29 @@ describe("Native dock terminal pane", () => {
     expect(source).toContain("moveLynxTerminalSplitResize({ event, session })");
     expect(source).toContain("registerLynxTerminalSplitTap({");
     expect(source).toContain("equalizeSplitOnSecondPointerDown({");
-    expect(source).toContain("bindmousedown={(event: LynxTerminalSplitPointerEvent");
+    expect(source).toContain(`bindmousedown={(
+                    event: LynxTerminalSplitPointerEvent`);
     expect(source).toContain("bindtouchstart={(event: LynxTerminalSplitPointerEvent) => {");
     expect(source).not.toContain("bindtap={() => {\n                    const handleKey = node.id");
     expect(source).toContain("node.children.map(() => 1)");
     expect(source).toContain("bindlayoutchange=");
     expect(source).toContain('className="DockTerminalPaneSplitResizeOverlay"');
     expect(source).toContain("bindmouseenter={() => setHoveredSplitHandle");
-    expect(source).toContain("' ui-hover' : ''");
+    expect(source).toContain('" ui-hover" : ""');
     expect(styles).toContain(".DockTerminalPaneSplitHandle--horizontal");
     expect(styles).toContain(".DockTerminalPaneSplitHandle--vertical");
     expect(source).toContain("resolvedTerminalGroups.length > 1");
     expect(source).toContain('className="DockTerminalPaneGroupTab"');
     expect(source).toContain('label="New terminal"');
     expect(source).toContain("newTerminalGroup(scopeId");
-    expect(source).toContain("setCloseQueuePurpose('group')");
+    expect(source).toContain('setCloseQueuePurpose("group")');
     expect(styles).toContain(".DockTerminalPaneGroupScroller");
   });
 
   it("persists dock terminal ownership and metadata in the canonical store", () => {
     const source = readFileSync(new URL("./DockTerminalPane.lynx.tsx", import.meta.url), "utf8");
-    expect(source).toContain("from '@synara-web/terminalStateStore'");
-    expect(source).toContain("from '@synara-web/lib/dockTerminalScope'");
+    expect(source).toContain('from "@synara-web/terminalStateStore"');
+    expect(source).toContain('from "@synara-web/lib/dockTerminalScope"');
     expect(source).toContain("openTerminalThreadPage(scopeId");
     expect(source).toContain("newTerminalTab(scopeId, targetTerminalId");
     expect(source).toContain("setActiveTerminal(scopeId, id)");

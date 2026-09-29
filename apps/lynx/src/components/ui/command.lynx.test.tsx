@@ -100,11 +100,11 @@ describe("Lynx CommandItem interaction contract", () => {
       "utf8",
     );
 
-    expect(commandSource).toContain("className={cx('LxCommandTextarea', props.className)}");
+    expect(commandSource).toContain('className={cx("LxCommandTextarea", props.className)}');
     expect(commandSource).toContain("<textarea");
     expect(commandSource).toContain('confirm-type="search"');
     expect(commandSource).toContain("global-bindkeydown={handleKeyDown}");
-    expect(commandSource).toContain("className={cx('LxCommandList', props.className)}");
+    expect(commandSource).toContain('className={cx("LxCommandList", props.className)}');
     expect(commandSource).toContain('scroll-orientation="vertical"');
     expect(commandSource).toContain(
       '<view className="LxCommandInput" catchkeydown={handleKeyDown}>',

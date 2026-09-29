@@ -45,7 +45,7 @@ describe("Lynx Environment panel", () => {
     const appStyles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
     expect(routerSource).toContain("<EnvironmentToggle");
     expect(routerSource).toContain("<EnvironmentPanel");
-    expect(routerSource).toContain("accessibleLabel: 'Toggle diff panel'");
+    expect(routerSource).toContain('accessibleLabel: "Toggle diff panel"');
     expect(routerSource).toContain("panelRightCloseSvg");
     expect(routerSource).not.toContain("accessibleLabel: 'Toggle files panel'");
     expect(routerSource).toContain(
@@ -54,7 +54,7 @@ describe("Lynx Environment panel", () => {
     expect(routerSource).toContain("const resolvedEnvironmentOpen =");
     expect(routerSource).toContain("environmentData={null}");
     expect(routerSource).toContain("open={environmentPanelLayout.visible}");
-    expect(panelSource).toContain("label={props.envMode === 'worktree' ? 'Worktree' : 'Local'}");
+    expect(panelSource).toContain('label={props.envMode === "worktree" ? "Worktree" : "Local"}');
     expect(panelSource).not.toContain("EnvironmentWorkspace");
     expect(panelSource).toContain("initialData: EnvironmentBootstrapData | null");
     expect(panelSource).toContain("initialStatus={props.initialData?.gitStatus ?? null}");
@@ -70,14 +70,14 @@ describe("Lynx Environment panel", () => {
     expect(panelSource.match(/open=\{liveQueriesEnabled\}/g)).toHaveLength(6);
     expect(panelSource).toContain("open={props.open}");
     expect(panelSource).toContain("initializeGit(props.workspaceRoot)");
-    expect(panelSource).toContain("\'Retry Initialize Git\' : \'Initialize Git\'");
+    expect(panelSource).toContain('"Retry Initialize Git" : "Initialize Git"');
     expect(panelSource).toContain("const isGitRepo = repositoryQuery.data?.isRepo === true");
     expect(panelSource).toContain("props.onNotesChange(next)");
     expect(panelSource).toContain("props.onBranchChange(branch)");
     expect(panelSource).toContain("props.onBranchChange(result.branch.name)");
     expect(panelSource).not.toContain("if (!props.open || props.bootstrapOnly) return;");
     expect(routerSource).toContain("initialEnvironmentOpen && environmentData !== null");
-    expect(panelSource).toContain("? 'Usage is currently unavailable.'");
+    expect(panelSource).toContain('? "Usage is currently unavailable."');
     expect(panelSource).toContain("!props.bootstrapOnly && visibility.showEnvironmentUsage ? (");
     expect(routerSource).toContain('className="ThreadHeaderControls"');
     expect(routerSource).toContain("resolveEnvironmentPanelLayout({");
@@ -91,9 +91,9 @@ describe("Lynx Environment panel", () => {
     );
     expect(panelSource).toContain("useLynxInteractiveState({");
     expect(panelSource).toContain("Toggle environment panel");
-    expect(panelSource).toContain("import windowSvg from '@synara-central-icons/window.svg?raw'");
-    expect(panelSource).toContain("from '@synara/shared/pinnedMessages'");
-    expect(panelSource).toContain("from '@synara/shared/threadMarkers'");
+    expect(panelSource).toContain('import windowSvg from "@synara-central-icons/window.svg?raw"');
+    expect(panelSource).toContain('from "@synara/shared/pinnedMessages"');
+    expect(panelSource).toContain('from "@synara/shared/threadMarkers"');
     expect(panelSource).not.toContain("from '@synara-web/pinnedMessages'");
     expect(panelSource).not.toContain("from '@synara-web/threadMarkers'");
     expect(appStyles).toMatch(
@@ -120,13 +120,14 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain("onOpenViewer={props.onOpenChanges}");
     expect(panelSource).toContain("fetchGitBranches(props.workspaceRoot)");
     expect(panelSource).toContain("await checkoutGitBranch({ cwd: props.workspaceRoot, branch })");
-    expect(panelSource).toContain("type: 'thread.meta.update'");
+    expect(panelSource).toContain('type: "thread.meta.update"');
     expect(panelSource).toContain("Switch branches from the worktree environment controls.");
     expect(panelSource).toContain("buildMenuItems(");
     expect(panelSource).toContain("resolvePullActionAvailability({");
     expect(panelSource).toContain("requiresDefaultBranchConfirmation(");
     expect(panelSource).toContain("resolveDefaultBranchActionDialogCopy({");
-    expect(panelSource).toContain("await runGitStackedAction({");
+    expect(panelSource).toContain(`await runGitStackedAction(
+        {`);
     expect(panelSource).toContain("await pullGitBranch(props.workspaceRoot)");
     expect(panelSource).toContain("Git pull failed.");
     expect(panelSource).toContain("await dialogs.confirm(");
@@ -142,31 +143,31 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).not.toContain("readOnly={running}");
     expect(panelSource).toContain('ariaLabel="Commit and Push"');
     expect(panelSource).toContain(
-      "label={running ? progressLabel ?? 'Working…' : 'Commit and Push'}",
+      'label={running ? (progressLabel ?? "Working…") : "Commit and Push"}',
     );
-    expect(panelSource).toContain("event.kind === 'phase_started'");
-    expect(panelSource).toContain("event.kind === 'hook_started'");
-    expect(panelSource).toContain("event.kind === 'hook_output'");
+    expect(panelSource).toContain('event.kind === "phase_started"');
+    expect(panelSource).toContain('event.kind === "hook_started"');
+    expect(panelSource).toContain('event.kind === "hook_output"');
     expect(panelSource).toContain("Git actions");
     expect(panelSource).toContain("Pull");
     expect(panelSource).toContain("Unavailable");
     expect(panelSource).toContain("const [excludedFiles, setExcludedFiles]");
     expect(panelSource).toContain("const selectedFiles = files.filter(");
     expect(panelSource).toContain("{ filePaths: selectedFiles.map((file) => file.path) }");
-    expect(panelSource).toContain("editingFiles ? 'Done' : 'Edit'");
-    expect(panelSource).toContain("allSelected ? 'Exclude all' : 'Include all'");
+    expect(panelSource).toContain('editingFiles ? "Done" : "Edit"');
+    expect(panelSource).toContain('allSelected ? "Exclude all" : "Include all"');
     expect(panelSource).toContain("EnvironmentGitActionFile--excluded");
     expect(panelSource).toContain("disabled={running || noneSelected || !dialogAction}");
-    expect(panelSource).toContain("void runAction('commit', { featureBranch: true })");
-    expect(panelSource).toContain("result.branch.status === 'created'");
+    expect(panelSource).toContain('void runAction("commit", { featureBranch: true })');
+    expect(panelSource).toContain('result.branch.status === "created"');
     expect(panelSource).toContain("createBranchFlowCompleted: true");
     expect(panelSource).toContain("threadId={props.threadId}");
     expect(panelSource).not.toContain("EnvironmentChangesPopup");
     expect(panelSource).not.toContain("EnvironmentChangesFilePath");
     expect(panelSource).toContain("stopLocalServer({");
     expect(panelSource).toContain("const [stopFeedback, setStopFeedback]");
-    expect(panelSource).toContain("message: result.message ?? 'Couldn’t stop local server.'");
-    expect(panelSource).toContain("message: 'Couldn’t stop local server.'");
+    expect(panelSource).toContain('message: result.message ?? "Couldn’t stop local server."');
+    expect(panelSource).toContain('message: "Couldn’t stop local server."');
     expect(panelSource).toContain("retainLocalServerStopFeedback(");
     expect(panelSource).toContain("{stopFeedback.message}");
     expect(panelSource).toContain('className="EnvironmentLocalServersFeedback"');
@@ -186,14 +187,14 @@ describe("Lynx Environment panel", () => {
     expect(routerSource).toContain("onOpenEditorView={enterEditorMode}");
     expect(routerSource).toContain('className="ThreadEditorView"');
     expect(routerSource).toContain(
-      "presentationMode={editorSearchActive ? 'editor-search' : 'editor'}",
+      'presentationMode={editorSearchActive ? "editor-search" : "editor"}',
     );
     expect(panelSource).toContain("fetchGitHubRepository(props.workspaceRoot)");
     expect(panelSource).toContain("platformWindow.openExternal(repository.url)");
     expect(panelSource).toContain("repository.nameWithOwner");
-    expect(panelSource).toContain("import githubSvg from '@synara-central-icons/github.svg?raw'");
+    expect(panelSource).toContain('import githubSvg from "@synara-central-icons/github.svg?raw"');
     expect(panelSource).toContain(
-      "import arrowUpRightSvg from '@synara-central-icons/arrow-up-right.svg?raw'",
+      'import arrowUpRightSvg from "@synara-central-icons/arrow-up-right.svg?raw"',
     );
     expect(panelSource).toContain("Could not open repository");
     expect(panelSource).toContain("fetchGitPullRequestSnapshot({");
@@ -217,35 +218,35 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain("Architecture notes, conventions, repo links");
     expect(panelSource).toContain("Append to notepad");
     expect(panelSource).toContain("function EnvironmentPinnedRow(");
-    expect(panelSource).toContain("type: 'thread.pinned-message.done.set'");
-    expect(panelSource).toContain("type: 'thread.pinned-message.label.set'");
-    expect(panelSource).toContain("type: 'thread.pinned-message.remove'");
+    expect(panelSource).toContain('type: "thread.pinned-message.done.set"');
+    expect(panelSource).toContain('type: "thread.pinned-message.label.set"');
+    expect(panelSource).toContain('type: "thread.pinned-message.remove"');
     expect(panelSource).toContain("displayLabelFor(props.pin, props.messageText)");
     expect(queriesSource).toContain("pinnedMessages: thread.pinnedMessages ?? []");
     expect(queriesSource).toContain("pinnedMessageTextById: Object.fromEntries(");
     expect(transcriptSource).toContain("function scrollToMessage(messageId: string)");
-    expect(transcriptSource).toContain("row.kind === 'message' && row.message.id === messageId");
+    expect(transcriptSource).toContain('row.kind === "message" && row.message.id === messageId');
     expect(panelSource).toContain("function EnvironmentMarkerRow(");
     expect(panelSource).toContain("isThreadMarkerAvailable(props.marker, props.messageText)");
-    expect(panelSource).toContain("type: 'thread.marker.done.set'");
-    expect(panelSource).toContain("type: 'thread.marker.label.set'");
-    expect(panelSource).toContain("type: 'thread.marker.remove'");
+    expect(panelSource).toContain('type: "thread.marker.done.set"');
+    expect(panelSource).toContain('type: "thread.marker.label.set"');
+    expect(panelSource).toContain('type: "thread.marker.remove"');
     expect(queriesSource).toContain("threadMarkers: thread.threadMarkers ?? []");
     expect(panelSource).toContain("onOpenViewer={props.onOpenChanges}");
     expect(diffDockSource).toContain(
       "return fetchWorkingTreeDiff(props.workspaceRoot, diffRequest.scope);",
     );
-    expect(diffDockSource).toContain("'working-tree-diff',");
+    expect(diffDockSource).toContain('"working-tree-diff",');
     expect(diffDockSource).toContain("diffSource,");
     expect(diffDockSource).toContain("diffIgnoreWhitespace,");
-    expect(diffDockSource).toContain("refreshGeneration === 0 && diffSource === 'workingTree'");
+    expect(diffDockSource).toContain('refreshGeneration === 0 && diffSource === "workingTree"');
     expect(diffDockSource).toContain("function OpenDiffDock(");
     expect(diffDockSource).not.toContain("enabled: props.open && Boolean(props.workspaceRoot)");
     expect(diffDockSource).toContain("buildPullRequestCodeView(");
     expect(diffDockSource).toContain("<PullRequestCodeComposition");
     expect(diffDockSource).toContain("<ResizableRightPanel");
     expect(diffDockSource).toContain("maxWidth={720}");
-    expect(diffDockSource).toContain("resizable={props.presentation === 'dock'}");
+    expect(diffDockSource).toContain('resizable={props.presentation === "dock"}');
     expect(routerSource).toContain("effectiveRightDockWidth !== null");
     expect(routerSource).toContain("open={diffOpen}");
     expect(routerSource).not.toContain('open={diffOpen}\n        presentation="editor"');
@@ -265,15 +266,15 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain("await generatePreparedThreadRecap({");
     expect(panelSource).toContain("<ChatMarkdown");
     expect(queriesSource).toContain("deriveThreadRecapSource({");
-    expect(queriesSource).toContain("thread.latestTurn?.state === 'running'");
+    expect(queriesSource).toContain('thread.latestTurn?.state === "running"');
     expect(queriesSource).toContain("export async function prepareThreadRecap(");
     expect(queriesSource).toContain("export async function generatePreparedThreadRecap(");
     expect(queriesSource).toContain("generateThreadRecap({");
     expect(queriesSource).toContain("readPersistedThreadRecapCache(webStorage)");
     expect(queriesSource).toContain("persistThreadRecapCache(");
-    expect(queriesSource).toContain("webStorage\n  );");
+    expect(queriesSource).toContain("webStorage);");
     expect(queriesSource).toContain("upsertPersistedThreadRecap(");
-    expect(panelSource).toContain("type: 'thread.meta.update'");
+    expect(panelSource).toContain('type: "thread.meta.update"');
     expect(panelSource).toContain("THREAD_NOTES_MAX_CHARS");
     expect(panelSource).toContain("EnvironmentNotepadInput");
     expect(panelSource).toContain("scheduleSave(0)");
@@ -308,7 +309,7 @@ describe("Lynx Environment panel", () => {
     expect(routerSource).not.toContain("rightInsetPx={");
     expect(routerSource).toContain("(threadPageWidth || viewportWidth) - effectiveRightDockWidth");
     expect(routerSource).toContain("resolveEnvironmentPanelLayout({");
-    expect(routerSource).toContain("bodyState.kind === 'empty'");
+    expect(routerSource).toContain('bodyState.kind === "empty"');
     expect(routerSource).toContain(
       "viewportWidth < VIEWPORT_BREAKPOINTS.lg || diffOpen || explorerOpen",
     );
@@ -408,7 +409,8 @@ describe("Lynx Environment panel", () => {
     expect(styles).toMatch(
       /\.EnvironmentGitActionMessage\s*\{[^}]*min-height:\s*72px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*transparent;[^}]*color:\s*var\(--foreground\);/s,
     );
-    expect(source).toContain("<CheckboxIndicator checked={allSelected}");
+    expect(source).toContain(`<CheckboxIndicator
+                  checked={allSelected}`);
     expect(source).toContain("mixed={!allSelected && !noneSelected}");
     expect(primitiveStyles).toMatch(
       /\.LxCheckboxIndicator--sm\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s,
@@ -515,7 +517,7 @@ describe("Lynx Environment panel", () => {
   it("honors and persists the canonical default-open preference", () => {
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
     expect(routerSource).toContain("resolveDefaultEnvironmentPanelOpen({");
-    expect(routerSource).toContain("isCenteredEmptyLanding: bodyState.kind === 'empty'");
+    expect(routerSource).toContain('isCenteredEmptyLanding: bodyState.kind === "empty"');
     expect(routerSource).toContain(
       "settingsDefaultOpen: environmentSettings.environmentPanelDefaultOpen",
     );

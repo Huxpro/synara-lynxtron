@@ -172,13 +172,13 @@ describe("slice root theme projection", () => {
     const settingsSource = readFileSync(new URL("./SettingsPage.tsx", import.meta.url), "utf8");
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
 
-    expect(settingsSource).toContain("readonly resolvedTheme: 'dark' | 'light';");
+    expect(settingsSource).toContain('readonly resolvedTheme: "dark" | "light";');
     expect(settingsSource).not.toContain("resolveSliceThemeVariant(themeState)");
     expect(routerSource).toContain("resolvedTheme={resolvedTheme}");
     expect(appSource).toContain(
       "const dispose = onGlobalEvent(SYSTEM_APPEARANCE_EVENT, (value: unknown) =>",
     );
-    expect(appSource).toContain("void bridgeCall('runtimeGetSystemAppearance')");
+    expect(appSource).toContain('void bridgeCall("runtimeGetSystemAppearance")');
     expect(appSource).toContain("const next = readSystemAppearanceResponse(value);");
     expect(appSource).toContain("!receivedTransition && next !== null");
   });

@@ -21,21 +21,22 @@ describe("Synara logo adapter", () => {
   });
 
   it("preserves the shared non-shrinking foreground base classes", () => {
-    expect(source).toContain("'shrink-0'");
-    expect(source).toContain("'text-foreground'");
+    expect(source).toContain('"shrink-0"');
+    expect(source).toContain('"text-foreground"');
     expect(source).toContain("className={`${resolvedClassName} LynxBrandMark`}");
   });
 
   it("maps the Web 0.875rem sidebar size to the same physical 14px", () => {
-    expect(source).toContain("classNames.includes('size-3.5')");
-    expect(source).toContain("hasSharedSidebarSize ? { width: '14px', height: '14px' } : {}");
-    expect(source).toContain("(value) => value !== 'size-3.5' && value !== 'pointer-events-none'");
+    expect(source).toContain('classNames.includes("size-3.5")');
+    expect(source).toContain('hasSharedSidebarSize ? { width: "14px", height: "14px" } : {}');
+    expect(source).toContain('(value) => value !== "size-3.5" && value !== "pointer-events-none"');
     expect(source).toContain('accessibility-trait="image"');
   });
 
   it("embeds the exact secondary token for the titlebar mark", () => {
     expect(source).toContain(
-      "classNames.includes(\n    'text-[var(--color-text-foreground-secondary)]'",
+      `classNames.includes(
+    "text-[var(--color-text-foreground-secondary)]"`,
     );
     expect(source).toContain("svgColors.secondaryForeground");
   });
@@ -43,7 +44,7 @@ describe("Synara logo adapter", () => {
   it("uses the same shared path source as the Electron renderer", () => {
     const styles = fs.readFileSync(path.resolve(__dirname, "synara-logo.css"), "utf8");
     expect(source).toContain(
-      "import { SYNARA_LOGO_PATHS } from '@synara-web/assets/synaraLogoPath'",
+      'import { SYNARA_LOGO_PATHS } from "@synara-web/assets/synaraLogoPath"',
     );
     expect(source).toContain('viewBox="0 0 470 504"');
     expect(source).not.toContain("lynxtron-mark-");

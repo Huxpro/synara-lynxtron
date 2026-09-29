@@ -14,7 +14,7 @@ describe("Collapsed work disclosure fidelity", () => {
 
     expect(source).toContain("<ChevronRightIcon");
     expect(source).toContain("disclosureChevronClassName(");
-    expect(source).toContain("color={semanticIconColor('secondary')}");
+    expect(source).toContain('color={semanticIconColor("secondary")}');
     expect(source).toContain("preserveOnClose: false");
     expect(source).not.toContain(">›</text>");
     expect(styles).toMatch(

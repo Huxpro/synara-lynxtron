@@ -23,10 +23,10 @@ describe("EditorRailAddMenu component identity", () => {
     expect(composition).toContain("EditorRailAddMenuChatIconElement");
     expect(composition).toContain("EditorRailAddMenuTerminalIconElement");
     expect(adapter).toContain(
-      "<MessageCircleIcon color={semanticIconColor('primary')} size={14} />",
+      '<MessageCircleIcon color={semanticIconColor("primary")} size={14} />',
     );
     expect(adapter).toContain("@synara-central-icons/console.svg?raw");
-    expect(adapter.match(/semanticIconColor\('primary'\)/g)).toHaveLength(2);
+    expect(adapter.match(/semanticIconColor\(["']primary["']\)/g)).toHaveLength(2);
     expect(adapter).not.toContain("svgColors.iconSecondary");
     expect(adapter).toContain('className="ThreadEditorAddMenuSvgIcon"');
     expect(tabs).toContain("<EditorRailAddMenu");

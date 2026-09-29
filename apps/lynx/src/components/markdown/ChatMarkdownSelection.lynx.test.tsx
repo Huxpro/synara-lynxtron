@@ -17,12 +17,12 @@ describe("Lynx transcript text selection", () => {
     expect(markdownSource).toContain("custom-context-menu={selectionEnabled}");
     expect(markdownSource).toContain("flatten={false}");
     expect(markdownSource).toContain("bindselectionchange={");
-    expect(markdownSource).toContain("method: 'getSelectedText'");
-    expect(markdownSource).toContain("method: 'getTextBoundingRect'");
+    expect(markdownSource).toContain('method: "getSelectedText"');
+    expect(markdownSource).toContain('method: "getTextBoundingRect"');
     expect(markdownSource).toContain("width: result.boundingRect.width");
     expect(markdownSource).toContain("height: result.boundingRect.height");
-    expect(markdownSource).toContain('className="MdParagraph"\n          context={context}');
-    expect(transcriptSource).toContain("<ChatMarkdown\n              cwd={workspaceRoot}");
+    expect(markdownSource).toContain('className="MdParagraph" context={context}');
+    expect(transcriptSource).toContain("<ChatMarkdown cwd={workspaceRoot}");
     expect(transcriptSource).toContain(
       "onOpenFileReference={onOpenFileReference}\n                onTextSelection={onTextSelectionChange}",
     );
@@ -49,6 +49,6 @@ describe("Lynx transcript text selection", () => {
     );
     expect(styles).toContain(".TranscriptSelectionToolbar--top");
     expect(styles).toContain(".TranscriptSelectionToolbar--bottom");
-    expect(transcriptSource).toContain("type: 'thread.marker.add'");
+    expect(transcriptSource).toContain('type: "thread.marker.add"');
   });
 });

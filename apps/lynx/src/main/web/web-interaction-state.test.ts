@@ -408,13 +408,13 @@ describe("Lynx-for-Web interaction state bridge", () => {
     const source = readFileSync(new URL("./web-host.ts", import.meta.url), "utf8");
 
     expect(source).toContain(
-      "'.SharedThemePackImportTextarea::part(textarea) { box-sizing: border-box; width: 100%; height: 100%; padding: 0; }'",
+      '".SharedThemePackImportTextarea::part(textarea) { box-sizing: border-box; width: 100%; height: 100%; padding: 0; }"',
     );
     expect(source).toContain("lynxView.injectStyleRules = LYNX_WEB_STYLE_RULES");
     expect(source).toContain("publishInteraction({");
-    expect(source).toContain("kind: 'composer-model-menu'");
-    expect(source).toContain("kind: 'explorer-visibility'");
-    expect(source).toContain("kind: 'environment-visibility'");
+    expect(source).toContain('kind: "composer-model-menu"');
+    expect(source).toContain('kind: "explorer-visibility"');
+    expect(source).toContain('kind: "environment-visibility"');
     const interactionHost = source.slice(
       source.indexOf("const interactionBridgeController"),
       source.indexOf("const publishViewportSize"),
@@ -423,41 +423,41 @@ describe("Lynx-for-Web interaction state bridge", () => {
     expect(interactionHost).not.toContain("searchParams.set");
     expect(source).toContain("COMPOSER_MODEL_PROVIDER_QUERY");
     expect(source).toContain("initialComposerModelProvider,");
-    expect(source).toContain("globalThis.matchMedia(\n  '(prefers-color-scheme: dark)'\n)");
+    expect(source).toContain('globalThis.matchMedia("(prefers-color-scheme: dark)")');
     expect(source).toContain(
-      "systemAppearanceQuery.addEventListener('change', publishSystemAppearance)",
+      'systemAppearanceQuery.addEventListener("change", publishSystemAppearance)',
     );
     expect(source).toContain(
       "lynxView.sendGlobalEvent?.(SYSTEM_APPEARANCE_EVENT, [event.matches])",
     );
     expect(source).toContain(
-      "systemAppearanceQuery.removeEventListener('change', publishSystemAppearance)",
+      'systemAppearanceQuery.removeEventListener("change", publishSystemAppearance)',
     );
-    expect(source).toContain("globalThis.matchMedia(\n  '(prefers-reduced-motion: reduce)'\n)");
+    expect(source).toContain('globalThis.matchMedia("(prefers-reduced-motion: reduce)")');
     expect(source).toContain("initialReducedMotion,");
-    expect(source).toContain("reducedMotionQuery.addEventListener('change', publishReducedMotion)");
+    expect(source).toContain('reducedMotionQuery.addEventListener("change", publishReducedMotion)');
     expect(source).toContain("lynxView.sendGlobalEvent?.(REDUCED_MOTION_EVENT, [event.matches])");
     expect(source).toContain(
-      "reducedMotionQuery.removeEventListener('change', publishReducedMotion)",
+      'reducedMotionQuery.removeEventListener("change", publishReducedMotion)',
     );
     expect(source).toContain("initialSystemDark,");
     expect(source).toContain("initialThemeMode,");
     expect(source).toContain("new URLSearchParams(globalThis.location.search).get(");
-    expect(source).toContain("pendingInitialRoute?.startsWith('/components-lab')");
-    expect(source).toContain("if (method === 'runtimeGetSystemAppearance')");
+    expect(source).toContain('pendingInitialRoute?.startsWith("/components-lab")');
+    expect(source).toContain('if (method === "runtimeGetSystemAppearance")');
     expect(source).toContain("return { dark: systemAppearanceQuery.matches };");
-    expect(source).toContain("if (method === 'runtimeGetEditorIcon')");
+    expect(source).toContain('if (method === "runtimeGetEditorIcon")');
     expect(source).toContain("const endpoint = new URL(configuredRelayBaseUrl());");
     expect(source).toContain("reader.readAsDataURL(blob);");
     expect(source).toContain("initialComposerModelMenuOpen,");
-    expect(source).toContain("root,\n        '.ComposerModelPopupLynx'");
-    expect(source).toContain("popup.style.visibility = 'visible'");
+    expect(source).toContain('root, ".ComposerModelPopupLynx"');
+    expect(source).toContain('popup.style.visibility = "visible"');
     expect(source).toContain("const INITIAL_OVERLAY_POSITION_TIMEOUT_MS = 15_000");
     expect(source).toContain("const INITIAL_OVERLAY_POSITION_RETRY_MS = 50");
     expect(source.match(/positionInitialOverlayWhenReady\(\(\) =>/g)).toHaveLength(2);
     expect(source).not.toContain("positionAttempts < 40");
     expect(source).toContain(
-      "'.EnvironmentScroller { flex: 0 1 auto; height: auto; min-height: 0; max-height: 100%; }'",
+      '".EnvironmentScroller { flex: 0 1 auto; height: auto; min-height: 0; max-height: 100%; }"',
     );
   });
 
@@ -536,8 +536,8 @@ describe("Lynx-for-Web dialog bridge", () => {
     const hostSource = readFileSync(new URL("./web-host.ts", import.meta.url), "utf8");
     const desktopSource = readFileSync(new URL("../desktop/main.ts", import.meta.url), "utf8");
 
-    expect(hostSource).toContain("if (method === 'dialogsConfirm')");
-    expect(hostSource).toContain("confirmed: globalThis.confirm(String(params.message ?? ''))");
+    expect(hostSource).toContain('if (method === "dialogsConfirm")');
+    expect(hostSource).toContain('confirmed: globalThis.confirm(String(params.message ?? ""))');
     expect(desktopSource).not.toContain("globalThis.confirm");
   });
 });

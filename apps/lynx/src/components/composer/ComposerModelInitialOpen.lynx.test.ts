@@ -29,7 +29,7 @@ describe("Native Composer model initial-open state", () => {
       "providers={providerStatuses ?? serverConfig?.providers ?? []}",
     );
     expect(composerSource).toContain("isProviderKind(initData.initialComposerModelProvider)");
-    expect(composerSource).toContain("initialModelMenuProvider ? 'models' : 'providers'");
+    expect(composerSource).toContain('initialModelMenuProvider ? "models" : "providers"');
     expect(composerSource).toContain("EMPTY_ASSISTANT_SELECTIONS");
     expect(composerSource).toContain("EMPTY_NON_PERSISTED_IMAGE_IDS");
     expect(composerSource).not.toMatch(/assistantSelections\s*\?\?\s*\[\]/);

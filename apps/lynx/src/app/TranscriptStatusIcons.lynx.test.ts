@@ -28,14 +28,14 @@ describe('Transcript status icon fidelity', () => {
     );
 
     expect(source).toContain(
-      "import botSvg from '@synara-central-icons/robot.svg?raw';"
+      'import botSvg from "@synara-central-icons/robot.svg?raw";'
     );
     expect(source).toContain(
-      "import toolSvg from '@synara-central-icons/zap.svg?raw';"
+      'import toolSvg from "@synara-central-icons/zap.svg?raw";'
     );
     expect(source).toContain('<CircleAlertIcon');
     expect(source).toContain('<CheckIcon');
-    expect(source).toContain("props.kind === 'error' || props.tone === 'error'");
+    expect(source).toContain('props.kind === "error" || props.tone === "error"');
     expect(source).toContain('? svgColors.statusError');
     expect(source).toContain(': svgColors.statusNeutral');
     expect(source).not.toContain("if (tone === 'tool') return '›'");

@@ -35,7 +35,7 @@ describe("Settings Appearance fidelity", () => {
       /\.SharedSettingsAppearanceRow\s*\{[^}]*padding:\s*var\(--app-density-settings-row-padding-y,\s*0\.625rem\) 12px;/s,
     );
     expect(styles).not.toMatch(/\.SharedSettingsAppearanceRow\s*\{[^}]*min-height:/s);
-    expect(source).toContain("props.terminal ? ' SharedSettingsAppearanceRow--terminal' : ''");
+    expect(source).toContain('props.terminal ? " SharedSettingsAppearanceRow--terminal" : ""');
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceRow--terminal\s*\{[^}]*border-bottom-width:\s*0;/s,
     );
@@ -58,12 +58,13 @@ describe("Settings Appearance fidelity", () => {
     expect(source).toContain('role="radiogroup"');
     expect(source).toContain('role="radio"');
     expect(source).toContain("aria-checked={active}");
-    expect(source).toContain("import { Switch } from '../components/ui/switch.lynx';");
-    expect(source).toContain("<Switch checked={props.checked}");
-    expect(source).toContain("'accessibility-state': { selected: active }");
-    expect(source).toContain("'accessibility-role': 'radio'");
+    expect(source).toContain('import { Switch } from "../components/ui/switch.lynx";');
+    expect(source).toContain(`<Switch
+      checked={props.checked}`);
+    expect(source).toContain('"accessibility-state": { selected: active }');
+    expect(source).toContain('"accessibility-role": "radio"');
     expect(source).toContain("SharedSettingsAppearanceSegment--inactive");
-    expect(source).toContain("Icon ? '' : ' SharedSettingsAppearanceSegment--text-only'");
+    expect(source).toContain('Icon ? "" : " SharedSettingsAppearanceSegment--text-only"');
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceSegment--text-only\s*\{[^}]*padding-left:\s*9px;[^}]*padding-right:\s*9px;/s,
     );
@@ -93,8 +94,8 @@ describe("Settings Appearance fidelity", () => {
       /\.SharedSettingsAppearanceInputLine \.LxInput\s*\{[^}]*text-align:\s*right;/s,
     );
     expect(source).toContain("onFocus={() => setOpen(true)}");
-    expect(source).toContain('className="SharedSettingsAppearanceFontTrigger"\n        passive');
-    expect(source).toContain("props.onChange('');");
+    expect(source).toContain('className="SharedSettingsAppearanceFontTrigger" passive');
+    expect(source).toContain('props.onChange("");');
     expect(source).toContain("No matching suggested fonts.");
     expect(source).toContain("<MenuItem");
     expect(source).toContain("onClick={() => props.onChange(suggestion)}");
@@ -111,7 +112,7 @@ describe("Settings Appearance fidelity", () => {
     expect(source).toContain('className="SharedSettingsAppearanceSelectLabel"');
     expect(source).toContain('className="SharedSettingsAppearanceSelectChevron"');
     expect(source).toContain("<MenuTrigger ariaLabel={props.ariaLabel}>");
-    expect(source).toContain("buttonProps={{ 'accessibility-element': false }}");
+    expect(source).toContain('buttonProps={{ "accessibility-element": false }}');
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceSelect\s*\{[^}]*width:\s*160px;[^}]*justify-content:\s*flex-start;[^}]*gap:\s*8px;/s,
     );

@@ -60,10 +60,10 @@ describe("Kanban card metadata icon fidelity", () => {
       "utf8",
     );
     expect(source).toContain(
-      "import worktreeSvg from '@synara-central-icons/arrow-split-right.svg?raw';",
+      'import worktreeSvg from "@synara-central-icons/arrow-split-right.svg?raw";',
     );
-    expect(source).toContain("import forkSvg from '@synara-central-icons/fork.svg?raw';");
-    expect(source).toContain("import pinFilledSvg from '@synara-central-icons-fill/pin.svg?raw';");
+    expect(source).toContain('import forkSvg from "@synara-central-icons/fork.svg?raw";');
+    expect(source).toContain('import pinFilledSvg from "@synara-central-icons-fill/pin.svg?raw";');
     expect(source).not.toContain('<text className="SharedKanbanCardMetaIcon">W</text>');
     expect(source).not.toContain('<text className="SharedKanbanCardMetaIcon">⑂</text>');
     expect(source).not.toContain('<text className="SharedKanbanCardMetaIcon">＋</text>');
@@ -120,7 +120,7 @@ describe("Kanban card metadata icon fidelity", () => {
 
     expect(source).toContain("<KanbanStatusIcon");
     expect(source).toContain('className="SharedKanbanCardColumnIcon"');
-    expect(source).toContain("import terminalSvg from '@synara-central-icons/console.svg?raw';");
+    expect(source).toContain('import terminalSvg from "@synara-central-icons/console.svg?raw";');
     expect(source).not.toContain("SharedKanbanCardColumnDot");
   });
 });

@@ -47,10 +47,10 @@ describe("Native Feedback dialog parity", () => {
 
     expect(source).toContain("FEEDBACK_CATEGORIES.map");
     expect(source).toContain("buildFeedbackSubmission({");
-    expect(source).toContain("await bridgeCall('feedbackSubmit', {");
+    expect(source).toContain('await bridgeCall("feedbackSubmit", {');
     expect(source).toContain("await bridgeCall<{");
-    expect(source).toContain(">('windowGetViewport');");
-    expect(source).toContain("placeholder: 'Share details (required)'");
+    expect(source).toContain('>("windowGetViewport");');
+    expect(source).toContain('placeholder: "Share details (required)"');
     expect(source).toContain("maxlength: 5000");
     expect(source).toContain("Diagnostics include app version");
     expect(source).toContain("fetchSynaraThreadDetailSnapshot(props.activeThreadId!)");
@@ -65,9 +65,9 @@ describe("Native Feedback dialog parity", () => {
       new URL("../../main/desktop/main.ts", import.meta.url),
       "utf8",
     );
-    expect(hostSource).toContain("case 'feedbackSubmit':");
+    expect(hostSource).toContain('case "feedbackSubmit":');
     expect(hostSource).toContain("await submitFeedbackPayload(submission);");
-    expect(desktopSource).toContain("name === 'feedbackSubmit' ||");
+    expect(desktopSource).toContain('name === "feedbackSubmit" ||');
     expect(styles).toMatch(
       /\.FeedbackDialogLynx\s*\{[^}]*width:\s*576px;[^}]*border-radius:\s*18px;/s,
     );

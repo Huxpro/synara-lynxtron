@@ -54,19 +54,19 @@ describe('composer project picker trigger icon', () => {
     );
 
     expect(source).toContain(
-      "import folderSvg from '@synara-central-icons/folder-2.svg?raw';"
+      'import folderSvg from "@synara-central-icons/folder-2.svg?raw";'
     );
     expect(source).toContain(
       'className="ComposerProjectPickerTriggerIconLynx"'
     );
     expect(source).toContain(
-      "content={colorizeLynxSvg(folderSvg, semanticIconColor('secondary'))}"
+      'content={colorizeLynxSvg(folderSvg, semanticIconColor("secondary"))}'
     );
     expect(source).not.toContain(
       '<FolderIcon className="ComposerProjectPickerTriggerIconLynx"'
     );
     expect(source).toMatch(
-      /import\s*\{[^}]*FolderIcon,[^}]*\}\s*from '\.\.\/lib\/icons\.lynx';/s
+      /import\s*\{[^}]*FolderIcon,[^}]*\}\s*from ["']\.\.\/lib\/icons\.lynx["'];/s
     );
     expect(source).toContain('const Icon = icons[props.icon] ?? FolderIcon;');
     expect(styles).toMatch(

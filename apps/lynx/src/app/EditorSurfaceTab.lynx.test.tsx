@@ -10,7 +10,7 @@ describe("Lynx editor surface tab", () => {
     const source = readFileSync(new URL("./EditorSurfaceTab.lynx.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./editor-surface-tab.css", import.meta.url), "utf8");
 
-    expect(source).toContain("color={semanticIconColor('secondary')}");
+    expect(source).toContain('color={semanticIconColor("secondary")}');
     expect(source).toContain("className={`${close.className} EditorSurfaceTabIconSlot`}");
     expect(styles).toMatch(/\.EditorSurfaceTabRestingIcon\s*\{[^}]*opacity:\s*0\.7;/s);
     expect(styles).toMatch(

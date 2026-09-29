@@ -152,7 +152,7 @@ describe("Lynx markdown file reference token", () => {
       new URL("./MarkdownFileReferenceToken.lynx.tsx", import.meta.url),
       "utf8",
     );
-    expect(source).toContain("import fileTextSvg from '@synara-central-icons/file-text.svg?raw'");
+    expect(source).toContain('import fileTextSvg from "@synara-central-icons/file-text.svg?raw"');
     expect(source).toContain("content={colorizeLynxSvg(fileTextSvg, svgColors.iconSecondary)}");
     expect(source).not.toContain("FileEntryIcon");
   });
@@ -172,7 +172,7 @@ describe("Lynx markdown file reference token", () => {
     const source = readFileSync(new URL("./ChatMarkdown.lynx.tsx", import.meta.url), "utf8");
 
     expect(source).toContain(
-      "import { highlightExplorerCode } from '../../data/synaraClient.lynx'",
+      'import { highlightExplorerCode } from "../../data/synaraClient.lynx"',
     );
     expect(source).toContain(
       "const [highlighted, setHighlighted] = useState<NativeSyntaxHighlightResult | null>(null)",

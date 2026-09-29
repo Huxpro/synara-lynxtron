@@ -5,7 +5,7 @@ describe("Pull Request responsive layout", () => {
   it("projects detail-open state from the real selected pull request", () => {
     const source = readFileSync(new URL("./FeatureListsPage.tsx", import.meta.url), "utf8");
 
-    expect(source).toContain("selectedInput ? ' SharedPrRouteBody--detail-open' : ''");
+    expect(source).toContain('selectedInput ? " SharedPrRouteBody--detail-open" : ""');
   });
 
   it("uses a single master-detail surface below the wide breakpoint", () => {

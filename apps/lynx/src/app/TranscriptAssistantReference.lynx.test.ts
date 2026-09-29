@@ -12,7 +12,7 @@ describe("Lynx assistant message actions", () => {
     expect(source).toContain("getAssistantSelectionValidationError({");
     expect(source).toContain("draftAttachmentCount >= PROVIDER_SEND_TURN_MAX_ATTACHMENTS");
     expect(source).toContain("disabled: assistantSelectionUnavailable");
-    expect(source).toContain("addToChat.disabled ? ' ui-disabled' : ''");
+    expect(source).toContain('addToChat.disabled ? " ui-disabled" : ""');
     expect(source).toContain("Reference whole assistant message");
     expect(source).toContain("baseClassName: `TranscriptMessageHoverRegion LynxWebHoverOwner ${");
     expect(source).toContain("focusable: false");
@@ -26,9 +26,9 @@ describe("Lynx assistant message actions", () => {
     const source = readFileSync(new URL("./Transcript.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
 
-    expect(source).toContain("'thread.pinned-message.add'");
-    expect(source).toContain("'thread.pinned-message.remove'");
-    expect(source).toContain("import(/* webpackMode: \"eager\" */ '../platform/clipboard')");
+    expect(source).toContain('"thread.pinned-message.add"');
+    expect(source).toContain('"thread.pinned-message.remove"');
+    expect(source).toContain('import(/* webpackMode: "eager" */ "../platform/clipboard")');
     expect(source).toContain("formatShortTimestamp(");
     expect(styles).toMatch(
       /\.TranscriptMessageHoverRegion\.ui-hover \.TranscriptMessageFooter,[\s\S]*?opacity:\s*1;/s,
@@ -65,7 +65,7 @@ describe("Lynx assistant message actions", () => {
     const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
 
     expect(source).toContain("deriveMessageTrailItems");
-    expect(source).toContain("from '@synara-web/components/chat/messageTrail.logic'");
+    expect(source).toContain('from "@synara-web/components/chat/messageTrail.logic"');
     expect(source).toContain("function TranscriptMessageTrail(");
     expect(source).toContain("isMessageTrailEligible({");
     expect(source).toContain("resolveMessageTrailPaneEdgeOffset(props.viewportWidth)");
@@ -131,9 +131,9 @@ describe("Lynx assistant message actions", () => {
     expect(source).toContain('className="TranscriptToolDetailsMarkdown"');
     expect(source).toContain("getChatTranscriptLineHeightPx(props.chatFontSizePx)");
     expect(source).toContain(
-      "displayText={row.kind === 'working-header' ? 'Working…' : 'Thinking'}",
+      'displayText={row.kind === "working-header" ? "Working…" : "Thinking"}',
     );
-    expect(source).toContain("displayText={message.text || 'System'}");
+    expect(source).toContain('displayText={message.text || "System"}');
     expect(source).toContain('displayText="Plan ready"');
     expect(source.match(/fontSizePx=\{chatFontSizePx\}/g)).toHaveLength(4);
     expect(source).toContain("fontSizePx={chatFontSizePx}");
@@ -156,11 +156,11 @@ describe("Lynx assistant message actions", () => {
 
     expect(querySource).toContain("buildRevertTurnCountByUserMessageId({");
     expect(webSource).toContain("buildRevertTurnCountByUserMessageId({");
-    expect(transcriptSource).toContain("accessibleLabel: 'Revert to this message'");
+    expect(transcriptSource).toContain('accessibleLabel: "Revert to this message"');
     expect(transcriptSource).toContain("await dialogs.confirm(");
-    expect(transcriptSource).toContain("type: 'thread.checkpoint.revert'");
-    expect(transcriptSource).toContain("scope: 'thread'");
-    expect(transcriptSource).toContain("'Failed to revert message.'");
+    expect(transcriptSource).toContain('type: "thread.checkpoint.revert"');
+    expect(transcriptSource).toContain('scope: "thread"');
+    expect(transcriptSource).toContain('"Failed to revert message."');
   });
 
   it("edits only the latest eligible user message through the canonical replay command", () => {
@@ -175,7 +175,7 @@ describe("Lynx assistant message actions", () => {
     expect(transcriptSource).toContain("target.messageId !== messageId");
     expect(transcriptSource).toContain("appendOriginalComposerPromptBlocks({");
     expect(transcriptSource).toContain("formatOutgoingComposerPrompt({");
-    expect(transcriptSource).toContain("type: 'thread.message.edit-and-resend'");
+    expect(transcriptSource).toContain('type: "thread.message.edit-and-resend"');
     expect(transcriptSource).toContain("modelSelection,");
     expect(transcriptSource).toContain("runtimeMode,");
     expect(transcriptSource).toContain("interactionMode,");

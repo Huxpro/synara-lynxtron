@@ -9,7 +9,7 @@ describe("Lynx Settings row anchors", () => {
     ]) {
       const source = readFileSync(new URL(file, import.meta.url), "utf8");
       expect(source).toContain(
-        "import { settingRowAnchorId } from '@synara-web/settingsNavigation'",
+        'import { settingRowAnchorId } from "@synara-web/settingsNavigation"',
       );
       expect(source).toContain("id={settingRowAnchorId(props.title)}");
     }

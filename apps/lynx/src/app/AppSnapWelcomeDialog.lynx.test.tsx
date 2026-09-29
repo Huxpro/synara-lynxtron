@@ -34,10 +34,10 @@ describe("Native AppSnap welcome parity", () => {
     expect(source).toContain("Press both Option keys (⌥ ⌥)");
     expect(source).toContain("Not now");
     expect(source).toContain("Set up AppSnap");
-    expect(source).toContain("from '@synara-central-icons/screen-capture.svg?raw'");
+    expect(source).toContain('from "@synara-central-icons/screen-capture.svg?raw"');
     expect(source).toContain("colorizeLynxSvg(screenCaptureSvg");
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
-    expect(routerSource).toContain("onOpenSettings={() => history.push('/settings/appsnap')}");
+    expect(routerSource).toContain('onOpenSettings={() => history.push("/settings/appsnap")}');
     expect(routerSource.match(/{appSnapWelcomeDialog}/g)).toHaveLength(2);
     const popupStyles = styles.slice(
       styles.indexOf(".LxDialogPopup.AppSnapWelcomeDialog"),

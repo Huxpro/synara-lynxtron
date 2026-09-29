@@ -19,7 +19,7 @@ describe("Native file preview header", () => {
     expect(source).toContain("ExplorerDockMarkdownMode--active");
     expect(source).toContain("<EyeIcon");
     expect(source).not.toContain("<CodeIcon");
-    expect(source).toContain("color={semanticIconColor('secondary')}");
+    expect(source).toContain('color={semanticIconColor("secondary")}');
     expect(source).toContain("color={svgColors.foreground}");
     expect(styles).toMatch(
       /\.ExplorerDockMarkdownModes\s*\{[^}]*height:\s*28px;[^}]*flex-shrink:\s*0;[^}]*border-radius:\s*8px;/s,

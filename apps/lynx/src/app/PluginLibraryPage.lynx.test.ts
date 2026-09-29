@@ -45,8 +45,8 @@ describe('Lynx plugin library', () => {
     expect(pageSource).toContain(
       'are unavailable for ${PROVIDER_DISPLAY_NAMES[provider]}.'
     );
-    expect(pageSource).toContain("tab === 'plugins'");
-    expect(pageSource).toContain("tab === 'skills'");
+    expect(pageSource).toContain('tab === "plugins"');
+    expect(pageSource).toContain('tab === "skills"');
     expect(pageSource).toContain('resolveProviderDiscoveryStatus');
     expect(pageSource).toContain('providerPluginDiscoveryWarnings');
     expect(pageSource).toContain('plugins.data?.remoteSyncError ?? null');
@@ -54,7 +54,7 @@ describe('Lynx plugin library', () => {
     expect(pageSource).toContain('<PluginLibraryWarning');
     expect(warningSource).toContain('className="PluginLibraryWarning"');
     expect(warningSource).toContain('color={svgColors.warning}');
-    expect(pageSource).toContain("useState<ProviderKind>('codex')");
+    expect(pageSource).toContain('useState<ProviderKind>("codex")');
     expect(pageSource).toContain('DEFAULT_PROVIDER_ORDER.map');
     expect(pageSource).toContain('provider={candidate}');
     expect(pageSource).toContain('providerDiscoveryItemGradient(');
@@ -63,7 +63,7 @@ describe('Lynx plugin library', () => {
     expect(pageSource).toContain('className="PluginLibraryProviderLabel"');
     expect(pageSource).toContain('<ListChecksIcon');
     expect(pageSource).toContain('size={20}');
-    expect(pageSource).toContain("color={semanticIconColor('inverse')}");
+    expect(pageSource).toContain('color={semanticIconColor("inverse")}');
     expect(pageSource).not.toContain('color="rgba(255, 255, 255, 0.8)"');
     const iconsSource = readFileSync(
       new URL('../lib/icons.lynx.tsx', import.meta.url),
@@ -73,7 +73,7 @@ describe('Lynx plugin library', () => {
     expect(iconsSource).not.toContain('icon-tabler-checklist');
     expect(pageSource).toContain('className="PluginLibraryInstalled"');
     expect(pageSource).toContain('<PuzzleIcon');
-    expect(pageSource).toContain("color={semanticIconColor('inverse')}");
+    expect(pageSource).toContain('color={semanticIconColor("inverse")}');
     expect(pageSource).not.toContain('PluginLibraryRowStatus');
     expect(pageSource).toContain('className="PluginLibrarySectionTitle">Skills</text>');
     expect(pageSource).toContain('PROVIDER_DISPLAY_NAMES[provider]');
@@ -92,7 +92,7 @@ describe('Lynx plugin library', () => {
       'return fetchProviderSkills({ provider, cwd: config.cwd })'
     );
     expect(clientSource).toContain(
-      "transportRequest<ProviderListPluginsResult>(\n    'provider.listPlugins'"
+      'transportRequest<ProviderListPluginsResult>("provider.listPlugins"'
     );
   });
 
@@ -101,9 +101,9 @@ describe('Lynx plugin library', () => {
       new URL('./router.tsx', import.meta.url),
       'utf8'
     );
-    expect(routerSource).toContain("pathname === '/plugins'");
+    expect(routerSource).toContain('pathname === "/plugins"');
     expect(routerSource).toContain(
-      "route.pathname === '/plugins'"
+      'route.pathname === "/plugins"'
     );
     expect(routerSource).toContain('<PluginLibraryPage />');
   });
@@ -119,8 +119,8 @@ describe('Lynx plugin library', () => {
     );
 
     expect(pageSource).toContain('className="PluginLibraryTabs"');
-    expect(pageSource).toContain("tab === 'plugins' ? ' PluginLibraryTab--active' : ''");
-    expect(pageSource).toContain("tab === 'skills' ? ' PluginLibraryTab--active' : ''");
+    expect(pageSource).toContain('tab === "plugins" ? " PluginLibraryTab--active" : ""');
+    expect(pageSource).toContain('tab === "skills" ? " PluginLibraryTab--active" : ""');
     expect(styles).toMatch(
       /\.PluginLibraryTabs\s*\{[^}]*gap:\s*12px;/s
     );

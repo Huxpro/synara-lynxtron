@@ -114,7 +114,7 @@ describe("Native Composer menu navigation", () => {
     expect(source).not.toContain("bindkeydown={handleComposerMenuKey}");
     expect(source).toContain('confirm-type="send"');
     expect(source).toContain("bindconfirm={() => {");
-    expect(source).toContain("event.key === 'Enter'");
+    expect(source).toContain('event.key === "Enter"');
     expect(source).toContain("event.shiftKey !== true");
     expect(source).toContain("!nativeEditorSnapshotRef.current.isComposing");
     expect(source).toContain("void activatePrimaryAction()");
@@ -128,7 +128,7 @@ describe("Native Composer menu navigation", () => {
       "utf8",
     );
     expect(adapterSource).toContain("scrollLynxElementIntoViewById(");
-    expect(adapterSource).toContain("'nearest'");
+    expect(adapterSource).toContain('"nearest"');
     expect(adapterSource).toContain("id={composerCommandRowId(props.item.id)}");
   });
 });

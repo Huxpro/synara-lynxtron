@@ -75,8 +75,8 @@ describe("Settings Provider tools fidelity", () => {
       "utf8",
     );
 
-    expect(source).toContain("queryKey: ['server-config']");
-    expect(source).toContain("queryKey: ['server-settings']");
+    expect(source).toContain('queryKey: ["server-config"]');
+    expect(source).toContain('queryKey: ["server-settings"]');
     expect(source).toContain("withProviderUpdateTimeout({");
     expect(source).toContain("request: updateProvider(provider)");
     expect(source).toContain("providerUpdateFailureMessage(");
@@ -86,8 +86,8 @@ describe("Settings Provider tools fidelity", () => {
       'state.status !== "failed" && state.status !== "unchanged"',
     );
     expect(source).toContain("updateServerSettings(patch)");
-    expect(source).toContain("queryClient.setQueryData(['server-settings'], settings)");
-    expect(clientSource).toContain("transportRequest('server.updateProvider', { provider })");
+    expect(source).toContain('queryClient.setQueryData(["server-settings"], settings)');
+    expect(clientSource).toContain('transportRequest("server.updateProvider", { provider })');
     expect(source).toContain("getVisibleProviderUpdateStatuses({");
     expect(source).toContain("shouldShowProviderUpdateStatus({");
     expect(source).toContain("Automatic CLI update checks");
@@ -96,13 +96,15 @@ describe("Settings Provider tools fidelity", () => {
     expect(source).toContain("Installed CLIs");
     expect(source.match(/<text className="LxButton__text">/g)).toHaveLength(2);
     expect(source.match(/color={svgColors.foreground80}/g)).toHaveLength(2);
-    expect(source.match(/\{props\.updating \? 'Updating…' : 'Update'\}/g)).toHaveLength(2);
+    expect(source.match(/\{props\.updating \? ["']Updating…["'] : ["']Update["']\}/g)).toHaveLength(
+      2,
+    );
     expect(source).toContain("Reset provider tools to default");
     expect(source).toContain("useLynxDisclosurePresence(props.open)");
     expect(source).toContain("disclosureContentClassName(");
     expect(source).toContain("disclosureChevronClassName(");
     expect(source).toContain("openExternalBestEffort(props.href)");
-    expect(source).toContain("from '@synara/shared/providerTools'");
+    expect(source).toContain('from "@synara/shared/providerTools"');
     expect(source).toContain("PROVIDER_TOOL_CONFIGS");
     expect(source).toContain("providerToolDescriptionText");
     expect(source).not.toContain("provider: 'opencode'");

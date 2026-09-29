@@ -41,7 +41,7 @@ describe("Lynx Explorer dock", () => {
   it("keeps single-file panes on the shared resizable dock width contract", () => {
     const source = readFileSync(new URL("./ExplorerDock.lynx.tsx", import.meta.url), "utf8");
 
-    expect(source).toContain("import { RIGHT_DOCK_MIN_WIDTH_PX } from '@synara/shared/rightDock';");
+    expect(source).toContain('import { RIGHT_DOCK_MIN_WIDTH_PX } from "@synara/shared/rightDock";');
     expect(source).toContain("export const EXPLORER_DOCK_MIN_WIDTH = RIGHT_DOCK_MIN_WIDTH_PX");
     expect(source).toContain("props.initialWidth ??");
     expect(source).toContain("Math.round(props.availableWidth / 2)");
@@ -69,13 +69,13 @@ describe("Lynx Explorer dock", () => {
     expect(routerSource).toContain(
       "const [explorerPresentationMode, setExplorerPresentationMode] = useState<",
     );
-    expect(routerSource).toContain("setExplorerPresentationMode('single-file');");
+    expect(routerSource).toContain('setExplorerPresentationMode("single-file");');
     expect(routerSource).toContain("presentationMode={explorerPresentationMode}");
     expect(routerSource).toContain("initialExplorerActionMenuOpen={initialExplorerActionMenuOpen}");
     expect(source).toContain("actionMenuDefaultOpen={props.initialActionMenuOpen}");
     expect(routerSource).not.toMatch(/openExplorerFileReference[\s\S]{0,300}setEditorMode\(true\)/);
-    expect(source).toContain("| 'single-file'");
-    expect(source).toContain("const singleFile = props.presentationMode === 'single-file';");
+    expect(source).toContain('| "single-file"');
+    expect(source).toContain('const singleFile = props.presentationMode === "single-file";');
     expect(source).toContain("singleFile && props.selectedPath");
     expect(source).toContain("`Close ${fileName(props.selectedPath)}`");
     expect(source).toContain("<ExplorerFileTab");
@@ -132,17 +132,17 @@ describe("Lynx Explorer dock", () => {
       "utf8",
     );
 
-    expect(clientSource).toContain("'projects.listDirectories'");
-    expect(clientSource).toContain("'projects.searchEntries'");
-    expect(clientSource).toContain("'projects.readFile'");
-    expect(clientSource).toContain("'projects.createLocalFilePreviewGrant'");
+    expect(clientSource).toContain('"projects.listDirectories"');
+    expect(clientSource).toContain('"projects.searchEntries"');
+    expect(clientSource).toContain('"projects.readFile"');
+    expect(clientSource).toContain('"projects.createLocalFilePreviewGrant"');
     expect(queriesSource).toContain("createLocalFilePreviewGrant");
     expect(queriesSource).toContain("isLocalAbsolutePath(input.relativePath)");
     expect(source).not.toContain("useQuery");
     expect(source).toContain("entriesPending: boolean");
     expect(source).toContain("entriesTruncated: boolean");
     expect(source).toContain('className="ExplorerDockSearchTruncated"');
-    expect(source).toContain("' ExplorerDockEntries--truncated'");
+    expect(source).toContain('" ExplorerDockEntries--truncated"');
     expect(source).toContain("Showing top matches. Refine search.");
     expect(source).toContain("onQueryChange: (query: string) => void");
     expect(routerSource).toContain("fetchExplorerEntries({");
@@ -150,37 +150,37 @@ describe("Lynx Explorer dock", () => {
       "explorerEntriesTruncated={explorerEntriesQuery.data?.truncated ?? false}",
     );
     expect(routerSource).toContain(
-      "queryKey: ['explorer-entries', activeThreadId, workspaceRoot, explorerTrimmedQuery]",
+      'queryKey: ["explorer-entries", activeThreadId, workspaceRoot, explorerTrimmedQuery]',
     );
     expect(routerSource).toContain(
-      "queryKey: ['explorer-file', activeThreadId, workspaceRoot, explorerSelectedPath]",
+      'queryKey: ["explorer-file", activeThreadId, workspaceRoot, explorerSelectedPath]',
     );
     expect(routerSource).toContain("entriesTruncated={explorerEntriesTruncated}");
-    expect(routerSource).toContain("| 'explorerEntriesTruncated'");
+    expect(routerSource).toContain('| "explorerEntriesTruncated"');
     expect(routerSource).toContain("explorerEntriesPending,\n    explorerEntriesTruncated,");
     expect(routerSource).toContain("fetchExplorerFile({");
-    expect(routerSource).toContain("'background only'");
+    expect(routerSource).toContain('"background only"');
     expect(routerSource).toContain("enabled: activeThreadId !== null");
     expect(routerSource).toContain("const [data, summary] = await Promise.all([");
     expect(source).toContain("<ResizableRightPanel");
-    expect(source).toContain("props.open ? ' ExplorerDock--open' : ' ExplorerDock--closed'");
+    expect(source).toContain('props.open ? " ExplorerDock--open" : " ExplorerDock--closed"');
     expect(source).toContain("minWidth={EXPLORER_DOCK_MIN_WIDTH}");
     expect(routerSource).toContain("minWidth: EXPLORER_DOCK_MIN_WIDTH");
     expect(source).toContain('placeholder="Search files..."');
-    expect(source).toContain("entry.kind === 'directory'");
+    expect(source).toContain('entry.kind === "directory"');
     expect(source).toContain("<ChatMarkdown");
     expect(source).toContain("onOpenFileReference={props.onSelectPath}");
     expect(source).toContain("<ExplorerPreviewHeader");
     expect(source).toContain("isMarkdown={fileIsMarkdown}");
-    expect(source).toContain("markdownPreviewEnabled={markdownMode === 'preview'}");
+    expect(source).toContain('markdownPreviewEnabled={markdownMode === "preview"}');
     expect(source).toContain("setMarkdownModeOverride({");
-    expect(source).toContain("fileIsMarkdown && markdownMode === 'preview'");
+    expect(source).toContain('fileIsMarkdown && markdownMode === "preview"');
     expect(source).toContain("<ExplorerSyntaxPreview");
     expect(source).toContain("truncated={props.file?.truncated ?? false}");
-    expect(source).toContain("' ExplorerDockPreview--truncated'");
+    expect(source).toContain('" ExplorerDockPreview--truncated"');
     expect(previewHeaderSource).toContain('className="ExplorerDockPreviewTruncated"');
     expect(previewHeaderSource).toContain('accessibility-label="Preview truncated at 1 MB."');
-    expect(previewHeaderSource).toContain("ariaLabel={props.triggerLabel ?? 'More actions'}");
+    expect(previewHeaderSource).toContain('ariaLabel={props.triggerLabel ?? "More actions"}');
     expect(previewHeaderSource).toContain("Reference in chat");
     expect(previewHeaderSource).toContain("Ask why this changed");
     expect(previewHeaderSource).toContain("applyExplorerChatAction({");
@@ -222,13 +222,13 @@ describe("Lynx Explorer dock", () => {
     expect(source).toContain("<ExplorerDirectoryEntry");
     expect(source).not.toContain("{expanded ? (");
     expect(source).toContain("style={{ paddingLeft: `${8 + props.depth * 12}px` }}");
-    expect(source).toContain("directory ? ' ExplorerDockEntry--directory' : ''");
+    expect(source).toContain('directory ? " ExplorerDockEntry--directory" : ""');
     expect(source).toContain("style={{ paddingLeft: `${8 + (props.depth + 1) * 12}px` }}");
     expect(source).toContain("Loading directory…");
     expect(source).toContain("Could not load directory.");
     expect(source).toContain("showPaths={Boolean(props.query.trim())}");
     expect(source).toContain("props.showPath && directoryPath(props.entry.path)");
-    expect(source).toContain("return separator < 0 ? '' : normalized.slice(0, separator + 1);");
+    expect(source).toContain('return separator < 0 ? "" : normalized.slice(0, separator + 1);');
     expect(queriesSource).toContain("export async function fetchExplorerDirectory");
     expect(queriesSource).toContain("relativePath: input.relativePath");
     expect(routerSource).toContain("fetchExplorerDirectory({");
@@ -239,7 +239,7 @@ describe("Lynx Explorer dock", () => {
     expect(routerSource).toContain("fetchExplorerLocalPreviewUrl({");
     expect(routerSource).toContain("!isSupportedLocalPreviewFilePath(explorerSelectedPath)");
     expect(queriesSource).toContain("export async function fetchExplorerLocalPreviewUrl");
-    expect(pdfSource).toContain("editor: 'system-default'");
+    expect(pdfSource).toContain('editor: "system-default"');
     expect(pdfSource).toContain("resolveExplorerPdfOpenTarget({");
     expect(queriesSource).toContain("export async function fetchExplorerPdfMetadata");
     expect(routerSource).toContain("fetchExplorerPdfMetadata({");
@@ -250,19 +250,19 @@ describe("Lynx Explorer dock", () => {
     expect(pdfSource).toContain("key={pageUrl}");
     expect(pdfPageSource).toContain('className="ExplorerDockPdfPageImage"');
     expect(pdfPageSource).toContain("binderror={() => {");
-    expect(source).toContain("' ExplorerDockPreview--pdf'");
-    expect(source).toContain("' ExplorerDockPreview--image'");
-    expect(source).toContain("' ExplorerDockPreview--markdown'");
+    expect(source).toContain('" ExplorerDockPreview--pdf"');
+    expect(source).toContain('" ExplorerDockPreview--image"');
+    expect(source).toContain('" ExplorerDockPreview--markdown"');
     expect(pdfSource).toContain('className="ExplorerDockPdfPrevious"');
     expect(pdfSource).toContain('className="ExplorerDockPdfNext"');
-    expect(pdfSource).toContain("' ExplorerDockPdf--multi-page'");
+    expect(pdfSource).toContain('" ExplorerDockPdf--multi-page"');
     expect(pdfSource).toContain('className="ExplorerDockPdfCompactOpen"');
     expect(pdfSource).toContain("<ChevronLeftIcon");
     expect(pdfSource).toContain("<ChevronRightIcon");
     expect(pdfSource).toContain("<MinusIcon");
     expect(pdfSource).toContain("<PlusIcon");
     expect(pdfSource).toContain("<ExternalLinkIcon");
-    expect(pdfSource).toContain("color={semanticIconColor('secondary')}");
+    expect(pdfSource).toContain('color={semanticIconColor("secondary")}');
     expect(pdfSource).not.toContain(">‹</text>");
     expect(pdfSource).not.toContain(">›</text>");
     expect(pdfSource).not.toContain(">−</text>");
@@ -271,7 +271,7 @@ describe("Lynx Explorer dock", () => {
     expect(pdfSource).toContain('aria-label="Previous PDF page"');
     expect(pdfSource).toContain('aria-label="Next PDF page"');
     expect(pdfPageSource).toContain('mode="scaleToFill"');
-    expect(pdfSource).toContain("from '@synara/shared/pdfZoom'");
+    expect(pdfSource).toContain('from "@synara/shared/pdfZoom"');
     expect(pdfSource).toContain('value="fit-width"');
     expect(pdfSource).toContain('value="fit-page"');
     expect(pdfSource).toContain("previousZoomScale(scale)");
@@ -283,16 +283,16 @@ describe("Lynx Explorer dock", () => {
     expect(pdfSource).toContain('scroll-orientation="vertical"');
     expect(pdfSource).not.toContain("<webview");
     expect(webHostSource).toContain(
-      "relaySocketBaseUrl ??\n          relayReadyBaseUrl ??\n          configuredRelayBaseUrl()",
+      "relaySocketBaseUrl ?? relayReadyBaseUrl ?? configuredRelayBaseUrl()",
     );
     expect(routerSource).toContain("toggleExpandedDirectory(current, path)");
-    expect(routerSource).toContain("accessibleLabel: 'Toggle diff panel'");
+    expect(routerSource).toContain('accessibleLabel: "Toggle diff panel"');
     expect(routerSource).toContain("onOpenFileReference={openExplorerFileReference}");
     expect(routerSource).toContain("onOpenFileReference={openExplorerFileReference}");
-    expect(routerSource).toContain("onExplorerQueryChange('')");
+    expect(routerSource).toContain('onExplorerQueryChange("")');
     expect(routerSource).toContain("onExplorerSelectPath(relativePath)");
     expect(routerSource).toContain(
-      "openPaneInState(current, { paneId: 'explorer', kind: 'explorer' })",
+      'openPaneInState(current, { paneId: "explorer", kind: "explorer" })',
     );
     expect(routerSource).toContain(
       "const [rightDockState, setRightDockState] = useState<RightDockThreadState>",

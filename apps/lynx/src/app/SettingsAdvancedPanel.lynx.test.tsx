@@ -14,12 +14,12 @@ describe("Settings Advanced fidelity", () => {
     );
     const configSource = readFileSync(new URL("../../lynx.config.ts", import.meta.url), "utf8");
 
-    expect(settingsSource).toContain("'advanced',");
-    expect(settingsSource).toContain("section === 'advanced'");
+    expect(settingsSource).toContain('"advanced",');
+    expect(settingsSource).toContain('section === "advanced"');
     expect(settingsSource).toContain("<SettingsAdvancedPanel />");
-    expect(clientSource).toContain("'shell.openInEditor'");
-    expect(clientSource).toContain("'orchestration.repairState'");
-    expect(configSource).toContain("'process.env.SYNARA_APP_VERSION'");
+    expect(clientSource).toContain('"shell.openInEditor"');
+    expect(clientSource).toContain('"orchestration.repairState"');
+    expect(configSource).toContain('"process.env.SYNARA_APP_VERSION"');
     expect(panelSource).toContain("Keybindings");
     expect(panelSource).toContain("Recovery tools");
     expect(panelSource).toContain("Version");
@@ -39,7 +39,7 @@ describe("Settings Advanced fidelity", () => {
     expect(panelSource).toContain("repair: repairSynaraState");
     expect(panelSource).toContain("sync: syncServerReadModel");
     expect(panelSource).toContain(
-      "queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] })",
+      'queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] })',
     );
     expect(panelSource).toContain("await openPathInEditor({ cwd: path, editor })");
     expect(panelSource).toContain("No available editors found.");
@@ -49,12 +49,13 @@ describe("Settings Advanced fidelity", () => {
     expect(panelSource).toContain("useLynxDisclosurePresence(props.open)");
     expect(panelSource).toContain("<ReleaseHistoryEntry");
     expect(panelSource).toContain(
-      "'SettingsAdvancedReleaseChevron'\n          )}\n          size={14}",
+      `"SettingsAdvancedReleaseChevron")}
+          size={14}`,
     );
     expect(panelSource).not.toContain("bindtap={() =>\n                        setExpandedRelease");
     expect(panelSource).not.toContain("{open ? (");
     expect(panelSource).toContain("aria-expanded={showRecoveryTools}");
-    expect(panelSource).toContain("'SettingsAdvancedRecoveryChevron'");
+    expect(panelSource).toContain('"SettingsAdvancedRecoveryChevron"');
   });
 
   it("matches the Web developer-tools and About row anatomy", () => {

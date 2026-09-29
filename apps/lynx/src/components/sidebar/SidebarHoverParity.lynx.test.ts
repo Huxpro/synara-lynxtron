@@ -8,7 +8,7 @@ describe("Lynx sidebar hover parity", () => {
     expect(source).toContain("subscribeOrchestrationShellEvents((item) => {");
     expect(source).toContain("if (invalidateTimer !== null) return;");
     expect(source).toContain("}, 50);");
-    expect(source).toContain("queryClient.invalidateQueries({ queryKey: ['threads'] })");
+    expect(source).toContain('queryClient.invalidateQueries({ queryKey: ["threads"] })');
   });
 
   it("renders the hover card outside the interactive row hit tree", () => {
@@ -45,23 +45,23 @@ describe("Lynx sidebar hover parity", () => {
     expect(activeIdentityIndex).toBeGreaterThan(threadIdentityIndex);
     expect(source.match(/threadId=\{thread.id\}/g)).toHaveLength(3);
     expect(source).toContain("projectId={group.id}");
-    expect(source).toContain("void performThreadAction(thread, '', 'toggle-pin')");
-    expect(source).toContain("void performThreadAction(thread, '', 'archive')");
+    expect(source).toContain('void performThreadAction(thread, "", "toggle-pin")');
+    expect(source).toContain('void performThreadAction(thread, "", "archive")');
     expect(source).toContain("getFallbackThreadIdAfterDelete({");
     expect(source).toContain("sortOrder: threadSortOrder");
-    expect(source).toContain("navigate(fallbackThreadId ? `/thread/${fallbackThreadId}` : '/')");
-    expect(source).toContain("queryClient.invalidateQueries({ queryKey: ['threads'] })");
-    expect(source).toContain("type: 'project.meta.update'");
+    expect(source).toContain('navigate(fallbackThreadId ? `/thread/${fallbackThreadId}` : "/")');
+    expect(source).toContain('queryClient.invalidateQueries({ queryKey: ["threads"] })');
+    expect(source).toContain('type: "project.meta.update"');
     expect(source).toContain("buildProjectContextMenuItems({");
-    expect(source).toContain("action === 'delete-threads' || action === 'delete'");
+    expect(source).toContain('action === "delete-threads" || action === "delete"');
     expect(source).toContain("...(data?.archivedThreads ?? []).filter(");
-    expect(source).toContain("action === 'delete'");
+    expect(source).toContain('action === "delete"');
     expect(source).toContain("threads: removalThreads");
     expect(source).toContain("deleteNativeProjectThreads({");
     expect(source).toContain("removeNativeProject({");
     expect(source).toContain("hasAnyThreads: projectThreads.length > 0");
     expect(source).toContain("fetchProjectDevServers");
-    expect(source).toContain("action === 'start-dev'");
+    expect(source).toContain('action === "start-dev"');
     expect(source).toContain("selectPrimaryProjectRunCommand({");
     expect(source).toContain("discoverProjectScripts({ cwd: projectSummary.workspaceRoot })");
     expect(source).toContain("upsertProjectRunCommandScripts({");
@@ -69,20 +69,20 @@ describe("Lynx sidebar hover parity", () => {
     expect(source).toContain("localServerMatchesRun(candidate, run)");
     expect(source).toContain("findDeepestWorkspaceRootMatch(");
     expect(source).toContain("projectRunServerByProjectId.get(group.id)");
-    expect(source).toContain("action === 'stop-dev'");
-    expect(source).toContain("action === 'open-dev-server'");
+    expect(source).toContain('action === "stop-dev"');
+    expect(source).toContain('action === "open-dev-server"');
     expect(source).toContain("platformWindow.openExternal(projectRunUrl)");
-    expect(source).toContain("action === 'rename'");
+    expect(source).toContain('action === "rename"');
     expect(source).toContain("<ProjectRenameDialogLynx");
     expect(source).toContain("<ThreadRenameDialogLynx");
-    expect(source).toContain("if (action === 'rename')");
+    expect(source).toContain('if (action === "rename")');
     expect(source).toContain("setRenameThreadId(thread.id)");
-    expect(source).toContain("if (action === 'mark-unread')");
+    expect(source).toContain('if (action === "mark-unread")');
     expect(source).toContain("useStore.getState().markThreadUnread(thread.id as never)");
     expect(source).toContain("resolveNativeThreadHandoffTargets(detail)");
-    expect(source).toContain("id: 'handoff:' + provider");
+    expect(source).toContain('id: "handoff:" + provider');
     expect(source).toContain("await createNativeThreadHandoff({");
-    expect(source).toContain("if (action === 'open-path-in-terminal')");
+    expect(source).toContain('if (action === "open-path-in-terminal")');
     expect(source).toContain(
       "requestOpenThreadPathInTerminal({ threadId: thread.id, cwd: workspaceRoot })",
     );
@@ -92,16 +92,16 @@ describe("Lynx sidebar hover parity", () => {
       "type: 'project.meta.update',\n            projectId: renameProjectId",
     );
     expect(source).toContain("hasArchivableThreads: archivePlan.archivableThreadIds.length > 0");
-    expect(source).toContain("action === 'archive-threads'");
+    expect(source).toContain('action === "archive-threads"');
     expect(source).toContain("projectThreadArchiveConfirmation({");
     expect(source).toContain("archiveNativeProjectThreads({");
     expect(source).toContain("const archivedThreadIds = new Set(result.archivedThreadIds)");
     expect(source).toContain("deletedThreadIds: archivedThreadIds");
-    expect(source).toContain("action === 'new-space'");
+    expect(source).toContain('action === "new-space"');
     expect(source).toContain("setProjectIdAfterSpaceCreate(project.id as ProjectId)");
     expect(source).toContain("if (projectIdAfterSpaceCreate)");
     expect(source).toContain("was created, but the project was not moved.");
-    expect(source).toContain("action?.startsWith('move-to-space:')");
+    expect(source).toContain('action?.startsWith("move-to-space:")');
     expect(source).toContain("buildNativeProjectMoveCommand({");
     expect(source).toContain("<SpaceSwitcherLynx");
     expect(source).toContain("spaces={data?.spaces ?? []}");
@@ -113,7 +113,7 @@ describe("Lynx sidebar hover parity", () => {
     expect(source).toContain("buildNativeSpaceDeleteCommand(space.id)");
     expect(source).toContain("nativeSpaceDeleteConfirmation(space.name, projectCount)");
     expect(source).toContain('className="AppSidebarSpaceActionError"');
-    expect(source).toContain("setSpaceEditorMode('create')");
+    expect(source).toContain('setSpaceEditorMode("create")');
     expect(source).toContain("<SpaceProjectPickerDialogLynx");
     expect(source).toContain("setSpaceProjectPickerTarget({ id: spaceId");
     expect(source).toContain("assignNativeProjectsToSpace({");
@@ -139,11 +139,12 @@ describe("Lynx sidebar hover parity", () => {
     expect(styles).toMatch(
       /\.AppSidebarHoverAction\s*\{[^}]*color:\s*var\(--color-icon-secondary\);/s,
     );
-    expect(source).toContain("const sidebarSecondaryIconColor = semanticIconColor('secondary')");
+    expect(source).toContain('const sidebarSecondaryIconColor = semanticIconColor("secondary")');
     expect(source).toContain("colorizeLynxSvg(pinSvg, sidebarSecondaryIconColor)");
     expect(source).toContain("color={sidebarSecondaryIconColor}");
     expect(source).toContain(
-      "terminalSvg,\n                                sidebarSecondaryIconColor",
+      `terminalSvg,
+                                        sidebarSecondaryIconColor`,
     );
     expect(source).not.toContain("colorizeLynxSvg(pinSvg, svgColors.iconSecondary)");
     const hoverActionStateRule = styles.slice(
@@ -164,9 +165,9 @@ describe("Lynx sidebar hover parity", () => {
     expect(styles).toMatch(
       /\.AppSidebarProjectFolder--hidden,[\s\S]*?\.AppSidebarProjectHeader\.ui-hover \.SharedSidebarProjectSummaryLeading,[\s\S]*?opacity:\s*0;/s,
     );
-    expect(source).toContain("navigate('/pull-requests')");
+    expect(source).toContain('navigate("/pull-requests")');
     expect(source).toContain("void createProjectTerminalThread(group.id)");
-    expect(source).toContain("title: 'New terminal'");
+    expect(source).toContain('title: "New terminal"');
     expect(source).toContain(".openTerminalThreadPage(threadId, { terminalOnly: true })");
     expect(source).toContain("terminalSvg,");
     expect(source).toContain("`/new-thread/${encodeURIComponent(group.id)}`");
@@ -249,7 +250,7 @@ describe("Lynx sidebar hover parity", () => {
     expect(hoverCardSource).toContain(
       '<text className="AppSidebarHoverCardMeta">Edit project</text>',
     );
-    expect(hoverCardSource).toContain("? semanticIconColor('primary')");
+    expect(hoverCardSource).toContain('? semanticIconColor("primary")');
     expect(styles).toMatch(/\.AppSidebarHoverCardPin--pinned\s*\{[^}]*opacity:\s*1;/s);
     expect(styles).toMatch(
       /\.AppSidebarProjectHoverCard \.AppSidebarHoverCardHeader,[\s\S]*?min-height:\s*26px;[\s\S]*?gap:\s*10px;/s,

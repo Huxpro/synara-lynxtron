@@ -5,8 +5,8 @@ describe("ThreadTerminal native selection action", () => {
   it("uses Lynx native selection APIs and the shared terminal menu", () => {
     const source = readFileSync(new URL("./ThreadTerminal.lynx.tsx", import.meta.url), "utf8");
 
-    expect(source).toContain("method: 'getSelectedText'");
-    expect(source).toContain("method: 'getTextBoundingRect'");
+    expect(source).toContain('method: "getSelectedText"');
+    expect(source).toContain('method: "getTextBoundingRect"');
     expect(source).toContain("buildTerminalSelectionContextMenuItems()");
     expect(source).toContain("normalizeTerminalContextText(text)");
     expect(source).toContain("selectedTerminalTextRef.current = normalizedText");
@@ -22,15 +22,15 @@ describe("ThreadTerminal native selection action", () => {
     expect(source).not.toContain(
       ").finally(() => {\n            selectionMenuOpenRef.current = false",
     );
-    expect(source).toContain("action !== 'add-to-chat'");
+    expect(source).toContain('action !== "add-to-chat"');
     expect(source).toContain("bindselectionchange={");
     expect(source).toContain("custom-context-menu={onAddTerminalContext !== undefined}");
-    expect(source).toContain("onGlobalEvent('terminal:copy-selection'");
+    expect(source).toContain('onGlobalEvent("terminal:copy-selection"');
     expect(source).toContain("normalizeTerminalClipboardText(text)");
     expect(source).toContain("clipboard.writeText(clipboardText)");
     expect(source).toContain("text: normalizeTerminalClipboardText(normalizedText)");
     expect(source).toContain("restoreTerminalInputFocusAfterSelectionMenu");
     expect(source).toContain("const focusTerminalInput = () =>");
-    expect(source).toContain("bridgeCall('shellSetTerminalSelectionEnabled'");
+    expect(source).toContain('bridgeCall("shellSetTerminalSelectionEnabled"');
   });
 });

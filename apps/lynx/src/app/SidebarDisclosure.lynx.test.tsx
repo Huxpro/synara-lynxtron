@@ -153,7 +153,7 @@ describe("Lynx sidebar disclosure", () => {
     expect(routerSource).toContain('key="settings-route-shell"');
     expect(routerSource).toContain('key="product-route-shell"');
     expect(routerSource).toContain(
-      "route.pathname !== '/settings' && route.pathname !== '/components-lab'",
+      'route.pathname !== "/settings" && route.pathname !== "/components-lab"',
     );
     expect(sidebarStyles).toMatch(/\.AppSidebar\s*\{[^}]*width:\s*100%;/s);
     expect(appStyles).toMatch(/\.SettingsSidebar\s*\{[^}]*width:\s*100%;/s);

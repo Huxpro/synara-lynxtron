@@ -120,15 +120,15 @@ describe('Lynx Settings section labels', () => {
     expect(usageSource).toContain(
       'const isRefreshing = usageQuery.isFetching || refreshMutation.isPending;'
     );
-    expect(usageSource).toContain("isRefreshing ? 'animate-spin'");
+    expect(usageSource).toContain('isRefreshing ? "animate-spin"');
     expect(usageSource).toContain('<TriangleAlertIcon');
     expect(usageSource).toContain('snapshot.detail?.trim()');
     expect(usageSource).toContain('className="SettingsUsageNotice"');
     expect(usageSource).toContain(
       "const SETTINGS_USAGE_WARNING_ICON_COLOR = {"
     );
-    expect(usageSource).toContain("light: '#e17100'");
-    expect(usageSource).toContain("dark: 'rgba(255, 210, 48, 0.9)'");
+    expect(usageSource).toContain('light: "#e17100"');
+    expect(usageSource).toContain('dark: "rgba(255, 210, 48, 0.9)"');
     expect(usageSource).toContain(
       'SETTINGS_USAGE_WARNING_ICON_COLOR[resolvedTheme]'
     );
@@ -150,7 +150,7 @@ describe('Lynx Settings section labels', () => {
       'accessibility-label={`${providerName}${'
     );
     expect(usageSource).toContain(
-      "if ((snapshot.status ?? 'ok') === 'ok') return snapshot.planName ?? null;"
+      'if ((snapshot.status ?? "ok") === "ok") return snapshot.planName ?? null;'
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageStatus\s*\{[^}]*flex-shrink:\s*0;[^}]*font-size:\s*11px;[^}]*font-weight:\s*500;[^}]*line-height:\s*11px;/s
@@ -171,7 +171,7 @@ describe('Lynx Settings section labels', () => {
       /\.SettingsUsageDetails\s*\{[^}]*gap:\s*14px;/s
     );
     expect(usageSource).toContain(
-      "import { deriveProviderUsageLimitDisplay } from '@synara/shared/providerUsageDisplay';"
+      'import { deriveProviderUsageLimitDisplay } from "@synara/shared/providerUsageDisplay";'
     );
     expect(usageSource).toContain(
       'const display = deriveProviderUsageLimitDisplay(props.limit);'
@@ -263,8 +263,9 @@ describe('Lynx Settings section labels', () => {
     expect(providerSource).toContain('<ChevronDownIcon');
     expect(providerSource).not.toContain('↑');
     expect(providerSource).not.toContain('↓');
-    expect(providerSource).toContain("import { Switch } from '../components/ui/switch.lynx';");
-    expect(providerSource).toContain('<Switch checked={checked}');
+    expect(providerSource).toContain('import { Switch } from "../components/ui/switch.lynx";');
+    expect(providerSource).toContain(`<Switch
+      checked={checked}`);
     expect(providerStyles).toMatch(/\.SharedSettingsProviderPickerSwitch\s*\{[^}]*margin-left:\s*4px;/s);
     expect(primitiveStyles).toMatch(/\.LxSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;/s);
     expect(primitiveStyles).toMatch(/\.LxSwitchThumb\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*border-radius:\s*8px;[^}]*background-color:\s*#ffffff;/s);
@@ -297,7 +298,7 @@ describe('Lynx Settings section labels', () => {
     }
     for (const source of owners.slice(0, 3)) {
       expect(source).toContain(
-        "buttonProps={{ 'accessibility-element': false }}"
+        'buttonProps={{ "accessibility-element": false }}'
       );
     }
   });

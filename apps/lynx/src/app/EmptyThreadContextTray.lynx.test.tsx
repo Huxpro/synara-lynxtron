@@ -56,9 +56,9 @@ describe("empty Thread context tray", () => {
       "utf8",
     );
 
-    expect(source).toContain("const secondaryIconColor = semanticIconColor('secondary')");
+    expect(source).toContain('const secondaryIconColor = semanticIconColor("secondary")');
     expect(source.match(/color=\{secondaryIconColor\}/g)).toHaveLength(6);
-    expect(source).toContain("? semanticIconColor('accent')");
+    expect(source).toContain('? semanticIconColor("accent")');
     expect(source).not.toContain("svgColors.accentForeground");
   });
 });

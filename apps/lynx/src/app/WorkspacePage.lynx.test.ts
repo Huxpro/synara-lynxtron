@@ -20,9 +20,9 @@ describe("Lynx workspace surface", () => {
 
   it("parses and renders workspace routes without falling through to chat", () => {
     const routerSource = source("./router.tsx");
-    expect(routerSource).toContain("pathname: '/workspace/$workspaceId'");
-    expect(routerSource).toContain("pathname: '/workspace'");
-    expect(routerSource).toContain("route.pathname === '/workspace/$workspaceId'");
+    expect(routerSource).toContain('pathname: "/workspace/$workspaceId"');
+    expect(routerSource).toContain('pathname: "/workspace"');
+    expect(routerSource).toContain('route.pathname === "/workspace/$workspaceId"');
     expect(routerSource).toContain("<WorkspacePage");
     expect(routerSource).toContain("studioSettings.showWorkspaceSection");
   });
@@ -30,7 +30,7 @@ describe("Lynx workspace surface", () => {
   it("uses the shared workspace store and a host-backed terminal", () => {
     const pageSource = source("./WorkspacePage.lynx.tsx");
     const pageStyles = source("./workspace-page.css");
-    expect(pageSource).toContain("from '@synara-web/workspaceStore'");
+    expect(pageSource).toContain('from "@synara-web/workspaceStore"');
     expect(pageSource).toContain("workspaceThreadId(workspace.id)");
     expect(pageSource).toContain('presentationMode="workspace"');
     expect(pageSource).toContain("workspaceTerminalIdsForPreset");
@@ -45,7 +45,7 @@ describe("Lynx workspace surface", () => {
     expect(pageSource).toContain("WORKSPACE_LAYOUT_PRESETS.map");
     expect(pageSource).toContain("setWorkspaceLayoutPreset(");
     expect(pageSource).toContain("WorkspaceTerminalGrid--${workspace.layoutPresetId}");
-    expect(pageSource).toContain("terminalIndex === 0 ? ' WorkspaceTerminalPane--primary' : ''");
+    expect(pageSource).toContain('terminalIndex === 0 ? " WorkspaceTerminalPane--primary" : ""');
     expect(pageStyles).toContain(
       ".WorkspaceTerminalGrid--top-main .WorkspaceTerminalPane--primary",
     );
@@ -117,7 +117,7 @@ describe("Lynx workspace surface", () => {
 
   it("wires the optional workspace sidebar surface and create action", () => {
     const sidebarSource = source("../components/sidebar/Sidebar.lynx.tsx");
-    expect(sidebarSource).toContain("isOnWorkspace: activePath === '/workspace'");
+    expect(sidebarSource).toContain('isOnWorkspace: activePath === "/workspace"');
     expect(sidebarSource).toContain("initialSortSettings.showWorkspaceSection");
     expect(sidebarSource).toContain("onCreateWorkspace={() => {");
     expect(sidebarSource).toContain("activeWorkspaceId === workspace.id");

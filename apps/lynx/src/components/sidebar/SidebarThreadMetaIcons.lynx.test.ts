@@ -6,9 +6,9 @@ describe("Sidebar thread metadata icon fidelity", () => {
     const source = readFileSync(new URL("./Sidebar.lynx.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./sidebar.css", import.meta.url), "utf8");
 
-    expect(source).toContain("import forkSvg from '@synara-central-icons/fork.svg?raw';");
+    expect(source).toContain('import forkSvg from "@synara-central-icons/fork.svg?raw";');
     expect(source).toContain(
-      "import worktreeSvg from '@synara-central-icons/arrow-split-right.svg?raw';",
+      'import worktreeSvg from "@synara-central-icons/arrow-split-right.svg?raw";',
     );
     expect(source).toContain("<GitBranchIcon size={12} />");
     expect(source).toContain("<ClockIcon size={12} />");

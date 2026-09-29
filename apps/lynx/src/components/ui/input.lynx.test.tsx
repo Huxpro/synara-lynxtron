@@ -5,13 +5,13 @@ describe("Lynx Input accessibility contract", () => {
   it("uses the shared dark control surface while preserving soft fill ownership", () => {
     const source = readFileSync(new URL("./input.lynx.tsx", import.meta.url), "utf8");
     expect(source).toContain("const { svgColors } = useTheme();");
-    expect(source).toContain("!unstyled && variant === 'default'");
+    expect(source).toContain('!unstyled && variant === "default"');
     expect(source).toContain("{ backgroundColor: svgColors.formControlSurface }");
   });
 
   it("projects the Electron placeholder tone into both Native input paths", () => {
     const source = readFileSync(new URL("./input.lynx.tsx", import.meta.url), "utf8");
-    expect(source).toContain("'placeholder-color': props.placeholderColor");
+    expect(source).toContain('"placeholder-color": props.placeholderColor');
     expect(source).toContain("placeholderColor={svgColors.placeholderForeground}");
     expect(source).toContain("placeholder-color={svgColors.placeholderForeground}");
     expect(source).toContain("nativeInput || onKeyDown || props.placeholder !== undefined");
@@ -44,7 +44,7 @@ describe("Lynx Input accessibility contract", () => {
     const source = readFileSync(new URL("./input.lynx.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./primitives.css", import.meta.url), "utf8");
 
-    expect(source).toContain("multiline && 'LxInputControl--multiline'");
+    expect(source).toContain('multiline && "LxInputControl--multiline"');
     expect(styles).toMatch(
       /\.LxInputControl--multiline\s*\{[^}]*min-height:\s*70px;[^}]*padding-left:\s*11px;[^}]*padding-right:\s*11px;/s,
     );
@@ -63,20 +63,20 @@ describe("Lynx Input accessibility contract", () => {
     const source = readFileSync(new URL("./input.lynx.tsx", import.meta.url), "utf8");
 
     expect(source).toContain("accessibleLabel={accessibilityLabel ?? ariaLabel}");
-    expect(source).toContain("'aria-label': props.accessibleLabel");
-    expect(source).toContain("'accessibility-element': props.accessibleLabel ? true : undefined");
-    expect(source).toContain("'accessibility-label': props.accessibleLabel");
+    expect(source).toContain('"aria-label": props.accessibleLabel');
+    expect(source).toContain('"accessibility-element": props.accessibleLabel ? true : undefined');
+    expect(source).toContain('"accessibility-label": props.accessibleLabel');
     expect(source).toContain("ariaInvalid={ariaInvalid}");
-    expect(source).toContain("'aria-invalid': props.ariaInvalid");
-    expect(source).toContain("'default-value': props.defaultValue");
+    expect(source).toContain('"aria-invalid": props.ariaInvalid');
+    expect(source).toContain('"default-value": props.defaultValue');
     expect(source).toContain("value: props.value ?? props.defaultValue");
-    expect(source).toContain("void setValue(props.defaultValue ?? '').catch(() => undefined)");
+    expect(source).toContain('void setValue(props.defaultValue ?? "").catch(() => undefined)');
     expect(source).toContain("{nativeInput || onKeyDown || props.placeholder !== undefined ? (");
     expect(source).toContain("<textarea {...sharedProps} maxlines={props.maxLines ?? 1} />");
     expect(source).toContain("maxLines={multiline ? (maxLines ?? 5) : 1}");
-    expect(source).toContain("props.type === 'number' ? '[0-9.]*' : undefined");
+    expect(source).toContain('props.type === "number" ? "[0-9.]*" : undefined');
     expect(source).toContain(
-      "'accessibility-state': props.disabled ? { disabled: true } : undefined",
+      '"accessibility-state": props.disabled ? { disabled: true } : undefined',
     );
     expect(source).toMatch(/<LynxInput[\s\S]{0,260}aria-invalid=\{ariaInvalid\}/);
   });
@@ -88,7 +88,7 @@ describe("Lynx Input accessibility contract", () => {
     expect(source).toContain("const [focused, setFocused] = useState(false);");
     expect(source).toContain("setFocused(true);");
     expect(source).toContain("setFocused(false);");
-    expect(source).toContain("focused && 'ui-focus'");
+    expect(source).toContain('focused && "ui-focus"');
     expect(styles).toMatch(
       /\.LxInputControl\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);/s,
     );

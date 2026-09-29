@@ -6,12 +6,12 @@ describe("empty Thread landing fidelity", () => {
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
 
     const emptyThreadBranch = routerSource.slice(
-      routerSource.indexOf("bodyState.kind === 'empty' ? ("),
+      routerSource.indexOf('bodyState.kind === "empty" ? ('),
     );
     expect(emptyThreadBranch).toContain("<CenteredEmptyLandingStack>");
     expect(routerSource).toContain("<CenteredEmptyLanding projectName={currentThread?.project} />");
     expect(routerSource).toContain("<EmptyThreadContextTray");
-    expect(routerSource).toContain("{bodyState.kind === 'empty' ? null : composer}");
+    expect(routerSource).toContain('{bodyState.kind === "empty" ? null : composer}');
     expect(routerSource).not.toContain(
       "<ChatEmptyStateHero projectName={currentThread?.project} />",
     );
@@ -31,15 +31,15 @@ describe("empty Thread landing fidelity", () => {
       "utf8",
     );
 
-    expect(traySource).toContain("'aria-pressed': props.temporary");
+    expect(traySource).toContain('"aria-pressed": props.temporary');
     expect(traySource).toContain("onClick={props.onTemporaryChange}");
     expect(traySource).not.toContain("aria-disabled");
     expect(traySource).not.toContain("accessibility-state={{ disabled: true }}");
-    expect(traySource).toContain("props.envMode === 'local' ? 'Local' : 'Worktree'");
+    expect(traySource).toContain('props.envMode === "local" ? "Local" : "Worktree"');
     expect(traySource).toContain("props.branch ? (");
     expect(traySource).toContain("{props.branch}");
     expect(traySource).not.toContain("props.branch ?? 'main'");
-    expect(lifecycleSource).toContain("type: 'thread.delete'");
+    expect(lifecycleSource).toContain('type: "thread.delete"');
     expect(lifecycleSource).toContain("shouldDeleteDepartingTemporaryThread(");
     expect(trayStyles).toMatch(
       /\.EmptyThreadContextTray\s*\{[^}]*width:\s*calc\(100% - 24px\);[^}]*max-width:\s*736px;[^}]*min-height:\s*58px;[^}]*margin:\s*-20px auto 0;[^}]*padding:\s*24px 8px 6px;/s,
@@ -56,7 +56,7 @@ describe("empty Thread landing fidelity", () => {
       "utf8",
     );
 
-    expect(headingSource).toContain("projectName ? ' CenteredEmptyLandingHeading--project' : ''");
+    expect(headingSource).toContain('projectName ? " CenteredEmptyLandingHeading--project" : ""');
     expect(headingStyles).toMatch(
       /\.CenteredEmptyLandingFrame\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*736px;[^}]*box-sizing:\s*border-box;[^}]*align-self:\s*center;/s,
     );

@@ -96,7 +96,7 @@ describe("ThemePack boolean interaction contract", () => {
     );
     expect(source).toContain('className="SharedThemePackResetAction"');
     expect(source).toContain(
-      "'SharedThemePackImportTriggerHost SharedThemePackHeaderAction SharedThemePackImportTrigger'",
+      '"SharedThemePackImportTriggerHost SharedThemePackHeaderAction SharedThemePackImportTrigger"',
     );
     expect(styles).toMatch(
       /\.SharedThemePackResetAction\s*\{[^}]*min-height:\s*20px;[^}]*padding:\s*2px 6px;/s,
@@ -207,7 +207,7 @@ describe("ThemePack boolean interaction contract", () => {
     expect(styles).toMatch(
       /\.SliceRoot--viewport-sm-up \.SharedThemePackImportFooter\s*\{[^}]*height:\s*52px;[^}]*flex-direction:\s*row;/s,
     );
-    expect(source).toContain("import { SettingsResetIcon } from './SettingsResetIcon.lynx';");
+    expect(source).toContain('import { SettingsResetIcon } from "./SettingsResetIcon.lynx";');
     expect(source).toContain("<SettingsResetIcon />");
     expect(source).not.toContain("↶");
     expect(primitiveStyles).toMatch(
@@ -231,7 +231,7 @@ describe("ThemePack boolean interaction contract", () => {
     expect(styles).not.toMatch(/\.SharedThemePackRowControl\s*\{[^}]*width:\s*280px;/s);
     expect(source).toContain("className={`SharedThemePackFontInput");
     expect(source.match(/<Input\s+nativeInput/g)).toHaveLength(2);
-    expect(source).toContain("props.mono ? ' SharedThemePackFontInput--mono' : ''");
+    expect(source).toContain('props.mono ? " SharedThemePackFontInput--mono" : ""');
     expect(source).toContain("accessibility-label={props.ariaLabel}");
     expect(styles).toMatch(
       /\.SharedThemePackFontInput\s*\{[^}]*width:\s*224px;[^}]*height:\s*32px;/s,

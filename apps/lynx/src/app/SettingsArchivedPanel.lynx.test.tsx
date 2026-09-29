@@ -7,8 +7,10 @@ describe("Settings Archived fidelity", () => {
       new URL("./SettingsArchivedPanel.lynx.tsx", import.meta.url),
       "utf8",
     );
-    expect(source).toContain("() => focusLynxNode(rowRef)");
-    expect(source).toContain("{ restoreFocus }");
+    expect(source).toMatch(/\(\) =>\s*focusLynxNode\(rowRef\)/);
+    expect(source).toContain(`{
+      restoreFocus,
+    }`);
   });
 
   it("routes a real archived panel backed by the shell snapshot", () => {
@@ -19,13 +21,13 @@ describe("Settings Archived fidelity", () => {
       "utf8",
     );
 
-    expect(settingsSource).toContain("'archived',");
-    expect(settingsSource).toContain("section === 'archived'");
+    expect(settingsSource).toContain('"archived",');
+    expect(settingsSource).toContain('section === "archived"');
     expect(settingsSource).toContain("<SettingsArchivedPanel />");
     expect(queriesSource).toContain("readonly archivedAt?: string | null;");
     expect(queriesSource).toContain("readonly archivedThreads:");
     expect(queriesSource).toContain("createThreadShellsSelector()(normalized)");
-    expect(panelSource).toContain("queryKey: ['sidebar-snapshot']");
+    expect(panelSource).toContain('queryKey: ["sidebar-snapshot"]');
     expect(panelSource).toContain("snapshotQuery.data?.archivedThreads");
     expect(panelSource).toContain("No archived threads");
     expect(panelSource).toContain(
@@ -34,7 +36,7 @@ describe("Settings Archived fidelity", () => {
     expect(panelSource).toContain(
       "Archived threads will appear here and can be restored to the sidebar.",
     );
-    expect(panelSource).toContain("import { ArchiveIcon } from '../lib/icons.lynx';");
+    expect(panelSource).toContain('import { ArchiveIcon } from "../lib/icons.lynx";');
     expect(panelSource).toContain('className="SettingsArchivedEmptyIcon"');
     expect(panelSource).not.toContain("function ArchiveIcon()");
   });
@@ -57,7 +59,7 @@ describe("Settings Archived fidelity", () => {
       "This will remove the thread and its conversation history forever.",
     );
     expect(panelSource).toContain(
-      "queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] })",
+      'queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] })',
     );
     expect(panelSource).toContain("Restore ${thread.title}");
     expect(panelSource).toContain("Delete ${thread.title}");
@@ -66,9 +68,9 @@ describe("Settings Archived fidelity", () => {
     expect(panelSource).toContain("resolveSecondaryPointerOffset(event)");
     expect(panelSource).toContain("getRectByRef(rowRef, true)");
     expect(panelSource).toContain("bindlongpress=");
-    expect(panelSource).toContain("action === 'restore'");
-    expect(panelSource).toContain("action === 'delete'");
-    expect(logicSource).toContain("type: 'thread.delete' as const");
+    expect(panelSource).toContain('action === "restore"');
+    expect(panelSource).toContain('action === "delete"');
+    expect(logicSource).toContain('type: "thread.delete" as const');
   });
 
   it("matches the Web empty-state and list-row anatomy", () => {

@@ -23,9 +23,9 @@ describe("Native Kanban context-menu coverage", () => {
     );
 
     expect(controller).toContain("resolveKanbanCardActions(card, {");
-    expect(controller).toContain("'../platform/contextMenu'");
+    expect(controller).toContain('"../platform/contextMenu"');
     expect(controller).toContain("await selectAction(card, action)");
-    expect(controller).toContain("'../data/synaraClient'");
+    expect(controller).toContain('"../data/synaraClient"');
     expect(cardAdapter).toContain("() => focusLynxNode(rootRef)");
   });
 });

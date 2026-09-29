@@ -55,9 +55,7 @@ describe("Explorer syntax preview", () => {
     expect(source).toContain('data-syntax-highlighted="true"');
     expect(source).toContain("baseClassName: `ExplorerDockSyntaxLineNumber");
     expect(source).toContain("accessibleLabel: `Comment on line");
-    expect(source).toContain(
-      '<PlusIcon\n              className="ExplorerDockSyntaxCommentGlyphIcon"\n              size={14}',
-    );
+    expect(source).toContain('<PlusIcon className="ExplorerDockSyntaxCommentGlyphIcon" size={14}');
     expect(source).not.toContain('<text className="ExplorerDockSyntaxCommentGlyph">+</text>');
     expect(source).toContain("<ExplorerFileCommentEditor");
     expect(source).toContain("color: token.color");
@@ -67,12 +65,12 @@ describe("Explorer syntax preview", () => {
     expect(source).not.toContain("ExplorerDockTruncated");
     expect(desktopSource).toContain("data.tag === NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG");
     expect(webSource).toContain("params.tag === NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG");
-    expect(hostSource).toContain("from 'shiki/core'");
+    expect(hostSource).toContain('from "shiki/core"');
     expect(hostSource).not.toContain("@pierre/diffs");
     expect(hostSource).not.toContain("from 'shiki'");
     expect(queriesSource).toContain("readProjectFileWithSyntax");
     expect(source).toContain("props.highlighted?.[props.theme]");
-    expect(queriesSource).toContain("/* webpackMode: \"eager\" */ '../data/synaraClient'");
+    expect(queriesSource).toContain('/* webpackMode: "eager" */ "../data/synaraClient"');
   });
 
   it("keeps Shiki out of the Lynx UI bundle graph", () => {

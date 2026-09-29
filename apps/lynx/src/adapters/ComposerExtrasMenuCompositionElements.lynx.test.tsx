@@ -117,7 +117,7 @@ describe("native composer attachment menu item", () => {
     expect(runtimeElementsSource).not.toContain("<Button");
     expect(runtimeElementsSource).not.toContain("render=");
     expect(runtimeElementsSource).toContain(
-      "import shieldAccessSvg from '@synara-central-icons/shield-access.svg?raw';",
+      'import shieldAccessSvg from "@synara-central-icons/shield-access.svg?raw";',
     );
     expect(runtimeElementsSource).toContain("ComposerRuntimeTriggerPermissionIconLynx");
     expect(runtimeElementsSource).not.toContain("'◆'");
@@ -155,7 +155,7 @@ describe("native composer attachment menu item", () => {
       "utf8",
     );
     expect(inputElementsSource).toContain(
-      "import sendArrowSvg from '@synara-central-icons/arrow-up.svg?raw';",
+      'import sendArrowSvg from "@synara-central-icons/arrow-up.svg?raw";',
     );
     expect(inputElementsSource).toContain('className="ComposerPrimaryActionSendIconLynx"');
     expect(composerStyles).toMatch(

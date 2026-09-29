@@ -17,7 +17,7 @@ describe("ThreadTerminalSearchBar", () => {
     expect(source).toContain('label="Close search (Esc)"');
     expect(source).toContain("<ChevronDownIcon");
     expect(source).toContain("<XIcon");
-    expect(source).toContain("semanticIconColor('secondary')");
+    expect(source).toContain('semanticIconColor("secondary")');
     expect(source).not.toContain('text="↑"');
     expect(source).not.toContain('text="↓"');
     expect(source).not.toContain('text="×"');

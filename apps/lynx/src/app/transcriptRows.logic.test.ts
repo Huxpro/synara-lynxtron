@@ -39,7 +39,7 @@ describe("transcript work-entry presentation", () => {
     expect(workEntrySource).toContain("<TimelineStatusRowComposition");
     expect(source).toContain("chunkCollapsedTurnItems(collapsedTurnItems).map");
     expect(source).toContain("summarizeToolCallGroup(props.entries)");
-    expect(source).toContain("baseClassName: 'TranscriptToolGroupTrigger'");
+    expect(source).toContain('baseClassName: "TranscriptToolGroupTrigger"');
     expect(source).toContain("classifyToolCallSummaryCategory(props.entry)");
     expect(source).toContain('<SearchIcon className="TranscriptStatusIcon" size={13} />');
     expect(source).toContain('<PencilIcon className="TranscriptStatusIcon" size={13} />');

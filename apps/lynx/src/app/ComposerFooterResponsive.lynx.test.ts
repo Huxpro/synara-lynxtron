@@ -33,7 +33,7 @@ describe("Native composer footer responsiveness", () => {
     );
     expect(composerSource).toContain("voiceBusy={isVoiceRecording || isVoiceTranscribing}");
     expect(composerSource).toContain(
-      "setVoiceWaveformLevels((current) => [...current, state.level ?? 0].slice(-160))",
+      "setVoiceWaveformLevels((current) => [...current, state.level ?? 0].slice(-160",
     );
     expect(composerSource).toContain("}, 50);");
     expect(composerSource).toContain("setIsVoiceTranscribing(true);\n    setVoiceDurationMs(0);");
@@ -58,7 +58,7 @@ describe("Native composer footer responsiveness", () => {
 
   it("uses the shared Electron composer placeholder copy", () => {
     expect(composerSource).toContain("DEFAULT_CHAT_COMPOSER_PLACEHOLDER");
-    expect(composerSource).toContain("from '@synara/shared/composerPlaceholder'");
+    expect(composerSource).toContain('from "@synara/shared/composerPlaceholder"');
     expect(composerSource).toContain(": DEFAULT_CHAT_COMPOSER_PLACEHOLDER");
     expect(composerSource).not.toContain("Ask anything, @mention a path, or use $skill");
   });
@@ -69,12 +69,12 @@ describe("Native composer footer responsiveness", () => {
       "const normalizedChatFontSizePx = normalizeChatFontSizePx(chatFontSizePx)",
     );
     expect(composerSource).toContain(
-      "'--type-composer-editor-size': `${normalizedChatFontSizePx}px`",
+      '"--type-composer-editor-size": `${normalizedChatFontSizePx}px`',
     );
     expect(composerSource).toContain("style={{ fontSize: `${normalizedChatFontSizePx}px` }}");
     expect(composerSource).toContain("fontSizePx={normalizedChatFontSizePx}");
     expect(composerSource).toContain(
-      "'--composer-empty-editor-height': `${emptyEditorMinHeightPx}px`",
+      '"--composer-empty-editor-height": `${emptyEditorMinHeightPx}px`',
     );
     expect(composerSource).toContain("resolveNativeComposerMaxLines({");
     expect(composerSource).toContain("maxlines={nativeEditorMaxLines}");

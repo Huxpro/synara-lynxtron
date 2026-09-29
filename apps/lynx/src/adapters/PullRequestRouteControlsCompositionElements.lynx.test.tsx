@@ -43,10 +43,10 @@ describe("pull request route controls fidelity", () => {
     expect(styles).toMatch(
       /\.SharedPrProjectFilterTrigger\s*\{[^}]*width:\s*24px;[^}]*min-width:\s*24px;[^}]*height:\s*24px;[^}]*min-height:\s*24px;[^}]*padding:\s*4px;[^}]*border-width:\s*0;[^}]*border-radius:\s*6px;/s,
     );
-    expect(source).toContain("import filterSvg from '@synara-central-icons/filter-2.svg?raw';");
+    expect(source).toContain('import filterSvg from "@synara-central-icons/filter-2.svg?raw";');
     expect(source).toContain("<MenuTrigger ariaLabel={triggerLabel}>");
-    expect(source).toContain("'aria-pressed': active");
-    expect(source).toContain("'accessibility-state': { selected: active }");
+    expect(source).toContain('"aria-pressed": active');
+    expect(source).toContain('"accessibility-state": { selected: active }');
     expect(source).toContain('className="SharedPrProjectFilterIconSlot"');
     expect(source).toContain('className="SharedPrProjectFilterIcon"');
     expect(source).toContain('className="SharedPrProjectFilterDot"');
@@ -108,14 +108,14 @@ describe("pull request route controls fidelity", () => {
       "utf8",
     );
 
-    expect(source).toContain("import { Input } from '../components/ui/input';");
+    expect(source).toContain('import { Input } from "../components/ui/input";');
     expect(source).toContain("<SearchIcon size={14}");
     expect(source).toContain('className="SharedPrSearchInput"');
     expect(source).toContain('type="search"');
     expect(source).toContain("defaultValue={props.value}");
     expect(source).not.toContain("value={props.value}");
     expect(source).toContain("onChange={(event) => props.onChange(event.target.value)}");
-    expect(source).toContain("if (event.key === 'Escape')");
+    expect(source).toContain('if (event.key === "Escape")');
     expect(styles).toMatch(
       /\.SharedPrSearchInput\s*\{[^}]*height:\s*28px;[^}]*padding-left:\s*32px;[^}]*border-radius:\s*10px;[^}]*font-size:\s*11px;/s,
     );
@@ -128,7 +128,7 @@ describe("pull request route controls fidelity", () => {
     expect(styles).toMatch(
       /\.SharedPrSearchIcon\s*\{[^}]*left:\s*10px;[^}]*top:\s*7px;[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*opacity:\s*0\.7;/s,
     );
-    expect(routeSource).toContain("const [searchQuery, setSearchQuery] = useState('')");
+    expect(routeSource).toContain('const [searchQuery, setSearchQuery] = useState("")');
     expect(routeSource).toContain("searchQuery={searchQuery}");
     expect(routeSource).toContain('searchCapability="editable"');
     expect(routeSource).toContain("setSearchQuery(value)");

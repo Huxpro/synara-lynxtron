@@ -59,31 +59,33 @@ describe("Composer model picker icon fidelity", () => {
       "utf8",
     );
 
-    expect(triggerSource).toContain("color={semanticIconColor('secondary')}");
+    expect(triggerSource).toContain('color={semanticIconColor("secondary")}');
     expect(triggerSource).toContain('className="ComposerModelTriggerStatusIconLynx"');
     expect(controlSource).toContain("<ArrowLeftIcon");
     expect(controlSource).toContain("useInitData()");
     expect(controlSource).toContain("initData.initialComposerModelMenuOpen === true");
     expect(controlSource).toContain('className="ComposerProviderBackIconLynx"');
-    expect(controlSource.match(/color=\{semanticIconColor\('secondary'\)\}/g)).toHaveLength(3);
+    expect(controlSource.match(/color=\{semanticIconColor\(["']secondary["']\)\}/g)).toHaveLength(
+      3,
+    );
     expect(triggerSource).toContain('className="ComposerModelTriggerChevronLynx"');
     expect(groupSource).toContain("<ChevronRightIcon");
     expect(groupSource).toContain("color={svgColors.mutedForeground80}");
     expect(groupSource).toContain("disclosureChevronClassName(");
     expect(groupSource).toContain("useLynxDisclosurePresence(props.open)");
     expect(groupSource).toContain("disclosureContentClassName(");
-    expect(groupSource).toContain("props.open ? ' ComposerModelGroupHeaderLynx--open' : ''");
+    expect(groupSource).toContain('props.open ? " ComposerModelGroupHeaderLynx--open" : ""');
     expect(groupSource).toContain('<view className="ComposerModelGroupCountColumnLynx">');
     expect(groupSource).not.toContain("<ChevronDownIcon");
     expect(groupSource).not.toContain("{props.open ? props.children : null}");
     expect(groupSource).toContain("<CheckIcon size={12} />");
     expect(triggerSource).toContain(
-      "import fastModeSvg from '@synara-central-icons-fill/zap.svg?raw';",
+      'import fastModeSvg from "@synara-central-icons-fill/zap.svg?raw";',
     );
     expect(groupSource).toContain(
-      "import starFilledSvg from '@synara-central-icons-fill/star.svg?raw';",
+      'import starFilledSvg from "@synara-central-icons-fill/star.svg?raw";',
     );
-    expect(groupSource).toContain("import starSvg from '@synara-central-icons/star.svg?raw';");
+    expect(groupSource).toContain('import starSvg from "@synara-central-icons/star.svg?raw";');
     expect(`${triggerSource}\n${groupSource}\n${controlSource}`).not.toMatch(/[⚙‹⌄›✓⚡★☆]/);
     expect(styles).toMatch(
       /\.ComposerModelTriggerStatusIconLynx\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;/s,

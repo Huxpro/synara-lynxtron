@@ -31,7 +31,7 @@ describe("Lynx Settings search input", () => {
     expect(source).not.toContain("value={props.value}");
     expect(source).toContain('size="sm"');
     expect(source).toContain('variant="soft"');
-    expect(source).toContain("inputRef.current?.setValue('')");
+    expect(source).toContain('inputRef.current?.setValue("")');
     expect(source).toContain("onChange={(event) => props.onValueChange?.(event.target.value)}");
   });
 

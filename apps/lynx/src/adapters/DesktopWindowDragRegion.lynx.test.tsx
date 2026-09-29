@@ -62,7 +62,7 @@ describe("desktop window drag regions", () => {
   it("uses the Lynxtron app-region property and protects controls", () => {
     expect(appStyles).toMatch(/\.AppWindowDragRegion\s*\{[^}]*-x-app-region:\s*drag;/s);
     expect(appStyles).toMatch(
-      /\.AppWindowDragRegion \.LxButton,[^{]*\.AppWindowDragRegion \[focusable='true'\],[^{]*\{[^}]*-x-app-region:\s*no-drag;/s,
+      /\.AppWindowDragRegion \.LxButton,[^{]*\.AppWindowDragRegion \[focusable=["']true["']\],[^{]*\{[^}]*-x-app-region:\s*no-drag;/s,
     );
   });
 });

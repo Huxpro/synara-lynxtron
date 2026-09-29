@@ -14,21 +14,21 @@ describe("ProjectActionEditor", () => {
     expect(source).toContain('aria-label="Action keybinding"');
     expect(source).toContain("projectActionKeybindingFromEvent(event)");
     expect(source).toContain("Run automatically on worktree creation");
-    expect(source).toContain("setValidationError('Name is required.')");
-    expect(source).toContain("setValidationError('Command is required.')");
+    expect(source).toContain('setValidationError("Name is required.")');
+    expect(source).toContain('setValidationError("Command is required.")');
     expect(source).toContain("Save action");
     expect(source).toContain("Cancel");
-    expect(source).toContain("editing ? 'Save changes' : 'Save action'");
-    expect(source).toContain("props.busy ? 'Saving…'");
+    expect(source).toContain('editing ? "Save changes" : "Save action"');
+    expect(source).toContain('props.busy ? "Saving…"');
     expect(source).toContain("disabled={props.busy}");
     expect(source.match(/disabled=\{props\.busy\}/g)?.length).toBeGreaterThanOrEqual(5);
     expect(source).toContain("props.onDelete");
     expect(source).toContain("SCRIPT_ICONS.map");
     expect(source).toContain("icon={entry.id}");
     expect(source).toContain(
-      "props.role === 'trigger' ? svgColors.foreground80 : svgColors.foreground",
+      'props.role === "trigger" ? svgColors.foreground80 : svgColors.foreground',
     );
-    expect(source).toContain("props.role === 'trigger' ? 18 : 16");
+    expect(source).toContain('props.role === "trigger" ? 18 : 16');
     expect(source).toContain('<ScriptIcon icon={icon} role="trigger" />');
     expect(source).toContain('size="icon-lg"');
     expect(source).toContain('<ScriptIcon icon={props.icon} role="option" />');
@@ -53,7 +53,7 @@ describe("ProjectActionEditor", () => {
       /\.ProjectActionEditorIconOption\s*\{[^}]*width:\s*72px;[^}]*height:\s*56px;[^}]*gap:\s*8px;[^}]*border-left-color:\s*var\(--color-border-light\);[^}]*border-right-color:\s*var\(--color-border-light\);[^}]*border-top-color:\s*var\(--color-border-light\);[^}]*border-bottom-color:\s*var\(--color-border-light\);/s,
     );
     expect(styles).toMatch(
-      /\.ProjectActionEditorIconOption\.ui-hover,\.ProjectActionEditorIconOption\.ui-focus,\.ProjectActionEditorIconOption--active\s*\{[^}]*border-left-color:\s*var\(--color-border\);[^}]*border-right-color:\s*var\(--color-border\);[^}]*border-top-color:\s*var\(--color-border\);[^}]*border-bottom-color:\s*var\(--color-border\);/s,
+      /\.ProjectActionEditorIconOption\.ui-hover,\s*\.ProjectActionEditorIconOption\.ui-focus,\s*\.ProjectActionEditorIconOption--active\s*\{[^}]*border-left-color:\s*var\(--color-border\);[^}]*border-right-color:\s*var\(--color-border\);[^}]*border-top-color:\s*var\(--color-border\);[^}]*border-bottom-color:\s*var\(--color-border\);/s,
     );
     expect(styles).toMatch(
       /\.ProjectActionEditorSwitch\s*\{[^}]*min-height:\s*38px;[^}]*padding:\s*8px 12px;[^}]*gap:\s*12px;[^}]*border-left-color:\s*var\(--color-border-light\);[^}]*border-right-color:\s*var\(--color-border-light\);[^}]*border-top-color:\s*var\(--color-border-light\);[^}]*border-bottom-color:\s*var\(--color-border-light\);/s,

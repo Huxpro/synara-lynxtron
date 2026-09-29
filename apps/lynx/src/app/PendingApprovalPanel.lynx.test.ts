@@ -64,10 +64,10 @@ describe("Lynx pending approval capability", () => {
   });
 
   it("dispatches the canonical response and refreshes the thread", () => {
-    expect(routerSource).toContain("type: 'thread.approval.respond'");
+    expect(routerSource).toContain('type: "thread.approval.respond"');
     expect(routerSource).toContain("requestId: activePendingApproval.requestId");
     expect(routerSource).toContain("decision,");
     expect(routerSource).toContain("<PendingApprovalPanel");
-    expect(routerSource).toContain("queryKey: ['thread-detail', threadId]");
+    expect(routerSource).toContain('queryKey: ["thread-detail", threadId]');
   });
 });

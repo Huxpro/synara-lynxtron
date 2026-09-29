@@ -42,10 +42,10 @@ describe("Pull Request row icon fidelity", () => {
       "utf8",
     );
     expect(stateIconSource).toContain(
-      "import draftSvg from '@synara-central-icons/draft.svg?raw';",
+      'import draftSvg from "@synara-central-icons/draft.svg?raw";',
     );
     expect(stateIconSource).toContain(
-      "import pullRequestClosedSvg from '@synara-central-icons/request-closed.svg?raw';",
+      'import pullRequestClosedSvg from "@synara-central-icons/request-closed.svg?raw";',
     );
     const source = readFileSync(
       new URL("./PullRequestRowCompositionElements.lynx.tsx", import.meta.url),

@@ -264,7 +264,7 @@ export function createRpcSocketManager(input: {
     return pending;
   };
 
-  const requestOnSocket = <A>(
+  const requestOnSocket = <A extends unknown>(
     socket: RpcTransportSocket,
     tag: string,
     payload: unknown,

@@ -17,7 +17,7 @@ describe("Kanban column icon fidelity", () => {
     );
 
     expect(source).toContain('className="SharedKanbanColumnNewCardIcon"');
-    expect(source).toContain("color={semanticIconColor('secondary')}");
+    expect(source).toContain('color={semanticIconColor("secondary")}');
     expect(source).toContain("<KanbanStatusIcon column={props.column} />");
     expect(source).not.toMatch(/[＋✓◐◌]/);
     expect(statusSource).toContain('<circle cx="7" cy="7" r="7" fill="#5e6ad2"/>');
