@@ -101,6 +101,17 @@ describe("Lynx Environment panel", () => {
     );
   });
 
+  it("lets clicks through the closed overlay to the dock beneath it", () => {
+    const panelSource = readFileSync(
+      new URL("./EnvironmentPanel.lynx.tsx", import.meta.url),
+      "utf8",
+    );
+    // Lynx does not inherit pointer-events, so the subtree must stop taking touches.
+    expect(panelSource).toMatch(
+      /className=\{`EnvironmentOverlay[^>]*user-interaction-enabled=\{props\.open\}/s,
+    );
+  });
+
   it("uses only sections backed by real current capabilities", () => {
     const panelSource = readFileSync(
       new URL("./EnvironmentPanel.lynx.tsx", import.meta.url),

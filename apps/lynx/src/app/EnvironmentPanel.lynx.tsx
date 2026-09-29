@@ -2450,6 +2450,9 @@ export function EnvironmentPanel(props: {
     <view
       className={`EnvironmentOverlay${props.open ? " EnvironmentOverlay--open" : ""}`}
       aria-hidden={!props.open}
+      // Lynx does not inherit `pointer-events: none`, so the closed overlay's
+      // controls would still take clicks over the dock beneath it.
+      user-interaction-enabled={props.open}
     >
       <view className="EnvironmentSurface">
         <scroll-view className="EnvironmentScroller" scroll-y>
