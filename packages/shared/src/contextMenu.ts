@@ -369,7 +369,7 @@ function normalizeItem<T extends string>(
 
   const submenu =
     depth < MAX_CONTEXT_MENU_DEPTH && Array.isArray(item.submenu)
-      ? normalizeContextMenuItems(item.submenu, depth + 1)
+      ? normalizeContextMenuItems<T>(item.submenu, depth + 1)
       : [];
   const type = item.type === "checkbox" || item.type === "radio" ? item.type : "normal";
 

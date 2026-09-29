@@ -110,7 +110,8 @@ export function createBrowserViewHost(input: {
       dispose() {},
     };
   }
-  const requireNative = input.requireNative ?? createRequire(import.meta.url);
+  const requireNative: (path: string) => NativeBrowserViewHost =
+    input.requireNative ?? createRequire(import.meta.url);
   let native: NativeBrowserViewHost | null = null;
   const load = () => {
     if (!native) {

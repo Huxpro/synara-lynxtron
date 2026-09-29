@@ -9,7 +9,7 @@ import { readFileSync } from "node:fs";
 describe("desktop system appearance", () => {
   it("publishes only real system appearance transitions", () => {
     let nextDark = false;
-    let scheduled: (() => void) | null = null;
+    const scheduled: { current: (() => void) | null } = { current: null };
     const changes: boolean[] = [];
     let cleared = false;
     const watcher = createSystemAppearanceWatcher({
@@ -17,7 +17,7 @@ describe("desktop system appearance", () => {
       readDark: () => nextDark,
       onChange: (dark) => changes.push(dark),
       schedule: (callback) => {
-        scheduled = callback;
+        scheduled.current = callback;
         return { unref() {} } as ReturnType<typeof setInterval>;
       },
       clear: () => {
@@ -28,8 +28,8 @@ describe("desktop system appearance", () => {
     watcher.refresh();
     expect(changes).toEqual([]);
     nextDark = true;
-    scheduled?.();
-    scheduled?.();
+    scheduled.current?.();
+    scheduled.current?.();
     expect(changes).toEqual([true]);
     nextDark = false;
     watcher.refresh();

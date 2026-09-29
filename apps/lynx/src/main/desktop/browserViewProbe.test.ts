@@ -10,7 +10,7 @@ describe("macOS Browser view capability probe", () => {
       platform: "linux",
       requireNative,
     });
-    expect(probe.attach({ x: 0, y: 0, width: 10, height: 10 }, "about:blank")).toBe(false);
+    expect(probe.attach({ x: 0, y: 0, width: 10, height: 10 }, "tab-1", "about:blank")).toBe(false);
     probe.dispose();
     expect(requireNative).not.toHaveBeenCalled();
   });

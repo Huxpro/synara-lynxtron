@@ -52,7 +52,8 @@ export function createSearchKeyMonitor(input: {
   if ((input.platform ?? process.platform) !== "darwin") {
     return { setMode() {}, setComposerBounds() {}, dispose() {} };
   }
-  const requireNative = input.requireNative ?? createRequire(import.meta.url);
+  const requireNative: (path: string) => NativeSearchKeyMonitor =
+    input.requireNative ?? createRequire(import.meta.url);
   let native: NativeSearchKeyMonitor | null = null;
   let mode: "disabled" | "search" | "terminal" = "disabled";
   const load = () => {

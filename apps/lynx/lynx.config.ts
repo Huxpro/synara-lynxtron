@@ -14,6 +14,14 @@ import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "url";
 import path from "path";
 
+// Lynx's template encoder (@lynx-js/tasm) and the Lynxtron runtime honor this page
+// config, but @lynx-js/type-config does not declare it yet.
+declare module "@lynx-js/config-rsbuild-plugin" {
+  interface Config {
+    alignMouseEventWithW3C?: boolean;
+  }
+}
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const requireFromApp = createRequire(import.meta.url);
