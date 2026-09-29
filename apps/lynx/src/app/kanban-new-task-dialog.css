@@ -1,77 +1,30 @@
-.KanbanNewTaskDialog {
-  width: 560px;
+/* Web KanbanNewTaskDialog: max-w-3xl rounded-3xl composer dialog. */
+.KanbanNewTaskDialog.LxDialogPopup {
+  width: 768px;
   max-width: 90%;
-  padding: 14px 16px 16px;
+  padding: 0;
+  border-radius: 24px;
 }
 
+/* Breadcrumb header: project chip › "New task" (px-4 pt-3.5). */
 .KanbanNewTaskHeader {
   min-width: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
-  padding-right: 28px;
+  gap: 8px;
+  padding: 14px 44px 0 16px;
 }
 
-.KanbanNewTaskMark {
-  width: 24px;
-  height: 26px;
-  flex-shrink: 0;
-}
-
-.KanbanNewTaskHeaderCopy {
+.LxMenuTrigger.KanbanNewTaskProjectTrigger {
   min-width: 0;
-  flex: 1;
-}
-
-.KanbanNewTaskTitle {
-  font-size: var(--app-font-size-ui);
-  line-height: 18px;
-  font-weight: 500;
-}
-
-.KanbanNewTaskDescription {
-  margin-top: 2px;
-  font-size: var(--app-font-size-ui-sm);
-  line-height: 18px;
-}
-
-.KanbanNewTaskPanel {
-  max-height: none;
-  margin-top: 14px;
-}
-
-.KanbanNewTaskProjectRow {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.KanbanNewTaskProjectLabel {
-  color: var(--muted-foreground);
-  font-size: var(--app-font-size-ui-sm);
-  line-height: 18px;
-}
-
-.KanbanNewTaskProjects {
-  min-width: 0;
-  flex: 1;
-}
-
-.KanbanNewTaskProjectOptions {
-  display: flex;
-  flex-direction: row;
-  gap: 6px;
-}
-
-.KanbanNewTaskProject {
+  max-width: 224px;
   height: 28px;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  padding: 0 10px;
+  gap: 6px;
+  padding: 0 8px;
   border-width: 1px;
   border-style: solid;
   border-left-color: var(--border);
@@ -79,49 +32,68 @@
   border-top-color: var(--border);
   border-bottom-color: var(--border);
   border-radius: 8px;
-  background-color: var(--background);
 }
 
-.KanbanNewTaskProject--selected {
-  border-left-color: var(--foreground);
-  border-right-color: var(--foreground);
-  border-top-color: var(--foreground);
-  border-bottom-color: var(--foreground);
-  background-color: var(--accent);
+.LxMenuTrigger.KanbanNewTaskProjectTrigger.ui-hover {
+  background-color: var(--color-background-elevated-secondary);
 }
 
-.KanbanNewTaskProject.ui-hover,
-.KanbanNewTaskProject.ui-pressed {
-  background-color: var(--secondary);
-}
-
-.KanbanNewTaskProject.ui-focus {
-  box-shadow: inset 0 0 0 1px var(--ring);
-}
-
-.KanbanNewTaskProjectText {
+.KanbanNewTaskProjectTriggerText {
+  min-width: 0;
+  flex: 0 1 auto;
   color: var(--foreground);
-  font-size: var(--app-font-size-ui-sm);
-  line-height: 18px;
+  font-size: var(--app-font-size-ui, 12px);
+  line-height: 16px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
+.KanbanNewTaskProjectTriggerChevron {
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.KanbanNewTaskBreadcrumb {
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+.KanbanNewTaskTitle {
+  min-width: 0;
+  font-size: var(--app-font-size-ui, 12px);
+  line-height: 12px;
+  font-weight: 500;
+}
+
+/* Web: sr-only description. */
+.KanbanNewTaskDescription {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+/* Flush, borderless composer body (px-4 pt-2 pb-2, inner min-h-28 py-1). */
+.KanbanNewTaskPanel.LxDialogPanel {
+  max-height: none;
+  /* Measured: the web body spans 124px (pt-2 + 112px editor + 4px). */
+  padding: 8px 16px 4px;
+}
+
+/* Web min-h-28 editor area. A definite height: the Lynx textarea otherwise
+   sizes itself to maxlines × line-height. */
 .KanbanNewTaskInput {
   width: 100%;
+  height: 112px;
   min-height: 112px;
-  max-height: 224px;
-  padding: 10px 12px;
-  border-width: 1px;
-  border-style: solid;
-  border-left-color: var(--border);
-  border-right-color: var(--border);
-  border-top-color: var(--border);
-  border-bottom-color: var(--border);
-  border-radius: 10px;
+  padding: 4px 0;
   color: var(--foreground);
-  background-color: var(--background);
+  background-color: transparent;
   font-family: var(--font-ui-family);
-  font-size: var(--app-font-size-ui);
-  line-height: 20px;
+  font-size: 14px;
+  line-height: 22px;
 }
 
 .KanbanNewTaskError {
@@ -138,10 +110,107 @@
 }
 
 .KanbanNewTaskFooter {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chips row: extras + permissions left, model + effort right (px-4 pb-2.5). */
+.KanbanNewTaskChips {
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-top: 12px;
+  padding: 0 16px 10px;
+}
+
+.KanbanNewTaskChipsLeading {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.KanbanNewTaskChipsTrailing {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Bottom bar: attach + voice left, draft switch + create right (px-4 py-2.5). */
+.KanbanNewTaskBottomBar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--color-border-light);
+}
+
+.KanbanNewTaskBottomLeading {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.KanbanNewTaskBottomTrailing {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.KanbanNewTaskIconButton,
+.LxMenuTrigger.KanbanNewTaskIconButton {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.KanbanNewTaskAttach {
+  margin-right: 4px;
+}
+
+.KanbanNewTaskIconButton.ui-hover,
+.LxMenuTrigger.KanbanNewTaskIconButton.ui-hover {
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.KanbanNewTaskIconButton.ui-focus,
+.LxMenuTrigger.KanbanNewTaskIconButton.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.KanbanNewTaskMenuRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.KanbanNewTaskMenuIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.KanbanNewTaskMenuText {
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 18px;
 }
 
 .KanbanNewTaskDraftToggle {
@@ -187,5 +256,5 @@
 .KanbanNewTaskDraftLabel {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm);
-  line-height: 18px;
+  line-height: 16px;
 }

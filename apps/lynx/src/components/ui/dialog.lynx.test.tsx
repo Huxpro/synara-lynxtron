@@ -177,7 +177,7 @@ describe("Lynx Dialog dismiss contract", () => {
     await openDialog();
     const defaultClose = elementTree.root?.querySelector(".LxDialogClose");
     const customClose = elementTree.root?.querySelector(".CustomClose");
-    expect(defaultClose?.getAttribute("accessibility-label")).toBe("Close dialog");
+    expect(defaultClose?.getAttribute("accessibility-label")).toBe("Close");
     expect(defaultClose?.querySelector(".LxDialogClose__icon")?.getAttribute("content")).toContain(
       'stroke="rgba(13, 13, 13, 0.598)"',
     );

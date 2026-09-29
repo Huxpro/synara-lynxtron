@@ -1043,9 +1043,10 @@
   transform: scale(0.98);
 }
 
+/* Web DialogPopup close: a 28px icon-sm button at end-2 top-2. */
 .LxDialogClose {
   position: absolute;
-  right: 10px;
+  right: 8px;
   top: 8px;
   padding: 6px;
 }

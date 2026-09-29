@@ -17,22 +17,27 @@ describe("Lynx voice notification presentation", () => {
       new URL("../components/composer/Composer.lynx.tsx", import.meta.url),
       "utf8",
     );
+    // Voice lives in the hook the composer and the Kanban task dialog share.
+    const voiceSource = readFileSync(
+      new URL("../components/composer/useNativeComposerVoice.lynx.ts", import.meta.url),
+      "utf8",
+    );
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
 
-    expect(composerSource).toContain("resolveVoiceTranscriptionFailure(error");
-    expect(composerSource).toContain('transcriptionFailedTitle: "Couldn\'t transcribe voice note"');
-    expect(composerSource).toContain("actionLabel: failure.actionLabel");
-    expect(composerSource).toContain("onAction: refreshStatuses");
-    expect(composerSource).toContain("voiceProviderRef.current === requestProvider");
-    expect(composerSource).toContain("isVoiceRecorderActionArmed({");
-    expect(composerSource).toContain("resolveVoiceRecordingStartGuard({");
+    expect(voiceSource).toContain("resolveVoiceTranscriptionFailure(error");
+    expect(voiceSource).toContain('transcriptionFailedTitle: "Couldn\'t transcribe voice note"');
+    expect(voiceSource).toContain("actionLabel: failure.actionLabel");
+    expect(voiceSource).toContain("onAction: refreshStatuses");
+    expect(voiceSource).toContain("providerRef.current === requestProvider");
+    expect(voiceSource).toContain("isVoiceRecorderActionArmed({");
+    expect(voiceSource).toContain("resolveVoiceRecordingStartGuard({");
+    expect(voiceSource).toContain("pendingUserInputCount: input.pendingUserInputCount,");
+    expect(composerSource).toContain("useNativeComposerVoice({");
     expect(composerSource).toContain("pendingUserInputCount,");
-    expect(composerSource).toContain(
-      "if (voiceState.canStartVoiceNotes || !isVoiceRecording) return;",
-    );
-    expect(composerSource).toContain('title: "Could not start recording"');
-    expect(composerSource).toContain('title: "No audio was captured."');
+    expect(voiceSource).toContain("if (voiceState.canStartVoiceNotes || !isRecording) return;");
+    expect(voiceSource).toContain('title: "Could not start recording"');
+    expect(voiceSource).toContain('title: "No audio was captured."');
     expect(composerSource).not.toContain(
       "sanitizedMessage.startsWith('Provider adapter request failed')",
     );

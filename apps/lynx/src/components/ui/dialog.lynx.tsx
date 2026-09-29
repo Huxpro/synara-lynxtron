@@ -200,11 +200,11 @@ export function DialogPopup({
       >
         {children}
         {showCloseButton && (
-          <DialogClose className="LxDialogClose" ariaLabel="Close dialog">
+          <DialogClose className="LxDialogClose" ariaLabel="Close">
             <XIcon
               className="LxDialogClose__icon"
               color={svgColors.secondaryForeground}
-              size={18}
+              size={16}
             />
           </DialogClose>
         )}

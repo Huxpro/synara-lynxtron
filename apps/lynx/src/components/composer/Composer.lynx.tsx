@@ -17,14 +17,6 @@ import {
   DEFAULT_CHAT_COMPOSER_PLACEHOLDER,
   resolveEmptyComposerEditorMinHeightPx,
 } from "@synara/shared/composerPlaceholder";
-import {
-  appendVoiceTranscriptToPrompt,
-  deriveComposerVoiceState,
-  describeVoiceRecordingStartError,
-  isVoiceRecorderActionArmed,
-  resolveVoiceRecordingStartGuard,
-  resolveVoiceTranscriptionFailure,
-} from "@synara/shared/composerVoice";
 import { DEFAULT_CHAT_FONT_SIZE_PX, normalizeChatFontSizePx } from "@synara-web/chatFontSize";
 
 import { useComposerDraftStore } from "../../adapters/composerDraftStore.lynx";
@@ -40,9 +32,7 @@ import {
 } from "../../platform/inputFocusOwnership.lynx";
 import { clipboard as clipboardPort } from "../../platform/clipboard";
 import { sleepOnHost } from "../../platform/timer";
-import { nativeVoiceRecorder } from "../../platform/voiceRecorder.lynx";
 import { fetchSidebarSnapshot, resolveNativeAssistantDeliveryMode } from "../../app/queries";
-import { useLynxVoiceNotificationStore } from "../../app/voiceNotificationStore.lynx";
 import {
   splitPromptIntoComposerSegments,
   type ComposerPromptSegment,
@@ -97,9 +87,7 @@ import {
   fetchServerConfig,
   fetchProviderModels,
   fetchProviderSkills,
-  refreshProviderStatuses,
   searchProjectEntries,
-  transcribeVoice,
 } from "../../data/synaraClient.lynx";
 import {
   buildComposerInteractionModeSetCommand,
@@ -145,7 +133,7 @@ import {
 } from "./composerAttachments.lynx";
 import { ComposerModelControl } from "./ComposerModelControl.lynx";
 import { ComposerVoiceButton, ComposerVoiceRecorderBar } from "./ComposerVoiceControls.lynx";
-import { scaleNativeVoiceWaveformLevel } from "./composerVoiceWaveform.logic";
+import { useNativeComposerVoice } from "./useNativeComposerVoice.lynx";
 import { ExpandedImageOverlay, type NativeExpandedImagePreview } from "./ExpandedImageOverlay.lynx";
 import { FileEntryIcon } from "../FileEntryIcon.lynx";
 import { Button } from "../ui/button";
@@ -484,16 +472,6 @@ export function Composer({
   const sendInFlightRef = useRef(false);
   const [isStopping, setIsStopping] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
-  const showVoiceNotification = useLynxVoiceNotificationStore((state) => state.show);
-  const [voiceHostSupported, setVoiceHostSupported] = useState(false);
-  const [isVoiceRecording, setIsVoiceRecording] = useState(false);
-  const [isVoiceTranscribing, setIsVoiceTranscribing] = useState(false);
-  const [voiceDurationMs, setVoiceDurationMs] = useState(0);
-  const [voiceWaveformLevels, setVoiceWaveformLevels] = useState<readonly number[]>([]);
-  const voiceRequestIdRef = useRef(0);
-  const voiceThreadIdRef = useRef(brandedThreadId);
-  const voiceProviderRef = useRef<ProviderKind | undefined>(undefined);
-  const voiceStartedAtRef = useRef<number | null>(null);
   const [expandedImage, setExpandedImage] = useState<NativeExpandedImagePreview | null>(null);
   const [composerTrigger, setComposerTrigger] = useState<ComposerTrigger | null>(null);
   const [composerHighlightedItemId, setComposerHighlightedItemId] = useState<string | null>(null);
@@ -517,52 +495,6 @@ export function Composer({
   const editorHistoryRef = useRef(createComposerEditorHistory<ComposerEditorHistoryContext>());
   const compositionHistorySnapshotRef =
     useRef<ComposerEditorHistorySnapshot<ComposerEditorHistoryContext> | null>(null);
-  useEffect(() => {
-    "background only";
-    if (!voiceInputEnabled) {
-      setVoiceHostSupported(false);
-      return;
-    }
-    voiceThreadIdRef.current = brandedThreadId;
-    voiceRequestIdRef.current += 1;
-    voiceStartedAtRef.current = null;
-    setIsVoiceRecording(false);
-    setIsVoiceTranscribing(false);
-    setVoiceDurationMs(0);
-    setVoiceWaveformLevels([]);
-    void nativeVoiceRecorder.cancel();
-    void nativeVoiceRecorder
-      .getState()
-      .then((state) => {
-        if (voiceThreadIdRef.current === brandedThreadId) {
-          setVoiceHostSupported(state?.supported === true);
-        }
-      })
-      .catch(() => setVoiceHostSupported(false));
-    return () => {
-      voiceRequestIdRef.current += 1;
-      void nativeVoiceRecorder.cancel();
-    };
-  }, [brandedThreadId, voiceInputEnabled]);
-  useEffect(() => {
-    "background only";
-    if (!isVoiceRecording || voiceStartedAtRef.current === null) return;
-    const timer = setInterval(() => {
-      const startedAt = voiceStartedAtRef.current;
-      if (startedAt !== null) setVoiceDurationMs(Math.max(0, Date.now() - startedAt));
-      void nativeVoiceRecorder
-        .getState()
-        .then((state) => {
-          if (state?.recording) {
-            setVoiceWaveformLevels((current) =>
-              [...current, scaleNativeVoiceWaveformLevel(state.level ?? 0)].slice(-160),
-            );
-          }
-        })
-        .catch(() => undefined);
-    }, 50);
-    return () => clearInterval(timer);
-  }, [isVoiceRecording]);
   useEffect(() => {
     "background only";
     const prompt = useComposerDraftStore.getState().draftsByThreadId[brandedThreadId]?.prompt ?? "";
@@ -590,7 +522,6 @@ export function Composer({
   }, [brandedThreadId]);
   const activeModelSelection = draftModelSelection ?? modelSelection;
   const activeProvider = activeModelSelection?.provider as ProviderKind | undefined;
-  voiceProviderRef.current = activeProvider;
   const discoveryProvider = modelCatalogProvider ?? activeProvider;
   const { data: mentionSnapshot } = useQuery({
     queryKey: ["sidebar-snapshot"],
@@ -625,27 +556,29 @@ export function Composer({
     staleTime: 15_000,
     retry: false,
   });
-  const voiceProviderStatus = (providerStatuses ?? serverConfig?.providers ?? []).find(
-    (status) => status.provider === "codex",
-  );
-  const voiceState = deriveComposerVoiceState({
-    authStatus: voiceProviderStatus?.authStatus,
-    voiceTranscriptionAvailable: voiceProviderStatus?.voiceTranscriptionAvailable,
-    isRecording: isVoiceRecording,
-    isTranscribing: isVoiceTranscribing,
+  const voice = useNativeComposerVoice({
+    enabled: voiceInputEnabled,
+    draftKey: brandedThreadId,
+    threadId,
+    provider: activeProvider,
+    providerStatuses: providerStatuses ?? serverConfig?.providers ?? [],
+    workspaceRoot,
+    pendingUserInputCount,
+    readPrompt: (draftKey) =>
+      useComposerDraftStore.getState().draftsByThreadId[draftKey]?.prompt ?? "",
+    onTranscript: (draftKey, nextPrompt) => {
+      setPrompt(draftKey, nextPrompt);
+      setNativeValue(nextPrompt);
+    },
+    onActionStart: () => setSendError(null),
+    onSettled: () => restoreNativeFocus(),
+    onProviderStatusesChange,
   });
-  const showVoiceNotesControl = voiceHostSupported && voiceState.showVoiceNotesControl;
-  useEffect(() => {
-    "background only";
-    if (voiceState.canStartVoiceNotes || !isVoiceRecording) return;
-    voiceRequestIdRef.current += 1;
-    voiceStartedAtRef.current = null;
-    setIsVoiceRecording(false);
-    setIsVoiceTranscribing(false);
-    setVoiceDurationMs(0);
-    setVoiceWaveformLevels([]);
-    void nativeVoiceRecorder.cancel();
-  }, [isVoiceRecording, voiceState.canStartVoiceNotes]);
+  const isVoiceRecording = voice.isRecording;
+  const isVoiceTranscribing = voice.isTranscribing;
+  const voiceDurationMs = voice.durationMs;
+  const voiceWaveformLevels = voice.waveformLevels;
+  const showVoiceNotesControl = voice.showVoiceNotesControl;
   useEffect(() => {
     if (serverConfig) {
       onProviderStatusesChange?.(serverConfig.providers);
@@ -1714,122 +1647,9 @@ export function Composer({
     }
   }
 
-  async function startVoiceRecording() {
-    "background only";
-    const guard = resolveVoiceRecordingStartGuard({
-      authStatus: voiceProviderStatus?.authStatus,
-      canStartVoiceNotes: voiceState.canStartVoiceNotes,
-      hasWorkspace: Boolean(workspaceRoot),
-      isRecording: isVoiceRecording,
-      isTranscribing: isVoiceTranscribing,
-      pendingUserInputCount,
-    });
-    if (guard.kind === "ignore") return;
-    if (guard.kind === "notify") {
-      showVoiceNotification({ title: guard.title });
-      return;
-    }
-    setSendError(null);
-    try {
-      const state = await nativeVoiceRecorder.start();
-      if (!state?.recording) throw new Error("The microphone could not be opened.");
-      voiceStartedAtRef.current = Date.now();
-      setVoiceDurationMs(0);
-      setVoiceWaveformLevels([]);
-      setIsVoiceRecording(true);
-    } catch (error) {
-      showVoiceNotification({
-        title: "Could not start recording",
-        description: describeVoiceRecordingStartError(error),
-      });
-    }
-  }
-
-  function isVoiceActionArmed() {
-    "background only";
-    return isVoiceRecorderActionArmed({
-      nowMs: Date.now(),
-      startedAtMs: voiceStartedAtRef.current,
-    });
-  }
-
-  function cancelVoiceRecording() {
-    "background only";
-    if (!isVoiceActionArmed()) return;
-    voiceRequestIdRef.current += 1;
-    voiceStartedAtRef.current = null;
-    setIsVoiceRecording(false);
-    setIsVoiceTranscribing(false);
-    setVoiceDurationMs(0);
-    setVoiceWaveformLevels([]);
-    void nativeVoiceRecorder.cancel();
-    restoreNativeFocus();
-  }
-
-  async function submitVoiceRecording() {
-    "background only";
-    if (!workspaceRoot || !isVoiceRecording || isVoiceTranscribing) return;
-    if (!isVoiceActionArmed()) return;
-    const requestId = voiceRequestIdRef.current + 1;
-    voiceRequestIdRef.current = requestId;
-    const requestThreadId = brandedThreadId;
-    const requestProvider = activeProvider;
-    const isCurrentVoiceRequest = () =>
-      voiceRequestIdRef.current === requestId &&
-      voiceThreadIdRef.current === requestThreadId &&
-      voiceProviderRef.current === requestProvider;
-    setIsVoiceRecording(false);
-    setIsVoiceTranscribing(true);
-    setVoiceDurationMs(0);
-    setSendError(null);
-    try {
-      const payload = await nativeVoiceRecorder.stop();
-      if (!payload) {
-        showVoiceNotification({ title: "No audio was captured." });
-        return;
-      }
-      const result = await transcribeVoice({
-        provider: "codex",
-        cwd: workspaceRoot,
-        threadId: threadId as never,
-        ...payload,
-      });
-      if (!isCurrentVoiceRequest()) return;
-      const currentPrompt =
-        useComposerDraftStore.getState().draftsByThreadId[requestThreadId]?.prompt ?? "";
-      const nextPrompt = appendVoiceTranscriptToPrompt(currentPrompt, result.text);
-      if (nextPrompt !== null) {
-        setPrompt(requestThreadId, nextPrompt);
-        setNativeValue(nextPrompt);
-      }
-    } catch (error) {
-      if (isCurrentVoiceRequest()) {
-        const failure = resolveVoiceTranscriptionFailure(error, {
-          transcriptionFailedTitle: "Couldn't transcribe voice note",
-        });
-        const refreshStatuses = () => {
-          void refreshProviderStatuses().then((result) => {
-            onProviderStatusesChange?.(result.providers);
-          });
-        };
-        if (failure.authExpired) refreshStatuses();
-        showVoiceNotification({
-          title: failure.title,
-          description: failure.description,
-          ...(failure.actionLabel
-            ? { actionLabel: failure.actionLabel, onAction: refreshStatuses }
-            : {}),
-        });
-      }
-    } finally {
-      if (isCurrentVoiceRequest()) {
-        voiceStartedAtRef.current = null;
-        setVoiceDurationMs(0);
-        setIsVoiceTranscribing(false);
-        restoreNativeFocus();
-      }
-    }
-  }
+  const startVoiceRecording = voice.start;
+  const cancelVoiceRecording = voice.cancel;
+  const submitVoiceRecording = voice.submit;
 
   const isRunning = isRunningComposerSession(sessionStatus);
   const isConnecting = isConnectingComposerSession(sessionStatus);

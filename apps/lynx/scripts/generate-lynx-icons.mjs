@@ -63,6 +63,7 @@ const icons = {
   MicIcon: "microphone",
   MinusIcon: "minus",
   ListChecksIcon: "list-check",
+  ListDetailsIcon: "list-details",
   MoonIcon: "moon",
   NewThreadIcon: "edit",
   PaletteIcon: "palette",

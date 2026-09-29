@@ -116,6 +116,8 @@ const ICON_CONTENT = {
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-minus" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M5 12l14 0" /> </svg>',
   ListChecksIcon:
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-list-check" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M3.5 5.5l1.5 1.5l2.5 -2.5" /> <path d="M3.5 11.5l1.5 1.5l2.5 -2.5" /> <path d="M3.5 17.5l1.5 1.5l2.5 -2.5" /> <path d="M11 6l9 0" /> <path d="M11 12l9 0" /> <path d="M11 18l9 0" /> </svg>',
+  ListDetailsIcon:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-list-details" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M13 5h8" /> <path d="M13 9h5" /> <path d="M13 15h8" /> <path d="M13 19h5" /> <path d="M3 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /> <path d="M3 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /> </svg>',
   MoonIcon:
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-moon" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008" /> </svg>',
   NewThreadIcon:
@@ -259,6 +261,7 @@ export const MessageCircleIcon: LynxIcon = createLynxIcon(ICON_CONTENT.MessageCi
 export const MicIcon: LynxIcon = createLynxIcon(ICON_CONTENT.MicIcon);
 export const MinusIcon: LynxIcon = createLynxIcon(ICON_CONTENT.MinusIcon);
 export const ListChecksIcon: LynxIcon = createLynxIcon(ICON_CONTENT.ListChecksIcon);
+export const ListDetailsIcon: LynxIcon = createLynxIcon(ICON_CONTENT.ListDetailsIcon);
 export const MoonIcon: LynxIcon = createLynxIcon(ICON_CONTENT.MoonIcon);
 export const NewThreadIcon: LynxIcon = createLynxIcon(ICON_CONTENT.NewThreadIcon);
 export const PaletteIcon: LynxIcon = createLynxIcon(ICON_CONTENT.PaletteIcon);
