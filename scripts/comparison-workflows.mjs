@@ -542,7 +542,10 @@ export async function workflowJ1(context) {
       };
     });
   } finally {
-    await deleteWorkflowThread(backend, thread?.threadId);
+    await deleteWorkflowThread(
+      backend,
+      thread?.threadId ?? (await threadWithMessage(backend, token).catch(() => null))?.id,
+    );
   }
   return { threadId: thread?.threadId, token };
 }
@@ -740,7 +743,10 @@ export async function workflowJ2(context) {
       return { renderedRows: rendered.length, atEnd: !(await scrollToBottomOffered(driver)) };
     });
   } finally {
-    await deleteWorkflowThread(backend, threadId);
+    await deleteWorkflowThread(
+      backend,
+      threadId ?? (await threadWithMessage(backend, `${token}-long`).catch(() => null))?.id,
+    );
   }
   return { threadId, token };
 }
