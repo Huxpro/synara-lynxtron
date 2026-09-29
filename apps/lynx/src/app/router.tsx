@@ -2714,6 +2714,10 @@ export function SliceRouter({
         invalidateTimer = null;
         if (!active) return;
         void queryClient.invalidateQueries({ queryKey: ["threads"] });
+        // The sidebar and Kanban board read the sidebar snapshot; refresh it on
+        // the same shell change instead of waiting for its 5s poll, as the web
+        // app updates both live.
+        void queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
       }, 50);
     });
     return () => {

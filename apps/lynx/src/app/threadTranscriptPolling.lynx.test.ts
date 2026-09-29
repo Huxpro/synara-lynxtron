@@ -24,6 +24,10 @@ describe("Lynx thread transcript polling", () => {
     expect(routerOwnerSource).toContain(
       'void queryClient.invalidateQueries({ queryKey: ["threads"] });',
     );
+    // Sidebar and Kanban statuses follow shell changes live, not only the 5s poll.
+    expect(routerOwnerSource).toContain(
+      'void queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });',
+    );
     expect(routerOwnerSource).toContain("className={`AppNotificationStack${");
     expect(routerOwnerSource).toContain('route.pathname === "/components-lab"');
     expect(routerOwnerSource).toContain('queryKey: ["thread-detail", activeThreadId]');
