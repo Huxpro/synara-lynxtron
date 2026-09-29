@@ -6,7 +6,19 @@
 import { ProjectId, ThreadId, type OrchestrationReadModel } from "@synara/contracts";
 import { describe, expect, it } from "vitest";
 
-import { getInactiveThreadIdsForRetention, THREAD_RETENTION_UNUSED_MS } from "./threadRetention";
+import {
+  getInactiveThreadIdsForRetention,
+  isThreadRetentionDisabled,
+  THREAD_RETENTION_UNUSED_MS,
+} from "./threadRetention";
+
+describe("thread retention configuration", () => {
+  it("disables retention only for the explicit comparison-harness value", () => {
+    expect(isThreadRetentionDisabled({ SYNARA_DISABLE_THREAD_RETENTION: "1" })).toBe(true);
+    expect(isThreadRetentionDisabled({ SYNARA_DISABLE_THREAD_RETENTION: "true" })).toBe(false);
+    expect(isThreadRetentionDisabled({})).toBe(false);
+  });
+});
 
 function makeReadModelThread(
   overrides: Partial<OrchestrationReadModel["threads"][number]> = {},

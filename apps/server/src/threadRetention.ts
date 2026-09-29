@@ -30,6 +30,11 @@ export const THREAD_RETENTION_INITIAL_SWEEP_DELAY_MS = 5 * 60 * 1000;
 export const THREAD_RETENTION_SWEEP_INTERVAL_MS = 24 * 60 * 60 * 1000;
 const THREAD_RETENTION_BATCH_SIZE = 25;
 const THREAD_RETENTION_BATCH_PAUSE_MS = 50;
+export const SYNARA_DISABLE_THREAD_RETENTION_ENV = "SYNARA_DISABLE_THREAD_RETENTION";
+
+export function isThreadRetentionDisabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  return env[SYNARA_DISABLE_THREAD_RETENTION_ENV]?.trim() === "1";
+}
 
 type RetentionThread =
   | OrchestrationReadModel["threads"][number]
@@ -236,6 +241,7 @@ export const startThreadRetentionJob = Effect.fn("startThreadRetentionJob")(func
   orchestrationEngine: OrchestrationEngineShape,
   projectionSnapshotQuery: ProjectionSnapshotQueryShape,
 ) {
+  if (isThreadRetentionDisabled()) return;
   const automationRepository = yield* AutomationRepository;
   // Give startup/projection bootstrap a short settling window, then run one
   // hide pass promptly so desktop installs do not need to stay open for 24 hours.

@@ -13,6 +13,27 @@ import { createConnection } from "node:net";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import {
+  comparisonFixtureMismatches,
+  openSynaraRpcSession,
+  readComparisonFixtureEntities,
+  readComparisonFixtureManifest,
+  resolveComparisonFixturePaths,
+} from "./comparison-fixture.mjs";
+import {
+  createRunManifest,
+  inspectNativeBackendConnections,
+  isTransientCdpContextError,
+  nativeBuildStampProblems,
+  nativeBundleHashes,
+  readJsonIfPresent,
+  recordPhase,
+  sha256File,
+  sourceIdentity,
+  writeNativeBuildStamp,
+  writeRunManifest,
+} from "./comparison-run.mjs";
+
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(scriptDirectory, "..");
 const defaultLynxDevtoolConnector =
@@ -27,8 +48,15 @@ export const COMPARISON_RENDERER_STORAGE_KEYS = Object.freeze([
   "synara:recent-views:v1",
 ]);
 
+// The pre-fixture seed's only visible ordinary-project thread. Kept for
+// `--seed legacy` reproductions of historical evidence.
+export const LEGACY_COMPARISON_THREAD_ID = "lynx-landing-thread-1787298664226-1b47e02983941";
+
 export const DEFAULT_DESKTOP_COMPARISON_OPTIONS = Object.freeze({
-  threadId: "lynx-landing-thread-1787298664226-1b47e02983941",
+  // null resolves to the seed's canonical thread (the fixture transcript).
+  threadId: null,
+  seed: "fixture",
+  exitAfterCertify: false,
   route: null,
   width: 1079,
   height: 803,
@@ -65,12 +93,22 @@ export function parseDesktopComparisonArgs(argv) {
       options.skipLynxDevtool = true;
       continue;
     }
+    if (argument === "--exit-after-certify") {
+      options.exitAfterCertify = true;
+      continue;
+    }
     const value = argv[index + 1];
     if (value === undefined) {
       throw new Error(`Missing value for ${argument}.`);
     }
     if (argument === "--thread") {
       options.threadId = value.trim();
+      if (!options.threadId) throw new Error("--thread requires a non-empty thread id.");
+    } else if (argument === "--seed") {
+      if (value !== "fixture" && value !== "legacy") {
+        throw new Error("--seed requires fixture or legacy.");
+      }
+      options.seed = value;
     } else if (argument === "--route") {
       options.route = value.trim();
     } else if (argument === "--width") {
@@ -118,9 +156,6 @@ export function parseDesktopComparisonArgs(argv) {
     }
     index += 1;
   }
-  if (!options.threadId) {
-    throw new Error("--thread requires a non-empty thread id.");
-  }
   if (
     options.route !== null &&
     (!options.route.startsWith("/") || options.route.startsWith("//"))
@@ -130,13 +165,32 @@ export function parseDesktopComparisonArgs(argv) {
   return options;
 }
 
+/**
+ * Fills seed-dependent defaults. The fixture seed must exist with its manifest:
+ * certifying against a missing fixture would silently fall back to whatever
+ * state happens to be on disk.
+ */
+export function resolveComparisonSeedOptions(options, fixtureManifest) {
+  if (options.seed === "legacy") {
+    return { ...options, threadId: options.threadId ?? LEGACY_COMPARISON_THREAD_ID };
+  }
+  if (!fixtureManifest) {
+    throw new Error(
+      "The comparison fixture is missing. Build it with `node scripts/comparison-fixture.mjs`.",
+    );
+  }
+  return { ...options, threadId: options.threadId ?? fixtureManifest.transcriptThreadId };
+}
+
 export function resolveDesktopComparisonPaths(
   root = repositoryRoot,
   sourceLynxtronAppOverride = process.env.SYNARA_COMPARE_LYNXTRON_APP?.trim(),
   exists = existsSync,
+  seed = "fixture",
 ) {
   const stateRoot = join(root, ".synara-desktop-comparison");
-  const seedHome = join(root, ".synara-pr84");
+  const seedHome =
+    seed === "legacy" ? join(root, ".synara-pr84") : resolveComparisonFixturePaths(root).seedHome;
   const electronHome = join(stateRoot, "electron");
   const electronUserDataDir = join(stateRoot, "electron-profile");
   const lynxUserDataDir = join(stateRoot, "lynx");
@@ -153,7 +207,10 @@ export function resolveDesktopComparisonPaths(
   return {
     root,
     stateRoot,
+    seed,
     seedHome,
+    runsDir: join(stateRoot, "runs"),
+    nativeBuildStamp: join(stateRoot, "native-build.json"),
     electronHome,
     electronUserDataDir,
     electronWindowState: join(electronHome, "userdata", "desktop-window-state.json"),
@@ -798,13 +855,16 @@ export function desktopComparisonCommands(options, paths, authToken, electronExe
         cwd: join(paths.root, "apps", "lynx"),
         env: {},
       },
+      // The Native bundle is endpoint-independent: the Lynxtron host hands the
+      // live backend URL to the renderer at load time, so one build serves every
+      // run and a stale port can never be compiled in.
+      {
+        command: "bun",
+        args: ["run", "build"],
+        cwd: join(paths.root, "apps", "lynx"),
+        env: { SYNARA_WS_URL: "" },
+      },
     ],
-    nativeBuild: {
-      command: "bun",
-      args: ["run", "build"],
-      cwd: join(paths.root, "apps", "lynx"),
-      env: {},
-    },
     web: {
       command: "bun",
       args: [
@@ -1103,32 +1163,310 @@ async function waitForRuntimeState(runtimePath, launchedAt, timeoutMs = 90_000) 
   throw new Error(`Timed out waiting for a fresh Electron runtime at ${runtimePath}.`);
 }
 
-async function configureElectronRenderer(
-  cdpPort,
-  options,
-  transcriptExpectation = null,
-  timeoutMs = 30_000,
-) {
-  const expectedUrl = comparisonWebUrl(options);
-  const startupUrl = comparisonElectronStartupUrl(options);
-  const theme = options.theme;
+const sleep = (ms) => new Promise((resolveWait) => setTimeout(resolveWait, ms));
+
+const ELECTRON_ACTIVITY_TRAIL_LIMIT = 400;
+
+/**
+ * Every Electron CDP evaluation goes through this client so a failure always
+ * carries the exact activity, request id, attempt, and timing that preceded it.
+ * Reloads legitimately destroy the execution context ("Promise was collected");
+ * idempotent reads retry through that, anything else fails loudly.
+ */
+export function createElectronCdpClient(socket, trail = []) {
+  let requestId = 0;
+  const evaluate = async (
+    expression,
+    activity,
+    { retryTransient = false, awaitPromise = true, timeoutMs = 5_000 } = {},
+  ) => {
+    for (let attempt = 1; ; attempt += 1) {
+      requestId += 1;
+      const startedAt = Date.now();
+      const entry = { at: new Date(startedAt).toISOString(), requestId, activity, attempt };
+      trail.push(entry);
+      if (trail.length > ELECTRON_ACTIVITY_TRAIL_LIMIT) {
+        trail.splice(0, trail.length - ELECTRON_ACTIVITY_TRAIL_LIMIT);
+      }
+      try {
+        const value = await evaluateElectronExpression(socket, requestId, expression, activity, {
+          awaitPromise,
+          timeoutMs,
+        });
+        entry.ms = Date.now() - startedAt;
+        entry.ok = true;
+        return value;
+      } catch (error) {
+        entry.ms = Date.now() - startedAt;
+        entry.ok = false;
+        entry.error = error instanceof Error ? error.message : String(error);
+        if (retryTransient && attempt < 3 && isTransientCdpContextError(entry.error)) {
+          await sleep(250);
+          continue;
+        }
+        throw error;
+      }
+    }
+  };
+  return { evaluate, trail };
+}
+
+async function pollElectron(cdp, expression, activity, isReady, timeoutMs, intervalMs = 100) {
   const deadline = Date.now() + timeoutMs;
-  let target = null;
+  let value = null;
+  while (Date.now() < deadline) {
+    value = await cdp.evaluate(expression, activity, { retryTransient: true });
+    if (isReady(value)) return { ready: true, value };
+    await sleep(intervalMs);
+  }
+  return { ready: false, value };
+}
+
+function transcriptAnchorReady(transcriptExpectation, readiness) {
+  return (
+    (transcriptExpectation.messageCount === 0 && readiness?.emptyStateRendered === true) ||
+    (readiness?.lastMessageRendered === true &&
+      readiness?.lastMessageVisible === true &&
+      readiness?.clientHeight > 0 &&
+      readiness?.scrollHeight >= readiness?.clientHeight)
+  );
+}
+
+async function findElectronPageTarget(cdpPort, startupUrl, timeoutMs) {
+  const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     try {
       const targets = await fetch(`http://127.0.0.1:${cdpPort}/json/list`).then((response) =>
         response.json(),
       );
-      target = targets.find(
+      const target = targets.find(
         (candidate) =>
           candidate.type === "page" &&
           new URL(candidate.url).origin === new URL(startupUrl).origin &&
           typeof candidate.webSocketDebuggerUrl === "string",
       );
-      if (target) break;
+      if (target) return target;
     } catch {}
-    await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+    await sleep(100);
   }
+  return null;
+}
+
+async function settleElectronRoute(cdp, expectedUrl) {
+  await cdp.evaluate(
+    comparisonRouteRestoreExpression(expectedUrl),
+    "restoring the Electron comparison route",
+    { retryTransient: true },
+  );
+  const routeDeadline = Date.now() + 30_000;
+  let stableRouteSince = 0;
+  let lastObservedRoute = null;
+  while (
+    Date.now() < routeDeadline &&
+    (stableRouteSince === 0 || Date.now() - stableRouteSince < 5_000)
+  ) {
+    const currentUrl = await cdp.evaluate(
+      "location.href",
+      "reading the Electron comparison route",
+      {
+        retryTransient: true,
+      },
+    );
+    lastObservedRoute = typeof currentUrl === "string" ? currentUrl : null;
+    if (typeof currentUrl === "string" && electronComparisonUrlMatches(currentUrl, expectedUrl)) {
+      if (stableRouteSince === 0) stableRouteSince = Date.now();
+    } else {
+      stableRouteSince = 0;
+      await cdp.evaluate(
+        comparisonRouteRestoreExpression(expectedUrl),
+        "reasserting the Electron comparison route",
+        { retryTransient: true },
+      );
+    }
+    await sleep(100);
+  }
+  if (stableRouteSince === 0 || Date.now() - stableRouteSince < 5_000) {
+    throw new Error(
+      `Timed out restoring the Electron comparison route ${expectedUrl}; last observed ${lastObservedRoute ?? "<unavailable>"}.`,
+    );
+  }
+}
+
+async function certifyElectronAnchor(cdp, identityThreadId, transcriptExpectation) {
+  const identity = await pollElectron(
+    cdp,
+    comparisonThreadIdentityReadyExpression(identityThreadId),
+    `confirming Electron sidebar identity ${identityThreadId}`,
+    (value) => value?.count >= 1 && value?.visibleActiveCount === 1,
+    15_000,
+  );
+  if (!identity.ready) {
+    throw new Error(
+      `Timed out confirming Electron sidebar identity ${identityThreadId}: ${JSON.stringify(identity.value)}.`,
+    );
+  }
+  const transcript = await pollElectron(
+    cdp,
+    comparisonTranscriptReadyExpression(transcriptExpectation),
+    `confirming Electron transcript anchor ${transcriptExpectation.lastMessageId ?? "<empty>"}`,
+    (value) => transcriptAnchorReady(transcriptExpectation, value),
+    15_000,
+  );
+  if (!transcript.ready) {
+    throw new Error(
+      `Timed out confirming Electron transcript anchor: ${JSON.stringify(transcript.value)}.`,
+    );
+  }
+  console.log(
+    `[compare:desktop] Electron transcript anchor verified: ${JSON.stringify(transcript.value)}.`,
+  );
+  const transientDeadline = Date.now() + 10_000;
+  let transientUi = null;
+  let cleanTransientSince = 0;
+  while (
+    (cleanTransientSince === 0 && Date.now() < transientDeadline) ||
+    (cleanTransientSince !== 0 && Date.now() - cleanTransientSince < 250)
+  ) {
+    transientUi = await cdp.evaluate(
+      comparisonTransientUiReadyExpression(),
+      "confirming clean Electron transient UI state",
+      { retryTransient: true },
+    );
+    const clean = Object.values(transientUi ?? {}).every(
+      (value) => typeof value !== "number" || value === 0,
+    );
+    cleanTransientSince = clean ? cleanTransientSince || Date.now() : 0;
+    await sleep(50);
+  }
+  if (cleanTransientSince === 0 || Date.now() - cleanTransientSince < 250) {
+    throw new Error(`Electron comparison retained transient UI: ${JSON.stringify(transientUi)}.`);
+  }
+  console.log(
+    `[compare:desktop] Electron transient UI verified clean: ${JSON.stringify(transientUi)}.`,
+  );
+  return { identity: identity.value, transcript: transcript.value, transientUi };
+}
+
+async function openElectronNewThreadLanding(cdp, options) {
+  const newThreadLandingExpression = comparisonNewThreadLandingReadyExpression(options);
+  if (!newThreadLandingExpression) return;
+  const openResult = await cdp.evaluate(
+    comparisonNewThreadOpenExpression(options),
+    "opening the Electron project landing through its rendered New thread action",
+  );
+  if (openResult?.clicked !== true) {
+    throw new Error(
+      `Unable to activate the Electron project New thread action: ${JSON.stringify(openResult)}.`,
+    );
+  }
+  const projectId = comparisonNewThreadProjectId(options);
+  const landing = await pollElectron(
+    cdp,
+    newThreadLandingExpression,
+    "confirming the Electron project landing",
+    (value) =>
+      value?.projectId === projectId &&
+      value?.composerRendered === true &&
+      value?.localControlRendered === true &&
+      value?.temporaryControlRendered === true &&
+      value?.projectTriggerRendered === true &&
+      value?.notFound === false,
+    15_000,
+  );
+  if (!landing.ready) {
+    throw new Error(
+      `Timed out confirming Electron project landing: ${JSON.stringify(landing.value)}.`,
+    );
+  }
+  console.log(
+    `[compare:desktop] Electron project landing verified: ${JSON.stringify(landing.value)}.`,
+  );
+}
+
+async function openElectronExplorer(cdp, options) {
+  const explorerExpression = comparisonExplorerOpenExpression(options);
+  if (!explorerExpression) return;
+  await cdp.evaluate(explorerExpression, "opening the canonical Electron Explorer fixture");
+  const explorerPath = comparisonExplorerPath(options);
+  if (!explorerPath) return;
+  const segments = explorerPath.split("/").filter(Boolean);
+  for (const targetPath of segments.map((_, index) => segments.slice(0, index + 1).join("/"))) {
+    const row = await pollElectron(
+      cdp,
+      comparisonExplorerRowClickExpression(targetPath),
+      `opening Electron Explorer row ${targetPath}`,
+      (clicked) => clicked === true,
+      15_000,
+    );
+    if (!row.ready) throw new Error(`Timed out opening Electron Explorer row ${targetPath}.`);
+  }
+  const preview = await pollElectron(
+    cdp,
+    comparisonExplorerReadyExpression(explorerPath),
+    `confirming Electron Explorer preview ${explorerPath}`,
+    (value) => value?.selected && value?.previewLoaded,
+    15_000,
+  );
+  if (!preview.ready) {
+    throw new Error(
+      `Timed out confirming Electron Explorer preview ${explorerPath}: ${JSON.stringify(preview.value)}.`,
+    );
+  }
+}
+
+async function openElectronDiff(cdp, options) {
+  const diffExpression = comparisonDiffOpenExpression(options);
+  if (!diffExpression) return;
+  await cdp.evaluate(diffExpression, "opening the canonical Electron Diff fixture");
+  const diff = await pollElectron(
+    cdp,
+    comparisonDiffReadyExpression(options),
+    "confirming the canonical Electron Diff fixture",
+    (value) => value?.paneOpen && value?.turnMatched && value?.rendered,
+    30_000,
+  );
+  if (!diff.ready) {
+    throw new Error(
+      `Timed out opening the canonical Electron Diff fixture: ${JSON.stringify(diff.value)}.`,
+    );
+  }
+}
+
+async function openElectronTerminal(cdp, options) {
+  const terminalThreadId = comparisonThreadId(options) ?? options.threadId;
+  await cdp.evaluate(
+    comparisonTerminalOpenExpression(terminalThreadId),
+    "opening the canonical Electron Terminal pane",
+  );
+  const terminal = await pollElectron(
+    cdp,
+    comparisonTerminalReadyExpression(terminalThreadId),
+    "confirming the canonical Electron Terminal pane",
+    (value) =>
+      value?.paneOpen === true &&
+      value?.terminalOpen === true &&
+      value?.rendered === true &&
+      value?.persistedDock === true &&
+      value?.persistedTerminal === true,
+    30_000,
+  );
+  if (!terminal.ready) {
+    throw new Error(
+      `Timed out opening the canonical Electron Terminal pane: ${JSON.stringify(terminal.value)}.`,
+    );
+  }
+}
+
+async function configureElectronRenderer(
+  cdpPort,
+  options,
+  transcriptExpectation = null,
+  trail = [],
+  timeoutMs = 30_000,
+) {
+  const expectedUrl = comparisonWebUrl(options);
+  const startupUrl = comparisonElectronStartupUrl(options);
+  const target = await findElectronPageTarget(cdpPort, startupUrl, timeoutMs);
   if (!target) {
     throw new Error(`Timed out waiting for the Electron page at ${expectedUrl}.`);
   }
@@ -1138,485 +1476,83 @@ async function configureElectronRenderer(
     socket.addEventListener("open", resolveOpen, { once: true });
     socket.addEventListener("error", rejectOpen, { once: true });
   });
-  await new Promise((resolveEvaluation, rejectEvaluation) => {
-    const timeout = setTimeout(
-      () => rejectEvaluation(new Error("Timed out refreshing comparison providers.")),
-      30_000,
-    );
-    const onMessage = (event) => {
-      const message = JSON.parse(String(event.data));
-      if (message.id !== 1) return;
-      socket.removeEventListener("message", onMessage);
-      clearTimeout(timeout);
-      const error = electronEvaluationError(message, "refreshing comparison providers");
-      if (error) rejectEvaluation(error);
-      else resolveEvaluation();
-    };
-    socket.addEventListener("message", onMessage);
-    socket.send(
-      JSON.stringify({
-        id: 1,
-        method: "Runtime.evaluate",
-        params: {
-          expression:
-            "import('/src/nativeApi.ts').then(({ ensureNativeApi }) => ensureNativeApi().server.refreshProviders()).then(() => undefined)",
-          awaitPromise: true,
-          returnByValue: true,
-        },
-      }),
-    );
-  });
-  await new Promise((resolveEvaluation, rejectEvaluation) => {
-    const timeout = setTimeout(
-      () => rejectEvaluation(new Error("Timed out configuring the Electron comparison state.")),
-      5_000,
-    );
-    socket.addEventListener("message", (event) => {
-      const message = JSON.parse(String(event.data));
-      if (message.id !== 2) return;
-      clearTimeout(timeout);
-      const error = electronEvaluationError(message, "configuring the Electron comparison state");
-      if (error) rejectEvaluation(error);
-      else resolveEvaluation();
-    });
-    socket.send(
-      JSON.stringify({
-        id: 2,
-        method: "Runtime.evaluate",
-        params: {
-          expression: comparisonRendererResetExpression(
-            theme,
-            options.appSnap,
-            options.chatFontSize,
-            comparisonElectronAnchorThreadId(options),
-          ),
-          returnByValue: true,
-        },
-      }),
-    );
-  });
-  let requestId = 2;
+  const cdp = createElectronCdpClient(socket, trail);
   try {
-    while (Date.now() < deadline) {
-      requestId += 1;
-      const rendererState = await new Promise((resolveEvaluation, rejectEvaluation) => {
-        const timeout = setTimeout(
-          () => rejectEvaluation(new Error("Timed out reading Electron comparison state.")),
-          5_000,
-        );
-        const onMessage = (event) => {
-          const message = JSON.parse(String(event.data));
-          if (message.id !== requestId) return;
-          socket.removeEventListener("message", onMessage);
-          clearTimeout(timeout);
-          const error = electronEvaluationError(message, "reading Electron comparison state");
-          if (error) {
-            rejectEvaluation(error);
-            return;
-          }
-          resolveEvaluation(message.result?.result?.value ?? {});
-        };
-        socket.addEventListener("message", onMessage);
-        socket.send(
-          JSON.stringify({
-            id: requestId,
-            method: "Runtime.evaluate",
-            params: {
-              expression: `Object.fromEntries(${JSON.stringify(
-                COMPARISON_RENDERER_STORAGE_KEYS,
-              )}.flatMap((key) => { const value = localStorage.getItem(key); return value === null ? [] : [[key, value]]; }))`,
-              returnByValue: true,
-            },
-          }),
-        );
-      });
-      if (typeof rendererState["synara:app-settings:v1"] === "string") {
-        requestId += 1;
-        await new Promise((resolveEvaluation, rejectEvaluation) => {
-          const timeout = setTimeout(
-            () => rejectEvaluation(new Error("Timed out restoring the Electron comparison route.")),
-            5_000,
-          );
-          const onMessage = (event) => {
-            const message = JSON.parse(String(event.data));
-            if (message.id !== requestId) return;
-            socket.removeEventListener("message", onMessage);
-            clearTimeout(timeout);
-            const error = electronEvaluationError(
-              message,
-              "restoring the Electron comparison route",
-            );
-            if (error) rejectEvaluation(error);
-            else resolveEvaluation();
-          };
-          socket.addEventListener("message", onMessage);
-          socket.send(
-            JSON.stringify({
-              id: requestId,
-              method: "Runtime.evaluate",
-              params: {
-                expression: comparisonRouteRestoreExpression(expectedUrl),
-                returnByValue: true,
-              },
-            }),
-          );
-        });
-        const routeDeadline = Date.now() + 30_000;
-        let stableRouteSince = 0;
-        let lastObservedRoute = null;
-        while (
-          Date.now() < routeDeadline &&
-          (stableRouteSince === 0 || Date.now() - stableRouteSince < 5_000)
-        ) {
-          requestId += 1;
-          const currentUrl = await new Promise((resolveEvaluation, rejectEvaluation) => {
-            const timeout = setTimeout(
-              () => rejectEvaluation(new Error("Timed out reading the Electron comparison route.")),
-              5_000,
-            );
-            const onMessage = (event) => {
-              const message = JSON.parse(String(event.data));
-              if (message.id !== requestId) return;
-              socket.removeEventListener("message", onMessage);
-              clearTimeout(timeout);
-              const error = electronEvaluationError(
-                message,
-                "reading the Electron comparison route",
-              );
-              if (error) rejectEvaluation(error);
-              else resolveEvaluation(message.result?.result?.value);
-            };
-            socket.addEventListener("message", onMessage);
-            socket.send(
-              JSON.stringify({
-                id: requestId,
-                method: "Runtime.evaluate",
-                params: { expression: "location.href", returnByValue: true },
-              }),
-            );
-          });
-          lastObservedRoute = typeof currentUrl === "string" ? currentUrl : null;
-          const routeMatches =
-            typeof currentUrl === "string" && electronComparisonUrlMatches(currentUrl, expectedUrl);
-          if (routeMatches) {
-            if (stableRouteSince === 0) stableRouteSince = Date.now();
-          } else {
-            stableRouteSince = 0;
-            requestId += 1;
-            await new Promise((resolveEvaluation, rejectEvaluation) => {
-              const timeout = setTimeout(
-                () =>
-                  rejectEvaluation(
-                    new Error("Timed out reasserting the Electron comparison route."),
-                  ),
-                5_000,
-              );
-              const onMessage = (event) => {
-                const message = JSON.parse(String(event.data));
-                if (message.id !== requestId) return;
-                socket.removeEventListener("message", onMessage);
-                clearTimeout(timeout);
-                const error = electronEvaluationError(
-                  message,
-                  "reasserting the Electron comparison route",
-                );
-                if (error) rejectEvaluation(error);
-                else resolveEvaluation();
-              };
-              socket.addEventListener("message", onMessage);
-              socket.send(
-                JSON.stringify({
-                  id: requestId,
-                  method: "Runtime.evaluate",
-                  params: {
-                    expression: comparisonRouteRestoreExpression(expectedUrl),
-                    returnByValue: true,
-                  },
-                }),
-              );
-            });
-          }
-          await new Promise((resolveWait) => setTimeout(resolveWait, 100));
-        }
-        if (stableRouteSince === 0 || Date.now() - stableRouteSince < 5_000) {
-          throw new Error(
-            `Timed out restoring the Electron comparison route ${expectedUrl}; last observed ${lastObservedRoute ?? "<unavailable>"}.`,
-          );
-        }
-        const identityThreadId = comparisonElectronAnchorThreadId(options);
-        if (identityThreadId) {
-          const identityDeadline = Date.now() + 15_000;
-          let identity = null;
-          while (Date.now() < identityDeadline) {
-            requestId += 1;
-            identity = await evaluateElectronExpression(
-              socket,
-              requestId,
-              comparisonThreadIdentityReadyExpression(identityThreadId),
-              `confirming Electron sidebar identity ${identityThreadId}`,
-            );
-            if (identity?.count >= 1 && identity?.visibleActiveCount === 1) break;
-            await new Promise((resolveWait) => setTimeout(resolveWait, 100));
-          }
-          if (identity?.count < 1 || identity?.visibleActiveCount !== 1) {
-            throw new Error(
-              `Timed out confirming Electron sidebar identity ${identityThreadId}: ${JSON.stringify(identity)}.`,
-            );
-          }
-          const transcriptDeadline = Date.now() + 15_000;
-          let transcriptReadiness = null;
-          while (Date.now() < transcriptDeadline) {
-            requestId += 1;
-            transcriptReadiness = await evaluateElectronExpression(
-              socket,
-              requestId,
-              comparisonTranscriptReadyExpression(transcriptExpectation),
-              `confirming Electron transcript anchor ${transcriptExpectation.lastMessageId ?? "<empty>"}`,
-            );
-            if (
-              (transcriptExpectation.messageCount === 0 &&
-                transcriptReadiness?.emptyStateRendered === true) ||
-              (transcriptReadiness?.lastMessageRendered === true &&
-                transcriptReadiness?.lastMessageVisible === true &&
-                transcriptReadiness?.clientHeight > 0 &&
-                transcriptReadiness?.scrollHeight >= transcriptReadiness?.clientHeight)
-            )
-              break;
-            await new Promise((resolveWait) => setTimeout(resolveWait, 100));
-          }
-          if (
-            !(
-              (transcriptExpectation.messageCount === 0 &&
-                transcriptReadiness?.emptyStateRendered === true) ||
-              (transcriptReadiness?.lastMessageRendered === true &&
-                transcriptReadiness?.lastMessageVisible === true &&
-                transcriptReadiness?.clientHeight > 0 &&
-                transcriptReadiness?.scrollHeight >= transcriptReadiness?.clientHeight)
-            )
-          ) {
-            throw new Error(
-              `Timed out confirming Electron transcript anchor: ${JSON.stringify(transcriptReadiness)}.`,
-            );
-          }
-          console.log(
-            `[compare:desktop] Electron transcript anchor verified: ${JSON.stringify(transcriptReadiness)}.`,
-          );
-          const transientDeadline = Date.now() + 10_000;
-          let transientUi = null;
-          let cleanTransientSince = 0;
-          while (
-            (cleanTransientSince === 0 && Date.now() < transientDeadline) ||
-            (cleanTransientSince !== 0 && Date.now() - cleanTransientSince < 250)
-          ) {
-            requestId += 1;
-            transientUi = await evaluateElectronExpression(
-              socket,
-              requestId,
-              comparisonTransientUiReadyExpression(),
-              "confirming clean Electron transient UI state",
-            );
-            const clean = Object.values(transientUi ?? {}).every(
-              (value) => typeof value !== "number" || value === 0,
-            );
-            cleanTransientSince = clean ? cleanTransientSince || Date.now() : 0;
-            await new Promise((resolveWait) => setTimeout(resolveWait, 50));
-          }
-          if (cleanTransientSince === 0 || Date.now() - cleanTransientSince < 250) {
-            throw new Error(
-              `Electron comparison retained transient UI: ${JSON.stringify(transientUi)}.`,
-            );
-          }
-          console.log(
-            `[compare:desktop] Electron transient UI verified clean: ${JSON.stringify(transientUi)}.`,
-          );
-        }
-        const newThreadLandingExpression = comparisonNewThreadLandingReadyExpression(options);
-        if (newThreadLandingExpression) {
-          requestId += 1;
-          const openResult = await evaluateElectronExpression(
-            socket,
-            requestId,
-            comparisonNewThreadOpenExpression(options),
-            "opening the Electron project landing through its rendered New thread action",
-          );
-          if (openResult?.clicked !== true) {
-            throw new Error(
-              `Unable to activate the Electron project New thread action: ${JSON.stringify(openResult)}.`,
-            );
-          }
-          const landingDeadline = Date.now() + 15_000;
-          let landingReadiness = null;
-          while (Date.now() < landingDeadline) {
-            requestId += 1;
-            landingReadiness = await evaluateElectronExpression(
-              socket,
-              requestId,
-              newThreadLandingExpression,
-              "confirming the Electron project landing",
-            );
-            if (
-              landingReadiness?.projectId === comparisonNewThreadProjectId(options) &&
-              landingReadiness?.composerRendered === true &&
-              landingReadiness?.localControlRendered === true &&
-              landingReadiness?.temporaryControlRendered === true &&
-              landingReadiness?.projectTriggerRendered === true &&
-              landingReadiness?.notFound === false
-            )
-              break;
-            await new Promise((resolveWait) => setTimeout(resolveWait, 100));
-          }
-          if (
-            landingReadiness?.projectId !== comparisonNewThreadProjectId(options) ||
-            landingReadiness?.composerRendered !== true ||
-            landingReadiness?.localControlRendered !== true ||
-            landingReadiness?.temporaryControlRendered !== true ||
-            landingReadiness?.projectTriggerRendered !== true ||
-            landingReadiness?.notFound !== false
-          ) {
-            throw new Error(
-              `Timed out confirming Electron project landing: ${JSON.stringify(landingReadiness)}.`,
-            );
-          }
-          console.log(
-            `[compare:desktop] Electron project landing verified: ${JSON.stringify(landingReadiness)}.`,
-          );
-        }
-        const explorerExpression = comparisonExplorerOpenExpression(options);
-        if (explorerExpression) {
-          requestId += 1;
-          await evaluateElectronExpression(
-            socket,
-            requestId,
-            explorerExpression,
-            "opening the canonical Electron Explorer fixture",
-          );
-          const explorerPath = comparisonExplorerPath(options);
-          if (explorerPath) {
-            const segments = explorerPath.split("/").filter(Boolean);
-            const targets = segments.map((_, index) => segments.slice(0, index + 1).join("/"));
-            for (const targetPath of targets) {
-              const targetDeadline = Date.now() + 15_000;
-              let clicked = false;
-              while (Date.now() < targetDeadline) {
-                requestId += 1;
-                clicked = await evaluateElectronExpression(
-                  socket,
-                  requestId,
-                  comparisonExplorerRowClickExpression(targetPath),
-                  `opening Electron Explorer row ${targetPath}`,
-                );
-                if (clicked) break;
-                await new Promise((resolveWait) => setTimeout(resolveWait, 100));
-              }
-              if (!clicked) {
-                throw new Error(`Timed out opening Electron Explorer row ${targetPath}.`);
-              }
-            }
-            const previewDeadline = Date.now() + 15_000;
-            let explorerReadiness = null;
-            while (Date.now() < previewDeadline) {
-              requestId += 1;
-              explorerReadiness = await evaluateElectronExpression(
-                socket,
-                requestId,
-                comparisonExplorerReadyExpression(explorerPath),
-                `confirming Electron Explorer preview ${explorerPath}`,
-              );
-              if (explorerReadiness?.selected && explorerReadiness?.previewLoaded) break;
-              await new Promise((resolveWait) => setTimeout(resolveWait, 100));
-            }
-            if (!explorerReadiness?.selected || !explorerReadiness?.previewLoaded) {
-              throw new Error(
-                `Timed out confirming Electron Explorer preview ${explorerPath}: ${JSON.stringify(explorerReadiness)}.`,
-              );
-            }
-          }
-        }
-        const diffExpression = comparisonDiffOpenExpression(options);
-        if (diffExpression) {
-          requestId += 1;
-          await evaluateElectronExpression(
-            socket,
-            requestId,
-            diffExpression,
-            "opening the canonical Electron Diff fixture",
-          );
-          const diffDeadline = Date.now() + 30_000;
-          let diffReadiness = null;
-          while (Date.now() < diffDeadline) {
-            requestId += 1;
-            diffReadiness = await evaluateElectronExpression(
-              socket,
-              requestId,
-              comparisonDiffReadyExpression(options),
-              "confirming the canonical Electron Diff fixture",
-            );
-            if (diffReadiness?.paneOpen && diffReadiness?.turnMatched && diffReadiness?.rendered)
-              break;
-            await new Promise((resolveWait) => setTimeout(resolveWait, 100));
-          }
-          if (!diffReadiness?.paneOpen || !diffReadiness?.turnMatched || !diffReadiness?.rendered) {
-            throw new Error(
-              `Timed out opening the canonical Electron Diff fixture: ${JSON.stringify(diffReadiness)}.`,
-            );
-          }
-        }
-        if (options.terminal === "open") {
-          const terminalThreadId = comparisonThreadId(options) ?? options.threadId;
-          requestId += 1;
-          await evaluateElectronExpression(
-            socket,
-            requestId,
-            comparisonTerminalOpenExpression(terminalThreadId),
-            "opening the canonical Electron Terminal pane",
-          );
-
-          const terminalDeadline = Date.now() + 30_000;
-          let lastTerminalReadiness = null;
-          while (Date.now() < terminalDeadline) {
-            requestId += 1;
-            lastTerminalReadiness = await evaluateElectronExpression(
-              socket,
-              requestId,
-              comparisonTerminalReadyExpression(terminalThreadId),
-              "confirming the canonical Electron Terminal pane",
-            );
-            if (
-              lastTerminalReadiness?.paneOpen === true &&
-              lastTerminalReadiness?.terminalOpen === true &&
-              lastTerminalReadiness?.rendered === true &&
-              lastTerminalReadiness?.persistedDock === true &&
-              lastTerminalReadiness?.persistedTerminal === true
-            ) {
-              break;
-            }
-            await new Promise((resolveWait) => setTimeout(resolveWait, 100));
-          }
-          if (
-            lastTerminalReadiness?.paneOpen !== true ||
-            lastTerminalReadiness?.terminalOpen !== true ||
-            lastTerminalReadiness?.rendered !== true ||
-            lastTerminalReadiness?.persistedDock !== true ||
-            lastTerminalReadiness?.persistedTerminal !== true
-          ) {
-            throw new Error(
-              `Timed out opening the canonical Electron Terminal pane: ${JSON.stringify(lastTerminalReadiness)}.`,
-            );
-          }
-
-          requestId += 1;
-          return await evaluateElectronExpression(
-            socket,
-            requestId,
-            comparisonRendererStateExpression(),
-            "reading synchronized Electron comparison state",
-          );
-        }
-        return rendererState;
-      }
-      await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+    // A page target exists before its document commits. Module imports only
+    // resolve once the dev-server document has loaded, so gate on that
+    // explicitly instead of relying on incidental startup delay.
+    const expectedOrigin = new URL(startupUrl).origin;
+    const document = await pollElectron(
+      cdp,
+      "({ origin: location.origin, readyState: document.readyState })",
+      "waiting for the Electron document to load",
+      (value) => value?.origin === expectedOrigin && value?.readyState === "complete",
+      timeoutMs,
+    );
+    if (!document.ready) {
+      throw new Error(
+        `Timed out waiting for the Electron document at ${expectedOrigin}: ${JSON.stringify(document.value)}.`,
+      );
     }
-    throw new Error("Timed out waiting for canonical Electron app settings.");
+    // Settle provider status before either renderer is retained, so both read
+    // the same provider snapshot.
+    await cdp.evaluate(
+      "import('/src/nativeApi.ts').then(({ ensureNativeApi }) => ensureNativeApi().server.refreshProviders()).then(() => undefined)",
+      "refreshing comparison providers",
+      { retryTransient: true, timeoutMs: 30_000 },
+    );
+    // The reset reloads the page synchronously at its end; it must not await.
+    await cdp.evaluate(
+      comparisonRendererResetExpression(
+        options.theme,
+        options.appSnap,
+        options.chatFontSize,
+        comparisonElectronAnchorThreadId(options),
+      ),
+      "configuring the Electron comparison state",
+      { awaitPromise: false },
+    );
+    const settings = await pollElectron(
+      cdp,
+      comparisonRendererStateExpression(),
+      "reading Electron comparison state",
+      (state) => typeof state?.["synara:app-settings:v1"] === "string",
+      timeoutMs,
+    );
+    if (!settings.ready) throw new Error("Timed out waiting for canonical Electron app settings.");
+    const rendererState = settings.value;
+
+    await settleElectronRoute(cdp, expectedUrl);
+    const identityThreadId = comparisonElectronAnchorThreadId(options);
+    const anchor = identityThreadId
+      ? await certifyElectronAnchor(cdp, identityThreadId, transcriptExpectation)
+      : null;
+    await openElectronNewThreadLanding(cdp, options);
+    await openElectronExplorer(cdp, options);
+    await openElectronDiff(cdp, options);
+    if (options.terminal === "open") {
+      await openElectronTerminal(cdp, options);
+      return {
+        rendererState: await cdp.evaluate(
+          comparisonRendererStateExpression(),
+          "reading synchronized Electron comparison state",
+          { retryTransient: true },
+        ),
+        anchor,
+      };
+    }
+    return { rendererState, anchor };
+  } catch (error) {
+    const recent = trail
+      .slice(-8)
+      .map(
+        (entry) =>
+          `#${entry.requestId} ${entry.activity} attempt=${entry.attempt} ${entry.ok ? "ok" : `failed: ${entry.error}`} ${entry.ms ?? "?"}ms`,
+      );
+    throw new Error(
+      `${error instanceof Error ? error.message : String(error)}\nRecent Electron activity:\n  ${recent.join("\n  ")}`,
+      { cause: error },
+    );
   } finally {
     socket.close();
   }
@@ -1640,9 +1576,18 @@ export function electronEvaluationError(message, activity) {
   return new Error(`Failed ${activity}: ${description}`);
 }
 
-function evaluateElectronExpression(socket, requestId, expression, activity) {
+function evaluateElectronExpression(
+  socket,
+  requestId,
+  expression,
+  activity,
+  { awaitPromise = true, timeoutMs = 5_000 } = {},
+) {
   return new Promise((resolveEvaluation, rejectEvaluation) => {
-    const timeout = setTimeout(() => rejectEvaluation(new Error(`Timed out ${activity}.`)), 5_000);
+    const timeout = setTimeout(() => {
+      socket.removeEventListener("message", onMessage);
+      rejectEvaluation(new Error(`Timed out ${activity}.`));
+    }, timeoutMs);
     const onMessage = (event) => {
       const message = JSON.parse(String(event.data));
       if (message.id !== requestId) return;
@@ -1660,7 +1605,7 @@ function evaluateElectronExpression(socket, requestId, expression, activity) {
       JSON.stringify({
         id: requestId,
         method: "Runtime.evaluate",
-        params: { expression, awaitPromise: true, returnByValue: true },
+        params: { expression, awaitPromise, returnByValue: true },
       }),
     );
   });
@@ -1710,9 +1655,93 @@ async function resolveElectronExecutable(webUrl) {
   return launcher.resolveElectronPath();
 }
 
+export function ownedComparisonPidsFromPs(output, paths, electronExecutable, webPort) {
+  return {
+    lynxtron: ownedLynxtronPidsFromPs(output, paths.ownedLynxtronExecutable),
+    electron: ownedElectronPidsFromPs(output, electronExecutable, paths.electronUserDataDir),
+    web: ownedWebPidsFromPs(output, join(paths.root, "apps", "web"), webPort),
+  };
+}
+
+function listOwnedComparisonProcesses(paths, electronExecutable, webPort) {
+  const processes = spawnSync("ps", ["-axo", "pid=,command="], { encoding: "utf8" });
+  if (processes.status !== 0) {
+    throw new Error(`Failed to inspect owned processes: ${processes.stderr.trim()}`);
+  }
+  return ownedComparisonPidsFromPs(processes.stdout, paths, electronExecutable, webPort);
+}
+
+/**
+ * Every Native socket must reach the certified backend. The Lynxtron host owns
+ * all renderer transports (RPC, streams, Terminal), so its established TCP
+ * connections are the ground truth for "which server is this window using".
+ */
+async function verifyNativeBackendConnections(paths, lynx, runtimePort, devtoolPort, timeoutMs) {
+  const deadline = Date.now() + timeoutMs;
+  let last = null;
+  while (Date.now() < deadline) {
+    const processes = spawnSync("ps", ["-axo", "pid=,command="], { encoding: "utf8" });
+    const pids = [
+      ...new Set([
+        ...(lynx.pid ? [lynx.pid] : []),
+        ...ownedLynxtronPidsFromPs(processes.stdout ?? "", paths.ownedLynxtronExecutable),
+      ]),
+    ];
+    last = inspectNativeBackendConnections(pids, { runtimePort, devtoolPort });
+    if (last.violations.length > 0) {
+      throw new Error(
+        `Native process is connected to a backend other than 127.0.0.1:${runtimePort}: ${JSON.stringify(last.violations)}.`,
+      );
+    }
+    if (last.backend.length > 0) return last;
+    await sleep(250);
+  }
+  throw new Error(
+    `Native process never connected to the certified backend 127.0.0.1:${runtimePort}: ${JSON.stringify(last)}.`,
+  );
+}
+
+async function readBackendIdentity(socketUrl) {
+  const session = await openSynaraRpcSession(socketUrl, "comparison-harness");
+  try {
+    const snapshot = await session.request("orchestration.getSnapshot", {});
+    return {
+      serverInstanceId: session.serverInstanceId,
+      snapshotSequence: snapshot?.snapshotSequence ?? null,
+      visibleThreadIds: (snapshot?.threads ?? [])
+        .filter((thread) => thread.deletedAt === null && thread.archivedAt === null)
+        .map((thread) => thread.id)
+        .sort(),
+    };
+  } finally {
+    session.close();
+  }
+}
+
+function eventTypesAfter(databasePath, sequence) {
+  const result = spawnSync(
+    "sqlite3",
+    [
+      "-json",
+      databasePath,
+      `select event_type as type, count(*) as count from orchestration_events where sequence > ${Number(sequence)} group by event_type order by event_type;`,
+    ],
+    { encoding: "utf8" },
+  );
+  return result.status === 0
+    ? JSON.parse(result.stdout || "[]")
+    : [{ error: result.stderr.trim() }];
+}
+
 async function main() {
-  const options = parseDesktopComparisonArgs(process.argv.slice(2));
-  const paths = resolveDesktopComparisonPaths();
+  const parsedOptions = parseDesktopComparisonArgs(process.argv.slice(2));
+  const fixtureManifest = parsedOptions.seed === "fixture" ? readComparisonFixtureManifest() : null;
+  const options = resolveComparisonSeedOptions(parsedOptions, fixtureManifest);
+  const paths = resolveDesktopComparisonPaths(repositoryRoot, undefined, existsSync, options.seed);
+  const runId = `${new Date().toISOString().replace(/[:.]/g, "-")}-${process.pid}`;
+  const run = createRunManifest({ runId, options, paths });
+  const persistRun = () => writeRunManifest(paths.runsDir, run);
+  persistRun();
   const authToken =
     process.env.SYNARA_COMPARE_AUTH_TOKEN?.trim() || "synara-local-desktop-comparison";
   const electronExecutable = await resolveElectronExecutable(comparisonElectronStartupUrl(options));
@@ -1730,31 +1759,56 @@ async function main() {
     stopExistingOwnedElectronRuntime(paths, electronExecutable);
     stopExistingOwnedWebRuntime(paths, options.webPort);
   };
+  const trackChild = (name, child) => {
+    child.once("exit", (code, signal) => {
+      run.children.push({
+        name,
+        pid: child.pid ?? null,
+        code,
+        signal,
+        at: new Date().toISOString(),
+        duringShutdown: shuttingDown,
+      });
+    });
+  };
 
-  const shutdown = (exitCode) => {
+  // Stops every owned process, then proves none survived before exiting. The
+  // cleanup result is part of the run evidence.
+  const shutdown = (exitCode, reason) => {
     if (shuttingDown) return;
     shuttingDown = true;
+    recordPhase(run, "shutdown", { reason, exitCode });
     stopAllOwned("SIGTERM");
     setTimeout(() => {
       stopAllOwned("SIGKILL");
-      process.exit(exitCode);
+      setTimeout(() => {
+        const leftovers = listOwnedComparisonProcesses(paths, electronExecutable, options.webPort);
+        const clean = Object.values(leftovers).every((pids) => pids.length === 0);
+        run.cleanup = { at: new Date().toISOString(), clean, leftovers };
+        run.endedAt = new Date().toISOString();
+        persistRun();
+        console.log(
+          `[compare:desktop] Cleanup ${clean ? "verified" : "FAILED"}: ${JSON.stringify(leftovers)}.`,
+        );
+        process.exit(clean ? exitCode : 1);
+      }, 500);
     }, 1_500);
   };
   for (const signal of ["SIGINT", "SIGTERM", "SIGHUP"]) {
-    process.once(signal, () => shutdown(0));
+    process.once(signal, () => shutdown(0, signal));
   }
-  process.stdin.once("close", () => shutdown(0));
-  process.once("disconnect", () => shutdown(0));
+  process.stdin.once("close", () => shutdown(0, "stdin-closed"));
+  process.once("disconnect", () => shutdown(0, "disconnect"));
   const parentPid = process.ppid;
   const parentWatchdog = setInterval(() => {
     if (process.ppid === 1) {
-      shutdown(0);
+      shutdown(0, "parent-exited");
       return;
     }
     try {
       process.kill(parentPid, 0);
     } catch {
-      shutdown(0);
+      shutdown(0, "parent-exited");
     }
   }, 500);
   parentWatchdog.unref();
@@ -1771,13 +1825,54 @@ async function main() {
     }
     if (!options.skipBuild) {
       for (const command of commands.preRuntimeBuild) await runCommand(command);
+      writeNativeBuildStamp(paths.nativeBuildStamp, {
+        builtAt: new Date().toISOString(),
+        source: sourceIdentity(paths.root),
+        bundles: nativeBundleHashes(paths.lynxApp),
+      });
     }
     if (!existsSync(paths.electronEntry)) {
       throw new Error("Electron comparison artifacts are missing. Run without --skip-build.");
     }
+    // A reused bundle must match the current Native sources exactly.
+    const buildStamp = readJsonIfPresent(paths.nativeBuildStamp);
+    const currentSource = sourceIdentity(paths.root);
+    const currentBundles = nativeBundleHashes(paths.lynxApp);
+    const stampProblems = nativeBuildStampProblems(buildStamp, currentSource, currentBundles);
+    run.build = { skipped: options.skipBuild, stamp: buildStamp, source: currentSource };
+    if (stampProblems.length > 0) {
+      throw new Error(`Refusing to certify a stale Native bundle: ${stampProblems.join("; ")}.`);
+    }
+    recordPhase(run, "build-verified", { bundles: currentBundles });
+
     stopExistingOwnedElectronRuntime(paths, electronExecutable);
     prepareDesktopComparisonHome(paths);
     prepareOwnedLynxtronRuntime(paths);
+    run.lynxtron = {
+      packageVersion: JSON.parse(readFileSync(paths.lynxtronPackageJson, "utf8")).version,
+      sourceApp: paths.sourceLynxtronApp,
+      frameworkSha256: sha256File(
+        join(
+          paths.ownedLynxtronApp,
+          "Contents",
+          "Frameworks",
+          "Lynxtron Framework.framework",
+          "Versions",
+          "1.0",
+          "Lynxtron Framework",
+        ),
+      ),
+    };
+    const clonedDatabase = join(paths.electronHome, "dev", "state.sqlite");
+    if (fixtureManifest) {
+      const mismatches = comparisonFixtureMismatches(
+        fixtureManifest,
+        readComparisonFixtureEntities(clonedDatabase),
+      );
+      if (mismatches.length > 0) {
+        throw new Error(`Cloned fixture does not match fixture.json: ${mismatches.join("; ")}.`);
+      }
+    }
     const routedThreadId = comparisonThreadId(options);
     const electronAnchorThreadId = comparisonElectronAnchorThreadId(options);
     if (routedThreadId) assertComparisonThreadAvailable(paths, routedThreadId);
@@ -1787,15 +1882,32 @@ async function main() {
     const transcriptExpectation = electronAnchorThreadId
       ? readComparisonTranscriptExpectation(paths, electronAnchorThreadId)
       : null;
+    run.seed = {
+      kind: options.seed,
+      seedHome: paths.seedHome,
+      fixture: fixtureManifest
+        ? {
+            createdAt: fixtureManifest.createdAt,
+            projectId: fixtureManifest.projectId,
+            workspaceRoot: fixtureManifest.workspaceRoot,
+            sequence: fixtureManifest.sequence,
+          }
+        : null,
+      threadId: electronAnchorThreadId,
+      transcriptExpectation,
+    };
+    recordPhase(run, "seed-verified");
     writeComparisonWindowStates(paths, options);
 
     const web = startOwned(commands.web);
     ownedChildren.push(web);
+    trackChild("web", web);
     await waitForPort(options.webPort);
 
     const launchedAt = Date.now();
     const electron = startOwned(commands.electron);
     ownedChildren.push(electron);
+    trackChild("electron", electron);
     const electronReadyTimeoutMs = Number.parseInt(
       process.env.SYNARA_COMPARE_ELECTRON_READY_TIMEOUT_MS ?? "90000",
       10,
@@ -1810,33 +1922,92 @@ async function main() {
     await waitForPort(runtime.port);
     const socketUrl = new URL(`ws://127.0.0.1:${runtime.port}`);
     socketUrl.searchParams.set("token", authToken);
-    commands.nativeBuild.env.SYNARA_WS_URL = socketUrl.toString();
-    await runCommand(commands.nativeBuild);
-    if (!existsSync(paths.lynxApp)) {
-      throw new Error("Native comparison artifacts are missing after the runtime-pinned build.");
+    run.backend = {
+      port: runtime.port,
+      pid: runtime.pid,
+      stateDir: join(paths.electronHome, "dev"),
+      ...(await readBackendIdentity(socketUrl.toString())),
+    };
+    if (electronAnchorThreadId && !run.backend.visibleThreadIds.includes(electronAnchorThreadId)) {
+      throw new Error(
+        `Backend ${run.backend.serverInstanceId} does not expose thread ${electronAnchorThreadId}.`,
+      );
     }
-    const rendererState = await configureElectronRenderer(
+    recordPhase(run, "backend-verified");
+    persistRun();
+
+    const electronResult = await configureElectronRenderer(
       options.electronCdpPort,
       options,
       transcriptExpectation,
+      run.activity,
     );
-    writeComparisonRendererState(paths, rendererState, options.theme);
+    run.electron = { anchor: electronResult.anchor, cdpPort: options.electronCdpPort };
+    writeComparisonRendererState(paths, electronResult.rendererState, options.theme);
+    recordPhase(run, "electron-certified");
 
     commands.lynx.env.SYNARA_WS_URL = socketUrl.toString();
     const lynx = startOwned(commands.lynx);
     ownedChildren.push(lynx);
+    trackChild("lynxtron", lynx);
     const lynxDevtool = options.skipLynxDevtool
       ? null
       : await waitForOwnedDevtoolListener(lynx, options.lynxDevtoolPort);
+    let nativeIdentity = null;
     if (lynxDevtool !== null && routedThreadId) {
       const route = options.route === null ? null : new URL(options.route, "http://synara.local");
-      await verifyOwnedNativeThreadIdentity(
+      nativeIdentity = await verifyOwnedNativeThreadIdentity(
         lynxDevtool.port,
         routedThreadId,
         transcriptExpectation,
         route?.searchParams.get("editor") !== "open",
       );
     }
+    const connections = await verifyNativeBackendConnections(
+      paths,
+      lynx,
+      runtime.port,
+      lynxDevtool?.port ?? null,
+      15_000,
+    );
+    run.native = {
+      pid: lynx.pid ?? null,
+      devtool: lynxDevtool,
+      identity: nativeIdentity,
+      connections,
+    };
+    recordPhase(run, "native-certified");
+
+    // Data freeze: the certified entities must be unchanged after both
+    // renderers attached. Any events appended meanwhile are recorded by type.
+    const backendAfter = await readBackendIdentity(socketUrl.toString());
+    run.backend.after = backendAfter;
+    run.backend.eventsSinceSeed = fixtureManifest
+      ? eventTypesAfter(clonedDatabase, fixtureManifest.sequence)
+      : null;
+    if (backendAfter.serverInstanceId !== run.backend.serverInstanceId) {
+      throw new Error("The backend restarted during certification.");
+    }
+    if (fixtureManifest && run.backend.eventsSinceSeed.length > 0) {
+      // The fixture already contains everything the app settles on first
+      // launch; any event now means a renderer mutated the certified data.
+      throw new Error(
+        `Data changed during certification: ${JSON.stringify(run.backend.eventsSinceSeed)}.`,
+      );
+    }
+    if (fixtureManifest) {
+      const entities = readComparisonFixtureEntities(clonedDatabase);
+      const mismatches = comparisonFixtureMismatches(
+        { ...fixtureManifest, sequence: entities.sequence },
+        entities,
+      );
+      if (mismatches.length > 0) {
+        throw new Error(`Fixture entities changed during certification: ${mismatches.join("; ")}.`);
+      }
+    }
+    run.status = "certified";
+    recordPhase(run, "certified");
+    persistRun();
 
     console.log(
       `[compare:desktop] Electron and Lynxtron are opening ${
@@ -1848,6 +2019,7 @@ async function main() {
         ? `[compare:desktop] Web ${options.webPort}, Electron CDP ${options.electronCdpPort}; Lynx DevTool certification explicitly skipped. Press Ctrl-C to stop owned processes.`
         : `[compare:desktop] Web ${options.webPort}, Electron CDP ${options.electronCdpPort}, Lynx DevTool ${lynxDevtool.port} (owned PID ${lynxDevtool.pid}, verified LISTEN; preferred ${options.lynxDevtoolPort}). Press Ctrl-C to stop owned processes.`,
     );
+    console.log(`[compare:desktop] Run manifest: ${join(paths.runsDir, `${runId}.json`)}.`);
 
     for (const [name, child] of [
       ["Electron", electron],
@@ -1855,7 +2027,7 @@ async function main() {
     ]) {
       child.once("error", (error) => {
         console.error(`[compare:desktop] ${name} failed to start:`, error);
-        shutdown(1);
+        shutdown(1, `${name}-start-error`);
       });
       child.once("exit", (code, signal) => {
         if (name === "Lynxtron" && code === 0 && !signal) {
@@ -1866,15 +2038,20 @@ async function main() {
           console.error(
             `[compare:desktop] ${name} exited unexpectedly (${signal ?? `code ${code ?? 0}`}).`,
           );
-          shutdown(code ?? 1);
+          shutdown(code ?? 1, `${name}-exited`);
         }
       });
     }
+    if (options.exitAfterCertify) shutdown(0, "exit-after-certify");
   } catch (error) {
-    for (const child of ownedChildren.toReversed()) stopOwned(child, "SIGTERM");
-    await new Promise((resolveWait) => setTimeout(resolveWait, 1_500));
-    for (const child of ownedChildren.toReversed()) stopOwned(child, "SIGKILL");
-    throw error;
+    run.status = "failed";
+    run.error = error instanceof Error ? error.message : String(error);
+    recordPhase(run, "failed");
+    persistRun();
+    console.error(`[compare:desktop] ${run.error}`);
+    // Route failures through the same verified cleanup as a normal exit so a
+    // failed run also proves it left nothing behind.
+    shutdown(1, "failure");
   }
 }
 

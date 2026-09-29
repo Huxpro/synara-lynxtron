@@ -4,6 +4,10 @@ import { spawnSync } from "node:child_process";
 import {
   DEFAULT_DESKTOP_COMPARISON_OPTIONS,
   COMPARISON_RENDERER_STORAGE_KEYS,
+  LEGACY_COMPARISON_THREAD_ID,
+  createElectronCdpClient,
+  ownedComparisonPidsFromPs,
+  resolveComparisonSeedOptions,
   assertComparisonThreadAvailable,
   readComparisonTranscriptExpectation,
   comparisonLynxDeepLink,
@@ -50,8 +54,46 @@ import { platform, tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 
 describe("Electron and Lynxtron comparison launcher", () => {
-  it("uses the long-lived comparison thread and matched dimensions by default", () => {
+  it("uses the canonical fixture seed and matched dimensions by default", () => {
     expect(parseDesktopComparisonArgs([])).toEqual(DEFAULT_DESKTOP_COMPARISON_OPTIONS);
+    expect(DEFAULT_DESKTOP_COMPARISON_OPTIONS).toMatchObject({
+      threadId: null,
+      seed: "fixture",
+      exitAfterCertify: false,
+    });
+  });
+
+  it("resolves the default thread from the seed and refuses a missing fixture", () => {
+    const defaults = parseDesktopComparisonArgs([]);
+    expect(
+      resolveComparisonSeedOptions(defaults, { transcriptThreadId: "fixture-thread" }).threadId,
+    ).toBe("fixture-thread");
+    expect(() => resolveComparisonSeedOptions(defaults, null)).toThrow(
+      "The comparison fixture is missing.",
+    );
+    expect(
+      resolveComparisonSeedOptions(parseDesktopComparisonArgs(["--seed", "legacy"]), null).threadId,
+    ).toBe(LEGACY_COMPARISON_THREAD_ID);
+    expect(
+      resolveComparisonSeedOptions(parseDesktopComparisonArgs(["--thread", "explicit"]), {
+        transcriptThreadId: "fixture-thread",
+      }).threadId,
+    ).toBe("explicit");
+    expect(() => parseDesktopComparisonArgs(["--seed", "other"])).toThrow(
+      "--seed requires fixture or legacy.",
+    );
+    expect(() => parseDesktopComparisonArgs(["--thread", " "])).toThrow(
+      "--thread requires a non-empty thread id.",
+    );
+  });
+
+  it("clones the fixture seed by default and the pre-fixture seed only on request", () => {
+    expect(resolveDesktopComparisonPaths("/repo").seedHome).toBe(
+      "/repo/.synara-desktop-comparison/fixture/seed",
+    );
+    expect(resolveDesktopComparisonPaths("/repo", undefined, existsSync, "legacy").seedHome).toBe(
+      "/repo/.synara-pr84",
+    );
   });
 
   it("supports an explicit comparison-only Lynxtron runtime without changing dependencies", () => {
@@ -102,9 +144,14 @@ describe("Electron and Lynxtron comparison launcher", () => {
         "18",
         "--skip-build",
         "--skip-lynx-devtool",
+        "--seed",
+        "legacy",
+        "--exit-after-certify",
       ]),
     ).toEqual({
       threadId: "thread-two",
+      seed: "legacy",
+      exitAfterCertify: true,
       route: "/settings/advanced",
       width: 1280,
       height: 820,
@@ -241,8 +288,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(
       comparisonExplorerPath(parseDesktopComparisonArgs(["--route", "/settings/general"])),
     ).toBeNull();
-    expect(comparisonThreadId(parseDesktopComparisonArgs([]))).toBe(
-      DEFAULT_DESKTOP_COMPARISON_OPTIONS.threadId,
+    expect(comparisonThreadId(parseDesktopComparisonArgs(["--thread", "thread-default"]))).toBe(
+      "thread-default",
     );
   });
 
@@ -641,7 +688,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
   it("generates commands with one home, endpoint credential, and matched route", () => {
     const paths = resolveDesktopComparisonPaths("/repo");
     const commands = desktopComparisonCommands(
-      DEFAULT_DESKTOP_COMPARISON_OPTIONS,
+      { ...DEFAULT_DESKTOP_COMPARISON_OPTIONS, threadId: LEGACY_COMPARISON_THREAD_ID },
       paths,
       "comparison-token",
       "/runtime/electron",
@@ -681,18 +728,21 @@ describe("Electron and Lynxtron comparison launcher", () => {
         SYNARA_MANAGED_RELAUNCH: "1",
       },
     });
-    expect(commands.preRuntimeBuild).toHaveLength(3);
-    expect(commands.preRuntimeBuild.at(-1)).toMatchObject({
+    expect(commands.preRuntimeBuild).toHaveLength(4);
+    expect(commands.preRuntimeBuild.at(-2)).toMatchObject({
       command: "bun",
       args: ["run", "build:web"],
       cwd: "/repo/apps/lynx",
     });
-    expect(commands.nativeBuild).toMatchObject({
+    // One endpoint-independent Native build per source state; the live backend
+    // reaches the renderer through the host at load time.
+    expect(commands.preRuntimeBuild.at(-1)).toMatchObject({
       command: "bun",
       args: ["run", "build"],
       cwd: "/repo/apps/lynx",
-      env: {},
+      env: { SYNARA_WS_URL: "" },
     });
+    expect(commands).not.toHaveProperty("nativeBuild");
   });
 
   it("makes an inspector-disabled visual run explicit in both build and readiness gates", () => {
@@ -704,7 +754,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       "/runtime/electron",
     );
 
-    expect(commands.nativeBuild.env).toEqual({});
+    expect(commands.preRuntimeBuild.at(-1)?.env).toEqual({ SYNARA_WS_URL: "" });
     expect(options.skipLynxDevtool).toBe(true);
   });
 
@@ -992,49 +1042,99 @@ describe("Electron and Lynxtron comparison launcher", () => {
     const source = readFileSync(new URL("./dev-electron-lynxtron.mjs", import.meta.url), "utf8");
     const configureSource = source.slice(
       source.indexOf("async function configureElectronRenderer"),
-      source.indexOf("function runCommand"),
+      source.indexOf("function comparisonRendererStateExpression"),
     );
-    expect(source).toContain("ensureNativeApi().server.refreshProviders()");
-    expect(source.indexOf("await waitForRuntimeState")).toBeLessThan(
-      source.indexOf("await runCommand(commands.nativeBuild)"),
+    const mainSource = source.slice(source.indexOf("async function main()"));
+    // Module imports resolve only after the dev-server document commits.
+    expect(configureSource.indexOf('value?.readyState === "complete"')).toBeLessThan(
+      configureSource.indexOf("ensureNativeApi().server.refreshProviders()"),
     );
-    expect(source).toContain('process.env.SYNARA_COMPARE_ELECTRON_READY_TIMEOUT_MS ?? "90000"');
-    expect(source.indexOf("await runCommand(commands.nativeBuild)")).toBeLessThan(
-      source.indexOf("const lynx = startOwned(commands.lynx)"),
-    );
-    expect(source).toContain("commands.nativeBuild.env.SYNARA_WS_URL = socketUrl.toString()");
-    expect(source.indexOf("if (!existsSync(paths.electronEntry))")).toBeLessThan(
-      source.indexOf("await waitForRuntimeState"),
-    );
-    expect(source.indexOf("if (!existsSync(paths.lynxApp))")).toBeGreaterThan(
-      source.indexOf("await runCommand(commands.nativeBuild)"),
-    );
-    expect(source).toContain("awaitPromise: true");
     expect(configureSource.indexOf("ensureNativeApi().server.refreshProviders()")).toBeLessThan(
       configureSource.indexOf("comparisonRendererResetExpression("),
     );
-    expect(source).toContain("options.chatFontSize");
-    expect(source).toContain(
-      "const terminalThreadId = comparisonThreadId(options) ?? options.threadId",
+    expect(configureSource.indexOf("settleElectronRoute(cdp, expectedUrl)")).toBeLessThan(
+      configureSource.indexOf("certifyElectronAnchor("),
     );
-    expect(source).toContain("comparisonTerminalOpenExpression(terminalThreadId)");
-    expect(source).toContain("comparisonTerminalReadyExpression(terminalThreadId)");
-    expect(source.indexOf("comparisonRouteRestoreExpression(expectedUrl)")).toBeLessThan(
-      source.indexOf("return rendererState"),
+    // Build identity and seed identity are verified before any process starts,
+    // and the backend is identified before either renderer is certified.
+    expect(mainSource.indexOf("nativeBuildStampProblems(")).toBeLessThan(
+      mainSource.indexOf("startOwned(commands.web)"),
     );
-    expect(source).toContain("stableRouteSince === 0 || Date.now() - stableRouteSince < 5_000");
-    expect(source).toContain("const routeDeadline = Date.now() + 30_000");
-    expect(source).toContain('params: { expression: "location.href", returnByValue: true }');
-    expect(source).toContain("Timed out reasserting the Electron comparison route.");
-    expect(configureSource).toContain(
-      "new URL(candidate.url).origin === new URL(startupUrl).origin",
+    expect(mainSource.indexOf("comparisonFixtureMismatches(")).toBeLessThan(
+      mainSource.indexOf("startOwned(commands.web)"),
     );
+    expect(mainSource.indexOf("readBackendIdentity(socketUrl.toString())")).toBeLessThan(
+      mainSource.indexOf("configureElectronRenderer("),
+    );
+    expect(
+      mainSource.indexOf("commands.lynx.env.SYNARA_WS_URL = socketUrl.toString()"),
+    ).toBeLessThan(mainSource.indexOf("startOwned(commands.lynx)"));
+    expect(mainSource.indexOf("verifyNativeBackendConnections(")).toBeLessThan(
+      mainSource.indexOf('run.status = "certified"'),
+    );
+    expect(source).toContain('process.env.SYNARA_COMPARE_ELECTRON_READY_TIMEOUT_MS ?? "90000"');
     expect(source).toContain('["Web", options.webPort]');
-    expect(source).toContain("message?.result?.exceptionDetails");
-    expect(source).toContain("Failed ${activity}: ${description}");
-    expect(configureSource.split("electronEvaluationError(")).toHaveLength(9);
-    expect(source).toContain(
-      'for (const child of ownedChildren.toReversed()) stopOwned(child, "SIGKILL")',
+  });
+
+  it("retries idempotent Electron reads through a reload and records the activity trail", async () => {
+    const sent: Array<{ id: number; expression: string }> = [];
+    const listeners = new Set<(event: { data: string }) => void>();
+    let collectNext = true;
+    const socket = {
+      addEventListener: (_type: string, listener: (event: { data: string }) => void) =>
+        listeners.add(listener),
+      removeEventListener: (_type: string, listener: (event: { data: string }) => void) =>
+        listeners.delete(listener),
+      send: (raw: string) => {
+        const message = JSON.parse(raw);
+        sent.push({ id: message.id, expression: message.params.expression });
+        const reply = collectNext
+          ? { id: message.id, error: { message: "Promise was collected" } }
+          : { id: message.id, result: { result: { value: "ok" } } };
+        collectNext = false;
+        queueMicrotask(() => {
+          for (const listener of [...listeners]) listener({ data: JSON.stringify(reply) });
+        });
+      },
+    };
+    const trail: Array<Record<string, unknown>> = [];
+    const cdp = createElectronCdpClient(socket, trail);
+
+    await expect(
+      cdp.evaluate("location.href", "reading route", { retryTransient: true }),
+    ).resolves.toBe("ok");
+    expect(sent.map((entry) => entry.id)).toEqual([1, 2]);
+    expect(trail).toMatchObject([
+      {
+        requestId: 1,
+        activity: "reading route",
+        attempt: 1,
+        ok: false,
+        error: "Promise was collected",
+      },
+      { requestId: 2, activity: "reading route", attempt: 2, ok: true },
+    ]);
+
+    collectNext = true;
+    await expect(cdp.evaluate("mutate()", "mutating state")).rejects.toThrow(
+      "Promise was collected",
     );
+    expect(trail.at(-1)).toMatchObject({ activity: "mutating state", ok: false });
+  });
+
+  it("identifies every owned comparison process for cleanup verification", () => {
+    const paths = resolveDesktopComparisonPaths("/repo");
+    const output = [
+      `101 ${paths.ownedLynxtronExecutable} /repo/apps/lynx/dist/desktop synara://thread/a`,
+      `102 /runtime/electron --remote-debugging-port=9223 --user-data-dir=${paths.electronUserDataDir} main.js`,
+      "103 /repo/apps/web/node_modules/.bin/vite --host 127.0.0.1 --port 8891 --strictPort",
+      "104 /runtime/electron --user-data-dir=/somewhere/else main.js",
+      "105 /Applications/Other.app/Contents/MacOS/other",
+    ].join("\n");
+    expect(ownedComparisonPidsFromPs(output, paths, "/runtime/electron", 8891)).toEqual({
+      lynxtron: [101],
+      electron: [102],
+      web: [103],
+    });
   });
 });
