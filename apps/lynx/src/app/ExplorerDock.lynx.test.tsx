@@ -27,6 +27,12 @@ describe("Lynx Explorer dock", () => {
     );
     expect(header).toContain("await openPathInEditor({ cwd: openTarget, editor })");
     expect(routerSource).toContain("onExplorerRetryFile={() => void explorerFileQuery.refetch()}");
+    // Every mounted Explorer (dock and editor mode) must receive the retry handler,
+    // and the page must forward it to the dock host.
+    expect(routerSource.match(/<ExplorerDock\b/g)?.length).toBe(
+      routerSource.match(/onRetryFile=\{onExplorerRetryFile\}/g)?.length,
+    );
+    expect(routerSource).toContain("onExplorerRetryFile={onExplorerRetryFile}");
     expect(routerSource).toContain("explorerFileQuery.isError && explorerFileQuery.isFetching");
     expect(queriesSource).toContain("if (explorerFileCache.get(cacheKey)?.result === result)");
     expect(queriesSource).toContain("explorerFileCache.delete(cacheKey)");

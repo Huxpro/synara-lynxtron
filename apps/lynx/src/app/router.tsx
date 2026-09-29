@@ -1123,6 +1123,7 @@ function ThreadPage(props: ThreadPageProps) {
     initialExplorerPresentationMode,
     isPending,
     onExplorerQueryChange,
+    onExplorerRetryFile,
     onExplorerSelectPath,
     onExplorerToggleDirectory,
     onEditorModeChange,
@@ -2143,6 +2144,7 @@ function ThreadPage(props: ThreadPageProps) {
                   workspaceRoot={currentThread?.workspaceRoot ?? null}
                   onWidthChange={() => {}}
                   onQueryChange={onExplorerQueryChange}
+                  onRetryFile={onExplorerRetryFile}
                   onSelectPath={onExplorerSelectPath}
                   onToggleDirectory={onExplorerToggleDirectory}
                   onClose={exitEditorMode}
@@ -2533,6 +2535,7 @@ function ThreadPage(props: ThreadPageProps) {
         initialExplorerActionMenuOpen={initialExplorerActionMenuOpen}
         initialDiffFileTreeOpen={diffFileTreeOpen}
         onExplorerQueryChange={onExplorerQueryChange}
+        onExplorerRetryFile={onExplorerRetryFile}
         onExplorerSelectPath={onExplorerSelectPath}
         onExplorerToggleDirectory={onExplorerToggleDirectory}
         resolvedTheme={resolvedTheme}
