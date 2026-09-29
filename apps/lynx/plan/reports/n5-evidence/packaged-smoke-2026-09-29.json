@@ -1,0 +1,95 @@
+{
+  "generated": "2026-09-29T21:59:21.306Z",
+  "commit": "d38f58a8f",
+  "artifact": {
+    "file": "Synara-Lynx-v0.5.5-lynx.0-darwin-arm64.dmg",
+    "bytes": 36376197,
+    "sha256": "0a9bbb08358fa0155e1b8449abb0ba837aabe0f01c233d50462f5bd6bcfc0b82",
+    "signing": "unsigned (identity: null)",
+    "arch": "arm64"
+  },
+  "host": {
+    "bundle": "packaged main.lynx.bundle via loadFile (NODE_ENV unset; no dev server on :5971)",
+    "backend": "isolated comparison backend (fixture workspace) over SYNARA_WS_URL",
+    "userData": "isolated SYNARA_LYNX_USER_DATA_DIR",
+    "inspector": "none: the release Lynxtron binary opens no DevTool port"
+  },
+  "launches": [
+    {
+      "deepLink": "<none>",
+      "process": "alive",
+      "uiReady": "renderer ui ready route=/ elapsedMs=394",
+      "uiReadyTimeouts": 0,
+      "routeChanges": "[]",
+      "scriptErrors": 0,
+      "storageWrites": 5,
+      "backendFixtureRefs": 1,
+      "quit": "exited in 1s"
+    },
+    {
+      "deepLink": "synara://pull-requests",
+      "process": "alive",
+      "uiReady": "renderer ui ready route=/pull-requests elapsedMs=327",
+      "uiReadyTimeouts": 0,
+      "routeChanges": "[route: '/pull-requests']",
+      "scriptErrors": 0,
+      "storageWrites": 5,
+      "backendFixtureRefs": 1,
+      "quit": "exited in 0s"
+    },
+    {
+      "deepLink": "synara://settings/general",
+      "process": "alive",
+      "uiReady": "renderer ui ready route=/settings/general elapsedMs=311",
+      "uiReadyTimeouts": 0,
+      "routeChanges": "[route: '/settings/general']",
+      "scriptErrors": 0,
+      "storageWrites": 7,
+      "backendFixtureRefs": 1,
+      "quit": "exited in 0s"
+    },
+    {
+      "deepLink": "synara://automations",
+      "process": "alive",
+      "uiReady": "renderer ui ready route=/automations elapsedMs=345",
+      "uiReadyTimeouts": 0,
+      "routeChanges": "[route: '/automations']",
+      "scriptErrors": 0,
+      "storageWrites": 5,
+      "backendFixtureRefs": 1,
+      "quit": "exited in 1s"
+    },
+    {
+      "deepLink": "synara://plugins",
+      "process": "alive",
+      "uiReady": "renderer ui ready route=/plugins elapsedMs=317",
+      "uiReadyTimeouts": 0,
+      "routeChanges": "[route: '/plugins']",
+      "scriptErrors": 0,
+      "storageWrites": 7,
+      "backendFixtureRefs": 1,
+      "quit": "exited in 0s"
+    },
+    {
+      "deepLink": "<none>",
+      "process": "alive",
+      "uiReady": "renderer ui ready route=/ elapsedMs=322",
+      "uiReadyTimeouts": 0,
+      "routeChanges": "[]",
+      "scriptErrors": 0,
+      "storageWrites": 5,
+      "backendFixtureRefs": 1,
+      "quit": "exited in 0s"
+    },
+    {
+      "deepLink": "synara://update",
+      "uiReady": "renderer ui ready route=/update elapsedMs=315",
+      "routeChanges": "route: /update"
+    },
+    {
+      "deepLink": "<none>, no auth token",
+      "uiReady": "renderer ui ready route=/ elapsedMs=383",
+      "backend": "401 on every RPC; renderer reports offline and cools down reconnects; process stays up, window closes cleanly"
+    }
+  ]
+}
