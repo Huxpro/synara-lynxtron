@@ -716,6 +716,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
       },
     });
     expect(commands.electron.args).toContain("--remote-debugging-port=9223");
+    // Occluded windows would stop requestAnimationFrame and stall the composer.
+    expect(commands.electron.args).toContain("--disable-backgrounding-occluded-windows");
     expect(commands.electron.args).toContain(
       "--user-data-dir=/repo/.synara-desktop-comparison/electron-profile",
     );

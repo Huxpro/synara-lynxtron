@@ -918,6 +918,11 @@ export function desktopComparisonCommands(options, paths, authToken, electronExe
       command: electronExecutable,
       args: [
         `--remote-debugging-port=${options.electronCdpPort}`,
+        // A comparison must not depend on whether the window is covered: occluded
+        // Chromium windows stop requestAnimationFrame, and the thread composer
+        // waits for one before it mounts.
+        "--disable-backgrounding-occluded-windows",
+        "--disable-renderer-backgrounding",
         `--user-data-dir=${paths.electronUserDataDir}`,
         `--synara-dev-root=${join(paths.root, "apps", "desktop")}`,
         paths.electronEntry,
