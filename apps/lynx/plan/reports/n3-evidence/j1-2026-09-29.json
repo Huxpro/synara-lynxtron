@@ -1,0 +1,152 @@
+{
+  "workflow": "J1",
+  "runId": "2026-09-29T14-57-08-460Z-10580",
+  "startedAt": "2026-09-29T15:17:45.415Z",
+  "renderers": {
+    "electron": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "open a new thread in the fixture project",
+          "ok": true,
+          "ms": 755
+        },
+        {
+          "name": "send and complete a real provider turn",
+          "ok": true,
+          "ms": 6642,
+          "detail": {
+            "threadId": "077765b7-1e5a-45a9-8837-9e0218fb4a70",
+            "turnId": "01a0edbe-6a9b-7c62-9820-0831e7166ab2",
+            "assistantMessageId": "assistant:msg_09b5c98fd3aaf671016abbd6a03e8887d0b5a17bb2f2c6ba0a"
+          }
+        },
+        {
+          "name": "open and close the thread model picker",
+          "ok": true,
+          "ms": 370,
+          "detail": {
+            "menu": {
+              "width": 208,
+              "height": 203
+            }
+          }
+        },
+        {
+          "name": "mention a workspace file from the @ menu and send it",
+          "ok": true,
+          "ms": 3064,
+          "detail": {
+            "option": {
+              "width": 716,
+              "height": 28
+            },
+            "sentText": "@src/math.ts Reply with exactly one line: J1-electron-mumtlvez-mention ok"
+          }
+        },
+        {
+          "name": "stop a streaming turn, then resend",
+          "ok": true,
+          "ms": 6642,
+          "detail": {
+            "streamedCharsBeforeStop": 108,
+            "stoppedReplyChars": 217,
+            "settledAfterStopMs": 307,
+            "stoppedTurnId": "01a0edbe-7628-7410-951f-14a6bc84f465",
+            "resentTurnId": "01a0edbe-8423-7b53-99a6-4545d590122a"
+          }
+        },
+        {
+          "name": "reload the renderer, reopen the thread, and continue it",
+          "ok": true,
+          "ms": 6674,
+          "detail": {
+            "routeRestored": true,
+            "landedOn": "077765b7-1e5a-45a9-8837-9e0218fb4a70",
+            "recoveredMs": 4740,
+            "messagesBefore": 8,
+            "messagesAfter": 10,
+            "userMessages": 5
+          }
+        }
+      ],
+      "result": {
+        "threadId": "077765b7-1e5a-45a9-8837-9e0218fb4a70",
+        "token": "J1-electron-mumtlvez"
+      }
+    },
+    "native": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "open a new thread in the fixture project",
+          "ok": true,
+          "ms": 460
+        },
+        {
+          "name": "send and complete a real provider turn",
+          "ok": true,
+          "ms": 7772,
+          "detail": {
+            "threadId": "lynx-landing-thread-1790695089769-6253da2fe4306",
+            "turnId": "01a0edbe-cab6-7fc3-b7ac-1f568fa5a11f",
+            "assistantMessageId": "assistant:msg_00e933261127bd90016abbd6b949a887d0985f2f687a0cab47"
+          }
+        },
+        {
+          "name": "open and close the thread model picker",
+          "ok": true,
+          "ms": 355,
+          "detail": {
+            "menu": {
+              "width": 1079,
+              "height": 803
+            }
+          }
+        },
+        {
+          "name": "mention a workspace file from the @ menu and send it",
+          "ok": true,
+          "ms": 2891,
+          "detail": {
+            "option": {
+              "width": 716,
+              "height": 28
+            },
+            "sentText": "@src/math.ts Reply with exactly one line: J1-native-mumtme2v-mention ok"
+          }
+        },
+        {
+          "name": "stop a streaming turn, then resend",
+          "ok": true,
+          "ms": 9564,
+          "detail": {
+            "streamedCharsBeforeStop": 0,
+            "stoppedReplyChars": 643,
+            "settledAfterStopMs": 165,
+            "stoppedTurnId": "01a0edbe-d4fa-7100-98e8-a36cff0a92fc",
+            "resentTurnId": "01a0edbe-e689-7e13-856e-7e5ba1cd377e"
+          }
+        },
+        {
+          "name": "reload the renderer, reopen the thread, and continue it",
+          "ok": true,
+          "ms": 4026,
+          "detail": {
+            "routeRestored": false,
+            "landedOn": "comparison-fixture-transcript-v2",
+            "recoveredMs": 1467,
+            "messagesBefore": 8,
+            "messagesAfter": 10,
+            "userMessages": 5
+          }
+        }
+      ],
+      "result": {
+        "threadId": "lynx-landing-thread-1790695089769-6253da2fe4306",
+        "token": "J1-native-mumtme2v"
+      }
+    }
+  },
+  "endedAt": "2026-09-29T15:18:34.676Z"
+}
