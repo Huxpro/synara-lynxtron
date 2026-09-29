@@ -12,18 +12,26 @@ official v0.0.28 release).
 | Mixed backend identity (R-01)       | `lynx.config.ts` compiled `SYNARA_WS_URL` into the Native renderer. RPC and Terminal went through the host process (runtime env), but renderer-derived origins (attachment URLs, site favicons) and the reported `baseUrl` used the compiled port. A bundle reused under a different server therefore talked to two backends.                                                    | Product: the Lynxtron host passes its live endpoint as `runtimeWsUrl` init data on every bundle load; `platform/runtimeEndpointSource.ts` reads it synchronously on both threads. The Native environment now compiles no endpoint (`""`), so one build serves every run.                                                                          |
 | Empty / hidden workspace (R-01)     | The pre-fixture seed had one ordinary-project thread with two messages; retention hid inactive threads on startup.                                                                                                                                                                                                                                                               | `scripts/comparison-fixture.mjs` builds a real git workspace and creates project, threads, and Home/Studio containers only through canonical RPC, runs five real provider turns (tool use, file edit, table, code block, 40-row list), then freezes the database. Retention is disabled for isolated homes (`SYNARA_DISABLE_THREAD_RETENTION=1`). |
 | Launcher failure attribution (R-04) | The launcher never kept an activity trail or child exit order. `dev exited 143` is 128+SIGTERM: the launcher's own cleanup. The historical `Promise was collected` is the CDP error for an `awaitPromise` evaluation whose context was destroyed by a navigation. Removing the per-run Native rebuild exposed a second race: the page target exists before its document commits. | Every Electron evaluation goes through one CDP client that records request id, activity, attempt, and timing; idempotent reads retry through context loss (bounded to three attempts). An explicit document-ready gate precedes any module import. Child exits are recorded with `duringShutdown`.                                                |
-| Repeated rebuilds (R-04)            | The Native bundle had to be rebuilt after the backend started, only to compile its port in.                                                                                                                                                                                                                                                                                      | One endpoint-independent build per source state. A build stamp records commit, a digest of uncommitted non-test Native sources, and bundle hashes; `--skip-build` refuses any mismatch.                                                                                                                                                           |
+| Repeated rebuilds (R-04)            | The Native bundle had to be rebuilt after the backend started, only to compile its port in.                                                                                                                                                                                                                                                                                      | One endpoint-independent build per source state. A build stamp records a content digest of every non-test Native input (path + bytes) and the bundle hashes; `--skip-build` refuses any mismatch. Committing identical content does not invalidate it.                                                                                            |
 
-`Promise was collected` did not recur in the six runs that reached Electron CDP,
-including one with a cold Vite dependency cache. The cause above is the documented CDP semantics, not a
-reproduced trace; if it recurs, the run manifest names the exact request.
+`Promise was collected` recurred twice during N2, both times on the first
+evaluation that lazily loaded a right-dock pane's code for the first time in a
+fresh dev server: once in the harness (`opening the canonical Electron git
+pane`, named by the trail) and once in a manual CDP probe opening the browser
+pane. Both times the identical second attempt succeeded once the dev server had
+served that code. That matches a
+dev-server reload on first dependency discovery destroying the evaluation's
+context. Vite printed nothing, so the mechanism is inferred; the failing
+request is not. The harness now records `Runtime.executionContextDestroyed`/
+`Page.frameNavigated` in the same trail and retries idempotent pane openers
+through context loss.
 
 ## Certification contract (scripts/dev-electron-lynxtron.mjs)
 
 Each run writes `.synara-desktop-comparison/runs/<runId>.json` and certifies,
 in order:
 
-1. Build identity: stamp matches current Native sources and bundles.
+1. Build identity: stamp matches the content of the current Native inputs and bundles.
 2. Seed identity: the clone matches `fixture.json` (project, workspace, visible
    threads, message counts, transcript tails, event sequence).
 3. Backend identity: `bootstrap.negotiate` server instance and snapshot

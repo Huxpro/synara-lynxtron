@@ -1,0 +1,3786 @@
+{
+ "summary": {
+  "cells": 16,
+  "cellsPassing": 16,
+  "probes": 80,
+  "probesPassing": 80
+ },
+ "cells": [
+  {
+   "cell": "browser-dark-1280x820",
+   "scenario": "browser",
+   "theme": "dark",
+   "viewport": "1280x820",
+   "runId": "2026-09-29T14-24-25-566Z-83258",
+   "route": null,
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 14.0,
+      "nativeDelta": 12.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "browser-toolbar",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 91,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 91,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "browser-tab-bar",
+     "role": "tab bar divider (border-border)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.07
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 136,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0705882
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 136,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 17.0,
+      "nativeDelta": 17.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "browser-dark-1440x900",
+   "scenario": "browser",
+   "theme": "dark",
+   "viewport": "1440x900",
+   "runId": "2026-09-29T14-27-04-096Z-97312",
+   "route": null,
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 14.0,
+      "nativeDelta": 12.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "browser-toolbar",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 91,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 91,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "browser-tab-bar",
+     "role": "tab bar divider (border-border)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.07
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 136,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0705882
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 136,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 17.0,
+      "nativeDelta": 17.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "browser-light-1280x820",
+   "scenario": "browser",
+   "theme": "light",
+   "viewport": "1280x820",
+   "runId": "2026-09-29T14-29-49-864Z-11235",
+   "route": null,
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 232.0,
+      "nativeDelta": 229.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "browser-toolbar",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 91,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 91,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "browser-tab-bar",
+     "role": "tab bar divider (border-border)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.07
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 136,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0666667
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 136,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -17.0,
+      "nativeDelta": -16.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "browser-light-1440x900",
+   "scenario": "browser",
+   "theme": "light",
+   "viewport": "1440x900",
+   "runId": "2026-09-29T14-32-19-174Z-24164",
+   "route": null,
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 232.0,
+      "nativeDelta": 229.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "browser-toolbar",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 91,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 91,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "browser-tab-bar",
+     "role": "tab bar divider (border-border)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.07
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 136,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0666667
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 136,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -17.0,
+      "nativeDelta": -16.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "diff-dark-1280x820",
+   "scenario": "diff",
+   "theme": "dark",
+   "viewport": "1280x820",
+   "runId": "2026-09-29T14-23-09-406Z-76432",
+   "route": "/thread/comparison-fixture-transcript-v2?diff=1&diffTurnId=01a0ed42-84d0-7f13-93a4-f393ce79456d",
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 11.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "diff-toolbar-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 91,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 91,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "diff-dark-1440x900",
+   "scenario": "diff",
+   "theme": "dark",
+   "viewport": "1440x900",
+   "runId": "2026-09-29T14-25-44-615Z-90468",
+   "route": "/thread/comparison-fixture-transcript-v2?diff=1&diffTurnId=01a0ed42-84d0-7f13-93a4-f393ce79456d",
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 11.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "diff-toolbar-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 91,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 91,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "diff-light-1280x820",
+   "scenario": "diff",
+   "theme": "light",
+   "viewport": "1280x820",
+   "runId": "2026-09-29T14-28-24-412Z-4257",
+   "route": "/thread/comparison-fixture-transcript-v2?diff=1&diffTurnId=01a0ed42-84d0-7f13-93a4-f393ce79456d",
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "diff-toolbar-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 91,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 91,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "diff-light-1440x900",
+   "scenario": "diff",
+   "theme": "light",
+   "viewport": "1440x900",
+   "runId": "2026-09-29T14-31-06-181Z-17490",
+   "route": "/thread/comparison-fixture-transcript-v2?diff=1&diffTurnId=01a0ed42-84d0-7f13-93a4-f393ce79456d",
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "diff-toolbar-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 91,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 91,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "explorer-dark-1280x820",
+   "scenario": "explorer",
+   "theme": "dark",
+   "viewport": "1280x820",
+   "runId": "2026-09-29T14-21-44-780Z-71649",
+   "route": "/thread/comparison-fixture-transcript-v2?explorer=open&explorerPath=src/math.ts",
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "explorer-sidebar-seam",
+     "role": "Explorer tree seam (border-border/65)",
+     "edge": "right",
+     "electron": {
+      "kind": "border",
+      "color": [
+       252.0327730769788,
+       251.98667991455028,
+       251.98245182240936,
+       0.0458824
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1008,
+       "y": 46,
+       "length": 774
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0431373
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1008,
+       "y": 46,
+       "length": 774
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 11.0,
+      "nativeDelta": 10.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "explorer-search-divider",
+     "role": "Explorer search divider (border-border/65)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "border",
+      "color": [
+       252.0327730769788,
+       251.98667991455028,
+       251.98245182240936,
+       0.0458824
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 90,
+       "length": 239
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0431373
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 90,
+       "length": 239
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 11.0,
+      "nativeDelta": 10.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "explorer-preview-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1009,
+       "y": 85,
+       "length": 271
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1009,
+       "y": 85,
+       "length": 271
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "explorer-dark-1440x900",
+   "scenario": "explorer",
+   "theme": "dark",
+   "viewport": "1440x900",
+   "runId": "2026-09-29T14-25-04-277Z-86781",
+   "route": "/thread/comparison-fixture-transcript-v2?explorer=open&explorerPath=src/math.ts",
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "explorer-sidebar-seam",
+     "role": "Explorer tree seam (border-border/65)",
+     "edge": "right",
+     "electron": {
+      "kind": "border",
+      "color": [
+       252.0327730769788,
+       251.98667991455028,
+       251.98245182240936,
+       0.0458824
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1088,
+       "y": 46,
+       "length": 854
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0431373
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1088,
+       "y": 46,
+       "length": 854
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 11.0,
+      "nativeDelta": 10.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "explorer-search-divider",
+     "role": "Explorer search divider (border-border/65)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "border",
+      "color": [
+       252.0327730769788,
+       251.98667991455028,
+       251.98245182240936,
+       0.0458824
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 90,
+       "length": 239
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0431373
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 90,
+       "length": 239
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 11.0,
+      "nativeDelta": 10.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "explorer-preview-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1089,
+       "y": 85,
+       "length": 351
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1089,
+       "y": 85,
+       "length": 351
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "explorer-light-1280x820",
+   "scenario": "explorer",
+   "theme": "light",
+   "viewport": "1280x820",
+   "runId": "2026-09-29T14-27-44-148Z-848",
+   "route": "/thread/comparison-fixture-transcript-v2?explorer=open&explorerPath=src/math.ts",
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "explorer-sidebar-seam",
+     "role": "Explorer tree seam (border-border/65)",
+     "edge": "right",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.003224094558554,
+       12.998554342373328,
+       12.998122720941796,
+       0.0458824
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1008,
+       "y": 46,
+       "length": 774
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0431373
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1008,
+       "y": 46,
+       "length": 774
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -11.0,
+      "nativeDelta": -10.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "explorer-search-divider",
+     "role": "Explorer search divider (border-border/65)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.003224094558554,
+       12.998554342373328,
+       12.998122720941796,
+       0.0458824
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 90,
+       "length": 239
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0431373
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 90,
+       "length": 239
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -11.0,
+      "nativeDelta": -10.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "explorer-preview-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1009,
+       "y": 85,
+       "length": 271
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1009,
+       "y": 85,
+       "length": 271
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "explorer-light-1440x900",
+   "scenario": "explorer",
+   "theme": "light",
+   "viewport": "1440x900",
+   "runId": "2026-09-29T14-30-29-059Z-14464",
+   "route": "/thread/comparison-fixture-transcript-v2?explorer=open&explorerPath=src/math.ts",
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "explorer-sidebar-seam",
+     "role": "Explorer tree seam (border-border/65)",
+     "edge": "right",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.003224094558554,
+       12.998554342373328,
+       12.998122720941796,
+       0.0458824
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1088,
+       "y": 46,
+       "length": 854
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0431373
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1088,
+       "y": 46,
+       "length": 854
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -11.0,
+      "nativeDelta": -10.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "explorer-search-divider",
+     "role": "Explorer search divider (border-border/65)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.003224094558554,
+       12.998554342373328,
+       12.998122720941796,
+       0.0458824
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 90,
+       "length": 239
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0431373
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 90,
+       "length": 239
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -11.0,
+      "nativeDelta": -10.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "explorer-preview-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1089,
+       "y": 85,
+       "length": 351
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 1089,
+       "y": 85,
+       "length": 351
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "git-dark-1280x820",
+   "scenario": "git",
+   "theme": "dark",
+   "viewport": "1280x820",
+   "runId": "2026-09-29T14-23-47-332Z-80105",
+   "route": null,
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 11.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "git-pane-header",
+     "role": "DockPaneHeader hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 91,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 91,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "git-diff-viewport",
+     "role": "list/diff split (border-border/70)",
+     "edge": "top",
+     "electron": {
+      "kind": "border",
+      "color": [
+       252.0327730769788,
+       251.98667991455028,
+       251.98245182240936,
+       0.0494118
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 263,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0470588
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 264,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 12.0,
+      "nativeDelta": 11.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "git-dark-1440x900",
+   "scenario": "git",
+   "theme": "dark",
+   "viewport": "1440x900",
+   "runId": "2026-09-29T14-26-25-163Z-94173",
+   "route": null,
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 11.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "git-pane-header",
+     "role": "DockPaneHeader hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       251.999925,
+       251.999925,
+       251.999925,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 91,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       252.45,
+       252.45,
+       252.45,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 91,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 10.0,
+      "nativeDelta": 9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "git-diff-viewport",
+     "role": "list/diff split (border-border/70)",
+     "edge": "top",
+     "electron": {
+      "kind": "border",
+      "color": [
+       252.0327730769788,
+       251.98667991455028,
+       251.98245182240936,
+       0.0494118
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 263,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       252,
+       252,
+       252,
+       0.0470588
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 264,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": 12.0,
+      "nativeDelta": 11.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "git-light-1280x820",
+   "scenario": "git",
+   "theme": "light",
+   "viewport": "1280x820",
+   "runId": "2026-09-29T14-29-02-759Z-7878",
+   "route": null,
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 512
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 768,
+       "y": 0,
+       "length": 820
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 45,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "git-pane-header",
+     "role": "DockPaneHeader hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 91,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 91,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "git-diff-viewport",
+     "role": "list/diff split (border-border/70)",
+     "edge": "top",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.003224094558554,
+       12.998554342373328,
+       12.998122720941796,
+       0.0494118
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 263,
+       "length": 511
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0470588
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 769,
+       "y": 264,
+       "length": 511
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -12.0,
+      "nativeDelta": -11.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "cell": "git-light-1440x900",
+   "scenario": "git",
+   "theme": "light",
+   "viewport": "1440x900",
+   "runId": "2026-09-29T14-31-42-532Z-21080",
+   "route": null,
+   "probes": [
+    {
+     "id": "thread-header-hairline",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 256,
+       "y": 45,
+       "length": 592
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-seam",
+     "role": "right dock seam (--app-surface-divider, 60%)",
+     "edge": "left",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0392157
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 848,
+       "y": 0,
+       "length": 900
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "right-dock-tab-header",
+     "role": "chat-surface header hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 45,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "git-pane-header",
+     "role": "DockPaneHeader hairline (--app-surface-divider, 60%)",
+     "edge": "bottom",
+     "electron": {
+      "kind": "gradient",
+      "color": [
+       13.000002,
+       13.000002,
+       13.000002,
+       0.0423529
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 91,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "gradient",
+      "color": [
+       12.75,
+       12.75,
+       12.75,
+       0.042
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 91,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -10.0,
+      "nativeDelta": -9.0,
+      "ok": true
+     },
+     "pass": true
+    },
+    {
+     "id": "git-diff-viewport",
+     "role": "list/diff split (border-border/70)",
+     "edge": "top",
+     "electron": {
+      "kind": "border",
+      "color": [
+       13.003224094558554,
+       12.998554342373328,
+       12.998122720941796,
+       0.0494118
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 263,
+       "length": 591
+      }
+     },
+     "native": {
+      "kind": "border",
+      "color": [
+       13,
+       13,
+       13,
+       0.0470588
+      ],
+      "thickness": 1,
+      "line": {
+       "x": 849,
+       "y": 264,
+       "length": 591
+      }
+     },
+     "style": {
+      "match": true,
+      "problems": []
+     },
+     "pixel": {
+      "electronDelta": -12.0,
+      "nativeDelta": -11.0,
+      "ok": true
+     },
+     "pass": true
+    }
+   ],
+   "pass": true
+  }
+ ]
+}
