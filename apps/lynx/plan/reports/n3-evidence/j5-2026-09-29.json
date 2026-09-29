@@ -1,7 +1,7 @@
 {
   "workflow": "J5",
-  "runId": "2026-09-29T17-12-59-634Z-85374",
-  "startedAt": "2026-09-29T17:16:12.194Z",
+  "runId": "2026-09-29T17-52-20-213Z-68068",
+  "startedAt": "2026-09-29T17:55:45.180Z",
   "renderers": {
     "electron": {
       "ok": true,
@@ -9,9 +9,9 @@
         {
           "name": "create an automation",
           "ok": true,
-          "ms": 1207,
+          "ms": 1302,
           "detail": {
-            "id": "automation:1782f545-13ad-42b0-bb72-071232cce4d4",
+            "id": "automation:592faf15-f398-49a6-959a-51d6d468a0bb",
             "worktreeMode": "auto",
             "acknowledgedRisks": ["local-checkout"]
           }
@@ -19,7 +19,7 @@
         {
           "name": "open it and edit where it runs",
           "ok": true,
-          "ms": 372,
+          "ms": 405,
           "detail": {
             "worktreeMode": "worktree",
             "via": "select value (native popup not drivable)"
@@ -28,7 +28,7 @@
         {
           "name": "pause and resume it",
           "ok": true,
-          "ms": 402,
+          "ms": 490,
           "detail": {
             "pausedThenResumed": true
           }
@@ -36,7 +36,7 @@
         {
           "name": "return to the list and back into the same state",
           "ok": true,
-          "ms": 167,
+          "ms": 182,
           "detail": {
             "worktreeMode": "worktree",
             "enabled": true
@@ -44,7 +44,7 @@
         }
       ],
       "result": {
-        "name": "J5 electron mumxu71j"
+        "name": "J5 electron mumz921u"
       }
     },
     "native": {
@@ -53,9 +53,9 @@
         {
           "name": "create an automation",
           "ok": true,
-          "ms": 2065,
+          "ms": 2266,
           "detail": {
-            "id": "automation:f68569f9-f035-4737-adea-401871cb6507",
+            "id": "automation:9fd4b9a3-cedc-47c5-accd-209fd83ef4c2",
             "worktreeMode": "auto",
             "acknowledgedRisks": ["local-checkout"]
           }
@@ -63,7 +63,7 @@
         {
           "name": "open it and edit where it runs",
           "ok": true,
-          "ms": 618,
+          "ms": 509,
           "detail": {
             "worktreeMode": "worktree",
             "via": "menu tap"
@@ -72,7 +72,7 @@
         {
           "name": "pause and resume it",
           "ok": true,
-          "ms": 445,
+          "ms": 439,
           "detail": {
             "pausedThenResumed": true
           }
@@ -88,9 +88,9 @@
         }
       ],
       "result": {
-        "name": "J5 native mumxu8q5"
+        "name": "J5 native mumz93wx"
       }
     }
   },
-  "endedAt": "2026-09-29T17:16:18.034Z"
+  "endedAt": "2026-09-29T17:55:51.340Z"
 }

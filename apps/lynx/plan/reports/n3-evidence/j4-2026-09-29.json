@@ -1,7 +1,7 @@
 {
   "workflow": "J4",
-  "runId": "2026-09-29T16-35-09-911Z-35784",
-  "startedAt": "2026-09-29T16:36:18.026Z",
+  "runId": "2026-09-29T17-52-20-213Z-68068",
+  "startedAt": "2026-09-29T17:55:15.213Z",
   "renderers": {
     "electron": {
       "ok": true,
@@ -9,19 +9,19 @@
         {
           "name": "switch between a thread and Settings with one correct sidebar",
           "ok": true,
-          "ms": 2805,
+          "ms": 3726,
           "detail": {
             "rounds": [
               {
-                "settingsMs": 303,
+                "settingsMs": 368,
                 "returnedToThread": true
               },
               {
-                "settingsMs": 221,
+                "settingsMs": 297,
                 "returnedToThread": true
               },
               {
-                "settingsMs": 105,
+                "settingsMs": 168,
                 "returnedToThread": true
               }
             ]
@@ -30,7 +30,7 @@
         {
           "name": "change theme and density; the app applies them",
           "ok": true,
-          "ms": 2013,
+          "ms": 2097,
           "detail": {
             "before": {
               "themeMode": "dark",
@@ -45,7 +45,7 @@
         {
           "name": "persist the change and keep settings the app does not know",
           "ok": true,
-          "ms": 50,
+          "ms": 52,
           "detail": {
             "themeMode": "light",
             "density": "compact",
@@ -55,7 +55,7 @@
         {
           "name": "keep the appearance across a renderer reload",
           "ok": true,
-          "ms": 2288,
+          "ms": 4488,
           "detail": {
             "applied": {
               "theme": "light",
@@ -70,7 +70,7 @@
         {
           "name": "keep a server setting consistent across both clients",
           "ok": true,
-          "ms": 2230,
+          "ms": 2020,
           "detail": {
             "electronTonative": "live",
             "nativeToelectron": "live"
@@ -79,7 +79,7 @@
         {
           "name": "restore the canonical appearance",
           "ok": true,
-          "ms": 1980,
+          "ms": 2047,
           "detail": {
             "themeMode": "dark",
             "density": "comfortable"
@@ -94,19 +94,19 @@
         {
           "name": "switch between a thread and Settings with one correct sidebar",
           "ok": true,
-          "ms": 3305,
+          "ms": 4563,
           "detail": {
             "rounds": [
               {
-                "settingsMs": 476,
+                "settingsMs": 670,
                 "returnedToThread": true
               },
               {
-                "settingsMs": 390,
+                "settingsMs": 423,
                 "returnedToThread": true
               },
               {
-                "settingsMs": 407,
+                "settingsMs": 302,
                 "returnedToThread": true
               }
             ]
@@ -115,7 +115,7 @@
         {
           "name": "change theme and density; the app applies them",
           "ok": true,
-          "ms": 3644,
+          "ms": 3738,
           "detail": {
             "before": {
               "themeMode": "dark",
@@ -130,7 +130,7 @@
         {
           "name": "persist the change and keep settings the app does not know",
           "ok": true,
-          "ms": 1,
+          "ms": 0,
           "detail": {
             "themeMode": "light",
             "density": "compact",
@@ -141,7 +141,7 @@
         {
           "name": "keep the appearance across a renderer reload",
           "ok": true,
-          "ms": 395,
+          "ms": 501,
           "detail": {
             "applied": {
               "theme": "light",
@@ -157,7 +157,7 @@
         {
           "name": "keep a server setting consistent across both clients",
           "ok": true,
-          "ms": 2750,
+          "ms": 3062,
           "detail": {
             "nativeToelectron": "live",
             "electronTonative": "live"
@@ -166,7 +166,7 @@
         {
           "name": "restore the canonical appearance",
           "ok": true,
-          "ms": 3402,
+          "ms": 3429,
           "detail": {
             "themeMode": "dark",
             "density": "comfortable",
@@ -177,5 +177,5 @@
       "result": {}
     }
   },
-  "endedAt": "2026-09-29T16:36:42.918Z"
+  "endedAt": "2026-09-29T17:55:44.947Z"
 }
