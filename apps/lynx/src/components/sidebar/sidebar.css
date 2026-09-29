@@ -644,6 +644,11 @@
   pointer-events: auto;
 }
 
+/* Electron project header actions: gap-1.5 between the 20px icon buttons. */
+.AppSidebarProjectHeader .AppSidebarRowHoverActions {
+  gap: 6px;
+}
+
 .AppSidebarProjectHeader.ui-hover .AppSidebarProjectRunDot,
 .AppSidebarProjectHeader.ui-focus .AppSidebarProjectRunDot {
   opacity: 0;

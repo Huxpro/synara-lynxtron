@@ -69,10 +69,10 @@ describe("Lynx sidebar disclosure", () => {
       /\.SidebarDisclosure--resizing,\s*\.SidebarDisclosure--resizing \.SidebarDisclosureInner\s*\{[^}]*transition-duration:\s*0ms;/s,
     );
     expect(styles).toMatch(
-      /\.SidebarResizeSash\s*\{[^}]*right:\s*-3px;[^}]*width:\s*10px;[^}]*background-color:\s*rgba\(128,\s*128,\s*128,\s*0\.02\);[^}]*cursor:\s*col-resize;/s,
+      /\.SidebarResizeSash\s*\{[^}]*right:\s*-8px;[^}]*width:\s*16px;[^}]*background-color:\s*rgba\(128,\s*128,\s*128,\s*0\.02\);[^}]*cursor:\s*col-resize;/s,
     );
     expect(styles).toMatch(
-      /\.SidebarResizeSashLine\s*\{[^}]*top:\s*14px;[^}]*bottom:\s*14px;[^}]*left:\s*3px;[^}]*width:\s*1px;[^}]*background-color:\s*transparent;/s,
+      /\.SidebarResizeSashLine\s*\{[^}]*top:\s*0;[^}]*bottom:\s*0;[^}]*left:\s*7px;[^}]*width:\s*2px;[^}]*background-color:\s*transparent;/s,
     );
     expect(styles).toMatch(
       /\.SidebarResizeOverlay\s*\{[^}]*position:\s*fixed;[^}]*width:\s*100vw;[^}]*height:\s*100vh;[^}]*cursor:\s*col-resize;/s,

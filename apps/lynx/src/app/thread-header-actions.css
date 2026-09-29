@@ -1,7 +1,9 @@
+/* Electron header text buttons: px calc(2.5 spacing - 1px) inside a 1px border,
+   11px icon, ui-sm text (11px at the default size) on a 1.5 line box. */
 .ThreadHeaderTextAction {
   height: 28px;
   min-height: 28px;
-  padding: 0 10px;
+  padding: 0 9px;
   gap: 6px;
   border-radius: 8px;
   flex-shrink: 0;
@@ -11,15 +13,15 @@
 .ThreadHeaderTextAction .LxButton__text,
 .ThreadHeaderTextActionLabel {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm);
   font-weight: 400;
-  line-height: 18px;
+  line-height: 16.5px;
   white-space: nowrap;
 }
 
 .ThreadHeaderTextActionIcon {
-  width: 14px;
-  height: 14px;
+  width: 11px;
+  height: 11px;
   color: var(--color-icon-primary);
   opacity: 0.8;
 }

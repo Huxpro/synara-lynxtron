@@ -601,15 +601,21 @@
   gap: 8px;
 }
 
+/* Electron model trigger: px-2, sm:px-2.5 (viewport-based, like Tailwind's sm). */
 .ComposerModelTriggerLynx {
   min-height: 28px;
   max-width: 190px;
   display: flex;
   align-items: center;
-  padding: 4px 6px;
+  padding: 4px 8px;
   border: 1px solid transparent;
   border-radius: 10px;
   background-color: transparent;
+}
+
+.SliceRoot--viewport-sm-up .ComposerModelTriggerLynx {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .ComposerModelTriggerLynx.ui-hover {
