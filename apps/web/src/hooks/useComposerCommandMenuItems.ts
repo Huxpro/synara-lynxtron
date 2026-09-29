@@ -21,7 +21,6 @@ import {
   LOCAL_FOLDER_MENTION_NAME,
   matchesLocalFolderMentionShortcut,
 } from "~/lib/localFolderMentions";
-import { basenameOfPath } from "../file-icons";
 import type { ComposerTrigger } from "../composer-logic";
 import {
   filterComposerSlashCommands,
@@ -30,6 +29,7 @@ import {
   shouldHideProviderNativeCommandFromComposerMenu,
 } from "../composerSlashCommands";
 import type { ComposerCommandItem } from "../components/chat/ComposerCommandMenu";
+import { buildWorkspacePathComposerItems } from "../components/chat/ComposerPathMentionItems";
 import { buildThreadMentionComposerItems } from "../components/chat/ComposerThreadMentionItems";
 import type { ProviderModelOption } from "../providerModelOptions";
 import { compareProvidersByOrder } from "../providerOrdering";
@@ -190,14 +190,7 @@ export function useComposerCommandMenuItems(input: {
             },
           ]
         : [];
-    const pathItems = workspaceEntries.map((entry) => ({
-      id: `path:${entry.kind}:${entry.path}`,
-      type: "path" as const,
-      path: entry.path,
-      pathKind: entry.kind,
-      label: basenameOfPath(entry.path),
-      description: entry.parentPath ?? "",
-    }));
+    const pathItems = buildWorkspacePathComposerItems(workspaceEntries);
     const threadItems = threadMentionSources
       ? buildThreadMentionComposerItems({
           ...threadMentionSources,

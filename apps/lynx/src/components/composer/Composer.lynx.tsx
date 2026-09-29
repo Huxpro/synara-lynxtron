@@ -52,6 +52,7 @@ import {
   ComposerCommandMenuComposition,
   type ComposerCommandItem,
 } from "@synara-web/components/chat/ComposerCommandMenuComposition";
+import { buildWorkspacePathComposerItems } from "@synara-web/components/chat/ComposerPathMentionItems";
 import { buildThreadMentionComposerItems } from "@synara-web/components/chat/ComposerThreadMentionItems";
 import { ComposerExtrasMenuComposition } from "@synara-web/components/chat/ComposerExtrasMenuComposition";
 import { getComposerTraitSelection } from "@synara-web/components/chat/composerTraits";
@@ -97,6 +98,7 @@ import {
   fetchProviderModels,
   fetchProviderSkills,
   refreshProviderStatuses,
+  searchProjectEntries,
   transcribeVoice,
 } from "../../data/synaraClient.lynx";
 import {
@@ -151,6 +153,7 @@ import {
   buildLynxAgentMentionItems,
   buildLynxSlashCommandItems,
   resolveLynxAgentMentionSelection,
+  resolveLynxPathMentionSelection,
   resolveLynxSkillSelection,
   resolveLynxSlashCommandSelection,
   resolveLynxThreadMentionSelection,
@@ -175,6 +178,9 @@ const EMPTY_FILE_COMMENTS = [];
 const EMPTY_SKILLS: ReadonlyArray<ProviderSkillReference> = [];
 const EMPTY_TERMINAL_CONTEXTS: ReadonlyArray<TerminalContextDraft> = [];
 const EMPTY_COMMAND_ITEMS: ReadonlyArray<ComposerCommandItem> = [];
+// Match the web composer's "@" path search (ChatView COMPOSER_PATH_QUERY_DEBOUNCE_MS, limit 80).
+const COMPOSER_PATH_QUERY_DEBOUNCE_MS = 120;
+const COMPOSER_PATH_QUERY_LIMIT = 80;
 interface ComposerEditorHistoryContext {
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
@@ -748,6 +754,43 @@ export function Composer({
         : [],
     [composerTrigger, mentionProjects, mentionThreads, threadId],
   );
+  // Workspace "@" path search, debounced like the web composer.
+  const mentionQuery = composerTrigger?.kind === "mention" ? composerTrigger.query : "";
+  const [debouncedMentionQuery, setDebouncedMentionQuery] = useState(mentionQuery);
+  useEffect(() => {
+    "background only";
+    const timer = setTimeout(
+      () => setDebouncedMentionQuery(mentionQuery),
+      COMPOSER_PATH_QUERY_DEBOUNCE_MS,
+    );
+    return () => clearTimeout(timer);
+  }, [mentionQuery]);
+  const effectiveMentionQuery = mentionQuery.length > 0 ? debouncedMentionQuery : "";
+  const { data: workspaceEntriesResult } = useQuery({
+    queryKey: ["composer-path-entries", workspaceRoot ?? null, effectiveMentionQuery],
+    queryFn: () => {
+      "background only";
+      if (!workspaceRoot) throw new Error("Workspace entry search is unavailable.");
+      return searchProjectEntries({
+        cwd: workspaceRoot,
+        query: effectiveMentionQuery,
+        limit: COMPOSER_PATH_QUERY_LIMIT,
+      });
+    },
+    enabled:
+      composerTrigger?.kind === "mention" &&
+      Boolean(workspaceRoot) &&
+      effectiveMentionQuery.length > 0,
+    staleTime: 15_000,
+    placeholderData: (previous) => previous,
+  });
+  const pathMentionItems = useMemo(
+    () =>
+      composerTrigger?.kind === "mention" && effectiveMentionQuery.length > 0
+        ? buildWorkspacePathComposerItems(workspaceEntriesResult?.entries ?? [])
+        : [],
+    [composerTrigger?.kind, effectiveMentionQuery, workspaceEntriesResult],
+  );
   const agentMentionItems = useMemo(
     () =>
       composerTrigger?.kind === "mention" && activeProvider
@@ -775,7 +818,7 @@ export function Composer({
       : composerTrigger?.kind === "skill"
         ? skillItems
         : composerTrigger?.kind === "mention"
-          ? [...threadMentionItems, ...agentMentionItems]
+          ? [...threadMentionItems, ...pathMentionItems, ...agentMentionItems]
           : EMPTY_COMMAND_ITEMS;
   const activeComposerMenuItemId = resolveComposerMenuActiveItemId({
     activeItemId: composerHighlightedItemId,
@@ -1200,6 +1243,23 @@ export function Composer({
     ];
     setPrompt(brandedThreadId, transition.prompt);
     setMentions(brandedThreadId, nextMentions);
+    setNativeValue(transition.prompt, transition.selectionStart, transition.selectionEnd);
+    setComposerTrigger(null);
+  }
+
+  function selectPathMention(item: ComposerCommandItem) {
+    "background only";
+    if (!composerTrigger) return;
+    const currentPrompt =
+      useComposerDraftStore.getState().draftsByThreadId[brandedThreadId]?.prompt ?? "";
+    const transition = resolveLynxPathMentionSelection({
+      item,
+      prompt: currentPrompt,
+      trigger: composerTrigger,
+    });
+    if (!transition) return;
+    recordEditorHistory();
+    setPrompt(brandedThreadId, transition.prompt);
     setNativeValue(transition.prompt, transition.selectionStart, transition.selectionEnd);
     setComposerTrigger(null);
   }
@@ -1823,6 +1883,7 @@ export function Composer({
             onSelect={(item) => {
               "background only";
               if (item.type === "agent") selectAgentMention(item);
+              else if (item.type === "path") selectPathMention(item);
               else selectThreadMention(item);
             }}
           />

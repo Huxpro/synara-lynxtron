@@ -506,7 +506,7 @@ export function ComposerModelControl(props: {
       <Menu open={modelOpen} onOpenChange={setPopupOpen}>
         <MenuTrigger
           className={`ComposerModelTriggerLynx${props.disabled ? " ComposerModelTriggerLynx--disabled" : ""}`}
-          ariaLabel="Choose model"
+          ariaLabel="Change model and reasoning"
           disabled={props.disabled}
         >
           <ComposerModelTriggerComposition

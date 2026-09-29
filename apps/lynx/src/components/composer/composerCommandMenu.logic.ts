@@ -182,26 +182,41 @@ export function resolveLynxThreadMentionSelection(input: {
   if (input.item.type !== "thread" || input.trigger.kind !== "mention") {
     return null;
   }
-  const replacement = ensureLeadingSpaceForReplacement(
-    input.prompt,
-    input.trigger.rangeStart,
-    `${formatComposerMentionToken(input.item.mention.name)} `,
-  );
-  const replacementRangeEnd = extendReplacementRangeForTrailingSpace(
-    input.prompt,
-    input.trigger.rangeEnd,
-    replacement,
-  );
-  const next = replaceTextRange(
-    input.prompt,
-    input.trigger.rangeStart,
-    replacementRangeEnd,
-    replacement,
-  );
   return {
     mention: input.item.mention,
-    prompt: next.text,
-    selectionStart: next.cursor,
-    selectionEnd: next.cursor,
+    ...replaceTriggerWithToken(
+      input.prompt,
+      input.trigger,
+      `${formatComposerMentionToken(input.item.mention.name)} `,
+    ),
   };
+}
+
+/** Same replacement the web composer applies for a selected "@" path entry. */
+export function resolveLynxPathMentionSelection(input: {
+  readonly item: ComposerCommandItem;
+  readonly prompt: string;
+  readonly trigger: ComposerTrigger;
+}): {
+  readonly prompt: string;
+  readonly selectionEnd: number;
+  readonly selectionStart: number;
+} | null {
+  if (input.item.type !== "path" || input.trigger.kind !== "mention") return null;
+  return replaceTriggerWithToken(
+    input.prompt,
+    input.trigger,
+    `${formatComposerMentionToken(input.item.path)} `,
+  );
+}
+
+function replaceTriggerWithToken(prompt: string, trigger: ComposerTrigger, token: string) {
+  const replacement = ensureLeadingSpaceForReplacement(prompt, trigger.rangeStart, token);
+  const replacementRangeEnd = extendReplacementRangeForTrailingSpace(
+    prompt,
+    trigger.rangeEnd,
+    replacement,
+  );
+  const next = replaceTextRange(prompt, trigger.rangeStart, replacementRangeEnd, replacement);
+  return { prompt: next.text, selectionStart: next.cursor, selectionEnd: next.cursor };
 }

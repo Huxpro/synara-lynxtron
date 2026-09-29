@@ -4,10 +4,12 @@ import {
   buildLynxAgentMentionItems,
   buildLynxSlashCommandItems,
   resolveLynxAgentMentionSelection,
+  resolveLynxPathMentionSelection,
   resolveLynxSkillSelection,
   resolveLynxSlashCommandSelection,
   resolveLynxThreadMentionSelection,
 } from "./composerCommandMenu.logic";
+import { buildWorkspacePathComposerItems } from "@synara-web/components/chat/ComposerPathMentionItems";
 
 const TRIGGER = {
   kind: "slash-command",
@@ -117,6 +119,27 @@ describe("Lynx composer command menu bridge", () => {
       selectionStart: 24,
       selectionEnd: 24,
     });
+  });
+
+  it("replaces an @ trigger with the workspace path token, as the web composer does", () => {
+    const [item] = buildWorkspacePathComposerItems([
+      { path: "src/math.ts", kind: "file", parentPath: "src" },
+    ]);
+    expect(item).toMatchObject({ label: "math.ts", description: "src" });
+    expect(
+      resolveLynxPathMentionSelection({
+        item: item!,
+        prompt: "Check @math now",
+        trigger: { kind: "mention", query: "math", rangeStart: 6, rangeEnd: 11 },
+      }),
+    ).toEqual({ prompt: "Check @src/math.ts now", selectionStart: 19, selectionEnd: 19 });
+    expect(
+      resolveLynxPathMentionSelection({
+        item: item!,
+        prompt: "/pl",
+        trigger: TRIGGER,
+      }),
+    ).toBeNull();
   });
 
   it("inserts the canonical provider skill token and returns its reference", () => {

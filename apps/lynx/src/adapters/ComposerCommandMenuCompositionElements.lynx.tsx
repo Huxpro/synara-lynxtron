@@ -16,6 +16,7 @@ import {
   UserIcon,
   type LynxIcon,
 } from "../lib/icons.lynx";
+import { FileEntryIcon } from "../components/FileEntryIcon.lynx";
 import { useLynxInteractiveState } from "../components/ui/interactive-state.lynx";
 import { scrollLynxElementIntoViewById } from "../components/ui/scrollIntoView.lynx";
 
@@ -44,7 +45,7 @@ function itemIcon(item: ComposerCommandItem): LynxIcon {
   if (item.type === "agent") return UserIcon;
   if (item.type === "plugin") return PuzzleIcon;
   if (item.type === "thread") return MessageCircleIcon;
-  if (item.type === "path") return item.pathKind === "directory" ? FolderIcon : ToolsIcon;
+  if (item.type === "path") return FolderIcon;
   if (item.type === "local-root") return DeviceLaptopIcon;
   if (item.type === "model") return BrainIcon;
   if (item.type === "fork-target") {
@@ -143,7 +144,11 @@ export function ComposerCommandRowElement(props: {
       }}
     >
       <view className="ComposerCommandIconSlotLynx">
-        <Icon className="ComposerCommandIconLynx" size={14} />
+        {props.item.type === "path" && props.item.pathKind === "file" ? (
+          <FileEntryIcon className="ComposerCommandFileIconLynx" pathValue={props.item.path} />
+        ) : (
+          <Icon className="ComposerCommandIconLynx" size={14} />
+        )}
       </view>
       <view className="ComposerCommandCopyLynx">
         <text className="ComposerCommandTitleLynx">{props.title}</text>

@@ -125,6 +125,17 @@
   color: var(--color-icon-secondary);
 }
 
+/* Web FILE_ICON_CLASSNAME: size-3.5, opacity-70 dark:opacity-80. */
+.ComposerCommandFileIconLynx {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+
+.SliceRoot--theme-dark .ComposerCommandFileIconLynx {
+  opacity: 0.8;
+}
+
 .ComposerCommandRowLynx--active .ComposerCommandIconSlotLynx,
 .ComposerCommandRowLynx--active .ComposerCommandIconLynx {
   color: var(--color-icon-secondary);

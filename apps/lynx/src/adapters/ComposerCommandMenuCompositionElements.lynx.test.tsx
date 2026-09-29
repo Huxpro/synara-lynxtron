@@ -86,9 +86,11 @@ describe("native Composer command menu row", () => {
       </>,
     );
 
+    // File paths use the file-type icon, like the web row; every other row a glyph.
     expect(elementTree.root?.querySelectorAll(".ComposerCommandIconLynx")).toHaveLength(
-      items.length,
+      items.length - 1,
     );
+    expect(elementTree.root?.querySelectorAll(".ComposerCommandFileIconLynx")).toHaveLength(1);
     expect(elementTree.root?.querySelector(".ComposerCommandGlyphLynx")).toBeNull();
     expect(styles).toMatch(
       /\.ComposerCommandRowLynx--active\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s,
