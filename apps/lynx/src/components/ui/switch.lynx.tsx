@@ -1,6 +1,6 @@
-import { useLynxInteractiveState } from './interactive-state.lynx';
-import { cx } from './shared.lynx';
-import './primitives.css';
+import { useLynxInteractiveState } from "./interactive-state.lynx";
+import { cx } from "./shared.lynx";
+import "./primitives.css";
 
 export function Switch(props: {
   readonly checked: boolean;
@@ -11,13 +11,9 @@ export function Switch(props: {
   readonly onCheckedChange: (checked: boolean) => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: cx(
-      'LxSwitch',
-      props.checked && 'LxSwitch--checked',
-      props.className
-    ),
+    baseClassName: cx("LxSwitch", props.checked && "LxSwitch--checked", props.className),
     accessibleLabel: props.ariaLabel,
-    accessibilityValue: props.checked ? 'On' : 'Off',
+    accessibilityValue: props.checked ? "On" : "Off",
     disabled: props.disabled,
     onActivate: () => props.onCheckedChange(!props.checked),
   });
@@ -33,7 +29,7 @@ export function Switch(props: {
       }}
       {...interaction.eventProps}
     >
-      <view className={cx('LxSwitchThumb', props.thumbClassName)} />
+      <view className={cx("LxSwitchThumb", props.thumbClassName)} />
     </view>
   );
 }

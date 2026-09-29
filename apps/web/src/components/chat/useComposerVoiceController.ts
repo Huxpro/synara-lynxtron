@@ -16,10 +16,7 @@ import {
 } from "@synara/shared/composerVoice";
 import type { RefreshProviderStatusesNow } from "../../hooks/useProviderStatusRefresh";
 import { toastManager } from "../ui/toast";
-import {
-  deriveComposerVoiceState,
-  describeVoiceRecordingStartError,
-} from "../ChatView.logic";
+import { deriveComposerVoiceState, describeVoiceRecordingStartError } from "../ChatView.logic";
 
 export interface ComposerVoiceFailureCopy {
   transcriptionFailedTitle: string;

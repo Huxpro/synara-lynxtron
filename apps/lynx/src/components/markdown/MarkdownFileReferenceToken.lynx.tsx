@@ -1,9 +1,9 @@
-import type { ReactNode } from '@lynx-js/react';
-import fileTextSvg from '@synara-central-icons/file-text.svg?raw';
+import type { ReactNode } from "@lynx-js/react";
+import fileTextSvg from "@synara-central-icons/file-text.svg?raw";
 
-import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
-import { useTheme } from '../../adapters/useTheme.lynx';
-import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
+import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
+import { useTheme } from "../../adapters/useTheme.lynx";
+import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
 
 export function MarkdownFileReferenceToken(props: {
   readonly children: ReactNode;
@@ -15,7 +15,7 @@ export function MarkdownFileReferenceToken(props: {
   const { svgColors } = useTheme();
   const activate = props.onOpenFileReference
     ? () => {
-        'background only';
+        "background only";
         props.onOpenFileReference?.(props.relativePath);
       }
     : undefined;
@@ -24,7 +24,7 @@ export function MarkdownFileReferenceToken(props: {
     disabled: !activate,
     focusable: Boolean(activate),
     onActivate: activate,
-    accessibilityTraits: activate ? 'link' : 'text',
+    accessibilityTraits: activate ? "link" : "text",
     accessibleLabel: `Open ${props.relativePath}`,
   });
   return (

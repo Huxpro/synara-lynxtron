@@ -1,10 +1,14 @@
-import { SPACE_NAME_MAX_LENGTH, type OrchestrationSpaceShell, type SpaceIconName } from '@synara/contracts';
-import type { InputRef } from '@lynx-js/lynx-ui';
-import { useEffect, useRef, useState } from '@lynx-js/react';
-import { SPACE_ICON_OPTIONS, validateSpaceName } from '@synara/shared/spacePresentation';
+import {
+  SPACE_NAME_MAX_LENGTH,
+  type OrchestrationSpaceShell,
+  type SpaceIconName,
+} from "@synara/contracts";
+import type { InputRef } from "@lynx-js/lynx-ui";
+import { useEffect, useRef, useState } from "@lynx-js/react";
+import { SPACE_ICON_OPTIONS, validateSpaceName } from "@synara/shared/spacePresentation";
 
-import { LynxSpaceIcon } from '../../adapters/ComposerProjectPickerCompositionElements.lynx';
-import { Button } from '../ui/button';
+import { LynxSpaceIcon } from "../../adapters/ComposerProjectPickerCompositionElements.lynx";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogDescription,
@@ -12,9 +16,9 @@ import {
   DialogPanel,
   DialogPopup,
   DialogTitle,
-} from '../ui/dialog.lynx';
-import { Input } from '../ui/input.lynx';
-import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
+} from "../ui/dialog.lynx";
+import { Input } from "../ui/input.lynx";
+import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
 
 function SpaceIconOption(props: {
   readonly icon: SpaceIconName;
@@ -24,10 +28,10 @@ function SpaceIconOption(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: `AppSidebarSpaceIconOption${
-      props.selected ? ' AppSidebarSpaceIconOption--active' : ''
+      props.selected ? " AppSidebarSpaceIconOption--active" : ""
     }`,
     accessibleLabel: props.label,
-    accessibilityTraits: props.selected ? 'selected' : 'button',
+    accessibilityTraits: props.selected ? "selected" : "button",
     onActivate: props.onSelect,
   });
   return (
@@ -40,31 +44,34 @@ function SpaceIconOption(props: {
 export function SpaceEditorDialogLynx(props: {
   readonly existingNames: readonly string[];
   readonly onOpenChange: (open: boolean) => void;
-  readonly onSave: (value: { readonly name: string; readonly icon: SpaceIconName }) => Promise<void>;
+  readonly onSave: (value: {
+    readonly name: string;
+    readonly icon: SpaceIconName;
+  }) => Promise<void>;
   readonly open: boolean;
   readonly space: OrchestrationSpaceShell | null;
-  readonly mode?: 'create' | 'edit';
+  readonly mode?: "create" | "edit";
 }) {
-  const mode = props.mode ?? 'edit';
-  const [name, setName] = useState('');
-  const [icon, setIcon] = useState<SpaceIconName>('bag');
+  const mode = props.mode ?? "edit";
+  const [name, setName] = useState("");
+  const [icon, setIcon] = useState<SpaceIconName>("bag");
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const inputRef = useRef<InputRef>(null);
   useEffect(() => {
     if (!props.open) return;
-    setName(props.space?.name ?? '');
-    setIcon(props.space?.icon ?? 'bag');
+    setName(props.space?.name ?? "");
+    setIcon(props.space?.icon ?? "bag");
     setError(null);
     setSaving(false);
-    void inputRef.current?.focus().then(() =>
-      inputRef.current?.setSelectionRange(0, props.space?.name.length ?? 0)
-    );
+    void inputRef.current
+      ?.focus()
+      .then(() => inputRef.current?.setSelectionRange(0, props.space?.name.length ?? 0));
   }, [props.open, props.space?.id]);
   const nameError = validateSpaceName(name, props.existingNames);
   const save = async () => {
-    if ((mode === 'edit' && !props.space) || nameError || saving) return;
-    if (mode === 'edit' && name.trim() === props.space?.name && icon === props.space?.icon) {
+    if ((mode === "edit" && !props.space) || nameError || saving) return;
+    if (mode === "edit" && name.trim() === props.space?.name && icon === props.space?.icon) {
       props.onOpenChange(false);
       return;
     }
@@ -74,18 +81,18 @@ export function SpaceEditorDialogLynx(props: {
       await props.onSave({ name: name.trim(), icon });
       props.onOpenChange(false);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Unable to save the space.');
+      setError(cause instanceof Error ? cause.message : "Unable to save the space.");
       setSaving(false);
     }
   };
   return (
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
       <DialogPopup className="AppSidebarSpaceEditorDialog">
-        <DialogTitle>{mode === 'create' ? 'New space' : 'Edit space'}</DialogTitle>
+        <DialogTitle>{mode === "create" ? "New space" : "Edit space"}</DialogTitle>
         <DialogDescription>
-          {mode === 'create'
-            ? 'Group projects into a focused work context.'
-            : 'Rename this space or give it a different icon. Its projects stay where they are.'}
+          {mode === "create"
+            ? "Group projects into a focused work context."
+            : "Rename this space or give it a different icon. Its projects stay where they are."}
         </DialogDescription>
         <DialogPanel className="AppSidebarSpaceEditorPanel">
           <text className="AppSidebarSpaceEditorLabel">Name</text>
@@ -98,7 +105,7 @@ export function SpaceEditorDialogLynx(props: {
             aria-invalid={Boolean(nameError)}
             onChange={(event) => setName(event.target.value)}
             onKeyDown={(event) => {
-              if (event.key === 'Enter') {
+              if (event.key === "Enter") {
                 event.preventDefault?.();
                 void save();
               }
@@ -129,7 +136,7 @@ export function SpaceEditorDialogLynx(props: {
             Cancel
           </Button>
           <Button disabled={Boolean(nameError) || saving} onClick={() => void save()}>
-            {saving ? 'Saving…' : mode === 'create' ? 'Create space' : 'Save'}
+            {saving ? "Saving…" : mode === "create" ? "Create space" : "Save"}
           </Button>
         </DialogFooter>
       </DialogPopup>

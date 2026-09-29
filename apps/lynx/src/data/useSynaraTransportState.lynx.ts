@@ -1,25 +1,23 @@
-import { useEffect, useState } from '@lynx-js/react';
+import { useEffect, useState } from "@lynx-js/react";
 
-import type { RpcTransportState } from './rpcTransport.logic';
-import { sleepOnHost } from '../platform/timer';
+import type { RpcTransportState } from "./rpcTransport.logic";
+import { sleepOnHost } from "../platform/timer";
 
 async function readTransportState(): Promise<RpcTransportState> {
-  'background only';
-  const { getSynaraTransportState } = await import(
-    /* webpackMode: "eager" */ './synaraClient'
-  );
+  "background only";
+  const { getSynaraTransportState } = await import(/* webpackMode: "eager" */ "./synaraClient");
   return getSynaraTransportState();
 }
 
 export function useSynaraTransportState(): RpcTransportState {
-  const [state, setState] = useState<RpcTransportState>('idle');
+  const [state, setState] = useState<RpcTransportState>("idle");
 
   useEffect(() => {
-    'background only';
+    "background only";
     let cancelled = false;
 
     async function observe(): Promise<void> {
-      'background only';
+      "background only";
       while (!cancelled) {
         try {
           const next = await readTransportState();

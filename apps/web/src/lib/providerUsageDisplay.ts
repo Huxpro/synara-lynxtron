@@ -78,9 +78,7 @@ export function deriveProviderUsageDisplayRow(row: VisibleRateLimitRow): Provide
     window: row.label,
     usedPercent: 100 - row.remainingPercent,
     ...(row.resetsAt ? { resetsAt: row.resetsAt } : {}),
-    ...(row.windowDurationMins !== undefined
-      ? { windowDurationMins: row.windowDurationMins }
-      : {}),
+    ...(row.windowDurationMins !== undefined ? { windowDurationMins: row.windowDurationMins } : {}),
   });
   const remainingPercent = display.remainingPercent ?? row.remainingPercent;
   const remainingLabel = formatRateLimitRemainingPercent(remainingPercent);

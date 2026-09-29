@@ -1,7 +1,7 @@
 // P2-V6: react-query selectors over the real Synara Effect-RPC WebSocket
 // snapshot. The transport is a singleton; both queries share its latest read.
 
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient } from "@tanstack/react-query";
 import type {
   AutomationListResult,
   AutomationDefinition,
@@ -43,20 +43,20 @@ import type {
   OrchestrationCheckpointSummary,
   OrchestrationThreadActivity,
   ThreadHandoff,
-} from '@synara/contracts';
-import type { SidebarStatusPresentation } from '@synara-web/components/SidebarStatus.logic';
-import { resolveThreadStatusPill } from '@synara-web/components/SidebarThreadStatus.logic';
+} from "@synara/contracts";
+import type { SidebarStatusPresentation } from "@synara-web/components/SidebarStatus.logic";
+import { resolveThreadStatusPill } from "@synara-web/components/SidebarThreadStatus.logic";
 import {
   buildRevertTurnCountByUserMessageId,
   buildTurnDiffSummaryByAssistantMessageId,
   deriveMessagesTimelineRows,
   type MessagesTimelineRow,
-} from '@synara-web/components/chat/MessagesTimeline.logic';
-import { filterSidechatTranscriptMessages } from '@synara-web/components/ChatView.logic';
+} from "@synara-web/components/chat/MessagesTimeline.logic";
+import { filterSidechatTranscriptMessages } from "@synara-web/components/ChatView.logic";
 import {
   formatAgentActivityEntryPreview,
   isReasoningUpdateWorkEntry,
-} from '@synara-web/components/chat/agentActivity.logic';
+} from "@synara-web/components/chat/agentActivity.logic";
 import {
   derivePendingApprovals,
   derivePendingUserInputs,
@@ -64,36 +64,31 @@ import {
   deriveWorkLogEntries,
   type PendingApproval,
   type PendingUserInput,
-} from '@synara-web/session-logic';
+} from "@synara-web/session-logic";
 import {
   createSidebarDisplayThreadsSelector,
   createThreadShellsSelector,
-} from '@synara-web/storeSelectors';
-import type {
-  Project,
-  SidebarThreadSummary,
-} from '@synara-web/types';
+} from "@synara-web/storeSelectors";
+import type { Project, SidebarThreadSummary } from "@synara-web/types";
 import type {
   SidebarSearchProject,
   SidebarSearchThread,
-} from '@synara-web/components/SidebarSearchPalette.logic';
+} from "@synara-web/components/SidebarSearchPalette.logic";
 import {
   projectSidebarSearchProject,
   projectSidebarSearchThreads,
-} from '@synara-web/components/SidebarSearchProjection.logic';
-import { webStorage } from '../platform/storage';
+} from "@synara-web/components/SidebarSearchProjection.logic";
+import { webStorage } from "../platform/storage";
 import {
   deriveThreadRecapSource,
   persistThreadRecapCache,
   readPersistedThreadRecapCache,
   upsertPersistedThreadRecap,
-} from '@synara-web/lib/threadRecap';
-import type { NativeSyntaxHighlightThemes } from '../main/syntaxHighlightingContract.logic';
-import { isLocalAbsolutePath } from '@synara/shared/path';
-import {
-  projectActiveThreadSummaries,
-} from './threadSummaryProjection.logic';
-import { parseMarkdown, type MarkdownNode } from '../components/markdown/markdownAst.lynx';
+} from "@synara-web/lib/threadRecap";
+import type { NativeSyntaxHighlightThemes } from "../main/syntaxHighlightingContract.logic";
+import { isLocalAbsolutePath } from "@synara/shared/path";
+import { projectActiveThreadSummaries } from "./threadSummaryProjection.logic";
+import { parseMarkdown, type MarkdownNode } from "../components/markdown/markdownAst.lynx";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -133,7 +128,7 @@ export interface ThreadSummary {
   readonly forkSourceThreadId?: string | null;
   readonly sidechatSourceThreadId?: string | null;
   readonly handoffSourceProvider?: string | null;
-  readonly envMode?: 'local' | 'worktree';
+  readonly envMode?: "local" | "worktree";
   readonly branch?: string | null;
   readonly worktreePath?: string | null;
   readonly associatedWorktreePath?: string | null;
@@ -143,13 +138,13 @@ export interface ThreadSummary {
 
 export interface ProjectSummary {
   readonly id: string;
-  readonly kind: 'project' | 'chat' | 'studio';
+  readonly kind: "project" | "chat" | "studio";
   readonly title: string;
   readonly workspaceRoot: string;
   readonly defaultModelSelection: ModelSelection | null;
-  readonly scripts: readonly import('@synara/contracts').ProjectScript[];
+  readonly scripts: readonly import("@synara/contracts").ProjectScript[];
   readonly isPinned?: boolean;
-  readonly spaceId?: import('@synara/contracts').SpaceId | null;
+  readonly spaceId?: import("@synara/contracts").SpaceId | null;
 }
 
 export interface WorktreeThreadSummary {
@@ -166,7 +161,7 @@ export interface ThreadHeaderSummary {
   readonly projectId: string;
   readonly project: string;
   readonly branch: string | null;
-  readonly envMode: 'local' | 'worktree';
+  readonly envMode: "local" | "worktree";
   readonly handoff: ThreadHandoff | null;
   readonly messages: readonly OrchestrationMessage[];
   readonly activities: readonly OrchestrationThreadActivity[];
@@ -177,8 +172,8 @@ export interface ThreadHeaderSummary {
   readonly createBranchFlowCompleted: boolean;
   readonly provider?: ProviderKind;
   readonly modelSelection: ModelSelection;
-  readonly runtimeMode: 'full-access' | 'approval-required';
-  readonly interactionMode: 'default' | 'plan';
+  readonly runtimeMode: "full-access" | "approval-required";
+  readonly interactionMode: "default" | "plan";
   readonly sessionStatus: string | null;
   readonly error: string | null;
   readonly errorRevision: string | null;
@@ -222,7 +217,7 @@ export interface SidebarSnapshot {
   readonly workspaceThreads: readonly WorktreeThreadSummary[];
   readonly searchProjects: readonly SidebarSearchProject[];
   readonly searchThreads: readonly SidebarSearchThread[];
-  readonly kanbanProjects: readonly Pick<Project, 'id' | 'kind' | 'name'>[];
+  readonly kanbanProjects: readonly Pick<Project, "id" | "kind" | "name">[];
   readonly kanbanThreads: readonly SidebarThreadSummary[];
 }
 
@@ -232,112 +227,100 @@ export type ThreadTranscriptRow = MessagesTimelineRow & {
   readonly markdownTreesByWorkEntryId?: Readonly<Record<string, MarkdownNode | null>>;
 };
 
-export type ExplorerEntriesResult =
-  | ProjectListDirectoriesResult
-  | ProjectSearchEntriesResult;
+export type ExplorerEntriesResult = ProjectListDirectoriesResult | ProjectSearchEntriesResult;
 
 export async function fetchAutomations(): Promise<AutomationListResult> {
-  'background only';
+  "background only";
   const { fetchAutomations: fetchAutomationList } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return fetchAutomationList();
 }
 
 export async function fetchProviderUpdatePromptServerConfig() {
-  'background only';
-  const { fetchServerConfig } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
-  );
+  "background only";
+  const { fetchServerConfig } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
   return fetchServerConfig();
 }
 
 export async function fetchProviderUpdatePromptServerSettings() {
-  'background only';
-  const { fetchServerSettings } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
-  );
+  "background only";
+  const { fetchServerSettings } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
   return fetchServerSettings();
 }
 
 export async function refreshProviderUpdatePromptServerConfig() {
-  'background only';
+  "background only";
   const { fetchFreshServerConfig } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return fetchFreshServerConfig();
 }
 
 export async function updatePromptProvider(provider: ProviderKind) {
-  'background only';
-  const { updateProvider } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
-  );
+  "background only";
+  const { updateProvider } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
   return updateProvider(provider);
 }
 
 export async function createAutomation(
-  input: AutomationCreateInput
+  input: AutomationCreateInput,
 ): Promise<AutomationDefinition> {
-  'background only';
+  "background only";
   const { createAutomation: createAutomationDefinition } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return createAutomationDefinition(input);
 }
 
 export async function runAutomationNow(
-  input: AutomationRunNowInput
+  input: AutomationRunNowInput,
 ): Promise<AutomationRunNowResult> {
-  'background only';
+  "background only";
   const { runAutomationNow: runNow } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return runNow(input);
 }
 
 export async function updateAutomation(
-  input: AutomationUpdateInput
+  input: AutomationUpdateInput,
 ): Promise<AutomationDefinition> {
-  'background only';
+  "background only";
   const { updateAutomation: updateAutomationDefinition } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return updateAutomationDefinition(input);
 }
 
-export async function deleteAutomation(
-  input: AutomationDeleteInput
-): Promise<void> {
-  'background only';
+export async function deleteAutomation(input: AutomationDeleteInput): Promise<void> {
+  "background only";
   const { deleteAutomation: deleteAutomationDefinition } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   await deleteAutomationDefinition(input);
 }
 
 export async function fetchPluginLibraryCapabilities(
-  provider: ProviderKind
+  provider: ProviderKind,
 ): Promise<ProviderComposerCapabilities> {
-  'background only';
+  "background only";
   const { fetchProviderComposerCapabilities } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return fetchProviderComposerCapabilities(provider);
 }
 
 export async function fetchPluginLibraryServerConfig(): Promise<ServerConfig> {
-  'background only';
-  const { fetchServerConfig } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
-  );
+  "background only";
+  const { fetchServerConfig } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
   return fetchServerConfig();
 }
 
 export async function fetchAutomationCreateServerConfig(): Promise<ServerConfig> {
-  'background only';
+  "background only";
   const { fetchFreshServerConfig } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return fetchFreshServerConfig();
 }
@@ -346,30 +329,28 @@ export async function fetchAutomationCreateModels(input: {
   readonly provider: ProviderKind;
   readonly cwd: string | null;
 }): Promise<ProviderListModelsResult> {
-  'background only';
-  const { fetchProviderModels } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
-  );
+  "background only";
+  const { fetchProviderModels } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
   return fetchProviderModels(input);
 }
 
 export async function fetchPluginLibraryPlugins(
-  provider: ProviderKind
+  provider: ProviderKind,
 ): Promise<ProviderListPluginsResult> {
-  'background only';
+  "background only";
   const { fetchProviderPlugins, fetchServerConfig } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   const config = await fetchServerConfig();
   return fetchProviderPlugins({ provider, cwd: config.cwd });
 }
 
 export async function fetchPluginLibrarySkills(
-  provider: ProviderKind
+  provider: ProviderKind,
 ): Promise<ProviderListSkillsResult> {
-  'background only';
+  "background only";
   const { fetchProviderSkills, fetchServerConfig } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   const config = await fetchServerConfig();
   return fetchProviderSkills({ provider, cwd: config.cwd });
@@ -413,7 +394,7 @@ let sidebarSearchSnapshotCache: OrchestrationSidebarSearchSnapshot | undefined;
 let sidebarSearchSnapshotRequest: Promise<void> | null = null;
 
 function refreshSidebarSearchSnapshotInBackground(
-  fetchSnapshot: () => Promise<OrchestrationSidebarSearchSnapshot>
+  fetchSnapshot: () => Promise<OrchestrationSidebarSearchSnapshot>,
 ): void {
   if (sidebarSearchSnapshotRequest !== null) return;
   sidebarSearchSnapshotRequest = fetchSnapshot()
@@ -422,7 +403,7 @@ function refreshSidebarSearchSnapshotInBackground(
       sidebarSnapshotCache = undefined;
     })
     .catch((error) => {
-      console.warn('[slice] sidebar search projection unavailable', String(error));
+      console.warn("[slice] sidebar search projection unavailable", String(error));
     })
     .finally(() => {
       sidebarSearchSnapshotRequest = null;
@@ -451,17 +432,17 @@ export interface PullRequestSnapshot {
 }
 
 export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
-  'background only';
+  "background only";
   const [
     { fetchSynaraSidebarShellSnapshot, fetchSynaraSidebarSearchSnapshot },
     { useStore },
     { hydrateStorage },
     { readSidebarUiState },
   ] = await Promise.all([
-    import(/* webpackMode: "eager" */ '../data/synaraClient'),
-    import(/* webpackMode: "eager" */ '@synara-web/store'),
-    import(/* webpackMode: "eager" */ '../platform/storage'),
-    import(/* webpackMode: "eager" */ '@synara-web/components/Sidebar.uiState'),
+    import(/* webpackMode: "eager" */ "../data/synaraClient"),
+    import(/* webpackMode: "eager" */ "@synara-web/store"),
+    import(/* webpackMode: "eager" */ "../platform/storage"),
+    import(/* webpackMode: "eager" */ "@synara-web/components/Sidebar.uiState"),
   ]);
   const snapshot = await fetchSynaraSidebarShellSnapshot();
   await hydrateStorage();
@@ -469,9 +450,7 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
     snapshotSequence: snapshot.snapshotSequence,
     threads: [],
   };
-  refreshSidebarSearchSnapshotInBackground(
-    fetchSynaraSidebarSearchSnapshot
-  );
+  refreshSidebarSearchSnapshotInBackground(fetchSynaraSidebarSearchSnapshot);
   if (
     sidebarSnapshotCache?.shellSnapshotSequence === snapshot.snapshotSequence &&
     sidebarSnapshotCache.searchSnapshotSequence === searchSnapshot.snapshotSequence
@@ -488,80 +467,73 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
     useStore
       .getState()
       .syncServerShellSnapshot(
-        snapshot as Parameters<ReturnType<typeof useStore.getState>['syncServerShellSnapshot']>[0]
+        snapshot as Parameters<ReturnType<typeof useStore.getState>["syncServerShellSnapshot"]>[0],
       );
     normalized = useStore.getState();
   } catch (error) {
-    console.error('[slice] main store projection failed', error);
+    console.error("[slice] main store projection failed", error);
     throw error;
   }
-  const projectNames = new Map(
-    normalized.projects.map((project) => [project.id, project.name])
-  );
-  const spaceNames = new Map(
-    normalized.spaces.map((space) => [space.id, space.name])
-  );
+  const projectNames = new Map(normalized.projects.map((project) => [project.id, project.name]));
+  const spaceNames = new Map(normalized.spaces.map((space) => [space.id, space.name]));
   const displayThreads = createSidebarDisplayThreadsSelector()(normalized);
   const archivedThreadShells = createThreadShellsSelector()(normalized).filter(
-    (thread) => thread.archivedAt != null
+    (thread) => thread.archivedAt != null,
   );
-  const workspaceThreads = createThreadShellsSelector()(normalized).map(
-    (thread) => ({
-      id: thread.id,
-      title: thread.title,
-      archivedAt: thread.archivedAt ?? null,
-      worktreePath: thread.worktreePath ?? null,
-      associatedWorktreePath: thread.associatedWorktreePath ?? null,
-    })
-  );
+  const workspaceThreads = createThreadShellsSelector()(normalized).map((thread) => ({
+    id: thread.id,
+    title: thread.title,
+    archivedAt: thread.archivedAt ?? null,
+    worktreePath: thread.worktreePath ?? null,
+    associatedWorktreePath: thread.associatedWorktreePath ?? null,
+  }));
   const searchMessagesByThreadId = new Map(
-    searchSnapshot.threads.map((thread) => [thread.threadId, thread.messages] as const)
+    searchSnapshot.threads.map((thread) => [thread.threadId, thread.messages] as const),
   );
   const threads = displayThreads.map((thread) => ({
-      id: thread.id,
-      title: thread.title,
-      projectId: thread.projectId,
-      project: projectNames.get(thread.projectId) ?? 'Unknown project',
-      messageCount:
-        normalized.messageIdsByThreadId?.[thread.id]?.length ??
-        searchMessagesByThreadId.get(thread.id)?.length ??
-        0,
-      createdAt: thread.createdAt,
-      updatedAt: thread.updatedAt ?? thread.createdAt,
-      archivedAt: thread.archivedAt ?? null,
-      latestUserMessageAt: thread.latestUserMessageAt ?? null,
-      live: thread.hasLiveTailWork,
-      provider: thread.session?.provider ?? thread.modelSelection.provider,
-      isPinned: thread.isPinned,
-      sessionStatus: thread.session?.status ?? null,
-      activeTurnId: thread.session?.activeTurnId ?? null,
-      parentThreadId: thread.parentThreadId ?? null,
-      subagentAgentId: thread.subagentAgentId ?? null,
-      subagentNickname: thread.subagentNickname ?? null,
-      subagentRole: thread.subagentRole ?? null,
-      forkSourceThreadId: thread.forkSourceThreadId ?? null,
-      sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
-      handoffSourceProvider: thread.handoff?.sourceProvider ?? null,
-      envMode: thread.envMode,
-      branch: thread.branch,
-      worktreePath: thread.worktreePath,
-      associatedWorktreePath: thread.associatedWorktreePath,
-      associatedWorktreeBranch: thread.associatedWorktreeBranch,
-      status: resolveThreadStatusPill({
-        thread: {
-          ...thread,
-          dismissedStatusKey:
-            dismissedThreadStatusKeyByThreadId[thread.id],
-        },
-        hasPendingApprovals: thread.hasPendingApprovals,
-        hasPendingUserInput: thread.hasPendingUserInput,
-      }),
-    }));
+    id: thread.id,
+    title: thread.title,
+    projectId: thread.projectId,
+    project: projectNames.get(thread.projectId) ?? "Unknown project",
+    messageCount:
+      normalized.messageIdsByThreadId?.[thread.id]?.length ??
+      searchMessagesByThreadId.get(thread.id)?.length ??
+      0,
+    createdAt: thread.createdAt,
+    updatedAt: thread.updatedAt ?? thread.createdAt,
+    archivedAt: thread.archivedAt ?? null,
+    latestUserMessageAt: thread.latestUserMessageAt ?? null,
+    live: thread.hasLiveTailWork,
+    provider: thread.session?.provider ?? thread.modelSelection.provider,
+    isPinned: thread.isPinned,
+    sessionStatus: thread.session?.status ?? null,
+    activeTurnId: thread.session?.activeTurnId ?? null,
+    parentThreadId: thread.parentThreadId ?? null,
+    subagentAgentId: thread.subagentAgentId ?? null,
+    subagentNickname: thread.subagentNickname ?? null,
+    subagentRole: thread.subagentRole ?? null,
+    forkSourceThreadId: thread.forkSourceThreadId ?? null,
+    sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
+    handoffSourceProvider: thread.handoff?.sourceProvider ?? null,
+    envMode: thread.envMode,
+    branch: thread.branch,
+    worktreePath: thread.worktreePath,
+    associatedWorktreePath: thread.associatedWorktreePath,
+    associatedWorktreeBranch: thread.associatedWorktreeBranch,
+    status: resolveThreadStatusPill({
+      thread: {
+        ...thread,
+        dismissedStatusKey: dismissedThreadStatusKeyByThreadId[thread.id],
+      },
+      hasPendingApprovals: thread.hasPendingApprovals,
+      hasPendingUserInput: thread.hasPendingUserInput,
+    }),
+  }));
   const archivedThreads = archivedThreadShells.map((thread) => ({
     id: thread.id,
     title: thread.title,
     projectId: thread.projectId,
-    project: projectNames.get(thread.projectId) ?? 'Unknown project',
+    project: projectNames.get(thread.projectId) ?? "Unknown project",
     messageCount: normalized.messageIdsByThreadId?.[thread.id]?.length ?? 0,
     createdAt: thread.createdAt,
     updatedAt: thread.updatedAt ?? thread.createdAt,
@@ -579,13 +551,13 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
       localName: project.localName,
       cwd: project.cwd,
       spaceName: project.spaceId
-        ? spaceNames.get(project.spaceId) ?? 'Unknown space'
-        : project.kind === 'project'
-          ? 'Void'
-          : 'Global',
+        ? (spaceNames.get(project.spaceId) ?? "Unknown space")
+        : project.kind === "project"
+          ? "Void"
+          : "Global",
       createdAt: project.createdAt,
       updatedAt: project.updatedAt,
-    })
+    }),
   );
   const searchThreads = projectSidebarSearchThreads({
     projects: searchProjects,
@@ -594,8 +566,7 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
         id: thread.id,
         title: thread.title,
         projectId: thread.projectId,
-        provider:
-          thread.session?.provider ?? thread.modelSelection.provider,
+        provider: thread.session?.provider ?? thread.modelSelection.provider,
         createdAt: thread.createdAt,
         updatedAt: thread.updatedAt,
         // The server has already capped this message window before it crosses
@@ -645,18 +616,18 @@ export async function fetchExplorerEntries(input: {
   readonly query: string;
   readonly workspaceRoot: string;
 }): Promise<ExplorerEntriesResult> {
-  'background only';
+  "background only";
   const cacheKey = `${input.workspaceRoot}\0${input.query}`;
   const cached = explorerEntriesCache.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) return cached.result;
   const { listProjectDirectories, searchProjectEntries } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   const result = input.query
     ? searchProjectEntries({
         cwd: input.workspaceRoot,
         query: input.query,
-        kind: 'file',
+        kind: "file",
         limit: 80,
       })
     : listProjectDirectories({
@@ -675,12 +646,12 @@ export async function fetchExplorerDirectory(input: {
   readonly relativePath: string;
   readonly workspaceRoot: string;
 }): Promise<ProjectListDirectoriesResult> {
-  'background only';
+  "background only";
   const cacheKey = `${input.workspaceRoot}\0${input.relativePath}`;
   const cached = explorerDirectoryCache.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) return cached.result;
   const { listProjectDirectories } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   const result = listProjectDirectories({
     cwd: input.workspaceRoot,
@@ -708,28 +679,28 @@ export async function fetchExplorerFile(input: {
   readonly file: ProjectReadFileResult;
   readonly syntaxHighlight: NativeSyntaxHighlightThemes | null;
 }> {
-  'background only';
+  "background only";
   const cacheKey = `${input.workspaceRoot}\0${input.relativePath}`;
   const cached = explorerFileCache.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) return cached.result;
   const { readProjectFileWithSyntax } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   const result = (async () => {
-      let previewGrant = input.previewGrant ?? null;
-      if (!previewGrant && isLocalAbsolutePath(input.relativePath)) {
-        previewGrant = await import(
-          /* webpackMode: "eager" */ '../data/synaraClient'
-        ).then(async ({ createLocalFilePreviewGrant }) => {
+    let previewGrant = input.previewGrant ?? null;
+    if (!previewGrant && isLocalAbsolutePath(input.relativePath)) {
+      previewGrant = await import(/* webpackMode: "eager" */ "../data/synaraClient").then(
+        async ({ createLocalFilePreviewGrant }) => {
           const result = await createLocalFilePreviewGrant(input.relativePath);
           return result.grant;
-        });
-      }
-      return readProjectFileWithSyntax({
-        cwd: input.workspaceRoot,
-        ...(previewGrant ? { previewGrant } : {}),
-        relativePath: input.relativePath,
-      });
+        },
+      );
+    }
+    return readProjectFileWithSyntax({
+      cwd: input.workspaceRoot,
+      ...(previewGrant ? { previewGrant } : {}),
+      relativePath: input.relativePath,
+    });
   })();
   explorerFileCache.set(cacheKey, {
     expiresAt: Date.now() + EXPLORER_CACHE_TTL_MS,
@@ -747,17 +718,14 @@ export async function fetchExplorerLocalPreviewUrl(input: {
   readonly relativePath: string;
   readonly workspaceRoot: string;
 }): Promise<string> {
-  'background only';
+  "background only";
   const [{ bridgeCall }, { buildWorkspaceLocalPreviewUrl }] = await Promise.all([
-    import(/* webpackMode: "eager" */ '../platform/bridge'),
-    import(/* webpackMode: "eager" */ './localPreview.logic'),
+    import(/* webpackMode: "eager" */ "../platform/bridge"),
+    import(/* webpackMode: "eager" */ "./localPreview.logic"),
   ]);
-  const runtime = await bridgeCall<{ readonly wsUrl?: unknown }>(
-    'runtimeGetSynaraWsUrl'
-  );
-  const wsUrl =
-    typeof runtime?.wsUrl === 'string' ? runtime.wsUrl.trim() : '';
-  if (!wsUrl) throw new Error('Synara runtime endpoint is unavailable.');
+  const runtime = await bridgeCall<{ readonly wsUrl?: unknown }>("runtimeGetSynaraWsUrl");
+  const wsUrl = typeof runtime?.wsUrl === "string" ? runtime.wsUrl.trim() : "";
+  if (!wsUrl) throw new Error("Synara runtime endpoint is unavailable.");
   return buildWorkspaceLocalPreviewUrl({
     wsUrl,
     cwd: input.workspaceRoot,
@@ -766,18 +734,14 @@ export async function fetchExplorerLocalPreviewUrl(input: {
 }
 
 export async function fetchEditorIconUrl(editorId: string): Promise<string> {
-  'background only';
-  const { bridgeCall } = await import(
-    /* webpackMode: "eager" */ '../platform/bridge'
-  );
-  const response = await bridgeCall<{ readonly dataUrl?: unknown }>(
-    'runtimeGetEditorIcon',
-    { editorId }
-  );
-  const dataUrl =
-    typeof response?.dataUrl === 'string' ? response.dataUrl.trim() : '';
-  if (!dataUrl.startsWith('data:image/')) {
-    throw new Error('Editor icon is unavailable.');
+  "background only";
+  const { bridgeCall } = await import(/* webpackMode: "eager" */ "../platform/bridge");
+  const response = await bridgeCall<{ readonly dataUrl?: unknown }>("runtimeGetEditorIcon", {
+    editorId,
+  });
+  const dataUrl = typeof response?.dataUrl === "string" ? response.dataUrl.trim() : "";
+  if (!dataUrl.startsWith("data:image/")) {
+    throw new Error("Editor icon is unavailable.");
   }
   return dataUrl;
 }
@@ -790,10 +754,8 @@ export async function fetchExplorerPdfMetadata(input: {
   readonly width: number;
   readonly height: number;
 }> {
-  'background only';
-  const { inspectProjectPdf } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
-  );
+  "background only";
+  const { inspectProjectPdf } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
   return inspectProjectPdf({
     cwd: input.workspaceRoot,
     path: input.relativePath,
@@ -801,39 +763,33 @@ export async function fetchExplorerPdfMetadata(input: {
 }
 
 export async function fetchThreads(): Promise<ThreadSummary[]> {
-  'background only';
+  "background only";
   const { fetchSynaraShellSnapshot } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   const snapshot = await fetchSynaraShellSnapshot();
   return projectActiveThreadSummaries(snapshot);
 }
 
 export async function fetchThreadCompletionAssistantSummary(
-  threadId: string
+  threadId: string,
 ): Promise<string | null> {
-  'background only';
-  const [
-    { fetchSynaraThreadDetailSnapshot },
-    { summarizeTaskCompletionAssistantMessage },
-  ] = await Promise.all([
-    import(/* webpackMode: "eager" */ '../data/synaraClient'),
-    import(
-      /* webpackMode: "eager" */ '@synara-web/notifications/taskCompletion.logic'
-    ),
-  ]);
+  "background only";
+  const [{ fetchSynaraThreadDetailSnapshot }, { summarizeTaskCompletionAssistantMessage }] =
+    await Promise.all([
+      import(/* webpackMode: "eager" */ "../data/synaraClient"),
+      import(/* webpackMode: "eager" */ "@synara-web/notifications/taskCompletion.logic"),
+    ]);
   const snapshot = await fetchSynaraThreadDetailSnapshot(threadId);
-  return snapshot?.thread
-    ? summarizeTaskCompletionAssistantMessage(snapshot.thread)
-    : null;
+  return snapshot?.thread ? summarizeTaskCompletionAssistantMessage(snapshot.thread) : null;
 }
 
 export async function fetchThreadHeaderSummary(
-  threadId: string
+  threadId: string,
 ): Promise<ThreadHeaderSummary | undefined> {
-  'background only';
+  "background only";
   const { fetchSynaraThreadDetailSnapshot, fetchSynaraSidebarShellSnapshot } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   const [detail, shell] = await Promise.all([
     fetchSynaraThreadDetailSnapshot(threadId),
@@ -841,14 +797,12 @@ export async function fetchThreadHeaderSummary(
   ]);
   const thread = detail?.thread;
   if (!thread) return undefined;
-  const project = shell.projects.find(
-    (candidate) => candidate.id === thread.projectId
-  );
+  const project = shell.projects.find((candidate) => candidate.id === thread.projectId);
   return {
     id: thread.id,
     title: thread.title,
     projectId: thread.projectId,
-    project: project?.title ?? 'Synara',
+    project: project?.title ?? "Synara",
     branch: thread.branch,
     envMode: thread.envMode,
     handoff: thread.handoff,
@@ -870,46 +824,35 @@ export async function fetchThreadHeaderSummary(
     sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
     latestTurnState: thread.latestTurn?.state ?? null,
     workspaceRoot: project?.workspaceRoot ?? null,
-    notes: thread.notes ?? '',
+    notes: thread.notes ?? "",
     pinnedMessages: thread.pinnedMessages ?? [],
     pinnedMessageTextById: Object.fromEntries(
       thread.messages
         .filter(
           (message) =>
-            (message.role === 'user' || message.role === 'assistant') &&
-            message.text.trim().length > 0
+            (message.role === "user" || message.role === "assistant") &&
+            message.text.trim().length > 0,
         )
-        .map((message) => [message.id as MessageId, message.text])
+        .map((message) => [message.id as MessageId, message.text]),
     ),
     pinnedRevision: JSON.stringify(thread.pinnedMessages ?? []),
     threadMarkers: thread.threadMarkers ?? [],
     markerRevision: JSON.stringify(thread.threadMarkers ?? []),
     lastKnownPr: thread.lastKnownPr ?? null,
-    pendingApprovals: derivePendingApprovals(
-      thread.activities,
-      thread.pendingInteractions
-    ),
-    pendingUserInputs: derivePendingUserInputs(
-      thread.activities,
-      thread.pendingInteractions
-    ),
+    pendingApprovals: derivePendingApprovals(thread.activities, thread.pendingInteractions),
+    pendingUserInputs: derivePendingUserInputs(thread.activities, thread.pendingInteractions),
     checkpoints: thread.checkpoints,
   };
 }
 
-export async function fetchThreadTranscriptRows(
-  threadId: string
-): Promise<ThreadTranscriptRow[]> {
-  'background only';
-  const [
-    { fetchSynaraThreadDetailSnapshot },
-    { useStore },
-    { getThreadFromState },
-  ] = await Promise.all([
-    import(/* webpackMode: "eager" */ '../data/synaraClient'),
-    import(/* webpackMode: "eager" */ '@synara-web/store'),
-    import(/* webpackMode: "eager" */ '@synara-web/threadDerivation'),
-  ]);
+export async function fetchThreadTranscriptRows(threadId: string): Promise<ThreadTranscriptRow[]> {
+  "background only";
+  const [{ fetchSynaraThreadDetailSnapshot }, { useStore }, { getThreadFromState }] =
+    await Promise.all([
+      import(/* webpackMode: "eager" */ "../data/synaraClient"),
+      import(/* webpackMode: "eager" */ "@synara-web/store"),
+      import(/* webpackMode: "eager" */ "@synara-web/threadDerivation"),
+    ]);
   const snapshot = await fetchSynaraThreadDetailSnapshot(threadId);
   if (!snapshot) return [];
   const cached = transcriptRowsByThreadId.get(threadId);
@@ -919,11 +862,13 @@ export async function fetchThreadTranscriptRows(
   useStore
     .getState()
     .syncServerThreadDetail(
-      snapshot.thread as Parameters<ReturnType<typeof useStore.getState>['syncServerThreadDetail']>[0]
+      snapshot.thread as Parameters<
+        ReturnType<typeof useStore.getState>["syncServerThreadDetail"]
+      >[0],
     );
   const thread = getThreadFromState(
     useStore.getState(),
-    threadId as Parameters<typeof getThreadFromState>[1]
+    threadId as Parameters<typeof getThreadFromState>[1],
   );
   if (!thread) {
     transcriptRowsByThreadId.set(threadId, {
@@ -935,12 +880,10 @@ export async function fetchThreadTranscriptRows(
 
   const visibleMessages = filterSidechatTranscriptMessages(
     thread.messages,
-    Boolean(thread.sidechatSourceThreadId)
+    Boolean(thread.sidechatSourceThreadId),
   );
   const visibleTurnIds = new Set(
-    visibleMessages.flatMap((message) =>
-      message.turnId ? [message.turnId] : []
-    )
+    visibleMessages.flatMap((message) => (message.turnId ? [message.turnId] : [])),
   );
   if (thread.latestTurn?.turnId) {
     visibleTurnIds.add(thread.latestTurn.turnId);
@@ -948,34 +891,32 @@ export async function fetchThreadTranscriptRows(
   const workEntries = deriveWorkLogEntries(
     thread.activities,
     thread.latestTurn?.turnId ?? undefined,
-    { visibleTurnIds }
+    { visibleTurnIds },
   );
   const timelineEntries = deriveTimelineEntries(
     visibleMessages as Parameters<typeof deriveTimelineEntries>[0],
     thread.proposedPlans as Parameters<typeof deriveTimelineEntries>[1],
-    workEntries
+    workEntries,
   );
-  const activeTurnInProgress = thread.latestTurn?.state === 'running';
-  const turnDiffSummaryByAssistantMessageId =
-    buildTurnDiffSummaryByAssistantMessageId({
-      turnDiffSummaries: thread.turnDiffSummaries,
-      messages: visibleMessages.map((message) => ({
-        id: message.id,
-        role: message.role,
-        turnId: message.turnId ?? null,
-      })),
-    });
+  const activeTurnInProgress = thread.latestTurn?.state === "running";
+  const turnDiffSummaryByAssistantMessageId = buildTurnDiffSummaryByAssistantMessageId({
+    turnDiffSummaries: thread.turnDiffSummaries,
+    messages: visibleMessages.map((message) => ({
+      id: message.id,
+      role: message.role,
+      turnId: message.turnId ?? null,
+    })),
+  });
   const inferredCheckpointTurnCountByTurnId = Object.fromEntries(
     [...thread.turnDiffSummaries]
       .sort((left, right) => left.completedAt.localeCompare(right.completedAt))
-      .map((summary, index) => [summary.turnId, index + 1])
+      .map((summary, index) => [summary.turnId, index + 1]),
   );
-  const revertTurnCountByUserMessageId =
-    buildRevertTurnCountByUserMessageId({
-      timelineEntries,
-      turnDiffSummaryByAssistantMessageId,
-      inferredCheckpointTurnCountByTurnId,
-    });
+  const revertTurnCountByUserMessageId = buildRevertTurnCountByUserMessageId({
+    timelineEntries,
+    turnDiffSummaryByAssistantMessageId,
+    inferredCheckpointTurnCountByTurnId,
+  });
   const derivedRows = deriveMessagesTimelineRows({
     timelineEntries,
     isWorking: activeTurnInProgress,
@@ -988,25 +929,25 @@ export async function fetchThreadTranscriptRows(
     revertTurnCountByUserMessageId,
   });
   const markdownMessages = derivedRows.flatMap((row) =>
-    row.kind === 'message'
+    row.kind === "message"
       ? [
           row.message,
           ...(row.collapsedTurnItems ?? []).flatMap((item) =>
-            item.kind === 'narration' ? [item.message] : []
+            item.kind === "narration" ? [item.message] : [],
           ),
         ]
-      : []
+      : [],
   );
   const markdownWorkEntries = derivedRows.flatMap((row) => {
     const entries =
-      row.kind === 'work'
+      row.kind === "work"
         ? row.groupedEntries
-        : row.kind === 'message'
+        : row.kind === "message"
           ? [
               ...(row.leadingWorkEntries ?? []),
               ...(row.inlineWorkEntries ?? []),
               ...(row.collapsedTurnItems ?? []).flatMap((item) =>
-                item.kind === 'work' ? [item.entry] : []
+                item.kind === "work" ? [item.entry] : [],
               ),
             ]
           : [];
@@ -1014,52 +955,43 @@ export async function fetchThreadTranscriptRows(
   });
   const parsedMarkdownTrees = [
     ...markdownMessages.map((message) =>
-      parseMarkdown(
-        message.text,
-        message.role === 'user' ? 'user' : 'assistant'
-      )
+      parseMarkdown(message.text, message.role === "user" ? "user" : "assistant"),
     ),
     ...markdownWorkEntries.map((entry) =>
       parseMarkdown(
-        formatAgentActivityEntryPreview(entry) ??
-          entry.preview ??
-          entry.detail ??
-          entry.label,
-        'assistant'
-      )
+        formatAgentActivityEntryPreview(entry) ?? entry.preview ?? entry.detail ?? entry.label,
+        "assistant",
+      ),
     ),
   ];
   const parsedTreeByMessageId = new Map(
-    markdownMessages.map((message, index) => [
-      message.id,
-      parsedMarkdownTrees[index] ?? null,
-    ])
+    markdownMessages.map((message, index) => [message.id, parsedMarkdownTrees[index] ?? null]),
   );
   const parsedTreeByWorkEntryId = new Map(
     markdownWorkEntries.map((entry, index) => [
       entry.id,
       parsedMarkdownTrees[markdownMessages.length + index] ?? null,
-    ])
+    ]),
   );
   const rows = derivedRows.map((row): ThreadTranscriptRow => {
     const rowWorkEntries =
-      row.kind === 'work'
+      row.kind === "work"
         ? row.groupedEntries
-        : row.kind === 'message'
+        : row.kind === "message"
           ? [
               ...(row.leadingWorkEntries ?? []),
               ...(row.inlineWorkEntries ?? []),
               ...(row.collapsedTurnItems ?? []).flatMap((item) =>
-                item.kind === 'work' ? [item.entry] : []
+                item.kind === "work" ? [item.entry] : [],
               ),
             ]
           : [];
     const markdownTreesByWorkEntryId = Object.fromEntries(
       rowWorkEntries
         .filter(isReasoningUpdateWorkEntry)
-        .map((entry) => [entry.id, parsedTreeByWorkEntryId.get(entry.id) ?? null])
+        .map((entry) => [entry.id, parsedTreeByWorkEntryId.get(entry.id) ?? null]),
     );
-    if (row.kind !== 'message') {
+    if (row.kind !== "message") {
       return Object.keys(markdownTreesByWorkEntryId).length > 0
         ? { ...row, markdownTreesByWorkEntryId }
         : row;
@@ -1067,13 +999,12 @@ export async function fetchThreadTranscriptRows(
     const messages = [
       row.message,
       ...(row.collapsedTurnItems ?? []).flatMap((item) =>
-        item.kind === 'narration' ? [item.message] : []
+        item.kind === "narration" ? [item.message] : [],
       ),
     ];
     const markdownTreesByMessageId: Record<string, MarkdownNode | null> = {};
     for (const message of messages)
-      markdownTreesByMessageId[message.id] =
-        parsedTreeByMessageId.get(message.id) ?? null;
+      markdownTreesByMessageId[message.id] = parsedTreeByMessageId.get(message.id) ?? null;
     return {
       ...row,
       markdownTree: markdownTreesByMessageId[row.message.id] ?? null,
@@ -1089,44 +1020,41 @@ export async function fetchThreadTranscriptRows(
 }
 
 export async function fetchThreadRecapSummary(
-  threadId: string
+  threadId: string,
 ): Promise<ThreadRecapSummary | null> {
-  'background only';
+  "background only";
   const cache = readPersistedThreadRecapCache(webStorage);
   return cache[threadId as keyof typeof cache] ?? null;
 }
 
-export async function prepareThreadRecap(
-  threadId: string
-): Promise<ThreadRecapPlan | null> {
-  'background only';
-  const [
-    { fetchSynaraThreadDetailSnapshot },
-    { useStore },
-    { getThreadFromState },
-  ] = await Promise.all([
-    import(/* webpackMode: "eager" */ '../data/synaraClient'),
-    import(/* webpackMode: "eager" */ '@synara-web/store'),
-    import(/* webpackMode: "eager" */ '@synara-web/threadDerivation'),
-  ]);
+export async function prepareThreadRecap(threadId: string): Promise<ThreadRecapPlan | null> {
+  "background only";
+  const [{ fetchSynaraThreadDetailSnapshot }, { useStore }, { getThreadFromState }] =
+    await Promise.all([
+      import(/* webpackMode: "eager" */ "../data/synaraClient"),
+      import(/* webpackMode: "eager" */ "@synara-web/store"),
+      import(/* webpackMode: "eager" */ "@synara-web/threadDerivation"),
+    ]);
   const snapshot = await fetchSynaraThreadDetailSnapshot(threadId);
   if (!snapshot) return null;
   useStore
     .getState()
     .syncServerThreadDetail(
-      snapshot.thread as Parameters<ReturnType<typeof useStore.getState>['syncServerThreadDetail']>[0]
+      snapshot.thread as Parameters<
+        ReturnType<typeof useStore.getState>["syncServerThreadDetail"]
+      >[0],
     );
   const thread = getThreadFromState(
     useStore.getState(),
-    threadId as Parameters<typeof getThreadFromState>[1]
+    threadId as Parameters<typeof getThreadFromState>[1],
   );
   if (!thread) return null;
   const cache = readPersistedThreadRecapCache(webStorage);
   const existing = cache[threadId] ?? null;
   const hasStreamingAssistant = thread.messages.some(
-    (message) => message.role === 'assistant' && message.streaming
+    (message) => message.role === "assistant" && message.streaming,
   );
-  if (thread.latestTurn?.state === 'running' || hasStreamingAssistant) {
+  if (thread.latestTurn?.state === "running" || hasStreamingAssistant) {
     return null;
   }
   const source = deriveThreadRecapSource({
@@ -1151,18 +1079,14 @@ export async function generatePreparedThreadRecap(input: {
   readonly plan: ThreadRecapPlan;
   readonly threadId: string;
 }): Promise<ThreadRecapSummary> {
-  'background only';
-  const { generateThreadRecap } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
-  );
+  "background only";
+  const { generateThreadRecap } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
   const cache = readPersistedThreadRecapCache(webStorage);
   const result = await generateThreadRecap({
     cwd: input.cwd,
     newMaterial: input.plan.newMaterial,
     currentState: input.plan.currentState,
-    ...(input.plan.existing?.text
-      ? { previousRecap: input.plan.existing.text }
-      : {}),
+    ...(input.plan.existing?.text ? { previousRecap: input.plan.existing.text } : {}),
   });
   const persisted = {
     text: result.recap,
@@ -1174,9 +1098,9 @@ export async function generatePreparedThreadRecap(input: {
     upsertPersistedThreadRecap(
       cache,
       input.threadId as Parameters<typeof upsertPersistedThreadRecap>[1],
-      persisted
+      persisted,
     ),
-    webStorage
+    webStorage,
   );
   return persisted;
 }
@@ -1185,9 +1109,9 @@ export async function fetchPullRequests(input: {
   readonly state: PullRequestState;
   readonly projectId: ProjectId | null;
 }): Promise<PullRequestSnapshot> {
-  'background only';
+  "background only";
   const { fetchSynaraPullRequests } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   const result = await fetchSynaraPullRequests(input);
   return {
@@ -1199,51 +1123,51 @@ export async function fetchPullRequests(input: {
 }
 
 export async function fetchPullRequestDetail(
-  input: PullRequestDetailInput
+  input: PullRequestDetailInput,
 ): Promise<PullRequestDetail> {
-  'background only';
+  "background only";
   const { fetchSynaraPullRequestDetail } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return fetchSynaraPullRequestDetail(input);
 }
 
 export async function fetchPullRequestDiff(
-  input: PullRequestDetailInput
+  input: PullRequestDetailInput,
 ): Promise<PullRequestDiffResult> {
-  'background only';
+  "background only";
   const { fetchSynaraPullRequestDiff } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return fetchSynaraPullRequestDiff(input);
 }
 
 export async function performPullRequestAction(
-  input: PullRequestActionInput
+  input: PullRequestActionInput,
 ): Promise<PullRequestActionResult> {
-  'background only';
+  "background only";
   const { performSynaraPullRequestAction } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return performSynaraPullRequestAction(input);
 }
 
 export async function postPullRequestComment(
-  input: PullRequestCommentInput
+  input: PullRequestCommentInput,
 ): Promise<PullRequestActionResult> {
-  'background only';
+  "background only";
   const { postSynaraPullRequestComment } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return postSynaraPullRequestComment(input);
 }
 
 export async function setPullRequestPinned(
-  input: PullRequestSetPinnedInput
+  input: PullRequestSetPinnedInput,
 ): Promise<PullRequestSetPinnedResult> {
-  'background only';
+  "background only";
   const { setSynaraPullRequestPinned } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient'
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return setSynaraPullRequestPinned(input);
 }

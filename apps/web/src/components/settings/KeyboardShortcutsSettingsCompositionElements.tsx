@@ -110,9 +110,7 @@ export function KeyboardShortcutsTitleElement({ children }: ChildrenProps) {
 }
 
 export function KeyboardShortcutsDescriptionElement({ children }: ChildrenProps) {
-  return (
-    <div className={cn(SETTINGS_CARD_ROW_DESCRIPTION_CLASS_NAME, "truncate")}>{children}</div>
-  );
+  return <div className={cn(SETTINGS_CARD_ROW_DESCRIPTION_CLASS_NAME, "truncate")}>{children}</div>;
 }
 
 export function KeyboardShortcutsShortcutElement({ children }: ChildrenProps) {

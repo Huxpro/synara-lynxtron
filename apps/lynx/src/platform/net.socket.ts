@@ -7,7 +7,7 @@
 //   until the Lynx app needs effect RpcClient there).
 // Layer: L1 platform port (lynx implementation)
 
-import 'background-only';
+import "background-only";
 
 import {
   GlobalEventEmitter,
@@ -16,9 +16,9 @@ import {
   type WebSocketFailedEvent,
   type WebSocketMessageEvent,
   type WebSocketOpenEvent,
-} from '@lynx-js/websocket/impl';
+} from "@lynx-js/websocket/impl";
 
-import { resolveRuntimeSocketUrl } from './runtimeEndpoint.logic';
+import { resolveRuntimeSocketUrl } from "./runtimeEndpoint.logic";
 
 type SocketEvent = {
   readonly type: string;
@@ -43,52 +43,40 @@ let nextSocketId = 1_000_000;
 class NativeRpcWebSocket {
   readonly url: string;
   private readonly socketId = nextSocketId++;
-  private readonly socketModule = (NativeModules as {
-    readonly LynxWebSocketModule?: LynxWebSocketModule;
-  }).LynxWebSocketModule;
-  private readonly listeners = new Map<
-    string,
-    Set<(event: SocketEvent) => void>
-  >();
+  private readonly socketModule = (
+    NativeModules as {
+      readonly LynxWebSocketModule?: LynxWebSocketModule;
+    }
+  ).LynxWebSocketModule;
+  private readonly listeners = new Map<string, Set<(event: SocketEvent) => void>>();
   private nativeCloseSent = false;
   private readyState = 0;
 
-  constructor(
-    url: string,
-    protocols?: string | string[],
-    options: WebSocketOptions = {}
-  ) {
+  constructor(url: string, protocols?: string | string[], options: WebSocketOptions = {}) {
     this.url = url;
     if (!this.socketModule) {
-      throw new Error('LynxWebSocketModule is unavailable.');
+      throw new Error("LynxWebSocketModule is unavailable.");
     }
-    GlobalEventEmitter.addListener(
-      'websocketMessage',
-      this.onMessage,
-      this
-    );
-    GlobalEventEmitter.addListener('websocketOpen', this.onOpen, this);
-    GlobalEventEmitter.addListener('websocketClosed', this.onClosed, this);
-    GlobalEventEmitter.addListener('websocketFailed', this.onFailed, this);
+    GlobalEventEmitter.addListener("websocketMessage", this.onMessage, this);
+    GlobalEventEmitter.addListener("websocketOpen", this.onOpen, this);
+    GlobalEventEmitter.addListener("websocketClosed", this.onClosed, this);
+    GlobalEventEmitter.addListener("websocketFailed", this.onFailed, this);
     this.socketModule.connect(
       url,
-      typeof protocols === 'string' ? [protocols] : protocols ?? [],
+      typeof protocols === "string" ? [protocols] : (protocols ?? []),
       options,
-      this.socketId
+      this.socketId,
     );
   }
 
-  addEventListener(
-    type: string,
-    listener: (event: SocketEvent) => void
-  ): void {
+  addEventListener(type: string, listener: (event: SocketEvent) => void): void {
     const entries = this.listeners.get(type) ?? new Set();
     entries.add(listener);
     this.listeners.set(type, entries);
   }
 
   send(data: string): void {
-    if (this.readyState === 0) throw new Error('INVALID_STATE_ERR');
+    if (this.readyState === 0) throw new Error("INVALID_STATE_ERR");
     if (this.readyState !== 1) return;
     this.socketModule?.send(data, this.socketId);
   }
@@ -101,30 +89,30 @@ class NativeRpcWebSocket {
     if (this.nativeCloseSent) return;
     this.nativeCloseSent = true;
     this.readyState = 2;
-    this.socketModule?.close(1000, '', this.socketId);
+    this.socketModule?.close(1000, "", this.socketId);
   }
 
-  private emit(type: string, detail: Omit<SocketEvent, 'type' | 'target'> = {}) {
+  private emit(type: string, detail: Omit<SocketEvent, "type" | "target"> = {}) {
     const event: SocketEvent = { type, target: this, ...detail };
     for (const listener of this.listeners.get(type) ?? []) listener(event);
   }
 
   private unregister(): void {
-    GlobalEventEmitter.removeListener('websocketMessage', this.onMessage);
-    GlobalEventEmitter.removeListener('websocketOpen', this.onOpen);
-    GlobalEventEmitter.removeListener('websocketClosed', this.onClosed);
-    GlobalEventEmitter.removeListener('websocketFailed', this.onFailed);
+    GlobalEventEmitter.removeListener("websocketMessage", this.onMessage);
+    GlobalEventEmitter.removeListener("websocketOpen", this.onOpen);
+    GlobalEventEmitter.removeListener("websocketClosed", this.onClosed);
+    GlobalEventEmitter.removeListener("websocketFailed", this.onFailed);
   }
 
   private readonly onMessage = (event: WebSocketMessageEvent): void => {
     if (event.id !== this.socketId) return;
-    this.emit('message', { data: event.data });
+    this.emit("message", { data: event.data });
   };
 
   private readonly onOpen = (event: WebSocketOpenEvent): void => {
     if (event.id !== this.socketId) return;
     this.readyState = 1;
-    this.emit('open');
+    this.emit("open");
   };
 
   private readonly onClosed = (event: WebSocketClosedEvent): void => {
@@ -133,7 +121,7 @@ class NativeRpcWebSocket {
     // wrapper cannot do this because it has already transitioned to CLOSED.
     this.forceNativeClose();
     this.readyState = 3;
-    this.emit('close', { code: event.code, reason: event.reason });
+    this.emit("close", { code: event.code, reason: event.reason });
     this.unregister();
   };
 
@@ -141,8 +129,8 @@ class NativeRpcWebSocket {
     if (event.id !== this.socketId) return;
     this.forceNativeClose();
     this.readyState = 3;
-    this.emit('error', { message: event.message });
-    this.emit('close', { code: 1006, reason: event.message });
+    this.emit("error", { message: event.message });
+    this.emit("close", { code: 1006, reason: event.message });
     this.unregister();
   };
 }
@@ -154,7 +142,7 @@ export interface WebSocketOptions {
 export type WebSocketFactory = (
   url: string,
   protocols?: string | string[],
-  options?: WebSocketOptions
+  options?: WebSocketOptions,
 ) => WebSocketLike;
 
 export const createWebSocket: WebSocketFactory = (url, protocols, options) =>

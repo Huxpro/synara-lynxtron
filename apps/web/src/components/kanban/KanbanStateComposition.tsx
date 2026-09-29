@@ -23,9 +23,7 @@ interface KanbanStatePresentation {
   readonly variant: KanbanStateElementVariant;
 }
 
-export function resolveKanbanStatePresentation(
-  kind: KanbanStateKind,
-): KanbanStatePresentation {
+export function resolveKanbanStatePresentation(kind: KanbanStateKind): KanbanStatePresentation {
   switch (kind) {
     case "loading-overview":
       return {
@@ -69,8 +67,7 @@ export function resolveKanbanStatePresentation(
       };
     case "stale-offline":
       return {
-        announcement:
-          "Kanban could not refresh while offline. Showing the last loaded board.",
+        announcement: "Kanban could not refresh while offline. Showing the last loaded board.",
         description: null,
         intent: "alert",
         title: "Offline · showing the last loaded board",
@@ -78,8 +75,7 @@ export function resolveKanbanStatePresentation(
       };
     case "stale-error":
       return {
-        announcement:
-          "Kanban could not refresh. Showing the last loaded board.",
+        announcement: "Kanban could not refresh. Showing the last loaded board.",
         description: null,
         intent: "alert",
         title: "Refresh failed · showing the last loaded board",

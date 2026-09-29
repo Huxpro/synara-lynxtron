@@ -1,18 +1,18 @@
-import { sortThreadsForSidebar } from '@synara-web/components/SidebarThreadSort.logic';
-import type { SidebarThreadSortOrderValue } from '@synara-web/sidebarSortDefaults';
+import { sortThreadsForSidebar } from "@synara-web/components/SidebarThreadSort.logic";
+import type { SidebarThreadSortOrderValue } from "@synara-web/sidebarSortDefaults";
 import {
   groupItemsBySpace,
   resolveActiveSpaceId,
   spaceDisplayName,
-} from '@synara-web/lib/spaceGrouping';
-import type { Space } from '@synara-web/types';
-import type { SpaceId } from '@synara/contracts';
+} from "@synara-web/lib/spaceGrouping";
+import type { Space } from "@synara-web/types";
+import type { SpaceId } from "@synara/contracts";
 
-import type { ThreadSummary } from './queries';
+import type { ThreadSummary } from "./queries";
 
 export interface EditorProjectSwitchProject {
   readonly id: string;
-  readonly kind: 'project' | 'chat' | 'studio';
+  readonly kind: "project" | "chat" | "studio";
   readonly title: string;
   readonly spaceId?: SpaceId | null;
 }
@@ -38,7 +38,7 @@ const EDITOR_PROJECT_SWITCH_EMPTY_HEIGHT = 76;
  * content-derived viewport while preserving Web's 264px maximum.
  */
 export function resolveEditorProjectSwitchListHeight(
-  groups: readonly { readonly items: readonly unknown[] }[]
+  groups: readonly { readonly items: readonly unknown[] }[],
 ): number {
   if (groups.length === 0) return EDITOR_PROJECT_SWITCH_EMPTY_HEIGHT;
   const contentHeight = groups.reduce(
@@ -47,7 +47,7 @@ export function resolveEditorProjectSwitchListHeight(
       (index > 0 ? EDITOR_PROJECT_SWITCH_SEPARATOR_HEIGHT : 0) +
       EDITOR_PROJECT_SWITCH_GROUP_LABEL_HEIGHT +
       group.items.length * EDITOR_PROJECT_SWITCH_ITEM_HEIGHT,
-    EDITOR_PROJECT_SWITCH_LIST_PADDING
+    EDITOR_PROJECT_SWITCH_LIST_PADDING,
   );
   return Math.min(EDITOR_PROJECT_SWITCH_LIST_MAX_HEIGHT, contentHeight);
 }
@@ -58,18 +58,13 @@ export function groupEditorProjectSwitchOptions(input: {
   readonly query: string;
   readonly spaces: readonly Space[];
 }) {
-  const activeSpaceId = resolveActiveSpaceId(
-    input.activeSpaceId,
-    input.spaces
-  );
+  const activeSpaceId = resolveActiveSpaceId(input.activeSpaceId, input.spaces);
   const normalizedQuery = input.query.trim().toLocaleLowerCase();
   const filtered = input.options.filter(
     (option) =>
       normalizedQuery.length === 0 ||
       option.title.toLocaleLowerCase().includes(normalizedQuery) ||
-      spaceDisplayName(option.spaceId, input.spaces)
-        .toLocaleLowerCase()
-        .includes(normalizedQuery)
+      spaceDisplayName(option.spaceId, input.spaces).toLocaleLowerCase().includes(normalizedQuery),
   );
   return groupItemsBySpace({
     items: filtered,
@@ -80,18 +75,18 @@ export function groupEditorProjectSwitchOptions(input: {
 }
 
 export type EditorProjectSwitchTarget =
-  | { readonly kind: 'current' }
-  | { readonly kind: 'thread'; readonly threadId: string }
-  | { readonly kind: 'draft'; readonly projectId: string };
+  | { readonly kind: "current" }
+  | { readonly kind: "thread"; readonly threadId: string }
+  | { readonly kind: "draft"; readonly projectId: string };
 
 export function resolveEditorProjectSwitchTarget(
-  option: EditorProjectSwitchOption
+  option: EditorProjectSwitchOption,
 ): EditorProjectSwitchTarget {
-  if (option.selected) return { kind: 'current' };
+  if (option.selected) return { kind: "current" };
   if (option.threadId) {
-    return { kind: 'thread', threadId: option.threadId };
+    return { kind: "thread", threadId: option.threadId };
   }
-  return { kind: 'draft', projectId: option.id };
+  return { kind: "draft", projectId: option.id };
 }
 
 export function resolveEditorProjectSwitchOptions(input: {
@@ -102,20 +97,19 @@ export function resolveEditorProjectSwitchOptions(input: {
 }): EditorProjectSwitchOption[] {
   const options: EditorProjectSwitchOption[] = [];
   for (const project of input.projects) {
-    if (project.kind !== 'project') continue;
+    if (project.kind !== "project") continue;
     const latestThread =
       sortThreadsForSidebar(
         input.threads.filter(
-          (thread) =>
-            thread.projectId === project.id && thread.archivedAt == null
+          (thread) => thread.projectId === project.id && thread.archivedAt == null,
         ),
-        input.sortOrder
+        input.sortOrder,
       )[0] ?? null;
     options.push({
       id: project.id,
       selected: project.id === input.currentProjectId,
       threadId: latestThread?.id ?? null,
-      title: project.title.trim() || 'Untitled project',
+      title: project.title.trim() || "Untitled project",
       spaceId: project.spaceId ?? null,
     });
   }

@@ -7,17 +7,14 @@ import {
   useRef,
   useState,
   type ReactNode,
-} from '@lynx-js/react';
-import { resolveCommandNavigation } from '@synara/shared/commandNavigation';
+} from "@lynx-js/react";
+import { resolveCommandNavigation } from "@synara/shared/commandNavigation";
 
-import {
-  Dialog,
-  DialogPopup,
-} from './dialog.lynx';
-import { useLynxInteractiveState } from './interactive-state.lynx';
-import { parseHostCommandKeyboardEvent } from './commandHostNavigation.logic';
-import { cx, textContent } from './shared.lynx';
-import './primitives.css';
+import { Dialog, DialogPopup } from "./dialog.lynx";
+import { useLynxInteractiveState } from "./interactive-state.lynx";
+import { parseHostCommandKeyboardEvent } from "./commandHostNavigation.logic";
+import { cx, textContent } from "./shared.lynx";
+import "./primitives.css";
 
 type ChildrenProps = {
   children?: ReactNode;
@@ -55,8 +52,8 @@ function commandItemClassName(className: string | undefined): string | undefined
   if (!className) return className;
   return className
     .split(/\s+/)
-    .filter((token) => token && token !== 'rounded-lg')
-    .join(' ');
+    .filter((token) => token && token !== "rounded-lg")
+    .join(" ");
 }
 
 export function CommandDialog(props: {
@@ -79,7 +76,7 @@ export function CommandDialogPopup(props: ChildrenProps) {
   return (
     <DialogPopup
       bottomStickOnMobile={false}
-      className={cx('LxCommandDialogPopup', props.className)}
+      className={cx("LxCommandDialogPopup", props.className)}
       viewportClassName="LxCommandDialogViewport"
       showCloseButton={false}
     >
@@ -88,23 +85,22 @@ export function CommandDialogPopup(props: ChildrenProps) {
   );
 }
 
-export function Command(props: ChildrenProps & {
-  autoHighlight?: boolean | 'always';
-  mode?: string;
-  onItemHighlighted?: (value: string | null) => void;
-}) {
+export function Command(
+  props: ChildrenProps & {
+    autoHighlight?: boolean | "always";
+    mode?: string;
+    onItemHighlighted?: (value: string | null) => void;
+  },
+) {
   const dialog = useContext(CommandDialogOpenContext);
   const entriesRef = useRef<Map<string, CommandEntry>>(new Map());
   const onItemHighlightedRef = useRef(props.onItemHighlighted);
   onItemHighlightedRef.current = props.onItemHighlighted;
   const [highlightedValue, setHighlightedValueState] = useState<string | null>(null);
-  const setHighlightedValue = useCallback(
-    (value: string | null) => {
-      setHighlightedValueState(value);
-      onItemHighlightedRef.current?.(value);
-    },
-    []
-  );
+  const setHighlightedValue = useCallback((value: string | null) => {
+    setHighlightedValueState(value);
+    onItemHighlightedRef.current?.(value);
+  }, []);
   const registerItem = useCallback(
     (value: string, entry: CommandEntry) => {
       entriesRef.current.set(value, entry);
@@ -125,7 +121,7 @@ export function Command(props: ChildrenProps & {
         });
       };
     },
-    [props.autoHighlight]
+    [props.autoHighlight],
   );
   const handleKeyDown = useCallback(
     (event: CommandKeyboardEvent): boolean => {
@@ -136,35 +132,35 @@ export function Command(props: ChildrenProps & {
         key: event.key,
         shiftKey: event.shiftKey,
       });
-      if (intent.type === 'none') return false;
+      if (intent.type === "none") return false;
       Object.assign(event, { __synaraCommandHandled: true });
       event.preventDefault?.();
       event.stopPropagation?.();
       // A command palette keeps keyboard focus in its search input. Moving
       // native focus into result rows breaks continued typing and triggers a
       // second host Tab traversal on Lynxtron PC.
-      if (intent.type === 'move') setHighlightedValue(intent.value);
-      if (intent.type === 'activate') entriesRef.current.get(intent.value)?.activate();
-      if (intent.type === 'dismiss') dialog.onOpenChange?.(false);
+      if (intent.type === "move") setHighlightedValue(intent.value);
+      if (intent.type === "activate") entriesRef.current.get(intent.value)?.activate();
+      if (intent.type === "dismiss") dialog.onOpenChange?.(false);
       return true;
     },
-    [dialog.onOpenChange, highlightedValue, setHighlightedValue]
+    [dialog.onOpenChange, highlightedValue, setHighlightedValue],
   );
   const handleKeyDownRef = useRef(handleKeyDown);
   handleKeyDownRef.current = handleKeyDown;
   useEffect(() => {
-    'background only';
+    "background only";
     if (!dialog.open) return;
     let active = true;
     let dispose: (() => void) | null = null;
-    void import(/* webpackMode: "eager" */ '../../platform/bridge')
+    void import(/* webpackMode: "eager" */ "../../platform/bridge")
       .then(({ bridgeCall, onGlobalEvent }) => {
         if (!active) return;
-        dispose = onGlobalEvent('shell:search-key', (payload: unknown) => {
+        dispose = onGlobalEvent("shell:search-key", (payload: unknown) => {
           const event = parseHostCommandKeyboardEvent(payload);
           if (!event) return;
           const handled = handleKeyDownRef.current(event);
-          void bridgeCall('shellSearchNavigationHandled', {
+          void bridgeCall("shellSearchNavigationHandled", {
             handled,
             key: event.key,
             shiftKey: event.shiftKey === true,
@@ -190,10 +186,7 @@ export function Command(props: ChildrenProps & {
         setHighlightedValue,
       }}
     >
-      <view
-        className={cx('LxCommand', props.className)}
-        global-bindkeydown={handleKeyDown}
-      >
+      <view className={cx("LxCommand", props.className)} global-bindkeydown={handleKeyDown}>
         {props.children}
       </view>
     </CommandContext.Provider>
@@ -201,7 +194,7 @@ export function Command(props: ChildrenProps & {
 }
 
 export function CommandPanel(props: ChildrenProps) {
-  return <view className={cx('LxCommandPanel', props.className)}>{props.children}</view>;
+  return <view className={cx("LxCommandPanel", props.className)}>{props.children}</view>;
 }
 
 export function CommandInput(props: {
@@ -214,12 +207,12 @@ export function CommandInput(props: {
 }) {
   const dialog = useContext(CommandDialogOpenContext);
   const command = useContext(CommandContext);
-  const inputRef = useRef<React.ElementRef<'textarea'>>(null);
-  const nativeValueRef = useRef(props.value ?? '');
+  const inputRef = useRef<React.ElementRef<"textarea">>(null);
+  const nativeValueRef = useRef(props.value ?? "");
   useEffect(() => {
     if (!dialog.open) return;
     try {
-      inputRef.current?.invoke({ method: 'focus' }).exec();
+      inputRef.current?.invoke({ method: "focus" }).exec();
     } catch {
       // The test renderer and a closing dialog can invalidate the element
       // between commit and the imperative focus request.
@@ -229,15 +222,13 @@ export function CommandInput(props: {
     if (props.value === undefined || props.value === nativeValueRef.current) return;
     nativeValueRef.current = props.value;
     try {
-      inputRef.current
-        ?.invoke({ method: 'setValue', params: { value: props.value } })
-        .exec();
+      inputRef.current?.invoke({ method: "setValue", params: { value: props.value } }).exec();
     } catch {
       // A closed dialog will remount with the current default value.
     }
   }, [props.value]);
   const handleKeyDown = (event: CommandKeyboardEvent) => {
-    'background only';
+    "background only";
     props.onKeyDown?.(event);
     command.handleKeyDown?.(event);
   };
@@ -247,12 +238,12 @@ export function CommandInput(props: {
       {props.startAddon}
       <textarea
         ref={inputRef}
-        className={cx('LxCommandTextarea', props.className)}
-        aria-label={props.placeholder ?? 'Command search'}
+        className={cx("LxCommandTextarea", props.className)}
+        aria-label={props.placeholder ?? "Command search"}
         accessibility-element={true}
-        accessibility-label={props.placeholder ?? 'Command search'}
+        accessibility-label={props.placeholder ?? "Command search"}
         focusable={true}
-        default-value={props.value ?? ''}
+        default-value={props.value ?? ""}
         placeholder={props.placeholder}
         maxlength={140}
         maxlines={1}
@@ -260,13 +251,13 @@ export function CommandInput(props: {
         show-soft-input-on-focus={true}
         bindkeydown={handleKeyDown}
         bindinput={(event) => {
-          'background only';
+          "background only";
           nativeValueRef.current = event.detail.value;
           props.onChange?.({ currentTarget: { value: event.detail.value } });
         }}
         bindconfirm={() => {
-          'background only';
-          command.handleKeyDown?.({ key: 'Enter' });
+          "background only";
+          command.handleKeyDown?.({ key: "Enter" });
         }}
       />
     </view>
@@ -275,46 +266,45 @@ export function CommandInput(props: {
 
 export function CommandList(props: ChildrenProps) {
   return (
-    <scroll-view
-      className={cx('LxCommandList', props.className)}
-      scroll-orientation="vertical"
-    >
+    <scroll-view className={cx("LxCommandList", props.className)} scroll-orientation="vertical">
       {props.children}
     </scroll-view>
   );
 }
 
 export function CommandEmpty(props: ChildrenProps) {
-  return <view className={cx('LxCommandEmpty', props.className)}>{props.children}</view>;
+  return <view className={cx("LxCommandEmpty", props.className)}>{props.children}</view>;
 }
 
 export function CommandGroup(props: ChildrenProps) {
-  return <view className={cx('LxCommandGroup', props.className)}>{props.children}</view>;
+  return <view className={cx("LxCommandGroup", props.className)}>{props.children}</view>;
 }
 
 export function CommandGroupLabel(props: ChildrenProps) {
   return (
-    <view className={cx('LxCommandGroupLabel', props.className)}>
-      {textContent(props.children, 'LxCommandGroupLabel__text')}
+    <view className={cx("LxCommandGroupLabel", props.className)}>
+      {textContent(props.children, "LxCommandGroupLabel__text")}
     </view>
   );
 }
 
-export function CommandItem(props: ChildrenProps & {
-  value?: string;
-  disabled?: boolean;
-  'aria-label'?: string;
-  onClick?: (event: {
-    defaultPrevented: boolean;
-    preventDefault(): void;
-    stopPropagation(): void;
-  }) => void;
-  onMouseDown?: (event: { preventDefault(): void }) => void;
-}) {
+export function CommandItem(
+  props: ChildrenProps & {
+    value?: string;
+    disabled?: boolean;
+    "aria-label"?: string;
+    onClick?: (event: {
+      defaultPrevented: boolean;
+      preventDefault(): void;
+      stopPropagation(): void;
+    }) => void;
+    onMouseDown?: (event: { preventDefault(): void }) => void;
+  },
+) {
   const command = useContext(CommandContext);
   const activateRef = useRef<() => void>(() => {});
   const onActivate = () => {
-    'background only';
+    "background only";
     let defaultPrevented = false;
     props.onClick?.({
       get defaultPrevented() {
@@ -336,26 +326,26 @@ export function CommandItem(props: ChildrenProps & {
   }, [activatable, command.registerItem, props.disabled, props.value]);
   const interaction = useLynxInteractiveState({
     baseClassName: cx(
-      'LxCommandItem',
+      "LxCommandItem",
       commandItemClassName(props.className),
-      command.highlightedValue === props.value && 'LxCommandItem--highlighted',
-      props.disabled && 'LxCommandItem--disabled'
+      command.highlightedValue === props.value && "LxCommandItem--highlighted",
+      props.disabled && "LxCommandItem--disabled",
     ),
     disabled: props.disabled,
     onActivate: props.onClick ? onActivate : undefined,
   });
   const onMouseEnter = () => {
-    'background only';
+    "background only";
     interaction.eventProps.bindmouseenter?.();
     command.setHighlightedValue?.(props.value ?? null);
   };
   const onFocus = () => {
-    'background only';
+    "background only";
     interaction.eventProps.bindfocus?.();
     command.setHighlightedValue?.(props.value ?? null);
   };
   const onMouseDown = () => {
-    'background only';
+    "background only";
     interaction.eventProps.bindmousedown?.();
     props.onMouseDown?.({
       // Background-thread Lynx events do not expose the mutable DOM event
@@ -367,9 +357,9 @@ export function CommandItem(props: ChildrenProps & {
   return (
     <view
       className={interaction.className}
-      style={{ borderRadius: '10px' }}
+      style={{ borderRadius: "10px" }}
       {...interaction.eventProps}
-      aria-label={props['aria-label']}
+      aria-label={props["aria-label"]}
       aria-selected={command.highlightedValue === props.value}
       bindmouseenter={props.disabled ? undefined : onMouseEnter}
       bindfocus={props.disabled ? undefined : onFocus}
@@ -378,7 +368,7 @@ export function CommandItem(props: ChildrenProps & {
         props.disabled
           ? undefined
           : (event: CommandKeyboardEvent) => {
-              'background only';
+              "background only";
               if (!command.handleKeyDown?.(event)) {
                 interaction.eventProps.bindkeydown?.(event);
               }
@@ -391,15 +381,15 @@ export function CommandItem(props: ChildrenProps & {
 }
 
 export function CommandSeparator(props: ChildrenProps) {
-  return <view className={cx('LxCommandSeparator', props.className)} />;
+  return <view className={cx("LxCommandSeparator", props.className)} />;
 }
 
 export function CommandFooter(props: ChildrenProps) {
-  return <view className={cx('LxCommandFooter', props.className)}>{props.children}</view>;
+  return <view className={cx("LxCommandFooter", props.className)}>{props.children}</view>;
 }
 
 export function CommandShortcut(props: ChildrenProps) {
-  return <view className={cx('LxCommandShortcut', props.className)}>{props.children}</view>;
+  return <view className={cx("LxCommandShortcut", props.className)}>{props.children}</view>;
 }
 
 export function CommandCollection(props: ChildrenProps) {

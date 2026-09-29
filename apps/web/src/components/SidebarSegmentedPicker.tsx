@@ -75,10 +75,7 @@ export function SidebarSegmentedPicker({
   const activeIndex = views.indexOf(displayedView);
   const segmentCount = views.length;
   const activeSegment = Math.max(0, activeIndex);
-  const segmentGeometry = resolveSidebarSegmentGeometry(
-    activeSegment,
-    segmentCount,
-  );
+  const segmentGeometry = resolveSidebarSegmentGeometry(activeSegment, segmentCount);
 
   return (
     <SidebarSegmentedPickerFrameElement>

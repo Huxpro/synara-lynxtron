@@ -18,13 +18,16 @@ vi.mock("./ComposerModelTriggerCompositionElements", () => ({
   }: {
     children: ReactNode;
     hidden: boolean;
-  }) => <span>{hidden ? "hidden-model:" : "model:"}{children}</span>,
+  }) => (
+    <span>
+      {hidden ? "hidden-model:" : "model:"}
+      {children}
+    </span>
+  ),
   ComposerModelTriggerFastBadgeElement: () => <span>fast</span>,
-  ComposerModelTriggerStatusIconElement: ({
-    accessibleLabel,
-  }: {
-    accessibleLabel: string;
-  }) => <span>status-icon:{accessibleLabel}</span>,
+  ComposerModelTriggerStatusIconElement: ({ accessibleLabel }: { accessibleLabel: string }) => (
+    <span>status-icon:{accessibleLabel}</span>
+  ),
   ComposerModelTriggerStatusLabelElement: ({ children }: { children: ReactNode }) => (
     <span>status:{children}</span>
   ),
@@ -38,9 +41,7 @@ vi.mock("./ProviderModelOptionGroupListCompositionElements", () => ({
   ProviderModelGroupElement: ({ children }: { children: ReactNode }) => (
     <section>{children}</section>
   ),
-  ProviderModelGroupLabelElement: ({ children }: { children: ReactNode }) => (
-    <h2>{children}</h2>
-  ),
+  ProviderModelGroupLabelElement: ({ children }: { children: ReactNode }) => <h2>{children}</h2>,
   ProviderModelCollapsibleGroupElement: ({
     children,
     label,
@@ -49,7 +50,14 @@ vi.mock("./ProviderModelOptionGroupListCompositionElements", () => ({
     children: ReactNode;
     label: string;
     count: number;
-  }) => <section><h2>{label}:{count}</h2>{children}</section>,
+  }) => (
+    <section>
+      <h2>
+        {label}:{count}
+      </h2>
+      {children}
+    </section>
+  ),
   ProviderModelRadioItemElement: ({
     active,
     modelName,
@@ -58,7 +66,12 @@ vi.mock("./ProviderModelOptionGroupListCompositionElements", () => ({
     active: boolean;
     modelName: string;
     modelSlug: string;
-  }) => <span>{active ? "active:" : "option:"}{modelSlug}:{modelName}</span>,
+  }) => (
+    <span>
+      {active ? "active:" : "option:"}
+      {modelSlug}:{modelName}
+    </span>
+  ),
 }));
 
 import { ComposerModelTriggerComposition } from "./ComposerModelTriggerComposition";

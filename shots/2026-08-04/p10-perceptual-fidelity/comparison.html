@@ -601,7 +601,10 @@
         margin: 8px 0 0;
         overflow: auto;
         color: var(--muted);
-        font: 9px/1.45 "SFMono-Regular", Consolas, monospace;
+        font:
+          9px/1.45 "SFMono-Regular",
+          Consolas,
+          monospace;
         white-space: pre-wrap;
       }
 
@@ -1598,10 +1601,14 @@
         overflow: hidden;
         color: inherit;
         background:
-          linear-gradient(90deg, color-mix(in srgb, var(--line) 45%, transparent) 1px, transparent 1px)
+          linear-gradient(
+              90deg,
+              color-mix(in srgb, var(--line) 45%, transparent) 1px,
+              transparent 1px
+            )
             0 0 / 24px 24px,
-          linear-gradient(color-mix(in srgb, var(--line) 40%, transparent) 1px, transparent 1px)
-            0 0 / 24px 24px,
+          linear-gradient(color-mix(in srgb, var(--line) 40%, transparent) 1px, transparent 1px) 0
+            0 / 24px 24px,
           var(--page);
         cursor: zoom-in;
       }
@@ -1882,9 +1889,9 @@
           <p class="eyebrow">Synara · P10 perceptual fidelity</p>
           <h1><span id="reviewDayCount">0</span> 天工作，一次翻完。</h1>
           <p class="intro">
-            先按工作项浏览，再深入审计。← / → 翻工作项，↑ / ↓ 切换同一项里的状态，
-            Enter 放大当前图片，1 / 2 / 3 选择 Web、Lynx-for-Web、Native。
-            所有去重后保留的 <span id="introImageCount">0</span> 张原始证据仍可从页面底部访问。
+            先按工作项浏览，再深入审计。← / → 翻工作项，↑ / ↓ 切换同一项里的状态， Enter
+            放大当前图片，1 / 2 / 3 选择 Web、Lynx-for-Web、Native。 所有去重后保留的
+            <span id="introImageCount">0</span> 张原始证据仍可从页面底部访问。
           </p>
         </div>
         <div class="summary">
@@ -1902,8 +1909,9 @@
             <h2>Loss 不是被抹平的进度条。</h2>
             <p>
               每个新增/更新 evidence 的 commit 都是一个 measured point；粗线是这些真实点的 EMA，
-              不是插值出来的证据。Loss 基于 <span id="lossStoryCount">0</span> 个 screen-state 工作单元、client 完整性、
-              同状态 RGB 距离和 commit-bounded regression ledger。反弹被保留并逐项归因。
+              不是插值出来的证据。Loss 基于 <span id="lossStoryCount">0</span> 个 screen-state
+              工作单元、client 完整性、 同状态 RGB 距离和 commit-bounded regression
+              ledger。反弹被保留并逐项归因。
             </p>
           </div>
           <div class="loss-score">
@@ -1922,26 +1930,26 @@
             ></svg>
             <div class="loss-timeline" id="lossTimeline"></div>
             <div class="loss-legend">
-              <span style="--legend-color:color-mix(in srgb, var(--accent) 34%, transparent)">Measured commit loss</span>
-              <span style="--legend-color:var(--accent)">EMA trend</span>
-              <span style="--legend-color:var(--good)">Best so far</span>
-              <span style="--legend-color:var(--p1)">Active regression debt</span>
+              <span style="--legend-color: color-mix(in srgb, var(--accent) 34%, transparent)"
+                >Measured commit loss</span
+              >
+              <span style="--legend-color: var(--accent)">EMA trend</span>
+              <span style="--legend-color: var(--good)">Best so far</span>
+              <span style="--legend-color: var(--p1)">Active regression debt</span>
             </div>
           </div>
           <aside class="loss-inspector" id="lossInspector"></aside>
         </div>
         <div class="loss-formula">
           <code id="lossFormula"></code>
-          <a href="../../../apps/lynx/plan/reports/fidelity-loss-method.md">
-            公式与证据边界
-          </a>
+          <a href="../../../apps/lynx/plan/reports/fidelity-loss-method.md"> 公式与证据边界 </a>
         </div>
         <section class="loss-rises">
           <header class="loss-rises-head">
             <h3>为什么 loss 会升高</h3>
             <p>
-              每次上升都由 weighted component delta 自动分解；新增 regression、scope、
-              client 缺口和进入 rolling window 的视觉 pair 都保留在 ledger。
+              每次上升都由 weighted component delta 自动分解；新增 regression、scope、 client
+              缺口和进入 rolling window 的视觉 pair 都保留在 ledger。
             </p>
             <button id="toggleAllRises" type="button" aria-pressed="false"></button>
           </header>
@@ -2001,7 +2009,9 @@
             <button id="nextVariant" type="button" aria-label="下一组截图">下一组 ↓</button>
             <button id="gridMode" type="button" aria-pressed="true">并排</button>
             <button id="overlayMode" type="button" aria-pressed="false">叠加</button>
-            <span class="review-help">← → 工作项 · ↑ ↓ 状态 · 1/2/3 选端 · Enter 放大 · O 叠加</span>
+            <span class="review-help"
+              >← → 工作项 · ↑ ↓ 状态 · 1/2/3 选端 · Enter 放大 · O 叠加</span
+            >
           </footer>
         </section>
       </section>
@@ -2049,21 +2059,21 @@
         </summary>
         <section class="archive" id="screenshotArchive">
           <div class="archive-toolbar">
-          <input
-            id="archiveSearch"
-            type="search"
-            placeholder="Filter by directory or filename"
-            aria-label="Filter screenshot archive"
-          />
-          <select id="archiveDay" aria-label="Filter archive by day">
-            <option value="all">All days</option>
-          </select>
-          <select id="archiveGitStatus" aria-label="Filter archive by Git status">
-            <option value="all">All asset locations</option>
-            <option value="remote">GitHub remote</option>
-            <option value="tracked">Tracked</option>
-            <option value="untracked">Untracked</option>
-          </select>
+            <input
+              id="archiveSearch"
+              type="search"
+              placeholder="Filter by directory or filename"
+              aria-label="Filter screenshot archive"
+            />
+            <select id="archiveDay" aria-label="Filter archive by day">
+              <option value="all">All days</option>
+            </select>
+            <select id="archiveGitStatus" aria-label="Filter archive by Git status">
+              <option value="all">All asset locations</option>
+              <option value="remote">GitHub remote</option>
+              <option value="tracked">Tracked</option>
+              <option value="untracked">Untracked</option>
+            </select>
           </div>
           <div class="archive-days" id="archiveDays"></div>
         </section>
@@ -2297,12 +2307,8 @@
         const opacity = panel.querySelector('[data-role="opacity"]');
         const split = panel.querySelector('[data-role="split"]');
         const updateImages = () => {
-          bottomImage.src = fidelityAssetUrl(
-            state.evidence[bottomSelect.value].comparisonPath,
-          );
-          topImage.src = fidelityAssetUrl(
-            state.evidence[topSelect.value].comparisonPath,
-          );
+          bottomImage.src = fidelityAssetUrl(state.evidence[bottomSelect.value].comparisonPath);
+          topImage.src = fidelityAssetUrl(state.evidence[topSelect.value].comparisonPath);
         };
         bottomSelect.addEventListener("change", updateImages);
         topSelect.addEventListener("change", updateImages);
@@ -2432,7 +2438,8 @@
             );
             if (!images.length) return [];
             visibleImages += images.length;
-            return [`
+            return [
+              `
               <details class="archive-directory">
                 <summary>
                   <span>${escapeHtml(directory.directory)}</span>
@@ -2440,10 +2447,12 @@
                 </summary>
                 <div class="archive-grid">${images.map(archiveImage).join("")}</div>
               </details>
-            `];
+            `,
+            ];
           });
           if (!directories.length) return [];
-          return [`
+          return [
+            `
             <details class="archive-day" ${selectedDay === day.day ? "open" : ""}>
               <summary>
                 <span>${day.day}</span>
@@ -2451,7 +2460,8 @@
               </summary>
               ${directories.join("")}
             </details>
-          `];
+          `,
+          ];
         });
         archiveDays.innerHTML = dayMarkup.length
           ? dayMarkup.join("")
@@ -2468,13 +2478,11 @@
       archiveSearch.addEventListener("input", renderArchive);
       archiveDay.addEventListener("change", renderArchive);
       archiveGitStatus.addEventListener("change", renderArchive);
-      document
-        .querySelector("#rawArchiveDetails")
-        .addEventListener("toggle", (event) => {
-          if (event.currentTarget.open && !archiveDays.childElementCount) {
-            renderArchive();
-          }
-        });
+      document.querySelector("#rawArchiveDetails").addEventListener("toggle", (event) => {
+        if (event.currentTarget.open && !archiveDays.childElementCount) {
+          renderArchive();
+        }
+      });
 
       const dayNarratives = {
         "2026-08-02": "搭建共享 server 的 fast loop，并验证 Composer、transcript 与 Markdown。",
@@ -2596,12 +2604,10 @@
           reviewStage.innerHTML = `<div class="review-frame-missing">调整日期或搜索条件。</div>`;
           return;
         }
-        reviewState.storyIndex =
-          (reviewState.storyIndex + stories.length) % stories.length;
+        reviewState.storyIndex = (reviewState.storyIndex + stories.length) % stories.length;
         const story = stories[reviewState.storyIndex];
         const variants = variantCount(story);
-        reviewState.variantIndex =
-          (reviewState.variantIndex + variants) % variants;
+        reviewState.variantIndex = (reviewState.variantIndex + variants) % variants;
         reviewList.innerHTML = stories
           .map(
             (item, index) => `
@@ -2661,9 +2667,7 @@
             renderReview();
           });
         });
-        reviewList
-          .querySelector('[aria-current="true"]')
-          ?.scrollIntoView({ block: "nearest" });
+        reviewList.querySelector('[aria-current="true"]')?.scrollIntoView({ block: "nearest" });
       }
 
       function stepStory(direction) {
@@ -2680,15 +2684,16 @@
       function setReviewMode(mode) {
         reviewState.mode = mode;
         document.querySelector("#gridMode").setAttribute("aria-pressed", String(mode === "grid"));
-        document.querySelector("#overlayMode").setAttribute("aria-pressed", String(mode === "overlay"));
+        document
+          .querySelector("#overlayMode")
+          .setAttribute("aria-pressed", String(mode === "overlay"));
         renderReview();
       }
 
       function openReviewLightbox() {
         if (!lightboxImages.length) return;
-        const preferred = lightboxImages[
-          Math.min(reviewState.selectedClient, lightboxImages.length - 1)
-        ];
+        const preferred =
+          lightboxImages[Math.min(reviewState.selectedClient, lightboxImages.length - 1)];
         lightboxIndex = lightboxImages.indexOf(preferred);
         reviewLightboxImage.src = preferred.src;
         reviewLightboxImage.alt = preferred.title;
@@ -2698,8 +2703,7 @@
 
       function stepReviewLightbox(direction) {
         if (!lightboxImages.length) return;
-        lightboxIndex =
-          (lightboxIndex + direction + lightboxImages.length) % lightboxImages.length;
+        lightboxIndex = (lightboxIndex + direction + lightboxImages.length) % lightboxImages.length;
         const image = lightboxImages[lightboxIndex];
         reviewLightboxImage.src = image.src;
         reviewLightboxImage.alt = image.title;
@@ -2712,14 +2716,10 @@
         visual: { label: "Visual distance", color: "var(--accent)" },
         reliability: { label: "Reliability debt", color: "var(--p0)" },
       };
-      let selectedCommitPointIndex = Math.max(
-        0,
-        fidelityLoss.commitPoints.length - 1,
-      );
+      let selectedCommitPointIndex = Math.max(0, fidelityLoss.commitPoints.length - 1);
       let showAllRises = false;
       let selectedLedgerDay = fidelityLoss.dayAnalysis.at(-1)?.day ?? "";
-      let selectedLedgerCommitIndex =
-        fidelityLoss.dayAnalysis.at(-1)?.lastCommitIndex ?? 0;
+      let selectedLedgerCommitIndex = fidelityLoss.dayAnalysis.at(-1)?.lastCommitIndex ?? 0;
 
       function lossInspector(point) {
         const componentRows = Object.entries(point.components)
@@ -2877,9 +2877,7 @@
             ? "—"
             : `${point.visual.previousMedianPercent.toFixed(2)}%`;
         const medianAfter =
-          point.visual.medianPercent === null
-            ? "—"
-            : `${point.visual.medianPercent.toFixed(2)}%`;
+          point.visual.medianPercent === null ? "—" : `${point.visual.medianPercent.toFixed(2)}%`;
         const pairSection = pairs.length
           ? `<div class="loss-pairs">${pairs.map(pairCard).join("")}</div>`
           : `<p class="empty">This commit did not activate a comparable screenshot pair.</p>`;
@@ -2888,16 +2886,10 @@
           : `<p class="empty">No structurally rejected pairs activated at this commit.</p>`;
         const harnessSection = harnessPairs.length
           ? `
-            <div class="loss-pairs">${harnessPairs
-              .map(harnessPairCard)
-              .join("")}</div>
-            ${[
-              ...new Set(harnessPairs.map((pair) => pair.harnessIssueId)),
-            ]
+            <div class="loss-pairs">${harnessPairs.map(harnessPairCard).join("")}</div>
+            ${[...new Set(harnessPairs.map((pair) => pair.harnessIssueId))]
               .map((issueId) => {
-                const issue = fidelityLoss.harnessIssueLedger.find(
-                  (entry) => entry.id === issueId,
-                );
+                const issue = fidelityLoss.harnessIssueLedger.find((entry) => entry.id === issueId);
                 if (!issue) return "";
                 const evidence = issue.resolutionEvidence;
                 return `
@@ -2920,10 +2912,7 @@
           ? `
             <ul class="loss-events">
               ${point.regressionChanges
-                .map(
-                  (change) =>
-                    `<li>${change.type}: ${escapeHtml(change.summary)}</li>`,
-                )
+                .map((change) => `<li>${change.type}: ${escapeHtml(change.summary)}</li>`)
                 .join("")}
             </ul>
           `
@@ -2973,13 +2962,9 @@
       }
 
       function renderLossLedger() {
-        const day = fidelityLoss.dayAnalysis.find(
-          (entry) => entry.day === selectedLedgerDay,
-        );
+        const day = fidelityLoss.dayAnalysis.find((entry) => entry.day === selectedLedgerDay);
         if (!day) return;
-        const dayPoints = day.commitIndexes.map(
-          (index) => fidelityLoss.commitPoints[index],
-        );
+        const dayPoints = day.commitIndexes.map((index) => fidelityLoss.commitPoints[index]);
         if (!day.commitIndexes.includes(selectedLedgerCommitIndex)) {
           selectedLedgerCommitIndex = day.lastCommitIndex;
         }
@@ -3001,7 +2986,7 @@
           </div>
           ${dayPoints
             .map(
-            (point) => `
+              (point) => `
               <button
                 class="loss-commit"
                 type="button"
@@ -3019,11 +3004,10 @@
                 >${signed(point.lossDelta)}</strong>
               </button>
             `,
-          )
-          .join("")}
+            )
+            .join("")}
         `;
-        document.querySelector("#lossLedgerDetail").innerHTML =
-          ledgerDetail(selected);
+        document.querySelector("#lossLedgerDetail").innerHTML = ledgerDetail(selected);
         list.querySelectorAll("[data-loss-commit-index]").forEach((button) => {
           button.addEventListener("click", () => {
             selectedLedgerCommitIndex = Number(button.dataset.lossCommitIndex);
@@ -3032,9 +3016,7 @@
             renderLossChart();
           });
         });
-        list
-          .querySelector('[aria-current="true"]')
-          ?.scrollIntoView({ block: "nearest" });
+        list.querySelector('[aria-current="true"]')?.scrollIntoView({ block: "nearest" });
       }
 
       function renderLossChart() {
@@ -3046,12 +3028,14 @@
         const margin = { top: 22, right: 18, bottom: 52, left: 42 };
         const plotWidth = width - margin.left - margin.right;
         const plotHeight = height - margin.top - margin.bottom;
-        const maximumLoss =
-          Math.max(60, Math.ceil(Math.max(...points.map((point) => point.loss)) / 10) * 10);
+        const maximumLoss = Math.max(
+          60,
+          Math.ceil(Math.max(...points.map((point) => point.loss)) / 10) * 10,
+        );
         const x = (index) =>
-          margin.left + (points.length === 1 ? plotWidth / 2 : (index / (points.length - 1)) * plotWidth);
-        const y = (value) =>
-          margin.top + plotHeight - (value / maximumLoss) * plotHeight;
+          margin.left +
+          (points.length === 1 ? plotWidth / 2 : (index / (points.length - 1)) * plotWidth);
+        const y = (value) => margin.top + plotHeight - (value / maximumLoss) * plotHeight;
         const path = (key) =>
           points
             .map(
@@ -3124,8 +3108,7 @@
         document.querySelector("#currentLoss").textContent = latest.loss.toFixed(2);
         document.querySelector("#lossDelta").textContent =
           `${(latest.loss - first.loss).toFixed(2)} from ${first.loss.toFixed(2)} · lower is better`;
-        document.querySelector("#lossFormula").textContent =
-          fidelityLoss.formula.expression ?? "";
+        document.querySelector("#lossFormula").textContent = fidelityLoss.formula.expression ?? "";
         const activatePoint = (index) => {
           selectedCommitPointIndex = index;
           selectedLedgerDay = points[index].day;
@@ -3198,9 +3181,7 @@
           });
         });
         const toggle = document.querySelector("#toggleAllRises");
-        toggle.textContent = showAllRises
-          ? "只看最大 12 次"
-          : `显示全部 ${orderedRises.length} 次`;
+        toggle.textContent = showAllRises ? "只看最大 12 次" : `显示全部 ${orderedRises.length} 次`;
         toggle.setAttribute("aria-pressed", String(showAllRises));
       }
 
@@ -3243,8 +3224,12 @@
       document.querySelector("#previousVariant").addEventListener("click", () => stepVariant(-1));
       document.querySelector("#nextVariant").addEventListener("click", () => stepVariant(1));
       document.querySelector("#gridMode").addEventListener("click", () => setReviewMode("grid"));
-      document.querySelector("#overlayMode").addEventListener("click", () => setReviewMode("overlay"));
-      document.querySelector("#closeReviewLightbox").addEventListener("click", () => reviewLightbox.close());
+      document
+        .querySelector("#overlayMode")
+        .addEventListener("click", () => setReviewMode("overlay"));
+      document
+        .querySelector("#closeReviewLightbox")
+        .addEventListener("click", () => reviewLightbox.close());
       reviewLightbox.addEventListener("click", (event) => {
         if (event.target === reviewLightbox) reviewLightbox.close();
       });
@@ -3273,17 +3258,13 @@
       document.querySelector("#storyCount").textContent = String(screenshotArchive.storyCount);
       document.querySelector("#imageCount").textContent =
         screenshotArchive.imageCount.toLocaleString();
-      document.querySelector("#reviewDayCount").textContent = String(
-        screenshotArchive.days.length
-      );
+      document.querySelector("#reviewDayCount").textContent = String(screenshotArchive.days.length);
       document.querySelector("#summaryDayCount").textContent = String(
-        screenshotArchive.days.length
+        screenshotArchive.days.length,
       );
       document.querySelector("#introImageCount").textContent =
         screenshotArchive.imageCount.toLocaleString();
-      document.querySelector("#lossStoryCount").textContent = String(
-        screenshotArchive.storyCount
-      );
+      document.querySelector("#lossStoryCount").textContent = String(screenshotArchive.storyCount);
       const lossLedgerDay = document.querySelector("#lossLedgerDay");
       lossLedgerDay.innerHTML = fidelityLoss.dayAnalysis
         .map(
@@ -3296,9 +3277,7 @@
         .join("");
       lossLedgerDay.addEventListener("change", () => {
         selectedLedgerDay = lossLedgerDay.value;
-        const day = fidelityLoss.dayAnalysis.find(
-          (entry) => entry.day === selectedLedgerDay,
-        );
+        const day = fidelityLoss.dayAnalysis.find((entry) => entry.day === selectedLedgerDay);
         selectedLedgerCommitIndex = day.lastCommitIndex;
         selectedCommitPointIndex = selectedLedgerCommitIndex;
         selectReviewDay(selectedLedgerDay);

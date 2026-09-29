@@ -2,10 +2,7 @@ import type { ProviderKind } from "@synara/contracts";
 import { projectBoundedSidebarSearchMessages } from "@synara/shared/sidebarSearch";
 
 import { basenameOfPath } from "../file-icons";
-import type {
-  SidebarSearchProject,
-  SidebarSearchThread,
-} from "./SidebarSearchPalette.logic";
+import type { SidebarSearchProject, SidebarSearchThread } from "./SidebarSearchPalette.logic";
 
 export interface SidebarSearchProjectSource {
   readonly id: string;

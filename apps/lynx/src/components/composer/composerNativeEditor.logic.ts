@@ -10,33 +10,33 @@ type NativeEditorValueResult = Partial<ComposerNativeEditorSnapshot> & {
 };
 
 function selectionOffset(value: string, candidate: unknown): number {
-  if (typeof candidate !== 'number' || !Number.isFinite(candidate)) {
+  if (typeof candidate !== "number" || !Number.isFinite(candidate)) {
     return value.length;
   }
   return Math.max(0, Math.min(value.length, Math.floor(candidate)));
 }
 
 export function normalizeComposerNativeEditorSnapshot(
-  candidate: NativeEditorValueResult | null | undefined
+  candidate: NativeEditorValueResult | null | undefined,
 ): ComposerNativeEditorSnapshot | null {
-  if (!candidate || typeof candidate.value !== 'string') return null;
+  if (!candidate || typeof candidate.value !== "string") return null;
   const selectionStart = selectionOffset(
     candidate.value,
-    candidate.selectionStart ?? candidate.selectionBegin
+    candidate.selectionStart ?? candidate.selectionBegin,
   );
   return {
     value: candidate.value,
     selectionStart,
     selectionEnd: Math.max(
       selectionStart,
-      selectionOffset(candidate.value, candidate.selectionEnd)
+      selectionOffset(candidate.value, candidate.selectionEnd),
     ),
     isComposing: candidate.isComposing === true,
   };
 }
 
 export function selectAllComposerNativeEditor(
-  snapshot: ComposerNativeEditorSnapshot
+  snapshot: ComposerNativeEditorSnapshot,
 ): ComposerNativeEditorSnapshot {
   return {
     ...snapshot,
@@ -46,18 +46,16 @@ export function selectAllComposerNativeEditor(
   };
 }
 
-export function selectedComposerNativeEditorText(
-  snapshot: ComposerNativeEditorSnapshot
-): string {
+export function selectedComposerNativeEditorText(snapshot: ComposerNativeEditorSnapshot): string {
   return snapshot.value.slice(snapshot.selectionStart, snapshot.selectionEnd);
 }
 
 export function cutComposerNativeEditorSelection(
-  snapshot: ComposerNativeEditorSnapshot
+  snapshot: ComposerNativeEditorSnapshot,
 ): ComposerNativeEditorSnapshot {
   const value = `${snapshot.value.slice(
     0,
-    snapshot.selectionStart
+    snapshot.selectionStart,
   )}${snapshot.value.slice(snapshot.selectionEnd)}`;
   return {
     value,

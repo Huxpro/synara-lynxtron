@@ -1,4 +1,4 @@
-import type { ComposerTrigger } from '@synara-web/composer-logic';
+import type { ComposerTrigger } from "@synara-web/composer-logic";
 
 export interface ComposerNativeValueAck {
   readonly triggerAfterAck: ComposerTrigger | null;

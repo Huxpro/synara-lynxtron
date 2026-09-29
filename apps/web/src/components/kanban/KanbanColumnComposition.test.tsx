@@ -1,10 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
-import {
-  KanbanColumnComposition,
-  KANBAN_DONE_RENDER_CAP,
-} from "./KanbanColumnComposition";
+import { KanbanColumnComposition, KANBAN_DONE_RENDER_CAP } from "./KanbanColumnComposition";
 import type { KanbanCard } from "./kanban.logic";
 
 function card(index: number, column: KanbanCard["column"]): KanbanCard {
@@ -60,16 +57,11 @@ describe("KanbanColumnComposition", () => {
   });
 
   it("caps long Done columns and exposes the exact hidden count", () => {
-    const cards = Array.from(
-      { length: KANBAN_DONE_RENDER_CAP + 2 },
-      (_, index) => card(index, "done"),
+    const cards = Array.from({ length: KANBAN_DONE_RENDER_CAP + 2 }, (_, index) =>
+      card(index, "done"),
     );
     const markup = renderToStaticMarkup(
-      <KanbanColumnComposition
-        columnKey="done"
-        cards={cards}
-        onOpenCard={vi.fn()}
-      />,
+      <KanbanColumnComposition columnKey="done" cards={cards} onOpenCard={vi.fn()} />,
     );
 
     expect(markup).toContain(`Card ${KANBAN_DONE_RENDER_CAP - 1}`);

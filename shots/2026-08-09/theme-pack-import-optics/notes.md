@@ -11,10 +11,10 @@
 
 ## Resolved values
 
-| Theme | Web placeholder | Lynx internal placeholder | Web focus border | Lynx focus border |
-| --- | --- | --- | --- | --- |
-| Light | foreground/50 | `rgba(13,13,13,.5)` | foreground/30 | `rgba(13,13,13,.3)` |
-| Dark | foreground/50 | `rgba(252,252,252,.5)` | foreground/30 | `rgba(252,252,252,.3)` |
+| Theme | Web placeholder | Lynx internal placeholder | Web focus border | Lynx focus border      |
+| ----- | --------------- | ------------------------- | ---------------- | ---------------------- |
+| Light | foreground/50   | `rgba(13,13,13,.5)`       | foreground/30    | `rgba(13,13,13,.3)`    |
+| Dark  | foreground/50   | `rgba(252,252,252,.5)`    | foreground/30    | `rgba(252,252,252,.3)` |
 
 - Lynx `x-textarea` exposes
   `placeholder-color="var(--theme-pack-import-placeholder)"`.

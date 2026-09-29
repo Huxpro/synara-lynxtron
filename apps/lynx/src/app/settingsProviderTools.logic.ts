@@ -2,102 +2,93 @@ import {
   DEFAULT_SERVER_SETTINGS_VIEW,
   type ServerSettingsPatch,
   type ServerSettingsView,
-} from '@synara/contracts';
+} from "@synara/contracts";
 import type {
   ProviderToolConfig,
   ProviderToolField,
   ProviderToolPasswordKey,
   ProviderToolTextKey,
-} from '@synara/shared/providerTools';
+} from "@synara/shared/providerTools";
 
 export type ProviderTextFieldId = ProviderToolTextKey | ProviderToolPasswordKey;
 export type { ProviderToolConfig, ProviderToolField };
 
-function providerFieldRawValue(
-  settings: ServerSettingsView,
-  id: ProviderTextFieldId
-): string {
+function providerFieldRawValue(settings: ServerSettingsView, id: ProviderTextFieldId): string {
   switch (id) {
-    case 'codexBinaryPath':
+    case "codexBinaryPath":
       return settings.providers.codex.binaryPath;
-    case 'codexHomePath':
+    case "codexHomePath":
       return settings.providers.codex.homePath;
-    case 'claudeBinaryPath':
+    case "claudeBinaryPath":
       return settings.providers.claudeAgent.binaryPath;
-    case 'cursorBinaryPath':
+    case "cursorBinaryPath":
       return settings.providers.cursor.binaryPath;
-    case 'cursorApiEndpoint':
+    case "cursorApiEndpoint":
       return settings.providers.cursor.apiEndpoint;
-    case 'antigravityBinaryPath':
+    case "antigravityBinaryPath":
       return settings.providers.antigravity.binaryPath;
-    case 'grokBinaryPath':
+    case "grokBinaryPath":
       return settings.providers.grok.binaryPath;
-    case 'droidBinaryPath':
+    case "droidBinaryPath":
       return settings.providers.droid.binaryPath;
-    case 'kiloBinaryPath':
+    case "kiloBinaryPath":
       return settings.providers.kilo.binaryPath;
-    case 'kiloServerUrl':
+    case "kiloServerUrl":
       return settings.providers.kilo.serverUrl;
-    case 'kiloServerPassword':
-      return '';
-    case 'openCodeBinaryPath':
+    case "kiloServerPassword":
+      return "";
+    case "openCodeBinaryPath":
       return settings.providers.opencode.binaryPath;
-    case 'openCodeServerUrl':
+    case "openCodeServerUrl":
       return settings.providers.opencode.serverUrl;
-    case 'openCodeServerPassword':
-      return '';
-    case 'piBinaryPath':
+    case "openCodeServerPassword":
+      return "";
+    case "piBinaryPath":
       return settings.providers.pi.binaryPath;
-    case 'piAgentDir':
+    case "piAgentDir":
       return settings.providers.pi.agentDir;
   }
 }
 
-export function providerFieldValue(
-  settings: ServerSettingsView,
-  id: ProviderTextFieldId
-): string {
+export function providerFieldValue(settings: ServerSettingsView, id: ProviderTextFieldId): string {
   const defaultValue = providerFieldRawValue(DEFAULT_SERVER_SETTINGS_VIEW, id);
   const value = providerFieldRawValue(settings, id);
-  return id.endsWith('BinaryPath') && value === defaultValue ? '' : value;
+  return id.endsWith("BinaryPath") && value === defaultValue ? "" : value;
 }
 
-export function providerFieldPatch(
-  id: ProviderTextFieldId,
-  value: string
-): ServerSettingsPatch {
+export function providerFieldPatch(id: ProviderTextFieldId, value: string): ServerSettingsPatch {
   switch (id) {
-    case 'codexBinaryPath':
+    case "codexBinaryPath":
       return { providers: { codex: { binaryPath: value } } };
-    case 'codexHomePath':
+    case "codexHomePath":
       return { providers: { codex: { homePath: value } } };
-    case 'claudeBinaryPath':
+    case "claudeBinaryPath":
       return { providers: { claudeAgent: { binaryPath: value } } };
-    case 'cursorBinaryPath':
+    case "cursorBinaryPath":
       return { providers: { cursor: { binaryPath: value } } };
-    case 'cursorApiEndpoint':
+    case "cursorApiEndpoint":
       return { providers: { cursor: { apiEndpoint: value } } };
-    case 'antigravityBinaryPath':
+    case "antigravityBinaryPath":
       return { providers: { antigravity: { binaryPath: value } } };
-    case 'grokBinaryPath':
+    case "grokBinaryPath":
       return { providers: { grok: { binaryPath: value } } };
-    case 'droidBinaryPath':
+    case "droidBinaryPath":
       return { providers: { droid: { binaryPath: value } } };
-    case 'kiloBinaryPath':
+    case "kiloBinaryPath":
       return { providers: { kilo: { binaryPath: value } } };
-    case 'kiloServerUrl':
+    case "kiloServerUrl":
       return { providers: { kilo: { serverUrl: value } } };
-    case 'kiloServerPassword':
+    case "kiloServerPassword":
       return { providers: { kilo: { serverPassword: value } } };
-    case 'openCodeBinaryPath':
+    case "openCodeBinaryPath":
       return { providers: { opencode: { binaryPath: value } } };
-    case 'openCodeServerUrl':
+    case "openCodeServerUrl":
       return { providers: { opencode: { serverUrl: value } } };
-    case 'openCodeServerPassword':
+    case "openCodeServerPassword":
       return { providers: { opencode: { serverPassword: value } } };
-    case 'piBinaryPath':
+    case "piBinaryPath":
       return { providers: { pi: { binaryPath: value } } };
-    case 'piAgentDir':
+    case "piAgentDir":
       return { providers: { pi: { agentDir: value } } };
   }
 }
@@ -110,17 +101,14 @@ export function providerToolResetPatch(): ServerSettingsPatch {
         homePath: DEFAULT_SERVER_SETTINGS_VIEW.providers.codex.homePath,
       },
       claudeAgent: {
-        binaryPath:
-          DEFAULT_SERVER_SETTINGS_VIEW.providers.claudeAgent.binaryPath,
+        binaryPath: DEFAULT_SERVER_SETTINGS_VIEW.providers.claudeAgent.binaryPath,
       },
       cursor: {
         binaryPath: DEFAULT_SERVER_SETTINGS_VIEW.providers.cursor.binaryPath,
-        apiEndpoint:
-          DEFAULT_SERVER_SETTINGS_VIEW.providers.cursor.apiEndpoint,
+        apiEndpoint: DEFAULT_SERVER_SETTINGS_VIEW.providers.cursor.apiEndpoint,
       },
       antigravity: {
-        binaryPath:
-          DEFAULT_SERVER_SETTINGS_VIEW.providers.antigravity.binaryPath,
+        binaryPath: DEFAULT_SERVER_SETTINGS_VIEW.providers.antigravity.binaryPath,
       },
       grok: {
         binaryPath: DEFAULT_SERVER_SETTINGS_VIEW.providers.grok.binaryPath,
@@ -131,16 +119,14 @@ export function providerToolResetPatch(): ServerSettingsPatch {
       kilo: {
         binaryPath: DEFAULT_SERVER_SETTINGS_VIEW.providers.kilo.binaryPath,
         serverUrl: DEFAULT_SERVER_SETTINGS_VIEW.providers.kilo.serverUrl,
-        serverPassword: '',
+        serverPassword: "",
       },
       opencode: {
-        binaryPath:
-          DEFAULT_SERVER_SETTINGS_VIEW.providers.opencode.binaryPath,
+        binaryPath: DEFAULT_SERVER_SETTINGS_VIEW.providers.opencode.binaryPath,
         serverUrl: DEFAULT_SERVER_SETTINGS_VIEW.providers.opencode.serverUrl,
-        serverPassword: '',
+        serverPassword: "",
         experimentalWebSockets:
-          DEFAULT_SERVER_SETTINGS_VIEW.providers.opencode
-            .experimentalWebSockets,
+          DEFAULT_SERVER_SETTINGS_VIEW.providers.opencode.experimentalWebSockets,
       },
       pi: {
         binaryPath: DEFAULT_SERVER_SETTINGS_VIEW.providers.pi.binaryPath,
@@ -152,20 +138,20 @@ export function providerToolResetPatch(): ServerSettingsPatch {
 
 export function isProviderToolDirty(
   config: ProviderToolConfig,
-  settings: ServerSettingsView
+  settings: ServerSettingsView,
 ): boolean {
   return config.fields.some((field) => {
-    if (field.kind === 'boolean') {
+    if (field.kind === "boolean") {
       return (
         settings.providers.opencode.experimentalWebSockets !==
         DEFAULT_SERVER_SETTINGS_VIEW.providers.opencode.experimentalWebSockets
       );
     }
-    if (field.kind === 'password') {
-      return field.settingsKey === 'kiloServerPassword'
+    if (field.kind === "password") {
+      return field.settingsKey === "kiloServerPassword"
         ? settings.providers.kilo.serverPasswordConfigured
         : settings.providers.opencode.serverPasswordConfigured;
     }
-    return providerFieldValue(settings, field.settingsKey) !== '';
+    return providerFieldValue(settings, field.settingsKey) !== "";
   });
 }

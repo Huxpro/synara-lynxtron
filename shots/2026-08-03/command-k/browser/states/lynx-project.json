@@ -17,9 +17,6 @@
       "selected": null
     }
   ],
-  "groups": [
-    "Threads",
-    "Projects"
-  ],
+  "groups": ["Threads", "Projects"],
   "empty": false
 }

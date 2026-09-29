@@ -1,58 +1,44 @@
-import type { ProviderUserInputAnswers } from '@synara/contracts';
-import type { PendingUserInput } from '@synara-web/session-logic';
+import type { ProviderUserInputAnswers } from "@synara/contracts";
+import type { PendingUserInput } from "@synara-web/session-logic";
 import {
   buildPendingUserInputAnswers,
   derivePendingUserInputProgress,
   setPendingUserInputCustomAnswer,
   togglePendingUserInputOptionSelection,
   type PendingUserInputDraftAnswer,
-} from '@synara-web/pendingUserInput';
-import { useState } from '@lynx-js/react';
+} from "@synara-web/pendingUserInput";
+import { useState } from "@lynx-js/react";
 
-import { Button } from '../ui/button.lynx';
-import { Input } from '../ui/input.lynx';
-import { ComposerChoiceRow } from './ComposerChoiceRow.lynx';
-import './pending-user-input-panel.css';
+import { Button } from "../ui/button.lynx";
+import { Input } from "../ui/input.lynx";
+import { ComposerChoiceRow } from "./ComposerChoiceRow.lynx";
+import "./pending-user-input-panel.css";
 
 export function PendingUserInputPanel(props: {
   readonly prompt: PendingUserInput;
   readonly pendingCount: number;
   readonly responding: boolean;
-  readonly onRespond: (
-    answers: ProviderUserInputAnswers,
-    lifecycleGeneration?: string
-  ) => void;
+  readonly onRespond: (answers: ProviderUserInputAnswers, lifecycleGeneration?: string) => void;
 }) {
-  const [answers, setAnswers] = useState<
-    Record<string, PendingUserInputDraftAnswer>
-  >({});
+  const [answers, setAnswers] = useState<Record<string, PendingUserInputDraftAnswer>>({});
   const [questionIndex, setQuestionIndex] = useState(0);
-  const progress = derivePendingUserInputProgress(
-    props.prompt.questions,
-    answers,
-    questionIndex
-  );
+  const progress = derivePendingUserInputProgress(props.prompt.questions, answers, questionIndex);
   const question = progress.activeQuestion;
   if (!question) return null;
 
-  const submitAnswers = (
-    nextAnswers: Record<string, PendingUserInputDraftAnswer>
-  ) => {
-    'background only';
-    const resolved = buildPendingUserInputAnswers(
-      props.prompt.questions,
-      nextAnswers
-    );
+  const submitAnswers = (nextAnswers: Record<string, PendingUserInputDraftAnswer>) => {
+    "background only";
+    const resolved = buildPendingUserInputAnswers(props.prompt.questions, nextAnswers);
     if (!resolved) return false;
     props.onRespond(resolved, props.prompt.lifecycleGeneration);
     return true;
   };
   const selectOption = (optionLabel: string) => {
-    'background only';
+    "background only";
     const nextAnswer = togglePendingUserInputOptionSelection(
       question,
       answers[question.id],
-      optionLabel
+      optionLabel,
     );
     const nextAnswers = {
       ...answers,
@@ -81,9 +67,7 @@ export function PendingUserInputPanel(props: {
             {progress.questionIndex + 1}/{props.prompt.questions.length}
           </text>
         ) : props.pendingCount > 1 ? (
-          <text className="PendingUserInputProgressLynx">
-            1/{props.pendingCount}
-          </text>
+          <text className="PendingUserInputProgressLynx">1/{props.pendingCount}</text>
         ) : null}
       </view>
       {question.multiSelect ? (
@@ -92,9 +76,7 @@ export function PendingUserInputPanel(props: {
       {question.options.length > 0 ? (
         <view className="PendingUserInputOptionsLynx">
           {question.options.map((option, index) => {
-            const selected = progress.selectedOptionLabels.includes(
-              option.label
-            );
+            const selected = progress.selectedOptionLabels.includes(option.label);
             return (
               <ComposerChoiceRow
                 key={`${question.id}:${option.label}`}
@@ -117,13 +99,10 @@ export function PendingUserInputPanel(props: {
         disabled={props.responding}
         value={progress.customAnswer}
         onInput={(value) => {
-          'background only';
+          "background only";
           setAnswers((current) => ({
             ...current,
-            [question.id]: setPendingUserInputCustomAnswer(
-              current[question.id],
-              value
-            ),
+            [question.id]: setPendingUserInputCustomAnswer(current[question.id], value),
           }));
         }}
       />
@@ -132,9 +111,7 @@ export function PendingUserInputPanel(props: {
           variant="ghost"
           size="sm"
           disabled={props.responding}
-          onClick={() =>
-            props.onRespond({}, props.prompt.lifecycleGeneration)
-          }
+          onClick={() => props.onRespond({}, props.prompt.lifecycleGeneration)}
         >
           Cancel
         </Button>

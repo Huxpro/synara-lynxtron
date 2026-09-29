@@ -52,16 +52,16 @@ remains conditional.
 
 ## Final Browser geometry
 
-| Anchor | Web | Lynx-for-Web |
-| --- | --- | --- |
-| Title | `276/13/85.75/20`, 14/20/500 | exact |
-| Active All pill | `284/62/34.15625/26`, radius 8 | exact |
-| Refresh trigger | `1232/9/28/28` | exact |
-| Refresh glyph | `1238/15/16/16` | exact |
-| Project trigger | `1228/102/24/24`, radius 6 | exact |
-| Project glyph | `1232/106/16/16` | exact |
-| Empty title | `664.40625/192/207.1875/28` | exact |
-| Empty description | `591.390625/224/353.21875/20` | exact |
+| Anchor            | Web                            | Lynx-for-Web |
+| ----------------- | ------------------------------ | ------------ |
+| Title             | `276/13/85.75/20`, 14/20/500   | exact        |
+| Active All pill   | `284/62/34.15625/26`, radius 8 | exact        |
+| Refresh trigger   | `1232/9/28/28`                 | exact        |
+| Refresh glyph     | `1238/15/16/16`                | exact        |
+| Project trigger   | `1228/102/24/24`, radius 6     | exact        |
+| Project glyph     | `1232/106/16/16`               | exact        |
+| Empty title       | `664.40625/192/207.1875/28`    | exact        |
+| Empty description | `591.390625/224/353.21875/20`  | exact        |
 
 The search row is an intentional capability delta. Web exposes an editable
 search input; Lynx honestly renders `Search unavailable in this runtime`.

@@ -1,31 +1,26 @@
-import { useEffect, useRef, useState } from '@lynx-js/react';
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from "@lynx-js/react";
+import { useQuery } from "@tanstack/react-query";
 
-import { SettingsSection } from '@synara-web/components/settings/SettingsSection';
+import { SettingsSection } from "@synara-web/components/settings/SettingsSection";
 
-import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
-import {
-  OpenAIProviderIcon,
-  hasLynxProviderIcon,
-} from '../components/OpenAIProviderIcon.lynx';
+import { SettingsGeneralBooleanControlElement } from "../adapters/SettingsGeneralCompositionElements.lynx";
+import { OpenAIProviderIcon, hasLynxProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 import {
   fetchServerSettings,
   fetchSkillsCatalog,
   updateServerSettings,
-} from '../data/synaraClient.lynx';
+} from "../data/synaraClient.lynx";
 import {
   buildSettingsSkillGroups,
   buildSettingsSkillSections,
   nextDisabledSkillNames,
   settingsSkillNameKey,
-} from './settingsSkills.logic';
-import { queryClient } from './queries';
+} from "./settingsSkills.logic";
+import { queryClient } from "./queries";
 
-import './settings-skills-panel.css';
+import "./settings-skills-panel.css";
 
-function SkillProviderStack(props: {
-  readonly providers: readonly string[];
-}) {
+function SkillProviderStack(props: { readonly providers: readonly string[] }) {
   if (props.providers.length === 0) return null;
   return (
     <view className="SettingsSkillsProviderStack">
@@ -33,7 +28,7 @@ function SkillProviderStack(props: {
         <view
           className="SettingsSkillsProviderBadge"
           key={provider}
-          style={{ marginLeft: index === 0 ? '0px' : '-4px' }}
+          style={{ marginLeft: index === 0 ? "0px" : "-4px" }}
         >
           {hasLynxProviderIcon(provider) ? (
             <OpenAIProviderIcon provider={provider} />
@@ -50,17 +45,17 @@ function SkillProviderStack(props: {
 
 export function SettingsSkillsPanel() {
   const catalogQuery = useQuery({
-    queryKey: ['skills-catalog'],
+    queryKey: ["skills-catalog"],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchSkillsCatalog();
     },
     staleTime: 30_000,
   });
   const settingsQuery = useQuery({
-    queryKey: ['server-settings'],
+    queryKey: ["server-settings"],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchServerSettings();
     },
   });
@@ -81,12 +76,10 @@ export function SettingsSkillsPanel() {
   const disabledKeys = new Set(disabledNames.map(settingsSkillNameKey));
   const groups = buildSettingsSkillGroups(catalogQuery.data?.skills ?? []);
   const sections = buildSettingsSkillSections(catalogQuery.data?.skills ?? []);
-  const enabledCount = groups.filter(
-    (group) => !disabledKeys.has(group.key)
-  ).length;
+  const enabledCount = groups.filter((group) => !disabledKeys.has(group.key)).length;
 
   async function setSkillEnabled(skillName: string, enabled: boolean) {
-    'background only';
+    "background only";
     const key = settingsSkillNameKey(skillName);
     const previous = disabledNamesRef.current;
     const next = nextDisabledSkillNames({
@@ -112,19 +105,15 @@ export function SettingsSkillsPanel() {
             setDisabledNames(settings.skills.disabled);
             setSavingSkillKey(null);
           }
-          await queryClient.invalidateQueries({ queryKey: ['provider-skills'] });
+          await queryClient.invalidateQueries({ queryKey: ["provider-skills"] });
         } catch (error) {
           if (saveOperationRef.current === operationId) {
             disabledNamesRef.current = previous;
             setDisabledNames(previous);
             setSavingSkillKey(null);
-            setSaveError(
-              error instanceof Error
-                ? error.message
-                : 'Unable to update this skill.'
-            );
+            setSaveError(error instanceof Error ? error.message : "Unable to update this skill.");
           }
-          await queryClient.invalidateQueries({ queryKey: ['server-settings'] });
+          await queryClient.invalidateQueries({ queryKey: ["server-settings"] });
         }
       });
     await saveQueueRef.current;
@@ -147,9 +136,7 @@ export function SettingsSkillsPanel() {
         accessibility-role="alert"
       >
         <text className="SettingsSkillsStateText">
-          {error instanceof Error
-            ? error.message
-            : 'Synara could not scan the skill folders.'}
+          {error instanceof Error ? error.message : "Synara could not scan the skill folders."}
         </text>
       </view>
     );
@@ -165,32 +152,25 @@ export function SettingsSkillsPanel() {
                 <text className="SettingsSkillsRowTitle">Synara skills folder</text>
               </view>
               <text className="SettingsSkillsRowDescription">
-                Skills placed here are available on every provider. When a
-                provider already ships its own copy of a skill, that copy is
-                used; otherwise Synara&apos;s copy is the fallback.
+                Skills placed here are available on every provider. When a provider already ships
+                its own copy of a skill, that copy is used; otherwise Synara&apos;s copy is the
+                fallback.
               </text>
             </view>
             <text className="SettingsSkillsCount">
-              {enabledCount} of {groups.length}{' '}
-              {groups.length === 1 ? 'skill' : 'skills'} enabled
+              {enabledCount} of {groups.length} {groups.length === 1 ? "skill" : "skills"} enabled
             </text>
           </view>
           {catalogQuery.data?.synaraSkillsDir ? (
             <view className="SettingsSkillsMetadata SettingsSkillsMetadata--portable">
-              <text className="SettingsSkillsPath">
-                {catalogQuery.data.synaraSkillsDir}
-              </text>
+              <text className="SettingsSkillsPath">{catalogQuery.data.synaraSkillsDir}</text>
             </view>
           ) : null}
         </view>
       </SettingsSection>
 
       {saveError ? (
-        <view
-          className="SettingsSkillsSaveError"
-          accessibility-element
-          accessibility-role="alert"
-        >
+        <view className="SettingsSkillsSaveError" accessibility-element accessibility-role="alert">
           <text className="SettingsSkillsSaveErrorText">{saveError}</text>
         </view>
       ) : null}
@@ -205,8 +185,8 @@ export function SettingsSkillsPanel() {
           >
             <text className="SettingsSkillsRowTitle">No skills found</text>
             <text className="SettingsSkillsRowDescription">
-              Add a skill folder containing a SKILL.md to the Synara skills
-              folder above, or install skills for any supported provider.
+              Add a skill folder containing a SKILL.md to the Synara skills folder above, or install
+              skills for any supported provider.
             </text>
           </view>
         </SettingsSection>
@@ -220,9 +200,7 @@ export function SettingsSkillsPanel() {
               <view
                 key={group.key}
                 className={`SettingsSkillsRow${
-                  index < section.groups.length - 1
-                    ? ' SettingsSkillsRow--continued'
-                    : ''
+                  index < section.groups.length - 1 ? " SettingsSkillsRow--continued" : ""
                 }`}
               >
                 <view className="SettingsSkillsMain SettingsSkillsMain--skill">
@@ -231,21 +209,15 @@ export function SettingsSkillsPanel() {
                       <view className="SettingsSkillsCube">
                         <view className="SettingsSkillsCubeFace" />
                       </view>
-                      <text className="SettingsSkillsRowTitle">
-                        {group.displayName}
-                      </text>
+                      <text className="SettingsSkillsRowTitle">{group.displayName}</text>
                     </view>
-                    <text className="SettingsSkillsRowDescription">
-                      {group.description}
-                    </text>
+                    <text className="SettingsSkillsRowDescription">{group.description}</text>
                   </view>
                   <view className="SettingsSkillsControl SettingsSkillsControl--skill">
                     <SettingsGeneralBooleanControlElement
                       checked={enabled}
                       ariaLabel={`Enable the ${group.displayName} skill`}
-                      onChange={(checked) =>
-                        void setSkillEnabled(group.primarySkill.name, checked)
-                      }
+                      onChange={(checked) => void setSkillEnabled(group.primarySkill.name, checked)}
                     />
                     {savingSkillKey === group.key ? (
                       <text className="SettingsSkillsSaving">Saving…</text>
@@ -256,16 +228,11 @@ export function SettingsSkillsPanel() {
                   <view className="SettingsSkillsSourceLine">
                     <SkillProviderStack providers={group.providers} />
                     <text className="SettingsSkillsSource">
-                      {group.sources
-                        .map((source) => source.label)
-                        .join(' · ')}
+                      {group.sources.map((source) => source.label).join(" · ")}
                     </text>
                   </view>
                   {group.sources.map((source) => (
-                    <text
-                      key={source.skill.path}
-                      className="SettingsSkillsPath"
-                    >
+                    <text key={source.skill.path} className="SettingsSkillsPath">
                       {source.skill.path}
                     </text>
                   ))}

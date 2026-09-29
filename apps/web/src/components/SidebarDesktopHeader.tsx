@@ -11,9 +11,7 @@ export function SidebarDesktopHeader(props: {
   readonly trafficLightGutter?: boolean;
 }) {
   return (
-    <SidebarDesktopHeaderRootElement
-      trafficLightGutter={props.trafficLightGutter}
-    >
+    <SidebarDesktopHeaderRootElement trafficLightGutter={props.trafficLightGutter}>
       {props.leadingControls}
       <SynaraLogo
         aria-label="Synara"

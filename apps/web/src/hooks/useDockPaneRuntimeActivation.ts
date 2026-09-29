@@ -132,10 +132,10 @@ export function useDockPaneRuntimeActivation(input: {
         cancelRaf(frameId);
       }
     };
-  // Depend on the pane's semantic identity, not the store object's reference.
-  // Projection updates may recreate an equivalent pane object every render; if
-  // that restarts this effect, the two-frame restore timer can be cancelled
-  // forever and leave a persisted Terminal stuck in preview mode.
+    // Depend on the pane's semantic identity, not the store object's reference.
+    // Projection updates may recreate an equivalent pane object every render; if
+    // that restarts this effect, the two-frame restore timer can be cancelled
+    // forever and leave a persisted Terminal stuck in preview mode.
   }, [activePaneKey, activePaneKind, hydratedPaneKey]);
 
   return {

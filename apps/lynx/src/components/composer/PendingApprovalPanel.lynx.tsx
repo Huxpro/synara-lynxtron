@@ -1,34 +1,26 @@
-import type { ProviderApprovalDecision } from '@synara/contracts';
-import type { PendingApproval } from '@synara-web/session-logic';
+import type { ProviderApprovalDecision } from "@synara/contracts";
+import type { PendingApproval } from "@synara-web/session-logic";
 import {
   APPROVAL_ACTIONS,
   APPROVAL_KIND_PROMPT,
   parseApprovalDetail,
   shortenApprovalPath,
-} from '@synara-web/components/chat/ComposerPendingApprovalPanel.logic';
+} from "@synara-web/components/chat/ComposerPendingApprovalPanel.logic";
 
-import { ComposerChoiceRow } from './ComposerChoiceRow.lynx';
-import './pending-approval-panel.css';
+import { ComposerChoiceRow } from "./ComposerChoiceRow.lynx";
+import "./pending-approval-panel.css";
 
 export function PendingApprovalPanel(props: {
   readonly approval: PendingApproval;
   readonly pendingCount: number;
   readonly responding: boolean;
-  readonly onRespond: (
-    decision: ProviderApprovalDecision,
-    lifecycleGeneration?: string
-  ) => void;
+  readonly onRespond: (decision: ProviderApprovalDecision, lifecycleGeneration?: string) => void;
 }) {
   const parsed = parseApprovalDetail(props.approval.detail);
   const detail =
-    parsed.fileName ??
-    parsed.command ??
-    parsed.fallback ??
-    'Review the request to continue.';
+    parsed.fileName ?? parsed.command ?? parsed.fallback ?? "Review the request to continue.";
   const supportingPath =
-    parsed.fileName && parsed.fileDir
-      ? shortenApprovalPath(parsed.fileDir)
-      : null;
+    parsed.fileName && parsed.fileDir ? shortenApprovalPath(parsed.fileDir) : null;
 
   return (
     <scroll-view
@@ -44,22 +36,18 @@ export function PendingApprovalPanel(props: {
           </text>
           {parsed.tool ? (
             <text className="PendingApprovalToolLynx">
-              {'  '}
+              {"  "}
               {parsed.tool}
             </text>
           ) : null}
         </text>
         {props.pendingCount > 1 ? (
-          <text className="PendingApprovalCountLynx">
-            1/{props.pendingCount}
-          </text>
+          <text className="PendingApprovalCountLynx">1/{props.pendingCount}</text>
         ) : null}
       </view>
       <view className="PendingApprovalDetailLynx">
         <text className="PendingApprovalDetailTextLynx">{detail}</text>
-        {supportingPath ? (
-          <text className="PendingApprovalPathLynx">{supportingPath}</text>
-        ) : null}
+        {supportingPath ? <text className="PendingApprovalPathLynx">{supportingPath}</text> : null}
       </view>
       <view className="PendingApprovalActionsLynx">
         {APPROVAL_ACTIONS.map((action, index) => (
@@ -70,18 +58,11 @@ export function PendingApprovalPanel(props: {
             description={action.description}
             tone={action.tone}
             disabled={props.responding}
-            onSelect={() =>
-              props.onRespond(
-                action.decision,
-                props.approval.lifecycleGeneration
-              )
-            }
+            onSelect={() => props.onRespond(action.decision, props.approval.lifecycleGeneration)}
           />
         ))}
       </view>
-      <text className="PendingApprovalHintLynx">
-        Resolve this approval request to continue
-      </text>
+      <text className="PendingApprovalHintLynx">Resolve this approval request to continue</text>
     </scroll-view>
   );
 }

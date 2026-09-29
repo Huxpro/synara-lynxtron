@@ -9,25 +9,15 @@ interface ElementProps {
   readonly children?: ReactNode;
 }
 
-export function SidebarProjectSummaryLeadingElement({
-  className,
-  children,
-}: ElementProps) {
+export function SidebarProjectSummaryLeadingElement({ className, children }: ElementProps) {
   return (
-    <SidebarLeadingIcon
-      size="sm"
-      tone={SIDEBAR_ROW_LABEL_TEXT_CLASS_NAME}
-      className={className}
-    >
+    <SidebarLeadingIcon size="sm" tone={SIDEBAR_ROW_LABEL_TEXT_CLASS_NAME} className={className}>
       {children}
     </SidebarLeadingIcon>
   );
 }
 
-export function SidebarProjectSummaryCopyElement({
-  className,
-  children,
-}: ElementProps) {
+export function SidebarProjectSummaryCopyElement({ className, children }: ElementProps) {
   return (
     <div
       className={cn(

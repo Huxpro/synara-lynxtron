@@ -542,8 +542,7 @@
   text-align: center;
 }
 
-.SliceRoot--viewport-short-height
-  .LxDialogPopup.SettingsProfileShareDialog {
+.SliceRoot--viewport-short-height .LxDialogPopup.SettingsProfileShareDialog {
   height: calc(100vh - 32px);
   max-height: calc(100vh - 32px);
 }
@@ -754,8 +753,7 @@
   border-radius: 8px;
 }
 
-.SliceRoot--viewport-short-height
-  .LxDialogPopup.SettingsProfileEditDialog {
+.SliceRoot--viewport-short-height .LxDialogPopup.SettingsProfileEditDialog {
   height: calc(100vh - 32px);
   max-height: calc(100vh - 32px);
 }

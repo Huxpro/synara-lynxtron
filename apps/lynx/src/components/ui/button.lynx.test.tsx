@@ -1,162 +1,139 @@
-import { describe, expect, it, rs } from '@rstest/core';
-import { fireEvent, render } from '@lynx-js/react/testing-library';
-import { readFileSync } from 'node:fs';
+import { describe, expect, it, rs } from "@rstest/core";
+import { fireEvent, render } from "@lynx-js/react/testing-library";
+import { readFileSync } from "node:fs";
 
-import { Button } from './button.lynx';
+import { Button } from "./button.lynx";
 
-describe('Lynx Button accessibility contract', () => {
-  it('uses variant-owned pressed paint without globally dimming or scaling', () => {
-    const styles = readFileSync(
-      new URL('./primitives.css', import.meta.url),
-      'utf8'
-    );
+describe("Lynx Button accessibility contract", () => {
+  it("uses variant-owned pressed paint without globally dimming or scaling", () => {
+    const styles = readFileSync(new URL("./primitives.css", import.meta.url), "utf8");
 
     expect(styles).toMatch(
-      /\.LxButton\.ui-active,\s*\.LxButton\.ui-hover,\s*\.LxButton\.ui-pressed\s*\{[^}]*opacity:\s*1;[^}]*transform:\s*none;/s
+      /\.LxButton\.ui-active,\s*\.LxButton\.ui-hover,\s*\.LxButton\.ui-pressed\s*\{[^}]*opacity:\s*1;[^}]*transform:\s*none;/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--ghost\.ui-hover\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s
+      /\.LxButton--ghost\.ui-hover\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary-hover\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--variant-default\.ui-hover,[^{]*\.LxButton--variant-default\.ui-pressed\s*\{[^}]*background-color:\s*var\(--primary-hover-fill\);/s
+      /\.LxButton--variant-default\.ui-hover,[^{]*\.LxButton--variant-default\.ui-pressed\s*\{[^}]*background-color:\s*var\(--primary-hover-fill\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--destructive\.ui-hover,[^{]*\.LxButton--destructive\.ui-pressed\s*\{[^}]*background-color:\s*var\(--destructive-hover-fill\);/s
+      /\.LxButton--destructive\.ui-hover,[^{]*\.LxButton--destructive\.ui-pressed\s*\{[^}]*background-color:\s*var\(--destructive-hover-fill\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--ghost \.LxButton__text,\s*\.LxButton--chrome \.LxButton__text\s*\{[^}]*color:\s*var\(--color-text-foreground-secondary\);/s
+      /\.LxButton--ghost \.LxButton__text,\s*\.LxButton--chrome \.LxButton__text\s*\{[^}]*color:\s*var\(--color-text-foreground-secondary\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--ghost\.ui-hover \.LxButton__text,[^{]*\.LxButton--chrome\.ui-pressed \.LxButton__text,[^{]*\.LxButton--link \.LxButton__text\s*\{[^}]*color:\s*var\(--foreground\);/s
+      /\.LxButton--ghost\.ui-hover \.LxButton__text,[^{]*\.LxButton--chrome\.ui-pressed \.LxButton__text,[^{]*\.LxButton--link \.LxButton__text\s*\{[^}]*color:\s*var\(--foreground\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--ghost\.ui-active,\s*\.LxButton--ghost\.ui-pressed\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s
+      /\.LxButton--ghost\.ui-active,\s*\.LxButton--ghost\.ui-pressed\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--destructive\s*\{[^}]*border-top-color:\s*var\(--destructive\);[^}]*border-right-color:\s*var\(--destructive\);[^}]*border-bottom-color:\s*var\(--destructive\);[^}]*border-left-color:\s*var\(--destructive\);[^}]*background-color:\s*var\(--destructive\);/s
+      /\.LxButton--destructive\s*\{[^}]*border-top-color:\s*var\(--destructive\);[^}]*border-right-color:\s*var\(--destructive\);[^}]*border-bottom-color:\s*var\(--destructive\);[^}]*border-left-color:\s*var\(--destructive\);[^}]*background-color:\s*var\(--destructive\);/s,
+    );
+    expect(styles).toMatch(/\.LxButton--destructive \.LxButton__text\s*\{[^}]*color:\s*#ffffff;/s);
+    expect(styles).toMatch(
+      /\.LxButton--prominent\s*\{[^}]*transition-property:\s*transform, opacity;[^}]*transition-duration:\s*150ms;[^}]*transition-timing-function:\s*ease-out;/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--destructive \.LxButton__text\s*\{[^}]*color:\s*#ffffff;/s
+      /\.LxButton--prominent \.LxButton__text\s*\{[^}]*color:\s*var\(--color-background-surface\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--prominent\s*\{[^}]*transition-property:\s*transform, opacity;[^}]*transition-duration:\s*150ms;[^}]*transition-timing-function:\s*ease-out;/s
+      /@media \(prefers-reduced-motion: reduce\)\s*\{[^}]*\.LxButton--prominent,[^}]*transition-duration:\s*0\.01ms;/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--prominent \.LxButton__text\s*\{[^}]*color:\s*var\(--color-background-surface\);/s
+      /\.LxButton--primary-outline,\s*\.LxButton--secondary-outline,\s*\.LxButton--destructive-outline\s*\{[^}]*background-color:\s*var\(--color-background-elevated-primary-opaque\);/s,
     );
     expect(styles).toMatch(
-      /@media \(prefers-reduced-motion: reduce\)\s*\{[^}]*\.LxButton--prominent,[^}]*transition-duration:\s*0\.01ms;/s
+      /\.LxButton--outline,\s*\.LxButton--primary-outline,\s*\.LxButton--secondary-outline,\s*\.LxButton--destructive-outline,\s*\.LxButton--chrome-outline\s*\{[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--primary-outline,\s*\.LxButton--secondary-outline,\s*\.LxButton--destructive-outline\s*\{[^}]*background-color:\s*var\(--color-background-elevated-primary-opaque\);/s
+      /\.LxButton--primary-outline\.ui-hover,[^{]*\.LxButton--primary-outline\.ui-pressed\s*\{[^}]*border-top-color:\s*var\(--primary-outline-state-border\);[^}]*background-color:\s*var\(--primary-outline-state-surface\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--outline,\s*\.LxButton--primary-outline,\s*\.LxButton--secondary-outline,\s*\.LxButton--destructive-outline,\s*\.LxButton--chrome-outline\s*\{[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);/s
+      /\.LxButton--destructive-outline\.ui-hover,[^{]*\.LxButton--destructive-outline\.ui-pressed\s*\{[^}]*border-top-color:\s*var\(--destructive-outline-state-border\);[^}]*background-color:\s*var\(--destructive-outline-state-surface\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--primary-outline\.ui-hover,[^{]*\.LxButton--primary-outline\.ui-pressed\s*\{[^}]*border-top-color:\s*var\(--primary-outline-state-border\);[^}]*background-color:\s*var\(--primary-outline-state-surface\);/s
+      /\.LxButton--secondary-outline\.ui-hover,[^{]*\.LxButton--secondary-outline\.ui-pressed\s*\{[^}]*background-color:\s*var\(--secondary-outline-state-surface\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--destructive-outline\.ui-hover,[^{]*\.LxButton--destructive-outline\.ui-pressed\s*\{[^}]*border-top-color:\s*var\(--destructive-outline-state-border\);[^}]*background-color:\s*var\(--destructive-outline-state-surface\);/s
+      /\.LxButton--secondary\.ui-hover,[^{]*\.LxButton--secondary\.ui-pressed\s*\{[^}]*background-color:\s*var\(--secondary-button-state-surface\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--secondary-outline\.ui-hover,[^{]*\.LxButton--secondary-outline\.ui-pressed\s*\{[^}]*background-color:\s*var\(--secondary-outline-state-surface\);/s
+      /\.LxButton--subtle\.ui-hover,[^{]*\.LxButton--subtle\.ui-pressed\s*\{[^}]*background-color:\s*var\(--subtle-button-state-surface\);/s,
     );
     expect(styles).toMatch(
-      /\.LxButton--secondary\.ui-hover,[^{]*\.LxButton--secondary\.ui-pressed\s*\{[^}]*background-color:\s*var\(--secondary-button-state-surface\);/s
-    );
-    expect(styles).toMatch(
-      /\.LxButton--subtle\.ui-hover,[^{]*\.LxButton--subtle\.ui-pressed\s*\{[^}]*background-color:\s*var\(--subtle-button-state-surface\);/s
-    );
-    expect(styles).toMatch(
-      /\.LxButton--chrome\.ui-hover,[^{]*\.LxButton--outline\.ui-hover,[^{]*\.LxButton--chrome-outline\.ui-pressed\s*\{[^}]*background-color:\s*var\(--outline-button-state-surface\);/s
+      /\.LxButton--chrome\.ui-hover,[^{]*\.LxButton--outline\.ui-hover,[^{]*\.LxButton--chrome-outline\.ui-pressed\s*\{[^}]*background-color:\s*var\(--outline-button-state-surface\);/s,
     );
     expect(styles).not.toMatch(
-      /\.LxButton\.ui-(?:active|hover|pressed)[^{]*\{[^}]*(?:opacity:\s*0\.|scale\(0\.)/s
+      /\.LxButton\.ui-(?:active|hover|pressed)[^{]*\{[^}]*(?:opacity:\s*0\.|scale\(0\.)/s,
     );
   });
 
-  it('exposes visible-text actions as Native buttons by default', () => {
+  it("exposes visible-text actions as Native buttons by default", () => {
     render(<Button>Save</Button>);
 
-    const button = elementTree.root?.querySelector('.LxButton');
-    expect(button?.getAttribute('accessibility-element')).toBe('true');
-    expect(button?.getAttribute('accessibility-trait')).toBe('button');
-    expect(button?.getAttribute('class')).toContain(
-      'LxButton--variant-default'
-    );
-    expect(button?.textContent).toBe('Save');
-    expect(
-      button?.querySelector('.LxButton__text')?.getAttribute(
-        'accessibility-element'
-      )
-    ).toBe('false');
-  });
-
-  it('keeps size and variant class namespaces distinct', () => {
-    render(<Button size="default" variant="primary-outline">Save</Button>);
-    const button = elementTree.root?.querySelector('.LxButton');
-    expect(button?.getAttribute('class')).toContain('LxButton--default');
-    expect(button?.getAttribute('class')).toContain(
-      'LxButton--variant-primary-outline'
-    );
-    expect(button?.getAttribute('class')).not.toContain(
-      'LxButton--variant-default'
+    const button = elementTree.root?.querySelector(".LxButton");
+    expect(button?.getAttribute("accessibility-element")).toBe("true");
+    expect(button?.getAttribute("accessibility-trait")).toBe("button");
+    expect(button?.getAttribute("class")).toContain("LxButton--variant-default");
+    expect(button?.textContent).toBe("Save");
+    expect(button?.querySelector(".LxButton__text")?.getAttribute("accessibility-element")).toBe(
+      "false",
     );
   });
 
-  it('honors explicit passive accessibility ownership', () => {
+  it("keeps size and variant class namespaces distinct", () => {
     render(
-      <Button buttonProps={{ 'accessibility-element': false }}>
-        Visual only
-      </Button>
+      <Button size="default" variant="primary-outline">
+        Save
+      </Button>,
     );
-
-    const button = elementTree.root?.querySelector('.LxButton');
-    expect(button?.getAttribute('accessibility-element')).toBe('false');
-    expect(button?.getAttribute('accessibility-trait')).toBeNull();
+    const button = elementTree.root?.querySelector(".LxButton");
+    expect(button?.getAttribute("class")).toContain("LxButton--default");
+    expect(button?.getAttribute("class")).toContain("LxButton--variant-primary-outline");
+    expect(button?.getAttribute("class")).not.toContain("LxButton--variant-default");
   });
 
-  it('publishes disabled state and remains inert', () => {
+  it("honors explicit passive accessibility ownership", () => {
+    render(<Button buttonProps={{ "accessibility-element": false }}>Visual only</Button>);
+
+    const button = elementTree.root?.querySelector(".LxButton");
+    expect(button?.getAttribute("accessibility-element")).toBe("false");
+    expect(button?.getAttribute("accessibility-trait")).toBeNull();
+  });
+
+  it("publishes disabled state and remains inert", () => {
     const onClick = rs.fn();
     render(
-      <Button
-        disabled
-        aria-label="Retry loading preferences"
-        onClick={onClick}
-      >
+      <Button disabled aria-label="Retry loading preferences" onClick={onClick}>
         Retry
-      </Button>
+      </Button>,
     );
 
-    const button = elementTree.root?.querySelector('.LxButton');
-    if (!button) throw new Error('expected disabled Button');
-    expect(button.getAttribute('accessibility-label')).toBe(
-      'Retry loading preferences'
-    );
-    expect(button.getAttribute('accessibility-state')).toBe(
-      '{"disabled":true}'
-    );
+    const button = elementTree.root?.querySelector(".LxButton");
+    if (!button) throw new Error("expected disabled Button");
+    expect(button.getAttribute("accessibility-label")).toBe("Retry loading preferences");
+    expect(button.getAttribute("accessibility-state")).toBe('{"disabled":true}');
     fireEvent.tap(button);
     expect(onClick).not.toHaveBeenCalled();
   });
 
-  it('merges disabled state with existing selected metadata', () => {
+  it("merges disabled state with existing selected metadata", () => {
     render(
       <Button
         disabled
         aria-label="Selected option"
         buttonProps={{
-          'accessibility-state': { selected: true },
+          "accessibility-state": { selected: true },
         }}
       >
         Selected
-      </Button>
+      </Button>,
     );
 
-    const button = elementTree.root?.querySelector('.LxButton');
-    expect(button?.getAttribute('accessibility-state')).toBe(
-      '{"selected":true,"disabled":true}'
-    );
+    const button = elementTree.root?.querySelector(".LxButton");
+    expect(button?.getAttribute("accessibility-state")).toBe('{"selected":true,"disabled":true}');
   });
 });

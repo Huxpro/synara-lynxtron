@@ -4,28 +4,20 @@ export interface RpcTransportSocket {
   addEventListener(type: string, listener: (event: any) => void): void;
 }
 
-export type RpcTransportState =
-  | 'idle'
-  | 'connecting'
-  | 'connected'
-  | 'reconnecting'
-  | 'offline';
+export type RpcTransportState = "idle" | "connecting" | "connected" | "reconnecting" | "offline";
 
-export type StartRpcTimeout = (
-  milliseconds: number,
-  onTimeout: () => void
-) => () => void;
+export type StartRpcTimeout = (milliseconds: number, onTimeout: () => void) => () => void;
 
 interface RpcExit {
-  readonly _tag: 'Exit';
+  readonly _tag: "Exit";
   readonly requestId: string;
   readonly exit:
-    | { readonly _tag: 'Success'; readonly value: unknown }
-    | { readonly _tag: 'Failure'; readonly cause?: unknown };
+    | { readonly _tag: "Success"; readonly value: unknown }
+    | { readonly _tag: "Failure"; readonly cause?: unknown };
 }
 
 interface RpcChunk {
-  readonly _tag: 'Chunk';
+  readonly _tag: "Chunk";
   readonly requestId: string;
   readonly values: readonly unknown[];
 }
@@ -44,19 +36,19 @@ interface RpcSocketContext {
 }
 
 export class RpcTransportError extends Error {
-  readonly name = 'RpcTransportError';
+  readonly name = "RpcTransportError";
 }
 
 export function isRpcTransportError(error: unknown): boolean {
   return (
     error instanceof RpcTransportError ||
-    (error instanceof Error && error.name === 'RpcTransportError')
+    (error instanceof Error && error.name === "RpcTransportError")
   );
 }
 
 function describeError(value: unknown): string {
   if (value instanceof Error) return value.message;
-  if (value && typeof value === 'object' && 'message' in value) {
+  if (value && typeof value === "object" && "message" in value) {
     return String((value as { message?: unknown }).message);
   }
   return String(value);
@@ -87,34 +79,26 @@ export function openRpcSocketWithTimeout(input: {
       reject(error);
     };
     cancelTimeout = input.startTimeout(input.timeoutMs, () => {
-      finishFailure(
-        new RpcTransportError(
-          `WebSocket open timed out after ${input.timeoutMs}ms`
-        )
-      );
+      finishFailure(new RpcTransportError(`WebSocket open timed out after ${input.timeoutMs}ms`));
     });
-    socket.addEventListener('open', () => {
+    socket.addEventListener("open", () => {
       if (settled) return;
       settled = true;
       cancelTimeout();
       resolve(socket);
     });
-    socket.addEventListener('error', (event: unknown) => {
-      finishFailure(
-        new RpcTransportError(
-          `WebSocket open failed: ${describeError(event)}`
-        )
-      );
+    socket.addEventListener("error", (event: unknown) => {
+      finishFailure(new RpcTransportError(`WebSocket open failed: ${describeError(event)}`));
     });
-    socket.addEventListener('close', () => {
-      finishFailure(new RpcTransportError('WebSocket closed before open'));
+    socket.addEventListener("close", () => {
+      finishFailure(new RpcTransportError("WebSocket closed before open"));
     });
   });
 }
 
 function attachRpcSocketContext(
   socket: RpcTransportSocket,
-  onTransportFailure: (socket: RpcTransportSocket, error: Error) => void
+  onTransportFailure: (socket: RpcTransportSocket, error: Error) => void,
 ): RpcSocketContext {
   const context: RpcSocketContext = { failed: false, pending: new Map() };
   const failAll = (error: Error) => {
@@ -127,13 +111,11 @@ function attachRpcSocketContext(
     context.pending.clear();
     onTransportFailure(socket, error);
   };
-  socket.addEventListener('error', (event: unknown) => {
-    failAll(
-      new RpcTransportError(`socket error: ${describeError(event)}`)
-    );
+  socket.addEventListener("error", (event: unknown) => {
+    failAll(new RpcTransportError(`socket error: ${describeError(event)}`));
   });
-  socket.addEventListener('close', () => {
-    failAll(new RpcTransportError('socket closed'));
+  socket.addEventListener("close", () => {
+    failAll(new RpcTransportError("socket closed"));
   });
   return context;
 }
@@ -159,7 +141,7 @@ export function createRpcSocketManager(input: {
   let disposed = false;
   let everConnected = false;
   let offlineUntilMs = 0;
-  let state: RpcTransportState = 'idle';
+  let state: RpcTransportState = "idle";
   const listeners = new Set<(state: RpcTransportState) => void>();
   const contexts = new WeakMap<RpcTransportSocket, RpcSocketContext>();
 
@@ -173,23 +155,18 @@ export function createRpcSocketManager(input: {
     if (activeSocket !== socket) return;
     activeSocket = null;
     connectionPromise = null;
-    publishState('idle');
+    publishState("idle");
     safeClose(socket);
   };
 
   const startBackgroundRecovery = () => {
-    if (
-      !input.autoReconnectOnFailure ||
-      disposed ||
-      activeSocket ||
-      recoveryPromise
-    ) {
+    if (!input.autoReconnectOnFailure || disposed || activeSocket || recoveryPromise) {
       return;
     }
     const generation = ++recoveryGeneration;
     const pending = (async () => {
       while (!disposed && generation === recoveryGeneration && !activeSocket) {
-        if (state === 'offline') {
+        if (state === "offline") {
           await input.sleep(input.offlineRetryDelayMs ?? 0);
           if (disposed || generation !== recoveryGeneration || activeSocket) return;
         }
@@ -217,7 +194,7 @@ export function createRpcSocketManager(input: {
     if (activeSocket !== socket) return;
     activeSocket = null;
     connectionPromise = null;
-    publishState(input.autoReconnectOnFailure ? 'reconnecting' : 'idle');
+    publishState(input.autoReconnectOnFailure ? "reconnecting" : "idle");
     safeClose(socket);
     startBackgroundRecovery();
   };
@@ -233,72 +210,70 @@ export function createRpcSocketManager(input: {
   const connectWithBackoff = async (): Promise<RpcTransportSocket> => {
     let lastError: Error | null = null;
     for (let attempt = 0; attempt <= input.maxReconnectAttempts; attempt += 1) {
-      if (disposed) throw new RpcTransportError('client disposed');
+      if (disposed) throw new RpcTransportError("client disposed");
       publishState(
-        state === 'reconnecting' || state === 'offline' || attempt > 0
-          ? 'reconnecting'
-          : 'connecting'
+        state === "reconnecting" || state === "offline" || attempt > 0
+          ? "reconnecting"
+          : "connecting",
       );
       try {
         const socket = await input.connect();
         if (disposed) {
           safeClose(socket);
-          throw new RpcTransportError('client disposed');
+          throw new RpcTransportError("client disposed");
         }
         activeSocket = socket;
         everConnected = true;
         offlineUntilMs = 0;
         contextFor(socket);
-        publishState('connected');
+        publishState("connected");
         return socket;
       } catch (error) {
-        lastError =
-          error instanceof Error ? error : new RpcTransportError(String(error));
+        lastError = error instanceof Error ? error : new RpcTransportError(String(error));
         if (attempt >= input.maxReconnectAttempts) break;
         const delay = Math.min(
           input.initialReconnectDelayMs * 2 ** attempt,
-          input.maxReconnectDelayMs
+          input.maxReconnectDelayMs,
         );
         await input.sleep(delay);
       }
     }
-    offlineUntilMs =
-      (input.now?.() ?? Date.now()) + (input.offlineRetryDelayMs ?? 0);
-    publishState('offline');
+    offlineUntilMs = (input.now?.() ?? Date.now()) + (input.offlineRetryDelayMs ?? 0);
+    publishState("offline");
     startBackgroundRecovery();
-    throw lastError ?? new RpcTransportError('connection failed');
+    throw lastError ?? new RpcTransportError("connection failed");
   };
 
   const getSocket = (): Promise<RpcTransportSocket> => {
     if (activeSocket) return Promise.resolve(activeSocket);
     if (connectionPromise) return connectionPromise;
-    if (state === 'offline' && (input.now?.() ?? Date.now()) < offlineUntilMs) {
-      return Promise.reject(
-        new RpcTransportError('Synara is offline; reconnect cooling down')
-      );
+    if (state === "offline" && (input.now?.() ?? Date.now()) < offlineUntilMs) {
+      return Promise.reject(new RpcTransportError("Synara is offline; reconnect cooling down"));
     }
     const pending = connectWithBackoff();
     connectionPromise = pending;
-    void pending.finally(() => {
-      if (connectionPromise === pending && activeSocket === null) {
-        connectionPromise = null;
-      }
-    }).catch(() => {
-      // The caller observes the original pending promise.
-    });
+    void pending
+      .finally(() => {
+        if (connectionPromise === pending && activeSocket === null) {
+          connectionPromise = null;
+        }
+      })
+      .catch(() => {
+        // The caller observes the original pending promise.
+      });
     return pending;
   };
 
-  const requestOnSocket = <A,>(
+  const requestOnSocket = <A>(
     socket: RpcTransportSocket,
     tag: string,
     payload: unknown,
     onChunk?: (value: unknown) => void,
-    timeoutMs: number | null = input.requestTimeoutMs
+    timeoutMs: number | null = input.requestTimeoutMs,
   ): Promise<A> => {
     const context = contextFor(socket);
     if (context.failed) {
-      return Promise.reject(new RpcTransportError('socket unavailable'));
+      return Promise.reject(new RpcTransportError("socket unavailable"));
     }
     const id = input.nextRequestId();
     return new Promise((resolve, reject) => {
@@ -317,9 +292,7 @@ export function createRpcSocketManager(input: {
           ? () => undefined
           : input.startTimeout(timeoutMs, () => {
               failTransport(
-                new RpcTransportError(
-                  `Synara RPC ${tag} timed out after ${timeoutMs}ms`
-                )
+                new RpcTransportError(`Synara RPC ${tag} timed out after ${timeoutMs}ms`),
               );
             });
       context.pending.set(id, {
@@ -332,26 +305,24 @@ export function createRpcSocketManager(input: {
       try {
         socket.send(
           JSON.stringify({
-            _tag: 'Request',
+            _tag: "Request",
             id,
             tag,
             payload,
             headers: [],
-          })
+          }),
         );
       } catch (error) {
         failTransport(
-          new RpcTransportError(
-            `Synara RPC ${tag} send failed: ${describeError(error)}`
-          )
+          new RpcTransportError(`Synara RPC ${tag} send failed: ${describeError(error)}`),
         );
       }
     });
   };
 
   const attachResponseListener = (socket: RpcTransportSocket) => {
-    socket.addEventListener('message', (event: { data?: unknown }) => {
-      if (typeof event.data !== 'string') return;
+    socket.addEventListener("message", (event: { data?: unknown }) => {
+      if (typeof event.data !== "string") return;
       let response: RpcExit | RpcChunk;
       try {
         response = JSON.parse(event.data) as RpcExit | RpcChunk;
@@ -361,20 +332,18 @@ export function createRpcSocketManager(input: {
       const context = contexts.get(socket);
       const pending = context?.pending.get(response.requestId);
       if (!pending) return;
-      if (response._tag === 'Chunk') {
+      if (response._tag === "Chunk") {
         for (const value of response.values) pending.onChunk?.(value);
         try {
           socket.send(
             JSON.stringify({
-              _tag: 'Ack',
+              _tag: "Ack",
               requestId: response.requestId,
-            })
+            }),
           );
         } catch (error) {
           const transportError = new RpcTransportError(
-            `Synara RPC ${pending.tag} acknowledgement failed: ${describeError(
-              error
-            )}`
+            `Synara RPC ${pending.tag} acknowledgement failed: ${describeError(error)}`,
           );
           context!.failed = true;
           for (const request of context!.pending.values()) {
@@ -386,18 +355,14 @@ export function createRpcSocketManager(input: {
         }
         return;
       }
-      if (response._tag !== 'Exit') return;
+      if (response._tag !== "Exit") return;
       context?.pending.delete(response.requestId);
       pending.cancelTimeout();
-      if (response.exit._tag === 'Success') {
+      if (response.exit._tag === "Success") {
         pending.resolve(response.exit.value);
       } else {
         pending.reject(
-          new Error(
-            `Synara RPC ${pending.tag} failed: ${JSON.stringify(
-              response.exit.cause
-            )}`
-          )
+          new Error(`Synara RPC ${pending.tag} failed: ${JSON.stringify(response.exit.cause)}`),
         );
       }
       if (input.closeWhenIdle && context && context.pending.size === 0) {
@@ -430,17 +395,11 @@ export function createRpcSocketManager(input: {
     async requestStream<A>(
       tag: string,
       payload: unknown,
-      onChunk: (value: A) => void
+      onChunk: (value: A) => void,
     ): Promise<void> {
       const socket = await getSocket();
       ensureResponseListener(socket);
-      await requestOnSocket<void>(
-        socket,
-        tag,
-        payload,
-        (value) => onChunk(value as A),
-        null
-      );
+      await requestOnSocket<void>(socket, tag, payload, (value) => onChunk(value as A), null);
     },
     getState(): RpcTransportState {
       return state;
@@ -455,7 +414,7 @@ export function createRpcSocketManager(input: {
       const socket = activeSocket;
       activeSocket = null;
       connectionPromise = null;
-      publishState('idle');
+      publishState("idle");
       if (socket) safeClose(socket);
     },
   };

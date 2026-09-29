@@ -9,8 +9,8 @@ import type {
   ProjectId,
   RuntimeMode,
   ProviderKind,
-} from '@synara/contracts';
-import { getDefaultModel } from '@synara/shared/model';
+} from "@synara/contracts";
+import { getDefaultModel } from "@synara/shared/model";
 
 export type CreateWorktreeMode = AutomationWorktreeMode;
 
@@ -64,7 +64,7 @@ export function buildAutomationCreateInput(input: {
   readonly runtimeMode: RuntimeMode;
   readonly schedule: AutomationSchedule;
   readonly stopOnError: boolean;
-  readonly targetThreadId: AutomationCreateInput['targetThreadId'];
+  readonly targetThreadId: AutomationCreateInput["targetThreadId"];
   readonly worktreeMode: CreateWorktreeMode;
 }): AutomationCreateInput {
   return {
@@ -79,26 +79,22 @@ export function buildAutomationCreateInput(input: {
     interactionMode: input.interactionMode,
     worktreeMode: input.worktreeMode,
     mode: input.mode,
-    targetThreadId:
-      input.mode === 'heartbeat' ? input.targetThreadId : null,
+    targetThreadId: input.mode === "heartbeat" ? input.targetThreadId : null,
     maxIterations: input.maxIterations,
     stopOnError: input.stopOnError,
-    completionPolicy:
-      input.mode === 'heartbeat'
-        ? input.completionPolicy
-        : { type: 'none' },
+    completionPolicy: input.mode === "heartbeat" ? input.completionPolicy : { type: "none" },
     minimumIntervalSeconds: 60,
     maxRuntimeSeconds: 3600,
-    retryPolicy: { type: 'none' },
-    misfirePolicy: 'coalesce',
+    retryPolicy: { type: "none" },
+    misfirePolicy: "coalesce",
     acknowledgedRisks: [
-      ...(input.runtimeMode === 'full-access' ? ['full-access' as const] : []),
-      ...(input.mode === 'standalone' &&
+      ...(input.runtimeMode === "full-access" ? ["full-access" as const] : []),
+      ...(input.mode === "standalone" &&
       input.acknowledgeLocalCheckout &&
-      (input.worktreeMode === 'auto' || input.worktreeMode === 'local')
-        ? ['local-checkout' as const]
+      (input.worktreeMode === "auto" || input.worktreeMode === "local")
+        ? ["local-checkout" as const]
         : []),
-      ...(input.acknowledgeFastInterval ? ['fast-interval' as const] : []),
+      ...(input.acknowledgeFastInterval ? ["fast-interval" as const] : []),
     ],
   };
 }

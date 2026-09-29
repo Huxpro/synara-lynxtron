@@ -11,12 +11,8 @@
   },
   "identity": {
     "rootPid": 28092,
-    "descendantPids": [
-      28096
-    ],
-    "ownedPorts": [
-      8903
-    ],
+    "descendantPids": [28096],
+    "ownedPorts": [8903],
     "client": {
       "id": "localhost:8903",
       "info": {

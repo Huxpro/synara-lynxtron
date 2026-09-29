@@ -1,1 +1,57 @@
-{"success":true,"data":{"origin":"http://localhost:8080/index.html?route=%2Fthread%2Feditor-changes-thread&editor=open&editorMode=diff","result":{"editor":1,"project":"Editor Changes","relay":{"activeBaseUrl":"ws://127.0.0.1:58090","configuredBaseUrl":"ws://127.0.0.1:58090","connectionAttempts":1,"explorerPreviewActionCount":0,"interactionEventCount":0,"lastExplorerPreviewAction":null,"lastInteractionEvent":null,"lastRpcError":null,"lastSyntaxHighlightResult":null,"lastTransportError":null,"pendingRequests":0,"readyBaseUrl":null,"recentRpcTags":["orchestration.getShellSnapshot","orchestration.getSidebarShellSnapshot","orchestration.getSidebarSearchSnapshot","orchestration.getThreadDetailSnapshot","orchestration.getSidebarShellSnapshot","orchestration.getThreadDetailSnapshot","projects.listDirectories","git.listBranches","git.readWorkingTreeDiff","provider.listModels","server.getConfig","server.refreshProviders","orchestration.getThreadDetailSnapshot","orchestration.getSidebarShellSnapshot","orchestration.getThreadDetailSnapshot","orchestration.getThreadDetailSnapshot","orchestration.getSidebarShellSnapshot","orchestration.getThreadDetailSnapshot","projects.listDirectories","git.readWorkingTreeDiff","provider.listModels","orchestration.getSidebarShellSnapshot","orchestration.getSidebarSearchSnapshot","orchestration.getThreadDetailSnapshot","orchestration.getSidebarShellSnapshot","orchestration.getThreadDetailSnapshot","projects.listDirectories"],"rendererReadyRoute":"/thread/editor-changes-thread","socketState":1,"syntaxHighlightCallCount":0}}},"error":null}
+{
+  "success": true,
+  "data": {
+    "origin": "http://localhost:8080/index.html?route=%2Fthread%2Feditor-changes-thread&editor=open&editorMode=diff",
+    "result": {
+      "editor": 1,
+      "project": "Editor Changes",
+      "relay": {
+        "activeBaseUrl": "ws://127.0.0.1:58090",
+        "configuredBaseUrl": "ws://127.0.0.1:58090",
+        "connectionAttempts": 1,
+        "explorerPreviewActionCount": 0,
+        "interactionEventCount": 0,
+        "lastExplorerPreviewAction": null,
+        "lastInteractionEvent": null,
+        "lastRpcError": null,
+        "lastSyntaxHighlightResult": null,
+        "lastTransportError": null,
+        "pendingRequests": 0,
+        "readyBaseUrl": null,
+        "recentRpcTags": [
+          "orchestration.getShellSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getThreadDetailSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getThreadDetailSnapshot",
+          "projects.listDirectories",
+          "git.listBranches",
+          "git.readWorkingTreeDiff",
+          "provider.listModels",
+          "server.getConfig",
+          "server.refreshProviders",
+          "orchestration.getThreadDetailSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getThreadDetailSnapshot",
+          "orchestration.getThreadDetailSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getThreadDetailSnapshot",
+          "projects.listDirectories",
+          "git.readWorkingTreeDiff",
+          "provider.listModels",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getThreadDetailSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getThreadDetailSnapshot",
+          "projects.listDirectories"
+        ],
+        "rendererReadyRoute": "/thread/editor-changes-thread",
+        "socketState": 1,
+        "syntaxHighlightCallCount": 0
+      }
+    }
+  },
+  "error": null
+}

@@ -1,15 +1,7 @@
 {
   "cls": "SettingsPage SettingsPage--theme-light SettingsPage--sidebar-closed",
-  "radii": [
-    "0px",
-    "0px"
-  ],
-  "rect": [
-    0,
-    0,
-    1280,
-    820
-  ],
+  "radii": ["0px", "0px"],
+  "rect": [0, 0, 1280, 820],
   "root": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
   "shadow": "none",
   "sidebar": false

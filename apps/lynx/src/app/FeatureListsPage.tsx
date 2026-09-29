@@ -1,5 +1,5 @@
-import { useCallback, useMemo, useRef, useState } from '@lynx-js/react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useCallback, useMemo, useRef, useState } from "@lynx-js/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   ProjectId,
   PullRequestDetailInput,
@@ -7,51 +7,48 @@ import type {
   PullRequestInvolvement,
   PullRequestListEntry,
   PullRequestState,
-} from '@synara/contracts';
+} from "@synara/contracts";
 
-import { KanbanColumnComposition } from '@synara-web/components/kanban/KanbanColumnComposition';
-import { KanbanOverviewComposition } from '@synara-web/components/kanban/KanbanOverviewComposition';
-import { KanbanRouteHeaderComposition } from '@synara-web/components/kanban/KanbanRouteHeaderComposition';
+import { KanbanColumnComposition } from "@synara-web/components/kanban/KanbanColumnComposition";
+import { KanbanOverviewComposition } from "@synara-web/components/kanban/KanbanOverviewComposition";
+import { KanbanRouteHeaderComposition } from "@synara-web/components/kanban/KanbanRouteHeaderComposition";
 import {
   KanbanStateComposition,
   type KanbanStateKind,
-} from '@synara-web/components/kanban/KanbanStateComposition';
-import type {
-  KanbanCard,
-  KanbanColumnKey,
-} from '@synara-web/components/kanban/kanban.logic';
+} from "@synara-web/components/kanban/KanbanStateComposition";
+import type { KanbanCard, KanbanColumnKey } from "@synara-web/components/kanban/kanban.logic";
 import {
   KANBAN_DND_COPY,
   resolveKanbanCrossColumnDropPolicy,
   resolveKanbanDragColumn,
   type KanbanDragRect,
-} from '@synara-web/components/kanban/kanbanDnd.logic';
+} from "@synara-web/components/kanban/kanbanDnd.logic";
 import {
   PullRequestListComposition,
   PullRequestListEmptyComposition,
   PullRequestListLoadingComposition,
-} from '@synara-web/components/pullRequest/PullRequestListComposition';
+} from "@synara-web/components/pullRequest/PullRequestListComposition";
 import {
   PullRequestRouteFiltersComposition,
   PullRequestRouteHeaderComposition,
-} from '@synara-web/components/pullRequest/PullRequestRouteControlsComposition';
-import { PullRequestSummaryComposition } from '@synara-web/components/pullRequest/PullRequestSummaryComposition';
+} from "@synara-web/components/pullRequest/PullRequestRouteControlsComposition";
+import { PullRequestSummaryComposition } from "@synara-web/components/pullRequest/PullRequestSummaryComposition";
 import {
   PullRequestDetailCapabilityComposition,
   PullRequestDetailTabsComposition,
-} from '@synara-web/components/pullRequest/PullRequestDetailTabsComposition';
-import { PullRequestDetailCloseComposition } from '@synara-web/components/pullRequest/PullRequestDetailCloseComposition';
+} from "@synara-web/components/pullRequest/PullRequestDetailTabsComposition";
+import { PullRequestDetailCloseComposition } from "@synara-web/components/pullRequest/PullRequestDetailCloseComposition";
 import {
   PULL_REQUEST_DIFF_INITIAL_LINE_COUNT,
   PULL_REQUEST_DIFF_MORE_LINE_COUNT,
   PullRequestCodeComposition,
   PullRequestCodeStateComposition,
-} from '@synara-web/components/pullRequest/PullRequestCodeComposition';
-import { buildPullRequestCodeView } from '@synara-web/components/pullRequest/pullRequestCode.logic';
-import { PullRequestTimelineComposition } from '@synara-web/components/pullRequest/PullRequestTimelineComposition';
-import { resolvePullRequestPrimaryAction } from '@synara-web/components/pullRequest/pullRequestDetail.logic';
-import type { PullRequestDetailTab } from '@synara-web/components/pullRequest/PullRequestDetailTabsComposition';
-import { pullRequestPinToggleInputs } from '@synara-web/components/pullRequest/pullRequestList.logic';
+} from "@synara-web/components/pullRequest/PullRequestCodeComposition";
+import { buildPullRequestCodeView } from "@synara-web/components/pullRequest/pullRequestCode.logic";
+import { PullRequestTimelineComposition } from "@synara-web/components/pullRequest/PullRequestTimelineComposition";
+import { resolvePullRequestPrimaryAction } from "@synara-web/components/pullRequest/pullRequestDetail.logic";
+import type { PullRequestDetailTab } from "@synara-web/components/pullRequest/PullRequestDetailTabsComposition";
+import { pullRequestPinToggleInputs } from "@synara-web/components/pullRequest/pullRequestList.logic";
 import {
   fetchPullRequestDetail,
   fetchPullRequestDiff,
@@ -60,12 +57,12 @@ import {
   performPullRequestAction,
   queryClient,
   setPullRequestPinned,
-} from './queries';
-import { Button } from '../components/ui/button';
+} from "./queries";
+import { Button } from "../components/ui/button";
 import {
   projectLynxKanbanComposerDrafts,
   useComposerDraftStore,
-} from '../adapters/composerDraftStore.lynx';
+} from "../adapters/composerDraftStore.lynx";
 import {
   createNativeKanbanDragSession,
   moveNativeKanbanDragSession,
@@ -73,54 +70,49 @@ import {
   shouldCancelNativeKanbanDragKey,
   type NativeKanbanDragSession,
   type NativeKanbanPointerEvent,
-} from './kanbanDnd.logic';
+} from "./kanbanDnd.logic";
 
 import {
   buildCanonicalSliceKanbanBoard,
   buildCanonicalSlicePullRequestList,
   createPullRequestActionGate,
   selectKanbanProjectBoard,
-} from './FeatureListsPage.logic';
+} from "./FeatureListsPage.logic";
 import {
   resolveKanbanOverviewRouteState,
   resolveKanbanProjectRouteState,
-} from './kanbanRouteState.logic';
-import { ResizableRightPanel } from './ResizableRightPanel.lynx';
-import { KanbanNewTaskDialog } from './KanbanNewTaskDialog.lynx';
-import { PullRequestsUnavailableState } from '../adapters/PullRequestsUnavailableState.lynx';
-import { PullRequestDetailExternalButtonElement } from '../adapters/PullRequestDetailCloseCompositionElements.lynx';
-import { PullRequestWarningBanner } from '../adapters/PullRequestWarningBanner.lynx';
-import { useNativeKanbanCardActions } from './useNativeKanbanCardActions.lynx';
+} from "./kanbanRouteState.logic";
+import { ResizableRightPanel } from "./ResizableRightPanel.lynx";
+import { KanbanNewTaskDialog } from "./KanbanNewTaskDialog.lynx";
+import { PullRequestsUnavailableState } from "../adapters/PullRequestsUnavailableState.lynx";
+import { PullRequestDetailExternalButtonElement } from "../adapters/PullRequestDetailCloseCompositionElements.lynx";
+import { PullRequestWarningBanner } from "../adapters/PullRequestWarningBanner.lynx";
+import { useNativeKanbanCardActions } from "./useNativeKanbanCardActions.lynx";
 
 export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => void }) {
-  const [newTaskProjectId, setNewTaskProjectId] =
-    useState<ProjectId | null>(null);
+  const [newTaskProjectId, setNewTaskProjectId] = useState<ProjectId | null>(null);
   const [newTaskOpen, setNewTaskOpen] = useState(false);
-  const lynxDraftsByThreadId = useComposerDraftStore(
-    (store) => store.draftsByThreadId
-  );
+  const lynxDraftsByThreadId = useComposerDraftStore((store) => store.draftsByThreadId);
   const composerDraftByThreadId = useMemo(
     () => projectLynxKanbanComposerDrafts(lynxDraftsByThreadId),
-    [lynxDraftsByThreadId]
+    [lynxDraftsByThreadId],
   );
   const { data, error, isPending, isFetching, refetch } = useQuery({
-    queryKey: ['sidebar-snapshot'],
+    queryKey: ["sidebar-snapshot"],
     queryFn: fetchSidebarSnapshot,
     refetchInterval: 5_000,
   });
   const board = useMemo(
     () => buildCanonicalSliceKanbanBoard(data, composerDraftByThreadId),
-    [composerDraftByThreadId, data]
+    [composerDraftByThreadId, data],
   );
   const projects = useMemo(
     () =>
       board.projects.flatMap((projectBoard) => {
-        const project = data?.projects.find(
-          (candidate) => candidate.id === projectBoard.projectId
-        );
+        const project = data?.projects.find((candidate) => candidate.id === projectBoard.projectId);
         return project ? [project] : [];
       }),
-    [board.projects, data?.projects]
+    [board.projects, data?.projects],
   );
   const routeState = resolveKanbanOverviewRouteState({
     hasSnapshot: data !== undefined,
@@ -129,8 +121,7 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
   });
   const cardActions = useNativeKanbanCardActions({
     projectWorkspaceRoot: (projectId) =>
-      data?.projects.find((candidate) => candidate.id === projectId)
-        ?.workspaceRoot ?? null,
+      data?.projects.find((candidate) => candidate.id === projectId)?.workspaceRoot ?? null,
   });
   return (
     <view className="FeaturePage FeaturePage--overview">
@@ -147,9 +138,9 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
         }}
       />
       {cardActions.actionPanels}
-      {routeState.kind === 'loading' ? (
+      {routeState.kind === "loading" ? (
         <KanbanStateComposition kind="loading-overview" />
-      ) : routeState.kind === 'offline' || routeState.kind === 'error' ? (
+      ) : routeState.kind === "offline" || routeState.kind === "error" ? (
         <KanbanStateComposition
           kind={routeState.kind}
           retrying={isFetching}
@@ -159,18 +150,14 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
         <view className="FeatureOverviewBody">
           {routeState.refreshIssue ? (
             <KanbanStateComposition
-              kind={
-                `stale-${routeState.refreshIssue}` as KanbanStateKind
-              }
+              kind={`stale-${routeState.refreshIssue}` as KanbanStateKind}
               retrying={isFetching}
               onRetry={() => void refetch()}
             />
           ) : null}
           <KanbanOverviewComposition
             board={board}
-            onOpenProject={(projectId) =>
-              navigate(`/kanban/${projectId}`)
-            }
+            onOpenProject={(projectId) => navigate(`/kanban/${projectId}`)}
             onOpenCard={(card) => navigate(`/thread/${card.threadId}`)}
             onCardContextMenu={cardActions.openCardContextMenu}
             onNewTask={(projectId) => {
@@ -192,11 +179,7 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
   );
 }
 
-const KANBAN_COLUMNS: readonly KanbanColumnKey[] = [
-  'draft',
-  'inProgress',
-  'done',
-];
+const KANBAN_COLUMNS: readonly KanbanColumnKey[] = ["draft", "inProgress", "done"];
 
 interface KanbanColumnLayoutEvent {
   readonly detail?: {
@@ -219,7 +202,7 @@ interface KanbanColumnLayoutEvent {
 
 function kanbanDragRectFromLayout(
   column: KanbanColumnKey,
-  event: KanbanColumnLayoutEvent
+  event: KanbanColumnLayoutEvent,
 ): KanbanDragRect | null {
   const rect = event.detail ?? event.params;
   if (!rect) return null;
@@ -248,18 +231,16 @@ export function KanbanProjectPage({
   readonly projectId: string;
 }) {
   const [newTaskOpen, setNewTaskOpen] = useState(false);
-  const lynxDraftsByThreadId = useComposerDraftStore(
-    (store) => store.draftsByThreadId
-  );
+  const lynxDraftsByThreadId = useComposerDraftStore((store) => store.draftsByThreadId);
   const composerDraftByThreadId = useMemo(
     () => projectLynxKanbanComposerDrafts(lynxDraftsByThreadId),
-    [lynxDraftsByThreadId]
+    [lynxDraftsByThreadId],
   );
   const kanbanColumnRectsRef = useRef<Partial<Record<KanbanColumnKey, KanbanDragRect>>>({});
   const nativeDragRef = useRef<NativeKanbanDragSession | null>(null);
   const [nativeDrag, setNativeDrag] = useState<NativeKanbanDragSession | null>(null);
   const { data, error, isPending, isFetching, refetch } = useQuery({
-    queryKey: ['sidebar-snapshot'],
+    queryKey: ["sidebar-snapshot"],
     queryFn: fetchSidebarSnapshot,
     refetchInterval: 2_000,
   });
@@ -267,9 +248,9 @@ export function KanbanProjectPage({
     () =>
       selectKanbanProjectBoard(
         buildCanonicalSliceKanbanBoard(data, composerDraftByThreadId),
-        projectId
+        projectId,
       ),
-    [composerDraftByThreadId, data, projectId]
+    [composerDraftByThreadId, data, projectId],
   );
   const project = data?.projects.find((candidate) => candidate.id === projectId);
   const cardActions = useNativeKanbanCardActions({
@@ -287,81 +268,90 @@ export function KanbanProjectPage({
     setNativeDrag(session);
   }, []);
 
-  const cancelNativeKanbanDrag = useCallback((notice?: string) => {
-    'background only';
-    setNativeDragSession(null);
-    if (notice) cardActions.showNotice(notice);
-  }, [cardActions.showNotice, setNativeDragSession]);
+  const cancelNativeKanbanDrag = useCallback(
+    (notice?: string) => {
+      "background only";
+      setNativeDragSession(null);
+      if (notice) cardActions.showNotice(notice);
+    },
+    [cardActions.showNotice, setNativeDragSession],
+  );
 
-  const startNativeKanbanDrag = useCallback((
-    card: KanbanCard,
-    point: { readonly x: number; readonly y: number }
-  ) => {
-    'background only';
-    if (nativeDragRef.current || cardActions.mutationPending) return;
-    setNativeDragSession(createNativeKanbanDragSession(card, point, Date.now()));
-  }, [cardActions.mutationPending, setNativeDragSession]);
+  const startNativeKanbanDrag = useCallback(
+    (card: KanbanCard, point: { readonly x: number; readonly y: number }) => {
+      "background only";
+      if (nativeDragRef.current || cardActions.mutationPending) return;
+      setNativeDragSession(createNativeKanbanDragSession(card, point, Date.now()));
+    },
+    [cardActions.mutationPending, setNativeDragSession],
+  );
 
-  const moveNativeKanbanDrag = useCallback((event: NativeKanbanPointerEvent) => {
-    'background only';
-    const current = nativeDragRef.current;
-    if (!current) return;
-    const point = readNativeKanbanPointer(event);
-    const rects = KANBAN_COLUMNS.flatMap((column) => {
-      const rect = kanbanColumnRectsRef.current[column];
-      return rect ? [rect] : [];
-    });
-    const targetColumn = point ? resolveKanbanDragColumn(point, rects) : null;
-    const policy = resolveKanbanCrossColumnDropPolicy(current.card, targetColumn, {
-      canSupplyStartPrompt: true,
-    });
-    const result = moveNativeKanbanDragSession({
-      event,
-      now: Date.now(),
-      policy,
-      session: current,
-    });
-    if (result.kind === 'ended-missed-mouseup') {
-      cancelNativeKanbanDrag(KANBAN_DND_COPY.missedMouseUp);
-    } else if (result.kind === 'moved') {
-      setNativeDragSession(result.session);
-    }
-  }, [cancelNativeKanbanDrag, setNativeDragSession]);
+  const moveNativeKanbanDrag = useCallback(
+    (event: NativeKanbanPointerEvent) => {
+      "background only";
+      const current = nativeDragRef.current;
+      if (!current) return;
+      const point = readNativeKanbanPointer(event);
+      const rects = KANBAN_COLUMNS.flatMap((column) => {
+        const rect = kanbanColumnRectsRef.current[column];
+        return rect ? [rect] : [];
+      });
+      const targetColumn = point ? resolveKanbanDragColumn(point, rects) : null;
+      const policy = resolveKanbanCrossColumnDropPolicy(current.card, targetColumn, {
+        canSupplyStartPrompt: true,
+      });
+      const result = moveNativeKanbanDragSession({
+        event,
+        now: Date.now(),
+        policy,
+        session: current,
+      });
+      if (result.kind === "ended-missed-mouseup") {
+        cancelNativeKanbanDrag(KANBAN_DND_COPY.missedMouseUp);
+      } else if (result.kind === "moved") {
+        setNativeDragSession(result.session);
+      }
+    },
+    [cancelNativeKanbanDrag, setNativeDragSession],
+  );
 
-  const endNativeKanbanDrag = useCallback((event: NativeKanbanPointerEvent) => {
-    'background only';
-    const current = nativeDragRef.current;
-    if (!current) return;
-    const finalPoint = readNativeKanbanPointer(event) ?? current.currentPoint;
-    const rects = KANBAN_COLUMNS.flatMap((column) => {
-      const rect = kanbanColumnRectsRef.current[column];
-      return rect ? [rect] : [];
-    });
-    const targetColumn = resolveKanbanDragColumn(finalPoint, rects);
-    const policy = resolveKanbanCrossColumnDropPolicy(current.card, targetColumn, {
-      canSupplyStartPrompt: true,
-    });
-    setNativeDragSession(null);
-    if (!current.activated) {
-      navigate(`/thread/${current.card.threadId}`);
-      return;
-    }
-    if (policy.kind === 'dispatch') {
-      void cardActions.startCard(current.card, current.card.draftPrompt);
-      return;
-    }
-    if (policy.kind === 'prompt-required') {
-      void cardActions.selectAction(current.card, 'start');
-      return;
-    }
-    if (policy.kind === 'invalid') cancelNativeKanbanDrag(policy.label);
-  }, [
-    cancelNativeKanbanDrag,
-    cardActions.selectAction,
-    cardActions.startCard,
-    navigate,
-    setNativeDragSession,
-  ]);
+  const endNativeKanbanDrag = useCallback(
+    (event: NativeKanbanPointerEvent) => {
+      "background only";
+      const current = nativeDragRef.current;
+      if (!current) return;
+      const finalPoint = readNativeKanbanPointer(event) ?? current.currentPoint;
+      const rects = KANBAN_COLUMNS.flatMap((column) => {
+        const rect = kanbanColumnRectsRef.current[column];
+        return rect ? [rect] : [];
+      });
+      const targetColumn = resolveKanbanDragColumn(finalPoint, rects);
+      const policy = resolveKanbanCrossColumnDropPolicy(current.card, targetColumn, {
+        canSupplyStartPrompt: true,
+      });
+      setNativeDragSession(null);
+      if (!current.activated) {
+        navigate(`/thread/${current.card.threadId}`);
+        return;
+      }
+      if (policy.kind === "dispatch") {
+        void cardActions.startCard(current.card, current.card.draftPrompt);
+        return;
+      }
+      if (policy.kind === "prompt-required") {
+        void cardActions.selectAction(current.card, "start");
+        return;
+      }
+      if (policy.kind === "invalid") cancelNativeKanbanDrag(policy.label);
+    },
+    [
+      cancelNativeKanbanDrag,
+      cardActions.selectAction,
+      cardActions.startCard,
+      navigate,
+      setNativeDragSession,
+    ],
+  );
 
   const nativeDragTargetColumn = nativeDrag?.activated
     ? resolveKanbanDragColumn(
@@ -369,7 +359,7 @@ export function KanbanProjectPage({
         KANBAN_COLUMNS.flatMap((column) => {
           const rect = kanbanColumnRectsRef.current[column];
           return rect ? [rect] : [];
-        })
+        }),
       )
     : null;
 
@@ -383,40 +373,31 @@ export function KanbanProjectPage({
       bindtouchcancel={() => cancelNativeKanbanDrag(KANBAN_DND_COPY.cancelled)}
     >
       <KanbanRouteHeaderComposition
-        title={projectBoard?.projectName ?? 'Kanban'}
+        title={projectBoard?.projectName ?? "Kanban"}
         taskCount={projectBoard?.totalCount ?? 0}
         navigationAvailable={false}
         backAvailable
-        onBack={() => navigate('/kanban')}
+        onBack={() => navigate("/kanban")}
         newTaskDisabled={!project}
         newTaskShortcutParts={[]}
         onNewTask={() => setNewTaskOpen(true)}
       />
       {cardActions.actionPanels}
-      {routeState.kind === 'loading' ? (
+      {routeState.kind === "loading" ? (
         <KanbanStateComposition kind="loading-project" />
-      ) : routeState.kind === 'offline' ||
-        routeState.kind === 'error' ||
-        routeState.kind === 'not-found' ? (
+      ) : routeState.kind === "offline" ||
+        routeState.kind === "error" ||
+        routeState.kind === "not-found" ? (
         <KanbanStateComposition
           kind={routeState.kind}
           retrying={isFetching}
-          onRetry={
-            routeState.kind === 'not-found'
-              ? undefined
-              : () => void refetch()
-          }
+          onRetry={routeState.kind === "not-found" ? undefined : () => void refetch()}
         />
       ) : (
-        <scroll-view
-          className="KanbanScroller"
-          scroll-orientation="horizontal"
-        >
+        <scroll-view className="KanbanScroller" scroll-orientation="horizontal">
           {routeState.refreshIssue ? (
             <KanbanStateComposition
-              kind={
-                `stale-${routeState.refreshIssue}` as KanbanStateKind
-              }
+              kind={`stale-${routeState.refreshIssue}` as KanbanStateKind}
               retrying={isFetching}
               onRetry={() => void refetch()}
             />
@@ -429,46 +410,38 @@ export function KanbanProjectPage({
                   })
                 : null;
               const columnIsValid =
-                columnPolicy?.kind === 'dispatch' ||
-                columnPolicy?.kind === 'prompt-required';
-              const columnIsInvalid =
-                columnPolicy?.kind === 'invalid';
+                columnPolicy?.kind === "dispatch" || columnPolicy?.kind === "prompt-required";
+              const columnIsInvalid = columnPolicy?.kind === "invalid";
               const columnIsHovered = nativeDragTargetColumn === column;
               return (
-              <view
-                className={`KanbanColumnHost${
-                  columnIsValid ? ' KanbanColumnHost--drag-valid' : ''
-                }${columnIsInvalid ? ' KanbanColumnHost--drag-invalid' : ''}${
-                  columnIsHovered ? ' KanbanColumnHost--drag-hover' : ''
-                }`}
-                key={column}
-                bindlayoutchange={(event: KanbanColumnLayoutEvent) => {
-                  'background only';
-                  const rect = kanbanDragRectFromLayout(column, event);
-                  if (rect) kanbanColumnRectsRef.current[column] = rect;
-                }}
-              >
-                <KanbanColumnComposition
-                  columnKey={column}
-                  cards={projectBoard?.[column] ?? []}
-                  onNewCard={
-                    column === 'draft'
-                      ? () => setNewTaskOpen(true)
-                      : undefined
-                  }
-                  onOpenCard={(card) => navigate(`/thread/${card.threadId}`)}
-                  onCardContextMenu={cardActions.openCardContextMenu}
-                  onCardDragPointerStart={startNativeKanbanDrag}
-                  dragSourceCardId={
-                    nativeDrag?.activated ? nativeDrag.card.cardId : null
-                  }
-                  showDispatchTarget={columnIsValid}
-                  dispatchTargetLabel={columnPolicy?.label}
-                  onCardActions={(card) => {
-                    cardActions.openCardActions(card);
+                <view
+                  className={`KanbanColumnHost${
+                    columnIsValid ? " KanbanColumnHost--drag-valid" : ""
+                  }${columnIsInvalid ? " KanbanColumnHost--drag-invalid" : ""}${
+                    columnIsHovered ? " KanbanColumnHost--drag-hover" : ""
+                  }`}
+                  key={column}
+                  bindlayoutchange={(event: KanbanColumnLayoutEvent) => {
+                    "background only";
+                    const rect = kanbanDragRectFromLayout(column, event);
+                    if (rect) kanbanColumnRectsRef.current[column] = rect;
                   }}
-                />
-              </view>
+                >
+                  <KanbanColumnComposition
+                    columnKey={column}
+                    cards={projectBoard?.[column] ?? []}
+                    onNewCard={column === "draft" ? () => setNewTaskOpen(true) : undefined}
+                    onOpenCard={(card) => navigate(`/thread/${card.threadId}`)}
+                    onCardContextMenu={cardActions.openCardContextMenu}
+                    onCardDragPointerStart={startNativeKanbanDrag}
+                    dragSourceCardId={nativeDrag?.activated ? nativeDrag.card.cardId : null}
+                    showDispatchTarget={columnIsValid}
+                    dispatchTargetLabel={columnPolicy?.label}
+                    onCardActions={(card) => {
+                      cardActions.openCardActions(card);
+                    }}
+                  />
+                </view>
               );
             })}
           </view>
@@ -483,7 +456,7 @@ export function KanbanProjectPage({
           bindtouchend={endNativeKanbanDrag}
           bindtouchcancel={() => cancelNativeKanbanDrag(KANBAN_DND_COPY.cancelled)}
           global-bindkeydown={(keyEvent: { readonly key: string }) => {
-            'background only';
+            "background only";
             if (shouldCancelNativeKanbanDragKey(keyEvent.key)) {
               cancelNativeKanbanDrag(KANBAN_DND_COPY.cancelled);
             }
@@ -491,9 +464,7 @@ export function KanbanProjectPage({
         >
           {nativeDrag.activated ? (
             <view
-              className={`KanbanDragGhost KanbanDragGhost--${
-                nativeDrag.policy?.kind ?? 'invalid'
-              }`}
+              className={`KanbanDragGhost KanbanDragGhost--${nativeDrag.policy?.kind ?? "invalid"}`}
               style={{
                 left: `${nativeDrag.currentPoint.x + 12}px`,
                 top: `${nativeDrag.currentPoint.y + 12}px`,
@@ -523,33 +494,27 @@ export function KanbanProjectPage({
 }
 
 export function PullRequestsPage() {
-  const [involvement, setInvolvement] =
-    useState<PullRequestInvolvement>('all');
-  const [state, setState] = useState<PullRequestState>('open');
+  const [involvement, setInvolvement] = useState<PullRequestInvolvement>("all");
+  const [state, setState] = useState<PullRequestState>("open");
   const [projectId, setProjectId] = useState<ProjectId | undefined>();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedInput, setSelectedInput] =
-    useState<PullRequestDetailInput | null>(null);
-  const [activeDetailTab, setActiveDetailTab] =
-    useState<PullRequestDetailTab>('summary');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedInput, setSelectedInput] = useState<PullRequestDetailInput | null>(null);
+  const [activeDetailTab, setActiveDetailTab] = useState<PullRequestDetailTab>("summary");
   const [expandedDiffFileKeys, setExpandedDiffFileKeys] = useState<string[]>([]);
-  const [visibleDiffLineCounts, setVisibleDiffLineCounts] = useState<
-    Record<string, number>
-  >({});
+  const [visibleDiffLineCounts, setVisibleDiffLineCounts] = useState<Record<string, number>>({});
   const [rawVisibleLineCount, setRawVisibleLineCount] = useState(
-    PULL_REQUEST_DIFF_INITIAL_LINE_COUNT
+    PULL_REQUEST_DIFF_INITIAL_LINE_COUNT,
   );
   const [routeBodyWidth, setRouteBodyWidth] = useState(0);
-  const [lastFailedAction, setLastFailedAction] =
-    useState<PullRequestActionInput | null>(null);
+  const [lastFailedAction, setLastFailedAction] = useState<PullRequestActionInput | null>(null);
   const actionGateRef = useRef(createPullRequestActionGate());
   const { data: sidebarData } = useQuery({
-    queryKey: ['sidebar-snapshot'],
+    queryKey: ["sidebar-snapshot"],
     queryFn: fetchSidebarSnapshot,
     refetchInterval: 60_000,
   });
   const { data, error, isPending, refetch, isFetching } = useQuery({
-    queryKey: ['pull-requests', state, projectId ?? null],
+    queryKey: ["pull-requests", state, projectId ?? null],
     queryFn: () =>
       fetchPullRequests({
         state,
@@ -566,14 +531,14 @@ export function PullRequestsPage() {
     refetch: refetchSelectedDetail,
   } = useQuery({
     queryKey: [
-      'pull-request-detail',
+      "pull-request-detail",
       selectedInput?.projectId ?? null,
       selectedInput?.repository ?? null,
       selectedInput?.number ?? null,
     ],
     queryFn: () => {
       if (!selectedInput) {
-        throw new Error('Pull request detail identity is unavailable.');
+        throw new Error("Pull request detail identity is unavailable.");
       }
       return fetchPullRequestDetail(selectedInput);
     },
@@ -588,26 +553,23 @@ export function PullRequestsPage() {
     refetch: refetchSelectedDiff,
   } = useQuery({
     queryKey: [
-      'pull-request-diff',
+      "pull-request-diff",
       selectedInput?.projectId ?? null,
       selectedInput?.repository ?? null,
       selectedInput?.number ?? null,
     ],
     queryFn: () => {
       if (!selectedInput) {
-        throw new Error('Pull request diff identity is unavailable.');
+        throw new Error("Pull request diff identity is unavailable.");
       }
       return fetchPullRequestDiff(selectedInput);
     },
-    enabled: selectedInput !== null && activeDetailTab === 'code',
+    enabled: selectedInput !== null && activeDetailTab === "code",
     retry: false,
   });
   const pinMutation = useMutation({
     mutationFn: async (entry: PullRequestListEntry) => {
-      const inputs = pullRequestPinToggleInputs(
-        entry,
-        projectId === undefined
-      );
+      const inputs = pullRequestPinToggleInputs(entry, projectId === undefined);
       for (const input of inputs) {
         await setPullRequestPinned(input);
       }
@@ -629,7 +591,7 @@ export function PullRequestsPage() {
   });
   const list = useMemo(
     () => buildCanonicalSlicePullRequestList(data, involvement, searchQuery),
-    [data, involvement, searchQuery]
+    [data, involvement, searchQuery],
   );
   const truncatedRepositoryCount =
     data?.repositoryBatches.filter((batch) => batch.truncated).length ?? 0;
@@ -639,37 +601,29 @@ export function PullRequestsPage() {
         selectedDiff?.patch,
         selectedInput
           ? `pull-request:${selectedInput.projectId}:${selectedInput.number}`
-          : 'pull-request:inactive'
+          : "pull-request:inactive",
       ),
-    [selectedDiff?.patch, selectedInput]
+    [selectedDiff?.patch, selectedInput],
   );
   const projects = useMemo(
     () =>
       (sidebarData?.projects ?? [])
-        .filter((project) => project.kind === 'project')
-        .map(
-          (project) =>
-            [project.id as ProjectId, project.title] as const
-        )
+        .filter((project) => project.kind === "project")
+        .map((project) => [project.id as ProjectId, project.title] as const)
         .sort((left, right) => left[1].localeCompare(right[1])),
-    [sidebarData]
+    [sidebarData],
   );
   const scopedProjectName = projectId
     ? projects.find(([candidateId]) => candidateId === projectId)?.[1]
     : undefined;
   const primaryAction = selectedDetail
-    ? resolvePullRequestPrimaryAction(
-        selectedDetail.state,
-        selectedDetail.isDraft
-      )
+    ? resolvePullRequestPrimaryAction(selectedDetail.state, selectedDetail.isDraft)
     : null;
-  const reviewingNonOpen = involvement === 'reviewing' && state !== 'open';
+  const reviewingNonOpen = involvement === "reviewing" && state !== "open";
   const pinErrorMessage =
-    pinMutation.error instanceof Error
-      ? pinMutation.error.message
-      : 'The pin could not be saved.';
+    pinMutation.error instanceof Error ? pinMutation.error.message : "The pin could not be saved.";
   const resetDetailUi = () => {
-    setActiveDetailTab('summary');
+    setActiveDetailTab("summary");
     setExpandedDiffFileKeys([]);
     setVisibleDiffLineCounts({});
     setRawVisibleLineCount(PULL_REQUEST_DIFF_INITIAL_LINE_COUNT);
@@ -689,7 +643,7 @@ export function PullRequestsPage() {
     resetDetailUi();
   };
   const runPullRequestAction = (input: PullRequestActionInput) => {
-    'background only';
+    "background only";
     if (!actionGateRef.current.tryAcquire()) return;
     setLastFailedAction(null);
     void actionMutation
@@ -710,20 +664,13 @@ export function PullRequestsPage() {
         onRefresh={() => void refetch()}
       />
       <view
-        className={`SharedPrRouteBody${
-          selectedInput ? ' SharedPrRouteBody--detail-open' : ''
-        }`}
-        bindlayoutchange={(event: {
-          readonly detail?: { readonly width?: number };
-        }) => {
+        className={`SharedPrRouteBody${selectedInput ? " SharedPrRouteBody--detail-open" : ""}`}
+        bindlayoutchange={(event: { readonly detail?: { readonly width?: number } }) => {
           const width = event.detail?.width;
-          if (typeof width === 'number' && width > 0) setRouteBodyWidth(width);
+          if (typeof width === "number" && width > 0) setRouteBodyWidth(width);
         }}
       >
-        <scroll-view
-          className="SharedPrRouteScroller"
-          scroll-orientation="vertical"
-        >
+        <scroll-view className="SharedPrRouteScroller" scroll-orientation="vertical">
           <view className="FeaturePageInner FeaturePageInner--pullRequests">
             <PullRequestRouteFiltersComposition
               involvement={involvement}
@@ -764,7 +711,7 @@ export function PullRequestsPage() {
                     }
                   }}
                 >
-                  {pinMutation.isPending ? 'Retrying…' : 'Retry'}
+                  {pinMutation.isPending ? "Retrying…" : "Retry"}
                 </Button>
               </view>
             ) : null}
@@ -780,13 +727,13 @@ export function PullRequestsPage() {
               <PullRequestListEmptyComposition
                 title={
                   reviewingNonOpen
-                    ? 'Review requests only apply to open pull requests'
-                    : 'No pull requests found'
+                    ? "Review requests only apply to open pull requests"
+                    : "No pull requests found"
                 }
                 description={
                   reviewingNonOpen
-                    ? 'Select Open to see pull requests currently awaiting your review.'
-                    : 'Try another involvement, state, project, or search filter.'
+                    ? "Select Open to see pull requests currently awaiting your review."
+                    : "Try another involvement, state, project, or search filter."
                 }
               />
             ) : (
@@ -807,26 +754,20 @@ export function PullRequestsPage() {
             )}
             {data && truncatedRepositoryCount > 0 ? (
               <text className="SharedPrListFootnote">
-                Showing the first 50 matching pull requests for{' '}
-                {truncatedRepositoryCount}{' '}
-                {truncatedRepositoryCount === 1
-                  ? 'repository'
-                  : 'repositories'}.
+                Showing the first 50 matching pull requests for {truncatedRepositoryCount}{" "}
+                {truncatedRepositoryCount === 1 ? "repository" : "repositories"}.
               </text>
             ) : null}
             {data?.errors.length ? (
               <PullRequestWarningBanner shape="callout">
-                {data.errors.length} project{' '}
-                {data.errors.length === 1
-                  ? 'repository was'
-                  : 'repositories were'}{' '}
-                unavailable. Healthy repositories are still shown.
+                {data.errors.length} project{" "}
+                {data.errors.length === 1 ? "repository was" : "repositories were"} unavailable.
+                Healthy repositories are still shown.
               </PullRequestWarningBanner>
             ) : null}
             {error && data ? (
               <PullRequestWarningBanner shape="callout">
-                The latest background refresh failed. Showing the last available
-                pull requests.
+                The latest background refresh failed. Showing the last available pull requests.
               </PullRequestWarningBanner>
             ) : null}
           </view>
@@ -835,9 +776,7 @@ export function PullRequestsPage() {
           <ResizableRightPanel
             availableWidth={routeBodyWidth}
             className="SharedPrDetailDock"
-            defaultWidth={
-              routeBodyWidth > 0 ? Math.round(routeBodyWidth / 2) : 512
-            }
+            defaultWidth={routeBodyWidth > 0 ? Math.round(routeBodyWidth / 2) : 512}
             minimumMainWidth={320}
             minWidth={416}
             resizable
@@ -845,7 +784,7 @@ export function PullRequestsPage() {
             <view className="SharedPrDetailDockHeader">
               <PullRequestDetailTabsComposition
                 activeTab={activeDetailTab}
-                availableTabs={['summary', 'timeline', 'code']}
+                availableTabs={["summary", "timeline", "code"]}
                 onSelectTab={setActiveDetailTab}
               />
               <view className="SharedPrDetailDockActions">
@@ -863,23 +802,17 @@ export function PullRequestsPage() {
                       })
                     }
                   >
-                    {actionMutation.isPending
-                      ? primaryAction.pendingLabel
-                      : primaryAction.label}
+                    {actionMutation.isPending ? primaryAction.pendingLabel : primaryAction.label}
                   </Button>
                 ) : null}
                 {selectedDetail ? (
-                  <PullRequestDetailExternalButtonElement
-                    url={selectedDetail.url}
-                  />
+                  <PullRequestDetailExternalButtonElement url={selectedDetail.url} />
                 ) : null}
-                <PullRequestDetailCloseComposition
-                  onClose={closeDetail}
-                />
+                <PullRequestDetailCloseComposition onClose={closeDetail} />
               </view>
             </view>
             <PullRequestDetailCapabilityComposition
-              availableTabs={['summary', 'timeline', 'code']}
+              availableTabs={["summary", "timeline", "code"]}
             />
             {selectedDetailError && selectedDetail ? (
               <PullRequestWarningBanner>
@@ -901,11 +834,8 @@ export function PullRequestsPage() {
                 </Button>
               </view>
             ) : null}
-            <scroll-view
-              className="SharedPrDetailDockScroller"
-              scroll-orientation="vertical"
-            >
-              {activeDetailTab === 'code' ? (
+            <scroll-view className="SharedPrDetailDockScroller" scroll-orientation="vertical">
+              {activeDetailTab === "code" ? (
                 selectedDiffPending ? (
                   <PullRequestCodeStateComposition kind="loading" />
                 ) : selectedDiffError ? (
@@ -925,7 +855,7 @@ export function PullRequestsPage() {
                       setExpandedDiffFileKeys((current) =>
                         current.includes(fileKey)
                           ? current.filter((key) => key !== fileKey)
-                          : [...current, fileKey]
+                          : [...current, fileKey],
                       )
                     }
                     onShowMoreFile={(fileKey) =>
@@ -938,7 +868,7 @@ export function PullRequestsPage() {
                     }
                     onShowMoreRaw={() =>
                       setRawVisibleLineCount(
-                        (current) => current + PULL_REQUEST_DIFF_MORE_LINE_COUNT
+                        (current) => current + PULL_REQUEST_DIFF_MORE_LINE_COUNT,
                       )
                     }
                   />
@@ -957,13 +887,10 @@ export function PullRequestsPage() {
                   onRetry={() => void refetchSelectedDetail()}
                 />
               ) : selectedDetail ? (
-                activeDetailTab === 'timeline' ? (
+                activeDetailTab === "timeline" ? (
                   <PullRequestTimelineComposition detail={selectedDetail} />
                 ) : (
-                  <PullRequestSummaryComposition
-                    detail={selectedDetail}
-                    commentingAvailable
-                  />
+                  <PullRequestSummaryComposition detail={selectedDetail} commentingAvailable />
                 )
               ) : null}
             </scroll-view>

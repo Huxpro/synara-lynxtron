@@ -1,5 +1,5 @@
-import { Undo2Icon } from '../lib/icons.lynx';
-import { useTheme } from './useTheme.lynx';
+import { Undo2Icon } from "../lib/icons.lynx";
+import { useTheme } from "./useTheme.lynx";
 
 export function SettingsResetIcon() {
   const { svgColors } = useTheme();

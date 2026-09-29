@@ -2,31 +2,13 @@
   "client": "localhost:8903",
   "body": {
     "tag": "<scroll-view class=\"SettingsSidebarBody\" scroll-orientation=\"vertical\">",
-    "border": [
-      0,
-      46,
-      255,
-      46,
-      255,
-      900,
-      0,
-      900
-    ],
+    "border": [0, 46, 255, 46, 255, 900, 0, 900],
     "width": 255,
     "height": 854
   },
   "inner": {
     "tag": "<view class=\"SettingsSidebarBodyInner\">",
-    "border": [
-      0,
-      46,
-      255,
-      46,
-      255,
-      900,
-      0,
-      900
-    ],
+    "border": [0, 46, 255, 46, 255, 900, 0, 900],
     "width": 243,
     "height": 842
   }

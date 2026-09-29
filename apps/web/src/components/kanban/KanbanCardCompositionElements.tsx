@@ -6,9 +6,7 @@ import type { ProviderKind } from "@synara/contracts";
 import type { ReactNode } from "react";
 
 import { ProviderIcon } from "../ProviderIcon";
-import {
-  PR_STATE_PRESENTATION_ICONS,
-} from "../pullRequest/pullRequestStatePresentation.icons";
+import { PR_STATE_PRESENTATION_ICONS } from "../pullRequest/pullRequestStatePresentation.icons";
 import type { PrStatePresentation } from "../pullRequest/pullRequestStatePresentation.logic";
 import { PR_FINE_TEXT_CLASS_NAME } from "../pullRequest/pullRequestText";
 import type { SidebarStatusPresentation } from "../SidebarStatus.logic";
@@ -28,15 +26,17 @@ import type { KanbanDragPoint } from "./kanbanDnd.logic";
 
 type ChildrenProps = { readonly children?: ReactNode };
 
-export function KanbanCardRootElement(props: ChildrenProps & {
-  readonly accessibleLabel: string;
-  readonly isOverlay: boolean;
-  readonly isDragSource: boolean;
-  readonly visualState?: 'default' | 'hover' | 'focus' | 'pressed';
-  readonly onActivate?: () => void;
-  readonly onContextMenu?: (event: React.MouseEvent) => void;
-  readonly onDragPointerStart?: (point: KanbanDragPoint) => void;
-}) {
+export function KanbanCardRootElement(
+  props: ChildrenProps & {
+    readonly accessibleLabel: string;
+    readonly isOverlay: boolean;
+    readonly isDragSource: boolean;
+    readonly visualState?: "default" | "hover" | "focus" | "pressed";
+    readonly onActivate?: () => void;
+    readonly onContextMenu?: (event: React.MouseEvent) => void;
+    readonly onDragPointerStart?: (point: KanbanDragPoint) => void;
+  },
+) {
   return (
     <div
       role="button"
@@ -54,8 +54,7 @@ export function KanbanCardRootElement(props: ChildrenProps & {
         RAISED_SURFACE_CHROME_CLASS_NAME,
         "dark:border dark:border-white/[0.05]",
         "hover:bg-card focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none",
-        (props.visualState === "hover" || props.visualState === "pressed") &&
-          "bg-card",
+        (props.visualState === "hover" || props.visualState === "pressed") && "bg-card",
         props.visualState === "focus" && "ring-1 ring-ring outline-none",
         props.isOverlay && "bg-card shadow-lg dark:shadow-lg",
         props.isDragSource && "opacity-40",
@@ -151,10 +150,7 @@ export function KanbanCardWorktreeElement(props: { readonly label: string }) {
 export function KanbanCardForkElement() {
   return (
     <span title="Forked thread" className="flex shrink-0 items-center">
-      <GoRepoForked
-        className="size-3 text-emerald-600 dark:text-emerald-300/90"
-        aria-hidden
-      />
+      <GoRepoForked className="size-3 text-emerald-600 dark:text-emerald-300/90" aria-hidden />
     </span>
   );
 }
@@ -184,16 +180,10 @@ export function KanbanCardAttachmentElement() {
 }
 
 export function KanbanCardTrailingElement(props: ChildrenProps) {
-  return (
-    <span className="ml-auto flex min-w-0 shrink-0 items-center gap-2">
-      {props.children}
-    </span>
-  );
+  return <span className="ml-auto flex min-w-0 shrink-0 items-center gap-2">{props.children}</span>;
 }
 
-export function KanbanCardOptimisticStatusElement(props: {
-  readonly elapsed: string | null;
-}) {
+export function KanbanCardOptimisticStatusElement(props: { readonly elapsed: string | null }) {
   return (
     <>
       <span className="flex shrink-0 items-center gap-1.5 text-[11px] text-sky-600 dark:text-sky-300/90">
@@ -209,9 +199,7 @@ export function KanbanCardOptimisticStatusElement(props: {
   );
 }
 
-export function KanbanCardStatusPillElement(props: {
-  readonly pill: SidebarStatusPresentation;
-}) {
+export function KanbanCardStatusPillElement(props: { readonly pill: SidebarStatusPresentation }) {
   return (
     <span className={cn("flex min-w-0 items-center gap-1.5 text-[11px]", props.pill.colorClass)}>
       <span
@@ -227,11 +215,7 @@ export function KanbanCardStatusPillElement(props: {
 }
 
 export function KanbanCardTimestampElement(props: { readonly label: string }) {
-  return (
-    <span className="shrink-0 text-[11px] text-muted-foreground/70">
-      {props.label}
-    </span>
-  );
+  return <span className="shrink-0 text-[11px] text-muted-foreground/70">{props.label}</span>;
 }
 
 export function KanbanCardColumnStatusElement(props: {

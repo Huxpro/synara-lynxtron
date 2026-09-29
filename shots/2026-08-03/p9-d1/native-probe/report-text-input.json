@@ -1,1 +1,193 @@
-{"runtimeLabel":"Lynxtron Native","startedMs":1785692083512,"events":[{"eventName":"focus","sourceName":"view-control","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"blur","sourceName":"view-control","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"focus","sourceName":"textarea","bindingExists":true,"eventArrived":true,"handlerCallCount":1,"lastArrivalMs":1785692628820},{"eventName":"blur","sourceName":"textarea","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"keydown:Enter","sourceName":"view-control","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"keydown:Space","sourceName":"view-control","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"keydown:ArrowDown","sourceName":"view-control","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"keydown:ArrowUp","sourceName":"view-control","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"keydown:Escape","sourceName":"view-control","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"keydown:Tab","sourceName":"view-control","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"keydown:Enter","sourceName":"textarea","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"keydown:ArrowUp","sourceName":"textarea","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"keydown:ArrowDown","sourceName":"textarea","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"keydown:Escape","sourceName":"textarea","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"mouseenter","sourceName":"view-control","bindingExists":true,"eventArrived":true,"handlerCallCount":2,"lastArrivalMs":1785692629763},{"eventName":"mouseleave","sourceName":"view-control","bindingExists":true,"eventArrived":true,"handlerCallCount":1,"lastArrivalMs":1785692628815},{"eventName":"mousedown","sourceName":"view-control","bindingExists":true,"eventArrived":true,"handlerCallCount":1,"lastArrivalMs":1785692551689},{"eventName":"mouseup","sourceName":"view-control","bindingExists":true,"eventArrived":true,"handlerCallCount":1,"lastArrivalMs":1785692551689},{"eventName":"tap","sourceName":"view-control","bindingExists":true,"eventArrived":true,"handlerCallCount":1,"lastArrivalMs":1785692551689},{"eventName":"scroll","sourceName":"scroll-view","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"input","sourceName":"textarea","bindingExists":true,"eventArrived":true,"handlerCallCount":13,"lastArrivalMs":1785692629725,"lastDetail":"value=Native ASCII ;isComposing=false"},{"eventName":"input:composing","sourceName":"textarea","bindingExists":true,"eventArrived":false,"handlerCallCount":0},{"eventName":"input:committed","sourceName":"textarea","bindingExists":true,"eventArrived":true,"handlerCallCount":13,"lastArrivalMs":1785692629725,"lastDetail":"value=Native ASCII ;isComposing=false"},{"eventName":"global:window-focus","sourceName":"host","bindingExists":true,"eventArrived":true,"handlerCallCount":1,"lastArrivalMs":1785692551695,"lastDetail":"host window focus"},{"eventName":"global:window-blur","sourceName":"host","bindingExists":true,"eventArrived":false,"handlerCallCount":0}]}
+{
+  "runtimeLabel": "Lynxtron Native",
+  "startedMs": 1785692083512,
+  "events": [
+    {
+      "eventName": "focus",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "blur",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "focus",
+      "sourceName": "textarea",
+      "bindingExists": true,
+      "eventArrived": true,
+      "handlerCallCount": 1,
+      "lastArrivalMs": 1785692628820
+    },
+    {
+      "eventName": "blur",
+      "sourceName": "textarea",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "keydown:Enter",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "keydown:Space",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "keydown:ArrowDown",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "keydown:ArrowUp",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "keydown:Escape",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "keydown:Tab",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "keydown:Enter",
+      "sourceName": "textarea",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "keydown:ArrowUp",
+      "sourceName": "textarea",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "keydown:ArrowDown",
+      "sourceName": "textarea",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "keydown:Escape",
+      "sourceName": "textarea",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "mouseenter",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": true,
+      "handlerCallCount": 2,
+      "lastArrivalMs": 1785692629763
+    },
+    {
+      "eventName": "mouseleave",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": true,
+      "handlerCallCount": 1,
+      "lastArrivalMs": 1785692628815
+    },
+    {
+      "eventName": "mousedown",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": true,
+      "handlerCallCount": 1,
+      "lastArrivalMs": 1785692551689
+    },
+    {
+      "eventName": "mouseup",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": true,
+      "handlerCallCount": 1,
+      "lastArrivalMs": 1785692551689
+    },
+    {
+      "eventName": "tap",
+      "sourceName": "view-control",
+      "bindingExists": true,
+      "eventArrived": true,
+      "handlerCallCount": 1,
+      "lastArrivalMs": 1785692551689
+    },
+    {
+      "eventName": "scroll",
+      "sourceName": "scroll-view",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "input",
+      "sourceName": "textarea",
+      "bindingExists": true,
+      "eventArrived": true,
+      "handlerCallCount": 13,
+      "lastArrivalMs": 1785692629725,
+      "lastDetail": "value=Native ASCII ;isComposing=false"
+    },
+    {
+      "eventName": "input:composing",
+      "sourceName": "textarea",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    },
+    {
+      "eventName": "input:committed",
+      "sourceName": "textarea",
+      "bindingExists": true,
+      "eventArrived": true,
+      "handlerCallCount": 13,
+      "lastArrivalMs": 1785692629725,
+      "lastDetail": "value=Native ASCII ;isComposing=false"
+    },
+    {
+      "eventName": "global:window-focus",
+      "sourceName": "host",
+      "bindingExists": true,
+      "eventArrived": true,
+      "handlerCallCount": 1,
+      "lastArrivalMs": 1785692551695,
+      "lastDetail": "host window focus"
+    },
+    {
+      "eventName": "global:window-blur",
+      "sourceName": "host",
+      "bindingExists": true,
+      "eventArrived": false,
+      "handlerCallCount": 0
+    }
+  ]
+}

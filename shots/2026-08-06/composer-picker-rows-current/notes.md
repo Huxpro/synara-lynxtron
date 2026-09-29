@@ -23,7 +23,7 @@ Status: retained Web, Lynx-for-Web, and exact-owned Native evidence
   - provider row `248x32`, radius 8px;
   - model row `248x30`, radius 8px;
   - trait row `240x34`, radius 8px.
-  Content dimensions retain the existing Native density/catalog contract.
+    Content dimensions retain the existing Native density/catalog contract.
 - The current Claude model list had no collapsible group or favourite control,
   so their 10.4px values are source/test evidence only and are not presented as
   runtime proof.

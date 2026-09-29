@@ -1,8 +1,6 @@
 {
   "head": "223a13e708685e39433a4e43993d22e123d7e577",
   "subject": "Commit selected file",
-  "files": [
-    "one.txt"
-  ],
+  "files": ["one.txt"],
   "status": "# branch.oid 223a13e708685e39433a4e43993d22e123d7e577\n# branch.head feature/select\n1 .M N... 100644 100644 100644 f719efd430d52bcfc8566a43b2eb655688d38871 f719efd430d52bcfc8566a43b2eb655688d38871 two.txt"
 }

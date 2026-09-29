@@ -314,9 +314,7 @@
 }
 
 .SliceRoot--viewport-compact .PluginLibraryHeader,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .PluginLibraryHeader {
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .PluginLibraryHeader {
   height: 92px;
   min-height: 92px;
   padding: 0;
@@ -326,9 +324,7 @@
 }
 
 .SliceRoot--viewport-compact .PluginLibraryTabs,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .PluginLibraryTabs {
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .PluginLibraryTabs {
   height: 46px;
   min-height: 46px;
   padding-left: 180px;
@@ -337,16 +333,12 @@
 }
 
 .SliceRoot--viewport-compact .PluginLibraryHeaderSpacer,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .PluginLibraryHeaderSpacer {
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .PluginLibraryHeaderSpacer {
   display: none;
 }
 
 .SliceRoot--viewport-compact .PluginLibraryProviders,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .PluginLibraryProviders {
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .PluginLibraryProviders {
   width: 100%;
   height: 46px;
   padding: 9px 16px;

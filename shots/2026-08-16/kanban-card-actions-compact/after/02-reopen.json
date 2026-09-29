@@ -1,1 +1,19 @@
-{"success":true,"data":{"origin":"http://localhost:8080/index.html?route=%2Fkanban%2Feditor-changes-project","result":{"buttons":["Start task","Rename task","Unpin thread","Copy Path","Copy Thread ID","Archive task","Delete","Cancel"]}},"error":null}
+{
+  "success": true,
+  "data": {
+    "origin": "http://localhost:8080/index.html?route=%2Fkanban%2Feditor-changes-project",
+    "result": {
+      "buttons": [
+        "Start task",
+        "Rename task",
+        "Unpin thread",
+        "Copy Path",
+        "Copy Thread ID",
+        "Archive task",
+        "Delete",
+        "Cancel"
+      ]
+    }
+  },
+  "error": null
+}

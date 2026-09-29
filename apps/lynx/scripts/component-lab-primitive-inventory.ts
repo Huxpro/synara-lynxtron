@@ -21,28 +21,78 @@ function moduleNames(directory: string, suffix: RegExp): readonly string[] {
 const webModules = moduleNames(webDirectory, /\.tsx$/);
 const lynxModules = new Set(moduleNames(lynxDirectory, /\.lynx\.tsx$/));
 const directlyCoveredWebModules = new Set(
-  COMPONENT_LAB_STORIES
-    .map((story) => story.renderers.electron.module)
+  COMPONENT_LAB_STORIES.map((story) => story.renderers.electron.module)
     .filter((module) => module.startsWith("apps/web/src/components/ui/"))
     .map((module) => path.basename(module, ".tsx")),
 );
-const mappedAdapters: Readonly<Record<string, { readonly evidence: string; readonly rationale: string }>> = {
-  DisclosureChevron: { evidence: "apps/lynx/src/platform/motion.lynx.ts", rationale: "shared disclosure motion contract with a Native class adapter" },
-  DisclosureRegion: { evidence: "apps/lynx/src/platform/motion.lynx.ts", rationale: "shared disclosure presence and content classes" },
-  "alert-dialog": { evidence: "apps/lynx/src/components/ui/dialog.lynx.tsx", rationale: "confirmation dialogs reuse the shared Native Dialog contract" },
-  autocomplete: { evidence: "apps/lynx/src/components/ui/command.lynx.tsx", rationale: "Native command collection owns filtering and highlighted-item behavior" },
-  combobox: { evidence: "apps/lynx/src/components/ui/menu.lynx.tsx", rationale: "Native picker compositions use Menu plus Input instead of a DOM combobox" },
-  empty: { evidence: "apps/lynx/src/adapters/CenteredEmptyLandingElements.lynx.tsx", rationale: "empty-state anatomy is shared through product compositions and element adapters" },
-  "input-group": { evidence: "apps/lynx/src/components/ui/input.lynx.tsx", rationale: "Native Input owns the control shell and addons are composed by consumers" },
-  label: { evidence: "apps/lynx/src/adapters/SettingsHeadingElement.lynx.tsx", rationale: "Native text semantics use element adapters instead of a DOM label primitive" },
-  popover: { evidence: "apps/lynx/src/components/ui/menu.lynx.tsx", rationale: "anchored Native popovers use the shared measured overlay/menu foundation" },
-  "preview-card": { evidence: "apps/lynx/src/components/sidebar/Sidebar.lynx.tsx", rationale: "preview cards are product-owned hover/tap surfaces on Native" },
-  "search-input": { evidence: "apps/lynx/src/components/ui/input.lynx.tsx", rationale: "Native search fields reuse Input with explicit search semantics" },
-  select: { evidence: "apps/lynx/src/components/ui/menu.lynx.tsx", rationale: "Native selects use MenuRadioGroup and MenuRadioItem" },
-  sheet: { evidence: "apps/lynx/src/components/ui/dialog.lynx.tsx", rationale: "Native Dialog owns compact bottom-sheet behavior" },
-  "shortcut-kbd": { evidence: "apps/lynx/src/components/ui/kbd.lynx.tsx", rationale: "Native Kbd is the shortcut-key renderer" },
-  sidebar: { evidence: "apps/lynx/src/components/sidebar/Sidebar.lynx.tsx", rationale: "application sidebar is a renderer-specific product shell, not a portable DOM primitive" },
-  toggle: { evidence: "apps/lynx/src/components/ui/button.lynx.tsx", rationale: "Native toggles compose Button with pressed state" },
+const mappedAdapters: Readonly<
+  Record<string, { readonly evidence: string; readonly rationale: string }>
+> = {
+  DisclosureChevron: {
+    evidence: "apps/lynx/src/platform/motion.lynx.ts",
+    rationale: "shared disclosure motion contract with a Native class adapter",
+  },
+  DisclosureRegion: {
+    evidence: "apps/lynx/src/platform/motion.lynx.ts",
+    rationale: "shared disclosure presence and content classes",
+  },
+  "alert-dialog": {
+    evidence: "apps/lynx/src/components/ui/dialog.lynx.tsx",
+    rationale: "confirmation dialogs reuse the shared Native Dialog contract",
+  },
+  autocomplete: {
+    evidence: "apps/lynx/src/components/ui/command.lynx.tsx",
+    rationale: "Native command collection owns filtering and highlighted-item behavior",
+  },
+  combobox: {
+    evidence: "apps/lynx/src/components/ui/menu.lynx.tsx",
+    rationale: "Native picker compositions use Menu plus Input instead of a DOM combobox",
+  },
+  empty: {
+    evidence: "apps/lynx/src/adapters/CenteredEmptyLandingElements.lynx.tsx",
+    rationale: "empty-state anatomy is shared through product compositions and element adapters",
+  },
+  "input-group": {
+    evidence: "apps/lynx/src/components/ui/input.lynx.tsx",
+    rationale: "Native Input owns the control shell and addons are composed by consumers",
+  },
+  label: {
+    evidence: "apps/lynx/src/adapters/SettingsHeadingElement.lynx.tsx",
+    rationale: "Native text semantics use element adapters instead of a DOM label primitive",
+  },
+  popover: {
+    evidence: "apps/lynx/src/components/ui/menu.lynx.tsx",
+    rationale: "anchored Native popovers use the shared measured overlay/menu foundation",
+  },
+  "preview-card": {
+    evidence: "apps/lynx/src/components/sidebar/Sidebar.lynx.tsx",
+    rationale: "preview cards are product-owned hover/tap surfaces on Native",
+  },
+  "search-input": {
+    evidence: "apps/lynx/src/components/ui/input.lynx.tsx",
+    rationale: "Native search fields reuse Input with explicit search semantics",
+  },
+  select: {
+    evidence: "apps/lynx/src/components/ui/menu.lynx.tsx",
+    rationale: "Native selects use MenuRadioGroup and MenuRadioItem",
+  },
+  sheet: {
+    evidence: "apps/lynx/src/components/ui/dialog.lynx.tsx",
+    rationale: "Native Dialog owns compact bottom-sheet behavior",
+  },
+  "shortcut-kbd": {
+    evidence: "apps/lynx/src/components/ui/kbd.lynx.tsx",
+    rationale: "Native Kbd is the shortcut-key renderer",
+  },
+  sidebar: {
+    evidence: "apps/lynx/src/components/sidebar/Sidebar.lynx.tsx",
+    rationale:
+      "application sidebar is a renderer-specific product shell, not a portable DOM primitive",
+  },
+  toggle: {
+    evidence: "apps/lynx/src/components/ui/button.lynx.tsx",
+    rationale: "Native toggles compose Button with pressed state",
+  },
 };
 
 const rows = webModules.map((module) => {

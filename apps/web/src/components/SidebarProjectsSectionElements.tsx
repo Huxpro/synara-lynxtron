@@ -4,21 +4,14 @@
 
 import type { ReactNode } from "react";
 
-import {
-  resolveSystemStateSemantics,
-  type SystemStateIntent,
-} from "./systemStateSemantics";
+import { resolveSystemStateSemantics, type SystemStateIntent } from "./systemStateSemantics";
 import { SidebarGroup, SidebarMenu } from "./ui/sidebar";
 
-export function SidebarProjectsSectionRootElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SidebarProjectsSectionRootElement(props: { readonly children?: ReactNode }) {
   return <SidebarGroup className="px-1.5 py-1.5">{props.children}</SidebarGroup>;
 }
 
-export function SidebarProjectsListElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SidebarProjectsListElement(props: { readonly children?: ReactNode }) {
   return <SidebarMenu className="gap-3">{props.children}</SidebarMenu>;
 }
 

@@ -3,9 +3,9 @@
 // Layer: Shared orchestration utility
 // Exports: edit eligibility plus provider-aware prompt formatting for replay.
 
-import type { ClaudeCodeEffort, ModelSelection, ProviderKind } from '@synara/contracts';
+import type { ClaudeCodeEffort, ModelSelection, ProviderKind } from "@synara/contracts";
 
-import { applyClaudePromptEffortPrefix, getModelCapabilities } from './model';
+import { applyClaudePromptEffortPrefix, getModelCapabilities } from "./model";
 
 type TurnMessageLike<TTurnId extends string = string> = {
   readonly id: string;
@@ -148,37 +148,31 @@ export function formatOutgoingComposerPrompt(params: {
   readonly text: string;
 }): string {
   const capabilities = getModelCapabilities(params.provider, params.model);
-  if (
-    params.effort &&
-    capabilities.promptInjectedEffortLevels.includes(params.effort)
-  ) {
-    return applyClaudePromptEffortPrefix(
-      params.text,
-      params.effort as ClaudeCodeEffort | null
-    );
+  if (params.effort && capabilities.promptInjectedEffortLevels.includes(params.effort)) {
+    return applyClaudePromptEffortPrefix(params.text, params.effort as ClaudeCodeEffort | null);
   }
   return params.text;
 }
 
 export function resolvePromptEffortFromModelSelection(
-  modelSelection: ModelSelection
+  modelSelection: ModelSelection,
 ): string | null {
   switch (modelSelection.provider) {
-    case 'antigravity':
+    case "antigravity":
       return null;
-    case 'codex':
+    case "codex":
       return modelSelection.options?.reasoningEffort ?? null;
-    case 'claudeAgent':
+    case "claudeAgent":
       return modelSelection.options?.effort ?? null;
-    case 'cursor':
+    case "cursor":
       return modelSelection.options?.reasoningEffort ?? null;
-    case 'grok':
-    case 'droid':
+    case "grok":
+    case "droid":
       return modelSelection.options?.reasoningEffort ?? null;
-    case 'pi':
+    case "pi":
       return modelSelection.options?.thinkingLevel ?? null;
-    case 'kilo':
-    case 'opencode':
+    case "kilo":
+    case "opencode":
       return null;
   }
 }

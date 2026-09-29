@@ -1,1 +1,34 @@
-{"success":true,"data":{"origin":"http://localhost:8080/index.html?route=%2Fkanban%2Feditor-changes-project","result":{"hostValue":"Review the pending changes","innerValue":"Review the pending changes","relay":{"activeBaseUrl":"ws://127.0.0.1:58090","configuredBaseUrl":"ws://127.0.0.1:58090","connectionAttempts":1,"explorerPreviewActionCount":0,"interactionEventCount":0,"lastExplorerPreviewAction":null,"lastInteractionEvent":null,"lastRpcError":null,"lastSyntaxHighlightResult":null,"lastTransportError":null,"pendingRequests":0,"readyBaseUrl":null,"recentRpcTags":["orchestration.getShellSnapshot","orchestration.getSidebarShellSnapshot","orchestration.getSidebarSearchSnapshot"],"rendererReadyRoute":"/kanban/editor-changes-project","socketState":1,"syntaxHighlightCallCount":0},"start":{"cls":"LxButton LxButton--default LxButton--sm","disabled":false}}},"error":null}
+{
+  "success": true,
+  "data": {
+    "origin": "http://localhost:8080/index.html?route=%2Fkanban%2Feditor-changes-project",
+    "result": {
+      "hostValue": "Review the pending changes",
+      "innerValue": "Review the pending changes",
+      "relay": {
+        "activeBaseUrl": "ws://127.0.0.1:58090",
+        "configuredBaseUrl": "ws://127.0.0.1:58090",
+        "connectionAttempts": 1,
+        "explorerPreviewActionCount": 0,
+        "interactionEventCount": 0,
+        "lastExplorerPreviewAction": null,
+        "lastInteractionEvent": null,
+        "lastRpcError": null,
+        "lastSyntaxHighlightResult": null,
+        "lastTransportError": null,
+        "pendingRequests": 0,
+        "readyBaseUrl": null,
+        "recentRpcTags": [
+          "orchestration.getShellSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot"
+        ],
+        "rendererReadyRoute": "/kanban/editor-changes-project",
+        "socketState": 1,
+        "syntaxHighlightCallCount": 0
+      },
+      "start": { "cls": "LxButton LxButton--default LxButton--sm", "disabled": false }
+    }
+  },
+  "error": null
+}

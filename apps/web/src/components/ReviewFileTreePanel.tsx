@@ -237,11 +237,7 @@ export const ReviewFileTreePanel = function ReviewFileTreePanel(props: {
       )}
       aria-label="Review files"
     >
-      <ReviewFileTreeSearchHeader
-        query={query}
-        onQueryChange={setQuery}
-        onClose={props.onClose}
-      />
+      <ReviewFileTreeSearchHeader query={query} onQueryChange={setQuery} onClose={props.onClose} />
       <div
         className={cn(
           "min-h-0 flex-1 overflow-auto px-1 py-1",

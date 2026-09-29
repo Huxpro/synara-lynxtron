@@ -2,11 +2,7 @@
 // Purpose: Portable pinned-thread ordering, optimistic state, and list de-duplication.
 // Exports: Shared thread pinning controller used by Web and Lynx sidebars.
 
-import {
-  derivePinnedIds,
-  getPinnedItems,
-  isLatestPinMutation,
-} from "../pinning.logic";
+import { derivePinnedIds, getPinnedItems, isLatestPinMutation } from "../pinning.logic";
 
 export function getPinnedThreadsForSidebar<
   TId extends string,
@@ -69,8 +65,6 @@ export function getUnpinnedThreadsForSidebar<
   return threads.filter((thread) => !hiddenThreadIds.has(thread.id));
 }
 
-export function shouldPrunePinnedThreads(input: {
-  readonly threadsHydrated: boolean;
-}): boolean {
+export function shouldPrunePinnedThreads(input: { readonly threadsHydrated: boolean }): boolean {
   return input.threadsHydrated;
 }

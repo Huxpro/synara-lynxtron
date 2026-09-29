@@ -62,16 +62,12 @@ describe("terminal text projection", () => {
     projector.write("\u001b[9");
     projector.write("4mblue\r\u001b[32mgreen\u001b[0m");
     expect(projector.toString()).toBe("green");
-    expect(projector.toStyledRuns()).toEqual([
-      { text: "green", style: { foreground: "green" } },
-    ]);
+    expect(projector.toStyledRuns()).toEqual([{ text: "green", style: { foreground: "green" } }]);
   });
 
   it("maps bright ANSI and indexed palette boundaries without shifting colors", () => {
     const projector = createTerminalTextProjector();
-    projector.write(
-      "\u001b[95mmagenta \u001b[96mcyan \u001b[97mwhite \u001b[38;5;16mcube-black",
-    );
+    projector.write("\u001b[95mmagenta \u001b[96mcyan \u001b[97mwhite \u001b[38;5;16mcube-black");
     expect(projector.toStyledRuns()).toEqual([
       { text: "magenta ", style: { foreground: "bright-magenta" } },
       { text: "cyan ", style: { foreground: "bright-cyan" } },

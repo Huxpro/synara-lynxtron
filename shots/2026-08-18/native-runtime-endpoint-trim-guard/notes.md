@@ -21,8 +21,8 @@ module `7819`. Before the fix, the module contained unguarded calls equivalent
 to:
 
 ```ts
-explicitUrl.trim()
-configuredUrl.trim()
+explicitUrl.trim();
+configuredUrl.trim();
 ```
 
 The values cross build/runtime boundaries:
@@ -45,8 +45,8 @@ Their TypeScript annotations did not protect Native runtime values.
 The rebuilt bundle now contains:
 
 ```js
-var r="string"==typeof e?e.trim():"";
-var n="string"==typeof t?t.trim():"";
+var r = "string" == typeof e ? e.trim() : "";
+var n = "string" == typeof t ? t.trim() : "";
 ```
 
 for the renderer endpoint path.

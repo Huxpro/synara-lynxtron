@@ -239,9 +239,7 @@
   width: 100%;
 }
 
-.SliceRoot--viewport-compact
-  .SettingsSkillsMetadata--portable
-  .SettingsSkillsPath {
+.SliceRoot--viewport-compact .SettingsSkillsMetadata--portable .SettingsSkillsPath {
   height: 33px;
   overflow: visible;
   text-overflow: clip;
@@ -253,17 +251,13 @@
   align-items: flex-start;
 }
 
-.SliceRoot--viewport-compact
-  .SettingsSkillsControl--skill
-  .SharedSettingsGeneralSwitch {
+.SliceRoot--viewport-compact .SettingsSkillsControl--skill .SharedSettingsGeneralSwitch {
   width: 40px;
   height: 24px;
   border-radius: 12px;
 }
 
-.SliceRoot--viewport-compact
-  .SettingsSkillsControl--skill
-  .SharedSettingsGeneralSwitchThumb {
+.SliceRoot--viewport-compact .SettingsSkillsControl--skill .SharedSettingsGeneralSwitchThumb {
   width: 20px;
   height: 20px;
   border-radius: 10px;

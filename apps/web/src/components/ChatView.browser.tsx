@@ -1150,58 +1150,58 @@ function resolveWsRpc(body: WsRequestEnvelope["body"]): unknown {
 }
 
 function installDeterministicSendNativeApi(): () => void {
-    const wsNativeApi = readNativeApi();
+  const wsNativeApi = readNativeApi();
   if (!wsNativeApi) {
     throw new Error("Expected browser native API fixture.");
   }
 
   setNativeApiForTest({
-      ...wsNativeApi,
-      git: {
-        ...wsNativeApi.git,
-        createDetachedWorktree: async (
-          input: Parameters<typeof wsNativeApi.git.createDetachedWorktree>[0],
-        ) => {
-          const request: WsRequestEnvelope["body"] = {
-            _tag: WS_METHODS.gitCreateDetachedWorktree,
-            ...input,
-          };
-          wsRequests.push(request);
-          return resolveWsRpc(request) as Awaited<
-            ReturnType<typeof wsNativeApi.git.createDetachedWorktree>
-          >;
-        },
+    ...wsNativeApi,
+    git: {
+      ...wsNativeApi.git,
+      createDetachedWorktree: async (
+        input: Parameters<typeof wsNativeApi.git.createDetachedWorktree>[0],
+      ) => {
+        const request: WsRequestEnvelope["body"] = {
+          _tag: WS_METHODS.gitCreateDetachedWorktree,
+          ...input,
+        };
+        wsRequests.push(request);
+        return resolveWsRpc(request) as Awaited<
+          ReturnType<typeof wsNativeApi.git.createDetachedWorktree>
+        >;
       },
-      terminal: {
-        ...wsNativeApi.terminal,
-        open: async (input: Parameters<typeof wsNativeApi.terminal.open>[0]) => {
-          const request: WsRequestEnvelope["body"] = {
-            _tag: WS_METHODS.terminalOpen,
-            ...input,
-          };
-          wsRequests.push(request);
-          return resolveWsRpc(request) as Awaited<ReturnType<typeof wsNativeApi.terminal.open>>;
-        },
-        write: async (input: Parameters<typeof wsNativeApi.terminal.write>[0]) => {
-          wsRequests.push({
-            _tag: WS_METHODS.terminalWrite,
-            ...input,
-          });
-        },
+    },
+    terminal: {
+      ...wsNativeApi.terminal,
+      open: async (input: Parameters<typeof wsNativeApi.terminal.open>[0]) => {
+        const request: WsRequestEnvelope["body"] = {
+          _tag: WS_METHODS.terminalOpen,
+          ...input,
+        };
+        wsRequests.push(request);
+        return resolveWsRpc(request) as Awaited<ReturnType<typeof wsNativeApi.terminal.open>>;
       },
-      orchestration: {
-        ...wsNativeApi.orchestration,
-        dispatchCommand: async (
-          command: Parameters<typeof wsNativeApi.orchestration.dispatchCommand>[0],
-        ) => {
-          wsRequests.push({
-            _tag: ORCHESTRATION_WS_METHODS.dispatchCommand,
-            command,
-          });
-          return { sequence: fixture.snapshot.snapshotSequence + 1 };
-        },
+      write: async (input: Parameters<typeof wsNativeApi.terminal.write>[0]) => {
+        wsRequests.push({
+          _tag: WS_METHODS.terminalWrite,
+          ...input,
+        });
       },
-    });
+    },
+    orchestration: {
+      ...wsNativeApi.orchestration,
+      dispatchCommand: async (
+        command: Parameters<typeof wsNativeApi.orchestration.dispatchCommand>[0],
+      ) => {
+        wsRequests.push({
+          _tag: ORCHESTRATION_WS_METHODS.dispatchCommand,
+          command,
+        });
+        return { sequence: fixture.snapshot.snapshotSequence + 1 };
+      },
+    },
+  });
 
   return () => {
     setNativeApiForTest(undefined);
@@ -4277,7 +4277,7 @@ describe("ChatView timeline estimator parity (full app)", () => {
         targetText: "project picker new test",
       }),
     });
-        const wsNativeApi = readNativeApi();
+    const wsNativeApi = readNativeApi();
     expect(wsNativeApi).toBeDefined();
     const pickFolder = vi.fn(async () => "/repo/new-project");
     let createdProjectId: ProjectId | null = null;
@@ -4295,17 +4295,17 @@ describe("ChatView timeline estimator parity (full app)", () => {
       return { sequence: fixture.snapshot.snapshotSequence + 1 };
     });
     setNativeApiForTest({
-        ...wsNativeApi,
-        dialogs: {
-          ...wsNativeApi?.dialogs,
-          pickFolder,
-        },
-        orchestration: {
-          ...wsNativeApi?.orchestration,
-          dispatchCommand,
-          getShellSnapshot: vi.fn(async () => createShellSnapshotFromReadModel(fixture.snapshot)),
-        },
-      });
+      ...wsNativeApi,
+      dialogs: {
+        ...wsNativeApi?.dialogs,
+        pickFolder,
+      },
+      orchestration: {
+        ...wsNativeApi?.orchestration,
+        dispatchCommand,
+        getShellSnapshot: vi.fn(async () => createShellSnapshotFromReadModel(fixture.snapshot)),
+      },
+    });
 
     try {
       const newThreadButton = page.getByLabelText("Create new thread in Project");
@@ -4519,17 +4519,17 @@ describe("ChatView timeline estimator parity (full app)", () => {
         })),
       },
     });
-        const wsNativeApi = readNativeApi();
+    const wsNativeApi = readNativeApi();
     expect(wsNativeApi).toBeDefined();
     setNativeApiForTest({
-        ...wsNativeApi,
-        orchestration: {
-          ...wsNativeApi?.orchestration,
-          dispatchCommand: vi.fn(async () => {
-            throw new Error("Project creation failed for test.");
-          }),
-        },
-      });
+      ...wsNativeApi,
+      orchestration: {
+        ...wsNativeApi?.orchestration,
+        dispatchCommand: vi.fn(async () => {
+          throw new Error("Project creation failed for test.");
+        }),
+      },
+    });
 
     try {
       await page.getByRole("button", { name: "Add project", exact: true }).click();

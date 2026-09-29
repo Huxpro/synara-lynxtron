@@ -35,13 +35,13 @@ No hidden route state or SQLite fixture was written.
 
 ## Geometry
 
-| Owner | Web | Lynx-for-Web | Native |
-| --- | ---: | ---: | ---: |
-| Main content x | `536` | `536` | `536` |
-| Updates card | `624x337.5` | `624x338.5` | first row `596x58` |
-| Provider tools card | `624x496.5` | `624x496` | first row `596x44` |
-| Tool rows | nine | nine at `596x44` | nine, first `596x44` |
-| Content frame | `1184x900` browser area | `1184x900` browser area | `1184x868` |
+| Owner               |                     Web |            Lynx-for-Web |               Native |
+| ------------------- | ----------------------: | ----------------------: | -------------------: |
+| Main content x      |                   `536` |                   `536` |                `536` |
+| Updates card        |             `624x337.5` |             `624x338.5` |   first row `596x58` |
+| Provider tools card |             `624x496.5` |               `624x496` |   first row `596x44` |
+| Tool rows           |                    nine |        nine at `596x44` | nine, first `596x44` |
+| Content frame       | `1184x900` browser area | `1184x900` browser area |           `1184x868` |
 
 The one-pixel card totals are the same fractional border rounding already
 measured in the light / 1280 fast loop.

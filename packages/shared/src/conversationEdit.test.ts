@@ -9,29 +9,29 @@ import {
 } from "./conversationEdit";
 
 describe("conversationEdit", () => {
-  it('preserves provider-specific prompt effort behavior for edited sends', () => {
+  it("preserves provider-specific prompt effort behavior for edited sends", () => {
     const selection = {
-      provider: 'claudeAgent' as const,
-      model: 'claude-opus-4-6',
-      options: { effort: 'high' as const },
+      provider: "claudeAgent" as const,
+      model: "claude-opus-4-6",
+      options: { effort: "high" as const },
     };
-    expect(resolvePromptEffortFromModelSelection(selection)).toBe('high');
+    expect(resolvePromptEffortFromModelSelection(selection)).toBe("high");
     expect(
       formatOutgoingComposerPrompt({
         provider: selection.provider,
         model: selection.model,
         effort: resolvePromptEffortFromModelSelection(selection),
-        text: 'Inspect this',
-      })
-    ).toContain('Inspect this');
+        text: "Inspect this",
+      }),
+    ).toContain("Inspect this");
     expect(
       formatOutgoingComposerPrompt({
-        provider: 'codex',
-        model: 'gpt-5.6-sol',
-        effort: 'high',
-        text: 'Keep exact text',
-      })
-    ).toBe('Keep exact text');
+        provider: "codex",
+        model: "gpt-5.6-sol",
+        effort: "high",
+        text: "Keep exact text",
+      }),
+    ).toBe("Keep exact text");
   });
 
   it("collects unique turn ids from a target message through the tail", () => {

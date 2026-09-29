@@ -29,10 +29,7 @@ import {
   XIcon,
 } from "~/lib/icons";
 
-import {
-  browserLocalServerUrl,
-  localServerPrimaryLabel,
-} from "@synara/shared/localServers";
+import { browserLocalServerUrl, localServerPrimaryLabel } from "@synara/shared/localServers";
 import {
   BROWSER_BLANK_URL,
   isBlankBrowserTabUrl,
@@ -396,7 +393,9 @@ function BrowserLocalServerThumbnail({ server }: { server: ServerLocalServerProc
         <span className="size-[3px] rounded-full bg-[var(--browser-home-traffic-green)]" />
       </span>
       <span className="flex min-w-0 flex-1 flex-col justify-center gap-0.5">
-        <span className="truncate text-[7px] font-bold leading-none text-[var(--browser-home-thumbnail-title)]">{label}</span>
+        <span className="truncate text-[7px] font-bold leading-none text-[var(--browser-home-thumbnail-title)]">
+          {label}
+        </span>
         {port ? (
           <span className="truncate text-[6px] font-medium leading-none text-[var(--browser-home-thumbnail-meta)]">
             localhost:{port}
@@ -427,7 +426,9 @@ function BrowserLocalServersHome({
     <div className="absolute inset-0 z-20 flex flex-col overflow-hidden bg-[var(--browser-home-surface)] text-[var(--browser-home-foreground)]">
       <div className="mx-auto flex h-full w-full max-w-[52rem] flex-col px-8 py-9">
         <div className="flex shrink-0 items-center justify-between">
-          <p className="text-[15px] font-medium text-[var(--browser-home-foreground-secondary)]">Local</p>
+          <p className="text-[15px] font-medium text-[var(--browser-home-foreground-secondary)]">
+            Local
+          </p>
           <Button
             type="button"
             variant="ghost"
@@ -447,14 +448,22 @@ function BrowserLocalServersHome({
             {loading ? (
               <>
                 <RefreshCwIcon className="mb-4 size-12 animate-spin text-[var(--browser-home-icon-muted)]" />
-                <p className="text-base font-semibold text-[var(--browser-home-foreground)]">Scanning local servers</p>
-                <p className="mt-2 text-sm text-[var(--browser-home-foreground-secondary)]">Checking localhost ports</p>
+                <p className="text-base font-semibold text-[var(--browser-home-foreground)]">
+                  Scanning local servers
+                </p>
+                <p className="mt-2 text-sm text-[var(--browser-home-foreground-secondary)]">
+                  Checking localhost ports
+                </p>
               </>
             ) : (
               <>
                 <GlobeIcon className="mb-4 size-16 stroke-[1.5] text-[var(--browser-home-foreground-tertiary)]" />
-                <p className="text-base font-semibold text-[var(--browser-home-foreground)]">No local servers</p>
-                <p className="mt-2 text-sm text-[var(--browser-home-foreground-secondary)]">Try another browser URL</p>
+                <p className="text-base font-semibold text-[var(--browser-home-foreground)]">
+                  No local servers
+                </p>
+                <p className="mt-2 text-sm text-[var(--browser-home-foreground-secondary)]">
+                  Try another browser URL
+                </p>
               </>
             )}
           </div>

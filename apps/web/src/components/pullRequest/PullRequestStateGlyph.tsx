@@ -9,9 +9,7 @@
 import type { GitPullRequestMergeability, PullRequestState } from "@synara/contracts";
 
 import { cn } from "~/lib/utils";
-import {
-  PR_STATE_PRESENTATION_ICONS,
-} from "./pullRequestStatePresentation.icons";
+import { PR_STATE_PRESENTATION_ICONS } from "./pullRequestStatePresentation.icons";
 import { resolvePrStatePresentation } from "./pullRequestStatePresentation.logic";
 
 const SIZE_CLASS_NAME = {

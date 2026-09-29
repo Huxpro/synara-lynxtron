@@ -1,16 +1,16 @@
-import type { InputRef } from '@lynx-js/lynx-ui';
-import { useEffect, useMemo, useRef, useState } from '@lynx-js/react';
-import type { ProjectId, SpaceIconName, SpaceId } from '@synara/contracts';
+import type { InputRef } from "@lynx-js/lynx-ui";
+import { useEffect, useMemo, useRef, useState } from "@lynx-js/react";
+import type { ProjectId, SpaceIconName, SpaceId } from "@synara/contracts";
 import {
   deriveSpaceProjectPickerGroups,
   spaceProjectPickerFailureMessage,
   toggleSpaceProjectSelection,
-} from '@synara/shared/spaceProjectPicker';
+} from "@synara/shared/spaceProjectPicker";
 
-import type { ProjectSummary } from '../../app/queries';
-import { LynxSpaceIcon } from '../../adapters/ComposerProjectPickerCompositionElements.lynx';
-import { CheckIcon, FolderIcon, SearchIcon } from '../../lib/icons.lynx';
-import { Button } from '../ui/button';
+import type { ProjectSummary } from "../../app/queries";
+import { LynxSpaceIcon } from "../../adapters/ComposerProjectPickerCompositionElements.lynx";
+import { CheckIcon, FolderIcon, SearchIcon } from "../../lib/icons.lynx";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogDescription,
@@ -18,9 +18,9 @@ import {
   DialogPanel,
   DialogPopup,
   DialogTitle,
-} from '../ui/dialog.lynx';
-import { Input } from '../ui/input.lynx';
-import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
+} from "../ui/dialog.lynx";
+import { Input } from "../ui/input.lynx";
+import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
 
 interface PickerSpace {
   readonly id: SpaceId;
@@ -35,10 +35,10 @@ function ProjectPickerRow(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: `AppSidebarSpaceProjectRow${
-      props.selected ? ' AppSidebarSpaceProjectRow--selected' : ''
+      props.selected ? " AppSidebarSpaceProjectRow--selected" : ""
     }`,
     accessibleLabel: props.project.title,
-    accessibilityTraits: props.selected ? 'selected' : 'button',
+    accessibilityTraits: props.selected ? "selected" : "button",
     onActivate: props.onToggle,
   });
   return (
@@ -55,7 +55,7 @@ function ProjectPickerRow(props: {
       <text className="AppSidebarSpaceProjectRowName">{props.project.title}</text>
       <view
         className={`AppSidebarSpaceProjectCheckbox${
-          props.selected ? ' AppSidebarSpaceProjectCheckbox--checked' : ''
+          props.selected ? " AppSidebarSpaceProjectCheckbox--checked" : ""
         }`}
       >
         {props.selected ? <CheckIcon size={11} /> : null}
@@ -76,26 +76,32 @@ export function SpaceProjectPickerDialogLynx(props: {
   readonly spaces: readonly PickerSpace[];
   readonly targetSpace: PickerSpace | null;
 }) {
-  const [query, setQuery] = useState(props.initialQuery ?? '');
+  const [query, setQuery] = useState(props.initialQuery ?? "");
   const [selectedIds, setSelectedIds] = useState<ReadonlySet<ProjectId>>(() => new Set());
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<InputRef>(null);
   useEffect(() => {
     if (!props.open) return;
-    setQuery(props.initialQuery ?? '');
+    setQuery(props.initialQuery ?? "");
     setSelectedIds(new Set());
     setSubmitting(false);
     setError(null);
     if (props.searchAutoFocus !== false && !props.searchDisabled) {
       void inputRef.current?.focus().catch(() => undefined);
     }
-  }, [props.initialQuery, props.open, props.searchAutoFocus, props.searchDisabled, props.targetSpace?.id]);
+  }, [
+    props.initialQuery,
+    props.open,
+    props.searchAutoFocus,
+    props.searchDisabled,
+    props.targetSpace?.id,
+  ]);
 
   const ordinaryProjects = useMemo(
     () =>
       props.projects
-        .filter((project) => project.kind === 'project')
+        .filter((project) => project.kind === "project")
         .map((project) => ({
           project,
           id: project.id as ProjectId,
@@ -103,7 +109,7 @@ export function SpaceProjectPickerDialogLynx(props: {
           path: project.workspaceRoot,
           spaceId: project.spaceId ?? null,
         })),
-    [props.projects]
+    [props.projects],
   );
   const picker = useMemo(
     () =>
@@ -116,7 +122,7 @@ export function SpaceProjectPickerDialogLynx(props: {
             targetSpaceId: props.targetSpace.id,
           })
         : { movableProjects: [], candidates: [], groups: [] },
-    [ordinaryProjects, props.activeSpaceId, props.spaces, props.targetSpace, query]
+    [ordinaryProjects, props.activeSpaceId, props.spaces, props.targetSpace, query],
   );
   const submit = async () => {
     if (!props.targetSpace || selectedIds.size === 0 || submitting) return;
@@ -132,21 +138,21 @@ export function SpaceProjectPickerDialogLynx(props: {
       }
       props.onOpenChange(false);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Unable to move the selected projects.');
+      setError(cause instanceof Error ? cause.message : "Unable to move the selected projects.");
       setSubmitting(false);
     }
   };
   const emptyMessage =
     ordinaryProjects.length === 0
-      ? 'No projects yet.'
+      ? "No projects yet."
       : picker.movableProjects.length === 0
-        ? `Every project is already in ${props.targetSpace?.name ?? 'this space'}.`
-        : 'No matching projects.';
+        ? `Every project is already in ${props.targetSpace?.name ?? "this space"}.`
+        : "No matching projects.";
 
   return (
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
       <DialogPopup className="AppSidebarSpaceProjectPickerDialog">
-        <DialogTitle>Move projects to {props.targetSpace?.name ?? 'space'}</DialogTitle>
+        <DialogTitle>Move projects to {props.targetSpace?.name ?? "space"}</DialogTitle>
         <DialogDescription>
           Choose existing projects. Their chats and pinned state move with them.
         </DialogDescription>
@@ -182,7 +188,7 @@ export function SpaceProjectPickerDialogLynx(props: {
                       selected={selectedIds.has(project.id as ProjectId)}
                       onToggle={() =>
                         setSelectedIds((current) =>
-                          toggleSpaceProjectSelection(current, project.id as ProjectId)
+                          toggleSpaceProjectSelection(current, project.id as ProjectId),
                         )
                       }
                     />
@@ -207,10 +213,10 @@ export function SpaceProjectPickerDialogLynx(props: {
           </Button>
           <Button disabled={selectedIds.size === 0 || submitting} onClick={() => void submit()}>
             {submitting
-              ? 'Moving…'
+              ? "Moving…"
               : selectedIds.size === 0
-                ? 'Move projects'
-                : `Move ${selectedIds.size} project${selectedIds.size === 1 ? '' : 's'}`}
+                ? "Move projects"
+                : `Move ${selectedIds.size} project${selectedIds.size === 1 ? "" : "s"}`}
           </Button>
         </DialogFooter>
       </DialogPopup>

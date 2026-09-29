@@ -1,17 +1,8 @@
 {
   "1280": {
-    "nativePhysical": [
-      2560,
-      1640
-    ],
-    "logical": [
-      1280,
-      820
-    ],
-    "browser": [
-      1280,
-      820
-    ],
+    "nativePhysical": [2560, 1640],
+    "logical": [1280, 820],
+    "browser": [1280, 820],
     "meanAbsoluteRgbDiff": 0.9959378175813008,
     "regions": {
       "sidebar": 1.7507383765243902,
@@ -21,18 +12,9 @@
     }
   },
   "1440": {
-    "nativePhysical": [
-      2880,
-      1800
-    ],
-    "logical": [
-      1440,
-      900
-    ],
-    "browser": [
-      1440,
-      900
-    ],
+    "nativePhysical": [2880, 1800],
+    "logical": [1440, 900],
+    "browser": [1440, 900],
     "meanAbsoluteRgbDiff": 0.8069068930041152,
     "regions": {
       "sidebar": 1.5962239583333335,

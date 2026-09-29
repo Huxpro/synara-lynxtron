@@ -12,14 +12,9 @@
   },
   "states": {
     "skillSelected": {
-      "visibleTokens": [
-        "review-agent"
-      ],
+      "visibleTokens": ["review-agent"],
       "visibleCount": 1,
-      "textareaCodePoints": [
-        "2063",
-        "20"
-      ],
+      "textareaCodePoints": ["2063", "20"],
       "canonicalText": "/review-agent ",
       "structuredSkills": 1,
       "reloadPersisted": true
@@ -30,14 +25,9 @@
       "structuredSkills": 0
     },
     "mentionSelected": {
-      "visibleTokens": [
-        "In Progress seed task"
-      ],
+      "visibleTokens": ["In Progress seed task"],
       "visibleCount": 1,
-      "textareaCodePoints": [
-        "2063",
-        "20"
-      ],
+      "textareaCodePoints": ["2063", "20"],
       "canonicalText": "@\"In Progress seed task\" ",
       "structuredMentions": 1,
       "reloadPersisted": true
@@ -50,7 +40,5 @@
   },
   "projection": "canonical prompt plus structured refs persisted; interleaved visual overlay renders one chip per invisible textarea anchor",
   "pageErrors": 0,
-  "knownWarnings": [
-    "upstream Lynx-for-Web deprecated initialization parameter warning"
-  ]
+  "knownWarnings": ["upstream Lynx-for-Web deprecated initialization parameter warning"]
 }

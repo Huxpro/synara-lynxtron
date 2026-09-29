@@ -45,10 +45,7 @@ describe("ComposerProjectPickerComposition", () => {
     });
 
     expect(withoutRetry.errorMessage).toBe("Unable to load folders.");
-    expect(withoutRetry.actions.map((action) => action.kind)).toEqual([
-      "add",
-      "reset",
-    ]);
+    expect(withoutRetry.actions.map((action) => action.kind)).toEqual(["add", "reset"]);
     expect(withRetry.actions.at(-1)).toEqual({
       kind: "retry",
       label: "Retry",

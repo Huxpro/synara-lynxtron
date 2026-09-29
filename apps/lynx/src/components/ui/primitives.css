@@ -21,7 +21,9 @@
 }
 
 .LxButton.ui-focus {
-  box-shadow: 0 0 0 1px var(--background), 0 0 0 2px var(--control-focus-ring-color);
+  box-shadow:
+    0 0 0 1px var(--background),
+    0 0 0 2px var(--control-focus-ring-color);
 }
 
 .LxButton--variant-default.ui-hover,
@@ -467,9 +469,15 @@
   background-color: var(--color-text-accent);
 }
 
-.LxSwitch.ui-hover { box-shadow: 0 0 0 1px var(--border); }
-.LxSwitch.ui-focus { box-shadow: 0 0 0 2px var(--ring); }
-.LxSwitch.ui-disabled { opacity: var(--control-disabled-opacity); }
+.LxSwitch.ui-hover {
+  box-shadow: 0 0 0 1px var(--border);
+}
+.LxSwitch.ui-focus {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+.LxSwitch.ui-disabled {
+  opacity: var(--control-disabled-opacity);
+}
 
 .LxSwitchThumb {
   width: 16px;
@@ -482,7 +490,9 @@
   transition-timing-function: ease-out;
 }
 
-.LxSwitch--checked .LxSwitchThumb { transform: translateX(12px); }
+.LxSwitch--checked .LxSwitchThumb {
+  transform: translateX(12px);
+}
 
 .LxCheckboxIndicator {
   width: 16px;
@@ -501,11 +511,30 @@
   background-color: transparent;
 }
 
-.LxCheckboxIndicator--sm { width: 14px; height: 14px; }
-.LxCheckboxIndicator--selected { border-top-color: var(--primary); border-right-color: var(--primary); border-bottom-color: var(--primary); border-left-color: var(--primary); background-color: var(--primary); }
-.LxCheckboxIndicatorIcon { width: 12px; height: 12px; }
-.LxCheckboxIndicator--sm .LxCheckboxIndicatorIcon { width: 10px; height: 10px; }
-.LxCheckboxIndicatorMixedBar { width: 6px; height: 1px; background-color: var(--primary-foreground); }
+.LxCheckboxIndicator--sm {
+  width: 14px;
+  height: 14px;
+}
+.LxCheckboxIndicator--selected {
+  border-top-color: var(--primary);
+  border-right-color: var(--primary);
+  border-bottom-color: var(--primary);
+  border-left-color: var(--primary);
+  background-color: var(--primary);
+}
+.LxCheckboxIndicatorIcon {
+  width: 12px;
+  height: 12px;
+}
+.LxCheckboxIndicator--sm .LxCheckboxIndicatorIcon {
+  width: 10px;
+  height: 10px;
+}
+.LxCheckboxIndicatorMixedBar {
+  width: 6px;
+  height: 1px;
+  background-color: var(--primary-foreground);
+}
 
 .LxSkeleton {
   position: relative;
@@ -520,56 +549,193 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(120deg, transparent 40%, rgba(255, 255, 255, 0.64), transparent 60%);
+  background-image: linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.64),
+    transparent 60%
+  );
   animation: LxSkeletonSweep 2s -1s linear infinite;
 }
 
 .SliceRoot--theme-dark .LxSkeletonShimmer {
-  background-image: linear-gradient(120deg, transparent 40%, rgba(255, 255, 255, 0.04), transparent 60%);
+  background-image: linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.04),
+    transparent 60%
+  );
 }
 
 @keyframes LxSkeletonSweep {
-  to { transform: translateX(200%); }
+  to {
+    transform: translateX(200%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .LxSkeletonShimmer { display: none; }
+  .LxSkeletonShimmer {
+    display: none;
+  }
 }
 
-.LxSeparator { flex-shrink: 0; background-color: var(--border); }
-.LxSeparator--horizontal { width: 100%; height: 1px; }
-.LxSeparator--vertical { width: 1px; align-self: stretch; }
+.LxSeparator {
+  flex-shrink: 0;
+  background-color: var(--border);
+}
+.LxSeparator--horizontal {
+  width: 100%;
+  height: 1px;
+}
+.LxSeparator--vertical {
+  width: 1px;
+  align-self: stretch;
+}
 
-.LxBadge { min-width: 18px; height: 18px; padding: 0 3px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 6px; background-color: var(--primary); }
-.LxBadge__text { color: var(--primary-foreground); font-size: 10px; font-weight: 500; line-height: 15px; }
-.LxBadge--sm { min-width: 16px; height: 16px; border-radius: 4px; }
-.LxBadge--sm .LxBadge__text { font-size: 9px; line-height: 13.5px; }
-.LxBadge--lg { min-width: 22px; height: 22px; padding: 0 5px; }
-.LxBadge--lg .LxBadge__text { font-size: 11px; line-height: 16.5px; }
-.LxBadge--secondary { background-color: var(--secondary); }
-.LxBadge--secondary .LxBadge__text { color: var(--secondary-foreground); }
-.LxBadge--outline { border-top-color: var(--border); border-right-color: var(--border); border-bottom-color: var(--border); border-left-color: var(--border); background-color: var(--color-background-elevated-primary-opaque); }
-.LxBadge--outline .LxBadge__text { color: var(--color-text-foreground); }
-.LxBadge--destructive { background-color: var(--destructive); }
-.LxBadge--destructive .LxBadge__text { color: #ffffff; }
-.LxBadge--error .LxBadge__text { color: var(--destructive); }
-.LxBadge--info .LxBadge__text { color: var(--info-foreground); }
-.LxBadge--success .LxBadge__text { color: var(--success); }
-.LxBadge--warning .LxBadge__text { color: var(--warning); }
-.LxBadge--capsule { border-radius: 999px; }
+.LxBadge {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background-color: var(--primary);
+}
+.LxBadge__text {
+  color: var(--primary-foreground);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 15px;
+}
+.LxBadge--sm {
+  min-width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+.LxBadge--sm .LxBadge__text {
+  font-size: 9px;
+  line-height: 13.5px;
+}
+.LxBadge--lg {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+}
+.LxBadge--lg .LxBadge__text {
+  font-size: 11px;
+  line-height: 16.5px;
+}
+.LxBadge--secondary {
+  background-color: var(--secondary);
+}
+.LxBadge--secondary .LxBadge__text {
+  color: var(--secondary-foreground);
+}
+.LxBadge--outline {
+  border-top-color: var(--border);
+  border-right-color: var(--border);
+  border-bottom-color: var(--border);
+  border-left-color: var(--border);
+  background-color: var(--color-background-elevated-primary-opaque);
+}
+.LxBadge--outline .LxBadge__text {
+  color: var(--color-text-foreground);
+}
+.LxBadge--destructive {
+  background-color: var(--destructive);
+}
+.LxBadge--destructive .LxBadge__text {
+  color: #ffffff;
+}
+.LxBadge--error .LxBadge__text {
+  color: var(--destructive);
+}
+.LxBadge--info .LxBadge__text {
+  color: var(--info-foreground);
+}
+.LxBadge--success .LxBadge__text {
+  color: var(--success);
+}
+.LxBadge--warning .LxBadge__text {
+  color: var(--warning);
+}
+.LxBadge--capsule {
+  border-radius: 999px;
+}
 
-.LxTimePicker { width: 176px; height: 176px; display: flex; flex-direction: row; align-items: stretch; gap: 4px; }
-.LxTimePickerColumn { min-width: 0; flex: 1; height: 176px; }
-.LxTimePickerColumnContent { padding: 4px; display: flex; flex-direction: column; gap: 2px; }
-.LxTimePickerOption { width: 100%; flex-shrink: 0; justify-content: center; }
+.LxTimePicker {
+  width: 176px;
+  height: 176px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 4px;
+}
+.LxTimePickerColumn {
+  min-width: 0;
+  flex: 1;
+  height: 176px;
+}
+.LxTimePickerColumnContent {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.LxTimePickerOption {
+  width: 100%;
+  flex-shrink: 0;
+  justify-content: center;
+}
 
-.LxAlert { position: relative; width: 100%; display: flex; flex-direction: row; align-items: flex-start; gap: 8px; padding: 12px 14px; border-width: 1px; border-style: solid; border-top-color: var(--border); border-right-color: var(--border); border-bottom-color: var(--border); border-left-color: var(--border); border-radius: 14px; color: var(--foreground); background-color: transparent; }
-.LxAlert--sm { padding: 6px 10px; border-radius: 8px; }
-.LxAlertTitle { color: var(--foreground); font-size: 14px; font-weight: 500; line-height: 20px; }
-.LxAlertDescription { min-width: 0; flex: 1; color: var(--muted-foreground); font-size: 14px; line-height: 20px; }
-.LxAlertTitle + .LxAlertDescription { margin-top: 2px; }
-.LxAlert--sm .LxAlertTitle, .LxAlert--sm .LxAlertDescription { font-size: 12px; line-height: 16px; }
-.LxAlertAction { flex-shrink: 0; }
+.LxAlert {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 14px;
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: var(--border);
+  border-right-color: var(--border);
+  border-bottom-color: var(--border);
+  border-left-color: var(--border);
+  border-radius: 14px;
+  color: var(--foreground);
+  background-color: transparent;
+}
+.LxAlert--sm {
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+.LxAlertTitle {
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+.LxAlertDescription {
+  min-width: 0;
+  flex: 1;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+.LxAlertTitle + .LxAlertDescription {
+  margin-top: 2px;
+}
+.LxAlert--sm .LxAlertTitle,
+.LxAlert--sm .LxAlertDescription {
+  font-size: 12px;
+  line-height: 16px;
+}
+.LxAlertAction {
+  flex-shrink: 0;
+}
 
 .LxSpinner {
   border-width: 1px;
@@ -583,11 +749,15 @@
 }
 
 @keyframes LxSpinnerSpin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .LxSpinner { animation: none; }
+  .LxSpinner {
+    animation: none;
+  }
 }
 
 .LxKbdGroup {
@@ -633,13 +803,11 @@
   padding-bottom: 15vh;
 }
 
-.SliceRoot--viewport-short-height
-  .LxDialogViewport.LxCommandDialogViewport {
+.SliceRoot--viewport-short-height .LxDialogViewport.LxCommandDialogViewport {
   padding: 8px;
 }
 
-.SliceRoot--viewport-short-height
-  .LxDialogPopup.LxCommandDialogPopup {
+.SliceRoot--viewport-short-height .LxDialogPopup.LxCommandDialogPopup {
   height: calc(100vh - 16px);
   max-height: calc(100vh - 16px);
 }
@@ -925,14 +1093,18 @@
 }
 
 .LxDialogFooter
-  > .LxButton:not(.LxButton--icon-chip):not(.LxButton--icon-xs):not(.LxButton--icon-sm):not(.LxButton--icon):not(.LxButton--icon-lg):not(.LxButton--icon-xl):not(.LxButton--capsule) {
+  > .LxButton:not(.LxButton--icon-chip):not(.LxButton--icon-xs):not(.LxButton--icon-sm):not(
+    .LxButton--icon
+  ):not(.LxButton--icon-lg):not(.LxButton--icon-xl):not(.LxButton--capsule) {
   min-height: 28px;
   padding: 4px 12px;
   border-radius: 8px;
 }
 
 .LxDialogFooter
-  > .LxButton:not(.LxButton--icon-chip):not(.LxButton--icon-xs):not(.LxButton--icon-sm):not(.LxButton--icon):not(.LxButton--icon-lg):not(.LxButton--icon-xl):not(.LxButton--capsule)
+  > .LxButton:not(.LxButton--icon-chip):not(.LxButton--icon-xs):not(.LxButton--icon-sm):not(
+    .LxButton--icon
+  ):not(.LxButton--icon-lg):not(.LxButton--icon-xl):not(.LxButton--capsule)
   .LxButton__text {
   font-weight: 400;
 }
@@ -952,16 +1124,11 @@
   border-radius: 0;
 }
 
-.SliceRoot--viewport-compact
-  .LxDialogPopup--bottom-stick-mobile
-  .LxDialogFooter {
+.SliceRoot--viewport-compact .LxDialogPopup--bottom-stick-mobile .LxDialogFooter {
   flex-direction: column-reverse;
 }
 
-.SliceRoot--viewport-compact
-  .LxDialogPopup--bottom-stick-mobile
-  .LxDialogFooter
-  > .LxButton {
+.SliceRoot--viewport-compact .LxDialogPopup--bottom-stick-mobile .LxDialogFooter > .LxButton {
   width: 100%;
 }
 
@@ -1029,7 +1196,9 @@
   border-bottom-color: var(--border);
   border-radius: 18px;
   background-color: var(--popover);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
 .LxMenuSubPopup {
@@ -1251,7 +1420,9 @@
   border-bottom-color: var(--border);
   border-radius: 10px;
   background-color: var(--popover);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
 .LxTooltipPopup--picker {

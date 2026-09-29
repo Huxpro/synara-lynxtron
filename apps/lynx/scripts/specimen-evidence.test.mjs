@@ -68,10 +68,10 @@ function fixture() {
 
 test("accepts a complete specimen inventory", () => {
   const value = fixture();
-  assert.deepEqual(
-    validateSpecimenManifest(value.manifest, value.manifestPath),
-    { errors: [], incomplete: [] },
-  );
+  assert.deepEqual(validateSpecimenManifest(value.manifest, value.manifestPath), {
+    errors: [],
+    incomplete: [],
+  });
 });
 
 test("keeps a missing required state incomplete", () => {
@@ -92,9 +92,7 @@ test("keeps pending temporal proof incomplete", () => {
 
 test("rejects missing evidence files", () => {
   const value = fixture();
-  value.manifest.controls[0].states.default.evidence = [
-    { kind: "geometry", path: "missing.json" },
-  ];
+  value.manifest.controls[0].states.default.evidence = [{ kind: "geometry", path: "missing.json" }];
   const result = validateSpecimenManifest(value.manifest, value.manifestPath);
   assert.match(result.errors.join("\n"), /missing evidence missing\.json/);
 });
@@ -113,8 +111,5 @@ test("rejects an incomplete required inventory", () => {
   const value = fixture();
   value.manifest.controls.pop();
   const result = validateSpecimenManifest(value.manifest, value.manifestPath);
-  assert.match(
-    result.errors.join("\n"),
-    /missing required primary-secondary-button/,
-  );
+  assert.match(result.errors.join("\n"), /missing required primary-secondary-button/);
 });

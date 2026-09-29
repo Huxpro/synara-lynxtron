@@ -43,27 +43,27 @@ are not represented here as screenshot proof.
 
 Before the repair:
 
-| Owner | Web | Lynx-for-Web | Result |
-| --- | ---: | ---: | --- |
-| Header to first card | first card `y=150` | first card `y=156` | Lynx root gap was `12px` instead of the shared section `6px` |
-| Error detail line | `12px/19.5px` | `12px/18px` | each card was `1.5px` short |
-| Provider title | `14px/20px/600` | `14px/normal/600` | Lynx rendered a 17px title box |
-| Refresh | `72x24`, `10px/15px` label | `80.6x25`, `12px/normal` label | generic xs chrome remained visible |
+| Owner                |                        Web |                   Lynx-for-Web | Result                                                       |
+| -------------------- | -------------------------: | -----------------------------: | ------------------------------------------------------------ |
+| Header to first card |         first card `y=150` |             first card `y=156` | Lynx root gap was `12px` instead of the shared section `6px` |
+| Error detail line    |              `12px/19.5px` |                    `12px/18px` | each card was `1.5px` short                                  |
+| Provider title       |            `14px/20px/600` |              `14px/normal/600` | Lynx rendered a 17px title box                               |
+| Refresh              | `72x24`, `10px/15px` label | `80.6x25`, `12px/normal` label | generic xs chrome remained visible                           |
 
 After assigning each difference to its actual owner:
 
-| Anchor | Web | Lynx-for-Web |
-| --- | ---: | ---: |
-| Section header | `x=456 y=118 w=624 h=26` | exact |
-| Refresh | `x=1008 y=119 w=72 h=24` | exact |
-| Provider icon | `x=473 y=167 w=28 h=28` | exact |
-| Provider title | `x=511 y=171 h=20`, `14/20/600` | exact |
-| Error status | `x=985.2 y=171.5 w=77.8 h=19` | exact |
-| Error detail | `x=473 y=209 w=590 h=19.5`, `12/19.5` | exact |
-| Card 1 | `x=456 y=150 w=624 h=95.5` | exact |
-| Card 2 | `x=456 y=257.5 w=624 h=95.5` | exact |
-| Card 3 | `x=456 y=365 w=624 h=95.5` | exact |
-| Footer | `x=456 y=466.5 w=624`, `11/18` | exact |
+| Anchor         |                                   Web | Lynx-for-Web |
+| -------------- | ------------------------------------: | -----------: |
+| Section header |              `x=456 y=118 w=624 h=26` |        exact |
+| Refresh        |              `x=1008 y=119 w=72 h=24` |        exact |
+| Provider icon  |               `x=473 y=167 w=28 h=28` |        exact |
+| Provider title |       `x=511 y=171 h=20`, `14/20/600` |        exact |
+| Error status   |         `x=985.2 y=171.5 w=77.8 h=19` |        exact |
+| Error detail   | `x=473 y=209 w=590 h=19.5`, `12/19.5` |        exact |
+| Card 1         |            `x=456 y=150 w=624 h=95.5` |        exact |
+| Card 2         |          `x=456 y=257.5 w=624 h=95.5` |        exact |
+| Card 3         |            `x=456 y=365 w=624 h=95.5` |        exact |
+| Footer         |        `x=456 y=466.5 w=624`, `11/18` |        exact |
 
 ## Evidence
 

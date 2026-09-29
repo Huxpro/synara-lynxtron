@@ -13,11 +13,7 @@
       "y": 56
     }
   },
-  "dims": [
-    390,
-    844,
-    1
-  ],
+  "dims": [390, 844, 1],
   "disclosure": {
     "cls": "LynxDisclosureMotion LynxDisclosureMotion--open SharedPrCodeDisclosure",
     "hidden": null,

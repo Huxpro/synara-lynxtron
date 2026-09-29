@@ -72,29 +72,19 @@ export function SidebarListSectionHeaderAddProjectElement(props: {
 export function SidebarListSectionHeaderSortElement(props: {
   readonly projectSortOrder: SidebarProjectSortOrderValue;
   readonly threadSortOrder: SidebarThreadSortOrderValue;
-  readonly onProjectSortOrderChange: (
-    value: SidebarProjectSortOrderValue,
-  ) => void;
-  readonly onThreadSortOrderChange: (
-    value: SidebarThreadSortOrderValue,
-  ) => void;
+  readonly onProjectSortOrderChange: (value: SidebarProjectSortOrderValue) => void;
+  readonly onThreadSortOrderChange: (value: SidebarThreadSortOrderValue) => void;
 }) {
   return (
     <Menu>
-      <SidebarIconButton
-        render={<MenuTrigger />}
-        icon={SortFilterIcon}
-        label="Sort projects"
-      />
+      <SidebarIconButton render={<MenuTrigger />} icon={SortFilterIcon} label="Sort projects" />
       <ComposerPickerMenuPopup align="end" side="bottom" className="min-w-44">
         <MenuGroup>
           <MenuGroupLabel>Sort projects</MenuGroupLabel>
           <MenuRadioGroup
             value={props.projectSortOrder}
             onValueChange={(value) =>
-              props.onProjectSortOrderChange(
-                value as SidebarProjectSortOrderValue,
-              )
+              props.onProjectSortOrderChange(value as SidebarProjectSortOrderValue)
             }
           >
             {SIDEBAR_PROJECT_SORT_OPTIONS.map((option) => (
@@ -109,9 +99,7 @@ export function SidebarListSectionHeaderSortElement(props: {
           <MenuRadioGroup
             value={props.threadSortOrder}
             onValueChange={(value) =>
-              props.onThreadSortOrderChange(
-                value as SidebarThreadSortOrderValue,
-              )
+              props.onThreadSortOrderChange(value as SidebarThreadSortOrderValue)
             }
           >
             {SIDEBAR_THREAD_SORT_OPTIONS.map((option) => (

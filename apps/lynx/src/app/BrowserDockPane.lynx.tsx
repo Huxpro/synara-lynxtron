@@ -1,20 +1,24 @@
-import { useEffect, useRef, useState } from '@lynx-js/react';
-import { getRectByRef } from '@lynx-js/lynx-ui';
-import type { NodesRef } from '@lynx-js/types';
-import { useQuery } from '@tanstack/react-query';
-import linkSvg from '@synara-central-icons/chain-link-3.svg?raw';
+import { useEffect, useRef, useState } from "@lynx-js/react";
+import { getRectByRef } from "@lynx-js/lynx-ui";
+import type { NodesRef } from "@lynx-js/types";
+import { useQuery } from "@tanstack/react-query";
+import linkSvg from "@synara-central-icons/chain-link-3.svg?raw";
 
-import { useTheme } from '../adapters/useTheme.lynx';
-import { Button } from '../components/ui/button.lynx';
-import { ArrowLeftIcon, ArrowRightIcon, CameraIcon, EllipsisIcon, ExternalLinkIcon, GlobeIcon, PlusIcon, RefreshCwIcon, XIcon } from '../lib/icons.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
+import { useTheme } from "../adapters/useTheme.lynx";
+import { Button } from "../components/ui/button.lynx";
 import {
-  Menu,
-  MenuItem,
-  MenuPopup,
-  MenuSeparator,
-  MenuTrigger,
-} from '../components/ui/menu.lynx';
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CameraIcon,
+  EllipsisIcon,
+  ExternalLinkIcon,
+  GlobeIcon,
+  PlusIcon,
+  RefreshCwIcon,
+  XIcon,
+} from "../lib/icons.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from "../components/ui/menu.lynx";
 import {
   BROWSER_BLANK_URL,
   buildBrowserAddressSuggestions,
@@ -24,25 +28,22 @@ import {
   resolveCopyableBrowserTabUrl,
   type BrowserAddressHistoryEntry,
   type BrowserAddressSuggestion,
-} from '@synara/shared/browserSession';
+} from "@synara/shared/browserSession";
 import {
   browserLocalServerUrl,
   localServerAddressLabel,
   localServerFolderLabel,
   localServerPrimaryLabel,
-} from '@synara/shared/localServers';
-import { BROWSER_COPY_LINK_TOAST_TITLE } from '@synara/shared/browserShortcuts';
-import { browserView } from '../platform/browserView.lynx';
-import { sleepOnHost } from '../platform/timer';
-import type { BrowserViewState } from '../main/desktop/browserViewProbe';
-import { fetchLocalServers } from '../data/synaraClient.lynx';
-import { platformWindow } from '../platform/window';
-import {
-  readBrowserTabsState,
-  storeBrowserTabsState,
-} from './browserTabsPersistence.lynx';
-import { resolveBrowserViewBounds } from './browserViewBounds.lynx';
-import './browser-dock-pane.css';
+} from "@synara/shared/localServers";
+import { BROWSER_COPY_LINK_TOAST_TITLE } from "@synara/shared/browserShortcuts";
+import { browserView } from "../platform/browserView.lynx";
+import { sleepOnHost } from "../platform/timer";
+import type { BrowserViewState } from "../main/desktop/browserViewProbe";
+import { fetchLocalServers } from "../data/synaraClient.lynx";
+import { platformWindow } from "../platform/window";
+import { readBrowserTabsState, storeBrowserTabsState } from "./browserTabsPersistence.lynx";
+import { resolveBrowserViewBounds } from "./browserViewBounds.lynx";
+import "./browser-dock-pane.css";
 
 const INITIAL_BROWSER_URL = BROWSER_BLANK_URL;
 const INACTIVE_TAB_SUSPEND_DELAY_MS = 1_500;
@@ -58,17 +59,18 @@ interface NativeBrowserTab {
 
 function upsertBrowserHistory(
   entries: readonly BrowserAddressHistoryEntry[],
-  next: BrowserAddressHistoryEntry
+  next: BrowserAddressHistoryEntry,
 ): readonly BrowserAddressHistoryEntry[] {
   if (next.url === BROWSER_BLANK_URL) return entries;
   if (
     entries[0]?.url === next.url &&
     entries[0]?.title === next.title &&
     entries[0]?.tabId === next.tabId
-  ) return entries;
+  )
+    return entries;
   return [next, ...entries.filter((entry) => entry.url !== next.url)].slice(
     0,
-    BROWSER_HISTORY_LIMIT
+    BROWSER_HISTORY_LIMIT,
   );
 }
 
@@ -81,7 +83,7 @@ export function BrowserDockPane(props: {
 }) {
   const { semanticIconColor, svgColors } = useTheme();
   const primaryIconColor = svgColors.foreground;
-  const secondaryIconColor = semanticIconColor('secondary');
+  const secondaryIconColor = semanticIconColor("secondary");
   const paneRef = useRef<NodesRef>(null);
   const contentRef = useRef<NodesRef>(null);
   const addressRef = useRef<NodesRef>(null);
@@ -99,28 +101,23 @@ export function BrowserDockPane(props: {
   const activeRef = useRef(props.active);
   activeRef.current = props.active;
   const nextTabIdRef = useRef(initialTabsRef.current.tabs.length + 1);
-  const [tabs, setTabs] = useState<readonly NativeBrowserTab[]>(
-    initialTabsRef.current.tabs
+  const [tabs, setTabs] = useState<readonly NativeBrowserTab[]>(initialTabsRef.current.tabs);
+  const [recentHistory, setRecentHistory] = useState<readonly BrowserAddressHistoryEntry[]>(
+    initialTabsRef.current.recentHistory,
   );
-  const [recentHistory, setRecentHistory] = useState<
-    readonly BrowserAddressHistoryEntry[]
-  >(initialTabsRef.current.recentHistory);
-  const [activeTabId, setActiveTabId] = useState(
-    initialTabsRef.current.activeTabId
-  );
+  const [activeTabId, setActiveTabId] = useState(initialTabsRef.current.activeTabId);
   const activeTabIdRef = useRef(activeTabId);
   activeTabIdRef.current = activeTabId;
   const [address, setAddress] = useState(
-    initialTabsRef.current.tabs.find(
-      (tab) => tab.id === initialTabsRef.current.activeTabId
-    )?.url ?? INITIAL_BROWSER_URL
+    initialTabsRef.current.tabs.find((tab) => tab.id === initialTabsRef.current.activeTabId)?.url ??
+      INITIAL_BROWSER_URL,
   );
   const [state, setState] = useState<BrowserViewState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
   const [actionsOpen, setActionsOpen] = useState(false);
   const [addressFocused, setAddressFocused] = useState(false);
-  const displayedAddress = address === BROWSER_BLANK_URL ? '' : address;
+  const displayedAddress = address === BROWSER_BLANK_URL ? "" : address;
   const addressSuggestions = buildBrowserAddressSuggestions({
     activeTabId,
     query: displayedAddress,
@@ -129,12 +126,11 @@ export function BrowserDockPane(props: {
   });
   const suggestionsOpen = addressFocused && addressSuggestions.length > 0;
   const showLocalServersHome = isBlankBrowserTabUrl(state ?? { url: address });
-  const showNativeView =
-    !showLocalServersHome && !actionsOpen && !suggestionsOpen && !error;
+  const showNativeView = !showLocalServersHome && !actionsOpen && !suggestionsOpen && !error;
   const localServersQuery = useQuery({
-    queryKey: ['browser-local-servers'],
+    queryKey: ["browser-local-servers"],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchLocalServers();
     },
     enabled: props.active && props.supported && showLocalServersHome,
@@ -148,7 +144,7 @@ export function BrowserDockPane(props: {
       setState(next);
       setError(next.lastError);
       if (next.url) setAddress(next.url);
-      if (isBlankBrowserTabUrl(next)) props.onTitleChange?.('Browser');
+      if (isBlankBrowserTabUrl(next)) props.onTitleChange?.("Browser");
       else if (next.title) props.onTitleChange?.(next.title);
     }
     setTabs((current) =>
@@ -157,11 +153,11 @@ export function BrowserDockPane(props: {
           ? {
               ...tab,
               faviconUrl: next.faviconUrl || tab.faviconUrl,
-              title: isBlankBrowserTabUrl(next) ? 'Browser' : next.title || tab.title,
+              title: isBlankBrowserTabUrl(next) ? "Browser" : next.title || tab.title,
               url: next.url || tab.url,
             }
-          : tab
-      )
+          : tab,
+      ),
     );
     if (next.url && next.url !== BROWSER_BLANK_URL) {
       setRecentHistory((current) =>
@@ -169,7 +165,7 @@ export function BrowserDockPane(props: {
           tabId: stateTabId,
           title: next.title || next.url,
           url: next.url,
-        })
+        }),
       );
     }
   };
@@ -183,21 +179,21 @@ export function BrowserDockPane(props: {
   const cancelTabSuspend = (tabId: string) => {
     suspendVersionByTabIdRef.current.set(
       tabId,
-      (suspendVersionByTabIdRef.current.get(tabId) ?? 0) + 1
+      (suspendVersionByTabIdRef.current.get(tabId) ?? 0) + 1,
     );
     if (warmInactiveTabIdRef.current === tabId) {
       warmInactiveTabIdRef.current = null;
     }
   };
   const suspendHostTab = async (tabId: string) => {
-    'background only';
+    "background only";
     cancelTabSuspend(tabId);
     if (!hostTabIdsRef.current.has(tabId)) return;
     await browserView.closeTab(tabId);
     hostTabIdsRef.current.delete(tabId);
   };
   const scheduleInactiveTabSuspend = (tabId: string) => {
-    'background only';
+    "background only";
     if (!hostTabIdsRef.current.has(tabId)) return;
     const previousWarmTabId = warmInactiveTabIdRef.current;
     if (previousWarmTabId && previousWarmTabId !== tabId) {
@@ -211,7 +207,8 @@ export function BrowserDockPane(props: {
         disposedRef.current ||
         suspendVersionByTabIdRef.current.get(tabId) !== version ||
         activeTabIdRef.current === tabId
-      ) return;
+      )
+        return;
       await suspendHostTab(tabId);
     });
   };
@@ -219,7 +216,7 @@ export function BrowserDockPane(props: {
     browserSuspendVersionRef.current += 1;
   };
   const scheduleBrowserSuspend = () => {
-    'background only';
+    "background only";
     const version = ++browserSuspendVersionRef.current;
     void sleepOnHost(INACTIVE_BROWSER_SUSPEND_DELAY_MS).then(async () => {
       if (disposedRef.current || browserSuspendVersionRef.current !== version) return;
@@ -236,7 +233,7 @@ export function BrowserDockPane(props: {
   };
 
   const syncBounds = async () => {
-    'background only';
+    "background only";
     if (!props.active || !props.supported || !paneRef.current || !contentRef.current) return;
     const [paneRect, contentRect] = await Promise.all([
       getRectByRef(paneRef, true),
@@ -245,11 +242,7 @@ export function BrowserDockPane(props: {
     // The empty content slot can briefly report the pane's top during a cold
     // restore. Never let a host-owned WKWebView cover the two 40px Lynx chrome
     // rows while a later layout pass catches up.
-    const bounds = resolveBrowserViewBounds(
-      paneRect,
-      contentRect,
-      BROWSER_CHROME_HEIGHT_PX
-    );
+    const bounds = resolveBrowserViewBounds(paneRect, contentRect, BROWSER_CHROME_HEIGHT_PX);
     if (!bounds) return;
     if (!attachedRef.current) {
       attachPromiseRef.current ??= browserView
@@ -277,39 +270,36 @@ export function BrowserDockPane(props: {
     nativeAddressRef.current = displayedAddress;
     try {
       addressRef.current
-        ?.invoke({ method: 'setValue', params: { value: displayedAddress } })
+        ?.invoke({ method: "setValue", params: { value: displayedAddress } })
         .exec();
     } catch {
       // The address field can unmount while its Native update is queued.
     }
   }, [displayedAddress]);
   useEffect(() => {
-    return browserView.onCopyLink(() =>
-      showCopyStatus(BROWSER_COPY_LINK_TOAST_TITLE)
-    );
+    return browserView.onCopyLink(() => showCopyStatus(BROWSER_COPY_LINK_TOAST_TITLE));
   }, []);
   useEffect(() => {
     return browserView.onOpenWindow((request) => {
       const kind = classifyBrowserWindowOpen({
         url: request.url,
         frameName: request.frameName,
-        features: request.hasFeatures ? 'native-window-features' : '',
-        disposition: 'new-window',
+        features: request.hasFeatures ? "native-window-features" : "",
+        disposition: "new-window",
       });
-      if (kind === 'popup') {
-        showCopyStatus('This sign-in popup requires the CEF browser backend.');
+      if (kind === "popup") {
+        showCopyStatus("This sign-in popup requires the CEF browser backend.");
         return;
       }
       void createTab(request.url);
     });
   }, []);
   useEffect(() => {
-    'background only';
+    "background only";
     if (props.active && props.supported) {
       cancelBrowserSuspend();
       void syncBounds().catch((cause) => setError(String(cause)));
-    }
-    else if (attachedRef.current) {
+    } else if (attachedRef.current) {
       void browserView.setVisible(false);
       scheduleBrowserSuspend();
     }
@@ -326,8 +316,7 @@ export function BrowserDockPane(props: {
     setRecentHistory(restored.recentHistory);
     setActiveTabId(restored.activeTabId);
     setAddress(
-      restored.tabs.find((tab) => tab.id === restored.activeTabId)?.url ??
-        INITIAL_BROWSER_URL
+      restored.tabs.find((tab) => tab.id === restored.activeTabId)?.url ?? INITIAL_BROWSER_URL,
     );
     setState(null);
     setError(null);
@@ -339,7 +328,7 @@ export function BrowserDockPane(props: {
   }, [activeTabId, props.threadId, recentHistory, tabs, tabsStateThreadId]);
   useEffect(() => {
     return () => {
-      'background only';
+      "background only";
       disposedRef.current = true;
       cancelBrowserSuspend();
       suspendVersionByTabIdRef.current.clear();
@@ -352,18 +341,18 @@ export function BrowserDockPane(props: {
   }, []);
 
   const navigate = async () => {
-    'background only';
+    "background only";
     const url = normalizeBrowserUrlInput(address);
     setAddress(url);
     setError(null);
     if (!attachedRef.current) await syncBounds();
     const result = await browserView.navigate(url);
-    if (!result.ok) setError('Could not open this address.');
+    if (!result.ok) setError("Could not open this address.");
   };
   const chooseAddressSuggestion = async (suggestion: BrowserAddressSuggestion) => {
-    'background only';
+    "background only";
     setAddressFocused(false);
-    if (suggestion.kind === 'tab' && suggestion.tabId) {
+    if (suggestion.kind === "tab" && suggestion.tabId) {
       const tab = tabs.find((candidate) => candidate.id === suggestion.tabId);
       if (tab) await selectTab(tab);
       return;
@@ -372,34 +361,30 @@ export function BrowserDockPane(props: {
     setError(null);
     if (!attachedRef.current) await syncBounds();
     const result = await browserView.navigate(suggestion.url);
-    if (!result.ok) setError('Could not open this address.');
+    if (!result.ok) setError("Could not open this address.");
   };
   const navigateToLocalServer = async (url: string) => {
-    'background only';
+    "background only";
     setAddress(url);
     setError(null);
     if (!attachedRef.current) await syncBounds();
     const result = await browserView.navigate(url);
-    if (!result.ok) setError('Could not open this address.');
+    if (!result.ok) setError("Could not open this address.");
   };
   const copyLink = async () => {
-    'background only';
+    "background only";
     if (!copyableUrl) return;
-    const { clipboard } = await import(
-      /* webpackMode: "eager" */ '../platform/clipboard'
-    );
+    const { clipboard } = await import(/* webpackMode: "eager" */ "../platform/clipboard");
     await clipboard.writeText(copyableUrl);
     showCopyStatus(BROWSER_COPY_LINK_TOAST_TITLE);
   };
   const copyScreenshot = async () => {
-    'background only';
+    "background only";
     const result = await browserView.copyScreenshotToClipboard();
-    showCopyStatus(
-      result.ok ? 'Browser screenshot copied' : 'Could not copy screenshot.'
-    );
+    showCopyStatus(result.ok ? "Browser screenshot copied" : "Could not copy screenshot.");
   };
   const createTab = async (url = BROWSER_BLANK_URL) => {
-    'background only';
+    "background only";
     const previousActiveTabId = activeTabIdRef.current;
     let tabId = `browser-tab-${nextTabIdRef.current++}`;
     while (tabs.some((tab) => tab.id === tabId)) {
@@ -407,14 +392,11 @@ export function BrowserDockPane(props: {
     }
     const result = await browserView.newTab(tabId, url);
     if (!result.ok) {
-      setError('Could not create a new browser tab.');
+      setError("Could not create a new browser tab.");
       return;
     }
     hostTabIdsRef.current.add(tabId);
-    setTabs((current) => [
-      ...current,
-      { id: tabId, faviconUrl: '', title: 'Untitled', url },
-    ]);
+    setTabs((current) => [...current, { id: tabId, faviconUrl: "", title: "Untitled", url }]);
     activeTabIdRef.current = tabId;
     cancelTabSuspend(tabId);
     setActiveTabId(tabId);
@@ -423,7 +405,7 @@ export function BrowserDockPane(props: {
     scheduleInactiveTabSuspend(previousActiveTabId);
   };
   const selectTab = async (tab: NativeBrowserTab) => {
-    'background only';
+    "background only";
     if (tab.id === activeTabId) return;
     const previousActiveTabId = activeTabIdRef.current;
     const result = hostTabIdsRef.current.has(tab.id)
@@ -439,7 +421,7 @@ export function BrowserDockPane(props: {
     scheduleInactiveTabSuspend(previousActiveTabId);
   };
   const closeTab = async (tabId: string) => {
-    'background only';
+    "background only";
     const index = tabs.findIndex((tab) => tab.id === tabId);
     if (index < 0) return;
     await browserView.closeTab(tabId);
@@ -478,29 +460,44 @@ export function BrowserDockPane(props: {
     <view
       ref={paneRef}
       flatten={false}
-      className={`BrowserDockPane${props.active ? '' : ' BrowserDockPane--hidden'}`}
+      className={`BrowserDockPane${props.active ? "" : " BrowserDockPane--hidden"}`}
     >
       <view className="BrowserDockToolbar">
-        <Button aria-label="Go back" disabled={!state?.canGoBack} size="icon-xs" variant="ghost" onClick={() => {
-          'background only';
-          void browserView.goBack();
-        }}>
+        <Button
+          aria-label="Go back"
+          disabled={!state?.canGoBack}
+          size="icon-xs"
+          variant="ghost"
+          onClick={() => {
+            "background only";
+            void browserView.goBack();
+          }}
+        >
           <ArrowLeftIcon color={primaryIconColor} size={14} />
         </Button>
-        <Button aria-label="Go forward" disabled={!state?.canGoForward} size="icon-xs" variant="ghost" onClick={() => {
-          'background only';
-          void browserView.goForward();
-        }}>
+        <Button
+          aria-label="Go forward"
+          disabled={!state?.canGoForward}
+          size="icon-xs"
+          variant="ghost"
+          onClick={() => {
+            "background only";
+            void browserView.goForward();
+          }}
+        >
           <ArrowRightIcon color={primaryIconColor} size={14} />
         </Button>
-        <Button aria-label="Reload page" size="icon-xs" variant="ghost" onClick={() => {
-          'background only';
-          void browserView.reload();
-        }}>
+        <Button
+          aria-label="Reload page"
+          size="icon-xs"
+          variant="ghost"
+          onClick={() => {
+            "background only";
+            void browserView.reload();
+          }}
+        >
           <RefreshCwIcon
-            className={
-              state?.isLoading ? 'BrowserDockRefreshIcon--loading' : undefined
-            }
+            className={state?.isLoading ? "BrowserDockRefreshIcon--loading" : undefined}
             color={primaryIconColor}
             size={14}
           />
@@ -518,7 +515,7 @@ export function BrowserDockPane(props: {
           maxlines={1}
           confirm-type="search"
           bindinput={(event) => {
-            'background only';
+            "background only";
             const nextValue = event.detail.value;
             if (nativeAddressRef.current !== nextValue) {
               setAddressFocused(true);
@@ -528,11 +525,11 @@ export function BrowserDockPane(props: {
           }}
           bindfocus={() => setAddressFocused(true)}
           bindblur={() => {
-            'background only';
+            "background only";
             void sleepOnHost(120).then(() => setAddressFocused(false));
           }}
           bindconfirm={() => {
-            'background only';
+            "background only";
             setAddressFocused(false);
             void navigate();
           }}
@@ -543,10 +540,8 @@ export function BrowserDockPane(props: {
           size="icon-xs"
           variant="ghost"
           onClick={() => {
-            'background only';
-            void copyScreenshot().catch(() =>
-              showCopyStatus('Could not copy screenshot.')
-            );
+            "background only";
+            void copyScreenshot().catch(() => showCopyStatus("Could not copy screenshot."));
           }}
         >
           <CameraIcon color={primaryIconColor} size={14} />
@@ -557,8 +552,8 @@ export function BrowserDockPane(props: {
           size="icon-xs"
           variant="ghost"
           onClick={() => {
-            'background only';
-            void copyLink().catch(() => showCopyStatus('Could not copy link.'));
+            "background only";
+            void copyLink().catch(() => showCopyStatus("Could not copy link."));
           }}
         >
           <svg
@@ -578,10 +573,8 @@ export function BrowserDockPane(props: {
             <MenuItem
               disabled={!copyableUrl}
               onClick={() => {
-                'background only';
-                void copyScreenshot().catch(() =>
-                  showCopyStatus('Could not copy screenshot.')
-                );
+                "background only";
+                void copyScreenshot().catch(() => showCopyStatus("Could not copy screenshot."));
               }}
             >
               <CameraIcon color={secondaryIconColor} size={14} />
@@ -590,10 +583,10 @@ export function BrowserDockPane(props: {
             <MenuItem
               disabled={!copyableUrl}
               onClick={() => {
-                'background only';
+                "background only";
                 if (!copyableUrl) return;
                 void platformWindow.openExternal(copyableUrl).then((opened) => {
-                  if (!opened) showCopyStatus('Could not open externally.');
+                  if (!opened) showCopyStatus("Could not open externally.");
                 });
               }}
             >
@@ -617,12 +610,12 @@ export function BrowserDockPane(props: {
               variant="ghost"
               aria-label={`${suggestion.title} ${suggestion.detail}`}
               onClick={() => {
-                'background only';
+                "background only";
                 void chooseAddressSuggestion(suggestion);
               }}
             >
               <view className="BrowserDockAddressSuggestionIcon">
-                {suggestion.kind === 'navigate' ? (
+                {suggestion.kind === "navigate" ? (
                   <ExternalLinkIcon color={secondaryIconColor} size={12} />
                 ) : suggestion.faviconUrl ? (
                   <image src={suggestion.faviconUrl} />
@@ -631,12 +624,8 @@ export function BrowserDockPane(props: {
                 )}
               </view>
               <view className="BrowserDockAddressSuggestionCopy">
-                <text className="BrowserDockAddressSuggestionTitle">
-                  {suggestion.title}
-                </text>
-                <text className="BrowserDockAddressSuggestionDetail">
-                  {suggestion.detail}
-                </text>
+                <text className="BrowserDockAddressSuggestionTitle">{suggestion.title}</text>
+                <text className="BrowserDockAddressSuggestionDetail">{suggestion.detail}</text>
               </view>
             </Button>
           ))}
@@ -647,13 +636,13 @@ export function BrowserDockPane(props: {
           <view className="BrowserDockTabList">
             {tabs.map((tab) => (
               <view
-                className={`BrowserDockTab${tab.id === activeTabId ? ' BrowserDockTab--active' : ''}`}
+                className={`BrowserDockTab${tab.id === activeTabId ? " BrowserDockTab--active" : ""}`}
                 key={tab.id}
               >
                 <view
                   className="BrowserDockTabSelect"
                   bindtap={() => {
-                    'background only';
+                    "background only";
                     void selectTab(tab);
                   }}
                 >
@@ -661,22 +650,18 @@ export function BrowserDockPane(props: {
                     <image className="BrowserDockTabFavicon" src={tab.faviconUrl} />
                   ) : (
                     <GlobeIcon
-                      color={
-                        tab.id === activeTabId
-                          ? primaryIconColor
-                          : secondaryIconColor
-                      }
+                      color={tab.id === activeTabId ? primaryIconColor : secondaryIconColor}
                       size={12}
                     />
                   )}
-                  <text className="BrowserDockTabLabel">{tab.title || 'Untitled'}</text>
+                  <text className="BrowserDockTabLabel">{tab.title || "Untitled"}</text>
                 </view>
                 <Button
-                  aria-label={`Close ${tab.title || 'Untitled'}`}
+                  aria-label={`Close ${tab.title || "Untitled"}`}
                   size="icon-xs"
                   variant="ghost"
                   onClick={() => {
-                    'background only';
+                    "background only";
                     void closeTab(tab.id);
                   }}
                 >
@@ -691,7 +676,7 @@ export function BrowserDockPane(props: {
           size="icon-xs"
           variant="ghost"
           onClick={() => {
-            'background only';
+            "background only";
             void createTab();
           }}
         >
@@ -710,15 +695,13 @@ export function BrowserDockPane(props: {
               size="icon-xs"
               variant="ghost"
               onClick={() => {
-                'background only';
+                "background only";
                 void localServersQuery.refetch();
               }}
             >
               <RefreshCwIcon
                 className={
-                  localServersQuery.isFetching
-                    ? 'BrowserDockRefreshIcon--loading'
-                    : undefined
+                  localServersQuery.isFetching ? "BrowserDockRefreshIcon--loading" : undefined
                 }
                 color="rgba(255, 255, 255, 0.35)"
                 size={14}
@@ -752,10 +735,10 @@ export function BrowserDockPane(props: {
                 const url = browserLocalServerUrl(server);
                 return (
                   <view
-                    className={`BrowserDockServerCard${url ? '' : ' BrowserDockServerCard--disabled'}`}
+                    className={`BrowserDockServerCard${url ? "" : " BrowserDockServerCard--disabled"}`}
                     key={server.id}
                     bindtap={() => {
-                      'background only';
+                      "background only";
                       if (url) void navigateToLocalServer(url);
                     }}
                   >
@@ -780,7 +763,7 @@ export function BrowserDockPane(props: {
                         {localServerAddressLabel(server)}
                         {localServerFolderLabel(server)
                           ? ` · ${localServerFolderLabel(server)}`
-                          : ''}
+                          : ""}
                       </text>
                     </view>
                     <view className="BrowserDockServerOnline" />
@@ -796,7 +779,7 @@ export function BrowserDockPane(props: {
         flatten={false}
         className="BrowserDockContentSlot"
         bindlayoutchange={() => {
-          'background only';
+          "background only";
           void syncBounds();
         }}
       />

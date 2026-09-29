@@ -1,6 +1,6 @@
 export type IntegrationClipboardOutcome =
-  | { readonly intent: 'success'; readonly message: string }
-  | { readonly intent: 'error'; readonly message: string };
+  | { readonly intent: "success"; readonly message: string }
+  | { readonly intent: "error"; readonly message: string };
 
 export async function copyIntegrationText(input: {
   readonly value: string;
@@ -9,14 +9,14 @@ export async function copyIntegrationText(input: {
 }): Promise<IntegrationClipboardOutcome> {
   try {
     await input.writeText(input.value);
-    return { intent: 'success', message: input.successMessage };
+    return { intent: "success", message: input.successMessage };
   } catch (error) {
     return {
-      intent: 'error',
+      intent: "error",
       message:
         error instanceof Error && error.message.trim()
           ? `Could not copy: ${error.message.trim()}`
-          : 'Could not copy to clipboard.',
+          : "Could not copy to clipboard.",
     };
   }
 }

@@ -153,9 +153,7 @@ export function readPersistedState(initialState: AppState): AppState {
     persistedProjectOrderCwds.length = 0;
     persistedProjectOrderByCwd.clear();
     persistedProjectNamesByCwd.clear();
-    for (const cwd of Array.isArray(parsed.expandedProjectCwds)
-      ? parsed.expandedProjectCwds
-      : []) {
+    for (const cwd of Array.isArray(parsed.expandedProjectCwds) ? parsed.expandedProjectCwds : []) {
       if (typeof cwd === "string" && cwd.length > 0) {
         persistedExpandedProjectCwds.add(projectCwdKey(cwd));
       }

@@ -1,7 +1,5 @@
 {
-  "active": [
-    "Secondary editor review"
-  ],
+  "active": ["Secondary editor review"],
   "dialog": null,
   "editor": true,
   "items": [],

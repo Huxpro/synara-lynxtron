@@ -3,13 +3,13 @@
 // Layer: Shared renderer-independent presentation policy
 
 export interface PathTreeFileNode {
-  readonly kind: 'file';
+  readonly kind: "file";
   readonly name: string;
   readonly path: string;
 }
 
 export interface PathTreeDirectoryNode {
-  readonly kind: 'directory';
+  readonly kind: "directory";
   readonly name: string;
   readonly path: string;
   readonly children: readonly PathTreeNode[];
@@ -29,16 +29,16 @@ function createDirectory(name: string, path: string): MutableDirectory {
 }
 
 function compareNodeName(left: string, right: string): number {
-  return left.localeCompare(right, undefined, { numeric: true, sensitivity: 'base' });
+  return left.localeCompare(right, undefined, { numeric: true, sensitivity: "base" });
 }
 
 function compressDirectory(node: PathTreeDirectoryNode): PathTreeDirectoryNode {
   let current = node;
   while (current.children.length === 1) {
     const onlyChild = current.children[0];
-    if (!onlyChild || onlyChild.kind !== 'directory') break;
+    if (!onlyChild || onlyChild.kind !== "directory") break;
     current = {
-      kind: 'directory',
+      kind: "directory",
       name: `${current.name}/${onlyChild.name}`,
       path: onlyChild.path,
       children: onlyChild.children,
@@ -51,11 +51,11 @@ function finalizeDirectory(directory: MutableDirectory): PathTreeNode[] {
   const directories = [...directory.directories.values()]
     .map((child) =>
       compressDirectory({
-        kind: 'directory',
+        kind: "directory",
         name: child.name,
         path: child.path,
         children: finalizeDirectory(child),
-      })
+      }),
     )
     .sort((left, right) => compareNodeName(left.name, right.name));
   const files = directory.files
@@ -65,10 +65,10 @@ function finalizeDirectory(directory: MutableDirectory): PathTreeNode[] {
 }
 
 export function buildPathTree(paths: readonly string[]): PathTreeNode[] {
-  const root = createDirectory('', '');
+  const root = createDirectory("", "");
   for (const rawPath of paths) {
-    const path = rawPath.replace(/^\/+|\/+$/g, '');
-    const segments = path.split('/').filter(Boolean);
+    const path = rawPath.replace(/^\/+|\/+$/g, "");
+    const segments = path.split("/").filter(Boolean);
     if (segments.length === 0) continue;
     const name = segments[segments.length - 1] as string;
     let directory = root;
@@ -82,7 +82,7 @@ export function buildPathTree(paths: readonly string[]): PathTreeNode[] {
       }
       directory = child;
     }
-    directory.files.push({ kind: 'file', name, path });
+    directory.files.push({ kind: "file", name, path });
   }
   return finalizeDirectory(root);
 }

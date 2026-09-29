@@ -7,10 +7,7 @@ import { fileURLToPath } from "node:url";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(SCRIPT_DIR, "../../..");
-const DEFAULT_MANIFEST = path.join(
-  REPO_ROOT,
-  "shots/2026-08-06/providers-evidence-manifest.json",
-);
+const DEFAULT_MANIFEST = path.join(REPO_ROOT, "shots/2026-08-06/providers-evidence-manifest.json");
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -44,10 +41,7 @@ function flattenNodes(root, output = []) {
 
 export function pngDimensions(filePath) {
   const buffer = fs.readFileSync(filePath);
-  if (
-    buffer.length < 24 ||
-    buffer.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a"
-  ) {
+  if (buffer.length < 24 || buffer.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a") {
     throw new Error(`${filePath} is not a valid PNG`);
   }
   return {
@@ -239,10 +233,7 @@ export function validateProvidersEvidenceManifest(manifest, root) {
 }
 
 export function validateProvidersEvidence(manifestPath = DEFAULT_MANIFEST) {
-  return validateProvidersEvidenceManifest(
-    readJson(manifestPath),
-    path.dirname(manifestPath),
-  );
+  return validateProvidersEvidenceManifest(readJson(manifestPath), path.dirname(manifestPath));
 }
 
 function parseManifest(argv) {

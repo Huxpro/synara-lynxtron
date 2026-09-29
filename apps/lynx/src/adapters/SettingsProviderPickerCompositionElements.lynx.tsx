@@ -1,15 +1,15 @@
-import type { ProviderKind } from '@synara/contracts';
+import type { ProviderKind } from "@synara/contracts";
 import type {
   SettingsProviderPickerItem,
   SettingsProviderPickerMoveDirection,
-} from '@synara-web/components/settings/SettingsProviderPickerComposition.logic';
+} from "@synara-web/components/settings/SettingsProviderPickerComposition.logic";
 
-import { Button } from '../components/ui/button';
-import { Switch } from '../components/ui/switch.lynx';
-import { ChevronDownIcon } from '../lib/icons.lynx';
-import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
-import { SettingsResetIcon } from './SettingsResetIcon.lynx';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
+import { Button } from "../components/ui/button";
+import { Switch } from "../components/ui/switch.lynx";
+import { ChevronDownIcon } from "../lib/icons.lynx";
+import { SettingsHeadingElement } from "./SettingsHeadingElement.lynx";
+import { SettingsResetIcon } from "./SettingsResetIcon.lynx";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
 
 function ProviderVisibilitySwitch(props: {
   readonly item: SettingsProviderPickerItem;
@@ -17,7 +17,13 @@ function ProviderVisibilitySwitch(props: {
 }) {
   const checked = !props.item.hidden;
   return (
-    <Switch checked={checked} ariaLabel={`Show ${props.item.title} in the provider picker`} className={`SharedSettingsProviderPickerSwitch${checked ? ' SharedSettingsProviderPickerSwitch--on' : ''}`} thumbClassName="SharedSettingsProviderPickerSwitchThumb" onCheckedChange={(next) => props.onHiddenChange(props.item.provider, !next)} />
+    <Switch
+      checked={checked}
+      ariaLabel={`Show ${props.item.title} in the provider picker`}
+      className={`SharedSettingsProviderPickerSwitch${checked ? " SharedSettingsProviderPickerSwitch--on" : ""}`}
+      thumbClassName="SharedSettingsProviderPickerSwitchThumb"
+      onCheckedChange={(next) => props.onHiddenChange(props.item.provider, !next)}
+    />
   );
 }
 
@@ -34,8 +40,8 @@ export function SettingsProviderPickerElement(props: {
   readonly onReorder: (provider: ProviderKind, overProvider: ProviderKind) => void;
 }) {
   const resetInteraction = useLynxInteractiveState({
-    baseClassName: 'SharedSettingsProviderPickerReset',
-    accessibleLabel: 'Reset provider picker to default',
+    baseClassName: "SharedSettingsProviderPickerReset",
+    accessibleLabel: "Reset provider picker to default",
     onActivate: props.onReset,
   });
   return (
@@ -60,30 +66,21 @@ export function SettingsProviderPickerElement(props: {
                 </view>
               ) : null}
             </view>
-            <text className="SharedSettingsProviderPickerDescription">
-              {props.description}
-            </text>
-            <text className="SharedSettingsProviderPickerStatus">
-              {props.status}
-            </text>
+            <text className="SharedSettingsProviderPickerDescription">{props.description}</text>
+            <text className="SharedSettingsProviderPickerStatus">{props.status}</text>
           </view>
         </view>
         <view className="SharedSettingsProviderPickerList">
           {props.items.map((item) => (
-            <view
-              key={item.provider}
-              className="SharedSettingsProviderPickerItem"
-            >
-              <text className="SharedSettingsProviderPickerItemTitle">
-                {item.title}
-              </text>
+            <view key={item.provider} className="SharedSettingsProviderPickerItem">
+              <text className="SharedSettingsProviderPickerItemTitle">{item.title}</text>
               <view className="SharedSettingsProviderPickerItemActions">
                 <Button
                   size="icon-xs"
                   variant="ghost"
                   disabled={!item.canMoveUp}
                   aria-label={`Move ${item.title} up`}
-                  onClick={() => props.onMove(item.provider, 'up')}
+                  onClick={() => props.onMove(item.provider, "up")}
                 >
                   <ChevronDownIcon
                     className="SharedSettingsProviderPickerMoveIcon SharedSettingsProviderPickerMoveIcon--up"
@@ -96,7 +93,7 @@ export function SettingsProviderPickerElement(props: {
                   variant="ghost"
                   disabled={!item.canMoveDown}
                   aria-label={`Move ${item.title} down`}
-                  onClick={() => props.onMove(item.provider, 'down')}
+                  onClick={() => props.onMove(item.provider, "down")}
                 >
                   <ChevronDownIcon
                     className="SharedSettingsProviderPickerMoveIcon"
@@ -104,10 +101,7 @@ export function SettingsProviderPickerElement(props: {
                     color="var(--muted-foreground)"
                   />
                 </Button>
-                <ProviderVisibilitySwitch
-                  item={item}
-                  onHiddenChange={props.onHiddenChange}
-                />
+                <ProviderVisibilitySwitch item={item} onHiddenChange={props.onHiddenChange} />
               </view>
             </view>
           ))}

@@ -4,7 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { webStorage } from "~/platform/storage";
 
 import { isBrowser } from "~/platform/env";
-import { addWindowEventListener, dispatchWindowEvent, removeWindowEventListener } from "~/platform/events";
+import {
+  addWindowEventListener,
+  dispatchWindowEvent,
+  removeWindowEventListener,
+} from "~/platform/events";
 const isomorphicLocalStorage = webStorage;
 
 const decode = <T, E>(schema: Schema.Codec<T, E>, value: string) =>

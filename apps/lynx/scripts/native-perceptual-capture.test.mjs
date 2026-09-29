@@ -25,14 +25,8 @@ test("collects a PID tree without duplicating descendants", () => {
 test("parses listening ports and matches only PID-owned clients", () => {
   const ports = parseListeningPorts("p1\nn127.0.0.1:8904\nn*:59132\n");
   assert.deepEqual([...ports], [8904, 59132]);
-  assert.equal(
-    clientMatchesOwnedPorts({ id: "localhost:8904", name: "Synara" }, ports),
-    true,
-  );
-  assert.equal(
-    clientMatchesOwnedPorts({ id: "localhost:8903", name: "Other" }, ports),
-    false,
-  );
+  assert.equal(clientMatchesOwnedPorts({ id: "localhost:8904", name: "Synara" }, ports), true);
+  assert.equal(clientMatchesOwnedPorts({ id: "localhost:8903", name: "Other" }, ports), false);
 });
 
 test("finds a class token without substring matches", () => {

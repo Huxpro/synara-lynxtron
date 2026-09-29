@@ -399,7 +399,7 @@ function EditorRailTabs(props: {
       actionPlacement="start"
       className="flex-1 gap-2 [-webkit-app-region:no-drag]"
       owner="chat"
-      actions={(
+      actions={
         <>
           <Menu modal={false}>
             <MenuTrigger
@@ -433,8 +433,8 @@ function EditorRailTabs(props: {
             onNavigateToThread={openChatTab}
           />
         </>
-      )}
-      tabs={(
+      }
+      tabs={
         <>
           {chatTabs.map((thread, index) => (
             <SurfaceTabChip
@@ -473,7 +473,7 @@ function EditorRailTabs(props: {
             />
           ) : null}
         </>
-      )}
+      }
       tabsClassName="justify-end"
     />
   );

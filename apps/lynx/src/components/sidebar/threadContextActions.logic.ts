@@ -1,6 +1,6 @@
-import type { ClientOrchestrationCommand } from '@synara/contracts';
+import type { ClientOrchestrationCommand } from "@synara/contracts";
 
-import type { ThreadContextMenuActionId } from '@synara-web/components/ThreadContextMenuItems.logic';
+import type { ThreadContextMenuActionId } from "@synara-web/components/ThreadContextMenuItems.logic";
 
 export function resolveSecondaryPointerOffset(event: {
   readonly button?: number;
@@ -12,8 +12,7 @@ export function resolveSecondaryPointerOffset(event: {
   // the actual pressed buttons in the W3C bitfield instead. Accept either
   // representation so production right-clicks and synthetic events agree.
   const secondaryPressed =
-    event.button === 2 ||
-    (typeof event.buttons === 'number' && (event.buttons & 2) === 2);
+    event.button === 2 || (typeof event.buttons === "number" && (event.buttons & 2) === 2);
   if (!secondaryPressed) return null;
   if (!Number.isFinite(event.x) || !Number.isFinite(event.y)) return null;
   return { x: event.x!, y: event.y! };
@@ -25,17 +24,17 @@ export function buildNativeThreadContextCommand(input: {
   readonly isPinned: boolean;
   readonly threadId: string;
 }): ClientOrchestrationCommand | null {
-  if (input.action === 'toggle-pin') {
+  if (input.action === "toggle-pin") {
     return {
-      type: 'thread.meta.update',
+      type: "thread.meta.update",
       commandId: input.commandId as never,
       threadId: input.threadId as never,
       isPinned: !input.isPinned,
     };
   }
-  if (input.action === 'archive') {
+  if (input.action === "archive") {
     return {
-      type: 'thread.archive',
+      type: "thread.archive",
       commandId: input.commandId as never,
       threadId: input.threadId as never,
     };
@@ -51,19 +50,19 @@ export function nativeThreadContextConfirmation(
   preferences: {
     readonly confirmThreadArchive: boolean;
     readonly confirmThreadDelete: boolean;
-  }
+  },
 ): string | null {
-  if (action === 'archive' && preferences.confirmThreadArchive) {
+  if (action === "archive" && preferences.confirmThreadArchive) {
     return [
       `Archive thread "${title}"?`,
-      'Archived threads are hidden from the sidebar but can be restored later.',
-    ].join('\n');
+      "Archived threads are hidden from the sidebar but can be restored later.",
+    ].join("\n");
   }
-  if (action === 'delete' && preferences.confirmThreadDelete) {
+  if (action === "delete" && preferences.confirmThreadDelete) {
     return [
       `Delete thread "${title}"?`,
-      'This permanently clears conversation history for this thread.',
-    ].join('\n');
+      "This permanently clears conversation history for this thread.",
+    ].join("\n");
   }
   return null;
 }

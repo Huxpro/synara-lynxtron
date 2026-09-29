@@ -7,11 +7,11 @@
  * Exported content will be automatically mapped to NativeModules.nodejs
  */
 
-import { contextBridge } from '@lynx-js/lynxtron/context-bridge';
+import { contextBridge } from "@lynx-js/lynxtron/context-bridge";
 contextBridge.exposeInLynxBTS({
   echo: (message: string) => {
     return `Echo from PC Service Thread: ${message}`;
   },
 });
 
-console.log('[PC Preload] Node.js capabilities exported');
+console.log("[PC Preload] Node.js capabilities exported");

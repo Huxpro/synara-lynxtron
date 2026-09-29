@@ -12,8 +12,7 @@ export function scaleNativeVoiceWaveformLevel(level: number): number {
   }
   const normalized = Math.min(
     1,
-    (level - WAVEFORM_NOISE_FLOOR) /
-      (WAVEFORM_FULL_SCALE_LEVEL - WAVEFORM_NOISE_FLOOR)
+    (level - WAVEFORM_NOISE_FLOOR) / (WAVEFORM_FULL_SCALE_LEVEL - WAVEFORM_NOISE_FLOOR),
   );
   return Math.max(WAVEFORM_MIN_VISIBLE_LEVEL, Math.sqrt(normalized));
 }

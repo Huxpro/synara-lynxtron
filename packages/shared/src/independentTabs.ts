@@ -1,4 +1,4 @@
-export type IndependentTabRowMode = 'expanded' | 'tabs-only';
+export type IndependentTabRowMode = "expanded" | "tabs-only";
 
 export type IndependentTabRowPresentation = {
   readonly mode: IndependentTabRowMode;
@@ -7,17 +7,17 @@ export type IndependentTabRowPresentation = {
 };
 
 export function resolveIndependentTabRowPresentation(
-  collapsed: boolean
+  collapsed: boolean,
 ): IndependentTabRowPresentation {
   return collapsed
     ? {
-        mode: 'tabs-only',
+        mode: "tabs-only",
         showActions: false,
-        toggleLabel: 'Restore tab actions',
+        toggleLabel: "Restore tab actions",
       }
     : {
-        mode: 'expanded',
+        mode: "expanded",
         showActions: true,
-        toggleLabel: 'Collapse to tabs only',
+        toggleLabel: "Collapse to tabs only",
       };
 }

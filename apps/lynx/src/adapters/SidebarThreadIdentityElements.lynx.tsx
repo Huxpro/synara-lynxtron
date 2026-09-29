@@ -1,6 +1,6 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import './sidebar-thread-identity-elements.css';
+import "./sidebar-thread-identity-elements.css";
 
 interface ChildrenProps {
   readonly children?: ReactNode;
@@ -13,7 +13,7 @@ export function SidebarThreadIdentityCopyElement({
   return (
     <view
       className={`SharedSidebarThreadIdentityCopy${
-        subagent ? ' SharedSidebarThreadIdentityCopy--subagent' : ''
+        subagent ? " SharedSidebarThreadIdentityCopy--subagent" : ""
       }`}
     >
       {children}
@@ -33,8 +33,8 @@ export function SidebarThreadIdentityTitleElement({
   return (
     <text
       className={`SharedSidebarThreadIdentityTitle${
-        active ? ' SharedSidebarThreadIdentityTitle--active' : ''
-      }${subagent ? ' SharedSidebarThreadIdentityTitle--subagent' : ''}`}
+        active ? " SharedSidebarThreadIdentityTitle--active" : ""
+      }${subagent ? " SharedSidebarThreadIdentityTitle--subagent" : ""}`}
     >
       {children}
     </text>

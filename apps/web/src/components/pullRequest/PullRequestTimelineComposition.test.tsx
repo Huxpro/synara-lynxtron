@@ -34,26 +34,30 @@ function detail(): PullRequestDetail {
     reviewers: [],
     labels: [],
     checks: [],
-    comments: [{
-      id: "comment-1",
-      kind: "review",
-      author: { login: "reviewer", name: null, avatarUrl: null, url: null },
-      body: "**Looks good**",
-      createdAt: "2026-07-03T10:00:00Z",
-      updatedAt: null,
-      url: null,
-      path: null,
-      reviewState: "APPROVED",
-    }],
+    comments: [
+      {
+        id: "comment-1",
+        kind: "review",
+        author: { login: "reviewer", name: null, avatarUrl: null, url: null },
+        body: "**Looks good**",
+        createdAt: "2026-07-03T10:00:00Z",
+        updatedAt: null,
+        url: null,
+        path: null,
+        reviewState: "APPROVED",
+      },
+    ],
     commentsTruncated: false,
     commentsIncomplete: false,
-    commits: [{
-      oid: "abcdef1234567890",
-      messageHeadline: "Fix the widget",
-      messageBody: "",
-      committedDate: "2026-07-02T10:00:00Z",
-      authors: [],
-    }],
+    commits: [
+      {
+        oid: "abcdef1234567890",
+        messageHeadline: "Fix the widget",
+        messageBody: "",
+        committedDate: "2026-07-02T10:00:00Z",
+        authors: [],
+      },
+    ],
     mergeCapabilities: { merge: true, squash: true, rebase: true },
   };
 }

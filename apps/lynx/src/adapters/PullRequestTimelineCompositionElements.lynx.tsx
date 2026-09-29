@@ -1,6 +1,6 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import './pull-request-timeline-composition-elements.css';
+import "./pull-request-timeline-composition-elements.css";
 
 type ChildrenProps = { readonly children?: ReactNode };
 

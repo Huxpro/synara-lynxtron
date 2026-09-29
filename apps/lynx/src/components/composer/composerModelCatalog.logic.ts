@@ -1,14 +1,10 @@
-import type {
-  ModelSelection,
-  ProviderKind,
-  ProviderModelDescriptor,
-} from '@synara/contracts';
-import { getModelOptions } from '@synara/shared/model';
+import type { ModelSelection, ProviderKind, ProviderModelDescriptor } from "@synara/contracts";
+import { getModelOptions } from "@synara/shared/model";
 import {
   formatProviderModelOptionName,
   mergeDynamicModelOptions,
   type ProviderModelOption,
-} from '@synara-web/providerModelOptions';
+} from "@synara-web/providerModelOptions";
 
 export function resolveCatalogModelSelection(input: {
   readonly provider: ProviderKind;
@@ -18,9 +14,7 @@ export function resolveCatalogModelSelection(input: {
   if (input.rememberedSelection?.provider === input.provider) {
     return input.rememberedSelection;
   }
-  return input.activeSelection?.provider === input.provider
-    ? input.activeSelection
-    : undefined;
+  return input.activeSelection?.provider === input.provider ? input.activeSelection : undefined;
 }
 
 export function resolveLynxProviderModelOptions(input: {

@@ -47,11 +47,8 @@ export function buildModelSearchText(option: ProviderModelOption): string {
     option.upstreamProviderName,
     option.upstreamProviderId,
   ]
-    .filter(
-      (value): value is string =>
-        typeof value === 'string' && value.trim().length > 0
-    )
-    .join(' ')
+    .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
+    .join(" ")
     .toLowerCase();
 }
 

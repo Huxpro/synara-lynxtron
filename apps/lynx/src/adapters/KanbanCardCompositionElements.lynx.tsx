@@ -1,64 +1,61 @@
-import type { ProviderKind } from '@synara/contracts';
-import { useRef, type ReactNode } from '@lynx-js/react';
-import { getRectByRef } from '@lynx-js/lynx-ui';
-import type { NodesRef } from '@lynx-js/types';
-import forkSvg from '@synara-central-icons/fork.svg?raw';
-import pinFilledSvg from '@synara-central-icons-fill/pin.svg?raw';
-import terminalSvg from '@synara-central-icons/console.svg?raw';
-import worktreeSvg from '@synara-central-icons/arrow-split-right.svg?raw';
+import type { ProviderKind } from "@synara/contracts";
+import { useRef, type ReactNode } from "@lynx-js/react";
+import { getRectByRef } from "@lynx-js/lynx-ui";
+import type { NodesRef } from "@lynx-js/types";
+import forkSvg from "@synara-central-icons/fork.svg?raw";
+import pinFilledSvg from "@synara-central-icons-fill/pin.svg?raw";
+import terminalSvg from "@synara-central-icons/console.svg?raw";
+import worktreeSvg from "@synara-central-icons/arrow-split-right.svg?raw";
 
-import type { PrStatePresentation } from '@synara-web/components/pullRequest/pullRequestStatePresentation.logic';
-import type { SidebarStatusPresentation } from '@synara-web/components/SidebarStatus.logic';
-import type { KanbanColumnKey } from '@synara-web/components/kanban/kanban.logic';
-import type { KanbanDragPoint } from '@synara-web/components/kanban/kanbanDnd.logic';
-import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
-import { GitBranchIcon, PaperclipIcon } from '../lib/icons.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
+import type { PrStatePresentation } from "@synara-web/components/pullRequest/pullRequestStatePresentation.logic";
+import type { SidebarStatusPresentation } from "@synara-web/components/SidebarStatus.logic";
+import type { KanbanColumnKey } from "@synara-web/components/kanban/kanban.logic";
+import type { KanbanDragPoint } from "@synara-web/components/kanban/kanbanDnd.logic";
+import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
+import { GitBranchIcon, PaperclipIcon } from "../lib/icons.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import {
   isNativeKanbanPrimaryPointer,
   readNativeKanbanPointer,
   type NativeKanbanPointerEvent,
-} from '../app/kanbanDnd.logic';
+} from "../app/kanbanDnd.logic";
 
-import './kanban-card-composition-elements.css';
-import { PullRequestStateIcon } from './PullRequestStateIcon.lynx';
-import { KanbanStatusIcon } from './KanbanStatusIcon.lynx';
-import { useTheme } from './useTheme.lynx';
+import "./kanban-card-composition-elements.css";
+import { PullRequestStateIcon } from "./PullRequestStateIcon.lynx";
+import { KanbanStatusIcon } from "./KanbanStatusIcon.lynx";
+import { useTheme } from "./useTheme.lynx";
 import {
   lynxNestedInteractiveEventProps,
   useLynxInteractiveState,
-} from './useLynxInteractiveState';
-import { resolveSecondaryPointerOffset } from '../components/sidebar/threadContextActions.logic';
-import { focusLynxNode } from '../components/ui/focus.lynx';
+} from "./useLynxInteractiveState";
+import { resolveSecondaryPointerOffset } from "../components/sidebar/threadContextActions.logic";
+import { focusLynxNode } from "../components/ui/focus.lynx";
 
 type ChildrenProps = { readonly children?: ReactNode };
 
-export function KanbanCardRootElement(props: ChildrenProps & {
-  readonly accessibleLabel: string;
-  readonly isOverlay: boolean;
-  readonly isDragSource: boolean;
-  readonly visualState?: 'default' | 'hover' | 'focus' | 'pressed';
-  readonly onActivate?: () => void;
-  readonly onContextMenu?: (
-    event: React.MouseEvent,
-    restoreFocus: () => void
-  ) => void;
-  readonly onDragPointerStart?: (point: KanbanDragPoint) => void;
-}) {
+export function KanbanCardRootElement(
+  props: ChildrenProps & {
+    readonly accessibleLabel: string;
+    readonly isOverlay: boolean;
+    readonly isDragSource: boolean;
+    readonly visualState?: "default" | "hover" | "focus" | "pressed";
+    readonly onActivate?: () => void;
+    readonly onContextMenu?: (event: React.MouseEvent, restoreFocus: () => void) => void;
+    readonly onDragPointerStart?: (point: KanbanDragPoint) => void;
+  },
+) {
   const rootRef = useRef<NodesRef>(null);
   const interaction = useLynxInteractiveState({
     baseClassName: `SharedKanbanCard${
-      props.isOverlay ? ' SharedKanbanCard--overlay' : ''
-    }${props.isDragSource ? ' SharedKanbanCard--drag-source' : ''}${
-      props.visualState && props.visualState !== 'default'
-        ? ` ui-${props.visualState}`
-        : ''
+      props.isOverlay ? " SharedKanbanCard--overlay" : ""
+    }${props.isDragSource ? " SharedKanbanCard--drag-source" : ""}${
+      props.visualState && props.visualState !== "default" ? ` ui-${props.visualState}` : ""
     }`,
     accessibleLabel: props.accessibleLabel,
     onActivate: props.onActivate,
   });
   const openContextMenu = (offset: { readonly x: number; readonly y: number }) => {
-    'background only';
+    "background only";
     if (!props.onContextMenu) return;
     void getRectByRef(rootRef, true)
       .then((rect) => {
@@ -69,7 +66,7 @@ export function KanbanCardRootElement(props: ChildrenProps & {
             preventDefault() {},
             stopPropagation() {},
           } as React.MouseEvent,
-          () => focusLynxNode(rootRef)
+          () => focusLynxNode(rootRef),
         );
       })
       .catch(() => {
@@ -86,7 +83,7 @@ export function KanbanCardRootElement(props: ChildrenProps & {
         readonly buttons?: number;
         readonly clientX?: number;
         readonly clientY?: number;
-        readonly detail?: NativeKanbanPointerEvent['detail'];
+        readonly detail?: NativeKanbanPointerEvent["detail"];
         readonly pageX?: number;
         readonly pageY?: number;
         readonly x?: number;
@@ -129,7 +126,7 @@ export function KanbanCardActionsElement(props: {
   readonly onActivate: (event: React.MouseEvent) => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedKanbanCardActions',
+    baseClassName: "SharedKanbanCardActions",
     accessibleLabel: props.label,
     onActivate: () =>
       props.onActivate({
@@ -162,7 +159,7 @@ export function KanbanCardPinElement() {
   return (
     <svg
       className="SharedKanbanCardPin"
-      content={colorizeLynxSvg(pinFilledSvg, semanticIconColor('secondary'))}
+      content={colorizeLynxSvg(pinFilledSvg, semanticIconColor("secondary"))}
     />
   );
 }
@@ -179,9 +176,7 @@ export function KanbanCardMetaRowElement(props: ChildrenProps) {
   return <view className="SharedKanbanCardMetaRow">{props.children}</view>;
 }
 
-export function KanbanCardProviderElement(props: {
-  readonly provider: ProviderKind | null;
-}) {
+export function KanbanCardProviderElement(props: { readonly provider: ProviderKind | null }) {
   if (props.provider === null) {
     return <view className="SharedKanbanCardProviderFallback" />;
   }
@@ -198,7 +193,7 @@ export function KanbanCardBranchElement(props: { readonly label: string }) {
     <view className="SharedKanbanCardBranch">
       <GitBranchIcon
         className="SharedKanbanCardBranchIcon"
-        color={semanticIconColor('secondary')}
+        color={semanticIconColor("secondary")}
         size={12}
       />
       <text className="SharedKanbanCardMetaText" maxlines={1}>
@@ -213,7 +208,7 @@ export function KanbanCardWorktreeElement(_props: { readonly label: string }) {
   return (
     <svg
       className="SharedKanbanCardMetaIcon"
-      content={colorizeLynxSvg(worktreeSvg, semanticIconColor('secondary'))}
+      content={colorizeLynxSvg(worktreeSvg, semanticIconColor("secondary"))}
     />
   );
 }
@@ -223,10 +218,7 @@ export function KanbanCardForkElement() {
   return (
     <svg
       className="SharedKanbanCardForkIcon"
-      content={colorizeLynxSvg(
-        forkSvg,
-        resolvedTheme === 'dark' ? '#6ee7b7' : '#059669'
-      )}
+      content={colorizeLynxSvg(forkSvg, resolvedTheme === "dark" ? "#6ee7b7" : "#059669")}
     />
   );
 }
@@ -238,10 +230,7 @@ export function KanbanCardPullRequestElement(props: {
 }) {
   return (
     <view className="SharedKanbanCardPr">
-      <PullRequestStateIcon
-        className="SharedKanbanCardPrIcon"
-        presentation={props.presentation}
-      />
+      <PullRequestStateIcon className="SharedKanbanCardPrIcon" presentation={props.presentation} />
       <text className="SharedKanbanCardPrText">#{props.number}</text>
     </view>
   );
@@ -252,7 +241,7 @@ export function KanbanCardAttachmentElement() {
   return (
     <PaperclipIcon
       className="SharedKanbanCardMetaIcon"
-      color={semanticIconColor('secondary')}
+      color={semanticIconColor("secondary")}
       size={12}
     />
   );
@@ -262,27 +251,23 @@ export function KanbanCardTrailingElement(props: ChildrenProps) {
   return <view className="SharedKanbanCardTrailing">{props.children}</view>;
 }
 
-export function KanbanCardOptimisticStatusElement(props: {
-  readonly elapsed: string | null;
-}) {
+export function KanbanCardOptimisticStatusElement(props: { readonly elapsed: string | null }) {
   return (
     <view className="SharedKanbanCardInlineStatus">
       <view className="SharedKanbanCardStatusDot SharedKanbanCardStatusDot--working" />
       <text className="SharedKanbanCardWorking">
-        {props.elapsed ? `Worked for ${props.elapsed}` : 'Starting…'}
+        {props.elapsed ? `Worked for ${props.elapsed}` : "Starting…"}
       </text>
     </view>
   );
 }
 
-export function KanbanCardStatusPillElement(props: {
-  readonly pill: SidebarStatusPresentation;
-}) {
+export function KanbanCardStatusPillElement(props: { readonly pill: SidebarStatusPresentation }) {
   return (
     <view className="SharedKanbanCardInlineStatus">
       <view
         className={`SharedKanbanCardStatusDot${
-          props.pill.pulse ? ' SharedKanbanCardStatusDot--working' : ''
+          props.pill.pulse ? " SharedKanbanCardStatusDot--working" : ""
         }`}
       />
       <text className="SharedKanbanCardStatusText" maxlines={1}>
@@ -307,13 +292,10 @@ export function KanbanCardColumnStatusElement(props: {
       {props.isTerminal ? (
         <svg
           className="SharedKanbanCardColumnIcon"
-          content={colorizeLynxSvg(terminalSvg, semanticIconColor('secondary'))}
+          content={colorizeLynxSvg(terminalSvg, semanticIconColor("secondary"))}
         />
       ) : (
-        <KanbanStatusIcon
-          className="SharedKanbanCardColumnIcon"
-          column={props.column}
-        />
+        <KanbanStatusIcon className="SharedKanbanCardColumnIcon" column={props.column} />
       )}
       <text className="SharedKanbanCardColumnLabel">{props.label}</text>
     </view>

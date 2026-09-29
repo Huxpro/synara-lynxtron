@@ -1,7 +1,7 @@
 import {
   resolveSystemStateSemantics,
   type SystemStateIntent,
-} from '@synara-web/components/systemStateSemantics';
+} from "@synara-web/components/systemStateSemantics";
 
 export interface SystemStateAnnouncementDecision {
   readonly content: string | null;
@@ -15,16 +15,14 @@ export type SystemStateAnnouncementInput =
   | undefined
   | readonly SystemStateAnnouncementInput[];
 
-export function normalizeSystemStateAnnouncement(
-  announcement: unknown
-): string {
-  if (typeof announcement === 'string' || typeof announcement === 'number') {
+export function normalizeSystemStateAnnouncement(announcement: unknown): string {
+  if (typeof announcement === "string" || typeof announcement === "number") {
     return String(announcement);
   }
   if (Array.isArray(announcement)) {
-    return announcement.map(normalizeSystemStateAnnouncement).join('');
+    return announcement.map(normalizeSystemStateAnnouncement).join("");
   }
-  return '';
+  return "";
 }
 
 export function resolveNextSystemStateAnnouncement(input: {

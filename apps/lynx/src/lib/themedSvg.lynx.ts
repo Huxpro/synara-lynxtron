@@ -9,22 +9,19 @@ export interface LynxSvgPalette {
   readonly disabled?: string;
 }
 
-export function resolveLynxSvgColor(
-  color: string,
-  palette: LynxSvgPalette
-): string {
-  if (color === 'currentColor' || color === 'var(--foreground)') {
+export function resolveLynxSvgColor(color: string, palette: LynxSvgPalette): string {
+  if (color === "currentColor" || color === "var(--foreground)") {
     return palette.foreground;
   }
-  if (color === 'var(--muted-foreground)') {
+  if (color === "var(--muted-foreground)") {
     return palette.mutedForeground;
   }
-  if (color === 'var(--color-icon-accent)') return palette.iconAccent ?? color;
-  if (color === 'var(--color-icon-primary)') return palette.iconPrimary ?? color;
-  if (color === 'var(--color-icon-secondary)') return palette.iconSecondary ?? color;
-  if (color === 'var(--color-icon-tertiary)') return palette.iconTertiary ?? color;
-  if (color === 'var(--color-text-button-primary)') return palette.inverse ?? color;
-  if (color === 'var(--color-token-disabled-foreground)') return palette.disabled ?? color;
+  if (color === "var(--color-icon-accent)") return palette.iconAccent ?? color;
+  if (color === "var(--color-icon-primary)") return palette.iconPrimary ?? color;
+  if (color === "var(--color-icon-secondary)") return palette.iconSecondary ?? color;
+  if (color === "var(--color-icon-tertiary)") return palette.iconTertiary ?? color;
+  if (color === "var(--color-text-button-primary)") return palette.inverse ?? color;
+  if (color === "var(--color-token-disabled-foreground)") return palette.disabled ?? color;
   return color;
 }
 

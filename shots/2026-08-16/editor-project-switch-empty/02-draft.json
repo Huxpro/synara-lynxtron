@@ -1,1 +1,66 @@
-{"success":true,"data":{"origin":"http://localhost:8080/index.html?route=%2Fthread%2Feditor-changes-thread&editor=open&editorMode=diff","result":{"composerProject":"Full accessGPT-5.5Medium","dialogCount":0,"editorProject":"Editor Changes","landing":"What should we do in Editor Empty Project?","railText":"New chatWhat should we do in Editor Empty Project?Full accessGPT-5.5Mediumsynara-editor-empty-project-2","relay":{"activeBaseUrl":"ws://127.0.0.1:58090","configuredBaseUrl":"ws://127.0.0.1:58090","connectionAttempts":1,"explorerPreviewActionCount":0,"interactionEventCount":0,"lastExplorerPreviewAction":null,"lastInteractionEvent":null,"lastRpcError":null,"lastSyntaxHighlightResult":null,"lastTransportError":null,"pendingRequests":0,"readyBaseUrl":null,"recentRpcTags":["orchestration.getShellSnapshot","orchestration.getSidebarShellSnapshot","orchestration.getSidebarSearchSnapshot","orchestration.getThreadDetailSnapshot","orchestration.getSidebarShellSnapshot","orchestration.getThreadDetailSnapshot","projects.listDirectories","git.listBranches","git.readWorkingTreeDiff","provider.listModels","server.getConfig","server.refreshProviders","provider.getComposerCapabilities","provider.getComposerCapabilities","provider.getComposerCapabilities","provider.getComposerCapabilities","provider.getComposerCapabilities","pullRequests.list","orchestration.getThreadDetailSnapshot","orchestration.getSidebarShellSnapshot","orchestration.getThreadDetailSnapshot","orchestration.getSidebarShellSnapshot","server.getConfig","server.refreshProviders","server.getSettings","orchestration.getSidebarShellSnapshot","orchestration.getSidebarSearchSnapshot","filesystem.browse","provider.listModels","provider.listModels","orchestration.getSidebarShellSnapshot","orchestration.getSidebarSearchSnapshot"],"rendererReadyRoute":"/thread/editor-changes-thread","socketState":1,"syntaxHighlightCallCount":0},"url":"http://localhost:8080/index.html?route=%2Fthread%2Feditor-changes-thread&editor=open&editorMode=diff"}},"error":null}
+{
+  "success": true,
+  "data": {
+    "origin": "http://localhost:8080/index.html?route=%2Fthread%2Feditor-changes-thread&editor=open&editorMode=diff",
+    "result": {
+      "composerProject": "Full accessGPT-5.5Medium",
+      "dialogCount": 0,
+      "editorProject": "Editor Changes",
+      "landing": "What should we do in Editor Empty Project?",
+      "railText": "New chatWhat should we do in Editor Empty Project?Full accessGPT-5.5Mediumsynara-editor-empty-project-2",
+      "relay": {
+        "activeBaseUrl": "ws://127.0.0.1:58090",
+        "configuredBaseUrl": "ws://127.0.0.1:58090",
+        "connectionAttempts": 1,
+        "explorerPreviewActionCount": 0,
+        "interactionEventCount": 0,
+        "lastExplorerPreviewAction": null,
+        "lastInteractionEvent": null,
+        "lastRpcError": null,
+        "lastSyntaxHighlightResult": null,
+        "lastTransportError": null,
+        "pendingRequests": 0,
+        "readyBaseUrl": null,
+        "recentRpcTags": [
+          "orchestration.getShellSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "orchestration.getThreadDetailSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getThreadDetailSnapshot",
+          "projects.listDirectories",
+          "git.listBranches",
+          "git.readWorkingTreeDiff",
+          "provider.listModels",
+          "server.getConfig",
+          "server.refreshProviders",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "provider.getComposerCapabilities",
+          "pullRequests.list",
+          "orchestration.getThreadDetailSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getThreadDetailSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "server.getConfig",
+          "server.refreshProviders",
+          "server.getSettings",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot",
+          "filesystem.browse",
+          "provider.listModels",
+          "provider.listModels",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot"
+        ],
+        "rendererReadyRoute": "/thread/editor-changes-thread",
+        "socketState": 1,
+        "syntaxHighlightCallCount": 0
+      },
+      "url": "http://localhost:8080/index.html?route=%2Fthread%2Feditor-changes-thread&editor=open&editorMode=diff"
+    }
+  },
+  "error": null
+}

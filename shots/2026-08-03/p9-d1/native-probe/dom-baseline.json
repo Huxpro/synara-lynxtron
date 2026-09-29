@@ -11,20 +11,12 @@
         "childNodeCount": 1,
         "children": [
           {
-            "attributes": [
-              "class",
-              "HostInputProbeRoot"
-            ],
+            "attributes": ["class", "HostInputProbeRoot"],
             "backendNodeId": 13,
             "childNodeCount": 6,
             "children": [
               {
-                "attributes": [
-                  "text",
-                  "P9-D1 Host Input Probe",
-                  "class",
-                  "HostInputProbeTitle"
-                ],
+                "attributes": ["text", "P9-D1 Host Input Probe", "class", "HostInputProbeTitle"],
                 "backendNodeId": 14,
                 "childNodeCount": 0,
                 "localName": "text",
@@ -147,10 +139,7 @@
                 "parentId": 13
               },
               {
-                "attributes": [
-                  "class",
-                  "HostInputProbeMatrix"
-                ],
+                "attributes": ["class", "HostInputProbeMatrix"],
                 "backendNodeId": 26,
                 "childNodeCount": 25,
                 "localName": "view",

@@ -1,7 +1,4 @@
-import {
-  isWorkspaceRelativePathSafe,
-  joinWorkspaceRelativePath,
-} from './path';
+import { isWorkspaceRelativePathSafe, joinWorkspaceRelativePath } from "./path";
 
 export interface FilePreviewBreadcrumbSegment {
   readonly key: string;
@@ -16,7 +13,7 @@ export interface FilePreviewBreadcrumb {
 }
 
 function basename(value: string): string | null {
-  const segments = value.replace(/\\/g, '/').split('/').filter(Boolean);
+  const segments = value.replace(/\\/g, "/").split("/").filter(Boolean);
   return segments.at(-1) ?? null;
 }
 
@@ -26,16 +23,9 @@ export function deriveFilePreviewBreadcrumb(input: {
 }): FilePreviewBreadcrumb {
   const fileIsOutsideWorkspace = !isWorkspaceRelativePathSafe(input.filePath);
   const projectName =
-    fileIsOutsideWorkspace || !input.workspaceRoot
-      ? null
-      : basename(input.workspaceRoot);
-  const relativeSegments = input.filePath
-    .replace(/\\/g, '/')
-    .split('/')
-    .filter(Boolean);
-  const segments = projectName
-    ? [projectName, ...relativeSegments]
-    : relativeSegments;
+    fileIsOutsideWorkspace || !input.workspaceRoot ? null : basename(input.workspaceRoot);
+  const relativeSegments = input.filePath.replace(/\\/g, "/").split("/").filter(Boolean);
+  const segments = projectName ? [projectName, ...relativeSegments] : relativeSegments;
   return {
     fileIsOutsideWorkspace,
     fileSegment: segments.at(-1) ?? input.filePath,
@@ -45,7 +35,7 @@ export function deriveFilePreviewBreadcrumb(input: {
         : joinWorkspaceRelativePath(input.workspaceRoot, input.filePath),
     prefixSegments: segments.slice(0, -1).map((name, index) => ({
       name,
-      key: segments.slice(0, index + 1).join('/'),
+      key: segments.slice(0, index + 1).join("/"),
     })),
   };
 }

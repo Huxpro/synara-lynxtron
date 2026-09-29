@@ -1,4 +1,4 @@
-import type { Notification as LynxtronNotification } from '@lynx-js/lynxtron';
+import type { Notification as LynxtronNotification } from "@lynx-js/lynxtron";
 
 export type NativeNotificationConstructor = typeof LynxtronNotification;
 
@@ -15,7 +15,7 @@ export function createNativeNotificationService(input: {
   const liveNotifications = new Set<InstanceType<NativeNotificationConstructor>>();
   return {
     isSupported(): boolean {
-      return typeof input.Notification === 'function';
+      return typeof input.Notification === "function";
     },
     show(request: NativeNotificationRequest): Promise<boolean> {
       if (!input.Notification) {
@@ -33,11 +33,11 @@ export function createNativeNotificationService(input: {
       });
       liveNotifications.add(notification);
       const release = () => liveNotifications.delete(notification);
-      notification.once('close', release);
-      notification.once('failed', release);
+      notification.once("close", release);
+      notification.once("failed", release);
       const threadId = request.threadId?.trim();
       if (threadId) {
-        notification.on('click', () => input.openThread(threadId));
+        notification.on("click", () => input.openThread(threadId));
       }
       return new Promise((resolve) => {
         let settled = false;
@@ -48,8 +48,8 @@ export function createNativeNotificationService(input: {
           resolve(shown);
         };
         const timeoutId = setTimeout(() => settle(false), 3_000);
-        notification.once('show', () => settle(true));
-        notification.once('failed', () => settle(false));
+        notification.once("show", () => settle(true));
+        notification.once("failed", () => settle(false));
         notification.show();
       });
     },

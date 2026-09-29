@@ -1,1 +1,151 @@
-{"success":true,"data":{"origin":"http://localhost:8080/index.html?route=%2Fkanban%2Feditor-changes-project","result":{"buttons":[{"overflowLeft":0,"overflowRight":0,"rect":{"bottom":143,"height":28,"right":107.421875,"width":78.421875,"x":29,"y":115},"text":"Start task"},{"overflowLeft":0,"overflowRight":0,"rect":{"bottom":143,"height":28,"right":211.640625,"width":96.21875,"x":115.421875,"y":115},"text":"Rename task"},{"overflowLeft":0,"overflowRight":0,"rect":{"bottom":179,"height":28,"right":110.046875,"width":81.046875,"x":29,"y":151},"text":"Pin thread"},{"overflowLeft":0,"overflowRight":0,"rect":{"bottom":179,"height":28,"right":199.296875,"width":81.25,"x":118.046875,"y":151},"text":"Copy Path"},{"overflowLeft":0,"overflowRight":0,"rect":{"bottom":215,"height":28,"right":140.46875,"width":111.46875,"x":29,"y":187},"text":"Copy Thread ID"},{"overflowLeft":0,"overflowRight":0,"rect":{"bottom":215,"height":28,"right":241.8125,"width":93.34375,"x":148.46875,"y":187},"text":"Archive task"},{"overflowLeft":0,"overflowRight":0,"rect":{"bottom":251,"height":28,"right":88.421875,"width":59.421875,"x":29,"y":223},"text":"Delete"},{"overflowLeft":0,"overflowRight":0,"rect":{"bottom":251,"height":28,"right":158.078125,"width":61.65625,"x":96.421875,"y":223},"text":"Cancel"}],"cards":[{"bottom":376.5,"height":64.5,"right":268,"width":248,"x":20,"y":312},{"bottom":449,"height":64.5,"right":268,"width":248,"x":20,"y":384.5}],"panel":{"bottom":264,"height":208,"overflowLeft":0,"overflowRight":0,"right":304,"width":288,"x":16,"y":56},"relay":{"activeBaseUrl":"ws://127.0.0.1:58090","configuredBaseUrl":"ws://127.0.0.1:58090","connectionAttempts":1,"explorerPreviewActionCount":0,"interactionEventCount":0,"lastExplorerPreviewAction":null,"lastInteractionEvent":null,"lastRpcError":null,"lastSyntaxHighlightResult":null,"lastTransportError":null,"pendingRequests":0,"readyBaseUrl":null,"recentRpcTags":["orchestration.getShellSnapshot","orchestration.getSidebarShellSnapshot","orchestration.getSidebarSearchSnapshot"],"rendererReadyRoute":"/kanban/editor-changes-project","socketState":1,"syntaxHighlightCallCount":0}}},"error":null}
+{
+  "success": true,
+  "data": {
+    "origin": "http://localhost:8080/index.html?route=%2Fkanban%2Feditor-changes-project",
+    "result": {
+      "buttons": [
+        {
+          "overflowLeft": 0,
+          "overflowRight": 0,
+          "rect": {
+            "bottom": 143,
+            "height": 28,
+            "right": 107.421875,
+            "width": 78.421875,
+            "x": 29,
+            "y": 115
+          },
+          "text": "Start task"
+        },
+        {
+          "overflowLeft": 0,
+          "overflowRight": 0,
+          "rect": {
+            "bottom": 143,
+            "height": 28,
+            "right": 211.640625,
+            "width": 96.21875,
+            "x": 115.421875,
+            "y": 115
+          },
+          "text": "Rename task"
+        },
+        {
+          "overflowLeft": 0,
+          "overflowRight": 0,
+          "rect": {
+            "bottom": 179,
+            "height": 28,
+            "right": 110.046875,
+            "width": 81.046875,
+            "x": 29,
+            "y": 151
+          },
+          "text": "Pin thread"
+        },
+        {
+          "overflowLeft": 0,
+          "overflowRight": 0,
+          "rect": {
+            "bottom": 179,
+            "height": 28,
+            "right": 199.296875,
+            "width": 81.25,
+            "x": 118.046875,
+            "y": 151
+          },
+          "text": "Copy Path"
+        },
+        {
+          "overflowLeft": 0,
+          "overflowRight": 0,
+          "rect": {
+            "bottom": 215,
+            "height": 28,
+            "right": 140.46875,
+            "width": 111.46875,
+            "x": 29,
+            "y": 187
+          },
+          "text": "Copy Thread ID"
+        },
+        {
+          "overflowLeft": 0,
+          "overflowRight": 0,
+          "rect": {
+            "bottom": 215,
+            "height": 28,
+            "right": 241.8125,
+            "width": 93.34375,
+            "x": 148.46875,
+            "y": 187
+          },
+          "text": "Archive task"
+        },
+        {
+          "overflowLeft": 0,
+          "overflowRight": 0,
+          "rect": {
+            "bottom": 251,
+            "height": 28,
+            "right": 88.421875,
+            "width": 59.421875,
+            "x": 29,
+            "y": 223
+          },
+          "text": "Delete"
+        },
+        {
+          "overflowLeft": 0,
+          "overflowRight": 0,
+          "rect": {
+            "bottom": 251,
+            "height": 28,
+            "right": 158.078125,
+            "width": 61.65625,
+            "x": 96.421875,
+            "y": 223
+          },
+          "text": "Cancel"
+        }
+      ],
+      "cards": [
+        { "bottom": 376.5, "height": 64.5, "right": 268, "width": 248, "x": 20, "y": 312 },
+        { "bottom": 449, "height": 64.5, "right": 268, "width": 248, "x": 20, "y": 384.5 }
+      ],
+      "panel": {
+        "bottom": 264,
+        "height": 208,
+        "overflowLeft": 0,
+        "overflowRight": 0,
+        "right": 304,
+        "width": 288,
+        "x": 16,
+        "y": 56
+      },
+      "relay": {
+        "activeBaseUrl": "ws://127.0.0.1:58090",
+        "configuredBaseUrl": "ws://127.0.0.1:58090",
+        "connectionAttempts": 1,
+        "explorerPreviewActionCount": 0,
+        "interactionEventCount": 0,
+        "lastExplorerPreviewAction": null,
+        "lastInteractionEvent": null,
+        "lastRpcError": null,
+        "lastSyntaxHighlightResult": null,
+        "lastTransportError": null,
+        "pendingRequests": 0,
+        "readyBaseUrl": null,
+        "recentRpcTags": [
+          "orchestration.getShellSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot"
+        ],
+        "rendererReadyRoute": "/kanban/editor-changes-project",
+        "socketState": 1,
+        "syntaxHighlightCallCount": 0
+      }
+    }
+  },
+  "error": null
+}

@@ -131,9 +131,6 @@ describe("providerUsageDisplay", () => {
       },
     ];
 
-    expect(mergeProviderUsageRefresh(previous, next)).toEqual([
-      next[0],
-      previous[1],
-    ]);
+    expect(mergeProviderUsageRefresh(previous, next)).toEqual([next[0], previous[1]]);
   });
 });

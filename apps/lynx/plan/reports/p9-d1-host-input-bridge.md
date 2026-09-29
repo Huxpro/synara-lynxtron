@@ -46,21 +46,21 @@ markers.
 
 ## Event matrix
 
-| Source | Event | Web | Native | Conclusion |
-|---|---|---:|---:|---|
-| view control | focus / blur | no | no | host focus bridge gap; real Tab/Shift+Tab does not publish |
-| view control | Enter / Space | no | no | handler wiring exists; no host key delivery |
-| view control | ArrowUp / ArrowDown / Escape / Tab | no | no | no host key delivery |
-| view control | mouseenter / mouseleave | no | yes | Native host publishes hover boundary |
-| view control | mousedown / mouseup / tap | yes | yes | positive on both runtimes |
-| textarea | focus | yes | yes | positive on both runtimes |
-| textarea | blur | yes | yes | final activated IME sequence produced one textarea blur |
-| textarea | Enter / ArrowUp / ArrowDown / Escape | no | no | textarea kernel consumes keys before Lynx JS |
-| textarea | ordinary input | yes | yes | committed `bindinput` positive |
-| textarea | `isComposing=true` | not a real IME run | yes | real Doubao Pinyin; 8 calls, final `value=zhong'wen;isComposing=true` |
-| textarea | committed input | yes | yes | Web 9 calls; Native ordinary run 13 calls; final IME commit 1 call |
-| scroll-view | wheel → scroll | no | yes | Native 3 events; final `scrollTop=242` |
-| host | window focus / blur | yes | yes | explicit host global-event bridge works |
+| Source       | Event                                |                Web | Native | Conclusion                                                            |
+| ------------ | ------------------------------------ | -----------------: | -----: | --------------------------------------------------------------------- |
+| view control | focus / blur                         |                 no |     no | host focus bridge gap; real Tab/Shift+Tab does not publish            |
+| view control | Enter / Space                        |                 no |     no | handler wiring exists; no host key delivery                           |
+| view control | ArrowUp / ArrowDown / Escape / Tab   |                 no |     no | no host key delivery                                                  |
+| view control | mouseenter / mouseleave              |                 no |    yes | Native host publishes hover boundary                                  |
+| view control | mousedown / mouseup / tap            |                yes |    yes | positive on both runtimes                                             |
+| textarea     | focus                                |                yes |    yes | positive on both runtimes                                             |
+| textarea     | blur                                 |                yes |    yes | final activated IME sequence produced one textarea blur               |
+| textarea     | Enter / ArrowUp / ArrowDown / Escape |                 no |     no | textarea kernel consumes keys before Lynx JS                          |
+| textarea     | ordinary input                       |                yes |    yes | committed `bindinput` positive                                        |
+| textarea     | `isComposing=true`                   | not a real IME run |    yes | real Doubao Pinyin; 8 calls, final `value=zhong'wen;isComposing=true` |
+| textarea     | committed input                      |                yes |    yes | Web 9 calls; Native ordinary run 13 calls; final IME commit 1 call    |
+| scroll-view  | wheel → scroll                       |                 no |    yes | Native 3 events; final `scrollTop=242`                                |
+| host         | window focus / blur                  |                yes |    yes | explicit host global-event bridge works                               |
 
 Across the retained Native ordinary-input and IME runs, the matrix is
 **25/25 bindings, 13/25 delivered categories**.
@@ -120,14 +120,14 @@ Evidence: `shots/2026-08-03/p9-d1/native-ime/`.
 
 ## Gap and feasibility assessment
 
-| Gap | Evidence | Feasible next action |
-|---|---|---|
-| Tab/view focus publication | Web and Native negative; P-110 history | likely Lynxtron host/upstream work; app helper changes cannot create missing host event |
-| view key publication | Web and Native negative | host/upstream investigation; menu accelerators remain separate fallback |
-| textarea Arrow/Enter/Escape | Web and Native negative | native textarea/custom element work or accepted kernel island |
-| real IME composition payload | positive Computer Use + report chronology | closed; retain probe as regression evidence |
-| Web nested scroll wheel | Web negative, Native positive | Web custom-element/harness issue; not a Native product gap |
-| window focus/blur global event | positive | retained probe pattern is feasible if product needs this signal |
+| Gap                            | Evidence                                  | Feasible next action                                                                    |
+| ------------------------------ | ----------------------------------------- | --------------------------------------------------------------------------------------- |
+| Tab/view focus publication     | Web and Native negative; P-110 history    | likely Lynxtron host/upstream work; app helper changes cannot create missing host event |
+| view key publication           | Web and Native negative                   | host/upstream investigation; menu accelerators remain separate fallback                 |
+| textarea Arrow/Enter/Escape    | Web and Native negative                   | native textarea/custom element work or accepted kernel island                           |
+| real IME composition payload   | positive Computer Use + report chronology | closed; retain probe as regression evidence                                             |
+| Web nested scroll wheel        | Web negative, Native positive             | Web custom-element/harness issue; not a Native product gap                              |
+| window focus/blur global event | positive                                  | retained probe pattern is feasible if product needs this signal                         |
 
 ## Exit audit
 

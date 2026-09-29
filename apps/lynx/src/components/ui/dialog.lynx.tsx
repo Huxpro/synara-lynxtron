@@ -3,7 +3,7 @@ import {
   DialogContent as LynxDialogContent,
   DialogRoot,
   DialogView,
-} from '@lynx-js/lynx-ui';
+} from "@lynx-js/lynx-ui";
 import {
   createContext,
   useCallback,
@@ -12,14 +12,14 @@ import {
   useRef,
   useState,
   type ReactNode,
-} from '@lynx-js/react';
+} from "@lynx-js/react";
 
-import { XIcon } from '../../lib/icons';
-import { useTheme } from '../../adapters/useTheme.lynx';
-import { focusLynxElementBySelector } from './focus.lynx';
-import { useLynxInteractiveState } from './interactive-state.lynx';
-import { cx, renderSlot, textContent } from './shared.lynx';
-import './primitives.css';
+import { XIcon } from "../../lib/icons";
+import { useTheme } from "../../adapters/useTheme.lynx";
+import { focusLynxElementBySelector } from "./focus.lynx";
+import { useLynxInteractiveState } from "./interactive-state.lynx";
+import { cx, renderSlot, textContent } from "./shared.lynx";
+import "./primitives.css";
 
 interface DialogProps {
   children?: ReactNode;
@@ -58,7 +58,7 @@ export function Dialog({ open, defaultOpen, onOpenChange, children }: DialogProp
     };
   }, []);
   const setOpen = (next: boolean) => {
-    'background only';
+    "background only";
     if (open === undefined) setUncontrolledOpen(next);
     onOpenChange?.(next);
   };
@@ -99,14 +99,10 @@ export function DialogTrigger(props: {
   }
   useEffect(
     () => dialog.registerTriggerSelector(selectorRef.current!),
-    [dialog.registerTriggerSelector]
+    [dialog.registerTriggerSelector],
   );
   const interaction = useLynxInteractiveState({
-    baseClassName: cx(
-      'LxDialogTrigger',
-      selectorRef.current.slice(1),
-      props.className
-    ),
+    baseClassName: cx("LxDialogTrigger", selectorRef.current.slice(1), props.className),
     accessibleLabel: props.ariaLabel,
     disabled: props.disabled,
     onActivate: dialog.show,
@@ -127,7 +123,7 @@ export function DialogClose(props: {
 }) {
   const dialog = useContext(DialogDismissContext);
   const interaction = useLynxInteractiveState({
-    baseClassName: props.className ?? 'LxDialogClose',
+    baseClassName: props.className ?? "LxDialogClose",
     accessibleLabel: props.ariaLabel,
     disabled: props.disabled,
     onActivate: dialog.close,
@@ -143,22 +139,18 @@ export function DialogBackdrop(props: { className?: string }) {
   const dialog = useContext(DialogDismissContext);
   return (
     <LynxDialogBackdrop
-      className={cx('LxDialogBackdrop', props.className)}
+      className={cx("LxDialogBackdrop", props.className)}
       clickToClose={false}
       transition
     >
-      <view
-        aria-hidden="true"
-        className="LxDialogBackdropTapTarget"
-        catchtap={dialog.close}
-      />
+      <view aria-hidden="true" className="LxDialogBackdropTapTarget" catchtap={dialog.close} />
     </LynxDialogBackdrop>
   );
 }
 
 export function DialogViewport(props: { children?: ReactNode; className?: string }) {
   return (
-    <DialogView className={cx('LxDialogViewport', props.className)} transition>
+    <DialogView className={cx("LxDialogViewport", props.className)} transition>
       {props.children}
     </DialogView>
   );
@@ -179,33 +171,30 @@ export function DialogPopup({
 }) {
   const dialog = useContext(DialogDismissContext);
   const { svgColors } = useTheme();
-  const handleKeyDown = (event: {
-    readonly key: string;
-    preventDefault?: () => void;
-  }) => {
-    'background only';
-    if (event.key !== 'Escape' || !dialog.open) return;
+  const handleKeyDown = (event: { readonly key: string; preventDefault?: () => void }) => {
+    "background only";
+    if (event.key !== "Escape" || !dialog.open) return;
     event.preventDefault?.();
     dialog.close();
   };
   return (
     <DialogViewport
       className={cx(
-        bottomStickOnMobile && 'LxDialogViewport--bottom-stick-mobile',
-        viewportClassName
+        bottomStickOnMobile && "LxDialogViewport--bottom-stick-mobile",
+        viewportClassName,
       )}
     >
       <DialogBackdrop />
       <LynxDialogContent
         className={cx(
-          'LxDialogPopup',
-          bottomStickOnMobile && 'LxDialogPopup--bottom-stick-mobile',
-          className
+          "LxDialogPopup",
+          bottomStickOnMobile && "LxDialogPopup--bottom-stick-mobile",
+          className,
         )}
         dialogContentProps={{
-          'aria-modal': true,
+          "aria-modal": true,
           bindkeydown: handleKeyDown,
-          role: 'dialog',
+          role: "dialog",
         }}
         transition
       >
@@ -225,21 +214,21 @@ export function DialogPopup({
 }
 
 export function DialogHeader(props: { children?: ReactNode; className?: string }) {
-  return <view className={cx('LxDialogHeader', props.className)}>{props.children}</view>;
+  return <view className={cx("LxDialogHeader", props.className)}>{props.children}</view>;
 }
 
 export function DialogFooter(props: {
   children?: ReactNode;
   className?: string;
-  variant?: 'default' | 'bare';
+  variant?: "default" | "bare";
 }) {
-  return <view className={cx('LxDialogFooter', props.className)}>{props.children}</view>;
+  return <view className={cx("LxDialogFooter", props.className)}>{props.children}</view>;
 }
 
 export function DialogTitle(props: { children?: ReactNode; className?: string }) {
   return (
     <text
-      className={cx('LxDialogTitle', props.className)}
+      className={cx("LxDialogTitle", props.className)}
       accessibility-element
       accessibility-heading
       accessibility-trait="header"
@@ -250,7 +239,7 @@ export function DialogTitle(props: { children?: ReactNode; className?: string })
 }
 
 export function DialogDescription(props: { children?: ReactNode; className?: string }) {
-  return <>{textContent(props.children, cx('LxDialogDescription', props.className))}</>;
+  return <>{textContent(props.children, cx("LxDialogDescription", props.className))}</>;
 }
 
 export function DialogPanel(props: {
@@ -259,7 +248,7 @@ export function DialogPanel(props: {
   scrollFade?: boolean;
 }) {
   return (
-    <scroll-view className={cx('LxDialogPanel', props.className)} scroll-y>
+    <scroll-view className={cx("LxDialogPanel", props.className)} scroll-y>
       {props.children}
     </scroll-view>
   );
@@ -274,5 +263,5 @@ export function DialogPortal(props: { children?: ReactNode }) {
 }
 
 export const DialogCreateHandle = undefined;
-export const dialogFieldLabelClassName = 'LxDialogFieldLabel';
-export const dialogFooterButtonClassName = 'LxButton--dialog-action';
+export const dialogFieldLabelClassName = "LxDialogFieldLabel";
+export const dialogFooterButtonClassName = "LxButton--dialog-action";

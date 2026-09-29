@@ -21,17 +21,14 @@ export function SettingsProviderUpdateChecksRowComposition(props: {
       description="Check Codex, Claude, and other provider CLIs for newer versions in the background."
       resetLabel="CLI update checks"
       changed={
-        props.values.enableProviderUpdateChecks !==
-        props.defaults.enableProviderUpdateChecks
+        props.values.enableProviderUpdateChecks !== props.defaults.enableProviderUpdateChecks
       }
       onReset={() => props.onChange(props.defaults)}
     >
       <SettingsGeneralBooleanControlElement
         checked={props.values.enableProviderUpdateChecks}
         ariaLabel="Automatic CLI update checks"
-        onChange={(enableProviderUpdateChecks) =>
-          props.onChange({ enableProviderUpdateChecks })
-        }
+        onChange={(enableProviderUpdateChecks) => props.onChange({ enableProviderUpdateChecks })}
       />
     </SettingsGeneralRowElement>
   );

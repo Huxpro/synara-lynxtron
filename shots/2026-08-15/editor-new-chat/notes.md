@@ -34,14 +34,14 @@ Web `New chat` does not immediately create a durable thread. It opens a project-
 
 ## Classification
 
-| Item | Classification | Result |
-| --- | --- | --- |
-| Missing Editor New chat draft | product loss, P2 | closed |
-| Duplicate creation / first-send retry semantics | reliability contract | reused existing tested `LandingComposer` path |
-| Preserve Editor after successful promotion | product/navigation loss | closed by explicit Editor continuation token |
-| Real first send with provider response | missing provider/runtime coverage | not claimed; isolated environment has no usable Codex CLI |
-| Lynx-for-Web trigger click | historical dynamic-event blocker | deterministic state remains the retained evidence for this cell; the global blocker was closed later, but New chat still needs a current-head trigger rerun |
-| Native interaction | missing certification coverage | not claimed; user-owned Native process remained untouched |
+| Item                                            | Classification                    | Result                                                                                                                                                      |
+| ----------------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Missing Editor New chat draft                   | product loss, P2                  | closed                                                                                                                                                      |
+| Duplicate creation / first-send retry semantics | reliability contract              | reused existing tested `LandingComposer` path                                                                                                               |
+| Preserve Editor after successful promotion      | product/navigation loss           | closed by explicit Editor continuation token                                                                                                                |
+| Real first send with provider response          | missing provider/runtime coverage | not claimed; isolated environment has no usable Codex CLI                                                                                                   |
+| Lynx-for-Web trigger click                      | historical dynamic-event blocker  | deterministic state remains the retained evidence for this cell; the global blocker was closed later, but New chat still needs a current-head trigger rerun |
+| Native interaction                              | missing certification coverage    | not claimed; user-owned Native process remained untouched                                                                                                   |
 
 ## Validation
 

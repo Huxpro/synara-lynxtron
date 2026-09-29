@@ -12,21 +12,15 @@ import {
 } from "./composerPickerStyles";
 import type { FavoriteModelProvider } from "./ProviderModelOptionGroupListComposition";
 
-export function ProviderModelOptionListFrameElement(props: {
-  readonly children: ReactNode;
-}) {
+export function ProviderModelOptionListFrameElement(props: { readonly children: ReactNode }) {
   return <div className="flex flex-col gap-px">{props.children}</div>;
 }
 
-export function ProviderModelGroupElement(props: {
-  readonly children: ReactNode;
-}) {
+export function ProviderModelGroupElement(props: { readonly children: ReactNode }) {
   return <MenuGroup className="flex flex-col gap-px px-0.5">{props.children}</MenuGroup>;
 }
 
-export function ProviderModelGroupLabelElement(props: {
-  readonly children: ReactNode;
-}) {
+export function ProviderModelGroupLabelElement(props: { readonly children: ReactNode }) {
   return <MenuGroupLabel>{props.children}</MenuGroupLabel>;
 }
 
@@ -56,9 +50,7 @@ export function ProviderModelCollapsibleGroupElement(props: {
           {props.count}
         </span>
       </CollapsibleTrigger>
-      <CollapsiblePanel className="flex flex-col gap-px pb-0.5">
-        {props.children}
-      </CollapsiblePanel>
+      <CollapsiblePanel className="flex flex-col gap-px pb-0.5">{props.children}</CollapsiblePanel>
     </Collapsible>
   );
 }

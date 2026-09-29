@@ -13,10 +13,10 @@
 
 ## Geometry
 
-| Anchor | Web original | Lynx for Web | Delta |
-| --- | --- | --- | --- |
+| Anchor           | Web original                       | Lynx for Web                    | Delta                             |
+| ---------------- | ---------------------------------- | ------------------------------- | --------------------------------- |
 | Composer surface | `x=400 y=421.75 w=736 h=95 r=19.2` | `x=408 y=429 w=736 h=95 r=19.2` | `x=+8 y=+7.25`; size/radius exact |
-| Project tray | `x=400 y=496.75 w=736 h=58` | `x=408 y=504 w=736 h=58` | `x=+8 y=+7.25`; size exact |
+| Project tray     | `x=400 y=496.75 w=736 h=58`        | `x=408 y=504 w=736 h=58`        | `x=+8 y=+7.25`; size exact        |
 
 The surface and tray meet the ≤8 px anchor contract. The shared Web landing
 stack remains the composition owner; Lynx supplies only platform controls and

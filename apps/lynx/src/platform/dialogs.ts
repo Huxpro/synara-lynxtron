@@ -6,9 +6,9 @@
 //   for saveFile.
 // Layer: L1 platform port (lynx implementation)
 
-import 'background-only';
+import "background-only";
 
-import { bridgeCall } from './bridge';
+import { bridgeCall } from "./bridge";
 
 export interface SaveFileInput {
   defaultFilename: string;
@@ -47,11 +47,11 @@ export interface DialogsPort {
 
 export const dialogs: DialogsPort = {
   pickFolder: async () => {
-    const res = await bridgeCall<{ path: string | null }>('dialogsPickFolder');
+    const res = await bridgeCall<{ path: string | null }>("dialogsPickFolder");
     return res.path ?? null;
   },
   pickFiles: async () => {
-    const res = await bridgeCall<PickFilesResult>('dialogsPickFiles');
+    const res = await bridgeCall<PickFilesResult>("dialogsPickFiles");
     return {
       files: Array.isArray(res.files) ? res.files : [],
       errors: Array.isArray(res.errors) ? res.errors : [],
@@ -60,18 +60,15 @@ export const dialogs: DialogsPort = {
   pickProfileImage: async () => {
     const res = await bridgeCall<{
       image: PickedProfileImage | null;
-    }>('dialogsPickProfileImage');
+    }>("dialogsPickProfileImage");
     return res.image ?? null;
   },
   saveProfileShareCard: async (input) => {
-    const res = await bridgeCall<{ path: string | null }>(
-      'dialogsSaveProfileShareCard',
-      input
-    );
+    const res = await bridgeCall<{ path: string | null }>("dialogsSaveProfileShareCard", input);
     return res.path ?? null;
   },
   saveFile: async (input) => {
-    const res = await bridgeCall<{ path: string | null }>('dialogsSaveFile', {
+    const res = await bridgeCall<{ path: string | null }>("dialogsSaveFile", {
       defaultFilename: input.defaultFilename,
       contents: input.contents,
       filters: input.filters,
@@ -79,13 +76,13 @@ export const dialogs: DialogsPort = {
     return res.path ?? null;
   },
   confirm: async (message) => {
-    const res = await bridgeCall<{ confirmed: boolean }>('dialogsConfirm', { message });
+    const res = await bridgeCall<{ confirmed: boolean }>("dialogsConfirm", { message });
     return res.confirmed === true;
   },
 };
 
 /** Wiring self-check (not part of the port contract). */
 export async function pingDialogs(): Promise<Record<string, boolean>> {
-  const res = await bridgeCall<{ apis: Record<string, boolean> }>('dialogsPing');
+  const res = await bridgeCall<{ apis: Record<string, boolean> }>("dialogsPing");
   return res.apis ?? {};
 }

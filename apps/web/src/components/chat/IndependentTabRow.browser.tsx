@@ -35,13 +35,15 @@ describe("IndependentTabRow", () => {
       <IndependentTabRow
         actions={<button type="button">Split right</button>}
         tabs={Array.from({ length: 8 }, (_, index) => (
-          <button key={index} type="button">Tab {index + 1}</button>
+          <button key={index} type="button">
+            Tab {index + 1}
+          </button>
         ))}
       />,
     );
 
-    const scroller = document.querySelector('[data-independent-tab-scroller]');
-    const actions = document.querySelector('[data-independent-tab-actions]');
+    const scroller = document.querySelector("[data-independent-tab-scroller]");
+    const actions = document.querySelector("[data-independent-tab-actions]");
     expect(scroller).not.toBeNull();
     expect(actions).not.toBeNull();
     expect(scroller?.contains(actions)).toBe(false);

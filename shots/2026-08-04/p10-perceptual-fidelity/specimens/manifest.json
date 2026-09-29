@@ -4,14 +4,7 @@
   "controls": [
     {
       "id": "sidebar-row",
-      "requiredStates": [
-        "default",
-        "hover",
-        "pressed",
-        "selected",
-        "disabled",
-        "focused"
-      ],
+      "requiredStates": ["default", "hover", "pressed", "selected", "disabled", "focused"],
       "states": {
         "default": {
           "status": "retained",
@@ -87,13 +80,7 @@
     },
     {
       "id": "segmented-control",
-      "requiredStates": [
-        "default",
-        "hover",
-        "pressed",
-        "selected",
-        "focused"
-      ],
+      "requiredStates": ["default", "hover", "pressed", "selected", "focused"],
       "states": {
         "default": {
           "status": "retained",
@@ -170,13 +157,7 @@
     },
     {
       "id": "icon-button",
-      "requiredStates": [
-        "default",
-        "hover",
-        "pressed",
-        "disabled",
-        "focused"
-      ],
+      "requiredStates": ["default", "hover", "pressed", "disabled", "focused"],
       "states": {
         "default": {
           "status": "retained",
@@ -249,13 +230,7 @@
     },
     {
       "id": "disclosure-chevron",
-      "requiredStates": [
-        "default",
-        "hover",
-        "pressed",
-        "selected",
-        "focused"
-      ],
+      "requiredStates": ["default", "hover", "pressed", "selected", "focused"],
       "states": {
         "default": {
           "status": "retained",
@@ -340,12 +315,7 @@
     },
     {
       "id": "composer-shell",
-      "requiredStates": [
-        "default",
-        "focused",
-        "disabled",
-        "loading"
-      ],
+      "requiredStates": ["default", "focused", "disabled", "loading"],
       "states": {
         "default": {
           "status": "retained",
@@ -407,11 +377,7 @@
     },
     {
       "id": "textarea",
-      "requiredStates": [
-        "default",
-        "focused",
-        "disabled"
-      ],
+      "requiredStates": ["default", "focused", "disabled"],
       "states": {
         "default": {
           "status": "retained",
@@ -454,14 +420,7 @@
     },
     {
       "id": "project-picker-row",
-      "requiredStates": [
-        "default",
-        "hover",
-        "pressed",
-        "selected",
-        "disabled",
-        "focused"
-      ],
+      "requiredStates": ["default", "hover", "pressed", "selected", "disabled", "focused"],
       "states": {
         "default": {
           "status": "retained",
@@ -545,14 +504,7 @@
     },
     {
       "id": "command-menu-row",
-      "requiredStates": [
-        "default",
-        "hover",
-        "pressed",
-        "selected",
-        "disabled",
-        "focused"
-      ],
+      "requiredStates": ["default", "hover", "pressed", "selected", "disabled", "focused"],
       "states": {
         "default": {
           "status": "retained",
@@ -644,14 +596,7 @@
     },
     {
       "id": "switch",
-      "requiredStates": [
-        "default",
-        "hover",
-        "pressed",
-        "selected",
-        "disabled",
-        "focused"
-      ],
+      "requiredStates": ["default", "hover", "pressed", "selected", "disabled", "focused"],
       "states": {
         "default": {
           "status": "retained",
@@ -735,12 +680,7 @@
     },
     {
       "id": "checkbox-radio",
-      "requiredStates": [
-        "default",
-        "selected",
-        "disabled",
-        "focused"
-      ],
+      "requiredStates": ["default", "selected", "disabled", "focused"],
       "states": {
         "default": {
           "status": "retained",
@@ -794,12 +734,7 @@
     },
     {
       "id": "tooltip-popover",
-      "requiredStates": [
-        "default",
-        "hover",
-        "pressed",
-        "focused"
-      ],
+      "requiredStates": ["default", "hover", "pressed", "focused"],
       "states": {
         "default": {
           "status": "retained",
@@ -861,13 +796,7 @@
     },
     {
       "id": "chip-token",
-      "requiredStates": [
-        "default",
-        "hover",
-        "pressed",
-        "selected",
-        "focused"
-      ],
+      "requiredStates": ["default", "hover", "pressed", "selected", "focused"],
       "states": {
         "default": {
           "status": "retained",
@@ -976,12 +905,7 @@
     },
     {
       "id": "status-row",
-      "requiredStates": [
-        "default",
-        "loading",
-        "error",
-        "selected"
-      ],
+      "requiredStates": ["default", "loading", "error", "selected"],
       "states": {
         "default": {
           "status": "retained",
@@ -1051,10 +975,7 @@
     },
     {
       "id": "empty-state-header",
-      "requiredStates": [
-        "default",
-        "loading"
-      ],
+      "requiredStates": ["default", "loading"],
       "states": {
         "default": {
           "status": "retained",
@@ -1075,14 +996,7 @@
     },
     {
       "id": "primary-secondary-button",
-      "requiredStates": [
-        "default",
-        "hover",
-        "pressed",
-        "disabled",
-        "focused",
-        "loading"
-      ],
+      "requiredStates": ["default", "hover", "pressed", "disabled", "focused", "loading"],
       "states": {
         "default": {
           "status": "retained",
@@ -1176,13 +1090,7 @@
   "temporal": [
     {
       "id": "disclosure-open-close",
-      "requiredSamples": [
-        "t0",
-        "t80",
-        "t160",
-        "t220",
-        "end"
-      ],
+      "requiredSamples": ["t0", "t80", "t160", "t220", "end"],
       "samples": {
         "t0": {
           "status": "retained",
@@ -1243,13 +1151,7 @@
     },
     {
       "id": "popover-menu-open-close",
-      "requiredSamples": [
-        "t0",
-        "t80",
-        "t160",
-        "t220",
-        "end"
-      ],
+      "requiredSamples": ["t0", "t80", "t160", "t220", "end"],
       "samples": {
         "t0": {
           "status": "retained",
@@ -1362,13 +1264,7 @@
     },
     {
       "id": "submenu-disclosure",
-      "requiredSamples": [
-        "t0",
-        "t80",
-        "t160",
-        "t220",
-        "end"
-      ],
+      "requiredSamples": ["t0", "t80", "t160", "t220", "end"],
       "samples": {
         "t0": {
           "status": "retained",
@@ -1429,10 +1325,7 @@
     },
     {
       "id": "hover",
-      "requiredSamples": [
-        "entry",
-        "stable"
-      ],
+      "requiredSamples": ["entry", "stable"],
       "samples": {
         "entry": {
           "status": "intentional-delta",
@@ -1468,10 +1361,7 @@
     },
     {
       "id": "pressed",
-      "requiredSamples": [
-        "down",
-        "release"
-      ],
+      "requiredSamples": ["down", "release"],
       "samples": {
         "down": {
           "status": "retained",
@@ -1499,10 +1389,7 @@
     },
     {
       "id": "selected-transition",
-      "requiredSamples": [
-        "before",
-        "after"
-      ],
+      "requiredSamples": ["before", "after"],
       "samples": {
         "before": {
           "status": "retained",
@@ -1530,11 +1417,7 @@
     },
     {
       "id": "composer-height-content",
-      "requiredSamples": [
-        "before",
-        "intermediate",
-        "end"
-      ],
+      "requiredSamples": ["before", "intermediate", "end"],
       "samples": {
         "before": {
           "status": "retained",
@@ -1578,10 +1461,7 @@
     },
     {
       "id": "loading-to-content",
-      "requiredSamples": [
-        "loading",
-        "content"
-      ],
+      "requiredSamples": ["loading", "content"],
       "samples": {
         "loading": {
           "status": "retained",
@@ -1617,13 +1497,7 @@
     },
     {
       "id": "sidebar-expansion",
-      "requiredSamples": [
-        "t0",
-        "t80",
-        "t160",
-        "t220",
-        "end"
-      ],
+      "requiredSamples": ["t0", "t80", "t160", "t220", "end"],
       "samples": {
         "t0": {
           "status": "retained",
@@ -1684,13 +1558,7 @@
     },
     {
       "id": "collapsed-work",
-      "requiredSamples": [
-        "t0",
-        "t80",
-        "t160",
-        "t220",
-        "end"
-      ],
+      "requiredSamples": ["t0", "t80", "t160", "t220", "end"],
       "samples": {
         "t0": {
           "status": "retained",
@@ -1755,10 +1623,7 @@
     },
     {
       "id": "focus-ring",
-      "requiredSamples": [
-        "before",
-        "focused"
-      ],
+      "requiredSamples": ["before", "focused"],
       "samples": {
         "before": {
           "status": "retained",
@@ -1790,10 +1655,7 @@
     },
     {
       "id": "reduced-motion",
-      "requiredSamples": [
-        "start",
-        "end"
-      ],
+      "requiredSamples": ["start", "end"],
       "samples": {
         "start": {
           "status": "retained",

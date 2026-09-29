@@ -4,10 +4,10 @@ export interface PickedFileUploadSnapshot {
   readonly sizeBytes: number;
 }
 
-export type BinaryAttachmentType = 'image' | 'file';
+export type BinaryAttachmentType = "image" | "file";
 
 export function attachmentTypeForMimeType(mimeType: string): BinaryAttachmentType {
-  return mimeType.toLowerCase().startsWith('image/') ? 'image' : 'file';
+  return mimeType.toLowerCase().startsWith("image/") ? "image" : "file";
 }
 
 export function validatePickedFileForUpload(input: {
@@ -22,14 +22,10 @@ export function validatePickedFileForUpload(input: {
     !Number.isSafeInteger(input.currentSizeBytes) ||
     input.currentSizeBytes !== input.file.sizeBytes
   ) {
-    throw new Error(
-      `'${input.file.name}' changed after it was selected. Pick it again.`
-    );
+    throw new Error(`'${input.file.name}' changed after it was selected. Pick it again.`);
   }
   if (input.currentSizeBytes > input.maxBytes) {
-    throw new Error(
-      `'${input.file.name}' exceeds the ${input.sizeLimitLabel} attachment limit.`
-    );
+    throw new Error(`'${input.file.name}' exceeds the ${input.sizeLimitLabel} attachment limit.`);
   }
 }
 
@@ -44,7 +40,7 @@ export function resolveImagePreviewSize(input: {
     input.width <= 0 ||
     input.height <= 0
   ) {
-    throw new Error('Unable to decode that image attachment.');
+    throw new Error("Unable to decode that image attachment.");
   }
   const scale = Math.min(1, input.maxDimension / Math.max(input.width, input.height));
   return {
@@ -62,18 +58,20 @@ export function resolveAttachmentUploadPayload(input: {
   readonly type: BinaryAttachmentType;
   readonly [key: string]: unknown;
 } {
-  const payload = input.payload as
-    | { readonly error?: unknown; readonly id?: unknown; readonly type?: unknown }
-    | null;
+  const payload = input.payload as {
+    readonly error?: unknown;
+    readonly id?: unknown;
+    readonly type?: unknown;
+  } | null;
   if (
     !input.ok ||
     !payload ||
-    typeof payload.id !== 'string' ||
+    typeof payload.id !== "string" ||
     !/^[a-z0-9_-]+$/i.test(payload.id) ||
-    (payload.type !== 'image' && payload.type !== 'file')
+    (payload.type !== "image" && payload.type !== "file")
   ) {
     const message =
-      payload && typeof payload.error === 'string'
+      payload && typeof payload.error === "string"
         ? payload.error
         : `Attachment upload failed with status ${input.status}.`;
     throw new Error(message);

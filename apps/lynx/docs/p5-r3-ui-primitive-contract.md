@@ -8,15 +8,15 @@ Rspeedy now resolves the canonical Web imports below to Lynx platform
 implementations. Callers do not add `.lynx`, change props, or import a parallel
 API:
 
-| Canonical import | Shared exports covered | Lynx renderer |
-|---|---|---|
-| `~/components/ui/button` | `Button`, `buttonVariants`, dialog/header class constants | lynx-ui Button |
-| `~/components/ui/input` | `Input`, `InputProps` | lynx-ui Input |
-| `~/components/ui/dialog` | root/trigger/portal/close/backdrop/popup/header/footer/title/description/panel/viewport | lynx-ui Dialog |
-| `~/components/ui/menu` | root/portal/trigger/popup/group/item/checkbox/radio/label/separator/shortcut/submenu/create-handle | Lynx view fallback |
-| `~/components/ui/tooltip` | create-handle/provider/root/trigger/popup | Lynx view fallback |
-| `~/components/ui/scroll-area` | `ScrollArea`, `ScrollBar` | native scroll-view |
-| `~/components/ui/collapsible` | root/trigger/panel/content | Lynx state + view |
+| Canonical import              | Shared exports covered                                                                             | Lynx renderer      |
+| ----------------------------- | -------------------------------------------------------------------------------------------------- | ------------------ |
+| `~/components/ui/button`      | `Button`, `buttonVariants`, dialog/header class constants                                          | lynx-ui Button     |
+| `~/components/ui/input`       | `Input`, `InputProps`                                                                              | lynx-ui Input      |
+| `~/components/ui/dialog`      | root/trigger/portal/close/backdrop/popup/header/footer/title/description/panel/viewport            | lynx-ui Dialog     |
+| `~/components/ui/menu`        | root/portal/trigger/popup/group/item/checkbox/radio/label/separator/shortcut/submenu/create-handle | Lynx view fallback |
+| `~/components/ui/tooltip`     | create-handle/provider/root/trigger/popup                                                          | Lynx view fallback |
+| `~/components/ui/scroll-area` | `ScrollArea`, `ScrollBar`                                                                          | native scroll-view |
+| `~/components/ui/collapsible` | root/trigger/panel/content                                                                         | Lynx state + view  |
 
 The exact aliases precede the general `~` source alias, so platform leaves are
 selected before ordinary feature/composition modules fall through to the Web

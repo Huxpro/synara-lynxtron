@@ -21,12 +21,12 @@ Status: complete current-head Web, Lynx-for-Web, and Native route matrix
 One named browser session captured Web and Lynx-for-Web from the same server,
 snapshot, route, theme, density, viewport, and DPR:
 
-| State | Web | Lynx-for-Web | Mean absolute RGB diff |
-| --- | --- | --- | ---: |
-| Light, 1280x820 | retained | retained | 0.5922 |
-| Dark, 1280x820 | retained | retained | 5.3949 |
-| Light, 1440x900 | retained | retained | 0.5095 |
-| Dark, 1440x900 | retained | retained | 4.7432 |
+| State           | Web      | Lynx-for-Web | Mean absolute RGB diff |
+| --------------- | -------- | ------------ | ---------------------: |
+| Light, 1280x820 | retained | retained     |                 0.5922 |
+| Dark, 1280x820  | retained | retained     |                 5.3949 |
+| Light, 1440x900 | retained | retained     |                 0.5095 |
+| Dark, 1440x900  | retained | retained     |                 4.7432 |
 
 All eight retained PNGs match their requested viewport dimensions at DPR 1.
 All eight error logs are empty. Lynx reports the expected theme, comfortable
@@ -92,12 +92,12 @@ the regex.
 
 Two exact-owned Native launches then retained the four required cells:
 
-| State | Root PID | Client | PNG | Console |
-| --- | ---: | --- | --- | --- |
-| Light, 1280x820 | `72290` | `localhost:8902/session 1` | `2560x1640` | empty |
-| Dark, 1280x820 | `72290` | `localhost:8902/session 1` | `2560x1640` | empty |
-| Dark, 1440x900 | `78385` | `localhost:8902/session 1` | `2880x1800` | empty |
-| Light, 1440x900 | `78385` | `localhost:8902/session 1` | `2880x1800` | empty |
+| State           | Root PID | Client                     | PNG         | Console |
+| --------------- | -------: | -------------------------- | ----------- | ------- |
+| Light, 1280x820 |  `72290` | `localhost:8902/session 1` | `2560x1640` | empty   |
+| Dark, 1280x820  |  `72290` | `localhost:8902/session 1` | `2560x1640` | empty   |
+| Dark, 1440x900  |  `78385` | `localhost:8902/session 1` | `2880x1800` | empty   |
+| Light, 1440x900 |  `78385` | `localhost:8902/session 1` | `2880x1800` | empty   |
 
 Every capture points to the staged
 `apps/lynx/dist/desktop/main.lynx.bundle`, contains the expected theme,

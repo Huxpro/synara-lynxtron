@@ -2,10 +2,7 @@
 // Purpose: Side-effect-free canonical app-settings storage projection for shared hosts.
 
 import type { DesktopAppSnapShortcut, ProviderKind } from "@synara/contracts";
-import {
-  DEFAULT_APP_SNAP_SHORTCUT,
-  isAppSnapShortcut,
-} from "@synara/shared/appSnapShortcut";
+import { DEFAULT_APP_SNAP_SHORTCUT, isAppSnapShortcut } from "@synara/shared/appSnapShortcut";
 import { PROVIDER_DESCRIPTORS } from "@synara/shared/providerMetadata";
 import {
   DEFAULT_SIDEBAR_PROJECT_SORT_ORDER,
@@ -102,11 +99,7 @@ function parseRecord(raw: string | null): Record<string, unknown> {
   }
 }
 
-function booleanValue(
-  record: Record<string, unknown>,
-  key: string,
-  fallback: boolean,
-): boolean {
+function booleanValue(record: Record<string, unknown>, key: string, fallback: boolean): boolean {
   return typeof record[key] === "boolean" ? record[key] : fallback;
 }
 
@@ -120,8 +113,7 @@ export function readSettingsGeneralProjection(
     providerKinds.has(record.defaultProvider as ProviderKind)
       ? (record.defaultProvider as ProviderKind)
       : DEFAULT_SETTINGS_GENERAL_VALUES.defaultProvider;
-  const localThreadMode =
-    record.defaultThreadEnvMode === "worktree" ? "worktree" : "local";
+  const localThreadMode = record.defaultThreadEnvMode === "worktree" ? "worktree" : "local";
   const defaultThreadEnvMode =
     serverDefaultThreadEnvMode === "local" || serverDefaultThreadEnvMode === "worktree"
       ? serverDefaultThreadEnvMode
@@ -133,8 +125,7 @@ export function readSettingsGeneralProjection(
       ? record.sidebarProjectSortOrder
       : DEFAULT_SETTINGS_GENERAL_VALUES.sidebarProjectSortOrder;
   const sidebarThreadSortOrder =
-    record.sidebarThreadSortOrder === "updated_at" ||
-    record.sidebarThreadSortOrder === "created_at"
+    record.sidebarThreadSortOrder === "updated_at" || record.sidebarThreadSortOrder === "created_at"
       ? record.sidebarThreadSortOrder
       : DEFAULT_SETTINGS_GENERAL_VALUES.sidebarThreadSortOrder;
 
@@ -223,10 +214,7 @@ export function writeSettingsGeneralProjection(
 
 export function writeSidebarSortProjection(
   raw: string | null,
-  values: Pick<
-    SettingsGeneralValues,
-    'sidebarProjectSortOrder' | 'sidebarThreadSortOrder'
-  >,
+  values: Pick<SettingsGeneralValues, "sidebarProjectSortOrder" | "sidebarThreadSortOrder">,
 ): string {
   return JSON.stringify({
     ...parseRecord(raw),
@@ -407,9 +395,7 @@ export function writeSettingsNotificationsProjection(
   });
 }
 
-export function readSettingsAppSnapProjection(
-  raw: string | null,
-): SettingsAppSnapValues {
+export function readSettingsAppSnapProjection(raw: string | null): SettingsAppSnapValues {
   const record = parseRecord(raw);
   const shortcut = isAppSnapShortcut(record.appSnapShortcut)
     ? record.appSnapShortcut

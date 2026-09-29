@@ -394,7 +394,10 @@ function matchesWhenClause(
   return evaluateWhenNode(whenAst, context);
 }
 
-function shortcutConflictKey(shortcut: KeybindingShortcut, platform = getNavigatorPlatform()): string {
+function shortcutConflictKey(
+  shortcut: KeybindingShortcut,
+  platform = getNavigatorPlatform(),
+): string {
   const useMetaForMod = isMacPlatform(platform);
   const metaKey = shortcut.metaKey || (shortcut.modKey && useMetaForMod);
   const ctrlKey = shortcut.ctrlKey || (shortcut.modKey && !useMetaForMod);

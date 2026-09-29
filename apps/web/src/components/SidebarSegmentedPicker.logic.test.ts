@@ -28,9 +28,7 @@ describe("Sidebar segmented picker geometry", () => {
   });
 
   it("clamps invalid active indices and preserves pending selection semantics", () => {
-    expect(resolveSidebarSegmentGeometry(9, 2)).toEqual(
-      resolveSidebarSegmentGeometry(1, 2),
-    );
+    expect(resolveSidebarSegmentGeometry(9, 2)).toEqual(resolveSidebarSegmentGeometry(1, 2));
     expect(resolvePendingSidebarViewSelection("threads", "threads")).toBeNull();
     expect(resolvePendingSidebarViewSelection("threads", "studio")).toBe("studio");
   });

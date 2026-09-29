@@ -49,16 +49,16 @@ false action.
 
 ## Measured convergence
 
-| Owner | Web | Lynx-for-Web |
-| --- | ---: | ---: |
-| Updates card | `624x337.5` | `624x338.5` |
-| Updates inset list | `598x178` | `598x179.5` |
-| Update rows | `59 / 59 / 58` | `58.5 / 59.5 / 59.5` |
-| Provider tools card | `624x496.5` | `624x496` |
-| Provider tool rows | nine at `596x44` | nine at `596x44` |
-| Codex disclosure row, open | `596x257` | `596x257` |
-| Codex disclosure content | `596x213` | `596x213` |
-| Codex inputs | `572x28` | two at `572x28` |
+| Owner                      |              Web |         Lynx-for-Web |
+| -------------------------- | ---------------: | -------------------: |
+| Updates card               |      `624x337.5` |          `624x338.5` |
+| Updates inset list         |        `598x178` |          `598x179.5` |
+| Update rows                |   `59 / 59 / 58` | `58.5 / 59.5 / 59.5` |
+| Provider tools card        |      `624x496.5` |            `624x496` |
+| Provider tool rows         | nine at `596x44` |     nine at `596x44` |
+| Codex disclosure row, open |        `596x257` |            `596x257` |
+| Codex disclosure content   |        `596x213` |            `596x213` |
+| Codex inputs               |         `572x28` |      two at `572x28` |
 
 The remaining one-pixel card/list totals are fractional border rounding, not a
 repeated row-owner error.

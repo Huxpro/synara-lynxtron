@@ -62,9 +62,7 @@
   top: 126px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage--provider-health-visible
-  .EnvironmentOverlay {
+.SliceRoot--viewport-short-height .ThreadPage--provider-health-visible .EnvironmentOverlay {
   top: 90px;
 }
 

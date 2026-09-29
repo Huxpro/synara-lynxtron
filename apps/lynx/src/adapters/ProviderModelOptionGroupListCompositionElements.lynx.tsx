@@ -1,26 +1,21 @@
-import type { ReactNode } from '@lynx-js/react';
-import starFilledSvg from '@synara-central-icons-fill/star.svg?raw';
-import starSvg from '@synara-central-icons/star.svg?raw';
+import type { ReactNode } from "@lynx-js/react";
+import starFilledSvg from "@synara-central-icons-fill/star.svg?raw";
+import starSvg from "@synara-central-icons/star.svg?raw";
 
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import {
-  CheckIcon,
-  ChevronRightIcon,
-} from '../lib/icons.lynx';
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { CheckIcon, ChevronRightIcon } from "../lib/icons.lynx";
 import {
   disclosureChevronClassName,
   disclosureContentClassName,
   useLynxDisclosurePresence,
-} from '../platform/motion.lynx';
+} from "../platform/motion.lynx";
 import {
   lynxNestedInteractiveEventProps,
   useLynxInteractiveState,
-} from '../components/ui/interactive-state.lynx';
-import { useTheme } from './useTheme.lynx';
+} from "../components/ui/interactive-state.lynx";
+import { useTheme } from "./useTheme.lynx";
 
-export function ProviderModelOptionListFrameElement(props: {
-  readonly children: ReactNode;
-}) {
+export function ProviderModelOptionListFrameElement(props: { readonly children: ReactNode }) {
   return (
     <scroll-view
       className="ComposerModelOptionListLynx"
@@ -33,15 +28,11 @@ export function ProviderModelOptionListFrameElement(props: {
   );
 }
 
-export function ProviderModelGroupElement(props: {
-  readonly children: ReactNode;
-}) {
+export function ProviderModelGroupElement(props: { readonly children: ReactNode }) {
   return <view className="ComposerModelGroupLynx">{props.children}</view>;
 }
 
-export function ProviderModelGroupLabelElement(props: {
-  readonly children: ReactNode;
-}) {
+export function ProviderModelGroupLabelElement(props: { readonly children: ReactNode }) {
   return <text className="ComposerModelGroupLabelLynx">{props.children}</text>;
 }
 
@@ -56,12 +47,12 @@ export function ProviderModelCollapsibleGroupElement(props: {
   const contentPresent = useLynxDisclosurePresence(props.open);
   const interaction = useLynxInteractiveState({
     baseClassName: `ComposerModelGroupHeaderLynx${
-      props.open ? ' ComposerModelGroupHeaderLynx--open' : ''
+      props.open ? " ComposerModelGroupHeaderLynx--open" : ""
     }`,
-    accessibleLabel: `${props.open ? 'Collapse' : 'Expand'} ${props.label} models`,
-    accessibilityValue: props.open ? 'Expanded' : 'Collapsed',
+    accessibleLabel: `${props.open ? "Collapse" : "Expand"} ${props.label} models`,
+    accessibilityValue: props.open ? "Expanded" : "Collapsed",
     onActivate: () => {
-      'background only';
+      "background only";
       props.onOpenChange(!props.open);
     },
   });
@@ -69,15 +60,12 @@ export function ProviderModelCollapsibleGroupElement(props: {
     <view className="ComposerModelGroupLynx">
       <view
         className={interaction.className}
-        aria-label={`${props.open ? 'Collapse' : 'Expand'} ${props.label} models`}
+        aria-label={`${props.open ? "Collapse" : "Expand"} ${props.label} models`}
         aria-expanded={props.open}
         {...interaction.eventProps}
       >
         <ChevronRightIcon
-          className={disclosureChevronClassName(
-            props.open,
-            'ComposerModelGroupChevronLynx'
-          )}
+          className={disclosureChevronClassName(props.open, "ComposerModelGroupChevronLynx")}
           color={svgColors.mutedForeground80}
           size={12}
         />
@@ -88,10 +76,7 @@ export function ProviderModelCollapsibleGroupElement(props: {
       </view>
       {contentPresent ? (
         <view
-          className={disclosureContentClassName(
-            props.open,
-            'ComposerModelGroupContentLynx'
-          )}
+          className={disclosureContentClassName(props.open, "ComposerModelGroupContentLynx")}
           aria-hidden={!props.open}
         >
           {props.children}
@@ -105,7 +90,7 @@ export function ProviderModelRadioItemElement(props: {
   readonly active: boolean;
   readonly costMultiplierLabel: string | null;
   readonly description?: string;
-  readonly favoriteProvider: 'cursor' | 'kilo' | 'opencode' | 'pi' | null;
+  readonly favoriteProvider: "cursor" | "kilo" | "opencode" | "pi" | null;
   readonly isFavorite: boolean;
   readonly modelName: string;
   readonly modelSlug: string;
@@ -116,29 +101,27 @@ export function ProviderModelRadioItemElement(props: {
   const { resolvedTheme, semanticIconColor } = useTheme();
   const optionInteraction = useLynxInteractiveState({
     baseClassName: `ComposerModelOptionLynx${
-      props.active ? ' ComposerModelOptionLynx--active' : ''
+      props.active ? " ComposerModelOptionLynx--active" : ""
     }`,
     accessibleLabel: `Select ${props.modelName}`,
-    accessibilityValue: props.active ? 'Selected' : undefined,
+    accessibilityValue: props.active ? "Selected" : undefined,
     onActivate: () => {
-      'background only';
+      "background only";
       props.onSelect();
       props.onAfterSelection?.();
     },
   });
   const favoriteInteraction = useLynxInteractiveState({
     baseClassName: `ComposerModelOptionFavoriteLynx${
-      props.isFavorite ? ' ComposerModelOptionFavoriteLynx--active' : ''
+      props.isFavorite ? " ComposerModelOptionFavoriteLynx--active" : ""
     }`,
-    accessibleLabel: `${props.isFavorite ? 'Remove' : 'Add'} ${
+    accessibleLabel: `${props.isFavorite ? "Remove" : "Add"} ${
       props.modelName
-    } ${props.isFavorite ? 'from' : 'to'} favourites`,
-    accessibilityValue: props.isFavorite ? 'On' : 'Off',
+    } ${props.isFavorite ? "from" : "to"} favourites`,
+    accessibilityValue: props.isFavorite ? "On" : "Off",
     onActivate: props.onToggleFavorite,
   });
-  const favoriteEventProps = lynxNestedInteractiveEventProps(
-    favoriteInteraction.eventProps
-  );
+  const favoriteEventProps = lynxNestedInteractiveEventProps(favoriteInteraction.eventProps);
   return (
     <view
       className={optionInteraction.className}
@@ -156,27 +139,23 @@ export function ProviderModelRadioItemElement(props: {
       {props.favoriteProvider ? (
         <view
           className={favoriteInteraction.className}
-          aria-label={`${
-            props.isFavorite ? 'Remove' : 'Add'
-          } ${props.modelName} ${
-            props.isFavorite ? 'from' : 'to'
+          aria-label={`${props.isFavorite ? "Remove" : "Add"} ${props.modelName} ${
+            props.isFavorite ? "from" : "to"
           } favourites`}
           aria-checked={props.isFavorite}
           {...favoriteEventProps}
         >
           <svg
             className={`ComposerModelOptionFavoriteIconLynx${
-              props.isFavorite
-                ? ' ComposerModelOptionFavoriteIconLynx--active'
-                : ''
+              props.isFavorite ? " ComposerModelOptionFavoriteIconLynx--active" : ""
             }`}
             content={colorizeLynxSvg(
               props.isFavorite ? starFilledSvg : starSvg,
               props.isFavorite
-                ? resolvedTheme === 'dark'
-                  ? '#fbbf24'
-                  : '#f59e0b'
-                : semanticIconColor('secondary')
+                ? resolvedTheme === "dark"
+                  ? "#fbbf24"
+                  : "#f59e0b"
+                : semanticIconColor("secondary"),
             )}
           />
         </view>

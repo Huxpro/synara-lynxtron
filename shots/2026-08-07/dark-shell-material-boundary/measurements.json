@@ -2,35 +2,15 @@
   "electron": {
     "source": "shots/2026-08-07/electron-reference-live/electron-opencode-thread-final.png",
     "dpr": 2,
-    "sidebarBody": [
-      6,
-      6,
-      6
-    ],
-    "mainBody": [
-      7,
-      7,
-      7
-    ],
-    "sidebarTop": [
-      8,
-      8,
-      8
-    ]
+    "sidebarBody": [6, 6, 6],
+    "mainBody": [7, 7, 7],
+    "sidebarTop": [8, 8, 8]
   },
   "native": {
     "source": "shots/2026-08-07/sidebar-top-highlight-current/native-dark-sidebar.jpg",
     "dpr": 2,
-    "sidebarBody": [
-      17,
-      17,
-      17
-    ],
-    "sidebarTop": [
-      23,
-      23,
-      23
-    ]
+    "sidebarBody": [17, 17, 17],
+    "sidebarTop": [23, 23, 23]
   },
   "canonical": {
     "codexDarkSurface": "#111111",

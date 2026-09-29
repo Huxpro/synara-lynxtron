@@ -1,1 +1,24 @@
-{"client":"web","captureTier":"browser","buildSha256":"647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b","snapshotSha256":"98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070","semanticRoute":"new-chat","theme":"light","viewport":{"width":1280,"height":820,"devicePixelRatio":1},"states":{"skillSelected":{"visibleTokens":["Review Agent"],"visibleCount":1,"textareaCanonicalSyntax":false},"skillCleared":{"visibleCount":0},"mentionSelected":{"visibleTokens":["In Progress seed task"],"visibleCount":1,"textareaCanonicalSyntax":false},"mentionCleared":{"visibleCount":0}},"pageErrors":0}
+{
+  "client": "web",
+  "captureTier": "browser",
+  "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+  "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+  "semanticRoute": "new-chat",
+  "theme": "light",
+  "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 },
+  "states": {
+    "skillSelected": {
+      "visibleTokens": ["Review Agent"],
+      "visibleCount": 1,
+      "textareaCanonicalSyntax": false
+    },
+    "skillCleared": { "visibleCount": 0 },
+    "mentionSelected": {
+      "visibleTokens": ["In Progress seed task"],
+      "visibleCount": 1,
+      "textareaCanonicalSyntax": false
+    },
+    "mentionCleared": { "visibleCount": 0 }
+  },
+  "pageErrors": 0
+}

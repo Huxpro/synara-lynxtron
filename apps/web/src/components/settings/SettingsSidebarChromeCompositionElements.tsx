@@ -31,10 +31,7 @@ export function SettingsSidebarBackButtonElement(
   return (
     <button
       type="button"
-      className={cn(
-        SETTINGS_SIDEBAR_ITEM_CLASS_NAME,
-        SETTINGS_SIDEBAR_ROW_FILL_HOVER_CLASS_NAME,
-      )}
+      className={cn(SETTINGS_SIDEBAR_ITEM_CLASS_NAME, SETTINGS_SIDEBAR_ROW_FILL_HOVER_CLASS_NAME)}
       onClick={props.onActivate}
     >
       {props.children}
@@ -51,11 +48,7 @@ export function SettingsSidebarBackIconElement() {
 }
 
 export function SettingsSidebarBackLabelElement(props: ChildrenProps) {
-  return (
-    <span className={SETTINGS_SIDEBAR_ITEM_LABEL_CLASS_NAME}>
-      {props.children}
-    </span>
-  );
+  return <span className={SETTINGS_SIDEBAR_ITEM_LABEL_CLASS_NAME}>{props.children}</span>;
 }
 
 export function SettingsSidebarSearchRegionElement(props: ChildrenProps) {
@@ -95,9 +88,5 @@ export function SettingsSidebarSearchElement(props: {
 }
 
 export function SettingsSidebarSearchUnavailableElement(props: ChildrenProps) {
-  return (
-    <p className={SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME}>
-      {props.children}
-    </p>
-  );
+  return <p className={SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME}>{props.children}</p>;
 }

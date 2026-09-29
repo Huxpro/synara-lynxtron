@@ -9,9 +9,7 @@ export const FAVORITE_MODEL_STORAGE_KEYS = {
 
 export type FavoriteModelProvider = keyof typeof FAVORITE_MODEL_STORAGE_KEYS;
 
-export function supportsModelFavorites(
-  provider: ProviderKind,
-): provider is FavoriteModelProvider {
+export function supportsModelFavorites(provider: ProviderKind): provider is FavoriteModelProvider {
   return (
     provider === "cursor" || provider === "kilo" || provider === "opencode" || provider === "pi"
   );
@@ -37,10 +35,7 @@ export function parseFavoriteModelSlugs(raw: string | null | undefined): string[
   }
 }
 
-export function toggleFavoriteModelSlug(
-  current: ReadonlyArray<string>,
-  slug: string,
-): string[] {
+export function toggleFavoriteModelSlug(current: ReadonlyArray<string>, slug: string): string[] {
   const normalizedCurrent = normalizeFavoriteModelSlugs(current);
   const normalizedSlug = slug.trim();
   if (!normalizedSlug) return normalizedCurrent;

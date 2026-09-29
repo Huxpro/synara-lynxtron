@@ -2,11 +2,7 @@
 // Purpose: Pure transforms + dispatch helpers for per-thread pinned messages and notes.
 // Layer: Chat environment panel + message timeline helpers.
 
-import {
-  type MessageId,
-  type PinnedMessage,
-  type ThreadId,
-} from "@synara/contracts";
+import { type MessageId, type PinnedMessage, type ThreadId } from "@synara/contracts";
 import {
   addPinnedMessage,
   clampThreadNotes,
@@ -24,13 +20,7 @@ import {
 import { newCommandId } from "./lib/utils";
 import { readNativeApi } from "./nativeApi";
 
-export {
-  clampThreadNotes,
-  derivePinLabel,
-  displayLabelFor,
-  isMessagePinned,
-  normalizePinLabel,
-};
+export { clampThreadNotes, derivePinLabel, displayLabelFor, isMessagePinned, normalizePinLabel };
 
 export function addPin(
   pins: readonly PinnedMessage[] | undefined,

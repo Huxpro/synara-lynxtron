@@ -1,17 +1,8 @@
-import {
-  createContext,
-  Fragment,
-  useContext,
-  useState,
-  type ReactNode,
-} from '@lynx-js/react';
+import { createContext, Fragment, useContext, useState, type ReactNode } from "@lynx-js/react";
 
-import {
-  disclosureContentClassName,
-  useLynxDisclosurePresence,
-} from '../../platform/motion.lynx';
-import { cx, renderSlot, textContent } from './shared.lynx';
-import './primitives.css';
+import { disclosureContentClassName, useLynxDisclosurePresence } from "../../platform/motion.lynx";
+import { cx, renderSlot, textContent } from "./shared.lynx";
+import "./primitives.css";
 
 interface TooltipContextValue {
   open: boolean;
@@ -32,7 +23,7 @@ export function Tooltip(props: {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(props.defaultOpen ?? false);
   const open = props.open ?? uncontrolledOpen;
   const toggle = () => {
-    'background only';
+    "background only";
     const next = !open;
     if (props.open === undefined) setUncontrolledOpen(next);
     props.onOpenChange?.(next);
@@ -51,7 +42,7 @@ export function TooltipTrigger(props: {
 }) {
   const tooltip = useContext(TooltipContext);
   return (
-    <view className={cx('LxTooltipTrigger', props.className)} bindtap={tooltip.toggle}>
+    <view className={cx("LxTooltipTrigger", props.className)} bindtap={tooltip.toggle}>
       {renderSlot(props.render, props.children)}
     </view>
   );
@@ -60,10 +51,10 @@ export function TooltipTrigger(props: {
 export function TooltipPopup(props: {
   children?: ReactNode;
   className?: string;
-  side?: 'top' | 'bottom' | 'left' | 'right';
-  align?: 'start' | 'center' | 'end';
+  side?: "top" | "bottom" | "left" | "right";
+  align?: "start" | "center" | "end";
   sideOffset?: number;
-  variant?: 'default' | 'picker';
+  variant?: "default" | "picker";
 }) {
   const tooltip = useContext(TooltipContext);
   const present = useLynxDisclosurePresence(tooltip.open);
@@ -74,13 +65,13 @@ export function TooltipPopup(props: {
       className={disclosureContentClassName(
         tooltip.open,
         cx(
-          'LxTooltipPopup',
-          props.variant === 'picker' && 'LxTooltipPopup--picker',
-          props.className
-        )
+          "LxTooltipPopup",
+          props.variant === "picker" && "LxTooltipPopup--picker",
+          props.className,
+        ),
       )}
     >
-      {textContent(props.children, 'LxTooltipText')}
+      {textContent(props.children, "LxTooltipText")}
     </view>
   );
 }

@@ -69,11 +69,7 @@ export function useRestoreOrCreateChatRouteController(
   }, [emptyRestoreRecoveryState, input.threadIds.length]);
 
   useEffect(() => {
-    if (
-      input.enabled === false ||
-      !input.threadsHydrated ||
-      !input.splitViewsHydrated
-    ) {
+    if (input.enabled === false || !input.threadsHydrated || !input.splitViewsHydrated) {
       return;
     }
 

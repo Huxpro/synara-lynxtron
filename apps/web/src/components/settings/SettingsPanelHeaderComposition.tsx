@@ -21,9 +21,7 @@ export function SettingsPanelHeaderComposition(props: {
   return (
     <SettingsPanelHeaderRootElement>
       <SettingsPanelHeaderCopyElement>
-        <SettingsPanelHeaderTitleElement>
-          {copy.title}
-        </SettingsPanelHeaderTitleElement>
+        <SettingsPanelHeaderTitleElement>{copy.title}</SettingsPanelHeaderTitleElement>
         <SettingsPanelHeaderDescriptionElement>
           {copy.description}
         </SettingsPanelHeaderDescriptionElement>

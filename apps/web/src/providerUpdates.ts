@@ -168,8 +168,7 @@ export async function runProviderUpdateBatch(input: {
       failures
         .map(({ provider }) => provider.versionAdvisory?.updateCommand)
         .filter(
-          (command): command is string =>
-            typeof command === "string" && command.trim().length > 0,
+          (command): command is string => typeof command === "string" && command.trim().length > 0,
         ),
     ),
   );
@@ -203,14 +202,11 @@ export function providerUpdateOutcomeCopy(outcome: ProviderUpdateBatchOutcome): 
   }
 
   const failureLines = outcome.failures
-    .map(
-      ({ provider, reason }) => `${PROVIDER_DISPLAY_NAMES[provider.provider]}: ${reason}`,
-    )
+    .map(({ provider, reason }) => `${PROVIDER_DISPLAY_NAMES[provider.provider]}: ${reason}`)
     .join("\n");
   const hasManualCommands = outcome.manualCommands.length > 0;
   return {
-    title:
-      outcome.status === "failed" ? "Provider updates failed" : "Some provider updates failed",
+    title: outcome.status === "failed" ? "Provider updates failed" : "Some provider updates failed",
     description: hasManualCommands
       ? `${failureLines}\n\nCopy the command${outcome.manualCommands.length === 1 ? "" : "s"} below to update manually in a terminal.`
       : failureLines,

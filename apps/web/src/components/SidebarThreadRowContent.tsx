@@ -15,9 +15,7 @@ import { TerminalIcon } from "../lib/icons";
 import { cn } from "../lib/utils";
 import { SidebarGlyph } from "./sidebarGlyphs";
 import { SidebarThreadSubagentIdentity } from "./SidebarThreadSubagentIdentity";
-import {
-  SidebarThreadProviderIdentity,
-} from "./SidebarThreadProviderIdentity";
+import { SidebarThreadProviderIdentity } from "./SidebarThreadProviderIdentity";
 import { SidebarThreadRowComposition } from "./SidebarThreadRowComposition";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "./ui/tooltip";
 

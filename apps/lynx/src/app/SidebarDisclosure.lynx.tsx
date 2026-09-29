@@ -1,20 +1,13 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from '@lynx-js/react';
+import { useEffect, useRef, useState, type ReactNode } from "@lynx-js/react";
 
 import {
   THREAD_SIDEBAR_DEFAULT_WIDTH,
   THREAD_SIDEBAR_WIDTH_STORAGE_KEY,
-} from '@synara-web/components/sidebarResize.logic';
-import {
-  useLynxDisclosurePresence,
-} from '../platform/motion';
-import { LynxInteractionScope } from '../components/ui/interaction-scope.lynx';
-import { useViewportLayout } from '../hooks/useViewportLayout.lynx';
-import { webStorage } from '../platform/storage';
+} from "@synara-web/components/sidebarResize.logic";
+import { useLynxDisclosurePresence } from "../platform/motion";
+import { LynxInteractionScope } from "../components/ui/interaction-scope.lynx";
+import { useViewportLayout } from "../hooks/useViewportLayout.lynx";
+import { webStorage } from "../platform/storage";
 import {
   createLynxSidebarResizeSession,
   isLynxSidebarPrimaryPointer,
@@ -23,37 +16,29 @@ import {
   resolveLynxSidebarPresentedWidth,
   type LynxSidebarPointerEvent,
   type LynxSidebarResizeSession,
-} from './sidebarResize.lynx.logic';
-import './sidebar-disclosure.css';
+} from "./sidebarResize.lynx.logic";
+import "./sidebar-disclosure.css";
 
 function readPersistedSidebarWidth(): number | null {
   try {
     const raw = webStorage.getItem(THREAD_SIDEBAR_WIDTH_STORAGE_KEY);
     if (!raw) return null;
     const value = JSON.parse(raw) as unknown;
-    return typeof value === 'number' && Number.isFinite(value)
-      ? value
-      : null;
+    return typeof value === "number" && Number.isFinite(value) ? value : null;
   } catch {
     return null;
   }
 }
 
-export function SidebarDisclosure(props: {
-  readonly children: ReactNode;
-  readonly open: boolean;
-}) {
+export function SidebarDisclosure(props: { readonly children: ReactNode; readonly open: boolean }) {
   const present = useLynxDisclosurePresence(props.open);
   const [revealed, setRevealed] = useState(props.open);
   const viewport = useViewportLayout();
-  const [persistedWidth, setPersistedWidth] = useState(
-    readPersistedSidebarWidth
-  );
+  const [persistedWidth, setPersistedWidth] = useState(readPersistedSidebarWidth);
   const [dragging, setDragging] = useState(false);
   const [hovered, setHovered] = useState(false);
   const resizeSessionRef = useRef<LynxSidebarResizeSession | null>(null);
-  const effectiveViewportWidth =
-    viewport.width > 0 ? viewport.width : 1280;
+  const effectiveViewportWidth = viewport.width > 0 ? viewport.width : 1280;
   const width = resolveLynxSidebarPresentedWidth({
     requestedWidth: persistedWidth ?? THREAD_SIDEBAR_DEFAULT_WIDTH,
     viewportWidth: effectiveViewportWidth,
@@ -61,7 +46,7 @@ export function SidebarDisclosure(props: {
   const resizable = props.open && !viewport.compact;
 
   useEffect(() => {
-    'background only';
+    "background only";
     if (!props.open || !present) {
       setRevealed(false);
       return;
@@ -76,10 +61,7 @@ export function SidebarDisclosure(props: {
     setDragging(false);
     if (!session) return;
     setPersistedWidth(session.width);
-    webStorage.setItem(
-      THREAD_SIDEBAR_WIDTH_STORAGE_KEY,
-      JSON.stringify(session.width)
-    );
+    webStorage.setItem(THREAD_SIDEBAR_WIDTH_STORAGE_KEY, JSON.stringify(session.width));
   };
   const startResize = (event: LynxSidebarPointerEvent) => {
     if (!resizable || !isLynxSidebarPrimaryPointer(event)) return;
@@ -99,11 +81,11 @@ export function SidebarDisclosure(props: {
       session,
       viewportWidth: effectiveViewportWidth,
     });
-    if (result.kind === 'ended-missed-mouseup') {
+    if (result.kind === "ended-missed-mouseup") {
       stopResize();
       return;
     }
-    if (result.kind !== 'moved') return;
+    if (result.kind !== "moved") return;
     resizeSessionRef.current = result.session;
     setPersistedWidth(result.session.width);
   };
@@ -113,27 +95,20 @@ export function SidebarDisclosure(props: {
   return (
     <view
       className={`SidebarDisclosure${
-        revealed
-          ? ' SidebarDisclosure--open'
-          : ' SidebarDisclosure--closed'
-      }${dragging ? ' SidebarDisclosure--resizing' : ''}`}
+        revealed ? " SidebarDisclosure--open" : " SidebarDisclosure--closed"
+      }${dragging ? " SidebarDisclosure--resizing" : ""}`}
       aria-hidden={!interactive}
       accessibility-elements-hidden={!interactive}
       style={{ width: `${revealed ? width : 0}px` }}
     >
-      <view
-        className="SidebarDisclosureInner"
-        style={{ width: `${width}px` }}
-      >
-        <LynxInteractionScope disabled={!interactive}>
-          {props.children}
-        </LynxInteractionScope>
+      <view className="SidebarDisclosureInner" style={{ width: `${width}px` }}>
+        <LynxInteractionScope disabled={!interactive}>{props.children}</LynxInteractionScope>
       </view>
       {resizable ? (
         <view
           className={`SidebarResizeSash${
-            hovered ? ' ui-hover' : ''
-          }${dragging ? ' SidebarResizeSash--dragging' : ''}`}
+            hovered ? " ui-hover" : ""
+          }${dragging ? " SidebarResizeSash--dragging" : ""}`}
           aria-label="Resize Sidebar"
           accessibility-element={true}
           accessibility-label="Resize Sidebar"

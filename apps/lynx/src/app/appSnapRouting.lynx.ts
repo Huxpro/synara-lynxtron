@@ -1,24 +1,15 @@
-import type {
-  ClientOrchestrationCommand,
-  ModelSelection,
-  ProviderKind,
-} from '@synara/contracts';
-import { getDefaultModel } from '@synara/shared/model';
+import type { ClientOrchestrationCommand, ModelSelection, ProviderKind } from "@synara/contracts";
+import { getDefaultModel } from "@synara/shared/model";
 
-import type { LynxAppSnapCapture } from '../platform/appSnap';
-import type { loadLandingBootstrap } from '../components/composer/LandingComposer.lynx';
-import {
-  dispatchSynaraCommand,
-  fetchSynaraSidebarShellSnapshot,
-} from '../data/synaraClient.lynx';
+import type { LynxAppSnapCapture } from "../platform/appSnap";
+import type { loadLandingBootstrap } from "../components/composer/LandingComposer.lynx";
+import { dispatchSynaraCommand, fetchSynaraSidebarShellSnapshot } from "../data/synaraClient.lynx";
 
 type LandingBootstrap = Awaited<ReturnType<typeof loadLandingBootstrap>>;
 
-function appSnapId(kind: 'command' | 'thread'): string {
-  'background only';
-  return `lynx-appsnap-${kind}-${Date.now()}-${Math.random()
-    .toString(16)
-    .slice(2)}`;
+function appSnapId(kind: "command" | "thread"): string {
+  "background only";
+  return `lynx-appsnap-${kind}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 export interface AppSnapDraftImage {
@@ -31,12 +22,10 @@ export interface AppSnapDraft {
 
 export function findAppSnapCaptureThreadId(
   draftsByThreadId: Readonly<Record<string, AppSnapDraft>>,
-  captureId: string
+  captureId: string,
 ): string | null {
   for (const [threadId, draft] of Object.entries(draftsByThreadId)) {
-    if (
-      draft.images.some((image) => image.appSnapCaptureId === captureId)
-    ) {
+    if (draft.images.some((image) => image.appSnapCaptureId === captureId)) {
       return threadId;
     }
   }
@@ -44,8 +33,8 @@ export function findAppSnapCaptureThreadId(
 }
 
 export function appSnapCaptureTimestampMs(
-  capture: Pick<LynxAppSnapCapture, 'capturedAt'>,
-  fallbackMs: number
+  capture: Pick<LynxAppSnapCapture, "capturedAt">,
+  fallbackMs: number,
 ): number {
   const timestampMs = Date.parse(capture.capturedAt);
   return Number.isFinite(timestampMs) ? timestampMs : fallbackMs;
@@ -57,21 +46,20 @@ export function buildFreshAppSnapThreadCreateCommand(input: {
   readonly createdAt: string;
   readonly defaultProvider: ProviderKind;
   readonly threadId: string;
-}): Extract<ClientOrchestrationCommand, { type: 'thread.create' }> {
-  const modelSelection: ModelSelection =
-    input.bootstrap.homeProject.defaultModelSelection ?? {
-      provider: input.defaultProvider,
-      model: getDefaultModel(input.defaultProvider),
-    };
+}): Extract<ClientOrchestrationCommand, { type: "thread.create" }> {
+  const modelSelection: ModelSelection = input.bootstrap.homeProject.defaultModelSelection ?? {
+    provider: input.defaultProvider,
+    model: getDefaultModel(input.defaultProvider),
+  };
   return {
-    type: 'thread.create',
+    type: "thread.create",
     commandId: input.commandId as never,
     threadId: input.threadId as never,
     projectId: input.bootstrap.homeProject.id,
-    title: 'New chat',
+    title: "New chat",
     modelSelection,
-    runtimeMode: 'full-access',
-    interactionMode: 'default',
+    runtimeMode: "full-access",
+    interactionMode: "default",
     envMode: input.bootstrap.generalSettings.defaultThreadEnvMode,
     branch: null,
     worktreePath: null,
@@ -88,14 +76,14 @@ export async function createFreshAppSnapTask(input: {
   readonly createThreadId?: () => string;
   readonly now?: () => Date;
 }): Promise<string> {
-  'background only';
+  "background only";
   const dispatchCommand = input.dispatchCommand ?? dispatchSynaraCommand;
   const fetchSnapshot = input.fetchSnapshot ?? fetchSynaraSidebarShellSnapshot;
-  const threadId = (input.createThreadId ?? (() => appSnapId('thread')))();
-  const bootstrap = await input.loadBootstrap(input.defaultProvider, 'chat');
+  const threadId = (input.createThreadId ?? (() => appSnapId("thread")))();
+  const bootstrap = await input.loadBootstrap(input.defaultProvider, "chat");
   const command = buildFreshAppSnapThreadCreateCommand({
     bootstrap,
-    commandId: (input.createCommandId ?? (() => appSnapId('command')))(),
+    commandId: (input.createCommandId ?? (() => appSnapId("command")))(),
     createdAt: (input.now ?? (() => new Date()))().toISOString(),
     defaultProvider: input.defaultProvider,
     threadId,
@@ -103,9 +91,7 @@ export async function createFreshAppSnapTask(input: {
   try {
     await dispatchCommand(command);
   } catch (error) {
-    const recovered = (await fetchSnapshot()).threads.some(
-      (thread) => thread.id === threadId
-    );
+    const recovered = (await fetchSnapshot()).threads.some((thread) => thread.id === threadId);
     if (!recovered) throw error;
   }
   return threadId;

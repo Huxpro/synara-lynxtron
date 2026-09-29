@@ -105,4 +105,3 @@ that route.
 - `native/raw.png`: Native-only Update cell, light, `1280x820` logical.
 - `geometry.json`: comparable dimensions and live band transitions.
 - `console.json`: console classification and Native exact-client identity.
-

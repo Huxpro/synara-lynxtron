@@ -1,9 +1,9 @@
 {
   "viewport": { "width": 1440, "height": 900, "band": "wide" },
   "scrollers": [
-    { "border": [272,90,648,90,648,884,272,884], "width": 376, "height": 794 },
-    { "border": [660,90,1036,90,1036,884,660,884], "width": 376, "height": 794 },
-    { "border": [1048,90,1424,90,1424,884,1048,884], "width": 376, "height": 794 }
+    { "border": [272, 90, 648, 90, 648, 884, 272, 884], "width": 376, "height": 794 },
+    { "border": [660, 90, 1036, 90, 1036, 884, 660, 884], "width": 376, "height": 794 },
+    { "border": [1048, 90, 1424, 90, 1424, 884, 1048, 884], "width": 376, "height": 794 }
   ],
   "consoleErrorsOrWarnings": []
 }

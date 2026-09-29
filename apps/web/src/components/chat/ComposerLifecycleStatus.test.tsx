@@ -107,16 +107,10 @@ describe("composer lifecycle status", () => {
 
   it("maps status and failure transitions to the Web live-region contract", () => {
     const statusMarkup = renderToStaticMarkup(
-      <ComposerLifecycleStatusElement
-        announcement="Response complete"
-        intent="status"
-      />,
+      <ComposerLifecycleStatusElement announcement="Response complete" intent="status" />,
     );
     const alertMarkup = renderToStaticMarkup(
-      <ComposerLifecycleStatusElement
-        announcement="Response failed."
-        intent="alert"
-      />,
+      <ComposerLifecycleStatusElement announcement="Response failed." intent="alert" />,
     );
     expect(statusMarkup).toContain('role="status"');
     expect(statusMarkup).toContain('aria-live="polite"');

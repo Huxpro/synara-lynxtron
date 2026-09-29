@@ -33,10 +33,10 @@ line-height. The shared owner now defines `line-height: 18px`.
 
 After repair, Web and Lynx-for-Web are exact for the title:
 
-| Client | x | y | width | height | Typography |
-| --- | ---: | ---: | ---: | ---: | --- |
-| Web | 298 | 14 | 55.0625 | 18 | 12 / 18 / 400 |
-| Lynx-for-Web | 298 | 14 | 55.0625 | 18 | 12 / 18 / 400 |
+| Client       |   x |   y |   width | height | Typography    |
+| ------------ | --: | --: | ------: | -----: | ------------- |
+| Web          | 298 |  14 | 55.0625 |     18 | 12 / 18 / 400 |
+| Lynx-for-Web | 298 |  14 | 55.0625 |     18 | 12 / 18 / 400 |
 
 The rest of the Landing anchors did not move:
 

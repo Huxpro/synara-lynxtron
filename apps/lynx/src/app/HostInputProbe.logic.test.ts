@@ -1,5 +1,5 @@
-import { describe, expect, it } from '@rstest/core';
-import { readFileSync } from 'node:fs';
+import { describe, expect, it } from "@rstest/core";
+import { readFileSync } from "node:fs";
 
 import {
   createHostInputProbeMatrix,
@@ -7,45 +7,36 @@ import {
   hostInputProbeSummary,
   recordHostEventArrival,
   recordHostEventBinding,
-} from './HostInputProbe.logic';
+} from "./HostInputProbe.logic";
 
-describe('host input probe matrix', () => {
-  it('includes a dynamic spread event control', () => {
-    const source = readFileSync(
-      new URL('./HostInputProbe.tsx', import.meta.url),
-      'utf8'
-    );
+describe("host input probe matrix", () => {
+  it("includes a dynamic spread event control", () => {
+    const source = readFileSync(new URL("./HostInputProbe.tsx", import.meta.url), "utf8");
     expect(source).toContain('id="host-input-probe-dynamic-spread"');
-    expect(source).toContain('{...dynamicSpreadEvents}');
-    expect(source).toContain('Dynamic spread taps: ${dynamicSpreadTapCount}');
+    expect(source).toContain("{...dynamicSpreadEvents}");
+    expect(source).toContain("Dynamic spread taps: ${dynamicSpreadTapCount}");
     expect(source).toContain('id="host-input-probe-dynamic-fixed"');
-    expect(source).toContain('bindtap={dynamicFixedTap}');
-    expect(source).toContain('Dynamic fixed taps: ${dynamicFixedTapCount}');
+    expect(source).toContain("bindtap={dynamicFixedTap}");
+    expect(source).toContain("Dynamic fixed taps: ${dynamicFixedTapCount}");
     expect(source).toContain('id="host-input-probe-dynamic-prop"');
-    expect(source).toContain('bindtap={props.onActivate}');
-    expect(source).toContain('Dynamic prop taps: ${props.count}');
+    expect(source).toContain("bindtap={props.onActivate}");
+    expect(source).toContain("Dynamic prop taps: ${props.count}");
     expect(source).toContain('aria-label="Lynx button event control"');
-    expect(source).toContain('Lynx button taps: ${lynxButtonTapCount}');
+    expect(source).toContain("Lynx button taps: ${lynxButtonTapCount}");
     expect(source).toContain('id="host-input-probe-post-hydration"');
-    expect(source).toContain('setPostHydrationMounted(true)');
-    expect(source).toContain(
-      'Post-hydration taps: ${postHydrationTapCount}'
-    );
+    expect(source).toContain("setPostHydrationMounted(true)");
+    expect(source).toContain("Post-hydration taps: ${postHydrationTapCount}");
   });
 
-  it('distinguishes binding existence from event delivery', () => {
-    const initial = createHostInputProbeMatrix('Lynx-for-Web', 100);
-    const bound = recordHostEventBinding(
-      initial,
-      'keydown:Enter',
-      'view-control'
-    );
+  it("distinguishes binding existence from event delivery", () => {
+    const initial = createHostInputProbeMatrix("Lynx-for-Web", 100);
+    const bound = recordHostEventBinding(initial, "keydown:Enter", "view-control");
     const delivered = recordHostEventArrival(
       bound,
-      'keydown:Enter',
-      'view-control',
-      'key=Enter',
-      200
+      "keydown:Enter",
+      "view-control",
+      "key=Enter",
+      200,
     );
 
     expect(hostInputProbeSummary(initial)).toEqual({
@@ -62,57 +53,53 @@ describe('host input probe matrix', () => {
     });
     expect(
       delivered.events.find(
-        (event) =>
-          event.eventName === 'keydown:Enter' &&
-          event.sourceName === 'view-control'
-      )
+        (event) => event.eventName === "keydown:Enter" && event.sourceName === "view-control",
+      ),
     ).toMatchObject({
       bindingExists: true,
       eventArrived: true,
       handlerCallCount: 1,
       lastArrivalMs: 200,
-      lastDetail: 'key=Enter',
+      lastDetail: "key=Enter",
     });
   });
 
-  it('keeps composing and committed textarea input as separate observations', () => {
-    const initial = createHostInputProbeMatrix('Native', 100);
+  it("keeps composing and committed textarea input as separate observations", () => {
+    const initial = createHostInputProbeMatrix("Native", 100);
     const composing = recordHostEventArrival(
       initial,
-      'input:composing',
-      'textarea',
-      'value=拼;isComposing=true',
-      200
+      "input:composing",
+      "textarea",
+      "value=拼;isComposing=true",
+      200,
     );
     const committed = recordHostEventArrival(
       composing,
-      'input:committed',
-      'textarea',
-      'value=拼音;isComposing=false',
-      300
+      "input:committed",
+      "textarea",
+      "value=拼音;isComposing=false",
+      300,
     );
 
     expect(
       committed.events
-        .filter((event) => event.eventName.startsWith('input:'))
-        .map((event) => [event.eventName, event.handlerCallCount])
+        .filter((event) => event.eventName.startsWith("input:"))
+        .map((event) => [event.eventName, event.handlerCallCount]),
     ).toEqual([
-      ['input:composing', 1],
-      ['input:committed', 1],
+      ["input:composing", 1],
+      ["input:committed", 1],
     ]);
   });
 
-  it('formats a stable human-readable report', () => {
+  it("formats a stable human-readable report", () => {
     const matrix = recordHostEventBinding(
-      createHostInputProbeMatrix('Lynx-for-Web', 0),
-      'focus',
-      'view-control'
+      createHostInputProbeMatrix("Lynx-for-Web", 0),
+      "focus",
+      "view-control",
     );
 
-    expect(formatHostInputProbeReport(matrix)).toContain(
-      'Host Input Probe — Lynx-for-Web'
-    );
-    expect(formatHostInputProbeReport(matrix)).toContain('Bindings: 1/25');
-    expect(formatHostInputProbeReport(matrix)).toContain('Delivered: 0/25');
+    expect(formatHostInputProbeReport(matrix)).toContain("Host Input Probe — Lynx-for-Web");
+    expect(formatHostInputProbeReport(matrix)).toContain("Bindings: 1/25");
+    expect(formatHostInputProbeReport(matrix)).toContain("Delivered: 0/25");
   });
 });

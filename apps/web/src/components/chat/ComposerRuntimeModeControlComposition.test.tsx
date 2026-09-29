@@ -35,16 +35,12 @@ describe("ComposerRuntimeModeControlComposition", () => {
     );
 
     expect(markup).toContain('data-runtime-mode="approval-required"');
-    expect(markup.indexOf("Full access")).toBeLessThan(
-      markup.indexOf("Default permissions"),
-    );
+    expect(markup.indexOf("Full access")).toBeLessThan(markup.indexOf("Default permissions"));
   });
 
   it("omits the control without a real mode transition", () => {
     expect(
-      renderToStaticMarkup(
-        <ComposerRuntimeModeControlComposition runtimeMode="full-access" />,
-      ),
+      renderToStaticMarkup(<ComposerRuntimeModeControlComposition runtimeMode="full-access" />),
     ).toBe("");
   });
 });

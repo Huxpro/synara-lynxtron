@@ -64,11 +64,11 @@ The full structured outcome is in `interaction.json`.
 Web authority and Lynx-for-Web used the same snapshot, route state, theme,
 viewport, and DPR.
 
-| Element | Web | Lynx-for-Web |
-| --- | --- | --- |
-| row | `622×106 @ (442,151)` | `622×106 @ (442,151)` |
-| Delete | `47.89×24 @ (1004.11,161)` | `47.89×24 @ (1004.11,161)` |
-| row padding | `10px 12px` | `10px 12px` |
+| Element     | Web                        | Lynx-for-Web               |
+| ----------- | -------------------------- | -------------------------- |
+| row         | `622×106 @ (442,151)`      | `622×106 @ (442,151)`      |
+| Delete      | `47.89×24 @ (1004.11,161)` | `47.89×24 @ (1004.11,161)` |
+| row padding | `10px 12px`                | `10px 12px`                |
 
 Native reported a `598×86` content box at `(517,160)` and a `48×24` Delete
 button at `(1067,160)`. Its coordinates are in the Lynx content frame rather

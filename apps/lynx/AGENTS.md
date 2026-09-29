@@ -35,15 +35,16 @@ Read the docs below in advance to help you understand the library or frameworks 
 ## Common Patterns
 
 ### Calling Native Capabilities
+
 Always use the unified `NativeModules` API to ensure cross-platform compatibility.
 
 ```typescript
 // Unified call for both Desktop and Web
-NativeModules.bridge.request({ method: 'showDialog', params: { message: 'Hi' } });
+NativeModules.bridge.request({ method: "showDialog", params: { message: "Hi" } });
 
 // Background logic (runs in the same JS thread as Lynx logic)
 // Use exposed to access capabilities exported by host preload scripts
-NativeModules.nodejs.exposed.echo('Hello', (res) => {
+NativeModules.nodejs.exposed.echo("Hello", (res) => {
   console.log(res); // Hello
 });
 ```
@@ -91,13 +92,13 @@ UI code in `src/app` runs in the Lynx engine, which is **not a browser**.
 ### UI Example
 
 ```tsx
-import { useState, useCallback } from '@lynx-js/react';
+import { useState, useCallback } from "@lynx-js/react";
 
 export function MyComponent() {
   const [count, setCount] = useState(0);
 
   const handleTap = useCallback(() => {
-    setCount(c => c + 1);
+    setCount((c) => c + 1);
   }, []);
 
   return (
@@ -114,5 +115,6 @@ export function MyComponent() {
 ## Local Type Definitions
 
 Inspect local types for exact API surfaces:
+
 - `node_modules/@lynx-js/lynxtron/apis/lynxtron.d.ts`
 - `node_modules/@lynx-js/lynxtron/apis/web-host.d.ts`

@@ -1,5 +1,5 @@
-import { describe, expect, it } from '@rstest/core';
-import { readFileSync } from 'node:fs';
+import { describe, expect, it } from "@rstest/core";
+import { readFileSync } from "node:fs";
 
 import {
   handleLynxActivationKey,
@@ -7,22 +7,20 @@ import {
   lynxInteractiveAccessibilityProps,
   lynxNestedInteractiveEventProps,
   lynxInteractiveClassName,
-} from './useLynxInteractiveState';
+} from "./useLynxInteractiveState";
 
-describe('Lynx interactive state adapter', () => {
-  it('matches native Enter and Space activation keys without widening the contract', () => {
-    expect(['Enter', ' ', 'Space', 'Spacebar'].every(isLynxActivationKey)).toBe(
-      true
-    );
-    expect(isLynxActivationKey('Escape')).toBe(false);
-    expect(isLynxActivationKey('ArrowDown')).toBe(false);
+describe("Lynx interactive state adapter", () => {
+  it("matches native Enter and Space activation keys without widening the contract", () => {
+    expect(["Enter", " ", "Space", "Spacebar"].every(isLynxActivationKey)).toBe(true);
+    expect(isLynxActivationKey("Escape")).toBe(false);
+    expect(isLynxActivationKey("ArrowDown")).toBe(false);
   });
 
-  it('activates supported keys exactly once and prevents their default action', () => {
+  it("activates supported keys exactly once and prevents their default action", () => {
     let activations = 0;
     let prevented = 0;
     const event = {
-      key: 'Enter',
+      key: "Enter",
       preventDefault: () => {
         prevented += 1;
       },
@@ -31,7 +29,7 @@ describe('Lynx interactive state adapter', () => {
     expect(
       handleLynxActivationKey(event, () => {
         activations += 1;
-      })
+      }),
     ).toBe(true);
     expect({ activations, prevented }).toEqual({
       activations: 1,
@@ -39,22 +37,22 @@ describe('Lynx interactive state adapter', () => {
     });
   });
 
-  it('does not consume or activate unrelated keys', () => {
+  it("does not consume or activate unrelated keys", () => {
     let activations = 0;
     let prevented = 0;
 
     expect(
       handleLynxActivationKey(
         {
-          key: 'Escape',
+          key: "Escape",
           preventDefault: () => {
             prevented += 1;
           },
         },
         () => {
           activations += 1;
-        }
-      )
+        },
+      ),
     ).toBe(false);
     expect({ activations, prevented }).toEqual({
       activations: 0,
@@ -62,93 +60,88 @@ describe('Lynx interactive state adapter', () => {
     });
   });
 
-  it('emits the generated utility state classes in stable order', () => {
+  it("emits the generated utility state classes in stable order", () => {
     expect(
-      lynxInteractiveClassName('Control', {
+      lynxInteractiveClassName("Control", {
         hovered: true,
         focused: true,
         pressed: true,
-      })
-    ).toBe('Control ui-hover ui-focus ui-pressed');
+      }),
+    ).toBe("Control ui-hover ui-focus ui-pressed");
     expect(
-      lynxInteractiveClassName('Control', {
+      lynxInteractiveClassName("Control", {
         hovered: false,
         focused: false,
         pressed: false,
-      })
-    ).toBe('Control');
+      }),
+    ).toBe("Control");
   });
 
-  it('keeps shared hover and focus intent delivery in the interaction primitive', () => {
+  it("keeps shared hover and focus intent delivery in the interaction primitive", () => {
     const source = readFileSync(
-      new URL(
-        '../components/ui/interactive-state.lynx.ts',
-        import.meta.url
-      ),
-      'utf8'
+      new URL("../components/ui/interactive-state.lynx.ts", import.meta.url),
+      "utf8",
     );
 
     expect(source).toMatch(
-      /bindmouseenter:[\s\S]*?setHovered\(true\);[\s\S]*?options\.onIntent\?\.\(\);[\s\S]*?bindmouseleave:/
+      /bindmouseenter:[\s\S]*?setHovered\(true\);[\s\S]*?options\.onIntent\?\.\(\);[\s\S]*?bindmouseleave:/,
     );
     expect(source).toMatch(
-      /bindfocus:[\s\S]*?setFocused\([\s\S]*?options\.onIntent\?\.\(\);[\s\S]*?bindblur:/
+      /bindfocus:[\s\S]*?setFocused\([\s\S]*?options\.onIntent\?\.\(\);[\s\S]*?bindblur:/,
     );
   });
 
-  it('exposes actionable native button semantics without widening passive nodes', () => {
+  it("exposes actionable native button semantics without widening passive nodes", () => {
     const onActivate = () => {};
 
     expect(
       lynxInteractiveAccessibilityProps({
-        accessibleLabel: 'Open settings',
-        accessibilityValue: 'Current page',
+        accessibleLabel: "Open settings",
+        accessibilityValue: "Current page",
         onActivate,
-      })
+      }),
     ).toEqual({
-      'accessibility-element': true,
-      'accessibility-label': 'Open settings',
-      'accessibility-trait': 'button',
-      'accessibility-value': 'Current page',
+      "accessibility-element": true,
+      "accessibility-label": "Open settings",
+      "accessibility-trait": "button",
+      "accessibility-value": "Current page",
     });
     expect(lynxInteractiveAccessibilityProps({})).toEqual({
-      'accessibility-element': undefined,
-      'accessibility-label': undefined,
-      'accessibility-trait': undefined,
-      'accessibility-value': undefined,
+      "accessibility-element": undefined,
+      "accessibility-label": undefined,
+      "accessibility-trait": undefined,
+      "accessibility-value": undefined,
     });
-    expect(
-      lynxInteractiveAccessibilityProps({ onActivate })
-    ).toMatchObject({
-      'accessibility-element': true,
-      'accessibility-trait': 'button',
+    expect(lynxInteractiveAccessibilityProps({ onActivate })).toMatchObject({
+      "accessibility-element": true,
+      "accessibility-trait": "button",
     });
     expect(
       lynxInteractiveAccessibilityProps({
-        accessibleLabel: 'Unavailable action',
-      })
+        accessibleLabel: "Unavailable action",
+      }),
     ).toMatchObject({
-      'accessibility-element': true,
-      'accessibility-trait': 'button',
+      "accessibility-element": true,
+      "accessibility-trait": "button",
     });
   });
 
-  it('keeps explicit native accessibility semantics authoritative', () => {
+  it("keeps explicit native accessibility semantics authoritative", () => {
     expect(
       lynxInteractiveAccessibilityProps({
         accessibilityElement: false,
-        accessibilityTraits: 'link',
-        accessibleLabel: 'Open documentation',
+        accessibilityTraits: "link",
+        accessibleLabel: "Open documentation",
         onActivate: () => {},
-      })
+      }),
     ).toMatchObject({
-      'accessibility-element': false,
-      'accessibility-label': 'Open documentation',
-      'accessibility-trait': 'link',
+      "accessibility-element": false,
+      "accessibility-label": "Open documentation",
+      "accessibility-trait": "link",
     });
   });
 
-  it('contains nested pointer activation without dropping focus or keyboard handlers', () => {
+  it("contains nested pointer activation without dropping focus or keyboard handlers", () => {
     const onMouseDown = () => {};
     const onMouseUp = () => {};
     const onTouchStart = () => {};
@@ -157,12 +150,12 @@ describe('Lynx interactive state adapter', () => {
     const onTap = () => {};
     const onKeyDown = () => {};
     const nested = lynxNestedInteractiveEventProps({
-      'accessibility-element': true,
-      'accessibility-label': 'Nested action',
-      'accessibility-trait': 'button',
-      'accessibility-value': undefined,
+      "accessibility-element": true,
+      "accessibility-label": "Nested action",
+      "accessibility-trait": "button",
+      "accessibility-value": undefined,
       focusable: true,
-      'aria-disabled': false,
+      "aria-disabled": false,
       bindmouseenter: undefined,
       bindmouseleave: undefined,
       bindmousedown: onMouseDown,
@@ -184,12 +177,12 @@ describe('Lynx interactive state adapter', () => {
       catchtouchcancel: onTouchCancel,
       catchtap: onTap,
       bindkeydown: onKeyDown,
-      'accessibility-element': true,
-      'accessibility-label': 'Nested action',
-      'accessibility-trait': 'button',
+      "accessibility-element": true,
+      "accessibility-label": "Nested action",
+      "accessibility-trait": "button",
     });
-    expect('bindmousedown' in nested).toBe(false);
-    expect('bindtouchstart' in nested).toBe(false);
-    expect('bindtap' in nested).toBe(false);
+    expect("bindmousedown" in nested).toBe(false);
+    expect("bindtouchstart" in nested).toBe(false);
+    expect("bindtap" in nested).toBe(false);
   });
 });

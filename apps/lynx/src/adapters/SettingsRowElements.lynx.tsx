@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
-import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
-import './settings-row-elements.css';
+import { SettingsHeadingElement } from "./SettingsHeadingElement.lynx";
+import "./settings-row-elements.css";
 
 type ElementProps = {
   readonly className?: string;
@@ -18,14 +18,11 @@ export function SettingsRowRootElement({
   children,
 }: ElementProps & { readonly id?: string }) {
   const isFirstRow =
-    id === 'setting-assistant-output' ||
-    id === 'setting-delete-confirmation' ||
-    id === 'setting-activity-toasts';
+    id === "setting-assistant-output" ||
+    id === "setting-delete-confirmation" ||
+    id === "setting-activity-toasts";
   return (
-    <view
-      id={id}
-      className={`SharedSettingsRow${isFirstRow ? ' SharedSettingsRow--first' : ''}`}
-    >
+    <view id={id} className={`SharedSettingsRow${isFirstRow ? " SharedSettingsRow--first" : ""}`}>
       {children}
     </view>
   );
@@ -44,24 +41,24 @@ export function SettingsRowLayoutElement({
 }
 
 export function SettingsRowViewElement({ className, children }: ElementProps) {
-  const roleClassName = className?.includes('space-y-0.5')
-    ? 'SharedSettingsRowCopy'
-    : className?.includes('min-h-5')
-      ? 'SharedSettingsRowTitleLine'
-      : className?.includes('text-[11px]')
-        ? 'SharedSettingsRowStatus'
-      : className?.includes('sm:justify-end')
-        ? 'SharedSettingsRowControl'
-        : 'SharedSettingsRowView';
+  const roleClassName = className?.includes("space-y-0.5")
+    ? "SharedSettingsRowCopy"
+    : className?.includes("min-h-5")
+      ? "SharedSettingsRowTitleLine"
+      : className?.includes("text-[11px]")
+        ? "SharedSettingsRowStatus"
+        : className?.includes("sm:justify-end")
+          ? "SharedSettingsRowControl"
+          : "SharedSettingsRowView";
   return (
     <view
       className={
-        roleClassName === 'SharedSettingsRowView'
+        roleClassName === "SharedSettingsRowView"
           ? classes(roleClassName, className)
           : roleClassName
       }
     >
-      {roleClassName === 'SharedSettingsRowStatus' ? (
+      {roleClassName === "SharedSettingsRowStatus" ? (
         <text className="SharedSettingsRowStatusText">{children}</text>
       ) : (
         children
@@ -72,18 +69,14 @@ export function SettingsRowViewElement({ className, children }: ElementProps) {
 
 export function SettingsRowTitleElement({ className, children }: ElementProps) {
   return (
-    <SettingsHeadingElement
-      className={classes('SharedSettingsRowTitle', className)}
-    >
+    <SettingsHeadingElement className={classes("SharedSettingsRowTitle", className)}>
       {children}
     </SettingsHeadingElement>
   );
 }
 
 export function SettingsRowDescriptionElement({ className, children }: ElementProps) {
-  return (
-    <text className={classes('SharedSettingsRowDescription', className)}>{children}</text>
-  );
+  return <text className={classes("SharedSettingsRowDescription", className)}>{children}</text>;
 }
 
 export function SettingsRowInlineElement({ className: _className, children }: ElementProps) {

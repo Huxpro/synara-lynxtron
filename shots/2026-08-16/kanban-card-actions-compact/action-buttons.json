@@ -1,1 +1,110 @@
-{"success":true,"data":{"origin":"http://localhost:8080/index.html?route=%2Fkanban%2Feditor-changes-project","result":{"buttons":[{"cls":"LxButton LxButton--outline LxButton--sm","rect":{"bottom":125,"height":28,"right":107.421875,"width":78.421875,"x":29,"y":97},"style":{"backgroundColor":"rgba(0, 0, 0, 0)","borderColor":"rgba(252, 252, 252, 0.07)","borderRadius":"10px","color":"rgb(252, 252, 252)","fontSize":"16px"},"text":"Start task"},{"cls":"LxButton LxButton--outline LxButton--sm","rect":{"bottom":125,"height":28,"right":211.640625,"width":96.21875,"x":115.421875,"y":97},"style":{"backgroundColor":"rgba(0, 0, 0, 0)","borderColor":"rgba(252, 252, 252, 0.07)","borderRadius":"10px","color":"rgb(252, 252, 252)","fontSize":"16px"},"text":"Rename task"},{"cls":"LxButton LxButton--destructive-outline LxButton--sm","rect":{"bottom":125,"height":28,"right":312.984375,"width":93.34375,"x":219.640625,"y":97},"style":{"backgroundColor":"rgba(0, 0, 0, 0)","borderColor":"rgba(252, 252, 252, 0.07)","borderRadius":"10px","color":"rgb(252, 252, 252)","fontSize":"16px"},"text":"Archive task"},{"cls":"LxButton LxButton--ghost LxButton--sm","rect":{"bottom":161,"height":28,"right":90.65625,"width":61.65625,"x":29,"y":133},"style":{"backgroundColor":"rgba(0, 0, 0, 0)","borderColor":"rgba(0, 0, 0, 0)","borderRadius":"10px","color":"rgb(252, 252, 252)","fontSize":"16px"},"text":"Cancel"}],"interactionCount":0,"relay":{"activeBaseUrl":"ws://127.0.0.1:58090","configuredBaseUrl":"ws://127.0.0.1:58090","connectionAttempts":1,"explorerPreviewActionCount":0,"interactionEventCount":0,"lastExplorerPreviewAction":null,"lastInteractionEvent":null,"lastRpcError":null,"lastSyntaxHighlightResult":null,"lastTransportError":null,"pendingRequests":0,"readyBaseUrl":null,"recentRpcTags":["orchestration.getShellSnapshot","orchestration.getSidebarShellSnapshot","orchestration.getSidebarSearchSnapshot"],"rendererReadyRoute":"/kanban/editor-changes-project","socketState":1,"syntaxHighlightCallCount":0}}},"error":null}
+{
+  "success": true,
+  "data": {
+    "origin": "http://localhost:8080/index.html?route=%2Fkanban%2Feditor-changes-project",
+    "result": {
+      "buttons": [
+        {
+          "cls": "LxButton LxButton--outline LxButton--sm",
+          "rect": {
+            "bottom": 125,
+            "height": 28,
+            "right": 107.421875,
+            "width": 78.421875,
+            "x": 29,
+            "y": 97
+          },
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(252, 252, 252, 0.07)",
+            "borderRadius": "10px",
+            "color": "rgb(252, 252, 252)",
+            "fontSize": "16px"
+          },
+          "text": "Start task"
+        },
+        {
+          "cls": "LxButton LxButton--outline LxButton--sm",
+          "rect": {
+            "bottom": 125,
+            "height": 28,
+            "right": 211.640625,
+            "width": 96.21875,
+            "x": 115.421875,
+            "y": 97
+          },
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(252, 252, 252, 0.07)",
+            "borderRadius": "10px",
+            "color": "rgb(252, 252, 252)",
+            "fontSize": "16px"
+          },
+          "text": "Rename task"
+        },
+        {
+          "cls": "LxButton LxButton--destructive-outline LxButton--sm",
+          "rect": {
+            "bottom": 125,
+            "height": 28,
+            "right": 312.984375,
+            "width": 93.34375,
+            "x": 219.640625,
+            "y": 97
+          },
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(252, 252, 252, 0.07)",
+            "borderRadius": "10px",
+            "color": "rgb(252, 252, 252)",
+            "fontSize": "16px"
+          },
+          "text": "Archive task"
+        },
+        {
+          "cls": "LxButton LxButton--ghost LxButton--sm",
+          "rect": {
+            "bottom": 161,
+            "height": 28,
+            "right": 90.65625,
+            "width": 61.65625,
+            "x": 29,
+            "y": 133
+          },
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "10px",
+            "color": "rgb(252, 252, 252)",
+            "fontSize": "16px"
+          },
+          "text": "Cancel"
+        }
+      ],
+      "interactionCount": 0,
+      "relay": {
+        "activeBaseUrl": "ws://127.0.0.1:58090",
+        "configuredBaseUrl": "ws://127.0.0.1:58090",
+        "connectionAttempts": 1,
+        "explorerPreviewActionCount": 0,
+        "interactionEventCount": 0,
+        "lastExplorerPreviewAction": null,
+        "lastInteractionEvent": null,
+        "lastRpcError": null,
+        "lastSyntaxHighlightResult": null,
+        "lastTransportError": null,
+        "pendingRequests": 0,
+        "readyBaseUrl": null,
+        "recentRpcTags": [
+          "orchestration.getShellSnapshot",
+          "orchestration.getSidebarShellSnapshot",
+          "orchestration.getSidebarSearchSnapshot"
+        ],
+        "rendererReadyRoute": "/kanban/editor-changes-project",
+        "socketState": 1,
+        "syntaxHighlightCallCount": 0
+      }
+    }
+  },
+  "error": null
+}

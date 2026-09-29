@@ -1,31 +1,29 @@
-import { useRef, useState, type ReactNode } from '@lynx-js/react';
-import { useQuery } from '@tanstack/react-query';
-import { getRectByRef } from '@lynx-js/lynx-ui';
-import type { NodesRef } from '@lynx-js/types';
-import { buildArchivedThreadContextMenuItems } from '@synara/shared/contextMenu';
-import { SettingsSection } from '@synara-web/components/settings/SettingsSection';
-import { formatRelativeTime } from '@synara-web/lib/relativeTime';
+import { useRef, useState, type ReactNode } from "@lynx-js/react";
+import { useQuery } from "@tanstack/react-query";
+import { getRectByRef } from "@lynx-js/lynx-ui";
+import type { NodesRef } from "@lynx-js/types";
+import { buildArchivedThreadContextMenuItems } from "@synara/shared/contextMenu";
+import { SettingsSection } from "@synara-web/components/settings/SettingsSection";
+import { formatRelativeTime } from "@synara-web/lib/relativeTime";
 
-import { Button } from '../components/ui/button';
-import { ArchiveIcon } from '../lib/icons.lynx';
-import { dispatchSynaraCommand } from '../data/synaraClient.lynx';
-import { dialogs } from '../platform/dialogs';
-import { showContextMenu } from '../platform/contextMenu';
-import { resolveSecondaryPointerOffset } from '../components/sidebar/threadContextActions.logic';
-import { focusLynxNode } from '../components/ui/focus.lynx';
-import { fetchSidebarSnapshot, queryClient } from './queries';
+import { Button } from "../components/ui/button";
+import { ArchiveIcon } from "../lib/icons.lynx";
+import { dispatchSynaraCommand } from "../data/synaraClient.lynx";
+import { dialogs } from "../platform/dialogs";
+import { showContextMenu } from "../platform/contextMenu";
+import { resolveSecondaryPointerOffset } from "../components/sidebar/threadContextActions.logic";
+import { focusLynxNode } from "../components/ui/focus.lynx";
+import { fetchSidebarSnapshot, queryClient } from "./queries";
 import {
   createDeleteArchivedThreadCommand,
   createUnarchiveCommand,
   groupArchivedThreads,
-} from './settingsArchived.logic';
+} from "./settingsArchived.logic";
 
-import './settings-archived-panel.css';
+import "./settings-archived-panel.css";
 
 function newCommandId(): string {
-  return `lynx-archived-${Date.now()}-${Math.random()
-    .toString(16)
-    .slice(2)}`;
+  return `lynx-archived-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 function ArchivedThreadRow(props: {
@@ -33,18 +31,17 @@ function ArchivedThreadRow(props: {
   readonly className: string;
   readonly onContextMenu: (
     position: { readonly x: number; readonly y: number },
-    restoreFocus: () => void
+    restoreFocus: () => void,
   ) => void;
 }) {
   const rowRef = useRef<NodesRef>(null);
   const openAtOffset = (offset: { readonly x: number; readonly y: number }) => {
-    'background only';
+    "background only";
     void getRectByRef(rowRef, true)
       .then((rect) =>
-        props.onContextMenu(
-          { x: rect.left + offset.x, y: rect.top + offset.y },
-          () => focusLynxNode(rowRef)
-        )
+        props.onContextMenu({ x: rect.left + offset.x, y: rect.top + offset.y }, () =>
+          focusLynxNode(rowRef),
+        ),
       )
       .catch(() => {
         // A menu at invented coordinates is worse than no menu.
@@ -77,63 +74,59 @@ function ArchivedThreadRow(props: {
 
 export function SettingsArchivedPanel() {
   const snapshotQuery = useQuery({
-    queryKey: ['sidebar-snapshot'],
+    queryKey: ["sidebar-snapshot"],
     queryFn: fetchSidebarSnapshot,
   });
   const [pendingAction, setPendingAction] = useState<{
     readonly threadId: string;
-    readonly type: 'restore' | 'delete';
+    readonly type: "restore" | "delete";
   } | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const groups = groupArchivedThreads(
     snapshotQuery.data?.projects ?? [],
-    snapshotQuery.data?.archivedThreads ?? []
+    snapshotQuery.data?.archivedThreads ?? [],
   );
 
   async function restoreThread(threadId: string) {
-    'background only';
+    "background only";
     if (pendingAction) return;
-    setPendingAction({ threadId, type: 'restore' });
+    setPendingAction({ threadId, type: "restore" });
     setActionError(null);
     try {
       await dispatchSynaraCommand(
         createUnarchiveCommand({
           threadId,
           commandId: newCommandId(),
-        })
+        }),
       );
-      await queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] });
+      await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
     } catch (error) {
-      setActionError(
-        error instanceof Error ? error.message : 'Unable to restore the thread.'
-      );
+      setActionError(error instanceof Error ? error.message : "Unable to restore the thread.");
     } finally {
       setPendingAction(null);
     }
   }
 
   async function deleteThread(threadId: string, threadTitle: string) {
-    'background only';
+    "background only";
     if (pendingAction) return;
     const confirmed = await dialogs.confirm(
-      `Permanently delete "${threadTitle}"?\n\nThis will remove the thread and its conversation history forever.`
+      `Permanently delete "${threadTitle}"?\n\nThis will remove the thread and its conversation history forever.`,
     );
     if (!confirmed) return;
 
-    setPendingAction({ threadId, type: 'delete' });
+    setPendingAction({ threadId, type: "delete" });
     setActionError(null);
     try {
       await dispatchSynaraCommand(
         createDeleteArchivedThreadCommand({
           threadId,
           commandId: newCommandId(),
-        })
+        }),
       );
-      await queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] });
+      await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
     } catch (error) {
-      setActionError(
-        error instanceof Error ? error.message : 'Unable to delete the thread.'
-      );
+      setActionError(error instanceof Error ? error.message : "Unable to delete the thread.");
     } finally {
       setPendingAction(null);
     }
@@ -143,25 +136,21 @@ export function SettingsArchivedPanel() {
     threadId: string,
     threadTitle: string,
     position: { readonly x: number; readonly y: number },
-    restoreFocus: () => void
+    restoreFocus: () => void,
   ) {
-    'background only';
+    "background only";
     if (pendingAction) return;
-    const action = await showContextMenu(
-      buildArchivedThreadContextMenuItems(),
-      position,
-      { restoreFocus }
-    );
-    if (action === 'restore') await restoreThread(threadId);
-    if (action === 'delete') await deleteThread(threadId, threadTitle);
+    const action = await showContextMenu(buildArchivedThreadContextMenuItems(), position, {
+      restoreFocus,
+    });
+    if (action === "restore") await restoreThread(threadId);
+    if (action === "delete") await deleteThread(threadId, threadTitle);
   }
 
   if (snapshotQuery.isPending) {
     return (
       <view className="SettingsArchivedState">
-        <text className="SettingsArchivedStateText">
-          Loading archived threads…
-        </text>
+        <text className="SettingsArchivedStateText">Loading archived threads…</text>
       </view>
     );
   }
@@ -170,7 +159,7 @@ export function SettingsArchivedPanel() {
     const errorMessage =
       snapshotQuery.error instanceof Error
         ? snapshotQuery.error.message
-        : 'Archived threads could not be loaded.';
+        : "Archived threads could not be loaded.";
     return (
       <view className="SettingsArchivedState SettingsArchivedState--error">
         <text
@@ -223,40 +212,25 @@ export function SettingsArchivedPanel() {
           accessibility-element
           accessibility-role="alert"
         >
-          <text className="SettingsArchivedRestoreErrorText">
-            {actionError}
-          </text>
+          <text className="SettingsArchivedRestoreErrorText">{actionError}</text>
         </view>
       ) : null}
       {groups.map((group) => (
-        <SettingsSection
-          key={group.projectId ?? 'unknown-project'}
-          title={group.title}
-        >
+        <SettingsSection key={group.projectId ?? "unknown-project"} title={group.title}>
           {group.threads.map((thread, index) => (
             <ArchivedThreadRow
               key={thread.id}
-              className={`SettingsArchivedRow${
-                index > 0 ? ' SettingsArchivedRow--divided' : ''
-              }`}
+              className={`SettingsArchivedRow${index > 0 ? " SettingsArchivedRow--divided" : ""}`}
               onContextMenu={(position, restoreFocus) =>
-                void openArchivedThreadContextMenu(
-                  thread.id,
-                  thread.title,
-                  position,
-                  restoreFocus
-                )
+                void openArchivedThreadContextMenu(thread.id, thread.title, position, restoreFocus)
               }
             >
               <view className="SettingsArchivedRowCopy">
                 <text className="SettingsArchivedRowTitle">{thread.title}</text>
                 <text className="SettingsArchivedRowDescription">
-                  Archived{' '}
+                  Archived{" "}
                   {formatRelativeTime(
-                    thread.archivedAt ??
-                      thread.updatedAt ??
-                      thread.createdAt ??
-                      ''
+                    thread.archivedAt ?? thread.updatedAt ?? thread.createdAt ?? "",
                   )}
                 </text>
               </view>
@@ -268,10 +242,9 @@ export function SettingsArchivedPanel() {
                   aria-label={`Restore ${thread.title}`}
                   onClick={() => void restoreThread(thread.id)}
                 >
-                  {pendingAction?.threadId === thread.id &&
-                  pendingAction.type === 'restore'
-                    ? 'Restoring…'
-                    : 'Restore'}
+                  {pendingAction?.threadId === thread.id && pendingAction.type === "restore"
+                    ? "Restoring…"
+                    : "Restore"}
                 </Button>
                 <Button
                   size="xs"
@@ -280,10 +253,9 @@ export function SettingsArchivedPanel() {
                   aria-label={`Delete ${thread.title}`}
                   onClick={() => void deleteThread(thread.id, thread.title)}
                 >
-                  {pendingAction?.threadId === thread.id &&
-                  pendingAction.type === 'delete'
-                    ? 'Deleting…'
-                    : 'Delete'}
+                  {pendingAction?.threadId === thread.id && pendingAction.type === "delete"
+                    ? "Deleting…"
+                    : "Delete"}
                 </Button>
               </view>
             </ArchivedThreadRow>

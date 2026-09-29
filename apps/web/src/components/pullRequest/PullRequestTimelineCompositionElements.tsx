@@ -14,11 +14,15 @@ export function PullRequestTimelineRailElement(props: ChildrenProps) {
 }
 
 export function PullRequestTimelineEventElement(props: ChildrenProps) {
-  return <article className={cn(PR_BODY_TEXT_CLASS_NAME, "relative pb-5")}>{props.children}</article>;
+  return (
+    <article className={cn(PR_BODY_TEXT_CLASS_NAME, "relative pb-5")}>{props.children}</article>
+  );
 }
 
 export function PullRequestTimelineMarkerElement() {
-  return <span className="absolute -left-[1.55rem] top-1 size-2 rounded-full border border-border bg-background" />;
+  return (
+    <span className="absolute -left-[1.55rem] top-1 size-2 rounded-full border border-border bg-background" />
+  );
 }
 
 export function PullRequestTimelineTitleElement(props: ChildrenProps) {
@@ -26,7 +30,9 @@ export function PullRequestTimelineTitleElement(props: ChildrenProps) {
 }
 
 export function PullRequestTimelineMetaElement(props: ChildrenProps) {
-  return <div className={cn(PR_META_TEXT_CLASS_NAME, "text-muted-foreground")}>{props.children}</div>;
+  return (
+    <div className={cn(PR_META_TEXT_CLASS_NAME, "text-muted-foreground")}>{props.children}</div>
+  );
 }
 
 export function PullRequestTimelineBodyElement(props: ChildrenProps) {

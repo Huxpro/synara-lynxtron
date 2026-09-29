@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  deriveSidebarChatRows,
-  resolveSidebarChatListTransition,
-} from "./SidebarChatRows.logic";
+import { deriveSidebarChatRows, resolveSidebarChatListTransition } from "./SidebarChatRows.logic";
 
 type TestThread = {
   readonly id: string;

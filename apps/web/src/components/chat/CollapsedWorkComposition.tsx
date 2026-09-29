@@ -26,10 +26,7 @@ export function CollapsedWorkComposition(props: {
   const label = collapsedWorkLabel(props.elapsed);
   return (
     <CollapsedWorkRootElement>
-      <CollapsedWorkDisclosureElement
-        open={props.open}
-        onOpenChange={props.onOpenChange}
-      >
+      <CollapsedWorkDisclosureElement open={props.open} onOpenChange={props.onOpenChange}>
         <CollapsedWorkTriggerElement
           accessibleLabel={`${props.open ? "Collapse" : "Expand"} ${label}`}
           open={props.open}
@@ -38,9 +35,7 @@ export function CollapsedWorkComposition(props: {
           <CollapsedWorkLabelElement>{label}</CollapsedWorkLabelElement>
           <CollapsedWorkChevronElement open={props.open} />
         </CollapsedWorkTriggerElement>
-        <CollapsedWorkPanelElement open={props.open}>
-          {props.children}
-        </CollapsedWorkPanelElement>
+        <CollapsedWorkPanelElement open={props.open}>{props.children}</CollapsedWorkPanelElement>
       </CollapsedWorkDisclosureElement>
       <CollapsedWorkDividerElement />
     </CollapsedWorkRootElement>

@@ -1,70 +1,63 @@
-import { useEffect, useState } from '@lynx-js/react';
+import { useEffect, useState } from "@lynx-js/react";
 
-import { Button } from '../components/ui/button';
-import type { UpdateCheckResult } from '../platform/updater';
+import { Button } from "../components/ui/button";
+import type { UpdateCheckResult } from "../platform/updater";
 
 export type UpdatePageState =
-  | { readonly kind: 'idle' }
-  | { readonly kind: 'checking' }
-  | { readonly kind: 'error'; readonly message: string }
-  | { readonly kind: 'result'; readonly value: UpdateCheckResult };
+  | { readonly kind: "idle" }
+  | { readonly kind: "checking" }
+  | { readonly kind: "error"; readonly message: string }
+  | { readonly kind: "result"; readonly value: UpdateCheckResult };
 
 export async function runUpdateCheckState(
-  checkForUpdate: () => Promise<UpdateCheckResult>
+  checkForUpdate: () => Promise<UpdateCheckResult>,
 ): Promise<UpdatePageState> {
   try {
-    return { kind: 'result', value: await checkForUpdate() };
+    return { kind: "result", value: await checkForUpdate() };
   } catch (error) {
     return {
-      kind: 'error',
-      message:
-        error instanceof Error ? error.message : 'Unable to check for updates.',
+      kind: "error",
+      message: error instanceof Error ? error.message : "Unable to check for updates.",
     };
   }
 }
 
 async function runUpdateCheck(): Promise<UpdateCheckResult> {
-  'background only';
-  const { checkForUpdate } = await import(
-    /* webpackMode: "eager" */ '../platform/updater'
-  );
+  "background only";
+  const { checkForUpdate } = await import(/* webpackMode: "eager" */ "../platform/updater");
   return checkForUpdate();
 }
 
 async function openDownloadPage(): Promise<void> {
-  'background only';
-  const { openUpdateDownloadPage } = await import(
-    /* webpackMode: "eager" */ '../platform/updater'
-  );
+  "background only";
+  const { openUpdateDownloadPage } = await import(/* webpackMode: "eager" */ "../platform/updater");
   await openUpdateDownloadPage();
 }
 
 export function UpdatePage() {
-  const [state, setState] = useState<UpdatePageState>({ kind: 'idle' });
+  const [state, setState] = useState<UpdatePageState>({ kind: "idle" });
   const [downloadError, setDownloadError] = useState<string | null>(null);
 
   function check() {
-    'background only';
-    setState({ kind: 'checking' });
+    "background only";
+    setState({ kind: "checking" });
     void runUpdateCheckState(runUpdateCheck).then(setState);
   }
 
   function openDownload() {
-    'background only';
+    "background only";
     setDownloadError(null);
     void openDownloadPage().catch((error) => {
-      setDownloadError(
-        error instanceof Error ? error.message : 'Unable to open download page.'
-      );
+      setDownloadError(error instanceof Error ? error.message : "Unable to open download page.");
     });
   }
 
   useEffect(() => {
-    'background only';
+    "background only";
     check();
   }, []);
 
-  const result = state.kind === 'result' ? state.value : null;
+  const result = state.kind === "result" ? state.value : null;
   return (
     <view className="UpdatePage">
       <view className="UpdateCard">
@@ -74,8 +67,8 @@ export function UpdatePage() {
         <text className="FeatureEyebrow">LYNXTRON EDITION</text>
         <text className="UpdateTitle">Synara updates</text>
         <text className="UpdateDescription">
-          This lightweight shell checks the official GitHub release metadata. Installation
-          stays in your control.
+          This lightweight shell checks the official GitHub release metadata. Installation stays in
+          your control.
         </text>
 
         {result ? (
@@ -87,13 +80,13 @@ export function UpdatePage() {
             <view className="UpdateVersionRow">
               <text className="UpdateVersionLabel">Latest release</text>
               <text className="UpdateVersionValue">
-                {result.latestVersion ? `v${result.latestVersion}` : 'Unavailable'}
+                {result.latestVersion ? `v${result.latestVersion}` : "Unavailable"}
               </text>
             </view>
           </view>
         ) : null}
 
-        {state.kind === 'error' ? (
+        {state.kind === "error" ? (
           <text className="UpdateStatus UpdateStatus--error">
             Could not check releases · {state.message}
           </text>
@@ -117,8 +110,8 @@ export function UpdatePage() {
         ) : null}
 
         <view className="UpdateActions">
-          <Button disabled={state.kind === 'checking'} onClick={check}>
-            {state.kind === 'checking' ? 'Checking…' : 'Check for updates'}
+          <Button disabled={state.kind === "checking"} onClick={check}>
+            {state.kind === "checking" ? "Checking…" : "Check for updates"}
           </Button>
           <Button variant="outline" onClick={openDownload}>
             Open download page

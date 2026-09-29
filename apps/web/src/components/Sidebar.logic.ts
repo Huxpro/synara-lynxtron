@@ -2,10 +2,7 @@
 // Purpose: Shared sidebar sorting and status helpers used by the thread list UI.
 // Exports: Sidebar row state derivation, add-project error helpers, sort utilities, and visibility helpers.
 
-import {
-  type ProjectId,
-  type ThreadId,
-} from "@synara/contracts";
+import { type ProjectId, type ThreadId } from "@synara/contracts";
 import { resolveThreadEnvironmentMode } from "@synara/shared/threadEnvironment";
 import { isWorkspaceRootWithin, workspaceRootsEqual } from "@synara/shared/threadWorkspace";
 import type { SidebarThreadSortOrder } from "../appSettings";
@@ -25,17 +22,11 @@ import {
   getVisibleThreadsForProject as getVisibleThreadsForProjectShared,
   resolveSidebarThreadListPaging as resolveSidebarThreadListPagingShared,
 } from "./SidebarThreadPaging.logic";
-import {
-  sortThreadsForSidebar,
-  type SidebarThreadSortInput,
-} from "./SidebarThreadSort.logic";
+import { sortThreadsForSidebar, type SidebarThreadSortInput } from "./SidebarThreadSort.logic";
 import { deriveSidebarProjectRows } from "./SidebarProjectRows.logic";
 import { getUnpinnedThreadsForSidebar } from "./SidebarThreadPinning.logic";
 import { resolveSidebarProjectStatus } from "./SidebarStatus.logic";
-import {
-  resolveThreadStatusPill,
-  type ThreadStatusPill,
-} from "./SidebarThreadStatus.logic";
+import { resolveThreadStatusPill, type ThreadStatusPill } from "./SidebarThreadStatus.logic";
 
 export {
   resolvePullRequestReviewBadge,
@@ -93,14 +84,8 @@ export {
   type SidebarProjectsSectionState,
 } from "./SidebarProjectsState.logic";
 export { pruneProjectThreadListPagingForCollapsedProjects } from "./SidebarProjectPaging.logic";
-export {
-  resolveSettingsBackTarget,
-  type SettingsBackTarget,
-} from "./SidebarSettingsBack.logic";
-export {
-  resolveThreadStatusPill,
-  type ThreadStatusPill,
-} from "./SidebarThreadStatus.logic";
+export { resolveSettingsBackTarget, type SettingsBackTarget } from "./SidebarSettingsBack.logic";
+export { resolveThreadStatusPill, type ThreadStatusPill } from "./SidebarThreadStatus.logic";
 
 export const THREAD_SELECTION_SAFE_SELECTOR = "[data-thread-item], [data-thread-selection-safe]";
 export const DEBUG_FEATURE_FLAGS_MENU_STORAGE_KEY = "synara:show-debug-feature-flags-menu";
@@ -587,13 +572,13 @@ export function deriveSidebarProjectData(input: {
     pinnedThreadIds: input.pinnedThreadIds,
     filterPinnedThreads: getUnpinnedThreadsForSidebar,
     resolveThreadStatus: (thread) =>
-        input.resolveThreadStatus
-          ? input.resolveThreadStatus(thread)
-          : resolveThreadStatusPill({
-              thread,
-              hasPendingApprovals: thread.hasPendingApprovals,
-              hasPendingUserInput: thread.hasPendingUserInput,
-            }),
+      input.resolveThreadStatus
+        ? input.resolveThreadStatus(thread)
+        : resolveThreadStatusPill({
+            thread,
+            hasPendingApprovals: thread.hasPendingApprovals,
+            hasPendingUserInput: thread.hasPendingUserInput,
+          }),
     resolveProjectStatus: resolveProjectStatusIndicator,
     threadListExtraPagesByProjectCwd: input.threadListExtraPagesByProjectCwd,
     normalizeProjectCwd: input.normalizeProjectCwd,

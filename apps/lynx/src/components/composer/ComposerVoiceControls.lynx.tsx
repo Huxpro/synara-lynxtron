@@ -1,12 +1,12 @@
-import sendArrowSvg from '@synara-central-icons/arrow-up.svg?raw';
-import { COMPOSER_VOICE_LABELS } from '@synara-web/components/chat/composerVoiceLabels';
+import sendArrowSvg from "@synara-central-icons/arrow-up.svg?raw";
+import { COMPOSER_VOICE_LABELS } from "@synara-web/components/chat/composerVoiceLabels";
 
-import { MicIcon } from '../../lib/icons.lynx';
-import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
-import { useTheme } from '../../adapters/useTheme.lynx';
-import { useLynxInteractiveState } from '../../adapters/useLynxInteractiveState';
-import { voiceWaveformBarHeight } from './composerVoiceWaveform.logic';
-import { Spinner } from '../ui/spinner.lynx';
+import { MicIcon } from "../../lib/icons.lynx";
+import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
+import { useTheme } from "../../adapters/useTheme.lynx";
+import { useLynxInteractiveState } from "../../adapters/useLynxInteractiveState";
+import { voiceWaveformBarHeight } from "./composerVoiceWaveform.logic";
+import { Spinner } from "../ui/spinner.lynx";
 
 const WAVEFORM_MAX_SAMPLES = 160;
 
@@ -16,18 +16,14 @@ export function ComposerVoiceButton(props: {
 }) {
   const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
-    baseClassName: `ComposerVoiceButtonLynx${props.disabled ? ' ComposerVoiceButtonLynx--disabled' : ''}`,
+    baseClassName: `ComposerVoiceButtonLynx${props.disabled ? " ComposerVoiceButtonLynx--disabled" : ""}`,
     accessibleLabel: COMPOSER_VOICE_LABELS.record,
     disabled: props.disabled,
     onActivate: props.onActivate,
   });
   return (
     <view className={interaction.className} {...interaction.eventProps}>
-      <MicIcon
-        className="ComposerVoiceIconLynx"
-        color={semanticIconColor('secondary')}
-        size={16}
-      />
+      <MicIcon className="ComposerVoiceIconLynx" color={semanticIconColor("secondary")} size={16} />
     </view>
   );
 }
@@ -41,7 +37,7 @@ export function ComposerVoiceRecorderBar(props: {
 }) {
   const { svgColors } = useTheme();
   const cancel = useLynxInteractiveState({
-    baseClassName: 'ComposerVoiceRoundActionLynx ComposerVoiceCancelLynx',
+    baseClassName: "ComposerVoiceRoundActionLynx ComposerVoiceCancelLynx",
     accessibleLabel: props.transcribing
       ? COMPOSER_VOICE_LABELS.transcribing
       : COMPOSER_VOICE_LABELS.stopAndTranscribe,
@@ -49,7 +45,7 @@ export function ComposerVoiceRecorderBar(props: {
     onActivate: props.onCancel,
   });
   const submit = useLynxInteractiveState({
-    baseClassName: 'ComposerVoiceRoundActionLynx ComposerVoiceSubmitLynx',
+    baseClassName: "ComposerVoiceRoundActionLynx ComposerVoiceSubmitLynx",
     accessibleLabel: props.transcribing
       ? COMPOSER_VOICE_LABELS.transcribing
       : COMPOSER_VOICE_LABELS.send,
@@ -64,7 +60,7 @@ export function ComposerVoiceRecorderBar(props: {
           {props.waveformLevels.slice(-WAVEFORM_MAX_SAMPLES).map((level, index) => (
             <view
               key={index}
-              className={`ComposerVoiceWaveformBarLynx${props.transcribing ? ' ComposerVoiceWaveformBarLynx--transcribing' : ''}`}
+              className={`ComposerVoiceWaveformBarLynx${props.transcribing ? " ComposerVoiceWaveformBarLynx--transcribing" : ""}`}
               style={{ height: `${voiceWaveformBarHeight(level)}px` }}
             />
           ))}
@@ -73,7 +69,10 @@ export function ComposerVoiceRecorderBar(props: {
       <text className="ComposerVoiceDurationLynx">{props.durationLabel}</text>
       <view className={cancel.className} {...cancel.eventProps}>
         {props.transcribing ? (
-          <Spinner className="ComposerVoiceSpinnerLynx ComposerVoiceSpinnerLynx--secondary" size={10} />
+          <Spinner
+            className="ComposerVoiceSpinnerLynx ComposerVoiceSpinnerLynx--secondary"
+            size={10}
+          />
         ) : (
           <view className="ComposerVoiceStopGlyphLynx ComposerVoiceStopGlyphLynx--secondary" />
         )}

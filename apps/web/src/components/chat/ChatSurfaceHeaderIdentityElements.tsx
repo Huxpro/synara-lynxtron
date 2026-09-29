@@ -13,8 +13,7 @@ export function ChatSurfaceHeaderIdentityRootElement(props: {
     <div
       className={cn(
         "flex min-w-0 items-center gap-2",
-        props.highlighted &&
-          "rounded-lg bg-secondary py-1 pl-2 pr-1 text-secondary-foreground",
+        props.highlighted && "rounded-lg bg-secondary py-1 pl-2 pr-1 text-secondary-foreground",
       )}
     >
       {props.children}
@@ -27,10 +26,7 @@ export function ChatSurfaceHeaderIdentityIconElement(props: {
   readonly children?: ReactNode;
 }) {
   return (
-    <span
-      className="inline-flex size-3.5 shrink-0 items-center justify-center"
-      title={props.title}
-    >
+    <span className="inline-flex size-3.5 shrink-0 items-center justify-center" title={props.title}>
       {props.children}
     </span>
   );

@@ -51,15 +51,15 @@ first populated comparison exposed three concrete differences:
 
 The final Web and Lynx-for-Web content geometry is exact:
 
-| Anchor | Web | Lynx-for-Web |
-| --- | --- | --- |
-| Copy | `x=549 y=534 w=436.5` | exact |
-| Title | `549/534/436.5/18`, `12/18/500` | exact |
-| Status | `549/554/436.5/18` | exact |
-| Resume pairing | `995.5/534/92.046875/24` | exact |
-| Revoke | `1095.546875/534/51.453125/24` | exact |
-| Action gap | `8px` | exact |
-| Timestamp content | full local date/time, two lines | exact |
+| Anchor            | Web                             | Lynx-for-Web |
+| ----------------- | ------------------------------- | ------------ |
+| Copy              | `x=549 y=534 w=436.5`           | exact        |
+| Title             | `549/534/436.5/18`, `12/18/500` | exact        |
+| Status            | `549/554/436.5/18`              | exact        |
+| Resume pairing    | `995.5/534/92.046875/24`        | exact        |
+| Revoke            | `1095.546875/534/51.453125/24`  | exact        |
+| Action gap        | `8px`                           | exact        |
+| Timestamp content | full local date/time, two lines | exact        |
 
 Web reports inner content at `598x122`; Lynx's bordered and padded row is
 `622x136`. Both retained PNGs are exactly `1440x900`, and both page-error files

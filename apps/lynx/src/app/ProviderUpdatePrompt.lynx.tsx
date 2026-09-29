@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from '@lynx-js/react';
-import { useQuery } from '@tanstack/react-query';
-import { PROVIDER_DISPLAY_NAMES } from '@synara/contracts';
+import { useEffect, useMemo, useState } from "@lynx-js/react";
+import { useQuery } from "@tanstack/react-query";
+import { PROVIDER_DISPLAY_NAMES } from "@synara/contracts";
 import {
   getVisibleProviderUpdateStatuses,
   providerUpdateOutcomeCopy,
@@ -8,23 +8,23 @@ import {
   PROVIDER_UPDATE_INITIAL_REFRESH_DELAY_MS,
   PROVIDER_UPDATE_REFRESH_INTERVAL_MS,
   runProviderUpdateBatch,
-} from '@synara-web/providerUpdates';
+} from "@synara-web/providerUpdates";
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsProviderPickerProjection,
-} from '@synara-web/appSettingsStorageProjection.logic';
+} from "@synara-web/appSettingsStorageProjection.logic";
 
-import { Button } from '../components/ui/button';
-import { IconButton } from '../components/ui/icon-button.lynx';
-import { CircleAlertIcon, TriangleAlertIcon, XIcon } from '../lib/icons.lynx';
-import { webStorage } from '../platform/storage';
+import { Button } from "../components/ui/button";
+import { IconButton } from "../components/ui/icon-button.lynx";
+import { CircleAlertIcon, TriangleAlertIcon, XIcon } from "../lib/icons.lynx";
+import { webStorage } from "../platform/storage";
 import {
   fetchProviderUpdatePromptServerConfig,
   fetchProviderUpdatePromptServerSettings,
   refreshProviderUpdatePromptServerConfig,
   queryClient,
   updatePromptProvider,
-} from './queries';
+} from "./queries";
 
 export function providerUpdatePromptCopy(input: {
   readonly firstProviderName: string;
@@ -37,8 +37,7 @@ export function providerUpdatePromptCopy(input: {
         input.providerCount === 1
           ? `${input.firstProviderName} update available`
           : `${input.providerCount} provider updates available`,
-      description:
-        'One or more provider updates failed. Review provider tools for details.',
+      description: "One or more provider updates failed. Review provider tools for details.",
     };
   }
   const additionalCount = input.providerCount - 1;
@@ -50,26 +49,26 @@ export function providerUpdatePromptCopy(input: {
     description:
       input.providerCount === 1
         ? `${input.firstProviderName} has a newer version available.`
-        : `${input.firstProviderName} and ${additionalCount} more provider${additionalCount === 1 ? '' : 's'} have newer versions available.`,
+        : `${input.firstProviderName} and ${additionalCount} more provider${additionalCount === 1 ? "" : "s"} have newer versions available.`,
   };
 }
 
 export function ProviderUpdatePromptSurface(props: {
   readonly title: string;
   readonly description: string;
-  readonly state: 'default' | 'multiple' | 'updating' | 'failure' | 'succeeded';
+  readonly state: "default" | "multiple" | "updating" | "failure" | "succeeded";
   readonly copyText?: string;
   readonly onCopy?: () => void;
   readonly onDismiss: () => void;
   readonly onReview: () => void;
   readonly onUpdateAll: () => void;
 }) {
-  const failed = props.state === 'failure';
-  const updating = props.state === 'updating';
-  const succeeded = props.state === 'succeeded';
+  const failed = props.state === "failure";
+  const updating = props.state === "updating";
+  const succeeded = props.state === "succeeded";
   return (
     <view
-      className={`ProviderUpdatePrompt${failed ? ' ProviderUpdatePrompt--failure' : ''}`}
+      className={`ProviderUpdatePrompt${failed ? " ProviderUpdatePrompt--failure" : ""}`}
       accessibility-element
       accessibility-label={`${props.title}. ${props.description}`}
     >
@@ -82,22 +81,25 @@ export function ProviderUpdatePromptSurface(props: {
       ) : (
         <TriangleAlertIcon
           className={`ProviderUpdatePromptIcon${
-            updating ? ' ProviderUpdatePromptIcon--updating' : ''
+            updating ? " ProviderUpdatePromptIcon--updating" : ""
           }`}
           size={16}
-          accessibilityLabel={updating ? 'updating' : 'warning'}
+          accessibilityLabel={updating ? "updating" : "warning"}
         />
       )}
       <view className="ProviderUpdatePromptContent">
         <view className="ProviderUpdatePromptCopy">
           <text className="ProviderUpdatePromptTitle">{props.title}</text>
-          <text className="ProviderUpdatePromptDescription">
-            {props.description}
-          </text>
+          <text className="ProviderUpdatePromptDescription">{props.description}</text>
         </view>
         <view className="ProviderUpdatePromptActions">
           {succeeded ? (
-            <Button className="ProviderUpdatePromptAction" size="xs" variant="outline" onClick={props.onDismiss}>
+            <Button
+              className="ProviderUpdatePromptAction"
+              size="xs"
+              variant="outline"
+              onClick={props.onDismiss}
+            >
               Done
             </Button>
           ) : updating ? (
@@ -107,42 +109,64 @@ export function ProviderUpdatePromptSurface(props: {
           ) : failed ? (
             <>
               {props.copyText ? (
-                <Button className="ProviderUpdatePromptAction" size="xs" variant="outline" onClick={props.onCopy}>
+                <Button
+                  className="ProviderUpdatePromptAction"
+                  size="xs"
+                  variant="outline"
+                  onClick={props.onCopy}
+                >
                   Copy
                 </Button>
               ) : null}
-              <Button className="ProviderUpdatePromptAction" size="xs" variant="outline" onClick={props.onReview}>
+              <Button
+                className="ProviderUpdatePromptAction"
+                size="xs"
+                variant="outline"
+                onClick={props.onReview}
+              >
                 Review providers
               </Button>
             </>
           ) : (
             <>
-              <Button className="ProviderUpdatePromptAction" size="xs" variant="outline" onClick={props.onReview}>
+              <Button
+                className="ProviderUpdatePromptAction"
+                size="xs"
+                variant="outline"
+                onClick={props.onReview}
+              >
                 Review updates
               </Button>
-              <Button className="ProviderUpdatePromptAction" size="xs" variant="outline" onClick={props.onUpdateAll}>
+              <Button
+                className="ProviderUpdatePromptAction"
+                size="xs"
+                variant="outline"
+                onClick={props.onUpdateAll}
+              >
                 Update all
               </Button>
             </>
           )}
         </view>
       </view>
-      <IconButton className="ProviderUpdatePromptDismiss" label="Dismiss provider updates" onClick={props.onDismiss}>
+      <IconButton
+        className="ProviderUpdatePromptDismiss"
+        label="Dismiss provider updates"
+        onClick={props.onDismiss}
+      >
         <XIcon size={12} />
       </IconButton>
     </view>
   );
 }
 
-export function ProviderUpdatePrompt(props: {
-  readonly onReview: () => void;
-}) {
+export function ProviderUpdatePrompt(props: { readonly onReview: () => void }) {
   const config = useQuery({
-    queryKey: ['server-config'],
+    queryKey: ["server-config"],
     queryFn: fetchProviderUpdatePromptServerConfig,
   });
   const serverSettings = useQuery({
-    queryKey: ['server-settings'],
+    queryKey: ["server-settings"],
     queryFn: fetchProviderUpdatePromptServerSettings,
   });
   useEffect(() => {
@@ -151,18 +175,12 @@ export function ProviderUpdatePrompt(props: {
     const refresh = () => {
       void refreshProviderUpdatePromptServerConfig()
         .then((nextConfig) => {
-          if (!disposed) queryClient.setQueryData(['server-config'], nextConfig);
+          if (!disposed) queryClient.setQueryData(["server-config"], nextConfig);
         })
         .catch(() => undefined);
     };
-    const initialRefreshId = setTimeout(
-      refresh,
-      PROVIDER_UPDATE_INITIAL_REFRESH_DELAY_MS
-    );
-    const refreshIntervalId = setInterval(
-      refresh,
-      PROVIDER_UPDATE_REFRESH_INTERVAL_MS
-    );
+    const initialRefreshId = setTimeout(refresh, PROVIDER_UPDATE_INITIAL_REFRESH_DELAY_MS);
+    const refreshIntervalId = setInterval(refresh, PROVIDER_UPDATE_REFRESH_INTERVAL_MS);
     return () => {
       disposed = true;
       clearTimeout(initialRefreshId);
@@ -170,7 +188,7 @@ export function ProviderUpdatePrompt(props: {
     };
   }, [serverSettings.data?.enableProviderUpdateChecks]);
   const hiddenProviders = readSettingsProviderPickerProjection(
-    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
   ).hiddenProviders;
   const providers = useMemo(
     () =>
@@ -180,13 +198,13 @@ export function ProviderUpdatePrompt(props: {
         serverSettings: serverSettings.data,
         oneClickOnly: true,
       }),
-    [config.data, hiddenProviders, serverSettings.data]
+    [config.data, hiddenProviders, serverSettings.data],
   );
   const key = providerUpdateNotificationKey(providers);
   const [dismissedKey, setDismissedKey] = useState<string | null>(null);
   const [updating, setUpdating] = useState(false);
   const [updateOutcome, setUpdateOutcome] = useState<{
-    readonly status: 'succeeded' | 'partially_failed' | 'failed';
+    readonly status: "succeeded" | "partially_failed" | "failed";
     readonly copy: {
       readonly title: string;
       readonly description: string;
@@ -194,7 +212,7 @@ export function ProviderUpdatePrompt(props: {
     };
   } | null>(null);
   useEffect(() => {
-    if (updateOutcome?.status !== 'succeeded') {
+    if (updateOutcome?.status !== "succeeded") {
       return;
     }
     const timeoutId = setTimeout(() => setUpdateOutcome(null), 6_000);
@@ -202,14 +220,11 @@ export function ProviderUpdatePrompt(props: {
   }, [updateOutcome]);
 
   const activeOutcome = updateOutcome;
-  if (
-    !activeOutcome &&
-    (!key || providers.length === 0 || dismissedKey === key)
-  ) {
+  if (!activeOutcome && (!key || providers.length === 0 || dismissedKey === key)) {
     return null;
   }
   const first = providers[0];
-  const name = first ? PROVIDER_DISPLAY_NAMES[first.provider] : '';
+  const name = first ? PROVIDER_DISPLAY_NAMES[first.provider] : "";
   const { title, description } =
     activeOutcome?.copy ??
     providerUpdatePromptCopy({
@@ -218,13 +233,13 @@ export function ProviderUpdatePrompt(props: {
       updateFailed: false,
     });
   const copyUpdateCommands = () => {
-    'background only';
+    "background only";
     const copyText = activeOutcome?.copy.copyText;
     if (!copyText) {
       return;
     }
-    void import(/* webpackMode: "eager" */ '../platform/clipboard').then(
-      ({ clipboard }) => clipboard.writeText(copyText)
+    void import(/* webpackMode: "eager" */ "../platform/clipboard").then(({ clipboard }) =>
+      clipboard.writeText(copyText),
     );
   };
 
@@ -233,15 +248,15 @@ export function ProviderUpdatePrompt(props: {
       title={title}
       description={description}
       state={
-        activeOutcome?.status === 'succeeded'
-          ? 'succeeded'
+        activeOutcome?.status === "succeeded"
+          ? "succeeded"
           : activeOutcome
-            ? 'failure'
+            ? "failure"
             : updating
-              ? 'updating'
+              ? "updating"
               : providers.length > 1
-                ? 'multiple'
-                : 'default'
+                ? "multiple"
+                : "default"
       }
       copyText={activeOutcome?.copy.copyText}
       onCopy={copyUpdateCommands}
@@ -266,7 +281,7 @@ export function ProviderUpdatePrompt(props: {
             status: outcome.status,
             copy: providerUpdateOutcomeCopy(outcome),
           });
-          void queryClient.invalidateQueries({ queryKey: ['server-config'] });
+          void queryClient.invalidateQueries({ queryKey: ["server-config"] });
         });
       }}
     />

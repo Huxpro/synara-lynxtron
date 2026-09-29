@@ -1,40 +1,37 @@
-import { useEffect, useState } from '@lynx-js/react';
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from "@lynx-js/react";
+import { useQuery } from "@tanstack/react-query";
 import type {
   AutomationDefinition,
   AutomationRun,
   AutomationSchedule,
   AutomationUpdateInput,
   AutomationWorktreeMode,
-} from '@synara/contracts';
+} from "@synara/contracts";
 import {
   formatAutomationRunTimestamp,
   projectAutomationDetail,
-} from '@synara/shared/automationList';
+} from "@synara/shared/automationList";
 
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input.lynx';
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input.lynx";
 import {
   Menu,
   MenuPopup,
   MenuRadioGroup,
   MenuRadioItem,
   MenuTrigger,
-} from '../components/ui/menu.lynx';
-import { ChevronRightIcon } from '../lib/icons';
-import { Trash2 } from '../lib/icons.lynx';
-import playSvg from '@synara-central-icons/play.svg?raw';
-import pauseSvg from '@synara-central-icons/pause.svg?raw';
-import { useTheme } from '../adapters/useTheme.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { AutomationDialog } from './AutomationDialog.lynx';
-import type { ProjectSummary, ThreadSummary } from './queries';
-import { AutomationTimeInput } from './AutomationTimeInput.lynx';
-import { ComposerModelControl } from '../components/composer/ComposerModelControl.lynx';
-import {
-  fetchAutomationCreateModels,
-  fetchAutomationCreateServerConfig,
-} from './queries';
+} from "../components/ui/menu.lynx";
+import { ChevronRightIcon } from "../lib/icons";
+import { Trash2 } from "../lib/icons.lynx";
+import playSvg from "@synara-central-icons/play.svg?raw";
+import pauseSvg from "@synara-central-icons/pause.svg?raw";
+import { useTheme } from "../adapters/useTheme.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { AutomationDialog } from "./AutomationDialog.lynx";
+import type { ProjectSummary, ThreadSummary } from "./queries";
+import { AutomationTimeInput } from "./AutomationTimeInput.lynx";
+import { ComposerModelControl } from "../components/composer/ComposerModelControl.lynx";
+import { fetchAutomationCreateModels, fetchAutomationCreateServerConfig } from "./queries";
 import {
   SCHEDULE_KIND_OPTIONS,
   datetimeLocalFromIso,
@@ -43,15 +40,13 @@ import {
   scheduleFromKind,
   scheduleKindFromSchedule,
   weekdayLabel,
-} from '@synara-web/lib/automationForm';
-import { completionPolicyFromStopWhen } from '@synara-web/lib/automationCompletionPolicy';
-import { automationApprovalGaps } from '@synara-web/lib/automationDraft';
+} from "@synara-web/lib/automationForm";
+import { completionPolicyFromStopWhen } from "@synara-web/lib/automationCompletionPolicy";
+import { automationApprovalGaps } from "@synara-web/lib/automationDraft";
 
 async function confirmAutomationDelete(name: string): Promise<boolean> {
-  'background only';
-  const { dialogs } = await import(
-    /* webpackMode: "eager" */ '../platform/dialogs'
-  );
+  "background only";
+  const { dialogs } = await import(/* webpackMode: "eager" */ "../platform/dialogs");
   return dialogs.confirm(`Delete "${name}"?`);
 }
 
@@ -84,11 +79,7 @@ function DetailRow({
   return (
     <view
       className={`AutomationDetailRow AutomationDetailRow--${
-        compact || label === 'Mode'
-          ? 'compact'
-          : label === 'Time'
-            ? 'time'
-            : 'control'
+        compact || label === "Mode" ? "compact" : label === "Time" ? "time" : "control"
       }`}
     >
       <text className="AutomationDetailRowLabel">{label}</text>
@@ -113,7 +104,7 @@ function InlineDetailSelect(props: {
           variant="ghost"
           size="sm"
           disabled={props.disabled}
-          buttonProps={{ 'accessibility-element': false }}
+          buttonProps={{ "accessibility-element": false }}
         >
           <text className="AutomationDetailInlineControlText">
             {selected?.label ?? props.value}
@@ -155,7 +146,7 @@ function InlineDetailTextInput(props: {
   return (
     <Input
       className={`AutomationDetailInlineInput${
-        props.mono ? ' AutomationDetailInlineInput--mono' : ''
+        props.mono ? " AutomationDetailInlineInput--mono" : ""
       }`}
       nativeInput
       unstyled
@@ -166,21 +157,21 @@ function InlineDetailTextInput(props: {
       onChange={(event) => setDraft(event.target.value)}
       onBlur={(event) => commit(event.target.value)}
       onKeyDown={(event) => {
-        if (event.key === 'Enter') commit(draft);
-        else if (event.key === 'Escape') setDraft(props.value);
+        if (event.key === "Enter") commit(draft);
+        else if (event.key === "Escape") setDraft(props.value);
       }}
     />
   );
 }
 
 const INTERVAL_OPTIONS = [
-  { value: '900', label: 'Every 15 min' },
-  { value: '1800', label: 'Every 30 min' },
-  { value: '3600', label: 'Every hour' },
-  { value: '7200', label: 'Every 2 hours' },
-  { value: '21600', label: 'Every 6 hours' },
-  { value: '43200', label: 'Every 12 hours' },
-  { value: '86400', label: 'Every 24 hours' },
+  { value: "900", label: "Every 15 min" },
+  { value: "1800", label: "Every 30 min" },
+  { value: "3600", label: "Every hour" },
+  { value: "7200", label: "Every 2 hours" },
+  { value: "21600", label: "Every 6 hours" },
+  { value: "43200", label: "Every 12 hours" },
+  { value: "86400", label: "Every 24 hours" },
 ] as const;
 
 function intervalOptions(current: number) {
@@ -191,9 +182,7 @@ function intervalOptions(current: number) {
     {
       value: String(current),
       label:
-        current >= 60 && current % 60 === 0
-          ? `Every ${current / 60} min`
-          : `Every ${current} sec`,
+        current >= 60 && current % 60 === 0 ? `Every ${current / 60} min` : `Every ${current} sec`,
     },
     ...INTERVAL_OPTIONS,
   ];
@@ -205,21 +194,19 @@ function AutomationDetailModelControl(props: {
   readonly disabled: boolean;
   readonly onPatch: (input: AutomationUpdateInput) => void;
 }) {
-  const [catalogProvider, setCatalogProvider] = useState(
-    props.definition.modelSelection.provider
-  );
+  const [catalogProvider, setCatalogProvider] = useState(props.definition.modelSelection.provider);
   useEffect(() => {
     setCatalogProvider(props.definition.modelSelection.provider);
   }, [props.definition.id, props.definition.modelSelection.provider]);
   const serverConfig = useQuery({
-    queryKey: ['automation-detail', 'server-config'],
+    queryKey: ["automation-detail", "server-config"],
     queryFn: fetchAutomationCreateServerConfig,
     staleTime: 30_000,
   });
   const modelCatalog = useQuery({
     queryKey: [
-      'automation-detail',
-      'models',
+      "automation-detail",
+      "models",
       catalogProvider,
       props.project?.workspaceRoot ?? null,
     ],
@@ -238,10 +225,7 @@ function AutomationDetailModelControl(props: {
       modelSelection={props.definition.modelSelection}
       catalogProvider={catalogProvider}
       runtimeModels={modelCatalog.data?.models ?? []}
-      modelsLoading={
-        modelCatalog.isPending ||
-        (modelCatalog.isFetching && !modelCatalog.data)
-      }
+      modelsLoading={modelCatalog.isPending || (modelCatalog.isFetching && !modelCatalog.data)}
       providers={serverConfig.data?.providers ?? []}
       onCatalogProviderChange={setCatalogProvider}
       onModelSelectionChange={(modelSelection) =>
@@ -250,7 +234,7 @@ function AutomationDetailModelControl(props: {
           modelSelection,
           providerOptions: providerOptionsForAutomationModelSelection(
             props.definition,
-            modelSelection
+            modelSelection,
           ),
         })
       }
@@ -300,32 +284,23 @@ export function AutomationDetailPage({
   readonly onRunNow: (definition: AutomationDefinition) => void;
   readonly onApproveRisks: (
     definition: AutomationDefinition,
-    acknowledgedRisks: AutomationDefinition['acknowledgedRisks'],
+    acknowledgedRisks: AutomationDefinition["acknowledgedRisks"],
     maxIterations: number | undefined,
-    runAfter: boolean
+    runAfter: boolean,
   ) => Promise<void>;
   readonly navigate: (to: string) => void;
 }) {
   const { semanticIconColor } = useTheme();
-  const definition =
-    definitions.find((candidate) => candidate.id === automationId) ?? null;
+  const definition = definitions.find((candidate) => candidate.id === automationId) ?? null;
   if (!definition) {
     return (
       <view className="AutomationDetailNotFoundPage">
         <view className="AutomationDetailNotFoundHeader AppWindowDragRegion">
-          <text className="AutomationDetailNotFoundHeaderTitle">
-            Automations
-          </text>
+          <text className="AutomationDetailNotFoundHeaderTitle">Automations</text>
         </view>
         <view className="AutomationDetailNotFound">
-          <text className="AutomationDetailNotFoundText">
-            Automation not found.
-          </text>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate('/automations')}
-          >
+          <text className="AutomationDetailNotFoundText">Automation not found.</text>
+          <Button variant="outline" size="sm" onClick={() => navigate("/automations")}>
             Back to automations
           </Button>
         </view>
@@ -333,11 +308,8 @@ export function AutomationDetailPage({
     );
   }
   const projectName =
-    projects.find((project) => project.id === definition.projectId)?.title ??
-    'Unknown project';
-  const selectedProject = projects.find(
-    (project) => project.id === definition.projectId
-  );
+    projects.find((project) => project.id === definition.projectId)?.title ?? "Unknown project";
+  const selectedProject = projects.find((project) => project.id === definition.projectId);
   const targetThreadTitle = definition.targetThreadId
     ? threads.find((thread) => thread.id === definition.targetThreadId)?.title
     : null;
@@ -359,14 +331,12 @@ export function AutomationDetailPage({
     acknowledgedRisks: definition.acknowledgedRisks,
   });
   const maxIterationOptions = [null, 10, 25, 50, 100, 250].map((value) => ({
-    value: value === null ? '' : String(value),
-    label: value === null ? 'Unlimited' : `${value} runs`,
+    value: value === null ? "" : String(value),
+    label: value === null ? "Unlimited" : `${value} runs`,
   }));
   if (
     definition.maxIterations !== null &&
-    !maxIterationOptions.some(
-      (option) => option.value === String(definition.maxIterations)
-    )
+    !maxIterationOptions.some((option) => option.value === String(definition.maxIterations))
   ) {
     maxIterationOptions.unshift({
       value: String(definition.maxIterations),
@@ -384,44 +354,35 @@ export function AutomationDetailPage({
             accessibility-label="Back to automations"
             accessibility-trait="button"
             focusable={true}
-            bindtap={() => navigate('/automations')}
+            bindtap={() => navigate("/automations")}
           >
-            <text className="AutomationDetailBreadcrumbParent">
-              Automations
-            </text>
+            <text className="AutomationDetailBreadcrumbParent">Automations</text>
             <ChevronRightIcon size={14} color="var(--muted-foreground)" />
-            <text className="AutomationDetailBreadcrumbCurrent">
-              {definition.name}
-            </text>
+            <text className="AutomationDetailBreadcrumbCurrent">{definition.name}</text>
           </view>
         </view>
-        <scroll-view
-          className="AutomationDetailPromptScroller"
-          scroll-orientation="vertical"
-        >
+        <scroll-view className="AutomationDetailPromptScroller" scroll-orientation="vertical">
           <view className="AutomationDetailPrompt">
             <text className="AutomationDetailTitle">{definition.name}</text>
-            <text className="AutomationDetailPromptText">
-              {definition.prompt}
-            </text>
+            <text className="AutomationDetailPromptText">{definition.prompt}</text>
           </view>
         </scroll-view>
       </view>
       <view className="AutomationDetailAside">
         <view className="AutomationDetailActionsHeader AppWindowDragRegion">
-          {definition.schedule.type === 'once' ? null : (
+          {definition.schedule.type === "once" ? null : (
             <Button
               variant="ghost"
               size="icon-sm"
               disabled={updatePending}
-              aria-label={definition.enabled ? 'Pause' : 'Resume'}
+              aria-label={definition.enabled ? "Pause" : "Resume"}
               onClick={() => onToggleEnabled(definition)}
             >
               <svg
                 className="AutomationDetailHeaderActionIcon"
                 content={colorizeLynxSvg(
                   definition.enabled ? pauseSvg : playSvg,
-                  semanticIconColor('secondary')
+                  semanticIconColor("secondary"),
                 )}
               />
             </Button>
@@ -436,33 +397,21 @@ export function AutomationDetailPage({
               if (confirmed) onDelete(definition);
             }}
           >
-            <Trash2 size={16} color={semanticIconColor('secondary')} />
+            <Trash2 size={16} color={semanticIconColor("secondary")} />
           </Button>
           <Button
             size="sm"
-            disabled={
-              runNowPending ||
-              updatePending ||
-              approvalGaps.runBlockingWarnings.length > 0
-            }
+            disabled={runNowPending || updatePending || approvalGaps.runBlockingWarnings.length > 0}
             onClick={() => onRunNow(definition)}
           >
             <svg
               className="AutomationDetailHeaderActionIcon"
-              content={colorizeLynxSvg(
-                playSvg,
-                semanticIconColor('inverse')
-              )}
+              content={colorizeLynxSvg(playSvg, semanticIconColor("inverse"))}
             />
-            <text className="LxButton__text">
-              {runNowPending ? 'Running...' : 'Run now'}
-            </text>
+            <text className="LxButton__text">{runNowPending ? "Running..." : "Run now"}</text>
           </Button>
         </view>
-        <scroll-view
-          className="AutomationDetailAsideScroller"
-          scroll-orientation="vertical"
-        >
+        <scroll-view className="AutomationDetailAsideScroller" scroll-orientation="vertical">
           <view className="AutomationDetailAsideContent">
             {approvalGaps.warnings.length > 0 ? (
               <view
@@ -471,20 +420,14 @@ export function AutomationDetailPage({
                 accessibility-label="Approval needed"
                 accessibility-trait="text"
               >
-                <text className="AutomationDetailApprovalTitle">
-                  Approval needed
-                </text>
+                <text className="AutomationDetailApprovalTitle">Approval needed</text>
                 <text className="AutomationDetailApprovalDescription">
                   Approve these risks before saving changes or running now.
                 </text>
                 {approvalGaps.warnings.map((warning) => (
                   <view key={warning.id} className="AutomationDetailApprovalWarning">
-                    <text className="AutomationDetailApprovalWarningTitle">
-                      {warning.title}
-                    </text>
-                    <text className="AutomationDetailApprovalWarningDetail">
-                      {warning.detail}
-                    </text>
+                    <text className="AutomationDetailApprovalWarningTitle">{warning.title}</text>
+                    <text className="AutomationDetailApprovalWarningDetail">{warning.detail}</text>
                   </view>
                 ))}
                 <view className="AutomationDetailApprovalActions">
@@ -497,7 +440,7 @@ export function AutomationDetailPage({
                         definition,
                         approvalGaps.acknowledgedRisks,
                         approvalGaps.maxIterations,
-                        false
+                        false,
                       )
                     }
                   >
@@ -511,7 +454,7 @@ export function AutomationDetailPage({
                         definition,
                         approvalGaps.acknowledgedRisks,
                         approvalGaps.maxIterations,
-                        true
+                        true,
                       )
                     }
                   >
@@ -540,9 +483,7 @@ export function AutomationDetailPage({
                   <view
                     className={`AutomationDetailStatusDot AutomationDetailStatusDot--${detail.status.toLowerCase()}`}
                   />
-                  <text className="AutomationDetailRowValue">
-                    {detail.status}
-                  </text>
+                  <text className="AutomationDetailRowValue">{detail.status}</text>
                 </view>
               </DetailRow>
               <DetailRow
@@ -557,7 +498,7 @@ export function AutomationDetailPage({
               />
             </DetailGroup>
             <DetailGroup title="Details">
-              {definition.mode === 'heartbeat' ? (
+              {definition.mode === "heartbeat" ? (
                 <DetailRow label="Runs in" value="Thread" compact />
               ) : (
                 <DetailRow label="Runs in" value={definition.worktreeMode}>
@@ -566,14 +507,14 @@ export function AutomationDetailPage({
                     value={definition.worktreeMode}
                     disabled={updatePending}
                     options={[
-                      { value: 'auto', label: 'Auto' },
-                      { value: 'local', label: 'Local' },
-                      { value: 'worktree', label: 'Worktree' },
+                      { value: "auto", label: "Auto" },
+                      { value: "local", label: "Local" },
+                      { value: "worktree", label: "Worktree" },
                     ]}
                     onChange={(value) => {
                       if (
-                        (value === 'auto' || value === 'local') &&
-                        !definition.acknowledgedRisks.includes('local-checkout')
+                        (value === "auto" || value === "local") &&
+                        !definition.acknowledgedRisks.includes("local-checkout")
                       ) {
                         onEditOpenChange(true);
                         return;
@@ -587,7 +528,7 @@ export function AutomationDetailPage({
                 </DetailRow>
               )}
               <DetailRow label="Project" value={projectName}>
-                {definition.mode === 'heartbeat' ? (
+                {definition.mode === "heartbeat" ? (
                   <text className="AutomationDetailRowValue">{projectName}</text>
                 ) : (
                   <InlineDetailSelect
@@ -599,7 +540,10 @@ export function AutomationDetailPage({
                       label: project.title,
                     }))}
                     onChange={(projectId) =>
-                      onPatch({ id: definition.id, projectId: projectId as AutomationDefinition['projectId'] })
+                      onPatch({
+                        id: definition.id,
+                        projectId: projectId as AutomationDefinition["projectId"],
+                      })
                     }
                   />
                 )}
@@ -614,14 +558,14 @@ export function AutomationDetailPage({
                     onPatch({
                       id: definition.id,
                       schedule: scheduleFromKind(
-                        kind as (typeof SCHEDULE_KIND_OPTIONS)[number]['value'],
-                        schedule
+                        kind as (typeof SCHEDULE_KIND_OPTIONS)[number]["value"],
+                        schedule,
                       ),
                     })
                   }
                 />
               </DetailRow>
-              {schedule.type === 'interval' && schedule.everySeconds !== 3600 ? (
+              {schedule.type === "interval" && schedule.everySeconds !== 3600 ? (
                 <DetailRow label="Every" value={String(schedule.everySeconds)}>
                   <InlineDetailSelect
                     label="Every"
@@ -632,7 +576,7 @@ export function AutomationDetailPage({
                       onPatch({
                         id: definition.id,
                         schedule: {
-                          type: 'interval',
+                          type: "interval",
                           everySeconds: Number(value),
                         },
                       })
@@ -640,7 +584,7 @@ export function AutomationDetailPage({
                   />
                 </DetailRow>
               ) : null}
-              {schedule.type === 'once' ? (
+              {schedule.type === "once" ? (
                 <DetailRow label="Run at" value={datetimeLocalFromIso(schedule.runAt)}>
                   <InlineDetailTextInput
                     label="Run at"
@@ -649,13 +593,13 @@ export function AutomationDetailPage({
                     onCommit={(value) =>
                       onPatch({
                         id: definition.id,
-                        schedule: { type: 'once', runAt: isoFromDatetimeLocal(value) },
+                        schedule: { type: "once", runAt: isoFromDatetimeLocal(value) },
                       })
                     }
                   />
                 </DetailRow>
               ) : null}
-              {schedule.type === 'cron' ? (
+              {schedule.type === "cron" ? (
                 <DetailRow label="Cron" value={schedule.expression}>
                   <InlineDetailTextInput
                     label="Cron expression"
@@ -668,7 +612,7 @@ export function AutomationDetailPage({
                   />
                 </DetailRow>
               ) : null}
-              {schedule.type === 'daily' || schedule.type === 'weekdays' ? (
+              {schedule.type === "daily" || schedule.type === "weekdays" ? (
                 <DetailRow label="Time" value={schedule.timeOfDay}>
                   <AutomationTimeInput
                     defaultValue={schedule.timeOfDay}
@@ -679,25 +623,41 @@ export function AutomationDetailPage({
                   />
                 </DetailRow>
               ) : null}
-              {schedule.type === 'weekly' ? (
+              {schedule.type === "weekly" ? (
                 <>
                   <DetailRow label="Day" value={weekdayLabel(schedule.dayOfWeek)}>
                     <InlineDetailSelect
                       label="Day"
                       value={String(schedule.dayOfWeek)}
                       disabled={updatePending}
-                      options={[0, 1, 2, 3, 4, 5, 6].map((day) => ({ value: String(day), label: weekdayLabel(day) }))}
+                      options={[0, 1, 2, 3, 4, 5, 6].map((day) => ({
+                        value: String(day),
+                        label: weekdayLabel(day),
+                      }))}
                       onChange={(value) =>
-                        onPatch({ id: definition.id, schedule: { ...schedule, dayOfWeek: Number(value) } as AutomationSchedule })
+                        onPatch({
+                          id: definition.id,
+                          schedule: { ...schedule, dayOfWeek: Number(value) } as AutomationSchedule,
+                        })
                       }
                     />
                   </DetailRow>
                   <DetailRow label="Time" value={schedule.timeOfDay}>
-                    <AutomationTimeInput defaultValue={schedule.timeOfDay} disabled={updatePending} onChange={(timeOfDay) => onPatch({ id: definition.id, schedule: { ...schedule, timeOfDay } })} />
+                    <AutomationTimeInput
+                      defaultValue={schedule.timeOfDay}
+                      disabled={updatePending}
+                      onChange={(timeOfDay) =>
+                        onPatch({ id: definition.id, schedule: { ...schedule, timeOfDay } })
+                      }
+                    />
                   </DetailRow>
                 </>
               ) : null}
-              {(schedule.type === 'daily' || schedule.type === 'weekdays' || schedule.type === 'weekly' || schedule.type === 'cron') && schedule.timezone ? (
+              {(schedule.type === "daily" ||
+                schedule.type === "weekdays" ||
+                schedule.type === "weekly" ||
+                schedule.type === "cron") &&
+              schedule.timezone ? (
                 <DetailRow label="Timezone" value={schedule.timezone}>
                   <InlineDetailTextInput
                     label="Automation timezone"
@@ -717,15 +677,19 @@ export function AutomationDetailPage({
                   onPatch={onPatch}
                 />
               </DetailRow>
-              <DetailRow label="Mode" value={definition.mode === 'heartbeat' ? 'Heartbeat' : 'Standalone'} compact />
-              {definition.mode === 'heartbeat' ? (
+              <DetailRow
+                label="Mode"
+                value={definition.mode === "heartbeat" ? "Heartbeat" : "Standalone"}
+                compact
+              />
+              {definition.mode === "heartbeat" ? (
                 <DetailRow label="Stop when" value="">
                   <InlineDetailTextInput
                     label="Heartbeat stop condition"
                     value={
-                      definition.completionPolicy.type === 'ai-evaluated'
+                      definition.completionPolicy.type === "ai-evaluated"
                         ? definition.completionPolicy.stopWhen
-                        : ''
+                        : ""
                     }
                     placeholder="Never"
                     disabled={updatePending}
@@ -738,17 +702,28 @@ export function AutomationDetailPage({
                   />
                 </DetailRow>
               ) : null}
-              <DetailRow label="Max iterations" value={definition.maxIterations === null ? 'Unlimited' : String(definition.maxIterations)}>
+              <DetailRow
+                label="Max iterations"
+                value={
+                  definition.maxIterations === null ? "Unlimited" : String(definition.maxIterations)
+                }
+              >
                 <InlineDetailSelect
                   label="Max iterations"
-                  value={definition.maxIterations === null ? '' : String(definition.maxIterations)}
+                  value={definition.maxIterations === null ? "" : String(definition.maxIterations)}
                   disabled={updatePending}
                   options={maxIterationOptions}
-                  onChange={(value) => onPatch({ id: definition.id, maxIterations: value ? Number(value) : null })}
+                  onChange={(value) =>
+                    onPatch({ id: definition.id, maxIterations: value ? Number(value) : null })
+                  }
                 />
               </DetailRow>
-              {definition.mode === 'heartbeat' ? (
-                <DetailRow label="Thread" value={targetThreadTitle ?? 'Thread unavailable'} compact />
+              {definition.mode === "heartbeat" ? (
+                <DetailRow
+                  label="Thread"
+                  value={targetThreadTitle ?? "Thread unavailable"}
+                  compact
+                />
               ) : null}
             </DetailGroup>
             <DetailGroup title="Previous runs">
@@ -759,18 +734,14 @@ export function AutomationDetailPage({
                   <view
                     key={row.run.id}
                     className={`AutomationDetailRun${
-                      row.run.threadId ? ' AutomationDetailRun--interactive' : ''
+                      row.run.threadId ? " AutomationDetailRun--interactive" : ""
                     }`}
                     accessibility-element={true}
                     accessibility-label={`${row.title}. ${row.detail}. ${row.meta}`}
-                    accessibility-trait={
-                      row.run.threadId ? 'button' : 'text'
-                    }
+                    accessibility-trait={row.run.threadId ? "button" : "text"}
                     focusable={row.run.threadId !== null}
                     bindtap={
-                      row.run.threadId
-                        ? () => navigate(`/thread/${row.run.threadId}`)
-                        : undefined
+                      row.run.threadId ? () => navigate(`/thread/${row.run.threadId}`) : undefined
                     }
                   >
                     <view className="AutomationDetailRunDot" />

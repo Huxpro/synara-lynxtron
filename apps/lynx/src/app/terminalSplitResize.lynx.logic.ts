@@ -1,15 +1,31 @@
-import { resizeTerminalSplitWeights } from '@synara-web/terminalPaneLayout';
-import type { ThreadTerminalSplitDirection } from '@synara-web/types';
+import { resizeTerminalSplitWeights } from "@synara-web/terminalPaneLayout";
+import type { ThreadTerminalSplitDirection } from "@synara-web/types";
 
 export interface LynxTerminalSplitPointerEvent {
   readonly buttons?: number;
-  readonly changedTouches?: readonly { readonly clientX?: number; readonly clientY?: number; readonly pageX?: number; readonly pageY?: number }[];
+  readonly changedTouches?: readonly {
+    readonly clientX?: number;
+    readonly clientY?: number;
+    readonly pageX?: number;
+    readonly pageY?: number;
+  }[];
   readonly clientX?: number;
   readonly clientY?: number;
-  readonly detail?: { readonly buttons?: number; readonly clientX?: number; readonly clientY?: number; readonly pageX?: number; readonly pageY?: number };
+  readonly detail?: {
+    readonly buttons?: number;
+    readonly clientX?: number;
+    readonly clientY?: number;
+    readonly pageX?: number;
+    readonly pageY?: number;
+  };
   readonly pageX?: number;
   readonly pageY?: number;
-  readonly touches?: readonly { readonly clientX?: number; readonly clientY?: number; readonly pageX?: number; readonly pageY?: number }[];
+  readonly touches?: readonly {
+    readonly clientX?: number;
+    readonly clientY?: number;
+    readonly pageX?: number;
+    readonly pageY?: number;
+  }[];
 }
 
 export interface LynxTerminalSplitResizeSession {
@@ -50,27 +66,41 @@ function finiteCoordinate(...values: readonly (number | undefined)[]): number | 
 
 export function readLynxTerminalSplitCoordinate(
   event: LynxTerminalSplitPointerEvent,
-  direction: ThreadTerminalSplitDirection
+  direction: ThreadTerminalSplitDirection,
 ): number | null {
   const touch = event.touches?.[0] ?? event.changedTouches?.[0];
-  return direction === 'horizontal'
-    ? finiteCoordinate(touch?.clientX, touch?.pageX, event.detail?.clientX, event.clientX, event.detail?.pageX, event.pageX)
-    : finiteCoordinate(touch?.clientY, touch?.pageY, event.detail?.clientY, event.clientY, event.detail?.pageY, event.pageY);
+  return direction === "horizontal"
+    ? finiteCoordinate(
+        touch?.clientX,
+        touch?.pageX,
+        event.detail?.clientX,
+        event.clientX,
+        event.detail?.pageX,
+        event.pageX,
+      )
+    : finiteCoordinate(
+        touch?.clientY,
+        touch?.pageY,
+        event.detail?.clientY,
+        event.clientY,
+        event.detail?.pageY,
+        event.pageY,
+      );
 }
 
 export function moveLynxTerminalSplitResize(input: {
   readonly event: LynxTerminalSplitPointerEvent;
   readonly session: LynxTerminalSplitResizeSession;
-}): { readonly kind: 'ended-missed-mouseup' } | { readonly kind: 'ignored' } | { readonly kind: 'moved'; readonly weights: number[] } {
+}):
+  | { readonly kind: "ended-missed-mouseup" }
+  | { readonly kind: "ignored" }
+  | { readonly kind: "moved"; readonly weights: number[] } {
   const buttons = input.event.detail?.buttons ?? input.event.buttons;
-  if (buttons === 0) return { kind: 'ended-missed-mouseup' };
-  const currentCoordinate = readLynxTerminalSplitCoordinate(
-    input.event,
-    input.session.direction
-  );
-  if (currentCoordinate === null) return { kind: 'ignored' };
+  if (buttons === 0) return { kind: "ended-missed-mouseup" };
+  const currentCoordinate = readLynxTerminalSplitCoordinate(input.event, input.session.direction);
+  if (currentCoordinate === null) return { kind: "ignored" };
   return {
-    kind: 'moved',
+    kind: "moved",
     weights: resizeTerminalSplitWeights({
       currentCoordinate,
       handleIndex: input.session.handleIndex,

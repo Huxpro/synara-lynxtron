@@ -43,20 +43,20 @@ language.
 
 ## Required temporal surfaces
 
-| Surface | Current consumer | Required sample points | Current proof | P10 gap |
-| --- | --- | --- | --- | --- |
-| Disclosure open/close | Sidebar project/chats, collapsed work | 0/80/160/220ms + end | source/tests, older Sidebar timing | current-build sequence |
-| Popover/menu open/close | Project Picker, Extras, model/trait, Command K | 0/80/160/220ms + end | static end states | temporal sequence |
-| Submenu/group disclosure | model provider groups | 0/80/160/220ms | source state classes | temporal sequence |
-| Hover | view-backed controls | entry and stable frame | source/older runtime | current specimens |
-| Pressed | view-backed controls | pointer down and release | source/older runtime | current specimens |
-| Selected transition | menu/tab/segmented/switch | before/after + intermediate if animated | static selected evidence | current sequence |
-| Composer height/content | attachments/tokens/multiline | before/intermediate/end | behavior tests | temporal evidence |
-| Loading→content | route and picker states | loading/end | source state compositions | temporal evidence |
-| Sidebar expansion | project/chats sections | 0/80/160/220/end | older timing proof | current sequence |
-| Collapsed work | transcript disclosure | 0/80/160/220/end | product consumer + older proof | current sequence |
-| Focus ring | enabled view-backed controls | before/focused | source classes | current runtime where host publishes focus |
-| Reduced motion | disclosure/chevron | start/end | source/tests | current runtime or deterministic style proof |
+| Surface                  | Current consumer                               | Required sample points                  | Current proof                      | P10 gap                                      |
+| ------------------------ | ---------------------------------------------- | --------------------------------------- | ---------------------------------- | -------------------------------------------- |
+| Disclosure open/close    | Sidebar project/chats, collapsed work          | 0/80/160/220ms + end                    | source/tests, older Sidebar timing | current-build sequence                       |
+| Popover/menu open/close  | Project Picker, Extras, model/trait, Command K | 0/80/160/220ms + end                    | static end states                  | temporal sequence                            |
+| Submenu/group disclosure | model provider groups                          | 0/80/160/220ms                          | source state classes               | temporal sequence                            |
+| Hover                    | view-backed controls                           | entry and stable frame                  | source/older runtime               | current specimens                            |
+| Pressed                  | view-backed controls                           | pointer down and release                | source/older runtime               | current specimens                            |
+| Selected transition      | menu/tab/segmented/switch                      | before/after + intermediate if animated | static selected evidence           | current sequence                             |
+| Composer height/content  | attachments/tokens/multiline                   | before/intermediate/end                 | behavior tests                     | temporal evidence                            |
+| Loading→content          | route and picker states                        | loading/end                             | source state compositions          | temporal evidence                            |
+| Sidebar expansion        | project/chats sections                         | 0/80/160/220/end                        | older timing proof                 | current sequence                             |
+| Collapsed work           | transcript disclosure                          | 0/80/160/220/end                        | product consumer + older proof     | current sequence                             |
+| Focus ring               | enabled view-backed controls                   | before/focused                          | source classes                     | current runtime where host publishes focus   |
+| Reduced motion           | disclosure/chevron                             | start/end                               | source/tests                       | current runtime or deterministic style proof |
 
 ## Transcript guardrails
 

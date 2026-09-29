@@ -544,11 +544,7 @@
         "height": 820,
         "devicePixelRatio": 1
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "landing-default-shell-inset",
@@ -705,11 +701,7 @@
         "height": 820,
         "devicePixelRatio": 1
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "sidebar-default-shell-inset",
@@ -866,11 +858,7 @@
         "height": 820,
         "devicePixelRatio": 1
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "composer-default-shell-inset",
@@ -1016,11 +1004,7 @@
         "height": 820,
         "devicePixelRatio": 1
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "project-picker-popup-direction",
@@ -1177,11 +1161,7 @@
         "height": 820,
         "devicePixelRatio": 1
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "skill-menu-frame-anatomy",
@@ -1338,11 +1318,7 @@
         "height": 820,
         "devicePixelRatio": 1
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "settings-general-row-type-scale",
@@ -1515,11 +1491,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "landing-default-light-1280-native-titlebar",
@@ -1632,11 +1604,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "landing-default-light-1440-native-titlebar",
@@ -1749,11 +1717,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "landing-default-dark-1280-native-titlebar",
@@ -1866,11 +1830,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "landing-default-dark-1440-native-titlebar",
@@ -1983,11 +1943,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "thread-default-light-1280-native-titlebar",
@@ -2100,11 +2056,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "thread-default-light-1440-native-titlebar",
@@ -2217,11 +2169,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "thread-default-dark-1280-native-titlebar",
@@ -2334,11 +2282,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "thread-default-dark-1440-native-titlebar",
@@ -2451,11 +2395,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "settings-general-light-1280-native-titlebar",
@@ -2568,11 +2508,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "settings-general-light-1440-native-titlebar",
@@ -2685,11 +2621,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "settings-general-dark-1280-native-titlebar",
@@ -2802,11 +2734,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "settings-general-dark-1440-native-titlebar",
@@ -2919,11 +2847,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "kanban-project-light-1280-native-titlebar",
@@ -3036,11 +2960,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "kanban-project-light-1440-native-titlebar",
@@ -3153,11 +3073,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "kanban-project-dark-1280-native-titlebar",
@@ -3270,11 +3186,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "kanban-project-dark-1440-native-titlebar",
@@ -3387,11 +3299,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "pull-requests-light-1280-native-titlebar",
@@ -3504,11 +3412,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "pull-requests-light-1440-native-titlebar",
@@ -3621,11 +3525,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "pull-requests-dark-1280-native-titlebar",
@@ -3738,11 +3638,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "pull-requests-dark-1440-native-titlebar",
@@ -3855,11 +3751,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -3959,11 +3851,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -4063,11 +3951,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -4167,11 +4051,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -4271,11 +4151,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -4375,11 +4251,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -4479,11 +4351,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -4583,11 +4451,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -4687,11 +4551,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -4791,11 +4651,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -4895,11 +4751,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -4999,11 +4851,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -5103,11 +4951,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "project-picker-open-dark-1280-host-folder-capability",
@@ -5220,11 +5064,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "project-picker-open-dark-1440-host-folder-capability",
@@ -5337,11 +5177,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [
         {
           "id": "project-picker-open-light-1440-host-folder-capability",
@@ -5454,11 +5290,7 @@
         "width": 1280,
         "height": 788
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -5558,11 +5390,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {
@@ -5662,11 +5490,7 @@
         "width": 1440,
         "height": 868
       },
-      "requiredClients": [
-        "web",
-        "lynx",
-        "native"
-      ],
+      "requiredClients": ["web", "lynx", "native"],
       "residuals": [],
       "evidence": {
         "web": {

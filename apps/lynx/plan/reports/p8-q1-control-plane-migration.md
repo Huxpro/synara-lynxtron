@@ -23,10 +23,10 @@ bun run --cwd apps/lynx audit:style:check
 
 本次迁入后已实际观察到全部通过：
 
-| 审计 | 结果 |
-|---|---|
+| 审计                | 结果                                                                                                               |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | reuse write / check | Threads 55.15%；Threads shell 63.42%；Thread 38.40%；Settings 51.29%；Projects/Kanban 52.24%；Pull Requests 57.19% |
-| style write / check | 2,254 classes；13,185 weighted；98.06% coverage |
+| style write / check | 2,254 classes；13,185 weighted；98.06% coverage                                                                    |
 
 生成物为 [P5-R1 reuse baseline](p5-r1-reuse-baseline.md) 与 [P5-R4 style coverage](p5-r4-style-coverage.md)。
 
@@ -34,14 +34,14 @@ bun run --cwd apps/lynx audit:style:check
 
 P8-Q1 的收口验证已完成：
 
-| 门禁 | 结果 |
-|---|---|
-| `bun install` | 通过；锁文件已按移除的无效 Rspack override 重新解析并保存。 |
-| Web production build | `bun run --cwd apps/web build` 通过（8,916 modules）。 |
-| Lynx production build | `bun run --cwd apps/lynx build` 通过（2267.1 kB Lynx / 2384.1 kB desktop）；仅保留已登记的 `color-scheme` 编码移除和可选 `ws` native addon 警告。 |
-| Desktop production build | `bun run --cwd apps/desktop build` 通过；仅保留 Electron `original-fs` external-import 警告。 |
-| 严格审计 | reuse write/check、style write/check 全部通过，结果见上表。 |
-| 主仓 diff | `git -C /Users/bytedance/github/synara diff --check` 通过。 |
-| 可恢复 staging diff | `git -C /Users/bytedance/github/synara-lynx diff --check` 通过；`slice/` 不存在，符合迁入后 staging 不再承载应用源码的状态。 |
+| 门禁                     | 结果                                                                                                                                              |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `bun install`            | 通过；锁文件已按移除的无效 Rspack override 重新解析并保存。                                                                                       |
+| Web production build     | `bun run --cwd apps/web build` 通过（8,916 modules）。                                                                                            |
+| Lynx production build    | `bun run --cwd apps/lynx build` 通过（2267.1 kB Lynx / 2384.1 kB desktop）；仅保留已登记的 `color-scheme` 编码移除和可选 `ws` native addon 警告。 |
+| Desktop production build | `bun run --cwd apps/desktop build` 通过；仅保留 Electron `original-fs` external-import 警告。                                                     |
+| 严格审计                 | reuse write/check、style write/check 全部通过，结果见上表。                                                                                       |
+| 主仓 diff                | `git -C /Users/bytedance/github/synara diff --check` 通过。                                                                                       |
+| 可恢复 staging diff      | `git -C /Users/bytedance/github/synara-lynx diff --check` 通过；`slice/` 不存在，符合迁入后 staging 不再承载应用源码的状态。                      |
 
 **结论：P8-Q1 completed。** P8-Q2 最终视觉认证矩阵现已解除依赖，仍须在相同 WS 数据下重新取得六核心屏 × light/dark × 1280×820/1440×900 的当前认证证据。

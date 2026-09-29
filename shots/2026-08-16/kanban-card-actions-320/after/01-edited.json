@@ -1,1 +1,11 @@
-{"success":true,"data":{"origin":"http://localhost:8080/index.html?route=%2Fkanban%2Feditor-changes-project","result":{"hostValue":"Editor changes review probe","innerValue":"Editor changes review probe"}},"error":null}
+{
+  "success": true,
+  "data": {
+    "origin": "http://localhost:8080/index.html?route=%2Fkanban%2Feditor-changes-project",
+    "result": {
+      "hostValue": "Editor changes review probe",
+      "innerValue": "Editor changes review probe"
+    }
+  },
+  "error": null
+}

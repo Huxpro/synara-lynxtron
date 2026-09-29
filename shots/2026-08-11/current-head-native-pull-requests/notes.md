@@ -22,7 +22,7 @@
   - filters `968x66 @ (284,62)`
   - empty region `968x180 @ (284,144)`
   - accessibility copy: `No pull requests found. Try another involvement,
-    state, project, or search filter.`
+state, project, or search filter.`
   - warning/error console empty.
 - The retained Web authority uses the same empty copy, involvement/state
   filters, search field, project filter, and refresh action. Its page-error file

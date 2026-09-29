@@ -1,13 +1,13 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
 import {
   lynxNestedInteractiveEventProps,
   useLynxInteractiveState,
-} from '../adapters/useLynxInteractiveState';
-import { XIcon } from '../lib/icons.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
+} from "../adapters/useLynxInteractiveState";
+import { XIcon } from "../lib/icons.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
 
-import './editor-surface-tab.css';
+import "./editor-surface-tab.css";
 
 /**
  * Lynx counterpart of Web's SurfaceTabChip. Every closable editor/dock tab
@@ -24,32 +24,28 @@ export function EditorSurfaceTab(props: {
   readonly leading?: ReactNode;
   readonly onClose: () => void;
   readonly onSelect?: () => void;
-  readonly visualState?: 'default' | 'hover' | 'focus' | 'pressed';
+  readonly visualState?: "default" | "hover" | "focus" | "pressed";
 }) {
   const { semanticIconColor } = useTheme();
   const tab = useLynxInteractiveState({
     baseClassName: `EditorSurfaceTab${
-      props.active ? ' EditorSurfaceTab--active' : ''
-    }${props.className ? ` ${props.className}` : ''}`,
+      props.active ? " EditorSurfaceTab--active" : ""
+    }${props.className ? ` ${props.className}` : ""}`,
     accessibleLabel: props.onSelect ? props.label : undefined,
-    accessibilityValue: props.active ? 'Selected' : undefined,
+    accessibilityValue: props.active ? "Selected" : undefined,
     onActivate: props.onSelect,
   });
   const close = useLynxInteractiveState({
-    baseClassName: 'EditorSurfaceTabClose',
+    baseClassName: "EditorSurfaceTabClose",
     accessibleLabel: props.closeLabel,
     onActivate: props.onClose,
   });
 
   const deterministicState =
-    props.visualState && props.visualState !== 'default'
-      ? ` ui-${props.visualState}`
-      : '';
+    props.visualState && props.visualState !== "default" ? ` ui-${props.visualState}` : "";
   return (
     <view className={`${tab.className}${deterministicState}`} {...tab.eventProps}>
-      {props.leading ? (
-        <view className="EditorSurfaceTabLeading">{props.leading}</view>
-      ) : null}
+      {props.leading ? <view className="EditorSurfaceTabLeading">{props.leading}</view> : null}
       <view
         className={`${close.className} EditorSurfaceTabIconSlot`}
         {...lynxNestedInteractiveEventProps(close.eventProps)}
@@ -58,15 +54,13 @@ export function EditorSurfaceTab(props: {
         <view className="EditorSurfaceTabCloseGlyph">
           <XIcon
             className="EditorSurfaceTabCloseIcon"
-            color={semanticIconColor('secondary')}
+            color={semanticIconColor("secondary")}
             size={14}
           />
         </view>
       </view>
       <text
-        className={`EditorSurfaceTabLabel${
-          props.labelClassName ? ` ${props.labelClassName}` : ''
-        }`}
+        className={`EditorSurfaceTabLabel${props.labelClassName ? ` ${props.labelClassName}` : ""}`}
       >
         {props.label}
       </text>

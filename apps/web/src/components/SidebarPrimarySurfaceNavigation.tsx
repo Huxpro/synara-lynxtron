@@ -1,12 +1,6 @@
 import type { ComponentType } from "react";
 
-import {
-  ClockIcon,
-  KanbanIcon,
-  NewThreadIcon,
-  SearchIcon,
-  TerminalIcon,
-} from "~/lib/icons";
+import { ClockIcon, KanbanIcon, NewThreadIcon, SearchIcon, TerminalIcon } from "~/lib/icons";
 import { splitShortcutLabel } from "~/keybindings";
 import { SidebarGlyph } from "~/components/sidebarGlyphs";
 import {
@@ -49,9 +43,7 @@ function item(input: {
     label: input.label,
     active: input.active,
     disabled: input.disabled,
-    shortcutParts: input.shortcutLabel
-      ? splitShortcutLabel(input.shortcutLabel)
-      : [],
+    shortcutParts: input.shortcutLabel ? splitShortcutLabel(input.shortcutLabel) : [],
     badge: input.badge,
     onActivate: input.onActivate,
     onMouseEnter: input.onMouseEnter,

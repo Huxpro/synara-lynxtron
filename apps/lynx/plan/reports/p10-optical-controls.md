@@ -29,23 +29,23 @@ not misreported as runtime delivery.
 
 ## Golden specimen inventory
 
-| # | Specimen | Product owner | Optical anchors | Current proof | P10 gap |
-| ---: | --- | --- | --- | --- | --- |
-| 1 | Sidebar row | shared Sidebar row + adapter CSS | 20px leading slot, label baseline, trailing actions, 28px rhythm | canonical default + older interaction runtime | current hover/pressed/focus frames |
-| 2 | Segmented control | Sidebar segmented picker | equal segment center, label baseline, selected fill | source + older runtime | current state matrix |
-| 3 | Icon button | shared Button / narrow feature adapter | hit box, painted glyph, visual center | multiple product consumers | consolidated specimen evidence |
-| 4 | Disclosure + chevron | shared disclosure compositions + platform motion | chevron painted bounds, 0→90° center, row baseline | source, tests, older timing proof | current fixed-time proof |
-| 5 | Composer shell | shared Composer input composition | 736×95 shell, 19.2px radius, editor/footer balance | three-client default | focused/sending/loading states |
-| 6 | Textarea | Web editor / Native textarea island | 12/19.5 text role, 39px field, selection/input semantics | P9-D1 + P10 Native | dark/two-size state proof |
-| 7 | Project-picker row | shared MenuItem composition | 14px icon, title rail, row center, highlight | three-client open picker | hover/pressed/disabled frames |
-| 8 | Command-menu row | shared command composition | 16px slot, 14px painted icon, 11.5/11/10.5 text rails | three-client filtered skill | hover/pressed/focus/disabled frames |
-| 9 | Switch | shared Settings switches | thumb/track center, label alignment, checked fill | source/tests/older runtime | current all-state frame |
-| 10 | Checkbox/radio | trait/theme controls | mark center, label gap, selected contrast | source/tests | current all-state frame |
-| 11 | Tooltip/popover | Menu/popup product consumers | trigger alignment ≤2px, surface edge/radius | picker/menu evidence | tooltip product-consumer boundary and state sequence |
-| 12 | Chip/token | Composer inline projection | single semantic token, icon/text center, delete affordance | P9 selected/cleared persistence | import into P10 atlas |
-| 13 | Status row | transcript/lifecycle/route-state composition | status icon baseline, meta density, row rhythm | source and P8/P9 evidence | current P10 loading/error/success specimens |
-| 14 | Empty-state header | shared empty hero | logo/heading center, 30px heading metrics | three-client landing | dark/two-size proof |
-| 15 | Primary/secondary button | shared Button and route actions | label/icon center, disabled opacity, pressed feedback | source and route consumers | consolidated current state matrix |
+|   # | Specimen                 | Product owner                                    | Optical anchors                                                  | Current proof                                 | P10 gap                                              |
+| --: | ------------------------ | ------------------------------------------------ | ---------------------------------------------------------------- | --------------------------------------------- | ---------------------------------------------------- |
+|   1 | Sidebar row              | shared Sidebar row + adapter CSS                 | 20px leading slot, label baseline, trailing actions, 28px rhythm | canonical default + older interaction runtime | current hover/pressed/focus frames                   |
+|   2 | Segmented control        | Sidebar segmented picker                         | equal segment center, label baseline, selected fill              | source + older runtime                        | current state matrix                                 |
+|   3 | Icon button              | shared Button / narrow feature adapter           | hit box, painted glyph, visual center                            | multiple product consumers                    | consolidated specimen evidence                       |
+|   4 | Disclosure + chevron     | shared disclosure compositions + platform motion | chevron painted bounds, 0→90° center, row baseline               | source, tests, older timing proof             | current fixed-time proof                             |
+|   5 | Composer shell           | shared Composer input composition                | 736×95 shell, 19.2px radius, editor/footer balance               | three-client default                          | focused/sending/loading states                       |
+|   6 | Textarea                 | Web editor / Native textarea island              | 12/19.5 text role, 39px field, selection/input semantics         | P9-D1 + P10 Native                            | dark/two-size state proof                            |
+|   7 | Project-picker row       | shared MenuItem composition                      | 14px icon, title rail, row center, highlight                     | three-client open picker                      | hover/pressed/disabled frames                        |
+|   8 | Command-menu row         | shared command composition                       | 16px slot, 14px painted icon, 11.5/11/10.5 text rails            | three-client filtered skill                   | hover/pressed/focus/disabled frames                  |
+|   9 | Switch                   | shared Settings switches                         | thumb/track center, label alignment, checked fill                | source/tests/older runtime                    | current all-state frame                              |
+|  10 | Checkbox/radio           | trait/theme controls                             | mark center, label gap, selected contrast                        | source/tests                                  | current all-state frame                              |
+|  11 | Tooltip/popover          | Menu/popup product consumers                     | trigger alignment ≤2px, surface edge/radius                      | picker/menu evidence                          | tooltip product-consumer boundary and state sequence |
+|  12 | Chip/token               | Composer inline projection                       | single semantic token, icon/text center, delete affordance       | P9 selected/cleared persistence               | import into P10 atlas                                |
+|  13 | Status row               | transcript/lifecycle/route-state composition     | status icon baseline, meta density, row rhythm                   | source and P8/P9 evidence                     | current P10 loading/error/success specimens          |
+|  14 | Empty-state header       | shared empty hero                                | logo/heading center, 30px heading metrics                        | three-client landing                          | dark/two-size proof                                  |
+|  15 | Primary/secondary button | shared Button and route actions                  | label/icon center, disabled opacity, pressed feedback            | source and route consumers                    | consolidated current state matrix                    |
 
 ## Named corrections
 

@@ -1,7 +1,4 @@
-import {
-  isWorkspaceRelativePathSafe,
-  joinWorkspaceRelativePath,
-} from '@synara/shared/path';
+import { isWorkspaceRelativePathSafe, joinWorkspaceRelativePath } from "@synara/shared/path";
 
 export function resolveExplorerPdfOpenTarget(input: {
   readonly relativePath: string;

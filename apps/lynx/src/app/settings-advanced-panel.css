@@ -323,8 +323,7 @@
   line-height: 18px;
 }
 
-.SliceRoot--viewport-short-height
-  .LxDialogPopup.SettingsAdvancedReleaseDialog {
+.SliceRoot--viewport-short-height .LxDialogPopup.SettingsAdvancedReleaseDialog {
   height: calc(100vh - 32px);
   max-height: calc(100vh - 32px);
 }
@@ -334,9 +333,7 @@
   padding: 10px 48px 2px 16px;
 }
 
-.SliceRoot--viewport-short-height
-  .SettingsAdvancedReleaseHeader
-  .LxDialogDescription {
+.SliceRoot--viewport-short-height .SettingsAdvancedReleaseHeader .LxDialogDescription {
   display: none;
 }
 
@@ -347,9 +344,7 @@
   max-height: none;
 }
 
-.SliceRoot--viewport-short-height
-  .SettingsAdvancedReleaseDialog
-  .LxDialogFooter {
+.SliceRoot--viewport-short-height .SettingsAdvancedReleaseDialog .LxDialogFooter {
   flex-shrink: 0;
   height: 44px;
   padding: 8px 16px;

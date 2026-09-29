@@ -75,53 +75,53 @@ export function TerminalWorkspaceTabBar(props: {
     <IndependentTabRow
       className="min-h-9 bg-[var(--color-background-surface)] px-1.5 py-1"
       owner="terminal-groups"
-      tabs={(
+      tabs={
         <>
-        {props.terminalGroups.map((terminalGroup) => {
-          const isActive = terminalGroup.id === props.activeGroupId;
-          const visualIdentity = selectRepresentativeTerminalVisualIdentity({
-            activeTerminalId: terminalGroup.activeTerminalId,
-            terminalIds: terminalGroup.terminalIds,
-            terminalVisualIdentityById: props.terminalVisualIdentityById,
-          })?.identity;
-          const groupTitle = visualIdentity?.title ?? "Terminal";
-          const closeTabLabel = `Close ${visualIdentity?.title ?? "Terminal tab"}`;
-          return (
-            <SurfaceTabChip
-              key={terminalGroup.id}
-              active={isActive}
-              title={groupTitle}
-              label={groupTitle}
-              labelClassName="max-w-40"
-              icon={
-                <TerminalIdentityIcon
-                  className="size-3.5"
-                  iconKey={visualIdentity?.iconKey ?? "terminal"}
-                />
-              }
-              leading={
-                visualIdentity && visualIdentity.state !== "idle" ? (
-                  <TerminalActivityIndicator
-                    className="text-foreground/70"
-                    state={visualIdentity.state}
+          {props.terminalGroups.map((terminalGroup) => {
+            const isActive = terminalGroup.id === props.activeGroupId;
+            const visualIdentity = selectRepresentativeTerminalVisualIdentity({
+              activeTerminalId: terminalGroup.activeTerminalId,
+              terminalIds: terminalGroup.terminalIds,
+              terminalVisualIdentityById: props.terminalVisualIdentityById,
+            })?.identity;
+            const groupTitle = visualIdentity?.title ?? "Terminal";
+            const closeTabLabel = `Close ${visualIdentity?.title ?? "Terminal tab"}`;
+            return (
+              <SurfaceTabChip
+                key={terminalGroup.id}
+                active={isActive}
+                title={groupTitle}
+                label={groupTitle}
+                labelClassName="max-w-40"
+                icon={
+                  <TerminalIdentityIcon
+                    className="size-3.5"
+                    iconKey={visualIdentity?.iconKey ?? "terminal"}
                   />
-                ) : null
-              }
-              trailing={
-                terminalGroup.terminalIds.length > 1 ? (
-                  <span className="shrink-0 text-[10px] text-current/55">
-                    {terminalGroup.terminalIds.length}
-                  </span>
-                ) : null
-              }
-              closeLabel={closeTabLabel}
-              onSelect={() => props.onActiveGroupChange(terminalGroup.id)}
-              onClose={canCloseGroups ? () => props.onCloseGroup(terminalGroup.id) : undefined}
-            />
-          );
-        })}
+                }
+                leading={
+                  visualIdentity && visualIdentity.state !== "idle" ? (
+                    <TerminalActivityIndicator
+                      className="text-foreground/70"
+                      state={visualIdentity.state}
+                    />
+                  ) : null
+                }
+                trailing={
+                  terminalGroup.terminalIds.length > 1 ? (
+                    <span className="shrink-0 text-[10px] text-current/55">
+                      {terminalGroup.terminalIds.length}
+                    </span>
+                  ) : null
+                }
+                closeLabel={closeTabLabel}
+                onSelect={() => props.onActiveGroupChange(terminalGroup.id)}
+                onClose={canCloseGroups ? () => props.onCloseGroup(terminalGroup.id) : undefined}
+              />
+            );
+          })}
         </>
-      )}
+      }
       actions={<TerminalChromeActions actions={props.actions} variant="workspace" />}
     />
   );

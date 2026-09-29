@@ -59,8 +59,7 @@
 - No weight, valid sample, or renderer scope was removed.
 - Focused toast tests pass `6/6`, Web and root production builds pass, React
   diagnostics report zero errors/warnings, and page errors are empty.
-- The retained PNG is exactly `390x844`; local screenshot count remains below
-  100.
+- The retained PNG is exactly `390x844`; local screenshot count remains below 100.
 - Every browser action used `bun run browser:run -- ...`; final sessions,
   owned browser processes, and owned ports are zero.
 

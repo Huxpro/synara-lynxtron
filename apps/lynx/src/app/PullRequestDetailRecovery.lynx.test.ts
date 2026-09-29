@@ -1,40 +1,30 @@
-import { describe, expect, it } from '@rstest/core';
-import { readFileSync } from 'node:fs';
+import { describe, expect, it } from "@rstest/core";
+import { readFileSync } from "node:fs";
 
-describe('Pull Request detail recovery fidelity', () => {
-  it('reuses the recoverable unavailable surface in the detail dock', () => {
-    const source = readFileSync(
-      new URL('./FeatureListsPage.tsx', import.meta.url),
-      'utf8'
-    );
+describe("Pull Request detail recovery fidelity", () => {
+  it("reuses the recoverable unavailable surface in the detail dock", () => {
+    const source = readFileSync(new URL("./FeatureListsPage.tsx", import.meta.url), "utf8");
 
-    expect(source).toContain('isFetching: selectedDetailFetching');
+    expect(source).toContain("isFetching: selectedDetailFetching");
     expect(source).toMatch(
-      /selectedDetailError && !selectedDetail \? \(\s*<PullRequestsUnavailableState\s+error=\{selectedDetailError\}\s+retrying=\{selectedDetailFetching\}\s+onRetry=\{\(\) => void refetchSelectedDetail\(\)\}/s
+      /selectedDetailError && !selectedDetail \? \(\s*<PullRequestsUnavailableState\s+error=\{selectedDetailError\}\s+retrying=\{selectedDetailFetching\}\s+onRetry=\{\(\) => void refetchSelectedDetail\(\)\}/s,
     );
-    expect(source).not.toContain(
-      'The detail could not be loaded. Close the panel and try again.'
-    );
+    expect(source).not.toContain("The detail could not be loaded. Close the panel and try again.");
   });
 
-  it('keeps the existing detail skeleton and code-specific recovery paths', () => {
-    const source = readFileSync(
-      new URL('./FeatureListsPage.tsx', import.meta.url),
-      'utf8'
-    );
+  it("keeps the existing detail skeleton and code-specific recovery paths", () => {
+    const source = readFileSync(new URL("./FeatureListsPage.tsx", import.meta.url), "utf8");
 
-    expect(source).toContain('rowCount={4}');
+    expect(source).toContain("rowCount={4}");
     expect(source).toContain('label="Loading pull request details…"');
     expect(source).toContain('className="SharedPrDetailLoading"');
-    expect(source).toContain('retrying={selectedDiffFetching}');
-    expect(source).toContain('onRetry={() => void refetchSelectedDiff()}');
+    expect(source).toContain("retrying={selectedDiffFetching}");
+    expect(source).toContain("onRetry={() => void refetchSelectedDiff()}");
   });
 
-  it('keeps detail skeletons inside the Web 20px panel inset', () => {
-    const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
+  it("keeps detail skeletons inside the Web 20px panel inset", () => {
+    const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
 
-    expect(styles).toMatch(
-      /\.SharedPrDetailLoading\s*\{[^}]*width:\s*100%;[^}]*padding:\s*20px;/s
-    );
+    expect(styles).toMatch(/\.SharedPrDetailLoading\s*\{[^}]*width:\s*100%;[^}]*padding:\s*20px;/s);
   });
 });

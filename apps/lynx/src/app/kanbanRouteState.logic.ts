@@ -1,17 +1,17 @@
-export type KanbanRecoverableErrorKind = 'offline' | 'error';
+export type KanbanRecoverableErrorKind = "offline" | "error";
 
 export type KanbanRouteState =
-  | { readonly kind: 'loading' }
-  | { readonly kind: 'offline' }
-  | { readonly kind: 'error' }
-  | { readonly kind: 'not-found' }
+  | { readonly kind: "loading" }
+  | { readonly kind: "offline" }
+  | { readonly kind: "error" }
+  | { readonly kind: "not-found" }
   | {
-      readonly kind: 'ready';
+      readonly kind: "ready";
       readonly refreshIssue: KanbanRecoverableErrorKind | null;
     };
 
 function classifyKanbanError(error: unknown): KanbanRecoverableErrorKind {
-  return isRpcTransportError(error) ? 'offline' : 'error';
+  return isRpcTransportError(error) ? "offline" : "error";
 }
 
 export function resolveKanbanOverviewRouteState(input: {
@@ -21,13 +21,13 @@ export function resolveKanbanOverviewRouteState(input: {
 }): KanbanRouteState {
   if (input.hasSnapshot) {
     return {
-      kind: 'ready',
+      kind: "ready",
       refreshIssue: input.error ? classifyKanbanError(input.error) : null,
     };
   }
-  if (input.isPending) return { kind: 'loading' };
+  if (input.isPending) return { kind: "loading" };
   if (input.error) return { kind: classifyKanbanError(input.error) };
-  return { kind: 'loading' };
+  return { kind: "loading" };
 }
 
 export function resolveKanbanProjectRouteState(input: {
@@ -38,13 +38,13 @@ export function resolveKanbanProjectRouteState(input: {
 }): KanbanRouteState {
   if (input.projectFound) {
     return {
-      kind: 'ready',
+      kind: "ready",
       refreshIssue: input.error ? classifyKanbanError(input.error) : null,
     };
   }
-  if (input.isPending) return { kind: 'loading' };
+  if (input.isPending) return { kind: "loading" };
   if (input.error) return { kind: classifyKanbanError(input.error) };
-  if (input.hasSnapshot) return { kind: 'not-found' };
-  return { kind: 'loading' };
+  if (input.hasSnapshot) return { kind: "not-found" };
+  return { kind: "loading" };
 }
-import { isRpcTransportError } from '../data/rpcTransport.logic';
+import { isRpcTransportError } from "../data/rpcTransport.logic";

@@ -42,9 +42,7 @@ export function resolveSidebarThreadRowModel(
     subagentIndentPx: Math.max(0, Math.min(depth - 1, 3) * 10),
     showCompactMeta: !isSubagentThread,
     showTemporaryThreadIcon:
-      !isSubagentThread &&
-      input.temporary === true &&
-      !input.sidechatSourceThreadId,
+      !isSubagentThread && input.temporary === true && !input.sidechatSourceThreadId,
     hoverScope: input.topLevel === true ? "chat" : "project",
   };
 }

@@ -1,4 +1,4 @@
-import type { NodesRef } from '@lynx-js/types';
+import type { NodesRef } from "@lynx-js/types";
 
 export interface LynxFocusableRef {
   readonly current: NodesRef | null;
@@ -21,7 +21,7 @@ export function focusLynxNode(ref: LynxFocusableRef): boolean {
     if (!node) return false;
     node
       .invoke({
-        method: 'setFocus',
+        method: "setFocus",
         params: { focus: true },
       })
       .exec();
@@ -47,7 +47,7 @@ export function focusLynxElementBySelector(selector: string): boolean {
       .createSelectorQuery()
       .select(selector)
       .invoke({
-        method: 'setFocus',
+        method: "setFocus",
         params: { focus: true },
       })
       .exec();

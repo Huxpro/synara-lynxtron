@@ -325,10 +325,10 @@ text. Exact-client warning/error console remained empty.
   state/runtime/user directories were removed. Ports `58090`, `8891`, and
   `8901` were free; browser cleanup ended at `sessions: []` with zero owned
   processes.
-Before commit, port `8901` was later occupied by an unrelated
-`/Users/bytedance/github/t3code-archaeology-verify3` verification process
-(PID `73718`) started after this loop's cleanup. It was not terminated and is
-external contention, not a Synara leak.
+  Before commit, port `8901` was later occupied by an unrelated
+  `/Users/bytedance/github/t3code-archaeology-verify3` verification process
+  (PID `73718`) started after this loop's cleanup. It was not terminated and is
+  external contention, not a Synara leak.
 - No screenshot was retained; local screenshot count remained `100`.
 
 The external-download handoff remains the only open Update scope.

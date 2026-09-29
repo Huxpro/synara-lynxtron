@@ -51,22 +51,16 @@ export function SettingsNotificationsPanel({
           description="Show an in-app toast when a chat or managed terminal agent finishes or needs input."
           status={activityStatus}
           resetAction={renderResetAction({
-            changed:
-              settings.enableTaskCompletionToasts !==
-              defaults.enableTaskCompletionToasts,
+            changed: settings.enableTaskCompletionToasts !== defaults.enableTaskCompletionToasts,
             label: "activity toasts",
             onReset: () =>
-              updateSetting(
-                "enableTaskCompletionToasts",
-                defaults.enableTaskCompletionToasts,
-              ),
+              updateSetting("enableTaskCompletionToasts", defaults.enableTaskCompletionToasts),
           })}
           control={renderControl({
             key: "enableTaskCompletionToasts",
             checked: settings.enableTaskCompletionToasts,
             ariaLabel: "Activity toast notifications",
-            onCheckedChange: (checked) =>
-              updateSetting("enableTaskCompletionToasts", checked),
+            onCheckedChange: (checked) => updateSetting("enableTaskCompletionToasts", checked),
           })}
         />
         <SettingsRow

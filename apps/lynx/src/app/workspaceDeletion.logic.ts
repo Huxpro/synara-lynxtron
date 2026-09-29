@@ -1,4 +1,4 @@
-import { closeLynxTerminalSession } from './terminalSessionCleanup.logic';
+import { closeLynxTerminalSession } from "./terminalSessionCleanup.logic";
 
 export async function deleteWorkspaceWithTerminalCleanup(input: {
   readonly workspaceId: string;
@@ -22,8 +22,8 @@ export async function deleteWorkspaceWithTerminalCleanup(input: {
         terminalId,
         close: input.closeTerminal,
         writeExit: input.writeTerminalExit,
-      })
-    )
+      }),
+    ),
   );
   input.deleteWorkspace(input.workspaceId);
 }

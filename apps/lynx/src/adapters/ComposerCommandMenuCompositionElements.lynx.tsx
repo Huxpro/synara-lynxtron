@@ -1,6 +1,6 @@
-import { useEffect, type ReactNode } from '@lynx-js/react';
+import { useEffect, type ReactNode } from "@lynx-js/react";
 
-import type { ComposerCommandItem } from '@synara-web/components/chat/ComposerCommandMenuComposition';
+import type { ComposerCommandItem } from "@synara-web/components/chat/ComposerCommandMenuComposition";
 import {
   BlocksIcon,
   BrainIcon,
@@ -15,12 +15,12 @@ import {
   ToolsIcon,
   UserIcon,
   type LynxIcon,
-} from '../lib/icons.lynx';
-import { useLynxInteractiveState } from '../components/ui/interactive-state.lynx';
-import { scrollLynxElementIntoViewById } from '../components/ui/scrollIntoView.lynx';
+} from "../lib/icons.lynx";
+import { useLynxInteractiveState } from "../components/ui/interactive-state.lynx";
+import { scrollLynxElementIntoViewById } from "../components/ui/scrollIntoView.lynx";
 
 export function composerCommandRowId(itemId: string): string {
-  return `composer-command-row-${itemId.replace(/[^a-z0-9_-]+/gi, '-')}`;
+  return `composer-command-row-${itemId.replace(/[^a-z0-9_-]+/gi, "-")}`;
 }
 
 const SLASH_COMMAND_ICONS: Record<string, LynxIcon> = {
@@ -37,23 +37,20 @@ const SLASH_COMMAND_ICONS: Record<string, LynxIcon> = {
 };
 
 function itemIcon(item: ComposerCommandItem): LynxIcon {
-  if (
-    item.type === 'slash-command' ||
-    item.type === 'provider-native-command'
-  ) {
+  if (item.type === "slash-command" || item.type === "provider-native-command") {
     return SLASH_COMMAND_ICONS[item.command] ?? ToolsIcon;
   }
-  if (item.type === 'skill') return BlocksIcon;
-  if (item.type === 'agent') return UserIcon;
-  if (item.type === 'plugin') return PuzzleIcon;
-  if (item.type === 'thread') return MessageCircleIcon;
-  if (item.type === 'path') return item.pathKind === 'directory' ? FolderIcon : ToolsIcon;
-  if (item.type === 'local-root') return DeviceLaptopIcon;
-  if (item.type === 'model') return BrainIcon;
-  if (item.type === 'fork-target') {
-    return item.target === 'local' ? DeviceLaptopIcon : GitBranchIcon;
+  if (item.type === "skill") return BlocksIcon;
+  if (item.type === "agent") return UserIcon;
+  if (item.type === "plugin") return PuzzleIcon;
+  if (item.type === "thread") return MessageCircleIcon;
+  if (item.type === "path") return item.pathKind === "directory" ? FolderIcon : ToolsIcon;
+  if (item.type === "local-root") return DeviceLaptopIcon;
+  if (item.type === "model") return BrainIcon;
+  if (item.type === "fork-target") {
+    return item.target === "local" ? DeviceLaptopIcon : GitBranchIcon;
   }
-  return item.target === 'changes' ? BlocksIcon : GitBranchIcon;
+  return item.target === "changes" ? BlocksIcon : GitBranchIcon;
 }
 
 export function ComposerCommandMenuFrameElement(props: {
@@ -63,20 +60,14 @@ export function ComposerCommandMenuFrameElement(props: {
   readonly onHighlightedItemChange: (itemId: string | null) => void;
 }) {
   useEffect(() => {
-    'background only';
+    "background only";
     if (props.activeItemId) {
-      scrollLynxElementIntoViewById(
-        composerCommandRowId(props.activeItemId),
-        'nearest'
-      );
+      scrollLynxElementIntoViewById(composerCommandRowId(props.activeItemId), "nearest");
     }
   }, [props.activeItemId]);
   return (
     <view className="ComposerCommandMenuLynx">
-      <scroll-view
-        className="ComposerCommandMenuListLynx"
-        scroll-orientation="vertical"
-      >
+      <scroll-view className="ComposerCommandMenuListLynx" scroll-orientation="vertical">
         {props.children}
       </scroll-view>
       {props.emptyText ? (
@@ -102,9 +93,7 @@ export function ComposerCommandSeparatorElement() {
   return <view className="ComposerCommandSeparatorLynx" />;
 }
 
-export function ComposerCommandGroupLabelElement(props: {
-  readonly children: ReactNode;
-}) {
+export function ComposerCommandGroupLabelElement(props: { readonly children: ReactNode }) {
   return <text className="ComposerCommandGroupLabelLynx">{props.children}</text>;
 }
 
@@ -122,7 +111,7 @@ export function ComposerCommandRowElement(props: {
   readonly title: string;
   readonly secondaryText: string | null;
   readonly trailingMeta: string | null;
-  readonly resolvedTheme: 'light' | 'dark';
+  readonly resolvedTheme: "light" | "dark";
   readonly active: boolean;
   readonly onHighlight: () => void;
   readonly onItemRef: (node: unknown | null) => void;
@@ -130,13 +119,11 @@ export function ComposerCommandRowElement(props: {
 }) {
   const Icon = itemIcon(props.item);
   const interaction = useLynxInteractiveState({
-    baseClassName: `ComposerCommandRowLynx${
-      props.active ? ' ComposerCommandRowLynx--active' : ''
-    }`,
+    baseClassName: `ComposerCommandRowLynx${props.active ? " ComposerCommandRowLynx--active" : ""}`,
     accessibleLabel: props.title,
-    accessibilityValue: props.active ? 'Selected' : undefined,
+    accessibilityValue: props.active ? "Selected" : undefined,
     onActivate: () => {
-      'background only';
+      "background only";
       props.onHighlight();
       props.onSelect();
     },
@@ -150,7 +137,7 @@ export function ComposerCommandRowElement(props: {
       aria-selected={props.active}
       {...interaction.eventProps}
       bindmouseenter={() => {
-        'background only';
+        "background only";
         handleMouseEnter?.();
         if (!props.active) props.onHighlight();
       }}
@@ -161,9 +148,7 @@ export function ComposerCommandRowElement(props: {
       <view className="ComposerCommandCopyLynx">
         <text className="ComposerCommandTitleLynx">{props.title}</text>
         {props.secondaryText ? (
-          <text className="ComposerCommandSecondaryLynx">
-            {props.secondaryText}
-          </text>
+          <text className="ComposerCommandSecondaryLynx">{props.secondaryText}</text>
         ) : null}
       </view>
       {props.trailingMeta ? (

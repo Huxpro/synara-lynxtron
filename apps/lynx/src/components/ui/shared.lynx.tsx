@@ -1,7 +1,7 @@
-import { cloneElement, isValidElement, type ReactElement, type ReactNode } from '@lynx-js/react';
+import { cloneElement, isValidElement, type ReactElement, type ReactNode } from "@lynx-js/react";
 
 export function cx(...values: Array<string | false | null | undefined>): string {
-  return values.filter(Boolean).join(' ');
+  return values.filter(Boolean).join(" ");
 }
 
 export function renderSlot(render: ReactNode | undefined, children: ReactNode): ReactNode {
@@ -12,8 +12,10 @@ export function renderSlot(render: ReactNode | undefined, children: ReactNode): 
 }
 
 export function textContent(children: ReactNode, className: string): ReactNode {
-  return typeof children === 'string' || typeof children === 'number' ? (
-    <text accessibility-element={false} className={className}>{String(children)}</text>
+  return typeof children === "string" || typeof children === "number" ? (
+    <text accessibility-element={false} className={className}>
+      {String(children)}
+    </text>
   ) : (
     children
   );

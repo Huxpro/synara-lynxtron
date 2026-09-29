@@ -11,55 +11,40 @@
 //  - WS echo: loopback server for the net.socket port self-test (also the
 //    first concrete use of the future sidecar slot)
 
-import {
-  app,
-  clipboard,
-  dialog,
-  LynxWindow,
-  Menu,
-  nativeImage,
-  shell,
-} from '@lynx-js/lynxtron';
+import { app, clipboard, dialog, LynxWindow, Menu, nativeImage, shell } from "@lynx-js/lynxtron";
 import {
   buildNativeContextMenuTemplate,
   normalizeContextMenuItems,
   type NormalizedContextMenuItem,
-} from '@synara/shared/contextMenu';
-import fs from 'node:fs';
-import { randomUUID } from 'node:crypto';
-import path from 'node:path';
+} from "@synara/shared/contextMenu";
+import fs from "node:fs";
+import { randomUUID } from "node:crypto";
+import path from "node:path";
 import {
   PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   PROVIDER_SEND_TURN_MAX_FILE_BYTES,
   PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
-} from '@synara/contracts/attachmentLimits';
+} from "@synara/contracts/attachmentLimits";
 import {
   ATTACHMENT_CANCEL_ROUTE_PATH,
   ATTACHMENT_UPLOAD_ROUTE_PATH,
-} from '@synara/shared/binaryTransfer';
-import { WebSocketServer } from 'ws';
-import { submitFeedbackPayload } from '@synara/shared/feedbackDelivery';
-import {
-  resolveShellPaths,
-  resolveShellUserDataDir,
-  SHELL_CAPABILITIES,
-} from './shellRuntime';
-import { resolveSynaraWsUrl } from './runtimeEndpoint.logic';
+} from "@synara/shared/binaryTransfer";
+import { WebSocketServer } from "ws";
+import { submitFeedbackPayload } from "@synara/shared/feedbackDelivery";
+import { resolveShellPaths, resolveShellUserDataDir, SHELL_CAPABILITIES } from "./shellRuntime";
+import { resolveSynaraWsUrl } from "./runtimeEndpoint.logic";
 import {
   attachmentTypeForMimeType,
   resolveAttachmentUploadPayload,
   resolveImagePreviewSize,
   validatePickedFileForUpload,
-} from './attachmentHost.logic';
+} from "./attachmentHost.logic";
 
 // --- KV storage ---------------------------------------------------------------
 
 function getKvFile(): string {
   return resolveShellPaths(
-    resolveShellUserDataDir(
-      app.getPath('userData'),
-      process.env.SYNARA_LYNX_USER_DATA_DIR
-    )
+    resolveShellUserDataDir(app.getPath("userData"), process.env.SYNARA_LYNX_USER_DATA_DIR),
   ).kvFile;
 }
 
@@ -83,27 +68,44 @@ let appSnapPickedDirectoryInitialized = false;
 
 function mimeTypeForPath(filePath: string): string {
   switch (path.extname(filePath).toLowerCase()) {
-    case '.css': return 'text/css';
-    case '.csv': return 'text/csv';
-    case '.gif': return 'image/gif';
-    case '.htm':
-    case '.html': return 'text/html';
-    case '.jpeg':
-    case '.jpg': return 'image/jpeg';
-    case '.js':
-    case '.mjs': return 'text/javascript';
-    case '.json': return 'application/json';
-    case '.md': return 'text/markdown';
-    case '.pdf': return 'application/pdf';
-    case '.png': return 'image/png';
-    case '.svg': return 'image/svg+xml';
-    case '.ts':
-    case '.tsx': return 'text/typescript';
-    case '.txt': return 'text/plain';
-    case '.webp': return 'image/webp';
-    case '.xml': return 'application/xml';
-    case '.zip': return 'application/zip';
-    default: return 'application/octet-stream';
+    case ".css":
+      return "text/css";
+    case ".csv":
+      return "text/csv";
+    case ".gif":
+      return "image/gif";
+    case ".htm":
+    case ".html":
+      return "text/html";
+    case ".jpeg":
+    case ".jpg":
+      return "image/jpeg";
+    case ".js":
+    case ".mjs":
+      return "text/javascript";
+    case ".json":
+      return "application/json";
+    case ".md":
+      return "text/markdown";
+    case ".pdf":
+      return "application/pdf";
+    case ".png":
+      return "image/png";
+    case ".svg":
+      return "image/svg+xml";
+    case ".ts":
+    case ".tsx":
+      return "text/typescript";
+    case ".txt":
+      return "text/plain";
+    case ".webp":
+      return "image/webp";
+    case ".xml":
+      return "application/xml";
+    case ".zip":
+      return "application/zip";
+    default:
+      return "application/octet-stream";
   }
 }
 
@@ -123,18 +125,15 @@ function deletePickedFile(token: string): PickedFileRecord | null {
   return file;
 }
 
-function attachmentHttpUrl(
-  route: string,
-  query: Readonly<Record<string, string>> = {}
-): URL {
+function attachmentHttpUrl(route: string, query: Readonly<Record<string, string>> = {}): URL {
   const socketUrl = new URL(resolveSynaraWsUrl(process.env.SYNARA_WS_URL));
-  const legacyToken = socketUrl.searchParams.get('token');
-  socketUrl.protocol = socketUrl.protocol === 'wss:' ? 'https:' : 'http:';
+  const legacyToken = socketUrl.searchParams.get("token");
+  socketUrl.protocol = socketUrl.protocol === "wss:" ? "https:" : "http:";
   socketUrl.pathname = route;
-  socketUrl.search = '';
-  socketUrl.hash = '';
+  socketUrl.search = "";
+  socketUrl.hash = "";
   if (legacyToken) {
-    socketUrl.searchParams.set('token', legacyToken);
+    socketUrl.searchParams.set("token", legacyToken);
   }
   for (const [key, value] of Object.entries(query)) {
     socketUrl.searchParams.set(key, value);
@@ -145,13 +144,9 @@ function attachmentHttpUrl(
 function loadKv(): Record<string, string> {
   if (kvCache !== null) return kvCache;
   try {
-    kvCache = JSON.parse(fs.readFileSync(getKvFile(), 'utf8')) as Record<string, string>;
+    kvCache = JSON.parse(fs.readFileSync(getKvFile(), "utf8")) as Record<string, string>;
   } catch (error) {
-    if (
-      error instanceof Error &&
-      'code' in error &&
-      error.code === 'ENOENT'
-    ) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
       kvCache = {};
     } else {
       throw new Error(`Unable to read persisted settings: ${String(error)}`);
@@ -164,42 +159,42 @@ function saveKv(): void {
   const kvFile = getKvFile();
   const temporaryFile = `${kvFile}.tmp`;
   fs.mkdirSync(path.dirname(kvFile), { recursive: true });
-  fs.writeFileSync(temporaryFile, JSON.stringify(loadKv()), 'utf8');
+  fs.writeFileSync(temporaryFile, JSON.stringify(loadKv()), "utf8");
   fs.renameSync(temporaryFile, kvFile);
 }
 
 export function handleStorage(method: string, data: any): unknown {
   const kv = loadKv();
   switch (method) {
-    case 'storageGet':
+    case "storageGet":
       return JSON.stringify({ value: kv[String(data.key)] ?? null });
-    case 'storageSet':
+    case "storageSet":
       kv[String(data.key)] = String(data.value);
       saveKv();
       return JSON.stringify({ ok: true });
-    case 'storageRemove':
+    case "storageRemove":
       delete kv[String(data.key)];
       saveKv();
       return JSON.stringify({ ok: true });
-    case 'storageClear':
+    case "storageClear":
       kvCache = {};
       saveKv();
       return JSON.stringify({ ok: true });
-    case 'storageDump':
+    case "storageDump":
       return JSON.stringify({ entries: kv });
     default:
-      return JSON.stringify({ error: 'unknown storage method ' + method });
+      return JSON.stringify({ error: "unknown storage method " + method });
   }
 }
 
 // --- clipboard ------------------------------------------------------------------
 
 async function renderProfileShareCard(svg: string): Promise<Buffer> {
-  if (!svg.startsWith('<svg') || svg.length > 1_000_000) {
-    throw new Error('Profile share card SVG is invalid.');
+  if (!svg.startsWith("<svg") || svg.length > 1_000_000) {
+    throw new Error("Profile share card SVG is invalid.");
   }
-  const { default: sharp } = await import('sharp');
-  return sharp(Buffer.from(svg, 'utf8'), {
+  const { default: sharp } = await import("sharp");
+  return sharp(Buffer.from(svg, "utf8"), {
     density: 144,
     limitInputPixels: 860 * 440 * 4,
   })
@@ -208,54 +203,43 @@ async function renderProfileShareCard(svg: string): Promise<Buffer> {
     .toBuffer();
 }
 
-export async function handleClipboard(
-  method: string,
-  data: any
-): Promise<unknown> {
+export async function handleClipboard(method: string, data: any): Promise<unknown> {
   switch (method) {
-    case 'clipboardWriteText':
-      clipboard.writeText(String(data.text ?? ''));
+    case "clipboardWriteText":
+      clipboard.writeText(String(data.text ?? ""));
       return JSON.stringify({ ok: true });
-    case 'clipboardReadText':
+    case "clipboardReadText":
       return JSON.stringify({ text: clipboard.readText() });
-    case 'clipboardWriteImagePngDataUrl': {
-      const image = nativeImage.createFromDataURL(String(data.dataUrl ?? ''));
+    case "clipboardWriteImagePngDataUrl": {
+      const image = nativeImage.createFromDataURL(String(data.dataUrl ?? ""));
       if (image.isEmpty()) {
         return JSON.stringify({ ok: false });
       }
       clipboard.writeImage(image);
       return JSON.stringify({ ok: true });
     }
-    case 'profileShareExport': {
-      const png = await renderProfileShareCard(String(data.svg ?? ''));
+    case "profileShareExport": {
+      const png = await renderProfileShareCard(String(data.svg ?? ""));
       const image = nativeImage.createFromBuffer(png);
       if (image.isEmpty()) {
-        throw new Error('Unable to render profile share card.');
+        throw new Error("Unable to render profile share card.");
       }
       clipboard.writeImage(image);
       return JSON.stringify({ ok: true });
     }
     default:
-      return JSON.stringify({ error: 'unknown clipboard method ' + method });
+      return JSON.stringify({ error: "unknown clipboard method " + method });
   }
 }
 
 // --- context menu ---------------------------------------------------------------
 
-export function handleContextMenu(
-  w: LynxWindow,
-  method: string,
-  data: any
-): Promise<unknown> {
-  if (method !== 'contextMenuShow') {
-    return Promise.resolve(
-      JSON.stringify({ error: 'unknown context menu method ' + method })
-    );
+export function handleContextMenu(w: LynxWindow, method: string, data: any): Promise<unknown> {
+  if (method !== "contextMenuShow") {
+    return Promise.resolve(JSON.stringify({ error: "unknown context menu method " + method }));
   }
 
-  const items = normalizeContextMenuItems(
-    Array.isArray(data?.items) ? data.items : []
-  );
+  const items = normalizeContextMenuItems(Array.isArray(data?.items) ? data.items : []);
   if (items.length === 0) {
     return Promise.resolve(JSON.stringify({ id: null }));
   }
@@ -267,15 +251,13 @@ export function handleContextMenu(
       settled = true;
       resolve(JSON.stringify({ id }));
     };
-    const toTemplate = (
-      menuItems: readonly NormalizedContextMenuItem[]
-    ): any[] =>
+    const toTemplate = (menuItems: readonly NormalizedContextMenuItem[]): any[] =>
       buildNativeContextMenuTemplate(menuItems).map((item) => {
-        if (item.type === 'separator') return { type: 'separator' };
+        if (item.type === "separator") return { type: "separator" };
         return {
           id: item.id,
           label: item.label,
-          type: item.submenu ? 'submenu' : item.type,
+          type: item.submenu ? "submenu" : item.type,
           enabled: item.enabled,
           visible: item.visible,
           checked: item.checked,
@@ -297,36 +279,32 @@ export function handleContextMenu(
 
 // --- dialogs ----------------------------------------------------------------------
 
-export async function handleDialogs(
-  w: LynxWindow,
-  method: string,
-  data: any
-): Promise<unknown> {
+export async function handleDialogs(w: LynxWindow, method: string, data: any): Promise<unknown> {
   switch (method) {
-    case 'dialogsConfirm': {
-      const message = String(data.message ?? '');
-      const lines = message.split('\n');
+    case "dialogsConfirm": {
+      const message = String(data.message ?? "");
+      const lines = message.split("\n");
       const { response } = await dialog.showMessageBox(w, {
         title: lines[0] ?? message,
         message: lines[0] ?? message,
-        detail: lines.slice(1).join('\n').trim() || undefined,
-        buttons: ['Cancel', 'Confirm'],
+        detail: lines.slice(1).join("\n").trim() || undefined,
+        buttons: ["Cancel", "Confirm"],
         defaultId: 1,
         cancelId: 0,
       });
       return JSON.stringify({ confirmed: response === 1 });
     }
-    case 'dialogsPickFolder': {
+    case "dialogsPickFolder": {
       const { canceled, filePaths } = await dialog.showOpenDialog(w, {
-        title: String(data.title ?? 'Choose folder'),
-        properties: ['openDirectory', 'createDirectory'],
+        title: String(data.title ?? "Choose folder"),
+        properties: ["openDirectory", "createDirectory"],
       });
       return JSON.stringify({ path: canceled || filePaths.length === 0 ? null : filePaths[0] });
     }
-    case 'dialogsPickFiles': {
+    case "dialogsPickFiles": {
       const { canceled, filePaths } = await dialog.showOpenDialog(w, {
-        title: String(data.title ?? 'Add files'),
-        properties: ['openFile', 'multiSelections'],
+        title: String(data.title ?? "Add files"),
+        properties: ["openFile", "multiSelections"],
       });
       if (canceled || filePaths.length === 0) {
         return JSON.stringify({ files: [], errors: [] });
@@ -351,10 +329,10 @@ export async function handleDialogs(
           const mimeType = mimeTypeForPath(resolvedPath);
           const attachmentType = attachmentTypeForMimeType(mimeType);
           const maxBytes =
-            attachmentType === 'image'
+            attachmentType === "image"
               ? PROVIDER_SEND_TURN_MAX_IMAGE_BYTES
               : PROVIDER_SEND_TURN_MAX_FILE_BYTES;
-          const sizeLimitLabel = attachmentType === 'image' ? '10MB' : '25MB';
+          const sizeLimitLabel = attachmentType === "image" ? "10MB" : "25MB";
           if (stat.size > maxBytes) {
             errors.push(`'${name}' exceeds the ${sizeLimitLabel} attachment limit.`);
             continue;
@@ -383,19 +361,19 @@ export async function handleDialogs(
       }
       if (filePaths.length > PROVIDER_SEND_TURN_MAX_ATTACHMENTS) {
         errors.push(
-          `You can attach up to ${PROVIDER_SEND_TURN_MAX_ATTACHMENTS} references per message.`
+          `You can attach up to ${PROVIDER_SEND_TURN_MAX_ATTACHMENTS} references per message.`,
         );
       }
       return JSON.stringify({ files, errors });
     }
-    case 'dialogsPickProfileImage': {
+    case "dialogsPickProfileImage": {
       const { canceled, filePaths } = await dialog.showOpenDialog(w, {
-        title: 'Choose profile photo',
-        properties: ['openFile'],
+        title: "Choose profile photo",
+        properties: ["openFile"],
         filters: [
           {
-            name: 'Images',
-            extensions: ['png', 'jpg', 'jpeg', 'webp', 'gif'],
+            name: "Images",
+            extensions: ["png", "jpg", "jpeg", "webp", "gif"],
           },
         ],
       });
@@ -405,11 +383,11 @@ export async function handleDialogs(
       const filePath = fs.realpathSync(filePaths[0]!);
       const stat = fs.statSync(filePath);
       if (!stat.isFile() || stat.size > 10 * 1024 * 1024) {
-        throw new Error('Profile photo must be an image smaller than 10MB.');
+        throw new Error("Profile photo must be an image smaller than 10MB.");
       }
       const image = nativeImage.createFromPath(filePath);
       if (image.isEmpty()) {
-        throw new Error('Unable to decode that profile photo.');
+        throw new Error("Unable to decode that profile photo.");
       }
       const size = image.getSize();
       const scale = Math.min(1, 256 / Math.max(size.width, size.height));
@@ -418,7 +396,7 @@ export async function handleDialogs(
           ? image.resize({
               width: Math.max(1, Math.round(size.width * scale)),
               height: Math.max(1, Math.round(size.height * scale)),
-              quality: 'good',
+              quality: "good",
             })
           : image;
       return JSON.stringify({
@@ -428,55 +406,55 @@ export async function handleDialogs(
         },
       });
     }
-    case 'dialogsSaveProfileShareCard': {
-      const png = await renderProfileShareCard(String(data.svg ?? ''));
+    case "dialogsSaveProfileShareCard": {
+      const png = await renderProfileShareCard(String(data.svg ?? ""));
       const { canceled, filePath } = await dialog.showSaveDialog(w, {
-        title: 'Save profile activity',
-        defaultPath: String(data.defaultFilename ?? 'synara-stats.png'),
-        filters: [{ name: 'PNG image', extensions: ['png'] }],
+        title: "Save profile activity",
+        defaultPath: String(data.defaultFilename ?? "synara-stats.png"),
+        filters: [{ name: "PNG image", extensions: ["png"] }],
       });
       if (canceled || !filePath) return JSON.stringify({ path: null });
       fs.writeFileSync(filePath, png);
       return JSON.stringify({ path: filePath });
     }
-    case 'dialogsSaveFile': {
+    case "dialogsSaveFile": {
       const input = data ?? {};
       const { canceled, filePath } = await dialog.showSaveDialog(w, {
-        title: String(input.title ?? 'Save file'),
+        title: String(input.title ?? "Save file"),
         defaultPath: input.defaultFilename ? String(input.defaultFilename) : undefined,
         filters: Array.isArray(input.filters)
-          ? input.filters.map((f: any) => ({ name: String(f.name), extensions: f.extensions.map(String) }))
+          ? input.filters.map((f: any) => ({
+              name: String(f.name),
+              extensions: f.extensions.map(String),
+            }))
           : undefined,
       });
       if (canceled || !filePath) {
         return JSON.stringify({ path: null });
       }
-      fs.writeFileSync(filePath, String(input.contents ?? ''), 'utf8');
+      fs.writeFileSync(filePath, String(input.contents ?? ""), "utf8");
       return JSON.stringify({ path: filePath });
     }
-    case 'dialogsPing':
+    case "dialogsPing":
       return JSON.stringify({
         ok: true,
         apis: {
-          showMessageBox: typeof dialog.showMessageBox === 'function',
-          showOpenDialog: typeof dialog.showOpenDialog === 'function',
-          showSaveDialog: typeof dialog.showSaveDialog === 'function',
+          showMessageBox: typeof dialog.showMessageBox === "function",
+          showOpenDialog: typeof dialog.showOpenDialog === "function",
+          showSaveDialog: typeof dialog.showSaveDialog === "function",
         },
       });
     default:
-      return JSON.stringify({ error: 'unknown dialogs method ' + method });
+      return JSON.stringify({ error: "unknown dialogs method " + method });
   }
 }
 
 // --- attachment staging ---------------------------------------------------------
 
-export async function handleAttachments(
-  method: string,
-  data: any
-): Promise<unknown> {
+export async function handleAttachments(method: string, data: any): Promise<unknown> {
   prunePickedFiles();
-  if (method === 'attachmentsReleasePickedFile') {
-    const token = String(data.token ?? '');
+  if (method === "attachmentsReleasePickedFile") {
+    const token = String(data.token ?? "");
     const file = deletePickedFile(token);
     const released = file !== null;
     if (released && file?.deleteOnRelease) {
@@ -484,11 +462,11 @@ export async function handleAttachments(
     }
     return JSON.stringify({ released });
   }
-  if (method === 'attachmentsGetPickedImagePreview') {
-    const token = String(data.token ?? '');
+  if (method === "attachmentsGetPickedImagePreview") {
+    const token = String(data.token ?? "");
     const file = pickedFiles.get(token);
-    if (!file) throw new Error('The selected image is no longer available. Pick it again.');
-    if (attachmentTypeForMimeType(file.mimeType) !== 'image') {
+    if (!file) throw new Error("The selected image is no longer available. Pick it again.");
+    if (attachmentTypeForMimeType(file.mimeType) !== "image") {
       throw new Error(`'${file.name}' is not an image attachment.`);
     }
     const currentStat = fs.statSync(file.path);
@@ -497,7 +475,7 @@ export async function handleAttachments(
       currentIsFile: currentStat.isFile(),
       currentSizeBytes: currentStat.size,
       maxBytes: PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
-      sizeLimitLabel: '10MB',
+      sizeLimitLabel: "10MB",
     });
     const image = nativeImage.createFromPath(file.path);
     if (image.isEmpty()) throw new Error(`Unable to decode '${file.name}' as an image.`);
@@ -506,22 +484,21 @@ export async function handleAttachments(
       maxDimension: PICKED_IMAGE_PREVIEW_MAX_DIMENSION,
     });
     const preview =
-      previewSize.width === image.getSize().width &&
-      previewSize.height === image.getSize().height
+      previewSize.width === image.getSize().width && previewSize.height === image.getSize().height
         ? image
-        : image.resize({ ...previewSize, quality: 'good' });
+        : image.resize({ ...previewSize, quality: "good" });
     return JSON.stringify({ dataUrl: preview.toDataURL() });
   }
-  if (method === 'attachmentsCancel') {
-    const attachmentId = String(data.attachmentId ?? '');
+  if (method === "attachmentsCancel") {
+    const attachmentId = String(data.attachmentId ?? "");
     if (!attachmentId || attachmentId.length > 128 || !/^[a-z0-9_-]+$/i.test(attachmentId)) {
-      return JSON.stringify({ error: 'Attachment id is invalid.' });
+      return JSON.stringify({ error: "Attachment id is invalid." });
     }
     const response = await fetch(attachmentHttpUrl(ATTACHMENT_CANCEL_ROUTE_PATH), {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Origin: 'synara://app',
+        "Content-Type": "application/json",
+        Origin: "synara://app",
       },
       body: JSON.stringify({ attachmentId }),
     });
@@ -530,25 +507,25 @@ export async function handleAttachments(
     }
     return JSON.stringify({ cancelled: response.ok });
   }
-  if (method !== 'attachmentsUploadPickedFile') {
+  if (method !== "attachmentsUploadPickedFile") {
     return JSON.stringify({ error: `unknown attachments method ${method}` });
   }
 
-  const token = String(data.token ?? '');
-  const threadId = String(data.threadId ?? '').trim();
+  const token = String(data.token ?? "");
+  const threadId = String(data.threadId ?? "").trim();
   const file = pickedFiles.get(token);
-  if (!file) throw new Error('The selected file is no longer available. Pick it again.');
-  if (!threadId) throw new Error('A thread is required to upload an attachment.');
+  if (!file) throw new Error("The selected file is no longer available. Pick it again.");
+  if (!threadId) throw new Error("A thread is required to upload an attachment.");
   const currentStat = fs.statSync(file.path);
   validatePickedFileForUpload({
     file,
     currentIsFile: currentStat.isFile(),
     currentSizeBytes: currentStat.size,
     maxBytes:
-      attachmentTypeForMimeType(file.mimeType) === 'image'
+      attachmentTypeForMimeType(file.mimeType) === "image"
         ? PROVIDER_SEND_TURN_MAX_IMAGE_BYTES
         : PROVIDER_SEND_TURN_MAX_FILE_BYTES,
-    sizeLimitLabel: attachmentTypeForMimeType(file.mimeType) === 'image' ? '10MB' : '25MB',
+    sizeLimitLabel: attachmentTypeForMimeType(file.mimeType) === "image" ? "10MB" : "25MB",
   });
   const bytes = await fs.promises.readFile(file.path);
   const attachmentType = attachmentTypeForMimeType(file.mimeType);
@@ -560,14 +537,14 @@ export async function handleAttachments(
       mimeType: file.mimeType,
     }),
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Length': String(bytes.byteLength),
-        'Content-Type': file.mimeType,
-        Origin: 'synara://app',
+        "Content-Length": String(bytes.byteLength),
+        "Content-Type": file.mimeType,
+        Origin: "synara://app",
       },
       body: bytes,
-    }
+    },
   );
   const payload = resolveAttachmentUploadPayload({
     ok: response.ok,
@@ -582,37 +559,31 @@ export async function registerAppSnapPickedImage(input: {
   readonly captureId: string;
   readonly name: string;
 }): Promise<{
-  readonly mimeType: 'image/png';
+  readonly mimeType: "image/png";
   readonly name: string;
   readonly sizeBytes: number;
   readonly token: string;
 }> {
-  if (
-    input.bytes.byteLength === 0 ||
-    input.bytes.byteLength > PROVIDER_SEND_TURN_MAX_IMAGE_BYTES
-  ) {
-    throw new Error('The captured AppSnap exceeds the image attachment limit.');
+  if (input.bytes.byteLength === 0 || input.bytes.byteLength > PROVIDER_SEND_TURN_MAX_IMAGE_BYTES) {
+    throw new Error("The captured AppSnap exceeds the image attachment limit.");
   }
   prunePickedFiles();
   const existing = Array.from(pickedFiles.values()).find(
-    (file) => file.appSnapCaptureId === input.captureId
+    (file) => file.appSnapCaptureId === input.captureId,
   );
   if (existing) {
     return {
       token: existing.token,
       name: existing.name,
-      mimeType: 'image/png',
+      mimeType: "image/png",
       sizeBytes: existing.sizeBytes,
     };
   }
   const token = randomUUID();
   const directory = path.join(
-    resolveShellUserDataDir(
-      app.getPath('userData'),
-      process.env.SYNARA_LYNX_USER_DATA_DIR
-    ),
-    'appsnap',
-    'picked'
+    resolveShellUserDataDir(app.getPath("userData"), process.env.SYNARA_LYNX_USER_DATA_DIR),
+    "appsnap",
+    "picked",
   );
   await fs.promises.mkdir(directory, { recursive: true, mode: 0o700 });
   if (!appSnapPickedDirectoryInitialized) {
@@ -620,12 +591,8 @@ export async function registerAppSnapPickedImage(input: {
     const entries = await fs.promises.readdir(directory).catch(() => []);
     await Promise.all(
       entries
-        .filter((entry) => entry.endsWith('.png'))
-        .map((entry) =>
-          fs.promises
-            .unlink(path.join(directory, entry))
-            .catch(() => undefined)
-        )
+        .filter((entry) => entry.endsWith(".png"))
+        .map((entry) => fs.promises.unlink(path.join(directory, entry)).catch(() => undefined)),
     );
   }
   const filePath = path.join(directory, `${token}.png`);
@@ -635,7 +602,7 @@ export async function registerAppSnapPickedImage(input: {
     token,
     path: filePath,
     name: input.name.trim() || `AppSnap-${input.captureId}.png`,
-    mimeType: 'image/png',
+    mimeType: "image/png",
     sizeBytes: input.bytes.byteLength,
     expiresAt: Date.now() + PICKED_FILE_TTL_MS,
     deleteOnRelease: true,
@@ -644,7 +611,7 @@ export async function registerAppSnapPickedImage(input: {
   return {
     token: file.token,
     name: file.name,
-    mimeType: 'image/png',
+    mimeType: "image/png",
     sizeBytes: file.sizeBytes,
   };
 }
@@ -661,59 +628,53 @@ function windowState(w: LynxWindow): {
   };
 }
 
-export async function handleShell(
-  w: LynxWindow,
-  method: string,
-  data: any
-): Promise<unknown> {
+export async function handleShell(w: LynxWindow, method: string, data: any): Promise<unknown> {
   switch (method) {
-    case 'shellCapabilities':
+    case "shellCapabilities":
       return JSON.stringify(SHELL_CAPABILITIES);
-    case 'windowMinimize':
+    case "windowMinimize":
       w.minimize();
       return JSON.stringify({ ok: true });
-    case 'windowToggleMaximize':
+    case "windowToggleMaximize":
       if (w.isMaximized()) w.unmaximize();
       else w.maximize();
       return JSON.stringify(windowState(w));
-    case 'windowClose':
+    case "windowClose":
       w.close();
       return JSON.stringify({ ok: true });
-    case 'windowGetState':
+    case "windowGetState":
       return JSON.stringify(windowState(w));
-    case 'windowGetViewport': {
+    case "windowGetViewport": {
       const bounds = w.getContentBounds();
       return JSON.stringify({
         width: bounds.width,
         height: bounds.height,
       });
     }
-    case 'shellOpenExternal': {
-      const raw = String(data.url ?? '');
+    case "shellOpenExternal": {
+      const raw = String(data.url ?? "");
       let parsed: URL;
       try {
         parsed = new URL(raw);
       } catch {
         return JSON.stringify({ opened: false });
       }
-      if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+      if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
         return JSON.stringify({ opened: false });
       }
       await shell.openExternal(parsed.toString());
       return JSON.stringify({ opened: true });
     }
-    case 'feedbackSubmit': {
-      const submission = data?.submission as
-        | { readonly details?: unknown }
-        | undefined;
-      if (!submission || typeof submission.details !== 'string') {
-        return JSON.stringify({ error: 'Feedback submission is required.' });
+    case "feedbackSubmit": {
+      const submission = data?.submission as { readonly details?: unknown } | undefined;
+      if (!submission || typeof submission.details !== "string") {
+        return JSON.stringify({ error: "Feedback submission is required." });
       }
       await submitFeedbackPayload(submission);
       return JSON.stringify({ ok: true });
     }
-    case 'shellShowInFolder': {
-      const target = String(data.path ?? '').trim();
+    case "shellShowInFolder": {
+      const target = String(data.path ?? "").trim();
       if (!target || !path.isAbsolute(target)) {
         return JSON.stringify({ opened: false });
       }
@@ -721,7 +682,7 @@ export async function handleShell(
       return JSON.stringify({ opened: true });
     }
     default:
-      return JSON.stringify({ error: 'unknown shell method ' + method });
+      return JSON.stringify({ error: "unknown shell method " + method });
   }
 }
 
@@ -731,20 +692,20 @@ let echoPortPromise: Promise<number> | null = null;
 
 export function ensureWsEcho(): Promise<number> {
   echoPortPromise ??= new Promise((resolve, reject) => {
-    const wss = new WebSocketServer({ host: '127.0.0.1', port: 0 });
-    wss.once('error', reject);
-    wss.once('listening', () => {
+    const wss = new WebSocketServer({ host: "127.0.0.1", port: 0 });
+    wss.once("error", reject);
+    wss.once("listening", () => {
       const addr = wss.address();
-      const port = typeof addr === 'object' && addr ? addr.port : 0;
+      const port = typeof addr === "object" && addr ? addr.port : 0;
       if (port === 0) {
-        reject(new Error('WebSocket echo server did not bind a port'));
+        reject(new Error("WebSocket echo server did not bind a port"));
         return;
       }
-      console.log('[hostServices] ws echo listening on', port);
+      console.log("[hostServices] ws echo listening on", port);
       resolve(port);
     });
-    wss.on('connection', (sock) => {
-      sock.on('message', (data: Buffer | string) => {
+    wss.on("connection", (sock) => {
+      sock.on("message", (data: Buffer | string) => {
         sock.send(data.toString());
       });
     });

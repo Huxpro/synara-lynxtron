@@ -13,7 +13,7 @@ export interface RelayPendingSummary {
 }
 
 export function summarizeRelayPendingRequests(
-  requests: Iterable<RelayPendingDiagnostic>
+  requests: Iterable<RelayPendingDiagnostic>,
 ): RelayPendingSummary {
   const pendingRequestTags: string[] = [];
   const pendingUnaryTags: string[] = [];

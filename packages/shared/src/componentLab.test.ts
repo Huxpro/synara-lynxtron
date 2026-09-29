@@ -164,9 +164,7 @@ describe("component lab manifest", () => {
   });
 
   it("rejects duplicate IDs and divergent consumer mappings", () => {
-    const source = COMPONENT_LAB_STORIES.find(
-      (story) => story.id === "editor-rail/add-menu",
-    )!;
+    const source = COMPONENT_LAB_STORIES.find((story) => story.id === "editor-rail/add-menu")!;
     const invalid: ComponentLabStory = {
       ...source,
       states: ["open"],
@@ -181,7 +179,7 @@ describe("component lab manifest", () => {
         "editor-rail/add-menu: lynx has no consumers",
         "editor-rail/add-menu: Lynx missing consumer editor-view/sidechat-header",
         "duplicate story id: editor-rail/add-menu",
-      ])
+      ]),
     );
   });
 
@@ -192,7 +190,10 @@ describe("component lab manifest", () => {
       id: "test/divergent-consumers",
       renderers: {
         ...source.renderers,
-        lynx: { ...source.renderers.lynx, consumers: [...source.renderers.lynx.consumers, "lynx-only/consumer"] },
+        lynx: {
+          ...source.renderers.lynx,
+          consumers: [...source.renderers.lynx.consumers, "lynx-only/consumer"],
+        },
       },
     };
     const divergentCounterpart: ComponentLabStory = {
@@ -207,7 +208,7 @@ describe("component lab manifest", () => {
       expect.arrayContaining([
         "test/divergent-consumers: Electron missing consumer lynx-only/consumer",
         expect.stringContaining("maps to both"),
-      ])
+      ]),
     );
   });
 
@@ -230,15 +231,17 @@ describe("component lab manifest", () => {
   });
 
   it("uses explicit meaningful cases instead of inflating a cartesian matrix", () => {
-    expect(componentLabCases({
-      variants: ["create", "validation-error"],
-      states: ["default", "open"],
-      cases: [
-        { variant: "create", state: "default" },
-        { variant: "create", state: "open" },
-        { variant: "validation-error", state: "default" },
-      ],
-    })).toEqual([
+    expect(
+      componentLabCases({
+        variants: ["create", "validation-error"],
+        states: ["default", "open"],
+        cases: [
+          { variant: "create", state: "default" },
+          { variant: "create", state: "open" },
+          { variant: "validation-error", state: "default" },
+        ],
+      }),
+    ).toEqual([
       { variant: "create", state: "default" },
       { variant: "create", state: "open" },
       { variant: "validation-error", state: "default" },
@@ -246,9 +249,7 @@ describe("component lab manifest", () => {
   });
 
   it("rejects invalid, duplicated, and incomplete explicit cases", () => {
-    const source = COMPONENT_LAB_STORIES.find(
-      (story) => story.id === "editor-rail/add-menu",
-    )!;
+    const source = COMPONENT_LAB_STORIES.find((story) => story.id === "editor-rail/add-menu")!;
     const invalid: ComponentLabStory = {
       ...source,
       id: "test/invalid-cases",
@@ -273,9 +274,7 @@ describe("component lab manifest", () => {
   });
 
   it("rejects duplicated semantic values across variant and state axes", () => {
-    const source = COMPONENT_LAB_STORIES.find(
-      (story) => story.id === "editor-rail/add-menu",
-    )!;
+    const source = COMPONENT_LAB_STORIES.find((story) => story.id === "editor-rail/add-menu")!;
     const invalid: ComponentLabStory = {
       ...source,
       id: "test/duplicate-axes",
@@ -283,7 +282,7 @@ describe("component lab manifest", () => {
       states: ["default", "open"],
     };
     expect(validateComponentLabStories([invalid])).toContain(
-      "test/duplicate-axes: variants duplicate states open"
+      "test/duplicate-axes: variants duplicate states open",
     );
   });
 });

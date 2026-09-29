@@ -1,22 +1,22 @@
 /** Minimum readable width shared by Web and Lynx right-dock surfaces. */
 export const RIGHT_DOCK_MIN_WIDTH_PX = 26 * 16;
-export const RIGHT_DOCK_STORAGE_KEY = 'synara:right-dock-state:v1';
+export const RIGHT_DOCK_STORAGE_KEY = "synara:right-dock-state:v1";
 
-import type { ProjectId, ThreadId, TurnId } from '@synara/contracts';
+import type { ProjectId, ThreadId, TurnId } from "@synara/contracts";
 
 export const RIGHT_DOCK_PANE_KINDS = [
-  'browser',
-  'diff',
-  'explorer',
-  'file',
-  'terminal',
-  'sidechat',
-  'git',
-  'pullRequest',
+  "browser",
+  "diff",
+  "explorer",
+  "file",
+  "terminal",
+  "sidechat",
+  "git",
+  "pullRequest",
 ] as const;
 
 export type RightDockPaneKind = (typeof RIGHT_DOCK_PANE_KINDS)[number];
-export type PullRequestInitialTab = 'summary' | 'timeline' | 'code';
+export type PullRequestInitialTab = "summary" | "timeline" | "code";
 
 export interface RightDockPane {
   id: string;
@@ -50,17 +50,10 @@ export interface OpenPaneInput {
   pullRequestInitialTab?: PullRequestInitialTab | null;
 }
 
-const RIGHT_DOCK_PANE_KIND_SET: ReadonlySet<string> = new Set(
-  RIGHT_DOCK_PANE_KINDS
-);
-const MULTI_INSTANCE_PANE_KINDS: ReadonlySet<RightDockPaneKind> = new Set([
-  'sidechat',
-  'file',
-]);
+const RIGHT_DOCK_PANE_KIND_SET: ReadonlySet<string> = new Set(RIGHT_DOCK_PANE_KINDS);
+const MULTI_INSTANCE_PANE_KINDS: ReadonlySet<RightDockPaneKind> = new Set(["sidechat", "file"]);
 export const SINGLETON_PANE_KINDS: ReadonlySet<RightDockPaneKind> = new Set(
-  RIGHT_DOCK_PANE_KINDS.filter(
-    (kind) => !MULTI_INSTANCE_PANE_KINDS.has(kind)
-  )
+  RIGHT_DOCK_PANE_KINDS.filter((kind) => !MULTI_INSTANCE_PANE_KINDS.has(kind)),
 );
 
 export function isSingletonPaneKind(kind: RightDockPaneKind): boolean {
@@ -71,72 +64,66 @@ export function createDefaultRightDockState(): RightDockThreadState {
   return { open: false, panes: [], activePaneId: null };
 }
 
-export function isRightDockPaneKind(
-  value: unknown
-): value is RightDockPaneKind {
-  return typeof value === 'string' && RIGHT_DOCK_PANE_KIND_SET.has(value);
+export function isRightDockPaneKind(value: unknown): value is RightDockPaneKind {
+  return typeof value === "string" && RIGHT_DOCK_PANE_KIND_SET.has(value);
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 function sanitizePane(value: unknown): RightDockPane | null {
-  if (!isRecord(value) || typeof value.id !== 'string' || !isRightDockPaneKind(value.kind)) {
+  if (!isRecord(value) || typeof value.id !== "string" || !isRightDockPaneKind(value.kind)) {
     return null;
   }
   return {
     id: value.id,
     kind: value.kind,
-    threadId: typeof value.threadId === 'string' ? (value.threadId as ThreadId) : null,
-    diffTurnId: typeof value.diffTurnId === 'string' ? (value.diffTurnId as TurnId) : null,
-    diffFilePath: typeof value.diffFilePath === 'string' ? value.diffFilePath : null,
-    filePath: typeof value.filePath === 'string' ? value.filePath : null,
+    threadId: typeof value.threadId === "string" ? (value.threadId as ThreadId) : null,
+    diffTurnId: typeof value.diffTurnId === "string" ? (value.diffTurnId as TurnId) : null,
+    diffFilePath: typeof value.diffFilePath === "string" ? value.diffFilePath : null,
+    filePath: typeof value.filePath === "string" ? value.filePath : null,
     pullRequestProjectId:
-      typeof value.pullRequestProjectId === 'string'
+      typeof value.pullRequestProjectId === "string"
         ? (value.pullRequestProjectId as ProjectId)
         : null,
     pullRequestRepository:
-      typeof value.pullRequestRepository === 'string'
-        ? value.pullRequestRepository
-        : null,
+      typeof value.pullRequestRepository === "string" ? value.pullRequestRepository : null,
     pullRequestNumber:
-      typeof value.pullRequestNumber === 'number' &&
+      typeof value.pullRequestNumber === "number" &&
       Number.isInteger(value.pullRequestNumber) &&
       value.pullRequestNumber > 0
         ? value.pullRequestNumber
         : null,
     pullRequestInitialTab:
-      value.pullRequestInitialTab === 'summary' ||
-      value.pullRequestInitialTab === 'timeline' ||
-      value.pullRequestInitialTab === 'code'
+      value.pullRequestInitialTab === "summary" ||
+      value.pullRequestInitialTab === "timeline" ||
+      value.pullRequestInitialTab === "code"
         ? value.pullRequestInitialTab
         : null,
   };
 }
 
-export function sanitizeRightDockThreadState(
-  value: unknown
-): RightDockThreadState {
+export function sanitizeRightDockThreadState(value: unknown): RightDockThreadState {
   if (!isRecord(value)) return createDefaultRightDockState();
   const panes = Array.isArray(value.panes)
     ? value.panes.map(sanitizePane).filter((pane): pane is RightDockPane => pane !== null)
     : [];
   const activePaneId =
-    typeof value.activePaneId === 'string' &&
-    panes.some((pane) => pane.id === value.activePaneId)
+    typeof value.activePaneId === "string" && panes.some((pane) => pane.id === value.activePaneId)
       ? value.activePaneId
       : (panes[0]?.id ?? null);
   return { open: panes.length > 0 && value.open === true, panes, activePaneId };
 }
 
 export function sanitizeRightDockStateByThreadId(
-  value: unknown
+  value: unknown,
 ): Record<string, RightDockThreadState> {
   if (!isRecord(value)) return {};
   const result: Record<string, RightDockThreadState> = {};
   for (const [key, entry] of Object.entries(value)) {
-    if (key === '__proto__' || key === 'constructor' || key === 'prototype' || entry === undefined) continue;
+    if (key === "__proto__" || key === "constructor" || key === "prototype" || entry === undefined)
+      continue;
     result[key] = sanitizeRightDockThreadState(entry);
   }
   return result;
@@ -159,31 +146,30 @@ function createPane(input: OpenPaneInput): RightDockPane {
 
 function findExistingPane(
   state: RightDockThreadState,
-  input: OpenPaneInput
+  input: OpenPaneInput,
 ): RightDockPane | undefined {
   if (isSingletonPaneKind(input.kind)) {
     return state.panes.find((pane) => pane.kind === input.kind);
   }
-  if (input.kind === 'sidechat' && input.threadId) {
-    return state.panes.find(
-      (pane) => pane.kind === 'sidechat' && pane.threadId === input.threadId
-    );
+  if (input.kind === "sidechat" && input.threadId) {
+    return state.panes.find((pane) => pane.kind === "sidechat" && pane.threadId === input.threadId);
   }
-  if (input.kind === 'file') {
+  if (input.kind === "file") {
     const filePath = input.filePath ?? null;
-    return state.panes.find(
-      (pane) => pane.kind === 'file' && pane.filePath === filePath
-    );
+    return state.panes.find((pane) => pane.kind === "file" && pane.filePath === filePath);
   }
   return undefined;
 }
 
 function reopenPatch(input: OpenPaneInput): Partial<RightDockPane> | null {
-  if (input.kind === 'diff' && (input.diffTurnId !== undefined || input.diffFilePath !== undefined)) {
+  if (
+    input.kind === "diff" &&
+    (input.diffTurnId !== undefined || input.diffFilePath !== undefined)
+  ) {
     return { diffTurnId: input.diffTurnId ?? null, diffFilePath: input.diffFilePath ?? null };
   }
   if (
-    input.kind === 'pullRequest' &&
+    input.kind === "pullRequest" &&
     (input.pullRequestProjectId !== undefined ||
       input.pullRequestRepository !== undefined ||
       input.pullRequestNumber !== undefined ||
@@ -201,7 +187,7 @@ function reopenPatch(input: OpenPaneInput): Partial<RightDockPane> | null {
 
 export function openPaneInState(
   state: RightDockThreadState,
-  input: OpenPaneInput
+  input: OpenPaneInput,
 ): RightDockThreadState {
   const existing = findExistingPane(state, input);
   if (existing) {
@@ -209,9 +195,7 @@ export function openPaneInState(
     return {
       open: true,
       panes: patch
-        ? state.panes.map((pane) =>
-            pane.id === existing.id ? { ...pane, ...patch } : pane
-          )
+        ? state.panes.map((pane) => (pane.id === existing.id ? { ...pane, ...patch } : pane))
         : state.panes,
       activePaneId: existing.id,
     };
@@ -222,7 +206,7 @@ export function openPaneInState(
 
 export function closePaneInState(
   state: RightDockThreadState,
-  paneId: string
+  paneId: string,
 ): RightDockThreadState {
   const index = state.panes.findIndex((pane) => pane.id === paneId);
   if (index < 0) return state;
@@ -236,7 +220,7 @@ export function closePaneInState(
 
 export function setActivePaneInState(
   state: RightDockThreadState,
-  paneId: string
+  paneId: string,
 ): RightDockThreadState {
   return state.panes.some((pane) => pane.id === paneId)
     ? { ...state, open: true, activePaneId: paneId }
@@ -245,7 +229,7 @@ export function setActivePaneInState(
 
 export function setDockOpenInState(
   state: RightDockThreadState,
-  open: boolean
+  open: boolean,
 ): RightDockThreadState {
   if ((open && state.panes.length === 0) || state.open === open) return state;
   return { ...state, open };
@@ -254,7 +238,7 @@ export function setDockOpenInState(
 export function updatePaneInState(
   state: RightDockThreadState,
   paneId: string,
-  patch: Partial<Omit<RightDockPane, 'id' | 'kind'>>
+  patch: Partial<Omit<RightDockPane, "id" | "kind">>,
 ): RightDockThreadState {
   let changed = false;
   const panes = state.panes.map((pane) => {
@@ -280,7 +264,7 @@ export function updatePaneInState(
 
 export function toggleSingletonPaneInState(
   state: RightDockThreadState,
-  input: OpenPaneInput
+  input: OpenPaneInput,
 ): RightDockThreadState {
   const existing = state.panes.find((pane) => pane.kind === input.kind);
   return existing && state.open && state.activePaneId === existing.id
@@ -288,9 +272,7 @@ export function toggleSingletonPaneInState(
     : openPaneInState(state, input);
 }
 
-export function resolveActivePane(
-  state: RightDockThreadState
-): RightDockPane | null {
+export function resolveActivePane(state: RightDockThreadState): RightDockPane | null {
   if (!state.open || state.activePaneId === null) return null;
   return state.panes.find((pane) => pane.id === state.activePaneId) ?? null;
 }

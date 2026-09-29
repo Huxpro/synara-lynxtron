@@ -1768,7 +1768,6 @@ state is absent from the paired component matrix.
   staged bundle SHA-256 is
   `f34eef3eecf343ee97b877607533dbc0288e171c9f722bb3ea83c208c25a7c65`.
 
-
 ### DS-100 — COMPLETE
 
 - Native Checkbox now declares its four physical border colors explicitly in
@@ -1785,7 +1784,6 @@ state is absent from the paired component matrix.
   error/warning console was empty, no screenshot was retained, and the final
   staged bundle SHA-256 is
   `2c32a5ed2d0045829c0dfe706228288e9310060f01f38d2b733e042acb269812`.
-
 
 ### DS-101 — COMPLETE
 
@@ -2575,7 +2573,6 @@ state is absent from the paired component matrix.
   SHA-256 is
   `273538252dde3241179216ba9d92bfae201656cc767acc702b2d899e3fe819fb`.
 
-
 ### DS-148 — COMPLETE
 
 - Native Markdown display-math blocks now declare their primary left accent as
@@ -2591,7 +2588,6 @@ state is absent from the paired component matrix.
   `rgba(252,252,252,0.00392157)` surface. The exact Native error/warning console
   was empty, no screenshot was retained, and the final staged bundle SHA-256 is
   `d2ae203e1fb6e62509eae25bad4fd9d41936ebca87d26d6cdfc9aae6b82bb39c`.
-
 
 ### DS-149 — COMPLETE
 

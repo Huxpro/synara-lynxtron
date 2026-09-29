@@ -4,12 +4,12 @@
 
 /// <reference path="./tsconfig.tools.json" />
 
-import { defineConfig } from '@rsbuild/core';
-import { pluginLynxtron } from '@lynx-js/lynxtron-dev-plugins/rsbuild';
-import { isRspeedyDevAsset } from './src/main/web/rspeedyDevProxy.logic';
-const rspeedyDevServer = 'http://localhost:5971';
-const buildHostInputProbe = process.env.SYNARA_HOST_INPUT_PROBE === '1';
-const configuredSynaraWsUrl = process.env.SYNARA_WS_URL?.trim() ?? '';
+import { defineConfig } from "@rsbuild/core";
+import { pluginLynxtron } from "@lynx-js/lynxtron-dev-plugins/rsbuild";
+import { isRspeedyDevAsset } from "./src/main/web/rspeedyDevProxy.logic";
+const rspeedyDevServer = "http://localhost:5971";
+const buildHostInputProbe = process.env.SYNARA_HOST_INPUT_PROBE === "1";
+const configuredSynaraWsUrl = process.env.SYNARA_WS_URL?.trim() ?? "";
 
 export default defineConfig({
   server: {
@@ -20,7 +20,7 @@ export default defineConfig({
         pathFilter: isRspeedyDevAsset,
         target: rspeedyDevServer,
         pathRewrite: {
-          '^/web/': '/',
+          "^/web/": "/",
         },
       },
     ],
@@ -29,27 +29,27 @@ export default defineConfig({
     desktop: {
       source: {
         entry: {
-          main: './src/main/desktop/main.ts',
-          preload: './src/main/desktop/preload.ts',
-          hostServices: './src/main/desktop/hostServices.ts',
+          main: "./src/main/desktop/main.ts",
+          preload: "./src/main/desktop/preload.ts",
+          hostServices: "./src/main/desktop/hostServices.ts",
         },
       },
       plugins: [
         pluginLynxtron({
-          args: ['--inspect=9222'],
+          args: ["--inspect=9222"],
         }),
       ],
       output: {
-        target: 'node',
+        target: "node",
         externals: {
-          sharp: 'module sharp',
+          sharp: "module sharp",
         },
         distPath: {
-          root: './dist/desktop',
+          root: "./dist/desktop",
         },
         copy: [
-          { from: './package.json', to: 'package.json' },
-          { from: './output/bundle/lynx/', to: '.' },
+          { from: "./package.json", to: "package.json" },
+          { from: "./output/bundle/lynx/", to: "." },
         ],
       },
       dev: {
@@ -59,61 +59,56 @@ export default defineConfig({
     web: {
       source: {
         define: {
-          'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl),
+          "process.env.SYNARA_WS_URL": JSON.stringify(configuredSynaraWsUrl),
         },
         entry: {
           ...(buildHostInputProbe
             ? {
-                'host-input-probe-host':
-                  './src/main/web/host-input-probe-host.ts',
+                "host-input-probe-host": "./src/main/web/host-input-probe-host.ts",
               }
             : {
-                'web-host': './src/main/web/web-host.ts',
-                'nodejs-adapter-web': {
-                  import: './src/main/web/nodejs_adapter_web.ts',
+                "web-host": "./src/main/web/web-host.ts",
+                "nodejs-adapter-web": {
+                  import: "./src/main/web/nodejs_adapter_web.ts",
                   html: false,
                 },
               }),
         },
       },
       output: {
-        target: 'web',
+        target: "web",
         // Derive async chunk and asset URLs from the current script so the
         // output can be served from either / or a nested public path.
-        assetPrefix: 'auto',
+        assetPrefix: "auto",
         filenameHash: false,
         filename: {
-          html: 'index.html',
+          html: "index.html",
         },
         distPath: {
-          root: buildHostInputProbe
-            ? './dist/probes/host-input/web'
-            : './dist/web',
-          js: '',
-          jsAsync: '',
+          root: buildHostInputProbe ? "./dist/probes/host-input/web" : "./dist/web",
+          js: "",
+          jsAsync: "",
         },
         copy: [
           {
-            from: buildHostInputProbe
-              ? './output/probes/host-input/web/'
-              : './output/bundle/web/',
-            to: '.',
+            from: buildHostInputProbe ? "./output/probes/host-input/web/" : "./output/bundle/web/",
+            to: ".",
           },
           {
-            from: '../web/public/central-icons-reversed/',
-            to: 'central-icons-reversed',
+            from: "../web/public/central-icons-reversed/",
+            to: "central-icons-reversed",
           },
           {
-            from: '../web/public/central-icons-fill/',
-            to: 'central-icons-fill',
+            from: "../web/public/central-icons-fill/",
+            to: "central-icons-fill",
           },
         ],
       },
       html: {
         template: buildHostInputProbe
-          ? './src/main/web/host-input-probe.html'
-          : './src/main/web/index.html',
-        inject: 'body',
+          ? "./src/main/web/host-input-probe.html"
+          : "./src/main/web/index.html",
+        inject: "body",
       },
       splitChunks: false,
     },

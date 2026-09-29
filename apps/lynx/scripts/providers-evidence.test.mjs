@@ -38,13 +38,11 @@ test("rejects Native build and interaction paint drift", () => {
   mutated.states.find((state) => state.id === "settings-row-native-pressed").expectStyles[
     "roles.pressed.paint.opacity"
   ] = "0.5";
-  mutated.states.find((state) => state.id === "providers-opencode-native-open").expectDom[2]
-    .attributes.readonly = "true";
+  mutated.states.find(
+    (state) => state.id === "providers-opencode-native-open",
+  ).expectDom[2].attributes.readonly = "true";
   mutated.builds.nativeOnline = "0".repeat(64);
-  const result = validateProvidersEvidenceManifest(
-    mutated,
-    path.dirname(MANIFEST_PATH),
-  );
+  const result = validateProvidersEvidenceManifest(mutated, path.dirname(MANIFEST_PATH));
   assert(result.errors.includes("providers-native-light-open: roles.tool.box.height mismatch"));
   assert(result.errors.includes("settings-row-native-pressed: Native build mismatch"));
   assert(
@@ -52,7 +50,5 @@ test("rejects Native build and interaction paint drift", () => {
       "settings-row-native-pressed: styles.roles.pressed.paint.opacity mismatch",
     ),
   );
-  assert(
-    result.errors.includes("providers-opencode-native-open: Native DOM expectation missing"),
-  );
+  assert(result.errors.includes("providers-opencode-native-open: Native DOM expectation missing"));
 });

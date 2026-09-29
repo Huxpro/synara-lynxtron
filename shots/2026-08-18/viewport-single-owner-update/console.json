@@ -1,10 +1,7 @@
 {
   "web": {
     "pageErrors": [],
-    "acceptedDevelopmentNoise": [
-      "Vite connected",
-      "React DevTools development suggestion"
-    ]
+    "acceptedDevelopmentNoise": ["Vite connected", "React DevTools development suggestion"]
   },
   "lynx": {
     "pageErrors": [],

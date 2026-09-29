@@ -14,7 +14,12 @@ minimum of `900x650`.
 This run prewrote an exact isolated state:
 
 ```json
-{"version":1,"bounds":{"x":220,"y":120,"width":900,"height":650},"maximized":false,"fullscreen":false}
+{
+  "version": 1,
+  "bounds": { "x": 220, "y": 120, "width": 900, "height": 650 },
+  "maximized": false,
+  "fullscreen": false
+}
 ```
 
 The exact-owned Native app loaded and retained those bytes. Its bridge issued

@@ -1,9 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import {
-  SettingsNavigationComposition,
-} from "./SettingsNavigationComposition";
+import { SettingsNavigationComposition } from "./SettingsNavigationComposition";
 import { resolveSettingsNavigationCompositionGroups } from "./SettingsNavigationComposition.logic";
 
 describe("SettingsNavigationComposition", () => {

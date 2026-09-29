@@ -24,32 +24,32 @@ Status: feature-state follow-up complete; keyboard shortcut certification deferr
 
 ## Prompt-to-artifact checklist
 
-| Requirement | Artifact / product evidence | Current audit |
-|---|---|---|
-| Comparison remains the normal workflow | `shots/2026-08-03/p8-q2/comparison.html` | pass; follow-up states added |
-| Command K real Cmd+K open | `command-k/native/empty-1280/` | pass |
-| Repeated Cmd+K and Escape | Browser product interaction | Web pass; Native shortcut certification deferred by user |
-| Suggested/action/project/thread/message/theme/empty queries | `command-k/browser/` and `browser/states/` | pass |
-| Project-name thread query | `command-k/browser/states/*-project.json` | pass: `Lynx Web Spike` returns all three project threads plus the project row |
-| Appearance activation and persistence | product storage + restart | implementation and earlier theme evidence retained; restart persistence remains outside this follow-up |
-| Add project / filesystem browse | rendered path mode and real RPC | pass: Web dialog + canonical `filesystem.browse` evidence |
-| Import thread/provider state | rendered import mode and real RPC | pass: Web provider surface + five canonical capability results |
-| Usage action/provider cards | rendered navigation and real usage RPC | pass: Web Usage route + three real usage records |
-| Loading/error/retry/empty | rendered states | pass for empty and real search error→Retry recovery; loading text remains source/test contract |
-| Keyboard Arrow/Tab/Shift+Tab/Enter/Escape | exact-owned delivery and state assertions | deferred by user; not claimed complete |
-| Pointer activation for enabled result types | rendered interactions | pass for Web action surfaces and exact Native Composer controls; Lynx-for-Web CommandItem activation is an explicit custom-element harness boundary |
-| Feedback/Spaces do not fake capability | palette omission + report | pass, explicit unavailable |
-| Extras closed/open | paired Browser frames | pass |
-| Attachment action | host file dialog semantics | menu visible; host dialog intentionally not opened over user desktop |
-| Plan off/on and first-send mode | paired state + command projection | pass for Browser off/on and Native checked; first-send projection covered by command construction |
-| Fast default/fast | rendered submenu and selected value | pass; activation exposed and fixed a real missing-icon crash |
-| Project empty/open/search/selected/reset | paired states | pass for Web search/select/reset and Native open/select/reset |
-| Skills trigger/filter/select/clear | paired Browser + structured payload | pass for trigger/filter/select/real editor clear; Native text input deferred with keyboard |
-| Mentions trigger/filter/select/clear | paired Browser + structured payload | pass for trigger/filter/select/real editor clear; Native text input deferred with keyboard |
-| Browser geometry / dimensions / console | notes + PNG checks | pass for retained Browser cells |
-| Native exact-owned dimensions / console / identity | PID-derived DevTool evidence | pass for Composer pointer states; six 2560×1576 frames and empty console |
-| Focused tests and production builds | command output in final audit | pass: Web unit 36, TraitsPicker Browser 23, Lynx 16, Web and Lynx/Desktop production builds |
-| Commit and push | git commit and remote ref | satisfied by the P9-U4 follow-up commit containing this audit |
+| Requirement                                                 | Artifact / product evidence                | Current audit                                                                                                                                       |
+| ----------------------------------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Comparison remains the normal workflow                      | `shots/2026-08-03/p8-q2/comparison.html`   | pass; follow-up states added                                                                                                                        |
+| Command K real Cmd+K open                                   | `command-k/native/empty-1280/`             | pass                                                                                                                                                |
+| Repeated Cmd+K and Escape                                   | Browser product interaction                | Web pass; Native shortcut certification deferred by user                                                                                            |
+| Suggested/action/project/thread/message/theme/empty queries | `command-k/browser/` and `browser/states/` | pass                                                                                                                                                |
+| Project-name thread query                                   | `command-k/browser/states/*-project.json`  | pass: `Lynx Web Spike` returns all three project threads plus the project row                                                                       |
+| Appearance activation and persistence                       | product storage + restart                  | implementation and earlier theme evidence retained; restart persistence remains outside this follow-up                                              |
+| Add project / filesystem browse                             | rendered path mode and real RPC            | pass: Web dialog + canonical `filesystem.browse` evidence                                                                                           |
+| Import thread/provider state                                | rendered import mode and real RPC          | pass: Web provider surface + five canonical capability results                                                                                      |
+| Usage action/provider cards                                 | rendered navigation and real usage RPC     | pass: Web Usage route + three real usage records                                                                                                    |
+| Loading/error/retry/empty                                   | rendered states                            | pass for empty and real search error→Retry recovery; loading text remains source/test contract                                                      |
+| Keyboard Arrow/Tab/Shift+Tab/Enter/Escape                   | exact-owned delivery and state assertions  | deferred by user; not claimed complete                                                                                                              |
+| Pointer activation for enabled result types                 | rendered interactions                      | pass for Web action surfaces and exact Native Composer controls; Lynx-for-Web CommandItem activation is an explicit custom-element harness boundary |
+| Feedback/Spaces do not fake capability                      | palette omission + report                  | pass, explicit unavailable                                                                                                                          |
+| Extras closed/open                                          | paired Browser frames                      | pass                                                                                                                                                |
+| Attachment action                                           | host file dialog semantics                 | menu visible; host dialog intentionally not opened over user desktop                                                                                |
+| Plan off/on and first-send mode                             | paired state + command projection          | pass for Browser off/on and Native checked; first-send projection covered by command construction                                                   |
+| Fast default/fast                                           | rendered submenu and selected value        | pass; activation exposed and fixed a real missing-icon crash                                                                                        |
+| Project empty/open/search/selected/reset                    | paired states                              | pass for Web search/select/reset and Native open/select/reset                                                                                       |
+| Skills trigger/filter/select/clear                          | paired Browser + structured payload        | pass for trigger/filter/select/real editor clear; Native text input deferred with keyboard                                                          |
+| Mentions trigger/filter/select/clear                        | paired Browser + structured payload        | pass for trigger/filter/select/real editor clear; Native text input deferred with keyboard                                                          |
+| Browser geometry / dimensions / console                     | notes + PNG checks                         | pass for retained Browser cells                                                                                                                     |
+| Native exact-owned dimensions / console / identity          | PID-derived DevTool evidence               | pass for Composer pointer states; six 2560×1576 frames and empty console                                                                            |
+| Focused tests and production builds                         | command output in final audit              | pass: Web unit 36, TraitsPicker Browser 23, Lynx 16, Web and Lynx/Desktop production builds                                                         |
+| Commit and push                                             | git commit and remote ref                  | satisfied by the P9-U4 follow-up commit containing this audit                                                                                       |
 
 Passing unit tests or existing screenshots are not sufficient for rows marked
 pending or weak. Keyboard delivery remains an explicit deferred boundary by

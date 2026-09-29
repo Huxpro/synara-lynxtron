@@ -1,1 +1,71 @@
-{"viewport":{"width":1280,"height":820,"visualWidth":1280,"visualHeight":820,"dpr":1},"row":{"box":{"x":469,"y":161,"width":598,"height":38,"top":161,"right":1067,"bottom":199,"left":469},"title":{"box":{"x":469,"y":161,"width":478.21875,"height":18,"top":161,"right":947.21875,"bottom":179,"left":469},"font":["12px","18px","500"]},"description":{"box":{"x":469,"y":181,"width":478.21875,"height":18,"top":181,"right":947.21875,"bottom":199,"left":469},"font":["12px","18px","400"]},"buttons":[{"text":"Restore","box":{"x":957.21875,"y":168,"width":53.890625,"height":24,"top":168,"right":1011.109375,"bottom":192,"left":957.21875},"font":["10px","15px"]},{"text":"Delete","box":{"x":1019.109375,"y":168,"width":47.890625,"height":24,"top":168,"right":1067,"bottom":192,"left":1019.109375},"font":["10px","15px"]}]}}
+{
+  "viewport": { "width": 1280, "height": 820, "visualWidth": 1280, "visualHeight": 820, "dpr": 1 },
+  "row": {
+    "box": {
+      "x": 469,
+      "y": 161,
+      "width": 598,
+      "height": 38,
+      "top": 161,
+      "right": 1067,
+      "bottom": 199,
+      "left": 469
+    },
+    "title": {
+      "box": {
+        "x": 469,
+        "y": 161,
+        "width": 478.21875,
+        "height": 18,
+        "top": 161,
+        "right": 947.21875,
+        "bottom": 179,
+        "left": 469
+      },
+      "font": ["12px", "18px", "500"]
+    },
+    "description": {
+      "box": {
+        "x": 469,
+        "y": 181,
+        "width": 478.21875,
+        "height": 18,
+        "top": 181,
+        "right": 947.21875,
+        "bottom": 199,
+        "left": 469
+      },
+      "font": ["12px", "18px", "400"]
+    },
+    "buttons": [
+      {
+        "text": "Restore",
+        "box": {
+          "x": 957.21875,
+          "y": 168,
+          "width": 53.890625,
+          "height": 24,
+          "top": 168,
+          "right": 1011.109375,
+          "bottom": 192,
+          "left": 957.21875
+        },
+        "font": ["10px", "15px"]
+      },
+      {
+        "text": "Delete",
+        "box": {
+          "x": 1019.109375,
+          "y": 168,
+          "width": 47.890625,
+          "height": 24,
+          "top": 168,
+          "right": 1067,
+          "bottom": 192,
+          "left": 1019.109375
+        },
+        "font": ["10px", "15px"]
+      }
+    ]
+  }
+}

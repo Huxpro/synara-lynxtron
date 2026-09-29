@@ -53,7 +53,7 @@ export function resolveOpenThreadPathTerminalTarget(input: {
   readonly terminalIds: readonly string[];
   readonly terminalOpen: boolean;
 }): OpenThreadPathTerminalTarget {
-  const candidateId = input.activeTerminalId || input.terminalIds[0] || 'default';
+  const candidateId = input.activeTerminalId || input.terminalIds[0] || "default";
   const reuseExisting =
     input.terminalOpen &&
     input.terminalIds.includes(candidateId) &&
@@ -69,23 +69,19 @@ type Listener = (intent: OpenThreadPathInTerminalIntent) => void;
 let pendingIntent: OpenThreadPathInTerminalIntent | null = null;
 const listeners = new Set<Listener>();
 
-export function requestOpenThreadPathInTerminal(
-  intent: OpenThreadPathInTerminalIntent
-): void {
+export function requestOpenThreadPathInTerminal(intent: OpenThreadPathInTerminalIntent): void {
   pendingIntent = intent;
   for (const listener of listeners) listener(intent);
 }
 
-export function subscribeOpenThreadPathInTerminal(
-  listener: Listener
-): () => void {
+export function subscribeOpenThreadPathInTerminal(listener: Listener): () => void {
   listeners.add(listener);
   if (pendingIntent) listener(pendingIntent);
   return () => listeners.delete(listener);
 }
 
 export function consumeOpenThreadPathInTerminal(
-  threadId: string
+  threadId: string,
 ): OpenThreadPathInTerminalIntent | null {
   if (pendingIntent?.threadId !== threadId) return null;
   const intent = pendingIntent;

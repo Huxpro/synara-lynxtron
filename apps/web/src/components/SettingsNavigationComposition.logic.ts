@@ -28,9 +28,7 @@ export function resolveSettingsNavigationCompositionGroups(input: {
       label: item.label,
       icon: item.icon,
       active: item.id === input.activeSection,
-      available:
-        input.availableSections === undefined ||
-        input.availableSections.includes(item.id),
+      available: input.availableSections === undefined || input.availableSections.includes(item.id),
     })),
   })).filter((group) => group.items.length > 0);
 }

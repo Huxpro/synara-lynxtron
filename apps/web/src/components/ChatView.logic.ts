@@ -462,8 +462,7 @@ export function resolveEnvironmentPanelLayout(input: {
   return {
     visible,
     variant,
-    appliesContentInset:
-      visible && variant === "docked" && !input.isCenteredEmptyLanding,
+    appliesContentInset: visible && variant === "docked" && !input.isCenteredEmptyLanding,
   };
 }
 

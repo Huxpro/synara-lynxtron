@@ -1,15 +1,15 @@
-import type { ProjectSummary, ThreadSummary } from '../../app/queries';
-import type { SpaceId } from '@synara/contracts';
-import { deriveSidebarSectionCollections } from '@synara-web/components/SidebarSections.logic';
+import type { ProjectSummary, ThreadSummary } from "../../app/queries";
+import type { SpaceId } from "@synara/contracts";
+import { deriveSidebarSectionCollections } from "@synara-web/components/SidebarSections.logic";
 import {
   derivePinnedThreadIdsForSidebar,
   getPinnedThreadsForSidebar,
   getUnpinnedThreadsForSidebar,
-} from '@synara-web/components/SidebarThreadPinning.logic';
+} from "@synara-web/components/SidebarThreadPinning.logic";
 import {
   derivePinnedProjectIdsForSidebar,
   orderPinnedProjectsForSidebar,
-} from '@synara-web/components/SidebarProjectPinning.logic';
+} from "@synara-web/components/SidebarProjectPinning.logic";
 // Sort defaults are settings-owned on Web; consume the same side-effect-free
 // source instead of restating two literals that would silently drift.
 import {
@@ -17,7 +17,7 @@ import {
   DEFAULT_SIDEBAR_THREAD_SORT_ORDER,
   type SidebarProjectSortOrderValue,
   type SidebarThreadSortOrderValue,
-} from '@synara-web/sidebarSortDefaults';
+} from "@synara-web/sidebarSortDefaults";
 
 export interface SidebarProjectGroup {
   readonly id: string;
@@ -43,13 +43,11 @@ export function resolveNativeSidebarSpaceId(input: {
   readonly threads: readonly ThreadSummary[];
 }): SpaceId | null {
   if (input.activeThreadId) {
-    const thread = input.threads.find(
-      (candidate) => candidate.id === input.activeThreadId
-    );
+    const thread = input.threads.find((candidate) => candidate.id === input.activeThreadId);
     const project = thread
       ? input.projects.find((candidate) => candidate.id === thread.projectId)
       : null;
-    if (project?.kind === 'project') return project.spaceId ?? null;
+    if (project?.kind === "project") return project.spaceId ?? null;
   }
   return input.storedActiveSpaceId !== null &&
     input.spaces.some((space) => space.id === input.storedActiveSpaceId)
@@ -77,11 +75,10 @@ export function deriveSidebarSections(input: {
   }));
   const visibleProjects = projects.filter(
     (project) =>
-      project.kind !== 'project' ||
-      (project.spaceId ?? null) === (input.activeSpaceId ?? null)
+      project.kind !== "project" || (project.spaceId ?? null) === (input.activeSpaceId ?? null),
   );
   const pinnedProjectIds = derivePinnedProjectIdsForSidebar({
-    projects: projects.filter((project) => project.kind === 'project'),
+    projects: projects.filter((project) => project.kind === "project"),
     persistedPinnedProjectIds: input.persistedPinnedProjectIds ?? [],
     optimisticPinnedStateByProjectId: new Map(),
   });
@@ -96,7 +93,7 @@ export function deriveSidebarSections(input: {
     const project = projectById.get(thread.projectId);
     return (
       project === undefined ||
-      project.kind !== 'project' ||
+      project.kind !== "project" ||
       (project.spaceId ?? null) === (input.activeSpaceId ?? null)
     );
   });
@@ -106,34 +103,29 @@ export function deriveSidebarSections(input: {
     ...thread,
     createdAt: thread.createdAt ?? thread.updatedAt,
     hasLiveTailWork: thread.live,
-    session:
-      thread.sessionStatus == null
-        ? undefined
-        : { status: thread.sessionStatus },
+    session: thread.sessionStatus == null ? undefined : { status: thread.sessionStatus },
   }));
   const sections = deriveSidebarSectionCollections({
     projects: orderedProjects,
     treeThreads: threads,
-    projectSortOrder:
-      input.projectSortOrder ?? DEFAULT_SIDEBAR_PROJECT_SORT_ORDER,
-    threadSortOrder:
-      input.threadSortOrder ?? DEFAULT_SIDEBAR_THREAD_SORT_ORDER,
+    projectSortOrder: input.projectSortOrder ?? DEFAULT_SIDEBAR_PROJECT_SORT_ORDER,
+    threadSortOrder: input.threadSortOrder ?? DEFAULT_SIDEBAR_THREAD_SORT_ORDER,
     resolveProjectSection: (project) => project.kind,
   });
   const groups = sections.projectPartitions.projects.map((project) => ({
     id: project.id,
     isPinned: project.isPinned,
     spaceId: project.spaceId ?? null,
-    title: project.title.trim() || 'Untitled project',
+    title: project.title.trim() || "Untitled project",
     workspaceRoot: project.workspaceRoot,
     threads: sections.sortedThreadsByProjectId.get(project.id) ?? [],
   }));
   const orphanThreads = sections.unpartitionedThreads;
   if (orphanThreads.length > 0) {
     groups.push({
-      id: '__orphan__',
-      title: 'Other',
-      workspaceRoot: '',
+      id: "__orphan__",
+      title: "Other",
+      workspaceRoot: "",
       threads: orphanThreads,
     });
   }

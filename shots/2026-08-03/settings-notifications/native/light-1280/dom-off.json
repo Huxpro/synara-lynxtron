@@ -19,34 +19,22 @@
             "childNodeCount": 1,
             "children": [
               {
-                "attributes": [
-                  "class",
-                  "SettingsPage SettingsPage--theme-light"
-                ],
+                "attributes": ["class", "SettingsPage SettingsPage--theme-light"],
                 "backendNodeId": 332,
                 "childNodeCount": 2,
                 "children": [
                   {
-                    "attributes": [
-                      "class",
-                      "SettingsSidebar"
-                    ],
+                    "attributes": ["class", "SettingsSidebar"],
                     "backendNodeId": 333,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "SharedSettingsSidebarChrome"
-                        ],
+                        "attributes": ["class", "SharedSettingsSidebarChrome"],
                         "backendNodeId": 336,
                         "childNodeCount": 2,
                         "children": [
                           {
-                            "attributes": [
-                              "class",
-                              "SharedSettingsSidebarBackRegion"
-                            ],
+                            "attributes": ["class", "SharedSettingsSidebarBackRegion"],
                             "backendNodeId": 337,
                             "childNodeCount": 1,
                             "children": [
@@ -93,10 +81,7 @@
                                 "childNodeCount": 2,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsSidebarBackIcon"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsSidebarBackIcon"],
                                     "backendNodeId": 339,
                                     "childNodeCount": 1,
                                     "children": [
@@ -126,18 +111,12 @@
                                     "parentId": 338
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsSidebarBackLabel"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsSidebarBackLabel"],
                                     "backendNodeId": 341,
                                     "childNodeCount": 1,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "text",
-                                          "Back to app"
-                                        ],
+                                        "attributes": ["text", "Back to app"],
                                         "backendNodeId": 342,
                                         "childNodeCount": 0,
                                         "children": [],
@@ -173,10 +152,7 @@
                             "parentId": 336
                           },
                           {
-                            "attributes": [
-                              "class",
-                              "SharedSettingsSidebarSearchRegion"
-                            ],
+                            "attributes": ["class", "SharedSettingsSidebarSearchRegion"],
                             "backendNodeId": 343,
                             "childNodeCount": 1,
                             "children": [
@@ -195,10 +171,7 @@
                                 "childNodeCount": 2,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsSidebarSearchIcon"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsSidebarSearchIcon"],
                                     "backendNodeId": 345,
                                     "childNodeCount": 1,
                                     "children": [
@@ -283,34 +256,22 @@
                         "parentId": 333
                       },
                       {
-                        "attributes": [
-                          "class",
-                          "SharedSettingsNavigation"
-                        ],
+                        "attributes": ["class", "SharedSettingsNavigation"],
                         "backendNodeId": 349,
                         "childNodeCount": 2,
                         "children": [
                           {
-                            "attributes": [
-                              "class",
-                              "SharedSettingsNavigationGroup"
-                            ],
+                            "attributes": ["class", "SharedSettingsNavigationGroup"],
                             "backendNodeId": 350,
                             "childNodeCount": 2,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSettingsNavigationGroupLabel"
-                                ],
+                                "attributes": ["class", "SharedSettingsNavigationGroupLabel"],
                                 "backendNodeId": 351,
                                 "childNodeCount": 1,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "text",
-                                      "App"
-                                    ],
+                                    "attributes": ["text", "App"],
                                     "backendNodeId": 352,
                                     "childNodeCount": 0,
                                     "children": [],
@@ -330,18 +291,12 @@
                                 "parentId": 350
                               },
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSettingsNavigationList"
-                                ],
+                                "attributes": ["class", "SharedSettingsNavigationList"],
                                 "backendNodeId": 353,
                                 "childNodeCount": 9,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 354,
                                     "childNodeCount": 1,
                                     "children": [
@@ -388,10 +343,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 356,
                                             "childNodeCount": 1,
                                             "children": [
@@ -429,10 +381,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "General"
-                                                ],
+                                                "attributes": ["text", "General"],
                                                 "backendNodeId": 359,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -468,10 +417,7 @@
                                     "parentId": 353
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 360,
                                     "childNodeCount": 1,
                                     "children": [
@@ -496,10 +442,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 362,
                                             "childNodeCount": 1,
                                             "children": [
@@ -537,10 +480,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Profile"
-                                                ],
+                                                "attributes": ["text", "Profile"],
                                                 "backendNodeId": 365,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -576,10 +516,7 @@
                                     "parentId": 353
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 366,
                                     "childNodeCount": 1,
                                     "children": [
@@ -626,10 +563,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 368,
                                             "childNodeCount": 1,
                                             "children": [
@@ -667,10 +601,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Appearance"
-                                                ],
+                                                "attributes": ["text", "Appearance"],
                                                 "backendNodeId": 371,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -706,10 +637,7 @@
                                     "parentId": 353
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 372,
                                     "childNodeCount": 1,
                                     "children": [
@@ -758,10 +686,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 374,
                                             "childNodeCount": 1,
                                             "children": [
@@ -799,10 +724,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Notifications"
-                                                ],
+                                                "attributes": ["text", "Notifications"],
                                                 "backendNodeId": 377,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -838,10 +760,7 @@
                                     "parentId": 353
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 378,
                                     "childNodeCount": 1,
                                     "children": [
@@ -888,10 +807,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 380,
                                             "childNodeCount": 1,
                                             "children": [
@@ -929,10 +845,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Behavior"
-                                                ],
+                                                "attributes": ["text", "Behavior"],
                                                 "backendNodeId": 383,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -968,10 +881,7 @@
                                     "parentId": 353
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 384,
                                     "childNodeCount": 1,
                                     "children": [
@@ -996,10 +906,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 386,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1037,10 +944,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "AppSnap"
-                                                ],
+                                                "attributes": ["text", "AppSnap"],
                                                 "backendNodeId": 389,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1076,10 +980,7 @@
                                     "parentId": 353
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 390,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1126,10 +1027,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 392,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1167,10 +1065,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Keyboard Shortcuts"
-                                                ],
+                                                "attributes": ["text", "Keyboard Shortcuts"],
                                                 "backendNodeId": 395,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1206,10 +1101,7 @@
                                     "parentId": 353
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 396,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1234,10 +1126,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 398,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1275,10 +1164,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Worktrees"
-                                                ],
+                                                "attributes": ["text", "Worktrees"],
                                                 "backendNodeId": 401,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1314,10 +1200,7 @@
                                     "parentId": 353
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 402,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1342,10 +1225,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 404,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1383,10 +1263,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Archived"
-                                                ],
+                                                "attributes": ["text", "Archived"],
                                                 "backendNodeId": 407,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1446,18 +1323,12 @@
                             "childNodeCount": 2,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSettingsNavigationGroupLabel"
-                                ],
+                                "attributes": ["class", "SharedSettingsNavigationGroupLabel"],
                                 "backendNodeId": 409,
                                 "childNodeCount": 1,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "text",
-                                      "Synara"
-                                    ],
+                                    "attributes": ["text", "Synara"],
                                     "backendNodeId": 410,
                                     "childNodeCount": 0,
                                     "children": [],
@@ -1477,18 +1348,12 @@
                                 "parentId": 408
                               },
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSettingsNavigationList"
-                                ],
+                                "attributes": ["class", "SharedSettingsNavigationList"],
                                 "backendNodeId": 411,
                                 "childNodeCount": 6,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 412,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1535,10 +1400,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 414,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1576,10 +1438,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Models"
-                                                ],
+                                                "attributes": ["text", "Models"],
                                                 "backendNodeId": 417,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1615,10 +1474,7 @@
                                     "parentId": 411
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 418,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1665,10 +1521,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 420,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1706,10 +1559,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Providers"
-                                                ],
+                                                "attributes": ["text", "Providers"],
                                                 "backendNodeId": 423,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1745,10 +1595,7 @@
                                     "parentId": 411
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 424,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1773,10 +1620,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 426,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1814,10 +1658,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Skills"
-                                                ],
+                                                "attributes": ["text", "Skills"],
                                                 "backendNodeId": 429,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1853,10 +1694,7 @@
                                     "parentId": 411
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 430,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1881,10 +1719,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 432,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1922,10 +1757,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Usage"
-                                                ],
+                                                "attributes": ["text", "Usage"],
                                                 "backendNodeId": 435,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1961,10 +1793,7 @@
                                     "parentId": 411
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 436,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1989,10 +1818,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 438,
                                             "childNodeCount": 1,
                                             "children": [
@@ -2030,10 +1856,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Integrations"
-                                                ],
+                                                "attributes": ["text", "Integrations"],
                                                 "backendNodeId": 441,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -2069,10 +1892,7 @@
                                     "parentId": 411
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 442,
                                     "childNodeCount": 1,
                                     "children": [
@@ -2097,10 +1917,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 444,
                                             "childNodeCount": 1,
                                             "children": [
@@ -2138,10 +1955,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Advanced"
-                                                ],
+                                                "attributes": ["text", "Advanced"],
                                                 "backendNodeId": 447,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -2209,52 +2023,32 @@
                     "parentId": 332
                   },
                   {
-                    "attributes": [
-                      "scroll-orientation",
-                      "vertical",
-                      "class",
-                      "SettingsContent"
-                    ],
+                    "attributes": ["scroll-orientation", "vertical", "class", "SettingsContent"],
                     "backendNodeId": 334,
                     "childNodeCount": 1,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "SettingsContentInner"
-                        ],
+                        "attributes": ["class", "SettingsContentInner"],
                         "backendNodeId": 335,
                         "childNodeCount": 3,
                         "children": [
                           {
-                            "attributes": [
-                              "class",
-                              "SharedSettingsPanelHeader"
-                            ],
+                            "attributes": ["class", "SharedSettingsPanelHeader"],
                             "backendNodeId": 448,
                             "childNodeCount": 2,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSettingsPanelHeaderCopy"
-                                ],
+                                "attributes": ["class", "SharedSettingsPanelHeaderCopy"],
                                 "backendNodeId": 449,
                                 "childNodeCount": 2,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsPanelHeaderTitle"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsPanelHeaderTitle"],
                                     "backendNodeId": 450,
                                     "childNodeCount": 1,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "text",
-                                          "Notifications"
-                                        ],
+                                        "attributes": ["text", "Notifications"],
                                         "backendNodeId": 451,
                                         "childNodeCount": 0,
                                         "children": [],
@@ -2274,18 +2068,12 @@
                                     "parentId": 449
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsPanelHeaderDescription"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsPanelHeaderDescription"],
                                     "backendNodeId": 452,
                                     "childNodeCount": 1,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "text",
-                                          "In-app toasts and desktop alerts."
-                                        ],
+                                        "attributes": ["text", "In-app toasts and desktop alerts."],
                                         "backendNodeId": 453,
                                         "childNodeCount": 0,
                                         "children": [],
@@ -2335,18 +2123,12 @@
                                 "childNodeCount": 1,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "LxButton__text"
-                                    ],
+                                    "attributes": ["class", "LxButton__text"],
                                     "backendNodeId": 455,
                                     "childNodeCount": 1,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "text",
-                                          "Restore defaults"
-                                        ],
+                                        "attributes": ["text", "Restore defaults"],
                                         "backendNodeId": 456,
                                         "childNodeCount": 0,
                                         "children": [],
@@ -2382,10 +2164,7 @@
                             "parentId": 335
                           },
                           {
-                            "attributes": [
-                              "class",
-                              "SharedSettingsPanelStack space-y-6"
-                            ],
+                            "attributes": ["class", "SharedSettingsPanelStack space-y-6"],
                             "backendNodeId": 680,
                             "childNodeCount": 1,
                             "children": [
@@ -2406,10 +2185,7 @@
                                     "childNodeCount": 1,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "text",
-                                          "Activity alerts"
-                                        ],
+                                        "attributes": ["text", "Activity alerts"],
                                         "backendNodeId": 683,
                                         "childNodeCount": 0,
                                         "children": [],
@@ -2447,18 +2223,12 @@
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsRowLayout"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsRowLayout"],
                                             "backendNodeId": 686,
                                             "childNodeCount": 2,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "SharedSettingsRowCopy"
-                                                ],
+                                                "attributes": ["class", "SharedSettingsRowCopy"],
                                                 "backendNodeId": 687,
                                                 "childNodeCount": 2,
                                                 "children": [
@@ -2546,10 +2316,7 @@
                                                                 "childNodeCount": 1,
                                                                 "children": [
                                                                   {
-                                                                    "attributes": [
-                                                                      "text",
-                                                                      "↶"
-                                                                    ],
+                                                                    "attributes": ["text", "↶"],
                                                                     "backendNodeId": 714,
                                                                     "childNodeCount": 0,
                                                                     "children": [],
@@ -2632,10 +2399,7 @@
                                                 "parentId": 686
                                               },
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "SharedSettingsRowControl"
-                                                ],
+                                                "attributes": ["class", "SharedSettingsRowControl"],
                                                 "backendNodeId": 694,
                                                 "childNodeCount": 1,
                                                 "children": [
@@ -2743,18 +2507,12 @@
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsRowLayout"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsRowLayout"],
                                             "backendNodeId": 698,
                                             "childNodeCount": 2,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "SharedSettingsRowCopy"
-                                                ],
+                                                "attributes": ["class", "SharedSettingsRowCopy"],
                                                 "backendNodeId": 699,
                                                 "childNodeCount": 3,
                                                 "children": [
@@ -2907,10 +2665,7 @@
                                                 "parentId": 698
                                               },
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "SharedSettingsRowControl"
-                                                ],
+                                                "attributes": ["class", "SharedSettingsRowControl"],
                                                 "backendNodeId": 709,
                                                 "childNodeCount": 1,
                                                 "children": [
@@ -3054,10 +2809,7 @@
                                 "childNodeCount": 1,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "text",
-                                      "Changes saved."
-                                    ],
+                                    "attributes": ["text", "Changes saved."],
                                     "backendNodeId": 679,
                                     "childNodeCount": 0,
                                     "children": [],

@@ -117,12 +117,12 @@ export function resolveInitialProjectScriptEditorState(
   initialEditingScriptId: string | null,
 ) {
   const script = initialEditingScriptId
-    ? scripts.find((candidate) => candidate.id === initialEditingScriptId) ?? null
+    ? (scripts.find((candidate) => candidate.id === initialEditingScriptId) ?? null)
     : null;
   return {
     script,
     keybinding: script
-      ? keybindingValueForCommand(keybindings, commandForProjectScript(script.id)) ?? ""
+      ? (keybindingValueForCommand(keybindings, commandForProjectScript(script.id)) ?? "")
       : "",
   };
 }
@@ -212,9 +212,7 @@ export default function ProjectScriptsControl({
     initialEditingScript?.runOnWorktreeCreate ?? false,
   );
   const [keybinding, setKeybinding] = useState(initialEditor.keybinding);
-  const [validationError, setValidationError] = useState<string | null>(
-    initialValidationError,
-  );
+  const [validationError, setValidationError] = useState<string | null>(initialValidationError);
   const [saving, setSaving] = useState(initialSaving);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 

@@ -64,8 +64,7 @@
   opacity: 0;
 }
 
-.DesktopTitlebarControl--toggle
-  .DesktopTitlebarControlIcon--secondary {
+.DesktopTitlebarControl--toggle .DesktopTitlebarControlIcon--secondary {
   opacity: 0.75;
 }
 

@@ -1,11 +1,5 @@
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ReactNode,
-} from '@lynx-js/react';
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "@lynx-js/react";
+import { useQuery } from "@tanstack/react-query";
 import {
   THREAD_NOTES_MAX_CHARS,
   type EditorId,
@@ -17,54 +11,51 @@ import {
   type PinnedMessage,
   type ProviderKind,
   type ThreadMarker,
-} from '@synara/contracts';
+} from "@synara/contracts";
 import {
   mergeProjectInstructionsIntoThreadNotes,
   useProjectInstructionsStore,
-} from '@synara-web/projectInstructionsStore';
+} from "@synara-web/projectInstructionsStore";
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsGeneralProjection,
-} from '@synara-web/appSettingsStorageProjection.logic';
-import { displayLabelFor, normalizePinLabel } from '@synara/shared/pinnedMessages';
+} from "@synara-web/appSettingsStorageProjection.logic";
+import { displayLabelFor, normalizePinLabel } from "@synara/shared/pinnedMessages";
 import {
   deriveThreadMarkerLabel,
   isThreadMarkerAvailable,
   normalizeThreadMarkerLabel,
-} from '@synara/shared/threadMarkers';
+} from "@synara/shared/threadMarkers";
 import {
   PULL_REQUEST_CHECK_STATUS_LABELS,
   summarizePullRequestChecks,
   summarizePullRequestComments,
-} from '@synara-web/components/pullRequest/pullRequestSummary.logic';
+} from "@synara-web/components/pullRequest/pullRequestSummary.logic";
 import {
   providerUsageDisplayName,
   providerUsageNeedsAuthDetail,
-} from '@synara/shared/providerUsage';
-import { deriveProviderUsageLimitDisplay } from '@synara/shared/providerUsageDisplay';
-import {
-  localServerAddressLabel,
-  localServerPrimaryLabel,
-} from '@synara/shared/localServers';
-import settingsSvg from '@synara-central-icons/settings-gear-4.svg?raw';
-import windowSvg from '@synara-central-icons/window.svg?raw';
-import globeSvg from '@synara-central-icons/globe.svg?raw';
-import githubSvg from '@synara-central-icons/github.svg?raw';
-import arrowUpRightSvg from '@synara-central-icons/arrow-up-right.svg?raw';
-import bubbleAlertSvg from '@synara-central-icons/bubble-alert.svg?raw';
-import circleCheckSvg from '@synara-central-icons/circle-check.svg?raw';
-import differenceSvg from '@synara-central-icons/difference-modified.svg?raw';
-import editSvg from '@synara-central-icons/edit-small-2.svg?raw';
-import closeSvg from '@synara-central-icons/close-circle-dashed.svg?raw';
-import mergeConflictSvg from '@synara-central-icons/merge-conflict.svg?raw';
-import pullRequestSvg from '@synara-central-icons/pull-request.svg?raw';
-import stopSvg from '@synara-central-icons/stop.svg?raw';
-import pushSvg from '@synara-central-icons/cloud-simple-upload.svg?raw';
+} from "@synara/shared/providerUsage";
+import { deriveProviderUsageLimitDisplay } from "@synara/shared/providerUsageDisplay";
+import { localServerAddressLabel, localServerPrimaryLabel } from "@synara/shared/localServers";
+import settingsSvg from "@synara-central-icons/settings-gear-4.svg?raw";
+import windowSvg from "@synara-central-icons/window.svg?raw";
+import globeSvg from "@synara-central-icons/globe.svg?raw";
+import githubSvg from "@synara-central-icons/github.svg?raw";
+import arrowUpRightSvg from "@synara-central-icons/arrow-up-right.svg?raw";
+import bubbleAlertSvg from "@synara-central-icons/bubble-alert.svg?raw";
+import circleCheckSvg from "@synara-central-icons/circle-check.svg?raw";
+import differenceSvg from "@synara-central-icons/difference-modified.svg?raw";
+import editSvg from "@synara-central-icons/edit-small-2.svg?raw";
+import closeSvg from "@synara-central-icons/close-circle-dashed.svg?raw";
+import mergeConflictSvg from "@synara-central-icons/merge-conflict.svg?raw";
+import pullRequestSvg from "@synara-central-icons/pull-request.svg?raw";
+import stopSvg from "@synara-central-icons/stop.svg?raw";
+import pushSvg from "@synara-central-icons/cloud-simple-upload.svg?raw";
 
-import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
-import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
-import { CheckboxIndicator } from '../components/ui/checkbox.lynx';
-import { Skeleton } from '../components/ui/skeleton.lynx';
+import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
+import { ChatMarkdown } from "../components/markdown/ChatMarkdown.lynx";
+import { CheckboxIndicator } from "../components/ui/checkbox.lynx";
+import { Skeleton } from "../components/ui/skeleton.lynx";
 import {
   ChevronDownIcon,
   ChevronRightIcon,
@@ -73,15 +64,15 @@ import {
   DeviceLaptopIcon,
   GitBranchIcon,
   RefreshCwIcon,
-} from '../lib/icons.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+} from "../lib/icons.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import {
   disclosureChevronClassName,
   disclosureContentClassName,
   useLynxDisclosurePresence,
-} from '../platform/motion.lynx';
+} from "../platform/motion.lynx";
 import {
   buildMenuItems,
   resolveQuickAction,
@@ -89,7 +80,7 @@ import {
   resolveDefaultBranchActionDialogCopy,
   requiresDefaultBranchConfirmation,
   summarizeGitResult,
-} from '@synara-web/components/GitActionsControl.logic';
+} from "@synara-web/components/GitActionsControl.logic";
 import {
   dispatchSynaraCommand,
   fetchAllProviderUsage,
@@ -105,14 +96,11 @@ import {
   checkoutGitBranch,
   runGitStackedAction,
   stopLocalServer,
-} from '../data/synaraClient.lynx';
-import { webStorage } from '../platform/storage';
-import { sleepOnHost } from '../platform/timer';
-import {
-  openExternalBestEffort,
-  platformWindow,
-} from '../platform/window';
-import { dialogs } from '../platform/dialogs';
+} from "../data/synaraClient.lynx";
+import { webStorage } from "../platform/storage";
+import { sleepOnHost } from "../platform/timer";
+import { openExternalBestEffort, platformWindow } from "../platform/window";
+import { dialogs } from "../platform/dialogs";
 import {
   Dialog,
   DialogDescription,
@@ -120,13 +108,13 @@ import {
   DialogPanel,
   DialogPopup,
   DialogTitle,
-} from '../components/ui/dialog.lynx';
-import { Button } from '../components/ui/button.lynx';
-import { Separator } from '../components/ui/separator.lynx';
+} from "../components/ui/dialog.lynx";
+import { Button } from "../components/ui/button.lynx";
+import { Separator } from "../components/ui/separator.lynx";
 import {
   retainLocalServerStopFeedback,
   type LocalServerStopFeedback,
-} from './environmentLocalServers.logic';
+} from "./environmentLocalServers.logic";
 import {
   Menu,
   MenuItem,
@@ -134,22 +122,22 @@ import {
   MenuRadioGroup,
   MenuRadioItem,
   MenuTrigger,
-} from '../components/ui/menu.lynx';
+} from "../components/ui/menu.lynx";
 import {
   environmentEditorOptions,
   LAST_EDITOR_STORAGE_KEY,
   resolveEnvironmentEditor,
-} from './environmentEditor.logic';
-import { resolveThreadRecapIdleMs } from '@synara-web/lib/threadRecap';
+} from "./environmentEditor.logic";
+import { resolveThreadRecapIdleMs } from "@synara-web/lib/threadRecap";
 import {
   fetchThreadRecapSummary,
   generatePreparedThreadRecap,
   prepareThreadRecap,
   type ThreadRecapSummary,
-} from './queries';
-import type { EnvironmentBootstrapData } from './environmentBootstrap.lynx';
+} from "./queries";
+import type { EnvironmentBootstrapData } from "./environmentBootstrap.lynx";
 
-import './environment-panel.css';
+import "./environment-panel.css";
 
 function EnvironmentDisclosureHeader(props: {
   readonly label: string;
@@ -157,23 +145,16 @@ function EnvironmentDisclosureHeader(props: {
   readonly onOpenChange: (open: boolean) => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'EnvironmentDisclosure',
+    baseClassName: "EnvironmentDisclosure",
     accessibleLabel: props.label,
-    accessibilityValue: props.open ? 'Expanded' : 'Collapsed',
+    accessibilityValue: props.open ? "Expanded" : "Collapsed",
     onActivate: () => props.onOpenChange(!props.open),
   });
   return (
-    <view
-      className={interaction.className}
-      aria-expanded={props.open}
-      {...interaction.eventProps}
-    >
+    <view className={interaction.className} aria-expanded={props.open} {...interaction.eventProps}>
       <text className="EnvironmentDisclosureLabel">{props.label}</text>
       <ChevronRightIcon
-        className={disclosureChevronClassName(
-          props.open,
-          'EnvironmentDisclosureChevron'
-        )}
+        className={disclosureChevronClassName(props.open, "EnvironmentDisclosureChevron")}
         size={12}
         color="var(--muted-foreground)"
       />
@@ -200,9 +181,7 @@ function EnvironmentDisclosureContent(props: {
 
 const NOTES_SAVE_DELAY_MS = 500;
 function environmentCommandId(): string {
-  return `lynx-environment-${Date.now()}-${Math.random()
-    .toString(16)
-    .slice(2)}`;
+  return `lynx-environment-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 export function EnvironmentToggle(props: {
@@ -211,24 +190,18 @@ export function EnvironmentToggle(props: {
 }) {
   const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
-    baseClassName: `EnvironmentToggle${
-      props.open ? ' EnvironmentToggle--open' : ''
-    }`,
-    accessibleLabel: 'Toggle environment panel',
-    accessibilityValue: props.open ? 'On' : 'Off',
+    baseClassName: `EnvironmentToggle${props.open ? " EnvironmentToggle--open" : ""}`,
+    accessibleLabel: "Toggle environment panel",
+    accessibilityValue: props.open ? "On" : "Off",
     onActivate: () => props.onChange(!props.open),
   });
   return (
-    <view
-      className={interaction.className}
-      aria-pressed={props.open}
-      {...interaction.eventProps}
-    >
+    <view className={interaction.className} aria-pressed={props.open} {...interaction.eventProps}>
       <svg
         className="EnvironmentToggleIcon"
         content={colorizeLynxSvg(
           windowSvg,
-          semanticIconColor(props.open ? 'primary' : 'secondary')
+          semanticIconColor(props.open ? "primary" : "secondary"),
         )}
       />
     </view>
@@ -246,13 +219,9 @@ function EnvironmentRow(props: {
     <view className="EnvironmentRow">
       <view className="EnvironmentRowIcon">{props.icon}</view>
       <text className="EnvironmentRowLabel">{props.label}</text>
-      {props.trailing ? (
-        <text className="EnvironmentRowTrailing">{props.trailing}</text>
-      ) : null}
+      {props.trailing ? <text className="EnvironmentRowTrailing">{props.trailing}</text> : null}
       {props.trailingContent ? (
-        <view className="EnvironmentRowTrailingContent">
-          {props.trailingContent}
-        </view>
+        <view className="EnvironmentRowTrailingContent">{props.trailingContent}</view>
       ) : null}
       {props.trailingIcon ? (
         <view className="EnvironmentRowTrailingIcon">{props.trailingIcon}</view>
@@ -292,17 +261,16 @@ function EnvironmentSectionLabel({ children }: { readonly children: string }) {
 
 function EnvironmentLocalServers(props: {
   readonly bootstrapOnly: boolean;
-  readonly initialData: EnvironmentBootstrapData['localServers'];
+  readonly initialData: EnvironmentBootstrapData["localServers"];
 }) {
   const { semanticIconColor } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [stoppingPid, setStoppingPid] = useState<number | null>(null);
-  const [stopFeedback, setStopFeedback] =
-    useState<LocalServerStopFeedback | null>(null);
+  const [stopFeedback, setStopFeedback] = useState<LocalServerStopFeedback | null>(null);
   const localServersQuery = useQuery({
-    queryKey: ['environment-local-servers'],
+    queryKey: ["environment-local-servers"],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchLocalServers();
     },
     enabled: !props.bootstrapOnly,
@@ -315,7 +283,7 @@ function EnvironmentLocalServers(props: {
   useEffect(() => {
     const nextFeedback = retainLocalServerStopFeedback(
       stopFeedback,
-      servers.map((server) => server.pid)
+      servers.map((server) => server.pid),
     );
     if (nextFeedback !== stopFeedback) {
       setStopFeedback(null);
@@ -323,7 +291,7 @@ function EnvironmentLocalServers(props: {
   }, [servers, stopFeedback]);
 
   async function stop(server: (typeof servers)[number]) {
-    'background only';
+    "background only";
     if (!server.isStoppable || stoppingPid !== null) return;
     setStoppingPid(server.pid);
     setStopFeedback(null);
@@ -335,14 +303,14 @@ function EnvironmentLocalServers(props: {
       if (!result.stopped) {
         setStopFeedback({
           pid: server.pid,
-          message: result.message ?? 'Couldn’t stop local server.',
+          message: result.message ?? "Couldn’t stop local server.",
         });
       }
       await localServersQuery.refetch();
     } catch {
       setStopFeedback({
         pid: server.pid,
-        message: 'Couldn’t stop local server.',
+        message: "Couldn’t stop local server.",
       });
     } finally {
       setStoppingPid(null);
@@ -351,35 +319,26 @@ function EnvironmentLocalServers(props: {
 
   return (
     <Menu open={menuOpen} onOpenChange={setMenuOpen}>
-      <MenuTrigger
-        ariaLabel="Local Servers"
-        className="EnvironmentLocalServersTrigger"
-      >
+      <MenuTrigger ariaLabel="Local Servers" className="EnvironmentLocalServersTrigger">
         <EnvironmentRow
           icon={
             <svg
               className="EnvironmentCanonicalIcon"
-              content={colorizeLynxSvg(globeSvg, semanticIconColor('primary'))}
+              content={colorizeLynxSvg(globeSvg, semanticIconColor("primary"))}
             />
           }
           label="Local Servers"
-          trailing={localServersQuery.isFetching ? 'Scanning…' : countLabel}
+          trailing={localServersQuery.isFetching ? "Scanning…" : countLabel}
         />
       </MenuTrigger>
-      <MenuPopup
-        align="start"
-        side="bottom"
-        className="EnvironmentLocalServersPopup"
-      >
+      <MenuPopup align="start" side="bottom" className="EnvironmentLocalServersPopup">
         <view className="EnvironmentLocalServersHeader">
           <text className="EnvironmentLocalServersHeaderText">
             {localServersQuery.isPending
-              ? 'Scanning ports…'
+              ? "Scanning ports…"
               : servers.length === 0
-                ? 'No servers running'
-                : `${servers.length} server${
-                    servers.length === 1 ? '' : 's'
-                  } running`}
+                ? "No servers running"
+                : `${servers.length} server${servers.length === 1 ? "" : "s"} running`}
           </text>
           <MenuItem
             className="EnvironmentLocalServersRefresh"
@@ -387,32 +346,20 @@ function EnvironmentLocalServers(props: {
             disabled={localServersQuery.isFetching}
             onClick={() => void localServersQuery.refetch()}
           >
-            <RefreshCwIcon
-              size={12}
-              color="var(--muted-foreground)"
-            />
+            <RefreshCwIcon size={12} color="var(--muted-foreground)" />
           </MenuItem>
         </view>
         {stopFeedback ? (
-          <text
-            className="EnvironmentLocalServersFeedback"
-            accessibility-role="alert"
-          >
+          <text className="EnvironmentLocalServersFeedback" accessibility-role="alert">
             {stopFeedback.message}
           </text>
         ) : null}
         {localServersQuery.isPending ? (
-          <text className="EnvironmentLocalServersEmpty">
-            Scanning local ports
-          </text>
+          <text className="EnvironmentLocalServersEmpty">Scanning local ports</text>
         ) : localServersQuery.isError ? (
-          <text className="EnvironmentLocalServersEmpty">
-            Couldn't scan local ports
-          </text>
+          <text className="EnvironmentLocalServersEmpty">Couldn't scan local ports</text>
         ) : servers.length === 0 ? (
-          <text className="EnvironmentLocalServersEmpty">
-            Local dev servers will appear here.
-          </text>
+          <text className="EnvironmentLocalServersEmpty">Local dev servers will appear here.</text>
         ) : (
           <view className="EnvironmentLocalServersList">
             {servers.map((server) => (
@@ -435,18 +382,13 @@ function EnvironmentLocalServers(props: {
                   onClick={() => void stop(server)}
                 >
                   {stoppingPid === server.pid ? (
-                    <RefreshCwIcon
-                      size={14}
-                      color="var(--muted-foreground)"
-                    />
+                    <RefreshCwIcon size={14} color="var(--muted-foreground)" />
                   ) : (
                     <svg
                       className="EnvironmentLocalServerStopIcon"
                       content={colorizeLynxSvg(
                         stopSvg,
-                        server.isStoppable
-                          ? 'var(--destructive)'
-                          : semanticIconColor('disabled')
+                        server.isStoppable ? "var(--destructive)" : semanticIconColor("disabled"),
                       )}
                     />
                   )}
@@ -482,11 +424,11 @@ function EnvironmentChanges(props: {
   });
 
   useEffect(() => {
-    'background only';
+    "background only";
     if (!props.open) return;
     let cancelled = false;
     async function pollGitStatus() {
-      'background only';
+      "background only";
       let first = true;
       while (!cancelled) {
         if (first) {
@@ -519,27 +461,23 @@ function EnvironmentChanges(props: {
     return () => {
       cancelled = true;
     };
-  }, [
-    props.open,
-    props.workspaceRoot,
-    refreshGeneration,
-  ]);
+  }, [props.open, props.workspaceRoot, refreshGeneration]);
 
   const status = statusState.data;
   const files = status?.workingTree.files ?? [];
   const stats = status?.workingTree;
   const accessibleLabel = statusState.error
-    ? 'Retry changes'
+    ? "Retry changes"
     : status?.hasWorkingTreeChanges
-      ? `${files.length} changed file${files.length === 1 ? '' : 's'}`
-      : 'No changes';
+      ? `${files.length} changed file${files.length === 1 ? "" : "s"}`
+      : "No changes";
   const activate = statusState.error
     ? () => setRefreshGeneration((current) => current + 1)
     : props.onOpenViewer;
   return (
     <EnvironmentInteractiveRow
       baseClassName={`EnvironmentChangesTrigger${
-        statusState.pending ? ' EnvironmentChangesTrigger--disabled' : ''
+        statusState.pending ? " EnvironmentChangesTrigger--disabled" : ""
       }`}
       accessibleLabel={accessibleLabel}
       disabled={statusState.pending}
@@ -548,36 +486,26 @@ function EnvironmentChanges(props: {
       <EnvironmentRow
         icon={
           statusState.error ? (
-            <RefreshCwIcon
-              size={16}
-              color="var(--destructive)"
-            />
+            <RefreshCwIcon size={16} color="var(--destructive)" />
           ) : (
             <svg
               className="EnvironmentCanonicalIcon"
-              content={colorizeLynxSvg(
-                differenceSvg,
-                semanticIconColor('primary')
-              )}
+              content={colorizeLynxSvg(differenceSvg, semanticIconColor("primary"))}
             />
           )
         }
         label={
           statusState.pending
-            ? 'Loading changes…'
+            ? "Loading changes…"
             : statusState.error
               ? "Couldn't load changes"
-              : 'Changes'
+              : "Changes"
         }
         trailingContent={
           stats && status?.hasWorkingTreeChanges ? (
             <>
-              <text className="EnvironmentChangesAddition">
-                +{stats.insertions}
-              </text>
-              <text className="EnvironmentChangesDeletion">
-                −{stats.deletions}
-              </text>
+              <text className="EnvironmentChangesAddition">+{stats.insertions}</text>
+              <text className="EnvironmentChangesDeletion">−{stats.deletions}</text>
             </>
           ) : null
         }
@@ -592,29 +520,25 @@ export function EnvironmentGitAction(props: {
   readonly onBranchChange?: (branch: string) => void;
   readonly open: boolean;
   readonly onCompleted: () => void;
-  readonly presentation?: 'environment' | 'toolbar';
+  readonly presentation?: "environment" | "toolbar";
   readonly threadId: string | null;
   readonly workspaceRoot: string;
 }) {
   const { semanticIconColor } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogAction, setDialogAction] = useState<GitStackedAction | null>(
-    null
-  );
-  const [commitMessage, setCommitMessage] = useState('');
+  const [dialogAction, setDialogAction] = useState<GitStackedAction | null>(null);
+  const [commitMessage, setCommitMessage] = useState("");
   const [editingFiles, setEditingFiles] = useState(false);
-  const [excludedFiles, setExcludedFiles] = useState<ReadonlySet<string>>(
-    new Set()
-  );
+  const [excludedFiles, setExcludedFiles] = useState<ReadonlySet<string>>(new Set());
   const [running, setRunning] = useState(false);
   const [progressLabel, setProgressLabel] = useState<string | null>(null);
   const [resultLabel, setResultLabel] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const branchesQuery = useQuery({
-    queryKey: ['environment-git-action-branches', props.workspaceRoot],
+    queryKey: ["environment-git-action-branches", props.workspaceRoot],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchGitBranches(props.workspaceRoot);
     },
     enabled: props.open,
@@ -622,15 +546,12 @@ export function EnvironmentGitAction(props: {
   });
   const branchList = branchesQuery.data;
   const defaultBranch =
-    branchList?.branches.find(
-      (branch) => !branch.isRemote && branch.isDefault
-    )?.name ?? null;
+    branchList?.branches.find((branch) => !branch.isRemote && branch.isDefault)?.name ?? null;
   const activeBranch = props.gitStatus?.branch ?? props.branch;
   const isDefaultBranch =
     activeBranch !== null &&
     (activeBranch === defaultBranch ||
-      (defaultBranch === null &&
-        (activeBranch === 'main' || activeBranch === 'master')));
+      (defaultBranch === null && (activeBranch === "main" || activeBranch === "master")));
   const menuItems = useMemo(
     () =>
       buildMenuItems(
@@ -638,15 +559,9 @@ export function EnvironmentGitAction(props: {
         running,
         branchList?.hasOriginRemote ?? false,
         isDefaultBranch,
-        defaultBranch
+        defaultBranch,
       ),
-    [
-      branchList?.hasOriginRemote,
-      defaultBranch,
-      isDefaultBranch,
-      props.gitStatus,
-      running,
-    ]
+    [branchList?.hasOriginRemote, defaultBranch, isDefaultBranch, props.gitStatus, running],
   );
   const pullAvailability = resolvePullActionAvailability({
     gitStatus: props.gitStatus,
@@ -658,19 +573,18 @@ export function EnvironmentGitAction(props: {
     isDefaultBranch,
     branchList?.hasOriginRemote ?? false,
     false,
-    defaultBranch
+    defaultBranch,
   );
   const quickActionInteraction = useLynxInteractiveState({
     baseClassName: `DiffDockGitQuickAction${
-      quickAction.disabled ? ' DiffDockGitQuickAction--disabled' : ''
+      quickAction.disabled ? " DiffDockGitQuickAction--disabled" : ""
     }`,
     accessibleLabel: quickAction.label,
     disabled: quickAction.disabled,
     onActivate: runQuickAction,
   });
   const hasRunnableCommitPushAction = menuItems.some(
-    (item) =>
-      (item.id === 'commit_push' || item.id === 'push') && !item.disabled
+    (item) => (item.id === "commit_push" || item.id === "push") && !item.disabled,
   );
   const files = props.gitStatus?.workingTree.files ?? [];
   const selectedFiles = files.filter((file) => !excludedFiles.has(file.path));
@@ -679,7 +593,7 @@ export function EnvironmentGitAction(props: {
 
   function resetDialogState(): void {
     setDialogAction(null);
-    setCommitMessage('');
+    setCommitMessage("");
     setEditingFiles(false);
     setExcludedFiles(new Set());
     setError(null);
@@ -696,60 +610,53 @@ export function EnvironmentGitAction(props: {
 
   async function runAction(
     action: GitStackedAction,
-    options: { readonly featureBranch?: boolean } = {}
+    options: { readonly featureBranch?: boolean } = {},
   ): Promise<void> {
-    'background only';
+    "background only";
     if (!props.gitStatus || running) return;
-    if (
-      requiresDefaultBranchConfirmation(action, isDefaultBranch) &&
-      activeBranch
-    ) {
+    if (requiresDefaultBranchConfirmation(action, isDefaultBranch) && activeBranch) {
       const copy = resolveDefaultBranchActionDialogCopy({
         action,
         branchName: activeBranch,
-        includesCommit:
-          action === 'commit_push' || action === 'commit_push_pr',
+        includesCommit: action === "commit_push" || action === "commit_push_pr",
       });
-      const confirmed = await dialogs.confirm(
-        `${copy.title}\n\n${copy.description}`
-      );
+      const confirmed = await dialogs.confirm(`${copy.title}\n\n${copy.description}`);
       if (!confirmed) return;
     }
     setRunning(true);
-    setProgressLabel('Running git action…');
+    setProgressLabel("Running git action…");
     setError(null);
     setResultLabel(null);
     try {
       const actionId = environmentCommandId();
-      const result = await runGitStackedAction({
-        actionId,
-        cwd: props.workspaceRoot,
-        action,
-        ...(options.featureBranch ? { featureBranch: true } : {}),
-        ...(commitMessage.trim()
-          ? { commitMessage: commitMessage.trim() }
-          : {}),
-        ...(!allSelected
-          ? { filePaths: selectedFiles.map((file) => file.path) }
-          : {}),
-      }, (event) => {
-        if (event.actionId !== actionId) return;
-        if (event.kind === 'phase_started') setProgressLabel(event.label);
-        else if (event.kind === 'hook_started') {
-          setProgressLabel(`Running ${event.hookName}…`);
-        } else if (event.kind === 'hook_output') {
-          setProgressLabel(event.text);
-        } else if (event.kind === 'action_failed') {
-          setProgressLabel(event.message);
-        }
-      });
+      const result = await runGitStackedAction(
+        {
+          actionId,
+          cwd: props.workspaceRoot,
+          action,
+          ...(options.featureBranch ? { featureBranch: true } : {}),
+          ...(commitMessage.trim() ? { commitMessage: commitMessage.trim() } : {}),
+          ...(!allSelected ? { filePaths: selectedFiles.map((file) => file.path) } : {}),
+        },
+        (event) => {
+          if (event.actionId !== actionId) return;
+          if (event.kind === "phase_started") setProgressLabel(event.label);
+          else if (event.kind === "hook_started") {
+            setProgressLabel(`Running ${event.hookName}…`);
+          } else if (event.kind === "hook_output") {
+            setProgressLabel(event.text);
+          } else if (event.kind === "action_failed") {
+            setProgressLabel(event.message);
+          }
+        },
+      );
       const summary = summarizeGitResult(result);
-      if (result.branch.status === 'created' && result.branch.name) {
+      if (result.branch.status === "created" && result.branch.name) {
         if (props.onBranchChange) {
           props.onBranchChange(result.branch.name);
         } else if (props.threadId) {
           await dispatchSynaraCommand({
-            type: 'thread.meta.update',
+            type: "thread.meta.update",
             commandId: environmentCommandId() as never,
             threadId: props.threadId as never,
             branch: result.branch.name,
@@ -758,15 +665,13 @@ export function EnvironmentGitAction(props: {
         }
       }
       setResultLabel(
-        summary.description
-          ? `${summary.title}: ${summary.description}`
-          : summary.title
+        summary.description ? `${summary.title}: ${summary.description}` : summary.title,
       );
       setDialogOpen(false);
       resetDialogState();
       props.onCompleted();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Git action failed.');
+      setError(cause instanceof Error ? cause.message : "Git action failed.");
     } finally {
       setRunning(false);
       setProgressLabel(null);
@@ -774,7 +679,7 @@ export function EnvironmentGitAction(props: {
   }
 
   async function runPull(): Promise<void> {
-    'background only';
+    "background only";
     if (!pullAvailability.canRun || running) return;
     setRunning(true);
     setError(null);
@@ -782,22 +687,22 @@ export function EnvironmentGitAction(props: {
     try {
       const result = await pullGitBranch(props.workspaceRoot);
       setResultLabel(
-        result.status === 'pulled'
+        result.status === "pulled"
           ? `Pulled ${result.upstreamBranch ?? result.branch}`
-          : 'Branch is already up to date'
+          : "Branch is already up to date",
       );
       props.onCompleted();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Git pull failed.');
+      setError(cause instanceof Error ? cause.message : "Git pull failed.");
     } finally {
       setRunning(false);
     }
   }
 
   function selectMenuItem(item: (typeof menuItems)[number]): void {
-    'background only';
+    "background only";
     if (item.disabled) return;
-    if (item.kind === 'open_pr') {
+    if (item.kind === "open_pr") {
       if (props.gitStatus?.pr?.url) {
         openExternalBestEffort(props.gitStatus.pr.url);
       }
@@ -805,7 +710,7 @@ export function EnvironmentGitAction(props: {
     }
     const action = item.dialogAction;
     if (!action) return;
-    if (action === 'commit' || action === 'commit_push') {
+    if (action === "commit" || action === "commit_push") {
       setDialogAction(action);
       setDialogOpen(true);
       return;
@@ -814,34 +719,31 @@ export function EnvironmentGitAction(props: {
   }
 
   function runQuickAction(): void {
-    'background only';
+    "background only";
     if (quickAction.disabled) return;
-    if (quickAction.kind === 'open_pr') {
+    if (quickAction.kind === "open_pr") {
       if (props.gitStatus?.pr?.url) openExternalBestEffort(props.gitStatus.pr.url);
       return;
     }
-    if (quickAction.kind === 'run_pull') {
+    if (quickAction.kind === "run_pull") {
       void runPull();
       return;
     }
-    if (quickAction.kind === 'run_action' && quickAction.action) {
+    if (quickAction.kind === "run_action" && quickAction.action) {
       void runAction(quickAction.action);
     }
   }
 
   return (
     <>
-      {props.presentation === 'toolbar' ? (
+      {props.presentation === "toolbar" ? (
         <view className="DiffDockGitSplitControl">
-          <view
-            className={quickActionInteraction.className}
-            {...quickActionInteraction.eventProps}
-          >
+          <view className={quickActionInteraction.className} {...quickActionInteraction.eventProps}>
             <svg
               className="DiffDockGitQuickActionIcon"
               content={colorizeLynxSvg(
-                quickAction.kind === 'open_pr' ? githubSvg : pushSvg,
-                semanticIconColor('primary')
+                quickAction.kind === "open_pr" ? githubSvg : pushSvg,
+                semanticIconColor("primary"),
               )}
             />
           </view>
@@ -877,83 +779,66 @@ export function EnvironmentGitAction(props: {
           </Menu>
         </view>
       ) : (
-      <Menu open={menuOpen} onOpenChange={setMenuOpen}>
-        <MenuTrigger
-          ariaLabel="Commit and Push"
-          className={`EnvironmentGitActionTrigger${
-            running || !hasRunnableCommitPushAction
-              ? ' EnvironmentGitActionTrigger--disabled'
-              : ''
-          }`}
-        >
-          <EnvironmentRow
-            icon={
-              <svg
-                className="EnvironmentCanonicalIcon"
-                content={colorizeLynxSvg(pushSvg, semanticIconColor('primary'))}
-              />
-            }
-            label={running ? progressLabel ?? 'Working…' : 'Commit and Push'}
-            trailingIcon={
-              <ChevronDownIcon
-                size={12}
-                color="var(--color-icon-secondary)"
-              />
-            }
-          />
-        </MenuTrigger>
-        <MenuPopup
-          align="start"
-          side="bottom"
-          className="EnvironmentGitActionPopup"
-        >
-          <text className="EnvironmentGitActionMenuLabel">Git actions</text>
-          {menuItems.length === 0 ? (
-            <text className="EnvironmentGitActionMenuState">
-              Git status is unavailable.
-            </text>
-          ) : (
-            <>
-              {menuItems.map((item) => (
+        <Menu open={menuOpen} onOpenChange={setMenuOpen}>
+          <MenuTrigger
+            ariaLabel="Commit and Push"
+            className={`EnvironmentGitActionTrigger${
+              running || !hasRunnableCommitPushAction
+                ? " EnvironmentGitActionTrigger--disabled"
+                : ""
+            }`}
+          >
+            <EnvironmentRow
+              icon={
+                <svg
+                  className="EnvironmentCanonicalIcon"
+                  content={colorizeLynxSvg(pushSvg, semanticIconColor("primary"))}
+                />
+              }
+              label={running ? (progressLabel ?? "Working…") : "Commit and Push"}
+              trailingIcon={<ChevronDownIcon size={12} color="var(--color-icon-secondary)" />}
+            />
+          </MenuTrigger>
+          <MenuPopup align="start" side="bottom" className="EnvironmentGitActionPopup">
+            <text className="EnvironmentGitActionMenuLabel">Git actions</text>
+            {menuItems.length === 0 ? (
+              <text className="EnvironmentGitActionMenuState">Git status is unavailable.</text>
+            ) : (
+              <>
+                {menuItems.map((item) => (
+                  <MenuItem
+                    className="EnvironmentGitActionMenuItem"
+                    disabled={item.disabled}
+                    key={item.id}
+                    onClick={() => selectMenuItem(item)}
+                    trailing={
+                      item.disabled ? (
+                        <text className="EnvironmentGitActionMenuUnavailable">Unavailable</text>
+                      ) : undefined
+                    }
+                  >
+                    {item.label}
+                  </MenuItem>
+                ))}
                 <MenuItem
                   className="EnvironmentGitActionMenuItem"
-                  disabled={item.disabled}
-                  key={item.id}
-                  onClick={() => selectMenuItem(item)}
+                  disabled={!pullAvailability.canRun}
+                  onClick={() => void runPull()}
                   trailing={
-                    item.disabled ? (
-                      <text className="EnvironmentGitActionMenuUnavailable">
-                        Unavailable
-                      </text>
+                    !pullAvailability.canRun ? (
+                      <text className="EnvironmentGitActionMenuUnavailable">Unavailable</text>
                     ) : undefined
                   }
                 >
-                  {item.label}
+                  Pull
                 </MenuItem>
-              ))}
-              <MenuItem
-                className="EnvironmentGitActionMenuItem"
-                disabled={!pullAvailability.canRun}
-                onClick={() => void runPull()}
-                trailing={
-                  !pullAvailability.canRun ? (
-                    <text className="EnvironmentGitActionMenuUnavailable">
-                      Unavailable
-                    </text>
-                  ) : undefined
-                }
-              >
-                Pull
-              </MenuItem>
-              {!pullAvailability.canRun && pullAvailability.hint ? (
-                <text className="EnvironmentGitActionMenuHint">
-                  {pullAvailability.hint}
-                </text>
-              ) : null}
-            </>
-          )}
-        </MenuPopup>
-      </Menu>
+                {!pullAvailability.canRun && pullAvailability.hint ? (
+                  <text className="EnvironmentGitActionMenuHint">{pullAvailability.hint}</text>
+                ) : null}
+              </>
+            )}
+          </MenuPopup>
+        </Menu>
       )}
       {resultLabel ? (
         <text className="EnvironmentGitActionStatus EnvironmentGitActionStatus--success">
@@ -982,13 +867,11 @@ export function EnvironmentGitAction(props: {
             <view className="EnvironmentGitActionSummary">
               <text className="EnvironmentGitActionSummaryLabel">Branch</text>
               <text className="EnvironmentGitActionSummaryValue">
-                {activeBranch ?? 'Detached HEAD'}
+                {activeBranch ?? "Detached HEAD"}
               </text>
               <text className="EnvironmentGitActionSummaryLabel">Files</text>
               <text className="EnvironmentGitActionSummaryValue">
-                {allSelected
-                  ? `${files.length}`
-                  : `${selectedFiles.length} of ${files.length}`}
+                {allSelected ? `${files.length}` : `${selectedFiles.length} of ${files.length}`}
               </text>
               <Button
                 variant="ghost"
@@ -996,66 +879,57 @@ export function EnvironmentGitAction(props: {
                 disabled={running || files.length === 0}
                 onClick={() => setEditingFiles((current) => !current)}
               >
-                {editingFiles ? 'Done' : 'Edit'}
+                {editingFiles ? "Done" : "Edit"}
               </Button>
             </view>
             {editingFiles && files.length > 0 ? (
               <EnvironmentInteractiveRow
                 baseClassName="EnvironmentGitActionSelectAll"
-                accessibleLabel={
-                  allSelected ? 'Exclude all files' : 'Include all files'
-                }
+                accessibleLabel={allSelected ? "Exclude all files" : "Include all files"}
                 ariaChecked={allSelected}
                 onActivate={() =>
                   setExcludedFiles(
-                    allSelected
-                      ? new Set(files.map((file) => file.path))
-                      : new Set()
+                    allSelected ? new Set(files.map((file) => file.path)) : new Set(),
                   )
                 }
               >
-                <CheckboxIndicator checked={allSelected} mixed={!allSelected && !noneSelected} size="sm" className="EnvironmentGitActionCheckbox" />
+                <CheckboxIndicator
+                  checked={allSelected}
+                  mixed={!allSelected && !noneSelected}
+                  size="sm"
+                  className="EnvironmentGitActionCheckbox"
+                />
                 <text className="EnvironmentGitActionSelectAllLabel">
-                  {allSelected ? 'Exclude all' : 'Include all'}
+                  {allSelected ? "Exclude all" : "Include all"}
                 </text>
               </EnvironmentInteractiveRow>
             ) : null}
-            <scroll-view
-              className="EnvironmentGitActionFiles"
-              scroll-y
-              enable-scroll-bar
-            >
+            <scroll-view className="EnvironmentGitActionFiles" scroll-y enable-scroll-bar>
               {files.map((file) => (
                 <EnvironmentInteractiveRow
                   baseClassName={`EnvironmentGitActionFile${
-                    excludedFiles.has(file.path)
-                      ? ' EnvironmentGitActionFile--excluded'
-                      : ''
+                    excludedFiles.has(file.path) ? " EnvironmentGitActionFile--excluded" : ""
                   }`}
                   key={file.path}
                   accessibleLabel={
                     editingFiles
-                      ? `${
-                          excludedFiles.has(file.path) ? 'Include' : 'Exclude'
-                        } ${file.path}`
+                      ? `${excludedFiles.has(file.path) ? "Include" : "Exclude"} ${file.path}`
                       : undefined
                   }
-                  ariaChecked={
-                    editingFiles ? !excludedFiles.has(file.path) : undefined
-                  }
-                  onActivate={
-                    editingFiles ? () => toggleFile(file.path) : undefined
-                  }
+                  ariaChecked={editingFiles ? !excludedFiles.has(file.path) : undefined}
+                  onActivate={editingFiles ? () => toggleFile(file.path) : undefined}
                 >
                   {editingFiles ? (
-                    <CheckboxIndicator checked={!excludedFiles.has(file.path)} size="sm" className="EnvironmentGitActionCheckbox" />
+                    <CheckboxIndicator
+                      checked={!excludedFiles.has(file.path)}
+                      size="sm"
+                      className="EnvironmentGitActionCheckbox"
+                    />
                   ) : null}
-                  <text className="EnvironmentGitActionFilePath">
-                    {file.path}
-                  </text>
+                  <text className="EnvironmentGitActionFilePath">{file.path}</text>
                   <text className="EnvironmentGitActionFileStats">
                     {excludedFiles.has(file.path)
-                      ? 'Excluded'
+                      ? "Excluded"
                       : `+${file.insertions} −${file.deletions}`}
                   </text>
                 </EnvironmentInteractiveRow>
@@ -1071,9 +945,7 @@ export function EnvironmentGitAction(props: {
               accessibility-label="Commit message"
               placeholder="Commit message (optional)"
               maxlength={10_000}
-              bindinput={(event) =>
-                setCommitMessage(event.detail.value.slice(0, 10_000))
-              }
+              bindinput={(event) => setCommitMessage(event.detail.value.slice(0, 10_000))}
             />
             {error ? (
               <text
@@ -1101,7 +973,7 @@ export function EnvironmentGitAction(props: {
               variant="outline"
               size="sm"
               disabled={running || noneSelected}
-              onClick={() => void runAction('commit', { featureBranch: true })}
+              onClick={() => void runAction("commit", { featureBranch: true })}
             >
               Commit on new branch
             </Button>
@@ -1112,11 +984,7 @@ export function EnvironmentGitAction(props: {
                 if (dialogAction) void runAction(dialogAction);
               }}
             >
-              {running
-                ? 'Working…'
-                : dialogAction === 'commit_push'
-                  ? 'Commit & push'
-                  : 'Commit'}
+              {running ? "Working…" : dialogAction === "commit_push" ? "Commit & push" : "Commit"}
             </Button>
           </DialogFooter>
         </DialogPopup>
@@ -1128,8 +996,8 @@ export function EnvironmentGitAction(props: {
 function EnvironmentBranch(props: {
   readonly branch: string | null;
   readonly bootstrapOnly: boolean;
-  readonly envMode: 'local' | 'worktree';
-  readonly initialBranches: EnvironmentBootstrapData['branches'];
+  readonly envMode: "local" | "worktree";
+  readonly initialBranches: EnvironmentBootstrapData["branches"];
   readonly open: boolean;
   readonly onBranchChange?: (branch: string) => void;
   readonly threadId: string | null;
@@ -1139,23 +1007,20 @@ function EnvironmentBranch(props: {
   const [switchingBranch, setSwitchingBranch] = useState<string | null>(null);
   const [error, setError] = useState(false);
   const branchesQuery = useQuery({
-    queryKey: ['environment-git-branches', props.workspaceRoot],
+    queryKey: ["environment-git-branches", props.workspaceRoot],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchGitBranches(props.workspaceRoot);
     },
     enabled: props.open && !props.bootstrapOnly,
     initialData: props.initialBranches ?? undefined,
     staleTime: 15_000,
   });
-  const branches = (branchesQuery.data?.branches ?? []).filter(
-    (branch) => !branch.isRemote
-  );
-  const checkoutDisabled =
-    props.envMode === 'worktree' || switchingBranch !== null;
+  const branches = (branchesQuery.data?.branches ?? []).filter((branch) => !branch.isRemote);
+  const checkoutDisabled = props.envMode === "worktree" || switchingBranch !== null;
 
   async function switchBranch(branch: string) {
-    'background only';
+    "background only";
     if (checkoutDisabled || branch === props.branch) return;
     setSwitchingBranch(branch);
     setError(false);
@@ -1165,7 +1030,7 @@ function EnvironmentBranch(props: {
         props.onBranchChange(branch);
       } else if (props.threadId) {
         await dispatchSynaraCommand({
-          type: 'thread.meta.update',
+          type: "thread.meta.update",
           commandId: environmentCommandId() as never,
           threadId: props.threadId as never,
           branch,
@@ -1183,13 +1048,8 @@ function EnvironmentBranch(props: {
   return (
     <view className="EnvironmentBranchGroup">
       <EnvironmentRow
-        icon={
-          <DeviceLaptopIcon
-            size={16}
-            color="var(--foreground)"
-          />
-        }
-        label={props.envMode === 'worktree' ? 'Worktree' : 'Local'}
+        icon={<DeviceLaptopIcon size={16} color="var(--foreground)" />}
+        label={props.envMode === "worktree" ? "Worktree" : "Local"}
       />
       <Menu open={menuOpen} onOpenChange={setMenuOpen}>
         <MenuTrigger
@@ -1198,34 +1058,18 @@ function EnvironmentBranch(props: {
           disabled={branchesQuery.isPending}
         >
           <EnvironmentRow
-            icon={
-              <GitBranchIcon
-                size={16}
-                color="var(--foreground)"
-              />
-            }
-            label={props.branch ?? 'No branch'}
-            trailingIcon={
-              <ChevronDownIcon
-                size={12}
-                color="var(--muted-foreground)"
-              />
-            }
+            icon={<GitBranchIcon size={16} color="var(--foreground)" />}
+            label={props.branch ?? "No branch"}
+            trailingIcon={<ChevronDownIcon size={12} color="var(--muted-foreground)" />}
           />
         </MenuTrigger>
-        <MenuPopup
-          align="start"
-          side="bottom"
-          className="EnvironmentBranchPopup"
-        >
-          {props.envMode === 'worktree' ? (
+        <MenuPopup align="start" side="bottom" className="EnvironmentBranchPopup">
+          {props.envMode === "worktree" ? (
             <text className="EnvironmentBranchState">
               Switch branches from the worktree environment controls.
             </text>
           ) : branches.length === 0 ? (
-            <text className="EnvironmentBranchState">
-              No local branches found.
-            </text>
+            <text className="EnvironmentBranchState">No local branches found.</text>
           ) : (
             <view className="EnvironmentBranchList">
               {branches.map((branch) => (
@@ -1246,11 +1090,7 @@ function EnvironmentBranch(props: {
               ))}
             </view>
           )}
-          {error ? (
-            <text className="EnvironmentBranchError">
-              Could not switch branch
-            </text>
-          ) : null}
+          {error ? <text className="EnvironmentBranchError">Could not switch branch</text> : null}
         </MenuPopup>
       </Menu>
     </view>
@@ -1259,40 +1099,34 @@ function EnvironmentBranch(props: {
 
 function EnvironmentEditor(props: {
   readonly bootstrapOnly: boolean;
-  readonly initialConfig: EnvironmentBootstrapData['config'];
+  readonly initialConfig: EnvironmentBootstrapData["config"];
   readonly onOpenEditorView: () => void;
   readonly open: boolean;
   readonly workspaceRoot: string;
 }) {
   const configQuery = useQuery({
-    queryKey: ['server-config'],
+    queryKey: ["server-config"],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchServerConfig();
     },
     enabled: props.open && !props.bootstrapOnly,
     initialData: props.initialConfig ?? undefined,
   });
-  const options = environmentEditorOptions(
-    configQuery.data?.availableEditors ?? []
-  );
+  const options = environmentEditorOptions(configQuery.data?.availableEditors ?? []);
   const [preferredEditor, setPreferredEditor] = useState<EditorId | null>(() =>
-    resolveEnvironmentEditor(
-      options,
-      webStorage.getItem(LAST_EDITOR_STORAGE_KEY)
-    )
+    resolveEnvironmentEditor(options, webStorage.getItem(LAST_EDITOR_STORAGE_KEY)),
   );
   const [openingEditor, setOpeningEditor] = useState<EditorId | null>(null);
   const [openError, setOpenError] = useState<string | null>(null);
   const resolvedEditor = resolveEnvironmentEditor(
     options,
-    preferredEditor ?? webStorage.getItem(LAST_EDITOR_STORAGE_KEY)
+    preferredEditor ?? webStorage.getItem(LAST_EDITOR_STORAGE_KEY),
   );
-  const activeOption =
-    options.find((option) => option.value === resolvedEditor) ?? null;
+  const activeOption = options.find((option) => option.value === resolvedEditor) ?? null;
 
   async function openEditor(editor: EditorId) {
-    'background only';
+    "background only";
     if (openingEditor !== null) return;
     setOpeningEditor(editor);
     setOpenError(null);
@@ -1304,9 +1138,7 @@ function EnvironmentEditor(props: {
       setPreferredEditor(editor);
       webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor);
     } catch (error) {
-      setOpenError(
-        error instanceof Error ? error.message : `Could not open ${editor}.`
-      );
+      setOpenError(error instanceof Error ? error.message : `Could not open ${editor}.`);
     } finally {
       setOpeningEditor(null);
     }
@@ -1326,12 +1158,7 @@ function EnvironmentEditor(props: {
         onActivate={props.onOpenEditorView}
       >
         <EnvironmentRow
-          icon={
-            <DeviceLaptopIcon
-              size={16}
-              color="var(--foreground)"
-            />
-          }
+          icon={<DeviceLaptopIcon size={16} color="var(--foreground)" />}
           label="Editor view"
         />
       </EnvironmentInteractiveRow>
@@ -1342,26 +1169,12 @@ function EnvironmentEditor(props: {
           disabled={openingEditor !== null}
         >
           <EnvironmentRow
-            icon={
-              <DeviceLaptopIcon
-                size={16}
-                color="var(--foreground)"
-              />
-            }
+            icon={<DeviceLaptopIcon size={16} color="var(--foreground)" />}
             label={`Open in ${activeOption.label}`}
-            trailingIcon={
-              <ChevronDownIcon
-                size={12}
-                color="var(--muted-foreground)"
-              />
-            }
+            trailingIcon={<ChevronDownIcon size={12} color="var(--muted-foreground)" />}
           />
         </MenuTrigger>
-        <MenuPopup
-          align="start"
-          side="bottom"
-          className="EnvironmentEditorPopup"
-        >
+        <MenuPopup align="start" side="bottom" className="EnvironmentEditorPopup">
           <MenuRadioGroup
             value={resolvedEditor ?? undefined}
             onValueChange={(value) => void openEditor(value as EditorId)}
@@ -1379,25 +1192,23 @@ function EnvironmentEditor(props: {
           </MenuRadioGroup>
         </MenuPopup>
       </Menu>
-      {openError ? (
-        <text className="EnvironmentEditorError">{openError}</text>
-      ) : null}
+      {openError ? <text className="EnvironmentEditorError">{openError}</text> : null}
     </view>
   );
 }
 
 function EnvironmentRepository(props: {
   readonly bootstrapOnly: boolean;
-  readonly initialRepository: EnvironmentBootstrapData['repository'];
+  readonly initialRepository: EnvironmentBootstrapData["repository"];
   readonly open: boolean;
   readonly workspaceRoot: string;
 }) {
   const { semanticIconColor } = useTheme();
   const [openError, setOpenError] = useState(false);
   const repositoryQuery = useQuery({
-    queryKey: ['environment-github-repository', props.workspaceRoot],
+    queryKey: ["environment-github-repository", props.workspaceRoot],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchGitHubRepository(props.workspaceRoot);
     },
     enabled: props.open && !props.bootstrapOnly,
@@ -1406,18 +1217,18 @@ function EnvironmentRepository(props: {
   });
   const repository = repositoryQuery.data?.repository ?? null;
   const interaction = useLynxInteractiveState({
-    baseClassName: 'EnvironmentRepositoryRow',
+    baseClassName: "EnvironmentRepositoryRow",
     accessibleLabel: repository
       ? `Open ${repository.nameWithOwner} on GitHub`
-      : 'GitHub repository unavailable',
+      : "GitHub repository unavailable",
     disabled: repository === null,
     onActivate: repository
       ? () => {
-          'background only';
+          "background only";
           setOpenError(false);
           void platformWindow.openExternal(repository.url).then(
             (opened) => setOpenError(!opened),
-            () => setOpenError(true)
+            () => setOpenError(true),
           );
         }
       : undefined,
@@ -1434,36 +1245,31 @@ function EnvironmentRepository(props: {
           icon={
             <svg
               className="EnvironmentCanonicalIcon"
-              content={colorizeLynxSvg(githubSvg, semanticIconColor('primary'))}
+              content={colorizeLynxSvg(githubSvg, semanticIconColor("primary"))}
             />
           }
           label={repository.nameWithOwner}
           trailingIcon={
             <svg
               className="EnvironmentRepositoryExternalIcon"
-              content={colorizeLynxSvg(
-                arrowUpRightSvg,
-                semanticIconColor('secondary')
-              )}
+              content={colorizeLynxSvg(arrowUpRightSvg, semanticIconColor("secondary"))}
             />
           }
         />
       </view>
       {openError ? (
-        <text className="EnvironmentRepositoryError">
-          Could not open repository
-        </text>
+        <text className="EnvironmentRepositoryError">Could not open repository</text>
       ) : null}
     </view>
   );
 }
 
 function pullRequestCheckColor(check: GitPullRequestCheck): string {
-  if (check.status === 'failure' || check.status === 'cancelled') {
-    return 'var(--destructive)';
+  if (check.status === "failure" || check.status === "cancelled") {
+    return "var(--destructive)";
   }
-  if (check.status === 'success') return 'var(--settings-usage-meter-healthy)';
-  return 'var(--muted-foreground)';
+  if (check.status === "success") return "var(--settings-usage-meter-healthy)";
+  return "var(--muted-foreground)";
 }
 
 function EnvironmentPullRequest(props: {
@@ -1486,12 +1292,12 @@ function EnvironmentPullRequest(props: {
   const [refreshGeneration, setRefreshGeneration] = useState(0);
 
   useEffect(() => {
-    'background only';
+    "background only";
     if (!props.open) return;
     let cancelled = false;
     const generation = refreshGeneration;
     async function pollPullRequest() {
-      'background only';
+      "background only";
       let first = true;
       while (!cancelled) {
         if (first) {
@@ -1526,12 +1332,7 @@ function EnvironmentPullRequest(props: {
     return () => {
       cancelled = true;
     };
-  }, [
-    props.open,
-    props.pullRequest.url,
-    props.workspaceRoot,
-    refreshGeneration,
-  ]);
+  }, [props.open, props.pullRequest.url, props.workspaceRoot, refreshGeneration]);
 
   const livePullRequest = snapshotState.data?.pullRequest ?? props.pullRequest;
   const checks = snapshotState.data?.checks ?? [];
@@ -1539,21 +1340,19 @@ function EnvironmentPullRequest(props: {
   const checksSummary = summarizePullRequestChecks(checks);
   const commentsSummary = summarizePullRequestComments(
     comments.length,
-    snapshotState.data?.commentsTruncated ?? false
+    snapshotState.data?.commentsTruncated ?? false,
   );
   const diffLabel = [
     `+${livePullRequest.additions ?? 0}`,
     `−${livePullRequest.deletions ?? 0}`,
     livePullRequest.changedFiles == null
       ? null
-      : `${livePullRequest.changedFiles} file${
-          livePullRequest.changedFiles === 1 ? '' : 's'
-        }`,
+      : `${livePullRequest.changedFiles} file${livePullRequest.changedFiles === 1 ? "" : "s"}`,
   ]
     .filter(Boolean)
-    .join(' ');
+    .join(" ");
   const openUrl = (url: string) => {
-    'background only';
+    "background only";
     openExternalBestEffort(url);
   };
 
@@ -1570,20 +1369,15 @@ function EnvironmentPullRequest(props: {
           icon={
             <svg
               className="EnvironmentCanonicalIcon"
-              content={colorizeLynxSvg(pullRequestSvg, semanticIconColor('primary'))}
+              content={colorizeLynxSvg(pullRequestSvg, semanticIconColor("primary"))}
             />
           }
           label={`#${livePullRequest.number} ${livePullRequest.title}`}
-          trailing={
-            livePullRequest.isDraft ? 'Draft' : null
-          }
+          trailing={livePullRequest.isDraft ? "Draft" : null}
           trailingIcon={
             <svg
               className="EnvironmentRepositoryExternalIcon"
-              content={colorizeLynxSvg(
-                arrowUpRightSvg,
-                semanticIconColor('secondary')
-              )}
+              content={colorizeLynxSvg(arrowUpRightSvg, semanticIconColor("secondary"))}
             />
           }
         />
@@ -1597,22 +1391,19 @@ function EnvironmentPullRequest(props: {
           icon={
             <svg
               className="EnvironmentCanonicalIcon"
-              content={colorizeLynxSvg(differenceSvg, semanticIconColor('primary'))}
+              content={colorizeLynxSvg(differenceSvg, semanticIconColor("primary"))}
             />
           }
           label={diffLabel}
           trailingIcon={
             <svg
               className="EnvironmentRepositoryExternalIcon"
-              content={colorizeLynxSvg(
-                arrowUpRightSvg,
-                semanticIconColor('secondary')
-              )}
+              content={colorizeLynxSvg(arrowUpRightSvg, semanticIconColor("secondary"))}
             />
           }
         />
       </EnvironmentInteractiveRow>
-      {livePullRequest.mergeability === 'conflicting' ? (
+      {livePullRequest.mergeability === "conflicting" ? (
         <EnvironmentInteractiveRow
           baseClassName="EnvironmentRepositoryRow"
           accessibleLabel={`Conflicts with ${livePullRequest.baseBranch}`}
@@ -1622,20 +1413,14 @@ function EnvironmentPullRequest(props: {
             icon={
               <svg
                 className="EnvironmentCanonicalIcon"
-                content={colorizeLynxSvg(
-                  mergeConflictSvg,
-                  'var(--destructive)'
-                )}
+                content={colorizeLynxSvg(mergeConflictSvg, "var(--destructive)")}
               />
             }
             label={`Conflicts with ${livePullRequest.baseBranch}`}
             trailingIcon={
               <svg
                 className="EnvironmentRepositoryExternalIcon"
-                content={colorizeLynxSvg(
-                  arrowUpRightSvg,
-                  semanticIconColor('secondary')
-                )}
+                content={colorizeLynxSvg(arrowUpRightSvg, semanticIconColor("secondary"))}
               />
             }
           />
@@ -1643,60 +1428,42 @@ function EnvironmentPullRequest(props: {
       ) : null}
       <Menu open={checksOpen} onOpenChange={setChecksOpen}>
         <MenuTrigger
-          ariaLabel={snapshotState.pending ? 'Loading checks' : checksSummary.label}
+          ariaLabel={snapshotState.pending ? "Loading checks" : checksSummary.label}
           className="EnvironmentPullRequestMenuTrigger"
           disabled={snapshotState.pending}
           onActivate={
-            snapshotState.error
-              ? () => setRefreshGeneration((current) => current + 1)
-              : undefined
+            snapshotState.error ? () => setRefreshGeneration((current) => current + 1) : undefined
           }
         >
           <EnvironmentRow
             icon={
               snapshotState.error ? (
-                <RefreshCwIcon
-                  size={16}
-                  color="var(--destructive)"
-                />
+                <RefreshCwIcon size={16} color="var(--destructive)" />
               ) : (
                 <svg
                   className="EnvironmentCanonicalIcon"
                   content={colorizeLynxSvg(
-                    checksSummary.tone === 'failure'
-                      ? bubbleAlertSvg
-                      : circleCheckSvg,
-                    checksSummary.tone === 'failure'
-                      ? 'var(--destructive)'
-                      : semanticIconColor('secondary')
+                    checksSummary.tone === "failure" ? bubbleAlertSvg : circleCheckSvg,
+                    checksSummary.tone === "failure"
+                      ? "var(--destructive)"
+                      : semanticIconColor("secondary"),
                   )}
                 />
               )
             }
             label={
               snapshotState.pending
-                ? 'Loading checks…'
+                ? "Loading checks…"
                 : snapshotState.error
                   ? "Couldn't load PR data"
                   : checksSummary.label
             }
-            trailingIcon={
-              <ChevronDownIcon
-                size={12}
-                color="var(--muted-foreground)"
-              />
-            }
+            trailingIcon={<ChevronDownIcon size={12} color="var(--muted-foreground)" />}
           />
         </MenuTrigger>
-        <MenuPopup
-          align="start"
-          side="bottom"
-          className="EnvironmentPullRequestPopup"
-        >
+        <MenuPopup align="start" side="bottom" className="EnvironmentPullRequestPopup">
           {checks.length === 0 ? (
-            <text className="EnvironmentPullRequestEmpty">
-              No checks reported for this PR.
-            </text>
+            <text className="EnvironmentPullRequestEmpty">No checks reported for this PR.</text>
           ) : (
             <view className="EnvironmentPullRequestList">
               {checks.map((check, index) => (
@@ -1710,9 +1477,7 @@ function EnvironmentPullRequest(props: {
                     className="EnvironmentPullRequestCheckDot"
                     style={{ backgroundColor: pullRequestCheckColor(check) }}
                   />
-                  <text className="EnvironmentPullRequestCheckName">
-                    {check.name}
-                  </text>
+                  <text className="EnvironmentPullRequestCheckName">{check.name}</text>
                   <text className="EnvironmentPullRequestCheckStatus">
                     {PULL_REQUEST_CHECK_STATUS_LABELS[check.status]}
                   </text>
@@ -1732,38 +1497,20 @@ function EnvironmentPullRequest(props: {
             icon={
               <svg
                 className="EnvironmentCanonicalIcon"
-                content={colorizeLynxSvg(
-                  bubbleAlertSvg,
-                  semanticIconColor('secondary')
-                )}
+                content={colorizeLynxSvg(bubbleAlertSvg, semanticIconColor("secondary"))}
               />
             }
-            label={
-              snapshotState.data?.commentsError
-                ? 'Comments unavailable'
-                : commentsSummary
-            }
-            trailingIcon={
-              <ChevronDownIcon
-                size={12}
-                color="var(--muted-foreground)"
-              />
-            }
+            label={snapshotState.data?.commentsError ? "Comments unavailable" : commentsSummary}
+            trailingIcon={<ChevronDownIcon size={12} color="var(--muted-foreground)" />}
           />
         </MenuTrigger>
-        <MenuPopup
-          align="start"
-          side="bottom"
-          className="EnvironmentPullRequestPopup"
-        >
+        <MenuPopup align="start" side="bottom" className="EnvironmentPullRequestPopup">
           <text className="EnvironmentPullRequestEmpty">
             {snapshotState.data?.commentsError
               ? `Couldn't load review comments: ${snapshotState.data.commentsError}`
               : comments.length === 0
-                ? 'No unresolved review comments.'
-                : `${comments.length} unresolved review comment${
-                    comments.length === 1 ? '' : 's'
-                  }`}
+                ? "No unresolved review comments."
+                : `${comments.length} unresolved review comment${comments.length === 1 ? "" : "s"}`}
           </text>
         </MenuPopup>
       </Menu>
@@ -1777,16 +1524,13 @@ function EnvironmentRecap(props: {
   readonly threadId: string;
   readonly workspaceRoot: string;
 }) {
-  const [generatedRecap, setGeneratedRecap] =
-    useState<ThreadRecapSummary | null>(null);
-  const [generationState, setGenerationState] = useState<
-    'idle' | 'pending' | 'error'
-  >('idle');
+  const [generatedRecap, setGeneratedRecap] = useState<ThreadRecapSummary | null>(null);
+  const [generationState, setGenerationState] = useState<"idle" | "pending" | "error">("idle");
   const generationRef = useRef(0);
   const cachedRecapQuery = useQuery({
-    queryKey: ['environment-thread-recap', props.threadId],
+    queryKey: ["environment-thread-recap", props.threadId],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchThreadRecapSummary(props.threadId);
     },
     enabled: props.open,
@@ -1797,10 +1541,10 @@ function EnvironmentRecap(props: {
   });
 
   useEffect(() => {
-    'background only';
+    "background only";
     if (!props.open) {
       generationRef.current += 1;
-      setGenerationState('idle');
+      setGenerationState("idle");
       return;
     }
     const generation = ++generationRef.current;
@@ -1809,7 +1553,7 @@ function EnvironmentRecap(props: {
         if (!plan || generationRef.current !== generation) return;
         await sleepOnHost(recapIdleMs);
         if (generationRef.current !== generation) return;
-        setGenerationState('pending');
+        setGenerationState("pending");
         const next = await generatePreparedThreadRecap({
           cwd: props.workspaceRoot,
           plan,
@@ -1817,25 +1561,19 @@ function EnvironmentRecap(props: {
         });
         if (generationRef.current !== generation) return;
         if (next) setGeneratedRecap(next);
-        setGenerationState('idle');
+        setGenerationState("idle");
       })
       .catch(() => {
         if (generationRef.current === generation) {
-          setGenerationState('error');
+          setGenerationState("error");
         }
       });
     return () => {
       if (generationRef.current === generation) generationRef.current += 1;
     };
-  }, [
-    props.open,
-    props.revision,
-    props.threadId,
-    props.workspaceRoot,
-    recapIdleMs,
-  ]);
+  }, [props.open, props.revision, props.threadId, props.workspaceRoot, recapIdleMs]);
 
-  if (!recap && generationState !== 'pending') return null;
+  if (!recap && generationState !== "pending") return null;
 
   return (
     <view className="EnvironmentRecapSection">
@@ -1843,14 +1581,9 @@ function EnvironmentRecap(props: {
       <EnvironmentSectionLabel>Recap</EnvironmentSectionLabel>
       {recap ? (
         <view className="EnvironmentRecapContent">
-          <ChatMarkdown
-            className="EnvironmentRecapMarkdown"
-            text={recap.text}
-          />
-          {generationState === 'error' ? (
-            <text className="EnvironmentRecapStatus">
-              Could not refresh recap
-            </text>
+          <ChatMarkdown className="EnvironmentRecapMarkdown" text={recap.text} />
+          {generationState === "error" ? (
+            <text className="EnvironmentRecapStatus">Could not refresh recap</text>
           ) : null}
         </view>
       ) : (
@@ -1869,19 +1602,15 @@ function EnvironmentProjectInstructions(props: {
   readonly projectId: string;
   readonly threadId: string | null;
 }) {
-  const textareaRef = useRef<React.ElementRef<'textarea'>>(null);
+  const textareaRef = useRef<React.ElementRef<"textarea">>(null);
   const storedInstructions = useProjectInstructionsStore(
-    (state) => state.instructionsByProjectId[props.projectId] ?? ''
+    (state) => state.instructionsByProjectId[props.projectId] ?? "",
   );
-  const setInstructions = useProjectInstructionsStore(
-    (state) => state.setInstructions
-  );
+  const setInstructions = useProjectInstructionsStore((state) => state.setInstructions);
   const [value, setValue] = useState(storedInstructions);
   const [open, setOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
-  const [copyState, setCopyState] = useState<'idle' | 'saving' | 'error'>(
-    'idle'
-  );
+  const [copyState, setCopyState] = useState<"idle" | "saving" | "error">("idle");
   const valueRef = useRef(value);
   const committedRef = useRef(storedInstructions);
   const copiedNotesRef = useRef<string | null>(null);
@@ -1889,7 +1618,7 @@ function EnvironmentProjectInstructions(props: {
   const focusedRef = useRef(false);
 
   useEffect(() => {
-    'background only';
+    "background only";
     let active = true;
     const applyHydratedInstructions = (next: string) => {
       if (!active) return;
@@ -1898,18 +1627,14 @@ function EnvironmentProjectInstructions(props: {
       setValue(next);
       setOpen(next.trim().length > 0);
       setHydrated(true);
-      textareaRef.current
-        ?.invoke({ method: 'setValue', params: { value: next } })
-        .exec();
+      textareaRef.current?.invoke({ method: "setValue", params: { value: next } }).exec();
     };
     void useProjectInstructionsStore.persist.rehydrate().then(
       () =>
         applyHydratedInstructions(
-          useProjectInstructionsStore.getState().instructionsByProjectId[
-            props.projectId
-          ] ?? ''
+          useProjectInstructionsStore.getState().instructionsByProjectId[props.projectId] ?? "",
         ),
-      () => applyHydratedInstructions(storedInstructions)
+      () => applyHydratedInstructions(storedInstructions),
     );
     return () => {
       active = false;
@@ -1928,7 +1653,7 @@ function EnvironmentProjectInstructions(props: {
       setValue(storedInstructions);
       textareaRef.current
         ?.invoke({
-          method: 'setValue',
+          method: "setValue",
           params: { value: storedInstructions },
         })
         .exec();
@@ -1942,7 +1667,7 @@ function EnvironmentProjectInstructions(props: {
   }, [props.notes]);
 
   function flushInstructions() {
-    'background only';
+    "background only";
     saveGenerationRef.current += 1;
     const next = valueRef.current;
     if (next === committedRef.current) return;
@@ -1951,7 +1676,7 @@ function EnvironmentProjectInstructions(props: {
   }
 
   function scheduleInstructionsSave() {
-    'background only';
+    "background only";
     const generation = ++saveGenerationRef.current;
     void sleepOnHost(500)
       .then(() => {
@@ -1963,8 +1688,8 @@ function EnvironmentProjectInstructions(props: {
   }
 
   async function copyToNotepad() {
-    'background only';
-    if (copyState === 'saving') return;
+    "background only";
+    if (copyState === "saving") return;
     flushInstructions();
     const currentNotes = copiedNotesRef.current ?? props.notes;
     const nextNotes = mergeProjectInstructionsIntoThreadNotes({
@@ -1972,13 +1697,13 @@ function EnvironmentProjectInstructions(props: {
       projectInstructions: valueRef.current,
     });
     if (nextNotes === currentNotes) return;
-    setCopyState('saving');
+    setCopyState("saving");
     try {
       if (props.onNotesChange) {
         await props.onNotesChange(nextNotes);
       } else if (props.threadId) {
         await dispatchSynaraCommand({
-          type: 'thread.meta.update',
+          type: "thread.meta.update",
           commandId: environmentCommandId() as never,
           threadId: props.threadId as never,
           notes: nextNotes,
@@ -1987,21 +1712,21 @@ function EnvironmentProjectInstructions(props: {
         return;
       }
       copiedNotesRef.current = nextNotes;
-      setCopyState('idle');
+      setCopyState("idle");
     } catch {
-      setCopyState('error');
+      setCopyState("error");
     }
   }
 
   const copyInteraction = useLynxInteractiveState({
-    baseClassName: 'EnvironmentInstructionsCopy',
+    baseClassName: "EnvironmentInstructionsCopy",
     accessibleLabel:
       props.notes.trim().length === 0
-        ? 'Copy project instructions to notepad'
-        : 'Append project instructions to notepad',
+        ? "Copy project instructions to notepad"
+        : "Append project instructions to notepad",
     disabled:
       value.trim().length === 0 ||
-      copyState === 'saving' ||
+      copyState === "saving" ||
       (!props.threadId && !props.onNotesChange),
     onActivate: () => void copyToNotepad(),
   });
@@ -2013,58 +1738,45 @@ function EnvironmentProjectInstructions(props: {
         open={open}
         onOpenChange={setOpen}
       />
-      <EnvironmentDisclosureContent
-        className="EnvironmentInstructions"
-        open={open}
-      >
-          <textarea
-            ref={textareaRef}
-            className="EnvironmentInstructionsInput"
-            aria-label="Project instructions"
-            accessibility-element
-            accessibility-label="Project instructions"
-            focusable
-            default-value={value}
-            placeholder="Architecture notes, conventions, repo links"
-            maxlength={THREAD_NOTES_MAX_CHARS}
-            maxlines={8}
-            enable-scroll-bar
-            bindfocus={() => {
-              focusedRef.current = true;
-            }}
-            bindinput={(event) => {
-              'background only';
-              valueRef.current = event.detail.value;
-              setValue(event.detail.value);
-              scheduleInstructionsSave();
-            }}
-            bindblur={() => {
-              'background only';
-              focusedRef.current = false;
-              flushInstructions();
-            }}
-          />
-          {value.trim().length > 0 ? (
-            <view
-              className={copyInteraction.className}
-              {...copyInteraction.eventProps}
-            >
-              <CopyIcon
-                size={14}
-                color="var(--foreground)"
-              />
-              <text className="EnvironmentInstructionsCopyLabel">
-                {props.notes.trim().length === 0
-                  ? 'Copy to notepad'
-                  : 'Append to notepad'}
-              </text>
-            </view>
-          ) : null}
-          {copyState === 'error' ? (
-            <text className="EnvironmentInstructionsStatus">
-              Could not update notepad
+      <EnvironmentDisclosureContent className="EnvironmentInstructions" open={open}>
+        <textarea
+          ref={textareaRef}
+          className="EnvironmentInstructionsInput"
+          aria-label="Project instructions"
+          accessibility-element
+          accessibility-label="Project instructions"
+          focusable
+          default-value={value}
+          placeholder="Architecture notes, conventions, repo links"
+          maxlength={THREAD_NOTES_MAX_CHARS}
+          maxlines={8}
+          enable-scroll-bar
+          bindfocus={() => {
+            focusedRef.current = true;
+          }}
+          bindinput={(event) => {
+            "background only";
+            valueRef.current = event.detail.value;
+            setValue(event.detail.value);
+            scheduleInstructionsSave();
+          }}
+          bindblur={() => {
+            "background only";
+            focusedRef.current = false;
+            flushInstructions();
+          }}
+        />
+        {value.trim().length > 0 ? (
+          <view className={copyInteraction.className} {...copyInteraction.eventProps}>
+            <CopyIcon size={14} color="var(--foreground)" />
+            <text className="EnvironmentInstructionsCopyLabel">
+              {props.notes.trim().length === 0 ? "Copy to notepad" : "Append to notepad"}
             </text>
-          ) : null}
+          </view>
+        ) : null}
+        {copyState === "error" ? (
+          <text className="EnvironmentInstructionsStatus">Could not update notepad</text>
+        ) : null}
       </EnvironmentDisclosureContent>
     </view>
   );
@@ -2082,19 +1794,16 @@ function EnvironmentPinnedRow(props: {
 }) {
   const { semanticIconColor } = useTheme();
   const [editing, setEditing] = useState(false);
-  const [draftLabel, setDraftLabel] = useState('');
-  const editInputRef = useRef<React.ElementRef<'input'>>(null);
+  const [draftLabel, setDraftLabel] = useState("");
+  const editInputRef = useRef<React.ElementRef<"input">>(null);
   const available = props.messageText !== undefined;
   const resolvedLabel = displayLabelFor(props.pin, props.messageText);
-  const label =
-    resolvedLabel.length > 0 ? resolvedLabel : '(message unavailable)';
+  const label = resolvedLabel.length > 0 ? resolvedLabel : "(message unavailable)";
   const done = props.pin.done === true;
 
   useEffect(() => {
     if (!editing) return;
-    editInputRef.current
-      ?.invoke({ method: 'focus', params: {} })
-      .exec();
+    editInputRef.current?.invoke({ method: "focus", params: {} }).exec();
   }, [editing]);
 
   function beginRename() {
@@ -2109,17 +1818,15 @@ function EnvironmentPinnedRow(props: {
   }
 
   const checkbox = useLynxInteractiveState({
-    baseClassName: `EnvironmentPinnedCheckbox${
-      done ? ' EnvironmentPinnedCheckbox--checked' : ''
-    }`,
-    accessibleLabel: done ? 'Mark not done' : 'Mark done',
+    baseClassName: `EnvironmentPinnedCheckbox${done ? " EnvironmentPinnedCheckbox--checked" : ""}`,
+    accessibleLabel: done ? "Mark not done" : "Mark done",
     disabled: props.busy,
     onActivate: () => props.onDoneChange(!done),
   });
   const labelInteraction = useLynxInteractiveState({
     baseClassName: `EnvironmentPinnedLabel${
-      done ? ' EnvironmentPinnedLabel--done' : ''
-    }${available ? '' : ' EnvironmentPinnedLabel--unavailable'}`,
+      done ? " EnvironmentPinnedLabel--done" : ""
+    }${available ? "" : " EnvironmentPinnedLabel--unavailable"}`,
     accessibleLabel: available
       ? `Jump to pinned message: ${label}`
       : `Pinned message unavailable: ${label}`,
@@ -2127,13 +1834,13 @@ function EnvironmentPinnedRow(props: {
     onActivate: available ? props.onJump : undefined,
   });
   const rename = useLynxInteractiveState({
-    baseClassName: 'EnvironmentPinnedAction',
+    baseClassName: "EnvironmentPinnedAction",
     accessibleLabel: `Rename pinned message: ${label}`,
     disabled: props.busy,
     onActivate: beginRename,
   });
   const remove = useLynxInteractiveState({
-    baseClassName: 'EnvironmentPinnedAction',
+    baseClassName: "EnvironmentPinnedAction",
     accessibleLabel: `Unpin message: ${label}`,
     disabled: props.busy,
     onActivate: props.onRemove,
@@ -2141,11 +1848,7 @@ function EnvironmentPinnedRow(props: {
 
   return (
     <view className="EnvironmentPinnedRow">
-      <view
-        className={checkbox.className}
-        aria-checked={done}
-        {...checkbox.eventProps}
-      >
+      <view className={checkbox.className} aria-checked={done} {...checkbox.eventProps}>
         <CheckboxIndicator checked={done} size="sm" />
       </view>
       {editing ? (
@@ -2163,28 +1866,23 @@ function EnvironmentPinnedRow(props: {
           bindconfirm={commitRename}
         />
       ) : (
-        <view
-          className={labelInteraction.className}
-          {...labelInteraction.eventProps}
-        >
+        <view className={labelInteraction.className} {...labelInteraction.eventProps}>
           <text className="EnvironmentPinnedLabelText">{label}</text>
         </view>
       )}
       <view className={rename.className} {...rename.eventProps}>
         <svg
           className="EnvironmentPinnedActionIcon"
-          content={colorizeLynxSvg(editSvg, semanticIconColor('secondary'))}
+          content={colorizeLynxSvg(editSvg, semanticIconColor("secondary"))}
         />
       </view>
       <view className={remove.className} {...remove.eventProps}>
         <svg
           className="EnvironmentPinnedActionIcon"
-          content={colorizeLynxSvg(closeSvg, semanticIconColor('secondary'))}
+          content={colorizeLynxSvg(closeSvg, semanticIconColor("secondary"))}
         />
       </view>
-      {props.error ? (
-        <text className="EnvironmentPinnedError">Could not save</text>
-      ) : null}
+      {props.error ? <text className="EnvironmentPinnedError">Could not save</text> : null}
     </view>
   );
 }
@@ -2209,21 +1907,21 @@ function EnvironmentPinned(props: {
     nextPins: readonly PinnedMessage[],
     command:
       | {
-          readonly type: 'thread.pinned-message.remove';
+          readonly type: "thread.pinned-message.remove";
           readonly messageId: never;
         }
       | {
-          readonly type: 'thread.pinned-message.done.set';
+          readonly type: "thread.pinned-message.done.set";
           readonly messageId: never;
           readonly done: boolean;
         }
       | {
-          readonly type: 'thread.pinned-message.label.set';
+          readonly type: "thread.pinned-message.label.set";
           readonly messageId: never;
           readonly label: string | null;
-        }
+        },
   ) {
-    'background only';
+    "background only";
     if (busyMessageId !== null) return;
     const previous = pins;
     setPins(nextPins);
@@ -2247,67 +1945,54 @@ function EnvironmentPinned(props: {
 
   return (
     <view className="EnvironmentSection">
-      <EnvironmentDisclosureHeader
-        label="Pinned"
-        open={open}
-        onOpenChange={setOpen}
-      />
-      <EnvironmentDisclosureContent
-        className="EnvironmentPinnedList"
-        open={open}
-      >
-          {pins.map((pin) => (
-            <EnvironmentPinnedRow
-              busy={busyMessageId !== null}
-              error={errorMessageId === pin.messageId}
-              key={pin.messageId}
-              messageText={props.messageTextById[pin.messageId]}
-              pin={pin}
-              onJump={() => props.onJump(pin.messageId)}
-              onDoneChange={(done) =>
-                void dispatchPinCommand(
-                  pin.messageId,
-                  pins.map((candidate) =>
-                    candidate.messageId === pin.messageId
-                      ? { ...candidate, done }
-                      : candidate
-                  ),
-                  {
-                    type: 'thread.pinned-message.done.set',
-                    messageId: pin.messageId as never,
-                    done,
-                  }
-                )
-              }
-              onRename={(label) =>
-                void dispatchPinCommand(
-                  pin.messageId,
-                  pins.map((candidate) =>
-                    candidate.messageId === pin.messageId
-                      ? { ...candidate, label }
-                      : candidate
-                  ),
-                  {
-                    type: 'thread.pinned-message.label.set',
-                    messageId: pin.messageId as never,
-                    label,
-                  }
-                )
-              }
-              onRemove={() =>
-                void dispatchPinCommand(
-                  pin.messageId,
-                  pins.filter(
-                    (candidate) => candidate.messageId !== pin.messageId
-                  ),
-                  {
-                    type: 'thread.pinned-message.remove',
-                    messageId: pin.messageId as never,
-                  }
-                )
-              }
-            />
-          ))}
+      <EnvironmentDisclosureHeader label="Pinned" open={open} onOpenChange={setOpen} />
+      <EnvironmentDisclosureContent className="EnvironmentPinnedList" open={open}>
+        {pins.map((pin) => (
+          <EnvironmentPinnedRow
+            busy={busyMessageId !== null}
+            error={errorMessageId === pin.messageId}
+            key={pin.messageId}
+            messageText={props.messageTextById[pin.messageId]}
+            pin={pin}
+            onJump={() => props.onJump(pin.messageId)}
+            onDoneChange={(done) =>
+              void dispatchPinCommand(
+                pin.messageId,
+                pins.map((candidate) =>
+                  candidate.messageId === pin.messageId ? { ...candidate, done } : candidate,
+                ),
+                {
+                  type: "thread.pinned-message.done.set",
+                  messageId: pin.messageId as never,
+                  done,
+                },
+              )
+            }
+            onRename={(label) =>
+              void dispatchPinCommand(
+                pin.messageId,
+                pins.map((candidate) =>
+                  candidate.messageId === pin.messageId ? { ...candidate, label } : candidate,
+                ),
+                {
+                  type: "thread.pinned-message.label.set",
+                  messageId: pin.messageId as never,
+                  label,
+                },
+              )
+            }
+            onRemove={() =>
+              void dispatchPinCommand(
+                pin.messageId,
+                pins.filter((candidate) => candidate.messageId !== pin.messageId),
+                {
+                  type: "thread.pinned-message.remove",
+                  messageId: pin.messageId as never,
+                },
+              )
+            }
+          />
+        ))}
       </EnvironmentDisclosureContent>
     </view>
   );
@@ -2325,21 +2010,17 @@ function EnvironmentMarkerRow(props: {
 }) {
   const { semanticIconColor } = useTheme();
   const [editing, setEditing] = useState(false);
-  const [draftLabel, setDraftLabel] = useState('');
-  const editInputRef = useRef<React.ElementRef<'input'>>(null);
+  const [draftLabel, setDraftLabel] = useState("");
+  const editInputRef = useRef<React.ElementRef<"input">>(null);
   const available =
-    props.messageText !== undefined &&
-    isThreadMarkerAvailable(props.marker, props.messageText);
-  const resolvedLabel =
-    props.marker.label?.trim() || deriveThreadMarkerLabel(props.marker);
+    props.messageText !== undefined && isThreadMarkerAvailable(props.marker, props.messageText);
+  const resolvedLabel = props.marker.label?.trim() || deriveThreadMarkerLabel(props.marker);
   const label = available ? resolvedLabel : `${resolvedLabel} (unavailable)`;
   const done = props.marker.done === true;
 
   useEffect(() => {
     if (!editing) return;
-    editInputRef.current
-      ?.invoke({ method: 'focus', params: {} })
-      .exec();
+    editInputRef.current?.invoke({ method: "focus", params: {} }).exec();
   }, [editing]);
 
   function beginRename() {
@@ -2354,31 +2035,27 @@ function EnvironmentMarkerRow(props: {
   }
 
   const checkbox = useLynxInteractiveState({
-    baseClassName: `EnvironmentPinnedCheckbox${
-      done ? ' EnvironmentPinnedCheckbox--checked' : ''
-    }`,
-    accessibleLabel: done ? 'Mark marker not done' : 'Mark marker done',
+    baseClassName: `EnvironmentPinnedCheckbox${done ? " EnvironmentPinnedCheckbox--checked" : ""}`,
+    accessibleLabel: done ? "Mark marker not done" : "Mark marker done",
     disabled: props.busy,
     onActivate: () => props.onDoneChange(!done),
   });
   const labelInteraction = useLynxInteractiveState({
     baseClassName: `EnvironmentPinnedLabel${
-      done ? ' EnvironmentPinnedLabel--done' : ''
-    }${available ? '' : ' EnvironmentPinnedLabel--unavailable'}`,
-    accessibleLabel: available
-      ? `Jump to marker: ${label}`
-      : `Marker unavailable: ${label}`,
+      done ? " EnvironmentPinnedLabel--done" : ""
+    }${available ? "" : " EnvironmentPinnedLabel--unavailable"}`,
+    accessibleLabel: available ? `Jump to marker: ${label}` : `Marker unavailable: ${label}`,
     disabled: !available || props.busy,
     onActivate: available ? props.onJump : undefined,
   });
   const rename = useLynxInteractiveState({
-    baseClassName: 'EnvironmentPinnedAction',
+    baseClassName: "EnvironmentPinnedAction",
     accessibleLabel: `Rename marker: ${label}`,
     disabled: props.busy,
     onActivate: beginRename,
   });
   const remove = useLynxInteractiveState({
-    baseClassName: 'EnvironmentPinnedAction',
+    baseClassName: "EnvironmentPinnedAction",
     accessibleLabel: `Remove marker: ${label}`,
     disabled: props.busy,
     onActivate: props.onRemove,
@@ -2386,16 +2063,10 @@ function EnvironmentMarkerRow(props: {
 
   return (
     <view className="EnvironmentPinnedRow">
-      <view
-        className={checkbox.className}
-        aria-checked={done}
-        {...checkbox.eventProps}
-      >
+      <view className={checkbox.className} aria-checked={done} {...checkbox.eventProps}>
         <CheckboxIndicator checked={done} size="sm" />
       </view>
-      <view
-        className={`EnvironmentMarkerSwatch EnvironmentMarkerSwatch--${props.marker.color}`}
-      />
+      <view className={`EnvironmentMarkerSwatch EnvironmentMarkerSwatch--${props.marker.color}`} />
       {editing ? (
         <input
           ref={editInputRef}
@@ -2411,28 +2082,23 @@ function EnvironmentMarkerRow(props: {
           bindconfirm={commitRename}
         />
       ) : (
-        <view
-          className={labelInteraction.className}
-          {...labelInteraction.eventProps}
-        >
+        <view className={labelInteraction.className} {...labelInteraction.eventProps}>
           <text className="EnvironmentPinnedLabelText">{label}</text>
         </view>
       )}
       <view className={rename.className} {...rename.eventProps}>
         <svg
           className="EnvironmentPinnedActionIcon"
-          content={colorizeLynxSvg(editSvg, semanticIconColor('secondary'))}
+          content={colorizeLynxSvg(editSvg, semanticIconColor("secondary"))}
         />
       </view>
       <view className={remove.className} {...remove.eventProps}>
         <svg
           className="EnvironmentPinnedActionIcon"
-          content={colorizeLynxSvg(closeSvg, semanticIconColor('secondary'))}
+          content={colorizeLynxSvg(closeSvg, semanticIconColor("secondary"))}
         />
       </view>
-      {props.error ? (
-        <text className="EnvironmentPinnedError">Could not save</text>
-      ) : null}
+      {props.error ? <text className="EnvironmentPinnedError">Could not save</text> : null}
     </view>
   );
 }
@@ -2457,21 +2123,21 @@ function EnvironmentMarkers(props: {
     nextMarkers: readonly ThreadMarker[],
     command:
       | {
-          readonly type: 'thread.marker.remove';
+          readonly type: "thread.marker.remove";
           readonly markerId: never;
         }
       | {
-          readonly type: 'thread.marker.done.set';
+          readonly type: "thread.marker.done.set";
           readonly markerId: never;
           readonly done: boolean;
         }
       | {
-          readonly type: 'thread.marker.label.set';
+          readonly type: "thread.marker.label.set";
           readonly markerId: never;
           readonly label: string | null;
-        }
+        },
   ) {
-    'background only';
+    "background only";
     if (busyMarkerId !== null) return;
     const previous = markers;
     setMarkers(nextMarkers);
@@ -2495,73 +2161,66 @@ function EnvironmentMarkers(props: {
 
   return (
     <view className="EnvironmentSection">
-      <EnvironmentDisclosureHeader
-        label="Markers"
-        open={open}
-        onOpenChange={setOpen}
-      />
-      <EnvironmentDisclosureContent
-        className="EnvironmentPinnedList"
-        open={open}
-      >
-          {markers.map((marker) => (
-            <EnvironmentMarkerRow
-              busy={busyMarkerId !== null}
-              error={errorMarkerId === marker.id}
-              key={marker.id}
-              marker={marker}
-              messageText={props.messageTextById[marker.messageId]}
-              onJump={() => props.onJump(marker.messageId)}
-              onDoneChange={(done) =>
-                void dispatchMarkerCommand(
-                  marker.id,
-                  markers.map((candidate) =>
-                    candidate.id === marker.id
-                      ? {
-                          ...candidate,
-                          done,
-                          updatedAt: new Date().toISOString(),
-                        }
-                      : candidate
-                  ),
-                  {
-                    type: 'thread.marker.done.set',
-                    markerId: marker.id as never,
-                    done,
-                  }
-                )
-              }
-              onRename={(label) =>
-                void dispatchMarkerCommand(
-                  marker.id,
-                  markers.map((candidate) =>
-                    candidate.id === marker.id
-                      ? {
-                          ...candidate,
-                          label,
-                          updatedAt: new Date().toISOString(),
-                        }
-                      : candidate
-                  ),
-                  {
-                    type: 'thread.marker.label.set',
-                    markerId: marker.id as never,
-                    label,
-                  }
-                )
-              }
-              onRemove={() =>
-                void dispatchMarkerCommand(
-                  marker.id,
-                  markers.filter((candidate) => candidate.id !== marker.id),
-                  {
-                    type: 'thread.marker.remove',
-                    markerId: marker.id as never,
-                  }
-                )
-              }
-            />
-          ))}
+      <EnvironmentDisclosureHeader label="Markers" open={open} onOpenChange={setOpen} />
+      <EnvironmentDisclosureContent className="EnvironmentPinnedList" open={open}>
+        {markers.map((marker) => (
+          <EnvironmentMarkerRow
+            busy={busyMarkerId !== null}
+            error={errorMarkerId === marker.id}
+            key={marker.id}
+            marker={marker}
+            messageText={props.messageTextById[marker.messageId]}
+            onJump={() => props.onJump(marker.messageId)}
+            onDoneChange={(done) =>
+              void dispatchMarkerCommand(
+                marker.id,
+                markers.map((candidate) =>
+                  candidate.id === marker.id
+                    ? {
+                        ...candidate,
+                        done,
+                        updatedAt: new Date().toISOString(),
+                      }
+                    : candidate,
+                ),
+                {
+                  type: "thread.marker.done.set",
+                  markerId: marker.id as never,
+                  done,
+                },
+              )
+            }
+            onRename={(label) =>
+              void dispatchMarkerCommand(
+                marker.id,
+                markers.map((candidate) =>
+                  candidate.id === marker.id
+                    ? {
+                        ...candidate,
+                        label,
+                        updatedAt: new Date().toISOString(),
+                      }
+                    : candidate,
+                ),
+                {
+                  type: "thread.marker.label.set",
+                  markerId: marker.id as never,
+                  label,
+                },
+              )
+            }
+            onRemove={() =>
+              void dispatchMarkerCommand(
+                marker.id,
+                markers.filter((candidate) => candidate.id !== marker.id),
+                {
+                  type: "thread.marker.remove",
+                  markerId: marker.id as never,
+                },
+              )
+            }
+          />
+        ))}
       </EnvironmentDisclosureContent>
     </view>
   );
@@ -2572,12 +2231,10 @@ function EnvironmentNotepad(props: {
   readonly onNotesChange?: (notes: string) => void | Promise<void>;
   readonly threadId: string | null;
 }) {
-  const textareaRef = useRef<React.ElementRef<'textarea'>>(null);
+  const textareaRef = useRef<React.ElementRef<"textarea">>(null);
   const [open, setOpen] = useState(true);
   const [value, setValue] = useState(props.notes);
-  const [saveState, setSaveState] = useState<
-    'idle' | 'saving' | 'saved' | 'error'
-  >('idle');
+  const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const valueRef = useRef(value);
   const committedRef = useRef(props.notes);
   const lastObservedServerNotesRef = useRef(props.notes);
@@ -2590,7 +2247,7 @@ function EnvironmentNotepad(props: {
   const retryAfterSaveRef = useRef(false);
 
   useEffect(() => {
-    'background only';
+    "background only";
     lastObservedServerNotesRef.current = props.notes;
     const pendingLocalEcho = pendingLocalEchoRef.current;
     if (pendingLocalEcho && props.notes === pendingLocalEcho.value) {
@@ -2611,7 +2268,7 @@ function EnvironmentNotepad(props: {
       setValue(props.notes);
       textareaRef.current
         ?.invoke({
-          method: 'setValue',
+          method: "setValue",
           params: { value: props.notes },
         })
         .exec();
@@ -2619,7 +2276,7 @@ function EnvironmentNotepad(props: {
   }, [props.notes]);
 
   async function flushNotes(): Promise<void> {
-    'background only';
+    "background only";
     if (saveInFlightRef.current) {
       retryAfterSaveRef.current = true;
       return;
@@ -2627,13 +2284,13 @@ function EnvironmentNotepad(props: {
     const next = valueRef.current;
     if (next === committedRef.current) return;
     saveInFlightRef.current = true;
-    setSaveState('saving');
+    setSaveState("saving");
     try {
       if (props.onNotesChange) {
         await props.onNotesChange(next);
       } else if (props.threadId) {
         await dispatchSynaraCommand({
-          type: 'thread.meta.update',
+          type: "thread.meta.update",
           commandId: environmentCommandId() as never,
           threadId: props.threadId as never,
           notes: next,
@@ -2646,15 +2303,12 @@ function EnvironmentNotepad(props: {
         value: next,
         staleServerValue: lastObservedServerNotesRef.current,
       };
-      setSaveState('saved');
+      setSaveState("saved");
     } catch {
-      setSaveState('error');
+      setSaveState("error");
     } finally {
       saveInFlightRef.current = false;
-      if (
-        retryAfterSaveRef.current &&
-        valueRef.current !== committedRef.current
-      ) {
+      if (retryAfterSaveRef.current && valueRef.current !== committedRef.current) {
         retryAfterSaveRef.current = false;
         scheduleSave(0);
       } else {
@@ -2664,7 +2318,7 @@ function EnvironmentNotepad(props: {
   }
 
   function scheduleSave(delayMs = NOTES_SAVE_DELAY_MS) {
-    'background only';
+    "background only";
     const generation = ++saveGenerationRef.current;
     void sleepOnHost(delayMs)
       .then(() => {
@@ -2679,44 +2333,35 @@ function EnvironmentNotepad(props: {
 
   return (
     <view className="EnvironmentSection">
-      <EnvironmentDisclosureHeader
-        label="Notepad"
-        open={open}
-        onOpenChange={setOpen}
-      />
-      <EnvironmentDisclosureContent
-        className="EnvironmentNotepad"
-        open={open}
-      >
-          <textarea
-            ref={textareaRef}
-            className="EnvironmentNotepadInput"
-            aria-label="Thread notepad"
-            accessibility-element
-            accessibility-label="Thread notepad"
-            focusable
-            default-value={value}
-            placeholder="Type here"
-            maxlength={THREAD_NOTES_MAX_CHARS}
-            maxlines={8}
-            enable-scroll-bar
-            bindinput={(event) => {
-              'background only';
-              valueRef.current = event.detail.value;
-              setValue(event.detail.value);
-              scheduleSave();
-            }}
-            bindblur={() => {
-              'background only';
-              saveGenerationRef.current += 1;
-              void flushNotes();
-            }}
-          />
-          <text
-            className={`EnvironmentNotepadStatus EnvironmentNotepadStatus--${saveState}`}
-          >
-            {saveState === 'error' ? 'Could not save' : ''}
-          </text>
+      <EnvironmentDisclosureHeader label="Notepad" open={open} onOpenChange={setOpen} />
+      <EnvironmentDisclosureContent className="EnvironmentNotepad" open={open}>
+        <textarea
+          ref={textareaRef}
+          className="EnvironmentNotepadInput"
+          aria-label="Thread notepad"
+          accessibility-element
+          accessibility-label="Thread notepad"
+          focusable
+          default-value={value}
+          placeholder="Type here"
+          maxlength={THREAD_NOTES_MAX_CHARS}
+          maxlines={8}
+          enable-scroll-bar
+          bindinput={(event) => {
+            "background only";
+            valueRef.current = event.detail.value;
+            setValue(event.detail.value);
+            scheduleSave();
+          }}
+          bindblur={() => {
+            "background only";
+            saveGenerationRef.current += 1;
+            void flushNotes();
+          }}
+        />
+        <text className={`EnvironmentNotepadStatus EnvironmentNotepadStatus--${saveState}`}>
+          {saveState === "error" ? "Could not save" : ""}
+        </text>
       </EnvironmentDisclosureContent>
     </view>
   );
@@ -2726,7 +2371,7 @@ export function EnvironmentPanel(props: {
   readonly branch: string | null;
   readonly bootstrapOnly: boolean;
   readonly initialData: EnvironmentBootstrapData | null;
-  readonly envMode: 'local' | 'worktree';
+  readonly envMode: "local" | "worktree";
   readonly notes: string;
   readonly onBranchChange?: (branch: string) => void;
   readonly onNotesChange?: (notes: string) => void | Promise<void>;
@@ -2746,16 +2391,14 @@ export function EnvironmentPanel(props: {
   readonly workspaceRoot: string | null;
 }) {
   const { semanticIconColor } = useTheme();
-  const visibility = readSettingsGeneralProjection(
-    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
-  );
+  const visibility = readSettingsGeneralProjection(webStorage.getItem(APP_SETTINGS_STORAGE_KEY));
   const liveQueriesEnabled = props.open && !props.bootstrapOnly;
   const [gitStatus, setGitStatus] = useState<GitStatusResult | null>(null);
   const [gitRefreshGeneration, setGitRefreshGeneration] = useState(0);
   const repositoryQuery = useQuery({
-    queryKey: ['environment-git-branches', props.workspaceRoot],
+    queryKey: ["environment-git-branches", props.workspaceRoot],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchGitBranches(props.workspaceRoot!);
     },
     enabled: liveQueriesEnabled && Boolean(props.workspaceRoot),
@@ -2766,7 +2409,7 @@ export function EnvironmentPanel(props: {
   const [initializeGitError, setInitializeGitError] = useState(false);
   const isGitRepo = repositoryQuery.data?.isRepo === true;
   const initializeRepository = async () => {
-    'background only';
+    "background only";
     if (!props.workspaceRoot || initializingGit) return;
     setInitializingGit(true);
     setInitializeGitError(false);
@@ -2781,35 +2424,31 @@ export function EnvironmentPanel(props: {
     }
   };
   const usageQuery = useQuery({
-    queryKey: ['environment-provider-usage', props.provider],
+    queryKey: ["environment-provider-usage", props.provider],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchAllProviderUsage({});
     },
     staleTime: 30_000,
     enabled: liveQueriesEnabled,
   });
-  const usage = usageQuery.data?.find(
-    (snapshot) => snapshot.provider === props.provider
-  );
+  const usage = usageQuery.data?.find((snapshot) => snapshot.provider === props.provider);
   const primaryLimit = usage?.limits[0];
   const usageLabel = primaryLimit
     ? deriveProviderUsageLimitDisplay(primaryLimit).leftText
-    : usage?.status === 'needs-auth'
+    : usage?.status === "needs-auth"
       ? providerUsageNeedsAuthDetail(props.provider)
-      : usage?.detail ?? 'Usage is currently unavailable.';
+      : (usage?.detail ?? "Usage is currently unavailable.");
 
   const settingsInteraction = useLynxInteractiveState({
-    baseClassName: 'EnvironmentSettings',
-    accessibleLabel: 'Panel sections',
+    baseClassName: "EnvironmentSettings",
+    accessibleLabel: "Panel sections",
     onActivate: props.onOpenSettings,
   });
 
   return (
     <view
-      className={`EnvironmentOverlay${
-        props.open ? ' EnvironmentOverlay--open' : ''
-      }`}
+      className={`EnvironmentOverlay${props.open ? " EnvironmentOverlay--open" : ""}`}
       aria-hidden={!props.open}
     >
       <view className="EnvironmentSurface">
@@ -2817,16 +2456,10 @@ export function EnvironmentPanel(props: {
           <view className="EnvironmentContent">
             <view className="EnvironmentHeader">
               <text className="EnvironmentTitle">Environment</text>
-              <view
-                className={settingsInteraction.className}
-                {...settingsInteraction.eventProps}
-              >
+              <view className={settingsInteraction.className} {...settingsInteraction.eventProps}>
                 <svg
                   className="EnvironmentSettingsIcon"
-                  content={colorizeLynxSvg(
-                    settingsSvg,
-                    semanticIconColor('secondary')
-                  )}
+                  content={colorizeLynxSvg(settingsSvg, semanticIconColor("secondary"))}
                 />
               </view>
             </view>
@@ -2834,9 +2467,7 @@ export function EnvironmentPanel(props: {
             {props.workspaceRoot && isGitRepo ? (
               <EnvironmentChanges
                 bootstrapOnly={props.bootstrapOnly}
-                initialLoadCompleted={
-                  props.initialData?.gitStatusLoaded === true
-                }
+                initialLoadCompleted={props.initialData?.gitStatusLoaded === true}
                 initialStatus={props.initialData?.gitStatus ?? null}
                 onOpenViewer={props.onOpenChanges}
                 open={props.open}
@@ -2866,25 +2497,19 @@ export function EnvironmentPanel(props: {
                 open={liveQueriesEnabled}
                 threadId={props.threadId}
                 workspaceRoot={props.workspaceRoot}
-                onCompleted={() =>
-                  setGitRefreshGeneration((current) => current + 1)
-                }
+                onCompleted={() => setGitRefreshGeneration((current) => current + 1)}
               />
             ) : null}
-            {props.workspaceRoot &&
-            !repositoryQuery.isPending &&
-            !isGitRepo ? (
+            {props.workspaceRoot && !repositoryQuery.isPending && !isGitRepo ? (
               <EnvironmentInteractiveRow
-                accessibleLabel={
-                  initializeGitError ? 'Retry Initialize Git' : 'Initialize Git'
-                }
+                accessibleLabel={initializeGitError ? "Retry Initialize Git" : "Initialize Git"}
                 baseClassName="EnvironmentInitializeGit"
                 disabled={initializingGit}
                 onActivate={() => void initializeRepository()}
               >
                 <EnvironmentRow
                   icon={<GitBranchIcon size={16} color="var(--foreground)" />}
-                  label={initializingGit ? 'Initializing…' : 'Initialize Git'}
+                  label={initializingGit ? "Initializing…" : "Initialize Git"}
                 />
               </EnvironmentInteractiveRow>
             ) : null}
@@ -2904,15 +2529,9 @@ export function EnvironmentPanel(props: {
                 <view className="EnvironmentDivider" />
                 <EnvironmentSectionLabel>Usage</EnvironmentSectionLabel>
                 <EnvironmentRow
-                  icon={
-                    <OpenAIProviderIcon provider={props.provider} />
-                  }
+                  icon={<OpenAIProviderIcon provider={props.provider} />}
                   label={providerUsageDisplayName(props.provider)}
-                  trailing={
-                    usageQuery.isPending
-                      ? 'Usage is currently unavailable.'
-                      : usageLabel
-                  }
+                  trailing={usageQuery.isPending ? "Usage is currently unavailable." : usageLabel}
                 />
               </>
             ) : null}
@@ -2928,7 +2547,7 @@ export function EnvironmentPanel(props: {
 
             {props.workspaceRoot &&
             visibility.showEnvironmentPullRequest &&
-            props.pullRequest?.state === 'open' ? (
+            props.pullRequest?.state === "open" ? (
               <EnvironmentPullRequest
                 open={liveQueriesEnabled}
                 pullRequest={props.pullRequest}
@@ -2946,9 +2565,7 @@ export function EnvironmentPanel(props: {
               />
             ) : null}
 
-            {props.workspaceRoot &&
-            props.threadId &&
-            visibility.showEnvironmentRecap ? (
+            {props.workspaceRoot && props.threadId && visibility.showEnvironmentRecap ? (
               <EnvironmentRecap
                 open={liveQueriesEnabled}
                 revision={props.recapRevision}

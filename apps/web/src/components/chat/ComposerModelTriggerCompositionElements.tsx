@@ -3,20 +3,16 @@ import type { ReactNode } from "react";
 import { ChevronDownIcon, FastModeIcon, SettingsIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 import { PROVIDER_ICON_COMPONENT_BY_PROVIDER } from "../ProviderIcon";
-import {
-  COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME,
-} from "./composerPickerStyles";
+import { COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME } from "./composerPickerStyles";
 import { getProviderIconClassName } from "./ProviderModelPicker";
 
-export function ComposerModelTriggerFrameElement(props: {
-  readonly children: ReactNode;
-}) {
-  return <span className="flex min-w-0 items-center gap-1.5 overflow-hidden">{props.children}</span>;
+export function ComposerModelTriggerFrameElement(props: { readonly children: ReactNode }) {
+  return (
+    <span className="flex min-w-0 items-center gap-1.5 overflow-hidden">{props.children}</span>
+  );
 }
 
-export function ComposerModelTriggerProviderIconElement(props: {
-  readonly provider: string;
-}) {
+export function ComposerModelTriggerProviderIconElement(props: { readonly provider: string }) {
   const ProviderIcon =
     PROVIDER_ICON_COMPONENT_BY_PROVIDER[
       props.provider as keyof typeof PROVIDER_ICON_COMPONENT_BY_PROVIDER
@@ -55,9 +51,7 @@ export function ComposerModelTriggerFastBadgeElement() {
   );
 }
 
-export function ComposerModelTriggerStatusIconElement(props: {
-  readonly accessibleLabel: string;
-}) {
+export function ComposerModelTriggerStatusIconElement(props: { readonly accessibleLabel: string }) {
   return (
     <>
       <SettingsIcon
@@ -70,15 +64,10 @@ export function ComposerModelTriggerStatusIconElement(props: {
   );
 }
 
-export function ComposerModelTriggerStatusLabelElement(props: {
-  readonly children: ReactNode;
-}) {
+export function ComposerModelTriggerStatusLabelElement(props: { readonly children: ReactNode }) {
   return (
     <span
-      className={cn(
-        "shrink-0 text-[10px] leading-[15px]",
-        COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME,
-      )}
+      className={cn("shrink-0 text-[10px] leading-[15px]", COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME)}
     >
       {props.children}
     </span>

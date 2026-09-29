@@ -9,7 +9,7 @@
   `::part(textarea)` rule to remove the duplicate shadow padding.
 - The adopted LynxView stylesheet contains exactly:
   `.SharedThemePackImportTextarea::part(textarea) { box-sizing: border-box;
-  width: 100%; height: 100%; padding: 0; }`.
+width: 100%; height: 100%; padding: 0; }`.
 - This rule is Web-only and is absent from the Desktop/Lynx bundle.
 - Exact textarea-region comparison:
   - light changed ratio `6.74% → 4.99%`, mean difference `4.19 → 2.39`;

@@ -298,9 +298,7 @@ async function resolvePinnedAddress(
   return selected;
 }
 
-export function createPinnedLookup(
-  pinned: Readonly<LookupAddress>,
-): Net.LookupFunction {
+export function createPinnedLookup(pinned: Readonly<LookupAddress>): Net.LookupFunction {
   return (_hostname, options: LookupOptions, callback) => {
     if (options.all) {
       callback(null, [{ address: pinned.address, family: pinned.family }]);

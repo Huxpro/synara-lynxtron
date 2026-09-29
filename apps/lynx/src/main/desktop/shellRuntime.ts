@@ -1,7 +1,7 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { randomUUID } from 'node:crypto';
-import type { KeybindingCommand } from '@synara/contracts';
+import fs from "node:fs";
+import path from "node:path";
+import { randomUUID } from "node:crypto";
+import type { KeybindingCommand } from "@synara/contracts";
 
 export interface ShellRectangle {
   readonly x: number;
@@ -36,11 +36,11 @@ export const SHELL_WINDOW_MIN_WIDTH = 840;
 export const SHELL_WINDOW_MIN_HEIGHT = 620;
 
 export function parseViewportProbeSequence(
-  value: string | undefined
+  value: string | undefined,
 ): readonly ViewportProbeSize[] {
   if (!value) return [];
   return value
-    .split(',')
+    .split(",")
     .map((entry) => {
       const match = entry.trim().match(/^(\d+)x(\d+)$/);
       if (!match) return null;
@@ -58,9 +58,9 @@ export interface ShellRouteDeliveryState {
 }
 
 export type ShellRouteDeliveryEvent =
-  | { readonly type: 'route-requested'; readonly route: string }
-  | { readonly type: 'renderer-ready' }
-  | { readonly type: 'renderer-reset' };
+  | { readonly type: "route-requested"; readonly route: string }
+  | { readonly type: "renderer-ready" }
+  | { readonly type: "renderer-reset" };
 
 export interface ShellRouteDeliveryResult {
   readonly state: ShellRouteDeliveryState;
@@ -74,15 +74,15 @@ export const INITIAL_SHELL_ROUTE_DELIVERY_STATE: ShellRouteDeliveryState = {
 
 export function reduceShellRouteDelivery(
   state: ShellRouteDeliveryState,
-  event: ShellRouteDeliveryEvent
+  event: ShellRouteDeliveryEvent,
 ): ShellRouteDeliveryResult {
-  if (event.type === 'renderer-reset') {
+  if (event.type === "renderer-reset") {
     return {
       state: { rendererReady: false, pendingRoute: state.pendingRoute },
       routeToDispatch: null,
     };
   }
-  if (event.type === 'renderer-ready') {
+  if (event.type === "renderer-ready") {
     return {
       state: { rendererReady: true, pendingRoute: null },
       routeToDispatch: state.pendingRoute,
@@ -101,31 +101,29 @@ export function reduceShellRouteDelivery(
 }
 
 export const SHELL_CAPABILITIES = {
-  windowState: 'native',
-  menu: 'native',
-  protocol: 'native',
-  logging: 'node-file',
-  migration: 'node-file',
-  globalShortcut: 'menu-accelerator',
-  autoUpdater: 'external-download',
-  sessionPermissions: 'not-available',
+  windowState: "native",
+  menu: "native",
+  protocol: "native",
+  logging: "node-file",
+  migration: "node-file",
+  globalShortcut: "menu-accelerator",
+  autoUpdater: "external-download",
+  sessionPermissions: "not-available",
 } as const;
 
 const NATIVE_RENDERER_COMMANDS = new Set<KeybindingCommand>([
-  'chat.new',
-  'sidebar.toggle',
-  'sidebar.search',
-  'browser.toggle',
-  'chat.visible.previous',
-  'chat.visible.next',
-  'composer.focus.toggle',
-  'view.recent.next',
-  'view.recent.previous',
+  "chat.new",
+  "sidebar.toggle",
+  "sidebar.search",
+  "browser.toggle",
+  "chat.visible.previous",
+  "chat.visible.next",
+  "composer.focus.toggle",
+  "view.recent.next",
+  "view.recent.previous",
 ]);
 
-export function resolveNativeRendererCommand(
-  command: KeybindingCommand
-): KeybindingCommand | null {
+export function resolveNativeRendererCommand(command: KeybindingCommand): KeybindingCommand | null {
   return NATIVE_RENDERER_COMMANDS.has(command) ? command : null;
 }
 
@@ -134,22 +132,22 @@ export interface ShellGlobalEventTarget {
 }
 
 export interface SearchNavigationAccelerator {
-  readonly accelerator: 'Up' | 'Down' | 'Tab' | 'Shift+Tab' | 'Esc';
-  readonly key: 'ArrowUp' | 'ArrowDown' | 'Tab' | 'Escape';
+  readonly accelerator: "Up" | "Down" | "Tab" | "Shift+Tab" | "Esc";
+  readonly key: "ArrowUp" | "ArrowDown" | "Tab" | "Escape";
   readonly shiftKey?: boolean;
 }
 
 export const SEARCH_NAVIGATION_ACCELERATORS: readonly SearchNavigationAccelerator[] = [
-  { accelerator: 'Up', key: 'ArrowUp' },
-  { accelerator: 'Down', key: 'ArrowDown' },
-  { accelerator: 'Tab', key: 'Tab' },
-  { accelerator: 'Shift+Tab', key: 'Tab', shiftKey: true },
-  { accelerator: 'Esc', key: 'Escape' },
+  { accelerator: "Up", key: "ArrowUp" },
+  { accelerator: "Down", key: "ArrowDown" },
+  { accelerator: "Tab", key: "Tab" },
+  { accelerator: "Shift+Tab", key: "Tab", shiftKey: true },
+  { accelerator: "Esc", key: "Escape" },
 ];
 
 export interface SearchNavigationMenuItem {
   readonly label: string;
-  readonly accelerator: SearchNavigationAccelerator['accelerator'];
+  readonly accelerator: SearchNavigationAccelerator["accelerator"];
   readonly visible: false;
   readonly acceleratorWorksWhenHidden: true;
   readonly registerAccelerator: true;
@@ -158,10 +156,10 @@ export interface SearchNavigationMenuItem {
 
 export function buildRecentViewNavigationMenuItems(
   enabled: boolean,
-  dispatch: (event: 'commit' | 'cancel') => void
+  dispatch: (event: "commit" | "cancel") => void,
 ): readonly {
   readonly label: string;
-  readonly accelerator: 'Enter' | 'Esc';
+  readonly accelerator: "Enter" | "Esc";
   readonly visible: false;
   readonly acceleratorWorksWhenHidden: true;
   readonly registerAccelerator: true;
@@ -169,8 +167,8 @@ export function buildRecentViewNavigationMenuItems(
 }[] {
   if (!enabled) return [];
   return [
-    { label: 'Open recent view', accelerator: 'Enter', event: 'commit' as const },
-    { label: 'Cancel recent views', accelerator: 'Esc', event: 'cancel' as const },
+    { label: "Open recent view", accelerator: "Enter", event: "commit" as const },
+    { label: "Cancel recent views", accelerator: "Esc", event: "cancel" as const },
   ].map(({ label, accelerator, event }) => ({
     label,
     accelerator,
@@ -183,10 +181,10 @@ export function buildRecentViewNavigationMenuItems(
 
 export function buildTerminalSearchMenuItems(
   enabled: boolean,
-  dispatch: () => void
+  dispatch: () => void,
 ): readonly {
-  readonly label: 'Find in Terminal';
-  readonly accelerator: 'CmdOrCtrl+F';
+  readonly label: "Find in Terminal";
+  readonly accelerator: "CmdOrCtrl+F";
   readonly visible: false;
   readonly acceleratorWorksWhenHidden: true;
   readonly registerAccelerator: true;
@@ -195,8 +193,8 @@ export function buildTerminalSearchMenuItems(
   if (!enabled) return [];
   return [
     {
-      label: 'Find in Terminal',
-      accelerator: 'CmdOrCtrl+F',
+      label: "Find in Terminal",
+      accelerator: "CmdOrCtrl+F",
       visible: false,
       acceleratorWorksWhenHidden: true,
       registerAccelerator: true,
@@ -207,7 +205,7 @@ export function buildTerminalSearchMenuItems(
 
 export function buildTerminalSearchNavigationMenuItems(
   enabled: boolean,
-  dispatch: (event: { readonly key: "Enter" | "Escape"; readonly shiftKey?: true }) => void
+  dispatch: (event: { readonly key: "Enter" | "Escape"; readonly shiftKey?: true }) => void,
 ): readonly {
   readonly label: string;
   readonly accelerator: "Enter" | "Shift+Enter" | "Esc";
@@ -264,10 +262,10 @@ const MAC_TERMINAL_CONTROL_ACCELERATORS: readonly TerminalInputAccelerator[] = [
 export function buildTerminalInputMenuItems(
   enabled: boolean,
   includeControlAccelerators: boolean,
-  dispatch: (data: string) => void
+  dispatch: (data: string) => void,
 ): readonly {
   readonly label: string;
-  readonly accelerator: TerminalInputAccelerator['accelerator'];
+  readonly accelerator: TerminalInputAccelerator["accelerator"];
   readonly visible: false;
   readonly acceleratorWorksWhenHidden: true;
   readonly registerAccelerator: true;
@@ -290,13 +288,13 @@ export function buildTerminalInputMenuItems(
 export function buildSearchNavigationMenuItems(
   enabled: boolean,
   dispatch: (event: {
-    readonly key: SearchNavigationAccelerator['key'];
+    readonly key: SearchNavigationAccelerator["key"];
     readonly shiftKey?: true;
-  }) => void
+  }) => void,
 ): readonly SearchNavigationMenuItem[] {
   if (!enabled) return [];
   return SEARCH_NAVIGATION_ACCELERATORS.map((navigation) => ({
-    label: `Search: ${navigation.key}${navigation.shiftKey ? ' (reverse)' : ''}`,
+    label: `Search: ${navigation.key}${navigation.shiftKey ? " (reverse)" : ""}`,
     accelerator: navigation.accelerator,
     visible: false,
     acceleratorWorksWhenHidden: true,
@@ -328,9 +326,7 @@ export interface ShellWindowPresentation {
   readonly showInactiveAfterSetup: boolean;
 }
 
-export function resolveShellWindowPresentation(
-  backgroundLaunch: boolean
-): ShellWindowPresentation {
+export function resolveShellWindowPresentation(backgroundLaunch: boolean): ShellWindowPresentation {
   return {
     showOnCreate: !backgroundLaunch,
     showAfterSetup: !backgroundLaunch,
@@ -339,18 +335,18 @@ export function resolveShellWindowPresentation(
 }
 
 export function shouldAcquireShellSingleInstanceLock(
-  allowParallelInstance: string | undefined
+  allowParallelInstance: string | undefined,
 ): boolean {
-  return allowParallelInstance !== '1';
+  return allowParallelInstance !== "1";
 }
 
 export function resolveShellPaths(userDataDir: string): ShellPaths {
-  const stateDir = path.join(userDataDir, 'synara-lynx-slice');
+  const stateDir = path.join(userDataDir, "synara-lynx-slice");
   return {
     stateDir,
-    windowState: path.join(stateDir, 'window-state.json'),
-    logFile: path.join(stateDir, 'logs', 'desktop-main.log'),
-    kvFile: path.join(stateDir, 'kv.json'),
+    windowState: path.join(stateDir, "window-state.json"),
+    logFile: path.join(stateDir, "logs", "desktop-main.log"),
+    kvFile: path.join(stateDir, "kv.json"),
   };
 }
 
@@ -361,18 +357,18 @@ export function resolveShellPaths(userDataDir: string): ShellPaths {
  */
 export function resolveShellUserDataDir(
   defaultUserDataDir: string,
-  override: string | undefined
+  override: string | undefined,
 ): string {
   const candidate = override?.trim();
   if (!candidate) return defaultUserDataDir;
   if (!path.isAbsolute(candidate)) {
-    throw new Error('SYNARA_LYNX_USER_DATA_DIR must be an absolute path.');
+    throw new Error("SYNARA_LYNX_USER_DATA_DIR must be an absolute path.");
   }
   return path.resolve(candidate);
 }
 
 function isFiniteNumber(value: unknown): value is number {
-  return typeof value === 'number' && Number.isFinite(value);
+  return typeof value === "number" && Number.isFinite(value);
 }
 
 export function parseWindowState(raw: string): ShellWindowState | null {
@@ -388,8 +384,8 @@ export function parseWindowState(raw: string): ShellWindowState | null {
       !isFiniteNumber(bounds.height) ||
       bounds.width < 640 ||
       bounds.height < 480 ||
-      typeof value.maximized !== 'boolean' ||
-      typeof value.fullscreen !== 'boolean'
+      typeof value.maximized !== "boolean" ||
+      typeof value.fullscreen !== "boolean"
     ) {
       return null;
     }
@@ -401,16 +397,10 @@ export function parseWindowState(raw: string): ShellWindowState | null {
 
 export function resolveRestoredBounds(
   saved: ShellRectangle | null,
-  workArea: ShellRectangle
+  workArea: ShellRectangle,
 ): ShellRectangle {
-  const width = Math.min(
-    Math.max(saved?.width ?? 1280, SHELL_WINDOW_MIN_WIDTH),
-    workArea.width
-  );
-  const height = Math.min(
-    Math.max(saved?.height ?? 820, SHELL_WINDOW_MIN_HEIGHT),
-    workArea.height
-  );
+  const width = Math.min(Math.max(saved?.width ?? 1280, SHELL_WINDOW_MIN_WIDTH), workArea.width);
+  const height = Math.min(Math.max(saved?.height ?? 820, SHELL_WINDOW_MIN_HEIGHT), workArea.height);
   const fallbackX = workArea.x + Math.round((workArea.width - width) / 2);
   const fallbackY = workArea.y + Math.round((workArea.height - height) / 2);
   if (!saved) {
@@ -434,7 +424,7 @@ export function resolveRestoredBounds(
 
 export function readWindowState(filePath: string): ShellWindowState | null {
   try {
-    return parseWindowState(fs.readFileSync(filePath, 'utf8'));
+    return parseWindowState(fs.readFileSync(filePath, "utf8"));
   } catch {
     return null;
   }
@@ -448,10 +438,10 @@ export function writeJsonAtomic(filePath: string, value: unknown): void {
   // atomic, but give every attempt its own collision-safe path.
   const temporary = path.join(
     directory,
-    `.${path.basename(filePath)}.${process.pid}.${randomUUID()}.tmp`
+    `.${path.basename(filePath)}.${process.pid}.${randomUUID()}.tmp`,
   );
   try {
-    fs.writeFileSync(temporary, JSON.stringify(value), 'utf8');
+    fs.writeFileSync(temporary, JSON.stringify(value), "utf8");
     fs.renameSync(temporary, filePath);
   } finally {
     // The rename removes the temporary on success; force cleanup covers a
@@ -462,9 +452,9 @@ export function writeJsonAtomic(filePath: string, value: unknown): void {
 
 export function migrateLegacyShellFiles(userDataDir: string, paths: ShellPaths): string[] {
   const migrations = [
-    { from: path.join(userDataDir, 'kv.json'), to: paths.kvFile },
+    { from: path.join(userDataDir, "kv.json"), to: paths.kvFile },
     {
-      from: path.join(userDataDir, 'desktop-window-state.json'),
+      from: path.join(userDataDir, "desktop-window-state.json"),
       to: paths.windowState,
     },
   ];
@@ -478,11 +468,7 @@ export function migrateLegacyShellFiles(userDataDir: string, paths: ShellPaths):
   return moved;
 }
 
-export function appendShellLog(
-  filePath: string,
-  message: string,
-  maxBytes = 1024 * 1024
-): void {
+export function appendShellLog(filePath: string, message: string, maxBytes = 1024 * 1024): void {
   try {
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
     if (fs.existsSync(filePath) && fs.statSync(filePath).size >= maxBytes) {
@@ -490,7 +476,7 @@ export function appendShellLog(
       if (fs.existsSync(previous)) fs.unlinkSync(previous);
       fs.renameSync(filePath, previous);
     }
-    fs.appendFileSync(filePath, `[${new Date().toISOString()}] ${message}\n`, 'utf8');
+    fs.appendFileSync(filePath, `[${new Date().toISOString()}] ${message}\n`, "utf8");
   } catch {
     // Logging must never prevent shell startup.
   }
@@ -500,13 +486,13 @@ export function parseSynaraDeepLink(raw: string): string | null {
   return parseSynaraDeepLinkInitData(raw)?.initialRoute ?? null;
 }
 
-const SYNARA_RELAUNCH_ROUTE_PREFIX = '--synara-relaunch-route=';
+const SYNARA_RELAUNCH_ROUTE_PREFIX = "--synara-relaunch-route=";
 
 export function parseSynaraRelaunchRoute(raw: string): string | null {
   if (!raw.startsWith(SYNARA_RELAUNCH_ROUTE_PREFIX)) return null;
   try {
     const route = decodeURIComponent(raw.slice(SYNARA_RELAUNCH_ROUTE_PREFIX.length));
-    return route.startsWith('/') ? route : null;
+    return route.startsWith("/") ? route : null;
   } catch {
     return null;
   }
@@ -516,21 +502,21 @@ export function buildSynaraRelaunchArguments(
   argv: readonly string[],
   applicationPath: string,
   route: string | null,
-  relaunchUrl?: string | null
+  relaunchUrl?: string | null,
 ): string[] {
   const processArguments = argv.slice(1);
   const args = processArguments
     .slice(
       processArguments[0] &&
-        !processArguments[0].startsWith('-') &&
+        !processArguments[0].startsWith("-") &&
         parseSynaraDeepLinkInitData(processArguments[0]) === null
         ? 1
-        : 0
+        : 0,
     )
     .filter(
       (argument) =>
         !argument.startsWith(SYNARA_RELAUNCH_ROUTE_PREFIX) &&
-        parseSynaraDeepLinkInitData(argument) === null
+        parseSynaraDeepLinkInitData(argument) === null,
     );
   args.unshift(applicationPath);
   if (relaunchUrl && parseSynaraDeepLinkInitData(relaunchUrl)) {
@@ -551,7 +537,7 @@ export interface SynaraDeepLinkInitData {
   readonly initialComposerModelProvider: string | null;
   readonly initialEnvironmentOpen: boolean;
   readonly initialEditorOpen: boolean;
-  readonly initialEditorCenterMode: 'file' | 'diff' | null;
+  readonly initialEditorCenterMode: "file" | "diff" | null;
   readonly initialEditorChatOpen: boolean | null;
   readonly initialEditorHistoryOpen: boolean;
   readonly initialEditorNewOpen: boolean;
@@ -564,7 +550,7 @@ export interface SynaraDeepLinkInitData {
   readonly initialWorkspaceSettingsOpen: boolean;
   readonly initialWorkspaceVisible: boolean;
   readonly initialExplorerOpen: boolean;
-  readonly initialExplorerPresentationMode: 'dock' | 'single-file';
+  readonly initialExplorerPresentationMode: "dock" | "single-file";
   readonly initialExplorerActionMenuOpen: boolean;
   readonly initialExplorerCommentLine: number | null;
   readonly initialExplorerExpandedDirectories: readonly string[];
@@ -577,124 +563,101 @@ export interface SynaraDeepLinkInitData {
 export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData | null {
   try {
     const url = new URL(raw);
-    if (url.protocol !== 'synara:') return null;
-    let initialRoute = '/';
-    if (url.hostname === 'threads') initialRoute = '/';
-    if (url.hostname === 'settings') {
-      const section = url.pathname.replace(/^\/+/, '').split('/')[0];
-      const target = url.searchParams.get('target')?.trim();
-      const search = target ? `?target=${encodeURIComponent(target)}` : '';
+    if (url.protocol !== "synara:") return null;
+    let initialRoute = "/";
+    if (url.hostname === "threads") initialRoute = "/";
+    if (url.hostname === "settings") {
+      const section = url.pathname.replace(/^\/+/, "").split("/")[0];
+      const target = url.searchParams.get("target")?.trim();
+      const search = target ? `?target=${encodeURIComponent(target)}` : "";
       initialRoute = section
         ? `/settings/${encodeURIComponent(decodeURIComponent(section))}${search}`
-        : '/settings';
-    } else if (url.hostname === 'studio') initialRoute = '/studio';
-    else if (url.hostname === 'components-lab') {
-      const story = url.searchParams.get('story')?.trim();
-      const state = url.searchParams.get('state')?.trim();
-      const variant = url.searchParams.get('variant')?.trim();
+        : "/settings";
+    } else if (url.hostname === "studio") initialRoute = "/studio";
+    else if (url.hostname === "components-lab") {
+      const story = url.searchParams.get("story")?.trim();
+      const state = url.searchParams.get("state")?.trim();
+      const variant = url.searchParams.get("variant")?.trim();
       const search = new URLSearchParams();
-      if (story) search.set('story', story);
-      if (state) search.set('state', state);
-      if (variant) search.set('variant', variant);
-      initialRoute = `/components-lab${search.size > 0 ? `?${search.toString()}` : ''}`;
-    }
-    else if (url.hostname === 'update') initialRoute = '/update';
-    else if (url.hostname === 'pull-requests') initialRoute = '/pull-requests';
-    else if (url.hostname === 'plugins') initialRoute = '/plugins';
-    else if (url.hostname === 'automations') {
-      const automationId = url.pathname.replace(/^\/+/, '').split('/')[0];
+      if (story) search.set("story", story);
+      if (state) search.set("state", state);
+      if (variant) search.set("variant", variant);
+      initialRoute = `/components-lab${search.size > 0 ? `?${search.toString()}` : ""}`;
+    } else if (url.hostname === "update") initialRoute = "/update";
+    else if (url.hostname === "pull-requests") initialRoute = "/pull-requests";
+    else if (url.hostname === "plugins") initialRoute = "/plugins";
+    else if (url.hostname === "automations") {
+      const automationId = url.pathname.replace(/^\/+/, "").split("/")[0];
       initialRoute = automationId
-        ? `/automations/${encodeURIComponent(
-            decodeURIComponent(automationId)
-          )}`
-        : '/automations';
-    }
-    else if (url.hostname === 'kanban') {
-      const projectId = url.pathname.replace(/^\/+/, '').split('/')[0];
+        ? `/automations/${encodeURIComponent(decodeURIComponent(automationId))}`
+        : "/automations";
+    } else if (url.hostname === "kanban") {
+      const projectId = url.pathname.replace(/^\/+/, "").split("/")[0];
       initialRoute = projectId
         ? `/kanban/${encodeURIComponent(decodeURIComponent(projectId))}`
-        : '/kanban';
-    } else if (url.hostname === 'workspace') {
-      const workspaceId = url.pathname.replace(/^\/+/, '').split('/')[0];
+        : "/kanban";
+    } else if (url.hostname === "workspace") {
+      const workspaceId = url.pathname.replace(/^\/+/, "").split("/")[0];
       initialRoute = workspaceId
         ? `/workspace/${encodeURIComponent(decodeURIComponent(workspaceId))}`
-        : '/workspace';
-    } else if (url.hostname === 'new-thread') {
-      const projectId = url.pathname.replace(/^\/+/, '').split('/')[0];
+        : "/workspace";
+    } else if (url.hostname === "new-thread") {
+      const projectId = url.pathname.replace(/^\/+/, "").split("/")[0];
       if (!projectId) return null;
-      initialRoute = `/new-thread/${encodeURIComponent(
-        decodeURIComponent(projectId)
-      )}`;
-    } else if (url.hostname === 'thread') {
-      const id = url.pathname.replace(/^\/+/, '').split('/')[0];
+      initialRoute = `/new-thread/${encodeURIComponent(decodeURIComponent(projectId))}`;
+    } else if (url.hostname === "thread") {
+      const id = url.pathname.replace(/^\/+/, "").split("/")[0];
       if (!id) return null;
       initialRoute = `/thread/${encodeURIComponent(decodeURIComponent(id))}`;
     }
-    const explorerCommentLineValue = Number(url.searchParams.get('explorerCommentLine'));
-    const explorerWidthValue = Number(url.searchParams.get('explorerWidth'));
+    const explorerCommentLineValue = Number(url.searchParams.get("explorerCommentLine"));
+    const explorerWidthValue = Number(url.searchParams.get("explorerWidth"));
     return {
       initialDiffOpen:
-        url.searchParams.get('diff') === 'open' ||
-        url.searchParams.get('diff') === '1',
-      initialDiffTurnId: url.searchParams.get('diffTurnId')?.trim() || null,
-      initialDiffFilePath: url.searchParams.get('diffFilePath')?.trim() || null,
-      initialDiffFileTreeOpen:
-        url.searchParams.get('diffFileTree') === 'open',
-      initialComposerModelMenuOpen:
-        url.searchParams.get('composerModelMenu') === 'open',
-      initialComposerModelSubmenuOpen:
-        url.searchParams.get('composerModelSubmenu') === 'open',
-      initialComposerModelProvider:
-        url.searchParams.get('composerModelProvider')?.trim() || null,
-      initialEnvironmentOpen: url.searchParams.get('environment') === 'open',
-      initialEditorOpen: url.searchParams.get('editor') === 'open',
+        url.searchParams.get("diff") === "open" || url.searchParams.get("diff") === "1",
+      initialDiffTurnId: url.searchParams.get("diffTurnId")?.trim() || null,
+      initialDiffFilePath: url.searchParams.get("diffFilePath")?.trim() || null,
+      initialDiffFileTreeOpen: url.searchParams.get("diffFileTree") === "open",
+      initialComposerModelMenuOpen: url.searchParams.get("composerModelMenu") === "open",
+      initialComposerModelSubmenuOpen: url.searchParams.get("composerModelSubmenu") === "open",
+      initialComposerModelProvider: url.searchParams.get("composerModelProvider")?.trim() || null,
+      initialEnvironmentOpen: url.searchParams.get("environment") === "open",
+      initialEditorOpen: url.searchParams.get("editor") === "open",
       initialEditorCenterMode:
-        url.searchParams.get('editorMode') === 'diff'
-          ? 'diff'
-          : url.searchParams.get('editorMode') === 'file'
-            ? 'file'
+        url.searchParams.get("editorMode") === "diff"
+          ? "diff"
+          : url.searchParams.get("editorMode") === "file"
+            ? "file"
             : null,
       initialEditorChatOpen:
-        url.searchParams.get('editorChat') === 'hidden'
+        url.searchParams.get("editorChat") === "hidden"
           ? false
-          : url.searchParams.get('editorChat') === 'open'
+          : url.searchParams.get("editorChat") === "open"
             ? true
             : null,
-      initialEditorHistoryOpen:
-        url.searchParams.get('editorHistory') === 'open',
-      initialEditorNewOpen:
-        url.searchParams.get('editorNew') === 'open',
-      initialEditorNewChatOpen:
-        url.searchParams.get('editorNewChat') === 'open',
-      initialEditorSearchOpen:
-        url.searchParams.get('editorSearch') === 'open',
-      initialEditorProjectMenuOpen:
-        url.searchParams.get('editorProjectMenu') === 'open',
-      initialRenameOpen: url.searchParams.get('rename') === 'open',
-      initialTerminalOpen: url.searchParams.get('terminal') === 'open',
-      initialSettingsTarget: url.searchParams.get('target')?.trim() || null,
-      initialWorkspaceSettingsOpen:
-        url.searchParams.get('workspaceSettings') === 'open',
-      initialWorkspaceVisible:
-        url.searchParams.get('workspaceVisible') === 'open',
-      initialExplorerOpen: url.searchParams.get('explorer') === 'open',
+      initialEditorHistoryOpen: url.searchParams.get("editorHistory") === "open",
+      initialEditorNewOpen: url.searchParams.get("editorNew") === "open",
+      initialEditorNewChatOpen: url.searchParams.get("editorNewChat") === "open",
+      initialEditorSearchOpen: url.searchParams.get("editorSearch") === "open",
+      initialEditorProjectMenuOpen: url.searchParams.get("editorProjectMenu") === "open",
+      initialRenameOpen: url.searchParams.get("rename") === "open",
+      initialTerminalOpen: url.searchParams.get("terminal") === "open",
+      initialSettingsTarget: url.searchParams.get("target")?.trim() || null,
+      initialWorkspaceSettingsOpen: url.searchParams.get("workspaceSettings") === "open",
+      initialWorkspaceVisible: url.searchParams.get("workspaceVisible") === "open",
+      initialExplorerOpen: url.searchParams.get("explorer") === "open",
       initialExplorerPresentationMode:
-        url.searchParams.get('explorerMode') === 'single-file'
-          ? 'single-file'
-          : 'dock',
-      initialExplorerActionMenuOpen:
-        url.searchParams.get('explorerActionMenu') === 'open',
+        url.searchParams.get("explorerMode") === "single-file" ? "single-file" : "dock",
+      initialExplorerActionMenuOpen: url.searchParams.get("explorerActionMenu") === "open",
       initialExplorerCommentLine:
         Number.isInteger(explorerCommentLineValue) && explorerCommentLineValue > 0
           ? explorerCommentLineValue
           : null,
-      initialExplorerExpandedDirectories: url.searchParams.getAll('explorerExpanded'),
-      initialExplorerPath: url.searchParams.get('explorerPath'),
-      initialExplorerQuery: url.searchParams.get('explorerQuery') ?? '',
+      initialExplorerExpandedDirectories: url.searchParams.getAll("explorerExpanded"),
+      initialExplorerPath: url.searchParams.get("explorerPath"),
+      initialExplorerQuery: url.searchParams.get("explorerQuery") ?? "",
       initialExplorerWidth:
-        Number.isFinite(explorerWidthValue) && explorerWidthValue > 0
-          ? explorerWidthValue
-          : null,
+        Number.isFinite(explorerWidthValue) && explorerWidthValue > 0 ? explorerWidthValue : null,
       initialRoute,
     };
   } catch {

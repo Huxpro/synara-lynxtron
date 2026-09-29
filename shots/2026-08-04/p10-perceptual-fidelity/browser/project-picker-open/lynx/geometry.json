@@ -1,1 +1,227 @@
-{"client":"lynx","stateId":"project-picker-open","viewport":{"width":1280,"height":820,"dpr":1,"visualWidth":1280,"visualHeight":820},"roles":{"trigger":{"tag":"X-VIEW","className":"LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx ComposerProjectPickerTriggerLynx--open","text":"Work in a project","box":{"x":408,"y":520,"width":122.859375,"height":28},"font":{"family":"system-ui","size":"16px","weight":"400","lineHeight":"normal","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgb(232, 242, 250)","borderColor":"rgba(0, 0, 0, 0)","borderWidth":"1px","radius":"10px","shadow":"none","opacity":"1"}},"popup":{"tag":"X-VIEW","className":"LxMenuPopup ComposerProjectPickerPopupLynx","text":"VoidsynaraFolders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agent","box":{"x":408,"y":259,"width":288,"height":258},"font":{"family":"system-ui","size":"16px","weight":"400","lineHeight":"normal","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(255, 255, 255, 0.7)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"1px","radius":"10.4px","shadow":"rgba(13, 13, 13, 0.07) 0px 4px 18px -6px","opacity":"1"}},"panel":{"tag":"X-VIEW","className":"ComposerProjectPickerPanelLynx","text":"VoidsynaraFolders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agent","box":{"x":409,"y":260,"width":278,"height":256},"font":{"family":"system-ui","size":"16px","weight":"400","lineHeight":"normal","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(0, 0, 0, 0)","borderColor":"rgb(13, 13, 13)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}},"search":{"tag":"X-VIEW","className":"ComposerProjectPickerSearchLynx","text":"","box":{"x":409,"y":260,"width":278,"height":43},"font":{"family":"system-ui","size":"16px","weight":"400","lineHeight":"normal","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(0, 0, 0, 0)","borderColor":"rgb(13, 13, 13) rgb(13, 13, 13) rgba(13, 13, 13, 0.07)","borderWidth":"0px 0px 1px","radius":"0px","shadow":"none","opacity":"1"}},"searchInput":{"tag":"X-INPUT","className":"LxInput","text":"","box":{"x":0,"y":0,"width":0,"height":0},"font":{"family":"system-ui","size":"11px","weight":"400","lineHeight":"16.5px","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(0, 0, 0, 0)","borderColor":"rgb(13, 13, 13)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}},"groupLabel":{"tag":"X-VIEW","className":"ComposerProjectPickerGroupLabelLynx","text":"Void","box":{"x":409,"y":305,"width":278,"height":28},"font":{"family":"system-ui","size":"16px","weight":"400","lineHeight":"normal","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(0, 0, 0, 0)","borderColor":"rgb(13, 13, 13)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}},"option":{"tag":"X-VIEW","className":"LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx LxMenuItem--highlighted","text":"synara","box":{"x":409,"y":333,"width":278,"height":26},"font":{"family":"system-ui","size":"16px","weight":"400","lineHeight":"normal","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgb(232, 242, 250)","borderColor":"rgba(0, 0, 0, 0)","borderWidth":"1px","radius":"8px","shadow":"none","opacity":"1"}},"optionTitle":{"tag":"X-TEXT","className":"ComposerProjectPickerOptionTitleLynx","text":"synara","box":{"x":440,"y":337,"width":37.4375,"height":18},"font":{"family":"system-ui","size":"12px","weight":"400","lineHeight":"18px","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(0, 0, 0, 0)","borderColor":"rgb(13, 13, 13)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}},"footer":{"tag":"X-VIEW","className":"ComposerProjectPickerFooterLynx","text":"New projectDon't work in a project","box":{"x":409,"y":451,"width":278,"height":65},"font":{"family":"system-ui","size":"16px","weight":"400","lineHeight":"normal","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(0, 0, 0, 0)","borderColor":"rgba(13, 13, 13, 0.07) rgb(13, 13, 13) rgb(13, 13, 13)","borderWidth":"1px 0px 0px","radius":"0px","shadow":"none","opacity":"1"}},"action":{"tag":"X-VIEW","className":"ComposerProjectPickerActionLynx","text":"New project","box":{"x":413,"y":456,"width":270,"height":28},"font":{"family":"system-ui","size":"16px","weight":"400","lineHeight":"normal","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(0, 0, 0, 0)","borderColor":"rgb(13, 13, 13)","borderWidth":"0px","radius":"8px","shadow":"none","opacity":"1"}}}}
+{
+  "client": "lynx",
+  "stateId": "project-picker-open",
+  "viewport": { "width": 1280, "height": 820, "dpr": 1, "visualWidth": 1280, "visualHeight": 820 },
+  "roles": {
+    "trigger": {
+      "tag": "X-VIEW",
+      "className": "LxMenuTrigger LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx ComposerProjectPickerTriggerLynx--open",
+      "text": "Work in a project",
+      "box": { "x": 408, "y": 520, "width": 122.859375, "height": 28 },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(232, 242, 250)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "radius": "10px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "popup": {
+      "tag": "X-VIEW",
+      "className": "LxMenuPopup ComposerProjectPickerPopupLynx",
+      "text": "VoidsynaraFolders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agent",
+      "box": { "x": 408, "y": 259, "width": 288, "height": 258 },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(255, 255, 255, 0.7)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "1px",
+        "radius": "10.4px",
+        "shadow": "rgba(13, 13, 13, 0.07) 0px 4px 18px -6px",
+        "opacity": "1"
+      }
+    },
+    "panel": {
+      "tag": "X-VIEW",
+      "className": "ComposerProjectPickerPanelLynx",
+      "text": "VoidsynaraFolders on this Mac_pf_partsai_completionantigravity-claude-proxyApplicationsbinbytedconductorDesktopdim-agent",
+      "box": { "x": 409, "y": 260, "width": 278, "height": 256 },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "search": {
+      "tag": "X-VIEW",
+      "className": "ComposerProjectPickerSearchLynx",
+      "text": "",
+      "box": { "x": 409, "y": 260, "width": 278, "height": 43 },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13) rgb(13, 13, 13) rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px 0px 1px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "searchInput": {
+      "tag": "X-INPUT",
+      "className": "LxInput",
+      "text": "",
+      "box": { "x": 0, "y": 0, "width": 0, "height": 0 },
+      "font": {
+        "family": "system-ui",
+        "size": "11px",
+        "weight": "400",
+        "lineHeight": "16.5px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "groupLabel": {
+      "tag": "X-VIEW",
+      "className": "ComposerProjectPickerGroupLabelLynx",
+      "text": "Void",
+      "box": { "x": 409, "y": 305, "width": 278, "height": 28 },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "option": {
+      "tag": "X-VIEW",
+      "className": "LxButton LxButton--ghost LxButton--default LxMenuItem ComposerProjectPickerOptionLynx LxMenuItem--highlighted",
+      "text": "synara",
+      "box": { "x": 409, "y": 333, "width": 278, "height": 26 },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(232, 242, 250)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "optionTitle": {
+      "tag": "X-TEXT",
+      "className": "ComposerProjectPickerOptionTitleLynx",
+      "text": "synara",
+      "box": { "x": 440, "y": 337, "width": 37.4375, "height": 18 },
+      "font": {
+        "family": "system-ui",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "footer": {
+      "tag": "X-VIEW",
+      "className": "ComposerProjectPickerFooterLynx",
+      "text": "New projectDon't work in a project",
+      "box": { "x": 409, "y": 451, "width": 278, "height": 65 },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.07) rgb(13, 13, 13) rgb(13, 13, 13)",
+        "borderWidth": "1px 0px 0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "action": {
+      "tag": "X-VIEW",
+      "className": "ComposerProjectPickerActionLynx",
+      "text": "New project",
+      "box": { "x": 413, "y": 456, "width": 270, "height": 28 },
+      "font": {
+        "family": "system-ui",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgb(13, 13, 13)",
+        "borderWidth": "0px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

@@ -19,11 +19,7 @@ import {
   KanbanColumnTitleElement,
 } from "~/components/kanban/KanbanColumnCompositionElements";
 import { KanbanCardView } from "./KanbanCardView";
-import {
-  KANBAN_COLUMN_LABELS,
-  type KanbanCard,
-  type KanbanColumnKey,
-} from "./kanban.logic";
+import { KANBAN_COLUMN_LABELS, type KanbanCard, type KanbanColumnKey } from "./kanban.logic";
 import type { KanbanDragPoint } from "./kanbanDnd.logic";
 
 export const KANBAN_DONE_RENDER_CAP = 30;
@@ -37,14 +33,8 @@ export function KanbanColumnComposition(props: {
     event: React.MouseEvent,
     restoreFocus?: () => void,
   ) => void;
-  readonly onCardActions?: (
-    card: KanbanCard,
-    event: React.MouseEvent,
-  ) => void;
-  readonly onCardDragPointerStart?: (
-    card: KanbanCard,
-    point: KanbanDragPoint,
-  ) => void;
+  readonly onCardActions?: (card: KanbanCard, event: React.MouseEvent) => void;
+  readonly onCardDragPointerStart?: (card: KanbanCard, point: KanbanDragPoint) => void;
   readonly dragSourceCardId?: string | null;
   readonly onNewCard?: () => void;
   readonly showDispatchTarget?: boolean;
@@ -53,9 +43,7 @@ export function KanbanColumnComposition(props: {
 }) {
   const [showAll, setShowAll] = useState(false);
   const visibleCards =
-    props.columnKey === "done" &&
-    !showAll &&
-    props.cards.length > KANBAN_DONE_RENDER_CAP
+    props.columnKey === "done" && !showAll && props.cards.length > KANBAN_DONE_RENDER_CAP
       ? props.cards.slice(0, KANBAN_DONE_RENDER_CAP)
       : props.cards;
   const hiddenCount = props.cards.length - visibleCards.length;
@@ -63,9 +51,7 @@ export function KanbanColumnComposition(props: {
   return (
     <KanbanColumnRootElement>
       <KanbanColumnHeaderElement>
-        <KanbanColumnTitleElement>
-          {KANBAN_COLUMN_LABELS[props.columnKey]}
-        </KanbanColumnTitleElement>
+        <KanbanColumnTitleElement>{KANBAN_COLUMN_LABELS[props.columnKey]}</KanbanColumnTitleElement>
         <KanbanColumnCountElement>{props.cards.length}</KanbanColumnCountElement>
         <KanbanColumnHeaderActionsElement>
           {props.showDispatchTarget ? (
@@ -74,10 +60,7 @@ export function KanbanColumnComposition(props: {
             </KanbanColumnDispatchTargetElement>
           ) : null}
           {props.onNewCard ? (
-            <KanbanColumnNewCardElement
-              label="New task"
-              onActivate={props.onNewCard}
-            />
+            <KanbanColumnNewCardElement label="New task" onActivate={props.onNewCard} />
           ) : null}
           <KanbanColumnStatusElement column={props.columnKey} />
         </KanbanColumnHeaderActionsElement>
@@ -88,12 +71,8 @@ export function KanbanColumnComposition(props: {
             <KanbanCardView
               card={card}
               onOpen={props.onOpenCard}
-              {...(props.onCardContextMenu
-                ? { onContextMenu: props.onCardContextMenu }
-                : {})}
-              {...(props.onCardActions
-                ? { onOpenActions: props.onCardActions }
-                : {})}
+              {...(props.onCardContextMenu ? { onContextMenu: props.onCardContextMenu } : {})}
+              {...(props.onCardActions ? { onOpenActions: props.onCardActions } : {})}
               {...(props.onCardDragPointerStart
                 ? { onDragPointerStart: props.onCardDragPointerStart }
                 : {})}

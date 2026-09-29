@@ -10,10 +10,7 @@ import { useState } from "react";
 import { CentralIcon } from "~/lib/central-icons";
 import { cn } from "~/lib/utils";
 import { SidebarLeadingIcon } from "./SidebarLeadingIcon";
-import {
-  SETTINGS_NAV_ITEMS,
-  type SettingsSectionId,
-} from "../settingsNavigation";
+import { SETTINGS_NAV_ITEMS, type SettingsSectionId } from "../settingsNavigation";
 import { SettingsNavigationComposition } from "./SettingsNavigationComposition";
 import { SettingsSidebarChromeComposition } from "./settings/SettingsSidebarChromeComposition";
 import {
@@ -118,23 +115,27 @@ export function SettingsSidebarNav(props: {
 
       <div className="min-h-0 flex-1 overflow-y-auto px-1.5 pb-1.5">
         {isSearching ? (
-        results.length === 0 ? (
-          <p className={SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME}>No matching settings.</p>
+          results.length === 0 ? (
+            <p className={SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME}>No matching settings.</p>
+          ) : (
+            <ul
+              aria-label="Settings search results"
+              className={cn("flex flex-col", SETTINGS_SIDEBAR_LIST_GAP_CLASS_NAME)}
+            >
+              {results.map((entry) => (
+                <SettingsSearchResultRow
+                  key={entry.id}
+                  entry={entry}
+                  onSelect={handleSelectResult}
+                />
+              ))}
+            </ul>
+          )
         ) : (
-          <ul
-            aria-label="Settings search results"
-            className={cn("flex flex-col", SETTINGS_SIDEBAR_LIST_GAP_CLASS_NAME)}
-          >
-            {results.map((entry) => (
-              <SettingsSearchResultRow key={entry.id} entry={entry} onSelect={handleSelectResult} />
-            ))}
-          </ul>
-        )
-      ) : (
-        <SettingsNavigationComposition
-          activeSection={props.activeSection}
-          onSelectSection={props.onSelectSection}
-        />
+          <SettingsNavigationComposition
+            activeSection={props.activeSection}
+            onSelectSection={props.onSelectSection}
+          />
         )}
       </div>
     </div>

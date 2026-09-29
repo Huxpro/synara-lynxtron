@@ -22,12 +22,12 @@ blocked by the current Desktop DevTool input implementation.
 Web and Lynx-for-Web retained all four requested theme and size coordinates
 against one snapshot:
 
-| State | Mean absolute RGB diff |
-| --- | ---: |
-| Light, 1280x820 | 0.9688 |
-| Dark, 1280x820 | 1.7066 |
-| Light, 1440x900 | 1.0836 |
-| Dark, 1440x900 | 2.0652 |
+| State           | Mean absolute RGB diff |
+| --------------- | ---------------------: |
+| Light, 1280x820 |                 0.9688 |
+| Dark, 1280x820  |                 1.7066 |
+| Light, 1440x900 |                 1.0836 |
+| Dark, 1440x900  |                 2.0652 |
 
 All eight PNGs match the requested logical dimensions at DPR 1, and all error
 logs are empty. Heading, Composer, and project-trigger anchors differ by less
@@ -49,10 +49,10 @@ No speculative transport change was made.
 
 ## Retained Native light cells
 
-| State | Exact PID/client | PNG | Console |
-| --- | --- | --- | --- |
-| Light, 1280x820 | `39893` / `localhost:8902/session 1` | `2560x1640` | empty |
-| Light, 1440x900 | `47584` / `localhost:8901/session 1` | `2880x1800` | empty |
+| State           | Exact PID/client                     | PNG         | Console |
+| --------------- | ------------------------------------ | ----------- | ------- |
+| Light, 1280x820 | `39893` / `localhost:8902/session 1` | `2560x1640` | empty   |
+| Light, 1440x900 | `47584` / `localhost:8901/session 1` | `2880x1800` | empty   |
 
 Both processes loaded
 `apps/lynx/dist/desktop/main.lynx.bundle`, connected to the isolated server,

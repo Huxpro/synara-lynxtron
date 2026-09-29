@@ -3,9 +3,7 @@
 
 import { PullRequestDetailCloseButtonElement } from "~/components/pullRequest/PullRequestDetailCloseCompositionElements";
 
-export function PullRequestDetailCloseComposition(props: {
-  readonly onClose?: () => void;
-}) {
+export function PullRequestDetailCloseComposition(props: { readonly onClose?: () => void }) {
   if (!props.onClose) return null;
 
   return (

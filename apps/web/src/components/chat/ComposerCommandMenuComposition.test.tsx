@@ -12,7 +12,12 @@ vi.mock("~/components/chat/ComposerCommandMenuCompositionElements", () => ({
   }: {
     children: ReactNode;
     emptyText: string | null;
-  }) => <div data-frame>{children}{emptyText ? <p>{emptyText}</p> : null}</div>,
+  }) => (
+    <div data-frame>
+      {children}
+      {emptyText ? <p>{emptyText}</p> : null}
+    </div>
+  ),
   ComposerCommandGroupElement: ({
     children,
     separatorBefore,
@@ -20,9 +25,7 @@ vi.mock("~/components/chat/ComposerCommandMenuCompositionElements", () => ({
     children: ReactNode;
     separatorBefore: boolean;
   }) => <section data-separated={separatorBefore}>{children}</section>,
-  ComposerCommandGroupLabelElement: ({ children }: { children: ReactNode }) => (
-    <h2>{children}</h2>
-  ),
+  ComposerCommandGroupLabelElement: ({ children }: { children: ReactNode }) => <h2>{children}</h2>,
   ComposerCommandRowElement: ({
     active,
     secondaryText,

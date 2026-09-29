@@ -1,10 +1,10 @@
-import type { ProjectId } from '@synara/contracts';
-import { useEffect, useRef, type ReactNode } from '@lynx-js/react';
-import type { InputRef } from '@lynx-js/lynx-ui';
-import filterSvg from '@synara-central-icons/filter-2.svg?raw';
+import type { ProjectId } from "@synara/contracts";
+import { useEffect, useRef, type ReactNode } from "@lynx-js/react";
+import type { InputRef } from "@lynx-js/lynx-ui";
+import filterSvg from "@synara-central-icons/filter-2.svg?raw";
 
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 import {
   Menu,
   MenuGroupLabel,
@@ -12,17 +12,17 @@ import {
   MenuRadioGroup,
   MenuRadioItem,
   MenuTrigger,
-} from '../components/ui/menu';
-import { RefreshCwIcon, SearchIcon } from '../lib/icons.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import './pull-request-route-controls-composition-elements.css';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
-import { useTheme } from './useTheme.lynx';
+} from "../components/ui/menu";
+import { RefreshCwIcon, SearchIcon } from "../lib/icons.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import "./pull-request-route-controls-composition-elements.css";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
+import { useTheme } from "./useTheme.lynx";
 
 type ChildrenProps = { readonly children?: ReactNode };
 
 export function PullRequestRouteHeaderRootElement(
-  props: ChildrenProps & { readonly hostClassName?: string | undefined }
+  props: ChildrenProps & { readonly hostClassName?: string | undefined },
 ) {
   return <view className="SharedPrRouteHeader">{props.children}</view>;
 }
@@ -69,9 +69,7 @@ export function PullRequestRouteHeaderRefreshElement(props: {
       onClick={props.onActivate}
     >
       <RefreshCwIcon
-        className={`SharedPrRouteRefreshIcon${
-          props.refreshing ? ' animate-spin' : ''
-        }`}
+        className={`SharedPrRouteRefreshIcon${props.refreshing ? " animate-spin" : ""}`}
         color={svgColors.iconSecondary}
         size={16}
       />
@@ -115,11 +113,9 @@ function PullRequestFilterPillElement(props: {
   readonly onIntent: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: `SharedPrFilterPill${
-      props.active ? ' SharedPrFilterPill--active' : ''
-    }`,
+    baseClassName: `SharedPrFilterPill${props.active ? " SharedPrFilterPill--active" : ""}`,
     accessibleLabel: props.label,
-    accessibilityValue: props.active ? 'Selected' : undefined,
+    accessibilityValue: props.active ? "Selected" : undefined,
     onActivate: props.onActivate,
     onIntent: props.onIntent,
   });
@@ -131,9 +127,7 @@ function PullRequestFilterPillElement(props: {
       accessibility-state={{ selected: props.active }}
     >
       <text
-        className={`SharedPrFilterPillText${
-          props.active ? ' SharedPrFilterPillText--active' : ''
-        }`}
+        className={`SharedPrFilterPillText${props.active ? " SharedPrFilterPillText--active" : ""}`}
       >
         {props.label}
       </text>
@@ -153,7 +147,7 @@ export function PullRequestSearchElement(props: {
   const inputRef = useRef<InputRef>(null);
   useEffect(() => {
     if (props.value.length === 0) {
-      void inputRef.current?.setValue('').catch(() => undefined);
+      void inputRef.current?.setValue("").catch(() => undefined);
     }
   }, [props.value]);
   return (
@@ -172,9 +166,9 @@ export function PullRequestSearchElement(props: {
         aria-label={props.placeholder}
         onChange={(event) => props.onChange(event.target.value)}
         onKeyDown={(event) => {
-          if (event.key === 'Escape') {
+          if (event.key === "Escape") {
             event.stopPropagation?.();
-            props.onChange('');
+            props.onChange("");
           }
         }}
       />
@@ -196,8 +190,7 @@ export function PullRequestProjectFilterElement(props: {
   readonly onChange: (value: ProjectId | undefined) => void;
 }) {
   const selectedName =
-    props.projects.find(([projectId]) => projectId === props.value)?.[1] ??
-    'All projects';
+    props.projects.find(([projectId]) => projectId === props.value)?.[1] ?? "All projects";
   const active = props.value !== undefined;
   const { semanticIconColor } = useTheme();
   const triggerLabel = `Filter pull requests by project: ${selectedName}`;
@@ -209,40 +202,26 @@ export function PullRequestProjectFilterElement(props: {
           size="icon-sm"
           aria-label={triggerLabel}
           buttonProps={{
-            'aria-pressed': active,
-            'accessibility-state': { selected: active },
+            "aria-pressed": active,
+            "accessibility-state": { selected: active },
           }}
           className="SharedPrProjectFilterTrigger"
         >
           <view className="SharedPrProjectFilterIconSlot">
             <svg
               className="SharedPrProjectFilterIcon"
-              content={colorizeLynxSvg(
-                filterSvg,
-                semanticIconColor('primary')
-              )}
+              content={colorizeLynxSvg(filterSvg, semanticIconColor("primary"))}
             />
           </view>
           {active ? <view className="SharedPrProjectFilterDot" /> : null}
         </Button>
       </MenuTrigger>
-      <MenuPopup
-        side="bottom"
-        align="end"
-        className="SharedPrProjectFilterPopup"
-      >
-        <MenuGroupLabel className="SharedPrProjectFilterLabel">
-          Project
-        </MenuGroupLabel>
-        <scroll-view
-          className="SharedPrProjectFilterList"
-          scroll-orientation="vertical"
-        >
+      <MenuPopup side="bottom" align="end" className="SharedPrProjectFilterPopup">
+        <MenuGroupLabel className="SharedPrProjectFilterLabel">Project</MenuGroupLabel>
+        <scroll-view className="SharedPrProjectFilterList" scroll-orientation="vertical">
           <MenuRadioGroup
-            value={props.value ?? ''}
-            onValueChange={(value) =>
-              props.onChange(value ? (value as ProjectId) : undefined)
-            }
+            value={props.value ?? ""}
+            onValueChange={(value) => props.onChange(value ? (value as ProjectId) : undefined)}
           >
             <MenuRadioItem value="">All projects</MenuRadioItem>
             {props.projects.map(([projectId, title]) => (

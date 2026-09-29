@@ -381,8 +381,7 @@ export function MessageTrail({ items, activeStore, onSelect }: MessageTrailProps
 
   // Read the motion preference once (continuous width morphing is motion).
   useEffect(() => {
-    reducedMotionRef.current =
-      matchMediaSafe("(prefers-reduced-motion: reduce)")?.matches ?? false;
+    reducedMotionRef.current = matchMediaSafe("(prefers-reduced-motion: reduce)")?.matches ?? false;
   }, []);
 
   // Going inert (narrow pane / N<=1): stop the loop and clear transient state.

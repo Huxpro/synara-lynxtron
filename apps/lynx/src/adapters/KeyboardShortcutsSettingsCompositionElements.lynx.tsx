@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
-import { Input } from '../components/ui/input.lynx';
-import './keyboard-shortcuts-settings-composition-elements.css';
+import { Input } from "../components/ui/input.lynx";
+import "./keyboard-shortcuts-settings-composition-elements.css";
 
 type ChildrenProps = {
   readonly children: ReactNode;
@@ -31,7 +31,7 @@ export function KeyboardShortcutsSearchElement({
       aria-label="Search shortcuts"
       onChange={(event) => onQueryChange(event.target.value)}
       onKeyDown={(event) => {
-        if (event.key !== 'Escape' || query.length === 0) return;
+        if (event.key !== "Escape" || query.length === 0) return;
         event.preventDefault?.();
         event.stopPropagation?.();
         onEscape();
@@ -71,9 +71,7 @@ export function KeyboardShortcutsRowElement({
 }) {
   return (
     <view
-      className={`SharedKeyboardShortcutsRow${
-        muted ? ' SharedKeyboardShortcutsRow--muted' : ''
-      }`}
+      className={`SharedKeyboardShortcutsRow${muted ? " SharedKeyboardShortcutsRow--muted" : ""}`}
     >
       {copy}
       {shortcut}

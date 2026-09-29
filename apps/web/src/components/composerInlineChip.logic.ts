@@ -6,11 +6,9 @@ function formatComposerInlineTokenLabel(name: string): string {
   return name
     .split(/[-_]/)
     .map((segment) =>
-      segment.length > 0
-        ? segment.charAt(0).toUpperCase() + segment.slice(1)
-        : segment
+      segment.length > 0 ? segment.charAt(0).toUpperCase() + segment.slice(1) : segment,
     )
-    .join(' ');
+    .join(" ");
 }
 
 export function formatComposerSkillChipLabel(name: string): string {

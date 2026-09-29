@@ -66,9 +66,7 @@ describe("PullRequestListComposition", () => {
     );
 
     expect(markup).toContain("Review requested");
-    expect(markup).toContain(
-      'aria-label="Keep the canonical row anatomy, pull request #42"',
-    );
+    expect(markup).toContain('aria-label="Keep the canonical row anatomy, pull request #42"');
     expect(markup).toContain("Keep the canonical row anatomy");
     expect(markup).toContain("Project One");
     expect(markup).toContain("acme/widgets");

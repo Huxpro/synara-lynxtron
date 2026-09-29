@@ -1,31 +1,20 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 import type {
   SettingsGeneralKey,
   SettingsGeneralOption,
-} from '@synara-web/components/settings/SettingsGeneralComposition.logic';
+} from "@synara-web/components/settings/SettingsGeneralComposition.logic";
 
-import { ChevronDownIcon } from '../lib/icons.lynx';
-import { Button } from '../components/ui/button';
-import { Switch } from '../components/ui/switch.lynx';
-import {
-  OpenAIProviderIcon,
-  hasLynxProviderIcon,
-} from '../components/OpenAIProviderIcon.lynx';
-import {
-  Menu,
-  MenuPopup,
-  MenuRadioGroup,
-  MenuRadioItem,
-  MenuTrigger,
-} from '../components/ui/menu';
-import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
-import { SettingsResetIcon } from './SettingsResetIcon.lynx';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
-import { settingRowAnchorId } from '@synara-web/settingsNavigation';
+import { ChevronDownIcon } from "../lib/icons.lynx";
+import { Button } from "../components/ui/button";
+import { Switch } from "../components/ui/switch.lynx";
+import { OpenAIProviderIcon, hasLynxProviderIcon } from "../components/OpenAIProviderIcon.lynx";
+import { Menu, MenuPopup, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "../components/ui/menu";
+import { SettingsHeadingElement } from "./SettingsHeadingElement.lynx";
+import { SettingsResetIcon } from "./SettingsResetIcon.lynx";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
+import { settingRowAnchorId } from "@synara-web/settingsNavigation";
 
-export function SettingsGeneralRootElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SettingsGeneralRootElement(props: { readonly children?: ReactNode }) {
   return <view className="SharedSettingsGeneralRoot">{props.children}</view>;
 }
 
@@ -54,7 +43,7 @@ export function SettingsGeneralRowElement(props: {
   readonly children?: ReactNode;
 }) {
   const resetInteraction = useLynxInteractiveState({
-    baseClassName: 'SharedSettingsGeneralReset',
+    baseClassName: "SharedSettingsGeneralReset",
     accessibleLabel: `Reset ${props.resetLabel} to default`,
     onActivate: props.onReset,
   });
@@ -62,7 +51,7 @@ export function SettingsGeneralRowElement(props: {
     <view
       id={settingRowAnchorId(props.title)}
       className={`SharedSettingsGeneralRow${
-        props.terminal ? ' SharedSettingsGeneralRow--terminal' : ''
+        props.terminal ? " SharedSettingsGeneralRow--terminal" : ""
       }`}
     >
       <view className="SharedSettingsGeneralRowCopy">
@@ -80,9 +69,7 @@ export function SettingsGeneralRowElement(props: {
             </view>
           ) : null}
         </view>
-        <text className="SharedSettingsGeneralRowDescription">
-          {props.description}
-        </text>
+        <text className="SharedSettingsGeneralRowDescription">{props.description}</text>
       </view>
       <view className="SharedSettingsGeneralRowControl">{props.children}</view>
     </view>
@@ -96,7 +83,14 @@ export function SettingsGeneralBooleanControlElement(props: {
   readonly onChange: (checked: boolean) => void;
 }) {
   return (
-    <Switch checked={props.checked} disabled={props.disabled} ariaLabel={props.ariaLabel} className={`SharedSettingsGeneralSwitch${props.checked ? ' SharedSettingsGeneralSwitch--on' : ''}${props.disabled ? ' SharedSettingsGeneralSwitch--disabled' : ''}`} thumbClassName="SharedSettingsGeneralSwitchThumb" onCheckedChange={props.onChange} />
+    <Switch
+      checked={props.checked}
+      disabled={props.disabled}
+      ariaLabel={props.ariaLabel}
+      className={`SharedSettingsGeneralSwitch${props.checked ? " SharedSettingsGeneralSwitch--on" : ""}${props.disabled ? " SharedSettingsGeneralSwitch--disabled" : ""}`}
+      thumbClassName="SharedSettingsGeneralSwitchThumb"
+      onCheckedChange={props.onChange}
+    />
   );
 }
 
@@ -127,10 +121,8 @@ export function SettingsGeneralSelectControlElement(props: {
   readonly options: readonly SettingsGeneralOption[];
   readonly onChange: (value: string) => void;
 }) {
-  const selected =
-    props.options.find((option) => option.value === props.value) ??
-    props.options[0];
-  const provider = props.settingKey === 'defaultProvider';
+  const selected = props.options.find((option) => option.value === props.value) ?? props.options[0];
+  const provider = props.settingKey === "defaultProvider";
 
   return (
     <Menu>
@@ -138,14 +130,11 @@ export function SettingsGeneralSelectControlElement(props: {
         <Button
           variant="outline"
           className="SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--general"
-          buttonProps={{ 'accessibility-element': false }}
+          buttonProps={{ "accessibility-element": false }}
         >
           <view className="SharedSettingsGeneralSelectContent">
             {provider && selected ? (
-              <SettingsGeneralProviderOption
-                provider={selected.value}
-                label={selected.label}
-              />
+              <SettingsGeneralProviderOption provider={selected.value} label={selected.label} />
             ) : (
               <text className="SharedSettingsGeneralSelectLabel">
                 {selected?.label ?? props.value}
@@ -159,19 +148,12 @@ export function SettingsGeneralSelectControlElement(props: {
           </view>
         </Button>
       </MenuTrigger>
-      <MenuPopup
-        side="bottom"
-        align="end"
-        className="SharedSettingsGeneralSelectPopup"
-      >
+      <MenuPopup side="bottom" align="end" className="SharedSettingsGeneralSelectPopup">
         <MenuRadioGroup value={props.value} onValueChange={props.onChange}>
           {props.options.map((option) => (
             <MenuRadioItem key={option.value} value={option.value}>
               {provider ? (
-                <SettingsGeneralProviderOption
-                  provider={option.value}
-                  label={option.label}
-                />
+                <SettingsGeneralProviderOption provider={option.value} label={option.label} />
               ) : (
                 option.label
               )}

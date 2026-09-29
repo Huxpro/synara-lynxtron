@@ -19,9 +19,7 @@ export function ChatSurfaceHeaderIdentity(props: {
   readonly onRename?: () => void;
 }) {
   return (
-    <ChatSurfaceHeaderIdentityRootElement
-      highlighted={props.highlighted ?? false}
-    >
+    <ChatSurfaceHeaderIdentityRootElement highlighted={props.highlighted ?? false}>
       {props.icon ? (
         <ChatSurfaceHeaderIdentityIconElement title={props.iconTitle}>
           {props.icon}

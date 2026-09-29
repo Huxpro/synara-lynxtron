@@ -11,12 +11,8 @@
     "The same physical SettingsBehaviorPanel, SettingsRow, SettingsSection, taxonomy, and class-token sources are compiled by Lynx.",
     "Only browser/native host elements are SPLIT below the shared composition; no copied JSX counts as reuse."
   ],
-  "screenSet": [
-    "settings-behavior-reference"
-  ],
-  "lynxEntries": [
-    "src/app/FidelityReferencePage.tsx"
-  ],
+  "screenSet": ["settings-behavior-reference"],
+  "lynxEntries": ["src/app/FidelityReferencePage.tsx"],
   "patchedSources": [],
   "hardIslandPackages": [],
   "classificationRules": [
@@ -37,12 +33,8 @@
       "label": "Settings > Behavior reference",
       "route": "/settings?section=behavior",
       "reference": "route-owned Runtime behavior + Safety confirmations panel",
-      "webEntries": [
-        "apps/web/src/components/settings/SettingsBehaviorPanel.tsx"
-      ],
-      "lynxConceptualEntries": [
-        "src/app/FidelityReferencePage.tsx"
-      ]
+      "webEntries": ["apps/web/src/components/settings/SettingsBehaviorPanel.tsx"],
+      "lynxConceptualEntries": ["src/app/FidelityReferencePage.tsx"]
     }
   ]
 }

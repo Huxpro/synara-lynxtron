@@ -1,124 +1,119 @@
-import { useQuery } from '@tanstack/react-query';
-import { useState } from '@lynx-js/react';
-import pencilSvg from '@synara-central-icons/pencil.svg?raw';
-import shareSvg from '@synara-central-icons/share-os.svg?raw';
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "@lynx-js/react";
+import pencilSvg from "@synara-central-icons/pencil.svg?raw";
+import shareSvg from "@synara-central-icons/share-os.svg?raw";
 import type {
   ProfileHeatmapCell,
   ProfileStats,
   ProfileTokenStats,
   ProviderKind,
-} from '@synara/contracts';
+} from "@synara/contracts";
 import {
   selectProfileHeatmap,
   selectProfileModelUsage,
   selectProfileTopProvider,
-} from '@synara-web/components/profile/profileSelectors';
+} from "@synara-web/components/profile/profileSelectors";
 
-import { Button } from '../components/ui/button';
-import { Badge } from '../components/ui/badge.lynx';
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge.lynx";
 import {
   Dialog,
   DialogFooter,
   DialogPanel,
   DialogPopup,
   DialogTitle,
-} from '../components/ui/dialog.lynx';
-import { Input } from '../components/ui/input.lynx';
-import {
-  OpenAIProviderIcon,
-  hasLynxProviderIcon,
-} from '../components/OpenAIProviderIcon.lynx';
-import {
-  fetchProfileStats,
-  fetchProfileTokenStats,
-} from '../data/synaraClient.lynx';
-import { ProfileUsageKindIcon } from './ProfileUsageKindIcon.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { ScreenshotIcon, Trash2 } from '../lib/icons.lynx';
-import { webStorage } from '../platform/storage';
-import { SettingsHeadingElement } from '../adapters/SettingsHeadingElement.lynx';
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
-import { useTheme } from '../adapters/useTheme.lynx';
+} from "../components/ui/dialog.lynx";
+import { Input } from "../components/ui/input.lynx";
+import { OpenAIProviderIcon, hasLynxProviderIcon } from "../components/OpenAIProviderIcon.lynx";
+import { fetchProfileStats, fetchProfileTokenStats } from "../data/synaraClient.lynx";
+import { ProfileUsageKindIcon } from "./ProfileUsageKindIcon.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { ScreenshotIcon, Trash2 } from "../lib/icons.lynx";
+import { webStorage } from "../platform/storage";
+import { SettingsHeadingElement } from "../adapters/SettingsHeadingElement.lynx";
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import { useTheme } from "../adapters/useTheme.lynx";
 import {
   createProfileShareCardSvg,
   PROFILE_SHARE_CARD_HEIGHT,
   PROFILE_SHARE_CARD_WIDTH,
-} from './profileShareCard.lynx';
+} from "./profileShareCard.lynx";
 
-import './settings-profile-panel.css';
+import "./settings-profile-panel.css";
 
 const PROFILE_HEATMAP_COLUMNS = 40;
-const PROFILE_NAME_STORAGE_KEY = 'synara:profile:name:v1';
-const PROFILE_HANDLE_STORAGE_KEY = 'synara:profile:handle:v1';
-const PROFILE_AVATAR_COLOR_STORAGE_KEY = 'synara:profile:avatarColor:v1';
-const PROFILE_AVATAR_IMAGE_STORAGE_KEY = 'synara:profile:avatarImage:v1';
+const PROFILE_NAME_STORAGE_KEY = "synara:profile:name:v1";
+const PROFILE_HANDLE_STORAGE_KEY = "synara:profile:handle:v1";
+const PROFILE_AVATAR_COLOR_STORAGE_KEY = "synara:profile:avatarColor:v1";
+const PROFILE_AVATAR_IMAGE_STORAGE_KEY = "synara:profile:avatarImage:v1";
 const PROFILE_AVATAR_COLORS = [
-  '#22c55e',
-  '#3b82f6',
-  '#8b5cf6',
-  '#ec4899',
-  '#f59e0b',
-  '#ef4444',
-  '#14b8a6',
-  '#64748b',
+  "#22c55e",
+  "#3b82f6",
+  "#8b5cf6",
+  "#ec4899",
+  "#f59e0b",
+  "#ef4444",
+  "#14b8a6",
+  "#64748b",
 ] as const;
 const PROFILE_MONTHS = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ] as const;
 
 type ProfileHeatmapSlot =
-  | { readonly kind: 'cell'; readonly cell: ProfileHeatmapCell }
-  | { readonly kind: 'pad'; readonly key: string };
+  | { readonly kind: "cell"; readonly cell: ProfileHeatmapCell }
+  | { readonly kind: "pad"; readonly key: string };
 
 function formatCompact(value: number | null | undefined): string {
   if (value === null || value === undefined || !Number.isFinite(value)) {
-    return '—';
+    return "—";
   }
   const absolute = Math.abs(value);
   const compact = (divisor: number, suffix: string) => {
     const rounded = Math.round((value / divisor) * 10) / 10;
     return `${Number.isInteger(rounded) ? rounded : rounded.toFixed(1)}${suffix}`;
   };
-  if (absolute >= 1_000_000_000) return compact(1_000_000_000, 'bn');
-  if (absolute >= 1_000_000) return compact(1_000_000, 'm');
-  if (absolute >= 1_000) return compact(1_000, 'k');
+  if (absolute >= 1_000_000_000) return compact(1_000_000_000, "bn");
+  if (absolute >= 1_000_000) return compact(1_000_000, "m");
+  if (absolute >= 1_000) return compact(1_000, "k");
   return `${Math.round(value)}`;
 }
 
 function formatNumber(value: number | null | undefined): string {
   if (value === null || value === undefined || !Number.isFinite(value)) {
-    return '—';
+    return "—";
   }
   const rounded = `${Math.round(value)}`;
-  const sign = rounded.startsWith('-') ? '-' : '';
+  const sign = rounded.startsWith("-") ? "-" : "";
   const digits = sign ? rounded.slice(1) : rounded;
-  return `${sign}${digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+  return `${sign}${digits.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 }
 
 function formatDays(value: number): string {
-  return `${formatNumber(value)} ${value === 1 ? 'day' : 'days'}`;
+  return `${formatNumber(value)} ${value === 1 ? "day" : "days"}`;
 }
 
 function toDisplayName(value: string): string {
-  const cleaned = value.replace(/[._-]+/g, ' ').trim().replace(/\s+/g, ' ');
-  if (!cleaned) return 'Synara';
+  const cleaned = value
+    .replace(/[._-]+/g, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+  if (!cleaned) return "Synara";
   return cleaned
-    .split(' ')
-    .map((part) =>
-      part.length > 0 ? `${part[0]!.toUpperCase()}${part.slice(1)}` : part
-    )
-    .join(' ');
+    .split(" ")
+    .map((part) => (part.length > 0 ? `${part[0]!.toUpperCase()}${part.slice(1)}` : part))
+    .join(" ");
 }
 
 function utcOffsetMinutes(): number {
@@ -126,40 +121,40 @@ function utcOffsetMinutes(): number {
 }
 
 function providerLabel(provider: ProviderKind | null): string {
-  if (!provider) return '—';
+  if (!provider) return "—";
   switch (provider) {
-    case 'codex':
-      return 'Codex';
-    case 'claudeAgent':
-      return 'Claude';
-    case 'cursor':
-      return 'Cursor';
-    case 'antigravity':
-      return 'Antigravity';
-    case 'grok':
-      return 'Grok';
-    case 'droid':
-      return 'Droid';
-    case 'kilo':
-      return 'Kilo';
-    case 'opencode':
-      return 'OpenCode';
-    case 'pi':
-      return 'Pi';
+    case "codex":
+      return "Codex";
+    case "claudeAgent":
+      return "Claude";
+    case "cursor":
+      return "Cursor";
+    case "antigravity":
+      return "Antigravity";
+    case "grok":
+      return "Grok";
+    case "droid":
+      return "Droid";
+    case "kilo":
+      return "Kilo";
+    case "opencode":
+      return "OpenCode";
+    case "pi":
+      return "Pi";
   }
 }
 
 function hourLabel(hour: number | null): string {
-  if (hour === null) return '—';
+  if (hour === null) return "—";
   const normalized = ((hour % 24) + 24) % 24;
-  if (normalized === 0) return '12 AM';
-  if (normalized === 12) return '12 PM';
+  if (normalized === 0) return "12 AM";
+  if (normalized === 12) return "12 PM";
   return normalized < 12 ? `${normalized} AM` : `${normalized - 12} PM`;
 }
 
-function projectLabel(project: ProfileStats['mostWorkedProject']): string {
-  if (!project) return '—';
-  const promptLabel = project.promptCount === 1 ? 'prompt' : 'prompts';
+function projectLabel(project: ProfileStats["mostWorkedProject"]): string {
+  if (!project) return "—";
+  const promptLabel = project.promptCount === 1 ? "prompt" : "prompts";
   return `${project.title} · ${formatNumber(project.promptCount)} ${promptLabel}`;
 }
 
@@ -168,12 +163,12 @@ function capitalize(value: string): string {
 }
 
 export function normalizeProfileHandle(value: string): string {
-  const bare = value.trim().replace(/^@+/, '').replace(/\s+/g, '');
-  return bare ? `@${bare}` : '';
+  const bare = value.trim().replace(/^@+/, "").replace(/\s+/g, "");
+  return bare ? `@${bare}` : "";
 }
 
 function storedProfileValue(key: string): string {
-  return webStorage.getItem(key)?.trim() ?? '';
+  return webStorage.getItem(key)?.trim() ?? "";
 }
 
 function persistProfileValue(key: string, value: string): void {
@@ -207,10 +202,10 @@ function ProfileColorOption(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: `SettingsProfileColorOption${
-      props.active ? ' SettingsProfileColorOption--active' : ''
+      props.active ? " SettingsProfileColorOption--active" : ""
     }`,
     accessibleLabel: `Use ${props.color}`,
-    accessibilityValue: props.active ? 'Selected' : 'Not selected',
+    accessibilityValue: props.active ? "Selected" : "Not selected",
     onActivate: props.onSelect,
   });
   return (
@@ -223,19 +218,19 @@ function ProfileColorOption(props: {
 }
 
 export function heatmapColumns(
-  cells: readonly ProfileHeatmapCell[]
+  cells: readonly ProfileHeatmapCell[],
 ): readonly (readonly ProfileHeatmapSlot[])[] {
   const visibleCells = cells.slice(-(PROFILE_HEATMAP_COLUMNS * 7));
   const slots: ProfileHeatmapSlot[] = [];
   const firstCell = visibleCells[0];
   for (let index = 0; index < (firstCell?.weekday ?? 0); index += 1) {
-    slots.push({ kind: 'pad', key: `lead-${index}` });
+    slots.push({ kind: "pad", key: `lead-${index}` });
   }
   for (const cell of visibleCells) {
-    slots.push({ kind: 'cell', cell });
+    slots.push({ kind: "cell", cell });
   }
   while (slots.length % 7 !== 0) {
-    slots.push({ kind: 'pad', key: `tail-${slots.length}` });
+    slots.push({ kind: "pad", key: `tail-${slots.length}` });
   }
   const columns: ProfileHeatmapSlot[][] = [];
   for (let index = 0; index < slots.length; index += 7) {
@@ -245,19 +240,19 @@ export function heatmapColumns(
 }
 
 export function heatmapMonthLabels(
-  columns: readonly (readonly ProfileHeatmapSlot[])[]
+  columns: readonly (readonly ProfileHeatmapSlot[])[],
 ): readonly string[] {
   let previousMonth = -1;
   return columns.map((column) => {
     const firstCell = column.find(
-      (slot): slot is Extract<ProfileHeatmapSlot, { readonly kind: 'cell' }> =>
-        slot.kind === 'cell'
+      (slot): slot is Extract<ProfileHeatmapSlot, { readonly kind: "cell" }> =>
+        slot.kind === "cell",
     )?.cell;
-    if (!firstCell) return '';
-    const month = Number(firstCell.day.split('-')[1]) - 1;
-    if (month < 0 || month === previousMonth) return '';
+    if (!firstCell) return "";
+    const month = Number(firstCell.day.split("-")[1]) - 1;
+    if (month < 0 || month === previousMonth) return "";
     previousMonth = month;
-    return PROFILE_MONTHS[month] ?? '';
+    return PROFILE_MONTHS[month] ?? "";
   });
 }
 
@@ -279,10 +274,7 @@ function StatTile(props: {
   );
 }
 
-function InsightRow(props: {
-  readonly label: string;
-  readonly value: string;
-}) {
+function InsightRow(props: { readonly label: string; readonly value: string }) {
   return (
     <view
       className="SettingsProfileInsightRow"
@@ -298,17 +290,13 @@ function InsightRow(props: {
   );
 }
 
-function ProfileProviderIcon(props: {
-  readonly provider: ProviderKind | 'unknown';
-}) {
+function ProfileProviderIcon(props: { readonly provider: ProviderKind | "unknown" }) {
   return hasLynxProviderIcon(props.provider) ? (
     <OpenAIProviderIcon provider={props.provider} />
   ) : (
     <view className="SettingsProfileProviderFallback">
       <text className="SettingsProfileProviderFallbackText">
-        {props.provider === 'unknown'
-          ? '•'
-          : providerLabel(props.provider).slice(0, 1)}
+        {props.provider === "unknown" ? "•" : providerLabel(props.provider).slice(0, 1)}
       </text>
     </view>
   );
@@ -328,40 +316,40 @@ function ProfileContent(props: {
   const defaultName = toDisplayName(props.stats.identity.homeDirBasename);
   const defaultHandle = props.stats.identity.defaultHandle;
   const [displayName, setDisplayName] = useState(
-    () => storedProfileValue(PROFILE_NAME_STORAGE_KEY) || defaultName
+    () => storedProfileValue(PROFILE_NAME_STORAGE_KEY) || defaultName,
   );
   const [handle, setHandle] = useState(
-    () => normalizeProfileHandle(storedProfileValue(PROFILE_HANDLE_STORAGE_KEY)) || defaultHandle
+    () => normalizeProfileHandle(storedProfileValue(PROFILE_HANDLE_STORAGE_KEY)) || defaultHandle,
   );
   const [avatarColor, setAvatarColor] = useState(
-    () => storedProfileValue(PROFILE_AVATAR_COLOR_STORAGE_KEY) || PROFILE_AVATAR_COLORS[0]
+    () => storedProfileValue(PROFILE_AVATAR_COLOR_STORAGE_KEY) || PROFILE_AVATAR_COLORS[0],
   );
   const [avatarImage, setAvatarImage] = useState(
-    () => storedProfileValue(PROFILE_AVATAR_IMAGE_STORAGE_KEY) || null
+    () => storedProfileValue(PROFILE_AVATAR_IMAGE_STORAGE_KEY) || null,
   );
   const [editOpen, setEditOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [shareStatus, setShareStatus] = useState<{
-    readonly intent: 'success' | 'neutral' | 'error';
+    readonly intent: "success" | "neutral" | "error";
     readonly message: string;
   } | null>(null);
   const [draftName, setDraftName] = useState(displayName);
-  const [draftHandle, setDraftHandle] = useState(handle.replace(/^@+/, ''));
+  const [draftHandle, setDraftHandle] = useState(handle.replace(/^@+/, ""));
   const [draftColor, setDraftColor] = useState(avatarColor);
   const [draftImage, setDraftImage] = useState<string | null>(avatarImage);
   const [editError, setEditError] = useState<string | null>(null);
   const providerValue = topProvider.provider
     ? `${providerLabel(topProvider.provider)}${
-        topProvider.percent === null ? '' : ` · ${topProvider.percent}%`
+        topProvider.percent === null ? "" : ` · ${topProvider.percent}%`
       }`
-    : '—';
+    : "—";
   const reasoningValue = props.stats.insights.topReasoning
     ? `${capitalize(props.stats.insights.topReasoning)}${
         props.stats.insights.topReasoningPercent === null
-          ? ''
+          ? ""
           : ` · ${props.stats.insights.topReasoningPercent}%`
       }`
-    : '—';
+    : "—";
   const shareCardSvg = createProfileShareCardSvg({
     stats: props.stats,
     tokenStats: props.tokenStats,
@@ -370,74 +358,68 @@ function ProfileContent(props: {
     avatarColor,
   });
   const copyShareCard = () => {
-    'background only';
+    "background only";
     setShareStatus(null);
-    return import(/* webpackMode: "eager" */ '../platform/clipboard')
-      .then(({ exportProfileShareCard }) =>
-        exportProfileShareCard({ svg: shareCardSvg })
-      )
+    return import(/* webpackMode: "eager" */ "../platform/clipboard")
+      .then(({ exportProfileShareCard }) => exportProfileShareCard({ svg: shareCardSvg }))
       .then((result) => {
         setShareStatus({
-          intent: result.ok ? 'success' : 'error',
+          intent: result.ok ? "success" : "error",
           message: result.ok
-            ? 'Copied image to clipboard.'
-            : 'Image copy unavailable. Use Save instead.',
+            ? "Copied image to clipboard."
+            : "Image copy unavailable. Use Save instead.",
         });
         return result.ok;
       })
       .catch((error) => {
-        console.warn('[profile] share card copy failed', String(error));
+        console.warn("[profile] share card copy failed", String(error));
         setShareStatus({
-          intent: 'error',
-          message: 'Image copy unavailable. Use Save instead.',
+          intent: "error",
+          message: "Image copy unavailable. Use Save instead.",
         });
         return false;
       });
   };
   const saveShareCard = () => {
-    'background only';
+    "background only";
     setShareStatus(null);
-    void import(/* webpackMode: "eager" */ '../platform/dialogs')
+    void import(/* webpackMode: "eager" */ "../platform/dialogs")
       .then(({ dialogs }) =>
         dialogs.saveProfileShareCard({
           defaultFilename: `synara-stats-${props.stats.timezone.today}.png`,
           svg: shareCardSvg,
-        })
+        }),
       )
       .then((path) =>
         setShareStatus({
-          intent: path ? 'success' : 'neutral',
-          message: path ? 'Saved PNG.' : 'Save cancelled.',
-        })
+          intent: path ? "success" : "neutral",
+          message: path ? "Saved PNG." : "Save cancelled.",
+        }),
       )
-      .catch((error) =>
-        setShareStatus({ intent: 'error', message: String(error) })
-      );
+      .catch((error) => setShareStatus({ intent: "error", message: String(error) }));
   };
-  const shareTo = async (target: 'x' | 'linkedin' | 'reddit') => {
-    'background only';
+  const shareTo = async (target: "x" | "linkedin" | "reddit") => {
+    "background only";
     const urls = {
-      x: 'https://x.com/intent/post',
-      linkedin: 'https://www.linkedin.com/sharing/share-offsite/',
-      reddit: 'https://www.reddit.com/submit',
+      x: "https://x.com/intent/post",
+      linkedin: "https://www.linkedin.com/sharing/share-offsite/",
+      reddit: "https://www.reddit.com/submit",
     } as const;
     await copyShareCard();
     try {
-      const { platformWindow } = await import(
-        /* webpackMode: "eager" */ '../platform/window'
-      );
+      const { platformWindow } = await import(/* webpackMode: "eager" */ "../platform/window");
       const opened = await platformWindow.openExternal(urls[target]);
-      if (!opened) throw new Error('Host did not open the share page.');
+      if (!opened) throw new Error("Host did not open the share page.");
     } catch {
       setShareStatus({
-        intent: 'error',
-        message: 'Could not open the share page.',
+        intent: "error",
+        message: "Could not open the share page.",
       });
     }
   };
   const openEdit = () => {
     setDraftName(displayName);
-    setDraftHandle(handle.replace(/^@+/, ''));
+    setDraftHandle(handle.replace(/^@+/, ""));
     setDraftColor(avatarColor);
     setDraftImage(avatarImage);
     setEditError(null);
@@ -450,25 +432,19 @@ function ProfileContent(props: {
     setHandle(nextHandle);
     setAvatarColor(draftColor);
     setAvatarImage(draftImage);
-    persistProfileValue(
-      PROFILE_NAME_STORAGE_KEY,
-      nextName === defaultName ? '' : nextName
-    );
-    persistProfileValue(
-      PROFILE_HANDLE_STORAGE_KEY,
-      nextHandle === defaultHandle ? '' : nextHandle
-    );
+    persistProfileValue(PROFILE_NAME_STORAGE_KEY, nextName === defaultName ? "" : nextName);
+    persistProfileValue(PROFILE_HANDLE_STORAGE_KEY, nextHandle === defaultHandle ? "" : nextHandle);
     persistProfileValue(
       PROFILE_AVATAR_COLOR_STORAGE_KEY,
-      draftColor === PROFILE_AVATAR_COLORS[0] ? '' : draftColor
+      draftColor === PROFILE_AVATAR_COLORS[0] ? "" : draftColor,
     );
-    persistProfileValue(PROFILE_AVATAR_IMAGE_STORAGE_KEY, draftImage ?? '');
+    persistProfileValue(PROFILE_AVATAR_IMAGE_STORAGE_KEY, draftImage ?? "");
     setEditOpen(false);
   };
   const pickProfileImage = () => {
-    'background only';
+    "background only";
     setEditError(null);
-    void import(/* webpackMode: "eager" */ '../platform/dialogs')
+    void import(/* webpackMode: "eager" */ "../platform/dialogs")
       .then(({ dialogs }) => dialogs.pickProfileImage())
       .then((image) => {
         if (image?.dataUrl) setDraftImage(image.dataUrl);
@@ -502,10 +478,7 @@ function ProfileContent(props: {
         </Button>
       </view>
       <view className="SettingsProfileIdentity">
-        <view
-          className="SettingsProfileAvatar"
-          style={{ backgroundColor: avatarColor }}
-        >
+        <view className="SettingsProfileAvatar" style={{ backgroundColor: avatarColor }}>
           {avatarImage ? (
             <image
               className="SettingsProfileAvatarImage"
@@ -514,9 +487,7 @@ function ProfileContent(props: {
               accessibility-element={false}
             />
           ) : (
-            <text className="SettingsProfileAvatarText">
-              {props.stats.identity.initials}
-            </text>
+            <text className="SettingsProfileAvatarText">{props.stats.identity.initials}</text>
           )}
         </view>
         <view className="SettingsProfileIdentityCopy">
@@ -524,11 +495,11 @@ function ProfileContent(props: {
             {displayName}
           </SettingsHeadingElement>
           <view className="SettingsProfileHandleLine">
-            <text className="SettingsProfileHandle">
-              {handle}
-            </text>
+            <text className="SettingsProfileHandle">{handle}</text>
             <text className="SettingsProfileDot">·</text>
-            <Badge className="SettingsProfileBadge" shape="capsule" variant="outline">Synara</Badge>
+            <Badge className="SettingsProfileBadge" shape="capsule" variant="outline">
+              Synara
+            </Badge>
           </view>
         </view>
       </view>
@@ -537,20 +508,12 @@ function ProfileContent(props: {
         <StatTile
           index={0}
           label="Lifetime tokens"
-          value={
-            props.tokensPending
-              ? '…'
-              : formatCompact(props.tokenStats?.lifetimeTotalTokens)
-          }
+          value={props.tokensPending ? "…" : formatCompact(props.tokenStats?.lifetimeTotalTokens)}
         />
         <StatTile
           index={1}
           label="Peak day"
-          value={
-            props.tokensPending
-              ? '…'
-              : formatCompact(props.tokenStats?.peakDayTokens)
-          }
+          value={props.tokensPending ? "…" : formatCompact(props.tokenStats?.peakDayTokens)}
         />
         <StatTile
           index={2}
@@ -580,12 +543,9 @@ function ProfileContent(props: {
         >
           <view className="SettingsProfileHeatmapGrid">
             {activityColumns.map((column, columnIndex) => (
-              <view
-                className="SettingsProfileHeatmapColumn"
-                key={`profile-heatmap-${columnIndex}`}
-              >
+              <view className="SettingsProfileHeatmapColumn" key={`profile-heatmap-${columnIndex}`}>
                 {column.map((slot) =>
-                  slot.kind === 'cell' ? (
+                  slot.kind === "cell" ? (
                     <view
                       className={`SettingsProfileHeatmapCell SettingsProfileHeatmapCell--${slot.cell.intensity}`}
                       key={slot.cell.day}
@@ -595,17 +555,14 @@ function ProfileContent(props: {
                       className="SettingsProfileHeatmapCell SettingsProfileHeatmapCell--pad"
                       key={slot.key}
                     />
-                  )
+                  ),
                 )}
               </view>
             ))}
           </view>
           <view className="SettingsProfileHeatmapMonths">
             {activityMonths.map((month, index) => (
-              <text
-                className="SettingsProfileHeatmapMonth"
-                key={`profile-month-${index}`}
-              >
+              <text className="SettingsProfileHeatmapMonth" key={`profile-month-${index}`}>
                 {month}
               </text>
             ))}
@@ -620,10 +577,7 @@ function ProfileContent(props: {
           </SettingsHeadingElement>
           <view className="SettingsProfileList">
             <InsightRow label="Most used provider" value={providerValue} />
-            <InsightRow
-              label="Most used reasoning"
-              value={reasoningValue}
-            />
+            <InsightRow label="Most used reasoning" value={reasoningValue} />
             <InsightRow
               label="Most active hour"
               value={hourLabel(props.stats.activeHours.startHour)}
@@ -675,9 +629,7 @@ function ProfileContent(props: {
                 </view>
               ))
             ) : (
-              <text className="SettingsProfileEmpty">
-                No skills or agents used yet.
-              </text>
+              <text className="SettingsProfileEmpty">No skills or agents used yet.</text>
             )}
           </view>
         </view>
@@ -704,9 +656,7 @@ function ProfileContent(props: {
                       {entry.model}
                     </text>
                   </view>
-                  <text className="SettingsProfileModelPercent">
-                    {entry.percent}%
-                  </text>
+                  <text className="SettingsProfileModelPercent">{entry.percent}%</text>
                 </view>
                 <view className="SettingsProfileModelTrack">
                   <view
@@ -719,25 +669,15 @@ function ProfileContent(props: {
               </view>
             ))
           ) : (
-            <text className="SettingsProfileEmpty">
-              No model activity yet.
-            </text>
+            <text className="SettingsProfileEmpty">No model activity yet.</text>
           )}
         </view>
       </view>
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogPopup
-          showCloseButton={false}
-          className="SettingsProfileEditDialog"
-        >
-          <DialogTitle className="SettingsProfileEditTitle">
-            Edit profile
-          </DialogTitle>
+        <DialogPopup showCloseButton={false} className="SettingsProfileEditDialog">
+          <DialogTitle className="SettingsProfileEditTitle">Edit profile</DialogTitle>
           <DialogPanel className="SettingsProfileEditBody">
-            <view
-              className="SettingsProfileEditAvatar"
-              style={{ backgroundColor: draftColor }}
-            >
+            <view className="SettingsProfileEditAvatar" style={{ backgroundColor: draftColor }}>
               {draftImage ? (
                 <image
                   className="SettingsProfileEditAvatarImage"
@@ -764,7 +704,7 @@ function ProfileContent(props: {
                   size={14}
                 />
                 <text className="LxButton__text">
-                  {draftImage ? 'Replace photo' : 'Upload photo'}
+                  {draftImage ? "Replace photo" : "Upload photo"}
                 </text>
               </Button>
               {draftImage ? (
@@ -794,9 +734,7 @@ function ProfileContent(props: {
               ))}
             </view>
             {draftImage ? (
-              <text className="SettingsProfilePhotoHint">
-                Colors apply when no photo is set.
-              </text>
+              <text className="SettingsProfilePhotoHint">Colors apply when no photo is set.</text>
             ) : null}
             {editError ? (
               <text
@@ -830,9 +768,7 @@ function ProfileContent(props: {
                     placeholder="username"
                     accessibility-label="Username"
                     onChange={(event) =>
-                      setDraftHandle(
-                        event.target.value.replace(/^@+/, '').replace(/\s+/g, '')
-                      )
+                      setDraftHandle(event.target.value.replace(/^@+/, "").replace(/\s+/g, ""))
                     }
                   />
                 </view>
@@ -847,10 +783,7 @@ function ProfileContent(props: {
             >
               Cancel
             </Button>
-            <Button
-              className="SettingsProfileEditFooterButton"
-              onClick={saveEdit}
-            >
+            <Button className="SettingsProfileEditFooterButton" onClick={saveEdit}>
               Save
             </Button>
           </DialogFooter>
@@ -858,9 +791,7 @@ function ProfileContent(props: {
       </Dialog>
       <Dialog open={shareOpen} onOpenChange={setShareOpen}>
         <DialogPopup className="SettingsProfileShareDialog">
-          <DialogTitle className="SettingsProfileShareTitle">
-            Share your activity
-          </DialogTitle>
+          <DialogTitle className="SettingsProfileShareTitle">Share your activity</DialogTitle>
           <DialogPanel className="SettingsProfileShareBody">
             <view
               className="SettingsProfileSharePreview"
@@ -868,41 +799,22 @@ function ProfileContent(props: {
                 aspectRatio: `${PROFILE_SHARE_CARD_WIDTH} / ${PROFILE_SHARE_CARD_HEIGHT}`,
               }}
             >
-              <svg
-                className="SettingsProfileShareCard"
-                content={shareCardSvg}
-              />
+              <svg className="SettingsProfileShareCard" content={shareCardSvg} />
             </view>
             <view className="SettingsProfileShareActions">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => void copyShareCard()}
-              >
+              <Button size="sm" variant="outline" onClick={() => void copyShareCard()}>
                 Copy
               </Button>
               <Button size="sm" variant="outline" onClick={saveShareCard}>
                 Save
               </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => void shareTo('x')}
-              >
+              <Button size="sm" variant="ghost" onClick={() => void shareTo("x")}>
                 X
               </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => void shareTo('linkedin')}
-              >
+              <Button size="sm" variant="ghost" onClick={() => void shareTo("linkedin")}>
                 LinkedIn
               </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => void shareTo('reddit')}
-              >
+              <Button size="sm" variant="ghost" onClick={() => void shareTo("reddit")}>
                 Reddit
               </Button>
             </view>
@@ -910,9 +822,7 @@ function ProfileContent(props: {
               <text
                 className={`SettingsProfileShareStatus SettingsProfileShareStatus--${shareStatus.intent}`}
                 accessibility-element
-                accessibility-role={
-                  shareStatus.intent === 'error' ? 'alert' : undefined
-                }
+                accessibility-role={shareStatus.intent === "error" ? "alert" : undefined}
               >
                 {shareStatus.message}
               </text>
@@ -927,18 +837,18 @@ function ProfileContent(props: {
 export function SettingsProfilePanel() {
   const offset = utcOffsetMinutes();
   const coreQuery = useQuery({
-    queryKey: ['profile-stats', offset],
+    queryKey: ["profile-stats", offset],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchProfileStats(offset);
     },
     staleTime: 60_000,
     retry: false,
   });
   const tokenQuery = useQuery({
-    queryKey: ['profile-token-stats', offset],
+    queryKey: ["profile-token-stats", offset],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchProfileTokenStats(offset);
     },
     staleTime: 5 * 60_000,
@@ -955,11 +865,7 @@ export function SettingsProfilePanel() {
   if (!coreQuery.data) {
     return (
       <view className="SettingsProfileState">
-        <text
-          className="SettingsProfileStateText"
-          accessibility-element
-          accessibility-role="alert"
-        >
+        <text className="SettingsProfileStateText" accessibility-element accessibility-role="alert">
           Couldn’t load your local stats.
         </text>
         <Button
@@ -968,7 +874,7 @@ export function SettingsProfilePanel() {
           disabled={coreQuery.isFetching}
           onClick={() => void coreQuery.refetch()}
         >
-          {coreQuery.isFetching ? 'Trying again…' : 'Try again'}
+          {coreQuery.isFetching ? "Trying again…" : "Try again"}
         </Button>
       </view>
     );

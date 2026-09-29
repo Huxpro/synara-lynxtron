@@ -1,17 +1,14 @@
-import type {
-  RightDockPane,
-  RightDockPaneKind,
-} from '@synara/shared/rightDock';
-import differenceSvg from '@synara-central-icons/difference-modified.svg?raw';
-import foldersSvg from '@synara-central-icons/folders.svg?raw';
-import terminalSvg from '@synara-central-icons/console.svg?raw';
-import sidechatSvg from '@synara-central-icons/bubble-text.svg?raw';
-import gitSvg from '@synara-central-icons/fork.svg?raw';
+import type { RightDockPane, RightDockPaneKind } from "@synara/shared/rightDock";
+import differenceSvg from "@synara-central-icons/difference-modified.svg?raw";
+import foldersSvg from "@synara-central-icons/folders.svg?raw";
+import terminalSvg from "@synara-central-icons/console.svg?raw";
+import sidechatSvg from "@synara-central-icons/bubble-text.svg?raw";
+import gitSvg from "@synara-central-icons/fork.svg?raw";
 
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
-import { GlobeIcon, PanelRightCloseIcon, PlusIcon } from '../lib/icons.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import { GlobeIcon, PanelRightCloseIcon, PlusIcon } from "../lib/icons.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
 import {
   Menu,
   MenuGroup,
@@ -19,31 +16,28 @@ import {
   MenuItem,
   MenuPopup,
   MenuTrigger,
-} from '../components/ui/menu.lynx';
-import { EditorSurfaceTab } from './EditorSurfaceTab.lynx';
-import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
+} from "../components/ui/menu.lynx";
+import { EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
+import { FileEntryIcon } from "../components/FileEntryIcon.lynx";
 
-import './thread-right-dock-tabs.css';
+import "./thread-right-dock-tabs.css";
 
 const DEFAULT_ADD_KINDS: readonly RightDockPaneKind[] = [
-  'diff',
-  'explorer',
-  'terminal',
-  'sidechat',
+  "diff",
+  "explorer",
+  "terminal",
+  "sidechat",
 ];
 
 function paneLabel(pane: RightDockPane): string {
-  if (pane.kind === 'browser') return 'Browser';
-  if (pane.kind === 'diff') return 'Diff';
-  if (pane.kind === 'explorer') return 'Explorer';
-  if (pane.kind === 'terminal') return 'Terminal';
-  if (pane.kind === 'sidechat') return 'Side';
-  if (pane.kind === 'git') return 'Git';
-  if (pane.kind === 'file' && pane.filePath) {
-    return (
-      pane.filePath.replace(/\\/g, '/').split('/').filter(Boolean).at(-1) ??
-      pane.filePath
-    );
+  if (pane.kind === "browser") return "Browser";
+  if (pane.kind === "diff") return "Diff";
+  if (pane.kind === "explorer") return "Explorer";
+  if (pane.kind === "terminal") return "Terminal";
+  if (pane.kind === "sidechat") return "Side";
+  if (pane.kind === "git") return "Git";
+  if (pane.kind === "file" && pane.filePath) {
+    return pane.filePath.replace(/\\/g, "/").split("/").filter(Boolean).at(-1) ?? pane.filePath;
   }
   return pane.kind;
 }
@@ -51,29 +45,29 @@ function paneLabel(pane: RightDockPane): string {
 function PaneIcon(props: { readonly kind: RightDockPaneKind }) {
   const { semanticIconColor } = useTheme();
   const content =
-    props.kind === 'diff'
+    props.kind === "diff"
       ? differenceSvg
-      : props.kind === 'git'
+      : props.kind === "git"
         ? gitSvg
-      : props.kind === 'terminal'
-        ? terminalSvg
-        : props.kind === 'sidechat'
-          ? sidechatSvg
-        : foldersSvg;
+        : props.kind === "terminal"
+          ? terminalSvg
+          : props.kind === "sidechat"
+            ? sidechatSvg
+            : foldersSvg;
   return (
     <svg
       className="ThreadRightDockTabIcon"
-      content={colorizeLynxSvg(content, semanticIconColor('secondary'))}
+      content={colorizeLynxSvg(content, semanticIconColor("secondary"))}
     />
   );
 }
 
 function RightDockPaneIcon(props: { readonly pane: RightDockPane }) {
   const { semanticIconColor } = useTheme();
-  if (props.pane.kind === 'browser') {
-    return <GlobeIcon color={semanticIconColor('secondary')} size={14} />;
+  if (props.pane.kind === "browser") {
+    return <GlobeIcon color={semanticIconColor("secondary")} size={14} />;
   }
-  if (props.pane.kind === 'file' && props.pane.filePath) {
+  if (props.pane.kind === "file" && props.pane.filePath) {
     return <FileEntryIcon pathValue={props.pane.filePath} />;
   }
   return <PaneIcon kind={props.pane.kind} />;
@@ -82,13 +76,13 @@ function RightDockPaneIcon(props: { readonly pane: RightDockPane }) {
 function CollapseButton(props: { readonly onCollapse: () => void }) {
   const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
-    baseClassName: 'ThreadRightDockHeaderButton',
-    accessibleLabel: 'Collapse panel',
+    baseClassName: "ThreadRightDockHeaderButton",
+    accessibleLabel: "Collapse panel",
     onActivate: props.onCollapse,
   });
   return (
     <view className={interaction.className} {...interaction.eventProps}>
-      <PanelRightCloseIcon color={semanticIconColor('secondary')} size={14} />
+      <PanelRightCloseIcon color={semanticIconColor("secondary")} size={14} />
     </view>
   );
 }
@@ -108,10 +102,7 @@ export function ThreadRightDockTabs(props: {
   const addKinds = props.addMenuKinds ?? DEFAULT_ADD_KINDS;
   return (
     <view className="ThreadRightDockTabHeader">
-      <scroll-view
-        className="ThreadRightDockTabScroller"
-        scroll-orientation="horizontal"
-      >
+      <scroll-view className="ThreadRightDockTabScroller" scroll-orientation="horizontal">
         <view className="ThreadRightDockTabList">
           {props.panes.map((pane) => (
             <EditorSurfaceTab
@@ -130,31 +121,31 @@ export function ThreadRightDockTabs(props: {
       {addKinds.length > 0 ? (
         <Menu defaultOpen={props.defaultAddMenuOpen}>
           <MenuTrigger ariaLabel="Add panel" className="ThreadRightDockHeaderButton">
-            <PlusIcon color={semanticIconColor('secondary')} size={14} />
+            <PlusIcon color={semanticIconColor("secondary")} size={14} />
           </MenuTrigger>
           <MenuPopup align="end" side="bottom" className="ThreadRightDockAddMenu">
             <MenuGroup>
               <MenuGroupLabel>Panel</MenuGroupLabel>
               {addKinds.map((kind) => (
                 <MenuItem key={kind} onClick={() => props.onAddPane(kind)}>
-                  {kind === 'browser' ? (
-                    <GlobeIcon color={semanticIconColor('secondary')} size={14} />
+                  {kind === "browser" ? (
+                    <GlobeIcon color={semanticIconColor("secondary")} size={14} />
                   ) : (
                     <PaneIcon kind={kind} />
                   )}
-                  <text>{
-                    kind === 'browser'
-                      ? 'Browser'
-                      : kind === 'diff'
-                      ? 'Diff'
-                      : kind === 'git'
-                        ? 'Git'
-                      : kind === 'terminal'
-                        ? 'Terminal'
-                        : kind === 'sidechat'
-                          ? 'Side'
-                          : 'Explorer'
-                  }</text>
+                  <text>
+                    {kind === "browser"
+                      ? "Browser"
+                      : kind === "diff"
+                        ? "Diff"
+                        : kind === "git"
+                          ? "Git"
+                          : kind === "terminal"
+                            ? "Terminal"
+                            : kind === "sidechat"
+                              ? "Side"
+                              : "Explorer"}
+                  </text>
                 </MenuItem>
               ))}
             </MenuGroup>

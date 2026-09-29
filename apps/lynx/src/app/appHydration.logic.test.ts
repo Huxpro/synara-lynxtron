@@ -1,13 +1,11 @@
-import { describe, expect, it } from '@rstest/core';
-import {
-  DEFAULT_SETTINGS_APPEARANCE_VALUES,
-} from '@synara-web/appSettingsStorageProjection.logic';
-import { DEFAULT_THEME_STATE } from '@synara-web/theme/theme.logic';
+import { describe, expect, it } from "@rstest/core";
+import { DEFAULT_SETTINGS_APPEARANCE_VALUES } from "@synara-web/appSettingsStorageProjection.logic";
+import { DEFAULT_THEME_STATE } from "@synara-web/theme/theme.logic";
 
-import { readPersistedAppearanceFallback } from './appHydration.logic';
+import { readPersistedAppearanceFallback } from "./appHydration.logic";
 
-describe('readPersistedAppearanceFallback', () => {
-  it('preserves hydrated appearance state', async () => {
+describe("readPersistedAppearanceFallback", () => {
+  it("preserves hydrated appearance state", async () => {
     const value = {
       appearance: {
         ...DEFAULT_SETTINGS_APPEARANCE_VALUES,
@@ -15,20 +13,18 @@ describe('readPersistedAppearanceFallback', () => {
       },
       themeState: {
         ...DEFAULT_THEME_STATE,
-        mode: 'dark' as const,
+        mode: "dark" as const,
       },
     };
 
-    await expect(
-      readPersistedAppearanceFallback(async () => value)
-    ).resolves.toEqual(value);
+    await expect(readPersistedAppearanceFallback(async () => value)).resolves.toEqual(value);
   });
 
-  it('uses canonical defaults when storage hydration fails', async () => {
+  it("uses canonical defaults when storage hydration fails", async () => {
     await expect(
       readPersistedAppearanceFallback(async () => {
-        throw new Error('storage unavailable');
-      })
+        throw new Error("storage unavailable");
+      }),
     ).resolves.toEqual({
       appearance: DEFAULT_SETTINGS_APPEARANCE_VALUES,
       themeState: DEFAULT_THEME_STATE,

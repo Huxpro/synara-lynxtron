@@ -1,6 +1,6 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import './sidebar-thread-subagent-identity-elements.css';
+import "./sidebar-thread-subagent-identity-elements.css";
 
 interface ChildrenProps {
   readonly children?: ReactNode;
@@ -14,10 +14,7 @@ export function SidebarThreadSubagentConnectorElement({
   readonly accentColor: string;
 }) {
   return (
-    <view
-      className="SharedSidebarSubagentConnector"
-      style={{ marginLeft: `${indentPx}px` }}
-    >
+    <view className="SharedSidebarSubagentConnector" style={{ marginLeft: `${indentPx}px` }}>
       <view className="SharedSidebarSubagentConnectorStem" />
       <view className="SharedSidebarSubagentConnectorArm" />
       <view
@@ -37,10 +34,7 @@ export function SidebarThreadSubagentPrimaryElement({
   children,
 }: ChildrenProps & { readonly accentColor: string }) {
   return (
-    <text
-      className="SharedSidebarSubagentPrimary"
-      style={{ color: accentColor }}
-    >
+    <text className="SharedSidebarSubagentPrimary" style={{ color: accentColor }}>
       {children}
     </text>
   );

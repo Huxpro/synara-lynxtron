@@ -111,9 +111,7 @@ projectionSnapshotLayer("ProjectionSnapshotQuery", (it) => {
         for (let index = 0; index < 14; index += 1) {
           const messageId = `${threadId}-message-${index}`;
           const text =
-            index === 13
-              ? `head-${"x".repeat(1_600)}-tail-marker`
-              : `${threadId} message ${index}`;
+            index === 13 ? `head-${"x".repeat(1_600)}-tail-marker` : `${threadId} message ${index}`;
           const createdAt = `2026-08-02T00:00:${String(index + 10).padStart(2, "0")}.000Z`;
           yield* sql`
             INSERT INTO projection_thread_messages (

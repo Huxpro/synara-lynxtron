@@ -121,4 +121,3 @@ recorded as follow-up product scope rather than hidden by this connection fix.
 - `lynx-after/raw.png`: current fixed Lynx-for-Web connected detail.
 - `geometry.json`: comparable geometry and relay transitions.
 - `console.json`: retained console/error classification.
-

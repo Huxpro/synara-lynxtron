@@ -11,20 +11,12 @@
         "childNodeCount": 1,
         "children": [
           {
-            "attributes": [
-              "class",
-              "HostInputProbeRoot"
-            ],
+            "attributes": ["class", "HostInputProbeRoot"],
             "backendNodeId": 13,
             "childNodeCount": 6,
             "children": [
               {
-                "attributes": [
-                  "text",
-                  "P9-D1 Host Input Probe",
-                  "class",
-                  "HostInputProbeTitle"
-                ],
+                "attributes": ["text", "P9-D1 Host Input Probe", "class", "HostInputProbeTitle"],
                 "backendNodeId": 14,
                 "childNodeCount": 0,
                 "children": [],
@@ -46,10 +38,7 @@
                 "childNodeCount": 1,
                 "children": [
                   {
-                    "attributes": [
-                      "text",
-                      "bound=25/25 delivered=1/25"
-                    ],
+                    "attributes": ["text", "bound=25/25 delivered=1/25"],
                     "backendNodeId": 27,
                     "childNodeCount": 0,
                     "children": [],
@@ -101,10 +90,7 @@
                 "childNodeCount": 1,
                 "children": [
                   {
-                    "attributes": [
-                      "text",
-                      "Focusable view control"
-                    ],
+                    "attributes": ["text", "Focusable view control"],
                     "backendNodeId": 17,
                     "childNodeCount": 0,
                     "children": [],
@@ -177,18 +163,12 @@
                 "childNodeCount": 1,
                 "children": [
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeScrollContent"
-                    ],
+                    "attributes": ["class", "HostInputProbeScrollContent"],
                     "backendNodeId": 20,
                     "childNodeCount": 5,
                     "children": [
                       {
-                        "attributes": [
-                          "text",
-                          "Scroll start"
-                        ],
+                        "attributes": ["text", "Scroll start"],
                         "backendNodeId": 21,
                         "childNodeCount": 0,
                         "localName": "text",
@@ -199,10 +179,7 @@
                         "parentId": 20
                       },
                       {
-                        "attributes": [
-                          "text",
-                          "Spacer one"
-                        ],
+                        "attributes": ["text", "Spacer one"],
                         "backendNodeId": 22,
                         "childNodeCount": 0,
                         "localName": "text",
@@ -213,10 +190,7 @@
                         "parentId": 20
                       },
                       {
-                        "attributes": [
-                          "text",
-                          "Spacer two"
-                        ],
+                        "attributes": ["text", "Spacer two"],
                         "backendNodeId": 23,
                         "childNodeCount": 0,
                         "localName": "text",
@@ -227,10 +201,7 @@
                         "parentId": 20
                       },
                       {
-                        "attributes": [
-                          "text",
-                          "Spacer three"
-                        ],
+                        "attributes": ["text", "Spacer three"],
                         "backendNodeId": 24,
                         "childNodeCount": 0,
                         "localName": "text",
@@ -241,10 +212,7 @@
                         "parentId": 20
                       },
                       {
-                        "attributes": [
-                          "text",
-                          "Scroll end"
-                        ],
+                        "attributes": ["text", "Scroll end"],
                         "backendNodeId": 25,
                         "childNodeCount": 0,
                         "localName": "text",
@@ -271,26 +239,17 @@
                 "parentId": 13
               },
               {
-                "attributes": [
-                  "class",
-                  "HostInputProbeMatrix"
-                ],
+                "attributes": ["class", "HostInputProbeMatrix"],
                 "backendNodeId": 26,
                 "childNodeCount": 25,
                 "children": [
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 28,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 29,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -333,18 +292,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 33,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 34,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -387,18 +340,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 38,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 39,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -441,18 +388,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 43,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 44,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -495,18 +436,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 48,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 49,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -549,18 +484,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 53,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 54,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -603,18 +532,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 58,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 59,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -657,18 +580,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 63,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 64,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -711,18 +628,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 68,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 69,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -765,18 +676,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 73,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 74,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -819,18 +724,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 78,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 79,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -873,18 +772,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 83,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 84,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -927,18 +820,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 88,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 89,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -981,18 +868,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 93,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 94,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -1035,18 +916,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 98,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 99,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -1089,18 +964,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 103,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 104,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -1143,18 +1012,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 108,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 109,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -1197,18 +1060,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 113,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 114,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -1251,18 +1108,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 118,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 119,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -1305,18 +1156,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 123,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 124,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -1359,18 +1204,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 128,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 129,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -1413,18 +1252,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 133,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 134,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -1467,18 +1300,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 138,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 139,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -1521,18 +1348,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 143,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 144,
                         "childNodeCount": 1,
                         "localName": "text",
@@ -1575,18 +1396,12 @@
                     "parentId": 26
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "HostInputProbeRow"
-                    ],
+                    "attributes": ["class", "HostInputProbeRow"],
                     "backendNodeId": 148,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "HostInputProbeEvent"
-                        ],
+                        "attributes": ["class", "HostInputProbeEvent"],
                         "backendNodeId": 149,
                         "childNodeCount": 1,
                         "localName": "text",

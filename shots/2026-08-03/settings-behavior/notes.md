@@ -53,10 +53,10 @@ P8-Q4, or P9-R1.
 
 Both retained Browser cells produced the same deltas:
 
-| Anchor | Lynx-for-Web delta | Size delta |
-|---|---:|---:|
-| Behavior title | `x +5px / y +8px` | exact `20px` font |
-| Runtime behavior card | `x +5px / y +5.25px` | exact width, `+1px` height |
+| Anchor                    |   Lynx-for-Web delta |                 Size delta |
+| ------------------------- | -------------------: | -------------------------: |
+| Behavior title            |    `x +5px / y +8px` |          exact `20px` font |
+| Runtime behavior card     | `x +5px / y +5.25px` | exact width, `+1px` height |
 | Safety confirmations card | `x +5px / y +6.25px` | exact width, `+1px` height |
 
 These values satisfy the existing ≤8px / ≤2px visual contract.

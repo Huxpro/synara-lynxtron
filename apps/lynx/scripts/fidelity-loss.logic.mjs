@@ -14,17 +14,17 @@ export function median(values) {
   if (!values.length) return null;
   const sorted = [...values].sort((left, right) => left - right);
   const midpoint = Math.floor(sorted.length / 2);
-  return sorted.length % 2 === 0
-    ? (sorted[midpoint - 1] + sorted[midpoint]) / 2
-    : sorted[midpoint];
+  return sorted.length % 2 === 0 ? (sorted[midpoint - 1] + sorted[midpoint]) / 2 : sorted[midpoint];
 }
 
 export function normalizeEvidenceName(name) {
-  return name
-    .toLowerCase()
-    .replace(/\.(?:jpe?g|png)$/u, '')
-    .replace(/^(?:web|lynx|native)[-_]?/u, '')
-    .replace(/[-_]?(?:web|lynx|native)$/u, '') || 'raw';
+  return (
+    name
+      .toLowerCase()
+      .replace(/\.(?:jpe?g|png)$/u, "")
+      .replace(/^(?:web|lynx|native)[-_]?/u, "")
+      .replace(/[-_]?(?:web|lynx|native)$/u, "") || "raw"
+  );
 }
 
 export function resolveEvidenceSourceCommit(image, firstCommitByFile) {
@@ -38,17 +38,11 @@ export function resolveEvidenceActivationIndex({
   evidenceCommits,
 }) {
   const sourceCommit = resolveEvidenceSourceCommit(asset, firstCommitByFile);
-  const sourceIndex = sourceCommit
-    ? commitIndexByHash.get(sourceCommit)
-    : undefined;
+  const sourceIndex = sourceCommit ? commitIndexByHash.get(sourceCommit) : undefined;
   if (sourceIndex !== undefined) return sourceIndex;
-  const sameDayIndex = evidenceCommits.findLastIndex(
-    (commit) => commit.date === asset.day
-  );
+  const sameDayIndex = evidenceCommits.findLastIndex((commit) => commit.date === asset.day);
   if (sameDayIndex >= 0) return sameDayIndex;
-  const priorIndex = evidenceCommits.findLastIndex(
-    (commit) => commit.date < asset.day
-  );
+  const priorIndex = evidenceCommits.findLastIndex((commit) => commit.date < asset.day);
   return Math.max(0, priorIndex);
 }
 
@@ -71,30 +65,23 @@ export function isComparableImageGeometry(left, right) {
       [left.height * 2, left.height * 2 - 64].includes(right.height)) ||
     (left.width === right.width * 2 &&
       [right.height * 2, right.height * 2 - 64].includes(left.height));
-  return (
-    nativeTitlebarCompatible ||
-    Math.abs(leftRatio - rightRatio) / leftRatio <= 0.015
-  );
+  return nativeTitlebarCompatible || Math.abs(leftRatio - rightRatio) / leftRatio <= 0.015;
 }
 
 export function visualQualityBand(maePercent) {
   return maePercent >= 25
-    ? 'critical'
+    ? "critical"
     : maePercent >= 10
-      ? 'poor'
+      ? "poor"
       : maePercent >= 3
-        ? 'noticeable'
-        : 'close';
+        ? "noticeable"
+        : "close";
 }
 
-export function classifyRenderedTheme({
-  meanLuminance,
-  brightFraction,
-  darkFraction,
-}) {
-  if (meanLuminance <= 70 && darkFraction >= 0.75) return 'dark';
-  if (meanLuminance >= 190 && brightFraction >= 0.75) return 'light';
-  return 'mixed';
+export function classifyRenderedTheme({ meanLuminance, brightFraction, darkFraction }) {
+  if (meanLuminance <= 70 && darkFraction >= 0.75) return "dark";
+  if (meanLuminance >= 190 && brightFraction >= 0.75) return "light";
+  return "mixed";
 }
 
 export function captureMismatchReason({
@@ -104,21 +91,20 @@ export function captureMismatchReason({
   renderedRightTheme,
 }) {
   if (
-    renderedLeftTheme === 'mixed' ||
-    renderedRightTheme === 'mixed' ||
+    renderedLeftTheme === "mixed" ||
+    renderedRightTheme === "mixed" ||
     renderedLeftTheme === renderedRightTheme
   ) {
     return null;
   }
-  return 'capture-theme-mismatch';
+  return "capture-theme-mismatch";
 }
 
 export function visualPairMatchesIssue(pair, issue) {
   const storyMatches = issue.affectedStoryIds
     ? issue.affectedStoryIds.includes(pair.storyId)
     : pair.storyId.startsWith(issue.affectedStoryPrefix);
-  const stateMatches =
-    !issue.affectedStateKeys || issue.affectedStateKeys.includes(pair.stateKey);
+  const stateMatches = !issue.affectedStateKeys || issue.affectedStateKeys.includes(pair.stateKey);
   const clientPairMatches =
     !issue.affectedClientPairs ||
     issue.affectedClientPairs.includes(`${pair.leftClient}:${pair.rightClient}`);
@@ -129,7 +115,7 @@ export function visualSampleSupersessionAtCommit(
   sample,
   commitIndex,
   supersessionLedger,
-  commitIndexByHash
+  commitIndexByHash,
 ) {
   return (
     supersessionLedger.find((entry) => {
@@ -137,15 +123,10 @@ export function visualSampleSupersessionAtCommit(
       return (
         Number.isInteger(supersededAtIndex) &&
         supersededAtIndex <= commitIndex &&
-        (!entry.affectedStateKeys ||
-          entry.affectedStateKeys.includes(sample.stateKey)) &&
+        (!entry.affectedStateKeys || entry.affectedStateKeys.includes(sample.stateKey)) &&
         (!entry.affectedClientPairs ||
-          entry.affectedClientPairs.includes(
-            `${sample.leftClient}:${sample.rightClient}`
-          )) &&
-        entry.affectedStoryPrefixes.some((prefix) =>
-          sample.storyId.startsWith(prefix)
-        )
+          entry.affectedClientPairs.includes(`${sample.leftClient}:${sample.rightClient}`)) &&
+        entry.affectedStoryPrefixes.some((prefix) => sample.storyId.startsWith(prefix))
       );
     }) ?? null
   );
@@ -195,12 +176,9 @@ export function calculateFidelityLoss({
   };
 }
 
-export function reliabilityLossFromPoints(
-  points,
-  capacity = RELIABILITY_DEBT_CAPACITY
-) {
+export function reliabilityLossFromPoints(points, capacity = RELIABILITY_DEBT_CAPACITY) {
   if (!Number.isFinite(capacity) || capacity <= 0) {
-    throw new RangeError('Reliability debt capacity must be positive');
+    throw new RangeError("Reliability debt capacity must be positive");
   }
   return clamp01(points / capacity);
 }
@@ -216,10 +194,7 @@ export function exponentialMovingAverage(values, alpha = 0.22) {
 
 export function weightedComponentContributions(previous, current, weights) {
   return Object.fromEntries(
-    Object.keys(weights).map((key) => [
-      key,
-      (current[key] - previous[key]) * weights[key] * 100,
-    ])
+    Object.keys(weights).map((key) => [key, (current[key] - previous[key]) * weights[key] * 100]),
   );
 }
 

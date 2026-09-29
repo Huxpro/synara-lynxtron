@@ -3,20 +3,10 @@
     "bg": "rgb(255, 255, 255)",
     "cls": "AppMain AppMain--sidebar-open",
     "color": "rgb(13, 13, 13)",
-    "font": [
-      "16px",
-      "normal",
-      "400",
-      "normal"
-    ],
+    "font": ["16px", "normal", "400", "normal"],
     "placeholder": null,
     "radius": "14.4px 0px 0px 14.4px",
-    "rect": [
-      256,
-      0,
-      1024,
-      820
-    ],
+    "rect": [256, 0, 1024, 820],
     "shadow": "rgba(0, 0, 0, 0.08) 1px 0px 0px 0px inset, rgba(0, 0, 0, 0.1) -6.5px 0px 12px -10px",
     "tag": "X-VIEW",
     "text": "New ChatWhat should we work on?Unable to prepare a new chat. Your draft will be available after retrying.Retry"
@@ -25,20 +15,10 @@
     "bg": "rgb(255, 255, 255)",
     "cls": "AppSidebar",
     "color": "rgb(13, 13, 13)",
-    "font": [
-      "16px",
-      "normal",
-      "400",
-      "normal"
-    ],
+    "font": ["16px", "normal", "400", "normal"],
     "placeholder": null,
     "radius": "0px",
-    "rect": [
-      0,
-      0,
-      256,
-      820
-    ],
+    "rect": [0, 0, 256, 820],
     "shadow": "rgba(0, 0, 0, 0.03) 0px 1px 0px 0px inset",
     "tag": "X-VIEW",
     "text": "StudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjectsServer unavailableSettings"
@@ -47,20 +27,10 @@
     "bg": "rgba(0, 0, 0, 0)",
     "cls": "CenteredEmptyLandingHeading",
     "color": "rgb(13, 13, 13)",
-    "font": [
-      "30px",
-      "35px",
-      "400",
-      "-0.45px"
-    ],
+    "font": ["30px", "35px", "400", "-0.45px"],
     "placeholder": null,
     "radius": "0px",
-    "rect": [
-      607.5,
-      383.5,
-      321,
-      35
-    ],
+    "rect": [607.5, 383.5, 321, 35],
     "shadow": "none",
     "tag": "X-TEXT",
     "text": "What should we work on?"

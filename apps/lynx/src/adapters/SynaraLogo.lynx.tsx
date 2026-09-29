@@ -1,63 +1,55 @@
-import type { CSSProperties } from '@lynx-js/types';
-import { SYNARA_LOGO_PATHS } from '@synara-web/assets/synaraLogoPath';
+import type { CSSProperties } from "@lynx-js/types";
+import { SYNARA_LOGO_PATHS } from "@synara-web/assets/synaraLogoPath";
 
-import { useTheme } from './useTheme.lynx';
-import './synara-logo.css';
+import { useTheme } from "./useTheme.lynx";
+import "./synara-logo.css";
 
 function synaraLogoContent(color: string): string {
   return (
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 504" fill="none">' +
-    SYNARA_LOGO_PATHS.map(
-      (path) => '<path d="' + path + '" fill="' + color + '" />'
-    ).join('') +
-    '</svg>'
+    SYNARA_LOGO_PATHS.map((path) => '<path d="' + path + '" fill="' + color + '" />').join("") +
+    "</svg>"
   );
 }
 
 export function SynaraLogo({
   className,
   style,
-  'aria-label': ariaLabel,
+  "aria-label": ariaLabel,
 }: {
   readonly className?: string;
   readonly style?: CSSProperties;
-  readonly 'aria-label'?: string;
+  readonly "aria-label"?: string;
 }) {
   const { svgColors } = useTheme();
   const classNames = className?.split(/\s+/).filter(Boolean) ?? [];
-  const hasSharedSidebarSize = classNames.includes('size-3.5');
+  const hasSharedSidebarSize = classNames.includes("size-3.5");
   const usesSecondaryForeground = classNames.includes(
-    'text-[var(--color-text-foreground-secondary)]'
+    "text-[var(--color-text-foreground-secondary)]",
   );
   const resolvedAriaLabel =
-    !ariaLabel || /^Synara(?: logo)?$/i.test(ariaLabel)
-      ? 'Synara logo'
-      : ariaLabel;
+    !ariaLabel || /^Synara(?: logo)?$/i.test(ariaLabel) ? "Synara logo" : ariaLabel;
   const resolvedClassName = [
-    'shrink-0',
-    'text-foreground',
-    ...classNames.filter(
-      (value) => value !== 'size-3.5' && value !== 'pointer-events-none'
-    ),
+    "shrink-0",
+    "text-foreground",
+    ...classNames.filter((value) => value !== "size-3.5" && value !== "pointer-events-none"),
   ]
     .filter(Boolean)
-    .join(' ');
+    .join(" ");
   return (
     <view
       className={`${resolvedClassName} LynxBrandMark`}
       accessibility-label={resolvedAriaLabel}
       accessibility-trait="image"
       style={{
-        ...(hasSharedSidebarSize ? { width: '14px', height: '14px' } : {}),
+        ...(hasSharedSidebarSize ? { width: "14px", height: "14px" } : {}),
         ...style,
       }}
     >
       <svg
         className="LynxBrandMarkLynx"
         content={synaraLogoContent(
-          usesSecondaryForeground
-            ? svgColors.secondaryForeground
-            : svgColors.foreground
+          usesSecondaryForeground ? svgColors.secondaryForeground : svgColors.foreground,
         )}
       />
     </view>

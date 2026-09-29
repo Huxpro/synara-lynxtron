@@ -55,12 +55,10 @@ export type SettingsGeneralSectionDefinition = {
   readonly rows: readonly SettingsGeneralRowDefinition[];
 };
 
-const providerOptions: readonly SettingsGeneralOption[] = PROVIDER_DESCRIPTORS.map(
-  ({ kind }) => ({
-    value: kind,
-    label: PROVIDER_DISPLAY_NAMES[kind],
-  }),
-);
+const providerOptions: readonly SettingsGeneralOption[] = PROVIDER_DESCRIPTORS.map(({ kind }) => ({
+  value: kind,
+  label: PROVIDER_DISPLAY_NAMES[kind],
+}));
 
 export const SETTINGS_GENERAL_SECTIONS: readonly SettingsGeneralSectionDefinition[] = [
   {

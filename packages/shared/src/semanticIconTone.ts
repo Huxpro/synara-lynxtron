@@ -1,21 +1,21 @@
 export const SEMANTIC_ICON_TONES = [
-  'primary',
-  'secondary',
-  'tertiary',
-  'accent',
-  'inverse',
-  'disabled',
+  "primary",
+  "secondary",
+  "tertiary",
+  "accent",
+  "inverse",
+  "disabled",
 ] as const;
 
 export type SemanticIconTone = (typeof SEMANTIC_ICON_TONES)[number];
 
 export const SEMANTIC_ICON_TONE_CSS_VARIABLE: Record<SemanticIconTone, string> = {
-  primary: '--color-icon-primary',
-  secondary: '--color-icon-secondary',
-  tertiary: '--color-icon-tertiary',
-  accent: '--color-icon-accent',
-  inverse: '--color-text-button-primary',
-  disabled: '--color-token-disabled-foreground',
+  primary: "--color-icon-primary",
+  secondary: "--color-icon-secondary",
+  tertiary: "--color-icon-tertiary",
+  accent: "--color-icon-accent",
+  inverse: "--color-text-button-primary",
+  disabled: "--color-token-disabled-foreground",
 };
 
 export function semanticIconToneColor(tone: SemanticIconTone): string {

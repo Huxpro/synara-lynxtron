@@ -704,9 +704,7 @@
   flex-direction: row;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChanges
-  .DiffDockFileSidebar {
+.SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebar {
   width: 104px;
   min-width: 104px;
   height: 100%;
@@ -715,25 +713,19 @@
   border-bottom-width: 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChanges
-  .DiffDockFileSidebarHeader {
+.SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarHeader {
   height: 24px;
   min-height: 24px;
   padding: 0 6px;
   gap: 4px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChanges
-  .DiffDockFileSidebarIcon {
+.SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarIcon {
   width: 12px;
   height: 12px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChanges
-  .LxMenuTrigger.DiffDockEditorOptionsTrigger {
+.SliceRoot--viewport-short-height .ThreadEditorChanges .LxMenuTrigger.DiffDockEditorOptionsTrigger {
   display: flex;
   width: 20px;
   min-width: 20px;
@@ -741,41 +733,29 @@
   min-height: 20px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChanges
-  .DiffDockFileSidebarTitle {
+.SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarTitle {
   font-size: 10px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChanges
-  .DiffDockFileSidebarCount {
+.SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarCount {
   padding: 0 4px;
   font-size: 9px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChanges
-  .DiffDockFileSidebarStats {
+.SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarStats {
   height: 20px;
   min-height: 20px;
   padding: 0 6px;
   gap: 4px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChanges
-  .DiffDockFileSidebarAddition,
-.SliceRoot--viewport-short-height
-  .ThreadEditorChanges
-  .DiffDockFileSidebarDeletion {
+.SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarAddition,
+.SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarDeletion {
   font-size: 10px;
   line-height: 12px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChanges
-  .DiffDockFileSidebarList {
+.SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarList {
   padding: 2px;
 }
 
@@ -785,18 +765,14 @@
   gap: 3px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChanges
-  .DiffDockFileName {
+.SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileName {
   min-width: 0;
   font-size: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChanges
-  .DiffDockFileDirectory {
+.SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileDirectory {
   display: none;
 }
 
@@ -812,10 +788,7 @@
   gap: 8px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .DiffDock
-  .DiffDockState {
+.SliceRoot--viewport-short-height .ThreadPage > .DiffDock .DiffDockState {
   height: 100%;
   min-height: 100%;
 }

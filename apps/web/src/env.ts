@@ -4,5 +4,4 @@
  * code executes, so this is reliable at module load time. (The older
  * window.nativeApi bridge was removed — see nativeApi.ts.)
  */
-export const isElectron =
-  typeof window !== "undefined" && window.desktopBridge !== undefined;
+export const isElectron = typeof window !== "undefined" && window.desktopBridge !== undefined;

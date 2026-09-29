@@ -1,4 +1,4 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
 function joinClassName(base: string, className?: string): string {
   return className ? `${base} ${className}` : base;
@@ -11,11 +11,7 @@ export function SidebarThreadTrailingRoot({
   readonly className?: string;
   readonly children?: ReactNode;
 }) {
-  return (
-    <view className={joinClassName('AppSidebarThreadTrailing', className)}>
-      {children}
-    </view>
-  );
+  return <view className={joinClassName("AppSidebarThreadTrailing", className)}>{children}</view>;
 }
 
 export function SidebarThreadTrailingGroup({

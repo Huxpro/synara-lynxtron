@@ -143,7 +143,13 @@ export function RightDockTabs(props: {
         <Menu defaultOpen={props.defaultAddMenuOpen} modal={false}>
           <MenuTrigger
             render={
-              <Button variant="chrome" size="icon-xs" aria-label="Add panel" title="Add panel" className={DOCK_HEADER_ICON_BUTTON_CLASS} />
+              <Button
+                variant="chrome"
+                size="icon-xs"
+                aria-label="Add panel"
+                title="Add panel"
+                className={DOCK_HEADER_ICON_BUTTON_CLASS}
+              />
             }
           >
             <PlusIcon className="size-3.5" />
@@ -151,12 +157,25 @@ export function RightDockTabs(props: {
           <ComposerPickerMenuPopup align="end" side="bottom" className="w-44 min-w-44">
             {props.addMenuKinds.map((kind) => {
               const { Icon, label } = getRightDockPaneMeta(kind);
-              return <MenuItem key={kind} onClick={() => props.onAddPane(kind)}><Icon className="size-3.5 shrink-0" /><span>{label}</span></MenuItem>;
+              return (
+                <MenuItem key={kind} onClick={() => props.onAddPane(kind)}>
+                  <Icon className="size-3.5 shrink-0" />
+                  <span>{label}</span>
+                </MenuItem>
+              );
             })}
           </ComposerPickerMenuPopup>
         </Menu>
       ) : null}
-      <IconButton variant="chrome" size="icon-xs" label="Collapse panel" tooltip="Collapse panel" tooltipSide="bottom" className={DOCK_HEADER_ICON_BUTTON_CLASS} onClick={props.onCollapse}>
+      <IconButton
+        variant="chrome"
+        size="icon-xs"
+        label="Collapse panel"
+        tooltip="Collapse panel"
+        tooltipSide="bottom"
+        className={DOCK_HEADER_ICON_BUTTON_CLASS}
+        onClick={props.onCollapse}
+      >
         <PanelRightCloseIcon />
       </IconButton>
     </div>

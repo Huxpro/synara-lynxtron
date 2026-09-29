@@ -8,19 +8,19 @@ import {
   useRef,
   useState,
   type ReactNode,
-} from '@lynx-js/react';
-import type { CSSProperties } from '@lynx-js/types';
-import { getRectById, getRectByRef } from '@lynx-js/lynx-ui';
-import type { NodesRef } from '@lynx-js/types';
-import { resolveCommandNavigation } from '@synara/shared/commandNavigation';
+} from "@lynx-js/react";
+import type { CSSProperties } from "@lynx-js/types";
+import { getRectById, getRectByRef } from "@lynx-js/lynx-ui";
+import type { NodesRef } from "@lynx-js/types";
+import { resolveCommandNavigation } from "@synara/shared/commandNavigation";
 
-import { CheckIcon, ChevronRightIcon } from '../../lib/icons.lynx';
-import { useTheme } from '../../adapters/useTheme.lynx';
-import { useLynxInteractiveState } from './interactive-state.lynx';
-import { focusLynxNode, type LynxFocusableRef } from './focus.lynx';
-import { cx, renderSlot, textContent } from './shared.lynx';
-import { sleepOnHost } from '../../platform/timer';
-import './primitives.css';
+import { CheckIcon, ChevronRightIcon } from "../../lib/icons.lynx";
+import { useTheme } from "../../adapters/useTheme.lynx";
+import { useLynxInteractiveState } from "./interactive-state.lynx";
+import { focusLynxNode, type LynxFocusableRef } from "./focus.lynx";
+import { cx, renderSlot, textContent } from "./shared.lynx";
+import { sleepOnHost } from "../../platform/timer";
+import "./primitives.css";
 
 interface MenuRect {
   readonly height: number;
@@ -91,11 +91,7 @@ export function MenuOverlayProvider(props: { children?: ReactNode }) {
     <MenuOverlayHostContext.Provider value={ready ? hostRef : null}>
       <Fragment>
         {props.children}
-        <view
-          ref={hostRef}
-          className="LxMenuOverlayHost"
-          event-through={true}
-        />
+        <view ref={hostRef} className="LxMenuOverlayHost" event-through={true} />
       </Fragment>
     </MenuOverlayHostContext.Provider>
   );
@@ -127,13 +123,16 @@ export function Menu(props: {
   const highlightedValueRef = useRef<string | null>(null);
   openRef.current = open;
   highlightedValueRef.current = highlightedValue;
-  const setOpen = useCallback((next: boolean) => {
-    'background only';
-    if (props.open === undefined) setUncontrolledOpen(next);
-    props.onOpenChange?.(next);
-  }, [props.onOpenChange, props.open]);
+  const setOpen = useCallback(
+    (next: boolean) => {
+      "background only";
+      if (props.open === undefined) setUncontrolledOpen(next);
+      props.onOpenChange?.(next);
+    },
+    [props.onOpenChange, props.open],
+  );
   const close = useCallback(() => {
-    'background only';
+    "background only";
     setOpen(false);
     focusLynxNode(triggerRef);
   }, [setOpen]);
@@ -142,39 +141,45 @@ export function Menu(props: {
     highlightedValueRef.current = value;
     setHighlightedValueState(value);
   }, []);
-  const registerItem = useCallback((value: string, entry: MenuEntry) => {
-    entriesRef.current.set(value, entry);
-    if (
-      props.autoHighlightFirst !== false &&
-      openRef.current &&
-      highlightedValueRef.current === null
-    ) {
-      highlightValue(value);
-    }
-    return () => {
-      entriesRef.current.delete(value);
-      setHighlightedValueState((current) => {
-        if (current !== value) return current;
-        highlightedValueRef.current = null;
-        return null;
+  const registerItem = useCallback(
+    (value: string, entry: MenuEntry) => {
+      entriesRef.current.set(value, entry);
+      if (
+        props.autoHighlightFirst !== false &&
+        openRef.current &&
+        highlightedValueRef.current === null
+      ) {
+        highlightValue(value);
+      }
+      return () => {
+        entriesRef.current.delete(value);
+        setHighlightedValueState((current) => {
+          if (current !== value) return current;
+          highlightedValueRef.current = null;
+          return null;
+        });
+      };
+    },
+    [highlightValue, props.autoHighlightFirst],
+  );
+  const handleKeyDown = useCallback(
+    (event: MenuKeyboardEvent): boolean => {
+      const intent = resolveCommandNavigation({
+        activeValue: highlightedValueRef.current,
+        enabledValues: [...entriesRef.current.keys()],
+        key: event.key,
+        shiftKey: event.shiftKey,
       });
-    };
-  }, [highlightValue, props.autoHighlightFirst]);
-  const handleKeyDown = useCallback((event: MenuKeyboardEvent): boolean => {
-    const intent = resolveCommandNavigation({
-      activeValue: highlightedValueRef.current,
-      enabledValues: [...entriesRef.current.keys()],
-      key: event.key,
-      shiftKey: event.shiftKey,
-    });
-    if (intent.type === 'none') return false;
-    event.preventDefault?.();
-    event.stopPropagation?.();
-    if (intent.type === 'move') highlightValue(intent.value);
-    if (intent.type === 'activate') entriesRef.current.get(intent.value)?.activate();
-    if (intent.type === 'dismiss') close();
-    return true;
-  }, [close, highlightValue]);
+      if (intent.type === "none") return false;
+      event.preventDefault?.();
+      event.stopPropagation?.();
+      if (intent.type === "move") highlightValue(intent.value);
+      if (intent.type === "activate") entriesRef.current.get(intent.value)?.activate();
+      if (intent.type === "dismiss") close();
+      return true;
+    },
+    [close, highlightValue],
+  );
   useEffect(() => {
     if (!open) {
       highlightedValueRef.current = null;
@@ -211,11 +216,8 @@ interface MenuKeyboardEvent {
   stopPropagation?: () => void;
 }
 
-function handleMenuEscape(
-  event: MenuKeyboardEvent,
-  menu: MenuContextValue
-): boolean {
-  'background only';
+function handleMenuEscape(event: MenuKeyboardEvent, menu: MenuContextValue): boolean {
+  "background only";
   return menu.open && menu.handleKeyDown(event);
 }
 
@@ -259,8 +261,13 @@ function hasMenuRectSize(rect: { readonly width?: number; readonly height?: numb
 
 async function resolveMenuTriggerRect(
   id: string,
-  ref: LynxFocusableRef
-): Promise<{ readonly left: number; readonly top: number; readonly width: number; readonly height: number }> {
+  ref: LynxFocusableRef,
+): Promise<{
+  readonly left: number;
+  readonly top: number;
+  readonly width: number;
+  readonly height: number;
+}> {
   const byId = await getRectById(id, true).catch(() => null);
   if (byId && hasMenuRectSize(byId)) return byId;
   return getRectByRef(ref, true);
@@ -272,10 +279,10 @@ function clampMenuCoordinate(value: number, extent: number, limit: number): numb
 }
 
 export function resolveMenuCoordinates(input: {
-  readonly align: 'start' | 'center' | 'end';
+  readonly align: "start" | "center" | "end";
   readonly anchor: MenuRect;
   readonly popup: MenuRect;
-  readonly side: 'top' | 'bottom' | 'left' | 'right';
+  readonly side: "top" | "bottom" | "left" | "right";
   readonly sideOffset: number;
   readonly viewport: MenuRect;
 }): { readonly left: number; readonly top: number } {
@@ -283,22 +290,22 @@ export function resolveMenuCoordinates(input: {
   const anchorX = anchor.x - viewport.x;
   const anchorY = anchor.y - viewport.y;
   let left =
-    align === 'start'
+    align === "start"
       ? anchorX
-      : align === 'end'
+      : align === "end"
         ? anchorX + anchor.width - popup.width
         : anchorX + (anchor.width - popup.width) / 2;
   let top =
-    align === 'start'
+    align === "start"
       ? anchorY
-      : align === 'end'
+      : align === "end"
         ? anchorY + anchor.height - popup.height
         : anchorY + (anchor.height - popup.height) / 2;
 
-  if (side === 'top') top = anchorY - popup.height - sideOffset;
-  if (side === 'bottom') top = anchorY + anchor.height + sideOffset;
-  if (side === 'left') left = anchorX - popup.width - sideOffset;
-  if (side === 'right') left = anchorX + anchor.width + sideOffset;
+  if (side === "top") top = anchorY - popup.height - sideOffset;
+  if (side === "bottom") top = anchorY + anchor.height + sideOffset;
+  if (side === "left") left = anchorX - popup.width - sideOffset;
+  if (side === "right") left = anchorX + anchor.width + sideOffset;
 
   return {
     left: clampMenuCoordinate(left, popup.width, viewport.width),
@@ -307,10 +314,10 @@ export function resolveMenuCoordinates(input: {
 }
 
 export function resolveSubmenuCoordinates(input: {
-  readonly align?: 'start' | 'end';
+  readonly align?: "start" | "end";
   readonly anchor: MenuRect;
   readonly popup: MenuRect;
-  readonly side?: 'auto' | 'left' | 'right';
+  readonly side?: "auto" | "left" | "right";
   readonly viewport: MenuRect;
   readonly sideOffset?: number;
   readonly viewportPadding?: number;
@@ -325,18 +332,16 @@ export function resolveSubmenuCoordinates(input: {
   const preferredLeft = input.anchor.x - input.popup.width - sideOffset;
   const fitsRight = preferredRight + input.popup.width <= viewportRight;
   const fitsLeft = preferredLeft >= viewportLeft;
-  const useVerticalFallback =
-    (input.side ?? 'auto') === 'auto' && !fitsRight && !fitsLeft;
-  const absoluteLeft =
-    useVerticalFallback
-      ? clampMenuCoordinate(
-          input.anchor.x - input.viewport.x,
-          input.popup.width,
-          input.viewport.width
-        ) + input.viewport.x
-      : input.side === 'left'
+  const useVerticalFallback = (input.side ?? "auto") === "auto" && !fitsRight && !fitsLeft;
+  const absoluteLeft = useVerticalFallback
+    ? clampMenuCoordinate(
+        input.anchor.x - input.viewport.x,
+        input.popup.width,
+        input.viewport.width,
+      ) + input.viewport.x
+    : input.side === "left"
       ? Math.max(viewportLeft, preferredLeft)
-      : input.side === 'right'
+      : input.side === "right"
         ? Math.min(preferredRight, viewportRight - input.popup.width)
         : fitsRight
           ? preferredRight
@@ -344,7 +349,7 @@ export function resolveSubmenuCoordinates(input: {
   const maximumTop = Math.max(viewportTop, viewportBottom - input.popup.height);
   const requestedTop = useVerticalFallback
     ? input.anchor.y + input.anchor.height
-    : input.align === 'end'
+    : input.align === "end"
       ? input.anchor.y + input.anchor.height - input.popup.height
       : input.anchor.y;
   const absoluteTop = Math.max(viewportTop, Math.min(requestedTop, maximumTop));
@@ -355,14 +360,14 @@ export function resolveSubmenuCoordinates(input: {
 }
 
 export function menuPlacementRequiresPopupSize(input: {
-  readonly align: 'start' | 'center' | 'end';
-  readonly side: 'top' | 'bottom' | 'left' | 'right';
+  readonly align: "start" | "center" | "end";
+  readonly side: "top" | "bottom" | "left" | "right";
 }): boolean {
   return (
-    input.side === 'top' ||
-    input.side === 'left' ||
-    (input.side === 'bottom' && input.align !== 'start') ||
-    (input.side === 'right' && input.align !== 'start')
+    input.side === "top" ||
+    input.side === "left" ||
+    (input.side === "bottom" && input.align !== "start") ||
+    (input.side === "right" && input.align !== "start")
   );
 }
 
@@ -381,12 +386,9 @@ export function MenuTrigger(props: {
     triggerIdRef.current = `synara-menu-trigger-${++nextMenuTriggerId}`;
   }
   const refreshAnchorRect = async (): Promise<boolean> => {
-    'background only';
+    "background only";
     try {
-      const rect = await resolveMenuTriggerRect(
-        triggerIdRef.current!,
-        menu.triggerRef
-      );
+      const rect = await resolveMenuTriggerRect(triggerIdRef.current!, menu.triggerRef);
       const nextRect = {
         height: rect.height,
         width: rect.width,
@@ -404,7 +406,7 @@ export function MenuTrigger(props: {
     }
   };
   const handleTap = () => {
-    'background only';
+    "background only";
     if (props.disabled) return;
     void refreshAnchorRect();
     if (props.onActivate) {
@@ -430,24 +432,24 @@ export function MenuTrigger(props: {
   }, [menu.anchorRect.height, menu.anchorRect.width, menu.open]);
   const interaction = useLynxInteractiveState({
     baseClassName: cx(
-      'LxMenuTrigger',
+      "LxMenuTrigger",
       props.className,
-      props.disabled && 'LxMenuTrigger--disabled'
+      props.disabled && "LxMenuTrigger--disabled",
     ),
     accessibilityElement: props.passive ? false : undefined,
     accessibleLabel: props.passive ? undefined : props.ariaLabel,
-    accessibilityValue: menu.open ? 'Expanded' : 'Collapsed',
+    accessibilityValue: menu.open ? "Expanded" : "Collapsed",
     disabled: props.disabled,
     focusable: props.passive ? false : undefined,
     onActivate: props.passive ? undefined : handleTap,
   });
   const handleKeyDown = (event: MenuKeyboardEvent) => {
-    'background only';
+    "background only";
     if (handleMenuEscape(event, menu)) return;
     if (!props.passive) interaction.eventProps.bindkeydown?.(event);
   };
   const handleLayoutChange = (event: MenuLayoutEvent) => {
-    'background only';
+    "background only";
     // Lynx layout events report coordinates in the nearest layout context,
     // not stable viewport coordinates. Always resolve the trigger through the
     // global selector API so nested composer/menu roots cannot pin popups to 0,0.
@@ -464,9 +466,7 @@ export function MenuTrigger(props: {
       aria-label={props.ariaLabel}
       aria-haspopup="menu"
       aria-expanded={menu.open}
-      catchkeydown={
-        props.disabled || props.passive ? undefined : handleKeyDown
-      }
+      catchkeydown={props.disabled || props.passive ? undefined : handleKeyDown}
       bindlayoutchange={handleLayoutChange}
     >
       {renderSlot(props.render, props.children)}
@@ -478,8 +478,8 @@ export function MenuPopupBase(props: {
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;
-  side?: 'top' | 'bottom' | 'left' | 'right';
-  align?: 'start' | 'center' | 'end';
+  side?: "top" | "bottom" | "left" | "right";
+  align?: "start" | "center" | "end";
   sideOffset?: number;
 }) {
   const menu = useContext(MenuContext);
@@ -487,20 +487,18 @@ export function MenuPopupBase(props: {
   const [viewportRect, setViewportRect] = useState<MenuRect>(EMPTY_MENU_RECT);
   const [layerOrigin, setLayerOrigin] = useState<{ x: number; y: number } | null>(null);
   if (!menu.open) return null;
-  const side = props.side ?? 'bottom';
-  const align = props.align ?? 'center';
+  const side = props.side ?? "bottom";
+  const align = props.align ?? "center";
   const coordinates = resolveMenuCoordinates({
     align,
     anchor: menu.anchorRect,
     popup: popupRect,
     side,
     sideOffset: props.sideOffset ?? 4,
-    viewport: layerOrigin
-      ? { ...viewportRect, x: 0, y: 0 }
-      : viewportRect,
+    viewport: layerOrigin ? { ...viewportRect, x: 0, y: 0 } : viewportRect,
   });
   const handleViewportLayout = (event: MenuLayoutEvent) => {
-    'background only';
+    "background only";
     const nextRect = menuRectFromLayout(event);
     if (layerOrigin === null) {
       setLayerOrigin({ x: nextRect.x, y: nextRect.y });
@@ -509,17 +507,14 @@ export function MenuPopupBase(props: {
     if (!sameMenuRect(menu.viewportRect, nextRect)) menu.setViewportRect(nextRect);
   };
   const handlePopupLayout = (event: MenuLayoutEvent) => {
-    'background only';
+    "background only";
     const nextRect = menuRectFromLayout(event);
     if (!sameMenuRect(popupRect, nextRect)) setPopupRect(nextRect);
   };
-  const anchorMeasured =
-    menu.anchorRect.width > 0 &&
-    menu.anchorRect.height > 0;
+  const anchorMeasured = menu.anchorRect.width > 0 && menu.anchorRect.height > 0;
   const popupMeasured = popupRect.width > 0 && popupRect.height > 0;
   const positioned =
-    anchorMeasured &&
-    (!menuPlacementRequiresPopupSize({ align, side }) || popupMeasured);
+    anchorMeasured && (!menuPlacementRequiresPopupSize({ align, side }) || popupMeasured);
   if (positioned) {
     menu.popupOriginRef.current = {
       x: coordinates.left + (layerOrigin?.x ?? 0),
@@ -529,41 +524,37 @@ export function MenuPopupBase(props: {
   return (
     <MenuPortal>
       <view
-      className="LxMenuLayer"
-      bindlayoutchange={handleViewportLayout}
-      event-through={false}
-      style={
-        layerOrigin
-          ? {
-              left: `${-Math.round(layerOrigin.x)}px`,
-              top: `${-Math.round(layerOrigin.y)}px`,
-            }
-          : undefined
-      }
-    >
-      <view
-        className="LxMenuBackdrop"
-        aria-hidden="true"
-        catchtap={menu.close}
-      />
-      <view
-        className={cx('LxMenuPopup', props.className)}
-        aria-modal={false}
-        role="menu"
-        bindkeydown={(event: MenuKeyboardEvent) => {
-          'background only';
-          menu.handleKeyDown(event);
-        }}
-        bindlayoutchange={handlePopupLayout}
-        style={{
-          ...props.style,
-          left: `${Math.round(coordinates.left)}px`,
-          opacity: positioned ? 1 : 0,
-          top: `${Math.round(coordinates.top)}px`,
-        }}
+        className="LxMenuLayer"
+        bindlayoutchange={handleViewportLayout}
+        event-through={false}
+        style={
+          layerOrigin
+            ? {
+                left: `${-Math.round(layerOrigin.x)}px`,
+                top: `${-Math.round(layerOrigin.y)}px`,
+              }
+            : undefined
+        }
       >
-        {props.children}
-      </view>
+        <view className="LxMenuBackdrop" aria-hidden="true" catchtap={menu.close} />
+        <view
+          className={cx("LxMenuPopup", props.className)}
+          aria-modal={false}
+          role="menu"
+          bindkeydown={(event: MenuKeyboardEvent) => {
+            "background only";
+            menu.handleKeyDown(event);
+          }}
+          bindlayoutchange={handlePopupLayout}
+          style={{
+            ...props.style,
+            left: `${Math.round(coordinates.left)}px`,
+            opacity: positioned ? 1 : 0,
+            top: `${Math.round(coordinates.top)}px`,
+          }}
+        >
+          {props.children}
+        </view>
       </view>
     </MenuPortal>
   );
@@ -572,9 +563,11 @@ export function MenuPopupBase(props: {
 export const MenuPopup = MenuPopupBase;
 export function MenuPortal(props: { children?: ReactNode }) {
   const hostRef = useContext(MenuOverlayHostContext);
-  return hostRef?.current
-    ? createPortal(<Fragment>{props.children}</Fragment>, hostRef.current)
-    : <Fragment>{props.children}</Fragment>;
+  return hostRef?.current ? (
+    createPortal(<Fragment>{props.children}</Fragment>, hostRef.current)
+  ) : (
+    <Fragment>{props.children}</Fragment>
+  );
 }
 
 export function MenuItem(props: {
@@ -585,9 +578,9 @@ export function MenuItem(props: {
   trailing?: ReactNode;
   inset?: boolean;
   closeOnClick?: boolean;
-  selectionRole?: 'radio' | 'checkbox' | 'switch';
+  selectionRole?: "radio" | "checkbox" | "switch";
   selected?: boolean;
-  variant?: 'default' | 'destructive';
+  variant?: "default" | "destructive";
 }) {
   const menu = useContext(MenuContext);
   const valueRef = useRef<string | null>(null);
@@ -595,30 +588,26 @@ export function MenuItem(props: {
     valueRef.current = `menu-item-${++nextMenuItemId}`;
   }
   const handleClick = () => {
-    'background only';
+    "background only";
     if (props.disabled) return;
     props.onClick?.();
     if (props.closeOnClick ?? true) menu.close();
   };
   const interaction = useLynxInteractiveState({
     baseClassName: cx(
-      'LxButton',
-      'LxButton--ghost',
-      'LxButton--default',
-      'LxMenuItem',
-      props.variant === 'destructive' && 'LxMenuItem--destructive',
-      props.inset && 'LxMenuItem--inset',
+      "LxButton",
+      "LxButton--ghost",
+      "LxButton--default",
+      "LxMenuItem",
+      props.variant === "destructive" && "LxMenuItem--destructive",
+      props.inset && "LxMenuItem--inset",
       props.className,
-      menu.highlightedValue === valueRef.current && 'LxMenuItem--highlighted',
-      props.disabled && 'LxMenuItem--disabled'
+      menu.highlightedValue === valueRef.current && "LxMenuItem--highlighted",
+      props.disabled && "LxMenuItem--disabled",
     ),
     disabled: props.disabled,
     accessibilityValue:
-      props.selected === undefined
-        ? undefined
-        : props.selected
-          ? 'Selected'
-          : 'Not selected',
+      props.selected === undefined ? undefined : props.selected ? "Selected" : "Not selected",
     onActivate: handleClick,
   });
   const activateRef = useRef(handleClick);
@@ -631,7 +620,7 @@ export function MenuItem(props: {
     });
   }, [activatable, menu.registerItem, props.disabled]);
   const handleKeyDown = (event: MenuKeyboardEvent) => {
-    'background only';
+    "background only";
     if (handleMenuEscape(event, menu)) return;
     interaction.eventProps.bindkeydown?.(event);
   };
@@ -642,17 +631,17 @@ export function MenuItem(props: {
       aria-disabled={props.disabled}
       aria-checked={props.selected}
       role={
-        props.selectionRole === 'radio'
-          ? 'menuitemradio'
+        props.selectionRole === "radio"
+          ? "menuitemradio"
           : props.selectionRole
-            ? 'menuitemcheckbox'
-            : 'menuitem'
+            ? "menuitemcheckbox"
+            : "menuitem"
       }
       accessibility-role={props.selectionRole}
       accessibility-state={
         props.selected === undefined
           ? undefined
-          : props.selectionRole === 'radio'
+          : props.selectionRole === "radio"
             ? { selected: props.selected }
             : { checked: props.selected }
       }
@@ -667,10 +656,8 @@ export function MenuItem(props: {
       catchkeydown={props.disabled ? undefined : handleKeyDown}
     >
       <view className="LxMenuItem__row">
-        {textContent(props.children, 'LxMenuItem__text')}
-        {props.trailing ? (
-          <view className="LxMenuItem__trailing">{props.trailing}</view>
-        ) : null}
+        {textContent(props.children, "LxMenuItem__text")}
+        {props.trailing ? <view className="LxMenuItem__trailing">{props.trailing}</view> : null}
       </view>
     </view>
   );
@@ -711,9 +698,7 @@ export function MenuRadioItem(props: {
       disabled={props.disabled}
       selectionRole="radio"
       selected={checked}
-      trailing={
-        checked ? <CheckIcon className="LxMenuIndicatorIcon" /> : undefined
-      }
+      trailing={checked ? <CheckIcon className="LxMenuIndicatorIcon" /> : undefined}
       onClick={() => selection.choose?.(props.value)}
     >
       {props.children}
@@ -727,15 +712,12 @@ export function MenuCheckboxItem(props: {
   onCheckedChange?: (checked: boolean) => void;
   className?: string;
   disabled?: boolean;
-  variant?: 'default' | 'switch';
+  variant?: "default" | "switch";
 }) {
   const switchIndicator =
-    props.variant === 'switch' ? (
+    props.variant === "switch" ? (
       <view
-        className={cx(
-          'LxMenuSwitch',
-          props.checked && 'LxMenuSwitch--checked'
-        )}
+        className={cx("LxMenuSwitch", props.checked && "LxMenuSwitch--checked")}
         aria-hidden="true"
       >
         <view className="LxMenuSwitch__thumb" />
@@ -747,13 +729,10 @@ export function MenuCheckboxItem(props: {
     );
   return (
     <MenuItem
-      className={cx(
-        props.className,
-        props.variant === 'switch' && 'LxMenuItem--switch'
-      )}
+      className={cx(props.className, props.variant === "switch" && "LxMenuItem--switch")}
       closeOnClick={false}
       disabled={props.disabled}
-      selectionRole={props.variant === 'switch' ? 'switch' : 'checkbox'}
+      selectionRole={props.variant === "switch" ? "switch" : "checkbox"}
       selected={props.checked}
       trailing={switchIndicator}
       onClick={() => props.onCheckedChange?.(!props.checked)}
@@ -764,19 +743,19 @@ export function MenuCheckboxItem(props: {
 }
 
 export function MenuSeparator(props: { className?: string }) {
-  return <view className={cx('LxMenuSeparator', props.className)} />;
+  return <view className={cx("LxMenuSeparator", props.className)} />;
 }
 
 export function MenuGroup(props: { children?: ReactNode; className?: string }) {
-  return <view className={cx('LxMenuGroup', props.className)}>{props.children}</view>;
+  return <view className={cx("LxMenuGroup", props.className)}>{props.children}</view>;
 }
 
 export function MenuGroupLabel(props: { children?: ReactNode; className?: string }) {
-  return <>{textContent(props.children, cx('LxMenuGroupLabel', props.className))}</>;
+  return <>{textContent(props.children, cx("LxMenuGroupLabel", props.className))}</>;
 }
 
 export function MenuShortcut(props: { children?: ReactNode; className?: string }) {
-  return <>{textContent(props.children, cx('LxMenuShortcut', props.className))}</>;
+  return <>{textContent(props.children, cx("LxMenuShortcut", props.className))}</>;
 }
 
 interface MenuSubContextValue {
@@ -800,15 +779,16 @@ export function MenuSub(props: {
   onOpenChange?: (open: boolean) => void;
 }) {
   const menu = useContext(MenuContext);
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(
-    props.defaultOpen ?? false
-  );
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(props.defaultOpen ?? false);
   const open = props.open ?? uncontrolledOpen;
-  const setOpen = useCallback((next: boolean) => {
-    'background only';
-    if (props.open === undefined) setUncontrolledOpen(next);
-    props.onOpenChange?.(next);
-  }, [props.onOpenChange, props.open]);
+  const setOpen = useCallback(
+    (next: boolean) => {
+      "background only";
+      if (props.open === undefined) setUncontrolledOpen(next);
+      props.onOpenChange?.(next);
+    },
+    [props.onOpenChange, props.open],
+  );
   const [triggerRect, setTriggerRect] = useState<MenuRect>(EMPTY_MENU_RECT);
   useEffect(() => {
     if (!menu.open) setOpen(false);
@@ -839,24 +819,20 @@ export function MenuSubTrigger(props: {
     valueRef.current = `menu-sub-trigger-${++nextMenuItemId}`;
   }
   const activate = () => {
-    'background only';
+    "background only";
     if (props.disabled) return;
     if (!submenu.open) props.onOpen?.();
     submenu.setOpen(!submenu.open);
   };
   const refreshTriggerRect = () => {
-    'background only';
+    "background only";
     void resolveMenuTriggerRect(triggerIdRef.current!, triggerRef)
       .then((rect) => {
         const parentOrigin = menu.popupOriginRef.current;
         const normalizedLeft =
-          parentOrigin && rect.left < parentOrigin.x
-            ? parentOrigin.x + rect.left
-            : rect.left;
+          parentOrigin && rect.left < parentOrigin.x ? parentOrigin.x + rect.left : rect.left;
         const normalizedTop =
-          parentOrigin && rect.top < parentOrigin.y
-            ? parentOrigin.y + rect.top
-            : rect.top;
+          parentOrigin && rect.top < parentOrigin.y ? parentOrigin.y + rect.top : rect.top;
         const nextRect = {
           height: rect.height,
           width: rect.width,
@@ -871,14 +847,13 @@ export function MenuSubTrigger(props: {
   };
   const interaction = useLynxInteractiveState({
     baseClassName: cx(
-      'LxButton',
-      'LxButton--ghost',
-      'LxButton--default',
-      'LxMenuItem',
-      'LxMenuSubTrigger',
+      "LxButton",
+      "LxButton--ghost",
+      "LxButton--default",
+      "LxMenuItem",
+      "LxMenuSubTrigger",
       props.className,
-      menu.highlightedValue === valueRef.current &&
-        'LxMenuItem--highlighted'
+      menu.highlightedValue === valueRef.current && "LxMenuItem--highlighted",
     ),
     disabled: props.disabled,
     onIntent: () => {
@@ -897,20 +872,20 @@ export function MenuSubTrigger(props: {
     });
   }, [menu.registerItem, props.disabled]);
   const handleSubmenuKeyDown = (event: MenuKeyboardEvent) => {
-    'background only';
-    if (event.key === 'ArrowRight') {
+    "background only";
+    if (event.key === "ArrowRight") {
       event.preventDefault?.();
       event.stopPropagation?.();
       submenu.setOpen(true);
       return;
     }
-    if ((event.key === 'ArrowLeft' || event.key === 'Escape') && submenu.open) {
+    if ((event.key === "ArrowLeft" || event.key === "Escape") && submenu.open) {
       event.preventDefault?.();
       event.stopPropagation?.();
       submenu.setOpen(false);
       return;
     }
-    if (event.key === 'Escape') {
+    if (event.key === "Escape") {
       menu.handleKeyDown(event);
       return;
     }
@@ -934,7 +909,7 @@ export function MenuSubTrigger(props: {
       }}
     >
       <view className="LxMenuItem__row">
-        {textContent(props.children, 'LxMenuItem__text')}
+        {textContent(props.children, "LxMenuItem__text")}
         <ChevronRightIcon
           className="LxMenuSubTrigger__chevron"
           color={svgColors.foreground80}
@@ -948,8 +923,8 @@ export function MenuSubTrigger(props: {
 export function MenuSubPopup(props: {
   children?: ReactNode;
   className?: string;
-  align?: 'start' | 'end';
-  side?: 'auto' | 'left' | 'right';
+  align?: "start" | "end";
+  side?: "auto" | "left" | "right";
   portaled?: boolean;
 }) {
   const submenu = useContext(MenuSubContext);
@@ -975,32 +950,26 @@ export function MenuSubPopup(props: {
   const popup = (
     <view
       className={cx(
-        'LxMenuPopup',
-        'LxMenuSubPopup',
-        props.align === 'end' && 'LxMenuSubPopup--align-end',
-        props.className
+        "LxMenuPopup",
+        "LxMenuSubPopup",
+        props.align === "end" && "LxMenuSubPopup--align-end",
+        props.className,
       )}
       role="menu"
-      catchtap={(event: { stopPropagation?: () => void }) =>
-        event.stopPropagation?.()
-      }
+      catchtap={(event: { stopPropagation?: () => void }) => event.stopPropagation?.()}
       bindlayoutchange={(event: MenuLayoutEvent) => {
         const nextRect = menuRectFromLayout(event);
         if (!sameMenuRect(popupRect, nextRect)) setPopupRect(nextRect);
       }}
       style={{
         left: `${Math.round(
-          props.portaled
-            ? submenu.triggerRect.x + coordinates.left
-            : coordinates.left
+          props.portaled ? submenu.triggerRect.x + coordinates.left : coordinates.left,
         )}px`,
         opacity: measured ? 1 : 0,
         top: `${Math.round(
-          props.portaled
-            ? submenu.triggerRect.y + coordinates.top
-            : coordinates.top
+          props.portaled ? submenu.triggerRect.y + coordinates.top : coordinates.top,
         )}px`,
-        ...(props.align === 'end' ? { bottom: 'auto' } : {}),
+        ...(props.align === "end" ? { bottom: "auto" } : {}),
       }}
     >
       {props.children}
@@ -1012,6 +981,8 @@ export function MenuSubPopup(props: {
         {popup}
       </view>
     </MenuPortal>
-  ) : popup;
+  ) : (
+    popup
+  );
 }
 export const MenuCreateHandle = undefined;

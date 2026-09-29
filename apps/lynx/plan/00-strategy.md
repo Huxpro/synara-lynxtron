@@ -13,15 +13,15 @@
    重新写一份 Lynx JSX，会快速得到可运行切片，但会系统性牺牲还原度和长期同步成本。
 3. **synara 现有架构已为此做好准备**（审计结论）：
 
-   | 已有 seam | 位置 | 意义 |
-   |---|---|---|
-   | 383 个 .ts 中 277 个零 DOM 引用 | apps/web/src | 数据/逻辑层可直接复用 |
-   | WebSocket 唯一构造点 | wsTransport.ts:183 | 传输层替换只动一处 |
-   | 桌面能力唯一全局 | window.desktopBridge + NativeApi 契约 | 平台端口抽象雏形 |
-   | 存储 memory fallback | lib/storage.ts, hooks/useLocalStorage.ts | 无 localStorage 的应对模式已有 |
-   | UI 原语集中 43 个 wrapper | components/ui/ | Base UI→Lynx 替换只重写这层 |
-   | history 三分支（browser/hash/memory） | appNavigation.ts | Lynx 走 memory history，seam 已存在 |
-   | 弹窗全走 api.dialogs.confirm（19 处，无直接 alert/confirm） | — | 平台对话框零成本切换 |
+   | 已有 seam                                                   | 位置                                     | 意义                                |
+   | ----------------------------------------------------------- | ---------------------------------------- | ----------------------------------- |
+   | 383 个 .ts 中 277 个零 DOM 引用                             | apps/web/src                             | 数据/逻辑层可直接复用               |
+   | WebSocket 唯一构造点                                        | wsTransport.ts:183                       | 传输层替换只动一处                  |
+   | 桌面能力唯一全局                                            | window.desktopBridge + NativeApi 契约    | 平台端口抽象雏形                    |
+   | 存储 memory fallback                                        | lib/storage.ts, hooks/useLocalStorage.ts | 无 localStorage 的应对模式已有      |
+   | UI 原语集中 43 个 wrapper                                   | components/ui/                           | Base UI→Lynx 替换只重写这层         |
+   | history 三分支（browser/hash/memory）                       | appNavigation.ts                         | Lynx 走 memory history，seam 已存在 |
+   | 弹窗全走 api.dialogs.confirm（19 处，无直接 alert/confirm） | —                                        | 平台对话框零成本切换                |
 
    难点高度集中：ChatView.tsx（11k 行）/Sidebar.tsx（6.7k）/MessagesTimeline.tsx（2.8k）手工滚动几何代码；xterm 终端、pdfjs、Lexical composer、CDP 浏览器面板四个无 Lynx 等价物的功能岛。
    React 19 专有特性用量小：useTransition×7、useId×9、startTransition×5（/compat 已覆盖）、无 flushSync、无直接 createPortal。
@@ -48,26 +48,26 @@ L0 Isomorphic Core  contracts / shared / *.logic.ts / stores / wsTransport（抽
    - `backdrop-filter`（已有 `<blur-view>`，缺 CSS 入口）
    - `prefers-reduced-motion` 媒体查询（synara CSS 里仅有的 4 个 @media 全是它）
    - `ResizeObserver`
-   注意：Lynxtron issue 受限、开发主要内部进行——**关键路径不依赖上游节奏，WS 中继/KV 桥按自研可落地做计划**。
+     注意：Lynxtron issue 受限、开发主要内部进行——**关键路径不依赖上游节奏，WS 中继/KV 桥按自研可落地做计划**。
 3. **定点适配收口进 L1 ports**：每 port = 接口 + 双 impl，web impl = 现状薄封装（零回归）。
 
-   | Port | web impl | lynx impl |
-   |---|---|---|
-   | storage | localStorage（现有） | NativeModule KV（或 sessionStorage + 主进程持久化） |
-   | net.socket | WebSocket | 待 P0-S2：原生 WS module / lynxBridge 中继 / SSE+fetch |
-   | clipboard | navigator.clipboard + desktopBridge | Lynxtron 主进程 clipboard API 经 contextBridge |
-   | window | desktopBridge.windowControls | LynxWindow 经 lynxBridge |
-   | updater | electron-updater 链 | 缺失→短期"检测更新+跳转下载"降级 |
-   | dialogs | NativeApi（现有） | Lynxtron dialog |
-   | motion | disclosureMotion.ts（grid-rows 动画） | 同契约 Lynx 实现（220ms ease-out + motion-reduce 回退） |
-   | scroll | DOM scrollTo/getBoundingClientRect | `<list>/<scroll-view>` async NodesRef.invoke |
+   | Port       | web impl                              | lynx impl                                               |
+   | ---------- | ------------------------------------- | ------------------------------------------------------- |
+   | storage    | localStorage（现有）                  | NativeModule KV（或 sessionStorage + 主进程持久化）     |
+   | net.socket | WebSocket                             | 待 P0-S2：原生 WS module / lynxBridge 中继 / SSE+fetch  |
+   | clipboard  | navigator.clipboard + desktopBridge   | Lynxtron 主进程 clipboard API 经 contextBridge          |
+   | window     | desktopBridge.windowControls          | LynxWindow 经 lynxBridge                                |
+   | updater    | electron-updater 链                   | 缺失→短期"检测更新+跳转下载"降级                        |
+   | dialogs    | NativeApi（现有）                     | Lynxtron dialog                                         |
+   | motion     | disclosureMotion.ts（grid-rows 动画） | 同契约 Lynx 实现（220ms ease-out + motion-reduce 回退） |
+   | scroll     | DOM scrollTo/getBoundingClientRect    | `<list>/<scroll-view>` async NodesRef.invoke            |
 
 ## 0.4 文件组织约定
 
 - 解析：Vite `resolve.extensions: ['.web.tsx','.web.ts','.tsx',...]`；Rspeedy 侧 `['.lynx.tsx','.lynx.ts',...]`。**import 永远写无后缀路径**。
 - 共享判定四态：`SHARED`（逐字节一致直接 import）/ `PATCHED`（同源生成+补丁，CSS）/ `SPLIT`（同名双实现 .web/.lynx）/ `EXCLUSIVE`（单端独有）。
 - 目录镜像：Lynx 侧新文件与 web 侧同相对路径、仅换后缀。
-- Lynx 兼容驱动的仓库内改造（收敛 window.*、删 window.nativeApi 死间接层、移除 shadcn dep）本身是 web 版质量改进，不含 Lynx 概念，可独立合入。
+- Lynx 兼容驱动的仓库内改造（收敛 window.\*、删 window.nativeApi 死间接层、移除 shadcn dep）本身是 web 版质量改进，不含 Lynx 概念，可独立合入。
 
 ## 0.5 CSS 管线（index.css 唯一真源 + 编译期补丁）
 
@@ -89,18 +89,18 @@ Tailwind 分叉三选项（决策 D1，依赖 P0-S3 数据）：A. web v4 + lynx
 
 ## 0.6 硬骨头决策框架
 
-| 功能岛 | 现状 | 建议路径 |
-|---|---|---|
-| 终端 | xterm.js canvas/WebGL | 🔀 三选一 spike：CEF webview 内嵌 / Node-API 自研 native 元素 / 一期裁剪（D2） |
-| Composer | Lexical contenteditable | 🔀 一期 textarea + chips/mentions 用 Lynx 元素；composer-nodes AST 逻辑复用 |
-| Transcript 滚动 | 手工 geometry/rAF/scroll-follow | 🔀 `<list>` + MTS 重写；list 语义不同（子组件 JS 提前全建、ref≠可见、滚动事件跨线程节流），独立设计课题 |
-| PDF | pdfjs canvas | 🔀 webview 内嵌或裁剪 |
-| 浏览器面板/CDP | Electron webview+CDP | ⬆️/🔀 CEF webview 唯一路径；或桌面版独占 |
-| Markdown/数学 | react-markdown + katex | 🔧 components 映射到 view/text（pipeline 纯，可复用）；KaTeX→一期降级源码样式或预渲染图片 |
-| 图标 | @tabler/react-icons SVG | 🔧 codemod → Lynx 静态 svg 元素（path 为主，覆盖率预计高） |
-| DnD | dnd-kit×5 | 🔀 MTS 手写；一期可只做点击替代交互 |
-| React 19 | useTransition×7、useId×9 | 🔧 →@tanstack/react-pacer（已有）/ 计数器 util |
-| Base UI 43 wrapper | floating-ui/portal/focus-trap | 🔀 对照官方 lynx-ui headless 库逐个重写（L2 主体工作量） |
+| 功能岛             | 现状                            | 建议路径                                                                                                |
+| ------------------ | ------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| 终端               | xterm.js canvas/WebGL           | 🔀 三选一 spike：CEF webview 内嵌 / Node-API 自研 native 元素 / 一期裁剪（D2）                          |
+| Composer           | Lexical contenteditable         | 🔀 一期 textarea + chips/mentions 用 Lynx 元素；composer-nodes AST 逻辑复用                             |
+| Transcript 滚动    | 手工 geometry/rAF/scroll-follow | 🔀 `<list>` + MTS 重写；list 语义不同（子组件 JS 提前全建、ref≠可见、滚动事件跨线程节流），独立设计课题 |
+| PDF                | pdfjs canvas                    | 🔀 webview 内嵌或裁剪                                                                                   |
+| 浏览器面板/CDP     | Electron webview+CDP            | ⬆️/🔀 CEF webview 唯一路径；或桌面版独占                                                                |
+| Markdown/数学      | react-markdown + katex          | 🔧 components 映射到 view/text（pipeline 纯，可复用）；KaTeX→一期降级源码样式或预渲染图片               |
+| 图标               | @tabler/react-icons SVG         | 🔧 codemod → Lynx 静态 svg 元素（path 为主，覆盖率预计高）                                              |
+| DnD                | dnd-kit×5                       | 🔀 MTS 手写；一期可只做点击替代交互                                                                     |
+| React 19           | useTransition×7、useId×9        | 🔧 →@tanstack/react-pacer（已有）/ 计数器 util                                                          |
+| Base UI 43 wrapper | floating-ui/portal/focus-trap   | 🔀 对照官方 lynx-ui headless 库逐个重写（L2 主体工作量）                                                |
 
 ## 0.7 并行兜底路径
 

@@ -20,7 +20,7 @@ Lynx CSS currently supports `:active` but no other interaction-state pseudo-clas
 ## Ask
 
 1. First-class `:hover` support on platforms with a pointer (desktop at minimum) — this was the highest-value single item in our whole port.
-2. `:focus-visible` / `:focus-within` once view focus exists on the platform (see our separate desktop keyboard/focus issue — the two combine: today focus styling is impossible both in CSS *and* in JS).
+2. `:focus-visible` / `:focus-within` once view focus exists on the platform (see our separate desktop keyboard/focus issue — the two combine: today focus styling is impossible both in CSS _and_ in JS).
 3. If engine-level support is not planned, documenting the recommended state-class pattern (and ideally shipping it as a framework helper) would at least standardize the workaround.
 
 ## Notes

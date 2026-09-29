@@ -6,11 +6,7 @@ import type { ReactNode } from "react";
 import { SidebarContent } from "./ui/sidebar";
 
 export function SidebarContentFrameElement(props: { readonly children?: ReactNode }) {
-  return (
-    <div className="flex min-h-0 flex-1 flex-col font-system-ui">
-      {props.children}
-    </div>
-  );
+  return <div className="flex min-h-0 flex-1 flex-col font-system-ui">{props.children}</div>;
 }
 
 export function SidebarFixedRegionElement(props: { readonly children?: ReactNode }) {

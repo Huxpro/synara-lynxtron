@@ -14,12 +14,12 @@ Web 当前实现是视觉与交互真源；本阶段不重新设计产品。Lynx
 
 ## 2. 复用分类
 
-| 分类 | 定义 | 例子 |
-|---|---|---|
-| SHARED | 同一源文件由 Web/Lynx 直接构建 | logic、store、feature composition、普通 JSX |
-| PATCHED | 同一真源经确定性生成/编译补丁 | tokens、Tailwind utility、icon manifest |
-| SPLIT | 同一无后缀 import/props，下层平台双实现 | Button、Dialog、scroll surface、markdown renderer |
-| EXCLUSIVE | 无合理等价物且被隔离的硬岛 | xterm、PDF canvas、browser webview、Lexical editing core |
+| 分类      | 定义                                    | 例子                                                     |
+| --------- | --------------------------------------- | -------------------------------------------------------- |
+| SHARED    | 同一源文件由 Web/Lynx 直接构建          | logic、store、feature composition、普通 JSX              |
+| PATCHED   | 同一真源经确定性生成/编译补丁           | tokens、Tailwind utility、icon manifest                  |
+| SPLIT     | 同一无后缀 import/props，下层平台双实现 | Button、Dialog、scroll surface、markdown renderer        |
+| EXCLUSIVE | 无合理等价物且被隔离的硬岛              | xterm、PDF canvas、browser webview、Lexical editing core |
 
 禁止把 Web JSX 复制到新 `.lynx.tsx` 后称作 SHARED。SPLIT 必须保持调用点和 props 契约，
 并说明为何 adapter/样式补丁不足。

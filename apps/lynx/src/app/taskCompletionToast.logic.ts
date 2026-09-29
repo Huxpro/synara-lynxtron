@@ -3,23 +3,23 @@ import {
   buildTerminalCompletionCopy,
   buildInputNeededCopy,
   buildTaskCompletionCopy,
-} from '@synara-web/notifications/taskCompletion.logic';
-import type { TerminalEvent } from '@synara/contracts';
-import { defaultTerminalTitleForCliKind } from '@synara/shared/terminalThreads';
+} from "@synara-web/notifications/taskCompletion.logic";
+import type { TerminalEvent } from "@synara/contracts";
+import { defaultTerminalTitleForCliKind } from "@synara/shared/terminalThreads";
 
-import type { ThreadSummary } from './queries';
+import type { ThreadSummary } from "./queries";
 
 export interface LynxTaskCompletionToast {
   readonly body: string;
-  readonly kind: 'terminal' | 'thread-attention' | 'thread-completion';
+  readonly kind: "terminal" | "thread-attention" | "thread-completion";
   readonly threadId: string;
   readonly title: string;
-  readonly tone: 'success' | 'warning';
+  readonly tone: "success" | "warning";
 }
 
 export interface LynxTerminalActivityState {
-  readonly agentState: 'running' | 'attention' | 'review' | null;
-  readonly cliKind: 'codex' | 'claude' | 'antigravity' | null;
+  readonly agentState: "running" | "attention" | "review" | null;
+  readonly cliKind: "codex" | "claude" | "antigravity" | null;
   readonly hasRunningSubprocess: boolean;
 }
 
@@ -32,7 +32,7 @@ export function applyLynxTerminalActivityEvent(input: {
   readonly next: ReadonlyMap<string, LynxTerminalActivityState>;
   readonly toast: LynxTaskCompletionToast | null;
 } {
-  if (input.event.type !== 'activity') {
+  if (input.event.type !== "activity") {
     return { next: input.current, toast: null };
   }
   const key = `${input.event.threadId}\u001f${input.event.terminalId}`;
@@ -44,19 +44,13 @@ export function applyLynxTerminalActivityEvent(input: {
   };
   const next = new Map(input.current);
   next.set(key, state);
-  if (
-    input.includeActiveThread !== true &&
-    input.event.threadId === input.activeThreadId
-  ) {
+  if (input.includeActiveThread !== true && input.event.threadId === input.activeThreadId) {
     return { next, toast: null };
   }
   const title = input.event.cliKind
     ? defaultTerminalTitleForCliKind(input.event.cliKind)
-    : 'Terminal';
-  if (
-    input.event.agentState === 'attention' &&
-    previous?.agentState !== 'attention'
-  ) {
+    : "Terminal";
+  if (input.event.agentState === "attention" && previous?.agentState !== "attention") {
     return {
       next,
       toast: {
@@ -67,15 +61,12 @@ export function applyLynxTerminalActivityEvent(input: {
           title,
         }),
         threadId: input.event.threadId,
-        kind: 'terminal',
-        tone: 'warning',
+        kind: "terminal",
+        tone: "warning",
       },
     };
   }
-  if (
-    input.event.agentState === 'review' &&
-    previous?.agentState !== 'review'
-  ) {
+  if (input.event.agentState === "review" && previous?.agentState !== "review") {
     return {
       next,
       toast: {
@@ -86,8 +77,8 @@ export function applyLynxTerminalActivityEvent(input: {
           title,
         }),
         threadId: input.event.threadId,
-        kind: 'terminal',
-        tone: 'success',
+        kind: "terminal",
+        tone: "success",
       },
     };
   }
@@ -101,25 +92,18 @@ export function detectLynxTaskCompletionToasts(input: {
   readonly includeActiveThread?: boolean;
   readonly runtimeStartedAtMs?: number;
 }): LynxTaskCompletionToast[] {
-  const previousById = new Map(
-    input.previous.map((thread) => [thread.id, thread] as const)
-  );
+  const previousById = new Map(input.previous.map((thread) => [thread.id, thread] as const));
   const toasts: LynxTaskCompletionToast[] = [];
 
   for (const thread of input.current) {
-    if (
-      input.includeActiveThread !== true &&
-      thread.id === input.activeThreadId
-    ) {
+    if (input.includeActiveThread !== true && thread.id === input.activeThreadId) {
       continue;
     }
     const previous = previousById.get(thread.id);
     if (!previous) continue;
 
-    const approvalStarted =
-      !previous.hasPendingApprovals && thread.hasPendingApprovals;
-    const inputStarted =
-      !previous.hasPendingUserInput && thread.hasPendingUserInput;
+    const approvalStarted = !previous.hasPendingApprovals && thread.hasPendingApprovals;
+    const inputStarted = !previous.hasPendingUserInput && thread.hasPendingUserInput;
     if (approvalStarted || inputStarted) {
       const updatedAtMs = Date.parse(thread.updatedAt);
       if (
@@ -130,7 +114,7 @@ export function detectLynxTaskCompletionToasts(input: {
         continue;
       }
       const copy = buildInputNeededCopy({
-        kind: approvalStarted ? 'approval' : 'user-input',
+        kind: approvalStarted ? "approval" : "user-input",
         threadId: thread.id as never,
         projectId: thread.projectId as never,
         title: thread.title,
@@ -140,15 +124,15 @@ export function detectLynxTaskCompletionToasts(input: {
       toasts.push({
         ...copy,
         threadId: thread.id,
-        kind: 'thread-attention',
-        tone: 'warning',
+        kind: "thread-attention",
+        tone: "warning",
       });
       continue;
     }
     if (
       previous.live &&
       !thread.live &&
-      thread.latestTurnState === 'completed' &&
+      thread.latestTurnState === "completed" &&
       thread.latestTurnCompletedAt &&
       (input.runtimeStartedAtMs === undefined ||
         !Number.isFinite(Date.parse(thread.latestTurnCompletedAt)) ||
@@ -164,8 +148,8 @@ export function detectLynxTaskCompletionToasts(input: {
       toasts.push({
         ...copy,
         threadId: thread.id,
-        kind: 'thread-completion',
-        tone: 'success',
+        kind: "thread-completion",
+        tone: "success",
       });
     }
   }
@@ -179,15 +163,11 @@ export async function resolveLynxTaskCompletionSummaries(input: {
 }): Promise<LynxTaskCompletionToast[]> {
   return Promise.all(
     input.toasts.map(async (toast) => {
-      if (toast.kind !== 'thread-completion') {
+      if (toast.kind !== "thread-completion") {
         return toast;
       }
-      const assistantSummary = await input
-        .loadAssistantSummary(toast.threadId)
-        .catch(() => null);
-      return assistantSummary
-        ? { ...toast, body: assistantSummary }
-        : toast;
-    })
+      const assistantSummary = await input.loadAssistantSummary(toast.threadId).catch(() => null);
+      return assistantSummary ? { ...toast, body: assistantSummary } : toast;
+    }),
   );
 }

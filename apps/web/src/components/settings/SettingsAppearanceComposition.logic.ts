@@ -74,9 +74,7 @@ export function normalizeAppearanceNumber(
   value: number,
 ): number {
   const [minimum, maximum] =
-    key === "chatFontSizePx"
-      ? [11, 20]
-      : [MIN_TERMINAL_FONT_SIZE_PX, MAX_TERMINAL_FONT_SIZE_PX];
+    key === "chatFontSizePx" ? [11, 20] : [MIN_TERMINAL_FONT_SIZE_PX, MAX_TERMINAL_FONT_SIZE_PX];
   if (!Number.isFinite(value)) return minimum;
   return Math.min(maximum, Math.max(minimum, Math.round(value)));
 }

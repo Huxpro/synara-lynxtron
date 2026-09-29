@@ -87,13 +87,13 @@ The project popup was:
 
 Exact row-container counts and active-control assertions passed:
 
-| Phase | Project scope | State | Rows |
-|---|---|---|---:|
-| initial | All | Open | 100 |
-| scoped | React | Open | 50 |
-| state change | React | Merged | 50 |
-| state restore | React | Open | 50 |
-| project restore | All | Open | 100 |
+| Phase           | Project scope | State  | Rows |
+| --------------- | ------------- | ------ | ---: |
+| initial         | All           | Open   |  100 |
+| scoped          | React         | Open   |   50 |
+| state change    | React         | Merged |   50 |
+| state restore   | React         | Open   |   50 |
+| project restore | All           | Open   |  100 |
 
 The trigger accessibility changed to React and stayed React through both state
 changes, then returned to All.

@@ -321,8 +321,7 @@ as the server's configured `devUrl`, proved the real Automations page:
 
 The investigation did expose one real harness packaging loss: the standalone
 Web build did not stage the Web-owned absolute icon URLs. Requests for
-`compose-pencil`, `columns-3-wide`, `magnifying-glass`, and `clock` returned
-404. The Web output now copies both canonical `central-icons-reversed` and
+`compose-pencil`, `columns-3-wide`, `magnifying-glass`, and `clock` returned 404. The Web output now copies both canonical `central-icons-reversed` and
 `central-icons-fill` directories; all four requests return 200 after the
 explicit production build.
 
@@ -367,6 +366,7 @@ Exact-client warning/error console stayed empty.
 
 Canonical project cleanup and all process/browser gates passed; screenshot count
 remained `100`.
+
 - Native warning/error console: zero.
 - Corrected Lynx-for-Web shadow-root/relay cell: passed.
 - Lynx-for-Web shared icon requests: `404 -> 200`.

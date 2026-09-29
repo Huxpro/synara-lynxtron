@@ -49,4 +49,3 @@ an intentional correctness delta, not unexplained top/bottom drift.
 - `lynx-a-bottom.png`, `lynx-a-detached.png`, `lynx-b-bottom.png`,
   `lynx-a-restored.png`
 - All PNGs are `1280x820`.
-

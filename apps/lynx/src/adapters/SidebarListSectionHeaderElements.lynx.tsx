@@ -1,16 +1,16 @@
-import filterSvg from '@synara-central-icons/filter-2.svg?raw';
-import plusSvg from '@synara-central-icons/plus-medium.svg?raw';
-import type { ReactNode } from '@lynx-js/react';
+import filterSvg from "@synara-central-icons/filter-2.svg?raw";
+import plusSvg from "@synara-central-icons/plus-medium.svg?raw";
+import type { ReactNode } from "@lynx-js/react";
 
 import {
   SIDEBAR_PROJECT_SORT_OPTIONS,
   SIDEBAR_THREAD_SORT_OPTIONS,
-} from '@synara-web/components/SidebarProjectSort.logic';
+} from "@synara-web/components/SidebarProjectSort.logic";
 import type {
   SidebarProjectSortOrderValue,
   SidebarThreadSortOrderValue,
-} from '@synara-web/sidebarSortDefaults';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
+} from "@synara-web/sidebarSortDefaults";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import {
   Menu,
   MenuGroup,
@@ -19,31 +19,26 @@ import {
   MenuRadioGroup,
   MenuRadioItem,
   MenuTrigger,
-} from '../components/ui/menu.lynx';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
-import { useTheme } from './useTheme.lynx';
-import './sidebar-list-section-header-elements.css';
+} from "../components/ui/menu.lynx";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
+import { useTheme } from "./useTheme.lynx";
+import "./sidebar-list-section-header-elements.css";
 
 interface ChildrenProps {
   readonly children?: ReactNode;
 }
 
-function SidebarListSectionHeaderActionIcon(props: {
-  readonly content: string;
-}) {
+function SidebarListSectionHeaderActionIcon(props: { readonly content: string }) {
   const { semanticIconColor } = useTheme();
   return (
     <>
       <svg
         className="SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--muted"
-        content={colorizeLynxSvg(
-          props.content,
-          semanticIconColor('secondary')
-        )}
+        content={colorizeLynxSvg(props.content, semanticIconColor("secondary"))}
       />
       <svg
         className="SharedSidebarListSectionHeaderActionIcon SharedSidebarListSectionHeaderActionIcon--foreground"
-        content={colorizeLynxSvg(props.content, semanticIconColor('primary'))}
+        content={colorizeLynxSvg(props.content, semanticIconColor("primary"))}
       />
     </>
   );
@@ -51,7 +46,7 @@ function SidebarListSectionHeaderActionIcon(props: {
 
 export function SidebarListSectionHeaderContainerElement({ children }: ChildrenProps) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedSidebarListSectionHeader LynxWebHoverOwner',
+    baseClassName: "SharedSidebarListSectionHeader LynxWebHoverOwner",
     focusable: false,
   });
   return (
@@ -78,16 +73,12 @@ export function SidebarListSectionHeaderAddProjectElement(props: {
   readonly onActivate: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedSidebarListSectionHeaderAction',
-    accessibleLabel: 'Add project',
+    baseClassName: "SharedSidebarListSectionHeaderAction",
+    accessibleLabel: "Add project",
     onActivate: props.onActivate,
   });
   return (
-    <view
-      id={props.elementId}
-      className={interaction.className}
-      {...interaction.eventProps}
-    >
+    <view id={props.elementId} className={interaction.className} {...interaction.eventProps}>
       <SidebarListSectionHeaderActionIcon content={plusSvg} />
     </view>
   );
@@ -96,26 +87,15 @@ export function SidebarListSectionHeaderAddProjectElement(props: {
 export function SidebarListSectionHeaderSortElement(props: {
   readonly projectSortOrder: SidebarProjectSortOrderValue;
   readonly threadSortOrder: SidebarThreadSortOrderValue;
-  readonly onProjectSortOrderChange: (
-    value: SidebarProjectSortOrderValue
-  ) => void;
-  readonly onThreadSortOrderChange: (
-    value: SidebarThreadSortOrderValue
-  ) => void;
+  readonly onProjectSortOrderChange: (value: SidebarProjectSortOrderValue) => void;
+  readonly onThreadSortOrderChange: (value: SidebarThreadSortOrderValue) => void;
 }) {
   return (
     <Menu>
-      <MenuTrigger
-        className="SharedSidebarListSectionHeaderAction"
-        ariaLabel="Sort projects"
-      >
+      <MenuTrigger className="SharedSidebarListSectionHeaderAction" ariaLabel="Sort projects">
         <SidebarListSectionHeaderActionIcon content={filterSvg} />
       </MenuTrigger>
-      <MenuPopup
-        side="bottom"
-        align="end"
-        className="SharedSidebarProjectSortPopup"
-      >
+      <MenuPopup side="bottom" align="end" className="SharedSidebarProjectSortPopup">
         <MenuGroup>
           <MenuGroupLabel className="SharedSidebarProjectSortGroupLabel">
             Sort projects
@@ -123,9 +103,7 @@ export function SidebarListSectionHeaderSortElement(props: {
           <MenuRadioGroup
             value={props.projectSortOrder}
             onValueChange={(value) =>
-              props.onProjectSortOrderChange(
-                value as SidebarProjectSortOrderValue
-              )
+              props.onProjectSortOrderChange(value as SidebarProjectSortOrderValue)
             }
           >
             {SIDEBAR_PROJECT_SORT_OPTIONS.map((option) => (
@@ -142,9 +120,7 @@ export function SidebarListSectionHeaderSortElement(props: {
           <MenuRadioGroup
             value={props.threadSortOrder}
             onValueChange={(value) =>
-              props.onThreadSortOrderChange(
-                value as SidebarThreadSortOrderValue
-              )
+              props.onThreadSortOrderChange(value as SidebarThreadSortOrderValue)
             }
           >
             {SIDEBAR_THREAD_SORT_OPTIONS.map((option) => (

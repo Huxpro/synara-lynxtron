@@ -43,10 +43,7 @@ export function SettingsGeneralComposition(props: {
                 resetLabel={row.resetLabel}
                 changed={value !== defaultValue}
                 onReset={() =>
-                  props.onChange(
-                    row.key,
-                    defaultValue as SettingsGeneralValues[typeof row.key],
-                  )
+                  props.onChange(row.key, defaultValue as SettingsGeneralValues[typeof row.key])
                 }
               >
                 {row.kind === "boolean" ? (
@@ -54,10 +51,7 @@ export function SettingsGeneralComposition(props: {
                     checked={Boolean(value)}
                     ariaLabel={row.ariaLabel}
                     onChange={(checked) =>
-                      props.onChange(
-                        row.key,
-                        checked as SettingsGeneralValues[typeof row.key],
-                      )
+                      props.onChange(row.key, checked as SettingsGeneralValues[typeof row.key])
                     }
                   />
                 ) : (
@@ -68,10 +62,7 @@ export function SettingsGeneralComposition(props: {
                     options={row.options}
                     onChange={(next) => {
                       if (!isSettingsGeneralOption(row, next)) return;
-                      props.onChange(
-                        row.key,
-                        next as SettingsGeneralValues[typeof row.key],
-                      );
+                      props.onChange(row.key, next as SettingsGeneralValues[typeof row.key]);
                     }}
                   />
                 )}

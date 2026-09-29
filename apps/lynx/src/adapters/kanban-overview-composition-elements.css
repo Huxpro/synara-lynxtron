@@ -109,10 +109,8 @@
   opacity: 0;
 }
 
-.SharedKanbanOverviewProjectHeader.ui-hover
-  .SharedKanbanOverviewProjectChevron,
-.SharedKanbanOverviewProjectHeader.ui-focus
-  .SharedKanbanOverviewProjectChevron {
+.SharedKanbanOverviewProjectHeader.ui-hover .SharedKanbanOverviewProjectChevron,
+.SharedKanbanOverviewProjectHeader.ui-focus .SharedKanbanOverviewProjectChevron {
   opacity: 1;
 }
 

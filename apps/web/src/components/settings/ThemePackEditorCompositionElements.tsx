@@ -1,20 +1,12 @@
 // FILE: ThemePackEditorCompositionElements.tsx
 // Purpose: Browser interaction elements beneath the shared theme-pack editor.
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { HexColorPicker } from "react-colorful";
 import { copyTextToClipboard } from "~/platform/clipboard";
 import { useUniqueId } from "~/hooks/useUniqueId";
 import { cn } from "../../lib/utils";
-import type {
-  ChromeTheme,
-  ThemeVariant,
-} from "../../theme/theme.logic";
+import type { ChromeTheme, ThemeVariant } from "../../theme/theme.logic";
 import {
   SETTINGS_CARD_CLASS_NAME,
   SETTINGS_CARD_ROW_CLASS_NAME,
@@ -42,23 +34,13 @@ import { SettingsSelectPopup } from "./SettingsPanelPrimitives";
 const HEX_COLOR_RE = /^#[0-9a-fA-F]{6}$/;
 const COLOR_PICKER_COMMIT_DELAY_MS = 220;
 
-export function ThemePackRootElement(props: {
-  readonly children?: ReactNode;
-}) {
-  return (
-    <div className={cn(SETTINGS_CARD_CLASS_NAME, "overflow-hidden")}>
-      {props.children}
-    </div>
-  );
+export function ThemePackRootElement(props: { readonly children?: ReactNode }) {
+  return <div className={cn(SETTINGS_CARD_CLASS_NAME, "overflow-hidden")}>{props.children}</div>;
 }
 
-export function ThemePackHeaderElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function ThemePackHeaderElement(props: { readonly children?: ReactNode }) {
   return (
-    <div className="flex flex-wrap items-center gap-1 px-4 py-3 sm:py-3.5">
-      {props.children}
-    </div>
+    <div className="flex flex-wrap items-center gap-1 px-4 py-3 sm:py-3.5">{props.children}</div>
   );
 }
 
@@ -74,9 +56,7 @@ export function ThemePackTitleElement(props: {
   );
 }
 
-export function ThemePackResetActionElement(props: {
-  readonly onReset: () => void;
-}) {
+export function ThemePackResetActionElement(props: { readonly onReset: () => void }) {
   return (
     <button
       type="button"
@@ -108,11 +88,7 @@ export function ThemePackImportActionElement(props: {
       setError(null);
       setOpen(false);
     } catch (cause) {
-      setError(
-        cause instanceof Error
-          ? cause.message
-          : "Unable to import that theme string.",
-      );
+      setError(cause instanceof Error ? cause.message : "Unable to import that theme string.");
     }
   };
 
@@ -133,11 +109,9 @@ export function ThemePackImportActionElement(props: {
           <DialogTitle>Import {props.variant} theme</DialogTitle>
           <p className="text-xs text-muted-foreground">
             Paste a{" "}
-            <code className="rounded bg-muted px-1 py-0.5 font-chat-code">
-              codex-theme-v1:
-            </code>{" "}
-            share string. The embedded variant must match {props.variant}, and
-            the selected code theme must exist for that variant.
+            <code className="rounded bg-muted px-1 py-0.5 font-chat-code">codex-theme-v1:</code>{" "}
+            share string. The embedded variant must match {props.variant}, and the selected code
+            theme must exist for that variant.
           </p>
         </DialogHeader>
         <DialogPanel>
@@ -163,12 +137,7 @@ export function ThemePackImportActionElement(props: {
               </Button>
             }
           />
-          <Button
-            type="button"
-            size="sm"
-            disabled={value.trim().length === 0}
-            onClick={submit}
-          >
+          <Button type="button" size="sm" disabled={value.trim().length === 0} onClick={submit}>
             Import
           </Button>
         </DialogFooter>
@@ -229,35 +198,22 @@ export function ThemePackCodeThemeControlElement(props: {
     >
       <SelectTrigger
         size="sm"
-        className={cn(
-          SETTINGS_CONTROL_RADIUS_CLASS_NAME,
-          "ml-1 min-w-52 gap-2",
-        )}
+        className={cn(SETTINGS_CONTROL_RADIUS_CLASS_NAME, "ml-1 min-w-52 gap-2")}
         aria-label={props.ariaLabel}
       >
         <SelectValue className="flex-1 text-left">
           <CodeThemeOption label={props.label} theme={props.theme} />
         </SelectValue>
       </SelectTrigger>
-      <SettingsSelectPopup
-        align="end"
-        alignItemWithTrigger={false}
-        className="p-1.5"
-      >
+      <SettingsSelectPopup align="end" alignItemWithTrigger={false} className="p-1.5">
         {props.options.map((option) => (
           <SelectItem
             hideIndicator
             key={option.id}
             value={option.id}
-            className={cn(
-              SETTINGS_CONTROL_RADIUS_CLASS_NAME,
-              "px-2 py-2",
-            )}
+            className={cn(SETTINGS_CONTROL_RADIUS_CLASS_NAME, "px-2 py-2")}
           >
-            <CodeThemeOption
-              label={option.label}
-              theme={option.previewTheme}
-            />
+            <CodeThemeOption label={option.label} theme={option.previewTheme} />
           </SelectItem>
         ))}
       </SettingsSelectPopup>
@@ -265,9 +221,7 @@ export function ThemePackCodeThemeControlElement(props: {
   );
 }
 
-export function ThemePackContextElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function ThemePackContextElement(props: { readonly children?: ReactNode }) {
   return (
     <div className="px-4 pb-3 text-[11px] text-[var(--color-text-foreground-secondary)]">
       {props.children}
@@ -306,9 +260,7 @@ export function ThemePackColorControlElement(props: {
   const [isOpen, setIsOpen] = useState(false);
   const normalizedDraftHex = draftHex?.trim().toLowerCase() ?? null;
   const previewColor =
-    normalizedDraftHex && HEX_COLOR_RE.test(normalizedDraftHex)
-      ? normalizedDraftHex
-      : props.color;
+    normalizedDraftHex && HEX_COLOR_RE.test(normalizedDraftHex) ? normalizedDraftHex : props.color;
   const inputValue = draftHex ?? props.color;
   const textColor = readableTextColor(previewColor);
   const ringColor = readableTextColor(previewColor, 0.32);
@@ -324,8 +276,7 @@ export function ThemePackColorControlElement(props: {
     }
   };
   const commit = (nextInput?: string | null) => {
-    const next =
-      nextInput === undefined ? pendingCommitRef.current : nextInput;
+    const next = nextInput === undefined ? pendingCommitRef.current : nextInput;
     clearTimer();
     pendingCommitRef.current = null;
     if (next && next !== colorRef.current) props.onChange(next);
@@ -392,9 +343,7 @@ export function ThemePackColorControlElement(props: {
             className="block size-5 shrink-0 rounded-full border"
             style={{ borderColor: ringColor }}
           />
-          <span className="font-system-ui flex-1 text-[12px] uppercase">
-            {previewColor}
-          </span>
+          <span className="font-system-ui flex-1 text-[12px] uppercase">{previewColor}</span>
         </PopoverTrigger>
         <PopoverPopup
           align="end"
@@ -451,11 +400,7 @@ export function ThemePackFontControlElement(props: {
       onBlur={() => setDraft(null)}
       spellCheck={false}
       aria-label={props.ariaLabel}
-      className={cn(
-        SETTINGS_CONTROL_RADIUS_CLASS_NAME,
-        "w-56",
-        props.mono && "font-chat-code",
-      )}
+      className={cn(SETTINGS_CONTROL_RADIUS_CLASS_NAME, "w-56", props.mono && "font-chat-code")}
     />
   );
 }
@@ -504,10 +449,7 @@ export function ThemePackContrastControlElement(props: {
   );
 }
 
-function CodeThemeOption(props: {
-  readonly label: string;
-  readonly theme: ChromeTheme;
-}) {
+function CodeThemeOption(props: { readonly label: string; readonly theme: ChromeTheme }) {
   return (
     <div className="flex min-w-0 items-center gap-2.5">
       <span
@@ -515,11 +457,7 @@ function CodeThemeOption(props: {
         className="flex size-5 shrink-0 items-center justify-center rounded-md border text-[10px] font-semibold leading-none"
         style={{
           backgroundColor: props.theme.surface,
-          borderColor: mixColor(
-            props.theme.surface,
-            props.theme.ink,
-            0.16,
-          ),
+          borderColor: mixColor(props.theme.surface, props.theme.ink, 0.16),
           color: props.theme.accent,
         }}
       >

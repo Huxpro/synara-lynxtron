@@ -1,6 +1,6 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import { SidebarPrimaryActionRow } from '@synara-web/components/SidebarPrimaryActionRow';
+import { SidebarPrimaryActionRow } from "@synara-web/components/SidebarPrimaryActionRow";
 
 export function SidebarSettingsEntryElement(props: {
   readonly active?: boolean;

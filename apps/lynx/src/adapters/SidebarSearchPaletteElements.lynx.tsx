@@ -1,4 +1,4 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
 import {
   ArrowDownToLineIcon,
@@ -17,14 +17,14 @@ import {
   SettingsIcon,
   SunIcon,
   type LynxIcon,
-} from '../lib/icons.lynx';
-import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
+} from "../lib/icons.lynx";
+import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 
 interface ElementProps {
   children?: ReactNode;
   className?: string;
   style?: Readonly<Record<string, string | number>>;
-  'aria-hidden'?: boolean | 'true' | 'false';
+  "aria-hidden"?: boolean | "true" | "false";
 }
 
 export function SidebarSearchPaletteView(props: ElementProps) {
@@ -52,36 +52,36 @@ export function SidebarSearchPaletteMark(props: ElementProps) {
 }
 
 export type SidebarSearchPaletteGlyphKind =
-  | 'arrow-down-to-line'
-  | 'arrow-left'
-  | 'bug'
-  | 'chat'
-  | 'check'
-  | 'corner-left-up'
-  | 'device-laptop'
-  | 'folder-closed'
-  | 'folder-open'
-  | 'folder-plus'
-  | 'moon'
-  | 'new-thread'
-  | 'provider'
-  | 'search'
-  | 'settings'
-  | 'sun';
+  | "arrow-down-to-line"
+  | "arrow-left"
+  | "bug"
+  | "chat"
+  | "check"
+  | "corner-left-up"
+  | "device-laptop"
+  | "folder-closed"
+  | "folder-open"
+  | "folder-plus"
+  | "moon"
+  | "new-thread"
+  | "provider"
+  | "search"
+  | "settings"
+  | "sun";
 
-const GLYPHS: Record<Exclude<SidebarSearchPaletteGlyphKind, 'provider'>, LynxIcon> = {
-  'arrow-down-to-line': ArrowDownToLineIcon,
-  'arrow-left': ArrowLeftIcon,
+const GLYPHS: Record<Exclude<SidebarSearchPaletteGlyphKind, "provider">, LynxIcon> = {
+  "arrow-down-to-line": ArrowDownToLineIcon,
+  "arrow-left": ArrowLeftIcon,
   bug: BugIcon,
   chat: MessageCircleIcon,
   check: CheckIcon,
-  'corner-left-up': CornerLeftUpIcon,
-  'device-laptop': DeviceLaptopIcon,
-  'folder-closed': FolderIcon,
-  'folder-open': FolderOpenIcon,
-  'folder-plus': FolderPlusIcon,
+  "corner-left-up": CornerLeftUpIcon,
+  "device-laptop": DeviceLaptopIcon,
+  "folder-closed": FolderIcon,
+  "folder-open": FolderOpenIcon,
+  "folder-plus": FolderPlusIcon,
   moon: MoonIcon,
-  'new-thread': NewThreadIcon,
+  "new-thread": NewThreadIcon,
   search: SearchIcon,
   settings: SettingsIcon,
   sun: SunIcon,
@@ -92,7 +92,7 @@ export function SidebarSearchPaletteGlyph(props: {
   readonly kind: SidebarSearchPaletteGlyphKind;
   readonly provider?: string;
 }) {
-  if (props.kind === 'provider') {
+  if (props.kind === "provider") {
     return (
       <view className={props.className}>
         <OpenAIProviderIcon provider={props.provider} />

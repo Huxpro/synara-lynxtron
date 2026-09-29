@@ -1,4 +1,4 @@
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 
 export function AutomationChoiceOption({
   disabled,
@@ -12,11 +12,9 @@ export function AutomationChoiceOption({
   readonly onSelect: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: `AutomationCreateChoice${
-      selected ? ' AutomationCreateChoice--selected' : ''
-    }`,
+    baseClassName: `AutomationCreateChoice${selected ? " AutomationCreateChoice--selected" : ""}`,
     accessibleLabel: label,
-    accessibilityValue: selected ? 'Selected' : undefined,
+    accessibilityValue: selected ? "Selected" : undefined,
     disabled,
     onActivate: onSelect,
   });

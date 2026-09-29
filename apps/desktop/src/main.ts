@@ -101,7 +101,10 @@ import {
 } from "./macIconCacheRefresh";
 import { collectMacUpdateDiagnostics } from "./macUpdateDiagnostics";
 import { openInitialBackendWindow } from "./initialBackendWindowOpen";
-import { shouldAllowMediaPermissionRequest, shouldConfigureMediaPermissions } from "./mediaPermissions";
+import {
+  shouldAllowMediaPermissionRequest,
+  shouldConfigureMediaPermissions,
+} from "./mediaPermissions";
 import {
   installResumableUpdateDownloader,
   type ResumableDownloaderTarget,

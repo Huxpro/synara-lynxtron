@@ -1,4 +1,22 @@
-export function Spinner(props: { readonly className?: string; readonly color?: string; readonly size?: number }) {
+export function Spinner(props: {
+  readonly className?: string;
+  readonly color?: string;
+  readonly size?: number;
+}) {
   const size = props.size ?? 16;
-  return <view accessibility-element accessibility-label="Loading" accessibility-trait="updating" className={`LxSpinner${props.className ? ` ${props.className}` : ''}`} style={{ width: `${size}px`, height: `${size}px`, borderTopColor: props.color, borderBottomColor: props.color, borderLeftColor: props.color }} />;
+  return (
+    <view
+      accessibility-element
+      accessibility-label="Loading"
+      accessibility-trait="updating"
+      className={`LxSpinner${props.className ? ` ${props.className}` : ""}`}
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        borderTopColor: props.color,
+        borderBottomColor: props.color,
+        borderLeftColor: props.color,
+      }}
+    />
+  );
 }

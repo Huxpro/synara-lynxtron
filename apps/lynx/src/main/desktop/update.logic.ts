@@ -2,10 +2,13 @@ function parseVersion(version: string): {
   readonly numbers: readonly number[];
   readonly prerelease: string | null;
 } | null {
-  const match = version.trim().replace(/^v/i, '').match(/^(\d+(?:\.\d+)*)(?:-([0-9A-Za-z.-]+))?$/);
+  const match = version
+    .trim()
+    .replace(/^v/i, "")
+    .match(/^(\d+(?:\.\d+)*)(?:-([0-9A-Za-z.-]+))?$/);
   if (!match) return null;
   return {
-    numbers: match[1].split('.').map(Number),
+    numbers: match[1].split(".").map(Number),
     prerelease: match[2] ?? null,
   };
 }

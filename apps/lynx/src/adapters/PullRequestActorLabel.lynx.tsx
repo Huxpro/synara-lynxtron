@@ -1,19 +1,19 @@
-import type { PullRequestActor } from '@synara/contracts';
-import { useState } from '@lynx-js/react';
+import type { PullRequestActor } from "@synara/contracts";
+import { useState } from "@lynx-js/react";
 
-import './pull-request-actor-label.css';
+import "./pull-request-actor-label.css";
 
 function initialFor(actor: PullRequestActor | null): string {
   const source = actor?.name?.trim() || actor?.login?.trim();
-  return source ? source.slice(0, 1).toUpperCase() : '?';
+  return source ? source.slice(0, 1).toUpperCase() : "?";
 }
 
 export function PullRequestActorLabel(props: {
   readonly actor: PullRequestActor | null;
-  readonly variant: 'author' | 'comment' | 'reviewer' | 'row';
+  readonly variant: "author" | "comment" | "reviewer" | "row";
 }) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
-  const login = props.actor?.login?.trim() || 'ghost';
+  const login = props.actor?.login?.trim() || "ghost";
   const src = props.actor?.avatarUrl?.trim() || null;
   return (
     <view
@@ -28,7 +28,7 @@ export function PullRequestActorLabel(props: {
           mode="aspectFill"
           accessibility-element={false}
           binderror={() => {
-            'background only';
+            "background only";
             setFailedSrc(src);
           }}
         />
@@ -37,14 +37,10 @@ export function PullRequestActorLabel(props: {
           className="SharedPrActorAvatar SharedPrActorAvatar--fallback"
           accessibility-element={false}
         >
-          <text className="SharedPrActorAvatarInitial">
-            {initialFor(props.actor)}
-          </text>
+          <text className="SharedPrActorAvatarInitial">{initialFor(props.actor)}</text>
         </view>
       )}
-      {props.variant === 'row' ? null : (
-        <text className="SharedPrActorLogin">{login}</text>
-      )}
+      {props.variant === "row" ? null : <text className="SharedPrActorLogin">{login}</text>}
     </view>
   );
 }

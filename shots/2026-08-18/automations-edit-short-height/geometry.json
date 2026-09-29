@@ -5,9 +5,7 @@
       "height": 500,
       "devicePixelRatio": 1
     },
-    "rootClasses": [
-      "SliceRoot--viewport-medium"
-    ],
+    "rootClasses": ["SliceRoot--viewport-medium"],
     "panel": {
       "clientHeight": 352,
       "scrollHeight": 374

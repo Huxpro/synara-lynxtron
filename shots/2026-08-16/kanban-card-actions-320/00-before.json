@@ -1,1 +1,23 @@
-{"success":true,"data":{"origin":"http://localhost:8080/index.html?route=%2Fkanban%2Feditor-changes-project","result":{"action":{"bottom":123,"centerX":243,"centerY":114,"height":18,"right":255,"width":24.984375,"x":230.015625,"y":105},"card":{"bottom":158.5,"height":64.5,"right":268,"width":248,"x":20,"y":94},"dims":[320,568,1],"header":{"bottom":46,"height":46,"right":320,"width":320,"x":0,"y":0},"rootClass":"SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-compact"}},"error":null}
+{
+  "success": true,
+  "data": {
+    "origin": "http://localhost:8080/index.html?route=%2Fkanban%2Feditor-changes-project",
+    "result": {
+      "action": {
+        "bottom": 123,
+        "centerX": 243,
+        "centerY": 114,
+        "height": 18,
+        "right": 255,
+        "width": 24.984375,
+        "x": 230.015625,
+        "y": 105
+      },
+      "card": { "bottom": 158.5, "height": 64.5, "right": 268, "width": 248, "x": 20, "y": 94 },
+      "dims": [320, 568, 1],
+      "header": { "bottom": 46, "height": 46, "right": 320, "width": 320, "x": 0, "y": 0 },
+      "rootClass": "SliceRoot SliceRoot--theme-dark SliceRoot--density-comfortable SliceRoot--viewport-compact"
+    }
+  },
+  "error": null
+}

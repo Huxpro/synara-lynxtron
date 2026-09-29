@@ -1,8 +1,4 @@
-import type {
-  AutomationDefinition,
-  AutomationListResult,
-  AutomationRun,
-} from "@synara/contracts";
+import type { AutomationDefinition, AutomationListResult, AutomationRun } from "@synara/contracts";
 import { AutomationId, ThreadId } from "@synara/contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -13,9 +9,7 @@ import {
   projectAutomationList,
 } from "./automationList";
 
-function definition(
-  overrides: Partial<AutomationDefinition> = {},
-): AutomationDefinition {
+function definition(overrides: Partial<AutomationDefinition> = {}): AutomationDefinition {
   return {
     id: "automation-1",
     projectId: "project-1",
@@ -218,16 +212,10 @@ describe("automation list projection", () => {
   it("formats detail timestamps relative to the current local day", () => {
     const now = new Date(2026, 7, 14, 12, 0, 0);
     expect(
-      formatAutomationRunTimestamp(
-        new Date(2026, 7, 14, 9, 30, 0).toISOString(),
-        now.getTime(),
-      ),
+      formatAutomationRunTimestamp(new Date(2026, 7, 14, 9, 30, 0).toISOString(), now.getTime()),
     ).toMatch(/^Today at /u);
     expect(
-      formatAutomationRunTimestamp(
-        new Date(2026, 7, 15, 9, 30, 0).toISOString(),
-        now.getTime(),
-      ),
+      formatAutomationRunTimestamp(new Date(2026, 7, 15, 9, 30, 0).toISOString(), now.getTime()),
     ).toMatch(/^Tomorrow at /u);
     expect(formatAutomationRunTimestamp(null, now.getTime())).toBe("—");
   });
@@ -237,16 +225,10 @@ describe("automation list projection", () => {
     const now = new Date(2026, 7, 14, 12, 0, 0);
 
     expect(
-      formatAutomationRunTimestamp(
-        new Date(2026, 7, 14, 9, 30, 0).toISOString(),
-        now.getTime(),
-      ),
+      formatAutomationRunTimestamp(new Date(2026, 7, 14, 9, 30, 0).toISOString(), now.getTime()),
     ).toBe("Today at 09:30");
     expect(
-      formatAutomationRunTimestamp(
-        new Date(2026, 7, 20, 9, 30, 0).toISOString(),
-        now.getTime(),
-      ),
+      formatAutomationRunTimestamp(new Date(2026, 7, 20, 9, 30, 0).toISOString(), now.getTime()),
     ).toBe("20 Aug 2026, 09:30");
     expect(
       formatAutomationCadence({

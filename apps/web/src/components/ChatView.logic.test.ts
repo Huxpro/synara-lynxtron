@@ -694,9 +694,7 @@ describe("voice helpers", () => {
 
   it("strips a plain Synara RPC transport prefix", () => {
     expect(
-      sanitizeVoiceErrorMessage(
-        "Synara RPC server.transcribeVoice failed: socket closed",
-      ),
+      sanitizeVoiceErrorMessage("Synara RPC server.transcribeVoice failed: socket closed"),
     ).toBe("socket closed");
   });
 

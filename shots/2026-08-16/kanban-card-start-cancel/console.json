@@ -1,1 +1,67 @@
-{"success":true,"data":{"messages":[{"args":[{"type":"string","value":"[Lynxtron Web] Configuring nodejs module with script:"},{"type":"string","value":"http://localhost:8080/nodejs-adapter-web.js"}],"text":"[Lynxtron Web] Configuring nodejs module with script: http://localhost:8080/nodejs-adapter-web.js","type":"log"},{"args":[{"type":"string","value":"[Lynxtron Web] Created Proxy Blob URL:"},{"type":"string","value":"blob:http://localhost:8080/e686d76c-ceb5-45a5-a577-ef1c172fe8ec"}],"text":"[Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8080/e686d76c-ceb5-45a5-a577-ef1c172fe8ec","type":"log"},{"args":[{"type":"string","value":"[Lynxtron Web] Final nativeModulesMap:"},{"className":"Object","description":"Object","objectId":"-1667722220254703155.2.1","preview":{"description":"Object","overflow":false,"properties":[{"name":"bridge","type":"string","value":"blob:http://localhost:8080/bbb52511-fc36-4454-808b-8aaa0bfbb87f"},{"name":"nodejs","type":"string","value":"blob:http://localhost:8080/e686d76c-ceb5-45a5-a577-ef1c172fe8ec"}],"type":"object"},"type":"object"}],"text":"[Lynxtron Web] Final nativeModulesMap: {bridge: \"blob:http://localhost:8080/bbb52511-fc36-4454-808b-8aaa0bfbb87f\", nodejs: \"blob:http://localhost:8080/e686d76c-ceb5-45a5-a577-ef1c172fe8ec\"}","type":"log"},{"args":[{"type":"string","value":"using deprecated parameters for the initialization function; pass a single object instead"}],"text":"using deprecated parameters for the initialization function; pass a single object instead","type":"warning"}]},"error":null}
+{
+  "success": true,
+  "data": {
+    "messages": [
+      {
+        "args": [
+          { "type": "string", "value": "[Lynxtron Web] Configuring nodejs module with script:" },
+          { "type": "string", "value": "http://localhost:8080/nodejs-adapter-web.js" }
+        ],
+        "text": "[Lynxtron Web] Configuring nodejs module with script: http://localhost:8080/nodejs-adapter-web.js",
+        "type": "log"
+      },
+      {
+        "args": [
+          { "type": "string", "value": "[Lynxtron Web] Created Proxy Blob URL:" },
+          {
+            "type": "string",
+            "value": "blob:http://localhost:8080/e686d76c-ceb5-45a5-a577-ef1c172fe8ec"
+          }
+        ],
+        "text": "[Lynxtron Web] Created Proxy Blob URL: blob:http://localhost:8080/e686d76c-ceb5-45a5-a577-ef1c172fe8ec",
+        "type": "log"
+      },
+      {
+        "args": [
+          { "type": "string", "value": "[Lynxtron Web] Final nativeModulesMap:" },
+          {
+            "className": "Object",
+            "description": "Object",
+            "objectId": "-1667722220254703155.2.1",
+            "preview": {
+              "description": "Object",
+              "overflow": false,
+              "properties": [
+                {
+                  "name": "bridge",
+                  "type": "string",
+                  "value": "blob:http://localhost:8080/bbb52511-fc36-4454-808b-8aaa0bfbb87f"
+                },
+                {
+                  "name": "nodejs",
+                  "type": "string",
+                  "value": "blob:http://localhost:8080/e686d76c-ceb5-45a5-a577-ef1c172fe8ec"
+                }
+              ],
+              "type": "object"
+            },
+            "type": "object"
+          }
+        ],
+        "text": "[Lynxtron Web] Final nativeModulesMap: {bridge: \"blob:http://localhost:8080/bbb52511-fc36-4454-808b-8aaa0bfbb87f\", nodejs: \"blob:http://localhost:8080/e686d76c-ceb5-45a5-a577-ef1c172fe8ec\"}",
+        "type": "log"
+      },
+      {
+        "args": [
+          {
+            "type": "string",
+            "value": "using deprecated parameters for the initialization function; pass a single object instead"
+          }
+        ],
+        "text": "using deprecated parameters for the initialization function; pass a single object instead",
+        "type": "warning"
+      }
+    ]
+  },
+  "error": null
+}

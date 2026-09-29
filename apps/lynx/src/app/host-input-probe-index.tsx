@@ -1,6 +1,6 @@
-import { root } from '@lynx-js/react';
+import { root } from "@lynx-js/react";
 
-import { HostInputProbe } from './HostInputProbe';
+import { HostInputProbe } from "./HostInputProbe";
 
 root.render(<HostInputProbe />);
 

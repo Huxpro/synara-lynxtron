@@ -1,1 +1,131 @@
-{"viewport":{"width":1440,"height":900,"visualWidth":1440,"visualHeight":900,"dpr":1},"rows":[{"label":"$check-code","row":{"x":872,"y":574.546875,"width":336,"height":20,"top":574.546875,"right":1208,"bottom":594.546875,"left":872},"identity":{"x":872,"y":574.546875,"width":115.375,"height":20,"top":574.546875,"right":987.375,"bottom":594.546875,"left":872},"shell":{"x":872,"y":574.546875,"width":20,"height":20,"top":574.546875,"right":892,"bottom":594.546875,"left":872},"glyph":{"x":876,"y":578.546875,"width":12,"height":12,"top":578.546875,"right":888,"bottom":590.546875,"left":876},"name":{"x":902,"y":574.546875,"width":85.375,"height":20,"top":574.546875,"right":987.375,"bottom":594.546875,"left":902},"count":{"x":1167.140625,"y":574.546875,"width":40.859375,"height":20,"top":574.546875,"right":1208,"bottom":594.546875,"left":1167.140625}},{"label":"@reviewer-agent","row":{"x":872,"y":604.546875,"width":336,"height":20,"top":604.546875,"right":1208,"bottom":624.546875,"left":872},"identity":{"x":872,"y":604.546875,"width":140.09375,"height":20,"top":604.546875,"right":1012.09375,"bottom":624.546875,"left":872},"shell":{"x":872,"y":604.546875,"width":20,"height":20,"top":604.546875,"right":892,"bottom":624.546875,"left":872},"glyph":{"x":876,"y":608.546875,"width":12,"height":12,"top":608.546875,"right":888,"bottom":620.546875,"left":876},"name":{"x":902,"y":604.546875,"width":110.09375,"height":20,"top":604.546875,"right":1012.09375,"bottom":624.546875,"left":902},"count":{"x":1167.140625,"y":604.546875,"width":40.859375,"height":20,"top":604.546875,"right":1208,"bottom":624.546875,"left":1167.140625}}]}
+{
+  "viewport": { "width": 1440, "height": 900, "visualWidth": 1440, "visualHeight": 900, "dpr": 1 },
+  "rows": [
+    {
+      "label": "$check-code",
+      "row": {
+        "x": 872,
+        "y": 574.546875,
+        "width": 336,
+        "height": 20,
+        "top": 574.546875,
+        "right": 1208,
+        "bottom": 594.546875,
+        "left": 872
+      },
+      "identity": {
+        "x": 872,
+        "y": 574.546875,
+        "width": 115.375,
+        "height": 20,
+        "top": 574.546875,
+        "right": 987.375,
+        "bottom": 594.546875,
+        "left": 872
+      },
+      "shell": {
+        "x": 872,
+        "y": 574.546875,
+        "width": 20,
+        "height": 20,
+        "top": 574.546875,
+        "right": 892,
+        "bottom": 594.546875,
+        "left": 872
+      },
+      "glyph": {
+        "x": 876,
+        "y": 578.546875,
+        "width": 12,
+        "height": 12,
+        "top": 578.546875,
+        "right": 888,
+        "bottom": 590.546875,
+        "left": 876
+      },
+      "name": {
+        "x": 902,
+        "y": 574.546875,
+        "width": 85.375,
+        "height": 20,
+        "top": 574.546875,
+        "right": 987.375,
+        "bottom": 594.546875,
+        "left": 902
+      },
+      "count": {
+        "x": 1167.140625,
+        "y": 574.546875,
+        "width": 40.859375,
+        "height": 20,
+        "top": 574.546875,
+        "right": 1208,
+        "bottom": 594.546875,
+        "left": 1167.140625
+      }
+    },
+    {
+      "label": "@reviewer-agent",
+      "row": {
+        "x": 872,
+        "y": 604.546875,
+        "width": 336,
+        "height": 20,
+        "top": 604.546875,
+        "right": 1208,
+        "bottom": 624.546875,
+        "left": 872
+      },
+      "identity": {
+        "x": 872,
+        "y": 604.546875,
+        "width": 140.09375,
+        "height": 20,
+        "top": 604.546875,
+        "right": 1012.09375,
+        "bottom": 624.546875,
+        "left": 872
+      },
+      "shell": {
+        "x": 872,
+        "y": 604.546875,
+        "width": 20,
+        "height": 20,
+        "top": 604.546875,
+        "right": 892,
+        "bottom": 624.546875,
+        "left": 872
+      },
+      "glyph": {
+        "x": 876,
+        "y": 608.546875,
+        "width": 12,
+        "height": 12,
+        "top": 608.546875,
+        "right": 888,
+        "bottom": 620.546875,
+        "left": 876
+      },
+      "name": {
+        "x": 902,
+        "y": 604.546875,
+        "width": 110.09375,
+        "height": 20,
+        "top": 604.546875,
+        "right": 1012.09375,
+        "bottom": 624.546875,
+        "left": 902
+      },
+      "count": {
+        "x": 1167.140625,
+        "y": 604.546875,
+        "width": 40.859375,
+        "height": 20,
+        "top": 604.546875,
+        "right": 1208,
+        "bottom": 624.546875,
+        "left": 1167.140625
+      }
+    }
+  ]
+}

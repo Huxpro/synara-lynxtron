@@ -1,49 +1,48 @@
-import { Button as LynxButton, type ButtonProps as LynxButtonProps } from '@lynx-js/lynx-ui';
-import type { ReactNode } from '@lynx-js/react';
+import { Button as LynxButton, type ButtonProps as LynxButtonProps } from "@lynx-js/lynx-ui";
+import type { ReactNode } from "@lynx-js/react";
 
-import { cx, renderSlot, textContent } from './shared.lynx';
-import './primitives.css';
+import { cx, renderSlot, textContent } from "./shared.lynx";
+import "./primitives.css";
 
 export type ButtonVariant =
-  | 'default'
-  | 'secondary'
-  | 'destructive'
-  | 'prominent'
-  | 'outline'
-  | 'primary-outline'
-  | 'secondary-outline'
-  | 'destructive-outline'
-  | 'chrome-outline'
-  | 'ghost'
-  | 'chrome'
-  | 'subtle'
-  | 'link';
+  | "default"
+  | "secondary"
+  | "destructive"
+  | "prominent"
+  | "outline"
+  | "primary-outline"
+  | "secondary-outline"
+  | "destructive-outline"
+  | "chrome-outline"
+  | "ghost"
+  | "chrome"
+  | "subtle"
+  | "link";
 
 export type ButtonSize =
-  | 'chip'
-  | 'xs'
-  | 'sm'
-  | 'default'
-  | 'lg'
-  | 'xl'
-  | 'icon-chip'
-  | 'icon-xs'
-  | 'icon-sm'
-  | 'icon'
-  | 'icon-lg'
-  | 'icon-xl';
+  | "chip"
+  | "xs"
+  | "sm"
+  | "default"
+  | "lg"
+  | "xl"
+  | "icon-chip"
+  | "icon-xs"
+  | "icon-sm"
+  | "icon"
+  | "icon-lg"
+  | "icon-xl";
 
-export interface ButtonProps
-  extends Omit<LynxButtonProps, 'children' | 'className' | 'onClick'> {
+export interface ButtonProps extends Omit<LynxButtonProps, "children" | "className" | "onClick"> {
   children?: ReactNode;
   className?: string;
   variant?: ButtonVariant;
   size?: ButtonSize;
-  shape?: 'default' | 'capsule';
+  shape?: "default" | "capsule";
   onClick?: (event: LynxButtonClickEvent) => void;
   render?: ReactNode;
-  type?: 'button' | 'submit' | 'reset';
-  'aria-label'?: string;
+  type?: "button" | "submit" | "reset";
+  "aria-label"?: string;
 }
 
 export interface LynxButtonClickEvent {
@@ -67,19 +66,21 @@ function createButtonClickEvent(): LynxButtonClickEvent {
   };
 }
 
-export function buttonVariants(input: {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  shape?: 'default' | 'capsule';
-  className?: string;
-} = {}): string {
+export function buttonVariants(
+  input: {
+    variant?: ButtonVariant;
+    size?: ButtonSize;
+    shape?: "default" | "capsule";
+    className?: string;
+  } = {},
+): string {
   return cx(
-    'LxButton',
-    `LxButton--${input.variant ?? 'default'}`,
-    `LxButton--variant-${input.variant ?? 'default'}`,
-    `LxButton--${input.size ?? 'default'}`,
-    input.shape === 'capsule' && 'LxButton--capsule',
-    input.className
+    "LxButton",
+    `LxButton--${input.variant ?? "default"}`,
+    `LxButton--variant-${input.variant ?? "default"}`,
+    `LxButton--${input.size ?? "default"}`,
+    input.shape === "capsule" && "LxButton--capsule",
+    input.className,
   );
 }
 
@@ -94,23 +95,21 @@ export function Button({
   type: _type,
   buttonProps,
   disabled,
-  'aria-label': ariaLabel,
+  "aria-label": ariaLabel,
   ...props
 }: ButtonProps) {
   const handleClick = () => {
-    'background only';
+    "background only";
     onClick?.(createButtonClickEvent());
   };
-  const existingAccessibilityState = buttonProps?.['accessibility-state'];
-  const accessibilityElement =
-    buttonProps?.['accessibility-element'] ?? true;
+  const existingAccessibilityState = buttonProps?.["accessibility-state"];
+  const accessibilityElement = buttonProps?.["accessibility-element"] ?? true;
   const accessibilityTrait =
-    buttonProps?.['accessibility-trait'] ??
-    (accessibilityElement ? ('button' as const) : undefined);
+    buttonProps?.["accessibility-trait"] ??
+    (accessibilityElement ? ("button" as const) : undefined);
   const accessibilityState = disabled
     ? {
-        ...(typeof existingAccessibilityState === 'object' &&
-        existingAccessibilityState !== null
+        ...(typeof existingAccessibilityState === "object" && existingAccessibilityState !== null
           ? existingAccessibilityState
           : {}),
         disabled: true,
@@ -124,24 +123,20 @@ export function Button({
       className={buttonVariants({ className, variant, size, shape })}
       buttonProps={{
         ...buttonProps,
-        'accessibility-element': accessibilityElement,
-        ...(accessibilityTrait
-          ? { 'accessibility-trait': accessibilityTrait }
-          : {}),
-        ...(accessibilityState
-          ? { 'accessibility-state': accessibilityState }
-          : {}),
+        "accessibility-element": accessibilityElement,
+        ...(accessibilityTrait ? { "accessibility-trait": accessibilityTrait } : {}),
+        ...(accessibilityState ? { "accessibility-state": accessibilityState } : {}),
         ...(ariaLabel
           ? {
-              'accessibility-label': ariaLabel,
+              "accessibility-label": ariaLabel,
             }
           : {}),
       }}
     >
-      {renderSlot(render, textContent(children, 'LxButton__text'))}
+      {renderSlot(render, textContent(children, "LxButton__text"))}
     </LynxButton>
   );
 }
 
-export const dialogActionButtonClassName = 'LxButton--dialog-action';
-export const headerButtonDarkBorderClassName = 'LxButton--header-border';
+export const dialogActionButtonClassName = "LxButton--dialog-action";
+export const headerButtonDarkBorderClassName = "LxButton--header-border";

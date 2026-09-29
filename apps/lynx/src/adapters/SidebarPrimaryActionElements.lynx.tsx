@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
-import './sidebar-primary-action-elements.css';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
+import "./sidebar-primary-action-elements.css";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
 
 interface ChildrenProps {
   readonly children?: ReactNode;
@@ -29,16 +29,16 @@ export function SidebarPrimaryActionButtonElement({
   readonly onActivate?: (() => void) | undefined;
   readonly onMouseEnter?: (() => void) | undefined;
   readonly onFocus?: (() => void) | undefined;
-  readonly visualState?: 'default' | 'hover' | 'focus' | 'pressed';
+  readonly visualState?: "default" | "hover" | "focus" | "pressed";
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: `SharedSidebarPrimaryActionButton${
-      active ? ' SharedSidebarPrimaryActionButton--active' : ''
-    }${disabled ? ' SharedSidebarPrimaryActionButton--disabled' : ''}${
-      visualState && visualState !== 'default' ? ` ui-${visualState}` : ''
+      active ? " SharedSidebarPrimaryActionButton--active" : ""
+    }${disabled ? " SharedSidebarPrimaryActionButton--disabled" : ""}${
+      visualState && visualState !== "default" ? ` ui-${visualState}` : ""
     }`,
     accessibleLabel,
-    accessibilityValue: active ? 'Current page' : undefined,
+    accessibilityValue: active ? "Current page" : undefined,
     disabled,
     programmaticFocusId: elementId,
     onActivate,

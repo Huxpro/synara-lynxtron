@@ -4,7 +4,12 @@ import { useEffect, useRef } from "react";
 
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
-import { formatTimePickerPart as pad, parseTimePickerValue as parseTime, TIME_PICKER_HOURS as HOURS, TIME_PICKER_MINUTES as MINUTES } from "@synara/shared/timePicker";
+import {
+  formatTimePickerPart as pad,
+  parseTimePickerValue as parseTime,
+  TIME_PICKER_HOURS as HOURS,
+  TIME_PICKER_MINUTES as MINUTES,
+} from "@synara/shared/timePicker";
 
 /**
  * shadcn-style scrollable time picker: two columns (hours / minutes) of selectable

@@ -92,16 +92,12 @@ export function pairPullRequestCodeLines(
 
 function PullRequestCodeSplitLineRow(props: {
   readonly row: Extract<PullRequestCodeSplitRow, { readonly kind: "paired" }>;
-  readonly syntaxTokensByLineId?: Readonly<
-    Record<string, readonly PullRequestCodeSyntaxToken[]>
-  >;
+  readonly syntaxTokensByLineId?: Readonly<Record<string, readonly PullRequestCodeSyntaxToken[]>>;
   readonly wordWrap: boolean;
 }) {
-  const leftTokens = props.row.left
-    ? props.syntaxTokensByLineId?.[props.row.left.id] ?? []
-    : [];
+  const leftTokens = props.row.left ? (props.syntaxTokensByLineId?.[props.row.left.id] ?? []) : [];
   const rightTokens = props.row.right
-    ? props.syntaxTokensByLineId?.[props.row.right.id] ?? []
+    ? (props.syntaxTokensByLineId?.[props.row.right.id] ?? [])
     : [];
   const emphasized =
     props.row.left && props.row.right && leftTokens.length > 0 && rightTokens.length > 0
@@ -172,9 +168,7 @@ export function PullRequestCodeComposition(props: {
   readonly rawVisibleLineCount: number;
   readonly fileElementId?: (fileKey: string) => string | undefined;
   readonly renderFileActions?: (filePath: string) => ReactNode;
-  readonly syntaxTokensByLineId?: Readonly<
-    Record<string, readonly PullRequestCodeSyntaxToken[]>
-  >;
+  readonly syntaxTokensByLineId?: Readonly<Record<string, readonly PullRequestCodeSyntaxToken[]>>;
   readonly onToggleFile: (fileKey: string) => void;
   readonly onShowMoreFile: (fileKey: string) => void;
   readonly onShowMoreRaw: () => void;
@@ -193,7 +187,9 @@ export function PullRequestCodeComposition(props: {
         </PullRequestCodeNoticeElement>
       ) : props.view.kind === "raw" ? (
         <>
-          <PullRequestCodeNoticeElement intent="warning">{props.view.reason}</PullRequestCodeNoticeElement>
+          <PullRequestCodeNoticeElement intent="warning">
+            {props.view.reason}
+          </PullRequestCodeNoticeElement>
           <PullRequestCodeFileElement>
             <PullRequestCodeFileHeaderElement
               path="Raw patch"
@@ -236,12 +232,10 @@ export function PullRequestCodeComposition(props: {
           )}
           {props.view.files.map((file) => {
             const isExpanded = expanded.has(file.key);
-            const visibleLineCount = props.visibleLineCounts[file.key] ?? PULL_REQUEST_DIFF_INITIAL_LINE_COUNT;
+            const visibleLineCount =
+              props.visibleLineCounts[file.key] ?? PULL_REQUEST_DIFF_INITIAL_LINE_COUNT;
             return (
-              <PullRequestCodeFileElement
-                key={file.key}
-                id={props.fileElementId?.(file.key)}
-              >
+              <PullRequestCodeFileElement key={file.key} id={props.fileElementId?.(file.key)}>
                 <PullRequestCodeFileHeaderElement
                   path={file.path}
                   previousPath={file.previousPath}
@@ -254,40 +248,44 @@ export function PullRequestCodeComposition(props: {
                   onActivate={() => props.onToggleFile(file.key)}
                 />
                 <PullRequestCodeDisclosureElement expanded={isExpanded}>
-                    {file.binary ? (
-                      <PullRequestCodeNoticeElement>Binary file changed.</PullRequestCodeNoticeElement>
-                    ) : null}
-                    {file.modeChange ? (
-                      <PullRequestCodeNoticeElement>
-                        File mode changed from {file.modeChange.previous} to {file.modeChange.next}.
-                      </PullRequestCodeNoticeElement>
-                    ) : null}
-                    {file.lifecycle ? (
-                      <PullRequestCodeNoticeElement>
-                        {file.lifecycle === "added" ? "File added." : "File deleted."}
-                      </PullRequestCodeNoticeElement>
-                    ) : null}
-                    <PullRequestCodeLinesElement wordWrap={props.wordWrap ?? false}>
-                      {props.renderMode === "split"
-                        ? pairPullRequestCodeLines(file.lines.slice(0, visibleLineCount)).map(
-                            (row, rowIndex) =>
-                              row.kind === "shared" ? (
-                                <PullRequestCodeLineElement
-                                  key={row.line.id}
-                                  {...row.line}
-                                  syntaxTokens={props.syntaxTokensByLineId?.[row.line.id]}
-                                  wordWrap={props.wordWrap ?? false}
-                                />
-                              ) : (
-                                <PullRequestCodeSplitLineRow
-                                  key={`split:${rowIndex}:${row.left?.id ?? ""}:${row.right?.id ?? ""}`}
-                                  row={row}
-                                  syntaxTokensByLineId={props.syntaxTokensByLineId}
-                                  wordWrap={props.wordWrap ?? false}
-                                />
-                              ),
-                          )
-                        : file.lines.slice(0, visibleLineCount).map((line) => (
+                  {file.binary ? (
+                    <PullRequestCodeNoticeElement>
+                      Binary file changed.
+                    </PullRequestCodeNoticeElement>
+                  ) : null}
+                  {file.modeChange ? (
+                    <PullRequestCodeNoticeElement>
+                      File mode changed from {file.modeChange.previous} to {file.modeChange.next}.
+                    </PullRequestCodeNoticeElement>
+                  ) : null}
+                  {file.lifecycle ? (
+                    <PullRequestCodeNoticeElement>
+                      {file.lifecycle === "added" ? "File added." : "File deleted."}
+                    </PullRequestCodeNoticeElement>
+                  ) : null}
+                  <PullRequestCodeLinesElement wordWrap={props.wordWrap ?? false}>
+                    {props.renderMode === "split"
+                      ? pairPullRequestCodeLines(file.lines.slice(0, visibleLineCount)).map(
+                          (row, rowIndex) =>
+                            row.kind === "shared" ? (
+                              <PullRequestCodeLineElement
+                                key={row.line.id}
+                                {...row.line}
+                                syntaxTokens={props.syntaxTokensByLineId?.[row.line.id]}
+                                wordWrap={props.wordWrap ?? false}
+                              />
+                            ) : (
+                              <PullRequestCodeSplitLineRow
+                                key={`split:${rowIndex}:${row.left?.id ?? ""}:${row.right?.id ?? ""}`}
+                                row={row}
+                                syntaxTokensByLineId={props.syntaxTokensByLineId}
+                                wordWrap={props.wordWrap ?? false}
+                              />
+                            ),
+                        )
+                      : file.lines
+                          .slice(0, visibleLineCount)
+                          .map((line) => (
                             <PullRequestCodeLineElement
                               key={line.id}
                               {...line}
@@ -295,13 +293,13 @@ export function PullRequestCodeComposition(props: {
                               wordWrap={props.wordWrap ?? false}
                             />
                           ))}
-                    </PullRequestCodeLinesElement>
-                    {visibleLineCount < file.lines.length ? (
-                      <PullRequestCodeMoreElement
-                        label={`Show ${Math.min(PULL_REQUEST_DIFF_MORE_LINE_COUNT, file.lines.length - visibleLineCount)} more lines`}
-                        onActivate={() => props.onShowMoreFile(file.key)}
-                      />
-                    ) : null}
+                  </PullRequestCodeLinesElement>
+                  {visibleLineCount < file.lines.length ? (
+                    <PullRequestCodeMoreElement
+                      label={`Show ${Math.min(PULL_REQUEST_DIFF_MORE_LINE_COUNT, file.lines.length - visibleLineCount)} more lines`}
+                      onActivate={() => props.onShowMoreFile(file.key)}
+                    />
+                  ) : null}
                 </PullRequestCodeDisclosureElement>
               </PullRequestCodeFileElement>
             );

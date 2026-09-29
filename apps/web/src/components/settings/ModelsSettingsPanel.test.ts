@@ -1,8 +1,5 @@
 import { getModelOptions } from "@synara/shared/model";
-import {
-  MAX_CUSTOM_MODEL_LENGTH,
-  validateCustomModelInput,
-} from "@synara/shared/customModels";
+import { MAX_CUSTOM_MODEL_LENGTH, validateCustomModelInput } from "@synara/shared/customModels";
 import { describe, expect, it } from "vitest";
 
 describe("validateCustomModelInput", () => {

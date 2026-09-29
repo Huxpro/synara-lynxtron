@@ -8,11 +8,7 @@
     "x": 520,
     "y": 46
   },
-  "entries": [
-    "docsdocs",
-    "srcsrc",
-    "▤README.mdREADME.md"
-  ],
+  "entries": ["docsdocs", "srcsrc", "▤README.mdREADME.md"],
   "pageStyle": "padding-right:760px;",
   "preview": "# Explorer Data\n\nPreview **markdown** content.",
   "relay": {

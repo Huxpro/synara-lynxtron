@@ -392,9 +392,7 @@ function PullRequestsRouteView() {
                 onStateIntent={handleStateIntent}
                 onStateChange={(state) => updateSearch({ state, ...CLEARED_SELECTION })}
                 onSearchChange={(value) => updateSearch({ q: value || undefined })}
-                onProjectChange={(projectId) =>
-                  updateSearch({ projectId, ...CLEARED_SELECTION })
-                }
+                onProjectChange={(projectId) => updateSearch({ projectId, ...CLEARED_SELECTION })}
               />
 
               {listQuery.isPending || exactInvolvementPending ? (

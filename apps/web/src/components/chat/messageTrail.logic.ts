@@ -160,24 +160,22 @@ export function resolveVisibleRowRangeFromAttachedCells(input: {
   readonly attachedCells: readonly AttachedListCell[];
   readonly listHeight: number | undefined;
 }): { readonly top: number; readonly bottom: number } | null {
-  if (typeof input.listHeight !== 'number' || !Number.isFinite(input.listHeight)) {
+  if (typeof input.listHeight !== "number" || !Number.isFinite(input.listHeight)) {
     return null;
   }
   const indexes = input.attachedCells
     .filter(
       (cell) =>
-        typeof cell.index === 'number' &&
+        typeof cell.index === "number" &&
         Number.isFinite(cell.index) &&
-        typeof cell.top === 'number' &&
-        typeof cell.bottom === 'number' &&
+        typeof cell.top === "number" &&
+        typeof cell.bottom === "number" &&
         cell.top < input.listHeight &&
-        cell.bottom > 0
+        cell.bottom > 0,
     )
     .map((cell) => cell.index as number)
     .sort((left, right) => left - right);
-  return indexes.length > 0
-    ? { top: indexes[0]!, bottom: indexes[indexes.length - 1]! }
-    : null;
+  return indexes.length > 0 ? { top: indexes[0]!, bottom: indexes[indexes.length - 1]! } : null;
 }
 
 export const EMPTY_ACTIVE_TRAIL_SNAPSHOT: ActiveTrailSnapshot = {

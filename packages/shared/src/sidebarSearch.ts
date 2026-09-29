@@ -43,9 +43,7 @@ export function projectBoundedSidebarSearchMessages(
 
   for (const { thread } of recentThreadCandidates) {
     if (remainingChars <= 0) break;
-    const sourceMessages = (thread.messages ?? []).slice(
-      -SIDEBAR_SEARCH_LIMITS.messagesPerThread,
-    );
+    const sourceMessages = (thread.messages ?? []).slice(-SIDEBAR_SEARCH_LIMITS.messagesPerThread);
     const messages: Array<{ readonly text: string }> = [];
     for (const message of sourceMessages) {
       if (remainingChars <= 0) break;

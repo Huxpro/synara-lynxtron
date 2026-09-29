@@ -1,6 +1,6 @@
 export function scrollLynxElementIntoViewById(
   id: string,
-  block: 'end' | 'nearest' | 'start' = 'start'
+  block: "end" | "nearest" | "start" = "start",
 ): boolean {
   if (!id.trim()) return false;
   try {
@@ -8,11 +8,11 @@ export function scrollLynxElementIntoViewById(
       .createSelectorQuery()
       .select(`#${id}`)
       .invoke({
-        method: 'scrollIntoView',
+        method: "scrollIntoView",
         params: {
           scrollIntoViewOptions: {
             block,
-            inline: 'start',
+            inline: "start",
           },
         },
       })

@@ -10,392 +10,137 @@
   "rows": [
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        251,
-        246,
-        32
-      ],
-      "copy": [
-        37,
-        201,
-        246,
-        40
-      ],
-      "rect": [
-        25,
-        191,
-        270,
-        103
-      ],
+      "control": [37, 251, 246, 32],
+      "copy": [37, 201, 246, 40],
+      "rect": [25, 191, 270, 103],
       "scrollWidth": 270,
       "text": "Default providerChoose the provider used for new chats.Codex"
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        372,
-        246,
-        32
-      ],
-      "copy": [
-        37,
-        304,
-        246,
-        58
-      ],
-      "rect": [
-        25,
-        294,
-        270,
-        120
-      ],
+      "control": [37, 372, 246, 32],
+      "copy": [37, 304, 246, 58],
+      "rect": [25, 294, 270, 120],
       "scrollWidth": 270,
       "text": "New threadsPick the default workspace mode for newly created draft threads.Local"
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        550,
-        246,
-        32
-      ],
-      "copy": [
-        37,
-        482,
-        246,
-        58
-      ],
-      "rect": [
-        25,
-        472,
-        270,
-        121
-      ],
+      "control": [37, 550, 246, 32],
+      "copy": [37, 482, 246, 58],
+      "rect": [25, 472, 270, 121],
       "scrollWidth": 270,
       "text": "Project orderControls how projects are arranged in the main sidebar.Manual order"
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        671,
-        246,
-        32
-      ],
-      "copy": [
-        37,
-        603,
-        246,
-        58
-      ],
-      "rect": [
-        25,
-        593,
-        270,
-        120
-      ],
+      "control": [37, 671, 246, 32],
+      "copy": [37, 603, 246, 58],
+      "rect": [25, 593, 270, 120],
       "scrollWidth": 270,
       "text": "Thread orderControls how threads are arranged inside each project in the main sidebar.Rece"
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        849,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        781,
-        246,
-        58
-      ],
-      "rect": [
-        25,
-        771,
-        270,
-        109
-      ],
+      "control": [37, 849, 246, 20],
+      "copy": [37, 781, 246, 58],
+      "rect": [25, 771, 270, 109],
       "scrollWidth": 270,
       "text": "ChatsShow the standalone Chats list in the sidebar footer (chats not tied to a project)."
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        958,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        890,
-        246,
-        58
-      ],
-      "rect": [
-        25,
-        880,
-        270,
-        109
-      ],
+      "control": [37, 958, 246, 20],
+      "copy": [37, 890, 246, 58],
+      "rect": [25, 880, 270, 109],
       "scrollWidth": 270,
       "text": "StudioShow the Studio tab in the sidebar switcher."
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        1085,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        999,
-        246,
-        76
-      ],
-      "rect": [
-        25,
-        989,
-        270,
-        126
-      ],
+      "control": [37, 1085, 246, 20],
+      "copy": [37, 999, 246, 76],
+      "rect": [25, 989, 270, 126],
       "scrollWidth": 270,
       "text": "WorkspaceShow the Workspace tab in the sidebar switcher. The Threads tab always stays visi"
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        1305,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        1183,
-        246,
-        112
-      ],
-      "rect": [
-        25,
-        1173,
-        270,
-        163
-      ],
+      "control": [37, 1305, 246, 20],
+      "copy": [37, 1183, 246, 112],
+      "rect": [25, 1173, 270, 163],
       "scrollWidth": 270,
       "text": "Open by defaultOpen the chat Environment panel automatically on normal threads. When off, "
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        1414,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        1346,
-        246,
-        58
-      ],
-      "rect": [
-        25,
-        1336,
-        270,
-        109
-      ],
+      "control": [37, 1414, 246, 20],
+      "copy": [37, 1346, 246, 58],
+      "rect": [25, 1336, 270, 109],
       "scrollWidth": 270,
       "text": "UsageShow the provider usage row in the chat Environment panel."
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        1559,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        1455,
-        246,
-        94
-      ],
-      "rect": [
-        25,
-        1445,
-        270,
-        145
-      ],
+      "control": [37, 1559, 246, 20],
+      "copy": [37, 1455, 246, 94],
+      "rect": [25, 1445, 270, 145],
       "scrollWidth": 270,
       "text": "RepositoryShow the GitHub repository link in the chat Environment panel. The git block (Ch"
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        1686,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        1600,
-        246,
-        76
-      ],
-      "rect": [
-        25,
-        1590,
-        270,
-        127
-      ],
+      "control": [37, 1686, 246, 20],
+      "copy": [37, 1600, 246, 76],
+      "rect": [25, 1590, 270, 127],
       "scrollWidth": 270,
       "text": "Pull requestShow the open pull request (CI checks and review comments) for the current bra"
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        1813,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        1727,
-        246,
-        76
-      ],
-      "rect": [
-        25,
-        1717,
-        270,
-        127
-      ],
+      "control": [37, 1813, 246, 20],
+      "copy": [37, 1727, 246, 76],
+      "rect": [25, 1717, 270, 127],
       "scrollWidth": 270,
       "text": "EditorShow the Editor section (in-app editor view and Open in editor picker) in the chat E"
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        1922,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        1854,
-        246,
-        58
-      ],
-      "rect": [
-        25,
-        1844,
-        270,
-        109
-      ],
+      "control": [37, 1922, 246, 20],
+      "copy": [37, 1854, 246, 58],
+      "rect": [25, 1844, 270, 109],
       "scrollWidth": 270,
       "text": "RecapShow the auto-generated chat recap in the Environment panel."
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        2031,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        1963,
-        246,
-        58
-      ],
-      "rect": [
-        25,
-        1953,
-        270,
-        109
-      ],
+      "control": [37, 2031, 246, 20],
+      "copy": [37, 1963, 246, 58],
+      "rect": [25, 1953, 270, 109],
       "scrollWidth": 270,
       "text": "Pinned messagesShow the pinned-messages checklist in the Environment panel."
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        2140,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        2072,
-        246,
-        58
-      ],
-      "rect": [
-        25,
-        2062,
-        270,
-        109
-      ],
+      "control": [37, 2140, 246, 20],
+      "copy": [37, 2072, 246, 58],
+      "rect": [25, 2062, 270, 109],
       "scrollWidth": 270,
       "text": "Text markersShow highlighted and underlined transcript text in the Environment panel."
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        2249,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        2181,
-        246,
-        58
-      ],
-      "rect": [
-        25,
-        2171,
-        270,
-        109
-      ],
+      "control": [37, 2249, 246, 20],
+      "copy": [37, 2181, 246, 58],
+      "rect": [25, 2171, 270, 109],
       "scrollWidth": 270,
       "text": "Project instructionsShow project-level instructions in the Environment panel."
     },
     {
       "clientWidth": 270,
-      "control": [
-        37,
-        2358,
-        246,
-        20
-      ],
-      "copy": [
-        37,
-        2290,
-        246,
-        58
-      ],
-      "rect": [
-        25,
-        2280,
-        270,
-        108
-      ],
+      "control": [37, 2358, 246, 20],
+      "copy": [37, 2290, 246, 58],
+      "rect": [25, 2280, 270, 108],
       "scrollWidth": 270,
       "text": "NotepadShow the per-thread notepad in the Environment panel."
     }

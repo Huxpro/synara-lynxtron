@@ -5,10 +5,7 @@ describe("browser home design tokens", () => {
   it("shares the authority palette with Native instead of duplicating literals", () => {
     const tokens = readFileSync(new URL("../tokens.css", import.meta.url), "utf8");
     const browser = readFileSync(new URL("./BrowserPanel.tsx", import.meta.url), "utf8");
-    const identity = readFileSync(
-      new URL("./LocalServerIdentity.tsx", import.meta.url),
-      "utf8",
-    );
+    const identity = readFileSync(new URL("./LocalServerIdentity.tsx", import.meta.url), "utf8");
     const consumers = browser + identity;
 
     for (const token of [
@@ -22,8 +19,8 @@ describe("browser home design tokens", () => {
       expect(tokens).toContain(`${token}:`);
       expect(consumers).toContain(`var(${token})`);
     }
-    expect(browser).not.toContain('bg-[#0d0d0d]');
-    expect(browser).not.toContain('text-white/35');
-    expect(browser).not.toContain('border-white/[0.07]');
+    expect(browser).not.toContain("bg-[#0d0d0d]");
+    expect(browser).not.toContain("text-white/35");
+    expect(browser).not.toContain("border-white/[0.07]");
   });
 });

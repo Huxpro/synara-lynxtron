@@ -8,7 +8,7 @@ export async function ensureThreadCreated(input: {
   readonly recover: () => Promise<boolean>;
   readonly state: ThreadCreationState;
 }): Promise<void> {
-  'background only';
+  "background only";
   if (input.state.created) return;
   if (input.state.inFlight) return input.state.inFlight;
 

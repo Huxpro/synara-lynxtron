@@ -1,21 +1,16 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
 import {
   resolveSystemStateSemantics,
   type SystemStateIntent,
-} from '@synara-web/components/systemStateSemantics';
+} from "@synara-web/components/systemStateSemantics";
 
-import { useLynxInteractiveState } from '../components/ui/interactive-state.lynx';
-import {
-  disclosureContentClassName,
-  useLynxDisclosurePresence,
-} from '../platform/motion.lynx';
-import { useLynxSystemStateAnnouncement } from '../platform/system-state-announcement.lynx';
-import { ChevronDownIcon, ChevronRightIcon } from '../lib/icons.lynx';
+import { useLynxInteractiveState } from "../components/ui/interactive-state.lynx";
+import { disclosureContentClassName, useLynxDisclosurePresence } from "../platform/motion.lynx";
+import { useLynxSystemStateAnnouncement } from "../platform/system-state-announcement.lynx";
+import { ChevronDownIcon, ChevronRightIcon } from "../lib/icons.lynx";
 
-export function SidebarChatsSectionRootElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SidebarChatsSectionRootElement(props: { readonly children?: ReactNode }) {
   return <view className="SharedSidebarChatsRoot">{props.children}</view>;
 }
 
@@ -25,7 +20,7 @@ export function SidebarChatsSectionHeaderElement(props: {
   readonly toolbar?: ReactNode;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedSidebarChatsHeaderButton',
+    baseClassName: "SharedSidebarChatsHeaderButton",
     onActivate: props.onActivate,
   });
   return (
@@ -61,12 +56,7 @@ export function SidebarChatsSectionBodyElement(props: {
 }) {
   const present = useLynxDisclosurePresence(props.expanded);
   return (
-    <view
-      className={disclosureContentClassName(
-        props.expanded,
-        'SharedSidebarChatsBody'
-      )}
-    >
+    <view className={disclosureContentClassName(props.expanded, "SharedSidebarChatsBody")}>
       {present ? props.children : null}
     </view>
   );
@@ -74,7 +64,7 @@ export function SidebarChatsSectionBodyElement(props: {
 
 export function SidebarChatsEmptyElement(props: {
   readonly children?: ReactNode;
-  readonly intent: Extract<SystemStateIntent, 'empty'>;
+  readonly intent: Extract<SystemStateIntent, "empty">;
   readonly announcement: string;
 }) {
   const semantics = resolveSystemStateSemantics(props.intent);
@@ -96,17 +86,13 @@ function SidebarChatsPaginationActionElement(props: {
   readonly onActivate?: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedSidebarChatsPaginationAction',
+    baseClassName: "SharedSidebarChatsPaginationAction",
     accessibleLabel: props.label,
     disabled: props.onActivate === undefined,
     onActivate: props.onActivate,
   });
   return (
-    <view
-      className={interaction.className}
-      aria-label={props.label}
-      {...interaction.eventProps}
-    >
+    <view className={interaction.className} aria-label={props.label} {...interaction.eventProps}>
       <text>{props.label}</text>
     </view>
   );
@@ -123,16 +109,10 @@ export function SidebarChatsPaginationElement(props: {
   return (
     <view className="SharedSidebarChatsPagination">
       {props.canShowMore ? (
-        <SidebarChatsPaginationActionElement
-          label="Show more"
-          onActivate={props.onShowMore}
-        />
+        <SidebarChatsPaginationActionElement label="Show more" onActivate={props.onShowMore} />
       ) : null}
       {props.canShowLess ? (
-        <SidebarChatsPaginationActionElement
-          label="Show less"
-          onActivate={props.onShowLess}
-        />
+        <SidebarChatsPaginationActionElement label="Show less" onActivate={props.onShowLess} />
       ) : null}
     </view>
   );

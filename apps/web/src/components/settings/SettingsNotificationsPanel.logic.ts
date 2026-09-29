@@ -2,9 +2,7 @@ export type NotificationSettingKey =
   | "enableTaskCompletionToasts"
   | "enableSystemTaskCompletionNotifications";
 
-export type NotificationSettingsValues = Readonly<
-  Record<NotificationSettingKey, boolean>
->;
+export type NotificationSettingsValues = Readonly<Record<NotificationSettingKey, boolean>>;
 
 export const DEFAULT_NOTIFICATION_SETTINGS_VALUES: NotificationSettingsValues = {
   enableTaskCompletionToasts: true,
@@ -17,7 +15,6 @@ export function notificationSettingsValuesEqual(
 ): boolean {
   return (
     left.enableTaskCompletionToasts === right.enableTaskCompletionToasts &&
-    left.enableSystemTaskCompletionNotifications ===
-      right.enableSystemTaskCompletionNotifications
+    left.enableSystemTaskCompletionNotifications === right.enableSystemTaskCompletionNotifications
   );
 }

@@ -1,8 +1,8 @@
-import type { ReactNode } from '@lynx-js/react';
-import circleCheckSvg from '@synara-central-icons-fill/circle-check.svg?raw';
+import type { ReactNode } from "@lynx-js/react";
+import circleCheckSvg from "@synara-central-icons-fill/circle-check.svg?raw";
 
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import './sidebar-thread-status-indicator-elements.css';
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import "./sidebar-thread-status-indicator-elements.css";
 
 function StatusShell({
   label,
@@ -32,17 +32,13 @@ export function SidebarThreadStatusCompletedElement({
     >
       <svg
         className="LynxSidebarThreadStatusCheck"
-        content={colorizeLynxSvg(circleCheckSvg, '#00a240')}
+        content={colorizeLynxSvg(circleCheckSvg, "#00a240")}
       />
     </StatusShell>
   );
 }
 
-export function SidebarThreadStatusRunningElement({
-  label,
-}: {
-  readonly label: string;
-}) {
+export function SidebarThreadStatusRunningElement({ label }: { readonly label: string }) {
   return (
     <StatusShell
       label={label}
@@ -60,11 +56,11 @@ export function SidebarThreadStatusDotElement({
   readonly colorClass: string;
   readonly dotClass: string;
 }) {
-  const tone = dotClass.includes('amber')
-    ? 'attention'
-    : dotClass.includes('indigo') || dotClass.includes('violet')
-      ? 'decision'
-      : 'idle';
+  const tone = dotClass.includes("amber")
+    ? "attention"
+    : dotClass.includes("indigo") || dotClass.includes("violet")
+      ? "decision"
+      : "idle";
   return (
     <StatusShell
       label={label}

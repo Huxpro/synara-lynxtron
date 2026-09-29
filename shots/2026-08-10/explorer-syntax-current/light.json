@@ -30,14 +30,7 @@
   },
   "highlighted": "true",
   "language": "typescript",
-  "lineNumbers": [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6"
-  ],
+  "lineNumbers": ["1", "2", "3", "4", "5", "6"],
   "rootClass": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
   "tokens": [
     {

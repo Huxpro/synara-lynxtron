@@ -11,11 +11,7 @@ type ChildrenProps = {
 };
 
 export function SettingsPanelHeaderRootElement(props: ChildrenProps) {
-  return (
-    <div className="mb-8 flex items-start justify-between gap-4">
-      {props.children}
-    </div>
-  );
+  return <div className="mb-8 flex items-start justify-between gap-4">{props.children}</div>;
 }
 
 export function SettingsPanelHeaderCopyElement(props: ChildrenProps) {

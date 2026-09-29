@@ -1,44 +1,42 @@
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from "@rstest/core";
 
-import { summarizeRelayPendingRequests } from './webRelayDiagnostics.logic';
+import { summarizeRelayPendingRequests } from "./webRelayDiagnostics.logic";
 
-describe('web relay diagnostics', () => {
-  it('separates settled unary traffic from a healthy long-lived stream', () => {
+describe("web relay diagnostics", () => {
+  it("separates settled unary traffic from a healthy long-lived stream", () => {
     expect(
-      summarizeRelayPendingRequests([
-        { tag: 'terminal.subscribeEvents', streaming: true },
-      ])
+      summarizeRelayPendingRequests([{ tag: "terminal.subscribeEvents", streaming: true }]),
     ).toEqual({
       pendingRequests: 1,
-      pendingRequestTags: ['terminal.subscribeEvents'],
+      pendingRequestTags: ["terminal.subscribeEvents"],
       pendingUnaryRequests: 0,
       pendingUnaryTags: [],
       activeStreamRequests: 1,
-      activeStreamTags: ['terminal.subscribeEvents'],
+      activeStreamTags: ["terminal.subscribeEvents"],
     });
   });
 
-  it('preserves all pending tags while identifying unfinished unary requests', () => {
+  it("preserves all pending tags while identifying unfinished unary requests", () => {
     expect(
       summarizeRelayPendingRequests([
-        { tag: 'terminal.subscribeEvents', streaming: true },
-        { tag: 'server.listExternalMcpIntegrations', streaming: false },
-        { tag: 'orchestration.getSidebarShellSnapshot', streaming: false },
-      ])
+        { tag: "terminal.subscribeEvents", streaming: true },
+        { tag: "server.listExternalMcpIntegrations", streaming: false },
+        { tag: "orchestration.getSidebarShellSnapshot", streaming: false },
+      ]),
     ).toEqual({
       pendingRequests: 3,
       pendingRequestTags: [
-        'terminal.subscribeEvents',
-        'server.listExternalMcpIntegrations',
-        'orchestration.getSidebarShellSnapshot',
+        "terminal.subscribeEvents",
+        "server.listExternalMcpIntegrations",
+        "orchestration.getSidebarShellSnapshot",
       ],
       pendingUnaryRequests: 2,
       pendingUnaryTags: [
-        'server.listExternalMcpIntegrations',
-        'orchestration.getSidebarShellSnapshot',
+        "server.listExternalMcpIntegrations",
+        "orchestration.getSidebarShellSnapshot",
       ],
       activeStreamRequests: 1,
-      activeStreamTags: ['terminal.subscribeEvents'],
+      activeStreamTags: ["terminal.subscribeEvents"],
     });
   });
 });

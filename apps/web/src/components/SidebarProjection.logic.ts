@@ -28,7 +28,6 @@ export function sortSidebarRowsByUpdatedAt<
 >(rows: readonly T[]): T[] {
   return [...rows].sort(
     (left, right) =>
-      right.updatedAt.localeCompare(left.updatedAt) ||
-      right.id.localeCompare(left.id),
+      right.updatedAt.localeCompare(left.updatedAt) || right.id.localeCompare(left.id),
   );
 }

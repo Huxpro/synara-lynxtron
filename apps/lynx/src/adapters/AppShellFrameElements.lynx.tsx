@@ -1,11 +1,7 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import './app-shell-frame-elements.css';
+import "./app-shell-frame-elements.css";
 
-export function AppShellFrameElement({
-  children,
-}: {
-  readonly children?: ReactNode;
-}) {
+export function AppShellFrameElement({ children }: { readonly children?: ReactNode }) {
   return <view className="SharedAppShellFrame">{children}</view>;
 }

@@ -5,17 +5,13 @@ import { PullRequestDetailCloseComposition } from "./PullRequestDetailCloseCompo
 
 describe("PullRequestDetailCloseComposition", () => {
   it("owns the canonical close label when the panel is closable", () => {
-    const markup = renderToStaticMarkup(
-      <PullRequestDetailCloseComposition onClose={vi.fn()} />,
-    );
+    const markup = renderToStaticMarkup(<PullRequestDetailCloseComposition onClose={vi.fn()} />);
 
     expect(markup).toContain('aria-label="Close pull request panel"');
     expect(markup).toContain("Close");
   });
 
   it("does not draw a close affordance without a close action", () => {
-    expect(
-      renderToStaticMarkup(<PullRequestDetailCloseComposition />),
-    ).toBe("");
+    expect(renderToStaticMarkup(<PullRequestDetailCloseComposition />)).toBe("");
   });
 });

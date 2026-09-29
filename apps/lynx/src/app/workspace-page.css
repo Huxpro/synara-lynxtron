@@ -212,16 +212,12 @@
   max-width: none;
 }
 
-.SliceRoot--viewport-short-height
-  .WorkspaceSettingsDialog
-  > .LxDialogTitle {
+.SliceRoot--viewport-short-height .WorkspaceSettingsDialog > .LxDialogTitle {
   flex-shrink: 0;
   min-height: 21px;
 }
 
-.SliceRoot--viewport-short-height
-  .WorkspaceSettingsDialog
-  > .LxDialogDescription {
+.SliceRoot--viewport-short-height .WorkspaceSettingsDialog > .LxDialogDescription {
   display: none;
 }
 
@@ -242,9 +238,7 @@
 }
 
 .SliceRoot--viewport-compact .WorkspacePageHeader,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .WorkspacePageHeader {
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .WorkspacePageHeader {
   height: 92px;
   min-height: 92px;
   padding: 0;
@@ -254,9 +248,7 @@
 }
 
 .SliceRoot--viewport-compact .WorkspacePageTitleRow,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .WorkspacePageTitleRow {
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .WorkspacePageTitleRow {
   height: 46px;
   min-height: 46px;
   display: flex;
@@ -267,27 +259,19 @@
 
 .SliceRoot--viewport-compact .WorkspacePageTitleButton,
 .SliceRoot--viewport-compact .WorkspacePageTitleInput,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .WorkspacePageTitleButton,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .WorkspacePageTitleInput {
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .WorkspacePageTitleButton,
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .WorkspacePageTitleInput {
   width: 100%;
   max-width: none;
 }
 
 .SliceRoot--viewport-compact .WorkspacePageHeaderSpacer,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .WorkspacePageHeaderSpacer {
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .WorkspacePageHeaderSpacer {
   display: none;
 }
 
 .SliceRoot--viewport-compact .WorkspacePageActions,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .WorkspacePageActions {
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .WorkspacePageActions {
   height: 46px;
   min-height: 46px;
   display: flex;

@@ -1,7 +1,7 @@
 import {
   LOCAL_IMAGE_ROUTE_PATH,
   LOCAL_PDF_PAGE_ROUTE_PATH,
-} from '@synara/shared/localPreviewFiles';
+} from "@synara/shared/localPreviewFiles";
 
 export function buildRuntimeHttpUrl(input: {
   readonly path: string;
@@ -9,12 +9,12 @@ export function buildRuntimeHttpUrl(input: {
   readonly wsUrl: string;
 }): string {
   const endpoint = new URL(input.wsUrl);
-  if (endpoint.protocol !== 'ws:' && endpoint.protocol !== 'wss:') {
-    throw new Error('Synara runtime URL must use ws: or wss:.');
+  if (endpoint.protocol !== "ws:" && endpoint.protocol !== "wss:") {
+    throw new Error("Synara runtime URL must use ws: or wss:.");
   }
-  endpoint.protocol = endpoint.protocol === 'wss:' ? 'https:' : 'http:';
+  endpoint.protocol = endpoint.protocol === "wss:" ? "https:" : "http:";
   endpoint.pathname = input.path;
-  endpoint.hash = '';
+  endpoint.hash = "";
   for (const [key, value] of Object.entries(input.query ?? {})) {
     endpoint.searchParams.set(key, value);
   }
@@ -39,12 +39,12 @@ export function buildPdfPagePreviewUrl(input: {
   readonly width?: number;
 }): string {
   const match = input.previewUrl.match(/^(https?:\/\/[^/?#]+)(?:\/[^?#]*)?(\?[^#]*)?/);
-  if (!match) throw new Error('PDF preview URL must use http: or https:.');
+  if (!match) throw new Error("PDF preview URL must use http: or https:.");
   const existingQuery = match[2]?.slice(1);
   const query = [
     ...(existingQuery ? [existingQuery] : []),
     `page=${encodeURIComponent(String(input.page))}`,
     `width=${encodeURIComponent(String(input.width ?? 960))}`,
-  ].join('&');
+  ].join("&");
   return `${match[1]}${LOCAL_PDF_PAGE_ROUTE_PATH}?${query}`;
 }

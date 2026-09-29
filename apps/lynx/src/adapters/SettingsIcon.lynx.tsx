@@ -1,4 +1,4 @@
-import { SETTINGS_NAV_ITEMS, type SettingsSectionId } from '@synara-web/settingsNavigation';
+import { SETTINGS_NAV_ITEMS, type SettingsSectionId } from "@synara-web/settingsNavigation";
 
 import {
   AdjustmentsHorizontalIcon,
@@ -17,23 +17,23 @@ import {
   ToolsIcon,
   UserIcon,
   type LynxIcon,
-} from '../lib/icons.lynx';
+} from "../lib/icons.lynx";
 
 const SETTINGS_ICONS: Readonly<Record<string, LynxIcon>> = {
-  'settings-gear-4': SettingsIcon,
+  "settings-gear-4": SettingsIcon,
   user: UserIcon,
-  'color-palette': PaletteIcon,
+  "color-palette": PaletteIcon,
   bell: BellIcon,
-  'settings-slider-hor': AdjustmentsHorizontalIcon,
-  'screen-capture': ScreenshotIcon,
+  "settings-slider-hor": AdjustmentsHorizontalIcon,
+  "screen-capture": ScreenshotIcon,
   shortcut: KeyboardIcon,
-  'branch-simple': GitBranchIcon,
+  "branch-simple": GitBranchIcon,
   archive: ArchiveIcon,
   brain: BrainIcon,
   puzzle: PuzzleIcon,
-  'building-blocks': BlocksIcon,
+  "building-blocks": BlocksIcon,
   gauge: GaugeIcon,
-  'plugin-1': PlugIcon,
+  "plugin-1": PlugIcon,
   toolbox: ToolsIcon,
 };
 
@@ -41,16 +41,14 @@ const SETTINGS_SECTION_ICONS = new Map<SettingsSectionId, LynxIcon>(
   SETTINGS_NAV_ITEMS.flatMap((item) => {
     const Icon = SETTINGS_ICONS[item.icon];
     return Icon ? [[item.id, Icon] as const] : [];
-  })
+  }),
 );
 
 export function settingsIconForName(name: string): LynxIcon | undefined {
   return SETTINGS_ICONS[name];
 }
 
-export function settingsIconForSection(
-  section: SettingsSectionId
-): LynxIcon | undefined {
+export function settingsIconForSection(section: SettingsSectionId): LynxIcon | undefined {
   return SETTINGS_SECTION_ICONS.get(section);
 }
 

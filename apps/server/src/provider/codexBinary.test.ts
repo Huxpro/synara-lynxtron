@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  CHATGPT_BUNDLED_CODEX_PATH,
-  resolveCodexBinaryPath,
-} from "./codexBinary.ts";
+import { CHATGPT_BUNDLED_CODEX_PATH, resolveCodexBinaryPath } from "./codexBinary.ts";
 
 describe("resolveCodexBinaryPath", () => {
   it("preserves an explicit custom binary", () => {

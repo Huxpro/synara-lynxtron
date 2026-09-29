@@ -57,21 +57,17 @@ describe("Electron and Lynxtron comparison launcher", () => {
   it("supports an explicit comparison-only Lynxtron runtime without changing dependencies", () => {
     expect(resolveDesktopComparisonPaths("/repo", "/tmp/lynxtron.app")).toMatchObject({
       sourceLynxtronApp: "/tmp/lynxtron.app",
-      ownedLynxtronApp:
-        "/repo/.synara-desktop-comparison/runtime/Synara Comparison Lynxtron.app",
+      ownedLynxtronApp: "/repo/.synara-desktop-comparison/runtime/Synara Comparison Lynxtron.app",
     });
   });
 
   it("prefers the installed devtool runtime variant used by current Lynxtron releases", () => {
     expect(
-      resolveDesktopComparisonPaths(
-        "/repo",
-        undefined,
-        (filePath) => filePath.endsWith("/dist/devtool/Lynxtron.app"),
+      resolveDesktopComparisonPaths("/repo", undefined, (filePath) =>
+        filePath.endsWith("/dist/devtool/Lynxtron.app"),
       ),
     ).toMatchObject({
-      sourceLynxtronApp:
-        "/repo/apps/lynx/node_modules/@lynx-js/lynxtron/dist/devtool/Lynxtron.app",
+      sourceLynxtronApp: "/repo/apps/lynx/node_modules/@lynx-js/lynxtron/dist/devtool/Lynxtron.app",
     });
   });
 
@@ -158,9 +154,12 @@ describe("Electron and Lynxtron comparison launcher", () => {
 
   it("passes deterministic system appearance probes only to the owned Native host", () => {
     const options = parseDesktopComparisonArgs([
-      "--theme", "system",
-      "--system-appearance-sequence", "light,dark,light",
-      "--system-appearance-interval-ms", "250",
+      "--theme",
+      "system",
+      "--system-appearance-sequence",
+      "light,dark,light",
+      "--system-appearance-interval-ms",
+      "250",
     ]);
     const commands = desktopComparisonCommands(
       options,
@@ -172,9 +171,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       SYNARA_SYSTEM_APPEARANCE_PROBE_SEQUENCE: "light,dark,light",
       SYNARA_SYSTEM_APPEARANCE_PROBE_INTERVAL_MS: "250",
     });
-    expect(commands.electron.env).not.toHaveProperty(
-      "SYNARA_SYSTEM_APPEARANCE_PROBE_SEQUENCE",
-    );
+    expect(commands.electron.env).not.toHaveProperty("SYNARA_SYSTEM_APPEARANCE_PROBE_SEQUENCE");
   });
 
   it("maps an explicit Native thread route onto the canonical Web hash route", () => {
@@ -224,15 +221,13 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(expression).toContain("clearThreadDockState");
     expect(expression).toContain("useRightDockStore.getState().openPane");
     expect(expression).toContain("paneId: 'explorer', kind: 'explorer'");
-    expect(comparisonExplorerPath(options)).toBe('src/nested/example.ts');
-    expect(comparisonExplorerRowClickExpression('src/nested')).toContain(
+    expect(comparisonExplorerPath(options)).toBe("src/nested/example.ts");
+    expect(comparisonExplorerRowClickExpression("src/nested")).toContain(
       "candidate.getAttribute('title') === \"src/nested\"",
     );
-    expect(comparisonExplorerRowClickExpression('src/nested')).toContain('row.click()');
-    expect(expression).toContain(
-      "useRightDockStore.getState().openPane",
-    );
-    expect(comparisonExplorerReadyExpression('src/nested/example.ts')).toContain(
+    expect(comparisonExplorerRowClickExpression("src/nested")).toContain("row.click()");
+    expect(expression).toContain("useRightDockStore.getState().openPane");
+    expect(comparisonExplorerReadyExpression("src/nested/example.ts")).toContain(
       "document.querySelector('.editor-file-viewer__highlight, .editor-file-viewer__plain')",
     );
   });
@@ -244,9 +239,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       ),
     ).toBeNull();
     expect(
-      comparisonExplorerPath(
-        parseDesktopComparisonArgs(["--route", "/settings/general"]),
-      ),
+      comparisonExplorerPath(parseDesktopComparisonArgs(["--route", "/settings/general"])),
     ).toBeNull();
     expect(comparisonThreadId(parseDesktopComparisonArgs([]))).toBe(
       DEFAULT_DESKTOP_COMPARISON_OPTIONS.threadId,
@@ -294,9 +287,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
 
   it("opens the same encoded thread in Web and native Lynx", () => {
     const options = { ...DEFAULT_DESKTOP_COMPARISON_OPTIONS, threadId: "thread / one" };
-    expect(comparisonWebUrl(options)).toBe(
-      "http://127.0.0.1:8891/#/thread%20%2F%20one",
-    );
+    expect(comparisonWebUrl(options)).toBe("http://127.0.0.1:8891/#/thread%20%2F%20one");
     expect(comparisonWebUrl({ ...options, terminal: "open" })).toBe(
       "http://127.0.0.1:8891/?terminal=open#/thread%20%2F%20one",
     );
@@ -335,12 +326,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(comparisonElectronStartupUrl(options)).toBe(
       `http://127.0.0.1:8891/#/${options.threadId}`,
     );
-    expect(comparisonWebUrl(options)).toBe(
-      `http://127.0.0.1:8891/#/${options.threadId}`,
-    );
-    expect(comparisonLynxDeepLink(options)).toBe(
-      "synara://new-thread/project%20one",
-    );
+    expect(comparisonWebUrl(options)).toBe(`http://127.0.0.1:8891/#/${options.threadId}`);
+    expect(comparisonLynxDeepLink(options)).toBe("synara://new-thread/project%20one");
 
     const openExpression = comparisonNewThreadOpenExpression(options);
     expect(openExpression).toContain("new-thread-button");
@@ -362,20 +349,18 @@ describe("Electron and Lynxtron comparison launcher", () => {
       route: "/components-lab?story=typography%2Fdiff-code&state=default&variant=split",
     };
     expect(comparisonWebUrl(options)).toBe(
-      "http://127.0.0.1:8891/#/components-lab?story=typography%2Fdiff-code&state=default&variant=split"
+      "http://127.0.0.1:8891/#/components-lab?story=typography%2Fdiff-code&state=default&variant=split",
     );
     expect(comparisonLynxDeepLink(options)).toBe(
-      "synara://components-lab?story=typography%2Fdiff-code&state=default&variant=split"
+      "synara://components-lab?story=typography%2Fdiff-code&state=default&variant=split",
     );
   });
 
   it("requires the exact routed thread row to be uniquely active and visible", () => {
     const expression = comparisonThreadIdentityReadyExpression("thread-a/b");
-    expect(expression).toContain(
-      JSON.stringify('[data-thread-id="thread-a/b"]'),
-    );
+    expect(expression).toContain(JSON.stringify('[data-thread-id="thread-a/b"]'));
     expect(expression).toContain("getAttribute('data-active') === 'true'");
-    expect(expression).toContain('visibleActiveCount');
+    expect(expression).toContain("visibleActiveCount");
   });
 
   it("requires the exact Native routed thread identity after PID-owned DevTool resolution", () => {
@@ -433,10 +418,14 @@ describe("Electron and Lynxtron comparison launcher", () => {
     const root = mkdtempSync(join(tmpdir(), "synara-comparison-transcript-"));
     const paths = resolveDesktopComparisonPaths(root);
     mkdirSync(join(paths.electronHome, "dev"), { recursive: true });
-    const sqlite = spawnSync("sqlite3", [
-      join(paths.electronHome, "dev", "state.sqlite"),
-      "create table projection_thread_messages(message_id text, thread_id text, sequence integer); insert into projection_thread_messages values('first', 'thread-live', 1), ('tail-message', 'thread-live', 2);",
-    ], { encoding: "utf8" });
+    const sqlite = spawnSync(
+      "sqlite3",
+      [
+        join(paths.electronHome, "dev", "state.sqlite"),
+        "create table projection_thread_messages(message_id text, thread_id text, sequence integer); insert into projection_thread_messages values('first', 'thread-live', 1), ('tail-message', 'thread-live', 2);",
+      ],
+      { encoding: "utf8" },
+    );
     expect(sqlite.status).toBe(0);
 
     const expectation = readComparisonTranscriptExpectation(paths, "thread-live");
@@ -444,12 +433,18 @@ describe("Electron and Lynxtron comparison launcher", () => {
     const expression = comparisonTranscriptReadyExpression(expectation);
     expect(expression).toContain('[data-chat-scroll-container="true"]');
     expect(expression).toContain('CSS.escape("tail-message")');
-    expect(expression).toContain('distanceFromBottom');
+    expect(expression).toContain("distanceFromBottom");
 
-    expect(nativeThreadIdentityFromDom({
-      attributes: ["class", "TranscriptList"],
-      children: [{ attributes: ["item-key", "tail-message"] }],
-    }, "thread-live", "tail-message")).toMatchObject({
+    expect(
+      nativeThreadIdentityFromDom(
+        {
+          attributes: ["class", "TranscriptList"],
+          children: [{ attributes: ["item-key", "tail-message"] }],
+        },
+        "thread-live",
+        "tail-message",
+      ),
+    ).toMatchObject({
       transcriptListCount: 1,
       lastMessageRendered: true,
     });
@@ -466,17 +461,19 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(expression).toContain("notificationDetails");
     expect(expression).toContain("node.getAttribute('data-state')");
 
-    expect(nativeTransientUiStateFromDom({
-      attributes: ["class", "SliceRoot"],
-      children: [
-        { attributes: ["class", "LxDialogOverlay"] },
-        { attributes: ["class", "TranscriptSelectionToolbar"] },
-        { attributes: ["class", "RightPanelResizeOverlay"] },
-        { attributes: ["class", "LxMenuLayer"] },
-        { attributes: ["class", "ProviderUpdatePrompt"] },
-        { attributes: ["class", "TaskCompletionToast"] },
-      ],
-    })).toEqual({
+    expect(
+      nativeTransientUiStateFromDom({
+        attributes: ["class", "SliceRoot"],
+        children: [
+          { attributes: ["class", "LxDialogOverlay"] },
+          { attributes: ["class", "TranscriptSelectionToolbar"] },
+          { attributes: ["class", "RightPanelResizeOverlay"] },
+          { attributes: ["class", "LxMenuLayer"] },
+          { attributes: ["class", "ProviderUpdatePrompt"] },
+          { attributes: ["class", "TaskCompletionToast"] },
+        ],
+      }),
+    ).toEqual({
       dialogCount: 1,
       menuLayerCount: 1,
       notificationCount: 2,
@@ -486,16 +483,11 @@ describe("Electron and Lynxtron comparison launcher", () => {
   });
 
   it("waits for Electron transient UI to remain clean before retaining evidence", () => {
-    const source = readFileSync(
-      new URL('./dev-electron-lynxtron.mjs', import.meta.url),
-      'utf8',
-    );
-    expect(source).toContain('const transientDeadline = Date.now() + 10_000');
-    expect(source).toContain(
-      'cleanTransientSince === 0 && Date.now() < transientDeadline'
-    );
-    expect(source).toContain('Date.now() - cleanTransientSince < 250');
-    expect(source).toContain('cleanTransientSince = clean');
+    const source = readFileSync(new URL("./dev-electron-lynxtron.mjs", import.meta.url), "utf8");
+    expect(source).toContain("const transientDeadline = Date.now() + 10_000");
+    expect(source).toContain("cleanTransientSince === 0 && Date.now() < transientDeadline");
+    expect(source).toContain("Date.now() - cleanTransientSince < 250");
+    expect(source).toContain("cleanTransientSince = clean");
     expect(source).toContain('typeof value !== "number" || value === 0');
   });
 
@@ -514,12 +506,17 @@ describe("Electron and Lynxtron comparison launcher", () => {
       setItem: (key: string, value: string) => values.set(key, value),
     };
     let reloadCount = 0;
-    const location = { reload: () => { reloadCount += 1; } };
+    const location = {
+      reload: () => {
+        reloadCount += 1;
+      },
+    };
 
-    Function("localStorage", "location", comparisonRendererResetExpression("dark"))(
-      localStorage,
-      location,
-    );
+    Function(
+      "localStorage",
+      "location",
+      comparisonRendererResetExpression("dark"),
+    )(localStorage, location);
 
     expect(Object.fromEntries(values)).toEqual({
       "synara:theme": "dark",
@@ -542,10 +539,11 @@ describe("Electron and Lynxtron comparison launcher", () => {
     };
     const location = { reload() {} };
 
-    Function("localStorage", "location", comparisonRendererResetExpression("light", "welcome"))(
-      localStorage,
-      location,
-    );
+    Function(
+      "localStorage",
+      "location",
+      comparisonRendererResetExpression("light", "welcome"),
+    )(localStorage, location);
 
     expect(values.has("synara:appsnap-welcome:v1")).toBe(false);
   });
@@ -563,12 +561,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
     Function(
       "localStorage",
       "location",
-      comparisonRendererResetExpression(
-        "dark",
-        "acknowledged",
-        null,
-        "thread-canonical",
-      ),
+      comparisonRendererResetExpression("dark", "acknowledged", null, "thread-canonical"),
     )(localStorage, location);
 
     expect(JSON.parse(values.get("synara:recent-views:v1")!)).toEqual({
@@ -634,7 +627,11 @@ describe("Electron and Lynxtron comparison launcher", () => {
   it("surfaces renderer exceptions from CDP evaluations", () => {
     expect(
       electronEvaluationError(
-        { result: { exceptionDetails: { exception: { description: 'ReferenceError: bad import' } } } },
+        {
+          result: {
+            exceptionDetails: { exception: { description: "ReferenceError: bad import" } },
+          },
+        },
         "opening Terminal",
       )?.message,
     ).toBe("Failed opening Terminal: ReferenceError: bad import");
@@ -657,8 +654,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
         SYNARA_HOME: "/repo/.synara-desktop-comparison/electron",
         SYNARA_ALLOW_PARALLEL_INSTANCE: "1",
         SYNARA_DESKTOP_AUTH_TOKEN: "comparison-token",
-        SYNARA_DESKTOP_USER_DATA_DIR:
-          "/repo/.synara-desktop-comparison/electron-profile",
+        SYNARA_DESKTOP_USER_DATA_DIR: "/repo/.synara-desktop-comparison/electron-profile",
         SYNARA_DISABLE_THREAD_RETENTION: "1",
         SYNARA_SKIP_SHELL_ENVIRONMENT_SYNC: "1",
         SYNARA_SKIP_MEDIA_PERMISSION_SETUP: "1",
@@ -734,31 +730,43 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(readFileSync(paths.ownedLynxtronExecutable, "utf8")).toBe("binary");
     expect(paths.ownedLynxtronApp).not.toBe(paths.sourceLynxtronApp);
     expect(
-      spawnSync("plutil", ["-extract", "CFBundleIdentifier", "raw", join(
-        paths.ownedLynxtronApp,
-        "Contents",
-        "Info.plist",
-      )], { encoding: "utf8" }).stdout.trim(),
+      spawnSync(
+        "plutil",
+        [
+          "-extract",
+          "CFBundleIdentifier",
+          "raw",
+          join(paths.ownedLynxtronApp, "Contents", "Info.plist"),
+        ],
+        { encoding: "utf8" },
+      ).stdout.trim(),
     ).toBe("com.lynxjs.SynaraComparisonLynxtron");
     expect(
-      spawnSync("plutil", ["-extract", "CFBundleShortVersionString", "raw", join(
-        paths.ownedLynxtronApp,
-        "Contents",
-        "Info.plist",
-      )], { encoding: "utf8" }).stdout.trim(),
+      spawnSync(
+        "plutil",
+        [
+          "-extract",
+          "CFBundleShortVersionString",
+          "raw",
+          join(paths.ownedLynxtronApp, "Contents", "Info.plist"),
+        ],
+        { encoding: "utf8" },
+      ).stdout.trim(),
     ).toBe("0.0.21");
     expect(
-      spawnSync("plutil", ["-extract", "SynaraLynxtronSourceVersion", "raw", join(
-        paths.ownedLynxtronApp,
-        "Contents",
-        "Info.plist",
-      )], { encoding: "utf8" }).stdout.trim(),
+      spawnSync(
+        "plutil",
+        [
+          "-extract",
+          "SynaraLynxtronSourceVersion",
+          "raw",
+          join(paths.ownedLynxtronApp, "Contents", "Info.plist"),
+        ],
+        { encoding: "utf8" },
+      ).stdout.trim(),
     ).toBe("0.0.21");
     if (platform() === "darwin") {
-      const source = readFileSync(
-        new URL("./dev-electron-lynxtron.mjs", import.meta.url),
-        "utf8",
-      );
+      const source = readFileSync(new URL("./dev-electron-lynxtron.mjs", import.meta.url), "utf8");
       expect(source).toContain(
         'spawnSync("ditto", [paths.sourceLynxtronApp, paths.ownedLynxtronApp]',
       );
@@ -790,9 +798,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       `/Applications/Other.app/Contents/MacOS/Electron --user-data-dir=${profile}`,
       `${executable} --user-data-dir=${profile}-other /repo/apps/desktop/dist-electron/main.js`,
     ];
-    const output = commands
-      .map((command, index) => `${index + 101} ${command}`)
-      .join("\n");
+    const output = commands.map((command, index) => `${index + 101} ${command}`).join("\n");
 
     expect(ownedElectronPidsFromPs(output, executable, profile)).toEqual([101]);
   });
@@ -840,10 +846,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
   });
 
   it("does not claim Lynx DevTool readiness before PID-owned LISTEN verification", () => {
-    const source = readFileSync(
-      new URL("./dev-electron-lynxtron.mjs", import.meta.url),
-      "utf8",
-    );
+    const source = readFileSync(new URL("./dev-electron-lynxtron.mjs", import.meta.url), "utf8");
 
     expect(source).toContain("await waitForOwnedDevtoolListener(");
     expect(source).toContain("verified LISTEN");
@@ -854,44 +857,29 @@ describe("Electron and Lynxtron comparison launcher", () => {
   });
 
   it("signs the copied Lynxtron framework before the outer app", () => {
-    const source = readFileSync(
-      new URL("./dev-electron-lynxtron.mjs", import.meta.url),
-      "utf8",
-    );
-    const frameworkSign = source.indexOf(
-      '["--force", "--sign", "-", embeddedFramework]',
-    );
-    const appSign = source.indexOf(
-      '["--force", "--sign", "-", paths.ownedLynxtronApp]',
-    );
+    const source = readFileSync(new URL("./dev-electron-lynxtron.mjs", import.meta.url), "utf8");
+    const frameworkSign = source.indexOf('["--force", "--sign", "-", embeddedFramework]');
+    const appSign = source.indexOf('["--force", "--sign", "-", paths.ownedLynxtronApp]');
     expect(frameworkSign).toBeGreaterThan(-1);
     expect(appSign).toBeGreaterThan(frameworkSign);
-    expect(source).not.toContain(
-      '["--force", "--deep", "--sign", "-", paths.ownedLynxtronApp]',
-    );
+    expect(source).not.toContain('["--force", "--deep", "--sign", "-", paths.ownedLynxtronApp]');
   });
 
   it("keeps owned children in the foreground process group for terminal cleanup", () => {
-    const source = readFileSync(
-      new URL("./dev-electron-lynxtron.mjs", import.meta.url),
-      "utf8",
-    );
-    expect(source).toContain('detached: false');
-    expect(source).toContain('child.kill(signal)');
-    expect(source).toContain('stopExistingOwnedLynxtronRuntime(paths)');
-    expect(source).toContain('stopExistingOwnedElectronRuntime(paths, electronExecutable)');
-    expect(source).toContain('stopExistingOwnedWebRuntime(paths, options.webPort)');
+    const source = readFileSync(new URL("./dev-electron-lynxtron.mjs", import.meta.url), "utf8");
+    expect(source).toContain("detached: false");
+    expect(source).toContain("child.kill(signal)");
+    expect(source).toContain("stopExistingOwnedLynxtronRuntime(paths)");
+    expect(source).toContain("stopExistingOwnedElectronRuntime(paths, electronExecutable)");
+    expect(source).toContain("stopExistingOwnedWebRuntime(paths, options.webPort)");
     expect(source).toContain('stopAllOwned("SIGKILL")');
-    expect(source).not.toContain('process.kill(-child.pid, signal)');
+    expect(source).not.toContain("process.kill(-child.pid, signal)");
   });
 
   it("checks comparison ports before starting heavyweight builds", () => {
-    const source = readFileSync(
-      new URL("./dev-electron-lynxtron.mjs", import.meta.url),
-      "utf8",
-    );
-    expect(source.indexOf('if (await isPortOpen(port))')).toBeLessThan(
-      source.indexOf('for (const command of commands.preRuntimeBuild)'),
+    const source = readFileSync(new URL("./dev-electron-lynxtron.mjs", import.meta.url), "utf8");
+    expect(source.indexOf("if (await isPortOpen(port))")).toBeLessThan(
+      source.indexOf("for (const command of commands.preRuntimeBuild)"),
     );
   });
 
@@ -912,7 +900,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       join(paths.seedHome, "dev", "settings.json"),
       '{"keepFixtureSetting":true,"enableProviderUpdateChecks":true}',
     );
-    writeFileSync(join(paths.seedHome, "dev", "server-runtime.json"), "{\"pid\":1}");
+    writeFileSync(join(paths.seedHome, "dev", "server-runtime.json"), '{"pid":1}');
 
     prepareDesktopComparisonHome(paths);
 
@@ -992,11 +980,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
     const root = mkdtempSync(join(tmpdir(), "synara-renderer-theme-"));
     const paths = resolveDesktopComparisonPaths(root);
 
-    writeComparisonRendererState(
-      paths,
-      { "synara:app-settings:v1": "{}" },
-      "dark",
-    );
+    writeComparisonRendererState(paths, { "synara:app-settings:v1": "{}" }, "dark");
 
     expect(JSON.parse(readFileSync(paths.lynxKvState, "utf8"))).toEqual({
       "synara:app-settings:v1": "{}",
@@ -1005,17 +989,12 @@ describe("Electron and Lynxtron comparison launcher", () => {
   });
 
   it("settles provider status through Electron before retaining either renderer", () => {
-    const source = readFileSync(
-      new URL('./dev-electron-lynxtron.mjs', import.meta.url),
-      "utf8",
-    );
+    const source = readFileSync(new URL("./dev-electron-lynxtron.mjs", import.meta.url), "utf8");
     const configureSource = source.slice(
       source.indexOf("async function configureElectronRenderer"),
       source.indexOf("function runCommand"),
     );
-    expect(source).toContain(
-      "ensureNativeApi().server.refreshProviders()"
-    );
+    expect(source).toContain("ensureNativeApi().server.refreshProviders()");
     expect(source.indexOf("await waitForRuntimeState")).toBeLessThan(
       source.indexOf("await runCommand(commands.nativeBuild)"),
     );
@@ -1036,16 +1015,14 @@ describe("Electron and Lynxtron comparison launcher", () => {
     );
     expect(source).toContain("options.chatFontSize");
     expect(source).toContain(
-      "const terminalThreadId = comparisonThreadId(options) ?? options.threadId"
+      "const terminalThreadId = comparisonThreadId(options) ?? options.threadId",
     );
     expect(source).toContain("comparisonTerminalOpenExpression(terminalThreadId)");
     expect(source).toContain("comparisonTerminalReadyExpression(terminalThreadId)");
     expect(source.indexOf("comparisonRouteRestoreExpression(expectedUrl)")).toBeLessThan(
       source.indexOf("return rendererState"),
     );
-    expect(source).toContain(
-      "stableRouteSince === 0 || Date.now() - stableRouteSince < 5_000",
-    );
+    expect(source).toContain("stableRouteSince === 0 || Date.now() - stableRouteSince < 5_000");
     expect(source).toContain("const routeDeadline = Date.now() + 30_000");
     expect(source).toContain('params: { expression: "location.href", returnByValue: true }');
     expect(source).toContain("Timed out reasserting the Electron comparison route.");
@@ -1053,9 +1030,11 @@ describe("Electron and Lynxtron comparison launcher", () => {
       "new URL(candidate.url).origin === new URL(startupUrl).origin",
     );
     expect(source).toContain('["Web", options.webPort]');
-    expect(source).toContain('message?.result?.exceptionDetails');
-    expect(source).toContain('Failed ${activity}: ${description}');
-    expect(configureSource.split('electronEvaluationError(')).toHaveLength(9);
-    expect(source).toContain('for (const child of ownedChildren.toReversed()) stopOwned(child, "SIGKILL")');
+    expect(source).toContain("message?.result?.exceptionDetails");
+    expect(source).toContain("Failed ${activity}: ${description}");
+    expect(configureSource.split("electronEvaluationError(")).toHaveLength(9);
+    expect(source).toContain(
+      'for (const child of ownedChildren.toReversed()) stopOwned(child, "SIGKILL")',
+    );
   });
 });

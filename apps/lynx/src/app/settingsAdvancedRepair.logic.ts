@@ -1,4 +1,4 @@
-import type { OrchestrationReadModel } from '@synara/contracts';
+import type { OrchestrationReadModel } from "@synara/contracts";
 
 export async function repairAdvancedSettingsState(input: {
   readonly repair: () => Promise<OrchestrationReadModel>;

@@ -9,10 +9,7 @@ import {
   isSupportedLocalImagePath,
   isSupportedLocalPdfPath,
 } from "@synara/shared/localPreviewFiles";
-import {
-  isMarkdownPreviewablePath,
-  resolveFilePreviewMode,
-} from "@synara/shared/filePreviewMode";
+import { isMarkdownPreviewablePath, resolveFilePreviewMode } from "@synara/shared/filePreviewMode";
 import {
   isLocalAbsolutePath,
   isWorkspaceRelativePathSafe,
@@ -326,16 +323,19 @@ export function WorkspaceFilePreview(props: WorkspaceFilePreviewProps) {
     filePath: string | null;
     rendered: boolean;
   } | null>(null);
-  const markdownPreviewEnabled = filePath !== null && resolveFilePreviewMode({
-    defaultMode: markdownPreviewDefault ? "preview" : "source",
-    filePath,
-    override: markdownPreviewOverride === null
-      ? null
-      : {
-          filePath: markdownPreviewOverride.filePath ?? "",
-          mode: markdownPreviewOverride.rendered ? "preview" : "source",
-        },
-  }) === "preview";
+  const markdownPreviewEnabled =
+    filePath !== null &&
+    resolveFilePreviewMode({
+      defaultMode: markdownPreviewDefault ? "preview" : "source",
+      filePath,
+      override:
+        markdownPreviewOverride === null
+          ? null
+          : {
+              filePath: markdownPreviewOverride.filePath ?? "",
+              mode: markdownPreviewOverride.rendered ? "preview" : "source",
+            },
+    }) === "preview";
   const localPreviewGrantQuery = useQuery(
     projectLocalPreviewGrantQueryOptions({
       path: filePath,

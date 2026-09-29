@@ -1,18 +1,18 @@
-import { useEffect, useState } from '@lynx-js/react';
+import { useEffect, useState } from "@lynx-js/react";
 
-import './motion.lynx.css';
+import "./motion.lynx.css";
 
 export const DISCLOSURE_TRANSITION_MS = 220;
 export const DISCLOSURE_CLEANUP_BUFFER_MS = 40;
 
-export const DISCLOSURE_SHELL_MOTION_CLASS = 'LynxDisclosureMotion';
-export const DISCLOSURE_SHELL_OPEN_CLASS = 'LynxDisclosureMotion--open';
-export const DISCLOSURE_SHELL_CLOSED_CLASS = 'LynxDisclosureMotion--closed';
-export const DISCLOSURE_INNER_CLASS = 'LynxDisclosureInner';
-export const DISCLOSURE_CONTENT_MOTION_CLASS = 'LynxDisclosureMotion';
-export const DISCLOSURE_CONTENT_OPEN_CLASS = 'LynxDisclosureMotion--open';
-export const DISCLOSURE_CONTENT_CLOSED_CLASS = 'LynxDisclosureMotion--closed';
-export const DISCLOSURE_CHEVRON_MOTION_CLASS = 'LynxDisclosureChevron';
+export const DISCLOSURE_SHELL_MOTION_CLASS = "LynxDisclosureMotion";
+export const DISCLOSURE_SHELL_OPEN_CLASS = "LynxDisclosureMotion--open";
+export const DISCLOSURE_SHELL_CLOSED_CLASS = "LynxDisclosureMotion--closed";
+export const DISCLOSURE_INNER_CLASS = "LynxDisclosureInner";
+export const DISCLOSURE_CONTENT_MOTION_CLASS = "LynxDisclosureMotion";
+export const DISCLOSURE_CONTENT_OPEN_CLASS = "LynxDisclosureMotion--open";
+export const DISCLOSURE_CONTENT_CLOSED_CLASS = "LynxDisclosureMotion--closed";
+export const DISCLOSURE_CHEVRON_MOTION_CLASS = "LynxDisclosureChevron";
 
 let reducedMotion = false;
 const reducedMotionListeners = new Set<(value: boolean) => void>();
@@ -26,7 +26,7 @@ export function setLynxReducedMotion(value: boolean): void {
 function useLynxReducedMotion(): boolean {
   const [value, setValue] = useState(reducedMotion);
   useEffect(() => {
-    'background only';
+    "background only";
     reducedMotionListeners.add(setValue);
     return () => reducedMotionListeners.delete(setValue);
   }, []);
@@ -34,43 +34,30 @@ function useLynxReducedMotion(): boolean {
 }
 
 function classNames(...values: ReadonlyArray<string | undefined>): string {
-  return values.filter(Boolean).join(' ');
+  return values.filter(Boolean).join(" ");
 }
 
-export function disclosureShellClassName(
-  open: boolean,
-  className?: string
-): string {
+export function disclosureShellClassName(open: boolean, className?: string): string {
   return classNames(
     DISCLOSURE_SHELL_MOTION_CLASS,
-    open
-      ? DISCLOSURE_SHELL_OPEN_CLASS
-      : DISCLOSURE_SHELL_CLOSED_CLASS,
-    className
+    open ? DISCLOSURE_SHELL_OPEN_CLASS : DISCLOSURE_SHELL_CLOSED_CLASS,
+    className,
   );
 }
 
-export function disclosureContentClassName(
-  open: boolean,
-  className?: string
-): string {
+export function disclosureContentClassName(open: boolean, className?: string): string {
   return classNames(
     DISCLOSURE_CONTENT_MOTION_CLASS,
-    open
-      ? DISCLOSURE_CONTENT_OPEN_CLASS
-      : DISCLOSURE_CONTENT_CLOSED_CLASS,
-    className
+    open ? DISCLOSURE_CONTENT_OPEN_CLASS : DISCLOSURE_CONTENT_CLOSED_CLASS,
+    className,
   );
 }
 
-export function disclosureChevronClassName(
-  open: boolean,
-  className?: string
-): string {
+export function disclosureChevronClassName(open: boolean, className?: string): string {
   return classNames(
     DISCLOSURE_CHEVRON_MOTION_CLASS,
-    open ? 'LynxDisclosureChevron--open' : undefined,
-    className
+    open ? "LynxDisclosureChevron--open" : undefined,
+    className,
   );
 }
 
@@ -85,7 +72,7 @@ export function useLynxDisclosurePresence(
   options: {
     readonly preserveOnClose?: boolean;
     readonly transitionMs?: number;
-  } = {}
+  } = {},
 ): boolean {
   const preserveOnClose = options.preserveOnClose ?? true;
   const transitionMs = options.transitionMs ?? DISCLOSURE_TRANSITION_MS;
@@ -93,7 +80,7 @@ export function useLynxDisclosurePresence(
   const [present, setPresent] = useState(open);
 
   useEffect(() => {
-    'background only';
+    "background only";
     if (open) {
       setPresent(true);
       return;
@@ -105,7 +92,7 @@ export function useLynxDisclosurePresence(
     }
     const timeout = setTimeout(
       () => setPresent(false),
-      transitionMs + DISCLOSURE_CLEANUP_BUFFER_MS
+      transitionMs + DISCLOSURE_CLEANUP_BUFFER_MS,
     );
     return () => clearTimeout(timeout);
   }, [open, prefersReducedMotion, preserveOnClose, present, transitionMs]);

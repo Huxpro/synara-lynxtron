@@ -11,8 +11,17 @@ export function EditorRailAddMenuComposition(props: {
 }) {
   return (
     <>
-      <EditorRailAddMenuItemElement icon={<EditorRailAddMenuChatIconElement />} label="New chat" onActivate={props.onNewChat} />
-      <EditorRailAddMenuItemElement icon={<EditorRailAddMenuTerminalIconElement />} label="New terminal" disabled={props.terminalDisabled} onActivate={props.onNewTerminal} />
+      <EditorRailAddMenuItemElement
+        icon={<EditorRailAddMenuChatIconElement />}
+        label="New chat"
+        onActivate={props.onNewChat}
+      />
+      <EditorRailAddMenuItemElement
+        icon={<EditorRailAddMenuTerminalIconElement />}
+        label="New terminal"
+        disabled={props.terminalDisabled}
+        onActivate={props.onNewTerminal}
+      />
     </>
   );
 }

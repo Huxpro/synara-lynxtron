@@ -31,9 +31,7 @@ export function claimComposerInputFocus(): void {
   publishTerminalInputFocusOwner(null);
 }
 
-export function subscribeTerminalInputFocusOwner(
-  listener: TerminalInputFocusListener
-): () => void {
+export function subscribeTerminalInputFocusOwner(listener: TerminalInputFocusListener): () => void {
   listener(terminalInputFocusOwner);
   terminalInputFocusListeners.add(listener);
   return () => terminalInputFocusListeners.delete(listener);

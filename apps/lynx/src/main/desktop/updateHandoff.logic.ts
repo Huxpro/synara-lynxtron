@@ -1,4 +1,4 @@
-import { appendFileSync } from 'node:fs';
+import { appendFileSync } from "node:fs";
 
 export async function openUpdateDownload(input: {
   readonly capturePath: string | null;
@@ -6,11 +6,7 @@ export async function openUpdateDownload(input: {
   readonly url: string;
 }): Promise<void> {
   if (input.capturePath) {
-    appendFileSync(
-      input.capturePath,
-      `${JSON.stringify({ url: input.url })}\n`,
-      'utf8'
-    );
+    appendFileSync(input.capturePath, `${JSON.stringify({ url: input.url })}\n`, "utf8");
     return;
   }
   await input.openExternal(input.url);

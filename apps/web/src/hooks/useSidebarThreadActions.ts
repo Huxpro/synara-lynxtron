@@ -19,9 +19,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { AppSettings } from "../appSettings";
 import { useComposerDraftStore } from "../composerDraftStore";
 import { showConfirmDialogFallback } from "~/components/ui/confirmDialogFallback";
-import {
-  getFallbackThreadIdAfterDelete,
-} from "../components/Sidebar.logic";
+import { getFallbackThreadIdAfterDelete } from "../components/Sidebar.logic";
 import {
   derivePinnedThreadIdsForSidebar,
   isLatestPinnedThreadMutation,

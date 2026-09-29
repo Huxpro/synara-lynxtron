@@ -38,45 +38,39 @@
   }
 }
 
-.SliceRoot--viewport-compact .ExplorerDock
-  .ExplorerDockSidebar {
+.SliceRoot--viewport-compact .ExplorerDock .ExplorerDockSidebar {
   width: 50%;
   min-width: 0;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  > .ExplorerDockHeader {
+.SliceRoot--viewport-short-height .ExplorerDock > .ExplorerDockHeader {
   height: 28px;
   min-height: 28px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockSearch {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockSearch {
   padding: 4px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockSearchIcon {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockSearchIcon {
   left: 14px;
   top: 11px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPreviewContent {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPreviewContent {
   padding: 4px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockEntries {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockEntries {
   padding: 3px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockEntryPath {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockEntryPath {
   display: none;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPreview--pdf
   .ExplorerDockPreviewHeader {
   position: absolute;
@@ -90,82 +84,78 @@
   border-bottom-width: 0;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPreview--pdf
   .ExplorerDockPreviewHeader
   .ExplorerDockBreadcrumb {
   display: none;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPreview--pdf
   .ExplorerDockPreviewContent {
   height: 100%;
   padding: 0;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPdfToolbar {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPdfToolbar {
   min-height: 32px;
   padding: 2px 4px;
   gap: 2px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPdf {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPdf {
   position: relative;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPdfIdentity,
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPdfPrevious,
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPdfNext {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPdfIdentity,
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPdfPrevious,
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPdfNext {
   display: none;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPdfControls {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPdfControls {
   width: 100%;
   padding-right: 32px;
   justify-content: space-between;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPdfPageFrame {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPdfPageFrame {
   padding: 2px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPdfOpen {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPdfOpen {
   margin-left: 0;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfPrevious,
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPdf--multi-page
-  .ExplorerDockPdfNext {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPdf--multi-page .ExplorerDockPdfNext {
   display: flex;
   width: 28px;
   min-width: 28px;
   padding: 0;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfPrevious
   .ExplorerDockPdfNavLabel,
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfNext
   .ExplorerDockPdfNavLabel {
   display: none;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfCompactNav {
   display: flex;
@@ -173,29 +163,30 @@
   line-height: 18px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPdf--multi-page
-  .ExplorerDockPdfOpen {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPdf--multi-page .ExplorerDockPdfOpen {
   width: 28px;
   min-width: 28px;
   margin-left: 0;
   padding: 0;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfControls {
   padding-right: 0;
   gap: 2px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfOpenLabel {
   display: none;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPdf--multi-page
   .ExplorerDockPdfCompactOpen {
   display: flex;
@@ -203,7 +194,8 @@
   line-height: 18px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPreview--image
   .ExplorerDockPreviewHeader {
   position: absolute;
@@ -217,29 +209,28 @@
   border-bottom-width: 0;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPreview--image
-  .ExplorerDockBreadcrumb,
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockPreview--image
-  .ExplorerDockImageName {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPreview--image .ExplorerDockBreadcrumb,
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPreview--image .ExplorerDockImageName {
   display: none;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPreview--image
   .ExplorerDockPreviewContent {
   height: 100%;
   padding: 2px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPreview--image
   .ExplorerDockImageFrame {
   gap: 0;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPreview--markdown
   .ExplorerDockPreviewHeader {
   position: absolute;
@@ -253,7 +244,8 @@
   border-bottom-width: 0;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPreview--markdown.ExplorerDockPreview--truncated
   .ExplorerDockPreviewHeader {
   width: 84px;
@@ -261,13 +253,15 @@
   gap: 4px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPreview--markdown
   .ExplorerDockBreadcrumb {
   display: none;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
+.SliceRoot--viewport-short-height
+  .ExplorerDock
   .ExplorerDockPreview--markdown
   .ExplorerDockPreviewContent {
   height: 100%;
@@ -321,55 +315,37 @@
   padding-top: 4px;
 }
 
-.SliceRoot--viewport-short-height
-  .ExplorerDock--editor-search
-  .ExplorerDockSearch {
+.SliceRoot--viewport-short-height .ExplorerDock--editor-search .ExplorerDockSearch {
   padding: 2px;
 }
 
-.SliceRoot--viewport-short-height
-  .ExplorerDock--editor-search
-  .ExplorerDockSearchIcon {
+.SliceRoot--viewport-short-height .ExplorerDock--editor-search .ExplorerDockSearchIcon {
   left: 12px;
   top: 9px;
 }
 
-.SliceRoot--viewport-short-height
-  .ExplorerDock--editor-search
-  .ExplorerDockSearchTruncated {
+.SliceRoot--viewport-short-height .ExplorerDock--editor-search .ExplorerDockSearchTruncated {
   height: 14px;
   padding: 0 4px;
   font-size: 9px;
   line-height: 14px;
 }
 
-.SliceRoot--viewport-short-height
-  .ExplorerDock--editor-search
-  .ExplorerDockEntries--truncated {
+.SliceRoot--viewport-short-height .ExplorerDock--editor-search .ExplorerDockEntries--truncated {
   padding: 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ExplorerDock--editor-search
-  .ExplorerDockPreview {
+.SliceRoot--viewport-short-height .ExplorerDock--editor-search .ExplorerDockPreview {
   display: none;
 }
 
-.SliceRoot--viewport-compact
-  .ExplorerDock--editor
-  .ExplorerDockBody,
-.SliceRoot--viewport-medium
-  .ExplorerDock--editor
-  .ExplorerDockBody {
+.SliceRoot--viewport-compact .ExplorerDock--editor .ExplorerDockBody,
+.SliceRoot--viewport-medium .ExplorerDock--editor .ExplorerDockBody {
   flex-direction: column;
 }
 
-.SliceRoot--viewport-compact
-  .ExplorerDock--editor
-  .ExplorerDockSidebar,
-.SliceRoot--viewport-medium
-  .ExplorerDock--editor
-  .ExplorerDockSidebar {
+.SliceRoot--viewport-compact .ExplorerDock--editor .ExplorerDockSidebar,
+.SliceRoot--viewport-medium .ExplorerDock--editor .ExplorerDockSidebar {
   width: 100%;
   min-width: 0;
   height: 176px;
@@ -378,9 +354,7 @@
   border-bottom: 1px solid var(--border);
 }
 
-.SliceRoot--viewport-short-height
-  .ExplorerDock--editor-search
-  .ExplorerDockSidebar {
+.SliceRoot--viewport-short-height .ExplorerDock--editor-search .ExplorerDockSidebar {
   height: 100%;
   min-height: 0;
 }
@@ -483,16 +457,14 @@
   line-height: 14px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockSearchTruncated {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockSearchTruncated {
   height: 14px;
   padding: 0 4px;
   font-size: 9px;
   line-height: 14px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockEntries--truncated {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockEntries--truncated {
   padding: 0;
 }
 
@@ -540,8 +512,7 @@
   line-height: 14px;
 }
 
-.SliceRoot--viewport-short-height .ExplorerDock
-  .ExplorerDockDirectoryState {
+.SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockDirectoryState {
   height: 12px;
   min-height: 12px;
   font-size: 9px;

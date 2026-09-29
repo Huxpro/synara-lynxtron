@@ -79,16 +79,16 @@ Its values and labels remain exact `14/20/400`.
 
 ## Final geometry
 
-| Anchor | Web | Lynx-for-Web |
-| --- | ---: | ---: |
-| Identity | `408/88/720/134` | exact |
-| Stats | `408/250/720/68`, radius 18 | exact |
-| Activity section | `408/346/720/168.5` | exact |
-| Heatmap grid | `408/378/720/123.5` | exact |
-| First slot | `15.0625×15.0625`, radius 5 | exact |
-| Month row | `408/504.5/720/10` | exact |
-| Insights columns | `408` and `792`, width 336 | exact |
-| Model section | `408/802.5/720/52` | exact |
+| Anchor           |                         Web | Lynx-for-Web |
+| ---------------- | --------------------------: | -----------: |
+| Identity         |            `408/88/720/134` |        exact |
+| Stats            | `408/250/720/68`, radius 18 |        exact |
+| Activity section |         `408/346/720/168.5` |        exact |
+| Heatmap grid     |         `408/378/720/123.5` |        exact |
+| First slot       | `15.0625×15.0625`, radius 5 |        exact |
+| Month row        |          `408/504.5/720/10` |        exact |
+| Insights columns |  `408` and `792`, width 336 |        exact |
+| Model section    |          `408/802.5/720/52` |        exact |
 
 ## Evidence
 

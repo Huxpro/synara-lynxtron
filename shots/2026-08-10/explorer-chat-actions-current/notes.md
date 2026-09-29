@@ -17,7 +17,7 @@
 - The dark fresh thread began with an empty composer. Activating
   `Ask why this changed` changed it to
   `Why did we implement @src/action.ts this way? Check the git history if
-  needed and explain the reasoning.`
+needed and explain the reasoning.`
 - `drafts.json` proves both drafts persisted structured mention metadata
   `{ "name": "action.ts", "path": "src/action.ts" }`.
 - Fresh page errors are empty. Console output contains only the known Lynx Web

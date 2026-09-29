@@ -1,13 +1,8 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import {
-  disclosureContentClassName,
-  useLynxDisclosurePresence,
-} from '../platform/motion.lynx';
+import { disclosureContentClassName, useLynxDisclosurePresence } from "../platform/motion.lynx";
 
-export function SidebarProjectDisclosureRootElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SidebarProjectDisclosureRootElement(props: { readonly children?: ReactNode }) {
   return <view className="AppSidebarProject">{props.children}</view>;
 }
 
@@ -18,12 +13,7 @@ export function SidebarProjectDisclosureBodyElement(props: {
   const present = useLynxDisclosurePresence(props.expanded);
   if (!present) return null;
   return (
-    <view
-      className={disclosureContentClassName(
-        props.expanded,
-        'AppSidebarProjectBody'
-      )}
-    >
+    <view className={disclosureContentClassName(props.expanded, "AppSidebarProjectBody")}>
       {props.children}
     </view>
   );

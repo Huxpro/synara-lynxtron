@@ -11,8 +11,7 @@ import * as Socket from "effect/unstable/socket/Socket";
 
 export type WebSocketFactory = (url: string, protocols?: string | string[]) => WebSocket;
 
-export const createWebSocket: WebSocketFactory = (url, protocols) =>
-  new WebSocket(url, protocols);
+export const createWebSocket: WebSocketFactory = (url, protocols) => new WebSocket(url, protocols);
 
 /**
  * effect `Socket` constructor layer sourced from the port. Drop-in replacement
@@ -20,9 +19,7 @@ export const createWebSocket: WebSocketFactory = (url, protocols) =>
  * the global constructor directly.
  */
 export const layerWebSocketConstructorFromPort: Layer.Layer<Socket.WebSocketConstructor> =
-  Layer.succeed(Socket.WebSocketConstructor)(
-    (url, protocols) => createWebSocket(url, protocols),
-  );
+  Layer.succeed(Socket.WebSocketConstructor)((url, protocols) => createWebSocket(url, protocols));
 
 /**
  * Default WS endpoint resolution, in the historical precedence order:

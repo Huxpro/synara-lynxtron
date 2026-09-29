@@ -1,9 +1,9 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import { resolveSystemStateSemantics } from '@synara-web/components/systemStateSemantics';
+import { resolveSystemStateSemantics } from "@synara-web/components/systemStateSemantics";
 
-import { useLynxSystemStateAnnouncement } from '../platform/system-state-announcement.lynx';
-import './pull-request-list-composition-elements.css';
+import { useLynxSystemStateAnnouncement } from "../platform/system-state-announcement.lynx";
+import "./pull-request-list-composition-elements.css";
 
 type ChildrenProps = { readonly children?: ReactNode };
 
@@ -12,13 +12,11 @@ export function PullRequestListRootElement(props: ChildrenProps) {
 }
 
 export function PullRequestListGroupTitleElement(
-  props: ChildrenProps & { readonly separated: boolean }
+  props: ChildrenProps & { readonly separated: boolean },
 ) {
   return (
     <text
-      className={`SharedPrGroupTitle${
-        props.separated ? ' SharedPrGroupTitle--separated' : ''
-      }`}
+      className={`SharedPrGroupTitle${props.separated ? " SharedPrGroupTitle--separated" : ""}`}
       accessibility-element={true}
       accessibility-trait="header"
     >
@@ -31,9 +29,9 @@ export function PullRequestListLoadingElement(props: {
   readonly rowCount: number;
   readonly label: string;
 }) {
-  const semantics = resolveSystemStateSemantics('status');
+  const semantics = resolveSystemStateSemantics("status");
   useLynxSystemStateAnnouncement({
-    intent: 'status',
+    intent: "status",
     announcement: props.label,
   });
   return (
@@ -53,7 +51,7 @@ export function PullRequestListLoadingElement(props: {
 export function PullRequestListEmptyElement(props: {
   readonly title: string;
   readonly description: string;
-  readonly intent: 'empty' | 'alert';
+  readonly intent: "empty" | "alert";
 }) {
   const semantics = resolveSystemStateSemantics(props.intent);
   const announcement = `${props.title}. ${props.description}`;

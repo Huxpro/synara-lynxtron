@@ -1,34 +1,28 @@
-import { execFileSync } from 'node:child_process';
+import { execFileSync } from "node:child_process";
 
 export type ReadSystemDark = () => boolean;
 
-export function parseSystemAppearanceProbeSequence(
-  value: string | undefined
-): readonly boolean[] {
+export function parseSystemAppearanceProbeSequence(value: string | undefined): readonly boolean[] {
   if (!value) return [];
   return value
-    .split(',')
+    .split(",")
     .map((entry) => entry.trim().toLowerCase())
-    .filter((entry): entry is 'dark' | 'light' =>
-      entry === 'dark' || entry === 'light'
-    )
-    .map((entry) => entry === 'dark');
+    .filter((entry): entry is "dark" | "light" => entry === "dark" || entry === "light")
+    .map((entry) => entry === "dark");
 }
 
-export function readMacSystemDark(
-  execFile: typeof execFileSync = execFileSync
-): boolean {
-  if (process.platform !== 'darwin') return false;
+export function readMacSystemDark(execFile: typeof execFileSync = execFileSync): boolean {
+  if (process.platform !== "darwin") return false;
   try {
     return (
       String(
-        execFile('/usr/bin/defaults', ['read', '-g', 'AppleInterfaceStyle'], {
-          encoding: 'utf8',
-          stdio: ['ignore', 'pipe', 'ignore'],
-        })
+        execFile("/usr/bin/defaults", ["read", "-g", "AppleInterfaceStyle"], {
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "ignore"],
+        }),
       )
         .trim()
-        .toLowerCase() === 'dark'
+        .toLowerCase() === "dark"
     );
   } catch {
     // `defaults` exits non-zero when AppleInterfaceStyle is absent, which is

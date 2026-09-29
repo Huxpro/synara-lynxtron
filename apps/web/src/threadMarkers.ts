@@ -10,10 +10,7 @@ import {
   type ThreadMarkerId,
   type ThreadMarkerStyle,
 } from "@synara/contracts";
-import {
-  deriveThreadMarkerLabel,
-  normalizeThreadMarkerLabel,
-} from "@synara/shared/threadMarkers";
+import { deriveThreadMarkerLabel, normalizeThreadMarkerLabel } from "@synara/shared/threadMarkers";
 
 import { newCommandId } from "./lib/utils";
 import { readNativeApi } from "./nativeApi";

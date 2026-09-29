@@ -65,11 +65,9 @@ describe("provider tools configuration", () => {
     expect(kiloPassword?.configuredKey).toBe("kiloServerPasswordConfigured");
     expect(openCodePassword?.configuredKey).toBe("openCodeServerPasswordConfigured");
     expect(openCode?.docs.map((doc) => doc.label)).toEqual(["Install", "Update", "Config"]);
-    expect(
-      providerToolDescriptionText(
-        codexBinary?.description ?? [],
-      ),
-    ).toBe("Leave blank to use codex from your PATH.");
+    expect(providerToolDescriptionText(codexBinary?.description ?? [])).toBe(
+      "Leave blank to use codex from your PATH.",
+    );
     expect(codexBinary?.description).toContainEqual({
       text: "codex",
       code: true,

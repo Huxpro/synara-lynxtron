@@ -50,14 +50,14 @@ export function PullRequestDetailCapabilityComposition(props: {
   readonly availableTabs: readonly PullRequestDetailTab[];
 }) {
   const available = new Set(props.availableTabs);
-  const unavailableLabels = PULL_REQUEST_DETAIL_TABS.filter(
-    (tab) => !available.has(tab.value),
-  ).map((tab) => tab.label);
+  const unavailableLabels = PULL_REQUEST_DETAIL_TABS.filter((tab) => !available.has(tab.value)).map(
+    (tab) => tab.label,
+  );
   if (unavailableLabels.length === 0) return null;
   return (
     <PullRequestDetailCapabilityElement>
-      {formatUnavailableTabs(unavailableLabels)}{" "}
-      {unavailableLabels.length === 1 ? "is" : "are"} unavailable in this runtime.
+      {formatUnavailableTabs(unavailableLabels)} {unavailableLabels.length === 1 ? "is" : "are"}{" "}
+      unavailable in this runtime.
     </PullRequestDetailCapabilityElement>
   );
 }

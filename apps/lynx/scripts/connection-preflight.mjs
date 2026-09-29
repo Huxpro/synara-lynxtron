@@ -11,9 +11,7 @@ const REQUEST_TIMEOUT_MS = 10_000;
 let requestSequence = 0;
 
 export function parseRuntimeWsUrl(html) {
-  const match = html.match(
-    /globalThis\.__SYNARA_LYNX_RUNTIME__=(\{[^<]+\});<\/script>/,
-  );
+  const match = html.match(/globalThis\.__SYNARA_LYNX_RUNTIME__=(\{[^<]+\});<\/script>/);
   if (!match?.[1]) return null;
   const parsed = JSON.parse(match[1]);
   return typeof parsed.wsUrl === "string" ? parsed.wsUrl : null;
@@ -75,12 +73,7 @@ function openSocket(url, origin) {
 function request(socket, tag, payload, requestId) {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(
-      () =>
-        reject(
-          new Error(
-            `${tag} (${requestId}) timed out after ${REQUEST_TIMEOUT_MS}ms`,
-          ),
-        ),
+      () => reject(new Error(`${tag} (${requestId}) timed out after ${REQUEST_TIMEOUT_MS}ms`)),
       REQUEST_TIMEOUT_MS,
     );
     const onMessage = (data) => {
@@ -105,10 +98,7 @@ function request(socket, tag, payload, requestId) {
 }
 
 async function probeRpc(serverUrl, origin, label) {
-  const bootstrap = await openSocket(
-    buildProbeSocketUrl(serverUrl, '/ws/bootstrap'),
-    origin,
-  );
+  const bootstrap = await openSocket(buildProbeSocketUrl(serverUrl, "/ws/bootstrap"), origin);
   let compatibility;
   try {
     compatibility = await request(
@@ -132,10 +122,7 @@ async function probeRpc(serverUrl, origin, label) {
     "x-synara-protocol-revision": String(compatibility.negotiatedRevision),
     "x-synara-server-instance": compatibility.serverInstanceId,
   };
-  const feature = await openSocket(
-    buildProbeSocketUrl(serverUrl, '/ws', query),
-    origin,
-  );
+  const feature = await openSocket(buildProbeSocketUrl(serverUrl, "/ws", query), origin);
   try {
     const snapshot = await request(
       feature,
@@ -155,8 +142,10 @@ async function probeRpc(serverUrl, origin, label) {
 }
 
 export async function runConnectionPreflight({ serverUrl, webOrigin }) {
-  const httpOrigin = withProtocol(serverUrl, serverUrl.startsWith("wss:") ? "https:" : "http:")
-    .origin;
+  const httpOrigin = withProtocol(
+    serverUrl,
+    serverUrl.startsWith("wss:") ? "https:" : "http:",
+  ).origin;
   await fetchOk(`${httpOrigin}/health`);
   await fetchOk(`${webOrigin}/`);
   const lynxResponse = await fetchOk(`${webOrigin}/lynx/index.html`);

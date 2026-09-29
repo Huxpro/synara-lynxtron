@@ -42,7 +42,7 @@
     jump affordance.
 - The first attempt on the imported seed thread was correctly rejected as
   negative evidence: server logged `provider command skipped for quarantined
-  thread`. It is not counted as a streaming pass. A newly created canonical
+thread`. It is not counted as a streaming pass. A newly created canonical
   thread produced the real 700-word and 300-word responses used above.
 - Browser runtime errors were empty. The upstream Lynx-for-Web initialization
   deprecation remains the only warning.

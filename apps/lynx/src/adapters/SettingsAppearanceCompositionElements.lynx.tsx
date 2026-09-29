@@ -1,9 +1,9 @@
-import { useState, type ReactNode } from '@lynx-js/react';
-import { TERMINAL_FONT_FAMILY_SUGGESTIONS } from '@synara-web/components/settings/SettingsAppearanceComposition.logic';
+import { useState, type ReactNode } from "@lynx-js/react";
+import { TERMINAL_FONT_FAMILY_SUGGESTIONS } from "@synara-web/components/settings/SettingsAppearanceComposition.logic";
 
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Switch } from '../components/ui/switch.lynx';
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Switch } from "../components/ui/switch.lynx";
 import {
   ChevronDownIcon,
   DeviceLaptopIcon,
@@ -11,7 +11,7 @@ import {
   SunIcon,
   XIcon,
   type LynxIcon,
-} from '../lib/icons.lynx';
+} from "../lib/icons.lynx";
 import {
   Menu,
   MenuItem,
@@ -19,14 +19,14 @@ import {
   MenuRadioGroup,
   MenuRadioItem,
   MenuTrigger,
-} from '../components/ui/menu';
-import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
-import { SettingsResetIcon } from './SettingsResetIcon.lynx';
+} from "../components/ui/menu";
+import { SettingsHeadingElement } from "./SettingsHeadingElement.lynx";
+import { SettingsResetIcon } from "./SettingsResetIcon.lynx";
 import {
   lynxNestedInteractiveEventProps,
   useLynxInteractiveState,
-} from './useLynxInteractiveState';
-import { settingRowAnchorId } from '@synara-web/settingsNavigation';
+} from "./useLynxInteractiveState";
+import { settingRowAnchorId } from "@synara-web/settingsNavigation";
 
 type Option = { readonly value: string; readonly label: string };
 
@@ -36,20 +36,14 @@ const THEME_OPTION_ICONS: Readonly<Record<string, LynxIcon>> = {
   system: DeviceLaptopIcon,
 };
 
-export function filterTerminalFontSuggestions(
-  value: string
-): ReadonlyArray<string> {
+export function filterTerminalFontSuggestions(value: string): ReadonlyArray<string> {
   const query = value.trim().toLowerCase();
   return query
-    ? TERMINAL_FONT_FAMILY_SUGGESTIONS.filter((font) =>
-        font.toLowerCase().includes(query)
-      )
+    ? TERMINAL_FONT_FAMILY_SUGGESTIONS.filter((font) => font.toLowerCase().includes(query))
     : TERMINAL_FONT_FAMILY_SUGGESTIONS;
 }
 
-export function SettingsAppearanceRootElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SettingsAppearanceRootElement(props: { readonly children?: ReactNode }) {
   return <view className="SharedSettingsAppearanceRoot">{props.children}</view>;
 }
 
@@ -67,9 +61,7 @@ export function SettingsAppearanceSectionElement(props: {
   );
 }
 
-export function SettingsAppearanceCardElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SettingsAppearanceCardElement(props: { readonly children?: ReactNode }) {
   return <view className="SharedSettingsAppearanceCard">{props.children}</view>;
 }
 
@@ -83,7 +75,7 @@ export function SettingsAppearanceRowElement(props: {
   readonly children?: ReactNode;
 }) {
   const resetInteraction = useLynxInteractiveState({
-    baseClassName: 'SharedSettingsAppearanceReset',
+    baseClassName: "SharedSettingsAppearanceReset",
     accessibleLabel: `Reset ${props.resetLabel} to default`,
     onActivate: props.onReset,
   });
@@ -91,7 +83,7 @@ export function SettingsAppearanceRowElement(props: {
     <view
       id={settingRowAnchorId(props.title)}
       className={`SharedSettingsAppearanceRow${
-        props.terminal ? ' SharedSettingsAppearanceRow--terminal' : ''
+        props.terminal ? " SharedSettingsAppearanceRow--terminal" : ""
       }`}
     >
       <view className="SharedSettingsAppearanceRowCopy">
@@ -109,9 +101,7 @@ export function SettingsAppearanceRowElement(props: {
             </view>
           ) : null}
         </view>
-        <text className="SharedSettingsAppearanceRowDescription">
-          {props.description}
-        </text>
+        <text className="SharedSettingsAppearanceRowDescription">{props.description}</text>
       </view>
       <view className="SharedSettingsAppearanceControl">{props.children}</view>
     </view>
@@ -133,27 +123,25 @@ export function SettingsAppearanceSegmentedControlElement(props: {
       {props.options.map((option) => {
         const active = option.value === props.value;
         const Icon =
-          props.ariaLabel === 'Theme preference'
-            ? THEME_OPTION_ICONS[option.value]
-            : undefined;
+          props.ariaLabel === "Theme preference" ? THEME_OPTION_ICONS[option.value] : undefined;
         return (
           <Button
             key={option.value}
             size="sm"
-            variant={active ? 'secondary' : 'ghost'}
+            variant={active ? "secondary" : "ghost"}
             className={`SharedSettingsAppearanceSegment${
-              Icon ? '' : ' SharedSettingsAppearanceSegment--text-only'
+              Icon ? "" : " SharedSettingsAppearanceSegment--text-only"
             }${
               active
-                ? ' SharedSettingsAppearanceSegment--active'
-                : ' SharedSettingsAppearanceSegment--inactive'
+                ? " SharedSettingsAppearanceSegment--active"
+                : " SharedSettingsAppearanceSegment--inactive"
             }`}
             role="radio"
             aria-checked={active}
             aria-label={`${props.ariaLabel}: ${option.label}`}
             buttonProps={{
-              'accessibility-role': 'radio',
-              'accessibility-state': { selected: active },
+              "accessibility-role": "radio",
+              "accessibility-state": { selected: active },
             }}
             onClick={() => props.onChange(option.value)}
           >
@@ -161,7 +149,7 @@ export function SettingsAppearanceSegmentedControlElement(props: {
               <Icon
                 className="SharedSettingsAppearanceSegmentIcon"
                 size={16}
-                color={active ? 'var(--foreground)' : 'var(--muted-foreground)'}
+                color={active ? "var(--foreground)" : "var(--muted-foreground)"}
               />
             ) : null}
             <text className="LxButton__text">{option.label}</text>
@@ -178,7 +166,13 @@ export function SettingsAppearanceBooleanControlElement(props: {
   readonly onChange: (checked: boolean) => void;
 }) {
   return (
-    <Switch checked={props.checked} ariaLabel={props.ariaLabel} className={`SharedSettingsAppearanceSwitch${props.checked ? ' SharedSettingsAppearanceSwitch--on' : ''}`} thumbClassName="SharedSettingsAppearanceSwitchThumb" onCheckedChange={props.onChange} />
+    <Switch
+      checked={props.checked}
+      ariaLabel={props.ariaLabel}
+      className={`SharedSettingsAppearanceSwitch${props.checked ? " SharedSettingsAppearanceSwitch--on" : ""}`}
+      thumbClassName="SharedSettingsAppearanceSwitchThumb"
+      onCheckedChange={props.onChange}
+    />
   );
 }
 
@@ -215,20 +209,17 @@ export function SettingsAppearanceTextControlElement(props: {
 }) {
   const [open, setOpen] = useState(false);
   const clearInteraction = useLynxInteractiveState({
-    baseClassName: 'SharedSettingsAppearanceFontAction',
-    accessibleLabel: 'Clear terminal font family',
+    baseClassName: "SharedSettingsAppearanceFontAction",
+    accessibleLabel: "Clear terminal font family",
     onActivate: () => {
-      props.onChange('');
+      props.onChange("");
       setOpen(true);
     },
   });
   const suggestions = filterTerminalFontSuggestions(props.value);
   return (
     <Menu open={open} onOpenChange={setOpen}>
-      <MenuTrigger
-        className="SharedSettingsAppearanceFontTrigger"
-        passive
-      >
+      <MenuTrigger className="SharedSettingsAppearanceFontTrigger" passive>
         <view className="SharedSettingsAppearanceFontInput">
           <Input
             nativeInput
@@ -258,27 +249,16 @@ export function SettingsAppearanceTextControlElement(props: {
           )}
         </view>
       </MenuTrigger>
-      <MenuPopup
-        className="SharedSettingsAppearanceFontPopup"
-        align="end"
-      >
-        <scroll-view
-          className="SharedSettingsAppearanceFontList"
-          scroll-y
-        >
+      <MenuPopup className="SharedSettingsAppearanceFontPopup" align="end">
+        <scroll-view className="SharedSettingsAppearanceFontList" scroll-y>
           {suggestions.length > 0 ? (
             suggestions.map((suggestion) => (
-              <MenuItem
-                key={suggestion}
-                onClick={() => props.onChange(suggestion)}
-              >
+              <MenuItem key={suggestion} onClick={() => props.onChange(suggestion)}>
                 {suggestion}
               </MenuItem>
             ))
           ) : (
-            <text className="SharedSettingsAppearanceFontEmpty">
-              No matching suggested fonts.
-            </text>
+            <text className="SharedSettingsAppearanceFontEmpty">No matching suggested fonts.</text>
           )}
         </scroll-view>
       </MenuPopup>
@@ -292,16 +272,14 @@ export function SettingsAppearanceSelectControlElement(props: {
   readonly options: readonly Option[];
   readonly onChange: (value: string) => void;
 }) {
-  const selected =
-    props.options.find((option) => option.value === props.value) ??
-    props.options[0];
+  const selected = props.options.find((option) => option.value === props.value) ?? props.options[0];
   return (
     <Menu>
       <MenuTrigger ariaLabel={props.ariaLabel}>
         <Button
           variant="outline"
           className="SharedSettingsAppearanceSelect"
-          buttonProps={{ 'accessibility-element': false }}
+          buttonProps={{ "accessibility-element": false }}
         >
           <text className="SharedSettingsAppearanceSelectLabel">
             {selected?.label ?? props.value}
@@ -326,12 +304,6 @@ export function SettingsAppearanceSelectControlElement(props: {
   );
 }
 
-export function SettingsAppearanceThemePacksElement(props: {
-  readonly children?: ReactNode;
-}) {
-  return (
-    <view className="SharedSettingsAppearanceThemePacks">
-      {props.children}
-    </view>
-  );
+export function SettingsAppearanceThemePacksElement(props: { readonly children?: ReactNode }) {
+  return <view className="SharedSettingsAppearanceThemePacks">{props.children}</view>;
 }

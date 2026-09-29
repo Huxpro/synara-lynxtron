@@ -1,3 +1,20 @@
-[{"thread_id":"editor-changes-thread","project_id":"editor-changes-project","title":"Editor changes review","deleted_at":null},
-{"thread_id":"editor-history-thread","project_id":"editor-changes-project","title":"Review chat history navigation","deleted_at":null},
-{"thread_id":"editor-secondary-thread","project_id":"editor-secondary-project","title":"Secondary editor review","deleted_at":null}]
+[
+  {
+    "thread_id": "editor-changes-thread",
+    "project_id": "editor-changes-project",
+    "title": "Editor changes review",
+    "deleted_at": null
+  },
+  {
+    "thread_id": "editor-history-thread",
+    "project_id": "editor-changes-project",
+    "title": "Review chat history navigation",
+    "deleted_at": null
+  },
+  {
+    "thread_id": "editor-secondary-thread",
+    "project_id": "editor-secondary-project",
+    "title": "Secondary editor review",
+    "deleted_at": null
+  }
+]

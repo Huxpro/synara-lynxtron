@@ -34,9 +34,7 @@ describe("ComposerInputComposition", () => {
           <ComposerFooterContentComposition
             compact
             leading={<span data-region="leading">Leading</span>}
-            actions={
-              <ComposerPrimaryActionComposition mode="send" onActivate={() => undefined} />
-            }
+            actions={<ComposerPrimaryActionComposition mode="send" onActivate={() => undefined} />}
           />
         </ComposerFooterRowComposition>
       </ComposerInputSurfaceComposition>,
@@ -70,9 +68,7 @@ describe("ComposerInputComposition", () => {
     const markup = renderToStaticMarkup(
       <ComposerFooterRowComposition>
         <ComposerFooterContentComposition
-          actions={
-            <ComposerPrimaryActionComposition mode="stop" onActivate={() => undefined} />
-          }
+          actions={<ComposerPrimaryActionComposition mode="stop" onActivate={() => undefined} />}
         />
       </ComposerFooterRowComposition>,
     );

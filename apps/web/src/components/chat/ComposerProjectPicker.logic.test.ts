@@ -49,9 +49,7 @@ describe("buildComposerProjectPickerModel", () => {
       "Void",
       "Folders on this Mac",
     ]);
-    expect(model.groups.find((group) => group.label === "Void")?.icon).toBe(
-      "black-hole",
-    );
+    expect(model.groups.find((group) => group.label === "Void")?.icon).toBe("black-hole");
     expect(model.groups[0]?.options[0]).toMatchObject({
       primaryLabel: "Studio",
       secondaryLabel: "studio-project",

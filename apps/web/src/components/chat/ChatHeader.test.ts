@@ -26,9 +26,9 @@ describe("editor rail independent tabs", () => {
   it("keeps chat tabs in the shared scroll lane and actions in the fixed lane", () => {
     const source = readFileSync(new URL("./ChatHeader.tsx", import.meta.url), "utf8");
     expect(source).toContain('import { IndependentTabRow } from "./IndependentTabRow"');
-    expect(source).toContain('<IndependentTabRow');
+    expect(source).toContain("<IndependentTabRow");
     expect(source).toContain('actionPlacement="start"');
     expect(source).toContain('tabsClassName="justify-end"');
-    expect(source).not.toContain('const shouldShowTabs =');
+    expect(source).not.toContain("const shouldShowTabs =");
   });
 });

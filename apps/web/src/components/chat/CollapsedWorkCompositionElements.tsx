@@ -52,17 +52,10 @@ export function CollapsedWorkLabelElement(props: ChildrenProps) {
 }
 
 export function CollapsedWorkChevronElement(props: { readonly open: boolean }) {
-  return (
-    <DisclosureChevron
-      open={props.open}
-      className="text-muted-foreground/55"
-    />
-  );
+  return <DisclosureChevron open={props.open} className="text-muted-foreground/55" />;
 }
 
-export function CollapsedWorkPanelElement(
-  props: ChildrenProps & { readonly open: boolean },
-) {
+export function CollapsedWorkPanelElement(props: ChildrenProps & { readonly open: boolean }) {
   return (
     <CollapsiblePanel>
       <div className={disclosureContentClassName(props.open, "mb-2.5 space-y-1.5")}>

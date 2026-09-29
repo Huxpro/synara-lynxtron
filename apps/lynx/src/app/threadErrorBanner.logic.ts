@@ -4,7 +4,7 @@ export function threadErrorDismissKey(input: {
 }): string | null {
   const error = input.error?.trim();
   if (!error) return null;
-  return `${input.revision ?? 'unknown'}\u001f${error}`;
+  return `${input.revision ?? "unknown"}\u001f${error}`;
 }
 
 export function visibleThreadError(input: {

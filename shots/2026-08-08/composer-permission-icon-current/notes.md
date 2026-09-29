@@ -28,12 +28,12 @@ The asset is not copied or redrawn. The alias resolves directly to
 
 At `1280x820`, DPR 1, light, comfortable:
 
-| Role | Web | Lynx-for-Web |
-| --- | --- | --- |
-| Trigger | `118.15625x28` | `118.15625x28` |
-| Shield | `14x14`, relative `11,7` | `14x14`, relative `11,7` |
-| Label | `58.15625x16.5`, relative `31,5.75` | same |
-| Chevron | `12x12`, relative `95.15625,8` | same |
+| Role    | Web                                 | Lynx-for-Web             |
+| ------- | ----------------------------------- | ------------------------ |
+| Trigger | `118.15625x28`                      | `118.15625x28`           |
+| Shield  | `14x14`, relative `11,7`            | `14x14`, relative `11,7` |
+| Label   | `58.15625x16.5`, relative `31,5.75` | same                     |
+| Chevron | `12x12`, relative `95.15625,8`      | same                     |
 
 The Lynx SVG content contains the canonical shield path beginning
 `M3.75 7.07405` and resolves both stroke and fills to `#e25505`. The old glyph

@@ -44,10 +44,10 @@ protocol probe to one server instance before any product interaction.
 Before opening a browser, `pullRequests.list` proved that the selected React
 project had real data in both transition states:
 
-| State | Entries | Repository batches | Repository | Errors |
-|---|---:|---:|---|---:|
-| Open | 50 | 1 | `facebook/react` | 0 |
-| Merged | 50 | 1 | `facebook/react` | 0 |
+| State  | Entries | Repository batches | Repository       | Errors |
+| ------ | ------: | -----------------: | ---------------- | -----: |
+| Open   |      50 |                  1 | `facebook/react` |      0 |
+| Merged |      50 |                  1 | `facebook/react` |      0 |
 
 Both repository batches were genuinely truncated at the 50-entry limit.
 `Closed` was rejected as the target state because its current canonical React
@@ -101,12 +101,12 @@ project trigger label. Web returned to:
 
 At Merged:
 
-| Metric | Web original | Lynx-for-Web |
-|---|---:|---:|
-| Filter shell | `280x104 @ (20,62)` | `264x102 @ (28,108)` |
-| Foreground | `rgb(252, 252, 252)` | `rgb(252, 252, 252)` |
-| Shell background | transparent | transparent |
-| Root theme | `html.dark` | `SliceRoot--theme-dark` |
+| Metric           |         Web original |            Lynx-for-Web |
+| ---------------- | -------------------: | ----------------------: |
+| Filter shell     |  `280x104 @ (20,62)` |    `264x102 @ (28,108)` |
+| Foreground       | `rgb(252, 252, 252)` |    `rgb(252, 252, 252)` |
+| Shell background |          transparent |             transparent |
+| Root theme       |          `html.dark` | `SliceRoot--theme-dark` |
 
 The `46px` vertical offset is the registered compact Lynx titlebar correction:
 Lynx-for-Web exercises the Native compact header allocation while Web original

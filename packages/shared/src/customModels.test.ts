@@ -1,10 +1,7 @@
 import { getModelOptions } from "./model";
 import { describe, expect, it } from "vitest";
 
-import {
-  MAX_CUSTOM_MODEL_LENGTH,
-  validateCustomModelInput,
-} from "./customModels";
+import { MAX_CUSTOM_MODEL_LENGTH, validateCustomModelInput } from "./customModels";
 
 describe("validateCustomModelInput", () => {
   it("rejects empty, built-in, oversized, and duplicate model slugs", () => {

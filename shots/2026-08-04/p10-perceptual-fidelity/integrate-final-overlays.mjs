@@ -19,10 +19,7 @@ function readJson(filePath) {
 
 function pngDimensions(filePath) {
   const buffer = fs.readFileSync(filePath);
-  if (
-    buffer.length < 24 ||
-    buffer.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a"
-  ) {
+  if (buffer.length < 24 || buffer.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a") {
     throw new Error(`${filePath} is not a PNG`);
   }
   return {
@@ -40,21 +37,14 @@ function interactionState(stateId) {
   throw new Error(`Unknown overlay state ${stateId}`);
 }
 
-function evidenceFor({
-  stateId,
-  client,
-  capture,
-  snapshotSha256,
-  theme,
-}) {
+function evidenceFor({ stateId, client, capture, snapshotSha256, theme }) {
   const relativeRoot = `final-overlays/${stateId}/${client}`;
   return {
     status: "retained",
     path: `${relativeRoot}/raw.png`,
     comparisonPath: `${relativeRoot}/comparison.png`,
     captureTier: client === "native" ? "native" : "browser",
-    buildSha256:
-      client === "native" ? capture.buildSha256 : BUILD_SHA256[client],
+    buildSha256: client === "native" ? capture.buildSha256 : BUILD_SHA256[client],
     snapshotSha256,
     image: pngDimensions(path.join(OVERLAY_ROOT, stateId, client, "raw.png")),
     geometry: `${relativeRoot}/geometry.json`,
@@ -100,9 +90,7 @@ function stateFor(stateId) {
   const width = stateId.endsWith("1440") ? 1440 : 1280;
   const height = width === 1440 ? 900 : 820;
   const theme = stateId.includes("-dark-") ? "dark" : "light";
-  const capture = readJson(
-    path.join(OVERLAY_ROOT, stateId, "native", "capture.json"),
-  );
+  const capture = readJson(path.join(OVERLAY_ROOT, stateId, "native", "capture.json"));
   const snapshotSha256 = capture.snapshotSha256;
   return {
     id: stateId,

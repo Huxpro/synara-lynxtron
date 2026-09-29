@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
-import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
-import './settings-section-elements.css';
+import { SettingsHeadingElement } from "./SettingsHeadingElement.lynx";
+import "./settings-section-elements.css";
 
 type ElementProps = {
   readonly className: string;
@@ -14,9 +14,7 @@ export function SettingsSectionElement({ className, children }: ElementProps) {
 
 export function SettingsSectionTitleElement({ className, children }: ElementProps) {
   return (
-    <SettingsHeadingElement
-      className={`SharedSettingsSectionTitle ${className}`}
-    >
+    <SettingsHeadingElement className={`SharedSettingsSectionTitle ${className}`}>
       {children}
     </SettingsHeadingElement>
   );

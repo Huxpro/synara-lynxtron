@@ -144,113 +144,112 @@ export default function TerminalViewportPane({
           <IndependentTabRow
             className="min-h-9 bg-[var(--color-background-surface)] px-1.5 py-1"
             owner="terminal-pane"
-            tabs={(
+            tabs={
               <>
-              {node.terminalIds.map((terminalId) => {
-                const visualIdentity = terminalVisualIdentityById.get(terminalId);
-                const isActiveTab = terminalId === activePaneTerminalId;
-                const tabTitle = visualIdentity?.title ?? "Terminal";
-                const closeTabLabel = `Close ${visualIdentity?.title ?? "terminal"}`;
+                {node.terminalIds.map((terminalId) => {
+                  const visualIdentity = terminalVisualIdentityById.get(terminalId);
+                  const isActiveTab = terminalId === activePaneTerminalId;
+                  const tabTitle = visualIdentity?.title ?? "Terminal";
+                  const closeTabLabel = `Close ${visualIdentity?.title ?? "terminal"}`;
 
-                return (
-                  <SurfaceTabChip
-                    key={terminalId}
-                    active={isActiveTab}
-                    className={cn(isActiveTab && !isFocusedPane && "opacity-70")}
-                    title={tabTitle}
-                    label={tabTitle}
-                    labelClassName="max-w-40"
-                    icon={
-                      <TerminalIdentityIcon
-                        className="size-3.5"
-                        iconKey={visualIdentity?.iconKey ?? "terminal"}
-                      />
-                    }
-                    leading={
-                      visualIdentity && visualIdentity.state !== "idle" ? (
-                        <TerminalActivityIndicator
-                          className="text-foreground/70"
-                          state={visualIdentity.state}
+                  return (
+                    <SurfaceTabChip
+                      key={terminalId}
+                      active={isActiveTab}
+                      className={cn(isActiveTab && !isFocusedPane && "opacity-70")}
+                      title={tabTitle}
+                      label={tabTitle}
+                      labelClassName="max-w-40"
+                      icon={
+                        <TerminalIdentityIcon
+                          className="size-3.5"
+                          iconKey={visualIdentity?.iconKey ?? "terminal"}
                         />
-                      ) : null
-                    }
-                    closeLabel={closeTabLabel}
-                    onSelect={() => onActiveTerminalChange(terminalId)}
-                    onClose={onCloseTerminal ? () => onCloseTerminal(terminalId) : undefined}
-                  />
-                );
-              })}
-
+                      }
+                      leading={
+                        visualIdentity && visualIdentity.state !== "idle" ? (
+                          <TerminalActivityIndicator
+                            className="text-foreground/70"
+                            state={visualIdentity.state}
+                          />
+                        ) : null
+                      }
+                      closeLabel={closeTabLabel}
+                      onSelect={() => onActiveTerminalChange(terminalId)}
+                      onClose={onCloseTerminal ? () => onCloseTerminal(terminalId) : undefined}
+                    />
+                  );
+                })}
               </>
-            )}
-            actions={(
+            }
+            actions={
               <>
-              {onNewTerminalTab ? (
-                <PaneActionButton
-                  label="New terminal tab"
-                  onClick={() => onNewTerminalTab(activePaneTerminalId)}
-                >
-                  <Plus className="size-3.5" />
-                </PaneActionButton>
-              ) : null}
-              {canMoveActiveTerminalToGroup ? (
-                <PaneActionButton
-                  label="Move to its own terminal tab"
-                  onClick={moveActiveTerminalToGroup}
-                >
-                  <TerminalSquareIcon className="size-3.5" />
-                </PaneActionButton>
-              ) : null}
-              {onSplitTerminalRight ? (
-                <PaneActionButton
-                  label="Split right"
-                  onClick={() => onSplitTerminalRight(activePaneTerminalId)}
-                >
-                  <SquareSplitHorizontal className="size-3.5" />
-                </PaneActionButton>
-              ) : null}
-              {onSplitTerminalDown ? (
-                <PaneActionButton
-                  label="Split down"
-                  onClick={() => onSplitTerminalDown(activePaneTerminalId)}
-                >
-                  <SquareSplitVertical className="size-3.5" />
-                </PaneActionButton>
-              ) : null}
-              {onTogglePresentationMode ? (
-                <PaneActionButton
-                  label={
-                    presentationMode === "workspace"
-                      ? "Collapse terminal into chat drawer"
-                      : "Expand terminal into workspace"
-                  }
-                  onClick={onTogglePresentationMode}
-                >
-                  {presentationMode === "workspace" ? (
-                    <Minimize2 className="size-3.5" />
-                  ) : (
-                    <Maximize2 className="size-3.5" />
-                  )}
-                </PaneActionButton>
-              ) : null}
-              {onTogglePanel ? (
-                <PaneActionButton
-                  label={isPanelOpen ? "Collapse side panel" : "Open side panel"}
-                  onClick={onTogglePanel}
-                >
-                  <PanelRightCloseIcon />
-                </PaneActionButton>
-              ) : null}
-              {onCloseTerminal ? (
-                <PaneActionButton
-                  label="Close active terminal tab"
-                  onClick={() => onCloseTerminal(activePaneTerminalId)}
-                >
-                  <Trash2 className="size-3.5" />
-                </PaneActionButton>
-              ) : null}
+                {onNewTerminalTab ? (
+                  <PaneActionButton
+                    label="New terminal tab"
+                    onClick={() => onNewTerminalTab(activePaneTerminalId)}
+                  >
+                    <Plus className="size-3.5" />
+                  </PaneActionButton>
+                ) : null}
+                {canMoveActiveTerminalToGroup ? (
+                  <PaneActionButton
+                    label="Move to its own terminal tab"
+                    onClick={moveActiveTerminalToGroup}
+                  >
+                    <TerminalSquareIcon className="size-3.5" />
+                  </PaneActionButton>
+                ) : null}
+                {onSplitTerminalRight ? (
+                  <PaneActionButton
+                    label="Split right"
+                    onClick={() => onSplitTerminalRight(activePaneTerminalId)}
+                  >
+                    <SquareSplitHorizontal className="size-3.5" />
+                  </PaneActionButton>
+                ) : null}
+                {onSplitTerminalDown ? (
+                  <PaneActionButton
+                    label="Split down"
+                    onClick={() => onSplitTerminalDown(activePaneTerminalId)}
+                  >
+                    <SquareSplitVertical className="size-3.5" />
+                  </PaneActionButton>
+                ) : null}
+                {onTogglePresentationMode ? (
+                  <PaneActionButton
+                    label={
+                      presentationMode === "workspace"
+                        ? "Collapse terminal into chat drawer"
+                        : "Expand terminal into workspace"
+                    }
+                    onClick={onTogglePresentationMode}
+                  >
+                    {presentationMode === "workspace" ? (
+                      <Minimize2 className="size-3.5" />
+                    ) : (
+                      <Maximize2 className="size-3.5" />
+                    )}
+                  </PaneActionButton>
+                ) : null}
+                {onTogglePanel ? (
+                  <PaneActionButton
+                    label={isPanelOpen ? "Collapse side panel" : "Open side panel"}
+                    onClick={onTogglePanel}
+                  >
+                    <PanelRightCloseIcon />
+                  </PaneActionButton>
+                ) : null}
+                {onCloseTerminal ? (
+                  <PaneActionButton
+                    label="Close active terminal tab"
+                    onClick={() => onCloseTerminal(activePaneTerminalId)}
+                  >
+                    <Trash2 className="size-3.5" />
+                  </PaneActionButton>
+                ) : null}
               </>
-            )}
+            }
           />
 
           <div className="relative min-h-0 min-w-0 flex-1 bg-[var(--color-background-surface)]">

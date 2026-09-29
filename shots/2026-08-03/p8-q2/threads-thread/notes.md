@@ -53,15 +53,15 @@ Retained cells:
 
 Like-for-like results at both sizes and themes:
 
-| Anchor | Web original | Lynx-for-Web | Delta |
-|---|---:|---:|---:|
-| Hero heading X | centered | `+8px` | pass |
-| Hero heading Y | authority | `+7.75px` | pass |
-| Hero size | `320.36×34.5` | `320.36×35` | pass |
-| Hero font | `30px` | `30px` | pass |
-| Project tray X | authority | `+8px` | pass |
-| Project tray Y | authority | `+7.25px` | pass |
-| Project tray size | `736×58` | `736×58` | exact |
+| Anchor            |  Web original | Lynx-for-Web | Delta |
+| ----------------- | ------------: | -----------: | ----: |
+| Hero heading X    |      centered |       `+8px` |  pass |
+| Hero heading Y    |     authority |    `+7.75px` |  pass |
+| Hero size         | `320.36×34.5` |  `320.36×35` |  pass |
+| Hero font         |        `30px` |       `30px` |  pass |
+| Project tray X    |     authority |       `+8px` |  pass |
+| Project tray Y    |     authority |    `+7.25px` |  pass |
+| Project tray size |      `736×58` |     `736×58` | exact |
 
 The sidebar and header retain the documented Lynx host inset. It does not
 change the shared 736px landing rail or typography.

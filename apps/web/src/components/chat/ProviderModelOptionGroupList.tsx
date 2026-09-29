@@ -4,9 +4,7 @@
 
 import type { ProviderKind } from "@synara/contracts";
 
-import type {
-  ProviderModelOptionGroup,
-} from "../../providerModelOptions";
+import type { ProviderModelOptionGroup } from "../../providerModelOptions";
 import {
   ProviderModelOptionGroupListComposition,
   type FavoriteModelProvider,

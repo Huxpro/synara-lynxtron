@@ -40,13 +40,13 @@ separate busy/error states. The shared `LxButton--xs` owner now matches the Web
 
 The Web and Lynx-for-Web content anchors are exact:
 
-| Anchor | Web | Lynx-for-Web |
-| --- | --- | --- |
-| Title | `x=469 y=161 w=478.21875 h=18`, `12/18/500` | exact |
-| Description | `x=469 y=181 w=478.21875 h=18`, `12/18/400` | exact |
-| Restore | `x=957.21875 y=168 w=53.890625 h=24`, `10/15/500` | exact |
-| Delete | `x=1019.109375 y=168 w=47.890625 h=24`, `10/15/500` | exact |
-| Action gap | `8px` | exact |
+| Anchor      | Web                                                 | Lynx-for-Web |
+| ----------- | --------------------------------------------------- | ------------ |
+| Title       | `x=469 y=161 w=478.21875 h=18`, `12/18/500`         | exact        |
+| Description | `x=469 y=181 w=478.21875 h=18`, `12/18/400`         | exact        |
+| Restore     | `x=957.21875 y=168 w=53.890625 h=24`, `10/15/500`   | exact        |
+| Delete      | `x=1019.109375 y=168 w=47.890625 h=24`, `10/15/500` | exact        |
+| Action gap  | `8px`                                               | exact        |
 
 Web reports the inner row content at `598x38`; Lynx reports the bordered row at
 `622x58`. Their shared content starts at the same `x=469/y=161` after the

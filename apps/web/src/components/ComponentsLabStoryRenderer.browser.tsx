@@ -60,9 +60,7 @@ describe("Components Lab overlay truthfulness", () => {
     try {
       const item = page.getByRole("menuitemcheckbox", { name: "Show terminal" });
       await expect.element(item).toHaveAttribute("data-checked");
-      expect(item.element().className).toContain(
-        "bg-[var(--color-background-button-secondary)]",
-      );
+      expect(item.element().className).toContain("bg-[var(--color-background-button-secondary)]");
     } finally {
       await screen.unmount();
     }

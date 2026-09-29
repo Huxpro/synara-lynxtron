@@ -2,12 +2,7 @@
   "client": "lynx",
   "stateId": "skill-menu-filtered",
   "query": "review-agent",
-  "items": [
-    "review-agent",
-    "review-bugbot",
-    "review-security",
-    "review"
-  ],
+  "items": ["review-agent", "review-bugbot", "review-security", "review"],
   "roles": {
     "surface": {
       "font": {

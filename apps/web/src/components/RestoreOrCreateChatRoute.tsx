@@ -79,10 +79,5 @@ export function RestoreOrCreateChatRoute({
     waitForFallbackDelay: waitForEmptyRouteRestoreFallbackDelay,
   });
 
-  return (
-    <SplashScreen
-      errorMessage={errorMessage}
-      onRetry={retry}
-    />
-  );
+  return <SplashScreen errorMessage={errorMessage} onRetry={retry} />;
 }

@@ -1,16 +1,8 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  type ReactNode,
-} from '@lynx-js/react';
+import { createContext, useContext, useState, type ReactNode } from "@lynx-js/react";
 
-import { cx, renderSlot } from './shared.lynx';
-import {
-  disclosureContentClassName,
-  useLynxDisclosurePresence,
-} from '../../platform/motion.lynx';
-import './primitives.css';
+import { cx, renderSlot } from "./shared.lynx";
+import { disclosureContentClassName, useLynxDisclosurePresence } from "../../platform/motion.lynx";
+import "./primitives.css";
 
 interface CollapsibleContextValue {
   readonly open: boolean;
@@ -33,7 +25,7 @@ export function Collapsible(props: {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(props.defaultOpen ?? false);
   const open = props.open ?? uncontrolledOpen;
   const toggle = () => {
-    'background only';
+    "background only";
     if (props.disabled) return;
     const next = !open;
     if (props.open === undefined) setUncontrolledOpen(next);
@@ -41,7 +33,7 @@ export function Collapsible(props: {
   };
   return (
     <CollapsibleContext.Provider value={{ open, toggle }}>
-      <view className={cx('LxCollapsible', props.className)}>{props.children}</view>
+      <view className={cx("LxCollapsible", props.className)}>{props.children}</view>
     </CollapsibleContext.Provider>
   );
 }
@@ -51,12 +43,12 @@ export function CollapsibleTrigger(props: {
   render?: ReactNode;
   className?: string;
   disabled?: boolean;
-  type?: 'button' | 'submit' | 'reset';
+  type?: "button" | "submit" | "reset";
 }) {
   const collapsible = useContext(CollapsibleContext);
   return (
     <view
-      className={cx('LxCollapsibleTrigger', props.className)}
+      className={cx("LxCollapsibleTrigger", props.className)}
       bindtap={props.disabled ? undefined : collapsible.toggle}
     >
       {renderSlot(props.render, props.children)}
@@ -77,7 +69,7 @@ export function CollapsiblePanel(props: {
       aria-hidden={!collapsible.open}
       className={disclosureContentClassName(
         collapsible.open,
-        cx('LxCollapsiblePanel', props.className)
+        cx("LxCollapsiblePanel", props.className),
       )}
     >
       {props.children}

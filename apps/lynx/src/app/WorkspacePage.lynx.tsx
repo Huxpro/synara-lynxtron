@@ -1,42 +1,36 @@
-import { useEffect, useInitData, useState } from '@lynx-js/react';
-import { useQuery } from '@tanstack/react-query';
-import {
-  useWorkspaceStore,
-  workspaceThreadId,
-} from '@synara-web/workspaceStore';
+import { useEffect, useInitData, useState } from "@lynx-js/react";
+import { useQuery } from "@tanstack/react-query";
+import { useWorkspaceStore, workspaceThreadId } from "@synara-web/workspaceStore";
 import {
   WORKSPACE_LAYOUT_PRESETS,
   type WorkspaceLayoutPresetId,
-} from '@synara-web/workspaceTerminalLayoutPresets';
-import type { SettingsAppearanceValues } from '@synara-web/components/settings/SettingsAppearanceComposition.logic';
+} from "@synara-web/workspaceTerminalLayoutPresets";
+import type { SettingsAppearanceValues } from "@synara-web/components/settings/SettingsAppearanceComposition.logic";
 
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input.lynx';
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input.lynx";
 import {
   Dialog,
   DialogDescription,
   DialogPanel,
   DialogPopup,
   DialogTitle,
-} from '../components/ui/dialog.lynx';
-import { fetchPluginLibraryServerConfig } from './queries';
-import { ThreadTerminal } from './ThreadTerminal.lynx';
-import { deleteWorkspaceWithTerminalCleanup } from './workspaceDeletion.logic';
-import { platformTerminal } from '../platform/terminal';
-import { workspaceTerminalIdsForPreset } from './workspaceLayout.logic';
-import { PlusIcon, SettingsIcon, Trash2 } from '../lib/icons.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
-import './workspace-page.css';
+} from "../components/ui/dialog.lynx";
+import { fetchPluginLibraryServerConfig } from "./queries";
+import { ThreadTerminal } from "./ThreadTerminal.lynx";
+import { deleteWorkspaceWithTerminalCleanup } from "./workspaceDeletion.logic";
+import { platformTerminal } from "../platform/terminal";
+import { workspaceTerminalIdsForPreset } from "./workspaceLayout.logic";
+import { PlusIcon, SettingsIcon, Trash2 } from "../lib/icons.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
+import "./workspace-page.css";
 
 export function WorkspacePage({
   appearance,
   workspaceId,
   navigate,
 }: {
-  readonly appearance: Pick<
-    SettingsAppearanceValues,
-    'terminalFontFamily' | 'terminalFontSizePx'
-  >;
+  readonly appearance: Pick<SettingsAppearanceValues, "terminalFontFamily" | "terminalFontSizePx">;
   readonly workspaceId: string;
   readonly navigate: (to: string) => void;
 }) {
@@ -44,25 +38,19 @@ export function WorkspacePage({
   const workspacePages = useWorkspaceStore((state) => state.workspacePages);
   const workspace = workspacePages.find((entry) => entry.id === workspaceId);
   const fallbackWorkspaceId = workspacePages[0]?.id ?? null;
-  const ensureWorkspacePage = useWorkspaceStore(
-    (state) => state.ensureWorkspacePage
-  );
+  const ensureWorkspacePage = useWorkspaceStore((state) => state.ensureWorkspacePage);
   const renameWorkspace = useWorkspaceStore((state) => state.renameWorkspace);
   const deleteWorkspace = useWorkspaceStore((state) => state.deleteWorkspace);
-  const setWorkspaceLayoutPreset = useWorkspaceStore(
-    (state) => state.setWorkspaceLayoutPreset
-  );
+  const setWorkspaceLayoutPreset = useWorkspaceStore((state) => state.setWorkspaceLayoutPreset);
   const [renaming, setRenaming] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(true);
   const initData = useInitData() as {
     readonly initialWorkspaceSettingsOpen?: unknown;
   };
-  const [settingsOpen, setSettingsOpen] = useState(
-    initData.initialWorkspaceSettingsOpen === true
-  );
-  const [draftTitle, setDraftTitle] = useState(workspace?.title ?? 'Workspace');
+  const [settingsOpen, setSettingsOpen] = useState(initData.initialWorkspaceSettingsOpen === true);
+  const [draftTitle, setDraftTitle] = useState(workspace?.title ?? "Workspace");
   const { data: serverConfig } = useQuery({
-    queryKey: ['server-config'],
+    queryKey: ["server-config"],
     queryFn: fetchPluginLibraryServerConfig,
     staleTime: 30_000,
   });
@@ -74,13 +62,7 @@ export function WorkspacePage({
       return;
     }
     ensureWorkspacePage(workspaceId);
-  }, [
-    ensureWorkspacePage,
-    fallbackWorkspaceId,
-    navigate,
-    workspace,
-    workspaceId,
-  ]);
+  }, [ensureWorkspacePage, fallbackWorkspaceId, navigate, workspace, workspaceId]);
 
   useEffect(() => {
     if (workspace && !renaming) setDraftTitle(workspace.title);
@@ -95,13 +77,13 @@ export function WorkspacePage({
   }
 
   const commitRename = () => {
-    'background only';
+    "background only";
     renameWorkspace(workspace.id, draftTitle);
     setRenaming(false);
   };
   const terminalIds = workspaceTerminalIdsForPreset(workspace.layoutPresetId);
   const removeWorkspace = async () => {
-    'background only';
+    "background only";
     await deleteWorkspaceWithTerminalCleanup({
       workspaceId: workspace.id,
       terminalIds,
@@ -110,7 +92,7 @@ export function WorkspacePage({
       writeTerminalExit: platformTerminal.write,
     });
     const nextWorkspaceId = useWorkspaceStore.getState().workspacePages[0]?.id;
-    navigate(nextWorkspaceId ? `/workspace/${nextWorkspaceId}` : '/');
+    navigate(nextWorkspaceId ? `/workspace/${nextWorkspaceId}` : "/");
   };
 
   return (
@@ -151,9 +133,7 @@ export function WorkspacePage({
               color={svgColors.foreground80}
               size={12}
             />
-            <text className="LxButton__text WorkspacePageHeaderActionText">
-              Terminal
-            </text>
+            <text className="LxButton__text WorkspacePageHeaderActionText">Terminal</text>
           </Button>
           <Button
             className="WorkspacePageHeaderAction"
@@ -167,9 +147,7 @@ export function WorkspacePage({
               color={svgColors.foreground80}
               size={12}
             />
-            <text className="LxButton__text WorkspacePageHeaderActionText">
-              Settings
-            </text>
+            <text className="LxButton__text WorkspacePageHeaderActionText">Settings</text>
           </Button>
           <Button
             className="WorkspacePageHeaderAction"
@@ -183,9 +161,7 @@ export function WorkspacePage({
               color={svgColors.foreground80}
               size={12}
             />
-            <text className="LxButton__text WorkspacePageHeaderActionText">
-              Delete workspace
-            </text>
+            <text className="LxButton__text WorkspacePageHeaderActionText">Delete workspace</text>
           </Button>
         </view>
       </view>
@@ -199,33 +175,24 @@ export function WorkspacePage({
             <view className="WorkspaceSettingsIntro">
               <text className="WorkspaceSettingsLabel">Layout preset</text>
               <text className="WorkspaceSettingsCopy">
-                Changes apply immediately. Extra terminals stay available as
-                tabs.
+                Changes apply immediately. Extra terminals stay available as tabs.
               </text>
             </view>
             <view className="WorkspacePageLayoutChoices">
-            {WORKSPACE_LAYOUT_PRESETS.map((preset) => (
-              <Button
-                key={preset.id}
-                className="WorkspaceSettingsPreset"
-                variant={
-                  workspace.layoutPresetId === preset.id
-                    ? 'secondary'
-                    : 'ghost'
-                }
-                size="xs"
-                onClick={() =>
-                  setWorkspaceLayoutPreset(
-                    workspace.id,
-                    preset.id as WorkspaceLayoutPresetId
-                  )
-                }
-              >
-                {preset.title} · {preset.slotCount}{' '}
-                {preset.slotCount === 1 ? 'pane' : 'panes'}
-              </Button>
-            ))}
-          </view>
+              {WORKSPACE_LAYOUT_PRESETS.map((preset) => (
+                <Button
+                  key={preset.id}
+                  className="WorkspaceSettingsPreset"
+                  variant={workspace.layoutPresetId === preset.id ? "secondary" : "ghost"}
+                  size="xs"
+                  onClick={() =>
+                    setWorkspaceLayoutPreset(workspace.id, preset.id as WorkspaceLayoutPresetId)
+                  }
+                >
+                  {preset.title} · {preset.slotCount} {preset.slotCount === 1 ? "pane" : "panes"}
+                </Button>
+              ))}
+            </view>
           </DialogPanel>
         </DialogPopup>
       </Dialog>
@@ -237,7 +204,7 @@ export function WorkspacePage({
             <view
               key={terminalId}
               className={`WorkspaceTerminalPane${
-                terminalIndex === 0 ? ' WorkspaceTerminalPane--primary' : ''
+                terminalIndex === 0 ? " WorkspaceTerminalPane--primary" : ""
               }`}
             >
               <ThreadTerminal
@@ -261,17 +228,11 @@ export function WorkspacePage({
         </view>
       ) : serverConfig?.homeDir ? (
         <view className="WorkspacePageState">
-          <text className="WorkspacePageStateTitle">
-            This workspace has no open terminals
-          </text>
+          <text className="WorkspacePageStateTitle">This workspace has no open terminals</text>
           <text className="WorkspacePageStateCopy">
-            Open a fresh terminal rooted in your home directory and start from
-            there.
+            Open a fresh terminal rooted in your home directory and start from there.
           </text>
-          <Button
-            className="WorkspacePageStateAction"
-            onClick={() => setTerminalOpen(true)}
-          >
+          <Button className="WorkspacePageStateAction" onClick={() => setTerminalOpen(true)}>
             New terminal
           </Button>
         </view>

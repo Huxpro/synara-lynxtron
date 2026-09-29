@@ -9,11 +9,7 @@ describe("useDockPaneRuntimeActivation", () => {
       "utf8",
     );
 
-    expect(source).toContain(
-      "}, [activePaneKey, activePaneKind, hydratedPaneKey]);",
-    );
-    expect(source).not.toContain(
-      "}, [activePaneKey, hydratedPaneKey, input.activePane]);",
-    );
+    expect(source).toContain("}, [activePaneKey, activePaneKind, hydratedPaneKey]);");
+    expect(source).not.toContain("}, [activePaneKey, hydratedPaneKey, input.activePane]);");
   });
 });

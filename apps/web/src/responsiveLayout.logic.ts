@@ -62,9 +62,7 @@ export function viewportLayoutClassName(layout: ViewportLayout): string {
 
 export function viewportBreakpointClassNames(layout: ViewportLayout): string {
   if (layout.width <= 0) return "";
-  return (Object.entries(VIEWPORT_BREAKPOINTS) as Array<
-    [ViewportBreakpoint, number]
-  >)
+  return (Object.entries(VIEWPORT_BREAKPOINTS) as Array<[ViewportBreakpoint, number]>)
     .filter(([, minimumWidth]) => layout.width >= minimumWidth)
     .sort((left, right) => left[1] - right[1])
     .map(([breakpoint]) => `SliceRoot--viewport-${breakpoint}-up`)
@@ -77,9 +75,7 @@ export function viewportHeightClassNames(layout: ViewportLayout): string {
     layout.height <= VIEWPORT_HEIGHT_BREAKPOINTS.constrained
       ? "SliceRoot--viewport-constrained-height"
       : "",
-    layout.height < VIEWPORT_HEIGHT_BREAKPOINTS.short
-      ? "SliceRoot--viewport-short-height"
-      : "",
+    layout.height < VIEWPORT_HEIGHT_BREAKPOINTS.short ? "SliceRoot--viewport-short-height" : "",
   ]
     .filter(Boolean)
     .join(" ");

@@ -1,10 +1,10 @@
-import { useEffect, useRef, type ReactNode } from '@lynx-js/react';
-import type { InputRef } from '@lynx-js/lynx-ui';
+import { useEffect, useRef, type ReactNode } from "@lynx-js/react";
+import type { InputRef } from "@lynx-js/lynx-ui";
 
-import { ArrowLeftIcon, SearchIcon } from '../lib/icons.lynx';
-import { Input } from '../components/ui/input';
-import './settings-sidebar-chrome-composition-elements.css';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
+import { ArrowLeftIcon, SearchIcon } from "../lib/icons.lynx";
+import { Input } from "../components/ui/input";
+import "./settings-sidebar-chrome-composition-elements.css";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
 
 type ChildrenProps = { readonly children?: ReactNode };
 
@@ -17,19 +17,15 @@ export function SettingsSidebarBackRegionElement(props: ChildrenProps) {
 }
 
 export function SettingsSidebarBackButtonElement(
-  props: ChildrenProps & { readonly onActivate: () => void }
+  props: ChildrenProps & { readonly onActivate: () => void },
 ) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedSettingsSidebarBackButton',
-    accessibleLabel: 'Back to app',
+    baseClassName: "SharedSettingsSidebarBackButton",
+    accessibleLabel: "Back to app",
     onActivate: props.onActivate,
   });
   return (
-    <view
-      className={interaction.className}
-      aria-label="Back to app"
-      {...interaction.eventProps}
-    >
+    <view className={interaction.className} aria-label="Back to app" {...interaction.eventProps}>
       {props.children}
     </view>
   );
@@ -62,7 +58,7 @@ export function SettingsSidebarSearchElement(props: {
   const inputRef = useRef<InputRef>(null);
   useEffect(() => {
     if (props.value.length === 0) {
-      void inputRef.current?.setValue('').catch(() => undefined);
+      void inputRef.current?.setValue("").catch(() => undefined);
     }
   }, [props.value]);
   return (
@@ -82,7 +78,7 @@ export function SettingsSidebarSearchElement(props: {
         onChange={(event) => props.onValueChange?.(event.target.value)}
         onConfirm={props.onSubmit}
         onKeyDown={(event) => {
-          if (event.key === 'Escape') {
+          if (event.key === "Escape") {
             event.stopPropagation?.();
             props.onEscape?.();
           }
@@ -107,9 +103,7 @@ export function SettingsSidebarSearchUnavailableElement(props: ChildrenProps) {
       <view className="SharedSettingsSidebarSearchIcon">
         <SearchIcon size={14} color="var(--muted-foreground)" />
       </view>
-      <text className="SharedSettingsSidebarSearchUnavailableText">
-        {props.children}
-      </text>
+      <text className="SharedSettingsSidebarSearchUnavailableText">{props.children}</text>
     </view>
   );
 }

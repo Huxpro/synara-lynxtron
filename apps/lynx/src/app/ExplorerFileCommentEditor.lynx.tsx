@@ -1,39 +1,34 @@
-import { useState } from '@lynx-js/react';
+import { useState } from "@lynx-js/react";
 
 import {
   FILE_COMMENT_TEXT_MAX_CHARS,
   formatFileCommentRange,
   normalizeFileCommentText,
-} from '@synara-web/lib/fileComments';
-import { SynaraLogo } from '~/components/SynaraLogo';
-import { Button } from '../components/ui/button';
-import { Textarea } from '../components/ui/textarea.lynx';
+} from "@synara-web/lib/fileComments";
+import { SynaraLogo } from "~/components/SynaraLogo";
+import { Button } from "../components/ui/button";
+import { Textarea } from "../components/ui/textarea.lynx";
 
 export function ExplorerFileCommentEditor(props: {
   readonly lineNumber: number;
   readonly onCancel: () => void;
   readonly onSubmit: (text: string) => void;
 }) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const normalized = normalizeFileCommentText(value);
-  const canSubmit =
-    normalized.length > 0 &&
-    normalized.length <= FILE_COMMENT_TEXT_MAX_CHARS;
+  const canSubmit = normalized.length > 0 && normalized.length <= FILE_COMMENT_TEXT_MAX_CHARS;
 
   return (
     <view className="ExplorerDockCommentEditor">
       <view className="ExplorerDockCommentHeader">
         <view className="ExplorerDockCommentIdentity">
           <view className="ExplorerDockCommentBadge">
-            <SynaraLogo
-              className="ExplorerDockCommentBadgeMark"
-              aria-label="Synara"
-            />
+            <SynaraLogo className="ExplorerDockCommentBadgeMark" aria-label="Synara" />
           </view>
           <text className="ExplorerDockCommentTitle">Local comment</text>
         </view>
         <text className="ExplorerDockCommentTarget">
-          Comment on{' '}
+          Comment on{" "}
           {formatFileCommentRange({
             startLine: props.lineNumber,
             endLine: props.lineNumber,

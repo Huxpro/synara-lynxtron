@@ -102,13 +102,10 @@ export function summarizeTaskCompletionAssistantMessage(input: {
   }>;
 }): string | null {
   const latestTurnId = input.latestTurn?.turnId ?? null;
-  const finalAssistantMessageId =
-    input.latestTurn?.assistantMessageId ?? null;
+  const finalAssistantMessageId = input.latestTurn?.assistantMessageId ?? null;
 
   if (finalAssistantMessageId) {
-    const finalMessage = input.messages.find(
-      (message) => message.id === finalAssistantMessageId,
-    );
+    const finalMessage = input.messages.find((message) => message.id === finalAssistantMessageId);
     if (finalMessage) {
       const summary = summarizeAssistantText(finalMessage.text);
       if (summary) {

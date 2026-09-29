@@ -1,20 +1,20 @@
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, rs } from "@rstest/core";
 
-import { deleteWorkspaceWithTerminalCleanup } from './workspaceDeletion.logic';
+import { deleteWorkspaceWithTerminalCleanup } from "./workspaceDeletion.logic";
 
-describe('deleteWorkspaceWithTerminalCleanup', () => {
-  it('closes and clears the synthetic workspace terminal before deletion', async () => {
+describe("deleteWorkspaceWithTerminalCleanup", () => {
+  it("closes and clears the synthetic workspace terminal before deletion", async () => {
     const calls: string[] = [];
     const closeTerminal = rs.fn(async () => {
-      calls.push('close');
+      calls.push("close");
     });
     const deleteWorkspace = rs.fn(() => {
-      calls.push('delete');
+      calls.push("delete");
     });
 
     await deleteWorkspaceWithTerminalCleanup({
-      workspaceId: 'workspace-1',
-      terminalIds: ['default', 'workspace-2'],
+      workspaceId: "workspace-1",
+      terminalIds: ["default", "workspace-2"],
       closeTerminal,
       deleteWorkspace,
       writeTerminalExit: async () => undefined,
@@ -22,37 +22,37 @@ describe('deleteWorkspaceWithTerminalCleanup', () => {
 
     expect(closeTerminal).toHaveBeenCalledTimes(2);
     expect(closeTerminal).toHaveBeenCalledWith({
-      threadId: 'workspace:workspace-1',
-      terminalId: 'default',
+      threadId: "workspace:workspace-1",
+      terminalId: "default",
       deleteHistory: true,
     });
     expect(closeTerminal).toHaveBeenCalledWith({
-      threadId: 'workspace:workspace-1',
-      terminalId: 'workspace-2',
+      threadId: "workspace:workspace-1",
+      terminalId: "workspace-2",
       deleteHistory: true,
     });
-    expect(calls).toEqual(['close', 'close', 'delete']);
+    expect(calls).toEqual(["close", "close", "delete"]);
   });
 
-  it('still deletes the page when terminal cleanup is already unavailable', async () => {
+  it("still deletes the page when terminal cleanup is already unavailable", async () => {
     const deleteWorkspace = rs.fn();
     const writeTerminalExit = rs.fn(async () => undefined);
 
     await deleteWorkspaceWithTerminalCleanup({
-      workspaceId: 'workspace-1',
-      terminalIds: ['default'],
+      workspaceId: "workspace-1",
+      terminalIds: ["default"],
       closeTerminal: async () => {
-        throw new Error('terminal already exited');
+        throw new Error("terminal already exited");
       },
       deleteWorkspace,
       writeTerminalExit,
     });
 
-    expect(deleteWorkspace).toHaveBeenCalledWith('workspace-1');
+    expect(deleteWorkspace).toHaveBeenCalledWith("workspace-1");
     expect(writeTerminalExit).toHaveBeenCalledWith({
-      threadId: 'workspace:workspace-1',
-      terminalId: 'default',
-      data: 'exit\r',
+      threadId: "workspace:workspace-1",
+      terminalId: "default",
+      data: "exit\r",
     });
   });
 });

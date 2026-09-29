@@ -10,6 +10,16 @@ export function EditorRailAddMenuTerminalIconElement() {
   return <TerminalIcon />;
 }
 
-export function EditorRailAddMenuItemElement(props: { readonly disabled?: boolean; readonly icon: ReactNode; readonly label: string; readonly onActivate: () => void }) {
-  return <MenuItem disabled={props.disabled} onClick={props.onActivate}>{props.icon}<span>{props.label}</span></MenuItem>;
+export function EditorRailAddMenuItemElement(props: {
+  readonly disabled?: boolean;
+  readonly icon: ReactNode;
+  readonly label: string;
+  readonly onActivate: () => void;
+}) {
+  return (
+    <MenuItem disabled={props.disabled} onClick={props.onActivate}>
+      {props.icon}
+      <span>{props.label}</span>
+    </MenuItem>
+  );
 }

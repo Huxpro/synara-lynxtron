@@ -42,8 +42,8 @@ describe("resolveMessageTrailPaneEdgeOffset", () => {
   });
 });
 
-describe('resolveVisibleRowRangeFromAttachedCells', () => {
-  it('filters attached buffer cells to the actual viewport', () => {
+describe("resolveVisibleRowRangeFromAttachedCells", () => {
+  it("filters attached buffer cells to the actual viewport", () => {
     expect(
       resolveVisibleRowRangeFromAttachedCells({
         listHeight: 400,
@@ -53,16 +53,16 @@ describe('resolveVisibleRowRangeFromAttachedCells', () => {
           { index: 4, top: 40, bottom: 300 },
           { index: 5, top: 400, bottom: 480 },
         ],
-      })
+      }),
     ).toEqual({ top: 3, bottom: 4 });
   });
 
-  it('rejects missing geometry without guessing', () => {
+  it("rejects missing geometry without guessing", () => {
     expect(
       resolveVisibleRowRangeFromAttachedCells({
         listHeight: undefined,
         attachedCells: [{ index: 1, top: 0, bottom: 20 }],
-      })
+      }),
     ).toBeNull();
   });
 });

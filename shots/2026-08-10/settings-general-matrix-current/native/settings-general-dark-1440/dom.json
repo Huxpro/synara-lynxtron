@@ -24,10 +24,7 @@
             "childNodeCount": 2,
             "children": [
               {
-                "attributes": [
-                  "class",
-                  "TransportStatusNotice TransportStatusNotice--offline"
-                ],
+                "attributes": ["class", "TransportStatusNotice TransportStatusNotice--offline"],
                 "backendNodeId": 166,
                 "childNodeCount": 2,
                 "children": [
@@ -46,10 +43,7 @@
                     "childNodeCount": 1,
                     "children": [
                       {
-                        "attributes": [
-                          "text",
-                          "Synara is offline."
-                        ],
+                        "attributes": ["text", "Synara is offline."],
                         "backendNodeId": 169,
                         "childNodeCount": 0,
                         "children": [],
@@ -102,18 +96,12 @@
                         "childNodeCount": 1,
                         "children": [
                           {
-                            "attributes": [
-                              "class",
-                              "LxButton__text"
-                            ],
+                            "attributes": ["class", "LxButton__text"],
                             "backendNodeId": 394,
                             "childNodeCount": 1,
                             "children": [
                               {
-                                "attributes": [
-                                  "text",
-                                  "Retry"
-                                ],
+                                "attributes": ["text", "Retry"],
                                 "backendNodeId": 395,
                                 "childNodeCount": 0,
                                 "children": [],
@@ -157,10 +145,7 @@
                 "parentId": 13
               },
               {
-                "attributes": [
-                  "class",
-                  "SharedAppShellFrame"
-                ],
+                "attributes": ["class", "SharedAppShellFrame"],
                 "backendNodeId": 16,
                 "childNodeCount": 2,
                 "children": [
@@ -179,20 +164,12 @@
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "SidebarDisclosureInner",
-                          "style",
-                          "width:256px;"
-                        ],
+                        "attributes": ["class", "SidebarDisclosureInner", "style", "width:256px;"],
                         "backendNodeId": 18,
                         "childNodeCount": 1,
                         "children": [
                           {
-                            "attributes": [
-                              "class",
-                              "SettingsSidebar"
-                            ],
+                            "attributes": ["class", "SettingsSidebar"],
                             "backendNodeId": 20,
                             "childNodeCount": 2,
                             "children": [
@@ -447,18 +424,12 @@
                                 "childNodeCount": 1,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsSidebarBodyInner"
-                                    ],
+                                    "attributes": ["class", "SettingsSidebarBodyInner"],
                                     "backendNodeId": 23,
                                     "childNodeCount": 2,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSettingsSidebarChrome"
-                                        ],
+                                        "attributes": ["class", "SharedSettingsSidebarChrome"],
                                         "backendNodeId": 34,
                                         "childNodeCount": 2,
                                         "children": [
@@ -554,10 +525,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "Back to app"
-                                                        ],
+                                                        "attributes": ["text", "Back to app"],
                                                         "backendNodeId": 40,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -746,10 +714,7 @@
                                         "parentId": 23
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSettingsNavigation"
-                                        ],
+                                        "attributes": ["class", "SharedSettingsNavigation"],
                                         "backendNodeId": 48,
                                         "childNodeCount": 2,
                                         "children": [
@@ -770,10 +735,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "App"
-                                                    ],
+                                                    "attributes": ["text", "App"],
                                                     "backendNodeId": 51,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -896,10 +858,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "General"
-                                                                ],
+                                                                "attributes": ["text", "General"],
                                                                 "backendNodeId": 58,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -1026,10 +985,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Profile"
-                                                                ],
+                                                                "attributes": ["text", "Profile"],
                                                                 "backendNodeId": 64,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -1416,10 +1372,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Behavior"
-                                                                ],
+                                                                "attributes": ["text", "Behavior"],
                                                                 "backendNodeId": 82,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -1546,10 +1499,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "AppSnap"
-                                                                ],
+                                                                "attributes": ["text", "AppSnap"],
                                                                 "backendNodeId": 88,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -1806,10 +1756,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Worktrees"
-                                                                ],
+                                                                "attributes": ["text", "Worktrees"],
                                                                 "backendNodeId": 100,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -1936,10 +1883,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Archived"
-                                                                ],
+                                                                "attributes": ["text", "Archived"],
                                                                 "backendNodeId": 106,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -2007,10 +1951,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Synara"
-                                                    ],
+                                                    "attributes": ["text", "Synara"],
                                                     "backendNodeId": 109,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -2129,10 +2070,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Models"
-                                                                ],
+                                                                "attributes": ["text", "Models"],
                                                                 "backendNodeId": 116,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -2259,10 +2197,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Providers"
-                                                                ],
+                                                                "attributes": ["text", "Providers"],
                                                                 "backendNodeId": 122,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -2389,10 +2324,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Skills"
-                                                                ],
+                                                                "attributes": ["text", "Skills"],
                                                                 "backendNodeId": 128,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -2519,10 +2451,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Usage"
-                                                                ],
+                                                                "attributes": ["text", "Usage"],
                                                                 "backendNodeId": 134,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -2779,10 +2708,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Advanced"
-                                                                ],
+                                                                "attributes": ["text", "Advanced"],
                                                                 "backendNodeId": 146,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -2913,10 +2839,7 @@
                             "childNodeCount": 1,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "SidebarResizeSashLine"
-                                ],
+                                "attributes": ["class", "SidebarResizeSashLine"],
                                 "backendNodeId": 148,
                                 "childNodeCount": 0,
                                 "children": [],
@@ -2982,26 +2905,17 @@
                         "childNodeCount": 1,
                         "children": [
                           {
-                            "attributes": [
-                              "class",
-                              "SettingsContentInner"
-                            ],
+                            "attributes": ["class", "SettingsContentInner"],
                             "backendNodeId": 152,
                             "childNodeCount": 3,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSettingsPanelHeader"
-                                ],
+                                "attributes": ["class", "SharedSettingsPanelHeader"],
                                 "backendNodeId": 153,
                                 "childNodeCount": 2,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsPanelHeaderCopy"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsPanelHeaderCopy"],
                                     "backendNodeId": 154,
                                     "childNodeCount": 2,
                                     "children": [
@@ -3020,10 +2934,7 @@
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "General"
-                                            ],
+                                            "attributes": ["text", "General"],
                                             "backendNodeId": 156,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -3160,10 +3071,7 @@
                                 "parentId": 152
                               },
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSettingsGeneralRoot"
-                                ],
+                                "attributes": ["class", "SharedSettingsGeneralRoot"],
                                 "backendNodeId": 170,
                                 "childNodeCount": 4,
                                 "children": [
@@ -3197,10 +3105,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Core defaults"
-                                                ],
+                                                "attributes": ["text", "Core defaults"],
                                                 "backendNodeId": 175,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3228,10 +3133,7 @@
                                         "parentId": 171
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSettingsGeneralCard"
-                                        ],
+                                        "attributes": ["class", "SharedSettingsGeneralCard"],
                                         "backendNodeId": 173,
                                         "childNodeCount": 2,
                                         "children": [
@@ -3354,10 +3256,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "class",
-                                                      "LxMenuRoot"
-                                                    ],
+                                                    "attributes": ["class", "LxMenuRoot"],
                                                     "backendNodeId": 184,
                                                     "childNodeCount": 1,
                                                     "children": [
@@ -3630,10 +3529,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "New threads"
-                                                            ],
+                                                            "attributes": ["text", "New threads"],
                                                             "backendNodeId": 200,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -3708,10 +3604,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "class",
-                                                      "LxMenuRoot"
-                                                    ],
+                                                    "attributes": ["class", "LxMenuRoot"],
                                                     "backendNodeId": 202,
                                                     "childNodeCount": 1,
                                                     "children": [
@@ -3943,10 +3836,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Sidebar organization"
-                                                ],
+                                                "attributes": ["text", "Sidebar organization"],
                                                 "backendNodeId": 213,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3974,10 +3864,7 @@
                                         "parentId": 209
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSettingsGeneralCard"
-                                        ],
+                                        "attributes": ["class", "SharedSettingsGeneralCard"],
                                         "backendNodeId": 211,
                                         "childNodeCount": 2,
                                         "children": [
@@ -4022,10 +3909,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "Project order"
-                                                            ],
+                                                            "attributes": ["text", "Project order"],
                                                             "backendNodeId": 220,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -4100,10 +3984,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "class",
-                                                      "LxMenuRoot"
-                                                    ],
+                                                    "attributes": ["class", "LxMenuRoot"],
                                                     "backendNodeId": 222,
                                                     "childNodeCount": 1,
                                                     "children": [
@@ -4330,10 +4211,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "Thread order"
-                                                            ],
+                                                            "attributes": ["text", "Thread order"],
                                                             "backendNodeId": 235,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -4408,10 +4286,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "class",
-                                                      "LxMenuRoot"
-                                                    ],
+                                                    "attributes": ["class", "LxMenuRoot"],
                                                     "backendNodeId": 237,
                                                     "childNodeCount": 1,
                                                     "children": [
@@ -4643,10 +4518,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Sidebar sections"
-                                                ],
+                                                "attributes": ["text", "Sidebar sections"],
                                                 "backendNodeId": 248,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -4674,10 +4546,7 @@
                                         "parentId": 244
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSettingsGeneralCard"
-                                        ],
+                                        "attributes": ["class", "SharedSettingsGeneralCard"],
                                         "backendNodeId": 246,
                                         "childNodeCount": 3,
                                         "children": [
@@ -4722,10 +4591,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "Chats"
-                                                            ],
+                                                            "attributes": ["text", "Chats"],
                                                             "backendNodeId": 255,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -4929,10 +4795,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "Studio"
-                                                            ],
+                                                            "attributes": ["text", "Studio"],
                                                             "backendNodeId": 265,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -5136,10 +4999,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "Workspace"
-                                                            ],
+                                                            "attributes": ["text", "Workspace"],
                                                             "backendNodeId": 275,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -5348,10 +5208,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Environment panel"
-                                                ],
+                                                "attributes": ["text", "Environment panel"],
                                                 "backendNodeId": 283,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -5379,10 +5236,7 @@
                                         "parentId": 279
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSettingsGeneralCard"
-                                        ],
+                                        "attributes": ["class", "SharedSettingsGeneralCard"],
                                         "backendNodeId": 281,
                                         "childNodeCount": 10,
                                         "children": [
@@ -5634,10 +5488,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "Usage"
-                                                            ],
+                                                            "attributes": ["text", "Usage"],
                                                             "backendNodeId": 300,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -5841,10 +5692,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "Repository"
-                                                            ],
+                                                            "attributes": ["text", "Repository"],
                                                             "backendNodeId": 310,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -6048,10 +5896,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "Pull request"
-                                                            ],
+                                                            "attributes": ["text", "Pull request"],
                                                             "backendNodeId": 320,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -6255,10 +6100,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "Editor"
-                                                            ],
+                                                            "attributes": ["text", "Editor"],
                                                             "backendNodeId": 330,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -6462,10 +6304,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "Recap"
-                                                            ],
+                                                            "attributes": ["text", "Recap"],
                                                             "backendNodeId": 340,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -6876,10 +6715,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "Text markers"
-                                                            ],
+                                                            "attributes": ["text", "Text markers"],
                                                             "backendNodeId": 360,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -7290,10 +7126,7 @@
                                                         "childNodeCount": 1,
                                                         "children": [
                                                           {
-                                                            "attributes": [
-                                                              "text",
-                                                              "Notepad"
-                                                            ],
+                                                            "attributes": ["text", "Notepad"],
                                                             "backendNodeId": 380,
                                                             "childNodeCount": 0,
                                                             "children": [],
@@ -7503,10 +7336,7 @@
                                     "childNodeCount": 1,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "text",
-                                          "Preferences loaded."
-                                        ],
+                                        "attributes": ["text", "Preferences loaded."],
                                         "backendNodeId": 386,
                                         "childNodeCount": 0,
                                         "children": [],

@@ -3,9 +3,9 @@ import {
   createDefaultRightDockState,
   sanitizeRightDockStateByThreadId,
   type RightDockThreadState,
-} from '@synara/shared/rightDock';
+} from "@synara/shared/rightDock";
 
-import { webStorage } from '../platform/storage';
+import { webStorage } from "../platform/storage";
 
 function readAll(): Record<string, RightDockThreadState> {
   const raw = webStorage.getItem(RIGHT_DOCK_STORAGE_KEY);
@@ -16,27 +16,22 @@ function readAll(): Record<string, RightDockThreadState> {
       state?: { dockStateByThreadId?: unknown };
     };
     return sanitizeRightDockStateByThreadId(
-      parsed.state?.dockStateByThreadId ?? parsed.dockStateByThreadId
+      parsed.state?.dockStateByThreadId ?? parsed.dockStateByThreadId,
     );
   } catch {
     return {};
   }
 }
 
-export function readRightDockThreadState(
-  threadId: string
-): RightDockThreadState {
+export function readRightDockThreadState(threadId: string): RightDockThreadState {
   return readAll()[threadId] ?? createDefaultRightDockState();
 }
 
-export function storeRightDockThreadState(
-  threadId: string,
-  state: RightDockThreadState
-): void {
+export function storeRightDockThreadState(threadId: string, state: RightDockThreadState): void {
   const dockStateByThreadId = { ...readAll(), [threadId]: state };
   webStorage.setItem(
     RIGHT_DOCK_STORAGE_KEY,
-    JSON.stringify({ state: { dockStateByThreadId }, version: 0 })
+    JSON.stringify({ state: { dockStateByThreadId }, version: 0 }),
   );
 }
 
@@ -46,6 +41,6 @@ export function removeRightDockThreadState(threadId: string): void {
   delete dockStateByThreadId[threadId];
   webStorage.setItem(
     RIGHT_DOCK_STORAGE_KEY,
-    JSON.stringify({ state: { dockStateByThreadId }, version: 0 })
+    JSON.stringify({ state: { dockStateByThreadId }, version: 0 }),
   );
 }

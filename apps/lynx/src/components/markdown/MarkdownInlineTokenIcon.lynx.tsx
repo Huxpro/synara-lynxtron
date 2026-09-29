@@ -1,53 +1,38 @@
-import agentMentionSvg from '@synara-central-icons/robot.svg?raw';
-import skillSvg from '@synara-central-icons/building-blocks.svg?raw';
-import terminalSvg from '@synara-central-icons/console.svg?raw';
+import agentMentionSvg from "@synara-central-icons/robot.svg?raw";
+import skillSvg from "@synara-central-icons/building-blocks.svg?raw";
+import terminalSvg from "@synara-central-icons/console.svg?raw";
 
-import type { MarkdownInlineTokenSegment } from './markdownPresentation.logic';
-import { threadIdFromThreadMentionPath } from '@synara/shared/threadMentions';
-import { useTheme } from '../../adapters/useTheme.lynx';
-import { ClockIcon, MessageCircleIcon } from '../../lib/icons.lynx';
-import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
-import { FileEntryIcon } from '../FileEntryIcon.lynx';
-import { ExternalLinkIcon } from './ExternalLinkIcon.lynx';
+import type { MarkdownInlineTokenSegment } from "./markdownPresentation.logic";
+import { threadIdFromThreadMentionPath } from "@synara/shared/threadMentions";
+import { useTheme } from "../../adapters/useTheme.lynx";
+import { ClockIcon, MessageCircleIcon } from "../../lib/icons.lynx";
+import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
+import { FileEntryIcon } from "../FileEntryIcon.lynx";
+import { ExternalLinkIcon } from "./ExternalLinkIcon.lynx";
 
 export function MarkdownInlineTokenIcon(props: {
   readonly color?: string;
   readonly segment: MarkdownInlineTokenSegment;
 }) {
   const { activeTheme, semanticIconColor } = useTheme();
-  if (props.segment.type === 'mention') {
+  if (props.segment.type === "mention") {
     if (threadIdFromThreadMentionPath(props.segment.path)) {
       return (
-        <MessageCircleIcon
-          className="MdInlineTokenIcon"
-          color="var(--info-foreground)"
-          size={12}
-        />
+        <MessageCircleIcon className="MdInlineTokenIcon" color="var(--info-foreground)" size={12} />
       );
     }
-    return (
-      <FileEntryIcon
-        className="MdInlineTokenIcon"
-        pathValue={props.segment.path}
-      />
-    );
+    return <FileEntryIcon className="MdInlineTokenIcon" pathValue={props.segment.path} />;
   }
-  if (props.segment.type === 'link') {
+  if (props.segment.type === "link") {
     return <ExternalLinkIcon url={props.segment.url} />;
   }
-  if (props.segment.type === 'slash-command') {
-    return (
-      <ClockIcon
-        className="MdInlineTokenIcon"
-        color="var(--info-foreground)"
-        size={12}
-      />
-    );
+  if (props.segment.type === "slash-command") {
+    return <ClockIcon className="MdInlineTokenIcon" color="var(--info-foreground)" size={12} />;
   }
   const content =
-    props.segment.type === 'skill'
+    props.segment.type === "skill"
       ? skillSvg
-      : props.segment.type === 'agent-mention'
+      : props.segment.type === "agent-mention"
         ? agentMentionSvg
         : terminalSvg;
   return (
@@ -56,9 +41,9 @@ export function MarkdownInlineTokenIcon(props: {
       content={colorizeLynxSvg(
         content,
         props.color ??
-          (props.segment.type === 'skill'
+          (props.segment.type === "skill"
             ? activeTheme.theme.accent
-            : semanticIconColor('secondary'))
+            : semanticIconColor("secondary")),
       )}
       accessibility-element={false}
     />

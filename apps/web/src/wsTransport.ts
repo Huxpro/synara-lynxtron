@@ -41,10 +41,7 @@ import { RpcClient, RpcSerialization } from "effect/unstable/rpc";
 import * as Socket from "effect/unstable/socket/Socket";
 
 import { APP_VERSION } from "./branding";
-import {
-  layerWebSocketConstructorFromPort,
-  resolveDefaultSocketUrl,
-} from "./platform/socket";
+import { layerWebSocketConstructorFromPort, resolveDefaultSocketUrl } from "./platform/socket";
 import type { WsTransportState } from "./wsTransportEvents";
 
 type PushListener<C extends WsPushChannel> = (message: WsPushMessage<C>) => void;

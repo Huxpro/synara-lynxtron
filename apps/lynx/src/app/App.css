@@ -58,7 +58,7 @@
 }
 
 .AppWindowDragRegion .LxButton,
-.AppWindowDragRegion [focusable='true'],
+.AppWindowDragRegion [focusable="true"],
 .AppWindowDragRegion input,
 .AppWindowDragRegion textarea {
   -x-app-region: no-drag;
@@ -238,38 +238,26 @@
   padding-left: 212px;
 }
 
-.SliceRoot--viewport-compact
-  .AppMain--sidebar-closed
-  .ThreadsLandingHeader,
-.SliceRoot--viewport-compact
-  .AppMain--sidebar-closed
-  .ThreadPageHeader {
+.SliceRoot--viewport-compact .AppMain--sidebar-closed .ThreadsLandingHeader,
+.SliceRoot--viewport-compact .AppMain--sidebar-closed .ThreadPageHeader {
   height: 92px;
   padding: 46px 20px 0;
 }
 
-.SliceRoot--viewport-compact
-  .ThreadPageHeader
-  .SharedChatHeaderIdentityTitle {
+.SliceRoot--viewport-compact .ThreadPageHeader .SharedChatHeaderIdentityTitle {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.SliceRoot--viewport-compact
-  .AppMain--sidebar-closed
-  .SharedKanbanRouteHeader,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .SharedKanbanRouteHeader {
+.SliceRoot--viewport-compact .AppMain--sidebar-closed .SharedKanbanRouteHeader,
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .SharedKanbanRouteHeader {
   height: 92px;
   padding: 46px 20px 0;
 }
 
-.SliceRoot--viewport-compact
-  .AppMain--sidebar-closed
-  .SharedPrRouteHeader {
+.SliceRoot--viewport-compact .AppMain--sidebar-closed .SharedPrRouteHeader {
   height: 92px;
   padding: 46px 20px 0;
 }
@@ -662,21 +650,15 @@
   align-items: center;
 }
 
-.SliceRoot--viewport-compact
-  .ThreadsLanding--environment-open
-  .ThreadsLandingBody {
+.SliceRoot--viewport-compact .ThreadsLanding--environment-open .ThreadsLandingBody {
   padding-right: 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  .CenteredEmptyLandingFrame {
+.SliceRoot--viewport-short-height .ThreadPage .CenteredEmptyLandingFrame {
   display: none;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  > .ProviderHealthBannerFrame {
+.SliceRoot--viewport-short-height .ThreadPage > .ProviderHealthBannerFrame {
   display: none;
 }
 
@@ -686,9 +668,7 @@
   --app-density-composer-editor-padding-bottom: 2px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  .TranscriptBottomInset {
+.SliceRoot--viewport-short-height .ThreadPage .TranscriptBottomInset {
   height: 8px;
 }
 
@@ -738,10 +718,7 @@
 
 /* Same layout-neutral divider recipe used by the Web chat surface. */
 .chat-surface-divider {
-  background-image: linear-gradient(
-    var(--app-surface-divider),
-    var(--app-surface-divider)
-  );
+  background-image: linear-gradient(var(--app-surface-divider), var(--app-surface-divider));
   background-repeat: no-repeat;
   background-position: left bottom;
   background-size: 100% 1px;
@@ -1391,18 +1368,10 @@
   padding-top: 8px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChat
-  > .AppWindowDragRegion,
-.SliceRoot--viewport-short-height
-  .ThreadEditorChat
-  .CenteredEmptyLandingFrame,
-.SliceRoot--viewport-short-height
-  .ThreadEditorChat
-  .EmptyThreadContextTray,
-.SliceRoot--viewport-short-height
-  .ThreadEditorChat
-  .ProviderHealthBannerFrame {
+.SliceRoot--viewport-short-height .ThreadEditorChat > .AppWindowDragRegion,
+.SliceRoot--viewport-short-height .ThreadEditorChat .CenteredEmptyLandingFrame,
+.SliceRoot--viewport-short-height .ThreadEditorChat .EmptyThreadContextTray,
+.SliceRoot--viewport-short-height .ThreadEditorChat .ProviderHealthBannerFrame {
   display: none;
 }
 
@@ -1412,9 +1381,7 @@
   --app-density-composer-editor-padding-bottom: 2px;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadEditorChat
-  .TranscriptBottomInset {
+.SliceRoot--viewport-short-height .ThreadEditorChat .TranscriptBottomInset {
   height: 8px;
 }
 
@@ -1531,21 +1498,13 @@
   padding: 20px;
 }
 
-.SliceRoot--viewport-compact
-  .SharedPrRouteBody--detail-open
-  .SharedPrRouteScroller,
-.SliceRoot--viewport-medium
-  .SharedPrRouteBody--detail-open
-  .SharedPrRouteScroller {
+.SliceRoot--viewport-compact .SharedPrRouteBody--detail-open .SharedPrRouteScroller,
+.SliceRoot--viewport-medium .SharedPrRouteBody--detail-open .SharedPrRouteScroller {
   display: none;
 }
 
-.SliceRoot--viewport-compact
-  .SharedPrRouteBody--detail-open
-  .SharedPrDetailDock,
-.SliceRoot--viewport-medium
-  .SharedPrRouteBody--detail-open
-  .SharedPrDetailDock {
+.SliceRoot--viewport-compact .SharedPrRouteBody--detail-open .SharedPrDetailDock,
+.SliceRoot--viewport-medium .SharedPrRouteBody--detail-open .SharedPrDetailDock {
   width: 100%;
   min-width: 0;
   border-left-width: 0;
@@ -1986,7 +1945,9 @@
   border-radius: 999px;
   background-color: var(--foreground);
   opacity: 0.2;
-  transition: width 90ms ease-out, opacity 90ms ease-out;
+  transition:
+    width 90ms ease-out,
+    opacity 90ms ease-out;
 }
 
 .TranscriptMessageTrailTick--visible .TranscriptMessageTrailTick {

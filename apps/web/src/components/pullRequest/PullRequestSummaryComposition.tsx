@@ -75,18 +75,10 @@ export function PullRequestSummaryComposition(props: {
       <PullRequestSummarySectionElement label="Description" defaultOpen>
         <PullRequestSummaryDescriptionElement detail={detail} />
       </PullRequestSummarySectionElement>
-      <PullRequestSummarySectionElement
-        label="Checks"
-        count={detail.checks.length}
-        defaultOpen
-      >
+      <PullRequestSummarySectionElement label="Checks" count={detail.checks.length} defaultOpen>
         <PullRequestSummaryChecksElement checks={detail.checks} />
       </PullRequestSummarySectionElement>
-      <PullRequestSummarySectionElement
-        label="Comments"
-        count={detail.comments.length}
-        defaultOpen
-      >
+      <PullRequestSummarySectionElement label="Comments" count={detail.comments.length} defaultOpen>
         <PullRequestSummaryCommentsElement
           detail={detail}
           commentingAvailable={props.commentingAvailable !== false}

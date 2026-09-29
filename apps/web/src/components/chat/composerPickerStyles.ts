@@ -244,8 +244,7 @@ export const RUNTIME_FULL_ACCESS_ACCENT_CLASS_NAME =
  *  `leading-relaxed` (1.625) keeps the input in step with the transcript/bubble leading. */
 export const COMPOSER_EDITOR_LINE_HEIGHT_CLASS_NAME =
   "leading-[var(--type-composer-editor-line-height)]";
-export const COMPOSER_EDITOR_TEXT_CLASS_NAME =
-  "text-[length:var(--type-composer-editor-size)]";
+export const COMPOSER_EDITOR_TEXT_CLASS_NAME = "text-[length:var(--type-composer-editor-size)]";
 /** Font, size, and leading shared by the composer editor and its placeholder so the
  *  placeholder always aligns with typed text. Keep both surfaces on this one token. */
 export const COMPOSER_EDITOR_TYPOGRAPHY_CLASS_NAME = `font-system-ui ${COMPOSER_EDITOR_TEXT_CLASS_NAME} ${COMPOSER_EDITOR_LINE_HEIGHT_CLASS_NAME}`;

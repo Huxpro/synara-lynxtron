@@ -9,9 +9,7 @@ import type { ProviderModelOption } from "../../providerModelOptions";
 import { FAVORITE_MODEL_STORAGE_KEYS } from "../../lib/modelFavorites.logic";
 
 import { webStorage } from "~/platform/storage";
-import {
-  COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS,
-} from "@synara/shared/componentLabFixtures";
+import { COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS } from "@synara/shared/componentLabFixtures";
 const MODEL_OPTIONS_BY_PROVIDER = {
   claudeAgent: [
     { slug: "claude-opus-4-6", name: "Claude Opus 4.6" },
@@ -469,9 +467,7 @@ describe("ProviderModelPicker", () => {
     webStorage.setItem(FAVORITE_MODEL_STORAGE_KEYS.opencode, persistedValue);
     const onFavoriteModelSlugsChange = vi.fn();
     const screen = await render(
-      <ControlledFavoritePickerHarness
-        onFavoriteModelSlugsChange={onFavoriteModelSlugsChange}
-      />,
+      <ControlledFavoritePickerHarness onFavoriteModelSlugsChange={onFavoriteModelSlugsChange} />,
     );
 
     try {
@@ -485,9 +481,7 @@ describe("ProviderModelPicker", () => {
       await vi.waitFor(() => {
         expect(onFavoriteModelSlugsChange).toHaveBeenCalledWith([]);
       });
-      await expect
-        .element(page.getByText("Favourites", { exact: true }))
-        .not.toBeInTheDocument();
+      await expect.element(page.getByText("Favourites", { exact: true })).not.toBeInTheDocument();
       await expect
         .element(page.getByRole("checkbox", { name: "Add Open Model 02 to favourites" }))
         .toHaveAttribute("aria-checked", "false");

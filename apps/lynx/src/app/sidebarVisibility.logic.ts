@@ -5,7 +5,6 @@ export function resolveResponsiveSidebarOpen(input: {
 }): boolean {
   return (
     input.userOverride ??
-    (input.viewportWidth > 0 &&
-      input.viewportWidth >= input.desktopMinimumWidth)
+    (input.viewportWidth > 0 && input.viewportWidth >= input.desktopMinimumWidth)
   );
 }

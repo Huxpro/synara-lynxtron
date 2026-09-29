@@ -65,10 +65,7 @@ export function SettingsAppearanceComposition(props: {
       resetLabel={title.toLowerCase()}
       changed={props.values[key] !== props.defaults[key]}
       onReset={() =>
-        props.onChange(
-          key,
-          props.defaults[key] as SettingsAppearanceValues[typeof key],
-        )
+        props.onChange(key, props.defaults[key] as SettingsAppearanceValues[typeof key])
       }
     >
       {control}
@@ -88,10 +85,7 @@ export function SettingsAppearanceComposition(props: {
               ariaLabel="Theme preference"
               options={SETTINGS_THEME_OPTIONS}
               onChange={(value) =>
-                props.onChange(
-                  "themeMode",
-                  value as SettingsAppearanceValues["themeMode"],
-                )
+                props.onChange("themeMode", value as SettingsAppearanceValues["themeMode"])
               }
             />,
           )}
@@ -128,32 +122,20 @@ export function SettingsAppearanceComposition(props: {
                 shareString={createThemeShareString(variant, pack)}
                 onImport={(value) =>
                   props.onThemeStateChange(
-                    updateThemePackFromShareString(
-                      props.themeState,
-                      value,
-                      variant,
-                    ),
+                    updateThemePackFromShareString(props.themeState, value, variant),
                   )
                 }
                 onResetVariant={() =>
-                  props.onThemeStateChange(
-                    resetThemeVariant(props.themeState, variant),
-                  )
+                  props.onThemeStateChange(resetThemeVariant(props.themeState, variant))
                 }
                 onSetCodeThemeId={(value) =>
-                  props.onThemeStateChange(
-                    setThemeCodeThemeId(props.themeState, variant, value),
-                  )
+                  props.onThemeStateChange(setThemeCodeThemeId(props.themeState, variant, value))
                 }
                 onUpdateTheme={(patch) =>
-                  props.onThemeStateChange(
-                    updateChromeTheme(props.themeState, variant, patch),
-                  )
+                  props.onThemeStateChange(updateChromeTheme(props.themeState, variant, patch))
                 }
                 onUpdateFonts={(patch) =>
-                  props.onThemeStateChange(
-                    setThemeFonts(props.themeState, variant, patch),
-                  )
+                  props.onThemeStateChange(setThemeFonts(props.themeState, variant, patch))
                 }
               />
             );
@@ -170,10 +152,7 @@ export function SettingsAppearanceComposition(props: {
               ariaLabel="UI density"
               options={SETTINGS_DENSITY_OPTIONS}
               onChange={(value) =>
-                props.onChange(
-                  "uiDensity",
-                  value as SettingsAppearanceValues["uiDensity"],
-                )
+                props.onChange("uiDensity", value as SettingsAppearanceValues["uiDensity"])
               }
             />,
           )}
@@ -186,10 +165,7 @@ export function SettingsAppearanceComposition(props: {
               suffix="px"
               ariaLabel="Base font size in pixels"
               onChange={(value) =>
-                props.onChange(
-                  "chatFontSizePx",
-                  normalizeAppearanceNumber("chatFontSizePx", value),
-                )
+                props.onChange("chatFontSizePx", normalizeAppearanceNumber("chatFontSizePx", value))
               }
             />,
           )}
@@ -229,9 +205,7 @@ export function SettingsAppearanceComposition(props: {
                 <SettingsAppearanceBooleanControlElement
                   checked={props.values.enableNativeFontSmoothing}
                   ariaLabel="Enable font smoothing"
-                  onChange={(checked) =>
-                    props.onChange("enableNativeFontSmoothing", checked)
-                  }
+                  onChange={(checked) => props.onChange("enableNativeFontSmoothing", checked)}
                 />,
                 true,
               )

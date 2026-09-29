@@ -1,17 +1,17 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import { useLynxSystemStateAnnouncement } from '../platform/system-state-announcement.lynx';
-import { normalizeSystemStateAnnouncement } from '../platform/system-state-announcement.logic';
-import './pull-request-warning-banner.css';
+import { useLynxSystemStateAnnouncement } from "../platform/system-state-announcement.lynx";
+import { normalizeSystemStateAnnouncement } from "../platform/system-state-announcement.logic";
+import "./pull-request-warning-banner.css";
 
 export function PullRequestWarningBanner(props: {
   readonly children: ReactNode;
-  readonly shape?: 'banner' | 'callout' | 'note';
+  readonly shape?: "banner" | "callout" | "note";
 }) {
-  const shape = props.shape ?? 'banner';
+  const shape = props.shape ?? "banner";
   const content = normalizeSystemStateAnnouncement(props.children);
   useLynxSystemStateAnnouncement({
-    intent: 'status',
+    intent: "status",
     announcement: content,
   });
   return (

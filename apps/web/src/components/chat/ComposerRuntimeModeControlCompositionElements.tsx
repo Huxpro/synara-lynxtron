@@ -55,9 +55,7 @@ export function ComposerRuntimeModeTriggerElement(props: {
   );
 }
 
-export function ComposerRuntimeModePopupElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function ComposerRuntimeModePopupElement(props: { readonly children?: ReactNode }) {
   return (
     <ComposerPickerMenuPopup align="start" side="top" className="min-w-44">
       {props.children}

@@ -52,18 +52,18 @@ leak report, and encourage terminating unrelated browser processes.
 
 ## Fidelity checklist
 
-| Area | Web evidence | Lynx evidence | Result |
-|---|---|---|---|
-| shell/sidebar anchors ≤8px | | | |
-| header/content anchors ≤8px | | | |
-| cards/rows/columns anchors ≤8px | | | |
-| typography size delta ≤2px | | | |
-| weight/line-height hierarchy | | | |
-| semantic background/foreground | | | |
-| border/selected/elevated/focus tokens | | | |
-| content/order/counts | | | |
-| empty/loading/error state | | | |
-| scoped interaction state | | | |
+| Area                                  | Web evidence | Lynx evidence | Result |
+| ------------------------------------- | ------------ | ------------- | ------ |
+| shell/sidebar anchors ≤8px            |              |               |        |
+| header/content anchors ≤8px           |              |               |        |
+| cards/rows/columns anchors ≤8px       |              |               |        |
+| typography size delta ≤2px            |              |               |        |
+| weight/line-height hierarchy          |              |               |        |
+| semantic background/foreground        |              |               |        |
+| border/selected/elevated/focus tokens |              |               |        |
+| content/order/counts                  |              |               |        |
+| empty/loading/error state             |              |               |        |
+| scoped interaction state              |              |               |        |
 
 ## Difference budget
 
@@ -71,8 +71,8 @@ Every accepted difference needs one entry. “Lynx limitation” without API/run
 an exemption.
 
 | Exemption ID | Region (x,y,w,h) | Classification | Evidence | User impact | Fallback | Owner/expiry |
-|---|---|---|---|---|---|---|
-| | | `🔧 / 🔀 / ⬆️` | | | | |
+| ------------ | ---------------- | -------------- | -------- | ----------- | -------- | ------------ |
+|              |                  | `🔧 / 🔀 / ⬆️` |          |             |          |              |
 
 Mask rules:
 
@@ -84,13 +84,13 @@ Mask rules:
 
 ## Interaction evidence
 
-| State/action | Web | Lynx | Result/notes |
-|---|---|---|---|
-| default | | | |
-| hover/active | | | |
-| focus/keyboard | | | |
-| scroll/resize | | | |
-| overlay/dismiss | | | |
+| State/action    | Web | Lynx | Result/notes |
+| --------------- | --- | ---- | ------------ |
+| default         |     |      |              |
+| hover/active    |     |      |              |
+| focus/keyboard  |     |      |              |
+| scroll/resize   |     |      |              |
+| overlay/dismiss |     |      |              |
 
 ## Verdict
 

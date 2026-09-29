@@ -52,10 +52,7 @@ const approvalRequiredTurnOverrides = {
 
 describe("Codex Synara harness policy", () => {
   it("uses the shared Codex binary resolver for discovery sessions", () => {
-    const source = readFileSync(
-      new URL("./codexAppServerManager.ts", import.meta.url),
-      "utf8",
-    );
+    const source = readFileSync(new URL("./codexAppServerManager.ts", import.meta.url), "utf8");
     const discoveryMethod = source.slice(
       source.indexOf("private async getOrCreateDiscoverySession"),
       source.indexOf("private scheduleDiscoverySessionIdleStop"),

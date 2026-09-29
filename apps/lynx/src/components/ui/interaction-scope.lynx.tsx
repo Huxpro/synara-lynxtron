@@ -1,8 +1,4 @@
-import {
-  createContext,
-  useContext,
-  type ReactNode,
-} from '@lynx-js/react';
+import { createContext, useContext, type ReactNode } from "@lynx-js/react";
 
 const LynxInteractionDisabledContext = createContext(false);
 
@@ -12,9 +8,7 @@ export function LynxInteractionScope(props: {
 }) {
   const parentDisabled = useContext(LynxInteractionDisabledContext);
   return (
-    <LynxInteractionDisabledContext.Provider
-      value={parentDisabled || props.disabled}
-    >
+    <LynxInteractionDisabledContext.Provider value={parentDisabled || props.disabled}>
       {props.children}
     </LynxInteractionDisabledContext.Provider>
   );

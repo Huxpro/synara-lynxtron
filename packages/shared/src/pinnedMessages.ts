@@ -31,10 +31,7 @@ export function derivePinLabel(messageText: string): string {
     : cleaned;
 }
 
-export function displayLabelFor(
-  pin: PinnedMessage,
-  messageText: string | undefined,
-): string {
+export function displayLabelFor(pin: PinnedMessage, messageText: string | undefined): string {
   const override = pin.label?.trim();
   if (override) {
     return override;

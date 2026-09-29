@@ -10,26 +10,8 @@
     {
       "dt": -1,
       "present": true,
-      "shellBorder": [
-        0,
-        0,
-        256,
-        0,
-        256,
-        820,
-        0,
-        820
-      ],
-      "innerBorder": [
-        0,
-        0,
-        256,
-        0,
-        256,
-        820,
-        0,
-        820
-      ],
+      "shellBorder": [0, 0, 256, 0, 256, 820, 0, 820],
+      "innerBorder": [0, 0, 256, 0, 256, 820, 0, 820],
       "className": "SidebarDisclosure SidebarDisclosure--open",
       "ariaHidden": "false",
       "accessibilityElementsHidden": "false",
@@ -40,26 +22,8 @@
     {
       "dt": 28,
       "present": true,
-      "shellBorder": [
-        0,
-        0,
-        256,
-        0,
-        256,
-        820,
-        0,
-        820
-      ],
-      "innerBorder": [
-        0,
-        0,
-        256,
-        0,
-        256,
-        820,
-        0,
-        820
-      ],
+      "shellBorder": [0, 0, 256, 0, 256, 820, 0, 820],
+      "innerBorder": [0, 0, 256, 0, 256, 820, 0, 820],
       "className": "SidebarDisclosure SidebarDisclosure--closed",
       "ariaHidden": "true",
       "accessibilityElementsHidden": "true",

@@ -46,9 +46,7 @@ export function KanbanRouteHeaderNavigationElement() {
   return <SidebarHeaderNavigationControls />;
 }
 
-export function KanbanRouteHeaderBackElement(props: {
-  readonly onActivate: () => void;
-}) {
+export function KanbanRouteHeaderBackElement(props: { readonly onActivate: () => void }) {
   return (
     <Button
       size="icon-xs"

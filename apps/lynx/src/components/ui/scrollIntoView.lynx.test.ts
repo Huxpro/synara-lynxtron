@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it, rs } from '@rstest/core';
+import { beforeEach, describe, expect, it, rs } from "@rstest/core";
 
-import { scrollLynxElementIntoViewById } from './scrollIntoView.lynx';
+import { scrollLynxElementIntoViewById } from "./scrollIntoView.lynx";
 
 const select = rs.fn();
 const invoke = rs.fn();
@@ -29,42 +29,40 @@ beforeEach(() => {
   exec.mockClear();
 });
 
-describe('scrollLynxElementIntoViewById', () => {
-  it('invokes the native scrollIntoView method with start alignment', () => {
-    expect(scrollLynxElementIntoViewById('setting-theme')).toBe(true);
-    expect(select).toHaveBeenCalledWith('#setting-theme');
+describe("scrollLynxElementIntoViewById", () => {
+  it("invokes the native scrollIntoView method with start alignment", () => {
+    expect(scrollLynxElementIntoViewById("setting-theme")).toBe(true);
+    expect(select).toHaveBeenCalledWith("#setting-theme");
     expect(invoke).toHaveBeenCalledWith({
-      method: 'scrollIntoView',
+      method: "scrollIntoView",
       params: {
         scrollIntoViewOptions: {
-          block: 'start',
-          inline: 'start',
+          block: "start",
+          inline: "start",
         },
       },
     });
     expect(exec).toHaveBeenCalledOnce();
   });
 
-  it('fails closed for empty ids or unavailable selector APIs', () => {
-    expect(scrollLynxElementIntoViewById('')).toBe(false);
+  it("fails closed for empty ids or unavailable selector APIs", () => {
+    expect(scrollLynxElementIntoViewById("")).toBe(false);
     Object.assign(lynx, {
       createSelectorQuery() {
-        throw new Error('selector unavailable');
+        throw new Error("selector unavailable");
       },
     });
-    expect(scrollLynxElementIntoViewById('setting-theme')).toBe(false);
+    expect(scrollLynxElementIntoViewById("setting-theme")).toBe(false);
   });
 
-  it('supports nearest alignment for active picker rows', () => {
-    expect(
-      scrollLynxElementIntoViewById('composer-command-row-plan', 'nearest')
-    ).toBe(true);
+  it("supports nearest alignment for active picker rows", () => {
+    expect(scrollLynxElementIntoViewById("composer-command-row-plan", "nearest")).toBe(true);
     expect(invoke).toHaveBeenLastCalledWith({
-      method: 'scrollIntoView',
+      method: "scrollIntoView",
       params: {
         scrollIntoViewOptions: {
-          block: 'nearest',
-          inline: 'start',
+          block: "nearest",
+          inline: "start",
         },
       },
     });

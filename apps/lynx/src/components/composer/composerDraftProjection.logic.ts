@@ -1,20 +1,17 @@
-import type {
-  ProviderMentionReference,
-  ProviderSkillReference,
-} from '@synara/contracts';
+import type { ProviderMentionReference, ProviderSkillReference } from "@synara/contracts";
 import {
   formatTerminalContextLabel,
   INLINE_TERMINAL_CONTEXT_PLACEHOLDER,
   type TerminalContextDraft,
-} from '@synara-web/lib/terminalContext';
-import { formatComposerSkillChipLabel } from '@synara-web/components/composerInlineChip.logic';
+} from "@synara-web/lib/terminalContext";
+import { formatComposerSkillChipLabel } from "@synara-web/components/composerInlineChip.logic";
 
-export const NATIVE_COMPOSER_TOKEN_ANCHOR = '\u2063';
+export const NATIVE_COMPOSER_TOKEN_ANCHOR = "\u2063";
 
 export interface NativeComposerDisplayToken {
   readonly canonicalText: string;
   readonly key: string;
-  readonly kind: 'mention' | 'skill' | 'terminal-context';
+  readonly kind: "mention" | "skill" | "terminal-context";
   readonly label: string;
 }
 
@@ -44,25 +41,22 @@ interface TokenRange {
   readonly canonicalText: string;
   readonly end: number;
   readonly key: string;
-  readonly kind: 'mention' | 'skill' | 'terminal-context';
+  readonly kind: "mention" | "skill" | "terminal-context";
   readonly label: string;
   readonly start: number;
 }
 
 function escaped(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function collectMentionRanges(
   canonicalText: string,
-  mentions: ReadonlyArray<ProviderMentionReference>
+  mentions: ReadonlyArray<ProviderMentionReference>,
 ): TokenRange[] {
   const ranges: TokenRange[] = [];
   for (const mention of mentions) {
-    const candidates = [
-      `@"${mention.name.replaceAll('"', '\\"')}"`,
-      `@${mention.name}`,
-    ];
+    const candidates = [`@"${mention.name.replaceAll('"', '\\"')}"`, `@${mention.name}`];
     for (const candidate of candidates) {
       let offset = 0;
       while (offset < canonicalText.length) {
@@ -72,7 +66,7 @@ function collectMentionRanges(
           canonicalText: candidate,
           end: start + candidate.length,
           key: `mention:${mention.path}`,
-          kind: 'mention',
+          kind: "mention",
           label: mention.name,
           start,
         });
@@ -85,23 +79,20 @@ function collectMentionRanges(
 
 function collectSkillRanges(
   canonicalText: string,
-  skills: ReadonlyArray<ProviderSkillReference>
+  skills: ReadonlyArray<ProviderSkillReference>,
 ): TokenRange[] {
   const ranges: TokenRange[] = [];
   for (const skill of skills) {
-    const matcher = new RegExp(
-      `(^|\\s)([$/])${escaped(skill.name)}(?=\\s|$)`,
-      'g'
-    );
+    const matcher = new RegExp(`(^|\\s)([$/])${escaped(skill.name)}(?=\\s|$)`, "g");
     for (const match of canonicalText.matchAll(matcher)) {
-      const whitespace = match[1] ?? '';
-      const token = `${match[2] ?? '/'}${skill.name}`;
+      const whitespace = match[1] ?? "";
+      const token = `${match[2] ?? "/"}${skill.name}`;
       const start = (match.index ?? 0) + whitespace.length;
       ranges.push({
         canonicalText: token,
         end: start + token.length,
         key: `skill:${skill.path}`,
-        kind: 'skill',
+        kind: "skill",
         label: formatComposerSkillChipLabel(skill.name),
         start,
       });
@@ -112,7 +103,7 @@ function collectSkillRanges(
 
 function collectTerminalContextRanges(
   canonicalText: string,
-  terminalContexts: ReadonlyArray<TerminalContextDraft>
+  terminalContexts: ReadonlyArray<TerminalContextDraft>,
 ): TokenRange[] {
   const ranges: TokenRange[] = [];
   let contextIndex = 0;
@@ -125,7 +116,7 @@ function collectTerminalContextRanges(
       canonicalText: INLINE_TERMINAL_CONTEXT_PLACEHOLDER,
       end: index + 1,
       key: `terminal-context:${context.id}`,
-      kind: 'terminal-context',
+      kind: "terminal-context",
       label: formatTerminalContextLabel(context),
       start: index,
     });
@@ -135,9 +126,7 @@ function collectTerminalContextRanges(
 
 function nonOverlappingRanges(ranges: ReadonlyArray<TokenRange>): TokenRange[] {
   const sorted = [...ranges].sort(
-    (left, right) =>
-      left.start - right.start ||
-      right.end - right.start - (left.end - left.start)
+    (left, right) => left.start - right.start || right.end - right.start - (left.end - left.start),
   );
   const result: TokenRange[] = [];
   for (const range of sorted) {
@@ -155,10 +144,7 @@ export function createNativeComposerDraftProjection(input: {
   readonly terminalContexts?: ReadonlyArray<TerminalContextDraft>;
 }): NativeComposerDraftProjection {
   const ranges = nonOverlappingRanges([
-    ...collectTerminalContextRanges(
-      input.canonicalText,
-      input.terminalContexts ?? []
-    ),
+    ...collectTerminalContextRanges(input.canonicalText, input.terminalContexts ?? []),
     ...collectMentionRanges(input.canonicalText, input.mentions),
     ...collectSkillRanges(input.canonicalText, input.skills),
   ]);
@@ -195,8 +181,7 @@ function editDistance(left: string, right: string): number {
       current[rightIndex] = Math.min(
         current[rightIndex - 1]! + 1,
         previous[rightIndex]! + 1,
-        previous[rightIndex - 1]! +
-          (left[leftIndex - 1] === right[rightIndex - 1] ? 0 : 1)
+        previous[rightIndex - 1]! + (left[leftIndex - 1] === right[rightIndex - 1] ? 0 : 1),
       );
     }
     previous.splice(0, previous.length, ...current);
@@ -204,59 +189,41 @@ function editDistance(left: string, right: string): number {
   return previous[right.length] ?? 0;
 }
 
-function combinations(
-  count: number,
-  choose: number,
-  start = 0,
-  prefix: number[] = []
-): number[][] {
+function combinations(count: number, choose: number, start = 0, prefix: number[] = []): number[][] {
   if (choose === 0) return [prefix];
   const result: number[][] = [];
   for (let index = start; index <= count - choose; index += 1) {
-    result.push(
-      ...combinations(count, choose - 1, index + 1, [...prefix, index])
-    );
+    result.push(...combinations(count, choose - 1, index + 1, [...prefix, index]));
   }
   return result;
 }
 
 function expectedPlainSegments(
   projection: NativeComposerDraftProjection,
-  retainedTokenIndexes: ReadonlyArray<number>
+  retainedTokenIndexes: ReadonlyArray<number>,
 ): string[] {
   const result: string[] = [];
   let plainStart = 0;
   for (const tokenIndex of retainedTokenIndexes) {
-    result.push(
-      projection.plainSegments
-        .slice(plainStart, tokenIndex + 1)
-        .join('')
-    );
+    result.push(projection.plainSegments.slice(plainStart, tokenIndex + 1).join(""));
     plainStart = tokenIndex + 1;
   }
-  result.push(projection.plainSegments.slice(plainStart).join(''));
+  result.push(projection.plainSegments.slice(plainStart).join(""));
   return result;
 }
 
 function retainedTokenIndexes(
   projection: NativeComposerDraftProjection,
-  nextPlainSegments: ReadonlyArray<string>
+  nextPlainSegments: ReadonlyArray<string>,
 ): number[] {
-  const retainedCount = Math.min(
-    nextPlainSegments.length - 1,
-    projection.displayTokens.length
-  );
+  const retainedCount = Math.min(nextPlainSegments.length - 1, projection.displayTokens.length);
   let best: number[] = [];
   let bestScore = Number.POSITIVE_INFINITY;
-  for (const candidate of combinations(
-    projection.displayTokens.length,
-    retainedCount
-  )) {
+  for (const candidate of combinations(projection.displayTokens.length, retainedCount)) {
     const expected = expectedPlainSegments(projection, candidate);
     const score = expected.reduce(
-      (total, segment, index) =>
-        total + editDistance(segment, nextPlainSegments[index] ?? ''),
-      0
+      (total, segment, index) => total + editDistance(segment, nextPlainSegments[index] ?? ""),
+      0,
     );
     if (score < bestScore) {
       best = candidate;
@@ -274,7 +241,7 @@ function canonicalOffset(input: {
   let displayCursor = 0;
   let canonicalCursor = 0;
   for (let index = 0; index < input.plainSegments.length; index += 1) {
-    const plain = input.plainSegments[index] ?? '';
+    const plain = input.plainSegments[index] ?? "";
     if (input.displayOffset <= displayCursor + plain.length) {
       return canonicalCursor + input.displayOffset - displayCursor;
     }
@@ -298,10 +265,10 @@ export function applyNativeComposerDisplayEdit(input: {
   const plainSegments = input.displayText.split(NATIVE_COMPOSER_TOKEN_ANCHOR);
   const indexes = retainedTokenIndexes(input.projection, plainSegments);
   const tokens = indexes.map((index) => input.projection.displayTokens[index]!);
-  let canonicalText = plainSegments[0] ?? '';
+  let canonicalText = plainSegments[0] ?? "";
   for (let index = 0; index < tokens.length; index += 1) {
     canonicalText += tokens[index]!.canonicalText;
-    canonicalText += plainSegments[index + 1] ?? '';
+    canonicalText += plainSegments[index + 1] ?? "";
   }
   const retainedKeys = new Set(tokens.map((token) => token.key));
   return {
@@ -320,13 +287,11 @@ export function applyNativeComposerDisplayEdit(input: {
     displaySelectionStart: input.displaySelectionStart,
     displayText: input.displayText,
     mentions: input.projection.mentions.filter((mention) =>
-      retainedKeys.has(`mention:${mention.path}`)
+      retainedKeys.has(`mention:${mention.path}`),
     ),
-    skills: input.projection.skills.filter((skill) =>
-      retainedKeys.has(`skill:${skill.path}`)
-    ),
+    skills: input.projection.skills.filter((skill) => retainedKeys.has(`skill:${skill.path}`)),
     terminalContexts: input.projection.terminalContexts.filter((context) =>
-      retainedKeys.has(`terminal-context:${context.id}`)
+      retainedKeys.has(`terminal-context:${context.id}`),
     ),
   };
 }
@@ -338,7 +303,7 @@ export function displayOffsetForCanonicalOffset(input: {
   let canonicalCursor = 0;
   let displayCursor = 0;
   for (let index = 0; index < input.projection.plainSegments.length; index += 1) {
-    const plain = input.projection.plainSegments[index] ?? '';
+    const plain = input.projection.plainSegments[index] ?? "";
     if (input.canonicalOffset <= canonicalCursor + plain.length) {
       return displayCursor + input.canonicalOffset - canonicalCursor;
     }

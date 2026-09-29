@@ -11,9 +11,7 @@ import { useCallback, useMemo } from "react";
 import { Button } from "~/components/ui/button";
 import { gitRemoveWorktreeMutationOptions } from "~/lib/gitReactQuery";
 import { ArchiveIcon } from "~/lib/icons";
-import {
-  buildArchivedThreadContextMenuItems,
-} from "@synara/shared/contextMenu";
+import { buildArchivedThreadContextMenuItems } from "@synara/shared/contextMenu";
 import {
   deleteArchivedThreadFromClient,
   deleteArchivedThreadsFromClient,
@@ -366,10 +364,7 @@ export function ArchivedSettingsPanel({ active }: { readonly active: boolean }) 
     async (threadId: ThreadId, threadTitle: string, position: { x: number; y: number }) => {
       const api = readNativeApi();
       if (!api) return;
-      const clicked = await api.contextMenu.show(
-        buildArchivedThreadContextMenuItems(),
-        position,
-      );
+      const clicked = await api.contextMenu.show(buildArchivedThreadContextMenuItems(), position);
       if (clicked === "restore") {
         await unarchiveThread(threadId);
       } else if (clicked === "delete") {

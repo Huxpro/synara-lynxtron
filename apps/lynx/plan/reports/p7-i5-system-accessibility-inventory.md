@@ -90,11 +90,11 @@ announcement remains unobservable in Lynxtron 0.0.7**.
 - Real sequence-180 runtime proved the same PR surface in two states:
   - online loaded-empty:
     `No pull requests found. Try another involvement, state, project, or
-    search filter.` with `accessibility-element=true` and trait `text`;
+search filter.` with `accessibility-element=true` and trait `text`;
   - after stopping only the owned server, unavailable:
     `Pull requests unavailable. Check your connection and try again.` with the
     same named node contract.
-  DevTool error/warning output was empty.
+    DevTool error/warning output was empty.
 - The first runtime pass correctly failed evidence review because Lynxtron was
   loading the older `dist/desktop/main.lynx.bundle`; `rspeedy build` alone
   updates `output/bundle`. The formal `npm run build` staged both Lynx and
@@ -192,14 +192,14 @@ Authoritative references:
 
 ## Six-screen state matrix
 
-| Surface | Implemented state authority | What is already correct | Remaining P7-I5 proof / gap |
-|---|---|---|---|
-| Threads shell / Sidebar | shared `resolveSidebarProjectsSectionState` and `SidebarProjectsSection` own ready/loading/error/empty priority and copy | existing rows win over transient loading/error; loading/error/empty use shared status semantics and bounded Native announcement; representative rows are named native buttons | application state path complete; flatter reading/group structure and current Lynxtron host exposure remain documented gaps |
-| Threads landing | physical-shared empty landing plus composer frame | intentional new-chat empty state is not confused with query failure; no fake history; non-interactive frame does not opt into the interactive accessibility primitive | application state path complete; host AX tree remains unavailable |
-| Thread / transcript / composer | `resolveThreadPageBodyState` owns loading/offline/error/empty/transcript; real provider polling owns streaming; composer owns sending/stop/error and retains draft on failure | offline differs from ordinary error; successful zero rows alone enters empty; Panel states and discrete Composer sending/start/complete/stop/failure transitions are bounded outside the transcript token loop; failed send keeps the draft | application lifecycle complete; Lynxtron offers no observable audible-announcement channel |
-| Settings | canonical storage/theme projections plus explicit hydration/save presentation state | failed hydration has alert + Retry; writes are awaited and serialized; stale completions are ignored; local/server failures retain current values and publish alert copy; saved state is a readable 11px status | remaining host audible proof is bounded by the same Lynxtron AX gap |
-| Kanban overview / project | real Sidebar snapshot → canonical board projection; shared overview/column/state compositions; pure route-state resolvers | loading/offline/error/not-found/stale distinctions, Retry, last-known-good preservation, no fake cards or three-column false not-found board; real offline→retry→loading→offline runtime proven | successful missing-project presentation is compiler/resolver tested but has no safe product deep-link runtime harness yet |
-| Pull Requests | shared list/row/loading/empty composition; real list/detail queries and pin mutation | loading/empty/unavailable use shared status/alert semantics; Native honors list/detail row counts; online empty and owned-server-offline alert have real runtime proof; refresh remains available | list transport taxonomy and selected-detail region remain bounded follow-up, not fake-data or silent-state blockers |
+| Surface                        | Implemented state authority                                                                                                                                                   | What is already correct                                                                                                                                                                                                                     | Remaining P7-I5 proof / gap                                                                                                |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Threads shell / Sidebar        | shared `resolveSidebarProjectsSectionState` and `SidebarProjectsSection` own ready/loading/error/empty priority and copy                                                      | existing rows win over transient loading/error; loading/error/empty use shared status semantics and bounded Native announcement; representative rows are named native buttons                                                               | application state path complete; flatter reading/group structure and current Lynxtron host exposure remain documented gaps |
+| Threads landing                | physical-shared empty landing plus composer frame                                                                                                                             | intentional new-chat empty state is not confused with query failure; no fake history; non-interactive frame does not opt into the interactive accessibility primitive                                                                       | application state path complete; host AX tree remains unavailable                                                          |
+| Thread / transcript / composer | `resolveThreadPageBodyState` owns loading/offline/error/empty/transcript; real provider polling owns streaming; composer owns sending/stop/error and retains draft on failure | offline differs from ordinary error; successful zero rows alone enters empty; Panel states and discrete Composer sending/start/complete/stop/failure transitions are bounded outside the transcript token loop; failed send keeps the draft | application lifecycle complete; Lynxtron offers no observable audible-announcement channel                                 |
+| Settings                       | canonical storage/theme projections plus explicit hydration/save presentation state                                                                                           | failed hydration has alert + Retry; writes are awaited and serialized; stale completions are ignored; local/server failures retain current values and publish alert copy; saved state is a readable 11px status                             | remaining host audible proof is bounded by the same Lynxtron AX gap                                                        |
+| Kanban overview / project      | real Sidebar snapshot → canonical board projection; shared overview/column/state compositions; pure route-state resolvers                                                     | loading/offline/error/not-found/stale distinctions, Retry, last-known-good preservation, no fake cards or three-column false not-found board; real offline→retry→loading→offline runtime proven                                             | successful missing-project presentation is compiler/resolver tested but has no safe product deep-link runtime harness yet  |
+| Pull Requests                  | shared list/row/loading/empty composition; real list/detail queries and pin mutation                                                                                          | loading/empty/unavailable use shared status/alert semantics; Native honors list/detail row counts; online empty and owned-server-offline alert have real runtime proof; refresh remains available                                           | list transport taxonomy and selected-detail region remain bounded follow-up, not fake-data or silent-state blockers        |
 
 ## Detailed findings
 
@@ -312,8 +312,7 @@ are covered by the pure resolver, both compilers, and shared render tests.
 
 #### H4 — Several state/status colors fail normal-text contrast
 
-**Current status:** resolved for informative text roles in implementation cut
-4. Decorative/disabled tertiary roles remain intentionally separate.
+**Current status:** resolved for informative text roles in implementation cut 4. Decorative/disabled tertiary roles remain intentionally separate.
 
 - **Location:** generated semantic values in
   `slice/src/generated/native-theme-variables.css:80-152,270-342`, plus

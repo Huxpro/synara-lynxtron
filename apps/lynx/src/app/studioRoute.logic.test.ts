@@ -1,21 +1,21 @@
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from "@rstest/core";
 
-import type { ProjectSummary, ThreadSummary } from './queries';
-import { resolveStudioRestoreRoute } from './studioRoute.logic';
+import type { ProjectSummary, ThreadSummary } from "./queries";
+import { resolveStudioRestoreRoute } from "./studioRoute.logic";
 
 const projects = [
   {
-    id: 'project-chat',
-    kind: 'chat',
-    title: 'Home',
-    workspaceRoot: '/home',
+    id: "project-chat",
+    kind: "chat",
+    title: "Home",
+    workspaceRoot: "/home",
     defaultModelSelection: null,
   },
   {
-    id: 'project-studio',
-    kind: 'studio',
-    title: 'Studio',
-    workspaceRoot: '/studio',
+    id: "project-studio",
+    kind: "studio",
+    title: "Studio",
+    workspaceRoot: "/studio",
     defaultModelSelection: null,
   },
 ] satisfies readonly ProjectSummary[];
@@ -38,56 +38,56 @@ function thread(input: {
   };
 }
 
-describe('resolveStudioRestoreRoute', () => {
-  it('restores a remembered route only when it belongs to Studio', () => {
+describe("resolveStudioRestoreRoute", () => {
+  it("restores a remembered route only when it belongs to Studio", () => {
     const threads = [
       thread({
-        id: 'studio-latest',
-        projectId: 'project-studio',
-        updatedAt: '2026-08-14T12:00:00.000Z',
+        id: "studio-latest",
+        projectId: "project-studio",
+        updatedAt: "2026-08-14T12:00:00.000Z",
       }),
       thread({
-        id: 'studio-remembered',
-        projectId: 'project-studio',
-        updatedAt: '2026-08-13T12:00:00.000Z',
+        id: "studio-remembered",
+        projectId: "project-studio",
+        updatedAt: "2026-08-13T12:00:00.000Z",
       }),
       thread({
-        id: 'chat-remembered',
-        projectId: 'project-chat',
-        updatedAt: '2026-08-14T13:00:00.000Z',
+        id: "chat-remembered",
+        projectId: "project-chat",
+        updatedAt: "2026-08-14T13:00:00.000Z",
       }),
     ];
 
     expect(
       resolveStudioRestoreRoute({
-        lastThreadRoute: { threadId: 'studio-remembered' },
+        lastThreadRoute: { threadId: "studio-remembered" },
         projects,
-        sortOrder: 'updated_at',
+        sortOrder: "updated_at",
         threads,
-      })
-    ).toEqual({ threadId: 'studio-remembered' });
+      }),
+    ).toEqual({ threadId: "studio-remembered" });
     expect(
       resolveStudioRestoreRoute({
-        lastThreadRoute: { threadId: 'chat-remembered' },
+        lastThreadRoute: { threadId: "chat-remembered" },
         projects,
-        sortOrder: 'updated_at',
+        sortOrder: "updated_at",
         threads,
-      })
-    ).toEqual({ threadId: 'studio-latest' });
+      }),
+    ).toEqual({ threadId: "studio-latest" });
   });
 
-  it('falls back to the latest active Studio thread', () => {
+  it("falls back to the latest active Studio thread", () => {
     const threads = [
       thread({
-        id: 'studio-latest',
-        projectId: 'project-studio',
-        updatedAt: '2026-08-14T12:00:00.000Z',
+        id: "studio-latest",
+        projectId: "project-studio",
+        updatedAt: "2026-08-14T12:00:00.000Z",
       }),
       thread({
-        id: 'studio-archived',
-        projectId: 'project-studio',
-        archivedAt: '2026-08-14T13:00:00.000Z',
-        updatedAt: '2026-08-14T13:00:00.000Z',
+        id: "studio-archived",
+        projectId: "project-studio",
+        archivedAt: "2026-08-14T13:00:00.000Z",
+        updatedAt: "2026-08-14T13:00:00.000Z",
       }),
     ];
 
@@ -95,26 +95,26 @@ describe('resolveStudioRestoreRoute', () => {
       resolveStudioRestoreRoute({
         lastThreadRoute: null,
         projects,
-        sortOrder: 'updated_at',
+        sortOrder: "updated_at",
         threads,
-      })
-    ).toEqual({ threadId: 'studio-latest' });
+      }),
+    ).toEqual({ threadId: "studio-latest" });
   });
 
-  it('returns null when Studio needs a new composer', () => {
+  it("returns null when Studio needs a new composer", () => {
     expect(
       resolveStudioRestoreRoute({
         lastThreadRoute: null,
         projects,
-        sortOrder: 'updated_at',
+        sortOrder: "updated_at",
         threads: [
           thread({
-            id: 'chat-only',
-            projectId: 'project-chat',
-            updatedAt: '2026-08-14T12:00:00.000Z',
+            id: "chat-only",
+            projectId: "project-chat",
+            updatedAt: "2026-08-14T12:00:00.000Z",
           }),
         ],
-      })
+      }),
     ).toBeNull();
   });
 });

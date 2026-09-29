@@ -85,13 +85,8 @@ export function resizeTerminalSplitWeights(input: {
   const nextWeight = startWeights[input.handleIndex + 1] ?? 1;
   const pairWeight = currentWeight + nextWeight;
   const totalWeight =
-    startWeights.reduce((sum, weight) => sum + weight, 0) ||
-    startWeights.length ||
-    1;
-  const minWeight = Math.max(
-    (pairWeight * MIN_TERMINAL_PANE_SIZE_PX) / input.totalSize,
-    0.1,
-  );
+    startWeights.reduce((sum, weight) => sum + weight, 0) || startWeights.length || 1;
+  const minWeight = Math.max((pairWeight * MIN_TERMINAL_PANE_SIZE_PX) / input.totalSize, 0.1);
   const deltaWeight =
     ((input.currentCoordinate - input.startCoordinate) / input.totalSize) * totalWeight;
   const resizedCurrent = Math.min(

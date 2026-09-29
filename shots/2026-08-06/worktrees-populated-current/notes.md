@@ -45,13 +45,13 @@ reuse one `SettingsWorktreesConversationList` owner.
 
 All content anchors are exact between Web and Lynx-for-Web:
 
-| Anchor | Web | Lynx-for-Web |
-| --- | --- | --- |
-| Title | `469/161/540.109375/18`, `12/18/500` | exact |
-| Path | `469/181/540.109375/18`, `12/18/400` | exact |
-| Conversations | `469/207/540.109375/18`, `11/18/500` | exact |
-| Empty conversation | `469/229/540.109375/18`, `12/18/400` | exact |
-| Delete | `1019.109375/161/47.890625/24`, `10/15/500` | exact |
+| Anchor             | Web                                         | Lynx-for-Web |
+| ------------------ | ------------------------------------------- | ------------ |
+| Title              | `469/161/540.109375/18`, `12/18/500`        | exact        |
+| Path               | `469/181/540.109375/18`, `12/18/400`        | exact        |
+| Conversations      | `469/207/540.109375/18`, `11/18/500`        | exact        |
+| Empty conversation | `469/229/540.109375/18`, `12/18/400`        | exact        |
+| Delete             | `1019.109375/161/47.890625/24`, `10/15/500` | exact        |
 
 Web reports the inner row content at `598x86`; Lynx's bordered/padded row is
 `622x106`. Both retained PNGs are exactly `1280x820`. Browser page-error files

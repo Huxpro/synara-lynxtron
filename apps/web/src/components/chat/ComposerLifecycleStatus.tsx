@@ -48,8 +48,7 @@ export function resolveComposerLifecycleTransition(input: {
   if (
     STOPPED_SESSION_STATUSES.has(current.sessionStatus ?? "") &&
     current.sessionStatus !== previous.sessionStatus &&
-    (ACTIVE_SESSION_STATUSES.has(previous.sessionStatus ?? "") ||
-      previous.operation === "stopping")
+    (ACTIVE_SESSION_STATUSES.has(previous.sessionStatus ?? "") || previous.operation === "stopping")
   ) {
     return { announcement: "Response stopped", intent: "status" };
   }
@@ -61,38 +60,24 @@ export function resolveComposerLifecycleTransition(input: {
       current.sessionStatus === null);
   if (
     reachedReadyState &&
-    (input.stopRequested ||
-      current.operation === "stopping" ||
-      previous.operation === "stopping")
+    (input.stopRequested || current.operation === "stopping" || previous.operation === "stopping")
   ) {
     return { announcement: "Response stopped", intent: "status" };
   }
 
-  if (
-    current.operation === "stopping" &&
-    previous.operation !== "stopping"
-  ) {
+  if (current.operation === "stopping" && previous.operation !== "stopping") {
     return { announcement: "Stopping response", intent: "status" };
   }
 
-  if (
-    current.operation === "sending" &&
-    previous.operation !== "sending"
-  ) {
+  if (current.operation === "sending" && previous.operation !== "sending") {
     return { announcement: "Sending message", intent: "status" };
   }
 
-  if (
-    current.sessionStatus === "starting" &&
-    previous.sessionStatus !== "starting"
-  ) {
+  if (current.sessionStatus === "starting" && previous.sessionStatus !== "starting") {
     return { announcement: "Starting response", intent: "status" };
   }
 
-  if (
-    current.sessionStatus === "running" &&
-    previous.sessionStatus !== "running"
-  ) {
+  if (current.sessionStatus === "running" && previous.sessionStatus !== "running") {
     return { announcement: "Response started", intent: "status" };
   }
 
@@ -120,23 +105,17 @@ export function ComposerLifecycleStatus(props: {
     current,
     includeFailure: props.includeFailure ?? true,
     previous: previousRef.current,
-    stopRequested:
-      stopRequestedRef.current || props.operation === "stopping",
+    stopRequested: stopRequestedRef.current || props.operation === "stopping",
   });
 
   useEffect(() => {
     previousRef.current = current;
-    if (
-      presentation?.announcement === "Response stopped" ||
-      presentation?.intent === "alert"
-    ) {
+    if (presentation?.announcement === "Response stopped" || presentation?.intent === "alert") {
       stopRequestedRef.current = false;
     } else if (props.operation === "stopping") {
       stopRequestedRef.current = true;
     }
   }, [props.errorMessage, props.operation, props.sessionStatus]);
 
-  return presentation ? (
-    <ComposerLifecycleStatusElement {...presentation} />
-  ) : null;
+  return presentation ? <ComposerLifecycleStatusElement {...presentation} /> : null;
 }

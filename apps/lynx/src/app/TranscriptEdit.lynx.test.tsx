@@ -1,22 +1,20 @@
-import { describe, expect, it, rs } from '@rstest/core';
-import { fireEvent, render, waitFor } from '@lynx-js/react/testing-library';
+import { describe, expect, it, rs } from "@rstest/core";
+import { fireEvent, render, waitFor } from "@lynx-js/react/testing-library";
 
-import { TranscriptUserMessageEditForm } from './TranscriptUserMessageEditForm.lynx';
+import { TranscriptUserMessageEditForm } from "./TranscriptUserMessageEditForm.lynx";
 
 function editTextarea(): Element {
-  const element = elementTree.root?.querySelector(
-    '.TranscriptUserEditTextarea'
-  );
-  if (!element) throw new Error('expected user-message edit textarea');
+  const element = elementTree.root?.querySelector(".TranscriptUserEditTextarea");
+  if (!element) throw new Error("expected user-message edit textarea");
   return element;
 }
 
 function editButtons(): Element[] {
-  return [...(elementTree.root?.querySelectorAll('.TranscriptUserEditActions .LxButton') ?? [])];
+  return [...(elementTree.root?.querySelectorAll(".TranscriptUserEditActions .LxButton") ?? [])];
 }
 
-describe('Lynx user-message edit form', () => {
-  it('keeps the draft local and exposes cancel/send through native controls', async () => {
+describe("Lynx user-message edit form", () => {
+  it("keeps the draft local and exposes cancel/send through native controls", async () => {
     const onCancel = rs.fn();
     const onDraftChange = rs.fn();
     const onSubmit = rs.fn();
@@ -29,21 +27,17 @@ describe('Lynx user-message edit form', () => {
         onCancel={onCancel}
         onDraftChange={onDraftChange}
         onSubmit={onSubmit}
-      />
+      />,
     );
 
-    expect(editTextarea().getAttribute('accessibility-label')).toBe(
-      'Edit message'
-    );
+    expect(editTextarea().getAttribute("accessibility-label")).toBe("Edit message");
     editTextarea().dispatchEvent(
-      new CustomEvent('bindEvent:input', {
+      new CustomEvent("bindEvent:input", {
         bubbles: true,
-        detail: { value: 'Edited prompt' },
-      })
+        detail: { value: "Edited prompt" },
+      }),
     );
-    await waitFor(() =>
-      expect(onDraftChange).toHaveBeenCalledWith('Edited prompt')
-    );
+    await waitFor(() => expect(onDraftChange).toHaveBeenCalledWith("Edited prompt"));
 
     const [cancel, send] = editButtons();
     fireEvent.tap(cancel!);
@@ -52,7 +46,7 @@ describe('Lynx user-message edit form', () => {
     expect(onSubmit).toHaveBeenCalledTimes(1);
   });
 
-  it('retains and displays a failed draft while disabling pending actions', () => {
+  it("retains and displays a failed draft while disabling pending actions", () => {
     render(
       <TranscriptUserMessageEditForm
         chatFontSizePx={14}
@@ -62,18 +56,17 @@ describe('Lynx user-message edit form', () => {
         onCancel={() => undefined}
         onDraftChange={() => undefined}
         onSubmit={() => undefined}
-      />
+      />,
     );
 
-    expect(editTextarea().getAttribute('default-value')).toBe('Keep this draft');
-    expect(
-      elementTree.root?.querySelector('.TranscriptUserEditError')?.textContent
-    ).toBe('Provider unavailable');
+    expect(editTextarea().getAttribute("default-value")).toBe("Keep this draft");
+    expect(elementTree.root?.querySelector(".TranscriptUserEditError")?.textContent).toBe(
+      "Provider unavailable",
+    );
     expect(
       editButtons().every(
-        (button) =>
-          button.getAttribute('accessibility-state') === '{"disabled":true}'
-      )
+        (button) => button.getAttribute("accessibility-state") === '{"disabled":true}',
+      ),
     ).toBe(true);
   });
 });

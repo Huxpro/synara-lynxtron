@@ -3,14 +3,7 @@ import type { ReactNode } from "react";
 
 import { PlusIcon, RefreshCwIcon, XIcon } from "~/lib/icons";
 import { SpaceIcon } from "../SpaceIcon";
-import {
-  Menu,
-  MenuGroup,
-  MenuGroupLabel,
-  MenuItem,
-  MenuSeparator,
-  MenuTrigger,
-} from "../ui/menu";
+import { Menu, MenuGroup, MenuGroupLabel, MenuItem, MenuSeparator, MenuTrigger } from "../ui/menu";
 import { FolderClosed } from "../FolderClosed";
 import { PickerTriggerButton } from "./PickerTriggerButton";
 import { ComposerPickerMenuPopup } from "./ComposerPickerMenuPopup";
@@ -53,11 +46,7 @@ export function ComposerProjectPickerFrameElement(props: {
           />
         }
       />
-      <ComposerPickerMenuPopup
-        align={props.align}
-        side={props.side}
-        className="min-w-72"
-      >
+      <ComposerPickerMenuPopup align={props.align} side={props.side} className="min-w-72">
         {props.children}
       </ComposerPickerMenuPopup>
     </Menu>
@@ -119,10 +108,7 @@ export function ComposerProjectPickerOptionElement(props: {
   readonly onSelect: () => void;
 }) {
   return (
-    <MenuItem
-      data-project-picker-option={props.primaryLabel}
-      onClick={props.onSelect}
-    >
+    <MenuItem data-project-picker-option={props.primaryLabel} onClick={props.onSelect}>
       <span className="flex w-full min-w-0 items-center gap-2">
         <FolderClosed className="size-3.5 shrink-0 text-muted-foreground/70" />
         <span className="flex min-w-0 items-baseline gap-1.5">
@@ -141,9 +127,7 @@ export function ComposerProjectPickerOptionElement(props: {
   );
 }
 
-export function ComposerProjectPickerEmptyElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function ComposerProjectPickerEmptyElement(props: { readonly children?: ReactNode }) {
   return (
     <p className="px-3 py-6 text-center text-[length:var(--app-font-size-ui-sm,11px)] text-muted-foreground/60">
       {props.children}
@@ -171,12 +155,7 @@ export function ComposerProjectPickerActionElement(props: {
   readonly disabled?: boolean;
   readonly onActivate: () => void;
 }) {
-  const Icon =
-    props.kind === "add"
-      ? PlusIcon
-      : props.kind === "reset"
-        ? XIcon
-        : RefreshCwIcon;
+  const Icon = props.kind === "add" ? PlusIcon : props.kind === "reset" ? XIcon : RefreshCwIcon;
   return (
     <button
       type="button"

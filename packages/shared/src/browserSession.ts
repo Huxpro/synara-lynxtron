@@ -159,7 +159,8 @@ export function buildBrowserAddressSuggestions(input: {
 
   for (const entry of input.recentHistory) {
     const entryUrl = displaySuggestionUrl(entry.url);
-    if (!entryUrl || (query && !`${entry.title} ${entryUrl}`.toLowerCase().includes(query))) continue;
+    if (!entryUrl || (query && !`${entry.title} ${entryUrl}`.toLowerCase().includes(query)))
+      continue;
     pushBrowserAddressSuggestion(suggestions, seenUrls, {
       id: `history:${entry.url}`,
       kind: "history",

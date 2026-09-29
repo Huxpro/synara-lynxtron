@@ -1,7 +1,7 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import { SynaraLogo } from '~/components/SynaraLogo';
-import './chat-empty-state-hero-elements.css';
+import { SynaraLogo } from "~/components/SynaraLogo";
+import "./chat-empty-state-hero-elements.css";
 
 interface ChildrenProps {
   readonly children?: ReactNode;

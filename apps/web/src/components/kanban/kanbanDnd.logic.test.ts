@@ -1,10 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { KanbanCard } from "./kanban.logic";
-import {
-  resolveKanbanCrossColumnDropPolicy,
-  resolveKanbanDragColumn,
-} from "./kanbanDnd.logic";
+import { resolveKanbanCrossColumnDropPolicy, resolveKanbanDragColumn } from "./kanbanDnd.logic";
 
 function card(overrides: Partial<KanbanCard> = {}): KanbanCard {
   return {
@@ -73,11 +70,9 @@ describe("Kanban cross-column DnD policy", () => {
       }),
     ).toEqual({ kind: "prompt-required", label: "Release to add a prompt" });
     expect(
-      resolveKanbanCrossColumnDropPolicy(
-        card({ draftPrompt: "", thread: null }),
-        "inProgress",
-        { canSupplyStartPrompt: true },
-      ),
+      resolveKanbanCrossColumnDropPolicy(card({ draftPrompt: "", thread: null }), "inProgress", {
+        canSupplyStartPrompt: true,
+      }),
     ).toMatchObject({ kind: "invalid", reason: "prompt-unavailable" });
   });
 

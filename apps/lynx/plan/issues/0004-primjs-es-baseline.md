@@ -16,13 +16,13 @@ The main-thread engine is missing several standard built-ins that are now baseli
 
 Concrete cases from porting a mid-sized React app:
 
-| Missing | Spec | How it surfaced |
-|---|---|---|
-| `Object.hasOwn` | ES2022 | Runtime `not a function` inside a schema library's parser construction, reached through a shared dependency graph |
-| `String.prototype.replaceAll` | ES2021 | A top-level initializer using it caused a **native startup crash** (bisected to the exact commit); a second occurrence only surfaced when a production fixture was force-opened |
-| `Array.prototype.toSorted` | ES2023 | Surfaced as an *unnamed* non-blocking rejection until DevTool produced a named stack; three more call sites found afterwards. Sibling methods (`toReversed`, `toSpliced`, `with`) presumably share the gap |
-| `TextEncoder` / `TextDecoder` | WHATWG Encoding | Required by common wire/serialization libraries; we ship a pure-JS UTF-8 polyfill (ASCII/CJK/astral-plane tested) as the first import of our entry file |
-| `URLSearchParams` | WHATWG URL | Needs `url-search-params-polyfill` loaded before everything else |
+| Missing                       | Spec            | How it surfaced                                                                                                                                                                                            |
+| ----------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Object.hasOwn`               | ES2022          | Runtime `not a function` inside a schema library's parser construction, reached through a shared dependency graph                                                                                          |
+| `String.prototype.replaceAll` | ES2021          | A top-level initializer using it caused a **native startup crash** (bisected to the exact commit); a second occurrence only surfaced when a production fixture was force-opened                            |
+| `Array.prototype.toSorted`    | ES2023          | Surfaced as an _unnamed_ non-blocking rejection until DevTool produced a named stack; three more call sites found afterwards. Sibling methods (`toReversed`, `toSpliced`, `with`) presumably share the gap |
+| `TextEncoder` / `TextDecoder` | WHATWG Encoding | Required by common wire/serialization libraries; we ship a pure-JS UTF-8 polyfill (ASCII/CJK/astral-plane tested) as the first import of our entry file                                                    |
+| `URLSearchParams`             | WHATWG URL      | Needs `url-search-params-polyfill` loaded before everything else                                                                                                                                           |
 
 ## Ask
 

@@ -36,12 +36,12 @@ The Skills row now has explicit owners:
 
 ## Exact populated rows
 
-| Row | Web | Lynx-for-Web |
-| --- | ---: | ---: |
-| `adapt` | `457/333.5/622/123.5` | exact |
-| `agent-browser` | `457/457/622/213.5` | exact |
-| `agent-device` | `457/670.5/622/159.5` | exact |
-| `android-device-automation` | `457/830/622/123.5` | exact |
+| Row                         |                   Web | Lynx-for-Web |
+| --------------------------- | --------------------: | -----------: |
+| `adapt`                     | `457/333.5/622/123.5` |        exact |
+| `agent-browser`             |   `457/457/622/213.5` |        exact |
+| `agent-device`              | `457/670.5/622/159.5` |        exact |
+| `android-device-automation` |   `457/830/622/123.5` |        exact |
 
 For `agent-browser`:
 

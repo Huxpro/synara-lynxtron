@@ -6,12 +6,7 @@
     "pageErrors": [],
     "lastTransportError": null,
     "lastRpcError": null,
-    "lifecycle": [
-      "connect-attempt",
-      "feature-open",
-      "connect-success",
-      "socket-owned"
-    ]
+    "lifecycle": ["connect-attempt", "feature-open", "connect-success", "socket-owned"]
   },
   "native": {
     "client": "localhost:8902",

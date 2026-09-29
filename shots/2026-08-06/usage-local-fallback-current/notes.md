@@ -61,17 +61,17 @@ fixed owners are:
 After assigning those values to their semantic owners, Web and Lynx-for-Web
 content anchors are exact:
 
-| Anchor | Web | Lynx-for-Web |
-| --- | --- | --- |
-| Warning | `573/209/.../19.5` | exact |
-| Weekly label | `553/242.5/.../16` | exact |
-| Track | `553/264.5/590/8` | exact |
-| 4% fill | width `23.59375` | exact |
-| 4% left | `553/278.5/.../16.5` | exact |
-| 24h line | y `322`, 12/16 | exact |
-| 24h subtitle | y `340`, 11/16.5 | exact |
-| 7d line/subtitle | y `362.5` / `380.5` | exact |
-| 30d line/subtitle | y `403` / `421` | exact |
+| Anchor            | Web                  | Lynx-for-Web |
+| ----------------- | -------------------- | ------------ |
+| Warning           | `573/209/.../19.5`   | exact        |
+| Weekly label      | `553/242.5/.../16`   | exact        |
+| Track             | `553/264.5/590/8`    | exact        |
+| 4% fill           | width `23.59375`     | exact        |
+| 4% left           | `553/278.5/.../16.5` | exact        |
+| 24h line          | y `322`, 12/16       | exact        |
+| 24h subtitle      | y `340`, 11/16.5     | exact        |
+| 7d line/subtitle  | y `362.5` / `380.5`  | exact        |
+| 30d line/subtitle | y `403` / `421`      | exact        |
 
 Web's inner card is `622x302.5`; Lynx's bordered card is `624x304.5`.
 Both retained Browser PNGs are exactly `1440x900`, and both page-error files

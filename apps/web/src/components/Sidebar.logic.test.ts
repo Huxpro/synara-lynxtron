@@ -1373,10 +1373,7 @@ describe("collectVisibleSidebarThreadIds", () => {
     expect(
       collectVisibleSidebarThreadIds({
         pinnedThreadIds: ["pinned", "shared"],
-        projectVisibleThreadIds: [
-          ["project-a", "shared"],
-          ["project-b"],
-        ],
+        projectVisibleThreadIds: [["project-a", "shared"], ["project-b"]],
         trailingThreadIds: ["chat", "project-a"],
       }),
     ).toEqual(["pinned", "shared", "project-a", "project-b", "chat"]);

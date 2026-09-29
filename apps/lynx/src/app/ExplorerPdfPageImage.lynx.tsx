@@ -1,4 +1,4 @@
-import { useState } from '@lynx-js/react';
+import { useState } from "@lynx-js/react";
 
 export function ExplorerPdfPageImage(props: {
   readonly accessibilityLabel: string;
@@ -25,7 +25,7 @@ export function ExplorerPdfPageImage(props: {
       accessibility-element={true}
       accessibility-label={props.accessibilityLabel}
       binderror={() => {
-        'background only';
+        "background only";
         setRenderFailed(true);
       }}
     />

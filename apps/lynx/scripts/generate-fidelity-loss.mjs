@@ -1,18 +1,11 @@
-import { execFileSync } from 'node:child_process';
-import {
-  existsSync,
-  mkdtempSync,
-  mkdirSync,
-  readFileSync,
-  rmSync,
-  writeFileSync,
-} from 'node:fs';
-import { createHash } from 'node:crypto';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import sharp from 'sharp';
+import { execFileSync } from "node:child_process";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import sharp from "sharp";
 
 import {
   calculateFidelityLoss,
@@ -33,1612 +26,1553 @@ import {
   visualSampleSupersessionAtCommit,
   weightedComponentContributions,
   FIDELITY_LOSS_WEIGHTS,
-} from './fidelity-loss.logic.mjs';
+} from "./fidelity-loss.logic.mjs";
 
-const scriptDirectory = fileURLToPath(new URL('.', import.meta.url));
-const repoRoot = resolve(scriptDirectory, '../../..');
-const evidenceRoot = resolve(
-  repoRoot,
-  'shots/2026-08-04/p10-perceptual-fidelity'
-);
-const archivePath = resolve(evidenceRoot, 'screenshot-archive.js');
-const outputJsonPath = resolve(evidenceRoot, 'fidelity-loss.json');
-const outputJsPath = resolve(evidenceRoot, 'fidelity-loss.js');
-const comparableClients = ['web', 'lynx', 'native'];
+const scriptDirectory = fileURLToPath(new URL(".", import.meta.url));
+const repoRoot = resolve(scriptDirectory, "../../..");
+const evidenceRoot = resolve(repoRoot, "shots/2026-08-04/p10-perceptual-fidelity");
+const archivePath = resolve(evidenceRoot, "screenshot-archive.js");
+const outputJsonPath = resolve(evidenceRoot, "fidelity-loss.json");
+const outputJsPath = resolve(evidenceRoot, "fidelity-loss.js");
+const comparableClients = ["web", "lynx", "native"];
 const visualRollingWindowSize = 24;
 const emaAlpha = 0.18;
-const remoteAssetCache = mkdtempSync(
-  join(tmpdir(), 'synara-fidelity-assets-cache-')
-);
+const remoteAssetCache = mkdtempSync(join(tmpdir(), "synara-fidelity-assets-cache-"));
 mkdirSync(remoteAssetCache, { recursive: true });
-process.on('exit', () => {
+process.on("exit", () => {
   rmSync(remoteAssetCache, { force: true, recursive: true });
 });
 
 const reliabilityLedger = [
   {
-    id: 'viewport-state-fanout',
+    id: "viewport-state-fanout",
     severityPoints: 1,
-    introduced: '664d8063e',
-    fixed: '4ae9dedf4',
-    summary: 'Viewport hydration race and duplicated resize subscriptions',
+    introduced: "664d8063e",
+    fixed: "4ae9dedf4",
+    summary: "Viewport hydration race and duplicated resize subscriptions",
   },
   {
-    id: 'titlebar-drag-controls',
+    id: "titlebar-drag-controls",
     severityPoints: 3,
-    introduced: 'bc846aab4',
-    fixed: '3b9e343cc',
-    summary: 'Focusable titlebar controls participated in the drag region',
+    introduced: "bc846aab4",
+    fixed: "3b9e343cc",
+    summary: "Focusable titlebar controls participated in the drag region",
   },
   {
-    id: 'native-preview-startup',
+    id: "native-preview-startup",
     severityPoints: 3,
-    introduced: '7165953da',
-    fixed: '13561914d',
-    summary: 'Explorer preview initializer crashed the Native runtime',
+    introduced: "7165953da",
+    fixed: "13561914d",
+    summary: "Explorer preview initializer crashed the Native runtime",
   },
   {
-    id: 'native-diff-nested-wheel-routing',
+    id: "native-diff-nested-wheel-routing",
     severityPoints: 3,
-    introduced: '7edf76421',
-    fixed: '0870afbbd',
+    introduced: "7edf76421",
+    fixed: "0870afbbd",
     summary:
-      'A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control',
+      "A global CGEvent probe was incorrectly attributed to the exact-owned Native Diff dock without a passing owned simple-scroll control",
   },
   {
-    id: 'lynx-web-relay-open-state-misclassified',
+    id: "lynx-web-relay-open-state-misclassified",
     severityPoints: 3,
-    introduced: 'b4df16d69',
-    fixed: '023a36d57',
+    introduced: "b4df16d69",
+    fixed: "023a36d57",
     summary:
-      'Lynx-for-Web rejected an open feature socket because the host depended on WebSocket.OPEN',
+      "Lynx-for-Web rejected an open feature socket because the host depended on WebSocket.OPEN",
   },
   {
-    id: 'lynx-web-relay-auth-query-dropped',
+    id: "lynx-web-relay-auth-query-dropped",
     severityPoints: 3,
-    introduced: 'b4df16d69',
-    fixed: 'e86b1fe2a',
+    introduced: "b4df16d69",
+    fixed: "e86b1fe2a",
     summary:
-      'Lynx-for-Web normalized configured relay URLs to origin and dropped authentication query parameters before opening bootstrap and feature sockets',
+      "Lynx-for-Web normalized configured relay URLs to origin and dropped authentication query parameters before opening bootstrap and feature sockets",
   },
 ];
 const productEvidenceSupersessionLedger = [
   {
-    id: 'plugin-skills-postfix-current',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-09-02--plugins-skills-current-committed'],
-    affectedStateKeys: ['skills-wide-light'],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: '1596dfa41',
+    id: "plugin-skills-postfix-current",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-09-02--plugins-skills-current-committed"],
+    affectedStateKeys: ["skills-wide-light"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "1596dfa41",
     summary:
-      'The first committed Plugin Skills recapture predates the final provider-label/icon paint, Web-exact header capsule, and wide-grid rhythm corrections.',
+      "The first committed Plugin Skills recapture predates the final provider-label/icon paint, Web-exact header capsule, and wide-grid rhythm corrections.",
     resolution:
-      'Committed retained evidence uses the same backend, snapshot, complete Codex Skills catalog, expanded project state, light 1280x820 DPR1 viewport, and overlay-free state. Current MAE is 1.1908321128248047%.',
+      "Committed retained evidence uses the same backend, snapshot, complete Codex Skills catalog, expanded project state, light 1280x820 DPR1 viewport, and overlay-free state. Current MAE is 1.1908321128248047%.",
     evidence: [
-      'shots/2026-09-03/plugins-skills-postfix-current/notes.md',
-      'shots/2026-09-03/plugins-skills-postfix-current/pngs.sha256',
+      "shots/2026-09-03/plugins-skills-postfix-current/notes.md",
+      "shots/2026-09-03/plugins-skills-postfix-current/pngs.sha256",
     ],
   },
   {
-    id: 'plugin-skills-wide-current-committed',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-14--plugins--visual-matrix'],
-    affectedStateKeys: ['skills-wide-light'],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: 'b5c80c68e',
+    id: "plugin-skills-wide-current-committed",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-14--plugins--visual-matrix"],
+    affectedStateKeys: ["skills-wide-light"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "b5c80c68e",
     summary:
-      'The archived wide Skills pair predates the committed two-column skill identity, provider icon, scrollbar-gutter, and installed-state composition.',
+      "The archived wide Skills pair predates the committed two-column skill identity, provider icon, scrollbar-gutter, and installed-state composition.",
     resolution:
-      'Committed current evidence renders the same populated Codex Skills catalog in Electron and Lynx-for-Web on one authenticated backend, route, theme, viewport, sidebar, and overlay state.',
+      "Committed current evidence renders the same populated Codex Skills catalog in Electron and Lynx-for-Web on one authenticated backend, route, theme, viewport, sidebar, and overlay state.",
     evidence: [
-      'shots/2026-09-02/plugins-skills-current-committed/notes.md',
-      'shots/2026-09-02/plugins-skills-current-committed/web-skills-wide-light.png',
-      'shots/2026-09-02/plugins-skills-current-committed/lynx-skills-wide-light.png',
+      "shots/2026-09-02/plugins-skills-current-committed/notes.md",
+      "shots/2026-09-02/plugins-skills-current-committed/web-skills-wide-light.png",
+      "shots/2026-09-02/plugins-skills-current-committed/lynx-skills-wide-light.png",
     ],
   },
   {
-    id: 'markdown-surface-current-light',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-02--harness--markdown--before'],
-    affectedStateKeys: ['1280x820'],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: '0dfcf4b69',
+    id: "markdown-surface-current-light",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-02--harness--markdown--before"],
+    affectedStateKeys: ["1280x820"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "0dfcf4b69",
     summary:
-      'The August 2 light Markdown frame predates the current shared transcript composition and Markdown rendering implementation.',
+      "The August 2 light Markdown frame predates the current shared transcript composition and Markdown rendering implementation.",
     resolution:
-      'Committed current evidence renders one canonical Markdown fixture in Electron and Lynx-for-Web on the same authenticated backend, thread, route, light theme, viewport, dock, and overlay state.',
+      "Committed current evidence renders one canonical Markdown fixture in Electron and Lynx-for-Web on the same authenticated backend, thread, route, light theme, viewport, dock, and overlay state.",
     evidence: [
-      'shots/2026-09-02/markdown-surface-current/notes.md',
-      'shots/2026-09-02/markdown-surface-current/web-light-1280x820.png',
-      'shots/2026-09-02/markdown-surface-current/lynx-light-1280x820.png',
+      "shots/2026-09-02/markdown-surface-current/notes.md",
+      "shots/2026-09-02/markdown-surface-current/web-light-1280x820.png",
+      "shots/2026-09-02/markdown-surface-current/lynx-light-1280x820.png",
     ],
   },
   {
-    id: 'markdown-surface-current-dark',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-02--harness--markdown--after-dark'],
-    affectedStateKeys: ['1280x820'],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: '0dfcf4b69',
+    id: "markdown-surface-current-dark",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-02--harness--markdown--after-dark"],
+    affectedStateKeys: ["1280x820"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "0dfcf4b69",
     summary:
-      'The August 2 dark Markdown frame predates the current shared transcript composition and Markdown rendering implementation.',
+      "The August 2 dark Markdown frame predates the current shared transcript composition and Markdown rendering implementation.",
     resolution:
-      'Committed current evidence renders the same canonical Markdown fixture in Electron and Lynx-for-Web on the same authenticated backend, thread, route, dark theme, viewport, dock, and overlay state.',
+      "Committed current evidence renders the same canonical Markdown fixture in Electron and Lynx-for-Web on the same authenticated backend, thread, route, dark theme, viewport, dock, and overlay state.",
     evidence: [
-      'shots/2026-09-02/markdown-surface-current/notes.md',
-      'shots/2026-09-02/markdown-surface-current/web-dark-1280x820.png',
-      'shots/2026-09-02/markdown-surface-current/lynx-dark-1280x820.png',
+      "shots/2026-09-02/markdown-surface-current/notes.md",
+      "shots/2026-09-02/markdown-surface-current/web-dark-1280x820.png",
+      "shots/2026-09-02/markdown-surface-current/lynx-dark-1280x820.png",
     ],
   },
   {
-    id: 'composer-details-tokens-1280-current',
-    type: 'superseded-product-snapshot',
+    id: "composer-details-tokens-1280-current",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-03--composer-details--browser--skills-mentions-1280"],
+    affectedStateKeys: ["skill-menu", "mention-menu", "skill-selected", "mention-selected"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "c805bd463",
+    summary:
+      "The August 3 composer detail frames predate shared skill display names, rich-token label formatting, and the current matched 1280px composer shell.",
+    resolution:
+      "Committed retained Electron and Lynx-for-Web evidence covers the same four states on one backend, thread, route, theme, viewport, dock, transcript, and overlay state.",
+    evidence: [
+      "shots/2026-09-02/composer-tokens-1280-current/notes.md",
+      "shots/2026-09-02/composer-tokens-1280-current/pngs.sha256",
+    ],
+  },
+  {
+    id: "markdown-token-current-persisted-output",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-02--harness--markdown-tokens"],
+    affectedStateKeys: ["persisted-tokens"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "4582803a2",
+    summary:
+      "The August 2 persisted-token frame predates current shared token labels, full-pane transcript composition, and resolved Native skill accent paint.",
+    resolution:
+      "Committed retained evidence renders one canonical isolated user message with non-empty mention and skill projections in Electron and Lynx-for-Web on the same backend, thread, route, theme, viewport, and dock state.",
+    evidence: [
+      "shots/2026-09-02/markdown-tokens-current/notes.md",
+      "shots/2026-09-02/markdown-tokens-current/electron-persisted-tokens.png",
+      "shots/2026-09-02/markdown-tokens-current/lynx-persisted-tokens.png",
+    ],
+  },
+  {
+    id: "markdown-token-current-menu-and-selection",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-02--harness--markdown-tokens"],
+    affectedStateKeys: ["skill-menu", "mention-menu", "skill-selected", "mention-selected"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "3a8158992",
+    summary:
+      "The August 2 composer menu and selected-token frames predate shared skill display-name projection and current rich-token presentation.",
+    resolution:
+      "Committed retained Electron and Lynx-for-Web evidence covers the same backend, thread, route, overlay state, viewport, and dock state for both menus and both selected-token states. Persisted-token output remains independently scored.",
+    evidence: [
+      "shots/2026-09-02/markdown-tokens-current/notes.md",
+      "shots/2026-09-02/markdown-tokens-current/pngs.sha256",
+    ],
+  },
+  {
+    id: "transcript-scroll-current-full-pane",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-02--harness--transcript-scroll"],
+    affectedStateKeys: ["pinned", "detached"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "3986fb12a",
+    summary:
+      "The August 2 transcript frames predate the shared full-pane scroll owner and the Lynx-safe scroll-to-bottom icon.",
+    resolution:
+      "Committed retained Electron and Lynx-for-Web evidence uses one backend, thread, route, overlay state, viewport, and dock state for both pinned and detached cells. The full-pane owner is converged and the detached control now paints the canonical arrow.",
+    evidence: [
+      "shots/2026-09-02/transcript-current-recapture/notes.md",
+      "shots/2026-09-02/transcript-current-recapture/electron-pinned.png",
+      "shots/2026-09-02/transcript-current-recapture/lynx-pinned.png",
+      "shots/2026-09-02/transcript-current-recapture/electron-detached.png",
+      "shots/2026-09-02/transcript-current-recapture/lynx-detached.png",
+    ],
+  },
+  {
+    id: "p8-q2-thread-current-full-pane",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-03--p8-q2--thread--"],
+    affectedStateKeys: ["raw"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "3986fb12a",
+    summary:
+      "The P8-Q2 Thread Browser matrix records the same retired 736px outer transcript-list architecture as the older transcript-scroll samples.",
+    resolution:
+      "Committed retained Electron and Lynx-for-Web evidence at the full-pane scroll-owner boundary supersedes the four old Browser cells. The transcript-mismatched Native siblings remain independently excluded rather than treated as replacement evidence.",
+    evidence: [
+      "shots/2026-08-03/p8-q2/threads-thread/notes.md",
+      "shots/2026-09-02/transcript-current-recapture/notes.md",
+      "shots/2026-09-02/transcript-current-recapture/electron-pinned.png",
+      "shots/2026-09-02/transcript-current-recapture/lynx-pinned.png",
+    ],
+  },
+  {
+    id: "settings-behavior-dark-current-stable",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-03--settings-behavior--browser--dark-1440"],
+    affectedStateKeys: ["raw"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "390b2fc7a",
+    summary:
+      "The original dark Behavior pair predates the stable-state fix that removes Lynx-only Preferences loaded feedback.",
+    resolution:
+      "Committed retained Electron and Lynx-for-Web evidence uses the same backend, Behavior route, dark 1440x900 DPR1 viewport, settings values, and provider-update overlay. Current MAE is 0.5927520576131687%.",
+    evidence: [
+      "shots/2026-09-02/settings-behavior-current/notes.md",
+      "shots/2026-09-02/settings-behavior-current/pngs.sha256",
+    ],
+  },
+  {
+    id: "settings-behavior-light-current-stable",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-03--settings-behavior--browser--light-1280"],
+    affectedStateKeys: ["raw"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "64b73fa6e",
+    summary:
+      "The original light Behavior pair predates the stable-state fix that removes Lynx-only Preferences loaded feedback.",
+    resolution:
+      "Committed retained Electron and Lynx-for-Web evidence uses the same backend and snapshot, Behavior route, light 1280x820 DPR1 viewport, settings values, 256px sidebar, and overlay-free state. Current MAE is 0.7313075382592061%.",
+    evidence: [
+      "shots/2026-09-03/settings-behavior-light-current/notes.md",
+      "shots/2026-09-03/settings-behavior-light-current/pngs.sha256",
+    ],
+  },
+  {
+    id: "p8-q2-empty-thread-current-landing",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-03--p8-q2--threads--"],
+    supersededAt: "8d1506220",
+    summary:
+      "The P8-Q2 empty-thread landing frames record the pre-centered hero/composer and pre-context-tray product state.",
+    resolution:
+      "Committed retained Web, Lynx-for-Web, and exact-owned Native evidence covers the centered shared landing, project context tray, and Temporary lifecycle. All eight old Browser and Native pairs stop contributing after that product boundary.",
+    evidence: ["shots/2026-08-06/thread-empty-current/notes.md", "apps/lynx/plan/LOG.md"],
+  },
+  {
+    id: "p9-composer-default-current-landing",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-03--p9-u5-composer--browser--default"],
+    affectedStateKeys: ["screenshot"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "180a6b27e",
+    summary:
+      "The P9 Composer default Browser pair predates the shared 256px sidebar and current centered empty-landing geometry.",
+    resolution:
+      "Later retained light 1280x820 DPR1 evidence covers the same New Chat, empty draft, no selected project, Plan-off, Fast-off semantic state with exact sidebar/main ownership and subpixel-aligned heading and composer anchors.",
+    evidence: [
+      "shots/2026-08-03/p9-u5-composer/browser/default/web/assertions.json",
+      "shots/2026-08-03/p9-u5-composer/browser/default/lynx/assertions.json",
+      "shots/2026-08-08/current-head-landing-light-1280/notes.md",
+    ],
+  },
+  {
+    id: "initial-composer-current-landing",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-02--harness--composer"],
+    affectedStateKeys: ["light"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "180a6b27e",
+    summary:
+      "The initial Composer light pair records the old +8px horizontal and +7.25px vertical Lynx landing offsets.",
+    resolution:
+      "Later retained light 1280x820 DPR1 evidence covers the same empty New Chat state with exact 256px sidebar ownership and subpixel-aligned heading, composer, and project tray anchors.",
+    evidence: [
+      "shots/2026-08-02/harness/composer/notes.md",
+      "shots/2026-08-08/current-head-landing-light-1280/notes.md",
+    ],
+  },
+  {
+    id: "composer-provider-activation-current-dynamic-models",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-11--current-head-composer-provider-activation-light-1280"],
+    affectedStateKeys: ["models"],
+    affectedClientPairs: ["web:lynx"],
+    supersededAt: "6c6392f1e",
+    summary:
+      "The provider-activation frame predates first-render dynamic model hydration and compares Web seven-model OpenCode data against the Lynx static OpenAI GPT-5 fallback.",
+    resolution:
+      "The immediately following retained light 1280x820 DPR1 dynamic-model evidence uses the same provider and status overlay while both clients render the same seven OpenCode models.",
+    evidence: [
+      "shots/2026-08-11/current-head-composer-provider-activation-light-1280/notes.md",
+      "shots/2026-08-11/current-head-composer-dynamic-models-light-1280/notes.md",
+    ],
+  },
+  {
+    id: "p8-pull-requests-light-current-controls",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-03--p8-q2--pull-requests--light-1280"],
+    affectedStateKeys: ["raw"],
+    affectedClientPairs: ["lynx:native"],
+    supersededAt: "544d49bc0",
+    summary:
+      "The P8 light 1280 Pull Requests Native pair predates the final route title, inset, pill, project-filter, and refresh-control composition.",
+    resolution:
+      "Later retained light 1280x820 default All/Open empty-list evidence covers the same semantic state in Lynx-for-Web and exact-owned Native with the corrected controls and clean consoles.",
+    evidence: [
+      "shots/2026-08-03/p8-q2/pull-requests/notes.md",
+      "shots/2026-08-06/pull-requests-current/notes.md",
+      "shots/2026-08-06/pull-requests-current/native/capture.json",
+    ],
+  },
+  {
+    id: "p8-q2-settings-general-current-native-shell",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-03--p8-q2--settings--"],
+    affectedClientPairs: ["lynx:native"],
+    supersededAt: "a385a479f",
+    summary:
+      "The P8-Q2 Settings General Native frames predate the canonical 256px Settings sidebar, shared 672px content rail, semantic typography, control geometry, and final vertical rhythm.",
+    resolution:
+      "Committed Settings shell, typography, material, and vertical-rhythm work plus current exact-owned General evidence supersede only the four stale Native snapshots. Browser contamination remains tracked separately.",
+    evidence: ["apps/lynx/plan/reports/p10-typography-calibration.md", "apps/lynx/plan/LOG.md"],
+  },
+  {
+    id: "p10-final-matrix-settings-general-current-native-shell",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-04--p10-perceptual-fidelity--final-matrix--settings-general-"],
+    affectedClientPairs: ["lynx:native"],
+    supersededAt: "a385a479f",
+    summary:
+      "The P10 final-matrix Settings General Native raw and comparison frames predate the final shared Settings shell scale and vertical rhythm.",
+    resolution:
+      "Retained P10 typography/material evidence and the committed final Settings sidebar rhythm supersede only the eight stale Native samples; their Browser siblings remain independently scored.",
+    evidence: ["apps/lynx/plan/reports/p10-typography-calibration.md", "apps/lynx/plan/LOG.md"],
+  },
+  {
+    id: "settings-skills-current-native-row-rhythm",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-05--settings-skills-"],
+    affectedClientPairs: ["lynx:native"],
+    supersededAt: "ef1706ce3",
+    summary:
+      "The August 5 Settings Skills Native frames predate the final wide-row copy-to-control gap and accumulated section-height correction.",
+    resolution:
+      "Committed current-head evidence made the 624px Shared skills section and representative row heights exact across Web and Lynx, with Native/Desktop build coverage. Only the stale Native snapshots stop contributing.",
+    evidence: [
+      "apps/lynx/plan/LOG.md",
+      "shots/2026-08-08/settings-skills-row-gap-current/notes.md",
+    ],
+  },
+  {
+    id: "settings-integrations-current-native-surface",
+    type: "superseded-product-snapshot",
     affectedStoryPrefixes: [
-      '2026-08-03--composer-details--browser--skills-mentions-1280',
+      "2026-08-05--settings-integrations-current",
+      "2026-08-05--settings-integrations-dark-1440",
     ],
-    affectedStateKeys: [
-      'skill-menu',
-      'mention-menu',
-      'skill-selected',
-      'mention-selected',
-    ],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: 'c805bd463',
+    affectedClientPairs: ["lynx:native"],
+    supersededAt: "9962bf8a9",
     summary:
-      'The August 3 composer detail frames predate shared skill display names, rich-token label formatting, and the current matched 1280px composer shell.',
+      "The initial Settings Integrations Native frame predates responsive collection handling and the complete disclosure workflow.",
     resolution:
-      'Committed retained Electron and Lynx-for-Web evidence covers the same four states on one backend, thread, route, theme, viewport, dock, transcript, and overlay state.',
+      "Committed follow-ups completed responsive collection layout, project selection, disclosure state, input metadata, and the full empty/create workflow. Current same-backend Browser evidence measures Web-to-Lynx at 0.555%; only the stale Native snapshot stops contributing.",
     evidence: [
-      'shots/2026-09-02/composer-tokens-1280-current/notes.md',
-      'shots/2026-09-02/composer-tokens-1280-current/pngs.sha256',
+      "apps/lynx/plan/LOG.md",
+      "apps/lynx/plan/reports/settings-fidelity-continuation-audit.md",
     ],
   },
   {
-    id: 'markdown-token-current-persisted-output',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-02--harness--markdown-tokens'],
-    affectedStateKeys: ['persisted-tokens'],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: '4582803a2',
-    summary:
-      'The August 2 persisted-token frame predates current shared token labels, full-pane transcript composition, and resolved Native skill accent paint.',
-    resolution:
-      'Committed retained evidence renders one canonical isolated user message with non-empty mention and skill projections in Electron and Lynx-for-Web on the same backend, thread, route, theme, viewport, and dock state.',
-    evidence: [
-      'shots/2026-09-02/markdown-tokens-current/notes.md',
-      'shots/2026-09-02/markdown-tokens-current/electron-persisted-tokens.png',
-      'shots/2026-09-02/markdown-tokens-current/lynx-persisted-tokens.png',
-    ],
-  },
-  {
-    id: 'markdown-token-current-menu-and-selection',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-02--harness--markdown-tokens'],
-    affectedStateKeys: [
-      'skill-menu',
-      'mention-menu',
-      'skill-selected',
-      'mention-selected',
-    ],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: '3a8158992',
-    summary:
-      'The August 2 composer menu and selected-token frames predate shared skill display-name projection and current rich-token presentation.',
-    resolution:
-      'Committed retained Electron and Lynx-for-Web evidence covers the same backend, thread, route, overlay state, viewport, and dock state for both menus and both selected-token states. Persisted-token output remains independently scored.',
-    evidence: [
-      'shots/2026-09-02/markdown-tokens-current/notes.md',
-      'shots/2026-09-02/markdown-tokens-current/pngs.sha256',
-    ],
-  },
-  {
-    id: 'transcript-scroll-current-full-pane',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-02--harness--transcript-scroll'],
-    affectedStateKeys: ['pinned', 'detached'],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: '3986fb12a',
-    summary:
-      'The August 2 transcript frames predate the shared full-pane scroll owner and the Lynx-safe scroll-to-bottom icon.',
-    resolution:
-      'Committed retained Electron and Lynx-for-Web evidence uses one backend, thread, route, overlay state, viewport, and dock state for both pinned and detached cells. The full-pane owner is converged and the detached control now paints the canonical arrow.',
-    evidence: [
-      'shots/2026-09-02/transcript-current-recapture/notes.md',
-      'shots/2026-09-02/transcript-current-recapture/electron-pinned.png',
-      'shots/2026-09-02/transcript-current-recapture/lynx-pinned.png',
-      'shots/2026-09-02/transcript-current-recapture/electron-detached.png',
-      'shots/2026-09-02/transcript-current-recapture/lynx-detached.png',
-    ],
-  },
-  {
-    id: 'p8-q2-thread-current-full-pane',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-03--p8-q2--thread--'],
-    affectedStateKeys: ['raw'],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: '3986fb12a',
-    summary:
-      'The P8-Q2 Thread Browser matrix records the same retired 736px outer transcript-list architecture as the older transcript-scroll samples.',
-    resolution:
-      'Committed retained Electron and Lynx-for-Web evidence at the full-pane scroll-owner boundary supersedes the four old Browser cells. The transcript-mismatched Native siblings remain independently excluded rather than treated as replacement evidence.',
-    evidence: [
-      'shots/2026-08-03/p8-q2/threads-thread/notes.md',
-      'shots/2026-09-02/transcript-current-recapture/notes.md',
-      'shots/2026-09-02/transcript-current-recapture/electron-pinned.png',
-      'shots/2026-09-02/transcript-current-recapture/lynx-pinned.png',
-    ],
-  },
-  {
-    id: 'settings-behavior-dark-current-stable',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-03--settings-behavior--browser--dark-1440'],
-    affectedStateKeys: ['raw'],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: '390b2fc7a',
-    summary:
-      'The original dark Behavior pair predates the stable-state fix that removes Lynx-only Preferences loaded feedback.',
-    resolution:
-      'Committed retained Electron and Lynx-for-Web evidence uses the same backend, Behavior route, dark 1440x900 DPR1 viewport, settings values, and provider-update overlay. Current MAE is 0.5927520576131687%.',
-    evidence: [
-      'shots/2026-09-02/settings-behavior-current/notes.md',
-      'shots/2026-09-02/settings-behavior-current/pngs.sha256',
-    ],
-  },
-  {
-    id: 'settings-behavior-light-current-stable',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-03--settings-behavior--browser--light-1280'],
-    affectedStateKeys: ['raw'],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: '64b73fa6e',
-    summary:
-      'The original light Behavior pair predates the stable-state fix that removes Lynx-only Preferences loaded feedback.',
-    resolution:
-      'Committed retained Electron and Lynx-for-Web evidence uses the same backend and snapshot, Behavior route, light 1280x820 DPR1 viewport, settings values, 256px sidebar, and overlay-free state. Current MAE is 0.7313075382592061%.',
-    evidence: [
-      'shots/2026-09-03/settings-behavior-light-current/notes.md',
-      'shots/2026-09-03/settings-behavior-light-current/pngs.sha256',
-    ],
-  },
-  {
-    id: 'p8-q2-empty-thread-current-landing',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-03--p8-q2--threads--'],
-    supersededAt: '8d1506220',
-    summary:
-      'The P8-Q2 empty-thread landing frames record the pre-centered hero/composer and pre-context-tray product state.',
-    resolution:
-      'Committed retained Web, Lynx-for-Web, and exact-owned Native evidence covers the centered shared landing, project context tray, and Temporary lifecycle. All eight old Browser and Native pairs stop contributing after that product boundary.',
-    evidence: [
-      'shots/2026-08-06/thread-empty-current/notes.md',
-      'apps/lynx/plan/LOG.md',
-    ],
-  },
-  {
-    id: 'p9-composer-default-current-landing',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-03--p9-u5-composer--browser--default'],
-    affectedStateKeys: ['screenshot'],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: '180a6b27e',
-    summary:
-      'The P9 Composer default Browser pair predates the shared 256px sidebar and current centered empty-landing geometry.',
-    resolution:
-      'Later retained light 1280x820 DPR1 evidence covers the same New Chat, empty draft, no selected project, Plan-off, Fast-off semantic state with exact sidebar/main ownership and subpixel-aligned heading and composer anchors.',
-    evidence: [
-      'shots/2026-08-03/p9-u5-composer/browser/default/web/assertions.json',
-      'shots/2026-08-03/p9-u5-composer/browser/default/lynx/assertions.json',
-      'shots/2026-08-08/current-head-landing-light-1280/notes.md',
-    ],
-  },
-  {
-    id: 'initial-composer-current-landing',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-02--harness--composer'],
-    affectedStateKeys: ['light'],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: '180a6b27e',
-    summary:
-      'The initial Composer light pair records the old +8px horizontal and +7.25px vertical Lynx landing offsets.',
-    resolution:
-      'Later retained light 1280x820 DPR1 evidence covers the same empty New Chat state with exact 256px sidebar ownership and subpixel-aligned heading, composer, and project tray anchors.',
-    evidence: [
-      'shots/2026-08-02/harness/composer/notes.md',
-      'shots/2026-08-08/current-head-landing-light-1280/notes.md',
-    ],
-  },
-  {
-    id: 'composer-provider-activation-current-dynamic-models',
-    type: 'superseded-product-snapshot',
+    id: "settings-appsnap-current-native-capability",
+    type: "superseded-product-snapshot",
     affectedStoryPrefixes: [
-      '2026-08-11--current-head-composer-provider-activation-light-1280',
+      "2026-08-05--settings-appsnap-current",
+      "2026-08-05--settings-appsnap-dark-1440",
     ],
-    affectedStateKeys: ['models'],
-    affectedClientPairs: ['web:lynx'],
-    supersededAt: '6c6392f1e',
+    affectedClientPairs: ["lynx:native"],
+    supersededAt: "6cf595b46",
     summary:
-      'The provider-activation frame predates first-render dynamic model hydration and compares Web seven-model OpenCode data against the Lynx static OpenAI GPT-5 fallback.',
+      "The initial Settings AppSnap Native frame predates restored product copy and host-backed Native capability state.",
     resolution:
-      'The immediately following retained light 1280x820 DPR1 dynamic-model evidence uses the same provider and status overlay while both clients render the same seven OpenCode models.',
-    evidence: [
-      'shots/2026-08-11/current-head-composer-provider-activation-light-1280/notes.md',
-      'shots/2026-08-11/current-head-composer-dynamic-models-light-1280/notes.md',
-    ],
+      "Committed follow-ups restored AppSnap product copy and exposed Native capability state. Current exact-owned Native shows the real shortcut, capture-sound control, destination behavior, and macOS permission rows; only the stale Native snapshot stops contributing.",
+    evidence: ["apps/lynx/plan/LOG.md", "apps/lynx/plan/reports/p10-completion-audit.md"],
   },
   {
-    id: 'p8-pull-requests-light-current-controls',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-03--p8-q2--pull-requests--light-1280'],
-    affectedStateKeys: ['raw'],
-    affectedClientPairs: ['lynx:native'],
-    supersededAt: '544d49bc0',
+    id: "automations-create-dialog-current-form",
+    type: "superseded-product-snapshot",
+    affectedStoryPrefixes: ["2026-08-14--automations--create-dialog"],
+    supersededAt: "ae6a64bf4",
     summary:
-      'The P8 light 1280 Pull Requests Native pair predates the final route title, inset, pill, project-filter, and refresh-control composition.',
+      "The 2026-08-14 Native create-dialog frames record a real historical form gap that no longer represents the current product.",
     resolution:
-      'Later retained light 1280x820 default All/Open empty-list evidence covers the same semantic state in Lynx-for-Web and exact-owned Native with the corrected controls and clean consoles.',
+      "Later exact-owned Native evidence covers the complete create form, schedule and heartbeat conditional state, model discovery, and reachable runtime policy controls. The old matched pairs remain historical samples but stop contributing to current visual loss after the final reachability fix.",
     evidence: [
-      'shots/2026-08-03/p8-q2/pull-requests/notes.md',
-      'shots/2026-08-06/pull-requests-current/notes.md',
-      'shots/2026-08-06/pull-requests-current/native/capture.json',
-    ],
-  },
-  {
-    id: 'p8-q2-settings-general-current-native-shell',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-03--p8-q2--settings--'],
-    affectedClientPairs: ['lynx:native'],
-    supersededAt: 'a385a479f',
-    summary:
-      'The P8-Q2 Settings General Native frames predate the canonical 256px Settings sidebar, shared 672px content rail, semantic typography, control geometry, and final vertical rhythm.',
-    resolution:
-      'Committed Settings shell, typography, material, and vertical-rhythm work plus current exact-owned General evidence supersede only the four stale Native snapshots. Browser contamination remains tracked separately.',
-    evidence: [
-      'apps/lynx/plan/reports/p10-typography-calibration.md',
-      'apps/lynx/plan/LOG.md',
-    ],
-  },
-  {
-    id: 'p10-final-matrix-settings-general-current-native-shell',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: [
-      '2026-08-04--p10-perceptual-fidelity--final-matrix--settings-general-',
-    ],
-    affectedClientPairs: ['lynx:native'],
-    supersededAt: 'a385a479f',
-    summary:
-      'The P10 final-matrix Settings General Native raw and comparison frames predate the final shared Settings shell scale and vertical rhythm.',
-    resolution:
-      'Retained P10 typography/material evidence and the committed final Settings sidebar rhythm supersede only the eight stale Native samples; their Browser siblings remain independently scored.',
-    evidence: [
-      'apps/lynx/plan/reports/p10-typography-calibration.md',
-      'apps/lynx/plan/LOG.md',
-    ],
-  },
-  {
-    id: 'settings-skills-current-native-row-rhythm',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: ['2026-08-05--settings-skills-'],
-    affectedClientPairs: ['lynx:native'],
-    supersededAt: 'ef1706ce3',
-    summary:
-      'The August 5 Settings Skills Native frames predate the final wide-row copy-to-control gap and accumulated section-height correction.',
-    resolution:
-      'Committed current-head evidence made the 624px Shared skills section and representative row heights exact across Web and Lynx, with Native/Desktop build coverage. Only the stale Native snapshots stop contributing.',
-    evidence: [
-      'apps/lynx/plan/LOG.md',
-      'shots/2026-08-08/settings-skills-row-gap-current/notes.md',
-    ],
-  },
-  {
-    id: 'settings-integrations-current-native-surface',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: [
-      '2026-08-05--settings-integrations-current',
-      '2026-08-05--settings-integrations-dark-1440',
-    ],
-    affectedClientPairs: ['lynx:native'],
-    supersededAt: '9962bf8a9',
-    summary:
-      'The initial Settings Integrations Native frame predates responsive collection handling and the complete disclosure workflow.',
-    resolution:
-      'Committed follow-ups completed responsive collection layout, project selection, disclosure state, input metadata, and the full empty/create workflow. Current same-backend Browser evidence measures Web-to-Lynx at 0.555%; only the stale Native snapshot stops contributing.',
-    evidence: [
-      'apps/lynx/plan/LOG.md',
-      'apps/lynx/plan/reports/settings-fidelity-continuation-audit.md',
-    ],
-  },
-  {
-    id: 'settings-appsnap-current-native-capability',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: [
-      '2026-08-05--settings-appsnap-current',
-      '2026-08-05--settings-appsnap-dark-1440',
-    ],
-    affectedClientPairs: ['lynx:native'],
-    supersededAt: '6cf595b46',
-    summary:
-      'The initial Settings AppSnap Native frame predates restored product copy and host-backed Native capability state.',
-    resolution:
-      'Committed follow-ups restored AppSnap product copy and exposed Native capability state. Current exact-owned Native shows the real shortcut, capture-sound control, destination behavior, and macOS permission rows; only the stale Native snapshot stops contributing.',
-    evidence: [
-      'apps/lynx/plan/LOG.md',
-      'apps/lynx/plan/reports/p10-completion-audit.md',
-    ],
-  },
-  {
-    id: 'automations-create-dialog-current-form',
-    type: 'superseded-product-snapshot',
-    affectedStoryPrefixes: [
-      '2026-08-14--automations--create-dialog',
-    ],
-    supersededAt: 'ae6a64bf4',
-    summary:
-      'The 2026-08-14 Native create-dialog frames record a real historical form gap that no longer represents the current product.',
-    resolution:
-      'Later exact-owned Native evidence covers the complete create form, schedule and heartbeat conditional state, model discovery, and reachable runtime policy controls. The old matched pairs remain historical samples but stop contributing to current visual loss after the final reachability fix.',
-    evidence: [
-      'shots/2026-08-16/native-automations-detail-current/notes.md',
-      'shots/2026-08-17/native-automations-create-schedule-switching/notes.md',
-      'shots/2026-08-17/native-automations-create-heartbeat-switching/notes.md',
-      'shots/2026-08-18/native-automations-create-policy-reachability/notes.md',
+      "shots/2026-08-16/native-automations-detail-current/notes.md",
+      "shots/2026-08-17/native-automations-create-schedule-switching/notes.md",
+      "shots/2026-08-17/native-automations-create-heartbeat-switching/notes.md",
+      "shots/2026-08-18/native-automations-create-policy-reachability/notes.md",
     ],
   },
 ];
 const visualPairOverrides = new Map([
   [
-    '2026-08-08--current-head-settings-general-dark-1280:web:lynx:raw',
+    "2026-08-08--current-head-settings-general-dark-1280:web:lynx:raw",
     {
-      left: 'web.png',
-      right: 'lynx-after-restore-radius.png',
+      left: "web.png",
+      right: "lynx-after-restore-radius.png",
       reason:
-        'The evidence notes designate lynx-after-restore-radius.png as the final post-fix frame; lynx.png predates the restore icon, size, and radius corrections.',
+        "The evidence notes designate lynx-after-restore-radius.png as the final post-fix frame; lynx.png predates the restore icon, size, and radius corrections.",
     },
   ],
   [
-    '2026-08-11--current-head-landing-light-1280:web:lynx:landing',
+    "2026-08-11--current-head-landing-light-1280:web:lynx:landing",
     {
-      left: 'web/landing.png',
-      right: 'lynx/landing-after.png',
+      left: "web/landing.png",
+      right: "lynx/landing-after.png",
       reason:
-        'The evidence notes designate landing-after.png as the retained post-fix Lynx frame; landing.png is the missing-banner baseline.',
+        "The evidence notes designate landing-after.png as the retained post-fix Lynx frame; landing.png is the missing-banner baseline.",
     },
   ],
 ]);
 const harnessIssueLedger = [
   {
-    id: 'markdown-syntax-highlight-dpr-mismatch',
-    type: 'capture-viewport-mismatch',
-    detectedAt: 'ea4f2258d',
-    affectedStoryIds: ['2026-09-02--markdown-syntax-highlight-current'],
-    affectedStateKeys: ['light-1280x820', 'dark-1280x820'],
-    affectedClientPairs: ['web:lynx'],
+    id: "markdown-syntax-highlight-dpr-mismatch",
+    type: "capture-viewport-mismatch",
+    detectedAt: "ea4f2258d",
+    affectedStoryIds: ["2026-09-02--markdown-syntax-highlight-current"],
+    affectedStateKeys: ["light-1280x820", "dark-1280x820"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The diagnostic Markdown highlighting frames export to the same PNG dimensions but do not share runtime DPR: Electron reported DPR 2 while Lynx-for-Web reported DPR 1.',
+      "The diagnostic Markdown highlighting frames export to the same PNG dimensions but do not share runtime DPR: Electron reported DPR 2 while Lynx-for-Web reported DPR 1.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'The frames remain functional syntax-highlighting evidence. They do not contribute to visual MAE and do not supersede the strict-DPR current Markdown surface pairs.',
+      "The frames remain functional syntax-highlighting evidence. They do not contribute to visual MAE and do not supersede the strict-DPR current Markdown surface pairs.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'settings-sidebar-seam-hydration-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '2da06b390',
-    affectedStoryIds: ['2026-08-07--settings-sidebar-seam-current'],
-    affectedStateKeys: ['raw'],
-    affectedClientPairs: ['lynx:native'],
+    id: "settings-sidebar-seam-hydration-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "2da06b390",
+    affectedStoryIds: ["2026-08-07--settings-sidebar-seam-current"],
+    affectedStateKeys: ["raw"],
+    affectedClientPairs: ["lynx:native"],
     summary:
-      'The Settings sidebar seam pair does not share product hydration or transport state: Lynx-for-Web is still showing Loading preferences, while Native renders the complete General form plus a Synara is offline / Retry notice.',
+      "The Settings sidebar seam pair does not share product hydration or transport state: Lynx-for-Web is still showing Loading preferences, while Native renders the complete General form plus a Synara is offline / Retry notice.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'The retained 256px sidebar, 244px Back/Search rails, 236px search shell, and zero-border geometry remain valid focused evidence. Only the mismatched full-frame Lynx-to-Native color comparison is excluded.',
+      "The retained 256px sidebar, 244px Back/Search rails, 236px search shell, and zero-border geometry remain valid focused evidence. Only the mismatched full-frame Lynx-to-Native color comparison is excluded.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'composer-token-current-transcript-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '79aeca05c',
-    affectedStoryIds: ['2026-09-02--composer-tokens-1280-current'],
-    affectedStateKeys: [
-      'skill-menu',
-      'mention-menu',
-      'skill-selected',
-      'mention-selected',
-    ],
-    affectedClientPairs: ['web:lynx'],
+    id: "composer-token-current-transcript-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "79aeca05c",
+    affectedStoryIds: ["2026-09-02--composer-tokens-1280-current"],
+    affectedStateKeys: ["skill-menu", "mention-menu", "skill-selected", "mention-selected"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The four retained current token pairs do not share one transcript or renderer-local selection state: Web contains a 1 selection chip and fewer messages, while Lynx-for-Web omits that chip and includes later recovery and watchdog messages.',
+      "The four retained current token pairs do not share one transcript or renderer-local selection state: Web contains a 1 selection chip and fewer messages, while Lynx-for-Web omits that chip and includes later recovery and watchdog messages.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only these four whole-frame Browser pairs are excluded. Their focused interaction evidence and the earlier token supersession remain valid; a replacement requires one shared transcript and identical selection state.',
+      "Only these four whole-frame Browser pairs are excluded. Their focused interaction evidence and the earlier token supersession remain valid; a replacement requires one shared transcript and identical selection state.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'command-palette-empty-shell-and-results-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
-    affectedStoryIds: ['2026-08-03--command-k--browser--states'],
-    affectedStateKeys: ['empty'],
-    affectedClientPairs: ['web:lynx'],
+    id: "command-palette-empty-shell-and-results-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
+    affectedStoryIds: ["2026-08-03--command-k--browser--states"],
+    affectedStateKeys: ["empty"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The Command Palette empty-state pair mixes Web provider-update and health overlays with no Recent rows against an unobscured Lynx-for-Web shell containing three Recent rows and a different suggested-command set.',
+      "The Command Palette empty-state pair mixes Web provider-update and health overlays with no Recent rows against an unobscured Lynx-for-Web shell containing three Recent rows and a different suggested-command set.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only this exact empty-state pair is excluded; other Command Palette query and open-state comparisons remain independently scored or governed by their existing state-specific exclusions.',
+      "Only this exact empty-state pair is excluded; other Command Palette query and open-state comparisons remain independently scored or governed by their existing state-specific exclusions.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'command-palette-empty-1280-shell-and-results-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
-    affectedStoryIds: ['2026-08-03--command-k--browser--empty-1280'],
-    affectedClientPairs: ['web:lynx'],
+    id: "command-palette-empty-1280-shell-and-results-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
+    affectedStoryIds: ["2026-08-03--command-k--browser--empty-1280"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The separate Command Palette empty-1280 story also mixes Web provider-update and health overlays with no Recent rows against an unobscured Lynx-for-Web palette containing Recent rows.',
+      "The separate Command Palette empty-1280 story also mixes Web provider-update and health overlays with no Recent rows against an unobscured Lynx-for-Web palette containing Recent rows.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only this exact story is excluded; no broader Command Palette prefix rule is introduced.',
+      "Only this exact story is excluded; no broader Command Palette prefix rule is introduced.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'command-palette-message-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
-    affectedStoryIds: ['2026-08-03--command-k--browser--message-1280'],
-    affectedClientPairs: ['web:lynx'],
+    id: "command-palette-message-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
+    affectedStoryIds: ["2026-08-03--command-k--browser--message-1280"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The matching Command Palette message query/result is captured under provider-update and health overlays in Web but an unobscured shell in Lynx-for-Web.',
+      "The matching Command Palette message query/result is captured under provider-update and health overlays in Web but an unobscured shell in Lynx-for-Web.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only this exact overlay-contaminated full-frame pair is excluded. Result-row highlight and summary fidelity still require a matched recapture.',
+      "Only this exact overlay-contaminated full-frame pair is excluded. Result-row highlight and summary fidelity still require a matched recapture.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'command-palette-theme-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
-    affectedStoryIds: ['2026-08-03--command-k--browser--theme-1280'],
-    affectedClientPairs: ['web:lynx'],
+    id: "command-palette-theme-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
+    affectedStoryIds: ["2026-08-03--command-k--browser--theme-1280"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The matching Command Palette theme query/actions are captured under provider-update and health overlays in Web but an unobscured shell in Lynx-for-Web.',
+      "The matching Command Palette theme query/actions are captured under provider-update and health overlays in Web but an unobscured shell in Lynx-for-Web.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only this exact overlay-contaminated full-frame pair is excluded. Selected-row paint and icon fidelity still require a matched recapture.',
+      "Only this exact overlay-contaminated full-frame pair is excluded. Selected-row paint and icon fidelity still require a matched recapture.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'command-palette-open-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '5d296ee8',
+    id: "command-palette-open-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "5d296ee8",
+    affectedStoryIds: ["2026-08-06--command-k-current", "2026-08-06--command-k-shadow-current"],
+    affectedStoryPrefix: "2026-08-06--command-k-",
+    affectedStateKeys: ["open-final", "open"],
+    affectedClientPairs: ["web:lynx"],
+    summary:
+      "These Command Palette pairs compare a Web frame without the palette against a Lynx-for-Web frame with the modal open; the gray backdrop makes the latter classify as mixed.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: ["e73701b73"],
+    resolution:
+      "Later exact geometry, radius, footer, material, keyboard, and Native evidence covers the open Command Palette. Only the mismatched open states are excluded; the valid open-before pair remains scored.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "command-palette-open-before-provider-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
+    affectedStoryIds: ["2026-08-06--command-k-current"],
+    affectedStateKeys: ["open-before"],
+    affectedClientPairs: ["web:lynx"],
+    summary:
+      "Both Command Palette frames are open, but Web has provider-update and error overlays plus a broader suggested-command set while Lynx-for-Web has a Codex-unavailable banner and different project/thread state.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "Only the exact open-before mixed-provider-state pair is excluded; later matched Command Palette geometry, material, keyboard, and Native evidence remains the current authority.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "command-palette-focused-provider-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
     affectedStoryIds: [
-      '2026-08-06--command-k-current',
-      '2026-08-06--command-k-shadow-current',
+      "2026-08-06--command-k-footer-current",
+      "2026-08-06--command-k-footer-text-current",
+      "2026-08-06--command-k-input-current",
+      "2026-08-06--command-k-kbd-current",
+      "2026-08-06--command-k-label-current",
     ],
-    affectedStoryPrefix: '2026-08-06--command-k-',
-    affectedStateKeys: ['open-final', 'open'],
-    affectedClientPairs: ['web:lynx'],
+    affectedStateKeys: ["open"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'These Command Palette pairs compare a Web frame without the palette against a Lynx-for-Web frame with the modal open; the gray backdrop makes the latter classify as mixed.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: ['e73701b73'],
-    resolution:
-      'Later exact geometry, radius, footer, material, keyboard, and Native evidence covers the open Command Palette. Only the mismatched open states are excluded; the valid open-before pair remains scored.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'command-palette-open-before-provider-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
-    affectedStoryIds: ['2026-08-06--command-k-current'],
-    affectedStateKeys: ['open-before'],
-    affectedClientPairs: ['web:lynx'],
-    summary:
-      'Both Command Palette frames are open, but Web has provider-update and error overlays plus a broader suggested-command set while Lynx-for-Web has a Codex-unavailable banner and different project/thread state.',
+      "These focused Command Palette stories reuse a Web shell with provider-update and error overlays plus eight suggested commands against a Lynx-for-Web shell with a Codex-unavailable banner and six suggested commands.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the exact open-before mixed-provider-state pair is excluded; later matched Command Palette geometry, material, keyboard, and Native evidence remains the current authority.',
+      "Only the four exact full-frame pairs are excluded; their focused source assertions and later matched Command Palette evidence remain valid.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'command-palette-focused-provider-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
+    id: "sidebar-early-browser-theme-mismatch-family",
+    type: "capture-theme-mismatch",
+    detectedAt: "5d296ee8",
     affectedStoryIds: [
-      '2026-08-06--command-k-footer-current',
-      '2026-08-06--command-k-footer-text-current',
-      '2026-08-06--command-k-input-current',
-      '2026-08-06--command-k-kbd-current',
-      '2026-08-06--command-k-label-current',
+      "2026-08-06--sidebar-primary-focus-ring-current",
+      "2026-08-06--sidebar-primary-pressed-current",
+      "2026-08-06--sidebar-primary-section-rhythm-current",
+      "2026-08-06--sidebar-project-add-current",
+      "2026-08-06--sidebar-section-header-typography-current",
+      "2026-08-06--sidebar-segmented-focus-current",
+      "2026-08-06--sidebar-segmented-pressed-current",
+      "2026-08-06--sidebar-segmented-thumb-current",
+      "2026-08-07--current-head-paired-landing",
     ],
-    affectedStateKeys: ['open'],
-    affectedClientPairs: ['web:lynx'],
+    affectedStoryPrefix: "2026-08-06--sidebar-",
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'These focused Command Palette stories reuse a Web shell with provider-update and error overlays plus eight suggested commands against a Lynx-for-Web shell with a Codex-unavailable banner and six suggested commands.',
+      "These early Sidebar browser pairs render Web dark and Lynx-for-Web light, producing 91-95% whole-frame error unrelated to the focused row, focus, pressed, typography, or segmented-control contracts.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the four exact full-frame pairs are excluded; their focused source assertions and later matched Command Palette evidence remain valid.',
+      "Only the exact Web-to-Lynx story set is excluded; valid sibling states and later same-theme Sidebar evidence remain scored.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'sidebar-early-browser-theme-mismatch-family',
-    type: 'capture-theme-mismatch',
-    detectedAt: '5d296ee8',
+    id: "sidebar-early-native-theme-mismatch-family",
+    type: "capture-theme-mismatch",
+    detectedAt: "5d296ee8",
     affectedStoryIds: [
-      '2026-08-06--sidebar-primary-focus-ring-current',
-      '2026-08-06--sidebar-primary-pressed-current',
-      '2026-08-06--sidebar-primary-section-rhythm-current',
-      '2026-08-06--sidebar-project-add-current',
-      '2026-08-06--sidebar-section-header-typography-current',
-      '2026-08-06--sidebar-segmented-focus-current',
-      '2026-08-06--sidebar-segmented-pressed-current',
-      '2026-08-06--sidebar-segmented-thumb-current',
-      '2026-08-07--current-head-paired-landing',
+      "2026-08-06--sidebar-primary-section-rhythm-current",
+      "2026-08-06--sidebar-primary-shortcut-current",
+      "2026-08-06--sidebar-primary-shortcut-reveal-current",
+      "2026-08-06--sidebar-section-header-typography-current",
+      "2026-08-06--sidebar-segmented-thumb-current",
+      "2026-08-07--sidebar-footer-frame-current",
+      "2026-08-07--sidebar-primary-active-current",
+      "2026-08-07--sidebar-primary-top-rhythm-current",
     ],
-    affectedStoryPrefix: '2026-08-06--sidebar-',
-    affectedClientPairs: ['web:lynx'],
+    affectedStoryPrefix: "2026-08-06--sidebar-",
+    affectedClientPairs: ["lynx:native"],
     summary:
-      'These early Sidebar browser pairs render Web dark and Lynx-for-Web light, producing 91-95% whole-frame error unrelated to the focused row, focus, pressed, typography, or segmented-control contracts.',
+      "These early Sidebar Native pairs render Lynx-for-Web light and Native dark, producing 92-96% whole-frame error unrelated to the focused Sidebar contracts.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the exact Web-to-Lynx story set is excluded; valid sibling states and later same-theme Sidebar evidence remain scored.',
+      "Only the exact Lynx-to-Native story set is excluded; valid browser siblings and later same-theme Native Sidebar evidence remain scored.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'sidebar-early-native-theme-mismatch-family',
-    type: 'capture-theme-mismatch',
-    detectedAt: '5d296ee8',
+    id: "landing-matrix-dark-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "2f12c0a9",
     affectedStoryIds: [
-      '2026-08-06--sidebar-primary-section-rhythm-current',
-      '2026-08-06--sidebar-primary-shortcut-current',
-      '2026-08-06--sidebar-primary-shortcut-reveal-current',
-      '2026-08-06--sidebar-section-header-typography-current',
-      '2026-08-06--sidebar-segmented-thumb-current',
-      '2026-08-07--sidebar-footer-frame-current',
-      '2026-08-07--sidebar-primary-active-current',
-      '2026-08-07--sidebar-primary-top-rhythm-current',
+      "2026-08-10--landing-matrix-current--browser--landing-default-dark-1280",
+      "2026-08-10--landing-matrix-current--browser--landing-default-dark-1440",
     ],
-    affectedStoryPrefix: '2026-08-06--sidebar-',
-    affectedClientPairs: ['lynx:native'],
+    affectedStoryPrefix: "2026-08-10--landing-matrix-current--browser--landing-default-dark-",
     summary:
-      'These early Sidebar Native pairs render Lynx-for-Web light and Native dark, producing 92-96% whole-frame error unrelated to the focused Sidebar contracts.',
+      "The dark Web landing matrix frames contain a provider-update prompt overlay while their Lynx-for-Web siblings do not; the light siblings are matched and remain scored.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the exact Lynx-to-Native story set is excluded; valid browser siblings and later same-theme Native Sidebar evidence remain scored.',
+      "Only the two overlay-contaminated dark cells are excluded. The same matrix light cells and later matched dark landing evidence remain available for visual scoring.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'landing-matrix-dark-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '2f12c0a9',
+    id: "composer-runtime-chevron-provider-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "4d5ab78e6",
+    affectedStoryPrefix: "2026-08-08--composer-runtime-chevron-current",
+    affectedClientPairs: ["web:lynx"],
+    summary:
+      "The Web runtime-chevron frame has no provider-health banner while Lynx-for-Web includes the 68px Codex status banner, shifting the full landing composition.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: ["c041b0430"],
+    resolution:
+      "The local 12px generated chevron geometry and Native identity evidence remain valid; only the provider-state-mismatched Web-to-Lynx frame is excluded.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "composer-model-bootstrap-interaction-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "c041b0430",
+    affectedStoryPrefix: "2026-08-11--current-head-composer-model-picker-bootstrap-light-1280",
+    summary:
+      "The Web frame has already opened the OpenCode model submenu while Lynx-for-Web remains on the provider list because provider-row activation was not yet deliverable.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: ["023a36d57"],
+    resolution:
+      "Later provider-row activation evidence reaches the models panel through the product path. The old two-different-panels pair cannot measure visual parity.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "provider-banner-icon-update-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "c041b0430",
+    affectedStoryPrefix: "2026-08-11--current-head-provider-banner-icon-light-1280",
+    summary:
+      "The Web provider-banner icon frame contains a Pi update prompt overlay while Lynx-for-Web does not, even though the target banner bounds and icon paint match exactly.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "The exact 736x68 banner geometry and rgb(224,46,42) icon probes remain valid; the update-overlay-contaminated full-frame pair is excluded from visual MAE.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "landing-native-provider-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "5d296ee8",
+    affectedStoryPrefix: "2026-08-08--current-head-landing-light-1280",
+    affectedClientPairs: ["lynx:native"],
+    summary:
+      "The Lynx-for-Web landing frame has no provider-health banner while the paired Native frame includes the 68px Codex status banner, shifting the complete focal composition.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: ["c041b0430"],
+    resolution:
+      "Later landing bootstrap evidence publishes provider status atomically. The local Chats geometry remains valid, but this state-mismatched full-frame Native pair cannot measure product visual parity.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "landing-dark-provider-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "5d296ee8",
+    affectedStoryPrefix: "2026-08-08--current-head-landing-dark-1280",
+    summary:
+      "The dark Web landing frame has no provider-health banner while Lynx-for-Web includes the 68px Codex status banner, shifting the complete landing composition.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: ["c041b0430"],
+    resolution:
+      "Later landing bootstrap evidence publishes provider status atomically; this old full-frame pair cannot measure dark landing parity.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "appearance-settings-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "9092e2c17",
+    affectedStoryPrefix: "2026-08-14--appearance-settings-cell",
+    summary:
+      "The wide Appearance pair compares Electron with an open provider-update overlay obscuring the page heading against Lynx-for-Web without that overlay.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "Exact row geometry and compact responsive behavior remain supported by the retained probes; the overlay-mismatched full-shell pair is excluded from visual MAE.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "settings-appearance-aug05-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
     affectedStoryIds: [
-      '2026-08-10--landing-matrix-current--browser--landing-default-dark-1280',
-      '2026-08-10--landing-matrix-current--browser--landing-default-dark-1440',
+      "2026-08-05--settings-appearance-current",
+      "2026-08-05--settings-appearance-dark-1440",
     ],
-    affectedStoryPrefix:
-      '2026-08-10--landing-matrix-current--browser--landing-default-dark-',
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The dark Web landing matrix frames contain a provider-update prompt overlay while their Lynx-for-Web siblings do not; the light siblings are matched and remain scored.',
+      "Both August 5 Appearance Web frames contain an open provider-update overlay that is absent from Lynx-for-Web, obscuring the page heading and upper settings card.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the two overlay-contaminated dark cells are excluded. The same matrix light cells and later matched dark landing evidence remain available for visual scoring.',
+      "Only the two overlay-contaminated Web-to-Lynx pairs are excluded; their same-page Lynx-to-Native siblings remain scored.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'composer-runtime-chevron-provider-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '4d5ab78e6',
-    affectedStoryPrefix: '2026-08-08--composer-runtime-chevron-current',
-    affectedClientPairs: ['web:lynx'],
-    summary:
-      'The Web runtime-chevron frame has no provider-health banner while Lynx-for-Web includes the 68px Codex status banner, shifting the full landing composition.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: ['c041b0430'],
-    resolution:
-      'The local 12px generated chevron geometry and Native identity evidence remain valid; only the provider-state-mismatched Web-to-Lynx frame is excluded.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'composer-model-bootstrap-interaction-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'c041b0430',
-    affectedStoryPrefix:
-      '2026-08-11--current-head-composer-model-picker-bootstrap-light-1280',
-    summary:
-      'The Web frame has already opened the OpenCode model submenu while Lynx-for-Web remains on the provider list because provider-row activation was not yet deliverable.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: ['023a36d57'],
-    resolution:
-      'Later provider-row activation evidence reaches the models panel through the product path. The old two-different-panels pair cannot measure visual parity.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'provider-banner-icon-update-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'c041b0430',
-    affectedStoryPrefix:
-      '2026-08-11--current-head-provider-banner-icon-light-1280',
-    summary:
-      'The Web provider-banner icon frame contains a Pi update prompt overlay while Lynx-for-Web does not, even though the target banner bounds and icon paint match exactly.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'The exact 736x68 banner geometry and rgb(224,46,42) icon probes remain valid; the update-overlay-contaminated full-frame pair is excluded from visual MAE.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'landing-native-provider-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '5d296ee8',
-    affectedStoryPrefix: '2026-08-08--current-head-landing-light-1280',
-    affectedClientPairs: ['lynx:native'],
-    summary:
-      'The Lynx-for-Web landing frame has no provider-health banner while the paired Native frame includes the 68px Codex status banner, shifting the complete focal composition.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: ['c041b0430'],
-    resolution:
-      'Later landing bootstrap evidence publishes provider status atomically. The local Chats geometry remains valid, but this state-mismatched full-frame Native pair cannot measure product visual parity.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'landing-dark-provider-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '5d296ee8',
-    affectedStoryPrefix: '2026-08-08--current-head-landing-dark-1280',
-    summary:
-      'The dark Web landing frame has no provider-health banner while Lynx-for-Web includes the 68px Codex status banner, shifting the complete landing composition.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: ['c041b0430'],
-    resolution:
-      'Later landing bootstrap evidence publishes provider status atomically; this old full-frame pair cannot measure dark landing parity.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'appearance-settings-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '9092e2c17',
-    affectedStoryPrefix: '2026-08-14--appearance-settings-cell',
-    summary:
-      'The wide Appearance pair compares Electron with an open provider-update overlay obscuring the page heading against Lynx-for-Web without that overlay.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'Exact row geometry and compact responsive behavior remain supported by the retained probes; the overlay-mismatched full-shell pair is excluded from visual MAE.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'settings-appearance-aug05-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
+    id: "settings-skills-aug05-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
     affectedStoryIds: [
-      '2026-08-05--settings-appearance-current',
-      '2026-08-05--settings-appearance-dark-1440',
+      "2026-08-05--settings-skills-current",
+      "2026-08-05--settings-skills-dark-1440",
     ],
-    affectedClientPairs: ['web:lynx'],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'Both August 5 Appearance Web frames contain an open provider-update overlay that is absent from Lynx-for-Web, obscuring the page heading and upper settings card.',
+      "Both August 5 Settings Skills Web frames contain an open provider-update overlay absent from Lynx-for-Web, obscuring the heading and portable-skills card.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the two overlay-contaminated Web-to-Lynx pairs are excluded; their same-page Lynx-to-Native siblings remain scored.',
+      "Only the two overlay-contaminated Web-to-Lynx pairs are excluded. Their same-page Lynx-to-Native siblings remain scored, independently from the newer Plugin Library Skills evidence.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'settings-skills-aug05-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
+    id: "settings-integrations-appsnap-aug05-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
     affectedStoryIds: [
-      '2026-08-05--settings-skills-current',
-      '2026-08-05--settings-skills-dark-1440',
+      "2026-08-05--settings-integrations-current",
+      "2026-08-05--settings-appsnap-current",
+      "2026-08-05--settings-integrations-dark-1440",
+      "2026-08-05--settings-appsnap-dark-1440",
     ],
-    affectedClientPairs: ['web:lynx'],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'Both August 5 Settings Skills Web frames contain an open provider-update overlay absent from Lynx-for-Web, obscuring the heading and portable-skills card.',
+      "The August 5 Integrations and AppSnap Web frames at both retained themes contain an open provider-update overlay while Lynx-for-Web shows a reconnecting badge; the renderers also expose different host capability state.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the two overlay-contaminated Web-to-Lynx pairs are excluded. Their same-page Lynx-to-Native siblings remain scored, independently from the newer Plugin Library Skills evidence.',
+      "Only the four provider-state-mismatched Browser pairs are excluded. Their Native snapshots remain governed separately by commit-bounded product supersessions.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'settings-integrations-appsnap-aug05-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
+    id: "settings-profile-advanced-aug05-provider-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "bd76b76f3",
     affectedStoryIds: [
-      '2026-08-05--settings-integrations-current',
-      '2026-08-05--settings-appsnap-current',
-      '2026-08-05--settings-integrations-dark-1440',
-      '2026-08-05--settings-appsnap-dark-1440',
+      "2026-08-05--settings-profile-current",
+      "2026-08-05--settings-advanced-current",
+      "2026-08-05--settings-profile-dark-1440",
+      "2026-08-05--settings-advanced-dark-1440",
     ],
-    affectedClientPairs: ['web:lynx'],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The August 5 Integrations and AppSnap Web frames at both retained themes contain an open provider-update overlay while Lynx-for-Web shows a reconnecting badge; the renderers also expose different host capability state.',
+      "The August 5 Profile and Advanced Web frames at both retained themes contain an open provider-update overlay while Lynx-for-Web shows a reconnecting badge and different provider-derived actions or recovery state.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the four provider-state-mismatched Browser pairs are excluded. Their Native snapshots remain governed separately by commit-bounded product supersessions.',
+      "Only the four provider-state-mismatched Web-to-Lynx full-shell pairs are excluded. Their Lynx-to-Native siblings remain scored, and current Profile or Advanced visual parity still requires matched-state recapture.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'settings-profile-advanced-aug05-provider-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'bd76b76f3',
+    id: "settings-search-native-interaction-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "76118c046",
+    affectedStoryIds: ["2026-08-06--settings-search-current"],
+    affectedStateKeys: ["raw"],
+    affectedClientPairs: ["lynx:native"],
+    summary:
+      "The Settings Search Lynx-for-Web frame is the filtered Archived result state, while its Native sibling is explicitly retained as default input/navigation anatomy without the query or result list.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "Only the mismatched Lynx-to-Native whole-frame pair is excluded. Browser search interaction evidence, Native default anatomy, and focused search/input coverage remain valid independently.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "providers-dark-aug06-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "6cd046c06",
+    affectedStoryIds: ["2026-08-06--providers-dark-1440"],
+    affectedClientPairs: ["web:lynx"],
+    summary:
+      "The August 6 dark Providers Web frame contains an open provider-update dialog that obscures the heading and update card while Lynx-for-Web is unobscured.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "Only this overlay-contaminated Web-to-Lynx full-shell pair is excluded. Other Providers stories and independently retained Native/provider-row evidence remain unaffected.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "sidebar-primary-shortcut-offline-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "dc2f0a8a0",
     affectedStoryIds: [
-      '2026-08-05--settings-profile-current',
-      '2026-08-05--settings-advanced-current',
-      '2026-08-05--settings-profile-dark-1440',
-      '2026-08-05--settings-advanced-dark-1440',
+      "2026-08-06--sidebar-primary-shortcut-current",
+      "2026-08-06--sidebar-primary-shortcut-reveal-current",
     ],
-    affectedClientPairs: ['web:lynx'],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The August 5 Profile and Advanced Web frames at both retained themes contain an open provider-update overlay while Lynx-for-Web shows a reconnecting badge and different provider-derived actions or recovery state.',
+      "The Sidebar primary-shortcut frames compare a healthy Web landing with provider-update and health overlays against a Lynx-for-Web shell in global offline/server-unavailable state.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the four provider-state-mismatched Web-to-Lynx full-shell pairs are excluded. Their Lynx-to-Native siblings remain scored, and current Profile or Advanced visual parity still requires matched-state recapture.',
+      "The raw, default, and hover full-shell pairs are excluded because they do not isolate shortcut visibility or hover paint. Focused source assertions and later healthy-shell Sidebar evidence remain independent.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'settings-search-native-interaction-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '76118c046',
-    affectedStoryIds: ['2026-08-06--settings-search-current'],
-    affectedStateKeys: ['raw'],
-    affectedClientPairs: ['lynx:native'],
+    id: "composer-model-row-provider-and-menu-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "d7fcc5f60",
+    affectedStoryIds: ["2026-08-06--composer-model-row-text-current"],
+    affectedStateKeys: ["open"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The Settings Search Lynx-for-Web frame is the filtered Archived result state, while its Native sibling is explicitly retained as default input/navigation anatomy without the query or result list.',
+      "The Composer model-row frame compares Web provider-update and health overlays plus a two-level provider/model menu against a Lynx Codex-unavailable banner and single-level model page.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the mismatched Lynx-to-Native whole-frame pair is excluded. Browser search interaction evidence, Native default anatomy, and focused search/input coverage remain valid independently.',
+      "Only this mixed provider and menu-state full-shell pair is excluded. Focused row typography assertions and later matched composer model evidence remain independent.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'providers-dark-aug06-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '6cd046c06',
-    affectedStoryIds: ['2026-08-06--providers-dark-1440'],
-    affectedClientPairs: ['web:lynx'],
+    id: "settings-search-provider-offline-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "c721f2441",
+    affectedStoryIds: ["2026-08-06--settings-search-current"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The August 6 dark Providers Web frame contains an open provider-update dialog that obscures the heading and update card while Lynx-for-Web is unobscured.',
+      "The Settings search pair compares matching query/results under an Electron provider-update overlay and a Lynx-for-Web global offline banner.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only this overlay-contaminated Web-to-Lynx full-shell pair is excluded. Other Providers stories and independently retained Native/provider-row evidence remain unaffected.',
+      "Only the mixed transport/provider-state Web-to-Lynx full-shell pair is excluded. The Lynx-to-Native sibling and focused Settings search behavior remain scored independently.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'sidebar-primary-shortcut-offline-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'dc2f0a8a0',
+    id: "settings-archived-provider-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "a888ede17",
     affectedStoryIds: [
-      '2026-08-06--sidebar-primary-shortcut-current',
-      '2026-08-06--sidebar-primary-shortcut-reveal-current',
+      "2026-08-05--settings-archived-current",
+      "2026-08-05--settings-archived-dark-1440",
     ],
-    affectedClientPairs: ['web:lynx'],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The Sidebar primary-shortcut frames compare a healthy Web landing with provider-update and health overlays against a Lynx-for-Web shell in global offline/server-unavailable state.',
+      "The archived-empty pair compares an Electron provider-update overlay against a Lynx reconnecting badge; Lynx also has a broken archived-state image resource.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'The raw, default, and hover full-shell pairs are excluded because they do not isolate shortcut visibility or hover paint. Focused source assertions and later healthy-shell Sidebar evidence remain independent.',
+      "Only this provider-state-mismatched full-shell pair is excluded. The broken Lynx empty-state image remains a separately visible product defect and requires current matched evidence before closure.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'composer-model-row-provider-and-menu-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'd7fcc5f60',
-    affectedStoryIds: ['2026-08-06--composer-model-row-text-current'],
-    affectedStateKeys: ['open'],
-    affectedClientPairs: ['web:lynx'],
-    summary:
-      'The Composer model-row frame compares Web provider-update and health overlays plus a two-level provider/model menu against a Lynx Codex-unavailable banner and single-level model page.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'Only this mixed provider and menu-state full-shell pair is excluded. Focused row typography assertions and later matched composer model evidence remain independent.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'settings-search-provider-offline-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'c721f2441',
-    affectedStoryIds: ['2026-08-06--settings-search-current'],
-    affectedClientPairs: ['web:lynx'],
-    summary:
-      'The Settings search pair compares matching query/results under an Electron provider-update overlay and a Lynx-for-Web global offline banner.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'Only the mixed transport/provider-state Web-to-Lynx full-shell pair is excluded. The Lynx-to-Native sibling and focused Settings search behavior remain scored independently.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'settings-archived-provider-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'a888ede17',
+    id: "settings-worktrees-menu-provider-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "9ba80eefb",
     affectedStoryIds: [
-      '2026-08-05--settings-archived-current',
-      '2026-08-05--settings-archived-dark-1440',
+      "2026-08-05--settings-worktrees-current",
+      "2026-08-05--settings-worktrees-dark-1440",
+      "2026-08-06--settings-shared-menu-text-current",
     ],
-    affectedClientPairs: ['web:lynx'],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The archived-empty pair compares an Electron provider-update overlay against a Lynx reconnecting badge; Lynx also has a broken archived-state image resource.',
+      "The Worktrees frames at both retained themes and the shared Settings menu Web frame contain the provider-update overlay while Lynx-for-Web shows reconnecting or no equivalent overlay.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only this provider-state-mismatched full-shell pair is excluded. The broken Lynx empty-state image remains a separately visible product defect and requires current matched evidence before closure.',
+      "Only these two provider-state-mismatched Browser full-shell pairs are excluded. The Worktrees Lynx-to-Native sibling and focused menu behavior remain scored independently.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'settings-worktrees-menu-provider-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '9ba80eefb',
+    id: "composer-provider-banner-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "9ba80eefb",
     affectedStoryIds: [
-      '2026-08-05--settings-worktrees-current',
-      '2026-08-05--settings-worktrees-dark-1440',
-      '2026-08-06--settings-shared-menu-text-current',
+      "2026-08-06--composer-provider-row-current",
+      "2026-08-08--composer-permission-icon-current",
+      "2026-08-06--sidebar-primary-action-icon-current",
+      "2026-08-06--sidebar-primary-action-label-current",
     ],
-    affectedClientPairs: ['web:lynx'],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The Worktrees frames at both retained themes and the shared Settings menu Web frame contain the provider-update overlay while Lynx-for-Web shows reconnecting or no equivalent overlay.',
+      "The Composer provider-row, permission-icon, and Sidebar primary-action frames use different provider-health banners and capability state between Web and Lynx-for-Web.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only these two provider-state-mismatched Browser full-shell pairs are excluded. The Worktrees Lynx-to-Native sibling and focused menu behavior remain scored independently.',
+      "Only the four mixed provider-state Browser full-shell pairs are excluded. The permission-icon Lynx-to-Native sibling and focused component evidence remain scored independently.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'composer-provider-banner-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '9ba80eefb',
+    id: "composer-aug06-provider-shell-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "ef8eece1c",
     affectedStoryIds: [
-      '2026-08-06--composer-provider-row-current',
-      '2026-08-08--composer-permission-icon-current',
-      '2026-08-06--sidebar-primary-action-icon-current',
-      '2026-08-06--sidebar-primary-action-label-current',
+      "2026-08-06--composer-extras-label-current",
+      "2026-08-06--composer-fast-toggle-current",
+      "2026-08-06--composer-footer-action-gap-current",
+      "2026-08-06--composer-footer-trigger-text-current",
+      "2026-08-06--composer-picker-chrome-current",
+      "2026-08-06--composer-picker-rows-current",
+      "2026-08-06--composer-picker-trigger-chrome-current",
+      "2026-08-06--composer-runtime-trigger-current",
+      "2026-08-06--composer-send-action-current",
+      "2026-08-06--composer-trait-label-current",
+      "2026-08-06--composer-trait-option-text-current",
+      "2026-08-06--composer-voice-action-current",
+      "2026-08-06--extras-current",
+      "2026-08-06--extras-popup-chrome-current",
     ],
-    affectedClientPairs: ['web:lynx'],
+    affectedStateKeys: ["open", "open-before", "open-final"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The Composer provider-row, permission-icon, and Sidebar primary-action frames use different provider-health banners and capability state between Web and Lynx-for-Web.',
+      "These August 6 Composer frames compare provider-update and health overlays in Web against a Codex-unavailable banner in Lynx-for-Web, even when their focused control or menu state is otherwise similar.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the four mixed provider-state Browser full-shell pairs are excluded. The permission-icon Lynx-to-Native sibling and focused component evidence remain scored independently.',
+      "Only the explicit open-state full-shell Browser pairs are excluded. Focused control geometry, menu behavior, and later matched Composer evidence remain independent.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'composer-aug06-provider-shell-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'ef8eece1c',
+    id: "p10-browser-composer-overlay-and-data-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "b2ec67303",
     affectedStoryIds: [
-      '2026-08-06--composer-extras-label-current',
-      '2026-08-06--composer-fast-toggle-current',
-      '2026-08-06--composer-footer-action-gap-current',
-      '2026-08-06--composer-footer-trigger-text-current',
-      '2026-08-06--composer-picker-chrome-current',
-      '2026-08-06--composer-picker-rows-current',
-      '2026-08-06--composer-picker-trigger-chrome-current',
-      '2026-08-06--composer-runtime-trigger-current',
-      '2026-08-06--composer-send-action-current',
-      '2026-08-06--composer-trait-label-current',
-      '2026-08-06--composer-trait-option-text-current',
-      '2026-08-06--composer-voice-action-current',
-      '2026-08-06--extras-current',
-      '2026-08-06--extras-popup-chrome-current',
+      "2026-08-04--p10-perceptual-fidelity--browser--skill-menu-filtered",
+      "2026-08-04--p10-perceptual-fidelity--browser--project-picker-open",
     ],
-    affectedStateKeys: ['open', 'open-before', 'open-final'],
-    affectedClientPairs: ['web:lynx'],
+    affectedStateKeys: ["raw", "comparison"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'These August 6 Composer frames compare provider-update and health overlays in Web against a Codex-unavailable banner in Lynx-for-Web, even when their focused control or menu state is otherwise similar.',
+      "The focused P10 skill-menu and project-picker Browser frames retain a Web provider-update overlay absent from Lynx; the picker also compares loading folders against populated local-directory results and reconnecting state.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the explicit open-state full-shell Browser pairs are excluded. Focused control geometry, menu behavior, and later matched Composer evidence remain independent.',
+      "Both raw and normalized pairs for the two exact stories are excluded. Skill icon and project-picker local composition still require matched-state evidence.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'p10-browser-composer-overlay-and-data-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'b2ec67303',
+    id: "p10-browser-default-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "07ef0beaa",
     affectedStoryIds: [
-      '2026-08-04--p10-perceptual-fidelity--browser--skill-menu-filtered',
-      '2026-08-04--p10-perceptual-fidelity--browser--project-picker-open',
+      "2026-08-04--p10-perceptual-fidelity--browser--default",
+      "2026-08-04--p10-perceptual-fidelity--browser--composer-default",
+      "2026-08-04--p10-perceptual-fidelity--browser--landing-default",
+      "2026-08-04--p10-perceptual-fidelity--browser--sidebar-default",
     ],
-    affectedStateKeys: ['raw', 'comparison'],
-    affectedClientPairs: ['web:lynx'],
+    affectedStateKeys: ["raw", "comparison"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The focused P10 skill-menu and project-picker Browser frames retain a Web provider-update overlay absent from Lynx; the picker also compares loading folders against populated local-directory results and reconnecting state.',
+      "The four P10 default Browser stories reuse Electron frames with an open provider-update overlay while Lynx-for-Web is unobscured.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Both raw and normalized pairs for the two exact stories are excluded. Skill icon and project-picker local composition still require matched-state evidence.',
+      "Only the raw and normalized full-shell pairs for these four exact stories are excluded. The clean P9 Composer default and later matched landing/composer evidence remain scored.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'p10-browser-default-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '07ef0beaa',
+    id: "sidebar-landing-provider-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "4d5ab78e6",
     affectedStoryIds: [
-      '2026-08-04--p10-perceptual-fidelity--browser--default',
-      '2026-08-04--p10-perceptual-fidelity--browser--composer-default',
-      '2026-08-04--p10-perceptual-fidelity--browser--landing-default',
-      '2026-08-04--p10-perceptual-fidelity--browser--sidebar-default',
+      "2026-08-08--sidebar-projects-rhythm-current",
+      "2026-08-08--sidebar-chats-chevron-current",
+      "2026-08-08--composer-project-folder-current",
     ],
-    affectedStateKeys: ['raw', 'comparison'],
-    affectedClientPairs: ['web:lynx'],
+    affectedClientPairs: ["web:lynx"],
+    affectedStoryPrefix: "2026-08-08--sidebar-",
     summary:
-      'The four P10 default Browser stories reuse Electron frames with an open provider-update overlay while Lynx-for-Web is unobscured.',
+      "The Sidebar projects-rhythm, Chats-chevron, and Composer project-folder pairs reuse a Web landing baseline without the provider banner and a Lynx frame with the 68px banner, shifting the full composition.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the raw and normalized full-shell pairs for these four exact stories are excluded. The clean P9 Composer default and later matched landing/composer evidence remain scored.',
+      "Their focused geometry, icon, transition, and exact-owned Native checks remain valid; only the provider-state-mismatched full-shell MAE is excluded.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'sidebar-landing-provider-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '4d5ab78e6',
+    id: "sidebar-pr-icon-provider-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "4d5ab78e6",
+    affectedStoryPrefix: "2026-08-08--sidebar-pull-request-icon-current",
+    summary:
+      "The sidebar Pull requests icon pair compares Web without a provider-health banner against Lynx-for-Web with the 68px Codex status banner, shifting the landing composition.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: ["7a3d97f05"],
+    resolution:
+      "The local icon evidence verifies identical 15x15 geometry and canonical path, with exact-owned Native paint and console proof; the full-shell pair cannot measure icon-only MAE.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "environment-fast-loop-shell-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "2f12c0a9",
     affectedStoryIds: [
-      '2026-08-08--sidebar-projects-rhythm-current',
-      '2026-08-08--sidebar-chats-chevron-current',
-      '2026-08-08--composer-project-folder-current',
+      "2026-08-09--environment-fast-loop-current",
+      "2026-08-09--environment-loaded-current",
+      "2026-08-09--environment-local-status-current",
     ],
-    affectedClientPairs: ['web:lynx'],
-    affectedStoryPrefix: '2026-08-08--sidebar-',
+    affectedStoryPrefix: "2026-08-09--environment-",
     summary:
-      'The Sidebar projects-rhythm, Chats-chevron, and Composer project-folder pairs reuse a Web landing baseline without the provider banner and a Lynx frame with the 68px banner, shifting the full composition.',
+      "The 2026-08-09 Environment full-shell pairs mix hydrated Electron sidebars and provider-update overlays with Lynx-for-Web Loading projects state; some Lynx panel frames are also still loading, and the dark-bottom captures use different themes.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Their focused geometry, icon, transition, and exact-owned Native checks remain valid; only the provider-state-mismatched full-shell MAE is excluded.',
+      "The local geometry, token, and scroll assertions remain valid evidence, but none of these full-shell PNGs isolates Environment visual parity. Later hydrated-shell evidence resolves the sidebar state.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'sidebar-pr-icon-provider-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '4d5ab78e6',
-    affectedStoryPrefix: '2026-08-08--sidebar-pull-request-icon-current',
-    summary:
-      'The sidebar Pull requests icon pair compares Web without a provider-health banner against Lynx-for-Web with the 68px Codex status banner, shifting the landing composition.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: ['7a3d97f05'],
-    resolution:
-      'The local icon evidence verifies identical 15x15 geometry and canonical path, with exact-owned Native paint and console proof; the full-shell pair cannot measure icon-only MAE.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'environment-fast-loop-shell-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '2f12c0a9',
+    id: "automations-list-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "dfa1c45f9",
+    affectedStoryPrefix: "2026-08-14--automations--",
     affectedStoryIds: [
-      '2026-08-09--environment-fast-loop-current',
-      '2026-08-09--environment-loaded-current',
-      '2026-08-09--environment-local-status-current',
+      "2026-08-14--automations--list",
+      "2026-08-14--automations--list-paused",
+      "2026-08-14--automations--empty",
     ],
-    affectedStoryPrefix: '2026-08-09--environment-',
     summary:
-      'The 2026-08-09 Environment full-shell pairs mix hydrated Electron sidebars and provider-update overlays with Lynx-for-Web Loading projects state; some Lynx panel frames are also still loading, and the dark-bottom captures use different themes.',
+      "The Automations list, paused-list, and empty Electron frames contain an open provider-update overlay that is absent from the matching Lynx frames.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: ["527f1f6fe"],
+    resolution:
+      "Later exact-owned Automations list/detail evidence verifies current state and interactions; these overlay-mismatched full-shell pairs remain archived but cannot measure list-only visual MAE.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "environment-row-shell-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "2f12c0a9",
+    affectedStoryPrefix: "2026-08-11--environment-row-hover-current",
+    summary:
+      "Both Environment row pairs compare Electron with a provider-update overlay and hydrated sidebar against Lynx-for-Web still showing Loading projects with no update overlay.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: ["2f118bc49"],
+    resolution:
+      "The retained row geometry and hover-token checks remain valid, and later thread bootstrap evidence resolves sidebar hydration; the shell-mismatched screenshots cannot measure Environment-only MAE.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "viewport-settings-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "4ae9dedf4",
+    affectedStoryPrefix: "2026-08-18--viewport-single-owner-update",
+    summary:
+      "The comparable viewport pair has an open provider-update overlay in Electron that is absent from Lynx-for-Web, obscuring the otherwise aligned Settings General surface.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'The local geometry, token, and scroll assertions remain valid evidence, but none of these full-shell PNGs isolates Environment visual parity. Later hydrated-shell evidence resolves the sidebar state.',
+      "The retained geometry and live-resize evidence remains valid, but this screenshot pair is excluded from visual MAE pending an overlay-matched recapture.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'automations-list-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'dfa1c45f9',
-    affectedStoryPrefix: '2026-08-14--automations--',
+    id: "empty-thread-current-theme-mismatch",
+    type: "capture-theme-mismatch",
+    detectedAt: "80d4078eb",
+    affectedStoryPrefix: "2026-08-10--empty-thread-",
+    summary:
+      "Both current empty-thread pairs rendered Electron dark and Lynx-for-Web light, producing roughly 91% color errors unrelated to the heading and null-branch context contracts.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "The pairs remain historical heading and null-branch behavior evidence but are excluded from visual MAE until the same states are recaptured under one theme.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "p8-q2-settings-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
+    affectedStoryPrefix: "2026-08-03--p8-q2--settings--",
+    affectedClientPairs: ["web:lynx"],
+    summary:
+      "All four P8-Q2 Settings Web frames contain an open provider-update overlay that is absent from their Lynx-for-Web siblings; the underlying General layouts are otherwise closely aligned.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "Only the overlay-contaminated Web-to-Lynx pairs are excluded. Their same-theme Lynx-to-Native siblings remain scored as valid Native fidelity evidence.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "p8-q2-pull-requests-repository-warning-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
+    affectedStoryPrefix: "2026-08-03--p8-q2--pull-requests--",
+    affectedClientPairs: ["web:lynx"],
+    summary:
+      "All four P8-Q2 Pull requests Web frames include a repository-unavailable warning absent from Lynx-for-Web, so the full-frame pairs do not share product state.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "Only Web-to-Lynx pairs are excluded. Search and filter capability differences require matched-state evidence, while all Lynx-to-Native siblings remain scored.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "p8-q2-thread-native-transcript-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
+    affectedStoryPrefix: "2026-08-03--p8-q2--thread--",
+    affectedClientPairs: ["lynx:native"],
+    summary:
+      "All four P8-Q2 Thread Lynx-for-Web frames show the short code-block seed transcript while their Native siblings show a different long WebSocket essay transcript at a different scroll position.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "Only the transcript-state-mismatched Lynx-to-Native pairs are excluded. The corresponding Web-to-Lynx pairs retain their historical same-transcript comparison.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "p10-final-matrix-thread-native-transcript-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
+    affectedStoryPrefix: "2026-08-04--p10-perceptual-fidelity--final-matrix--thread-default-",
+    affectedClientPairs: ["lynx:native"],
+    summary:
+      "The P10 final-matrix Lynx-for-Web Thread frames show the short code-block seed transcript while their Native siblings show a different long WebSocket essay, extra user turns, a different scroll position, and a reconnecting badge.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "Both raw and titlebar-normalized comparison states are excluded only for Lynx-to-Native. Browser siblings and unrelated final-matrix surfaces remain independently scored.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "p10-final-matrix-browser-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "10e39095c",
+    affectedStoryPrefix: "2026-08-04--p10-perceptual-fidelity--final-matrix--",
+    affectedClientPairs: ["web:lynx"],
+    summary:
+      "All twenty P10 final-matrix Web frames contain a provider-update overlay that is absent from Lynx-for-Web. Thread also has a Web-only provider-path banner versus a Lynx reconnecting badge, while Pull requests has a Web-only repository warning.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "All raw and titlebar-normalized final-matrix states are excluded only for Web-to-Lynx. Earlier matched P8-Q2 Browser matrices remain scored, while Native pairs stay independently governed by their existing product and harness records.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "p10-final-overlays-browser-provider-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "973adba6f",
+    affectedStoryPrefix: "2026-08-04--p10-perceptual-fidelity--final-overlays--",
+    affectedClientPairs: ["web:lynx"],
+    summary:
+      "Every P10 final-overlays Web frame contains provider-update and provider-path overlays that are absent from Lynx-for-Web, so the full-frame pairs do not isolate the intended composer overlay state.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "All raw and titlebar-normalized final-overlays states are excluded only for Web-to-Lynx. Their intended composer interactions remain behavioral evidence, Native pairs remain independent, and later matched composer token recaptures are tracked separately.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "p10-settings-general-browser-hydration-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "aa58ca991",
+    affectedStoryIds: ["2026-08-04--p10-perceptual-fidelity--browser--settings-general"],
+    affectedClientPairs: ["web:lynx"],
+    summary:
+      "The P10 Settings General Browser pair compares a hydrated Electron settings form plus provider-update overlay with Lynx-for-Web still showing Loading preferences and a reconnecting badge.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: [],
+    resolution:
+      "Both raw and normalized images remain historical capture evidence but cannot measure renderer fidelity. Later matched Settings evidence covers the hydrated surface independently.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "composer-details-shell-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "7c8036434",
     affectedStoryIds: [
-      '2026-08-14--automations--list',
-      '2026-08-14--automations--list-paused',
-      '2026-08-14--automations--empty',
+      "2026-08-03--composer-details--browser--extras-default-1280",
+      "2026-08-03--composer-details--browser--project-picker-1280",
     ],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'The Automations list, paused-list, and empty Electron frames contain an open provider-update overlay that is absent from the matching Lynx frames.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: ['527f1f6fe'],
-    resolution:
-      'Later exact-owned Automations list/detail evidence verifies current state and interactions; these overlay-mismatched full-shell pairs remain archived but cannot measure list-only visual MAE.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'environment-row-shell-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '2f12c0a9',
-    affectedStoryPrefix: '2026-08-11--environment-row-hover-current',
-    summary:
-      'Both Environment row pairs compare Electron with a provider-update overlay and hydrated sidebar against Lynx-for-Web still showing Loading projects with no update overlay.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: ['2f118bc49'],
-    resolution:
-      'The retained row geometry and hover-token checks remain valid, and later thread bootstrap evidence resolves sidebar hydration; the shell-mismatched screenshots cannot measure Environment-only MAE.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'viewport-settings-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '4ae9dedf4',
-    affectedStoryPrefix: '2026-08-18--viewport-single-owner-update',
-    summary:
-      'The comparable viewport pair has an open provider-update overlay in Electron that is absent from Lynx-for-Web, obscuring the otherwise aligned Settings General surface.',
+      "The August 3 Extras and Project Picker Electron frames contain provider-update and provider-path overlays that are absent from the corresponding Lynx-for-Web frames.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'The retained geometry and live-resize evidence remains valid, but this screenshot pair is excluded from visual MAE pending an overlay-matched recapture.',
+      "Only the four full-frame Extras raw/menu and Project Picker open/selected Browser pairs are excluded. Their interaction assertions and later focused composer evidence remain independent.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'empty-thread-current-theme-mismatch',
-    type: 'capture-theme-mismatch',
-    detectedAt: '80d4078eb',
-    affectedStoryPrefix: '2026-08-10--empty-thread-',
+    id: "p10-runtime-mention-chip-browser-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "5b02e765f",
+    affectedStoryIds: ["2026-08-04--p10-perceptual-fidelity--specimens--runtime--mention-chip"],
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'Both current empty-thread pairs rendered Electron dark and Lynx-for-Web light, producing roughly 91% color errors unrelated to the heading and null-branch context contracts.',
+      "The runtime mention-chip Web frame contains provider-update and provider-path overlays that are absent from Lynx-for-Web, so its whole-frame MAE does not isolate the selected mention chip.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'The pairs remain historical heading and null-branch behavior evidence but are excluded from visual MAE until the same states are recaptured under one theme.',
+      "Only the Web-to-Lynx specimen pair is excluded. Its Lynx-to-Native sibling and later matched mention-token evidence remain independently tracked.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'p8-q2-settings-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
-    affectedStoryPrefix: '2026-08-03--p8-q2--settings--',
-    affectedClientPairs: ['web:lynx'],
+    id: "settings-shortcuts-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
+    affectedStoryPrefix: "2026-08-03--settings-shortcuts--browser--",
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'All four P8-Q2 Settings Web frames contain an open provider-update overlay that is absent from their Lynx-for-Web siblings; the underlying General layouts are otherwise closely aligned.',
+      "Both archived Settings Keyboard Shortcuts Web frames contain an open provider-update overlay that obscures the heading and search field while Lynx-for-Web is unobscured.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the overlay-contaminated Web-to-Lynx pairs are excluded. Their same-theme Lynx-to-Native siblings remain scored as valid Native fidelity evidence.',
+      "The dark-1440 and light-1280 Browser pairs are excluded as overlay-contaminated full-frame comparisons; their aligned shortcut table remains historical structure evidence.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'p8-q2-pull-requests-repository-warning-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
-    affectedStoryPrefix: '2026-08-03--p8-q2--pull-requests--',
-    affectedClientPairs: ['web:lynx'],
+    id: "settings-notifications-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "1352e45ae",
+    affectedStoryPrefix: "2026-08-03--settings-notifications--browser--",
+    affectedClientPairs: ["web:lynx"],
     summary:
-      'All four P8-Q2 Pull requests Web frames include a repository-unavailable warning absent from Lynx-for-Web, so the full-frame pairs do not share product state.',
+      "Both archived Settings Notifications Web frames contain an open provider-update overlay absent from Lynx-for-Web, obscuring the heading and upper notification controls.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only Web-to-Lynx pairs are excluded. Search and filter capability differences require matched-state evidence, while all Lynx-to-Native siblings remain scored.',
+      "The two full-frame Browser pairs are excluded. Notification-test capability and status-copy differences remain a separate matched-state product question.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'p8-q2-thread-native-transcript-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
-    affectedStoryPrefix: '2026-08-03--p8-q2--thread--',
-    affectedClientPairs: ['lynx:native'],
+    id: "settings-general-route-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "2f12c0a9",
+    affectedStoryPrefix: "2026-08-10--settings-general-matrix-current--browser--settings-general-",
     summary:
-      'All four P8-Q2 Thread Lynx-for-Web frames show the short code-block seed transcript while their Native siblings show a different long WebSocket essay transcript at a different scroll position.',
+      "The Settings General matrix labels do not match the rendered routes: Electron captured AppSnap while Lynx-for-Web captured General at both themes and widths.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Only the transcript-state-mismatched Lynx-to-Native pairs are excluded. The corresponding Web-to-Lynx pairs retain their historical same-transcript comparison.',
+      "All four mislabeled route pairs remain archived but cannot contribute to same-state visual MAE; a matched General recapture is still required.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'p10-final-matrix-thread-native-transcript-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
-    affectedStoryPrefix:
-      '2026-08-04--p10-perceptual-fidelity--final-matrix--thread-default-',
-    affectedClientPairs: ['lynx:native'],
+    id: "automations-detail-provider-overlay-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "dfa1c45f9",
+    affectedStoryPrefix: "2026-08-14--automations--detail",
     summary:
-      'The P10 final-matrix Lynx-for-Web Thread frames show the short code-block seed transcript while their Native siblings show a different long WebSocket essay, extra user turns, a different scroll position, and a reconnecting badge.',
+      "The Electron Automation detail frame includes an open provider-update overlay and different header-action state while the Lynx frame has no overlay, so the pair does not isolate detail-surface fidelity.",
+    severityPoints: 0,
+    excludeVisualPairs: true,
+    resolvedBy: ["527f1f6fe"],
+    resolution:
+      "Later current-head exact-owned 1280x820 detail evidence validates the same main/aside split, title, content geometry, copy, and state with zero console errors and only one-pixel Native rhythm.",
+    resolutionStoryPrefixes: [],
+  },
+  {
+    id: "settings-release-history-rendered-theme-mismatch",
+    type: "capture-theme-mismatch",
+    detectedAt: "2f12c0a9",
+    affectedStoryPrefix: "2026-08-10--settings-release-history-rhythm-current",
+    summary:
+      "The paired Release history geometry evidence rendered Electron dark and Lynx-for-Web light; the light modal backdrop was classified as mixed, so automatic theme detection alone could not reject the pair.",
     severityPoints: 0,
     excludeVisualPairs: true,
     resolvedBy: [],
     resolution:
-      'Both raw and titlebar-normalized comparison states are excluded only for Lynx-to-Native. Browser siblings and unrelated final-matrix surfaces remain independently scored.',
+      "The pair remains valid geometry and interaction evidence but is excluded from color MAE until a same-theme recapture replaces it.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'p10-final-matrix-browser-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '10e39095c',
-    affectedStoryPrefix:
-      '2026-08-04--p10-perceptual-fidelity--final-matrix--',
-    affectedClientPairs: ['web:lynx'],
+    id: "p9-command-menu-theme-mismatch",
+    type: "capture-theme-mismatch",
+    detectedAt: "75a03632e",
+    affectedStoryPrefix: "2026-08-03--p9-u5-composer--browser--command-menu--",
     summary:
-      'All twenty P10 final-matrix Web frames contain a provider-update overlay that is absent from Lynx-for-Web. Thread also has a Web-only provider-path banner versus a Lynx reconnecting badge, while Pull requests has a Web-only repository warning.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'All raw and titlebar-normalized final-matrix states are excluded only for Web-to-Lynx. Earlier matched P8-Q2 Browser matrices remain scored, while Native pairs stay independently governed by their existing product and harness records.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'p10-final-overlays-browser-provider-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '973adba6f',
-    affectedStoryPrefix:
-      '2026-08-04--p10-perceptual-fidelity--final-overlays--',
-    affectedClientPairs: ['web:lynx'],
-    summary:
-      'Every P10 final-overlays Web frame contains provider-update and provider-path overlays that are absent from Lynx-for-Web, so the full-frame pairs do not isolate the intended composer overlay state.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'All raw and titlebar-normalized final-overlays states are excluded only for Web-to-Lynx. Their intended composer interactions remain behavioral evidence, Native pairs remain independent, and later matched composer token recaptures are tracked separately.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'p10-settings-general-browser-hydration-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'aa58ca991',
-    affectedStoryIds: [
-      '2026-08-04--p10-perceptual-fidelity--browser--settings-general',
-    ],
-    affectedClientPairs: ['web:lynx'],
-    summary:
-      'The P10 Settings General Browser pair compares a hydrated Electron settings form plus provider-update overlay with Lynx-for-Web still showing Loading preferences and a reconnecting badge.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'Both raw and normalized images remain historical capture evidence but cannot measure renderer fidelity. Later matched Settings evidence covers the hydrated surface independently.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'composer-details-shell-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '7c8036434',
-    affectedStoryIds: [
-      '2026-08-03--composer-details--browser--extras-default-1280',
-      '2026-08-03--composer-details--browser--project-picker-1280',
-    ],
-    affectedClientPairs: ['web:lynx'],
-    summary:
-      'The August 3 Extras and Project Picker Electron frames contain provider-update and provider-path overlays that are absent from the corresponding Lynx-for-Web frames.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'Only the four full-frame Extras raw/menu and Project Picker open/selected Browser pairs are excluded. Their interaction assertions and later focused composer evidence remain independent.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'p10-runtime-mention-chip-browser-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '5b02e765f',
-    affectedStoryIds: [
-      '2026-08-04--p10-perceptual-fidelity--specimens--runtime--mention-chip',
-    ],
-    affectedClientPairs: ['web:lynx'],
-    summary:
-      'The runtime mention-chip Web frame contains provider-update and provider-path overlays that are absent from Lynx-for-Web, so its whole-frame MAE does not isolate the selected mention chip.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'Only the Web-to-Lynx specimen pair is excluded. Its Lynx-to-Native sibling and later matched mention-token evidence remain independently tracked.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'settings-shortcuts-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
-    affectedStoryPrefix: '2026-08-03--settings-shortcuts--browser--',
-    affectedClientPairs: ['web:lynx'],
-    summary:
-      'Both archived Settings Keyboard Shortcuts Web frames contain an open provider-update overlay that obscures the heading and search field while Lynx-for-Web is unobscured.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'The dark-1440 and light-1280 Browser pairs are excluded as overlay-contaminated full-frame comparisons; their aligned shortcut table remains historical structure evidence.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'settings-notifications-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '1352e45ae',
-    affectedStoryPrefix: '2026-08-03--settings-notifications--browser--',
-    affectedClientPairs: ['web:lynx'],
-    summary:
-      'Both archived Settings Notifications Web frames contain an open provider-update overlay absent from Lynx-for-Web, obscuring the heading and upper notification controls.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'The two full-frame Browser pairs are excluded. Notification-test capability and status-copy differences remain a separate matched-state product question.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'settings-general-route-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '2f12c0a9',
-    affectedStoryPrefix:
-      '2026-08-10--settings-general-matrix-current--browser--settings-general-',
-    summary:
-      'The Settings General matrix labels do not match the rendered routes: Electron captured AppSnap while Lynx-for-Web captured General at both themes and widths.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'All four mislabeled route pairs remain archived but cannot contribute to same-state visual MAE; a matched General recapture is still required.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'automations-detail-provider-overlay-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'dfa1c45f9',
-    affectedStoryPrefix: '2026-08-14--automations--detail',
-    summary:
-      'The Electron Automation detail frame includes an open provider-update overlay and different header-action state while the Lynx frame has no overlay, so the pair does not isolate detail-surface fidelity.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: ['527f1f6fe'],
-    resolution:
-      'Later current-head exact-owned 1280x820 detail evidence validates the same main/aside split, title, content geometry, copy, and state with zero console errors and only one-pixel Native rhythm.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'settings-release-history-rendered-theme-mismatch',
-    type: 'capture-theme-mismatch',
-    detectedAt: '2f12c0a9',
-    affectedStoryPrefix: '2026-08-10--settings-release-history-rhythm-current',
-    summary:
-      'The paired Release history geometry evidence rendered Electron dark and Lynx-for-Web light; the light modal backdrop was classified as mixed, so automatic theme detection alone could not reject the pair.',
-    severityPoints: 0,
-    excludeVisualPairs: true,
-    resolvedBy: [],
-    resolution:
-      'The pair remains valid geometry and interaction evidence but is excluded from color MAE until a same-theme recapture replaces it.',
-    resolutionStoryPrefixes: [],
-  },
-  {
-    id: 'p9-command-menu-theme-mismatch',
-    type: 'capture-theme-mismatch',
-    detectedAt: '75a03632e',
-    affectedStoryPrefix:
-      '2026-08-03--p9-u5-composer--browser--command-menu--',
-    summary:
-      'Web command-menu screenshots rendered dark while Web and Lynx assertions both declared light.',
+      "Web command-menu screenshots rendered dark while Web and Lynx assertions both declared light.",
     severityPoints: 2,
-    resolvedBy: ['9a75c7560', '32d83f97a'],
+    resolvedBy: ["9a75c7560", "32d83f97a"],
     resolution:
-      'Current light Web/Lynx evidence converged to 98.7% parity, followed by synchronized Native certification.',
+      "Current light Web/Lynx evidence converged to 98.7% parity, followed by synchronized Native certification.",
     resolutionStoryPrefixes: [
-      '2026-08-04--p10-perceptual-fidelity--browser--skill-menu-filtered',
-      '2026-08-04--p10-perceptual-fidelity--final-overlays--mention-menu-filtered',
-      '2026-08-04--p10-perceptual-fidelity--final-overlays--skill-menu-filtered',
+      "2026-08-04--p10-perceptual-fidelity--browser--skill-menu-filtered",
+      "2026-08-04--p10-perceptual-fidelity--final-overlays--mention-menu-filtered",
+      "2026-08-04--p10-perceptual-fidelity--final-overlays--skill-menu-filtered",
     ],
   },
   {
-    id: 'temporary-sidebar-hydration',
-    type: 'capture-product-state-mismatch',
-    detectedAt: '2221865a8',
-    affectedStoryPrefix: '2026-08-13--temporary-chat-current--',
+    id: "temporary-sidebar-hydration",
+    type: "capture-product-state-mismatch",
+    detectedAt: "2221865a8",
+    affectedStoryPrefix: "2026-08-13--temporary-chat-current--",
     summary:
-      'The Temporary on/off pairs compare a hydrated Electron shell with provider status and full sidebar against Lynx-for-Web still showing Loading projects with different header and provider state.',
+      "The Temporary on/off pairs compare a hydrated Electron shell with provider status and full sidebar against Lynx-for-Web still showing Loading projects with different header and provider state.",
     severityPoints: 1,
     excludeVisualPairs: true,
-    resolvedBy: ['2f118bc49'],
+    resolvedBy: ["2f118bc49"],
     resolution:
-      'Thread-route bootstrap now seeds the shared sidebar snapshot before thread-specific fetches; a fresh route rendered real project and thread rows.',
+      "Thread-route bootstrap now seeds the shared sidebar snapshot before thread-specific fetches; a fresh route rendered real project and thread rows.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'lynx-web-sidebar-row-bindtap-automation',
-    type: 'interaction-harness-boundary',
-    detectedAt: '2f118bc49',
-    affectedStoryPrefix: '2026-08-13--temporary-chat-current--',
+    id: "lynx-web-sidebar-row-bindtap-automation",
+    type: "interaction-harness-boundary",
+    detectedAt: "2f118bc49",
+    affectedStoryPrefix: "2026-08-13--temporary-chat-current--",
     summary:
-      'The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.',
+      "The visible Lynx-for-Web sidebar row does not activate through agent-browser click, pointer, keyboard, or synthetic tap paths, blocking retained Temporary cleanup UI evidence.",
     severityPoints: 0,
     resolvedBy: [],
     resolution:
-      'Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.',
+      "Unresolved harness-only automation boundary; it does not count as product visual or reliability loss.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'native-automations-devtool-fixed-port',
-    type: 'native-certification-harness-blocker',
-    detectedAt: '06cbda876',
-    affectedStoryPrefix: '2026-08-14--automations--',
+    id: "native-automations-devtool-fixed-port",
+    type: "native-certification-harness-blocker",
+    detectedAt: "06cbda876",
+    affectedStoryPrefix: "2026-08-14--automations--",
     summary:
-      'The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint.',
+      "The exact-owned Synara Lynxtron process loaded the production bundle in a background window but could not register a DevTool client while a user-owned Lynxtron occupied the fixed localhost:8901 endpoint.",
     severityPoints: 0,
-    resolvedBy: ['af9db8126'],
+    resolvedBy: ["af9db8126"],
     resolution:
-      'A fresh exact-owned @synara/lynx process registered on PID-derived localhost:8902 while the unrelated localhost:8901 client remained running, then completed the Native Automation Repeats roundtrip with a clean console.',
+      "A fresh exact-owned @synara/lynx process registered on PID-derived localhost:8902 while the unrelated localhost:8901 client remained running, then completed the Native Automation Repeats roundtrip with a clean console.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'workspace-split-stub-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'cfbc288f3',
-    affectedStoryPrefix: '2026-08-14--workspace--split-layout',
+    id: "workspace-split-stub-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "cfbc288f3",
+    affectedStoryPrefix: "2026-08-14--workspace--split-layout",
     summary:
-      'The Web frame captured the xterm split workspace while Lynx-for-Web used the retired dark Terminal-ready stub, a different active backend, and mixed rendered theme.',
+      "The Web frame captured the xterm split workspace while Lynx-for-Web used the retired dark Terminal-ready stub, a different active backend, and mixed rendered theme.",
     severityPoints: 0,
     excludeVisualPairs: true,
-    resolvedBy: ['b584638f3'],
+    resolvedBy: ["b584638f3"],
     resolution:
-      'Current Native Workspace uses the real multi-PTY split composition and passed exact-owned lifecycle, persistence, ordering, asymmetric-layout, and dark/short-window verification.',
+      "Current Native Workspace uses the real multi-PTY split composition and passed exact-owned lifecycle, persistence, ordering, asymmetric-layout, and dark/short-window verification.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'explorer-disclosure-shell-state-mismatch',
-    type: 'capture-product-state-mismatch',
-    detectedAt: 'f8823edc0',
-    affectedStoryPrefix: '2026-08-13--explorer-disclosure-current--',
+    id: "explorer-disclosure-shell-state-mismatch",
+    type: "capture-product-state-mismatch",
+    detectedAt: "f8823edc0",
+    affectedStoryPrefix: "2026-08-13--explorer-disclosure-current--",
     summary:
-      'Explorer disclosure frames used different shell hydration and provider states: Web had the real project/thread and provider banner while Lynx-for-Web still showed Loading projects with different composer and dock chrome.',
+      "Explorer disclosure frames used different shell hydration and provider states: Web had the real project/thread and provider banner while Lynx-for-Web still showed Loading projects with different composer and dock chrome.",
     severityPoints: 0,
     excludeVisualPairs: true,
-    resolvedBy: ['dfd4baa86'],
+    resolvedBy: ["dfd4baa86"],
     resolution:
-      'Later compact Explorer tree evidence uses the real hydrated shell and validates current tree disclosure, close, preview, action, and recovery behavior.',
+      "Later compact Explorer tree evidence uses the real hydrated shell and validates current tree disclosure, close, preview, action, and recovery behavior.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'native-devtool-wheel-emulation',
-    type: 'interaction-harness-boundary',
-    detectedAt: '7edf76421',
-    affectedStoryPrefix: '2026-08-17--standalone-diff-native-wheel',
+    id: "native-devtool-wheel-emulation",
+    type: "interaction-harness-boundary",
+    detectedAt: "7edf76421",
+    affectedStoryPrefix: "2026-08-17--standalone-diff-native-wheel",
     summary:
-      'Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.',
+      "Lynxtron DevTool accepts mouseWheel emulation but does not deliver drag or wheel scrolling; real macOS pixel-scroll must be used for Native wheel certification.",
     severityPoints: 0,
     resolvedBy: [],
     resolution:
-      'Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.',
+      "Tracked upstream in lynx-family/lynxtron#151; this remains a harness-only input boundary and does not prove a product scroll regression.",
     resolutionStoryPrefixes: [],
   },
   {
-    id: 'native-cgevent-wheel-delivery',
-    type: 'native-certification-harness-blocker',
-    detectedAt: '0870afbbd',
-    affectedStoryPrefix: '2026-08-17--standalone-diff-native-wheel',
+    id: "native-cgevent-wheel-delivery",
+    type: "native-certification-harness-blocker",
+    detectedAt: "0870afbbd",
+    affectedStoryPrefix: "2026-08-17--standalone-diff-native-wheel",
     summary:
-      'Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view.',
+      "Synthetic CGEvent wheel input produced no bindscroll calls even when the exact-owned HostInputProbe process was frontmost and the cursor was positioned over its simple scroll-view.",
     severityPoints: 0,
     resolvedBy: [],
     resolution:
-      'Unresolved harness-only input boundary; use physical hardware wheel evidence or a fixed Lynxtron DevTool wheel path before attributing Native wheel behavior to product code.',
+      "Unresolved harness-only input boundary; use physical hardware wheel evidence or a fixed Lynxtron DevTool wheel path before attributing Native wheel behavior to product code.",
     resolutionStoryPrefixes: [],
   },
 ];
 
 function parseGlobalAssignment(source) {
-  return JSON.parse(
-    source
-      .replace(/^globalThis\.[A-Z0-9_]+ = /u, '')
-      .replace(/;\s*$/u, '')
-  );
+  return JSON.parse(source.replace(/^globalThis\.[A-Z0-9_]+ = /u, "").replace(/;\s*$/u, ""));
 }
 
 function git(...arguments_) {
-  return execFileSync('git', arguments_, {
+  return execFileSync("git", arguments_, {
     cwd: repoRoot,
-    encoding: 'utf8',
+    encoding: "utf8",
   }).trim();
 }
 
 function commitMetadata(commit) {
   const [hash, timestamp, ...subject] = git(
-    'show',
-    '-s',
-    '--format=%H%x09%ad%x09%s',
-    '--date=iso-strict',
-    commit
-  ).split('\t');
+    "show",
+    "-s",
+    "--format=%H%x09%ad%x09%s",
+    "--date=iso-strict",
+    commit,
+  ).split("\t");
   return {
     hash,
     shortHash: hash.slice(0, 9),
     timestamp,
     date: timestamp.slice(0, 10),
-    subject: subject.join('\t'),
+    subject: subject.join("\t"),
   };
 }
 
 function commitsByDay(firstDay, lastDay) {
   const rows = git(
-    'log',
-    '--format=%H%x09%ad%x09%s',
-    '--date=short',
+    "log",
+    "--format=%H%x09%ad%x09%s",
+    "--date=short",
     `--since=${firstDay} 00:00:00`,
     `--until=${lastDay} 23:59:59`,
-    '--reverse'
+    "--reverse",
   )
-    .split('\n')
+    .split("\n")
     .filter(Boolean)
     .map((row) => {
-      const [hash, date, ...subject] = row.split('\t');
-      return { hash, shortHash: hash.slice(0, 9), date, subject: subject.join('\t') };
+      const [hash, date, ...subject] = row.split("\t");
+      return { hash, shortHash: hash.slice(0, 9), date, subject: subject.join("\t") };
     });
   return Map.groupBy(rows, (row) => row.date);
 }
 
 function evidenceCommitHistory(firstDay, lastDay) {
   const output = git(
-    'log',
-    '--reverse',
-    '--format=@@%H%x09%ad%x09%s',
-    '--date=iso-strict',
-    '--name-only',
-    '--diff-filter=AM',
+    "log",
+    "--reverse",
+    "--format=@@%H%x09%ad%x09%s",
+    "--date=iso-strict",
+    "--name-only",
+    "--diff-filter=AM",
     `--since=${firstDay} 00:00:00`,
     `--until=${lastDay} 23:59:59`,
-    '--',
-    ...days.map((day) => `shots/${day}`)
+    "--",
+    ...days.map((day) => `shots/${day}`),
   );
   const commits = [];
   let current = null;
-  for (const line of output.split('\n')) {
-    if (line.startsWith('@@')) {
-      const [hash, timestamp, ...subject] = line.slice(2).split('\t');
+  for (const line of output.split("\n")) {
+    if (line.startsWith("@@")) {
+      const [hash, timestamp, ...subject] = line.slice(2).split("\t");
       current = {
         hash,
         shortHash: hash.slice(0, 9),
         timestamp,
         date: timestamp.slice(0, 10),
-        subject: subject.join('\t'),
+        subject: subject.join("\t"),
         files: [],
       };
       commits.push(current);
@@ -1651,20 +1585,20 @@ function evidenceCommitHistory(firstDay, lastDay) {
 
 function firstAddedCommitByFile(firstDay, lastDay) {
   const output = git(
-    'log',
-    '--reverse',
-    '--format=@@%H',
-    '--name-only',
-    '--diff-filter=A',
+    "log",
+    "--reverse",
+    "--format=@@%H",
+    "--name-only",
+    "--diff-filter=A",
     `--since=${firstDay} 00:00:00`,
     `--until=${lastDay} 23:59:59`,
-    '--',
-    ...days.map((day) => `shots/${day}`)
+    "--",
+    ...days.map((day) => `shots/${day}`),
   );
   const result = new Map();
   let currentHash = null;
-  for (const line of output.split('\n')) {
-    if (line.startsWith('@@')) currentHash = line.slice(2);
+  for (const line of output.split("\n")) {
+    if (line.startsWith("@@")) currentHash = line.slice(2);
     else if (line && currentHash && !result.has(line)) result.set(line, currentHash);
   }
   return result;
@@ -1684,11 +1618,11 @@ function imagesByNormalizedName(story, client) {
 function readEvidenceDeclaration(imagePath) {
   const assertionsPath = resolve(
     repoRoot,
-    imagePath.replace(/screenshot\.png$/u, 'assertions.json')
+    imagePath.replace(/screenshot\.png$/u, "assertions.json"),
   );
   if (!existsSync(assertionsPath)) return {};
   try {
-    const assertions = JSON.parse(readFileSync(assertionsPath, 'utf8'));
+    const assertions = JSON.parse(readFileSync(assertionsPath, "utf8"));
     return {
       theme: assertions.theme ?? null,
       snapshotSha256: assertions.snapshotSha256 ?? null,
@@ -1706,23 +1640,16 @@ async function imageMaePercent(leftPath, rightPath) {
   ]);
   const left = sharp(resolvedLeftPath).removeAlpha();
   const right = sharp(resolvedRightPath).removeAlpha();
-  const [leftMetadata, rightMetadata] = await Promise.all([
-    left.metadata(),
-    right.metadata(),
-  ]);
+  const [leftMetadata, rightMetadata] = await Promise.all([left.metadata(), right.metadata()]);
   const leftRatio = leftMetadata.width / leftMetadata.height;
   if (!isComparableImageGeometry(leftMetadata, rightMetadata)) {
-    return { accepted: false, reason: 'aspect-ratio-mismatch' };
+    return { accepted: false, reason: "aspect-ratio-mismatch" };
   }
   const width = Math.min(leftMetadata.width, rightMetadata.width);
-  const height = Math.min(
-    leftMetadata.height,
-    rightMetadata.height,
-    Math.round(width / leftRatio)
-  );
+  const height = Math.min(leftMetadata.height, rightMetadata.height, Math.round(width / leftRatio));
   const [leftPixels, rightPixels] = await Promise.all([
-    left.resize(width, height, { fit: 'fill' }).raw().toBuffer(),
-    right.resize(width, height, { fit: 'fill' }).raw().toBuffer(),
+    left.resize(width, height, { fit: "fill" }).raw().toBuffer(),
+    right.resize(width, height, { fit: "fill" }).raw().toBuffer(),
   ]);
   let total = 0;
   let leftLuminanceTotal = 0;
@@ -1778,11 +1705,11 @@ async function resolveImagePath(filePath) {
   if (existsSync(filePath)) return filePath;
   const repoPath = filePath
     .slice(repoRoot.length + 1)
-    .split('\\')
-    .join('/');
+    .split("\\")
+    .join("/");
   const url = `${archive.assetBaseUrl}/${repoPath}`;
-  const extension = repoPath.split('.').at(-1);
-  const cacheKey = createHash('sha256').update(url).digest('hex');
+  const extension = repoPath.split(".").at(-1);
+  const cacheKey = createHash("sha256").update(url).digest("hex");
   const cachePath = resolve(remoteAssetCache, `${cacheKey}.${extension}`);
   if (!existsSync(cachePath)) {
     let lastError = null;
@@ -1798,9 +1725,7 @@ async function resolveImagePath(filePath) {
       } catch (error) {
         lastError = error;
         if (attempt < 3) {
-          await new Promise((resolveDelay) =>
-            setTimeout(resolveDelay, 250 * 2 ** attempt)
-          );
+          await new Promise((resolveDelay) => setTimeout(resolveDelay, 250 * 2 ** attempt));
         }
       }
     }
@@ -1815,8 +1740,8 @@ async function visualSamples(stories, commitIndexByHash, firstCommitByFile) {
   const harness = [];
   for (const story of stories) {
     for (const [leftClient, rightClient] of [
-      ['web', 'lynx'],
-      ['lynx', 'native'],
+      ["web", "lynx"],
+      ["lynx", "native"],
     ]) {
       const left = imagesByNormalizedName(story, leftClient);
       const right = imagesByNormalizedName(story, rightClient);
@@ -1824,18 +1749,14 @@ async function visualSamples(stories, commitIndexByHash, firstCommitByFile) {
         let leftImages = left.get(key);
         let rightImages = right.get(key);
         const pairOverride = visualPairOverrides.get(
-          `${story.id}:${leftClient}:${rightClient}:${key}`
+          `${story.id}:${leftClient}:${rightClient}:${key}`,
         );
         if (pairOverride) {
           leftImages = story.images.filter(
-            (image) =>
-              image.client === leftClient &&
-              image.repoPath.endsWith(pairOverride.left)
+            (image) => image.client === leftClient && image.repoPath.endsWith(pairOverride.left),
           );
           rightImages = story.images.filter(
-            (image) =>
-              image.client === rightClient &&
-              image.repoPath.endsWith(pairOverride.right)
+            (image) => image.client === rightClient && image.repoPath.endsWith(pairOverride.right),
           );
         }
         const pairCount = Math.min(leftImages.length, rightImages.length);
@@ -1847,27 +1768,16 @@ async function visualSamples(stories, commitIndexByHash, firstCommitByFile) {
             left: leftImages[index].repoPath,
             right: rightImages[index].repoPath,
             stateKey: key,
-            ...(pairOverride
-              ? { pairOverrideReason: pairOverride.reason }
-              : {}),
+            ...(pairOverride ? { pairOverrideReason: pairOverride.reason } : {}),
           };
-          const leftCommit = resolveEvidenceSourceCommit(
-            leftImages[index],
-            firstCommitByFile
-          );
-          const rightCommit = resolveEvidenceSourceCommit(
-            rightImages[index],
-            firstCommitByFile
-          );
+          const leftCommit = resolveEvidenceSourceCommit(leftImages[index], firstCommitByFile);
+          const rightCommit = resolveEvidenceSourceCommit(rightImages[index], firstCommitByFile);
           const leftCommitIndex = commitIndexByHash.get(leftCommit);
           const rightCommitIndex = commitIndexByHash.get(rightCommit);
-          const activationCommitIndex = Math.max(
-            leftCommitIndex ?? 0,
-            rightCommitIndex ?? 0
-          );
+          const activationCommitIndex = Math.max(leftCommitIndex ?? 0, rightCommitIndex ?? 0);
           const result = await imageMaePercent(
             resolve(repoRoot, pair.left),
-            resolve(repoRoot, pair.right)
+            resolve(repoRoot, pair.right),
           );
           const leftDeclaration = readEvidenceDeclaration(pair.left);
           const rightDeclaration = readEvidenceDeclaration(pair.right);
@@ -1878,7 +1788,7 @@ async function visualSamples(stories, commitIndexByHash, firstCommitByFile) {
             renderedRightTheme: result.renderedRightTheme,
           });
           const harnessIssue = harnessIssueLedger.find((issue) =>
-            visualPairMatchesIssue(pair, issue)
+            visualPairMatchesIssue(pair, issue),
           );
           if (result.accepted && harnessIssue?.excludeVisualPairs === true) {
             harness.push({
@@ -1886,25 +1796,22 @@ async function visualSamples(stories, commitIndexByHash, firstCommitByFile) {
               ...result,
               activationCommitIndex,
               mismatchReason:
-                harnessIssue.type === 'capture-theme-mismatch'
-                  ? 'capture-theme-mismatch'
-                  : 'capture-product-state-mismatch',
+                harnessIssue.type === "capture-theme-mismatch"
+                  ? "capture-theme-mismatch"
+                  : "capture-product-state-mismatch",
               harnessIssueId: harnessIssue.id,
               leftDeclaration,
               rightDeclaration,
             });
             continue;
           }
-          if (
-            result.accepted &&
-            mismatchReason === 'capture-theme-mismatch'
-          ) {
+          if (result.accepted && mismatchReason === "capture-theme-mismatch") {
             harness.push({
               ...pair,
               ...result,
               activationCommitIndex,
               mismatchReason,
-              harnessIssueId: harnessIssue?.id ?? 'auto-rendered-theme-mismatch',
+              harnessIssueId: harnessIssue?.id ?? "auto-rendered-theme-mismatch",
               leftDeclaration,
               rightDeclaration,
             });
@@ -1932,17 +1839,15 @@ function completeness(stories, activeAssetPaths = null) {
   for (const story of stories) {
     const clients = new Set(
       story.images
-        .filter(
-          (image) => !activeAssetPaths || activeAssetPaths.has(image.repoPath)
-        )
-        .map((image) => image.client)
+        .filter((image) => !activeAssetPaths || activeAssetPaths.has(image.repoPath))
+        .map((image) => image.client),
     );
     const hasEvidence = (story.evidence ?? []).some(
-      (entry) => !activeAssetPaths || activeAssetPaths.has(entry.repoPath)
+      (entry) => !activeAssetPaths || activeAssetPaths.has(entry.repoPath),
     );
     if (
       ![...clients].some((client) => comparableClients.includes(client)) &&
-      (hasEvidence || [...clients].every((client) => client === 'evidence'))
+      (hasEvidence || [...clients].every((client) => client === "evidence"))
     ) {
       expected += 1;
       observed += 1;
@@ -1958,11 +1863,11 @@ function activeReliabilityEvents(timestamp, ledger) {
   return ledger.filter(
     (entry) =>
       entry.introducedMetadata.timestamp <= timestamp &&
-      (!entry.fixedMetadata || entry.fixedMetadata.timestamp > timestamp)
+      (!entry.fixedMetadata || entry.fixedMetadata.timestamp > timestamp),
   );
 }
 
-const archive = parseGlobalAssignment(readFileSync(archivePath, 'utf8'));
+const archive = parseGlobalAssignment(readFileSync(archivePath, "utf8"));
 const days = archive.days.map((entry) => entry.day);
 const dayCommits = commitsByDay(days[0], days.at(-1));
 const ledger = reliabilityLedger.map((entry) => ({
@@ -1975,14 +1880,12 @@ const harnessLedger = harnessIssueLedger.map((entry) => ({
   detectedMetadata: commitMetadata(entry.detectedAt),
   resolvedMetadata: entry.resolvedBy.map(commitMetadata),
 }));
-const productSupersessionLedger = productEvidenceSupersessionLedger.map(
-  (entry) => ({
-    ...entry,
-    supersededMetadata: commitMetadata(entry.supersededAt),
-  })
-);
+const productSupersessionLedger = productEvidenceSupersessionLedger.map((entry) => ({
+  ...entry,
+  supersededMetadata: commitMetadata(entry.supersededAt),
+}));
 const remoteEvidenceFilesByCommit = groupEvidenceFilesBySourceCommit(
-  archive.stories.flatMap(storyAssets)
+  archive.stories.flatMap(storyAssets),
 );
 const evidenceCommits = [
   ...evidenceCommitHistory(days[0], days.at(-1)),
@@ -1994,14 +1897,14 @@ const evidenceCommits = [
   ...ledger.flatMap((entry) =>
     [entry.introducedMetadata, entry.fixedMetadata]
       .filter(Boolean)
-      .map((metadata) => ({ ...metadata, files: [], reliabilityOnly: true }))
+      .map((metadata) => ({ ...metadata, files: [], reliabilityOnly: true })),
   ),
   ...harnessLedger.flatMap((entry) =>
     [entry.detectedMetadata, ...entry.resolvedMetadata].map((metadata) => ({
       ...metadata,
       files: [],
       harnessOnly: true,
-    }))
+    })),
   ),
   ...productSupersessionLedger.map((entry) => ({
     ...entry.supersededMetadata,
@@ -2011,27 +1914,19 @@ const evidenceCommits = [
 ]
   .filter(
     (commit, index, commits) =>
-      commits.findIndex((candidate) => candidate.hash === commit.hash) === index
+      commits.findIndex((candidate) => candidate.hash === commit.hash) === index,
   )
   .sort((left, right) => left.timestamp.localeCompare(right.timestamp));
-const commitIndexByHash = new Map(
-  evidenceCommits.map((commit, index) => [commit.hash, index])
-);
+const commitIndexByHash = new Map(evidenceCommits.map((commit, index) => [commit.hash, index]));
 const productSupersessionRules = productSupersessionLedger.map((entry) => ({
   ...entry,
   supersededAt: entry.supersededMetadata.hash,
 }));
 const firstCommitByFile = firstAddedCommitByFile(days[0], days.at(-1));
-const allSamples = await visualSamples(
-  archive.stories,
-  commitIndexByHash,
-  firstCommitByFile
-);
+const allSamples = await visualSamples(archive.stories, commitIndexByHash, firstCommitByFile);
 for (const issue of harnessLedger) {
   const resolutionPairs = allSamples.accepted.filter((pair) =>
-    issue.resolutionStoryPrefixes.some((prefix) =>
-      pair.storyId.startsWith(prefix)
-    )
+    issue.resolutionStoryPrefixes.some((prefix) => pair.storyId.startsWith(prefix)),
   );
   issue.resolutionEvidence = {
     pairCount: resolutionPairs.length,
@@ -2065,7 +1960,7 @@ for (const issue of harnessLedger) {
         maePercent,
         parityPercent,
         qualityBand,
-      })
+      }),
     ),
   };
 }
@@ -2073,17 +1968,16 @@ const storyActivationCommitIndex = new Map(
   archive.stories.map((story) => [
     story.id,
     Math.min(
-      ...storyAssets(story).map(
-        (asset) =>
-          resolveEvidenceActivationIndex({
-            asset,
-            firstCommitByFile,
-            commitIndexByHash,
-            evidenceCommits,
-          })
-      )
+      ...storyAssets(story).map((asset) =>
+        resolveEvidenceActivationIndex({
+          asset,
+          firstCommitByFile,
+          commitIndexByHash,
+          evidenceCommits,
+        }),
+      ),
     ),
-  ])
+  ]),
 );
 const imageActivationCommitIndex = new Map(
   archive.stories.flatMap((story) =>
@@ -2095,8 +1989,8 @@ const imageActivationCommitIndex = new Map(
         commitIndexByHash,
         evidenceCommits,
       }),
-    ])
-  )
+    ]),
+  ),
 );
 const evidenceActivationCommitIndex = new Map(
   archive.stories.flatMap((story) =>
@@ -2108,8 +2002,8 @@ const evidenceActivationCommitIndex = new Map(
         commitIndexByHash,
         evidenceCommits,
       }),
-    ])
-  )
+    ]),
+  ),
 );
 const commitPoints = [];
 let bestLoss = Number.POSITIVE_INFINITY;
@@ -2118,15 +2012,15 @@ let previousComponents = null;
 for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1) {
   const commit = evidenceCommits[commitIndex];
   const activeStories = archive.stories.filter(
-    (story) => storyActivationCommitIndex.get(story.id) <= commitIndex
+    (story) => storyActivationCommitIndex.get(story.id) <= commitIndex,
   );
   const activeAssetPaths = new Set(
     [...imageActivationCommitIndex, ...evidenceActivationCommitIndex]
       .filter(([, activationIndex]) => activationIndex <= commitIndex)
-      .map(([file]) => file)
+      .map(([file]) => file),
   );
   const historicalAcceptedPairs = allSamples.accepted.filter(
-    (sample) => sample.activationCommitIndex <= commitIndex
+    (sample) => sample.activationCommitIndex <= commitIndex,
   );
   const supersededPairs = historicalAcceptedPairs
     .map((sample) => ({
@@ -2135,7 +2029,7 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
         sample,
         commitIndex,
         productSupersessionRules,
-        commitIndexByHash
+        commitIndexByHash,
       ),
     }))
     .filter(({ supersession }) => supersession !== null)
@@ -2145,50 +2039,35 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
       supersededAt: supersession.supersededAt,
     }));
   const supersededPairKeys = new Set(
-    supersededPairs.map(
-      (sample) => `${sample.storyId}:${sample.left}:${sample.right}`
-    )
+    supersededPairs.map((sample) => `${sample.storyId}:${sample.left}:${sample.right}`),
   );
   const acceptedPairs = historicalAcceptedPairs.filter(
-    (sample) =>
-      !supersededPairKeys.has(
-        `${sample.storyId}:${sample.left}:${sample.right}`
-      )
+    (sample) => !supersededPairKeys.has(`${sample.storyId}:${sample.left}:${sample.right}`),
   );
   const rejectedPairs = allSamples.rejected.filter(
-    (sample) => sample.activationCommitIndex <= commitIndex
+    (sample) => sample.activationCommitIndex <= commitIndex,
   );
   const harnessPairs = allSamples.harness.filter(
-    (sample) => sample.activationCommitIndex <= commitIndex
+    (sample) => sample.activationCommitIndex <= commitIndex,
   );
   const activatedHarnessPairs = allSamples.harness.filter(
-    (sample) => sample.activationCommitIndex === commitIndex
+    (sample) => sample.activationCommitIndex === commitIndex,
   );
   const activatedRejectedPairs = allSamples.rejected.filter(
-    (sample) => sample.activationCommitIndex === commitIndex
+    (sample) => sample.activationCommitIndex === commitIndex,
   );
   const rollingPairs = acceptedPairs.slice(-visualRollingWindowSize);
-  const visual = visualLossFromSamples(
-    rollingPairs.map((sample) => sample.maePercent)
-  );
+  const visual = visualLossFromSamples(rollingPairs.map((sample) => sample.maePercent));
   const previousVisual = commitPoints.at(-1)?.visual ?? null;
   const events = activeReliabilityEvents(commit.timestamp, ledger);
   const harnessEvents = harnessLedger.filter(
     (event) =>
       event.detectedMetadata.timestamp <= commit.timestamp &&
-      event.resolvedMetadata.every(
-        (resolution) => resolution.timestamp > commit.timestamp
-      )
+      event.resolvedMetadata.every((resolution) => resolution.timestamp > commit.timestamp),
   );
   const reliabilityPoints =
-    events.reduce(
-    (total, event) => total + event.severityPoints,
-    0
-    ) +
-    harnessEvents.reduce(
-      (total, event) => total + event.severityPoints,
-      0
-    );
+    events.reduce((total, event) => total + event.severityPoints, 0) +
+    harnessEvents.reduce((total, event) => total + event.severityPoints, 0);
   const scopeCoverage = activeStories.length / archive.storyCount;
   const clientCompleteness = completeness(activeStories, activeAssetPaths);
   const calculated = calculateFidelityLoss({
@@ -2202,13 +2081,10 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
     ? weightedComponentContributions(
         previousComponents,
         calculated.components,
-        FIDELITY_LOSS_WEIGHTS
+        FIDELITY_LOSS_WEIGHTS,
       )
     : Object.fromEntries(Object.keys(FIDELITY_LOSS_WEIGHTS).map((key) => [key, 0]));
-  const lossDelta =
-    commitPoints.length > 0
-      ? calculated.loss - commitPoints.at(-1).loss
-      : 0;
+  const lossDelta = commitPoints.length > 0 ? calculated.loss - commitPoints.at(-1).loss : 0;
   const addedStoryIds = archive.stories
     .filter((story) => storyActivationCommitIndex.get(story.id) === commitIndex)
     .map((story) => story.id);
@@ -2219,14 +2095,14 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
     .filter(([, activationIndex]) => activationIndex === commitIndex)
     .map(([file]) => file);
   const activatedPairs = allSamples.accepted.filter(
-    (sample) => sample.activationCommitIndex === commitIndex
+    (sample) => sample.activationCommitIndex === commitIndex,
   );
   const regressionChanges = ledger.flatMap((event) => {
     if (event.introducedMetadata.hash === commit.hash) {
-      return [{ type: 'introduced', id: event.id, summary: event.summary }];
+      return [{ type: "introduced", id: event.id, summary: event.summary }];
     }
     if (event.fixedMetadata?.hash === commit.hash) {
-      return [{ type: 'fixed', id: event.id, summary: event.summary }];
+      return [{ type: "fixed", id: event.id, summary: event.summary }];
     }
     return [];
   });
@@ -2234,19 +2110,17 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
     if (event.detectedMetadata.hash === commit.hash) {
       return [
         {
-          type: 'harness-detected',
+          type: "harness-detected",
           id: event.id,
           summary: event.summary,
         },
       ];
     }
-    const resolution = event.resolvedMetadata.find(
-      (metadata) => metadata.hash === commit.hash
-    );
+    const resolution = event.resolvedMetadata.find((metadata) => metadata.hash === commit.hash);
     if (resolution) {
       return [
         {
-          type: 'harness-resolution',
+          type: "harness-resolution",
           id: event.id,
           summary: event.resolution,
         },
@@ -2257,7 +2131,7 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
   const supersessionChanges = productSupersessionLedger
     .filter((event) => event.supersededMetadata.hash === commit.hash)
     .map((event) => ({
-      type: 'product-evidence-supersession',
+      type: "product-evidence-supersession",
       id: event.id,
       summary: event.resolution,
     }));
@@ -2267,7 +2141,7 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
     .map(([component, contribution]) => ({
       component,
       contribution,
-      direction: contribution > 0 ? 'up' : 'down',
+      direction: contribution > 0 ? "up" : "down",
     }));
   commitPoints.push({
     index: commitIndex,
@@ -2312,18 +2186,14 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
           resolvedMetadata,
           resolutionEvidence: _resolutionEvidence,
           ...event
-        }) => event
+        }) => event,
       ),
       points: reliabilityPoints,
     },
     components: calculated.components,
     componentContributions,
     causes,
-    regressionChanges: [
-      ...regressionChanges,
-      ...harnessChanges,
-      ...supersessionChanges,
-    ],
+    regressionChanges: [...regressionChanges, ...harnessChanges, ...supersessionChanges],
     lossDelta,
     loss: calculated.loss,
     bestLoss,
@@ -2332,7 +2202,7 @@ for (let commitIndex = 0; commitIndex < evidenceCommits.length; commitIndex += 1
 }
 const smoothLosses = exponentialMovingAverage(
   commitPoints.map((point) => point.loss),
-  emaAlpha
+  emaAlpha,
 );
 commitPoints.forEach((point, index) => {
   point.smoothLoss = smoothLosses[index];
@@ -2356,12 +2226,9 @@ const riseAnalysis = commitPoints
     explanation: [
       ...point.causes
         .filter((cause) => cause.contribution > 0)
-        .map(
-          (cause) =>
-            `${cause.component} added ${cause.contribution.toFixed(2)} loss points`
-        ),
+        .map((cause) => `${cause.component} added ${cause.contribution.toFixed(2)} loss points`),
       ...point.regressionChanges
-        .filter((change) => change.type === 'introduced')
+        .filter((change) => change.type === "introduced")
         .map((change) => `regression introduced: ${change.summary}`),
       point.addedStoryIds.length
         ? `${point.addedStoryIds.length} newly discovered stories changed scope/client expectations`
@@ -2388,23 +2255,13 @@ const dayAnalysis = anchoredDays.map((day) => {
     netLossDelta: last.loss - openingLoss,
     riseCount: dayPoints.filter((point) => point.lossDelta > 0.01).length,
     fallCount: dayPoints.filter((point) => point.lossDelta < -0.01).length,
-    addedStoryCount: dayPoints.reduce(
-      (total, point) => total + point.addedStoryIds.length,
-      0
-    ),
-    activatedPairCount: dayPoints.reduce(
-      (total, point) => total + point.activatedPairCount,
-      0
-    ),
+    addedStoryCount: dayPoints.reduce((total, point) => total + point.addedStoryIds.length, 0),
+    activatedPairCount: dayPoints.reduce((total, point) => total + point.activatedPairCount, 0),
     componentContributions: Object.fromEntries(
       Object.keys(FIDELITY_LOSS_WEIGHTS).map((component) => [
         component,
-        dayPoints.reduce(
-          (total, point) =>
-            total + point.componentContributions[component],
-          0
-        ),
-      ])
+        dayPoints.reduce((total, point) => total + point.componentContributions[component], 0),
+      ]),
     ),
     commitIndexes: dayPoints.map((point) => point.index),
   };
@@ -2429,11 +2286,11 @@ const points = anchoredDays.map((day) => {
             sample,
             point.index,
             productSupersessionRules,
-            commitIndexByHash
-          ) === null
+            commitIndexByHash,
+          ) === null,
       ),
       rejectedPairs: allSamples.rejected.filter(
-        (sample) => sample.activationCommitIndex <= point.index
+        (sample) => sample.activationCommitIndex <= point.index,
       ),
     },
   };
@@ -2442,7 +2299,7 @@ const points = anchoredDays.map((day) => {
 const result = {
   version: 1,
   generatedFrom: {
-    archive: 'screenshot-archive.js',
+    archive: "screenshot-archive.js",
     firstDay: days[0],
     lastDay: days.at(-1),
     finalStoryCount: archive.storyCount,
@@ -2451,25 +2308,23 @@ const result = {
   },
   formula: {
     expression:
-      '100 × (0.30 × scopeGap + 0.25 × clientGap + 0.35 × visualDistance + 0.10 × reliabilityDebt)',
+      "100 × (0.30 × scopeGap + 0.25 × clientGap + 0.35 × visualDistance + 0.10 × reliabilityDebt)",
     weights: FIDELITY_LOSS_WEIGHTS,
     visual:
-      'Median current same-state RGB MAE, capped at 10%, shrunk toward 50% loss until 12 accepted pairs exist. Historical product pairs remain recorded but stop contributing after explicitly linked later product evidence supersedes them.',
+      "Median current same-state RGB MAE, capped at 10%, shrunk toward 50% loss until 12 accepted pairs exist. Historical product pairs remain recorded but stop contributing after explicitly linked later product evidence supersedes them.",
     comparability:
-      'Pairs require normalized state names and matching aspect ratio within 1.5%; high MAE remains scored and is classified as poor or critical parity.',
-    scope:
-      `Cumulative unique work stories divided by the final known ${archive.storyCount}-story scope; continuous frames count as one story.`,
+      "Pairs require normalized state names and matching aspect ratio within 1.5%; high MAE remains scored and is classified as poor or critical parity.",
+    scope: `Cumulative unique work stories divided by the final known ${archive.storyCount}-story scope; continuous frames count as one story.`,
     completeness:
-      'Observed Web/Lynx/Native cells divided by expected cells for discovered stories.',
-    reliability:
-      'Active, commit-bounded regression severity points divided by the ledger maximum.',
+      "Observed Web/Lynx/Native cells divided by expected cells for discovered stories.",
+    reliability: "Active, commit-bounded regression severity points divided by the ledger maximum.",
     granularity:
-      'Every commit that adds or updates evidence produces a measured point; smoothLoss is an EMA over measured points, not interpolated evidence.',
+      "Every commit that adds or updates evidence produces a measured point; smoothLoss is an EMA over measured points, not interpolated evidence.",
   },
   smoothing: {
-    method: 'exponential-moving-average',
+    method: "exponential-moving-average",
     alpha: emaAlpha,
-    source: 'commitPoints.loss',
+    source: "commitPoints.loss",
   },
   reliabilityLedger: ledger,
   harnessIssueLedger: harnessLedger,
@@ -2483,8 +2338,8 @@ const result = {
 writeFileSync(outputJsonPath, `${JSON.stringify(result, null, 2)}\n`);
 writeFileSync(
   outputJsPath,
-  `globalThis.__SYNARA_FIDELITY_LOSS__ = ${JSON.stringify(result, null, 2)};\n`
+  `globalThis.__SYNARA_FIDELITY_LOSS__ = ${JSON.stringify(result, null, 2)};\n`,
 );
 console.log(
-  `Generated ${commitPoints.length} commit points and ${points.length} daily anchors: ${commitPoints[0].loss.toFixed(2)} → ${commitPoints.at(-1).loss.toFixed(2)}`
+  `Generated ${commitPoints.length} commit points and ${points.length} daily anchors: ${commitPoints[0].loss.toFixed(2)} → ${commitPoints.at(-1).loss.toFixed(2)}`,
 );

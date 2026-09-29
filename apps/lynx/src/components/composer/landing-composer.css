@@ -117,8 +117,7 @@
   padding: 2px 0;
 }
 
-.SliceRoot--viewport-short-height
-  .ComposerProjectPickerPopupLynx.LxMenuPopup {
+.SliceRoot--viewport-short-height .ComposerProjectPickerPopupLynx.LxMenuPopup {
   height: calc(100vh - 16px);
   max-height: calc(100vh - 16px);
 }

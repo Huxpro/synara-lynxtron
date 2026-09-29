@@ -1,9 +1,9 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import { ChevronRightIcon, PlusIcon } from '../lib/icons.lynx';
-import './kanban-overview-composition-elements.css';
-import { useTheme } from './useTheme.lynx';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
+import { ChevronRightIcon, PlusIcon } from "../lib/icons.lynx";
+import "./kanban-overview-composition-elements.css";
+import { useTheme } from "./useTheme.lynx";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
 
 type ChildrenProps = { readonly children?: ReactNode };
 
@@ -25,10 +25,7 @@ export function KanbanOverviewEmptyBodyElement(props: ChildrenProps) {
 
 export function KanbanOverviewProjectsElement(props: ChildrenProps) {
   return (
-    <scroll-view
-      className="SharedKanbanOverviewScroller"
-      scroll-orientation="horizontal"
-    >
+    <scroll-view className="SharedKanbanOverviewScroller" scroll-orientation="horizontal">
       <view className="SharedKanbanOverviewProjects">{props.children}</view>
     </scroll-view>
   );
@@ -42,18 +39,20 @@ export function KanbanOverviewProjectHeaderRootElement(props: ChildrenProps) {
   return <view className="SharedKanbanOverviewProjectHeaderRoot">{props.children}</view>;
 }
 
-export function KanbanOverviewProjectHeaderElement(props: ChildrenProps & {
-  readonly onActivate: () => void;
-}) {
+export function KanbanOverviewProjectHeaderElement(
+  props: ChildrenProps & {
+    readonly onActivate: () => void;
+  },
+) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedKanbanOverviewProjectHeader',
+    baseClassName: "SharedKanbanOverviewProjectHeader",
     onActivate: props.onActivate,
   });
   return (
     <view
       className={interaction.className}
-      data-project-header-hovered={interaction.hovered ? 'true' : 'false'}
-      data-project-header-focused={interaction.focused ? 'true' : 'false'}
+      data-project-header-hovered={interaction.hovered ? "true" : "false"}
+      data-project-header-focused={interaction.focused ? "true" : "false"}
       {...interaction.eventProps}
     >
       {props.children}
@@ -78,7 +77,7 @@ export function KanbanOverviewProjectChevronElement() {
   return (
     <ChevronRightIcon
       className="SharedKanbanOverviewProjectChevron"
-      color={semanticIconColor('tertiary')}
+      color={semanticIconColor("tertiary")}
       size={14}
     />
   );
@@ -90,19 +89,15 @@ export function KanbanOverviewNewTaskElement(props: {
 }) {
   const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedKanbanOverviewNewTask',
+    baseClassName: "SharedKanbanOverviewNewTask",
     accessibleLabel: props.label,
     onActivate: props.onActivate,
   });
   return (
-    <view
-      className={interaction.className}
-      aria-label={props.label}
-      {...interaction.eventProps}
-    >
+    <view className={interaction.className} aria-label={props.label} {...interaction.eventProps}>
       <PlusIcon
         className="SharedKanbanOverviewNewTaskIcon"
-        color={semanticIconColor('secondary')}
+        color={semanticIconColor("secondary")}
         size={14}
       />
     </view>
@@ -111,10 +106,7 @@ export function KanbanOverviewNewTaskElement(props: {
 
 export function KanbanOverviewCardListElement(props: ChildrenProps) {
   return (
-    <scroll-view
-      className="SharedKanbanOverviewCardScroller"
-      scroll-orientation="vertical"
-    >
+    <scroll-view className="SharedKanbanOverviewCardScroller" scroll-orientation="vertical">
       <view className="SharedKanbanOverviewCardList">{props.children}</view>
     </scroll-view>
   );
@@ -129,15 +121,12 @@ export function KanbanOverviewShowMoreElement(props: {
   readonly onActivate: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedKanbanOverviewShowMore',
+    baseClassName: "SharedKanbanOverviewShowMore",
     accessibleLabel: props.label,
     onActivate: props.onActivate,
   });
   return (
-    <view
-      className={interaction.className}
-      {...interaction.eventProps}
-    >
+    <view className={interaction.className} {...interaction.eventProps}>
       <text className="SharedKanbanOverviewShowMoreLabel">{props.label}</text>
     </view>
   );

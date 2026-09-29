@@ -23,11 +23,7 @@ export function SidebarThreadIdentity({
 }: SidebarThreadIdentityProps) {
   return (
     <SidebarThreadIdentityCopyElement subagent={subagent}>
-      <SidebarThreadIdentityTitleElement
-        active={active}
-        subagent={subagent}
-        testId={titleTestId}
-      >
+      <SidebarThreadIdentityTitleElement active={active} subagent={subagent} testId={titleTestId}>
         {title}
       </SidebarThreadIdentityTitleElement>
       {!subagent && pendingStatusColorClass ? (

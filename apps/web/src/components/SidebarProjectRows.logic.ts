@@ -56,10 +56,7 @@ export function deriveSidebarProjectRows<
 
   for (const project of input.projects) {
     const allProjectThreads = input.sortedThreadsByProjectId.get(project.id) ?? [];
-    const projectThreads = input.filterPinnedThreads(
-      allProjectThreads,
-      input.pinnedThreadIds,
-    );
+    const projectThreads = input.filterPinnedThreads(allProjectThreads, input.pinnedThreadIds);
     const projectStatus = input.resolveProjectStatus(
       allProjectThreads.map(input.resolveThreadStatus),
     );
@@ -75,13 +72,15 @@ export function deriveSidebarProjectRows<
       const visibleEntries =
         activeThread === null
           ? []
-          : [{
-              kind: "thread" as const,
-              rowId: activeThread.id,
-              rootRowId: activeThread.id,
-              thread: activeThread,
-              depth: 0,
-            }];
+          : [
+              {
+                kind: "thread" as const,
+                rowId: activeThread.id,
+                rootRowId: activeThread.id,
+                thread: activeThread,
+                depth: 0,
+              },
+            ];
       byProjectId.set(project.id, {
         allProjectThreadCount: allProjectThreads.length,
         projectThreads,

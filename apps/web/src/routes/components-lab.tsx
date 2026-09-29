@@ -13,11 +13,7 @@ interface ComponentsLabSearch {
 
 function ComponentsLabRouteView() {
   const search = useSearch({ from: "/components-lab" });
-  const resolvedSearch = resolveComponentsLabSearch(
-    search,
-    getLocationSearch(),
-    getLocationHash(),
-  );
+  const resolvedSearch = resolveComponentsLabSearch(search, getLocationSearch(), getLocationHash());
   const navigate = useNavigate();
   return (
     <ComponentsLabPage
@@ -26,7 +22,10 @@ function ComponentsLabRouteView() {
       selectedStoryId={resolvedSearch.story ?? null}
       selectedState={resolvedSearch.state ?? null}
       onSelectStory={(story) =>
-        void navigate({ to: "/components-lab", search: { story, state: "default", variant: undefined } })
+        void navigate({
+          to: "/components-lab",
+          search: { story, state: "default", variant: undefined },
+        })
       }
       onSelectState={(state) =>
         void navigate({
@@ -36,7 +35,10 @@ function ComponentsLabRouteView() {
       }
       selectedVariant={resolvedSearch.variant ?? null}
       onSelectVariant={(variant) =>
-        void navigate({ to: "/components-lab", search: { story: resolvedSearch.story, state: resolvedSearch.state, variant } })
+        void navigate({
+          to: "/components-lab",
+          search: { story: resolvedSearch.story, state: resolvedSearch.state, variant },
+        })
       }
     />
   );

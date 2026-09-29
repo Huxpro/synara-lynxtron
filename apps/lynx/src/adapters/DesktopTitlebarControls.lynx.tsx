@@ -1,9 +1,9 @@
-import sidebarToggleSvg from '@synara-central-icons/sidebar-hidden-left-wide.svg?raw';
+import sidebarToggleSvg from "@synara-central-icons/sidebar-hidden-left-wide.svg?raw";
 
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
-import { useTheme } from './useTheme.lynx';
-import './desktop-titlebar-controls.css';
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
+import { useTheme } from "./useTheme.lynx";
+import "./desktop-titlebar-controls.css";
 
 const arrowForwardSvg =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"><path d="M295.6 163.7c-5.1 5-5.1 13.3-.1 18.4l60.8 60.9H124.9c-7.1 0-12.9 5.8-12.9 13s5.8 13 12.9 13h231.3l-60.8 60.9c-5 5.1-4.9 13.3.1 18.4 5.1 5 13.2 5 18.3-.1l82.4-83c1.1-1.2 2-2.5 2.7-4.1.7-1.6 1-3.3 1-5 0-3.4-1.3-6.6-3.7-9.1l-82.4-83c-4.9-5.2-13.1-5.3-18.2-.3z"/></svg>';
@@ -19,9 +19,7 @@ function TitlebarControl(props: {
   readonly onActivate: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: `${props.className}${
-      props.disabled ? ' DesktopTitlebarControl--disabled' : ''
-    }`,
+    baseClassName: `${props.className}${props.disabled ? " DesktopTitlebarControl--disabled" : ""}`,
     accessibleLabel: props.accessibleLabel,
     disabled: props.disabled,
     onActivate: props.onActivate,
@@ -47,14 +45,14 @@ function TitlebarControl(props: {
 export function DesktopTitlebarControls(props: {
   readonly canGoBack: boolean;
   readonly canGoForward: boolean;
-  readonly placement: 'closed' | 'open';
+  readonly placement: "closed" | "open";
   readonly onGoBack: () => void;
   readonly onGoForward: () => void;
   readonly onToggleSidebar: () => void;
 }) {
   const { semanticIconColor } = useTheme();
-  const secondary = semanticIconColor('secondary');
-  const foreground = semanticIconColor('primary');
+  const secondary = semanticIconColor("secondary");
+  const foreground = semanticIconColor("primary");
   const sidebarSecondary = colorizeLynxSvg(sidebarToggleSvg, secondary);
   const sidebarForeground = colorizeLynxSvg(sidebarToggleSvg, foreground);
   const arrowSecondary = colorizeLynxSvg(arrowForwardSvg, secondary);
@@ -62,9 +60,7 @@ export function DesktopTitlebarControls(props: {
   const arrowBackSecondary = colorizeLynxSvg(arrowBackSvg, secondary);
   const arrowBackForeground = colorizeLynxSvg(arrowBackSvg, foreground);
   return (
-    <view
-      className={`DesktopTitlebarControls DesktopTitlebarControls--${props.placement}`}
-    >
+    <view className={`DesktopTitlebarControls DesktopTitlebarControls--${props.placement}`}>
       <TitlebarControl
         accessibleLabel="Toggle thread sidebar"
         className="DesktopTitlebarControl DesktopTitlebarControl--toggle"

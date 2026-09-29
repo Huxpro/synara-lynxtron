@@ -3,11 +3,7 @@
 // Exports: Shared project pinning controller used by Web and Lynx sidebars.
 
 import { MAX_PINNED_PROJECTS } from "@synara/contracts";
-import {
-  derivePinnedIds,
-  isLatestPinMutation,
-  orderPinnedItemsFirst,
-} from "../pinning.logic";
+import { derivePinnedIds, isLatestPinMutation, orderPinnedItemsFirst } from "../pinning.logic";
 
 export function isLatestPinnedProjectMutation<TId>(input: {
   readonly projectId: TId;

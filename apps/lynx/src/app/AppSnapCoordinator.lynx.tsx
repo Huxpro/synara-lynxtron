@@ -1,23 +1,23 @@
-import { useEffect, useRef } from '@lynx-js/react';
+import { useEffect, useRef } from "@lynx-js/react";
 
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsAppSnapProjection,
   readSettingsGeneralProjection,
-} from '@synara-web/appSettingsStorageProjection.logic';
-import { resolveAppSnapTarget } from '@synara-web/appSnap.logic';
+} from "@synara-web/appSettingsStorageProjection.logic";
+import { resolveAppSnapTarget } from "@synara-web/appSnap.logic";
 
-import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
-import { fetchSynaraSidebarShellSnapshot } from '../data/synaraClient.lynx';
-import { appSnap, type LynxAppSnapCapture } from '../platform/appSnap';
-import { webStorage } from '../platform/storage';
-import { loadLandingBootstrap } from '../components/composer/LandingComposer.lynx';
-import { attachAppSnapCapture } from './appSnapCapture.lynx';
+import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
+import { fetchSynaraSidebarShellSnapshot } from "../data/synaraClient.lynx";
+import { appSnap, type LynxAppSnapCapture } from "../platform/appSnap";
+import { webStorage } from "../platform/storage";
+import { loadLandingBootstrap } from "../components/composer/LandingComposer.lynx";
+import { attachAppSnapCapture } from "./appSnapCapture.lynx";
 import {
   appSnapCaptureTimestampMs,
   createFreshAppSnapTask,
   findAppSnapCaptureThreadId,
-} from './appSnapRouting.lynx';
+} from "./appSnapRouting.lynx";
 
 export function AppSnapCoordinator(props: {
   readonly activeThreadId: string | null;
@@ -30,18 +30,14 @@ export function AppSnapCoordinator(props: {
   const lastInteractionRef = useRef<{
     readonly threadId: string;
     readonly atMs: number;
-  } | null>(
-    props.activeThreadId
-      ? { threadId: props.activeThreadId, atMs: Date.now() }
-      : null
-  );
+  } | null>(props.activeThreadId ? { threadId: props.activeThreadId, atMs: Date.now() } : null);
   const lastAppSnapRef = useRef<{
     readonly threadId: string;
     readonly atMs: number;
   } | null>(null);
 
   useEffect(() => {
-    'background only';
+    "background only";
     if (!props.activeThreadId) return;
     lastInteractionRef.current = {
       threadId: props.activeThreadId,
@@ -50,42 +46,35 @@ export function AppSnapCoordinator(props: {
   }, [props.activeThreadId]);
 
   useEffect(() => {
-    'background only';
+    "background only";
     const enqueue = (capture: LynxAppSnapCapture) => {
       if (seenCaptureIdsRef.current.has(capture.captureId)) return;
       seenCaptureIdsRef.current.add(capture.captureId);
       queueRef.current = queueRef.current
         .then(async () => {
           const snapshot = await fetchSynaraSidebarShellSnapshot();
-          const availableThreadIds = new Set(
-            snapshot.threads.map((thread) => thread.id)
-          );
-          const draftsByThreadId =
-            useComposerDraftStore.getState().draftsByThreadId;
-          const restoredThreadId = findAppSnapCaptureThreadId(
-            draftsByThreadId,
-            capture.captureId
-          );
+          const availableThreadIds = new Set(snapshot.threads.map((thread) => thread.id));
+          const draftsByThreadId = useComposerDraftStore.getState().draftsByThreadId;
+          const restoredThreadId = findAppSnapCaptureThreadId(draftsByThreadId, capture.captureId);
           const captureAtMs = appSnapCaptureTimestampMs(capture, Date.now());
-          const resolvedTarget = restoredThreadId &&
-            availableThreadIds.has(restoredThreadId)
-            ? {
-                kind: 'existing' as const,
-                target: { threadId: restoredThreadId },
-              }
-            : resolveAppSnapTarget({
-                captureAtMs,
-                lastInteraction: lastInteractionRef.current as never,
-                lastAppSnap: lastAppSnapRef.current as never,
-                isThreadAvailable: (threadId) =>
-                  availableThreadIds.has(threadId),
-              });
+          const resolvedTarget =
+            restoredThreadId && availableThreadIds.has(restoredThreadId)
+              ? {
+                  kind: "existing" as const,
+                  target: { threadId: restoredThreadId },
+                }
+              : resolveAppSnapTarget({
+                  captureAtMs,
+                  lastInteraction: lastInteractionRef.current as never,
+                  lastAppSnap: lastAppSnapRef.current as never,
+                  isThreadAvailable: (threadId) => availableThreadIds.has(threadId),
+                });
           let threadId: string;
-          if (resolvedTarget.kind === 'existing') {
+          if (resolvedTarget.kind === "existing") {
             threadId = resolvedTarget.target.threadId;
           } else {
             const generalSettings = readSettingsGeneralProjection(
-              webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+              webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
             );
             threadId = await createFreshAppSnapTask({
               defaultProvider: generalSettings.defaultProvider,
@@ -105,11 +94,9 @@ export function AppSnapCoordinator(props: {
     };
     const disposeCaptured = appSnap.onCaptured(enqueue);
     const disposeError = appSnap.onError((error) => {
-      console.warn('[appsnap]', error.message);
+      console.warn("[appsnap]", error.message);
     });
-    const settings = readSettingsAppSnapProjection(
-      webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
-    );
+    const settings = readSettingsAppSnapProjection(webStorage.getItem(APP_SETTINGS_STORAGE_KEY));
     void appSnap
       .setPlayCaptureSound(settings.appSnapPlaySound)
       .then(() => appSnap.setEnabled(settings.enableAppSnap))

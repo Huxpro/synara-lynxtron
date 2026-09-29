@@ -9,7 +9,10 @@ import {
   CHAT_SURFACE_HEADER_HEIGHT_CLASS,
   CHAT_SURFACE_HEADER_PADDING_X_CLASS,
 } from "~/components/chat/chatHeaderControls";
-import { PullRequestFilterPillGroup, PullRequestProjectFilterPopover } from "./PullRequestListFilters";
+import {
+  PullRequestFilterPillGroup,
+  PullRequestProjectFilterPopover,
+} from "./PullRequestListFilters";
 import { SidebarHeaderNavigationControls } from "~/components/SidebarHeaderNavigationControls";
 import { Button } from "~/components/ui/button";
 import { SearchInput } from "~/components/ui/search-input";
@@ -36,7 +39,11 @@ export function PullRequestRouteHeaderRootElement(
 }
 
 export function PullRequestRouteHeaderRowElement(props: ChildrenProps) {
-  return <div className={cn("flex items-center gap-2", CHAT_SURFACE_HEADER_HEIGHT_CLASS)}>{props.children}</div>;
+  return (
+    <div className={cn("flex items-center gap-2", CHAT_SURFACE_HEADER_HEIGHT_CLASS)}>
+      {props.children}
+    </div>
+  );
 }
 
 export function PullRequestRouteHeaderNavigationElement() {

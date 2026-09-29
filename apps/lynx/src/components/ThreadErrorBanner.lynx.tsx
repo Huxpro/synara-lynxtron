@@ -1,8 +1,8 @@
-import { CircleAlertIcon, XIcon } from '../lib/icons.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
-import { useLynxInteractiveState } from './ui/interactive-state.lynx';
+import { CircleAlertIcon, XIcon } from "../lib/icons.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
+import { useLynxInteractiveState } from "./ui/interactive-state.lynx";
 
-import './thread-error-banner.css';
+import "./thread-error-banner.css";
 
 export function ThreadErrorBanner(props: {
   readonly error: string | null;
@@ -10,19 +10,15 @@ export function ThreadErrorBanner(props: {
 }) {
   const { activeTheme } = useTheme();
   const dismiss = useLynxInteractiveState({
-    baseClassName: 'ThreadErrorBannerDismiss',
-    accessibleLabel: 'Dismiss error',
+    baseClassName: "ThreadErrorBannerDismiss",
+    accessibleLabel: "Dismiss error",
     onActivate: props.onDismiss,
   });
   if (!props.error) return null;
 
   return (
     <view className="ThreadErrorBannerFrame">
-      <view
-        className="ThreadErrorBanner"
-        accessibility-element
-        accessibility-label={props.error}
-      >
+      <view className="ThreadErrorBanner" accessibility-element accessibility-label={props.error}>
         <CircleAlertIcon
           className="ThreadErrorBannerIcon"
           color={activeTheme.theme.semanticColors.diffRemoved}

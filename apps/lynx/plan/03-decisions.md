@@ -2,21 +2,21 @@
 
 状态：🟡 待数据 / 🟢 已决 / ⚪ 暂缓
 
-| ID | 决策 | 选项 | 依赖数据 | 状态 | 结论 |
-|---|---|---|---|---|---|
-| D1 | Tailwind 策略 | A. web v4 + lynx v3 preset 双 Tailwind；B. v4 产物 PostCSS strip；C. 令牌共享 + 自收敛 utility 子集 | P0-S3 覆盖率 | 🟢 | A（2026-07-27，P0-S3 数据支持，见下） |
-| D2 | 终端路径 | a. CEF webview 内嵌 xterm（保体验、付 Chromium 成本）；b. Node-API 自研 native 终端元素（长期最优）；c. 一期裁剪 | Phase 2 后评估工作量 | 🟢 | c（2026-07-28，D13 修订）：runtime 为 hard island，一期保留入口和说明性 placeholder |
-| D3 | CEF 兜底过渡形态 | 是否先做"Lynxtron 壳 + webview 内嵌现有 web app"作为过渡发行形态 | P0-S5 | 🟢 | c（2026-07-28）：0.0.7 `<webview>` 实测崩溃，放弃兜底；D13 修订为 browser/PDF 一期保留说明性 placeholder |
-| D4 | WS 传输路径 | a. Lynx view 直连（若 WS module 可用）；b. lynxBridge 中继主进程 WS；c. SSE+fetch 重构传输层 | P0-S2 | 🟢 | a（2026-07-27，P0-S2 数据，见下） |
-| D5 | updater 方案 | a. 检测更新+跳转下载降级；b. 自研更新器；c. 等上游 | P4 阶段 | 🟢 | a（2026-07-27，P4-X2）：只读 latest metadata + 固定官方下载页，不下载/安装 |
-| D6 | 图标方案 | codemod → Lynx svg 静态子集 vs iconfont vs 预渲染图片 | P2-V4 实测覆盖率 | 🟢 | codemod/生成器（2026-07-27）：14/14 首切片 outline 图标实机通过；保留 stroke/currentColor/size props |
-| D7 | 代码落点：Lynx app 与主仓关系 | a. 单仓 apps/web-lynx；b. synara-lynx 独立仓 + path/vendor 引用主仓共享层 | P5-R2 原组件编译探针 | 🟢 | a（2026-07-27）：最终进入主仓 workspace；slice 暂作可逆 staging |
-| D8 | macOS 正式发行签名 | a. Developer ID + notarization + stapling；b. 内部 unsigned 分发；c. 暂不分发 | Apple 账号、证书、bundle id 归属、CI secrets | 🟡 | P4-X3 仅产本地 unsigned arm64 DMG；不代用户申请凭证或接受系统安全例外 |
-| D9 | UI 移植方法 | a. compiler-driven port 原组件树；b. 继续按截图 clean-room 重写；c. 全量 WebView | P2–P4 实测 + 当前 UI 复盘 | 🟢 | a（2026-07-27）：普通 UI 复用组件树与调用点；仅硬岛双实现 |
-| D10 | Phase 5 reference screen 边界 | a. 真实 route-owned feature panel；b. 必须连同完整 settings shell；c. slice 诊断页 | P5-R5 与 P6-C1 依赖边界 | 🟡 | 夜间先选 a：Settings Behavior 真实 panel 全图入 denominator；shell 不 mask、明确交 P6-C1；若后续要求 b，可在同一 composition 外扩 |
-| D11 | Sidebar 大颗粒复用边界 | a. 原 6.5k 行组件整树运行；b. 真源内抽 controller/view-model + 大颗粒 presentation composition，平台只分 host/L2 叶子；c. Lynx 重画 | P6-C1 full-tree compiler/runtime probe | 🟡 | 先选 b：a 已编译通过但运行时空白；c 违反 D9。保持诊断 route 不进入产品与 reuse 分子，可随上游 router/host 支持改善后回试 a |
-| D12 | Phase 6 reuse 门禁位置 | route ≥70% 强制门禁 vs 任务子图门禁/Phase 出口 | route graph 与任务边界实测 | 🟢（已被 D13 取代） | threads-shell 子图已建并保留为观测指标；≥70% 不再作为任务放行门禁 |
-| D13 | 聊天优先级与 Phase 6 放行 | 聊天主 UI 优先；terminal/browser/PDF placeholder；reuse 强制点让位 | 用户决策 | 🟢 | P6-C2→C3→C1 收尾→C4→C5→C6；按视觉契约放行，reuse 每刀审计并报告 |
+| ID  | 决策                          | 选项                                                                                                                                | 依赖数据                                     | 状态                | 结论                                                                                                                              |
+| --- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| D1  | Tailwind 策略                 | A. web v4 + lynx v3 preset 双 Tailwind；B. v4 产物 PostCSS strip；C. 令牌共享 + 自收敛 utility 子集                                 | P0-S3 覆盖率                                 | 🟢                  | A（2026-07-27，P0-S3 数据支持，见下）                                                                                             |
+| D2  | 终端路径                      | a. CEF webview 内嵌 xterm（保体验、付 Chromium 成本）；b. Node-API 自研 native 终端元素（长期最优）；c. 一期裁剪                    | Phase 2 后评估工作量                         | 🟢                  | c（2026-07-28，D13 修订）：runtime 为 hard island，一期保留入口和说明性 placeholder                                               |
+| D3  | CEF 兜底过渡形态              | 是否先做"Lynxtron 壳 + webview 内嵌现有 web app"作为过渡发行形态                                                                    | P0-S5                                        | 🟢                  | c（2026-07-28）：0.0.7 `<webview>` 实测崩溃，放弃兜底；D13 修订为 browser/PDF 一期保留说明性 placeholder                          |
+| D4  | WS 传输路径                   | a. Lynx view 直连（若 WS module 可用）；b. lynxBridge 中继主进程 WS；c. SSE+fetch 重构传输层                                        | P0-S2                                        | 🟢                  | a（2026-07-27，P0-S2 数据，见下）                                                                                                 |
+| D5  | updater 方案                  | a. 检测更新+跳转下载降级；b. 自研更新器；c. 等上游                                                                                  | P4 阶段                                      | 🟢                  | a（2026-07-27，P4-X2）：只读 latest metadata + 固定官方下载页，不下载/安装                                                        |
+| D6  | 图标方案                      | codemod → Lynx svg 静态子集 vs iconfont vs 预渲染图片                                                                               | P2-V4 实测覆盖率                             | 🟢                  | codemod/生成器（2026-07-27）：14/14 首切片 outline 图标实机通过；保留 stroke/currentColor/size props                              |
+| D7  | 代码落点：Lynx app 与主仓关系 | a. 单仓 apps/web-lynx；b. synara-lynx 独立仓 + path/vendor 引用主仓共享层                                                           | P5-R2 原组件编译探针                         | 🟢                  | a（2026-07-27）：最终进入主仓 workspace；slice 暂作可逆 staging                                                                   |
+| D8  | macOS 正式发行签名            | a. Developer ID + notarization + stapling；b. 内部 unsigned 分发；c. 暂不分发                                                       | Apple 账号、证书、bundle id 归属、CI secrets | 🟡                  | P4-X3 仅产本地 unsigned arm64 DMG；不代用户申请凭证或接受系统安全例外                                                             |
+| D9  | UI 移植方法                   | a. compiler-driven port 原组件树；b. 继续按截图 clean-room 重写；c. 全量 WebView                                                    | P2–P4 实测 + 当前 UI 复盘                    | 🟢                  | a（2026-07-27）：普通 UI 复用组件树与调用点；仅硬岛双实现                                                                         |
+| D10 | Phase 5 reference screen 边界 | a. 真实 route-owned feature panel；b. 必须连同完整 settings shell；c. slice 诊断页                                                  | P5-R5 与 P6-C1 依赖边界                      | 🟡                  | 夜间先选 a：Settings Behavior 真实 panel 全图入 denominator；shell 不 mask、明确交 P6-C1；若后续要求 b，可在同一 composition 外扩 |
+| D11 | Sidebar 大颗粒复用边界        | a. 原 6.5k 行组件整树运行；b. 真源内抽 controller/view-model + 大颗粒 presentation composition，平台只分 host/L2 叶子；c. Lynx 重画 | P6-C1 full-tree compiler/runtime probe       | 🟡                  | 先选 b：a 已编译通过但运行时空白；c 违反 D9。保持诊断 route 不进入产品与 reuse 分子，可随上游 router/host 支持改善后回试 a        |
+| D12 | Phase 6 reuse 门禁位置        | route ≥70% 强制门禁 vs 任务子图门禁/Phase 出口                                                                                      | route graph 与任务边界实测                   | 🟢（已被 D13 取代） | threads-shell 子图已建并保留为观测指标；≥70% 不再作为任务放行门禁                                                                 |
+| D13 | 聊天优先级与 Phase 6 放行     | 聊天主 UI 优先；terminal/browser/PDF placeholder；reuse 强制点让位                                                                  | 用户决策                                     | 🟢                  | P6-C2→C3→C1 收尾→C4→C5→C6；按视觉契约放行，reuse 每刀审计并报告                                                                   |
 
 ## 决策记录
 
@@ -83,6 +83,7 @@ notarization/stapling。夜间自主任务不申请凭证、不绕过 Gatekeeper
 ### D1 — Tailwind 策略 → A（2026-07-27）
 
 数据（[spikes/p0-s3](../spikes/p0-s3/README.md)，Top500 高频 class 喂 tailwindcss 3.4.19 + @lynx-js/tailwind-preset 0.5.0）：
+
 - 绝对通过率 66.0%（330/500）；**加权通过率 80.1%**（12,815/15,994 次出现）。
 - 未通过大头可机械补齐：自定义主题色（text-muted-foreground 366 次等，~8%）→ tokens 注入 v3 config；缺失 utility（inline-flex 154、cursor-pointer 86、pointer-events-none 76、tabular-nums 74、outline-none 66，~7%）→ preset 扩展/自收敛补丁。
 - 补齐后预计 ~95%；真·不兼容（伪类/媒体查询变体 ~3.6%）用 preset 的 uiVariants 或构建期静态化。
@@ -92,6 +93,7 @@ notarization/stapling。夜间自主任务不申请凭证、不绕过 Gatekeeper
 ### D4 — WS 传输路径 → a（2026-07-27）
 
 数据（[spikes/p0-s2](../spikes/p0-s2/README.md)，Lynxtron 0.0.7 实测，两轮一致）：
+
 - **(a) 直连可用**：`LynxWebSocketModule` 已预注册（connect/send/ping/close + GlobalEventEmitter 事件）；官方 `@lynx-js/websocket` 提供 W3C 包装。RTT avg 0.5–0.9ms、吞吐 ~390msg/s（发送端限 500/s）、重连 1–2ms。
 - (b) 中继同样可行且桥开销仅 ~0.4ms（b1 RTT ~1ms），保留为备选（主进程代理场景）；(b2) 重连有 ~505ms 异常，淘汰。
 - (c) SSE：EventSource 连接成功但消息事件不派发（0.0.7 缺陷）→ 兜底暂不可用，⬆️ 上游。
@@ -312,6 +314,7 @@ Threads 图天然包含 composer/ChatView，属 P6-C2/C3 范围——该备选�
 "C1 必须先完成 C2/C3"，与 01-roadmap 自己的依赖顺序自相矛盾（C2 依赖 C1）。
 
 定案（保守可逆，不降低最终标准）：
+
 1. **≥70% 的强制放行点移到 P6-C6**（六屏一起验收），与 06 的"Phase 6 每个核心屏均 ≥70%"
    在 Phase 出口层面完全一致；
 2. 每个 C 任务继续报本屏数字，作为**进度指标**而非放行条件；
@@ -330,6 +333,7 @@ terminal 相关模块（Threads 图内约 4,646 LOC）整体登记为 **hard isl
 理由与可行性依据：xterm 依赖 DOM/canvas，PrimJS 无法运行；自研原生终端模块属独立项目量级。
 
 执行后果：
+
 - **P3-E5 由 pending 改为 descoped（一期）**，不再作为 Phase 5–8 的可达任务，因此不再
   计入停止条件 (b) 的"等待用户决策"集合。
 - 复用率口径：terminal 模块保持 EXCLUSIVE 分类，本就不进 eligible 分母，裁剪不改变已有
@@ -340,6 +344,7 @@ terminal 相关模块（Threads 图内约 4,646 LOC）整体登记为 **hard isl
 ### D13 — 优先级重定：聊天主 UI 高优，复用率降为非阻塞目标（2026-07-28，🟢 用户决策）
 
 用户明确三点：
+
 1. **terminal 与内嵌 browser 留 placeholder**（不是静默缺失，也不是完全不做界面）：
    保留入口与占位表面，说明该能力一期不可用，避免用户以为是 bug。
 2. **其余聊天主 UI 全部高优**，尤其是**基于 `<list>` 的完整聊天能力**
@@ -364,7 +369,6 @@ terminal 相关模块（Threads 图内约 4,646 LOC）整体登记为 **hard isl
 P6-C2（Thread + Transcript + `<list>` 完整聊天）→ P6-C3（Composer）→ P6-C1 收尾
 → P6-C4（Settings）→ P6-C5（Projects/Kanban/PR）→ P6-C6 → Phase 7 → Phase 8。
 理由：聊天是产品主路径，C1 的剩余部分是 sidebar 打磨，不应挡住主路径。
-
 
 ### D7 更新 — 主仓 workspace 已成为实际落点（2026-07-31，🟢）
 

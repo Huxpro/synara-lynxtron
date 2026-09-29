@@ -15,8 +15,7 @@ export function updateComposerDraftPrompt<
   if (input.threadId.length === 0) {
     return input.draftsByThreadId;
   }
-  const existing =
-    input.draftsByThreadId[input.threadId] ?? input.createEmptyDraft();
+  const existing = input.draftsByThreadId[input.threadId] ?? input.createEmptyDraft();
   const nextDraft = {
     ...existing,
     prompt: input.prompt,

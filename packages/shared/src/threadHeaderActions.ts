@@ -40,15 +40,13 @@ export function resolveThreadHeaderActionState(
   input: ThreadHeaderActionStateInput,
 ): ThreadHeaderActionState {
   const isEditorRail = input.surface.kind === "editor-rail";
-  const suppressHandoffControls =
-    isEditorRail || input.surface.primary === "terminal";
+  const suppressHandoffControls = isEditorRail || input.surface.primary === "terminal";
   const showEnvironment = input.environmentEnabled;
   const showDiff = !isEditorRail;
 
   return {
     diffDisabled:
-      showDiff &&
-      (!input.isGitRepo || (input.diffDisabledReason !== null && !input.diffOpen)),
+      showDiff && (!input.isGitRepo || (input.diffDisabledReason !== null && !input.diffOpen)),
     diffStats:
       showDiff && input.diffTotals.hasChanges
         ? {
@@ -58,8 +56,7 @@ export function resolveThreadHeaderActionState(
         : null,
     showDiff,
     showEnvironment,
-    showGitActions:
-      !showEnvironment && input.hasProject && input.gitActionsAvailable,
+    showGitActions: !showEnvironment && input.hasProject && input.gitActionsAvailable,
     showHandoff: !suppressHandoffControls,
     showLegacyOpenIn: !showEnvironment && input.hasProject,
     showProjectActions: input.hasProjectActionSurface,

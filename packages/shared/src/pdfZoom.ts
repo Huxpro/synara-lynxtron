@@ -5,18 +5,7 @@ export const PDF_MIN_SCALE = 0.25;
 export const PDF_MAX_SCALE = 5;
 
 /** Canonical zoom stops shared by the Electron and Lynx PDF viewers. */
-export const PDF_ZOOM_PRESETS: readonly number[] = [
-  0.5,
-  0.75,
-  1,
-  1.25,
-  1.5,
-  1.75,
-  2,
-  2.5,
-  3,
-  4,
-];
+export const PDF_ZOOM_PRESETS: readonly number[] = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3, 4];
 
 export type PdfZoomMode =
   | { readonly type: "fit-width" }
@@ -47,9 +36,7 @@ function fitWidthScale(page: PdfPageIntrinsicSize, container: PdfViewportSize): 
 function fitPageScale(page: PdfPageIntrinsicSize, container: PdfViewportSize): number {
   const usableHeight = container.height - PDF_PAGE_MARGIN_PX * 2;
   if (usableHeight <= 0 || page.height <= 0) return fitWidthScale(page, container);
-  return clampPdfScale(
-    Math.min(fitWidthScale(page, container), usableHeight / page.height),
-  );
+  return clampPdfScale(Math.min(fitWidthScale(page, container), usableHeight / page.height));
 }
 
 export function resolvePdfScale(
@@ -59,9 +46,7 @@ export function resolvePdfScale(
 ): number {
   if (mode.type === "custom") return clampPdfScale(mode.scale);
   if (!page || !container) return 1;
-  return mode.type === "fit-page"
-    ? fitPageScale(page, container)
-    : fitWidthScale(page, container);
+  return mode.type === "fit-page" ? fitPageScale(page, container) : fitWidthScale(page, container);
 }
 
 export function nextZoomScale(scale: number): number {

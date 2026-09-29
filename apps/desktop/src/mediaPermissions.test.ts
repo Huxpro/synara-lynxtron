@@ -5,7 +5,10 @@
 
 import { describe, expect, it } from "vitest";
 
-import { shouldAllowMediaPermissionRequest, shouldConfigureMediaPermissions } from "./mediaPermissions";
+import {
+  shouldAllowMediaPermissionRequest,
+  shouldConfigureMediaPermissions,
+} from "./mediaPermissions";
 
 describe("shouldAllowMediaPermissionRequest", () => {
   it("skips TCC setup only for an explicit isolated comparison", () => {

@@ -1,5 +1,5 @@
-import { GitBranchIcon } from '../lib/icons.lynx';
-import { useTheme } from './useTheme.lynx';
+import { GitBranchIcon } from "../lib/icons.lynx";
+import { useTheme } from "./useTheme.lynx";
 
 export function PullRequestSummaryBranchRow(props: {
   readonly additions: number;
@@ -25,10 +25,10 @@ export function PullRequestSummaryBranchRow(props: {
         <text className="SharedPrSummaryBranchName">{props.baseBranch}</text>
         <view className="SharedPrSummaryDiffStat">
           <text className="SharedPrSummaryDiffStat--addition">
-            +{props.additions.toLocaleString('en-US')}
+            +{props.additions.toLocaleString("en-US")}
           </text>
           <text className="SharedPrSummaryDiffStat--deletion">
-            -{props.deletions.toLocaleString('en-US')}
+            -{props.deletions.toLocaleString("en-US")}
           </text>
         </view>
       </view>

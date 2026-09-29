@@ -76,9 +76,7 @@ import {
 
 const decodeReadModel = Schema.decodeUnknownEffect(OrchestrationReadModel);
 const decodeShellSnapshot = Schema.decodeUnknownEffect(OrchestrationShellSnapshot);
-const decodeSidebarSearchSnapshot = Schema.decodeUnknownEffect(
-  OrchestrationSidebarSearchSnapshot,
-);
+const decodeSidebarSearchSnapshot = Schema.decodeUnknownEffect(OrchestrationSidebarSearchSnapshot);
 const decodeThreadDetail = Schema.decodeUnknownEffect(OrchestrationThread);
 const decodeThreadDetailSnapshot = Schema.decodeUnknownEffect(OrchestrationThreadDetailSnapshot);
 const decodeModelSelection = Schema.decodeUnknownEffect(ModelSelection);
@@ -2290,9 +2288,9 @@ const makeProjectionSnapshotQuery = Effect.gen(function* () {
       .pipe(
         Effect.mapError((error) => {
           if (isPersistenceError(error)) return error;
-          return toPersistenceSqlError(
-            "ProjectionSnapshotQuery.getSidebarSearchSnapshot:query",
-          )(error);
+          return toPersistenceSqlError("ProjectionSnapshotQuery.getSidebarSearchSnapshot:query")(
+            error,
+          );
         }),
       );
 

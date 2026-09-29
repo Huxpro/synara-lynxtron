@@ -6,6 +6,7 @@
 ## 5.1 环境启动
 
 ### Web 侧（原始项目）
+
 隔离实例，避免与日常实例抢端口/状态（遵守主仓 AGENTS.md）：
 
 ```bash
@@ -20,8 +21,9 @@ env -u SYNARA_AUTH_TOKEN SYNARA_PORT_OFFSET=3158 SYNARA_NO_BROWSER=1 bun run dev
 检查端口占用：`lsof -nP -iTCP:<port> -sTCP:LISTEN`（server 与 web 两个端口都要查）。
 
 ### Lynx 侧
+
 - Lynx 应用（spike 或垂直切片）以 dev 模式启动（Rspeedy dev server / Lynxtron `npm run dev`）。
-- **前置**：安装 LynxDevTool 桌面 app（https://lynxjs.org/next/guide/devtool.html）；`reactlynx tree` 要求 dev build 且含 `@lynx-js/preact-devtools`（含 PR #2/#5 修复）。
+- **前置**：安装 LynxDevTool 桌面 app（https://lynxjs.org/next/guide/devtool.html）；`reactlynx tree`要求 dev build 且含`@lynx-js/preact-devtools`（含 PR #2/#5 修复）。
 - DevTool CLI（lynx-devtool skill）：
   `node /Users/bytedance/.agents/skills/lynx-devtool/scripts/index.mjs <cmd>`
 

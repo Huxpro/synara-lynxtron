@@ -34,10 +34,5 @@ export function SidebarThreadStatusDotElement({
   readonly colorClass: string;
   readonly dotClass: string;
 }) {
-  return (
-    <span
-      aria-label={label}
-      className={cn("size-1.5 shrink-0 rounded-full", dotClass)}
-    />
-  );
+  return <span aria-label={label} className={cn("size-1.5 shrink-0 rounded-full", dotClass)} />;
 }

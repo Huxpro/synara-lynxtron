@@ -402,10 +402,7 @@ const WebSocketRequestBody = Schema.Union([
   tagRequestBody(WS_METHODS.serverGenerateThreadRecap, ServerGenerateThreadRecapInput),
   tagRequestBody(WS_METHODS.serverGenerateAutomationIntent, ServerGenerateAutomationIntentInput),
   tagRequestBody(WS_METHODS.serverUpsertKeybinding, KeybindingRule),
-  tagRequestBody(
-    WS_METHODS.serverRemoveKeybinding,
-    Schema.Struct({ command: KeybindingCommand }),
-  ),
+  tagRequestBody(WS_METHODS.serverRemoveKeybinding, Schema.Struct({ command: KeybindingCommand })),
 
   // Provider discovery
   tagRequestBody(WS_METHODS.providerGetComposerCapabilities, ProviderGetComposerCapabilitiesInput),

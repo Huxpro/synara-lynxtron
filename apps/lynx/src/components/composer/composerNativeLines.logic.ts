@@ -11,11 +11,11 @@ export function resolveNativeComposerMaxLines(input: {
       : 736;
   const textWidthPx = Math.max(1, availableWidthPx - COMPOSER_EDITOR_HORIZONTAL_CHROME_PX);
   const estimatedCharacterWidthPx = Math.max(1, input.chatFontSizePx * 0.5);
-  const explicitLines = input.text.split('\n');
+  const explicitLines = input.text.split("\n");
   const wrappedLineCount = explicitLines.reduce(
     (total, line) =>
       total + Math.max(1, Math.ceil((line.length * estimatedCharacterWidthPx) / textWidthPx)),
-    0
+    0,
   );
   return Math.min(6, Math.max(2, wrappedLineCount));
 }

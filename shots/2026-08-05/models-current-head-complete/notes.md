@@ -42,18 +42,18 @@ No SQLite fixture or direct settings-file write was used.
 
 The empty editor now matches Web exactly:
 
-| Anchor | Web | Lynx-for-Web |
-| --- | ---: | ---: |
-| Generation section | `456/118/624/112` | exact |
-| Generation card | `456/150/624/80` | exact |
-| Git writing row | `457/151/622/78` | exact |
-| Custom section | `456/254/624/159` | exact |
-| Custom card | `456/286/624/127` | exact |
-| Custom row | `457/287/622/125` | exact |
-| Editor | `469/353/598/49` | exact |
-| Provider trigger | `469/372/144/28` | exact |
-| Input | `621/372/369/28` | exact |
-| Add | `998/370/69/32` | exact |
+| Anchor             |               Web | Lynx-for-Web |
+| ------------------ | ----------------: | -----------: |
+| Generation section | `456/118/624/112` |        exact |
+| Generation card    |  `456/150/624/80` |        exact |
+| Git writing row    |  `457/151/622/78` |        exact |
+| Custom section     | `456/254/624/159` |        exact |
+| Custom card        | `456/286/624/127` |        exact |
+| Custom row         | `457/287/622/125` |        exact |
+| Editor             |  `469/353/598/49` |        exact |
+| Provider trigger   |  `469/372/144/28` |        exact |
+| Input              |  `621/372/369/28` |        exact |
+| Add                |   `998/370/69/32` |        exact |
 
 ## Evidence
 

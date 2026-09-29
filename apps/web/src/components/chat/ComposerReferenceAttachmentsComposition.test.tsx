@@ -60,9 +60,7 @@ describe("ComposerReferenceAttachmentsComposition", () => {
     const markup = renderToStaticMarkup(
       <ComposerReferenceAttachmentsComposition
         assistantSelections={[{ id: "s1", text: "selection" } as never]}
-        fileComments={[
-          { path: "a.ts", startLine: 1, endLine: 1, text: "comment" } as never,
-        ]}
+        fileComments={[{ path: "a.ts", startLine: 1, endLine: 1, text: "comment" } as never]}
         pastedTexts={[
           { id: "p1", text: "one", lineCount: 1, charCount: 3, createdAt: "now" },
           { id: "p2", text: "two", lineCount: 1, charCount: 3, createdAt: "now" },

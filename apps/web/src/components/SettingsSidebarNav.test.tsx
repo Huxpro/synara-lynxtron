@@ -75,9 +75,7 @@ describe("SettingsSidebarNav", () => {
     expect(markup).toContain('aria-label="Settings sections"');
     expect(markup).toContain("Back to app");
     expect(markup).toContain('class="shrink-0 px-1.5 pt-1.5"');
-    expect(markup).toContain(
-      'class="min-h-0 flex-1 overflow-y-auto px-1.5 pb-1.5"',
-    );
+    expect(markup).toContain('class="min-h-0 flex-1 overflow-y-auto px-1.5 pb-1.5"');
     expect(markup.indexOf('class="shrink-0 px-1.5 pt-1.5"')).toBeLessThan(
       markup.indexOf('class="min-h-0 flex-1 overflow-y-auto px-1.5 pb-1.5"'),
     );
@@ -92,8 +90,6 @@ describe("SettingsSidebarNav", () => {
       "props.settingsNavigation ? (\n        props.settingsNavigation",
     );
     const sidebarSource = readFileSync(new URL("./Sidebar.tsx", import.meta.url), "utf8");
-    expect(sidebarSource).toContain(
-      '<SidebarGroup className="min-h-0 flex-1 p-0">',
-    );
+    expect(sidebarSource).toContain('<SidebarGroup className="min-h-0 flex-1 p-0">');
   });
 });

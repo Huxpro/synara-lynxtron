@@ -1,6 +1,6 @@
-import 'background-only';
+import "background-only";
 
-import { bridgeCall } from './bridge';
+import { bridgeCall } from "./bridge";
 
 export interface UpdateCheckResult {
   readonly currentVersion: string;
@@ -13,10 +13,10 @@ export interface UpdateCheckResult {
 }
 
 export function checkForUpdate(): Promise<UpdateCheckResult> {
-  return bridgeCall('updaterCheck');
+  return bridgeCall("updaterCheck");
 }
 
 export async function openUpdateDownloadPage(): Promise<boolean> {
-  const result = await bridgeCall<{ readonly opened: boolean }>('updaterOpenDownload');
+  const result = await bridgeCall<{ readonly opened: boolean }>("updaterOpenDownload");
   return result.opened;
 }

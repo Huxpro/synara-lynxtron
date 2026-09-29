@@ -28,9 +28,7 @@ import {
   BranchToolbarBranchSelector,
   type BranchSelectorVariant,
 } from "./BranchToolbarBranchSelector";
-import {
-  COMPOSER_TOOLBAR_PICKER_TRIGGER_CLASS_NAME,
-} from "./chat/composerPickerStyles";
+import { COMPOSER_TOOLBAR_PICKER_TRIGGER_CLASS_NAME } from "./chat/composerPickerStyles";
 import { ComposerRuntimeModeControlComposition } from "./chat/ComposerRuntimeModeControlComposition";
 import {
   ENVIRONMENT_ROW_CLASS_NAME,
@@ -44,14 +42,7 @@ import { ComposerPickerMenuPopup } from "./chat/ComposerPickerMenuPopup";
 import { Button } from "./ui/button";
 import { Collapsible, CollapsiblePanel } from "./ui/collapsible";
 import { DisclosureChevron } from "./ui/DisclosureChevron";
-import {
-  Menu,
-  MenuGroup,
-  MenuGroupLabel,
-  MenuItem,
-  MenuSeparator,
-  MenuTrigger,
-} from "./ui/menu";
+import { Menu, MenuGroup, MenuGroupLabel, MenuItem, MenuSeparator, MenuTrigger } from "./ui/menu";
 import type { ThreadWorkspacePatch } from "../types";
 
 function WorktreeGlyph({ className }: { className?: string }) {

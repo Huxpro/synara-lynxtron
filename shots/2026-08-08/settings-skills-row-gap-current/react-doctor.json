@@ -73,9 +73,7 @@
       "diagnostics": [],
       "score": null,
       "skippedChecks": [],
-      "analyzedFiles": [
-        "src/app/SettingsSkillsPanel.lynx.test.tsx"
-      ],
+      "analyzedFiles": ["src/app/SettingsSkillsPanel.lynx.test.tsx"],
       "analyzedFileCount": 1,
       "complete": true,
       "scannedFileCount": 1,

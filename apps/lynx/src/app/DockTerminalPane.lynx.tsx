@@ -1,39 +1,34 @@
-import { Fragment, useEffect, useRef, useState, type ReactNode } from '@lynx-js/react';
-import terminalSvg from '@synara-central-icons/console.svg?raw';
-import type { TerminalEvent, ThreadId } from '@synara/contracts';
+import { Fragment, useEffect, useRef, useState, type ReactNode } from "@lynx-js/react";
+import terminalSvg from "@synara-central-icons/console.svg?raw";
+import type { TerminalEvent, ThreadId } from "@synara/contracts";
 import {
   defaultTerminalTitleForCliKind,
   deriveTerminalOutputIdentity,
   resolveTerminalVisualIdentity,
   type TerminalCliKind,
   type TerminalVisualState,
-} from '@synara/shared/terminalThreads';
+} from "@synara/shared/terminalThreads";
 
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
-import {
-  LayoutColumnsIcon,
-  LayoutRowsIcon,
-  PlusIcon,
-  Trash2,
-} from '../lib/icons.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
-import { EditorSurfaceTab } from './EditorSurfaceTab.lynx';
-import { IndependentTabRow } from './IndependentTabRow.lynx';
-import { ThreadTerminal } from './ThreadTerminal.lynx';
-import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
-import type { ThreadTerminalLayoutNode } from '@synara-web/types';
-import { MAX_TERMINALS_PER_GROUP } from '@synara-web/types';
-import { dockTerminalThreadId } from '@synara-web/lib/dockTerminalScope';
-import { randomUUID } from '@synara-web/lib/utils';
-import type { TerminalContextSelection } from '@synara-web/lib/terminalContext';
-import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import { LayoutColumnsIcon, LayoutRowsIcon, PlusIcon, Trash2 } from "../lib/icons.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
+import { EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
+import { IndependentTabRow } from "./IndependentTabRow.lynx";
+import { ThreadTerminal } from "./ThreadTerminal.lynx";
+import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
+import type { ThreadTerminalLayoutNode } from "@synara-web/types";
+import { MAX_TERMINALS_PER_GROUP } from "@synara-web/types";
+import { dockTerminalThreadId } from "@synara-web/lib/dockTerminalScope";
+import { randomUUID } from "@synara-web/lib/utils";
+import type { TerminalContextSelection } from "@synara-web/lib/terminalContext";
+import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
 import {
   selectThreadTerminalState,
   flushTerminalStatePersistence,
   useTerminalStateStore,
-} from '@synara-web/terminalStateStore';
-import { resolveThreadTerminalLayout } from '@synara-web/components/terminal/TerminalLayout';
+} from "@synara-web/terminalStateStore";
+import { resolveThreadTerminalLayout } from "@synara-web/components/terminal/TerminalLayout";
 import {
   moveLynxTerminalSplitResize,
   readLynxTerminalSplitCoordinate,
@@ -41,31 +36,27 @@ import {
   type LynxTerminalSplitPointerEvent,
   type LynxTerminalSplitResizeSession,
   type LynxTerminalSplitTapState,
-} from './terminalSplitResize.lynx.logic';
-import './dock-terminal-pane.css';
+} from "./terminalSplitResize.lynx.logic";
+import "./dock-terminal-pane.css";
 
 function TerminalIcon(props: { readonly cliKind?: TerminalCliKind | null }) {
   const { semanticIconColor } = useTheme();
-  if (props.cliKind === 'codex') return <OpenAIProviderIcon provider="codex" />;
-  if (props.cliKind === 'claude') return <OpenAIProviderIcon provider="claudeAgent" />;
-  if (props.cliKind === 'antigravity') {
+  if (props.cliKind === "codex") return <OpenAIProviderIcon provider="codex" />;
+  if (props.cliKind === "claude") return <OpenAIProviderIcon provider="claudeAgent" />;
+  if (props.cliKind === "antigravity") {
     return <OpenAIProviderIcon provider="antigravity" />;
   }
   return (
     <svg
       className="DockTerminalPaneIcon"
-      content={colorizeLynxSvg(terminalSvg, semanticIconColor('secondary'))}
+      content={colorizeLynxSvg(terminalSvg, semanticIconColor("secondary"))}
     />
   );
 }
 
 function ActivityIndicator(props: { readonly state: TerminalVisualState }) {
-  if (props.state === 'idle') return null;
-  return (
-    <view
-      className={'DockTerminalPaneActivity DockTerminalPaneActivity--' + props.state}
-    />
-  );
+  if (props.state === "idle") return null;
+  return <view className={"DockTerminalPaneActivity DockTerminalPaneActivity--" + props.state} />;
 }
 
 function ToolbarButton(props: {
@@ -75,14 +66,14 @@ function ToolbarButton(props: {
   readonly onActivate: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'DockTerminalPaneToolbarButton',
+    baseClassName: "DockTerminalPaneToolbarButton",
     accessibleLabel: props.label,
     disabled: props.disabled,
     onActivate: props.onActivate,
   });
   return (
     <view
-      className={`${interaction.className}${props.disabled ? ' ui-disabled' : ''}`}
+      className={`${interaction.className}${props.disabled ? " ui-disabled" : ""}`}
       {...interaction.eventProps}
     >
       {props.children}
@@ -98,41 +89,27 @@ export function DockTerminalPane(props: {
   readonly workspaceRoot: string;
   readonly onClosePane: () => void;
   readonly isActive?: boolean;
-  readonly scope?: 'dock' | 'thread';
+  readonly scope?: "dock" | "thread";
 }) {
   const { semanticIconColor } = useTheme();
-  const toolbarIconColor = semanticIconColor('secondary');
+  const toolbarIconColor = semanticIconColor("secondary");
   const scopeId =
-    props.scope === 'thread'
+    props.scope === "thread"
       ? (props.threadId as ThreadId)
       : dockTerminalThreadId(props.threadId as ThreadId);
   const terminalState = useTerminalStateStore((state) =>
-    selectThreadTerminalState(state.terminalStateByThreadId, scopeId)
+    selectThreadTerminalState(state.terminalStateByThreadId, scopeId),
   );
-  const openTerminalThreadPage = useTerminalStateStore(
-    (state) => state.openTerminalThreadPage
-  );
+  const openTerminalThreadPage = useTerminalStateStore((state) => state.openTerminalThreadPage);
   const newTerminalTab = useTerminalStateStore((state) => state.newTerminalTab);
   const newTerminalGroup = useTerminalStateStore((state) => state.newTerminal);
-  const splitTerminalRight = useTerminalStateStore(
-    (state) => state.splitTerminalRight
-  );
-  const splitTerminalDown = useTerminalStateStore(
-    (state) => state.splitTerminalDown
-  );
-  const setActiveTerminal = useTerminalStateStore(
-    (state) => state.setActiveTerminal
-  );
+  const splitTerminalRight = useTerminalStateStore((state) => state.splitTerminalRight);
+  const splitTerminalDown = useTerminalStateStore((state) => state.splitTerminalDown);
+  const setActiveTerminal = useTerminalStateStore((state) => state.setActiveTerminal);
   const closeTerminal = useTerminalStateStore((state) => state.closeTerminal);
-  const resizeTerminalSplit = useTerminalStateStore(
-    (state) => state.resizeTerminalSplit
-  );
-  const setTerminalMetadata = useTerminalStateStore(
-    (state) => state.setTerminalMetadata
-  );
-  const setTerminalActivity = useTerminalStateStore(
-    (state) => state.setTerminalActivity
-  );
+  const resizeTerminalSplit = useTerminalStateStore((state) => state.resizeTerminalSplit);
+  const setTerminalMetadata = useTerminalStateStore((state) => state.setTerminalMetadata);
+  const setTerminalActivity = useTerminalStateStore((state) => state.setTerminalActivity);
   const resolvedLayout = resolveThreadTerminalLayout({
     activeTerminalGroupId: terminalState.activeTerminalGroupId,
     activeTerminalId: terminalState.activeTerminalId,
@@ -146,35 +123,25 @@ export function DockTerminalPane(props: {
   });
   const allTabs = resolvedLayout.normalizedTerminalIds.map((id) => ({
     id,
-    label: terminalState.terminalLabelsById[id] ?? 'Terminal',
+    label: terminalState.terminalLabelsById[id] ?? "Terminal",
   }));
-  const tabs = allTabs.filter((tab) =>
-    resolvedLayout.visibleTerminalIds.includes(tab.id)
-  );
+  const tabs = allTabs.filter((tab) => resolvedLayout.visibleTerminalIds.includes(tab.id));
   const activeId = resolvedLayout.resolvedActiveTerminalId;
   const [closeRequestById, setCloseRequestById] = useState<Record<string, number>>({});
   const [closeQueue, setCloseQueue] = useState<readonly string[]>([]);
-  const [closeQueuePurpose, setCloseQueuePurpose] = useState<
-    'group' | 'pane' | null
-  >(null);
+  const [closeQueuePurpose, setCloseQueuePurpose] = useState<"group" | "pane" | null>(null);
   const handledExternalCloseRef = useRef(props.closeRequestVersion);
   const splitSizeByIdRef = useRef<Record<string, number>>({});
   const splitResizeSessionRef = useRef<LynxTerminalSplitResizeSession | null>(null);
   const splitTapStateRef = useRef<LynxTerminalSplitTapState | null>(null);
   const [resizingSplit, setResizingSplit] = useState(false);
   const [hoveredSplitHandle, setHoveredSplitHandle] = useState<string | null>(null);
-  const addTerminalContext = useComposerDraftStore(
-    (state) => state.addTerminalContext
-  );
+  const addTerminalContext = useComposerDraftStore((state) => state.addTerminalContext);
 
-  const addTerminalSelectionToChat = (
-    selection: TerminalContextSelection
-  ) => {
+  const addTerminalSelectionToChat = (selection: TerminalContextSelection) => {
     addTerminalContext(props.threadId, {
       ...selection,
-      id: `lynx-terminal-context-${Date.now()}-${Math.random()
-        .toString(16)
-        .slice(2)}`,
+      id: `lynx-terminal-context-${Date.now()}-${Math.random().toString(16).slice(2)}`,
       threadId: props.threadId as ThreadId,
       createdAt: new Date().toISOString(),
     });
@@ -202,7 +169,7 @@ export function DockTerminalPane(props: {
       return;
     }
     const ids = terminalState.terminalIds;
-    setCloseQueuePurpose('pane');
+    setCloseQueuePurpose("pane");
     setCloseQueue(ids);
     requestClose(ids[0]!);
   }, [props.closeRequestVersion]);
@@ -227,12 +194,12 @@ export function DockTerminalPane(props: {
   const splitTerminal = (
     targetTerminalId: string,
     terminalCount: number,
-    position: 'right' | 'bottom'
+    position: "right" | "bottom",
   ) => {
     if (terminalCount >= MAX_TERMINALS_PER_GROUP) return;
     const terminalId = `terminal-${randomUUID()}`;
     setActiveTerminal(scopeId, targetTerminalId);
-    if (position === 'right') splitTerminalRight(scopeId, terminalId);
+    if (position === "right") splitTerminalRight(scopeId, terminalId);
     else splitTerminalDown(scopeId, terminalId);
     flushTerminalStatePersistence();
   };
@@ -244,7 +211,7 @@ export function DockTerminalPane(props: {
 
   const acceptTerminalEvent = (event: TerminalEvent) => {
     const id = event.terminalId;
-    if (event.type === 'activity') {
+    if (event.type === "activity") {
       if (event.cliKind) {
         setTerminalMetadata(scopeId, id, {
           cliKind: event.cliKind,
@@ -257,7 +224,7 @@ export function DockTerminalPane(props: {
       });
       return;
     }
-    if (event.type === 'output') {
+    if (event.type === "output") {
       const identity = deriveTerminalOutputIdentity(event.data);
       if (!identity) return;
       setTerminalMetadata(scopeId, id, {
@@ -266,11 +233,7 @@ export function DockTerminalPane(props: {
       });
       return;
     }
-    if (
-      event.type === 'started' ||
-      event.type === 'restarted' ||
-      event.type === 'exited'
-    ) {
+    if (event.type === "started" || event.type === "restarted" || event.type === "exited") {
       setTerminalActivity(scopeId, id, {
         agentState: null,
         hasRunningSubprocess: false,
@@ -288,25 +251,20 @@ export function DockTerminalPane(props: {
     const session = splitResizeSessionRef.current;
     if (!session) return;
     const result = moveLynxTerminalSplitResize({ event, session });
-    if (result.kind === 'ended-missed-mouseup') {
+    if (result.kind === "ended-missed-mouseup") {
       stopSplitResize();
       return;
     }
-    if (result.kind !== 'moved') return;
-    resizeTerminalSplit(
-      scopeId,
-      session.groupId,
-      session.splitId,
-      result.weights
-    );
+    if (result.kind !== "moved") return;
+    resizeTerminalSplit(scopeId, session.groupId, session.splitId, result.weights);
   };
 
   const equalizeSplitOnSecondPointerDown = (input: {
     readonly groupId: string;
     readonly handleIndex: number;
-    readonly node: Extract<ThreadTerminalLayoutNode, { readonly type: 'split' }>;
+    readonly node: Extract<ThreadTerminalLayoutNode, { readonly type: "split" }>;
   }): boolean => {
-    const handleKey = input.node.id + ':' + input.handleIndex;
+    const handleKey = input.node.id + ":" + input.handleIndex;
     const tap = registerLynxTerminalSplitTap({
       handleKey,
       now: Date.now(),
@@ -320,7 +278,7 @@ export function DockTerminalPane(props: {
       scopeId,
       input.groupId,
       input.node.id,
-      input.node.children.map(() => 1)
+      input.node.children.map(() => 1),
     );
     flushTerminalStatePersistence();
     return true;
@@ -341,7 +299,7 @@ export function DockTerminalPane(props: {
       flushTerminalStatePersistence();
       if (remainingQueue.length > 0) {
         requestClose(remainingQueue[0]!);
-      } else if (closeQueuePurpose === 'pane') {
+      } else if (closeQueuePurpose === "pane") {
         setCloseQueuePurpose(null);
         props.onClosePane();
       } else {
@@ -361,43 +319,37 @@ export function DockTerminalPane(props: {
   const closeTerminalGroup = (groupId: string) => {
     if (resolvedLayout.resolvedTerminalGroups.length <= 1) return;
     const terminalGroup = resolvedLayout.resolvedTerminalGroups.find(
-      (candidate) => candidate.id === groupId
+      (candidate) => candidate.id === groupId,
     );
     const ids = terminalGroup?.terminalIds ?? [];
     if (ids.length === 0) return;
-    setCloseQueuePurpose('group');
+    setCloseQueuePurpose("group");
     setCloseQueue(ids);
     requestClose(ids[0]!);
   };
 
-  const renderLayout = (
-    node: ThreadTerminalLayoutNode,
-    terminalGroupId: string
-  ): ReactNode => {
-    if (node.type === 'split') {
+  const renderLayout = (node: ThreadTerminalLayoutNode, terminalGroupId: string): ReactNode => {
+    if (node.type === "split") {
       const weights = node.weights.map((weight) =>
-        Number.isFinite(weight) && weight > 0 ? weight : 1
+        Number.isFinite(weight) && weight > 0 ? weight : 1,
       );
       return (
         <view
-          className={
-            'DockTerminalPaneSplit DockTerminalPaneSplit--' + node.direction
-          }
+          className={"DockTerminalPaneSplit DockTerminalPaneSplit--" + node.direction}
           bindlayoutchange={(event: {
             readonly detail?: { readonly height?: number; readonly width?: number };
             readonly params?: { readonly height?: number; readonly width?: number };
           }) => {
-            'background only';
+            "background only";
             const detail = event.detail ?? event.params ?? {};
-            const size =
-              node.direction === 'horizontal' ? detail.width : detail.height;
-            if (typeof size === 'number' && size > 0) {
+            const size = node.direction === "horizontal" ? detail.width : detail.height;
+            if (typeof size === "number" && size > 0) {
               splitSizeByIdRef.current[node.id] = size;
             }
           }}
         >
           {node.children.map((child, index) => (
-            <Fragment key={child.type === 'split' ? child.id : child.paneId}>
+            <Fragment key={child.type === "split" ? child.id : child.paneId}>
               <view
                 className="DockTerminalPaneSplitChild"
                 style={{ flexGrow: weights[index] ?? 1, flexBasis: 0 }}
@@ -407,23 +359,33 @@ export function DockTerminalPane(props: {
               {index < node.children.length - 1 ? (
                 <view
                   className={
-                    'DockTerminalPaneSplitHandle DockTerminalPaneSplitHandle--' +
+                    "DockTerminalPaneSplitHandle DockTerminalPaneSplitHandle--" +
                     node.direction +
-                    (hoveredSplitHandle === `${node.id}:${index}` ? ' ui-hover' : '')
+                    (hoveredSplitHandle === `${node.id}:${index}` ? " ui-hover" : "")
                   }
                   accessibility-element={true}
                   accessibility-label="Resize terminal panes"
                   accessibility-trait="adjustable"
                   bindmouseenter={() => setHoveredSplitHandle(`${node.id}:${index}`)}
                   bindmouseleave={() => setHoveredSplitHandle(null)}
-                  bindmousedown={(event: LynxTerminalSplitPointerEvent & { readonly button?: number }) => {
+                  bindmousedown={(
+                    event: LynxTerminalSplitPointerEvent & { readonly button?: number },
+                  ) => {
                     const buttons = event.detail?.buttons ?? event.buttons;
-                    if (event.button !== undefined && event.button !== 0 && !(event.button === 1 && buttons === 1)) return;
-                    if (equalizeSplitOnSecondPointerDown({
-                      groupId: terminalGroupId,
-                      handleIndex: index,
-                      node,
-                    })) return;
+                    if (
+                      event.button !== undefined &&
+                      event.button !== 0 &&
+                      !(event.button === 1 && buttons === 1)
+                    )
+                      return;
+                    if (
+                      equalizeSplitOnSecondPointerDown({
+                        groupId: terminalGroupId,
+                        handleIndex: index,
+                        node,
+                      })
+                    )
+                      return;
                     const startCoordinate = readLynxTerminalSplitCoordinate(event, node.direction);
                     const totalSize = splitSizeByIdRef.current[node.id] ?? 0;
                     if (startCoordinate === null || totalSize <= 0) return;
@@ -441,17 +403,25 @@ export function DockTerminalPane(props: {
                   bindmousemove={moveSplitResize}
                   bindmouseup={stopSplitResize}
                   bindtouchstart={(event: LynxTerminalSplitPointerEvent) => {
-                    if (equalizeSplitOnSecondPointerDown({
-                      groupId: terminalGroupId,
-                      handleIndex: index,
-                      node,
-                    })) return;
+                    if (
+                      equalizeSplitOnSecondPointerDown({
+                        groupId: terminalGroupId,
+                        handleIndex: index,
+                        node,
+                      })
+                    )
+                      return;
                     const startCoordinate = readLynxTerminalSplitCoordinate(event, node.direction);
                     const totalSize = splitSizeByIdRef.current[node.id] ?? 0;
                     if (startCoordinate === null || totalSize <= 0) return;
                     splitResizeSessionRef.current = {
-                      direction: node.direction, groupId: terminalGroupId, handleIndex: index, splitId: node.id,
-                      startCoordinate, totalSize, weights,
+                      direction: node.direction,
+                      groupId: terminalGroupId,
+                      handleIndex: index,
+                      splitId: node.id,
+                      startCoordinate,
+                      totalSize,
+                      weights,
                     };
                     setResizingSplit(true);
                   }}
@@ -468,13 +438,11 @@ export function DockTerminalPane(props: {
       );
     }
     const leafTabs = node.terminalIds
-      .map((terminalId) =>
-        allTabs.find((candidate) => candidate.id === terminalId)
-      )
+      .map((terminalId) => allTabs.find((candidate) => candidate.id === terminalId))
       .filter((tab): tab is (typeof allTabs)[number] => Boolean(tab));
     const leafActiveId = node.terminalIds.includes(node.activeTerminalId)
       ? node.activeTerminalId
-      : leafTabs[0]?.id ?? activeId;
+      : (leafTabs[0]?.id ?? activeId);
     return (
       <view className="DockTerminalPaneLeaf">
         <IndependentTabRow
@@ -482,20 +450,23 @@ export function DockTerminalPane(props: {
           listClassName="DockTerminalPaneTabs"
           owner="terminal-pane"
           scrollerClassName="DockTerminalPaneTabScroller"
-          tabs={(
+          tabs={
             <>
               {leafTabs.map((tab) => {
                 const identity =
                   resolvedLayout.terminalVisualIdentityById.get(tab.id) ??
                   resolveTerminalVisualIdentity({
-                    cliKind: null, fallbackTitle: tab.label, state: 'idle', title: null,
+                    cliKind: null,
+                    fallbackTitle: tab.label,
+                    state: "idle",
+                    title: null,
                   });
                 return (
                   <EditorSurfaceTab
                     key={tab.id}
                     active={tab.id === leafActiveId}
                     className="DockTerminalPaneTab"
-                    closeLabel={'Close ' + identity.title}
+                    closeLabel={"Close " + identity.title}
                     icon={<TerminalIcon cliKind={identity.cliKind} />}
                     label={identity.title}
                     leading={<ActivityIndicator state={identity.state} />}
@@ -505,56 +476,38 @@ export function DockTerminalPane(props: {
                 );
               })}
             </>
-          )}
-          actions={(
+          }
+          actions={
             <>
               <ToolbarButton
                 disabled={node.terminalIds.length >= MAX_TERMINALS_PER_GROUP}
                 label="New terminal tab"
-                onActivate={() =>
-                  addTerminalTab(leafActiveId, node.terminalIds.length)
-                }
+                onActivate={() => addTerminalTab(leafActiveId, node.terminalIds.length)}
               >
                 <PlusIcon color={toolbarIconColor} size={14} />
               </ToolbarButton>
               {node.terminalIds.length > 1 ? (
                 <ToolbarButton
                   label="Move to its own terminal tab"
-                  onActivate={() =>
-                    moveTerminalToGroup(leafActiveId, node.terminalIds.length)
-                  }
+                  onActivate={() => moveTerminalToGroup(leafActiveId, node.terminalIds.length)}
                 >
                   <TerminalIcon />
                 </ToolbarButton>
               ) : null}
               <ToolbarButton
-                disabled={
-                  resolvedLayout.visibleTerminalIds.length >=
-                  MAX_TERMINALS_PER_GROUP
-                }
+                disabled={resolvedLayout.visibleTerminalIds.length >= MAX_TERMINALS_PER_GROUP}
                 label="Split right"
                 onActivate={() =>
-                  splitTerminal(
-                    leafActiveId,
-                    resolvedLayout.visibleTerminalIds.length,
-                    'right'
-                  )
+                  splitTerminal(leafActiveId, resolvedLayout.visibleTerminalIds.length, "right")
                 }
               >
                 <LayoutColumnsIcon color={toolbarIconColor} size={14} />
               </ToolbarButton>
               <ToolbarButton
-                disabled={
-                  resolvedLayout.visibleTerminalIds.length >=
-                  MAX_TERMINALS_PER_GROUP
-                }
+                disabled={resolvedLayout.visibleTerminalIds.length >= MAX_TERMINALS_PER_GROUP}
                 label="Split down"
                 onActivate={() =>
-                  splitTerminal(
-                    leafActiveId,
-                    resolvedLayout.visibleTerminalIds.length,
-                    'bottom'
-                  )
+                  splitTerminal(leafActiveId, resolvedLayout.visibleTerminalIds.length, "bottom")
                 }
               >
                 <LayoutRowsIcon color={toolbarIconColor} size={14} />
@@ -566,50 +519,46 @@ export function DockTerminalPane(props: {
                 <Trash2 color={toolbarIconColor} size={14} />
               </ToolbarButton>
             </>
-          )}
+          }
         />
         <view className="DockTerminalPaneLeafBody">
-        {node.terminalIds.map((terminalId) => {
-          const tab = allTabs.find((candidate) => candidate.id === terminalId);
-          if (!tab) return null;
-          return (
-            <view
-              key={tab.id}
-              className={
-                'DockTerminalPaneSession' +
-                (tab.id === node.activeTerminalId
-                  ? ''
-                  : ' DockTerminalPaneSession--hidden')
-              }
-              bindtap={() => activateTerminal(tab.id)}
-            >
-              <ThreadTerminal
-                active={
-                  props.isActive !== false &&
-                  terminalGroupId === resolvedLayout.resolvedActiveGroupId &&
-                  tab.id === resolvedLayout.resolvedActiveTerminalId
+          {node.terminalIds.map((terminalId) => {
+            const tab = allTabs.find((candidate) => candidate.id === terminalId);
+            if (!tab) return null;
+            return (
+              <view
+                key={tab.id}
+                className={
+                  "DockTerminalPaneSession" +
+                  (tab.id === node.activeTerminalId ? "" : " DockTerminalPaneSession--hidden")
                 }
-                autoOpen={
-                  terminalGroupId === resolvedLayout.resolvedActiveGroupId
-                }
-                closeRequestVersion={closeRequestById[tab.id] ?? 0}
-                fontFamily={props.fontFamily}
-                fontSizePx={props.fontSizePx}
-                open
-                presentationMode="workspace"
-                showHeader={false}
-                terminalId={tab.id}
-                terminalLabel={tab.label}
-                threadId={scopeId}
-                workspaceRoot={props.workspaceRoot}
-                onCloseSettled={(closed) => finishClose(tab.id, closed)}
-                onTerminalEvent={acceptTerminalEvent}
-                onAddTerminalContext={addTerminalSelectionToChat}
-                onOpenChange={() => {}}
-              />
-            </view>
-          );
-        })}
+                bindtap={() => activateTerminal(tab.id)}
+              >
+                <ThreadTerminal
+                  active={
+                    props.isActive !== false &&
+                    terminalGroupId === resolvedLayout.resolvedActiveGroupId &&
+                    tab.id === resolvedLayout.resolvedActiveTerminalId
+                  }
+                  autoOpen={terminalGroupId === resolvedLayout.resolvedActiveGroupId}
+                  closeRequestVersion={closeRequestById[tab.id] ?? 0}
+                  fontFamily={props.fontFamily}
+                  fontSizePx={props.fontSizePx}
+                  open
+                  presentationMode="workspace"
+                  showHeader={false}
+                  terminalId={tab.id}
+                  terminalLabel={tab.label}
+                  threadId={scopeId}
+                  workspaceRoot={props.workspaceRoot}
+                  onCloseSettled={(closed) => finishClose(tab.id, closed)}
+                  onTerminalEvent={acceptTerminalEvent}
+                  onAddTerminalContext={addTerminalSelectionToChat}
+                  onOpenChange={() => {}}
+                />
+              </view>
+            );
+          })}
         </view>
       </view>
     );
@@ -623,73 +572,60 @@ export function DockTerminalPane(props: {
           listClassName="DockTerminalPaneGroups"
           owner="terminal-groups"
           scrollerClassName="DockTerminalPaneGroupScroller"
-          tabs={(
+          tabs={
             <>
-            {resolvedLayout.resolvedTerminalGroups.map((terminalGroup) => {
-              const identity =
-                resolvedLayout.terminalVisualIdentityById.get(
-                  terminalGroup.activeTerminalId
-                ) ??
-                resolveTerminalVisualIdentity({
-                  cliKind: null,
-                  fallbackTitle: 'Terminal',
-                  state: 'idle',
-                  title: null,
-                });
-              return (
-                <EditorSurfaceTab
-                  key={terminalGroup.id}
-                  active={
-                    terminalGroup.id === resolvedLayout.resolvedActiveGroupId
-                  }
-                  className="DockTerminalPaneGroupTab"
-                  closeLabel={'Close ' + identity.title + ' tab'}
-                  icon={<TerminalIcon cliKind={identity.cliKind} />}
-                  label={identity.title}
-                  leading={<ActivityIndicator state={identity.state} />}
-                  onClose={() => closeTerminalGroup(terminalGroup.id)}
-                  onSelect={() =>
-                    activateTerminal(terminalGroup.activeTerminalId)
-                  }
-                />
-              );
-            })}
+              {resolvedLayout.resolvedTerminalGroups.map((terminalGroup) => {
+                const identity =
+                  resolvedLayout.terminalVisualIdentityById.get(terminalGroup.activeTerminalId) ??
+                  resolveTerminalVisualIdentity({
+                    cliKind: null,
+                    fallbackTitle: "Terminal",
+                    state: "idle",
+                    title: null,
+                  });
+                return (
+                  <EditorSurfaceTab
+                    key={terminalGroup.id}
+                    active={terminalGroup.id === resolvedLayout.resolvedActiveGroupId}
+                    className="DockTerminalPaneGroupTab"
+                    closeLabel={"Close " + identity.title + " tab"}
+                    icon={<TerminalIcon cliKind={identity.cliKind} />}
+                    label={identity.title}
+                    leading={<ActivityIndicator state={identity.state} />}
+                    onClose={() => closeTerminalGroup(terminalGroup.id)}
+                    onSelect={() => activateTerminal(terminalGroup.activeTerminalId)}
+                  />
+                );
+              })}
             </>
-          )}
-          actions={(
+          }
+          actions={
             <>
-            <ToolbarButton
-              disabled={tabs.length >= MAX_TERMINALS_PER_GROUP}
-              label="Split right"
-              onActivate={() =>
-                splitTerminal(activeId, tabs.length, 'right')
-              }
-            >
-              <LayoutColumnsIcon color={toolbarIconColor} size={14} />
-            </ToolbarButton>
-            <ToolbarButton
-              disabled={tabs.length >= MAX_TERMINALS_PER_GROUP}
-              label="Split down"
-              onActivate={() =>
-                splitTerminal(activeId, tabs.length, 'bottom')
-              }
-            >
-              <LayoutRowsIcon color={toolbarIconColor} size={14} />
-            </ToolbarButton>
-            <ToolbarButton
-              label="New terminal"
-              onActivate={addTerminalGroup}
-            >
-              <PlusIcon color={toolbarIconColor} size={14} />
-            </ToolbarButton>
-            <ToolbarButton
-              label="Close active terminal tab"
-              onActivate={() => requestClose(activeId)}
-            >
-              <Trash2 color={toolbarIconColor} size={14} />
-            </ToolbarButton>
+              <ToolbarButton
+                disabled={tabs.length >= MAX_TERMINALS_PER_GROUP}
+                label="Split right"
+                onActivate={() => splitTerminal(activeId, tabs.length, "right")}
+              >
+                <LayoutColumnsIcon color={toolbarIconColor} size={14} />
+              </ToolbarButton>
+              <ToolbarButton
+                disabled={tabs.length >= MAX_TERMINALS_PER_GROUP}
+                label="Split down"
+                onActivate={() => splitTerminal(activeId, tabs.length, "bottom")}
+              >
+                <LayoutRowsIcon color={toolbarIconColor} size={14} />
+              </ToolbarButton>
+              <ToolbarButton label="New terminal" onActivate={addTerminalGroup}>
+                <PlusIcon color={toolbarIconColor} size={14} />
+              </ToolbarButton>
+              <ToolbarButton
+                label="Close active terminal tab"
+                onActivate={() => requestClose(activeId)}
+              >
+                <Trash2 color={toolbarIconColor} size={14} />
+              </ToolbarButton>
             </>
-          )}
+          }
         />
       ) : null}
       <view className="DockTerminalPaneBody">
@@ -697,10 +633,10 @@ export function DockTerminalPane(props: {
           <view
             key={terminalGroup.id}
             className={
-              'DockTerminalPaneGroupBody' +
+              "DockTerminalPaneGroupBody" +
               (terminalGroup.id === resolvedLayout.resolvedActiveGroupId
-                ? ''
-                : ' DockTerminalPaneGroupBody--hidden')
+                ? ""
+                : " DockTerminalPaneGroupBody--hidden")
             }
           >
             {renderLayout(terminalGroup.layout, terminalGroup.id)}

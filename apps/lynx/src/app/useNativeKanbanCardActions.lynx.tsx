@@ -1,34 +1,34 @@
-import { useEffect, useRef, useState, type ReactNode } from '@lynx-js/react';
+import { useEffect, useRef, useState, type ReactNode } from "@lynx-js/react";
 
-import type { KanbanCard } from '@synara-web/components/kanban/kanban.logic';
-import { isKanbanDraftOnlyCard } from '@synara-web/components/kanban/kanban.logic';
+import type { KanbanCard } from "@synara-web/components/kanban/kanban.logic";
+import { isKanbanDraftOnlyCard } from "@synara-web/components/kanban/kanban.logic";
 import {
   KANBAN_MUTATION_COPY,
   createKanbanMutationGate,
   resolveKanbanCardActions,
   type KanbanCardActionId,
   type KanbanMutationActionId,
-} from '@synara-web/components/kanban/kanbanMutation.logic';
+} from "@synara-web/components/kanban/kanbanMutation.logic";
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsBehaviorProjection,
-} from '@synara-web/appSettingsStorageProjection.logic';
-import { resolveThreadWorkspaceCwd } from '@synara/shared/threadEnvironment';
+} from "@synara-web/appSettingsStorageProjection.logic";
+import { resolveThreadWorkspaceCwd } from "@synara/shared/threadEnvironment";
 
-import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
-import { Button } from '../components/ui/button';
+import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
+import { Button } from "../components/ui/button";
 import {
   buildNativeThreadContextCommand,
   nativeThreadContextConfirmation,
-} from '../components/sidebar/threadContextActions.logic';
-import { webStorage } from '../platform/storage';
-import { fetchThreadHeaderSummary, queryClient } from './queries';
+} from "../components/sidebar/threadContextActions.logic";
+import { webStorage } from "../platform/storage";
+import { fetchThreadHeaderSummary, queryClient } from "./queries";
 import {
   buildNativeKanbanArchiveCommand,
   buildNativeKanbanRenameCommand,
   buildNativeKanbanStartCommand,
   resolveNativeKanbanMutationError,
-} from './kanbanMutation.logic';
+} from "./kanbanMutation.logic";
 
 interface KanbanMutationTarget {
   readonly action: KanbanMutationActionId;
@@ -38,9 +38,7 @@ interface KanbanMutationTarget {
 }
 
 function newKanbanCommandId(kind: string): string {
-  return `lynx-kanban-${kind}-${Date.now()}-${Math.random()
-    .toString(16)
-    .slice(2)}`;
+  return `lynx-kanban-${kind}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 export interface NativeKanbanCardActionsController {
@@ -50,7 +48,7 @@ export interface NativeKanbanCardActionsController {
   readonly openCardContextMenu: (
     card: KanbanCard,
     event: React.MouseEvent,
-    restoreFocus?: () => void
+    restoreFocus?: () => void,
   ) => Promise<void>;
   readonly showNotice: (notice: string) => void;
   readonly startCard: (card: KanbanCard, prompt: string) => Promise<void>;
@@ -60,14 +58,12 @@ export interface NativeKanbanCardActionsController {
 export function useNativeKanbanCardActions(input: {
   readonly projectWorkspaceRoot: (projectId: string) => string | null;
 }): NativeKanbanCardActionsController {
-  const [mutationTarget, setMutationTarget] =
-    useState<KanbanMutationTarget | null>(null);
+  const [mutationTarget, setMutationTarget] = useState<KanbanMutationTarget | null>(null);
   const [mutationPending, setMutationPending] = useState(false);
   const [mutationNotice, setMutationNotice] = useState<string | null>(null);
-  const [mutationChooserCard, setMutationChooserCard] =
-    useState<KanbanCard | null>(null);
+  const [mutationChooserCard, setMutationChooserCard] = useState<KanbanCard | null>(null);
   const mutationGateRef = useRef(createKanbanMutationGate());
-  const mutationTextareaRef = useRef<React.ElementRef<'textarea'>>(null);
+  const mutationTextareaRef = useRef<React.ElementRef<"textarea">>(null);
 
   const workspacePathForCard = (card: KanbanCard) =>
     resolveThreadWorkspaceCwd({
@@ -79,54 +75,54 @@ export function useNativeKanbanCardActions(input: {
   const actionsForCard = (card: KanbanCard) =>
     resolveKanbanCardActions(card, {
       canSupplyStartPrompt: true,
-      deleteAvailable: card.column !== 'inProgress',
+      deleteAvailable: card.column !== "inProgress",
       copyPathAvailable: workspacePathForCard(card) !== null,
     });
 
   const executeMutation = async (target: KanbanMutationTarget) => {
-    'background only';
+    "background only";
     const { card, action } = target;
     if (!mutationGateRef.current.tryAcquire(card.threadId)) return;
     setMutationPending(true);
     setMutationTarget({ ...target, error: null });
     try {
       const { dispatchSynaraCommand } = await import(
-        /* webpackMode: "eager" */ '../data/synaraClient'
+        /* webpackMode: "eager" */ "../data/synaraClient"
       );
       let command;
-      if (action === 'start') {
+      if (action === "start") {
         const text = target.value.trim();
         if (text.length === 0) {
-          throw new Error('Write a prompt before starting this task.');
+          throw new Error("Write a prompt before starting this task.");
         }
         const summary = await fetchThreadHeaderSummary(card.threadId);
-        if (!summary) throw new Error('This task is no longer available.');
+        if (!summary) throw new Error("This task is no longer available.");
         command = buildNativeKanbanStartCommand({
-          commandId: newKanbanCommandId('start'),
+          commandId: newKanbanCommandId("start"),
           createdAt: new Date().toISOString(),
           interactionMode: summary.interactionMode,
-          messageId: newKanbanCommandId('message'),
+          messageId: newKanbanCommandId("message"),
           modelSelection: summary.modelSelection,
           runtimeMode: summary.runtimeMode,
           text,
           threadId: card.threadId,
         });
-      } else if (action === 'rename') {
+      } else if (action === "rename") {
         const title = target.value.trim();
-        if (title.length === 0) throw new Error('Task name cannot be empty.');
+        if (title.length === 0) throw new Error("Task name cannot be empty.");
         command = buildNativeKanbanRenameCommand({
-          commandId: newKanbanCommandId('rename'),
+          commandId: newKanbanCommandId("rename"),
           threadId: card.threadId,
           title,
         });
       } else {
         command = buildNativeKanbanArchiveCommand({
-          commandId: newKanbanCommandId('archive'),
+          commandId: newKanbanCommandId("archive"),
           threadId: card.threadId,
         });
       }
       await dispatchSynaraCommand(command);
-      await queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] });
+      await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
       setMutationNotice(KANBAN_MUTATION_COPY[action].success);
       setMutationTarget(null);
     } catch (error) {
@@ -141,33 +137,25 @@ export function useNativeKanbanCardActions(input: {
   };
 
   const selectAction = async (card: KanbanCard, action: KanbanCardActionId) => {
-    'background only';
+    "background only";
     setMutationChooserCard(null);
     setMutationNotice(null);
     const isDraftOnly = isKanbanDraftOnlyCard(card);
     const workspacePath = workspacePathForCard(card);
     try {
-      if (action === 'copy-path' || action === 'copy-thread-id') {
-        const { clipboard } = await import(
-          /* webpackMode: "eager" */ '../platform/clipboard'
-        );
-        await clipboard.writeText(
-          action === 'copy-path' ? workspacePath ?? '' : card.threadId
-        );
-        setMutationNotice(
-          action === 'copy-path' ? 'Task path copied' : 'Task ID copied'
-        );
+      if (action === "copy-path" || action === "copy-thread-id") {
+        const { clipboard } = await import(/* webpackMode: "eager" */ "../platform/clipboard");
+        await clipboard.writeText(action === "copy-path" ? (workspacePath ?? "") : card.threadId);
+        setMutationNotice(action === "copy-path" ? "Task path copied" : "Task ID copied");
         return;
       }
-      if (action === 'delete' && (card.thread === null || isDraftOnly)) {
+      if (action === "delete" && (card.thread === null || isDraftOnly)) {
         const settings = readSettingsBehaviorProjection(
-          webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+          webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
         );
         if (settings.confirmThreadDelete) {
-          const { dialogs } = await import(
-            /* webpackMode: "eager" */ '../platform/dialogs'
-          );
-          if (!(await dialogs.confirm('Delete this draft? This removes its unsent prompt.'))) {
+          const { dialogs } = await import(/* webpackMode: "eager" */ "../platform/dialogs");
+          if (!(await dialogs.confirm("Delete this draft? This removes its unsent prompt."))) {
             return;
           }
         }
@@ -176,22 +164,16 @@ export function useNativeKanbanCardActions(input: {
         } else {
           useComposerDraftStore.getState().clearDraft(card.threadId);
         }
-        setMutationNotice('Draft deleted');
+        setMutationNotice("Draft deleted");
         return;
       }
-      if (action === 'toggle-pin' || action === 'delete') {
+      if (action === "toggle-pin" || action === "delete") {
         const settings = readSettingsBehaviorProjection(
-          webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+          webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
         );
-        const confirmation = nativeThreadContextConfirmation(
-          action,
-          card.title,
-          settings
-        );
+        const confirmation = nativeThreadContextConfirmation(action, card.title, settings);
         if (confirmation) {
-          const { dialogs } = await import(
-            /* webpackMode: "eager" */ '../platform/dialogs'
-          );
+          const { dialogs } = await import(/* webpackMode: "eager" */ "../platform/dialogs");
           if (!(await dialogs.confirm(confirmation))) return;
         }
         const command = buildNativeThreadContextCommand({
@@ -202,16 +184,16 @@ export function useNativeKanbanCardActions(input: {
         });
         if (!command) return;
         const { dispatchSynaraCommand } = await import(
-          /* webpackMode: "eager" */ '../data/synaraClient'
+          /* webpackMode: "eager" */ "../data/synaraClient"
         );
         await dispatchSynaraCommand(command);
-        await queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] });
+        await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
         setMutationNotice(
-          action === 'toggle-pin'
+          action === "toggle-pin"
             ? card.thread?.isPinned
-              ? 'Task unpinned'
-              : 'Task pinned'
-            : 'Task deleted'
+              ? "Task unpinned"
+              : "Task pinned"
+            : "Task deleted",
         );
         return;
       }
@@ -219,18 +201,16 @@ export function useNativeKanbanCardActions(input: {
       setMutationNotice(resolveNativeKanbanMutationError(error));
       return;
     }
-    if (action === 'archive') {
-      const { dialogs } = await import(
-        /* webpackMode: "eager" */ '../platform/dialogs'
-      );
+    if (action === "archive") {
+      const { dialogs } = await import(/* webpackMode: "eager" */ "../platform/dialogs");
       const confirmed = await dialogs.confirm(
         [
           `Archive task "${card.title}"?`,
-          'Archived tasks leave this board and can be restored later.',
-        ].join('\n')
+          "Archived tasks leave this board and can be restored later.",
+        ].join("\n"),
       );
       if (!confirmed) return;
-      const target = { action, card, value: '', error: null } as const;
+      const target = { action, card, value: "", error: null } as const;
       setMutationTarget(target);
       await executeMutation(target);
       return;
@@ -238,7 +218,7 @@ export function useNativeKanbanCardActions(input: {
     setMutationTarget({
       action,
       card,
-      value: action === 'rename' ? card.title : '',
+      value: action === "rename" ? card.title : "",
       error: null,
     });
   };
@@ -246,120 +226,161 @@ export function useNativeKanbanCardActions(input: {
   const openCardContextMenu = async (
     card: KanbanCard,
     event: React.MouseEvent,
-    restoreFocus?: () => void
+    restoreFocus?: () => void,
   ) => {
-    'background only';
+    "background only";
     event.preventDefault();
     event.stopPropagation();
     const actions = actionsForCard(card);
     if (actions.length === 0) return;
-    const { showContextMenu } = await import(
-      /* webpackMode: "eager" */ '../platform/contextMenu'
+    const { showContextMenu } = await import(/* webpackMode: "eager" */ "../platform/contextMenu");
+    const action = await showContextMenu(
+      actions,
+      {
+        x: event.clientX,
+        y: event.clientY,
+      },
+      { restoreFocus },
     );
-    const action = await showContextMenu(actions, {
-      x: event.clientX,
-      y: event.clientY,
-    }, { restoreFocus });
     if (action) await selectAction(card, action);
   };
 
   useEffect(() => {
-    'background only';
+    "background only";
     if (
       !mutationTarget ||
-      (mutationTarget.action !== 'start' && mutationTarget.action !== 'rename')
-    ) return;
+      (mutationTarget.action !== "start" && mutationTarget.action !== "rename")
+    )
+      return;
     const value = mutationTarget.value;
-    mutationTextareaRef.current
-      ?.invoke({ method: 'setValue', params: { value } })
-      .exec();
+    mutationTextareaRef.current?.invoke({ method: "setValue", params: { value } }).exec();
     mutationTextareaRef.current
       ?.invoke({
-        method: 'setSelectionRange',
+        method: "setSelectionRange",
         params: { selectionStart: value.length, selectionEnd: value.length },
       })
       .exec();
   }, [mutationTarget?.action, mutationTarget?.card.threadId]);
 
-  const mutationCopy = mutationTarget
-    ? KANBAN_MUTATION_COPY[mutationTarget.action]
-    : null;
+  const mutationCopy = mutationTarget ? KANBAN_MUTATION_COPY[mutationTarget.action] : null;
 
   const actionPanels = (
     <>
       {mutationNotice ? (
-        <view className="KanbanMutationNotice" accessibility-element accessibility-label={mutationNotice}>
+        <view
+          className="KanbanMutationNotice"
+          accessibility-element
+          accessibility-label={mutationNotice}
+        >
           <text className="KanbanMutationNoticeText">{mutationNotice}</text>
         </view>
       ) : null}
       {mutationChooserCard ? (
-        <view className="KanbanMutationPanel" accessibility-element accessibility-label={`Actions for ${mutationChooserCard.title}`}>
+        <view
+          className="KanbanMutationPanel"
+          accessibility-element
+          accessibility-label={`Actions for ${mutationChooserCard.title}`}
+        >
           <view className="KanbanMutationPanelHeader">
             <text className="KanbanMutationPanelTitle">Task actions</text>
-            <text className="KanbanMutationPanelTask" maxlines={1}>{mutationChooserCard.title}</text>
+            <text className="KanbanMutationPanelTask" maxlines={1}>
+              {mutationChooserCard.title}
+            </text>
           </view>
           <view className="KanbanMutationActions KanbanMutationActions--chooser">
             {actionsForCard(mutationChooserCard).map((action) => (
-              <Button key={action.id} size="sm" variant={action.destructive ? 'destructive-outline' : 'outline'} onClick={() => void selectAction(mutationChooserCard, action.id)}>
+              <Button
+                key={action.id}
+                size="sm"
+                variant={action.destructive ? "destructive-outline" : "outline"}
+                onClick={() => void selectAction(mutationChooserCard, action.id)}
+              >
                 {action.label}
               </Button>
             ))}
-            <Button size="sm" variant="ghost" onClick={() => setMutationChooserCard(null)}>Cancel</Button>
+            <Button size="sm" variant="ghost" onClick={() => setMutationChooserCard(null)}>
+              Cancel
+            </Button>
           </view>
         </view>
       ) : null}
       {mutationTarget ? (
-        <view className="KanbanMutationPanel" accessibility-element accessibility-label={`${mutationTarget.action} ${mutationTarget.card.title}`}>
+        <view
+          className="KanbanMutationPanel"
+          accessibility-element
+          accessibility-label={`${mutationTarget.action} ${mutationTarget.card.title}`}
+        >
           <view className="KanbanMutationPanelHeader">
             <text className="KanbanMutationPanelTitle">
-              {mutationTarget.action === 'start'
-                ? 'Start task'
-                : mutationTarget.action === 'rename'
-                  ? 'Rename task'
+              {mutationTarget.action === "start"
+                ? "Start task"
+                : mutationTarget.action === "rename"
+                  ? "Rename task"
                   : mutationPending
                     ? mutationCopy?.pending
                     : mutationCopy?.error}
             </text>
-            <text className="KanbanMutationPanelTask" maxlines={1}>{mutationTarget.card.title}</text>
+            <text className="KanbanMutationPanelTask" maxlines={1}>
+              {mutationTarget.card.title}
+            </text>
           </view>
-          {mutationTarget.action === 'start' || mutationTarget.action === 'rename' ? (
+          {mutationTarget.action === "start" || mutationTarget.action === "rename" ? (
             <textarea
               ref={mutationTextareaRef}
               key={`${mutationTarget.action}:${mutationTarget.card.threadId}`}
-              className={`KanbanMutationTextarea${mutationTarget.error ? ' KanbanMutationTextarea--invalid' : ''}`}
+              className={`KanbanMutationTextarea${mutationTarget.error ? " KanbanMutationTextarea--invalid" : ""}`}
               default-value={mutationTarget.value}
               readonly={mutationPending}
-              aria-label={mutationTarget.action === 'start' ? 'Task instructions' : 'Task name'}
+              aria-label={mutationTarget.action === "start" ? "Task instructions" : "Task name"}
               aria-invalid={Boolean(mutationTarget.error)}
               accessibility-element
-              accessibility-label={mutationTarget.action === 'start' ? 'Task instructions' : 'Task name'}
-              placeholder={mutationTarget.action === 'start' ? 'What should the agent do?' : 'Task name'}
+              accessibility-label={
+                mutationTarget.action === "start" ? "Task instructions" : "Task name"
+              }
+              placeholder={
+                mutationTarget.action === "start" ? "What should the agent do?" : "Task name"
+              }
               maxlength={8000}
               maxlines={4}
               bindinput={(event) => {
-                'background only';
-                setMutationTarget((current) => current ? { ...current, value: event.detail.value, error: null } : current);
+                "background only";
+                setMutationTarget((current) =>
+                  current ? { ...current, value: event.detail.value, error: null } : current,
+                );
               }}
             />
           ) : null}
           {mutationTarget.error ? (
-            <text className="KanbanMutationError" accessibility-element accessibility-role="alert">{mutationTarget.error}</text>
+            <text className="KanbanMutationError" accessibility-element accessibility-role="alert">
+              {mutationTarget.error}
+            </text>
           ) : null}
           <view className="KanbanMutationActions">
-            <Button size="sm" variant="ghost" disabled={mutationPending} onClick={() => setMutationTarget(null)}>Cancel</Button>
             <Button
               size="sm"
-              disabled={mutationPending || ((mutationTarget.action === 'start' || mutationTarget.action === 'rename') && mutationTarget.value.trim().length === 0)}
+              variant="ghost"
+              disabled={mutationPending}
+              onClick={() => setMutationTarget(null)}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              disabled={
+                mutationPending ||
+                ((mutationTarget.action === "start" || mutationTarget.action === "rename") &&
+                  mutationTarget.value.trim().length === 0)
+              }
               onClick={() => void executeMutation(mutationTarget)}
             >
               {mutationPending
                 ? mutationCopy?.pending
                 : mutationTarget.error
                   ? KANBAN_MUTATION_COPY.retry
-                  : mutationTarget.action === 'start'
-                    ? 'Start'
-                    : mutationTarget.action === 'rename'
-                      ? 'Save'
+                  : mutationTarget.action === "start"
+                    ? "Start"
+                    : mutationTarget.action === "rename"
+                      ? "Save"
                       : KANBAN_MUTATION_COPY.retry}
             </Button>
           </view>
@@ -379,7 +400,7 @@ export function useNativeKanbanCardActions(input: {
     openCardContextMenu,
     showNotice: setMutationNotice,
     async startCard(card, prompt) {
-      const target = { action: 'start', card, value: prompt, error: null } as const;
+      const target = { action: "start", card, value: prompt, error: null } as const;
       setMutationTarget(target);
       await executeMutation(target);
     },

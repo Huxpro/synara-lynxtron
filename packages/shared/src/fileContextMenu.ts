@@ -1,9 +1,6 @@
-import type { ContextMenuItem } from '@synara/contracts';
+import type { ContextMenuItem } from "@synara/contracts";
 
-export type FileContextMenuAction =
-  | 'reference-in-chat'
-  | 'ask-why-in-chat'
-  | 'copy-path';
+export type FileContextMenuAction = "reference-in-chat" | "ask-why-in-chat" | "copy-path";
 
 export function buildFileContextMenuItems(input: {
   readonly referenceLabel?: string;
@@ -13,11 +10,11 @@ export function buildFileContextMenuItems(input: {
 }): ContextMenuItem<FileContextMenuAction>[] {
   return [
     ...(input.referenceAvailable
-      ? [{ id: 'reference-in-chat' as const, label: input.referenceLabel ?? 'Reference in chat' }]
+      ? [{ id: "reference-in-chat" as const, label: input.referenceLabel ?? "Reference in chat" }]
       : []),
     ...(input.askWhyAvailable
-      ? [{ id: 'ask-why-in-chat' as const, label: input.askWhyLabel ?? 'Ask why this changed' }]
+      ? [{ id: "ask-why-in-chat" as const, label: input.askWhyLabel ?? "Ask why this changed" }]
       : []),
-    { id: 'copy-path' as const, label: 'Copy path' },
+    { id: "copy-path" as const, label: "Copy path" },
   ];
 }

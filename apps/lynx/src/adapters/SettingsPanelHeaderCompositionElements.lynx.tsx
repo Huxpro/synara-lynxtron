@@ -1,7 +1,7 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import { Button } from '../components/ui/button';
-import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
+import { Button } from "../components/ui/button";
+import { SettingsHeadingElement } from "./SettingsHeadingElement.lynx";
 
 type ChildrenProps = {
   readonly children?: ReactNode;
@@ -42,10 +42,7 @@ export function SettingsPanelHeaderRestoreElement(props: {
       disabled={props.disabled}
       onClick={props.onRestore}
     >
-      <svg
-        className="SharedSettingsPanelHeaderRestoreIcon"
-        content={ROTATE_CW_ICON}
-      />
+      <svg className="SharedSettingsPanelHeaderRestoreIcon" content={ROTATE_CW_ICON} />
       <text className="LxButton__text">Restore defaults</text>
     </Button>
   );

@@ -2,28 +2,24 @@ import type {
   GitPullRequestMergeability,
   PullRequestActor,
   PullRequestState,
-} from '@synara/contracts';
-import type { ReactNode } from '@lynx-js/react';
-import pinFilledSvg from '@synara-central-icons-fill/pin.svg?raw';
-import pinSvg from '@synara-central-icons/pin.svg?raw';
-import { resolvePrStatePresentation } from '@synara-web/components/pullRequest/pullRequestStatePresentation.logic';
+} from "@synara/contracts";
+import type { ReactNode } from "@lynx-js/react";
+import pinFilledSvg from "@synara-central-icons-fill/pin.svg?raw";
+import pinSvg from "@synara-central-icons/pin.svg?raw";
+import { resolvePrStatePresentation } from "@synara-web/components/pullRequest/pullRequestStatePresentation.logic";
 
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import './pull-request-row-composition-elements.css';
-import { PullRequestActorLabel } from './PullRequestActorLabel.lynx';
-import { PullRequestStateIcon } from './PullRequestStateIcon.lynx';
-import { useTheme } from './useTheme.lynx';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import "./pull-request-row-composition-elements.css";
+import { PullRequestActorLabel } from "./PullRequestActorLabel.lynx";
+import { PullRequestStateIcon } from "./PullRequestStateIcon.lynx";
+import { useTheme } from "./useTheme.lynx";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
 
 type ChildrenProps = { readonly children?: ReactNode };
 
-export function PullRequestRowRootElement(
-  props: ChildrenProps & { readonly selected: boolean }
-) {
+export function PullRequestRowRootElement(props: ChildrenProps & { readonly selected: boolean }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: `SharedPrRow${
-      props.selected ? ' SharedPrRow--selected' : ''
-    }`,
+    baseClassName: `SharedPrRow${props.selected ? " SharedPrRow--selected" : ""}`,
     focusable: false,
   });
   return (
@@ -41,12 +37,12 @@ export function PullRequestRowActionElement(
     readonly number: number;
     readonly selected: boolean;
     readonly onActivate?: (() => void) | undefined;
-  }
+  },
 ) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedPrRowAction',
+    baseClassName: "SharedPrRowAction",
     accessibleLabel: props.accessibleLabel,
-    accessibilityValue: props.selected ? 'Current pull request' : undefined,
+    accessibilityValue: props.selected ? "Current pull request" : undefined,
     onActivate: props.onActivate,
   });
   return (
@@ -72,10 +68,7 @@ export function PullRequestRowStateElement(props: {
       accessibility-element
       accessibility-label={presentation.label}
     >
-      <PullRequestStateIcon
-        className="SharedPrStateIcon"
-        presentation={presentation}
-      />
+      <PullRequestStateIcon className="SharedPrStateIcon" presentation={presentation} />
     </view>
   );
 }
@@ -99,9 +92,7 @@ export function PullRequestRowMetaElement(props: ChildrenProps) {
   return <view className="SharedPrMeta">{props.children}</view>;
 }
 
-export function PullRequestRowAuthorElement(props: {
-  readonly actor: PullRequestActor | null;
-}) {
+export function PullRequestRowAuthorElement(props: { readonly actor: PullRequestActor | null }) {
   return <PullRequestActorLabel actor={props.actor} variant="row" />;
 }
 
@@ -114,19 +105,17 @@ export function PullRequestRowMetaSegmentElement(
     readonly title?: string | undefined;
     readonly truncateWidth?: string;
     readonly showSeparator: boolean;
-  }
+  },
 ) {
   const widthClassName =
-    props.truncateWidth === 'max-w-[12rem]'
-      ? ' SharedPrMetaSegmentText--project'
-      : props.truncateWidth === 'max-w-[14rem]'
-        ? ' SharedPrMetaSegmentText--branch'
-        : '';
+    props.truncateWidth === "max-w-[12rem]"
+      ? " SharedPrMetaSegmentText--project"
+      : props.truncateWidth === "max-w-[14rem]"
+        ? " SharedPrMetaSegmentText--branch"
+        : "";
   return (
     <view className="SharedPrMetaSegment">
-      {props.showSeparator ? (
-        <text className="SharedPrMetaSeparator">·</text>
-      ) : null}
+      {props.showSeparator ? <text className="SharedPrMetaSeparator">·</text> : null}
       <text
         className={`SharedPrMetaSegmentText${widthClassName}`}
         accessibility-element={props.title ? true : undefined}
@@ -152,8 +141,8 @@ export function PullRequestRowDiffElement(props: {
 }) {
   return (
     <view className="SharedPrDiff">
-      <text className="SharedPrDiffText">+{props.additions.toLocaleString('en-US')}</text>
-      <text className="SharedPrDiffText">-{props.deletions.toLocaleString('en-US')}</text>
+      <text className="SharedPrDiffText">+{props.additions.toLocaleString("en-US")}</text>
+      <text className="SharedPrDiffText">-{props.deletions.toLocaleString("en-US")}</text>
     </view>
   );
 }
@@ -165,11 +154,9 @@ export function PullRequestRowPinElement(props: {
 }) {
   const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
-    baseClassName: `SharedPrPin ${
-      props.pinned ? 'SharedPrPin--pinned' : 'SharedPrPin--unpinned'
-    }`,
+    baseClassName: `SharedPrPin ${props.pinned ? "SharedPrPin--pinned" : "SharedPrPin--unpinned"}`,
     accessibleLabel: props.label,
-    accessibilityValue: props.pinned ? 'Pinned' : 'Not pinned',
+    accessibilityValue: props.pinned ? "Pinned" : "Not pinned",
     onActivate: props.onActivate,
   });
   return (
@@ -181,19 +168,17 @@ export function PullRequestRowPinElement(props: {
     >
       <svg
         className={`SharedPrPinIcon ${
-          props.pinned
-            ? 'SharedPrPinIcon--pinned'
-            : 'SharedPrPinIcon--muted'
+          props.pinned ? "SharedPrPinIcon--pinned" : "SharedPrPinIcon--muted"
         }`}
         content={colorizeLynxSvg(
           props.pinned ? pinFilledSvg : pinSvg,
-          semanticIconColor(props.pinned ? 'primary' : 'secondary')
+          semanticIconColor(props.pinned ? "primary" : "secondary"),
         )}
       />
       {props.pinned ? null : (
         <svg
           className="SharedPrPinIcon SharedPrPinIcon--foreground"
-          content={colorizeLynxSvg(pinSvg, semanticIconColor('primary'))}
+          content={colorizeLynxSvg(pinSvg, semanticIconColor("primary"))}
         />
       )}
     </view>

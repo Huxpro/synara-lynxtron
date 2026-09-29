@@ -23,9 +23,7 @@ vi.mock("./ComposerTraitRadioSectionCompositionElements", () => ({
       {children}
     </section>
   ),
-  ComposerTraitRadioGroupElement: ({ children }: { children: ReactNode }) => (
-    <div>{children}</div>
-  ),
+  ComposerTraitRadioGroupElement: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   ComposerTraitRadioItemElement: ({
     active,
     isDefault,

@@ -18,9 +18,7 @@ export interface TranscriptSelectionActionLayout {
   placement: "top" | "bottom";
 }
 
-export function resolveSelectionViewportElement(
-  container: HTMLElement | null,
-): HTMLElement | null {
+export function resolveSelectionViewportElement(container: HTMLElement | null): HTMLElement | null {
   let candidate = container;
   while (candidate) {
     const rect = candidate.getBoundingClientRect();
@@ -121,11 +119,9 @@ export function resolveTranscriptSelectionActionLayout(input: {
   viewport?: { left?: number; top?: number; width: number; height: number } | null;
 }): TranscriptSelectionActionLayout {
   const viewportWidth =
-    input.viewport?.width ??
-    (isBrowser() ? getViewportWidth() : input.pointer.x + 8);
+    input.viewport?.width ?? (isBrowser() ? getViewportWidth() : input.pointer.x + 8);
   const viewportHeight =
-    input.viewport?.height ??
-    (isBrowser() ? getViewportHeight() : input.pointer.y + 8);
+    input.viewport?.height ?? (isBrowser() ? getViewportHeight() : input.pointer.y + 8);
 
   return resolveSelectionActionLayout({
     selectionRect: input.selectionRect

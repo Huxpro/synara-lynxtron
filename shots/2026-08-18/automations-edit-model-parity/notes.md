@@ -32,8 +32,7 @@ real `createWsNativeApi()` product API:
   Manual;
 - enabled:
   false;
-- max iterations:
-  25.
+- max iterations: 25.
 
 The fixture never ran. SQLite was not written directly.
 

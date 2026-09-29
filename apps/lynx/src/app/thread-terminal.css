@@ -206,42 +206,114 @@
   white-space: pre;
 }
 
-.ThreadTerminalRun--fg-terminal-foreground { color: var(--color-token-terminal-foreground); }
-.ThreadTerminalRun--fg-terminal-background { color: var(--color-token-terminal-background); }
-.ThreadTerminalRun--bg-terminal-foreground { background-color: var(--color-token-terminal-foreground); }
-.ThreadTerminalRun--bg-terminal-background { background-color: var(--color-token-terminal-background); }
-.ThreadTerminalRun--fg-black { color: var(--color-token-terminal-ansi-black); }
-.ThreadTerminalRun--fg-red { color: var(--color-token-terminal-ansi-red); }
-.ThreadTerminalRun--fg-green { color: var(--color-token-terminal-ansi-green); }
-.ThreadTerminalRun--fg-yellow { color: var(--color-token-terminal-ansi-yellow); }
-.ThreadTerminalRun--fg-blue { color: var(--color-token-terminal-ansi-blue); }
-.ThreadTerminalRun--fg-magenta { color: var(--color-token-terminal-ansi-magenta); }
-.ThreadTerminalRun--fg-cyan { color: var(--color-token-terminal-ansi-cyan); }
-.ThreadTerminalRun--fg-white { color: var(--color-token-terminal-ansi-white); }
-.ThreadTerminalRun--fg-bright-black { color: var(--color-token-terminal-ansi-bright-black); }
-.ThreadTerminalRun--fg-bright-red { color: var(--color-token-terminal-ansi-bright-red); }
-.ThreadTerminalRun--fg-bright-green { color: var(--color-token-terminal-ansi-bright-green); }
-.ThreadTerminalRun--fg-bright-yellow { color: var(--color-token-terminal-ansi-bright-yellow); }
-.ThreadTerminalRun--fg-bright-blue { color: var(--color-token-terminal-ansi-bright-blue); }
-.ThreadTerminalRun--fg-bright-magenta { color: var(--color-token-terminal-ansi-bright-magenta); }
-.ThreadTerminalRun--fg-bright-cyan { color: var(--color-token-terminal-ansi-bright-cyan); }
-.ThreadTerminalRun--fg-bright-white { color: var(--color-token-terminal-ansi-bright-white); }
-.ThreadTerminalRun--bg-black { background-color: var(--color-token-terminal-ansi-black); }
-.ThreadTerminalRun--bg-red { background-color: var(--color-token-terminal-ansi-red); }
-.ThreadTerminalRun--bg-green { background-color: var(--color-token-terminal-ansi-green); }
-.ThreadTerminalRun--bg-yellow { background-color: var(--color-token-terminal-ansi-yellow); }
-.ThreadTerminalRun--bg-blue { background-color: var(--color-token-terminal-ansi-blue); }
-.ThreadTerminalRun--bg-magenta { background-color: var(--color-token-terminal-ansi-magenta); }
-.ThreadTerminalRun--bg-cyan { background-color: var(--color-token-terminal-ansi-cyan); }
-.ThreadTerminalRun--bg-white { background-color: var(--color-token-terminal-ansi-white); }
-.ThreadTerminalRun--bg-bright-black { background-color: var(--color-token-terminal-ansi-bright-black); }
-.ThreadTerminalRun--bg-bright-red { background-color: var(--color-token-terminal-ansi-bright-red); }
-.ThreadTerminalRun--bg-bright-green { background-color: var(--color-token-terminal-ansi-bright-green); }
-.ThreadTerminalRun--bg-bright-yellow { background-color: var(--color-token-terminal-ansi-bright-yellow); }
-.ThreadTerminalRun--bg-bright-blue { background-color: var(--color-token-terminal-ansi-bright-blue); }
-.ThreadTerminalRun--bg-bright-magenta { background-color: var(--color-token-terminal-ansi-bright-magenta); }
-.ThreadTerminalRun--bg-bright-cyan { background-color: var(--color-token-terminal-ansi-bright-cyan); }
-.ThreadTerminalRun--bg-bright-white { background-color: var(--color-token-terminal-ansi-bright-white); }
+.ThreadTerminalRun--fg-terminal-foreground {
+  color: var(--color-token-terminal-foreground);
+}
+.ThreadTerminalRun--fg-terminal-background {
+  color: var(--color-token-terminal-background);
+}
+.ThreadTerminalRun--bg-terminal-foreground {
+  background-color: var(--color-token-terminal-foreground);
+}
+.ThreadTerminalRun--bg-terminal-background {
+  background-color: var(--color-token-terminal-background);
+}
+.ThreadTerminalRun--fg-black {
+  color: var(--color-token-terminal-ansi-black);
+}
+.ThreadTerminalRun--fg-red {
+  color: var(--color-token-terminal-ansi-red);
+}
+.ThreadTerminalRun--fg-green {
+  color: var(--color-token-terminal-ansi-green);
+}
+.ThreadTerminalRun--fg-yellow {
+  color: var(--color-token-terminal-ansi-yellow);
+}
+.ThreadTerminalRun--fg-blue {
+  color: var(--color-token-terminal-ansi-blue);
+}
+.ThreadTerminalRun--fg-magenta {
+  color: var(--color-token-terminal-ansi-magenta);
+}
+.ThreadTerminalRun--fg-cyan {
+  color: var(--color-token-terminal-ansi-cyan);
+}
+.ThreadTerminalRun--fg-white {
+  color: var(--color-token-terminal-ansi-white);
+}
+.ThreadTerminalRun--fg-bright-black {
+  color: var(--color-token-terminal-ansi-bright-black);
+}
+.ThreadTerminalRun--fg-bright-red {
+  color: var(--color-token-terminal-ansi-bright-red);
+}
+.ThreadTerminalRun--fg-bright-green {
+  color: var(--color-token-terminal-ansi-bright-green);
+}
+.ThreadTerminalRun--fg-bright-yellow {
+  color: var(--color-token-terminal-ansi-bright-yellow);
+}
+.ThreadTerminalRun--fg-bright-blue {
+  color: var(--color-token-terminal-ansi-bright-blue);
+}
+.ThreadTerminalRun--fg-bright-magenta {
+  color: var(--color-token-terminal-ansi-bright-magenta);
+}
+.ThreadTerminalRun--fg-bright-cyan {
+  color: var(--color-token-terminal-ansi-bright-cyan);
+}
+.ThreadTerminalRun--fg-bright-white {
+  color: var(--color-token-terminal-ansi-bright-white);
+}
+.ThreadTerminalRun--bg-black {
+  background-color: var(--color-token-terminal-ansi-black);
+}
+.ThreadTerminalRun--bg-red {
+  background-color: var(--color-token-terminal-ansi-red);
+}
+.ThreadTerminalRun--bg-green {
+  background-color: var(--color-token-terminal-ansi-green);
+}
+.ThreadTerminalRun--bg-yellow {
+  background-color: var(--color-token-terminal-ansi-yellow);
+}
+.ThreadTerminalRun--bg-blue {
+  background-color: var(--color-token-terminal-ansi-blue);
+}
+.ThreadTerminalRun--bg-magenta {
+  background-color: var(--color-token-terminal-ansi-magenta);
+}
+.ThreadTerminalRun--bg-cyan {
+  background-color: var(--color-token-terminal-ansi-cyan);
+}
+.ThreadTerminalRun--bg-white {
+  background-color: var(--color-token-terminal-ansi-white);
+}
+.ThreadTerminalRun--bg-bright-black {
+  background-color: var(--color-token-terminal-ansi-bright-black);
+}
+.ThreadTerminalRun--bg-bright-red {
+  background-color: var(--color-token-terminal-ansi-bright-red);
+}
+.ThreadTerminalRun--bg-bright-green {
+  background-color: var(--color-token-terminal-ansi-bright-green);
+}
+.ThreadTerminalRun--bg-bright-yellow {
+  background-color: var(--color-token-terminal-ansi-bright-yellow);
+}
+.ThreadTerminalRun--bg-bright-blue {
+  background-color: var(--color-token-terminal-ansi-bright-blue);
+}
+.ThreadTerminalRun--bg-bright-magenta {
+  background-color: var(--color-token-terminal-ansi-bright-magenta);
+}
+.ThreadTerminalRun--bg-bright-cyan {
+  background-color: var(--color-token-terminal-ansi-bright-cyan);
+}
+.ThreadTerminalRun--bg-bright-white {
+  background-color: var(--color-token-terminal-ansi-bright-white);
+}
 
 .ThreadTerminalJump {
   position: absolute;

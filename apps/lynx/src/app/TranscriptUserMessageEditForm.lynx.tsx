@@ -1,6 +1,6 @@
-import { PROVIDER_SEND_TURN_MAX_INPUT_CHARS } from '@synara/contracts';
+import { PROVIDER_SEND_TURN_MAX_INPUT_CHARS } from "@synara/contracts";
 
-import { Button } from '../components/ui/button.lynx';
+import { Button } from "../components/ui/button.lynx";
 
 interface NativeTextInputEvent {
   readonly detail: { readonly value: string };
@@ -30,13 +30,9 @@ export function TranscriptUserMessageEditForm(props: {
           fontSize: `${props.chatFontSizePx}px`,
           lineHeight: `${Math.round(props.chatFontSizePx * 1.5)}px`,
         }}
-        bindinput={(event: NativeTextInputEvent) =>
-          props.onDraftChange(event.detail.value)
-        }
+        bindinput={(event: NativeTextInputEvent) => props.onDraftChange(event.detail.value)}
       />
-      {props.error ? (
-        <text className="TranscriptUserEditError">{props.error}</text>
-      ) : null}
+      {props.error ? <text className="TranscriptUserEditError">{props.error}</text> : null}
       <view className="TranscriptUserEditActions">
         <Button
           size="xs"
@@ -47,12 +43,7 @@ export function TranscriptUserMessageEditForm(props: {
         >
           Cancel
         </Button>
-        <Button
-          size="xs"
-          shape="capsule"
-          disabled={!canSubmit}
-          onClick={props.onSubmit}
-        >
+        <Button size="xs" shape="capsule" disabled={!canSubmit} onClick={props.onSubmit}>
           Send
         </Button>
       </view>

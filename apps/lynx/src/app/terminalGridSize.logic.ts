@@ -3,8 +3,8 @@ import {
   TERMINAL_MAX_ROWS,
   TERMINAL_MIN_COLS,
   TERMINAL_MIN_ROWS,
-} from '@synara/contracts';
-import { normalizeAppearanceNumber } from '@synara-web/components/settings/SettingsAppearanceComposition.logic';
+} from "@synara/contracts";
+import { normalizeAppearanceNumber } from "@synara-web/components/settings/SettingsAppearanceComposition.logic";
 
 // Match Electron/xterm's measured right-dock viewport: 12px content inset on
 // the leading/top edges, plus a 20px scrollbar gutter and 14px bottom inset.
@@ -25,13 +25,8 @@ export interface LynxTerminalCellMetrics {
   readonly lineHeight: number;
 }
 
-export function resolveLynxTerminalCellMetrics(
-  fontSizePx: number
-): LynxTerminalCellMetrics {
-  const normalizedFontSize = normalizeAppearanceNumber(
-    'terminalFontSizePx',
-    fontSizePx
-  );
+export function resolveLynxTerminalCellMetrics(fontSizePx: number): LynxTerminalCellMetrics {
+  const normalizedFontSize = normalizeAppearanceNumber("terminalFontSizePx", fontSizePx);
   return {
     cellWidth: normalizedFontSize * MONOSPACE_CELL_WIDTH_RATIO,
     lineHeight: normalizedFontSize * TERMINAL_LINE_HEIGHT_RATIO,
@@ -52,19 +47,17 @@ export function resolveLynxTerminalGridSize(input: {
   ) {
     return null;
   }
-  const { cellWidth, lineHeight } = resolveLynxTerminalCellMetrics(
-    input.fontSizePx
-  );
+  const { cellWidth, lineHeight } = resolveLynxTerminalCellMetrics(input.fontSizePx);
   return {
     cols: clamp(
       Math.floor((input.width - TERMINAL_HORIZONTAL_PADDING_PX) / cellWidth),
       TERMINAL_MIN_COLS,
-      TERMINAL_MAX_COLS
+      TERMINAL_MAX_COLS,
     ),
     rows: clamp(
       Math.floor((input.height - TERMINAL_VERTICAL_PADDING_PX) / lineHeight),
       TERMINAL_MIN_ROWS,
-      TERMINAL_MAX_ROWS
+      TERMINAL_MAX_ROWS,
     ),
   };
 }

@@ -1,6 +1,6 @@
-import { useState } from '@lynx-js/react';
-import { useLynxInteractionDisabled } from './interaction-scope.lynx';
-import { consumeProgrammaticLynxFocus } from './focus.lynx';
+import { useState } from "@lynx-js/react";
+import { useLynxInteractionDisabled } from "./interaction-scope.lynx";
+import { consumeProgrammaticLynxFocus } from "./focus.lynx";
 
 export interface LynxInteractiveState {
   readonly focused: boolean;
@@ -9,21 +9,21 @@ export interface LynxInteractiveState {
 }
 
 export type LynxAccessibilityTrait =
-  | 'text'
-  | 'image'
-  | 'button'
-  | 'link'
-  | 'header'
-  | 'search'
-  | 'selected'
-  | 'playable'
-  | 'keyboard'
-  | 'summary'
-  | 'disabled'
-  | 'updating'
-  | 'adjustable'
-  | 'tabbar'
-  | 'none';
+  | "text"
+  | "image"
+  | "button"
+  | "link"
+  | "header"
+  | "search"
+  | "selected"
+  | "playable"
+  | "keyboard"
+  | "summary"
+  | "disabled"
+  | "updating"
+  | "adjustable"
+  | "tabbar"
+  | "none";
 
 export interface LynxInteractiveAccessibilityOptions {
   readonly accessibilityElement?: boolean;
@@ -34,31 +34,27 @@ export interface LynxInteractiveAccessibilityOptions {
   readonly onIntent?: (() => void) | undefined;
 }
 
-export function lynxInteractiveAccessibilityProps(
-  options: LynxInteractiveAccessibilityOptions
-) {
+export function lynxInteractiveAccessibilityProps(options: LynxInteractiveAccessibilityOptions) {
   const hasAccessibleLabel = Boolean(options.accessibleLabel?.trim());
   const actionable = options.onActivate !== undefined;
   const accessibilityElement =
-    options.accessibilityElement ??
-    (hasAccessibleLabel || actionable ? true : undefined);
+    options.accessibilityElement ?? (hasAccessibleLabel || actionable ? true : undefined);
   return {
-    'accessibility-element': accessibilityElement,
-    'accessibility-label': options.accessibleLabel,
-    'accessibility-trait':
-      options.accessibilityTraits ??
-      (accessibilityElement ? 'button' : undefined),
-    'accessibility-value': options.accessibilityValue,
+    "accessibility-element": accessibilityElement,
+    "accessibility-label": options.accessibleLabel,
+    "accessibility-trait":
+      options.accessibilityTraits ?? (accessibilityElement ? "button" : undefined),
+    "accessibility-value": options.accessibilityValue,
   } as const;
 }
 
 export function isLynxActivationKey(key: string): boolean {
-  return key === 'Enter' || key === ' ' || key === 'Space' || key === 'Spacebar';
+  return key === "Enter" || key === " " || key === "Space" || key === "Spacebar";
 }
 
 export function handleLynxActivationKey(
   event: { key: string; preventDefault?: () => void },
-  onActivate: () => void
+  onActivate: () => void,
 ): boolean {
   if (!isLynxActivationKey(event.key)) return false;
   event.preventDefault?.();
@@ -68,15 +64,15 @@ export function handleLynxActivationKey(
 
 export function lynxInteractiveClassName(
   baseClassName: string,
-  state: LynxInteractiveState
+  state: LynxInteractiveState,
 ): string {
-  return `${baseClassName}${state.hovered ? ' ui-hover' : ''}${
-    state.focused ? ' ui-focus' : ''
-  }${state.pressed ? ' ui-pressed' : ''}`;
+  return `${baseClassName}${state.hovered ? " ui-hover" : ""}${
+    state.focused ? " ui-focus" : ""
+  }${state.pressed ? " ui-pressed" : ""}`;
 }
 
 export function lynxNestedInteractiveEventProps(
-  eventProps: ReturnType<typeof useLynxInteractiveState>['eventProps']
+  eventProps: ReturnType<typeof useLynxInteractiveState>["eventProps"],
 ) {
   const {
     bindmousedown,
@@ -98,12 +94,14 @@ export function lynxNestedInteractiveEventProps(
   };
 }
 
-export function useLynxInteractiveState(options: {
-  readonly baseClassName: string;
-  readonly disabled?: boolean;
-  readonly focusable?: boolean;
-  readonly programmaticFocusId?: string;
-} & LynxInteractiveAccessibilityOptions) {
+export function useLynxInteractiveState(
+  options: {
+    readonly baseClassName: string;
+    readonly disabled?: boolean;
+    readonly focusable?: boolean;
+    readonly programmaticFocusId?: string;
+  } & LynxInteractiveAccessibilityOptions,
+) {
   const scopeDisabled = useLynxInteractionDisabled();
   const disabled = scopeDisabled || (options.disabled ?? false);
   const [hovered, setHovered] = useState(false);
@@ -116,9 +114,8 @@ export function useLynxInteractiveState(options: {
     className: lynxInteractiveClassName(options.baseClassName, state),
     eventProps: {
       ...lynxInteractiveAccessibilityProps(options),
-      focusable:
-        !disabled && (options.focusable ?? options.onActivate !== undefined),
-      'aria-disabled': disabled,
+      focusable: !disabled && (options.focusable ?? options.onActivate !== undefined),
+      "aria-disabled": disabled,
       bindmouseenter: disabled
         ? undefined
         : () => {
@@ -142,7 +139,7 @@ export function useLynxInteractiveState(options: {
             setFocused(
               options.programmaticFocusId
                 ? !consumeProgrammaticLynxFocus(options.programmaticFocusId)
-                : true
+                : true,
             );
             options.onIntent?.();
           },
@@ -158,8 +155,7 @@ export function useLynxInteractiveState(options: {
           : (event: { key: string; preventDefault?: () => void }) => {
               handleLynxActivationKey(event, options.onActivate!);
             },
-      bindtap:
-        disabled || !options.onActivate ? undefined : options.onActivate,
+      bindtap: disabled || !options.onActivate ? undefined : options.onActivate,
     },
   };
 }

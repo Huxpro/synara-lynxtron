@@ -2,11 +2,11 @@ import type {
   AutomationCreateInput,
   AutomationDefinition,
   AutomationUpdateInput,
-} from '@synara/contracts';
+} from "@synara/contracts";
 
-import { AutomationCreateDialog } from './AutomationCreateDialog.lynx';
-import { AutomationEditDialog } from './AutomationEditDialog.lynx';
-import type { ProjectSummary, ThreadSummary } from './queries';
+import { AutomationCreateDialog } from "./AutomationCreateDialog.lynx";
+import { AutomationEditDialog } from "./AutomationEditDialog.lynx";
+import type { ProjectSummary, ThreadSummary } from "./queries";
 
 type AutomationDialogSharedProps = {
   readonly error: string | null;
@@ -19,18 +19,18 @@ type AutomationDialogSharedProps = {
 
 type AutomationDialogProps =
   | (AutomationDialogSharedProps & {
-      readonly variant: 'create';
+      readonly variant: "create";
       readonly onCreate: (input: AutomationCreateInput) => void;
     })
   | (AutomationDialogSharedProps & {
-      readonly variant: 'edit';
+      readonly variant: "edit";
       readonly definition: AutomationDefinition;
       readonly onSave: (input: AutomationUpdateInput) => void;
     });
 
 /** One production identity for the shared Create/Edit automation composer. */
 export function AutomationDialog(props: AutomationDialogProps) {
-  if (props.variant === 'edit') {
+  if (props.variant === "edit") {
     return (
       <AutomationEditDialog
         definition={props.definition}

@@ -1,15 +1,15 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import openAiSvg from '@synara-provider-icons/openai.svg?raw';
-import claudeSvg from '@synara-provider-icons/claudeai.svg?raw';
-import cursorSvg from '@synara-provider-icons/cursor.svg?raw';
-import antigravitySvg from '@synara-provider-icons/antigravity.svg?raw';
-import grokSvg from '@synara-provider-icons/grok.svg?raw';
-import openCodeSvg from '@synara-provider-icons/opencode.svg?raw';
+import openAiSvg from "@synara-provider-icons/openai.svg?raw";
+import claudeSvg from "@synara-provider-icons/claudeai.svg?raw";
+import cursorSvg from "@synara-provider-icons/cursor.svg?raw";
+import antigravitySvg from "@synara-provider-icons/antigravity.svg?raw";
+import grokSvg from "@synara-provider-icons/grok.svg?raw";
+import openCodeSvg from "@synara-provider-icons/opencode.svg?raw";
 
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { useTheme } from './useTheme.lynx';
-import './sidebar-thread-provider-identity-elements.css';
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { useTheme } from "./useTheme.lynx";
+import "./sidebar-thread-provider-identity-elements.css";
 
 const PROVIDER_SVG: Readonly<Record<string, string>> = {
   codex: openAiSvg,
@@ -30,7 +30,7 @@ export function SidebarThreadProviderIdentityContainerElement({
   return (
     <view
       className={`SharedSidebarProviderIdentity${
-        handoff ? ' SharedSidebarProviderIdentity--handoff' : ''
+        handoff ? " SharedSidebarProviderIdentity--handoff" : ""
       }`}
     >
       {children}
@@ -43,17 +43,13 @@ export function SidebarThreadProviderIdentityIconElement({
   placement,
 }: {
   readonly provider: string;
-  readonly placement: 'single' | 'source' | 'target';
+  readonly placement: "single" | "source" | "target";
 }) {
   const { semanticIconColor } = useTheme();
   const source = PROVIDER_SVG[provider];
-  const content = source
-    ? colorizeLynxSvg(source, semanticIconColor('primary'))
-    : undefined;
+  const content = source ? colorizeLynxSvg(source, semanticIconColor("primary")) : undefined;
   return (
-    <view
-      className={`SharedSidebarProviderIcon SharedSidebarProviderIcon--${placement}`}
-    >
+    <view className={`SharedSidebarProviderIcon SharedSidebarProviderIcon--${placement}`}>
       {content ? (
         <svg className="SharedSidebarProviderIconSvg" content={content} />
       ) : (

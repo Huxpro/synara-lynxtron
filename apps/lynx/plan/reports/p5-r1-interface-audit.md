@@ -61,14 +61,14 @@ flowchart TD
   chat --> hard["EXCLUSIVE: terminal / PDF / browser islands"]
 ```
 
-| Screen ID | Authoritative Web route | Web feature entry | Current slice counterpart | Audit verdict |
-|---|---|---|---|---|
-| threads | `/` | `_chat.index.tsx` under root/chat shell | router + Sidebar + full-page cards | clean-room; wrong landing anatomy |
-| thread | `/$threadId` | `_chat.$threadId.tsx` → SingleChatSurface | Transcript + Composer | real data, different component tree |
-| settings | `/settings` | `_chat.settings.tsx` | SettingsPage | clean-room subset and copy |
-| projects | `/kanban/` | `_chat.kanban.index.tsx` → KanbanView(null) | `/projects` FeatureListsPage | incorrect route/reference mapping |
-| kanban | `/kanban/$projectId` | `_chat.kanban.$projectId.tsx` | `/kanban` FeatureListsPage | global thread projection, not project board |
-| pull-requests | `/pull-requests/` | `_chat.pull-requests.index.tsx` | PullRequestsPage | clean-room list, missing filters/detail dock |
+| Screen ID     | Authoritative Web route | Web feature entry                           | Current slice counterpart          | Audit verdict                                |
+| ------------- | ----------------------- | ------------------------------------------- | ---------------------------------- | -------------------------------------------- |
+| threads       | `/`                     | `_chat.index.tsx` under root/chat shell     | router + Sidebar + full-page cards | clean-room; wrong landing anatomy            |
+| thread        | `/$threadId`            | `_chat.$threadId.tsx` → SingleChatSurface   | Transcript + Composer              | real data, different component tree          |
+| settings      | `/settings`             | `_chat.settings.tsx`                        | SettingsPage                       | clean-room subset and copy                   |
+| projects      | `/kanban/`              | `_chat.kanban.index.tsx` → KanbanView(null) | `/projects` FeatureListsPage       | incorrect route/reference mapping            |
+| kanban        | `/kanban/$projectId`    | `_chat.kanban.$projectId.tsx`               | `/kanban` FeatureListsPage         | global thread projection, not project board  |
+| pull-requests | `/pull-requests/`       | `_chat.pull-requests.index.tsx`             | PullRequestsPage                   | clean-room list, missing filters/detail dock |
 
 The generated JSON contains every reachable module, dependency edge, target
 SHARED/PATCHED/SPLIT/EXCLUSIVE classification and reason.

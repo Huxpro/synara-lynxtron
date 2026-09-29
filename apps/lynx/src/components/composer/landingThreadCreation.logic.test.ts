@@ -1,16 +1,16 @@
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, rs } from "@rstest/core";
 
 import {
   ensureLandingThreadCreated,
   type LandingThreadCreationState,
-} from './landingThreadCreation.logic';
+} from "./landingThreadCreation.logic";
 
 function freshState(): LandingThreadCreationState {
   return { created: false, inFlight: null };
 }
 
-describe('ensureLandingThreadCreated', () => {
-  it('coalesces simultaneous sends into one canonical thread creation', async () => {
+describe("ensureLandingThreadCreated", () => {
+  it("coalesces simultaneous sends into one canonical thread creation", async () => {
     let release!: () => void;
     const pending = new Promise<void>((resolve) => {
       release = resolve;
@@ -30,11 +30,11 @@ describe('ensureLandingThreadCreated', () => {
     expect(recover).not.toHaveBeenCalled();
   });
 
-  it('accepts an ambiguous response only when persistence confirms the thread', async () => {
+  it("accepts an ambiguous response only when persistence confirms the thread", async () => {
     const state = freshState();
     await ensureLandingThreadCreated({
       create: async () => {
-        throw new Error('connection closed after write');
+        throw new Error("connection closed after write");
       },
       recover: async () => true,
       state,
@@ -43,11 +43,11 @@ describe('ensureLandingThreadCreated', () => {
     expect(state.created).toBe(true);
   });
 
-  it('keeps creation retryable after a confirmed failure', async () => {
+  it("keeps creation retryable after a confirmed failure", async () => {
     const state = freshState();
     const create = rs
       .fn<() => Promise<void>>()
-      .mockRejectedValueOnce(new Error('offline'))
+      .mockRejectedValueOnce(new Error("offline"))
       .mockResolvedValueOnce();
 
     await expect(
@@ -55,8 +55,8 @@ describe('ensureLandingThreadCreated', () => {
         create,
         recover: async () => false,
         state,
-      })
-    ).rejects.toThrow('offline');
+      }),
+    ).rejects.toThrow("offline");
     expect(state).toEqual({ created: false, inFlight: null });
 
     await ensureLandingThreadCreated({

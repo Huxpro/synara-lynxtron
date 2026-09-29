@@ -55,13 +55,13 @@ P8-Q4, or P9-R1.
 
 Both Browser cells produced the same deltas:
 
-| Anchor | Lynx-for-Web delta | Size delta |
-|---|---:|---:|
-| Page title | `x +5px / y +8px` | exact `28px` box |
-| Search control | `x +5px / y +5.25px` | exact `624×28px` |
-| Table header | `x +5px / y +5.25px` | exact `622×33.5px` |
-| First row | `x +5px / y +5.25px` | exact `622×59px` |
-| Tenth row | `x +5px / y +5.25px` | exact `622×59px` |
+| Anchor         |   Lynx-for-Web delta |         Size delta |
+| -------------- | -------------------: | -----------------: |
+| Page title     |    `x +5px / y +8px` |   exact `28px` box |
+| Search control | `x +5px / y +5.25px` |   exact `624×28px` |
+| Table header   | `x +5px / y +5.25px` | exact `622×33.5px` |
+| First row      | `x +5px / y +5.25px` |   exact `622×59px` |
+| Tenth row      | `x +5px / y +5.25px` |   exact `622×59px` |
 
 The initial native adapter row was 54px while Web was 59px, producing
 cumulative drift. That frame was discarded. Explicit line-height and row

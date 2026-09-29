@@ -25,23 +25,23 @@ Command K is complete only when retained evidence covers:
 
 ## Current implementation audit
 
-| Capability | Web authority | Lynx before P9-U4 | Required action |
-|---|---|---|---|
-| New chat | enabled | enabled | verify |
-| New thread | enabled | hidden | enable with real landing navigation |
-| Settings | enabled | enabled | verify |
-| Project results | enabled | enabled | verify |
-| Thread/title/project/message results | enabled | enabled | verify all match kinds |
-| Theme mode | enabled | hard-disabled | implement persisted native theme setter |
-| Code theme | enabled | hard-disabled | implement persisted native code-theme setter |
-| Add project/path browse | enabled | hard-disabled; native API returns null | add raw RPC ports before enabling |
-| Import thread | enabled when provider supports it | hard-disabled; raw RPC port absent | add capability discovery/import RPC before enabling |
-| Feedback | global Web dialog; browser fetch delivery | no Lynx feedback surface or host/server delivery port | explicit unavailable capability until a real delivery surface exists |
-| Usage settings | dedicated Web panel | Lynx Usage panel unavailable | implement panel before enabling |
-| Spaces | Web store/actions | snapshot currently omits spaces and active-space UI mutation | explicit unavailable capability until Sidebar space filtering/state is ported |
-| Keyboard navigation | Base UI DOM events | native command kernel + hidden menu accelerators | retain exact host proof |
-| Filesystem path mode | enabled | disabled | depends on raw filesystem RPC |
-| Import mode | enabled | disabled | depends on import RPC/capability |
+| Capability                           | Web authority                             | Lynx before P9-U4                                            | Required action                                                               |
+| ------------------------------------ | ----------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| New chat                             | enabled                                   | enabled                                                      | verify                                                                        |
+| New thread                           | enabled                                   | hidden                                                       | enable with real landing navigation                                           |
+| Settings                             | enabled                                   | enabled                                                      | verify                                                                        |
+| Project results                      | enabled                                   | enabled                                                      | verify                                                                        |
+| Thread/title/project/message results | enabled                                   | enabled                                                      | verify all match kinds                                                        |
+| Theme mode                           | enabled                                   | hard-disabled                                                | implement persisted native theme setter                                       |
+| Code theme                           | enabled                                   | hard-disabled                                                | implement persisted native code-theme setter                                  |
+| Add project/path browse              | enabled                                   | hard-disabled; native API returns null                       | add raw RPC ports before enabling                                             |
+| Import thread                        | enabled when provider supports it         | hard-disabled; raw RPC port absent                           | add capability discovery/import RPC before enabling                           |
+| Feedback                             | global Web dialog; browser fetch delivery | no Lynx feedback surface or host/server delivery port        | explicit unavailable capability until a real delivery surface exists          |
+| Usage settings                       | dedicated Web panel                       | Lynx Usage panel unavailable                                 | implement panel before enabling                                               |
+| Spaces                               | Web store/actions                         | snapshot currently omits spaces and active-space UI mutation | explicit unavailable capability until Sidebar space filtering/state is ported |
+| Keyboard navigation                  | Base UI DOM events                        | native command kernel + hidden menu accelerators             | retain exact host proof                                                       |
+| Filesystem path mode                 | enabled                                   | disabled                                                     | depends on raw filesystem RPC                                                 |
+| Import mode                          | enabled                                   | disabled                                                     | depends on import RPC/capability                                              |
 
 ## Evidence policy
 

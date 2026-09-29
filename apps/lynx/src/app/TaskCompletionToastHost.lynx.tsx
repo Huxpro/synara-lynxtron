@@ -1,54 +1,43 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-} from '@lynx-js/react';
-import { useQuery } from '@tanstack/react-query';
-import type { TerminalEvent } from '@synara/contracts';
+import { useEffect, useRef, useState } from "@lynx-js/react";
+import { useQuery } from "@tanstack/react-query";
+import type { TerminalEvent } from "@synara/contracts";
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsNotificationsProjection,
-} from '@synara-web/appSettingsStorageProjection.logic';
+} from "@synara-web/appSettingsStorageProjection.logic";
 
-import { Button } from '../components/ui/button';
-import { subscribeTerminalEvents } from '../data/synaraClient.lynx';
-import { NotificationDismissIcon } from './NotificationDismissIcon.lynx';
-import { onGlobalEvent } from '../platform/bridge';
-import { webStorage } from '../platform/storage';
-import {
-  fetchThreadCompletionAssistantSummary,
-  queryClient,
-  type ThreadSummary,
-} from './queries';
+import { Button } from "../components/ui/button";
+import { subscribeTerminalEvents } from "../data/synaraClient.lynx";
+import { NotificationDismissIcon } from "./NotificationDismissIcon.lynx";
+import { onGlobalEvent } from "../platform/bridge";
+import { webStorage } from "../platform/storage";
+import { fetchThreadCompletionAssistantSummary, queryClient, type ThreadSummary } from "./queries";
 import {
   applyLynxTerminalActivityEvent,
   detectLynxTaskCompletionToasts,
   resolveLynxTaskCompletionSummaries,
   type LynxTerminalActivityState,
   type LynxTaskCompletionToast,
-} from './taskCompletionToast.logic';
+} from "./taskCompletionToast.logic";
 
 const TOAST_VISIBLE_MS = 8_000;
-const TERMINAL_EVENT = 'synara:terminal-event';
-const TERMINAL_EVENT_QUERY_KEY = ['terminal-activity-event'] as const;
+const TERMINAL_EVENT = "synara:terminal-event";
+const TERMINAL_EVENT_QUERY_KEY = ["terminal-activity-event"] as const;
 interface TerminalEventSnapshot {
   readonly toast: LynxTaskCompletionToast | null;
   readonly version: number;
 }
 
-function deliverSystemNotifications(
-  notifications: readonly LynxTaskCompletionToast[]
-) {
-  'background only';
+function deliverSystemNotifications(notifications: readonly LynxTaskCompletionToast[]) {
+  "background only";
   if (notifications.length === 0) return;
-  void import(
-    /* webpackMode: "eager" */ '../platform/notifications'
-  ).then(({ showSystemNotification }) =>
-    Promise.all(
-      notifications.map((notification) =>
-        showSystemNotification(notification).catch(() => false)
-      )
-    )
+  void import(/* webpackMode: "eager" */ "../platform/notifications").then(
+    ({ showSystemNotification }) =>
+      Promise.all(
+        notifications.map((notification) =>
+          showSystemNotification(notification).catch(() => false),
+        ),
+      ),
   );
 }
 
@@ -62,9 +51,7 @@ export function TaskCompletionToastHost(props: {
   activeThreadIdRef.current = props.activeThreadId;
   const mountedRef = useRef(true);
   const completionRunRef = useRef(0);
-  const terminalActivityRef = useRef<
-    ReadonlyMap<string, LynxTerminalActivityState>
-  >(new Map());
+  const terminalActivityRef = useRef<ReadonlyMap<string, LynxTerminalActivityState>>(new Map());
   const [toast, setToast] = useState<LynxTaskCompletionToast | null>(null);
   const [runtimeStartedAtMs] = useState(() => Date.now());
   const [dismissedTerminalVersion, setDismissedTerminalVersion] = useState(0);
@@ -81,7 +68,7 @@ export function TaskCompletionToastHost(props: {
         version: 0,
       },
     },
-    queryClient
+    queryClient,
   );
   const terminalToast =
     terminalEventQuery.data.version === dismissedTerminalVersion
@@ -95,12 +82,12 @@ export function TaskCompletionToastHost(props: {
   }, []);
 
   useEffect(() => {
-    'background only';
+    "background only";
     const previous = previousRef.current;
     previousRef.current = props.threads;
     if (previous === null) return;
     const settings = readSettingsNotificationsProjection(
-      webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+      webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
     );
     const notifications = detectLynxTaskCompletionToasts({
       activeThreadId: props.activeThreadId,
@@ -113,7 +100,7 @@ export function TaskCompletionToastHost(props: {
     const completionRun = completionRunRef.current + 1;
     completionRunRef.current = completionRun;
     const offscreenNotifications = notifications.filter(
-      (notification) => notification.threadId !== activeThreadIdRef.current
+      (notification) => notification.threadId !== activeThreadIdRef.current,
     );
     const latestOffscreenNotification = offscreenNotifications.at(-1) ?? null;
     if (settings.enableTaskCompletionToasts) {
@@ -121,13 +108,11 @@ export function TaskCompletionToastHost(props: {
     }
     if (settings.enableSystemTaskCompletionNotifications) {
       deliverSystemNotifications(
-        notifications.filter(
-          (notification) => notification.kind !== 'thread-completion'
-        )
+        notifications.filter((notification) => notification.kind !== "thread-completion"),
       );
     }
     const completionNotifications = notifications.filter(
-      (notification) => notification.kind === 'thread-completion'
+      (notification) => notification.kind === "thread-completion",
     );
     if (completionNotifications.length === 0) return;
     void resolveLynxTaskCompletionSummaries({
@@ -136,22 +121,20 @@ export function TaskCompletionToastHost(props: {
     }).then((resolvedNotifications) => {
       if (!mountedRef.current) return;
       const currentSettings = readSettingsNotificationsProjection(
-        webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+        webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
       );
       if (
         currentSettings.enableTaskCompletionToasts &&
         completionRun === completionRunRef.current &&
-        latestOffscreenNotification?.kind === 'thread-completion'
+        latestOffscreenNotification?.kind === "thread-completion"
       ) {
         const resolvedLatest = resolvedNotifications.find(
-          (notification) =>
-            notification.threadId === latestOffscreenNotification.threadId
+          (notification) => notification.threadId === latestOffscreenNotification.threadId,
         );
         setToast(
-          resolvedLatest &&
-            resolvedLatest.threadId !== activeThreadIdRef.current
+          resolvedLatest && resolvedLatest.threadId !== activeThreadIdRef.current
             ? resolvedLatest
-            : null
+            : null,
         );
       }
       if (currentSettings.enableSystemTaskCompletionNotifications) {
@@ -161,43 +144,34 @@ export function TaskCompletionToastHost(props: {
   }, [props.activeThreadId, props.threads, runtimeStartedAtMs]);
 
   useEffect(() => {
-    'background only';
-    const disposeGlobalEvent = onGlobalEvent(
-      TERMINAL_EVENT,
-      (event: unknown) => {
-        if (!event || typeof event !== 'object' || !('type' in event)) return;
-        const terminalEvent = event as TerminalEvent;
-        const result = applyLynxTerminalActivityEvent({
-          activeThreadId: activeThreadIdRef.current,
-          current: terminalActivityRef.current,
-          event: terminalEvent,
-          includeActiveThread: true,
-        });
-        terminalActivityRef.current = result.next;
-        if (terminalEvent.type !== 'activity') return;
-        const settings = readSettingsNotificationsProjection(
-          webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
-        );
-        if (
-          settings.enableSystemTaskCompletionNotifications &&
-          result.toast
-        ) {
-          deliverSystemNotifications([result.toast]);
-        }
-        queryClient.setQueryData<TerminalEventSnapshot>(
-          TERMINAL_EVENT_QUERY_KEY,
-          (current) => ({
-            toast:
-              settings.enableTaskCompletionToasts &&
-              result.toast &&
-              terminalEvent.threadId !== activeThreadIdRef.current
-                ? result.toast
-                : null,
-            version: (current?.version ?? 0) + 1,
-          })
-        );
+    "background only";
+    const disposeGlobalEvent = onGlobalEvent(TERMINAL_EVENT, (event: unknown) => {
+      if (!event || typeof event !== "object" || !("type" in event)) return;
+      const terminalEvent = event as TerminalEvent;
+      const result = applyLynxTerminalActivityEvent({
+        activeThreadId: activeThreadIdRef.current,
+        current: terminalActivityRef.current,
+        event: terminalEvent,
+        includeActiveThread: true,
+      });
+      terminalActivityRef.current = result.next;
+      if (terminalEvent.type !== "activity") return;
+      const settings = readSettingsNotificationsProjection(
+        webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
+      );
+      if (settings.enableSystemTaskCompletionNotifications && result.toast) {
+        deliverSystemNotifications([result.toast]);
       }
-    );
+      queryClient.setQueryData<TerminalEventSnapshot>(TERMINAL_EVENT_QUERY_KEY, (current) => ({
+        toast:
+          settings.enableTaskCompletionToasts &&
+          result.toast &&
+          terminalEvent.threadId !== activeThreadIdRef.current
+            ? result.toast
+            : null,
+        version: (current?.version ?? 0) + 1,
+      }));
+    });
     const disposeTerminalEvents = subscribeTerminalEvents(() => {});
     return () => {
       disposeGlobalEvent();
@@ -206,18 +180,15 @@ export function TaskCompletionToastHost(props: {
   }, []);
 
   useEffect(() => {
-    'background only';
+    "background only";
     if (!terminalToast) return;
     const version = terminalEventQuery.data.version;
-    const timer = setTimeout(
-      () => setDismissedTerminalVersion(version),
-      TOAST_VISIBLE_MS
-    );
+    const timer = setTimeout(() => setDismissedTerminalVersion(version), TOAST_VISIBLE_MS);
     return () => clearTimeout(timer);
   }, [terminalEventQuery.data.version, terminalToast]);
 
   useEffect(() => {
-    'background only';
+    "background only";
     if (!toast) return;
     const timer = setTimeout(() => setToast(null), TOAST_VISIBLE_MS);
     return () => clearTimeout(timer);

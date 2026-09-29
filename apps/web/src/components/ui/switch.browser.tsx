@@ -17,7 +17,9 @@ describe("Switch deterministic interaction states", () => {
       />,
     );
     try {
-      const thumb = page.getByRole("switch", { name: "Enable notifications" }).element()
+      const thumb = page
+        .getByRole("switch", { name: "Enable notifications" })
+        .element()
         .querySelector<HTMLElement>('[data-slot="switch-thumb"]');
       expect(thumb).not.toBeNull();
       expect(getComputedStyle(thumb!).scale).not.toBe("none");

@@ -23,7 +23,7 @@ export async function closeLynxTerminalSession(input: {
       .writeExit({
         threadId: input.threadId,
         terminalId: input.terminalId,
-        data: 'exit\r',
+        data: "exit\r",
       })
       .catch(() => undefined);
   }

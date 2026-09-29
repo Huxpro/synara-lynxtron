@@ -1,16 +1,16 @@
-import { useEffect, useState } from '@lynx-js/react';
+import { useEffect, useState } from "@lynx-js/react";
 import {
   APP_SNAP_WELCOME_STORAGE_KEY,
   readAppSnapWelcomeStorage,
   writeAppSnapWelcomeStorage,
-} from '@synara-web/components/AppSnapWelcomeDialog.logic';
-import screenCaptureSvg from '@synara-central-icons/screen-capture.svg?raw';
+} from "@synara-web/components/AppSnapWelcomeDialog.logic";
+import screenCaptureSvg from "@synara-central-icons/screen-capture.svg?raw";
 
-import { useTheme } from '../adapters/useTheme.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { appSnap } from '../platform/appSnap';
-import { webStorage } from '../platform/storage';
-import { Button } from '../components/ui/button';
+import { useTheme } from "../adapters/useTheme.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { appSnap } from "../platform/appSnap";
+import { webStorage } from "../platform/storage";
+import { Button } from "../components/ui/button";
 import {
   Dialog,
   DialogDescription,
@@ -18,19 +18,17 @@ import {
   DialogHeader,
   DialogPopup,
   DialogTitle,
-} from '../components/ui/dialog.lynx';
+} from "../components/ui/dialog.lynx";
 
-export function AppSnapWelcomeDialogLynx(props: {
-  readonly onOpenSettings: () => void;
-}) {
+export function AppSnapWelcomeDialogLynx(props: { readonly onOpenSettings: () => void }) {
   const { semanticIconColor } = useTheme();
   const [open, setOpen] = useState(false);
   const acknowledged = readAppSnapWelcomeStorage(
-    webStorage.getItem(APP_SNAP_WELCOME_STORAGE_KEY)
+    webStorage.getItem(APP_SNAP_WELCOME_STORAGE_KEY),
   ).acknowledged;
 
   useEffect(() => {
-    'background only';
+    "background only";
     if (acknowledged) return;
     let active = true;
     void appSnap
@@ -45,35 +43,34 @@ export function AppSnapWelcomeDialogLynx(props: {
   }, [acknowledged]);
 
   const acknowledge = () => {
-    'background only';
+    "background only";
     webStorage.setItem(
       APP_SNAP_WELCOME_STORAGE_KEY,
-      writeAppSnapWelcomeStorage({ acknowledged: true })
+      writeAppSnapWelcomeStorage({ acknowledged: true }),
     );
     setOpen(false);
   };
 
   return (
-    <Dialog open={open && !acknowledged} onOpenChange={(next) => {
-      if (!next) acknowledge();
-    }}>
+    <Dialog
+      open={open && !acknowledged}
+      onOpenChange={(next) => {
+        if (!next) acknowledge();
+      }}
+    >
       <DialogPopup showCloseButton={false} className="AppSnapWelcomeDialog">
         <view className="AppSnapWelcomeBody">
           <view className="AppSnapWelcomeHero" aria-hidden="true">
             <svg
               className="AppSnapWelcomeHeroIcon"
-              content={colorizeLynxSvg(
-                screenCaptureSvg,
-                semanticIconColor('primary')
-              )}
+              content={colorizeLynxSvg(screenCaptureSvg, semanticIconColor("primary"))}
             />
           </view>
           <DialogHeader className="AppSnapWelcomeHeader">
-            <DialogTitle className="AppSnapWelcomeTitle">
-              Synara AppSnaps are live!
-            </DialogTitle>
+            <DialogTitle className="AppSnapWelcomeTitle">Synara AppSnaps are live!</DialogTitle>
             <DialogDescription className="AppSnapWelcomeDescription">
-              Press both Option keys (⌥ ⌥) to snap any app&apos;s window into the task you&apos;re working in.
+              Press both Option keys (⌥ ⌥) to snap any app&apos;s window into the task you&apos;re
+              working in.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="AppSnapWelcomeFooter">

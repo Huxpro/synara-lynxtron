@@ -1,6 +1,6 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import './composer-column-frame-surface-elements.css';
+import "./composer-column-frame-surface-elements.css";
 
 export function ComposerColumnFrameSurfaceElement({
   children,
@@ -9,9 +9,5 @@ export function ComposerColumnFrameSurfaceElement({
   readonly children: ReactNode;
   readonly className?: string;
 }) {
-  return (
-    <view className={`ComposerColumnFrameSurfaceLynx ${className ?? ''}`}>
-      {children}
-    </view>
-  );
+  return <view className={`ComposerColumnFrameSurfaceLynx ${className ?? ""}`}>{children}</view>;
 }

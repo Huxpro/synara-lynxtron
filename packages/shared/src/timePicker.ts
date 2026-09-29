@@ -5,7 +5,10 @@ export function formatTimePickerPart(value: number): string {
   return value.toString().padStart(2, "0");
 }
 
-export function parseTimePickerValue(value: string): { readonly hour: number; readonly minute: number } {
+export function parseTimePickerValue(value: string): {
+  readonly hour: number;
+  readonly minute: number;
+} {
   const [rawHour, rawMinute] = value.split(":");
   const hour = Number.parseInt(rawHour ?? "", 10);
   const minute = Number.parseInt(rawMinute ?? "", 10);

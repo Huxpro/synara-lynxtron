@@ -1,8 +1,4 @@
-import type {
-  ClientOrchestrationCommand,
-  ModelSelection,
-  ProviderKind,
-} from '@synara/contracts';
+import type { ClientOrchestrationCommand, ModelSelection, ProviderKind } from "@synara/contracts";
 import {
   buildThreadHandoffImportedActivities,
   buildThreadHandoffImportedMessages,
@@ -10,15 +6,12 @@ import {
   resolveAvailableHandoffTargetProviders,
   resolveThreadHandoffModelSelection,
   resolveThreadHandoffTitle,
-} from '@synara-web/lib/threadHandoff';
-import { resolveProviderSendAvailability } from '@synara-web/lib/providerAvailability';
-import { newCommandId, newThreadId } from '@synara-web/lib/utils';
+} from "@synara-web/lib/threadHandoff";
+import { resolveProviderSendAvailability } from "@synara-web/lib/providerAvailability";
+import { newCommandId, newThreadId } from "@synara-web/lib/utils";
 
-import {
-  fetchFreshServerConfig,
-  dispatchSynaraCommand,
-} from '../data/synaraClient.lynx';
-import { queryClient, type ThreadHeaderSummary } from './queries';
+import { fetchFreshServerConfig, dispatchSynaraCommand } from "../data/synaraClient.lynx";
+import { queryClient, type ThreadHeaderSummary } from "./queries";
 
 export interface NativeThreadHandoffProject {
   readonly id: string;
@@ -26,17 +19,21 @@ export interface NativeThreadHandoffProject {
 }
 
 export function resolveNativeThreadHandoffTargets(
-  thread: ThreadHeaderSummary | undefined
+  thread: ThreadHeaderSummary | undefined,
 ): readonly ProviderKind[] {
-  if (!thread || !canCreateThreadHandoff({
-    thread: thread as never,
-    isBusy:
-      thread.sessionStatus === 'starting' ||
-      thread.sessionStatus === 'running' ||
-      thread.latestTurnState === 'running',
-    hasPendingApprovals: thread.pendingApprovals.length > 0,
-    hasPendingUserInput: thread.pendingUserInputs.length > 0,
-  })) return [];
+  if (
+    !thread ||
+    !canCreateThreadHandoff({
+      thread: thread as never,
+      isBusy:
+        thread.sessionStatus === "starting" ||
+        thread.sessionStatus === "running" ||
+        thread.latestTurnState === "running",
+      hasPendingApprovals: thread.pendingApprovals.length > 0,
+      hasPendingUserInput: thread.pendingUserInputs.length > 0,
+    })
+  )
+    return [];
   return resolveAvailableHandoffTargetProviders(thread.modelSelection.provider);
 }
 
@@ -46,9 +43,9 @@ export function buildNativeThreadHandoffCreateCommand(input: {
   readonly project: NativeThreadHandoffProject;
   readonly targetProvider: ProviderKind;
   readonly thread: ThreadHeaderSummary;
-}): Extract<ClientOrchestrationCommand, { type: 'thread.handoff.create' }> {
+}): Extract<ClientOrchestrationCommand, { type: "thread.handoff.create" }> {
   return {
-    type: 'thread.handoff.create',
+    type: "thread.handoff.create",
     commandId: newCommandId(),
     threadId: input.nextThreadId as never,
     sourceThreadId: input.thread.id as never,
@@ -79,10 +76,10 @@ export async function createNativeThreadHandoff(input: {
   readonly targetProvider: ProviderKind;
   readonly thread: ThreadHeaderSummary;
 }): Promise<string> {
-  'background only';
+  "background only";
   const targets = resolveNativeThreadHandoffTargets(input.thread);
   if (!targets.includes(input.targetProvider)) {
-    throw new Error('This handoff target is not available for the current thread.');
+    throw new Error("This handoff target is not available for the current thread.");
   }
   const config = await fetchFreshServerConfig();
   const availability = resolveProviderSendAvailability({
@@ -100,17 +97,17 @@ export async function createNativeThreadHandoff(input: {
       project: input.project,
       targetProvider: input.targetProvider,
       thread: input.thread,
-    })
+    }),
   );
   for (const activity of buildThreadHandoffImportedActivities(input.thread as never)) {
     await dispatchSynaraCommand({
-      type: 'thread.activity.append',
+      type: "thread.activity.append",
       commandId: newCommandId(),
       threadId: nextThreadId,
       activity,
       createdAt,
     });
   }
-  await queryClient.invalidateQueries({ queryKey: ['threads'] });
+  await queryClient.invalidateQueries({ queryKey: ["threads"] });
   return nextThreadId;
 }

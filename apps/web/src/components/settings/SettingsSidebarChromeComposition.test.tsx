@@ -22,10 +22,7 @@ describe("SettingsSidebarChromeComposition", () => {
 
   it("replaces the input with explicit unavailable capability copy", () => {
     const markup = renderToStaticMarkup(
-      <SettingsSidebarChromeComposition
-        onBack={vi.fn()}
-        searchCapability="unavailable"
-      />,
+      <SettingsSidebarChromeComposition onBack={vi.fn()} searchCapability="unavailable" />,
     );
 
     expect(markup).toContain("Back to app");

@@ -788,10 +788,7 @@ export function buildThemeCssVariables(
       parseHexColor(pack.theme.semanticColors.diffRemoved),
       0.04,
     ),
-    "--input-invalid-border": formatRgba(
-      parseHexColor(pack.theme.semanticColors.diffRemoved),
-      0.3,
-    ),
+    "--input-invalid-border": formatRgba(parseHexColor(pack.theme.semanticColors.diffRemoved), 0.3),
     "--input-invalid-focus-border": formatRgba(
       parseHexColor(pack.theme.semanticColors.diffRemoved),
       0.5,
@@ -930,10 +927,7 @@ export function buildResolvedThemeTokens(
   };
 }
 
-export function resolveTextForegroundSecondary(
-  theme: ChromeTheme,
-  variant: ThemeVariant,
-): string {
+export function resolveTextForegroundSecondary(theme: ChromeTheme, variant: ThemeVariant): string {
   const contrast = normalizeContrastStrength(theme.contrast, variant);
   return formatRgba(parseHexColor(theme.ink), 0.65 + contrast * 0.1);
 }
@@ -1482,15 +1476,9 @@ function mixChannel(from: number, to: number, amount: number): number {
 function relativeLuminance(color: RgbColor): number {
   const channel = (value: number) => {
     const normalized = value / 255;
-    return normalized <= 0.04045
-      ? normalized / 12.92
-      : ((normalized + 0.055) / 1.055) ** 2.4;
+    return normalized <= 0.04045 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4;
   };
-  return (
-    0.2126 * channel(color.red) +
-    0.7152 * channel(color.green) +
-    0.0722 * channel(color.blue)
-  );
+  return 0.2126 * channel(color.red) + 0.7152 * channel(color.green) + 0.0722 * channel(color.blue);
 }
 
 function contrastRatio(left: RgbColor, right: RgbColor): number {
@@ -1502,11 +1490,7 @@ function contrastRatio(left: RgbColor, right: RgbColor): number {
   );
 }
 
-function ensureReadableTextColor(
-  preferred: string,
-  surface: string,
-  ink: string,
-): string {
+function ensureReadableTextColor(preferred: string, surface: string, ink: string): string {
   const preferredColor = parseHexColor(preferred);
   const surfaceColor = parseHexColor(surface);
   if (contrastRatio(preferredColor, surfaceColor) >= 4.5) {
@@ -1524,9 +1508,7 @@ function ensureReadableTextColor(
   const black = parseHexColor("#000000");
   const white = parseHexColor("#ffffff");
   return formatHex(
-    contrastRatio(black, surfaceColor) >= contrastRatio(white, surfaceColor)
-      ? black
-      : white,
+    contrastRatio(black, surfaceColor) >= contrastRatio(white, surfaceColor) ? black : white,
   );
 }
 
@@ -1547,9 +1529,7 @@ function compositeScaledColorOverSurface(
   surface: string,
   multiplier: number,
 ): string {
-  const rgbaMatch = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([0-9.]+)\s*\)$/i.exec(
-    color,
-  );
+  const rgbaMatch = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([0-9.]+)\s*\)$/i.exec(color);
   if (rgbaMatch) {
     return formatHex(
       mixRgb(

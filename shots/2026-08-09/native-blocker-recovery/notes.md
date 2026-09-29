@@ -21,10 +21,10 @@ Runtime:
 
 ## Cells
 
-| Cell | Outer window | Root class | Route | Console | Screenshot |
-| --- | --- | --- | --- | --- | --- |
-| Settings light | `1280x820` | `SliceRoot--theme-light` / `SettingsPage--theme-light` | `SharedSettingsGeneralRoot` plus active General navigation row | no error/warning entries | `settings-light-1280.png`, `2560x1640` |
-| Settings dark | `1440x900` | `SliceRoot--theme-dark` / `SettingsPage--theme-dark` | `SharedSettingsGeneralRoot` plus active General navigation row | no error/warning entries | `settings-dark-1440.png`, `2880x1800` |
+| Cell           | Outer window | Root class                                             | Route                                                          | Console                  | Screenshot                             |
+| -------------- | ------------ | ------------------------------------------------------ | -------------------------------------------------------------- | ------------------------ | -------------------------------------- |
+| Settings light | `1280x820`   | `SliceRoot--theme-light` / `SettingsPage--theme-light` | `SharedSettingsGeneralRoot` plus active General navigation row | no error/warning entries | `settings-light-1280.png`, `2560x1640` |
+| Settings dark  | `1440x900`   | `SliceRoot--theme-dark` / `SettingsPage--theme-dark`   | `SharedSettingsGeneralRoot` plus active General navigation row | no error/warning entries | `settings-dark-1440.png`, `2880x1800`  |
 
 The theme was supplied through the product's persisted `synara:theme` format in
 the isolated KV file. Window dimensions were supplied through the isolated

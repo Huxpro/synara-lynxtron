@@ -1,9 +1,9 @@
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from "@rstest/core";
 
-import { retryActiveSynaraQueries } from './transportRetry.logic';
+import { retryActiveSynaraQueries } from "./transportRetry.logic";
 
-describe('retryActiveSynaraQueries', () => {
-  it('refetches active queries exactly once', async () => {
+describe("retryActiveSynaraQueries", () => {
+  it("refetches active queries exactly once", async () => {
     const filters: unknown[] = [];
 
     await retryActiveSynaraQueries({
@@ -13,16 +13,16 @@ describe('retryActiveSynaraQueries', () => {
       },
     });
 
-    expect(filters).toEqual([{ type: 'active' }]);
+    expect(filters).toEqual([{ type: "active" }]);
   });
 
-  it('contains transport rejection so the retry control remains reusable', async () => {
+  it("contains transport rejection so the retry control remains reusable", async () => {
     await expect(
       retryActiveSynaraQueries({
         refetchQueries: async () => {
-          throw new Error('offline');
+          throw new Error("offline");
         },
-      })
+      }),
     ).resolves.toBeUndefined();
   });
 });

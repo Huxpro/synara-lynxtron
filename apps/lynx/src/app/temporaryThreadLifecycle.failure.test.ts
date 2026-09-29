@@ -1,9 +1,9 @@
-import { describe, expect, it, rs } from '@rstest/core';
+import { describe, expect, it, rs } from "@rstest/core";
 
-import { deleteTemporaryThreadBestEffort } from './temporaryThreadLifecycle.lynx';
+import { deleteTemporaryThreadBestEffort } from "./temporaryThreadLifecycle.lynx";
 
-describe('deleteTemporaryThreadBestEffort', () => {
-  it('invalidates projections after successful deletion', async () => {
+describe("deleteTemporaryThreadBestEffort", () => {
+  it("invalidates projections after successful deletion", async () => {
     const invalidate = rs.fn(async () => undefined);
 
     await deleteTemporaryThreadBestEffort({
@@ -14,18 +14,18 @@ describe('deleteTemporaryThreadBestEffort', () => {
     expect(invalidate).toHaveBeenCalledTimes(1);
   });
 
-  it('contains delete and invalidation failures without leaking cleanup rejection', async () => {
+  it("contains delete and invalidation failures without leaking cleanup rejection", async () => {
     const invalidate = rs.fn(async () => {
-      throw new Error('offline');
+      throw new Error("offline");
     });
 
     await expect(
       deleteTemporaryThreadBestEffort({
         dispatchDelete: async () => {
-          throw new Error('delete failed');
+          throw new Error("delete failed");
         },
         invalidate,
-      })
+      }),
     ).resolves.toBeUndefined();
     expect(invalidate).toHaveBeenCalledTimes(1);
   });

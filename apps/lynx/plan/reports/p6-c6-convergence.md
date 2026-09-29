@@ -5,15 +5,15 @@ Current baseline: 2026-07-30 final convergence audit
 
 ## Current honest baseline
 
-| Core screen | Module reuse | LOC reuse | Gate | Distance to 70 |
-| --- | ---: | ---: | ---: | ---: |
-| Threads | 58.66% | 55.05% | **55.05%** | 14.95pp |
-| Threads shell + Sidebar | 67.37% | 63.33% | **63.33%** | 6.67pp |
-| Thread | 46.22% | 38.26% | **38.26%** | 31.74pp |
-| Settings | 54.34% | 51.19% | **51.19%** | 18.81pp |
-| Projects overview | 56.26% | 52.15% | **52.15%** | 17.85pp |
-| Project Kanban | 56.26% | 52.15% | **52.15%** | 17.85pp |
-| Pull Requests | 61.76% | 57.08% | **57.08%** | 12.92pp |
+| Core screen             | Module reuse | LOC reuse |       Gate | Distance to 70 |
+| ----------------------- | -----------: | --------: | ---------: | -------------: |
+| Threads                 |       58.66% |    55.05% | **55.05%** |        14.95pp |
+| Threads shell + Sidebar |       67.37% |    63.33% | **63.33%** |         6.67pp |
+| Thread                  |       46.22% |    38.26% | **38.26%** |        31.74pp |
+| Settings                |       54.34% |    51.19% | **51.19%** |        18.81pp |
+| Projects overview       |       56.26% |    52.15% | **52.15%** |        17.85pp |
+| Project Kanban          |       56.26% |    52.15% | **52.15%** |        17.85pp |
+| Pull Requests           |       61.76% |    57.08% | **57.08%** |        12.92pp |
 
 The target is a report objective under D13, not a release gate. Percentages
 must not be raised by unused imports, copied JSX, type-only imports, or wider
@@ -53,8 +53,8 @@ JSX/CSS owner is deleted.
   offline state with empty error/warning console.
 - Projects/Kanban reuse remains 52.07% because the shared header module was
   already reachable through the project route. This demonstrates why P6-C6
-cannot use percentage movement as a substitute for deleting the second
-source owner.
+  cannot use percentage movement as a substitute for deleting the second
+  source owner.
 
 ## Convergence cut 3 — keep diagnostic CSS out of the product graph
 
@@ -200,28 +200,28 @@ This is the exhaustive production ownership classification used for the next
 source-deletion cuts. “Host” means lifecycle, routing or platform integration;
 it is not permission to retain a second copy of ordinary product anatomy.
 
-| Core surface | Native production owner | Physical-shared anatomy already consumed | Retained host / platform kernel | Remaining ordinary candidate |
-| --- | --- | --- | --- | --- |
-| App shell + Sidebar | `router.tsx`, `Sidebar.lynx.tsx` and sidebar adapters | App frame, desktop header, segmented/primary surfaces, projects/chats/pinned/studio sections, rows, meta/status, footer and search palette | Memory routing, snapshot/KV projection, `<scroll-view>`, disclosure/scroll controllers and leaf host/asset glyph Elements | No second ordinary anatomy owner identified; interaction states belong to P7 |
-| Threads landing | `router.tsx` | Chat surface header, centered empty landing, composer frame/placeholder | Route restore/query lifecycle and host scroll wrapper | No second page anatomy owner identified |
-| Thread | `router.tsx`, `Transcript.lynx.tsx`, `Composer.lynx.tsx` | Header/empty/panel state, message and status rows, collapsed-work disclosure chrome, typography, composer shell/editor/footer and menus | `<list>` virtualization/stick controller, native Markdown, textarea/input, disclosure event/visibility Elements and polling bridge | No second ordinary anatomy owner identified |
-| Settings | `SettingsPage.tsx` plus settings adapters | Back/Search capability chrome, navigation taxonomy, panel header, General, Appearance and theme-pack editor | Storage/server hydration, two-pane scroll, clipboard and registered crashing native text-input kernel | No second page anatomy owner identified; unavailable search now avoids that kernel |
-| Projects + Kanban | `FeatureListsPage.tsx` plus Kanban adapters | Route header, overview, canonical board projection, columns and cards | Query/memory route, `<scroll-view>`, native pointer DnD/mutation orchestration, and compact task-creation dialog | No second page anatomy owner identified |
-| Pull Requests | `FeatureListsPage.tsx` plus PR adapters | Route header/filters, list/row/states, Summary, canonical tabs/capability and close control | Query/mutation, 50% dock, scroll and close icon/button Elements; Timeline/Code/review kernels remain Web-only | No second ordinary anatomy owner identified; redundant native identity was deleted |
-| Cross-screen controllers | `router.tsx`, `Composer.lynx.tsx` | Shared projection/composition modules listed above | Background snapshot/RPC, native window/route/scroll/input lifecycle | Split large controllers only when it deletes a visible second owner |
+| Core surface             | Native production owner                                  | Physical-shared anatomy already consumed                                                                                                   | Retained host / platform kernel                                                                                                    | Remaining ordinary candidate                                                       |
+| ------------------------ | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| App shell + Sidebar      | `router.tsx`, `Sidebar.lynx.tsx` and sidebar adapters    | App frame, desktop header, segmented/primary surfaces, projects/chats/pinned/studio sections, rows, meta/status, footer and search palette | Memory routing, snapshot/KV projection, `<scroll-view>`, disclosure/scroll controllers and leaf host/asset glyph Elements          | No second ordinary anatomy owner identified; interaction states belong to P7       |
+| Threads landing          | `router.tsx`                                             | Chat surface header, centered empty landing, composer frame/placeholder                                                                    | Route restore/query lifecycle and host scroll wrapper                                                                              | No second page anatomy owner identified                                            |
+| Thread                   | `router.tsx`, `Transcript.lynx.tsx`, `Composer.lynx.tsx` | Header/empty/panel state, message and status rows, collapsed-work disclosure chrome, typography, composer shell/editor/footer and menus    | `<list>` virtualization/stick controller, native Markdown, textarea/input, disclosure event/visibility Elements and polling bridge | No second ordinary anatomy owner identified                                        |
+| Settings                 | `SettingsPage.tsx` plus settings adapters                | Back/Search capability chrome, navigation taxonomy, panel header, General, Appearance and theme-pack editor                                | Storage/server hydration, two-pane scroll, clipboard and registered crashing native text-input kernel                              | No second page anatomy owner identified; unavailable search now avoids that kernel |
+| Projects + Kanban        | `FeatureListsPage.tsx` plus Kanban adapters              | Route header, overview, canonical board projection, columns and cards                                                                      | Query/memory route, `<scroll-view>`, native pointer DnD/mutation orchestration, and compact task-creation dialog                   | No second page anatomy owner identified                                            |
+| Pull Requests            | `FeatureListsPage.tsx` plus PR adapters                  | Route header/filters, list/row/states, Summary, canonical tabs/capability and close control                                                | Query/mutation, 50% dock, scroll and close icon/button Elements; Timeline/Code/review kernels remain Web-only                      | No second ordinary anatomy owner identified; redundant native identity was deleted |
+| Cross-screen controllers | `router.tsx`, `Composer.lynx.tsx`                        | Shared projection/composition modules listed above                                                                                         | Background snapshot/RPC, native window/route/scroll/input lifecycle                                                                | Split large controllers only when it deletes a visible second owner                |
 
 ## Why the remaining gap is not one duplicate page
 
 The generated baseline JSON remains the exhaustive per-module authority. The
 largest eligible-but-unreused modules fall into these architectural groups:
 
-| Group | Representative modules | Explanation / next treatment |
-| --- | --- | --- |
-| Web route and app orchestration | `routes/__root.tsx`, `_chat.tsx`, route-owned PR/Settings files | Owns TanStack browser routing, desktop gutters, lazy panes and Web stores. Share cohesive state/anatomy below it; do not import the route shell into Lynx memory-history. |
-| Mature Web monoliths already split below | `Sidebar.tsx` (6052 LOC), `ChatView.tsx` (10691 LOC), `MessagesTimeline.tsx` (2720 LOC) | Core visible anatomy is already consumed through shared compositions. Remaining LOC mixes DOM/Router/store/terminal/diff kernels; importing the monolith would reintroduce the failures documented in P-30/P-32. Continue extracting cohesive product-owned composition/state, not opaque slots. |
-| Registered hard platform kernels that remain eligible | terminal state/layout, `DiffPanel`, PR Code/Timeline/review actions, Lexical and DnD call sites | They remain in the denominator unless narrowly approved EXCLUSIVE; D13 explicitly forbids expanding exclusions to meet 70. Their gap is reported, not hidden. |
-| Product features outside the completed native capability slice | Automations, provider/MCP Settings panels, What’s New, space/project creation | Navigation/capability is honest, but full feature trees are not yet native product consumers. Phase 7/8 determines interaction coverage; P6-C6 only removes duplicated core-screen renderers. |
-| Native route/state wrappers and leaf Elements | memory-history, background RPC/query, `<list>`/scroll, native Markdown/input, close/glyph host adapters | These are retained platform lifecycle or primitive mappings, not second page anatomy. P7 audits their interaction states; P8 removes diagnostics and staging residue. |
+| Group                                                          | Representative modules                                                                                  | Explanation / next treatment                                                                                                                                                                                                                                                                     |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Web route and app orchestration                                | `routes/__root.tsx`, `_chat.tsx`, route-owned PR/Settings files                                         | Owns TanStack browser routing, desktop gutters, lazy panes and Web stores. Share cohesive state/anatomy below it; do not import the route shell into Lynx memory-history.                                                                                                                        |
+| Mature Web monoliths already split below                       | `Sidebar.tsx` (6052 LOC), `ChatView.tsx` (10691 LOC), `MessagesTimeline.tsx` (2720 LOC)                 | Core visible anatomy is already consumed through shared compositions. Remaining LOC mixes DOM/Router/store/terminal/diff kernels; importing the monolith would reintroduce the failures documented in P-30/P-32. Continue extracting cohesive product-owned composition/state, not opaque slots. |
+| Registered hard platform kernels that remain eligible          | terminal state/layout, `DiffPanel`, PR Code/Timeline/review actions, Lexical and DnD call sites         | They remain in the denominator unless narrowly approved EXCLUSIVE; D13 explicitly forbids expanding exclusions to meet 70. Their gap is reported, not hidden.                                                                                                                                    |
+| Product features outside the completed native capability slice | Automations, provider/MCP Settings panels, What’s New, space/project creation                           | Navigation/capability is honest, but full feature trees are not yet native product consumers. Phase 7/8 determines interaction coverage; P6-C6 only removes duplicated core-screen renderers.                                                                                                    |
+| Native route/state wrappers and leaf Elements                  | memory-history, background RPC/query, `<list>`/scroll, native Markdown/input, close/glyph host adapters | These are retained platform lifecycle or primitive mappings, not second page anatomy. P7 audits their interaction states; P8 removes diagnostics and staging residue.                                                                                                                            |
 
 ## Final below-70 disposition
 
@@ -267,11 +267,11 @@ expanded EXCLUSIVE classification is used to improve these values.
 - [x] Remove historical diagnostic pages from the production import graph.
 - [x] Remove the Kanban overview-only route header renderer/styles.
 - [x] Remove historical diagnostic and superseded renderer CSS from the
-  production stylesheet graph.
+      production stylesheet graph.
 - [x] Enumerate all remaining native core-screen JSX/CSS ownership.
 - [x] Share or delete ordinary duplicate anatomy; retain only documented host
-  Elements, `<list>`, Markdown, text-input, DnD, terminal/browser/PDF and other
-  real kernels.
+      Elements, `<list>`, Markdown, text-input, DnD, terminal/browser/PDF and other
+      real kernels.
 - [x] Regenerate the exhaustive six-screen gap report after convergence.
 - [x] Explain every remaining below-70 group without widening EXCLUSIVE.
 - [x] Run final two-repo tests/build/audits/diff checks and update roadmap/LOG.

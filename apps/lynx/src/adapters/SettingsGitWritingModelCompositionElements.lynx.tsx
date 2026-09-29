@@ -1,22 +1,14 @@
-import type { ReactNode } from '@lynx-js/react';
-import type { SettingsGitWritingModelOption } from '@synara-web/components/settings/SettingsGitWritingModelComposition.logic';
+import type { ReactNode } from "@lynx-js/react";
+import type { SettingsGitWritingModelOption } from "@synara-web/components/settings/SettingsGitWritingModelComposition.logic";
 
-import { ChevronDownIcon } from '../lib/icons.lynx';
-import { Button } from '../components/ui/button';
-import {
-  Menu,
-  MenuPopup,
-  MenuRadioGroup,
-  MenuRadioItem,
-  MenuTrigger,
-} from '../components/ui/menu';
-import { SettingsHeadingElement } from './SettingsHeadingElement.lynx';
-import { SettingsResetIcon } from './SettingsResetIcon.lynx';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
+import { ChevronDownIcon } from "../lib/icons.lynx";
+import { Button } from "../components/ui/button";
+import { Menu, MenuPopup, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "../components/ui/menu";
+import { SettingsHeadingElement } from "./SettingsHeadingElement.lynx";
+import { SettingsResetIcon } from "./SettingsResetIcon.lynx";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
 
-export function SettingsGitWritingModelRootElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SettingsGitWritingModelRootElement(props: { readonly children?: ReactNode }) {
   return <view className="SharedSettingsGeneralRoot">{props.children}</view>;
 }
 
@@ -42,8 +34,8 @@ export function SettingsGitWritingModelRowElement(props: {
   readonly children?: ReactNode;
 }) {
   const resetInteraction = useLynxInteractiveState({
-    baseClassName: 'SharedSettingsGeneralReset',
-    accessibleLabel: 'Reset git writing model to default',
+    baseClassName: "SharedSettingsGeneralReset",
+    accessibleLabel: "Reset git writing model to default",
     onActivate: props.onReset,
   });
   return (
@@ -63,9 +55,7 @@ export function SettingsGitWritingModelRowElement(props: {
             </view>
           ) : null}
         </view>
-        <text className="SharedSettingsGeneralRowDescription">
-          {props.description}
-        </text>
+        <text className="SharedSettingsGeneralRowDescription">{props.description}</text>
       </view>
       <view className="SharedSettingsGeneralRowControl">{props.children}</view>
     </view>
@@ -79,7 +69,7 @@ export function SettingsGitWritingModelSelectElement(props: {
   readonly onChange: (value: string) => void;
 }) {
   const selected = props.options.find(
-    (option) => `${option.provider}:${option.model}` === props.value
+    (option) => `${option.provider}:${option.model}` === props.value,
   );
   return (
     <Menu>
@@ -87,7 +77,7 @@ export function SettingsGitWritingModelSelectElement(props: {
         <Button
           variant="outline"
           className="SharedSettingsGeneralSelectTrigger SharedSettingsGeneralSelectTrigger--writing-model"
-          buttonProps={{ 'accessibility-element': false }}
+          buttonProps={{ "accessibility-element": false }}
         >
           <view className="SharedSettingsGeneralSelectContent">
             <text className="SharedSettingsGeneralSelectLabel">
@@ -101,11 +91,7 @@ export function SettingsGitWritingModelSelectElement(props: {
           </view>
         </Button>
       </MenuTrigger>
-      <MenuPopup
-        side="bottom"
-        align="end"
-        className="SharedSettingsGeneralSelectPopup"
-      >
+      <MenuPopup side="bottom" align="end" className="SharedSettingsGeneralSelectPopup">
         <MenuRadioGroup value={props.value} onValueChange={props.onChange}>
           {props.options.map((option) => {
             const value = `${option.provider}:${option.model}`;

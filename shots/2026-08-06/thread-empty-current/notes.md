@@ -69,13 +69,13 @@ the evidence thread was not deleted.
 
 ## Browser geometry
 
-| Anchor | Web | Lynx-for-Web |
-| --- | --- | --- |
-| Header title | `298/14/140.015625/18`, 12/18/400 | exact |
-| Project heading y/height | `407.25/34.5` | `407/35` |
-| Composer | `400/461.75/736/95` | `400/462/736/95` |
-| Context tray | `400/536.75/736/58` | `400/537/736/58` |
-| Temporary | `1025.515625/560.75/102.484375/28` | `1026/561/102/28` |
+| Anchor                   | Web                                | Lynx-for-Web      |
+| ------------------------ | ---------------------------------- | ----------------- |
+| Header title             | `298/14/140.015625/18`, 12/18/400  | exact             |
+| Project heading y/height | `407.25/34.5`                      | `407/35`          |
+| Composer                 | `400/461.75/736/95`                | `400/462/736/95`  |
+| Context tray             | `400/536.75/736/58`                | `400/537/736/58`  |
+| Temporary                | `1025.515625/560.75/102.484375/28` | `1026/561/102/28` |
 
 The remaining quarter-pixel Browser differences are engine rounding. The
 heading width differs because Web sizes the text intrinsically while Lynx owns

@@ -9,14 +9,7 @@ import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-quer
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ChevronDownIcon, PlusIcon } from "~/lib/icons";
 import { CentralIcon } from "~/lib/central-icons";
-import {
-  type CSSProperties,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   gitBranchesQueryOptions,

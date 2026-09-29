@@ -1,1 +1,15 @@
-{"success":true,"data":{"origin":"http://localhost:8080/index.html?route=%2Fthread%2Feditor-changes-thread&editor=open&editorMode=diff","result":{"dialog":"×Switch projectOpen the latest chat or start a new one.Editor Changes✓Editor SecondaryOpenEditor Empty ProjectNew chat","items":[{"disabled":false,"text":"Editor Changes✓"},{"disabled":false,"text":"Editor SecondaryOpen"},{"disabled":false,"text":"Editor Empty ProjectNew chat"}]}},"error":null}
+{
+  "success": true,
+  "data": {
+    "origin": "http://localhost:8080/index.html?route=%2Fthread%2Feditor-changes-thread&editor=open&editorMode=diff",
+    "result": {
+      "dialog": "×Switch projectOpen the latest chat or start a new one.Editor Changes✓Editor SecondaryOpenEditor Empty ProjectNew chat",
+      "items": [
+        { "disabled": false, "text": "Editor Changes✓" },
+        { "disabled": false, "text": "Editor SecondaryOpen" },
+        { "disabled": false, "text": "Editor Empty ProjectNew chat" }
+      ]
+    }
+  },
+  "error": null
+}

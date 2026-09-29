@@ -4,7 +4,10 @@
 import type { ProjectKind, ProviderKind } from "@synara/contracts";
 import { threadMentionPathForThreadId } from "@synara/shared/threadMentions";
 
-import { normalizeProviderDiscoveryText, rankProviderDiscoveryItems } from "~/lib/providerDiscovery";
+import {
+  normalizeProviderDiscoveryText,
+  rankProviderDiscoveryItems,
+} from "~/lib/providerDiscovery";
 import type { ComposerCommandItem } from "./ComposerCommandMenuComposition";
 
 const THREAD_MENTION_SUGGESTION_LIMIT = 20;

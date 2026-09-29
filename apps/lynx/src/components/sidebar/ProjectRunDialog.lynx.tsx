@@ -1,10 +1,10 @@
-import type { InputRef } from '@lynx-js/lynx-ui';
-import { useEffect, useRef, useState } from '@lynx-js/react';
-import playSvg from '@synara-central-icons/play.svg?raw';
+import type { InputRef } from "@lynx-js/lynx-ui";
+import { useEffect, useRef, useState } from "@lynx-js/react";
+import playSvg from "@synara-central-icons/play.svg?raw";
 
-import type { ProjectSummary } from '../../app/queries';
-import { colorizeLynxSvg } from '../../lib/themedSvg.lynx';
-import { Button } from '../ui/button';
+import type { ProjectSummary } from "../../app/queries";
+import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogDescription,
@@ -13,8 +13,8 @@ import {
   DialogPanel,
   DialogPopup,
   DialogTitle,
-} from '../ui/dialog.lynx';
-import { Input } from '../ui/input.lynx';
+} from "../ui/dialog.lynx";
+import { Input } from "../ui/input.lynx";
 
 export function normalizeProjectRunCommand(value: string): string {
   return value.trim();
@@ -28,7 +28,7 @@ export function ProjectRunDialogLynx(props: {
   readonly open: boolean;
   readonly project: ProjectSummary | null;
 }) {
-  const [command, setCommand] = useState('');
+  const [command, setCommand] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<InputRef>(null);
@@ -39,9 +39,9 @@ export function ProjectRunDialogLynx(props: {
     setCommand(props.initialCommand);
     setSubmitting(false);
     setError(null);
-    void inputRef.current?.focus().then(() =>
-      inputRef.current?.setSelectionRange(0, props.initialCommand.length)
-    );
+    void inputRef.current
+      ?.focus()
+      .then(() => inputRef.current?.setSelectionRange(0, props.initialCommand.length));
   }, [props.open, props.project?.id]);
   useEffect(() => {
     if (!props.open || editedRef.current) return;
@@ -56,7 +56,7 @@ export function ProjectRunDialogLynx(props: {
       await props.onRun(normalized);
       props.onOpenChange(false);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Unable to start the run command.');
+      setError(cause instanceof Error ? cause.message : "Unable to start the run command.");
       setSubmitting(false);
     }
   };
@@ -67,11 +67,11 @@ export function ProjectRunDialogLynx(props: {
           <view className="AppSidebarProjectRunHeading">
             <svg
               className="AppSidebarProjectRunIcon"
-              content={colorizeLynxSvg(playSvg, 'var(--foreground)')}
+              content={colorizeLynxSvg(playSvg, "var(--foreground)")}
             />
             <DialogTitle>Start dev</DialogTitle>
           </view>
-          <DialogDescription>{props.project?.title ?? 'Project'}</DialogDescription>
+          <DialogDescription>{props.project?.title ?? "Project"}</DialogDescription>
         </DialogHeader>
         <DialogPanel className="AppSidebarProjectRunPanel">
           <text className="AppSidebarProjectRunLabel">Command</text>
@@ -88,7 +88,7 @@ export function ProjectRunDialogLynx(props: {
               setCommand(event.target.value);
             }}
             onKeyDown={(event) => {
-              if (event.key === 'Enter') {
+              if (event.key === "Enter") {
                 event.preventDefault?.();
                 void run();
               }
@@ -104,7 +104,7 @@ export function ProjectRunDialogLynx(props: {
             Cancel
           </Button>
           <Button disabled={!normalized || submitting || props.loading} onClick={() => void run()}>
-            {submitting ? 'Starting…' : 'Run'}
+            {submitting ? "Starting…" : "Run"}
           </Button>
         </DialogFooter>
       </DialogPopup>

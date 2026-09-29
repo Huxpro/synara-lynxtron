@@ -156,10 +156,7 @@ export function storeEditorChatPaneWidth(width: number): void {
     return;
   }
   try {
-    webStorage.setItem(
-      EDITOR_CHAT_PANE_STORAGE_KEY,
-      String(clampEditorChatPaneWidth(width)),
-    );
+    webStorage.setItem(EDITOR_CHAT_PANE_STORAGE_KEY, String(clampEditorChatPaneWidth(width)));
   } catch {
     // Best-effort preference persistence only.
   }

@@ -328,306 +328,300 @@ function AutomationDetailView() {
       onBack={() => void navigate({ to: "/automations" })}
       actions={
         <>
-                {canPauseAutomation(definition) ? (
-                  <Button
-                    type="button"
-                    size="icon-sm"
-                    variant="ghost"
-                    aria-label={definition.enabled ? "Pause" : "Resume"}
-                    title={definition.enabled ? "Pause" : "Resume"}
-                    onClick={togglePause}
-                  >
-                    <CentralIcon name={definition.enabled ? "pause" : "play"} className="size-4" />
-                  </Button>
-                ) : null}
-                <Button
-                  type="button"
-                  size="icon-sm"
-                  variant="ghost"
-                  aria-label="Delete"
-                  title="Delete"
-                  onClick={() => void deleteDefinition()}
-                >
-                  <CentralIcon name="trash-can-simple" className="size-4" />
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  className="ml-1.5"
-                  disabled={
-                    runNowMutation.isPending ||
-                    // Stay disabled while an approval update is in flight: the cache merges
-                    // acknowledgedRisks optimistically, so warnings clears before the server
-                    // persists and a run dispatched in that window hits the old definition.
-                    updateMutation.isPending ||
-                    approvalGaps.runBlockingWarnings.length > 0
-                  }
-                  title={
-                    approvalGaps.runBlockingWarnings.length > 0
-                      ? "Approve the automation first"
-                      : undefined
-                  }
-                  onClick={() => runNowMutation.mutate(definition)}
-                >
-                  <CentralIcon name="play" className="size-4" />
-                  Run now
-                </Button>
+          {canPauseAutomation(definition) ? (
+            <Button
+              type="button"
+              size="icon-sm"
+              variant="ghost"
+              aria-label={definition.enabled ? "Pause" : "Resume"}
+              title={definition.enabled ? "Pause" : "Resume"}
+              onClick={togglePause}
+            >
+              <CentralIcon name={definition.enabled ? "pause" : "play"} className="size-4" />
+            </Button>
+          ) : null}
+          <Button
+            type="button"
+            size="icon-sm"
+            variant="ghost"
+            aria-label="Delete"
+            title="Delete"
+            onClick={() => void deleteDefinition()}
+          >
+            <CentralIcon name="trash-can-simple" className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            className="ml-1.5"
+            disabled={
+              runNowMutation.isPending ||
+              // Stay disabled while an approval update is in flight: the cache merges
+              // acknowledgedRisks optimistically, so warnings clears before the server
+              // persists and a run dispatched in that window hits the old definition.
+              updateMutation.isPending ||
+              approvalGaps.runBlockingWarnings.length > 0
+            }
+            title={
+              approvalGaps.runBlockingWarnings.length > 0
+                ? "Approve the automation first"
+                : undefined
+            }
+            onClick={() => runNowMutation.mutate(definition)}
+          >
+            <CentralIcon name="play" className="size-4" />
+            Run now
+          </Button>
         </>
       }
     >
-              <AutomationApprovalBanner
-                warnings={approvalGaps.warnings}
-                busy={approvalBusy}
-                // Swallow the rejection here; the mutation's onError already toasts. Without
-                // this, void-ing the rejected promise would surface an unhandled rejection.
-                onApprove={() => void approveAutomationRisks().catch(() => undefined)}
-                onApproveAndRun={() => void handleApproveAndRunNow()}
-              />
-              <DetailGroup title="Details">
-                {definition.mode === "heartbeat" ? (
-                  <DetailRow label="Runs in">Thread</DetailRow>
-                ) : (
-                  <EditRow
-                    label={
-                      <>
-                        Runs in
-                        <CentralIcon
-                          name="info-simple"
-                          className="size-3 text-muted-foreground/60"
-                          aria-label="Where the automation runs: a worktree, a local checkout, or auto"
-                        />
-                      </>
-                    }
-                  >
-                    <InlineSelect
-                      value={definition.worktreeMode}
-                      options={WORKTREE_OPTIONS}
-                      onChange={(value) => {
-                        if (
-                          (value === "local" || value === "auto") &&
-                          !definition.acknowledgedRisks.includes("local-checkout")
-                        ) {
-                          openEditDialog({ worktreeMode: value as AutomationWorktreeMode });
-                          return;
-                        }
-                        patch({ worktreeMode: value as AutomationWorktreeMode });
-                      }}
-                    />
-                  </EditRow>
-                )}
-                {definition.mode === "heartbeat" ? (
-                  <DetailRow label="Project">{project?.name ?? "Unknown project"}</DetailRow>
-                ) : (
-                  <EditRow label="Project">
-                    <InlineSelect
-                      value={definition.projectId}
-                      options={projects.map((entry) => ({ value: entry.id, label: entry.name }))}
-                      onChange={(value) =>
-                        patch({ projectId: value as AutomationDefinition["projectId"] })
-                      }
-                    />
-                  </EditRow>
-                )}
-                {definition.sourceThreadId ? (
-                  <DetailRow label="Created from">
-                    {sourceThread ? (
-                      <button
-                        type="button"
-                        onClick={() =>
-                          void navigate({
-                            to: "/$threadId",
-                            params: { threadId: sourceThread.id },
-                          })
-                        }
-                        className="min-w-0 truncate text-right text-foreground transition-colors hover:text-primary"
-                      >
-                        {resolveThreadPickerTitle(sourceThread.title)}
-                      </button>
-                    ) : (
-                      "Thread unavailable"
-                    )}
-                  </DetailRow>
-                ) : null}
-                <EditRow label="Repeats">
-                  <InlineSelect
-                    value={scheduleKindFromSchedule(schedule)}
-                    options={SCHEDULE_KIND_OPTIONS}
-                    onChange={(value) =>
-                      patch({
-                        schedule: scheduleFromKind(
-                          value as (typeof SCHEDULE_KIND_OPTIONS)[number]["value"],
-                          schedule,
-                        ),
-                      })
-                    }
-                  />
-                </EditRow>
-                {schedule.type === "interval" && schedule.everySeconds !== 3600 ? (
-                  <EditRow label="Every">
-                    <InlineSelect
-                      value={String(schedule.everySeconds)}
-                      options={intervalOptions(schedule.everySeconds)}
-                      onChange={(value) =>
-                        patch({
-                          schedule: { type: "interval", everySeconds: Number.parseInt(value, 10) },
-                        })
-                      }
-                    />
-                  </EditRow>
-                ) : null}
-                {schedule.type === "once" ? (
-                  <EditRow label="Run at">
-                    <input
-                      type="datetime-local"
-                      value={datetimeLocalFromIso(schedule.runAt)}
-                      onChange={(event) =>
-                        event.target.value
-                          ? patch({
-                              schedule: {
-                                type: "once",
-                                runAt: isoFromDatetimeLocal(event.target.value),
-                              },
-                            })
-                          : undefined
-                      }
-                      className={INLINE_CONTROL_CLASS}
-                    />
-                  </EditRow>
-                ) : null}
-                {schedule.type === "cron" ? (
-                  <EditRow label="Cron">
-                    <InlineCommitTextInput
-                      value={schedule.expression}
-                      onCommit={(value) =>
-                        patch({
-                          schedule: {
-                            type: "cron",
-                            expression: value,
-                            timezone: schedule.timezone,
-                          },
-                        })
-                      }
-                      className="font-mono"
-                    />
-                  </EditRow>
-                ) : null}
-                {schedule.type === "daily" || schedule.type === "weekdays" ? (
-                  <EditRow label="Time">
-                    <InlineTime
-                      value={schedule.timeOfDay}
-                      onChange={(value) =>
-                        value ? patch({ schedule: { ...schedule, timeOfDay: value } }) : undefined
-                      }
-                    />
-                  </EditRow>
-                ) : null}
-                {schedule.type === "weekly" ? (
-                  <>
-                    <EditRow label="Day">
-                      <InlineSelect
-                        value={String(schedule.dayOfWeek)}
-                        options={[0, 1, 2, 3, 4, 5, 6].map((day) => ({
-                          value: String(day),
-                          label: weekdayLabel(day),
-                        }))}
-                        onChange={(value) =>
-                          patch({
-                            schedule: updateWeeklyScheduleDay(schedule, Number.parseInt(value, 10)),
-                          })
-                        }
-                      />
-                    </EditRow>
-                    <EditRow label="Time">
-                      <InlineTime
-                        value={schedule.timeOfDay}
-                        onChange={(value) =>
-                          value
-                            ? patch({
-                                schedule: updateWeeklyScheduleTime(schedule, value),
-                              })
-                            : undefined
-                        }
-                      />
-                    </EditRow>
-                  </>
-                ) : null}
-                {(schedule.type === "daily" ||
-                  schedule.type === "weekdays" ||
-                  schedule.type === "weekly" ||
-                  schedule.type === "cron") &&
-                schedule.timezone ? (
-                  <EditRow label="Timezone">
-                    <InlineCommitTextInput
-                      value={schedule.timezone}
-                      onCommit={(value) => patch({ schedule: { ...schedule, timezone: value } })}
-                    />
-                  </EditRow>
-                ) : null}
-                <EditRow label="Model">
-                  <AutomationModelPicker
-                    value={definition.modelSelection}
-                    projectCwd={project?.cwd ?? null}
-                    onChange={applyModelSelection}
-                  />
-                </EditRow>
-                <ModelOptionRows
-                  modelSelection={definition.modelSelection}
-                  onChange={applyModelSelection}
+      <AutomationApprovalBanner
+        warnings={approvalGaps.warnings}
+        busy={approvalBusy}
+        // Swallow the rejection here; the mutation's onError already toasts. Without
+        // this, void-ing the rejected promise would surface an unhandled rejection.
+        onApprove={() => void approveAutomationRisks().catch(() => undefined)}
+        onApproveAndRun={() => void handleApproveAndRunNow()}
+      />
+      <DetailGroup title="Details">
+        {definition.mode === "heartbeat" ? (
+          <DetailRow label="Runs in">Thread</DetailRow>
+        ) : (
+          <EditRow
+            label={
+              <>
+                Runs in
+                <CentralIcon
+                  name="info-simple"
+                  className="size-3 text-muted-foreground/60"
+                  aria-label="Where the automation runs: a worktree, a local checkout, or auto"
                 />
-                <DetailRow label="Mode">
-                  {definition.mode === "heartbeat" ? "Heartbeat" : "Standalone"}
-                </DetailRow>
-                {definition.mode === "heartbeat" ? (
-                  <EditRow label="Stop when">
-                    <InlineCommitTextInput
-                      value={stopWhen}
-                      placeholder="Never"
-                      onCommit={(value) =>
-                        patch({
-                          completionPolicy: completionPolicyFromStopWhen(value),
-                        })
-                      }
-                    />
-                  </EditRow>
-                ) : null}
-                <EditRow label="Max iterations">
-                  <InlineSelect
-                    value={definition.maxIterations == null ? "" : String(definition.maxIterations)}
-                    options={maxIterationOptions(definition.maxIterations)}
-                    onChange={(value) =>
-                      patch({ maxIterations: value === "" ? null : Number.parseInt(value, 10) })
-                    }
-                  />
-                </EditRow>
-                {definition.mode === "heartbeat" ? (
-                  <DetailRow label="Thread">
-                    {targetThread
-                      ? resolveThreadPickerTitle(targetThread.title)
-                      : "Thread unavailable"}
-                  </DetailRow>
-                ) : null}
-              </DetailGroup>
+              </>
+            }
+          >
+            <InlineSelect
+              value={definition.worktreeMode}
+              options={WORKTREE_OPTIONS}
+              onChange={(value) => {
+                if (
+                  (value === "local" || value === "auto") &&
+                  !definition.acknowledgedRisks.includes("local-checkout")
+                ) {
+                  openEditDialog({ worktreeMode: value as AutomationWorktreeMode });
+                  return;
+                }
+                patch({ worktreeMode: value as AutomationWorktreeMode });
+              }}
+            />
+          </EditRow>
+        )}
+        {definition.mode === "heartbeat" ? (
+          <DetailRow label="Project">{project?.name ?? "Unknown project"}</DetailRow>
+        ) : (
+          <EditRow label="Project">
+            <InlineSelect
+              value={definition.projectId}
+              options={projects.map((entry) => ({ value: entry.id, label: entry.name }))}
+              onChange={(value) => patch({ projectId: value as AutomationDefinition["projectId"] })}
+            />
+          </EditRow>
+        )}
+        {definition.sourceThreadId ? (
+          <DetailRow label="Created from">
+            {sourceThread ? (
+              <button
+                type="button"
+                onClick={() =>
+                  void navigate({
+                    to: "/$threadId",
+                    params: { threadId: sourceThread.id },
+                  })
+                }
+                className="min-w-0 truncate text-right text-foreground transition-colors hover:text-primary"
+              >
+                {resolveThreadPickerTitle(sourceThread.title)}
+              </button>
+            ) : (
+              "Thread unavailable"
+            )}
+          </DetailRow>
+        ) : null}
+        <EditRow label="Repeats">
+          <InlineSelect
+            value={scheduleKindFromSchedule(schedule)}
+            options={SCHEDULE_KIND_OPTIONS}
+            onChange={(value) =>
+              patch({
+                schedule: scheduleFromKind(
+                  value as (typeof SCHEDULE_KIND_OPTIONS)[number]["value"],
+                  schedule,
+                ),
+              })
+            }
+          />
+        </EditRow>
+        {schedule.type === "interval" && schedule.everySeconds !== 3600 ? (
+          <EditRow label="Every">
+            <InlineSelect
+              value={String(schedule.everySeconds)}
+              options={intervalOptions(schedule.everySeconds)}
+              onChange={(value) =>
+                patch({
+                  schedule: { type: "interval", everySeconds: Number.parseInt(value, 10) },
+                })
+              }
+            />
+          </EditRow>
+        ) : null}
+        {schedule.type === "once" ? (
+          <EditRow label="Run at">
+            <input
+              type="datetime-local"
+              value={datetimeLocalFromIso(schedule.runAt)}
+              onChange={(event) =>
+                event.target.value
+                  ? patch({
+                      schedule: {
+                        type: "once",
+                        runAt: isoFromDatetimeLocal(event.target.value),
+                      },
+                    })
+                  : undefined
+              }
+              className={INLINE_CONTROL_CLASS}
+            />
+          </EditRow>
+        ) : null}
+        {schedule.type === "cron" ? (
+          <EditRow label="Cron">
+            <InlineCommitTextInput
+              value={schedule.expression}
+              onCommit={(value) =>
+                patch({
+                  schedule: {
+                    type: "cron",
+                    expression: value,
+                    timezone: schedule.timezone,
+                  },
+                })
+              }
+              className="font-mono"
+            />
+          </EditRow>
+        ) : null}
+        {schedule.type === "daily" || schedule.type === "weekdays" ? (
+          <EditRow label="Time">
+            <InlineTime
+              value={schedule.timeOfDay}
+              onChange={(value) =>
+                value ? patch({ schedule: { ...schedule, timeOfDay: value } }) : undefined
+              }
+            />
+          </EditRow>
+        ) : null}
+        {schedule.type === "weekly" ? (
+          <>
+            <EditRow label="Day">
+              <InlineSelect
+                value={String(schedule.dayOfWeek)}
+                options={[0, 1, 2, 3, 4, 5, 6].map((day) => ({
+                  value: String(day),
+                  label: weekdayLabel(day),
+                }))}
+                onChange={(value) =>
+                  patch({
+                    schedule: updateWeeklyScheduleDay(schedule, Number.parseInt(value, 10)),
+                  })
+                }
+              />
+            </EditRow>
+            <EditRow label="Time">
+              <InlineTime
+                value={schedule.timeOfDay}
+                onChange={(value) =>
+                  value
+                    ? patch({
+                        schedule: updateWeeklyScheduleTime(schedule, value),
+                      })
+                    : undefined
+                }
+              />
+            </EditRow>
+          </>
+        ) : null}
+        {(schedule.type === "daily" ||
+          schedule.type === "weekdays" ||
+          schedule.type === "weekly" ||
+          schedule.type === "cron") &&
+        schedule.timezone ? (
+          <EditRow label="Timezone">
+            <InlineCommitTextInput
+              value={schedule.timezone}
+              onCommit={(value) => patch({ schedule: { ...schedule, timezone: value } })}
+            />
+          </EditRow>
+        ) : null}
+        <EditRow label="Model">
+          <AutomationModelPicker
+            value={definition.modelSelection}
+            projectCwd={project?.cwd ?? null}
+            onChange={applyModelSelection}
+          />
+        </EditRow>
+        <ModelOptionRows
+          modelSelection={definition.modelSelection}
+          onChange={applyModelSelection}
+        />
+        <DetailRow label="Mode">
+          {definition.mode === "heartbeat" ? "Heartbeat" : "Standalone"}
+        </DetailRow>
+        {definition.mode === "heartbeat" ? (
+          <EditRow label="Stop when">
+            <InlineCommitTextInput
+              value={stopWhen}
+              placeholder="Never"
+              onCommit={(value) =>
+                patch({
+                  completionPolicy: completionPolicyFromStopWhen(value),
+                })
+              }
+            />
+          </EditRow>
+        ) : null}
+        <EditRow label="Max iterations">
+          <InlineSelect
+            value={definition.maxIterations == null ? "" : String(definition.maxIterations)}
+            options={maxIterationOptions(definition.maxIterations)}
+            onChange={(value) =>
+              patch({ maxIterations: value === "" ? null : Number.parseInt(value, 10) })
+            }
+          />
+        </EditRow>
+        {definition.mode === "heartbeat" ? (
+          <DetailRow label="Thread">
+            {targetThread ? resolveThreadPickerTitle(targetThread.title) : "Thread unavailable"}
+          </DetailRow>
+        ) : null}
+      </DetailGroup>
 
-              <DetailGroup title="Previous runs">
-                {runs.length === 0 ? (
-                  <div className="px-1.5 py-1 text-xs text-muted-foreground">No runs yet.</div>
-                ) : (
-                  <div className="flex flex-col gap-0.5">
-                    {runs.map((run) => (
-                      <RunRow
-                        key={run.id}
-                        run={run}
-                        onOpen={(threadId) =>
-                          void navigate({ to: "/$threadId", params: { threadId } })
-                        }
-                        onCancel={() => cancelRunMutation.mutate(run)}
-                        onMarkRead={(unread) => markRunReadMutation.mutate({ run, unread })}
-                        onArchive={(archived) => archiveRunMutation.mutate({ run, archived })}
-                      />
-                    ))}
-                  </div>
-                )}
-              </DetailGroup>
+      <DetailGroup title="Previous runs">
+        {runs.length === 0 ? (
+          <div className="px-1.5 py-1 text-xs text-muted-foreground">No runs yet.</div>
+        ) : (
+          <div className="flex flex-col gap-0.5">
+            {runs.map((run) => (
+              <RunRow
+                key={run.id}
+                run={run}
+                onOpen={(threadId) => void navigate({ to: "/$threadId", params: { threadId } })}
+                onCancel={() => cancelRunMutation.mutate(run)}
+                onMarkRead={(unread) => markRunReadMutation.mutate({ run, unread })}
+                onArchive={(archived) => archiveRunMutation.mutate({ run, archived })}
+              />
+            ))}
+          </div>
+        )}
+      </DetailGroup>
 
       {form ? (
         <AutomationDialog

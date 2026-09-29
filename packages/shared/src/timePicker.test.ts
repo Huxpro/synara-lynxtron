@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { formatTimePickerPart, parseTimePickerValue, TIME_PICKER_HOURS, TIME_PICKER_MINUTES } from "./timePicker";
+import {
+  formatTimePickerPart,
+  parseTimePickerValue,
+  TIME_PICKER_HOURS,
+  TIME_PICKER_MINUTES,
+} from "./timePicker";
 
 describe("time picker contract", () => {
   it("provides complete hour and minute domains", () => {

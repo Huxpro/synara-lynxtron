@@ -1,27 +1,27 @@
-import { useRef } from '@lynx-js/react';
-import { getRectByRef } from '@lynx-js/lynx-ui';
-import type { NodesRef } from '@lynx-js/types';
-import type { OrchestrationSpaceShell, SpaceId } from '@synara/contracts';
-import type { SpaceActivityTone } from '@synara/shared/spaceActivity';
+import { useRef } from "@lynx-js/react";
+import { getRectByRef } from "@lynx-js/lynx-ui";
+import type { NodesRef } from "@lynx-js/types";
+import type { OrchestrationSpaceShell, SpaceId } from "@synara/contracts";
+import type { SpaceActivityTone } from "@synara/shared/spaceActivity";
 
-import { LynxSpaceIcon } from '../../adapters/ComposerProjectPickerCompositionElements.lynx';
-import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
-import { resolveSecondaryPointerOffset } from './threadContextActions.logic';
-import { focusLynxNode } from '../ui/focus.lynx';
-import { PlusIcon } from '../../lib/icons.lynx';
-import { useTheme } from '../../adapters/useTheme.lynx';
+import { LynxSpaceIcon } from "../../adapters/ComposerProjectPickerCompositionElements.lynx";
+import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
+import { resolveSecondaryPointerOffset } from "./threadContextActions.logic";
+import { focusLynxNode } from "../ui/focus.lynx";
+import { PlusIcon } from "../../lib/icons.lynx";
+import { useTheme } from "../../adapters/useTheme.lynx";
 
 export interface NativeSpaceOption {
   readonly id: SpaceId | null;
-  readonly icon: OrchestrationSpaceShell['icon'] | 'black-hole';
+  readonly icon: OrchestrationSpaceShell["icon"] | "black-hole";
   readonly name: string;
 }
 
 export function buildNativeSpaceOptions(
-  spaces: readonly OrchestrationSpaceShell[]
+  spaces: readonly OrchestrationSpaceShell[],
 ): readonly NativeSpaceOption[] {
   return [
-    { id: null, icon: 'black-hole', name: 'Void' },
+    { id: null, icon: "black-hole", name: "Void" },
     ...spaces.map((space) => ({
       id: space.id,
       icon: space.icon,
@@ -36,28 +36,28 @@ function SpaceTab(props: {
   readonly activityTone?: SpaceActivityTone | null;
   readonly onContextMenu?: (
     position: { readonly x: number; readonly y: number },
-    restoreFocus: () => void
+    restoreFocus: () => void,
   ) => void;
   readonly onSelect: () => void;
 }) {
   const { semanticIconColor, svgColors } = useTheme();
   const tabRef = useRef<NodesRef>(null);
   const interaction = useLynxInteractiveState({
-    baseClassName: `AppSidebarSpaceTab${
-      props.active ? ' AppSidebarSpaceTab--active' : ''
-    }`,
+    baseClassName: `AppSidebarSpaceTab${props.active ? " AppSidebarSpaceTab--active" : ""}`,
     accessibleLabel: [
       props.option.name,
-      props.active ? 'Active' : null,
-      props.activityTone === 'attention'
-        ? 'Needs attention'
-        : props.activityTone === 'running'
-          ? 'Working'
-          : props.activityTone === 'completed'
-            ? 'Done'
+      props.active ? "Active" : null,
+      props.activityTone === "attention"
+        ? "Needs attention"
+        : props.activityTone === "running"
+          ? "Working"
+          : props.activityTone === "completed"
+            ? "Done"
             : null,
-    ].filter(Boolean).join(' · '),
-    accessibilityTraits: props.active ? 'selected' : 'button',
+    ]
+      .filter(Boolean)
+      .join(" · "),
+    accessibilityTraits: props.active ? "selected" : "button",
     onActivate: props.onSelect,
   });
   return (
@@ -65,15 +65,19 @@ function SpaceTab(props: {
       ref={tabRef}
       className={interaction.className}
       {...interaction.eventProps}
-      bindmousedown={(event: { readonly button?: number; readonly buttons?: number; readonly x?: number; readonly y?: number }) => {
+      bindmousedown={(event: {
+        readonly button?: number;
+        readonly buttons?: number;
+        readonly x?: number;
+        readonly y?: number;
+      }) => {
         interaction.eventProps.bindmousedown?.();
         const offset = resolveSecondaryPointerOffset(event);
         if (!offset || !props.onContextMenu) return;
         void getRectByRef(tabRef, true).then((rect) =>
-          props.onContextMenu?.(
-            { x: rect.left + offset.x, y: rect.top + offset.y },
-            () => focusLynxNode(tabRef)
-          )
+          props.onContextMenu?.({ x: rect.left + offset.x, y: rect.top + offset.y }, () =>
+            focusLynxNode(tabRef),
+          ),
         );
       }}
       bindlongpress={(event: { readonly x?: number; readonly y?: number }) => {
@@ -84,18 +88,14 @@ function SpaceTab(props: {
               x: rect.left + (event.x ?? rect.width / 2),
               y: rect.top + (event.y ?? rect.height / 2),
             },
-            () => focusLynxNode(tabRef)
-          )
+            () => focusLynxNode(tabRef),
+          ),
         );
       }}
     >
       <LynxSpaceIcon
         className="AppSidebarSpaceTabIcon"
-        color={
-          props.active
-            ? semanticIconColor('primary')
-            : svgColors.mutedForeground70
-        }
+        color={props.active ? semanticIconColor("primary") : svgColors.mutedForeground70}
         icon={props.option.icon}
         size={14}
       />
@@ -111,17 +111,13 @@ function SpaceTab(props: {
 function CreateSpaceButton(props: { readonly onCreate: () => void }) {
   const { svgColors } = useTheme();
   const interaction = useLynxInteractiveState({
-    baseClassName: 'AppSidebarSpaceTab AppSidebarSpaceCreate',
-    accessibleLabel: 'New space',
+    baseClassName: "AppSidebarSpaceTab AppSidebarSpaceCreate",
+    accessibleLabel: "New space",
     onActivate: props.onCreate,
   });
   return (
     <view className={interaction.className} {...interaction.eventProps}>
-      <PlusIcon
-        className="AppSidebarSpaceTabIcon"
-        color={svgColors.mutedForeground55}
-        size={14}
-      />
+      <PlusIcon className="AppSidebarSpaceTabIcon" color={svgColors.mutedForeground55} size={14} />
     </view>
   );
 }
@@ -133,15 +129,14 @@ export function SpaceSwitcherLynx(props: {
   readonly onContextMenu: (
     space: OrchestrationSpaceShell,
     position: { readonly x: number; readonly y: number },
-    restoreFocus: () => void
+    restoreFocus: () => void,
   ) => void;
   readonly onSelect: (spaceId: SpaceId | null) => void;
   readonly onCreate: () => void;
 }) {
   if (props.spaces.length === 0) return null;
   const options = buildNativeSpaceOptions(props.spaces);
-  const activeName =
-    options.find((option) => option.id === props.activeSpaceId)?.name ?? 'Void';
+  const activeName = options.find((option) => option.id === props.activeSpaceId)?.name ?? "Void";
   return (
     <view className="AppSidebarSpaces">
       <text className="AppSidebarSpacesLabel">{activeName}</text>
@@ -154,7 +149,7 @@ export function SpaceSwitcherLynx(props: {
       >
         {options.map((option) => (
           <SpaceTab
-            key={option.id ?? 'void'}
+            key={option.id ?? "void"}
             active={option.id === props.activeSpaceId}
             activityTone={props.activityBySpaceId.get(option.id) ?? null}
             option={option}
@@ -162,9 +157,7 @@ export function SpaceSwitcherLynx(props: {
               option.id === null
                 ? undefined
                 : (position, restoreFocus) => {
-                    const space = props.spaces.find(
-                      (candidate) => candidate.id === option.id
-                    );
+                    const space = props.spaces.find((candidate) => candidate.id === option.id);
                     if (space) props.onContextMenu(space, position, restoreFocus);
                   }
             }

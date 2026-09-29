@@ -17,8 +17,8 @@ describe("WorkspaceFilePreviewHeader", () => {
     );
     expect(source).toContain('role="radiogroup"');
     expect(source).toContain('aria-label="Markdown view"');
-    expect(source).toContain('onMarkdownPreviewChange(segment.rendered)');
-    expect(source).toContain('defaultOpen={props.actionMenuDefaultOpen}');
+    expect(source).toContain("onMarkdownPreviewChange(segment.rendered)");
+    expect(source).toContain("defaultOpen={props.actionMenuDefaultOpen}");
   });
   it("keeps partial-read disclosure available at every header width", () => {
     const queryClient = new QueryClient({
@@ -51,9 +51,7 @@ describe("WorkspaceFilePreviewHeader", () => {
     );
 
     expect(previewSource).toContain("fileQuery.isPending");
-    expect(previewSource).toContain(
-      "fileQuery.data !== undefined && fileContents.length === 0",
-    );
+    expect(previewSource).toContain("fileQuery.data !== undefined && fileContents.length === 0");
     expect(previewSource).toContain("<p>Empty file.</p>");
   });
 });

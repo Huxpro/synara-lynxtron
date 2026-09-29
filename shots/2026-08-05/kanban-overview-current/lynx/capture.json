@@ -2,7 +2,12 @@
   "client": "lynx",
   "stateId": "kanban-overview-light-1280",
   "snapshotSha256": "84d05db5d654601715926c496331c770b38a2626bfcfaea94e405a997ad8d601",
-  "stateEcho": { "semanticRoute": "kanban", "theme": "light", "density": "comfortable", "interactionState": "empty" },
+  "stateEcho": {
+    "semanticRoute": "kanban",
+    "theme": "light",
+    "density": "comfortable",
+    "interactionState": "empty"
+  },
   "image": { "width": 1280, "height": 820 },
   "origin": "http://localhost:8921/lynx/index.html"
 }

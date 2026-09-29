@@ -1,7 +1,5 @@
 {
-  "active": [
-    "Editor changes review"
-  ],
+  "active": ["Editor changes review"],
   "dialog": null,
   "editor": true,
   "items": [],

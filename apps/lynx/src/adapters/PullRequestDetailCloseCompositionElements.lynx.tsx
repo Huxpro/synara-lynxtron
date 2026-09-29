@@ -1,7 +1,7 @@
-import { ExternalLinkIcon, XIcon } from '../lib/icons.lynx';
-import { openExternalBestEffort } from '../platform/window';
-import './pull-request-detail-close-composition-elements.css';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
+import { ExternalLinkIcon, XIcon } from "../lib/icons.lynx";
+import { openExternalBestEffort } from "../platform/window";
+import "./pull-request-detail-close-composition-elements.css";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
 
 export function PullRequestDetailCloseButtonElement(props: {
   readonly accessibleLabel: string;
@@ -9,7 +9,7 @@ export function PullRequestDetailCloseButtonElement(props: {
   readonly onActivate: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedPrDetailCloseButton',
+    baseClassName: "SharedPrDetailCloseButton",
     accessibleLabel: props.accessibleLabel,
     onActivate: props.onActivate,
   });
@@ -24,17 +24,14 @@ export function PullRequestDetailCloseButtonElement(props: {
   );
 }
 
-export function PullRequestDetailExternalButtonElement(props: {
-  readonly url: string;
-}) {
+export function PullRequestDetailExternalButtonElement(props: { readonly url: string }) {
   const openExternal = () => {
-    'background only';
+    "background only";
     openExternalBestEffort(props.url);
   };
   const interaction = useLynxInteractiveState({
-    baseClassName:
-      'SharedPrDetailCloseButton SharedPrDetailExternalButton',
-    accessibleLabel: 'Open in external browser',
+    baseClassName: "SharedPrDetailCloseButton SharedPrDetailExternalButton",
+    accessibleLabel: "Open in external browser",
     onActivate: openExternal,
   });
   return (

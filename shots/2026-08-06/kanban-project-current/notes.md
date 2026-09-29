@@ -44,17 +44,17 @@ or route-local offset was added.
 
 ## Final Browser geometry
 
-| Anchor | Web | Lynx-for-Web |
-| --- | --- | --- |
-| Route title | `312/13/46.640625/20`, 14/20/500 | exact |
-| First column | `272/58/322.65625/746` | exact |
-| Header | `272/58/322.65625/32` | exact |
-| Draft title | `278/60.25/31.515625/19.5`, 13/19.5/500 | exact |
-| Count | `317.515625/62/5.578125/16` | exact |
-| Card | `276/94/314.65625/64.375`, radius 10 | `276/94/314.65625/64.5` |
-| Card title | y=105, 13/17.875/500 | exact line box |
-| Branch glyph | `12×12` before branch text | exact slot |
-| Branch text | x=327, 11/16.5 | exact |
+| Anchor       | Web                                     | Lynx-for-Web            |
+| ------------ | --------------------------------------- | ----------------------- |
+| Route title  | `312/13/46.640625/20`, 14/20/500        | exact                   |
+| First column | `272/58/322.65625/746`                  | exact                   |
+| Header       | `272/58/322.65625/32`                   | exact                   |
+| Draft title  | `278/60.25/31.515625/19.5`, 13/19.5/500 | exact                   |
+| Count        | `317.515625/62/5.578125/16`             | exact                   |
+| Card         | `276/94/314.65625/64.375`, radius 10    | `276/94/314.65625/64.5` |
+| Card title   | y=105, 13/17.875/500                    | exact line box          |
+| Branch glyph | `12×12` before branch text              | exact slot              |
+| Branch text  | x=327, 11/16.5                          | exact                   |
 
 The remaining 0.125px card-height difference is engine rounding. All three
 columns have exact x/y/width/height.

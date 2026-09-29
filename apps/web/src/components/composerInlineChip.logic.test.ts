@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  DEFAULT_AGENT_CHIP_COLOR,
-  resolveAgentChipColor,
-} from "./composerInlineChip.logic";
+import { DEFAULT_AGENT_CHIP_COLOR, resolveAgentChipColor } from "./composerInlineChip.logic";
 
 describe("composer inline chip presentation", () => {
   it("resolves the canonical per-agent colors", () => {

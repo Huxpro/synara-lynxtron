@@ -1,7 +1,7 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import './pull-request-detail-tabs-composition-elements.css';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
+import "./pull-request-detail-tabs-composition-elements.css";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
 
 type ChildrenProps = { readonly children?: ReactNode };
 
@@ -25,10 +25,10 @@ export function PullRequestDetailTabElement(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: `SharedPrDetailTab${
-      props.active ? ' SharedPrDetailTab--active' : ''
-    }${props.available ? '' : ' SharedPrDetailTab--unavailable'}`,
+      props.active ? " SharedPrDetailTab--active" : ""
+    }${props.available ? "" : " SharedPrDetailTab--unavailable"}`,
     accessibleLabel: props.label,
-    accessibilityValue: props.active ? 'Selected' : undefined,
+    accessibilityValue: props.active ? "Selected" : undefined,
     disabled: !props.available,
     onActivate: props.onActivate,
   });
@@ -40,10 +40,8 @@ export function PullRequestDetailTabElement(props: {
       accessibility-state={{ selected: props.active }}
     >
       <text
-        className={`SharedPrDetailTabText${
-          props.active ? ' SharedPrDetailTabText--active' : ''
-        }${
-          props.available ? '' : ' SharedPrDetailTabText--unavailable'
+        className={`SharedPrDetailTabText${props.active ? " SharedPrDetailTabText--active" : ""}${
+          props.available ? "" : " SharedPrDetailTabText--unavailable"
         }`}
       >
         {props.label}

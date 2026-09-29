@@ -1,7 +1,7 @@
 // P2-V1: remaining slice-local Zustand smoke. Composer drafts now use the
 // physical main-repository composerDraftStore.
 
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface SliceUiState {
   readonly pinnedByThreadId: Record<string, boolean>;

@@ -4,7 +4,7 @@ import { resolveProviderHealthBannerPresentation } from "@synara-web/components/
 import { CircleAlertIcon, TriangleAlertIcon, XIcon } from "../lib/icons.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { useLynxInteractiveState } from "./ui/interactive-state.lynx";
-import { Alert, AlertDescription, AlertTitle } from './ui/alert.lynx';
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert.lynx";
 
 import "./provider-health-banner.css";
 
@@ -41,7 +41,9 @@ export function ProviderHealthBanner(props: {
         />
         <view className="ProviderHealthBannerCopy">
           <AlertTitle className="ProviderHealthBannerTitle">{presentation.title}</AlertTitle>
-          <AlertDescription className="ProviderHealthBannerDescription"><text>{presentation.message}</text></AlertDescription>
+          <AlertDescription className="ProviderHealthBannerDescription">
+            <text>{presentation.message}</text>
+          </AlertDescription>
         </view>
         {props.onDismiss ? (
           <view className={dismiss.className} {...dismiss.eventProps}>

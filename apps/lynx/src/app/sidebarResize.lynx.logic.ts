@@ -4,7 +4,7 @@ import {
   THREAD_SIDEBAR_MIN_WIDTH,
   clampSidebarWidth,
   sidebarWidthFromPointer,
-} from '@synara-web/components/sidebarResize.logic';
+} from "@synara-web/components/sidebarResize.logic";
 
 export interface LynxSidebarPointerEvent {
   readonly button?: number;
@@ -30,30 +30,26 @@ export interface LynxSidebarPointerEvent {
 
 export interface LynxSidebarResizeSession {
   readonly moved: boolean;
-  readonly side: 'left' | 'right';
+  readonly side: "left" | "right";
   readonly startWidth: number;
   readonly startX: number;
   readonly width: number;
 }
 
 export type LynxSidebarResizeMoveResult =
-  | { readonly kind: 'ended-missed-mouseup' }
-  | { readonly kind: 'ignored' }
+  | { readonly kind: "ended-missed-mouseup" }
+  | { readonly kind: "ignored" }
   | {
-      readonly kind: 'moved';
+      readonly kind: "moved";
       readonly session: LynxSidebarResizeSession;
     };
 
-function finiteCoordinate(
-  ...values: readonly (number | undefined)[]
-): number | null {
+function finiteCoordinate(...values: readonly (number | undefined)[]): number | null {
   const value = values.find((candidate) => Number.isFinite(candidate));
   return value ?? null;
 }
 
-export function readLynxSidebarPointerX(
-  event: LynxSidebarPointerEvent
-): number | null {
+export function readLynxSidebarPointerX(event: LynxSidebarPointerEvent): number | null {
   const touch = event.touches?.[0] ?? event.changedTouches?.[0];
   return finiteCoordinate(
     touch?.clientX,
@@ -63,20 +59,16 @@ export function readLynxSidebarPointerX(
     event.detail?.x,
     event.x,
     event.detail?.pageX,
-    event.pageX
+    event.pageX,
   );
 }
 
-export function readLynxSidebarButtons(
-  event: LynxSidebarPointerEvent
-): number | null {
+export function readLynxSidebarButtons(event: LynxSidebarPointerEvent): number | null {
   const buttons = event.detail?.buttons ?? event.buttons;
-  return typeof buttons === 'number' ? buttons : null;
+  return typeof buttons === "number" ? buttons : null;
 }
 
-export function isLynxSidebarPrimaryPointer(
-  event: LynxSidebarPointerEvent
-): boolean {
+export function isLynxSidebarPrimaryPointer(event: LynxSidebarPointerEvent): boolean {
   const buttons = readLynxSidebarButtons(event);
   return (
     event.touches !== undefined ||
@@ -115,13 +107,13 @@ export function resolveLynxSidebarPresentedWidth(input: {
 }
 
 export function createLynxSidebarResizeSession(input: {
-  readonly side?: 'left' | 'right';
+  readonly side?: "left" | "right";
   readonly startWidth: number;
   readonly startX: number;
 }): LynxSidebarResizeSession {
   return {
     moved: false,
-    side: input.side ?? 'left',
+    side: input.side ?? "left",
     startWidth: input.startWidth,
     startX: input.startX,
     width: input.startWidth,
@@ -137,10 +129,10 @@ export function moveLynxSidebarResizeSession(input: {
   readonly viewportWidth: number;
 }): LynxSidebarResizeMoveResult {
   if (readLynxSidebarButtons(input.event) === 0) {
-    return { kind: 'ended-missed-mouseup' };
+    return { kind: "ended-missed-mouseup" };
   }
   const currentX = readLynxSidebarPointerX(input.event);
-  if (currentX === null) return { kind: 'ignored' };
+  if (currentX === null) return { kind: "ignored" };
   const requestedWidth = sidebarWidthFromPointer({
     currentX,
     side: input.session.side,
@@ -160,12 +152,10 @@ export function moveLynxSidebarResizeSession(input: {
           viewportWidth: input.viewportWidth,
         });
   return {
-    kind: 'moved',
+    kind: "moved",
     session: {
       ...input.session,
-      moved:
-        input.session.moved ||
-        Math.abs(currentX - input.session.startX) > 2,
+      moved: input.session.moved || Math.abs(currentX - input.session.startX) > 2,
       width,
     },
   };

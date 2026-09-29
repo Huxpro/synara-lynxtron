@@ -1,12 +1,10 @@
-import 'background-only';
+import "background-only";
 
-import { useComposerDraftStore } from '../adapters/composerDraftStore.lynx';
-import type { LynxAppSnapCapture } from '../platform/appSnap';
-import { resolvePickedComposerFiles } from '../components/composer/composerAttachments.lynx';
+import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
+import type { LynxAppSnapCapture } from "../platform/appSnap";
+import { resolvePickedComposerFiles } from "../components/composer/composerAttachments.lynx";
 
-type AddImages = ReturnType<
-  typeof useComposerDraftStore.getState
->['addImages'];
+type AddImages = ReturnType<typeof useComposerDraftStore.getState>["addImages"];
 
 export async function attachAppSnapCapture(
   threadId: string,
@@ -15,9 +13,9 @@ export async function attachAppSnapCapture(
     readonly addImages: AddImages;
     readonly existingAttachmentCount: number;
     readonly resolvePickedFiles: typeof resolvePickedComposerFiles;
-  }
+  },
 ): Promise<boolean> {
-  'background only';
+  "background only";
   const store = useComposerDraftStore.getState();
   const draft = store.draftsByThreadId[threadId];
   const resolvedDependencies = dependencies ?? {
@@ -34,8 +32,6 @@ export async function attachAppSnapCapture(
   });
   const image = resolved.images[0];
   if (!image) return false;
-  resolvedDependencies.addImages(threadId, [
-    { ...image, appSnapCaptureId: capture.captureId },
-  ]);
+  resolvedDependencies.addImages(threadId, [{ ...image, appSnapCaptureId: capture.captureId }]);
   return true;
 }

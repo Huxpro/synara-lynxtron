@@ -692,4 +692,3 @@ test/evidence tooling 或明确排除在 product graph 外的 harness。
 - 不因工作量大、耗时长或分数接近目标而提前停止。
 - 只有 completion audit 证明 objective 全部实现且无 required work 后，才标记 goal complete。
 ```
-

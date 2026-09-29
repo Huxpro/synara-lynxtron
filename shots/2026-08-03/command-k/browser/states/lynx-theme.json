@@ -9,8 +9,6 @@
       "selected": null
     }
   ],
-  "groups": [
-    "Configure"
-  ],
+  "groups": ["Configure"],
   "empty": false
 }

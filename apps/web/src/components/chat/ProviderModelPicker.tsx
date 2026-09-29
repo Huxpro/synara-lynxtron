@@ -126,9 +126,7 @@ export const ProviderModelMenuItems = function ProviderModelMenuItems(
   props: ProviderModelMenuItemsProps,
 ) {
   const { onAfterSelection } = props;
-  const [modelSearchQuery, setModelSearchQuery] = useState(
-    props.initialSearchQuery ?? "",
-  );
+  const [modelSearchQuery, setModelSearchQuery] = useState(props.initialSearchQuery ?? "");
   const [kiloFavoriteModelSlugs, setKiloFavoriteModelSlugs] = useLocalStorage(
     FAVORITE_MODEL_STORAGE_KEYS.kilo,
     EMPTY_FAVORITE_MODEL_SLUGS,
@@ -158,13 +156,9 @@ export const ProviderModelMenuItems = function ProviderModelMenuItems(
     ...(hiddenProviders ? { hiddenProviders } : {}),
     ...(providerOrder ? { providerOrder } : {}),
     protectedProviders:
-      props.lockedProvider === null
-        ? [props.provider]
-        : [props.provider, props.lockedProvider],
+      props.lockedProvider === null ? [props.provider] : [props.provider, props.lockedProvider],
   });
-  const visibleAvailableProviderOptions = providerItems.filter(
-    (item) => item.kind === "available",
-  );
+  const visibleAvailableProviderOptions = providerItems.filter((item) => item.kind === "available");
   const visibleUnavailableProviderOptions = providerItems.filter(
     (item) => item.kind === "coming-soon",
   );
@@ -424,9 +418,7 @@ export const ProviderModelPicker = function ProviderModelPicker(props: ProviderM
   const { onOpenChange, onSelectionCommitted, open } = props;
   const triggerRef = useRef<HTMLButtonElement>(null);
   const escapeFocusTimerRef = useRef<number | null>(null);
-  const [uncontrolledMenuOpen, setUncontrolledMenuOpen] = useState(
-    props.initialOpen ?? false,
-  );
+  const [uncontrolledMenuOpen, setUncontrolledMenuOpen] = useState(props.initialOpen ?? false);
   const selectionCommitTimerRef = useRef<number | null>(null);
   const isMenuOpen = open ?? uncontrolledMenuOpen;
   const activeProvider = props.lockedProvider ?? props.provider;
@@ -549,8 +541,12 @@ export const ProviderModelPicker = function ProviderModelPicker(props: ProviderM
           {...(props.providerOrder ? { providerOrder: props.providerOrder } : {})}
           {...(props.disabled !== undefined ? { disabled: props.disabled } : {})}
           onProviderModelChange={props.onProviderModelChange}
-          {...(props.favoriteModelSlugsOverride ? { favoriteModelSlugsOverride: props.favoriteModelSlugsOverride } : {})}
-          {...(props.onFavoriteModelSlugsChange ? { onFavoriteModelSlugsChange: props.onFavoriteModelSlugsChange } : {})}
+          {...(props.favoriteModelSlugsOverride
+            ? { favoriteModelSlugsOverride: props.favoriteModelSlugsOverride }
+            : {})}
+          {...(props.onFavoriteModelSlugsChange
+            ? { onFavoriteModelSlugsChange: props.onFavoriteModelSlugsChange }
+            : {})}
           onAfterSelection={handleAfterSelection}
         />
       </ComposerPickerMenuPopup>

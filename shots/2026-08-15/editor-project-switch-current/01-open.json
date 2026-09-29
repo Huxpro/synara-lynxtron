@@ -1,7 +1,5 @@
 {
-  "active": [
-    "Editor changes review"
-  ],
+  "active": ["Editor changes review"],
   "dialog": {
     "height": 160,
     "width": 420,

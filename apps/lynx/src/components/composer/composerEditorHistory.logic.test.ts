@@ -1,11 +1,11 @@
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from "@rstest/core";
 
 import {
   createComposerEditorHistory,
   pushComposerEditorHistory,
   redoComposerEditorHistory,
   undoComposerEditorHistory,
-} from './composerEditorHistory.logic';
+} from "./composerEditorHistory.logic";
 
 const snapshot = (value: string) => ({
   value,
@@ -14,49 +14,49 @@ const snapshot = (value: string) => ({
   context: { pastedTextIds: value ? [value] : [] },
 });
 
-describe('native composer editor history', () => {
-  it('undoes and redoes the complete editor snapshot', () => {
+describe("native composer editor history", () => {
+  it("undoes and redoes the complete editor snapshot", () => {
     const recorded = pushComposerEditorHistory({
       state: createComposerEditorHistory(),
-      snapshot: snapshot('before'),
+      snapshot: snapshot("before"),
     });
     const undone = undoComposerEditorHistory({
       state: recorded,
-      current: snapshot('after'),
+      current: snapshot("after"),
     });
-    expect(undone.snapshot).toEqual(snapshot('before'));
+    expect(undone.snapshot).toEqual(snapshot("before"));
     const redone = redoComposerEditorHistory({
       state: undone.state,
-      current: snapshot('before'),
+      current: snapshot("before"),
     });
-    expect(redone.snapshot).toEqual(snapshot('after'));
+    expect(redone.snapshot).toEqual(snapshot("after"));
   });
 
-  it('clears redo when a new edit is recorded', () => {
+  it("clears redo when a new edit is recorded", () => {
     const recorded = pushComposerEditorHistory({
       state: createComposerEditorHistory(),
-      snapshot: snapshot('first'),
+      snapshot: snapshot("first"),
     });
     const undone = undoComposerEditorHistory({
       state: recorded,
-      current: snapshot('second'),
+      current: snapshot("second"),
     });
     const branched = pushComposerEditorHistory({
       state: undone.state,
-      snapshot: snapshot('branch'),
+      snapshot: snapshot("branch"),
     });
     expect(branched.redo).toEqual([]);
   });
 
-  it('keeps only the configured number of undo entries', () => {
+  it("keeps only the configured number of undo entries", () => {
     let state = createComposerEditorHistory<{ pastedTextIds: string[] }>();
-    for (const value of ['one', 'two', 'three']) {
+    for (const value of ["one", "two", "three"]) {
       state = pushComposerEditorHistory({
         state,
         snapshot: snapshot(value),
         limit: 2,
       });
     }
-    expect(state.undo.map((entry) => entry.value)).toEqual(['two', 'three']);
+    expect(state.undo.map((entry) => entry.value)).toEqual(["two", "three"]);
   });
 });

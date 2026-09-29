@@ -204,10 +204,12 @@ export function groupCommandItems(
         item.type !== "agent",
     );
     const groups: ComposerCommandGroupModel[] = [];
-    if (pluginItems.length > 0) groups.push({ id: "plugins", label: "Plugins", items: pluginItems });
+    if (pluginItems.length > 0)
+      groups.push({ id: "plugins", label: "Plugins", items: pluginItems });
     if (threadItems.length > 0) groups.push({ id: "chats", label: "Chats", items: threadItems });
     if (localItems.length > 0) groups.push({ id: "local", label: "Local", items: localItems });
-    if (agentItems.length > 0) groups.push({ id: "subagents", label: "Subagents", items: agentItems });
+    if (agentItems.length > 0)
+      groups.push({ id: "subagents", label: "Subagents", items: agentItems });
     if (otherItems.length > 0) groups.push({ id: "other", label: null, items: otherItems });
     return groups;
   }
@@ -276,10 +278,7 @@ export function ComposerCommandMenuComposition(props: ComposerCommandMenuComposi
       onHighlightedItemChange={props.onHighlightedItemChange}
     >
       {groups.map((group, groupIndex) => (
-        <ComposerCommandGroupElement
-          key={group.id}
-          separatorBefore={groupIndex > 0}
-        >
+        <ComposerCommandGroupElement key={group.id} separatorBefore={groupIndex > 0}>
           {group.label ? (
             <ComposerCommandGroupLabelElement>{group.label}</ComposerCommandGroupLabelElement>
           ) : null}

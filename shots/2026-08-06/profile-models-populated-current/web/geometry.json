@@ -1,1 +1,152 @@
-{"viewport":{"width":1440,"height":900,"visualWidth":1440,"visualHeight":900,"dpr":1},"scroll":{"top":0,"height":900,"scrollHeight":900},"models":[{"model":"gpt-5.6-sol","item":{"x":488,"y":834.546875,"width":336,"height":30,"top":834.546875,"right":824,"bottom":864.546875,"left":488},"line":{"x":488,"y":834.546875,"width":336,"height":20,"top":834.546875,"right":824,"bottom":854.546875,"left":488},"identity":{"x":488,"y":834.546875,"width":95.28125,"height":20,"top":834.546875,"right":583.28125,"bottom":854.546875,"left":488},"name":{"x":510,"y":834.546875,"width":73.28125,"height":20,"top":834.546875,"right":583.28125,"bottom":854.546875,"left":510},"percent":{"x":781.171875,"y":834.546875,"width":42.828125,"height":20,"top":834.546875,"right":824,"bottom":854.546875,"left":781.171875},"icon":{"x":488,"y":837.546875,"width":14,"height":14,"top":837.546875,"right":502,"bottom":851.546875,"left":488},"track":{"x":488,"y":860.546875,"width":336,"height":4,"top":860.546875,"right":824,"bottom":864.546875,"left":488}},{"model":"gpt-5.5","item":{"x":872,"y":834.546875,"width":336,"height":30,"top":834.546875,"right":1208,"bottom":864.546875,"left":872},"line":{"x":872,"y":834.546875,"width":336,"height":20,"top":834.546875,"right":1208,"bottom":854.546875,"left":872},"identity":{"x":872,"y":834.546875,"width":69.984375,"height":20,"top":834.546875,"right":941.984375,"bottom":854.546875,"left":872},"name":{"x":894,"y":834.546875,"width":47.984375,"height":20,"top":834.546875,"right":941.984375,"bottom":854.546875,"left":894},"percent":{"x":1165.171875,"y":834.546875,"width":42.828125,"height":20,"top":834.546875,"right":1208,"bottom":854.546875,"left":1165.171875},"icon":{"x":872,"y":837.546875,"width":14,"height":14,"top":837.546875,"right":886,"bottom":851.546875,"left":872},"track":{"x":872,"y":860.546875,"width":336,"height":4,"top":860.546875,"right":1208,"bottom":864.546875,"left":872}}]}
+{
+  "viewport": { "width": 1440, "height": 900, "visualWidth": 1440, "visualHeight": 900, "dpr": 1 },
+  "scroll": { "top": 0, "height": 900, "scrollHeight": 900 },
+  "models": [
+    {
+      "model": "gpt-5.6-sol",
+      "item": {
+        "x": 488,
+        "y": 834.546875,
+        "width": 336,
+        "height": 30,
+        "top": 834.546875,
+        "right": 824,
+        "bottom": 864.546875,
+        "left": 488
+      },
+      "line": {
+        "x": 488,
+        "y": 834.546875,
+        "width": 336,
+        "height": 20,
+        "top": 834.546875,
+        "right": 824,
+        "bottom": 854.546875,
+        "left": 488
+      },
+      "identity": {
+        "x": 488,
+        "y": 834.546875,
+        "width": 95.28125,
+        "height": 20,
+        "top": 834.546875,
+        "right": 583.28125,
+        "bottom": 854.546875,
+        "left": 488
+      },
+      "name": {
+        "x": 510,
+        "y": 834.546875,
+        "width": 73.28125,
+        "height": 20,
+        "top": 834.546875,
+        "right": 583.28125,
+        "bottom": 854.546875,
+        "left": 510
+      },
+      "percent": {
+        "x": 781.171875,
+        "y": 834.546875,
+        "width": 42.828125,
+        "height": 20,
+        "top": 834.546875,
+        "right": 824,
+        "bottom": 854.546875,
+        "left": 781.171875
+      },
+      "icon": {
+        "x": 488,
+        "y": 837.546875,
+        "width": 14,
+        "height": 14,
+        "top": 837.546875,
+        "right": 502,
+        "bottom": 851.546875,
+        "left": 488
+      },
+      "track": {
+        "x": 488,
+        "y": 860.546875,
+        "width": 336,
+        "height": 4,
+        "top": 860.546875,
+        "right": 824,
+        "bottom": 864.546875,
+        "left": 488
+      }
+    },
+    {
+      "model": "gpt-5.5",
+      "item": {
+        "x": 872,
+        "y": 834.546875,
+        "width": 336,
+        "height": 30,
+        "top": 834.546875,
+        "right": 1208,
+        "bottom": 864.546875,
+        "left": 872
+      },
+      "line": {
+        "x": 872,
+        "y": 834.546875,
+        "width": 336,
+        "height": 20,
+        "top": 834.546875,
+        "right": 1208,
+        "bottom": 854.546875,
+        "left": 872
+      },
+      "identity": {
+        "x": 872,
+        "y": 834.546875,
+        "width": 69.984375,
+        "height": 20,
+        "top": 834.546875,
+        "right": 941.984375,
+        "bottom": 854.546875,
+        "left": 872
+      },
+      "name": {
+        "x": 894,
+        "y": 834.546875,
+        "width": 47.984375,
+        "height": 20,
+        "top": 834.546875,
+        "right": 941.984375,
+        "bottom": 854.546875,
+        "left": 894
+      },
+      "percent": {
+        "x": 1165.171875,
+        "y": 834.546875,
+        "width": 42.828125,
+        "height": 20,
+        "top": 834.546875,
+        "right": 1208,
+        "bottom": 854.546875,
+        "left": 1165.171875
+      },
+      "icon": {
+        "x": 872,
+        "y": 837.546875,
+        "width": 14,
+        "height": 14,
+        "top": 837.546875,
+        "right": 886,
+        "bottom": 851.546875,
+        "left": 872
+      },
+      "track": {
+        "x": 872,
+        "y": 860.546875,
+        "width": 336,
+        "height": 4,
+        "top": 860.546875,
+        "right": 1208,
+        "bottom": 864.546875,
+        "left": 872
+      }
+    }
+  ]
+}

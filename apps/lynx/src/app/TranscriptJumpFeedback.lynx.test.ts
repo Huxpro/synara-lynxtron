@@ -1,35 +1,26 @@
-import { describe, expect, it } from '@rstest/core';
-import { readFileSync } from 'node:fs';
+import { describe, expect, it } from "@rstest/core";
+import { readFileSync } from "node:fs";
 
-describe('Transcript jump feedback', () => {
-  it('uses a Lynx-safe colorized arrow instead of a currentColor DOM SVG', () => {
-    const transcript = readFileSync(
-      new URL('./Transcript.tsx', import.meta.url),
-      'utf8'
-    );
+describe("Transcript jump feedback", () => {
+  it("uses a Lynx-safe colorized arrow instead of a currentColor DOM SVG", () => {
+    const transcript = readFileSync(new URL("./Transcript.tsx", import.meta.url), "utf8");
     expect(transcript).toContain(
-      "import arrowDownSvg from '@tabler/icons/outline/arrow-down.svg?raw';"
+      "import arrowDownSvg from '@tabler/icons/outline/arrow-down.svg?raw';",
     );
-    expect(transcript).not.toContain(
-      "import { ArrowDownIcon } from '@synara-web/lib/icons';"
-    );
-    expect(transcript).toContain(
-      'content={colorizeLynxSvg(arrowDownSvg, svgColors.foreground)}'
-    );
-    expect(transcript).toContain('<TranscriptJumpIcon />');
+    expect(transcript).not.toContain("import { ArrowDownIcon } from '@synara-web/lib/icons';");
+    expect(transcript).toContain("content={colorizeLynxSvg(arrowDownSvg, svgColors.foreground)}");
+    expect(transcript).toContain("<TranscriptJumpIcon />");
   });
 
-  it('uses Web semantic surfaces without dimming the whole control', () => {
-    const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
+  it("uses Web semantic surfaces without dimming the whole control", () => {
+    const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
 
     expect(styles).toMatch(
-      /\.TranscriptJump\.ui-hover\s*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
+      /\.TranscriptJump\.ui-hover\s*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s,
     );
     expect(styles).toMatch(
-      /\.TranscriptJump\.ui-pressed\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s
+      /\.TranscriptJump\.ui-pressed\s*\{[^}]*background-color:\s*var\(--color-background-button-secondary\);/s,
     );
-    expect(styles).not.toMatch(
-      /\.TranscriptJump\.ui-(?:hover|pressed)\s*\{[^}]*opacity:/s
-    );
+    expect(styles).not.toMatch(/\.TranscriptJump\.ui-(?:hover|pressed)\s*\{[^}]*opacity:/s);
   });
 });

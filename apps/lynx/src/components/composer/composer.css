@@ -326,8 +326,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0
-    var(--app-density-composer-footer-padding-end, 0.5rem)
+  padding: 0 var(--app-density-composer-footer-padding-end, 0.5rem)
     var(--app-density-composer-footer-padding, 0.375rem)
     var(--app-density-composer-footer-padding, 0.375rem);
   overflow: visible;
@@ -432,8 +431,13 @@
   line-height: 13px;
 }
 
-.ComposerContextWindowPopoverRowLynx--muted > text { color: var(--muted-foreground); }
-.ComposerContextWindowPopoverRowLynx--value > text { color: var(--foreground); font-weight: 500; }
+.ComposerContextWindowPopoverRowLynx--muted > text {
+  color: var(--muted-foreground);
+}
+.ComposerContextWindowPopoverRowLynx--value > text {
+  color: var(--foreground);
+  font-weight: 500;
+}
 
 .ComposerFooterLeadingLynx--voice-busy {
   min-width: 0;
@@ -530,7 +534,9 @@
   background-color: var(--foreground);
 }
 
-.ComposerVoiceWaveformBarLynx--transcribing { opacity: 0.55; }
+.ComposerVoiceWaveformBarLynx--transcribing {
+  opacity: 0.55;
+}
 
 .ComposerVoiceDurationLynx {
   width: 38px;
@@ -550,9 +556,19 @@
   border-radius: 14px;
   background-color: var(--foreground);
 }
-.ComposerVoiceStopGlyphLynx { width: 8px; height: 8px; border-radius: 1px; background-color: var(--background); }
-.ComposerVoiceStopGlyphLynx--secondary { background-color: var(--foreground); }
-.ComposerVoiceSubmitIconLynx { width: 13px; height: 13px; }
+.ComposerVoiceStopGlyphLynx {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  background-color: var(--background);
+}
+.ComposerVoiceStopGlyphLynx--secondary {
+  background-color: var(--foreground);
+}
+.ComposerVoiceSubmitIconLynx {
+  width: 13px;
+  height: 13px;
+}
 .ComposerVoiceSpinnerLynx {
   width: 10px;
   height: 10px;
@@ -1127,16 +1143,13 @@
   max-height: 298px;
 }
 
-.SliceRoot--viewport-short-height
-  .ComposerModelPopupLynx.LxMenuPopup {
+.SliceRoot--viewport-short-height .ComposerModelPopupLynx.LxMenuPopup {
   height: calc(100vh - 16px);
   max-height: calc(100vh - 16px);
 }
 
-.SliceRoot--viewport-compact
-  .ComposerModelPopupLynx--models.LxMenuPopup,
-.SliceRoot--viewport-short-height
-  .ComposerModelPopupLynx--models.LxMenuPopup {
+.SliceRoot--viewport-compact .ComposerModelPopupLynx--models.LxMenuPopup,
+.SliceRoot--viewport-short-height .ComposerModelPopupLynx--models.LxMenuPopup {
   width: 260px;
   max-width: 260px;
 }
@@ -1158,12 +1171,8 @@
   display: none;
 }
 
-.SliceRoot--viewport-compact
-  .ComposerModelBrowserLynx
-  .ComposerProviderBackLynx,
-.SliceRoot--viewport-short-height
-  .ComposerModelBrowserLynx
-  .ComposerProviderBackLynx {
+.SliceRoot--viewport-compact .ComposerModelBrowserLynx .ComposerProviderBackLynx,
+.SliceRoot--viewport-short-height .ComposerModelBrowserLynx .ComposerProviderBackLynx {
   display: flex;
 }
 
@@ -1500,8 +1509,7 @@
   font-weight: 400;
 }
 
-.ComposerRuntimeTriggerLynx--full-access
-  .ComposerRuntimeTriggerPermissionIconLynx,
+.ComposerRuntimeTriggerLynx--full-access .ComposerRuntimeTriggerPermissionIconLynx,
 .ComposerRuntimeTriggerLynx--full-access .ComposerRuntimeTriggerLabelLynx {
   color: var(--runtime-full-access-accent);
 }

@@ -1,25 +1,165 @@
-.ProjectActionEditorDialog { width: 512px; max-width: calc(100vw - 32px); border-radius: 24px; padding: 0; }
-.ProjectActionEditorHeader { margin-bottom: 0; padding: 16px 40px 4px 16px; }
-.ProjectActionEditorPanel { display: flex; flex-direction: column; gap: 16px; padding: 0 16px 12px; }
-.ProjectActionEditorField { display: flex; flex-direction: column; gap: 6px; }
-.ProjectActionEditorLabel { color: var(--foreground); font-size: 12px; line-height: 16px; font-weight: 500; }
-.ProjectActionEditorNameRow { display: flex; flex-direction: row; align-items: center; gap: 8px; }
-.ProjectActionEditorNameInput { flex: 1; }
-.ProjectActionEditorCommandInput { min-height: 96px; padding-left: 10px; padding-right: 10px; }
-.ProjectActionEditorCommandInput > .LxInput { padding-top: 8px; padding-bottom: 8px; }
-.ProjectActionEditorIconPicker { position: relative; flex-shrink: 0; }
-.ProjectActionEditorIconPopup { position: absolute; left: 0; top: 40px; z-index: 2; width: 266px; padding: 16px; border-width: 1px; border-style: solid; border-left-color: var(--border); border-right-color: var(--border); border-top-color: var(--border); border-bottom-color: var(--border); border-radius: 10px; background-color: var(--popover); }
-.ProjectActionEditorIconGrid { display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; }
-.ProjectActionEditorIconOption { width: 72px; height: 56px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border-width: 1px; border-style: solid; border-left-color: var(--color-border-light); border-right-color: var(--color-border-light); border-top-color: var(--color-border-light); border-bottom-color: var(--color-border-light); border-radius: 8px; background-color: transparent; }
-.ProjectActionEditorIconOption.ui-hover,.ProjectActionEditorIconOption.ui-focus,.ProjectActionEditorIconOption--active { border-left-color: var(--color-border); border-right-color: var(--color-border); border-top-color: var(--color-border); border-bottom-color: var(--color-border); background-color: var(--sidebar-accent); }
-.ProjectActionEditorIconLabel { color: var(--foreground); font-size: 11px; line-height: 15px; }
-.ProjectActionEditorSwitch { min-height: 38px; margin-top: 4px; padding: 8px 12px; display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; border-width: 1px; border-style: solid; border-left-color: var(--color-border-light); border-right-color: var(--color-border-light); border-top-color: var(--color-border-light); border-bottom-color: var(--color-border-light); border-radius: 8px; }
-.ProjectActionEditorSwitchLabel { color: var(--foreground); font-size: 14px; line-height: 20px; }
-.ProjectActionEditorSwitchTrack { position: relative; width: 32px; height: 20px; border-radius: 999px; background-color: var(--muted); }
-.ProjectActionEditorSwitchThumb { position: absolute; left: 2px; top: 2px; width: 16px; height: 16px; border-radius: 999px; background-color: var(--background); }
-.ProjectActionEditorSwitch--on .ProjectActionEditorSwitchTrack { background-color: var(--primary); }
-.ProjectActionEditorSwitch--on .ProjectActionEditorSwitchThumb { left: 14px; background-color: var(--primary-foreground); }
-.ProjectActionEditorFooter { gap: 8px; margin-top: 0; padding: 0 16px 16px; }
-.ProjectActionEditorDelete { margin-right: auto; }
-.ProjectActionEditorHint { color: var(--muted-foreground); font-size: 12px; line-height: 16px; }
-.ProjectActionEditorError { color: var(--destructive); font-size: 14px; line-height: 20px; }
+.ProjectActionEditorDialog {
+  width: 512px;
+  max-width: calc(100vw - 32px);
+  border-radius: 24px;
+  padding: 0;
+}
+.ProjectActionEditorHeader {
+  margin-bottom: 0;
+  padding: 16px 40px 4px 16px;
+}
+.ProjectActionEditorPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 16px 12px;
+}
+.ProjectActionEditorField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ProjectActionEditorLabel {
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+.ProjectActionEditorNameRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.ProjectActionEditorNameInput {
+  flex: 1;
+}
+.ProjectActionEditorCommandInput {
+  min-height: 96px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.ProjectActionEditorCommandInput > .LxInput {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.ProjectActionEditorIconPicker {
+  position: relative;
+  flex-shrink: 0;
+}
+.ProjectActionEditorIconPopup {
+  position: absolute;
+  left: 0;
+  top: 40px;
+  z-index: 2;
+  width: 266px;
+  padding: 16px;
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
+  border-radius: 10px;
+  background-color: var(--popover);
+}
+.ProjectActionEditorIconGrid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ProjectActionEditorIconOption {
+  width: 72px;
+  height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--color-border-light);
+  border-right-color: var(--color-border-light);
+  border-top-color: var(--color-border-light);
+  border-bottom-color: var(--color-border-light);
+  border-radius: 8px;
+  background-color: transparent;
+}
+.ProjectActionEditorIconOption.ui-hover,
+.ProjectActionEditorIconOption.ui-focus,
+.ProjectActionEditorIconOption--active {
+  border-left-color: var(--color-border);
+  border-right-color: var(--color-border);
+  border-top-color: var(--color-border);
+  border-bottom-color: var(--color-border);
+  background-color: var(--sidebar-accent);
+}
+.ProjectActionEditorIconLabel {
+  color: var(--foreground);
+  font-size: 11px;
+  line-height: 15px;
+}
+.ProjectActionEditorSwitch {
+  min-height: 38px;
+  margin-top: 4px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-left-color: var(--color-border-light);
+  border-right-color: var(--color-border-light);
+  border-top-color: var(--color-border-light);
+  border-bottom-color: var(--color-border-light);
+  border-radius: 8px;
+}
+.ProjectActionEditorSwitchLabel {
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+.ProjectActionEditorSwitchTrack {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border-radius: 999px;
+  background-color: var(--muted);
+}
+.ProjectActionEditorSwitchThumb {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background-color: var(--background);
+}
+.ProjectActionEditorSwitch--on .ProjectActionEditorSwitchTrack {
+  background-color: var(--primary);
+}
+.ProjectActionEditorSwitch--on .ProjectActionEditorSwitchThumb {
+  left: 14px;
+  background-color: var(--primary-foreground);
+}
+.ProjectActionEditorFooter {
+  gap: 8px;
+  margin-top: 0;
+  padding: 0 16px 16px;
+}
+.ProjectActionEditorDelete {
+  margin-right: auto;
+}
+.ProjectActionEditorHint {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+.ProjectActionEditorError {
+  color: var(--destructive);
+  font-size: 14px;
+  line-height: 20px;
+}

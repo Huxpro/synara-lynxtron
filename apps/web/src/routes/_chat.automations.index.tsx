@@ -70,14 +70,8 @@ function AutomationsRouteView() {
     formFromDefinition(null, fallbackProjectId, projectModelSelection(projects, fallbackProjectId)),
   );
 
-  const {
-    data,
-    isLoading,
-    refetch,
-    createMutation,
-    updateMutation,
-    deleteMutation,
-  } = useAutomations((threadId) => void navigate({ to: "/$threadId", params: { threadId } }));
+  const { data, isLoading, refetch, createMutation, updateMutation, deleteMutation } =
+    useAutomations((threadId) => void navigate({ to: "/$threadId", params: { threadId } }));
   const providerOptionsForDispatch = getProviderStartOptions(settings);
 
   const updateDialogForm = (nextForm: AutomationFormState) => {
@@ -200,9 +194,7 @@ function AutomationsRouteView() {
               params: { automationId: automationId as AutomationDefinition["id"] },
             })
           }
-          onOpenThread={(threadId) =>
-            void navigate({ to: "/$threadId", params: { threadId } })
-          }
+          onOpenThread={(threadId) => void navigate({ to: "/$threadId", params: { threadId } })}
           onDelete={(definition) => void deleteDefinition(definition)}
         />
       </div>

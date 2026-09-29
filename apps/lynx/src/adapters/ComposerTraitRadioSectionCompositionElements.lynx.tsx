@@ -1,11 +1,11 @@
-import type { ReactNode } from '@lynx-js/react';
-import fastModeFilledSvg from '@synara-central-icons-fill/zap.svg?raw';
-import fastModeSvg from '@synara-central-icons/zap.svg?raw';
+import type { ReactNode } from "@lynx-js/react";
+import fastModeFilledSvg from "@synara-central-icons-fill/zap.svg?raw";
+import fastModeSvg from "@synara-central-icons/zap.svg?raw";
 
-import { CheckIcon } from '../lib/icons.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { useTheme } from './useTheme.lynx';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
+import { CheckIcon } from "../lib/icons.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { useTheme } from "./useTheme.lynx";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
 
 export function ComposerTraitFastModeToggleElement(props: {
   readonly enabled: boolean;
@@ -14,10 +14,10 @@ export function ComposerTraitFastModeToggleElement(props: {
   const { resolvedTheme, semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: `ComposerTraitFastModeToggleLynx${
-      props.enabled ? ' ComposerTraitFastModeToggleLynx--active' : ''
+      props.enabled ? " ComposerTraitFastModeToggleLynx--active" : ""
     }`,
-    accessibleLabel: 'Fast mode',
-    accessibilityValue: props.enabled ? 'On' : 'Off',
+    accessibleLabel: "Fast mode",
+    accessibilityValue: props.enabled ? "On" : "Off",
     onActivate: props.onToggle,
   });
   return (
@@ -29,17 +29,15 @@ export function ComposerTraitFastModeToggleElement(props: {
     >
       <svg
         className={`ComposerTraitFastModeToggleIconLynx${
-          props.enabled
-            ? ' ComposerTraitFastModeToggleIconLynx--active'
-            : ''
+          props.enabled ? " ComposerTraitFastModeToggleIconLynx--active" : ""
         }`}
         content={colorizeLynxSvg(
           props.enabled ? fastModeFilledSvg : fastModeSvg,
           props.enabled
-            ? resolvedTheme === 'dark'
-              ? '#fbbf24'
-              : '#f59e0b'
-            : semanticIconColor('secondary')
+            ? resolvedTheme === "dark"
+              ? "#fbbf24"
+              : "#f59e0b"
+            : semanticIconColor("secondary"),
         )}
       />
     </view>
@@ -82,22 +80,18 @@ export function ComposerTraitRadioItemElement(props: {
   readonly onSelectionComplete?: () => void;
 }) {
   const activate = () => {
-    'background only';
+    "background only";
     if (props.disabled) return;
     props.onSelect();
     props.onSelectionComplete?.();
   };
   const interaction = useLynxInteractiveState({
     baseClassName: `ComposerTraitOptionLynx${
-      props.active ? ' ComposerTraitOptionLynx--active' : ''
-    }${props.disabled ? ' ComposerTraitOptionLynx--disabled' : ''}`,
+      props.active ? " ComposerTraitOptionLynx--active" : ""
+    }${props.disabled ? " ComposerTraitOptionLynx--disabled" : ""}`,
     accessibleLabel: props.label,
-    accessibilityValue: [
-      props.active ? 'Selected' : null,
-      props.description,
-    ]
-      .filter(Boolean)
-      .join('. ') || undefined,
+    accessibilityValue:
+      [props.active ? "Selected" : null, props.description].filter(Boolean).join(". ") || undefined,
     disabled: props.disabled,
     onActivate: activate,
   });
@@ -111,7 +105,7 @@ export function ComposerTraitRadioItemElement(props: {
       <view className="ComposerTraitOptionCopyLynx">
         <text className="ComposerTraitOptionLabelLynx">
           {props.label}
-          {props.isDefault ? ' (default)' : ''}
+          {props.isDefault ? " (default)" : ""}
         </text>
       </view>
       <view className="ComposerTraitOptionCheckLynx">

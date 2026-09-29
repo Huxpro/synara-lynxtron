@@ -73,9 +73,7 @@
       "diagnostics": [],
       "score": null,
       "skippedChecks": [],
-      "analyzedFiles": [
-        "src/adapters/SettingsPanelHeaderCompositionElements.lynx.test.tsx"
-      ],
+      "analyzedFiles": ["src/adapters/SettingsPanelHeaderCompositionElements.lynx.test.tsx"],
       "analyzedFileCount": 1,
       "complete": true,
       "scannedFileCount": 1,

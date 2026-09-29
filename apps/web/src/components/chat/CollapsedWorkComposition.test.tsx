@@ -1,10 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
-import {
-  collapsedWorkLabel,
-  CollapsedWorkComposition,
-} from "./CollapsedWorkComposition";
+import { collapsedWorkLabel, CollapsedWorkComposition } from "./CollapsedWorkComposition";
 
 describe("CollapsedWorkComposition", () => {
   it("owns the canonical elapsed label and collapsed anatomy", () => {

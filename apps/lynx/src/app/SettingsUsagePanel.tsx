@@ -1,58 +1,58 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { ServerProviderUsageSnapshot } from '@synara/contracts';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { ServerProviderUsageSnapshot } from "@synara/contracts";
 import {
   PROVIDER_USAGE_PROVIDERS,
   mergeProviderUsageRefresh,
   providerUsageDisplayName,
   providerUsageNeedsAuthDetail,
-} from '@synara/shared/providerUsage';
-import { deriveProviderUsageLimitDisplay } from '@synara/shared/providerUsageDisplay';
+} from "@synara/shared/providerUsage";
+import { deriveProviderUsageLimitDisplay } from "@synara/shared/providerUsageDisplay";
 
-import { SettingsHeadingElement } from '../adapters/SettingsHeadingElement.lynx';
-import { Button } from '../components/ui/button';
-import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
-import { RefreshCwIcon, TriangleAlertIcon } from '../lib/icons.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
-import './settings-usage-panel.css';
+import { SettingsHeadingElement } from "../adapters/SettingsHeadingElement.lynx";
+import { Button } from "../components/ui/button";
+import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
+import { RefreshCwIcon, TriangleAlertIcon } from "../lib/icons.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
+import "./settings-usage-panel.css";
 
-const SETTINGS_PROVIDER_USAGE_QUERY_KEY = ['settings-provider-usage'] as const;
+const SETTINGS_PROVIDER_USAGE_QUERY_KEY = ["settings-provider-usage"] as const;
 const SETTINGS_USAGE_WARNING_ICON_COLOR = {
-  light: '#e17100',
-  dark: 'rgba(255, 210, 48, 0.9)',
+  light: "#e17100",
+  dark: "rgba(255, 210, 48, 0.9)",
 } as const;
 
 async function loadProviderUsage(forceRefresh = false) {
-  'background only';
+  "background only";
   const { fetchAllProviderUsage } = await import(
-    /* webpackMode: "eager" */ '../data/synaraClient.lynx'
+    /* webpackMode: "eager" */ "../data/synaraClient.lynx"
   );
   return fetchAllProviderUsage(forceRefresh ? { forceRefresh: true } : {});
 }
 
 function missingSnapshot(
-  provider: (typeof PROVIDER_USAGE_PROVIDERS)[number]
+  provider: (typeof PROVIDER_USAGE_PROVIDERS)[number],
 ): ServerProviderUsageSnapshot {
   return {
     provider,
     updatedAt: new Date(0).toISOString(),
     limits: [],
     usageLines: [],
-    source: 'unavailable',
-    status: 'error',
-    detail: 'Usage is currently unavailable.',
+    source: "unavailable",
+    status: "error",
+    detail: "Usage is currently unavailable.",
   };
 }
 
 function statusLabel(snapshot: ServerProviderUsageSnapshot): string | null {
-  if ((snapshot.status ?? 'ok') === 'ok') return snapshot.planName ?? null;
-  if (snapshot.status === 'needs-auth') return 'Not signed in';
-  if (snapshot.status === 'unsupported') return 'Unsupported';
-  return 'Unavailable';
+  if ((snapshot.status ?? "ok") === "ok") return snapshot.planName ?? null;
+  if (snapshot.status === "needs-auth") return "Not signed in";
+  if (snapshot.status === "unsupported") return "Unsupported";
+  return "Unavailable";
 }
 
 function UsageLimitRow(props: {
-  readonly limit: ServerProviderUsageSnapshot['limits'][number];
-  readonly provider: ServerProviderUsageSnapshot['provider'];
+  readonly limit: ServerProviderUsageSnapshot["limits"][number];
+  readonly provider: ServerProviderUsageSnapshot["provider"];
 }) {
   const display = deriveProviderUsageLimitDisplay(props.limit);
   const paceAmountText = display.pace?.amountText ?? null;
@@ -60,15 +60,10 @@ function UsageLimitRow(props: {
   const hasPaceDetails = paceAmountText !== null || paceEtaText !== null;
 
   return (
-    <view
-      className="SettingsUsageLimit"
-      key={`${props.provider}:${props.limit.window}`}
-    >
+    <view className="SettingsUsageLimit" key={`${props.provider}:${props.limit.window}`}>
       <view className="SettingsUsageLimitTitle">
         <text className="SettingsUsageLabel">{display.label}</text>
-        <view
-          className={`SettingsUsagePaceDot SettingsUsageTone--${display.paceTone}`}
-        />
+        <view className={`SettingsUsagePaceDot SettingsUsageTone--${display.paceTone}`} />
       </view>
       {display.remainingPercent === null ? null : (
         <view
@@ -93,9 +88,7 @@ function UsageLimitRow(props: {
               className="SettingsUsageTrackMarkerGap"
               style={{ left: `${display.markerPercent}%` }}
             >
-              <view
-                className={`SettingsUsageTrackMarker SettingsUsageTone--${display.paceTone}`}
-              />
+              <view className={`SettingsUsageTrackMarker SettingsUsageTone--${display.paceTone}`} />
             </view>
           )}
         </view>
@@ -113,9 +106,7 @@ function UsageLimitRow(props: {
           ) : (
             <view />
           )}
-          {paceEtaText ? (
-            <text className="SettingsUsageMetaText">{paceEtaText}</text>
-          ) : null}
+          {paceEtaText ? <text className="SettingsUsageMetaText">{paceEtaText}</text> : null}
         </view>
       ) : null}
     </view>
@@ -135,16 +126,16 @@ export function SettingsUsagePanel() {
     onSuccess: (data) => {
       queryClient.setQueryData<readonly ServerProviderUsageSnapshot[]>(
         SETTINGS_PROVIDER_USAGE_QUERY_KEY,
-        (previous) => mergeProviderUsageRefresh(previous, data)
+        (previous) => mergeProviderUsageRefresh(previous, data),
       );
     },
   });
   const isRefreshing = usageQuery.isFetching || refreshMutation.isPending;
   const snapshots = new Map(
-    (usageQuery.data ?? []).map((snapshot) => [snapshot.provider, snapshot])
+    (usageQuery.data ?? []).map((snapshot) => [snapshot.provider, snapshot]),
   );
   const cards = PROVIDER_USAGE_PROVIDERS.map(
-    (provider) => snapshots.get(provider) ?? missingSnapshot(provider)
+    (provider) => snapshots.get(provider) ?? missingSnapshot(provider),
   );
 
   return (
@@ -162,7 +153,7 @@ export function SettingsUsagePanel() {
           onClick={() => refreshMutation.mutate()}
         >
           <RefreshCwIcon
-            className={isRefreshing ? 'animate-spin' : undefined}
+            className={isRefreshing ? "animate-spin" : undefined}
             size={14}
             color={svgColors.foreground80}
           />
@@ -176,38 +167,31 @@ export function SettingsUsagePanel() {
       ) : (
         <view className="SettingsUsageCards">
           {cards.map((snapshot) => {
-            const status = snapshot.status ?? 'ok';
+            const status = snapshot.status ?? "ok";
             const statusText = statusLabel(snapshot);
             const providerName = providerUsageDisplayName(snapshot.provider);
-            const hasUsage =
-              snapshot.limits.length > 0 || snapshot.usageLines.length > 0;
+            const hasUsage = snapshot.limits.length > 0 || snapshot.usageLines.length > 0;
             return (
               <view className="SettingsUsageCard" key={snapshot.provider}>
                 <view
                   className="SettingsUsageCardHeader"
                   accessibility-element
-                  accessibility-label={`${providerName}${
-                    statusText ? `: ${statusText}` : ''
-                  }`}
+                  accessibility-label={`${providerName}${statusText ? `: ${statusText}` : ""}`}
                   accessibility-trait="text"
                 >
                   <view className="SettingsUsageProviderIdentity">
                     <view className="SettingsUsageProviderIcon">
                       <OpenAIProviderIcon provider={snapshot.provider} />
                     </view>
-                    <text className="SettingsUsageProvider">
-                      {providerName}
-                    </text>
+                    <text className="SettingsUsageProvider">{providerName}</text>
                   </view>
                   {statusText ? (
-                    <text
-                      className={`SettingsUsageStatus SettingsUsageStatus--${status}`}
-                    >
+                    <text className={`SettingsUsageStatus SettingsUsageStatus--${status}`}>
                       {statusText}
                     </text>
                   ) : null}
                 </view>
-                {status === 'ok' && hasUsage ? (
+                {status === "ok" && hasUsage ? (
                   <view className="SettingsUsageDetails">
                     {snapshot.detail?.trim() ? (
                       <view
@@ -219,13 +203,9 @@ export function SettingsUsagePanel() {
                         <TriangleAlertIcon
                           className="SettingsUsageNoticeIcon"
                           size={14}
-                          color={
-                            SETTINGS_USAGE_WARNING_ICON_COLOR[resolvedTheme]
-                          }
+                          color={SETTINGS_USAGE_WARNING_ICON_COLOR[resolvedTheme]}
                         />
-                        <text className="SettingsUsageNoticeText">
-                          {snapshot.detail}
-                        </text>
+                        <text className="SettingsUsageNoticeText">{snapshot.detail}</text>
                       </view>
                     ) : null}
                     {snapshot.limits.length > 0 ? (
@@ -242,9 +222,7 @@ export function SettingsUsagePanel() {
                     {snapshot.usageLines.length > 0 ? (
                       <view
                         className={`SettingsUsageLines${
-                          snapshot.limits.length > 0
-                            ? ' SettingsUsageLines--after-meters'
-                            : ''
+                          snapshot.limits.length > 0 ? " SettingsUsageLines--after-meters" : ""
                         }`}
                       >
                         {snapshot.usageLines.map((line) => (
@@ -253,22 +231,16 @@ export function SettingsUsagePanel() {
                             key={`${snapshot.provider}:${line.label}:${line.value}`}
                             accessibility-element
                             accessibility-label={`${line.label}: ${line.value}${
-                              line.subtitle ? `. ${line.subtitle}` : ''
+                              line.subtitle ? `. ${line.subtitle}` : ""
                             }`}
                             accessibility-trait="text"
                           >
                             <view className="SettingsUsageLineHeader">
-                              <text className="SettingsUsageLabel">
-                                {line.label}
-                              </text>
-                              <text className="SettingsUsageValue">
-                                {line.value}
-                              </text>
+                              <text className="SettingsUsageLabel">{line.label}</text>
+                              <text className="SettingsUsageValue">{line.value}</text>
                             </view>
                             {line.subtitle ? (
-                              <text className="SettingsUsageSubtitle">
-                                {line.subtitle}
-                              </text>
+                              <text className="SettingsUsageSubtitle">{line.subtitle}</text>
                             ) : null}
                           </view>
                         ))}
@@ -277,10 +249,9 @@ export function SettingsUsagePanel() {
                   </view>
                 ) : (
                   <text className="SettingsUsageDetail">
-                    {status === 'ok'
-                      ? 'No usage data reported yet.'
-                      : snapshot.detail ??
-                        providerUsageNeedsAuthDetail(snapshot.provider)}
+                    {status === "ok"
+                      ? "No usage data reported yet."
+                      : (snapshot.detail ?? providerUsageNeedsAuthDetail(snapshot.provider))}
                   </text>
                 )}
               </view>
@@ -289,10 +260,9 @@ export function SettingsUsagePanel() {
         </view>
       )}
       <text className="SettingsUsageFootnote">
-        Usage is read locally from each provider CLI's stored credentials and
-        fetched directly from the provider. OAuth providers may refresh
-        short-lived tokens through their official token endpoint; if a provider
-        shows “Not signed in”, re-authenticate with its CLI.
+        Usage is read locally from each provider CLI's stored credentials and fetched directly from
+        the provider. OAuth providers may refresh short-lived tokens through their official token
+        endpoint; if a provider shows “Not signed in”, re-authenticate with its CLI.
       </text>
     </view>
   );

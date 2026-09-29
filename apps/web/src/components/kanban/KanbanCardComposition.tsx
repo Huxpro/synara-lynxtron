@@ -28,11 +28,7 @@ import { formatRelativeTime } from "~/lib/relativeTime";
 import { formatElapsed } from "../../session-logic";
 import { resolveThreadStatusPill } from "../Sidebar.logic";
 import { resolvePrStatePresentation } from "../pullRequest/pullRequestStatePresentation.logic";
-import {
-  KANBAN_COLUMN_LABELS,
-  kanbanThreadCardId,
-  type KanbanCard,
-} from "./kanban.logic";
+import { KANBAN_COLUMN_LABELS, kanbanThreadCardId, type KanbanCard } from "./kanban.logic";
 import type { KanbanDragPoint } from "./kanbanDnd.logic";
 
 export interface KanbanCardCompositionProps {
@@ -44,21 +40,14 @@ export interface KanbanCardCompositionProps {
     restoreFocus?: () => void,
   ) => void;
   readonly onOpenActions?: (card: KanbanCard, event: React.MouseEvent) => void;
-  readonly onDragPointerStart?: (
-    card: KanbanCard,
-    point: KanbanDragPoint,
-  ) => void;
+  readonly onDragPointerStart?: (card: KanbanCard, point: KanbanDragPoint) => void;
   readonly isOverlay?: boolean;
   readonly isDragSource?: boolean;
   readonly nowMs?: number;
-  readonly visualState?: 'default' | 'hover' | 'focus' | 'pressed';
+  readonly visualState?: "default" | "hover" | "focus" | "pressed";
 }
 
-const REDUNDANT_COLUMN_PILL_LABELS = new Set([
-  "Working",
-  "Connecting",
-  "Completed",
-]);
+const REDUNDANT_COLUMN_PILL_LABELS = new Set(["Working", "Connecting", "Completed"]);
 
 export function KanbanCardComposition({
   card,
@@ -69,23 +58,19 @@ export function KanbanCardComposition({
   isOverlay = false,
   isDragSource = false,
   nowMs,
-  visualState = 'default',
+  visualState = "default",
 }: KanbanCardCompositionProps) {
   const showDraftPreview =
     card.column === "draft" &&
     card.draftPrompt.length > 0 &&
     card.cardId === kanbanThreadCardId(card.threadId);
-  const isForked = Boolean(
-    card.thread?.forkSourceThreadId && !card.thread.sidechatSourceThreadId,
-  );
+  const isForked = Boolean(card.thread?.forkSourceThreadId && !card.thread.sidechatSourceThreadId);
   const worktreeBadgeLabel = resolveThreadEnvironmentPresentation({
     envMode: card.envMode,
     worktreePath: card.worktreePath,
   }).worktreeBadgeLabel;
   const pullRequest = card.thread?.lastKnownPr ?? null;
-  const pullRequestPresentation = pullRequest
-    ? resolvePrStatePresentation(pullRequest)
-    : null;
+  const pullRequestPresentation = pullRequest ? resolvePrStatePresentation(pullRequest) : null;
   const activeWorkElapsed =
     card.activeWorkStartedAt && nowMs
       ? formatElapsed(card.activeWorkStartedAt, new Date(nowMs).toISOString())
@@ -98,9 +83,7 @@ export function KanbanCardComposition({
       })
     : null;
   const visibleStatusPill =
-    statusPill && !REDUNDANT_COLUMN_PILL_LABELS.has(statusPill.label)
-      ? statusPill
-      : null;
+    statusPill && !REDUNDANT_COLUMN_PILL_LABELS.has(statusPill.label) ? statusPill : null;
 
   return (
     <KanbanCardRootElement
@@ -131,20 +114,12 @@ export function KanbanCardComposition({
         ) : null}
       </KanbanCardTitleRowElement>
       {showDraftPreview ? (
-        <KanbanCardDraftPreviewElement>
-          {card.draftPrompt}
-        </KanbanCardDraftPreviewElement>
+        <KanbanCardDraftPreviewElement>{card.draftPrompt}</KanbanCardDraftPreviewElement>
       ) : null}
       <KanbanCardMetaRowElement>
-        {card.isTerminal ? null : (
-          <KanbanCardProviderElement provider={card.provider} />
-        )}
-        {card.branch ? (
-          <KanbanCardBranchElement label={card.branch} />
-        ) : null}
-        {worktreeBadgeLabel ? (
-          <KanbanCardWorktreeElement label={worktreeBadgeLabel} />
-        ) : null}
+        {card.isTerminal ? null : <KanbanCardProviderElement provider={card.provider} />}
+        {card.branch ? <KanbanCardBranchElement label={card.branch} /> : null}
+        {worktreeBadgeLabel ? <KanbanCardWorktreeElement label={worktreeBadgeLabel} /> : null}
         {isForked ? <KanbanCardForkElement /> : null}
         {pullRequest && pullRequestPresentation ? (
           <KanbanCardPullRequestElement
@@ -156,22 +131,14 @@ export function KanbanCardComposition({
         {card.draftHasAttachments ? <KanbanCardAttachmentElement /> : null}
         <KanbanCardTrailingElement>
           {card.isOptimisticDispatch ? (
-            <KanbanCardOptimisticStatusElement
-              elapsed={activeWorkElapsed}
-            />
+            <KanbanCardOptimisticStatusElement elapsed={activeWorkElapsed} />
           ) : (
             <>
-              {visibleStatusPill ? (
-                <KanbanCardStatusPillElement pill={visibleStatusPill} />
-              ) : null}
+              {visibleStatusPill ? <KanbanCardStatusPillElement pill={visibleStatusPill} /> : null}
               {activeWorkElapsed ? (
-                <KanbanCardTimestampElement
-                  label={`Worked for ${activeWorkElapsed}`}
-                />
+                <KanbanCardTimestampElement label={`Worked for ${activeWorkElapsed}`} />
               ) : card.timestamp ? (
-                <KanbanCardTimestampElement
-                  label={formatRelativeTime(card.timestamp)}
-                />
+                <KanbanCardTimestampElement label={formatRelativeTime(card.timestamp)} />
               ) : null}
             </>
           )}

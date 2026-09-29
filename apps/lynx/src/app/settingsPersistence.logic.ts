@@ -1,43 +1,43 @@
-import type { SystemStateIntent } from '@synara-web/components/systemStateSemantics';
+import type { SystemStateIntent } from "@synara-web/components/systemStateSemantics";
 
 export type SettingsPersistenceState =
-  | { readonly kind: 'loaded' }
-  | { readonly kind: 'saving' }
-  | { readonly kind: 'saved' }
-  | { readonly kind: 'error'; readonly message: string };
+  | { readonly kind: "loaded" }
+  | { readonly kind: "saving" }
+  | { readonly kind: "saved" }
+  | { readonly kind: "error"; readonly message: string };
 
 export type SettingsPersistOutcome =
-  | { readonly kind: 'saved' }
-  | { readonly kind: 'partial'; readonly message: string };
+  | { readonly kind: "saved" }
+  | { readonly kind: "partial"; readonly message: string };
 
 export interface SettingsPersistencePresentation {
   readonly announcement: string;
-  readonly intent: Exclude<SystemStateIntent, 'plain' | 'empty'>;
+  readonly intent: Exclude<SystemStateIntent, "plain" | "empty">;
   readonly message: string;
 }
 
 export function resolveSettingsPersistencePresentation(
-  state: SettingsPersistenceState
+  state: SettingsPersistenceState,
 ): SettingsPersistencePresentation | null {
   switch (state.kind) {
-    case 'loaded':
+    case "loaded":
       return null;
-    case 'saving':
+    case "saving":
       return {
-        announcement: 'Saving changes',
-        intent: 'status',
-        message: 'Saving changes…',
+        announcement: "Saving changes",
+        intent: "status",
+        message: "Saving changes…",
       };
-    case 'saved':
+    case "saved":
       return {
-        announcement: 'Changes saved',
-        intent: 'status',
-        message: 'Changes saved.',
+        announcement: "Changes saved",
+        intent: "status",
+        message: "Changes saved.",
       };
-    case 'error':
+    case "error":
       return {
         announcement: state.message,
-        intent: 'alert',
+        intent: "alert",
         message: state.message,
       };
   }
@@ -45,7 +45,7 @@ export function resolveSettingsPersistencePresentation(
 
 export function shouldApplySettingsSaveResult(
   latestOperationId: number,
-  completedOperationId: number
+  completedOperationId: number,
 ): boolean {
   return latestOperationId === completedOperationId;
 }

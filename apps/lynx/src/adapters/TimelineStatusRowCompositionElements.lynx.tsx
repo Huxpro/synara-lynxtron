@@ -1,7 +1,7 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import type { TimelineStatusTone } from '@synara-web/components/chat/TimelineStatusRowComposition';
-import './timeline-status-row-composition-elements.css';
+import type { TimelineStatusTone } from "@synara-web/components/chat/TimelineStatusRowComposition";
+import "./timeline-status-row-composition-elements.css";
 
 function toneClass(tone: TimelineStatusTone): string {
   return ` SharedTimelineStatusRow--${tone}`;
@@ -15,7 +15,7 @@ export function TimelineStatusRowRootElement(props: {
   return (
     <view
       className={`SharedTimelineStatusRow${
-        props.compact ? ' SharedTimelineStatusRow--compact' : ''
+        props.compact ? " SharedTimelineStatusRow--compact" : ""
       }${toneClass(props.tone)}`}
     >
       {props.children}

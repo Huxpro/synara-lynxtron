@@ -1,20 +1,14 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-export function SidebarContentFrameElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SidebarContentFrameElement(props: { readonly children?: ReactNode }) {
   return <view className="AppSidebarContentFrame">{props.children}</view>;
 }
 
-export function SidebarFixedRegionElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SidebarFixedRegionElement(props: { readonly children?: ReactNode }) {
   return <view className="AppSidebarFixedRegion">{props.children}</view>;
 }
 
-export function SidebarScrollRegionElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SidebarScrollRegionElement(props: { readonly children?: ReactNode }) {
   return (
     <scroll-view className="AppSidebarScroll" scroll-orientation="vertical">
       <view className="AppSidebarScrollInner">{props.children}</view>
@@ -22,8 +16,6 @@ export function SidebarScrollRegionElement(props: {
   );
 }
 
-export function SidebarSurfaceTransitionElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SidebarSurfaceTransitionElement(props: { readonly children?: ReactNode }) {
   return <view className="AppSidebarSurfaceEnter">{props.children}</view>;
 }

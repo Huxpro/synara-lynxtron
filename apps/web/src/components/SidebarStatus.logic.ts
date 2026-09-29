@@ -111,10 +111,7 @@ export function resolveSidebarProjectStatus(
 ): SidebarStatusPresentation | null {
   let highest: SidebarStatusPresentation | null = null;
   for (const status of statuses) {
-    if (
-      status &&
-      (!highest || STATUS_PRIORITY[status.label] > STATUS_PRIORITY[highest.label])
-    ) {
+    if (status && (!highest || STATUS_PRIORITY[status.label] > STATUS_PRIORITY[highest.label])) {
       highest = status;
     }
   }

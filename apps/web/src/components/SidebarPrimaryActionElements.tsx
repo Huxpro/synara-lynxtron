@@ -47,8 +47,10 @@ export function SidebarPrimaryActionButtonElement({
       aria-current={active ? "page" : undefined}
       className={cn(
         "group/sidebar-primary-action",
-        visualState === "hover" && "bg-[var(--sidebar-accent)] text-[var(--sidebar-accent-foreground)]",
-        visualState === "pressed" && "bg-[var(--sidebar-accent-active)] text-[var(--sidebar-accent-foreground)]",
+        visualState === "hover" &&
+          "bg-[var(--sidebar-accent)] text-[var(--sidebar-accent-foreground)]",
+        visualState === "pressed" &&
+          "bg-[var(--sidebar-accent-active)] text-[var(--sidebar-accent-foreground)]",
         visualState === "focus" && "ring-1 ring-inset ring-ring",
         SIDEBAR_HEADER_ROW_CLASS_NAME,
         active

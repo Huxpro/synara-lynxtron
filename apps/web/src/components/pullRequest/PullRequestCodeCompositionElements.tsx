@@ -18,9 +18,16 @@ export function PullRequestCodeRootElement(props: ChildrenProps) {
   return <div className="flex flex-col gap-3 p-3">{props.children}</div>;
 }
 
-export function PullRequestCodeNoticeElement(props: ChildrenProps & { readonly intent?: "warning" | "muted" }) {
+export function PullRequestCodeNoticeElement(
+  props: ChildrenProps & { readonly intent?: "warning" | "muted" },
+) {
   return (
-    <p className={cn("text-xs", props.intent === "warning" ? "text-amber-700 dark:text-amber-300" : "text-muted-foreground")}>
+    <p
+      className={cn(
+        "text-xs",
+        props.intent === "warning" ? "text-amber-700 dark:text-amber-300" : "text-muted-foreground",
+      )}
+    >
       {props.children}
     </p>
   );
@@ -33,7 +40,9 @@ export function PullRequestCodeStatsElement(props: {
 }) {
   return (
     <div className="flex items-center gap-2 text-xs text-muted-foreground">
-      <span>{props.fileCount} {props.fileCount === 1 ? "file" : "files"}</span>
+      <span>
+        {props.fileCount} {props.fileCount === 1 ? "file" : "files"}
+      </span>
       <span className="text-success">+{props.additions}</span>
       <span className="text-destructive">-{props.deletions}</span>
     </div>
@@ -41,7 +50,11 @@ export function PullRequestCodeStatsElement(props: {
 }
 
 export function PullRequestCodeFileElement(props: ChildrenProps & { readonly id?: string }) {
-  return <section id={props.id} className="overflow-hidden rounded-md border border-border">{props.children}</section>;
+  return (
+    <section id={props.id} className="overflow-hidden rounded-md border border-border">
+      {props.children}
+    </section>
+  );
 }
 
 export function PullRequestCodeFileHeaderElement(props: {
@@ -59,9 +72,7 @@ export function PullRequestCodeFileHeaderElement(props: {
   const slash = path.lastIndexOf("/");
   const basename = slash === -1 ? path : path.slice(slash + 1);
   const directory = slash === -1 ? "" : path.slice(0, slash + 1);
-  const previousPath = props.previousPath
-    ? formatGitPathForDisplay(props.previousPath)
-    : null;
+  const previousPath = props.previousPath ? formatGitPathForDisplay(props.previousPath) : null;
   return (
     <button
       type="button"
@@ -83,21 +94,25 @@ export function PullRequestCodeFileHeaderElement(props: {
       </span>
       {previousPath ? (
         <span className="truncate text-muted-foreground">
-          {props.relation === "copied" ? "copied from" : props.relation === "renamed" ? "renamed from" : "from"}{" "}
+          {props.relation === "copied"
+            ? "copied from"
+            : props.relation === "renamed"
+              ? "renamed from"
+              : "from"}{" "}
           {previousPath}
         </span>
       ) : null}
       <span className="text-success">+{props.additions}</span>
       <span className="text-destructive">-{props.deletions}</span>
       {props.trailingActions ? (
-        <span
-          className="inline-flex"
-          onClick={(event) => event.stopPropagation()}
-        >
+        <span className="inline-flex" onClick={(event) => event.stopPropagation()}>
           {props.trailingActions}
         </span>
       ) : null}
-      <DisclosureChevron open={props.expanded} className="size-2.5 shrink-0 text-muted-foreground" />
+      <DisclosureChevron
+        open={props.expanded}
+        className="size-2.5 shrink-0 text-muted-foreground"
+      />
     </button>
   );
 }
@@ -108,9 +123,7 @@ export function PullRequestCodeDisclosureElement(
   return <DisclosureRegion open={props.expanded}>{props.children}</DisclosureRegion>;
 }
 
-export function PullRequestCodeLinesElement(
-  props: ChildrenProps & { readonly wordWrap: boolean },
-) {
+export function PullRequestCodeLinesElement(props: ChildrenProps & { readonly wordWrap: boolean }) {
   return (
     <div
       className={cn(
@@ -143,12 +156,25 @@ export function PullRequestCodeLineElement(props: {
             ? "\\"
             : " ";
   return (
-    <div className={cn("flex", props.wordWrap ? "min-w-0" : "min-w-max", props.kind === "addition" && "bg-success/10", props.kind === "deletion" && "bg-destructive/10", props.kind === "hunk" && "bg-muted/60 text-muted-foreground", props.kind.startsWith("no-newline-") && "italic text-muted-foreground")}>
+    <div
+      className={cn(
+        "flex",
+        props.wordWrap ? "min-w-0" : "min-w-max",
+        props.kind === "addition" && "bg-success/10",
+        props.kind === "deletion" && "bg-destructive/10",
+        props.kind === "hunk" && "bg-muted/60 text-muted-foreground",
+        props.kind.startsWith("no-newline-") && "italic text-muted-foreground",
+      )}
+    >
       {props.side === "right" ? null : (
-        <span className="w-10 shrink-0 select-none px-1 text-right text-muted-foreground">{props.oldLine ?? ""}</span>
+        <span className="w-10 shrink-0 select-none px-1 text-right text-muted-foreground">
+          {props.oldLine ?? ""}
+        </span>
       )}
       {props.side === "left" ? null : (
-        <span className="w-10 shrink-0 select-none px-1 text-right text-muted-foreground">{props.newLine ?? ""}</span>
+        <span className="w-10 shrink-0 select-none px-1 text-right text-muted-foreground">
+          {props.newLine ?? ""}
+        </span>
       )}
       <span className="w-5 shrink-0 select-none text-center">{prefix}</span>
       <span
@@ -212,5 +238,14 @@ export function PullRequestCodeMoreElement(props: {
   readonly label: string;
   readonly onActivate: () => void;
 }) {
-  return <button type="button" disabled={props.disabled} className="w-full border-t border-border px-3 py-2 text-xs text-muted-foreground hover:text-foreground disabled:opacity-64" onClick={props.onActivate}>{props.label}</button>;
+  return (
+    <button
+      type="button"
+      disabled={props.disabled}
+      className="w-full border-t border-border px-3 py-2 text-xs text-muted-foreground hover:text-foreground disabled:opacity-64"
+      onClick={props.onActivate}
+    >
+      {props.label}
+    </button>
+  );
 }

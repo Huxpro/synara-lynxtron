@@ -2405,8 +2405,7 @@ function makeClaudeAdapter(options?: ClaudeAdapterLiveOptions) {
           ...context.session,
           status: status === "failed" ? "error" : "ready",
           activeTurnId: undefined,
-          lastError:
-            status === "failed" ? (errorMessage ?? "Claude turn failed.") : undefined,
+          lastError: status === "failed" ? (errorMessage ?? "Claude turn failed.") : undefined,
           updatedAt,
         };
         yield* updateResumeCursor(context);

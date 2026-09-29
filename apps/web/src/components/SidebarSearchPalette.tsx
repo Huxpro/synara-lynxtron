@@ -91,9 +91,7 @@ interface SidebarSearchPaletteProps {
   onOpenThread: (threadId: string) => void;
   importProviders: readonly ImportProviderKind[];
   onImportThread: (provider: ImportProviderKind, externalId: string) => Promise<void>;
-  onBrowseFilesystem?: (
-    partialPath: string,
-  ) => Promise<FilesystemBrowseResult | null>;
+  onBrowseFilesystem?: (partialPath: string) => Promise<FilesystemBrowseResult | null>;
   filesystemBrowseEnabled?: boolean;
   appearanceEnabled?: boolean;
 }
@@ -657,7 +655,9 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                   <PaletteGlyph kind="arrow-left" className="size-4" />
                 </Button>
                 <PaletteView>
-                  <PaletteText className="text-sm font-medium text-foreground">Import thread from provider</PaletteText>
+                  <PaletteText className="text-sm font-medium text-foreground">
+                    Import thread from provider
+                  </PaletteText>
                   <PaletteText className="mt-1 text-xs text-muted-foreground">
                     Create a local app thread and resume it from an existing provider id.
                   </PaletteText>
@@ -666,7 +666,9 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
             </PaletteView>
             <PaletteView className="space-y-4 px-4 py-4">
               <PaletteView className="space-y-2">
-                <PaletteText className="text-xs font-medium text-muted-foreground">Provider</PaletteText>
+                <PaletteText className="text-xs font-medium text-muted-foreground">
+                  Provider
+                </PaletteText>
                 <PaletteView className="flex gap-2">
                   {props.importProviders.map((provider) => (
                     <Button
@@ -699,7 +701,9 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                 ) : null}
               </PaletteView>
               <PaletteView className="space-y-2">
-                <PaletteText className="text-xs font-medium text-muted-foreground">{importFieldLabel}</PaletteText>
+                <PaletteText className="text-xs font-medium text-muted-foreground">
+                  {importFieldLabel}
+                </PaletteText>
                 <Input
                   autoFocus
                   nativeInput
@@ -877,8 +881,8 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                         {willCreateMissingFolder ? (
                           <PaletteText className="mx-1.5 mt-2 rounded-md border border-dashed border-[color:var(--color-border)] px-3 py-2 text-sm text-muted-foreground">
                             Press Enter to create{" "}
-                            <PaletteText className="text-foreground">{trimmedQuery}</PaletteText> and add it as a
-                            project.
+                            <PaletteText className="text-foreground">{trimmedQuery}</PaletteText>{" "}
+                            and add it as a project.
                           </PaletteText>
                         ) : null}
                         {addProjectError ? (
@@ -1086,12 +1090,12 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                                 setTheme(themeCommandItem.mode);
                               }}
                             >
-                          <PaletteView className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
-                            <PaletteGlyph
-                              kind={THEME_MODE_GLYPHS[themeCommandItem.mode]}
-                              className="size-[15px]"
-                            />
-                          </PaletteView>
+                              <PaletteView className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
+                                <PaletteGlyph
+                                  kind={THEME_MODE_GLYPHS[themeCommandItem.mode]}
+                                  className="size-[15px]"
+                                />
+                              </PaletteView>
                               <PaletteText className="min-w-0 flex-1 truncate text-[length:var(--app-font-size-ui,12px)] text-foreground">
                                 {themeCommandItem.label}
                               </PaletteText>

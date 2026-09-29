@@ -47,10 +47,7 @@ it.effect("accepts bounded sidebar-search and targeted thread-detail requests", 
       },
     });
     assert.strictEqual(shell.body._tag, ORCHESTRATION_WS_METHODS.getSidebarShellSnapshot);
-    assert.strictEqual(
-      search.body._tag,
-      ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot,
-    );
+    assert.strictEqual(search.body._tag, ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot);
     assert.strictEqual(detail.body._tag, ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot);
     if (detail.body._tag === ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot) {
       assert.strictEqual(detail.body.threadId, "thread-1");

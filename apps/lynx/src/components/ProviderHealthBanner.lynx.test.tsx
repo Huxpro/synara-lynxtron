@@ -75,9 +75,7 @@ describe("Native ProviderHealthBanner", () => {
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height \.ProviderHealthBannerDescription\s*\{[^}]*display:\s*none;/s,
     );
-    expect(styles).toMatch(
-      /\.ProviderHealthBannerIcon\s*\{[^}]*opacity:\s*0\.92;/s,
-    );
+    expect(styles).toMatch(/\.ProviderHealthBannerIcon\s*\{[^}]*opacity:\s*0\.92;/s);
     expect(styles).toMatch(
       /\.ProviderHealthBanner--error \.ProviderHealthBannerIcon\s*\{[^}]*color:\s*var\(--destructive\);/s,
     );

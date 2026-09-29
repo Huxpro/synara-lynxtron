@@ -6,8 +6,7 @@ import path from "node:path";
 import { ReadableStream } from "node:stream/web";
 import { setTimeout as delay } from "node:timers/promises";
 
-const DEFAULT_CONNECTOR_PATH =
-  "/Users/bytedance/.agents/skills/lynx-devtool/scripts/connector.mjs";
+const DEFAULT_CONNECTOR_PATH = "/Users/bytedance/.agents/skills/lynx-devtool/scripts/connector.mjs";
 
 function parseArguments(argv) {
   const options = {
@@ -52,7 +51,8 @@ function parseArguments(argv) {
     "buildSha256",
     "snapshotSha256",
   ]) {
-    if (!options[key]) throw new Error(`--${key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)} is required`);
+    if (!options[key])
+      throw new Error(`--${key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)} is required`);
   }
   if (!Number.isSafeInteger(options.rootPid) || options.rootPid <= 0) {
     throw new Error("--root-pid must be a positive integer");
@@ -97,11 +97,9 @@ export function parseListeningPorts(output) {
 function listeningPortsForPid(pid) {
   try {
     return parseListeningPorts(
-      execFileSync(
-        "lsof",
-        ["-nP", "-a", "-p", String(pid), "-iTCP", "-sTCP:LISTEN", "-Fn"],
-        { encoding: "utf8" },
-      ),
+      execFileSync("lsof", ["-nP", "-a", "-p", String(pid), "-iTCP", "-sTCP:LISTEN", "-Fn"], {
+        encoding: "utf8",
+      }),
     );
   } catch {
     return new Set();
@@ -110,7 +108,9 @@ function listeningPortsForPid(pid) {
 
 export function clientMatchesOwnedPorts(client, ports) {
   const serialized = JSON.stringify(client);
-  return [...ports].some((port) => new RegExp(`(?:localhost|127\\.0\\.0\\.1):${port}\\b`).test(serialized));
+  return [...ports].some((port) =>
+    new RegExp(`(?:localhost|127\\.0\\.0\\.1):${port}\\b`).test(serialized),
+  );
 }
 
 function unwrap(result) {
@@ -160,12 +160,9 @@ function computedStyleMap(result) {
 }
 
 async function captureRole(connector, clientId, sessionId, node) {
-  const boxResult = await connector.sendCDPMessage(
-    clientId,
-    sessionId,
-    "DOM.getBoxModel",
-    { nodeId: node.nodeId },
-  );
+  const boxResult = await connector.sendCDPMessage(clientId, sessionId, "DOM.getBoxModel", {
+    nodeId: node.nodeId,
+  });
   const styleResult = await connector.sendCDPMessage(
     clientId,
     sessionId,
@@ -206,10 +203,7 @@ async function readStreamUntilIdle(stream, { idleMs = 400, maxMs = 4000 } = {}) 
   try {
     while (Date.now() < deadline) {
       const remaining = Math.min(idleMs, deadline - Date.now());
-      const next = await Promise.race([
-        reader.read(),
-        delay(remaining, { timeout: true }),
-      ]);
+      const next = await Promise.race([reader.read(), delay(remaining, { timeout: true })]);
       if (next?.timeout) break;
       if (next.done) break;
       values.push(next.value);
@@ -233,9 +227,9 @@ async function collectConsole(connector, clientId, sessionId) {
   );
   const values = await readStreamUntilIdle(stream);
   return values
-    .filter(({ method, params }) =>
-      method === "Runtime.consoleAPICalled" &&
-      ["warning", "error"].includes(params?.type),
+    .filter(
+      ({ method, params }) =>
+        method === "Runtime.consoleAPICalled" && ["warning", "error"].includes(params?.type),
     )
     .map(({ params }) => ({
       type: params.type,
@@ -311,17 +305,13 @@ async function main() {
   }
   process.kill(options.rootPid, 0);
   const descendants = collectDescendantPids(options.rootPid, childPids);
-  const ownedPorts = new Set(
-    descendants.flatMap((pid) => [...listeningPortsForPid(pid)]),
-  );
+  const ownedPorts = new Set(descendants.flatMap((pid) => [...listeningPortsForPid(pid)]));
   const { createDefaultConnector } = await import(options.connectorPath);
   const connector = createDefaultConnector();
   const clients = await connector.listClients();
   const matches = clients.filter((client) => clientMatchesOwnedPorts(client, ownedPorts));
   if (matches.length !== 1) {
-    throw new Error(
-      `Expected exactly one PID-owned DevTool client, found ${matches.length}`,
-    );
+    throw new Error(`Expected exactly one PID-owned DevTool client, found ${matches.length}`);
   }
   const client = matches[0];
   const sessions = (await connector.sendListSessionMessage(client.id))
@@ -350,18 +340,9 @@ async function main() {
   for (const role of options.roles) {
     const node = findFirstNodeByClass(root, role.className);
     if (!node) throw new Error(`Missing required role ${role.name}=.${role.className}`);
-    roles[role.name] = await captureRole(
-      connector,
-      client.id,
-      Number(session.session_id),
-      node,
-    );
+    roles[role.name] = await captureRole(connector, client.id, Number(session.session_id), node);
   }
-  const consoleMessages = await collectConsole(
-    connector,
-    client.id,
-    Number(session.session_id),
-  );
+  const consoleMessages = await collectConsole(connector, client.id, Number(session.session_id));
   process.kill(options.rootPid, 0);
 
   const identity = {
@@ -388,16 +369,20 @@ async function main() {
     ),
     fs.promises.writeFile(
       path.join(options.output, "styles.json"),
-      `${JSON.stringify({
-        client: "native",
-        stateId: options.stateId,
-        roles: Object.fromEntries(
-          Object.entries(roles).map(([name, value]) => [
-            name,
-            { font: value.font, paint: value.paint },
-          ]),
-        ),
-      }, null, 2)}\n`,
+      `${JSON.stringify(
+        {
+          client: "native",
+          stateId: options.stateId,
+          roles: Object.fromEntries(
+            Object.entries(roles).map(([name, value]) => [
+              name,
+              { font: value.font, paint: value.paint },
+            ]),
+          ),
+        },
+        null,
+        2,
+      )}\n`,
     ),
     fs.promises.writeFile(
       path.join(options.output, "console.txt"),
@@ -407,15 +392,19 @@ async function main() {
     ),
     fs.promises.writeFile(
       path.join(options.output, "capture.json"),
-      `${JSON.stringify({
-        client: "native",
-        stateId: options.stateId,
-        buildSha256: options.buildSha256,
-        snapshotSha256: options.snapshotSha256,
-        stateEcho,
-        identity,
-        consoleMessages,
-      }, null, 2)}\n`,
+      `${JSON.stringify(
+        {
+          client: "native",
+          stateId: options.stateId,
+          buildSha256: options.buildSha256,
+          snapshotSha256: options.snapshotSha256,
+          stateEcho,
+          identity,
+          consoleMessages,
+        },
+        null,
+        2,
+      )}\n`,
     ),
   ]);
   console.log(

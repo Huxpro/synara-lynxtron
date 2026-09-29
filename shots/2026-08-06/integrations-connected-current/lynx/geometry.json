@@ -1,1 +1,165 @@
-{"viewport":{"width":1440,"height":900,"visualWidth":1440,"visualHeight":900,"dpr":1},"row":{"box":{"x":537,"y":524,"width":622,"height":136,"top":524,"right":1159,"bottom":660,"left":537},"copy":{"x":549,"y":534,"width":436.5,"height":116,"top":534,"right":985.5,"bottom":650,"left":549},"leafs":[{"text":"Fidelity coding agent","box":{"x":549,"y":534,"width":436.5,"height":18,"top":534,"right":985.5,"bottom":552,"left":549},"font":["12px","18px","500"]},{"text":"Waiting for pairing","box":{"x":549,"y":554,"width":436.5,"height":18,"top":554,"right":985.5,"bottom":572,"left":549},"font":["12px","18px","400"]},{"text":"Projects: All projects, including future ones","box":{"x":549,"y":574,"width":436.5,"height":18,"top":574,"right":985.5,"bottom":592,"left":549},"font":["12px","18px","400"]},{"text":"Permissions: Create and follow its own tasks","box":{"x":549,"y":594,"width":436.5,"height":18,"top":594,"right":985.5,"bottom":612,"left":549},"font":["12px","18px","400"]},{"text":"Created 8/6/2026, 7:40:58 AM · Last used Never · Expires 9/5/2026, 7:40:58 AM","box":{"x":549,"y":614,"width":436.5,"height":36,"top":614,"right":985.5,"bottom":650,"left":549},"font":["12px","18px","400"]},{"text":"Resume pairing","box":{"x":1003.5,"y":538.5,"width":76.046875,"height":15,"top":538.5,"right":1079.546875,"bottom":553.5,"left":1003.5},"font":["10px","15px","500"]},{"text":"Revoke","box":{"x":1103.546875,"y":538.5,"width":35.453125,"height":15,"top":538.5,"right":1139,"bottom":553.5,"left":1103.546875},"font":["10px","15px","500"]}],"actions":{"x":995.5,"y":534,"width":151.5,"height":24,"top":534,"right":1147,"bottom":558,"left":995.5},"buttons":[{"text":"Resume pairing","box":{"x":995.5,"y":534,"width":92.046875,"height":24,"top":534,"right":1087.546875,"bottom":558,"left":995.5},"font":["10px","15px"]},{"text":"Revoke","box":{"x":1095.546875,"y":534,"width":51.453125,"height":24,"top":534,"right":1147,"bottom":558,"left":1095.546875},"font":["10px","15px"]}]}}
+{
+  "viewport": { "width": 1440, "height": 900, "visualWidth": 1440, "visualHeight": 900, "dpr": 1 },
+  "row": {
+    "box": {
+      "x": 537,
+      "y": 524,
+      "width": 622,
+      "height": 136,
+      "top": 524,
+      "right": 1159,
+      "bottom": 660,
+      "left": 537
+    },
+    "copy": {
+      "x": 549,
+      "y": 534,
+      "width": 436.5,
+      "height": 116,
+      "top": 534,
+      "right": 985.5,
+      "bottom": 650,
+      "left": 549
+    },
+    "leafs": [
+      {
+        "text": "Fidelity coding agent",
+        "box": {
+          "x": 549,
+          "y": 534,
+          "width": 436.5,
+          "height": 18,
+          "top": 534,
+          "right": 985.5,
+          "bottom": 552,
+          "left": 549
+        },
+        "font": ["12px", "18px", "500"]
+      },
+      {
+        "text": "Waiting for pairing",
+        "box": {
+          "x": 549,
+          "y": 554,
+          "width": 436.5,
+          "height": 18,
+          "top": 554,
+          "right": 985.5,
+          "bottom": 572,
+          "left": 549
+        },
+        "font": ["12px", "18px", "400"]
+      },
+      {
+        "text": "Projects: All projects, including future ones",
+        "box": {
+          "x": 549,
+          "y": 574,
+          "width": 436.5,
+          "height": 18,
+          "top": 574,
+          "right": 985.5,
+          "bottom": 592,
+          "left": 549
+        },
+        "font": ["12px", "18px", "400"]
+      },
+      {
+        "text": "Permissions: Create and follow its own tasks",
+        "box": {
+          "x": 549,
+          "y": 594,
+          "width": 436.5,
+          "height": 18,
+          "top": 594,
+          "right": 985.5,
+          "bottom": 612,
+          "left": 549
+        },
+        "font": ["12px", "18px", "400"]
+      },
+      {
+        "text": "Created 8/6/2026, 7:40:58 AM · Last used Never · Expires 9/5/2026, 7:40:58 AM",
+        "box": {
+          "x": 549,
+          "y": 614,
+          "width": 436.5,
+          "height": 36,
+          "top": 614,
+          "right": 985.5,
+          "bottom": 650,
+          "left": 549
+        },
+        "font": ["12px", "18px", "400"]
+      },
+      {
+        "text": "Resume pairing",
+        "box": {
+          "x": 1003.5,
+          "y": 538.5,
+          "width": 76.046875,
+          "height": 15,
+          "top": 538.5,
+          "right": 1079.546875,
+          "bottom": 553.5,
+          "left": 1003.5
+        },
+        "font": ["10px", "15px", "500"]
+      },
+      {
+        "text": "Revoke",
+        "box": {
+          "x": 1103.546875,
+          "y": 538.5,
+          "width": 35.453125,
+          "height": 15,
+          "top": 538.5,
+          "right": 1139,
+          "bottom": 553.5,
+          "left": 1103.546875
+        },
+        "font": ["10px", "15px", "500"]
+      }
+    ],
+    "actions": {
+      "x": 995.5,
+      "y": 534,
+      "width": 151.5,
+      "height": 24,
+      "top": 534,
+      "right": 1147,
+      "bottom": 558,
+      "left": 995.5
+    },
+    "buttons": [
+      {
+        "text": "Resume pairing",
+        "box": {
+          "x": 995.5,
+          "y": 534,
+          "width": 92.046875,
+          "height": 24,
+          "top": 534,
+          "right": 1087.546875,
+          "bottom": 558,
+          "left": 995.5
+        },
+        "font": ["10px", "15px"]
+      },
+      {
+        "text": "Revoke",
+        "box": {
+          "x": 1095.546875,
+          "y": 534,
+          "width": 51.453125,
+          "height": 24,
+          "top": 534,
+          "right": 1147,
+          "bottom": 558,
+          "left": 1095.546875
+        },
+        "font": ["10px", "15px"]
+      }
+    ]
+  }
+}

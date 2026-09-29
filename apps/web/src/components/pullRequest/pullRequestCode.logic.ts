@@ -186,14 +186,12 @@ function noNewlineMarkers(
 }
 
 function projectFileLines(
-  file: Extract<RenderablePatch, { kind: "files" }>['files'][number],
+  file: Extract<RenderablePatch, { kind: "files" }>["files"][number],
   markers: readonly NoNewlineMarker[],
 ) {
   const fileKey = buildFileDiffRenderKey(file);
   const lines: PullRequestDiffLineView[] = [];
-  const markerKeys = new Set(
-    markers.map((marker) => `${marker.afterKind}:${marker.afterIndex}`),
-  );
+  const markerKeys = new Set(markers.map((marker) => `${marker.afterKind}:${marker.afterIndex}`));
   let rowIndex = 0;
   let additionIndex = 0;
   let deletionIndex = 0;
@@ -240,8 +238,8 @@ function projectFileLines(
             newLine: newLine++,
             text: portableLineText(
               file.additionLines[segment.additionLineIndex + index] ??
-              file.deletionLines[segment.deletionLineIndex + index] ??
-              "",
+                file.deletionLines[segment.deletionLineIndex + index] ??
+                "",
             ),
           });
           appendNoNewlineMarker("context", contextIndex);
@@ -399,7 +397,10 @@ function fileRelations(
   return relations;
 }
 
-function rawPatchView(patch: string, reason: string): Extract<PullRequestCodeView, { kind: "raw" }> {
+function rawPatchView(
+  patch: string,
+  reason: string,
+): Extract<PullRequestCodeView, { kind: "raw" }> {
   return {
     kind: "raw",
     reason,
@@ -629,8 +630,10 @@ export function buildPullRequestCodeView(
       "Combined merge diff has multiple parents. Showing the complete raw patch.",
     );
   }
-  const { renderablePatch: renderable, renderableFiles } =
-    buildPullRequestParsedCodeModel(patch, cacheScope);
+  const { renderablePatch: renderable, renderableFiles } = buildPullRequestParsedCodeModel(
+    patch,
+    cacheScope,
+  );
   if (!renderable) return { kind: "empty" };
   if (renderable.kind === "raw") {
     const portable = buildPortableUnifiedDiffView(patch);
@@ -647,7 +650,9 @@ export function buildPullRequestCodeView(
   const files = renderableFiles.map((file) => {
     const stats = summarizeFileDiffStats([file]);
     const path = resolveFileDiffPath(file);
-    const previousPath = file.prevName ? resolveFileDiffPath({ ...file, name: file.prevName }) : null;
+    const previousPath = file.prevName
+      ? resolveFileDiffPath({ ...file, name: file.prevName })
+      : null;
     const lifecycleOffset = lifecycleOffsets.get(path) ?? 0;
     const lifecycle = lifecycles.get(path)?.[lifecycleOffset] ?? null;
     lifecycleOffsets.set(path, lifecycleOffset + 1);

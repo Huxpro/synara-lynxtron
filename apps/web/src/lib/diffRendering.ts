@@ -295,7 +295,7 @@ function decodeGitPathBytes(value: string): string {
       t: 0x09,
       v: 0x0b,
     };
-    bytes.push(simpleEscapes[escaped] ?? (encoder.encode(escaped)[0] ?? 0));
+    bytes.push(simpleEscapes[escaped] ?? encoder.encode(escaped)[0] ?? 0);
   }
   return new TextDecoder().decode(Uint8Array.from(bytes));
 }
@@ -339,8 +339,7 @@ export function parseGitDiffHeader(
   if (separators.length === 0) return null;
   const separator =
     separators.find(
-      (candidate) =>
-        body.slice(2, candidate) === body.slice(candidate + " b/".length),
+      (candidate) => body.slice(2, candidate) === body.slice(candidate + " b/".length),
     ) ?? separators[0]!;
   return {
     previousPath: stripGitDiffPathPrefix(body.slice(0, separator)),

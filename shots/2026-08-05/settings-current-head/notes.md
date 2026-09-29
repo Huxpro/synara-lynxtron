@@ -31,12 +31,12 @@ accumulated into a `17px` early offset at `UI density` and every following row.
 
 After assigning the shared Theme Pack font control a `32px` height:
 
-| Anchor | Web | Lynx-for-Web | Delta |
-| --- | ---: | ---: | ---: |
-| Light card height | `475.5` | `475` | `-0.5px` |
-| Dark card height | `475.5` | `475` | `-0.5px` |
-| UI density y | `1278` | `1277` | `-1px` |
-| Time and reading y | `1668` | `1667` | `-1px` |
+| Anchor             |     Web | Lynx-for-Web |    Delta |
+| ------------------ | ------: | -----------: | -------: |
+| Light card height  | `475.5` |        `475` | `-0.5px` |
+| Dark card height   | `475.5` |        `475` | `-0.5px` |
+| UI density y       |  `1278` |       `1277` |   `-1px` |
+| Time and reading y |  `1668` |       `1667` |   `-1px` |
 
 The remaining one-pixel downstream difference is browser fractional rounding,
 not a repeated owner error.
@@ -47,10 +47,10 @@ changed intrinsic sizing. A text-only owner class now uses Web's `9px`
 horizontal padding without disturbing the icon-bearing theme segments:
 
 | Density option | Web width | Lynx-for-Web width |
-| --- | ---: | ---: |
-| Compact | `72.3` | `72.3` |
-| Comfortable | `92` | `92` |
-| Spacious | `72.8` | `72.8` |
+| -------------- | --------: | -----------------: |
+| Compact        |    `72.3` |             `72.3` |
+| Comfortable    |      `92` |               `92` |
+| Spacious       |    `72.8` |             `72.8` |
 
 ## Interaction proof
 

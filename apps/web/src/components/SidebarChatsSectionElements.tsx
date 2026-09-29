@@ -4,10 +4,7 @@
 
 import type { ReactNode } from "react";
 
-import {
-  resolveSystemStateSemantics,
-  type SystemStateIntent,
-} from "./systemStateSemantics";
+import { resolveSystemStateSemantics, type SystemStateIntent } from "./systemStateSemantics";
 import {
   SidebarGroup,
   SidebarMenu,
@@ -29,9 +26,7 @@ import {
   DISCLOSURE_INNER_CLASS,
 } from "~/platform/motion";
 
-export function SidebarChatsSectionRootElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SidebarChatsSectionRootElement(props: { readonly children?: ReactNode }) {
   return (
     <SidebarGroup className="sidebar-surface-enter px-1.5 pt-1 pb-2">
       <div className="group/collapsible">{props.children}</div>
@@ -61,10 +56,7 @@ export function SidebarChatsSectionHeaderElement(props: {
           <span className="truncate font-system-ui text-[length:var(--app-font-size-ui,12px)] font-normal text-muted-foreground/79">
             Chats
           </span>
-          <DisclosureChevron
-            open={props.expanded}
-            className="text-muted-foreground/79"
-          />
+          <DisclosureChevron open={props.expanded} className="text-muted-foreground/79" />
         </div>
       </SidebarMenuButton>
       {props.toolbar ? (
@@ -83,9 +75,7 @@ export function SidebarChatsSectionBodyElement(props: {
   return (
     <div className={`${disclosureShellClassName(props.expanded)} pt-1`}>
       <div className={DISCLOSURE_INNER_CLASS}>
-        <SidebarMenu
-          className={`gap-1 ${disclosureContentClassName(props.expanded)}`}
-        >
+        <SidebarMenu className={`gap-1 ${disclosureContentClassName(props.expanded)}`}>
           {props.children}
         </SidebarMenu>
       </div>

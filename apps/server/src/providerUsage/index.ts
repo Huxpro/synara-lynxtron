@@ -64,16 +64,14 @@ export function mergeLiveWithLocalUsage(
   if (!localSnapshot) {
     return snapshot;
   }
-  const hasLocalUsage =
-    localSnapshot.limits.length > 0 || localSnapshot.usageLines.length > 0;
+  const hasLocalUsage = localSnapshot.limits.length > 0 || localSnapshot.usageLines.length > 0;
   if (!hasLocalUsage) {
     return snapshot;
   }
   if ((snapshot.status ?? "ok") === "ok") {
     return {
       ...snapshot,
-      limits:
-        snapshot.limits.length > 0 ? snapshot.limits : localSnapshot.limits,
+      limits: snapshot.limits.length > 0 ? snapshot.limits : localSnapshot.limits,
       usageLines: [...snapshot.usageLines, ...localSnapshot.usageLines],
     };
   }

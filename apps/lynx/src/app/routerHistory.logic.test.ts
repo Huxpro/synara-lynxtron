@@ -1,14 +1,14 @@
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from "@rstest/core";
 
-import { resolveMemoryNavigationState } from './routerHistory.logic';
+import { resolveMemoryNavigationState } from "./routerHistory.logic";
 
-describe('memory navigation state', () => {
-  it('derives back and forward availability from TanStack history state', () => {
+describe("memory navigation state", () => {
+  it("derives back and forward availability from TanStack history state", () => {
     expect(
       resolveMemoryNavigationState({
         length: 3,
         state: { __TSR_index: 1 },
-      })
+      }),
     ).toEqual({
       canGoBack: true,
       canGoForward: true,
@@ -17,7 +17,7 @@ describe('memory navigation state', () => {
     });
   });
 
-  it('clamps missing or stale indices', () => {
+  it("clamps missing or stale indices", () => {
     expect(resolveMemoryNavigationState({ length: 1, state: null })).toEqual({
       canGoBack: false,
       canGoForward: false,
@@ -28,7 +28,7 @@ describe('memory navigation state', () => {
       resolveMemoryNavigationState({
         length: 2,
         state: { __TSR_index: 99 },
-      })
+      }),
     ).toEqual({
       canGoBack: true,
       canGoForward: false,

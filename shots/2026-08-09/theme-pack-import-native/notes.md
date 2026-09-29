@@ -33,10 +33,10 @@ icon subtree. A real exact-client press/release then removes the dialog.
 
 ## Retained cells
 
-| Cell | Dialog border | Textarea border | Cancel border | Import border | Close | Console |
-| --- | --- | --- | --- | --- | --- | --- |
-| light | `416,289..864,532` | `434,372..846,466` | `721,491..781,519` | `789,491..848,519` | `827,298,28x28`; center hits Close subtree | empty |
-| dark | same | same | same | same | same repaired hit target | empty |
+| Cell  | Dialog border      | Textarea border    | Cancel border      | Import border      | Close                                      | Console |
+| ----- | ------------------ | ------------------ | ------------------ | ------------------ | ------------------------------------------ | ------- |
+| light | `416,289..864,532` | `434,372..846,466` | `721,491..781,519` | `789,491..848,519` | `827,298,28x28`; center hits Close subtree | empty   |
+| dark  | same               | same               | same               | same               | same repaired hit target                   | empty   |
 
 The PNGs are `2560x1640` because Lynxtron `0.0.9` DevTool captures the full
 outer `1280x820` window rather than the titlebar-subtracted LynxView used by the

@@ -1,6 +1,4 @@
-import type {
-  WorktreeThreadSummary,
-} from './queries';
+import type { WorktreeThreadSummary } from "./queries";
 
 export interface ManagedWorktree {
   readonly path: string;
@@ -17,25 +15,23 @@ export interface WorktreeGroup {
 
 export function isThreadAssociatedWithWorktree(
   thread: WorktreeThreadSummary,
-  worktreePath: string
+  worktreePath: string,
 ): boolean {
   return [thread.worktreePath, thread.associatedWorktreePath].some(
-    (candidate) => candidate?.trim() === worktreePath
+    (candidate) => candidate?.trim() === worktreePath,
   );
 }
 
 export function linkedThreadsForWorktree(
   threads: readonly WorktreeThreadSummary[],
-  worktreePath: string
+  worktreePath: string,
 ): readonly WorktreeThreadSummary[] {
-  return threads.filter((thread) =>
-    isThreadAssociatedWithWorktree(thread, worktreePath)
-  );
+  return threads.filter((thread) => isThreadAssociatedWithWorktree(thread, worktreePath));
 }
 
 export function groupManagedWorktrees(
   worktrees: readonly ManagedWorktree[],
-  threads: readonly WorktreeThreadSummary[]
+  threads: readonly WorktreeThreadSummary[],
 ): readonly WorktreeGroup[] {
   const groups: WorktreeGroup[] = [];
   const groupIndexByRoot = new Map<string, number>();
@@ -62,9 +58,7 @@ export function groupManagedWorktrees(
   return groups;
 }
 
-export function linkedWorktreeCounts(
-  threads: readonly WorktreeThreadSummary[]
-): {
+export function linkedWorktreeCounts(threads: readonly WorktreeThreadSummary[]): {
   readonly active: number;
   readonly archived: number;
 } {
@@ -80,7 +74,7 @@ export function createDeleteThreadCommand(input: {
   readonly threadId: string;
 }) {
   return {
-    type: 'thread.delete' as const,
+    type: "thread.delete" as const,
     commandId: input.commandId as never,
     threadId: input.threadId as never,
   };

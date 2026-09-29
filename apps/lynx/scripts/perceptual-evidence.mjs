@@ -117,10 +117,7 @@ function validateEvidence(errors, incomplete, manifest, manifestPath, state, cli
   if (required && evidence.status !== "retained") {
     incomplete.push(`${prefix}: required evidence is ${evidence.status}`);
   }
-  if (
-    ["diagnostic", "pending", "not-applicable"].includes(evidence.status) &&
-    !evidence.reason
-  ) {
+  if (["diagnostic", "pending", "not-applicable"].includes(evidence.status) && !evidence.reason) {
     errors.push(`${prefix}: ${evidence.status} requires a reason`);
   }
   if (required && evidence.status === "not-applicable") {
@@ -140,8 +137,7 @@ function validateEvidence(errors, incomplete, manifest, manifestPath, state, cli
   ]) {
     if (!evidence[key]) errors.push(`${prefix}: retained evidence requires ${key}`);
   }
-  const expectedSnapshotSha256 =
-    state.snapshotSha256 ?? manifest.defaults.snapshotSha256;
+  const expectedSnapshotSha256 = state.snapshotSha256 ?? manifest.defaults.snapshotSha256;
   if (evidence.snapshotSha256 !== expectedSnapshotSha256) {
     errors.push(`${prefix}: snapshot hash does not match state snapshot`);
   }
@@ -288,33 +284,21 @@ function validateRequiredMatrix(errors, incomplete, manifest) {
       continue;
     }
     if (requiredStateIds.has(requirement.stateId)) {
-      errors.push(
-        `requiredMatrix.${requirement.id}: duplicate stateId ${requirement.stateId}`,
-      );
+      errors.push(`requiredMatrix.${requirement.id}: duplicate stateId ${requirement.stateId}`);
       continue;
     }
     requiredStateIds.add(requirement.stateId);
-    for (const key of [
-      "semanticRoute",
-      "theme",
-      "density",
-      "interactionState",
-      "viewport",
-    ]) {
+    for (const key of ["semanticRoute", "theme", "density", "interactionState", "viewport"]) {
       if (requirement[key] === undefined || requirement[key] === "") {
         errors.push(`requiredMatrix.${requirement.id}: ${key} is required`);
       }
     }
-    const matchingState = manifest.states.find(
-      (state) => state.id === requirement.stateId,
-    );
+    const matchingState = manifest.states.find((state) => state.id === requirement.stateId);
     if (!matchingState) {
       incomplete.push(
         `requiredMatrix.${requirement.id}: required state ${requirement.stateId} is missing`,
       );
-    } else if (
-      matrixCoordinateKey(matchingState) !== matrixCoordinateKey(requirement)
-    ) {
+    } else if (matrixCoordinateKey(matchingState) !== matrixCoordinateKey(requirement)) {
       errors.push(
         `requiredMatrix.${requirement.id}: state ${requirement.stateId} axes do not match`,
       );
@@ -449,10 +433,7 @@ function main() {
   for (const item of result.incomplete) console.warn(`incomplete: ${item}`);
   for (const item of result.blocking) console.warn(`blocking: ${item}`);
   if (result.errors.length > 0) process.exit(1);
-  if (
-    !options.allowIncomplete &&
-    (result.incomplete.length > 0 || result.blocking.length > 0)
-  ) {
+  if (!options.allowIncomplete && (result.incomplete.length > 0 || result.blocking.length > 0)) {
     process.exit(2);
   }
   if (options.write) {

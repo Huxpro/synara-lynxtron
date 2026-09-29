@@ -60,7 +60,9 @@ export function AutomationDetailComposition({
               trafficLightGutterClassName,
             )}
           >
-            <div className={cn("flex items-center gap-2 sm:gap-3", CHAT_SURFACE_HEADER_HEIGHT_CLASS)}>
+            <div
+              className={cn("flex items-center gap-2 sm:gap-3", CHAT_SURFACE_HEADER_HEIGHT_CLASS)}
+            >
               <SidebarHeaderNavigationControls />
               <div className="flex min-w-0 flex-1 items-center gap-1.5 text-sm [-webkit-app-region:no-drag]">
                 <button
@@ -70,7 +72,10 @@ export function AutomationDetailComposition({
                 >
                   Automations
                 </button>
-                <CentralIcon name="chevron-right-small" className="size-3.5 shrink-0 text-muted-foreground" />
+                <CentralIcon
+                  name="chevron-right-small"
+                  className="size-3.5 shrink-0 text-muted-foreground"
+                />
                 <span className="truncate font-heading font-medium">{name}</span>
               </div>
             </div>
@@ -93,8 +98,15 @@ export function AutomationDetailComposition({
               windowControlsGutterClassName,
             )}
           >
-            <div className={cn("flex items-center justify-end gap-2 sm:gap-3", CHAT_SURFACE_HEADER_HEIGHT_CLASS)}>
-              <div className="flex shrink-0 items-center gap-1 [-webkit-app-region:no-drag]">{actions}</div>
+            <div
+              className={cn(
+                "flex items-center justify-end gap-2 sm:gap-3",
+                CHAT_SURFACE_HEADER_HEIGHT_CLASS,
+              )}
+            >
+              <div className="flex shrink-0 items-center gap-1 [-webkit-app-region:no-drag]">
+                {actions}
+              </div>
             </div>
           </header>
           <div className="min-h-0 flex-1 overflow-y-auto border-t border-[var(--app-surface-divider)] sm:border-l sm:border-t-0">
@@ -111,14 +123,18 @@ export function AutomationDetailComposition({
                     <AutomationDetailStatusValue tone="muted">
                       {formatAutomationRunTimestamp(nextRunAt)}
                     </AutomationDetailStatusValue>
-                  ) : "—"}
+                  ) : (
+                    "—"
+                  )}
                 </AutomationDetailRow>
                 <AutomationDetailRow label="Last ran">
                   {lastRunAt ? (
                     <AutomationDetailStatusValue tone="muted">
                       {formatAutomationRunTimestamp(lastRunAt)}
                     </AutomationDetailStatusValue>
-                  ) : "—"}
+                  ) : (
+                    "—"
+                  )}
                 </AutomationDetailRow>
               </AutomationDetailGroup>
               {children}
@@ -130,14 +146,51 @@ export function AutomationDetailComposition({
   );
 }
 
-export function AutomationDetailGroup({ title, children }: { readonly title: string; readonly children: ReactNode }) {
-  return <section className="space-y-0.5"><h2 className="px-1.5 pb-1 text-xs font-medium text-muted-foreground/70">{title}</h2><div className="flex flex-col">{children}</div></section>;
+export function AutomationDetailGroup({
+  title,
+  children,
+}: {
+  readonly title: string;
+  readonly children: ReactNode;
+}) {
+  return (
+    <section className="space-y-0.5">
+      <h2 className="px-1.5 pb-1 text-xs font-medium text-muted-foreground/70">{title}</h2>
+      <div className="flex flex-col">{children}</div>
+    </section>
+  );
 }
 
-export function AutomationDetailRow({ label, children }: { readonly label: ReactNode; readonly children: ReactNode }) {
-  return <div className="flex items-center justify-between gap-3 rounded-md px-1.5 py-1.5 text-xs"><span className="flex shrink-0 items-center gap-1 text-muted-foreground">{label}</span><span className="min-w-0 truncate text-right text-foreground">{children}</span></div>;
+export function AutomationDetailRow({
+  label,
+  children,
+}: {
+  readonly label: ReactNode;
+  readonly children: ReactNode;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-md px-1.5 py-1.5 text-xs">
+      <span className="flex shrink-0 items-center gap-1 text-muted-foreground">{label}</span>
+      <span className="min-w-0 truncate text-right text-foreground">{children}</span>
+    </div>
+  );
 }
 
-function AutomationDetailStatusValue({ tone = "default", children }: { readonly tone?: "default" | "muted"; readonly children: ReactNode }) {
-  return <span className={cn("inline-flex items-center gap-1.5", tone === "muted" ? "text-muted-foreground" : "text-foreground")}>{children}</span>;
+function AutomationDetailStatusValue({
+  tone = "default",
+  children,
+}: {
+  readonly tone?: "default" | "muted";
+  readonly children: ReactNode;
+}) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5",
+        tone === "muted" ? "text-muted-foreground" : "text-foreground",
+      )}
+    >
+      {children}
+    </span>
+  );
 }

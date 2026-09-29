@@ -34,7 +34,10 @@ six seconds. Adding `corrupt.pdf` left the complete Lynx renderer on
 Raw WebSocket capture showed why:
 
 ```json
-{"_tag":"Defect","defect":{"message":"Invalid PDF structure.","name":"InvalidPDFException"}}
+{
+  "_tag": "Defect",
+  "defect": { "message": "Invalid PDF structure.", "name": "InvalidPDFException" }
+}
 ```
 
 Effect RPC emits this connection-level `Defect` without a request id. The

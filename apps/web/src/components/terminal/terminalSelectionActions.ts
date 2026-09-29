@@ -14,11 +14,9 @@ export function resolveTerminalSelectionActionPosition(options: {
 }): { x: number; y: number } {
   const { bounds, selectionRect, pointer, viewport } = options;
   const viewportWidth =
-    viewport?.width ??
-    (isBrowser() ? getViewportWidth() : bounds.left + bounds.width + 8);
+    viewport?.width ?? (isBrowser() ? getViewportWidth() : bounds.left + bounds.width + 8);
   const viewportHeight =
-    viewport?.height ??
-    (isBrowser() ? getViewportHeight() : bounds.top + bounds.height + 8);
+    viewport?.height ?? (isBrowser() ? getViewportHeight() : bounds.top + bounds.height + 8);
   const drawerLeft = Math.round(bounds.left);
   const drawerTop = Math.round(bounds.top);
   const drawerRight = Math.round(bounds.left + bounds.width);

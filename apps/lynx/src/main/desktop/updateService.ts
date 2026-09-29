@@ -1,9 +1,9 @@
-import { app, shell } from '@lynx-js/lynxtron';
-import { compareVersions } from './update.logic';
-import { openUpdateDownload } from './updateHandoff.logic';
+import { app, shell } from "@lynx-js/lynxtron";
+import { compareVersions } from "./update.logic";
+import { openUpdateDownload } from "./updateHandoff.logic";
 
-const RELEASE_OWNER = 'Emanuele-web04';
-const RELEASE_REPO = 'synara';
+const RELEASE_OWNER = "Emanuele-web04";
+const RELEASE_REPO = "synara";
 const RELEASES_PAGE = `https://github.com/${RELEASE_OWNER}/${RELEASE_REPO}/releases/latest`;
 const RELEASE_API = `https://api.github.com/repos/${RELEASE_OWNER}/${RELEASE_REPO}/releases/latest`;
 
@@ -22,8 +22,8 @@ export async function checkForUpdate(): Promise<UpdateCheckResult> {
   try {
     const response = await fetch(RELEASE_API, {
       headers: {
-        Accept: 'application/vnd.github+json',
-        'User-Agent': `Synara-Lynx/${currentVersion}`,
+        Accept: "application/vnd.github+json",
+        "User-Agent": `Synara-Lynx/${currentVersion}`,
       },
       signal: AbortSignal.timeout(12_000),
     });
@@ -37,17 +37,16 @@ export async function checkForUpdate(): Promise<UpdateCheckResult> {
       readonly draft?: unknown;
     };
     const latestVersion =
-      typeof release.tag_name === 'string' ? release.tag_name.replace(/^v/i, '') : null;
+      typeof release.tag_name === "string" ? release.tag_name.replace(/^v/i, "") : null;
     if (!latestVersion || release.draft === true) {
-      throw new Error('Latest GitHub release response was incomplete');
+      throw new Error("Latest GitHub release response was incomplete");
     }
     return {
       currentVersion,
       latestVersion,
       updateAvailable: compareVersions(latestVersion, currentVersion) > 0,
-      releaseName: typeof release.name === 'string' ? release.name : null,
-      publishedAt:
-        typeof release.published_at === 'string' ? release.published_at : null,
+      releaseName: typeof release.name === "string" ? release.name : null,
+      publishedAt: typeof release.published_at === "string" ? release.published_at : null,
       downloadPage: RELEASES_PAGE,
       error: null,
     };
@@ -66,12 +65,11 @@ export async function checkForUpdate(): Promise<UpdateCheckResult> {
 
 export async function handleUpdater(method: string): Promise<unknown> {
   switch (method) {
-    case 'updaterCheck':
+    case "updaterCheck":
       return JSON.stringify(await checkForUpdate());
-    case 'updaterOpenDownload':
+    case "updaterOpenDownload":
       await openUpdateDownload({
-        capturePath:
-          process.env.SYNARA_UPDATE_OPEN_EXTERNAL_CAPTURE?.trim() || null,
+        capturePath: process.env.SYNARA_UPDATE_OPEN_EXTERNAL_CAPTURE?.trim() || null,
         openExternal: (url) => shell.openExternal(url),
         url: RELEASES_PAGE,
       });

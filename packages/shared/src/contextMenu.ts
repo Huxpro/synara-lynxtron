@@ -1,9 +1,9 @@
-import type { ContextMenuItem } from '@synara/contracts';
+import type { ContextMenuItem } from "@synara/contracts";
 
 export interface NormalizedContextMenuItem<T extends string = string> {
   readonly id: T;
   readonly label: string;
-  readonly type: 'normal' | 'checkbox' | 'radio';
+  readonly type: "normal" | "checkbox" | "radio";
   readonly enabled: boolean;
   readonly visible: boolean;
   readonly checked: boolean;
@@ -15,51 +15,48 @@ export interface NormalizedContextMenuItem<T extends string = string> {
 
 const MAX_CONTEXT_MENU_DEPTH = 8;
 
-export type ArchivedThreadContextMenuAction = 'restore' | 'delete';
-export type SelectedThreadsContextMenuAction =
-  | 'mark-unread'
-  | 'archive'
-  | 'delete';
-export type TerminalSelectionContextMenuAction = 'add-to-chat';
+export type ArchivedThreadContextMenuAction = "restore" | "delete";
+export type SelectedThreadsContextMenuAction = "mark-unread" | "archive" | "delete";
+export type TerminalSelectionContextMenuAction = "add-to-chat";
 export type ThreadContextMenuActionId =
-  | 'rename'
-  | 'toggle-pin'
-  | 'clear-notification'
-  | 'mark-unread'
-  | 'copy-path'
-  | 'open-path-in-terminal'
-  | 'copy-thread-id'
-  | 'archive'
-  | 'delete';
+  | "rename"
+  | "toggle-pin"
+  | "clear-notification"
+  | "mark-unread"
+  | "copy-path"
+  | "open-path-in-terminal"
+  | "copy-thread-id"
+  | "archive"
+  | "delete";
 export type ContentContextMenuAction =
   | `spellcheck:${number}`
-  | 'no-spelling-suggestions'
-  | 'copy-image'
-  | 'cut'
-  | 'copy'
-  | 'paste'
-  | 'select-all';
-export type SpaceContextMenuAction = 'edit' | 'delete';
+  | "no-spelling-suggestions"
+  | "copy-image"
+  | "cut"
+  | "copy"
+  | "paste"
+  | "select-all";
+export type SpaceContextMenuAction = "edit" | "delete";
 export type ProjectContextMenuCoreAction =
-  | 'open-in-finder'
-  | 'open-in-kanban'
-  | 'copy-path'
-  | 'toggle-pin';
+  | "open-in-finder"
+  | "open-in-kanban"
+  | "copy-path"
+  | "toggle-pin";
 export type ProjectContextMenuCommand =
   | ProjectContextMenuCoreAction
-  | 'start-dev'
-  | 'stop-dev'
-  | 'open-dev-server'
-  | 'rename'
-  | 'archive-threads'
-  | 'delete-threads'
-  | 'delete';
+  | "start-dev"
+  | "stop-dev"
+  | "open-dev-server"
+  | "rename"
+  | "archive-threads"
+  | "delete-threads"
+  | "delete";
 export type ProjectContextMenuAction =
   | ProjectContextMenuCommand
-  | 'move-to-space'
-  | 'move-to-void'
+  | "move-to-space"
+  | "move-to-void"
   | `move-to-space:${string}`
-  | 'new-space';
+  | "new-space";
 
 export interface ProjectContextMenuSpace {
   readonly id: string;
@@ -73,29 +70,29 @@ export function buildProjectMoveToSpaceItem(input: {
   readonly spaces: readonly ProjectContextMenuSpace[];
 }): ContextMenuItem<ProjectContextMenuAction> {
   return {
-    id: 'move-to-space',
-    label: 'Move to space',
+    id: "move-to-space",
+    label: "Move to space",
     ...(input.separatorBefore ? { separatorBefore: true } : {}),
     submenu: [
       {
-        id: 'move-to-void',
-        label: 'Void',
-        type: 'radio',
+        id: "move-to-void",
+        label: "Void",
+        type: "radio",
         checked: input.currentSpaceId === null,
       },
       ...input.spaces.map(
         (space): ContextMenuItem<ProjectContextMenuAction> => ({
           id: `move-to-space:${space.id}`,
           label: space.label,
-          type: 'radio',
+          type: "radio",
           checked: input.currentSpaceId === space.id,
-        })
+        }),
       ),
       ...(input.includeNewSpace
         ? [
             {
-              id: 'new-space' as const,
-              label: 'New space…',
+              id: "new-space" as const,
+              label: "New space…",
               separatorBefore: true,
             },
           ]
@@ -122,13 +119,13 @@ export function buildProjectContextMenuExecutableItems(input: {
     ...core.slice(0, -1),
     ...(input.devServerRunning
       ? [
-          { id: 'stop-dev' as const, label: 'Stop dev', separatorBefore: true },
+          { id: "stop-dev" as const, label: "Stop dev", separatorBefore: true },
           ...(input.hasOpenDevServer
-            ? [{ id: 'open-dev-server' as const, label: 'Open dev server' }]
+            ? [{ id: "open-dev-server" as const, label: "Open dev server" }]
             : []),
         ]
       : input.includeStartDev
-        ? [{ id: 'start-dev' as const, label: 'Start dev', separatorBefore: true }]
+        ? [{ id: "start-dev" as const, label: "Start dev", separatorBefore: true }]
         : []),
     buildProjectMoveToSpaceItem({
       currentSpaceId: input.currentSpaceId,
@@ -137,14 +134,14 @@ export function buildProjectContextMenuExecutableItems(input: {
       spaces: input.spaces,
     }),
     ...(input.includeRename
-      ? [{ id: 'rename' as const, label: 'Edit name', separatorBefore: true }]
+      ? [{ id: "rename" as const, label: "Edit name", separatorBefore: true }]
       : []),
     { ...togglePin, separatorBefore: false },
     ...(input.hasArchivableThreads
       ? [
           {
-            id: 'archive-threads' as const,
-            label: 'Archive threads',
+            id: "archive-threads" as const,
+            label: "Archive threads",
             separatorBefore: true,
           },
         ]
@@ -154,24 +151,24 @@ export function buildProjectContextMenuExecutableItems(input: {
 
 export function buildArchivedThreadContextMenuItems(): ContextMenuItem<ArchivedThreadContextMenuAction>[] {
   return [
-    { id: 'restore', label: 'Restore' },
-    { id: 'delete', label: 'Delete', destructive: true },
+    { id: "restore", label: "Restore" },
+    { id: "delete", label: "Delete", destructive: true },
   ];
 }
 
 export function buildSelectedThreadsContextMenuItems(
-  count: number
+  count: number,
 ): ContextMenuItem<SelectedThreadsContextMenuAction>[] {
   if (!Number.isSafeInteger(count) || count <= 0) return [];
   return [
-    { id: 'mark-unread', label: `Mark unread (${count})` },
-    { id: 'archive', label: `Archive (${count})` },
-    { id: 'delete', label: `Delete (${count})`, destructive: true },
+    { id: "mark-unread", label: `Mark unread (${count})` },
+    { id: "archive", label: `Archive (${count})` },
+    { id: "delete", label: `Delete (${count})`, destructive: true },
   ];
 }
 
 export function buildTerminalSelectionContextMenuItems(): ContextMenuItem<TerminalSelectionContextMenuAction>[] {
-  return [{ id: 'add-to-chat', label: 'Add to chat' }];
+  return [{ id: "add-to-chat", label: "Add to chat" }];
 }
 
 export function buildThreadContextMenuItems(input: {
@@ -190,48 +187,48 @@ export function buildThreadContextMenuItems(input: {
 }): ContextMenuItem<string>[] {
   const items: ContextMenuItem<string>[] = [];
   if (input.renameAvailable !== false) {
-    items.push({ id: 'rename', label: 'Rename thread' });
+    items.push({ id: "rename", label: "Rename thread" });
   }
   if (input.pinAvailable !== false) {
     items.push({
-      id: 'toggle-pin',
-      label: (input.isPinned ? 'Unpin' : 'Pin') + ' thread',
+      id: "toggle-pin",
+      label: (input.isPinned ? "Unpin" : "Pin") + " thread",
     });
   }
   if (input.clearNotificationAvailable) {
-    items.push({ id: 'clear-notification', label: 'Clear notification' });
+    items.push({ id: "clear-notification", label: "Clear notification" });
   }
   if (input.markUnreadAvailable !== false) {
-    items.push({ id: 'mark-unread', label: 'Mark unread' });
+    items.push({ id: "mark-unread", label: "Mark unread" });
   }
   items.push(...(input.middleItems ?? []));
 
   let copyGroupStarted = false;
   if (input.copyPathAvailable) {
-    items.push({ id: 'copy-path', label: 'Copy Path', separatorBefore: true });
+    items.push({ id: "copy-path", label: "Copy Path", separatorBefore: true });
     copyGroupStarted = true;
   }
   if (input.openPathInTerminalAvailable) {
     items.push({
-      id: 'open-path-in-terminal',
-      label: 'Open Path in Terminal',
+      id: "open-path-in-terminal",
+      label: "Open Path in Terminal",
       ...(!copyGroupStarted ? { separatorBefore: true } : {}),
     });
     copyGroupStarted = true;
   }
   if (input.copyThreadIdAvailable !== false) {
     items.push({
-      id: 'copy-thread-id',
-      label: 'Copy Thread ID',
+      id: "copy-thread-id",
+      label: "Copy Thread ID",
       ...(!copyGroupStarted ? { separatorBefore: true } : {}),
     });
   }
   items.push(...(input.extraItems ?? []));
   if (input.archiveAvailable !== false) {
-    items.push({ id: 'archive', label: 'Archive', separatorBefore: true });
+    items.push({ id: "archive", label: "Archive", separatorBefore: true });
   }
   if (input.deleteAvailable !== false) {
-    items.push({ id: 'delete', label: 'Delete', destructive: true });
+    items.push({ id: "delete", label: "Delete", destructive: true });
   }
   return items;
 }
@@ -255,8 +252,8 @@ export function buildContentContextMenuItems(input: {
           }))
         : [
             {
-              id: 'no-spelling-suggestions' as const,
-              label: 'No suggestions',
+              id: "no-spelling-suggestions" as const,
+              label: "No suggestions",
               enabled: false,
             },
           ]
@@ -264,30 +261,30 @@ export function buildContentContextMenuItems(input: {
     ...(input.image
       ? [
           {
-            id: 'copy-image' as const,
-            label: 'Copy Image',
+            id: "copy-image" as const,
+            label: "Copy Image",
             separatorBefore: input.misspelledWord,
           },
         ]
       : []),
     {
-      id: 'cut',
-      label: 'Cut',
+      id: "cut",
+      label: "Cut",
       enabled: input.canCut,
       separatorBefore: input.misspelledWord || input.image,
     },
-    { id: 'copy', label: 'Copy', enabled: input.canCopy },
-    { id: 'paste', label: 'Paste', enabled: input.canPaste },
-    { id: 'select-all', label: 'Select All', enabled: input.canSelectAll },
+    { id: "copy", label: "Copy", enabled: input.canCopy },
+    { id: "paste", label: "Paste", enabled: input.canPaste },
+    { id: "select-all", label: "Select All", enabled: input.canSelectAll },
   ];
 }
 
 export function buildSpaceContextMenuItems(): ContextMenuItem<SpaceContextMenuAction>[] {
   return [
-    { id: 'edit', label: 'Edit space…' },
+    { id: "edit", label: "Edit space…" },
     // Deleting a Space files its projects back into Void, so this intentionally
     // stays neutral rather than inheriting destructive styling.
-    { id: 'delete', label: 'Delete space' },
+    { id: "delete", label: "Delete space" },
   ];
 }
 
@@ -295,12 +292,12 @@ export function buildProjectContextMenuCoreItems(input: {
   readonly isPinned: boolean;
 }): ContextMenuItem<ProjectContextMenuCoreAction>[] {
   return [
-    { id: 'open-in-finder', label: 'Open in Finder' },
-    { id: 'open-in-kanban', label: 'Open in Kanban' },
-    { id: 'copy-path', label: 'Copy Path' },
+    { id: "open-in-finder", label: "Open in Finder" },
+    { id: "open-in-kanban", label: "Open in Kanban" },
+    { id: "copy-path", label: "Copy Path" },
     {
-      id: 'toggle-pin',
-      label: input.isPinned ? 'Unpin project' : 'Pin project',
+      id: "toggle-pin",
+      label: input.isPinned ? "Unpin project" : "Pin project",
       separatorBefore: true,
     },
   ];
@@ -322,25 +319,23 @@ export function buildProjectContextMenuItems(input: {
   return [
     ...coreItems.slice(0, -1),
     {
-      id: input.isRunning ? 'stop-dev' : 'start-dev',
-      label: input.isRunning ? 'Stop dev' : 'Start dev',
+      id: input.isRunning ? "stop-dev" : "start-dev",
+      label: input.isRunning ? "Stop dev" : "Start dev",
       separatorBefore: true,
     },
-    ...(input.hasOpenServer
-      ? [{ id: 'open-dev-server' as const, label: 'Open dev server' }]
-      : []),
+    ...(input.hasOpenServer ? [{ id: "open-dev-server" as const, label: "Open dev server" }] : []),
     buildProjectMoveToSpaceItem({
       currentSpaceId: input.currentSpaceId,
       includeNewSpace: true,
       spaces: input.spaces,
     }),
-    { id: 'rename', label: 'Edit name', separatorBefore: true },
+    { id: "rename", label: "Edit name", separatorBefore: true },
     { ...togglePin, separatorBefore: false },
     ...(input.hasArchivableThreads
       ? [
           {
-            id: 'archive-threads' as const,
-            label: 'Archive threads',
+            id: "archive-threads" as const,
+            label: "Archive threads",
             separatorBefore: true,
           },
         ]
@@ -348,15 +343,15 @@ export function buildProjectContextMenuItems(input: {
     ...(input.hasAnyThreads
       ? [
           {
-            id: 'delete-threads' as const,
-            label: 'Delete threads',
+            id: "delete-threads" as const,
+            label: "Delete threads",
             separatorBefore: !input.hasArchivableThreads,
           },
         ]
       : []),
     {
-      id: 'delete',
-      label: 'Remove',
+      id: "delete",
+      label: "Remove",
       separatorBefore: true,
       destructive: true,
     },
@@ -365,19 +360,18 @@ export function buildProjectContextMenuItems(input: {
 
 function normalizeItem<T extends string>(
   input: unknown,
-  depth: number
+  depth: number,
 ): NormalizedContextMenuItem<T> | null {
-  if (typeof input !== 'object' || input === null) return null;
+  if (typeof input !== "object" || input === null) return null;
   const item = input as ContextMenuItem<T>;
-  if (typeof item.id !== 'string' || item.id.length === 0) return null;
-  if (typeof item.label !== 'string' || item.label.length === 0) return null;
+  if (typeof item.id !== "string" || item.id.length === 0) return null;
+  if (typeof item.label !== "string" || item.label.length === 0) return null;
 
   const submenu =
     depth < MAX_CONTEXT_MENU_DEPTH && Array.isArray(item.submenu)
       ? normalizeContextMenuItems(item.submenu, depth + 1)
       : [];
-  const type =
-    item.type === 'checkbox' || item.type === 'radio' ? item.type : 'normal';
+  const type = item.type === "checkbox" || item.type === "radio" ? item.type : "normal";
 
   return {
     id: item.id,
@@ -386,7 +380,7 @@ function normalizeItem<T extends string>(
     enabled: item.enabled !== false,
     visible: item.visible !== false,
     checked: item.checked === true,
-    ...(typeof item.accelerator === 'string' && item.accelerator.length > 0
+    ...(typeof item.accelerator === "string" && item.accelerator.length > 0
       ? { accelerator: item.accelerator }
       : {}),
     destructive: item.destructive === true,
@@ -397,7 +391,7 @@ function normalizeItem<T extends string>(
 
 export function normalizeContextMenuItems<T extends string>(
   items: readonly unknown[],
-  depth = 0
+  depth = 0,
 ): readonly NormalizedContextMenuItem<T>[] {
   if (depth > MAX_CONTEXT_MENU_DEPTH) return [];
   return items
@@ -406,11 +400,11 @@ export function normalizeContextMenuItems<T extends string>(
 }
 
 export type NativeContextMenuTemplateEntry<T extends string = string> =
-  | { readonly type: 'separator' }
+  | { readonly type: "separator" }
   | NormalizedContextMenuItem<T>;
 
 export function buildNativeContextMenuTemplate<T extends string>(
-  items: readonly NormalizedContextMenuItem<T>[]
+  items: readonly NormalizedContextMenuItem<T>[],
 ): readonly NativeContextMenuTemplateEntry<T>[] {
   const template: NativeContextMenuTemplateEntry<T>[] = [];
   let destructiveGroupStarted = false;
@@ -418,7 +412,7 @@ export function buildNativeContextMenuTemplate<T extends string>(
     const insertSeparator =
       template.length > 0 &&
       (item.separatorBefore || (item.destructive && !destructiveGroupStarted));
-    if (insertSeparator) template.push({ type: 'separator' });
+    if (insertSeparator) template.push({ type: "separator" });
     if (item.destructive) destructiveGroupStarted = true;
     template.push(item);
   }

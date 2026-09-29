@@ -1,57 +1,44 @@
-import { useState } from '@lynx-js/react';
+import { useState } from "@lynx-js/react";
 import type {
   KeybindingRule,
   ModelSelection,
   ProjectScript,
   ProviderKind,
-} from '@synara/contracts';
-import { PROVIDER_DISPLAY_NAMES } from '@synara/contracts';
-import type { ThreadHeaderActionState } from '@synara/shared/threadHeaderActions';
-import { resolveSemanticIconTone } from '@synara/shared/semanticIconTone';
+} from "@synara/contracts";
+import { PROVIDER_DISPLAY_NAMES } from "@synara/contracts";
+import type { ThreadHeaderActionState } from "@synara/shared/threadHeaderActions";
+import { resolveSemanticIconTone } from "@synara/shared/semanticIconTone";
 import {
   addProjectAction,
   deleteProjectAction,
   updateProjectAction,
-} from '@synara/shared/projectActionScripts';
+} from "@synara/shared/projectActionScripts";
 import {
   decodeProjectScriptKeybindingRule,
   keybindingValueForCommand,
-} from '@synara-web/lib/projectScriptKeybindings';
-import { newCommandId } from '@synara-web/lib/utils';
+} from "@synara-web/lib/projectScriptKeybindings";
+import { newCommandId } from "@synara-web/lib/utils";
 import {
   commandForProjectScript,
   nextProjectScriptId,
   projectScriptRuntimeEnv,
-} from '@synara-web/projectScripts';
-import { DEFAULT_THREAD_TERMINAL_ID } from '@synara-web/types';
-import handoffSvg from '@synara-central-icons/arrow-left-right.svg?raw';
+} from "@synara-web/projectScripts";
+import { DEFAULT_THREAD_TERMINAL_ID } from "@synara-web/types";
+import handoffSvg from "@synara-central-icons/arrow-left-right.svg?raw";
 
-import {
-  dispatchSynaraCommand,
-} from '../data/synaraClient.lynx';
-import { PlusIcon, SettingsIcon } from '../lib/icons.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
-import { platformTerminal } from '../platform/terminal';
-import { Button } from '../components/ui/button';
-import {
-  Menu,
-  MenuItem,
-  MenuPopup,
-  MenuTrigger,
-} from '../components/ui/menu.lynx';
-import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
-import { queryClient, type ThreadHeaderSummary } from './queries';
-import {
-  createNativeThreadHandoff,
-  resolveNativeThreadHandoffTargets,
-} from './threadHandoff.lynx';
-import {
-  ProjectActionEditor,
-  type ProjectActionEditorValue,
-} from './ProjectActionEditor.lynx';
+import { dispatchSynaraCommand } from "../data/synaraClient.lynx";
+import { PlusIcon, SettingsIcon } from "../lib/icons.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
+import { platformTerminal } from "../platform/terminal";
+import { Button } from "../components/ui/button";
+import { Menu, MenuItem, MenuPopup, MenuTrigger } from "../components/ui/menu.lynx";
+import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
+import { queryClient, type ThreadHeaderSummary } from "./queries";
+import { createNativeThreadHandoff, resolveNativeThreadHandoffTargets } from "./threadHandoff.lynx";
+import { ProjectActionEditor, type ProjectActionEditorValue } from "./ProjectActionEditor.lynx";
 
-import './thread-header-actions.css';
+import "./thread-header-actions.css";
 
 interface HeaderProject {
   readonly id: string;
@@ -75,9 +62,7 @@ export function ProjectActionAddButton(props: {
       onClick={props.onActivate}
     >
       <PlusIcon className="ThreadHeaderTextActionIcon" size={14} />
-      {!props.compact ? (
-        <text className="ThreadHeaderTextActionLabel">Add action</text>
-      ) : null}
+      {!props.compact ? <text className="ThreadHeaderTextActionLabel">Add action</text> : null}
     </Button>
   );
 }
@@ -87,10 +72,7 @@ function commandId(prefix: string): never {
 }
 
 export function ThreadHeaderActions(props: {
-  readonly actionState: Pick<
-    ThreadHeaderActionState,
-    'showHandoff' | 'showProjectActions'
-  >;
+  readonly actionState: Pick<ThreadHeaderActionState, "showHandoff" | "showProjectActions">;
   readonly onNavigateToThread: (threadId: string) => void;
   readonly onOpenTerminal: () => void;
   readonly project: HeaderProject | null;
@@ -109,7 +91,7 @@ export function ThreadHeaderActions(props: {
   const handoffAllowed = handoffTargets.length > 0;
 
   async function createHandoff(targetProvider: ProviderKind) {
-    'background only';
+    "background only";
     if (!thread || !project || busy || !handoffAllowed) return;
     setBusy(true);
     setError(null);
@@ -121,16 +103,14 @@ export function ThreadHeaderActions(props: {
       });
       props.onNavigateToThread(nextThreadId);
     } catch (cause) {
-      setError(
-        cause instanceof Error ? cause.message : 'Could not hand off thread.'
-      );
+      setError(cause instanceof Error ? cause.message : "Could not hand off thread.");
     } finally {
       setBusy(false);
     }
   }
 
   async function runScript(script: ProjectScript) {
-    'background only';
+    "background only";
     if (!thread || !project || busy) return;
     setBusy(true);
     setError(null);
@@ -153,11 +133,7 @@ export function ThreadHeaderActions(props: {
         data: `${script.command}\r`,
       });
     } catch (cause) {
-      setError(
-        cause instanceof Error
-          ? cause.message
-          : `Failed to run ${script.name}.`
-      );
+      setError(cause instanceof Error ? cause.message : `Failed to run ${script.name}.`);
     } finally {
       setBusy(false);
     }
@@ -171,37 +147,40 @@ export function ThreadHeaderActions(props: {
   }
 
   async function openEditActionEditor(script: ProjectScript) {
-    'background only';
+    "background only";
     setError(null);
     setEditingScript(script);
     setEditingKeybinding(null);
     setActionDialogOpen(true);
     const { fetchServerConfig } = await import(
-      /* webpackMode: "eager" */ '../data/synaraClient.lynx'
+      /* webpackMode: "eager" */ "../data/synaraClient.lynx"
     );
     const config = await fetchServerConfig().catch(() => null);
     setEditingKeybinding(
       config
         ? keybindingValueForCommand(config.keybindings, commandForProjectScript(script.id))
-        : null
+        : null,
     );
   }
 
   async function saveAction(value: ProjectActionEditorValue) {
-    'background only';
+    "background only";
     if (!project || busy) return;
     setBusy(true);
     setError(null);
     try {
       const scriptId =
         editingScript?.id ??
-        nextProjectScriptId(value.name, project.scripts.map((script) => script.id));
+        nextProjectScriptId(
+          value.name,
+          project.scripts.map((script) => script.id),
+        );
       const scripts = editingScript
         ? updateProjectAction(project.scripts, scriptId, value)
         : addProjectAction(project.scripts, scriptId, value);
       await dispatchSynaraCommand({
-        type: 'project.meta.update',
-        commandId: commandId('lynx-project-action'),
+        type: "project.meta.update",
+        commandId: commandId("lynx-project-action"),
         projectId: project.id as never,
         scripts,
       });
@@ -211,51 +190,49 @@ export function ThreadHeaderActions(props: {
       });
       if (keybindingRule) {
         const { upsertKeybinding } = await import(
-          /* webpackMode: "eager" */ '../data/synaraClient.lynx'
+          /* webpackMode: "eager" */ "../data/synaraClient.lynx"
         );
         await upsertKeybinding(keybindingRule as KeybindingRule);
       } else {
         const { removeKeybinding } = await import(
-          /* webpackMode: "eager" */ '../data/synaraClient.lynx'
+          /* webpackMode: "eager" */ "../data/synaraClient.lynx"
         );
         await removeKeybinding(commandForProjectScript(scriptId));
       }
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] }),
-        queryClient.invalidateQueries({ queryKey: ['thread-detail', thread?.id] }),
+        queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
+        queryClient.invalidateQueries({ queryKey: ["thread-detail", thread?.id] }),
       ]);
       setActionDialogOpen(false);
       setEditingScript(null);
     } catch (cause) {
-      setError(
-        cause instanceof Error ? cause.message : 'Could not add project action.'
-      );
+      setError(cause instanceof Error ? cause.message : "Could not add project action.");
     } finally {
       setBusy(false);
     }
   }
 
   async function deleteAction() {
-    'background only';
+    "background only";
     if (!project || !editingScript || busy) return;
     setBusy(true);
     setError(null);
     try {
       await dispatchSynaraCommand({
-        type: 'project.meta.update',
-        commandId: commandId('lynx-project-action-delete'),
+        type: "project.meta.update",
+        commandId: commandId("lynx-project-action-delete"),
         projectId: project.id as never,
         scripts: deleteProjectAction(project.scripts, editingScript.id),
       });
       const { removeKeybinding } = await import(
-        /* webpackMode: "eager" */ '../data/synaraClient.lynx'
+        /* webpackMode: "eager" */ "../data/synaraClient.lynx"
       );
       await removeKeybinding(commandForProjectScript(editingScript.id));
-      await queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] });
+      await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
       setActionDialogOpen(false);
       setEditingScript(null);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Could not delete project action.');
+      setError(cause instanceof Error ? cause.message : "Could not delete project action.");
     } finally {
       setBusy(false);
     }
@@ -279,21 +256,11 @@ export function ThreadHeaderActions(props: {
           >
             <svg
               className="ThreadHeaderTextActionIcon"
-              content={colorizeLynxSvg(
-                handoffSvg,
-                resolveSemanticIconTone('primary', svgColors)
-              )}
+              content={colorizeLynxSvg(handoffSvg, resolveSemanticIconTone("primary", svgColors))}
             />
-            {!props.compact ? (
-              <text className="ThreadHeaderTextActionLabel">Hand off</text>
-            ) : null}
+            {!props.compact ? <text className="ThreadHeaderTextActionLabel">Hand off</text> : null}
           </MenuTrigger>
-          <MenuPopup
-            align="end"
-            className="ThreadHeaderActionMenu"
-            side="bottom"
-            sideOffset={6}
-          >
+          <MenuPopup align="end" className="ThreadHeaderActionMenu" side="bottom" sideOffset={6}>
             {handoffTargets.map((provider) => (
               <MenuItem key={provider} onClick={() => void createHandoff(provider)}>
                 <OpenAIProviderIcon provider={provider} />
@@ -322,18 +289,26 @@ export function ThreadHeaderActions(props: {
               <text className="ThreadHeaderTextActionLabel">Add action</text>
             ) : null}
           </MenuTrigger>
-          <MenuPopup
-            align="end"
-            className="ThreadHeaderActionMenu"
-            side="bottom"
-            sideOffset={6}
-          >
+          <MenuPopup align="end" className="ThreadHeaderActionMenu" side="bottom" sideOffset={6}>
             {project?.scripts.map((script) => (
-              <MenuItem key={script.id} onClick={() => void runScript(script)} trailing={
-                <Button size="icon-xs" variant="ghost" aria-label={`Edit ${script.name}`} onClick={(event) => { event.preventDefault(); event.stopPropagation(); void openEditActionEditor(script); }}>
-                  <SettingsIcon size={14} color="var(--color-icon-secondary)" />
-                </Button>
-              }>
+              <MenuItem
+                key={script.id}
+                onClick={() => void runScript(script)}
+                trailing={
+                  <Button
+                    size="icon-xs"
+                    variant="ghost"
+                    aria-label={`Edit ${script.name}`}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      void openEditActionEditor(script);
+                    }}
+                  >
+                    <SettingsIcon size={14} color="var(--color-icon-secondary)" />
+                  </Button>
+                }
+              >
                 <text>{script.name}</text>
               </MenuItem>
             ))}
@@ -351,18 +326,25 @@ export function ThreadHeaderActions(props: {
         />
       ) : null}
       <ProjectActionEditor
-        key={`${editingScript?.id ?? 'new'}-${actionDialogOpen ? 'open' : 'closed'}-${editingKeybinding ?? ''}`}
+        key={`${editingScript?.id ?? "new"}-${actionDialogOpen ? "open" : "closed"}-${editingKeybinding ?? ""}`}
         busy={busy}
         error={error}
-        initialValue={editingScript ? {
-          command: editingScript.command,
-          icon: editingScript.icon,
-          keybinding: editingKeybinding,
-          name: editingScript.name,
-          runOnWorktreeCreate: editingScript.runOnWorktreeCreate,
-        } : undefined}
+        initialValue={
+          editingScript
+            ? {
+                command: editingScript.command,
+                icon: editingScript.icon,
+                keybinding: editingKeybinding,
+                name: editingScript.name,
+                runOnWorktreeCreate: editingScript.runOnWorktreeCreate,
+              }
+            : undefined
+        }
         open={actionDialogOpen}
-        onOpenChange={(open) => { setActionDialogOpen(open); if (!open) setEditingScript(null); }}
+        onOpenChange={(open) => {
+          setActionDialogOpen(open);
+          if (!open) setEditingScript(null);
+        }}
         onDelete={editingScript ? deleteAction : undefined}
         onSave={saveAction}
       />

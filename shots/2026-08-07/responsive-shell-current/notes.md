@@ -9,7 +9,7 @@
 - The 900px run started from persisted 1280px geometry, then resized live to
   900x650. Root attributes changed to
   `SliceRoot--viewport-medium data-viewport-width=900
-  data-viewport-height=650`, proving the resize event path.
+data-viewport-height=650`, proving the resize event path.
 - At 900x650: Sidebar border is x0..256, its own vertical scroll viewport is
   560px high, main content is x256..900 (644px), and the Composer is centered
   at x268..888 (620px). No whole-window horizontal overflow is present.

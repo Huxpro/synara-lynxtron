@@ -30,22 +30,16 @@ let persistQueue = Promise.resolve();
 function isBackgroundThread(): boolean {
   // Rspeedy defines `__MAIN_THREAD__` per bundle; the typeof guard keeps the
   // module usable under Rstest, where the flag may not be injected.
-  return typeof __MAIN_THREAD__ === 'undefined' ? true : !__MAIN_THREAD__;
+  return typeof __MAIN_THREAD__ === "undefined" ? true : !__MAIN_THREAD__;
 }
 
-async function callBridge(
-  method: string,
-  params: Record<string, unknown>
-): Promise<unknown> {
-  'background only';
-  const { bridgeCall } = await import(/* webpackMode: "eager" */ './bridge');
+async function callBridge(method: string, params: Record<string, unknown>): Promise<unknown> {
+  "background only";
+  const { bridgeCall } = await import(/* webpackMode: "eager" */ "./bridge");
   return bridgeCall(method, params);
 }
 
-function enqueuePersist(
-  method: string,
-  params: Record<string, unknown> = {}
-): Promise<void> {
+function enqueuePersist(method: string, params: Record<string, unknown> = {}): Promise<void> {
   // Keep localStorage-style mirror writes synchronous while serializing host
   // writes. Serialization preserves set/remove/clear order even if bridge
   // callbacks complete out of order.
@@ -54,8 +48,8 @@ function enqueuePersist(
   persistQueue = operation.then(
     () => undefined,
     (error) => {
-      console.warn('[storage] persist failed', method, String(error));
-    }
+      console.warn("[storage] persist failed", method, String(error));
+    },
   );
   return operation.then(() => undefined);
 }
@@ -70,7 +64,7 @@ export async function hydrateStorage(): Promise<void> {
   if (!isBackgroundThread()) return;
   hydratePromise ??= (async () => {
     try {
-      const res = (await callBridge('storageDump', {})) as {
+      const res = (await callBridge("storageDump", {})) as {
         entries?: Record<string, string>;
       };
       for (const [k, v] of Object.entries(res.entries ?? {})) {
@@ -78,7 +72,7 @@ export async function hydrateStorage(): Promise<void> {
       }
     } catch (e) {
       hydrationError = e;
-      console.warn('[storage] hydrate failed (starting empty)', String(e));
+      console.warn("[storage] hydrate failed (starting empty)", String(e));
     }
     hydrated = true;
   })();
@@ -97,12 +91,9 @@ export async function retryHydrateStorage(): Promise<void> {
   await hydrateStorage();
 }
 
-export async function setPersistedStorageItem(
-  key: string,
-  value: string
-): Promise<void> {
+export async function setPersistedStorageItem(key: string, value: string): Promise<void> {
   mirror.set(key, value);
-  await enqueuePersist('storageSet', { key, value });
+  await enqueuePersist("storageSet", { key, value });
 }
 
 /** Await all queued host writes (tests, shutdown hooks, and explicit exports). */
@@ -124,15 +115,15 @@ export const webStorage: KeyValueStorage = {
   getItem: (key) => mirror.get(key) ?? null,
   setItem: (key, value) => {
     mirror.set(key, value);
-    persist('storageSet', { key, value });
+    persist("storageSet", { key, value });
   },
   removeItem: (key) => {
     mirror.delete(key);
-    persist('storageRemove', { key });
+    persist("storageRemove", { key });
   },
   clear: () => {
     mirror.clear();
-    persist('storageClear');
+    persist("storageClear");
   },
 };
 

@@ -2,10 +2,7 @@
 // Purpose: Browser elements beneath the shared General settings composition.
 
 import type { ReactNode } from "react";
-import type {
-  SettingsGeneralKey,
-  SettingsGeneralOption,
-} from "./SettingsGeneralComposition.logic";
+import type { SettingsGeneralKey, SettingsGeneralOption } from "./SettingsGeneralComposition.logic";
 import { ProviderOptionLabel } from "../ProviderIcon";
 import { SettingResetButton, SettingsSelectControl } from "./SettingControls";
 import { SettingsRow, SettingsSection } from "./SettingsPanelPrimitives";
@@ -71,11 +68,12 @@ export function SettingsGeneralSelectControlElement(props: {
 }) {
   const selected = props.options.find((option) => option.value === props.value);
   const provider = props.settingKey === "defaultProvider";
-  const valueContent = provider && selected ? (
-    <ProviderOptionLabel provider={selected.value as never} label={selected.label} />
-  ) : (
-    (selected?.label ?? props.value)
-  );
+  const valueContent =
+    provider && selected ? (
+      <ProviderOptionLabel provider={selected.value as never} label={selected.label} />
+    ) : (
+      (selected?.label ?? props.value)
+    );
 
   return (
     <SettingsSelectControl

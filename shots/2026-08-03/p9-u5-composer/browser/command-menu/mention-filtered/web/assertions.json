@@ -1,1 +1,30 @@
-{"client":"web","captureTier":"browser","buildSha256":"647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b","snapshotSha256":"98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070","semanticRoute":"new-chat","theme":"light","viewport":{"width":1280,"height":820,"devicePixelRatio":1},"states":{"skillTrigger":{"query":"","count":114},"skillFiltered":{"query":"review-agent","items":["review-agent","review-bugbot","review-security","review"]},"mentionTrigger":{"query":"","commonThreads":["New chat","New chat","In Progress seed task","Draft seed task","Done seed task"],"platformExtras":["Local","Subagents"]},"mentionFiltered":{"query":"Progress","items":["In Progress seed task"]}},"geometry":{"surface":{"width":724,"height":288},"rowHeight":28},"pageErrors":0}
+{
+  "client": "web",
+  "captureTier": "browser",
+  "buildSha256": "647bb96161b34e9b01afcf44a639c5043e5f1cdc43691694136c5ee8c115046b",
+  "snapshotSha256": "98753f94c2df90724d0a892353c03bf2fba50bb880de6d9db012f1266f606070",
+  "semanticRoute": "new-chat",
+  "theme": "light",
+  "viewport": { "width": 1280, "height": 820, "devicePixelRatio": 1 },
+  "states": {
+    "skillTrigger": { "query": "", "count": 114 },
+    "skillFiltered": {
+      "query": "review-agent",
+      "items": ["review-agent", "review-bugbot", "review-security", "review"]
+    },
+    "mentionTrigger": {
+      "query": "",
+      "commonThreads": [
+        "New chat",
+        "New chat",
+        "In Progress seed task",
+        "Draft seed task",
+        "Done seed task"
+      ],
+      "platformExtras": ["Local", "Subagents"]
+    },
+    "mentionFiltered": { "query": "Progress", "items": ["In Progress seed task"] }
+  },
+  "geometry": { "surface": { "width": 724, "height": 288 }, "rowHeight": 28 },
+  "pageErrors": 0
+}

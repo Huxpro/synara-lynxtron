@@ -141,9 +141,7 @@ function KanbanColumnComponent({
           columnKey={columnKey}
           cards={cards}
           onOpenCard={onOpenCard}
-          {...(onCardContextMenu
-            ? { onCardContextMenu }
-            : {})}
+          {...(onCardContextMenu ? { onCardContextMenu } : {})}
           {...(onNewCard ? { onNewCard } : {})}
           showDispatchTarget={dispatchTarget}
           {...(nowMs !== undefined ? { nowMs } : {})}
@@ -152,15 +150,15 @@ function KanbanColumnComponent({
     );
   }
 
-  const cardElements = cappedCards.map((card) =>
+  const cardElements = cappedCards.map((card) => (
     <SortableKanbanCard
       key={card.cardId}
       card={card}
       onOpen={onOpenCard}
       onContextMenu={onCardContextMenu}
       {...(nowMs !== undefined ? { nowMs } : {})}
-    />,
-  );
+    />
+  ));
 
   return (
     <section className="flex min-h-0 min-w-64 flex-1 flex-col">

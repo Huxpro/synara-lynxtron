@@ -54,15 +54,15 @@ have `scrollTop=0`; no scrolling or hidden state injection is required.
 
 The two-column owner is exact between Web and Lynx-for-Web:
 
-| Anchor | Web | Lynx-for-Web |
-| --- | --- | --- |
-| First model item | `488/834.546875/336/30` | `488/834.5/336/30` |
-| Second model item | `872/834.546875/336/30` | `872/834.5/336/30` |
-| Line | `336x20` | exact |
-| Provider icon | `14x14`, y `837.546875` | `14x14`, y `837.5` |
-| Track | `336x4`, y `860.546875` | `336x4`, y `860.5` |
-| Column gap | `48px` | exact |
-| Item line-to-track gap | `6px` | exact |
+| Anchor                 | Web                     | Lynx-for-Web       |
+| ---------------------- | ----------------------- | ------------------ |
+| First model item       | `488/834.546875/336/30` | `488/834.5/336/30` |
+| Second model item      | `872/834.546875/336/30` | `872/834.5/336/30` |
+| Line                   | `336x20`                | exact              |
+| Provider icon          | `14x14`, y `837.546875` | `14x14`, y `837.5` |
+| Track                  | `336x4`, y `860.546875` | `336x4`, y `860.5` |
+| Column gap             | `48px`                  | exact              |
+| Item line-to-track gap | `6px`                   | exact              |
 
 Web sizes identity content to its text. Lynx lets the identity flex through the
 available line before the right-aligned percentage. Both preserve the same

@@ -21,10 +21,7 @@ describe("sidebar sort option catalog", () => {
   });
 
   it("keeps the Web sidebar on the shared catalog", () => {
-    const sidebarSource = fs.readFileSync(
-      path.resolve(__dirname, "Sidebar.tsx"),
-      "utf8",
-    );
+    const sidebarSource = fs.readFileSync(path.resolve(__dirname, "Sidebar.tsx"), "utf8");
     expect(sidebarSource).toContain("SIDEBAR_PROJECT_SORT_OPTIONS.map");
     expect(sidebarSource).toContain("SIDEBAR_THREAD_SORT_OPTIONS.map");
     expect(sidebarSource).not.toContain("SIDEBAR_SORT_LABELS");

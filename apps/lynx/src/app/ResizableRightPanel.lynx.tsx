@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, type ReactNode } from '@lynx-js/react';
+import { useEffect, useRef, useState, type ReactNode } from "@lynx-js/react";
 
-import { clampSidebarWidth } from '@synara-web/components/sidebarResize.logic';
-import { useViewportLayout } from '../hooks/useViewportLayout.lynx';
-import { webStorage } from '../platform/storage';
+import { clampSidebarWidth } from "@synara-web/components/sidebarResize.logic";
+import { useViewportLayout } from "../hooks/useViewportLayout.lynx";
+import { webStorage } from "../platform/storage";
 import {
   createLynxSidebarResizeSession,
   isLynxSidebarPrimaryPointer,
@@ -10,18 +10,16 @@ import {
   readLynxSidebarPointerX,
   type LynxSidebarPointerEvent,
   type LynxSidebarResizeSession,
-} from './sidebarResize.lynx.logic';
-import './resizable-right-panel.css';
+} from "./sidebarResize.lynx.logic";
+import "./resizable-right-panel.css";
 
-function readPersistedWidth(
-  storageKey: string | undefined
-): number | null {
+function readPersistedWidth(storageKey: string | undefined): number | null {
   if (!storageKey) return null;
   try {
     const raw = webStorage.getItem(storageKey);
     if (!raw) return null;
     const value = JSON.parse(raw) as unknown;
-    return typeof value === 'number' && Number.isFinite(value) ? value : null;
+    return typeof value === "number" && Number.isFinite(value) ? value : null;
   } catch {
     return null;
   }
@@ -41,23 +39,17 @@ export function ResizableRightPanel(props: {
   readonly storageKey?: string | undefined;
 }) {
   const viewport = useViewportLayout();
-  const [persistedWidth, setPersistedWidth] = useState(() =>
-    readPersistedWidth(props.storageKey)
-  );
+  const [persistedWidth, setPersistedWidth] = useState(() => readPersistedWidth(props.storageKey));
   const [dragging, setDragging] = useState(false);
   const [hovered, setHovered] = useState(false);
   const sessionRef = useRef<LynxSidebarResizeSession | null>(null);
-  const availableWidth =
-    props.availableWidth > 0 ? props.availableWidth : viewport.width;
-  const width = clampSidebarWidth(
-    persistedWidth ?? props.defaultWidth,
-    {
-      maxWidth: props.maxWidth,
-      minWidth: props.minWidth,
-      minimumContentWidth: props.minimumMainWidth,
-      viewportWidth: availableWidth,
-    }
-  );
+  const availableWidth = props.availableWidth > 0 ? props.availableWidth : viewport.width;
+  const width = clampSidebarWidth(persistedWidth ?? props.defaultWidth, {
+    maxWidth: props.maxWidth,
+    minWidth: props.minWidth,
+    minimumContentWidth: props.minimumMainWidth,
+    viewportWidth: availableWidth,
+  });
   const canResize =
     !props.hosted &&
     props.resizable &&
@@ -84,7 +76,7 @@ export function ResizableRightPanel(props: {
     const startX = readLynxSidebarPointerX(event);
     if (startX === null) return;
     sessionRef.current = createLynxSidebarResizeSession({
-      side: 'right',
+      side: "right",
       startWidth: width,
       startX,
     });
@@ -101,11 +93,11 @@ export function ResizableRightPanel(props: {
       session,
       viewportWidth: availableWidth,
     });
-    if (result.kind === 'ended-missed-mouseup') {
+    if (result.kind === "ended-missed-mouseup") {
       stopResize();
       return;
     }
-    if (result.kind !== 'moved') return;
+    if (result.kind !== "moved") return;
     sessionRef.current = result.session;
     setPersistedWidth(result.session.width);
   };
@@ -113,19 +105,13 @@ export function ResizableRightPanel(props: {
   return (
     <view
       className={props.className}
-      style={
-        props.hosted
-          ? { width: '100%' }
-          : canResize
-            ? { width: `${width}px` }
-            : undefined
-      }
+      style={props.hosted ? { width: "100%" } : canResize ? { width: `${width}px` } : undefined}
     >
       {canResize ? (
         <view
           className={`RightPanelResizeSash${
-            hovered ? ' ui-hover' : ''
-          }${dragging ? ' RightPanelResizeSash--dragging' : ''}`}
+            hovered ? " ui-hover" : ""
+          }${dragging ? " RightPanelResizeSash--dragging" : ""}`}
           aria-label="Resize panel"
           accessibility-element={true}
           accessibility-label="Resize panel"

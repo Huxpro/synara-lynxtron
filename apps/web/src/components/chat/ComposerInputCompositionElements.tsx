@@ -83,9 +83,7 @@ export function ComposerFooterRowElement(
       className={cn(
         "@container",
         COMPOSER_FOOTER_ROW_CLASS_NAME,
-        props.compact
-          ? "gap-1.5"
-          : "flex-wrap gap-1.5 sm:flex-nowrap sm:gap-0",
+        props.compact ? "gap-1.5" : "flex-wrap gap-1.5 sm:flex-nowrap sm:gap-0",
       )}
     >
       {props.children}
@@ -142,8 +140,7 @@ export function ComposerPrimaryActionElement(props: {
   const isStop = props.mode === "stop";
   const isSending = props.mode === "sending";
   const label =
-    props.accessibleLabel ??
-    (isStop ? "Stop generation" : isSending ? "Sending" : "Send message");
+    props.accessibleLabel ?? (isStop ? "Stop generation" : isSending ? "Sending" : "Send message");
 
   return (
     <Button

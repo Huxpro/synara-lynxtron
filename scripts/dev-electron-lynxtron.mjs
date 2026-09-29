@@ -91,7 +91,9 @@ export function parseDesktopComparisonArgs(argv) {
     } else if (argument === "--system-appearance-sequence") {
       const steps = value.split(",").map((entry) => entry.trim().toLowerCase());
       if (steps.length < 2 || steps.some((entry) => entry !== "light" && entry !== "dark")) {
-        throw new Error("--system-appearance-sequence requires at least two comma-separated light/dark steps.");
+        throw new Error(
+          "--system-appearance-sequence requires at least two comma-separated light/dark steps.",
+        );
       }
       options.systemAppearanceSequence = steps.join(",");
     } else if (argument === "--system-appearance-interval-ms") {
@@ -138,15 +140,7 @@ export function resolveDesktopComparisonPaths(
   const electronHome = join(stateRoot, "electron");
   const electronUserDataDir = join(stateRoot, "electron-profile");
   const lynxUserDataDir = join(stateRoot, "lynx");
-  const packageDist = join(
-    root,
-    "apps",
-    "lynx",
-    "node_modules",
-    "@lynx-js",
-    "lynxtron",
-    "dist",
-  );
+  const packageDist = join(root, "apps", "lynx", "node_modules", "@lynx-js", "lynxtron", "dist");
   const lynxtronPackageJson = join(dirname(packageDist), "package.json");
   const variantLynxtronApp = join(packageDist, "devtool", "Lynxtron.app");
   const legacyLynxtronApp = join(packageDist, "lynxtron.app");
@@ -155,11 +149,7 @@ export function resolveDesktopComparisonPaths(
     : exists(variantLynxtronApp)
       ? variantLynxtronApp
       : legacyLynxtronApp;
-  const ownedLynxtronApp = join(
-    stateRoot,
-    "runtime",
-    "Synara Comparison Lynxtron.app",
-  );
+  const ownedLynxtronApp = join(stateRoot, "runtime", "Synara Comparison Lynxtron.app");
   return {
     root,
     stateRoot,
@@ -211,11 +201,9 @@ export function prepareOwnedLynxtronRuntime(paths, options = {}) {
     ["CFBundleVersion", sourceVersion],
     ["SynaraLynxtronSourceVersion", sourceVersion],
   ]) {
-    const rewrite = spawnSync(
-      "plutil",
-      ["-replace", key, "-string", value, infoPlist],
-      { encoding: "utf8" },
-    );
+    const rewrite = spawnSync("plutil", ["-replace", key, "-string", value, infoPlist], {
+      encoding: "utf8",
+    });
     if (rewrite.status !== 0) {
       throw new Error(`Failed to rewrite owned Lynxtron ${key}: ${rewrite.stderr.trim()}`);
     }
@@ -228,22 +216,16 @@ export function prepareOwnedLynxtronRuntime(paths, options = {}) {
       "Lynxtron Framework.framework",
     );
     if (existsSync(embeddedFramework)) {
-      const signFramework = spawnSync(
-        "codesign",
-        ["--force", "--sign", "-", embeddedFramework],
-        { encoding: "utf8" },
-      );
+      const signFramework = spawnSync("codesign", ["--force", "--sign", "-", embeddedFramework], {
+        encoding: "utf8",
+      });
       if (signFramework.status !== 0) {
-        throw new Error(
-          `Failed to sign owned Lynxtron framework: ${signFramework.stderr.trim()}`,
-        );
+        throw new Error(`Failed to sign owned Lynxtron framework: ${signFramework.stderr.trim()}`);
       }
     }
-    const sign = spawnSync(
-      "codesign",
-      ["--force", "--sign", "-", paths.ownedLynxtronApp],
-      { encoding: "utf8" },
-    );
+    const sign = spawnSync("codesign", ["--force", "--sign", "-", paths.ownedLynxtronApp], {
+      encoding: "utf8",
+    });
     if (sign.status !== 0) {
       throw new Error(`Failed to sign owned Lynxtron runtime: ${sign.stderr.trim()}`);
     }
@@ -305,9 +287,16 @@ function stopExistingOwnedWebRuntime(paths, webPort) {
   if (processes.status !== 0) {
     throw new Error("Failed to inspect owned Web processes: " + processes.stderr.trim());
   }
-  for (const pid of ownedWebPidsFromPs(processes.stdout, join(paths.root, "apps", "web"), webPort)) {
-    try { process.kill(pid, "SIGTERM"); }
-    catch (error) { if (error?.code !== "ESRCH") throw error; }
+  for (const pid of ownedWebPidsFromPs(
+    processes.stdout,
+    join(paths.root, "apps", "web"),
+    webPort,
+  )) {
+    try {
+      process.kill(pid, "SIGTERM");
+    } catch (error) {
+      if (error?.code !== "ESRCH") throw error;
+    }
   }
 }
 
@@ -322,8 +311,11 @@ export function stopExistingOwnedElectronRuntime(paths, electronExecutable) {
     paths.electronUserDataDir,
   );
   for (const pid of pids) {
-    try { process.kill(pid, "SIGTERM"); }
-    catch (error) { if (error?.code !== "ESRCH") throw error; }
+    try {
+      process.kill(pid, "SIGTERM");
+    } catch (error) {
+      if (error?.code !== "ESRCH") throw error;
+    }
   }
   const deadline = Date.now() + 3_000;
   for (const pid of pids) {
@@ -333,13 +325,19 @@ export function stopExistingOwnedElectronRuntime(paths, electronExecutable) {
         process.kill(pid, 0);
         Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 50);
       } catch (error) {
-        if (error?.code === "ESRCH") { running = false; break; }
+        if (error?.code === "ESRCH") {
+          running = false;
+          break;
+        }
         throw error;
       }
     }
     if (running) {
-      try { process.kill(pid, "SIGKILL"); }
-      catch (error) { if (error?.code !== "ESRCH") throw error; }
+      try {
+        process.kill(pid, "SIGKILL");
+      } catch (error) {
+        if (error?.code !== "ESRCH") throw error;
+      }
     }
   }
 }
@@ -509,10 +507,7 @@ export function comparisonWebUrl(options) {
         route.searchParams.get("editorMode") === "file" &&
         route.searchParams.get("explorerPath")
       ) {
-        route.searchParams.set(
-          "editorFilePath",
-          route.searchParams.get("explorerPath"),
-        );
+        route.searchParams.set("editorFilePath", route.searchParams.get("explorerPath"));
       } else {
         route.searchParams.delete("editorFilePath");
       }
@@ -574,8 +569,8 @@ export function electronComparisonUrlMatches(candidateUrl, expectedUrl) {
     if (candidate.origin !== expected.origin || candidate.search !== expected.search) {
       return false;
     }
-    const candidateHash = new URL(candidate.hash.slice(1) || '/', 'http://synara.local');
-    const expectedHash = new URL(expected.hash.slice(1) || '/', 'http://synara.local');
+    const candidateHash = new URL(candidate.hash.slice(1) || "/", "http://synara.local");
+    const expectedHash = new URL(expected.hash.slice(1) || "/", "http://synara.local");
     if (candidateHash.pathname !== expectedHash.pathname) return false;
     const transientRouteKeys = new Set(["panel", "diff", "diffTurnId", "diffFilePath"]);
     for (const [key, value] of expectedHash.searchParams) {
@@ -861,7 +856,11 @@ export function desktopComparisonCommands(options, paths, authToken, electronExe
           ? { SYNARA_SYSTEM_APPEARANCE_PROBE_SEQUENCE: options.systemAppearanceSequence }
           : {}),
         ...(options.systemAppearanceIntervalMs
-          ? { SYNARA_SYSTEM_APPEARANCE_PROBE_INTERVAL_MS: String(options.systemAppearanceIntervalMs) }
+          ? {
+              SYNARA_SYSTEM_APPEARANCE_PROBE_INTERVAL_MS: String(
+                options.systemAppearanceIntervalMs,
+              ),
+            }
           : {}),
       },
     },
@@ -900,11 +899,7 @@ export function writeComparisonWindowStates(paths, options) {
   );
 }
 
-export function writeComparisonRendererState(
-  paths,
-  rendererState,
-  comparisonTheme = "dark",
-) {
+export function writeComparisonRendererState(paths, rendererState, comparisonTheme = "dark") {
   const allowlisted = Object.fromEntries(
     COMPARISON_RENDERER_STORAGE_KEYS.flatMap((key) => {
       const value = rendererState?.[key];
@@ -946,15 +941,13 @@ export function lsofShowsPidListeningOnPort(output, pid, port) {
   const expectedPid = String(pid);
   const expectedEndpoint = `TCP *:${port} (LISTEN)`;
   const expectedLoopbackEndpoint = `TCP 127.0.0.1:${port} (LISTEN)`;
-  return output
-    .split("\n")
-    .some((line) => {
-      const columns = line.trim().split(/\s+/);
-      return (
-        columns[1] === expectedPid &&
-        (line.includes(expectedEndpoint) || line.includes(expectedLoopbackEndpoint))
-      );
-    });
+  return output.split("\n").some((line) => {
+    const columns = line.trim().split(/\s+/);
+    return (
+      columns[1] === expectedPid &&
+      (line.includes(expectedEndpoint) || line.includes(expectedLoopbackEndpoint))
+    );
+  });
 }
 
 export function pidOwnedDevtoolPortsFromLsof(output, pid) {
@@ -976,26 +969,24 @@ export function pidOwnedDevtoolPortsFromLsof(output, pid) {
 }
 
 function pidOwnedDevtoolPorts(pid) {
-  const listeners = spawnSync(
-    "lsof",
-    ["-nP", "-a", "-p", String(pid), "-iTCP", "-sTCP:LISTEN"],
-    { encoding: "utf8" },
-  );
+  const listeners = spawnSync("lsof", ["-nP", "-a", "-p", String(pid), "-iTCP", "-sTCP:LISTEN"], {
+    encoding: "utf8",
+  });
   if (listeners.error) throw listeners.error;
   return pidOwnedDevtoolPortsFromLsof(listeners.stdout, pid);
 }
 
 export function resolveLynxDevtoolReadyTimeoutMs(
-  raw = process.env.SYNARA_COMPARE_LYNX_DEVTOOL_READY_TIMEOUT_MS
+  raw = process.env.SYNARA_COMPARE_LYNX_DEVTOOL_READY_TIMEOUT_MS,
 ) {
-  const timeoutMs = Number.parseInt(raw ?? '', 10);
+  const timeoutMs = Number.parseInt(raw ?? "", 10);
   return Number.isFinite(timeoutMs) && timeoutMs > 0 ? timeoutMs : 30_000;
 }
 
 async function waitForOwnedDevtoolListener(
   child,
   preferredPort,
-  timeoutMs = resolveLynxDevtoolReadyTimeoutMs()
+  timeoutMs = resolveLynxDevtoolReadyTimeoutMs(),
 ) {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
@@ -1009,7 +1000,7 @@ async function waitForOwnedDevtoolListener(
       if (ports.length === 1) return { pid: child.pid, port: ports[0] };
       if (ports.length > 1) {
         throw new Error(
-          `Owned Lynxtron PID ${child.pid} opened multiple DevTool listeners: ${ports.join(', ')}.`,
+          `Owned Lynxtron PID ${child.pid} opened multiple DevTool listeners: ${ports.join(", ")}.`,
         );
       }
     }
@@ -1029,8 +1020,7 @@ async function verifyOwnedNativeThreadIdentity(
   requireSidebarIdentity = true,
   timeoutMs = 20_000,
 ) {
-  const connectorPath =
-    process.env.LYNX_DEVTOOL_CONNECTOR?.trim() || defaultLynxDevtoolConnector;
+  const connectorPath = process.env.LYNX_DEVTOOL_CONNECTOR?.trim() || defaultLynxDevtoolConnector;
   if (!existsSync(connectorPath)) {
     throw new Error(`Lynx DevTool connector is missing at ${connectorPath}.`);
   }
@@ -1185,10 +1175,7 @@ async function configureElectronRenderer(
       const message = JSON.parse(String(event.data));
       if (message.id !== 2) return;
       clearTimeout(timeout);
-      const error = electronEvaluationError(
-        message,
-        "configuring the Electron comparison state",
-      );
+      const error = electronEvaluationError(message, "configuring the Electron comparison state");
       if (error) rejectEvaluation(error);
       else resolveEvaluation();
     });
@@ -1197,13 +1184,12 @@ async function configureElectronRenderer(
         id: 2,
         method: "Runtime.evaluate",
         params: {
-          expression:
-            comparisonRendererResetExpression(
-              theme,
-              options.appSnap,
-              options.chatFontSize,
-              comparisonElectronAnchorThreadId(options),
-            ),
+          expression: comparisonRendererResetExpression(
+            theme,
+            options.appSnap,
+            options.chatFontSize,
+            comparisonElectronAnchorThreadId(options),
+          ),
           returnByValue: true,
         },
       }),
@@ -1223,10 +1209,7 @@ async function configureElectronRenderer(
           if (message.id !== requestId) return;
           socket.removeEventListener("message", onMessage);
           clearTimeout(timeout);
-          const error = electronEvaluationError(
-            message,
-            "reading Electron comparison state",
-          );
+          const error = electronEvaluationError(message, "reading Electron comparison state");
           if (error) {
             rejectEvaluation(error);
             return;
@@ -1314,8 +1297,7 @@ async function configureElectronRenderer(
           });
           lastObservedRoute = typeof currentUrl === "string" ? currentUrl : null;
           const routeMatches =
-            typeof currentUrl === "string" &&
-            electronComparisonUrlMatches(currentUrl, expectedUrl);
+            typeof currentUrl === "string" && electronComparisonUrlMatches(currentUrl, expectedUrl);
           if (routeMatches) {
             if (stableRouteSince === 0) stableRouteSince = Date.now();
           } else {
@@ -1323,7 +1305,10 @@ async function configureElectronRenderer(
             requestId += 1;
             await new Promise((resolveEvaluation, rejectEvaluation) => {
               const timeout = setTimeout(
-                () => rejectEvaluation(new Error("Timed out reasserting the Electron comparison route.")),
+                () =>
+                  rejectEvaluation(
+                    new Error("Timed out reasserting the Electron comparison route."),
+                  ),
                 5_000,
               );
               const onMessage = (event) => {
@@ -1386,25 +1371,28 @@ async function configureElectronRenderer(
               socket,
               requestId,
               comparisonTranscriptReadyExpression(transcriptExpectation),
-              `confirming Electron transcript anchor ${transcriptExpectation.lastMessageId ?? '<empty>'}`,
+              `confirming Electron transcript anchor ${transcriptExpectation.lastMessageId ?? "<empty>"}`,
             );
             if (
-              ((transcriptExpectation.messageCount === 0 &&
+              (transcriptExpectation.messageCount === 0 &&
                 transcriptReadiness?.emptyStateRendered === true) ||
-                (transcriptReadiness?.lastMessageRendered === true &&
-                  transcriptReadiness?.lastMessageVisible === true &&
-                  transcriptReadiness?.clientHeight > 0 &&
-                  transcriptReadiness?.scrollHeight >= transcriptReadiness?.clientHeight))
-            ) break;
-            await new Promise((resolveWait) => setTimeout(resolveWait, 100));
-          }
-          if (
-            !((transcriptExpectation.messageCount === 0 &&
-              transcriptReadiness?.emptyStateRendered === true) ||
               (transcriptReadiness?.lastMessageRendered === true &&
                 transcriptReadiness?.lastMessageVisible === true &&
                 transcriptReadiness?.clientHeight > 0 &&
-                transcriptReadiness?.scrollHeight >= transcriptReadiness?.clientHeight))
+                transcriptReadiness?.scrollHeight >= transcriptReadiness?.clientHeight)
+            )
+              break;
+            await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+          }
+          if (
+            !(
+              (transcriptExpectation.messageCount === 0 &&
+                transcriptReadiness?.emptyStateRendered === true) ||
+              (transcriptReadiness?.lastMessageRendered === true &&
+                transcriptReadiness?.lastMessageVisible === true &&
+                transcriptReadiness?.clientHeight > 0 &&
+                transcriptReadiness?.scrollHeight >= transcriptReadiness?.clientHeight)
+            )
           ) {
             throw new Error(
               `Timed out confirming Electron transcript anchor: ${JSON.stringify(transcriptReadiness)}.`,
@@ -1430,9 +1418,7 @@ async function configureElectronRenderer(
             const clean = Object.values(transientUi ?? {}).every(
               (value) => typeof value !== "number" || value === 0,
             );
-            cleanTransientSince = clean
-              ? cleanTransientSince || Date.now()
-              : 0;
+            cleanTransientSince = clean ? cleanTransientSince || Date.now() : 0;
             await new Promise((resolveWait) => setTimeout(resolveWait, 50));
           }
           if (cleanTransientSince === 0 || Date.now() - cleanTransientSince < 250) {
@@ -1475,7 +1461,8 @@ async function configureElectronRenderer(
               landingReadiness?.temporaryControlRendered === true &&
               landingReadiness?.projectTriggerRendered === true &&
               landingReadiness?.notFound === false
-            ) break;
+            )
+              break;
             await new Promise((resolveWait) => setTimeout(resolveWait, 100));
           }
           if (
@@ -1506,9 +1493,7 @@ async function configureElectronRenderer(
           const explorerPath = comparisonExplorerPath(options);
           if (explorerPath) {
             const segments = explorerPath.split("/").filter(Boolean);
-            const targets = segments.map((_, index) =>
-              segments.slice(0, index + 1).join("/"),
-            );
+            const targets = segments.map((_, index) => segments.slice(0, index + 1).join("/"));
             for (const targetPath of targets) {
               const targetDeadline = Date.now() + 15_000;
               let clicked = false;
@@ -1566,7 +1551,8 @@ async function configureElectronRenderer(
               comparisonDiffReadyExpression(options),
               "confirming the canonical Electron Diff fixture",
             );
-            if (diffReadiness?.paneOpen && diffReadiness?.turnMatched && diffReadiness?.rendered) break;
+            if (diffReadiness?.paneOpen && diffReadiness?.turnMatched && diffReadiness?.rendered)
+              break;
             await new Promise((resolveWait) => setTimeout(resolveWait, 100));
           }
           if (!diffReadiness?.paneOpen || !diffReadiness?.turnMatched || !diffReadiness?.rendered) {
@@ -1656,10 +1642,7 @@ export function electronEvaluationError(message, activity) {
 
 function evaluateElectronExpression(socket, requestId, expression, activity) {
   return new Promise((resolveEvaluation, rejectEvaluation) => {
-    const timeout = setTimeout(
-      () => rejectEvaluation(new Error(`Timed out ${activity}.`)),
-      5_000,
-    );
+    const timeout = setTimeout(() => rejectEvaluation(new Error(`Timed out ${activity}.`)), 5_000);
     const onMessage = (event) => {
       const message = JSON.parse(String(event.data));
       if (message.id !== requestId) return;
@@ -1846,9 +1829,7 @@ async function main() {
       ? null
       : await waitForOwnedDevtoolListener(lynx, options.lynxDevtoolPort);
     if (lynxDevtool !== null && routedThreadId) {
-      const route = options.route === null
-        ? null
-        : new URL(options.route, "http://synara.local");
+      const route = options.route === null ? null : new URL(options.route, "http://synara.local");
       await verifyOwnedNativeThreadIdentity(
         lynxDevtool.port,
         routedThreadId,
@@ -1878,9 +1859,7 @@ async function main() {
       });
       child.once("exit", (code, signal) => {
         if (name === "Lynxtron" && code === 0 && !signal) {
-          console.log(
-            "[compare:desktop] Lynxtron handed off to a managed replacement process.",
-          );
+          console.log("[compare:desktop] Lynxtron handed off to a managed replacement process.");
           return;
         }
         if (!shuttingDown) {

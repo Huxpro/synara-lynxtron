@@ -1,5 +1,5 @@
-import path from 'node:path';
-import { createRequire } from 'node:module';
+import path from "node:path";
+import { createRequire } from "node:module";
 
 export interface BrowserViewBounds {
   readonly x: number;
@@ -23,7 +23,15 @@ export interface BrowserViewState {
 }
 
 interface NativeBrowserViewHost {
-  attach(nativeViewHandle: Buffer, x: number, y: number, width: number, height: number, tabId: string, url: string): boolean;
+  attach(
+    nativeViewHandle: Buffer,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    tabId: string,
+    url: string,
+  ): boolean;
   setBounds(x: number, y: number, width: number, height: number): boolean;
   setVisible(visible: boolean): boolean;
   navigate(url: string): boolean;
@@ -64,9 +72,17 @@ export interface BrowserOpenWindowRequest {
 }
 
 const EMPTY_STATE: BrowserViewState = {
-  tabId: '',
-  supported: false, attached: false, canGoBack: false, canGoForward: false, isLoading: false,
-  lastError: null, title: '', faviconUrl: '', url: '', visible: false,
+  tabId: "",
+  supported: false,
+  attached: false,
+  canGoBack: false,
+  canGoForward: false,
+  isLoading: false,
+  lastError: null,
+  title: "",
+  faviconUrl: "",
+  url: "",
+  visible: false,
 };
 
 export function createBrowserViewHost(input: {
@@ -77,22 +93,30 @@ export function createBrowserViewHost(input: {
   readonly platform?: NodeJS.Platform;
   readonly requireNative?: (path: string) => NativeBrowserViewHost;
 }): BrowserViewHost {
-  if ((input.platform ?? process.platform) !== 'darwin') {
+  if ((input.platform ?? process.platform) !== "darwin") {
     return {
-      attach: () => false, setBounds: () => false, setVisible: () => false,
-      navigate: () => false, goBack: () => false, goForward: () => false,
-      newTab: () => false, selectTab: () => false, closeTab: () => false,
-      reload: () => false, copyScreenshotToClipboard: async () => false,
-      getState: () => EMPTY_STATE, dispose() {},
+      attach: () => false,
+      setBounds: () => false,
+      setVisible: () => false,
+      navigate: () => false,
+      goBack: () => false,
+      goForward: () => false,
+      newTab: () => false,
+      selectTab: () => false,
+      closeTab: () => false,
+      reload: () => false,
+      copyScreenshotToClipboard: async () => false,
+      getState: () => EMPTY_STATE,
+      dispose() {},
     };
   }
   const requireNative = input.requireNative ?? createRequire(import.meta.url);
   let native: NativeBrowserViewHost | null = null;
   const load = () => {
     if (!native) {
-      native = requireNative(path.join(__dirname, 'native', 'browser-view-probe.node'));
+      native = requireNative(path.join(__dirname, "native", "browser-view-probe.node"));
       native.setStateListener(
-        input.onStateChange ? () => input.onStateChange?.(native?.getState() ?? EMPTY_STATE) : null
+        input.onStateChange ? () => input.onStateChange?.(native?.getState() ?? EMPTY_STATE) : null,
       );
       native.setCopyLinkListener(input.onCopyLink ?? null);
       native.setOpenWindowListener(input.onOpenWindow ?? null);
@@ -100,9 +124,16 @@ export function createBrowserViewHost(input: {
     return native;
   };
   return {
-    attach: (bounds, tabId, url) => load().attach(
-      input.nativeViewHandle, bounds.x, bounds.y, bounds.width, bounds.height, tabId, url
-    ),
+    attach: (bounds, tabId, url) =>
+      load().attach(
+        input.nativeViewHandle,
+        bounds.x,
+        bounds.y,
+        bounds.width,
+        bounds.height,
+        tabId,
+        url,
+      ),
     setBounds: (bounds) => load().setBounds(bounds.x, bounds.y, bounds.width, bounds.height),
     setVisible: (visible) => load().setVisible(visible),
     navigate: (url) => load().navigate(url),

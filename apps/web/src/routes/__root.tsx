@@ -291,11 +291,7 @@ function TransportCompatibilityView({ issue }: { issue: WsCompatibilityError }) 
           Client {APP_VERSION} · Server {issue.serverBuild}
         </p>
         <div className="mt-5">
-          <Button
-            size="sm"
-            className={dialogActionButtonClassName}
-            onClick={() => reloadPage()}
-          >
+          <Button size="sm" className={dialogActionButtonClassName} onClick={() => reloadPage()}>
             Reload app
           </Button>
         </div>

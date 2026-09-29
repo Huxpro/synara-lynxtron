@@ -52,9 +52,7 @@ export function KanbanColumnNewCardElement(props: {
   );
 }
 
-export function KanbanColumnStatusElement(props: {
-  readonly column: KanbanColumnKey;
-}) {
+export function KanbanColumnStatusElement(props: { readonly column: KanbanColumnKey }) {
   return <KanbanStatusIcon column={props.column} />;
 }
 

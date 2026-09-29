@@ -7,9 +7,5 @@
     "lib": ["ES2023"],
     "target": "ES2022"
   },
-  "include": [
-    "./lynx.config.ts",
-    "./rstest.config.ts",
-    "./rsbuild.config.ts"
-  ]
+  "include": ["./lynx.config.ts", "./rstest.config.ts", "./rsbuild.config.ts"]
 }

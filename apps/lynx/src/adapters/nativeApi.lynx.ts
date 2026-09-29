@@ -14,5 +14,5 @@ export function readNativeApi(): null {
  * than a silent Lynx-only branch.
  */
 export function ensureNativeApi(): never {
-  throw new Error('Native API not found');
+  throw new Error("Native API not found");
 }

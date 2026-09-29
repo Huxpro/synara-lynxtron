@@ -1,11 +1,8 @@
-import type { RpcTransportState } from '../data/rpcTransport.logic';
+import type { RpcTransportState } from "../data/rpcTransport.logic";
 
 export function shouldRefetchAfterTransportRecovery(
   previous: RpcTransportState,
-  current: RpcTransportState
+  current: RpcTransportState,
 ): boolean {
-  return (
-    current === 'connected' &&
-    (previous === 'offline' || previous === 'reconnecting')
-  );
+  return current === "connected" && (previous === "offline" || previous === "reconnecting");
 }

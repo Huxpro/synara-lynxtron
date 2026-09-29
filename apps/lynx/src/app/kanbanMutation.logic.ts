@@ -3,9 +3,9 @@ import type {
   ModelSelection,
   ProviderInteractionMode,
   RuntimeMode,
-} from '@synara/contracts';
+} from "@synara/contracts";
 
-import { buildComposerTurnStartCommand } from '../components/composer/composerDispatch.logic';
+import { buildComposerTurnStartCommand } from "../components/composer/composerDispatch.logic";
 
 export function buildNativeKanbanStartCommand(input: {
   readonly commandId: string;
@@ -26,7 +26,7 @@ export function buildNativeKanbanRenameCommand(input: {
   readonly title: string;
 }): ClientOrchestrationCommand {
   return {
-    type: 'thread.meta.update',
+    type: "thread.meta.update",
     commandId: input.commandId as never,
     threadId: input.threadId as never,
     title: input.title,
@@ -38,7 +38,7 @@ export function buildNativeKanbanArchiveCommand(input: {
   readonly threadId: string;
 }): ClientOrchestrationCommand {
   return {
-    type: 'thread.archive',
+    type: "thread.archive",
     commandId: input.commandId as never,
     threadId: input.threadId as never,
   };
@@ -47,5 +47,5 @@ export function buildNativeKanbanArchiveCommand(input: {
 export function resolveNativeKanbanMutationError(error: unknown): string {
   return error instanceof Error && error.message.length > 0
     ? error.message
-    : 'The server did not accept the change.';
+    : "The server did not accept the change.";
 }

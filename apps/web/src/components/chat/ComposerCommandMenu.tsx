@@ -5,10 +5,7 @@ import {
   type ComposerCommandMenuCompositionProps,
 } from "./ComposerCommandMenuComposition";
 
-export {
-  groupCommandItems,
-  type ComposerCommandItem,
-} from "./ComposerCommandMenuComposition";
+export { groupCommandItems, type ComposerCommandItem } from "./ComposerCommandMenuComposition";
 
 type ComposerCommandMenuProps = Omit<ComposerCommandMenuCompositionProps, "onItemRef">;
 

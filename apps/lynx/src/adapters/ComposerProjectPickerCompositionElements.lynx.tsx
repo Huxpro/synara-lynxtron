@@ -1,7 +1,7 @@
-import folderSvg from '@synara-central-icons/folder-2.svg?raw';
-import type { SpaceIconName } from '@synara/contracts';
-import type { InputRef } from '@lynx-js/lynx-ui';
-import { useEffect, useRef, type ReactNode } from '@lynx-js/react';
+import folderSvg from "@synara-central-icons/folder-2.svg?raw";
+import type { SpaceIconName } from "@synara/contracts";
+import type { InputRef } from "@lynx-js/lynx-ui";
+import { useEffect, useRef, type ReactNode } from "@lynx-js/react";
 
 import {
   BackpackIcon,
@@ -32,17 +32,12 @@ import {
   TargetIcon,
   TreeIcon,
   XIcon,
-} from '../lib/icons.lynx';
-import { Input } from '../components/ui/input.lynx';
-import {
-  MenuItem,
-  Menu,
-  MenuPopupBase,
-  MenuTrigger,
-} from '../components/ui/menu.lynx';
-import { useLynxInteractiveState } from '../components/ui/interactive-state.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { useTheme } from './useTheme.lynx';
+} from "../lib/icons.lynx";
+import { Input } from "../components/ui/input.lynx";
+import { MenuItem, Menu, MenuPopupBase, MenuTrigger } from "../components/ui/menu.lynx";
+import { useLynxInteractiveState } from "../components/ui/interactive-state.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { useTheme } from "./useTheme.lynx";
 
 function ComposerProjectPickerTriggerElement(props: {
   readonly primaryLabel: string;
@@ -54,16 +49,12 @@ function ComposerProjectPickerTriggerElement(props: {
     <view className="ComposerProjectPickerTriggerContentLynx">
       <svg
         className="ComposerProjectPickerTriggerIconLynx"
-        content={colorizeLynxSvg(folderSvg, semanticIconColor('secondary'))}
+        content={colorizeLynxSvg(folderSvg, semanticIconColor("secondary"))}
       />
       <view className="ComposerProjectPickerTriggerCopyLynx">
-        <text className="ComposerProjectPickerTriggerLabelLynx">
-          {props.primaryLabel}
-        </text>
+        <text className="ComposerProjectPickerTriggerLabelLynx">{props.primaryLabel}</text>
         {props.secondaryLabel ? (
-          <text className="ComposerProjectPickerTriggerSecondaryLynx">
-            {props.secondaryLabel}
-          </text>
+          <text className="ComposerProjectPickerTriggerSecondaryLynx">{props.secondaryLabel}</text>
         ) : null}
       </view>
     </view>
@@ -74,8 +65,8 @@ export function ComposerProjectPickerFrameElement(props: {
   readonly children?: ReactNode;
   readonly open: boolean;
   readonly onOpenChange: (open: boolean) => void;
-  readonly align: 'start' | 'center' | 'end';
-  readonly side: 'top' | 'bottom';
+  readonly align: "start" | "center" | "end";
+  readonly side: "top" | "bottom";
   readonly primaryLabel: string;
   readonly secondaryLabel: string | null;
   readonly triggerClassName?: string;
@@ -86,7 +77,7 @@ export function ComposerProjectPickerFrameElement(props: {
     <Menu open={props.open} onOpenChange={props.onOpenChange}>
       <MenuTrigger
         className={`LandingComposerProjectTrigger ComposerProjectPickerTriggerLynx${
-          props.open ? ' ComposerProjectPickerTriggerLynx--open' : ''
+          props.open ? " ComposerProjectPickerTriggerLynx--open" : ""
         }`}
         ariaLabel={props.triggerLabel}
       >
@@ -117,7 +108,7 @@ export function ComposerProjectPickerPanelElement(props: {
 }) {
   const inputRef = useRef<InputRef>(null);
   useEffect(() => {
-    'background only';
+    "background only";
     const input = inputRef.current;
     if (!input) return;
     void input
@@ -138,10 +129,7 @@ export function ComposerProjectPickerPanelElement(props: {
           onChange={(event) => props.onQueryChange(event.target.value)}
         />
       </view>
-      <scroll-view
-        className="ComposerProjectPickerListLynx"
-        scroll-orientation="vertical"
-      >
+      <scroll-view className="ComposerProjectPickerListLynx" scroll-orientation="vertical">
         {props.children}
       </scroll-view>
       {props.footer ? (
@@ -157,9 +145,7 @@ export function ComposerProjectPickerGroupElement(props: {
 }) {
   return (
     <view className="ComposerProjectPickerGroupLynx">
-      {props.separatorBefore ? (
-        <view className="ComposerProjectPickerSeparatorLynx" />
-      ) : null}
+      {props.separatorBefore ? <view className="ComposerProjectPickerSeparatorLynx" /> : null}
       {props.children}
     </view>
   );
@@ -167,7 +153,7 @@ export function ComposerProjectPickerGroupElement(props: {
 
 export function ComposerProjectPickerGroupLabelElement(props: {
   readonly children?: ReactNode;
-  readonly icon: SpaceIconName | 'black-hole';
+  readonly icon: SpaceIconName | "black-hole";
 }) {
   const { svgColors } = useTheme();
   return (
@@ -178,9 +164,7 @@ export function ComposerProjectPickerGroupLabelElement(props: {
         icon={props.icon}
         size={12}
       />
-      <text className="ComposerProjectPickerGroupLabelTextLynx">
-        {props.children}
-      </text>
+      <text className="ComposerProjectPickerGroupLabelTextLynx">{props.children}</text>
     </view>
   );
 }
@@ -188,17 +172,17 @@ export function ComposerProjectPickerGroupLabelElement(props: {
 export function LynxSpaceIcon(props: {
   readonly className?: string;
   readonly color?: string;
-  readonly icon: SpaceIconName | 'black-hole';
+  readonly icon: SpaceIconName | "black-hole";
   readonly size?: number;
 }) {
   const icons = {
-    'black-hole': BlocksIcon,
+    "black-hole": BlocksIcon,
     bag: BriefcaseIcon,
     home: HomeIcon,
-    'code-brackets': CodeIcon,
+    "code-brackets": CodeIcon,
     rocket: RocketIcon,
-    'light-bulb': LightBulbIcon,
-    'color-palette': PaletteIcon,
+    "light-bulb": LightBulbIcon,
+    "color-palette": PaletteIcon,
     book: BookIcon,
     lab: FlaskIcon,
     heart: HeartIcon,
@@ -206,22 +190,16 @@ export function LynxSpaceIcon(props: {
     globe: GlobeIcon,
     cloud: CloudIcon,
     hammer: HammerIcon,
-    'chart-2': ChartIcon,
+    "chart-2": ChartIcon,
     gamecontroller: GameControllerIcon,
-    'camera-1': CameraIcon,
+    "camera-1": CameraIcon,
     target: TargetIcon,
     tree: TreeIcon,
     school: SchoolIcon,
     backpack: BackpackIcon,
   } as const;
   const Icon = icons[props.icon] ?? FolderIcon;
-  return (
-    <Icon
-      className={props.className}
-      color={props.color}
-      size={props.size ?? 12}
-    />
-  );
+  return <Icon className={props.className} color={props.color} size={props.size ?? 12} />;
 }
 
 export function ComposerProjectPickerOptionElement(props: {
@@ -234,7 +212,7 @@ export function ComposerProjectPickerOptionElement(props: {
   return (
     <MenuItem
       className={`ComposerProjectPickerOptionLynx${
-        props.selected ? ' ComposerProjectPickerOptionLynx--selected' : ''
+        props.selected ? " ComposerProjectPickerOptionLynx--selected" : ""
       }`}
       onClick={props.onSelect}
     >
@@ -245,13 +223,9 @@ export function ComposerProjectPickerOptionElement(props: {
           size={14}
         />
         <view className="ComposerProjectPickerOptionCopyLynx">
-          <text className="ComposerProjectPickerOptionTitleLynx">
-            {props.primaryLabel}
-          </text>
+          <text className="ComposerProjectPickerOptionTitleLynx">{props.primaryLabel}</text>
           {props.secondaryLabel ? (
-            <text className="ComposerProjectPickerOptionSecondaryLynx">
-              {props.secondaryLabel}
-            </text>
+            <text className="ComposerProjectPickerOptionSecondaryLynx">{props.secondaryLabel}</text>
           ) : null}
         </view>
         <view className="ComposerProjectPickerCheckLynx">
@@ -262,14 +236,10 @@ export function ComposerProjectPickerOptionElement(props: {
   );
 }
 
-export function ComposerProjectPickerEmptyElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function ComposerProjectPickerEmptyElement(props: { readonly children?: ReactNode }) {
   return (
     <view className="ComposerProjectPickerEmptyLynx">
-      <text className="ComposerProjectPickerEmptyTextLynx">
-        {props.children}
-      </text>
+      <text className="ComposerProjectPickerEmptyTextLynx">{props.children}</text>
     </view>
   );
 }
@@ -282,9 +252,7 @@ export function ComposerProjectPickerFooterElement(props: {
     <>
       {props.children}
       {props.errorMessage ? (
-        <text className="ComposerProjectPickerErrorLynx">
-          {props.errorMessage}
-        </text>
+        <text className="ComposerProjectPickerErrorLynx">{props.errorMessage}</text>
       ) : null}
     </>
   );
@@ -292,24 +260,18 @@ export function ComposerProjectPickerFooterElement(props: {
 
 export function ComposerProjectPickerActionElement(props: {
   readonly children?: ReactNode;
-  readonly kind: 'add' | 'reset' | 'retry';
+  readonly kind: "add" | "reset" | "retry";
   readonly disabled?: boolean;
   readonly onActivate: () => void;
 }) {
   const { svgColors } = useTheme();
   const interaction = useLynxInteractiveState({
-    baseClassName: 'ComposerProjectPickerActionLynx',
-    accessibleLabel:
-      typeof props.children === 'string' ? props.children : undefined,
+    baseClassName: "ComposerProjectPickerActionLynx",
+    accessibleLabel: typeof props.children === "string" ? props.children : undefined,
     disabled: props.disabled,
     onActivate: props.onActivate,
   });
-  const Icon =
-    props.kind === 'add'
-      ? PlusIcon
-      : props.kind === 'reset'
-        ? XIcon
-        : RefreshCwIcon;
+  const Icon = props.kind === "add" ? PlusIcon : props.kind === "reset" ? XIcon : RefreshCwIcon;
   return (
     <view className={interaction.className} {...interaction.eventProps}>
       <Icon
@@ -317,9 +279,7 @@ export function ComposerProjectPickerActionElement(props: {
         color={svgColors.mutedForeground}
         size={14}
       />
-      <text className="ComposerProjectPickerActionTextLynx">
-        {props.children}
-      </text>
+      <text className="ComposerProjectPickerActionTextLynx">{props.children}</text>
     </view>
   );
 }

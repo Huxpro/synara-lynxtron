@@ -26,7 +26,9 @@ export function KanbanOverviewEmptyBodyElement(props: ChildrenProps) {
 }
 
 export function KanbanOverviewProjectsElement(props: ChildrenProps) {
-  return <div className="flex h-full min-h-0 gap-4 overflow-x-auto px-4 pb-4">{props.children}</div>;
+  return (
+    <div className="flex h-full min-h-0 gap-4 overflow-x-auto px-4 pb-4">{props.children}</div>
+  );
 }
 
 export function KanbanOverviewProjectColumnElement(props: ChildrenProps) {
@@ -37,9 +39,11 @@ export function KanbanOverviewProjectHeaderRootElement(props: ChildrenProps) {
   return <div className="flex shrink-0 items-center gap-1">{props.children}</div>;
 }
 
-export function KanbanOverviewProjectHeaderElement(props: ChildrenProps & {
-  readonly onActivate: () => void;
-}) {
+export function KanbanOverviewProjectHeaderElement(
+  props: ChildrenProps & {
+    readonly onActivate: () => void;
+  },
+) {
   return (
     <button
       type="button"
@@ -67,7 +71,9 @@ export function KanbanOverviewProjectCountElement(props: ChildrenProps) {
 }
 
 export function KanbanOverviewProjectChevronElement() {
-  return <ChevronRightIcon className="ml-auto size-3.5 shrink-0 text-muted-foreground/50 opacity-0 transition-opacity group-hover/kanban-project:opacity-100 group-focus-visible/kanban-project:opacity-100" />;
+  return (
+    <ChevronRightIcon className="ml-auto size-3.5 shrink-0 text-muted-foreground/50 opacity-0 transition-opacity group-hover/kanban-project:opacity-100 group-focus-visible/kanban-project:opacity-100" />
+  );
 }
 
 export function KanbanOverviewNewTaskElement(props: {
@@ -89,7 +95,9 @@ export function KanbanOverviewNewTaskElement(props: {
 }
 
 export function KanbanOverviewCardListElement(props: ChildrenProps) {
-  return <ul className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-1">{props.children}</ul>;
+  return (
+    <ul className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-1">{props.children}</ul>
+  );
 }
 
 export function KanbanOverviewCardItemElement(props: ChildrenProps) {

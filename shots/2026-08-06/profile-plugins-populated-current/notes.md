@@ -53,16 +53,16 @@ Tabler icon was substituted.
 
 Both rows are exact between Web and Lynx-for-Web:
 
-| Anchor | Web | Lynx-for-Web |
-| --- | --- | --- |
-| Row 1 | `872/574.546875/336/20` | `872/574.5/336/20` |
-| Row 2 | `872/604.546875/336/20` | `872/604.5/336/20` |
-| Row pitch | `30px` | exact |
-| Icon shell | `20x20` | exact |
-| Glyph | `12x12`, inset 4px | exact |
-| Name origin | x `902` | exact |
-| Count right edge | x `1208` | exact |
-| Typography | `14/20` names and counts | exact |
+| Anchor           | Web                      | Lynx-for-Web       |
+| ---------------- | ------------------------ | ------------------ |
+| Row 1            | `872/574.546875/336/20`  | `872/574.5/336/20` |
+| Row 2            | `872/604.546875/336/20`  | `872/604.5/336/20` |
+| Row pitch        | `30px`                   | exact              |
+| Icon shell       | `20x20`                  | exact              |
+| Glyph            | `12x12`, inset 4px       | exact              |
+| Name origin      | x `902`                  | exact              |
+| Count right edge | x `1208`                 | exact              |
+| Typography       | `14/20` names and counts | exact              |
 
 Web sizes the left identity to intrinsic text, while Lynx lets the identity
 flex through the remaining row width before the right-aligned count. The visible

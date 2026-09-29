@@ -79,7 +79,7 @@ with isolated server state. The temporary project order changed
 schema-valid 1692-byte preflight state was restored atomically:
 
 ```json
-{"projectOrderCwds":["/Users/bytedance"],"projectNamesByCwd":{"/Users/bytedance":"Home"}}
+{ "projectOrderCwds": ["/Users/bytedance"], "projectNamesByCwd": { "/Users/bytedance": "Home" } }
 ```
 
 Window state remained byte-exact at SHA-256

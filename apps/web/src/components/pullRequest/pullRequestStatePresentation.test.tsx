@@ -1,8 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  PR_STATE_PRESENTATION_ICONS,
-} from "./pullRequestStatePresentation.icons";
+import { PR_STATE_PRESENTATION_ICONS } from "./pullRequestStatePresentation.icons";
 import { resolvePrStatePresentation } from "./pullRequestStatePresentation.logic";
 
 describe("resolvePrStatePresentation", () => {

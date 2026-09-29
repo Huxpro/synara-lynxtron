@@ -40,25 +40,13 @@ export function ComposerProjectPickerComposition(props: {
     addActionLabel: props.addActionLabel,
     resetActionLabel: props.resetActionLabel,
     retryVisible: props.onRetry !== undefined,
-    ...(props.addActionBusy === undefined
-      ? {}
-      : { addActionBusy: props.addActionBusy }),
-    ...(props.resetVisible === undefined
-      ? {}
-      : { resetVisible: props.resetVisible }),
-    ...(props.retryActionLabel === undefined
-      ? {}
-      : { retryActionLabel: props.retryActionLabel }),
-    ...(props.retryActionBusy === undefined
-      ? {}
-      : { retryActionBusy: props.retryActionBusy }),
-    ...(props.errorMessage === undefined
-      ? {}
-      : { errorMessage: props.errorMessage }),
+    ...(props.addActionBusy === undefined ? {} : { addActionBusy: props.addActionBusy }),
+    ...(props.resetVisible === undefined ? {} : { resetVisible: props.resetVisible }),
+    ...(props.retryActionLabel === undefined ? {} : { retryActionLabel: props.retryActionLabel }),
+    ...(props.retryActionBusy === undefined ? {} : { retryActionBusy: props.retryActionBusy }),
+    ...(props.errorMessage === undefined ? {} : { errorMessage: props.errorMessage }),
   });
-  const activateAction = (
-    kind: "add" | "reset" | "retry",
-  ) => {
+  const activateAction = (kind: "add" | "reset" | "retry") => {
     if (kind === "add") props.onAddProject();
     else if (kind === "reset") props.onReset();
     else props.onRetry?.();
@@ -75,9 +63,7 @@ export function ComposerProjectPickerComposition(props: {
       {...(props.triggerClassName === undefined
         ? {}
         : { triggerClassName: props.triggerClassName })}
-      {...(props.triggerTestId === undefined
-        ? {}
-        : { triggerTestId: props.triggerTestId })}
+      {...(props.triggerTestId === undefined ? {} : { triggerTestId: props.triggerTestId })}
     >
       <ComposerProjectPickerPanelElement
         placeholder={props.searchPlaceholder ?? "Search projects"}
@@ -99,10 +85,7 @@ export function ComposerProjectPickerComposition(props: {
         }
       >
         {props.model.groups.map((group, groupIndex) => (
-          <ComposerProjectPickerGroupElement
-            key={group.id}
-            separatorBefore={groupIndex > 0}
-          >
+          <ComposerProjectPickerGroupElement key={group.id} separatorBefore={groupIndex > 0}>
             <ComposerProjectPickerGroupLabelElement icon={group.icon}>
               {group.label}
             </ComposerProjectPickerGroupLabelElement>

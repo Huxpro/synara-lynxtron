@@ -39,8 +39,6 @@ export function MessageUserBubbleComposition(props: {
   );
 }
 
-export function MessageAssistantRowComposition(props: {
-  readonly children?: ReactNode;
-}) {
+export function MessageAssistantRowComposition(props: { readonly children?: ReactNode }) {
   return <MessageAssistantRowElement>{props.children}</MessageAssistantRowElement>;
 }

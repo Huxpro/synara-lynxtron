@@ -1,33 +1,29 @@
-import { useEffect, useRef, useState, type ReactNode } from '@lynx-js/react';
-import type { InputRef } from '@lynx-js/lynx-ui';
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useRef, useState, type ReactNode } from "@lynx-js/react";
+import type { InputRef } from "@lynx-js/lynx-ui";
+import { useQuery } from "@tanstack/react-query";
 import type {
   GitReadWorkingTreeDiffResult,
   OrchestrationCheckpointSummary,
-} from '@synara/contracts';
-import { RIGHT_DOCK_MIN_WIDTH_PX } from '@synara/shared/rightDock';
-import {
-  buildPathTree,
-  filterPathsForSearch,
-  type PathTreeNode,
-} from '@synara/shared/pathTree';
+} from "@synara/contracts";
+import { RIGHT_DOCK_MIN_WIDTH_PX } from "@synara/shared/rightDock";
+import { buildPathTree, filterPathsForSearch, type PathTreeNode } from "@synara/shared/pathTree";
 import {
   formatGitPathForDisplay,
   PULL_REQUEST_DIFF_INITIAL_LINE_COUNT,
   PULL_REQUEST_DIFF_MORE_LINE_COUNT,
   PullRequestCodeComposition,
-} from '@synara-web/components/pullRequest/PullRequestCodeComposition';
+} from "@synara-web/components/pullRequest/PullRequestCodeComposition";
 import {
   buildPullRequestCodeView,
   type PullRequestDiffFileView,
-} from '@synara-web/components/pullRequest/pullRequestCode.logic';
+} from "@synara-web/components/pullRequest/pullRequestCode.logic";
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsBehaviorProjection,
-} from '@synara-web/appSettingsStorageProjection.logic';
+} from "@synara-web/appSettingsStorageProjection.logic";
 
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
-import differenceSvg from '@synara-central-icons/difference-modified.svg?raw';
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import differenceSvg from "@synara-central-icons/difference-modified.svg?raw";
 import {
   AdjustmentsHorizontalIcon,
   ChevronDownIcon,
@@ -42,17 +38,17 @@ import {
   SearchIcon,
   TextWrapIcon,
   XIcon,
-} from '../lib/icons.lynx';
+} from "../lib/icons.lynx";
 import {
   fetchWorkingTreeDiff,
   fetchGitStatus,
   fetchFullThreadDiff,
   fetchTurnDiff,
   highlightExplorerCode,
-} from '../data/synaraClient.lynx';
-import { Button } from '../components/ui/button.lynx';
-import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
-import { Input } from '../components/ui/input.lynx';
+} from "../data/synaraClient.lynx";
+import { Button } from "../components/ui/button.lynx";
+import { FileEntryIcon } from "../components/FileEntryIcon.lynx";
+import { Input } from "../components/ui/input.lynx";
 import {
   Menu,
   MenuCheckboxItem,
@@ -63,34 +59,34 @@ import {
   MenuRadioGroup,
   MenuRadioItem,
   MenuTrigger,
-} from '../components/ui/menu.lynx';
-import { scrollLynxElementIntoViewById } from '../components/ui/scrollIntoView.lynx';
-import { ResizableRightPanel } from './ResizableRightPanel.lynx';
-import { EditorSurfaceTab } from './EditorSurfaceTab.lynx';
-import { webStorage } from '../platform/storage';
+} from "../components/ui/menu.lynx";
+import { scrollLynxElementIntoViewById } from "../components/ui/scrollIntoView.lynx";
+import { ResizableRightPanel } from "./ResizableRightPanel.lynx";
+import { EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
+import { webStorage } from "../platform/storage";
 import {
   disclosureChevronClassName,
   disclosureContentClassName,
   useLynxDisclosurePresence,
-} from '../platform/motion.lynx';
-import { ExplorerFileActionsMenu } from './ExplorerPreviewHeader.lynx';
-import { EnvironmentGitAction } from './EnvironmentPanel.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
+} from "../platform/motion.lynx";
+import { ExplorerFileActionsMenu } from "./ExplorerPreviewHeader.lynx";
+import { EnvironmentGitAction } from "./EnvironmentPanel.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
 import {
   buildDiffSyntaxHighlightRequests,
   DIFF_INITIAL_VISIBLE_FILE_COUNT,
   DIFF_MORE_VISIBLE_FILE_COUNT,
   mergeDiffSyntaxHighlightResults,
   visibleDiffFiles,
-} from './diffSyntaxHighlighting.logic';
+} from "./diffSyntaxHighlighting.logic";
 import {
   resolveEditorDiffRequest,
   sortEditorDiffCheckpoints,
   type EditorDiffSource as DiffSource,
-} from './editorDiffSource.logic';
+} from "./editorDiffSource.logic";
 
-import './diff-dock.css';
+import "./diff-dock.css";
 
 function DockHeaderIconButton(props: {
   readonly children: ReactNode;
@@ -98,7 +94,7 @@ function DockHeaderIconButton(props: {
   readonly onActivate: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'DiffDockHeaderIconButton',
+    baseClassName: "DiffDockHeaderIconButton",
     accessibleLabel: props.label,
     onActivate: props.onActivate,
   });
@@ -124,15 +120,14 @@ export function DiffDock(props: {
   readonly initialSelectedFilePath?: string | null;
   readonly checkpoints?: readonly OrchestrationCheckpointSummary[];
   readonly unavailableLabel?: string | null;
-  readonly presentation?: 'dock' | 'editor' | 'hosted';
+  readonly presentation?: "dock" | "editor" | "hosted";
   readonly sidebarVisible?: boolean;
   readonly threadId: string;
   readonly workspaceRoot: string | null;
 }) {
-  const present = useLynxDisclosurePresence(
-    props.open && Boolean(props.workspaceRoot),
-    { transitionMs: 300 }
-  );
+  const present = useLynxDisclosurePresence(props.open && Boolean(props.workspaceRoot), {
+    transitionMs: 300,
+  });
   if (!present || !props.workspaceRoot) return null;
 
   return (
@@ -150,7 +145,7 @@ export function DiffDock(props: {
       dockTabHeader={props.dockTabHeader}
       onWidthChange={props.onWidthChange}
       open={props.open}
-      presentation={props.presentation ?? 'dock'}
+      presentation={props.presentation ?? "dock"}
       sidebarVisible={props.sidebarVisible}
       threadId={props.threadId}
       unavailableLabel={props.unavailableLabel}
@@ -173,7 +168,7 @@ function OpenDiffDock(props: {
   readonly dockTabHeader?: ReactNode;
   readonly onWidthChange: (width: number) => void;
   readonly open: boolean;
-  readonly presentation: 'dock' | 'editor' | 'hosted';
+  readonly presentation: "dock" | "editor" | "hosted";
   readonly sidebarVisible?: boolean;
   readonly threadId: string;
   readonly unavailableLabel?: string | null;
@@ -181,57 +176,41 @@ function OpenDiffDock(props: {
 }) {
   const { resolvedTheme, semanticIconColor } = useTheme();
   const [refreshGeneration, setRefreshGeneration] = useState(0);
-  const [expandedFileKeys, setExpandedFileKeys] = useState<string[] | null>(
-    null
-  );
+  const [expandedFileKeys, setExpandedFileKeys] = useState<string[] | null>(null);
   const [selectedFilePath, setSelectedFilePath] = useState<string | null>(
-    props.initialSelectedFilePath ?? null
+    props.initialSelectedFilePath ?? null,
   );
-  const [visibleLineCounts, setVisibleLineCounts] = useState<
-    Record<string, number>
-  >({});
+  const [visibleLineCounts, setVisibleLineCounts] = useState<Record<string, number>>({});
   const [rawVisibleLineCount, setRawVisibleLineCount] = useState(
-    PULL_REQUEST_DIFF_INITIAL_LINE_COUNT
+    PULL_REQUEST_DIFF_INITIAL_LINE_COUNT,
   );
-  const [visibleFileCount, setVisibleFileCount] = useState(
-    DIFF_INITIAL_VISIBLE_FILE_COUNT
-  );
+  const [visibleFileCount, setVisibleFileCount] = useState(DIFF_INITIAL_VISIBLE_FILE_COUNT);
   const pendingFileJumpKeyRef = useRef<string | null>(null);
   const [fileJumpOpen, setFileJumpOpen] = useState(false);
-  const [fileJumpQuery, setFileJumpQuery] = useState('');
-  const [fileTreeOpen, setFileTreeOpen] = useState(
-    props.initialFileTreeOpen === true
-  );
+  const [fileJumpQuery, setFileJumpQuery] = useState("");
+  const [fileTreeOpen, setFileTreeOpen] = useState(props.initialFileTreeOpen === true);
   const [fileTreeInteracted, setFileTreeInteracted] = useState(false);
   const updateFileTreeOpen = (open: boolean) => {
     setFileTreeInteracted(true);
     setFileTreeOpen(open);
     props.onFileTreeOpenChange?.(open);
   };
-  const [fileTreeQuery, setFileTreeQuery] = useState('');
-  const [collapsedTreePaths, setCollapsedTreePaths] = useState<ReadonlySet<string>>(
-    new Set()
-  );
+  const [fileTreeQuery, setFileTreeQuery] = useState("");
+  const [collapsedTreePaths, setCollapsedTreePaths] = useState<ReadonlySet<string>>(new Set());
   const fileTreePresent = useLynxDisclosurePresence(fileTreeOpen);
   const fileTreeVisible =
-    fileTreeOpen ||
-    (!fileTreeInteracted && props.initialFileTreeOpen === true);
+    fileTreeOpen || (!fileTreeInteracted && props.initialFileTreeOpen === true);
   const closeFileJump = () => {
     setFileJumpOpen(false);
-    setFileJumpQuery('');
+    setFileJumpQuery("");
   };
   const [diffWordWrap, setDiffWordWrap] = useState(
-    () =>
-      readSettingsBehaviorProjection(
-        webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
-      ).diffWordWrap
+    () => readSettingsBehaviorProjection(webStorage.getItem(APP_SETTINGS_STORAGE_KEY)).diffWordWrap,
   );
-  const [diffRenderMode, setDiffRenderMode] = useState<'stacked' | 'split'>(
-    'split'
-  );
+  const [diffRenderMode, setDiffRenderMode] = useState<"stacked" | "split">("split");
   const [diffIgnoreWhitespace, setDiffIgnoreWhitespace] = useState(true);
   const [diffSource, setDiffSource] = useState<DiffSource>(
-    props.initialDiffSource ?? 'workingTree'
+    props.initialDiffSource ?? "workingTree",
   );
   const [diffCopied, setDiffCopied] = useState(false);
   const orderedCheckpoints = sortEditorDiffCheckpoints(props.checkpoints);
@@ -239,23 +218,23 @@ function OpenDiffDock(props: {
 
   const diff = useQuery({
     queryKey: [
-      'working-tree-diff',
+      "working-tree-diff",
       props.workspaceRoot,
       diffSource,
       diffIgnoreWhitespace,
       refreshGeneration,
     ],
     queryFn: () => {
-      'background only';
-      if (diffRequest.kind === 'empty') return Promise.resolve({ patch: '' });
-      if (diffRequest.kind === 'full-thread') {
+      "background only";
+      if (diffRequest.kind === "empty") return Promise.resolve({ patch: "" });
+      if (diffRequest.kind === "full-thread") {
         return fetchFullThreadDiff({
           threadId: props.threadId,
           toTurnCount: diffRequest.toTurnCount,
           ignoreWhitespace: diffIgnoreWhitespace,
         }).then((result) => ({ patch: result.diff }));
       }
-      if (diffRequest.kind === 'turn') {
+      if (diffRequest.kind === "turn") {
         return fetchTurnDiff({
           threadId: props.threadId,
           fromTurnCount: diffRequest.fromTurnCount,
@@ -266,17 +245,15 @@ function OpenDiffDock(props: {
       return fetchWorkingTreeDiff(props.workspaceRoot, diffRequest.scope);
     },
     initialData:
-      refreshGeneration === 0 && diffSource === 'workingTree'
-        ? props.initialDiff
-        : undefined,
+      refreshGeneration === 0 && diffSource === "workingTree" ? props.initialDiff : undefined,
     enabled: !props.unavailableLabel,
     retry: false,
     staleTime: Number.POSITIVE_INFINITY,
   });
   const gitStatus = useQuery({
-    queryKey: ['diff-dock-git-status', props.workspaceRoot, refreshGeneration],
+    queryKey: ["diff-dock-git-status", props.workspaceRoot, refreshGeneration],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchGitStatus(props.workspaceRoot);
     },
     enabled: !props.unavailableLabel,
@@ -286,33 +263,28 @@ function OpenDiffDock(props: {
 
   const view = buildPullRequestCodeView(
     diff.data?.patch,
-    `working-tree:${props.workspaceRoot ?? 'none'}`
+    `working-tree:${props.workspaceRoot ?? "none"}`,
   );
   const copyDiff = async () => {
-    'background only';
+    "background only";
     const patch = diff.data?.patch;
     if (!patch) return;
-    const { clipboard } = await import(
-      /* webpackMode: "eager" */ '../platform/clipboard'
-    );
+    const { clipboard } = await import(/* webpackMode: "eager" */ "../platform/clipboard");
     await clipboard.writeText(patch);
     setDiffCopied(true);
   };
   const selectedFile =
-    view.kind === 'files'
-      ? view.files.find((file) => file.path === selectedFilePath) ?? view.files[0]
+    view.kind === "files"
+      ? (view.files.find((file) => file.path === selectedFilePath) ?? view.files[0])
       : undefined;
   // The file sidebar is a navigator for the complete diff, never a filter.
   // Preserve hunk metadata in Editor mode too: Web's diff renderer keeps these
   // rows in both dock and workspace presentations to anchor the two line grids.
   const visibleFiles =
-    view.kind === 'files'
+    view.kind === "files"
       ? visibleDiffFiles(view.files, visibleFileCount, selectedFile?.path ?? null)
       : [];
-  const visibleView =
-    view.kind === 'files'
-      ? { ...view, files: visibleFiles }
-      : view;
+  const visibleView = view.kind === "files" ? { ...view, files: visibleFiles } : view;
   useEffect(() => {
     const fileKey = pendingFileJumpKeyRef.current;
     if (!fileKey || !visibleFiles.some((file) => file.key === fileKey)) return;
@@ -320,23 +292,19 @@ function OpenDiffDock(props: {
     scrollLynxElementIntoViewById(fileElementId(fileKey));
   }, [visibleFiles]);
   const syntaxHighlightRequests =
-    visibleView.kind === 'files'
-      ? buildDiffSyntaxHighlightRequests(visibleView.files)
-      : [];
+    visibleView.kind === "files" ? buildDiffSyntaxHighlightRequests(visibleView.files) : [];
   const syntaxHighlights = useQuery({
     queryKey: [
-      'working-tree-diff-syntax',
+      "working-tree-diff-syntax",
       props.workspaceRoot,
       refreshGeneration,
-      diff.data?.patch ?? '',
-      visibleFiles.map((file) => file.key).join('\0'),
+      diff.data?.patch ?? "",
+      visibleFiles.map((file) => file.key).join("\0"),
     ],
     queryFn: () => {
-      'background only';
+      "background only";
       return Promise.all(
-        syntaxHighlightRequests.map(({ code, path }) =>
-          highlightExplorerCode({ code, path })
-        )
+        syntaxHighlightRequests.map(({ code, path }) => highlightExplorerCode({ code, path })),
       );
     },
     enabled: syntaxHighlightRequests.length > 0,
@@ -349,29 +317,22 @@ function OpenDiffDock(props: {
     theme: resolvedTheme,
   });
   const visibleExpandedFileKeys =
-    expandedFileKeys ??
-    (view.kind === 'files' ? view.files.map((file) => file.key) : []);
-  const allFilesCollapsed =
-    view.kind === 'files' && visibleExpandedFileKeys.length === 0;
+    expandedFileKeys ?? (view.kind === "files" ? view.files.map((file) => file.key) : []);
+  const allFilesCollapsed = view.kind === "files" && visibleExpandedFileKeys.length === 0;
   const toggleCollapseAll = () => {
-    if (view.kind !== 'files') return;
-    setExpandedFileKeys(
-      allFilesCollapsed ? view.files.map((file) => file.key) : []
-    );
+    if (view.kind !== "files") return;
+    setExpandedFileKeys(allFilesCollapsed ? view.files.map((file) => file.key) : []);
   };
   const fileElementId = (fileKey: string) =>
-    `diff-dock-file-${view.kind === 'files' ? view.files.findIndex((file) => file.key === fileKey) : -1}`;
+    `diff-dock-file-${view.kind === "files" ? view.files.findIndex((file) => file.key === fileKey) : -1}`;
   const fileJumpFiles =
-    view.kind === 'files'
+    view.kind === "files"
       ? view.files.filter((file) =>
-          file.path.toLowerCase().includes(fileJumpQuery.trim().toLowerCase())
+          file.path.toLowerCase().includes(fileJumpQuery.trim().toLowerCase()),
         )
       : [];
-  const fileTreePaths =
-    view.kind === 'files' ? view.files.map((file) => file.path) : [];
-  const fileTree = buildPathTree(
-    filterPathsForSearch(fileTreePaths, fileTreeQuery)
-  );
+  const fileTreePaths = view.kind === "files" ? view.files.map((file) => file.path) : [];
+  const fileTree = buildPathTree(filterPathsForSearch(fileTreePaths, fileTreeQuery));
   const fileTreeSearching = fileTreeQuery.trim().length > 0;
   const toggleTreeDirectory = (path: string) => {
     setCollapsedTreePaths((current) => {
@@ -382,9 +343,8 @@ function OpenDiffDock(props: {
     });
   };
   const selectTreeFile = (path: string) => {
-    const file = view.kind === 'files'
-      ? view.files.find((candidate) => candidate.path === path)
-      : undefined;
+    const file =
+      view.kind === "files" ? view.files.find((candidate) => candidate.path === path) : undefined;
     if (file) jumpToFile(file);
   };
   const jumpToFile = (file: PullRequestDiffFileView) => {
@@ -394,13 +354,13 @@ function OpenDiffDock(props: {
     closeFileJump();
   };
   const closeInteraction = useLynxInteractiveState({
-    baseClassName: 'DiffDockClose',
-    accessibleLabel: 'Close changes',
+    baseClassName: "DiffDockClose",
+    accessibleLabel: "Close changes",
     onActivate: props.onClose,
   });
   const retryInteraction = useLynxInteractiveState({
-    baseClassName: 'DiffDockRetry',
-    accessibleLabel: 'Retry loading changes',
+    baseClassName: "DiffDockRetry",
+    accessibleLabel: "Retry loading changes",
     onActivate: () => setRefreshGeneration((current) => current + 1),
   });
 
@@ -408,187 +368,156 @@ function OpenDiffDock(props: {
     <ResizableRightPanel
       availableWidth={props.availableWidth}
       className={`DiffDock${
-        props.presentation === 'hosted' ? ' DiffDock--hosted' : ''
-      }${props.open ? ' DiffDock--open' : ' DiffDock--closed'}`}
+        props.presentation === "hosted" ? " DiffDock--hosted" : ""
+      }${props.open ? " DiffDock--open" : " DiffDock--closed"}`}
       defaultWidth={
         props.availableWidth > 0
-          ? Math.max(
-              RIGHT_DOCK_MIN_WIDTH_PX,
-              Math.round(props.availableWidth / 2)
-            )
+          ? Math.max(RIGHT_DOCK_MIN_WIDTH_PX, Math.round(props.availableWidth / 2))
           : RIGHT_DOCK_MIN_WIDTH_PX
       }
       maxWidth={720}
       minimumMainWidth={320}
       minWidth={RIGHT_DOCK_MIN_WIDTH_PX}
       onWidthChange={props.onWidthChange}
-      hosted={props.presentation === 'hosted'}
-      resizable={props.presentation === 'dock'}
+      hosted={props.presentation === "hosted"}
+      resizable={props.presentation === "dock"}
     >
-      {props.presentation === 'dock' ? (
+      {props.presentation === "dock" ? (
         <>
-          {props.dockTabHeader ?? <view className="DiffDockTabHeader">
-            <view className="DiffDockTabList">
-              <EditorSurfaceTab
-                active
-                className="DiffDockTab"
-                closeLabel="Close Diff"
-                icon={
-                  <svg
-                    className="DiffDockTabIcon"
-                    content={colorizeLynxSvg(
-                      differenceSvg,
-                      semanticIconColor('secondary')
-                    )}
-                  />
-                }
-                label="Diff"
-                labelClassName="DiffDockTabTitle"
-                onClose={props.onClose}
-              />
-            </view>
-            <view className="DiffDockTabActions">
-              {props.onAddExplorer ? (
-                <Menu>
-                  <MenuTrigger
-                    ariaLabel="Add panel"
-                    className="DiffDockHeaderIconButton"
-                  >
-                    <PlusIcon
-                      color={semanticIconColor('secondary')}
-                      size={14}
+          {props.dockTabHeader ?? (
+            <view className="DiffDockTabHeader">
+              <view className="DiffDockTabList">
+                <EditorSurfaceTab
+                  active
+                  className="DiffDockTab"
+                  closeLabel="Close Diff"
+                  icon={
+                    <svg
+                      className="DiffDockTabIcon"
+                      content={colorizeLynxSvg(differenceSvg, semanticIconColor("secondary"))}
                     />
-                  </MenuTrigger>
-                  <MenuPopup
-                    side="bottom"
-                    align="end"
-                    className="DiffDockAddPanelMenu"
-                  >
-                    <MenuGroup>
-                      <MenuGroupLabel>Panel</MenuGroupLabel>
-                      <MenuItem onClick={props.onAddExplorer}>
-                        <FolderOpenIcon size={14} />
-                        <text>Explorer</text>
-                      </MenuItem>
-                    </MenuGroup>
-                  </MenuPopup>
-                </Menu>
-              ) : null}
-              <DockHeaderIconButton
-                label="Collapse panel"
-                onActivate={props.onClose}
-              >
-                <PanelRightCloseIcon
-                  color={semanticIconColor('secondary')}
-                  size={14}
-                />
-              </DockHeaderIconButton>
-            </view>
-          </view>}
-        </>
-      ) : null}
-      {props.presentation !== 'editor' ? (
-          <view className="DiffDockHeader">
-            <view className="DiffDockIdentity">
-              <DiffSourcePicker
-                checkpoints={orderedCheckpoints}
-                diffSource={diffSource}
-                fileCount={view.kind === 'files' ? view.files.length : 0}
-                onDiffSourceChange={setDiffSource}
-              />
-              {view.kind === 'files' ? (
-                <text className="DiffDockStats DiffDockActiveStats">
-                  +{view.additions} −{view.deletions}
-                </text>
-              ) : null}
-            </view>
-            <view className="DiffDockHeaderActions">
-              <DiffOptionsMenu
-                allFilesCollapsed={allFilesCollapsed}
-                diffCopied={diffCopied}
-                diffIgnoreWhitespace={diffIgnoreWhitespace}
-                diffRenderMode={diffRenderMode}
-                diffSource={diffSource}
-                diffWordWrap={diffWordWrap}
-                hasCopyText={Boolean(diff.data?.patch)}
-                hasFiles={view.kind === 'files'}
-                label="Diff view options"
-                onCopyDiff={() => void copyDiff()}
-                onDiffIgnoreWhitespaceChange={setDiffIgnoreWhitespace}
-                onDiffRenderModeChange={setDiffRenderMode}
-                onDiffSourceChange={setDiffSource}
-                checkpoints={orderedCheckpoints}
-                onDiffWordWrapChange={setDiffWordWrap}
-                onToggleCollapseAll={toggleCollapseAll}
-                triggerClassName="DiffDockToolbarMenuTrigger"
-                showSource={false}
-              />
-              {view.kind === 'files' && view.files.length > 1 ? (
-                <Button
-                  aria-label="Jump to file"
-                  className="DiffDockFileJumpTrigger"
-                  variant="ghost"
-                  onClick={() => setFileJumpOpen(true)}
-                >
-                  <SearchIcon size={14} color="var(--muted-foreground)" />
-                </Button>
-              ) : null}
-              {view.kind === 'files' ? (
-                <DockHeaderIconButton
-                  label={fileTreeOpen ? 'Hide file tree' : 'Show file tree'}
-                  onActivate={() => updateFileTreeOpen(!fileTreeOpen)}
-                >
-                  <FoldersIcon
-                    size={14}
-                    color={fileTreeOpen ? 'var(--foreground)' : 'var(--muted-foreground)'}
-                  />
-                </DockHeaderIconButton>
-              ) : null}
-              <view className="DiffDockToolbarDivider" />
-              <EnvironmentGitAction
-                branch={gitStatus.data?.branch ?? null}
-                gitStatus={gitStatus.data ?? null}
-                open={props.open}
-                presentation="toolbar"
-                threadId={props.threadId}
-                workspaceRoot={props.workspaceRoot}
-                onCompleted={() => setRefreshGeneration((current) => current + 1)}
-              />
-              <DiffTurnPicker
-                checkpoints={orderedCheckpoints}
-                diffSource={diffSource}
-                onDiffSourceChange={setDiffSource}
-              />
-              <view className="DiffDockToolbarDivider" />
-              <view
-                className={closeInteraction.className}
-                {...closeInteraction.eventProps}
-              >
-                <XIcon
-                  size={14}
-                  color="var(--muted-foreground)"
+                  }
+                  label="Diff"
+                  labelClassName="DiffDockTabTitle"
+                  onClose={props.onClose}
                 />
               </view>
+              <view className="DiffDockTabActions">
+                {props.onAddExplorer ? (
+                  <Menu>
+                    <MenuTrigger ariaLabel="Add panel" className="DiffDockHeaderIconButton">
+                      <PlusIcon color={semanticIconColor("secondary")} size={14} />
+                    </MenuTrigger>
+                    <MenuPopup side="bottom" align="end" className="DiffDockAddPanelMenu">
+                      <MenuGroup>
+                        <MenuGroupLabel>Panel</MenuGroupLabel>
+                        <MenuItem onClick={props.onAddExplorer}>
+                          <FolderOpenIcon size={14} />
+                          <text>Explorer</text>
+                        </MenuItem>
+                      </MenuGroup>
+                    </MenuPopup>
+                  </Menu>
+                ) : null}
+                <DockHeaderIconButton label="Collapse panel" onActivate={props.onClose}>
+                  <PanelRightCloseIcon color={semanticIconColor("secondary")} size={14} />
+                </DockHeaderIconButton>
+              </view>
+            </view>
+          )}
+        </>
+      ) : null}
+      {props.presentation !== "editor" ? (
+        <view className="DiffDockHeader">
+          <view className="DiffDockIdentity">
+            <DiffSourcePicker
+              checkpoints={orderedCheckpoints}
+              diffSource={diffSource}
+              fileCount={view.kind === "files" ? view.files.length : 0}
+              onDiffSourceChange={setDiffSource}
+            />
+            {view.kind === "files" ? (
+              <text className="DiffDockStats DiffDockActiveStats">
+                +{view.additions} −{view.deletions}
+              </text>
+            ) : null}
+          </view>
+          <view className="DiffDockHeaderActions">
+            <DiffOptionsMenu
+              allFilesCollapsed={allFilesCollapsed}
+              diffCopied={diffCopied}
+              diffIgnoreWhitespace={diffIgnoreWhitespace}
+              diffRenderMode={diffRenderMode}
+              diffSource={diffSource}
+              diffWordWrap={diffWordWrap}
+              hasCopyText={Boolean(diff.data?.patch)}
+              hasFiles={view.kind === "files"}
+              label="Diff view options"
+              onCopyDiff={() => void copyDiff()}
+              onDiffIgnoreWhitespaceChange={setDiffIgnoreWhitespace}
+              onDiffRenderModeChange={setDiffRenderMode}
+              onDiffSourceChange={setDiffSource}
+              checkpoints={orderedCheckpoints}
+              onDiffWordWrapChange={setDiffWordWrap}
+              onToggleCollapseAll={toggleCollapseAll}
+              triggerClassName="DiffDockToolbarMenuTrigger"
+              showSource={false}
+            />
+            {view.kind === "files" && view.files.length > 1 ? (
+              <Button
+                aria-label="Jump to file"
+                className="DiffDockFileJumpTrigger"
+                variant="ghost"
+                onClick={() => setFileJumpOpen(true)}
+              >
+                <SearchIcon size={14} color="var(--muted-foreground)" />
+              </Button>
+            ) : null}
+            {view.kind === "files" ? (
+              <DockHeaderIconButton
+                label={fileTreeOpen ? "Hide file tree" : "Show file tree"}
+                onActivate={() => updateFileTreeOpen(!fileTreeOpen)}
+              >
+                <FoldersIcon
+                  size={14}
+                  color={fileTreeOpen ? "var(--foreground)" : "var(--muted-foreground)"}
+                />
+              </DockHeaderIconButton>
+            ) : null}
+            <view className="DiffDockToolbarDivider" />
+            <EnvironmentGitAction
+              branch={gitStatus.data?.branch ?? null}
+              gitStatus={gitStatus.data ?? null}
+              open={props.open}
+              presentation="toolbar"
+              threadId={props.threadId}
+              workspaceRoot={props.workspaceRoot}
+              onCompleted={() => setRefreshGeneration((current) => current + 1)}
+            />
+            <DiffTurnPicker
+              checkpoints={orderedCheckpoints}
+              diffSource={diffSource}
+              onDiffSourceChange={setDiffSource}
+            />
+            <view className="DiffDockToolbarDivider" />
+            <view className={closeInteraction.className} {...closeInteraction.eventProps}>
+              <XIcon size={14} color="var(--muted-foreground)" />
             </view>
           </view>
+        </view>
       ) : null}
       <view className="DiffDockBody">
-        {props.presentation === 'editor' &&
+        {props.presentation === "editor" &&
         props.sidebarVisible !== false &&
-        view.kind === 'files' ? (
+        view.kind === "files" ? (
           <view className="DiffDockFileSidebar">
             <view className="DiffDockFileSidebarHeader">
               <svg
                 className="DiffDockFileSidebarIcon"
-                content={colorizeLynxSvg(
-                  differenceSvg,
-                  semanticIconColor('secondary')
-                )}
+                content={colorizeLynxSvg(differenceSvg, semanticIconColor("secondary"))}
               />
               <text className="DiffDockFileSidebarTitle">Changed files</text>
-              <text className="DiffDockFileSidebarCount">
-                {view.files.length}
-              </text>
+              <text className="DiffDockFileSidebarCount">{view.files.length}</text>
               <EditorDiffOptionsMenu
                 allFilesCollapsed={allFilesCollapsed}
                 diffCopied={diffCopied}
@@ -607,17 +536,10 @@ function OpenDiffDock(props: {
               />
             </view>
             <view className="DiffDockFileSidebarStats">
-              <text className="DiffDockFileSidebarAddition">
-                +{view.additions}
-              </text>
-              <text className="DiffDockFileSidebarDeletion">
-                -{view.deletions}
-              </text>
+              <text className="DiffDockFileSidebarAddition">+{view.additions}</text>
+              <text className="DiffDockFileSidebarDeletion">-{view.deletions}</text>
             </view>
-            <scroll-view
-              className="DiffDockFileSidebarList"
-              scroll-orientation="vertical"
-            >
+            <scroll-view className="DiffDockFileSidebarList" scroll-orientation="vertical">
               {view.files.map((file) => (
                 <EditorDiffFileRow
                   key={file.key}
@@ -626,12 +548,12 @@ function OpenDiffDock(props: {
                   path={file.path}
                   selected={file.key === selectedFile?.key}
                   onActivate={() => {
-                    'background only';
+                    "background only";
                     setSelectedFilePath(file.path);
                     setExpandedFileKeys((current) =>
                       current === null || current.includes(file.key)
                         ? current
-                        : [...current, file.key]
+                        : [...current, file.key],
                     );
                     scrollLynxElementIntoViewById(fileElementId(file.key));
                   }}
@@ -642,127 +564,110 @@ function OpenDiffDock(props: {
         ) : null}
         <view
           className={`DiffDockPatchViewportFrame${
-            props.presentation !== 'editor' && fileTreeVisible
-              ? ' DiffDockPatchViewportFrame--with-review-tree'
-              : ''
+            props.presentation !== "editor" && fileTreeVisible
+              ? " DiffDockPatchViewportFrame--with-review-tree"
+              : ""
           }`}
         >
-        <scroll-view
-          className="DiffDockScroller DiffDockPatchViewport"
-          scroll-y
-          enable-scroll-bar
-        >
-        {props.unavailableLabel ? (
-          <view className="DiffDockState">
-            <text className="DiffDockStateText">{props.unavailableLabel}</text>
-          </view>
-        ) : diff.isPending ? (
-          <view className="DiffDockState">
-            <RefreshCwIcon
-              size={16}
-              color="var(--muted-foreground)"
-            />
-            <text className="DiffDockStateText">Loading changes…</text>
-          </view>
-        ) : diff.error ? (
-          <view className="DiffDockState">
-            <text className="DiffDockStateText">Couldn’t load changes.</text>
-            <view
-              className={retryInteraction.className}
-              {...retryInteraction.eventProps}
-            >
-              <text className="DiffDockRetryText">Retry</text>
-            </view>
-          </view>
-        ) : (
-          <>
-          <PullRequestCodeComposition
-            emptyLabel="No working tree changes."
-            // Both the editor center and the dock follow the same compact file
-            // header anatomy as Web: type glyph, basename, then muted directory.
-            filePathPresentation="basename-first"
-            renderMode={
-              props.presentation !== 'editor' ? diffRenderMode : 'split'
-            }
-            // The Editor composition owns aggregate stats in its changed-files
-            // sidebar; its center is reserved for full file cards. The ordinary
-            // diff dock has no sidebar, so it keeps the shared summary inline.
-            showSummary={props.presentation !== 'editor'}
-            syntaxTokensByLineId={syntaxTokensByLineId}
-            wordWrap={diffWordWrap}
-            renderFileActions={
-              (filePath) => (
-                <DiffFileActionsMenu
-                  defaultOpen={
-                    props.initialActionMenuOpen === true &&
-                    filePath === selectedFile?.path
+          <scroll-view
+            className="DiffDockScroller DiffDockPatchViewport"
+            scroll-y
+            enable-scroll-bar
+          >
+            {props.unavailableLabel ? (
+              <view className="DiffDockState">
+                <text className="DiffDockStateText">{props.unavailableLabel}</text>
+              </view>
+            ) : diff.isPending ? (
+              <view className="DiffDockState">
+                <RefreshCwIcon size={16} color="var(--muted-foreground)" />
+                <text className="DiffDockStateText">Loading changes…</text>
+              </view>
+            ) : diff.error ? (
+              <view className="DiffDockState">
+                <text className="DiffDockStateText">Couldn’t load changes.</text>
+                <view className={retryInteraction.className} {...retryInteraction.eventProps}>
+                  <text className="DiffDockRetryText">Retry</text>
+                </view>
+              </view>
+            ) : (
+              <>
+                <PullRequestCodeComposition
+                  emptyLabel="No working tree changes."
+                  // Both the editor center and the dock follow the same compact file
+                  // header anatomy as Web: type glyph, basename, then muted directory.
+                  filePathPresentation="basename-first"
+                  renderMode={props.presentation !== "editor" ? diffRenderMode : "split"}
+                  // The Editor composition owns aggregate stats in its changed-files
+                  // sidebar; its center is reserved for full file cards. The ordinary
+                  // diff dock has no sidebar, so it keeps the shared summary inline.
+                  showSummary={props.presentation !== "editor"}
+                  syntaxTokensByLineId={syntaxTokensByLineId}
+                  wordWrap={diffWordWrap}
+                  renderFileActions={(filePath) => (
+                    <DiffFileActionsMenu
+                      defaultOpen={
+                        props.initialActionMenuOpen === true && filePath === selectedFile?.path
+                      }
+                      filePath={filePath}
+                      threadId={props.threadId}
+                    />
+                  )}
+                  fileElementId={fileElementId}
+                  view={visibleView}
+                  truncated={false}
+                  expandedFileKeys={visibleExpandedFileKeys}
+                  visibleLineCounts={visibleLineCounts}
+                  rawVisibleLineCount={rawVisibleLineCount}
+                  onToggleFile={(fileKey) =>
+                    setExpandedFileKeys(
+                      visibleExpandedFileKeys.includes(fileKey)
+                        ? visibleExpandedFileKeys.filter((key) => key !== fileKey)
+                        : [...visibleExpandedFileKeys, fileKey],
+                    )
                   }
-                  filePath={filePath}
-                  threadId={props.threadId}
+                  onShowMoreFile={(fileKey) =>
+                    setVisibleLineCounts((current) => ({
+                      ...current,
+                      [fileKey]:
+                        (current[fileKey] ?? PULL_REQUEST_DIFF_INITIAL_LINE_COUNT) +
+                        PULL_REQUEST_DIFF_MORE_LINE_COUNT,
+                    }))
+                  }
+                  onShowMoreRaw={() =>
+                    setRawVisibleLineCount((current) => current + PULL_REQUEST_DIFF_MORE_LINE_COUNT)
+                  }
                 />
-              )
-            }
-            fileElementId={fileElementId}
-            view={visibleView}
-            truncated={false}
-            expandedFileKeys={visibleExpandedFileKeys}
-            visibleLineCounts={visibleLineCounts}
-            rawVisibleLineCount={rawVisibleLineCount}
-            onToggleFile={(fileKey) =>
-              setExpandedFileKeys(
-                visibleExpandedFileKeys.includes(fileKey)
-                  ? visibleExpandedFileKeys.filter((key) => key !== fileKey)
-                  : [...visibleExpandedFileKeys, fileKey]
-              )
-            }
-            onShowMoreFile={(fileKey) =>
-              setVisibleLineCounts((current) => ({
-                ...current,
-                [fileKey]:
-                  (current[fileKey] ?? PULL_REQUEST_DIFF_INITIAL_LINE_COUNT) +
-                  PULL_REQUEST_DIFF_MORE_LINE_COUNT,
-              }))
-            }
-            onShowMoreRaw={() =>
-              setRawVisibleLineCount(
-                (current) => current + PULL_REQUEST_DIFF_MORE_LINE_COUNT
-              )
-            }
-          />
-          {view.kind === 'files' && visibleFiles.length < view.files.length ? (
-            <Button
-              className="DiffDockShowMoreFiles"
-              variant="ghost"
-              onClick={() =>
-                setVisibleFileCount((current) =>
-                  Math.min(
-                    view.files.length,
-                    current + DIFF_MORE_VISIBLE_FILE_COUNT
-                  )
-                )
-              }
-            >
-              Show {Math.min(
-                DIFF_MORE_VISIBLE_FILE_COUNT,
-                view.files.length - visibleFiles.length
-              )} more files
-            </Button>
-          ) : null}
-          </>
-        )}
-        </scroll-view>
+                {view.kind === "files" && visibleFiles.length < view.files.length ? (
+                  <Button
+                    className="DiffDockShowMoreFiles"
+                    variant="ghost"
+                    onClick={() =>
+                      setVisibleFileCount((current) =>
+                        Math.min(view.files.length, current + DIFF_MORE_VISIBLE_FILE_COUNT),
+                      )
+                    }
+                  >
+                    Show{" "}
+                    {Math.min(
+                      DIFF_MORE_VISIBLE_FILE_COUNT,
+                      view.files.length - visibleFiles.length,
+                    )}{" "}
+                    more files
+                  </Button>
+                ) : null}
+              </>
+            )}
+          </scroll-view>
         </view>
-        {props.presentation !== 'editor' &&
+        {props.presentation !== "editor" &&
         (fileTreePresent || fileTreeVisible) &&
-        view.kind === 'files' ? (
+        view.kind === "files" ? (
           <ReviewFileTree
             className={
               fileTreeInteracted
-                ? disclosureContentClassName(
-                    fileTreeOpen,
-                    'DiffDockReviewTreeMotion'
-                  )
-                : ''
+                ? disclosureContentClassName(fileTreeOpen, "DiffDockReviewTreeMotion")
+                : ""
             }
             nodes={fileTree}
             query={fileTreeQuery}
@@ -783,15 +688,12 @@ function OpenDiffDock(props: {
           accessibility-label="Jump to file dialog"
           accessibility-trait="dialog"
           bindkeydown={(event: { readonly key?: string }) => {
-            'background only';
-            if (event.key === 'Escape') closeFileJump();
+            "background only";
+            if (event.key === "Escape") closeFileJump();
           }}
           tabindex={0}
         >
-          <view
-            className="DiffDockFileJumpBackdrop"
-            bindtap={closeFileJump}
-          />
+          <view className="DiffDockFileJumpBackdrop" bindtap={closeFileJump} />
           <view
             className="DiffDockFileJumpDialog"
             accessibility-element
@@ -804,7 +706,7 @@ function OpenDiffDock(props: {
               variant="ghost"
               onClick={closeFileJump}
             >
-              <XIcon color={semanticIconColor('secondary')} size={14} />
+              <XIcon color={semanticIconColor("secondary")} size={14} />
             </Button>
             <text className="DiffDockFileJumpHeading">Jump to file</text>
             <Input
@@ -819,22 +721,17 @@ function OpenDiffDock(props: {
                 }
               }}
             />
-            <scroll-view
-              className="DiffDockFileJumpList"
-              scroll-orientation="vertical"
-            >
+            <scroll-view className="DiffDockFileJumpList" scroll-orientation="vertical">
               {fileJumpFiles.length === 0 ? (
-                <text className="DiffDockFileJumpEmpty">
-                  No matching files.
-                </text>
+                <text className="DiffDockFileJumpEmpty">No matching files.</text>
               ) : (
                 fileJumpFiles.map((file) => (
                   <Button
                     key={file.key}
                     className={`DiffDockFileJumpItem${
                       visibleExpandedFileKeys.includes(file.key)
-                        ? ' DiffDockFileJumpItem--active'
-                        : ''
+                        ? " DiffDockFileJumpItem--active"
+                        : ""
                     }`}
                     variant="ghost"
                     onClick={() => jumpToFile(file)}
@@ -842,12 +739,8 @@ function OpenDiffDock(props: {
                     <text className="DiffDockFileJumpPath">
                       {formatGitPathForDisplay(file.path)}
                     </text>
-                    <text className="SharedPrCodeStatsAddition">
-                      +{file.additions}
-                    </text>
-                    <text className="SharedPrCodeStatsDeletion">
-                      -{file.deletions}
-                    </text>
+                    <text className="SharedPrCodeStatsAddition">+{file.additions}</text>
+                    <text className="SharedPrCodeStatsDeletion">-{file.deletions}</text>
                   </Button>
                 ))
               )}
@@ -864,13 +757,13 @@ function EditorDiffOptionsMenu(props: {
   readonly checkpoints: readonly OrchestrationCheckpointSummary[];
   readonly diffCopied: boolean;
   readonly diffIgnoreWhitespace: boolean;
-  readonly diffRenderMode: 'stacked' | 'split';
+  readonly diffRenderMode: "stacked" | "split";
   readonly diffSource: DiffSource;
   readonly diffWordWrap: boolean;
   readonly hasCopyText: boolean;
   readonly onCopyDiff: () => void;
   readonly onDiffIgnoreWhitespaceChange: (enabled: boolean) => void;
-  readonly onDiffRenderModeChange: (mode: 'stacked' | 'split') => void;
+  readonly onDiffRenderModeChange: (mode: "stacked" | "split") => void;
   readonly onDiffSourceChange: (source: DiffSource) => void;
   readonly onDiffWordWrapChange: (enabled: boolean) => void;
   readonly onToggleCollapseAll: () => void;
@@ -887,13 +780,13 @@ function EditorDiffOptionsMenu(props: {
 }
 
 function diffSourceLabel(source: DiffSource): string {
-  if (source === 'workingTree') return 'Working tree';
-  if (source === 'unstaged') return 'Unstaged changes';
-  if (source === 'staged') return 'Staged changes';
-  if (source === 'branch') return 'Branch changes';
-  if (source === 'allTurns') return 'All turns';
-  if (source === 'lastTurn') return 'Last turn';
-  return 'Turn';
+  if (source === "workingTree") return "Working tree";
+  if (source === "unstaged") return "Unstaged changes";
+  if (source === "staged") return "Staged changes";
+  if (source === "branch") return "Branch changes";
+  if (source === "allTurns") return "All turns";
+  if (source === "lastTurn") return "Last turn";
+  return "Turn";
 }
 
 function DiffPickerTrigger(props: {
@@ -905,9 +798,7 @@ function DiffPickerTrigger(props: {
     <view className={props.className}>
       <AdjustmentsHorizontalIcon size={14} color="var(--foreground)" />
       <text className="DiffDockPickerLabel">{props.label}</text>
-      {props.count ? (
-        <text className="DiffDockPickerCount">{props.count}</text>
-      ) : null}
+      {props.count ? <text className="DiffDockPickerCount">{props.count}</text> : null}
       <ChevronDownIcon size={12} color="var(--muted-foreground)" />
     </view>
   );
@@ -931,11 +822,21 @@ function DiffSourcePicker(props: {
       <MenuPopup align="start" side="bottom" sideOffset={6} className="DiffDockSourceMenu">
         <MenuGroup>
           <MenuGroupLabel>Diff source</MenuGroupLabel>
-          <MenuRadioGroup value={props.diffSource} onValueChange={(value) => {
-            if (value === 'workingTree' || value === 'unstaged' || value === 'staged' || value === 'branch' || value === 'allTurns' || value === 'lastTurn') {
-              props.onDiffSourceChange(value);
-            }
-          }}>
+          <MenuRadioGroup
+            value={props.diffSource}
+            onValueChange={(value) => {
+              if (
+                value === "workingTree" ||
+                value === "unstaged" ||
+                value === "staged" ||
+                value === "branch" ||
+                value === "allTurns" ||
+                value === "lastTurn"
+              ) {
+                props.onDiffSourceChange(value);
+              }
+            }}
+          >
             <MenuRadioItem value="workingTree">Working tree</MenuRadioItem>
             <MenuRadioItem value="unstaged">Unstaged changes</MenuRadioItem>
             <MenuRadioItem value="staged">Staged changes</MenuRadioItem>
@@ -959,16 +860,14 @@ function DiffTurnPicker(props: {
   readonly onDiffSourceChange: (source: DiffSource) => void;
 }) {
   if (props.checkpoints.length === 0) return null;
-  const selectedTurn = props.diffSource.startsWith('turn:')
-    ? props.checkpoints.find(
-        (checkpoint) => `turn:${checkpoint.turnId}` === props.diffSource
-      )
+  const selectedTurn = props.diffSource.startsWith("turn:")
+    ? props.checkpoints.find((checkpoint) => `turn:${checkpoint.turnId}` === props.diffSource)
     : null;
   const label = selectedTurn
     ? `Turn ${selectedTurn.checkpointTurnCount}`
-    : props.diffSource === 'allTurns'
-      ? 'All turns'
-      : 'Turns';
+    : props.diffSource === "allTurns"
+      ? "All turns"
+      : "Turns";
   return (
     <Menu>
       <MenuTrigger ariaLabel="Choose turn diff" className="DiffDockTurnTrigger">
@@ -977,11 +876,14 @@ function DiffTurnPicker(props: {
       <MenuPopup align="end" side="bottom" sideOffset={6} className="DiffDockTurnsMenu">
         <MenuGroup>
           <MenuGroupLabel>Turns</MenuGroupLabel>
-          <MenuRadioGroup value={props.diffSource} onValueChange={(value) => {
-            if (value === 'allTurns' || value.startsWith('turn:')) {
-              props.onDiffSourceChange(value as DiffSource);
-            }
-          }}>
+          <MenuRadioGroup
+            value={props.diffSource}
+            onValueChange={(value) => {
+              if (value === "allTurns" || value.startsWith("turn:")) {
+                props.onDiffSourceChange(value as DiffSource);
+              }
+            }}
+          >
             <MenuRadioItem value="allTurns">All turns</MenuRadioItem>
             {props.checkpoints.map((checkpoint) => (
               <MenuRadioItem key={checkpoint.turnId} value={`turn:${checkpoint.turnId}`}>
@@ -1000,7 +902,7 @@ function DiffOptionsMenu(props: {
   readonly checkpoints: readonly OrchestrationCheckpointSummary[];
   readonly diffCopied: boolean;
   readonly diffIgnoreWhitespace: boolean;
-  readonly diffRenderMode: 'stacked' | 'split';
+  readonly diffRenderMode: "stacked" | "split";
   readonly diffSource: DiffSource;
   readonly diffWordWrap: boolean;
   readonly hasCopyText: boolean;
@@ -1008,7 +910,7 @@ function DiffOptionsMenu(props: {
   readonly label: string;
   readonly onCopyDiff: () => void;
   readonly onDiffIgnoreWhitespaceChange: (enabled: boolean) => void;
-  readonly onDiffRenderModeChange: (mode: 'stacked' | 'split') => void;
+  readonly onDiffRenderModeChange: (mode: "stacked" | "split") => void;
   readonly onDiffSourceChange: (source: DiffSource) => void;
   readonly onDiffWordWrapChange: (enabled: boolean) => void;
   readonly onToggleCollapseAll: () => void;
@@ -1017,63 +919,54 @@ function DiffOptionsMenu(props: {
 }) {
   return (
     <Menu>
-      <MenuTrigger
-        ariaLabel={props.label}
-        className={props.triggerClassName}
-      >
+      <MenuTrigger ariaLabel={props.label} className={props.triggerClassName}>
         <EllipsisIcon size={14} color="var(--muted-foreground)" />
       </MenuTrigger>
-      <MenuPopup
-        align="end"
-        className="DiffDockOptionsMenu"
-        side="bottom"
-        sideOffset={6}
-      >
-        {props.showSource ? <MenuGroup>
-          <MenuGroupLabel>Source</MenuGroupLabel>
-          <MenuRadioGroup
-            value={props.diffSource}
-            onValueChange={(value) => {
-              if (
-                value === 'workingTree' ||
-                value === 'unstaged' ||
-                value === 'staged' ||
-                value === 'branch' ||
-                value === 'allTurns' ||
-                value === 'lastTurn'
-              ) {
-                props.onDiffSourceChange(value);
-              }
-            }}
-          >
-            <MenuRadioItem value="workingTree">Working tree</MenuRadioItem>
-            <MenuRadioItem value="unstaged">Unstaged changes</MenuRadioItem>
-            <MenuRadioItem value="staged">Staged changes</MenuRadioItem>
-            <MenuRadioItem value="branch">Branch changes</MenuRadioItem>
-            {props.checkpoints.length > 0 ? (
-              <>
-                <MenuRadioItem value="allTurns">All turns</MenuRadioItem>
-                <MenuRadioItem value="lastTurn">Last turn</MenuRadioItem>
-              </>
-            ) : null}
-          </MenuRadioGroup>
-        </MenuGroup> : null}
+      <MenuPopup align="end" className="DiffDockOptionsMenu" side="bottom" sideOffset={6}>
+        {props.showSource ? (
+          <MenuGroup>
+            <MenuGroupLabel>Source</MenuGroupLabel>
+            <MenuRadioGroup
+              value={props.diffSource}
+              onValueChange={(value) => {
+                if (
+                  value === "workingTree" ||
+                  value === "unstaged" ||
+                  value === "staged" ||
+                  value === "branch" ||
+                  value === "allTurns" ||
+                  value === "lastTurn"
+                ) {
+                  props.onDiffSourceChange(value);
+                }
+              }}
+            >
+              <MenuRadioItem value="workingTree">Working tree</MenuRadioItem>
+              <MenuRadioItem value="unstaged">Unstaged changes</MenuRadioItem>
+              <MenuRadioItem value="staged">Staged changes</MenuRadioItem>
+              <MenuRadioItem value="branch">Branch changes</MenuRadioItem>
+              {props.checkpoints.length > 0 ? (
+                <>
+                  <MenuRadioItem value="allTurns">All turns</MenuRadioItem>
+                  <MenuRadioItem value="lastTurn">Last turn</MenuRadioItem>
+                </>
+              ) : null}
+            </MenuRadioGroup>
+          </MenuGroup>
+        ) : null}
         {props.showSource && props.checkpoints.length > 0 ? (
           <MenuGroup>
             <MenuGroupLabel>Turns</MenuGroupLabel>
             <MenuRadioGroup
               value={props.diffSource}
               onValueChange={(value) => {
-                if (value.startsWith('turn:')) {
+                if (value.startsWith("turn:")) {
                   props.onDiffSourceChange(value as `turn:${string}`);
                 }
               }}
             >
               {props.checkpoints.map((checkpoint) => (
-                <MenuRadioItem
-                  key={checkpoint.turnId}
-                  value={`turn:${checkpoint.turnId}`}
-                >
+                <MenuRadioItem key={checkpoint.turnId} value={`turn:${checkpoint.turnId}`}>
                   {`Turn ${checkpoint.checkpointTurnCount}`}
                 </MenuRadioItem>
               ))}
@@ -1085,7 +978,7 @@ function DiffOptionsMenu(props: {
           <MenuRadioGroup
             value={props.diffRenderMode}
             onValueChange={(value) => {
-              if (value === 'stacked' || value === 'split') {
+              if (value === "stacked" || value === "split") {
                 props.onDiffRenderModeChange(value);
               }
             }}
@@ -1115,7 +1008,7 @@ function DiffOptionsMenu(props: {
               <view className="DiffDockOptionLabel">
                 <CopyIcon size={14} color="var(--muted-foreground)" />
                 <text className="LxMenuItem__text">
-                  {props.diffCopied ? 'Copied diff' : 'Copy diff'}
+                  {props.diffCopied ? "Copied diff" : "Copy diff"}
                 </text>
               </view>
             </MenuItem>
@@ -1125,9 +1018,7 @@ function DiffOptionsMenu(props: {
               <view className="DiffDockOptionLabel">
                 <FolderOpenIcon size={14} color="var(--muted-foreground)" />
                 <text className="LxMenuItem__text">
-                  {props.allFilesCollapsed
-                    ? 'Expand all files'
-                    : 'Collapse all files'}
+                  {props.allFilesCollapsed ? "Expand all files" : "Collapse all files"}
                 </text>
               </view>
             </MenuItem>
@@ -1168,7 +1059,7 @@ function ReviewFileTreeRow(props: {
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: `DiffDockReviewTreeRow${
-      props.selected ? ' DiffDockReviewTreeRow--selected' : ''
+      props.selected ? " DiffDockReviewTreeRow--selected" : ""
     }`,
     accessibleLabel: props.label,
     onActivate: props.onActivate,
@@ -1197,7 +1088,7 @@ function ReviewFileTreeNodes(props: {
   return (
     <>
       {props.nodes.map((node) => {
-        if (node.kind === 'file') {
+        if (node.kind === "file") {
           return (
             <ReviewFileTreeRow
               key={`file:${node.path}`}
@@ -1205,10 +1096,7 @@ function ReviewFileTreeNodes(props: {
               label={node.name}
               selected={node.path === props.selectedFilePath}
               leading={
-                <FileEntryIcon
-                  className="DiffDockReviewTreeFileIcon"
-                  pathValue={node.path}
-                />
+                <FileEntryIcon className="DiffDockReviewTreeFileIcon" pathValue={node.path} />
               }
               onActivate={() => props.onSelectFile(node.path)}
             />
@@ -1221,7 +1109,7 @@ function ReviewFileTreeNodes(props: {
               depth={props.depth}
               label={node.name}
               leading={
-                <view className={disclosureChevronClassName(open, 'DiffDockReviewTreeChevron')}>
+                <view className={disclosureChevronClassName(open, "DiffDockReviewTreeChevron")}>
                   <ChevronRightIcon size={12} color="var(--muted-foreground)" />
                 </view>
               }
@@ -1274,7 +1162,7 @@ export function ReviewFileTreeSearchHeader(props: {
           aria-label="Filter files"
           onChange={(event) => props.onQueryChange(event.target.value)}
           onKeyDown={(event) => {
-            if (event.key === 'Escape') props.onQueryChange('');
+            if (event.key === "Escape") props.onQueryChange("");
           }}
         />
       </view>
@@ -1319,7 +1207,7 @@ function ReviewFileTree(props: {
           />
         ) : (
           <text className="DiffDockReviewTreeState">
-            {props.searching ? 'No matching files.' : 'No files in this diff.'}
+            {props.searching ? "No matching files." : "No files in this diff."}
           </text>
         )}
       </scroll-view>
@@ -1336,27 +1224,19 @@ function EditorDiffFileRow(props: {
 }) {
   const displayPath = formatGitPathForDisplay(props.path);
   const interaction = useLynxInteractiveState({
-    baseClassName: `DiffDockFileRow${
-      props.selected ? ' DiffDockFileRow--selected' : ''
-    }`,
+    baseClassName: `DiffDockFileRow${props.selected ? " DiffDockFileRow--selected" : ""}`,
     accessibleLabel: `Open ${displayPath}`,
     onActivate: props.onActivate,
   });
-  const slash = displayPath.lastIndexOf('/');
-  const directory =
-    slash === -1 ? '' : displayPath.slice(0, slash + 1);
+  const slash = displayPath.lastIndexOf("/");
+  const directory = slash === -1 ? "" : displayPath.slice(0, slash + 1);
   const name = slash === -1 ? displayPath : displayPath.slice(slash + 1);
   return (
     <view className={interaction.className} {...interaction.eventProps}>
-      <FileEntryIcon
-        className="DiffDockFileIcon"
-        pathValue={displayPath}
-      />
+      <FileEntryIcon className="DiffDockFileIcon" pathValue={displayPath} />
       <view className="DiffDockFileIdentity">
         <text className="DiffDockFileName">{name}</text>
-        {directory ? (
-          <text className="DiffDockFileDirectory">{directory}</text>
-        ) : null}
+        {directory ? <text className="DiffDockFileDirectory">{directory}</text> : null}
       </view>
       <view className="DiffDockFileStats">
         <text className="DiffDockFileAddition">+{props.additions}</text>

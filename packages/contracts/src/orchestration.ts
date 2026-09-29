@@ -2252,8 +2252,7 @@ export const OrchestrationSidebarSearchMessage = Schema.Struct({
     Schema.isMaxLength(ORCHESTRATION_SIDEBAR_SEARCH_LIMITS.messageCharsPerMessage),
   ),
 });
-export type OrchestrationSidebarSearchMessage =
-  typeof OrchestrationSidebarSearchMessage.Type;
+export type OrchestrationSidebarSearchMessage = typeof OrchestrationSidebarSearchMessage.Type;
 
 export const OrchestrationSidebarSearchThread = Schema.Struct({
   threadId: ThreadId,
@@ -2261,8 +2260,7 @@ export const OrchestrationSidebarSearchThread = Schema.Struct({
     Schema.isMaxLength(ORCHESTRATION_SIDEBAR_SEARCH_LIMITS.messagesPerThread),
   ),
 });
-export type OrchestrationSidebarSearchThread =
-  typeof OrchestrationSidebarSearchThread.Type;
+export type OrchestrationSidebarSearchThread = typeof OrchestrationSidebarSearchThread.Type;
 
 export const OrchestrationSidebarSearchSnapshot = Schema.Struct({
   snapshotSequence: NonNegativeInt,
@@ -2270,8 +2268,7 @@ export const OrchestrationSidebarSearchSnapshot = Schema.Struct({
     Schema.isMaxLength(ORCHESTRATION_SIDEBAR_SEARCH_LIMITS.messageThreadCount),
   ),
 });
-export type OrchestrationSidebarSearchSnapshot =
-  typeof OrchestrationSidebarSearchSnapshot.Type;
+export type OrchestrationSidebarSearchSnapshot = typeof OrchestrationSidebarSearchSnapshot.Type;
 
 export const OrchestrationThreadStreamItem = Schema.Union([
   Schema.Struct({
@@ -2372,9 +2369,7 @@ export const OrchestrationGetThreadDetailSnapshotInput = Schema.Struct({
 });
 export type OrchestrationGetThreadDetailSnapshotInput =
   typeof OrchestrationGetThreadDetailSnapshotInput.Type;
-const OrchestrationGetThreadDetailSnapshotResult = Schema.NullOr(
-  OrchestrationThreadDetailSnapshot,
-);
+const OrchestrationGetThreadDetailSnapshotResult = Schema.NullOr(OrchestrationThreadDetailSnapshot);
 export type OrchestrationGetThreadDetailSnapshotResult =
   typeof OrchestrationGetThreadDetailSnapshotResult.Type;
 

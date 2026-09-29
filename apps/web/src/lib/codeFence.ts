@@ -7,9 +7,7 @@
 //             and the shared path basename helper (file-icons).
 
 import { getFiletypeFromFileName } from "@pierre/diffs";
-import {
-  parseCodeFenceDisplayInfo,
-} from "./codeFenceCore";
+import { parseCodeFenceDisplayInfo } from "./codeFenceCore";
 
 export { dedentCode } from "./codeFenceCore";
 
@@ -34,9 +32,10 @@ export interface CodeFenceInfo {
 // language token (preserving the legacy `gitignore` → `ini` alias).
 export function parseCodeFenceInfo(rawInfo: string): CodeFenceInfo {
   const display = parseCodeFenceDisplayInfo(rawInfo);
-  const language = display.isFileReference && display.fileName
-    ? getFiletypeFromFileName(display.fileName)
-    : display.language;
+  const language =
+    display.isFileReference && display.fileName
+      ? getFiletypeFromFileName(display.fileName)
+      : display.language;
   return {
     ...display,
     language,

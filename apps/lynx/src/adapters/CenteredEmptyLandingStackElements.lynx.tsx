@@ -1,6 +1,6 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import './centered-empty-landing-stack-elements.css';
+import "./centered-empty-landing-stack-elements.css";
 
 interface ChildrenProps {
   readonly children?: ReactNode;

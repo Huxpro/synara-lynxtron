@@ -1,12 +1,12 @@
-import { describe, expect, it, rs } from '@rstest/core';
-import { fireEvent, render } from '@lynx-js/react/testing-library';
-import { readFileSync } from 'node:fs';
+import { describe, expect, it, rs } from "@rstest/core";
+import { fireEvent, render } from "@lynx-js/react/testing-library";
+import { readFileSync } from "node:fs";
 
 import {
   ComposerFileAttachmentElement,
   ComposerImageAttachmentElement,
   ComposerPastedTextAttachmentElement,
-} from './ComposerReferenceAttachmentsCompositionElements.lynx';
+} from "./ComposerReferenceAttachmentsCompositionElements.lynx";
 
 function findElement(selector: string): Element {
   const element = elementTree.root?.querySelector(selector);
@@ -14,76 +14,66 @@ function findElement(selector: string): Element {
   return element;
 }
 
-describe('composer reference attachment interaction contract', () => {
-  it('uses canonical summary, file, remove, and disclosure icons', () => {
+describe("composer reference attachment interaction contract", () => {
+  it("uses canonical summary, file, remove, and disclosure icons", () => {
     const source = readFileSync(
-      new URL(
-        './ComposerReferenceAttachmentsCompositionElements.lynx.tsx',
-        import.meta.url
-      ),
-      'utf8'
+      new URL("./ComposerReferenceAttachmentsCompositionElements.lynx.tsx", import.meta.url),
+      "utf8",
     );
     const styles = readFileSync(
-      new URL('../components/composer/composer.css', import.meta.url),
-      'utf8'
+      new URL("../components/composer/composer.css", import.meta.url),
+      "utf8",
     );
 
     expect(source.match(/semanticIconColor\('secondary'\)/g)?.length).toBeGreaterThanOrEqual(4);
     expect(source).toContain("semanticIconColor('tertiary')");
-    expect(source).toContain('svgColors.surface');
+    expect(source).toContain("svgColors.surface");
     expect(source).toContain('colorMode="inherit"');
-    expect(source).toContain('mimeType={file.mimeType}');
-    expect(source).toContain('<FileEntryIcon');
-    expect(source).toContain('<ChevronRightIcon');
-    expect(source).toContain('<CircleAlertIcon');
-    expect(source).toContain('color={svgColors.warning}');
+    expect(source).toContain("mimeType={file.mimeType}");
+    expect(source).toContain("<FileEntryIcon");
+    expect(source).toContain("<ChevronRightIcon");
+    expect(source).toContain("<CircleAlertIcon");
+    expect(source).toContain("color={svgColors.warning}");
     expect(source).not.toContain('color="#d97706"');
-    const themeSource = readFileSync(
-      new URL('./useTheme.lynx.ts', import.meta.url),
-      'utf8'
-    );
+    const themeSource = readFileSync(new URL("./useTheme.lynx.ts", import.meta.url), "utf8");
     expect(themeSource).toContain(
-      "const warningColor = resolvedTheme === 'dark' ? '#f5b44a' : '#d97706'"
+      "const warningColor = resolvedTheme === 'dark' ? '#f5b44a' : '#d97706'",
     );
-    expect(themeSource).toContain('warning: warningColor');
-    expect(source).toContain(
-      'accessibility-label="Draft attachment may not persist"'
-    );
-    expect(source).not.toContain(
-      '<text className="ComposerReferenceImageWarningLynx">!</text>'
-    );
+    expect(themeSource).toContain("warning: warningColor");
+    expect(source).toContain('accessibility-label="Draft attachment may not persist"');
+    expect(source).not.toContain('<text className="ComposerReferenceImageWarningLynx">!</text>');
     expect(source).not.toMatch(/[×◌≡▤]/);
     expect(styles).toMatch(
-      /\.ComposerReferenceCardActionLynx\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*row;[^}]*gap:\s*2px;/s
+      /\.ComposerReferenceCardActionLynx\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*row;[^}]*gap:\s*2px;/s,
     );
     expect(styles).toMatch(
-      /\.ComposerReferenceSummaryLynx,\s*\.ComposerReferenceCardLynx\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s
+      /\.ComposerReferenceSummaryLynx,\s*\.ComposerReferenceCardLynx\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);/s,
     );
     expect(styles).toMatch(
-      /\.ComposerReferenceCardActionLynx\.ui-pressed \.ComposerReferenceCardActionTextLynx\s*\{[^}]*color:\s*var\(--foreground\);/s
+      /\.ComposerReferenceCardActionLynx\.ui-pressed \.ComposerReferenceCardActionTextLynx\s*\{[^}]*color:\s*var\(--foreground\);/s,
     );
     expect(styles).not.toMatch(
-      /\.ComposerReference(?:CardAction|Remove|Image)Lynx\.ui-pressed\s*\{[^}]*opacity:/s
+      /\.ComposerReference(?:CardAction|Remove|Image)Lynx\.ui-pressed\s*\{[^}]*opacity:/s,
     );
     expect(source).toContain('tone="ghost"');
     expect(styles).toMatch(
-      /\.ComposerReferenceRemoveLynx--ghost\s*\{[^}]*top:\s*2px;[^}]*right:\s*3px;[^}]*background-color:\s*transparent;/s
+      /\.ComposerReferenceRemoveLynx--ghost\s*\{[^}]*top:\s*2px;[^}]*right:\s*3px;[^}]*background-color:\s*transparent;/s,
     );
     expect(styles).toMatch(
-      /\.ComposerReferenceRemoveLynx--ghost \.ComposerReferenceRemoveIconLynx\s*\{[^}]*color:\s*var\(--color-icon-secondary\);/s
+      /\.ComposerReferenceRemoveLynx--ghost \.ComposerReferenceRemoveIconLynx\s*\{[^}]*color:\s*var\(--color-icon-secondary\);/s,
     );
     expect(styles).toMatch(
-      /\.ComposerReferenceImageLynx\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--color-border-light\);[^}]*border-right-color:\s*var\(--color-border-light\);[^}]*border-top-color:\s*var\(--color-border-light\);[^}]*border-bottom-color:\s*var\(--color-border-light\);[^}]*border-radius:\s*12px;[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s
+      /\.ComposerReferenceImageLynx\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--color-border-light\);[^}]*border-right-color:\s*var\(--color-border-light\);[^}]*border-top-color:\s*var\(--color-border-light\);[^}]*border-bottom-color:\s*var\(--color-border-light\);[^}]*border-radius:\s*12px;[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s,
     );
     expect(styles).toMatch(
-      /\.ComposerReferenceImageLynx\.ui-hover\s*\{[^}]*border-left-color:\s*var\(--foreground\);[^}]*border-right-color:\s*var\(--foreground\);[^}]*border-top-color:\s*var\(--foreground\);[^}]*border-bottom-color:\s*var\(--foreground\);/s
+      /\.ComposerReferenceImageLynx\.ui-hover\s*\{[^}]*border-left-color:\s*var\(--foreground\);[^}]*border-right-color:\s*var\(--foreground\);[^}]*border-top-color:\s*var\(--foreground\);[^}]*border-bottom-color:\s*var\(--foreground\);/s,
     );
     expect(styles).toMatch(
-      /\.ComposerReferenceImageWarningLynx\s*\{[^}]*left:\s*4px;[^}]*bottom:\s*4px;[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*var\(--composer-surface\);/s
+      /\.ComposerReferenceImageWarningLynx\s*\{[^}]*left:\s*4px;[^}]*bottom:\s*4px;[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*10px;[^}]*background-color:\s*var\(--composer-surface\);/s,
     );
   });
 
-  it('gives the pasted-text show and remove actions canonical interaction state', () => {
+  it("gives the pasted-text show and remove actions canonical interaction state", () => {
     const onShowInTextField = rs.fn();
     const onRemove = rs.fn();
 
@@ -91,66 +81,62 @@ describe('composer reference attachment interaction contract', () => {
       <ComposerPastedTextAttachmentElement
         pastedText={{
           charCount: 11,
-          id: 'paste-1',
+          id: "paste-1",
           lineCount: 1,
-          text: 'hello world',
+          text: "hello world",
         }}
         onShowInTextField={onShowInTextField}
         onRemove={onRemove}
-      />
+      />,
     );
 
-    const show = findElement('.ComposerReferenceCardActionLynx');
-    expect(show.getAttribute('focusable')).toBe('true');
-    expect(show.getAttribute('accessibility-label')).toBe(
-      'Show hello world in text field'
-    );
+    const show = findElement(".ComposerReferenceCardActionLynx");
+    expect(show.getAttribute("focusable")).toBe("true");
+    expect(show.getAttribute("accessibility-label")).toBe("Show hello world in text field");
 
-    fireEvent(show, new Event('bindEvent:mouseenter', { bubbles: true }));
-    expect(show.getAttribute('class')).toContain('ui-hover');
+    fireEvent(show, new Event("bindEvent:mouseenter", { bubbles: true }));
+    expect(show.getAttribute("class")).toContain("ui-hover");
     fireEvent.mousedown(show);
-    expect(show.getAttribute('class')).toContain('ui-pressed');
+    expect(show.getAttribute("class")).toContain("ui-pressed");
     fireEvent.mouseup(show);
-    expect(show.getAttribute('class')).not.toContain('ui-pressed');
+    expect(show.getAttribute("class")).not.toContain("ui-pressed");
     fireEvent.focus(show);
-    expect(show.getAttribute('class')).toContain('ui-focus');
-    fireEvent.keydown(show, { key: 'Enter' });
+    expect(show.getAttribute("class")).toContain("ui-focus");
+    fireEvent.keydown(show, { key: "Enter" });
     fireEvent.tap(show);
     expect(onShowInTextField).toHaveBeenCalledTimes(2);
 
-    const remove = findElement('.ComposerReferenceRemoveLynx');
-    expect(remove.getAttribute('focusable')).toBe('true');
-    expect(remove.getAttribute('accessibility-label')).toBe(
-      'Remove pasted text (11 chars)'
-    );
-    fireEvent.keydown(remove, { key: ' ' });
-    fireEvent(remove, new Event('catchEvent:tap', { bubbles: true }));
+    const remove = findElement(".ComposerReferenceRemoveLynx");
+    expect(remove.getAttribute("focusable")).toBe("true");
+    expect(remove.getAttribute("accessibility-label")).toBe("Remove pasted text (11 chars)");
+    fireEvent.keydown(remove, { key: " " });
+    fireEvent(remove, new Event("catchEvent:tap", { bubbles: true }));
     expect(onRemove).toHaveBeenCalledTimes(2);
   });
 
-  it('uses the shared compact type label for file attachment cards', () => {
+  it("uses the shared compact type label for file attachment cards", () => {
     render(
       <ComposerFileAttachmentElement
         file={{
-          id: 'pdf-1',
-          mimeType: 'application/pdf',
-          name: 'renderer-fidelity.pdf',
+          id: "pdf-1",
+          mimeType: "application/pdf",
+          name: "renderer-fidelity.pdf",
           sizeBytes: 2048,
         }}
         onRemove={() => {}}
-      />
+      />,
     );
 
-    expect(findElement('.ComposerReferenceCardMetaLynx').textContent).toBe('PDF');
+    expect(findElement(".ComposerReferenceCardMetaLynx").textContent).toBe("PDF");
   });
 
-  it('keeps nested image removal separate from image preview activation', () => {
+  it("keeps nested image removal separate from image preview activation", () => {
     const onExpandImage = rs.fn();
     const onRemoveImage = rs.fn();
     const image = {
-      id: 'image-1',
-      name: 'screen.png',
-      previewUrl: 'data:image/png;base64,AA==',
+      id: "image-1",
+      name: "screen.png",
+      previewUrl: "data:image/png;base64,AA==",
     };
 
     render(
@@ -160,19 +146,17 @@ describe('composer reference attachment interaction contract', () => {
         nonPersisted={false}
         onExpandImage={onExpandImage}
         onRemoveImage={onRemoveImage}
-      />
+      />,
     );
 
-    const preview = findElement('.ComposerReferenceImageLynx');
-    expect(preview.getAttribute('focusable')).toBe('true');
-    expect(preview.getAttribute('accessibility-label')).toBe(
-      'Preview screen.png'
-    );
+    const preview = findElement(".ComposerReferenceImageLynx");
+    expect(preview.getAttribute("focusable")).toBe("true");
+    expect(preview.getAttribute("accessibility-label")).toBe("Preview screen.png");
     expect(
-      preview.querySelector('.ComposerReferenceImagePreviewLynx')?.getAttribute(
-        'accessibility-element'
-      )
-    ).toBe('false');
+      preview
+        .querySelector(".ComposerReferenceImagePreviewLynx")
+        ?.getAttribute("accessibility-element"),
+    ).toBe("false");
     fireEvent.tap(preview);
     expect(onExpandImage).toHaveBeenCalledTimes(1);
     expect(onExpandImage).toHaveBeenLastCalledWith({
@@ -180,17 +164,17 @@ describe('composer reference attachment interaction contract', () => {
       index: 0,
     });
 
-    const remove = findElement('.ComposerReferenceRemoveLynx');
-    fireEvent(remove, new Event('catchEvent:tap', { bubbles: true }));
+    const remove = findElement(".ComposerReferenceRemoveLynx");
+    fireEvent(remove, new Event("catchEvent:tap", { bubbles: true }));
     expect(onRemoveImage).toHaveBeenCalledWith(image.id);
     expect(onExpandImage).toHaveBeenCalledTimes(1);
   });
 
-  it('names the non-persisted image warning without changing preview activation', () => {
+  it("names the non-persisted image warning without changing preview activation", () => {
     const image = {
-      id: 'image-1',
-      name: 'screen.png',
-      previewUrl: 'data:image/png;base64,AA==',
+      id: "image-1",
+      name: "screen.png",
+      previewUrl: "data:image/png;base64,AA==",
     };
 
     render(
@@ -200,16 +184,12 @@ describe('composer reference attachment interaction contract', () => {
         nonPersisted={true}
         onExpandImage={() => {}}
         onRemoveImage={() => {}}
-      />
+      />,
     );
 
-    const warning = findElement('.ComposerReferenceImageWarningLynx');
-    expect(warning.getAttribute('accessibility-element')).toBe('true');
-    expect(warning.getAttribute('accessibility-label')).toBe(
-      'Draft attachment may not persist'
-    );
-    expect(
-      warning.querySelector('.ComposerReferenceImageWarningIconLynx')
-    ).not.toBeNull();
+    const warning = findElement(".ComposerReferenceImageWarningLynx");
+    expect(warning.getAttribute("accessibility-element")).toBe("true");
+    expect(warning.getAttribute("accessibility-label")).toBe("Draft attachment may not persist");
+    expect(warning.querySelector(".ComposerReferenceImageWarningIconLynx")).not.toBeNull();
   });
 });

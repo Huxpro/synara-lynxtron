@@ -41,10 +41,7 @@ function makeTestLayer(state: {
   statusCalls: number;
 }) {
   const gitCore = {
-    statusDetails: (
-      _cwd: string,
-      options?: { readonly refreshRemote?: boolean },
-    ) =>
+    statusDetails: (_cwd: string, options?: { readonly refreshRemote?: boolean }) =>
       Effect.sync(() => {
         state.detailsCalls += 1;
         state.detailsOptions?.push(options);

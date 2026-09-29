@@ -145,10 +145,7 @@ export function useKanbanCardContextMenu(
     });
 
     void (async () => {
-      const clicked = await api.contextMenu.show(
-        actions,
-        position,
-      );
+      const clicked = await api.contextMenu.show(actions, position);
 
       if (clicked === "start") {
         await startDraft(card);

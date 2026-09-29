@@ -143,7 +143,7 @@ export function decorateTerminalTextLine(
       const start = sorted[index] as number;
       const end = sorted[index + 1] as number;
       const match = lineMatches.find(
-        (candidate) => candidate.start <= start && candidate.end >= end
+        (candidate) => candidate.start <= start && candidate.end >= end,
       );
       result.push({
         text: run.text.slice(start - runStart, end - runStart),
@@ -157,9 +157,7 @@ export function decorateTerminalTextLine(
   return result;
 }
 
-export function flattenTerminalTextLines(
-  lines: readonly TerminalTextLine[]
-): TerminalTextRun[] {
+export function flattenTerminalTextLines(lines: readonly TerminalTextLine[]): TerminalTextRun[] {
   const runs: TerminalTextRun[] = [];
   const append = (text: string, style: TerminalTextStyle) => {
     if (!text) return;
@@ -341,9 +339,7 @@ export function createTerminalTextProjector(
   });
 
   const blankLine = (): TerminalCell[] =>
-    style.background === undefined
-      ? []
-      : Array.from({ length: columns }, blankCell);
+    style.background === undefined ? [] : Array.from({ length: columns }, blankCell);
 
   const ensureRow = (target: number) => {
     while (lines.length <= target) lines.push([]);
@@ -359,20 +355,20 @@ export function createTerminalTextProjector(
 
   const moveRow = (next: number) => {
     pendingWrap = false;
-    row = primaryScreen === null
-      ? Math.max(0, next)
-      : Math.max(0, Math.min(viewportRows - 1, next));
+    row =
+      primaryScreen === null ? Math.max(0, next) : Math.max(0, Math.min(viewportRows - 1, next));
     ensureRow(row);
     capLines();
   };
 
   const moveCursorRow = (next: number) => {
     const minimum = primaryScreen !== null && originMode ? scrollTop : 0;
-    const maximum = primaryScreen !== null
-      ? originMode
-        ? scrollBottom
-        : viewportRows - 1
-      : Number.POSITIVE_INFINITY;
+    const maximum =
+      primaryScreen !== null
+        ? originMode
+          ? scrollBottom
+          : viewportRows - 1
+        : Number.POSITIVE_INFINITY;
     moveRow(Math.min(maximum, Math.max(minimum, next)));
   };
 
@@ -389,17 +385,9 @@ export function createTerminalTextProjector(
     const amount = Math.min(count, height);
     if (direction === "up") {
       lines.splice(scrollTop, amount);
-      lines.splice(
-        scrollBottom - amount + 1,
-        0,
-        ...Array.from({ length: amount }, blankLine)
-      );
+      lines.splice(scrollBottom - amount + 1, 0, ...Array.from({ length: amount }, blankLine));
     } else {
-      lines.splice(
-        scrollTop,
-        0,
-        ...Array.from({ length: amount }, blankLine)
-      );
+      lines.splice(scrollTop, 0, ...Array.from({ length: amount }, blankLine));
       lines.splice(scrollBottom + 1, amount);
     }
   };
@@ -480,11 +468,7 @@ export function createTerminalTextProjector(
     while (line.length < column) line.push({ text: " ", style: {} });
     if (insertMode) {
       clearWideGlyphContinuationAt(line, column);
-      line.splice(
-        column,
-        0,
-        ...Array.from({ length: width }, blankCell)
-      );
+      line.splice(column, 0, ...Array.from({ length: width }, blankCell));
       if (line.length > columns) line.length = columns;
       clearOrphanedWideCells(line);
     }
@@ -525,7 +509,7 @@ export function createTerminalTextProjector(
       line.splice(
         column,
         Math.max(0, line.length - column),
-        ...Array.from({ length: columns - column }, blankCell)
+        ...Array.from({ length: columns - column }, blankCell),
       );
     }
   };
@@ -561,18 +545,15 @@ export function createTerminalTextProjector(
     ensureAlternateViewport();
     const amount = Math.min(count, scrollBottom - row + 1);
     lines.splice(row, amount);
-    lines.splice(
-      scrollBottom - amount + 1,
-      0,
-      ...Array.from({ length: amount }, blankLine)
-    );
+    lines.splice(scrollBottom - amount + 1, 0, ...Array.from({ length: amount }, blankLine));
   };
 
   const applyCsi = (body: string, final: string) => {
     const normalized = body.replace(/^[?>!]/, "");
-    const params = normalized.length === 0
-      ? []
-      : normalized.split(";").map((value) => Number.parseInt(value, 10) || 0);
+    const params =
+      normalized.length === 0
+        ? []
+        : normalized.split(";").map((value) => Number.parseInt(value, 10) || 0);
     const count = parameterValue(params, 0, 1);
     if (body === "?25" && (final === "h" || final === "l")) {
       cursorVisible = final === "h";
@@ -589,12 +570,7 @@ export function createTerminalTextProjector(
         cursorStyleOverride = undefined;
       } else if (cursorStyle >= 1 && cursorStyle <= 6) {
         cursorBlinkOverride = cursorStyle % 2 === 1;
-        cursorStyleOverride =
-          cursorStyle <= 2
-            ? "block"
-            : cursorStyle <= 4
-              ? "underline"
-              : "bar";
+        cursorStyleOverride = cursorStyle <= 2 ? "block" : cursorStyle <= 4 ? "underline" : "bar";
       }
       return;
     }
@@ -625,16 +601,8 @@ export function createTerminalTextProjector(
     }
     if ((body === "?1049" || body === "?1047" || body === "?47") && final === "l") {
       if (primaryScreen !== null) {
-        ({
-          column,
-          lines,
-          pendingWrap,
-          row,
-          savedColumn,
-          savedRow,
-          savedStyle,
-          style,
-        } = primaryScreen);
+        ({ column, lines, pendingWrap, row, savedColumn, savedRow, savedStyle, style } =
+          primaryScreen);
         primaryScreen = null;
         scrollTop = 0;
         scrollBottom = viewportRows - 1;
@@ -660,27 +628,40 @@ export function createTerminalTextProjector(
       return;
     }
     switch (final) {
-      case "A": moveCursorRow(row - count); break;
-      case "B": moveCursorRow(row + count); break;
-      case "C": pendingWrap = false; column = Math.min(columns - 1, column + count); break;
-      case "a": pendingWrap = false; column = Math.min(columns - 1, column + count); break;
-      case "D": pendingWrap = false; column = Math.max(0, column - count); break;
-      case "E": moveCursorRow(row + count); column = 0; break;
-      case "F": moveCursorRow(row - count); column = 0; break;
+      case "A":
+        moveCursorRow(row - count);
+        break;
+      case "B":
+        moveCursorRow(row + count);
+        break;
+      case "C":
+        pendingWrap = false;
+        column = Math.min(columns - 1, column + count);
+        break;
+      case "a":
+        pendingWrap = false;
+        column = Math.min(columns - 1, column + count);
+        break;
+      case "D":
+        pendingWrap = false;
+        column = Math.max(0, column - count);
+        break;
+      case "E":
+        moveCursorRow(row + count);
+        column = 0;
+        break;
+      case "F":
+        moveCursorRow(row - count);
+        column = 0;
+        break;
       case "G":
       case "`":
         pendingWrap = false;
-        column = Math.min(
-          columns - 1,
-          Math.max(0, parameterValue(params, 0, 1) - 1)
-        );
+        column = Math.min(columns - 1, Math.max(0, parameterValue(params, 0, 1) - 1));
         break;
       case "I":
         pendingWrap = false;
-        column = Math.min(
-          columns - 1,
-          (Math.floor(column / 8) + count) * 8
-        );
+        column = Math.min(columns - 1, (Math.floor(column / 8) + count) * 8);
         break;
       case "Z":
         pendingWrap = false;
@@ -689,25 +670,34 @@ export function createTerminalTextProjector(
       case "H":
       case "f":
         moveCursorRow(
-          parameterValue(params, 0, 1) - 1 +
-            (primaryScreen !== null && originMode ? scrollTop : 0)
+          parameterValue(params, 0, 1) - 1 + (primaryScreen !== null && originMode ? scrollTop : 0),
         );
-        column = Math.min(
-          columns - 1,
-          Math.max(0, parameterValue(params, 1, 1) - 1)
-        );
+        column = Math.min(columns - 1, Math.max(0, parameterValue(params, 1, 1) - 1));
         break;
       case "d":
         moveCursorRow(
-          parameterValue(params, 0, 1) - 1 +
-            (primaryScreen !== null && originMode ? scrollTop : 0)
+          parameterValue(params, 0, 1) - 1 + (primaryScreen !== null && originMode ? scrollTop : 0),
         );
         break;
-      case "e": moveCursorRow(row + count); break;
-      case "J": pendingWrap = false; eraseDisplay(params[0] ?? 0); break;
-      case "K": pendingWrap = false; eraseLine(params[0] ?? 0); break;
-      case "L": pendingWrap = false; insertLines(count); break;
-      case "M": pendingWrap = false; deleteLines(count); break;
+      case "e":
+        moveCursorRow(row + count);
+        break;
+      case "J":
+        pendingWrap = false;
+        eraseDisplay(params[0] ?? 0);
+        break;
+      case "K":
+        pendingWrap = false;
+        eraseLine(params[0] ?? 0);
+        break;
+      case "L":
+        pendingWrap = false;
+        insertLines(count);
+        break;
+      case "M":
+        pendingWrap = false;
+        deleteLines(count);
+        break;
       case "P": {
         pendingWrap = false;
         const line = lines[row] as TerminalCell[];
@@ -718,8 +708,14 @@ export function createTerminalTextProjector(
         clearOrphanedWideCells(line);
         break;
       }
-      case "S": pendingWrap = false; scrollRegion(count, "up"); break;
-      case "T": pendingWrap = false; scrollRegion(count, "down"); break;
+      case "S":
+        pendingWrap = false;
+        scrollRegion(count, "up");
+        break;
+      case "T":
+        pendingWrap = false;
+        scrollRegion(count, "down");
+        break;
       case "@":
         pendingWrap = false;
         clearWideGlyphContinuationAt(lines[row] as TerminalCell[], column);
@@ -730,7 +726,7 @@ export function createTerminalTextProjector(
         );
         (lines[row] as TerminalCell[]).length = Math.min(
           (lines[row] as TerminalCell[]).length,
-          columns
+          columns,
         );
         clearOrphanedWideCells(lines[row] as TerminalCell[]);
         break;
@@ -756,8 +752,7 @@ export function createTerminalTextProjector(
           else if (code === 9) style = { ...style, strikethrough: true };
           else if (code === 22) {
             style = { ...style, bold: undefined, dim: undefined };
-          }
-          else if (code === 23) style = { ...style, italic: undefined };
+          } else if (code === 23) style = { ...style, italic: undefined };
           else if (code === 24) style = { ...style, underline: undefined };
           else if (code === 27) style = { ...style, inverse: undefined };
           else if (code === 29) style = { ...style, strikethrough: undefined };
@@ -806,9 +801,15 @@ export function createTerminalTextProjector(
         }
         break;
       }
-      case "s": pendingWrap = false; saveCursor(); break;
-      case "u": restoreCursor(); break;
-      default: break;
+      case "s":
+        pendingWrap = false;
+        saveCursor();
+        break;
+      case "u":
+        restoreCursor();
+        break;
+      default:
+        break;
     }
   };
 
@@ -816,11 +817,7 @@ export function createTerminalTextProjector(
     let index = 0;
     while (index < input.length) {
       const firstCodeUnit = input.charCodeAt(index);
-      if (
-        firstCodeUnit >= 0xd800 &&
-        firstCodeUnit <= 0xdbff &&
-        index + 1 >= input.length
-      ) {
+      if (firstCodeUnit >= 0xd800 && firstCodeUnit <= 0xdbff && index + 1 >= input.length) {
         return input.slice(index);
       }
       const codePoint = input.codePointAt(index) as number;
@@ -862,7 +859,8 @@ export function createTerminalTextProjector(
             input[end] !== "\u009c" &&
             !(isOsc && input[end] === "\u0007") &&
             !(input[end] === "\u001b" && input[end + 1] === "\\")
-          ) end += 1;
+          )
+            end += 1;
           if (end >= input.length) return input.slice(index);
           index = input[end] === "\u001b" ? end + 2 : end + 1;
           continue;
@@ -892,18 +890,25 @@ export function createTerminalTextProjector(
           cursorStyleOverride = undefined;
           scrollTop = 0;
           scrollBottom = viewportRows - 1;
-        }
-        else if (command === "D") lineFeed();
-        else if (command === "E") { lineFeed(); column = 0; }
-        else if (command === "M") reverseIndex();
+        } else if (command === "D") lineFeed();
+        else if (command === "E") {
+          lineFeed();
+          column = 0;
+        } else if (command === "M") reverseIndex();
         index += command === "(" || command === ")" ? 3 : 2;
         continue;
       }
-      if (value === "\r") { column = 0; pendingWrap = false; }
-      else if (value === "\n") lineFeed();
-      else if (value === "\b") { pendingWrap = false; column = Math.max(0, column - 1); }
-      else if (value === "\t") { pendingWrap = false; column = Math.min(columns - 1, (Math.floor(column / 8) + 1) * 8); }
-      else if (isCombiningCodePoint(codePoint)) appendCombining(value);
+      if (value === "\r") {
+        column = 0;
+        pendingWrap = false;
+      } else if (value === "\n") lineFeed();
+      else if (value === "\b") {
+        pendingWrap = false;
+        column = Math.max(0, column - 1);
+      } else if (value === "\t") {
+        pendingWrap = false;
+        column = Math.min(columns - 1, (Math.floor(column / 8) + 1) * 8);
+      } else if (isCombiningCodePoint(codePoint)) appendCombining(value);
       else if (codePoint >= 0x20 && codePoint !== 0x7f) put(value, codePoint);
       index += codeUnitLength;
     }
@@ -950,9 +955,7 @@ export function createTerminalTextProjector(
       };
     },
     toStyledLines() {
-      const lastNonEmptyLine = lines.findLastIndex((line) =>
-        line.some(cellHasVisiblePresentation)
-      );
+      const lastNonEmptyLine = lines.findLastIndex((line) => line.some(cellHasVisiblePresentation));
       return lines.slice(0, lastNonEmptyLine + 1).map((line, index) => {
         const trimmed = trimUnstyledTrailingCells(line);
         return {
@@ -973,9 +976,7 @@ export function createTerminalTextProjector(
           runs.push({ text, style: { ...runStyle } });
         }
       };
-      const lastNonEmptyLine = lines.findLastIndex((line) =>
-        line.some(cellHasVisiblePresentation)
-      );
+      const lastNonEmptyLine = lines.findLastIndex((line) => line.some(cellHasVisiblePresentation));
       lines.slice(0, lastNonEmptyLine + 1).forEach((line, lineIndex) => {
         const trimmed = trimUnstyledTrailingCells(line);
         for (const run of cellsToRuns(trimmed)) append(run.text, run.style);
@@ -998,10 +999,7 @@ export function createTerminalTextProjector(
   };
 }
 
-export function projectTerminalText(
-  data: string,
-  options?: TerminalTextProjectorOptions,
-): string {
+export function projectTerminalText(data: string, options?: TerminalTextProjectorOptions): string {
   const projector = createTerminalTextProjector(options);
   projector.write(data);
   return projector.toString();

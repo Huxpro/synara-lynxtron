@@ -105,7 +105,7 @@ function storyRendererBranch(sourceText: string, storyId: string): string | null
   ].filter((index) => index >= 0);
   if (starts.length === 0) return null;
   const start = Math.min(...starts);
-  const next = sourceText.indexOf('if (props.storyId ===', start + 20);
+  const next = sourceText.indexOf("if (props.storyId ===", start + 20);
   return sourceText.slice(start, next < 0 ? sourceText.length : next);
 }
 
@@ -122,7 +122,13 @@ function source(file: string): string {
   return value;
 }
 const failures: string[] = [];
-const rows: Array<{ story: string; renderer: Renderer; authority: string; lab: string; productHits: number }> = [];
+const rows: Array<{
+  story: string;
+  renderer: Renderer;
+  authority: string;
+  lab: string;
+  productHits: number;
+}> = [];
 const counterpartByElectronIdentity = new Map<string, string>();
 const electronIdentitiesByLynxIdentity = new Map<string, Set<string>>();
 const storiesByCounterpartPair = new Map<string, string[]>();
@@ -132,11 +138,14 @@ for (const story of COMPONENT_LAB_STORIES) {
   const lynxIdentity = `${story.renderers.lynx.module}#${story.renderers.lynx.component}`;
   const existingCounterpart = counterpartByElectronIdentity.get(electronIdentity);
   if (existingCounterpart && existingCounterpart !== lynxIdentity) {
-    failures.push(`${story.id}: ${electronIdentity} maps to both ${existingCounterpart} and ${lynxIdentity}`);
+    failures.push(
+      `${story.id}: ${electronIdentity} maps to both ${existingCounterpart} and ${lynxIdentity}`,
+    );
   } else {
     counterpartByElectronIdentity.set(electronIdentity, lynxIdentity);
   }
-  const electronIdentities = electronIdentitiesByLynxIdentity.get(lynxIdentity) ?? new Set<string>();
+  const electronIdentities =
+    electronIdentitiesByLynxIdentity.get(lynxIdentity) ?? new Set<string>();
   electronIdentities.add(electronIdentity);
   electronIdentitiesByLynxIdentity.set(lynxIdentity, electronIdentities);
   const counterpartPair = `${electronIdentity} -> ${lynxIdentity}`;
@@ -166,7 +175,7 @@ for (const story of COMPONENT_LAB_STORIES) {
       const branch = storyRendererBranch(labSource, story.id);
       if (branch === null) {
         failures.push(`${story.id}/${renderer}: missing story renderer branch`);
-      } else if (!branch.includes('props.variant')) {
+      } else if (!branch.includes("props.variant")) {
         failures.push(`${story.id}/${renderer}: renderer ignores declared variants`);
       }
     }
@@ -174,7 +183,7 @@ for (const story of COMPONENT_LAB_STORIES) {
       const branch = storyRendererBranch(labSource, story.id);
       if (branch === null) {
         failures.push(`${story.id}/${renderer}: missing story renderer branch`);
-      } else if (!branch.includes('props.state')) {
+      } else if (!branch.includes("props.state")) {
         failures.push(`${story.id}/${renderer}: renderer ignores declared states`);
       }
     }
@@ -185,7 +194,8 @@ for (const story of COMPONENT_LAB_STORIES) {
         file === authorityFile ||
         file.includes(".test.") ||
         file.includes(".spec.")
-      ) return false;
+      )
+        return false;
       return contains(source(file), productPattern);
     });
     const authorityProductUse = occurrenceCount(authoritySource, productPattern) > 1;
@@ -193,7 +203,13 @@ for (const story of COMPONENT_LAB_STORIES) {
     if (productConsumerCount === 0) {
       failures.push(`${story.id}/${renderer}: no product consumer contains ${productPattern}`);
     }
-    rows.push({ story: story.id, renderer, authority: entry.module, lab: labSymbol, productHits: productConsumerCount });
+    rows.push({
+      story: story.id,
+      renderer,
+      authority: entry.module,
+      lab: labSymbol,
+      productHits: productConsumerCount,
+    });
   }
 }
 
@@ -204,7 +220,7 @@ for (const [lynxIdentity, electronIdentities] of electronIdentitiesByLynxIdentit
   const expected = override ? [...override.electronIdentities].sort() : [];
   if (!override || JSON.stringify(actual) !== JSON.stringify(expected)) {
     failures.push(
-      `${lynxIdentity}: maps from multiple Electron identities without an exact many-to-one override: ${actual.join(", ")}`
+      `${lynxIdentity}: maps from multiple Electron identities without an exact many-to-one override: ${actual.join(", ")}`,
     );
   }
 }
@@ -218,16 +234,32 @@ const manyToOneGroups = [...electronIdentitiesByLynxIdentity]
   .map(([lynx, identities]) => ({
     lynx,
     electron: [...identities].sort(),
-    stories: COMPONENT_LAB_STORIES
-      .filter((story) => `${story.renderers.lynx.module}#${story.renderers.lynx.component}` === lynx)
-      .map((story) => story.id),
+    stories: COMPONENT_LAB_STORIES.filter(
+      (story) => `${story.renderers.lynx.module}#${story.renderers.lynx.component}` === lynx,
+    ).map((story) => story.id),
     rationale: manyToOneOverrides[lynx]?.rationale ?? null,
     evidence: manyToOneOverrides[lynx]?.evidence ?? null,
   }));
 
-console.log(JSON.stringify({ coverage: summarizeComponentLabCoverage(COMPONENT_LAB_STORIES), checks: rows.length, counterpartGroups, manyToOneGroups, rows }, null, 2));
+console.log(
+  JSON.stringify(
+    {
+      coverage: summarizeComponentLabCoverage(COMPONENT_LAB_STORIES),
+      checks: rows.length,
+      counterpartGroups,
+      manyToOneGroups,
+      rows,
+    },
+    null,
+    2,
+  ),
+);
 if (failures.length > 0) {
-  console.error(`component identity audit failed (${failures.length}):\n${failures.map((failure) => `- ${failure}`).join("\n")}`);
+  console.error(
+    `component identity audit failed (${failures.length}):\n${failures.map((failure) => `- ${failure}`).join("\n")}`,
+  );
   process.exit(1);
 }
-console.log(`component identity audit passed: ${rows.length} renderer mappings across ${COMPONENT_LAB_STORIES.length} stories`);
+console.log(
+  `component identity audit passed: ${rows.length} renderer mappings across ${COMPONENT_LAB_STORIES.length} stories`,
+);

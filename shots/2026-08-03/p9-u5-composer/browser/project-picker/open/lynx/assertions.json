@@ -17,15 +17,9 @@
       "open": false
     },
     "open": {
-      "groups": [
-        "Void",
-        "Folders on this Mac"
-      ],
+      "groups": ["Void", "Folders on this Mac"],
       "firstOption": "spike-workspace",
-      "footer": [
-        "New project",
-        "Don't work in a project"
-      ],
+      "footer": ["New project", "Don't work in a project"],
       "hiddenDirectoryPresent": false,
       "popup": {
         "x": 408,
@@ -37,9 +31,7 @@
     },
     "search": {
       "query": "spike",
-      "options": [
-        "spike-workspace"
-      ]
+      "options": ["spike-workspace"]
     },
     "noMatch": {
       "query": "spike-missing",
@@ -53,10 +45,7 @@
       "selectedOption": "spike-workspace",
       "selectedIndicator": "✓",
       "ariaSelected": true,
-      "footer": [
-        "New project",
-        "Don't work in a project"
-      ]
+      "footer": ["New project", "Don't work in a project"]
     },
     "reset": {
       "trigger": "Work in a project",
@@ -65,7 +54,5 @@
   },
   "stateSetup": "Rendered controls only; closed-shadow controls exercised through real CDP pointer events.",
   "pageErrors": 0,
-  "knownWarnings": [
-    "upstream Lynx-for-Web deprecated initialization parameter warning"
-  ]
+  "knownWarnings": ["upstream Lynx-for-Web deprecated initialization parameter warning"]
 }

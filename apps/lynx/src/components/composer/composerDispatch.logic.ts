@@ -6,19 +6,19 @@ import type {
   ProviderMentionReference,
   ProviderSkillReference,
   RuntimeMode,
-} from '@synara/contracts';
+} from "@synara/contracts";
 import {
   appendPastedTextsToPrompt,
   type PastedTextDraft,
-} from '@synara-web/lib/composerPastedText';
+} from "@synara-web/lib/composerPastedText";
 import {
   appendFileCommentsToPrompt,
   type FileCommentSelection,
-} from '@synara-web/lib/fileComments';
+} from "@synara-web/lib/fileComments";
 import {
   appendTerminalContextsToPrompt,
   type TerminalContextSelection,
-} from '@synara-web/lib/terminalContext';
+} from "@synara-web/lib/terminalContext";
 
 export function buildComposerSendText(input: {
   readonly fileComments: ReadonlyArray<FileCommentSelection>;
@@ -29,18 +29,18 @@ export function buildComposerSendText(input: {
   return appendFileCommentsToPrompt(
     appendPastedTextsToPrompt(
       appendTerminalContextsToPrompt(input.prompt, input.terminalContexts ?? []),
-      input.pastedTexts
+      input.pastedTexts,
     ),
-    input.fileComments
+    input.fileComments,
   ).trim();
 }
 
 export function isRunningComposerSession(status: string | null): boolean {
-  return status === 'running';
+  return status === "running";
 }
 
 export function isConnectingComposerSession(status: string | null): boolean {
-  return status === 'starting';
+  return status === "starting";
 }
 
 export async function runComposerSendTransaction(input: {
@@ -69,20 +69,16 @@ export function buildComposerTurnStartCommand(input: {
   readonly threadId: string;
 }): ClientOrchestrationCommand {
   return {
-    type: 'thread.turn.start',
+    type: "thread.turn.start",
     commandId: input.commandId as never,
     threadId: input.threadId as never,
     message: {
       messageId: input.messageId as never,
-      role: 'user',
+      role: "user",
       text: input.text,
       attachments: input.attachments ? [...input.attachments] : [],
-      ...(input.mentions && input.mentions.length > 0
-        ? { mentions: [...input.mentions] }
-        : {}),
-      ...(input.skills && input.skills.length > 0
-        ? { skills: [...input.skills] }
-        : {}),
+      ...(input.mentions && input.mentions.length > 0 ? { mentions: [...input.mentions] } : {}),
+      ...(input.skills && input.skills.length > 0 ? { skills: [...input.skills] } : {}),
     },
     modelSelection: input.modelSelection,
     runtimeMode: input.runtimeMode,
@@ -98,7 +94,7 @@ export function buildComposerTurnInterruptCommand(input: {
   readonly threadId: string;
 }): ClientOrchestrationCommand {
   return {
-    type: 'thread.turn.interrupt',
+    type: "thread.turn.interrupt",
     commandId: input.commandId as never,
     threadId: input.threadId as never,
     ...(input.activeTurnId ? { turnId: input.activeTurnId as never } : {}),
@@ -113,7 +109,7 @@ export function buildComposerInteractionModeSetCommand(input: {
   readonly threadId: string;
 }): ClientOrchestrationCommand {
   return {
-    type: 'thread.interaction-mode.set',
+    type: "thread.interaction-mode.set",
     commandId: input.commandId as never,
     threadId: input.threadId as never,
     interactionMode: input.interactionMode,
@@ -128,7 +124,7 @@ export function buildComposerRuntimeModeSetCommand(input: {
   readonly threadId: string;
 }): ClientOrchestrationCommand {
   return {
-    type: 'thread.runtime-mode.set',
+    type: "thread.runtime-mode.set",
     commandId: input.commandId as never,
     threadId: input.threadId as never,
     runtimeMode: input.runtimeMode,

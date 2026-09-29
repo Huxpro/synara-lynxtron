@@ -153,10 +153,7 @@ export function deriveUsagePace(input: {
   };
 }
 
-export function formatProviderUsageResetCountdown(
-  resetsAt: string,
-  nowMs = Date.now(),
-): string {
+export function formatProviderUsageResetCountdown(resetsAt: string, nowMs = Date.now()): string {
   const resetMs = Date.parse(resetsAt);
   if (Number.isNaN(resetMs)) {
     return "";
@@ -201,7 +198,8 @@ export function deriveProviderUsageLimitDisplay(
   return {
     label: normalizedWindowLabel(limit),
     remainingPercent,
-    leftText: remainingPercent === null ? "Usage reported" : `${Math.round(remainingPercent)}% left`,
+    leftText:
+      remainingPercent === null ? "Usage reported" : `${Math.round(remainingPercent)}% left`,
     resetText: limit.resetsAt
       ? formatProviderUsageResetCountdown(limit.resetsAt, nowMs) || null
       : null,

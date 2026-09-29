@@ -1,4 +1,4 @@
-import type { BrowserViewBounds } from '../main/desktop/browserViewProbe';
+import type { BrowserViewBounds } from "../main/desktop/browserViewProbe";
 
 export interface BrowserViewMeasuredRect {
   readonly left: number;
@@ -10,7 +10,7 @@ export interface BrowserViewMeasuredRect {
 export function resolveBrowserViewBounds(
   pane: BrowserViewMeasuredRect,
   content: BrowserViewMeasuredRect,
-  chromeHeight: number
+  chromeHeight: number,
 ): BrowserViewBounds | null {
   const left = Math.max(content.left, pane.left);
   const top = Math.max(content.top, pane.top + chromeHeight);

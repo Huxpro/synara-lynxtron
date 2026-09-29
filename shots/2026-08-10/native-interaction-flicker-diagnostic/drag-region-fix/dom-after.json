@@ -70,10 +70,7 @@
                 "parentId": 13
               },
               {
-                "attributes": [
-                  "class",
-                  "SharedAppShellFrame"
-                ],
+                "attributes": ["class", "SharedAppShellFrame"],
                 "backendNodeId": 16,
                 "childNodeCount": 2,
                 "children": [
@@ -98,10 +95,7 @@
                     "parentId": 16
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "AppMain AppMain--sidebar-open"
-                    ],
+                    "attributes": ["class", "AppMain AppMain--sidebar-open"],
                     "backendNodeId": 114,
                     "childNodeCount": 1,
                     "localName": "view",

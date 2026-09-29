@@ -324,12 +324,8 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
   // re-clicking the active activity-bar item collapses the sidebar (VS Code
   // style), and the header chat toggle hides the chat pane (kept mounted so
   // the chat runtime survives).
-  const [sidebarVisible, setSidebarVisible] = useState(() =>
-    readEditorSidebarVisible(),
-  );
-  const [chatPaneVisible, setChatPaneVisible] = useState(() =>
-    readEditorChatPaneVisible(),
-  );
+  const [sidebarVisible, setSidebarVisible] = useState(() => readEditorSidebarVisible());
+  const [chatPaneVisible, setChatPaneVisible] = useState(() => readEditorChatPaneVisible());
   // The search pane replaces the explorer/diff sidebar without touching the
   // center mode, so picking a result simply opens it in the file preview. The
   // query lives here so it survives toggling between sidebar panes.

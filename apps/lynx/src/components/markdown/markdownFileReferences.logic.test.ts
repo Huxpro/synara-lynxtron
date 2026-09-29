@@ -1,62 +1,62 @@
-import { describe, expect, it } from '@rstest/core';
+import { describe, expect, it } from "@rstest/core";
 
 import {
   resolveLynxInlineCodeFileReference,
   resolveLynxMarkdownFileReference,
-} from './markdownFileReferences.logic';
+} from "./markdownFileReferences.logic";
 
-describe('Lynx markdown file references', () => {
-  it('normalizes workspace links to safe relative paths', () => {
+describe("Lynx markdown file references", () => {
+  it("normalizes workspace links to safe relative paths", () => {
     expect(
       resolveLynxMarkdownFileReference({
-        cwd: '/Users/dev/project',
-        rawPath: 'src/app/router.tsx:42:7',
-      })
-    ).toBe('src/app/router.tsx');
+        cwd: "/Users/dev/project",
+        rawPath: "src/app/router.tsx:42:7",
+      }),
+    ).toBe("src/app/router.tsx");
     expect(
       resolveLynxMarkdownFileReference({
-        cwd: '/Users/dev/project',
-        rawPath: '/Users/dev/project/README.md#L3',
-      })
-    ).toBe('README.md');
+        cwd: "/Users/dev/project",
+        rawPath: "/Users/dev/project/README.md#L3",
+      }),
+    ).toBe("README.md");
   });
 
-  it('keeps absolute local files for the grant-backed preview path', () => {
+  it("keeps absolute local files for the grant-backed preview path", () => {
     expect(
       resolveLynxMarkdownFileReference({
-        cwd: '/Users/dev/project',
-        rawPath: '/tmp/synara-codex-workspaces/thread-1/example.js',
-      })
-    ).toBe('/tmp/synara-codex-workspaces/thread-1/example.js');
+        cwd: "/Users/dev/project",
+        rawPath: "/tmp/synara-codex-workspaces/thread-1/example.js",
+      }),
+    ).toBe("/tmp/synara-codex-workspaces/thread-1/example.js");
   });
 
-  it('rejects external and traversal targets', () => {
+  it("rejects external and traversal targets", () => {
     expect(
       resolveLynxMarkdownFileReference({
-        cwd: '/Users/dev/project',
-        rawPath: 'https://example.com/docs',
-      })
+        cwd: "/Users/dev/project",
+        rawPath: "https://example.com/docs",
+      }),
     ).toBeNull();
     expect(
       resolveLynxMarkdownFileReference({
-        cwd: '/Users/dev/project',
-        rawPath: '../secret.txt',
-      })
+        cwd: "/Users/dev/project",
+        rawPath: "../secret.txt",
+      }),
     ).toBeNull();
   });
 
-  it('uses the shared inline-code candidate grammar', () => {
+  it("uses the shared inline-code candidate grammar", () => {
     expect(
       resolveLynxInlineCodeFileReference({
-        cwd: '/Users/dev/project',
-        value: '`src/app/router.tsx`',
-      })
-    ).toBe('src/app/router.tsx');
+        cwd: "/Users/dev/project",
+        value: "`src/app/router.tsx`",
+      }),
+    ).toBe("src/app/router.tsx");
     expect(
       resolveLynxInlineCodeFileReference({
-        cwd: '/Users/dev/project',
-        value: 'not a file',
-      })
+        cwd: "/Users/dev/project",
+        value: "not a file",
+      }),
     ).toBeNull();
   });
 });

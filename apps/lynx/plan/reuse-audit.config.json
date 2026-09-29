@@ -3,17 +3,8 @@
   "lynxRoot": ".",
   "outputJson": "plan/reports/p5-r1-reuse-baseline.json",
   "outputMarkdown": "plan/reports/p5-r1-reuse-baseline.md",
-  "screenSet": [
-    "threads",
-    "thread",
-    "settings",
-    "projects",
-    "kanban",
-    "pull-requests"
-  ],
-  "lynxEntries": [
-    "src/app/index.tsx"
-  ],
+  "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
+  "lynxEntries": ["src/app/index.tsx"],
   "patchedSources": [],
   "hardIslandPackages": [
     "@lexical/react",
@@ -125,22 +116,15 @@
         "apps/web/src/routes/_chat.tsx",
         "apps/web/src/routes/_chat.index.tsx"
       ],
-      "lynxConceptualEntries": [
-        "src/app/router.tsx",
-        "src/components/sidebar/Sidebar.lynx.tsx"
-      ]
+      "lynxConceptualEntries": ["src/app/router.tsx", "src/components/sidebar/Sidebar.lynx.tsx"]
     },
     {
       "id": "threads-shell",
       "label": "Threads shell + Sidebar (P6-C1 own subgraph)",
       "route": "/",
       "reference": "D12: P6-C1's own gate. Sidebar entry only; composer / ChatView / terminal / transport belong to P6-C2/C3 and are measured by the full `threads` route screen.",
-      "webEntries": [
-        "apps/web/src/components/Sidebar.tsx"
-      ],
-      "lynxConceptualEntries": [
-        "src/components/sidebar/Sidebar.lynx.tsx"
-      ]
+      "webEntries": ["apps/web/src/components/Sidebar.tsx"],
+      "lynxConceptualEntries": ["src/components/sidebar/Sidebar.lynx.tsx"]
     },
     {
       "id": "thread",
@@ -152,10 +136,7 @@
         "apps/web/src/routes/_chat.tsx",
         "apps/web/src/routes/_chat.$threadId.tsx"
       ],
-      "lynxConceptualEntries": [
-        "src/app/Transcript.tsx",
-        "src/components/composer/Composer.tsx"
-      ]
+      "lynxConceptualEntries": ["src/app/Transcript.tsx", "src/components/composer/Composer.tsx"]
     },
     {
       "id": "settings",
@@ -167,9 +148,7 @@
         "apps/web/src/routes/_chat.tsx",
         "apps/web/src/routes/_chat.settings.tsx"
       ],
-      "lynxConceptualEntries": [
-        "src/app/SettingsPage.tsx"
-      ]
+      "lynxConceptualEntries": ["src/app/SettingsPage.tsx"]
     },
     {
       "id": "projects",
@@ -181,9 +160,7 @@
         "apps/web/src/routes/_chat.tsx",
         "apps/web/src/routes/_chat.kanban.index.tsx"
       ],
-      "lynxConceptualEntries": [
-        "src/app/FeatureListsPage.tsx"
-      ]
+      "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"]
     },
     {
       "id": "kanban",
@@ -195,9 +172,7 @@
         "apps/web/src/routes/_chat.tsx",
         "apps/web/src/routes/_chat.kanban.$projectId.tsx"
       ],
-      "lynxConceptualEntries": [
-        "src/app/FeatureListsPage.tsx"
-      ]
+      "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"]
     },
     {
       "id": "pull-requests",
@@ -209,9 +184,7 @@
         "apps/web/src/routes/_chat.tsx",
         "apps/web/src/routes/_chat.pull-requests.index.tsx"
       ],
-      "lynxConceptualEntries": [
-        "src/app/FeatureListsPage.tsx"
-      ]
+      "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"]
     }
   ]
 }

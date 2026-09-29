@@ -56,10 +56,7 @@ describe("SettingsGeneralComposition", () => {
   it("compares every shared row against its default", () => {
     expect(settingsGeneralValuesEqual(defaults, defaults)).toBe(true);
     expect(
-      settingsGeneralValuesEqual(
-        { ...defaults, environmentPanelDefaultOpen: true },
-        defaults,
-      ),
+      settingsGeneralValuesEqual({ ...defaults, environmentPanelDefaultOpen: true }, defaults),
     ).toBe(false);
   });
 });

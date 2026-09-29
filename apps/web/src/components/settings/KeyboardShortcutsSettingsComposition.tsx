@@ -84,10 +84,7 @@ export function KeyboardShortcutsSettingsComposition({
 
       {filteredSections.length > 0 ? (
         <KeyboardShortcutsCardElement>
-          <KeyboardShortcutsHeaderElement
-            commandLabel="Command"
-            keybindingLabel="Keybinding"
-          />
+          <KeyboardShortcutsHeaderElement commandLabel="Command" keybindingLabel="Keybinding" />
           {filteredSections.flatMap((section) =>
             section.entries.map((entry) => (
               <KeyboardShortcutsRowElement
@@ -111,9 +108,7 @@ export function KeyboardShortcutsSettingsComposition({
           )}
         </KeyboardShortcutsCardElement>
       ) : (
-        <KeyboardShortcutsEmptyElement>
-          No shortcuts match “{query}”.
-        </KeyboardShortcutsEmptyElement>
+        <KeyboardShortcutsEmptyElement>No shortcuts match “{query}”.</KeyboardShortcutsEmptyElement>
       )}
     </KeyboardShortcutsRootElement>
   );

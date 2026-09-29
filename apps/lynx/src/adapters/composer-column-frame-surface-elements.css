@@ -8,9 +8,7 @@
   flex-direction: column;
 }
 
-.SliceRoot--viewport-compact
-  .ComposerColumnFrameSurfaceLynx.ComposerColumnFrameSurfaceLynx,
-.SliceRoot--viewport-medium
-  .ComposerColumnFrameSurfaceLynx.ComposerColumnFrameSurfaceLynx {
+.SliceRoot--viewport-compact .ComposerColumnFrameSurfaceLynx.ComposerColumnFrameSurfaceLynx,
+.SliceRoot--viewport-medium .ComposerColumnFrameSurfaceLynx.ComposerColumnFrameSurfaceLynx {
   max-width: calc(100% - 24px);
 }

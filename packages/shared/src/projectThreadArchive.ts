@@ -44,14 +44,11 @@ export async function deleteProjectThreadsSequentially<
 }
 
 export function deriveProjectThreadArchivePlan<ThreadId extends string>(
-  threads: readonly ProjectArchiveThread<ThreadId>[]
+  threads: readonly ProjectArchiveThread<ThreadId>[],
 ): ProjectThreadArchivePlan<ThreadId> {
   const current = threads.filter((thread) => thread.archivedAt == null);
   const archivableThreadIds = current
-    .filter(
-      (thread) =>
-        !(thread.sessionStatus === 'running' && thread.activeTurnId != null)
-    )
+    .filter((thread) => !(thread.sessionStatus === "running" && thread.activeTurnId != null))
     .map((thread) => thread.id);
   return {
     archivableThreadIds,
@@ -60,7 +57,7 @@ export function deriveProjectThreadArchivePlan<ThreadId extends string>(
   };
 }
 
-function plural(count: number, singular: string, pluralValue = singular + 's'): string {
+function plural(count: number, singular: string, pluralValue = singular + "s"): string {
   return count === 1 ? singular : pluralValue;
 }
 
@@ -69,9 +66,9 @@ export function projectThreadDeleteConfirmation(input: {
   readonly threadCount: number;
 }): string {
   return [
-    `Delete ${input.threadCount} ${plural(input.threadCount, 'thread')} in "${input.projectName}"?`,
-    'This permanently clears conversation history for these threads.',
-  ].join('\n');
+    `Delete ${input.threadCount} ${plural(input.threadCount, "thread")} in "${input.projectName}"?`,
+    "This permanently clears conversation history for these threads.",
+  ].join("\n");
 }
 
 export function projectRemoveConfirmation(input: {
@@ -81,8 +78,8 @@ export function projectRemoveConfirmation(input: {
   if (input.threadCount === 0) return `Remove project "${input.projectName}"?`;
   return [
     `Remove project "${input.projectName}"?`,
-    `This will delete ${input.threadCount} ${plural(input.threadCount, 'thread')} in this folder and remove the project.`,
-  ].join('\n');
+    `This will delete ${input.threadCount} ${plural(input.threadCount, "thread")} in this folder and remove the project.`,
+  ].join("\n");
 }
 
 export function projectThreadArchiveConfirmation(input: {
@@ -91,20 +88,20 @@ export function projectThreadArchiveConfirmation(input: {
   readonly runningCount: number;
 }): string {
   const lines = [
-    `Archive ${input.archivableCount} ${plural(input.archivableCount, 'thread')} in "${input.projectName}"?`,
-    'Archived threads are hidden from the sidebar but can be restored later.',
+    `Archive ${input.archivableCount} ${plural(input.archivableCount, "thread")} in "${input.projectName}"?`,
+    "Archived threads are hidden from the sidebar but can be restored later.",
   ];
   if (input.runningCount > 0) {
     lines.push(
-      '',
+      "",
       `${input.runningCount} running ${plural(
         input.runningCount,
-        'thread is',
-        'threads are'
-      )} currently active and will be skipped.`
+        "thread is",
+        "threads are",
+      )} currently active and will be skipped.`,
     );
   }
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 export function projectThreadArchiveResultMessage(input: {
@@ -116,16 +113,16 @@ export function projectThreadArchiveResultMessage(input: {
   if (input.failureCount > 0 && input.archivedCount === 0) {
     return `Could not archive ${input.failureCount} ${plural(
       input.failureCount,
-      'thread'
+      "thread",
     )} in "${input.projectName}".`;
   }
   const failures =
     input.failureCount > 0
-      ? `Failed to archive ${input.failureCount} ${plural(input.failureCount, 'thread')}.`
-      : '';
+      ? `Failed to archive ${input.failureCount} ${plural(input.failureCount, "thread")}.`
+      : "";
   const skipped =
     input.runningCount > 0
-      ? `Skipped ${input.runningCount} running ${plural(input.runningCount, 'thread')}.`
-      : '';
-  return [failures, skipped].filter(Boolean).join(' ') || null;
+      ? `Skipped ${input.runningCount} running ${plural(input.runningCount, "thread")}.`
+      : "";
+  return [failures, skipped].filter(Boolean).join(" ") || null;
 }

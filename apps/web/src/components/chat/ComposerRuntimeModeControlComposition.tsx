@@ -9,12 +9,7 @@ import {
   ComposerRuntimeModeTriggerElement,
   ComposerRuntimeRestrictedLabelElement,
 } from "~/components/chat/ComposerRuntimeModeControlCompositionElements";
-import {
-  Menu,
-  MenuRadioGroup,
-  MenuRadioItem,
-  MenuTrigger,
-} from "~/components/ui/menu";
+import { Menu, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "~/components/ui/menu";
 
 export function ComposerRuntimeModeControlComposition(props: {
   readonly disabled?: boolean;
@@ -41,10 +36,7 @@ export function ComposerRuntimeModeControlComposition(props: {
         <MenuRadioGroup
           value={props.runtimeMode}
           onValueChange={(value) => {
-            if (
-              value !== "full-access" &&
-              value !== "approval-required"
-            ) {
+            if (value !== "full-access" && value !== "approval-required") {
               return;
             }
             if (value !== props.runtimeMode) {

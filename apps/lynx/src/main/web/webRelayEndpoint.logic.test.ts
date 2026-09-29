@@ -1,133 +1,110 @@
-import { describe, expect, it } from '@rstest/core';
-import fs from 'node:fs';
+import { describe, expect, it } from "@rstest/core";
+import fs from "node:fs";
 
 import {
   buildWebRelaySocketUrl,
   normalizeWebRelayUrl,
   resolveWebRelayEndpoint,
-} from './webRelayEndpoint.logic';
+} from "./webRelayEndpoint.logic";
 
-describe('Lynx-for-Web relay endpoint', () => {
-  it('preserves auth query parameters while normalizing the relay root', () => {
+describe("Lynx-for-Web relay endpoint", () => {
+  it("preserves auth query parameters while normalizing the relay root", () => {
     expect(
-      normalizeWebRelayUrl(
-        ' ws://127.0.0.1:53742/stale?token=synara-local-desktop-comparison '
-      )
-    ).toBe(
-      'ws://127.0.0.1:53742/?token=synara-local-desktop-comparison'
-    );
+      normalizeWebRelayUrl(" ws://127.0.0.1:53742/stale?token=synara-local-desktop-comparison "),
+    ).toBe("ws://127.0.0.1:53742/?token=synara-local-desktop-comparison");
   });
 
-  it('merges auth and protocol query parameters into socket paths', () => {
-    const base =
-      'ws://127.0.0.1:53742/?token=synara-local-desktop-comparison';
-    expect(buildWebRelaySocketUrl(base, '/ws/bootstrap')).toBe(
-      'ws://127.0.0.1:53742/ws/bootstrap?token=synara-local-desktop-comparison'
+  it("merges auth and protocol query parameters into socket paths", () => {
+    const base = "ws://127.0.0.1:53742/?token=synara-local-desktop-comparison";
+    expect(buildWebRelaySocketUrl(base, "/ws/bootstrap")).toBe(
+      "ws://127.0.0.1:53742/ws/bootstrap?token=synara-local-desktop-comparison",
     );
     expect(
       buildWebRelaySocketUrl(
         base,
-        '/ws?x-synara-protocol-revision=1&x-synara-server-instance=server-1'
-      )
+        "/ws?x-synara-protocol-revision=1&x-synara-server-instance=server-1",
+      ),
     ).toBe(
-      'ws://127.0.0.1:53742/ws?x-synara-protocol-revision=1&x-synara-server-instance=server-1&token=synara-local-desktop-comparison'
+      "ws://127.0.0.1:53742/ws?x-synara-protocol-revision=1&x-synara-server-instance=server-1&token=synara-local-desktop-comparison",
     );
   });
 
-  it('lets the same-origin runtime config override a stale build endpoint', () => {
+  it("lets the same-origin runtime config override a stale build endpoint", () => {
     expect(
       resolveWebRelayEndpoint(
-        ' ws://127.0.0.1:58134 ',
-        'ws://127.0.0.1:59999',
-        'ws://127.0.0.1:58090'
-      )
-    ).toBe('ws://127.0.0.1:58134');
+        " ws://127.0.0.1:58134 ",
+        "ws://127.0.0.1:59999",
+        "ws://127.0.0.1:58090",
+      ),
+    ).toBe("ws://127.0.0.1:58134");
   });
 
-  it('falls back from runtime to build and then the product default', () => {
-    expect(
-      resolveWebRelayEndpoint(
-        undefined,
-        'ws://127.0.0.1:58133',
-        'ws://127.0.0.1:58090'
-      )
-    ).toBe('ws://127.0.0.1:58133');
-    expect(
-      resolveWebRelayEndpoint(undefined, '', 'ws://127.0.0.1:58090')
-    ).toBe('ws://127.0.0.1:58090');
+  it("falls back from runtime to build and then the product default", () => {
+    expect(resolveWebRelayEndpoint(undefined, "ws://127.0.0.1:58133", "ws://127.0.0.1:58090")).toBe(
+      "ws://127.0.0.1:58133",
+    );
+    expect(resolveWebRelayEndpoint(undefined, "", "ws://127.0.0.1:58090")).toBe(
+      "ws://127.0.0.1:58090",
+    );
   });
 
-  it('supports the session handoff between runtime HTML and build endpoint', () => {
+  it("supports the session handoff between runtime HTML and build endpoint", () => {
     expect(
       resolveWebRelayEndpoint(
         undefined,
-        ' ws://127.0.0.1:55342/?token=owned ',
-        'ws://127.0.0.1:59999',
-        'ws://127.0.0.1:58090'
-      )
-    ).toBe('ws://127.0.0.1:55342/?token=owned');
+        " ws://127.0.0.1:55342/?token=owned ",
+        "ws://127.0.0.1:59999",
+        "ws://127.0.0.1:58090",
+      ),
+    ).toBe("ws://127.0.0.1:55342/?token=owned");
   });
 
-  it('injects the isolated endpoint into both Web renderer bundles', () => {
+  it("injects the isolated endpoint into both Web renderer bundles", () => {
     const rsbuildConfig = fs.readFileSync(
-      new URL('../../../rsbuild.config.ts', import.meta.url),
-      'utf8'
+      new URL("../../../rsbuild.config.ts", import.meta.url),
+      "utf8",
     );
     const rspeedyConfig = fs.readFileSync(
-      new URL('../../../lynx.config.ts', import.meta.url),
-      'utf8'
+      new URL("../../../lynx.config.ts", import.meta.url),
+      "utf8",
     );
 
     expect(rsbuildConfig).toContain(
-      "const configuredSynaraWsUrl = process.env.SYNARA_WS_URL?.trim() ?? ''"
+      "const configuredSynaraWsUrl = process.env.SYNARA_WS_URL?.trim() ?? ''",
     );
     expect(rsbuildConfig).toContain(
-      "'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl)"
+      "'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl)",
     );
     expect(rspeedyConfig).toContain(
-      "'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl)"
+      "'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl)",
     );
-    const host = fs.readFileSync(
-      new URL('./web-host.ts', import.meta.url),
-      'utf8'
-    );
-    expect(host).toContain('return process.env.SYNARA_WS_URL;');
-    expect(host).toContain(
-      'relaySocketBaseUrl ?? relayReadyBaseUrl ?? configuredRelayBaseUrl()'
-    );
-    expect(host).not.toContain(
-      "if (typeof process === 'undefined') return undefined;"
-    );
+    const host = fs.readFileSync(new URL("./web-host.ts", import.meta.url), "utf8");
+    expect(host).toContain("return process.env.SYNARA_WS_URL;");
+    expect(host).toContain("relaySocketBaseUrl ?? relayReadyBaseUrl ?? configuredRelayBaseUrl()");
+    expect(host).not.toContain("if (typeof process === 'undefined') return undefined;");
   });
 
-  it('stages shared public icon URLs for the standalone Web renderer', () => {
+  it("stages shared public icon URLs for the standalone Web renderer", () => {
     const rsbuildConfig = fs.readFileSync(
-      new URL('../../../rsbuild.config.ts', import.meta.url),
-      'utf8'
+      new URL("../../../rsbuild.config.ts", import.meta.url),
+      "utf8",
     );
 
-    expect(rsbuildConfig).toContain(
-      "from: '../web/public/central-icons-reversed/'"
-    );
+    expect(rsbuildConfig).toContain("from: '../web/public/central-icons-reversed/'");
     expect(rsbuildConfig).toContain("to: 'central-icons-reversed'");
-    expect(rsbuildConfig).toContain(
-      "from: '../web/public/central-icons-fill/'"
-    );
+    expect(rsbuildConfig).toContain("from: '../web/public/central-icons-fill/'");
     expect(rsbuildConfig).toContain("to: 'central-icons-fill'");
   });
 
-  it('keeps recovery active after both a dropped socket and a cold-start failure', () => {
-    const host = fs.readFileSync(
-      new URL('./web-host.ts', import.meta.url),
-      'utf8'
-    );
+  it("keeps recovery active after both a dropped socket and a cold-start failure", () => {
+    const host = fs.readFileSync(new URL("./web-host.ts", import.meta.url), "utf8");
 
-    expect(host).toContain('startRelayRecovery(baseUrl);');
-    expect(host).toContain('startRelayRecovery(configuredRelayBaseUrl());');
-    expect(host).toContain('invalidateRelaySocket(socket, baseUrl, error);');
+    expect(host).toContain("startRelayRecovery(baseUrl);");
+    expect(host).toContain("startRelayRecovery(configuredRelayBaseUrl());");
+    expect(host).toContain("invalidateRelaySocket(socket, baseUrl, error);");
     expect(host).toContain("import { isWebSocketOpen } from './webSocketState.logic';");
-    expect(host).toContain('if (!isWebSocketOpen(socket))');
-    expect(host).toContain('isWebSocketOpen(relaySocket)');
-    expect(host).not.toContain('WebSocket.OPEN');
+    expect(host).toContain("if (!isWebSocketOpen(socket))");
+    expect(host).toContain("isWebSocketOpen(relaySocket)");
+    expect(host).not.toContain("WebSocket.OPEN");
   });
 });

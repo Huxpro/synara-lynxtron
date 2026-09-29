@@ -174,7 +174,9 @@ export function useTranscriptAssistantSelectionAction(
         selectionRect: selectionState.selectionRect,
         pointer: { x: clientX, y: clientY },
         viewport: (() => {
-          const rect = (resolveSelectionViewportElement(container) ?? container).getBoundingClientRect();
+          const rect = (
+            resolveSelectionViewportElement(container) ?? container
+          ).getBoundingClientRect();
           return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
         })(),
       });

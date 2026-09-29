@@ -1,9 +1,9 @@
-import 'background-only';
+import "background-only";
 
-import type { DesktopAppSnapState } from '@synara/contracts';
+import type { DesktopAppSnapState } from "@synara/contracts";
 
-import { bridgeCall, onGlobalEvent } from './bridge';
-import type { PickedFile } from './dialogs';
+import { bridgeCall, onGlobalEvent } from "./bridge";
+import type { PickedFile } from "./dialogs";
 
 export interface LynxAppSnapCapture {
   readonly captureId: string;
@@ -21,27 +21,25 @@ export interface LynxAppSnapError {
 }
 
 export const appSnap = {
-  getState: () => bridgeCall<DesktopAppSnapState>('appSnapGetState'),
+  getState: () => bridgeCall<DesktopAppSnapState>("appSnapGetState"),
   setEnabled: (enabled: boolean) =>
-    bridgeCall<DesktopAppSnapState>('appSnapSetEnabled', { enabled }),
-  requestPermissions: () =>
-    bridgeCall<DesktopAppSnapState>('appSnapRequestPermissions'),
+    bridgeCall<DesktopAppSnapState>("appSnapSetEnabled", { enabled }),
+  requestPermissions: () => bridgeCall<DesktopAppSnapState>("appSnapRequestPermissions"),
   setPlayCaptureSound: (enabled: boolean) =>
-    bridgeCall<DesktopAppSnapState>('appSnapSetPlaySound', { enabled }),
+    bridgeCall<DesktopAppSnapState>("appSnapSetPlaySound", { enabled }),
   previewCaptureSound: () =>
-    bridgeCall<{ readonly played?: boolean }>('appSnapPreviewSound').then(
-      (result) => result.played === true
+    bridgeCall<{ readonly played?: boolean }>("appSnapPreviewSound").then(
+      (result) => result.played === true,
     ),
   listPendingCaptures: () =>
     bridgeCall<{ readonly captures: readonly LynxAppSnapCapture[] }>(
-      'appSnapListPendingCaptures'
+      "appSnapListPendingCaptures",
     ).then((result) => result.captures),
-  acknowledgeCapture: (captureId: string) =>
-    bridgeCall('appSnapAcknowledgeCapture', { captureId }),
+  acknowledgeCapture: (captureId: string) => bridgeCall("appSnapAcknowledgeCapture", { captureId }),
   onCaptured: (listener: (capture: LynxAppSnapCapture) => void) =>
-    onGlobalEvent('synara:appsnap-captured', listener),
+    onGlobalEvent("synara:appsnap-captured", listener),
   onError: (listener: (error: LynxAppSnapError) => void) =>
-    onGlobalEvent('synara:appsnap-error', listener),
+    onGlobalEvent("synara:appsnap-error", listener),
   onState: (listener: (state: DesktopAppSnapState) => void) =>
-    onGlobalEvent('synara:appsnap-state', listener),
+    onGlobalEvent("synara:appsnap-state", listener),
 };

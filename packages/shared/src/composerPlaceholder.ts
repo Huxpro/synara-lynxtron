@@ -1,5 +1,5 @@
 export const DEFAULT_CHAT_COMPOSER_PLACEHOLDER =
-  'Ask anything, @tag files/folders, or use / to show available commands';
+  "Ask anything, @tag files/folders, or use / to show available commands";
 
 const COMPOSER_EDITOR_HORIZONTAL_CHROME_PX = 68;
 const COMPOSER_EDITOR_LINE_HEIGHT_PX = 19.5;
@@ -18,7 +18,7 @@ export function resolveEmptyComposerEditorMinHeightPx(input: {
   const estimatedCharacterWidthPx = Math.max(1, input.chatFontSizePx * 0.5);
   const lineCount = Math.min(
     6,
-    Math.max(2, Math.ceil((placeholder.length * estimatedCharacterWidthPx) / textWidthPx))
+    Math.max(2, Math.ceil((placeholder.length * estimatedCharacterWidthPx) / textWidthPx)),
   );
   return lineCount * COMPOSER_EDITOR_LINE_HEIGHT_PX;
 }

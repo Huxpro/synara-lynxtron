@@ -538,15 +538,13 @@ export const createComposerDraftStoreState =
         return;
       }
       set((state) => ({
-        draftsByThreadId: updateComposerDraftPrompt(
-          {
-            draftsByThreadId: state.draftsByThreadId,
-            threadId,
-            prompt,
-            createEmptyDraft: createEmptyThreadDraft,
-            shouldRemoveDraft,
-          },
-        ),
+        draftsByThreadId: updateComposerDraftPrompt({
+          draftsByThreadId: state.draftsByThreadId,
+          threadId,
+          prompt,
+          createEmptyDraft: createEmptyThreadDraft,
+          shouldRemoveDraft,
+        }),
       }));
     },
     setPromptHistorySavedDraft: (threadId, savedDraft) => {

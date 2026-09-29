@@ -307,10 +307,7 @@ describe("withProviderUpdateTimeout", () => {
 describe("runProviderUpdateBatch", () => {
   const finishedAt = "2026-06-10T10:01:00.000Z";
 
-  function updateResult(
-    provider: ProviderKind,
-    overrides: Partial<ServerProviderStatus> = {},
-  ) {
+  function updateResult(provider: ProviderKind, overrides: Partial<ServerProviderStatus> = {}) {
     return {
       providers: [
         providerStatus(provider, {
@@ -427,9 +424,7 @@ describe("runProviderUpdateBatch", () => {
     ]);
     expect(copy.title).toBe("Provider updates failed");
     expect(copy.description).toContain("Codex: Network unavailable.");
-    expect(copy.description).toContain(
-      "Claude: The provider status was missing after updating.",
-    );
+    expect(copy.description).toContain("Claude: The provider status was missing after updating.");
     expect(copy.copyText).toBe(
       "npm install -g provider@latest\nnpm install -g @anthropic-ai/claude-code@latest",
     );
@@ -446,9 +441,7 @@ describe("runProviderUpdateBatch", () => {
     });
 
     expect(outcome.status).toBe("partially_failed");
-    expect(providerUpdateOutcomeCopy(outcome).title).toBe(
-      "Some provider updates failed",
-    );
+    expect(providerUpdateOutcomeCopy(outcome).title).toBe("Some provider updates failed");
   });
 });
 

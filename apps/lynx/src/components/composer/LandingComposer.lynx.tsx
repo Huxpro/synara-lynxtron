@@ -1,69 +1,62 @@
-import { useEffect, useMemo, useRef, useState } from '@lynx-js/react';
-import { useQuery } from '@tanstack/react-query';
-import type {
-  ModelSelection,
-  ProviderKind,
-} from '@synara/contracts';
-import { getDefaultModel } from '@synara/shared/model';
-import { PanelStateMessage } from '@synara-web/components/chat/PanelStateMessage';
-import { ComposerProjectPickerComposition } from '@synara-web/components/chat/ComposerProjectPickerComposition';
-import { buildComposerProjectPickerModel } from '@synara-web/components/chat/ComposerProjectPicker.logic';
-import { useStore } from '@synara-web/store';
+import { useEffect, useMemo, useRef, useState } from "@lynx-js/react";
+import { useQuery } from "@tanstack/react-query";
+import type { ModelSelection, ProviderKind } from "@synara/contracts";
+import { getDefaultModel } from "@synara/shared/model";
+import { PanelStateMessage } from "@synara-web/components/chat/PanelStateMessage";
+import { ComposerProjectPickerComposition } from "@synara-web/components/chat/ComposerProjectPickerComposition";
+import { buildComposerProjectPickerModel } from "@synara-web/components/chat/ComposerProjectPicker.logic";
+import { useStore } from "@synara-web/store";
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsGeneralProjection,
-} from '@synara-web/appSettingsStorageProjection.logic';
+} from "@synara-web/appSettingsStorageProjection.logic";
 
-import { fetchSidebarSnapshot, queryClient } from '../../app/queries';
-import { EmptyThreadContextTray } from '../../app/EmptyThreadContextTray.lynx';
-import { useComposerDraftStore } from '../../adapters/composerDraftStore.lynx';
+import { fetchSidebarSnapshot, queryClient } from "../../app/queries";
+import { EmptyThreadContextTray } from "../../app/EmptyThreadContextTray.lynx";
+import { useComposerDraftStore } from "../../adapters/composerDraftStore.lynx";
 import {
   dispatchSynaraCommand,
   browseFilesystem,
   fetchServerConfig,
   fetchServerSettings,
   fetchSynaraSidebarShellSnapshot,
-} from '../../data/synaraClient.lynx';
-import { dialogs } from '../../platform/dialogs';
-import { webStorage } from '../../platform/storage';
-import { Button } from '../ui/button';
-import { Composer } from './Composer.lynx';
+} from "../../data/synaraClient.lynx";
+import { dialogs } from "../../platform/dialogs";
+import { webStorage } from "../../platform/storage";
+import { Button } from "../ui/button";
+import { Composer } from "./Composer.lynx";
 import {
   ensureLandingThreadCreated,
   type LandingThreadCreationState,
-} from './landingThreadCreation.logic';
-import { landingDraftId } from './landingDraftIdentity.logic';
-import { resolveLandingWorkspaceContext } from './landingStudioFolder.logic';
+} from "./landingThreadCreation.logic";
+import { landingDraftId } from "./landingDraftIdentity.logic";
+import { resolveLandingWorkspaceContext } from "./landingStudioFolder.logic";
 
-import './landing-composer.css';
+import "./landing-composer.css";
 
-function landingId(kind: 'command' | 'project' | 'thread'): string {
-  'background only';
+function landingId(kind: "command" | "project" | "thread"): string {
+  "background only";
   return `lynx-landing-${kind}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 function projectWorkspaceLabel(workspaceRoot: string): string {
-  const normalized = workspaceRoot.replace(/[\\/]+$/, '');
+  const normalized = workspaceRoot.replace(/[\\/]+$/, "");
   const segments = normalized.split(/[\\/]+/);
   return segments.at(-1) || workspaceRoot;
 }
 
 function landingBootstrapQueryKey(
   initialModelProvider: ProviderKind,
-  containerKind: 'chat' | 'studio'
+  containerKind: "chat" | "studio",
 ) {
-  return [
-    'landing-composer-bootstrap',
-    initialModelProvider,
-    containerKind,
-  ] as const;
+  return ["landing-composer-bootstrap", initialModelProvider, containerKind] as const;
 }
 
 export async function loadLandingBootstrap(
   initialModelProvider: ProviderKind | null = null,
-  containerKind: 'chat' | 'studio' = 'chat'
+  containerKind: "chat" | "studio" = "chat",
 ) {
-  'background only';
+  "background only";
   const [snapshot, , config, serverSettings] = await Promise.all([
     fetchSynaraSidebarShellSnapshot(),
     fetchSidebarSnapshot(),
@@ -72,13 +65,13 @@ export async function loadLandingBootstrap(
   ]);
   const generalSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
-    serverSettings?.defaultThreadEnvMode
+    serverSettings?.defaultThreadEnvMode,
   );
   const spaces = useStore.getState().spaces;
   const normalizedProjects = useStore.getState().projects;
   const localFolderResult = config.homeDir
     ? await browseFilesystem({
-        partialPath: `${config.homeDir.replace(/[\\/]+$/, '')}/`,
+        partialPath: `${config.homeDir.replace(/[\\/]+$/, "")}/`,
       })
         .then((result) => ({
           entries: result.entries,
@@ -86,20 +79,17 @@ export async function loadLandingBootstrap(
         }))
         .catch((error) => ({
           entries: [],
-          errorMessage:
-            error instanceof Error ? error.message : 'Unable to load folders.',
+          errorMessage: error instanceof Error ? error.message : "Unable to load folders.",
         }))
     : {
         entries: [],
-        errorMessage: 'Home folder is not available yet.',
+        errorMessage: "Home folder is not available yet.",
       };
-  const existing = snapshot.projects.find(
-    (project) => project.kind === containerKind
-  );
+  const existing = snapshot.projects.find((project) => project.kind === containerKind);
   if (existing) {
     return {
       homeProject: existing,
-      projects: snapshot.projects.filter((project) => project.kind === 'project'),
+      projects: snapshot.projects.filter((project) => project.kind === "project"),
       normalizedProjects,
       spaces,
       localFolders: localFolderResult.entries,
@@ -111,39 +101,33 @@ export async function loadLandingBootstrap(
   }
 
   const workspaceRoot =
-    containerKind === 'studio'
-      ? config.studioWorkspaceRoot?.trim()
-      : config.homeDir?.trim();
+    containerKind === "studio" ? config.studioWorkspaceRoot?.trim() : config.homeDir?.trim();
   if (!workspaceRoot) {
     throw new Error(
-      containerKind === 'studio'
-        ? 'Studio folder is not available yet.'
-        : 'Home folder is not available yet.'
+      containerKind === "studio"
+        ? "Studio folder is not available yet."
+        : "Home folder is not available yet.",
     );
   }
-  const projectId = landingId('project');
+  const projectId = landingId("project");
   try {
     await dispatchSynaraCommand({
-      type: 'project.create',
-      commandId: landingId('command'),
+      type: "project.create",
+      commandId: landingId("command"),
       projectId,
       kind: containerKind,
-      title: containerKind === 'studio' ? 'Studio' : 'Home',
+      title: containerKind === "studio" ? "Studio" : "Home",
       workspaceRoot,
-      createWorkspaceRootIfMissing: containerKind === 'studio',
+      createWorkspaceRootIfMissing: containerKind === "studio",
       createdAt: new Date().toISOString(),
     });
     const refreshed = await fetchSynaraSidebarShellSnapshot();
-    const created = refreshed.projects.find(
-      (project) => project.id === projectId
-    );
-    if (!created) throw new Error('The new chat workspace was not persisted.');
+    const created = refreshed.projects.find((project) => project.id === projectId);
+    if (!created) throw new Error("The new chat workspace was not persisted.");
     await fetchSidebarSnapshot();
     return {
       homeProject: created,
-      projects: refreshed.projects.filter(
-        (project) => project.kind === 'project'
-      ),
+      projects: refreshed.projects.filter((project) => project.kind === "project"),
       normalizedProjects: useStore.getState().projects,
       spaces: useStore.getState().spaces,
       localFolders: localFolderResult.entries,
@@ -154,16 +138,12 @@ export async function loadLandingBootstrap(
     };
   } catch (error) {
     const refreshed = await fetchSynaraSidebarShellSnapshot();
-    const recovered = refreshed.projects.find(
-      (project) => project.kind === containerKind
-    );
+    const recovered = refreshed.projects.find((project) => project.kind === containerKind);
     if (recovered) {
       await fetchSidebarSnapshot();
       return {
         homeProject: recovered,
-        projects: refreshed.projects.filter(
-          (project) => project.kind === 'project'
-        ),
+        projects: refreshed.projects.filter((project) => project.kind === "project"),
         normalizedProjects: useStore.getState().projects,
         spaces: useStore.getState().spaces,
         localFolders: localFolderResult.entries,
@@ -179,77 +159,58 @@ export async function loadLandingBootstrap(
 
 export function LandingComposer(props: {
   readonly branch?: string | null;
-  readonly containerKind?: 'chat' | 'studio';
-  readonly envMode?: 'local' | 'worktree';
+  readonly containerKind?: "chat" | "studio";
+  readonly envMode?: "local" | "worktree";
   readonly initialModelProvider?: ProviderKind | null;
   readonly initialProjectId?: string | null;
   readonly notes?: string;
-  readonly onEnvModeChange?: (envMode: 'local' | 'worktree') => void;
+  readonly onEnvModeChange?: (envMode: "local" | "worktree") => void;
   readonly onProjectSelectionChange?: (projectId: string | null) => void;
   readonly onTemporaryChange?: () => void;
-  readonly onThreadCreated: (
-    threadId: string,
-    options: { readonly temporary: boolean }
-  ) => void;
+  readonly onThreadCreated: (threadId: string, options: { readonly temporary: boolean }) => void;
   readonly temporary?: boolean;
 }) {
   const generalSettings = readSettingsGeneralProjection(
-    webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
+    webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
   );
   const draftId = landingDraftId(props.containerKind);
-  const initialModelProvider =
-    props.initialModelProvider ?? generalSettings.defaultProvider;
-  const threadIdRef = useRef(landingId('thread'));
+  const initialModelProvider = props.initialModelProvider ?? generalSettings.defaultProvider;
+  const threadIdRef = useRef(landingId("thread"));
   const threadCreationRef = useRef<LandingThreadCreationState>({
     created: false,
     inFlight: null,
   });
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
-    props.initialProjectId ?? null
+    props.initialProjectId ?? null,
   );
   useEffect(() => {
     setSelectedProjectId(props.initialProjectId ?? null);
   }, [props.initialProjectId]);
   const [studioFolderPath, setStudioFolderPath] = useState<string | null>(null);
-  const [internalEnvMode, setInternalEnvMode] = useState<'local' | 'worktree'>(
-    generalSettings.defaultThreadEnvMode
+  const [internalEnvMode, setInternalEnvMode] = useState<"local" | "worktree">(
+    generalSettings.defaultThreadEnvMode,
   );
   const [internalTemporary, setInternalTemporary] = useState(false);
   const envMode = props.envMode ?? internalEnvMode;
   const temporary = props.temporary ?? internalTemporary;
   const interactionMode =
-    useComposerDraftStore(
-      (state) => state.draftsByThreadId[draftId]?.interactionMode
-    ) ?? 'default';
+    useComposerDraftStore((state) => state.draftsByThreadId[draftId]?.interactionMode) ?? "default";
   const runtimeMode =
-    useComposerDraftStore(
-      (state) => state.draftsByThreadId[draftId]?.runtimeMode
-    ) ?? 'full-access';
-  const setInteractionMode = useComposerDraftStore(
-    (state) => state.setInteractionMode
-  );
+    useComposerDraftStore((state) => state.draftsByThreadId[draftId]?.runtimeMode) ?? "full-access";
+  const setInteractionMode = useComposerDraftStore((state) => state.setInteractionMode);
   const setRuntimeMode = useComposerDraftStore((state) => state.setRuntimeMode);
   const [projectPickerOpen, setProjectPickerOpen] = useState(false);
-  const [projectQuery, setProjectQuery] = useState('');
+  const [projectQuery, setProjectQuery] = useState("");
   const [projectPickerBusy, setProjectPickerBusy] = useState(false);
-  const [projectPickerError, setProjectPickerError] = useState<string | null>(
-    null
-  );
+  const [projectPickerError, setProjectPickerError] = useState<string | null>(null);
   const { data, error, isFetching, isPending, refetch } = useQuery({
-    queryKey: landingBootstrapQueryKey(
-      initialModelProvider,
-      props.containerKind ?? 'chat'
-    ),
-    queryFn: () =>
-      loadLandingBootstrap(
-        initialModelProvider,
-        props.containerKind ?? 'chat'
-      ),
+    queryKey: landingBootstrapQueryKey(initialModelProvider, props.containerKind ?? "chat"),
+    queryFn: () => loadLandingBootstrap(initialModelProvider, props.containerKind ?? "chat"),
     staleTime: 30_000,
   });
   useEffect(() => {
     if (data?.serverConfig) {
-      queryClient.setQueryData(['server-config'], data.serverConfig);
+      queryClient.setQueryData(["server-config"], data.serverConfig);
     }
   }, [data?.serverConfig]);
   useEffect(() => {
@@ -258,9 +219,7 @@ export function LandingComposer(props: {
     }
   }, [data?.generalSettings.defaultThreadEnvMode, props.envMode]);
   const modelSelection = useMemo<ModelSelection>(() => {
-    const selectedProject = data?.projects.find(
-      (project) => project.id === selectedProjectId
-    );
+    const selectedProject = data?.projects.find((project) => project.id === selectedProjectId);
     if (selectedProject?.defaultModelSelection) {
       return selectedProject.defaultModelSelection;
     }
@@ -272,13 +231,11 @@ export function LandingComposer(props: {
       model: getDefaultModel(initialModelProvider),
     };
   }, [data, initialModelProvider, selectedProjectId]);
-  const selectedProject = data?.projects.find(
-    (project) => project.id === selectedProjectId
-  );
+  const selectedProject = data?.projects.find((project) => project.id === selectedProjectId);
   const targetProject = selectedProject ?? data?.homeProject;
   const workspaceContext = targetProject
     ? resolveLandingWorkspaceContext({
-        containerKind: props.containerKind ?? 'chat',
+        containerKind: props.containerKind ?? "chat",
         projectWorkspaceRoot: targetProject.workspaceRoot,
         studioFolderPath,
       })
@@ -287,27 +244,23 @@ export function LandingComposer(props: {
     () =>
       buildComposerProjectPickerModel({
         projects: [
-          ...(props.containerKind === 'studio'
+          ...(props.containerKind === "studio"
             ? []
             : (data?.projects ?? []).map((project) => {
                 const source = data?.normalizedProjects.find(
-                  (candidate) => candidate.id === project.id
+                  (candidate) => candidate.id === project.id,
                 );
-                const space = data?.spaces.find(
-                  (candidate) => candidate.id === source?.spaceId
-                );
+                const space = data?.spaces.find((candidate) => candidate.id === source?.spaceId);
                 return {
                   id: `project:${project.id}`,
-                  kind: 'project' as const,
+                  kind: "project" as const,
                   projectId: project.id as never,
                   workspaceRoot: project.workspaceRoot,
                   primaryLabel:
-                    source?.localName?.trim() ||
-                    projectWorkspaceLabel(project.workspaceRoot),
+                    source?.localName?.trim() || projectWorkspaceLabel(project.workspaceRoot),
                   secondaryLabel:
                     source?.localName?.trim() &&
-                    source.localName.trim() !==
-                      projectWorkspaceLabel(project.workspaceRoot)
+                    source.localName.trim() !== projectWorkspaceLabel(project.workspaceRoot)
                       ? projectWorkspaceLabel(project.workspaceRoot)
                       : null,
                   spaceId: source?.spaceId ?? null,
@@ -319,27 +272,27 @@ export function LandingComposer(props: {
           ...(data?.localFolders ?? [])
             .filter(
               (folder) =>
-                !folder.name.startsWith('.') &&
-                (props.containerKind === 'studio' ||
+                !folder.name.startsWith(".") &&
+                (props.containerKind === "studio" ||
                   !(data?.projects ?? []).some(
-                    (project) => project.workspaceRoot === folder.fullPath
-                  ))
+                    (project) => project.workspaceRoot === folder.fullPath,
+                  )),
             )
             .map((folder) => ({
               id: `folder:${folder.fullPath}`,
-              kind: 'folder' as const,
+              kind: "folder" as const,
               projectId: null,
               workspaceRoot: folder.fullPath,
               primaryLabel: folder.name,
               secondaryLabel: null,
-              spaceId: '__local__' as never,
-              spaceName: 'Folders on this Mac',
-              spaceIcon: 'home' as const,
+              spaceId: "__local__" as never,
+              spaceName: "Folders on this Mac",
+              spaceIcon: "home" as const,
               spaceSortOrder: Number.MAX_SAFE_INTEGER,
             })),
         ],
         selectedOptionId:
-          props.containerKind === 'studio'
+          props.containerKind === "studio"
             ? studioFolderPath
               ? `folder:${studioFolderPath}`
               : null
@@ -347,50 +300,43 @@ export function LandingComposer(props: {
               ? `project:${selectedProjectId}`
               : null,
         query: projectQuery,
-        emptyTriggerLabel:
-          props.containerKind === 'studio' ? 'Use a folder' : undefined,
+        emptyTriggerLabel: props.containerKind === "studio" ? "Use a folder" : undefined,
       }),
-    [
-      data,
-      projectQuery,
-      props.containerKind,
-      selectedProjectId,
-      studioFolderPath,
-    ]
+    [data, projectQuery, props.containerKind, selectedProjectId, studioFolderPath],
   );
 
   const handleProjectPickerOpenChange = (open: boolean) => {
-    'background only';
+    "background only";
     setProjectPickerOpen(open);
     if (!open) {
-      setProjectQuery('');
+      setProjectQuery("");
       setProjectPickerError(null);
     }
   };
 
   const selectProject = (projectId: string | null) => {
-    'background only';
+    "background only";
     setSelectedProjectId(projectId);
     props.onProjectSelectionChange?.(projectId);
   };
 
   const handleAddProject = async () => {
-    'background only';
+    "background only";
     if (projectPickerBusy) return;
     setProjectPickerBusy(true);
     setProjectPickerError(null);
     try {
       const workspaceRoot = await dialogs.pickFolder();
       if (!workspaceRoot) return;
-      if (props.containerKind === 'studio') {
+      if (props.containerKind === "studio") {
         setStudioFolderPath(workspaceRoot);
         setProjectPickerOpen(false);
         return;
       }
-      const projectId = landingId('project');
+      const projectId = landingId("project");
       await dispatchSynaraCommand({
-        type: 'project.create',
-        commandId: landingId('command'),
+        type: "project.create",
+        commandId: landingId("command"),
         projectId,
         title: projectWorkspaceLabel(workspaceRoot),
         workspaceRoot,
@@ -404,52 +350,44 @@ export function LandingComposer(props: {
         createdAt: new Date().toISOString(),
       });
       await queryClient.invalidateQueries({
-        queryKey: landingBootstrapQueryKey(
-          initialModelProvider,
-          props.containerKind ?? 'chat'
-        ),
+        queryKey: landingBootstrapQueryKey(initialModelProvider, props.containerKind ?? "chat"),
       });
       const refreshed = await loadLandingBootstrap(
         initialModelProvider,
-        props.containerKind ?? 'chat'
+        props.containerKind ?? "chat",
       );
       queryClient.setQueryData(
-        landingBootstrapQueryKey(
-          initialModelProvider,
-          props.containerKind ?? 'chat'
-        ),
-        refreshed
+        landingBootstrapQueryKey(initialModelProvider, props.containerKind ?? "chat"),
+        refreshed,
       );
       selectProject(projectId);
       setProjectPickerOpen(false);
     } catch (error) {
-      setProjectPickerError(
-        error instanceof Error ? error.message : 'Unable to add project.'
-      );
+      setProjectPickerError(error instanceof Error ? error.message : "Unable to add project.");
     } finally {
       setProjectPickerBusy(false);
     }
   };
 
   async function ensureThread(input: {
-    readonly interactionMode: 'default' | 'plan';
+    readonly interactionMode: "default" | "plan";
     readonly modelSelection: ModelSelection;
-    readonly runtimeMode: 'full-access' | 'approval-required';
+    readonly runtimeMode: "full-access" | "approval-required";
   }): Promise<void> {
-    'background only';
+    "background only";
     if (!targetProject || !workspaceContext) {
-      throw new Error('The new chat workspace is not ready.');
+      throw new Error("The new chat workspace is not ready.");
     }
     const threadId = threadIdRef.current;
     await ensureLandingThreadCreated({
       state: threadCreationRef.current,
       create: async () => {
         await dispatchSynaraCommand({
-          type: 'thread.create',
-          commandId: landingId('command'),
+          type: "thread.create",
+          commandId: landingId("command"),
           threadId,
           projectId: targetProject.id,
-          title: 'New chat',
+          title: "New chat",
           modelSelection: input.modelSelection,
           runtimeMode: input.runtimeMode,
           interactionMode: input.interactionMode,
@@ -460,16 +398,14 @@ export function LandingComposer(props: {
         });
       },
       recover: async () =>
-        (await fetchSynaraSidebarShellSnapshot()).threads.some(
-          (thread) => thread.id === threadId
-        ),
+        (await fetchSynaraSidebarShellSnapshot()).threads.some((thread) => thread.id === threadId),
     });
-    if ((props.notes ?? '').trim().length > 0) {
+    if ((props.notes ?? "").trim().length > 0) {
       await dispatchSynaraCommand({
-        type: 'thread.meta.update',
-        commandId: landingId('command') as never,
+        type: "thread.meta.update",
+        commandId: landingId("command") as never,
         threadId: threadId as never,
-        notes: props.notes ?? '',
+        notes: props.notes ?? "",
       }).catch(() => undefined);
     }
   }
@@ -495,7 +431,7 @@ export function LandingComposer(props: {
           aria-label="Retry preparing new chat"
           onClick={() => void refetch()}
         >
-          {isFetching ? 'Retrying…' : 'Retry'}
+          {isFetching ? "Retrying…" : "Retry"}
         </Button>
       </view>
     );
@@ -514,7 +450,7 @@ export function LandingComposer(props: {
             aria-label="Retry refreshing new chat settings"
             onClick={() => void refetch()}
           >
-            {isFetching ? 'Retrying…' : 'Retry'}
+            {isFetching ? "Retrying…" : "Retry"}
           </Button>
         </view>
       ) : null}
@@ -534,16 +470,14 @@ export function LandingComposer(props: {
         onSetInteractionMode={(nextInteractionMode) =>
           setInteractionMode(draftId, nextInteractionMode)
         }
-        onSetRuntimeMode={(nextRuntimeMode) =>
-          setRuntimeMode(draftId, nextRuntimeMode)
-        }
+        onSetRuntimeMode={(nextRuntimeMode) => setRuntimeMode(draftId, nextRuntimeMode)}
         onSendSucceeded={() => {
-          'background only';
+          "background only";
           props.onThreadCreated(threadIdRef.current, { temporary });
           void Promise.all([
-            queryClient.invalidateQueries({ queryKey: ['threads'] }),
-            queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] }),
-            queryClient.invalidateQueries({ queryKey: ['landing-composer-bootstrap'] }),
+            queryClient.invalidateQueries({ queryKey: ["threads"] }),
+            queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
+            queryClient.invalidateQueries({ queryKey: ["landing-composer-bootstrap"] }),
           ]);
         }}
       />
@@ -553,120 +487,110 @@ export function LandingComposer(props: {
         envMode={envMode}
         onEnvModeChange={props.onEnvModeChange ?? setInternalEnvMode}
         onTemporaryChange={
-          props.onTemporaryChange ??
-          (() => setInternalTemporary((current) => !current))
+          props.onTemporaryChange ?? (() => setInternalTemporary((current) => !current))
         }
         projectName={targetProject.title}
         temporary={temporary}
         projectControl={
           <ComposerProjectPickerComposition
-          model={projectPickerModel}
-          open={projectPickerOpen}
-          align="start"
-          side="top"
-          onOpenChange={handleProjectPickerOpenChange}
-          onQueryChange={setProjectQuery}
-          onSelectOption={(option) => {
-            'background only';
-            if (props.containerKind === 'studio') {
-              setStudioFolderPath(option.workspaceRoot);
-              setProjectPickerOpen(false);
-              return;
-            }
-            if (option.projectId) {
-              selectProject(option.projectId);
-              setProjectPickerOpen(false);
-              return;
-            }
-            void (async () => {
-              setProjectPickerBusy(true);
-              setProjectPickerError(null);
-              try {
-                const existing = data.projects.find(
-                  (project) => project.workspaceRoot === option.workspaceRoot
-                );
-                if (existing) {
-                  selectProject(existing.id);
-                  setProjectPickerOpen(false);
-                  return;
-                }
-                const projectId = landingId('project');
-                await dispatchSynaraCommand({
-                  type: 'project.create',
-                  commandId: landingId('command'),
-                  projectId,
-                  title: option.primaryLabel,
-                  workspaceRoot: option.workspaceRoot,
-                  createWorkspaceRootIfMissing: false,
-                  defaultModelSelection: {
-                    provider: initialModelProvider,
-                    model: getDefaultModel(initialModelProvider),
-                  },
-                  isPinned: false,
-                  spaceId: null,
-                  createdAt: new Date().toISOString(),
-                });
-                const refreshed = await loadLandingBootstrap(
-                  initialModelProvider,
-                  props.containerKind ?? 'chat'
-                );
-                queryClient.setQueryData(
-                  landingBootstrapQueryKey(
-                    initialModelProvider,
-                    props.containerKind ?? 'chat'
-                  ),
-                  refreshed
-                );
-                selectProject(projectId);
+            model={projectPickerModel}
+            open={projectPickerOpen}
+            align="start"
+            side="top"
+            onOpenChange={handleProjectPickerOpenChange}
+            onQueryChange={setProjectQuery}
+            onSelectOption={(option) => {
+              "background only";
+              if (props.containerKind === "studio") {
+                setStudioFolderPath(option.workspaceRoot);
                 setProjectPickerOpen(false);
-              } catch (selectionError) {
-                setProjectPickerError(
-                  selectionError instanceof Error
-                    ? selectionError.message
-                    : 'Unable to select project.'
-                );
-              } finally {
-                setProjectPickerBusy(false);
+                return;
               }
-            })();
-          }}
-          addActionLabel={
-            projectPickerBusy
-              ? props.containerKind === 'studio'
-                ? 'Choosing folder...'
-                : 'Adding project...'
-              : props.containerKind === 'studio'
-                ? 'Choose a folder'
-                : 'New project'
-          }
-          addActionBusy={projectPickerBusy}
-          resetActionLabel={
-            props.containerKind === 'studio'
-              ? "Don't use a folder"
-              : "Don't work in a project"
-          }
-          searchPlaceholder={
-            props.containerKind === 'studio'
-              ? 'Search folders'
-              : 'Search projects'
-          }
-          errorMessage={projectPickerError ?? data.localFoldersError}
-          retryActionLabel={isFetching ? 'Retrying…' : 'Retry'}
-          retryActionBusy={isFetching}
-          onRetry={
-            data.localFoldersError ? () => void refetch() : undefined
-          }
-          onAddProject={() => void handleAddProject()}
-          onReset={() => {
-            'background only';
-            if (props.containerKind === 'studio') {
-              setStudioFolderPath(null);
-            } else {
-              selectProject(null);
+              if (option.projectId) {
+                selectProject(option.projectId);
+                setProjectPickerOpen(false);
+                return;
+              }
+              void (async () => {
+                setProjectPickerBusy(true);
+                setProjectPickerError(null);
+                try {
+                  const existing = data.projects.find(
+                    (project) => project.workspaceRoot === option.workspaceRoot,
+                  );
+                  if (existing) {
+                    selectProject(existing.id);
+                    setProjectPickerOpen(false);
+                    return;
+                  }
+                  const projectId = landingId("project");
+                  await dispatchSynaraCommand({
+                    type: "project.create",
+                    commandId: landingId("command"),
+                    projectId,
+                    title: option.primaryLabel,
+                    workspaceRoot: option.workspaceRoot,
+                    createWorkspaceRootIfMissing: false,
+                    defaultModelSelection: {
+                      provider: initialModelProvider,
+                      model: getDefaultModel(initialModelProvider),
+                    },
+                    isPinned: false,
+                    spaceId: null,
+                    createdAt: new Date().toISOString(),
+                  });
+                  const refreshed = await loadLandingBootstrap(
+                    initialModelProvider,
+                    props.containerKind ?? "chat",
+                  );
+                  queryClient.setQueryData(
+                    landingBootstrapQueryKey(initialModelProvider, props.containerKind ?? "chat"),
+                    refreshed,
+                  );
+                  selectProject(projectId);
+                  setProjectPickerOpen(false);
+                } catch (selectionError) {
+                  setProjectPickerError(
+                    selectionError instanceof Error
+                      ? selectionError.message
+                      : "Unable to select project.",
+                  );
+                } finally {
+                  setProjectPickerBusy(false);
+                }
+              })();
+            }}
+            addActionLabel={
+              projectPickerBusy
+                ? props.containerKind === "studio"
+                  ? "Choosing folder..."
+                  : "Adding project..."
+                : props.containerKind === "studio"
+                  ? "Choose a folder"
+                  : "New project"
             }
-            setProjectPickerOpen(false);
-          }}
-          triggerClassName="LandingComposerProjectTrigger"
+            addActionBusy={projectPickerBusy}
+            resetActionLabel={
+              props.containerKind === "studio" ? "Don't use a folder" : "Don't work in a project"
+            }
+            searchPlaceholder={
+              props.containerKind === "studio" ? "Search folders" : "Search projects"
+            }
+            errorMessage={projectPickerError ?? data.localFoldersError}
+            retryActionLabel={isFetching ? "Retrying…" : "Retry"}
+            retryActionBusy={isFetching}
+            onRetry={data.localFoldersError ? () => void refetch() : undefined}
+            onAddProject={() => void handleAddProject()}
+            onReset={() => {
+              "background only";
+              if (props.containerKind === "studio") {
+                setStudioFolderPath(null);
+              } else {
+                selectProject(null);
+              }
+              setProjectPickerOpen(false);
+            }}
+            triggerClassName="LandingComposerProjectTrigger"
           />
         }
       />

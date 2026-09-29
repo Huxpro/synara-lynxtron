@@ -27,9 +27,7 @@ export function SettingsSidebarChromeComposition(props: {
       <SettingsSidebarBackRegionElement>
         <SettingsSidebarBackButtonElement onActivate={props.onBack}>
           <SettingsSidebarBackIconElement />
-          <SettingsSidebarBackLabelElement>
-            Back to app
-          </SettingsSidebarBackLabelElement>
+          <SettingsSidebarBackLabelElement>Back to app</SettingsSidebarBackLabelElement>
         </SettingsSidebarBackButtonElement>
       </SettingsSidebarBackRegionElement>
 

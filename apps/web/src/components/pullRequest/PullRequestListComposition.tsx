@@ -43,10 +43,7 @@ export function PullRequestListComposition(props: {
     <PullRequestListRootElement>
       {props.grouped
         ? props.grouped.flatMap((group, groupIndex) => [
-            <PullRequestListGroupTitleElement
-              key={`group:${group.key}`}
-              separated={groupIndex > 0}
-            >
+            <PullRequestListGroupTitleElement key={`group:${group.key}`} separated={groupIndex > 0}>
               {group.label}
             </PullRequestListGroupTitleElement>,
             ...group.entries.map(renderEntry),

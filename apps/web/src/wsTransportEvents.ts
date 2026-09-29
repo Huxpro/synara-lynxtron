@@ -6,7 +6,11 @@
 import type { WsCompatibilityError } from "@synara/contracts";
 
 import { isBrowser } from "~/platform/env";
-import { addWindowEventListener, dispatchWindowEvent, removeWindowEventListener } from "~/platform/events";
+import {
+  addWindowEventListener,
+  dispatchWindowEvent,
+  removeWindowEventListener,
+} from "~/platform/events";
 export type WsTransportState = "connecting" | "open" | "closed" | "incompatible" | "disposed";
 
 export const SYNARA_WS_TRANSPORT_STATE_EVENT = "synara:ws-transport-state";
@@ -24,9 +28,7 @@ export interface WsCompatibilityIssueEventDetail {
 
 // Emits a browser-local event without leaking transport internals into UI code.
 export function emitWsTransportState(state: WsTransportState): void {
-  if (
-    !isBrowser() || typeof CustomEvent === "undefined"
-  ) {
+  if (!isBrowser() || typeof CustomEvent === "undefined") {
     return;
   }
 
@@ -63,9 +65,7 @@ export function readLatestWsCompatibilityIssue(): WsCompatibilityError | null {
 
 export function emitWsCompatibilityIssue(issue: WsCompatibilityError | null): void {
   latestCompatibilityIssue = issue;
-  if (
-    !isBrowser() || typeof CustomEvent === "undefined"
-  ) {
+  if (!isBrowser() || typeof CustomEvent === "undefined") {
     return;
   }
   dispatchWindowEvent(

@@ -23,15 +23,15 @@ describe("WS RPC contracts", () => {
     expect(WsFeatureRpcGroup.requests.has(ORCHESTRATION_WS_METHODS.reconcileProviderDelivery)).toBe(
       true,
     );
-    expect(
-      WsFeatureRpcGroup.requests.has(ORCHESTRATION_WS_METHODS.getSidebarShellSnapshot),
-    ).toBe(true);
-    expect(
-      WsFeatureRpcGroup.requests.has(ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot),
-    ).toBe(true);
-    expect(
-      WsFeatureRpcGroup.requests.has(ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot),
-    ).toBe(true);
+    expect(WsFeatureRpcGroup.requests.has(ORCHESTRATION_WS_METHODS.getSidebarShellSnapshot)).toBe(
+      true,
+    );
+    expect(WsFeatureRpcGroup.requests.has(ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot)).toBe(
+      true,
+    );
+    expect(WsFeatureRpcGroup.requests.has(ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot)).toBe(
+      true,
+    );
   });
 
   it("uses a schema-backed transport error", () => {

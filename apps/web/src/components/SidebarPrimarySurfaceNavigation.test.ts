@@ -8,7 +8,11 @@ describe("SidebarPrimarySurfaceNavigation", () => {
       "utf8",
     );
 
-    expect(source.match(/onActivate: props\.onOpenSearch \? \(\) => props\.onOpenSearch\?\.\(\) : undefined/g)).toHaveLength(2);
+    expect(
+      source.match(
+        /onActivate: props\.onOpenSearch \? \(\) => props\.onOpenSearch\?\.\(\) : undefined/g,
+      ),
+    ).toHaveLength(2);
     expect(source).not.toContain("onActivate: props.onOpenSearch,");
   });
 });

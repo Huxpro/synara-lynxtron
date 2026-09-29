@@ -136,10 +136,7 @@ test("accepts a complete three-client state and writes gallery data", () => {
   const result = run(fixture, "--write");
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /validated 1 states \(0 incomplete cells, 0 blocking residuals\)/);
-  assert.match(
-    fs.readFileSync(fixture.outputPath, "utf8"),
-    /__SYNARA_PERCEPTUAL_EVIDENCE__/,
-  );
+  assert.match(fs.readFileSync(fixture.outputPath, "utf8"), /__SYNARA_PERCEPTUAL_EVIDENCE__/);
 });
 
 test("keeps required pending cells red", () => {

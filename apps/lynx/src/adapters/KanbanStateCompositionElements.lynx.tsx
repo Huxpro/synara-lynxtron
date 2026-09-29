@@ -1,15 +1,15 @@
-import { resolveSystemStateSemantics } from '@synara-web/components/systemStateSemantics';
+import { resolveSystemStateSemantics } from "@synara-web/components/systemStateSemantics";
 
-import { Button } from '../components/ui/button';
-import { useLynxSystemStateAnnouncement } from '../platform/system-state-announcement.lynx';
-import './kanban-state-composition-elements.css';
+import { Button } from "../components/ui/button";
+import { useLynxSystemStateAnnouncement } from "../platform/system-state-announcement.lynx";
+import "./kanban-state-composition-elements.css";
 
-export type KanbanStateElementVariant = 'page' | 'inline';
+export type KanbanStateElementVariant = "page" | "inline";
 
 export function KanbanStateElement(props: {
   readonly announcement: string;
   readonly description: string | null;
-  readonly intent: 'status' | 'alert' | 'empty';
+  readonly intent: "status" | "alert" | "empty";
   readonly title: string;
   readonly variant: KanbanStateElementVariant;
   readonly retryLabel: string;
@@ -22,26 +22,18 @@ export function KanbanStateElement(props: {
     announcement: props.announcement,
   });
   return (
-    <view
-      className={`SharedKanbanState SharedKanbanState--${props.variant}`}
-    >
+    <view className={`SharedKanbanState SharedKanbanState--${props.variant}`}>
       <view
         className="SharedKanbanStateCopy"
         accessibility-element={semantics.announce}
         accessibility-label={props.announcement}
-        accessibility-trait={props.intent === 'status' ? 'updating' : 'text'}
+        accessibility-trait={props.intent === "status" ? "updating" : "text"}
       >
-        <text
-          className="SharedKanbanStateTitle"
-          accessibility-element={false}
-        >
+        <text className="SharedKanbanStateTitle" accessibility-element={false}>
           {props.title}
         </text>
         {props.description ? (
-          <text
-            className="SharedKanbanStateDescription"
-            accessibility-element={false}
-          >
+          <text className="SharedKanbanStateDescription" accessibility-element={false}>
             {props.description}
           </text>
         ) : null}

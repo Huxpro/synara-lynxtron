@@ -7,12 +7,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "AppSidebarScroll",
-      "rect": [
-        0,
-        46,
-        256,
-        730
-      ],
+      "rect": [0, 46, 256, 730],
       "tag": "SCROLL-VIEW"
     },
     {
@@ -22,12 +17,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "AppSidebar",
-      "rect": [
-        0,
-        0,
-        256,
-        820
-      ],
+      "rect": [0, 0, 256, 820],
       "tag": "X-VIEW"
     },
     {
@@ -37,12 +27,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "SharedAppShellFrame",
-      "rect": [
-        0,
-        0,
-        1280,
-        820
-      ],
+      "rect": [0, 0, 1280, 820],
       "tag": "X-VIEW"
     },
     {
@@ -52,12 +37,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "SliceRoot SliceRoot--theme-light SliceRoot--density-comfortable SliceRoot--viewport-wide SliceRoot--viewport-sm-up SliceRoot--viewport-md-up SliceRoot--viewport-lg-up SliceRoot--viewport-xl-up",
-      "rect": [
-        0,
-        0,
-        1280,
-        820
-      ],
+      "rect": [0, 0, 1280, 820],
       "tag": "X-VIEW"
     },
     {
@@ -67,12 +47,7 @@
       "borderRight": "0px none rgb(0, 0, 0)",
       "boxShadow": "none",
       "cls": "",
-      "rect": [
-        0,
-        0,
-        1280,
-        820
-      ],
+      "rect": [0, 0, 1280, 820],
       "tag": "DIV"
     },
     {
@@ -82,12 +57,7 @@
       "borderRight": "0px none rgb(0, 0, 0)",
       "boxShadow": "none",
       "cls": "",
-      "rect": [
-        0,
-        0,
-        1280,
-        820
-      ],
+      "rect": [0, 0, 1280, 820],
       "tag": "LYNX-VIEW"
     },
     {
@@ -97,12 +67,7 @@
       "borderRight": "0px none rgb(0, 0, 0)",
       "boxShadow": "none",
       "cls": "",
-      "rect": [
-        0,
-        0,
-        1280,
-        820
-      ],
+      "rect": [0, 0, 1280, 820],
       "tag": "BODY"
     },
     {
@@ -112,12 +77,7 @@
       "borderRight": "0px none rgb(0, 0, 0)",
       "boxShadow": "none",
       "cls": "",
-      "rect": [
-        0,
-        0,
-        1280,
-        820
-      ],
+      "rect": [0, 0, 1280, 820],
       "tag": "HTML"
     }
   ],
@@ -129,12 +89,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "CenteredEmptyLandingFrame",
-      "rect": [
-        256,
-        327.5,
-        1024,
-        111
-      ],
+      "rect": [256, 327.5, 1024, 111],
       "tag": "X-VIEW"
     },
     {
@@ -144,12 +99,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "SharedEmptyLandingStack",
-      "rect": [
-        256,
-        327.5,
-        1024,
-        211
-      ],
+      "rect": [256, 327.5, 1024, 211],
       "tag": "X-VIEW"
     },
     {
@@ -159,12 +109,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "SharedEmptyLandingViewport",
-      "rect": [
-        256,
-        327.5,
-        1024,
-        211
-      ],
+      "rect": [256, 327.5, 1024, 211],
       "tag": "X-VIEW"
     },
     {
@@ -174,12 +119,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "ThreadsLandingBodyInner",
-      "rect": [
-        256,
-        46,
-        1024,
-        774
-      ],
+      "rect": [256, 46, 1024, 774],
       "tag": "X-VIEW"
     },
     {
@@ -189,12 +129,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "ThreadsLandingBody",
-      "rect": [
-        256,
-        46,
-        1024,
-        774
-      ],
+      "rect": [256, 46, 1024, 774],
       "tag": "SCROLL-VIEW"
     },
     {
@@ -204,12 +139,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "ThreadsLanding",
-      "rect": [
-        256,
-        0,
-        1024,
-        820
-      ],
+      "rect": [256, 0, 1024, 820],
       "tag": "X-VIEW"
     },
     {
@@ -219,12 +149,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "AppMain",
-      "rect": [
-        256,
-        0,
-        1024,
-        820
-      ],
+      "rect": [256, 0, 1024, 820],
       "tag": "X-VIEW"
     },
     {
@@ -234,12 +159,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "SharedAppShellFrame",
-      "rect": [
-        0,
-        0,
-        1280,
-        820
-      ],
+      "rect": [0, 0, 1280, 820],
       "tag": "X-VIEW"
     }
   ],
@@ -251,12 +171,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "CenteredEmptyLandingFrame",
-      "rect": [
-        256,
-        327.5,
-        1024,
-        111
-      ],
+      "rect": [256, 327.5, 1024, 111],
       "tag": "X-VIEW"
     },
     {
@@ -266,12 +181,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "SharedEmptyLandingStack",
-      "rect": [
-        256,
-        327.5,
-        1024,
-        211
-      ],
+      "rect": [256, 327.5, 1024, 211],
       "tag": "X-VIEW"
     },
     {
@@ -281,12 +191,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "SharedEmptyLandingViewport",
-      "rect": [
-        256,
-        327.5,
-        1024,
-        211
-      ],
+      "rect": [256, 327.5, 1024, 211],
       "tag": "X-VIEW"
     },
     {
@@ -296,12 +201,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "ThreadsLandingBodyInner",
-      "rect": [
-        256,
-        46,
-        1024,
-        774
-      ],
+      "rect": [256, 46, 1024, 774],
       "tag": "X-VIEW"
     },
     {
@@ -311,12 +211,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "ThreadsLandingBody",
-      "rect": [
-        256,
-        46,
-        1024,
-        774
-      ],
+      "rect": [256, 46, 1024, 774],
       "tag": "SCROLL-VIEW"
     },
     {
@@ -326,12 +221,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "ThreadsLanding",
-      "rect": [
-        256,
-        0,
-        1024,
-        820
-      ],
+      "rect": [256, 0, 1024, 820],
       "tag": "X-VIEW"
     },
     {
@@ -341,12 +231,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "AppMain",
-      "rect": [
-        256,
-        0,
-        1024,
-        820
-      ],
+      "rect": [256, 0, 1024, 820],
       "tag": "X-VIEW"
     },
     {
@@ -356,12 +241,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "SharedAppShellFrame",
-      "rect": [
-        0,
-        0,
-        1280,
-        820
-      ],
+      "rect": [0, 0, 1280, 820],
       "tag": "X-VIEW"
     }
   ],
@@ -373,12 +253,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "AppSidebar",
-      "rect": [
-        0,
-        0,
-        256,
-        820
-      ],
+      "rect": [0, 0, 256, 820],
       "tag": "X-VIEW"
     },
     {
@@ -388,12 +263,7 @@
       "borderRight": "0px solid rgb(13, 13, 13)",
       "boxShadow": "none",
       "cls": "AppMain",
-      "rect": [
-        256,
-        0,
-        1024,
-        820
-      ],
+      "rect": [256, 0, 1024, 820],
       "tag": "X-VIEW"
     }
   ],
@@ -404,12 +274,7 @@
     "borderRight": "0px solid rgb(13, 13, 13)",
     "boxShadow": "none",
     "cls": "SharedAppShellFrame",
-    "rect": [
-      0,
-      0,
-      1280,
-      820
-    ],
+    "rect": [0, 0, 1280, 820],
     "tag": "X-VIEW"
   }
 }

@@ -39,15 +39,15 @@ The fix keeps the attempt key after an automatic failure. A given thread/termina
 
 ## Classification
 
-| Item | Classification | Result |
-| --- | --- | --- |
-| Missing Editor New-terminal rail action/surface | product loss, P2 | closed |
-| Repeated terminal auto-open after deterministic failure | product loss, P1 | closed |
-| Missing canonical workspace during first terminal cell | harness state loss | fixed by recreating the real Git workspace; no SQLite writes |
-| New chat draft lifecycle | missing coverage / P2 residual | still open; intentionally not represented by a disabled control |
-| Lynx-for-Web dynamic click path | historical dynamic-event blocker | deterministic state remains the retained evidence for this cell; the global blocker was closed later, but terminal-rail activation still needs a current-head rerun |
-| `pullRequests.list` missing `state` key | newly discovered product/RPC loss | closed: Sidebar now passes explicit `{ state: 'open', projectId: null }` instead of leaking QueryFunctionContext |
-| Native terminal interaction | missing certification coverage | not claimed; user-owned Native process remained untouched |
+| Item                                                    | Classification                    | Result                                                                                                                                                              |
+| ------------------------------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Missing Editor New-terminal rail action/surface         | product loss, P2                  | closed                                                                                                                                                              |
+| Repeated terminal auto-open after deterministic failure | product loss, P1                  | closed                                                                                                                                                              |
+| Missing canonical workspace during first terminal cell  | harness state loss                | fixed by recreating the real Git workspace; no SQLite writes                                                                                                        |
+| New chat draft lifecycle                                | missing coverage / P2 residual    | still open; intentionally not represented by a disabled control                                                                                                     |
+| Lynx-for-Web dynamic click path                         | historical dynamic-event blocker  | deterministic state remains the retained evidence for this cell; the global blocker was closed later, but terminal-rail activation still needs a current-head rerun |
+| `pullRequests.list` missing `state` key                 | newly discovered product/RPC loss | closed: Sidebar now passes explicit `{ state: 'open', projectId: null }` instead of leaking QueryFunctionContext                                                    |
+| Native terminal interaction                             | missing certification coverage    | not claimed; user-owned Native process remained untouched                                                                                                           |
 
 ## Validation
 

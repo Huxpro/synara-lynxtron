@@ -44,14 +44,15 @@ describe("buildPullRequestCodeView", () => {
       additions: 2,
       deletions: 1,
     });
-    expect(view.files[1]?.lines.map((line) => [line.kind, line.oldLine, line.newLine, line.text]))
-      .toEqual([
-        ["hunk", null, null, "@@ -1,3 +1,3 @@"],
-        ["context", 1, 1, "keep"],
-        ["deletion", 2, null, "old"],
-        ["addition", null, 2, "new"],
-        ["context", 3, 3, "tail"],
-      ]);
+    expect(
+      view.files[1]?.lines.map((line) => [line.kind, line.oldLine, line.newLine, line.text]),
+    ).toEqual([
+      ["hunk", null, null, "@@ -1,3 +1,3 @@"],
+      ["context", 1, 1, "keep"],
+      ["deletion", 2, null, "old"],
+      ["addition", null, 2, "new"],
+      ["context", 3, 3, "tail"],
+    ]);
   });
 
   it("parses the unified diff body from a GitHub mbox patch", () => {
@@ -76,14 +77,15 @@ describe("buildPullRequestCodeView", () => {
 
     const portable = buildPortableUnifiedDiffView(mboxPatch);
     expect(portable?.files.map((file) => file.path)).toEqual(["src/a.ts", "src/z.ts"]);
-    expect(portable?.files[1]?.lines.map((line) => [line.kind, line.oldLine, line.newLine]))
-      .toEqual([
-        ["hunk", null, null],
-        ["context", 1, 1],
-        ["deletion", 2, null],
-        ["addition", null, 2],
-        ["context", 3, 3],
-      ]);
+    expect(
+      portable?.files[1]?.lines.map((line) => [line.kind, line.oldLine, line.newLine]),
+    ).toEqual([
+      ["hunk", null, null],
+      ["context", 1, 1],
+      ["deletion", 2, null],
+      ["addition", null, 2],
+      ["context", 3, 3],
+    ]);
   });
 
   it("preserves binary file identity in parsed and portable views", () => {
@@ -129,10 +131,7 @@ describe("buildPullRequestCodeView", () => {
       "",
     ].join("\n");
 
-    const parsed = buildPullRequestCodeView(
-      binaryPatch,
-      "pull-request:literal-binary-test",
-    );
+    const parsed = buildPullRequestCodeView(binaryPatch, "pull-request:literal-binary-test");
     expect(parsed.kind).toBe("files");
     if (parsed.kind !== "files") return;
     expect(parsed.files[0]).toMatchObject({
@@ -250,22 +249,12 @@ describe("buildPullRequestCodeView", () => {
     expect(parsed.kind).toBe("files");
     if (parsed.kind !== "files") return;
     expect(
-      parsed.files[0]?.lines.map((line) => [
-        line.kind,
-        line.oldLine,
-        line.newLine,
-        line.text,
-      ]),
+      parsed.files[0]?.lines.map((line) => [line.kind, line.oldLine, line.newLine, line.text]),
     ).toEqual(expectedLines);
 
     const portable = buildPortableUnifiedDiffView(patch);
     expect(
-      portable?.files[0]?.lines.map((line) => [
-        line.kind,
-        line.oldLine,
-        line.newLine,
-        line.text,
-      ]),
+      portable?.files[0]?.lines.map((line) => [line.kind, line.oldLine, line.newLine, line.text]),
     ).toEqual(expectedLines);
   });
 
@@ -290,20 +279,13 @@ describe("buildPullRequestCodeView", () => {
       ["no-newline-context", "No newline at end of file"],
     ];
 
-    const parsed = buildPullRequestCodeView(
-      patch,
-      "pull-request:no-newline-context-test",
-    );
+    const parsed = buildPullRequestCodeView(patch, "pull-request:no-newline-context-test");
     expect(parsed.kind).toBe("files");
     if (parsed.kind !== "files") return;
-    expect(parsed.files[0]?.lines.map((line) => [line.kind, line.text])).toEqual(
-      expectedLines,
-    );
+    expect(parsed.files[0]?.lines.map((line) => [line.kind, line.text])).toEqual(expectedLines);
 
     const portable = buildPortableUnifiedDiffView(patch);
-    expect(portable?.files[0]?.lines.map((line) => [line.kind, line.text])).toEqual(
-      expectedLines,
-    );
+    expect(portable?.files[0]?.lines.map((line) => [line.kind, line.text])).toEqual(expectedLines);
   });
 
   it("decodes quoted Git paths and preserves their no-newline metadata", () => {
@@ -322,13 +304,7 @@ describe("buildPullRequestCodeView", () => {
     const expected = {
       path: "文档.txt",
       previousPath: null,
-      kinds: [
-        "hunk",
-        "deletion",
-        "no-newline-deletion",
-        "addition",
-        "no-newline-addition",
-      ],
+      kinds: ["hunk", "deletion", "no-newline-deletion", "addition", "no-newline-addition"],
     };
 
     const parsed = buildPullRequestCodeView(patch, "pull-request:quoted-unicode");
@@ -490,8 +466,6 @@ describe("pairPullRequestCodeLines", () => {
           ? ["shared", row.line.kind]
           : ["paired", row.left?.kind ?? null, row.right?.kind ?? null],
       ),
-    ).toEqual([
-      ["paired", null, "addition"],
-    ]);
+    ).toEqual([["paired", null, "addition"]]);
   });
 });

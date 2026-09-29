@@ -58,8 +58,14 @@ function splitTokensAtRanges(
 }
 
 export function emphasizePairedDiffTokens(input: {
-  readonly addition: { readonly text: string; readonly tokens: readonly PullRequestCodeSyntaxToken[] };
-  readonly deletion: { readonly text: string; readonly tokens: readonly PullRequestCodeSyntaxToken[] };
+  readonly addition: {
+    readonly text: string;
+    readonly tokens: readonly PullRequestCodeSyntaxToken[];
+  };
+  readonly deletion: {
+    readonly text: string;
+    readonly tokens: readonly PullRequestCodeSyntaxToken[];
+  };
 }) {
   const ranges = changedRanges(input.deletion.text, input.addition.text);
   return {

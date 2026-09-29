@@ -1,10 +1,6 @@
 {
   "bodyClass": "SharedPrRouteBody",
-  "dims": [
-    1280,
-    820,
-    1
-  ],
+  "dims": [1280, 820, 1],
   "dockRect": null,
   "input": {
     "nativeRect": {

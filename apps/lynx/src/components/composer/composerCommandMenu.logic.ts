@@ -1,40 +1,25 @@
-import type { ComposerTrigger } from '@synara-web/composer-logic';
-import { replaceTextRange } from '@synara-web/composer-logic';
+import type { ComposerTrigger } from "@synara-web/composer-logic";
+import { replaceTextRange } from "@synara-web/composer-logic";
 import {
   ensureLeadingSpaceForReplacement,
   extendReplacementRangeForTrailingSpace,
-} from '@synara-web/composerTriggerInsertion';
-import {
-  formatComposerMentionToken,
-  skillMentionPrefix,
-} from '@synara-web/lib/composerMentions';
-import type {
-  ProviderKind,
-  ProviderSkillReference,
-} from '@synara/contracts';
-import { getAgentMentionAutocompleteAliases } from '@synara/contracts';
-import { rankProviderDiscoveryItems } from '@synara-web/lib/providerDiscovery';
+} from "@synara-web/composerTriggerInsertion";
+import { formatComposerMentionToken, skillMentionPrefix } from "@synara-web/lib/composerMentions";
+import type { ProviderKind, ProviderSkillReference } from "@synara/contracts";
+import { getAgentMentionAutocompleteAliases } from "@synara/contracts";
+import { rankProviderDiscoveryItems } from "@synara-web/lib/providerDiscovery";
 import {
   buildSubagentsPrompt,
   filterComposerSlashCommands,
-} from '@synara-web/composerSlashCommands';
-import type { ComposerCommandItem } from '@synara-web/components/chat/ComposerCommandMenuComposition';
+} from "@synara-web/composerSlashCommands";
+import type { ComposerCommandItem } from "@synara-web/components/chat/ComposerCommandMenuComposition";
 
-const LYNX_SUPPORTED_SLASH_COMMANDS = [
-  'plan',
-  'default',
-  'subagents',
-] as const;
+const LYNX_SUPPORTED_SLASH_COMMANDS = ["plan", "default", "subagents"] as const;
 
-export function buildLynxSlashCommandItems(
-  query: string
-): ComposerCommandItem[] {
-  return filterComposerSlashCommands(
-    query,
-    LYNX_SUPPORTED_SLASH_COMMANDS
-  ).map((definition) => ({
+export function buildLynxSlashCommandItems(query: string): ComposerCommandItem[] {
+  return filterComposerSlashCommands(query, LYNX_SUPPORTED_SLASH_COMMANDS).map((definition) => ({
     id: `slash:${definition.command}`,
-    type: 'slash-command' as const,
+    type: "slash-command" as const,
     command: definition.command,
     label: definition.label,
     description: definition.description,
@@ -44,13 +29,13 @@ export function buildLynxSlashCommandItems(
 
 export interface LynxSlashCommandTransition {
   readonly prompt: string;
-  readonly interactionMode: 'plan' | 'default' | null;
+  readonly interactionMode: "plan" | "default" | null;
   readonly selectionEnd: number;
   readonly selectionStart: number;
 }
 
 export interface LynxThreadMentionTransition {
-  readonly mention: Extract<ComposerCommandItem, { type: 'thread' }>['mention'];
+  readonly mention: Extract<ComposerCommandItem, { type: "thread" }>["mention"];
   readonly prompt: string;
   readonly selectionEnd: number;
   readonly selectionStart: number;
@@ -65,15 +50,15 @@ export interface LynxSkillTransition {
 
 export function buildLynxAgentMentionItems(
   provider: ProviderKind,
-  query: string
+  query: string,
 ): ComposerCommandItem[] {
   return rankProviderDiscoveryItems(
     getAgentMentionAutocompleteAliases(provider),
     query,
-    ({ alias, displayName }) => [{ value: alias }, { value: displayName }]
+    ({ alias, displayName }) => [{ value: alias }, { value: displayName }],
   ).map(({ alias, displayName, color }) => ({
     id: `agent:${provider}:${alias}`,
-    type: 'agent' as const,
+    type: "agent" as const,
     provider,
     alias,
     color,
@@ -91,17 +76,17 @@ export function resolveLynxAgentMentionSelection(input: {
   readonly selectionEnd: number;
   readonly selectionStart: number;
 } | null {
-  if (input.item.type !== 'agent' || input.trigger.kind !== 'mention') return null;
+  if (input.item.type !== "agent" || input.trigger.kind !== "mention") return null;
   const replacement = ensureLeadingSpaceForReplacement(
     input.prompt,
     input.trigger.rangeStart,
-    `@${input.item.alias}()`
+    `@${input.item.alias}()`,
   );
   const next = replaceTextRange(
     input.prompt,
     input.trigger.rangeStart,
     input.trigger.rangeEnd,
-    replacement
+    replacement,
   );
   const cursor = next.cursor - 1;
   return {
@@ -118,24 +103,25 @@ export function resolveLynxSkillSelection(input: {
   readonly trigger: ComposerTrigger;
 }): LynxSkillTransition | null {
   if (
-    input.item.type !== 'skill' ||
-    (input.trigger.kind !== 'skill' && input.trigger.kind !== 'slash-command')
-  ) return null;
+    input.item.type !== "skill" ||
+    (input.trigger.kind !== "skill" && input.trigger.kind !== "slash-command")
+  )
+    return null;
   const replacement = ensureLeadingSpaceForReplacement(
     input.prompt,
     input.trigger.rangeStart,
-    `${skillMentionPrefix(input.provider)}${input.item.skill.name} `
+    `${skillMentionPrefix(input.provider)}${input.item.skill.name} `,
   );
   const replacementRangeEnd = extendReplacementRangeForTrailingSpace(
     input.prompt,
     input.trigger.rangeEnd,
-    replacement
+    replacement,
   );
   const next = replaceTextRange(
     input.prompt,
     input.trigger.rangeStart,
     replacementRangeEnd,
-    replacement
+    replacement,
   );
   return {
     prompt: next.text,
@@ -153,14 +139,14 @@ export function resolveLynxSlashCommandSelection(input: {
   readonly prompt: string;
   readonly trigger: ComposerTrigger;
 }): LynxSlashCommandTransition | null {
-  if (input.item.type !== 'slash-command') return null;
+  if (input.item.type !== "slash-command") return null;
 
-  if (input.item.command === 'plan' || input.item.command === 'default') {
+  if (input.item.command === "plan" || input.item.command === "default") {
     const replacement = replaceTextRange(
       input.prompt,
       input.trigger.rangeStart,
       input.trigger.rangeEnd,
-      ''
+      "",
     );
     return {
       prompt: replacement.text,
@@ -170,12 +156,12 @@ export function resolveLynxSlashCommandSelection(input: {
     };
   }
 
-  if (input.item.command === 'subagents') {
+  if (input.item.command === "subagents") {
     const replacement = replaceTextRange(
       input.prompt,
       input.trigger.rangeStart,
       input.trigger.rangeEnd,
-      buildSubagentsPrompt('')
+      buildSubagentsPrompt(""),
     );
     return {
       prompt: replacement.text,
@@ -193,24 +179,24 @@ export function resolveLynxThreadMentionSelection(input: {
   readonly prompt: string;
   readonly trigger: ComposerTrigger;
 }): LynxThreadMentionTransition | null {
-  if (input.item.type !== 'thread' || input.trigger.kind !== 'mention') {
+  if (input.item.type !== "thread" || input.trigger.kind !== "mention") {
     return null;
   }
   const replacement = ensureLeadingSpaceForReplacement(
     input.prompt,
     input.trigger.rangeStart,
-    `${formatComposerMentionToken(input.item.mention.name)} `
+    `${formatComposerMentionToken(input.item.mention.name)} `,
   );
   const replacementRangeEnd = extendReplacementRangeForTrailingSpace(
     input.prompt,
     input.trigger.rangeEnd,
-    replacement
+    replacement,
   );
   const next = replaceTextRange(
     input.prompt,
     input.trigger.rangeStart,
     replacementRangeEnd,
-    replacement
+    replacement,
   );
   return {
     mention: input.item.mention,

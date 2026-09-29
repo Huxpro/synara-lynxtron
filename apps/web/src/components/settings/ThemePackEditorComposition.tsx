@@ -16,9 +16,7 @@ import {
   ThemePackRowElement,
   ThemePackTitleElement,
 } from "~/components/settings/ThemePackEditorCompositionElements";
-import {
-  resolveThemePackEditorModel,
-} from "./ThemePackEditorComposition.logic";
+import { resolveThemePackEditorModel } from "./ThemePackEditorComposition.logic";
 import type {
   ChromeTheme,
   ThemeFonts,
@@ -43,9 +41,7 @@ export type ThemePackEditorCompositionProps = {
   readonly onUpdateFonts: (patch: Partial<ThemeFonts>) => void;
 };
 
-export function ThemePackEditorComposition(
-  props: ThemePackEditorCompositionProps,
-) {
+export function ThemePackEditorComposition(props: ThemePackEditorCompositionProps) {
   const model = resolveThemePackEditorModel(props);
   const { theme } = props.pack;
   const defaultTheme = props.defaultPack.theme;
@@ -58,14 +54,8 @@ export function ThemePackEditorComposition(
             <ThemePackResetActionElement onReset={props.onResetVariant} />
           ) : null}
         </ThemePackTitleElement>
-        <ThemePackImportActionElement
-          variant={props.variant}
-          onImport={props.onImport}
-        />
-        <ThemePackCopyActionElement
-          variant={props.variant}
-          shareString={props.shareString}
-        />
+        <ThemePackImportActionElement variant={props.variant} onImport={props.onImport} />
+        <ThemePackCopyActionElement variant={props.variant} shareString={props.shareString} />
         {props.showCodeThemeSelection ? (
           <ThemePackCodeThemeControlElement
             ariaLabel={`${model.titleLabel} code theme`}
@@ -121,9 +111,7 @@ export function ThemePackEditorComposition(
           value={theme.fonts.ui ?? ""}
           placeholder="System default"
           ariaLabel={`${model.titleLabel} UI font`}
-          onChange={(ui) =>
-            props.onUpdateFonts({ ui: ui.length > 0 ? ui : null })
-          }
+          onChange={(ui) => props.onUpdateFonts({ ui: ui.length > 0 ? ui : null })}
         />
       </ThemePackRowElement>
       <ThemePackRowElement label="Code font">
@@ -132,18 +120,14 @@ export function ThemePackEditorComposition(
           placeholder='"JetBrains Mono"'
           ariaLabel={`${model.titleLabel} code font`}
           mono
-          onChange={(code) =>
-            props.onUpdateFonts({ code: code.length > 0 ? code : null })
-          }
+          onChange={(code) => props.onUpdateFonts({ code: code.length > 0 ? code : null })}
         />
       </ThemePackRowElement>
       <ThemePackRowElement label="Translucent sidebar">
         <ThemePackBooleanControlElement
           checked={!theme.opaqueWindows}
           ariaLabel={`${model.titleLabel} translucent sidebar`}
-          onChange={(checked) =>
-            props.onUpdateTheme({ opaqueWindows: !checked })
-          }
+          onChange={(checked) => props.onUpdateTheme({ opaqueWindows: !checked })}
         />
       </ThemePackRowElement>
       <ThemePackRowElement label="Contrast">

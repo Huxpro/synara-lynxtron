@@ -9,10 +9,7 @@ export interface CenteredEmptyLandingProps {
   readonly projectName?: string | null;
 }
 
-export function CenteredEmptyLanding({
-  className,
-  projectName = null,
-}: CenteredEmptyLandingProps) {
+export function CenteredEmptyLanding({ className, projectName = null }: CenteredEmptyLandingProps) {
   return (
     <CenteredEmptyLandingFrameElement className={className}>
       <CenteredEmptyLandingLogoElement />

@@ -1,5 +1,5 @@
-import { buildSidebarSearchActions } from '@synara-web/components/SidebarSearchActions.logic';
-import { LYNX_PRIMARY_SHORTCUT_LABELS } from './sidebarShortcuts';
+import { buildSidebarSearchActions } from "@synara-web/components/SidebarSearchActions.logic";
+import { LYNX_PRIMARY_SHORTCUT_LABELS } from "./sidebarShortcuts";
 
 export function buildLynxSidebarSearchActions(onCreateSpace: () => void) {
   return buildSidebarSearchActions({

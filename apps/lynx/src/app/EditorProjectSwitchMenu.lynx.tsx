@@ -1,27 +1,27 @@
-import type { SpaceIconName } from '@synara/contracts';
-import type { InputRef } from '@lynx-js/lynx-ui';
-import { useEffect, useRef } from '@lynx-js/react';
+import type { SpaceIconName } from "@synara/contracts";
+import type { InputRef } from "@lynx-js/lynx-ui";
+import { useEffect, useRef } from "@lynx-js/react";
 
 import {
   ComposerProjectPickerGroupElement,
   ComposerProjectPickerGroupLabelElement,
-} from '../adapters/ComposerProjectPickerCompositionElements.lynx';
+} from "../adapters/ComposerProjectPickerCompositionElements.lynx";
 import {
   Menu,
   MenuPopup,
   MenuRadioGroup,
   MenuRadioItem,
   MenuTrigger,
-} from '../components/ui/menu.lynx';
-import { ChevronDownIcon } from '../lib/icons.lynx';
-import { Input } from '../components/ui/input.lynx';
-import type { EditorProjectSwitchOption } from './editorProjectSwitch.logic';
-import { resolveEditorProjectSwitchListHeight } from './editorProjectSwitch.logic';
+} from "../components/ui/menu.lynx";
+import { ChevronDownIcon } from "../lib/icons.lynx";
+import { Input } from "../components/ui/input.lynx";
+import type { EditorProjectSwitchOption } from "./editorProjectSwitch.logic";
+import { resolveEditorProjectSwitchListHeight } from "./editorProjectSwitch.logic";
 
 export interface EditorProjectSwitchGroup {
   readonly key: string;
   readonly label: string;
-  readonly icon: SpaceIconName | 'black-hole';
+  readonly icon: SpaceIconName | "black-hole";
   readonly items: readonly EditorProjectSwitchOption[];
 }
 
@@ -36,7 +36,10 @@ export function EditorProjectSwitchSearchHeader(props: {
     if (!props.autoFocus || props.disabled) return;
     const input = searchInputRef.current;
     if (!input) return;
-    void input.focus().then(() => input.setSelectionRange(0, props.query.length)).catch(() => undefined);
+    void input
+      .focus()
+      .then(() => input.setSelectionRange(0, props.query.length))
+      .catch(() => undefined);
   }, [props.autoFocus, props.disabled]);
   return (
     <view className="ThreadEditorProjectSwitchSearch">
@@ -67,15 +70,11 @@ export function EditorProjectSwitchMenu(props: {
 }) {
   const listHeight = resolveEditorProjectSwitchListHeight(props.groups);
   return (
-    <Menu
-      autoHighlightFirst={false}
-      open={props.open}
-      onOpenChange={props.onOpenChange}
-    >
+    <Menu autoHighlightFirst={false} open={props.open} onOpenChange={props.onOpenChange}>
       <MenuTrigger
         ariaLabel="Switch project"
         className={`ThreadEditorProjectSwitchTrigger${
-          props.open ? ' ThreadEditorProjectSwitchTrigger--open' : ''
+          props.open ? " ThreadEditorProjectSwitchTrigger--open" : ""
         }`}
       >
         <ChevronDownIcon size={14} color="var(--muted-foreground)" />
@@ -99,14 +98,11 @@ export function EditorProjectSwitchMenu(props: {
         >
           {props.groups.length > 0 ? (
             <MenuRadioGroup
-              value={props.currentProjectId ?? ''}
+              value={props.currentProjectId ?? ""}
               onValueChange={props.onProjectIdChange}
             >
               {props.groups.map((group, index) => (
-                <ComposerProjectPickerGroupElement
-                  key={group.key}
-                  separatorBefore={index > 0}
-                >
+                <ComposerProjectPickerGroupElement key={group.key} separatorBefore={index > 0}>
                   <ComposerProjectPickerGroupLabelElement icon={group.icon}>
                     {group.label}
                   </ComposerProjectPickerGroupLabelElement>
@@ -119,9 +115,7 @@ export function EditorProjectSwitchMenu(props: {
               ))}
             </MenuRadioGroup>
           ) : (
-            <text className="ThreadEditorProjectSwitchEmpty">
-              No matching projects
-            </text>
+            <text className="ThreadEditorProjectSwitchEmpty">No matching projects</text>
           )}
         </scroll-view>
       </MenuPopup>

@@ -1,104 +1,104 @@
 #!/usr/bin/env node
 
-import fs from 'node:fs';
-import path from 'node:path';
-import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
+import fs from "node:fs";
+import path from "node:path";
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 
 const require = createRequire(import.meta.url);
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-const projectRoot = path.resolve(scriptDir, '..');
-const outputFile = path.join(projectRoot, 'src/lib/icons.lynx.tsx');
+const projectRoot = path.resolve(scriptDir, "..");
+const outputFile = path.join(projectRoot, "src/lib/icons.lynx.tsx");
 
 // First vertical-slice inventory. Add a stable Synara export name and its
 // Tabler file slug; the generator validates every source and produces one
 // auditable static module (no React-DOM icon runtime in the Lynx bundle).
 const icons = {
-  AdjustmentsHorizontalIcon: 'adjustments-horizontal',
-  ArchiveIcon: 'archive',
-  ArrowDownToLineIcon: 'arrow-down-to-arc',
-  ArrowLeftIcon: 'arrow-left',
-  ArrowRightIcon: 'arrow-right',
-  BackpackIcon: 'backpack',
-  BellIcon: 'bell',
-  BookIcon: 'book',
-  BriefcaseIcon: 'briefcase',
-  BlocksIcon: 'blocks',
-  BrainIcon: 'brain',
-  BugIcon: 'bug',
-  CheckIcon: 'check',
-  ChevronDownIcon: 'chevron-down',
-  ChevronLeftIcon: 'chevron-left',
-  ChevronRightIcon: 'chevron-right',
-  CircleAlertIcon: 'alert-circle',
-  ClockIcon: 'clock',
-  CloudIcon: 'cloud',
-  CodeIcon: 'brackets',
-  CornerLeftUpIcon: 'corner-left-up',
-  CopyIcon: 'copy',
-  DeviceLaptopIcon: 'device-laptop',
-  GameControllerIcon: 'device-gamepad',
-  EllipsisIcon: 'dots',
-  EyeIcon: 'eye',
-  ExternalLinkIcon: 'external-link',
-  FileIcon: 'file',
-  FolderIcon: 'folder',
-  FolderOpenIcon: 'folder-open',
-  FolderPlusIcon: 'folder-plus',
-  FoldersIcon: 'folders',
-  FlaskIcon: 'flask',
-  GaugeIcon: 'gauge',
-  GitBranchIcon: 'git-branch',
-  GitCommitIcon: 'git-commit',
-  GlobeIcon: 'world',
-  HammerIcon: 'hammer',
-  HeartIcon: 'heart',
-  HomeIcon: 'home',
-  KanbanIcon: 'layout-kanban',
-  KeyboardIcon: 'keyboard',
-  LayoutColumnsIcon: 'layout-columns',
-  LayoutRowsIcon: 'layout-rows',
-  LightBulbIcon: 'bulb',
-  MessageCircleIcon: 'message-circle',
-  MicIcon: 'microphone',
-  MinusIcon: 'minus',
-  ListChecksIcon: 'list-check',
-  MoonIcon: 'moon',
-  NewThreadIcon: 'edit',
-  PaletteIcon: 'palette',
-  PanelRightCloseIcon: 'layout-sidebar-right-collapse',
-  PaperclipIcon: 'paperclip',
-  PencilIcon: 'pencil',
-  PlugIcon: 'plug',
-  PlusIcon: 'plus',
-  PuzzleIcon: 'puzzle',
-  RefreshCwIcon: 'refresh',
-  RocketIcon: 'rocket',
-  SchoolIcon: 'school',
-  SearchIcon: 'search',
-  SettingsIcon: 'settings',
-  ScreenshotIcon: 'screenshot',
-  SunIcon: 'sun',
-  StarIcon: 'star',
-  TargetIcon: 'target',
-  TextWrapIcon: 'text-wrap',
-  ToolsIcon: 'tools',
-  TriangleAlertIcon: 'alert-triangle',
-  Trash2: 'trash',
-  TreeIcon: 'tree',
-  CameraIcon: 'camera',
-  ChartIcon: 'chart-dots-2',
-  Undo2Icon: 'arrow-back-up',
-  UserIcon: 'user',
-  XIcon: 'x',
+  AdjustmentsHorizontalIcon: "adjustments-horizontal",
+  ArchiveIcon: "archive",
+  ArrowDownToLineIcon: "arrow-down-to-arc",
+  ArrowLeftIcon: "arrow-left",
+  ArrowRightIcon: "arrow-right",
+  BackpackIcon: "backpack",
+  BellIcon: "bell",
+  BookIcon: "book",
+  BriefcaseIcon: "briefcase",
+  BlocksIcon: "blocks",
+  BrainIcon: "brain",
+  BugIcon: "bug",
+  CheckIcon: "check",
+  ChevronDownIcon: "chevron-down",
+  ChevronLeftIcon: "chevron-left",
+  ChevronRightIcon: "chevron-right",
+  CircleAlertIcon: "alert-circle",
+  ClockIcon: "clock",
+  CloudIcon: "cloud",
+  CodeIcon: "brackets",
+  CornerLeftUpIcon: "corner-left-up",
+  CopyIcon: "copy",
+  DeviceLaptopIcon: "device-laptop",
+  GameControllerIcon: "device-gamepad",
+  EllipsisIcon: "dots",
+  EyeIcon: "eye",
+  ExternalLinkIcon: "external-link",
+  FileIcon: "file",
+  FolderIcon: "folder",
+  FolderOpenIcon: "folder-open",
+  FolderPlusIcon: "folder-plus",
+  FoldersIcon: "folders",
+  FlaskIcon: "flask",
+  GaugeIcon: "gauge",
+  GitBranchIcon: "git-branch",
+  GitCommitIcon: "git-commit",
+  GlobeIcon: "world",
+  HammerIcon: "hammer",
+  HeartIcon: "heart",
+  HomeIcon: "home",
+  KanbanIcon: "layout-kanban",
+  KeyboardIcon: "keyboard",
+  LayoutColumnsIcon: "layout-columns",
+  LayoutRowsIcon: "layout-rows",
+  LightBulbIcon: "bulb",
+  MessageCircleIcon: "message-circle",
+  MicIcon: "microphone",
+  MinusIcon: "minus",
+  ListChecksIcon: "list-check",
+  MoonIcon: "moon",
+  NewThreadIcon: "edit",
+  PaletteIcon: "palette",
+  PanelRightCloseIcon: "layout-sidebar-right-collapse",
+  PaperclipIcon: "paperclip",
+  PencilIcon: "pencil",
+  PlugIcon: "plug",
+  PlusIcon: "plus",
+  PuzzleIcon: "puzzle",
+  RefreshCwIcon: "refresh",
+  RocketIcon: "rocket",
+  SchoolIcon: "school",
+  SearchIcon: "search",
+  SettingsIcon: "settings",
+  ScreenshotIcon: "screenshot",
+  SunIcon: "sun",
+  StarIcon: "star",
+  TargetIcon: "target",
+  TextWrapIcon: "text-wrap",
+  ToolsIcon: "tools",
+  TriangleAlertIcon: "alert-triangle",
+  Trash2: "trash",
+  TreeIcon: "tree",
+  CameraIcon: "camera",
+  ChartIcon: "chart-dots-2",
+  Undo2Icon: "arrow-back-up",
+  UserIcon: "user",
+  XIcon: "x",
 };
 
 function compactSvg(source, slug) {
   const compact = source
-    .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/\s+/g, ' ')
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/\s+/g, " ")
     .trim();
-  if (!compact.startsWith('<svg') || !compact.includes('</svg>')) {
+  if (!compact.startsWith("<svg") || !compact.includes("</svg>")) {
     throw new Error(`Invalid SVG source for ${slug}`);
   }
   if (/<(?:script|foreignObject)\b/i.test(compact)) {
@@ -109,19 +109,19 @@ function compactSvg(source, slug) {
 
 const records = Object.entries(icons).map(([exportName, slug]) => {
   const sourcePath = require.resolve(`@tabler/icons/outline/${slug}.svg`);
-  const svg = compactSvg(fs.readFileSync(sourcePath, 'utf8'), slug);
+  const svg = compactSvg(fs.readFileSync(sourcePath, "utf8"), slug);
   return { exportName, slug, svg };
 });
 
 const dataLines = records
   .map(({ exportName, svg }) => `  ${exportName}: ${JSON.stringify(svg)},`)
-  .join('\n');
+  .join("\n");
 const exportLines = records
   .map(
     ({ exportName }) =>
-      `export const ${exportName}: LynxIcon = createLynxIcon(ICON_CONTENT.${exportName});`
+      `export const ${exportName}: LynxIcon = createLynxIcon(ICON_CONTENT.${exportName});`,
   )
-  .join('\n');
+  .join("\n");
 
 const generated = `// GENERATED by scripts/generate-lynx-icons.mjs — do not hand-edit.
 // Source: @tabler/icons 3.44.0 outline SVGs (MIT).
@@ -187,11 +187,15 @@ ${exportLines}
 `;
 
 fs.mkdirSync(path.dirname(outputFile), { recursive: true });
-fs.writeFileSync(outputFile, generated, 'utf8');
+fs.writeFileSync(outputFile, generated, "utf8");
 console.log(
-  JSON.stringify({
-    output: path.relative(projectRoot, outputFile),
-    generated: records.length,
-    icons: records.map(({ exportName, slug }) => ({ exportName, slug })),
-  }, null, 2)
+  JSON.stringify(
+    {
+      output: path.relative(projectRoot, outputFile),
+      generated: records.length,
+      icons: records.map(({ exportName, slug }) => ({ exportName, slug })),
+    },
+    null,
+    2,
+  ),
 );

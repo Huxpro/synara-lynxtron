@@ -15,9 +15,7 @@ import {
 } from "../sidebarRowStyles";
 import { SidebarMenuSub } from "./ui/sidebar";
 
-export function SidebarProjectDisclosureRootElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SidebarProjectDisclosureRootElement(props: { readonly children?: ReactNode }) {
   return <div className="group/collapsible">{props.children}</div>;
 }
 

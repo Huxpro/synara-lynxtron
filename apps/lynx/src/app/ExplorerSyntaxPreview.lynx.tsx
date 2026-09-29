@@ -1,16 +1,16 @@
-import { useState } from '@lynx-js/react';
+import { useState } from "@lynx-js/react";
 
-import { type NativeSyntaxHighlightThemes } from '../main/syntaxHighlightingContract.logic';
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
-import { PlusIcon } from '../lib/icons.lynx';
-import { ExplorerFileCommentEditor } from './ExplorerFileCommentEditor.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
+import { type NativeSyntaxHighlightThemes } from "../main/syntaxHighlightingContract.logic";
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import { PlusIcon } from "../lib/icons.lynx";
+import { ExplorerFileCommentEditor } from "./ExplorerFileCommentEditor.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
 
 function tokenStyle(fontStyle: number): Record<string, string | number> {
   return {
-    ...(fontStyle & 1 ? { fontStyle: 'italic' } : {}),
+    ...(fontStyle & 1 ? { fontStyle: "italic" } : {}),
     ...(fontStyle & 2 ? { fontWeight: 700 } : {}),
-    ...(fontStyle & 4 ? { textDecoration: 'underline' } : {}),
+    ...(fontStyle & 4 ? { textDecoration: "underline" } : {}),
   };
 }
 
@@ -18,24 +18,14 @@ export function ExplorerSyntaxPreview(props: {
   readonly contents: string;
   readonly highlighted: NativeSyntaxHighlightThemes | null;
   readonly initialCommentLine: number | null;
-  readonly onComment: (input: {
-    readonly lineNumber: number;
-    readonly text: string;
-  }) => void;
+  readonly onComment: (input: { readonly lineNumber: number; readonly text: string }) => void;
   readonly path: string;
-  readonly theme: 'dark' | 'light';
+  readonly theme: "dark" | "light";
 }) {
   const highlighted = props.highlighted?.[props.theme] ?? null;
-  const [commentLine, setCommentLine] = useState<number | null>(
-    props.initialCommentLine
-  );
+  const [commentLine, setCommentLine] = useState<number | null>(props.initialCommentLine);
   return (
-    <scroll-view
-      className="ExplorerDockPreviewScroll"
-      scroll-x
-      scroll-y
-      enable-scroll-bar
-    >
+    <scroll-view className="ExplorerDockPreviewScroll" scroll-x scroll-y enable-scroll-bar>
       {highlighted ? (
         <view
           className="ExplorerDockSyntax"
@@ -47,7 +37,7 @@ export function ExplorerSyntaxPreview(props: {
             return (
               <ExplorerSyntaxLine
                 active={commentLine === lineNumber}
-                key={`${lineIndex}:${line.map((token) => token.content).join('')}`}
+                key={`${lineIndex}:${line.map((token) => token.content).join("")}`}
                 line={line}
                 lineNumber={lineNumber}
                 onActivate={() => setCommentLine(lineNumber)}
@@ -69,7 +59,7 @@ export function ExplorerSyntaxPreview(props: {
 
 export function ExplorerSyntaxLine(props: {
   readonly active: boolean;
-  readonly line: NativeSyntaxHighlightThemes['light']['lines'][number];
+  readonly line: NativeSyntaxHighlightThemes["light"]["lines"][number];
   readonly lineNumber: number;
   readonly onActivate: () => void;
   readonly onCancel: () => void;
@@ -78,7 +68,7 @@ export function ExplorerSyntaxLine(props: {
   const { codeFontFamily } = useTheme();
   const lineNumber = useLynxInteractiveState({
     baseClassName: `ExplorerDockSyntaxLineNumber${
-      props.active ? ' ExplorerDockSyntaxLineNumber--active' : ''
+      props.active ? " ExplorerDockSyntaxLineNumber--active" : ""
     }`,
     accessibleLabel: `Comment on line ${props.lineNumber}`,
     onActivate: props.onActivate,
@@ -87,24 +77,16 @@ export function ExplorerSyntaxLine(props: {
     <view className="ExplorerDockSyntaxLineGroup">
       <view
         className={`ExplorerDockSyntaxLine${
-          props.active ? ' ExplorerDockSyntaxLine--commenting' : ''
+          props.active ? " ExplorerDockSyntaxLine--commenting" : ""
         }`}
       >
         <view className={lineNumber.className} {...lineNumber.eventProps}>
-          <text className="ExplorerDockSyntaxLineNumberText">
-            {props.lineNumber}
-          </text>
+          <text className="ExplorerDockSyntaxLineNumberText">{props.lineNumber}</text>
           <view className="ExplorerDockSyntaxCommentGlyph">
-            <PlusIcon
-              className="ExplorerDockSyntaxCommentGlyphIcon"
-              size={14}
-            />
+            <PlusIcon className="ExplorerDockSyntaxCommentGlyphIcon" size={14} />
           </view>
         </view>
-        <text
-          className="ExplorerDockSyntaxCode"
-          style={{ fontFamily: codeFontFamily }}
-        >
+        <text className="ExplorerDockSyntaxCode" style={{ fontFamily: codeFontFamily }}>
           {props.line.length === 0 ? (
             <text style={{ fontFamily: codeFontFamily }}> </text>
           ) : (

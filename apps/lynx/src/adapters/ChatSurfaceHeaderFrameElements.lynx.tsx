@@ -1,4 +1,4 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
 export function ChatSurfaceHeaderFrameElement(props: {
   readonly className?: string;
@@ -7,8 +7,8 @@ export function ChatSurfaceHeaderFrameElement(props: {
 }) {
   return (
     <view
-      className={`${props.className ?? ''} AppWindowDragRegion${
-        props.padded ? ' AppWindowDragRegion--padded' : ''
+      className={`${props.className ?? ""} AppWindowDragRegion${
+        props.padded ? " AppWindowDragRegion--padded" : ""
       }`.trim()}
     >
       {props.children}

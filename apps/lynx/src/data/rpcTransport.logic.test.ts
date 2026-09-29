@@ -1,25 +1,22 @@
-import { describe, expect, it } from '@rstest/core';
-import { readFileSync } from 'node:fs';
+import { describe, expect, it } from "@rstest/core";
+import { readFileSync } from "node:fs";
 
 import {
   createRpcSocketManager,
   openRpcSocketWithTimeout,
   type RpcTransportSocket,
   type StartRpcTimeout,
-} from './rpcTransport.logic';
+} from "./rpcTransport.logic";
 
-describe('RPC pending cleanup contract', () => {
-  it('contains derived finally rejections for connection and recovery promises', () => {
-    const source = readFileSync(
-      new URL('./rpcTransport.logic.ts', import.meta.url),
-      'utf8'
-    );
+describe("RPC pending cleanup contract", () => {
+  it("contains derived finally rejections for connection and recovery promises", () => {
+    const source = readFileSync(new URL("./rpcTransport.logic.ts", import.meta.url), "utf8");
     expect(source.match(/\.finally\(\(\) => \{/g)).toHaveLength(2);
     expect(source).toContain(
-      'if (recoveryPromise === pending) recoveryPromise = null;\n      })\n      .catch'
+      "if (recoveryPromise === pending) recoveryPromise = null;\n      })\n      .catch",
     );
     expect(source).toContain(
-      'if (connectionPromise === pending && activeSocket === null) {\n        connectionPromise = null;\n      }\n    }).catch'
+      "if (connectionPromise === pending && activeSocket === null) {\n        connectionPromise = null;\n      }\n    }).catch",
     );
   });
 });
@@ -49,20 +46,20 @@ class FakeSocket implements RpcTransportSocket {
 
   succeedLast(value: unknown): void {
     const request = this.lastRequest();
-    this.emit('message', {
+    this.emit("message", {
       data: JSON.stringify({
-        _tag: 'Exit',
+        _tag: "Exit",
         requestId: request.id,
-        exit: { _tag: 'Success', value },
+        exit: { _tag: "Success", value },
       }),
     });
   }
 
   chunkLast(...values: unknown[]): void {
     const request = this.lastRequest();
-    this.emit('message', {
+    this.emit("message", {
       data: JSON.stringify({
-        _tag: 'Chunk',
+        _tag: "Chunk",
         requestId: request.id,
         values,
       }),
@@ -72,7 +69,7 @@ class FakeSocket implements RpcTransportSocket {
   private lastRequest(): { id?: string } {
     for (const frame of this.sent.toReversed()) {
       const parsed = JSON.parse(frame) as { _tag?: string; id?: string };
-      if (parsed._tag === 'Request') return parsed;
+      if (parsed._tag === "Request") return parsed;
     }
     return {};
   }
@@ -135,11 +132,11 @@ async function flushUntil(predicate: () => boolean): Promise<void> {
     if (predicate()) return;
     await Promise.resolve();
   }
-  throw new Error('condition did not become true');
+  throw new Error("condition did not become true");
 }
 
-describe('rpc transport manager', () => {
-  it('closes and rejects a socket that never opens', async () => {
+describe("rpc transport manager", () => {
+  it("closes and rejects a socket that never opens", async () => {
     const socket = new FakeSocket();
     const timeouts = controlledTimeouts();
     const pending = openRpcSocketWithTimeout({
@@ -148,56 +145,56 @@ describe('rpc transport manager', () => {
       startTimeout: timeouts.startTimeout,
     });
     timeouts.fireNext();
-    await expect(pending).rejects.toThrow('open timed out after 8000ms');
+    await expect(pending).rejects.toThrow("open timed out after 8000ms");
     expect(socket.closed).toBe(true);
   });
 
-  it('atomically rejects a mid-RPC close and invalidates the active socket', async () => {
+  it("atomically rejects a mid-RPC close and invalidates the active socket", async () => {
     const socket = new FakeSocket();
     const { manager } = managerFor({ connect: async () => socket });
-    const pending = manager.request('orchestration.getSnapshot', {});
+    const pending = manager.request("orchestration.getSnapshot", {});
     await flushUntil(() => socket.sent.length === 1);
-    socket.emit('close');
-    await expect(pending).rejects.toThrow('socket closed');
+    socket.emit("close");
+    await expect(pending).rejects.toThrow("socket closed");
     expect(socket.closed).toBe(true);
-    expect(manager.getState()).toBe('idle');
+    expect(manager.getState()).toBe("idle");
   });
 
-  it('invalidates a hanging request even when close is missing', async () => {
+  it("invalidates a hanging request even when close is missing", async () => {
     const socket = new FakeSocket();
     const { manager, timeouts } = managerFor({ connect: async () => socket });
-    const pending = manager.request('orchestration.getSnapshot', {});
+    const pending = manager.request("orchestration.getSnapshot", {});
     await flushUntil(() => socket.sent.length === 1);
     timeouts.fireNext();
-    await expect(pending).rejects.toThrow('timed out after 8000ms');
+    await expect(pending).rejects.toThrow("timed out after 8000ms");
     expect(socket.closed).toBe(true);
-    expect(manager.getState()).toBe('idle');
+    expect(manager.getState()).toBe("idle");
   });
 
-  it('uses bounded exponential backoff while the server restarts', async () => {
+  it("uses bounded exponential backoff while the server restarts", async () => {
     const delays: number[] = [];
     const socket = new FakeSocket();
     let attempts = 0;
     const { manager } = managerFor({
       connect: async () => {
         attempts += 1;
-        if (attempts < 3) throw new Error('server unavailable');
+        if (attempts < 3) throw new Error("server unavailable");
         return socket;
       },
       sleep: async (milliseconds) => {
         delays.push(milliseconds);
       },
     });
-    const pending = manager.request<{ ok: true }>('orchestration.getSnapshot', {});
+    const pending = manager.request<{ ok: true }>("orchestration.getSnapshot", {});
     await flushUntil(() => socket.sent.length === 1);
     socket.succeedLast({ ok: true });
     await expect(pending).resolves.toEqual({ ok: true });
     expect(attempts).toBe(3);
     expect(delays).toEqual([100, 200]);
-    expect(manager.getState()).toBe('connected');
+    expect(manager.getState()).toBe("connected");
   });
 
-  it('renegotiates on the next snapshot after a failed socket', async () => {
+  it("renegotiates on the next snapshot after a failed socket", async () => {
     const first = new FakeSocket();
     const second = new FakeSocket();
     const sockets = [first, second];
@@ -205,22 +202,22 @@ describe('rpc transport manager', () => {
       connect: async () => sockets.shift() ?? second,
     });
 
-    const failed = manager.request('orchestration.getSnapshot', {});
+    const failed = manager.request("orchestration.getSnapshot", {});
     await flushUntil(() => first.sent.length === 1);
-    first.emit('close');
-    await expect(failed).rejects.toThrow('socket closed');
+    first.emit("close");
+    await expect(failed).rejects.toThrow("socket closed");
 
     const recovered = manager.request<{ snapshotSequence: number }>(
-      'orchestration.getSnapshot',
-      {}
+      "orchestration.getSnapshot",
+      {},
     );
     await flushUntil(() => second.sent.length === 1);
     second.succeedLast({ snapshotSequence: 42 });
     await expect(recovered).resolves.toEqual({ snapshotSequence: 42 });
-    expect(manager.getState()).toBe('connected');
+    expect(manager.getState()).toBe("connected");
   });
 
-  it('recovers a failed active socket without waiting for another request', async () => {
+  it("recovers a failed active socket without waiting for another request", async () => {
     const first = new FakeSocket();
     const second = new FakeSocket();
     const sockets = [first, second];
@@ -233,29 +230,26 @@ describe('rpc transport manager', () => {
       autoReconnectOnFailure: true,
     });
 
-    const initial = manager.request<{ snapshotSequence: number }>(
-      'orchestration.getSnapshot',
-      {}
-    );
+    const initial = manager.request<{ snapshotSequence: number }>("orchestration.getSnapshot", {});
     await flushUntil(() => first.sent.length === 1);
     first.succeedLast({ snapshotSequence: 41 });
     await expect(initial).resolves.toEqual({ snapshotSequence: 41 });
 
-    first.emit('close');
-    expect(manager.getState()).toBe('reconnecting');
+    first.emit("close");
+    expect(manager.getState()).toBe("reconnecting");
     await flushUntil(() => attempts === 2);
-    expect(manager.getState()).toBe('connected');
+    expect(manager.getState()).toBe("connected");
 
     const recovered = manager.request<{ snapshotSequence: number }>(
-      'orchestration.getSnapshot',
-      {}
+      "orchestration.getSnapshot",
+      {},
     );
     await flushUntil(() => second.sent.length === 1);
     second.succeedLast({ snapshotSequence: 42 });
     await expect(recovered).resolves.toEqual({ snapshotSequence: 42 });
   });
 
-  it('holds offline between bounded retry windows, then recovers', async () => {
+  it("holds offline between bounded retry windows, then recovers", async () => {
     const recoveredSocket = new FakeSocket();
     let now = 1_000;
     let attempts = 0;
@@ -263,7 +257,7 @@ describe('rpc transport manager', () => {
     const { manager } = managerFor({
       connect: async () => {
         attempts += 1;
-        if (!serverOnline) throw new Error('server unavailable');
+        if (!serverOnline) throw new Error("server unavailable");
         return recoveredSocket;
       },
       maxReconnectAttempts: 1,
@@ -271,23 +265,23 @@ describe('rpc transport manager', () => {
       now: () => now,
     });
 
-    await expect(
-      manager.request('orchestration.getSnapshot', {})
-    ).rejects.toThrow('server unavailable');
-    expect(manager.getState()).toBe('offline');
+    await expect(manager.request("orchestration.getSnapshot", {})).rejects.toThrow(
+      "server unavailable",
+    );
+    expect(manager.getState()).toBe("offline");
     expect(attempts).toBe(2);
 
     serverOnline = true;
-    await expect(
-      manager.request('orchestration.getSnapshot', {})
-    ).rejects.toThrow('reconnect cooling down');
+    await expect(manager.request("orchestration.getSnapshot", {})).rejects.toThrow(
+      "reconnect cooling down",
+    );
     expect(attempts).toBe(2);
-    expect(manager.getState()).toBe('offline');
+    expect(manager.getState()).toBe("offline");
 
     now += 5_000;
     const recovered = manager.request<{ snapshotSequence: number }>(
-      'orchestration.getSnapshot',
-      {}
+      "orchestration.getSnapshot",
+      {},
     );
     await flushUntil(() => recoveredSocket.sent.length === 1);
     recoveredSocket.succeedLast({ snapshotSequence: 43 });
@@ -295,7 +289,7 @@ describe('rpc transport manager', () => {
     expect(attempts).toBe(3);
   });
 
-  it('retires an idle socket after its final response when requested', async () => {
+  it("retires an idle socket after its final response when requested", async () => {
     const first = new FakeSocket();
     const second = new FakeSocket();
     const sockets = [first, second];
@@ -306,50 +300,42 @@ describe('rpc transport manager', () => {
       autoReconnectOnFailure: true,
     });
     manager.subscribe((state) => states.push(state));
-    const pending = manager.request<{ ok: true }>(
-      'orchestration.getSnapshot',
-      {}
-    );
+    const pending = manager.request<{ ok: true }>("orchestration.getSnapshot", {});
     await flushUntil(() => first.sent.length === 1);
     first.succeedLast({ ok: true });
     await expect(pending).resolves.toEqual({ ok: true });
     expect(first.closed).toBe(true);
-    expect(manager.getState()).toBe('idle');
+    expect(manager.getState()).toBe("idle");
 
-    const next = manager.request<{ ok: true }>(
-      'orchestration.getSnapshot',
-      {}
-    );
+    const next = manager.request<{ ok: true }>("orchestration.getSnapshot", {});
     await flushUntil(() => second.sent.length === 1);
     second.succeedLast({ ok: true });
     await expect(next).resolves.toEqual({ ok: true });
-    expect(states).not.toContain('reconnecting');
+    expect(states).not.toContain("reconnecting");
   });
 
-  it('delivers stream chunks in order and settles on the final exit', async () => {
+  it("delivers stream chunks in order and settles on the final exit", async () => {
     const socket = new FakeSocket();
     const { manager, timeouts } = managerFor({
       connect: async () => socket,
       closeWhenIdle: true,
     });
     const chunks: unknown[] = [];
-    const pending = manager.requestStream(
-      'git.runStackedAction',
-      { action: 'commit' },
-      (value) => chunks.push(value)
+    const pending = manager.requestStream("git.runStackedAction", { action: "commit" }, (value) =>
+      chunks.push(value),
     );
     await flushUntil(() => socket.sent.length === 1);
     expect(timeouts.size).toBe(0);
-    socket.chunkLast({ kind: 'action_started' }, { kind: 'phase_started' });
-    expect(JSON.parse(socket.sent.at(-1) ?? '{}')).toEqual({
-      _tag: 'Ack',
-      requestId: '1',
+    socket.chunkLast({ kind: "action_started" }, { kind: "phase_started" });
+    expect(JSON.parse(socket.sent.at(-1) ?? "{}")).toEqual({
+      _tag: "Ack",
+      requestId: "1",
     });
-    socket.chunkLast({ kind: 'action_finished', result: { action: 'commit' } });
+    socket.chunkLast({ kind: "action_finished", result: { action: "commit" } });
     expect(chunks).toEqual([
-      { kind: 'action_started' },
-      { kind: 'phase_started' },
-      { kind: 'action_finished', result: { action: 'commit' } },
+      { kind: "action_started" },
+      { kind: "phase_started" },
+      { kind: "action_finished", result: { action: "commit" } },
     ]);
     socket.succeedLast(undefined);
     await expect(pending).resolves.toBeUndefined();

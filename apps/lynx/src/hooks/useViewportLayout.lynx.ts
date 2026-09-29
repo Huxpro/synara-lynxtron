@@ -1,23 +1,19 @@
-import {
-  useCallback,
-  useEffect,
-  useState,
-} from '@lynx-js/react';
+import { useCallback, useEffect, useState } from "@lynx-js/react";
 
 import {
   resolveViewportLayout,
   UNKNOWN_VIEWPORT_SIZE,
   type ViewportLayout,
   type ViewportSize,
-} from '@synara-web/responsiveLayout.logic';
-import { platformWindow } from '../platform/window';
+} from "@synara-web/responsiveLayout.logic";
+import { platformWindow } from "../platform/window";
 
 function validViewportSize(width: unknown, height: unknown): ViewportSize | null {
   if (
-    typeof width !== 'number' ||
+    typeof width !== "number" ||
     !Number.isFinite(width) ||
     width <= 0 ||
-    typeof height !== 'number' ||
+    typeof height !== "number" ||
     !Number.isFinite(height) ||
     height <= 0
   ) {
@@ -32,14 +28,12 @@ export function useViewportLayout(): ViewportLayout {
     const next = validViewportSize(width, height);
     if (!next) return;
     setSize((current) =>
-      current.width === next.width && current.height === next.height
-        ? current
-        : next
+      current.width === next.width && current.height === next.height ? current : next,
     );
   }, []);
 
   useEffect(() => {
-    'background only';
+    "background only";
     let active = true;
     void platformWindow
       .getViewportSize()

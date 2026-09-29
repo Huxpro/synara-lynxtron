@@ -4,11 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { KanbanOverviewComposition } from "./KanbanOverviewComposition";
 import type { KanbanBoard, KanbanCard } from "./kanban.logic";
 
-function card(
-  cardId: string,
-  column: KanbanCard["column"],
-  title: string,
-): KanbanCard {
+function card(cardId: string, column: KanbanCard["column"], title: string): KanbanCard {
   return {
     cardId,
     threadId: cardId as KanbanCard["threadId"],
@@ -60,21 +56,13 @@ describe("KanbanOverviewComposition", () => {
     };
 
     const markup = renderToStaticMarkup(
-      <KanbanOverviewComposition
-        board={board}
-        onOpenProject={vi.fn()}
-        onOpenCard={vi.fn()}
-      />,
+      <KanbanOverviewComposition board={board} onOpenProject={vi.fn()} onOpenCard={vi.fn()} />,
     );
 
     expect(markup).not.toContain("Empty project");
     expect(markup).toContain("Ready project");
-    expect(markup.indexOf("Running card")).toBeLessThan(
-      markup.indexOf("Draft card"),
-    );
-    expect(markup.indexOf("Draft card")).toBeLessThan(
-      markup.indexOf("Done card"),
-    );
+    expect(markup.indexOf("Running card")).toBeLessThan(markup.indexOf("Draft card"));
+    expect(markup.indexOf("Draft card")).toBeLessThan(markup.indexOf("Done card"));
   });
 
   it("uses the canonical empty-state copy", () => {

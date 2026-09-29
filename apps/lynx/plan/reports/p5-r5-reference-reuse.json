@@ -9,20 +9,11 @@
     "gate": "minimum(module reuse %, LOC reuse %)",
     "targetPercent": 70
   },
-  "screenSet": [
-    "settings-behavior-reference"
-  ],
+  "screenSet": ["settings-behavior-reference"],
   "lynxGraph": {
-    "entries": [
-      "src/app/FidelityReferencePage.tsx"
-    ],
+    "entries": ["src/app/FidelityReferencePage.tsx"],
     "modules": 12,
-    "externalImports": [
-      "@lynx-js/lynx-ui",
-      "@lynx-js/react",
-      "@lynx-js/types",
-      "react"
-    ],
+    "externalImports": ["@lynx-js/lynx-ui", "@lynx-js/react", "@lynx-js/types", "react"],
     "unresolvedImports": []
   },
   "screens": [
@@ -31,18 +22,12 @@
       "label": "Settings > Behavior reference",
       "route": "/settings?section=behavior",
       "reference": "route-owned Runtime behavior + Safety confirmations panel",
-      "webEntries": [
-        "apps/web/src/components/settings/SettingsBehaviorPanel.tsx"
-      ],
-      "lynxConceptualEntries": [
-        "src/app/FidelityReferencePage.tsx"
-      ],
+      "webEntries": ["apps/web/src/components/settings/SettingsBehaviorPanel.tsx"],
+      "lynxConceptualEntries": ["src/app/FidelityReferencePage.tsx"],
       "graph": {
         "modules": 8,
         "loc": 524,
-        "externalImports": [
-          "react"
-        ],
+        "externalImports": ["react"],
         "unresolvedImports": []
       },
       "targetClassification": {
@@ -140,9 +125,7 @@
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/sidebarRowStyles.ts"
-          ]
+          "dependencies": ["apps/web/src/sidebarRowStyles.ts"]
         },
         {
           "path": "apps/web/src/sidebarRowStyles.ts",

@@ -49,11 +49,11 @@ P8-Q4, or P9-R1.
 
 Both Browser cells preserve the established Settings shell offset:
 
-| Anchor | Lynx-for-Web delta |
-|---|---:|
-| Page title | `x +5px / y +8px` |
-| Section/card | `x +5px / y +5.25px` |
-| Activity toast row | `x +5px / y +5.25px` |
+| Anchor                   |   Lynx-for-Web delta |
+| ------------------------ | -------------------: |
+| Page title               |    `x +5px / y +8px` |
+| Section/card             | `x +5px / y +5.25px` |
+| Activity toast row       | `x +5px / y +5.25px` |
 | Desktop notification row | `x +5px / y +5.25px` |
 
 The Desktop notification row is intentionally 15px shorter in Lynx because

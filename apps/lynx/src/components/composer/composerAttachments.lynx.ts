@@ -1,19 +1,16 @@
-import 'background-only';
+import "background-only";
 
-import type { ChatFileAttachment, ChatImageAttachment } from '@synara/contracts';
+import type { ChatFileAttachment, ChatImageAttachment } from "@synara/contracts";
 import {
   PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   PROVIDER_SEND_TURN_MAX_FILE_BYTES,
   PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
-} from '@synara/contracts/attachmentLimits';
+} from "@synara/contracts/attachmentLimits";
 
-import { bridgeCall } from '../../platform/bridge';
-import type { PickedFile } from '../../platform/dialogs';
+import { bridgeCall } from "../../platform/bridge";
+import type { PickedFile } from "../../platform/dialogs";
 
-type AttachmentBridgeCall = <T>(
-  method: string,
-  params: Record<string, unknown>
-) => Promise<T>;
+type AttachmentBridgeCall = <T>(method: string, params: Record<string, unknown>) => Promise<T>;
 
 export interface NativeComposerFileAttachment {
   readonly id: string;
@@ -21,7 +18,7 @@ export interface NativeComposerFileAttachment {
   readonly name: string;
   readonly sizeBytes: number;
   readonly token: string;
-  readonly type: 'file';
+  readonly type: "file";
 }
 
 export interface NativeComposerImageAttachment {
@@ -32,7 +29,7 @@ export interface NativeComposerImageAttachment {
   readonly previewUrl: string;
   readonly sizeBytes: number;
   readonly token: string;
-  readonly type: 'image';
+  readonly type: "image";
 }
 
 export type NativeComposerBinaryAttachment =
@@ -48,12 +45,12 @@ export interface PickedComposerFilesResult {
 
 function validPickedFile(file: PickedFile): boolean {
   return (
-    typeof file.token === 'string' &&
+    typeof file.token === "string" &&
     /^[a-f0-9-]{16,64}$/i.test(file.token) &&
-    typeof file.name === 'string' &&
+    typeof file.name === "string" &&
     file.name.trim().length > 0 &&
     file.name.length <= 255 &&
-    typeof file.mimeType === 'string' &&
+    typeof file.mimeType === "string" &&
     file.mimeType.length > 0 &&
     file.mimeType.length <= 255 &&
     Number.isSafeInteger(file.sizeBytes) &&
@@ -61,10 +58,13 @@ function validPickedFile(file: PickedFile): boolean {
   );
 }
 
-export async function resolvePickedComposerFiles(input: {
-  readonly existingAttachmentCount: number;
-  readonly files: ReadonlyArray<PickedFile>;
-}, request: AttachmentBridgeCall = bridgeCall): Promise<PickedComposerFilesResult> {
+export async function resolvePickedComposerFiles(
+  input: {
+    readonly existingAttachmentCount: number;
+    readonly files: ReadonlyArray<PickedFile>;
+  },
+  request: AttachmentBridgeCall = bridgeCall,
+): Promise<PickedComposerFilesResult> {
   const files: NativeComposerFileAttachment[] = [];
   const images: NativeComposerImageAttachment[] = [];
   const rejectedTokens: string[] = [];
@@ -74,18 +74,18 @@ export async function resolvePickedComposerFiles(input: {
 
   for (const file of input.files) {
     if (!validPickedFile(file) || seenTokens.has(file.token)) {
-      if (typeof file.token === 'string') rejectedTokens.push(file.token);
-      error = 'One selected file could not be validated.';
+      if (typeof file.token === "string") rejectedTokens.push(file.token);
+      error = "One selected file could not be validated.";
       continue;
     }
     seenTokens.add(file.token);
-    const isImage = file.mimeType.toLowerCase().startsWith('image/');
+    const isImage = file.mimeType.toLowerCase().startsWith("image/");
     const maxBytes = isImage
       ? PROVIDER_SEND_TURN_MAX_IMAGE_BYTES
       : PROVIDER_SEND_TURN_MAX_FILE_BYTES;
     if (file.sizeBytes > maxBytes) {
       rejectedTokens.push(file.token);
-      error = `'${file.name}' exceeds the ${isImage ? '10MB' : '25MB'} attachment limit.`;
+      error = `'${file.name}' exceeds the ${isImage ? "10MB" : "25MB"} attachment limit.`;
       continue;
     }
     if (attachmentCount >= PROVIDER_SEND_TURN_MAX_ATTACHMENTS) {
@@ -96,17 +96,14 @@ export async function resolvePickedComposerFiles(input: {
     if (isImage) {
       try {
         const preview = await request<{ readonly dataUrl: string }>(
-          'attachmentsGetPickedImagePreview',
-          { token: file.token }
+          "attachmentsGetPickedImagePreview",
+          { token: file.token },
         );
-        if (
-          typeof preview.dataUrl !== 'string' ||
-          !preview.dataUrl.startsWith('data:image/')
-        ) {
-          throw new Error('The image preview is invalid.');
+        if (typeof preview.dataUrl !== "string" || !preview.dataUrl.startsWith("data:image/")) {
+          throw new Error("The image preview is invalid.");
         }
         images.push({
-          type: 'image',
+          type: "image",
           id: `lynx-image-${file.token}`,
           token: file.token,
           name: file.name,
@@ -121,7 +118,7 @@ export async function resolvePickedComposerFiles(input: {
       }
     } else {
       files.push({
-        type: 'file',
+        type: "file",
         id: `lynx-file-${file.token}`,
         token: file.token,
         name: file.name,
@@ -137,7 +134,7 @@ export async function resolvePickedComposerFiles(input: {
 
 export async function releasePickedComposerFile(token: string): Promise<void> {
   try {
-    await bridgeCall('attachmentsReleasePickedFile', { token });
+    await bridgeCall("attachmentsReleasePickedFile", { token });
   } catch {
     // The host capability expires on its own; removal must stay best-effort.
   }
@@ -145,11 +142,11 @@ export async function releasePickedComposerFile(token: string): Promise<void> {
 
 async function cancelManagedAttachments(
   attachmentIds: ReadonlyArray<string>,
-  request: AttachmentBridgeCall
+  request: AttachmentBridgeCall,
 ): Promise<void> {
   for (const attachmentId of attachmentIds) {
     try {
-      await request('attachmentsCancel', { attachmentId });
+      await request("attachmentsCancel", { attachmentId });
     } catch {
       // The server also expires staged uploads; keep the original send error.
     }
@@ -161,20 +158,23 @@ type StagedNativeAttachment = ChatImageAttachment | ChatFileAttachment;
 export interface StagedNativeComposerFiles {
   readonly attachments: ReadonlyArray<StagedNativeAttachment>;
   readonly runWithDispatch: <A>(
-    dispatch: (attachments: ReadonlyArray<StagedNativeAttachment>) => Promise<A>
+    dispatch: (attachments: ReadonlyArray<StagedNativeAttachment>) => Promise<A>,
   ) => Promise<A>;
 }
 
-export async function stageNativeComposerFiles(input: {
-  readonly files: ReadonlyArray<NativeComposerBinaryAttachment>;
-  readonly threadId: string;
-}, request: AttachmentBridgeCall = bridgeCall): Promise<StagedNativeComposerFiles> {
+export async function stageNativeComposerFiles(
+  input: {
+    readonly files: ReadonlyArray<NativeComposerBinaryAttachment>;
+    readonly threadId: string;
+  },
+  request: AttachmentBridgeCall = bridgeCall,
+): Promise<StagedNativeComposerFiles> {
   const attachments: StagedNativeAttachment[] = [];
   try {
     for (const file of input.files) {
       const result = await request<{ attachment: StagedNativeAttachment }>(
-        'attachmentsUploadPickedFile',
-        { token: file.token, threadId: input.threadId }
+        "attachmentsUploadPickedFile",
+        { token: file.token, threadId: input.threadId },
       );
       if (result.attachment.type !== file.type) {
         throw new Error(`Attachment type changed while uploading '${file.name}'.`);
@@ -184,7 +184,7 @@ export async function stageNativeComposerFiles(input: {
   } catch (error) {
     await cancelManagedAttachments(
       attachments.map((attachment) => attachment.id),
-      request
+      request,
     );
     throw error;
   }
@@ -197,11 +197,11 @@ export async function stageNativeComposerFiles(input: {
         const result = await dispatch(attachments);
         pending = false;
         for (const file of input.files) {
-          if (file.type !== 'image' || !file.appSnapCaptureId) continue;
-          await request('attachmentsReleasePickedFile', {
+          if (file.type !== "image" || !file.appSnapCaptureId) continue;
+          await request("attachmentsReleasePickedFile", {
             token: file.token,
           }).catch(() => undefined);
-          await request('appSnapAcknowledgeCapture', {
+          await request("appSnapAcknowledgeCapture", {
             captureId: file.appSnapCaptureId,
           }).catch(() => undefined);
         }
@@ -211,7 +211,7 @@ export async function stageNativeComposerFiles(input: {
           pending = false;
           await cancelManagedAttachments(
             attachments.map((attachment) => attachment.id),
-            request
+            request,
           );
         }
         throw error;

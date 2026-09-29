@@ -39,11 +39,11 @@ The project-specific heading fills that frame instead of owning a hard-coded
 
 Final geometry:
 
-| Anchor | Web | Lynx-for-Web |
-| --- | --- | --- |
-| Frame | `400/351.25/736/110.5` | `400/311/736/111` |
-| Heading | `495.375/407.25/545.25/34.5` | `424/367/688/35` |
-| Composer surface | `400/461.75/736/95` | `400/422/736/95` |
+| Anchor           | Web                          | Lynx-for-Web      |
+| ---------------- | ---------------------------- | ----------------- |
+| Frame            | `400/351.25/736/110.5`       | `400/311/736/111` |
+| Heading          | `495.375/407.25/545.25/34.5` | `424/367/688/35`  |
+| Composer surface | `400/461.75/736/95`          | `400/422/736/95`  |
 
 The vertical coordinates differ because Web and Lynx displayed different
 provider-health heights during these fresh sessions; they are not used as a

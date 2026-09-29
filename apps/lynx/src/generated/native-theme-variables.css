@@ -17,7 +17,7 @@
   --app-settings-surface: #ffffff;
   --app-shell-background: #ffffff;
   --app-sidebar-backdrop-filter: none;
-  --app-sidebar-shadow: inset 0 1px 0 rgba(0,0,0,0.03);
+  --app-sidebar-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.03);
   --app-sidebar-surface: #ffffff;
   --app-user-message-background: rgba(13, 13, 13, 0.04);
   --background: #ffffff;
@@ -211,7 +211,7 @@
   --app-settings-surface: #111111;
   --app-shell-background: #101010;
   --app-sidebar-backdrop-filter: none;
-  --app-sidebar-shadow: inset 0 1px 0 rgba(255,255,255,0.025);
+  --app-sidebar-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
   --app-sidebar-surface: #111111;
   --app-user-message-background: rgba(252, 252, 252, 0.026);
   --background: #101010;

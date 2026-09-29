@@ -449,13 +449,11 @@ export function ToastSurface({
   );
 }
 
-export function ToastSurfaceFixture(props: {
-  readonly toast: ToastObject<ThreadToastData>;
-}) {
+export function ToastSurfaceFixture(props: { readonly toast: ToastObject<ThreadToastData> }) {
   return (
     <Toast.Provider toastManager={toastManager}>
       <Toast.Root
-        className={toastRootClassName('top-center', false)}
+        className={toastRootClassName("top-center", false)}
         data-toast-root="true"
         data-slot="toast-root"
         toast={props.toast}

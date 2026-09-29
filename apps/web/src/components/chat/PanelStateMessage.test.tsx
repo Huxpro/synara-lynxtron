@@ -27,9 +27,7 @@ describe("PanelStateMessage", () => {
   });
 
   it("keeps plain hints silent and exposes explicit status and alert semantics", () => {
-    const plainMarkup = renderToStaticMarkup(
-      <PanelStateMessage>Select a file</PanelStateMessage>,
-    );
+    const plainMarkup = renderToStaticMarkup(<PanelStateMessage>Select a file</PanelStateMessage>);
     const statusMarkup = renderToStaticMarkup(
       <PanelStateMessage intent="status" announcement="Loading conversation">
         Loading conversation…

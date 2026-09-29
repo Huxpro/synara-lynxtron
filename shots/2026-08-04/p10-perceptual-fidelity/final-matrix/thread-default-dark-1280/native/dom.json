@@ -20,26 +20,17 @@
             "childNodeCount": 1,
             "children": [
               {
-                "attributes": [
-                  "class",
-                  "SharedAppShellFrame"
-                ],
+                "attributes": ["class", "SharedAppShellFrame"],
                 "backendNodeId": 3500,
                 "childNodeCount": 2,
                 "children": [
                   {
-                    "attributes": [
-                      "class",
-                      "AppSidebar"
-                    ],
+                    "attributes": ["class", "AppSidebar"],
                     "backendNodeId": 3501,
                     "childNodeCount": 3,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "AppSidebarTitlebar"
-                        ],
+                        "attributes": ["class", "AppSidebarTitlebar"],
                         "backendNodeId": 3502,
                         "childNodeCount": 1,
                         "children": [
@@ -81,26 +72,17 @@
                         "childNodeCount": 1,
                         "children": [
                           {
-                            "attributes": [
-                              "class",
-                              "AppSidebarScrollInner"
-                            ],
+                            "attributes": ["class", "AppSidebarScrollInner"],
                             "backendNodeId": 3505,
                             "childNodeCount": 3,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "SidebarSegmentedFrame"
-                                ],
+                                "attributes": ["class", "SidebarSegmentedFrame"],
                                 "backendNodeId": 3506,
                                 "childNodeCount": 1,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SidebarSegmentedTrack"
-                                    ],
+                                    "attributes": ["class", "SidebarSegmentedTrack"],
                                     "backendNodeId": 3507,
                                     "childNodeCount": 3,
                                     "children": [
@@ -168,10 +150,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Studio"
-                                                ],
+                                                "attributes": ["text", "Studio"],
                                                 "backendNodeId": 3511,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -245,10 +224,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Projects"
-                                                ],
+                                                "attributes": ["text", "Projects"],
                                                 "backendNodeId": 3514,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -292,26 +268,17 @@
                                 "parentId": 3505
                               },
                               {
-                                "attributes": [
-                                  "class",
-                                  "AppSidebarSurfaceEnter"
-                                ],
+                                "attributes": ["class", "AppSidebarSurfaceEnter"],
                                 "backendNodeId": 3515,
                                 "childNodeCount": 2,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "AppSidebarPrimaryNav"
-                                    ],
+                                    "attributes": ["class", "AppSidebarPrimaryNav"],
                                     "backendNodeId": 3516,
                                     "childNodeCount": 5,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSidebarPrimaryActionItem"
-                                        ],
+                                        "attributes": ["class", "SharedSidebarPrimaryActionItem"],
                                         "backendNodeId": 3517,
                                         "childNodeCount": 1,
                                         "children": [
@@ -401,10 +368,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "New thread"
-                                                    ],
+                                                    "attributes": ["text", "New thread"],
                                                     "backendNodeId": 3522,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -440,10 +404,7 @@
                                         "parentId": 3516
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSidebarPrimaryActionItem"
-                                        ],
+                                        "attributes": ["class", "SharedSidebarPrimaryActionItem"],
                                         "backendNodeId": 3523,
                                         "childNodeCount": 1,
                                         "children": [
@@ -535,10 +496,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Search"
-                                                    ],
+                                                    "attributes": ["text", "Search"],
                                                     "backendNodeId": 3528,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -566,18 +524,12 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "class",
-                                                      "AppSidebarShortcut"
-                                                    ],
+                                                    "attributes": ["class", "AppSidebarShortcut"],
                                                     "backendNodeId": 3530,
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "⌘K"
-                                                        ],
+                                                        "attributes": ["text", "⌘K"],
                                                         "backendNodeId": 3531,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -621,10 +573,7 @@
                                         "parentId": 3516
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSidebarPrimaryActionItem"
-                                        ],
+                                        "attributes": ["class", "SharedSidebarPrimaryActionItem"],
                                         "backendNodeId": 3532,
                                         "childNodeCount": 1,
                                         "children": [
@@ -714,10 +663,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Kanban"
-                                                    ],
+                                                    "attributes": ["text", "Kanban"],
                                                     "backendNodeId": 3537,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -753,10 +699,7 @@
                                         "parentId": 3516
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSidebarPrimaryActionItem"
-                                        ],
+                                        "attributes": ["class", "SharedSidebarPrimaryActionItem"],
                                         "backendNodeId": 3538,
                                         "childNodeCount": 1,
                                         "children": [
@@ -844,10 +787,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Pull requests"
-                                                    ],
+                                                    "attributes": ["text", "Pull requests"],
                                                     "backendNodeId": 3543,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -883,10 +823,7 @@
                                         "parentId": 3516
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSidebarPrimaryActionItem"
-                                        ],
+                                        "attributes": ["class", "SharedSidebarPrimaryActionItem"],
                                         "backendNodeId": 3544,
                                         "childNodeCount": 1,
                                         "children": [
@@ -956,10 +893,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Automations"
-                                                    ],
+                                                    "attributes": ["text", "Automations"],
                                                     "backendNodeId": 3549,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -1003,18 +937,12 @@
                                     "parentId": 3515
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSidebarProjectsRoot"
-                                    ],
+                                    "attributes": ["class", "SharedSidebarProjectsRoot"],
                                     "backendNodeId": 3550,
                                     "childNodeCount": 2,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSidebarListSectionHeader"
-                                        ],
+                                        "attributes": ["class", "SharedSidebarListSectionHeader"],
                                         "backendNodeId": 3551,
                                         "childNodeCount": 1,
                                         "children": [
@@ -1035,10 +963,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Projects"
-                                                    ],
+                                                    "attributes": ["text", "Projects"],
                                                     "backendNodeId": 3554,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -1074,18 +999,12 @@
                                         "parentId": 3550
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSidebarProjectsList"
-                                        ],
+                                        "attributes": ["class", "SharedSidebarProjectsList"],
                                         "backendNodeId": 3555,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "AppSidebarProject"
-                                            ],
+                                            "attributes": ["class", "AppSidebarProject"],
                                             "backendNodeId": 3556,
                                             "childNodeCount": 2,
                                             "children": [
@@ -1718,18 +1637,12 @@
                                 "parentId": 3505
                               },
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSidebarChatsRoot"
-                                ],
+                                "attributes": ["class", "SharedSidebarChatsRoot"],
                                 "backendNodeId": 3585,
                                 "childNodeCount": 1,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSidebarChatsHeader"
-                                    ],
+                                    "attributes": ["class", "SharedSidebarChatsHeader"],
                                     "backendNodeId": 3586,
                                     "childNodeCount": 2,
                                     "children": [
@@ -1856,34 +1769,22 @@
                         "parentId": 3501
                       },
                       {
-                        "attributes": [
-                          "class",
-                          "AppSidebarFooter"
-                        ],
+                        "attributes": ["class", "AppSidebarFooter"],
                         "backendNodeId": 3591,
                         "childNodeCount": 1,
                         "children": [
                           {
-                            "attributes": [
-                              "class",
-                              "AppSidebarFooterStack"
-                            ],
+                            "attributes": ["class", "AppSidebarFooterStack"],
                             "backendNodeId": 3592,
                             "childNodeCount": 1,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "AppSidebarFooterRow"
-                                ],
+                                "attributes": ["class", "AppSidebarFooterRow"],
                                 "backendNodeId": 3593,
                                 "childNodeCount": 1,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSidebarPrimaryActionItem"
-                                    ],
+                                    "attributes": ["class", "SharedSidebarPrimaryActionItem"],
                                     "backendNodeId": 3594,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1969,10 +1870,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Settings"
-                                                ],
+                                                "attributes": ["text", "Settings"],
                                                 "backendNodeId": 3599,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -2040,18 +1938,12 @@
                     "parentId": 3500
                   },
                   {
-                    "attributes": [
-                      "class",
-                      "AppMain"
-                    ],
+                    "attributes": ["class", "AppMain"],
                     "backendNodeId": 3600,
                     "childNodeCount": 1,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "Page ThreadPage"
-                        ],
+                        "attributes": ["class", "Page ThreadPage"],
                         "backendNodeId": 4184,
                         "childNodeCount": 3,
                         "children": [
@@ -2064,18 +1956,12 @@
                             "childNodeCount": 1,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedChatHeaderIdentity"
-                                ],
+                                "attributes": ["class", "SharedChatHeaderIdentity"],
                                 "backendNodeId": 4186,
                                 "childNodeCount": 2,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedChatHeaderIdentityIcon"
-                                    ],
+                                    "attributes": ["class", "SharedChatHeaderIdentityIcon"],
                                     "backendNodeId": 4187,
                                     "childNodeCount": 1,
                                     "children": [
@@ -2105,18 +1991,12 @@
                                     "parentId": 4186
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedChatHeaderIdentityTitle"
-                                    ],
+                                    "attributes": ["class", "SharedChatHeaderIdentityTitle"],
                                     "backendNodeId": 4189,
                                     "childNodeCount": 1,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "text",
-                                          "Draft seed task"
-                                        ],
+                                        "attributes": ["text", "Draft seed task"],
                                         "backendNodeId": 4190,
                                         "childNodeCount": 0,
                                         "children": [],
@@ -2162,10 +2042,7 @@
                             "childNodeCount": 1,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "TranscriptShell"
-                                ],
+                                "attributes": ["class", "TranscriptShell"],
                                 "backendNodeId": 4215,
                                 "childNodeCount": 1,
                                 "children": [
@@ -2220,10 +2097,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "SharedMessageUserRow"
-                                                ],
+                                                "attributes": ["class", "SharedMessageUserRow"],
                                                 "backendNodeId": 4249,
                                                 "childNodeCount": 1,
                                                 "children": [
@@ -2409,10 +2283,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "class",
-                                                          "MdRoot"
-                                                        ],
+                                                        "attributes": ["class", "MdRoot"],
                                                         "backendNodeId": 4260,
                                                         "childNodeCount": 1,
                                                         "children": [
@@ -2532,10 +2403,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "SharedMessageUserRow"
-                                                ],
+                                                "attributes": ["class", "SharedMessageUserRow"],
                                                 "backendNodeId": 4265,
                                                 "childNodeCount": 1,
                                                 "children": [
@@ -2705,10 +2573,7 @@
                                             "childNodeCount": 2,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "SharedCollapsedWork"
-                                                ],
+                                                "attributes": ["class", "SharedCollapsedWork"],
                                                 "backendNodeId": 4274,
                                                 "childNodeCount": 2,
                                                 "children": [
@@ -2859,10 +2724,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "class",
-                                                          "MdRoot"
-                                                        ],
+                                                        "attributes": ["class", "MdRoot"],
                                                         "backendNodeId": 4283,
                                                         "childNodeCount": 1,
                                                         "children": [
@@ -3590,10 +3452,7 @@
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "TranscriptBottomInset"
-                                            ],
+                                            "attributes": ["class", "TranscriptBottomInset"],
                                             "backendNodeId": 4287,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -3647,10 +3506,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "class",
-                                                          "MdRoot"
-                                                        ],
+                                                        "attributes": ["class", "MdRoot"],
                                                         "backendNodeId": 4292,
                                                         "childNodeCount": 1,
                                                         "children": [
@@ -4038,10 +3894,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "SharedMessageUserRow"
-                                                ],
+                                                "attributes": ["class", "SharedMessageUserRow"],
                                                 "backendNodeId": 4297,
                                                 "childNodeCount": 1,
                                                 "children": [
@@ -4227,10 +4080,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "class",
-                                                          "MdRoot"
-                                                        ],
+                                                        "attributes": ["class", "MdRoot"],
                                                         "backendNodeId": 4308,
                                                         "childNodeCount": 1,
                                                         "children": [
@@ -4618,10 +4468,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "SharedMessageUserRow"
-                                                ],
+                                                "attributes": ["class", "SharedMessageUserRow"],
                                                 "backendNodeId": 4313,
                                                 "childNodeCount": 1,
                                                 "children": [
@@ -5119,10 +4966,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "class",
-                                                          "MdRoot"
-                                                        ],
+                                                        "attributes": ["class", "MdRoot"],
                                                         "backendNodeId": 4324,
                                                         "childNodeCount": 1,
                                                         "children": [
@@ -8918,34 +8762,22 @@
                             "childNodeCount": 1,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "ComposerInputShellLynx"
-                                ],
+                                "attributes": ["class", "ComposerInputShellLynx"],
                                 "backendNodeId": 4218,
                                 "childNodeCount": 1,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "ComposerInputSurfaceLynx"
-                                    ],
+                                    "attributes": ["class", "ComposerInputSurfaceLynx"],
                                     "backendNodeId": 4219,
                                     "childNodeCount": 2,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "ComposerEditorRegionLynx"
-                                        ],
+                                        "attributes": ["class", "ComposerEditorRegionLynx"],
                                         "backendNodeId": 4220,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "ComposerProjectedEditorFlow"
-                                            ],
+                                            "attributes": ["class", "ComposerProjectedEditorFlow"],
                                             "backendNodeId": 4221,
                                             "childNodeCount": 2,
                                             "children": [
@@ -9021,26 +8853,17 @@
                                         "parentId": 4219
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "ComposerFooterRowLynx"
-                                        ],
+                                        "attributes": ["class", "ComposerFooterRowLynx"],
                                         "backendNodeId": 4224,
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "ComposerFooterLeadingLynx"
-                                            ],
+                                            "attributes": ["class", "ComposerFooterLeadingLynx"],
                                             "backendNodeId": 4225,
                                             "childNodeCount": 2,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "LxMenuRoot"
-                                                ],
+                                                "attributes": ["class", "LxMenuRoot"],
                                                 "backendNodeId": 4226,
                                                 "childNodeCount": 1,
                                                 "children": [
@@ -9160,10 +8983,7 @@
                                                 "parentId": 4225
                                               },
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "LxMenuRoot"
-                                                ],
+                                                "attributes": ["class", "LxMenuRoot"],
                                                 "backendNodeId": 4230,
                                                 "childNodeCount": 1,
                                                 "children": [
@@ -9301,26 +9121,17 @@
                                             "parentId": 4224
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "ComposerFooterActionsLynx"
-                                            ],
+                                            "attributes": ["class", "ComposerFooterActionsLynx"],
                                             "backendNodeId": 4235,
                                             "childNodeCount": 2,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "ComposerModelControlLynx"
-                                                ],
+                                                "attributes": ["class", "ComposerModelControlLynx"],
                                                 "backendNodeId": 4236,
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "class",
-                                                      "LxMenuRoot"
-                                                    ],
+                                                    "attributes": ["class", "LxMenuRoot"],
                                                     "backendNodeId": 4237,
                                                     "childNodeCount": 1,
                                                     "children": [

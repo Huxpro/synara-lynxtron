@@ -403,8 +403,7 @@ export function buildRevertTurnCountByUserMessageId(input: {
       const summary = input.turnDiffSummaryByAssistantMessageId.get(nextEntry.message.id);
       if (!summary) continue;
       const turnCount =
-        summary.checkpointTurnCount ??
-        input.inferredCheckpointTurnCountByTurnId[summary.turnId];
+        summary.checkpointTurnCount ?? input.inferredCheckpointTurnCountByTurnId[summary.turnId];
       if (typeof turnCount === "number") {
         byUserMessageId.set(entry.message.id, Math.max(0, turnCount - 1));
       }

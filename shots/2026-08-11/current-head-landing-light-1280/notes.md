@@ -12,7 +12,7 @@
 - Retained frames:
   - Web authority: `web/landing.png`
   - Lynx-for-Web after the fix: `lynx/landing-after.png`
-  Both PNGs are exactly `1280x820`.
+    Both PNGs are exactly `1280x820`.
 - Baseline product failure: `lynx/landing.png` omitted the Codex provider-health
   banner even though the shared server reported Codex unavailable. The missing
   68px banner shifted the landing composition upward.

@@ -1,5 +1,5 @@
-import type { ClientOrchestrationCommand, ThreadId } from '@synara/contracts';
-import { deleteProjectThreadsSequentially } from '@synara/shared/projectThreadArchive';
+import type { ClientOrchestrationCommand, ThreadId } from "@synara/contracts";
+import { deleteProjectThreadsSequentially } from "@synara/shared/projectThreadArchive";
 
 interface NativeProjectThread {
   readonly id: string;
@@ -21,18 +21,20 @@ export async function deleteNativeProjectThreads(input: {
     threads: input.threads,
     deleteThread: async (thread) => {
       const threadId = thread.id as ThreadId;
-      if (thread.sessionStatus && thread.sessionStatus !== 'closed') {
-        await input.dispatch({
-          type: 'thread.session.stop',
-          commandId: commandId('lynx-project-thread-stop') as never,
-          threadId,
-          createdAt: new Date().toISOString(),
-        }).catch(() => undefined);
+      if (thread.sessionStatus && thread.sessionStatus !== "closed") {
+        await input
+          .dispatch({
+            type: "thread.session.stop",
+            commandId: commandId("lynx-project-thread-stop") as never,
+            threadId,
+            createdAt: new Date().toISOString(),
+          })
+          .catch(() => undefined);
       }
       await input.closeTerminalHistory(threadId).catch(() => undefined);
       await input.dispatch({
-        type: 'thread.delete',
-        commandId: commandId('lynx-project-thread-delete') as never,
+        type: "thread.delete",
+        commandId: commandId("lynx-project-thread-delete") as never,
         threadId,
       });
       await input.cleanupThreadState(threadId);
@@ -46,7 +48,7 @@ export async function deleteNativeProjectThreads(input: {
 }
 
 export async function removeNativeProject(input: {
-  readonly projectId: import('@synara/contracts').ProjectId;
+  readonly projectId: import("@synara/contracts").ProjectId;
   readonly threads: readonly NativeProjectThread[];
   readonly dispatch: (command: ClientOrchestrationCommand) => Promise<unknown>;
   readonly closeTerminalHistory: (threadId: ThreadId) => Promise<void>;
@@ -78,11 +80,11 @@ export async function removeNativeProject(input: {
 }
 
 export function buildNativeProjectDeleteCommand(
-  projectId: import('@synara/contracts').ProjectId
+  projectId: import("@synara/contracts").ProjectId,
 ): ClientOrchestrationCommand {
   return {
-    type: 'project.delete',
-    commandId: commandId('lynx-project-delete') as never,
+    type: "project.delete",
+    commandId: commandId("lynx-project-delete") as never,
     projectId,
   };
 }

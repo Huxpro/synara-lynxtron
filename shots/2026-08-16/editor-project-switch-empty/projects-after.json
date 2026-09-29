@@ -1,7 +1,44 @@
-[{"project_id":"a556512f-da82-483c-8c42-47fabccfa5f5","title":"Studio","workspace_root":"/Users/bytedance/Documents/Synara/Studio","deleted_at":null},
-{"project_id":"editor-changes-project","title":"Editor Changes","workspace_root":"/private/tmp/synara-editor-changes","deleted_at":null},
-{"project_id":"editor-empty-project","title":"Editor Empty Project","workspace_root":"/private/tmp/synara-editor-empty-project","deleted_at":"2026-08-15T16:41:54.934Z"},
-{"project_id":"editor-empty-project-2","title":"Editor Empty Project","workspace_root":"/private/tmp/synara-editor-empty-project-2","deleted_at":"2026-08-15T16:43:58.887Z"},
-{"project_id":"editor-secondary-project","title":"Editor Secondary","workspace_root":"/private/tmp/synara-editor-secondary","deleted_at":null},
-{"project_id":"lynx-landing-project-1786726928238-156f6465b74ed8","title":"Home","workspace_root":"/Users/bytedance","deleted_at":null},
-{"project_id":"lynx-landing-project-1786726928305-f580eacbcb61c","title":"Home","workspace_root":"/Users/bytedance","deleted_at":"2026-08-14T17:07:16.486Z"}]
+[
+  {
+    "project_id": "a556512f-da82-483c-8c42-47fabccfa5f5",
+    "title": "Studio",
+    "workspace_root": "/Users/bytedance/Documents/Synara/Studio",
+    "deleted_at": null
+  },
+  {
+    "project_id": "editor-changes-project",
+    "title": "Editor Changes",
+    "workspace_root": "/private/tmp/synara-editor-changes",
+    "deleted_at": null
+  },
+  {
+    "project_id": "editor-empty-project",
+    "title": "Editor Empty Project",
+    "workspace_root": "/private/tmp/synara-editor-empty-project",
+    "deleted_at": "2026-08-15T16:41:54.934Z"
+  },
+  {
+    "project_id": "editor-empty-project-2",
+    "title": "Editor Empty Project",
+    "workspace_root": "/private/tmp/synara-editor-empty-project-2",
+    "deleted_at": "2026-08-15T16:43:58.887Z"
+  },
+  {
+    "project_id": "editor-secondary-project",
+    "title": "Editor Secondary",
+    "workspace_root": "/private/tmp/synara-editor-secondary",
+    "deleted_at": null
+  },
+  {
+    "project_id": "lynx-landing-project-1786726928238-156f6465b74ed8",
+    "title": "Home",
+    "workspace_root": "/Users/bytedance",
+    "deleted_at": null
+  },
+  {
+    "project_id": "lynx-landing-project-1786726928305-f580eacbcb61c",
+    "title": "Home",
+    "workspace_root": "/Users/bytedance",
+    "deleted_at": "2026-08-14T17:07:16.486Z"
+  }
+]

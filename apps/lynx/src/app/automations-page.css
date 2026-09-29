@@ -324,8 +324,7 @@
   height: 246px;
 }
 
-.SliceRoot--viewport-short-height.SliceRoot--viewport-compact
-  .AutomationDetailMain {
+.SliceRoot--viewport-short-height.SliceRoot--viewport-compact .AutomationDetailMain {
   flex: 0 0 120px;
   height: 120px;
 }
@@ -336,12 +335,8 @@
   padding: 46px 20px 0;
 }
 
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .AutomationDetailHeader,
-.SliceRoot--viewport-medium
-  .AppMain--sidebar-closed
-  .AutomationDetailNotFoundHeader {
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .AutomationDetailHeader,
+.SliceRoot--viewport-medium .AppMain--sidebar-closed .AutomationDetailNotFoundHeader {
   padding-left: 180px;
 }
 
@@ -470,11 +465,7 @@
   border-style: solid;
   border-color: color-mix(in srgb, var(--destructive) 30%, transparent);
   border-radius: 6px;
-  background-color: color-mix(
-    in srgb,
-    var(--destructive) 6%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--destructive) 6%, transparent);
 }
 
 .AutomationDetailApproval {
@@ -960,11 +951,7 @@
 .AutomationCreateError {
   padding: 8px 10px;
   border-radius: 7px;
-  background-color: color-mix(
-    in srgb,
-    var(--destructive) 8%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--destructive) 8%, transparent);
 }
 
 .AutomationCreateErrorText {
@@ -1053,9 +1040,7 @@
   min-height: 0;
 }
 
-.SliceRoot--viewport-medium
-  .AutomationCreateDialog
-  > .AutomationCreateFooter {
+.SliceRoot--viewport-medium .AutomationCreateDialog > .AutomationCreateFooter {
   flex-shrink: 0;
   margin-top: 0;
 }

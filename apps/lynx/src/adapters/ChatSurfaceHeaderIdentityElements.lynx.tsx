@@ -1,5 +1,5 @@
-import type { ReactNode } from '@lynx-js/react';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
+import type { ReactNode } from "@lynx-js/react";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
 
 export function ChatSurfaceHeaderIdentityRootElement(props: {
   readonly highlighted: boolean;
@@ -8,7 +8,7 @@ export function ChatSurfaceHeaderIdentityRootElement(props: {
   return (
     <view
       className={`SharedChatHeaderIdentity${
-        props.highlighted ? ' SharedChatHeaderIdentity--highlighted' : ''
+        props.highlighted ? " SharedChatHeaderIdentity--highlighted" : ""
       }`}
     >
       {props.children}
@@ -30,10 +30,10 @@ interface ChatSurfaceHeaderIdentityTitleProps {
 }
 
 function RenamableChatSurfaceHeaderIdentityTitle(
-  props: ChatSurfaceHeaderIdentityTitleProps & { readonly onRename: () => void }
+  props: ChatSurfaceHeaderIdentityTitleProps & { readonly onRename: () => void },
 ) {
   const rename = useLynxInteractiveState({
-    baseClassName: 'SharedChatHeaderIdentityTitle',
+    baseClassName: "SharedChatHeaderIdentityTitle",
     accessibleLabel: `Rename thread ${props.title}`,
     onActivate: props.onRename,
   });
@@ -44,9 +44,7 @@ function RenamableChatSurfaceHeaderIdentityTitle(
   );
 }
 
-export function ChatSurfaceHeaderIdentityTitleElement(
-  props: ChatSurfaceHeaderIdentityTitleProps
-) {
+export function ChatSurfaceHeaderIdentityTitleElement(props: ChatSurfaceHeaderIdentityTitleProps) {
   if (!props.onRename) {
     return (
       <text className="SharedChatHeaderIdentityTitle" maxlines={1}>
@@ -54,10 +52,5 @@ export function ChatSurfaceHeaderIdentityTitleElement(
       </text>
     );
   }
-  return (
-    <RenamableChatSurfaceHeaderIdentityTitle
-      {...props}
-      onRename={props.onRename}
-    />
-  );
+  return <RenamableChatSurfaceHeaderIdentityTitle {...props} onRename={props.onRename} />;
 }

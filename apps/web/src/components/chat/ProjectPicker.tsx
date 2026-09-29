@@ -346,18 +346,16 @@ export const ProjectPicker = memo(function ProjectPicker({
             (() => {
               const space = spaces.find((candidate) => candidate.id === folder.spaceId);
               return {
-              id: folder.projectId ? `project:${folder.projectId}` : `folder:${folder.cwd}`,
-              kind: folder.projectId ? ("project" as const) : ("folder" as const),
-              projectId: folder.projectId,
-              workspaceRoot: folder.cwd,
-              primaryLabel: folder.primaryLabel,
-              secondaryLabel: folder.secondaryLabel,
-              spaceId: folder.spaceId,
-              spaceName: folder.spaceName,
-              spaceIcon: space?.icon ?? null,
-              ...(space?.sortOrder === undefined
-                ? {}
-                : { spaceSortOrder: space.sortOrder }),
+                id: folder.projectId ? `project:${folder.projectId}` : `folder:${folder.cwd}`,
+                kind: folder.projectId ? ("project" as const) : ("folder" as const),
+                projectId: folder.projectId,
+                workspaceRoot: folder.cwd,
+                primaryLabel: folder.primaryLabel,
+                secondaryLabel: folder.secondaryLabel,
+                spaceId: folder.spaceId,
+                spaceName: folder.spaceName,
+                spaceIcon: space?.icon ?? null,
+                ...(space?.sortOrder === undefined ? {} : { spaceSortOrder: space.sortOrder }),
               };
             })(),
           ]),
@@ -381,13 +379,11 @@ export const ProjectPicker = memo(function ProjectPicker({
             : null
           : selectedWorkspaceRoot
             ? activeFolderOptions.some(
-                (folder) =>
-                  folder.projectId !== null && folder.cwd === selectedWorkspaceRoot,
+                (folder) => folder.projectId !== null && folder.cwd === selectedWorkspaceRoot,
               )
               ? `project:${
                   activeFolderOptions.find(
-                    (folder) =>
-                      folder.projectId !== null && folder.cwd === selectedWorkspaceRoot,
+                    (folder) => folder.projectId !== null && folder.cwd === selectedWorkspaceRoot,
                   )?.projectId
                 }`
               : `folder:${selectedWorkspaceRoot}`
@@ -432,9 +428,7 @@ export const ProjectPicker = memo(function ProjectPicker({
       resetVisible={showResetToHome || isProjectSelectionMode}
       searchPlaceholder={searchPlaceholder}
       errorMessage={
-        errorMessage ??
-        directoryErrorMessage ??
-        (isLoadingDirectories ? "Loading folders…" : null)
+        errorMessage ?? directoryErrorMessage ?? (isLoadingDirectories ? "Loading folders…" : null)
       }
       retryActionLabel={isLoadingDirectories ? "Retrying…" : "Retry"}
       retryActionBusy={isLoadingDirectories}
@@ -449,9 +443,7 @@ export const ProjectPicker = memo(function ProjectPicker({
       onAddProject={() => void handleAddNewProject()}
       onReset={handleResetToHome}
       {...(triggerClassName === undefined ? {} : { triggerClassName })}
-      triggerTestId={
-        isProjectSelectionMode ? "project-picker-trigger" : "workspace-picker-trigger"
-      }
+      triggerTestId={isProjectSelectionMode ? "project-picker-trigger" : "workspace-picker-trigger"}
     />
   );
 });

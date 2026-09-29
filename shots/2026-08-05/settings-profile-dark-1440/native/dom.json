@@ -20,34 +20,22 @@
             "childNodeCount": 1,
             "children": [
               {
-                "attributes": [
-                  "class",
-                  "SettingsPage SettingsPage--theme-dark"
-                ],
+                "attributes": ["class", "SettingsPage SettingsPage--theme-dark"],
                 "backendNodeId": 170,
                 "childNodeCount": 2,
                 "children": [
                   {
-                    "attributes": [
-                      "class",
-                      "SettingsSidebar"
-                    ],
+                    "attributes": ["class", "SettingsSidebar"],
                     "backendNodeId": 171,
                     "childNodeCount": 2,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "SharedSettingsSidebarChrome"
-                        ],
+                        "attributes": ["class", "SharedSettingsSidebarChrome"],
                         "backendNodeId": 174,
                         "childNodeCount": 2,
                         "children": [
                           {
-                            "attributes": [
-                              "class",
-                              "SharedSettingsSidebarBackRegion"
-                            ],
+                            "attributes": ["class", "SharedSettingsSidebarBackRegion"],
                             "backendNodeId": 175,
                             "childNodeCount": 1,
                             "children": [
@@ -94,10 +82,7 @@
                                 "childNodeCount": 2,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsSidebarBackIcon"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsSidebarBackIcon"],
                                     "backendNodeId": 177,
                                     "childNodeCount": 1,
                                     "children": [
@@ -127,18 +112,12 @@
                                     "parentId": 176
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsSidebarBackLabel"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsSidebarBackLabel"],
                                     "backendNodeId": 179,
                                     "childNodeCount": 1,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "text",
-                                          "Back to app"
-                                        ],
+                                        "attributes": ["text", "Back to app"],
                                         "backendNodeId": 180,
                                         "childNodeCount": 0,
                                         "children": [],
@@ -174,26 +153,17 @@
                             "parentId": 174
                           },
                           {
-                            "attributes": [
-                              "class",
-                              "SharedSettingsSidebarSearchRegion"
-                            ],
+                            "attributes": ["class", "SharedSettingsSidebarSearchRegion"],
                             "backendNodeId": 181,
                             "childNodeCount": 1,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSettingsSidebarSearch"
-                                ],
+                                "attributes": ["class", "SharedSettingsSidebarSearch"],
                                 "backendNodeId": 182,
                                 "childNodeCount": 2,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsSidebarSearchIcon"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsSidebarSearchIcon"],
                                     "backendNodeId": 183,
                                     "childNodeCount": 1,
                                     "children": [
@@ -317,34 +287,22 @@
                         "parentId": 171
                       },
                       {
-                        "attributes": [
-                          "class",
-                          "SharedSettingsNavigation"
-                        ],
+                        "attributes": ["class", "SharedSettingsNavigation"],
                         "backendNodeId": 188,
                         "childNodeCount": 2,
                         "children": [
                           {
-                            "attributes": [
-                              "class",
-                              "SharedSettingsNavigationGroup"
-                            ],
+                            "attributes": ["class", "SharedSettingsNavigationGroup"],
                             "backendNodeId": 189,
                             "childNodeCount": 2,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSettingsNavigationGroupLabel"
-                                ],
+                                "attributes": ["class", "SharedSettingsNavigationGroupLabel"],
                                 "backendNodeId": 190,
                                 "childNodeCount": 1,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "text",
-                                      "App"
-                                    ],
+                                    "attributes": ["text", "App"],
                                     "backendNodeId": 191,
                                     "childNodeCount": 0,
                                     "children": [],
@@ -364,18 +322,12 @@
                                 "parentId": 189
                               },
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSettingsNavigationList"
-                                ],
+                                "attributes": ["class", "SharedSettingsNavigationList"],
                                 "backendNodeId": 192,
                                 "childNodeCount": 9,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 193,
                                     "childNodeCount": 1,
                                     "children": [
@@ -422,10 +374,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 195,
                                             "childNodeCount": 1,
                                             "children": [
@@ -463,10 +412,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "General"
-                                                ],
+                                                "attributes": ["text", "General"],
                                                 "backendNodeId": 198,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -502,10 +448,7 @@
                                     "parentId": 192
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 199,
                                     "childNodeCount": 1,
                                     "children": [
@@ -554,10 +497,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 201,
                                             "childNodeCount": 1,
                                             "children": [
@@ -595,10 +535,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Profile"
-                                                ],
+                                                "attributes": ["text", "Profile"],
                                                 "backendNodeId": 204,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -634,10 +571,7 @@
                                     "parentId": 192
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 205,
                                     "childNodeCount": 1,
                                     "children": [
@@ -684,10 +618,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 207,
                                             "childNodeCount": 1,
                                             "children": [
@@ -725,10 +656,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Appearance"
-                                                ],
+                                                "attributes": ["text", "Appearance"],
                                                 "backendNodeId": 210,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -764,10 +692,7 @@
                                     "parentId": 192
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 211,
                                     "childNodeCount": 1,
                                     "children": [
@@ -814,10 +739,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 213,
                                             "childNodeCount": 1,
                                             "children": [
@@ -855,10 +777,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Notifications"
-                                                ],
+                                                "attributes": ["text", "Notifications"],
                                                 "backendNodeId": 216,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -894,10 +813,7 @@
                                     "parentId": 192
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 217,
                                     "childNodeCount": 1,
                                     "children": [
@@ -944,10 +860,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 219,
                                             "childNodeCount": 1,
                                             "children": [
@@ -985,10 +898,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Behavior"
-                                                ],
+                                                "attributes": ["text", "Behavior"],
                                                 "backendNodeId": 222,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1024,10 +934,7 @@
                                     "parentId": 192
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 223,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1074,10 +981,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 225,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1115,10 +1019,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "AppSnap"
-                                                ],
+                                                "attributes": ["text", "AppSnap"],
                                                 "backendNodeId": 228,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1154,10 +1055,7 @@
                                     "parentId": 192
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 229,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1204,10 +1102,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 231,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1245,10 +1140,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Keyboard Shortcuts"
-                                                ],
+                                                "attributes": ["text", "Keyboard Shortcuts"],
                                                 "backendNodeId": 234,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1284,10 +1176,7 @@
                                     "parentId": 192
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 235,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1334,10 +1223,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 237,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1375,10 +1261,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Worktrees"
-                                                ],
+                                                "attributes": ["text", "Worktrees"],
                                                 "backendNodeId": 240,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1414,10 +1297,7 @@
                                     "parentId": 192
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 241,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1464,10 +1344,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 243,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1505,10 +1382,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Archived"
-                                                ],
+                                                "attributes": ["text", "Archived"],
                                                 "backendNodeId": 246,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1568,18 +1442,12 @@
                             "childNodeCount": 2,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSettingsNavigationGroupLabel"
-                                ],
+                                "attributes": ["class", "SharedSettingsNavigationGroupLabel"],
                                 "backendNodeId": 248,
                                 "childNodeCount": 1,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "text",
-                                      "Synara"
-                                    ],
+                                    "attributes": ["text", "Synara"],
                                     "backendNodeId": 249,
                                     "childNodeCount": 0,
                                     "children": [],
@@ -1599,18 +1467,12 @@
                                 "parentId": 247
                               },
                               {
-                                "attributes": [
-                                  "class",
-                                  "SharedSettingsNavigationList"
-                                ],
+                                "attributes": ["class", "SharedSettingsNavigationList"],
                                 "backendNodeId": 250,
                                 "childNodeCount": 6,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 251,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1657,10 +1519,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 253,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1698,10 +1557,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Models"
-                                                ],
+                                                "attributes": ["text", "Models"],
                                                 "backendNodeId": 256,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1737,10 +1593,7 @@
                                     "parentId": 250
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 257,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1787,10 +1640,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 259,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1828,10 +1678,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Providers"
-                                                ],
+                                                "attributes": ["text", "Providers"],
                                                 "backendNodeId": 262,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1867,10 +1714,7 @@
                                     "parentId": 250
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 263,
                                     "childNodeCount": 1,
                                     "children": [
@@ -1917,10 +1761,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 265,
                                             "childNodeCount": 1,
                                             "children": [
@@ -1958,10 +1799,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Skills"
-                                                ],
+                                                "attributes": ["text", "Skills"],
                                                 "backendNodeId": 268,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -1997,10 +1835,7 @@
                                     "parentId": 250
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 269,
                                     "childNodeCount": 1,
                                     "children": [
@@ -2047,10 +1882,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 271,
                                             "childNodeCount": 1,
                                             "children": [
@@ -2088,10 +1920,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Usage"
-                                                ],
+                                                "attributes": ["text", "Usage"],
                                                 "backendNodeId": 274,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -2127,10 +1956,7 @@
                                     "parentId": 250
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 275,
                                     "childNodeCount": 1,
                                     "children": [
@@ -2177,10 +2003,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 277,
                                             "childNodeCount": 1,
                                             "children": [
@@ -2218,10 +2041,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Integrations"
-                                                ],
+                                                "attributes": ["text", "Integrations"],
                                                 "backendNodeId": 280,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -2257,10 +2077,7 @@
                                     "parentId": 250
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SharedSettingsNavigationItem"
-                                    ],
+                                    "attributes": ["class", "SharedSettingsNavigationItem"],
                                     "backendNodeId": 281,
                                     "childNodeCount": 1,
                                     "children": [
@@ -2307,10 +2124,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SharedSettingsNavigationIcon"
-                                            ],
+                                            "attributes": ["class", "SharedSettingsNavigationIcon"],
                                             "backendNodeId": 283,
                                             "childNodeCount": 1,
                                             "children": [
@@ -2348,10 +2162,7 @@
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Advanced"
-                                                ],
+                                                "attributes": ["text", "Advanced"],
                                                 "backendNodeId": 286,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -2419,12 +2230,7 @@
                     "parentId": 170
                   },
                   {
-                    "attributes": [
-                      "scroll-orientation",
-                      "vertical",
-                      "class",
-                      "SettingsContent"
-                    ],
+                    "attributes": ["scroll-orientation", "vertical", "class", "SettingsContent"],
                     "backendNodeId": 172,
                     "childNodeCount": 1,
                     "children": [
@@ -2437,18 +2243,12 @@
                         "childNodeCount": 1,
                         "children": [
                           {
-                            "attributes": [
-                              "class",
-                              "SettingsProfile"
-                            ],
+                            "attributes": ["class", "SettingsProfile"],
                             "backendNodeId": 3871,
                             "childNodeCount": 6,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "SettingsProfileActions"
-                                ],
+                                "attributes": ["class", "SettingsProfileActions"],
                                 "backendNodeId": 3872,
                                 "childNodeCount": 1,
                                 "children": [
@@ -2475,18 +2275,12 @@
                                     "childNodeCount": 1,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "LxButton__text"
-                                        ],
+                                        "attributes": ["class", "LxButton__text"],
                                         "backendNodeId": 3898,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "Copy summary"
-                                            ],
+                                            "attributes": ["text", "Copy summary"],
                                             "backendNodeId": 3899,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -2522,34 +2316,22 @@
                                 "parentId": 3871
                               },
                               {
-                                "attributes": [
-                                  "class",
-                                  "SettingsProfileIdentity"
-                                ],
+                                "attributes": ["class", "SettingsProfileIdentity"],
                                 "backendNodeId": 3873,
                                 "childNodeCount": 3,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileAvatar"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileAvatar"],
                                     "backendNodeId": 3874,
                                     "childNodeCount": 1,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileAvatarText"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileAvatarText"],
                                         "backendNodeId": 3875,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "BY"
-                                            ],
+                                            "attributes": ["text", "BY"],
                                             "backendNodeId": 3900,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -2577,18 +2359,12 @@
                                     "parentId": 3873
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileName"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileName"],
                                     "backendNodeId": 3876,
                                     "childNodeCount": 1,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "text",
-                                          "Bytedance"
-                                        ],
+                                        "attributes": ["text", "Bytedance"],
                                         "backendNodeId": 3901,
                                         "childNodeCount": 0,
                                         "children": [],
@@ -2608,26 +2384,17 @@
                                     "parentId": 3873
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileHandleLine"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileHandleLine"],
                                     "backendNodeId": 3877,
                                     "childNodeCount": 3,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileHandle"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileHandle"],
                                         "backendNodeId": 3878,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "@bytedance"
-                                            ],
+                                            "attributes": ["text", "@bytedance"],
                                             "backendNodeId": 3902,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -2647,12 +2414,7 @@
                                         "parentId": 3877
                                       },
                                       {
-                                        "attributes": [
-                                          "text",
-                                          "·",
-                                          "class",
-                                          "SettingsProfileDot"
-                                        ],
+                                        "attributes": ["text", "·", "class", "SettingsProfileDot"],
                                         "backendNodeId": 3879,
                                         "childNodeCount": 0,
                                         "children": [],
@@ -2697,34 +2459,22 @@
                                 "parentId": 3871
                               },
                               {
-                                "attributes": [
-                                  "class",
-                                  "SettingsProfileStats"
-                                ],
+                                "attributes": ["class", "SettingsProfileStats"],
                                 "backendNodeId": 3881,
                                 "childNodeCount": 5,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileStat"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileStat"],
                                     "backendNodeId": 3903,
                                     "childNodeCount": 2,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileStatValue"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileStatValue"],
                                         "backendNodeId": 3904,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "—"
-                                            ],
+                                            "attributes": ["text", "—"],
                                             "backendNodeId": 3906,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -2744,18 +2494,12 @@
                                         "parentId": 3903
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileStatLabel"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileStatLabel"],
                                         "backendNodeId": 3905,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "Lifetime tokens"
-                                            ],
+                                            "attributes": ["text", "Lifetime tokens"],
                                             "backendNodeId": 3907,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -2783,26 +2527,17 @@
                                     "parentId": 3881
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileStat"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileStat"],
                                     "backendNodeId": 3908,
                                     "childNodeCount": 2,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileStatValue"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileStatValue"],
                                         "backendNodeId": 3909,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "—"
-                                            ],
+                                            "attributes": ["text", "—"],
                                             "backendNodeId": 3911,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -2822,18 +2557,12 @@
                                         "parentId": 3908
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileStatLabel"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileStatLabel"],
                                         "backendNodeId": 3910,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "Peak day"
-                                            ],
+                                            "attributes": ["text", "Peak day"],
                                             "backendNodeId": 3912,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -2861,26 +2590,17 @@
                                     "parentId": 3881
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileStat"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileStat"],
                                     "backendNodeId": 3913,
                                     "childNodeCount": 2,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileStatValue"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileStatValue"],
                                         "backendNodeId": 3914,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "0"
-                                            ],
+                                            "attributes": ["text", "0"],
                                             "backendNodeId": 3916,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -2900,18 +2620,12 @@
                                         "parentId": 3913
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileStatLabel"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileStatLabel"],
                                         "backendNodeId": 3915,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "Total prompts"
-                                            ],
+                                            "attributes": ["text", "Total prompts"],
                                             "backendNodeId": 3917,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -2939,26 +2653,17 @@
                                     "parentId": 3881
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileStat"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileStat"],
                                     "backendNodeId": 3918,
                                     "childNodeCount": 2,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileStatValue"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileStatValue"],
                                         "backendNodeId": 3919,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "0 days"
-                                            ],
+                                            "attributes": ["text", "0 days"],
                                             "backendNodeId": 3921,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -2978,18 +2683,12 @@
                                         "parentId": 3918
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileStatLabel"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileStatLabel"],
                                         "backendNodeId": 3920,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "Current streak"
-                                            ],
+                                            "attributes": ["text", "Current streak"],
                                             "backendNodeId": 3922,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -3017,26 +2716,17 @@
                                     "parentId": 3881
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileStat"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileStat"],
                                     "backendNodeId": 3923,
                                     "childNodeCount": 2,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileStatValue"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileStatValue"],
                                         "backendNodeId": 3924,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "0 days"
-                                            ],
+                                            "attributes": ["text", "0 days"],
                                             "backendNodeId": 3926,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -3056,18 +2746,12 @@
                                         "parentId": 3923
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileStatLabel"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileStatLabel"],
                                         "backendNodeId": 3925,
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "text",
-                                              "Longest streak"
-                                            ],
+                                            "attributes": ["text", "Longest streak"],
                                             "backendNodeId": 3927,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -3140,18 +2824,12 @@
                                     "childNodeCount": 2,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileHeatmapGrid"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileHeatmapGrid"],
                                         "backendNodeId": 3885,
                                         "childNodeCount": 40,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 3928,
                                             "childNodeCount": 7,
                                             "children": [
@@ -3269,10 +2947,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 3936,
                                             "childNodeCount": 7,
                                             "children": [
@@ -3390,10 +3065,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 3944,
                                             "childNodeCount": 7,
                                             "children": [
@@ -3511,10 +3183,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 3952,
                                             "childNodeCount": 7,
                                             "children": [
@@ -3632,10 +3301,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 3960,
                                             "childNodeCount": 7,
                                             "children": [
@@ -3753,10 +3419,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 3968,
                                             "childNodeCount": 7,
                                             "children": [
@@ -3874,10 +3537,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 3976,
                                             "childNodeCount": 7,
                                             "children": [
@@ -3995,10 +3655,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 3984,
                                             "childNodeCount": 7,
                                             "children": [
@@ -4116,10 +3773,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 3992,
                                             "childNodeCount": 7,
                                             "children": [
@@ -4237,10 +3891,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4000,
                                             "childNodeCount": 7,
                                             "children": [
@@ -4358,10 +4009,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4008,
                                             "childNodeCount": 7,
                                             "children": [
@@ -4479,10 +4127,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4016,
                                             "childNodeCount": 7,
                                             "children": [
@@ -4600,10 +4245,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4024,
                                             "childNodeCount": 7,
                                             "children": [
@@ -4721,10 +4363,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4032,
                                             "childNodeCount": 7,
                                             "children": [
@@ -4842,10 +4481,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4040,
                                             "childNodeCount": 7,
                                             "children": [
@@ -4963,10 +4599,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4048,
                                             "childNodeCount": 7,
                                             "children": [
@@ -5084,10 +4717,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4056,
                                             "childNodeCount": 7,
                                             "children": [
@@ -5205,10 +4835,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4064,
                                             "childNodeCount": 7,
                                             "children": [
@@ -5326,10 +4953,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4072,
                                             "childNodeCount": 7,
                                             "children": [
@@ -5447,10 +5071,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4080,
                                             "childNodeCount": 7,
                                             "children": [
@@ -5568,10 +5189,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4088,
                                             "childNodeCount": 7,
                                             "children": [
@@ -5689,10 +5307,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4096,
                                             "childNodeCount": 7,
                                             "children": [
@@ -5810,10 +5425,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4104,
                                             "childNodeCount": 7,
                                             "children": [
@@ -5931,10 +5543,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4112,
                                             "childNodeCount": 7,
                                             "children": [
@@ -6052,10 +5661,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4120,
                                             "childNodeCount": 7,
                                             "children": [
@@ -6173,10 +5779,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4128,
                                             "childNodeCount": 7,
                                             "children": [
@@ -6294,10 +5897,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4136,
                                             "childNodeCount": 7,
                                             "children": [
@@ -6415,10 +6015,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4144,
                                             "childNodeCount": 7,
                                             "children": [
@@ -6536,10 +6133,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4152,
                                             "childNodeCount": 7,
                                             "children": [
@@ -6657,10 +6251,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4160,
                                             "childNodeCount": 7,
                                             "children": [
@@ -6778,10 +6369,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4168,
                                             "childNodeCount": 7,
                                             "children": [
@@ -6899,10 +6487,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4176,
                                             "childNodeCount": 7,
                                             "children": [
@@ -7020,10 +6605,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4184,
                                             "childNodeCount": 7,
                                             "children": [
@@ -7141,10 +6723,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4192,
                                             "childNodeCount": 7,
                                             "children": [
@@ -7262,10 +6841,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4200,
                                             "childNodeCount": 7,
                                             "children": [
@@ -7383,10 +6959,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4208,
                                             "childNodeCount": 7,
                                             "children": [
@@ -7504,10 +7077,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4216,
                                             "childNodeCount": 7,
                                             "children": [
@@ -7625,10 +7195,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4224,
                                             "childNodeCount": 7,
                                             "children": [
@@ -7746,10 +7313,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4232,
                                             "childNodeCount": 7,
                                             "children": [
@@ -7867,10 +7431,7 @@
                                             "parentId": 3885
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapColumn"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapColumn"],
                                             "backendNodeId": 4240,
                                             "childNodeCount": 1,
                                             "children": [
@@ -7906,26 +7467,17 @@
                                         "parentId": 3884
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileHeatmapMonths"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileHeatmapMonths"],
                                         "backendNodeId": 3886,
                                         "childNodeCount": 40,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4242,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Nov"
-                                                ],
+                                                "attributes": ["text", "Nov"],
                                                 "backendNodeId": 4243,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -7945,10 +7497,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4244,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -7960,10 +7509,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4245,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -7975,10 +7521,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4246,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -7990,18 +7533,12 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4247,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Dec"
-                                                ],
+                                                "attributes": ["text", "Dec"],
                                                 "backendNodeId": 4248,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -8021,10 +7558,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4249,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8036,10 +7570,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4250,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8051,10 +7582,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4251,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8066,10 +7594,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4252,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8081,18 +7606,12 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4253,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Jan"
-                                                ],
+                                                "attributes": ["text", "Jan"],
                                                 "backendNodeId": 4254,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -8112,10 +7631,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4255,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8127,10 +7643,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4256,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8142,10 +7655,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4257,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8157,18 +7667,12 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4258,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Feb"
-                                                ],
+                                                "attributes": ["text", "Feb"],
                                                 "backendNodeId": 4259,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -8188,10 +7692,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4260,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8203,10 +7704,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4261,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8218,10 +7716,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4262,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8233,18 +7728,12 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4263,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Mar"
-                                                ],
+                                                "attributes": ["text", "Mar"],
                                                 "backendNodeId": 4264,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -8264,10 +7753,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4265,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8279,10 +7765,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4266,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8294,10 +7777,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4267,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8309,18 +7789,12 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4268,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Apr"
-                                                ],
+                                                "attributes": ["text", "Apr"],
                                                 "backendNodeId": 4269,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -8340,10 +7814,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4270,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8355,10 +7826,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4271,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8370,10 +7838,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4272,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8385,10 +7850,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4273,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8400,18 +7862,12 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4274,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "May"
-                                                ],
+                                                "attributes": ["text", "May"],
                                                 "backendNodeId": 4275,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -8431,10 +7887,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4276,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8446,10 +7899,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4277,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8461,10 +7911,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4278,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8476,18 +7923,12 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4279,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Jun"
-                                                ],
+                                                "attributes": ["text", "Jun"],
                                                 "backendNodeId": 4280,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -8507,10 +7948,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4281,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8522,10 +7960,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4282,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8537,10 +7972,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4283,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8552,18 +7984,12 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4284,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Jul"
-                                                ],
+                                                "attributes": ["text", "Jul"],
                                                 "backendNodeId": 4285,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -8583,10 +8009,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4286,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8598,10 +8021,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4287,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8613,10 +8033,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4288,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8628,10 +8045,7 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4289,
                                             "childNodeCount": 0,
                                             "children": [],
@@ -8643,18 +8057,12 @@
                                             "parentId": 3886
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonth"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonth"],
                                             "backendNodeId": 4290,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Aug"
-                                                ],
+                                                "attributes": ["text", "Aug"],
                                                 "backendNodeId": 4291,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -8698,18 +8106,12 @@
                                 "parentId": 3871
                               },
                               {
-                                "attributes": [
-                                  "class",
-                                  "SettingsProfileColumns"
-                                ],
+                                "attributes": ["class", "SettingsProfileColumns"],
                                 "backendNodeId": 3887,
                                 "childNodeCount": 2,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileColumn"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileColumn"],
                                     "backendNodeId": 3888,
                                     "childNodeCount": 2,
                                     "children": [
@@ -8731,18 +8133,12 @@
                                         "parentId": 3888
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileList"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileList"],
                                         "backendNodeId": 3890,
                                         "childNodeCount": 7,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileInsightRow"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileInsightRow"],
                                             "backendNodeId": 4292,
                                             "childNodeCount": 2,
                                             "children": [
@@ -8755,10 +8151,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Most used provider"
-                                                    ],
+                                                    "attributes": ["text", "Most used provider"],
                                                     "backendNodeId": 4295,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -8788,10 +8181,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "—"
-                                                    ],
+                                                    "attributes": ["text", "—"],
                                                     "backendNodeId": 4296,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -8819,10 +8209,7 @@
                                             "parentId": 3890
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileInsightRow"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileInsightRow"],
                                             "backendNodeId": 4297,
                                             "childNodeCount": 2,
                                             "children": [
@@ -8835,10 +8222,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Most used reasoning"
-                                                    ],
+                                                    "attributes": ["text", "Most used reasoning"],
                                                     "backendNodeId": 4300,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -8868,10 +8252,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "—"
-                                                    ],
+                                                    "attributes": ["text", "—"],
                                                     "backendNodeId": 4301,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -8899,10 +8280,7 @@
                                             "parentId": 3890
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileInsightRow"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileInsightRow"],
                                             "backendNodeId": 4302,
                                             "childNodeCount": 2,
                                             "children": [
@@ -8915,10 +8293,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Most active hour"
-                                                    ],
+                                                    "attributes": ["text", "Most active hour"],
                                                     "backendNodeId": 4305,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -8948,10 +8323,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "—"
-                                                    ],
+                                                    "attributes": ["text", "—"],
                                                     "backendNodeId": 4306,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -8979,10 +8351,7 @@
                                             "parentId": 3890
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileInsightRow"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileInsightRow"],
                                             "backendNodeId": 4307,
                                             "childNodeCount": 2,
                                             "children": [
@@ -8995,10 +8364,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Most worked project"
-                                                    ],
+                                                    "attributes": ["text", "Most worked project"],
                                                     "backendNodeId": 4310,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -9028,10 +8394,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "—"
-                                                    ],
+                                                    "attributes": ["text", "—"],
                                                     "backendNodeId": 4311,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -9059,10 +8422,7 @@
                                             "parentId": 3890
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileInsightRow"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileInsightRow"],
                                             "backendNodeId": 4312,
                                             "childNodeCount": 2,
                                             "children": [
@@ -9075,10 +8435,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Skills explored"
-                                                    ],
+                                                    "attributes": ["text", "Skills explored"],
                                                     "backendNodeId": 4315,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -9108,10 +8465,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "0"
-                                                    ],
+                                                    "attributes": ["text", "0"],
                                                     "backendNodeId": 4316,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -9139,10 +8493,7 @@
                                             "parentId": 3890
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileInsightRow"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileInsightRow"],
                                             "backendNodeId": 4317,
                                             "childNodeCount": 2,
                                             "children": [
@@ -9155,10 +8506,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Total skills used"
-                                                    ],
+                                                    "attributes": ["text", "Total skills used"],
                                                     "backendNodeId": 4320,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -9188,10 +8536,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "0"
-                                                    ],
+                                                    "attributes": ["text", "0"],
                                                     "backendNodeId": 4321,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -9219,10 +8564,7 @@
                                             "parentId": 3890
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileInsightRow"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileInsightRow"],
                                             "backendNodeId": 4322,
                                             "childNodeCount": 2,
                                             "children": [
@@ -9235,10 +8577,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Total threads"
-                                                    ],
+                                                    "attributes": ["text", "Total threads"],
                                                     "backendNodeId": 4325,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -9268,10 +8607,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "0"
-                                                    ],
+                                                    "attributes": ["text", "0"],
                                                     "backendNodeId": 4326,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -9315,10 +8651,7 @@
                                     "parentId": 3887
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileColumn"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileColumn"],
                                     "backendNodeId": 3891,
                                     "childNodeCount": 2,
                                     "children": [
@@ -9340,10 +8673,7 @@
                                         "parentId": 3891
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileList"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileList"],
                                         "backendNodeId": 3893,
                                         "childNodeCount": 1,
                                         "children": [
@@ -9414,10 +8744,7 @@
                                     "parentId": 3894
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileModels"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileModels"],
                                     "backendNodeId": 3896,
                                     "childNodeCount": 1,
                                     "children": [

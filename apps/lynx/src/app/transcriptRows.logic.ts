@@ -1,28 +1,23 @@
-import type { ThreadTranscriptRow } from './queries';
-import {
-  DEFAULT_CHAT_FONT_SIZE_PX,
-  normalizeChatFontSizePx,
-} from '@synara-web/chatFontSize';
+import type { ThreadTranscriptRow } from "./queries";
+import { DEFAULT_CHAT_FONT_SIZE_PX, normalizeChatFontSizePx } from "@synara-web/chatFontSize";
 import {
   formatAgentActivityEntryPreview,
   isReasoningUpdateWorkEntry,
-} from '@synara-web/components/chat/agentActivity.logic';
-import { isFileChangeWorkLogEntry } from '@synara-web/session-logic';
-import { basenameOfPath } from '@synara-web/file-icons';
+} from "@synara-web/components/chat/agentActivity.logic";
+import { isFileChangeWorkLogEntry } from "@synara-web/session-logic";
+import { basenameOfPath } from "@synara-web/file-icons";
 
-export type MessageTranscriptRow = Extract<ThreadTranscriptRow, { kind: 'message' }>;
-export type WorkLogEntry = Extract<ThreadTranscriptRow, { kind: 'work' }>['groupedEntries'][number];
+export type MessageTranscriptRow = Extract<ThreadTranscriptRow, { kind: "message" }>;
+export type WorkLogEntry = Extract<ThreadTranscriptRow, { kind: "work" }>["groupedEntries"][number];
 
-export function resolveTranscriptWorkEntryDisplayText(
-  entry: WorkLogEntry
-): string {
+export function resolveTranscriptWorkEntryDisplayText(entry: WorkLogEntry): string {
   if (isReasoningUpdateWorkEntry(entry)) {
     return formatAgentActivityEntryPreview(entry) ?? entry.label;
   }
   if (isFileChangeWorkLogEntry(entry) && (entry.changedFiles?.length ?? 0) > 0) {
     const changedFiles = entry.changedFiles ?? [];
     return changedFiles.length === 1
-      ? `Edited ${basenameOfPath(changedFiles[0] ?? '')}`
+      ? `Edited ${basenameOfPath(changedFiles[0] ?? "")}`
       : `Edited ${changedFiles.length} files`;
   }
   return entry.detail ? `${entry.label} ${entry.detail}` : entry.label;
@@ -34,7 +29,7 @@ const TRANSCRIPT_MARKDOWN_BLOCK_GAP_PX = 18;
 export interface TranscriptScrollToPositionParams {
   readonly position: number;
   readonly offset: number;
-  readonly alignTo: 'bottom';
+  readonly alignTo: "bottom";
   readonly smooth: boolean;
 }
 
@@ -54,16 +49,10 @@ export function resolveTranscriptPinnedFromSample(input: {
   readonly listHeight: number;
   readonly bottomEpsilon: number;
 }): boolean {
-  if (
-    input.previousScrollTop !== null &&
-    input.scrollTop < input.previousScrollTop - 1
-  ) {
+  if (input.previousScrollTop !== null && input.scrollTop < input.previousScrollTop - 1) {
     return false;
   }
-  if (
-    input.scrollTop + input.listHeight >=
-    input.scrollHeight - input.bottomEpsilon
-  ) {
+  if (input.scrollTop + input.listHeight >= input.scrollHeight - input.bottomEpsilon) {
     return true;
   }
   return input.currentPinned;
@@ -83,9 +72,7 @@ export function resolveTranscriptPinnedFromScroll(input: {
     // Some Lynx-for-Web releases expose the native `lynxscroll` shape without
     // eventSource/listHeight. Keep a negative-delta fallback for those builds;
     // the host metrics sample remains authoritative for live-edge reattachment.
-    return typeof detail.deltaY === 'number' && detail.deltaY < 0
-      ? false
-      : input.currentPinned;
+    return typeof detail.deltaY === "number" && detail.deltaY < 0 ? false : input.currentPinned;
   }
 
   if (
@@ -96,54 +83,44 @@ export function resolveTranscriptPinnedFromScroll(input: {
   ) {
     return input.currentPinned;
   }
-  return (
-    detail.scrollTop + detail.listHeight >=
-    detail.scrollHeight - input.bottomEpsilon
-  );
+  return detail.scrollTop + detail.listHeight >= detail.scrollHeight - input.bottomEpsilon;
 }
 
 export function buildTranscriptScrollToBottomParams(
   rowCount: number,
-  trailingChromeRowCount = 0
+  trailingChromeRowCount = 0,
 ): TranscriptScrollToPositionParams | null {
   const targetCount = rowCount + trailingChromeRowCount;
   if (targetCount <= 0) return null;
   return {
     position: targetCount - 1,
     offset: 0,
-    alignTo: 'bottom',
+    alignTo: "bottom",
     smooth: false,
   };
 }
 
 export function estimateTranscriptRowMainAxisSize(
   row: ThreadTranscriptRow,
-  chatFontSizePx = DEFAULT_CHAT_FONT_SIZE_PX
+  chatFontSizePx = DEFAULT_CHAT_FONT_SIZE_PX,
 ): number {
-  if (row.kind !== 'message') return 96;
+  if (row.kind !== "message") return 96;
 
   const normalizedChatFontSizePx = normalizeChatFontSizePx(chatFontSizePx);
-  const typographyScale =
-    normalizedChatFontSizePx / DEFAULT_CHAT_FONT_SIZE_PX;
-  const estimatedCharsPerLine =
-    TRANSCRIPT_ESTIMATED_CHARS_PER_LINE / typographyScale;
-  const text = row.message.text ?? '';
-  const physicalLines = text.split('\n');
+  const typographyScale = normalizedChatFontSizePx / DEFAULT_CHAT_FONT_SIZE_PX;
+  const estimatedCharsPerLine = TRANSCRIPT_ESTIMATED_CHARS_PER_LINE / typographyScale;
+  const text = row.message.text ?? "";
+  const physicalLines = text.split("\n");
   const wrappedLineCount = physicalLines.reduce(
-    (count, line) =>
-      count +
-      Math.max(
-        1,
-        Math.ceil(line.length / estimatedCharsPerLine)
-      ),
-    0
+    (count, line) => count + Math.max(1, Math.ceil(line.length / estimatedCharsPerLine)),
+    0,
   );
   const estimate =
     72 +
     wrappedLineCount * TRANSCRIPT_ESTIMATED_LINE_HEIGHT_PX * typographyScale +
     Math.max(0, physicalLines.length - 1) * TRANSCRIPT_MARKDOWN_BLOCK_GAP_PX;
 
-  return Math.max(row.message.role === 'user' ? 92 : 96, estimate);
+  return Math.max(row.message.role === "user" ? 92 : 96, estimate);
 }
 
 export function resolveMessageWorkPlacement(row: MessageTranscriptRow) {
@@ -158,23 +135,23 @@ export function resolveMessageWorkPlacement(row: MessageTranscriptRow) {
 }
 
 export function transcriptRowVersion(row: ThreadTranscriptRow | undefined): string {
-  if (!row) return '';
-  if (row.kind === 'message') {
+  if (!row) return "";
+  if (row.kind === "message") {
     const workVersion = [
       ...(row.leadingWorkEntries ?? []),
       ...(row.inlineWorkEntries ?? []),
       ...(row.collapsedTurnItems ?? []).flatMap((item) =>
-        item.kind === 'work' ? [item.entry] : []
+        item.kind === "work" ? [item.entry] : [],
       ),
     ]
-      .map((entry) => `${entry.id}:${entry.label}:${entry.detail ?? ''}:${entry.toolStatus ?? ''}`)
-      .join('|');
-    return `${row.message.text}:${row.message.streaming}:${row.collapsedWorkElapsed ?? ''}:${workVersion}`;
+      .map((entry) => `${entry.id}:${entry.label}:${entry.detail ?? ""}:${entry.toolStatus ?? ""}`)
+      .join("|");
+    return `${row.message.text}:${row.message.streaming}:${row.collapsedWorkElapsed ?? ""}:${workVersion}`;
   }
-  if (row.kind === 'work') {
+  if (row.kind === "work") {
     return row.groupedEntries
-      .map((entry) => `${entry.id}:${entry.label}:${entry.detail ?? ''}:${entry.toolStatus ?? ''}`)
-      .join('|');
+      .map((entry) => `${entry.id}:${entry.label}:${entry.detail ?? ""}:${entry.toolStatus ?? ""}`)
+      .join("|");
   }
   return row.id;
 }

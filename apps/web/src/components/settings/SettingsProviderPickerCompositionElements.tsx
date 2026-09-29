@@ -11,11 +11,7 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import {
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 import { CentralIcon } from "~/lib/central-icons";
@@ -65,9 +61,7 @@ function SortableProviderPickerItem(props: {
       </div>
       <Switch
         checked={!props.item.hidden}
-        onCheckedChange={(checked) =>
-          props.onHiddenChange(props.item.provider, !Boolean(checked))
-        }
+        onCheckedChange={(checked) => props.onHiddenChange(props.item.provider, !Boolean(checked))}
         aria-label={`Show ${props.item.title} in the provider picker`}
       />
     </div>
@@ -86,9 +80,7 @@ export function SettingsProviderPickerElement(props: {
   readonly onMove: (provider: ProviderKind, direction: SettingsProviderPickerMoveDirection) => void;
   readonly onReorder: (provider: ProviderKind, overProvider: ProviderKind) => void;
 }) {
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
-  );
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
   const handleDragEnd = (event: DragEndEvent) => {
     if (!event.over || event.active.id === event.over.id) return;
     props.onReorder(event.active.id as ProviderKind, event.over.id as ProviderKind);

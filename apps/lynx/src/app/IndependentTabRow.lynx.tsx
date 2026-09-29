@@ -1,24 +1,24 @@
-import { useState, type ReactNode } from '@lynx-js/react';
-import { resolveIndependentTabRowPresentation } from '@synara/shared/independentTabs';
+import { useState, type ReactNode } from "@lynx-js/react";
+import { resolveIndependentTabRowPresentation } from "@synara/shared/independentTabs";
 
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
-import { ChevronLeftIcon, ChevronRightIcon } from '../lib/icons.lynx';
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import { ChevronLeftIcon, ChevronRightIcon } from "../lib/icons.lynx";
 
-import './independent-tab-row.css';
+import "./independent-tab-row.css";
 
 function IndependentTabRowToggle(props: {
-  readonly actionPlacement: 'start' | 'end';
+  readonly actionPlacement: "start" | "end";
   readonly collapsed: boolean;
   readonly label: string;
   readonly onActivate: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'IndependentTabRowToggle',
+    baseClassName: "IndependentTabRowToggle",
     accessibleLabel: props.label,
     onActivate: props.onActivate,
   });
   const Icon =
-    props.actionPlacement === 'start'
+    props.actionPlacement === "start"
       ? props.collapsed
         ? ChevronRightIcon
         : ChevronLeftIcon
@@ -33,18 +33,18 @@ function IndependentTabRowToggle(props: {
 }
 
 export function IndependentTabRow(props: {
-  readonly actionPlacement?: 'start' | 'end';
+  readonly actionPlacement?: "start" | "end";
   readonly actions: ReactNode;
   readonly className?: string;
   readonly defaultCollapsed?: boolean;
   readonly listClassName?: string;
-  readonly owner?: 'chat' | 'terminal-pane' | 'terminal-groups';
+  readonly owner?: "chat" | "terminal-pane" | "terminal-groups";
   readonly scrollerClassName?: string;
   readonly tabs: ReactNode;
 }) {
   const [collapsed, setCollapsed] = useState(props.defaultCollapsed ?? false);
   const presentation = resolveIndependentTabRowPresentation(collapsed);
-  const actionPlacement = props.actionPlacement ?? 'end';
+  const actionPlacement = props.actionPlacement ?? "end";
   const actionLane = presentation.showActions ? (
     <view className="IndependentTabRowActions">
       {props.actions}
@@ -56,9 +56,7 @@ export function IndependentTabRow(props: {
       />
     </view>
   ) : (
-    <view
-      className="IndependentTabRowActions IndependentTabRowActions--restore"
-    >
+    <view className="IndependentTabRowActions IndependentTabRowActions--restore">
       <IndependentTabRowToggle
         actionPlacement={actionPlacement}
         collapsed
@@ -71,27 +69,23 @@ export function IndependentTabRow(props: {
   return (
     <view
       className={`IndependentTabRow IndependentTabRow--${presentation.mode} IndependentTabRow--owner-${
-        props.owner ?? 'unspecified'
-      }${
-        props.className ? ` ${props.className}` : ''
-      }`}
+        props.owner ?? "unspecified"
+      }${props.className ? ` ${props.className}` : ""}`}
     >
-      {actionPlacement === 'start' ? actionLane : null}
+      {actionPlacement === "start" ? actionLane : null}
       <scroll-view
         className={`IndependentTabRowScroller${
-          props.scrollerClassName ? ` ${props.scrollerClassName}` : ''
+          props.scrollerClassName ? ` ${props.scrollerClassName}` : ""
         }`}
         scroll-orientation="horizontal"
       >
         <view
-          className={`IndependentTabRowList${
-            props.listClassName ? ` ${props.listClassName}` : ''
-          }`}
+          className={`IndependentTabRowList${props.listClassName ? ` ${props.listClassName}` : ""}`}
         >
           {props.tabs}
         </view>
       </scroll-view>
-      {actionPlacement === 'end' ? actionLane : null}
+      {actionPlacement === "end" ? actionLane : null}
     </view>
   );
 }

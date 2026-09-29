@@ -7,10 +7,7 @@ import { GoTasklist } from "react-icons/go";
 import { PaperclipIcon, PlusIcon } from "~/lib/icons";
 import { Button } from "../ui/button";
 import { MenuItem, MenuTrigger } from "../ui/menu";
-import {
-  ComposerPickerMenuPopup,
-  ComposerPickerMenuSubPopup,
-} from "./ComposerPickerMenuPopup";
+import { ComposerPickerMenuPopup, ComposerPickerMenuSubPopup } from "./ComposerPickerMenuPopup";
 
 export function ComposerExtrasMenuTriggerElement() {
   return (
@@ -43,15 +40,11 @@ export function ComposerExtrasMenuTriggerHostElement(props: { readonly open: boo
   );
 }
 
-export function ComposerExtrasMenuPopupElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function ComposerExtrasMenuPopupElement(props: { readonly children?: ReactNode }) {
   return <ComposerPickerMenuPopup align="start">{props.children}</ComposerPickerMenuPopup>;
 }
 
-export function ComposerExtrasSubPopupElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function ComposerExtrasSubPopupElement(props: { readonly children?: ReactNode }) {
   return <ComposerPickerMenuSubPopup>{props.children}</ComposerPickerMenuSubPopup>;
 }
 

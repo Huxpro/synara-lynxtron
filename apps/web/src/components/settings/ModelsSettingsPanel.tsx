@@ -2,13 +2,8 @@
 // Purpose: Own model-setting discovery, selection, and custom-model editing workflows.
 // Layer: Settings panel
 
-import {
-  DEFAULT_GIT_TEXT_GENERATION_MODEL,
-  type ProviderKind,
-} from "@synara/contracts";
-import {
-  validateCustomModelInput,
-} from "@synara/shared/customModels";
+import { DEFAULT_GIT_TEXT_GENERATION_MODEL, type ProviderKind } from "@synara/contracts";
+import { validateCustomModelInput } from "@synara/shared/customModels";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
 
@@ -34,10 +29,7 @@ import { Button } from "../ui/button";
 import { DisclosureRegion } from "../ui/DisclosureRegion";
 import { Input } from "../ui/input";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import {
-  SettingResetButton,
-  useSettingsRestoreSignal,
-} from "./SettingControls";
+import { SettingResetButton, useSettingsRestoreSignal } from "./SettingControls";
 import { SettingsRow, SettingsSection, SettingsSelectPopup } from "./SettingsPanelPrimitives";
 import { SettingsGitWritingModelComposition } from "./SettingsGitWritingModelComposition";
 import {

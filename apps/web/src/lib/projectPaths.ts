@@ -101,10 +101,7 @@ function splitAbsolutePath(value: string): {
   return null;
 }
 
-export function isFilesystemBrowseQuery(
-  value: string,
-  platform = getNavigatorPlatform(),
-): boolean {
+export function isFilesystemBrowseQuery(value: string, platform = getNavigatorPlatform()): boolean {
   const allowWindowsPaths = isWindowsPlatform(platform);
   return (
     value.startsWith("./") ||

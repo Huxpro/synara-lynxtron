@@ -1,6 +1,6 @@
-import 'background-only';
+import "background-only";
 
-import { bridgeCall } from './bridge';
+import { bridgeCall } from "./bridge";
 
 export interface SystemNotificationRequest {
   readonly body: string;
@@ -9,18 +9,11 @@ export interface SystemNotificationRequest {
 }
 
 export async function isSystemNotificationSupported(): Promise<boolean> {
-  const result = await bridgeCall<{ readonly supported?: boolean }>(
-    'notificationsIsSupported'
-  );
+  const result = await bridgeCall<{ readonly supported?: boolean }>("notificationsIsSupported");
   return result.supported === true;
 }
 
-export async function showSystemNotification(
-  request: SystemNotificationRequest
-): Promise<boolean> {
-  const result = await bridgeCall<{ readonly shown?: boolean }>(
-    'notificationsShow',
-    request
-  );
+export async function showSystemNotification(request: SystemNotificationRequest): Promise<boolean> {
+  const result = await bridgeCall<{ readonly shown?: boolean }>("notificationsShow", request);
   return result.shown === true;
 }

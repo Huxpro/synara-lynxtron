@@ -1,34 +1,34 @@
-import { useState } from '@lynx-js/react';
-import { useQuery } from '@tanstack/react-query';
+import { useState } from "@lynx-js/react";
+import { useQuery } from "@tanstack/react-query";
 import type {
   ProviderKind,
   ProviderPluginDescriptor,
   ProviderSkillDescriptor,
-} from '@synara/contracts';
-import { PROVIDER_DISPLAY_NAMES } from '@synara/contracts';
+} from "@synara/contracts";
+import { PROVIDER_DISPLAY_NAMES } from "@synara/contracts";
 import {
   normalizeProviderDiscoveryText,
   providerDiscoveryItemGradient,
   providerDiscoveryItemRing,
   providerPluginDiscoveryWarnings,
   resolveProviderDiscoveryStatus,
-} from '@synara/shared/providerDiscoveryPresentation';
-import { DEFAULT_PROVIDER_ORDER } from '@synara-web/providerOrdering';
+} from "@synara/shared/providerDiscoveryPresentation";
+import { DEFAULT_PROVIDER_ORDER } from "@synara-web/providerOrdering";
 
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input.lynx';
-import { CheckIcon, ListChecksIcon, PuzzleIcon, SearchIcon } from '../lib/icons.lynx';
-import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input.lynx";
+import { CheckIcon, ListChecksIcon, PuzzleIcon, SearchIcon } from "../lib/icons.lynx";
+import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
 import {
   fetchPluginLibraryCapabilities,
   fetchPluginLibraryPlugins,
   fetchPluginLibrarySkills,
-} from './queries';
-import './plugin-library-page.css';
-import { PluginLibraryWarning } from './PluginLibraryWarning.lynx';
+} from "./queries";
+import "./plugin-library-page.css";
+import { PluginLibraryWarning } from "./PluginLibraryWarning.lynx";
 
-type DiscoveryTab = 'plugins' | 'skills';
+type DiscoveryTab = "plugins" | "skills";
 
 function pluginLabel(plugin: ProviderPluginDescriptor): string {
   return plugin.interface?.displayName ?? plugin.name;
@@ -39,7 +39,7 @@ function pluginDescription(plugin: ProviderPluginDescriptor): string {
     plugin.interface?.shortDescription ??
     plugin.interface?.longDescription ??
     plugin.interface?.developerName ??
-    'Installed Codex plugin'
+    "Installed Codex plugin"
   );
 }
 
@@ -48,12 +48,7 @@ function skillLabel(skill: ProviderSkillDescriptor): string {
 }
 
 function skillDescription(skill: ProviderSkillDescriptor): string {
-  return (
-    skill.interface?.shortDescription ??
-    skill.description ??
-    skill.scope ??
-    skill.path
-  );
+  return skill.interface?.shortDescription ?? skill.description ?? skill.scope ?? skill.path;
 }
 
 function DiscoveryRow(props: {
@@ -61,34 +56,23 @@ function DiscoveryRow(props: {
   readonly enabled: boolean;
   readonly label: string;
   readonly brandColor?: string;
-  readonly kind?: 'plugin' | 'skill';
+  readonly kind?: "plugin" | "skill";
 }) {
   const { semanticIconColor } = useTheme();
-  const skill = props.kind === 'skill';
+  const skill = props.kind === "skill";
   return (
     <view className="PluginLibraryRow">
       <view
-        className={`PluginLibraryGlyph${skill ? ' PluginLibraryGlyph--skill' : ''}`}
+        className={`PluginLibraryGlyph${skill ? " PluginLibraryGlyph--skill" : ""}`}
         style={{
-          backgroundImage: providerDiscoveryItemGradient(
-            props.label,
-            props.brandColor
-          ),
+          backgroundImage: providerDiscoveryItemGradient(props.label, props.brandColor),
           boxShadow: providerDiscoveryItemRing(props.label, props.brandColor),
         }}
       >
         {skill ? (
-          <ListChecksIcon
-            size={20}
-            color={semanticIconColor('inverse')}
-            style={{ opacity: 0.8 }}
-          />
+          <ListChecksIcon size={20} color={semanticIconColor("inverse")} style={{ opacity: 0.8 }} />
         ) : (
-          <PuzzleIcon
-            size={20}
-            color={semanticIconColor('inverse')}
-            style={{ opacity: 0.8 }}
-          />
+          <PuzzleIcon size={20} color={semanticIconColor("inverse")} style={{ opacity: 0.8 }} />
         )}
       </view>
       <view className="PluginLibraryRowCopy">
@@ -99,7 +83,7 @@ function DiscoveryRow(props: {
       </view>
       {props.enabled ? (
         <view className="PluginLibraryInstalled">
-          <CheckIcon size={14} color={semanticIconColor('secondary')} />
+          <CheckIcon size={14} color={semanticIconColor("secondary")} />
         </view>
       ) : null}
     </view>
@@ -108,27 +92,23 @@ function DiscoveryRow(props: {
 
 export function PluginLibraryPage() {
   const { svgColors } = useTheme();
-  const [tab, setTab] = useState<DiscoveryTab>('plugins');
-  const [provider, setProvider] = useState<ProviderKind>('codex');
-  const [search, setSearch] = useState('');
+  const [tab, setTab] = useState<DiscoveryTab>("plugins");
+  const [provider, setProvider] = useState<ProviderKind>("codex");
+  const [search, setSearch] = useState("");
   const capabilities = useQuery({
-    queryKey: ['plugin-library', 'capabilities', provider],
+    queryKey: ["plugin-library", "capabilities", provider],
     queryFn: () => fetchPluginLibraryCapabilities(provider),
   });
   const plugins = useQuery({
-    queryKey: ['plugin-library', 'plugins', provider],
+    queryKey: ["plugin-library", "plugins", provider],
     queryFn: () => fetchPluginLibraryPlugins(provider),
-    enabled:
-      tab === 'plugins' &&
-      capabilities.data?.supportsPluginDiscovery === true,
+    enabled: tab === "plugins" && capabilities.data?.supportsPluginDiscovery === true,
     retry: false,
   });
   const skills = useQuery({
-    queryKey: ['plugin-library', 'skills', provider],
+    queryKey: ["plugin-library", "skills", provider],
     queryFn: () => fetchPluginLibrarySkills(provider),
-    enabled:
-      tab === 'skills' &&
-      capabilities.data?.supportsSkillDiscovery === true,
+    enabled: tab === "skills" && capabilities.data?.supportsSkillDiscovery === true,
     retry: false,
   });
   const query = normalizeProviderDiscoveryText(search);
@@ -137,14 +117,13 @@ export function PluginLibraryPage() {
     readonly plugin: ProviderPluginDescriptor;
   }> = [];
   for (const marketplace of plugins.data?.marketplaces ?? []) {
-    const marketplaceName =
-      marketplace.interface?.displayName ?? marketplace.name;
+    const marketplaceName = marketplace.interface?.displayName ?? marketplace.name;
     for (const plugin of marketplace.plugins) {
       if (!plugin.installed) continue;
       if (
         query &&
         !normalizeProviderDiscoveryText(
-          `${marketplaceName} ${pluginLabel(plugin)} ${pluginDescription(plugin)}`
+          `${marketplaceName} ${pluginLabel(plugin)} ${pluginDescription(plugin)}`,
         ).includes(query)
       ) {
         continue;
@@ -157,7 +136,7 @@ export function PluginLibraryPage() {
     if (
       query &&
       !normalizeProviderDiscoveryText(
-        `${skillLabel(skill)} ${skillDescription(skill)} ${skill.path}`
+        `${skillLabel(skill)} ${skillDescription(skill)} ${skill.path}`,
       ).includes(query)
     ) {
       continue;
@@ -165,25 +144,23 @@ export function PluginLibraryPage() {
     discoveredSkills.push(skill);
   }
   const supported =
-    tab === 'plugins'
+    tab === "plugins"
       ? capabilities.data?.supportsPluginDiscovery === true
       : capabilities.data?.supportsSkillDiscovery === true;
   const activePending =
     capabilities.isPending ||
-    (supported && (tab === 'plugins' ? plugins.isPending : skills.isPending));
-  const activeError =
-    capabilities.error ?? (tab === 'plugins' ? plugins.error : skills.error);
+    (supported && (tab === "plugins" ? plugins.isPending : skills.isPending));
+  const activeError = capabilities.error ?? (tab === "plugins" ? plugins.error : skills.error);
   const status = resolveProviderDiscoveryStatus({
     error: activeError,
-    itemCount:
-      tab === 'plugins' ? installedPlugins.length : discoveredSkills.length,
+    itemCount: tab === "plugins" ? installedPlugins.length : discoveredSkills.length,
     pending: activePending,
     providerLabel: PROVIDER_DISPLAY_NAMES[provider],
     resource: tab,
     supported,
   });
   const pluginWarnings =
-    tab === 'plugins'
+    tab === "plugins"
       ? providerPluginDiscoveryWarnings({
           marketplaceLoadErrors: plugins.data?.marketplaceLoadErrors ?? [],
           remoteSyncError: plugins.data?.remoteSyncError ?? null,
@@ -195,45 +172,36 @@ export function PluginLibraryPage() {
       <view className="PluginLibraryHeader">
         <view className="PluginLibraryTabs">
           <Button
-            variant={tab === 'plugins' ? 'secondary' : 'ghost'}
+            variant={tab === "plugins" ? "secondary" : "ghost"}
             size="sm"
-            className={`PluginLibraryTab${
-              tab === 'plugins' ? ' PluginLibraryTab--active' : ''
-            }`}
-            onClick={() => setTab('plugins')}
+            className={`PluginLibraryTab${tab === "plugins" ? " PluginLibraryTab--active" : ""}`}
+            onClick={() => setTab("plugins")}
           >
             Plugins
           </Button>
           <Button
-            variant={tab === 'skills' ? 'secondary' : 'ghost'}
+            variant={tab === "skills" ? "secondary" : "ghost"}
             size="sm"
-            className={`PluginLibraryTab${
-              tab === 'skills' ? ' PluginLibraryTab--active' : ''
-            }`}
-            onClick={() => setTab('skills')}
+            className={`PluginLibraryTab${tab === "skills" ? " PluginLibraryTab--active" : ""}`}
+            onClick={() => setTab("skills")}
           >
             Skills
           </Button>
         </view>
         <view className="PluginLibraryHeaderSpacer" />
-        <scroll-view
-          className="PluginLibraryProviders"
-          scroll-orientation="horizontal"
-        >
+        <scroll-view className="PluginLibraryProviders" scroll-orientation="horizontal">
           <view className="PluginLibraryProviderChoices">
             {DEFAULT_PROVIDER_ORDER.map((candidate) => (
               <Button
                 key={candidate}
-                variant={provider === candidate ? 'secondary' : 'ghost'}
+                variant={provider === candidate ? "secondary" : "ghost"}
                 size="sm"
                 className={`PluginLibraryProviderChoice${
-                  provider === candidate
-                    ? ' PluginLibraryProviderChoice--active'
-                    : ''
+                  provider === candidate ? " PluginLibraryProviderChoice--active" : ""
                 }`}
                 onClick={() => {
                   setProvider(candidate);
-                  setSearch('');
+                  setSearch("");
                 }}
               >
                 <OpenAIProviderIcon
@@ -248,10 +216,7 @@ export function PluginLibraryPage() {
           </view>
         </scroll-view>
       </view>
-      <scroll-view
-        className="PluginLibraryScroller"
-        scroll-orientation="vertical"
-      >
+      <scroll-view className="PluginLibraryScroller" scroll-orientation="vertical">
         <view className="PluginLibraryContent">
           <text className="PluginLibraryTitle">
             Make {PROVIDER_DISPLAY_NAMES[provider]} work your way
@@ -273,54 +238,48 @@ export function PluginLibraryPage() {
               ))}
             </view>
           ) : null}
-          {status.kind === 'loading' ? (
+          {status.kind === "loading" ? (
             <text className="PluginLibraryState">Loading {tab}…</text>
-          ) : status.kind === 'error' ? (
-            <text className="PluginLibraryState PluginLibraryState--error">
-              {status.message}
-            </text>
-          ) : status.kind === 'unsupported' ? (
+          ) : status.kind === "error" ? (
+            <text className="PluginLibraryState PluginLibraryState--error">{status.message}</text>
+          ) : status.kind === "unsupported" ? (
             <text className="PluginLibraryState">
-              {`${tab === 'plugins' ? 'Plugins' : 'Skills'} are unavailable for ${PROVIDER_DISPLAY_NAMES[provider]}.`}
+              {`${tab === "plugins" ? "Plugins" : "Skills"} are unavailable for ${PROVIDER_DISPLAY_NAMES[provider]}.`}
             </text>
-          ) : status.kind === 'empty' ? (
+          ) : status.kind === "empty" ? (
             <text className="PluginLibraryState">
-              {tab === 'plugins'
-                ? 'No installed plugins found.'
-                : 'No skills found.'}
+              {tab === "plugins" ? "No installed plugins found." : "No skills found."}
             </text>
           ) : (
             <view
-              className={`PluginLibraryRows${
-                tab === 'skills' ? ' PluginLibraryRows--skills' : ''
-              }`}
+              className={`PluginLibraryRows${tab === "skills" ? " PluginLibraryRows--skills" : ""}`}
             >
-              {tab === 'plugins'
-                ? installedPlugins.map(({ marketplace, plugin }) => (
-                    <DiscoveryRow
-                      key={`${marketplace}:${plugin.id}`}
-                      description={pluginDescription(plugin)}
-                      enabled={plugin.enabled}
-                      label={pluginLabel(plugin)}
-                      brandColor={plugin.interface?.brandColor}
-                    />
-                  ))
-                : (
-                    <>
-                      <text className="PluginLibrarySectionTitle">Skills</text>
-                      <view className="PluginLibrarySkillGrid">
-                        {discoveredSkills.map((skill) => (
-                          <DiscoveryRow
-                            key={skill.path}
-                            description={skillDescription(skill)}
-                            enabled={skill.enabled}
-                            kind="skill"
-                            label={skillLabel(skill)}
-                          />
-                        ))}
-                      </view>
-                    </>
-                  )}
+              {tab === "plugins" ? (
+                installedPlugins.map(({ marketplace, plugin }) => (
+                  <DiscoveryRow
+                    key={`${marketplace}:${plugin.id}`}
+                    description={pluginDescription(plugin)}
+                    enabled={plugin.enabled}
+                    label={pluginLabel(plugin)}
+                    brandColor={plugin.interface?.brandColor}
+                  />
+                ))
+              ) : (
+                <>
+                  <text className="PluginLibrarySectionTitle">Skills</text>
+                  <view className="PluginLibrarySkillGrid">
+                    {discoveredSkills.map((skill) => (
+                      <DiscoveryRow
+                        key={skill.path}
+                        description={skillDescription(skill)}
+                        enabled={skill.enabled}
+                        kind="skill"
+                        label={skillLabel(skill)}
+                      />
+                    ))}
+                  </view>
+                </>
+              )}
             </view>
           )}
         </view>

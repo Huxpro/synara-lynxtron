@@ -62,7 +62,7 @@
 ## Runtime evidence
 
 - Lynx relay reached `rendererReadyRoute:
-  /workspace/workspace-fidelity`, `socketState: 1`, and zero pending requests.
+/workspace/workspace-fidelity`, `socketState: 1`, and zero pending requests.
 - Observed RPCs included `server.getConfig` and `terminal.open`.
 - Canonical terminal evidence used
   `threadId=workspace:workspace-fidelity`,

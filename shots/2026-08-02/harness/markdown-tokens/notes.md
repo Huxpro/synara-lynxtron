@@ -65,4 +65,3 @@ It does not render line numbers in the authoritative state captured for this
 goal. Lynx therefore does not invent line numbers; that item is an explicit
 authority absence, not an omitted parity feature. The code-block paired proof
 remains in `../markdown/notes.md`.
-

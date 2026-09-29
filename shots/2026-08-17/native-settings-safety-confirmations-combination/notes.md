@@ -5,11 +5,11 @@
 An exact-owned Native Settings cell exercised all three Safety confirmations
 as one persisted combination, then restored each key independently:
 
-| Setting | Default | Changed |
-|---|---:|---:|
-| Confirm thread deletion | On | Off |
-| Confirm thread archive | Off | On |
-| Confirm terminal tab close | On | Off |
+| Setting                    | Default | Changed |
+| -------------------------- | ------: | ------: |
+| Confirm thread deletion    |      On |     Off |
+| Confirm thread archive     |     Off |      On |
+| Confirm terminal tab close |      On |     Off |
 
 The cell included two cold app restarts:
 

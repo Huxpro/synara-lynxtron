@@ -62,8 +62,10 @@ export const WorkspaceFilePreviewHeader = function WorkspaceFilePreviewHeader(
 
   // Out-of-workspace previews (e.g. a session's scratch directory under the
   // OS temp dir) arrive as absolute paths; everything in-workspace is relative.
-  const { fileSegment, openTarget, prefixSegments } =
-    deriveFilePreviewBreadcrumb({ filePath, workspaceRoot });
+  const { fileSegment, openTarget, prefixSegments } = deriveFilePreviewBreadcrumb({
+    filePath,
+    workspaceRoot,
+  });
 
   const { onReferenceInChat, onAskWhyInChat } = props;
   const referenceWholeFile = () => {
@@ -170,9 +172,7 @@ export const WorkspaceFilePreviewHeader = function WorkspaceFilePreviewHeader(
         {/* Responsive (default) mode: the "Open" label rides the same
             `header-actions` container declared on this header, so it shows on a
             wide pane and collapses to the editor icon when the pane is narrow. */}
-        <OpenInPicker
-          openInTarget={openTarget}
-        />
+        <OpenInPicker openInTarget={openTarget} />
       </div>
     </div>
   );

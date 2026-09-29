@@ -151,8 +151,7 @@ export function shouldReserveDesktopTopBarWindowControlsGutter(input: {
  * right edge: chat header, workspace header, plugin nav, the right dock header, etc.
  */
 export function useDesktopTopBarWindowControlsGutterClassName(): string | null {
-  const isWindowsDesktop =
-    isWindowsPlatform(getNavigatorPlatform());
+  const isWindowsDesktop = isWindowsPlatform(getNavigatorPlatform());
   return shouldReserveDesktopTopBarWindowControlsGutter({
     isElectron,
     isWindowsDesktop,

@@ -14,11 +14,7 @@ import { applyClaudePromptEffortPrefix } from "@synara/shared/model";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { ChevronDownIcon, FastModeIcon, SettingsIcon } from "~/lib/icons";
 import { Button } from "../ui/button";
-import {
-  Menu,
-  MenuSeparator as MenuDivider,
-  MenuTrigger,
-} from "../ui/menu";
+import { Menu, MenuSeparator as MenuDivider, MenuTrigger } from "../ui/menu";
 import { useComposerDraftStore } from "../../composerDraftStore";
 import {
   buildNextProviderOptions,

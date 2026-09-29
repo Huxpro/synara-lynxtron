@@ -74,16 +74,7 @@ export function buildSidebarSearchActions(
       id: "import-thread",
       label: "Import thread from...",
       description: "Attach a local thread to an existing provider session.",
-      keywords: [
-        "import",
-        "resume",
-        "thread",
-        "session",
-        "codex",
-        "claude",
-        "cursor",
-        "opencode",
-      ],
+      keywords: ["import", "resume", "thread", "session", "codex", "claude", "cursor", "opencode"],
       shortcutLabel: input.importThreadShortcutLabel,
     });
   }

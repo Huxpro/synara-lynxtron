@@ -80,10 +80,13 @@ export function SettingsAppearanceSegmentedControlElement(props: {
   const options = props.options.map((option) => ({
     ...option,
     icon:
-      props.ariaLabel !== "Theme preference" ? undefined
-      : option.value === "light" ? <SunIcon />
-      : option.value === "dark" ? <MoonIcon />
-      : <DeviceLaptopIcon />,
+      props.ariaLabel !== "Theme preference" ? undefined : option.value === "light" ? (
+        <SunIcon />
+      ) : option.value === "dark" ? (
+        <MoonIcon />
+      ) : (
+        <DeviceLaptopIcon />
+      ),
   }));
   return (
     <SettingsSegmentedControl
@@ -143,9 +146,7 @@ export function SettingsAppearanceTextControlElement(props: {
 }) {
   const query = props.value.trim().toLowerCase();
   const suggestions = query
-    ? TERMINAL_FONT_FAMILY_SUGGESTIONS.filter((font) =>
-        font.toLowerCase().includes(query),
-      )
+    ? TERMINAL_FONT_FAMILY_SUGGESTIONS.filter((font) => font.toLowerCase().includes(query))
     : TERMINAL_FONT_FAMILY_SUGGESTIONS;
   return (
     <Autocomplete
@@ -209,8 +210,6 @@ export function SettingsAppearanceSelectControlElement(props: {
   );
 }
 
-export function SettingsAppearanceThemePacksElement(props: {
-  readonly children?: ReactNode;
-}) {
+export function SettingsAppearanceThemePacksElement(props: { readonly children?: ReactNode }) {
   return <div className="space-y-3">{props.children}</div>;
 }

@@ -1,28 +1,24 @@
-import type {
-  PullRequestActor,
-  PullRequestCheck,
-  PullRequestDetail,
-} from '@synara/contracts';
-import { useState, type ReactNode } from '@lynx-js/react';
+import type { PullRequestActor, PullRequestCheck, PullRequestDetail } from "@synara/contracts";
+import { useState, type ReactNode } from "@lynx-js/react";
 
-import { ChatMarkdown } from '../components/markdown/ChatMarkdown.lynx';
-import { ChevronRightIcon } from '../lib/icons.lynx';
+import { ChatMarkdown } from "../components/markdown/ChatMarkdown.lynx";
+import { ChevronRightIcon } from "../lib/icons.lynx";
 import {
   disclosureChevronClassName,
   disclosureContentClassName,
   useLynxDisclosurePresence,
-} from '../platform/motion.lynx';
-import { PULL_REQUEST_CHECK_STATUS_LABELS } from '@synara-web/components/pullRequest/pullRequestSummary.logic';
-import { PullRequestCommentComposer } from './PullRequestCommentComposer.lynx';
-import { PullRequestActorLabel } from './PullRequestActorLabel.lynx';
-import { PullRequestCheckStatusIcon } from './PullRequestCheckStatusIcon.lynx';
-import { PullRequestSummaryBranchRow } from './PullRequestSummaryBranchRow.lynx';
-import { PullRequestSummaryCommentCard } from './PullRequestSummaryCommentCard.lynx';
-import { PullRequestSummaryMetaIcon } from './PullRequestSummaryMetaIcon.lynx';
-import { PullRequestWarningBanner } from './PullRequestWarningBanner.lynx';
-import { openExternalBestEffort } from '../platform/window';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
-import './pull-request-summary-composition-elements.css';
+} from "../platform/motion.lynx";
+import { PULL_REQUEST_CHECK_STATUS_LABELS } from "@synara-web/components/pullRequest/pullRequestSummary.logic";
+import { PullRequestCommentComposer } from "./PullRequestCommentComposer.lynx";
+import { PullRequestActorLabel } from "./PullRequestActorLabel.lynx";
+import { PullRequestCheckStatusIcon } from "./PullRequestCheckStatusIcon.lynx";
+import { PullRequestSummaryBranchRow } from "./PullRequestSummaryBranchRow.lynx";
+import { PullRequestSummaryCommentCard } from "./PullRequestSummaryCommentCard.lynx";
+import { PullRequestSummaryMetaIcon } from "./PullRequestSummaryMetaIcon.lynx";
+import { PullRequestWarningBanner } from "./PullRequestWarningBanner.lynx";
+import { openExternalBestEffort } from "../platform/window";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
+import "./pull-request-summary-composition-elements.css";
 
 type ChildrenProps = { readonly children?: ReactNode };
 
@@ -46,9 +42,7 @@ export function PullRequestSummaryIntroElement(props: {
       <view className="SharedPrSummaryByline">
         <PullRequestActorLabel actor={props.author} variant="author" />
         <text className="SharedPrSummaryBylineText">·</text>
-        <text className="SharedPrSummaryBylineText">
-          {props.updatedAtLabel}
-        </text>
+        <text className="SharedPrSummaryBylineText">{props.updatedAtLabel}</text>
         <text className="SharedPrSummaryBylineText">·</text>
         <text className="SharedPrSummaryBylineText">{props.stateLabel}</text>
       </view>
@@ -62,7 +56,7 @@ export function PullRequestSummaryMetaRowsElement(props: ChildrenProps) {
 
 type PullRequestSummaryMetaRowProps =
   | {
-      readonly kind: 'branch';
+      readonly kind: "branch";
       readonly label: string;
       readonly headBranch: string;
       readonly baseBranch: string;
@@ -70,26 +64,24 @@ type PullRequestSummaryMetaRowProps =
       readonly deletions: number;
     }
   | {
-      readonly kind: 'merge' | 'comments';
+      readonly kind: "merge" | "comments";
       readonly label: string;
       readonly value: string;
     }
   | {
-      readonly kind: 'reviewers';
+      readonly kind: "reviewers";
       readonly label: string;
       readonly reviewers: ReadonlyArray<PullRequestActor>;
     }
   | {
-      readonly kind: 'checks';
+      readonly kind: "checks";
       readonly label: string;
       readonly value: string;
       readonly checks: ReadonlyArray<PullRequestCheck>;
     };
 
-export function PullRequestSummaryMetaRowElement(
-  props: PullRequestSummaryMetaRowProps
-) {
-  if (props.kind === 'branch') {
+export function PullRequestSummaryMetaRowElement(props: PullRequestSummaryMetaRowProps) {
+  if (props.kind === "branch") {
     return (
       <PullRequestSummaryBranchRow
         additions={props.additions}
@@ -100,7 +92,7 @@ export function PullRequestSummaryMetaRowElement(
       />
     );
   }
-  if (props.kind === 'reviewers') {
+  if (props.kind === "reviewers") {
     return (
       <view className="SharedPrSummaryMetaRow">
         <view className="SharedPrSummaryMetaLabel SharedPrSummaryMetaLabel--icon">
@@ -108,17 +100,11 @@ export function PullRequestSummaryMetaRowElement(
           <text className="SharedPrSummaryMetaLabelText">{props.label}</text>
         </view>
         {props.reviewers.length === 0 ? (
-          <text className="SharedPrSummaryMetaValue SharedPrSummaryMetaValue--muted">
-            None
-          </text>
+          <text className="SharedPrSummaryMetaValue SharedPrSummaryMetaValue--muted">None</text>
         ) : (
           <view className="SharedPrSummaryReviewers">
             {props.reviewers.map((actor) => (
-              <PullRequestActorLabel
-                actor={actor}
-                key={actor.login}
-                variant="reviewer"
-              />
+              <PullRequestActorLabel actor={actor} key={actor.login} variant="reviewer" />
             ))}
           </view>
         )}
@@ -130,13 +116,11 @@ export function PullRequestSummaryMetaRowElement(
       <view className="SharedPrSummaryMetaLabel SharedPrSummaryMetaLabel--icon">
         <PullRequestSummaryMetaIcon
           kind={props.kind}
-          checks={props.kind === 'checks' ? props.checks : undefined}
+          checks={props.kind === "checks" ? props.checks : undefined}
         />
         <text className="SharedPrSummaryMetaLabelText">{props.label}</text>
       </view>
-      <text className="SharedPrSummaryMetaValue">
-        {props.value}
-      </text>
+      <text className="SharedPrSummaryMetaValue">{props.value}</text>
     </view>
   );
 }
@@ -146,18 +130,18 @@ export function PullRequestSummarySectionElement(
     readonly label: string;
     readonly count?: number | undefined;
     readonly defaultOpen: boolean;
-  }
+  },
 ) {
   const [open, setOpen] = useState(props.defaultOpen);
   const contentPresent = useLynxDisclosurePresence(open);
   const toggle = () => {
-    'background only';
+    "background only";
     setOpen((value) => !value);
   };
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedPrSummarySectionHeader',
-    accessibleLabel: `${props.label}, ${open ? 'expanded' : 'collapsed'}`,
-    accessibilityValue: open ? 'Expanded' : 'Collapsed',
+    baseClassName: "SharedPrSummarySectionHeader",
+    accessibleLabel: `${props.label}, ${open ? "expanded" : "collapsed"}`,
+    accessibilityValue: open ? "Expanded" : "Collapsed",
     onActivate: toggle,
   });
   return (
@@ -165,15 +149,12 @@ export function PullRequestSummarySectionElement(
       <view
         className={interaction.className}
         aria-expanded={open}
-        aria-label={`${props.label}, ${open ? 'expanded' : 'collapsed'}`}
+        aria-label={`${props.label}, ${open ? "expanded" : "collapsed"}`}
         {...interaction.eventProps}
       >
         <text className="SharedPrSummarySectionTitle">{props.label}</text>
         <ChevronRightIcon
-          className={disclosureChevronClassName(
-            open,
-            'SharedPrSummarySectionChevron'
-          )}
+          className={disclosureChevronClassName(open, "SharedPrSummarySectionChevron")}
           size={14}
         />
         {props.count === undefined ? null : (
@@ -182,10 +163,7 @@ export function PullRequestSummarySectionElement(
       </view>
       {contentPresent ? (
         <view
-          className={disclosureContentClassName(
-            open,
-            'SharedPrSummarySectionBody'
-          )}
+          className={disclosureContentClassName(open, "SharedPrSummarySectionBody")}
           aria-hidden={!open}
         >
           {props.children}
@@ -201,11 +179,7 @@ export function PullRequestSummaryDescriptionElement(props: {
   return (
     <ChatMarkdown
       cwd={props.detail.workspaceRoot}
-      text={
-        props.detail.body.trim()
-          ? props.detail.body
-          : '_No description provided._'
-      }
+      text={props.detail.body.trim() ? props.detail.body : "_No description provided._"}
     />
   );
 }
@@ -216,14 +190,12 @@ export function PullRequestSummaryChecksElement(props: {
   return (
     <view className="SharedPrSummaryChecks">
       {props.checks.length === 0 ? (
-        <text className="SharedPrSummaryEmptyChecks">
-          No checks reported.
-        </text>
+        <text className="SharedPrSummaryEmptyChecks">No checks reported.</text>
       ) : (
         props.checks.map((check, index) => (
           <PullRequestSummaryCheckRow
             check={check}
-            key={`${check.name}:${check.url ?? ''}:${index}`}
+            key={`${check.name}:${check.url ?? ""}:${index}`}
           />
         ))
       )}
@@ -231,18 +203,14 @@ export function PullRequestSummaryChecksElement(props: {
   );
 }
 
-function PullRequestSummaryCheckRow(props: {
-  readonly check: PullRequestCheck;
-}) {
+function PullRequestSummaryCheckRow(props: { readonly check: PullRequestCheck }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedPrSummaryCheckRow',
-    accessibleLabel: `${props.check.name}, ${
-      PULL_REQUEST_CHECK_STATUS_LABELS[props.check.status]
-    }`,
+    baseClassName: "SharedPrSummaryCheckRow",
+    accessibleLabel: `${props.check.name}, ${PULL_REQUEST_CHECK_STATUS_LABELS[props.check.status]}`,
     disabled: !props.check.url,
     onActivate: props.check.url
       ? () => {
-          'background only';
+          "background only";
           openExternalBestEffort(props.check.url!);
         }
       : undefined,
@@ -267,14 +235,12 @@ export function PullRequestSummaryCommentsElement(props: {
       {props.detail.commentsIncomplete || props.detail.commentsTruncated ? (
         <PullRequestWarningBanner shape="note">
           {props.detail.commentsIncomplete
-            ? 'Some unresolved review comments could not be loaded. Check GitHub for the complete review.'
-            : 'More unresolved review comments may be available on GitHub.'}
+            ? "Some unresolved review comments could not be loaded. Check GitHub for the complete review."
+            : "More unresolved review comments may be available on GitHub."}
         </PullRequestWarningBanner>
       ) : null}
       {props.detail.comments.length === 0 ? (
-        <text className="SharedPrSummaryEmptyComments">
-          No comments
-        </text>
+        <text className="SharedPrSummaryEmptyComments">No comments</text>
       ) : (
         props.detail.comments.map((comment, index) => (
           <PullRequestSummaryCommentCard
@@ -286,9 +252,7 @@ export function PullRequestSummaryCommentsElement(props: {
           />
         ))
       )}
-      {props.commentingAvailable ? (
-        <PullRequestCommentComposer detail={props.detail} />
-      ) : null}
+      {props.commentingAvailable ? <PullRequestCommentComposer detail={props.detail} /> : null}
     </view>
   );
 }

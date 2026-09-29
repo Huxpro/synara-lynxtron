@@ -1,7 +1,7 @@
-import { describe, expect, it } from '@rstest/core';
-import { readFileSync } from 'node:fs';
+import { describe, expect, it } from "@rstest/core";
+import { readFileSync } from "node:fs";
 
-import type { ThreadTranscriptRow } from './queries';
+import type { ThreadTranscriptRow } from "./queries";
 import {
   buildTranscriptScrollToBottomParams,
   estimateTranscriptRowMainAxisSize,
@@ -11,123 +11,121 @@ import {
   resolveTranscriptWorkEntryDisplayText,
   transcriptRowVersion,
   type MessageTranscriptRow,
-} from './transcriptRows.logic';
+} from "./transcriptRows.logic";
 
-describe('transcript work-entry presentation', () => {
-  it('uses the shared reasoning formatter instead of leaking markdown', () => {
+describe("transcript work-entry presentation", () => {
+  it("uses the shared reasoning formatter instead of leaking markdown", () => {
     expect(
       resolveTranscriptWorkEntryDisplayText({
-        id: 'reasoning-1',
-        label: 'Reasoning trace',
-        detail: '**Planning GitHub verification approach**',
-        tone: 'tool',
-      } as never)
-    ).toBe('Planning GitHub verification approach');
+        id: "reasoning-1",
+        label: "Reasoning trace",
+        detail: "**Planning GitHub verification approach**",
+        tone: "tool",
+      } as never),
+    ).toBe("Planning GitHub verification approach");
   });
 
-  it('routes reasoning entries through rich Markdown while ordinary tools stay compact', () => {
-    const source = readFileSync(new URL('./Transcript.tsx', import.meta.url), 'utf8');
+  it("routes reasoning entries through rich Markdown while ordinary tools stay compact", () => {
+    const source = readFileSync(new URL("./Transcript.tsx", import.meta.url), "utf8");
     const workEntrySource = source.slice(
-      source.indexOf('function TranscriptWorkEntry'),
-      source.indexOf('function TranscriptWorkEntries')
+      source.indexOf("function TranscriptWorkEntry"),
+      source.indexOf("function TranscriptWorkEntries"),
     );
-    expect(workEntrySource).toContain('isReasoningUpdateWorkEntry(entry)');
-    expect(workEntrySource).toContain('formatAgentActivityEntryPreview(entry)');
+    expect(workEntrySource).toContain("isReasoningUpdateWorkEntry(entry)");
+    expect(workEntrySource).toContain("formatAgentActivityEntryPreview(entry)");
     expect(workEntrySource).toContain(
-      '<ChatMarkdown cwd={workspaceRoot} preparsedTree={markdownTree} text={reasoningText} />'
+      "<ChatMarkdown cwd={workspaceRoot} preparsedTree={markdownTree} text={reasoningText} />",
     );
-    expect(workEntrySource).toContain('<TimelineStatusRowComposition');
-    expect(source).toContain('chunkCollapsedTurnItems(collapsedTurnItems).map');
-    expect(source).toContain('summarizeToolCallGroup(props.entries)');
+    expect(workEntrySource).toContain("<TimelineStatusRowComposition");
+    expect(source).toContain("chunkCollapsedTurnItems(collapsedTurnItems).map");
+    expect(source).toContain("summarizeToolCallGroup(props.entries)");
     expect(source).toContain("baseClassName: 'TranscriptToolGroupTrigger'");
-    expect(source).toContain('classifyToolCallSummaryCategory(props.entry)');
+    expect(source).toContain("classifyToolCallSummaryCategory(props.entry)");
     expect(source).toContain('<SearchIcon className="TranscriptStatusIcon" size={13} />');
     expect(source).toContain('<PencilIcon className="TranscriptStatusIcon" size={13} />');
-    const styles = readFileSync(new URL('./App.css', import.meta.url), 'utf8');
+    const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
     expect(styles).toMatch(
-      /\.TranscriptReasoningEntry\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*19px;/s
+      /\.TranscriptReasoningEntry\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*19px;/s,
     );
     expect(styles).toMatch(
-      /\.TranscriptReasoningEntry \.MdHeading,[\s\S]*?font-size:\s*inherit;[\s\S]*?line-height:\s*inherit;/
+      /\.TranscriptReasoningEntry \.MdHeading,[\s\S]*?font-size:\s*inherit;[\s\S]*?line-height:\s*inherit;/,
     );
     expect(styles).toMatch(
-      /\.TranscriptCollapsedNarration \.MdHeading,[\s\S]*?font-size:\s*12px;[\s\S]*?line-height:\s*19px;/
+      /\.TranscriptCollapsedNarration \.MdHeading,[\s\S]*?font-size:\s*12px;[\s\S]*?line-height:\s*19px;/,
     );
   });
 
-  it('opens the end-of-turn changes card with the real provider turn id', () => {
-    const source = readFileSync(new URL('./Transcript.tsx', import.meta.url), 'utf8');
+  it("opens the end-of-turn changes card with the real provider turn id", () => {
+    const source = readFileSync(new URL("./Transcript.tsx", import.meta.url), "utf8");
     expect(source).toContain(
-      'accessibleLabel: turnSummary\n      ? `Review changes for turn ${turnSummary.turnId}`'
+      "accessibleLabel: turnSummary\n      ? `Review changes for turn ${turnSummary.turnId}`",
     );
-    expect(source).toContain(
-      'if (turnSummary) onOpenTurnDiff?.(turnSummary.turnId);'
-    );
-    expect(source).toContain('onOpenTurnDiff={onOpenTurnDiff}');
+    expect(source).toContain("if (turnSummary) onOpenTurnDiff?.(turnSummary.turnId);");
+    expect(source).toContain("onOpenTurnDiff={onOpenTurnDiff}");
   });
 
-  it('keeps ordinary work rows in label-detail form', () => {
+  it("keeps ordinary work rows in label-detail form", () => {
     expect(
       resolveTranscriptWorkEntryDisplayText({
-        id: 'tool-1',
-        label: 'Read',
-        detail: 'src/index.ts',
-        tone: 'tool',
-      } as never)
-    ).toBe('Read src/index.ts');
+        id: "tool-1",
+        label: "Read",
+        detail: "src/index.ts",
+        tone: "tool",
+      } as never),
+    ).toBe("Read src/index.ts");
   });
 
-  it('uses Electron file-change wording and basenames for edit rows', () => {
+  it("uses Electron file-change wording and basenames for edit rows", () => {
     expect(
       resolveTranscriptWorkEntryDisplayText({
-        id: 'edit-1',
-        label: 'File change',
-        tone: 'tool',
-        itemType: 'file_change',
-        changedFiles: ['/tmp/workspace/example.js'],
-      } as never)
-    ).toBe('Edited example.js');
+        id: "edit-1",
+        label: "File change",
+        tone: "tool",
+        itemType: "file_change",
+        changedFiles: ["/tmp/workspace/example.js"],
+      } as never),
+    ).toBe("Edited example.js");
     expect(
       resolveTranscriptWorkEntryDisplayText({
-        id: 'edit-2',
-        label: 'File change',
-        tone: 'tool',
-        itemType: 'file_change',
-        changedFiles: ['/tmp/a.ts', '/tmp/b.ts'],
-      } as never)
-    ).toBe('Edited 2 files');
+        id: "edit-2",
+        label: "File change",
+        tone: "tool",
+        itemType: "file_change",
+        changedFiles: ["/tmp/a.ts", "/tmp/b.ts"],
+      } as never),
+    ).toBe("Edited 2 files");
   });
 });
 
-describe('buildTranscriptScrollToBottomParams', () => {
-  it('uses the Lynx list position contract and targets the final row', () => {
+describe("buildTranscriptScrollToBottomParams", () => {
+  it("uses the Lynx list position contract and targets the final row", () => {
     expect(buildTranscriptScrollToBottomParams(0)).toBeNull();
     expect(buildTranscriptScrollToBottomParams(4)).toEqual({
       position: 3,
       offset: 0,
-      alignTo: 'bottom',
+      alignTo: "bottom",
       smooth: false,
     });
   });
 
-  it('includes explicit trailing list chrome in the target position', () => {
+  it("includes explicit trailing list chrome in the target position", () => {
     expect(buildTranscriptScrollToBottomParams(4, 1)).toEqual({
       position: 4,
       offset: 0,
-      alignTo: 'bottom',
+      alignTo: "bottom",
       smooth: false,
     });
   });
 });
 
-describe('resolveTranscriptPinnedFromScroll', () => {
+describe("resolveTranscriptPinnedFromScroll", () => {
   const base = {
     currentPinned: true,
     nativeUserEventSource: 2,
     bottomEpsilon: 30,
   } as const;
 
-  it('keeps the Native event-source gate and derives the live edge', () => {
+  it("keeps the Native event-source gate and derives the live edge", () => {
     expect(
       resolveTranscriptPinnedFromScroll({
         ...base,
@@ -138,7 +136,7 @@ describe('resolveTranscriptPinnedFromScroll', () => {
           scrollHeight: 500,
           listHeight: 300,
         },
-      })
+      }),
     ).toBe(false);
     expect(
       resolveTranscriptPinnedFromScroll({
@@ -150,17 +148,17 @@ describe('resolveTranscriptPinnedFromScroll', () => {
           scrollHeight: 500,
           listHeight: 300,
         },
-      })
+      }),
     ).toBe(true);
   });
 
-  it('uses Lynx-for-Web delta only to detach from the live edge', () => {
+  it("uses Lynx-for-Web delta only to detach from the live edge", () => {
     expect(
       resolveTranscriptPinnedFromScroll({
         ...base,
         isWebRelayMode: true,
         detail: { deltaY: -24, scrollTop: 80, scrollHeight: 500 },
-      })
+      }),
     ).toBe(false);
     expect(
       resolveTranscriptPinnedFromScroll({
@@ -168,12 +166,12 @@ describe('resolveTranscriptPinnedFromScroll', () => {
         currentPinned: false,
         isWebRelayMode: true,
         detail: { deltaY: 24, scrollTop: 104, scrollHeight: 500 },
-      })
+      }),
     ).toBe(false);
   });
 });
 
-describe('resolveTranscriptPinnedFromSample', () => {
+describe("resolveTranscriptPinnedFromSample", () => {
   const base = {
     currentPinned: true,
     previousScrollTop: 124,
@@ -182,68 +180,66 @@ describe('resolveTranscriptPinnedFromSample', () => {
     bottomEpsilon: 30,
   } as const;
 
-  it('detaches only when the viewport moves upward', () => {
-    expect(
-      resolveTranscriptPinnedFromSample({ ...base, scrollTop: 40 })
-    ).toBe(false);
+  it("detaches only when the viewport moves upward", () => {
+    expect(resolveTranscriptPinnedFromSample({ ...base, scrollTop: 40 })).toBe(false);
     expect(
       resolveTranscriptPinnedFromSample({
         ...base,
         previousScrollTop: null,
         scrollTop: 0,
         scrollHeight: 900,
-      })
+      }),
     ).toBe(true);
   });
 
-  it('reattaches at the live edge', () => {
+  it("reattaches at the live edge", () => {
     expect(
       resolveTranscriptPinnedFromSample({
         ...base,
         currentPinned: false,
         previousScrollTop: 40,
         scrollTop: 124,
-      })
+      }),
     ).toBe(true);
   });
 });
 
-function entry(id: string, toolStatus = 'completed') {
+function entry(id: string, toolStatus = "completed") {
   return {
     id,
     label: id,
-    tone: 'tool' as const,
-    createdAt: '2026-07-29T00:00:00.000Z',
+    tone: "tool" as const,
+    createdAt: "2026-07-29T00:00:00.000Z",
     toolStatus,
   };
 }
 
 function messageRow(overrides: Partial<MessageTranscriptRow> = {}): MessageTranscriptRow {
   return {
-    kind: 'message',
-    id: 'message-row',
-    createdAt: '2026-07-29T00:00:00.000Z',
+    kind: "message",
+    id: "message-row",
+    createdAt: "2026-07-29T00:00:00.000Z",
     message: {
-      id: 'assistant-message',
-      role: 'assistant',
-      text: 'answer',
-      createdAt: '2026-07-29T00:00:00.000Z',
+      id: "assistant-message",
+      role: "assistant",
+      text: "answer",
+      createdAt: "2026-07-29T00:00:00.000Z",
       turnId: null,
       streaming: false,
     },
-    durationStart: '2026-07-29T00:00:00.000Z',
+    durationStart: "2026-07-29T00:00:00.000Z",
     showAssistantCopyButton: true,
     assistantCopyStreaming: false,
     ...overrides,
   } as MessageTranscriptRow;
 }
 
-describe('resolveMessageWorkPlacement', () => {
-  it('keeps leading and inline work attached to a live assistant message', () => {
-    const leading = entry('leading');
-    const inline = entry('inline', 'running');
+describe("resolveMessageWorkPlacement", () => {
+  it("keeps leading and inline work attached to a live assistant message", () => {
+    const leading = entry("leading");
+    const inline = entry("inline", "running");
     const placement = resolveMessageWorkPlacement(
-      messageRow({ leadingWorkEntries: [leading], inlineWorkEntries: [inline] })
+      messageRow({ leadingWorkEntries: [leading], inlineWorkEntries: [inline] }),
     );
 
     expect(placement.hasCollapsedWork).toBe(false);
@@ -251,14 +247,14 @@ describe('resolveMessageWorkPlacement', () => {
     expect(placement.inlineWorkEntries).toEqual([inline]);
   });
 
-  it('uses the settled collapsed turn as the single work presentation', () => {
-    const collapsed = entry('collapsed');
+  it("uses the settled collapsed turn as the single work presentation", () => {
+    const collapsed = entry("collapsed");
     const placement = resolveMessageWorkPlacement(
       messageRow({
-        leadingWorkEntries: [entry('leading')],
-        inlineWorkEntries: [entry('inline')],
-        collapsedTurnItems: [{ kind: 'work', id: collapsed.id, entry: collapsed }],
-      })
+        leadingWorkEntries: [entry("leading")],
+        inlineWorkEntries: [entry("inline")],
+        collapsedTurnItems: [{ kind: "work", id: collapsed.id, entry: collapsed }],
+      }),
     );
 
     expect(placement.hasCollapsedWork).toBe(true);
@@ -268,72 +264,66 @@ describe('resolveMessageWorkPlacement', () => {
   });
 });
 
-describe('estimateTranscriptRowMainAxisSize', () => {
-  it('keeps short messages at the established row minimum', () => {
+describe("estimateTranscriptRowMainAxisSize", () => {
+  it("keeps short messages at the established row minimum", () => {
     expect(estimateTranscriptRowMainAxisSize(messageRow())).toBe(100);
     expect(
       estimateTranscriptRowMainAxisSize(
         messageRow({
-          message: { ...messageRow().message, role: 'user', text: '' },
-        })
-      )
+          message: { ...messageRow().message, role: "user", text: "" },
+        }),
+      ),
     ).toBe(100);
   });
 
-  it('gives long multiline Markdown enough virtual-list height', () => {
+  it("gives long multiline Markdown enough virtual-list height", () => {
     const text = Array.from(
       { length: 120 },
-      (_, index) => `${index + 1}. **Streaming output stays ordered.**`
-    ).join('\n');
+      (_, index) => `${index + 1}. **Streaming output stays ordered.**`,
+    ).join("\n");
 
     expect(
-      estimateTranscriptRowMainAxisSize(
-        messageRow({ message: { ...messageRow().message, text } })
-      )
+      estimateTranscriptRowMainAxisSize(messageRow({ message: { ...messageRow().message, text } })),
     ).toBeGreaterThan(5_000);
   });
 
-  it('scales wrapping and line height with the configured chat font size', () => {
+  it("scales wrapping and line height with the configured chat font size", () => {
     const row = messageRow({
       message: {
         ...messageRow().message,
-        text: 'Configured transcript typography remains aligned with virtualization. '.repeat(
-          12
-        ),
+        text: "Configured transcript typography remains aligned with virtualization. ".repeat(12),
       },
     });
 
     expect(estimateTranscriptRowMainAxisSize(row, 20)).toBeGreaterThan(
-      estimateTranscriptRowMainAxisSize(row, 11)
+      estimateTranscriptRowMainAxisSize(row, 11),
     );
   });
 });
 
-describe('transcriptRowVersion', () => {
-  it('changes for streaming text and attached work status updates', () => {
+describe("transcriptRowVersion", () => {
+  it("changes for streaming text and attached work status updates", () => {
     const running = messageRow({
-      message: { ...messageRow().message, text: '', streaming: true },
-      inlineWorkEntries: [entry('tool', 'running')],
+      message: { ...messageRow().message, text: "", streaming: true },
+      inlineWorkEntries: [entry("tool", "running")],
     });
     const completed = messageRow({
-      message: { ...running.message, text: 'done', streaming: false },
-      inlineWorkEntries: [entry('tool', 'completed')],
+      message: { ...running.message, text: "done", streaming: false },
+      inlineWorkEntries: [entry("tool", "completed")],
     });
 
     expect(transcriptRowVersion(running)).not.toBe(transcriptRowVersion(completed));
   });
 
-  it('changes for standalone work status updates', () => {
+  it("changes for standalone work status updates", () => {
     const row = (toolStatus: string): ThreadTranscriptRow =>
       ({
-        kind: 'work',
-        id: 'work-row',
-        createdAt: '2026-07-29T00:00:00.000Z',
-        groupedEntries: [entry('tool', toolStatus)],
+        kind: "work",
+        id: "work-row",
+        createdAt: "2026-07-29T00:00:00.000Z",
+        groupedEntries: [entry("tool", toolStatus)],
       }) as ThreadTranscriptRow;
 
-    expect(transcriptRowVersion(row('running'))).not.toBe(
-      transcriptRowVersion(row('completed'))
-    );
+    expect(transcriptRowVersion(row("running"))).not.toBe(transcriptRowVersion(row("completed")));
   });
 });

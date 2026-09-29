@@ -15,8 +15,7 @@ import {
   shouldShowSidebarThreadProviderIdentity,
 } from "./SidebarThreadProviderIdentity";
 
-export interface SidebarThreadRowCompositionThread
-  extends SidebarSubagentThreadIdentityInput {
+export interface SidebarThreadRowCompositionThread extends SidebarSubagentThreadIdentityInput {
   readonly title: string;
 }
 

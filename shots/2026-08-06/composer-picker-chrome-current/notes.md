@@ -27,8 +27,8 @@ Status: retained Web, Lynx-for-Web, and exact-owned Native evidence
 - Current Lynx-for-Web:
   - Model `260x300`, radius 10.4px, Light 7% shadow;
   - Traits `260x188`, same chrome.
-  Their content dimensions differ by the existing Native catalog/layout
-  contract; this slice only closes material ownership.
+    Their content dimensions differ by the existing Native catalog/layout
+    contract; this slice only closes material ownership.
 - Exact-owned Native bundle
   `3d6a37e6cf49f9b4feed986a17b317c21e6a835452f4f725f99b3d32634993d6`,
   root PID `78889`, PID-derived `localhost:8904/session 1`. A real Model

@@ -26,14 +26,14 @@ Evidence: `before/web-1280x820.png`, `before/lynx-1280x820.png`.
 
 Light, final JavaScript block and composer:
 
-| Surface | Web | Lynx-for-Web | Delta |
-| --- | --- | --- | --- |
-| Code block x/y | 399 / 463.89 | 407 / 466 | +8 / +2.11 px |
-| Code block w/h | 728 / 140.69 | 728 / 143 | 0 / +2.31 px |
-| Code block bottom | 604.58 | 609 | +4.42 px |
-| Composer x/y | 400 / 709 | 408 / 709 | +8 / 0 px |
-| Composer w/h | 736 / 95 | 736 / 95 | 0 / 0 px |
-| Block→composer gap | 104.42 | 100 | -4.42 px |
+| Surface            | Web          | Lynx-for-Web | Delta         |
+| ------------------ | ------------ | ------------ | ------------- |
+| Code block x/y     | 399 / 463.89 | 407 / 466    | +8 / +2.11 px |
+| Code block w/h     | 728 / 140.69 | 728 / 143    | 0 / +2.31 px  |
+| Code block bottom  | 604.58       | 609          | +4.42 px      |
+| Composer x/y       | 400 / 709    | 408 / 709    | +8 / 0 px     |
+| Composer w/h       | 736 / 95     | 736 / 95     | 0 / 0 px      |
+| Block→composer gap | 104.42       | 100          | -4.42 px      |
 
 The code surface uses the same 11px / 16.5px code typography, 10px-class
 radius, semantic background, header/action anatomy and 728px width. Fenced code

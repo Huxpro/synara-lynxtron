@@ -1,28 +1,24 @@
-import type { OrchestrationShellSnapshot } from '@synara/contracts';
+import type { OrchestrationShellSnapshot } from "@synara/contracts";
 
-import type { ThreadSummary } from './queries';
+import type { ThreadSummary } from "./queries";
 
 export function projectActiveThreadSummaries(
-  snapshot: OrchestrationShellSnapshot
+  snapshot: OrchestrationShellSnapshot,
 ): ThreadSummary[] {
-  const projectNames = new Map(
-    snapshot.projects.map((project) => [project.id, project.title])
-  );
+  const projectNames = new Map(snapshot.projects.map((project) => [project.id, project.title]));
   return snapshot.threads
     .filter((thread) => thread.archivedAt == null)
     .map((thread) => ({
       id: thread.id,
       title: thread.title,
       projectId: thread.projectId,
-      project: projectNames.get(thread.projectId) ?? 'Unknown project',
+      project: projectNames.get(thread.projectId) ?? "Unknown project",
       messageCount: 0,
       createdAt: thread.createdAt,
       updatedAt: thread.updatedAt,
       archivedAt: thread.archivedAt,
       latestUserMessageAt: thread.latestUserMessageAt ?? null,
-      live:
-        thread.session?.status === 'running' ||
-        thread.session?.status === 'connecting',
+      live: thread.session?.status === "running" || thread.session?.status === "connecting",
       provider: thread.session?.provider ?? thread.modelSelection.provider,
       isPinned: thread.isPinned,
       sessionStatus: thread.session?.status ?? null,

@@ -1,10 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
-import {
-  KanbanStateComposition,
-  resolveKanbanStatePresentation,
-} from "./KanbanStateComposition";
+import { KanbanStateComposition, resolveKanbanStatePresentation } from "./KanbanStateComposition";
 
 describe("KanbanStateComposition", () => {
   it("separates loading, offline and missing-project semantics", () => {

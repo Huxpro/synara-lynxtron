@@ -1,8 +1,4 @@
-import {
-  resolveDraftDropAction,
-  type KanbanCard,
-  type KanbanColumnKey,
-} from "./kanban.logic";
+import { resolveDraftDropAction, type KanbanCard, type KanbanColumnKey } from "./kanban.logic";
 
 export interface KanbanDragPoint {
   readonly x: number;
@@ -33,11 +29,7 @@ export type KanbanCrossColumnDropPolicy =
   | {
       readonly kind: "invalid";
       readonly label: string;
-      readonly reason:
-        | "derived-source"
-        | "done-derived"
-        | "outside-board"
-        | "prompt-unavailable";
+      readonly reason: "derived-source" | "done-derived" | "outside-board" | "prompt-unavailable";
     };
 
 export const KANBAN_DND_COPY = {
@@ -68,12 +60,7 @@ export function resolveKanbanDragColumn(
 export function resolveKanbanCrossColumnDropPolicy(
   card: Pick<
     KanbanCard,
-    | "column"
-    | "draftHasAttachments"
-    | "draftPrompt"
-    | "envMode"
-    | "thread"
-    | "worktreePath"
+    "column" | "draftHasAttachments" | "draftPrompt" | "envMode" | "thread" | "worktreePath"
   >,
   targetColumn: KanbanColumnKey | null,
   options: { readonly canSupplyStartPrompt: boolean },

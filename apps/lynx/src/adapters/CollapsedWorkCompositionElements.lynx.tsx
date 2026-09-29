@@ -1,14 +1,14 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import { ChevronRightIcon } from '../lib/icons.lynx';
-import './collapsed-work-composition-elements.css';
+import { ChevronRightIcon } from "../lib/icons.lynx";
+import "./collapsed-work-composition-elements.css";
 import {
   disclosureChevronClassName,
   disclosureContentClassName,
   useLynxDisclosurePresence,
-} from '../platform/motion.lynx';
-import { useLynxInteractiveState } from './useLynxInteractiveState';
-import { useTheme } from './useTheme.lynx';
+} from "../platform/motion.lynx";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
+import { useTheme } from "./useTheme.lynx";
 
 type ChildrenProps = { readonly children?: ReactNode };
 
@@ -25,12 +25,12 @@ export function CollapsedWorkTriggerElement(
     readonly accessibleLabel: string;
     readonly open: boolean;
     readonly onActivate: () => void;
-  }
+  },
 ) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SharedCollapsedWorkTrigger',
+    baseClassName: "SharedCollapsedWorkTrigger",
     accessibleLabel: props.accessibleLabel,
-    accessibilityValue: props.open ? 'Expanded' : 'Collapsed',
+    accessibilityValue: props.open ? "Expanded" : "Collapsed",
     onActivate: props.onActivate,
   });
   return (
@@ -53,30 +53,20 @@ export function CollapsedWorkChevronElement(props: { readonly open: boolean }) {
   const { semanticIconColor } = useTheme();
   return (
     <ChevronRightIcon
-      className={disclosureChevronClassName(
-        props.open,
-        'SharedCollapsedWorkChevron'
-      )}
-      color={semanticIconColor('secondary')}
+      className={disclosureChevronClassName(props.open, "SharedCollapsedWorkChevron")}
+      color={semanticIconColor("secondary")}
       size={12}
     />
   );
 }
 
-export function CollapsedWorkPanelElement(
-  props: ChildrenProps & { readonly open: boolean }
-) {
+export function CollapsedWorkPanelElement(props: ChildrenProps & { readonly open: boolean }) {
   const present = useLynxDisclosurePresence(props.open, {
     preserveOnClose: false,
   });
   if (!present) return null;
   return (
-    <view
-      className={disclosureContentClassName(
-        props.open,
-        'SharedCollapsedWorkPanel'
-      )}
-    >
+    <view className={disclosureContentClassName(props.open, "SharedCollapsedWorkPanel")}>
       {props.children}
     </view>
   );

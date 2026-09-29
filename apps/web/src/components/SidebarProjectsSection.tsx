@@ -11,11 +11,7 @@ import {
   SidebarProjectsStateElement,
 } from "~/components/SidebarProjectsSectionElements";
 
-export type SidebarProjectsSectionState =
-  | "ready"
-  | "loading"
-  | "error"
-  | "empty";
+export type SidebarProjectsSectionState = "ready" | "loading" | "error" | "empty";
 
 export function SidebarProjectsSection<Row>(props: {
   readonly rows: readonly Row[];
@@ -32,18 +28,18 @@ export function SidebarProjectsSection<Row>(props: {
   const state = props.state ?? "ready";
   const rows = props.rows.map((row) => props.renderRow(row));
   const list =
-    state === "ready"
-      ? props.renderList
-        ? props.renderList(rows)
-        : <SidebarProjectsListElement>{rows}</SidebarProjectsListElement>
-      : null;
+    state === "ready" ? (
+      props.renderList ? (
+        props.renderList(rows)
+      ) : (
+        <SidebarProjectsListElement>{rows}</SidebarProjectsListElement>
+      )
+    ) : null;
 
   return (
     <SidebarProjectsSectionRootElement>
       {props.prelude}
-      <SidebarListSectionHeader label="Projects">
-        {props.headerActions}
-      </SidebarListSectionHeader>
+      <SidebarListSectionHeader label="Projects">{props.headerActions}</SidebarListSectionHeader>
       {list}
       {state === "loading" ? (
         <SidebarProjectsStateElement

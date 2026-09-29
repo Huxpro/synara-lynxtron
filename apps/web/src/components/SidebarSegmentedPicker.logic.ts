@@ -28,16 +28,8 @@ export function resolveSidebarSegmentGeometry(
   const edgeWidthOverhang = isFirst || isLast ? 8 : 0;
 
   return {
-    left: isFirst
-      ? "-6px"
-      : calcLength(
-          safeIndex * segmentPercent,
-          leftPixelAdjustment,
-        ),
-    width: calcLength(
-      segmentPercent,
-      cellPixelAdjustment + edgeWidthOverhang,
-    ),
+    left: isFirst ? "-6px" : calcLength(safeIndex * segmentPercent, leftPixelAdjustment),
+    width: calcLength(segmentPercent, cellPixelAdjustment + edgeWidthOverhang),
     labelTranslateX: isFirst ? "-4px" : isLast ? "4px" : "0px",
   };
 }

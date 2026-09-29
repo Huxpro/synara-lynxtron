@@ -33,13 +33,16 @@
         margin: 0;
         color: var(--ink);
         background:
-          linear-gradient(90deg, color-mix(in srgb, var(--line) 38%, transparent) 1px, transparent 1px)
+          linear-gradient(
+              90deg,
+              color-mix(in srgb, var(--line) 38%, transparent) 1px,
+              transparent 1px
+            )
             0 0 / 72px 72px,
-          linear-gradient(color-mix(in srgb, var(--line) 30%, transparent) 1px, transparent 1px)
-            0 0 / 72px 72px,
+          linear-gradient(color-mix(in srgb, var(--line) 30%, transparent) 1px, transparent 1px) 0
+            0 / 72px 72px,
           var(--page);
-        font-family:
-          "Avenir Next", "Helvetica Neue", "PingFang SC", sans-serif;
+        font-family: "Avenir Next", "Helvetica Neue", "PingFang SC", sans-serif;
         min-height: 100vh;
       }
 
@@ -295,12 +298,11 @@
         width: 100%;
         aspect-ratio: var(--image-ratio, 1280 / 820);
         object-fit: contain;
-        background:
-          repeating-conic-gradient(
-              color-mix(in srgb, var(--line) 32%, transparent) 0 25%,
-              transparent 0 50%
-            )
-            50% / 18px 18px;
+        background: repeating-conic-gradient(
+            color-mix(in srgb, var(--line) 32%, transparent) 0 25%,
+            transparent 0 50%
+          )
+          50% / 18px 18px;
       }
 
       .frame-missing {
@@ -498,8 +500,8 @@
           <p class="eyebrow">Synara · Lynxtron certification archive</p>
           <h1>同一界面，三种运行表面。</h1>
           <p class="intro">
-            P8-Q2 六个核心界面与后续 UI 扩面切片的可审计视觉证据。按界面、主题与尺寸筛选，
-            并排查看 Web authority、Lynx-for-Web 与真实 Lynxtron Native。
+            P8-Q2 六个核心界面与后续 UI 扩面切片的可审计视觉证据。按界面、主题与尺寸筛选， 并排查看
+            Web authority、Lynx-for-Web 与真实 Lynxtron Native。
             所有图片均使用仓库相对路径，下载仓库后可直接离线打开。
           </p>
         </div>
@@ -514,15 +516,63 @@
       <nav class="toolbar" aria-label="Evidence filters">
         <div class="filter-group" id="themeFilters">
           <span class="filter-label">主题</span>
-          <button class="chip" type="button" data-filter="theme" data-value="all" aria-pressed="true">全部</button>
-          <button class="chip" type="button" data-filter="theme" data-value="light" aria-pressed="false">Light</button>
-          <button class="chip" type="button" data-filter="theme" data-value="dark" aria-pressed="false">Dark</button>
+          <button
+            class="chip"
+            type="button"
+            data-filter="theme"
+            data-value="all"
+            aria-pressed="true"
+          >
+            全部
+          </button>
+          <button
+            class="chip"
+            type="button"
+            data-filter="theme"
+            data-value="light"
+            aria-pressed="false"
+          >
+            Light
+          </button>
+          <button
+            class="chip"
+            type="button"
+            data-filter="theme"
+            data-value="dark"
+            aria-pressed="false"
+          >
+            Dark
+          </button>
         </div>
         <div class="filter-group" id="sizeFilters">
           <span class="filter-label">尺寸</span>
-          <button class="chip" type="button" data-filter="size" data-value="all" aria-pressed="true">全部</button>
-          <button class="chip" type="button" data-filter="size" data-value="1280" aria-pressed="false">1280 × 820</button>
-          <button class="chip" type="button" data-filter="size" data-value="1440" aria-pressed="false">1440 × 900</button>
+          <button
+            class="chip"
+            type="button"
+            data-filter="size"
+            data-value="all"
+            aria-pressed="true"
+          >
+            全部
+          </button>
+          <button
+            class="chip"
+            type="button"
+            data-filter="size"
+            data-value="1280"
+            aria-pressed="false"
+          >
+            1280 × 820
+          </button>
+          <button
+            class="chip"
+            type="button"
+            data-filter="size"
+            data-value="1440"
+            aria-pressed="false"
+          >
+            1440 × 900
+          </button>
         </div>
         <div class="filter-group">
           <label class="filter-label" for="screenFilter">界面</label>
@@ -621,10 +671,7 @@
           note: "../p9-u4-browser/notes.md",
         },
       ];
-      const screens = [
-        ...legacyScreens,
-        ...composerEvidence.screens,
-      ];
+      const screens = [...legacyScreens, ...composerEvidence.screens];
 
       const variants = [
         { theme: "light", size: "1280", browserSize: "1280 × 820", nativeSize: "2560 × 1576" },
@@ -644,7 +691,7 @@
           native: `native/${screen.id}/${variant.theme}-${variant.size}/native.png`,
           webMetrics: `${screen.id}/${variant.theme}-${variant.size}/web-metrics.json`,
           lynxMetrics: `${screen.id}/${variant.theme}-${variant.size}/lynx-metrics.json`,
-        }))
+        })),
       );
       const legacyCases = [
         ...coreCases,
@@ -857,10 +904,7 @@
           lynxMetrics: null,
         },
       ];
-      const cases = [
-        ...legacyCases,
-        ...composerEvidence.cases,
-      ];
+      const cases = [...legacyCases, ...composerEvidence.cases];
 
       const filters = { theme: "all", size: "all", screen: "all" };
       const gallery = document.querySelector("#gallery");
@@ -920,7 +964,7 @@
           (item) =>
             (filters.theme === "all" || item.theme === filters.theme) &&
             (filters.size === "all" || item.size === filters.size) &&
-            (filters.screen === "all" || item.id === filters.screen)
+            (filters.screen === "all" || item.id === filters.screen),
         );
 
         resultCount.textContent = `${visible.length} / ${cases.length} 个对比单元`;
@@ -945,7 +989,7 @@
                       ${item.lynxMetrics ? `<a href="${item.lynxMetrics}">Lynx metrics</a>` : ""}
                     </div>
                   </article>
-                `
+                `,
               )
               .join("")
           : `<div class="empty">没有符合当前筛选条件的证据。</div>`;
@@ -1004,10 +1048,10 @@
 
       document.querySelector("#screenCount").textContent = String(screens.length);
       document.querySelector("#browserFrameCount").textContent = String(
-        cases.reduce((count, item) => count + (item.web ? 1 : 0) + (item.lynx ? 1 : 0), 0)
+        cases.reduce((count, item) => count + (item.web ? 1 : 0) + (item.lynx ? 1 : 0), 0),
       );
       document.querySelector("#nativeFrameCount").textContent = String(
-        cases.reduce((count, item) => count + (item.native ? 1 : 0), 0)
+        cases.reduce((count, item) => count + (item.native ? 1 : 0), 0),
       );
 
       render();

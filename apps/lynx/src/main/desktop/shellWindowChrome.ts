@@ -1,25 +1,23 @@
-import { getMacTrafficLightPosition } from '@synara/shared/desktopChrome';
+import { getMacTrafficLightPosition } from "@synara/shared/desktopChrome";
 
 export interface ShellWindowChromeOptions {
   readonly frame?: boolean;
-  readonly titleBarStyle?: 'hiddenInset';
+  readonly titleBarStyle?: "hiddenInset";
   readonly trafficLightPosition?: {
     readonly x: number;
     readonly y: number;
   };
 }
 
-export function resolveShellWindowChrome(
-  platform: NodeJS.Platform
-): ShellWindowChromeOptions {
-  if (platform === 'win32') {
+export function resolveShellWindowChrome(platform: NodeJS.Platform): ShellWindowChromeOptions {
+  if (platform === "win32") {
     return { frame: false };
   }
-  if (platform !== 'darwin') {
+  if (platform !== "darwin") {
     return {};
   }
   return {
-    titleBarStyle: 'hiddenInset',
+    titleBarStyle: "hiddenInset",
     trafficLightPosition: getMacTrafficLightPosition(),
   };
 }

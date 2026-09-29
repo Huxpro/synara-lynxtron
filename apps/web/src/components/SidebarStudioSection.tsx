@@ -21,9 +21,7 @@ export function SidebarStudioSection<Row>(props: {
   return (
     <SidebarStudioSectionRootElement>
       {props.prelude}
-      <SidebarListSectionHeader label="Studio">
-        {props.headerActions}
-      </SidebarListSectionHeader>
+      <SidebarListSectionHeader label="Studio">{props.headerActions}</SidebarListSectionHeader>
       <SidebarStudioListElement listRef={props.listRef}>
         {props.rows.length > 0 ? (
           props.rows.map((row) => props.renderRow(row))

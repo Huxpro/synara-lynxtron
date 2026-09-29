@@ -1,4 +1,4 @@
-import { useEffect, useState } from '@lynx-js/react';
+import { useEffect, useState } from "@lynx-js/react";
 
 import {
   createHostInputProbeMatrix,
@@ -6,71 +6,65 @@ import {
   recordHostEventArrival,
   recordHostEventBinding,
   type HostInputProbeMatrix,
-} from './HostInputProbe.logic';
-import { Button } from '../components/ui/button';
-import './HostInputProbe.css';
+} from "./HostInputProbe.logic";
+import { Button } from "../components/ui/button";
+import "./HostInputProbe.css";
 
 declare const NativeModules: {
   readonly bridge?: {
     readonly call?: (
       method: string,
       params: Record<string, unknown>,
-      callback: (result: unknown) => void
+      callback: (result: unknown) => void,
     ) => void;
   };
 };
 
 const BINDINGS = [
-  ['focus', 'view-control'],
-  ['blur', 'view-control'],
-  ['keydown:Enter', 'view-control'],
-  ['keydown:Space', 'view-control'],
-  ['keydown:ArrowDown', 'view-control'],
-  ['keydown:ArrowUp', 'view-control'],
-  ['keydown:Escape', 'view-control'],
-  ['keydown:Tab', 'view-control'],
-  ['mouseenter', 'view-control'],
-  ['mouseleave', 'view-control'],
-  ['mousedown', 'view-control'],
-  ['mouseup', 'view-control'],
-  ['tap', 'view-control'],
-  ['focus', 'textarea'],
-  ['blur', 'textarea'],
-  ['keydown:Enter', 'textarea'],
-  ['keydown:ArrowUp', 'textarea'],
-  ['keydown:ArrowDown', 'textarea'],
-  ['keydown:Escape', 'textarea'],
-  ['input', 'textarea'],
-  ['input:composing', 'textarea'],
-  ['input:committed', 'textarea'],
-  ['scroll', 'scroll-view'],
-  ['global:window-focus', 'host'],
-  ['global:window-blur', 'host'],
+  ["focus", "view-control"],
+  ["blur", "view-control"],
+  ["keydown:Enter", "view-control"],
+  ["keydown:Space", "view-control"],
+  ["keydown:ArrowDown", "view-control"],
+  ["keydown:ArrowUp", "view-control"],
+  ["keydown:Escape", "view-control"],
+  ["keydown:Tab", "view-control"],
+  ["mouseenter", "view-control"],
+  ["mouseleave", "view-control"],
+  ["mousedown", "view-control"],
+  ["mouseup", "view-control"],
+  ["tap", "view-control"],
+  ["focus", "textarea"],
+  ["blur", "textarea"],
+  ["keydown:Enter", "textarea"],
+  ["keydown:ArrowUp", "textarea"],
+  ["keydown:ArrowDown", "textarea"],
+  ["keydown:Escape", "textarea"],
+  ["input", "textarea"],
+  ["input:composing", "textarea"],
+  ["input:committed", "textarea"],
+  ["scroll", "scroll-view"],
+  ["global:window-focus", "host"],
+  ["global:window-blur", "host"],
 ] as const;
 
 function createBoundMatrix(): HostInputProbeMatrix {
   return BINDINGS.reduce(
-    (matrix, [eventName, sourceName]) =>
-      recordHostEventBinding(matrix, eventName, sourceName),
-    createHostInputProbeMatrix(
-      process.env.SYNARA_HOST_INPUT_PROBE_RUNTIME || 'Unknown runtime'
-    )
+    (matrix, [eventName, sourceName]) => recordHostEventBinding(matrix, eventName, sourceName),
+    createHostInputProbeMatrix(process.env.SYNARA_HOST_INPUT_PROBE_RUNTIME || "Unknown runtime"),
   );
 }
 
 function keyEventName(key: string): string {
-  if (key === ' ' || key === 'Spacebar') return 'keydown:Space';
+  if (key === " " || key === "Spacebar") return "keydown:Space";
   return `keydown:${key}`;
 }
 
 function publishMatrix(matrix: HostInputProbeMatrix): void {
-  NativeModules.bridge?.call?.('hostInputProbePublish', { matrix }, () => {});
+  NativeModules.bridge?.call?.("hostInputProbePublish", { matrix }, () => {});
 }
 
-function DynamicPropControl(props: {
-  readonly count: number;
-  readonly onActivate: () => void;
-}) {
+function DynamicPropControl(props: { readonly count: number; readonly onActivate: () => void }) {
   return (
     <view
       id="host-input-probe-dynamic-prop"
@@ -94,49 +88,41 @@ export function HostInputProbe() {
   const [postHydrationTapCount, setPostHydrationTapCount] = useState(0);
   const summary = hostInputProbeSummary(matrix);
   const dynamicFixedTap = () => {
-    'background only';
+    "background only";
     setDynamicFixedTapCount((count) => count + 1);
   };
   const dynamicSpreadEvents = {
     bindtap: () => {
-      'background only';
+      "background only";
       setDynamicSpreadTapCount((count) => count + 1);
     },
   };
 
-  const record = (
-    eventName: string,
-    sourceName: string,
-    detail?: string
-  ) => {
-    'background only';
-    setMatrix((current) =>
-      recordHostEventArrival(current, eventName, sourceName, detail)
-    );
+  const record = (eventName: string, sourceName: string, detail?: string) => {
+    "background only";
+    setMatrix((current) => recordHostEventArrival(current, eventName, sourceName, detail));
   };
 
   useEffect(() => {
-    'background only';
+    "background only";
     publishMatrix(matrix);
   }, [matrix]);
 
   useEffect(() => {
-    'background only';
+    "background only";
     setPostHydrationMounted(true);
   }, []);
 
   useEffect(() => {
-    'background only';
-    const emitter = lynx.getJSModule('GlobalEventEmitter');
-    const onHostFocus = () =>
-      record('global:window-focus', 'host', 'host window focus');
-    const onHostBlur = () =>
-      record('global:window-blur', 'host', 'host window blur');
-    emitter.addListener('host-input-probe:window-focus', onHostFocus);
-    emitter.addListener('host-input-probe:window-blur', onHostBlur);
+    "background only";
+    const emitter = lynx.getJSModule("GlobalEventEmitter");
+    const onHostFocus = () => record("global:window-focus", "host", "host window focus");
+    const onHostBlur = () => record("global:window-blur", "host", "host window blur");
+    emitter.addListener("host-input-probe:window-focus", onHostFocus);
+    emitter.addListener("host-input-probe:window-blur", onHostBlur);
     return () => {
-      emitter.removeListener('host-input-probe:window-focus', onHostFocus);
-      emitter.removeListener('host-input-probe:window-blur', onHostBlur);
+      emitter.removeListener("host-input-probe:window-focus", onHostFocus);
+      emitter.removeListener("host-input-probe:window-blur", onHostBlur);
     };
   }, []);
 
@@ -182,7 +168,7 @@ export function HostInputProbe() {
           accessibility-element={true}
           accessibility-label="Post-hydration event control"
           bindtap={() => {
-            'background only';
+            "background only";
             setPostHydrationTapCount((count) => count + 1);
           }}
         >
@@ -195,16 +181,16 @@ export function HostInputProbe() {
         focusable={true}
         accessibility-element={true}
         accessibility-label="Host input probe control"
-        bindfocus={() => record('focus', 'view-control')}
-        bindblur={() => record('blur', 'view-control')}
+        bindfocus={() => record("focus", "view-control")}
+        bindblur={() => record("blur", "view-control")}
         bindkeydown={(event: { readonly key: string }) =>
-          record(keyEventName(event.key), 'view-control', `key=${event.key}`)
+          record(keyEventName(event.key), "view-control", `key=${event.key}`)
         }
-        bindmouseenter={() => record('mouseenter', 'view-control')}
-        bindmouseleave={() => record('mouseleave', 'view-control')}
-        bindmousedown={() => record('mousedown', 'view-control')}
-        bindmouseup={() => record('mouseup', 'view-control')}
-        bindtap={() => record('tap', 'view-control')}
+        bindmouseenter={() => record("mouseenter", "view-control")}
+        bindmouseleave={() => record("mouseleave", "view-control")}
+        bindmousedown={() => record("mousedown", "view-control")}
+        bindmouseup={() => record("mouseup", "view-control")}
+        bindtap={() => record("tap", "view-control")}
       >
         <text>Focusable view control</text>
       </view>
@@ -217,22 +203,20 @@ export function HostInputProbe() {
         placeholder="Type text or use IME"
         maxlines={3}
         send-composing-input={true}
-        bindfocus={() => record('focus', 'textarea')}
-        bindblur={() => record('blur', 'textarea')}
+        bindfocus={() => record("focus", "textarea")}
+        bindblur={() => record("blur", "textarea")}
         catchkeydown={(event: { readonly key: string }) =>
-          record(keyEventName(event.key), 'textarea', `key=${event.key}`)
+          record(keyEventName(event.key), "textarea", `key=${event.key}`)
         }
         bindinput={(event) => {
           const detail = `value=${event.detail.value};isComposing=${String(
-            event.detail.isComposing
+            event.detail.isComposing,
           )}`;
-          record('input', 'textarea', detail);
+          record("input", "textarea", detail);
           record(
-            event.detail.isComposing
-              ? 'input:composing'
-              : 'input:committed',
-            'textarea',
-            detail
+            event.detail.isComposing ? "input:composing" : "input:committed",
+            "textarea",
+            detail,
           );
         }}
       />
@@ -241,13 +225,7 @@ export function HostInputProbe() {
         className="HostInputProbeScroll"
         scroll-orientation="vertical"
         scroll-y={true}
-        bindscroll={(event) =>
-          record(
-            'scroll',
-            'scroll-view',
-            JSON.stringify(event.detail ?? {})
-          )
-        }
+        bindscroll={(event) => record("scroll", "scroll-view", JSON.stringify(event.detail ?? {}))}
       >
         <view className="HostInputProbeScrollContent">
           <text>Scroll start</text>
@@ -259,10 +237,7 @@ export function HostInputProbe() {
       </scroll-view>
       <view className="HostInputProbeMatrix">
         {matrix.events.map((event) => (
-          <view
-            className="HostInputProbeRow"
-            key={`${event.sourceName}:${event.eventName}`}
-          >
+          <view className="HostInputProbeRow" key={`${event.sourceName}:${event.eventName}`}>
             <text className="HostInputProbeEvent">
               {`${event.sourceName} / ${event.eventName}`}
             </text>
@@ -270,15 +245,15 @@ export function HostInputProbe() {
               className="HostInputProbeResult"
               data-event-name={event.eventName}
               data-source-name={event.sourceName}
-              data-binding={event.bindingExists ? 'yes' : 'no'}
-              data-arrived={event.eventArrived ? 'yes' : 'no'}
+              data-binding={event.bindingExists ? "yes" : "no"}
+              data-arrived={event.eventArrived ? "yes" : "no"}
               data-calls={String(event.handlerCallCount)}
             >
               {event.eventArrived
                 ? `arrived ×${event.handlerCallCount}`
                 : event.bindingExists
-                  ? 'bound'
-                  : 'missing'}
+                  ? "bound"
+                  : "missing"}
             </text>
           </view>
         ))}

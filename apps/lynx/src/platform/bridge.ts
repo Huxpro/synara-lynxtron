@@ -4,15 +4,18 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import 'background-only';
+import "background-only";
 
-export function bridgeCall<T = any>(name: string, params: Record<string, unknown> = {}): Promise<T> {
+export function bridgeCall<T = any>(
+  name: string,
+  params: Record<string, unknown> = {},
+): Promise<T> {
   return new Promise((resolve, reject) => {
     try {
       (NativeModules as any).bridge.call(name, params, (reply: any) => {
         try {
-          const parsed = typeof reply === 'string' ? JSON.parse(reply) : reply;
-          if (parsed && typeof parsed === 'object' && 'error' in parsed && parsed.error) {
+          const parsed = typeof reply === "string" ? JSON.parse(reply) : reply;
+          if (parsed && typeof parsed === "object" && "error" in parsed && parsed.error) {
             reject(new Error(String(parsed.error)));
             return;
           }
@@ -30,7 +33,7 @@ export function bridgeCall<T = any>(name: string, params: Record<string, unknown
 type GeeListener = (...args: any[]) => void;
 
 export function onGlobalEvent(event: string, listener: GeeListener): () => void {
-  const gee = (lynx as any).getJSModule('GlobalEventEmitter');
+  const gee = (lynx as any).getJSModule("GlobalEventEmitter");
   gee.addListener(event, listener);
   return () => gee.removeListener(event, listener);
 }

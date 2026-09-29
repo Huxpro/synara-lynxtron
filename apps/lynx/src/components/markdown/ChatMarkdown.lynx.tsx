@@ -1,49 +1,38 @@
 // P2-V5: unified/remark parses on the background thread; this module only
 // turns the serializable mdast subset into Lynx-native view/text elements.
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from '@lynx-js/react';
-import { getRectByRef } from '@lynx-js/lynx-ui';
-import type { NodesRef, SelectionChangeEvent } from '@lynx-js/types';
-import type { ProviderMentionReference } from '@synara/contracts';
+import { useEffect, useRef, useState, type ReactNode } from "@lynx-js/react";
+import { getRectByRef } from "@lynx-js/lynx-ui";
+import type { NodesRef, SelectionChangeEvent } from "@lynx-js/types";
+import type { ProviderMentionReference } from "@synara/contracts";
 import {
   splitPromptIntoDisplaySegments,
   type ComposerPromptSegment,
-} from '@synara-web/composer-editor-mentions';
+} from "@synara-web/composer-editor-mentions";
 
-import { useLynxInteractiveState } from '../ui/interactive-state.lynx';
-import { CheckIcon, CopyIcon, TextWrapIcon } from '../../lib/icons.lynx';
-import { clipboard } from '../../platform/clipboard';
-import { sleepOnHost } from '../../platform/timer';
-import { openExternalBestEffort } from '../../platform/window';
-import {
-  parseMarkdown,
-  type MarkdownNode,
-  type MarkdownVariant,
-} from './markdownAst';
-import {
-  resolveAgentChipColor,
-} from '@synara-web/components/composerInlineChip.logic';
+import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
+import { CheckIcon, CopyIcon, TextWrapIcon } from "../../lib/icons.lynx";
+import { clipboard } from "../../platform/clipboard";
+import { sleepOnHost } from "../../platform/timer";
+import { openExternalBestEffort } from "../../platform/window";
+import { parseMarkdown, type MarkdownNode, type MarkdownVariant } from "./markdownAst";
+import { resolveAgentChipColor } from "@synara-web/components/composerInlineChip.logic";
 import {
   resolveMarkdownCodeBlockPresentation,
   resolveMarkdownInlineTokenPresentation,
   toggleMarkdownCodeWrap,
   type MarkdownInlineTokenSegment,
-} from './markdownPresentation.logic';
-import { MarkdownInlineTokenIcon } from './MarkdownInlineTokenIcon.lynx';
+} from "./markdownPresentation.logic";
+import { MarkdownInlineTokenIcon } from "./MarkdownInlineTokenIcon.lynx";
 import {
   resolveLynxInlineCodeFileReference,
   resolveLynxMarkdownFileReference,
-} from './markdownFileReferences.logic';
-import { ExternalLinkIcon } from './ExternalLinkIcon.lynx';
-import { MarkdownFileReferenceToken } from './MarkdownFileReferenceToken.lynx';
-import { highlightExplorerCode } from '../../data/synaraClient.lynx';
-import type { NativeSyntaxHighlightResult } from '../../main/syntaxHighlightingContract.logic';
-import { useTheme } from '../../adapters/useTheme.lynx';
+} from "./markdownFileReferences.logic";
+import { ExternalLinkIcon } from "./ExternalLinkIcon.lynx";
+import { MarkdownFileReferenceToken } from "./MarkdownFileReferenceToken.lynx";
+import { highlightExplorerCode } from "../../data/synaraClient.lynx";
+import type { NativeSyntaxHighlightResult } from "../../main/syntaxHighlightingContract.logic";
+import { useTheme } from "../../adapters/useTheme.lynx";
 
 export interface ChatMarkdownProps {
   readonly text: string;
@@ -53,9 +42,7 @@ export interface ChatMarkdownProps {
   readonly variant?: MarkdownVariant;
   readonly mentionReferences?: ReadonlyArray<ProviderMentionReference>;
   readonly onOpenFileReference?: (relativePath: string) => void;
-  readonly onTextSelection?: (
-    selection: MarkdownTextSelection | null
-  ) => void;
+  readonly onTextSelection?: (selection: MarkdownTextSelection | null) => void;
   readonly preparsedTree?: MarkdownNode | null;
 }
 
@@ -72,9 +59,7 @@ interface MarkdownRenderContext {
   readonly cwd: string | null;
   readonly mentionReferences: ReadonlyArray<ProviderMentionReference>;
   readonly onOpenFileReference?: (relativePath: string) => void;
-  readonly onTextSelection?: (
-    selection: MarkdownTextSelection | null
-  ) => void;
+  readonly onTextSelection?: (selection: MarkdownTextSelection | null) => void;
   readonly selectable: boolean;
   readonly variant: MarkdownVariant;
 }
@@ -85,11 +70,10 @@ function SelectableMarkdownText(props: {
   readonly context: MarkdownRenderContext;
 }) {
   const textRef = useRef<NodesRef>(null);
-  const selectionEnabled =
-    props.context.selectable && props.context.onTextSelection !== undefined;
+  const selectionEnabled = props.context.selectable && props.context.onTextSelection !== undefined;
 
   function handleSelectionChange(event: SelectionChangeEvent) {
-    'background only';
+    "background only";
     const start = event.detail.start;
     const end = event.detail.end;
     if (!selectionEnabled || start < 0 || end <= start || !textRef.current) {
@@ -99,9 +83,9 @@ function SelectableMarkdownText(props: {
     const selectedText = new Promise<string>((resolve) => {
       textRef.current
         ?.invoke({
-          method: 'getSelectedText',
+          method: "getSelectedText",
           success: (result) => resolve(result.selectedText),
-          fail: () => resolve(''),
+          fail: () => resolve(""),
         })
         .exec();
     });
@@ -113,7 +97,7 @@ function SelectableMarkdownText(props: {
     } | null>((resolve) => {
       textRef.current
         ?.invoke({
-          method: 'getTextBoundingRect',
+          method: "getTextBoundingRect",
           params: { start, end },
           success: (result) =>
             resolve({
@@ -150,9 +134,7 @@ function SelectableMarkdownText(props: {
       text-selection={props.context.selectable}
       custom-context-menu={selectionEnabled}
       flatten={false}
-      bindselectionchange={
-        selectionEnabled ? handleSelectionChange : undefined
-      }
+      bindselectionchange={selectionEnabled ? handleSelectionChange : undefined}
     >
       {props.children}
     </text>
@@ -167,13 +149,10 @@ function MarkdownInlineToken({
   readonly segment: MarkdownInlineTokenSegment;
 }) {
   const presentation = resolveMarkdownInlineTokenPresentation(segment);
-  const agentColor =
-    segment.type === 'agent-mention'
-      ? resolveAgentChipColor(segment.color)
-      : null;
+  const agentColor = segment.type === "agent-mention" ? resolveAgentChipColor(segment.color) : null;
   const externalTarget = presentation.openExternalUrl;
   const fileReference =
-    segment.type === 'mention'
+    segment.type === "mention"
       ? resolveLynxMarkdownFileReference({
           cwd: context.cwd,
           rawPath: segment.path,
@@ -181,12 +160,12 @@ function MarkdownInlineToken({
       : null;
   const activate = externalTarget
     ? () => {
-        'background only';
+        "background only";
         openExternalBestEffort(externalTarget);
       }
     : fileReference && context.onOpenFileReference
       ? () => {
-          'background only';
+          "background only";
           context.onOpenFileReference?.(fileReference);
         }
       : undefined;
@@ -194,7 +173,7 @@ function MarkdownInlineToken({
     baseClassName: `MdInlineToken MdInlineToken--${segment.type}`,
     focusable: Boolean(activate),
     onActivate: activate,
-    accessibilityTraits: activate ? 'link' : 'text',
+    accessibilityTraits: activate ? "link" : "text",
     accessibleLabel: externalTarget
       ? `Open ${externalTarget}`
       : fileReference
@@ -214,10 +193,7 @@ function MarkdownInlineToken({
       }
       {...interaction.eventProps}
     >
-      <MarkdownInlineTokenIcon
-        segment={segment}
-        color={agentColor?.text}
-      />
+      <MarkdownInlineTokenIcon segment={segment} color={agentColor?.text} />
       {presentation.label}
     </text>
   );
@@ -226,39 +202,31 @@ function MarkdownInlineToken({
 function renderUserText(
   value: string,
   key: string,
-  context: MarkdownRenderContext
+  context: MarkdownRenderContext,
 ): React.ReactNode {
   if (!/[@$/]|https?:\/\//i.test(value)) {
     return <text key={key}>{value}</text>;
   }
   const occurrences = new Map<string, number>();
-  return splitPromptIntoDisplaySegments(value, context.mentionReferences).map(
-    (segment) => {
-      const identity = JSON.stringify(segment);
-      const occurrence = occurrences.get(identity) ?? 0;
-      occurrences.set(identity, occurrence + 1);
-      const segmentKey = `${key}.${segment.type}.${identity}.${occurrence}`;
-      return segment.type === 'text' ? (
-        <text key={segmentKey}>{segment.text}</text>
-      ) : (
-        <MarkdownInlineToken
-          context={context}
-          key={segmentKey}
-          segment={segment}
-        />
-      );
-    }
-  );
+  return splitPromptIntoDisplaySegments(value, context.mentionReferences).map((segment) => {
+    const identity = JSON.stringify(segment);
+    const occurrence = occurrences.get(identity) ?? 0;
+    occurrences.set(identity, occurrence + 1);
+    const segmentKey = `${key}.${segment.type}.${identity}.${occurrence}`;
+    return segment.type === "text" ? (
+      <text key={segmentKey}>{segment.text}</text>
+    ) : (
+      <MarkdownInlineToken context={context} key={segmentKey} segment={segment} />
+    );
+  });
 }
 
 function renderInlineChildren(
   node: MarkdownNode,
   key: string,
-  context: MarkdownRenderContext
+  context: MarkdownRenderContext,
 ): React.ReactNode {
-  return (node.children ?? []).map((child, index) =>
-    renderNode(child, `${key}.${index}`, context)
-  );
+  return (node.children ?? []).map((child, index) => renderNode(child, `${key}.${index}`, context));
 }
 
 function MarkdownTable(props: {
@@ -273,14 +241,14 @@ function MarkdownTable(props: {
           <view className="MdTableRow" key={`${props.nodeKey}.row.${rowIndex}`}>
             {(row.children ?? []).map((cell, cellIndex) => (
               <view
-                className={rowIndex === 0 ? 'MdTableCell MdTableHeaderCell' : 'MdTableCell'}
+                className={rowIndex === 0 ? "MdTableCell MdTableHeaderCell" : "MdTableCell"}
                 key={`${props.nodeKey}.cell.${rowIndex}.${cellIndex}`}
               >
-                <text className={rowIndex === 0 ? 'MdTableHeaderText' : 'MdTableCellText'}>
+                <text className={rowIndex === 0 ? "MdTableHeaderText" : "MdTableCellText"}>
                   {renderInlineChildren(
                     cell,
                     `${props.nodeKey}.inline.${rowIndex}.${cellIndex}`,
-                    props.context
+                    props.context,
                   )}
                 </text>
               </view>
@@ -292,11 +260,7 @@ function MarkdownTable(props: {
   );
 }
 
-function renderTable(
-  node: MarkdownNode,
-  key: string,
-  context: MarkdownRenderContext
-) {
+function renderTable(node: MarkdownNode, key: string, context: MarkdownRenderContext) {
   return <MarkdownTable context={context} key={key} node={node} nodeKey={key} />;
 }
 
@@ -309,7 +273,7 @@ function MarkdownLink({
   readonly nodeKey: string;
   readonly context: MarkdownRenderContext;
 }) {
-  const url = node.url ?? '';
+  const url = node.url ?? "";
   const external = /^https?:\/\//i.test(url);
   const fileReference = external
     ? null
@@ -319,16 +283,16 @@ function MarkdownLink({
       });
   const activate = external
     ? () => {
-        'background only';
+        "background only";
         openExternalBestEffort(url);
       }
     : undefined;
   const interaction = useLynxInteractiveState({
-    baseClassName: 'MdLink',
+    baseClassName: "MdLink",
     disabled: !activate,
     focusable: Boolean(activate),
     onActivate: activate,
-    accessibilityTraits: activate ? 'link' : 'text',
+    accessibilityTraits: activate ? "link" : "text",
     accessibleLabel: external ? `Open ${url}` : undefined,
   });
   if (fileReference) {
@@ -370,10 +334,10 @@ function MarkdownCodeAction({
   readonly children: React.ReactNode;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: `MdCodeAction${active ? ' MdCodeAction--active' : ''}`,
+    baseClassName: `MdCodeAction${active ? " MdCodeAction--active" : ""}`,
     onActivate,
     accessibleLabel: label,
-    accessibilityValue: active ? 'on' : 'off',
+    accessibilityValue: active ? "on" : "off",
   });
   return (
     <view className={interaction.className} aria-label={label} {...interaction.eventProps}>
@@ -393,7 +357,7 @@ function MarkdownInlineCode({
 }) {
   const fileReference = resolveLynxInlineCodeFileReference({
     cwd: context.cwd,
-    value: node.value ?? '',
+    value: node.value ?? "",
   });
   if (fileReference) {
     return (
@@ -404,13 +368,13 @@ function MarkdownInlineCode({
         relativePath={fileReference}
         showGlyph
       >
-        {node.value ?? ''}
+        {node.value ?? ""}
       </MarkdownFileReferenceToken>
     );
   }
   return (
     <text className="MdCode MdInlineCode" key={nodeKey}>
-      {node.value ?? ''}
+      {node.value ?? ""}
     </text>
   );
 }
@@ -418,38 +382,43 @@ function MarkdownInlineCode({
 function MarkdownTaskCheckbox(props: { readonly checked: boolean }) {
   return (
     <view
-      className={`MdTaskCheckbox${
-        props.checked ? ' MdTaskCheckbox--checked' : ''
-      }`}
+      className={`MdTaskCheckbox${props.checked ? " MdTaskCheckbox--checked" : ""}`}
       accessibility-element={true}
       accessibility-role="checkbox"
       accessibility-state={{ checked: props.checked, disabled: true }}
-      accessibility-value={props.checked ? 'Checked' : 'Not checked'}
+      accessibility-value={props.checked ? "Checked" : "Not checked"}
     >
-      {props.checked ? (
-        <CheckIcon className="MdTaskCheckboxIcon" size={10} />
-      ) : null}
+      {props.checked ? <CheckIcon className="MdTaskCheckboxIcon" size={10} /> : null}
     </view>
   );
 }
 
-function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; readonly nodeKey: string }) {
+function MarkdownCodeBlock({
+  node,
+  nodeKey,
+}: {
+  readonly node: MarkdownNode;
+  readonly nodeKey: string;
+}) {
   const [copied, setCopied] = useState(false);
   const [wrap, setWrap] = useState(false);
   const [highlighted, setHighlighted] = useState<NativeSyntaxHighlightResult | null>(null);
   const copyGenerationRef = useRef(0);
   const { codeFontFamily, resolvedTheme } = useTheme();
   const presentation = resolveMarkdownCodeBlockPresentation({
-    code: node.value ?? '',
+    code: node.value ?? "",
     language: node.lang,
   });
 
   useEffect(() => {
-    'background only';
+    "background only";
     let active = true;
     setHighlighted(null);
-    if (!presentation.code || !node.lang) return () => { active = false; };
-    const path = `snippet.${node.lang === 'javascript' ? 'js' : node.lang === 'typescript' ? 'ts' : node.lang}`;
+    if (!presentation.code || !node.lang)
+      return () => {
+        active = false;
+      };
+    const path = `snippet.${node.lang === "javascript" ? "js" : node.lang === "typescript" ? "ts" : node.lang}`;
     void highlightExplorerCode({ code: presentation.code, path })
       .then((themes) => {
         if (active) setHighlighted(themes?.[resolvedTheme] ?? null);
@@ -463,7 +432,7 @@ function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; rea
   }, [node.lang, presentation.code, resolvedTheme]);
 
   async function copyCode() {
-    'background only';
+    "background only";
     const generation = copyGenerationRef.current + 1;
     copyGenerationRef.current = generation;
     try {
@@ -477,22 +446,16 @@ function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; rea
   }
 
   function toggleWrap() {
-    'background only';
+    "background only";
     setWrap(toggleMarkdownCodeWrap);
   }
 
   return (
-    <view
-      className={`MdCodeBlockShell${wrap ? ' MdCodeBlockShell--wrap' : ''}`}
-      key={nodeKey}
-    >
+    <view className={`MdCodeBlockShell${wrap ? " MdCodeBlockShell--wrap" : ""}`} key={nodeKey}>
       <view className="MdCodeHeader">
         <view className="MdCodeTitle">
           {presentation.isFileReference && presentation.filePath ? (
-            <FileEntryIcon
-              className="MdCodeFileIcon"
-              pathValue={presentation.filePath}
-            />
+            <FileEntryIcon className="MdCodeFileIcon" pathValue={presentation.filePath} />
           ) : null}
           <text className="MdCodeLanguage">{presentation.title}</text>
           {presentation.directory ? (
@@ -505,16 +468,16 @@ function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; rea
         <view className="MdCodeActions">
           <MarkdownCodeAction
             active={wrap}
-            label={wrap ? 'Disable soft wrap' : 'Enable soft wrap'}
+            label={wrap ? "Disable soft wrap" : "Enable soft wrap"}
             onActivate={toggleWrap}
           >
             <TextWrapIcon size={12} />
           </MarkdownCodeAction>
           <MarkdownCodeAction
             active={copied}
-            label={copied ? 'Copied' : 'Copy code'}
+            label={copied ? "Copied" : "Copy code"}
             onActivate={() => {
-              'background only';
+              "background only";
               void copyCode();
             }}
           >
@@ -533,21 +496,21 @@ function MarkdownCodeBlock({ node, nodeKey }: { readonly node: MarkdownNode; rea
           >
             {highlighted
               ? highlighted.lines.map((line, lineIndex) => (
-                  <text key={`${lineIndex}:${line.map((token) => token.content).join('')}`}>
+                  <text key={`${lineIndex}:${line.map((token) => token.content).join("")}`}>
                     {line.map((token, tokenIndex) => (
                       <text
                         key={`${tokenIndex}:${token.content}`}
                         style={{
                           color: token.color,
-                          ...(token.fontStyle & 1 ? { fontStyle: 'italic' } : {}),
+                          ...(token.fontStyle & 1 ? { fontStyle: "italic" } : {}),
                           ...(token.fontStyle & 2 ? { fontWeight: 700 } : {}),
-                          ...(token.fontStyle & 4 ? { textDecoration: 'underline' } : {}),
+                          ...(token.fontStyle & 4 ? { textDecoration: "underline" } : {}),
                         }}
                       >
                         {token.content}
                       </text>
                     ))}
-                    {lineIndex < highlighted.lines.length - 1 ? '\n' : ''}
+                    {lineIndex < highlighted.lines.length - 1 ? "\n" : ""}
                   </text>
                 ))
               : presentation.code}
@@ -562,27 +525,25 @@ function renderNode(
   node: MarkdownNode,
   key: string,
   context: MarkdownRenderContext,
-  listContext?: { ordered: boolean; index: number }
+  listContext?: { ordered: boolean; index: number },
 ): React.ReactNode {
   const children = () => renderInlineChildren(node, key, context);
   switch (node.type) {
-    case 'root':
+    case "root":
       return <view key={key}>{children()}</view>;
-    case 'text':
-      return context.variant === 'user' && context.allowComposerChips
-        ? renderUserText(node.value ?? '', key, context)
-        : <text key={key}>{node.value ?? ''}</text>;
-    case 'paragraph':
+    case "text":
+      return context.variant === "user" && context.allowComposerChips ? (
+        renderUserText(node.value ?? "", key, context)
+      ) : (
+        <text key={key}>{node.value ?? ""}</text>
+      );
+    case "paragraph":
       return (
-        <SelectableMarkdownText
-          className="MdParagraph"
-          context={context}
-          key={key}
-        >
+        <SelectableMarkdownText className="MdParagraph" context={context} key={key}>
           {children()}
         </SelectableMarkdownText>
       );
-    case 'heading':
+    case "heading":
       return (
         <SelectableMarkdownText
           className={`MdHeading MdH${node.depth ?? 3}`}
@@ -592,56 +553,52 @@ function renderNode(
           {children()}
         </SelectableMarkdownText>
       );
-    case 'strong':
+    case "strong":
       return (
         <text className="MdStrong" key={key}>
           {children()}
         </text>
       );
-    case 'emphasis':
+    case "emphasis":
       return (
         <text className="MdEmphasis" key={key}>
           {children()}
         </text>
       );
-    case 'delete':
+    case "delete":
       return (
         <text className="MdDeleted" key={key}>
           {children()}
         </text>
       );
-    case 'link':
+    case "link":
       return <MarkdownLink node={node} nodeKey={key} context={context} />;
-    case 'image':
+    case "image":
       return (
         <text className="MdImageFallback" key={key}>
-          [image: {node.alt ?? 'preview'}]
+          [image: {node.alt ?? "preview"}]
         </text>
       );
-    case 'blockquote':
+    case "blockquote":
       return (
         <view className="MdBlockquote" key={key}>
           {children()}
         </view>
       );
-    case 'list':
+    case "list":
       return (
         <view className="MdList" key={key}>
           {(node.children ?? []).map((child, index) =>
-            renderNode(
-              child,
-              `${key}.${index}`,
-              context,
-              { ordered: node.ordered === true, index }
-            )
+            renderNode(child, `${key}.${index}`, context, {
+              ordered: node.ordered === true,
+              index,
+            }),
           )}
         </view>
       );
-    case 'listItem': {
+    case "listItem": {
       const task = node.checked !== undefined && node.checked !== null;
-      const marker = listContext?.ordered
-          ? `${listContext.index + 1}.`
-          : '•';
+      const marker = listContext?.ordered ? `${listContext.index + 1}.` : "•";
       return (
         <view className="MdListItem" key={key}>
           {task ? (
@@ -655,38 +612,35 @@ function renderNode(
         </view>
       );
     }
-    case 'code':
+    case "code":
       return <MarkdownCodeBlock node={node} nodeKey={key} />;
-    case 'inlineCode':
-      return (
-        <MarkdownInlineCode
-          context={context}
-          node={node}
-          nodeKey={key}
-        />
-      );
-    case 'math':
+    case "inlineCode":
+      return <MarkdownInlineCode context={context} node={node} nodeKey={key} />;
+    case "math":
       return (
         <view className="MdMathBlockShell" key={key}>
-          <text className="MdCode MdMath MdMathBlock">ƒ {'  '}{node.value ?? ''}</text>
+          <text className="MdCode MdMath MdMathBlock">
+            ƒ {"  "}
+            {node.value ?? ""}
+          </text>
         </view>
       );
-    case 'inlineMath':
+    case "inlineMath":
       return (
         <text className="MdCode MdMath" key={key}>
-          ƒ {node.value ?? ''}
+          ƒ {node.value ?? ""}
         </text>
       );
-    case 'table':
+    case "table":
       return renderTable(node, key, context);
-    case 'thematicBreak':
+    case "thematicBreak":
       return <view className="MdRule" key={key} />;
-    case 'break':
-      return <text key={key}>{'\n'}</text>;
-    case 'html':
+    case "break":
+      return <text key={key}>{"\n"}</text>;
+    case "html":
       return (
         <text className="MdHtmlFallback" key={key}>
-          {node.value ?? ''}
+          {node.value ?? ""}
         </text>
       );
     default:
@@ -699,7 +653,7 @@ export function ChatMarkdown({
   className,
   cwd = null,
   selectable = false,
-  variant = 'assistant',
+  variant = "assistant",
   mentionReferences = [],
   onOpenFileReference,
   onTextSelection,
@@ -710,17 +664,17 @@ export function ChatMarkdown({
   const tree = hasPreparsedTree ? preparsedTree : parsedTree;
 
   useEffect(() => {
-    'background only';
+    "background only";
     if (hasPreparsedTree) return;
     try {
       setParsedTree(parseMarkdown(text, variant));
     } catch (error) {
-      console.error('[markdown] parse failed', String(error), error);
+      console.error("[markdown] parse failed", String(error), error);
     }
   }, [hasPreparsedTree, text, variant]);
 
   const context: MarkdownRenderContext = {
-    allowComposerChips: variant === 'user',
+    allowComposerChips: variant === "user",
     cwd,
     mentionReferences,
     onOpenFileReference,
@@ -731,17 +685,15 @@ export function ChatMarkdown({
 
   return (
     <view
-      className={`${className ? `MdRoot ${className}` : 'MdRoot'}${
-        variant === 'user' ? ' MdRoot--user' : ''
+      className={`${className ? `MdRoot ${className}` : "MdRoot"}${
+        variant === "user" ? " MdRoot--user" : ""
       }`}
     >
       {tree ? (
-        renderNode(tree, 'root', context)
+        renderNode(tree, "root", context)
       ) : (
         <SelectableMarkdownText className="MdParagraph" context={context}>
-          {variant === 'user'
-            ? renderUserText(text, 'fallback', context)
-            : text}
+          {variant === "user" ? renderUserText(text, "fallback", context) : text}
         </SelectableMarkdownText>
       )}
     </view>

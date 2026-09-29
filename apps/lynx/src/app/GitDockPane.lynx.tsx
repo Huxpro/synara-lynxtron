@@ -1,30 +1,26 @@
-import { useMemo, useState } from '@lynx-js/react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMemo, useState } from "@lynx-js/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   PULL_REQUEST_DIFF_INITIAL_LINE_COUNT,
   PULL_REQUEST_DIFF_MORE_LINE_COUNT,
   PullRequestCodeComposition,
-} from '@synara-web/components/pullRequest/PullRequestCodeComposition';
+} from "@synara-web/components/pullRequest/PullRequestCodeComposition";
 import {
   buildPullRequestCodeView,
   type PullRequestCodeView,
   type PullRequestDiffFileView,
-} from '@synara-web/components/pullRequest/pullRequestCode.logic';
+} from "@synara-web/components/pullRequest/pullRequestCode.logic";
 
-import { FileEntryIcon } from '../components/FileEntryIcon.lynx';
-import { Button } from '../components/ui/button.lynx';
-import { RefreshCwIcon } from '../lib/icons.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
-import {
-  fetchWorkingTreeDiff,
-  stageGitFiles,
-  unstageGitFiles,
-} from '../data/synaraClient.lynx';
-import { queryClient } from './queries';
-import './git-dock-pane.css';
+import { FileEntryIcon } from "../components/FileEntryIcon.lynx";
+import { Button } from "../components/ui/button.lynx";
+import { RefreshCwIcon } from "../lib/icons.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import { fetchWorkingTreeDiff, stageGitFiles, unstageGitFiles } from "../data/synaraClient.lynx";
+import { queryClient } from "./queries";
+import "./git-dock-pane.css";
 
-type GitSection = 'staged' | 'unstaged';
+type GitSection = "staged" | "unstaged";
 
 interface SelectedGitFile {
   readonly path: string;
@@ -32,20 +28,18 @@ interface SelectedGitFile {
 }
 
 function filesFromView(view: PullRequestCodeView): readonly PullRequestDiffFileView[] {
-  return view.kind === 'files' ? view.files : [];
+  return view.kind === "files" ? view.files : [];
 }
 
-function selectedFileView(
-  file: PullRequestDiffFileView | null
-): PullRequestCodeView {
+function selectedFileView(file: PullRequestDiffFileView | null): PullRequestCodeView {
   return file
     ? {
-        kind: 'files',
+        kind: "files",
         additions: file.additions,
         deletions: file.deletions,
         files: [file],
       }
-    : { kind: 'empty' };
+    : { kind: "empty" };
 }
 
 function GitFileRow(props: {
@@ -57,7 +51,7 @@ function GitFileRow(props: {
   readonly onSelect: () => void;
 }) {
   const row = useLynxInteractiveState({
-    baseClassName: `GitDockFileRow${props.selected ? ' GitDockFileRow--selected' : ''}`,
+    baseClassName: `GitDockFileRow${props.selected ? " GitDockFileRow--selected" : ""}`,
     accessibleLabel: `Open ${props.file.path}`,
     onActivate: props.onSelect,
   });
@@ -130,74 +124,75 @@ function GitFileSection(props: {
   );
 }
 
-export function GitDockPane(props: {
-  readonly threadId: string;
-  readonly workspaceRoot: string;
-}) {
+export function GitDockPane(props: { readonly threadId: string; readonly workspaceRoot: string }) {
   const { semanticIconColor } = useTheme();
   const [refreshGeneration, setRefreshGeneration] = useState(0);
   const [selected, setSelected] = useState<SelectedGitFile | null>(null);
   const [visibleLineCounts, setVisibleLineCounts] = useState<Record<string, number>>({});
   const [error, setError] = useState<string | null>(null);
   const stagedQuery = useQuery({
-    queryKey: ['git-dock-diff', props.workspaceRoot, 'staged', refreshGeneration],
+    queryKey: ["git-dock-diff", props.workspaceRoot, "staged", refreshGeneration],
     queryFn: () => {
-      'background only';
-      return fetchWorkingTreeDiff(props.workspaceRoot, 'staged');
+      "background only";
+      return fetchWorkingTreeDiff(props.workspaceRoot, "staged");
     },
     retry: false,
   });
   const unstagedQuery = useQuery({
-    queryKey: ['git-dock-diff', props.workspaceRoot, 'unstaged', refreshGeneration],
+    queryKey: ["git-dock-diff", props.workspaceRoot, "unstaged", refreshGeneration],
     queryFn: () => {
-      'background only';
-      return fetchWorkingTreeDiff(props.workspaceRoot, 'unstaged');
+      "background only";
+      return fetchWorkingTreeDiff(props.workspaceRoot, "unstaged");
     },
     retry: false,
   });
   const stagedView = useMemo(
-    () => buildPullRequestCodeView(stagedQuery.data?.patch, `git-dock:staged:${props.workspaceRoot}`),
-    [props.workspaceRoot, stagedQuery.data?.patch]
+    () =>
+      buildPullRequestCodeView(stagedQuery.data?.patch, `git-dock:staged:${props.workspaceRoot}`),
+    [props.workspaceRoot, stagedQuery.data?.patch],
   );
   const unstagedView = useMemo(
-    () => buildPullRequestCodeView(unstagedQuery.data?.patch, `git-dock:unstaged:${props.workspaceRoot}`),
-    [props.workspaceRoot, unstagedQuery.data?.patch]
+    () =>
+      buildPullRequestCodeView(
+        unstagedQuery.data?.patch,
+        `git-dock:unstaged:${props.workspaceRoot}`,
+      ),
+    [props.workspaceRoot, unstagedQuery.data?.patch],
   );
   const stagedFiles = filesFromView(stagedView);
   const unstagedFiles = filesFromView(unstagedView);
   const mutation = useMutation({
-    mutationFn: async (input: { readonly action: 'stage' | 'unstage'; readonly paths: readonly string[] }) => {
-      'background only';
-      return input.action === 'stage'
+    mutationFn: async (input: {
+      readonly action: "stage" | "unstage";
+      readonly paths: readonly string[];
+    }) => {
+      "background only";
+      return input.action === "stage"
         ? stageGitFiles(props.workspaceRoot, input.paths)
         : unstageGitFiles(props.workspaceRoot, input.paths);
     },
     onMutate: () => {
-      'background only';
+      "background only";
       setError(null);
     },
     onError: (cause) => {
-      'background only';
+      "background only";
       setError(cause instanceof Error ? cause.message : String(cause));
     },
     onSettled: async () => {
-      'background only';
-      await queryClient.invalidateQueries({ queryKey: ['git-dock-diff', props.workspaceRoot] });
+      "background only";
+      await queryClient.invalidateQueries({ queryKey: ["git-dock-diff", props.workspaceRoot] });
     },
   });
   const selectedResolved = selected
     ? (() => {
-        const preferredFiles =
-          selected.section === 'staged' ? stagedFiles : unstagedFiles;
-        const preferred = preferredFiles.find(
-          (file) => file.path === selected.path
-        );
+        const preferredFiles = selected.section === "staged" ? stagedFiles : unstagedFiles;
+        const preferred = preferredFiles.find((file) => file.path === selected.path);
         if (preferred) return { file: preferred, section: selected.section };
-        const fallbackSection: GitSection =
-          selected.section === 'staged' ? 'unstaged' : 'staged';
-        const fallback = (
-          fallbackSection === 'staged' ? stagedFiles : unstagedFiles
-        ).find((file) => file.path === selected.path);
+        const fallbackSection: GitSection = selected.section === "staged" ? "unstaged" : "staged";
+        const fallback = (fallbackSection === "staged" ? stagedFiles : unstagedFiles).find(
+          (file) => file.path === selected.path,
+        );
         return fallback ? { file: fallback, section: fallbackSection } : null;
       })()
     : null;
@@ -219,15 +214,12 @@ export function GitDockPane(props: {
           variant="ghost"
           onClick={() => setRefreshGeneration((current) => current + 1)}
         >
-          <RefreshCwIcon
-            color={semanticIconColor('secondary')}
-            size={14}
-          />
+          <RefreshCwIcon color={semanticIconColor("secondary")} size={14} />
         </Button>
       </view>
       <scroll-view className="GitDockFileList" scroll-y enable-scroll-bar>
         {error || queryError ? (
-          <text className="GitDockError">{error ?? 'Could not load source-control changes.'}</text>
+          <text className="GitDockError">{error ?? "Could not load source-control changes."}</text>
         ) : pending && !hasChanges ? (
           <text className="GitDockState">Loading changes…</text>
         ) : !hasChanges ? (
@@ -240,14 +232,14 @@ export function GitDockPane(props: {
               emptyLabel="No staged changes."
               files={stagedFiles}
               selectedPath={
-                selectedResolved?.section === 'staged' ? selected?.path ?? null : null
+                selectedResolved?.section === "staged" ? (selected?.path ?? null) : null
               }
               title="Staged"
               onAction={(paths) => {
-                'background only';
-                mutation.mutate({ action: 'unstage', paths });
+                "background only";
+                mutation.mutate({ action: "unstage", paths });
               }}
-              onSelect={(file) => setSelected({ section: 'staged', path: file.path })}
+              onSelect={(file) => setSelected({ section: "staged", path: file.path })}
             />
             <GitFileSection
               actionDisabled={mutation.isPending}
@@ -255,14 +247,14 @@ export function GitDockPane(props: {
               emptyLabel="No unstaged changes."
               files={unstagedFiles}
               selectedPath={
-                selectedResolved?.section === 'unstaged' ? selected?.path ?? null : null
+                selectedResolved?.section === "unstaged" ? (selected?.path ?? null) : null
               }
               title="Changes"
               onAction={(paths) => {
-                'background only';
-                mutation.mutate({ action: 'stage', paths });
+                "background only";
+                mutation.mutate({ action: "stage", paths });
               }}
-              onSelect={(file) => setSelected({ section: 'unstaged', path: file.path })}
+              onSelect={(file) => setSelected({ section: "unstaged", path: file.path })}
             />
           </>
         )}
@@ -281,7 +273,9 @@ export function GitDockPane(props: {
           onShowMoreFile={(fileKey) =>
             setVisibleLineCounts((current) => ({
               ...current,
-              [fileKey]: (current[fileKey] ?? PULL_REQUEST_DIFF_INITIAL_LINE_COUNT) + PULL_REQUEST_DIFF_MORE_LINE_COUNT,
+              [fileKey]:
+                (current[fileKey] ?? PULL_REQUEST_DIFF_INITIAL_LINE_COUNT) +
+                PULL_REQUEST_DIFF_MORE_LINE_COUNT,
             }))
           }
           onShowMoreRaw={() => {}}

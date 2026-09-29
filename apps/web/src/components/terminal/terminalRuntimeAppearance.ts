@@ -3,10 +3,7 @@
 // Layer: Terminal runtime infrastructure
 
 import { Terminal, type ITheme } from "@xterm/xterm";
-import {
-  TERMINAL_BOLD_FONT_WEIGHT,
-  TERMINAL_FONT_WEIGHT,
-} from "@synara/shared/terminalThreads";
+import { TERMINAL_BOLD_FONT_WEIGHT, TERMINAL_FONT_WEIGHT } from "@synara/shared/terminalThreads";
 
 import { isBrowser, getComputedStyleSafe, getDocumentElement } from "~/platform/env";
 const FALLBACK_TERMINAL_FONT_SIZE_PX = 12;

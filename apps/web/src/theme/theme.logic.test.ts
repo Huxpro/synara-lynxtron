@@ -31,9 +31,7 @@ function contrastRatio(left: string, right: string): number {
   const luminance = (hex: string) => {
     const channels = [1, 3, 5].map((offset) => {
       const value = Number.parseInt(hex.slice(offset, offset + 2), 16) / 255;
-      return value <= 0.04045
-        ? value / 12.92
-        : ((value + 0.055) / 1.055) ** 2.4;
+      return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
     });
     return 0.2126 * channels[0]! + 0.7152 * channels[1]! + 0.0722 * channels[2]!;
   };
@@ -349,10 +347,7 @@ describe("buildThemeCssVariables", () => {
   it("keeps informative status text at normal-text contrast in both variants", () => {
     for (const variant of ["light", "dark"] as const) {
       const theme = DEFAULT_THEME_STATE.chromeThemes[variant];
-      const variables = buildThemeCssVariables(
-        { codeThemeId: "codex", theme },
-        variant,
-      ).variables;
+      const variables = buildThemeCssVariables({ codeThemeId: "codex", theme }, variant).variables;
       for (const name of [
         "--color-text-status-neutral",
         "--color-text-status-error",
@@ -361,10 +356,7 @@ describe("buildThemeCssVariables", () => {
       ]) {
         expect(contrastRatio(variables[name]!, theme.surface)).toBeGreaterThanOrEqual(4.5);
       }
-      const resolved = buildResolvedThemeTokens(
-        { codeThemeId: "codex", theme },
-        variant,
-      );
+      const resolved = buildResolvedThemeTokens({ codeThemeId: "codex", theme }, variant);
       expect(variables["--color-text-status-neutral"]).toBe(resolved.status.neutral);
       expect(variables["--color-text-status-error"]).toBe(resolved.status.error);
     }

@@ -101,24 +101,14 @@
   background-color: transparent;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  .EmptyThreadContextIdentity,
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  .EmptyThreadContextStatus,
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  .EmptyThreadContextSpacer,
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  .EmptyThreadTemporaryLabel {
+.SliceRoot--viewport-short-height .ThreadPage .EmptyThreadContextIdentity,
+.SliceRoot--viewport-short-height .ThreadPage .EmptyThreadContextStatus,
+.SliceRoot--viewport-short-height .ThreadPage .EmptyThreadContextSpacer,
+.SliceRoot--viewport-short-height .ThreadPage .EmptyThreadTemporaryLabel {
   display: none;
 }
 
-.SliceRoot--viewport-short-height
-  .ThreadPage
-  .EmptyThreadTemporaryButton {
+.SliceRoot--viewport-short-height .ThreadPage .EmptyThreadTemporaryButton {
   width: 28px;
   min-width: 28px;
   height: 28px;

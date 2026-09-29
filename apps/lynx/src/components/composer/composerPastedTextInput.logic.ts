@@ -1,14 +1,14 @@
-import { shouldCollapsePastedText } from '@synara-web/lib/composerPastedText';
+import { shouldCollapsePastedText } from "@synara-web/lib/composerPastedText";
 
 export type ComposerInputTransition =
   | {
-      readonly kind: 'prompt';
+      readonly kind: "prompt";
       readonly prompt: string;
       readonly selectionEnd: number;
       readonly selectionStart: number;
     }
   | {
-      readonly kind: 'collapsed-paste';
+      readonly kind: "collapsed-paste";
       readonly pastedText: string;
       readonly prompt: string;
       readonly selectionEnd: number;
@@ -28,18 +28,11 @@ function normalizeSelection(input: {
   const selectionStart = clampSelectionOffset(input.value, input.selectionStart);
   return {
     selectionStart,
-    selectionEnd: Math.max(
-      selectionStart,
-      clampSelectionOffset(input.value, input.selectionEnd)
-    ),
+    selectionEnd: Math.max(selectionStart, clampSelectionOffset(input.value, input.selectionEnd)),
   };
 }
 
-function mapOffsetAfterRemoval(
-  offset: number,
-  removalStart: number,
-  removalEnd: number
-): number {
+function mapOffsetAfterRemoval(offset: number, removalStart: number, removalEnd: number): number {
   if (offset <= removalStart) return offset;
   if (offset >= removalEnd) return offset - (removalEnd - removalStart);
   return removalStart;
@@ -58,14 +51,11 @@ export function resolveComposerInputTransition(input: {
     selectionEnd: input.selectionEnd,
   });
   if (input.previousPrompt === input.nextPrompt) {
-    return { kind: 'prompt', prompt: input.nextPrompt, ...selection };
+    return { kind: "prompt", prompt: input.nextPrompt, ...selection };
   }
 
   let prefixLength = 0;
-  const sharedPrefixLimit = Math.min(
-    input.previousPrompt.length,
-    input.nextPrompt.length
-  );
+  const sharedPrefixLimit = Math.min(input.previousPrompt.length, input.nextPrompt.length);
   while (
     prefixLength < sharedPrefixLimit &&
     input.previousPrompt[prefixLength] === input.nextPrompt[prefixLength]
@@ -89,28 +79,18 @@ export function resolveComposerInputTransition(input: {
     suffixLength === 0 ? input.nextPrompt.length : input.nextPrompt.length - suffixLength;
   const insertedText = input.nextPrompt.slice(prefixLength, insertedEnd);
   if (input.isComposing || !shouldCollapsePastedText(insertedText)) {
-    return { kind: 'prompt', prompt: input.nextPrompt, ...selection };
+    return { kind: "prompt", prompt: input.nextPrompt, ...selection };
   }
 
-  const prompt =
-    input.nextPrompt.slice(0, prefixLength) +
-    input.nextPrompt.slice(insertedEnd);
+  const prompt = input.nextPrompt.slice(0, prefixLength) + input.nextPrompt.slice(insertedEnd);
   const collapsedSelection = normalizeSelection({
     value: prompt,
-    selectionStart: mapOffsetAfterRemoval(
-      selection.selectionStart,
-      prefixLength,
-      insertedEnd
-    ),
-    selectionEnd: mapOffsetAfterRemoval(
-      selection.selectionEnd,
-      prefixLength,
-      insertedEnd
-    ),
+    selectionStart: mapOffsetAfterRemoval(selection.selectionStart, prefixLength, insertedEnd),
+    selectionEnd: mapOffsetAfterRemoval(selection.selectionEnd, prefixLength, insertedEnd),
   });
 
   return {
-    kind: 'collapsed-paste',
+    kind: "collapsed-paste",
     pastedText: insertedText,
     prompt,
     ...collapsedSelection,

@@ -45,7 +45,5 @@
       "left": 542
     }
   ],
-  "status": [
-    "System notification tests are unavailable in this runtime."
-  ]
+  "status": ["System notification tests are unavailable in this runtime."]
 }

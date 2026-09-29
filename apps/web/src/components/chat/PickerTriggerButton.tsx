@@ -23,39 +23,39 @@ type PickerTriggerButtonProps = {
 
 export const PickerTriggerButton = forwardRef<HTMLButtonElement, PickerTriggerButtonProps>(
   function PickerTriggerButton(props, ref) {
-  const { icon, label, compact, hideLabel, hideChevron, className, ...buttonProps } = props;
+    const { icon, label, compact, hideLabel, hideChevron, className, ...buttonProps } = props;
 
-  return (
-    <Button
-      ref={ref}
-      {...buttonProps}
-      size="sm"
-      variant="chrome"
-      {...(hideLabel && typeof label === "string" ? { title: label } : {})}
-      className={cn(
-        "min-w-0 justify-start overflow-hidden whitespace-nowrap px-1.5 text-[var(--color-text-foreground)] [&_svg]:mx-0",
-        COMPOSER_PICKER_TRIGGER_TEXT_CLASS_NAME,
-        compact ? "max-w-52 shrink-0" : "max-w-56 shrink sm:max-w-64 sm:px-1.5",
-        className,
-      )}
-    >
-      <span
+    return (
+      <Button
+        ref={ref}
+        {...buttonProps}
+        size="sm"
+        variant="chrome"
+        {...(hideLabel && typeof label === "string" ? { title: label } : {})}
         className={cn(
-          "flex min-w-0 w-full items-center gap-1.5 overflow-hidden",
-          hideLabel ? "gap-1" : compact ? "max-w-44" : undefined,
+          "min-w-0 justify-start overflow-hidden whitespace-nowrap px-1.5 text-[var(--color-text-foreground)] [&_svg]:mx-0",
+          COMPOSER_PICKER_TRIGGER_TEXT_CLASS_NAME,
+          compact ? "max-w-52 shrink-0" : "max-w-56 shrink sm:max-w-64 sm:px-1.5",
+          className,
         )}
       >
-        <span className="inline-flex size-3.5 shrink-0 items-center justify-center">{icon}</span>
-        {hideLabel ? (
-          <span className="sr-only">{label}</span>
-        ) : (
-          <span className="min-w-0 flex-1 truncate">{label}</span>
-        )}
-        {hideChevron ? null : (
-          <ChevronDownIcon aria-hidden="true" className="size-3 shrink-0 opacity-60" />
-        )}
-      </span>
-    </Button>
-  );
+        <span
+          className={cn(
+            "flex min-w-0 w-full items-center gap-1.5 overflow-hidden",
+            hideLabel ? "gap-1" : compact ? "max-w-44" : undefined,
+          )}
+        >
+          <span className="inline-flex size-3.5 shrink-0 items-center justify-center">{icon}</span>
+          {hideLabel ? (
+            <span className="sr-only">{label}</span>
+          ) : (
+            <span className="min-w-0 flex-1 truncate">{label}</span>
+          )}
+          {hideChevron ? null : (
+            <ChevronDownIcon aria-hidden="true" className="size-3 shrink-0 opacity-60" />
+          )}
+        </span>
+      </Button>
+    );
   },
 );

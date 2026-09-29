@@ -1,7 +1,6 @@
 import { existsSync } from "node:fs";
 
-export const CHATGPT_BUNDLED_CODEX_PATH =
-  "/Applications/ChatGPT.app/Contents/Resources/codex";
+export const CHATGPT_BUNDLED_CODEX_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex";
 
 export function resolveCodexBinaryPath(
   configuredPath?: string | null,
@@ -17,13 +16,8 @@ export function resolveCodexBinaryPath(
   }
   const platform = input.platform ?? process.platform;
   const exists = input.exists ?? existsSync;
-  const allowBundledDiscovery =
-    input.allowBundledDiscovery ?? process.env.NODE_ENV !== "test";
-  if (
-    allowBundledDiscovery &&
-    platform === "darwin" &&
-    exists(CHATGPT_BUNDLED_CODEX_PATH)
-  ) {
+  const allowBundledDiscovery = input.allowBundledDiscovery ?? process.env.NODE_ENV !== "test";
+  if (allowBundledDiscovery && platform === "darwin" && exists(CHATGPT_BUNDLED_CODEX_PATH)) {
     return CHATGPT_BUNDLED_CODEX_PATH;
   }
   return configured || "codex";

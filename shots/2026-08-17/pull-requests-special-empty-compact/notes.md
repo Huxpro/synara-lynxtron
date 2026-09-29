@@ -47,13 +47,13 @@ usable at `320x320`.
 
 ### Before
 
-| Metric | Web original | Lynx-for-Web |
-|---|---:|---:|
-| Empty shell | `280x256 @ y=182..438` | `264x256 @ y=226..482` |
-| Title | `y=246..330`, 84px / 3 lines | `y=290..374`, 84px / 3 lines |
-| Description | `y=334..374` | `y=378..418` |
-| Visible viewport bottom | `320` | `320` |
-| Scroller `scrollTop` after real wheel | `0` | `0` |
+| Metric                                |                 Web original |                 Lynx-for-Web |
+| ------------------------------------- | ---------------------------: | ---------------------------: |
+| Empty shell                           |       `280x256 @ y=182..438` |       `264x256 @ y=226..482` |
+| Title                                 | `y=246..330`, 84px / 3 lines | `y=290..374`, 84px / 3 lines |
+| Description                           |                 `y=334..374` |                 `y=378..418` |
+| Visible viewport bottom               |                        `320` |                        `320` |
+| Scroller `scrollTop` after real wheel |                          `0` |                          `0` |
 
 Web clipped the final 10px of the title and all description copy. Lynx exposed
 only the first 30px of the 84px title and none of the description. A real
@@ -98,12 +98,12 @@ viewports are unaffected.
 
 At `320x320`:
 
-| Metric | Web original | Lynx-for-Web |
-|---|---:|---:|
-| Empty shell | `280x100 @ y=174..274` | `264x100 @ y=218..318` |
-| Title | `y=174..230`, 56px / 2 lines | `y=218..274`, 56px / 2 lines |
-| Description | `y=234..274` | `y=278..318` |
-| Root height class | Web media contract | `SliceRoot--viewport-constrained-height` |
+| Metric            |                 Web original |                             Lynx-for-Web |
+| ----------------- | ---------------------------: | ---------------------------------------: |
+| Empty shell       |       `280x100 @ y=174..274` |                   `264x100 @ y=218..318` |
+| Title             | `y=174..230`, 56px / 2 lines |             `y=218..274`, 56px / 2 lines |
+| Description       |                 `y=234..274` |                             `y=278..318` |
+| Root height class |           Web media contract | `SliceRoot--viewport-constrained-height` |
 
 The title and description are now fully visible at `scrollTop=0` in both
 renderers. Real wheel input remains a no-op because no recovery scroll is

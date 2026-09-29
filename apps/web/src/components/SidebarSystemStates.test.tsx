@@ -13,11 +13,7 @@ function renderInSidebar(node: ReactNode) {
 describe("Sidebar system states", () => {
   it("exposes loading, error and loaded-empty projects with bounded live semantics", () => {
     const loading = renderInSidebar(
-      <SidebarProjectsSection
-        rows={[]}
-        renderRow={() => null}
-        state="loading"
-      />,
+      <SidebarProjectsSection rows={[]} renderRow={() => null} state="loading" />,
     );
     const error = renderInSidebar(
       <SidebarProjectsSection rows={[]} renderRow={() => null} state="error" />,

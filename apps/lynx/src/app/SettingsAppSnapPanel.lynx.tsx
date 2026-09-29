@@ -1,56 +1,49 @@
-import { useEffect, useState } from '@lynx-js/react';
-import { SettingsSection } from '@synara-web/components/settings/SettingsSection';
+import { useEffect, useState } from "@lynx-js/react";
+import { SettingsSection } from "@synara-web/components/settings/SettingsSection";
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsAppSnapProjection,
   writeSettingsAppSnapProjection,
   type SettingsAppSnapValues,
-} from '@synara-web/appSettingsStorageProjection.logic';
-import type { DesktopAppSnapState } from '@synara/contracts';
+} from "@synara-web/appSettingsStorageProjection.logic";
+import type { DesktopAppSnapState } from "@synara/contracts";
 
-import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
-import { Button } from '../components/ui/button';
-import { appSnap } from '../platform/appSnap';
-import { setPersistedStorageItem, webStorage } from '../platform/storage';
-import './settings-appsnap-panel.css';
+import { SettingsGeneralBooleanControlElement } from "../adapters/SettingsGeneralCompositionElements.lynx";
+import { Button } from "../components/ui/button";
+import { appSnap } from "../platform/appSnap";
+import { setPersistedStorageItem, webStorage } from "../platform/storage";
+import "./settings-appsnap-panel.css";
 
 function appSnapStatus(state: DesktopAppSnapState | null): string {
-  if (!state) return 'Checking AppSnap support…';
-  if (!state.supported) return state.message ?? 'Unavailable in this runtime';
-  if (state.status === 'ready') return 'Listening — press both Option keys to snap';
-  if (state.status === 'starting') return 'Starting the capture listener…';
-  if (state.status === 'permission-required') {
-    return state.message ?? 'Permission setup required';
+  if (!state) return "Checking AppSnap support…";
+  if (!state.supported) return state.message ?? "Unavailable in this runtime";
+  if (state.status === "ready") return "Listening — press both Option keys to snap";
+  if (state.status === "starting") return "Starting the capture listener…";
+  if (state.status === "permission-required") {
+    return state.message ?? "Permission setup required";
   }
-  if (state.status === 'error') return state.message ?? 'AppSnap could not start';
-  return 'Off';
+  if (state.status === "error") return state.message ?? "AppSnap could not start";
+  return "Off";
 }
 
-async function persistAppSnapSettings(
-  values: SettingsAppSnapValues
-): Promise<void> {
-  'background only';
+async function persistAppSnapSettings(values: SettingsAppSnapValues): Promise<void> {
+  "background only";
   await setPersistedStorageItem(
     APP_SETTINGS_STORAGE_KEY,
-    writeSettingsAppSnapProjection(
-      webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
-      values
-    )
+    writeSettingsAppSnapProjection(webStorage.getItem(APP_SETTINGS_STORAGE_KEY), values),
   );
 }
 
 export function SettingsAppSnapPanel() {
   const [settings, setSettings] = useState(() =>
-    readSettingsAppSnapProjection(
-      webStorage.getItem(APP_SETTINGS_STORAGE_KEY)
-    )
+    readSettingsAppSnapProjection(webStorage.getItem(APP_SETTINGS_STORAGE_KEY)),
   );
   const [state, setState] = useState<DesktopAppSnapState | null>(null);
   const [pending, setPending] = useState(false);
   const [soundStatus, setSoundStatus] = useState<string | null>(null);
 
   useEffect(() => {
-    'background only';
+    "background only";
     let active = true;
     const dispose = appSnap.onState((next) => {
       if (active) setState(next);
@@ -70,24 +63,21 @@ export function SettingsAppSnapPanel() {
   }, []);
 
   function setEnabled(enabled: boolean) {
-    'background only';
+    "background only";
     if (pending) return;
     setPending(true);
     void (enabled ? appSnap.requestPermissions() : Promise.resolve(state))
       .then(() => appSnap.setEnabled(enabled))
       .then(async (next) => {
         setState(next);
-        const accepted =
-          !enabled ||
-          next.status === 'ready' ||
-          next.status === 'starting';
+        const accepted = !enabled || next.status === "ready" || next.status === "starting";
         if (enabled && !accepted) {
           await appSnap.setEnabled(false);
         }
         const nextSettings = {
           ...settings,
           enableAppSnap: accepted && enabled,
-          appSnapShortcut: { kind: 'both-option-keys' } as const,
+          appSnapShortcut: { kind: "both-option-keys" } as const,
         };
         setSettings(nextSettings);
         await persistAppSnapSettings(nextSettings);
@@ -96,7 +86,7 @@ export function SettingsAppSnapPanel() {
   }
 
   function recheckPermissions() {
-    'background only';
+    "background only";
     if (pending) return;
     setPending(true);
     void appSnap
@@ -107,7 +97,7 @@ export function SettingsAppSnapPanel() {
   }
 
   function setCaptureSound(enabled: boolean) {
-    'background only';
+    "background only";
     const nextSettings = { ...settings, appSnapPlaySound: enabled };
     setSettings(nextSettings);
     setSoundStatus(null);
@@ -116,21 +106,19 @@ export function SettingsAppSnapPanel() {
   }
 
   function previewCaptureSound() {
-    'background only';
+    "background only";
     setSoundStatus(null);
     void appSnap
       .previewCaptureSound()
       .then((played) =>
-        setSoundStatus(
-          played ? 'Preview played.' : 'Capture sound is unavailable.'
-        )
+        setSoundStatus(played ? "Preview played." : "Capture sound is unavailable."),
       )
-      .catch(() => setSoundStatus('Capture sound is unavailable.'));
+      .catch(() => setSoundStatus("Capture sound is unavailable."));
   }
 
   const supported = state?.supported === true;
   const enabled = supported && settings.enableAppSnap;
-  const customShortcut = settings.appSnapShortcut.kind === 'key-chord';
+  const customShortcut = settings.appSnapShortcut.kind === "key-chord";
 
   return (
     <view className="SettingsAppSnapPanel">
@@ -144,15 +132,13 @@ export function SettingsAppSnapPanel() {
             Take an AppSnap to show your agent another app&apos;s window
           </text>
           <text className="SettingsAppSnapRowDescription">
-            Press your two-key shortcut while any app is frontmost. Synara
-            captures that window as an image, brings itself forward, and
-            attaches the snap to a task composer — the capture stays on this
-            device until you send the message.
+            Press your two-key shortcut while any app is frontmost. Synara captures that window as
+            an image, brings itself forward, and attaches the snap to a task composer — the capture
+            stays on this device until you send the message.
           </text>
           {!supported ? (
             <text className="SettingsAppSnapUnavailable">
-              {state?.message ??
-                'AppSnap requires the Synara desktop app on macOS.'}
+              {state?.message ?? "AppSnap requires the Synara desktop app on macOS."}
             </text>
           ) : null}
         </view>
@@ -177,9 +163,7 @@ export function SettingsAppSnapPanel() {
             />
           </view>
           <view className="SettingsAppSnapMetadata">
-            <text className="SettingsAppSnapStatus">
-              {appSnapStatus(state)}
-            </text>
+            <text className="SettingsAppSnapStatus">{appSnapStatus(state)}</text>
           </view>
         </view>
 
@@ -189,8 +173,7 @@ export function SettingsAppSnapPanel() {
               <text className="SettingsAppSnapRowTitle">Shortcut</text>
             </view>
             <text className="SettingsAppSnapRowDescription">
-              Press both physical Option keys together while another app is
-              frontmost.
+              Press both physical Option keys together while another app is frontmost.
             </text>
           </view>
           <view className="SettingsAppSnapMetadata">
@@ -209,8 +192,8 @@ export function SettingsAppSnapPanel() {
               <text className="SettingsAppSnapRowTitle">Destination</text>
             </view>
             <text className="SettingsAppSnapRowDescription">
-              Snaps attach to the active thread. If no thread is open, the
-              capture stays pending until you open one.
+              Snaps attach to the active thread. If no thread is open, the capture stays pending
+              until you open one.
             </text>
           </view>
           <text className="SettingsAppSnapValue">Active thread</text>
@@ -236,35 +219,24 @@ export function SettingsAppSnapPanel() {
               onChange={setCaptureSound}
             />
           </view>
-          {soundStatus ? (
-            <text className="SettingsAppSnapStatus">{soundStatus}</text>
-          ) : null}
+          {soundStatus ? <text className="SettingsAppSnapStatus">{soundStatus}</text> : null}
         </view>
       </SettingsSection>
       {supported ? (
         <SettingsSection title="macOS permissions">
           <view className="SettingsAppSnapRow SettingsAppSnapRow--continued">
             <text className="SettingsAppSnapRowTitle">Input Monitoring</text>
-            <text className="SettingsAppSnapValue">
-              {state.inputMonitoringPermission}
-            </text>
+            <text className="SettingsAppSnapValue">{state.inputMonitoringPermission}</text>
           </view>
           <view className="SettingsAppSnapRow SettingsAppSnapRow--continued">
             <text className="SettingsAppSnapRowTitle">Screen Recording</text>
-            <text className="SettingsAppSnapValue">
-              {state.screenRecordingPermission}
-            </text>
+            <text className="SettingsAppSnapValue">{state.screenRecordingPermission}</text>
           </view>
           <view className="SettingsAppSnapRow">
             <text className="SettingsAppSnapRowDescription">
               Recheck after changing permissions in System Settings.
             </text>
-            <Button
-              size="xs"
-              variant="outline"
-              disabled={pending}
-              onClick={recheckPermissions}
-            >
+            <Button size="xs" variant="outline" disabled={pending} onClick={recheckPermissions}>
               Recheck permissions
             </Button>
           </view>

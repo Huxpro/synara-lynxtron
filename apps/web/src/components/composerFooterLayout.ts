@@ -68,14 +68,8 @@ export function resolveNextComposerFooterTier(input: {
   demotionWidths: ReadonlyArray<number | undefined>;
 }): ComposerFooterTierStep {
   const demotionWidths = [...input.demotionWidths];
-  const minimumTier = Math.max(
-    0,
-    Math.min(input.minimumTier ?? 0, COMPOSER_FOOTER_MAX_TIER),
-  );
-  let tier = Math.max(
-    minimumTier,
-    Math.min(input.currentTier, COMPOSER_FOOTER_MAX_TIER),
-  );
+  const minimumTier = Math.max(0, Math.min(input.minimumTier ?? 0, COMPOSER_FOOTER_MAX_TIER));
+  let tier = Math.max(minimumTier, Math.min(input.currentTier, COMPOSER_FOOTER_MAX_TIER));
 
   // Promote toward richer tiers while the footer is comfortably wider than the
   // width at which the richer tier last overflowed. An unknown demotion width

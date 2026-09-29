@@ -11,17 +11,12 @@ export interface SidebarListSectionHeaderProps {
   readonly children?: ReactNode;
 }
 
-export function SidebarListSectionHeader({
-  label,
-  children,
-}: SidebarListSectionHeaderProps) {
+export function SidebarListSectionHeader({ label, children }: SidebarListSectionHeaderProps) {
   return (
     <SidebarListSectionHeaderContainerElement>
       <SidebarListSectionHeaderLabelElement>{label}</SidebarListSectionHeaderLabelElement>
       {children ? (
-        <SidebarListSectionHeaderToolbarElement>
-          {children}
-        </SidebarListSectionHeaderToolbarElement>
+        <SidebarListSectionHeaderToolbarElement>{children}</SidebarListSectionHeaderToolbarElement>
       ) : null}
     </SidebarListSectionHeaderContainerElement>
   );

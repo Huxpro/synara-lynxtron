@@ -28,10 +28,12 @@ export type SidebarThreadSortInput = {
   createdAt: string;
   updatedAt?: string | undefined;
   latestUserMessageAt?: string | null | undefined;
-  messages?: ReadonlyArray<{
-    readonly role: string;
-    readonly createdAt: string;
-  }> | undefined;
+  messages?:
+    | ReadonlyArray<{
+        readonly role: string;
+        readonly createdAt: string;
+      }>
+    | undefined;
   latestTurn?: SidebarLatestTurnTiming | null | undefined;
   lastVisitedAt?: string | null | undefined;
   hasLiveTailWork?: boolean | undefined;
@@ -125,9 +127,10 @@ function threadSortAttentionRank(thread: SidebarThreadSortInput): number {
   return 0;
 }
 
-export function sortThreadsForSidebar<
-  T extends { id: string } & SidebarThreadSortInput,
->(threads: readonly T[], sortOrder: SidebarThreadSortOrder): T[] {
+export function sortThreadsForSidebar<T extends { id: string } & SidebarThreadSortInput>(
+  threads: readonly T[],
+  sortOrder: SidebarThreadSortOrder,
+): T[] {
   return [...threads].sort((left, right) => {
     const byAttentionRank = threadSortAttentionRank(right) - threadSortAttentionRank(left);
     if (byAttentionRank !== 0) return byAttentionRank;

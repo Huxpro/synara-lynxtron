@@ -47,8 +47,7 @@
   pointer-events: none;
 }
 
-.SharedSidebarListSectionHeader.ui-hover
-  .SharedSidebarListSectionHeaderAction,
+.SharedSidebarListSectionHeader.ui-hover .SharedSidebarListSectionHeaderAction,
 .SharedSidebarListSectionHeaderAction.ui-focus {
   opacity: 1;
   pointer-events: auto;
@@ -82,12 +81,9 @@
   opacity: 0;
 }
 
-.SharedSidebarListSectionHeaderAction.ui-hover
-  .SharedSidebarListSectionHeaderActionIcon--muted,
-.SharedSidebarListSectionHeaderAction.ui-focus
-  .SharedSidebarListSectionHeaderActionIcon--muted,
-.SharedSidebarListSectionHeaderAction.ui-pressed
-  .SharedSidebarListSectionHeaderActionIcon--muted {
+.SharedSidebarListSectionHeaderAction.ui-hover .SharedSidebarListSectionHeaderActionIcon--muted,
+.SharedSidebarListSectionHeaderAction.ui-focus .SharedSidebarListSectionHeaderActionIcon--muted,
+.SharedSidebarListSectionHeaderAction.ui-pressed .SharedSidebarListSectionHeaderActionIcon--muted {
   opacity: 0;
 }
 
@@ -124,7 +120,6 @@
   font-weight: 500;
 }
 
-.SharedSidebarProjectSortPopup
-  .SharedSidebarProjectSortGroupLabel--secondary {
+.SharedSidebarProjectSortPopup .SharedSidebarProjectSortGroupLabel--secondary {
   padding-top: 8px;
 }

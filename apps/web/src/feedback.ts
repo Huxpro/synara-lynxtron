@@ -4,12 +4,15 @@
 // Depends on: The public trysynara feedback endpoint.
 
 import { APP_VERSION } from "./branding";
-import {
-  DEFAULT_FEEDBACK_ENDPOINT,
-  submitFeedbackPayload,
-} from "@synara/shared/feedbackDelivery";
+import { DEFAULT_FEEDBACK_ENDPOINT, submitFeedbackPayload } from "@synara/shared/feedbackDelivery";
 
-import { getNavigatorPlatform, getViewportWidth, getViewportHeight, getNavigatorUserAgent, getNavigatorLanguage } from "~/platform/env";
+import {
+  getNavigatorPlatform,
+  getViewportWidth,
+  getViewportHeight,
+  getNavigatorUserAgent,
+  getNavigatorLanguage,
+} from "~/platform/env";
 /**
  * `lead` opens the reported summary in the reporter's voice, so the category is
  * readable as a sentence rather than as an enum value.

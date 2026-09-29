@@ -1,12 +1,8 @@
-import { useEffect, type ReactNode } from '@lynx-js/react';
+import { useEffect, type ReactNode } from "@lynx-js/react";
 
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  XIcon,
-} from '../../lib/icons.lynx';
-import { useLynxInteractiveState } from '../../adapters/useLynxInteractiveState';
-import { focusLynxElementBySelector } from '../ui/focus.lynx';
+import { ChevronLeftIcon, ChevronRightIcon, XIcon } from "../../lib/icons.lynx";
+import { useLynxInteractiveState } from "../../adapters/useLynxInteractiveState";
+import { focusLynxElementBySelector } from "../ui/focus.lynx";
 
 export interface NativeExpandedImagePreview {
   readonly images: ReadonlyArray<{
@@ -39,13 +35,11 @@ export function ExpandedImageOverlay(props: {
   readonly onClose: () => void;
   readonly onNavigate: (direction: -1 | 1) => void;
 }) {
-  const item = props.expandedImage
-    ? props.expandedImage.images[props.expandedImage.index]
-    : null;
+  const item = props.expandedImage ? props.expandedImage.images[props.expandedImage.index] : null;
   useEffect(() => {
-    'background only';
+    "background only";
     if (item) {
-      focusLynxElementBySelector('.ComposerExpandedImageOverlay');
+      focusLynxElementBySelector(".ComposerExpandedImageOverlay");
     }
   }, [item]);
   if (!props.expandedImage || !item) return null;
@@ -54,23 +48,20 @@ export function ExpandedImageOverlay(props: {
   const caption = hasMultipleImages
     ? `${item.name} (${props.expandedImage.index + 1}/${props.expandedImage.images.length})`
     : item.name;
-  const handleKeyDown = (event: {
-    readonly key: string;
-    preventDefault?: () => void;
-  }) => {
-    'background only';
-    if (event.key === 'Escape') {
+  const handleKeyDown = (event: { readonly key: string; preventDefault?: () => void }) => {
+    "background only";
+    if (event.key === "Escape") {
       event.preventDefault?.();
       props.onClose();
       return;
     }
     if (!hasMultipleImages) return;
-    if (event.key === 'ArrowLeft') {
+    if (event.key === "ArrowLeft") {
       event.preventDefault?.();
       props.onNavigate(-1);
       return;
     }
-    if (event.key === 'ArrowRight') {
+    if (event.key === "ArrowRight") {
       event.preventDefault?.();
       props.onNavigate(1);
     }
@@ -119,11 +110,7 @@ export function ExpandedImageOverlay(props: {
             accessibleLabel="Close image preview"
             onActivate={props.onClose}
           >
-            <XIcon
-              className="ComposerExpandedImageCloseIcon"
-              color="var(--foreground)"
-              size={16}
-            />
+            <XIcon className="ComposerExpandedImageCloseIcon" color="var(--foreground)" size={16} />
           </ExpandedImageAction>
         </view>
         <text className="ComposerExpandedImageName">{caption}</text>

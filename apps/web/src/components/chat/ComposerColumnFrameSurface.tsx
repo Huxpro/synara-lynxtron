@@ -16,9 +16,7 @@ export function ComposerColumnFrameSurface({
   readonly className?: string;
 }) {
   return (
-    <ComposerColumnFrameSurfaceElement
-      className={cn(COMPOSER_COLUMN_FRAME_CLASS_NAME, className)}
-    >
+    <ComposerColumnFrameSurfaceElement className={cn(COMPOSER_COLUMN_FRAME_CLASS_NAME, className)}>
       {children}
     </ComposerColumnFrameSurfaceElement>
   );

@@ -37,9 +37,7 @@ export function TerminalSearch({
   const inputRef = useRef<HTMLInputElement>(null);
   const searchTimerRef = useRef<number | null>(null);
   const [query, setQuery] = useState(initialQuery);
-  const [hasResults, setHasResults] = useState<boolean | null>(
-    initialQuery ? false : null,
-  );
+  const [hasResults, setHasResults] = useState<boolean | null>(initialQuery ? false : null);
   const [caseSensitive, setCaseSensitive] = useState(initialCaseSensitive);
 
   const searchOptions: ISearchOptions = {

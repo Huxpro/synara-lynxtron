@@ -37,9 +37,7 @@ import { KeyboardShortcutsSettingsPanel } from "../components/settings/KeyboardS
 import { ProfileSettingsPanel } from "../components/settings/ProfileSettingsPanel";
 import { ProviderUsageSettingsPanel } from "../components/settings/ProviderUsageSettingsPanel";
 import { ExternalMcpSettingsPanel } from "../components/settings/ExternalMcpSettingsPanel";
-import {
-  SettingResetButton,
-} from "../components/settings/SettingControls";
+import { SettingResetButton } from "../components/settings/SettingControls";
 import { SkillsSettingsPanel } from "../components/settings/SkillsSettingsPanel";
 import { SettingsAppearanceComposition } from "../components/settings/SettingsAppearanceComposition";
 import { SettingsGeneralComposition } from "../components/settings/SettingsGeneralComposition";
@@ -61,9 +59,7 @@ import { useTheme } from "../hooks/useTheme";
 import { cn, isMacPlatform } from "../lib/utils";
 import { ensureNativeApi, readNativeApi } from "../nativeApi";
 import { sameProviderOrder } from "../providerOrdering";
-import {
-  normalizeSettingsSection,
-} from "../settingsNavigation";
+import { normalizeSettingsSection } from "../settingsNavigation";
 import { SETTINGS_PAGE_BACKGROUND_CLASS_NAME } from "../settingsPanelStyles";
 
 import { getNavigatorPlatform, scrollElementIntoViewById } from "~/platform/env";
@@ -90,9 +86,7 @@ function SettingsRouteView() {
   const desktopTopBarTrafficLightGutterClassName = useDesktopTopBarTrafficLightGutterClassName();
   const [releaseHistoryOpen, setReleaseHistoryOpen] = useState(false);
   const [resetEpoch, setResetEpoch] = useState(0);
-  const shouldShowFontSmoothing = isMacPlatform(
-    getNavigatorPlatform(),
-  );
+  const shouldShowFontSmoothing = isMacPlatform(getNavigatorPlatform());
   const isGitTextGenerationModelDirty = isGitTextGenerationSettingsDirty(settings, defaults);
   const isInstallSettingsDirty = isProviderInstallSettingsDirty(settings, defaults);
   const hiddenProviderCount = new Set(settings.hiddenProviders).size;
@@ -240,10 +234,7 @@ function SettingsRouteView() {
           return;
         }
         updateSettings({
-          [key]:
-            key === "terminalFontFamily"
-              ? normalizeTerminalFontFamily(String(value))
-              : value,
+          [key]: key === "terminalFontFamily" ? normalizeTerminalFontFamily(String(value)) : value,
         });
       }}
     />

@@ -135,11 +135,9 @@ export const GitStatusBroadcasterLive = Layer.effect(
         const details = yield* gitCore.statusDetails(normalizedCwd, {
           refreshRemote: false,
         });
-        return yield* updateCachedLocalStatus(
-          normalizedCwd,
-          splitLocalStatusDetails(details),
-          { publish: true },
-        );
+        return yield* updateCachedLocalStatus(normalizedCwd, splitLocalStatusDetails(details), {
+          publish: true,
+        });
       });
 
     const streamStatus: GitStatusBroadcasterShape["streamStatus"] = (input) =>

@@ -10,9 +10,7 @@ export interface SystemStateSemantics {
   readonly announce: boolean;
 }
 
-export function resolveSystemStateSemantics(
-  intent: SystemStateIntent,
-): SystemStateSemantics {
+export function resolveSystemStateSemantics(intent: SystemStateIntent): SystemStateSemantics {
   if (intent === "plain") {
     return {
       live: undefined,

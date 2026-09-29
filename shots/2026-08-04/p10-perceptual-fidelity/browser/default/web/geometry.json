@@ -1,1 +1,183 @@
-{"client":"web","stateId":"landing-default","viewport":{"width":1280,"height":820,"dpr":1,"visualWidth":1280,"visualHeight":820},"roles":{"sidebar":{"tag":"DIV","className":"relative z-0 flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow-sm/5 app-sidebar-surface","text":"Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjects","box":{"x":0,"y":0,"width":256,"height":820},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"16px","weight":"400","lineHeight":"24px","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgb(255, 255, 255)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"0px","shadow":"rgba(0, 0, 0, 0.03) 0px 1px 0px 0px inset","opacity":"1"}},"projectRow":{"tag":"BUTTON","className":"peer/menu-button overflow-hidden p-2 ring-ring/60 active:bg-[var(--sidebar-accent-active)] active:text-[var(--sidebar-accent-foreground)] disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pe-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-[var(--sidebar-accent-active)] data-[active=true]:text-[var(--sidebar-accent-foreground)] data-[state=open]:hover:bg-[var(--sidebar-accent)] group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg:not([class*='size-'])]:size-4 [&>svg]:shrink-0 flex w-full min-w-0 items-center text-left select-none min-h-[var(--app-density-row-height,1.75rem)] h-[var(--app-density-row-height,1.75rem)] gap-[var(--app-density-row-gap,0.5rem)] rounded-md px-2 py-[var(--app-density-row-padding-y,0.125rem)] text-[length:var(--app-font-size-ui,12px)] font-normal outline-hidden transition-colors focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring hover:bg-[var(--sidebar-accent)] group-hover/project-header:bg-[var(--sidebar-accent)] group-hover/project-header:text-[var(--sidebar-accent-foreground)] cursor-grab active:cursor-grabbing","text":"P10 Fidelity Workspace","box":{"x":6,"y":287.25,"width":244,"height":28},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"12px","weight":"400","lineHeight":"18px","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(0, 0, 0, 0)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"8px","shadow":"none","opacity":"1"}},"projectLabel":{"tag":"SPAN","className":"inline-block shrink-0 bg-current size-4","text":"","box":{"x":14,"y":293.25,"width":16,"height":16},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"12px","weight":"400","lineHeight":"18px","letterSpacing":"normal"},"paint":{"color":"oklab(0.159065 0.00000723451 0.00000317395 / 0.95)","background":"oklab(0.159065 0.00000723451 0.00000317395 / 0.95)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}},"hero":{"tag":"H2","className":"text-[26px] font-normal leading-[1.15] tracking-[-0.015em] text-foreground/95 sm:text-[30px]","text":"What should we work on?","box":{"x":607.8125,"y":367.25,"width":320.359375,"height":34.5},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"30px","weight":"400","lineHeight":"34.5px","letterSpacing":"-0.45px"},"paint":{"color":"oklab(0.159065 0.00000723451 0.00000317395 / 0.95)","background":"rgba(0, 0, 0, 0)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}},"composerSurface":{"tag":"DIV","className":"chat-composer-surface border border-[color:color-mix(in_srgb,var(--color-border-heavy)_95%,var(--foreground)_5%)] dark:border-border shadow-[0_4px_18px_-6px_color-mix(in_srgb,var(--foreground)_7%,transparent)] dark:shadow-[0_6px_24px_-10px_rgba(0,0,0,0.30)] transition-colors duration-200","text":"Ask for follow-up changes or attach imagesFull accessGPT-5.5Medium","box":{"x":400,"y":421.75,"width":736,"height":95},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"16px","weight":"400","lineHeight":"24px","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"oklab(0.999994 0.0000455678 0.0000200868 / 0.864706)","borderColor":"color(srgb 0.0509804 0.0509804 0.0509804 / 0.105882)","borderWidth":"1px","radius":"19.2px","shadow":"rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, color(srgb 0.0509804 0.0509804 0.0509804 / 0.07) 0px 4px 18px -6px","opacity":"1"}},"textbox":{"tag":"DIV","className":"block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--app-font-size-chat,12px)] leading-relaxed min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0","text":"","box":{"x":413,"y":434.75,"width":708,"height":39},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"12px","weight":"400","lineHeight":"19.5px","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(0, 0, 0, 0)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}},"projectTrigger":{"tag":"BUTTON","className":"[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center rounded-lg border outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 gap-1.5 sm:h-7 border-transparent bg-transparent focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-elevated-secondary)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-elevated-secondary)] min-w-0 justify-start overflow-hidden whitespace-nowrap px-1.5 [&_svg]:mx-0 text-[length:var(--app-font-size-ui-sm,11px)] text-[var(--color-text-foreground-secondary)] sm:text-[length:var(--app-font-size-ui-sm,11px)] font-normal hover:text-[var(--color-text-foreground)] data-pressed:text-[var(--color-text-foreground)] max-w-56 shrink sm:max-w-64 sm:px-1.5 h-7 py-1","text":"Work in a project","box":{"x":408,"y":520.75,"width":122.859375,"height":28},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"11px","weight":"400","lineHeight":"16.5px","letterSpacing":"normal"},"paint":{"color":"rgba(13, 13, 13, 0.596)","background":"rgba(0, 0, 0, 0)","borderColor":"rgba(0, 0, 0, 0)","borderWidth":"1px","radius":"10px","shadow":"none","opacity":"1"}},"headerTitle":{"tag":"H2","className":"max-w-[clamp(12rem,42vw,36rem)] truncate font-system-ui text-[length:var(--app-font-size-ui,12px)] font-normal text-foreground","text":"New Chat","box":{"x":298,"y":14,"width":55.0625,"height":18},"font":{"family":"-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif","size":"12px","weight":"400","lineHeight":"18px","letterSpacing":"normal"},"paint":{"color":"rgb(13, 13, 13)","background":"rgba(0, 0, 0, 0)","borderColor":"rgba(13, 13, 13, 0.07)","borderWidth":"0px","radius":"0px","shadow":"none","opacity":"1"}}}}
+{
+  "client": "web",
+  "stateId": "landing-default",
+  "viewport": { "width": 1280, "height": 820, "dpr": 1, "visualWidth": 1280, "visualHeight": 820 },
+  "roles": {
+    "sidebar": {
+      "tag": "DIV",
+      "className": "relative z-0 flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow-sm/5 app-sidebar-surface",
+      "text": "Toggle SidebarToggle SidebarStudioProjectsNew thread⌘NSearch⌘KKanbanPull requestsAutomationsProjects",
+      "box": { "x": 0, "y": 0, "width": 256, "height": 820 },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgb(255, 255, 255)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "rgba(0, 0, 0, 0.03) 0px 1px 0px 0px inset",
+        "opacity": "1"
+      }
+    },
+    "projectRow": {
+      "tag": "BUTTON",
+      "className": "peer/menu-button overflow-hidden p-2 ring-ring/60 active:bg-[var(--sidebar-accent-active)] active:text-[var(--sidebar-accent-foreground)] disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pe-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-[var(--sidebar-accent-active)] data-[active=true]:text-[var(--sidebar-accent-foreground)] data-[state=open]:hover:bg-[var(--sidebar-accent)] group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg:not([class*='size-'])]:size-4 [&>svg]:shrink-0 flex w-full min-w-0 items-center text-left select-none min-h-[var(--app-density-row-height,1.75rem)] h-[var(--app-density-row-height,1.75rem)] gap-[var(--app-density-row-gap,0.5rem)] rounded-md px-2 py-[var(--app-density-row-padding-y,0.125rem)] text-[length:var(--app-font-size-ui,12px)] font-normal outline-hidden transition-colors focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring hover:bg-[var(--sidebar-accent)] group-hover/project-header:bg-[var(--sidebar-accent)] group-hover/project-header:text-[var(--sidebar-accent-foreground)] cursor-grab active:cursor-grabbing",
+      "text": "P10 Fidelity Workspace",
+      "box": { "x": 6, "y": 287.25, "width": 244, "height": 28 },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "8px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "projectLabel": {
+      "tag": "SPAN",
+      "className": "inline-block shrink-0 bg-current size-4",
+      "text": "",
+      "box": { "x": 14, "y": 293.25, "width": 16, "height": 16 },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.95)",
+        "background": "oklab(0.159065 0.00000723451 0.00000317395 / 0.95)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "hero": {
+      "tag": "H2",
+      "className": "text-[26px] font-normal leading-[1.15] tracking-[-0.015em] text-foreground/95 sm:text-[30px]",
+      "text": "What should we work on?",
+      "box": { "x": 607.8125, "y": 367.25, "width": 320.359375, "height": 34.5 },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "30px",
+        "weight": "400",
+        "lineHeight": "34.5px",
+        "letterSpacing": "-0.45px"
+      },
+      "paint": {
+        "color": "oklab(0.159065 0.00000723451 0.00000317395 / 0.95)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "composerSurface": {
+      "tag": "DIV",
+      "className": "chat-composer-surface border border-[color:color-mix(in_srgb,var(--color-border-heavy)_95%,var(--foreground)_5%)] dark:border-border shadow-[0_4px_18px_-6px_color-mix(in_srgb,var(--foreground)_7%,transparent)] dark:shadow-[0_6px_24px_-10px_rgba(0,0,0,0.30)] transition-colors duration-200",
+      "text": "Ask for follow-up changes or attach imagesFull accessGPT-5.5Medium",
+      "box": { "x": 400, "y": 421.75, "width": 736, "height": 95 },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "24px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "oklab(0.999994 0.0000455678 0.0000200868 / 0.864706)",
+        "borderColor": "color(srgb 0.0509804 0.0509804 0.0509804 / 0.105882)",
+        "borderWidth": "1px",
+        "radius": "19.2px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, color(srgb 0.0509804 0.0509804 0.0509804 / 0.07) 0px 4px 18px -6px",
+        "opacity": "1"
+      }
+    },
+    "textbox": {
+      "tag": "DIV",
+      "className": "block max-h-[200px] w-full overflow-y-auto whitespace-pre-wrap break-words bg-transparent text-foreground focus:outline-none font-system-ui text-[length:var(--app-font-size-chat,12px)] leading-relaxed min-h-[var(--app-density-composer-editor-min-height,2lh)] [&_p]:m-0",
+      "text": "",
+      "box": { "x": 413, "y": 434.75, "width": 708, "height": 39 },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "19.5px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "projectTrigger": {
+      "tag": "BUTTON",
+      "className": "[&_svg,&_[data-slot=central-icon]]:-mx-0.5 relative inline-flex cursor-pointer items-center rounded-lg border outline-none pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_[data-slot=central-icon]:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 [&_[data-slot=central-icon]:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 sm:[&_[data-slot=central-icon]:not([class*='size-'])]:size-4 [&_svg,&_[data-slot=central-icon]]:pointer-events-none [&_svg,&_[data-slot=central-icon]]:shrink-0 gap-1.5 sm:h-7 border-transparent bg-transparent focus-visible:ring-[color:var(--color-border-focus)]/60 focus-visible:ring-offset-0 [:hover,[data-pressed]]:bg-[var(--color-background-elevated-secondary)] [:hover,[data-pressed]]:text-[var(--color-text-foreground)] data-pressed:bg-[var(--color-background-elevated-secondary)] min-w-0 justify-start overflow-hidden whitespace-nowrap px-1.5 [&_svg]:mx-0 text-[length:var(--app-font-size-ui-sm,11px)] text-[var(--color-text-foreground-secondary)] sm:text-[length:var(--app-font-size-ui-sm,11px)] font-normal hover:text-[var(--color-text-foreground)] data-pressed:text-[var(--color-text-foreground)] max-w-56 shrink sm:max-w-64 sm:px-1.5 h-7 py-1",
+      "text": "Work in a project",
+      "box": { "x": 408, "y": 520.75, "width": 122.859375, "height": 28 },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "11px",
+        "weight": "400",
+        "lineHeight": "16.5px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgba(13, 13, 13, 0.596)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(0, 0, 0, 0)",
+        "borderWidth": "1px",
+        "radius": "10px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    },
+    "headerTitle": {
+      "tag": "H2",
+      "className": "max-w-[clamp(12rem,42vw,36rem)] truncate font-system-ui text-[length:var(--app-font-size-ui,12px)] font-normal text-foreground",
+      "text": "New Chat",
+      "box": { "x": 298, "y": 14, "width": 55.0625, "height": 18 },
+      "font": {
+        "family": "-apple-system, \"system-ui\", \"Segoe UI\", system-ui, sans-serif",
+        "size": "12px",
+        "weight": "400",
+        "lineHeight": "18px",
+        "letterSpacing": "normal"
+      },
+      "paint": {
+        "color": "rgb(13, 13, 13)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderColor": "rgba(13, 13, 13, 0.07)",
+        "borderWidth": "0px",
+        "radius": "0px",
+        "shadow": "none",
+        "opacity": "1"
+      }
+    }
+  }
+}

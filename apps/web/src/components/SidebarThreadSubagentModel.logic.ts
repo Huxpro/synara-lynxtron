@@ -88,9 +88,7 @@ function hashLabelSeed(seed: string): number {
   return hash;
 }
 
-export function sidebarThreadSubagentAccentColor(
-  seed: string | null | undefined,
-): string {
+export function sidebarThreadSubagentAccentColor(seed: string | null | undefined): string {
   const normalized = normalizeWhitespace(seed)?.toLowerCase() ?? "subagent";
   const index = hashLabelSeed(normalized) % SUBAGENT_ACCENT_PALETTE.length;
   return SUBAGENT_ACCENT_PALETTE[index] ?? SUBAGENT_ACCENT_PALETTE[0];
@@ -108,20 +106,15 @@ export function resolveSidebarThreadSubagentModel(input: {
   const parsedTitle = parseBracketedSubagentLabel(normalizedTitle);
   const parsedTitleRole = suppressWorkerTierRole(parsedTitle.role);
   const titleWithoutWorkerRole =
-    parsedTitle.role !== null && parsedTitleRole === null
-      ? parsedTitle.nickname
-      : normalizedTitle;
+    parsedTitle.role !== null && parsedTitleRole === null ? parsedTitle.nickname : normalizedTitle;
   const parsedTitleNickname = isGenericSubagentTitle(parsedTitle.nickname)
     ? null
     : parsedTitle.nickname;
-  const titleLabel = isGenericSubagentTitle(titleWithoutWorkerRole)
-    ? null
-    : titleWithoutWorkerRole;
+  const titleLabel = isGenericSubagentTitle(titleWithoutWorkerRole) ? null : titleWithoutWorkerRole;
   const nickname = explicitNickname ?? parsedTitleNickname;
   const role = explicitRole ?? parsedTitleRole;
   const resolvedTitle = parsedTitleNickname ? null : titleLabel;
-  const fallbackLabel =
-    fallbackSubagentLabel(normalizeWhitespace(input.fallbackId)) ?? "Subagent";
+  const fallbackLabel = fallbackSubagentLabel(normalizeWhitespace(input.fallbackId)) ?? "Subagent";
   const primaryLabel =
     nickname ??
     resolvedTitle ??

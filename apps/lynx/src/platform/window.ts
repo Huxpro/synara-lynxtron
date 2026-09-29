@@ -1,7 +1,7 @@
-import 'background-only';
+import "background-only";
 
-import { bridgeCall, onGlobalEvent } from './bridge';
-import type { ViewportSize } from '@synara-web/responsiveLayout.logic';
+import { bridgeCall, onGlobalEvent } from "./bridge";
+import type { ViewportSize } from "@synara-web/responsiveLayout.logic";
 
 export interface DesktopWindowState {
   readonly isMaximized: boolean;
@@ -27,47 +27,39 @@ export interface WindowPort {
 export const platformWindow: WindowPort = {
   hasWindowControls: () => true,
   minimize: async () => {
-    await bridgeCall('windowMinimize');
+    await bridgeCall("windowMinimize");
   },
-  toggleMaximize: () => bridgeCall('windowToggleMaximize'),
+  toggleMaximize: () => bridgeCall("windowToggleMaximize"),
   close: async () => {
-    await bridgeCall('windowClose');
+    await bridgeCall("windowClose");
   },
-  getWindowState: () => bridgeCall('windowGetState'),
-  getViewportSize: () => bridgeCall('windowGetViewport'),
+  getWindowState: () => bridgeCall("windowGetState"),
+  getViewportSize: () => bridgeCall("windowGetViewport"),
   onViewportResize: (listener) =>
-    onGlobalEvent('viewport:resize', (width: unknown, height: unknown) => {
+    onGlobalEvent("viewport:resize", (width: unknown, height: unknown) => {
       if (
-        typeof width === 'number' &&
+        typeof width === "number" &&
         Number.isFinite(width) &&
-        typeof height === 'number' &&
+        typeof height === "number" &&
         Number.isFinite(height)
       ) {
         listener({ width, height });
       }
     }),
   onWindowState: (listener) =>
-    onGlobalEvent('window:state', (state: unknown) => {
-      if (
-        state &&
-        typeof state === 'object' &&
-        'isMaximized' in state &&
-        'isFullscreen' in state
-      ) {
+    onGlobalEvent("window:state", (state: unknown) => {
+      if (state && typeof state === "object" && "isMaximized" in state && "isFullscreen" in state) {
         listener(state as DesktopWindowState);
       }
     }),
   openExternal: async (url) => {
-    const result = await bridgeCall<{ readonly opened: boolean }>('shellOpenExternal', {
+    const result = await bridgeCall<{ readonly opened: boolean }>("shellOpenExternal", {
       url,
     });
     return result.opened;
   },
   showInFolder: async (path) => {
-    const result = await bridgeCall<{ readonly opened: boolean }>(
-      'shellShowInFolder',
-      { path }
-    );
+    const result = await bridgeCall<{ readonly opened: boolean }>("shellShowInFolder", { path });
     return result.opened;
   },
   openWindow: (url) => {

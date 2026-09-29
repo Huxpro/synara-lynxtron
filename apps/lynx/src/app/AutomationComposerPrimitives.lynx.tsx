@@ -1,8 +1,8 @@
-import { CheckboxIndicator } from '../components/ui/checkbox.lynx';
-import { Input } from '../components/ui/input.lynx';
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
-import { useTheme } from '../adapters/useTheme.lynx';
-import { colorizeLynxSvg } from '../lib/themedSvg.lynx';
+import { CheckboxIndicator } from "../components/ui/checkbox.lynx";
+import { Input } from "../components/ui/input.lynx";
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import { useTheme } from "../adapters/useTheme.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 
 export function AutomationComposerNameInput(props: {
   readonly disabled: boolean;
@@ -52,10 +52,7 @@ export function AutomationComposerToolbarIcon(props: {
   return (
     <svg
       className={props.className}
-      content={colorizeLynxSvg(
-        props.content,
-        semanticIconColor('secondary')
-      )}
+      content={colorizeLynxSvg(props.content, semanticIconColor("secondary"))}
       accessibility-element={false}
     />
   );
@@ -76,26 +73,15 @@ export function AutomationComposerWarningRow(props: {
         accessibility-trait="text"
       >
         <view className="AutomationCreateWarningDot" />
-        <AutomationComposerWarningCopy
-          title={props.title}
-          detail={props.detail}
-        />
+        <AutomationComposerWarningCopy title={props.title} detail={props.detail} />
       </view>
     );
   }
 
-  return (
-    <InteractiveAutomationComposerWarningRow
-      {...props}
-      onToggle={props.onToggle}
-    />
-  );
+  return <InteractiveAutomationComposerWarningRow {...props} onToggle={props.onToggle} />;
 }
 
-function AutomationComposerWarningCopy(props: {
-  readonly detail: string;
-  readonly title: string;
-}) {
+function AutomationComposerWarningCopy(props: { readonly detail: string; readonly title: string }) {
   return (
     <view className="AutomationCreateWarningCopy">
       <text className="AutomationCreateWarningTitle">{props.title}</text>
@@ -111,20 +97,16 @@ function InteractiveAutomationComposerWarningRow(props: {
   readonly title: string;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName:
-      'AutomationCreateWarning AutomationCreateWarning--interactive',
+    baseClassName: "AutomationCreateWarning AutomationCreateWarning--interactive",
     accessibleLabel: `${props.title}. ${props.detail}`,
-    accessibilityValue: props.checked ? 'Checked' : 'Unchecked',
-    accessibilityTraits: 'button',
+    accessibilityValue: props.checked ? "Checked" : "Unchecked",
+    accessibilityTraits: "button",
     onActivate: props.onToggle,
   });
   return (
     <view className={interaction.className} {...interaction.eventProps}>
       <CheckboxIndicator checked={props.checked} size="sm" />
-      <AutomationComposerWarningCopy
-        title={props.title}
-        detail={props.detail}
-      />
+      <AutomationComposerWarningCopy title={props.title} detail={props.detail} />
     </view>
   );
 }

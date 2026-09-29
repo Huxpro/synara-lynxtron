@@ -4,7 +4,7 @@ export interface LandingRouteProject {
 }
 
 export interface LandingRoutePresentation {
-  readonly headerTitle: 'New Chat' | 'New thread';
+  readonly headerTitle: "New Chat" | "New thread";
   readonly projectName: string | null;
 }
 
@@ -18,6 +18,6 @@ export function resolveLandingRoutePresentation(input: {
   const projectName = project?.title.trim() || null;
 
   return projectName
-    ? { headerTitle: 'New thread', projectName }
-    : { headerTitle: 'New Chat', projectName: null };
+    ? { headerTitle: "New thread", projectName }
+    : { headerTitle: "New Chat", projectName: null };
 }

@@ -1,8 +1,5 @@
-import type {
-  ProviderKind,
-  ProviderSkillDescriptor,
-} from '@synara/contracts';
-import { PROVIDER_DISPLAY_NAMES } from '@synara/contracts';
+import type { ProviderKind, ProviderSkillDescriptor } from "@synara/contracts";
+import { PROVIDER_DISPLAY_NAMES } from "@synara/contracts";
 
 export interface SettingsSkillSource {
   readonly skill: ProviderSkillDescriptor;
@@ -27,32 +24,32 @@ export interface SettingsSkillSection {
   readonly groups: readonly SettingsSkillGroup[];
 }
 
-const SHARED_SECTION = 'shared';
-const PERSONAL_ORIGIN = 'personal';
+const SHARED_SECTION = "shared";
+const PERSONAL_ORIGIN = "personal";
 const ORIGIN_ORDER = [
-  'synara',
-  'codex',
-  'claude',
-  'cursor',
-  'antigravity',
-  'grok',
-  'droid',
-  'kilo',
-  'opencode',
-  'pi',
-  'agents',
-  'project',
+  "synara",
+  "codex",
+  "claude",
+  "cursor",
+  "antigravity",
+  "grok",
+  "droid",
+  "kilo",
+  "opencode",
+  "pi",
+  "agents",
+  "project",
 ] as const;
 const PROVIDER_ORDER: readonly ProviderKind[] = [
-  'codex',
-  'claudeAgent',
-  'cursor',
-  'antigravity',
-  'grok',
-  'droid',
-  'kilo',
-  'opencode',
-  'pi',
+  "codex",
+  "claudeAgent",
+  "cursor",
+  "antigravity",
+  "grok",
+  "droid",
+  "kilo",
+  "opencode",
+  "pi",
 ];
 
 function compareAscending(left: string, right: string): number {
@@ -70,32 +67,32 @@ function originInfo(origin: string): {
   readonly provider: ProviderKind | null;
 } {
   switch (origin) {
-    case 'synara':
-      return { label: 'Synara', provider: null };
-    case 'codex':
-      return { label: PROVIDER_DISPLAY_NAMES.codex, provider: 'codex' };
-    case 'claude':
+    case "synara":
+      return { label: "Synara", provider: null };
+    case "codex":
+      return { label: PROVIDER_DISPLAY_NAMES.codex, provider: "codex" };
+    case "claude":
       return {
         label: PROVIDER_DISPLAY_NAMES.claudeAgent,
-        provider: 'claudeAgent',
+        provider: "claudeAgent",
       };
-    case 'cursor':
-    case 'antigravity':
-    case 'grok':
-    case 'droid':
-    case 'kilo':
-    case 'opencode':
-    case 'pi':
+    case "cursor":
+    case "antigravity":
+    case "grok":
+    case "droid":
+    case "kilo":
+    case "opencode":
+    case "pi":
       return {
         label: PROVIDER_DISPLAY_NAMES[origin],
         provider: origin,
       };
-    case 'agents':
-      return { label: 'Shared (.agents)', provider: null };
-    case 'project':
-      return { label: 'Project', provider: null };
+    case "agents":
+      return { label: "Shared (.agents)", provider: null };
+    case "project":
+      return { label: "Project", provider: null };
     default:
-      return { label: origin || 'Personal', provider: null };
+      return { label: origin || "Personal", provider: null };
   }
 }
 
@@ -104,13 +101,11 @@ export function settingsSkillNameKey(name: string): string {
 }
 
 function sectionTitle(section: string): string {
-  return section === SHARED_SECTION
-    ? 'Shared skills'
-    : `From ${originInfo(section).label}`;
+  return section === SHARED_SECTION ? "Shared skills" : `From ${originInfo(section).label}`;
 }
 
 export function buildSettingsSkillGroups(
-  skills: readonly ProviderSkillDescriptor[]
+  skills: readonly ProviderSkillDescriptor[],
 ): readonly SettingsSkillGroup[] {
   const sourceGroups = new Map<string, SettingsSkillSource[]>();
   for (const skill of skills) {
@@ -140,40 +135,27 @@ export function buildSettingsSkillGroups(
       .map((source) => source.provider)
       .filter((provider): provider is ProviderKind => provider !== null)
       .filter((provider, index, all) => all.indexOf(provider) === index)
-      .sort(
-        (left, right) =>
-          PROVIDER_ORDER.indexOf(left) - PROVIDER_ORDER.indexOf(right)
-      );
+      .sort((left, right) => PROVIDER_ORDER.indexOf(left) - PROVIDER_ORDER.indexOf(right));
     groups.push({
       key,
       displayName: primarySkill.interface?.displayName ?? primarySkill.name,
       description:
-        primarySkill.interface?.shortDescription ??
-        primarySkill.description ??
-        'No description.',
+        primarySkill.interface?.shortDescription ?? primarySkill.description ?? "No description.",
       primarySkill,
       providers,
       sources,
-      section:
-        sources.length > 1
-          ? SHARED_SECTION
-          : (sources[0]?.origin ?? PERSONAL_ORIGIN),
+      section: sources.length > 1 ? SHARED_SECTION : (sources[0]?.origin ?? PERSONAL_ORIGIN),
     });
   }
-  return groups.sort((left, right) =>
-    compareAscending(left.displayName, right.displayName)
-  );
+  return groups.sort((left, right) => compareAscending(left.displayName, right.displayName));
 }
 
 export function buildSettingsSkillSections(
-  skills: readonly ProviderSkillDescriptor[]
+  skills: readonly ProviderSkillDescriptor[],
 ): readonly SettingsSkillSection[] {
   const sections = new Map<string, SettingsSkillGroup[]>();
   for (const group of buildSettingsSkillGroups(skills)) {
-    sections.set(group.section, [
-      ...(sections.get(group.section) ?? []),
-      group,
-    ]);
+    sections.set(group.section, [...(sections.get(group.section) ?? []), group]);
   }
   return [...sections.entries()]
     .map(([key, groups]) => ({

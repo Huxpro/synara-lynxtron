@@ -9,10 +9,7 @@ import {
   hasActionableProposedPlan,
   isLatestTurnSettled,
 } from "../session-logic";
-import {
-  hasUnseenCompletion,
-  isThreadActivelyWorking,
-} from "./SidebarThreadSort.logic";
+import { hasUnseenCompletion, isThreadActivelyWorking } from "./SidebarThreadSort.logic";
 import {
   resolveSidebarStatusPresentation,
   type SidebarStatusPresentation,
@@ -108,8 +105,7 @@ export function resolveThreadStatusPill(input: {
         ? {
             dismissalKey: completedDismissalKey,
             dismissed:
-              completedDismissalKey !== null &&
-              thread.dismissedStatusKey === completedDismissalKey,
+              completedDismissalKey !== null && thread.dismissedStatusKey === completedDismissalKey,
           }
         : null,
   });

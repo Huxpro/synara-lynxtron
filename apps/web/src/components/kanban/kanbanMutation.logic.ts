@@ -60,9 +60,7 @@ export function resolveKanbanMutationActions(
 
   return [
     ...(canStart ? [{ id: "start", label: "Start task" } as const] : []),
-    ...(hasThreadActionSurface
-      ? [{ id: "rename", label: "Rename task" } as const]
-      : []),
+    ...(hasThreadActionSurface ? [{ id: "rename", label: "Rename task" } as const] : []),
     ...(hasThreadActionSurface && card.column !== "inProgress"
       ? [{ id: "archive", label: "Archive task", destructive: true } as const]
       : []),
@@ -87,18 +85,16 @@ export function resolveKanbanCardActions(
   return [
     ...mutationActions.filter((action) => action.id === "start"),
     ...(isThreadActionCard
-      ? [
+      ? ([
           {
             id: "rename",
-            label:
-              mutationActions.find((action) => action.id === "rename")?.label ??
-              "Rename task",
+            label: mutationActions.find((action) => action.id === "rename")?.label ?? "Rename task",
           },
           {
             id: "toggle-pin",
             label: pinActionLabel("thread", card.thread?.isPinned ?? false),
           },
-        ] satisfies KanbanCardActionPolicy[]
+        ] satisfies KanbanCardActionPolicy[])
       : []),
     ...(options.copyPathAvailable
       ? [
@@ -109,9 +105,7 @@ export function resolveKanbanCardActions(
           } as const,
         ]
       : []),
-    ...(isThreadBacked
-      ? [{ id: "copy-thread-id", label: "Copy Thread ID" } as const]
-      : []),
+    ...(isThreadBacked ? [{ id: "copy-thread-id", label: "Copy Thread ID" } as const] : []),
     ...(isThreadActionCard
       ? mutationActions
           .filter((action) => action.id === "archive")

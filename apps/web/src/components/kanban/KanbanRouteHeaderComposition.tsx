@@ -26,16 +26,10 @@ export function KanbanRouteHeaderComposition(props: {
   return (
     <KanbanRouteHeaderRootElement hostClassName={props.hostClassName}>
       <KanbanRouteHeaderRowElement>
-        {props.navigationAvailable === false ? null : (
-          <KanbanRouteHeaderNavigationElement />
-        )}
-        {props.backAvailable ? (
-          <KanbanRouteHeaderBackElement onActivate={props.onBack} />
-        ) : null}
+        {props.navigationAvailable === false ? null : <KanbanRouteHeaderNavigationElement />}
+        {props.backAvailable ? <KanbanRouteHeaderBackElement onActivate={props.onBack} /> : null}
         <KanbanRouteHeaderTitleElement>{props.title}</KanbanRouteHeaderTitleElement>
-        <KanbanRouteHeaderCountElement>
-          {props.taskCount} tasks
-        </KanbanRouteHeaderCountElement>
+        <KanbanRouteHeaderCountElement>{props.taskCount} tasks</KanbanRouteHeaderCountElement>
         <KanbanRouteHeaderSpacerElement />
         <KanbanRouteHeaderNewTaskElement
           disabled={props.newTaskDisabled}

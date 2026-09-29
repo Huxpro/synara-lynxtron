@@ -1,4 +1,4 @@
-import type { TerminalEvent, TerminalSessionSnapshot } from '@synara/contracts';
+import type { TerminalEvent, TerminalSessionSnapshot } from "@synara/contracts";
 
 export function utf8ByteLength(value: string): number {
   let bytes = 0;
@@ -33,32 +33,32 @@ export function applyTerminalEventToSnapshot(input: {
   if (event.threadId !== input.threadId || event.terminalId !== input.terminalId) {
     return input.snapshot;
   }
-  if (event.type === 'started' || event.type === 'restarted') {
+  if (event.type === "started" || event.type === "restarted") {
     return event.snapshot;
   }
   if (!input.snapshot) return null;
-  if (event.type === 'output') {
+  if (event.type === "output") {
     return {
       ...input.snapshot,
       history: input.snapshot.history + event.data,
       updatedAt: event.createdAt,
     };
   }
-  if (event.type === 'cleared') {
-    return { ...input.snapshot, history: '', replayPreamble: '', updatedAt: event.createdAt };
+  if (event.type === "cleared") {
+    return { ...input.snapshot, history: "", replayPreamble: "", updatedAt: event.createdAt };
   }
-  if (event.type === 'exited') {
+  if (event.type === "exited") {
     return {
       ...input.snapshot,
-      status: 'exited',
+      status: "exited",
       pid: null,
       exitCode: event.exitCode,
       exitSignal: event.exitSignal,
       updatedAt: event.createdAt,
     };
   }
-  if (event.type === 'error') {
-    return { ...input.snapshot, status: 'error', updatedAt: event.createdAt };
+  if (event.type === "error") {
+    return { ...input.snapshot, status: "error", updatedAt: event.createdAt };
   }
   return input.snapshot;
 }

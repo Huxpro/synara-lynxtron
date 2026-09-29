@@ -9,12 +9,7 @@
     "visualHeight": 820
   },
   "query": "review-agent",
-  "items": [
-    "review-agent",
-    "review-bugbot",
-    "review-security",
-    "review"
-  ],
+  "items": ["review-agent", "review-bugbot", "review-security", "review"],
   "activeFirst": true,
   "roles": {
     "surface": {

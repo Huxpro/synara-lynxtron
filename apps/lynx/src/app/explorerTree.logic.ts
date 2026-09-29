@@ -1,14 +1,14 @@
-import { shouldShowWorkspaceExplorerEntry } from '@synara/shared/workspaceExplorer';
+import { shouldShowWorkspaceExplorerEntry } from "@synara/shared/workspaceExplorer";
 
-export function visibleExplorerEntries<
-  T extends { readonly kind: string; readonly name: string },
->(entries: readonly T[]): readonly T[] {
+export function visibleExplorerEntries<T extends { readonly kind: string; readonly name: string }>(
+  entries: readonly T[],
+): readonly T[] {
   return entries.filter(shouldShowWorkspaceExplorerEntry);
 }
 
 export function toggleExpandedDirectory(
   current: ReadonlySet<string>,
-  path: string
+  path: string,
 ): ReadonlySet<string> {
   const next = new Set(current);
   if (next.has(path)) next.delete(path);
@@ -17,7 +17,7 @@ export function toggleExpandedDirectory(
 }
 
 export function projectExplorerDirectories<T>(
-  results: readonly (readonly [string, readonly T[], boolean])[]
+  results: readonly (readonly [string, readonly T[], boolean])[],
 ): {
   readonly entriesByPath: Readonly<Record<string, readonly T[]>>;
   readonly errorPaths: ReadonlySet<string>;

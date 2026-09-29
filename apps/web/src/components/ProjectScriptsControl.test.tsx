@@ -2,7 +2,9 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 
-import ProjectScriptsControl, { resolveInitialProjectScriptEditorState } from "./ProjectScriptsControl";
+import ProjectScriptsControl, {
+  resolveInitialProjectScriptEditorState,
+} from "./ProjectScriptsControl";
 
 describe("ProjectScriptsControl", () => {
   it("renders the empty project actions state", () => {
@@ -21,10 +23,7 @@ describe("ProjectScriptsControl", () => {
   });
 
   it("renders deterministic saving and validation states for the shared editor", () => {
-    const source = readFileSync(
-      new URL("./ProjectScriptsControl.tsx", import.meta.url),
-      "utf8",
-    );
+    const source = readFileSync(new URL("./ProjectScriptsControl.tsx", import.meta.url), "utf8");
     expect(source).toContain("if (saving) return");
     expect(source).toContain("setSaving(true)");
     expect(source).toContain("setSaving(false)");
@@ -43,17 +42,19 @@ describe("ProjectScriptsControl", () => {
     expect(
       resolveInitialProjectScriptEditorState(
         [script],
-        [{
-          command: "script.component-lab-test.run",
-          shortcut: {
-            key: "t",
-            metaKey: false,
-            ctrlKey: false,
-            shiftKey: false,
-            altKey: false,
-            modKey: true,
+        [
+          {
+            command: "script.component-lab-test.run",
+            shortcut: {
+              key: "t",
+              metaKey: false,
+              ctrlKey: false,
+              shiftKey: false,
+              altKey: false,
+              modKey: true,
+            },
           },
-        }] as never,
+        ] as never,
         script.id,
       ),
     ).toEqual({ script, keybinding: "mod+t" });

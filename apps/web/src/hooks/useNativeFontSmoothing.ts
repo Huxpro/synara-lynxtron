@@ -10,9 +10,7 @@ import { isMacPlatform } from "../lib/utils";
 import { getNavigatorPlatform, getDocumentElement } from "~/platform/env";
 export function useNativeFontSmoothing() {
   const { settings } = useAppSettings();
-  const shouldApply =
-    settings.enableNativeFontSmoothing &&
-    isMacPlatform(getNavigatorPlatform());
+  const shouldApply = settings.enableNativeFontSmoothing && isMacPlatform(getNavigatorPlatform());
 
   useEffect(() => {
     const rootStyle = getDocumentElement()?.style;

@@ -1,29 +1,27 @@
-import { useState } from '@lynx-js/react';
-import { useQuery } from '@tanstack/react-query';
-import { SettingsSection } from '@synara-web/components/settings/SettingsSection';
-import { formatWorktreePathForDisplay } from '@synara-web/worktreeCleanup';
+import { useState } from "@lynx-js/react";
+import { useQuery } from "@tanstack/react-query";
+import { SettingsSection } from "@synara-web/components/settings/SettingsSection";
+import { formatWorktreePathForDisplay } from "@synara-web/worktreeCleanup";
 
-import { Button } from '../components/ui/button';
+import { Button } from "../components/ui/button";
 import {
   dispatchSynaraCommand,
   fetchManagedWorktrees,
   removeManagedWorktree,
-} from '../data/synaraClient.lynx';
-import { dialogs } from '../platform/dialogs';
-import { fetchSidebarSnapshot, queryClient } from './queries';
+} from "../data/synaraClient.lynx";
+import { dialogs } from "../platform/dialogs";
+import { fetchSidebarSnapshot, queryClient } from "./queries";
 import {
   createDeleteThreadCommand,
   groupManagedWorktrees,
   linkedThreadsForWorktree,
   linkedWorktreeCounts,
-} from './settingsWorktrees.logic';
+} from "./settingsWorktrees.logic";
 
-import './settings-worktrees-panel.css';
+import "./settings-worktrees-panel.css";
 
 function newCommandId(): string {
-  return `lynx-worktree-${Date.now()}-${Math.random()
-    .toString(16)
-    .slice(2)}`;
+  return `lynx-worktree-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 function deleteConfirmation(input: {
@@ -35,34 +33,34 @@ function deleteConfirmation(input: {
   if (total === 0) {
     return [
       `Delete worktree "${input.displayName}"?`,
-      'This removes the Git worktree from disk.',
-    ].join('\n');
+      "This removes the Git worktree from disk.",
+    ].join("\n");
   }
-  const conversationLabel = total === 1 ? 'conversation is' : 'conversations are';
+  const conversationLabel = total === 1 ? "conversation is" : "conversations are";
   return [
     `Delete worktree "${input.displayName}"?`,
-    '',
+    "",
     `${input.activeCount} active and ${input.archivedCount} archived ${conversationLabel} linked to this worktree.`,
     input.archivedCount > 0
-      ? 'Archived conversations will be deleted first.'
-      : 'Deleting it can break reopening those chats in the same workspace.',
-    '',
-    'Delete the worktree anyway?',
-  ].join('\n');
+      ? "Archived conversations will be deleted first."
+      : "Deleting it can break reopening those chats in the same workspace.",
+    "",
+    "Delete the worktree anyway?",
+  ].join("\n");
 }
 
 export function SettingsWorktreesPanel() {
   const worktreesQuery = useQuery({
-    queryKey: ['managed-worktrees'],
+    queryKey: ["managed-worktrees"],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchManagedWorktrees();
     },
   });
   const snapshotQuery = useQuery({
-    queryKey: ['sidebar-snapshot'],
+    queryKey: ["sidebar-snapshot"],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchSidebarSnapshot();
     },
   });
@@ -70,26 +68,20 @@ export function SettingsWorktreesPanel() {
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const groups = groupManagedWorktrees(
     worktreesQuery.data?.worktrees ?? [],
-    snapshotQuery.data?.workspaceThreads ?? []
+    snapshotQuery.data?.workspaceThreads ?? [],
   );
 
-  async function deleteWorktree(input: {
-    readonly workspaceRoot: string;
-    readonly path: string;
-  }) {
-    'background only';
+  async function deleteWorktree(input: { readonly workspaceRoot: string; readonly path: string }) {
+    "background only";
     if (deletingPath) return;
     setDeleteError(null);
     let linkedThreads: ReturnType<typeof linkedThreadsForWorktree>;
     try {
       const snapshot = await fetchSidebarSnapshot();
-      linkedThreads = linkedThreadsForWorktree(
-        snapshot.workspaceThreads,
-        input.path
-      );
+      linkedThreads = linkedThreadsForWorktree(snapshot.workspaceThreads, input.path);
     } catch {
       setDeleteError(
-        'Could not verify linked conversations. Retry once the app reconnects to the server.'
+        "Could not verify linked conversations. Retry once the app reconnects to the server.",
       );
       return;
     }
@@ -99,7 +91,7 @@ export function SettingsWorktreesPanel() {
         displayName: formatWorktreePathForDisplay(input.path),
         activeCount: counts.active,
         archivedCount: counts.archived,
-      })
+      }),
     );
     if (!confirmed) return;
 
@@ -111,7 +103,7 @@ export function SettingsWorktreesPanel() {
           createDeleteThreadCommand({
             threadId: thread.id,
             commandId: newCommandId(),
-          })
+          }),
         );
       }
       await removeManagedWorktree({
@@ -120,13 +112,11 @@ export function SettingsWorktreesPanel() {
         force: true,
       });
     } catch (error) {
-      setDeleteError(
-        error instanceof Error ? error.message : 'Unable to delete the worktree.'
-      );
+      setDeleteError(error instanceof Error ? error.message : "Unable to delete the worktree.");
     } finally {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['managed-worktrees'] }),
-        queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] }),
+        queryClient.invalidateQueries({ queryKey: ["managed-worktrees"] }),
+        queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
       ]);
       setDeletingPath(null);
     }
@@ -135,9 +125,7 @@ export function SettingsWorktreesPanel() {
   if (worktreesQuery.isPending || snapshotQuery.isPending) {
     return (
       <view className="SettingsWorktreesState">
-        <text className="SettingsWorktreesStateText">
-          Loading managed worktrees…
-        </text>
+        <text className="SettingsWorktreesStateText">Loading managed worktrees…</text>
       </view>
     );
   }
@@ -151,7 +139,7 @@ export function SettingsWorktreesPanel() {
           accessibility-element
           accessibility-role="alert"
         >
-          {error instanceof Error ? error.message : 'Unable to load worktrees.'}
+          {error instanceof Error ? error.message : "Unable to load worktrees."}
         </text>
         <Button
           size="xs"
@@ -171,9 +159,7 @@ export function SettingsWorktreesPanel() {
   if (groups.length === 0) {
     return (
       <view className="SettingsWorktreesState">
-        <text className="SettingsWorktreesStateText">
-          No app-managed worktrees found yet.
-        </text>
+        <text className="SettingsWorktreesStateText">No app-managed worktrees found yet.</text>
       </view>
     );
   }
@@ -186,9 +172,7 @@ export function SettingsWorktreesPanel() {
           accessibility-element
           accessibility-role="alert"
         >
-          <text className="SettingsWorktreesDeleteErrorText">
-            {deleteError}
-          </text>
+          <text className="SettingsWorktreesDeleteErrorText">{deleteError}</text>
         </view>
       ) : null}
       {groups.map((group) => (
@@ -196,23 +180,16 @@ export function SettingsWorktreesPanel() {
           {group.worktrees.map((worktree, index) => (
             <view
               key={worktree.path}
-              className={`SettingsWorktreesRow${
-                index > 0 ? ' SettingsWorktreesRow--divided' : ''
-              }`}
+              className={`SettingsWorktreesRow${index > 0 ? " SettingsWorktreesRow--divided" : ""}`}
             >
               <view className="SettingsWorktreesRowCopy">
                 <text className="SettingsWorktreesRowTitle">Worktree</text>
                 <text className="SettingsWorktreesPath">{worktree.path}</text>
-                <text className="SettingsWorktreesConversationLabel">
-                  Conversations
-                </text>
+                <text className="SettingsWorktreesConversationLabel">Conversations</text>
                 {worktree.linkedThreads.length > 0 ? (
                   <view className="SettingsWorktreesConversationList">
                     {worktree.linkedThreads.map((thread) => (
-                      <text
-                        key={thread.id}
-                        className="SettingsWorktreesConversation"
-                      >
+                      <text key={thread.id} className="SettingsWorktreesConversation">
                         {thread.title}
                       </text>
                     ))}
@@ -230,9 +207,7 @@ export function SettingsWorktreesPanel() {
                   size="xs"
                   variant="destructive"
                   disabled={deletingPath !== null}
-                  aria-label={`Delete ${formatWorktreePathForDisplay(
-                    worktree.path
-                  )} worktree`}
+                  aria-label={`Delete ${formatWorktreePathForDisplay(worktree.path)} worktree`}
                   onClick={() =>
                     void deleteWorktree({
                       workspaceRoot: group.workspaceRoot,
@@ -240,12 +215,11 @@ export function SettingsWorktreesPanel() {
                     })
                   }
                 >
-                  {deletingPath === worktree.path ? 'Deleting…' : 'Delete'}
+                  {deletingPath === worktree.path ? "Deleting…" : "Delete"}
                 </Button>
                 {worktree.linkedThreads.length > 0 ? (
                   <text className="SettingsWorktreesActionHint">
-                    Linked conversations exist. Deleting will ask for
-                    confirmation.
+                    Linked conversations exist. Deleting will ask for confirmation.
                   </text>
                 ) : null}
               </view>

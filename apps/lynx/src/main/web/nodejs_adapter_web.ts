@@ -6,7 +6,7 @@
  * Node.js Simulation Environment for Web (Background Thread)
  */
 
-import { contextBridge } from '@lynx-js/lynxtron/context-bridge';
+import { contextBridge } from "@lynx-js/lynxtron/context-bridge";
 
 contextBridge.exposeInLynxBTS({
   // Adapt to desktop's exposed pattern
@@ -15,6 +15,4 @@ contextBridge.exposeInLynxBTS({
   },
 });
 
-console.log(
-  '[Lynxtron Web] Node.js environment simulation initialized in BG Thread'
-);
+console.log("[Lynxtron Web] Node.js environment simulation initialized in BG Thread");

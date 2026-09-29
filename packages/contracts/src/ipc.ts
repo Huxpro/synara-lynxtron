@@ -214,7 +214,7 @@ export interface ContextMenuItem<T extends string = string> {
   enabled?: boolean;
   visible?: boolean;
   checked?: boolean;
-  type?: 'normal' | 'checkbox' | 'radio';
+  type?: "normal" | "checkbox" | "radio";
   accelerator?: string;
   submenu?: readonly ContextMenuItem<T>[];
 }

@@ -1,4 +1,4 @@
-import type { ProjectSummary, ThreadSummary } from './queries';
+import type { ProjectSummary, ThreadSummary } from "./queries";
 
 export interface ArchivedThreadGroup {
   readonly projectId: string | null;
@@ -7,7 +7,7 @@ export interface ArchivedThreadGroup {
 }
 
 function archivedSortKey(thread: ThreadSummary): string {
-  return thread.archivedAt ?? thread.updatedAt ?? thread.createdAt ?? '';
+  return thread.archivedAt ?? thread.updatedAt ?? thread.createdAt ?? "";
 }
 
 function compareDescending(left: string, right: string): number {
@@ -15,25 +15,20 @@ function compareDescending(left: string, right: string): number {
   return left < right ? 1 : -1;
 }
 
-export function compareArchivedThreads(
-  left: ThreadSummary,
-  right: ThreadSummary
-): number {
+export function compareArchivedThreads(left: ThreadSummary, right: ThreadSummary): number {
   return (
     compareDescending(archivedSortKey(left), archivedSortKey(right)) ||
     compareDescending(left.id, right.id)
   );
 }
 
-function sortArchivedThreads(
-  threads: readonly ThreadSummary[]
-): readonly ThreadSummary[] {
+function sortArchivedThreads(threads: readonly ThreadSummary[]): readonly ThreadSummary[] {
   return [...threads].sort(compareArchivedThreads);
 }
 
 export function groupArchivedThreads(
   projects: readonly ProjectSummary[],
-  threads: readonly ThreadSummary[]
+  threads: readonly ThreadSummary[],
 ): readonly ArchivedThreadGroup[] {
   const archivedThreads = threads.filter((thread) => thread.archivedAt != null);
   const knownProjectIds = new Set(projects.map((project) => project.id));
@@ -41,16 +36,16 @@ export function groupArchivedThreads(
     projectId: project.id,
     title: project.title,
     threads: sortArchivedThreads(
-      archivedThreads.filter((thread) => thread.projectId === project.id)
+      archivedThreads.filter((thread) => thread.projectId === project.id),
     ),
   }));
   const orphanedThreads = sortArchivedThreads(
-    archivedThreads.filter((thread) => !knownProjectIds.has(thread.projectId))
+    archivedThreads.filter((thread) => !knownProjectIds.has(thread.projectId)),
   );
   if (orphanedThreads.length > 0) {
     groups.push({
       projectId: null,
-      title: 'Unknown project',
+      title: "Unknown project",
       threads: orphanedThreads,
     });
   }
@@ -62,7 +57,7 @@ export function createUnarchiveCommand(input: {
   readonly commandId: string;
 }) {
   return {
-    type: 'thread.unarchive' as const,
+    type: "thread.unarchive" as const,
     commandId: input.commandId as never,
     threadId: input.threadId as never,
   };
@@ -73,7 +68,7 @@ export function createDeleteArchivedThreadCommand(input: {
   readonly commandId: string;
 }) {
   return {
-    type: 'thread.delete' as const,
+    type: "thread.delete" as const,
     commandId: input.commandId as never,
     threadId: input.threadId as never,
   };

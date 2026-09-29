@@ -1,45 +1,36 @@
-import { render } from '@lynx-js/react/testing-library';
-import { describe, expect, it, rs } from '@rstest/core';
-import { readFileSync } from 'node:fs';
+import { render } from "@lynx-js/react/testing-library";
+import { describe, expect, it, rs } from "@rstest/core";
+import { readFileSync } from "node:fs";
 
-import { EmptyThreadContextTray } from './EmptyThreadContextTray.lynx';
+import { EmptyThreadContextTray } from "./EmptyThreadContextTray.lynx";
 
 const defaultProps = {
-  envMode: 'local' as const,
+  envMode: "local" as const,
   onTemporaryChange: rs.fn(),
-  projectName: 'Environment Current',
+  projectName: "Environment Current",
   temporary: false,
 };
 
-describe('empty Thread context tray', () => {
-  it('does not invent a branch when the server snapshot has none', () => {
+describe("empty Thread context tray", () => {
+  it("does not invent a branch when the server snapshot has none", () => {
     render(<EmptyThreadContextTray {...defaultProps} branch={null} />);
 
-    const statuses = elementTree.root?.querySelectorAll(
-      '.EmptyThreadContextStatus'
-    );
+    const statuses = elementTree.root?.querySelectorAll(".EmptyThreadContextStatus");
     expect(statuses).toHaveLength(1);
-    expect(elementTree.root?.textContent).toContain('Environment Current');
-    expect(elementTree.root?.textContent).toContain('Local');
-    expect(elementTree.root?.textContent).not.toContain('main');
+    expect(elementTree.root?.textContent).toContain("Environment Current");
+    expect(elementTree.root?.textContent).toContain("Local");
+    expect(elementTree.root?.textContent).not.toContain("main");
   });
 
-  it('renders the exact branch supplied by the server snapshot', () => {
-    render(
-      <EmptyThreadContextTray
-        {...defaultProps}
-        branch="feature/fidelity"
-      />
-    );
+  it("renders the exact branch supplied by the server snapshot", () => {
+    render(<EmptyThreadContextTray {...defaultProps} branch="feature/fidelity" />);
 
-    const statuses = elementTree.root?.querySelectorAll(
-      '.EmptyThreadContextStatus'
-    );
+    const statuses = elementTree.root?.querySelectorAll(".EmptyThreadContextStatus");
     expect(statuses).toHaveLength(2);
-    expect(elementTree.root?.textContent).toContain('feature/fidelity');
+    expect(elementTree.root?.textContent).toContain("feature/fidelity");
   });
 
-  it('renders live environment and temporary controls for landing drafts', () => {
+  it("renders live environment and temporary controls for landing drafts", () => {
     const onEnvModeChange = rs.fn();
     const onTemporaryChange = rs.fn();
     render(
@@ -48,30 +39,26 @@ describe('empty Thread context tray', () => {
         onEnvModeChange={onEnvModeChange}
         onTemporaryChange={onTemporaryChange}
         projectControl={<text className="ProjectControl">github</text>}
-      />
+      />,
     );
 
-    expect(elementTree.root?.querySelector('.ProjectControl')?.textContent).toBe(
-      'github'
-    );
-    expect(elementTree.root?.textContent).toContain('Local');
-    expect(elementTree.root?.textContent).toContain('Temporary');
+    expect(elementTree.root?.querySelector(".ProjectControl")?.textContent).toBe("github");
+    expect(elementTree.root?.textContent).toContain("Local");
+    expect(elementTree.root?.textContent).toContain("Temporary");
     expect(
-      elementTree.root?.querySelector('.EmptyThreadContextStatus--interactive')
+      elementTree.root?.querySelector(".EmptyThreadContextStatus--interactive"),
     ).not.toBeNull();
   });
 
-  it('resolves toolbar icon paint explicitly instead of relying on SVG inheritance', () => {
+  it("resolves toolbar icon paint explicitly instead of relying on SVG inheritance", () => {
     const source = readFileSync(
-      new URL('./EmptyThreadContextTray.lynx.tsx', import.meta.url),
-      'utf8'
+      new URL("./EmptyThreadContextTray.lynx.tsx", import.meta.url),
+      "utf8",
     );
 
-    expect(source).toContain(
-      "const secondaryIconColor = semanticIconColor('secondary')"
-    );
+    expect(source).toContain("const secondaryIconColor = semanticIconColor('secondary')");
     expect(source.match(/color=\{secondaryIconColor\}/g)).toHaveLength(6);
     expect(source).toContain("? semanticIconColor('accent')");
-    expect(source).not.toContain('svgColors.accentForeground');
+    expect(source).not.toContain("svgColors.accentForeground");
   });
 });

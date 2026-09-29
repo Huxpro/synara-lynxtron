@@ -1,25 +1,21 @@
-import type { ServerProviderAuthStatus } from '@synara/contracts';
+import type { ServerProviderAuthStatus } from "@synara/contracts";
 
-export const DEFAULT_VOICE_TRANSCRIPTION_FAILURE_TITLE =
-  'Voice transcription failed';
+export const DEFAULT_VOICE_TRANSCRIPTION_FAILURE_TITLE = "Voice transcription failed";
 export const DEFAULT_VOICE_TRANSCRIPTION_FAILURE_DESCRIPTION =
-  'The voice note could not be transcribed.';
-export const VOICE_AUTH_EXPIRED_TITLE = 'Sign in to ChatGPT again';
+  "The voice note could not be transcribed.";
+export const VOICE_AUTH_EXPIRED_TITLE = "Sign in to ChatGPT again";
 export const VOICE_AUTH_EXPIRED_DESCRIPTION =
-  'Voice transcription uses your ChatGPT session in Codex. That session was rejected, so sign in again there and retry.';
-export const VOICE_REFRESH_ACTION_LABEL = 'Refresh status';
+  "Voice transcription uses your ChatGPT session in Codex. That session was rejected, so sign in again there and retry.";
+export const VOICE_REFRESH_ACTION_LABEL = "Refresh status";
 export const VOICE_RECORDER_ACTION_ARM_DELAY_MS = 250;
-export const VOICE_SIGN_IN_REQUIRED_TITLE =
-  'Sign in to ChatGPT in Codex before using voice notes.';
-export const VOICE_UNAVAILABLE_TITLE =
-  'Voice notes require a ChatGPT-authenticated Codex session.';
-export const VOICE_PENDING_INPUT_TITLE =
-  'Answer plan questions before recording a voice note.';
+export const VOICE_SIGN_IN_REQUIRED_TITLE = "Sign in to ChatGPT in Codex before using voice notes.";
+export const VOICE_UNAVAILABLE_TITLE = "Voice notes require a ChatGPT-authenticated Codex session.";
+export const VOICE_PENDING_INPUT_TITLE = "Answer plan questions before recording a voice note.";
 
 export type VoiceRecordingStartGuard =
-  | { readonly kind: 'allow' }
-  | { readonly kind: 'ignore' }
-  | { readonly kind: 'notify'; readonly title: string };
+  | { readonly kind: "allow" }
+  | { readonly kind: "ignore" }
+  | { readonly kind: "notify"; readonly title: string };
 
 export function resolveVoiceRecordingStartGuard(input: {
   readonly authStatus: ServerProviderAuthStatus | null | undefined;
@@ -30,18 +26,18 @@ export function resolveVoiceRecordingStartGuard(input: {
   readonly pendingUserInputCount: number;
 }): VoiceRecordingStartGuard {
   if (!input.hasWorkspace || input.isRecording || input.isTranscribing) {
-    return { kind: 'ignore' };
+    return { kind: "ignore" };
   }
-  if (input.authStatus === 'unauthenticated') {
-    return { kind: 'notify', title: VOICE_SIGN_IN_REQUIRED_TITLE };
+  if (input.authStatus === "unauthenticated") {
+    return { kind: "notify", title: VOICE_SIGN_IN_REQUIRED_TITLE };
   }
   if (!input.canStartVoiceNotes) {
-    return { kind: 'notify', title: VOICE_UNAVAILABLE_TITLE };
+    return { kind: "notify", title: VOICE_UNAVAILABLE_TITLE };
   }
   if (input.pendingUserInputCount > 0) {
-    return { kind: 'notify', title: VOICE_PENDING_INPUT_TITLE };
+    return { kind: "notify", title: VOICE_PENDING_INPUT_TITLE };
   }
-  return { kind: 'allow' };
+  return { kind: "allow" };
 }
 
 export function isVoiceRecorderActionArmed(input: {
@@ -57,13 +53,13 @@ export function isVoiceRecorderActionArmed(input: {
 
 export function appendVoiceTranscriptToPrompt(
   currentPrompt: string,
-  transcript: string
+  transcript: string,
 ): string | null {
   const trimmedTranscript = transcript.trim();
   if (trimmedTranscript.length === 0) return null;
   return currentPrompt.trim().length === 0
     ? trimmedTranscript
-    : `${currentPrompt.replace(/\s+$/, '')}\n${trimmedTranscript}`;
+    : `${currentPrompt.replace(/\s+$/, "")}\n${trimmedTranscript}`;
 }
 
 export function sanitizeVoiceErrorMessage(message: string): string {
@@ -78,8 +74,8 @@ export function sanitizeVoiceErrorMessage(message: string): string {
       const parsed = JSON.parse(rpcPayload) as unknown;
       const messages: string[] = [];
       const visit = (value: unknown) => {
-        if (!value || typeof value !== 'object') return;
-        if ('message' in value && typeof value.message === 'string') {
+        if (!value || typeof value !== "object") return;
+        if ("message" in value && typeof value.message === "string") {
           messages.push(value.message);
         }
         for (const nested of Object.values(value)) visit(nested);
@@ -92,18 +88,16 @@ export function sanitizeVoiceErrorMessage(message: string): string {
     }
   }
 
-  const firstLine = normalized.split('\n')[0]?.trim() ?? normalized;
-  const withoutRpcPrefix = firstLine.replace(/^Synara RPC [^ ]+ failed:\s*/i, '');
-  const withoutInlineStack = withoutRpcPrefix.replace(/\s+at file:\/\/.*$/s, '').trim();
+  const firstLine = normalized.split("\n")[0]?.trim() ?? normalized;
+  const withoutRpcPrefix = firstLine.replace(/^Synara RPC [^ ]+ failed:\s*/i, "");
+  const withoutInlineStack = withoutRpcPrefix.replace(/\s+at file:\/\/.*$/s, "").trim();
   const withoutRemoteMethodPrefix = withoutInlineStack.replace(
     /^Error invoking remote method ['"][^'"]+['"]:\s*/i,
-    ''
+    "",
   );
-  const withoutRepeatedErrorPrefix = withoutRemoteMethodPrefix
-    .replace(/^(Error:\s*)+/i, '')
-    .trim();
-  const providerAdapterPrefix = 'Provider adapter request failed';
-  const providerAdapterSeparatorIndex = withoutRepeatedErrorPrefix.lastIndexOf(': ');
+  const withoutRepeatedErrorPrefix = withoutRemoteMethodPrefix.replace(/^(Error:\s*)+/i, "").trim();
+  const providerAdapterPrefix = "Provider adapter request failed";
+  const providerAdapterSeparatorIndex = withoutRepeatedErrorPrefix.lastIndexOf(": ");
   const withoutProviderAdapterPrefix =
     withoutRepeatedErrorPrefix.startsWith(providerAdapterPrefix) &&
     providerAdapterSeparatorIndex >= providerAdapterPrefix.length
@@ -117,32 +111,29 @@ export function sanitizeVoiceErrorMessage(message: string): string {
 
 export function isVoiceAuthExpiredMessage(message: string): boolean {
   const normalized = message.toLowerCase();
-  return (
-    normalized.includes('chatgpt login has expired') ||
-    normalized.includes('sign in again')
-  );
+  return normalized.includes("chatgpt login has expired") || normalized.includes("sign in again");
 }
 
 export function describeVoiceRecordingStartError(error: unknown): string {
-  if (!(error instanceof Error)) return 'The microphone could not be opened.';
+  if (!(error instanceof Error)) return "The microphone could not be opened.";
 
   const normalizedMessage = error.message.trim();
-  const errorName = typeof error.name === 'string' ? error.name : '';
-  if (errorName === 'NotAllowedError' || errorName === 'PermissionDeniedError') {
-    return 'Microphone access was denied. Enable it in macOS Privacy & Security > Microphone for Synara, then try again.';
+  const errorName = typeof error.name === "string" ? error.name : "";
+  if (errorName === "NotAllowedError" || errorName === "PermissionDeniedError") {
+    return "Microphone access was denied. Enable it in macOS Privacy & Security > Microphone for Synara, then try again.";
   }
-  if (errorName === 'NotFoundError' || errorName === 'DevicesNotFoundError') {
-    return 'No microphone was found. Connect one and try again.';
+  if (errorName === "NotFoundError" || errorName === "DevicesNotFoundError") {
+    return "No microphone was found. Connect one and try again.";
   }
-  if (errorName === 'NotReadableError' || errorName === 'TrackStartError') {
-    return 'The microphone is busy or unavailable right now. Close other audio apps and try again.';
+  if (errorName === "NotReadableError" || errorName === "TrackStartError") {
+    return "The microphone is busy or unavailable right now. Close other audio apps and try again.";
   }
-  if (errorName === 'SecurityError') {
-    return 'Microphone access is blocked in this environment.';
+  if (errorName === "SecurityError") {
+    return "Microphone access is blocked in this environment.";
   }
   return normalizedMessage.length > 0
     ? sanitizeVoiceErrorMessage(normalizedMessage)
-    : 'The microphone could not be opened.';
+    : "The microphone could not be opened.";
 }
 
 export function deriveComposerVoiceState(input: {
@@ -151,14 +142,12 @@ export function deriveComposerVoiceState(input: {
   isRecording: boolean;
   isTranscribing: boolean;
 }) {
-  const canRenderVoiceNotes = input.authStatus !== 'unauthenticated';
-  const canStartVoiceNotes =
-    canRenderVoiceNotes && input.voiceTranscriptionAvailable !== false;
+  const canRenderVoiceNotes = input.authStatus !== "unauthenticated";
+  const canStartVoiceNotes = canRenderVoiceNotes && input.voiceTranscriptionAvailable !== false;
   return {
     canRenderVoiceNotes,
     canStartVoiceNotes,
-    showVoiceNotesControl:
-      canRenderVoiceNotes || input.isRecording || input.isTranscribing,
+    showVoiceNotesControl: canRenderVoiceNotes || input.isRecording || input.isTranscribing,
   };
 }
 
@@ -172,23 +161,21 @@ export interface VoiceTranscriptionFailureCopy {
 
 export function resolveVoiceTranscriptionFailure(
   error: unknown,
-  copy: VoiceTranscriptionFailureCopy = {}
+  copy: VoiceTranscriptionFailureCopy = {},
 ) {
   const description =
     error instanceof Error
       ? sanitizeVoiceErrorMessage(error.message)
-      : copy.fallbackDescription ?? DEFAULT_VOICE_TRANSCRIPTION_FAILURE_DESCRIPTION;
+      : (copy.fallbackDescription ?? DEFAULT_VOICE_TRANSCRIPTION_FAILURE_DESCRIPTION);
   const authExpired = isVoiceAuthExpiredMessage(description);
   return {
     authExpired,
     title: authExpired
-      ? copy.authExpiredTitle ?? VOICE_AUTH_EXPIRED_TITLE
-      : copy.transcriptionFailedTitle ?? DEFAULT_VOICE_TRANSCRIPTION_FAILURE_TITLE,
+      ? (copy.authExpiredTitle ?? VOICE_AUTH_EXPIRED_TITLE)
+      : (copy.transcriptionFailedTitle ?? DEFAULT_VOICE_TRANSCRIPTION_FAILURE_TITLE),
     description: authExpired
-      ? copy.authExpiredDescription ?? VOICE_AUTH_EXPIRED_DESCRIPTION
+      ? (copy.authExpiredDescription ?? VOICE_AUTH_EXPIRED_DESCRIPTION)
       : description,
-    actionLabel: authExpired
-      ? copy.refreshActionLabel ?? VOICE_REFRESH_ACTION_LABEL
-      : null,
+    actionLabel: authExpired ? (copy.refreshActionLabel ?? VOICE_REFRESH_ACTION_LABEL) : null,
   };
 }

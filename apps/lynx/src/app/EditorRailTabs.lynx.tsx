@@ -1,32 +1,32 @@
-import { useEffect, useState } from '@lynx-js/react';
-import type { ProviderKind } from '@synara/contracts';
+import { useEffect, useState } from "@lynx-js/react";
+import type { ProviderKind } from "@synara/contracts";
 import {
   readEditorRailChatTabs,
   storeEditorRailChatTabs,
   type EditorRailChatTabSnapshot,
-} from '@synara-web/editorViewState';
+} from "@synara-web/editorViewState";
 
-import { ClockIcon, PlusIcon } from '../lib/icons.lynx';
-import { OpenAIProviderIcon } from '../components/OpenAIProviderIcon.lynx';
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
-import type { ThreadSummary } from './queries';
-import { EditorSurfaceTab } from './EditorSurfaceTab.lynx';
-import { EditorRailAddMenu } from './EditorRailAddMenu.lynx';
-import { IndependentTabRow } from './IndependentTabRow.lynx';
+import { ClockIcon, PlusIcon } from "../lib/icons.lynx";
+import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import type { ThreadSummary } from "./queries";
+import { EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
+import { EditorRailAddMenu } from "./EditorRailAddMenu.lynx";
+import { IndependentTabRow } from "./IndependentTabRow.lynx";
 
-import './editor-rail-tabs.css';
+import "./editor-rail-tabs.css";
 
 function EditorRailIconButton(props: {
   readonly label: string;
   readonly onActivate: () => void;
-  readonly icon: 'history' | 'plus';
+  readonly icon: "history" | "plus";
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'ThreadEditorRailIconButton',
+    baseClassName: "ThreadEditorRailIconButton",
     accessibleLabel: props.label,
     onActivate: props.onActivate,
   });
-  const Icon = props.icon === 'plus' ? PlusIcon : ClockIcon;
+  const Icon = props.icon === "plus" ? PlusIcon : ClockIcon;
   return (
     <view className={interaction.className} {...interaction.eventProps}>
       <Icon className="ThreadEditorRailIcon" size={14} />
@@ -64,7 +64,7 @@ function EditorRailTab(props: {
 
 export function EditorRailTabs(props: {
   readonly activeProvider: ProviderKind;
-  readonly activeSurface: 'chat' | 'terminal';
+  readonly activeSurface: "chat" | "terminal";
   readonly activeThreadId: string;
   readonly activeThreadTitle: string;
   readonly onCloseTerminal: () => void;
@@ -77,9 +77,7 @@ export function EditorRailTabs(props: {
   readonly terminalAvailable: boolean;
   readonly threads: readonly ThreadSummary[];
 }) {
-  const [openTabs, setOpenTabs] = useState<
-    ReadonlyArray<EditorRailChatTabSnapshot>
-  >(() => {
+  const [openTabs, setOpenTabs] = useState<ReadonlyArray<EditorRailChatTabSnapshot>>(() => {
     const stored = readEditorRailChatTabs(props.projectId as never);
     return stored.length > 0
       ? stored
@@ -99,8 +97,8 @@ export function EditorRailTabs(props: {
 
   function updateTabs(
     updater: (
-      current: ReadonlyArray<EditorRailChatTabSnapshot>
-    ) => ReadonlyArray<EditorRailChatTabSnapshot>
+      current: ReadonlyArray<EditorRailChatTabSnapshot>,
+    ) => ReadonlyArray<EditorRailChatTabSnapshot>,
   ) {
     setOpenTabs((current) => {
       const next = updater(current);
@@ -110,19 +108,14 @@ export function EditorRailTabs(props: {
   }
 
   useEffect(() => {
-    if (props.activeSurface !== 'chat') return;
+    if (props.activeSurface !== "chat") return;
     updateTabs((current) => {
       const existing = current.find((tab) => tab.id === currentTab.id);
       if (!existing) return [...current, currentTab];
-      if (
-        existing.title === currentTab.title &&
-        existing.provider === currentTab.provider
-      ) {
+      if (existing.title === currentTab.title && existing.provider === currentTab.provider) {
         return current;
       }
-      return current.map((tab) =>
-        tab.id === currentTab.id ? currentTab : tab
-      );
+      return current.map((tab) => (tab.id === currentTab.id ? currentTab : tab));
     });
   }, [
     props.activeProvider,
@@ -132,9 +125,7 @@ export function EditorRailTabs(props: {
     props.projectId,
   ]);
 
-  const threadById = new Map(
-    props.threads.map((thread) => [thread.id, thread])
-  );
+  const threadById = new Map(props.threads.map((thread) => [thread.id, thread]));
   const tabs = openTabs.map((tab) => {
     const thread = threadById.get(tab.id);
     return thread
@@ -148,10 +139,7 @@ export function EditorRailTabs(props: {
   function closeChat(threadId: string) {
     const next = tabs.find((tab) => tab.id !== threadId);
     updateTabs((current) => current.filter((tab) => tab.id !== threadId));
-    if (
-      props.activeSurface === 'chat' &&
-      props.activeThreadId === threadId
-    ) {
+    if (props.activeSurface === "chat" && props.activeThreadId === threadId) {
       if (next) props.onOpenChat(next.id);
       else if (props.terminalAvailable) props.onOpenTerminal();
     }
@@ -164,7 +152,7 @@ export function EditorRailTabs(props: {
       listClassName="ThreadEditorRailTabList"
       owner="chat"
       scrollerClassName="ThreadEditorRailTabScroller"
-      actions={(
+      actions={
         <view className="ThreadEditorRailTabActions">
           <EditorRailAddMenu
             onNewChat={props.onNewChat}
@@ -178,22 +166,15 @@ export function EditorRailTabs(props: {
               />
             }
           />
-          <EditorRailIconButton
-            icon="history"
-            label="Chat history"
-            onActivate={props.onHistory}
-          />
+          <EditorRailIconButton icon="history" label="Chat history" onActivate={props.onHistory} />
         </view>
-      )}
-      tabs={(
+      }
+      tabs={
         <>
           {tabs.map((tab, index) => (
             <EditorRailTab
               key={tab.id}
-              active={
-                props.activeSurface === 'chat' &&
-                tab.id === props.activeThreadId
-              }
+              active={props.activeSurface === "chat" && tab.id === props.activeThreadId}
               label={`Chat ${index + 1}`}
               provider={tab.provider}
               onSelect={() => props.onOpenChat(tab.id)}
@@ -202,7 +183,7 @@ export function EditorRailTabs(props: {
           ))}
           {props.terminalAvailable ? (
             <EditorRailTab
-              active={props.activeSurface === 'terminal'}
+              active={props.activeSurface === "terminal"}
               label="Terminal"
               terminal
               onSelect={props.onOpenTerminal}
@@ -210,7 +191,7 @@ export function EditorRailTabs(props: {
             />
           ) : null}
         </>
-      )}
+      }
     />
   );
 }

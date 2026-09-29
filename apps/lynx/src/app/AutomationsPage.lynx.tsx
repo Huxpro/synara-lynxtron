@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from '@lynx-js/react';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import type { AutomationDefinitionRow, AutomationTriageRow } from '@synara/shared/automationList';
-import { projectAutomationList } from '@synara/shared/automationList';
+import { useEffect, useMemo, useRef, useState } from "@lynx-js/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import type { AutomationDefinitionRow, AutomationTriageRow } from "@synara/shared/automationList";
+import { projectAutomationList } from "@synara/shared/automationList";
 
-import { Button } from '../components/ui/button';
-import { PlusIcon, RefreshCwIcon } from '../lib/icons';
-import { useTheme } from '../adapters/useTheme.lynx';
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
-import { sleepOnHost } from '../platform/timer';
+import { Button } from "../components/ui/button";
+import { PlusIcon, RefreshCwIcon } from "../lib/icons";
+import { useTheme } from "../adapters/useTheme.lynx";
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import { sleepOnHost } from "../platform/timer";
 import {
   createAutomation,
   deleteAutomation,
@@ -16,16 +16,16 @@ import {
   queryClient,
   runAutomationNow,
   updateAutomation,
-} from './queries';
-import { AutomationDialog } from './AutomationDialog.lynx';
-import { AutomationDetailPage } from './AutomationDetailPage.lynx';
-import './automations-page.css';
+} from "./queries";
+import { AutomationDialog } from "./AutomationDialog.lynx";
+import { AutomationDetailPage } from "./AutomationDetailPage.lynx";
+import "./automations-page.css";
 
 function useHostPolling(poll: () => Promise<unknown>, delayMs: number): void {
   const pollRef = useRef(poll);
   pollRef.current = poll;
   useEffect(() => {
-    'background only';
+    "background only";
     let cancelled = false;
     const schedule = () => {
       void sleepOnHost(delayMs)
@@ -48,7 +48,7 @@ function useHostPolling(poll: () => Promise<unknown>, delayMs: number): void {
 export function AutomationStatusDot({
   tone,
 }: {
-  readonly tone: AutomationDefinitionRow['tone'] | 'triage';
+  readonly tone: AutomationDefinitionRow["tone"] | "triage";
 }) {
   return (
     <view className={`AutomationsStatusDot AutomationsStatusDot--${tone}`}>
@@ -65,17 +65,14 @@ export function AutomationRow({
   readonly onOpen: (automationId: string) => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'AutomationsRow AutomationsRow--interactive',
+    baseClassName: "AutomationsRow AutomationsRow--interactive",
     accessibleLabel: `${row.definition.name}. ${row.detail}. ${row.meta}`,
     accessibilityElement: true,
-    accessibilityTraits: 'button',
+    accessibilityTraits: "button",
     onActivate: () => onOpen(row.definition.id),
   });
   return (
-    <view
-      className={interaction.className}
-      {...interaction.eventProps}
-    >
+    <view className={interaction.className} {...interaction.eventProps}>
       <AutomationStatusDot tone={row.tone} />
       <text className="AutomationsRowTitle">{row.definition.name}</text>
       <text className="AutomationsRowDetail">{row.detail}</text>
@@ -92,17 +89,14 @@ export function AutomationTriageListRow({
   readonly onOpen: (automationId: string) => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'AutomationsRow AutomationsRow--interactive',
+    baseClassName: "AutomationsRow AutomationsRow--interactive",
     accessibleLabel: `${row.title}. ${row.detail}. ${row.meta}`,
     accessibilityElement: true,
-    accessibilityTraits: 'button',
+    accessibilityTraits: "button",
     onActivate: row.definition ? () => onOpen(row.definition!.id) : undefined,
   });
   return (
-    <view
-      className={interaction.className}
-      {...interaction.eventProps}
-    >
+    <view className={interaction.className} {...interaction.eventProps}>
       <AutomationStatusDot tone="triage" />
       <text className="AutomationsRowTitle">{row.title}</text>
       <text className="AutomationsRowDetail">{row.detail}</text>
@@ -126,11 +120,7 @@ export function AutomationSection({
       <text className="AutomationsSectionTitle">{title}</text>
       <view className="AutomationsRows">
         {rows.map((row) => (
-          <AutomationRow
-            key={row.definition.id}
-            row={row}
-            onOpen={onOpen}
-          />
+          <AutomationRow key={row.definition.id} row={row} onOpen={onOpen} />
         ))}
       </view>
     </view>
@@ -157,24 +147,55 @@ export function AutomationsListContent({
       <view className="AutomationsContent">
         <text className="AutomationsTitle">Automations</text>
         {isLoading ? (
-          <view className="AutomationsState" accessibility-element accessibility-label="Loading automations" accessibility-trait="updating">
+          <view
+            className="AutomationsState"
+            accessibility-element
+            accessibility-label="Loading automations"
+            accessibility-trait="updating"
+          >
             <text className="AutomationsStateText">Loading automations...</text>
           </view>
         ) : error ? (
-          <view className="AutomationsState" accessibility-element accessibility-label="Automations could not be loaded" accessibility-trait="text">
+          <view
+            className="AutomationsState"
+            accessibility-element
+            accessibility-label="Automations could not be loaded"
+            accessibility-trait="text"
+          >
             <text className="AutomationsStateTitle">Automations could not be loaded</text>
             <text className="AutomationsStateText">Check the server connection and try again.</text>
-            <Button variant="outline" size="sm" onClick={onRetry}>Try again</Button>
+            <Button variant="outline" size="sm" onClick={onRetry}>
+              Try again
+            </Button>
           </view>
         ) : definitionsCount === 0 ? (
-          <view className="AutomationsState" accessibility-element accessibility-label="No automations yet. Schedule a prompt to run on its own, or wake an existing thread on a loop." accessibility-trait="text">
+          <view
+            className="AutomationsState"
+            accessibility-element
+            accessibility-label="No automations yet. Schedule a prompt to run on its own, or wake an existing thread on a loop."
+            accessibility-trait="text"
+          >
             <text className="AutomationsStateTitle">No automations yet</text>
-            <text className="AutomationsStateText">Schedule a prompt to run on its own, or wake an existing thread on a loop.</text>
+            <text className="AutomationsStateText">
+              Schedule a prompt to run on its own, or wake an existing thread on a loop.
+            </text>
           </view>
         ) : projection ? (
           <view className="AutomationsSections">
             {projection.triage.length > 0 ? (
-              <view className="AutomationsSection"><view className="AutomationsSectionHeader"><text className="AutomationsSectionTitle">Needs review</text><text className="AutomationsSectionCount">Unread {projection.unreadTriageCount}</text></view><view className="AutomationsRows">{projection.triage.map((row) => <AutomationTriageListRow key={row.run.id} row={row} onOpen={onOpen} />)}</view></view>
+              <view className="AutomationsSection">
+                <view className="AutomationsSectionHeader">
+                  <text className="AutomationsSectionTitle">Needs review</text>
+                  <text className="AutomationsSectionCount">
+                    Unread {projection.unreadTriageCount}
+                  </text>
+                </view>
+                <view className="AutomationsRows">
+                  {projection.triage.map((row) => (
+                    <AutomationTriageListRow key={row.run.id} row={row} onOpen={onOpen} />
+                  ))}
+                </view>
+              </view>
             ) : null}
             <AutomationSection title="Current" rows={projection.current} onOpen={onOpen} />
             <AutomationSection title="Paused" rows={projection.paused} onOpen={onOpen} />
@@ -196,30 +217,30 @@ export function AutomationsPage({
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const automations = useQuery({
-    queryKey: ['automations'],
+    queryKey: ["automations"],
     queryFn: fetchAutomations,
   });
   const sidebar = useQuery({
-    queryKey: ['sidebar-snapshot'],
+    queryKey: ["sidebar-snapshot"],
     queryFn: fetchSidebarSnapshot,
   });
   const updateMutation = useMutation({
     mutationFn: updateAutomation,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['automations'] });
+      await queryClient.invalidateQueries({ queryKey: ["automations"] });
     },
   });
   const deleteMutation = useMutation({
     mutationFn: deleteAutomation,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['automations'] });
-      navigate('/automations');
+      await queryClient.invalidateQueries({ queryKey: ["automations"] });
+      navigate("/automations");
     },
   });
   const createMutation = useMutation({
     mutationFn: createAutomation,
     onSuccess: async (definition) => {
-      await queryClient.invalidateQueries({ queryKey: ['automations'] });
+      await queryClient.invalidateQueries({ queryKey: ["automations"] });
       setCreateOpen(false);
       navigate(`/automations/${encodeURIComponent(definition.id)}`);
     },
@@ -227,7 +248,7 @@ export function AutomationsPage({
   const runNowMutation = useMutation({
     mutationFn: runAutomationNow,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['automations'] });
+      await queryClient.invalidateQueries({ queryKey: ["automations"] });
     },
   });
   useHostPolling(automations.refetch, 5_000);
@@ -248,10 +269,9 @@ export function AutomationsPage({
               })) ?? [],
           })
         : null,
-    [automations.data, sidebar.data]
+    [automations.data, sidebar.data],
   );
-  const openAutomation = (id: string) =>
-    navigate(`/automations/${encodeURIComponent(id)}`);
+  const openAutomation = (id: string) => navigate(`/automations/${encodeURIComponent(id)}`);
 
   if (automationId) {
     if (automations.isPending || sidebar.isPending) {
@@ -262,9 +282,7 @@ export function AutomationsPage({
           accessibility-label="Loading automation"
           accessibility-trait="updating"
         >
-          <text className="AutomationDetailNotFoundText">
-            Loading automation...
-          </text>
+          <text className="AutomationDetailNotFoundText">Loading automation...</text>
         </view>
       );
     }
@@ -299,9 +317,7 @@ export function AutomationsPage({
               : null
         }
         deletePending={deleteMutation.isPending}
-        onDelete={(definition) =>
-          deleteMutation.mutate({ id: definition.id })
-        }
+        onDelete={(definition) => deleteMutation.mutate({ id: definition.id })}
         onToggleEnabled={(definition) =>
           updateMutation.mutate({
             id: definition.id,
@@ -316,9 +332,7 @@ export function AutomationsPage({
               : null
         }
         runNowPending={runNowMutation.isPending}
-        onRunNow={(definition) =>
-          runNowMutation.mutate({ automationId: definition.id })
-        }
+        onRunNow={(definition) => runNowMutation.mutate({ automationId: definition.id })}
         onApproveRisks={async (definition, acknowledgedRisks, maxIterations, runAfter) => {
           try {
             await updateMutation.mutateAsync({
@@ -348,7 +362,7 @@ export function AutomationsPage({
           aria-label="Refresh"
           onClick={() => void automations.refetch()}
         >
-          <RefreshCwIcon size={16} color={semanticIconColor('secondary')} />
+          <RefreshCwIcon size={16} color={semanticIconColor("secondary")} />
         </Button>
         <Button
           className="AutomationsNewAction"
@@ -359,12 +373,10 @@ export function AutomationsPage({
         >
           <PlusIcon
             className="AutomationsNewActionIcon"
-            color={semanticIconColor('inverse')}
+            color={semanticIconColor("inverse")}
             size={14}
           />
-          <text className="LxButton__text AutomationsNewActionText">
-            New automation
-          </text>
+          <text className="LxButton__text AutomationsNewActionText">New automation</text>
         </Button>
       </view>
       <AutomationsListContent

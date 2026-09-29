@@ -18,13 +18,12 @@ const CONTENT_TYPES: Readonly<Record<string, string>> = {
 export function injectLynxRuntimeConfig(html: string, wsUrl: string): string {
   const serializedConfig = JSON.stringify({ wsUrl }).replaceAll("<", "\\u003c");
   const script = `<script>globalThis.__SYNARA_LYNX_RUNTIME__=${serializedConfig};</script>`;
-  return html.includes("</head>") ? html.replace("</head>", `${script}</head>`) : `${script}${html}`;
+  return html.includes("</head>")
+    ? html.replace("</head>", `${script}</head>`)
+    : `${script}${html}`;
 }
 
-export function resolveLynxDevAssetPath(
-  requestUrl: string,
-  lynxDistDir: string,
-): string | null {
+export function resolveLynxDevAssetPath(requestUrl: string, lynxDistDir: string): string | null {
   const url = new URL(requestUrl, "http://localhost");
   if (url.pathname !== LYNX_DEV_PREFIX && !url.pathname.startsWith(`${LYNX_DEV_PREFIX}/`)) {
     return null;
@@ -70,7 +69,10 @@ export function lynxDevSurfacePlugin(options: {
               : raw;
           response.statusCode = 200;
           response.setHeader("Cache-Control", "no-store");
-          response.setHeader("Content-Type", CONTENT_TYPES[extension] ?? "application/octet-stream");
+          response.setHeader(
+            "Content-Type",
+            CONTENT_TYPES[extension] ?? "application/octet-stream",
+          );
           response.end(body);
         } catch (error) {
           const code =

@@ -54,10 +54,8 @@ describe("app settings General storage projection", () => {
 
   it("uses the server-owned thread mode when supplied", () => {
     expect(
-      readSettingsGeneralProjection(
-        JSON.stringify({ defaultThreadEnvMode: "local" }),
-        "worktree",
-      ).defaultThreadEnvMode,
+      readSettingsGeneralProjection(JSON.stringify({ defaultThreadEnvMode: "local" }), "worktree")
+        .defaultThreadEnvMode,
     ).toBe("worktree");
   });
 
@@ -77,10 +75,7 @@ describe("app settings General storage projection", () => {
       uiDensity: "compact",
     });
     expect(
-      readSettingsAppearanceProjection(
-        written.appSettingsRaw,
-        written.themeRaw,
-      ),
+      readSettingsAppearanceProjection(written.appSettingsRaw, written.themeRaw),
     ).toMatchObject({
       themeMode: "dark",
       uiDensity: "compact",
@@ -88,18 +83,15 @@ describe("app settings General storage projection", () => {
   });
 
   it("round-trips Provider picker fields without touching unrelated app settings", () => {
-    const raw = writeSettingsProviderPickerProjection(
-      JSON.stringify({ chatFontSizePx: 17 }),
-      {
-        hiddenProviders: ["kilo"],
-        providerOrder: [
-          "kilo",
-          ...DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES.providerOrder.filter(
-            (provider) => provider !== "kilo",
-          ),
-        ],
-      },
-    );
+    const raw = writeSettingsProviderPickerProjection(JSON.stringify({ chatFontSizePx: 17 }), {
+      hiddenProviders: ["kilo"],
+      providerOrder: [
+        "kilo",
+        ...DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES.providerOrder.filter(
+          (provider) => provider !== "kilo",
+        ),
+      ],
+    });
     expect(JSON.parse(raw)).toMatchObject({
       chatFontSizePx: 17,
       hiddenProviders: ["kilo"],
@@ -110,21 +102,16 @@ describe("app settings General storage projection", () => {
   });
 
   it("round-trips AppSnap defaults and custom chords without touching unrelated settings", () => {
-    expect(readSettingsAppSnapProjection(null)).toEqual(
-      DEFAULT_SETTINGS_APPSNAP_VALUES,
-    );
-    const raw = writeSettingsAppSnapProjection(
-      JSON.stringify({ chatFontSizePx: 17 }),
-      {
-        enableAppSnap: true,
-        appSnapPlaySound: false,
-        appSnapShortcut: {
-          kind: "key-chord",
-          modifier: "option",
-          key: "KeyK",
-        },
+    expect(readSettingsAppSnapProjection(null)).toEqual(DEFAULT_SETTINGS_APPSNAP_VALUES);
+    const raw = writeSettingsAppSnapProjection(JSON.stringify({ chatFontSizePx: 17 }), {
+      enableAppSnap: true,
+      appSnapPlaySound: false,
+      appSnapShortcut: {
+        kind: "key-chord",
+        modifier: "option",
+        key: "KeyK",
       },
-    );
+    });
     expect(JSON.parse(raw)).toMatchObject({
       chatFontSizePx: 17,
       enableAppSnap: true,

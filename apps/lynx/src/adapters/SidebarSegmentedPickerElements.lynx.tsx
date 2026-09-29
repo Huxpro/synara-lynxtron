@@ -1,8 +1,8 @@
-import type { CSSProperties } from '@lynx-js/types';
-import type { ReactNode } from '@lynx-js/react';
+import type { CSSProperties } from "@lynx-js/types";
+import type { ReactNode } from "@lynx-js/react";
 
-import { useLynxInteractiveState } from '../components/ui/interactive-state.lynx';
-import './sidebar-segmented-picker-elements.css';
+import { useLynxInteractiveState } from "../components/ui/interactive-state.lynx";
+import "./sidebar-segmented-picker-elements.css";
 
 interface ChildrenProps {
   readonly children?: ReactNode;
@@ -27,7 +27,7 @@ export function SidebarSegmentedPickerThumbElement({
 }) {
   return (
     <view
-      className={`SidebarSegmentedThumb${hidden ? ' SidebarSegmentedThumb--hidden' : ''}`}
+      className={`SidebarSegmentedThumb${hidden ? " SidebarSegmentedThumb--hidden" : ""}`}
       style={{ left, width } as CSSProperties}
     />
   );
@@ -44,16 +44,10 @@ export function SidebarSegmentButtonElement({
   readonly onActivate: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: `SidebarSegmentedButton${
-      active ? ' SidebarSegmentedButton--active' : ''
-    }`,
+    baseClassName: `SidebarSegmentedButton${active ? " SidebarSegmentedButton--active" : ""}`,
     onActivate,
   });
-  const {
-    bindmouseenter,
-    bindtouchstart,
-    ...remainingEventProps
-  } = interaction.eventProps;
+  const { bindmouseenter, bindtouchstart, ...remainingEventProps } = interaction.eventProps;
   return (
     <view
       className={interaction.className}

@@ -17,8 +17,7 @@ export function SidebarDesktopHeaderRootElement(props: {
       className={cn(
         "drag-region flex-row items-center gap-2 py-0 ps-4 pe-3 font-system-ui",
         CHAT_SURFACE_HEADER_HEIGHT_CLASS,
-        props.trafficLightGutter &&
-          DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CLASS,
+        props.trafficLightGutter && DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CLASS,
       )}
     >
       {props.children}

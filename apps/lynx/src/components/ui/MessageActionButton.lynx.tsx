@@ -1,4 +1,4 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
 export function MessageActionButtonLynx(props: {
   readonly children: ReactNode;

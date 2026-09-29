@@ -113,10 +113,7 @@ function startOfLocalDay(date: Date): number {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
 }
 
-export function formatAutomationRunTimestamp(
-  value: string | null,
-  nowMs = Date.now(),
-): string {
+export function formatAutomationRunTimestamp(value: string | null, nowMs = Date.now()): string {
   if (!value) return "—";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
@@ -129,9 +126,7 @@ export function formatAutomationRunTimestamp(
     },
     () => formatFallbackTime(date),
   );
-  const dayDelta = Math.round(
-    (startOfLocalDay(date) - startOfLocalDay(now)) / 86_400_000,
-  );
+  const dayDelta = Math.round((startOfLocalDay(date) - startOfLocalDay(now)) / 86_400_000);
   if (dayDelta === 0) return `Today at ${time}`;
   if (dayDelta === 1) return `Tomorrow at ${time}`;
   if (dayDelta === -1) return `Yesterday at ${time}`;
@@ -273,8 +268,7 @@ export function projectAutomationDetail(input: {
 }): AutomationDetailProjection {
   const completionPolicy = input.definition.completionPolicy;
   const latestFinishedRun =
-    input.runs.find((run) => run.finishedAt !== null || run.startedAt !== null) ??
-    null;
+    input.runs.find((run) => run.finishedAt !== null || run.startedAt !== null) ?? null;
   const status =
     input.definition.schedule.type === "once"
       ? input.definition.enabled && input.definition.nextRunAt
@@ -309,10 +303,7 @@ export function projectAutomationDetail(input: {
           ? [
               {
                 label: "Repeats",
-                value:
-                  input.definition.schedule.everySeconds === 3600
-                    ? "Hourly"
-                    : "Custom",
+                value: input.definition.schedule.everySeconds === 3600 ? "Hourly" : "Custom",
               },
               ...(input.definition.schedule.everySeconds === 3600
                 ? []
@@ -351,8 +342,7 @@ export function projectAutomationDetail(input: {
                   label: "Time",
                   value: formatClockTime(input.definition.schedule.timeOfDay),
                 },
-                ...("timezone" in input.definition.schedule &&
-                input.definition.schedule.timezone
+                ...("timezone" in input.definition.schedule && input.definition.schedule.timezone
                   ? [
                       {
                         label: "Timezone",
@@ -383,8 +373,7 @@ export function projectAutomationDetail(input: {
       label: "Mode",
       value: input.definition.mode === "heartbeat" ? "Heartbeat" : "Standalone",
     },
-    ...(input.definition.mode === "heartbeat" &&
-    completionPolicy?.type === "ai-evaluated"
+    ...(input.definition.mode === "heartbeat" && completionPolicy?.type === "ai-evaluated"
       ? [
           {
             label: "Stop when",
@@ -413,9 +402,7 @@ export function projectAutomationDetail(input: {
     detailRows,
     lastRunAt: latestFinishedRun?.finishedAt ?? latestFinishedRun?.startedAt ?? null,
     nextRunAt:
-      input.definition.enabled && input.definition.nextRunAt
-        ? input.definition.nextRunAt
-        : null,
+      input.definition.enabled && input.definition.nextRunAt ? input.definition.nextRunAt : null,
     projectName: input.projectName,
     runs,
     status,
@@ -432,7 +419,7 @@ export function projectAutomationList(input: {
   const projects = new Map(input.projects.map((project) => [project.id, project.name]));
   const threads = new Map(input.threads.map((thread) => [thread.id, thread.title]));
   const definitions = new Map(
-    input.data.definitions.map((definition) => [definition.id, definition])
+    input.data.definitions.map((definition) => [definition.id, definition]),
   );
   const latestRuns = latestRunsByAutomationId(input.data.runs);
 
@@ -443,9 +430,7 @@ export function projectAutomationList(input: {
         : null;
     const suffix = source ? ` · From ${source}` : "";
     if (definition.mode === "heartbeat") {
-      const target = definition.targetThreadId
-        ? threads.get(definition.targetThreadId)
-        : null;
+      const target = definition.targetThreadId ? threads.get(definition.targetThreadId) : null;
       return `Heartbeat · ${target ?? projects.get(definition.projectId) ?? "Unknown project"}${suffix}`;
     }
     return `${projects.get(definition.projectId) ?? "Unknown project"}${suffix}`;
@@ -484,17 +469,18 @@ export function projectAutomationList(input: {
 
   const triageRows = (runs: readonly AutomationRun[]) =>
     runs
-    .toSorted((left, right) => right.updatedAt.localeCompare(left.updatedAt))
-    .map((run): AutomationTriageRow => {
-      const definition = definitions.get(run.automationId) ?? null;
-      return {
-        definition,
-        detail: automationRunResultSummary(run) || (definition ? detail(definition) : "Saved run"),
-        meta: formatRelativeTime(run.finishedAt ?? run.startedAt ?? run.scheduledFor, nowMs),
-        run,
-        title: definition?.name ?? "Automation run",
-      };
-    });
+      .toSorted((left, right) => right.updatedAt.localeCompare(left.updatedAt))
+      .map((run): AutomationTriageRow => {
+        const definition = definitions.get(run.automationId) ?? null;
+        return {
+          definition,
+          detail:
+            automationRunResultSummary(run) || (definition ? detail(definition) : "Saved run"),
+          meta: formatRelativeTime(run.finishedAt ?? run.startedAt ?? run.scheduledFor, nowMs),
+          run,
+          title: definition?.name ?? "Automation run",
+        };
+      });
   const triage = triageRows(input.data.runs.filter(isAutomationTriageRun));
 
   const current: AutomationDefinitionRow[] = [];

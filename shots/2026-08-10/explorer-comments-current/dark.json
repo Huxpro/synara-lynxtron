@@ -6,10 +6,7 @@
     "x": 807,
     "y": 164
   },
-  "lineButtons": [
-    "Comment on line 1",
-    "Comment on line 2"
-  ],
+  "lineButtons": ["Comment on line 1", "Comment on line 2"],
   "logo": {
     "contentLength": 1238,
     "label": "Synara",

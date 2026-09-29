@@ -22,9 +22,7 @@ describe("browserLocalServerUrl", () => {
         }),
       ),
     ).toBe("http://127.0.0.1:5733/");
-    expect(browserLocalServerUrl(makeServer({ ports: [8891] }))).toBe(
-      "http://localhost:8891/",
-    );
+    expect(browserLocalServerUrl(makeServer({ ports: [8891] }))).toBe("http://localhost:8891/");
     expect(browserLocalServerUrl(makeServer({}))).toBeNull();
   });
 });

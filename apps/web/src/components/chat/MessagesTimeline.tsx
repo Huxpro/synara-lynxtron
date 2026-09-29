@@ -1132,144 +1132,144 @@ export const MessagesTimeline = memo(function MessagesTimeline({
                 />
               ) : null}
               <MessageUserRowComposition fullWidth={isEditingThisMessage}>
-                  {/* Keep user-message chrome outside the bubble so the message reads as one simple block. */}
-                  {/* The cross-task origin label already attributes this turn to another Synara thread,
+                {/* Keep user-message chrome outside the bubble so the message reads as one simple block. */}
+                {/* The cross-task origin label already attributes this turn to another Synara thread,
                       so suppress the dispatch chip here to avoid a duplicate "Sent by …" marker. */}
-                  {showCrossTaskOrigin ? null : (
-                    <UserDispatchModeChip
-                      dispatchMode={row.message.dispatchMode}
-                      dispatchOrigin={row.message.dispatchOrigin}
-                      hasLeadingMedia={hasLeadingMedia}
-                    />
-                  )}
-                  {renderedAssistantSelections.length > 0 && (
-                    <div className="mb-1 flex max-w-[240px] flex-wrap justify-end gap-1.5 self-end">
-                      <AssistantSelectionsSummaryChip selections={renderedAssistantSelections} />
-                    </div>
-                  )}
-                  {renderedFileComments.length > 0 && (
-                    <div className="mb-1 flex max-w-[240px] flex-wrap justify-end gap-1.5 self-end">
-                      <FileCommentsSummaryChip comments={renderedFileComments} />
-                    </div>
-                  )}
-                  {renderedPastedTexts.length > 0 && (
-                    <div className="mb-1 flex max-w-full flex-col items-end gap-1.5 self-end">
-                      {renderedPastedTexts.map((pasted) => (
-                        <UserMessagePastedTextCard
-                          key={pasted.index}
-                          text={pasted.text}
-                          metrics={{ lineCount: pasted.lineCount, charCount: pasted.charCount }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                  {userFiles.length > 0 && (
-                    <div className="mb-1 flex max-w-[280px] flex-wrap justify-end gap-1.5 self-end">
-                      {userFiles.map((file) => (
-                        <FileAttachmentChip key={file.id} file={file} />
-                      ))}
-                    </div>
-                  )}
-                  {userImages.length > 0 && (
-                    <div
-                      className={cn(
-                        "flex max-w-[240px] flex-wrap justify-end gap-2 self-end",
-                        showUserText && "mb-1",
-                      )}
+                {showCrossTaskOrigin ? null : (
+                  <UserDispatchModeChip
+                    dispatchMode={row.message.dispatchMode}
+                    dispatchOrigin={row.message.dispatchOrigin}
+                    hasLeadingMedia={hasLeadingMedia}
+                  />
+                )}
+                {renderedAssistantSelections.length > 0 && (
+                  <div className="mb-1 flex max-w-[240px] flex-wrap justify-end gap-1.5 self-end">
+                    <AssistantSelectionsSummaryChip selections={renderedAssistantSelections} />
+                  </div>
+                )}
+                {renderedFileComments.length > 0 && (
+                  <div className="mb-1 flex max-w-[240px] flex-wrap justify-end gap-1.5 self-end">
+                    <FileCommentsSummaryChip comments={renderedFileComments} />
+                  </div>
+                )}
+                {renderedPastedTexts.length > 0 && (
+                  <div className="mb-1 flex max-w-full flex-col items-end gap-1.5 self-end">
+                    {renderedPastedTexts.map((pasted) => (
+                      <UserMessagePastedTextCard
+                        key={pasted.index}
+                        text={pasted.text}
+                        metrics={{ lineCount: pasted.lineCount, charCount: pasted.charCount }}
+                      />
+                    ))}
+                  </div>
+                )}
+                {userFiles.length > 0 && (
+                  <div className="mb-1 flex max-w-[280px] flex-wrap justify-end gap-1.5 self-end">
+                    {userFiles.map((file) => (
+                      <FileAttachmentChip key={file.id} file={file} />
+                    ))}
+                  </div>
+                )}
+                {userImages.length > 0 && (
+                  <div
+                    className={cn(
+                      "flex max-w-[240px] flex-wrap justify-end gap-2 self-end",
+                      showUserText && "mb-1",
+                    )}
+                  >
+                    {userImages.map((image) => (
+                      <UserImageAttachmentThumbnail
+                        key={image.id}
+                        image={image}
+                        userImages={userImages}
+                        onImageExpand={onImageExpand}
+                        onTimelineImageLoad={
+                          isTailContentRow ? scrollTailExpansionToEnd : ignoreTimelineImageLoad
+                        }
+                        resolvedTheme={resolvedTheme}
+                      />
+                    ))}
+                  </div>
+                )}
+                {isEditingThisMessage ? (
+                  <UserMessageEditForm
+                    key={row.message.id}
+                    initialValue={displayedUserMessage.copyText}
+                    disabled={isSubmittingThisEdit || isRevertingCheckpoint}
+                    chatTypographyStyle={userMessageTypographyStyle}
+                    onCancel={cancelUserMessageEdit}
+                    onSubmit={(text) => void submitUserMessageEdit(row.message.id, text)}
+                  />
+                ) : showUserText ? (
+                  <MessageUserBubbleComposition chipOnly={bubbleIsChipOnly}>
+                    <UserMessageCollapsibleText
+                      text={userMessageText}
+                      expanded={userMessageExpanded}
+                      chatFontSizePx={normalizedChatFontSizePx}
+                      onToggle={() => {
+                        setExpandedUserMessagesById((previous) => ({
+                          ...previous,
+                          [row.message.id]: !(previous[row.message.id] ?? false),
+                        }));
+                      }}
                     >
-                      {userImages.map((image) => (
-                        <UserImageAttachmentThumbnail
-                          key={image.id}
-                          image={image}
-                          userImages={userImages}
-                          onImageExpand={onImageExpand}
-                          onTimelineImageLoad={
-                            isTailContentRow ? scrollTailExpansionToEnd : ignoreTimelineImageLoad
-                          }
-                          resolvedTheme={resolvedTheme}
-                        />
-                      ))}
-                    </div>
-                  )}
-                  {isEditingThisMessage ? (
-                    <UserMessageEditForm
-                      key={row.message.id}
-                      initialValue={displayedUserMessage.copyText}
-                      disabled={isSubmittingThisEdit || isRevertingCheckpoint}
-                      chatTypographyStyle={userMessageTypographyStyle}
-                      onCancel={cancelUserMessageEdit}
-                      onSubmit={(text) => void submitUserMessageEdit(row.message.id, text)}
-                    />
-                  ) : showUserText ? (
-                    <MessageUserBubbleComposition chipOnly={bubbleIsChipOnly}>
-                      <UserMessageCollapsibleText
+                      <UserMessageBody
                         text={userMessageText}
-                        expanded={userMessageExpanded}
-                        chatFontSizePx={normalizedChatFontSizePx}
-                        onToggle={() => {
-                          setExpandedUserMessagesById((previous) => ({
-                            ...previous,
-                            [row.message.id]: !(previous[row.message.id] ?? false),
-                          }));
-                        }}
-                      >
-                        <UserMessageBody
-                          text={userMessageText}
-                          mentionReferences={row.message.mentions ?? []}
-                          terminalContexts={terminalContexts}
-                          chatTypographyStyle={userMessageTypographyStyle}
-                          resolvedTheme={resolvedTheme}
-                          markdownCwd={markdownCwd}
+                        mentionReferences={row.message.mentions ?? []}
+                        terminalContexts={terminalContexts}
+                        chatTypographyStyle={userMessageTypographyStyle}
+                        resolvedTheme={resolvedTheme}
+                        markdownCwd={markdownCwd}
+                      />
+                    </UserMessageCollapsibleText>
+                  </MessageUserBubbleComposition>
+                ) : null}
+                {!isEditingThisMessage && (
+                  <div
+                    className="flex items-center justify-end gap-2 pr-0.5 font-system-ui font-normal text-muted-foreground/45"
+                    style={chatMessageFooterStyle}
+                  >
+                    <p className={cn("tabular-nums", MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME)}>
+                      {formatShortTimestamp(row.message.createdAt, timestampFormat)}
+                    </p>
+                    <div className="flex items-center gap-2">
+                      {displayedUserMessage.copyText && (
+                        <MessageCopyButton
+                          text={displayedUserMessage.copyText}
+                          className={MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME}
                         />
-                      </UserMessageCollapsibleText>
-                    </MessageUserBubbleComposition>
-                  ) : null}
-                  {!isEditingThisMessage && (
-                    <div
-                      className="flex items-center justify-end gap-2 pr-0.5 font-system-ui font-normal text-muted-foreground/45"
-                      style={chatMessageFooterStyle}
-                    >
-                      <p className={cn("tabular-nums", MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME)}>
-                        {formatShortTimestamp(row.message.createdAt, timestampFormat)}
-                      </p>
-                      <div className="flex items-center gap-2">
-                        {displayedUserMessage.copyText && (
-                          <MessageCopyButton
-                            text={displayedUserMessage.copyText}
-                            className={MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME}
-                          />
-                        )}
-                        {showEditUserMessage && (
-                          <MessageActionButton
-                            label="Edit message"
-                            tooltip="Edit and resend"
-                            disabled={isRevertingCheckpoint}
-                            className={cn(
-                              MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
-                              "disabled:text-muted-foreground/35",
-                            )}
-                            onClick={() => startUserMessageEdit(row.message.id)}
-                          >
-                            <NewThreadIcon className={MESSAGE_ACTION_ICON_CLASS_NAME} />
-                          </MessageActionButton>
-                        )}
-                        {canRevertAgentWork ? (
-                          <MessageActionButton
-                            label="Revert to this message"
-                            tooltip="Revert to this message"
-                            disabled={isRevertingCheckpoint || isWorking}
-                            className={cn(
-                              MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
-                              "disabled:text-muted-foreground/35",
-                            )}
-                            onClick={() => onRevertUserMessage(row.message.id)}
-                          >
-                            <Undo2Icon className={MESSAGE_ACTION_ICON_CLASS_NAME} />
-                          </MessageActionButton>
-                        ) : null}
-                      </div>
+                      )}
+                      {showEditUserMessage && (
+                        <MessageActionButton
+                          label="Edit message"
+                          tooltip="Edit and resend"
+                          disabled={isRevertingCheckpoint}
+                          className={cn(
+                            MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
+                            "disabled:text-muted-foreground/35",
+                          )}
+                          onClick={() => startUserMessageEdit(row.message.id)}
+                        >
+                          <NewThreadIcon className={MESSAGE_ACTION_ICON_CLASS_NAME} />
+                        </MessageActionButton>
+                      )}
+                      {canRevertAgentWork ? (
+                        <MessageActionButton
+                          label="Revert to this message"
+                          tooltip="Revert to this message"
+                          disabled={isRevertingCheckpoint || isWorking}
+                          className={cn(
+                            MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME,
+                            "disabled:text-muted-foreground/35",
+                          )}
+                          onClick={() => onRevertUserMessage(row.message.id)}
+                        >
+                          <Undo2Icon className={MESSAGE_ACTION_ICON_CLASS_NAME} />
+                        </MessageActionButton>
+                      ) : null}
                     </div>
-                  )}
+                  </div>
+                )}
               </MessageUserRowComposition>
             </div>
           );

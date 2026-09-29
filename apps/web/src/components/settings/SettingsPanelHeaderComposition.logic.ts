@@ -11,8 +11,6 @@ export function resolveSettingsPanelHeader(section: SettingsSectionId): {
   const item = SETTINGS_NAV_ITEMS.find((candidate) => candidate.id === section);
   return {
     title: item?.label ?? "General",
-    description:
-      item?.description ??
-      "Default provider, thread mode, and sidebar organization.",
+    description: item?.description ?? "Default provider, thread mode, and sidebar organization.",
   };
 }

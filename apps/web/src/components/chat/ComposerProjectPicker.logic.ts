@@ -55,12 +55,7 @@ const VOID_GROUP_ICON = "black-hole" as const;
 const VOID_GROUP_SORT_ORDER = Number.MAX_SAFE_INTEGER - 1;
 
 function searchableText(project: ComposerProjectPickerSourceProject): string {
-  return [
-    project.primaryLabel,
-    project.secondaryLabel,
-    project.spaceName,
-    project.workspaceRoot,
-  ]
+  return [project.primaryLabel, project.secondaryLabel, project.spaceName, project.workspaceRoot]
     .filter(Boolean)
     .join(" ")
     .toLocaleLowerCase();

@@ -24,10 +24,7 @@
             "childNodeCount": 1,
             "children": [
               {
-                "attributes": [
-                  "class",
-                  "SharedAppShellFrame"
-                ],
+                "attributes": ["class", "SharedAppShellFrame"],
                 "backendNodeId": 132,
                 "childNodeCount": 2,
                 "children": [
@@ -44,18 +41,12 @@
                     "childNodeCount": 1,
                     "children": [
                       {
-                        "attributes": [
-                          "class",
-                          "SidebarDisclosureInner"
-                        ],
+                        "attributes": ["class", "SidebarDisclosureInner"],
                         "backendNodeId": 134,
                         "childNodeCount": 1,
                         "children": [
                           {
-                            "attributes": [
-                              "class",
-                              "SettingsSidebar"
-                            ],
+                            "attributes": ["class", "SettingsSidebar"],
                             "backendNodeId": 135,
                             "childNodeCount": 2,
                             "children": [
@@ -332,18 +323,12 @@
                                 "childNodeCount": 1,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsSidebarBodyInner"
-                                    ],
+                                    "attributes": ["class", "SettingsSidebarBodyInner"],
                                     "backendNodeId": 138,
                                     "childNodeCount": 2,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSettingsSidebarChrome"
-                                        ],
+                                        "attributes": ["class", "SharedSettingsSidebarChrome"],
                                         "backendNodeId": 149,
                                         "childNodeCount": 2,
                                         "children": [
@@ -439,10 +424,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "Back to app"
-                                                        ],
+                                                        "attributes": ["text", "Back to app"],
                                                         "backendNodeId": 155,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -625,10 +607,7 @@
                                         "parentId": 138
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SharedSettingsNavigation"
-                                        ],
+                                        "attributes": ["class", "SharedSettingsNavigation"],
                                         "backendNodeId": 163,
                                         "childNodeCount": 2,
                                         "children": [
@@ -649,10 +628,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "App"
-                                                    ],
+                                                    "attributes": ["text", "App"],
                                                     "backendNodeId": 166,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -771,10 +747,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "General"
-                                                                ],
+                                                                "attributes": ["text", "General"],
                                                                 "backendNodeId": 173,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -903,10 +876,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Profile"
-                                                                ],
+                                                                "attributes": ["text", "Profile"],
                                                                 "backendNodeId": 179,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -1293,10 +1263,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Behavior"
-                                                                ],
+                                                                "attributes": ["text", "Behavior"],
                                                                 "backendNodeId": 197,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -1423,10 +1390,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "AppSnap"
-                                                                ],
+                                                                "attributes": ["text", "AppSnap"],
                                                                 "backendNodeId": 203,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -1683,10 +1647,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Worktrees"
-                                                                ],
+                                                                "attributes": ["text", "Worktrees"],
                                                                 "backendNodeId": 215,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -1813,10 +1774,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Archived"
-                                                                ],
+                                                                "attributes": ["text", "Archived"],
                                                                 "backendNodeId": 221,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -1884,10 +1842,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Synara"
-                                                    ],
+                                                    "attributes": ["text", "Synara"],
                                                     "backendNodeId": 224,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -2006,10 +1961,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Models"
-                                                                ],
+                                                                "attributes": ["text", "Models"],
                                                                 "backendNodeId": 231,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -2136,10 +2088,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Providers"
-                                                                ],
+                                                                "attributes": ["text", "Providers"],
                                                                 "backendNodeId": 237,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -2266,10 +2215,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Skills"
-                                                                ],
+                                                                "attributes": ["text", "Skills"],
                                                                 "backendNodeId": 243,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -2396,10 +2342,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Usage"
-                                                                ],
+                                                                "attributes": ["text", "Usage"],
                                                                 "backendNodeId": 249,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -2656,10 +2599,7 @@
                                                             "childNodeCount": 1,
                                                             "children": [
                                                               {
-                                                                "attributes": [
-                                                                  "text",
-                                                                  "Advanced"
-                                                                ],
+                                                                "attributes": ["text", "Advanced"],
                                                                 "backendNodeId": 261,
                                                                 "childNodeCount": 0,
                                                                 "children": [],
@@ -2797,18 +2737,12 @@
                             "childNodeCount": 1,
                             "children": [
                               {
-                                "attributes": [
-                                  "class",
-                                  "SettingsProfile"
-                                ],
+                                "attributes": ["class", "SettingsProfile"],
                                 "backendNodeId": 511,
                                 "childNodeCount": 7,
                                 "children": [
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileActions"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileActions"],
                                     "backendNodeId": 512,
                                     "childNodeCount": 2,
                                     "children": [
@@ -2835,18 +2769,12 @@
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "LxButton__text"
-                                            ],
+                                            "attributes": ["class", "LxButton__text"],
                                             "backendNodeId": 539,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Copy summary"
-                                                ],
+                                                "attributes": ["text", "Copy summary"],
                                                 "backendNodeId": 540,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -2946,10 +2874,7 @@
                                     "parentId": 511
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileIdentity"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileIdentity"],
                                     "backendNodeId": 513,
                                     "childNodeCount": 2,
                                     "children": [
@@ -2964,18 +2889,12 @@
                                         "childNodeCount": 1,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileAvatarText"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileAvatarText"],
                                             "backendNodeId": 544,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "BY"
-                                                ],
+                                                "attributes": ["text", "BY"],
                                                 "backendNodeId": 545,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3003,26 +2922,17 @@
                                         "parentId": 513
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileIdentityCopy"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileIdentityCopy"],
                                         "backendNodeId": 515,
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileName"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileName"],
                                             "backendNodeId": 516,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Bytedance"
-                                                ],
+                                                "attributes": ["text", "Bytedance"],
                                                 "backendNodeId": 546,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3042,26 +2952,17 @@
                                             "parentId": 515
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHandleLine"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHandleLine"],
                                             "backendNodeId": 517,
                                             "childNodeCount": 3,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "class",
-                                                  "SettingsProfileHandle"
-                                                ],
+                                                "attributes": ["class", "SettingsProfileHandle"],
                                                 "backendNodeId": 518,
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "@bytedance"
-                                                    ],
+                                                    "attributes": ["text", "@bytedance"],
                                                     "backendNodeId": 547,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -3139,10 +3040,7 @@
                                     "parentId": 511
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileStats"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileStats"],
                                     "backendNodeId": 521,
                                     "childNodeCount": 5,
                                     "children": [
@@ -3155,18 +3053,12 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileStatValue"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileStatValue"],
                                             "backendNodeId": 549,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "—"
-                                                ],
+                                                "attributes": ["text", "—"],
                                                 "backendNodeId": 551,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3186,18 +3078,12 @@
                                             "parentId": 548
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileStatLabel"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileStatLabel"],
                                             "backendNodeId": 550,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Lifetime tokens"
-                                                ],
+                                                "attributes": ["text", "Lifetime tokens"],
                                                 "backendNodeId": 552,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3233,18 +3119,12 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileStatValue"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileStatValue"],
                                             "backendNodeId": 554,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "—"
-                                                ],
+                                                "attributes": ["text", "—"],
                                                 "backendNodeId": 556,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3264,18 +3144,12 @@
                                             "parentId": 553
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileStatLabel"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileStatLabel"],
                                             "backendNodeId": 555,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Peak day"
-                                                ],
+                                                "attributes": ["text", "Peak day"],
                                                 "backendNodeId": 557,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3311,18 +3185,12 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileStatValue"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileStatValue"],
                                             "backendNodeId": 559,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "0"
-                                                ],
+                                                "attributes": ["text", "0"],
                                                 "backendNodeId": 561,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3342,18 +3210,12 @@
                                             "parentId": 558
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileStatLabel"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileStatLabel"],
                                             "backendNodeId": 560,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Total prompts"
-                                                ],
+                                                "attributes": ["text", "Total prompts"],
                                                 "backendNodeId": 562,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3389,18 +3251,12 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileStatValue"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileStatValue"],
                                             "backendNodeId": 564,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "0 days"
-                                                ],
+                                                "attributes": ["text", "0 days"],
                                                 "backendNodeId": 566,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3420,18 +3276,12 @@
                                             "parentId": 563
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileStatLabel"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileStatLabel"],
                                             "backendNodeId": 565,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Current streak"
-                                                ],
+                                                "attributes": ["text", "Current streak"],
                                                 "backendNodeId": 567,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3467,18 +3317,12 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileStatValue"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileStatValue"],
                                             "backendNodeId": 569,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "0 days"
-                                                ],
+                                                "attributes": ["text", "0 days"],
                                                 "backendNodeId": 571,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3498,18 +3342,12 @@
                                             "parentId": 568
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileStatLabel"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileStatLabel"],
                                             "backendNodeId": 570,
                                             "childNodeCount": 1,
                                             "children": [
                                               {
-                                                "attributes": [
-                                                  "text",
-                                                  "Longest streak"
-                                                ],
+                                                "attributes": ["text", "Longest streak"],
                                                 "backendNodeId": 572,
                                                 "childNodeCount": 0,
                                                 "children": [],
@@ -3582,10 +3420,7 @@
                                         "childNodeCount": 2,
                                         "children": [
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapGrid"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapGrid"],
                                             "backendNodeId": 525,
                                             "childNodeCount": 40,
                                             "children": [
@@ -8438,10 +8273,7 @@
                                             "parentId": 524
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileHeatmapMonths"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileHeatmapMonths"],
                                             "backendNodeId": 526,
                                             "childNodeCount": 40,
                                             "children": [
@@ -8454,10 +8286,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Nov"
-                                                    ],
+                                                    "attributes": ["text", "Nov"],
                                                     "backendNodeId": 894,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -8545,10 +8374,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Dec"
-                                                    ],
+                                                    "attributes": ["text", "Dec"],
                                                     "backendNodeId": 900,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -8621,10 +8447,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Jan"
-                                                    ],
+                                                    "attributes": ["text", "Jan"],
                                                     "backendNodeId": 905,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -8697,10 +8520,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Feb"
-                                                    ],
+                                                    "attributes": ["text", "Feb"],
                                                     "backendNodeId": 910,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -8773,10 +8593,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Mar"
-                                                    ],
+                                                    "attributes": ["text", "Mar"],
                                                     "backendNodeId": 915,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -8864,10 +8681,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Apr"
-                                                    ],
+                                                    "attributes": ["text", "Apr"],
                                                     "backendNodeId": 921,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -8940,10 +8754,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "May"
-                                                    ],
+                                                    "attributes": ["text", "May"],
                                                     "backendNodeId": 926,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -9031,10 +8842,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Jun"
-                                                    ],
+                                                    "attributes": ["text", "Jun"],
                                                     "backendNodeId": 932,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -9107,10 +8915,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Jul"
-                                                    ],
+                                                    "attributes": ["text", "Jul"],
                                                     "backendNodeId": 937,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -9183,10 +8988,7 @@
                                                 "childNodeCount": 1,
                                                 "children": [
                                                   {
-                                                    "attributes": [
-                                                      "text",
-                                                      "Aug"
-                                                    ],
+                                                    "attributes": ["text", "Aug"],
                                                     "backendNodeId": 942,
                                                     "childNodeCount": 0,
                                                     "children": [],
@@ -9230,18 +9032,12 @@
                                     "parentId": 511
                                   },
                                   {
-                                    "attributes": [
-                                      "class",
-                                      "SettingsProfileColumns"
-                                    ],
+                                    "attributes": ["class", "SettingsProfileColumns"],
                                     "backendNodeId": 527,
                                     "childNodeCount": 2,
                                     "children": [
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileColumn"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileColumn"],
                                         "backendNodeId": 528,
                                         "childNodeCount": 2,
                                         "children": [
@@ -9263,10 +9059,7 @@
                                             "parentId": 528
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileList"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileList"],
                                             "backendNodeId": 530,
                                             "childNodeCount": 7,
                                             "children": [
@@ -9320,10 +9113,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "—"
-                                                        ],
+                                                        "attributes": ["text", "—"],
                                                         "backendNodeId": 947,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -9400,10 +9190,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "—"
-                                                        ],
+                                                        "attributes": ["text", "—"],
                                                         "backendNodeId": 952,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -9447,10 +9234,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "Most active hour"
-                                                        ],
+                                                        "attributes": ["text", "Most active hour"],
                                                         "backendNodeId": 956,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -9480,10 +9264,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "—"
-                                                        ],
+                                                        "attributes": ["text", "—"],
                                                         "backendNodeId": 957,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -9560,10 +9341,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "—"
-                                                        ],
+                                                        "attributes": ["text", "—"],
                                                         "backendNodeId": 962,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -9607,10 +9385,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "Skills explored"
-                                                        ],
+                                                        "attributes": ["text", "Skills explored"],
                                                         "backendNodeId": 966,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -9640,10 +9415,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "0"
-                                                        ],
+                                                        "attributes": ["text", "0"],
                                                         "backendNodeId": 967,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -9687,10 +9459,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "Total skills used"
-                                                        ],
+                                                        "attributes": ["text", "Total skills used"],
                                                         "backendNodeId": 971,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -9720,10 +9489,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "0"
-                                                        ],
+                                                        "attributes": ["text", "0"],
                                                         "backendNodeId": 972,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -9767,10 +9533,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "Total threads"
-                                                        ],
+                                                        "attributes": ["text", "Total threads"],
                                                         "backendNodeId": 976,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -9800,10 +9563,7 @@
                                                     "childNodeCount": 1,
                                                     "children": [
                                                       {
-                                                        "attributes": [
-                                                          "text",
-                                                          "0"
-                                                        ],
+                                                        "attributes": ["text", "0"],
                                                         "backendNodeId": 977,
                                                         "childNodeCount": 0,
                                                         "children": [],
@@ -9847,10 +9607,7 @@
                                         "parentId": 527
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileColumn"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileColumn"],
                                         "backendNodeId": 531,
                                         "childNodeCount": 2,
                                         "children": [
@@ -9872,10 +9629,7 @@
                                             "parentId": 531
                                           },
                                           {
-                                            "attributes": [
-                                              "class",
-                                              "SettingsProfileList"
-                                            ],
+                                            "attributes": ["class", "SettingsProfileList"],
                                             "backendNodeId": 533,
                                             "childNodeCount": 1,
                                             "children": [
@@ -9946,10 +9700,7 @@
                                         "parentId": 534
                                       },
                                       {
-                                        "attributes": [
-                                          "class",
-                                          "SettingsProfileModels"
-                                        ],
+                                        "attributes": ["class", "SettingsProfileModels"],
                                         "backendNodeId": 536,
                                         "childNodeCount": 1,
                                         "children": [

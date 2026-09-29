@@ -1,7 +1,7 @@
-import { useState } from '@lynx-js/react';
+import { useState } from "@lynx-js/react";
 
 function fileName(path: string): string {
-  return path.replace(/\\/g, '/').split('/').pop() || path;
+  return path.replace(/\\/g, "/").split("/").pop() || path;
 }
 
 export function ExplorerImagePreview(props: {
@@ -11,9 +11,7 @@ export function ExplorerImagePreview(props: {
   const [decodeFailed, setDecodeFailed] = useState(false);
   if (decodeFailed) {
     return (
-      <text className="ExplorerDockState ExplorerDockState--error">
-        Could not load this image.
-      </text>
+      <text className="ExplorerDockState ExplorerDockState--error">Could not load this image.</text>
     );
   }
   return (
@@ -24,7 +22,7 @@ export function ExplorerImagePreview(props: {
         mode="aspectFit"
         accessibility-element={false}
         binderror={() => {
-          'background only';
+          "background only";
           setDecodeFailed(true);
         }}
       />

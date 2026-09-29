@@ -1,21 +1,21 @@
-import { useEffect, useState } from '@lynx-js/react';
-import type { ProjectId, SpaceIconName, SpaceId } from '@synara/contracts';
-import { newSpaceId } from '@synara-web/lib/utils';
-import { useSpacesUiStore } from '@synara-web/spacesUiStore';
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from "@lynx-js/react";
+import type { ProjectId, SpaceIconName, SpaceId } from "@synara/contracts";
+import { newSpaceId } from "@synara-web/lib/utils";
+import { useSpacesUiStore } from "@synara-web/spacesUiStore";
+import { useQuery } from "@tanstack/react-query";
 
 import {
   fetchSidebarSnapshot,
   invalidateSidebarSnapshotProjectionCache,
   queryClient,
-} from '../../app/queries';
-import { SidebarSearchPaletteLynx } from './SidebarSearchPalette.lynx';
-import { SpaceEditorDialogLynx } from './SpaceEditorDialog.lynx';
-import { SpaceProjectPickerDialogLynx } from './SpaceProjectPickerDialog.lynx';
+} from "../../app/queries";
+import { SidebarSearchPaletteLynx } from "./SidebarSearchPalette.lynx";
+import { SpaceEditorDialogLynx } from "./SpaceEditorDialog.lynx";
+import { SpaceProjectPickerDialogLynx } from "./SpaceProjectPickerDialog.lynx";
 import {
   assignNativeProjectsToSpace,
   buildNativeSpaceCreateCommand,
-} from './spaceContextActions.logic';
+} from "./spaceContextActions.logic";
 
 interface CreatedSpaceTarget {
   readonly id: SpaceId;
@@ -32,13 +32,12 @@ export function SidebarSearchPaletteHost(props: {
   readonly paletteKey: number;
 }) {
   const [createSpaceOpen, setCreateSpaceOpen] = useState(false);
-  const [createdSpaceTarget, setCreatedSpaceTarget] =
-    useState<CreatedSpaceTarget | null>(null);
+  const [createdSpaceTarget, setCreatedSpaceTarget] = useState<CreatedSpaceTarget | null>(null);
   const [spaceActionError, setSpaceActionError] = useState<string | null>(null);
   const activeSpaceId = useSpacesUiStore((state) => state.activeSpaceId);
   const setActiveSpaceId = useSpacesUiStore((state) => state.setActiveSpaceId);
   const { data, error, isPending, refetch } = useQuery({
-    queryKey: ['sidebar-snapshot'],
+    queryKey: ["sidebar-snapshot"],
     queryFn: fetchSidebarSnapshot,
     refetchInterval: 5_000,
   });
@@ -47,7 +46,7 @@ export function SidebarSearchPaletteHost(props: {
     let active = true;
     let unsubscribe: (() => void) | null = null;
     let invalidateTimer: ReturnType<typeof setTimeout> | null = null;
-    void import(/* webpackMode: "eager" */ '../../data/synaraClient.lynx')
+    void import(/* webpackMode: "eager" */ "../../data/synaraClient.lynx")
       .then(({ subscribeOrchestrationShellEvents }) => {
         if (!active) return;
         unsubscribe = subscribeOrchestrationShellEvents(() => {
@@ -56,7 +55,7 @@ export function SidebarSearchPaletteHost(props: {
             invalidateTimer = null;
             if (!active) return;
             invalidateSidebarSnapshotProjectionCache();
-            void queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] });
+            void queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
           }, 100);
         });
       })
@@ -68,15 +67,12 @@ export function SidebarSearchPaletteHost(props: {
     };
   }, []);
 
-  const saveSpace = async (value: {
-    readonly icon: SpaceIconName;
-    readonly name: string;
-  }) => {
-    'background only';
+  const saveSpace = async (value: { readonly icon: SpaceIconName; readonly name: string }) => {
+    "background only";
     setSpaceActionError(null);
     try {
       const { dispatchSynaraCommand } = await import(
-        /* webpackMode: "eager" */ '../../data/synaraClient'
+        /* webpackMode: "eager" */ "../../data/synaraClient"
       );
       const spaceId = newSpaceId();
       await dispatchSynaraCommand(
@@ -84,35 +80,30 @@ export function SidebarSearchPaletteHost(props: {
           icon: value.icon,
           name: value.name,
           spaceId,
-        })
+        }),
       );
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] }),
-        queryClient.invalidateQueries({ queryKey: ['threads'] }),
+        queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
+        queryClient.invalidateQueries({ queryKey: ["threads"] }),
       ]);
       setActiveSpaceId(spaceId);
-      props.navigate('/');
+      props.navigate("/");
       setCreatedSpaceTarget({
         id: spaceId,
         icon: value.icon,
         name: value.name.trim(),
       });
     } catch (cause) {
-      setSpaceActionError(
-        cause instanceof Error ? cause.message : 'Unable to create the space.'
-      );
+      setSpaceActionError(cause instanceof Error ? cause.message : "Unable to create the space.");
       throw cause;
     }
   };
 
   const assignProjects = async (projectIds: readonly ProjectId[]) => {
-    'background only';
+    "background only";
     if (!createdSpaceTarget) return projectIds;
-    const {
-      dispatchSynaraCommand,
-      fetchSynaraSidebarShellSnapshot,
-    } = await import(
-      /* webpackMode: "eager" */ '../../data/synaraClient'
+    const { dispatchSynaraCommand, fetchSynaraSidebarShellSnapshot } = await import(
+      /* webpackMode: "eager" */ "../../data/synaraClient"
     );
     const failedIds = await assignNativeProjectsToSpace({
       dispatch: dispatchSynaraCommand,
@@ -121,8 +112,8 @@ export function SidebarSearchPaletteHost(props: {
       spaceId: createdSpaceTarget.id,
     });
     await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ['sidebar-snapshot'] }),
-      queryClient.invalidateQueries({ queryKey: ['threads'] }),
+      queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
+      queryClient.invalidateQueries({ queryKey: ["threads"] }),
     ]);
     return failedIds;
   };
@@ -135,13 +126,13 @@ export function SidebarSearchPaletteHost(props: {
         activeThreadId={props.activeThreadId}
         initialQuery={props.initialQuery}
         snapshot={data}
-        searchStatus={data ? 'ready' : isPending ? 'loading' : 'error'}
+        searchStatus={data ? "ready" : isPending ? "loading" : "error"}
         searchErrorMessage={error instanceof Error ? error.message : null}
         onRetrySearch={() => void refetch()}
         onOpenChange={props.onOpenChange}
-        onOpenProject={() => props.navigate('/kanban')}
+        onOpenProject={() => props.navigate("/kanban")}
         onOpenThread={(threadId) => props.navigate(`/thread/${threadId}`)}
-        onCreateThread={() => props.navigate('/')}
+        onCreateThread={() => props.navigate("/")}
         onCreateSpace={() => {
           setSpaceActionError(null);
           setCreateSpaceOpen(true);
@@ -149,9 +140,7 @@ export function SidebarSearchPaletteHost(props: {
         onCreateProjectThread={(projectId) =>
           props.navigate(`/new-thread/${encodeURIComponent(projectId)}`)
         }
-        onOpenSettings={(section) =>
-          props.navigate(section ? `/settings/${section}` : '/settings')
-        }
+        onOpenSettings={(section) => props.navigate(section ? `/settings/${section}` : "/settings")}
       />
       <SpaceEditorDialogLynx
         mode="create"

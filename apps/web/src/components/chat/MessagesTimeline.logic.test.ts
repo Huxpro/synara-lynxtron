@@ -736,7 +736,10 @@ describe("buildRevertTurnCountByUserMessageId", () => {
       checkpointMessageEntry("a-2", "assistant", "second reply"),
     ];
     const summaries = new Map([
-      [MessageId.makeUnsafe("a-2"), makeSummary({ turnId: "turn-2", checkpointTurnCount: undefined })],
+      [
+        MessageId.makeUnsafe("a-2"),
+        makeSummary({ turnId: "turn-2", checkpointTurnCount: undefined }),
+      ],
     ]);
 
     expect(

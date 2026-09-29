@@ -9,8 +9,6 @@
       "selected": null
     }
   ],
-  "groups": [
-    "Threads"
-  ],
+  "groups": ["Threads"],
   "empty": false
 }

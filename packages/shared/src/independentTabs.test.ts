@@ -1,21 +1,21 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
 
-import { resolveIndependentTabRowPresentation } from './independentTabs';
+import { resolveIndependentTabRowPresentation } from "./independentTabs";
 
-describe('independent tab row presentation', () => {
-  it('keeps actions visible in the expanded row', () => {
+describe("independent tab row presentation", () => {
+  it("keeps actions visible in the expanded row", () => {
     expect(resolveIndependentTabRowPresentation(false)).toEqual({
-      mode: 'expanded',
+      mode: "expanded",
       showActions: true,
-      toggleLabel: 'Collapse to tabs only',
+      toggleLabel: "Collapse to tabs only",
     });
   });
 
-  it('keeps the tabs lane while replacing actions with one restore control', () => {
+  it("keeps the tabs lane while replacing actions with one restore control", () => {
     expect(resolveIndependentTabRowPresentation(true)).toEqual({
-      mode: 'tabs-only',
+      mode: "tabs-only",
       showActions: false,
-      toggleLabel: 'Restore tab actions',
+      toggleLabel: "Restore tab actions",
     });
   });
 });

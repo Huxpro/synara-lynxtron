@@ -26,9 +26,7 @@ describe("shared control state design tokens", () => {
     for (const contents of webSources) {
       expect(contents).not.toContain("opacity-64");
     }
-    expect(webSources.join("\n")).toContain(
-      "opacity-[var(--control-disabled-opacity)]",
-    );
+    expect(webSources.join("\n")).toContain("opacity-[var(--control-disabled-opacity)]");
     expect(native.match(/opacity:\s*var\(--control-disabled-opacity\);/g)).toHaveLength(6);
   });
 
@@ -40,8 +38,6 @@ describe("shared control state design tokens", () => {
     expect(tokens).toContain("--control-input-focus-border:");
     expect(native).toContain("var(--control-focus-ring-color)");
     expect(native).toContain("var(--control-input-focus-border)");
-    expect(native).toMatch(
-      /\.LxButton--prominent\.ui-disabled\s*\{[^}]*opacity:\s*0\.2;/s,
-    );
+    expect(native).toMatch(/\.LxButton--prominent\.ui-disabled\s*\{[^}]*opacity:\s*0\.2;/s);
   });
 });

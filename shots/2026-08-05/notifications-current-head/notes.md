@@ -51,15 +51,15 @@ without participating in title/description/control centering.
 
 Final first-row anchors:
 
-| Anchor | Web | Lynx-for-Web |
-| --- | ---: | ---: |
-| Section title | `x=456 y=118 w=624 h=26` | exact |
-| Card | `x=456 y=150 w=624` | exact |
-| First row | `x=457 y=151 w=622` | exact |
-| Title | `x=469 y=162 h=18`, `12/18/500` | exact |
-| Description | `x=469 y=183 h=18`, `12/18/400` | exact |
-| Switch | `x=1035 y=171 w=32 h=20` | exact |
-| First divider | none | none |
+| Anchor        |                             Web | Lynx-for-Web |
+| ------------- | ------------------------------: | -----------: |
+| Section title |        `x=456 y=118 w=624 h=26` |        exact |
+| Card          |             `x=456 y=150 w=624` |        exact |
+| First row     |             `x=457 y=151 w=622` |        exact |
+| Title         | `x=469 y=162 h=18`, `12/18/500` |        exact |
+| Description   | `x=469 y=183 h=18`, `12/18/400` |        exact |
+| Switch        |        `x=1035 y=171 w=32 h=20` |        exact |
+| First divider |                            none |         none |
 
 The Lynx status now begins at `x=469 y=201`, uses `11/16/400`, and remains
 outside the common 40px layout. The second row retains its real top divider and

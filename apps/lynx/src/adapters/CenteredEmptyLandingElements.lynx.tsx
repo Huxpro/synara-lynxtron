@@ -1,7 +1,7 @@
-import type { ReactNode } from '@lynx-js/react';
+import type { ReactNode } from "@lynx-js/react";
 
-import { SynaraLogo } from '~/components/SynaraLogo';
-import './centered-empty-landing-elements.css';
+import { SynaraLogo } from "~/components/SynaraLogo";
+import "./centered-empty-landing-elements.css";
 
 interface ChildrenProps {
   readonly children?: ReactNode;
@@ -12,9 +12,7 @@ export function CenteredEmptyLandingFrameElement({
   children,
 }: ChildrenProps & { readonly className?: string }) {
   return (
-    <view
-      className={`CenteredEmptyLandingFrame${className ? ` ${className}` : ''}`}
-    >
+    <view className={`CenteredEmptyLandingFrame${className ? ` ${className}` : ""}`}>
       {children}
     </view>
   );
@@ -32,16 +30,15 @@ export function CenteredEmptyLandingHeadingElement({
   return (
     <text
       className={`CenteredEmptyLandingHeading${
-        projectName ? ' CenteredEmptyLandingHeading--project' : ''
+        projectName ? " CenteredEmptyLandingHeading--project" : ""
       }`}
     >
       {projectName ? (
         <>
-          What should we do in{' '}
-          <text className="CenteredEmptyLandingAccent">{projectName}</text>?
+          What should we do in <text className="CenteredEmptyLandingAccent">{projectName}</text>?
         </>
       ) : (
-        'What should we work on?'
+        "What should we work on?"
       )}
     </text>
   );

@@ -1,11 +1,7 @@
 // FILE: PullRequestRouteControlsComposition.tsx
 // Purpose: Physical shared source for the pull-request route header and filter anatomy.
 
-import type {
-  ProjectId,
-  PullRequestInvolvement,
-  PullRequestState,
-} from "@synara/contracts";
+import type { ProjectId, PullRequestInvolvement, PullRequestState } from "@synara/contracts";
 
 import {
   PullRequestFilterPillGroupElement,
@@ -54,12 +50,12 @@ export function PullRequestRouteHeaderComposition(props: {
   return (
     <PullRequestRouteHeaderRootElement hostClassName={props.hostClassName}>
       <PullRequestRouteHeaderRowElement>
-        {props.navigationAvailable === false ? null : (
-          <PullRequestRouteHeaderNavigationElement />
-        )}
+        {props.navigationAvailable === false ? null : <PullRequestRouteHeaderNavigationElement />}
         <PullRequestRouteHeaderTitleElement>Pull requests</PullRequestRouteHeaderTitleElement>
         {props.scopedProjectName ? (
-          <PullRequestRouteHeaderScopeElement>{props.scopedProjectName}</PullRequestRouteHeaderScopeElement>
+          <PullRequestRouteHeaderScopeElement>
+            {props.scopedProjectName}
+          </PullRequestRouteHeaderScopeElement>
         ) : null}
         <PullRequestRouteHeaderSpacerElement />
         <PullRequestRouteHeaderRefreshElement

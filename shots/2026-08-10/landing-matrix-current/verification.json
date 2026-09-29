@@ -2,146 +2,74 @@
   "checks": [
     {
       "path": "browser/landing-default-light-1280/web/raw.png",
-      "expected": [
-        1280,
-        820
-      ],
-      "actual": [
-        1280,
-        820
-      ],
+      "expected": [1280, 820],
+      "actual": [1280, 820],
       "pass": true
     },
     {
       "path": "browser/landing-default-light-1280/lynx/raw.png",
-      "expected": [
-        1280,
-        820
-      ],
-      "actual": [
-        1280,
-        820
-      ],
+      "expected": [1280, 820],
+      "actual": [1280, 820],
       "pass": true
     },
     {
       "path": "browser/landing-default-dark-1280/web/raw.png",
-      "expected": [
-        1280,
-        820
-      ],
-      "actual": [
-        1280,
-        820
-      ],
+      "expected": [1280, 820],
+      "actual": [1280, 820],
       "pass": true
     },
     {
       "path": "browser/landing-default-dark-1280/lynx/raw.png",
-      "expected": [
-        1280,
-        820
-      ],
-      "actual": [
-        1280,
-        820
-      ],
+      "expected": [1280, 820],
+      "actual": [1280, 820],
       "pass": true
     },
     {
       "path": "browser/landing-default-light-1440/web/raw.png",
-      "expected": [
-        1440,
-        900
-      ],
-      "actual": [
-        1440,
-        900
-      ],
+      "expected": [1440, 900],
+      "actual": [1440, 900],
       "pass": true
     },
     {
       "path": "browser/landing-default-light-1440/lynx/raw.png",
-      "expected": [
-        1440,
-        900
-      ],
-      "actual": [
-        1440,
-        900
-      ],
+      "expected": [1440, 900],
+      "actual": [1440, 900],
       "pass": true
     },
     {
       "path": "browser/landing-default-dark-1440/web/raw.png",
-      "expected": [
-        1440,
-        900
-      ],
-      "actual": [
-        1440,
-        900
-      ],
+      "expected": [1440, 900],
+      "actual": [1440, 900],
       "pass": true
     },
     {
       "path": "browser/landing-default-dark-1440/lynx/raw.png",
-      "expected": [
-        1440,
-        900
-      ],
-      "actual": [
-        1440,
-        900
-      ],
+      "expected": [1440, 900],
+      "actual": [1440, 900],
       "pass": true
     },
     {
       "path": "native/landing-default-light-1280/raw.png",
-      "expected": [
-        2560,
-        1640
-      ],
-      "actual": [
-        2560,
-        1640
-      ],
+      "expected": [2560, 1640],
+      "actual": [2560, 1640],
       "pass": true
     },
     {
       "path": "native/landing-default-light-1440/raw.png",
-      "expected": [
-        2880,
-        1800
-      ],
-      "actual": [
-        2880,
-        1800
-      ],
+      "expected": [2880, 1800],
+      "actual": [2880, 1800],
       "pass": true
     },
     {
       "path": "native/landing-default-light-1280/logical.png",
-      "expected": [
-        1280,
-        820
-      ],
-      "actual": [
-        1280,
-        820
-      ],
+      "expected": [1280, 820],
+      "actual": [1280, 820],
       "pass": true
     },
     {
       "path": "native/landing-default-light-1440/logical.png",
-      "expected": [
-        1440,
-        900
-      ],
-      "actual": [
-        1440,
-        900
-      ],
+      "expected": [1440, 900],
+      "actual": [1440, 900],
       "pass": true
     },
     {

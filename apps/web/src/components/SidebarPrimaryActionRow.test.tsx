@@ -25,11 +25,7 @@ describe("SidebarPrimaryActionRow", () => {
   it("preserves disabled semantics while keeping a stable accessible name", () => {
     const markup = renderToStaticMarkup(
       <SidebarProvider>
-        <SidebarPrimaryActionRow
-          disabled
-          icon={<span aria-hidden>!</span>}
-          label="Pull requests"
-        />
+        <SidebarPrimaryActionRow disabled icon={<span aria-hidden>!</span>} label="Pull requests" />
       </SidebarProvider>,
     );
 

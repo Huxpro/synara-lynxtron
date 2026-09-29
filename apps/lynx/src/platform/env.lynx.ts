@@ -1,4 +1,4 @@
-import { resolveRuntimeHttpOrigin } from './runtimeEndpoint.logic';
+import { resolveRuntimeHttpOrigin } from "./runtimeEndpoint.logic";
 
 /**
  * Lynx environment adapter for shared feature modules that gate synchronous
@@ -24,15 +24,15 @@ export function getLocationOrigin(): string {
 }
 
 export function getNavigatorPlatform(): string {
-  return 'MacIntel';
+  return "MacIntel";
 }
 
 export function getNavigatorUserAgent(): string {
-  return 'Lynxtron';
+  return "Lynxtron";
 }
 
 export function getNavigatorLanguage(): string {
-  return 'en-US';
+  return "en-US";
 }
 
 /** Native callers with an exact viewport should pass it explicitly. */

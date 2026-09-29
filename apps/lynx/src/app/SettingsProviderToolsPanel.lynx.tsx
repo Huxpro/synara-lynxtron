@@ -1,19 +1,19 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState, type ReactNode } from '@lynx-js/react';
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect, useState, type ReactNode } from "@lynx-js/react";
 import type {
   ProviderKind,
   ServerSettingsPatch,
   ServerSettingsView,
   ServerProviderStatus,
-} from '@synara/contracts';
-import { DEFAULT_SERVER_SETTINGS_VIEW } from '@synara/contracts';
-import { PROVIDER_DESCRIPTOR_BY_KIND } from '@synara/shared/providerMetadata';
+} from "@synara/contracts";
+import { DEFAULT_SERVER_SETTINGS_VIEW } from "@synara/contracts";
+import { PROVIDER_DESCRIPTOR_BY_KIND } from "@synara/shared/providerMetadata";
 import {
   PROVIDER_TOOL_CONFIGS,
   providerToolDescriptionText,
   type ProviderToolConfig,
   type ProviderToolField,
-} from '@synara/shared/providerTools';
+} from "@synara/shared/providerTools";
 import {
   formatProviderVersion,
   getVisibleProviderUpdateStatuses,
@@ -23,42 +23,39 @@ import {
   shouldOfferProviderUpdateAction,
   shouldShowProviderUpdateStatus,
   withProviderUpdateTimeout,
-} from '@synara-web/providerUpdates';
-import { SettingsSection } from '@synara-web/components/settings/SettingsSection';
-import { SETTINGS_TARGETS } from '@synara-web/settingsNavigation';
+} from "@synara-web/providerUpdates";
+import { SettingsSection } from "@synara-web/components/settings/SettingsSection";
+import { SETTINGS_TARGETS } from "@synara-web/settingsNavigation";
 
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { SettingsGeneralBooleanControlElement } from '../adapters/SettingsGeneralCompositionElements.lynx';
-import { SettingsResetIcon } from '../adapters/SettingsResetIcon.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
-import { useLynxInteractiveState } from '../adapters/useLynxInteractiveState';
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { SettingsGeneralBooleanControlElement } from "../adapters/SettingsGeneralCompositionElements.lynx";
+import { SettingsResetIcon } from "../adapters/SettingsResetIcon.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import {
   fetchServerConfig,
   fetchServerSettings,
   updateProvider,
   updateServerSettings,
-} from '../data/synaraClient.lynx';
-import {
-  OpenAIProviderIcon,
-  hasLynxProviderIcon,
-} from '../components/OpenAIProviderIcon.lynx';
-import { ArrowDownToLineIcon, ChevronRightIcon } from '../lib/icons.lynx';
+} from "../data/synaraClient.lynx";
+import { OpenAIProviderIcon, hasLynxProviderIcon } from "../components/OpenAIProviderIcon.lynx";
+import { ArrowDownToLineIcon, ChevronRightIcon } from "../lib/icons.lynx";
 import {
   disclosureChevronClassName,
   disclosureContentClassName,
   useLynxDisclosurePresence,
-} from '../platform/motion.lynx';
-import { openExternalBestEffort } from '../platform/window';
-import { queryClient } from './queries';
+} from "../platform/motion.lynx";
+import { openExternalBestEffort } from "../platform/window";
+import { queryClient } from "./queries";
 import {
   isProviderToolDirty,
   providerFieldPatch,
   providerFieldValue,
   providerToolResetPatch,
-} from './settingsProviderTools.logic';
+} from "./settingsProviderTools.logic";
 
-import './settings-provider-tools-panel.css';
+import "./settings-provider-tools-panel.css";
 
 function ProviderIdentity(props: { readonly provider: ProviderKind }) {
   const descriptor = PROVIDER_DESCRIPTOR_BY_KIND[props.provider];
@@ -73,9 +70,7 @@ function ProviderIdentity(props: { readonly provider: ProviderKind }) {
           </text>
         )}
       </view>
-      <text className="SettingsProviderToolsName">
-        {descriptor.displayName}
-      </text>
+      <text className="SettingsProviderToolsName">{descriptor.displayName}</text>
     </view>
   );
 }
@@ -91,7 +86,7 @@ function ProviderStatusRow(props: {
   return (
     <view
       className={`SettingsProviderToolsListRow${
-        props.divided ? ' SettingsProviderToolsListRow--divided' : ''
+        props.divided ? " SettingsProviderToolsListRow--divided" : ""
       }`}
     >
       <view className="SettingsProviderToolsRowCopy">
@@ -116,9 +111,7 @@ function ProviderStatusRow(props: {
             size={12}
             color={svgColors.foreground80}
           />
-          <text className="LxButton__text">
-            {props.updating ? 'Updating…' : 'Update'}
-          </text>
+          <text className="LxButton__text">{props.updating ? "Updating…" : "Update"}</text>
         </Button>
       ) : (
         <text className="SettingsProviderToolsManual">Manual update</text>
@@ -127,15 +120,12 @@ function ProviderStatusRow(props: {
   );
 }
 
-function ProviderDocLink(props: {
-  readonly label: string;
-  readonly href: string;
-}) {
+function ProviderDocLink(props: { readonly label: string; readonly href: string }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: 'SettingsProviderToolsDocLink',
+    baseClassName: "SettingsProviderToolsDocLink",
     accessibleLabel: `Open ${props.label} documentation`,
     onActivate: () => {
-      'background only';
+      "background only";
       openExternalBestEffort(props.href);
     },
   });
@@ -147,49 +137,40 @@ function ProviderDocLink(props: {
 }
 
 function ProviderTextField(props: {
-  readonly field: Extract<ProviderToolField, { kind: 'text' | 'password' }>;
+  readonly field: Extract<ProviderToolField, { kind: "text" | "password" }>;
   readonly settings: ServerSettingsView;
   readonly disabled: boolean;
   readonly onCommit: (patch: ServerSettingsPatch) => void;
 }) {
-  const storedValue = providerFieldValue(
-    props.settings,
-    props.field.settingsKey
-  );
+  const storedValue = providerFieldValue(props.settings, props.field.settingsKey);
   const [value, setValue] = useState(storedValue);
   useEffect(() => setValue(storedValue), [storedValue]);
   const configured =
-    props.field.kind === 'password' &&
-    (props.field.settingsKey === 'kiloServerPassword'
+    props.field.kind === "password" &&
+    (props.field.settingsKey === "kiloServerPassword"
       ? props.settings.providers.kilo.serverPasswordConfigured
       : props.settings.providers.opencode.serverPasswordConfigured);
 
   return (
     <view className="SettingsProviderToolsField">
-      <text className="SettingsProviderToolsFieldLabel">
-        {props.field.label}
-      </text>
+      <text className="SettingsProviderToolsFieldLabel">{props.field.label}</text>
       <Input
         nativeInput
         className="SettingsProviderToolsFieldInput"
         size="sm"
         variant="soft"
         value={value}
-        type={props.field.kind === 'password' ? 'password' : 'text'}
+        type={props.field.kind === "password" ? "password" : "text"}
         disabled={props.disabled}
         maxLength={4096}
         accessibility-label={props.field.label}
         placeholder={
-          configured
-            ? 'Configured — enter a replacement or leave blank'
-            : props.field.placeholder
+          configured ? "Configured — enter a replacement or leave blank" : props.field.placeholder
         }
         onChange={(event) => setValue(event.target.value)}
         onBlur={(event) => {
           if (event.target.value !== storedValue) {
-            props.onCommit(
-              providerFieldPatch(props.field.settingsKey, event.target.value)
-            );
+            props.onCommit(providerFieldPatch(props.field.settingsKey, event.target.value));
           }
         }}
       />
@@ -217,9 +198,9 @@ function ProviderToolRow(props: {
   const { svgColors } = useTheme();
   const present = useLynxDisclosurePresence(props.open);
   const trigger = useLynxInteractiveState({
-    baseClassName: 'SettingsProviderToolsDisclosureTrigger',
+    baseClassName: "SettingsProviderToolsDisclosureTrigger",
     accessibleLabel: `${PROVIDER_DESCRIPTOR_BY_KIND[props.config.provider].displayName} provider tools`,
-    accessibilityValue: props.open ? 'Expanded' : 'Collapsed',
+    accessibilityValue: props.open ? "Expanded" : "Collapsed",
     onActivate: () => props.onOpenChange(!props.open),
   });
   const dirty = isProviderToolDirty(props.config, props.settings);
@@ -233,15 +214,13 @@ function ProviderToolRow(props: {
   const showUpdate =
     props.status &&
     shouldOfferProviderUpdateAction(props.status) &&
-    (showUpdateStatus ||
-      props.status.versionAdvisory?.status === 'unknown');
+    (showUpdateStatus || props.status.versionAdvisory?.status === "unknown");
   const providerStatusLabel = props.status
     ? !props.serverSettingsForUpdates.enableProviderUpdateChecks
       ? formatProviderVersion(props.status.version)
         ? `Current ${formatProviderVersion(props.status.version)}`
         : null
-      : props.status.versionAdvisory?.status === 'behind_latest' &&
-          !showUpdateStatus
+      : props.status.versionAdvisory?.status === "behind_latest" && !showUpdateStatus
         ? null
         : providerUpdateStatusLabel(props.status)
     : null;
@@ -249,32 +228,23 @@ function ProviderToolRow(props: {
   return (
     <view
       className={`SettingsProviderToolsDisclosure${
-        props.divided ? ' SettingsProviderToolsDisclosure--divided' : ''
+        props.divided ? " SettingsProviderToolsDisclosure--divided" : ""
       }`}
     >
       <view
         className={`SettingsProviderToolsDisclosureMain${
-          props.divided
-            ? ' SettingsProviderToolsDisclosureMain--divided'
-            : ''
+          props.divided ? " SettingsProviderToolsDisclosureMain--divided" : ""
         }`}
       >
         <view className={trigger.className} {...trigger.eventProps}>
           <ProviderIdentity provider={props.config.provider} />
           <view className="SettingsProviderToolsDisclosureMeta">
-            {dirty ? (
-              <text className="SettingsProviderToolsCustom">Custom</text>
-            ) : null}
+            {dirty ? <text className="SettingsProviderToolsCustom">Custom</text> : null}
             {providerStatusLabel ? (
-              <text className="SettingsProviderToolsStatus">
-                {providerStatusLabel}
-              </text>
+              <text className="SettingsProviderToolsStatus">{providerStatusLabel}</text>
             ) : null}
             <ChevronRightIcon
-              className={disclosureChevronClassName(
-                props.open,
-                'SettingsProviderToolsChevron'
-              )}
+              className={disclosureChevronClassName(props.open, "SettingsProviderToolsChevron")}
               size={16}
               color="var(--muted-foreground)"
             />
@@ -293,9 +263,7 @@ function ProviderToolRow(props: {
               size={12}
               color={svgColors.foreground80}
             />
-            <text className="LxButton__text">
-              {props.updating ? 'Updating…' : 'Update'}
-            </text>
+            <text className="LxButton__text">{props.updating ? "Updating…" : "Update"}</text>
           </Button>
         ) : null}
       </view>
@@ -303,36 +271,26 @@ function ProviderToolRow(props: {
         <view
           className={disclosureContentClassName(
             props.open,
-            'SettingsProviderToolsDisclosureContent'
+            "SettingsProviderToolsDisclosureContent",
           )}
           aria-hidden={!props.open}
         >
           <view className="SettingsProviderToolsDocs">
             {props.config.docs.map((doc) => (
-              <ProviderDocLink
-                key={`${props.config.provider}-${doc.label}`}
-                {...doc}
-              />
+              <ProviderDocLink key={`${props.config.provider}-${doc.label}`} {...doc} />
             ))}
           </view>
           {props.config.fields.map((field) =>
-            field.kind === 'boolean' ? (
-              <view
-                key={field.settingsKey}
-                className="SettingsProviderToolsBooleanField"
-              >
+            field.kind === "boolean" ? (
+              <view key={field.settingsKey} className="SettingsProviderToolsBooleanField">
                 <view className="SettingsProviderToolsBooleanCopy">
-                  <text className="SettingsProviderToolsFieldLabel">
-                    {field.label}
-                  </text>
+                  <text className="SettingsProviderToolsFieldLabel">{field.label}</text>
                   <text className="SettingsProviderToolsFieldDescription">
                     {providerToolDescriptionText(field.description)}
                   </text>
                 </view>
                 <SettingsGeneralBooleanControlElement
-                  checked={
-                    props.settings.providers.opencode.experimentalWebSockets
-                  }
+                  checked={props.settings.providers.opencode.experimentalWebSockets}
                   ariaLabel={field.label}
                   disabled={props.saving}
                   onChange={(experimentalWebSockets) =>
@@ -352,7 +310,7 @@ function ProviderToolRow(props: {
                 disabled={props.saving}
                 onCommit={props.onSettingsPatch}
               />
-            )
+            ),
           )}
         </view>
       ) : null}
@@ -367,27 +325,25 @@ export function SettingsProviderToolsPanel(props: {
   readonly onEnableProviderUpdateChecksChange: (value: boolean) => void;
   readonly providerPicker: ReactNode;
 }) {
-  const [openProviders, setOpenProviders] = useState<
-    Partial<Record<ProviderKind, boolean>>
-  >({});
+  const [openProviders, setOpenProviders] = useState<Partial<Record<ProviderKind, boolean>>>({});
   const [notice, setNotice] = useState<string | null>(null);
   const configQuery = useQuery({
-    queryKey: ['server-config'],
+    queryKey: ["server-config"],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchServerConfig();
     },
   });
   const settingsQuery = useQuery({
-    queryKey: ['server-settings'],
+    queryKey: ["server-settings"],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchServerSettings();
     },
   });
   const updateMutation = useMutation({
     mutationFn: (provider: ProviderKind) => {
-      'background only';
+      "background only";
       return withProviderUpdateTimeout({
         provider,
         request: updateProvider(provider),
@@ -395,35 +351,31 @@ export function SettingsProviderToolsPanel(props: {
     },
     onSuccess: async (result, provider) => {
       const failureMessage = providerUpdateFailureMessage(
-        result.providers.find((status) => status.provider === provider)
+        result.providers.find((status) => status.provider === provider),
       );
       if (failureMessage) {
         setNotice(failureMessage);
       } else {
         setNotice(null);
       }
-      await queryClient.invalidateQueries({ queryKey: ['server-config'] });
+      await queryClient.invalidateQueries({ queryKey: ["server-config"] });
     },
     onError: (error) => {
-      setNotice(
-        error instanceof Error ? error.message : 'The provider update failed.'
-      );
+      setNotice(error instanceof Error ? error.message : "The provider update failed.");
     },
   });
   const settingsMutation = useMutation({
     mutationFn: (patch: ServerSettingsPatch) => {
-      'background only';
+      "background only";
       return updateServerSettings(patch);
     },
     onSuccess: (settings) => {
-      queryClient.setQueryData(['server-settings'], settings);
+      queryClient.setQueryData(["server-settings"], settings);
       setNotice(null);
     },
     onError: (error) => {
       setNotice(
-        error instanceof Error
-          ? error.message
-          : 'The provider settings could not be saved.'
+        error instanceof Error ? error.message : "The provider settings could not be saved.",
       );
     },
   });
@@ -440,18 +392,14 @@ export function SettingsProviderToolsPanel(props: {
     oneClickOnly: false,
   });
   const updatesStatus = !props.enableProviderUpdateChecks
-    ? 'Automatic checks off'
+    ? "Automatic checks off"
     : outdated.length > 0
-      ? `${outdated.length} ${outdated.length === 1 ? 'update' : 'updates'} available`
-      : 'No provider updates detected';
-  const updatingProvider = updateMutation.isPending
-    ? updateMutation.variables
-    : undefined;
-  const statusByProvider = new Map(
-    providers.map((status) => [status.provider, status])
-  );
+      ? `${outdated.length} ${outdated.length === 1 ? "update" : "updates"} available`
+      : "No provider updates detected";
+  const updatingProvider = updateMutation.isPending ? updateMutation.variables : undefined;
+  const statusByProvider = new Map(providers.map((status) => [status.provider, status]));
   const providerToolsDirty = PROVIDER_TOOL_CONFIGS.some((config) =>
-    isProviderToolDirty(config, settings)
+    isProviderToolDirty(config, settings),
   );
 
   return (
@@ -469,18 +417,15 @@ export function SettingsProviderToolsPanel(props: {
         <view className="SettingsProviderToolsSummaryRow SettingsProviderToolsSummaryRow--continued">
           <view className="SettingsProviderToolsSummaryCopy">
             <view className="SettingsProviderToolsTitleLine">
-              <text className="SettingsProviderToolsTitle">
-                Automatic CLI update checks
-              </text>
-              {props.enableProviderUpdateChecks !==
-              props.defaultEnableProviderUpdateChecks ? (
+              <text className="SettingsProviderToolsTitle">Automatic CLI update checks</text>
+              {props.enableProviderUpdateChecks !== props.defaultEnableProviderUpdateChecks ? (
                 <Button
                   size="icon-xs"
                   variant="ghost"
                   aria-label="Reset automatic provider update checks to default"
                   onClick={() =>
                     props.onEnableProviderUpdateChecksChange(
-                      props.defaultEnableProviderUpdateChecks
+                      props.defaultEnableProviderUpdateChecks,
                     )
                   }
                 >
@@ -489,8 +434,7 @@ export function SettingsProviderToolsPanel(props: {
               ) : null}
             </view>
             <text className="SettingsProviderToolsDescription">
-              Check Codex, Claude, and other provider CLIs for newer versions in
-              the background.
+              Check Codex, Claude, and other provider CLIs for newer versions in the background.
             </text>
           </view>
           <SettingsGeneralBooleanControlElement
@@ -506,17 +450,13 @@ export function SettingsProviderToolsPanel(props: {
           <view className="SettingsProviderToolsSummaryMain">
             <view className="SettingsProviderToolsSummaryCopy">
               <view className="SettingsProviderToolsTitleLine">
-                <text className="SettingsProviderToolsTitle">
-                  Provider updates
-                </text>
+                <text className="SettingsProviderToolsTitle">Provider updates</text>
               </view>
               <text className="SettingsProviderToolsDescription">
                 Review installed provider tools that Synara can safely update.
               </text>
             </view>
-            <text className="SettingsProviderToolsSummaryStatus">
-              {updatesStatus}
-            </text>
+            <text className="SettingsProviderToolsSummaryStatus">{updatesStatus}</text>
           </view>
           {props.enableProviderUpdateChecks && outdated.length > 0 ? (
             <view className="SettingsProviderToolsList SettingsProviderToolsList--updates">
@@ -525,10 +465,7 @@ export function SettingsProviderToolsPanel(props: {
                   key={status.provider}
                   status={status}
                   divided={index > 0}
-                  updating={
-                    updatingProvider === status.provider ||
-                    isProviderUpdateActive(status)
-                  }
+                  updating={updatingProvider === status.provider || isProviderUpdateActive(status)}
                   onUpdate={(provider) => updateMutation.mutate(provider)}
                 />
               ))}
@@ -543,9 +480,7 @@ export function SettingsProviderToolsPanel(props: {
         <view className="SettingsProviderToolsSummaryRow">
           <view className="SettingsProviderToolsSummaryCopy">
             <view className="SettingsProviderToolsTitleLine">
-              <text className="SettingsProviderToolsTitle">
-                Installed CLIs
-              </text>
+              <text className="SettingsProviderToolsTitle">Installed CLIs</text>
               {providerToolsDirty ? (
                 <Button
                   size="icon-xs"
@@ -562,13 +497,11 @@ export function SettingsProviderToolsPanel(props: {
               ) : null}
             </view>
             <text className="SettingsProviderToolsDescription">
-              Review provider versions and update tools. Open a row only when
-              you need binary overrides.
+              Review provider versions and update tools. Open a row only when you need binary
+              overrides.
             </text>
           </view>
-          <text className="SettingsProviderToolsSummaryStatus">
-            {updatesStatus}
-          </text>
+          <text className="SettingsProviderToolsSummaryStatus">{updatesStatus}</text>
         </view>
         <view className="SettingsProviderToolsList">
           {PROVIDER_TOOL_CONFIGS.map((config, index) => {

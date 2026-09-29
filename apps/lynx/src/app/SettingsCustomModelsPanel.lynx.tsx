@@ -1,65 +1,52 @@
-import { useState } from '@lynx-js/react';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import type {
-  ServerSettingsView,
-} from '@synara/contracts';
-import { validateCustomModelInput } from '@synara/shared/customModels';
-import { PROVIDER_DESCRIPTOR_BY_KIND } from '@synara/shared/providerMetadata';
+import { useState } from "@lynx-js/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import type { ServerSettingsView } from "@synara/contracts";
+import { validateCustomModelInput } from "@synara/shared/customModels";
+import { PROVIDER_DESCRIPTOR_BY_KIND } from "@synara/shared/providerMetadata";
 
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import {
-  Menu,
-  MenuPopup,
-  MenuRadioGroup,
-  MenuRadioItem,
-  MenuTrigger,
-} from '../components/ui/menu';
-import { ChevronDownIcon, PlusIcon, XIcon } from '../lib/icons.lynx';
-import {
-  fetchServerSettings,
-  updateServerSettings,
-} from '../data/synaraClient.lynx';
-import { SettingsResetIcon } from '../adapters/SettingsResetIcon.lynx';
-import { useTheme } from '../adapters/useTheme.lynx';
-import { queryClient } from './queries';
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Menu, MenuPopup, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "../components/ui/menu";
+import { ChevronDownIcon, PlusIcon, XIcon } from "../lib/icons.lynx";
+import { fetchServerSettings, updateServerSettings } from "../data/synaraClient.lynx";
+import { SettingsResetIcon } from "../adapters/SettingsResetIcon.lynx";
+import { useTheme } from "../adapters/useTheme.lynx";
+import { queryClient } from "./queries";
 import {
   CUSTOM_MODEL_PROVIDERS,
   customModelsForProvider,
   customModelsProviderPatch,
   type CustomModelProvider,
-} from './custom-model-settings';
+} from "./custom-model-settings";
 
-import './settings-custom-models-panel.css';
+import "./settings-custom-models-panel.css";
 
 export function SettingsCustomModelsPanel(props: {
   readonly onSettingsChange?: (settings: ServerSettingsView) => void;
 }) {
   const { svgColors } = useTheme();
-  const [provider, setProvider] = useState<CustomModelProvider>('codex');
-  const [input, setInput] = useState('');
+  const [provider, setProvider] = useState<CustomModelProvider>("codex");
+  const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const settingsQuery = useQuery({
-    queryKey: ['server-settings'],
+    queryKey: ["server-settings"],
     queryFn: () => {
-      'background only';
+      "background only";
       return fetchServerSettings();
     },
   });
   const updateMutation = useMutation({
     mutationFn: (patch: ServerSettingsPatch) => {
-      'background only';
+      "background only";
       return updateServerSettings(patch);
     },
     onSuccess: (settings) => {
-      queryClient.setQueryData(['server-settings'], settings);
+      queryClient.setQueryData(["server-settings"], settings);
       props.onSettingsChange?.(settings);
     },
     onError: (mutationError) => {
       setError(
-        mutationError instanceof Error
-          ? mutationError.message
-          : 'Unable to update custom models.'
+        mutationError instanceof Error ? mutationError.message : "Unable to update custom models.",
       );
     },
   });
@@ -72,7 +59,7 @@ export function SettingsCustomModelsPanel(props: {
         customModelsForProvider(settings, entry.provider).map((slug) => ({
           provider: entry.provider,
           slug,
-        }))
+        })),
       )
     : [];
 
@@ -84,25 +71,18 @@ export function SettingsCustomModelsPanel(props: {
       value: input,
       savedModels,
     });
-    if ('error' in result) {
+    if ("error" in result) {
       setError(result.error);
       return;
     }
     setError(null);
-    setInput('');
-    updateMutation.mutate(
-      customModelsProviderPatch(provider, [...savedModels, result.model])
-    );
+    setInput("");
+    updateMutation.mutate(customModelsProviderPatch(provider, [...savedModels, result.model]));
   };
 
-  const removeModel = (
-    rowProvider: CustomModelProvider,
-    slug: string
-  ) => {
+  const removeModel = (rowProvider: CustomModelProvider, slug: string) => {
     if (!settings || updateMutation.isPending) return;
-    const next = customModelsForProvider(settings, rowProvider).filter(
-      (model) => model !== slug
-    );
+    const next = customModelsForProvider(settings, rowProvider).filter((model) => model !== slug);
     setError(null);
     updateMutation.mutate(customModelsProviderPatch(rowProvider, next));
   };
@@ -110,11 +90,8 @@ export function SettingsCustomModelsPanel(props: {
   const resetModels = () => {
     if (!settings || updateMutation.isPending) return;
     const providers = Object.fromEntries(
-      CUSTOM_MODEL_PROVIDERS.map((entry) => [
-        entry.provider,
-        { customModels: [] },
-      ])
-    ) as NonNullable<ServerSettingsPatch['providers']>;
+      CUSTOM_MODEL_PROVIDERS.map((entry) => [entry.provider, { customModels: [] }]),
+    ) as NonNullable<ServerSettingsPatch["providers"]>;
     setError(null);
     updateMutation.mutate({ providers });
   };
@@ -122,18 +99,14 @@ export function SettingsCustomModelsPanel(props: {
   return (
     <view className="SettingsCustomModelsSection">
       <view className="SettingsCustomModelsSectionTitle">
-        <text className="SettingsCustomModelsSectionTitleText">
-          Custom models
-        </text>
+        <text className="SettingsCustomModelsSectionTitleText">Custom models</text>
       </view>
       <view className="SettingsCustomModelsCard">
         <view className="SettingsCustomModelsRow">
           <view className="SettingsCustomModelsHeader">
             <view className="SettingsCustomModelsCopy">
               <view className="SettingsCustomModelsTitleLine">
-                <text className="SettingsCustomModelsTitle">
-                  Saved model slugs
-                </text>
+                <text className="SettingsCustomModelsTitle">Saved model slugs</text>
                 {rows.length > 0 ? (
                   <Button
                     size="icon-xs"
@@ -153,47 +126,40 @@ export function SettingsCustomModelsPanel(props: {
           <view className="SettingsCustomModelsEditor">
             <view className="SettingsCustomModelsEditorRow">
               <Menu>
-              <MenuTrigger ariaLabel="Custom model provider">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="SettingsCustomModelsProviderTrigger"
-                  buttonProps={{ 'accessibility-element': false }}
-                >
-                  <text className="SettingsCustomModelsProviderLabel">
-                    {PROVIDER_DESCRIPTOR_BY_KIND[provider].displayName}
-                  </text>
-                  <ChevronDownIcon
-                    className="SettingsCustomModelsChevron"
-                    size={14}
-                    color="var(--foreground)"
-                  />
-                </Button>
-              </MenuTrigger>
-              <MenuPopup className="SettingsCustomModelsProviderPopup">
-                <MenuRadioGroup
-                  value={provider}
-                  onValueChange={(value) => {
-                    if (
-                      CUSTOM_MODEL_PROVIDERS.some(
-                        (entry) => entry.provider === value
-                      )
-                    ) {
-                      setProvider(value as CustomModelProvider);
-                      setError(null);
-                    }
-                  }}
-                >
-                  {CUSTOM_MODEL_PROVIDERS.map((entry) => (
-                    <MenuRadioItem
-                      key={entry.provider}
-                      value={entry.provider}
-                    >
-                      {PROVIDER_DESCRIPTOR_BY_KIND[entry.provider].displayName}
-                    </MenuRadioItem>
-                  ))}
-                </MenuRadioGroup>
-              </MenuPopup>
+                <MenuTrigger ariaLabel="Custom model provider">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="SettingsCustomModelsProviderTrigger"
+                    buttonProps={{ "accessibility-element": false }}
+                  >
+                    <text className="SettingsCustomModelsProviderLabel">
+                      {PROVIDER_DESCRIPTOR_BY_KIND[provider].displayName}
+                    </text>
+                    <ChevronDownIcon
+                      className="SettingsCustomModelsChevron"
+                      size={14}
+                      color="var(--foreground)"
+                    />
+                  </Button>
+                </MenuTrigger>
+                <MenuPopup className="SettingsCustomModelsProviderPopup">
+                  <MenuRadioGroup
+                    value={provider}
+                    onValueChange={(value) => {
+                      if (CUSTOM_MODEL_PROVIDERS.some((entry) => entry.provider === value)) {
+                        setProvider(value as CustomModelProvider);
+                        setError(null);
+                      }
+                    }}
+                  >
+                    {CUSTOM_MODEL_PROVIDERS.map((entry) => (
+                      <MenuRadioItem key={entry.provider} value={entry.provider}>
+                        {PROVIDER_DESCRIPTOR_BY_KIND[entry.provider].displayName}
+                      </MenuRadioItem>
+                    ))}
+                  </MenuRadioGroup>
+                </MenuPopup>
               </Menu>
               <Input
                 nativeInput
@@ -209,17 +175,17 @@ export function SettingsCustomModelsPanel(props: {
                   if (error) setError(null);
                 }}
                 confirmType="send"
-              onConfirm={addModel}
+                onConfirm={addModel}
               />
               <Button
-              size="sm"
-              variant="outline"
-              className="SettingsCustomModelsAdd"
-              disabled={!settings || updateMutation.isPending}
-              onClick={addModel}
-            >
-              <PlusIcon size={14} color={svgColors.foreground80} />
-              <text className="LxButton__text">Add</text>
+                size="sm"
+                variant="outline"
+                className="SettingsCustomModelsAdd"
+                disabled={!settings || updateMutation.isPending}
+                onClick={addModel}
+              >
+                <PlusIcon size={14} color={svgColors.foreground80} />
+                <text className="LxButton__text">Add</text>
               </Button>
             </view>
             {error ? (
@@ -232,30 +198,26 @@ export function SettingsCustomModelsPanel(props: {
               </text>
             ) : null}
             {settingsQuery.isPending ? (
-              <text className="SettingsCustomModelsState">
-                Loading custom models…
-              </text>
+              <text className="SettingsCustomModelsState">Loading custom models…</text>
             ) : null}
             {rows.length > 0 ? (
               <view className="SettingsCustomModelsList">
                 {rows.map((row, index) => (
                   <view
-                  className={`SettingsCustomModelsListRow${
-                    index > 0 ? ' SettingsCustomModelsListRow--divided' : ''
-                  }`}
-                  key={`${row.provider}:${row.slug}`}
+                    className={`SettingsCustomModelsListRow${
+                      index > 0 ? " SettingsCustomModelsListRow--divided" : ""
+                    }`}
+                    key={`${row.provider}:${row.slug}`}
                   >
                     <text className="SettingsCustomModelsRowProvider">
                       {PROVIDER_DESCRIPTOR_BY_KIND[row.provider].displayName}
                     </text>
-                    <text className="SettingsCustomModelsRowSlug">
-                      {row.slug}
-                    </text>
+                    <text className="SettingsCustomModelsRowSlug">{row.slug}</text>
                     <Button
-                    size="icon-xs"
-                    variant="ghost"
-                    aria-label={`Remove ${row.slug}`}
-                    onClick={() => removeModel(row.provider, row.slug)}
+                      size="icon-xs"
+                      variant="ghost"
+                      aria-label={`Remove ${row.slug}`}
+                      onClick={() => removeModel(row.provider, row.slug)}
                     >
                       <XIcon size={14} color="var(--muted-foreground)" />
                     </Button>
