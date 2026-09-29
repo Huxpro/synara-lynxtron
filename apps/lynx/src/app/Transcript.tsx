@@ -23,7 +23,6 @@ import {
   deriveMessageTrailItems,
   isMessageTrailEligible,
   resolveActiveTrailSnapshot,
-  resolveMessageTrailPaneEdgeOffset,
   resolveVisibleRowRangeFromAttachedCells,
   type ActiveTrailStore,
   type MessageTrailAnchor,
@@ -185,9 +184,6 @@ function TranscriptMessageTrail(props: {
   return (
     <view
       className="TranscriptMessageTrail"
-      style={{
-        left: `${resolveMessageTrailPaneEdgeOffset(props.viewportWidth)}px`,
-      }}
       accessibility-element
       accessibility-label="Message navigation"
       accessibility-trait="summary"

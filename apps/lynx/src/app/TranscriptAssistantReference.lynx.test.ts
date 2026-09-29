@@ -68,7 +68,12 @@ describe("Lynx assistant message actions", () => {
     expect(source).toContain('from "@synara-web/components/chat/messageTrail.logic"');
     expect(source).toContain("function TranscriptMessageTrail(");
     expect(source).toContain("isMessageTrailEligible({");
-    expect(source).toContain("resolveMessageTrailPaneEdgeOffset(props.viewportWidth)");
+    // Mounted in the full-width transcript shell, the rail sits at the pane's left
+    // edge (CSS left: 0) like the web rail; no offset that could reach the sidebar.
+    expect(source).not.toContain("resolveMessageTrailPaneEdgeOffset");
+    expect(styles).toMatch(
+      /\.TranscriptMessageTrail\s*\{[^}]*position:\s*absolute;[^}]*left:\s*0;/s,
+    );
     expect(source).toContain("focusDistance={");
     expect(source).toContain("onHoverChange={setHoveredIndex}");
     expect(source).toContain('accessibility-label="Message navigation"');

@@ -12,7 +12,6 @@ import {
   computeTrailGeometry,
   createActiveTrailStore,
   isMessageTrailEligible,
-  resolveMessageTrailPaneEdgeOffset,
   resolveVisibleRowRangeFromAttachedCells,
   deriveMessageTrailItems,
   resolveActiveTrailMessageId,
@@ -26,19 +25,6 @@ describe("isMessageTrailEligible", () => {
     expect(isMessageTrailEligible({ itemCount: 4, paneWidth: 864 })).toBe(true);
     expect(isMessageTrailEligible({ itemCount: 3, paneWidth: 864 })).toBe(false);
     expect(isMessageTrailEligible({ itemCount: 4, paneWidth: 863 })).toBe(false);
-  });
-});
-
-describe("resolveMessageTrailPaneEdgeOffset", () => {
-  it("moves a centered 736px Native transcript rail back to the pane edge", () => {
-    expect(resolveMessageTrailPaneEdgeOffset(736)).toBe(0);
-    expect(resolveMessageTrailPaneEdgeOffset(864)).toBe(-64);
-    expect(resolveMessageTrailPaneEdgeOffset(1280)).toBe(-272);
-  });
-
-  it("does not invent an offset for narrow or invalid geometry", () => {
-    expect(resolveMessageTrailPaneEdgeOffset(640)).toBe(0);
-    expect(resolveMessageTrailPaneEdgeOffset(Number.NaN)).toBe(0);
   });
 });
 

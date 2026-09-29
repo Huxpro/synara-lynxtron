@@ -36,19 +36,6 @@ export interface MessageTrailItem {
 
 export const MESSAGE_TRAIL_MIN_PANE_WIDTH_PX = 864;
 export const MESSAGE_TRAIL_MIN_ITEM_COUNT = 4;
-export const MESSAGE_TRAIL_CONTENT_MAX_WIDTH_PX = 736;
-
-/**
- * Native mounts the trail inside the centered transcript column, while Web mounts
- * it against the full pane. Move the Native rail back across only the centering
- * gutter so both renderers share the pane's left edge without changing message
- * width. Narrow panes never produce a negative offset.
- */
-export function resolveMessageTrailPaneEdgeOffset(paneWidth: number): number {
-  if (!Number.isFinite(paneWidth)) return 0;
-  const gutter = Math.max(0, (paneWidth - MESSAGE_TRAIL_CONTENT_MAX_WIDTH_PX) / 2);
-  return gutter === 0 ? 0 : -gutter;
-}
 
 export function isMessageTrailEligible(input: {
   readonly itemCount: number;
