@@ -6,6 +6,7 @@
 @import "../../../web/src/tokens.css";
 @import "./lynx-overrides.css";
 @import "../generated/native-theme-variables.css";
+@import "../generated/native-color-mix-variables.css";
 @import "../generated/core-utilities.css";
 @import "../components/markdown/markdown.css";
 @import "../adapters/settings-navigation-composition-elements.css";
@@ -716,6 +717,12 @@
   color: var(--muted-foreground);
 }
 
+/* Electron's surface divider, verbatim from apps/web/src/index.css (projected
+   by postcss.config.mjs because Lynx has no color-mix()). */
+.SliceRoot {
+  --app-surface-divider: color-mix(in srgb, var(--color-border) 60%, transparent);
+}
+
 /* Same layout-neutral divider recipe used by the Web chat surface. */
 .chat-surface-divider {
   background-image: linear-gradient(var(--app-surface-divider), var(--app-surface-divider));
@@ -1180,7 +1187,6 @@
   padding: 0 12px;
   align-items: center;
   gap: 6px;
-  border-bottom: 1px solid var(--border);
 }
 
 .ThreadEditorIdentity {

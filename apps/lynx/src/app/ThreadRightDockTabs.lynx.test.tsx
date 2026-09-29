@@ -62,9 +62,12 @@ describe("Lynx thread right dock tabs", () => {
     expect(sharedStyles).toMatch(/\.EditorSurfaceTabLabel\s*\{[^}]*flex-shrink:\s*1;/s);
     expect(sharedStyles).not.toMatch(/\.EditorSurfaceTabLabel\s*\{[^}]*flex:\s*1;/s);
     expect(dockStyles).toMatch(/\.ThreadRightDockTab\s*\{[^}]*min-width:\s*68px;/s);
-    expect(dockStyles).toMatch(
-      /\.ThreadRightDockTabHeader\s*\{[^}]*height:\s*46px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,
-    );
+    // Same chat-surface header row as Electron: 46px with a layout-neutral hairline.
+    expect(dockStyles).toMatch(/\.ThreadRightDockTabHeader\s*\{[^}]*height:\s*46px;/s);
+    expect(dockStyles).not.toMatch(/\.ThreadRightDockTabHeader\s*\{[^}]*border-bottom/s);
+    expect(
+      readFileSync(new URL("./ThreadRightDockTabs.lynx.tsx", import.meta.url), "utf8"),
+    ).toContain('className="ThreadRightDockTabHeader chat-surface-divider"');
     expect(sharedStyles).toMatch(
       /\.EditorSurfaceTabRestingIcon\s*\{[^}]*color:\s*var\(--color-icon-secondary\);/s,
     );

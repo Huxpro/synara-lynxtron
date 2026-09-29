@@ -24,7 +24,7 @@ type ChildrenProps = { readonly children?: ReactNode };
 export function PullRequestRouteHeaderRootElement(
   props: ChildrenProps & { readonly hostClassName?: string | undefined },
 ) {
-  return <view className="SharedPrRouteHeader">{props.children}</view>;
+  return <view className="SharedPrRouteHeader chat-surface-divider">{props.children}</view>;
 }
 
 export function PullRequestRouteHeaderRowElement(props: ChildrenProps) {

@@ -25,7 +25,6 @@
   padding: 0 6px;
   align-items: center;
   gap: 4px;
-  border-bottom: 1px solid var(--border);
 }
 
 .DiffDockTabList {
@@ -102,9 +101,6 @@
   align-items: center;
   gap: 8px;
   justify-content: space-between;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: var(--border);
 }
 
 .DiffDockBody {
@@ -514,7 +510,8 @@
   height: 16px;
   margin: 0 4px;
   flex-shrink: 0;
-  background-color: color-mix(in srgb, var(--border) 60%, transparent);
+  /* Electron DiffPanelToolbar: bg-border/60 */
+  background-color: color-mix(in oklab, var(--color-border) 60%, transparent);
 }
 
 .DiffDockClose {
@@ -576,10 +573,11 @@
 }
 
 .DiffDockGitSplitDivider {
+  /* Electron chatHeaderControls split divider: w-px self-stretch bg-border */
   width: 1px;
-  height: 16px;
+  align-self: stretch;
   flex-shrink: 0;
-  background-color: var(--border);
+  background-color: var(--color-border);
 }
 
 .LxButton.DiffDockFileJumpTrigger,

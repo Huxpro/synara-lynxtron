@@ -17,18 +17,17 @@
   pointer-events: none;
   opacity: 0;
 }
+/* Electron BrowserPanel toolbar: flex items-center gap-1.5 px-1.5 h-[46px]
+   chat-surface-divider (the hairline is the shared class in the markup). */
 .BrowserDockToolbar {
   position: relative;
   z-index: 3;
   display: flex;
-  height: 40px;
-  min-height: 40px;
-  padding: 4px 6px;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 6px;
   align-items: center;
-  gap: 4px;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: var(--border);
+  gap: 6px;
 }
 .BrowserDockRefreshIcon--loading {
   animation: BrowserDockSpin 1s linear infinite;
@@ -144,13 +143,16 @@
   width: 208px;
   min-width: 208px;
 }
+/* Electron BrowserPanel tab bar: flex items-center gap-2 border-b border-border px-2 py-1.5
+   around h-8 tabs (45px with its border). BrowserDockHome is absolutely positioned
+   below the 46px toolbar (+45px when tabs show). */
 .BrowserDockTabBar {
   display: flex;
-  height: 40px;
-  min-height: 40px;
-  padding: 5px 8px;
+  height: 45px;
+  min-height: 45px;
+  padding: 6px 8px;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   border-bottom-width: 1px;
   border-bottom-style: solid;
   border-bottom-color: var(--border);
@@ -168,8 +170,8 @@
 .BrowserDockTab {
   display: flex;
   width: 150px;
-  height: 30px;
-  padding-left: 9px;
+  height: 32px;
+  padding-left: 10px;
   align-items: center;
   border-width: 1px;
   border-style: solid;
@@ -177,7 +179,7 @@
   border-right-color: transparent;
   border-top-color: transparent;
   border-bottom-color: transparent;
-  border-radius: 7px;
+  border-radius: 10px;
   color: var(--muted-foreground);
 }
 .BrowserDockTab--active {
@@ -240,7 +242,7 @@
 }
 .BrowserDockHome {
   position: absolute;
-  top: 40px;
+  top: 46px;
   right: 0;
   bottom: 0;
   left: 0;
@@ -251,7 +253,7 @@
   background-color: var(--browser-home-surface);
 }
 .BrowserDockHome--withTabs {
-  top: 80px;
+  top: 91px;
 }
 .BrowserDockHomeHeader {
   display: flex;

@@ -165,7 +165,7 @@ export function ExplorerPreviewHeader(props: {
   };
 
   return (
-    <view className="ExplorerDockPreviewHeader">
+    <view className="ExplorerDockPreviewHeader chat-surface-divider">
       <view
         className="ExplorerDockBreadcrumb"
         accessibility-element

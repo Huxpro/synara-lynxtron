@@ -295,7 +295,7 @@ export function AutomationDetailPage({
   if (!definition) {
     return (
       <view className="AutomationDetailNotFoundPage">
-        <view className="AutomationDetailNotFoundHeader AppWindowDragRegion">
+        <view className="AutomationDetailNotFoundHeader AppWindowDragRegion chat-surface-divider">
           <text className="AutomationDetailNotFoundHeaderTitle">Automations</text>
         </view>
         <view className="AutomationDetailNotFound">
@@ -347,7 +347,7 @@ export function AutomationDetailPage({
   return (
     <view className="AutomationDetailPage">
       <view className="AutomationDetailMain">
-        <view className="AutomationDetailHeader AppWindowDragRegion">
+        <view className="AutomationDetailHeader AppWindowDragRegion chat-surface-divider">
           <view
             className="AutomationDetailBreadcrumb"
             accessibility-element={true}
@@ -369,7 +369,7 @@ export function AutomationDetailPage({
         </scroll-view>
       </view>
       <view className="AutomationDetailAside">
-        <view className="AutomationDetailActionsHeader AppWindowDragRegion">
+        <view className="AutomationDetailActionsHeader AppWindowDragRegion chat-surface-divider">
           {definition.schedule.type === "once" ? null : (
             <Button
               variant="ghost"

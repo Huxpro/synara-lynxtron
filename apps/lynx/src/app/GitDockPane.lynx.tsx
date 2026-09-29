@@ -13,6 +13,8 @@ import {
 
 import { FileEntryIcon } from "../components/FileEntryIcon.lynx";
 import { Button } from "../components/ui/button.lynx";
+import { IconButton } from "../components/ui/icon-button.lynx";
+import { DockPaneHeader } from "./DockPaneHeader.lynx";
 import { RefreshCwIcon } from "../lib/icons.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
@@ -106,17 +108,19 @@ function GitFileSection(props: {
         ) : null}
       </view>
       {props.files.length > 0 ? (
-        props.files.map((file) => (
-          <GitFileRow
-            key={file.key}
-            actionDisabled={props.actionDisabled}
-            actionLabel={props.actionLabel}
-            file={file}
-            selected={file.path === props.selectedPath}
-            onAction={() => props.onAction([file.path])}
-            onSelect={() => props.onSelect(file)}
-          />
-        ))
+        <view className="GitDockFileRows">
+          {props.files.map((file) => (
+            <GitFileRow
+              key={file.key}
+              actionDisabled={props.actionDisabled}
+              actionLabel={props.actionLabel}
+              file={file}
+              selected={file.path === props.selectedPath}
+              onAction={() => props.onAction([file.path])}
+              onSelect={() => props.onSelect(file)}
+            />
+          ))}
+        </view>
       ) : (
         <text className="GitDockSectionEmpty">{props.emptyLabel}</text>
       )}
@@ -124,7 +128,11 @@ function GitFileSection(props: {
   );
 }
 
-export function GitDockPane(props: { readonly threadId: string; readonly workspaceRoot: string }) {
+export function GitDockPane(props: {
+  readonly threadId: string;
+  readonly workspaceRoot: string;
+  readonly onClose?: () => void;
+}) {
   const { semanticIconColor } = useTheme();
   const [refreshGeneration, setRefreshGeneration] = useState(0);
   const [selected, setSelected] = useState<SelectedGitFile | null>(null);
@@ -204,60 +212,65 @@ export function GitDockPane(props: { readonly threadId: string; readonly workspa
 
   return (
     <view className="GitDockPane">
-      <view className="GitDockHeader">
-        <text className="GitDockTitle">Source control</text>
-        <view className="GitDockHeaderSpacer" />
-        <Button
-          aria-label="Refresh changes"
-          className="GitDockRefresh"
-          size="icon-xs"
-          variant="ghost"
-          onClick={() => setRefreshGeneration((current) => current + 1)}
-        >
-          <RefreshCwIcon color={semanticIconColor("secondary")} size={14} />
-        </Button>
-      </view>
+      <DockPaneHeader
+        title="Source control"
+        closeLabel="Close source control"
+        onClose={props.onClose}
+        actions={
+          <IconButton
+            className="DockPaneHeaderIconButton"
+            label="Refresh changes"
+            onClick={() => setRefreshGeneration((current) => current + 1)}
+          >
+            <RefreshCwIcon color={semanticIconColor("secondary")} size={14} />
+          </IconButton>
+        }
+      />
       <scroll-view className="GitDockFileList" scroll-y enable-scroll-bar>
-        {error || queryError ? (
-          <text className="GitDockError">{error ?? "Could not load source-control changes."}</text>
-        ) : pending && !hasChanges ? (
-          <text className="GitDockState">Loading changes…</text>
-        ) : !hasChanges ? (
-          <text className="GitDockState">No changes in the working tree.</text>
-        ) : (
-          <>
-            <GitFileSection
-              actionDisabled={mutation.isPending}
-              actionLabel="Unstage"
-              emptyLabel="No staged changes."
-              files={stagedFiles}
-              selectedPath={
-                selectedResolved?.section === "staged" ? (selected?.path ?? null) : null
-              }
-              title="Staged"
-              onAction={(paths) => {
-                "background only";
-                mutation.mutate({ action: "unstage", paths });
-              }}
-              onSelect={(file) => setSelected({ section: "staged", path: file.path })}
-            />
-            <GitFileSection
-              actionDisabled={mutation.isPending}
-              actionLabel="Stage"
-              emptyLabel="No unstaged changes."
-              files={unstagedFiles}
-              selectedPath={
-                selectedResolved?.section === "unstaged" ? (selected?.path ?? null) : null
-              }
-              title="Changes"
-              onAction={(paths) => {
-                "background only";
-                mutation.mutate({ action: "stage", paths });
-              }}
-              onSelect={(file) => setSelected({ section: "unstaged", path: file.path })}
-            />
-          </>
-        )}
+        <view className="GitDockFileListContent">
+          {error || queryError ? (
+            <text className="GitDockError">
+              {error ?? "Could not load source-control changes."}
+            </text>
+          ) : pending && !hasChanges ? (
+            <text className="GitDockState">Loading changes…</text>
+          ) : !hasChanges ? (
+            <text className="GitDockState">No changes in the working tree.</text>
+          ) : (
+            <>
+              <GitFileSection
+                actionDisabled={mutation.isPending}
+                actionLabel="Unstage"
+                emptyLabel="No staged changes."
+                files={stagedFiles}
+                selectedPath={
+                  selectedResolved?.section === "staged" ? (selected?.path ?? null) : null
+                }
+                title="Staged"
+                onAction={(paths) => {
+                  "background only";
+                  mutation.mutate({ action: "unstage", paths });
+                }}
+                onSelect={(file) => setSelected({ section: "staged", path: file.path })}
+              />
+              <GitFileSection
+                actionDisabled={mutation.isPending}
+                actionLabel="Stage"
+                emptyLabel="No unstaged changes."
+                files={unstagedFiles}
+                selectedPath={
+                  selectedResolved?.section === "unstaged" ? (selected?.path ?? null) : null
+                }
+                title="Changes"
+                onAction={(paths) => {
+                  "background only";
+                  mutation.mutate({ action: "stage", paths });
+                }}
+                onSelect={(file) => setSelected({ section: "unstaged", path: file.path })}
+              />
+            </>
+          )}
+        </view>
       </scroll-view>
       <scroll-view className="GitDockDiff" scroll-y enable-scroll-bar>
         <PullRequestCodeComposition

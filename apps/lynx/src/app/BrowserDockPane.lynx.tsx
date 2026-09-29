@@ -49,7 +49,8 @@ const INITIAL_BROWSER_URL = BROWSER_BLANK_URL;
 const INACTIVE_TAB_SUSPEND_DELAY_MS = 1_500;
 const INACTIVE_BROWSER_SUSPEND_DELAY_MS = 30_000;
 const BROWSER_HISTORY_LIMIT = 12;
-const BROWSER_CHROME_HEIGHT_PX = 80;
+// 46px chat-surface toolbar + 45px tab bar (Electron BrowserPanel chrome).
+const BROWSER_CHROME_HEIGHT_PX = 91;
 interface NativeBrowserTab {
   readonly faviconUrl: string;
   readonly id: string;
@@ -462,7 +463,7 @@ export function BrowserDockPane(props: {
       flatten={false}
       className={`BrowserDockPane${props.active ? "" : " BrowserDockPane--hidden"}`}
     >
-      <view className="BrowserDockToolbar">
+      <view className="BrowserDockToolbar chat-surface-divider">
         <Button
           aria-label="Go back"
           disabled={!state?.canGoBack}

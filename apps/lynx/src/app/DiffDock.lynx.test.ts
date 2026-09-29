@@ -30,10 +30,14 @@ describe("Diff Dock chrome fidelity", () => {
     expect(railTabsSource).toContain("<EditorSurfaceTab");
   });
 
-  it("declares the hosted Diff toolbar divider with physical Native border properties", () => {
+  it("uses the shared chat-surface hairline under the hosted Diff toolbar", () => {
     const styles = readFileSync(new URL("./diff-dock.css", import.meta.url), "utf8");
+    const source = readFileSync(new URL("./DiffDock.lynx.tsx", import.meta.url), "utf8");
+    expect(styles).not.toMatch(/\.DiffDockHeader\s*\{[^}]*border-bottom/s);
+    expect(source).toContain('className="DiffDockHeader chat-surface-divider"');
+    // Electron DiffPanelToolbar separators: bg-border/60.
     expect(styles).toMatch(
-      /\.DiffDockHeader\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,
+      /\.DiffDockToolbarDivider\s*\{[^}]*background-color:\s*color-mix\(in oklab, var\(--color-border\) 60%, transparent\);/s,
     );
   });
 

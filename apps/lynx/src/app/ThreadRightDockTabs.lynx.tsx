@@ -101,7 +101,7 @@ export function ThreadRightDockTabs(props: {
   const { semanticIconColor } = useTheme();
   const addKinds = props.addMenuKinds ?? DEFAULT_ADD_KINDS;
   return (
-    <view className="ThreadRightDockTabHeader">
+    <view className="ThreadRightDockTabHeader chat-surface-divider">
       <scroll-view className="ThreadRightDockTabScroller" scroll-orientation="horizontal">
         <view className="ThreadRightDockTabList">
           {props.panes.map((pane) => (

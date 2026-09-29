@@ -11,7 +11,7 @@
   flex-direction: column;
   border-left-width: 1px;
   border-left-style: solid;
-  border-left-color: var(--border);
+  border-left-color: var(--app-surface-divider);
   background-color: var(--background);
   opacity: 1;
   transform: translateX(0);

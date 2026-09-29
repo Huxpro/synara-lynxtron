@@ -982,7 +982,16 @@ function ThreadRightDocks(
         </view>
       ) : null}
       {gitOpen && currentThread?.workspaceRoot ? (
-        <GitDockPane threadId={currentThread.id} workspaceRoot={currentThread.workspaceRoot} />
+        <GitDockPane
+          threadId={currentThread.id}
+          workspaceRoot={currentThread.workspaceRoot}
+          onClose={() => {
+            updateRightDockState((current) => {
+              const pane = current.panes.find((candidate) => candidate.kind === "git");
+              return pane ? closePaneInState(current, pane.id) : current;
+            });
+          }}
+        />
       ) : null}
       {browserPane && currentThread ? (
         <BrowserDockPane
@@ -1963,7 +1972,7 @@ function ThreadPage(props: ThreadPageProps) {
     return (
       <>
         <view className="ThreadEditorView">
-          <view className="ThreadEditorHeader AppWindowDragRegion">
+          <view className="ThreadEditorHeader AppWindowDragRegion chat-surface-divider">
             <view
               className="ThreadEditorIdentity"
               style={{

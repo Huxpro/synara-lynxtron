@@ -30,13 +30,16 @@ describe("Native Git right-dock pane", () => {
     expect(router).toContain("<GitDockPane");
   });
 
-  it("declares both source-control dividers with physical Native border properties", () => {
+  it("places the source-control dividers where Electron's GitPanel does", () => {
     const styles = readFileSync(new URL("./git-dock-pane.css", import.meta.url), "utf8");
+    const source = readFileSync(new URL("./GitDockPane.lynx.tsx", import.meta.url), "utf8");
+    // Pane header: the shared dock header row with its layout-neutral hairline.
+    expect(source).toContain("<DockPaneHeader");
+    expect(source).toContain('title="Source control"');
+    // List/diff split: border-t border-border/70 on the diff viewport, not the list.
+    expect(styles).not.toMatch(/\.GitDockFileList\s*\{[^}]*border-bottom/s);
     expect(styles).toMatch(
-      /\.GitDockHeader\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,
-    );
-    expect(styles).toMatch(
-      /\.GitDockFileList\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,
+      /\.GitDockDiff\s*\{[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*solid;[^}]*border-top-color:\s*color-mix\(in oklab, var\(--color-border\) 70%, transparent\);/s,
     );
   });
 });

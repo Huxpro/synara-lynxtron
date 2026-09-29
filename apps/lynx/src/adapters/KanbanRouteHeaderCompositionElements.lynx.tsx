@@ -12,7 +12,7 @@ export function KanbanRouteHeaderRootElement(
     readonly hostClassName?: string | undefined;
   },
 ) {
-  return <view className="SharedKanbanRouteHeader">{props.children}</view>;
+  return <view className="SharedKanbanRouteHeader chat-surface-divider">{props.children}</view>;
 }
 
 export function KanbanRouteHeaderRowElement(props: ChildrenProps) {

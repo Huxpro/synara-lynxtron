@@ -23,10 +23,10 @@ describe("Native stable right dock host", () => {
     expect(elementTree.root?.querySelector(".HostedPane")).not.toBeNull();
   });
 
-  it("declares the main dock divider with physical Native border properties", () => {
+  it("draws the dock seam with Electron's surface divider", () => {
     const styles = readFileSync(new URL("./thread-right-dock-host.css", import.meta.url), "utf8");
     expect(styles).toMatch(
-      /\.ThreadRightDockHost\s*\{[^}]*border-left-width:\s*1px;[^}]*border-left-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);/s,
+      /\.ThreadRightDockHost\s*\{[^}]*border-left-width:\s*1px;[^}]*border-left-style:\s*solid;[^}]*border-left-color:\s*var\(--app-surface-divider\);/s,
     );
   });
 

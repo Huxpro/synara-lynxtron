@@ -385,7 +385,7 @@ function OpenDiffDock(props: {
       {props.presentation === "dock" ? (
         <>
           {props.dockTabHeader ?? (
-            <view className="DiffDockTabHeader">
+            <view className="DiffDockTabHeader chat-surface-divider">
               <view className="DiffDockTabList">
                 <EditorSurfaceTab
                   active
@@ -428,7 +428,7 @@ function OpenDiffDock(props: {
         </>
       ) : null}
       {props.presentation !== "editor" ? (
-        <view className="DiffDockHeader">
+        <view className="DiffDockHeader chat-surface-divider">
           <view className="DiffDockIdentity">
             <DiffSourcePicker
               checkpoints={orderedCheckpoints}

@@ -354,7 +354,7 @@ export function AutomationsPage({
 
   return (
     <view className="AutomationsPage">
-      <view className="AutomationsHeader AppWindowDragRegion">
+      <view className="AutomationsHeader AppWindowDragRegion chat-surface-divider">
         <view className="AutomationsHeaderSpacer" />
         <Button
           variant="ghost"

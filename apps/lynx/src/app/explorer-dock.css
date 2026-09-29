@@ -81,7 +81,7 @@
   height: 28px;
   min-height: 28px;
   padding: 0;
-  border-bottom-width: 0;
+  background-image: none;
 }
 
 .SliceRoot--viewport-short-height
@@ -206,7 +206,7 @@
   height: 28px;
   min-height: 28px;
   padding: 0;
-  border-bottom-width: 0;
+  background-image: none;
 }
 
 .SliceRoot--viewport-short-height .ExplorerDock .ExplorerDockPreview--image .ExplorerDockBreadcrumb,
@@ -241,7 +241,7 @@
   height: 28px;
   min-height: 28px;
   padding: 0;
-  border-bottom-width: 0;
+  background-image: none;
 }
 
 .SliceRoot--viewport-short-height
@@ -351,7 +351,9 @@
   height: 176px;
   min-height: 176px;
   border-right-width: 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: color-mix(in oklab, var(--color-border) 65%, transparent);
 }
 
 .SliceRoot--viewport-short-height .ExplorerDock--editor-search .ExplorerDockSidebar {
@@ -407,7 +409,7 @@
   flex-direction: column;
   border-right-width: 1px;
   border-right-style: solid;
-  border-right-color: var(--border);
+  border-right-color: color-mix(in oklab, var(--color-border) 65%, transparent);
 }
 
 .ExplorerDockSearch {
@@ -416,7 +418,7 @@
   padding: 8px;
   border-bottom-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: var(--border);
+  border-bottom-color: color-mix(in oklab, var(--color-border) 65%, transparent);
 }
 
 .ExplorerDockSearchInput {
@@ -451,7 +453,9 @@
   flex-shrink: 0;
   height: 22px;
   padding: 4px 8px;
-  border-top: 1px solid var(--border);
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: color-mix(in oklab, var(--color-border) 45%, transparent);
   color: var(--muted-foreground);
   font-size: 10px;
   line-height: 14px;
@@ -577,9 +581,6 @@
   padding: 0 12px;
   align-items: center;
   gap: 8px;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: var(--border);
 }
 
 .ExplorerDockBreadcrumb {

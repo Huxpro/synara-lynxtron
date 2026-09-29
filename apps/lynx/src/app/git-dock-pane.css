@@ -6,73 +6,69 @@
   flex: 1;
   flex-direction: column;
 }
-.GitDockHeader {
-  display: flex;
-  height: 36px;
-  min-height: 36px;
-  padding: 0 8px 0 12px;
-  align-items: center;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: var(--border);
-}
-.GitDockTitle {
-  color: var(--foreground);
-  font-size: 12px;
-  font-weight: 600;
-}
-.GitDockHeaderSpacer {
-  flex: 1;
-}
-.GitDockRefresh {
-  width: 28px;
-  min-width: 28px;
-  height: 28px;
-  min-height: 28px;
-}
+/* Electron GitPanel list: flex max-h-[48%] flex-col gap-2 px-1.5 py-2.
+   Lynx scroll-view does not lay out children with flex gap, so the column
+   lives on an inner content view. */
 .GitDockFileList {
   max-height: 48%;
   min-height: 96px;
-  padding: 8px 6px;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: var(--border);
 }
+.GitDockFileListContent {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 6px;
+  gap: 8px;
+}
+/* GitFileSection: <section> = header + rows, no gap between them */
 .GitDockSection {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin-bottom: 8px;
 }
+/* header: flex items-center gap-2 px-1.5 py-1 (height follows content) */
 .GitDockSectionHeader {
   display: flex;
-  min-height: 28px;
   padding: 4px 6px;
   align-items: center;
   gap: 8px;
 }
+/* text-[11px] font-semibold text-muted-foreground */
 .GitDockSectionTitle {
   color: var(--muted-foreground);
   font-size: 11px;
   font-weight: 600;
+  line-height: 16.5px;
 }
+/* rounded-full bg-muted px-1.5 text-[10px] font-medium */
 .GitDockSectionCount {
-  min-width: 18px;
-  padding: 1px 5px;
+  padding: 0 6px;
   border-radius: 999px;
   background-color: var(--muted);
   color: var(--muted-foreground);
   font-size: 10px;
+  font-weight: 500;
+  line-height: 15px;
   text-align: center;
+}
+/* rows: flex flex-col gap-0.5 */
+.GitDockFileRows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 .GitDockSectionAction {
   margin-left: auto;
 }
-.GitDockSectionEmpty,
 .GitDockState {
   padding: 6px;
   color: var(--muted-foreground);
   font-size: 11px;
+}
+/* empty: px-1.5 py-1 text-[11px] text-muted-foreground/70 */
+.GitDockSectionEmpty {
+  padding: 4px 6px;
+  color: color-mix(in oklab, var(--muted-foreground) 70%, transparent);
+  font-size: 11px;
+  line-height: 16.5px;
 }
 .GitDockState {
   text-align: center;
@@ -82,10 +78,10 @@
   color: var(--destructive);
   font-size: 11px;
 }
+/* row: group flex items-center gap-1.5 rounded-md px-1.5 py-1 */
 .GitDockFileRow {
   display: flex;
-  min-height: 30px;
-  padding: 3px 6px;
+  padding: 4px 6px;
   align-items: center;
   gap: 6px;
   border-radius: 6px;
@@ -124,4 +120,8 @@
   flex: 1;
   min-width: 0;
   min-height: 0;
+  /* Electron GitPanel diff viewport: border-t border-border/70 */
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: color-mix(in oklab, var(--color-border) 70%, transparent);
 }

@@ -14,8 +14,19 @@ describe("Kanban route header fidelity", () => {
     );
 
     expect(styles).toMatch(
-      /\.SharedKanbanRouteHeader\s*\{[^}]*height:\s*46px;[^}]*padding:\s*0 20px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,
+      /\.SharedKanbanRouteHeader\s*\{[^}]*height:\s*46px;[^}]*padding:\s*0 20px;/s,
     );
+
+    // Electron route header: the shared layout-neutral chat-surface hairline.
+
+    expect(styles).not.toMatch(/\.SharedKanbanRouteHeader\s*\{[^}]*border-bottom/s);
+
+    expect(
+      readFileSync(
+        new URL("./KanbanRouteHeaderCompositionElements.lynx.tsx", import.meta.url),
+        "utf8",
+      ),
+    ).toContain('className="SharedKanbanRouteHeader chat-surface-divider"');
     expect(styles).toMatch(
       /\.SharedKanbanRouteHeaderRow\s*\{[^}]*height:\s*46px;[^}]*gap:\s*12px;/s,
     );

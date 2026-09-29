@@ -189,11 +189,14 @@ describe("Native Browser right-dock pane", () => {
     expect(styles).not.toContain("rgba(255,255,255");
   });
 
-  it("declares both Browser chrome dividers with physical Native border properties", () => {
+  it("matches Electron's Browser chrome dividers", () => {
     const styles = readFileSync(new URL("./browser-dock-pane.css", import.meta.url), "utf8");
-    expect(styles).toMatch(
-      /\.BrowserDockToolbar\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,
-    );
+    const source = readFileSync(new URL("./BrowserDockPane.lynx.tsx", import.meta.url), "utf8");
+    // Toolbar: the 46px chat-surface header row with its layout-neutral hairline.
+    expect(styles).toMatch(/\.BrowserDockToolbar\s*\{[^}]*height:\s*46px;/s);
+    expect(styles).not.toMatch(/\.BrowserDockToolbar\s*\{[^}]*border-bottom/s);
+    expect(source).toContain('className="BrowserDockToolbar chat-surface-divider"');
+    // Tab bar: border-b border-border (full strength).
     expect(styles).toMatch(
       /\.BrowserDockTabBar\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,
     );

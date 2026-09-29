@@ -1,0 +1,36 @@
+/* Electron DockPaneHeader: CHAT_SURFACE_HEADER_ROW_CLASS_NAME + gap-1 px-4. */
+.DockPaneHeader {
+  display: flex;
+  flex-shrink: 0;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 16px;
+  align-items: center;
+  gap: 4px;
+}
+
+/* text-[13px] font-medium tracking-[-0.01em] text-foreground */
+.DockPaneHeaderTitle {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.13px;
+}
+
+/* ml-auto flex items-center gap-0.5 */
+.DockPaneHeaderActions {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  gap: 2px;
+}
+
+/* DOCK_HEADER_ICON_BUTTON_CLASS: !size-7 shrink-0 rounded-lg */
+.LxButton.DockPaneHeaderIconButton {
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  min-height: 28px;
+  flex-shrink: 0;
+  border-radius: 8px;
+}

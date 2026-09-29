@@ -306,7 +306,11 @@ describe("Lynx Explorer dock", () => {
   it("matches the Web dock explorer split anatomy", () => {
     const styles = readFileSync(new URL("./explorer-dock.css", import.meta.url), "utf8");
 
-    expect(styles).not.toMatch(/#[0-9a-f]{3,8}\b|rgba?\(|oklch\(|color-mix\(/i);
+    expect(styles).not.toMatch(/#[0-9a-f]{3,8}\b|rgba?\(|oklch\(/i);
+    // Dividers use Electron's recipes verbatim (projected at build time).
+    for (const recipe of styles.match(/color-mix\([^;]*\)/g) ?? []) {
+      expect(recipe).toMatch(/^color-mix\(in oklab, var\(--color-border\) \d+%, transparent\)$/);
+    }
     for (const token of [
       "--background",
       "--border",
@@ -346,7 +350,7 @@ describe("Lynx Explorer dock", () => {
       /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockEntries\s*\{[^}]*padding:\s*3px;/s,
     );
     expect(styles).toMatch(
-      /\.ExplorerDockSearchTruncated\s*\{[^}]*height:\s*22px;[^}]*padding:\s*4px 8px;[^}]*border-top:\s*1px solid var\(--border\);/s,
+      /\.ExplorerDockSearchTruncated\s*\{[^}]*height:\s*22px;[^}]*padding:\s*4px 8px;[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*solid;[^}]*border-top-color:\s*color-mix\(in oklab, var\(--color-border\) 45%, transparent\);/s,
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockSearchTruncated\s*\{[^}]*height:\s*14px;[^}]*padding:\s*0 4px;[^}]*font-size:\s*9px;/s,
@@ -400,10 +404,10 @@ describe("Lynx Explorer dock", () => {
       /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockPreview--markdown\s+\.ExplorerDockPreviewContent\s*\{[^}]*height:\s*100%;[^}]*padding:\s*2px;/s,
     );
     expect(styles).toMatch(
-      /\.ExplorerDockSidebar\s*\{[^}]*width:\s*240px;[^}]*min-width:\s*240px;[^}]*border-right-width:\s*1px;[^}]*border-right-style:\s*solid;[^}]*border-right-color:\s*var\(--border\);/s,
+      /\.ExplorerDockSidebar\s*\{[^}]*width:\s*240px;[^}]*min-width:\s*240px;[^}]*border-right-width:\s*1px;[^}]*border-right-style:\s*solid;[^}]*border-right-color:\s*color-mix\(in oklab, var\(--color-border\) 65%, transparent\);/s,
     );
     expect(styles).toMatch(
-      /\.ExplorerDockSearch\s*\{[^}]*padding:\s*8px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,
+      /\.ExplorerDockSearch\s*\{[^}]*padding:\s*8px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*color-mix\(in oklab, var\(--color-border\) 65%, transparent\);/s,
     );
     expect(styles).toMatch(
       /\.ExplorerDockSearchInput\s*\{[^}]*height:\s*28px;[^}]*padding-left:\s*32px;/s,
@@ -454,8 +458,13 @@ describe("Lynx Explorer dock", () => {
       /\.ExplorerDockPreview\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*flex-direction:\s*column;/s,
     );
     expect(styles).toMatch(
-      /\.ExplorerDockPreviewHeader\s*\{[^}]*height:\s*40px;[^}]*min-height:\s*40px;[^}]*padding:\s*0 12px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,
+      /\.ExplorerDockPreviewHeader\s*\{[^}]*height:\s*40px;[^}]*min-height:\s*40px;[^}]*padding:\s*0 12px;/s,
     );
+    // Electron WorkspaceFilePreviewHeader: the shared layout-neutral hairline.
+    expect(styles).not.toMatch(/\.ExplorerDockPreviewHeader\s*\{[^}]*border-bottom/s);
+    expect(
+      readFileSync(new URL("./ExplorerPreviewHeader.lynx.tsx", import.meta.url), "utf8"),
+    ).toContain('className="ExplorerDockPreviewHeader chat-surface-divider"');
     expect(styles).toMatch(
       /\.ExplorerDockBreadcrumb\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*1;[^}]*overflow:\s*hidden;/s,
     );

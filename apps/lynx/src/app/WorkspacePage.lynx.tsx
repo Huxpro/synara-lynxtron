@@ -97,7 +97,7 @@ export function WorkspacePage({
 
   return (
     <view className="WorkspacePage">
-      <view className="WorkspacePageHeader AppWindowDragRegion">
+      <view className="WorkspacePageHeader AppWindowDragRegion chat-surface-divider">
         <view className="WorkspacePageTitleRow">
           {renaming ? (
             <Input

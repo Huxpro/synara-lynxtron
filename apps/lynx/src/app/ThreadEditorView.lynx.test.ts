@@ -329,7 +329,7 @@ describe("Lynx Editor view", () => {
     expect(diffDockSource).toContain("+{view.additions}");
     expect(diffDockSource).toContain("-{view.deletions}");
     expect(diffDockSource).toContain('showSummary={props.presentation !== "editor"}');
-    expect(diffDockSource).toContain('className="DiffDockTabHeader"');
+    expect(diffDockSource).toContain('className="DiffDockTabHeader chat-surface-divider"');
     expect(diffDockSource).toContain("<EditorSurfaceTab");
     expect(diffDockSource).toContain('label="Diff"');
     expect(diffDockSource).toContain("<DiffSourcePicker");
