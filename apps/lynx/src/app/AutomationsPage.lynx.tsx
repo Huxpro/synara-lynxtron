@@ -239,10 +239,11 @@ export function AutomationsPage({
   });
   const createMutation = useMutation({
     mutationFn: createAutomation,
-    onSuccess: async (definition) => {
+    // Like the web list, creating closes the dialog and keeps the list, where
+    // the new automation appears; it does not open the detail.
+    onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["automations"] });
       setCreateOpen(false);
-      navigate(`/automations/${encodeURIComponent(definition.id)}`);
     },
   });
   const runNowMutation = useMutation({

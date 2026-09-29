@@ -56,6 +56,13 @@ describe("Lynx Automations route", () => {
     expect(pageSource).toContain("mutationFn: updateAutomation");
     expect(pageSource).toContain("mutationFn: deleteAutomation");
     expect(pageSource).toContain("mutationFn: runAutomationNow");
+    // Like the web list, Create closes the dialog and stays on the list.
+    const createMutation = pageSource.slice(
+      pageSource.indexOf("mutationFn: createAutomation"),
+      pageSource.indexOf("const runNowMutation"),
+    );
+    expect(createMutation).toContain("setCreateOpen(false)");
+    expect(createMutation).not.toContain("navigate(");
     expect(pageSource).toContain('invalidateQueries({ queryKey: ["automations"] })');
     expect(detailSource).toContain('"background only"');
     expect(detailSource).toContain("return dialogs.confirm(");
@@ -153,7 +160,7 @@ describe("Lynx Automations route", () => {
     expect(pageSource).toContain("mutationFn: createAutomation");
     expect(pageSource).toContain("<AutomationDialog");
     expect(pageSource).toContain("threads={sidebar.data?.threads ?? []}");
-    expect(pageSource).toContain("navigate(`/automations/${encodeURIComponent(definition.id)}`)");
+    expect(pageSource).not.toContain("navigate(`/automations/${encodeURIComponent(definition.id)}`)");
     expect(dialogSource).toContain("buildAutomationCreateInput({");
     expect(createLogicSource).toContain("readonly schedule: AutomationSchedule");
     expect(createLogicSource).toContain("schedule: input.schedule");
