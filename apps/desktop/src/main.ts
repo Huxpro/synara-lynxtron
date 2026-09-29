@@ -3464,6 +3464,13 @@ function createWindow(): BrowserWindow {
     // Preserve the original first-launch behavior, then respect the state saved
     // by subsequent closes. Normal bounds are restored before maximizing so the
     // native restore control returns to the user's last windowed size.
+    // Automated launches (comparison harness) must not take focus from the user;
+    // maximizing would show and focus the window, and the harness sizes it.
+    if (process.env.SYNARA_BACKGROUND_LAUNCH === "1") {
+      window.showInactive();
+      emitDesktopWindowState(window);
+      return;
+    }
     if (!savedWindowState || savedWindowState.isMaximized) {
       window.maximize();
     }

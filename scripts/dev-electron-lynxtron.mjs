@@ -270,8 +270,12 @@ export function prepareOwnedLynxtronRuntime(paths, options = {}) {
     ["CFBundleShortVersionString", sourceVersion],
     ["CFBundleVersion", sourceVersion],
     ["SynaraLynxtronSourceVersion", sourceVersion],
+    // An agent (UI element) app never activates, so comparisons cannot pull
+    // focus from the user's foreground app.
+    ["LSUIElement", true],
   ]) {
-    const rewrite = spawnSync("plutil", ["-replace", key, "-string", value, infoPlist], {
+    const type = typeof value === "boolean" ? "-bool" : "-string";
+    const rewrite = spawnSync("plutil", ["-replace", key, type, String(value), infoPlist], {
       encoding: "utf8",
     });
     if (rewrite.status !== 0) {
@@ -931,6 +935,8 @@ export function desktopComparisonCommands(options, paths, authToken, electronExe
       env: {
         SYNARA_HOME: paths.electronHome,
         SYNARA_ALLOW_PARALLEL_INSTANCE: "1",
+        // Both renderers open inactive so a comparison never steals focus.
+        SYNARA_BACKGROUND_LAUNCH: "1",
         SYNARA_DESKTOP_AUTH_TOKEN: authToken,
         SYNARA_DESKTOP_USER_DATA_DIR: paths.electronUserDataDir,
         SYNARA_DISABLE_THREAD_RETENTION: "1",
@@ -946,6 +952,7 @@ export function desktopComparisonCommands(options, paths, authToken, electronExe
       env: {
         NODE_ENV: "production",
         SYNARA_ALLOW_PARALLEL_INSTANCE: "1",
+        SYNARA_BACKGROUND_LAUNCH: "1",
         SYNARA_ENABLE_DEVTOOL: "1",
         SYNARA_LYNX_USER_DATA_DIR: paths.lynxUserDataDir,
         SYNARA_MANAGED_RELAUNCH: "1",
@@ -1738,7 +1745,7 @@ async function resolveElectronExecutable(webUrl) {
   const launcher = await import(
     new URL("../apps/desktop/scripts/electron-launcher.mjs", import.meta.url)
   );
-  return launcher.resolveElectronPath();
+  return launcher.resolveElectronPath({ background: true });
 }
 
 export function ownedComparisonPidsFromPs(output, paths, electronExecutable, webPort) {

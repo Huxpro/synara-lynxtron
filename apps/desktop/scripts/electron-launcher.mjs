@@ -3,7 +3,6 @@
 import { spawnSync } from "node:child_process";
 import {
   copyFileSync,
-  cpSync,
   existsSync,
   mkdirSync,
   readFileSync,
@@ -51,11 +50,25 @@ function setPlistString(plistPath, key, value) {
   throw new Error(`Failed to update plist key "${key}" at ${plistPath}: ${details}`.trim());
 }
 
-function patchMainBundleInfoPlist(appBundlePath, iconPath) {
+function setPlistBoolean(plistPath, key, value) {
+  const result = spawnSync("plutil", ["-replace", key, "-bool", String(value), plistPath], {
+    encoding: "utf8",
+  });
+  if (result.status !== 0) {
+    throw new Error(`Failed to update plist key "${key}" at ${plistPath}: ${result.stderr}`.trim());
+  }
+}
+
+function patchMainBundleInfoPlist(appBundlePath, iconPath, bundleId, background) {
   const infoPlistPath = join(appBundlePath, "Contents", "Info.plist");
   setPlistString(infoPlistPath, "CFBundleDisplayName", APP_DISPLAY_NAME);
   setPlistString(infoPlistPath, "CFBundleName", APP_DISPLAY_NAME);
-  setPlistString(infoPlistPath, "CFBundleIdentifier", APP_BUNDLE_ID);
+  setPlistString(infoPlistPath, "CFBundleIdentifier", bundleId);
+  if (background) {
+    // An agent (UI element) app never activates or shows in the Dock, so
+    // automated launches cannot pull focus from the user's foreground app.
+    setPlistBoolean(infoPlistPath, "LSUIElement", true);
+  }
   setPlistString(infoPlistPath, "CFBundleIconFile", "icon.icns");
   setPlistString(infoPlistPath, "NSMicrophoneUsageDescription", MICROPHONE_USAGE_DESCRIPTION);
 
@@ -64,7 +77,9 @@ function patchMainBundleInfoPlist(appBundlePath, iconPath) {
   copyFileSync(iconPath, join(resourcesDir, "electron.icns"));
 }
 
-function patchHelperBundleInfoPlists(appBundlePath) {
+// Chromium derives helper IPC names from the main bundle id, so helper ids must
+// extend the same id as the main bundle.
+function patchHelperBundleInfoPlists(appBundlePath, bundleId) {
   const frameworksDir = join(appBundlePath, "Contents", "Frameworks");
   if (!existsSync(frameworksDir)) {
     return;
@@ -89,8 +104,8 @@ function patchHelperBundleInfoPlists(appBundlePath) {
       : `${APP_DISPLAY_NAME} Helper`;
     const helperIdSuffix = suffix.replace(/[()]/g, "").trim().toLowerCase().replace(/\s+/g, "-");
     const helperBundleId = helperIdSuffix
-      ? `${APP_BUNDLE_ID}.helper.${helperIdSuffix}`
-      : `${APP_BUNDLE_ID}.helper`;
+      ? `${bundleId}.helper.${helperIdSuffix}`
+      : `${bundleId}.helper`;
 
     setPlistString(helperPlistPath, "CFBundleDisplayName", helperName);
     setPlistString(helperPlistPath, "CFBundleName", helperName);
@@ -106,13 +121,15 @@ function readJson(path) {
   }
 }
 
-function buildMacLauncher(electronBinaryPath) {
+function buildMacLauncher(electronBinaryPath, background) {
   const sourceAppBundlePath = resolve(electronBinaryPath, "../../..");
   const runtimeDir = join(desktopDir, ".electron-runtime");
-  const targetAppBundlePath = join(runtimeDir, `${APP_DISPLAY_NAME}.app`);
+  const bundleName = background ? `${APP_DISPLAY_NAME} (Background)` : APP_DISPLAY_NAME;
+  const bundleId = background ? `${APP_BUNDLE_ID}.background` : APP_BUNDLE_ID;
+  const targetAppBundlePath = join(runtimeDir, `${bundleName}.app`);
   const targetBinaryPath = join(targetAppBundlePath, "Contents", "MacOS", "Electron");
   const iconPath = join(desktopDir, "resources", "icon.icns");
-  const metadataPath = join(runtimeDir, "metadata.json");
+  const metadataPath = join(runtimeDir, background ? "metadata-background.json" : "metadata.json");
 
   mkdirSync(runtimeDir, { recursive: true });
 
@@ -133,15 +150,24 @@ function buildMacLauncher(electronBinaryPath) {
   }
 
   rmSync(targetAppBundlePath, { recursive: true, force: true });
-  cpSync(sourceAppBundlePath, targetAppBundlePath, { recursive: true });
-  patchMainBundleInfoPlist(targetAppBundlePath, iconPath);
-  patchHelperBundleInfoPlists(targetAppBundlePath);
+  // ditto keeps the framework's relative symlinks; Node's cpSync rewrites them
+  // to absolute links into the source bundle, which breaks helper startup.
+  const copy = spawnSync("ditto", [sourceAppBundlePath, targetAppBundlePath], {
+    encoding: "utf8",
+  });
+  if (copy.status !== 0) {
+    throw new Error(`Failed to copy the Electron app bundle: ${copy.stderr.trim()}`);
+  }
+  patchMainBundleInfoPlist(targetAppBundlePath, iconPath, bundleId, background);
+  patchHelperBundleInfoPlists(targetAppBundlePath, bundleId);
   writeFileSync(metadataPath, `${JSON.stringify(expectedMetadata, null, 2)}\n`);
 
   return targetBinaryPath;
 }
 
-export function resolveElectronPath() {
+// `background` builds a separate agent-app bundle for automated launches
+// (comparison harness) so they never take focus from the user.
+export function resolveElectronPath({ background = false } = {}) {
   const require = createRequire(import.meta.url);
   const electronBinaryPath = require("electron");
 
@@ -149,5 +175,5 @@ export function resolveElectronPath() {
     return electronBinaryPath;
   }
 
-  return buildMacLauncher(electronBinaryPath);
+  return buildMacLauncher(electronBinaryPath, background);
 }

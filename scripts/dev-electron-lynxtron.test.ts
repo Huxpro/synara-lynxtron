@@ -718,6 +718,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(commands.electron.args).toContain("--remote-debugging-port=9223");
     // Occluded windows would stop requestAnimationFrame and stall the composer.
     expect(commands.electron.args).toContain("--disable-backgrounding-occluded-windows");
+    expect(commands.electron.env.SYNARA_BACKGROUND_LAUNCH).toBe("1");
+    expect(commands.lynx.env.SYNARA_BACKGROUND_LAUNCH).toBe("1");
     expect(commands.electron.args).toContain(
       "--user-data-dir=/repo/.synara-desktop-comparison/electron-profile",
     );
@@ -823,6 +825,13 @@ describe("Electron and Lynxtron comparison launcher", () => {
         { encoding: "utf8" },
       ).stdout.trim(),
     ).toBe("0.0.21");
+    expect(
+      spawnSync(
+        "plutil",
+        ["-extract", "LSUIElement", "raw", join(paths.ownedLynxtronApp, "Contents", "Info.plist")],
+        { encoding: "utf8" },
+      ).stdout.trim(),
+    ).toBe("true");
     if (platform() === "darwin") {
       const source = readFileSync(new URL("./dev-electron-lynxtron.mjs", import.meta.url), "utf8");
       expect(source).toContain(
