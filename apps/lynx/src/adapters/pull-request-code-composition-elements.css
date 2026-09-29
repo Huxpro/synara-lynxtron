@@ -378,13 +378,15 @@
   font-family: var(--font-chat-code-family);
   font-size: var(--app-font-size-chat-code, 11px);
   line-height: 20px;
-  white-space: pre;
+  /* Lynx supports only normal/nowrap (`pre` falls back to wrapping) and keeps
+     spaces as authored, so nowrap is the web's `pre`. */
+  white-space: nowrap;
 }
 
 .SharedPrCodeLine--wrap .SharedPrCodeLineText {
   flex: 1;
   min-width: 0;
-  white-space: pre-wrap;
+  white-space: normal;
 }
 
 .SharedPrCodeLine--hunk .SharedPrCodeLineText,

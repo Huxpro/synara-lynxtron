@@ -23,9 +23,9 @@ import {
 } from "@synara-web/appSettingsStorageProjection.logic";
 
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import changesSvg from "@synara-central-icons/changes.svg?raw";
 import differenceSvg from "@synara-central-icons/difference-modified.svg?raw";
 import {
-  AdjustmentsHorizontalIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   CopyIcon,
@@ -90,11 +90,12 @@ import "./diff-dock.css";
 
 function DockHeaderIconButton(props: {
   readonly children: ReactNode;
+  readonly className?: string;
   readonly label: string;
   readonly onActivate: () => void;
 }) {
   const interaction = useLynxInteractiveState({
-    baseClassName: "DiffDockHeaderIconButton",
+    baseClassName: `DiffDockHeaderIconButton${props.className ? ` ${props.className}` : ""}`,
     accessibleLabel: props.label,
     onActivate: props.onActivate,
   });
@@ -355,7 +356,7 @@ function OpenDiffDock(props: {
   };
   const closeInteraction = useLynxInteractiveState({
     baseClassName: "DiffDockClose",
-    accessibleLabel: "Close changes",
+    accessibleLabel: "Close file view",
     onActivate: props.onClose,
   });
   const retryInteraction = useLynxInteractiveState({
@@ -408,9 +409,12 @@ function OpenDiffDock(props: {
                     <MenuTrigger ariaLabel="Add panel" className="DiffDockHeaderIconButton">
                       <PlusIcon color={semanticIconColor("secondary")} size={14} />
                     </MenuTrigger>
-                    <MenuPopup side="bottom" align="end" className="DiffDockAddPanelMenu">
+                    <MenuPopup
+                      side="bottom"
+                      align="end"
+                      className="LxPickerMenuPopup DiffDockAddPanelMenu"
+                    >
                       <MenuGroup>
-                        <MenuGroupLabel>Panel</MenuGroupLabel>
                         <MenuItem onClick={props.onAddExplorer}>
                           <FolderOpenIcon size={14} />
                           <text>Explorer</text>
@@ -436,54 +440,60 @@ function OpenDiffDock(props: {
               fileCount={view.kind === "files" ? view.files.length : 0}
               onDiffSourceChange={setDiffSource}
             />
-            {view.kind === "files" ? (
-              <text className="DiffDockStats DiffDockActiveStats">
-                +{view.additions} −{view.deletions}
-              </text>
+            {view.kind === "files" && (view.additions > 0 || view.deletions > 0) ? (
+              // Web DiffStat: added/deleted counts in their decoration colors.
+              <view className="DiffDockActiveStats">
+                <text className="DiffDockStats DiffDockStat--added">+{view.additions}</text>
+                <text className="DiffDockStats DiffDockStat--deleted">-{view.deletions}</text>
+              </view>
             ) : null}
           </view>
           <view className="DiffDockHeaderActions">
-            <DiffOptionsMenu
-              allFilesCollapsed={allFilesCollapsed}
-              diffCopied={diffCopied}
-              diffIgnoreWhitespace={diffIgnoreWhitespace}
-              diffRenderMode={diffRenderMode}
-              diffSource={diffSource}
-              diffWordWrap={diffWordWrap}
-              hasCopyText={Boolean(diff.data?.patch)}
-              hasFiles={view.kind === "files"}
-              label="Diff view options"
-              onCopyDiff={() => void copyDiff()}
-              onDiffIgnoreWhitespaceChange={setDiffIgnoreWhitespace}
-              onDiffRenderModeChange={setDiffRenderMode}
-              onDiffSourceChange={setDiffSource}
-              checkpoints={orderedCheckpoints}
-              onDiffWordWrapChange={setDiffWordWrap}
-              onToggleCollapseAll={toggleCollapseAll}
-              triggerClassName="DiffDockToolbarMenuTrigger"
-              showSource={false}
-            />
-            {view.kind === "files" && view.files.length > 1 ? (
-              <Button
-                aria-label="Jump to file"
-                className="DiffDockFileJumpTrigger"
-                variant="ghost"
-                onClick={() => setFileJumpOpen(true)}
-              >
-                <SearchIcon size={14} color="var(--muted-foreground)" />
-              </Button>
-            ) : null}
-            {view.kind === "files" ? (
-              <DockHeaderIconButton
-                label={fileTreeOpen ? "Hide file tree" : "Show file tree"}
-                onActivate={() => updateFileTreeOpen(!fileTreeOpen)}
-              >
-                <FoldersIcon
-                  size={14}
-                  color={fileTreeOpen ? "var(--foreground)" : "var(--muted-foreground)"}
-                />
-              </DockHeaderIconButton>
-            ) : null}
+            {/* Web DiffPanelToolbar: view options, jump and tree as one gap-1 group. */}
+            <view className="DiffDockToolbarGroup">
+              <DiffOptionsMenu
+                allFilesCollapsed={allFilesCollapsed}
+                diffCopied={diffCopied}
+                diffIgnoreWhitespace={diffIgnoreWhitespace}
+                diffRenderMode={diffRenderMode}
+                diffSource={diffSource}
+                diffWordWrap={diffWordWrap}
+                hasCopyText={Boolean(diff.data?.patch)}
+                hasFiles={view.kind === "files"}
+                label="Diff view options"
+                onCopyDiff={() => void copyDiff()}
+                onDiffIgnoreWhitespaceChange={setDiffIgnoreWhitespace}
+                onDiffRenderModeChange={setDiffRenderMode}
+                onDiffSourceChange={setDiffSource}
+                checkpoints={orderedCheckpoints}
+                onDiffWordWrapChange={setDiffWordWrap}
+                onToggleCollapseAll={toggleCollapseAll}
+                triggerClassName="DiffDockToolbarMenuTrigger"
+                showSource={false}
+              />
+              {view.kind === "files" && view.files.length > 1 ? (
+                <Button
+                  aria-label="Jump to file"
+                  className="DiffDockFileJumpTrigger"
+                  variant="ghost"
+                  onClick={() => setFileJumpOpen(true)}
+                >
+                  <SearchIcon size={14} color="var(--muted-foreground)" />
+                </Button>
+              ) : null}
+              {view.kind === "files" ? (
+                <DockHeaderIconButton
+                  className="DiffDockToolbarIconButton"
+                  label={fileTreeOpen ? "Hide file tree" : "Show file tree"}
+                  onActivate={() => updateFileTreeOpen(!fileTreeOpen)}
+                >
+                  <FoldersIcon
+                    size={14}
+                    color={fileTreeOpen ? "var(--foreground)" : "var(--muted-foreground)"}
+                  />
+                </DockHeaderIconButton>
+              ) : null}
+            </view>
             <view className="DiffDockToolbarDivider" />
             <EnvironmentGitAction
               branch={gitStatus.data?.branch ?? null}
@@ -598,10 +608,9 @@ function OpenDiffDock(props: {
                   // header anatomy as Web: type glyph, basename, then muted directory.
                   filePathPresentation="basename-first"
                   renderMode={props.presentation !== "editor" ? diffRenderMode : "split"}
-                  // The Editor composition owns aggregate stats in its changed-files
-                  // sidebar; its center is reserved for full file cards. The ordinary
-                  // diff dock has no sidebar, so it keeps the shared summary inline.
-                  showSummary={props.presentation !== "editor"}
+                  // Like the web DiffPanel, aggregate stats live in the toolbar (dock)
+                  // or the changed-files sidebar (editor), never in a summary row.
+                  showSummary={false}
                   syntaxTokensByLineId={syntaxTokensByLineId}
                   wordWrap={diffWordWrap}
                   renderFileActions={(filePath) => (
@@ -789,17 +798,35 @@ function diffSourceLabel(source: DiffSource): string {
   return "Turn";
 }
 
+// Web FaPlusMinus (Font Awesome 6, CC BY 4.0): the turn-diff glyph.
+const PLUS_MINUS_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112L48 144c-17.7 0-32 14.3-32 32s14.3 32 32 32l112 0 0 112c0 17.7 14.3 32 32 32s32-14.3 32-32l0-112 112 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-112 0 0-112zM0 480c0 17.7 14.3 32 32 32l320 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 448c-17.7 0-32 14.3-32 32z"/></svg>';
+
 function DiffPickerTrigger(props: {
+  readonly icon: "changes" | "plusMinus";
   readonly label: string;
   readonly count?: number;
   readonly className: string;
 }) {
+  const { semanticIconColor } = useTheme();
   return (
     <view className={props.className}>
-      <AdjustmentsHorizontalIcon size={14} color="var(--foreground)" />
+      {props.icon === "changes" ? (
+        <svg
+          className="DiffDockPickerIcon"
+          content={colorizeLynxSvg(changesSvg, semanticIconColor("primary"))}
+        />
+      ) : (
+        <svg
+          className="DiffDockPickerIcon DiffDockPickerIcon--plusMinus"
+          content={colorizeLynxSvg(PLUS_MINUS_SVG, semanticIconColor("primary"))}
+        />
+      )}
       <text className="DiffDockPickerLabel">{props.label}</text>
-      {props.count ? <text className="DiffDockPickerCount">{props.count}</text> : null}
-      <ChevronDownIcon size={12} color="var(--muted-foreground)" />
+      <view className="DiffDockPickerTrailing">
+        {props.count ? <text className="DiffDockPickerCount">{props.count}</text> : null}
+        <ChevronDownIcon size={12} color="var(--muted-foreground)" />
+      </view>
     </view>
   );
 }
@@ -816,6 +843,13 @@ function DiffSourcePicker(props: {
         <DiffPickerTrigger
           className="DiffDockPickerContent"
           count={props.fileCount}
+          icon={
+            props.diffSource === "allTurns" ||
+            props.diffSource === "lastTurn" ||
+            props.diffSource.startsWith("turn:")
+              ? "plusMinus"
+              : "changes"
+          }
           label={diffSourceLabel(props.diffSource)}
         />
       </MenuTrigger>
@@ -871,7 +905,7 @@ function DiffTurnPicker(props: {
   return (
     <Menu>
       <MenuTrigger ariaLabel="Choose turn diff" className="DiffDockTurnTrigger">
-        <DiffPickerTrigger className="DiffDockPickerContent" label={label} />
+        <DiffPickerTrigger className="DiffDockPickerContent" icon="plusMinus" label={label} />
       </MenuTrigger>
       <MenuPopup align="end" side="bottom" sideOffset={6} className="DiffDockTurnsMenu">
         <MenuGroup>
@@ -1044,7 +1078,7 @@ function DiffFileActionsMenu(props: {
         showActionIcons
         threadId={props.threadId}
         triggerClassName="DiffDockFileActionsTrigger"
-        triggerLabel={`File actions for ${props.filePath}`}
+        triggerLabel="File actions"
       />
     </view>
   );

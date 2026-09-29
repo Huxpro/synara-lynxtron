@@ -51,6 +51,10 @@ import mergeConflictSvg from "@synara-central-icons/merge-conflict.svg?raw";
 import pullRequestSvg from "@synara-central-icons/pull-request.svg?raw";
 import stopSvg from "@synara-central-icons/stop.svg?raw";
 import pushSvg from "@synara-central-icons/cloud-simple-upload.svg?raw";
+import branchSvg from "@synara-central-icons/branch.svg?raw";
+import infoSvg from "@synara-central-icons/circle-info.svg?raw";
+import cloudSyncSvg from "@synara-central-icons/cloud-sync.svg?raw";
+import commitsSvg from "@synara-central-icons/commits.svg?raw";
 
 import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 import { ChatMarkdown } from "../components/markdown/ChatMarkdown.lynx";
@@ -75,7 +79,10 @@ import {
 } from "../platform/motion.lynx";
 import {
   buildMenuItems,
+  resolveGitQuickActionGlyph,
   resolveQuickAction,
+  type GitGlyphName,
+  type GitQuickAction,
   resolvePullActionAvailability,
   resolveDefaultBranchActionDialogCopy,
   requiresDefaultBranchConfirmation,
@@ -182,6 +189,20 @@ function EnvironmentDisclosureContent(props: {
 const NOTES_SAVE_DELAY_MS = 500;
 function environmentCommandId(): string {
   return `lynx-environment-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+// Web GIT_ACTION_GLYPH: one glyph per git action, chosen by the shared resolver.
+const GIT_ACTION_GLYPH_SVG: Record<GitGlyphName, string> = {
+  commit: commitsSvg,
+  push: pushSvg,
+  pr: githubSvg,
+  sync: cloudSyncSvg,
+  branch: branchSvg,
+};
+
+function resolveGitQuickActionSvg(quickAction: GitQuickAction): string {
+  const glyph = resolveGitQuickActionGlyph(quickAction);
+  return glyph ? GIT_ACTION_GLYPH_SVG[glyph] : infoSvg;
 }
 
 export function EnvironmentToggle(props: {
@@ -742,7 +763,7 @@ export function EnvironmentGitAction(props: {
             <svg
               className="DiffDockGitQuickActionIcon"
               content={colorizeLynxSvg(
-                quickAction.kind === "open_pr" ? githubSvg : pushSvg,
+                resolveGitQuickActionSvg(quickAction),
                 semanticIconColor("primary"),
               )}
             />
@@ -2450,6 +2471,9 @@ export function EnvironmentPanel(props: {
     <view
       className={`EnvironmentOverlay${props.open ? " EnvironmentOverlay--open" : ""}`}
       aria-hidden={!props.open}
+      // `aria-hidden` is web-only; Lynx hides a subtree from assistive tech with
+      // accessibility-elements-hidden.
+      accessibility-elements-hidden={!props.open}
       // Lynx does not inherit `pointer-events: none`, so the closed overlay's
       // controls would still take clicks over the dock beneath it.
       user-interaction-enabled={props.open}

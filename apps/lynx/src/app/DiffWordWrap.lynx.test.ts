@@ -66,10 +66,11 @@ describe("Lynx diff word wrap setting", () => {
       /\.SharedPrCodeLine\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*100%;/s,
     );
     expect(lynxStyles).toMatch(
-      /\.SharedPrCodeLineText\s*\{[^}]*flex-shrink:\s*0;[^}]*white-space:\s*pre;/s,
+      // Lynx supports only normal/nowrap white-space.
+      /\.SharedPrCodeLineText\s*\{[^}]*flex-shrink:\s*0;[^}]*white-space:\s*nowrap;/s,
     );
     expect(lynxStyles).toMatch(
-      /\.SharedPrCodeLine--wrap \.SharedPrCodeLineText\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*white-space:\s*pre-wrap;/s,
+      /\.SharedPrCodeLine--wrap \.SharedPrCodeLineText\s*\{[^}]*flex:\s*1;[^}]*min-width:\s*0;[^}]*white-space:\s*normal;/s,
     );
   });
 });

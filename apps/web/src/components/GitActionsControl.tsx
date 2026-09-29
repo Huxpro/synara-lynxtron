@@ -28,7 +28,7 @@ import {
   buildGitActionProgressStages,
   buildMenuItems,
   type GitActionMenuItem,
-  type GitActionIconName,
+  type GitGlyphName,
   type GitQuickAction,
   type DefaultBranchConfirmableAction,
   requiresFeatureBranchForDefaultBranchAction,
@@ -37,6 +37,7 @@ import {
   resolveDefaultCreateBranchName,
   resolveDefaultBranchActionDialogCopy,
   resolveCreatePrActionAvailability,
+  resolveGitQuickActionGlyph,
   resolveQuickAction,
   resolvePullActionAvailability,
   shouldOfferCreateBranchPrompt,
@@ -154,7 +155,7 @@ interface GitPickerMenuItem {
   label: string;
   disabled: boolean;
   disabledReason: string | null;
-  icon: GitActionIconName | "sync" | "branch";
+  icon: GitGlyphName;
   onSelect: () => void;
 }
 
@@ -267,8 +268,6 @@ const GIT_ACTION_ICON_CLASS = "size-3.5";
 /** Semantic name → glyph for every git affordance. Single source of truth shared by
  *  the header quick action and the dropdown picker rows so the same action always
  *  renders the same icon (e.g. push-family → the cloud PushIcon, PR → GitHub mark). */
-type GitGlyphName = GitActionIconName | "sync" | "branch";
-
 const GIT_ACTION_GLYPH: Record<GitGlyphName, LucideIcon> = {
   commit: GitCommitIcon,
   push: PushIcon,
@@ -280,19 +279,6 @@ const GIT_ACTION_GLYPH: Record<GitGlyphName, LucideIcon> = {
 function GitActionGlyph({ name, className }: { name: GitGlyphName; className?: string }) {
   const Glyph = GIT_ACTION_GLYPH[name];
   return <Glyph className={className ?? GIT_ACTION_ICON_CLASS} />;
-}
-
-// Map a header quick action onto its shared glyph name; null falls back to a hint icon.
-// Every push-family action collapses to "push" so the button matches the picker rows.
-function resolveGitQuickActionGlyph(quickAction: GitQuickAction): GitGlyphName | null {
-  if (quickAction.kind === "open_pr") return "pr";
-  if (quickAction.kind === "run_pull") return "sync";
-  if (quickAction.kind === "create_branch") return "branch";
-  if (quickAction.kind === "run_action") {
-    return quickAction.action === "commit" ? "commit" : "push";
-  }
-  if (quickAction.label === "Commit") return "commit";
-  return null;
 }
 
 function GitQuickActionIcon({ quickAction }: { quickAction: GitQuickAction }) {

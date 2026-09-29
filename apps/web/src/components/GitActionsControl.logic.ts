@@ -7,6 +7,8 @@ import { isTemporaryWorktreeBranch, resolveUniqueSynaraBranchName } from "@synar
 
 export type GitActionIconName = "commit" | "push" | "pr";
 
+export type GitGlyphName = GitActionIconName | "sync" | "branch";
+
 export type GitDialogAction = "commit" | "push" | "commit_push" | "create_pr";
 
 export interface GitActionMenuItem {
@@ -567,3 +569,16 @@ export function resolveLiveThreadBranchUpdate(input: {
 
 // Re-export from shared for backwards compatibility in this module's exports
 export { resolveAutoFeatureBranchName } from "@synara/shared/git";
+
+// Map a header quick action onto its shared glyph name; null falls back to a hint icon.
+// Every push-family action collapses to "push" so the button matches the picker rows.
+export function resolveGitQuickActionGlyph(quickAction: GitQuickAction): GitGlyphName | null {
+  if (quickAction.kind === "open_pr") return "pr";
+  if (quickAction.kind === "run_pull") return "sync";
+  if (quickAction.kind === "create_branch") return "branch";
+  if (quickAction.kind === "run_action") {
+    return quickAction.action === "commit" ? "commit" : "push";
+  }
+  if (quickAction.label === "Commit") return "commit";
+  return null;
+}

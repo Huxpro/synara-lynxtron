@@ -328,7 +328,7 @@ describe("Lynx Editor view", () => {
     expect(diffDockSource).toContain('props.diffCopied ? "Copied diff" : "Copy diff"');
     expect(diffDockSource).toContain("+{view.additions}");
     expect(diffDockSource).toContain("-{view.deletions}");
-    expect(diffDockSource).toContain('showSummary={props.presentation !== "editor"}');
+    expect(diffDockSource).toContain("showSummary={false}");
     expect(diffDockSource).toContain('className="DiffDockTabHeader chat-surface-divider"');
     expect(diffDockSource).toContain("<EditorSurfaceTab");
     expect(diffDockSource).toContain('label="Diff"');
