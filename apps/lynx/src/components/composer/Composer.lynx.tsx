@@ -41,7 +41,7 @@ import {
 import { clipboard as clipboardPort } from "../../platform/clipboard";
 import { sleepOnHost } from "../../platform/timer";
 import { nativeVoiceRecorder } from "../../platform/voiceRecorder.lynx";
-import { fetchSidebarSnapshot } from "../../app/queries";
+import { fetchSidebarSnapshot, resolveNativeAssistantDeliveryMode } from "../../app/queries";
 import { useLynxVoiceNotificationStore } from "../../app/voiceNotificationStore.lynx";
 import {
   splitPromptIntoComposerSegments,
@@ -1634,9 +1634,11 @@ export function Composer({
             files: [...images, ...files],
             threadId,
           });
+          const assistantDeliveryMode = await resolveNativeAssistantDeliveryMode();
           await stagedFiles.runWithDispatch((attachments) =>
             dispatchSynaraCommand(
               buildComposerTurnStartCommand({
+                assistantDeliveryMode,
                 attachments: [...attachments, ...assistantSelections],
                 commandId: createComposerDispatchId("command"),
                 createdAt: new Date().toISOString(),

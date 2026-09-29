@@ -2,7 +2,13 @@
 // snapshot. The transport is a singleton; both queries share its latest read.
 
 import { QueryClient } from "@tanstack/react-query";
+import {
+  APP_SETTINGS_STORAGE_KEY,
+  readSettingsBehaviorProjection,
+  resolveAssistantDeliveryMode,
+} from "@synara-web/appSettingsStorageProjection.logic";
 import type {
+  AssistantDeliveryMode,
   AutomationListResult,
   AutomationDefinition,
   AutomationCreateInput,
@@ -241,6 +247,25 @@ export async function fetchProviderUpdatePromptServerConfig() {
   "background only";
   const { fetchServerConfig } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
   return fetchServerConfig();
+}
+
+/**
+ * The delivery mode for a new turn, resolved at send time from the same setting the
+ * web app uses (server value first, then the stored app settings, default streaming).
+ */
+export async function resolveNativeAssistantDeliveryMode(): Promise<AssistantDeliveryMode> {
+  "background only";
+  const [{ fetchServerSettings }, { webStorage }] = await Promise.all([
+    import(/* webpackMode: "eager" */ "../data/synaraClient"),
+    import(/* webpackMode: "eager" */ "../platform/storage"),
+  ]);
+  const serverSettings = await fetchServerSettings().catch(() => null);
+  return resolveAssistantDeliveryMode(
+    readSettingsBehaviorProjection(
+      webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
+      serverSettings?.enableAssistantStreaming,
+    ),
+  );
 }
 
 export async function fetchProviderUpdatePromptServerSettings() {

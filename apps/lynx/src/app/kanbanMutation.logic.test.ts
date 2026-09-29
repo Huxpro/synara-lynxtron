@@ -11,6 +11,7 @@ describe("native Kanban mutation commands", () => {
   it("builds a real turn command from the canonical thread execution settings", () => {
     expect(
       buildNativeKanbanStartCommand({
+        assistantDeliveryMode: "streaming",
         commandId: "command-start",
         createdAt: "2026-08-02T00:00:00.000Z",
         interactionMode: "plan",
@@ -26,6 +27,7 @@ describe("native Kanban mutation commands", () => {
       message: { role: "user", text: "Run the task" },
       interactionMode: "plan",
       runtimeMode: "approval-required",
+      assistantDeliveryMode: "streaming",
     });
   });
 

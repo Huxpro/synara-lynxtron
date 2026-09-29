@@ -1,4 +1,5 @@
 import type {
+  AssistantDeliveryMode,
   ChatAttachment,
   ClientOrchestrationCommand,
   ModelSelection,
@@ -56,6 +57,8 @@ export async function runComposerSendTransaction(input: {
 }
 
 export function buildComposerTurnStartCommand(input: {
+  /** Omitting it makes the server buffer the reply (no live text), so it is required. */
+  readonly assistantDeliveryMode: AssistantDeliveryMode;
   readonly attachments?: ReadonlyArray<ChatAttachment>;
   readonly commandId: string;
   readonly createdAt: string;
@@ -83,6 +86,7 @@ export function buildComposerTurnStartCommand(input: {
     modelSelection: input.modelSelection,
     runtimeMode: input.runtimeMode,
     interactionMode: input.interactionMode,
+    assistantDeliveryMode: input.assistantDeliveryMode,
     createdAt: input.createdAt as never,
   };
 }

@@ -105,6 +105,7 @@ describe("composer dispatch logic", () => {
   it("builds the same orchestration turn-start shape used by Web", () => {
     expect(
       buildComposerTurnStartCommand({
+        assistantDeliveryMode: "streaming",
         commandId: "command-1",
         createdAt: "2026-07-29T12:00:00.000Z",
         interactionMode: "default",
@@ -151,12 +152,15 @@ describe("composer dispatch logic", () => {
       modelSelection: { provider: "opencode", model: "deepseek-v4-flash-free" },
       runtimeMode: "full-access",
       interactionMode: "default",
+      // Without it the server buffers the reply and Native shows no live text.
+      assistantDeliveryMode: "streaming",
       createdAt: "2026-07-29T12:00:00.000Z",
     });
   });
 
   it("preserves runtime trait options in the turn model selection", () => {
     const command = buildComposerTurnStartCommand({
+      assistantDeliveryMode: "streaming",
       commandId: "command-1",
       createdAt: "2026-07-29T12:00:00.000Z",
       interactionMode: "default",
@@ -183,6 +187,7 @@ describe("composer dispatch logic", () => {
 
   it("carries server-staged file attachments into the real turn command", () => {
     const command = buildComposerTurnStartCommand({
+      assistantDeliveryMode: "streaming",
       attachments: [
         {
           type: "file",
@@ -220,6 +225,7 @@ describe("composer dispatch logic", () => {
 
   it("carries assistant message references into the canonical turn command", () => {
     const command = buildComposerTurnStartCommand({
+      assistantDeliveryMode: "streaming",
       attachments: [
         {
           type: "assistant-selection",

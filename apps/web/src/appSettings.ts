@@ -7,7 +7,6 @@ import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Option, Schema, SchemaTransformation } from "effect";
 import {
-  type AssistantDeliveryMode,
   DEFAULT_GIT_TEXT_GENERATION_MODEL,
   DEFAULT_SERVER_SETTINGS,
   DEFAULT_SERVER_SETTINGS_VIEW,
@@ -1123,15 +1122,7 @@ export function getProviderStartOptions(
   return Object.keys(providerOptions).length > 0 ? providerOptions : undefined;
 }
 
-/**
- * Single source of truth for mapping the streaming preference onto the orchestration
- * delivery mode used when dispatching turns (composer, chat, and kanban share this).
- */
-export function resolveAssistantDeliveryMode(
-  settings: Pick<AppSettings, "enableAssistantStreaming">,
-): AssistantDeliveryMode {
-  return settings.enableAssistantStreaming ? "streaming" : "buffered";
-}
+export { resolveAssistantDeliveryMode } from "./appSettingsStorageProjection.logic";
 
 export function getCustomBinaryPathForProvider(
   settings: Pick<

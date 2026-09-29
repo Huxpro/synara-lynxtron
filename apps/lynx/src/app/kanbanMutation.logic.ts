@@ -1,4 +1,5 @@
 import type {
+  AssistantDeliveryMode,
   ClientOrchestrationCommand,
   ModelSelection,
   ProviderInteractionMode,
@@ -8,6 +9,7 @@ import type {
 import { buildComposerTurnStartCommand } from "../components/composer/composerDispatch.logic";
 
 export function buildNativeKanbanStartCommand(input: {
+  readonly assistantDeliveryMode: AssistantDeliveryMode;
   readonly commandId: string;
   readonly createdAt: string;
   readonly interactionMode: ProviderInteractionMode;

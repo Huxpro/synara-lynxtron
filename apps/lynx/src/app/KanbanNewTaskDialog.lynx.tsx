@@ -28,7 +28,7 @@ import {
   ensureThreadCreated,
   type ThreadCreationState,
 } from "../components/composer/landingThreadCreation.logic";
-import { queryClient, type ProjectSummary } from "./queries";
+import { queryClient, resolveNativeAssistantDeliveryMode, type ProjectSummary } from "./queries";
 import { webStorage } from "../platform/storage";
 import {
   buildNativeKanbanTaskCreateCommand,
@@ -223,6 +223,7 @@ export function KanbanNewTaskDialog(props: {
         if (start) {
           await dispatchCommand(
             buildComposerTurnStartCommand({
+              assistantDeliveryMode: await resolveNativeAssistantDeliveryMode(),
               commandId: createNativeKanbanTaskId("command"),
               createdAt: new Date().toISOString(),
               interactionMode: "default",

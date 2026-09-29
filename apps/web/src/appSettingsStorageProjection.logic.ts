@@ -1,7 +1,11 @@
 // FILE: appSettingsStorageProjection.logic.ts
 // Purpose: Side-effect-free canonical app-settings storage projection for shared hosts.
 
-import type { DesktopAppSnapShortcut, ProviderKind } from "@synara/contracts";
+import type {
+  AssistantDeliveryMode,
+  DesktopAppSnapShortcut,
+  ProviderKind,
+} from "@synara/contracts";
 import { DEFAULT_APP_SNAP_SHORTCUT, isAppSnapShortcut } from "@synara/shared/appSnapShortcut";
 import { PROVIDER_DESCRIPTORS } from "@synara/shared/providerMetadata";
 import {
@@ -315,6 +319,17 @@ export function writeSettingsProviderPickerProjection(
     hiddenProviders: normalized.hiddenProviders,
     providerOrder: normalized.providerOrder,
   });
+}
+
+/**
+ * Single source of truth for mapping the streaming preference onto the orchestration
+ * delivery mode used when dispatching turns (web composer, chat and kanban, and the
+ * Lynx composer and kanban share this).
+ */
+export function resolveAssistantDeliveryMode(settings: {
+  readonly enableAssistantStreaming: boolean;
+}): AssistantDeliveryMode {
+  return settings.enableAssistantStreaming ? "streaming" : "buffered";
 }
 
 export function readSettingsBehaviorProjection(

@@ -8,6 +8,7 @@ import {
   THEME_STORAGE_KEY,
   readSettingsAppearanceProjection,
   readSettingsAppSnapProjection,
+  readSettingsBehaviorProjection,
   readSettingsGeneralProjection,
   readSettingsProviderPickerProjection,
   writeSettingsAppearanceProjection,
@@ -15,6 +16,7 @@ import {
   writeSettingsGeneralProjection,
   writeSettingsProviderPickerProjection,
   writeSidebarSortProjection,
+  resolveAssistantDeliveryMode,
 } from "./appSettingsStorageProjection.logic";
 import { DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES } from "./components/settings/SettingsProviderPickerComposition.logic";
 
@@ -126,5 +128,18 @@ describe("app settings General storage projection", () => {
         key: "KeyK",
       },
     });
+  });
+});
+
+describe("assistant delivery mode", () => {
+  it("streams by default and follows the server preference over stored settings", () => {
+    expect(resolveAssistantDeliveryMode(readSettingsBehaviorProjection(null))).toBe("streaming");
+    const storedOff = JSON.stringify({ enableAssistantStreaming: false });
+    expect(resolveAssistantDeliveryMode(readSettingsBehaviorProjection(storedOff))).toBe(
+      "buffered",
+    );
+    expect(resolveAssistantDeliveryMode(readSettingsBehaviorProjection(storedOff, true))).toBe(
+      "streaming",
+    );
   });
 });
