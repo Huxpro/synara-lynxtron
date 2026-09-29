@@ -5,6 +5,7 @@ import {
   resolveEditorChatHistoryThreads,
 } from "./editorChatHistory.logic";
 import type { ThreadSummary } from "./queries";
+import { makeThreadSummary } from "./queriesTestFixtures";
 
 function thread(
   id: string,
@@ -12,7 +13,7 @@ function thread(
   createdAt: string,
   updatedAt = createdAt,
 ): ThreadSummary {
-  return {
+  return makeThreadSummary({
     id,
     projectId,
     project: projectId,
@@ -21,7 +22,7 @@ function thread(
     createdAt,
     updatedAt,
     live: false,
-  };
+  });
 }
 
 describe("Editor chat history projection", () => {

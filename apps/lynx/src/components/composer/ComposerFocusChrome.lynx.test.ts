@@ -33,7 +33,7 @@ describe("Lynx composer focus chrome", () => {
     const selectAllEnd = source.indexOf("async function copyOrCutNativeEditorText", selectAllStart);
     const selectAllSource = source.slice(selectAllStart, selectAllEnd);
 
-    expect(selectAllSource).toContain("await readNativeEditorSnapshot()");
+    expect(selectAllSource).toContain("await readNativeEditorSnapshot(");
     expect(selectAllSource).toContain('method: "select"');
     expect(selectAllSource).not.toContain("method: 'setSelectionRange'");
     expect(selectAllSource).not.toContain("setNativeValue(");

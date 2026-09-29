@@ -1,0 +1,320 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@lynx-js/react",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "moduleSuffixes": [".lynx", ""],
+    "lib": ["ES2023"],
+    "target": "ES2022",
+    "noEmit": true,
+    "paths": {
+      "@assets": ["./src/assets"],
+      "@assets/*": ["./src/assets/*"],
+      "@lynx-js/react": ["./node_modules/@lynx-js/react/types/react.d.ts"],
+      "@lynx-js/react/compat": ["./node_modules/@lynx-js/react/runtime/compat/index.d.ts"],
+      "@lynx-js/react/debug": ["./node_modules/@lynx-js/react/runtime/debug/index.d.ts"],
+      "@lynx-js/react/element-template": [
+        "./node_modules/@lynx-js/react/runtime/lib/element-template/index.d.ts"
+      ],
+      "@lynx-js/react/element-template/internal": [
+        "./node_modules/@lynx-js/react/runtime/lib/element-template/internal.d.ts"
+      ],
+      "@lynx-js/react/element-template/jsx-dev-runtime": [
+        "./node_modules/@lynx-js/react/runtime/lib/element-template/jsx-dev-runtime/index.d.ts"
+      ],
+      "@lynx-js/react/element-template/jsx-runtime": [
+        "./node_modules/@lynx-js/react/runtime/lib/element-template/jsx-runtime/index.d.ts"
+      ],
+      "@lynx-js/react/experimental/lazy/import": [
+        "./node_modules/@lynx-js/react/runtime/lazy/import.d.ts"
+      ],
+      "@lynx-js/react/hooks": ["./node_modules/@lynx-js/react/runtime/lib/core/hooks/react.d.ts"],
+      "@lynx-js/react/internal": ["./node_modules/@lynx-js/react/runtime/lib/internal.d.ts"],
+      "@lynx-js/react/internal/document": [
+        "./node_modules/@lynx-js/react/runtime/lib/document.d.ts"
+      ],
+      "@lynx-js/react/jsx-dev-runtime": [
+        "./node_modules/@lynx-js/react/runtime/jsx-dev-runtime/index.d.ts"
+      ],
+      "@lynx-js/react/jsx-runtime": [
+        "./node_modules/@lynx-js/react/runtime/jsx-runtime/index.d.ts"
+      ],
+      "@lynx-js/react/legacy-react-runtime": [
+        "./node_modules/@lynx-js/react/runtime/lib/core/compat/legacy-react-runtime.d.ts"
+      ],
+      "@lynx-js/react/lepus": ["./node_modules/@lynx-js/react/runtime/lepus/index.d.ts"],
+      "@lynx-js/react/lepus/hooks": [
+        "./node_modules/@lynx-js/react/runtime/lib/core/hooks/react.d.ts"
+      ],
+      "@lynx-js/react/lepus/jsx-dev-runtime": [
+        "./node_modules/@lynx-js/react/runtime/jsx-runtime/index.d.ts"
+      ],
+      "@lynx-js/react/lepus/jsx-runtime": [
+        "./node_modules/@lynx-js/react/runtime/jsx-runtime/index.d.ts"
+      ],
+      "@lynx-js/react/refresh": ["./node_modules/@lynx-js/react/refresh/src/index.ts"],
+      "@lynx-js/react/runtime-components": [
+        "./node_modules/@lynx-js/react/components/lib/index.d.ts"
+      ],
+      "@lynx-js/react/testing-library": [
+        "./node_modules/@lynx-js/react/testing-library/types/index.d.ts"
+      ],
+      "@lynx-js/react/testing-library/plugins": [
+        "./node_modules/@lynx-js/react/testing-library/dist/plugins/index.d.ts"
+      ],
+      "@lynx-js/react/testing-library/pure": [
+        "./node_modules/@lynx-js/react/testing-library/types/pure.d.ts"
+      ],
+      "@lynx-js/react/testing-library/rstest-config": [
+        "./node_modules/@lynx-js/react/testing-library/dist/rstest-config.d.ts"
+      ],
+      "@lynx-js/react/testing-library/vitest-config": [
+        "./node_modules/@lynx-js/react/testing-library/dist/vitest.config.d.ts"
+      ],
+      "@lynx-js/react/worklet-dev-runtime": [
+        "./node_modules/@lynx-js/react/runtime/lib/worklet-runtime/index.d.ts"
+      ],
+      "@lynx-js/react/worklet-runtime": [
+        "./node_modules/@lynx-js/react/runtime/lib/worklet-runtime/index.d.ts"
+      ],
+      "@lynx-js/react/worklet-runtime/bindings": [
+        "./node_modules/@lynx-js/react/runtime/lib/worklet-runtime/bindings/index.d.ts"
+      ],
+      "@synara-central-icons": ["../web/public/central-icons-reversed"],
+      "@synara-central-icons-fill": ["../web/public/central-icons-fill"],
+      "@synara-central-icons-fill/*": ["../web/public/central-icons-fill/*"],
+      "@synara-central-icons/*": ["../web/public/central-icons-reversed/*"],
+      "@synara-provider-icons": ["../web/public/central-icons-fill"],
+      "@synara-provider-icons/*": ["../web/public/central-icons-fill/*"],
+      "@synara-web": ["../web/src"],
+      "@synara-web/*": ["../web/src/*"],
+      "@synara/shared/githubRepository": ["../../packages/shared/src/githubRepository.ts"],
+      "@synara/shared/model": ["../../packages/shared/src/model.ts"],
+      "@tanstack/react-query": ["./node_modules/@tanstack/react-query"],
+      "~": ["../web/src"],
+      "~/*": ["../web/src/*"],
+      "~/components/AppShellFrameElements": ["./src/adapters/AppShellFrameElements.lynx.tsx"],
+      "~/components/CenteredEmptyLandingElements": [
+        "./src/adapters/CenteredEmptyLandingElements.lynx.tsx"
+      ],
+      "~/components/CenteredEmptyLandingStackElements": [
+        "./src/adapters/CenteredEmptyLandingStackElements.lynx.tsx"
+      ],
+      "~/components/chat/ChatEmptyStateHeroElements": [
+        "./src/adapters/ChatEmptyStateHeroElements.lynx.tsx"
+      ],
+      "~/components/chat/ChatSurfaceHeaderFrameElements": [
+        "./src/adapters/ChatSurfaceHeaderFrameElements.lynx.tsx"
+      ],
+      "~/components/chat/ChatSurfaceHeaderIdentityElements": [
+        "./src/adapters/ChatSurfaceHeaderIdentityElements.lynx.tsx"
+      ],
+      "~/components/chat/CollapsedWorkCompositionElements": [
+        "./src/adapters/CollapsedWorkCompositionElements.lynx.tsx"
+      ],
+      "~/components/chat/ComposerColumnFrameSurfaceElements": [
+        "./src/adapters/ComposerColumnFrameSurfaceElements.lynx.tsx"
+      ],
+      "~/components/chat/ComposerCommandMenuCompositionElements": [
+        "./src/adapters/ComposerCommandMenuCompositionElements.lynx.tsx"
+      ],
+      "~/components/chat/ComposerExtrasMenuCompositionElements": [
+        "./src/adapters/ComposerExtrasMenuCompositionElements.lynx.tsx"
+      ],
+      "~/components/chat/ComposerInputCompositionElements": [
+        "./src/adapters/ComposerInputCompositionElements.lynx.tsx"
+      ],
+      "~/components/chat/ComposerLifecycleStatusElements": [
+        "./src/adapters/ComposerLifecycleStatusElements.lynx.tsx"
+      ],
+      "~/components/chat/ComposerModelTriggerCompositionElements": [
+        "./src/adapters/ComposerModelTriggerCompositionElements.lynx.tsx"
+      ],
+      "~/components/chat/ComposerProjectPickerCompositionElements": [
+        "./src/adapters/ComposerProjectPickerCompositionElements.lynx.tsx"
+      ],
+      "~/components/chat/ComposerReferenceAttachmentsCompositionElements": [
+        "./src/adapters/ComposerReferenceAttachmentsCompositionElements.lynx.tsx"
+      ],
+      "~/components/chat/ComposerRuntimeModeControlCompositionElements": [
+        "./src/adapters/ComposerRuntimeModeControlCompositionElements.lynx.tsx"
+      ],
+      "~/components/chat/ComposerTraitRadioSectionCompositionElements": [
+        "./src/adapters/ComposerTraitRadioSectionCompositionElements.lynx.tsx"
+      ],
+      "~/components/chat/EditorRailAddMenuCompositionElements": [
+        "./src/adapters/EditorRailAddMenuCompositionElements.lynx.tsx"
+      ],
+      "~/components/chat/MessageRowCompositionElements": [
+        "./src/adapters/MessageRowCompositionElements.lynx.tsx"
+      ],
+      "~/components/chat/PanelStateMessageElements": [
+        "./src/adapters/PanelStateMessageElements.lynx.tsx"
+      ],
+      "~/components/chat/ProviderModelOptionGroupListCompositionElements": [
+        "./src/adapters/ProviderModelOptionGroupListCompositionElements.lynx.tsx"
+      ],
+      "~/components/chat/TimelineStatusRowCompositionElements": [
+        "./src/adapters/TimelineStatusRowCompositionElements.lynx.tsx"
+      ],
+      "~/components/kanban/KanbanCardCompositionElements": [
+        "./src/adapters/KanbanCardCompositionElements.lynx.tsx"
+      ],
+      "~/components/kanban/KanbanColumnCompositionElements": [
+        "./src/adapters/KanbanColumnCompositionElements.lynx.tsx"
+      ],
+      "~/components/kanban/KanbanOverviewCompositionElements": [
+        "./src/adapters/KanbanOverviewCompositionElements.lynx.tsx"
+      ],
+      "~/components/kanban/KanbanRouteHeaderCompositionElements": [
+        "./src/adapters/KanbanRouteHeaderCompositionElements.lynx.tsx"
+      ],
+      "~/components/kanban/KanbanStateCompositionElements": [
+        "./src/adapters/KanbanStateCompositionElements.lynx.tsx"
+      ],
+      "~/components/pullRequest/PullRequestCodeCompositionElements": [
+        "./src/adapters/PullRequestCodeCompositionElements.lynx.tsx"
+      ],
+      "~/components/pullRequest/PullRequestDetailCloseCompositionElements": [
+        "./src/adapters/PullRequestDetailCloseCompositionElements.lynx.tsx"
+      ],
+      "~/components/pullRequest/PullRequestDetailTabsCompositionElements": [
+        "./src/adapters/PullRequestDetailTabsCompositionElements.lynx.tsx"
+      ],
+      "~/components/pullRequest/PullRequestListCompositionElements": [
+        "./src/adapters/PullRequestListCompositionElements.lynx.tsx"
+      ],
+      "~/components/pullRequest/PullRequestRouteControlsCompositionElements": [
+        "./src/adapters/PullRequestRouteControlsCompositionElements.lynx.tsx"
+      ],
+      "~/components/pullRequest/PullRequestRowCompositionElements": [
+        "./src/adapters/PullRequestRowCompositionElements.lynx.tsx"
+      ],
+      "~/components/pullRequest/PullRequestSummaryCompositionElements": [
+        "./src/adapters/PullRequestSummaryCompositionElements.lynx.tsx"
+      ],
+      "~/components/pullRequest/PullRequestTimelineCompositionElements": [
+        "./src/adapters/PullRequestTimelineCompositionElements.lynx.tsx"
+      ],
+      "~/components/settings/KeyboardShortcutsSettingsCompositionElements": [
+        "./src/adapters/KeyboardShortcutsSettingsCompositionElements.lynx.tsx"
+      ],
+      "~/components/settings/SettingsAppearanceCompositionElements": [
+        "./src/adapters/SettingsAppearanceCompositionElements.lynx.tsx"
+      ],
+      "~/components/settings/SettingsGeneralCompositionElements": [
+        "./src/adapters/SettingsGeneralCompositionElements.lynx.tsx"
+      ],
+      "~/components/settings/SettingsGitWritingModelCompositionElements": [
+        "./src/adapters/SettingsGitWritingModelCompositionElements.lynx.tsx"
+      ],
+      "~/components/settings/SettingsPanelHeaderCompositionElements": [
+        "./src/adapters/SettingsPanelHeaderCompositionElements.lynx.tsx"
+      ],
+      "~/components/settings/SettingsProviderPickerCompositionElements": [
+        "./src/adapters/SettingsProviderPickerCompositionElements.lynx.tsx"
+      ],
+      "~/components/settings/SettingsRowElements": ["./src/adapters/SettingsRowElements.lynx.tsx"],
+      "~/components/settings/SettingsSectionElements": [
+        "./src/adapters/SettingsSectionElements.lynx.tsx"
+      ],
+      "~/components/settings/SettingsSidebarChromeCompositionElements": [
+        "./src/adapters/SettingsSidebarChromeCompositionElements.lynx.tsx"
+      ],
+      "~/components/settings/ThemePackEditorCompositionElements": [
+        "./src/adapters/ThemePackEditorCompositionElements.lynx.tsx"
+      ],
+      "~/components/SettingsNavigationCompositionElements": [
+        "./src/adapters/SettingsNavigationCompositionElements.lynx.tsx"
+      ],
+      "~/components/SidebarChatsSectionElements": [
+        "./src/adapters/SidebarChatsSectionElements.lynx.tsx"
+      ],
+      "~/components/SidebarDesktopHeaderElements": [
+        "./src/adapters/SidebarDesktopHeaderElements.lynx.tsx"
+      ],
+      "~/components/SidebarFooterSectionElements": [
+        "./src/adapters/SidebarFooterSectionElements.lynx.tsx"
+      ],
+      "~/components/SidebarListSectionHeaderElements": [
+        "./src/adapters/SidebarListSectionHeaderElements.lynx.tsx"
+      ],
+      "~/components/SidebarPinnedSectionElements": [
+        "./src/adapters/SidebarPinnedSectionElements.lynx.tsx"
+      ],
+      "~/components/SidebarPrimaryActionElements": [
+        "./src/adapters/SidebarPrimaryActionElements.lynx.tsx"
+      ],
+      "~/components/SidebarPrimaryNavigationElements": [
+        "./src/adapters/SidebarPrimaryNavigationElements.lynx.tsx"
+      ],
+      "~/components/SidebarProjectDisclosureElements": [
+        "./src/adapters/SidebarProjectDisclosureElements.lynx.tsx"
+      ],
+      "~/components/SidebarProjectsSectionElements": [
+        "./src/adapters/SidebarProjectsSectionElements.lynx.tsx"
+      ],
+      "~/components/SidebarProjectSummaryElements": [
+        "./src/adapters/SidebarProjectSummaryElements.lynx.tsx"
+      ],
+      "~/components/SidebarSearchPaletteElements": [
+        "./src/adapters/SidebarSearchPaletteElements.lynx.tsx"
+      ],
+      "~/components/SidebarSegmentedPickerElements": [
+        "./src/adapters/SidebarSegmentedPickerElements.lynx.tsx"
+      ],
+      "~/components/SidebarSettingsEntryElements": [
+        "./src/adapters/SidebarSettingsEntryElements.lynx.tsx"
+      ],
+      "~/components/SidebarStudioSectionElements": [
+        "./src/adapters/SidebarStudioSectionElements.lynx.tsx"
+      ],
+      "~/components/SidebarSurfaceContentElements": [
+        "./src/adapters/SidebarSurfaceContentElements.lynx.tsx"
+      ],
+      "~/components/SidebarThreadIdentityElements": [
+        "./src/adapters/SidebarThreadIdentityElements.lynx.tsx"
+      ],
+      "~/components/SidebarThreadProviderIdentityElements": [
+        "./src/adapters/SidebarThreadProviderIdentityElements.lynx.tsx"
+      ],
+      "~/components/SidebarThreadStatusIndicatorElements": [
+        "./src/adapters/SidebarThreadStatusIndicatorElements.lynx.tsx"
+      ],
+      "~/components/SidebarThreadSubagentIdentityElements": [
+        "./src/adapters/SidebarThreadSubagentIdentityElements.lynx.tsx"
+      ],
+      "~/components/SidebarThreadTrailingClusterElements": [
+        "./src/adapters/SidebarThreadTrailingClusterElements.lynx.tsx"
+      ],
+      "~/components/SynaraLogo": ["./src/adapters/SynaraLogo.lynx.tsx"],
+      "~/components/terminal/terminalRuntimeRegistry": [
+        "./src/adapters/terminalRuntimeRegistry.lynx.ts"
+      ],
+      "~/components/ui/button": ["./src/components/ui/button.lynx.tsx"],
+      "~/components/ui/collapsible": ["./src/components/ui/collapsible.lynx.tsx"],
+      "~/components/ui/command": ["./src/components/ui/command.lynx.tsx"],
+      "~/components/ui/dialog": ["./src/components/ui/dialog.lynx.tsx"],
+      "~/components/ui/input": ["./src/components/ui/input.lynx.tsx"],
+      "~/components/ui/kbd": ["./src/components/ui/kbd.lynx.tsx"],
+      "~/components/ui/menu": ["./src/components/ui/menu.lynx.tsx"],
+      "~/components/ui/scroll-area": ["./src/components/ui/scroll-area.lynx.tsx"],
+      "~/components/ui/shortcut-kbd": ["../web/src/components/ui/shortcut-kbd.tsx"],
+      "~/components/ui/tooltip": ["./src/components/ui/tooltip.lynx.tsx"],
+      "~/components/WorkspaceFilePreviewErrorStateElements": [
+        "./src/adapters/WorkspaceFilePreviewErrorStateElements.lynx.tsx"
+      ],
+      "~/hooks/useTheme": ["./src/adapters/useTheme.lynx.ts"],
+      "~/hooks/useViewportLayout": ["./src/hooks/useViewportLayout.lynx.ts"],
+      "~/nativeApi": ["./src/adapters/nativeApi.lynx.ts"],
+      "~/platform/env": ["./src/platform/env.lynx.ts"],
+      "~/platform/motion": ["./src/platform/motion.lynx.ts"],
+      "~/platform/storage": ["./src/platform/storage.ts"],
+      "react": ["./node_modules/@types/react"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["src/main/desktop/**", "src/main/web/**"]
+}

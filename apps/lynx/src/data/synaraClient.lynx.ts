@@ -60,7 +60,7 @@ import type {
   PullRequestActionInput,
   PullRequestActionResult,
   PullRequestCommentInput,
-  PullRequestListEntry,
+  PullRequestsListResult,
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
   PullRequestState,
@@ -143,16 +143,8 @@ export interface SynaraSnapshot {
   readonly threads: readonly SynaraThread[];
 }
 
-export interface SynaraPullRequestListResult {
-  readonly viewer: string | null;
-  readonly entries: readonly PullRequestListEntry[];
-  readonly errors: readonly {
-    readonly projectId: string;
-    readonly projectTitle: string;
-    readonly message: string;
-  }[];
-  readonly repositoryBatches: readonly unknown[];
-}
+/** The server's `pullRequests.list` reply, as the contract defines it. */
+export type SynaraPullRequestListResult = PullRequestsListResult;
 
 const OFFLINE_RETRY_DELAY_MS = 5_000;
 const TRANSPORT_STATE_EVENT = "synara:transport-state";
@@ -247,11 +239,13 @@ function hostBridgeRequest<A>(method: string, params: Record<string, unknown>): 
         try {
           const parsed = typeof reply === "string" ? JSON.parse(reply) : reply;
           if (parsed && typeof parsed === "object" && "error" in parsed && parsed.error) {
-            const error = new Error(String(parsed.error)) as RelayBridgeError;
-            error.name =
+            const name: RelayBridgeError["name"] =
               "errorKind" in parsed && parsed.errorKind === "rpc"
                 ? "SynaraRpcResponseError"
                 : "RpcTransportError";
+            const error: RelayBridgeError = Object.assign(new Error(String(parsed.error)), {
+              name,
+            });
             reject(error);
             return;
           }

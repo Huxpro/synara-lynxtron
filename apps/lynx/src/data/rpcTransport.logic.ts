@@ -69,7 +69,7 @@ export function openRpcSocketWithTimeout(input: {
 }): Promise<RpcTransportSocket> {
   return new Promise((resolve, reject) => {
     let settled = false;
-    let cancelTimeout = () => undefined;
+    let cancelTimeout: () => void = () => undefined;
     const socket = input.createSocket();
     const finishFailure = (error: Error) => {
       if (settled) return;

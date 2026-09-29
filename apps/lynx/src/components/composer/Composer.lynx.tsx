@@ -3,6 +3,7 @@ import { getRectByRef } from "@lynx-js/lynx-ui";
 import type { NodesRef } from "@lynx-js/types";
 import { useQuery } from "@tanstack/react-query";
 import type {
+  ChatAssistantSelectionAttachment,
   ModelSelection,
   ProviderKind,
   ProviderMentionReference,
@@ -81,6 +82,7 @@ import {
   createPastedTextDraft,
   type PastedTextDraft,
 } from "@synara-web/lib/composerPastedText";
+import type { FileCommentDraft } from "@synara-web/lib/fileComments";
 import type { TerminalContextDraft } from "@synara-web/lib/terminalContext";
 import {
   dispatchSynaraCommand,
@@ -155,14 +157,14 @@ import {
 import "./composer.css";
 
 type ComposerTokenSegment = Exclude<ComposerPromptSegment, { readonly type: "text" }>;
-const EMPTY_ASSISTANT_SELECTIONS = [];
+const EMPTY_ASSISTANT_SELECTIONS: ReadonlyArray<ChatAssistantSelectionAttachment> = [];
 const EMPTY_MENTIONS: ReadonlyArray<Extract<ComposerCommandItem, { type: "thread" }>["mention"]> =
   [];
 const EMPTY_PASTED_TEXTS: ReadonlyArray<PastedTextDraft> = [];
 const EMPTY_FILES: ReadonlyArray<NativeComposerFileAttachment> = [];
 const EMPTY_IMAGES: ReadonlyArray<NativeComposerImageAttachment> = [];
 const EMPTY_NON_PERSISTED_IMAGE_IDS: ReadonlyArray<string> = [];
-const EMPTY_FILE_COMMENTS = [];
+const EMPTY_FILE_COMMENTS: ReadonlyArray<FileCommentDraft> = [];
 const EMPTY_SKILLS: ReadonlyArray<ProviderSkillReference> = [];
 const EMPTY_TERMINAL_CONTEXTS: ReadonlyArray<TerminalContextDraft> = [];
 const EMPTY_COMMAND_ITEMS: ReadonlyArray<ComposerCommandItem> = [];
@@ -939,7 +941,7 @@ export function Composer({
     };
     pendingNativeValueRef.current = {
       value: draftProjection.displayText,
-      ...selection,
+      triggerAfterAck: null,
     };
     appliedDisplayProjectionRef.current = draftProjection.displayText;
     textareaRef.current
@@ -951,12 +953,9 @@ export function Composer({
     textareaRef.current?.invoke({ method: "setSelectionRange", params: selection }).exec();
   }, [draftProjection]);
 
-  async function readNativeEditorSnapshot(fallbackPrompt: string): Promise<{
-    readonly isComposing: boolean;
-    readonly selectionEnd: number;
-    readonly selectionStart: number;
-    readonly value: string;
-  } | null> {
+  async function readNativeEditorSnapshot(
+    fallbackPrompt: string,
+  ): Promise<ComposerNativeEditorSnapshot> {
     "background only";
     const fallbackProjection =
       draftProjectionRef.current.canonicalText === fallbackPrompt
@@ -988,7 +987,7 @@ export function Composer({
               resolve(fallback);
               return;
             }
-            resolve(normalizeComposerNativeEditorSnapshot(result));
+            resolve(normalizeComposerNativeEditorSnapshot(result) ?? fallback);
           },
           fail: () => {
             "background only";
@@ -1076,7 +1075,10 @@ export function Composer({
   async function selectAllNativeEditorText() {
     "background only";
     if (!focused) return;
-    const editor = await readNativeEditorSnapshot();
+    // Read the store directly: this runs from a global-event listener closure.
+    const editor = await readNativeEditorSnapshot(
+      useComposerDraftStore.getState().draftsByThreadId[brandedThreadId]?.prompt ?? "",
+    );
     const selected = selectAllComposerNativeEditor(editor);
     nativeSelectionRef.current = {
       selectionStart: selected.selectionStart,
@@ -1829,7 +1831,7 @@ export function Composer({
                 value: event.detail.value,
                 selectionStart: event.detail.selectionStart,
                 selectionEnd: event.detail.selectionEnd,
-                isComposing: event.detail.isComposing,
+                isComposing: event.detail.isComposing ?? false,
               };
               if (pendingNativeValueRef.current !== null) {
                 const pendingNativeValue = pendingNativeValueRef.current;
@@ -1947,6 +1949,7 @@ export function Composer({
               {!isVoiceRecording &&
               !isVoiceTranscribing &&
               !compactFooter &&
+              contextWindow &&
               contextWindowDisplay ? (
                 <ComposerContextWindowMeterElement
                   display={contextWindowDisplay}

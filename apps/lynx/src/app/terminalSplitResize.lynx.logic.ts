@@ -11,12 +11,15 @@ export interface LynxTerminalSplitPointerEvent {
   }[];
   readonly clientX?: number;
   readonly clientY?: number;
+  // Lynx touch events report page coordinates here as `x`/`y`.
   readonly detail?: {
     readonly buttons?: number;
     readonly clientX?: number;
     readonly clientY?: number;
     readonly pageX?: number;
     readonly pageY?: number;
+    readonly x?: number;
+    readonly y?: number;
   };
   readonly pageX?: number;
   readonly pageY?: number;

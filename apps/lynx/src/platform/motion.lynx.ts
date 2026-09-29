@@ -28,7 +28,9 @@ function useLynxReducedMotion(): boolean {
   useEffect(() => {
     "background only";
     reducedMotionListeners.add(setValue);
-    return () => reducedMotionListeners.delete(setValue);
+    return () => {
+      reducedMotionListeners.delete(setValue);
+    };
   }, []);
   return value;
 }

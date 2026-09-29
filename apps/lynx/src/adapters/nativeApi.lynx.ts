@@ -1,9 +1,11 @@
+import type { NativeApi } from "@synara/contracts";
+
 /**
  * Filesystem browsing/import is a host capability and remains outside the
  * first shared palette slice. Returning null preserves the Web component's
  * existing guarded fallback without inventing a DOM bridge.
  */
-export function readNativeApi(): null {
+export function readNativeApi(): NativeApi | null {
   return null;
 }
 
@@ -13,6 +15,6 @@ export function readNativeApi(): null {
  * identical means shared call sites take their own documented error path rather
  * than a silent Lynx-only branch.
  */
-export function ensureNativeApi(): never {
+export function ensureNativeApi(): NativeApi {
   throw new Error("Native API not found");
 }

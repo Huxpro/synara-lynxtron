@@ -1,14 +1,9 @@
 // FILE: ComposerReferenceAttachmentsComposition.tsx
 // Purpose: Own the cross-platform composer reference-attachment ordering and visibility.
 
-import {
-  type ComposerFileAttachment,
-  type ComposerImageAttachment,
-} from "../../composerDraftStore";
 import { type PastedTextDraft } from "../../lib/composerPastedText";
 import { type FileCommentDraft } from "../../lib/fileComments";
 import { type ChatAssistantSelectionAttachment } from "../../types";
-import { type ExpandedImagePreview } from "./ExpandedImagePreview";
 import {
   ComposerAssistantSelectionsAttachmentElement,
   ComposerFileAttachmentElement,
@@ -18,14 +13,18 @@ import {
   ComposerReferenceAttachmentsContainerElement,
 } from "~/components/chat/ComposerReferenceAttachmentsCompositionElements";
 
+// Attachment shapes come from the platform elements (the `~` alias resolves to
+// the Lynx adapter in the Lynx bundle), so each renderer passes its own drafts.
+type ComposerImageAttachmentElementProps = Parameters<typeof ComposerImageAttachmentElement>[0];
+
 export interface ComposerReferenceAttachmentsCompositionProps {
   assistantSelections: ReadonlyArray<ChatAssistantSelectionAttachment>;
   fileComments: ReadonlyArray<FileCommentDraft>;
   pastedTexts?: ReadonlyArray<PastedTextDraft>;
-  files: ReadonlyArray<ComposerFileAttachment>;
-  images: ReadonlyArray<ComposerImageAttachment>;
+  files: ReadonlyArray<Parameters<typeof ComposerFileAttachmentElement>[0]["file"]>;
+  images: ReadonlyArray<ComposerImageAttachmentElementProps["image"]>;
   nonPersistedImageIdSet: ReadonlySet<string>;
-  onExpandImage: (preview: ExpandedImagePreview) => void;
+  onExpandImage: ComposerImageAttachmentElementProps["onExpandImage"];
   onRemoveAssistantSelections: () => void;
   onRemoveFileComments: () => void;
   onRemovePastedText?: (pastedTextId: string) => void;

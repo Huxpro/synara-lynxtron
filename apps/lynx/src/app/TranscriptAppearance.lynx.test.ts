@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
 describe("Lynx transcript appearance settings", () => {

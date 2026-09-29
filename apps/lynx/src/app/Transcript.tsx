@@ -167,7 +167,12 @@ function TranscriptMessageTrail(props: {
   readonly viewportWidth: number;
 }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const items = deriveMessageTrailItems(props.rows);
+  const items = deriveMessageTrailItems(
+    props.rows.filter(
+      (row): row is Extract<ThreadTranscriptRow, { readonly kind: "message" }> =>
+        row.kind === "message",
+    ),
+  );
   const activeSnapshot = useSyncExternalStore(
     props.activeStore.subscribe,
     props.activeStore.get,
@@ -634,7 +639,9 @@ function TranscriptMessage({
         assistantMessageId: message.id,
         text: assistantText,
       });
-      if (selection) addAssistantSelection(threadId, selection);
+      // The web helper widens the id to string; keep the row's branded MessageId.
+      if (selection)
+        addAssistantSelection(threadId, { ...selection, assistantMessageId: message.id });
     },
   });
   const messageHover = useLynxInteractiveState({
@@ -676,6 +683,9 @@ function TranscriptMessage({
         );
         if (!confirmed) return;
         try {
+          const { dispatchSynaraCommand } = await import(
+            /* webpackMode: "eager" */ "../data/synaraClient"
+          );
           await dispatchSynaraCommand({
             type: "thread.checkpoint.revert",
             commandId: `lynx-command-${Date.now()}-${Math.random().toString(16).slice(2)}` as never,
@@ -748,7 +758,8 @@ function TranscriptMessage({
       assistantMessageId: message.id,
       text: activeTextSelection.text,
     });
-    if (selection) addAssistantSelection(threadId, selection);
+    if (selection)
+      addAssistantSelection(threadId, { ...selection, assistantMessageId: message.id });
     onTextSelectionChange(null);
   }
   function addMarker(style: "highlight" | "underline") {
@@ -1275,6 +1286,9 @@ export function Transcript({
     setEditSubmitting(true);
     setEditError(null);
     try {
+      const { dispatchSynaraCommand } = await import(
+        /* webpackMode: "eager" */ "../data/synaraClient"
+      );
       await dispatchSynaraCommand({
         type: "thread.message.edit-and-resend",
         commandId: `lynx-command-${Date.now()}-${Math.random().toString(16).slice(2)}` as never,

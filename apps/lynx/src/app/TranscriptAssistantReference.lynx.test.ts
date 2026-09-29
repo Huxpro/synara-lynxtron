@@ -8,7 +8,9 @@ describe("Lynx assistant message actions", () => {
 
     expect(source).toContain("createAssistantSelectionAttachment({");
     expect(source).toContain("assistantMessageId: message.id");
-    expect(source).toContain("addAssistantSelection(threadId, selection)");
+    expect(source).toContain(
+      "addAssistantSelection(threadId, { ...selection, assistantMessageId: message.id })",
+    );
     expect(source).toContain("getAssistantSelectionValidationError({");
     expect(source).toContain("draftAttachmentCount >= PROVIDER_SEND_TURN_MAX_ATTACHMENTS");
     expect(source).toContain("disabled: assistantSelectionUnavailable");

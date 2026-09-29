@@ -4,28 +4,31 @@ import { useTheme } from "../../adapters/useTheme.lynx";
 import { cx, textContent } from "./shared.lynx";
 import "./primitives.css";
 
+type BadgeVariant =
+  | "default"
+  | "secondary"
+  | "outline"
+  | "destructive"
+  | "error"
+  | "info"
+  | "success"
+  | "warning";
+
 export function Badge(props: {
   readonly children?: ReactNode;
   readonly className?: string;
   readonly shape?: "default" | "capsule";
   readonly size?: "sm" | "default" | "lg";
-  readonly variant?:
-    | "default"
-    | "secondary"
-    | "outline"
-    | "destructive"
-    | "error"
-    | "info"
-    | "success"
-    | "warning";
+  readonly variant?: BadgeVariant;
 }) {
   const { svgColors } = useTheme();
-  const statusSurface = {
+  const statusSurfaces: Partial<Record<BadgeVariant, string>> = {
     error: svgColors.statusErrorSurface,
     info: svgColors.statusInfoSurface,
     success: svgColors.statusSuccessSurface,
     warning: svgColors.statusWarningSurface,
-  }[props.variant ?? "default"];
+  };
+  const statusSurface = statusSurfaces[props.variant ?? "default"];
   return (
     <view
       className={cx(

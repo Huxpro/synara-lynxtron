@@ -1,4 +1,5 @@
 import { describe, expect, it } from "@rstest/core";
+import { ProjectId, SpaceId } from "@synara/contracts";
 
 import {
   buildNativeSpaceDeleteCommand,
@@ -86,10 +87,12 @@ describe("Native Space context actions", () => {
 
   it("chunks bulk assignment and retains only authoritative failures", async () => {
     const commands: any[] = [];
-    const projectIds = Array.from({ length: 201 }, (_, index) => `project-${index}` as never);
+    const projectIds = Array.from({ length: 201 }, (_, index) =>
+      ProjectId.makeUnsafe(`project-${index}`),
+    );
     const failed = await assignNativeProjectsToSpace({
       projectIds,
-      spaceId: "space-a" as never,
+      spaceId: SpaceId.makeUnsafe("space-a"),
       dispatch: async (command) => {
         commands.push(command);
         if (commands.length === 2) throw new Error("offline");
@@ -99,7 +102,7 @@ describe("Native Space context actions", () => {
         spaces: [],
         projects: [
           {
-            id: "project-200",
+            id: ProjectId.makeUnsafe("project-200"),
             kind: "project",
             title: "Last",
             workspaceRoot: "/last",

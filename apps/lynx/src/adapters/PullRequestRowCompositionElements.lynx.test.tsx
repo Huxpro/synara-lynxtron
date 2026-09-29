@@ -100,6 +100,7 @@ describe("Pull Request row icon fidelity", () => {
         actor={{
           login: "octocat",
           name: "Octo Cat",
+          url: null,
           avatarUrl: "https://example.test/octocat.png",
         }}
       />,

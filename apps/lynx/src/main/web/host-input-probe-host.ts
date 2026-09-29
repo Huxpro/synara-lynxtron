@@ -6,9 +6,7 @@ interface ProbeMatrixPayload {
 }
 
 declare global {
-  interface Window {
-    __SYNARA_HOST_INPUT_PROBE__?: unknown;
-  }
+  var __SYNARA_HOST_INPUT_PROBE__: unknown;
 }
 
 const webDocument = globalThis.document;

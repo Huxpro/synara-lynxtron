@@ -38,7 +38,7 @@ function RenamableChatSurfaceHeaderIdentityTitle(
     onActivate: props.onRename,
   });
   return (
-    <text className={rename.className} maxlines={1} {...rename.eventProps}>
+    <text className={rename.className} text-maxline="1" {...rename.eventProps}>
       {props.displayTitle ?? props.title}
     </text>
   );
@@ -47,7 +47,7 @@ function RenamableChatSurfaceHeaderIdentityTitle(
 export function ChatSurfaceHeaderIdentityTitleElement(props: ChatSurfaceHeaderIdentityTitleProps) {
   if (!props.onRename) {
     return (
-      <text className="SharedChatHeaderIdentityTitle" maxlines={1}>
+      <text className="SharedChatHeaderIdentityTitle" text-maxline="1">
         {props.displayTitle ?? props.title}
       </text>
     );

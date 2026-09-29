@@ -107,7 +107,15 @@ export async function flushStorage(): Promise<void> {
  * every write already reaches the host bridge immediately, so there is nothing
  * to hook. The signature is kept identical so shared call sites stay unchanged.
  */
-export function flushStorageBeforePageHide(_flush: () => void): void {
+export interface FlushBeforePageHideEnv {
+  readonly window?: unknown;
+  readonly document?: unknown;
+}
+
+export function flushStorageBeforePageHide(
+  _flush: () => void,
+  _env?: FlushBeforePageHideEnv,
+): void {
   // Intentionally empty: no page-hide lifecycle on this platform.
 }
 

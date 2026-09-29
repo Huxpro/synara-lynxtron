@@ -11,7 +11,7 @@ describe("Native sidebar New thread target", () => {
     const source = readFileSync(new URL("./Sidebar.lynx.tsx", import.meta.url), "utf8");
     expect(source).toContain("onCreateThread={openPrimaryNewThread}");
     expect(source).toContain("resolveNewThreadTarget({");
-    expect(source).toContain("setLatestProjectId(activeProject.id as never)");
+    expect(source).toContain("setLatestProjectId(ProjectId.makeUnsafe(activeProject.id))");
     expect(source).toContain("`/new-thread/${encodeURIComponent(target.projectId)}`");
 
     const projects = [

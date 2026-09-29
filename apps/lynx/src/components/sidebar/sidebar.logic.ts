@@ -112,7 +112,7 @@ export function deriveSidebarSections(input: {
     threadSortOrder: input.threadSortOrder ?? DEFAULT_SIDEBAR_THREAD_SORT_ORDER,
     resolveProjectSection: (project) => project.kind,
   });
-  const groups = sections.projectPartitions.projects.map((project) => ({
+  const groups: SidebarProjectGroup[] = sections.projectPartitions.projects.map((project) => ({
     id: project.id,
     isPinned: project.isPinned,
     spaceId: project.spaceId ?? null,

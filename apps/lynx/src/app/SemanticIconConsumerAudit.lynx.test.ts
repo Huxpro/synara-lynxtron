@@ -5,7 +5,7 @@ describe("semantic icon consumer audit", () => {
   it("routes thread-header chrome through semantic icon roles", () => {
     const source = readFileSync(new URL("./ThreadHeaderActions.lynx.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./thread-header-actions.css", import.meta.url), "utf8");
-    expect(source).toContain('resolveSemanticIconTone("primary", svgColors)');
+    expect(source).toContain('semanticIconColor("primary")');
     expect(source).toContain('color="var(--color-icon-secondary)"');
     expect(source).not.toContain('color="var(--muted-foreground)"');
     expect(styles).toMatch(

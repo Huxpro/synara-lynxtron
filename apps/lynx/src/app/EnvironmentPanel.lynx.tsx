@@ -1650,7 +1650,8 @@ function EnvironmentProjectInstructions(props: {
       setHydrated(true);
       textareaRef.current?.invoke({ method: "setValue", params: { value: next } }).exec();
     };
-    void useProjectInstructionsStore.persist.rehydrate().then(
+    // rehydrate() returns void when the store has no storage; normalize to a promise.
+    void Promise.resolve(useProjectInstructionsStore.persist.rehydrate()).then(
       () =>
         applyHydratedInstructions(
           useProjectInstructionsStore.getState().instructionsByProjectId[props.projectId] ?? "",

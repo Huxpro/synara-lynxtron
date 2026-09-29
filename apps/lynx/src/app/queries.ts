@@ -31,8 +31,8 @@ import type {
   PullRequestActionResult,
   PullRequestCommentInput,
   PullRequestListEntry,
-  PullRequestsListError,
   PullRequestsListRepositoryBatch,
+  PullRequestsListResult,
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
   PullRequestState,
@@ -93,7 +93,10 @@ import {
 } from "@synara-web/lib/threadRecap";
 import type { NativeSyntaxHighlightThemes } from "../main/syntaxHighlightingContract.logic";
 import { isLocalAbsolutePath } from "@synara/shared/path";
-import { projectActiveThreadSummaries } from "./threadSummaryProjection.logic";
+import {
+  projectActiveThreadSummaries,
+  resolveSnapshotThreadProvider,
+} from "./threadSummaryProjection.logic";
 import { parseMarkdown, type MarkdownNode } from "../components/markdown/markdownAst.lynx";
 
 export const queryClient = new QueryClient({
@@ -108,13 +111,10 @@ export const queryClient = new QueryClient({
 export interface ThreadSummary {
   readonly id: string;
   readonly title: string;
-  readonly remoteName: string;
-  readonly folderName: string;
-  readonly localName: string | null;
   readonly projectId: string;
   readonly project: string;
   readonly messageCount: number;
-  readonly createdAt?: string;
+  readonly createdAt: string;
   readonly updatedAt: string;
   readonly archivedAt?: string | null;
   readonly latestUserMessageAt?: string | null;
@@ -146,6 +146,9 @@ export interface ProjectSummary {
   readonly id: string;
   readonly kind: "project" | "chat" | "studio";
   readonly title: string;
+  readonly remoteName: string;
+  readonly folderName: string;
+  readonly localName: string | null;
   readonly workspaceRoot: string;
   readonly defaultModelSelection: ModelSelection | null;
   readonly scripts: readonly import("@synara/contracts").ProjectScript[];
@@ -233,7 +236,10 @@ export type ThreadTranscriptRow = MessagesTimelineRow & {
   readonly markdownTreesByWorkEntryId?: Readonly<Record<string, MarkdownNode | null>>;
 };
 
-export type ExplorerEntriesResult = ProjectListDirectoriesResult | ProjectSearchEntriesResult;
+// Directory listings are never truncated; only search results report it.
+export type ExplorerEntriesResult =
+  | (ProjectListDirectoriesResult & { readonly truncated?: undefined })
+  | ProjectSearchEntriesResult;
 
 export async function fetchAutomations(): Promise<AutomationListResult> {
   "background only";
@@ -448,6 +454,8 @@ const transcriptRowsByThreadId = new Map<
     readonly rows: ThreadTranscriptRow[];
   }
 >();
+
+type PullRequestsListError = PullRequestsListResult["errors"][number];
 
 export interface PullRequestSnapshot {
   readonly viewer: string | null;
@@ -829,16 +837,16 @@ export async function fetchThreadHeaderSummary(
     projectId: thread.projectId,
     project: project?.title ?? "Synara",
     branch: thread.branch,
-    envMode: thread.envMode,
+    envMode: thread.envMode ?? "local",
     handoff: thread.handoff,
     messages: thread.messages,
     activities: thread.activities,
-    worktreePath: thread.worktreePath,
-    associatedWorktreePath: thread.associatedWorktreePath,
-    associatedWorktreeBranch: thread.associatedWorktreeBranch,
-    associatedWorktreeRef: thread.associatedWorktreeRef,
-    createBranchFlowCompleted: thread.createBranchFlowCompleted,
-    provider: thread.session?.provider ?? thread.modelSelection.provider,
+    worktreePath: thread.worktreePath ?? null,
+    associatedWorktreePath: thread.associatedWorktreePath ?? null,
+    associatedWorktreeBranch: thread.associatedWorktreeBranch ?? null,
+    associatedWorktreeRef: thread.associatedWorktreeRef ?? null,
+    createBranchFlowCompleted: thread.createBranchFlowCompleted ?? false,
+    provider: resolveSnapshotThreadProvider(thread),
     modelSelection: thread.modelSelection,
     runtimeMode: thread.runtimeMode,
     interactionMode: thread.interactionMode,

@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
-import type { ModelSelection, ProviderKind } from "@synara/contracts";
-import { getDefaultModel } from "@synara/shared/model";
+import {
+  CommandId,
+  ProjectId,
+  ThreadId,
+  type ModelSelection,
+  type ProviderKind,
+} from "@synara/contracts";
 import { PanelStateMessage } from "@synara-web/components/chat/PanelStateMessage";
 import { ComposerProjectPickerComposition } from "@synara-web/components/chat/ComposerProjectPickerComposition";
 import { buildComposerProjectPickerModel } from "@synara-web/components/chat/ComposerProjectPicker.logic";
@@ -21,6 +26,7 @@ import {
   fetchServerSettings,
   fetchSynaraSidebarShellSnapshot,
 } from "../../data/synaraClient.lynx";
+import { defaultModelSelectionForProvider } from "../../lib/defaultModelSelection";
 import { dialogs } from "../../platform/dialogs";
 import { webStorage } from "../../platform/storage";
 import { Button } from "../ui/button";
@@ -34,9 +40,14 @@ import { resolveLandingWorkspaceContext } from "./landingStudioFolder.logic";
 
 import "./landing-composer.css";
 
-function landingId(kind: "command" | "project" | "thread"): string {
+function landingId(kind: "command"): CommandId;
+function landingId(kind: "project"): ProjectId;
+function landingId(kind: "thread"): ThreadId;
+function landingId(kind: "command" | "project" | "thread"): CommandId | ProjectId | ThreadId {
   "background only";
-  return `lynx-landing-${kind}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  const id = `lynx-landing-${kind}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  if (kind === "command") return CommandId.makeUnsafe(id);
+  return kind === "project" ? ProjectId.makeUnsafe(id) : ThreadId.makeUnsafe(id);
 }
 
 function projectWorkspaceLabel(workspaceRoot: string): string {
@@ -228,10 +239,7 @@ export function LandingComposer(props: {
     if (data?.homeProject.defaultModelSelection) {
       return data.homeProject.defaultModelSelection;
     }
-    return {
-      provider: initialModelProvider,
-      model: getDefaultModel(initialModelProvider),
-    };
+    return defaultModelSelectionForProvider(initialModelProvider);
   }, [data, initialModelProvider, selectedProjectId]);
   const selectedProject = data?.projects.find((project) => project.id === selectedProjectId);
   const targetProject = selectedProject ?? data?.homeProject;
@@ -343,10 +351,7 @@ export function LandingComposer(props: {
         title: projectWorkspaceLabel(workspaceRoot),
         workspaceRoot,
         createWorkspaceRootIfMissing: false,
-        defaultModelSelection: {
-          provider: initialModelProvider,
-          model: getDefaultModel(initialModelProvider),
-        },
+        defaultModelSelection: defaultModelSelectionForProvider(initialModelProvider),
         isPinned: false,
         spaceId: null,
         createdAt: new Date().toISOString(),
@@ -405,8 +410,8 @@ export function LandingComposer(props: {
     if ((props.notes ?? "").trim().length > 0) {
       await dispatchSynaraCommand({
         type: "thread.meta.update",
-        commandId: landingId("command") as never,
-        threadId: threadId as never,
+        commandId: landingId("command"),
+        threadId,
         notes: props.notes ?? "",
       }).catch(() => undefined);
     }
@@ -439,6 +444,8 @@ export function LandingComposer(props: {
     );
   }
 
+  const readyProject = targetProject ?? data.homeProject;
+
   return (
     <view className="LandingComposer">
       {error ? (
@@ -466,7 +473,7 @@ export function LandingComposer(props: {
         interactionMode={interactionMode}
         sessionStatus={null}
         activeTurnId={null}
-        workspaceRoot={workspaceContext?.workspaceRoot ?? targetProject.workspaceRoot}
+        workspaceRoot={workspaceContext?.workspaceRoot ?? readyProject.workspaceRoot}
         providerStatuses={data.serverConfig.providers}
         emptyLanding={true}
         onBeforeSend={ensureThread}
@@ -492,7 +499,7 @@ export function LandingComposer(props: {
         onTemporaryChange={
           props.onTemporaryChange ?? (() => setInternalTemporary((current) => !current))
         }
-        projectName={targetProject.title}
+        projectName={readyProject.title}
         temporary={temporary}
         projectControl={
           <ComposerProjectPickerComposition
@@ -534,10 +541,7 @@ export function LandingComposer(props: {
                     title: option.primaryLabel,
                     workspaceRoot: option.workspaceRoot,
                     createWorkspaceRootIfMissing: false,
-                    defaultModelSelection: {
-                      provider: initialModelProvider,
-                      model: getDefaultModel(initialModelProvider),
-                    },
+                    defaultModelSelection: defaultModelSelectionForProvider(initialModelProvider),
                     isPinned: false,
                     spaceId: null,
                     createdAt: new Date().toISOString(),

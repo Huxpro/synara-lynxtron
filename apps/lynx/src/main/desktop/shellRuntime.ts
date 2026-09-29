@@ -166,10 +166,15 @@ export function buildRecentViewNavigationMenuItems(
   readonly click: () => void;
 }[] {
   if (!enabled) return [];
-  return [
-    { label: "Open recent view", accelerator: "Enter", event: "commit" as const },
-    { label: "Cancel recent views", accelerator: "Esc", event: "cancel" as const },
-  ].map(({ label, accelerator, event }) => ({
+  const items: readonly {
+    readonly label: string;
+    readonly accelerator: "Enter" | "Esc";
+    readonly event: "commit" | "cancel";
+  }[] = [
+    { label: "Open recent view", accelerator: "Enter", event: "commit" },
+    { label: "Cancel recent views", accelerator: "Esc", event: "cancel" },
+  ];
+  return items.map(({ label, accelerator, event }) => ({
     label,
     accelerator,
     visible: false as const,
@@ -215,11 +220,17 @@ export function buildTerminalSearchNavigationMenuItems(
   readonly click: () => void;
 }[] {
   if (!enabled) return [];
-  return [
+  const items: readonly {
+    readonly label: string;
+    readonly accelerator: "Enter" | "Shift+Enter" | "Esc";
+    readonly key: "Enter" | "Escape";
+    readonly shiftKey?: true;
+  }[] = [
     { label: "Terminal search next", accelerator: "Enter", key: "Enter" },
     { label: "Terminal search previous", accelerator: "Shift+Enter", key: "Enter", shiftKey: true },
     { label: "Terminal search close", accelerator: "Esc", key: "Escape" },
-  ].map(({ label, accelerator, key, shiftKey }) => ({
+  ];
+  return items.map(({ label, accelerator, key, shiftKey }) => ({
     label,
     accelerator,
     visible: false,

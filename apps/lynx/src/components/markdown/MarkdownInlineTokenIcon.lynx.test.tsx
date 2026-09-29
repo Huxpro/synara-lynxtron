@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@rstest/core";
 import { render } from "@lynx-js/react/testing-library";
 import { readFileSync } from "node:fs";
+import { ThreadId } from "@synara/contracts";
 
 import { MarkdownInlineTokenIcon } from "./MarkdownInlineTokenIcon.lynx";
 
@@ -24,8 +25,14 @@ describe("Lynx Markdown inline token icons", () => {
           segment={{
             type: "terminal-context",
             context: {
+              id: "context-1",
+              threadId: ThreadId.makeUnsafe("thread-1"),
+              createdAt: "2026-01-01T00:00:00.000Z",
               terminalId: "terminal-1",
               terminalLabel: "Terminal",
+              lineStart: 1,
+              lineEnd: 1,
+              text: "",
             },
           }}
         />

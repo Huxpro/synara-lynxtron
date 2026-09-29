@@ -1,9 +1,9 @@
 import type { ClientOrchestrationCommand, ModelSelection, ProviderKind } from "@synara/contracts";
-import { getDefaultModel } from "@synara/shared/model";
 
 import type { LynxAppSnapCapture } from "../platform/appSnap";
 import type { loadLandingBootstrap } from "../components/composer/LandingComposer.lynx";
 import { dispatchSynaraCommand, fetchSynaraSidebarShellSnapshot } from "../data/synaraClient.lynx";
+import { defaultModelSelectionForProvider } from "../lib/defaultModelSelection";
 
 type LandingBootstrap = Awaited<ReturnType<typeof loadLandingBootstrap>>;
 
@@ -47,10 +47,9 @@ export function buildFreshAppSnapThreadCreateCommand(input: {
   readonly defaultProvider: ProviderKind;
   readonly threadId: string;
 }): Extract<ClientOrchestrationCommand, { type: "thread.create" }> {
-  const modelSelection: ModelSelection = input.bootstrap.homeProject.defaultModelSelection ?? {
-    provider: input.defaultProvider,
-    model: getDefaultModel(input.defaultProvider),
-  };
+  const modelSelection: ModelSelection =
+    input.bootstrap.homeProject.defaultModelSelection ??
+    defaultModelSelectionForProvider(input.defaultProvider);
   return {
     type: "thread.create",
     commandId: input.commandId as never,

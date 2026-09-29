@@ -695,7 +695,6 @@ function OpenDiffDock(props: {
           className="DiffDockFileJumpViewport"
           accessibility-element
           accessibility-label="Jump to file dialog"
-          accessibility-trait="dialog"
           bindkeydown={(event: { readonly key?: string }) => {
             "background only";
             if (event.key === "Escape") closeFileJump();
@@ -707,7 +706,8 @@ function OpenDiffDock(props: {
             className="DiffDockFileJumpDialog"
             accessibility-element
             accessibility-label="Jump to file"
-            accessibility-trait="dialog"
+            role="dialog"
+            aria-modal={true}
           >
             <Button
               aria-label="Close file picker"

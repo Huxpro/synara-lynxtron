@@ -160,7 +160,9 @@ describe("Lynx Automations route", () => {
     expect(pageSource).toContain("mutationFn: createAutomation");
     expect(pageSource).toContain("<AutomationDialog");
     expect(pageSource).toContain("threads={sidebar.data?.threads ?? []}");
-    expect(pageSource).not.toContain("navigate(`/automations/${encodeURIComponent(definition.id)}`)");
+    expect(pageSource).not.toContain(
+      "navigate(`/automations/${encodeURIComponent(definition.id)}`)",
+    );
     expect(dialogSource).toContain("buildAutomationCreateInput({");
     expect(createLogicSource).toContain("readonly schedule: AutomationSchedule");
     expect(createLogicSource).toContain("schedule: input.schedule");
@@ -319,7 +321,7 @@ describe("Lynx Automations route", () => {
     expect(editSource).toContain('form.scheduleKind === "weekly"');
     expect(editSource).toContain("<AutomationTimeInput");
     expect(editSource).toContain("defaultValue={form.timeOfDay}");
-    expect(editSource).toContain('accessibleLabel="Automation timezone"');
+    expect(editSource).toContain('aria-label="Automation timezone"');
     expect(editSource).toContain("MAX_ITERATION_OPTIONS");
     expect(editSource).toContain("buildAutomationFormWarnings(form)");
     expect(editSource).toContain("hasBlockingAutomationDraftWarnings(");

@@ -9,6 +9,9 @@ function productionSourceFiles(directory: string): string[] {
     if (entry.isDirectory()) return productionSourceFiles(absolute);
     if (!entry.isFile() || !/\.(?:ts|tsx)$/.test(entry.name)) return [];
     if (/\.(?:test|spec)\.(?:ts|tsx)$/.test(entry.name)) return [];
+    // Declaration files type attributes (including the upstream plural name);
+    // they never render one.
+    if (entry.name.endsWith(".d.ts")) return [];
     return [absolute];
   });
 }

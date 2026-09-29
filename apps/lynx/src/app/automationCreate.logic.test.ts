@@ -1,10 +1,14 @@
 import { describe, expect, it } from "@rstest/core";
+import { ProjectId, ThreadId } from "@synara/contracts";
 
 import {
   buildAutomationCreateInput,
   resolveAutomationModelSelection,
   resolveAutomationModelSelectionForProjectChange,
 } from "./automationCreate.logic";
+
+const projectId = ProjectId.makeUnsafe("project-1");
+const threadId = ThreadId.makeUnsafe("thread-1");
 
 const modelSelection = {
   provider: "codex",
@@ -76,7 +80,7 @@ describe("Automation create payload", () => {
         acknowledgeLocalCheckout: false,
         completionPolicy: { type: "none" },
         interactionMode: "plan",
-        projectId: "project-1",
+        projectId,
         maxIterations: 25,
         mode: "standalone",
         modelSelection,
@@ -109,7 +113,7 @@ describe("Automation create payload", () => {
         acknowledgeLocalCheckout: worktreeMode === "local",
         completionPolicy: { type: "none" },
         interactionMode: "default",
-        projectId: "project-1",
+        projectId,
         maxIterations: null,
         mode: "standalone",
         modelSelection,
@@ -140,7 +144,7 @@ describe("Automation create payload", () => {
         acknowledgeLocalCheckout: worktreeMode === "local",
         completionPolicy: { type: "none" },
         interactionMode: "default",
-        projectId: "project-1",
+        projectId,
         maxIterations: null,
         mode: "standalone",
         modelSelection,
@@ -168,7 +172,7 @@ describe("Automation create payload", () => {
         confidenceThreshold: 0.8,
       },
       interactionMode: "default" as const,
-      projectId: "project-1" as const,
+      projectId,
       maxIterations: null,
       modelSelection,
       name: "Continue a thread",
@@ -183,7 +187,7 @@ describe("Automation create payload", () => {
       buildAutomationCreateInput({
         ...base,
         mode: "heartbeat",
-        targetThreadId: "thread-1",
+        targetThreadId: threadId,
       }),
     ).toMatchObject({
       completionPolicy: {
@@ -198,7 +202,7 @@ describe("Automation create payload", () => {
       buildAutomationCreateInput({
         ...base,
         mode: "standalone",
-        targetThreadId: "thread-1",
+        targetThreadId: threadId,
       }),
     ).toMatchObject({
       completionPolicy: { type: "none" },
@@ -213,7 +217,7 @@ describe("Automation create payload", () => {
       acknowledgeLocalCheckout: false,
       completionPolicy: { type: "none" },
       interactionMode: "default",
-      projectId: "project-1",
+      projectId,
       maxIterations: 10,
       mode: "standalone",
       modelSelection,

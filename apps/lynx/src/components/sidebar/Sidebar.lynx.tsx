@@ -15,11 +15,12 @@ import {
 } from "@synara/shared/contextMenu";
 import {
   PROVIDER_DISPLAY_NAMES,
+  ProjectId,
   type OrchestrationSpaceShell,
-  type ProjectId,
   type ProviderKind,
   type SpaceIconName,
   type SpaceId,
+  type ThreadId,
 } from "@synara/contracts";
 import { useQuery } from "@tanstack/react-query";
 import forkSvg from "@synara-central-icons/fork.svg?raw";
@@ -60,7 +61,7 @@ import {
 } from "@synara/shared/projectThreadArchive";
 import { firstLocalServerUrl, localServerMatchesRun } from "@synara/shared/localServers";
 import { newCommandId, newSpaceId, newThreadId } from "@synara-web/lib/utils";
-import { getDefaultModel } from "@synara/shared/model";
+import { defaultModelSelectionForProvider } from "../../lib/defaultModelSelection";
 import { abbreviateHomePath } from "@synara-web/components/sidebarHoverCardAnchors";
 import {
   SIDEBAR_THREAD_PREVIEW_LIMIT,
@@ -171,6 +172,7 @@ import { sleepOnHost } from "../../platform/timer";
 import { removeRightDockThreadState } from "../../app/rightDockState.lynx";
 import {
   buildNativeThreadContextCommand,
+  isThreadContextMenuActionId,
   nativeThreadContextConfirmation,
   resolveSecondaryPointerOffset,
 } from "./threadContextActions.logic";
@@ -454,7 +456,9 @@ async function readPersistedSidebarListState(): Promise<PersistedSidebarListStat
   };
 }
 
-async function persistSidebarListState(state: PersistedSidebarListState): Promise<void> {
+async function persistSidebarListState(
+  state: Pick<PersistedSidebarListState, "expanded" | "chatExtraPages" | "projectExtraPagesByCwd">,
+): Promise<void> {
   "background only";
   const { persistSidebarUiState, readSidebarUiState } = await import(
     /* webpackMode: "eager" */ "@synara-web/components/Sidebar.uiState"
@@ -605,7 +609,7 @@ export function Sidebar({
       ? data.projects.find((project) => project.id === activeThread.projectId)
       : null;
     if (!activeProject || activeProject.kind !== "project") return;
-    setLatestProjectId(activeProject.id as never);
+    setLatestProjectId(ProjectId.makeUnsafe(activeProject.id));
     const routeSpaceId = activeProject.spaceId ?? null;
     rememberSpaceThread(routeSpaceId, activeThreadId as never);
     if (routeSpaceId !== storedActiveSpaceId) setActiveSpaceId(routeSpaceId);
@@ -621,13 +625,16 @@ export function Sidebar({
   // one used, else this Space's most recently updated project.
   const latestProjectId = useLatestProjectStore((state) => state.latestProjectId);
   const openPrimaryNewThread = () => {
-    const spaceProjects = (data?.projects ?? []).filter(
-      (project) => (project.spaceId ?? null) === activeSpaceId,
-    );
+    const spaceProjects = (data?.projects ?? [])
+      .filter((project) => (project.spaceId ?? null) === activeSpaceId)
+      .map((project) => ({ ...project, id: ProjectId.makeUnsafe(project.id) }));
     const focusedProjectId =
       data?.threads.find((thread) => thread.id === activeThreadId)?.projectId ?? null;
     const target = resolveNewThreadTarget({
-      currentProjectId: resolveCurrentProjectTargetId(spaceProjects, focusedProjectId as never),
+      currentProjectId: resolveCurrentProjectTargetId(
+        spaceProjects,
+        focusedProjectId ? ProjectId.makeUnsafe(focusedProjectId) : null,
+      ),
       latestUsableProjectId: resolveLatestProjectTargetIdWithFallback(
         spaceProjects,
         latestProjectId,
@@ -813,6 +820,7 @@ export function Sidebar({
       navigate("/thread/" + thread.id);
       return;
     }
+    if (!isThreadContextMenuActionId(action)) return;
     await performThreadAction(thread, workspaceRoot, action);
   }
 
@@ -1146,7 +1154,7 @@ export function Sidebar({
         const deleteInput = {
           threads: removalThreads,
           dispatch: dispatchSynaraCommand,
-          closeTerminalHistory: async (threadId) => {
+          closeTerminalHistory: async (threadId: ThreadId) => {
             await platformTerminal.close({ threadId, deleteHistory: true }).catch(() => undefined);
             await platformTerminal
               .close({
@@ -1431,7 +1439,13 @@ export function Sidebar({
   function threadHoverCard(thread: ThreadSummary) {
     const project = sections.projectGroups.find((group) => group.id === thread.projectId) ?? null;
     const metadata = resolveThreadHoverCardMetadata({
-      thread,
+      thread: {
+        envMode: thread.envMode ?? "local",
+        branch: thread.branch ?? null,
+        worktreePath: thread.worktreePath ?? null,
+        associatedWorktreePath: thread.associatedWorktreePath ?? null,
+        associatedWorktreeBranch: thread.associatedWorktreeBranch ?? null,
+      },
       project: project
         ? {
             cwd: project.workspaceRoot,
@@ -1456,10 +1470,12 @@ export function Sidebar({
     const project = data?.projects.find((candidate) => candidate.id === projectId);
     if (!project) return;
     const threadId = newThreadId();
-    const modelSelection = project.defaultModelSelection ?? {
-      provider: initialSortSettings.defaultProvider,
-      model: getDefaultModel(initialSortSettings.defaultProvider),
-    };
+    const modelSelection =
+      project.defaultModelSelection ??
+      defaultModelSelectionForProvider(initialSortSettings.defaultProvider);
+    const { dispatchSynaraCommand } = await import(
+      /* webpackMode: "eager" */ "../../data/synaraClient"
+    );
     await dispatchSynaraCommand({
       type: "thread.create",
       commandId: newCommandId(),
@@ -1713,7 +1729,7 @@ export function Sidebar({
       const activeProject = activeThread
         ? data?.projects.find((project) => project.id === activeThread.projectId)
         : null;
-      if (activeProject?.kind === "project") {
+      if (activeThread && activeProject?.kind === "project") {
         rememberSpaceThread(activeProject.spaceId ?? null, activeThread.id as never);
       }
     }

@@ -343,7 +343,8 @@ async function scrollSettingsTargetWhenReady(targetId: string): Promise<boolean>
   let found = false;
   await sleepOnHost(100);
   for (let attempt = 0; attempt < 3; attempt += 1) {
-    found = (await runOnMainThread(scrollSettingsTargetOnMainThread)(targetId)) || found;
+    // runOnMainThread cannot infer the worklet's return type (it resolves to `{}`).
+    found = (await runOnMainThread(scrollSettingsTargetOnMainThread)(targetId)) === true || found;
     if (attempt < 2) await sleepOnHost(100);
   }
   return found;

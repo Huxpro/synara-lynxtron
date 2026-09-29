@@ -56,10 +56,6 @@ export function resolveSliceThemeVariables(
   }).variables;
   return {
     ...variables,
-    // Lynxtron has no macOS vibrancy behind the sidebar. Use the shared card
-    // surface as the opaque visual equivalent of Electron's translucent
-    // sidebar material (#f5f5f5 light / #111111 dark by default).
-    "--app-sidebar-surface": theme.theme.card,
     "--font-ui-family": resolveSliceUiFontFamily(themeState, systemDark),
     // Lynx Desktop currently leaves nested var() fallbacks unresolved in
     // font-family. Project the concrete stack at the root so every code surface

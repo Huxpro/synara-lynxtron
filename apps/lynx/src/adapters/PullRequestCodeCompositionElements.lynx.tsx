@@ -215,7 +215,7 @@ export function PullRequestCodeLineElement(props: {
                       }
                     : {}),
                   ...(token.fontStyle & 1 ? { fontStyle: "italic" } : {}),
-                  ...(token.fontStyle & 2 ? { fontWeight: 700 } : {}),
+                  ...(token.fontStyle & 2 ? { fontWeight: "700" } : {}),
                   ...(token.fontStyle & 4 ? { textDecoration: "underline" } : {}),
                 }}
               >

@@ -124,8 +124,7 @@ describe("landing composer fidelity contract", () => {
     expect(landingSource).toContain(
       "props.initialModelProvider ?? generalSettings.defaultProvider",
     );
-    expect(landingSource).toContain("provider: initialModelProvider");
-    expect(landingSource).toContain("model: getDefaultModel(initialModelProvider)");
+    expect(landingSource).toContain("defaultModelSelectionForProvider(initialModelProvider)");
     expect(landingSource).toContain("envMode,");
     expect(landingSource).toContain("generalSettings.defaultThreadEnvMode");
     expect(routerSource).toContain("envModeTouchedRef.current = true");

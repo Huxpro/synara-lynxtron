@@ -348,7 +348,7 @@ export class WsTransport {
   private readonly streamCleanups = new Map<string, () => void>();
   private readonly streamSettled = new Map<string, Promise<void>>();
   private readonly streamCapacityRetries = new Map<string, number>();
-  private readonly streamCapacityRetryTimers = new Map<string, number>();
+  private readonly streamCapacityRetryTimers = new Map<string, ReturnType<typeof setTimeout>>();
   private readonly activeThreadStreamInputs = new Map<string, unknown>();
   private shellSubscribed = false;
   private readonly threadSubscriptions = new Map<string, unknown>();

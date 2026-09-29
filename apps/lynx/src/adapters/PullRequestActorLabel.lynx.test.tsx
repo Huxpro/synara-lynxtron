@@ -11,6 +11,7 @@ describe("Pull Request actor label fidelity", () => {
         actor={{
           login: "octocat",
           name: "The Octocat",
+          url: null,
           avatarUrl: "https://avatars.example/octocat.png",
         }}
         variant="reviewer"
@@ -31,6 +32,7 @@ describe("Pull Request actor label fidelity", () => {
         actor={{
           login: "reviewer",
           name: "Reviewer",
+          url: null,
           avatarUrl: "https://avatars.example/reviewer.png",
         }}
         variant="author"

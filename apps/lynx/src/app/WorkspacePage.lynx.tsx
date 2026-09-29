@@ -54,6 +54,7 @@ export function WorkspacePage({
     queryFn: fetchPluginLibraryServerConfig,
     staleTime: 30_000,
   });
+  const homeDir = serverConfig?.homeDir;
 
   useEffect(() => {
     if (workspace) return;
@@ -196,7 +197,7 @@ export function WorkspacePage({
           </DialogPanel>
         </DialogPopup>
       </Dialog>
-      {serverConfig?.homeDir && terminalOpen ? (
+      {homeDir && terminalOpen ? (
         <view
           className={`WorkspaceTerminalGrid WorkspaceTerminalGrid--${workspace.layoutPresetId}`}
         >
@@ -216,7 +217,7 @@ export function WorkspacePage({
                 presentationMode="workspace"
                 terminalId={terminalId}
                 threadId={workspaceThreadId(workspace.id)}
-                workspaceRoot={serverConfig.homeDir}
+                workspaceRoot={homeDir}
                 onOpenChange={(open) => {
                   if (!open && terminalIds.length === 1) {
                     setTerminalOpen(false);
@@ -226,7 +227,7 @@ export function WorkspacePage({
             </view>
           ))}
         </view>
-      ) : serverConfig?.homeDir ? (
+      ) : homeDir ? (
         <view className="WorkspacePageState">
           <text className="WorkspacePageStateTitle">This workspace has no open terminals</text>
           <text className="WorkspacePageStateCopy">

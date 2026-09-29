@@ -15,6 +15,7 @@ import pinSvg from "@synara-central-icons/pin.svg?raw";
 import { EditorRailAddMenu } from "./EditorRailAddMenu.lynx";
 import { ProjectActionEditor } from "./ProjectActionEditor.lynx";
 import { Button } from "../components/ui/button";
+import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 import { ComposerModelControl } from "../components/composer/ComposerModelControl.lynx";
 import {
   COMPONENT_LAB_AUTOMATION_DEFINITION,
@@ -164,6 +165,9 @@ const COMPONENT_LAB_SPACE_PROJECTS = [
     id: "component-lab-alpha",
     kind: "project" as const,
     title: "Alpha",
+    remoteName: "Alpha",
+    folderName: "alpha",
+    localName: null,
     workspaceRoot: "/work/alpha",
     defaultModelSelection: null,
     scripts: [],
@@ -173,6 +177,9 @@ const COMPONENT_LAB_SPACE_PROJECTS = [
     id: "component-lab-beta",
     kind: "project" as const,
     title: "Beta",
+    remoteName: "Beta",
+    folderName: "beta",
+    localName: null,
     workspaceRoot: "/work/beta",
     defaultModelSelection: null,
     scripts: [],
@@ -184,6 +191,9 @@ const COMPONENT_LAB_AUTOMATION_LYNX_PROJECT = {
   id: COMPONENT_LAB_AUTOMATION_PROJECT.id,
   kind: "project" as const,
   title: COMPONENT_LAB_AUTOMATION_PROJECT.name,
+  remoteName: COMPONENT_LAB_AUTOMATION_PROJECT.name,
+  folderName: "synara",
+  localName: null,
   workspaceRoot: COMPONENT_LAB_AUTOMATION_PROJECT.workspaceRoot,
   defaultModelSelection: COMPONENT_LAB_AUTOMATION_DEFINITION.modelSelection,
   scripts: [],
