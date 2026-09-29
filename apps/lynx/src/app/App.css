@@ -7,6 +7,7 @@
 @import "./lynx-overrides.css";
 @import "../generated/native-theme-variables.css";
 @import "../generated/native-color-mix-variables.css";
+@import "../generated/native-typography-variables.css";
 @import "../generated/core-utilities.css";
 @import "../components/markdown/markdown.css";
 @import "../adapters/settings-navigation-composition-elements.css";

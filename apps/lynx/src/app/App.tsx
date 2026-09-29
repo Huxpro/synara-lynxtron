@@ -36,6 +36,7 @@ import { bridgeCall, onGlobalEvent } from "../platform/bridge";
 import { setLynxReducedMotion } from "../platform/motion.lynx";
 
 import { sliceUiDensityClassName } from "./appDensity.logic";
+import { sliceTypographyClassName } from "./appTypography.logic";
 import { readPersistedAppearanceFallback } from "./appHydration.logic";
 import { resolveSliceThemeVariables, sliceThemeClassName } from "./appTheme.logic";
 import { queryClient } from "./queries";
@@ -275,6 +276,7 @@ export function App() {
           "SliceRoot",
           sliceThemeClassName(themeState, systemDark),
           sliceUiDensityClassName(appearance.uiDensity),
+          sliceTypographyClassName(appearance.chatFontSizePx),
           viewportLayoutClassName(viewportLayout),
           viewportBreakpointClassNames(viewportLayout),
           viewportHeightClassNames(viewportLayout),
