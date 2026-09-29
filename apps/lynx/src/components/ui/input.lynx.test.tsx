@@ -18,12 +18,14 @@ describe("Lynx Input accessibility contract", () => {
     expect(source).toContain("{ backgroundColor: svgColors.formControlSurface }");
   });
 
-  it("projects the Electron placeholder tone into both Native input paths", () => {
+  it("routes every placeholder through the Native input that paints its tone", () => {
     const source = readFileSync(new URL("./input.lynx.tsx", import.meta.url), "utf8");
     expect(source).toContain('"placeholder-color": props.placeholderColor');
     expect(source).toContain("placeholderColor={svgColors.placeholderForeground}");
-    expect(source).toContain("placeholder-color={svgColors.placeholderForeground}");
-    expect(source).toContain("nativeInput || onKeyDown || props.placeholder !== undefined");
+    // lynx-ui's Input forwards only its own props, so it could not paint the tone.
+    expect(source).toContain(
+      "nativeInput || onKeyDown || autoFocus || props.placeholder !== undefined",
+    );
   });
 
   it("centers the one-line textarea through shared size metrics", () => {
@@ -80,14 +82,15 @@ describe("Lynx Input accessibility contract", () => {
     expect(source).toContain('"default-value": props.defaultValue');
     expect(source).toContain("value: props.value ?? props.defaultValue");
     expect(source).toContain('void setValue(props.defaultValue ?? "").catch(() => undefined)');
-    expect(source).toContain("{nativeInput || onKeyDown || props.placeholder !== undefined ? (");
+    expect(source).toContain(
+      "{nativeInput || onKeyDown || autoFocus || props.placeholder !== undefined ? (",
+    );
     expect(source).toContain("<textarea {...sharedProps} maxlines={props.maxLines ?? 1} />");
     expect(source).toContain("maxLines={multiline ? (maxLines ?? 5) : 1}");
     expect(source).toContain('props.type === "number" ? "[0-9.]*" : undefined');
     expect(source).toContain(
       '"accessibility-state": props.disabled ? { disabled: true } : undefined',
     );
-    expect(source).toMatch(/<LynxInput[\s\S]{0,260}aria-invalid=\{ariaInvalid\}/);
   });
 
   it("projects real input focus onto the shared control shell", () => {

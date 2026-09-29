@@ -61,9 +61,8 @@ describe("Lynx Menu overlay contract", () => {
       expect(elementTree.root?.querySelector(".LxMenuLayer")).not.toBeNull();
     });
     const source = readFileSync(new URL("./menu.lynx.tsx", import.meta.url), "utf8");
-    expect(source).toContain(
-      "createPortal(<Fragment>{props.children}</Fragment>, hostRef.current)",
-    );
+    expect(source).toContain("createPortal(<Fragment>{children}</Fragment>, host)");
+    expect(source).toContain("renderMenuPortal(props.children, hostRef.current)");
     expect(source).toContain("<MenuPortal>");
     const primitiveStyles = readFileSync(new URL("./primitives.css", import.meta.url), "utf8");
     expect(primitiveStyles).toMatch(
