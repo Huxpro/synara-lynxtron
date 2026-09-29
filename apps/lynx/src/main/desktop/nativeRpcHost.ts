@@ -7,6 +7,7 @@ import {
   type RpcTransportState,
   type StartRpcTimeout,
 } from "../../data/rpcTransport.logic";
+import { nativeEventStreamChannel } from "../nativeEventStreams.logic";
 import { resolveSynaraWsUrl } from "./runtimeEndpoint.logic";
 import { normalizeLynxRpcPayload } from "../rpcPayload.logic";
 
@@ -123,9 +124,7 @@ export async function handleNativeRpc(
     if (method === "synaraRpcStream") {
       const events: unknown[] = [];
       await featureManager.requestStream(tag, data.payload, (event) => {
-        if (tag !== "terminal.subscribeEvents" && tag !== "orchestration.subscribeShell") {
-          events.push(event);
-        }
+        if (nativeEventStreamChannel(tag) === null) events.push(event);
         onProgress?.(event);
       });
       return events;

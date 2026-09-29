@@ -24,16 +24,21 @@ describe("Lynx Synara relay state", () => {
     expect(mainSource).toContain('_tag: "NativeRpcResult"');
     expect(clientSource).toContain('parsed._tag === "NativeRpcResult"');
     expect(clientSource).toContain('"orchestration.subscribeShell"');
+    // Long-lived streams are relayed as global events through one shared table.
     expect(clientSource).toContain(
-      'const ORCHESTRATION_SHELL_EVENT = "synara:orchestration-shell-event"',
+      'const ORCHESTRATION_SHELL_EVENT = NATIVE_EVENT_STREAM_CHANNELS["orchestration.subscribeShell"]',
     );
-    expect(mainSource).toContain('rpcData.tag === "orchestration.subscribeShell"');
-    expect(mainSource).toContain("ORCHESTRATION_SHELL_EVENT");
+    expect(clientSource).toContain(
+      'const SERVER_SETTINGS_EVENT = NATIVE_EVENT_STREAM_CHANNELS["server.subscribeSettings"]',
+    );
+    expect(mainSource).toContain("nativeEventStreamChannel(String(rpcData.tag");
     const nativeHostSource = readFileSync(
       new URL("../main/desktop/nativeRpcHost.ts", import.meta.url),
       "utf8",
     );
-    expect(nativeHostSource).toContain('tag !== "orchestration.subscribeShell"');
+    expect(nativeHostSource).toContain(
+      "if (nativeEventStreamChannel(tag) === null) events.push(event);",
+    );
   });
 
   it("leaves connection lifecycle state to the Web relay socket owner", () => {
@@ -96,7 +101,7 @@ describe("Lynx Synara relay state", () => {
       "utf8",
     );
 
-    expect(mainSource).toContain("? TERMINAL_EVENT");
+    expect(mainSource).toContain("nativeEventStreamChannel(String(rpcData.tag");
     expect(clientSource).not.toContain("export function publishTerminalEvent");
     expect(clientSource).not.toContain("onGlobalEvent(TERMINAL_EVENT");
     expect(toastHostSource).toContain("queryClient.setQueryData<TerminalEventSnapshot>(");

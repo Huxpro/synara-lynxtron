@@ -164,22 +164,32 @@ async function readSettings(retry: boolean): Promise<{
   const appSettingsRaw = webStorage.getItem(APP_SETTINGS_STORAGE_KEY);
   const themeRaw = webStorage.getItem(THEME_STORAGE_KEY);
   return {
-    general: readSettingsGeneralProjection(appSettingsRaw, serverSettings?.defaultThreadEnvMode),
+    ...readServerBackedSettings(appSettingsRaw, serverSettings),
     appearance: readSettingsAppearanceProjection(appSettingsRaw, themeRaw),
+    notifications: readSettingsNotificationsProjection(appSettingsRaw),
+    providerPicker: readSettingsProviderPickerProjection(appSettingsRaw),
+    keybindings: serverConfig?.keybindings ?? EMPTY_KEYBINDINGS,
+    themeState: parseStoredThemeState(themeRaw),
+  };
+}
+
+/** The Settings values that come from server settings (the rest are stored locally). */
+function readServerBackedSettings(
+  appSettingsRaw: string | null,
+  serverSettings: ServerSettingsView | null,
+) {
+  return {
+    general: readSettingsGeneralProjection(appSettingsRaw, serverSettings?.defaultThreadEnvMode),
     behavior: readSettingsBehaviorProjection(
       appSettingsRaw,
       serverSettings?.enableAssistantStreaming,
     ),
-    notifications: readSettingsNotificationsProjection(appSettingsRaw),
     models: readSettingsGitWritingModelValues(serverSettings),
     providers: readSettingsProviderUpdateChecksValues(serverSettings),
-    providerPicker: readSettingsProviderPickerProjection(appSettingsRaw),
     modelOptions: buildSettingsGitWritingModelOptions({
       settings: serverSettings,
       selected: readSettingsGitWritingModelValues(serverSettings),
     }),
-    keybindings: serverConfig?.keybindings ?? EMPTY_KEYBINDINGS,
-    themeState: parseStoredThemeState(themeRaw),
   };
 }
 
@@ -438,6 +448,36 @@ export function SettingsPage({
       active = false;
     };
   }, [loadAttempt, onAppearanceChange, onThemeStateChange]);
+
+  // Server settings changed elsewhere (another client, another window) show up
+  // live, as they do on the web, instead of only on the next page load.
+  useEffect(() => {
+    "background only";
+    if (hydrationState !== "ready") return;
+    let active = true;
+    let unsubscribe: (() => void) | null = null;
+    void Promise.all([
+      import(/* webpackMode: "eager" */ "../platform/storage"),
+      import(/* webpackMode: "eager" */ "../data/synaraClient"),
+    ]).then(([{ webStorage }, { subscribeServerSettings }]) => {
+      if (!active) return;
+      unsubscribe = subscribeServerSettings((serverSettings) => {
+        const next = readServerBackedSettings(
+          webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
+          serverSettings,
+        );
+        setSettings(next.general);
+        setBehavior(next.behavior);
+        setModels(next.models);
+        setProviders(next.providers);
+        setModelOptions(next.modelOptions);
+      });
+    });
+    return () => {
+      active = false;
+      unsubscribe?.();
+    };
+  }, [hydrationState]);
 
   useEffect(() => {
     "background only";

@@ -99,6 +99,7 @@ import type {
 import { resolveDefaultSocketUrl } from "../platform/net.socket";
 import { bridgeCall, onGlobalEvent } from "../platform/bridge";
 import { RpcTransportError, type RpcTransportState } from "./rpcTransport.logic";
+import { NATIVE_EVENT_STREAM_CHANNELS } from "../main/nativeEventStreams.logic";
 import {
   NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG,
   type NativeSyntaxHighlightThemes,
@@ -156,7 +157,8 @@ export interface SynaraPullRequestListResult {
 const OFFLINE_RETRY_DELAY_MS = 5_000;
 const TRANSPORT_STATE_EVENT = "synara:transport-state";
 const GIT_ACTION_PROGRESS_EVENT = "synara:git-action-progress";
-const ORCHESTRATION_SHELL_EVENT = "synara:orchestration-shell-event";
+const ORCHESTRATION_SHELL_EVENT = NATIVE_EVENT_STREAM_CHANNELS["orchestration.subscribeShell"];
+const SERVER_SETTINGS_EVENT = NATIVE_EVENT_STREAM_CHANNELS["server.subscribeSettings"];
 
 let relayState: RpcTransportState = "idle";
 let relayEverConnected = false;
@@ -169,6 +171,9 @@ let terminalEventStream: Promise<void> | null = null;
 let terminalEventRetry: ReturnType<typeof setTimeout> | null = null;
 let orchestrationShellEventStream: Promise<void> | null = null;
 let orchestrationShellEventRetry: ReturnType<typeof setTimeout> | null = null;
+const serverSettingsListeners = new Set<(settings: ServerSettingsView) => void>();
+let serverSettingsStream: Promise<void> | null = null;
+let serverSettingsRetry: ReturnType<typeof setTimeout> | null = null;
 
 function setRelayState(state: RpcTransportState): void {
   if (relayState === state) return;
@@ -204,6 +209,14 @@ onGlobalEvent(ORCHESTRATION_SHELL_EVENT, (event: unknown) => {
   for (const listener of orchestrationShellEventListeners) {
     listener(event as OrchestrationShellStreamItem);
   }
+});
+onGlobalEvent(SERVER_SETTINGS_EVENT, (event: unknown) => {
+  const settings =
+    event && typeof event === "object" && "settings" in event
+      ? (event as { readonly settings: ServerSettingsView }).settings
+      : null;
+  if (!settings) return;
+  for (const listener of serverSettingsListeners) listener(settings);
 });
 function describeRelayError(error: unknown): string {
   if (error instanceof Error) return error.message;
@@ -340,6 +353,42 @@ function ensureOrchestrationShellEventStream(): void {
         ensureOrchestrationShellEventStream();
       }, 1_000);
     });
+}
+
+function ensureServerSettingsStream(): void {
+  if (serverSettingsStream || serverSettingsListeners.size === 0) return;
+  serverSettingsStream = relayStreamRequest<{ readonly settings: ServerSettingsView }>(
+    "server.subscribeSettings",
+    {},
+  )
+    .then(() => undefined)
+    .catch(() => undefined)
+    .finally(() => {
+      serverSettingsStream = null;
+      if (serverSettingsListeners.size === 0) return;
+      serverSettingsRetry = setTimeout(() => {
+        serverSettingsRetry = null;
+        ensureServerSettingsStream();
+      }, 1_000);
+    });
+}
+
+/**
+ * Server settings as the server publishes them: the current view first, then
+ * every change, including changes made by other clients.
+ */
+export function subscribeServerSettings(
+  listener: (settings: ServerSettingsView) => void,
+): () => void {
+  serverSettingsListeners.add(listener);
+  ensureServerSettingsStream();
+  return () => {
+    serverSettingsListeners.delete(listener);
+    if (serverSettingsListeners.size === 0 && serverSettingsRetry) {
+      clearTimeout(serverSettingsRetry);
+      serverSettingsRetry = null;
+    }
+  };
 }
 
 function transportRequest<A>(tag: string, payload: unknown): Promise<A> {

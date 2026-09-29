@@ -65,6 +65,7 @@ import { createRequire } from "node:module";
 import { DesktopAppSnapManager } from "../../../../desktop/src/appSnapManager";
 import type { DesktopAppSnapErrorEvent, DesktopAppSnapState } from "@synara/contracts";
 import { SYSTEM_APPEARANCE_EVENT } from "../systemAppearanceEvent.logic";
+import { nativeEventStreamChannel } from "../nativeEventStreams.logic";
 import {
   createSystemAppearanceWatcher,
   parseSystemAppearanceProbeSequence,
@@ -82,8 +83,6 @@ const rendererUiReadyTimeoutMs = Math.max(
   Number(process.env.SYNARA_UI_READY_TIMEOUT_MS) || 15_000,
 );
 const hostInputProbeReportPath = process.env.SYNARA_HOST_INPUT_PROBE_REPORT?.trim() || null;
-const TERMINAL_EVENT = "synara:terminal-event";
-const ORCHESTRATION_SHELL_EVENT = "synara:orchestration-shell-event";
 const APPSNAP_CAPTURE_EVENT = "synara:appsnap-captured";
 const APPSNAP_ERROR_EVENT = "synara:appsnap-error";
 const APPSNAP_STATE_EVENT = "synara:appsnap-state";
@@ -858,11 +857,8 @@ app.whenReady().then(() => {
                 rpcData,
                 (event) => {
                   const channel =
-                    rpcData.tag === "terminal.subscribeEvents"
-                      ? TERMINAL_EVENT
-                      : rpcData.tag === "orchestration.subscribeShell"
-                        ? ORCHESTRATION_SHELL_EVENT
-                        : "synara:git-action-progress";
+                    nativeEventStreamChannel(String(rpcData.tag ?? "")) ??
+                    "synara:git-action-progress";
                   w.sendGlobalEvent(channel, event);
                 },
               );
