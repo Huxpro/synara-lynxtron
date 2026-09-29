@@ -3,6 +3,7 @@ import { describe, expect, it } from "@rstest/core";
 import {
   DEFAULT_SYNARA_HTTP_ORIGIN,
   DEFAULT_SYNARA_SOCKET_URL,
+  readHostRuntimeSocketUrl,
   resolveRuntimeHttpOrigin,
   resolveRuntimeSocketUrl,
 } from "./runtimeEndpoint.logic";
@@ -18,6 +19,19 @@ describe("runtime endpoint projection", () => {
         { value: "ws://bad-config-shape:2" },
       ),
     ).toBe(DEFAULT_SYNARA_SOCKET_URL);
+  });
+
+  it("reads only a ws(s) backend URL from the host init data", () => {
+    expect(readHostRuntimeSocketUrl({ runtimeWsUrl: " ws://127.0.0.1:56730/?token=t " })).toBe(
+      "ws://127.0.0.1:56730/?token=t",
+    );
+    expect(readHostRuntimeSocketUrl({ runtimeWsUrl: "wss://synara.example/ws" })).toBe(
+      "wss://synara.example/ws",
+    );
+    expect(readHostRuntimeSocketUrl({ runtimeWsUrl: "http://127.0.0.1:1" })).toBeNull();
+    expect(readHostRuntimeSocketUrl({ runtimeWsUrl: 42 })).toBeNull();
+    expect(readHostRuntimeSocketUrl({})).toBeNull();
+    expect(readHostRuntimeSocketUrl(undefined)).toBeNull();
   });
 
   it("projects ws and wss endpoints to the matching HTTP origin", () => {

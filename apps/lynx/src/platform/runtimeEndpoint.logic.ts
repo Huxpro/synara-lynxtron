@@ -9,6 +9,19 @@ export function resolveRuntimeSocketUrl(explicitUrl: unknown, configuredUrl: unk
   return DEFAULT_SYNARA_SOCKET_URL;
 }
 
+/**
+ * The backend URL the desktop host hands to the renderer in its init data
+ * (`runtimeWsUrl`). Anything that is not a ws(s) URL is ignored so a malformed
+ * host value falls back to the configured endpoint instead of breaking RPC.
+ */
+export function readHostRuntimeSocketUrl(initData: unknown): string | null {
+  if (!initData || typeof initData !== "object") return null;
+  const value = (initData as { readonly runtimeWsUrl?: unknown }).runtimeWsUrl;
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  return /^wss?:\/\//i.test(trimmed) ? trimmed : null;
+}
+
 export function resolveRuntimeHttpOrigin(configuredUrl: unknown): string {
   const value = typeof configuredUrl === "string" ? configuredUrl.trim() : "";
   const match = value?.match(/^(ws|wss):\/\/([^/]+)/i);

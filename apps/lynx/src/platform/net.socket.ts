@@ -19,6 +19,7 @@ import {
 } from "@lynx-js/websocket/impl";
 
 import { resolveRuntimeSocketUrl } from "./runtimeEndpoint.logic";
+import { configuredRuntimeSocketUrl } from "./runtimeEndpointSource";
 
 type SocketEvent = {
   readonly type: string;
@@ -155,8 +156,5 @@ export const createWebSocket: WebSocketFactory = (url, protocols, options) =>
  * from the sidecar handshake (P4), so this stays deliberately small.
  */
 export function resolveDefaultSocketUrl(explicitUrl: string | null): string {
-  // This exact expression is replaced by lynx.config.ts. The background VM
-  // cannot observe the desktop host's process environment at runtime.
-  const envUrl = process.env.SYNARA_WS_URL;
-  return resolveRuntimeSocketUrl(explicitUrl, envUrl);
+  return resolveRuntimeSocketUrl(explicitUrl, configuredRuntimeSocketUrl());
 }

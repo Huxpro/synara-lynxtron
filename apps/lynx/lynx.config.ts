@@ -389,12 +389,12 @@ export default defineConfig({
     lynx: {
       source: {
         preEntry: "./src/runtime-polyfills.ts",
-        // Rspeedy background bundles do not inherit the desktop host process
-        // environment at runtime. Make an explicitly supplied certification /
-        // packaged endpoint part of the bundle; an empty value preserves the
-        // product default in runtimeEndpoint.logic.
+        // The Native bundle never embeds a backend endpoint: the Lynxtron host
+        // passes the live one as `runtimeWsUrl` init data on every load (see
+        // platform/runtimeEndpointSource.ts). Compiling a port in would let a
+        // reused bundle talk to a different server than its host.
         define: {
-          "process.env.SYNARA_WS_URL": JSON.stringify(configuredSynaraWsUrl),
+          "process.env.SYNARA_WS_URL": JSON.stringify(""),
           "process.env.SYNARA_APP_VERSION": JSON.stringify(appVersion),
           "process.env.SYNARA_LYNX_WEB_RELAY": JSON.stringify("0"),
           "process.env.SYNARA_HOST_INPUT_PROBE_RUNTIME": JSON.stringify(

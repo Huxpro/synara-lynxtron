@@ -28,4 +28,21 @@ describe("Lynx markdown site favicon URLs", () => {
       else process.env.SYNARA_WS_URL = previous;
     }
   });
+
+  it("prefers the live backend the desktop host passed in init data", () => {
+    const host = lynx as unknown as { __initData?: unknown };
+    const previousInitData = host.__initData;
+    const previousEnv = process.env.SYNARA_WS_URL;
+    process.env.SYNARA_WS_URL = "ws://127.0.0.1:53477/?token=stale";
+    host.__initData = { runtimeWsUrl: "ws://127.0.0.1:58090/?token=live" };
+    try {
+      expect(buildSiteFaviconUrl("https://example.com")).toBe(
+        "http://127.0.0.1:58090/api/site-favicon?domain=example.com&token=live",
+      );
+    } finally {
+      host.__initData = previousInitData;
+      if (previousEnv === undefined) delete process.env.SYNARA_WS_URL;
+      else process.env.SYNARA_WS_URL = previousEnv;
+    }
+  });
 });

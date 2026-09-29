@@ -1,4 +1,5 @@
 import { resolveRuntimeHttpOrigin } from "./runtimeEndpoint.logic";
+import { configuredRuntimeSocketUrl } from "./runtimeEndpointSource";
 
 /**
  * Lynx environment adapter for shared feature modules that gate synchronous
@@ -17,10 +18,9 @@ export function isBrowser(): boolean {
  * socket/server ports; there is no DOM location object to consult.
  */
 export function getLocationOrigin(): string {
-  // Replaced at build time together with the socket port. Keeping attachment
-  // origin and RPC endpoint coupled prevents mixed-snapshot certification.
-  const socketUrl = process.env.SYNARA_WS_URL;
-  return resolveRuntimeHttpOrigin(socketUrl);
+  // Derived from the same live endpoint as RPC, so attachment URLs and the
+  // backend can never point at different servers.
+  return resolveRuntimeHttpOrigin(configuredRuntimeSocketUrl());
 }
 
 export function getNavigatorPlatform(): string {

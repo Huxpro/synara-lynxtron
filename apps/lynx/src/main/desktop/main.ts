@@ -319,6 +319,10 @@ function loadLynxBundle(w: LynxWindow): void {
       ...(startupInitData ?? {}),
       initialRoute: route,
       initialSystemDark: readCurrentSystemDark(),
+      // The live backend for this window. The renderer bundle carries no
+      // endpoint of its own (see lynx.config.ts), so every reload rebinds to
+      // exactly the server this host process is connected to.
+      runtimeWsUrl: resolveSynaraWsUrl(process.env.SYNARA_WS_URL),
     },
   };
   if (rendererUiReadyTimer) clearTimeout(rendererUiReadyTimer);

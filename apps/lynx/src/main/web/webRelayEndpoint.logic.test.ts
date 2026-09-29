@@ -70,14 +70,17 @@ describe("Lynx-for-Web relay endpoint", () => {
     );
 
     expect(rsbuildConfig).toContain(
-      "const configuredSynaraWsUrl = process.env.SYNARA_WS_URL?.trim() ?? ''",
+      'const configuredSynaraWsUrl = process.env.SYNARA_WS_URL?.trim() ?? ""',
     );
     expect(rsbuildConfig).toContain(
-      "'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl)",
+      '"process.env.SYNARA_WS_URL": JSON.stringify(configuredSynaraWsUrl)',
     );
     expect(rspeedyConfig).toContain(
-      "'process.env.SYNARA_WS_URL': JSON.stringify(configuredSynaraWsUrl)",
+      '"process.env.SYNARA_WS_URL": JSON.stringify(configuredSynaraWsUrl)',
     );
+    // The Native environment never compiles an endpoint in; its host supplies
+    // the live one at load time.
+    expect(rspeedyConfig).toContain('"process.env.SYNARA_WS_URL": JSON.stringify("")');
     const host = fs.readFileSync(new URL("./web-host.ts", import.meta.url), "utf8");
     expect(host).toContain("return process.env.SYNARA_WS_URL;");
     expect(host).toContain("relaySocketBaseUrl ?? relayReadyBaseUrl ?? configuredRelayBaseUrl()");
@@ -90,10 +93,10 @@ describe("Lynx-for-Web relay endpoint", () => {
       "utf8",
     );
 
-    expect(rsbuildConfig).toContain("from: '../web/public/central-icons-reversed/'");
-    expect(rsbuildConfig).toContain("to: 'central-icons-reversed'");
-    expect(rsbuildConfig).toContain("from: '../web/public/central-icons-fill/'");
-    expect(rsbuildConfig).toContain("to: 'central-icons-fill'");
+    expect(rsbuildConfig).toContain('from: "../web/public/central-icons-reversed/"');
+    expect(rsbuildConfig).toContain('to: "central-icons-reversed"');
+    expect(rsbuildConfig).toContain('from: "../web/public/central-icons-fill/"');
+    expect(rsbuildConfig).toContain('to: "central-icons-fill"');
   });
 
   it("keeps recovery active after both a dropped socket and a cold-start failure", () => {
@@ -102,7 +105,7 @@ describe("Lynx-for-Web relay endpoint", () => {
     expect(host).toContain("startRelayRecovery(baseUrl);");
     expect(host).toContain("startRelayRecovery(configuredRelayBaseUrl());");
     expect(host).toContain("invalidateRelaySocket(socket, baseUrl, error);");
-    expect(host).toContain("import { isWebSocketOpen } from './webSocketState.logic';");
+    expect(host).toContain('import { isWebSocketOpen } from "./webSocketState.logic";');
     expect(host).toContain("if (!isWebSocketOpen(socket))");
     expect(host).toContain("isWebSocketOpen(relaySocket)");
     expect(host).not.toContain("WebSocket.OPEN");

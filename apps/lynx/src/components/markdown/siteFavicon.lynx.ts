@@ -1,4 +1,5 @@
 import { resolveRuntimeSocketUrl } from "../../platform/runtimeEndpoint.logic";
+import { configuredRuntimeSocketUrl } from "../../platform/runtimeEndpointSource";
 
 export function extractExternalLinkHost(url: string): string | null {
   const match = url.trim().match(/^https?:\/\/([^/?#]+)/i);
@@ -13,7 +14,7 @@ export function isGitHubExternalLink(url: string): boolean {
 export function buildSiteFaviconUrl(url: string): string | null {
   const host = extractExternalLinkHost(url);
   if (!host) return null;
-  const socketUrl = resolveRuntimeSocketUrl(null, process.env.SYNARA_WS_URL);
+  const socketUrl = resolveRuntimeSocketUrl(null, configuredRuntimeSocketUrl());
   const match = socketUrl.match(/^(ws|wss):\/\/([^/?#]+)(?:[^?#]*)?(?:\?([^#]*))?/i);
   if (!match) return null;
   const protocol = match[1]?.toLowerCase() === "wss" ? "https" : "http";
