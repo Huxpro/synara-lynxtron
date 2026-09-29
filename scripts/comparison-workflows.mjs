@@ -3,6 +3,8 @@
 // list of verified steps; any failed expectation throws with its context.
 import { waitFor } from "./comparison-workflow.mjs";
 
+const sleep = (ms) => new Promise((resolveSleep) => setTimeout(resolveSleep, ms));
+
 export const FIXTURE_PROJECT_TITLE = "synara-fixture-app";
 
 function pick(driver, targets) {
@@ -49,6 +51,46 @@ export async function activeThreadId(driver) {
     queue.push(...(node?.children ?? []));
   }
   return null;
+}
+
+/** Window-space rects of the rendered transcript message rows, in order. */
+export async function messageRowRects(driver) {
+  if (driver.kind === "electron") {
+    return driver.evaluate(
+      `Array.from(document.querySelectorAll('[data-timeline-row-kind="message"][data-message-id]')).map((node) => { const r = node.getBoundingClientRect(); return { id: node.getAttribute('data-message-id'), top: r.top, bottom: r.bottom }; })`,
+    );
+  }
+  const rows = [];
+  const queue = [await driver.documentRoot()];
+  while (queue.length > 0) {
+    const node = queue.shift();
+    const attributes = node?.attributes ?? [];
+    for (let index = 0; index + 1 < attributes.length; index += 2) {
+      if (attributes[index] === "item-key")
+        rows.push({ nodeId: node.nodeId, id: String(attributes[index + 1]) });
+    }
+    queue.push(...(node?.children ?? []));
+  }
+  const rects = [];
+  for (const row of rows) {
+    const quad = (await driver.send("DOM.getBoxModel", { nodeId: row.nodeId }))?.model?.border;
+    if (!quad) continue;
+    const ys = [quad[1], quad[3], quad[5], quad[7]];
+    // Recycled (off-screen) list items report an empty box.
+    if (Math.max(...ys) - Math.min(...ys) <= 0) continue;
+    rects.push({ id: row.id, top: Math.min(...ys), bottom: Math.max(...ys) });
+  }
+  return rects;
+}
+
+/** Whether the transcript offers "Scroll to bottom" (i.e. it is not following the end). */
+export async function scrollToBottomOffered(driver) {
+  if (driver.kind === "electron") {
+    return driver.evaluate(
+      `document.querySelector('[aria-label="Scroll to bottom"]')?.getAttribute('aria-hidden') === 'false'`,
+    );
+  }
+  return (await driver.find({ label: "Scroll to bottom" })) !== null;
 }
 
 async function threadWithMessage(backend, token) {
@@ -104,6 +146,110 @@ async function waitForSettled(
     },
     { label, timeoutMs, intervalMs: 500 },
   );
+}
+
+const COMPOSER_TARGET = {
+  electron: { testId: "composer-editor" },
+  native: { label: "Message composer" },
+};
+const FIXTURE_SECONDARY_THREAD_ID = "comparison-fixture-secondary-v2";
+
+async function openNewThread(driver) {
+  await driver.tap({ label: `Create new thread in ${FIXTURE_PROJECT_TITLE}` });
+  await waitFor(() => driver.find(pick(driver, COMPOSER_TARGET)), {
+    label: "the new thread composer",
+  });
+}
+
+/** Sends `text` and resolves with the thread once the new turn has settled as completed. */
+async function sendAndComplete(driver, backend, text, marker, threadId = null) {
+  const previousTurnId = threadId
+    ? ((await backend.thread(threadId))?.latestTurn?.turnId ?? null)
+    : null;
+  await composeAndSend(driver, text);
+  const sent = await waitFor(() => threadWithMessage(backend, marker), {
+    label: `"${marker}" in the backend`,
+    timeoutMs: 30_000,
+  });
+  const settled = await waitForSettled(
+    backend,
+    sent.id,
+    `the "${marker}" turn`,
+    previousTurnId,
+    180_000,
+  );
+  if (settled.latestTurn.state !== "completed")
+    throw new Error(`"${marker}" turn ended ${settled.latestTurn.state}.`);
+  if (userMessagesWith(settled, marker).length !== 1)
+    throw new Error(`"${marker}" was not sent exactly once.`);
+  return settled;
+}
+
+/** Waits for the newest turn to be running with at least `minChars` of streamed assistant text. */
+async function waitForStreamingText(
+  backend,
+  threadId,
+  previousTurnId,
+  minChars,
+  timeoutMs = 60_000,
+) {
+  return waitFor(
+    async () => {
+      const current = await backend.thread(threadId);
+      const turn = current?.latestTurn;
+      const last = current?.messages?.at(-1);
+      return turn?.turnId !== previousTurnId &&
+        turn?.state === "running" &&
+        last?.role === "assistant" &&
+        last.streaming &&
+        last.text.length >= minChars
+        ? current
+        : null;
+    },
+    { label: `${minChars} chars of streamed text`, timeoutMs, intervalMs: 150 },
+  );
+}
+
+/** A rendered message row inside the transcript viewport, to watch for movement. */
+async function pickAnchorRow(driver, viewport) {
+  // Any row crossing the viewport middle works; a long reply can span the
+  // whole viewport with its top edge above it.
+  const middle = (viewport.top + viewport.bottom) / 2;
+  const rows = (await messageRowRects(driver)).filter(
+    (row) => row.top <= middle && row.bottom >= middle,
+  );
+  if (rows.length === 0)
+    throw new Error("No message row inside the transcript viewport to anchor on.");
+  return rows[0];
+}
+
+/**
+ * Scrolls toward the top until the transcript reports it is detached. A wheel
+ * that races an in-flight follow scroll can be absorbed; a user scrolls again.
+ */
+async function detachTranscript(driver, viewport, deltaY) {
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    await driver.scroll({ x: viewport.x, y: (viewport.top + viewport.bottom) / 2 }, deltaY);
+    const detached = await waitFor(() => scrollToBottomOffered(driver), {
+      label: "the transcript to detach",
+      timeoutMs: 1_500,
+    }).catch(() => false);
+    if (detached) {
+      await sleep(300);
+      return attempt;
+    }
+  }
+  throw new Error("The transcript never detached from the end after scrolling up.");
+}
+
+async function rowTop(driver, id) {
+  return (await messageRowRects(driver)).find((row) => row.id === id)?.top ?? null;
+}
+
+async function transcriptViewport(driver) {
+  const composer = await driver.find(pick(driver, COMPOSER_TARGET));
+  // The transcript sits above the composer; 60px clears the header.
+  return { top: 60, bottom: composer.y - composer.height / 2 - 20, x: composer.x };
 }
 
 /** J1 — existing project → new thread → send → complete → model picker → stream → stop → resend. */
@@ -363,4 +509,203 @@ export async function workflowJ1(context) {
   return { threadId: thread.threadId, token };
 }
 
-export const WORKFLOWS = Object.freeze({ J1: workflowJ1 });
+function longPrompt(topic, marker) {
+  return `Without using tools, write a numbered list of 70 one-line facts about ${topic}, one per line. First line: ${marker}`;
+}
+
+/**
+ * J2 — long transcript → follow live output → scroll away → new output keeps
+ * the reader's place → Jump → tool-only activity never snaps a detached reader
+ * → switch threads and back with the right content.
+ */
+export async function workflowJ2(context) {
+  const { driver, backend, step } = context;
+  const token = `J2-${driver.kind}-${Date.now().toString(36)}`;
+  let threadId;
+
+  await step("build a long transcript with a real turn", async () => {
+    await openNewThread(driver);
+    const settled = await sendAndComplete(
+      driver,
+      backend,
+      longPrompt("rivers", `${token}-long`),
+      `${token}-long`,
+    );
+    threadId = settled.id;
+    const last = settled.messages.at(-1);
+    await waitFor(async () => (await renderedMessageIds(driver)).includes(last.id), {
+      label: "the long reply in the transcript",
+      timeoutMs: 20_000,
+    });
+    return { threadId, replyChars: last.text.length };
+  });
+
+  let streamTurnBefore;
+  await step("follow live output to the end of the transcript", async () => {
+    streamTurnBefore = (await backend.thread(threadId)).latestTurn.turnId;
+    await composeAndSend(driver, longPrompt("mountains", `${token}-follow`));
+    await waitForStreamingText(backend, threadId, streamTurnBefore, 1);
+    const samples = [];
+    const deadline = Date.now() + 2_500;
+    while (Date.now() < deadline) {
+      samples.push(await scrollToBottomOffered(driver));
+      await sleep(250);
+    }
+    if (samples.some(Boolean)) {
+      throw new Error(
+        `The transcript stopped following live output (${samples.filter(Boolean).length}/${samples.length} samples).`,
+      );
+    }
+    return { samples: samples.length };
+  });
+
+  await step("scroll away while output streams; the reader keeps their place", async () => {
+    const viewport = await transcriptViewport(driver);
+    const detachAttempts = await detachTranscript(driver, viewport, -500);
+    const anchor = await pickAnchorRow(driver, viewport);
+    const before = await backend.thread(threadId);
+    const startChars = before.messages.at(-1).text.length;
+    if (before.latestTurn.state !== "running")
+      throw new Error("The turn finished before the detach check.");
+    const drift = [];
+    const deadline = Date.now() + 2_500;
+    while (Date.now() < deadline) {
+      await sleep(300);
+      const top = await rowTop(driver, anchor.id);
+      if (top === null) throw new Error(`Anchor row ${anchor.id} left the viewport.`);
+      drift.push(Math.round((top - anchor.top) * 10) / 10);
+      if (!(await scrollToBottomOffered(driver)))
+        throw new Error("Scroll to bottom disappeared while detached.");
+    }
+    const after = await backend.thread(threadId);
+    const grewChars = after.messages.at(-1).text.length - startChars;
+    if (grewChars <= 0) throw new Error("No new output arrived during the detach check.");
+    const maxDrift = Math.max(...drift.map(Math.abs));
+    if (maxDrift > 2)
+      throw new Error(`The detached transcript moved ${maxDrift}px under new output.`);
+    return { anchor: anchor.id, detachAttempts, maxDriftPx: maxDrift, grewChars };
+  });
+
+  await step("jump back to the latest output", async () => {
+    await driver.tap({ label: "Scroll to bottom" });
+    await waitFor(async () => !(await scrollToBottomOffered(driver)), {
+      label: "Scroll to bottom to hide",
+    });
+    const settled = await waitForSettled(
+      backend,
+      threadId,
+      "the followed turn",
+      streamTurnBefore,
+      180_000,
+    );
+    const last = settled.messages.at(-1);
+    await waitFor(async () => (await renderedMessageIds(driver)).includes(last.id), {
+      label: "the final reply rendered",
+    });
+    await sleep(500);
+    if (await scrollToBottomOffered(driver))
+      throw new Error("The transcript detached again after Jump.");
+    const viewport = await transcriptViewport(driver);
+    const lastRow = (await messageRowRects(driver)).find((row) => row.id === last.id);
+    return {
+      lastRowBottom: lastRow ? Math.round(lastRow.bottom) : null,
+      viewportBottom: Math.round(viewport.bottom),
+    };
+  });
+
+  await step("tool activity does not snap a detached reader", async () => {
+    const marker = `${token}-tool`;
+    const previousTurnId = (await backend.thread(threadId)).latestTurn.turnId;
+    await composeAndSend(
+      driver,
+      `Use the shell to run \`sleep 5 && ls src\`, then reply with exactly one line: ${marker} ok`,
+    );
+    // Let the send's own scroll-to-end finish before the reader scrolls away.
+    await waitFor(
+      async () => {
+        const turn = (await backend.thread(threadId))?.latestTurn;
+        return turn?.turnId !== previousTurnId &&
+          turn?.state === "running" &&
+          Date.now() - Date.parse(turn.startedAt) > 1_500
+          ? turn
+          : null;
+      },
+      { label: "the tool turn to be under way", timeoutMs: 30_000 },
+    );
+    const viewport = await transcriptViewport(driver);
+    const detachAttempts = await detachTranscript(driver, viewport, -400);
+    const anchor = await pickAnchorRow(driver, viewport);
+    const detachedAt = await backend.thread(threadId);
+    const turnActivities = (thread) =>
+      (thread.activities ?? []).filter((activity) => activity.turnId === thread.latestTurn.turnId)
+        .length;
+    const activitiesAtDetach = turnActivities(detachedAt);
+    const drift = [];
+    for (;;) {
+      const current = await backend.thread(threadId);
+      const top = await rowTop(driver, anchor.id);
+      if (top === null)
+        throw new Error(`Anchor row ${anchor.id} left the viewport while detached.`);
+      drift.push(Math.round((top - anchor.top) * 10) / 10);
+      if (!(await scrollToBottomOffered(driver)))
+        throw new Error("Activity snapped the detached transcript to the end.");
+      if (current.latestTurn.state !== "running") break;
+      if (drift.length > 200) throw new Error("The tool turn did not finish.");
+      await sleep(300);
+    }
+    const settled = await waitForSettled(
+      backend,
+      threadId,
+      "the tool turn",
+      previousTurnId,
+      60_000,
+    );
+    if (userMessagesWith(settled, marker).length !== 1)
+      throw new Error(`"${marker}" was not sent exactly once.`);
+    const toolActivitiesWhileDetached = turnActivities(settled) - activitiesAtDetach;
+    if (toolActivitiesWhileDetached <= 0)
+      throw new Error("No tool activity arrived while detached.");
+    await sleep(800);
+    const maxDrift = Math.max(...drift.map(Math.abs));
+    if (maxDrift > 2)
+      throw new Error(`The detached transcript moved ${maxDrift}px under tool activity.`);
+    if (!(await scrollToBottomOffered(driver)))
+      throw new Error("The final reply snapped the detached transcript.");
+    return {
+      detachAttempts,
+      samples: drift.length,
+      maxDriftPx: maxDrift,
+      toolActivitiesWhileDetached,
+    };
+  });
+
+  await step("switch to another thread and back with the right content", async () => {
+    const secondary = await backend.thread(FIXTURE_SECONDARY_THREAD_ID);
+    const own = await backend.thread(threadId);
+    await driver.tap({ attribute: ["data-thread-id", FIXTURE_SECONDARY_THREAD_ID] });
+    await waitFor(
+      async () =>
+        (await activeThreadId(driver)) === FIXTURE_SECONDARY_THREAD_ID &&
+        (await renderedMessageIds(driver)).includes(secondary.messages.at(-1).id),
+      { label: "the secondary thread", timeoutMs: 20_000 },
+    );
+    await driver.tap({ attribute: ["data-thread-id", threadId] });
+    await waitFor(
+      async () =>
+        (await activeThreadId(driver)) === threadId &&
+        (await renderedMessageIds(driver)).includes(own.messages.at(-1).id),
+      { label: "the J2 thread again", timeoutMs: 20_000 },
+    );
+    const foreign = new Set(secondary.messages.map((message) => message.id));
+    const rendered = await renderedMessageIds(driver);
+    const leaked = rendered.filter((id) => foreign.has(id));
+    if (leaked.length > 0)
+      throw new Error(`Secondary-thread rows rendered in J2: ${leaked.join(", ")}`);
+    await sleep(500);
+    return { renderedRows: rendered.length, atEnd: !(await scrollToBottomOffered(driver)) };
+  });
+
+  return { threadId, token };
+}
+
+export const WORKFLOWS = Object.freeze({ J1: workflowJ1, J2: workflowJ2 });

@@ -1,0 +1,140 @@
+{
+  "workflow": "J2",
+  "runId": "2026-09-29T15-28-57-360Z-39778",
+  "startedAt": "2026-09-29T15:32:33.854Z",
+  "renderers": {
+    "electron": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "build a long transcript with a real turn",
+          "ok": true,
+          "ms": 21112,
+          "detail": {
+            "threadId": "e0beab1e-636e-4473-86b4-ee62649a5c82",
+            "replyChars": 3952
+          }
+        },
+        {
+          "name": "follow live output to the end of the transcript",
+          "ok": true,
+          "ms": 5059,
+          "detail": {
+            "samples": 9
+          }
+        },
+        {
+          "name": "scroll away while output streams; the reader keeps their place",
+          "ok": true,
+          "ms": 3496,
+          "detail": {
+            "anchor": "assistant:msg_04a9ea69fc382247016abbda1c55bc87d095e9ecce60bb2927",
+            "detachAttempts": 1,
+            "maxDriftPx": 0,
+            "grewChars": 1125
+          }
+        },
+        {
+          "name": "jump back to the latest output",
+          "ok": true,
+          "ms": 4991,
+          "detail": {
+            "lastRowBottom": 632,
+            "viewportBottom": 685
+          }
+        },
+        {
+          "name": "tool activity does not snap a detached reader",
+          "ok": true,
+          "ms": 10168,
+          "detail": {
+            "detachAttempts": 1,
+            "samples": 21,
+            "maxDriftPx": 0,
+            "toolActivitiesWhileDetached": 5
+          }
+        },
+        {
+          "name": "switch to another thread and back with the right content",
+          "ok": true,
+          "ms": 1377,
+          "detail": {
+            "renderedRows": 6,
+            "atEnd": true
+          }
+        }
+      ],
+      "result": {
+        "threadId": "e0beab1e-636e-4473-86b4-ee62649a5c82",
+        "token": "J2-electron-mumu4wxv"
+      }
+    },
+    "native": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "build a long transcript with a real turn",
+          "ok": true,
+          "ms": 19253,
+          "detail": {
+            "threadId": "lynx-landing-thread-1790696000248-633d9dcf3be8d8",
+            "replyChars": 3543
+          }
+        },
+        {
+          "name": "follow live output to the end of the transcript",
+          "ok": true,
+          "ms": 5170,
+          "detail": {
+            "samples": 8
+          }
+        },
+        {
+          "name": "scroll away while output streams; the reader keeps their place",
+          "ok": true,
+          "ms": 4000,
+          "detail": {
+            "anchor": "assistant:msg_09f707972ce8b736016abbda490f0087d0a386d164d3f886b7",
+            "detachAttempts": 1,
+            "maxDriftPx": 0,
+            "grewChars": 1095
+          }
+        },
+        {
+          "name": "jump back to the latest output",
+          "ok": true,
+          "ms": 4165,
+          "detail": {
+            "lastRowBottom": 612,
+            "viewportBottom": 685
+          }
+        },
+        {
+          "name": "tool activity does not snap a detached reader",
+          "ok": true,
+          "ms": 10485,
+          "detail": {
+            "detachAttempts": 1,
+            "samples": 11,
+            "maxDriftPx": 0,
+            "toolActivitiesWhileDetached": 5
+          }
+        },
+        {
+          "name": "switch to another thread and back with the right content",
+          "ok": true,
+          "ms": 1749,
+          "detail": {
+            "renderedRows": 6,
+            "atEnd": true
+          }
+        }
+      ],
+      "result": {
+        "threadId": "lynx-landing-thread-1790696000248-633d9dcf3be8d8",
+        "token": "J2-native-mumu5wmq"
+      }
+    }
+  },
+  "endedAt": "2026-09-29T15:34:04.937Z"
+}

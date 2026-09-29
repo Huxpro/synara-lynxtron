@@ -165,6 +165,16 @@ export async function openElectronDriver(cdpPort) {
       return box;
     },
     type: (text) => send("Input.insertText", { text }),
+    /** Mouse wheel at a point; negative deltaY scrolls content toward the top. */
+    async scroll(point, deltaY) {
+      await send("Input.dispatchMouseEvent", {
+        type: "mouseWheel",
+        x: point.x,
+        y: point.y,
+        deltaX: 0,
+        deltaY,
+      });
+    },
     async press(key) {
       const keys = {
         Enter: { code: "Enter", windowsVirtualKeyCode: 13 },
@@ -260,6 +270,30 @@ export async function openNativeDriver(devtoolPort) {
       return box;
     },
     type: (text) => send("Input.insertText", { text }),
+    /**
+     * Finger drag at a point (the input a touch/trackpad user gives a Lynx
+     * list); negative deltaY scrolls content toward the top.
+     */
+    async scroll(point, deltaY) {
+      const steps = 12;
+      const x = Math.round(point.x);
+      const startY = Math.round(point.y);
+      const emit = (type, y) =>
+        send("Input.emulateTouchFromMouseEvent", {
+          type,
+          x,
+          y,
+          timestamp: Date.now() / 1000,
+          button: "left",
+        });
+      await emit("mousePressed", startY);
+      for (let index = 1; index <= steps; index += 1) {
+        await emit("mouseMoved", Math.round(startY - (deltaY * index) / steps));
+        await sleep(16);
+      }
+      await sleep(120);
+      await emit("mouseReleased", Math.round(startY - deltaY));
+    },
     async press(key) {
       throw new Error(`Lynx DevTool cannot dispatch key "${key}"; drive the equivalent control.`);
     },
