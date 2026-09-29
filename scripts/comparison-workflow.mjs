@@ -145,6 +145,8 @@ export async function openElectronDriver(cdpPort) {
       const node = nodes.find((candidate) => {
         const r = candidate.getBoundingClientRect();
         const inViewport = r.right > 0 && r.bottom > 0 && r.left < innerWidth && r.top < innerHeight;
+        // Closed Base UI overlays stay mounted (data-closed, opacity 0) during and after exit.
+        if (candidate.closest("[data-closed]")) return false;
         return r.width > 0 && r.height > 0 && inViewport && (text === null || (candidate.innerText ?? "").includes(text));
       });
       if (!node) return null;

@@ -1246,9 +1246,182 @@ export async function workflowJ4(context) {
   return {};
 }
 
+async function automationNamed(backend, name) {
+  const list = await backend.request("automation.list", {});
+  return list.definitions.find((definition) => definition.name === name) ?? null;
+}
+
+/** Chooses a value in a detail-page select. */
+async function chooseDetailOption(driver, label, value, optionText) {
+  if (driver.kind === "electron") {
+    // Electron renders these as native <select> elements whose popup menu is
+    // outside the page, so CDP input cannot reach it; set the value and fire
+    // the change event the popup would.
+    const changed = await driver.evaluate(`(() => {
+      const select = Array.from(document.querySelectorAll("select")).find((candidate) =>
+        Array.from(candidate.options).some((option) => option.value === ${JSON.stringify(value)}),
+      );
+      if (!select) return false;
+      Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value").set.call(select, ${JSON.stringify(value)});
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+      return true;
+    })()`);
+    if (!changed) throw new Error(`No ${label} select offers ${value}.`);
+    return "select value (native popup not drivable)";
+  }
+  await driver.tap({ label });
+  await driver.tap({ text: optionText, within: ".LxMenuLayer" });
+  return "menu tap";
+}
+
+/**
+ * J5 — create an automation → open it → edit a field → pause/resume → back to
+ * the list and into the detail again, each change checked against the
+ * canonical automation store. Running it is out of scope (plan N3).
+ */
+export async function workflowJ5(context) {
+  const { driver, backend, step } = context;
+  const name = `J5 ${driver.kind} ${Date.now().toString(36)}`;
+  const prompt = `Summarize the latest changes (${name}).`;
+  const pauseButton = { label: "Pause" };
+  const resumeButton = { label: "Resume" };
+
+  try {
+    await step("create an automation", async () => {
+      if (await driver.find(pick(driver, SETTINGS_TARGETS.back))) {
+        await driver.tap(pick(driver, SETTINGS_TARGETS.back));
+      }
+      // Start from a thread: Electron's sidebar entry does not leave an open
+      // automation detail (it stays on the current automations route).
+      await driver.tap({ attribute: ["data-thread-id", FIXTURE_TRANSCRIPT_THREAD_ID] });
+      await driver.tap(
+        pick(driver, {
+          electron: { selector: "a, button", text: "Automations" },
+          native: { label: "Automations" },
+        }),
+      );
+      await driver.tap(
+        pick(driver, {
+          electron: { selector: "button", text: "New automation" },
+          native: { label: "New automation" },
+        }),
+      );
+      await driver.tap({ label: "Automation title" });
+      await driver.type(name);
+      await driver.tap({ label: "Automation prompt" });
+      await driver.type(prompt);
+      // The local-checkout fallback warning must be acknowledged before Create.
+      await driver.tap(
+        pick(driver, {
+          electron: { selector: '[role="dialog"] input[type="checkbox"]' },
+          native: { label: /^Auto fallback may use local checkout\./ },
+        }),
+      );
+      await driver.tap(
+        pick(driver, {
+          electron: { selector: '[role="dialog"] button', text: "Create" },
+          native: { text: "Create" },
+        }),
+      );
+      const created = await waitFor(() => automationNamed(backend, name), {
+        label: "the automation in the store",
+      });
+      await waitFor(async () => !(await driver.find({ label: "Automation title" })), {
+        label: "the create dialog to close",
+      });
+      await sleep(400);
+      if (created.prompt !== prompt || created.enabled !== true) {
+        throw new Error(
+          `Stored automation differs: ${JSON.stringify({ prompt: created.prompt, enabled: created.enabled })}`,
+        );
+      }
+      await waitFor(
+        () =>
+          driver.find(
+            pick(driver, {
+              electron: { selector: "button", text: name },
+              native: { label: new RegExp(`^${name}\\. `) },
+            }),
+          ),
+        { label: "the automation row" },
+      );
+      return {
+        id: created.id,
+        worktreeMode: created.worktreeMode,
+        acknowledgedRisks: created.acknowledgedRisks,
+      };
+    });
+
+    const row = () =>
+      pick(driver, {
+        electron: { selector: "button", text: name },
+        native: { label: new RegExp(`^${name}\\. `) },
+      });
+
+    await step("open it and edit where it runs", async () => {
+      await driver.tap(row());
+      await waitFor(() => driver.find(pauseButton), { label: "the automation detail" });
+      const via = await chooseDetailOption(driver, "Runs in", "worktree", "Worktree");
+      const edited = await waitFor(
+        async () => {
+          const definition = await automationNamed(backend, name);
+          return definition?.worktreeMode === "worktree" ? definition : null;
+        },
+        { label: "worktreeMode to be stored" },
+      );
+      return { worktreeMode: edited.worktreeMode, via };
+    });
+
+    await step("pause and resume it", async () => {
+      await driver.tap(pauseButton);
+      await waitFor(async () => (await automationNamed(backend, name))?.enabled === false, {
+        label: "the automation to be paused in the store",
+      });
+      await waitFor(() => driver.find(resumeButton), { label: "the Resume action" });
+      await driver.tap(resumeButton);
+      await waitFor(async () => (await automationNamed(backend, name))?.enabled === true, {
+        label: "the automation to be resumed in the store",
+      });
+      await waitFor(() => driver.find(pauseButton), { label: "the Pause action again" });
+      return { pausedThenResumed: true };
+    });
+
+    await step("return to the list and back into the same state", async () => {
+      await driver.tap(
+        pick(driver, {
+          electron: { selector: "button", text: "Automations" },
+          native: { label: "Back to automations" },
+        }),
+      );
+      await waitFor(() => driver.find(row()), { label: "the automation row" });
+      await driver.tap(row());
+      await waitFor(() => driver.find(pauseButton), { label: "the detail again" });
+      const definition = await automationNamed(backend, name);
+      if (definition.worktreeMode !== "worktree" || definition.enabled !== true) {
+        throw new Error(`State drifted: ${JSON.stringify(definition)}`);
+      }
+      const shownWorktree =
+        driver.kind === "electron"
+          ? await driver.evaluate(
+              `Array.from(document.querySelectorAll("select")).some((select) => select.value === "worktree")`,
+            )
+          : Boolean(await driver.find({ text: "Worktree" }));
+      if (!shownWorktree) throw new Error("The detail does not show the stored Worktree mode.");
+      return { worktreeMode: definition.worktreeMode, enabled: definition.enabled };
+    });
+  } finally {
+    const leftover = await automationNamed(backend, name).catch(() => null);
+    if (leftover)
+      await backend.request("automation.delete", { id: leftover.id }).catch(() => undefined);
+  }
+
+  return { name };
+}
+
 export const WORKFLOWS = Object.freeze({
   J1: workflowJ1,
   J2: workflowJ2,
   J3: workflowJ3,
   J4: workflowJ4,
+  J5: workflowJ5,
 });
