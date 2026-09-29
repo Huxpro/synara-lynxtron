@@ -1,0 +1,134 @@
+{
+  "workflow": "J6",
+  "runId": "2026-09-29T21-16-56-031Z-16503",
+  "startedAt": "2026-09-29T21:18:18.224Z",
+  "renderers": {
+    "electron": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "show the populated board as the store and the other client do",
+          "ok": true,
+          "ms": 145,
+          "detail": {
+            "cards": [
+              {
+                "title": "Fixture secondary",
+                "status": "Done"
+              },
+              {
+                "title": "Fixture transcript",
+                "status": "Done"
+              }
+            ],
+            "peerMatches": true
+          }
+        },
+        {
+          "name": "create a task that runs a real turn; both clients show it",
+          "ok": true,
+          "ms": 8743,
+          "detail": {
+            "threadId": "a56f1408-2a64-49e2-b007-4909c4c7f764",
+            "title": "Reply with exactly one line J6-electron-mun6hjee",
+            "electronDoneMs": 168,
+            "nativeDoneMs": 172
+          }
+        },
+        {
+          "name": "open the task and return to the board",
+          "ok": true,
+          "ms": 1309,
+          "detail": {
+            "opened": "a56f1408-2a64-49e2-b007-4909c4c7f764"
+          }
+        },
+        {
+          "name": "keep the board across a reconnect",
+          "ok": true,
+          "ms": 2703,
+          "detail": {
+            "cards": 3,
+            "routeRestored": true
+          }
+        },
+        {
+          "name": "pull requests: same empty state (named blocked cell)",
+          "ok": true,
+          "ms": 674,
+          "detail": {
+            "blocked": "The fixture workspace has no GitHub remote, so the PR service has nothing to list; populated PR cells need a real repository.",
+            "emptyStateShown": true
+          }
+        }
+      ],
+      "result": {
+        "token": "J6-electron-mun6hjee"
+      }
+    },
+    "native": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "show the populated board as the store and the other client do",
+          "ok": true,
+          "ms": 507,
+          "detail": {
+            "cards": [
+              {
+                "title": "Fixture secondary",
+                "status": "Done"
+              },
+              {
+                "title": "Fixture transcript",
+                "status": "Done"
+              }
+            ],
+            "peerMatches": true
+          }
+        },
+        {
+          "name": "create a task that runs a real turn; both clients show it",
+          "ok": true,
+          "ms": 11509,
+          "detail": {
+            "threadId": "lynx-kanban-task-thread-1790716712357-d19ec20207dae",
+            "title": "Reply with exactly one line J6-native-mun6htvp",
+            "nativeDoneMs": 547,
+            "electronDoneMs": 512
+          }
+        },
+        {
+          "name": "open the task and return to the board",
+          "ok": true,
+          "ms": 663,
+          "detail": {
+            "opened": "lynx-kanban-task-thread-1790716712357-d19ec20207dae"
+          }
+        },
+        {
+          "name": "keep the board across a reconnect",
+          "ok": true,
+          "ms": 5996,
+          "detail": {
+            "cards": 3,
+            "routeRestored": false
+          }
+        },
+        {
+          "name": "pull requests: same empty state (named blocked cell)",
+          "ok": true,
+          "ms": 222,
+          "detail": {
+            "blocked": "The fixture workspace has no GitHub remote, so the PR service has nothing to list; populated PR cells need a real repository.",
+            "emptyStateShown": true
+          }
+        }
+      ],
+      "result": {
+        "token": "J6-native-mun6htvp"
+      }
+    }
+  },
+  "endedAt": "2026-09-29T21:18:50.713Z"
+}

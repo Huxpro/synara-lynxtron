@@ -94,11 +94,12 @@ same workflow.
 
 - **J1/J2 on the final bundle.** At 17:52 every provider turn ended with "The
   provider accepted this turn but produced no runtime events", in both
-  renderers. The app-server opened threads normally, and `codex exec` with the
-  same model answered, so the stall is on the provider path, not in the app.
-  J1 and J2 passed on earlier bundles the same day. The Native changes since
-  then are covered by J3–J6 on the final bundle. Re-run J1 and J2 on the final
-  bundle once turns complete again.
+  renderers. _Corrected in N4:_ this was first recorded as an external
+  provider stall, but the message comes from a 15-second first-event
+  watchdog in uncommitted working-tree changes to `ProviderCommandReactor.ts`,
+  which the harness runs. The cause of the silence (provider or that change)
+  was not isolated. J1 and J2 passed on earlier bundles the same day; see
+  [n4-matrix-2026-09-29.md](n4-matrix-2026-09-29.md) for the final-build runs.
 - **Populated pull requests.** Named blocked cell: the fixture workspace has no
   GitHub remote. Both renderers show the same empty state.
 - **Process restart.** "Restart" is verified as a renderer reload. A LynxView

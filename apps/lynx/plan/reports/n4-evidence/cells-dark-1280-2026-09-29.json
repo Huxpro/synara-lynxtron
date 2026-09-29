@@ -1,5 +1,5 @@
 {
-  "runId": "2026-09-29T20-26-35-496Z-67340",
+  "runId": "2026-09-29T21-35-21-825Z-58877",
   "theme": "dark",
   "window": {
     "width": 1280,
@@ -11,110 +11,9 @@
       "surface": "landing",
       "comparison": {
         "compared": 29,
-        "matched": 25,
+        "matched": 29,
         "exempt": [],
-        "outside": [
-          {
-            "label": "Hand off thread",
-            "electron": {
-              "x": 967.1015625,
-              "y": 9,
-              "width": 82.484375,
-              "height": 28,
-              "gutter": 0
-            },
-            "native": {
-              "x": 1002,
-              "y": 9,
-              "width": 82,
-              "height": 28
-            },
-            "delta": {
-              "x": 34.9,
-              "y": 0,
-              "width": -0.5,
-              "height": 0
-            },
-            "worst": 34.9,
-            "match": false,
-            "exemption": null
-          },
-          {
-            "label": "Add action",
-            "electron": {
-              "x": 1057.5859375,
-              "y": 9,
-              "width": 96.3125,
-              "height": 28,
-              "gutter": 0
-            },
-            "native": {
-              "x": 1092,
-              "y": 9,
-              "width": 96,
-              "height": 28
-            },
-            "delta": {
-              "x": 34.4,
-              "y": 0,
-              "width": -0.3,
-              "height": 0
-            },
-            "worst": 34.4,
-            "match": false,
-            "exemption": null
-          },
-          {
-            "label": "Toggle environment panel",
-            "electron": {
-              "x": 1161.8984375,
-              "y": 9,
-              "width": 28,
-              "height": 28,
-              "gutter": 0
-            },
-            "native": {
-              "x": 1196,
-              "y": 9,
-              "width": 28,
-              "height": 28
-            },
-            "delta": {
-              "x": 34.1,
-              "y": 0,
-              "width": 0,
-              "height": 0
-            },
-            "worst": 34.1,
-            "match": false,
-            "exemption": null
-          },
-          {
-            "label": "Toggle diff panel",
-            "electron": {
-              "x": 1197.8984375,
-              "y": 9,
-              "width": 62.1015625,
-              "height": 28,
-              "gutter": 0
-            },
-            "native": {
-              "x": 1232,
-              "y": 9,
-              "width": 28,
-              "height": 28
-            },
-            "delta": {
-              "x": 34.1,
-              "y": 0,
-              "width": -34.1,
-              "height": 0
-            },
-            "worst": 34.1,
-            "match": false,
-            "exemption": null
-          }
-        ],
+        "outside": [],
         "electronOnly": ["Toggle Sidebar"],
         "missing": [],
         "nativeOnly": [
@@ -124,11 +23,12 @@
           "Fixture transcript",
           "Local",
           "Message composer",
+          "Resize panel",
           "Settings"
         ],
         "repeated": 3
       },
-      "pass": false,
+      "pass": true,
       "electronErrors": []
     },
     "thread": {
@@ -370,6 +270,35 @@
     }
   },
   "increments": {
+    "landing-diff-dock": {
+      "increment": "landing-diff-dock",
+      "workflow": "J3",
+      "base": "landing",
+      "comparison": {
+        "compared": 39,
+        "matched": 39,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": ["Git actions"],
+        "missing": [],
+        "nativeOnly": [
+          "Change model and reasoning",
+          "Collapse README.md",
+          "Collapse src/math.ts",
+          "Collapse synara-fixture-app",
+          "Diff",
+          "Fixture secondary",
+          "Fixture transcript",
+          "Local",
+          "Message composer",
+          "Resize panel",
+          "Settings"
+        ],
+        "repeated": 5
+      },
+      "probes": [],
+      "pass": true
+    },
     "model-menu": {
       "increment": "model-menu",
       "workflow": "J1",
@@ -678,34 +607,13 @@
       "workflow": "J6",
       "base": "kanban",
       "comparison": {
-        "compared": 0,
-        "matched": 0,
+        "compared": 6,
+        "matched": 6,
         "exempt": [],
         "outside": [],
-        "electronOnly": [
-          "Attach images",
-          "Change effort, context, and speed",
-          "Choose the project for this task",
-          "Close",
-          "Record voice note",
-          "Task options"
-        ],
-        "missing": [
-          "Attach images",
-          "Change effort, context, and speed",
-          "Choose the project for this task",
-          "Close",
-          "Record voice note",
-          "Task options"
-        ],
-        "nativeOnly": [
-          "Close dialog",
-          "Create task in Home",
-          "Create task in synara-fixture-app",
-          "Send as draft",
-          "Synara",
-          "Task prompt"
-        ],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": ["Change model and reasoning", "Send as draft", "Task prompt"],
         "repeated": 0
       },
       "probes": [
@@ -718,23 +626,23 @@
             "height": 255
           },
           "native": {
-            "x": 360,
-            "y": 238,
-            "width": 560,
-            "height": 344
+            "x": 256,
+            "y": 283,
+            "width": 768,
+            "height": 255
           },
           "delta": {
-            "x": 104,
-            "y": -44.5,
-            "width": -208,
-            "height": 89
+            "x": 0,
+            "y": 0.5,
+            "width": 0,
+            "height": 0
           },
-          "worst": 208,
-          "match": false
+          "worst": 0.5,
+          "match": true
         }
       ],
-      "pass": false
+      "pass": true
     }
   },
-  "nativeConsoleErrors": null
+  "nativeConsoleErrors": "unavailable: get-console returned no parsable output"
 }

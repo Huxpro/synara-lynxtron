@@ -1,0 +1,25 @@
+{
+  "workflow": "J1",
+  "runId": "2026-09-29T21-16-56-031Z-16503",
+  "startedAt": "2026-09-29T21:21:58.068Z",
+  "renderers": {
+    "native": {
+      "ok": false,
+      "steps": [
+        {
+          "name": "open a new thread in the fixture project",
+          "ok": true,
+          "ms": 250
+        },
+        {
+          "name": "send and complete a real provider turn",
+          "ok": false,
+          "ms": 17325,
+          "error": "Turn ended error: The provider accepted this turn but produced no runtime events. The session was stopped so you can retry safely."
+        }
+      ],
+      "error": "Turn ended error: The provider accepted this turn but produced no runtime events. The session was stopped so you can retry safely."
+    }
+  },
+  "endedAt": "2026-09-29T21:22:15.681Z"
+}

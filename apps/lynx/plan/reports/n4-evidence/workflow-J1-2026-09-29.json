@@ -1,0 +1,97 @@
+{
+  "workflow": "J1",
+  "runId": "2026-09-29T21-16-56-031Z-16503",
+  "startedAt": "2026-09-29T21:19:01.628Z",
+  "renderers": {
+    "electron": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "open a new thread in the fixture project",
+          "ok": true,
+          "ms": 1314
+        },
+        {
+          "name": "send and complete a real provider turn",
+          "ok": true,
+          "ms": 15691,
+          "detail": {
+            "threadId": "b64e01e7-ea11-4102-a7fe-ee09ce62cc0e",
+            "turnId": "01a0ef09-516a-7450-955c-3041bc5a2b65",
+            "assistantMessageId": "assistant:msg_0b73ae81702a926b016abc2b54fca487d08dd06ee2ceff8132"
+          }
+        },
+        {
+          "name": "open and close the thread model picker",
+          "ok": true,
+          "ms": 278,
+          "detail": {
+            "menu": {
+              "width": 208,
+              "height": 203
+            }
+          }
+        },
+        {
+          "name": "mention a workspace file from the @ menu and send it",
+          "ok": true,
+          "ms": 14123,
+          "detail": {
+            "option": {
+              "width": 716,
+              "height": 28
+            },
+            "sentText": "@src/math.ts Reply with exactly one line: J1-electron-mun6igw1-mention ok"
+          }
+        },
+        {
+          "name": "stop a streaming turn, then resend",
+          "ok": true,
+          "ms": 7084,
+          "detail": {
+            "streamedCharsBeforeStop": 80,
+            "stoppedReplyChars": 141,
+            "settledAfterStopMs": 161,
+            "stoppedTurnId": "01a0ef09-86c0-7c21-8570-b21ae116540b",
+            "resentTurnId": "01a0ef09-934d-71f2-a0ba-0bf0973a4105"
+          }
+        },
+        {
+          "name": "reload the renderer, reopen the thread, and continue it",
+          "ok": true,
+          "ms": 6904,
+          "detail": {
+            "routeRestored": true,
+            "landedOn": "b64e01e7-ea11-4102-a7fe-ee09ce62cc0e",
+            "recoveredMs": 3982,
+            "messagesBefore": 8,
+            "messagesAfter": 10,
+            "userMessages": 5
+          }
+        }
+      ],
+      "result": {
+        "threadId": "b64e01e7-ea11-4102-a7fe-ee09ce62cc0e",
+        "token": "J1-electron-mun6igw1"
+      }
+    },
+    "native": {
+      "ok": false,
+      "steps": [
+        {
+          "name": "open a new thread in the fixture project",
+          "ok": true,
+          "ms": 442
+        },
+        {
+          "name": "send and complete a real provider turn",
+          "ok": false,
+          "ms": 18154,
+          "error": "Turn ended error: The provider accepted this turn but produced no runtime events. The session was stopped so you can retry safely."
+        }
+      ],
+      "error": "Turn ended error: The provider accepted this turn but produced no runtime events. The session was stopped so you can retry safely."
+    }
+  },
+  "endedAt": "2026-09-29T21:20:05.680Z"
+}
