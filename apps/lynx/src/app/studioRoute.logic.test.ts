@@ -1,24 +1,23 @@
 import { describe, expect, it } from "@rstest/core";
 
 import type { ProjectSummary, ThreadSummary } from "./queries";
+import { makeProjectSummary, makeThreadSummary } from "./queriesTestFixtures";
 import { resolveStudioRestoreRoute } from "./studioRoute.logic";
 
-const projects = [
-  {
+const projects: readonly ProjectSummary[] = [
+  makeProjectSummary({
     id: "project-chat",
     kind: "chat",
     title: "Home",
     workspaceRoot: "/home",
-    defaultModelSelection: null,
-  },
-  {
+  }),
+  makeProjectSummary({
     id: "project-studio",
     kind: "studio",
     title: "Studio",
     workspaceRoot: "/studio",
-    defaultModelSelection: null,
-  },
-] satisfies readonly ProjectSummary[];
+  }),
+];
 
 function thread(input: {
   readonly id: string;
@@ -26,7 +25,7 @@ function thread(input: {
   readonly archivedAt?: string | null;
   readonly updatedAt: string;
 }): ThreadSummary {
-  return {
+  return makeThreadSummary({
     id: input.id,
     title: input.id,
     projectId: input.projectId,
@@ -35,7 +34,7 @@ function thread(input: {
     updatedAt: input.updatedAt,
     archivedAt: input.archivedAt ?? null,
     live: false,
-  };
+  });
 }
 
 describe("resolveStudioRestoreRoute", () => {

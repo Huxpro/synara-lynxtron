@@ -1,9 +1,16 @@
 import { shouldShowWorkspaceExplorerEntry } from "@synara/shared/workspaceExplorer";
 
-export function visibleExplorerEntries<T extends { readonly kind: string; readonly name: string }>(
-  entries: readonly T[],
-): readonly T[] {
-  return entries.filter(shouldShowWorkspaceExplorerEntry);
+// Search results (ProjectEntry) carry no `name`; derive it from the path so hidden-directory
+// filtering never reads an undefined name.
+export function visibleExplorerEntries<
+  T extends { readonly kind: string; readonly path: string; readonly name?: string },
+>(entries: readonly T[]): readonly T[] {
+  return entries.filter((entry) =>
+    shouldShowWorkspaceExplorerEntry({
+      kind: entry.kind,
+      name: entry.name ?? entry.path.replace(/\\/g, "/").split("/").pop() ?? entry.path,
+    }),
+  );
 }
 
 export function toggleExpandedDirectory(

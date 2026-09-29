@@ -10,7 +10,7 @@ import type {
   RuntimeMode,
   ProviderKind,
 } from "@synara/contracts";
-import { getDefaultModel } from "@synara/shared/model";
+import { defaultModelSelectionForProvider } from "./defaultModelSelection.logic";
 
 export type CreateWorktreeMode = AutomationWorktreeMode;
 
@@ -18,12 +18,7 @@ export function resolveAutomationModelSelection(input: {
   readonly projectModelSelection: ModelSelection | null | undefined;
   readonly defaultProvider: ProviderKind;
 }): ModelSelection {
-  return (
-    input.projectModelSelection ?? {
-      provider: input.defaultProvider,
-      model: getDefaultModel(input.defaultProvider),
-    }
-  );
+  return input.projectModelSelection ?? defaultModelSelectionForProvider(input.defaultProvider);
 }
 
 export function resolveAutomationModelSelectionForProjectChange(input: {

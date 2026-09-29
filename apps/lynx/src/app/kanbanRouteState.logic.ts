@@ -18,7 +18,7 @@ export function resolveKanbanOverviewRouteState(input: {
   readonly hasSnapshot: boolean;
   readonly isPending: boolean;
   readonly error: unknown;
-}): KanbanRouteState {
+}): Exclude<KanbanRouteState, { readonly kind: "not-found" }> {
   if (input.hasSnapshot) {
     return {
       kind: "ready",

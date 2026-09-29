@@ -1,6 +1,24 @@
-import type { OrchestrationShellSnapshot } from "@synara/contracts";
+import type {
+  ModelSelection,
+  OrchestrationSession,
+  OrchestrationShellSnapshot,
+  ProviderKind,
+} from "@synara/contracts";
+import { isProviderKind } from "@synara-web/providerOrdering";
 
 import type { ThreadSummary } from "./queries";
+
+// Orchestration snapshots carry the running provider as `session.providerName`
+// (the web store's normalized `session.provider` does not exist on them).
+export function resolveSnapshotThreadProvider(thread: {
+  readonly session: Pick<OrchestrationSession, "providerName"> | null;
+  readonly modelSelection: Pick<ModelSelection, "provider">;
+}): ProviderKind {
+  const providerName = thread.session?.providerName;
+  return providerName && isProviderKind(providerName)
+    ? providerName
+    : thread.modelSelection.provider;
+}
 
 export function projectActiveThreadSummaries(
   snapshot: OrchestrationShellSnapshot,
@@ -18,8 +36,8 @@ export function projectActiveThreadSummaries(
       updatedAt: thread.updatedAt,
       archivedAt: thread.archivedAt,
       latestUserMessageAt: thread.latestUserMessageAt ?? null,
-      live: thread.session?.status === "running" || thread.session?.status === "connecting",
-      provider: thread.session?.provider ?? thread.modelSelection.provider,
+      live: thread.session?.status === "running" || thread.session?.status === "starting",
+      provider: resolveSnapshotThreadProvider(thread),
       isPinned: thread.isPinned,
       sessionStatus: thread.session?.status ?? null,
       hasPendingApprovals: thread.hasPendingApprovals,

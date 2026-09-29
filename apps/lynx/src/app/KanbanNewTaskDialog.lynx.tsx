@@ -1,4 +1,3 @@
-import { getDefaultModel } from "@synara/shared/model";
 import type {
   ClientOrchestrationCommand,
   ModelSelection,
@@ -77,6 +76,7 @@ import {
   buildNativeKanbanTaskCreateCommand,
   createNativeKanbanTaskId,
 } from "./kanbanTaskCreation.logic";
+import { defaultModelSelectionForProvider } from "./defaultModelSelection.logic";
 
 import "./kanban-new-task-dialog.css";
 
@@ -318,10 +318,8 @@ export function KanbanNewTaskDialog(props: {
   const currentProject = props.projects.find((project) => project.id === projectId) ?? null;
   const [modelSelectionOverride, setModelSelectionOverride] = useState<ModelSelection | null>(null);
   // Web useKanbanTaskScratchDraft: the default provider's model, not the project default.
-  const modelSelection: ModelSelection = modelSelectionOverride ?? {
-    provider: generalSettings.defaultProvider,
-    model: getDefaultModel(generalSettings.defaultProvider),
-  };
+  const modelSelection: ModelSelection =
+    modelSelectionOverride ?? defaultModelSelectionForProvider(generalSettings.defaultProvider);
   const [modelCatalogProvider, setModelCatalogProvider] = useState<ProviderKind>(
     modelSelection.provider,
   );

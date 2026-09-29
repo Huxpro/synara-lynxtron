@@ -2,6 +2,7 @@ import { describe, expect, it } from "@rstest/core";
 import { SpaceId } from "@synara/contracts";
 
 import type { ThreadSummary } from "./queries";
+import { makeThreadSummary } from "./queriesTestFixtures";
 import {
   groupEditorProjectSwitchOptions,
   resolveEditorProjectSwitchListHeight,
@@ -15,7 +16,7 @@ function thread(
   updatedAt: string,
   archivedAt: string | null = null,
 ): ThreadSummary {
-  return {
+  return makeThreadSummary({
     id,
     title: id,
     projectId,
@@ -24,7 +25,7 @@ function thread(
     updatedAt,
     archivedAt,
     live: false,
-  };
+  });
 }
 
 describe("Editor project switch options", () => {
@@ -49,7 +50,7 @@ describe("Editor project switch options", () => {
           { id: "project-b", kind: "project", title: "Project B" },
           { id: "studio", kind: "studio", title: "Studio" },
         ],
-        sortOrder: "updated",
+        sortOrder: "updated_at",
         threads: [
           thread("a-old", "project-a", "2026-01-01T00:00:00.000Z"),
           thread("a-new", "project-a", "2026-01-02T00:00:00.000Z"),

@@ -130,6 +130,7 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
         taskCount={board.totalCount}
         navigationAvailable={false}
         backAvailable={false}
+        onBack={() => {}}
         newTaskDisabled={projects.length === 0}
         newTaskShortcutParts={[]}
         onNewTask={() => {

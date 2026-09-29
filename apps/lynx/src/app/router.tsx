@@ -25,8 +25,11 @@ import type {
   GitReadWorkingTreeDiffResult,
   ProviderApprovalDecision,
   ProviderKind,
+  ProviderUserInputAnswers,
   ServerProviderStatus,
+  TurnId,
 } from "@synara/contracts";
+import { COMPONENT_LAB_STORIES } from "@synara/shared/componentLab";
 import { MAC_DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_PX } from "@synara/shared/desktopChrome";
 import {
   RIGHT_DOCK_MIN_WIDTH_PX,
@@ -395,10 +398,17 @@ function useProviderHealthBanner(
 
 // --- pages ----------------------------------------------------------------------
 function ThreadsLandingHeader(props: {
-  readonly environmentOpen: boolean;
-  readonly environmentAvailable: boolean;
-  readonly onEnvironmentOpenChange: (open: boolean) => void;
-  readonly project: ProjectSummary | null;
+  // Omitted when the page has no environment to toggle (e.g. Studio bootstrapping).
+  readonly environment?: {
+    readonly open: boolean;
+    readonly onOpenChange: (open: boolean) => void;
+  };
+  // Landing projects come from the shell snapshot, where `kind` is optional.
+  readonly project:
+    | (Pick<ProjectSummary, "id" | "workspaceRoot" | "defaultModelSelection" | "scripts"> & {
+        readonly kind?: ProjectSummary["kind"];
+      })
+    | null;
   readonly title?: "New Chat" | "New thread";
   readonly diffToggle?: ReactNode;
   readonly compact?: boolean;
@@ -427,10 +437,10 @@ function ThreadsLandingHeader(props: {
           onNavigateToThread={() => {}}
           onOpenTerminal={() => {}}
         />
-        {props.environmentAvailable ? (
+        {props.environment ? (
           <EnvironmentToggle
-            open={props.environmentOpen}
-            onChange={props.onEnvironmentOpenChange}
+            open={props.environment.open}
+            onChange={props.environment.onOpenChange}
           />
         ) : null}
         {props.diffToggle ?? (
@@ -549,9 +559,11 @@ function ThreadsLandingPage(props: {
         }
       >
         <ThreadsLandingHeader
-          environmentOpen={environmentOpen}
-          environmentAvailable={environmentProject !== null}
-          onEnvironmentOpenChange={setEnvironmentOpen}
+          environment={
+            environmentProject !== null
+              ? { open: environmentOpen, onOpenChange: setEnvironmentOpen }
+              : undefined
+          }
           project={selectedProject}
           title={routePresentation.headerTitle}
           // Same rule as the thread page header (compactThreadHeader).
@@ -644,9 +656,6 @@ function ThreadsLandingPage(props: {
         explorerOpen={explorerOpen}
         explorerPresentationMode={explorerPresentationMode}
         initialDiffFileTreeOpen={diffFileTreeOpen}
-        initialDiffFilePath={null}
-        initialDiffOpen={false}
-        initialDiffTurnId={null}
         initialExplorerActionMenuOpen={false}
         initialExplorerCommentLine={null}
         initialExplorerWidth={null}
@@ -732,7 +741,7 @@ interface ThreadPageProps {
   readonly explorerSelectedPath: string | null;
   readonly initialEnvironmentOpen: boolean;
   readonly initialDiffOpen: boolean;
-  readonly initialDiffTurnId: string | null;
+  readonly initialDiffTurnId: TurnId | null;
   readonly initialDiffFilePath: string | null;
   readonly initialDiffFileTreeOpen: boolean;
   readonly initialEditorOpen: boolean;
@@ -800,9 +809,6 @@ function ThreadRightDocks(
     | "explorerPdfMetadataPending"
     | "explorerQuery"
     | "explorerSelectedPath"
-    | "initialDiffOpen"
-    | "initialDiffTurnId"
-    | "initialDiffFilePath"
     | "initialExplorerWidth"
     | "initialExplorerCommentLine"
     | "initialExplorerActionMenuOpen"
@@ -1485,7 +1491,7 @@ function ThreadPage(props: ThreadPageProps) {
             }),
         });
       } catch (cause) {
-        setSidechatCreateError(
+        setLocalThreadError(
           cause instanceof Error ? cause.message : "Could not open path in Terminal.",
         );
       }
@@ -1710,7 +1716,7 @@ function ThreadPage(props: ThreadPageProps) {
     try {
       await dispatchSynaraCommand({
         type: "thread.approval.respond",
-        commandId: `lynx-approval-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        commandId: newCommandId(),
         threadId: threadId as never,
         requestId: activePendingApproval.requestId,
         ...(lifecycleGeneration ? { lifecycleGeneration } : {}),
@@ -1725,7 +1731,7 @@ function ThreadPage(props: ThreadPageProps) {
     }
   };
   const respondToUserInput = async (
-    answers: Record<string, string | string[] | null>,
+    answers: ProviderUserInputAnswers,
     lifecycleGeneration?: string,
   ) => {
     "background only";
@@ -1734,7 +1740,7 @@ function ThreadPage(props: ThreadPageProps) {
     try {
       await dispatchSynaraCommand({
         type: "thread.user-input.respond",
-        commandId: `lynx-user-input-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        commandId: newCommandId(),
         threadId: threadId as never,
         requestId: activePendingUserInput.requestId,
         ...(lifecycleGeneration ? { lifecycleGeneration } : {}),
@@ -1823,7 +1829,7 @@ function ThreadPage(props: ThreadPageProps) {
     try {
       await dispatchSynaraCommand({
         type: "thread.meta.update",
-        commandId: `lynx-thread-rename-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        commandId: newCommandId(),
         threadId: threadId as never,
         title,
       });
@@ -2685,7 +2691,7 @@ export function SliceRouter({
 }: {
   readonly appearance: SettingsAppearanceValues;
   readonly initialDiffOpen: boolean;
-  readonly initialDiffTurnId: string | null;
+  readonly initialDiffTurnId: TurnId | null;
   readonly initialDiffFilePath: string | null;
   readonly initialEditorOpen: boolean;
   readonly initialEditorCenterMode: "file" | "diff" | null;
@@ -2876,7 +2882,17 @@ export function SliceRouter({
       buildRecentViewDisplayEntries({
         recentViews,
         currentView: currentRecentView,
-        threadsById: Object.fromEntries((routeThreads ?? []).map((thread) => [thread.id, thread])),
+        // ThreadSummary ids are unbranded strings; the snapshot values are real ids.
+        threadsById: Object.fromEntries(
+          (routeThreads ?? []).map((thread) => [
+            thread.id,
+            {
+              ...thread,
+              id: thread.id as import("@synara/contracts").ThreadId,
+              projectId: thread.projectId as import("@synara/contracts").ProjectId,
+            },
+          ]),
+        ),
         projects: routeProjects,
         pinnedThreadIds: (routeThreads ?? [])
           .filter((thread) => thread.isPinned)

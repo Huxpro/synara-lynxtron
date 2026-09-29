@@ -5,6 +5,7 @@ import { readFileSync } from "node:fs";
 import { EmptyThreadContextTray } from "./EmptyThreadContextTray.lynx";
 
 const defaultProps = {
+  branch: null,
   envMode: "local" as const,
   onTemporaryChange: rs.fn(),
   projectName: "Environment Current",
@@ -13,7 +14,7 @@ const defaultProps = {
 
 describe("empty Thread context tray", () => {
   it("does not invent a branch when the server snapshot has none", () => {
-    render(<EmptyThreadContextTray {...defaultProps} branch={null} />);
+    render(<EmptyThreadContextTray {...defaultProps} />);
 
     const statuses = elementTree.root?.querySelectorAll(".EmptyThreadContextStatus");
     expect(statuses).toHaveLength(1);

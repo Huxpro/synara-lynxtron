@@ -7,7 +7,6 @@ import type {
 } from "@synara/contracts";
 import { PROVIDER_DISPLAY_NAMES } from "@synara/contracts";
 import type { ThreadHeaderActionState } from "@synara/shared/threadHeaderActions";
-import { resolveSemanticIconTone } from "@synara/shared/semanticIconTone";
 import {
   addProjectAction,
   deleteProjectAction,
@@ -79,7 +78,7 @@ export function ThreadHeaderActions(props: {
   readonly thread: ThreadHeaderSummary | undefined;
   readonly compact: boolean;
 }) {
-  const { svgColors } = useTheme();
+  const { semanticIconColor } = useTheme();
   const [actionDialogOpen, setActionDialogOpen] = useState(false);
   const [editingScript, setEditingScript] = useState<ProjectScript | null>(null);
   const [editingKeybinding, setEditingKeybinding] = useState<string | null>(null);
@@ -256,7 +255,7 @@ export function ThreadHeaderActions(props: {
           >
             <svg
               className="ThreadHeaderTextActionIcon"
-              content={colorizeLynxSvg(handoffSvg, resolveSemanticIconTone("primary", svgColors))}
+              content={colorizeLynxSvg(handoffSvg, semanticIconColor("primary"))}
             />
             {!props.compact ? <text className="ThreadHeaderTextActionLabel">Hand off</text> : null}
           </MenuTrigger>

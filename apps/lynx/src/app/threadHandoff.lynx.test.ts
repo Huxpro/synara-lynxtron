@@ -1,33 +1,60 @@
 import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
+import { MessageId } from "@synara/contracts";
 
 import {
   buildNativeThreadHandoffCreateCommand,
   resolveNativeThreadHandoffTargets,
 } from "./threadHandoff.lynx";
+import type { ThreadHeaderSummary } from "./queries";
 
-const eligibleThread = {
+const eligibleThread: ThreadHeaderSummary = {
   id: "thread-1",
   title: "Source thread",
   projectId: "project-1",
-  modelSelection: { provider: "codex", model: "gpt-5.6-sol" },
-  sessionStatus: "idle",
-  latestTurnState: "completed",
-  pendingApprovals: [],
-  pendingUserInputs: [],
+  project: "Project",
+  branch: null,
+  envMode: "local",
   handoff: null,
   messages: [
     {
-      id: "message-1",
+      id: MessageId.makeUnsafe("message-1"),
       role: "user",
       text: "hello",
       source: "native",
+      turnId: null,
       streaming: false,
       createdAt: "2026-08-30T00:00:00.000Z",
+      updatedAt: "2026-08-30T00:00:00.000Z",
     },
   ],
   activities: [],
-} as never;
+  worktreePath: null,
+  associatedWorktreePath: null,
+  associatedWorktreeBranch: null,
+  associatedWorktreeRef: null,
+  createBranchFlowCompleted: false,
+  modelSelection: { provider: "codex", model: "gpt-5.6-sol" },
+  runtimeMode: "full-access",
+  interactionMode: "default",
+  sessionStatus: "idle",
+  error: null,
+  errorRevision: null,
+  activeTurnId: null,
+  sidechatSourceThreadId: null,
+  latestTurnState: "completed",
+  workspaceRoot: null,
+  notes: "",
+  pinnedMessages: [],
+  pinnedMessageTextById: {},
+  pinnedRevision: "",
+  threadMarkers: [],
+  markerRevision: "",
+  lastKnownPr: null,
+  pendingApprovals: [],
+  pendingUserInputs: [],
+  checkpoints: [],
+};
 
 describe("Native thread handoff service", () => {
   it("uses the same eligibility and target-provider policy as the header and sidebar", () => {

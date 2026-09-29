@@ -110,7 +110,7 @@ export function AutomationCreateDialog({
   const [modelCatalogProvider, setModelCatalogProvider] = useState<ProviderKind>(
     modelSelection.provider,
   );
-  const [mode, setMode] = useState<AutomationCreateInput["mode"]>("standalone");
+  const [mode, setMode] = useState<NonNullable<AutomationCreateInput["mode"]>>("standalone");
   const [targetThreadId, setTargetThreadId] = useState("");
   const [stopWhen, setStopWhen] = useState("");
   const [scheduleForm, setScheduleForm] = useState<AutomationFormState>(() =>
@@ -119,9 +119,9 @@ export function AutomationCreateDialog({
   const [maxIterations, setMaxIterations] = useState<number | null>(null);
   const [stopOnError, setStopOnError] = useState(true);
   const [interactionMode, setInteractionMode] =
-    useState<AutomationCreateInput["interactionMode"]>("default");
+    useState<NonNullable<AutomationCreateInput["interactionMode"]>>("default");
   const [runtimeMode, setRuntimeMode] =
-    useState<AutomationCreateInput["runtimeMode"]>("approval-required");
+    useState<NonNullable<AutomationCreateInput["runtimeMode"]>>("approval-required");
   const [worktreeMode, setWorktreeMode] = useState<CreateWorktreeMode>("auto");
   const [acknowledgedWarningIds, setAcknowledgedWarningIds] = useState<
     ReadonlySet<AutomationDraftWarningId>
@@ -650,7 +650,9 @@ export function AutomationCreateDialog({
                   <MenuGroupLabel>Mode</MenuGroupLabel>
                   <MenuRadioGroup
                     value={mode}
-                    onValueChange={(value) => setMode(value as AutomationCreateInput["mode"])}
+                    onValueChange={(value) =>
+                      setMode(value as NonNullable<AutomationCreateInput["mode"]>)
+                    }
                   >
                     <MenuRadioItem value="standalone">Standalone</MenuRadioItem>
                     <MenuRadioItem value="heartbeat">Heartbeat</MenuRadioItem>
@@ -728,7 +730,7 @@ export function AutomationCreateDialog({
                 <MenuRadioGroup
                   value={runtimeMode}
                   onValueChange={(value) => {
-                    setRuntimeMode(value as AutomationCreateInput["runtimeMode"]);
+                    setRuntimeMode(value as NonNullable<AutomationCreateInput["runtimeMode"]>);
                     setAcknowledgedWarningIds(new Set());
                   }}
                 >

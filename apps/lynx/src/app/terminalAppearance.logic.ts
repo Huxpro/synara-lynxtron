@@ -9,14 +9,14 @@ export function resolveLynxTerminalTypography(input: {
 }): {
   readonly fontFamily: string;
   readonly fontSize: string;
-  readonly fontWeight: string;
+  readonly fontWeight: `${typeof TERMINAL_FONT_WEIGHT}`;
   readonly lineHeight: string;
 } {
   const fontSizePx = normalizeAppearanceNumber("terminalFontSizePx", input.fontSizePx);
   return {
     fontFamily: input.fontFamily.trim() || DEFAULT_LYNX_TERMINAL_FONT_FAMILY,
     fontSize: `${fontSizePx}px`,
-    fontWeight: String(TERMINAL_FONT_WEIGHT),
+    fontWeight: `${TERMINAL_FONT_WEIGHT}` as const,
     lineHeight: `${fontSizePx * 1.5}px`,
   };
 }

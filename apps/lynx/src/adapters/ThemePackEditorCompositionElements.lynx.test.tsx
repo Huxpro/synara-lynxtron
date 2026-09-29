@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, rs } from "@rstest/core";
 import { fireEvent, render, waitFor } from "@lynx-js/react/testing-library";
 import { readFileSync } from "node:fs";
+import { DEFAULT_CHROME_THEME_BY_VARIANT, type ChromeTheme } from "@synara-web/theme/theme.logic";
 
 import {
   ThemePackBooleanControlElement,
@@ -428,31 +429,26 @@ describe("ThemePack boolean interaction contract", () => {
   });
 
   it("renders palette previews in the code-theme trigger and options", () => {
+    const linearTheme: ChromeTheme = {
+      accent: "#5e6ad2",
+      surface: "#ffffff",
+      ink: "#1a1c1f",
+      contrast: 50,
+      fonts: { ui: null, code: null },
+      opaqueWindows: false,
+      semanticColors: DEFAULT_CHROME_THEME_BY_VARIANT.light.semanticColors,
+    };
     render(
       <ThemePackCodeThemeControlElement
         value="linear"
         label="Linear"
         ariaLabel="Light theme code theme"
-        theme={{
-          accent: "#5e6ad2",
-          surface: "#ffffff",
-          ink: "#1a1c1f",
-          contrast: 50,
-          fonts: { ui: null, code: null },
-          opaqueWindows: false,
-        }}
+        theme={linearTheme}
         options={[
           {
             id: "linear",
             label: "Linear",
-            previewTheme: {
-              accent: "#5e6ad2",
-              surface: "#ffffff",
-              ink: "#1a1c1f",
-              contrast: 50,
-              fonts: { ui: null, code: null },
-              opaqueWindows: false,
-            },
+            previewTheme: linearTheme,
           },
         ]}
         onChange={() => {}}

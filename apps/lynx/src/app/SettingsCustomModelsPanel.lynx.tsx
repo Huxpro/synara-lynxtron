@@ -1,6 +1,6 @@
 import { useState } from "@lynx-js/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import type { ServerSettingsView } from "@synara/contracts";
+import type { ServerSettingsPatch, ServerSettingsView } from "@synara/contracts";
 import { validateCustomModelInput } from "@synara/shared/customModels";
 import { PROVIDER_DESCRIPTOR_BY_KIND } from "@synara/shared/providerMetadata";
 
@@ -71,7 +71,7 @@ export function SettingsCustomModelsPanel(props: {
       value: input,
       savedModels,
     });
-    if ("error" in result) {
+    if (result.error !== undefined) {
       setError(result.error);
       return;
     }

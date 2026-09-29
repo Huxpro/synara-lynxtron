@@ -1,6 +1,7 @@
 import { describe, expect, it, rs } from "@rstest/core";
 import { readFileSync } from "node:fs";
 import { fireEvent, render } from "@lynx-js/react/testing-library";
+import type { ComposerCommandItem } from "@synara-web/components/chat/ComposerCommandMenuComposition";
 
 import { ComposerCommandRowElement } from "./ComposerCommandMenuCompositionElements.lynx";
 import { composerCommandRowId } from "./ComposerCommandMenuCompositionElements.lynx";
@@ -19,49 +20,50 @@ describe("native Composer command menu row", () => {
       new URL("../components/composer/composer.css", import.meta.url),
       "utf8",
     );
-    const items = [
+    const items: ComposerCommandItem[] = [
       {
         id: "slash:plan",
-        type: "slash-command" as const,
-        command: "plan" as const,
+        type: "slash-command",
+        command: "plan",
         label: "/plan",
         description: "Switch to plan mode",
-        source: "app" as const,
+        source: "app",
       },
       {
         id: "skill:review",
-        type: "skill" as const,
+        type: "skill",
         skill: {
           name: "review",
           description: "Review changes",
           path: "/skills/review/SKILL.md",
-          scope: "project" as const,
+          scope: "project",
+          enabled: true,
         },
         label: "review",
         description: "Review changes",
       },
       {
         id: "thread:release",
-        type: "thread" as const,
+        type: "thread",
         threadId: "release",
-        provider: "codex" as const,
+        provider: "codex",
         mention: { name: "Release prep", path: "thread://release" },
         label: "Release prep",
         description: "Synara",
       },
       {
         id: "path:agents",
-        type: "path" as const,
+        type: "path",
         path: "/workspace/AGENTS.md",
-        pathKind: "file" as const,
+        pathKind: "file",
         label: "AGENTS.md",
         description: "/workspace",
       },
       {
         id: "model:gpt",
-        type: "model" as const,
-        provider: "codex" as const,
-        model: "gpt-5" as never,
+        type: "model",
+        provider: "codex",
+        model: "gpt-5",
         label: "GPT-5",
         description: "Model",
       },

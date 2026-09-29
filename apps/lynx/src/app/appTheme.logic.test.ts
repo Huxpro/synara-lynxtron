@@ -136,7 +136,7 @@ describe("slice root theme projection", () => {
     expect(variables["--codex-base-accent"]).toBe("#ff3366");
     expect(variables["--codex-base-ink"]).toBe("#112233");
     expect(variables["--codex-base-surface"]).toBe("#fefefe");
-    expect(variables["--app-sidebar-surface"]).toBe(customState.chromeThemes.light.card);
+    expect(variables["--app-sidebar-surface"]).toBe("#fefefe");
     expect(variables["--foreground"]).not.toBe(DEFAULT_THEME_STATE.chromeThemes.light.ink);
     expect(variables["--primary-hover-fill"]).toBe("#293847");
     expect(variables["--destructive-hover-fill"]).toBe("#e3433f");

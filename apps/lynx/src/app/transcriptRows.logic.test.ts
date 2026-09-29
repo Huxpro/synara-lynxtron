@@ -11,6 +11,7 @@ import {
   resolveTranscriptWorkEntryDisplayText,
   transcriptRowVersion,
   type MessageTranscriptRow,
+  type WorkLogEntry,
 } from "./transcriptRows.logic";
 
 describe("transcript work-entry presentation", () => {
@@ -41,8 +42,8 @@ describe("transcript work-entry presentation", () => {
     expect(source).toContain("summarizeToolCallGroup(props.entries)");
     expect(source).toContain('baseClassName: "TranscriptToolGroupTrigger"');
     expect(source).toContain("classifyToolCallSummaryCategory(props.entry)");
-    expect(source).toContain('<SearchIcon className="TranscriptStatusIcon" size={13} />');
-    expect(source).toContain('<PencilIcon className="TranscriptStatusIcon" size={13} />');
+    expect(source).toContain('<TranscriptStatusIcon kind="search" tone={props.entry.tone} />');
+    expect(source).toContain('<TranscriptStatusIcon kind="edit" tone={props.entry.tone} />');
     const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
     expect(styles).toMatch(
       /\.TranscriptReasoningEntry\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*19px;/s,
@@ -204,11 +205,11 @@ describe("resolveTranscriptPinnedFromSample", () => {
   });
 });
 
-function entry(id: string, toolStatus = "completed") {
+function entry(id: string, toolStatus: WorkLogEntry["toolStatus"] = "completed"): WorkLogEntry {
   return {
     id,
     label: id,
-    tone: "tool" as const,
+    tone: "tool",
     createdAt: "2026-07-29T00:00:00.000Z",
     toolStatus,
   };
@@ -316,7 +317,7 @@ describe("transcriptRowVersion", () => {
   });
 
   it("changes for standalone work status updates", () => {
-    const row = (toolStatus: string): ThreadTranscriptRow =>
+    const row = (toolStatus: WorkLogEntry["toolStatus"]): ThreadTranscriptRow =>
       ({
         kind: "work",
         id: "work-row",
