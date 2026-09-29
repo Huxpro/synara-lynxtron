@@ -386,6 +386,8 @@ export function AutomationEditDialog({
 
             <ComposerModelControl
               hideStatusLabel
+              hideTraits
+              splitTraits
               triggerVariant="picker"
               modelSelection={form.modelSelection}
               catalogProvider={modelCatalogProvider}

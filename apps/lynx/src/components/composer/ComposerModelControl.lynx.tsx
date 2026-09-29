@@ -96,6 +96,8 @@ export function ComposerModelControl(props: {
   readonly compact?: boolean;
   // "picker": the web's compact PickerTriggerButton inset (automation dialogs).
   readonly triggerVariant?: "composer" | "picker";
+  // Web ProviderModelPicker: provider/model only, no effort/speed control.
+  readonly hideTraits?: boolean;
   readonly hideStatusLabel?: boolean;
   readonly disabled?: boolean;
   readonly modelSelection: ModelSelection;
@@ -534,7 +536,8 @@ export function ComposerModelControl(props: {
               : ""
           }`}
           side="top"
-          align="end"
+          // Web ProviderModelPicker opens from the trigger's start edge.
+          align={props.triggerVariant === "picker" ? "start" : "end"}
           sideOffset={4}
         >
           {props.splitTraits && !useSinglePanelModelNavigation ? (
@@ -591,7 +594,7 @@ export function ComposerModelControl(props: {
           ) : null}
         </MenuPopup>
       </Menu>
-      {props.splitTraits && effortLabel ? (
+      {props.splitTraits && effortLabel && !props.hideTraits ? (
         <Menu open={traitsOpen} onOpenChange={setTraitsOpen}>
           <MenuTrigger
             className={`ComposerTraitsTriggerLynx${

@@ -450,6 +450,8 @@ export function AutomationCreateDialog({
             </Menu>
             <ComposerModelControl
               hideStatusLabel
+              hideTraits
+              splitTraits
               triggerVariant="picker"
               modelSelection={modelSelection}
               catalogProvider={modelCatalogProvider}

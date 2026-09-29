@@ -207,6 +207,42 @@ export const INCREMENTS = Object.freeze({
         }),
       ),
   },
+  "automation-model-menu": {
+    workflow: "J5",
+    base: "automations",
+    // The web automation dialog uses the compact provider/model picker.
+    open: async (driver) => {
+      await driver.tap(pick(driver, textTarget("button", "New automation")));
+      await waitFor(() => probeBox(driver, DIALOG_PROBE), { label: "automation dialog" });
+      await driver.tap(
+        pick(driver, {
+          electron: {
+            selector: '[role="dialog"] button[data-slot="menu-trigger"]',
+            text: "GPT-5 Codex",
+          },
+          native: { label: "Change model and reasoning" },
+        }),
+      );
+    },
+    probes: [MENU_PROBE],
+    close: async (driver) => {
+      await driver.tap(
+        pick(driver, {
+          electron: {
+            selector: '[role="dialog"] button[data-slot="menu-trigger"]',
+            text: "GPT-5 Codex",
+          },
+          native: { label: "Change model and reasoning" },
+        }),
+      );
+      await driver.tap(
+        pick(driver, {
+          electron: { selector: '[role="dialog"] button', text: "Cancel" },
+          native: { text: "Cancel" },
+        }),
+      );
+    },
+  },
   "kanban-new-task": {
     workflow: "J6",
     base: "kanban",
