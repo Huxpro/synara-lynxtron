@@ -20,6 +20,12 @@ import {
   AutomationDetailGroup as DetailGroup,
   AutomationDetailRow as DetailRow,
 } from "~/components/automation/AutomationDetailComposition";
+import {
+  CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
+  CHAT_SURFACE_HEADER_HEIGHT_CLASS,
+  CHAT_SURFACE_HEADER_PADDING_X_CLASS,
+} from "~/components/chat/chatHeaderControls";
+import { CHAT_BACKGROUND_CLASS_NAME } from "~/components/chat/composerPickerStyles";
 import { SidebarHeaderNavigationControls } from "~/components/SidebarHeaderNavigationControls";
 import { Button } from "~/components/ui/button";
 import { RouteInsetSurface } from "~/components/RouteInsetSurface";
@@ -36,6 +42,10 @@ import {
   stopWhenFromCompletionPolicy,
 } from "~/lib/automationCompletionPolicy";
 import { automationLifecycleState, canPauseAutomation } from "~/lib/automationStatus";
+import {
+  useDesktopTopBarTrafficLightGutterClassName,
+  useDesktopTopBarWindowControlsGutterClassName,
+} from "~/hooks/useDesktopTopBarGutter";
 import { CentralIcon } from "~/lib/central-icons";
 import { cn } from "~/lib/utils";
 import {
@@ -159,6 +169,10 @@ function AutomationDetailView() {
     // Running an automation keeps the user on this info page; the live run surfaces in
     // "Previous runs" (click a run there to open its thread), matching the reference UX.
   } = useAutomations();
+
+  const desktopTopBarTrafficLightGutterClassName = useDesktopTopBarTrafficLightGutterClassName();
+  const desktopTopBarWindowControlsGutterClassName =
+    useDesktopTopBarWindowControlsGutterClassName();
 
   const definition = data.definitions.find((candidate) => candidate.id === automationId) ?? null;
   const runs = runsByAutomationId.get(automationId) ?? [];
