@@ -2,8 +2,11 @@ import type { ProjectId } from "@synara/contracts";
 
 import type { Project } from "../types";
 
+/** The only project fields the targeting reads, so other hosts can pass their own shape. */
+type ProjectTargetCandidate = Pick<Project, "id" | "kind" | "updatedAt">;
+
 function resolveUsableProjectId(
-  projects: readonly Project[],
+  projects: readonly ProjectTargetCandidate[],
   projectId: ProjectId | null,
 ): ProjectId | null {
   if (!projectId) {
@@ -17,21 +20,21 @@ function resolveUsableProjectId(
 }
 
 export function resolveCurrentProjectTargetId(
-  projects: readonly Project[],
+  projects: readonly ProjectTargetCandidate[],
   focusedProjectId: ProjectId | null,
 ): ProjectId | null {
   return resolveUsableProjectId(projects, focusedProjectId);
 }
 
 export function resolveLatestProjectTargetId(
-  projects: readonly Project[],
+  projects: readonly ProjectTargetCandidate[],
   latestProjectId: ProjectId | null,
 ): ProjectId | null {
   return resolveUsableProjectId(projects, latestProjectId);
 }
 
 export function resolveLatestProjectTargetIdWithFallback(
-  projects: readonly Project[],
+  projects: readonly ProjectTargetCandidate[],
   latestProjectId: ProjectId | null,
 ): ProjectId | null {
   return (

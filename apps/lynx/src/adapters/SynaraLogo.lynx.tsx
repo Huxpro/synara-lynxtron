@@ -27,8 +27,6 @@ export function SynaraLogo({
   const usesSecondaryForeground = classNames.includes(
     "text-[var(--color-text-foreground-secondary)]",
   );
-  const resolvedAriaLabel =
-    !ariaLabel || /^Synara(?: logo)?$/i.test(ariaLabel) ? "Synara logo" : ariaLabel;
   const resolvedClassName = [
     "shrink-0",
     "text-foreground",
@@ -39,7 +37,9 @@ export function SynaraLogo({
   return (
     <view
       className={`${resolvedClassName} LynxBrandMark`}
-      accessibility-label={resolvedAriaLabel}
+      // Like the web mark: named only when the caller names it, else hidden.
+      accessibility-label={ariaLabel}
+      accessibility-elements-hidden={!ariaLabel}
       accessibility-trait="image"
       style={{
         ...(hasSharedSidebarSize ? { width: "14px", height: "14px" } : {}),

@@ -23,8 +23,13 @@ export function SidebarChatsSectionHeaderElement(props: {
     baseClassName: "SharedSidebarChatsHeaderButton",
     onActivate: props.onActivate,
   });
+  // Hover owner so the overlay toolbar reveals on header hover, like the web.
+  const header = useLynxInteractiveState({
+    baseClassName: "SharedSidebarChatsHeader LynxWebHoverOwner",
+    focusable: false,
+  });
   return (
-    <view className="SharedSidebarChatsHeader">
+    <view className={header.className} {...header.eventProps}>
       <view
         className={interaction.className}
         aria-expanded={props.expanded}
@@ -45,7 +50,9 @@ export function SidebarChatsSectionHeaderElement(props: {
           />
         )}
       </view>
-      {props.toolbar}
+      {props.toolbar ? (
+        <view className="SharedSidebarListSectionHeaderToolbar">{props.toolbar}</view>
+      ) : null}
     </view>
   );
 }

@@ -9,15 +9,23 @@ const source = fs.readFileSync(path.resolve(__dirname, "SynaraLogo.lynx.tsx"), "
 
 describe("Synara logo adapter", () => {
   it("renders the shared Synara mark as a static image identity", () => {
-    render(<SynaraLogo className="size-10 pointer-events-none" />);
+    render(<SynaraLogo className="size-10 pointer-events-none" aria-label="Synara" />);
 
     const logo = elementTree.root?.querySelector(".LynxBrandMark");
     if (!logo) throw new Error("expected Lynx brand mark");
 
     expect(logo.getAttribute("class")).not.toContain("pointer-events-none");
     expect(logo.getAttribute("accessibility-trait")).toBe("image");
-    expect(logo.getAttribute("accessibility-label")).toBe("Synara logo");
+    expect(logo.getAttribute("accessibility-label")).toBe("Synara");
     expect(logo.querySelectorAll(".LynxBrandMarkLynx")).toHaveLength(1);
+  });
+
+  it("hides an unnamed mark from accessibility like the web svg", () => {
+    render(<SynaraLogo className="size-3.5" />);
+
+    const logo = elementTree.root?.querySelector(".LynxBrandMark");
+    expect(logo?.getAttribute("accessibility-label")).toBeNull();
+    expect(logo?.getAttribute("accessibility-elements-hidden")).toBe("true");
   });
 
   it("preserves the shared non-shrinking foreground base classes", () => {

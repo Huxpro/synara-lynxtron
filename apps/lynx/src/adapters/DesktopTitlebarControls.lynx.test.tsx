@@ -103,8 +103,9 @@ describe("desktop titlebar controls", () => {
     expect(appStyles).toMatch(
       /\.SliceRoot--theme-dark \.SettingsSidebar\s*\{[^}]*box-shadow:\s*inset 0 1px 0 rgba\(255,\s*255,\s*255,\s*0\.025\);/s,
     );
-    expect(appStyles).toMatch(
-      /\.SettingsSidebarTitlebar\s*\{[^}]*height:\s*46px;[^}]*padding-left:\s*14px;[^}]*padding-right:\s*14px;/s,
+    // Settings keeps the app sidebar's desktop header (controls + mark), as on the web.
+    expect(settingsSource).toContain(
+      "<SidebarDesktopHeader leadingControls={openTitlebarControls} trafficLightGutter />",
     );
     expect(appStyles).toMatch(
       /\.SettingsSidebarBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*width:\s*100%;/s,

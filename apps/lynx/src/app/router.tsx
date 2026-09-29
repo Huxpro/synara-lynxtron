@@ -3502,6 +3502,9 @@ export function SliceRouter({
       <SidebarDisclosure open={sidebarOpen && !editorModeOpen}>
         <Sidebar
           activeThreadId={route.pathname === "/thread/$threadId" ? route.params.threadId : null}
+          draftProjectId={
+            route.pathname === "/new-thread/$projectId" ? route.params.projectId : null
+          }
           activeWorkspaceId={
             route.pathname === "/workspace/$workspaceId"
               ? route.params.workspaceId

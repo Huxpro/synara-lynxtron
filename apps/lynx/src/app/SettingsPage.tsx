@@ -1,6 +1,7 @@
 import { runOnMainThread, useEffect, useRef, useState, type ReactNode } from "@lynx-js/react";
 
 import { SettingsNavigationComposition } from "@synara-web/components/SettingsNavigationComposition";
+import { SidebarDesktopHeader } from "@synara-web/components/SidebarDesktopHeader";
 import { SettingsSidebarChromeComposition } from "@synara-web/components/settings/SettingsSidebarChromeComposition";
 import { AppShellFrame } from "@synara-web/components/AppShellFrame";
 import { SettingsAppearanceComposition } from "@synara-web/components/settings/SettingsAppearanceComposition";
@@ -696,7 +697,8 @@ export function SettingsPage({
   const settingsSidebar = (
     <SidebarDisclosure open={sidebarOpen}>
       <view className="SettingsSidebar">
-        <view className="SettingsSidebarTitlebar AppWindowDragRegion">{openTitlebarControls}</view>
+        {/* The web settings route keeps the app Sidebar's desktop header. */}
+        <SidebarDesktopHeader leadingControls={openTitlebarControls} trafficLightGutter />
         <view className="SettingsSidebarFixedChrome">
           <SettingsSidebarChromeComposition
             onBack={onBack}

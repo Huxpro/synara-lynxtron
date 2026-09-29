@@ -68,7 +68,7 @@ export function SidebarProjectRowSpecimen(props: {
           </Actions>
         }
       >
-        <ProjectPinAction pinned={pinned} onActivate={() => {}} />
+        <ProjectPinAction pinned={pinned} projectName="project" onActivate={() => {}} />
         <SidebarProjectSummary
           leading={<FolderIcon size={16} />}
           leadingClassName={pinned ? "AppSidebarProjectFolder--hidden" : undefined}

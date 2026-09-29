@@ -190,7 +190,7 @@ export function ComposerContextWindowMeterElement(props: {
   return (
     <view
       className={`ComposerContextWindowMeterLynx${open ? " ComposerContextWindowMeterLynx--open" : ""}`}
-      aria-label={props.display.ariaLabel}
+      accessibility-label={props.display.ariaLabel}
       accessibility-element={true}
       accessibility-role="button"
       accessibility-value={open ? "Expanded" : "Collapsed"}

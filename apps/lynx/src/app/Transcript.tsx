@@ -33,6 +33,7 @@ import {
 } from "@synara-web/lib/terminalContext";
 import { resolveTranscriptMarkerRange } from "@synara/shared/threadMarkers";
 import { resolveSelectionActionLayout } from "@synara/shared/selectionActionLayout";
+import { pinActionLabel } from "@synara-web/lib/pin.logic";
 import { formatShortTimestamp } from "@synara-web/timestampFormat";
 import {
   createMarkdownCodeFence,
@@ -705,7 +706,7 @@ function TranscriptMessage({
   const pinned = pinnedMessageIds.has(message.id);
   const pin = useLynxInteractiveState({
     baseClassName: `TranscriptMessageAction${pinned ? " TranscriptMessageAction--persistent" : ""}`,
-    accessibleLabel: pinned ? "Unpin from panel" : "Pin to panel",
+    accessibleLabel: pinActionLabel("message", pinned),
     onActivate: () => {
       "background only";
       void import(/* webpackMode: "eager" */ "../data/synaraClient").then(

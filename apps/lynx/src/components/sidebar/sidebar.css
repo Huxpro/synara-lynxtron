@@ -519,16 +519,17 @@
   transform: rotate(180deg);
 }
 
-.AppSidebarProject {
-  margin-bottom: 8px;
-}
-
 .SharedSidebarProjectsRoot,
 .SharedSidebarProjectsList,
 .SharedSidebarStudioRoot,
 .SharedSidebarStudioList {
   display: flex;
   flex-direction: column;
+}
+
+/* Web SidebarProjectsListElement: SidebarMenu gap-3 between projects only. */
+.SharedSidebarProjectsList {
+  gap: 12px;
 }
 
 .SharedSidebarProjectsRoot,
@@ -881,7 +882,13 @@
 }
 
 .SharedSidebarChatsHeader {
+  position: relative;
   height: var(--app-density-row-height, 1.75rem);
+}
+
+.SharedSidebarChatsHeader.ui-hover .SharedSidebarListSectionHeaderAction {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .SharedSidebarChatsHeaderButton {

@@ -26,7 +26,7 @@ describe("Lynx Settings sidebar layout", () => {
     );
 
     expect(webSidebar).toContain('className="px-1.5 py-1.5"');
-    expect(styles).toMatch(/\.SettingsSidebarTitlebar\s*\{[^}]*height:\s*46px;/s);
+    expect(styles).not.toContain(".SettingsSidebarTitlebar");
     expect(styles).toMatch(
       /\.SettingsSidebarBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*width:\s*100%;/s,
     );

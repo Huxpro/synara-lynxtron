@@ -1,4 +1,7 @@
+import composePencilSvg from "@synara-central-icons/compose-pencil.svg?raw";
+import expandAllSvg from "@synara-central-icons/expand-45.svg?raw";
 import filterSvg from "@synara-central-icons/filter-2.svg?raw";
+import collapseAllSvg from "@synara-central-icons/minimize-45.svg?raw";
 import plusSvg from "@synara-central-icons/plus-medium.svg?raw";
 import type { ReactNode } from "@lynx-js/react";
 
@@ -68,19 +71,108 @@ export function SidebarListSectionHeaderToolbarElement({ children }: ChildrenPro
   return <view className="SharedSidebarListSectionHeaderToolbar">{children}</view>;
 }
 
-export function SidebarListSectionHeaderAddProjectElement(props: {
+export function SidebarListSectionHeaderIconActionElement(props: {
   readonly elementId?: string;
+  readonly icon: string;
+  readonly label: string;
   readonly onActivate: () => void;
 }) {
   const interaction = useLynxInteractiveState({
     baseClassName: "SharedSidebarListSectionHeaderAction",
-    accessibleLabel: "Add project",
+    accessibleLabel: props.label,
     onActivate: props.onActivate,
   });
   return (
     <view id={props.elementId} className={interaction.className} {...interaction.eventProps}>
-      <SidebarListSectionHeaderActionIcon content={plusSvg} />
+      <SidebarListSectionHeaderActionIcon content={props.icon} />
     </view>
+  );
+}
+
+export function SidebarListSectionHeaderAddProjectElement(props: {
+  readonly elementId?: string;
+  readonly onActivate: () => void;
+}) {
+  return (
+    <SidebarListSectionHeaderIconActionElement
+      elementId={props.elementId}
+      icon={plusSvg}
+      label="Add project"
+      onActivate={props.onActivate}
+    />
+  );
+}
+
+// Web Sidebar: Collapse all (keeping the active project) when every project is
+// open, else Expand all.
+export function SidebarListSectionHeaderToggleProjectsElement(props: {
+  readonly allExpanded: boolean;
+  readonly hasFocusedProject: boolean;
+  readonly onActivate: () => void;
+}) {
+  return (
+    <SidebarListSectionHeaderIconActionElement
+      icon={props.allExpanded ? collapseAllSvg : expandAllSvg}
+      label={
+        props.allExpanded
+          ? props.hasFocusedProject
+            ? "Collapse all projects except the active project"
+            : "Collapse all projects"
+          : "Expand all projects"
+      }
+      onActivate={props.onActivate}
+    />
+  );
+}
+
+function SidebarThreadSortRadioGroup(props: {
+  readonly value: SidebarThreadSortOrderValue;
+  readonly onValueChange: (value: SidebarThreadSortOrderValue) => void;
+}) {
+  return (
+    <MenuRadioGroup
+      value={props.value}
+      onValueChange={(value) => props.onValueChange(value as SidebarThreadSortOrderValue)}
+    >
+      {SIDEBAR_THREAD_SORT_OPTIONS.map((option) => (
+        <MenuRadioItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuRadioItem>
+      ))}
+    </MenuRadioGroup>
+  );
+}
+
+// Web ChatSortMenu: the Chats section sorts threads only.
+export function SidebarChatSortElement(props: {
+  readonly threadSortOrder: SidebarThreadSortOrderValue;
+  readonly onThreadSortOrderChange: (value: SidebarThreadSortOrderValue) => void;
+}) {
+  return (
+    <Menu>
+      <MenuTrigger className="SharedSidebarListSectionHeaderAction" ariaLabel="Sort chats">
+        <SidebarListSectionHeaderActionIcon content={filterSvg} />
+      </MenuTrigger>
+      <MenuPopup side="bottom" align="end" className="SharedSidebarProjectSortPopup">
+        <MenuGroup>
+          <MenuGroupLabel className="SharedSidebarProjectSortGroupLabel">Sort chats</MenuGroupLabel>
+          <SidebarThreadSortRadioGroup
+            value={props.threadSortOrder}
+            onValueChange={props.onThreadSortOrderChange}
+          />
+        </MenuGroup>
+      </MenuPopup>
+    </Menu>
+  );
+}
+
+export function SidebarChatNewElement(props: { readonly onActivate: () => void }) {
+  return (
+    <SidebarListSectionHeaderIconActionElement
+      icon={composePencilSvg}
+      label="Open new chat home"
+      onActivate={props.onActivate}
+    />
   );
 }
 
@@ -117,18 +209,10 @@ export function SidebarListSectionHeaderSortElement(props: {
           <MenuGroupLabel className="SharedSidebarProjectSortGroupLabel SharedSidebarProjectSortGroupLabel--secondary">
             Sort threads
           </MenuGroupLabel>
-          <MenuRadioGroup
+          <SidebarThreadSortRadioGroup
             value={props.threadSortOrder}
-            onValueChange={(value) =>
-              props.onThreadSortOrderChange(value as SidebarThreadSortOrderValue)
-            }
-          >
-            {SIDEBAR_THREAD_SORT_OPTIONS.map((option) => (
-              <MenuRadioItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuRadioItem>
-            ))}
-          </MenuRadioGroup>
+            onValueChange={props.onThreadSortOrderChange}
+          />
         </MenuGroup>
       </MenuPopup>
     </Menu>

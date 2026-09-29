@@ -1,3 +1,9 @@
+import { useLatestProjectStore } from "@synara-web/latestProjectStore";
+import {
+  resolveCurrentProjectTargetId,
+  resolveLatestProjectTargetIdWithFallback,
+  resolveNewThreadTarget,
+} from "@synara-web/lib/projectShortcutTargets";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "@lynx-js/react";
 import { getRectByRef } from "@lynx-js/lynx-ui";
 import type { NodesRef } from "@lynx-js/types";
@@ -90,6 +96,7 @@ import {
 import { useWorkspaceStore } from "@synara-web/workspaceStore";
 import { useStore } from "@synara-web/store";
 import { dockTerminalThreadId } from "@synara-web/lib/dockTerminalScope";
+import { pinActionLabel } from "@synara-web/lib/pin.logic";
 import { requestOpenThreadPathInTerminal } from "../../app/threadTerminalIntent.lynx";
 import {
   flushTerminalStatePersistence,
@@ -101,8 +108,11 @@ import {
 } from "@synara-web/projectRunTargets";
 import { projectScriptRuntimeEnv } from "@synara-web/projectScripts";
 import {
+  SidebarChatNewElement,
+  SidebarChatSortElement,
   SidebarListSectionHeaderAddProjectElement,
   SidebarListSectionHeaderSortElement,
+  SidebarListSectionHeaderToggleProjectsElement,
 } from "~/components/SidebarListSectionHeaderElements";
 import { SIDEBAR_CHAT_SECTION_DEFAULT_EXPANDED } from "@synara-web/components/SidebarDefaults.logic";
 import {
@@ -335,12 +345,13 @@ function ProjectRunIndicatorDot() {
 
 export function ProjectPinAction(props: {
   readonly pinned: boolean;
+  readonly projectName: string;
   readonly onActivate: () => void;
 }) {
   const { svgColors } = useTheme();
   const interaction = useLynxInteractiveState({
     baseClassName: "AppSidebarProjectPin" + (props.pinned ? " AppSidebarProjectPin--pinned" : ""),
-    accessibleLabel: props.pinned ? "Unpin project" : "Pin project",
+    accessibleLabel: pinActionLabel(props.projectName, props.pinned),
     accessibilityValue: props.pinned ? "Pinned" : "Not pinned",
     onActivate: props.onActivate,
   });
@@ -469,6 +480,7 @@ async function persistProjectDisclosureState(
 export function Sidebar({
   activeThreadId,
   activeWorkspaceId,
+  draftProjectId = null,
   activePath,
   navigate,
   searchOpen,
@@ -477,6 +489,8 @@ export function Sidebar({
 }: {
   readonly activeThreadId: string | null;
   readonly activeWorkspaceId?: string | null;
+  // Project of the new-thread (draft) route, which the web also treats as focused.
+  readonly draftProjectId?: string | null;
   readonly activePath: string;
   readonly navigate: (to: string) => void;
   readonly searchOpen: boolean;
@@ -575,6 +589,7 @@ export function Sidebar({
   const storedActiveSpaceId = useSpacesUiStore((state) => state.activeSpaceId);
   const setActiveSpaceId = useSpacesUiStore((state) => state.setActiveSpaceId);
   const rememberSpaceThread = useSpacesUiStore((state) => state.rememberThread);
+  const setLatestProjectId = useLatestProjectStore((state) => state.setLatestProjectId);
   const getLastSpaceThreadId = useSpacesUiStore((state) => state.getLastThreadId);
   const activeSpaceId = resolveNativeSidebarSpaceId({
     activeThreadId,
@@ -590,10 +605,36 @@ export function Sidebar({
       ? data.projects.find((project) => project.id === activeThread.projectId)
       : null;
     if (!activeProject || activeProject.kind !== "project") return;
+    setLatestProjectId(activeProject.id as never);
     const routeSpaceId = activeProject.spaceId ?? null;
     rememberSpaceThread(routeSpaceId, activeThreadId as never);
     if (routeSpaceId !== storedActiveSpaceId) setActiveSpaceId(routeSpaceId);
-  }, [activeThreadId, data, rememberSpaceThread, setActiveSpaceId, storedActiveSpaceId]);
+  }, [
+    activeThreadId,
+    data,
+    rememberSpaceThread,
+    setActiveSpaceId,
+    setLatestProjectId,
+    storedActiveSpaceId,
+  ]);
+  // Like the web sidebar: New thread opens in the focused project, else the latest
+  // one used, else this Space's most recently updated project.
+  const latestProjectId = useLatestProjectStore((state) => state.latestProjectId);
+  const openPrimaryNewThread = () => {
+    const spaceProjects = (data?.projects ?? []).filter(
+      (project) => (project.spaceId ?? null) === activeSpaceId,
+    );
+    const focusedProjectId =
+      data?.threads.find((thread) => thread.id === activeThreadId)?.projectId ?? null;
+    const target = resolveNewThreadTarget({
+      currentProjectId: resolveCurrentProjectTargetId(spaceProjects, focusedProjectId as never),
+      latestUsableProjectId: resolveLatestProjectTargetIdWithFallback(
+        spaceProjects,
+        latestProjectId,
+      ),
+    });
+    navigate(target ? `/new-thread/${encodeURIComponent(target.projectId)}` : "/");
+  };
   const [persistedPinnedThreadIds, setPersistedPinnedThreadIds] = useState<readonly string[]>([]);
   const [persistedPinnedProjectIds, setPersistedPinnedProjectIds] = useState<readonly string[]>([]);
   const [projectSortOrder, setProjectSortOrder] = useState<SidebarProjectSortOrderValue>(
@@ -1595,6 +1636,17 @@ export function Sidebar({
     });
   }
 
+  function persistProjectExpansion(next: ReadonlySet<string>) {
+    void persistProjectDisclosureState(
+      sections.projectGroups
+        .filter((project) => project.workspaceRoot.length > 0)
+        .map((project) => ({
+          cwd: project.workspaceRoot,
+          expanded: next.has(normalizeSidebarProjectThreadListCwd(project.workspaceRoot)),
+        })),
+    );
+  }
+
   function toggleProject(projectCwd: string) {
     "background only";
     const projectKey = normalizeSidebarProjectThreadListCwd(projectCwd);
@@ -1609,16 +1661,32 @@ export function Sidebar({
           : new Set(current);
       if (next.has(projectKey)) next.delete(projectKey);
       else next.add(projectKey);
-      void persistProjectDisclosureState(
-        sections.projectGroups
-          .filter((project) => project.workspaceRoot.length > 0)
-          .map((project) => ({
-            cwd: project.workspaceRoot,
-            expanded: next.has(normalizeSidebarProjectThreadListCwd(project.workspaceRoot)),
-          })),
-      );
+      persistProjectExpansion(next);
       return next;
     });
+  }
+
+  // Web handleToggleProjects: collapse every project except the focused one when
+  // all are open, else open them all.
+  const focusedProjectId =
+    data?.threads.find((thread) => thread.id === activeThreadId)?.projectId ?? draftProjectId;
+  const allProjectsExpanded =
+    sections.projectGroups.length > 0 &&
+    sections.projectGroups.every(
+      (group) =>
+        expandedProjectCwds === null ||
+        expandedProjectCwds.has(normalizeSidebarProjectThreadListCwd(group.workspaceRoot)),
+    );
+  function toggleAllProjects() {
+    "background only";
+    const next = new Set(
+      sections.projectGroups
+        .filter((group) => !allProjectsExpanded || group.id === focusedProjectId)
+        .map((group) => normalizeSidebarProjectThreadListCwd(group.workspaceRoot))
+        .filter(Boolean),
+    );
+    setExpandedProjectCwds(next);
+    persistProjectExpansion(next);
   }
 
   function applyChatListAction(action: SidebarChatListAction) {
@@ -1709,7 +1777,7 @@ export function Sidebar({
             pullRequestsBadge={pullRequestsReviewBadge}
             newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}
             searchShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.search}
-            onCreateThread={() => navigate("/")}
+            onCreateThread={openPrimaryNewThread}
             onCreateWorkspace={() => {
               const workspaceId = createWorkspace();
               navigate(`/workspace/${workspaceId}`);
@@ -1887,6 +1955,13 @@ export function Sidebar({
                     })}
                     headerActions={
                       <>
+                        {sections.projectGroups.length > 0 ? (
+                          <SidebarListSectionHeaderToggleProjectsElement
+                            allExpanded={allProjectsExpanded}
+                            hasFocusedProject={focusedProjectId !== null}
+                            onActivate={toggleAllProjects}
+                          />
+                        ) : null}
                         <SidebarListSectionHeaderSortElement
                           projectSortOrder={projectSortOrder}
                           threadSortOrder={threadSortOrder}
@@ -2010,6 +2085,7 @@ export function Sidebar({
                             >
                               <ProjectPinAction
                                 pinned={projectPinned}
+                                projectName={group.title}
                                 onActivate={() => void toggleProjectPinned(group)}
                               />
                               <SidebarProjectSummary
@@ -2107,6 +2183,17 @@ export function Sidebar({
               chatsSectionVisible && primarySidebarSurface === "threads" && !isPending && !error
             }
             expanded={chatsExpanded}
+            toolbar={
+              <>
+                <SidebarChatSortElement
+                  threadSortOrder={threadSortOrder}
+                  onThreadSortOrderChange={(value) =>
+                    persistSidebarSortOrders(projectSortOrder, value)
+                  }
+                />
+                <SidebarChatNewElement onActivate={() => navigate("/")} />
+              </>
+            }
             rows={chatRows.visibleEntries}
             canShowMore={chatRows.canShowMoreThreads}
             canShowLess={chatRows.canShowLessThreads}
