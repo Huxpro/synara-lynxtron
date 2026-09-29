@@ -27,7 +27,7 @@ describe("native composer trait picker contract", () => {
       /\.ComposerTraitSectionHeaderLynx\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*6px 8px;/s,
     );
     expect(composerStyles).toMatch(
-      /\.ComposerTraitSectionLynx\s*\{[^}]*padding:\s*6px 4px 8px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,
+      /\.ComposerTraitSectionLynx\s*\{\s*display:\s*flex;\s*flex-direction:\s*column;\s*\}/s,
     );
     expect(composerStyles).toMatch(
       /\.ComposerTraitSectionLabelLynx\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*font-weight:\s*400;[^}]*opacity:\s*0\.45;/s,

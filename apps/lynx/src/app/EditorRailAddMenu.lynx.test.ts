@@ -16,7 +16,7 @@ describe("EditorRailAddMenu component identity", () => {
       "utf8",
     );
     expect(menu).toContain("EditorRailAddMenuComposition");
-    expect(menu).toContain('MenuPopup className="ThreadEditorAddMenuPopup"');
+    expect(menu).toContain('MenuPopup className="LxPickerMenuPopup ThreadEditorAddMenuPopup"');
     expect(menu).toContain("autoHighlightFirst={false}");
     expect(composition).toContain('label="New chat"');
     expect(composition).toContain('label="New terminal"');
@@ -31,7 +31,6 @@ describe("EditorRailAddMenu component identity", () => {
     expect(adapter).toContain('className="ThreadEditorAddMenuSvgIcon"');
     expect(tabs).toContain("<EditorRailAddMenu");
     expect(router).not.toContain("ThreadEditorNewDialog");
-    expect(styles).toContain("height: 26px");
     expect(styles).toContain("justify-content: flex-start");
     expect(styles).toContain(".ThreadEditorAddMenuContent");
     expect(styles).toContain("text-align: left");

@@ -1,3 +1,5 @@
+import chevronDownSmallSvg from "@synara-central-icons/chevron-down-small.svg?raw";
+
 import { CheckboxIndicator } from "../components/ui/checkbox.lynx";
 import { Input } from "../components/ui/input.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
@@ -40,6 +42,18 @@ export function AutomationComposerStopWhenInput(props: {
       placeholder="PR is ready to merge"
       value={props.value}
       onChange={(event) => props.onChange(event.target.value)}
+    />
+  );
+}
+
+// Web chips: CentralIcon "chevron-down-small", size-3.5, opacity-60.
+export function AutomationComposerChipChevron() {
+  const { semanticIconColor } = useTheme();
+  return (
+    <svg
+      className="AutomationCreateChipChevron"
+      content={colorizeLynxSvg(chevronDownSmallSvg, semanticIconColor("secondary"))}
+      accessibility-element={false}
     />
   );
 }

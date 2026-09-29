@@ -17,7 +17,7 @@ describe("Lynx thread composer dock fidelity", () => {
       /\.ThreadPageMain\s*\{[^}]*display:\s*flex;[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*height:\s*100%;[^}]*flex-direction:\s*column;/s,
     );
     expect(styles).toMatch(
-      /\.ThreadComposerDock\s*\{[^}]*display:\s*flex;[^}]*width:\s*100%;[^}]*flex-shrink:\s*0;[^}]*padding-bottom:\s*16px;/s,
+      /\.ThreadComposerDock\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*10;[^}]*display:\s*flex;[^}]*width:\s*100%;[^}]*flex-shrink:\s*0;[^}]*margin-top:\s*-20px;[^}]*padding-bottom:\s*16px;/s,
     );
   });
 

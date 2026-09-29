@@ -8,6 +8,11 @@
   flex-direction: column;
 }
 
+/* Web CHAT_COLUMN_GUTTER_CLASS_NAME: 0.75rem gutters, 1.25rem from sm (640px). */
+.SliceRoot--viewport-sm-up .ComposerColumnFrameSurfaceLynx.ComposerColumnFrameSurfaceLynx {
+  width: calc(100% - 40px);
+}
+
 .SliceRoot--viewport-compact .ComposerColumnFrameSurfaceLynx.ComposerColumnFrameSurfaceLynx,
 .SliceRoot--viewport-medium .ComposerColumnFrameSurfaceLynx.ComposerColumnFrameSurfaceLynx {
   max-width: calc(100% - 24px);

@@ -1143,16 +1143,25 @@
   padding-top: 16px;
 }
 
+/* Electron's composer wrapper is "relative z-10 -mt-5": the transcript runs 20px
+   under the composer's top edge, so its last row sits 20px lower. */
 .ThreadComposerDock {
+  position: relative;
+  z-index: 10;
   display: flex;
   width: 100%;
   flex-shrink: 0;
   flex-direction: column;
+  margin-top: -20px;
   padding-bottom: 16px;
 }
 
 .SliceRoot--viewport-short-height .ThreadTranscriptColumn {
   padding-top: 0;
+}
+
+.SliceRoot--viewport-short-height .TranscriptMessageTrail {
+  top: 0;
 }
 
 .SliceRoot--viewport-short-height .ThreadComposerDock {
@@ -1909,15 +1918,22 @@
   width: calc(100% - 24px);
 }
 
+/* Web CHAT_COLUMN_GUTTER_CLASS_NAME: 1.25rem gutters from sm (640px). */
+.SliceRoot--viewport-sm-up .TranscriptRowFrame {
+  width: calc(100% - 40px);
+}
+
 .TranscriptBottomInset {
   height: 80px;
 }
 
+/* Electron's rail spans the transcript pane (inset-y-0); the shell starts below
+   the column's 16px top padding, so reach back over it. */
 .TranscriptMessageTrail {
   position: absolute;
   left: 0;
-  top: 10%;
-  bottom: 10%;
+  top: -16px;
+  bottom: 0;
   z-index: 20;
   display: flex;
   width: 56px;

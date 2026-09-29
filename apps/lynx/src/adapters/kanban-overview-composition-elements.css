@@ -90,11 +90,14 @@
   color: var(--foreground);
   font-size: 13px;
   font-weight: 650;
+  /* Electron h2: text-[13px] with the default 1.5 line box (19.5px). */
+  line-height: 19.5px;
 }
 
 .SharedKanbanOverviewProjectCount {
   color: color-mix(in srgb, var(--muted-foreground) 70%, transparent);
   font-size: 12px;
+  line-height: 16px;
 }
 
 .SharedKanbanOverviewProjectCount {
@@ -121,6 +124,12 @@
   align-items: center;
   justify-content: center;
   border-radius: 7px;
+}
+
+/* Electron icon button: size-7, sm:size-6. */
+.SliceRoot--viewport-sm-up .SharedKanbanOverviewNewTask {
+  width: 24px;
+  height: 24px;
 }
 
 .SharedKanbanOverviewNewTaskIcon {

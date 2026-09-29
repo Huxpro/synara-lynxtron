@@ -14,7 +14,12 @@ export function EditorRailAddMenu(props: {
   return (
     <Menu open={open} onOpenChange={setOpen} autoHighlightFirst={false}>
       <MenuTrigger>{props.trigger}</MenuTrigger>
-      <MenuPopup className="ThreadEditorAddMenuPopup" side="bottom" align="start" sideOffset={6}>
+      <MenuPopup
+        className="LxPickerMenuPopup ThreadEditorAddMenuPopup"
+        side="bottom"
+        align="start"
+        sideOffset={6}
+      >
         <EditorRailAddMenuComposition
           onNewChat={() => {
             setOpen(false);

@@ -93,6 +93,8 @@ function ComposerProviderOptionElement(props: {
 
 export function ComposerModelControl(props: {
   readonly compact?: boolean;
+  // "picker": the web's compact PickerTriggerButton inset (automation dialogs).
+  readonly triggerVariant?: "composer" | "picker";
   readonly hideStatusLabel?: boolean;
   readonly disabled?: boolean;
   readonly modelSelection: ModelSelection;
@@ -505,7 +507,9 @@ export function ComposerModelControl(props: {
     <view className="ComposerModelControlLynx">
       <Menu open={modelOpen} onOpenChange={setPopupOpen}>
         <MenuTrigger
-          className={`ComposerModelTriggerLynx${props.disabled ? " ComposerModelTriggerLynx--disabled" : ""}`}
+          className={`ComposerModelTriggerLynx${
+            props.triggerVariant === "picker" ? " ComposerModelTriggerLynx--picker" : ""
+          }${props.disabled ? " ComposerModelTriggerLynx--disabled" : ""}`}
           ariaLabel="Change model and reasoning"
           disabled={props.disabled}
         >
@@ -530,7 +534,7 @@ export function ComposerModelControl(props: {
           }`}
           side="top"
           align="end"
-          sideOffset={6}
+          sideOffset={4}
         >
           {props.splitTraits && !useSinglePanelModelNavigation ? (
             renderProviderSubmenuList()
@@ -605,7 +609,7 @@ export function ComposerModelControl(props: {
               size={12}
             />
           </MenuTrigger>
-          <MenuPopup className="ComposerTraitsPopupLynx" side="top" align="end" sideOffset={6}>
+          <MenuPopup className="ComposerTraitsPopupLynx" side="top" align="end" sideOffset={4}>
             {renderTraitSections(() => setTraitsOpen(false))}
           </MenuPopup>
         </Menu>

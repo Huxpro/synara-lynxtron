@@ -15,6 +15,11 @@
   background-color: var(--color-background-elevated-secondary);
 }
 
+/* Web CHAT_COLUMN_GUTTER_CLASS_NAME: 1.25rem gutters from sm (640px). */
+.SliceRoot--viewport-sm-up .EmptyThreadContextTray {
+  width: calc(100% - 40px);
+}
+
 .EmptyThreadContextIdentity,
 .EmptyThreadContextStatus {
   display: flex;

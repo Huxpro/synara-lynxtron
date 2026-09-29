@@ -9,14 +9,7 @@ import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import { GlobeIcon, PanelRightCloseIcon, PlusIcon } from "../lib/icons.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
-import {
-  Menu,
-  MenuGroup,
-  MenuGroupLabel,
-  MenuItem,
-  MenuPopup,
-  MenuTrigger,
-} from "../components/ui/menu.lynx";
+import { Menu, MenuGroup, MenuItem, MenuPopup, MenuTrigger } from "../components/ui/menu.lynx";
 import { EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
 import { FileEntryIcon } from "../components/FileEntryIcon.lynx";
 
@@ -123,9 +116,8 @@ export function ThreadRightDockTabs(props: {
           <MenuTrigger ariaLabel="Add panel" className="ThreadRightDockHeaderButton">
             <PlusIcon color={semanticIconColor("secondary")} size={14} />
           </MenuTrigger>
-          <MenuPopup align="end" side="bottom" className="ThreadRightDockAddMenu">
+          <MenuPopup align="end" side="bottom" className="LxPickerMenuPopup ThreadRightDockAddMenu">
             <MenuGroup>
-              <MenuGroupLabel>Panel</MenuGroupLabel>
               {addKinds.map((kind) => (
                 <MenuItem key={kind} onClick={() => props.onAddPane(kind)}>
                   {kind === "browser" ? (

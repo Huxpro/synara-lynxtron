@@ -55,10 +55,12 @@
   align-items: flex-start;
 }
 
+/* Electron: -mr-1 shrink-0 rounded px-1 text-xs. */
 .SharedKanbanCardActions {
   flex-shrink: 0;
-  padding: 1px 4px;
-  border-radius: 5px;
+  margin-right: -4px;
+  padding: 0 4px;
+  border-radius: 4px;
 }
 
 .SharedKanbanCardActions.ui-hover,

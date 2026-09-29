@@ -1201,6 +1201,19 @@
     0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
+/* Picker menus (Electron ComposerPickerMenuPopup): 4px shell, 26px rows. */
+.LxPickerMenuPopup.LxMenuPopup {
+  min-height: 0;
+  padding: 4px;
+}
+
+.LxPickerMenuPopup .LxMenuItem {
+  height: 26px;
+  min-height: 26px;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
 .LxMenuSubPopup {
   position: absolute;
   left: calc(100% + 6px);

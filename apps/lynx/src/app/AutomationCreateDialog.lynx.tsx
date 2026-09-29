@@ -58,7 +58,7 @@ import {
   MenuSeparator,
   MenuTrigger,
 } from "../components/ui/menu.lynx";
-import { BrainIcon, ChevronDownIcon, ClockIcon, FolderIcon, XIcon } from "../lib/icons.lynx";
+import { BrainIcon, ClockIcon, FolderIcon, XIcon } from "../lib/icons.lynx";
 import infoSvg from "@synara-central-icons/info-simple.svg?raw";
 import modeSvg from "@synara-central-icons/building-blocks.svg?raw";
 import worktreeSvg from "@synara-central-icons/arrow-split-right.svg?raw";
@@ -70,6 +70,7 @@ import {
 } from "./automationCreate.logic";
 import { AutomationTimeInput } from "./AutomationTimeInput.lynx";
 import {
+  AutomationComposerChipChevron,
   AutomationComposerNameInput,
   AutomationComposerStopWhenInput,
   AutomationComposerToolbarIcon,
@@ -349,7 +350,9 @@ export function AutomationCreateDialog({
             aria-label="Automation prompt"
             disabled={pending}
             maxLength={64000}
-            maxLines={10}
+            // The web prompt is a fixed 15rem box that scrolls; 11 lines of 23px
+            // keep the line cap from shrinking the field below 240px.
+            maxLines={11}
             placeholder="Add prompt e.g. look for crashes in $sentry"
             value={prompt}
             onChange={(event) => setPrompt(event.target.value)}
@@ -398,11 +401,7 @@ export function AutomationCreateDialog({
                     content={worktreeSvg}
                   />
                   <text className="AutomationCreateChipText">{worktreeModeLabel}</text>
-                  <ChevronDownIcon
-                    className="AutomationCreateChipChevron"
-                    color="var(--color-icon-secondary)"
-                    size={12}
-                  />
+                  <AutomationComposerChipChevron />
                 </Button>
               </MenuTrigger>
               <MenuPopup align="start" side="top" className="AutomationCreateMenu">
@@ -436,11 +435,7 @@ export function AutomationCreateDialog({
                   <text className="AutomationCreateChipText AutomationCreateProjectLabel">
                     {selectedProjectLabel}
                   </text>
-                  <ChevronDownIcon
-                    className="AutomationCreateChipChevron"
-                    color="var(--color-icon-secondary)"
-                    size={12}
-                  />
+                  <AutomationComposerChipChevron />
                 </Button>
               </MenuTrigger>
               <MenuPopup align="start" side="top" className="AutomationCreateProjectMenu">
@@ -455,6 +450,7 @@ export function AutomationCreateDialog({
             </Menu>
             <ComposerModelControl
               hideStatusLabel
+              triggerVariant="picker"
               modelSelection={modelSelection}
               catalogProvider={modelCatalogProvider}
               runtimeModels={modelCatalog.data?.models ?? []}
@@ -483,11 +479,7 @@ export function AutomationCreateDialog({
                     size={16}
                   />
                   <text className="AutomationCreateChipText">{cadenceLabel}</text>
-                  <ChevronDownIcon
-                    className="AutomationCreateChipChevron"
-                    color="var(--color-icon-secondary)"
-                    size={12}
-                  />
+                  <AutomationComposerChipChevron />
                 </Button>
               </MenuTrigger>
               <MenuPopup align="start" side="top" className="AutomationCreateScheduleMenu">

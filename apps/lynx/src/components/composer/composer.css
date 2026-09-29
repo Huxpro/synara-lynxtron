@@ -343,10 +343,9 @@
   overflow: visible;
 }
 
+/* Web compact footer changes only the gap (gap-1.5); padding stays 6px/8px. */
 .ComposerFooterRowLynx--compact {
   gap: 6px;
-  padding-left: 4px;
-  padding-right: 4px;
 }
 
 .ComposerFooterLeadingLynx--compact {
@@ -618,6 +617,12 @@
   padding-right: 10px;
 }
 
+/* Web compact PickerTriggerButton: px-1.5 at every viewport. */
+.SliceRoot .ComposerModelTriggerLynx.ComposerModelTriggerLynx--picker {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
 .ComposerModelTriggerLynx.ui-hover {
   background-color: var(--color-background-elevated-secondary);
 }
@@ -794,7 +799,9 @@
 }
 
 .ComposerModelSubTriggerLynx {
-  min-height: 32px;
+  height: 26px;
+  min-height: 26px;
+  padding: 4px 8px;
 }
 
 .ComposerModelSubTriggerContentLynx {
@@ -986,10 +993,6 @@
 .ComposerTraitSectionLynx {
   display: flex;
   flex-direction: column;
-  padding: 6px 4px 8px;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: var(--border);
 }
 
 .ComposerTraitSectionHeaderLynx {
