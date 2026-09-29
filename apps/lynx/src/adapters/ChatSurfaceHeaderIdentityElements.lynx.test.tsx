@@ -7,7 +7,7 @@ describe("chat surface header identity fidelity", () => {
       new URL("./ChatSurfaceHeaderIdentityElements.lynx.tsx", import.meta.url),
       "utf8",
     );
-    expect(source).toContain("maxlines={1}");
+    expect(source).toContain('text-maxline="1"');
     expect(source).toContain("{props.displayTitle ?? props.title}");
     expect(source).toContain("`Rename thread ${props.title}`");
     const styles = readFileSync(new URL("../app/App.css", import.meta.url), "utf8");

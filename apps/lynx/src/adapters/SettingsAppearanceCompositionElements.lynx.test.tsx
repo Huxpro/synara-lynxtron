@@ -56,8 +56,8 @@ describe("Settings Appearance fidelity", () => {
       /\.LxSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border:\s*1px solid var\(--settings-switch-border\);/s,
     );
     expect(source).toContain('role="radiogroup"');
-    expect(source).toContain('role="radio"');
-    expect(source).toContain("aria-checked={active}");
+    expect(source).toContain('role: "radio"');
+    expect(source).toContain('"aria-checked": active');
     expect(source).toContain('import { Switch } from "../components/ui/switch.lynx";');
     expect(source).toContain(`<Switch
       checked={props.checked}`);

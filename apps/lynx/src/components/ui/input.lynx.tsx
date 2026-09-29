@@ -33,13 +33,28 @@ export interface LynxInputKeyEvent {
   readonly key: string;
   readonly metaKey?: boolean;
   readonly shiftKey?: boolean;
+  preventDefault(): void;
+  stopPropagation(): void;
+}
+
+type RawLynxKeyEvent = Omit<LynxInputKeyEvent, "preventDefault" | "stopPropagation"> & {
   preventDefault?: () => void;
   stopPropagation?: () => void;
+};
+
+// Background-thread Lynx events may arrive without the DOM-style methods; keep
+// the shared `event.preventDefault()` call-site contract total.
+export function toLynxInputKeyEvent(event: RawLynxKeyEvent): LynxInputKeyEvent {
+  return {
+    ...event,
+    preventDefault: () => event.preventDefault?.(),
+    stopPropagation: () => event.stopPropagation?.(),
+  };
 }
 
 export interface InputProps extends Omit<
   LynxInputProps,
-  "className" | "onInput" | "onFocus" | "onBlur" | "readonly" | "type"
+  "className" | "onInput" | "onFocus" | "onBlur" | "type"
 > {
   ref?: React.ForwardedRef<InputRef>;
   className?: string;
@@ -56,7 +71,11 @@ export interface InputProps extends Omit<
   onFocus?: (event: LynxInputFocusEvent) => void;
   onBlur?: (event: LynxInputFocusEvent) => void;
   onKeyDown?: (event: LynxInputKeyEvent) => void;
+  /** Focuses the field once it mounts (and again if it becomes enabled). */
+  autoFocus?: boolean;
   "aria-invalid"?: boolean;
+  "aria-label"?: string;
+  "accessibility-label"?: string;
 }
 
 interface RawInputEvent {
@@ -71,6 +90,7 @@ interface RawInputEvent {
 interface KeyboardInputProps {
   readonly accessibleLabel?: string;
   readonly ariaInvalid?: boolean;
+  readonly autoFocus?: boolean;
   readonly className: string;
   readonly confirmType: NonNullable<LynxInputProps["confirmType"]>;
   readonly defaultValue?: string;
@@ -132,6 +152,11 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
       }>;
     const setSelectionRange = (selectionStart: number, selectionEnd: number): Promise<void> =>
       invoke("setSelectionRange", { selectionStart, selectionEnd }).then(() => undefined);
+
+    useEffect(() => {
+      if (!props.autoFocus || props.disabled) return;
+      void focus().catch(() => undefined);
+    }, [props.autoFocus, props.disabled]);
 
     // Values this input emitted and has not yet seen come back as `value`.
     // Their echo must not be written into the native field (typing may have
@@ -212,7 +237,10 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
         : (event: { detail: { value: string } }) => props.onConfirm?.(event.detail.value),
       bindselection: (event: { detail: { selectionStart: number; selectionEnd: number } }) =>
         props.onSelectionChange?.(event.detail.selectionStart, event.detail.selectionEnd),
-      catchkeydown: props.disabled ? undefined : props.onKeyDown,
+      catchkeydown:
+        props.disabled || !props.onKeyDown
+          ? undefined
+          : (event: RawLynxKeyEvent) => props.onKeyDown?.(toLynxInputKeyEvent(event)),
       className: props.className,
       style: props.style,
     } as const;
@@ -240,6 +268,7 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
     onFocus,
     onBlur,
     onKeyDown,
+    autoFocus,
     "aria-invalid": ariaInvalid,
     "aria-label": ariaLabel,
     "accessibility-label": accessibilityLabel,
@@ -297,11 +326,12 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
           : undefined
       }
     >
-      {nativeInput || onKeyDown || props.placeholder !== undefined ? (
+      {nativeInput || onKeyDown || autoFocus || props.placeholder !== undefined ? (
         <KeyboardInput
           ref={forwardedRef}
           accessibleLabel={accessibilityLabel ?? ariaLabel}
           ariaInvalid={ariaInvalid}
+          autoFocus={autoFocus}
           id={props.id}
           className="LxInput"
           readonly={props.readonly}
@@ -325,15 +355,14 @@ export const Input = forwardRef<InputRef, InputProps>(function Input(
           style={props.style}
         />
       ) : (
+        // lynx-ui's Input renders only its own props (no disabled/focusable/aria
+        // attributes reach the element): disabled is enforced through readonly,
+        // invalid/disabled visuals through the control wrapper's classes.
         <LynxInput
           {...props}
           ref={forwardedRef}
           className="LxInput"
           readonly={resolvedDisabled || props.readonly}
-          disabled={resolvedDisabled}
-          focusable={!resolvedDisabled}
-          aria-invalid={ariaInvalid}
-          placeholder-color={svgColors.placeholderForeground}
           type={type === "search" ? "text" : type}
           confirmType={type === "search" ? "search" : props.confirmType}
           onInput={resolvedDisabled ? undefined : handleInput}

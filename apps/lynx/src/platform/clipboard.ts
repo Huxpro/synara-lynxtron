@@ -44,5 +44,5 @@ export async function readClipboardText(): Promise<string> {
 export async function exportProfileShareCard(
   input: ProfileShareExportInput,
 ): Promise<{ readonly ok: boolean }> {
-  return bridgeCall("profileShareExport", input);
+  return bridgeCall("profileShareExport", { ...input });
 }

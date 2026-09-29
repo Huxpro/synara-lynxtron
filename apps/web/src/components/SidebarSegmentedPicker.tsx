@@ -40,7 +40,7 @@ export function SidebarSegmentedPicker({
   if (pendingView.key !== activeView) {
     setPendingView({ key: activeView, value: null });
   }
-  const pendingViewResetTimeoutRef = useRef<number | null>(null);
+  const pendingViewResetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const clearPendingViewResetTimeout = useCallback(() => {
     if (pendingViewResetTimeoutRef.current !== null) {
       clearTimeout(pendingViewResetTimeoutRef.current);

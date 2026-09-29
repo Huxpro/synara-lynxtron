@@ -2384,7 +2384,6 @@ function ThreadPage(props: ThreadPageProps) {
             className="ThreadEditorHistoryViewport"
             accessibility-element
             accessibility-label="Chat history dialog"
-            accessibility-trait="dialog"
             bindkeydown={(event: { readonly key?: string }) => {
               "background only";
               if (event.key === "Escape") setEditorChatHistoryOpen(false);
@@ -2399,7 +2398,8 @@ function ThreadPage(props: ThreadPageProps) {
               className="ThreadEditorHistoryDialog"
               accessibility-element
               accessibility-label="Chat history"
-              accessibility-trait="dialog"
+              role="dialog"
+              aria-modal={true}
             >
               <Button
                 aria-label="Close chat history"

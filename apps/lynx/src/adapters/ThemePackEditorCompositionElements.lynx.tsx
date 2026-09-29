@@ -489,6 +489,8 @@ interface ThemePackContrastPointerEvent {
   readonly detail?: {
     readonly clientX?: number;
     readonly pageX?: number;
+    /** Page-space x of a Lynx touch event. */
+    readonly x?: number;
   };
   readonly touches?: readonly {
     readonly clientX?: number;
@@ -523,7 +525,8 @@ export function resolveThemePackContrastPointerValue(
     event.detail?.clientX ??
     event.clientX ??
     event.detail?.pageX ??
-    event.pageX;
+    event.pageX ??
+    event.detail?.x;
   if (typeof x !== "number" || !Number.isFinite(x)) return null;
   return Math.round(Math.max(0, Math.min(1, (x - rect.left) / rect.width)) * 100);
 }

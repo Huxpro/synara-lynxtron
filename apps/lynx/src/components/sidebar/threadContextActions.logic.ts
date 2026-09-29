@@ -2,6 +2,23 @@ import type { ClientOrchestrationCommand } from "@synara/contracts";
 
 import type { ThreadContextMenuActionId } from "@synara-web/components/ThreadContextMenuItems.logic";
 
+const THREAD_CONTEXT_MENU_ACTIONS: Readonly<Record<ThreadContextMenuActionId, true>> = {
+  rename: true,
+  "toggle-pin": true,
+  "clear-notification": true,
+  "mark-unread": true,
+  "copy-path": true,
+  "open-path-in-terminal": true,
+  "copy-thread-id": true,
+  archive: true,
+  delete: true,
+};
+
+/** Narrows a native context-menu reply (menu ids are plain strings). */
+export function isThreadContextMenuActionId(value: string): value is ThreadContextMenuActionId {
+  return Object.hasOwn(THREAD_CONTEXT_MENU_ACTIONS, value);
+}
+
 export function resolveSecondaryPointerOffset(event: {
   readonly button?: number;
   readonly buttons?: number;
@@ -16,6 +33,23 @@ export function resolveSecondaryPointerOffset(event: {
   if (!secondaryPressed) return null;
   if (!Number.isFinite(event.x) || !Number.isFinite(event.y)) return null;
   return { x: event.x!, y: event.y! };
+}
+
+/**
+ * Element-local offset of a Lynx `longpress`. Unlike mouse events it has no
+ * top-level x/y: the element-relative point lives on the touch entry.
+ */
+export function resolveLongPressOffset(event: {
+  readonly touches?: readonly { readonly x?: number; readonly y?: number }[];
+  readonly changedTouches?: readonly { readonly x?: number; readonly y?: number }[];
+}): { readonly x: number; readonly y: number } | null {
+  const touch = event.touches?.[0] ?? event.changedTouches?.[0];
+  const x = touch?.x;
+  const y = touch?.y;
+  if (x === undefined || y === undefined || !Number.isFinite(x) || !Number.isFinite(y)) {
+    return null;
+  }
+  return { x, y };
 }
 
 export function buildNativeThreadContextCommand(input: {

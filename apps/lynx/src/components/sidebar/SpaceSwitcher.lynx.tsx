@@ -6,7 +6,10 @@ import type { SpaceActivityTone } from "@synara/shared/spaceActivity";
 
 import { LynxSpaceIcon } from "../../adapters/ComposerProjectPickerCompositionElements.lynx";
 import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
-import { resolveSecondaryPointerOffset } from "./threadContextActions.logic";
+import {
+  resolveLongPressOffset,
+  resolveSecondaryPointerOffset,
+} from "./threadContextActions.logic";
 import { focusLynxNode } from "../ui/focus.lynx";
 import { PlusIcon } from "../../lib/icons.lynx";
 import { useTheme } from "../../adapters/useTheme.lynx";
@@ -80,13 +83,14 @@ function SpaceTab(props: {
           ),
         );
       }}
-      bindlongpress={(event: { readonly x?: number; readonly y?: number }) => {
+      bindlongpress={(event) => {
         if (!props.onContextMenu) return;
+        const offset = resolveLongPressOffset(event);
         void getRectByRef(tabRef, true).then((rect) =>
           props.onContextMenu?.(
             {
-              x: rect.left + (event.x ?? rect.width / 2),
-              y: rect.top + (event.y ?? rect.height / 2),
+              x: rect.left + (offset?.x ?? rect.width / 2),
+              y: rect.top + (offset?.y ?? rect.height / 2),
             },
             () => focusLynxNode(tabRef),
           ),

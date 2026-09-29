@@ -76,7 +76,7 @@ import {
   buildNativeKanbanTaskCreateCommand,
   createNativeKanbanTaskId,
 } from "./kanbanTaskCreation.logic";
-import { defaultModelSelectionForProvider } from "./defaultModelSelection.logic";
+import { defaultModelSelectionForProvider } from "../lib/defaultModelSelection";
 
 import "./kanban-new-task-dialog.css";
 

@@ -182,11 +182,11 @@ export type ComposerCommandItem =
 interface ComposerCommandGroupModel {
   readonly id: string;
   readonly label: string | null;
-  readonly items: ComposerCommandItem[];
+  readonly items: readonly ComposerCommandItem[];
 }
 
 export function groupCommandItems(
-  items: ComposerCommandItem[],
+  items: readonly ComposerCommandItem[],
   triggerKind: ComposerTriggerKind | null,
   groupSlashCommandSections: boolean,
 ): ComposerCommandGroupModel[] {
@@ -240,7 +240,7 @@ export function groupCommandItems(
 }
 
 export interface ComposerCommandMenuCompositionProps {
-  readonly items: ComposerCommandItem[];
+  readonly items: readonly ComposerCommandItem[];
   readonly resolvedTheme: "light" | "dark";
   readonly isLoading: boolean;
   readonly triggerKind: ComposerTriggerKind | null;

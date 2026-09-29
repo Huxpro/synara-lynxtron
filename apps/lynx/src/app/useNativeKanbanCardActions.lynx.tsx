@@ -288,7 +288,7 @@ export function useNativeKanbanCardActions(input: {
         >
           <view className="KanbanMutationPanelHeader">
             <text className="KanbanMutationPanelTitle">Task actions</text>
-            <text className="KanbanMutationPanelTask" maxlines={1}>
+            <text className="KanbanMutationPanelTask" text-maxline="1">
               {mutationChooserCard.title}
             </text>
           </view>
@@ -325,7 +325,7 @@ export function useNativeKanbanCardActions(input: {
                     ? mutationCopy?.pending
                     : mutationCopy?.error}
             </text>
-            <text className="KanbanMutationPanelTask" maxlines={1}>
+            <text className="KanbanMutationPanelTask" text-maxline="1">
               {mutationTarget.card.title}
             </text>
           </view>

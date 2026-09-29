@@ -14,6 +14,7 @@ import {
   PencilIcon,
   PinIcon,
   PlayIcon,
+  SearchIcon,
   SettingsIcon,
   StopFilledIcon,
   TemporaryThreadIcon,
@@ -190,7 +191,10 @@ import { PreviewCard, PreviewCardPopup, PreviewCardTrigger } from "./ui/preview-
 import { SidebarIconButton } from "./SidebarIconButton";
 import { SidebarLeadingIcon } from "./SidebarLeadingIcon";
 import { SidebarListSectionHeader } from "./SidebarListSectionHeader";
-import { SidebarPrimarySurfaceNavigation } from "./SidebarPrimarySurfaceNavigation";
+import {
+  SidebarPrimarySurfaceNavigation,
+  type SidebarPrimarySurfaceIcons,
+} from "./SidebarPrimarySurfaceNavigation";
 import { SidebarProjectSummary } from "./SidebarProjectSummary";
 import { SidebarSegmentedPicker } from "./SidebarSegmentedPicker";
 import type { SidebarView } from "./SidebarSegmentedPicker.logic";
@@ -427,6 +431,13 @@ const SIDEBAR_LIST_ANIMATION_OPTIONS = {
 } as const;
 const EMPTY_THREAD_JUMP_LABELS = new Map<ThreadId, string>();
 const EMPTY_SHORTCUT_PARTS: readonly string[] = [];
+const SIDEBAR_PRIMARY_SURFACE_ICONS: SidebarPrimarySurfaceIcons = {
+  automations: ClockIcon,
+  kanban: KanbanIcon,
+  newThread: NewThreadIcon,
+  newWorkspace: TerminalIcon,
+  search: SearchIcon,
+};
 const ADD_PROJECT_SNAPSHOT_CATCH_UP_MAX_ATTEMPTS = 6;
 const ADD_PROJECT_SNAPSHOT_CATCH_UP_DELAY_MS = 50;
 const EMPTY_PROJECT_SIDEBAR_DATA: ReadonlyMap<ProjectId, SidebarDerivedProjectData> = new Map();
@@ -5224,6 +5235,7 @@ export default function Sidebar() {
           /* Primary sidebar actions stay limited to features we currently ship. */
           <SidebarPrimarySurfaceNavigation
             surface={primarySidebarSurface}
+            icons={SIDEBAR_PRIMARY_SURFACE_ICONS}
             pullRequestIcon={IoIosGitCompare}
             searchOpen={searchPaletteOpen}
             kanbanActive={isOnKanban}

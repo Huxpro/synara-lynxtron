@@ -28,7 +28,10 @@ import {
   lynxNestedInteractiveEventProps,
   useLynxInteractiveState,
 } from "./useLynxInteractiveState";
-import { resolveSecondaryPointerOffset } from "../components/sidebar/threadContextActions.logic";
+import {
+  resolveLongPressOffset,
+  resolveSecondaryPointerOffset,
+} from "../components/sidebar/threadContextActions.logic";
 import { focusLynxNode } from "../components/ui/focus.lynx";
 
 type ChildrenProps = { readonly children?: ReactNode };
@@ -105,11 +108,8 @@ export function KanbanCardRootElement(
         const point = readNativeKanbanPointer(event);
         if (point) props.onDragPointerStart(point);
       }}
-      bindlongpress={(event: { readonly x?: number; readonly y?: number }) => {
-        openContextMenu({
-          x: Number.isFinite(event.x) ? event.x! : 12,
-          y: Number.isFinite(event.y) ? event.y! : 12,
-        });
+      bindlongpress={(event) => {
+        openContextMenu(resolveLongPressOffset(event) ?? { x: 12, y: 12 });
       }}
     >
       {props.children}
@@ -148,7 +148,7 @@ export function KanbanCardActionsElement(props: {
 
 export function KanbanCardTitleElement(props: ChildrenProps) {
   return (
-    <text className="SharedKanbanCardTitle" maxlines={2}>
+    <text className="SharedKanbanCardTitle" text-maxline="2">
       {props.children}
     </text>
   );
@@ -166,7 +166,7 @@ export function KanbanCardPinElement() {
 
 export function KanbanCardDraftPreviewElement(props: ChildrenProps) {
   return (
-    <text className="SharedKanbanCardDraftPreview" maxlines={2}>
+    <text className="SharedKanbanCardDraftPreview" text-maxline="2">
       {props.children}
     </text>
   );
@@ -196,7 +196,7 @@ export function KanbanCardBranchElement(props: { readonly label: string }) {
         color={semanticIconColor("secondary")}
         size={12}
       />
-      <text className="SharedKanbanCardMetaText" maxlines={1}>
+      <text className="SharedKanbanCardMetaText" text-maxline="1">
         {props.label}
       </text>
     </view>
@@ -270,7 +270,7 @@ export function KanbanCardStatusPillElement(props: { readonly pill: SidebarStatu
           props.pill.pulse ? " SharedKanbanCardStatusDot--working" : ""
         }`}
       />
-      <text className="SharedKanbanCardStatusText" maxlines={1}>
+      <text className="SharedKanbanCardStatusText" text-maxline="1">
         {props.pill.label}
       </text>
     </view>

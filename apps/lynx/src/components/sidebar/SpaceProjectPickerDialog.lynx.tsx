@@ -44,7 +44,6 @@ function ProjectPickerRow(props: {
   return (
     <view
       className={interaction.className}
-      accessibility-element
       accessibility-role="checkbox"
       accessibility-state={{ checked: props.selected }}
       {...interaction.eventProps}

@@ -7,6 +7,7 @@
 
 import { create } from "zustand";
 import {
+  MessageId,
   PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   type ChatAssistantSelectionAttachment,
   type ModelSelection,
@@ -122,6 +123,21 @@ function isStringRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+/** Normalizes (trims, validates) the selection, so branding the id is safe. */
+function createAssistantSelectionDraft(
+  id: string,
+  selection: { readonly assistantMessageId: string; readonly text: string },
+): ChatAssistantSelectionAttachment | null {
+  const normalized = normalizeAssistantSelectionAttachment(selection);
+  if (!normalized) return null;
+  return {
+    type: "assistant-selection",
+    id,
+    assistantMessageId: MessageId.makeUnsafe(normalized.assistantMessageId),
+    text: normalized.text,
+  };
+}
+
 function parseAssistantSelections(value: unknown): ChatAssistantSelectionAttachment[] {
   if (!Array.isArray(value)) return [];
   const selections: ChatAssistantSelectionAttachment[] = [];
@@ -136,16 +152,11 @@ function parseAssistantSelections(value: unknown): ChatAssistantSelectionAttachm
     ) {
       continue;
     }
-    const normalized = normalizeAssistantSelectionAttachment({
+    const selection = createAssistantSelectionDraft(candidate.id, {
       assistantMessageId: candidate.assistantMessageId,
       text: candidate.text,
     });
-    if (!normalized) continue;
-    selections.push({
-      type: "assistant-selection",
-      id: candidate.id,
-      ...normalized,
-    });
+    if (selection) selections.push(selection);
   }
   return selections;
 }
@@ -365,7 +376,7 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()((set)
   addAssistantSelection: (threadId, selection) =>
     set((state) => {
       const current = state.draftsByThreadId[threadId] ?? emptyDraft();
-      const normalized = normalizeAssistantSelectionAttachment(selection);
+      const normalized = createAssistantSelectionDraft(selection.id, selection);
       if (
         !normalized ||
         current.files.length + current.images.length + current.assistantSelections.length >=
@@ -387,14 +398,7 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()((set)
           ...state.draftsByThreadId,
           [threadId]: {
             ...current,
-            assistantSelections: [
-              ...current.assistantSelections,
-              {
-                type: "assistant-selection",
-                id: selection.id,
-                ...normalized,
-              },
-            ],
+            assistantSelections: [...current.assistantSelections, normalized],
           },
         },
       };

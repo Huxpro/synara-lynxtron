@@ -16,7 +16,7 @@ describe("sidebar hover card icon paint", () => {
 
     const metadataIcons = elementTree.root?.querySelectorAll(".AppSidebarHoverCardIcon");
     expect(metadataIcons).toHaveLength(4);
-    for (const icon of metadataIcons ?? []) {
+    for (const icon of Array.from(metadataIcons ?? [])) {
       expect(icon.getAttribute("content")).toContain('stroke="rgba(13, 13, 13, 0.6)"');
     }
 
@@ -54,7 +54,7 @@ describe("sidebar hover card icon paint", () => {
     const card = elementTree.root?.querySelector(".AppSidebarThreadHoverCard");
     const metadataIcons = card?.querySelectorAll(".AppSidebarHoverCardIcon");
     expect(metadataIcons).toHaveLength(4);
-    for (const icon of metadataIcons ?? []) {
+    for (const icon of Array.from(metadataIcons ?? [])) {
       expect(icon.getAttribute("content")).toMatch(/(?:stroke|fill)="rgba\(13, 13, 13, 0\.6\)"/);
     }
   });

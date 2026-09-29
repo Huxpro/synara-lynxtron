@@ -283,7 +283,7 @@ function InsightRow(props: { readonly label: string; readonly value: string }) {
       accessibility-trait="text"
     >
       <text className="SettingsProfileInsightLabel">{props.label}</text>
-      <text className="SettingsProfileInsightValue" maxlines={1}>
+      <text className="SettingsProfileInsightValue" text-maxline="1">
         {props.value}
       </text>
     </view>
@@ -619,7 +619,7 @@ function ProfileContent(props: {
                     <view className="SettingsProfilePluginIcon">
                       <ProfileUsageKindIcon kind={skill.kind} />
                     </view>
-                    <text className="SettingsProfilePluginName" maxlines={1}>
+                    <text className="SettingsProfilePluginName" text-maxline="1">
                       {skill.displayName}
                     </text>
                   </view>
@@ -652,7 +652,7 @@ function ProfileContent(props: {
                 <view className="SettingsProfileModelLine">
                   <view className="SettingsProfileModelIdentity">
                     <ProfileProviderIcon provider={entry.provider} />
-                    <text className="SettingsProfileModelName" maxlines={1}>
+                    <text className="SettingsProfileModelName" text-maxline="1">
                       {entry.model}
                     </text>
                   </view>

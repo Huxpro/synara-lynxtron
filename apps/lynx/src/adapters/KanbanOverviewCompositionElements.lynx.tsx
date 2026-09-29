@@ -49,12 +49,7 @@ export function KanbanOverviewProjectHeaderElement(
     onActivate: props.onActivate,
   });
   return (
-    <view
-      className={interaction.className}
-      data-project-header-hovered={interaction.hovered ? "true" : "false"}
-      data-project-header-focused={interaction.focused ? "true" : "false"}
-      {...interaction.eventProps}
-    >
+    <view className={interaction.className} {...interaction.eventProps}>
       {props.children}
     </view>
   );
@@ -62,7 +57,7 @@ export function KanbanOverviewProjectHeaderElement(
 
 export function KanbanOverviewProjectTitleElement(props: ChildrenProps) {
   return (
-    <text className="SharedKanbanOverviewProjectTitle" maxlines={1}>
+    <text className="SharedKanbanOverviewProjectTitle" text-maxline="1">
       {props.children}
     </text>
   );

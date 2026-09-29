@@ -147,7 +147,8 @@ export function resolveVisibleRowRangeFromAttachedCells(input: {
   readonly attachedCells: readonly AttachedListCell[];
   readonly listHeight: number | undefined;
 }): { readonly top: number; readonly bottom: number } | null {
-  if (typeof input.listHeight !== "number" || !Number.isFinite(input.listHeight)) {
+  const listHeight = input.listHeight;
+  if (typeof listHeight !== "number" || !Number.isFinite(listHeight)) {
     return null;
   }
   const indexes = input.attachedCells
@@ -157,7 +158,7 @@ export function resolveVisibleRowRangeFromAttachedCells(input: {
         Number.isFinite(cell.index) &&
         typeof cell.top === "number" &&
         typeof cell.bottom === "number" &&
-        cell.top < input.listHeight &&
+        cell.top < listHeight &&
         cell.bottom > 0,
     )
     .map((cell) => cell.index as number)

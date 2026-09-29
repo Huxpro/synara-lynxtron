@@ -3,7 +3,7 @@ import type { ClientOrchestrationCommand, ModelSelection, ProviderKind } from "@
 import type { LynxAppSnapCapture } from "../platform/appSnap";
 import type { loadLandingBootstrap } from "../components/composer/LandingComposer.lynx";
 import { dispatchSynaraCommand, fetchSynaraSidebarShellSnapshot } from "../data/synaraClient.lynx";
-import { defaultModelSelectionForProvider } from "./defaultModelSelection.logic";
+import { defaultModelSelectionForProvider } from "../lib/defaultModelSelection";
 
 type LandingBootstrap = Awaited<ReturnType<typeof loadLandingBootstrap>>;
 

@@ -52,7 +52,7 @@ describe("Native Space editor dialog", () => {
     const rocket = elementTree.root?.querySelector('[accessibility-label="Rocket"]');
     if (!rocket) throw new Error("expected Rocket icon option");
     fireEvent.tap(rocket);
-    const buttons = [...(elementTree.root?.querySelectorAll(".LxButton") ?? [])];
+    const buttons = Array.from(elementTree.root?.querySelectorAll(".LxButton") ?? []);
     const save = buttons[buttons.length - 1];
     if (!save) throw new Error("expected Save button");
     fireEvent.tap(save);

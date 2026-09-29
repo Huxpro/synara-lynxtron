@@ -1,6 +1,5 @@
 import type { ComponentType } from "react";
 
-import { ClockIcon, KanbanIcon, NewThreadIcon, SearchIcon, TerminalIcon } from "~/lib/icons";
 import { splitShortcutLabel } from "~/keybindings";
 import { SidebarGlyph } from "~/components/sidebarGlyphs";
 import {
@@ -14,15 +13,9 @@ export interface SidebarPrimarySurfaceIcons {
   readonly automations: Icon;
   readonly kanban: Icon;
   readonly newThread: Icon;
+  readonly newWorkspace: Icon;
   readonly search: Icon;
 }
-
-const DEFAULT_ICONS: SidebarPrimarySurfaceIcons = {
-  automations: ClockIcon,
-  kanban: KanbanIcon,
-  newThread: NewThreadIcon,
-  search: SearchIcon,
-};
 
 function item(input: {
   icon: Icon;
@@ -54,7 +47,8 @@ function item(input: {
 export function SidebarPrimarySurfaceNavigation(props: {
   surface: "threads" | "studio" | "workspace";
   pullRequestIcon: Icon;
-  icons?: SidebarPrimarySurfaceIcons;
+  /** Platform icon set; each renderer supplies its own glyph implementation. */
+  icons: SidebarPrimarySurfaceIcons;
   searchOpen?: boolean;
   kanbanActive?: boolean;
   pullRequestsActive?: boolean;
@@ -73,12 +67,12 @@ export function SidebarPrimarySurfaceNavigation(props: {
   onOpenPullRequests?: () => void;
   onOpenAutomations?: () => void;
 }) {
-  const icons = props.icons ?? DEFAULT_ICONS;
+  const icons = props.icons;
   const items =
     props.surface === "workspace"
       ? [
           item({
-            icon: TerminalIcon,
+            icon: icons.newWorkspace,
             label: "New workspace",
             onActivate: props.onCreateWorkspace,
           }),

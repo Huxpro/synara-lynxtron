@@ -16,14 +16,18 @@ interface NativeRpcResult<T> {
   readonly value: T;
 }
 
-export function unwrapTerminalBridgeResult<T>(result: T | NativeRpcResult<T>): T {
-  return result &&
+function isNativeRpcResult<T>(result: T | NativeRpcResult<T>): result is NativeRpcResult<T> {
+  return (
     typeof result === "object" &&
+    result !== null &&
     "_tag" in result &&
     result._tag === "NativeRpcResult" &&
     "value" in result
-    ? result.value
-    : result;
+  );
+}
+
+export function unwrapTerminalBridgeResult<T>(result: T | NativeRpcResult<T>): T {
+  return isNativeRpcResult(result) ? result.value : result;
 }
 
 async function callTerminalBridge<T>(name: string, input: Record<string, unknown>): Promise<T> {

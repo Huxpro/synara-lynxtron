@@ -1,6 +1,6 @@
 import { useMemo, useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
-import { DEFAULT_MODEL_BY_PROVIDER, type ProviderKind } from "@synara/contracts";
+import { DEFAULT_MODEL_BY_PROVIDER } from "@synara/contracts";
 
 import {
   SidebarSearchPalette,
@@ -107,7 +107,7 @@ export function SidebarSearchPaletteLynx(props: {
     );
     const target = props.snapshot?.projects.find((project) => project.kind === "project");
     if (!target) throw new Error("Add a project before importing a thread.");
-    const model = DEFAULT_MODEL_BY_PROVIDER[provider as ProviderKind];
+    const model = DEFAULT_MODEL_BY_PROVIDER[provider];
     if (!model) throw new Error(`No default model is available for ${provider}.`);
     const command = buildNativeSearchImportThreadCreateCommand({
       projectId: target.id,

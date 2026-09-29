@@ -471,10 +471,10 @@ export function KanbanProjectPage({
                 top: `${nativeDrag.currentPoint.y + 12}px`,
               }}
             >
-              <text className="KanbanDragGhostTitle" maxlines={1}>
+              <text className="KanbanDragGhostTitle" text-maxline="1">
                 {nativeDrag.card.title}
               </text>
-              <text className="KanbanDragGhostStatus" maxlines={2}>
+              <text className="KanbanDragGhostStatus" text-maxline="2">
                 {nativeDrag.policy?.label ?? KANBAN_DND_COPY.dragging}
               </text>
             </view>

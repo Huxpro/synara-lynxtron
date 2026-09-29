@@ -10,7 +10,7 @@ import type {
   RuntimeMode,
   ProviderKind,
 } from "@synara/contracts";
-import { defaultModelSelectionForProvider } from "./defaultModelSelection.logic";
+import { defaultModelSelectionForProvider } from "../lib/defaultModelSelection";
 
 export type CreateWorktreeMode = AutomationWorktreeMode;
 

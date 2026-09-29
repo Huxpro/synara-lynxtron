@@ -85,15 +85,15 @@ describe("Native Space project picker", () => {
     );
     expect(elementTree.root?.querySelector(".AppSidebarSpaceProjectPickerDialog")).toBeTruthy();
     expect(
-      [...(elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectGroupLabelText") ?? [])].map(
-        (element) => element.textContent,
-      ),
+      Array.from(
+        elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectGroupLabelText") ?? [],
+      ).map((element) => element.textContent),
     ).toEqual(["Void · Active", "Work"]);
 
-    const rows = [...(elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectRow") ?? [])];
+    const rows = Array.from(elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectRow") ?? []);
     fireEvent.tap(rows[0]!);
     fireEvent.tap(rows[1]!);
-    const buttons = [...(elementTree.root?.querySelectorAll(".LxButton") ?? [])];
+    const buttons = Array.from(elementTree.root?.querySelectorAll(".LxButton") ?? []);
     const submit = buttons[buttons.length - 1];
     expect(submit?.textContent).toBe("Move 2 projects");
     fireEvent.tap(submit!);
@@ -117,9 +117,9 @@ describe("Native Space project picker", () => {
     await waitFor(() =>
       expect(elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectRow")).toHaveLength(2),
     );
-    const rows = [...(elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectRow") ?? [])];
+    const rows = Array.from(elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectRow") ?? []);
     rows.forEach((row) => fireEvent.tap(row));
-    const buttons = [...(elementTree.root?.querySelectorAll(".LxButton") ?? [])];
+    const buttons = Array.from(elementTree.root?.querySelectorAll(".LxButton") ?? []);
     fireEvent.tap(buttons[buttons.length - 1]!);
     await waitFor(() =>
       expect(
