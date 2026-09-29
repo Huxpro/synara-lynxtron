@@ -707,6 +707,17 @@
   background-color: transparent;
 }
 
+.ComposerTraitsTriggerLynx--icon {
+  gap: 4px;
+}
+
+.ComposerTraitsTriggerGearLynx {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
 .ComposerTraitsTriggerLynx.ui-hover,
 .ComposerTraitsTriggerLynx.ui-pressed {
   background-color: var(--color-background-elevated-secondary);

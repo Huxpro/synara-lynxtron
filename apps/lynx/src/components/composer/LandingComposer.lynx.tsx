@@ -158,6 +158,8 @@ export async function loadLandingBootstrap(
 }
 
 export function LandingComposer(props: {
+  /** Main-column width, so the footer compacts like the thread composer. */
+  readonly availableWidth?: number;
   readonly branch?: string | null;
   readonly containerKind?: "chat" | "studio";
   readonly envMode?: "local" | "worktree";
@@ -455,6 +457,7 @@ export function LandingComposer(props: {
         </view>
       ) : null}
       <Composer
+        availableWidth={props.availableWidth}
         voiceInputEnabled
         draftId={draftId}
         threadId={threadIdRef.current}

@@ -26,7 +26,8 @@
   transform: translateX(100%);
 }
 
-.SliceRoot--viewport-compact .ThreadPage > .ThreadRightDockHost {
+.SliceRoot--viewport-compact .ThreadPage > .ThreadRightDockHost,
+.SliceRoot--viewport-compact .ThreadsLanding > .ThreadRightDockHost {
   left: 0;
   top: 92px;
   width: 100%;

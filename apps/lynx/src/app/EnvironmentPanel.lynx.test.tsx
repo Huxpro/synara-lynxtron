@@ -45,8 +45,10 @@ describe("Lynx Environment panel", () => {
     const appStyles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
     expect(routerSource).toContain("<EnvironmentToggle");
     expect(routerSource).toContain("<EnvironmentPanel");
-    expect(routerSource).toContain('accessibleLabel: "Toggle diff panel"');
-    expect(routerSource).toContain("panelRightCloseSvg");
+    expect(readFileSync(new URL("./threadDock.lynx.tsx", import.meta.url), "utf8")).toContain(
+      'accessibleLabel: "Toggle diff panel"',
+    );
+    expect(routerSource).toContain("<ThreadDiffToggle");
     expect(routerSource).not.toContain("accessibleLabel: 'Toggle files panel'");
     expect(routerSource).toContain(
       "const [environmentUserOverride, setEnvironmentUserOverride] = useState<",
@@ -316,7 +318,9 @@ describe("Lynx Environment panel", () => {
     );
     expect(panelSource).not.toContain("rightInsetPx");
     expect(routerSource).toContain("const effectiveRightDockWidth =");
-    expect(routerSource).toContain("rightDockWidth !== null && rightDockWidth > 0");
+    expect(readFileSync(new URL("./threadDock.lynx.tsx", import.meta.url), "utf8")).toContain(
+      "dockWidth !== null && dockWidth > 0",
+    );
     expect(routerSource).not.toContain("rightInsetPx={");
     expect(routerSource).toContain("(threadPageWidth || viewportWidth) - effectiveRightDockWidth");
     expect(routerSource).toContain("resolveEnvironmentPanelLayout({");

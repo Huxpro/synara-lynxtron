@@ -6,6 +6,7 @@ import type {
 } from "@synara/contracts";
 import { useEffect, useInitData, useMemo, useState } from "@lynx-js/react";
 import fastModeSvg from "@synara-central-icons-fill/zap.svg?raw";
+import settingsGearSvg from "@synara-central-icons/settings-gear-4.svg?raw";
 import { VIEWPORT_HEIGHT_BREAKPOINTS } from "@synara-web/responsiveLayout.logic";
 
 import { buildComposerProviderPickerItems } from "@synara-web/components/chat/ComposerProviderPickerItems";
@@ -593,11 +594,21 @@ export function ComposerModelControl(props: {
       {props.splitTraits && effortLabel ? (
         <Menu open={traitsOpen} onOpenChange={setTraitsOpen}>
           <MenuTrigger
-            className="ComposerTraitsTriggerLynx"
+            className={`ComposerTraitsTriggerLynx${
+              props.compact ? " ComposerTraitsTriggerLynx--icon" : ""
+            }`}
             ariaLabel="Change effort, context, and speed"
           >
-            <text className="ComposerTraitsTriggerLabelLynx">{effortLabel}</text>
-            {traitSelection.fastModeEnabled ? (
+            {props.compact ? (
+              // Web TraitsPicker hideLabel: gear + chevron for narrow composers.
+              <svg
+                className="ComposerTraitsTriggerGearLynx"
+                content={colorizeLynxSvg(settingsGearSvg, semanticIconColor("secondary"))}
+              />
+            ) : (
+              <text className="ComposerTraitsTriggerLabelLynx">{effortLabel}</text>
+            )}
+            {!props.compact && traitSelection.fastModeEnabled ? (
               <svg
                 className="ComposerTraitsTriggerFastLynx"
                 content={colorizeLynxSvg(fastModeSvg, semanticIconColor("secondary"))}

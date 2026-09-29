@@ -26,7 +26,7 @@ describe("Lynx Explorer dock", () => {
       "utf8",
     );
     expect(header).toContain("await openPathInEditor({ cwd: openTarget, editor })");
-    expect(routerSource).toContain("onExplorerRetryFile={() => void explorerFileQuery.refetch()}");
+    expect(routerSource).toContain("onExplorerRetryFile: () => void explorerFileQuery.refetch(),");
     // Every mounted Explorer (dock and editor mode) must receive the retry handler,
     // and the page must forward it to the dock host.
     expect(routerSource.match(/<ExplorerDock\b/g)?.length).toBe(
@@ -153,7 +153,7 @@ describe("Lynx Explorer dock", () => {
     expect(source).toContain("onQueryChange: (query: string) => void");
     expect(routerSource).toContain("fetchExplorerEntries({");
     expect(routerSource).toContain(
-      "explorerEntriesTruncated={explorerEntriesQuery.data?.truncated ?? false}",
+      "explorerEntriesTruncated: explorerEntriesQuery.data?.truncated ?? false,",
     );
     expect(routerSource).toContain(
       'queryKey: ["explorer-entries", activeThreadId, workspaceRoot, explorerTrimmedQuery]',
@@ -292,7 +292,9 @@ describe("Lynx Explorer dock", () => {
       "relaySocketBaseUrl ?? relayReadyBaseUrl ?? configuredRelayBaseUrl()",
     );
     expect(routerSource).toContain("toggleExpandedDirectory(current, path)");
-    expect(routerSource).toContain('accessibleLabel: "Toggle diff panel"');
+    expect(readFileSync(new URL("./threadDock.lynx.tsx", import.meta.url), "utf8")).toContain(
+      'accessibleLabel: "Toggle diff panel"',
+    );
     expect(routerSource).toContain("onOpenFileReference={openExplorerFileReference}");
     expect(routerSource).toContain("onOpenFileReference={openExplorerFileReference}");
     expect(routerSource).toContain('onExplorerQueryChange("")');

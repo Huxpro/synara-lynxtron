@@ -176,6 +176,12 @@ import { DiffDock } from "./DiffDock.lynx";
 import { ThreadRightDockTabs } from "./ThreadRightDockTabs.lynx";
 import { ThreadRightDockHost } from "./ThreadRightDockHost.lynx";
 import { readRightDockThreadState, storeRightDockThreadState } from "./rightDockState.lynx";
+import {
+  ThreadDiffToggle,
+  usePersistedRightDockState,
+  useRightDockLayout,
+  useWorkspaceHeaderDiff,
+} from "./threadDock.lynx";
 import { EXPLORER_DOCK_MIN_WIDTH, ExplorerDock } from "./ExplorerDock.lynx";
 import { ResizableRightPanel } from "./ResizableRightPanel.lynx";
 import {
@@ -394,6 +400,8 @@ function ThreadsLandingHeader(props: {
   readonly onEnvironmentOpenChange: (open: boolean) => void;
   readonly project: ProjectSummary | null;
   readonly title?: "New Chat" | "New thread";
+  readonly diffToggle?: ReactNode;
+  readonly compact?: boolean;
 }) {
   const project = props.project;
   return (
@@ -404,7 +412,7 @@ function ThreadsLandingHeader(props: {
       <view className="ThreadHeaderControls">
         <ThreadHeaderActions
           actionState={{ showHandoff: true, showProjectActions: project?.kind === "project" }}
-          compact={false}
+          compact={props.compact ?? false}
           project={
             project
               ? {
@@ -425,33 +433,24 @@ function ThreadsLandingHeader(props: {
             onChange={props.onEnvironmentOpenChange}
           />
         ) : null}
-        <LandingDiffToggle />
+        {props.diffToggle ?? (
+          <ThreadDiffToggle open={false} disabled stats={null} onToggle={() => {}} />
+        )}
       </view>
     </ChatSurfaceHeaderFrame>
   );
 }
 
-function LandingDiffToggle() {
-  const { semanticIconColor } = useTheme();
-  const diffToggle = useLynxInteractiveState({
-    baseClassName: "ThreadDiffToggle ui-disabled",
-    accessibleLabel: "Toggle diff panel",
-    disabled: true,
-  });
-  return (
-    <view className={diffToggle.className} {...diffToggle.eventProps}>
-      <svg
-        className="ThreadDiffToggleIcon"
-        content={colorizeLynxSvg(panelRightCloseSvg, semanticIconColor("secondary"))}
-      />
-    </view>
-  );
-}
-
 function ThreadsLandingPage(props: {
+  readonly appearance: SettingsAppearanceValues;
   readonly containerKind?: "chat" | "studio";
+  readonly explorerDockProps: ExplorerDockProps;
   readonly initialProjectId?: string | null;
+  readonly onDockWorkspaceChange: (workspaceRoot: string | null) => void;
   readonly onThreadCreated: (threadId: string, options: { readonly temporary: boolean }) => void;
+  readonly resolvedTheme: "dark" | "light";
+  readonly viewportHeight: number;
+  readonly viewportWidth: number;
 }) {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
     props.initialProjectId ?? null,
@@ -496,71 +495,209 @@ function ThreadsLandingPage(props: {
     }
   }, [landingBootstrap?.generalSettings.defaultThreadEnvMode]);
   const landingThreadId = landingDraftId(props.containerKind);
+  // Web: the landing is the draft thread, so its header diff toggle and right
+  // dock work on the project before the first message.
+  const dockWorkspaceRoot = environmentProject?.workspaceRoot || null;
+  const { onDockWorkspaceChange } = props;
+  useEffect(() => {
+    onDockWorkspaceChange(dockWorkspaceRoot);
+  }, [dockWorkspaceRoot, onDockWorkspaceChange]);
+  useEffect(() => () => onDockWorkspaceChange(null), [onDockWorkspaceChange]);
+  const [rightDockState, updateRightDockState] = usePersistedRightDockState(landingThreadId);
+  const [explorerPresentationMode, setExplorerPresentationMode] = useState<"dock" | "single-file">(
+    "dock",
+  );
+  const [diffFileTreeOpen, setDiffFileTreeOpen] = useState(false);
+  const activeDockPane = resolveActivePane(rightDockState);
+  const dockOpen = rightDockState.open && Boolean(rightDockState.activePaneId);
+  const diffOpen = rightDockState.open && activeDockPane?.kind === "diff";
+  const explorerOpen =
+    rightDockState.open && (activeDockPane?.kind === "explorer" || activeDockPane?.kind === "file");
+  const terminalOpen = rightDockState.open && activeDockPane?.kind === "terminal";
+  const dockLayout = useRightDockLayout({
+    dockOpen,
+    initialDockWidth: null,
+    viewportWidth: props.viewportWidth,
+  });
+  const headerDiff = useWorkspaceHeaderDiff({ workspaceRoot: dockWorkspaceRoot, diffOpen });
+  const headerActionState = resolveThreadHeaderActionState({
+    diffDisabledReason:
+      dockWorkspaceRoot && headerDiff.isPending ? "Checking Git repository…" : null,
+    diffOpen,
+    diffTotals: headerDiff.totals,
+    environmentEnabled: environmentProject !== null,
+    hasProject: environmentProject !== null,
+    hasProjectActionSurface: selectedProject?.kind === "project",
+    isGitRepo: headerDiff.isGitRepo,
+    gitActionsAvailable: true,
+    surface: { kind: "thread", layout: "single", primary: "chat", sidechat: false },
+  });
   return (
     <view
       className={`ThreadsLanding${environmentVisible ? " ThreadsLanding--environment-open" : ""}`}
+      bindlayoutchange={(event: { readonly detail?: { readonly width?: number } }) => {
+        const width = event.detail?.width;
+        if (typeof width === "number" && width > 0) dockLayout.setPageWidth(width);
+      }}
     >
-      <ThreadsLandingHeader
-        environmentOpen={environmentOpen}
-        environmentAvailable={environmentProject !== null}
-        onEnvironmentOpenChange={setEnvironmentOpen}
-        project={selectedProject}
-        title={routePresentation.headerTitle}
-      />
-      <ProviderHealthBanner status={providerHealth.status} onDismiss={providerHealth.dismiss} />
-      <scroll-view className="ThreadsLandingBody" scroll-orientation="vertical">
-        <view className="ThreadsLandingBodyInner">
-          <CenteredEmptyLandingStack>
-            <CenteredEmptyLanding projectName={routePresentation.projectName} />
-            <ComposerColumnFrameSurface>
-              <LandingComposer
-                containerKind={props.containerKind}
-                branch={branch}
-                envMode={envMode}
-                initialModelProvider={initialModelProvider}
-                initialProjectId={selectedProjectId}
-                notes={notes}
-                onEnvModeChange={(nextEnvMode) => {
-                  envModeTouchedRef.current = true;
-                  setEnvMode(nextEnvMode);
+      <view
+        className="ThreadsLandingMain"
+        style={
+          dockLayout.effectiveDockWidth !== null
+            ? { width: `${dockLayout.mainWidth}px` }
+            : undefined
+        }
+      >
+        <ThreadsLandingHeader
+          environmentOpen={environmentOpen}
+          environmentAvailable={environmentProject !== null}
+          onEnvironmentOpenChange={setEnvironmentOpen}
+          project={selectedProject}
+          title={routePresentation.headerTitle}
+          // Same rule as the thread page header (compactThreadHeader).
+          compact={dockLayout.mainWidth < 700}
+          diffToggle={
+            headerActionState.showDiff ? (
+              <ThreadDiffToggle
+                open={diffOpen}
+                disabled={headerActionState.diffDisabled}
+                stats={headerActionState.diffStats}
+                onToggle={() => {
+                  setEnvironmentOpen(false);
+                  updateRightDockState((current) =>
+                    diffOpen
+                      ? setDockOpenInState(current, false)
+                      : openPaneInState(current, { paneId: "diff", kind: "diff" }),
+                  );
                 }}
-                onProjectSelectionChange={setSelectedProjectId}
-                onTemporaryChange={() => setTemporary((current) => !current)}
-                onThreadCreated={props.onThreadCreated}
-                temporary={temporary}
               />
-            </ComposerColumnFrameSurface>
-          </CenteredEmptyLandingStack>
-        </view>
-      </scroll-view>
-      {environmentProject ? (
-        <EnvironmentPanel
-          branch={branch}
-          bootstrapOnly={false}
-          initialData={null}
-          envMode={envMode}
-          notes={notes}
-          onBranchChange={setBranch}
-          onNotesChange={setNotes}
-          onOpenSettings={() => history.push("/settings/general")}
-          onJumpToPinnedMessage={() => {}}
-          onOpenChanges={() => {}}
-          onOpenEditorView={() => {}}
-          open={environmentVisible}
-          pinnedMessages={[]}
-          pinnedMessageTextById={{}}
-          projectId={environmentProject.id}
-          provider={initialModelProvider}
-          pullRequest={null}
-          recapRevision="0:empty:0:settled:no-turn"
-          threadId={null}
-          threadMarkers={[]}
-          workspaceRoot={environmentProject.workspaceRoot}
+            ) : null
+          }
         />
-      ) : null}
+        <ProviderHealthBanner status={providerHealth.status} onDismiss={providerHealth.dismiss} />
+        <scroll-view className="ThreadsLandingBody" scroll-orientation="vertical">
+          <view className="ThreadsLandingBodyInner">
+            <CenteredEmptyLandingStack>
+              <CenteredEmptyLanding projectName={routePresentation.projectName} />
+              <ComposerColumnFrameSurface>
+                <LandingComposer
+                  availableWidth={dockLayout.mainWidth}
+                  containerKind={props.containerKind}
+                  branch={branch}
+                  envMode={envMode}
+                  initialModelProvider={initialModelProvider}
+                  initialProjectId={selectedProjectId}
+                  notes={notes}
+                  onEnvModeChange={(nextEnvMode) => {
+                    envModeTouchedRef.current = true;
+                    setEnvMode(nextEnvMode);
+                  }}
+                  onProjectSelectionChange={setSelectedProjectId}
+                  onTemporaryChange={() => setTemporary((current) => !current)}
+                  onThreadCreated={props.onThreadCreated}
+                  temporary={temporary}
+                />
+              </ComposerColumnFrameSurface>
+            </CenteredEmptyLandingStack>
+          </view>
+        </scroll-view>
+        {environmentProject ? (
+          <EnvironmentPanel
+            branch={branch}
+            bootstrapOnly={false}
+            initialData={null}
+            envMode={envMode}
+            notes={notes}
+            onBranchChange={setBranch}
+            onNotesChange={setNotes}
+            onOpenSettings={() => history.push("/settings/general")}
+            onJumpToPinnedMessage={() => {}}
+            onOpenChanges={() => {}}
+            onOpenEditorView={() => {}}
+            open={environmentVisible}
+            pinnedMessages={[]}
+            pinnedMessageTextById={{}}
+            projectId={environmentProject.id}
+            provider={initialModelProvider}
+            pullRequest={null}
+            recapRevision="0:empty:0:settled:no-turn"
+            threadId={null}
+            threadMarkers={[]}
+            workspaceRoot={environmentProject.workspaceRoot}
+          />
+        ) : null}
+      </view>
+      <ThreadRightDocks
+        {...props.explorerDockProps}
+        chatFontSizePx={props.appearance.chatFontSizePx}
+        diffOpen={diffOpen}
+        dockThread={
+          dockWorkspaceRoot
+            ? {
+                id: landingThreadId,
+                workspaceRoot: dockWorkspaceRoot,
+                checkpoints: [],
+                sidechatSource: null,
+              }
+            : undefined
+        }
+        explorerOpen={explorerOpen}
+        explorerPresentationMode={explorerPresentationMode}
+        initialDiffFileTreeOpen={diffFileTreeOpen}
+        initialDiffFilePath={null}
+        initialDiffOpen={false}
+        initialDiffTurnId={null}
+        initialExplorerActionMenuOpen={false}
+        initialExplorerCommentLine={null}
+        initialExplorerWidth={null}
+        onDiffFileTreeOpenChange={setDiffFileTreeOpen}
+        resolvedTheme={props.resolvedTheme}
+        rightDockState={rightDockState}
+        setExplorerPresentationMode={setExplorerPresentationMode}
+        setRightDockWidth={dockLayout.setDockWidth}
+        terminalFontFamily={props.appearance.terminalFontFamily}
+        terminalFontSizePx={props.appearance.terminalFontSizePx}
+        terminalOpen={terminalOpen}
+        threadPageWidth={dockLayout.pageWidth}
+        timestampFormat={props.appearance.timestampFormat}
+        updateRightDockState={updateRightDockState}
+        viewportHeight={props.viewportHeight}
+        viewportWidth={props.viewportWidth}
+      />
     </view>
   );
 }
+
+type ExplorerDockProps = Pick<
+  ThreadPageProps,
+  | "explorerEntries"
+  | "explorerEntriesError"
+  | "explorerEntriesPending"
+  | "explorerEntriesTruncated"
+  | "explorerDirectoryEntries"
+  | "explorerDirectoryErrors"
+  | "explorerDirectoryPending"
+  | "explorerExpandedDirectories"
+  | "explorerFile"
+  | "explorerFileError"
+  | "explorerFilePending"
+  | "explorerFileRetrying"
+  | "explorerFileSyntaxHighlight"
+  | "explorerLocalPreviewUrl"
+  | "explorerLocalPreviewError"
+  | "explorerLocalPreviewPending"
+  | "explorerPdfPageCount"
+  | "explorerPdfPageHeight"
+  | "explorerPdfPageWidth"
+  | "explorerPdfMetadataError"
+  | "explorerPdfMetadataPending"
+  | "explorerQuery"
+  | "explorerSelectedPath"
+  | "onExplorerQueryChange"
+  | "onExplorerRetryFile"
+  | "onExplorerSelectPath"
+  | "onExplorerToggleDirectory"
+>;
 
 interface ThreadPageProps {
   readonly appearance: SettingsAppearanceValues;
@@ -628,10 +765,18 @@ interface ThreadPageProps {
   readonly viewportHeight: number;
 }
 
+/** What the right dock needs from its thread (a draft on the new-thread landing). */
+interface RightDockThread {
+  readonly id: string;
+  readonly workspaceRoot: string | null;
+  readonly checkpoints: NonNullable<ThreadPageProps["currentThread"]>["checkpoints"];
+  /** The thread a side chat forks from; null where side chats are unavailable. */
+  readonly sidechatSource: NonNullable<ThreadPageProps["currentThread"]> | null;
+}
+
 function ThreadRightDocks(
   props: Pick<
     ThreadPageProps,
-    | "currentThread"
     | "explorerDirectoryEntries"
     | "explorerDirectoryErrors"
     | "explorerDirectoryPending"
@@ -669,6 +814,7 @@ function ThreadRightDocks(
     | "resolvedTheme"
     | "viewportWidth"
   > & {
+    readonly dockThread: RightDockThread | undefined;
     readonly diffOpen: boolean;
     readonly explorerOpen: boolean;
     readonly terminalOpen: boolean;
@@ -704,7 +850,7 @@ function ThreadRightDocks(
   });
   const browserSupported = browserViewState?.supported === true;
   const {
-    currentThread,
+    dockThread,
     diffOpen,
     explorerDirectoryEntries,
     explorerDirectoryErrors,
@@ -786,7 +932,7 @@ function ThreadRightDocks(
   const browserPane = rightDockState.panes.find((pane) => pane.kind === "browser");
   const browserOpen = rightDockState.open && activePane?.kind === "browser";
   const gitOpen = rightDockState.open && activePane?.kind === "git";
-  const terminalKey = terminalPane ? `${currentThread?.id ?? ""}\0${terminalPane.id}` : null;
+  const terminalKey = terminalPane ? `${dockThread?.id ?? ""}\0${terminalPane.id}` : null;
   const terminalHydrated =
     terminalOpen || (terminalKey !== null && hydratedTerminalKey === terminalKey);
   useEffect(() => {
@@ -799,8 +945,8 @@ function ThreadRightDocks(
       activePaneId={rightDockState.activePaneId}
       paneLabelOverrides={paneLabelOverrides}
       addMenuKinds={
-        currentThread?.workspaceRoot
-          ? canCreateLynxSidechat(currentThread)
+        dockThread?.workspaceRoot
+          ? dockThread.sidechatSource
             ? [
                 ...(browserSupported ? ["browser" as const] : []),
                 "diff",
@@ -816,7 +962,7 @@ function ThreadRightDocks(
                 "terminal",
                 "git",
               ]
-          : canCreateLynxSidechat(currentThread)
+          : dockThread?.sidechatSource
             ? [...(browserSupported ? ["browser" as const] : []), "diff", "explorer", "sidechat"]
             : [...(browserSupported ? ["browser" as const] : []), "diff", "explorer"]
       }
@@ -833,14 +979,15 @@ function ThreadRightDocks(
       onAddPane={(kind) => {
         "background only";
         if (kind === "sidechat") {
-          if (!currentThread || !canCreateLynxSidechat(currentThread)) return;
+          const source = dockThread?.sidechatSource;
+          if (!source) return;
           const sidechatThreadId = newThreadId();
           setSidechatCreateError(null);
           void dispatchSynaraCommand(
             buildLynxSidechatCreateCommand({
               commandId: newCommandId(),
               createdAt: new Date().toISOString(),
-              source: currentThread,
+              source,
               threadId: sidechatThreadId,
             }),
           )
@@ -897,11 +1044,11 @@ function ThreadRightDocks(
           initialFileTreeOpen={initialDiffFileTreeOpen}
           initialDiffSource={activePane?.diffTurnId ? `turn:${activePane.diffTurnId}` : undefined}
           initialSelectedFilePath={activePane?.diffFilePath}
-          checkpoints={currentThread?.checkpoints ?? []}
+          checkpoints={dockThread?.checkpoints ?? []}
           onFileTreeOpenChange={onDiffFileTreeOpenChange}
           presentation="hosted"
-          threadId={currentThread?.id ?? ""}
-          workspaceRoot={currentThread?.workspaceRoot ?? null}
+          threadId={dockThread?.id ?? ""}
+          workspaceRoot={dockThread?.workspaceRoot ?? null}
           onClose={() => {
             updateRightDockState((current) => {
               const pane = current.panes.find((candidate) => candidate.kind === "diff");
@@ -943,9 +1090,9 @@ function ThreadRightDocks(
           presentationMode={explorerPresentationMode}
           query={explorerQuery}
           selectedPath={explorerSelectedPath}
-          threadId={currentThread?.id ?? ""}
+          threadId={dockThread?.id ?? ""}
           theme={resolvedTheme}
-          workspaceRoot={currentThread?.workspaceRoot ?? null}
+          workspaceRoot={dockThread?.workspaceRoot ?? null}
           onWidthChange={() => {}}
           onQueryChange={onExplorerQueryChange}
           onRetryFile={onExplorerRetryFile}
@@ -959,7 +1106,7 @@ function ThreadRightDocks(
           }}
         />
       ) : null}
-      {terminalPane && terminalHydrated && currentThread?.workspaceRoot ? (
+      {terminalPane && terminalHydrated && dockThread?.workspaceRoot ? (
         <view
           className={`ThreadRightDockTerminalPane${
             terminalOpen ? "" : " ThreadRightDockTerminalPane--hidden"
@@ -970,8 +1117,8 @@ function ThreadRightDocks(
             closeRequestVersion={terminalCloseRequestVersion}
             fontFamily={terminalFontFamily}
             fontSizePx={terminalFontSizePx}
-            threadId={currentThread.id}
-            workspaceRoot={currentThread.workspaceRoot}
+            threadId={dockThread.id}
+            workspaceRoot={dockThread.workspaceRoot}
             onClosePane={() => {
               updateRightDockState((current) => {
                 const pane = current.panes.find((candidate) => candidate.kind === "terminal");
@@ -981,10 +1128,10 @@ function ThreadRightDocks(
           />
         </view>
       ) : null}
-      {gitOpen && currentThread?.workspaceRoot ? (
+      {gitOpen && dockThread?.workspaceRoot ? (
         <GitDockPane
-          threadId={currentThread.id}
-          workspaceRoot={currentThread.workspaceRoot}
+          threadId={dockThread.id}
+          workspaceRoot={dockThread.workspaceRoot}
           onClose={() => {
             updateRightDockState((current) => {
               const pane = current.panes.find((candidate) => candidate.kind === "git");
@@ -993,12 +1140,12 @@ function ThreadRightDocks(
           }}
         />
       ) : null}
-      {browserPane && currentThread ? (
+      {browserPane && dockThread ? (
         <BrowserDockPane
-          key={currentThread.id}
+          key={dockThread.id}
           active={browserOpen}
           supported={browserSupported}
-          threadId={currentThread.id}
+          threadId={dockThread.id}
           onClose={() => {
             updateRightDockState((current) => closePaneInState(current, browserPane.id));
           }}
@@ -1394,17 +1541,23 @@ function ThreadPage(props: ThreadPageProps) {
   const [localThreadError, setLocalThreadError] = useState<string | null>(null);
   const threadRenameInputRef = useRef<InputRef>(null);
   const threadRenameTouchedRef = useRef(false);
-  const [threadPageWidth, setThreadPageWidth] = useState(0);
-  const [rightDockWidth, setRightDockWidth] = useState<number | null>(() =>
-    initialExplorerOpen && viewportWidth > 0
-      ? clampSidebarWidth(initialExplorerWidth ?? Math.round(viewportWidth / 2), {
-          maxWidth: 960,
-          minWidth: EXPLORER_DOCK_MIN_WIDTH,
-          minimumContentWidth: 320,
-          viewportWidth,
-        })
-      : null,
-  );
+  const rightDockLayout = useRightDockLayout({
+    dockOpen: rightDockState.open && Boolean(rightDockState.activePaneId),
+    fallbackDockWidth: initialExplorerWidth,
+    initialDockWidth:
+      initialExplorerOpen && viewportWidth > 0
+        ? clampSidebarWidth(initialExplorerWidth ?? Math.round(viewportWidth / 2), {
+            maxWidth: 960,
+            minWidth: EXPLORER_DOCK_MIN_WIDTH,
+            minimumContentWidth: 320,
+            viewportWidth,
+          })
+        : null,
+    viewportWidth,
+  });
+  const threadPageWidth = rightDockLayout.pageWidth;
+  const setThreadPageWidth = rightDockLayout.setPageWidth;
+  const setRightDockWidth = rightDockLayout.setDockWidth;
   const transcriptControllerRef = useRef<TranscriptController | null>(null);
   const registerTranscriptController = useCallback((controller: TranscriptController | null) => {
     transcriptControllerRef.current = controller;
@@ -1448,18 +1601,9 @@ function ThreadPage(props: ThreadPageProps) {
   const currentProject = currentThread
     ? (props.projects.find((project) => project.id === currentThread.projectId) ?? null)
     : null;
-  const headerGitState = useQuery({
-    queryKey: ["thread-header-git-state", currentThread?.workspaceRoot ?? null],
-    queryFn: async () => {
-      "background only";
-      const workspaceRoot = currentThread?.workspaceRoot;
-      if (!workspaceRoot) return { isGitRepo: false, patch: "" };
-      const branches = await fetchGitBranches(workspaceRoot);
-      if (!branches.isRepo) return { isGitRepo: false, patch: "" };
-      const diff = await fetchWorkingTreeDiff(workspaceRoot);
-      return { isGitRepo: true, patch: diff.patch };
-    },
-    enabled: Boolean(currentThread?.workspaceRoot),
+  const headerDiff = useWorkspaceHeaderDiff({
+    workspaceRoot: currentThread?.workspaceRoot ?? null,
+    diffOpen,
     initialData:
       environmentData?.branches && initialWorkingTreeDiff
         ? {
@@ -1467,29 +1611,16 @@ function ThreadPage(props: ThreadPageProps) {
             patch: initialWorkingTreeDiff.patch,
           }
         : undefined,
-    refetchInterval: diffOpen ? false : 2_000,
   });
-  const headerDiffView = buildPullRequestCodeView(
-    headerGitState.data?.patch,
-    `thread-header:${currentThread?.workspaceRoot ?? "none"}`,
-  );
-  const headerDiffTotals =
-    headerDiffView.kind === "files"
-      ? {
-          additions: headerDiffView.additions,
-          deletions: headerDiffView.deletions,
-          hasChanges: headerDiffView.additions > 0 || headerDiffView.deletions > 0,
-        }
-      : { additions: 0, deletions: 0, hasChanges: false };
   const threadHeaderActionState = resolveThreadHeaderActionState({
     diffDisabledReason:
-      currentThread?.workspaceRoot && headerGitState.isPending ? "Checking Git repository…" : null,
+      currentThread?.workspaceRoot && headerDiff.isPending ? "Checking Git repository…" : null,
     diffOpen,
-    diffTotals: headerDiffTotals,
+    diffTotals: headerDiff.totals,
     environmentEnabled: currentThread !== undefined,
     hasProject: currentProject !== null,
     hasProjectActionSurface: currentProject?.kind === "project",
-    isGitRepo: headerGitState.data?.isGitRepo === true,
+    isGitRepo: headerDiff.isGitRepo,
     gitActionsAvailable: true,
     surface: {
       kind: "thread",
@@ -1555,33 +1686,7 @@ function ThreadPage(props: ThreadPageProps) {
     },
     [closeEnvironmentForAction, onExplorerQueryChange, onExplorerSelectPath, updateRightDockState],
   );
-  const diffToggle = useLynxInteractiveState({
-    baseClassName: `ThreadDiffToggle${diffOpen ? " ThreadDiffToggle--active" : ""}${
-      threadHeaderActionState.diffStats ? " ThreadDiffToggle--with-stats" : ""
-    }`,
-    accessibleLabel: "Toggle diff panel",
-    disabled: threadHeaderActionState.diffDisabled,
-    accessibilityValue: diffOpen ? "On" : "Off",
-    onActivate: () => {
-      closeEnvironmentForAction();
-      setExplorerOpen(false);
-      setDiffOpen(!diffOpen);
-    },
-  });
-  const availableDockWidth = threadPageWidth || viewportWidth;
-  const measuredRightDockWidth =
-    rightDockWidth !== null && rightDockWidth > 0 ? rightDockWidth : null;
-  const rightDockOverlaysMainContent = viewportWidth > 0 && viewportWidth < VIEWPORT_BREAKPOINTS.md;
-  const effectiveRightDockWidth =
-    rightDockState.open && Boolean(rightDockState.activePaneId) && !rightDockOverlaysMainContent
-      ? (measuredRightDockWidth ??
-        clampSidebarWidth(initialExplorerWidth ?? Math.round(availableDockWidth / 2), {
-          maxWidth: 960,
-          minWidth: RIGHT_DOCK_MIN_WIDTH_PX,
-          minimumContentWidth: 320,
-          viewportWidth: availableDockWidth,
-        }))
-      : null;
+  const effectiveRightDockWidth = rightDockLayout.effectiveDockWidth;
   const threadHeaderAvailableWidth = Math.max(
     0,
     (threadPageWidth || viewportWidth) - (effectiveRightDockWidth ?? 0),
@@ -2395,31 +2500,16 @@ function ThreadPage(props: ThreadPageProps) {
               />
             ) : null}
             {threadHeaderActionState.showDiff ? (
-              <view
-                className={`${diffToggle.className}${
-                  threadHeaderActionState.diffDisabled ? " ui-disabled" : ""
-                }`}
-                aria-pressed={diffOpen}
-                {...diffToggle.eventProps}
-              >
-                {threadHeaderActionState.diffStats ? (
-                  <view className="ThreadDiffToggleStats">
-                    <text className="ThreadDiffToggleAddition">
-                      +{threadHeaderActionState.diffStats.additions}
-                    </text>
-                    <text className="ThreadDiffToggleDeletion">
-                      -{threadHeaderActionState.diffStats.deletions}
-                    </text>
-                  </view>
-                ) : null}
-                <svg
-                  className="ThreadDiffToggleIcon"
-                  content={colorizeLynxSvg(
-                    panelRightCloseSvg,
-                    diffOpen ? semanticIconColor("primary") : semanticIconColor("secondary"),
-                  )}
-                />
-              </view>
+              <ThreadDiffToggle
+                open={diffOpen}
+                disabled={threadHeaderActionState.diffDisabled}
+                stats={threadHeaderActionState.diffStats}
+                onToggle={() => {
+                  closeEnvironmentForAction();
+                  setExplorerOpen(false);
+                  setDiffOpen(!diffOpen);
+                }}
+              />
             ) : null}
           </view>
         </ChatSurfaceHeaderFrame>
@@ -2496,7 +2586,16 @@ function ThreadPage(props: ThreadPageProps) {
         ) : null}
       </view>
       <ThreadRightDocks
-        currentThread={currentThread}
+        dockThread={
+          currentThread
+            ? {
+                id: currentThread.id,
+                workspaceRoot: currentThread.workspaceRoot,
+                checkpoints: currentThread.checkpoints,
+                sidechatSource: canCreateLynxSidechat(currentThread) ? currentThread : null,
+              }
+            : undefined
+        }
         diffOpen={diffOpen}
         explorerDirectoryEntries={explorerDirectoryEntries}
         explorerDirectoryErrors={explorerDirectoryErrors}
@@ -2912,7 +3011,13 @@ export function SliceRouter({
     };
   }, [activeThreadId]);
   const resolvedActiveThreadData = activeThreadData;
-  const workspaceRoot = resolvedActiveThreadData?.summary?.workspaceRoot ?? null;
+  // The new-thread landing (the web's draft thread) reports the project its
+  // dock works in; a thread route always uses the thread's workspace.
+  const [landingDockWorkspaceRoot, setLandingDockWorkspaceRoot] = useState<string | null>(null);
+  const workspaceRoot =
+    activeThreadId !== null
+      ? (resolvedActiveThreadData?.summary?.workspaceRoot ?? null)
+      : landingDockWorkspaceRoot;
   const explorerEntriesQuery = useQuery({
     queryKey: ["explorer-entries", activeThreadId, workspaceRoot, explorerTrimmedQuery],
     queryFn: async () => {
@@ -3004,13 +3109,15 @@ export function SliceRouter({
         )
       : [],
   );
+  // Explorer state belongs to one workspace: a thread, or the landing's project.
+  const explorerScopeKey = activeThreadId ?? `landing:${landingDockWorkspaceRoot ?? ""}`;
   useEffect(() => {
-    if (previousExplorerThreadIdRef.current === activeThreadId) return;
-    previousExplorerThreadIdRef.current = activeThreadId;
+    if (previousExplorerThreadIdRef.current === explorerScopeKey) return;
+    previousExplorerThreadIdRef.current = explorerScopeKey;
     setExplorerQuery("");
     setExplorerSelectedPath(null);
     setExplorerExpandedDirectories(new Set());
-  }, [activeThreadId]);
+  }, [explorerScopeKey]);
   const [persistedLastRoute, setPersistedLastRoute] = useState<LastThreadRoute | null>(null);
   const [lastRouteHydrated, setLastRouteHydrated] = useState(false);
   const [coldStartRoutePending, setColdStartRoutePending] = useState(true);
@@ -3270,6 +3377,51 @@ export function SliceRouter({
     };
   }, [commitRecentViewSelection, openOrAdvanceRecentViews, openSearchPalette, setRoute]);
 
+  const explorerDockProps: ExplorerDockProps = {
+    explorerEntries: explorerEntriesQuery.data?.entries ?? [],
+    explorerEntriesError: explorerEntriesQuery.isError,
+    explorerEntriesPending: workspaceRoot !== null && explorerEntriesQuery.isPending,
+    explorerEntriesTruncated: explorerEntriesQuery.data?.truncated ?? false,
+    explorerDirectoryEntries: explorerDirectoryData,
+    explorerDirectoryErrors: explorerDirectoryErrors,
+    explorerDirectoryPending: explorerDirectoryPending,
+    explorerExpandedDirectories: explorerExpandedDirectories,
+    explorerFile: explorerFileQuery.data?.file ?? null,
+    explorerFileError: explorerFileQuery.isError,
+    explorerFilePending:
+      explorerSelectedPath !== null &&
+      !isSupportedLocalPreviewFilePath(explorerSelectedPath) &&
+      workspaceRoot !== null &&
+      explorerFileQuery.isPending,
+    explorerFileRetrying: explorerFileQuery.isError && explorerFileQuery.isFetching,
+    explorerFileSyntaxHighlight: explorerFileQuery.data?.syntaxHighlight ?? null,
+    explorerLocalPreviewUrl: explorerLocalPreviewQuery.data ?? null,
+    explorerLocalPreviewError: explorerLocalPreviewQuery.isError,
+    explorerLocalPreviewPending:
+      explorerSelectedPath !== null &&
+      isSupportedLocalPreviewFilePath(explorerSelectedPath) &&
+      workspaceRoot !== null &&
+      explorerLocalPreviewQuery.isPending,
+    explorerPdfPageCount: explorerPdfMetadataQuery.data?.pageCount ?? 0,
+    explorerPdfPageHeight: explorerPdfMetadataQuery.data?.height ?? 0,
+    explorerPdfPageWidth: explorerPdfMetadataQuery.data?.width ?? 0,
+    explorerPdfMetadataError: explorerPdfMetadataQuery.isError,
+    explorerPdfMetadataPending:
+      explorerSelectedPath !== null &&
+      isSupportedLocalPdfPath(explorerSelectedPath) &&
+      workspaceRoot !== null &&
+      explorerPdfMetadataQuery.isPending,
+    explorerQuery: explorerQuery,
+    explorerSelectedPath: explorerSelectedPath,
+    onExplorerQueryChange: (query) => {
+      setExplorerQuery(query);
+      setExplorerSelectedPath(null);
+    },
+    onExplorerRetryFile: () => void explorerFileQuery.refetch(),
+    onExplorerSelectPath: setExplorerSelectedPath,
+    onExplorerToggleDirectory: (path) =>
+      setExplorerExpandedDirectories((current) => toggleExpandedDirectory(current, path)),
+  };
   let page: React.ReactNode;
   if (route.pathname === "/components-lab") {
     page = (
@@ -3320,44 +3472,6 @@ export function SliceRouter({
         data={resolvedActiveThreadData?.data}
         environmentData={null}
         error={activeThreadError}
-        explorerEntries={explorerEntriesQuery.data?.entries ?? []}
-        explorerEntriesError={explorerEntriesQuery.isError}
-        explorerEntriesPending={workspaceRoot !== null && explorerEntriesQuery.isPending}
-        explorerEntriesTruncated={explorerEntriesQuery.data?.truncated ?? false}
-        explorerDirectoryEntries={explorerDirectoryData}
-        explorerDirectoryErrors={explorerDirectoryErrors}
-        explorerDirectoryPending={explorerDirectoryPending}
-        explorerExpandedDirectories={explorerExpandedDirectories}
-        explorerFile={explorerFileQuery.data?.file ?? null}
-        explorerFileError={explorerFileQuery.isError}
-        explorerFilePending={
-          explorerSelectedPath !== null &&
-          !isSupportedLocalPreviewFilePath(explorerSelectedPath) &&
-          workspaceRoot !== null &&
-          explorerFileQuery.isPending
-        }
-        explorerFileRetrying={explorerFileQuery.isError && explorerFileQuery.isFetching}
-        explorerFileSyntaxHighlight={explorerFileQuery.data?.syntaxHighlight ?? null}
-        explorerLocalPreviewUrl={explorerLocalPreviewQuery.data ?? null}
-        explorerLocalPreviewError={explorerLocalPreviewQuery.isError}
-        explorerLocalPreviewPending={
-          explorerSelectedPath !== null &&
-          isSupportedLocalPreviewFilePath(explorerSelectedPath) &&
-          workspaceRoot !== null &&
-          explorerLocalPreviewQuery.isPending
-        }
-        explorerPdfPageCount={explorerPdfMetadataQuery.data?.pageCount ?? 0}
-        explorerPdfPageHeight={explorerPdfMetadataQuery.data?.height ?? 0}
-        explorerPdfPageWidth={explorerPdfMetadataQuery.data?.width ?? 0}
-        explorerPdfMetadataError={explorerPdfMetadataQuery.isError}
-        explorerPdfMetadataPending={
-          explorerSelectedPath !== null &&
-          isSupportedLocalPdfPath(explorerSelectedPath) &&
-          workspaceRoot !== null &&
-          explorerPdfMetadataQuery.isPending
-        }
-        explorerQuery={explorerQuery}
-        explorerSelectedPath={explorerSelectedPath}
         initialEnvironmentOpen={initialEnvironmentOpen}
         initialDiffOpen={initialDiffOpen}
         initialDiffTurnId={initialDiffTurnId}
@@ -3381,15 +3495,7 @@ export function SliceRouter({
         initialExplorerActionMenuOpen={initialExplorerActionMenuOpen}
         initialExplorerCommentLine={initialExplorerCommentLine}
         isPending={resolvedActiveThreadPending}
-        onExplorerQueryChange={(query) => {
-          setExplorerQuery(query);
-          setExplorerSelectedPath(null);
-        }}
-        onExplorerRetryFile={() => void explorerFileQuery.refetch()}
-        onExplorerSelectPath={setExplorerSelectedPath}
-        onExplorerToggleDirectory={(path) =>
-          setExplorerExpandedDirectories((current) => toggleExpandedDirectory(current, path))
-        }
+        {...explorerDockProps}
         onEditorModeChange={setEditorModeOpen}
         onNavigateToThread={(threadId) => {
           setEditorEntryThreadId(threadId);
@@ -3406,6 +3512,12 @@ export function SliceRouter({
   } else if (route.pathname === "/studio") {
     page = studioLandingReady ? (
       <ThreadsLandingPage
+        appearance={appearance}
+        explorerDockProps={explorerDockProps}
+        onDockWorkspaceChange={setLandingDockWorkspaceRoot}
+        resolvedTheme={resolvedTheme}
+        viewportHeight={viewportHeight}
+        viewportWidth={viewportWidth}
         key="studio"
         containerKind="studio"
         onThreadCreated={(threadId, options) => {
@@ -3445,6 +3557,12 @@ export function SliceRouter({
       />
     ) : (
       <ThreadsLandingPage
+        appearance={appearance}
+        explorerDockProps={explorerDockProps}
+        onDockWorkspaceChange={setLandingDockWorkspaceRoot}
+        resolvedTheme={resolvedTheme}
+        viewportHeight={viewportHeight}
+        viewportWidth={viewportWidth}
         onThreadCreated={(threadId, options) => {
           setLandingTemporaryThreadId(options.temporary ? threadId : null);
           navigate(`/thread/${threadId}`);
@@ -3483,6 +3601,12 @@ export function SliceRouter({
   } else {
     page = (
       <ThreadsLandingPage
+        appearance={appearance}
+        explorerDockProps={explorerDockProps}
+        onDockWorkspaceChange={setLandingDockWorkspaceRoot}
+        resolvedTheme={resolvedTheme}
+        viewportHeight={viewportHeight}
+        viewportWidth={viewportWidth}
         key={
           route.pathname === "/new-thread/$projectId" ? `project:${route.params.projectId}` : "chat"
         }

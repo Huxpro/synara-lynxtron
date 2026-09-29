@@ -16,7 +16,7 @@ describe("EditorRailAddMenu component identity", () => {
       "utf8",
     );
     expect(menu).toContain("EditorRailAddMenuComposition");
-    expect(menu).toContain('MenuPopup className="LxPickerMenuPopup ThreadEditorAddMenuPopup"');
+    expect(menu).toContain('className="LxPickerMenuPopup ThreadEditorAddMenuPopup"');
     expect(menu).toContain("autoHighlightFirst={false}");
     expect(composition).toContain('label="New chat"');
     expect(composition).toContain('label="New terminal"');

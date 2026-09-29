@@ -893,7 +893,7 @@ function DiffTurnPicker(props: {
   readonly diffSource: DiffSource;
   readonly onDiffSourceChange: (source: DiffSource) => void;
 }) {
-  if (props.checkpoints.length === 0) return null;
+  // Web DiffPanelToolbar shows the Turns menu even before the first turn.
   const selectedTurn = props.diffSource.startsWith("turn:")
     ? props.checkpoints.find((checkpoint) => `turn:${checkpoint.turnId}` === props.diffSource)
     : null;

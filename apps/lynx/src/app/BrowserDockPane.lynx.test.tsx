@@ -22,12 +22,12 @@ describe("Native Browser right-dock pane", () => {
     expect(source).toContain("browserView.destroy()");
     expect(source).not.toContain("await refreshState()");
     expect(router).toContain('activePane?.kind === "browser"');
-    expect(router).toContain("browserPane && currentThread ? (");
+    expect(router).toContain("browserPane && dockThread ? (");
     expect(router).toContain("<BrowserDockPane");
     expect(router).toContain("active={browserOpen}");
     expect(router).toContain("supported={browserSupported}");
-    expect(router).toContain("threadId={currentThread.id}");
-    expect(router).toContain("key={currentThread.id}");
+    expect(router).toContain("threadId={dockThread.id}");
+    expect(router).toContain("key={dockThread.id}");
     expect(router).toContain("onTitleChange={(title) => {");
   });
 

@@ -48,7 +48,9 @@ describe("landing composer fidelity contract", () => {
     expect(routerSource).toContain("thread={undefined}");
     expect(routerSource).toContain("<ComposerColumnFrameSurface>");
     expect(routerSource).toContain("<LandingComposer");
-    expect(landingSource).toContain("<Composer\n        voiceInputEnabled");
+    expect(landingSource).toContain(
+      "<Composer\n        availableWidth={props.availableWidth}\n        voiceInputEnabled",
+    );
     expect(routerSource).toContain(
       '<scroll-view className="ThreadsLandingBody" scroll-orientation="vertical"',
     );
@@ -110,7 +112,8 @@ describe("landing composer fidelity contract", () => {
     expect(routerSource).toContain("useProviderHealthBanner(initialModelProvider,");
     expect(routerSource).toContain("<EnvironmentPanel");
     expect(routerSource).toContain("threadId={null}");
-    expect(routerSource).toContain("<LandingDiffToggle />");
+    expect(routerSource).toContain("<ThreadDiffToggle");
+    expect(routerSource).toContain("<ThreadRightDocks");
     expect(appStyles).toMatch(
       /\.ThreadsLanding--environment-open \.ThreadsLandingBody\s*\{[^}]*padding-right:\s*312px;/s,
     );

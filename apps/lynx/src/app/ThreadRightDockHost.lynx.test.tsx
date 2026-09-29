@@ -62,12 +62,18 @@ describe("Native stable right dock host", () => {
       /\.ThreadRightDockHostBody > \.DiffDock--hosted,[\s\S]*?\.ExplorerDock--hosted\s*\{[^}]*width:\s*100%;[^}]*transition:\s*none;/s,
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-compact \.ThreadPage > \.ThreadRightDockHost\s*\{[^}]*left:\s*0;[^}]*top:\s*92px;[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*max-width:\s*none;/s,
+      /\.SliceRoot--viewport-compact \.ThreadPage > \.ThreadRightDockHost,\s*\.SliceRoot--viewport-compact \.ThreadsLanding > \.ThreadRightDockHost\s*\{[^}]*left:\s*0;[^}]*top:\s*92px;[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*max-width:\s*none;/s,
     );
-    expect(router).toContain("viewportWidth < VIEWPORT_BREAKPOINTS.md");
+    expect(readFileSync(new URL("./threadDock.lynx.tsx", import.meta.url), "utf8")).toContain(
+      "input.viewportWidth < VIEWPORT_BREAKPOINTS.md",
+    );
     expect(router).not.toContain("availableDockWidth < VIEWPORT_BREAKPOINTS.md");
     expect(router).toContain("rightDockState.open &&");
-    expect(router).toContain("Boolean(rightDockState.activePaneId) &&");
-    expect(router).toContain("!rightDockOverlaysMainContent");
+    expect(router).toContain(
+      "dockOpen: rightDockState.open && Boolean(rightDockState.activePaneId),",
+    );
+    expect(readFileSync(new URL("./threadDock.lynx.tsx", import.meta.url), "utf8")).toContain(
+      "input.dockOpen && !overlaysMainContent",
+    );
   });
 });
