@@ -3226,3 +3226,21 @@ state is absent from the paired component matrix.
   `809d6a667339fd4eb74eddc36bb3ef3b97ca76e9b2486d22f14bd495d834864f`.
   Final certification used the comparison-owned production runtime and isolated
   server directly because the full launcher Electron sidecar remained unstable.
+
+### Coverage note (N1, 2026-09-29) — DS-182 to DS-184
+
+The entries above are kept as recorded. Their certification level, restated
+against the evidence layers defined in
+[core-goal-review-and-next-phase-2026-09-29.md](core-goal-review-and-next-phase-2026-09-29.md):
+
+| Entry  | Implementation landed | Rendered style observed | Paired product verified | Why not paired                                                                                                                                                                                                                                         |
+| ------ | --------------------- | ----------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| DS-182 | yes                   | yes (dark, 1079×803)    | no                      | Native-only run. Its renderer bundle had the comparison endpoint compiled in (`53477`) while the host ran against `58090`; RPC itself went through the host, but bundle and runtime did not share one backend identity. No Electron cell was captured. |
+| DS-183 | yes                   | yes (dark, 1079×803)    | no                      | Observed on the Thread/landing state of the pre-fixture seed, not a populated thread.                                                                                                                                                                  |
+| DS-184 | yes                   | yes (dark, 1079×803)    | no                      | The Explorer rendered `No workspace.`; the pre-fixture seed had only one ordinary-project thread and retention had hidden three inactive threads.                                                                                                      |
+
+None of the three is evidence of Electron parity: all used the full
+`--border` color, while Electron uses the 60% surface divider (right dock) and
+the 65% Explorer recipe. Re-certification against the canonical populated
+fixture happens in N2. See
+[n1-verification-chain-2026-09-29.md](n1-verification-chain-2026-09-29.md).
