@@ -2,6 +2,15 @@ import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
 describe("Lynx Input accessibility contract", () => {
+  it("never makes a controlled field readonly while it takes text", () => {
+    // Lynxtron aborts (SIGABRT) when a single-line field turns readonly mid-input;
+    // echoes are resolved by resolveControlledInputValue instead.
+    const source = readFileSync(new URL("./input.lynx.tsx", import.meta.url), "utf8");
+    expect(source).not.toContain('setAttribute("readonly"');
+    expect(source).not.toContain("setNativePropsByRef(inputRef, { readonly: false })");
+    expect(source).toContain("resolveControlledInputValue(pendingEchoes.current, next)");
+  });
+
   it("uses the shared dark control surface while preserving soft fill ownership", () => {
     const source = readFileSync(new URL("./input.lynx.tsx", import.meta.url), "utf8");
     expect(source).toContain("const { svgColors } = useTheme();");

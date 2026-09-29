@@ -1,7 +1,6 @@
 import {
   Input as LynxInput,
   InvokeRejectError,
-  setNativePropsByRef,
   type InputProps as LynxInputProps,
   type InputRef,
 } from "@lynx-js/lynx-ui";
@@ -15,6 +14,7 @@ import {
 } from "@lynx-js/react";
 import type { NodesRef } from "@lynx-js/types";
 
+import { resolveControlledInputValue } from "./controlledInputEcho.logic";
 import { useLynxInteractionDisabled } from "./interaction-scope.lynx";
 import { useTheme } from "../../adapters/useTheme.lynx";
 import { cx } from "./shared.lynx";
@@ -65,9 +65,6 @@ interface RawInputEvent {
     readonly selectionEnd: number;
     readonly selectionStart: number;
     readonly value: string;
-  };
-  readonly currentTarget?: {
-    setAttribute(name: string, value: boolean): void;
   };
 }
 
@@ -136,8 +133,15 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
     const setSelectionRange = (selectionStart: number, selectionEnd: number): Promise<void> =>
       invoke("setSelectionRange", { selectionStart, selectionEnd }).then(() => undefined);
 
+    // Values this input emitted and has not yet seen come back as `value`.
+    // Their echo must not be written into the native field (typing may have
+    // moved past it); any other `value` is an outside change and is applied.
+    const pendingEchoes = useRef<string[]>([]);
     useEffect(() => {
-      void setValue(props.value ?? "").catch(() => undefined);
+      const next = props.value ?? "";
+      const resolved = resolveControlledInputValue(pendingEchoes.current, next);
+      pendingEchoes.current = [...resolved.pendingEchoes];
+      if (resolved.apply) void setValue(next).catch(() => undefined);
     }, [props.value]);
     useEffect(() => {
       if (!controlled.current) {
@@ -153,27 +157,19 @@ const KeyboardInput = forwardRef<InputRef, KeyboardInputProps>(
       selectionStart: number,
       selectionEnd: number,
       isComposing: boolean,
-      unlockInteraction: boolean,
     ) => {
+      if (controlled.current) pendingEchoes.current.push(value);
       props.onInput?.(value, selectionStart, selectionEnd, isComposing);
-      if (unlockInteraction) {
-        try {
-          setNativePropsByRef(inputRef, { readonly: false });
-        } catch {
-          // Older/test hosts may not expose native prop mutation. The controlled
-          // value update remains authoritative and the next mount resets readonly.
-        }
-      }
     };
+    // Lynxtron aborts (NSAssertion) when a single-line field is made readonly
+    // while it is taking text, so controlled inputs never lock the field here.
     const handleInput = (event: RawInputEvent) => {
       "main thread";
-      if (controlled.current) event.currentTarget?.setAttribute("readonly", true);
       runOnBackground(sendInputEvent)(
         event.detail.value,
         event.detail.selectionStart,
         event.detail.selectionEnd,
         event.detail.isComposing,
-        controlled.current,
       );
     };
 
