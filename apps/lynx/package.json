@@ -19,6 +19,8 @@
     "stage:appsnap-helper": "node scripts/stage-appsnap-helper.mjs",
     "start:web": "npm run build:web && npx serve dist/web",
     "test": "rstest",
+    "typecheck": "node scripts/sync-tsconfig-paths.mjs --check && tsc -p tsconfig.json && tsc -p src/main/desktop/tsconfig.json && tsc -p src/main/web/tsconfig.json && tsc -p tsconfig.tools.json",
+    "typecheck:sync-paths": "node scripts/sync-tsconfig-paths.mjs",
     "pack": "bun run build && lynxtron-builder --publish never",
     "audit:reuse": "node scripts/reuse-audit.mjs",
     "audit:reuse:check": "node scripts/reuse-audit.mjs --check",
