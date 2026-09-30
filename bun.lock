@@ -42,6 +42,7 @@
         "@fontsource-variable/jetbrains-mono": "^5.2.8",
         "@lynx-js/config-rsbuild-plugin": "0.2.0",
         "@lynx-js/css-serializer": "0.1.7",
+        "@lynx-js/devtool-connector": "0.13.2",
         "@lynx-js/lynx-core": "0.1.4",
         "@lynx-js/lynx-ui": "^3.135.3",
         "@lynx-js/lynxtron": "0.0.28",
@@ -787,6 +788,8 @@
     "@lynx-js/debug-metadata": ["@lynx-js/debug-metadata@0.1.0", "", { "bin": { "debug-metadata": "./dist/cli.js" } }, "sha512-3N+Wgc/kIc4/aG5KpdPWKsC9MsNngygeyg9JS6IOayS8AQJ37xjVEzlz1U3aYzT9al0RJKL7w4poa0tGaXBv1g=="],
 
     "@lynx-js/debug-metadata-rsbuild-plugin": ["@lynx-js/debug-metadata-rsbuild-plugin@0.2.1", "", { "dependencies": { "@lynx-js/debug-metadata": "^0.1.0" } }, "sha512-uvpX41tk7TxkIs8fJqIHqOUyOhRC5BVTH4ri+B1rZI6k3yclYIKA7lSnDirgEL+92GmkInerO3Zwg9y3Zyg5hA=="],
+
+    "@lynx-js/devtool-connector": ["@lynx-js/devtool-connector@0.13.2", "", { "dependencies": { "jpeg-js": "^0.4.4", "obug": "^2.1.3", "semver": "^7.7.3", "ws": "^8.21.0" } }, "sha512-7NXFJFogGJAOQmIk4x95Ef9b9JbBJK5J5xviDF5OWmOeW+ZiSfCAALUMwRUlU9nXPMeH/rdtT3Kis0QtV4WDfA=="],
 
     "@lynx-js/gesture-runtime": ["@lynx-js/gesture-runtime@2.1.1", "", { "peerDependencies": { "@lynx-js/react": "*", "@lynx-js/types": "*" } }, "sha512-zBDOHakuePjw5wPCButExNgcllyFPGqYzqP2CWCWcQaX4gqJmCmYeRKguihyxH6ma6ExxlH/J2x5CHD91ed3bQ=="],
 
@@ -2410,6 +2413,8 @@
 
     "jose": ["jose@6.2.2", "", {}, "sha512-d7kPDd34KO/YnzaDOlikGpOurfF0ByC2sEV4cANCtdqLlTfBlw2p14O/5d/zv40gJPbIQxfES3nSx1/oYNyuZQ=="],
 
+    "jpeg-js": ["jpeg-js@0.4.4", "", {}, "sha512-WZzeDOEtTOBK4Mdsar0IqEU5sMr3vSV2RqkAIzUEV2BHnUfKGyswWFPFwK5EeDo93K3FohSHbLAjj0s1Wzd+dg=="],
+
     "js-base64": ["js-base64@3.7.8", "", {}, "sha512-hNngCeKxIUQiEUN3GPJOkz4wF/YvdUdbNL9hsBcMQTkKzboD7T/q3OYOuuPZLUE6dBxSGpwhk5mwuDud7JVAow=="],
 
     "js-cookie": ["js-cookie@3.0.8", "", {}, "sha512-yeJd4aNAdYZQjaon2bpD/Gb0B/omw7HQOsynXXcOiWVCacbBcPlgn8S/d1X6blFSaHao7ozqtW7NZW19xpCtIw=="],
@@ -3803,6 +3808,10 @@
     "@jsonjoy.com/json-pack/@jsonjoy.com/buffers": ["@jsonjoy.com/buffers@1.2.1", "", { "peerDependencies": { "tslib": "2" } }, "sha512-12cdlDwX4RUM3QxmUbVJWqZ/mrK6dFQH4Zxq6+r1YXKXYBNgZXndx2qbCJwh3+WWkCSn67IjnlG3XYTvmvYtgA=="],
 
     "@jsonjoy.com/util/@jsonjoy.com/buffers": ["@jsonjoy.com/buffers@1.2.1", "", { "peerDependencies": { "tslib": "2" } }, "sha512-12cdlDwX4RUM3QxmUbVJWqZ/mrK6dFQH4Zxq6+r1YXKXYBNgZXndx2qbCJwh3+WWkCSn67IjnlG3XYTvmvYtgA=="],
+
+    "@lynx-js/devtool-connector/obug": ["obug@2.2.1", "", {}, "sha512-XrsrhT5sybtKI6wakr2SPOlGZWWYbUXZ7a0jT8/QOeAPau+1X/bSegNe5YR75oJmEZQbKningirmGOEJCIk61Q=="],
+
+    "@lynx-js/devtool-connector/semver": ["semver@7.8.5", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA=="],
 
     "@lynx-js/lynxtron-builder/electron-builder": ["electron-builder@26.13.0", "", { "dependencies": { "app-builder-lib": "26.13.0", "builder-util": "26.13.0", "builder-util-runtime": "9.6.3", "chalk": "^4.1.2", "ci-info": "^4.2.0", "dmg-builder": "26.13.0", "fs-extra": "^10.1.0", "lazy-val": "^1.0.5", "simple-update-notifier": "2.0.0", "yargs": "^17.6.2" }, "bin": { "electron-builder": "./cli.js", "install-app-deps": "./install-app-deps.js" } }, "sha512-FmFIFrUyXL8W2+e8RPveQ4thTQ+apSghkQHI1euEgXDUHzLGCAvo/ACsQCCJG4vYakAh0cLqfbteiARDtzzVMg=="],
 

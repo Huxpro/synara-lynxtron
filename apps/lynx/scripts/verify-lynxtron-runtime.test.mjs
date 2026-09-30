@@ -46,6 +46,18 @@ test("resolves Windows runtime and devtool resource paths", () => {
     },
   );
 });
+test("resolves the Linux devtool runtime, which ships no inspector resources", () => {
+  const paths = resolveLynxtronRuntimePaths(
+    "/repo/node_modules/@lynx-js/lynxtron/package.json",
+    "linux",
+    (filePath) => filePath.endsWith("/dist/devtool/lynxtron"),
+  );
+  assert.deepEqual(paths, {
+    executable: "/repo/node_modules/@lynx-js/lynxtron/dist/devtool/lynxtron",
+    inspectorResourceCandidates: [],
+  });
+  assert.doesNotThrow(() => verifyLynxtronRuntime(paths, (filePath) => filePath === paths.executable));
+});
 test("fails with an actionable root-install message when inspector assets are missing", () => {
   assert.throws(
     () =>

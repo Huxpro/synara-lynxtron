@@ -35,6 +35,7 @@ import {
   readWindowState,
   reduceShellRouteDelivery,
   resolveRestoredBounds,
+  resolveShellWorkArea,
   resolveNativeRendererCommand,
   resolveShellPaths,
   resolveShellUserDataDir,
@@ -717,10 +718,14 @@ app.whenReady().then(() => {
     app.setAsDefaultProtocolClient("synara");
   }
   const savedState = readWindowState(shellPaths.windowState);
-  const display = savedState
-    ? screen.getDisplayMatching(savedState.bounds)
-    : screen.getPrimaryDisplay();
-  const bounds = resolveRestoredBounds(savedState?.bounds ?? null, display.workArea);
+  const workArea = resolveShellWorkArea(
+    () =>
+      (savedState
+        ? screen.getDisplayMatching(savedState.bounds)
+        : screen.getPrimaryDisplay()
+      ).workArea,
+  );
+  const bounds = resolveRestoredBounds(savedState?.bounds ?? null, workArea);
   const windowPresentation = resolveShellWindowPresentation(isBackgroundLaunch);
   const w = new LynxWindow({
     ...bounds,

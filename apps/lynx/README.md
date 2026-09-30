@@ -39,6 +39,10 @@ bun run pack
 
 Never use `bun test`; it bypasses the configured Rstest command.
 
+On Linux, Lynxtron only renders windowless. See
+[`docs/linux-development.md`](docs/linux-development.md) for the Web (HMR),
+native DevTool-driven, and X11-presenter development loops.
+
 ## Product boundaries
 
 - Web composition, copy, ordering, tokens, and state semantics remain the

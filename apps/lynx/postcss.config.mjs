@@ -47,4 +47,20 @@ const synaraLynxColorMix = () => ({
 });
 synaraLynxColorMix.postcss = true;
 
-export default { plugins: [synaraLynxColorMix] };
+// Tailwind escapes `,` in arbitrary-value class names as `\2c `. Unminified
+// (dev) output can wrap those selectors so the escape is followed by a newline
+// and indentation, which the Lynx-for-Web CSS encoder cannot parse. A CSS hex
+// escape consumes exactly one trailing whitespace, so collapse a wrapped run to
+// one space to keep the selector identical while making it single-line.
+const HEX_ESCAPE_WRAPPED_WHITESPACE = /(\\[0-9a-fA-F]{1,6})[ \t]*\r?\n\s*/g;
+const synaraLynxSelectorEscapes = () => ({
+  postcssPlugin: "synara-lynx-selector-escapes",
+  Rule(rule) {
+    if (!rule.selector.includes("\\")) return;
+    const normalized = rule.selector.replace(HEX_ESCAPE_WRAPPED_WHITESPACE, "$1 ");
+    if (normalized !== rule.selector) rule.selector = normalized;
+  },
+});
+synaraLynxSelectorEscapes.postcss = true;
+
+export default { plugins: [synaraLynxColorMix, synaraLynxSelectorEscapes] };
