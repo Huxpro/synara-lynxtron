@@ -437,9 +437,6 @@ export function KanbanProjectPage({
                     dragSourceCardId={nativeDrag?.activated ? nativeDrag.card.cardId : null}
                     showDispatchTarget={columnIsValid}
                     dispatchTargetLabel={columnPolicy?.label}
-                    onCardActions={(card) => {
-                      cardActions.openCardActions(card);
-                    }}
                   />
                 </view>
               );

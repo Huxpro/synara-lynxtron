@@ -24,10 +24,7 @@ import "./kanban-card-composition-elements.css";
 import { PullRequestStateIcon } from "./PullRequestStateIcon.lynx";
 import { KanbanStatusIcon } from "./KanbanStatusIcon.lynx";
 import { useTheme } from "./useTheme.lynx";
-import {
-  lynxNestedInteractiveEventProps,
-  useLynxInteractiveState,
-} from "./useLynxInteractiveState";
+import { useLynxInteractiveState } from "./useLynxInteractiveState";
 import { resolveSecondaryPointerOffset } from "../components/sidebar/threadContextActions.logic";
 import { focusLynxNode } from "../components/ui/focus.lynx";
 
@@ -119,31 +116,6 @@ export function KanbanCardRootElement(
 
 export function KanbanCardTitleRowElement(props: ChildrenProps) {
   return <view className="SharedKanbanCardTitleRow">{props.children}</view>;
-}
-
-export function KanbanCardActionsElement(props: {
-  readonly label: string;
-  readonly onActivate: (event: React.MouseEvent) => void;
-}) {
-  const interaction = useLynxInteractiveState({
-    baseClassName: "SharedKanbanCardActions",
-    accessibleLabel: props.label,
-    onActivate: () =>
-      props.onActivate({
-        clientX: 0,
-        clientY: 0,
-        preventDefault() {},
-        stopPropagation() {},
-      } as React.MouseEvent),
-  });
-  return (
-    <view
-      className={interaction.className}
-      {...lynxNestedInteractiveEventProps(interaction.eventProps)}
-    >
-      <text className="SharedKanbanCardActionsText">•••</text>
-    </view>
-  );
 }
 
 export function KanbanCardTitleElement(props: ChildrenProps) {

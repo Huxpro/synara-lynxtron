@@ -68,26 +68,6 @@ export function KanbanCardRootElement(
   );
 }
 
-export function KanbanCardActionsElement(props: {
-  readonly label: string;
-  readonly onActivate: (event: React.MouseEvent) => void;
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={props.label}
-      title={props.label}
-      className="-mr-1 shrink-0 rounded px-1 text-ui text-muted-foreground/70 hover:bg-muted hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none"
-      onClick={(event) => {
-        event.stopPropagation();
-        props.onActivate(event);
-      }}
-    >
-      •••
-    </button>
-  );
-}
-
 export function KanbanCardTitleRowElement(props: ChildrenProps) {
   return <span className="flex min-w-0 items-start gap-1.5">{props.children}</span>;
 }

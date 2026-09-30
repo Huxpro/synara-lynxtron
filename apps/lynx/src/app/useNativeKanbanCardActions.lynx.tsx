@@ -48,7 +48,6 @@ function newKanbanCommandId(kind: string): string {
 export interface NativeKanbanCardActionsController {
   readonly actionPanels: ReactNode;
   readonly mutationPending: boolean;
-  readonly openCardActions: (card: KanbanCard) => void;
   readonly openCardContextMenu: (
     card: KanbanCard,
     event: React.MouseEvent,
@@ -65,7 +64,6 @@ export function useNativeKanbanCardActions(input: {
   const [mutationTarget, setMutationTarget] = useState<KanbanMutationTarget | null>(null);
   const [mutationPending, setMutationPending] = useState(false);
   const [mutationNotice, setMutationNotice] = useState<string | null>(null);
-  const [mutationChooserCard, setMutationChooserCard] = useState<KanbanCard | null>(null);
   const mutationGateRef = useRef(createKanbanMutationGate());
   const mutationTextareaRef = useRef<React.ElementRef<"textarea">>(null);
 
@@ -143,7 +141,6 @@ export function useNativeKanbanCardActions(input: {
 
   const selectAction = async (card: KanbanCard, action: KanbanCardActionId) => {
     "background only";
-    setMutationChooserCard(null);
     setMutationNotice(null);
     const isDraftOnly = isKanbanDraftOnlyCard(card);
     const workspacePath = workspacePathForCard(card);
@@ -280,35 +277,6 @@ export function useNativeKanbanCardActions(input: {
           <text className="KanbanMutationNoticeText">{mutationNotice}</text>
         </view>
       ) : null}
-      {mutationChooserCard ? (
-        <view
-          className="KanbanMutationPanel"
-          accessibility-element
-          accessibility-label={`Actions for ${mutationChooserCard.title}`}
-        >
-          <view className="KanbanMutationPanelHeader">
-            <text className="KanbanMutationPanelTitle">Task actions</text>
-            <text className="KanbanMutationPanelTask" maxlines={1}>
-              {mutationChooserCard.title}
-            </text>
-          </view>
-          <view className="KanbanMutationActions KanbanMutationActions--chooser">
-            {actionsForCard(mutationChooserCard).map((action) => (
-              <Button
-                key={action.id}
-                size="sm"
-                variant={action.destructive ? "destructive-outline" : "outline"}
-                onClick={() => void selectAction(mutationChooserCard, action.id)}
-              >
-                {action.label}
-              </Button>
-            ))}
-            <Button size="sm" variant="ghost" onClick={() => setMutationChooserCard(null)}>
-              Cancel
-            </Button>
-          </view>
-        </view>
-      ) : null}
       {mutationTarget ? (
         <view
           className="KanbanMutationPanel"
@@ -397,11 +365,6 @@ export function useNativeKanbanCardActions(input: {
   return {
     actionPanels,
     mutationPending,
-    openCardActions(card) {
-      setMutationTarget(null);
-      setMutationNotice(null);
-      setMutationChooserCard(card);
-    },
     openCardContextMenu,
     showNotice: setMutationNotice,
     async startCard(card, prompt) {

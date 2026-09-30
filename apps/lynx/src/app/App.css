@@ -1782,11 +1782,6 @@
   gap: 8px;
 }
 
-.KanbanMutationActions--chooser {
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-
 .UpdatePage {
   width: 100%;
   height: 100%;

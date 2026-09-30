@@ -4,7 +4,6 @@
 // consume this same component tree without copying the card renderer.
 
 import {
-  KanbanCardActionsElement,
   KanbanCardAttachmentElement,
   KanbanCardBranchElement,
   KanbanCardColumnStatusElement,
@@ -39,7 +38,6 @@ export interface KanbanCardCompositionProps {
     event: React.MouseEvent,
     restoreFocus?: () => void,
   ) => void;
-  readonly onOpenActions?: ((card: KanbanCard, event: React.MouseEvent) => void) | undefined;
   readonly onDragPointerStart?: ((card: KanbanCard, point: KanbanDragPoint) => void) | undefined;
   readonly isOverlay?: boolean | undefined;
   readonly isDragSource?: boolean | undefined;
@@ -53,7 +51,6 @@ export function KanbanCardComposition({
   card,
   onOpen,
   onContextMenu,
-  onOpenActions,
   onDragPointerStart,
   isOverlay = false,
   isDragSource = false,
@@ -106,12 +103,6 @@ export function KanbanCardComposition({
       <KanbanCardTitleRowElement>
         <KanbanCardTitleElement>{card.title}</KanbanCardTitleElement>
         {card.thread?.isPinned ? <KanbanCardPinElement /> : null}
-        {onOpenActions || onContextMenu ? (
-          <KanbanCardActionsElement
-            label={`Actions for ${card.title}`}
-            onActivate={(event) => (onOpenActions ?? onContextMenu)?.(card, event)}
-          />
-        ) : null}
       </KanbanCardTitleRowElement>
       {showDraftPreview ? (
         <KanbanCardDraftPreviewElement>{card.draftPrompt}</KanbanCardDraftPreviewElement>

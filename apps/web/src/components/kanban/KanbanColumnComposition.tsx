@@ -33,7 +33,6 @@ export function KanbanColumnComposition(props: {
     event: React.MouseEvent,
     restoreFocus?: () => void,
   ) => void;
-  readonly onCardActions?: ((card: KanbanCard, event: React.MouseEvent) => void) | undefined;
   readonly onCardDragPointerStart?:
     | ((card: KanbanCard, point: KanbanDragPoint) => void)
     | undefined;
@@ -74,7 +73,6 @@ export function KanbanColumnComposition(props: {
               card={card}
               onOpen={props.onOpenCard}
               {...(props.onCardContextMenu ? { onContextMenu: props.onCardContextMenu } : {})}
-              {...(props.onCardActions ? { onOpenActions: props.onCardActions } : {})}
               {...(props.onCardDragPointerStart
                 ? { onDragPointerStart: props.onCardDragPointerStart }
                 : {})}
