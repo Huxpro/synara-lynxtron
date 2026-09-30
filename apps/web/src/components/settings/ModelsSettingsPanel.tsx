@@ -2,17 +2,25 @@
 // Purpose: Own model-setting discovery, selection, and custom-model editing workflows.
 // Layer: Settings panel
 
-import { DEFAULT_GIT_TEXT_GENERATION_MODEL, type ProviderKind } from "@synara/contracts";
-import { validateCustomModelInput } from "@synara/shared/customModels";
+import {
+  DEFAULT_GIT_TEXT_GENERATION_MODEL,
+  GIT_TEXT_GENERATION_PROVIDERS,
+  PROVIDER_DISPLAY_NAMES,
+  type GitTextGenerationProvider,
+  type ProviderKind,
+} from "@synara/contracts";
+import { getModelOptions, normalizeModelSlug } from "@synara/shared/model";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
 
 import {
   CUSTOM_MODEL_EDITOR_PROVIDER_SETTINGS,
   type AppSettingsBinding,
+  MAX_CUSTOM_MODEL_LENGTH,
   getCustomModelsForProvider,
   getDefaultCustomModelsForProvider,
   getGitTextGenerationModelOptions,
+  isGitTextGenerationSettingsDirty,
   patchCustomModels,
 } from "~/appSettings";
 import { useProviderModelCatalog } from "~/hooks/useProviderModelCatalog";
@@ -29,14 +37,37 @@ import { Button } from "../ui/button";
 import { DisclosureRegion } from "../ui/DisclosureRegion";
 import { Input } from "../ui/input";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { SettingResetButton, useSettingsRestoreSignal } from "./SettingControls";
-import { SettingsRow, SettingsSection, SettingsSelectPopup } from "./SettingsPanelPrimitives";
-import { SettingsGitWritingModelComposition } from "./SettingsGitWritingModelComposition";
 import {
-  formatSettingsGitWritingModelOptionLabel,
-  isGitWritingModelProvider,
-  readSettingsGitWritingModelValues,
-} from "./SettingsGitWritingModelComposition.logic";
+  SettingResetButton,
+  SettingsSelectControl,
+  useSettingsRestoreSignal,
+} from "./SettingControls";
+import { SettingsRow, SettingsSection, SettingsSelectPopup } from "./SettingsPanelPrimitives";
+
+type CustomModelValidationResult =
+  | { readonly model: string; readonly error?: never }
+  | { readonly model?: never; readonly error: string };
+
+export function validateCustomModelInput(input: {
+  readonly provider: ProviderKind;
+  readonly value: string;
+  readonly savedModels: readonly string[];
+}): CustomModelValidationResult {
+  const normalized = normalizeModelSlug(input.value, input.provider);
+  if (!normalized) {
+    return { error: "Enter a model slug." };
+  }
+  if (getModelOptions(input.provider).some((option) => option.slug === normalized)) {
+    return { error: "That model is already built in." };
+  }
+  if (normalized.length > MAX_CUSTOM_MODEL_LENGTH) {
+    return { error: `Model slugs must be ${MAX_CUSTOM_MODEL_LENGTH} characters or less.` };
+  }
+  if (input.savedModels.includes(normalized)) {
+    return { error: "That custom model is already saved." };
+  }
+  return { model: normalized };
+}
 
 function isCustomModelEditorProvider(value: string | null): value is ProviderKind {
   return CUSTOM_MODEL_EDITOR_PROVIDER_SETTINGS.some((config) => config.provider === value);
@@ -67,27 +98,9 @@ export function ModelsSettingsPanel({
     setShowAllCustomModels(false);
   });
 
-  const {
-    customCodexModels,
-    customKiloModels,
-    customOpenCodeModels,
-    textGenerationModel,
-    textGenerationProvider,
-  } = settings;
+  const { textGenerationModel, textGenerationProvider } = settings;
   const currentGitTextGenerationProvider = textGenerationProvider ?? "codex";
   const currentGitTextGenerationModel = textGenerationModel ?? DEFAULT_GIT_TEXT_GENERATION_MODEL;
-  const currentGitWritingModelValues = readSettingsGitWritingModelValues({
-    textGenerationModelSelection: {
-      provider: currentGitTextGenerationProvider,
-      model: currentGitTextGenerationModel,
-    },
-  });
-  const defaultGitWritingModelValues = readSettingsGitWritingModelValues({
-    textGenerationModelSelection: {
-      provider: defaults.textGenerationProvider ?? "codex",
-      model: defaults.textGenerationModel ?? DEFAULT_GIT_TEXT_GENERATION_MODEL,
-    },
-  });
   const gitWritingModelHintByProvider = useMemo<Partial<Record<ProviderKind, string | null>>>(
     () => ({ [currentGitTextGenerationProvider]: currentGitTextGenerationModel }),
     [currentGitTextGenerationModel, currentGitTextGenerationProvider],
@@ -102,34 +115,26 @@ export function ModelsSettingsPanel({
     discoveryEnabled: active,
     cwd: providerModelDiscoveryCwd,
     modelHintByProvider: gitWritingModelHintByProvider,
+    prefetchProviders: GIT_TEXT_GENERATION_PROVIDERS,
   });
-  const gitTextGenerationModelOptions = useMemo(
-    () =>
-      getGitTextGenerationModelOptions(
-        {
-          customCodexModels,
-          customKiloModels,
-          customOpenCodeModels,
-          textGenerationModel,
-          textGenerationProvider,
-        },
-        {
-          codex: gitWritingCatalogOptionsByProvider.codex,
-          kilo: gitWritingCatalogOptionsByProvider.kilo,
-          opencode: gitWritingCatalogOptionsByProvider.opencode,
-        },
-      ),
-    [
-      customCodexModels,
-      customKiloModels,
-      customOpenCodeModels,
-      gitWritingCatalogOptionsByProvider.codex,
-      gitWritingCatalogOptionsByProvider.kilo,
-      gitWritingCatalogOptionsByProvider.opencode,
-      textGenerationModel,
-      textGenerationProvider,
-    ],
-  );
+  const gitTextGenerationModelOptions = useMemo(() => {
+    const discoveredOptionsByProvider = {} as Record<
+      GitTextGenerationProvider,
+      (typeof gitWritingCatalogOptionsByProvider)[GitTextGenerationProvider]
+    >;
+    for (const provider of GIT_TEXT_GENERATION_PROVIDERS) {
+      discoveredOptionsByProvider[provider] = gitWritingCatalogOptionsByProvider[provider];
+    }
+    return getGitTextGenerationModelOptions(settings, discoveredOptionsByProvider);
+  }, [gitWritingCatalogOptionsByProvider, settings]);
+  const currentGitTextGenerationValue = `${currentGitTextGenerationProvider}:${currentGitTextGenerationModel}`;
+  const isGitTextGenerationModelDirty = isGitTextGenerationSettingsDirty(settings, defaults);
+  const selectedGitTextGenerationModelLabel =
+    gitTextGenerationModelOptions.find(
+      (option) =>
+        option.provider === currentGitTextGenerationProvider &&
+        option.slug === currentGitTextGenerationModel,
+    )?.name ?? currentGitTextGenerationModel;
   const selectedCustomModelProviderSettings = CUSTOM_MODEL_EDITOR_PROVIDER_SETTINGS.find(
     (config) => config.provider === selectedCustomModelProvider,
   )!;
@@ -212,8 +217,10 @@ export function ModelsSettingsPanel({
         removeFirstBorder && "first:border-t-0",
       )}
     >
-      <span className="truncate text-xs text-muted-foreground">{row.providerTitle}</span>
-      <code className="min-w-0 truncate text-sm text-foreground">{row.slug}</code>
+      <span className="truncate text-ui leading-snug text-muted-foreground">
+        {row.providerTitle}
+      </span>
+      <code className="min-w-0 truncate text-ui-lg leading-snug text-foreground">{row.slug}</code>
       <button
         type="button"
         className="shrink-0 opacity-0 transition-opacity group-hover:opacity-100 hover:opacity-100"
@@ -229,31 +236,54 @@ export function ModelsSettingsPanel({
 
   return (
     <div className="space-y-6">
-      <SettingsGitWritingModelComposition
-        values={currentGitWritingModelValues}
-        defaults={defaultGitWritingModelValues}
-        options={gitTextGenerationModelOptions.flatMap((option) =>
-          isGitWritingModelProvider(option.provider)
-            ? [
-                {
-                  provider: option.provider,
-                  model: option.slug,
-                  label: formatSettingsGitWritingModelOptionLabel(
-                    option.provider,
-                    option.slug,
-                    option.name,
-                  ),
-                },
-              ]
-            : [],
-        )}
-        onChange={(value) =>
-          updateSettings({
-            textGenerationProvider: value.provider,
-            textGenerationModel: value.model,
-          })
-        }
-      />
+      <SettingsSection title="Generation defaults">
+        <SettingsRow
+          title="Git writing model"
+          description="Used for generated commit messages, PR titles, and branch names."
+          resetAction={
+            isGitTextGenerationModelDirty ? (
+              <SettingResetButton
+                label="git writing model"
+                onClick={() =>
+                  updateSettings({
+                    textGenerationProvider: defaults.textGenerationProvider,
+                    textGenerationModel: defaults.textGenerationModel,
+                  })
+                }
+              />
+            ) : null
+          }
+          control={
+            <SettingsSelectControl
+              value={currentGitTextGenerationValue}
+              onValueChange={(value) => {
+                if (!value) return;
+                const separatorIndex = value.indexOf(":");
+                const provider = value.slice(0, separatorIndex) as ProviderKind;
+                const model = value.slice(separatorIndex + 1);
+                if (!provider || !model) return;
+                updateSettings({
+                  textGenerationProvider: provider,
+                  textGenerationModel: model,
+                });
+              }}
+              ariaLabel="Git text generation model"
+              triggerClassName="w-full sm:w-52"
+              valueContent={selectedGitTextGenerationModelLabel}
+            >
+              {gitTextGenerationModelOptions.map((option) => (
+                <SelectItem
+                  hideIndicator
+                  key={`${option.provider}:${option.slug}`}
+                  value={`${option.provider}:${option.slug}`}
+                >
+                  {PROVIDER_DISPLAY_NAMES[option.provider]} / {option.name}
+                </SelectItem>
+              ))}
+            </SettingsSelectControl>
+          }
+        />
+      </SettingsSection>
 
       <SettingsSection title="Custom models">
         <SettingsRow
@@ -327,7 +357,9 @@ export function ModelsSettingsPanel({
             </div>
 
             {selectedCustomModelError ? (
-              <p className="mt-2 text-xs text-destructive">{selectedCustomModelError}</p>
+              <p className="mt-2 text-ui leading-snug text-destructive">
+                {selectedCustomModelError}
+              </p>
             ) : null}
 
             {savedCustomModelRows.length > 0 ? (
@@ -342,7 +374,7 @@ export function ModelsSettingsPanel({
                     </DisclosureRegion>
                     <button
                       type="button"
-                      className="mt-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                      className="mt-2 text-ui leading-snug text-muted-foreground transition-colors hover:text-foreground"
                       aria-expanded={showAllCustomModels}
                       onClick={() => setShowAllCustomModels((value) => !value)}
                     >

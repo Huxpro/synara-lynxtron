@@ -118,7 +118,7 @@ function resolveSubagentIdentityFromParentActivity(input: {
   };
 }
 
-export function subagentAccentColor(seed: string | null | undefined): string {
+function subagentAccentColor(seed: string | null | undefined): string {
   return sidebarThreadSubagentAccentColor(seed);
 }
 

@@ -26,6 +26,7 @@ import {
   COMPOSER_STACKED_PANEL_FOOTER_ROW_CLASS_NAME,
   COMPOSER_STACKED_PANEL_ICON_BUTTON_CLASS_NAME,
   COMPOSER_STACKED_PANEL_ICON_CLASS_NAME,
+  COMPOSER_STACKED_PANEL_SCROLL_REGION_CLASS_NAME,
 } from "./composerStackedPanelStyles";
 
 interface ActiveTaskListCardProps {
@@ -49,11 +50,13 @@ function taskStatusIcon(status: ActiveTaskListState["tasks"][number]["status"]) 
 
 export function ActiveTaskListCard({
   activeTaskList,
-  backgroundTaskCount = 0,
-  compact = false,
+  backgroundTaskCount: backgroundTaskCountProp,
+  compact: compactProp,
   onCompactChange,
   onOpenSidebar,
 }: ActiveTaskListCardProps) {
+  const backgroundTaskCount = backgroundTaskCountProp ?? 0;
+  const compact = compactProp ?? false;
   const totalCount = activeTaskList.tasks.length;
   const completedCount = activeTaskList.tasks.filter((task) => task.status === "completed").length;
   const hasInProgressTask = activeTaskList.tasks.some((task) => task.status === "inProgress");
@@ -104,7 +107,13 @@ export function ActiveTaskListCard({
 
       {compact ? null : (
         <>
-          <ol className={cn("space-y-0", COMPOSER_STACKED_PANEL_BODY_PADDING_CLASS_NAME)}>
+          <ol
+            className={cn(
+              "space-y-0",
+              COMPOSER_STACKED_PANEL_BODY_PADDING_CLASS_NAME,
+              COMPOSER_STACKED_PANEL_SCROLL_REGION_CLASS_NAME,
+            )}
+          >
             {activeTaskList.tasks.map((task, index) => {
               const occurrence = (taskOccurrenceCount.get(task.task) ?? 0) + 1;
               taskOccurrenceCount.set(task.task, occurrence);
@@ -113,7 +122,7 @@ export function ActiveTaskListCard({
                 <li key={`${task.task}:${occurrence}`} className="flex items-start gap-2 py-1">
                   <div
                     className={cn(
-                      "mt-[3px] flex min-w-0 shrink-0 items-center gap-1.5 text-[12px]",
+                      "mt-[3px] flex min-w-0 shrink-0 items-center gap-1.5 text-ui",
                       task.status === "completed"
                         ? "text-muted-foreground/45"
                         : task.status === "inProgress"
@@ -128,7 +137,7 @@ export function ActiveTaskListCard({
                   </div>
                   <p
                     className={cn(
-                      "min-w-0 flex-1 text-[13px] leading-5 text-foreground/85",
+                      "min-w-0 flex-1 text-ui-lg leading-5 text-foreground/85",
                       task.status === "completed" && "text-muted-foreground/50 line-through",
                     )}
                   >

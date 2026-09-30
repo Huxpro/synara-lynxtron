@@ -1,3 +1,5 @@
+import type { PendingUserInputRecoveryDraft } from "./pendingUserInputRecovery";
+import type { ComposerComputerControlMode } from "./computerControlMode";
 // FILE: composerDraftDomain.ts
 // Purpose: Defines composer draft state, stable defaults, and content/project normalization.
 // Exports: Internal domain primitives plus public facade types.
@@ -20,6 +22,7 @@ import * as Equal from "effect/Equal";
 import * as Schema from "effect/Schema";
 
 import { normalizeAssistantSelectionAttachment } from "./lib/assistantSelections";
+import { type BrowserAnnotationDraft, normalizeBrowserAnnotations } from "./lib/browserAnnotations";
 import type { ComposerImageSource } from "./lib/composerImageSource";
 import {
   type PastedTextDraft,
@@ -32,6 +35,10 @@ import {
   type FileCommentSelection,
   normalizeFileCommentSelection,
 } from "./lib/fileComments";
+import {
+  type PullRequestContextDraft,
+  normalizePullRequestContexts,
+} from "./lib/pullRequestContext";
 import { type TerminalContextDraft, normalizeTerminalContextText } from "./lib/terminalContext";
 import {
   type ChatAssistantSelectionAttachment,
@@ -43,7 +50,7 @@ import {
 } from "./types";
 
 export const COMPOSER_DRAFT_STORAGE_KEY = "synara:composer-drafts:v1";
-export const COMPOSER_DRAFT_STORAGE_VERSION = 5;
+export const COMPOSER_DRAFT_STORAGE_VERSION = 6;
 export type DraftThreadEnvMode = "local" | "worktree";
 const TERMINAL_DRAFT_THREAD_MAPPING_SUFFIX = "::terminal";
 
@@ -100,9 +107,11 @@ export interface ComposerPromptHistorySavedDraft {
   nonPersistedImageIds: string[];
   persistedAttachments: PersistedComposerImageAttachment[];
   assistantSelections: ComposerAssistantSelectionAttachment[];
+  browserAnnotations: BrowserAnnotationDraft[];
   terminalContexts: TerminalContextDraft[];
   fileComments: FileCommentDraft[];
   pastedTexts: PastedTextDraft[];
+  pullRequestContexts: PullRequestContextDraft[];
   skills: ProviderSkillReference[];
   mentions: ProviderMentionReference[];
 }
@@ -118,9 +127,11 @@ export interface QueuedComposerChatTurn {
   images: ComposerImageAttachment[];
   files: ComposerFileAttachment[];
   assistantSelections: ComposerAssistantSelectionAttachment[];
+  browserAnnotations: BrowserAnnotationDraft[];
   terminalContexts: TerminalContextDraft[];
   fileComments: FileCommentDraft[];
   pastedTexts: PastedTextDraft[];
+  pullRequestContexts: PullRequestContextDraft[];
   skills: ProviderSkillReference[];
   mentions: ProviderMentionReference[];
   selectedProvider: ProviderKind;
@@ -128,6 +139,9 @@ export interface QueuedComposerChatTurn {
   selectedPromptEffort: string | null;
   modelSelection: ModelSelection;
   providerOptionsForDispatch?: ProviderStartOptions | undefined;
+  enableComputerControl?: boolean | undefined;
+  computerControlMode?: ComposerComputerControlMode | undefined;
+  computerControlGeneration?: number | undefined;
   sourceProposedPlan?: NonNullable<OrchestrationLatestTurn["sourceProposedPlan"]> | undefined;
   runtimeMode: RuntimeMode;
   interactionMode: ProviderInteractionMode;
@@ -152,12 +166,16 @@ export interface QueuedComposerPlanFollowUp {
   selectedPromptEffort: string | null;
   modelSelection: ModelSelection;
   providerOptionsForDispatch?: ProviderStartOptions | undefined;
+  enableComputerControl?: boolean | undefined;
+  computerControlMode?: ComposerComputerControlMode | undefined;
+  computerControlGeneration?: number | undefined;
   runtimeMode: RuntimeMode;
 }
 
 export type QueuedComposerTurn = QueuedComposerChatTurn | QueuedComposerPlanFollowUp;
 
 export interface ComposerThreadDraftState {
+  pendingUserInputDrafts?: Record<string, PendingUserInputRecoveryDraft>;
   prompt: string;
   // Non-null only while composer prompt-history browsing is active: the user's
   // real draft, kept safe while `prompt` temporarily holds a recalled history
@@ -169,9 +187,11 @@ export interface ComposerThreadDraftState {
   nonPersistedImageIds: string[];
   persistedAttachments: PersistedComposerImageAttachment[];
   assistantSelections: ComposerAssistantSelectionAttachment[];
+  browserAnnotations: BrowserAnnotationDraft[];
   terminalContexts: TerminalContextDraft[];
   fileComments: FileCommentDraft[];
   pastedTexts: PastedTextDraft[];
+  pullRequestContexts: PullRequestContextDraft[];
   skills: ProviderSkillReference[];
   mentions: ProviderMentionReference[];
   queuedTurns: QueuedComposerTurn[];
@@ -180,6 +200,9 @@ export interface ComposerThreadDraftState {
   activeProvider: ProviderKind | null;
   runtimeMode: RuntimeMode | null;
   interactionMode: ProviderInteractionMode | null;
+  enableComputerControl?: boolean | undefined;
+  computerControlMode?: ComposerComputerControlMode | undefined;
+  computerControlGeneration?: number | undefined;
 }
 
 export interface DraftThreadState {
@@ -190,31 +213,45 @@ export interface DraftThreadState {
   entryPoint: ThreadPrimarySurface;
   branch: string | null;
   worktreePath: string | null;
+  workingDirectory?: string | null;
   lastKnownPr?: OrchestrationThreadPullRequest | null;
   envMode: DraftThreadEnvMode;
+  // Goal staged before the thread exists server-side; persisted via
+  // `thread.meta.update` when the first send promotes the draft.
+  goal?: string;
   isTemporary?: boolean;
   promotedTo?: ThreadId;
 }
 
-interface DraftThreadMutationOptions {
+export interface DraftThreadMutationOptions {
   branch?: string | null;
   worktreePath?: string | null;
+  workingDirectory?: string | null;
   lastKnownPr?: OrchestrationThreadPullRequest | null;
   createdAt?: string;
-  envMode?: DraftThreadEnvMode;
+  // Explicitly `| undefined`: callers forward a `ThreadWorkspacePatch`, whose `envMode` is
+  // optional in the same way, and under `exactOptionalPropertyTypes` a bare `?:` would reject
+  // that spread even though the value sets are identical ("local" | "worktree").
+  envMode?: DraftThreadEnvMode | undefined;
   runtimeMode?: RuntimeMode;
   interactionMode?: ProviderInteractionMode;
   entryPoint?: ThreadPrimarySurface;
   isTemporary?: boolean;
+  // Empty string clears the staged goal; undefined leaves it unchanged.
+  goal?: string;
 }
 
 type DraftThreadCreatedAtMode = "accept-empty" | "preserve-existing-on-empty";
 
-interface ProjectDraftThread extends DraftThreadState {
+export interface ProjectDraftThread extends DraftThreadState {
   threadId: ThreadId;
 }
 
 export interface ComposerDraftStoreState {
+  setPendingUserInputDrafts: (
+    threadId: ThreadId,
+    drafts: Record<string, PendingUserInputRecoveryDraft>,
+  ) => void;
   draftsByThreadId: Record<ThreadId, ComposerThreadDraftState>;
   draftThreadsByThreadId: Record<ThreadId, DraftThreadState>;
   projectDraftThreadIdByProjectId: Record<string, ThreadId>;
@@ -244,6 +281,7 @@ export interface ComposerDraftStoreState {
       createdAt?: string;
       branch?: string | null;
       worktreePath?: string | null;
+      workingDirectory?: string | null;
       envMode?: DraftThreadEnvMode;
       runtimeMode?: RuntimeMode;
       interactionMode?: ProviderInteractionMode;
@@ -269,7 +307,10 @@ export interface ComposerDraftStoreState {
   clearProjectDraftThreadById: (projectId: ProjectId, threadId: ThreadId) => void;
   markDraftThreadPromoting: (threadId: ThreadId, promotedTo?: ThreadId) => void;
   finalizePromotedDraftThread: (threadId: ThreadId) => void;
-  clearDraftThread: (threadId: ThreadId) => void;
+  clearDraftThread: (
+    threadId: ThreadId,
+    options?: { readonly preserveComputerControl?: boolean },
+  ) => void;
   setStickyModelSelection: (modelSelection: ModelSelection | null | undefined) => void;
   setPrompt: (threadId: ThreadId, prompt: string) => void;
   setPromptHistorySavedDraft: (
@@ -277,7 +318,7 @@ export interface ComposerDraftStoreState {
     savedDraft: ComposerPromptHistorySavedDraft | null,
   ) => void;
   restorePromptHistorySavedDraft: (threadId: ThreadId) => void;
-  addPromptHistorySavedDraftImage: (threadId: ThreadId, image: ComposerImageAttachment) => void;
+  addPromptHistorySavedDraftImage: (threadId: ThreadId, image: ComposerImageAttachment) => boolean;
   syncPromptHistorySavedDraftPersistedAttachments: (
     threadId: ThreadId,
     attachments: PersistedComposerImageAttachment[],
@@ -309,14 +350,20 @@ export interface ComposerDraftStoreState {
     threadId: ThreadId,
     interactionMode: ProviderInteractionMode | null | undefined,
   ) => void;
+  setComputerControlMode: (
+    threadId: ThreadId,
+    mode: ComposerComputerControlMode,
+    options?: { revokeQueued?: boolean; generation?: number },
+  ) => void;
+  setEnableComputerControl: (threadId: ThreadId, enabled: boolean) => void;
   enqueueQueuedTurn: (threadId: ThreadId, queuedTurn: QueuedComposerTurn) => void;
   insertQueuedTurn: (threadId: ThreadId, queuedTurn: QueuedComposerTurn, index: number) => void;
   removeQueuedTurn: (threadId: ThreadId, queuedTurnId: string) => void;
-  addImage: (threadId: ThreadId, image: ComposerImageAttachment) => void;
-  addImages: (threadId: ThreadId, images: ComposerImageAttachment[]) => void;
+  addImage: (threadId: ThreadId, image: ComposerImageAttachment) => boolean;
+  addImages: (threadId: ThreadId, images: ComposerImageAttachment[]) => number;
   removeImage: (threadId: ThreadId, imageId: string) => void;
   removeAppSnapCapture: (captureId: string) => void;
-  addFiles: (threadId: ThreadId, files: ComposerFileAttachment[]) => void;
+  addFiles: (threadId: ThreadId, files: ComposerFileAttachment[]) => number;
   removeFile: (threadId: ThreadId, fileId: string) => void;
   addAssistantSelection: (
     threadId: ThreadId,
@@ -324,12 +371,25 @@ export interface ComposerDraftStoreState {
   ) => boolean;
   removeAssistantSelection: (threadId: ThreadId, selectionId: string) => void;
   clearAssistantSelections: (threadId: ThreadId) => void;
+  addBrowserAnnotation: (
+    threadId: ThreadId,
+    annotation: Omit<BrowserAnnotationDraft, "ordinal"> & { ordinal?: number },
+  ) => boolean;
+  addBrowserAnnotations: (
+    threadId: ThreadId,
+    annotations: ReadonlyArray<Omit<BrowserAnnotationDraft, "ordinal"> & { ordinal?: number }>,
+  ) => number;
+  removeBrowserAnnotation: (threadId: ThreadId, annotationId: string) => void;
+  clearBrowserAnnotations: (threadId: ThreadId) => void;
   addFileComment: (threadId: ThreadId, comment: FileCommentDraft) => boolean;
   removeFileComment: (threadId: ThreadId, commentId: string) => void;
   clearFileComments: (threadId: ThreadId) => void;
   addPastedTexts: (threadId: ThreadId, pastedTexts: PastedTextDraft[]) => void;
   removePastedText: (threadId: ThreadId, pastedTextId: string) => void;
   clearPastedTexts: (threadId: ThreadId) => void;
+  addPullRequestContext: (threadId: ThreadId, context: PullRequestContextDraft) => boolean;
+  removePullRequestContext: (threadId: ThreadId, contextId: string) => void;
+  clearPullRequestContexts: (threadId: ThreadId) => void;
   insertTerminalContext: (
     threadId: ThreadId,
     prompt: string,
@@ -413,6 +473,8 @@ export function buildDraftThreadState(input: {
         ? false
         : existingThread?.isTemporary === true;
   const nextPromotedTo = existingThread?.promotedTo;
+  const nextGoal =
+    options?.goal === undefined ? existingThread?.goal : options.goal.trim() || undefined;
 
   return {
     projectId: input.projectId,
@@ -428,12 +490,17 @@ export function buildDraftThreadState(input: {
     branch:
       options?.branch === undefined ? (existingThread?.branch ?? null) : (options.branch ?? null),
     worktreePath: nextWorktreePath,
+    workingDirectory:
+      options?.workingDirectory === undefined
+        ? (existingThread?.workingDirectory ?? null)
+        : (options.workingDirectory ?? null),
     lastKnownPr:
       options?.lastKnownPr === undefined
         ? (existingThread?.lastKnownPr ?? null)
         : (options.lastKnownPr ?? null),
     envMode:
       options?.envMode ?? (nextWorktreePath ? "worktree" : (existingThread?.envMode ?? "local")),
+    ...(nextGoal ? { goal: nextGoal } : {}),
     ...(nextIsTemporary ? { isTemporary: true } : {}),
     ...(nextPromotedTo ? { promotedTo: nextPromotedTo } : {}),
   };
@@ -455,8 +522,10 @@ export function draftThreadStatesEqual(
     left.entryPoint === right.entryPoint &&
     left.branch === right.branch &&
     left.worktreePath === right.worktreePath &&
+    (left.workingDirectory ?? null) === (right.workingDirectory ?? null) &&
     Equal.equals(left.lastKnownPr ?? null, right.lastKnownPr ?? null) &&
     left.envMode === right.envMode &&
+    (left.goal ?? "") === (right.goal ?? "") &&
     (left.isTemporary === true) === (right.isTemporary === true) &&
     left.promotedTo === right.promotedTo
   );
@@ -488,9 +557,11 @@ export function createEmptyThreadDraft(): ComposerThreadDraftState {
     nonPersistedImageIds: [],
     persistedAttachments: [],
     assistantSelections: [],
+    browserAnnotations: [],
     terminalContexts: [],
     fileComments: [],
     pastedTexts: [],
+    pullRequestContexts: [],
     skills: [],
     mentions: [],
     queuedTurns: [],
@@ -499,6 +570,12 @@ export function createEmptyThreadDraft(): ComposerThreadDraftState {
     activeProvider: null,
     runtimeMode: null,
     interactionMode: null,
+    // Tri-state: undefined means "no explicit choice". A chat that has not
+    // started yet then follows the machine-wide computerControlEnabled
+    // setting (off by default), including while permission setup is needed; its
+    // first send records the resolved value here so later setting changes leave
+    // the chat alone. A chat with turns and no recorded choice is off.
+    enableComputerControl: undefined,
   };
 }
 
@@ -694,9 +771,11 @@ export function captureComposerPromptHistorySavedDraft(input: {
     nonPersistedImageIds: [...draft.nonPersistedImageIds],
     persistedAttachments: [...draft.persistedAttachments],
     assistantSelections: normalizeAssistantSelections(draft.assistantSelections),
+    browserAnnotations: normalizeBrowserAnnotations(draft.browserAnnotations),
     terminalContexts: normalizeTerminalContextsForThread(threadId, draft.terminalContexts),
     fileComments: normalizeFileComments(draft.fileComments),
     pastedTexts: normalizePastedTexts(draft.pastedTexts),
+    pullRequestContexts: normalizePullRequestContexts(draft.pullRequestContexts),
     skills: [...draft.skills],
     mentions: [...draft.mentions],
   };
@@ -721,14 +800,20 @@ export function buildTransferredComposerDraft(input: {
     nonPersistedImageIds: [...sourceDraft.nonPersistedImageIds],
     persistedAttachments: [...sourceDraft.persistedAttachments],
     assistantSelections: normalizeAssistantSelections(sourceDraft.assistantSelections),
+    browserAnnotations: normalizeBrowserAnnotations(sourceDraft.browserAnnotations),
     terminalContexts: normalizeTerminalContextsForThread(
       targetThreadId,
       sourceDraft.terminalContexts,
     ),
     fileComments: normalizeFileComments(sourceDraft.fileComments),
     pastedTexts: normalizePastedTexts(sourceDraft.pastedTexts),
+    pullRequestContexts: normalizePullRequestContexts(sourceDraft.pullRequestContexts),
     skills: [...sourceDraft.skills],
     mentions: [...sourceDraft.mentions],
+    enableComputerControl: sourceDraft.enableComputerControl,
+    computerControlMode: sourceDraft.computerControlMode,
+    // Revocation generations belong to the target thread, never the copied prompt.
+    computerControlGeneration: base.computerControlGeneration ?? 0,
     restoredSourceProposedPlan: null,
   };
 }
@@ -763,12 +848,14 @@ function clonePromptHistorySavedDraft(
     nonPersistedImageIds: [...savedDraft.nonPersistedImageIds],
     persistedAttachments: [...savedDraft.persistedAttachments],
     assistantSelections: normalizeAssistantSelections(savedDraft.assistantSelections),
+    browserAnnotations: normalizeBrowserAnnotations(savedDraft.browserAnnotations),
     terminalContexts: normalizeTerminalContextsForThread(
       targetThreadId,
       savedDraft.terminalContexts,
     ),
     fileComments: normalizeFileComments(savedDraft.fileComments),
     pastedTexts: normalizePastedTexts(savedDraft.pastedTexts),
+    pullRequestContexts: normalizePullRequestContexts(savedDraft.pullRequestContexts),
     skills: [...savedDraft.skills],
     mentions: [...savedDraft.mentions],
   };
@@ -776,15 +863,18 @@ function clonePromptHistorySavedDraft(
 
 export function shouldRemoveDraft(draft: ComposerThreadDraftState): boolean {
   return (
+    Object.keys(draft.pendingUserInputDrafts ?? {}).length === 0 &&
     draft.prompt.length === 0 &&
     draft.promptHistorySavedDraft === null &&
     draft.images.length === 0 &&
     draft.files.length === 0 &&
     draft.persistedAttachments.length === 0 &&
     draft.assistantSelections.length === 0 &&
+    draft.browserAnnotations.length === 0 &&
     draft.terminalContexts.length === 0 &&
     draft.fileComments.length === 0 &&
     draft.pastedTexts.length === 0 &&
+    draft.pullRequestContexts.length === 0 &&
     draft.skills.length === 0 &&
     draft.mentions.length === 0 &&
     draft.queuedTurns.length === 0 &&
@@ -792,7 +882,11 @@ export function shouldRemoveDraft(draft: ComposerThreadDraftState): boolean {
     Object.keys(draft.modelSelectionByProvider).length === 0 &&
     draft.activeProvider === null &&
     draft.runtimeMode === null &&
-    draft.interactionMode === null
+    draft.interactionMode === null &&
+    // An explicit false is still content: it records the user's choice to keep
+    // computer control off in this chat when the new-chat default is on.
+    draft.enableComputerControl === undefined &&
+    draft.computerControlMode === undefined
   );
 }
 
@@ -808,7 +902,9 @@ const EMPTY_FILES: ComposerFileAttachment[] = [];
 const EMPTY_IDS: string[] = [];
 const EMPTY_PERSISTED_ATTACHMENTS: PersistedComposerImageAttachment[] = [];
 const EMPTY_TERMINAL_CONTEXTS: TerminalContextDraft[] = [];
+const EMPTY_BROWSER_ANNOTATIONS: BrowserAnnotationDraft[] = [];
 const EMPTY_PASTED_TEXTS: PastedTextDraft[] = [];
+const EMPTY_PULL_REQUEST_CONTEXTS: PullRequestContextDraft[] = [];
 const EMPTY_SKILLS: ProviderSkillReference[] = [];
 const EMPTY_MENTIONS: ProviderMentionReference[] = [];
 const EMPTY_QUEUED_TURNS: QueuedComposerTurn[] = [];
@@ -817,7 +913,9 @@ Object.freeze(EMPTY_FILES);
 Object.freeze(EMPTY_IDS);
 Object.freeze(EMPTY_PERSISTED_ATTACHMENTS);
 Object.freeze(EMPTY_TERMINAL_CONTEXTS);
+Object.freeze(EMPTY_BROWSER_ANNOTATIONS);
 Object.freeze(EMPTY_PASTED_TEXTS);
+Object.freeze(EMPTY_PULL_REQUEST_CONTEXTS);
 Object.freeze(EMPTY_SKILLS);
 Object.freeze(EMPTY_MENTIONS);
 Object.freeze(EMPTY_QUEUED_TURNS);
@@ -832,9 +930,11 @@ const EMPTY_THREAD_DRAFT = Object.freeze<ComposerThreadDraftState>({
   nonPersistedImageIds: EMPTY_IDS,
   persistedAttachments: EMPTY_PERSISTED_ATTACHMENTS,
   assistantSelections: [],
+  browserAnnotations: EMPTY_BROWSER_ANNOTATIONS,
   terminalContexts: EMPTY_TERMINAL_CONTEXTS,
   fileComments: [],
   pastedTexts: EMPTY_PASTED_TEXTS,
+  pullRequestContexts: EMPTY_PULL_REQUEST_CONTEXTS,
   skills: EMPTY_SKILLS,
   mentions: EMPTY_MENTIONS,
   queuedTurns: EMPTY_QUEUED_TURNS,
@@ -843,6 +943,7 @@ const EMPTY_THREAD_DRAFT = Object.freeze<ComposerThreadDraftState>({
   activeProvider: null,
   runtimeMode: null,
   interactionMode: null,
+  enableComputerControl: undefined,
 });
 
 export function selectComposerThreadDraft(

@@ -86,21 +86,21 @@ describe("app settings General storage projection", () => {
 
   it("round-trips Provider picker fields without touching unrelated app settings", () => {
     const raw = writeSettingsProviderPickerProjection(JSON.stringify({ chatFontSizePx: 17 }), {
-      hiddenProviders: ["kilo"],
+      hiddenProviders: ["grok"],
       providerOrder: [
-        "kilo",
+        "grok",
         ...DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES.providerOrder.filter(
-          (provider) => provider !== "kilo",
+          (provider) => provider !== "grok",
         ),
       ],
     });
     expect(JSON.parse(raw)).toMatchObject({
       chatFontSizePx: 17,
-      hiddenProviders: ["kilo"],
+      hiddenProviders: ["grok"],
     });
     const projected = readSettingsProviderPickerProjection(raw);
-    expect(projected.hiddenProviders).toEqual(["kilo"]);
-    expect(projected.providerOrder.slice(0, 2)).toEqual(["kilo", "codex"]);
+    expect(projected.hiddenProviders).toEqual(["grok"]);
+    expect(projected.providerOrder.slice(0, 2)).toEqual(["grok", "codex"]);
   });
 
   it("round-trips AppSnap defaults and custom chords without touching unrelated settings", () => {

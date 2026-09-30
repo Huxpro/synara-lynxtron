@@ -4,46 +4,43 @@
 
 import { normalizeWorkspaceRootForComparison } from "@synara/shared/threadWorkspace";
 
+import { parseProjectAppearance, type ProjectAppearance } from "./lib/projectAppearance";
 import type { AppState } from "./storeState";
 import type { Project } from "./types";
-
-import { webStorage } from "~/platform/storage";
 import { isBrowser } from "~/platform/env";
-const PERSISTED_STATE_KEY = "synara:renderer-state:v8";
+import { webStorage } from "~/platform/storage";
+
+export const PERSISTED_STATE_KEY = "synara:renderer-state:v8";
 const persistedExpandedProjectCwds = new Set<string>();
-const persistedProjectOrderCwds: string[] = [];
 const persistedProjectOrderByCwd = new Map<string, number>();
 const persistedProjectNamesByCwd = new Map<string, string>();
+const persistedProjectAppearanceByCwd = new Map<string, ProjectAppearance>();
+let persistedExpandedProjectCwdsDefined = false;
 
 export interface RememberedProjectUiState {
   expandedProjectCount: number;
+  isLegacyExpansionPayload: boolean;
   isProjectExpanded: (cwdKey: string) => boolean;
   projectOrderCount: number;
   projectOrderIndexForCwd: (cwdKey: string) => number | undefined;
   projectNameForCwd: (cwdKey: string) => string | undefined;
-}
-
-interface PersistedProjectUiStateDocument {
-  expandedProjectCwds?: unknown;
-  projectOrderCwds?: unknown;
-  projectNamesByCwd?: unknown;
-  [key: string]: unknown;
-}
-
-export interface PersistedProjectExpansionState {
-  readonly expandedProjectCwds: readonly string[];
+  projectAppearanceForCwd: (cwdKey: string) => ProjectAppearance | undefined;
 }
 
 const rememberedProjectUiState: RememberedProjectUiState = {
   get expandedProjectCount() {
     return persistedExpandedProjectCwds.size;
   },
+  get isLegacyExpansionPayload() {
+    return persistedExpandedProjectCwdsDefined;
+  },
   isProjectExpanded: (cwdKey) => persistedExpandedProjectCwds.has(cwdKey),
   get projectOrderCount() {
-    return persistedProjectOrderCwds.length;
+    return persistedProjectOrderByCwd.size;
   },
   projectOrderIndexForCwd: (cwdKey) => persistedProjectOrderByCwd.get(cwdKey),
   projectNameForCwd: (cwdKey) => persistedProjectNamesByCwd.get(cwdKey),
+  projectAppearanceForCwd: (cwdKey) => persistedProjectAppearanceByCwd.get(cwdKey),
 };
 
 export function projectCwdKey(cwd: string): string {
@@ -54,12 +51,200 @@ export function getRememberedProjectUiState(): RememberedProjectUiState {
   return rememberedProjectUiState;
 }
 
+function resetRememberedProjectState(): void {
+  persistedExpandedProjectCwds.clear();
+  persistedProjectOrderByCwd.clear();
+  persistedProjectNamesByCwd.clear();
+  persistedProjectAppearanceByCwd.clear();
+  persistedExpandedProjectCwdsDefined = false;
+}
+
+/**
+ * Retains preferences only for the authoritative snapshot's workspace roots.
+ * Callers pass normalized keys (`projectCwdKey`).
+ */
+export function resetStaleRememberedProjectState(incomingCwdKeys: ReadonlySet<string>): void {
+  if (incomingCwdKeys.size === 0) {
+    resetRememberedProjectState();
+    return;
+  }
+  const rememberedCwdKeys = new Set([
+    ...persistedProjectOrderByCwd.keys(),
+    ...persistedExpandedProjectCwds,
+    ...persistedProjectNamesByCwd.keys(),
+    ...persistedProjectAppearanceByCwd.keys(),
+  ]);
+  // An all-collapsed legacy payload has no identities to compare. Preserve it
+  // for the first non-empty snapshot; remembering that snapshot upgrades it to
+  // modern per-project state. An authoritative empty snapshot expires it above.
+  if (persistedExpandedProjectCwdsDefined && rememberedCwdKeys.size === 0) {
+    return;
+  }
+  let hasIncoming = false;
+  for (const cwdKey of rememberedCwdKeys) {
+    if (incomingCwdKeys.has(cwdKey)) {
+      hasIncoming = true;
+    } else {
+      forgetProjectState(cwdKey);
+    }
+  }
+  if (!hasIncoming) {
+    resetRememberedProjectState();
+    return;
+  }
+  // Close gaps left by removals so unknown projects sort after retained ones.
+  const orderedCwds = [...persistedProjectOrderByCwd].toSorted((a, b) => a[1] - b[1]);
+  for (const [index, [cwdKey]] of orderedCwds.entries()) {
+    persistedProjectOrderByCwd.set(cwdKey, index);
+  }
+}
+
+export function rememberProjectState(
+  projects: ReadonlyArray<Pick<Project, "cwd" | "expanded" | "localName" | "appearance">>,
+): void {
+  for (const [index, project] of projects.entries()) {
+    const cwdKey = projectCwdKey(project.cwd);
+    if (project.expanded) {
+      persistedExpandedProjectCwds.add(cwdKey);
+    } else {
+      persistedExpandedProjectCwds.delete(cwdKey);
+    }
+    // Callers pass the full ordered project list, so the array position is the
+    // current order. Re-index known projects too, or the remembered order would
+    // drift after reorderProjects.
+    persistedProjectOrderByCwd.set(cwdKey, index);
+    const localName = project.localName?.trim() ?? "";
+    if (localName.length > 0) {
+      persistedProjectNamesByCwd.set(cwdKey, localName);
+    } else {
+      persistedProjectNamesByCwd.delete(cwdKey);
+    }
+    if (project.appearance) {
+      persistedProjectAppearanceByCwd.set(cwdKey, project.appearance);
+    } else {
+      persistedProjectAppearanceByCwd.delete(cwdKey);
+    }
+  }
+  if (persistedProjectOrderByCwd.size > 0) {
+    persistedExpandedProjectCwdsDefined = false;
+  }
+}
+
+export function forgetProjectState(cwd: string): void {
+  const cwdKey = projectCwdKey(cwd);
+  persistedExpandedProjectCwds.delete(cwdKey);
+  persistedProjectOrderByCwd.delete(cwdKey);
+  persistedProjectNamesByCwd.delete(cwdKey);
+  persistedProjectAppearanceByCwd.delete(cwdKey);
+}
+
+export function readPersistedState(initialState: AppState): AppState {
+  if (!isBrowser()) return initialState;
+  try {
+    const raw = webStorage.getItem(PERSISTED_STATE_KEY);
+    if (!raw) {
+      resetRememberedProjectState();
+      return initialState;
+    }
+    // SAFETY: localStorage is only writable by same-origin scripts. We validate the
+    // persisted shape below, discarding any malformed entries and falling back to defaults.
+    const parsed = JSON.parse(raw) as {
+      expandedProjectCwds?: string[];
+      projectOrderCwds?: string[];
+      projectNamesByCwd?: Record<string, string>;
+      projectAppearanceByCwd?: Record<string, unknown>;
+    };
+    resetRememberedProjectState();
+    persistedExpandedProjectCwdsDefined =
+      Array.isArray(parsed.expandedProjectCwds) && parsed.projectOrderCwds === undefined;
+    for (const cwd of Array.isArray(parsed.expandedProjectCwds) ? parsed.expandedProjectCwds : []) {
+      if (typeof cwd === "string" && cwd.length > 0) {
+        persistedExpandedProjectCwds.add(projectCwdKey(cwd));
+      }
+    }
+    for (const cwd of Array.isArray(parsed.projectOrderCwds) ? parsed.projectOrderCwds : []) {
+      const cwdKey = typeof cwd === "string" ? projectCwdKey(cwd) : "";
+      if (cwdKey.length > 0 && !persistedProjectOrderByCwd.has(cwdKey)) {
+        persistedProjectOrderByCwd.set(cwdKey, persistedProjectOrderByCwd.size);
+      }
+    }
+    const projectNamesByCwd =
+      typeof parsed.projectNamesByCwd === "object" &&
+      parsed.projectNamesByCwd !== null &&
+      !Array.isArray(parsed.projectNamesByCwd)
+        ? parsed.projectNamesByCwd
+        : {};
+    for (const [cwd, name] of Object.entries(projectNamesByCwd)) {
+      if (typeof cwd !== "string" || cwd.length === 0 || typeof name !== "string") continue;
+      const trimmedName = name.trim();
+      if (trimmedName.length === 0) continue;
+      persistedProjectNamesByCwd.set(projectCwdKey(cwd), trimmedName);
+    }
+    const projectAppearanceByCwd =
+      typeof parsed.projectAppearanceByCwd === "object" &&
+      parsed.projectAppearanceByCwd !== null &&
+      !Array.isArray(parsed.projectAppearanceByCwd)
+        ? parsed.projectAppearanceByCwd
+        : {};
+    for (const [cwd, value] of Object.entries(projectAppearanceByCwd)) {
+      const appearance = parseProjectAppearance(value);
+      if (cwd.length === 0 || !appearance) continue;
+      persistedProjectAppearanceByCwd.set(projectCwdKey(cwd), appearance);
+    }
+    return { ...initialState };
+  } catch {
+    resetRememberedProjectState();
+    return initialState;
+  }
+}
+
+export function persistState(state: AppState): void {
+  if (!isBrowser() || !state.threadsHydrated) return;
+  try {
+    const projectNamesByCwd: Record<string, string> = {};
+    const projectAppearanceByCwd: Record<string, ProjectAppearance> = {};
+    for (const project of state.projects) {
+      const localName = project.localName?.trim();
+      if (localName && localName.length > 0) {
+        projectNamesByCwd[projectCwdKey(project.cwd)] = localName;
+      }
+      if (project.appearance) {
+        projectAppearanceByCwd[projectCwdKey(project.cwd)] = project.appearance;
+      }
+    }
+    webStorage.setItem(
+      PERSISTED_STATE_KEY,
+      JSON.stringify({
+        expandedProjectCwds: state.projects
+          .filter((project) => project.expanded)
+          .map((project) => projectCwdKey(project.cwd)),
+        projectOrderCwds: state.projects.map((project) => projectCwdKey(project.cwd)),
+        projectNamesByCwd,
+        projectAppearanceByCwd,
+      }),
+    );
+  } catch (error) {
+    // Quota/private-mode storage failures are not actionable in the UI; log at
+    // debug level so they are observable in devtools without breaking chat UX.
+    console.debug("Failed to persist renderer state", error);
+  }
+}
+
+interface PersistedProjectUiStateDocument {
+  expandedProjectCwds?: unknown;
+  [key: string]: unknown;
+}
+
+export interface PersistedProjectExpansionState {
+  readonly expandedProjectCwds: readonly string[];
+}
+
 function readPersistedProjectUiStateDocument(): PersistedProjectUiStateDocument | null {
   if (!isBrowser()) return null;
   const raw = webStorage.getItem(PERSISTED_STATE_KEY);
   if (!raw) return null;
   const parsed = JSON.parse(raw) as unknown;
-  return parsed !== null && typeof parsed === "object"
+  return parsed !== null && typeof parsed === "object" && !Array.isArray(parsed)
     ? (parsed as PersistedProjectUiStateDocument)
     : null;
 }
@@ -83,12 +268,9 @@ export function readPersistedProjectExpansionState(): PersistedProjectExpansionS
   }
 }
 
+/** Updates only the expansion list, keeping the rest of the document the web renderer wrote. */
 export function persistProjectExpansionState(
   projects: ReadonlyArray<{ readonly cwd: string; readonly expanded: boolean }>,
-  additionalState: {
-    readonly projectOrderCwds?: readonly string[];
-    readonly projectNamesByCwd?: Readonly<Record<string, string>>;
-  } = {},
 ): void {
   if (!isBrowser()) return;
   try {
@@ -99,98 +281,10 @@ export function persistProjectExpansionState(
         ...current,
         expandedProjectCwds: projects
           .filter((project) => project.expanded)
-          .map((project) => project.cwd),
-        ...(additionalState.projectOrderCwds
-          ? { projectOrderCwds: additionalState.projectOrderCwds }
-          : {}),
-        ...(additionalState.projectNamesByCwd
-          ? { projectNamesByCwd: additionalState.projectNamesByCwd }
-          : {}),
+          .map((project) => projectCwdKey(project.cwd)),
       }),
     );
-  } catch {
-    // Ignore malformed/quota/storage errors to avoid breaking navigation.
-  }
-}
-
-export function rememberProjectUiState(
-  projects: ReadonlyArray<Pick<Project, "cwd" | "expanded">>,
-): void {
-  for (const project of projects) {
-    const cwdKey = projectCwdKey(project.cwd);
-    if (project.expanded) {
-      persistedExpandedProjectCwds.add(cwdKey);
-    } else {
-      persistedExpandedProjectCwds.delete(cwdKey);
-    }
-    if (!persistedProjectOrderByCwd.has(cwdKey)) {
-      persistedProjectOrderByCwd.set(cwdKey, persistedProjectOrderCwds.length);
-      persistedProjectOrderCwds.push(cwdKey);
-    }
-  }
-}
-
-export function rememberProjectLocalNames(
-  projects: ReadonlyArray<Pick<Project, "cwd" | "localName">>,
-): void {
-  for (const project of projects) {
-    const cwdKey = projectCwdKey(project.cwd);
-    const localName = project.localName?.trim() ?? "";
-    if (localName.length > 0) {
-      persistedProjectNamesByCwd.set(cwdKey, localName);
-    } else {
-      persistedProjectNamesByCwd.delete(cwdKey);
-    }
-  }
-}
-
-export function readPersistedState(initialState: AppState): AppState {
-  if (!isBrowser()) return initialState;
-  try {
-    const parsed = readPersistedProjectUiStateDocument();
-    if (!parsed) return initialState;
-    persistedExpandedProjectCwds.clear();
-    persistedProjectOrderCwds.length = 0;
-    persistedProjectOrderByCwd.clear();
-    persistedProjectNamesByCwd.clear();
-    for (const cwd of Array.isArray(parsed.expandedProjectCwds) ? parsed.expandedProjectCwds : []) {
-      if (typeof cwd === "string" && cwd.length > 0) {
-        persistedExpandedProjectCwds.add(projectCwdKey(cwd));
-      }
-    }
-    for (const cwd of Array.isArray(parsed.projectOrderCwds) ? parsed.projectOrderCwds : []) {
-      const cwdKey = typeof cwd === "string" ? projectCwdKey(cwd) : "";
-      if (cwdKey.length > 0 && !persistedProjectOrderByCwd.has(cwdKey)) {
-        persistedProjectOrderByCwd.set(cwdKey, persistedProjectOrderCwds.length);
-        persistedProjectOrderCwds.push(cwdKey);
-      }
-    }
-    const projectNamesByCwd =
-      parsed.projectNamesByCwd !== null && typeof parsed.projectNamesByCwd === "object"
-        ? parsed.projectNamesByCwd
-        : {};
-    for (const [cwd, name] of Object.entries(projectNamesByCwd)) {
-      if (typeof cwd !== "string" || cwd.length === 0 || typeof name !== "string") continue;
-      const trimmedName = name.trim();
-      if (trimmedName.length === 0) continue;
-      persistedProjectNamesByCwd.set(projectCwdKey(cwd), trimmedName);
-    }
-    return { ...initialState };
-  } catch {
-    return initialState;
-  }
-}
-
-export function persistState(state: AppState): void {
-  if (!isBrowser()) return;
-  try {
-    rememberProjectUiState(state.projects);
-    rememberProjectLocalNames(state.projects);
-    persistProjectExpansionState(state.projects, {
-      projectOrderCwds: state.projects.map((project) => project.cwd),
-      projectNamesByCwd: Object.fromEntries(persistedProjectNamesByCwd),
-    });
-  } catch {
-    // Ignore quota/storage errors to avoid breaking chat UX.
+  } catch (error) {
+    console.debug("Failed to persist project expansion state", error);
   }
 }

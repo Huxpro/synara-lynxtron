@@ -20,9 +20,6 @@ describe("Settings Provider tools fidelity", () => {
     expect(providerFieldPatch("cursorApiEndpoint", "https://cursor.test")).toEqual({
       providers: { cursor: { apiEndpoint: "https://cursor.test" } },
     });
-    expect(providerFieldPatch("kiloServerPassword", "secret")).toEqual({
-      providers: { kilo: { serverPassword: "secret" } },
-    });
     expect(providerFieldPatch("openCodeServerPassword", "")).toEqual({
       providers: { opencode: { serverPassword: "" } },
     });
@@ -41,22 +38,15 @@ describe("Settings Provider tools fidelity", () => {
       "antigravity",
       "grok",
       "droid",
-      "kilo",
       "opencode",
       "pi",
     ]);
-    expect(patch.providers?.kilo).toMatchObject({
-      binaryPath: "kilo",
-      serverUrl: "",
-      serverPassword: "",
-    });
     expect(patch.providers?.opencode).toMatchObject({
       binaryPath: "opencode",
       serverUrl: "",
       serverPassword: "",
       experimentalWebSockets: false,
     });
-    expect(patch.providers?.kilo).not.toHaveProperty("serverPasswordConfigured");
     expect(patch.providers?.opencode).not.toHaveProperty("serverPasswordConfigured");
   });
 

@@ -4,25 +4,12 @@ import { page } from "vitest/browser";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 
+import { NATIVE_SURFACE_OCCLUSION_SYNC_EVENT } from "~/lib/nativeSurfaceOcclusion";
 import { ExpandedImageOverlay } from "./ExpandedImageOverlay";
 
 describe("ExpandedImageOverlay", () => {
   afterEach(() => {
     document.body.innerHTML = "";
-  });
-
-  it("renders nothing without an expanded image", async () => {
-    const screen = await render(
-      <ExpandedImageOverlay expandedImage={null} onClose={vi.fn()} onNavigate={vi.fn()} />,
-    );
-
-    try {
-      await expect
-        .element(page.getByRole("dialog", { name: "Expanded image preview" }))
-        .not.toBeInTheDocument();
-    } finally {
-      await screen.unmount();
-    }
   });
 
   it("renders the selected image and dispatches previous, next, and close", async () => {
@@ -57,6 +44,41 @@ describe("ExpandedImageOverlay", () => {
       expect(onNavigate).toHaveBeenNthCalledWith(2, 1);
       expect(onClose).toHaveBeenCalledOnce();
     } finally {
+      await screen.unmount();
+    }
+  });
+
+  it("signals native surfaces when the overlay opens and closes", async () => {
+    const onOcclusionChange = vi.fn();
+    window.addEventListener(NATIVE_SURFACE_OCCLUSION_SYNC_EVENT, onOcclusionChange);
+    const screen = await render(
+      <ExpandedImageOverlay expandedImage={null} onClose={vi.fn()} onNavigate={vi.fn()} />,
+    );
+
+    try {
+      expect(onOcclusionChange).not.toHaveBeenCalled();
+      await expect
+        .element(page.getByRole("dialog", { name: "Expanded image preview" }))
+        .not.toBeInTheDocument();
+
+      await screen.rerender(
+        <ExpandedImageOverlay
+          expandedImage={{
+            images: [{ src: "data:image/png;base64,preview", name: "Preview image" }],
+            index: 0,
+          }}
+          onClose={vi.fn()}
+          onNavigate={vi.fn()}
+        />,
+      );
+      expect(onOcclusionChange).toHaveBeenCalledTimes(1);
+
+      await screen.rerender(
+        <ExpandedImageOverlay expandedImage={null} onClose={vi.fn()} onNavigate={vi.fn()} />,
+      );
+      expect(onOcclusionChange).toHaveBeenCalledTimes(2);
+    } finally {
+      window.removeEventListener(NATIVE_SURFACE_OCCLUSION_SYNC_EVENT, onOcclusionChange);
       await screen.unmount();
     }
   });

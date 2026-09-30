@@ -17,7 +17,9 @@ import {
   SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME,
 } from "../settingsSidebarNavStyles";
 
-export function SettingsNavigationRootElement(props: { readonly children?: ReactNode }) {
+export function SettingsNavigationRootElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return (
     <nav aria-label="Settings sections" className="flex flex-col">
       {props.children}
@@ -27,7 +29,7 @@ export function SettingsNavigationRootElement(props: { readonly children?: React
 
 export function SettingsNavigationGroupElement(props: {
   readonly groupId: string;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <section
@@ -41,7 +43,7 @@ export function SettingsNavigationGroupElement(props: {
 
 export function SettingsNavigationGroupLabelElement(props: {
   readonly groupId: string;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <h2 id={`settings-nav-${props.groupId}`} className={SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME}>
@@ -50,13 +52,17 @@ export function SettingsNavigationGroupLabelElement(props: {
   );
 }
 
-export function SettingsNavigationListElement(props: { readonly children?: ReactNode }) {
+export function SettingsNavigationListElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return (
     <ul className={cn("flex flex-col", SETTINGS_SIDEBAR_LIST_GAP_CLASS_NAME)}>{props.children}</ul>
   );
 }
 
-export function SettingsNavigationItemElement(props: { readonly children?: ReactNode }) {
+export function SettingsNavigationItemElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return <li>{props.children}</li>;
 }
 
@@ -65,7 +71,7 @@ export function SettingsNavigationItemButtonElement(props: {
   readonly accessibleLabel: string;
   readonly disabled: boolean;
   readonly onSelect: () => void;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <button
@@ -96,6 +102,8 @@ export function SettingsNavigationIconElement(props: { readonly name: string }) 
   );
 }
 
-export function SettingsNavigationItemLabelElement(props: { readonly children?: ReactNode }) {
+export function SettingsNavigationItemLabelElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return <span className={SETTINGS_SIDEBAR_ITEM_LABEL_CLASS_NAME}>{props.children}</span>;
 }

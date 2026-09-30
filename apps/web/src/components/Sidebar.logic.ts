@@ -124,23 +124,73 @@ function differentDisplayValue(
   return existing !== null && normalized === existing ? null : normalized;
 }
 
+/**
+ * Display label for the container a thread lives in: real projects show their
+ * user-facing name, while project-less containers (home chats, studio) read as
+ * the app itself. Single rule shared by the Activity rows, pinned-row
+ * suffixes, and thread hover cards, so a chat's auto-generated slug folder
+ * never leaks into the UI as a fake "project name".
+ */
+export function resolveThreadProjectLabel(
+  project: Pick<Project, "kind" | "name" | "folderName"> | null | undefined,
+): string {
+  if (!project || project.kind !== "project") {
+    return "Synara";
+  }
+  return nonEmptyDisplayValue(project.name) ?? project.folderName;
+}
+
+/**
+ * Primary label for a project row in the Threads sidebar.
+ *
+ * Always prefer the configured display name (`project.name`, which already
+ * reflects `localName` when set). Do not render the underlying folder name as a
+ * competing sibling: a previous shrink-0 muted suffix could crowd the display
+ * name out of a narrow row and leave only a greyed-out folder label visible,
+ * while the hover card correctly showed the configured name (#1000). Folder
+ * identity stays in the project hover card path row.
+ */
+export function resolveSidebarProjectRowLabel(
+  project: Pick<Project, "name" | "folderName">,
+): string {
+  return nonEmptyDisplayValue(project.name) ?? project.folderName;
+}
+
 export type SidebarThreadHoverMetadata = {
-  projectName: string | null;
+  projectName: string;
   projectCwd: string | null;
   sourceProjectName: string | null;
   branch: string | null;
   worktreeName: string | null;
 };
 
+/** Prefer the branch captured from the active workspace. The associated worktree branch is a
+ * durable handoff/recovery identity and can legitimately lag after an agent checks out a branch. */
+export function resolveThreadDisplayBranch(
+  thread: Pick<
+    SidebarThreadSummary,
+    "envMode" | "branch" | "worktreePath" | "associatedWorktreeBranch"
+  >,
+): string | null {
+  const currentBranch = nonEmptyDisplayValue(thread.branch);
+  if (currentBranch !== null) return currentBranch;
+
+  const isActiveWorktree =
+    resolveThreadEnvironmentMode({
+      envMode: thread.envMode,
+      worktreePath: thread.worktreePath,
+    }) === "worktree";
+  return isActiveWorktree ? null : nonEmptyDisplayValue(thread.associatedWorktreeBranch);
+}
+
 export function resolveThreadHoverCardMetadata(input: {
   thread: Pick<
     SidebarThreadSummary,
     "envMode" | "branch" | "worktreePath" | "associatedWorktreePath" | "associatedWorktreeBranch"
   >;
-  project: Pick<Project, "name" | "folderName" | "cwd"> | null;
+  project: Pick<Project, "kind" | "name" | "folderName" | "cwd"> | null;
 }): SidebarThreadHoverMetadata {
-  const projectName =
-    nonEmptyDisplayValue(input.project?.name) ?? nonEmptyDisplayValue(input.project?.folderName);
+  const projectName = resolveThreadProjectLabel(input.project);
   const activeWorktreePath = nonEmptyDisplayValue(input.thread.worktreePath);
   const isWorktree =
     resolveThreadEnvironmentMode({
@@ -156,9 +206,7 @@ export function resolveThreadHoverCardMetadata(input: {
     sourceProjectName: isWorktree
       ? differentDisplayValue(input.project?.folderName, projectName)
       : null,
-    branch:
-      nonEmptyDisplayValue(input.thread.associatedWorktreeBranch) ??
-      nonEmptyDisplayValue(input.thread.branch),
+    branch: resolveThreadDisplayBranch(input.thread),
     worktreeName: worktreePath ? formatWorktreePathForDisplay(worktreePath) : null,
   };
 }
@@ -190,7 +238,7 @@ export type SidebarProjectEntry = {
   depth: number;
 };
 
-export type SidebarThreadHoverAnchorScope = "pinned" | "chat" | "project";
+export type SidebarThreadHoverAnchorScope = "pinned" | "chat" | "project" | "activity";
 
 export function createSidebarThreadHoverAnchorId(input: {
   scope: SidebarThreadHoverAnchorScope;
@@ -321,6 +369,39 @@ export function findDeepestWorkspaceRootMatch<T>(
     }
   }
   return best;
+}
+
+export async function runExclusiveProjectAddition<T>(
+  lock: { current: boolean },
+  operation: () => Promise<T>,
+): Promise<T> {
+  if (lock.current) {
+    throw new Error("Another project is already being added.");
+  }
+
+  lock.current = true;
+  try {
+    return await operation();
+  } finally {
+    lock.current = false;
+  }
+}
+
+export async function runProjectProvisionWithCancellationRecovery<T>(input: {
+  readonly signal: AbortSignal;
+  readonly provision: () => Promise<T>;
+  readonly recoverCommittedProject: () => Promise<boolean>;
+}): Promise<
+  { readonly status: "completed"; readonly result: T } | { readonly status: "recovered" }
+> {
+  try {
+    return { status: "completed", result: await input.provision() };
+  } catch (error) {
+    if (!input.signal.aborted || !(await input.recoverCommittedProject())) {
+      throw error;
+    }
+    return { status: "recovered" };
+  }
 }
 
 // Rechecks an existing local project against the server before the add flow decides to reuse it.
@@ -591,3 +672,99 @@ export function deriveSidebarProjectData(input: {
 // PR-state presentation (label/color/glyph) moved to
 // ~/components/pullRequest/pullRequestStatePresentation so the sidebar badge, kanban chip,
 // and the pull request feature surfaces all share one mapping.
+
+/**
+ * Shared project roots can serve several threads, so their live Git status is environment state,
+ * not thread ownership. Only a materialized worktree is thread-scoped: coding agents may checkout
+ * or create a new branch there without going through Synara's branch picker, so its checked-out
+ * branch is authoritative even when the persisted branch metadata is stale.
+ */
+export function shouldUseLivePullRequestForSidebarThread(input: {
+  readonly threadBranch: string | null;
+  readonly liveBranch: string | null;
+  readonly hasDedicatedWorktree: boolean;
+}): boolean {
+  if (input.liveBranch === null) {
+    return false;
+  }
+  return input.hasDedicatedWorktree;
+}
+
+export function resolveSidebarThreadPullRequest<
+  T extends { readonly headBranch: string; readonly state: "open" | "closed" | "merged" },
+>(input: {
+  readonly threadBranch: string | null;
+  readonly liveBranch: string | null;
+  readonly hasLiveStatus: boolean;
+  readonly hasDedicatedWorktree: boolean;
+  readonly livePullRequest: T | null;
+  readonly persistedPullRequest: T | null;
+}): T | null {
+  // A shared local checkout can move because another thread is working in the same project root.
+  // Its live PR must never overwrite the durable PR explicitly associated with this thread.
+  if (!input.hasDedicatedWorktree) {
+    return input.persistedPullRequest;
+  }
+
+  // A settled (merged/closed) PR is the thread's outcome, not a claim about the current
+  // checkout, so it stays visible after the checkout moves on — e.g. switching back to
+  // main after merging must flip the badge to "merged", not drop it and let stale
+  // metadata elsewhere keep it "open".
+  const settledPersistedPullRequest =
+    input.persistedPullRequest !== null && input.persistedPullRequest.state !== "open"
+      ? input.persistedPullRequest
+      : null;
+  const persistedValidationBranch =
+    input.hasLiveStatus && input.hasDedicatedWorktree ? input.liveBranch : input.threadBranch;
+  const persistedPullRequest =
+    input.persistedPullRequest !== null &&
+    (persistedValidationBranch === null ||
+      input.persistedPullRequest.headBranch === persistedValidationBranch)
+      ? input.persistedPullRequest
+      : settledPersistedPullRequest;
+  if (!input.hasLiveStatus) {
+    return persistedPullRequest;
+  }
+  if (input.liveBranch === null && input.hasDedicatedWorktree) {
+    return settledPersistedPullRequest;
+  }
+  if (!shouldUseLivePullRequestForSidebarThread(input)) {
+    return persistedPullRequest;
+  }
+  if (input.livePullRequest !== null) {
+    return input.livePullRequest;
+  }
+  return persistedPullRequest !== null && persistedPullRequest.headBranch === input.liveBranch
+    ? persistedPullRequest
+    : settledPersistedPullRequest;
+}
+
+/**
+ * Which status — if any — a sidebar row shows in its trailing glyph slot.
+ * Single owner of the visibility rule so the classic thread rows, the collapsed
+ * project rows and the Activity rows can never disagree about when a spinner or
+ * an unread-completion dot is on screen; only the surface-specific suppressions
+ * are passed in.
+ *
+ * - `slotOccupied`: another affordance owns the slot right now (e.g. the thread
+ *   jump shortcut label), so the status stays hidden until it clears.
+ * - `isActive`: the row's thread is open, so a completion the user is already
+ *   looking at is not advertised as unread.
+ *
+ * Every other status still asks something of the user (or is live work), so it
+ * survives even on a dimmed/settled row.
+ */
+export function resolveThreadStatusTrailingIndicator(input: {
+  status: ThreadStatusPill | null;
+  slotOccupied?: boolean;
+  isActive?: boolean;
+}): ThreadStatusPill | null {
+  const { status } = input;
+  if (status === null || input.slotOccupied === true) {
+    return null;
+  }
+  if (status.label === "Completed" && input.isActive === true) {
+    return null;
+  }
+  return status;
+}

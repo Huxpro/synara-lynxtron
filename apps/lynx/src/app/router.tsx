@@ -46,7 +46,6 @@ import type { SettingsSectionId } from "@synara-web/settingsNavigation";
 import type { Project } from "@synara-web/types";
 import { useStore } from "@synara-web/store";
 import { useSpacesUiStore } from "@synara-web/spacesUiStore";
-import { useWorkspaceStore } from "@synara-web/workspaceStore";
 import { useRecentViewsStore } from "@synara-web/recentViewsStore";
 import {
   buildRecentViewDisplayEntries,
@@ -110,7 +109,6 @@ import { KanbanProjectPage, ProjectsPage, PullRequestsPage } from "./FeatureList
 import { AutomationsPage } from "./AutomationsPage.lynx";
 import { PluginLibraryPage } from "./PluginLibraryPage.lynx";
 import { resolveLandingRoutePresentation } from "./landingRoutePresentation.logic";
-import { WorkspacePage } from "./WorkspacePage.lynx";
 import { RecentViewSwitcherLynx } from "./RecentViewSwitcher.lynx";
 import { Composer } from "../components/composer/Composer.lynx";
 import { PendingApprovalPanel } from "../components/composer/PendingApprovalPanel.lynx";
@@ -305,16 +303,6 @@ function parseRoute(pathname: string): RouteState {
         ...(search.get("embed") === "1" ? { embed: "1" } : {}),
       },
     };
-  }
-  const workspaceMatch = routePathname.match(/^\/workspace\/([^/]+)$/);
-  if (workspaceMatch) {
-    return {
-      pathname: "/workspace/$workspaceId",
-      params: { workspaceId: decodeURIComponent(workspaceMatch[1]) },
-    };
-  }
-  if (routePathname === "/workspace") {
-    return { pathname: "/workspace", params: {} };
   }
   if (routePathname === "/kanban") {
     return { pathname: "/kanban", params: {} };
@@ -622,7 +610,6 @@ function ThreadsLandingPage(props: {
             pullRequest={null}
             recapRevision="0:empty:0:settled:no-turn"
             threadId={null}
-            threadMarkers={[]}
             workspaceRoot={environmentProject.workspaceRoot}
           />
         ) : null}
@@ -2561,7 +2548,6 @@ function ThreadPage(props: ThreadPageProps) {
             projectId={currentThread.projectId}
             pinnedMessages={currentThread.pinnedMessages}
             pinnedMessageTextById={currentThread.pinnedMessageTextById}
-            threadMarkers={currentThread.threadMarkers}
             pullRequest={currentThread.lastKnownPr}
             provider={currentThread.provider ?? "codex"}
             recapRevision={threadRecapRevision(data ?? [], currentThread.latestTurnState)}
@@ -2664,7 +2650,6 @@ export function SliceRouter({
   initialTerminalOpen,
   initialTemporaryOpen,
   initialSettingsTarget,
-  initialWorkspaceVisible,
   initialRoute,
   initialExplorerOpen,
   initialExplorerPresentationMode,
@@ -2698,7 +2683,6 @@ export function SliceRouter({
   readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
   readonly initialSettingsTarget: string | null;
-  readonly initialWorkspaceVisible: boolean;
   readonly initialRoute: string | null;
   readonly initialExplorerOpen: boolean;
   readonly initialExplorerPresentationMode: "dock" | "single-file";
@@ -2826,7 +2810,6 @@ export function SliceRouter({
     };
   }, [componentsLabRoute]);
   const routeProjects = useStore((state) => state.projects);
-  const workspacePages = useWorkspaceStore((state) => state.workspacePages);
   const recentViews = useRecentViewsStore((state) => state.recentViews);
   const recordRecentView = useRecentViewsStore((state) => state.recordRecentView);
   const pruneRecentViewsStore = useRecentViewsStore((state) => state.pruneRecentViews);
@@ -2839,7 +2822,6 @@ export function SliceRouter({
   const studioSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
   );
-  const workspaceEnabled = initialWorkspaceVisible || studioSettings.showWorkspaceSection;
   const activeThreadId =
     route.pathname === "/thread/$threadId"
       ? route.params.threadId
@@ -2856,8 +2838,6 @@ export function SliceRouter({
       route.pathname === "/thread/$threadId"
         ? (route.params.threadId as import("@synara/contracts").ThreadId)
         : null,
-    routeWorkspaceId:
-      route.pathname === "/workspace/$workspaceId" ? (route.params.workspaceId ?? null) : null,
     settingsSection: route.pathname === "/settings" ? route.params.section : undefined,
   });
   const currentRecentViewKey = currentRecentView ? recentViewKey(currentRecentView) : null;
@@ -2866,10 +2846,9 @@ export function SliceRouter({
       availableThreadIds: new Set(
         (routeThreads ?? []).map((thread) => thread.id as import("@synara/contracts").ThreadId),
       ),
-      availableWorkspaceIds: new Set(workspacePages.map((workspace) => workspace.id)),
       availableSplitViewIds: new Set<string>(),
     }),
-    [routeThreads, workspacePages],
+    [routeThreads],
   );
   const recentViewEntries = useMemo(
     () =>
@@ -2881,9 +2860,8 @@ export function SliceRouter({
         pinnedThreadIds: (routeThreads ?? [])
           .filter((thread) => thread.isPinned)
           .map((thread) => thread.id as import("@synara/contracts").ThreadId),
-        workspacePages,
       }),
-    [currentRecentViewKey, recentViews, routeProjects, routeThreads, workspacePages],
+    [currentRecentViewKey, recentViews, routeProjects, routeThreads],
   );
   useEffect(() => {
     recentViewsRef.current = recentViews;
@@ -3209,11 +3187,6 @@ export function SliceRouter({
     }
   }, [route.pathname, studioSettings.showStudioSection]);
   useEffect(() => {
-    if (route.pathname.startsWith("/workspace") && !workspaceEnabled) {
-      history.replace("/");
-    }
-  }, [route.pathname, workspaceEnabled]);
-  useEffect(() => {
     if (route.pathname !== "/studio") {
       setStudioLandingReady(false);
     }
@@ -3244,10 +3217,6 @@ export function SliceRouter({
     (view: RecentView) => {
       if (view.kind === "thread") {
         navigateToChat(`/thread/${view.threadId}`);
-        return;
-      }
-      if (view.kind === "workspace") {
-        navigateToChat(`/workspace/${view.workspaceId}`);
         return;
       }
       if (view.kind === "settings") {
@@ -3547,36 +3516,6 @@ export function SliceRouter({
         </view>
       </view>
     );
-  } else if (route.pathname === "/workspace" && workspaceEnabled) {
-    const workspaceId = workspacePages[0]?.id ?? null;
-    page = workspaceId ? (
-      <WorkspacePage
-        appearance={appearance}
-        workspaceId={workspaceId}
-        navigate={(to) => history.replace(to)}
-      />
-    ) : (
-      <ThreadsLandingPage
-        appearance={appearance}
-        explorerDockProps={explorerDockProps}
-        onDockWorkspaceChange={setLandingDockWorkspaceRoot}
-        resolvedTheme={resolvedTheme}
-        viewportHeight={viewportHeight}
-        viewportWidth={viewportWidth}
-        onThreadCreated={(threadId, options) => {
-          setLandingTemporaryThreadId(options.temporary ? threadId : null);
-          navigate(`/thread/${threadId}`);
-        }}
-      />
-    );
-  } else if (route.pathname === "/workspace/$workspaceId" && workspaceEnabled) {
-    page = (
-      <WorkspacePage
-        appearance={appearance}
-        workspaceId={route.params.workspaceId}
-        navigate={(to) => history.replace(to)}
-      />
-    );
   } else if (route.pathname === "/kanban") {
     page = <ProjectsPage navigate={(to) => history.push(to)} />;
   } else if (route.pathname === "/kanban/$projectId") {
@@ -3629,18 +3568,7 @@ export function SliceRouter({
           draftProjectId={
             route.pathname === "/new-thread/$projectId" ? route.params.projectId : null
           }
-          activeWorkspaceId={
-            route.pathname === "/workspace/$workspaceId"
-              ? route.params.workspaceId
-              : (workspacePages[0]?.id ?? null)
-          }
-          activePath={
-            route.pathname === "/kanban/$projectId"
-              ? "/kanban"
-              : route.pathname === "/workspace/$workspaceId"
-                ? "/workspace"
-                : route.pathname
-          }
+          activePath={route.pathname === "/kanban/$projectId" ? "/kanban" : route.pathname}
           navigate={navigateToChat}
           searchOpen={searchOpen}
           onOpenSearch={openSearchPalette}

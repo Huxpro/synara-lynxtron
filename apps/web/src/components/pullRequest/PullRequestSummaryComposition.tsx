@@ -22,8 +22,8 @@ import {
 
 export function PullRequestSummaryComposition(props: {
   readonly detail: PullRequestDetail;
-  readonly commentingAvailable?: boolean;
-  readonly nowMs?: number;
+  readonly commentingAvailable?: boolean | undefined;
+  readonly nowMs?: number | undefined;
 }) {
   const { detail } = props;
   return (

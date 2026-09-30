@@ -3,6 +3,7 @@
 // Exports: Shared settled/live checks without the full work-log projection graph.
 
 export type LatestTurnTiming = {
+  readonly turnId?: string | null | undefined;
   readonly state: string;
   readonly startedAt?: string | null | undefined;
   readonly completedAt?: string | null | undefined;

@@ -10,7 +10,6 @@ import {
   type OrchestrationThreadPullRequest,
   type PinnedMessage,
   type ProviderKind,
-  type ThreadMarker,
 } from "@synara/contracts";
 import {
   mergeProjectInstructionsIntoThreadNotes,
@@ -21,11 +20,6 @@ import {
   readSettingsGeneralProjection,
 } from "@synara-web/appSettingsStorageProjection.logic";
 import { displayLabelFor, normalizePinLabel } from "@synara/shared/pinnedMessages";
-import {
-  deriveThreadMarkerLabel,
-  isThreadMarkerAvailable,
-  normalizeThreadMarkerLabel,
-} from "@synara/shared/threadMarkers";
 import {
   PULL_REQUEST_CHECK_STATUS_LABELS,
   summarizePullRequestChecks,
@@ -2019,234 +2013,6 @@ function EnvironmentPinned(props: {
   );
 }
 
-function EnvironmentMarkerRow(props: {
-  readonly busy: boolean;
-  readonly error: boolean;
-  readonly marker: ThreadMarker;
-  readonly messageText: string | undefined;
-  readonly onDoneChange: (done: boolean) => void;
-  readonly onJump: () => void;
-  readonly onRemove: () => void;
-  readonly onRename: (label: string | null) => void;
-}) {
-  const { semanticIconColor } = useTheme();
-  const [editing, setEditing] = useState(false);
-  const [draftLabel, setDraftLabel] = useState("");
-  const editInputRef = useRef<React.ElementRef<"input">>(null);
-  const available =
-    props.messageText !== undefined && isThreadMarkerAvailable(props.marker, props.messageText);
-  const resolvedLabel = props.marker.label?.trim() || deriveThreadMarkerLabel(props.marker);
-  const label = available ? resolvedLabel : `${resolvedLabel} (unavailable)`;
-  const done = props.marker.done === true;
-
-  useEffect(() => {
-    if (!editing) return;
-    editInputRef.current?.invoke({ method: "focus", params: {} }).exec();
-  }, [editing]);
-
-  function beginRename() {
-    setDraftLabel(props.marker.label ?? resolvedLabel);
-    setEditing(true);
-  }
-
-  function commitRename() {
-    const nextLabel = normalizeThreadMarkerLabel(draftLabel);
-    setEditing(false);
-    if ((props.marker.label ?? null) !== nextLabel) props.onRename(nextLabel);
-  }
-
-  const checkbox = useLynxInteractiveState({
-    baseClassName: `EnvironmentPinnedCheckbox${done ? " EnvironmentPinnedCheckbox--checked" : ""}`,
-    accessibleLabel: done ? "Mark marker not done" : "Mark marker done",
-    disabled: props.busy,
-    onActivate: () => props.onDoneChange(!done),
-  });
-  const labelInteraction = useLynxInteractiveState({
-    baseClassName: `EnvironmentPinnedLabel${
-      done ? " EnvironmentPinnedLabel--done" : ""
-    }${available ? "" : " EnvironmentPinnedLabel--unavailable"}`,
-    accessibleLabel: available ? `Jump to marker: ${label}` : `Marker unavailable: ${label}`,
-    disabled: !available || props.busy,
-    onActivate: available ? props.onJump : undefined,
-  });
-  const rename = useLynxInteractiveState({
-    baseClassName: "EnvironmentPinnedAction",
-    accessibleLabel: `Rename marker: ${label}`,
-    disabled: props.busy,
-    onActivate: beginRename,
-  });
-  const remove = useLynxInteractiveState({
-    baseClassName: "EnvironmentPinnedAction",
-    accessibleLabel: `Remove marker: ${label}`,
-    disabled: props.busy,
-    onActivate: props.onRemove,
-  });
-
-  return (
-    <view className="EnvironmentPinnedRow">
-      <view className={checkbox.className} aria-checked={done} {...checkbox.eventProps}>
-        <CheckboxIndicator checked={done} size="sm" />
-      </view>
-      <view className={`EnvironmentMarkerSwatch EnvironmentMarkerSwatch--${props.marker.color}`} />
-      {editing ? (
-        <input
-          ref={editInputRef}
-          className="EnvironmentPinnedEdit"
-          aria-label="Marker label"
-          accessibility-element
-          accessibility-label="Marker label"
-          focusable
-          default-value={draftLabel}
-          maxlength={60}
-          bindinput={(event) => setDraftLabel(event.detail.value)}
-          bindblur={commitRename}
-          bindconfirm={commitRename}
-        />
-      ) : (
-        <view className={labelInteraction.className} {...labelInteraction.eventProps}>
-          <text className="EnvironmentPinnedLabelText">{label}</text>
-        </view>
-      )}
-      <view className={rename.className} {...rename.eventProps}>
-        <svg
-          className="EnvironmentPinnedActionIcon"
-          content={colorizeLynxSvg(editSvg, semanticIconColor("secondary"))}
-        />
-      </view>
-      <view className={remove.className} {...remove.eventProps}>
-        <svg
-          className="EnvironmentPinnedActionIcon"
-          content={colorizeLynxSvg(closeSvg, semanticIconColor("secondary"))}
-        />
-      </view>
-      {props.error ? <text className="EnvironmentPinnedError">Could not save</text> : null}
-    </view>
-  );
-}
-
-function EnvironmentMarkers(props: {
-  readonly markers: readonly ThreadMarker[];
-  readonly messageTextById: Readonly<Record<string, string>>;
-  readonly onJump: (messageId: string) => void;
-  readonly threadId: string;
-}) {
-  const [open, setOpen] = useState(true);
-  const [markers, setMarkers] = useState<readonly ThreadMarker[]>(props.markers);
-  const [busyMarkerId, setBusyMarkerId] = useState<string | null>(null);
-  const [errorMarkerId, setErrorMarkerId] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (busyMarkerId === null) setMarkers(props.markers);
-  }, [busyMarkerId, props.markers]);
-
-  async function dispatchMarkerCommand(
-    markerId: string,
-    nextMarkers: readonly ThreadMarker[],
-    command:
-      | {
-          readonly type: "thread.marker.remove";
-          readonly markerId: never;
-        }
-      | {
-          readonly type: "thread.marker.done.set";
-          readonly markerId: never;
-          readonly done: boolean;
-        }
-      | {
-          readonly type: "thread.marker.label.set";
-          readonly markerId: never;
-          readonly label: string | null;
-        },
-  ) {
-    "background only";
-    if (busyMarkerId !== null) return;
-    const previous = markers;
-    setMarkers(nextMarkers);
-    setBusyMarkerId(markerId);
-    setErrorMarkerId(null);
-    try {
-      await dispatchSynaraCommand({
-        ...command,
-        commandId: environmentCommandId() as never,
-        threadId: props.threadId as never,
-      });
-    } catch {
-      setMarkers(previous);
-      setErrorMarkerId(markerId);
-    } finally {
-      setBusyMarkerId(null);
-    }
-  }
-
-  if (markers.length === 0) return null;
-
-  return (
-    <view className="EnvironmentSection">
-      <EnvironmentDisclosureHeader label="Markers" open={open} onOpenChange={setOpen} />
-      <EnvironmentDisclosureContent className="EnvironmentPinnedList" open={open}>
-        {markers.map((marker) => (
-          <EnvironmentMarkerRow
-            busy={busyMarkerId !== null}
-            error={errorMarkerId === marker.id}
-            key={marker.id}
-            marker={marker}
-            messageText={props.messageTextById[marker.messageId]}
-            onJump={() => props.onJump(marker.messageId)}
-            onDoneChange={(done) =>
-              void dispatchMarkerCommand(
-                marker.id,
-                markers.map((candidate) =>
-                  candidate.id === marker.id
-                    ? {
-                        ...candidate,
-                        done,
-                        updatedAt: new Date().toISOString(),
-                      }
-                    : candidate,
-                ),
-                {
-                  type: "thread.marker.done.set",
-                  markerId: marker.id as never,
-                  done,
-                },
-              )
-            }
-            onRename={(label) =>
-              void dispatchMarkerCommand(
-                marker.id,
-                markers.map((candidate) =>
-                  candidate.id === marker.id
-                    ? {
-                        ...candidate,
-                        label,
-                        updatedAt: new Date().toISOString(),
-                      }
-                    : candidate,
-                ),
-                {
-                  type: "thread.marker.label.set",
-                  markerId: marker.id as never,
-                  label,
-                },
-              )
-            }
-            onRemove={() =>
-              void dispatchMarkerCommand(
-                marker.id,
-                markers.filter((candidate) => candidate.id !== marker.id),
-                {
-                  type: "thread.marker.remove",
-                  markerId: marker.id as never,
-                },
-              )
-            }
-          />
-        ))}
-      </EnvironmentDisclosureContent>
-    </view>
-  );
-}
-
 function EnvironmentNotepad(props: {
   readonly notes: string;
   readonly onNotesChange?: (notes: string) => void | Promise<void>;
@@ -2408,7 +2174,6 @@ export function EnvironmentPanel(props: {
   readonly pullRequest: OrchestrationThreadPullRequest | null;
   readonly recapRevision: string;
   readonly threadId: string | null;
-  readonly threadMarkers: readonly ThreadMarker[];
   readonly workspaceRoot: string | null;
 }) {
   const { semanticIconColor } = useTheme();
@@ -2610,20 +2375,6 @@ export function EnvironmentPanel(props: {
                   messageTextById={props.pinnedMessageTextById}
                   onJump={props.onJumpToPinnedMessage}
                   pins={props.pinnedMessages}
-                  threadId={props.threadId}
-                />
-              </>
-            ) : null}
-
-            {props.threadId &&
-            visibility.showEnvironmentMarkers &&
-            props.threadMarkers.length > 0 ? (
-              <>
-                <view className="EnvironmentDivider" />
-                <EnvironmentMarkers
-                  markers={props.threadMarkers}
-                  messageTextById={props.pinnedMessageTextById}
-                  onJump={props.onJumpToPinnedMessage}
                   threadId={props.threadId}
                 />
               </>

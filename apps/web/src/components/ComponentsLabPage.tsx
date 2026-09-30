@@ -15,14 +15,14 @@ import { DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CLASS } from "~/hooks/useDesktopTo
 import { ComponentsLabStoryRenderer } from "./ComponentsLabStoryRenderer";
 
 interface ComponentsLabPageProps {
-  readonly embedded?: boolean;
+  readonly embedded?: boolean | undefined;
   readonly renderer: "electron" | "lynx";
-  readonly selectedState?: string | null;
-  readonly selectedVariant?: string | null;
-  readonly selectedStoryId?: string | null;
-  readonly onSelectStory?: (storyId: string) => void;
-  readonly onSelectState?: (state: string) => void;
-  readonly onSelectVariant?: (variant: string) => void;
+  readonly selectedState?: string | null | undefined;
+  readonly selectedVariant?: string | null | undefined;
+  readonly selectedStoryId?: string | null | undefined;
+  readonly onSelectStory?: ((storyId: string) => void) | undefined;
+  readonly onSelectState?: ((state: string) => void) | undefined;
+  readonly onSelectVariant?: ((variant: string) => void) | undefined;
 }
 
 export function ComponentsLabPage(props: ComponentsLabPageProps) {
@@ -175,8 +175,8 @@ export function ComponentsLabPage(props: ComponentsLabPageProps) {
         className={`drag-region flex h-12 shrink-0 items-center gap-4 border-b border-border px-4 ${DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CLASS}`}
       >
         <div className="flex w-52 shrink-0 items-baseline gap-2">
-          <h1 className="text-sm font-semibold">Components Lab</h1>
-          <span className="text-[10px] text-muted-foreground">
+          <h1 className="text-ui font-semibold">Components Lab</h1>
+          <span className="text-ui-xs text-muted-foreground">
             {COMPONENT_LAB_IMPLEMENTED_STORY_IDS.length}/{COMPONENT_LAB_STORIES.length}
           </span>
         </div>
@@ -187,7 +187,7 @@ export function ComponentsLabPage(props: ComponentsLabPageProps) {
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search components"
             aria-label="Search components"
-            className="min-w-0 flex-1 bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground"
+            className="min-w-0 flex-1 bg-transparent text-ui text-foreground outline-none placeholder:text-muted-foreground"
           />
         </label>
         <div className="flex w-52 shrink-0 justify-end">
@@ -214,7 +214,7 @@ export function ComponentsLabPage(props: ComponentsLabPageProps) {
                 <button
                   key={story.id}
                   type="button"
-                  className={`w-full rounded-lg px-2 py-1.5 text-left text-xs transition-colors ${
+                  className={`w-full rounded-lg px-2 py-1.5 text-left text-ui transition-colors ${
                     story.id === selectedStory?.id
                       ? "bg-[var(--color-background-button-secondary-hover)] text-foreground"
                       : "text-muted-foreground hover:bg-[var(--color-background-button-secondary-hover)] hover:text-foreground"
@@ -228,18 +228,18 @@ export function ComponentsLabPage(props: ComponentsLabPageProps) {
                       className={`size-1.5 shrink-0 rounded-full ${implemented ? "bg-[var(--status-success)]" : "bg-muted-foreground/35"}`}
                     />
                   </span>
-                  <span className="block truncate text-[10px] opacity-70">{story.id}</span>
+                  <span className="block truncate text-ui-xs opacity-70">{story.id}</span>
                 </button>
               );
             })}
             {visibleStories.length === 0 ? (
-              <p className="px-2 py-5 text-xs text-muted-foreground">No matching components</p>
+              <p className="px-2 py-5 text-ui text-muted-foreground">No matching components</p>
             ) : null}
           </nav>
         </aside>
         <main className="min-w-0 flex-1 overflow-auto p-4">
           {manifestErrors.length > 0 ? (
-            <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
+            <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-ui text-destructive">
               {manifestErrors.join(" · ")}
             </div>
           ) : selectedStory ? (
@@ -251,7 +251,7 @@ export function ComponentsLabPage(props: ComponentsLabPageProps) {
                       key={variant}
                       type="button"
                       aria-pressed={variant === selectedVariant}
-                      className={`rounded-md px-2.5 py-1 text-xs ${variant === selectedVariant ? "bg-secondary text-foreground" : "text-muted-foreground"}`}
+                      className={`rounded-md px-2.5 py-1 text-ui ${variant === selectedVariant ? "bg-secondary text-foreground" : "text-muted-foreground"}`}
                       onClick={() => props.onSelectVariant?.(variant)}
                     >
                       {variant}
@@ -264,7 +264,7 @@ export function ComponentsLabPage(props: ComponentsLabPageProps) {
                       key={state}
                       type="button"
                       aria-pressed={state === selectedState}
-                      className={`rounded-md px-2.5 py-1 text-xs transition-colors focus-visible:ring-1 focus-visible:ring-ring ${state === selectedState ? "bg-foreground text-background" : "bg-muted text-muted-foreground hover:text-foreground"}`}
+                      className={`rounded-md px-2.5 py-1 text-ui transition-colors focus-visible:ring-1 focus-visible:ring-ring ${state === selectedState ? "bg-foreground text-background" : "bg-muted text-muted-foreground hover:text-foreground"}`}
                       onClick={() => props.onSelectState?.(state)}
                     >
                       {state}
@@ -279,7 +279,7 @@ export function ComponentsLabPage(props: ComponentsLabPageProps) {
                         ? "Run all story variants and states"
                         : "Stop story case run"
                     }
-                    className="flex h-7 items-center gap-1.5 rounded-md border border-border px-2 text-[11px] text-muted-foreground hover:bg-muted hover:text-foreground"
+                    className="flex h-7 items-center gap-1.5 rounded-md border border-border px-2 text-ui-sm text-muted-foreground hover:bg-muted hover:text-foreground"
                     onClick={() => setAutomationIndex((current) => (current === null ? 0 : null))}
                   >
                     {automationIndex === null ? (
@@ -309,14 +309,14 @@ export function ComponentsLabPage(props: ComponentsLabPageProps) {
                   />
                   <button
                     type="button"
-                    className="flex h-7 items-center gap-1.5 rounded-md border border-border px-2 text-[11px] text-muted-foreground hover:bg-muted hover:text-foreground"
+                    className="flex h-7 items-center gap-1.5 rounded-md border border-border px-2 text-ui-sm text-muted-foreground hover:bg-muted hover:text-foreground"
                     onClick={() => electronScreenshotInputRef.current?.click()}
                   >
                     <CopyIcon className="size-3" /> Electron screenshot
                   </button>
                   <button
                     type="button"
-                    className="flex h-7 items-center gap-1.5 rounded-md border border-border px-2 text-[11px] text-muted-foreground hover:bg-muted hover:text-foreground"
+                    className="flex h-7 items-center gap-1.5 rounded-md border border-border px-2 text-ui-sm text-muted-foreground hover:bg-muted hover:text-foreground"
                     onClick={() => lynxScreenshotInputRef.current?.click()}
                   >
                     <CopyIcon className="size-3" /> Lynx screenshot
@@ -340,10 +340,10 @@ export function ComponentsLabPage(props: ComponentsLabPageProps) {
                     data-component-lab-renderer="electron"
                   >
                     <header className="flex h-9 items-center justify-between border-b border-border px-3">
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                      <span className="text-ui-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                         Electron
                       </span>
-                      <span className="text-[10px] text-muted-foreground">
+                      <span className="text-ui-xs text-muted-foreground">
                         {electronScreenshot ? "Screenshot" : "Live reference"}
                       </span>
                     </header>
@@ -369,10 +369,10 @@ export function ComponentsLabPage(props: ComponentsLabPageProps) {
                     data-component-lab-renderer="lynx"
                   >
                     <header className="flex h-9 items-center justify-between border-b border-border px-3">
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                      <span className="text-ui-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                         Lynx
                       </span>
-                      <span className="text-[10px] text-muted-foreground">
+                      <span className="text-ui-xs text-muted-foreground">
                         {lynxScreenshot ? "Screenshot" : "Live renderer"}
                       </span>
                     </header>
@@ -392,13 +392,13 @@ export function ComponentsLabPage(props: ComponentsLabPageProps) {
                         className="block h-[calc(100vh-141px)] min-h-[520px] w-full border-0 bg-transparent"
                       />
                     ) : (
-                      <div className="flex h-[calc(100vh-141px)] min-h-[520px] items-center justify-center text-xs text-muted-foreground">
+                      <div className="flex h-[calc(100vh-141px)] min-h-[520px] items-center justify-center text-ui text-muted-foreground">
                         Preparing Lynx renderer…
                       </div>
                     )}
                   </section>
                 </div>
-                <details className="mt-4 border-t border-border pt-3 text-xs text-muted-foreground">
+                <details className="mt-4 border-t border-border pt-3 text-ui text-muted-foreground">
                   <summary className="cursor-pointer select-none font-medium text-foreground">
                     Component mapping
                   </summary>
@@ -407,11 +407,11 @@ export function ComponentsLabPage(props: ComponentsLabPageProps) {
                       const entry = selectedStory.renderers[renderer];
                       return (
                         <div key={renderer} className="min-w-0">
-                          <p className="text-[10px] font-medium uppercase tracking-[0.12em]">
+                          <p className="text-ui-xs font-medium uppercase tracking-[0.12em]">
                             {renderer}
                           </p>
                           <p className="mt-1 font-medium text-foreground">{entry.component}</p>
-                          <p className="mt-1 break-words font-mono text-[10px] leading-4">
+                          <p className="mt-1 break-words font-mono text-ui-xs leading-4">
                             {entry.module}
                           </p>
                           <p className="mt-1">{entry.consumers.join(" · ")}</p>

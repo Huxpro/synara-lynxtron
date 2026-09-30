@@ -1,11 +1,10 @@
 // FILE: SidebarProjection.logic.ts
 // Purpose: Small platform-neutral collection helpers shared by Sidebar renderers.
 
-export function groupSidebarThreadsByProjectId<
-  ProjectKey extends string,
-  T extends { readonly projectId: ProjectKey },
->(threads: readonly T[]): ReadonlyMap<ProjectKey, T[]> {
-  const byProjectId = new Map<ProjectKey, T[]>();
+export function groupSidebarThreadsByProjectId<T extends { readonly projectId: string }>(
+  threads: readonly T[],
+): ReadonlyMap<T["projectId"], T[]> {
+  const byProjectId = new Map<T["projectId"], T[]>();
   for (const thread of threads) {
     const existing = byProjectId.get(thread.projectId);
     if (existing) {

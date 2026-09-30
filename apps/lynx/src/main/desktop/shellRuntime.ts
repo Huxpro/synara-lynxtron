@@ -547,8 +547,6 @@ export interface SynaraDeepLinkInitData {
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
   readonly initialSettingsTarget: string | null;
-  readonly initialWorkspaceSettingsOpen: boolean;
-  readonly initialWorkspaceVisible: boolean;
   readonly initialExplorerOpen: boolean;
   readonly initialExplorerPresentationMode: "dock" | "single-file";
   readonly initialExplorerActionMenuOpen: boolean;
@@ -596,11 +594,6 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
       initialRoute = projectId
         ? `/kanban/${encodeURIComponent(decodeURIComponent(projectId))}`
         : "/kanban";
-    } else if (url.hostname === "workspace") {
-      const workspaceId = url.pathname.replace(/^\/+/, "").split("/")[0];
-      initialRoute = workspaceId
-        ? `/workspace/${encodeURIComponent(decodeURIComponent(workspaceId))}`
-        : "/workspace";
     } else if (url.hostname === "new-thread") {
       const projectId = url.pathname.replace(/^\/+/, "").split("/")[0];
       if (!projectId) return null;
@@ -643,8 +636,6 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
       initialRenameOpen: url.searchParams.get("rename") === "open",
       initialTerminalOpen: url.searchParams.get("terminal") === "open",
       initialSettingsTarget: url.searchParams.get("target")?.trim() || null,
-      initialWorkspaceSettingsOpen: url.searchParams.get("workspaceSettings") === "open",
-      initialWorkspaceVisible: url.searchParams.get("workspaceVisible") === "open",
       initialExplorerOpen: url.searchParams.get("explorer") === "open",
       initialExplorerPresentationMode:
         url.searchParams.get("explorerMode") === "single-file" ? "single-file" : "dock",

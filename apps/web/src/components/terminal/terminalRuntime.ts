@@ -415,7 +415,7 @@ function startVisibilityRecovery(entry: TerminalRuntimeEntry): void {
   }
 
   let recoveryFrame = 0;
-  let throttleTimer: number | null = null;
+  let throttleTimer: ReturnType<typeof setTimeout> | null = null;
   let lastRunAt = 0;
   const RECOVERY_THROTTLE_MS = 120;
 
@@ -1059,6 +1059,11 @@ export function createRuntimeEntry(config: TerminalRuntimeConfig): TerminalRunti
 
       if (event.type === "exited") {
         flushPendingWrites(entry);
+        setRuntimeStatus(entry, "exited");
+        entry.callbacks.onTerminalActivityChange(entry.terminalId, {
+          hasRunningSubprocess: false,
+          agentState: null,
+        });
         const details = [
           typeof event.exitCode === "number" ? `code ${event.exitCode}` : null,
           typeof event.exitSignal === "number" ? `signal ${event.exitSignal}` : null,

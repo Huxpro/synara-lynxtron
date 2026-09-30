@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { cn } from "~/lib/utils";
 import { PR_BODY_TEXT_CLASS_NAME, PR_META_TEXT_CLASS_NAME } from "./pullRequestText";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function PullRequestTimelineRootElement(props: ChildrenProps) {
   return <div className="h-full overflow-y-auto px-5 py-5">{props.children}</div>;

@@ -28,13 +28,15 @@ import { Switch } from "../ui/switch";
 
 type Option = { readonly value: string; readonly label: string };
 
-export function SettingsAppearanceRootElement(props: { readonly children?: ReactNode }) {
+export function SettingsAppearanceRootElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return <div className="space-y-6">{props.children}</div>;
 }
 
 export function SettingsAppearanceSectionElement(props: {
   readonly title: string;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <section className={SETTINGS_PANEL_SECTION_CLASS_NAME}>
@@ -44,18 +46,20 @@ export function SettingsAppearanceSectionElement(props: {
   );
 }
 
-export function SettingsAppearanceCardElement(props: { readonly children?: ReactNode }) {
+export function SettingsAppearanceCardElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return <SettingsCard>{props.children}</SettingsCard>;
 }
 
 export function SettingsAppearanceRowElement(props: {
-  readonly terminal?: boolean;
+  readonly terminal?: boolean | undefined;
   readonly title: string;
   readonly description: string;
   readonly resetLabel: string;
   readonly changed: boolean;
   readonly onReset: () => void;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <SettingsRow
@@ -133,7 +137,7 @@ export function SettingsAppearanceNumberControlElement(props: {
         }}
         aria-label={props.ariaLabel}
       />
-      <span className="text-xs text-muted-foreground">{props.suffix}</span>
+      <span className="text-ui text-muted-foreground">{props.suffix}</span>
     </div>
   );
 }
@@ -210,6 +214,8 @@ export function SettingsAppearanceSelectControlElement(props: {
   );
 }
 
-export function SettingsAppearanceThemePacksElement(props: { readonly children?: ReactNode }) {
+export function SettingsAppearanceThemePacksElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return <div className="space-y-3">{props.children}</div>;
 }

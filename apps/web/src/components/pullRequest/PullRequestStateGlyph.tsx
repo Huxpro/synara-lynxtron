@@ -36,7 +36,7 @@ export function PullRequestStateGlyph({
   state,
   isDraft,
   mergeability,
-  size = "sm",
+  size: sizeProp,
   className,
 }: {
   state: PullRequestState;
@@ -45,6 +45,7 @@ export function PullRequestStateGlyph({
   size?: keyof typeof SIZE_CLASS_NAME;
   className?: string;
 }) {
+  const size = sizeProp ?? "sm";
   const presentation = resolvePrStatePresentation({ state, isDraft, mergeability });
   const Icon = PR_STATE_PRESENTATION_ICONS[presentation.iconKind];
   return (

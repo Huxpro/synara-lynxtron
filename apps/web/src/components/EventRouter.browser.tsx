@@ -1,15 +1,19 @@
 import "../index.css";
 
 import {
+  ApprovalRequestId,
+  CommandId,
   EventId,
   MessageId,
+  DEVICE_WS_METHODS,
+  COMPUTER_WS_METHODS,
   ORCHESTRATION_WS_METHODS,
   ProjectId,
   ThreadId,
   TurnId,
   type OrchestrationEvent,
   type OrchestrationReadModel,
-  type OrchestrationShellStreamEvent,
+  type OrchestrationShellStreamItem,
   type OrchestrationThread,
   type ServerConfig,
   type WsWelcomePayload,
@@ -20,6 +24,30 @@ import { HttpResponse, http, ws } from "msw";
 import { setupWorker } from "msw/browser";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
+
+const threadSnapshotFailureListeners = vi.hoisted(
+  () =>
+    new Set<
+      (failure: {
+        readonly threadId: string;
+        readonly code: string | null;
+        readonly error: Error;
+      }) => void
+    >(),
+);
+
+vi.mock("../wsNativeApi", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../wsNativeApi")>();
+  return {
+    ...actual,
+    onThreadStreamFailure: (
+      listener: typeof threadSnapshotFailureListeners extends Set<infer T> ? T : never,
+    ) => {
+      threadSnapshotFailureListeners.add(listener);
+      return () => threadSnapshotFailureListeners.delete(listener);
+    },
+  };
+});
 
 import { useComposerDraftStore } from "../composerDraftStore";
 import { getRouter } from "../router";
@@ -32,12 +60,20 @@ import {
   sendEffectRpcExit,
   type EffectRpcWebSocketClient,
 } from "../test/effectRpcWebSocketMock";
-import { createBrowserTestServerConfig, createFullscreenTestHost } from "../test/browserHarness";
+import {
+  createBrowserTestServerConfig,
+  createBrowserTestServerSettings,
+  createFullscreenTestHost,
+} from "../test/browserHarness";
 import { getThreadFromState } from "../threadDerivation";
-import { useWorkspaceStore } from "../workspaceStore";
+import { resetThreadDetailResumeCursorsForTests } from "../threadDetailResumeCursors";
+import { useWorkspacePathsStore } from "../workspacePathsStore";
 import { resetWsNativeApiForTest } from "../wsNativeApi";
+import { registerTerminalRuntimeCleanup } from "../lib/terminalStateCleanup";
+// Pre-transform the compiler-heavy component before the first hydration deadline.
+// This suite runs on its own CI shard, so ChatView's suite cannot warm it first.
+import "./ChatView";
 
-import { webStorage } from "~/platform/storage";
 const THREAD_ID = ThreadId.makeUnsafe("thread-root-browser-test");
 const OTHER_THREAD_ID = ThreadId.makeUnsafe("thread-other-browser-test");
 const PROJECT_ID = ProjectId.makeUnsafe("project-root-browser-test");
@@ -52,6 +88,9 @@ interface TestFixture {
 let fixture: TestFixture;
 let shellStreamRequestId: string | null = null;
 let shellStreamClient: EffectRpcWebSocketClient | null = null;
+let serverLifecycleRequestId: string | null = null;
+let serverLifecycleClient: EffectRpcWebSocketClient | null = null;
+let suppressNextShellSnapshot = false;
 const threadStreamRequestIdByThreadId = new Map<ThreadId, string>();
 const threadStreamClientByThreadId = new Map<ThreadId, EffectRpcWebSocketClient>();
 let delayNextThreadSnapshot = false;
@@ -60,6 +99,14 @@ const subscribeThreadRequestCountById = new Map<ThreadId, number>();
 let subscribeThreadRequests: ThreadId[] = [];
 let replayEvents: OrchestrationEvent[] = [];
 let replayRequestCursors: number[] = [];
+let getShellSnapshotRequestCount = 0;
+let getThreadDetailSnapshotRequestCount = 0;
+let delayNextThreadDetailSnapshotResponse = false;
+let pendingThreadDetailSnapshotResponse: {
+  readonly client: EffectRpcWebSocketClient;
+  readonly requestId: string;
+  readonly result: unknown;
+} | null = null;
 
 const wsLink = ws.link(/ws(s)?:\/\/.*/);
 
@@ -137,6 +184,57 @@ function createSnapshot(overrides?: Partial<OrchestrationReadModel["threads"][nu
   } satisfies OrchestrationReadModel;
 }
 
+function withApprovalRequest(
+  thread: OrchestrationThread,
+  input: {
+    readonly requestId: ApprovalRequestId;
+    readonly status?: "pending" | "responding" | "uncertain";
+  },
+): OrchestrationThread {
+  const createdAt = "2026-03-04T12:00:05.000Z";
+  const lifecycleGeneration = `generation:${input.requestId}`;
+  const status = input.status ?? "pending";
+  return {
+    ...thread,
+    updatedAt: createdAt,
+    hasPendingApprovals: true,
+    activities: [
+      {
+        id: EventId.makeUnsafe(`event:${input.requestId}`),
+        createdAt,
+        tone: "approval",
+        kind: "approval.requested",
+        summary: "Command approval requested",
+        payload: {
+          requestId: input.requestId,
+          lifecycleGeneration,
+          requestKind: "command",
+          requestType: "command_execution_approval",
+          detail: "Command: git status",
+        },
+        turnId: null,
+        sequence: 2,
+      },
+    ],
+    pendingInteractions: [
+      {
+        interactionKind: "approval",
+        requestId: input.requestId,
+        threadId: thread.id,
+        turnId: null,
+        lifecycleGeneration,
+        status,
+        decision: status === "pending" ? null : "accept",
+        responseCommandId:
+          status === "pending" ? null : CommandId.makeUnsafe(`response:${input.requestId}`),
+        responseRequestedAt: status === "pending" ? null : createdAt,
+        createdAt,
+        resolvedAt: null,
+      },
+    ],
+  };
+}
+
 function buildFixture(): TestFixture {
   return {
     snapshot: createSnapshot(),
@@ -164,10 +262,22 @@ function findThreadDetailFromFixtureSnapshot(threadId: ThreadId): OrchestrationT
 
 function resolveWsRpc(tag: string, body?: unknown): unknown {
   if (tag === ORCHESTRATION_WS_METHODS.getShellSnapshot) {
+    getShellSnapshotRequestCount += 1;
     return createShellSnapshotFromReadModel(fixture.snapshot);
   }
   if (tag === ORCHESTRATION_WS_METHODS.getSnapshot) {
     return fixture.snapshot;
+  }
+  if (tag === ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot) {
+    getThreadDetailSnapshotRequestCount += 1;
+    const request = body as { readonly threadId?: ThreadId } | null;
+    const thread = request?.threadId ? findThreadDetailFromFixtureSnapshot(request.threadId) : null;
+    return thread
+      ? {
+          snapshotSequence: fixture.snapshot.snapshotSequence,
+          thread,
+        }
+      : null;
   }
   if (tag === ORCHESTRATION_WS_METHODS.replayEvents) {
     const request = body as { readonly fromSequenceExclusive?: unknown } | null;
@@ -175,6 +285,9 @@ function resolveWsRpc(tag: string, body?: unknown): unknown {
       typeof request?.fromSequenceExclusive === "number" ? request.fromSequenceExclusive : 0;
     replayRequestCursors.push(fromSequenceExclusive);
     return replayEvents.filter((event) => event.sequence > fromSequenceExclusive);
+  }
+  if (tag === WS_METHODS.serverGetSettings) {
+    return createBrowserTestServerSettings(NOW_ISO);
   }
   if (tag === WS_METHODS.serverGetConfig) {
     return fixture.serverConfig;
@@ -226,6 +339,10 @@ const worker = setupWorker(
         subscribeShellRequestCount += 1;
         shellStreamRequestId = request.id;
         shellStreamClient = client;
+        if (suppressNextShellSnapshot) {
+          suppressNextShellSnapshot = false;
+          return;
+        }
         sendEffectRpcChunk(client, request.id, {
           kind: "snapshot",
           snapshot: createShellSnapshotFromReadModel(fixture.snapshot),
@@ -233,6 +350,8 @@ const worker = setupWorker(
         return;
       }
       if (method === WS_METHODS.subscribeServerLifecycle) {
+        serverLifecycleRequestId = request.id;
+        serverLifecycleClient = client;
         sendEffectRpcChunk(client, request.id, {
           type: "welcome",
           payload: fixture.welcome,
@@ -252,7 +371,13 @@ const worker = setupWorker(
         method === WS_METHODS.subscribeTerminalEvents ||
         method === WS_METHODS.subscribeOrchestrationDomainEvents ||
         method === WS_METHODS.subscribeProjectDevServerEvents ||
-        method === WS_METHODS.subscribeAutomationEvents
+        method === WS_METHODS.subscribeAutomationEvents ||
+        // Left open like the rest: these are infinite subscriptions, and the
+        // default below answers with an Exit, which a stream RPC reads as the
+        // socket dying and answers with a full reconnect. That loops forever
+        // and starves the RPCs these tests are actually asserting on.
+        method === DEVICE_WS_METHODS.subscribeEvents ||
+        method === COMPUTER_WS_METHODS.subscribeEvents
       ) {
         return;
       }
@@ -282,7 +407,20 @@ const worker = setupWorker(
         });
         return;
       }
-      sendEffectRpcExit(client, request.id, resolveWsRpc(method, requestBody));
+      const result = resolveWsRpc(method, requestBody);
+      if (
+        method === ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot &&
+        delayNextThreadDetailSnapshotResponse
+      ) {
+        delayNextThreadDetailSnapshotResponse = false;
+        pendingThreadDetailSnapshotResponse = {
+          client,
+          requestId: request.id,
+          result,
+        };
+        return;
+      }
+      sendEffectRpcExit(client, request.id, result);
     });
   }),
   http.get("*/attachments/:attachmentId", () => new HttpResponse(null, { status: 204 })),
@@ -318,7 +456,9 @@ async function mountApp(options?: {
           expectedThread.messages.every((message) => hydratedMessageIdSet.has(message.id)),
         ).toBe(true);
       },
-      { timeout: 20_000, interval: 16 },
+      // The first Chromium/MSW mount can spend more than 40 seconds compiling
+      // the full desktop route graph on a cold Windows dev cache.
+      { timeout: 60_000, interval: 16 },
     );
   } catch (cause) {
     await screen.unmount();
@@ -365,11 +505,30 @@ function sendThreadSnapshotPush(threadId: ThreadId, snapshotSequence: number) {
   });
 }
 
-function sendShellEventPush(event: OrchestrationShellStreamEvent) {
+function sendPendingThreadDetailSnapshotResponse() {
+  const pending = pendingThreadDetailSnapshotResponse;
+  if (pending === null) {
+    throw new Error("No delayed thread-detail snapshot response is pending");
+  }
+  pendingThreadDetailSnapshotResponse = null;
+  sendEffectRpcExit(pending.client, pending.requestId, pending.result);
+}
+
+function sendShellEventPush(event: OrchestrationShellStreamItem) {
   if (!shellStreamRequestId || !shellStreamClient) {
     throw new Error("Shell stream is not connected");
   }
   sendEffectRpcChunk(shellStreamClient, shellStreamRequestId, event);
+}
+
+function sendServerWelcomePush() {
+  if (!serverLifecycleRequestId || !serverLifecycleClient) {
+    throw new Error("Server lifecycle stream is not connected");
+  }
+  sendEffectRpcChunk(serverLifecycleClient, serverLifecycleRequestId, {
+    type: "welcome",
+    payload: fixture.welcome,
+  });
 }
 
 describe("EventRouter scoped orchestration sync", () => {
@@ -389,20 +548,25 @@ describe("EventRouter scoped orchestration sync", () => {
 
   beforeEach(async () => {
     await resetWsNativeApiForTest();
+    threadSnapshotFailureListeners.clear();
     fixture = buildFixture();
     document.body.innerHTML = "";
     shellStreamRequestId = null;
     shellStreamClient = null;
+    serverLifecycleRequestId = null;
+    serverLifecycleClient = null;
+    suppressNextShellSnapshot = false;
     threadStreamRequestIdByThreadId.clear();
     threadStreamClientByThreadId.clear();
     delayNextThreadSnapshot = false;
-    webStorage.clear();
+    localStorage.clear();
     useComposerDraftStore.setState({
       draftsByThreadId: {},
       draftThreadsByThreadId: {},
       projectDraftThreadIdByProjectId: {},
     });
     useStore.setState({
+      shellSnapshotSequence: 0,
       projects: [],
       threadIds: [],
       threadShellById: {},
@@ -417,29 +581,146 @@ describe("EventRouter scoped orchestration sync", () => {
       turnDiffIdsByThreadId: {},
       turnDiffSummaryByThreadId: {},
       sidebarThreadSummaryById: {},
+      deletedThreadIdsById: {},
+      deletedProjectIdsById: {},
       threadsHydrated: false,
     });
-    useWorkspaceStore.setState({
+    useWorkspacePathsStore.setState({
       homeDir: null,
-      workspacePages: [
-        {
-          id: "workspace-test",
-          title: "Workspace 1",
-          layoutPresetId: "single",
-          createdAt: NOW_ISO,
-          updatedAt: NOW_ISO,
-        },
-      ],
+      chatWorkspaceRoot: null,
+      studioWorkspaceRoot: null,
     });
     subscribeShellRequestCount = 0;
     subscribeThreadRequestCountById.clear();
     subscribeThreadRequests = [];
     replayEvents = [];
     replayRequestCursors = [];
+    getShellSnapshotRequestCount = 0;
+    getThreadDetailSnapshotRequestCount = 0;
+    delayNextThreadDetailSnapshotResponse = false;
+    pendingThreadDetailSnapshotResponse = null;
+    resetThreadDetailResumeCursorsForTests();
   });
 
   afterEach(() => {
     document.body.innerHTML = "";
+  });
+
+  it.each(["archive", "thread removal", "project removal"])(
+    "prunes terminal runtimes after live %s",
+    async (operation) => {
+      const mounted = await mountApp();
+      const cleanup = vi.fn();
+      const unregister = registerTerminalRuntimeCleanup(cleanup);
+      try {
+        const shell = createShellSnapshotFromReadModel(fixture.snapshot);
+        sendShellEventPush(
+          operation === "archive"
+            ? {
+                kind: "thread-upserted",
+                sequence: 2,
+                thread: { ...shell.threads[0]!, archivedAt: NOW_ISO },
+              }
+            : operation === "thread removal"
+              ? { kind: "thread-removed", sequence: 2, threadId: THREAD_ID }
+              : { kind: "project-removed", sequence: 2, projectId: PROJECT_ID },
+        );
+        await vi.waitFor(() => {
+          expect(cleanup).toHaveBeenCalled();
+          const scopes = cleanup.mock.calls.at(-1)?.[0] as ReadonlySet<string>;
+          expect(scopes.has(THREAD_ID)).toBe(false);
+          expect(scopes.has(`dock-terminal:${THREAD_ID}`)).toBe(false);
+        });
+      } finally {
+        unregister();
+        await mounted.cleanup();
+      }
+    },
+  );
+
+  it("retains terminal runtimes when a buffered unarchive is newer than the reconnect snapshot", async () => {
+    const mounted = await mountApp();
+    const cleanup = vi.fn();
+    const unregister = registerTerminalRuntimeCleanup(cleanup);
+    try {
+      suppressNextShellSnapshot = true;
+      sendServerWelcomePush();
+      await vi.waitFor(() => expect(subscribeShellRequestCount).toBe(2));
+      cleanup.mockClear();
+      const shell = createShellSnapshotFromReadModel(fixture.snapshot);
+      sendShellEventPush({
+        kind: "thread-upserted",
+        sequence: 3,
+        thread: { ...shell.threads[0]!, archivedAt: null },
+      });
+      sendShellEventPush({
+        kind: "snapshot",
+        snapshot: {
+          ...shell,
+          snapshotSequence: 2,
+          threads: [{ ...shell.threads[0]!, archivedAt: NOW_ISO }],
+        },
+      });
+      await vi.waitFor(() => expect(cleanup).toHaveBeenCalled());
+      for (const [scopes] of cleanup.mock.calls as [ReadonlySet<string>][]) {
+        expect(scopes.has(THREAD_ID)).toBe(true);
+        expect(scopes.has(`dock-terminal:${THREAD_ID}`)).toBe(true);
+      }
+    } finally {
+      unregister();
+      await mounted.cleanup();
+    }
+  });
+
+  it("coalesces the replayed welcome with the initial subscription bootstrap", async () => {
+    const mounted = await mountApp();
+
+    try {
+      expect(subscribeShellRequestCount).toBe(1);
+    } finally {
+      await mounted.cleanup();
+    }
+  });
+
+  it("does not query a fallback after a streamed shell snapshot with no spaces", async () => {
+    const mounted = await mountApp();
+
+    try {
+      await new Promise((resolve) => window.setTimeout(resolve, 2_000));
+      expect(useStore.getState().spaces).toEqual([]);
+      expect(getShellSnapshotRequestCount).toBe(0);
+    } finally {
+      await mounted.cleanup();
+    }
+  });
+
+  it("applies the shell fallback when a reconnect snapshot does not arrive", async () => {
+    const mounted = await mountApp();
+
+    try {
+      fixture.snapshot = {
+        ...fixture.snapshot,
+        snapshotSequence: 2,
+        threads: fixture.snapshot.threads.map((thread) => ({
+          ...thread,
+          title: "Updated after reconnect",
+        })),
+      };
+      suppressNextShellSnapshot = true;
+      sendServerWelcomePush();
+
+      await vi.waitFor(() => expect(subscribeShellRequestCount).toBe(2));
+      await vi.waitFor(() => expect(getShellSnapshotRequestCount).toBe(1), {
+        timeout: 3_000,
+      });
+      await vi.waitFor(() =>
+        expect(getThreadFromState(useStore.getState(), THREAD_ID)?.title).toBe(
+          "Updated after reconnect",
+        ),
+      );
+    } finally {
+      await mounted.cleanup();
+    }
   });
 
   it("drops duplicate thread events after the thread snapshot sequence advances", async () => {
@@ -485,7 +766,7 @@ describe("EventRouter scoped orchestration sync", () => {
 
       sendThreadEventPush(firstAssistantChunk);
 
-      await new Promise((resolve) => setTimeout(resolve, 120));
+      await new Promise((resolve) => window.setTimeout(resolve, 120));
 
       const threadAfterDuplicate = useStore.getState();
       expect(
@@ -651,6 +932,170 @@ describe("EventRouter scoped orchestration sync", () => {
     }
   });
 
+  it("hydrates a pending approval for an orchestrator thread with no session detail", async () => {
+    fixture = {
+      ...fixture,
+      snapshot: createSnapshot({
+        creationSource: "synara_mcp",
+        sourceThreadId: OTHER_THREAD_ID,
+        messages: [],
+        session: null,
+      }),
+    };
+    const mounted = await mountApp();
+
+    try {
+      const requestId = ApprovalRequestId.makeUnsafe("approval-orchestrator-thread");
+      fixture = {
+        ...fixture,
+        snapshot: {
+          ...fixture.snapshot,
+          snapshotSequence: 2,
+          threads: fixture.snapshot.threads.map((thread) =>
+            withApprovalRequest(thread, { requestId }),
+          ),
+          updatedAt: "2026-03-04T12:00:05.000Z",
+        },
+      };
+
+      sendShellEventPush({
+        kind: "thread-upserted",
+        sequence: 2,
+        thread: createShellSnapshotFromReadModel(fixture.snapshot).threads[0]!,
+      });
+
+      await vi.waitFor(
+        () => {
+          expect(getThreadDetailSnapshotRequestCount).toBeGreaterThan(0);
+          expect(document.body.textContent).toContain("Approve this command?");
+          expect(
+            getThreadFromState(useStore.getState(), THREAD_ID)?.pendingInteractions?.[0]?.requestId,
+          ).toBe(requestId);
+        },
+        { timeout: 4_000, interval: 16 },
+      );
+    } finally {
+      fixture = buildFixture();
+      await mounted.cleanup();
+    }
+  });
+
+  it("queues a pending approval repair behind an older projection read", async () => {
+    fixture = {
+      ...fixture,
+      snapshot: createSnapshot({
+        creationSource: "synara_mcp",
+        sourceThreadId: OTHER_THREAD_ID,
+        messages: [],
+        latestTurn: null,
+        session: {
+          threadId: THREAD_ID,
+          status: "starting",
+          providerName: "codex",
+          runtimeMode: "full-access",
+          activeTurnId: null,
+          lastError: null,
+          updatedAt: NOW_ISO,
+        },
+      }),
+    };
+    const mounted = await mountApp();
+
+    try {
+      delayNextThreadDetailSnapshotResponse = true;
+      await vi.waitFor(
+        () => {
+          expect(getThreadDetailSnapshotRequestCount).toBeGreaterThan(0);
+          expect(pendingThreadDetailSnapshotResponse).not.toBeNull();
+        },
+        { timeout: 10_000, interval: 16 },
+      );
+
+      const delayedResponse = pendingThreadDetailSnapshotResponse!;
+      const staleThread = {
+        ...fixture.snapshot.threads[0]!,
+        session: null,
+        hasPendingApprovals: false,
+      };
+      pendingThreadDetailSnapshotResponse = {
+        ...delayedResponse,
+        result: {
+          snapshotSequence: 1,
+          thread: staleThread,
+        },
+      };
+
+      const requestId = ApprovalRequestId.makeUnsafe("approval-after-stale-projection");
+      const currentThread = withApprovalRequest(staleThread, { requestId });
+      fixture = {
+        ...fixture,
+        snapshot: {
+          ...fixture.snapshot,
+          snapshotSequence: 2,
+          threads: [currentThread],
+          updatedAt: currentThread.updatedAt,
+        },
+      };
+      const requestCountBeforeApproval = getThreadDetailSnapshotRequestCount;
+
+      sendShellEventPush({
+        kind: "thread-upserted",
+        sequence: 2,
+        thread: createShellSnapshotFromReadModel(fixture.snapshot).threads[0]!,
+      });
+      await vi.waitFor(() =>
+        expect(getThreadFromState(useStore.getState(), THREAD_ID)?.hasPendingApprovals).toBe(true),
+      );
+
+      sendPendingThreadDetailSnapshotResponse();
+
+      await vi.waitFor(
+        () => {
+          expect(getThreadDetailSnapshotRequestCount).toBeGreaterThan(requestCountBeforeApproval);
+          expect(document.body.textContent).toContain("Approve this command?");
+          expect(
+            getThreadFromState(useStore.getState(), THREAD_ID)?.pendingInteractions?.[0]?.requestId,
+          ).toBe(requestId);
+        },
+        { timeout: 4_000, interval: 16 },
+      );
+    } finally {
+      fixture = buildFixture();
+      await mounted.cleanup();
+    }
+  }, 60_000);
+
+  it("does not poll a hydrated non-actionable approval", async () => {
+    const baseSnapshot = createSnapshot({
+      creationSource: "synara_mcp",
+      sourceThreadId: OTHER_THREAD_ID,
+      messages: [],
+      session: null,
+    });
+    fixture = {
+      ...fixture,
+      snapshot: {
+        ...baseSnapshot,
+        threads: [
+          withApprovalRequest(baseSnapshot.threads[0]!, {
+            requestId: ApprovalRequestId.makeUnsafe("approval-response-uncertain"),
+            status: "uncertain",
+          }),
+        ],
+      },
+    };
+    const mounted = await mountApp();
+
+    try {
+      await new Promise<void>((resolve) => window.setTimeout(resolve, 5_200));
+      expect(getThreadDetailSnapshotRequestCount).toBe(0);
+      expect(document.body.textContent).not.toContain("Approve this command?");
+    } finally {
+      fixture = buildFixture();
+      await mounted.cleanup();
+    }
+  }, 60_000);
+
   it("polls a subscribed running thread to recover missed detail events", async () => {
     const runningTurnId = TurnId.makeUnsafe("turn-catchup-running");
     fixture = {
@@ -751,6 +1196,636 @@ describe("EventRouter scoped orchestration sync", () => {
     }
   });
 
+  it("limits skipped projection reconciles to 72 seconds since the last snapshot", async () => {
+    const turnId = TurnId.makeUnsafe("turn-reconcile-deadline");
+    fixture = {
+      ...fixture,
+      snapshot: createSnapshot({
+        latestTurn: {
+          turnId,
+          state: "running",
+          requestedAt: NOW_ISO,
+          startedAt: NOW_ISO,
+          completedAt: null,
+          assistantMessageId: null,
+        },
+        session: {
+          threadId: THREAD_ID,
+          status: "running",
+          providerName: "codex",
+          runtimeMode: "full-access",
+          activeTurnId: turnId,
+          lastError: null,
+          updatedAt: NOW_ISO,
+        },
+      }),
+    };
+    const mounted = await mountApp();
+    // Advance only the scheduling clock; leave transport and browser timers real.
+    let now = Date.now() + 6_000;
+    const clock = vi.spyOn(Date, "now").mockImplementation(() => now);
+
+    try {
+      await vi.waitFor(() => expect(getThreadDetailSnapshotRequestCount).toBe(1), {
+        timeout: 4_000,
+      });
+      // Let the snapshot continuation record its successful reconciliation time.
+      await new Promise<void>((resolve) => window.setTimeout(resolve, 100));
+      const lastSnapshotAt = now;
+
+      for (const elapsedMs of [9_000, 27_000, 63_000]) {
+        const previousReplayCount = replayRequestCursors.length;
+        now = lastSnapshotAt + elapsedMs;
+        await vi.waitFor(
+          () => expect(replayRequestCursors.length).toBeGreaterThan(previousReplayCount),
+          { timeout: 4_000 },
+        );
+        expect(getThreadDetailSnapshotRequestCount).toBe(1);
+      }
+
+      // Each replay was empty, but skipped reconciles must not move the real-fetch
+      // deadline to 135 seconds by adding their backoff delays together.
+      now = lastSnapshotAt + 72_000;
+      await vi.waitFor(() => expect(getThreadDetailSnapshotRequestCount).toBe(2), {
+        timeout: 4_000,
+      });
+    } finally {
+      clock.mockRestore();
+      fixture = buildFixture();
+      await mounted.cleanup();
+    }
+  });
+
+  it("does not poll a converged terminal thread projection", async () => {
+    const mounted = await mountApp();
+
+    try {
+      await new Promise<void>((resolve) => window.setTimeout(resolve, 5_200));
+      expect(getThreadDetailSnapshotRequestCount).toBe(0);
+    } finally {
+      await mounted.cleanup();
+    }
+  }, 60_000);
+
+  it("runs one terminal reconciliation when the final assistant event is absent", async () => {
+    const turnId = TurnId.makeUnsafe("turn-terminal-fence");
+    const finalMessageId = MessageId.makeUnsafe("msg-terminal-fence-final");
+    const startedAt = "2026-03-04T12:00:04.000Z";
+    fixture = {
+      ...fixture,
+      snapshot: createSnapshot({
+        latestTurn: {
+          turnId,
+          state: "running",
+          requestedAt: startedAt,
+          startedAt,
+          completedAt: null,
+          assistantMessageId: null,
+        },
+        session: {
+          threadId: THREAD_ID,
+          status: "running",
+          providerName: "codex",
+          runtimeMode: "full-access",
+          activeTurnId: turnId,
+          lastError: null,
+          updatedAt: startedAt,
+        },
+        updatedAt: startedAt,
+      }),
+    };
+    const mounted = await mountApp();
+
+    try {
+      const completedAt = "2026-03-04T12:00:09.000Z";
+      const currentThread = getThreadDetailFromFixtureSnapshot(THREAD_ID);
+      fixture = {
+        ...fixture,
+        snapshot: {
+          ...fixture.snapshot,
+          snapshotSequence: 3,
+          updatedAt: completedAt,
+          threads: [
+            {
+              ...currentThread,
+              latestTurn: {
+                turnId,
+                state: "completed",
+                requestedAt: startedAt,
+                startedAt,
+                completedAt,
+                assistantMessageId: finalMessageId,
+              },
+              messages: [
+                ...currentThread.messages,
+                {
+                  id: finalMessageId,
+                  role: "assistant",
+                  text: "Recovered after the terminal fence.",
+                  turnId,
+                  streaming: false,
+                  source: "native",
+                  createdAt: completedAt,
+                  updatedAt: completedAt,
+                },
+              ],
+              session: {
+                threadId: THREAD_ID,
+                status: "ready",
+                providerName: "codex",
+                runtimeMode: "full-access",
+                activeTurnId: null,
+                lastError: null,
+                updatedAt: completedAt,
+              },
+              updatedAt: completedAt,
+            },
+          ],
+        },
+      };
+
+      sendThreadEventPush({
+        sequence: 2,
+        eventId: EventId.makeUnsafe("event-terminal-fence-session-ready"),
+        aggregateKind: "thread",
+        aggregateId: THREAD_ID,
+        occurredAt: completedAt,
+        commandId: null,
+        causationEventId: null,
+        correlationId: null,
+        metadata: {},
+        type: "thread.session-set",
+        payload: {
+          threadId: THREAD_ID,
+          session: {
+            threadId: THREAD_ID,
+            status: "ready",
+            providerName: "codex",
+            runtimeMode: "full-access",
+            activeTurnId: null,
+            lastError: null,
+            updatedAt: completedAt,
+          },
+        },
+      });
+
+      await vi.waitFor(() => {
+        const thread = getThreadFromState(useStore.getState(), THREAD_ID);
+        expect(thread?.latestTurn?.state).toBe("completed");
+        expect(thread?.messages.some((message) => message.id === finalMessageId)).toBe(false);
+      });
+      await vi.waitFor(
+        () => {
+          const thread = getThreadFromState(useStore.getState(), THREAD_ID);
+          expect(getThreadDetailSnapshotRequestCount).toBeGreaterThan(0);
+          expect(thread?.messages.find((message) => message.id === finalMessageId)?.text).toBe(
+            "Recovered after the terminal fence.",
+          );
+        },
+        { timeout: 10_000, interval: 16 },
+      );
+    } finally {
+      fixture = buildFixture();
+      await mounted.cleanup();
+    }
+  }, 120_000);
+
+  it("keeps the terminal fence until a post-settle snapshot includes the assistant reply", async () => {
+    // Mirrors #548: session-set lands (and a premature detail snapshot is taken)
+    // before buffered assistant finals are projected. Clearing the fence on that
+    // first snapshot left the UI spinning until a full reload.
+    const turnId = TurnId.makeUnsafe("turn-fence-premature-snapshot");
+    const finalMessageId = MessageId.makeUnsafe("msg-fence-premature-final");
+    const startedAt = "2026-03-04T12:00:04.000Z";
+    const completedAt = "2026-03-04T12:00:09.000Z";
+    fixture = {
+      ...fixture,
+      snapshot: createSnapshot({
+        latestTurn: {
+          turnId,
+          state: "running",
+          requestedAt: startedAt,
+          startedAt,
+          completedAt: null,
+          assistantMessageId: null,
+        },
+        session: {
+          threadId: THREAD_ID,
+          status: "running",
+          providerName: "codex",
+          runtimeMode: "full-access",
+          activeTurnId: turnId,
+          lastError: null,
+          updatedAt: startedAt,
+        },
+        updatedAt: startedAt,
+      }),
+    };
+    const mounted = await mountApp();
+
+    try {
+      const currentThread = getThreadDetailFromFixtureSnapshot(THREAD_ID);
+      // Premature authoritative projection: terminal at the session-set sequence,
+      // with an assistantMessageId that has not been projected into messages yet.
+      fixture = {
+        ...fixture,
+        snapshot: {
+          ...fixture.snapshot,
+          snapshotSequence: 2,
+          updatedAt: completedAt,
+          threads: [
+            {
+              ...currentThread,
+              latestTurn: {
+                turnId,
+                state: "completed",
+                requestedAt: startedAt,
+                startedAt,
+                completedAt,
+                assistantMessageId: finalMessageId,
+              },
+              messages: [...currentThread.messages],
+              session: {
+                threadId: THREAD_ID,
+                status: "ready",
+                providerName: "codex",
+                runtimeMode: "full-access",
+                activeTurnId: null,
+                lastError: null,
+                updatedAt: completedAt,
+              },
+              updatedAt: completedAt,
+            },
+          ],
+        },
+      };
+
+      delayNextThreadDetailSnapshotResponse = true;
+
+      sendThreadEventPush({
+        sequence: 2,
+        eventId: EventId.makeUnsafe("event-fence-premature-session-ready"),
+        aggregateKind: "thread",
+        aggregateId: THREAD_ID,
+        occurredAt: completedAt,
+        commandId: null,
+        causationEventId: null,
+        correlationId: null,
+        metadata: {},
+        type: "thread.session-set",
+        payload: {
+          threadId: THREAD_ID,
+          session: {
+            threadId: THREAD_ID,
+            status: "ready",
+            providerName: "codex",
+            runtimeMode: "full-access",
+            activeTurnId: null,
+            lastError: null,
+            updatedAt: completedAt,
+          },
+        },
+      });
+
+      await vi.waitFor(() => {
+        const thread = getThreadFromState(useStore.getState(), THREAD_ID);
+        expect(thread?.latestTurn?.state).toBe("completed");
+        expect(thread?.messages.some((message) => message.id === finalMessageId)).toBe(false);
+      });
+
+      await vi.waitFor(
+        () => {
+          expect(getThreadDetailSnapshotRequestCount).toBeGreaterThan(0);
+          expect(pendingThreadDetailSnapshotResponse).not.toBeNull();
+        },
+        { timeout: 10_000, interval: 16 },
+      );
+
+      sendPendingThreadDetailSnapshotResponse();
+
+      await new Promise<void>((resolve) => window.setTimeout(resolve, 200));
+      expect(
+        getThreadFromState(useStore.getState(), THREAD_ID)?.messages.some(
+          (message) => message.id === finalMessageId,
+        ),
+      ).toBe(false);
+
+      fixture = {
+        ...fixture,
+        snapshot: {
+          ...fixture.snapshot,
+          snapshotSequence: 3,
+          threads: [
+            {
+              ...fixture.snapshot.threads[0]!,
+              messages: [
+                ...currentThread.messages,
+                {
+                  id: finalMessageId,
+                  role: "assistant",
+                  text: "Recovered without a reload.",
+                  turnId,
+                  streaming: false,
+                  source: "native",
+                  createdAt: completedAt,
+                  updatedAt: completedAt,
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      await vi.waitFor(
+        () => {
+          const thread = getThreadFromState(useStore.getState(), THREAD_ID);
+          expect(getThreadDetailSnapshotRequestCount).toBeGreaterThan(1);
+          expect(thread?.messages.find((message) => message.id === finalMessageId)?.text).toBe(
+            "Recovered without a reload.",
+          );
+        },
+        { timeout: 15_000, interval: 16 },
+      );
+    } finally {
+      fixture = buildFixture();
+      await mounted.cleanup();
+    }
+  }, 120_000);
+
+  it("reconciles a missed completion from the authoritative thread projection", async () => {
+    const turnId = TurnId.makeUnsafe("turn-missed-completion");
+    const progressMessageId = MessageId.makeUnsafe("msg-missed-completion-progress");
+    const finalMessageId = MessageId.makeUnsafe("msg-missed-completion-final");
+    const startedAt = "2026-03-04T12:00:04.000Z";
+    fixture = {
+      ...fixture,
+      snapshot: createSnapshot({
+        latestTurn: {
+          turnId,
+          state: "running",
+          requestedAt: startedAt,
+          startedAt,
+          completedAt: null,
+          assistantMessageId: null,
+        },
+        session: {
+          threadId: THREAD_ID,
+          status: "running",
+          providerName: "codex",
+          runtimeMode: "full-access",
+          activeTurnId: turnId,
+          lastError: null,
+          updatedAt: startedAt,
+        },
+        updatedAt: startedAt,
+      }),
+    };
+
+    const mounted = await mountApp();
+
+    try {
+      sendThreadEventPush({
+        sequence: 2,
+        eventId: EventId.makeUnsafe("event-missed-completion-progress"),
+        aggregateKind: "thread",
+        aggregateId: THREAD_ID,
+        occurredAt: "2026-03-04T12:00:05.000Z",
+        commandId: null,
+        causationEventId: null,
+        correlationId: null,
+        metadata: {},
+        type: "thread.message-sent",
+        payload: {
+          threadId: THREAD_ID,
+          messageId: progressMessageId,
+          role: "assistant",
+          text: "Cloning repository…",
+          turnId,
+          source: "native",
+          streaming: true,
+          createdAt: "2026-03-04T12:00:05.000Z",
+          updatedAt: "2026-03-04T12:00:05.000Z",
+        },
+      });
+
+      await vi.waitFor(() => {
+        const thread = getThreadFromState(useStore.getState(), THREAD_ID);
+        expect(thread?.messages.find((message) => message.id === progressMessageId)?.text).toBe(
+          "Cloning repository…",
+        );
+      });
+
+      const completedAt = "2026-03-04T12:00:09.000Z";
+      const currentThread = getThreadDetailFromFixtureSnapshot(THREAD_ID);
+      fixture = {
+        ...fixture,
+        snapshot: {
+          ...fixture.snapshot,
+          snapshotSequence: 4,
+          updatedAt: completedAt,
+          threads: [
+            {
+              ...currentThread,
+              latestTurn: {
+                turnId,
+                state: "completed",
+                requestedAt: startedAt,
+                startedAt,
+                completedAt,
+                assistantMessageId: finalMessageId,
+              },
+              messages: [
+                ...currentThread.messages,
+                {
+                  id: progressMessageId,
+                  role: "assistant",
+                  text: "Cloning repository… done.",
+                  turnId,
+                  streaming: false,
+                  source: "native",
+                  createdAt: "2026-03-04T12:00:05.000Z",
+                  updatedAt: "2026-03-04T12:00:08.000Z",
+                },
+                {
+                  id: finalMessageId,
+                  role: "assistant",
+                  text: "Repository cloned successfully.",
+                  turnId,
+                  streaming: false,
+                  source: "native",
+                  createdAt: completedAt,
+                  updatedAt: completedAt,
+                },
+              ],
+              session: {
+                threadId: THREAD_ID,
+                status: "ready",
+                providerName: "codex",
+                runtimeMode: "full-access",
+                activeTurnId: null,
+                lastError: null,
+                updatedAt: completedAt,
+              },
+              updatedAt: completedAt,
+            },
+          ],
+        },
+      };
+
+      // Deliver only the terminal session transition, not the final message.
+      // The reducer now considers the session and turn terminal, but the stale
+      // streaming message must keep projection repair eligible until the
+      // authoritative detail snapshot closes it.
+      sendThreadEventPush({
+        sequence: 3,
+        eventId: EventId.makeUnsafe("event-missed-completion-session-ready"),
+        aggregateKind: "thread",
+        aggregateId: THREAD_ID,
+        occurredAt: completedAt,
+        commandId: null,
+        causationEventId: null,
+        correlationId: null,
+        metadata: {},
+        type: "thread.session-set",
+        payload: {
+          threadId: THREAD_ID,
+          session: {
+            threadId: THREAD_ID,
+            status: "ready",
+            providerName: "codex",
+            runtimeMode: "full-access",
+            activeTurnId: null,
+            lastError: null,
+            updatedAt: completedAt,
+          },
+        },
+      });
+
+      await vi.waitFor(() => {
+        const thread = getThreadFromState(useStore.getState(), THREAD_ID);
+        expect(thread?.latestTurn?.state).toBe("completed");
+        expect(thread?.session?.orchestrationStatus).toBe("ready");
+        expect(
+          thread?.messages.find((message) => message.id === progressMessageId)?.streaming,
+        ).toBe(true);
+      });
+
+      await vi.waitFor(
+        () => {
+          const thread = getThreadFromState(useStore.getState(), THREAD_ID);
+          expect(getThreadDetailSnapshotRequestCount).toBeGreaterThan(0);
+          expect(thread?.latestTurn?.state).toBe("completed");
+          expect(thread?.session?.orchestrationStatus).toBe("ready");
+          expect(thread?.session?.activeTurnId).toBeUndefined();
+          expect(
+            thread?.messages.filter((message) => message.id === progressMessageId),
+          ).toHaveLength(1);
+          expect(
+            thread?.messages.find((message) => message.id === progressMessageId)?.streaming,
+          ).toBe(false);
+          expect(thread?.messages.filter((message) => message.id === finalMessageId)).toHaveLength(
+            1,
+          );
+          expect(thread?.messages.find((message) => message.id === finalMessageId)?.text).toBe(
+            "Repository cloned successfully.",
+          );
+        },
+        { timeout: 10_000, interval: 16 },
+      );
+    } finally {
+      fixture = buildFixture();
+      await mounted.cleanup();
+    }
+  }, 60_000);
+
+  it("does not apply a delayed projection snapshot behind the live thread cursor", async () => {
+    const turnId = TurnId.makeUnsafe("turn-delayed-projection");
+    const startedAt = "2026-03-04T12:00:04.000Z";
+    fixture = {
+      ...fixture,
+      snapshot: createSnapshot({
+        latestTurn: {
+          turnId,
+          state: "running",
+          requestedAt: startedAt,
+          startedAt,
+          completedAt: null,
+          assistantMessageId: null,
+        },
+        session: {
+          threadId: THREAD_ID,
+          status: "running",
+          providerName: "codex",
+          runtimeMode: "full-access",
+          activeTurnId: turnId,
+          lastError: null,
+          updatedAt: startedAt,
+        },
+        updatedAt: startedAt,
+      }),
+    };
+
+    const mounted = await mountApp();
+
+    try {
+      delayNextThreadDetailSnapshotResponse = true;
+      await vi.waitFor(
+        () => {
+          expect(getThreadDetailSnapshotRequestCount).toBeGreaterThan(0);
+          expect(pendingThreadDetailSnapshotResponse).not.toBeNull();
+        },
+        { timeout: 10_000, interval: 16 },
+      );
+
+      const completedAt = "2026-03-04T12:00:09.000Z";
+      sendThreadEventPush({
+        sequence: 2,
+        eventId: EventId.makeUnsafe("event-delayed-projection-session-ready"),
+        aggregateKind: "thread",
+        aggregateId: THREAD_ID,
+        occurredAt: completedAt,
+        commandId: null,
+        causationEventId: null,
+        correlationId: null,
+        metadata: {},
+        type: "thread.session-set",
+        payload: {
+          threadId: THREAD_ID,
+          session: {
+            threadId: THREAD_ID,
+            status: "ready",
+            providerName: "codex",
+            runtimeMode: "full-access",
+            activeTurnId: null,
+            lastError: null,
+            updatedAt: completedAt,
+          },
+        },
+      });
+
+      await vi.waitFor(() => {
+        const thread = getThreadFromState(useStore.getState(), THREAD_ID);
+        expect(thread?.latestTurn?.state).toBe("completed");
+        expect(thread?.session?.orchestrationStatus).toBe("ready");
+      });
+
+      sendPendingThreadDetailSnapshotResponse();
+      // Let the RPC continuation run before asserting that the older snapshot
+      // did not roll back the just-applied stream event.
+      await new Promise<void>((resolve) => window.setTimeout(resolve, 100));
+
+      expect(pendingThreadDetailSnapshotResponse).toBeNull();
+      const thread = getThreadFromState(useStore.getState(), THREAD_ID);
+      expect(thread?.latestTurn?.state).toBe("completed");
+      expect(thread?.latestTurn?.completedAt).toBe(completedAt);
+      expect(thread?.session?.orchestrationStatus).toBe("ready");
+      expect(thread?.session?.activeTurnId).toBeUndefined();
+    } finally {
+      fixture = buildFixture();
+      await mounted.cleanup();
+    }
+  }, 60_000);
+
   it("flushes only the first assistant chunk immediately for a message", async () => {
     const mounted = await mountApp();
 
@@ -807,7 +1882,7 @@ describe("EventRouter scoped orchestration sync", () => {
 
       sendThreadEventPush(secondAssistantChunk);
 
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      await new Promise((resolve) => window.setTimeout(resolve, 20));
 
       const threadBeforeThrottleFlush = getThreadFromState(useStore.getState(), THREAD_ID);
       const messageBeforeThrottleFlush = threadBeforeThrottleFlush?.messages.find(
@@ -830,7 +1905,7 @@ describe("EventRouter scoped orchestration sync", () => {
     }
   });
 
-  it("recovers buffered thread events by re-requesting the missing thread snapshot", async () => {
+  it("recovers buffered thread events with a direct snapshot read", async () => {
     const recoveryThreadId = ThreadId.makeUnsafe("thread-buffered-recovery");
     const bufferedEvent = {
       sequence: 3,
@@ -890,6 +1965,9 @@ describe("EventRouter scoped orchestration sync", () => {
         },
         { timeout: 4_000, interval: 16 },
       );
+      const subscribeCountBeforeMaterialization =
+        subscribeThreadRequestCountById.get(recoveryThreadId) ?? 0;
+      const detailSnapshotReadsBeforeMaterialization = getThreadDetailSnapshotRequestCount;
 
       const baseThread = fixture.snapshot.threads[0]!;
       fixture.snapshot = {
@@ -921,7 +1999,12 @@ describe("EventRouter scoped orchestration sync", () => {
       let thread;
       await vi.waitFor(
         () => {
-          expect(subscribeThreadRequestCountById.get(recoveryThreadId)).toBeGreaterThanOrEqual(3);
+          expect(getThreadDetailSnapshotRequestCount).toBeGreaterThan(
+            detailSnapshotReadsBeforeMaterialization,
+          );
+          expect(subscribeThreadRequestCountById.get(recoveryThreadId)).toBe(
+            subscribeCountBeforeMaterialization,
+          );
           thread = getThreadFromState(useStore.getState(), recoveryThreadId);
           const message = thread?.messages.find(
             (entry) => entry.id === MessageId.makeUnsafe("msg-buffered-assistant"),
@@ -933,7 +2016,7 @@ describe("EventRouter scoped orchestration sync", () => {
 
       sendThreadEventPush(bufferedEvent);
 
-      await new Promise((resolve) => setTimeout(resolve, 120));
+      await new Promise((resolve) => window.setTimeout(resolve, 120));
 
       thread = getThreadFromState(useStore.getState(), recoveryThreadId);
       expect(
@@ -941,6 +2024,101 @@ describe("EventRouter scoped orchestration sync", () => {
           (entry) => entry.id === MessageId.makeUnsafe("msg-buffered-assistant"),
         ),
       ).toHaveLength(1);
+    } finally {
+      await mounted.cleanup();
+    }
+  });
+
+  it("recovers a promoted draft when both live promotion paths are missed", async () => {
+    const draftThreadId = ThreadId.makeUnsafe("thread-draft-missed-live-promotion");
+    useComposerDraftStore.setState({
+      draftsByThreadId: {},
+      draftThreadsByThreadId: {
+        [draftThreadId]: {
+          projectId: PROJECT_ID,
+          createdAt: NOW_ISO,
+          runtimeMode: "full-access",
+          interactionMode: "default",
+          entryPoint: "chat",
+          branch: null,
+          worktreePath: null,
+          envMode: "local",
+          isTemporary: false,
+        },
+      },
+      projectDraftThreadIdByProjectId: {
+        [PROJECT_ID]: draftThreadId,
+      },
+    });
+    const mounted = await mountApp({ routeThreadId: draftThreadId, waitForThreadId: null });
+
+    try {
+      await vi.waitFor(
+        () => {
+          expect(subscribeThreadRequestCountById.get(draftThreadId)).toBeGreaterThanOrEqual(1);
+        },
+        { timeout: 4_000, interval: 16 },
+      );
+      const subscribeCountBeforeMaterialization =
+        subscribeThreadRequestCountById.get(draftThreadId) ?? 0;
+      const detailReadsBeforeMaterialization = getThreadDetailSnapshotRequestCount;
+      const baseThread = fixture.snapshot.threads[0]!;
+      fixture.snapshot = {
+        ...fixture.snapshot,
+        snapshotSequence: 2,
+        threads: [
+          ...fixture.snapshot.threads,
+          {
+            ...baseThread,
+            id: draftThreadId,
+            title: "Recovered missed promotion",
+            messages: [
+              {
+                id: MessageId.makeUnsafe("msg-draft-missed-live-promotion"),
+                role: "assistant",
+                text: "recovered without a reload",
+                turnId: TurnId.makeUnsafe("turn-draft-missed-live-promotion"),
+                streaming: false,
+                source: "native",
+                createdAt: "2026-03-04T12:00:09.000Z",
+                updatedAt: "2026-03-04T12:00:09.000Z",
+              },
+            ],
+            activities: [],
+            proposedPlans: [],
+            checkpoints: [],
+            latestTurn: {
+              turnId: TurnId.makeUnsafe("turn-draft-missed-live-promotion"),
+              state: "completed",
+              requestedAt: "2026-03-04T12:00:08.000Z",
+              startedAt: "2026-03-04T12:00:08.100Z",
+              completedAt: "2026-03-04T12:00:09.000Z",
+              assistantMessageId: MessageId.makeUnsafe("msg-draft-missed-live-promotion"),
+            },
+            updatedAt: "2026-03-04T12:00:09.000Z",
+          } satisfies OrchestrationReadModel["threads"][number],
+        ],
+      };
+
+      // Deliberately do not push either a shell upsert or a thread stream item.
+      // The periodic direct projection read must promote the visible draft.
+      await vi.waitFor(
+        () => {
+          expect(getThreadDetailSnapshotRequestCount).toBeGreaterThan(
+            detailReadsBeforeMaterialization,
+          );
+          expect(subscribeThreadRequestCountById.get(draftThreadId)).toBe(
+            subscribeCountBeforeMaterialization,
+          );
+          expect(
+            getThreadFromState(useStore.getState(), draftThreadId)?.messages.at(-1)?.text,
+          ).toBe("recovered without a reload");
+          expect(
+            useComposerDraftStore.getState().draftThreadsByThreadId[draftThreadId],
+          ).toBeUndefined();
+        },
+        { timeout: 8_000, interval: 16 },
+      );
     } finally {
       await mounted.cleanup();
     }
@@ -983,6 +2161,9 @@ describe("EventRouter scoped orchestration sync", () => {
         },
         { timeout: 4_000, interval: 16 },
       );
+      const subscribeCountBeforeMaterialization =
+        subscribeThreadRequestCountById.get(draftThreadId) ?? 0;
+      const detailSnapshotReadsBeforeMaterialization = getThreadDetailSnapshotRequestCount;
 
       const baseThread = fixture.snapshot.threads[0]!;
       fixture.snapshot = {
@@ -1039,12 +2220,122 @@ describe("EventRouter scoped orchestration sync", () => {
       await vi.waitFor(
         () => {
           expect(useStore.getState().threadIds?.includes(draftThreadId)).toBe(true);
-          expect(subscribeThreadRequestCountById.get(draftThreadId)).toBeGreaterThanOrEqual(2);
-          expect(
-            subscribeThreadRequests.filter((threadId) => threadId === draftThreadId).length,
-          ).toBeGreaterThanOrEqual(2);
+          expect(getThreadDetailSnapshotRequestCount).toBeGreaterThan(
+            detailSnapshotReadsBeforeMaterialization,
+          );
+          expect(subscribeThreadRequestCountById.get(draftThreadId)).toBe(
+            subscribeCountBeforeMaterialization,
+          );
           const thread = getThreadFromState(useStore.getState(), draftThreadId);
           expect(thread?.messages.at(-1)?.text).toBe("draft promotion rendered");
+        },
+        { timeout: 4_000, interval: 16 },
+      );
+
+      const subscribeCountAfterMaterialization =
+        subscribeThreadRequestCountById.get(draftThreadId) ?? 0;
+      for (const listener of threadSnapshotFailureListeners) {
+        listener({
+          threadId: draftThreadId,
+          code: "THREAD_SNAPSHOT_NOT_FOUND",
+          error: new Error("The original draft stream exhausted after materialization"),
+        });
+      }
+      await vi.waitFor(
+        () => {
+          expect(subscribeThreadRequestCountById.get(draftThreadId)).toBe(
+            subscribeCountAfterMaterialization + 1,
+          );
+          expect(useStore.getState().threadDetailSyncById?.[draftThreadId]).toBe("synced");
+        },
+        { timeout: 4_000, interval: 16 },
+      );
+    } finally {
+      await mounted.cleanup();
+    }
+  });
+
+  it("hydrates a promoted draft when it first appears in a shell snapshot", async () => {
+    const draftThreadId = ThreadId.makeUnsafe("thread-draft-promoted-by-snapshot");
+    delayNextThreadSnapshot = true;
+    useComposerDraftStore.setState({
+      draftsByThreadId: {},
+      draftThreadsByThreadId: {
+        [draftThreadId]: {
+          projectId: PROJECT_ID,
+          createdAt: NOW_ISO,
+          runtimeMode: "full-access",
+          interactionMode: "default",
+          entryPoint: "chat",
+          branch: null,
+          worktreePath: null,
+          envMode: "local",
+          isTemporary: false,
+        },
+      },
+      projectDraftThreadIdByProjectId: {
+        [PROJECT_ID]: draftThreadId,
+      },
+    });
+    const mounted = await mountApp({ routeThreadId: draftThreadId, waitForThreadId: null });
+
+    try {
+      await vi.waitFor(
+        () => {
+          expect(subscribeThreadRequestCountById.get(draftThreadId)).toBeGreaterThanOrEqual(1);
+        },
+        { timeout: 4_000, interval: 16 },
+      );
+      const subscribeCountBeforeMaterialization =
+        subscribeThreadRequestCountById.get(draftThreadId) ?? 0;
+      const detailReadsBeforeMaterialization = getThreadDetailSnapshotRequestCount;
+      const baseThread = fixture.snapshot.threads[0]!;
+      fixture.snapshot = {
+        ...fixture.snapshot,
+        snapshotSequence: 2,
+        threads: [
+          ...fixture.snapshot.threads,
+          {
+            ...baseThread,
+            id: draftThreadId,
+            title: "Snapshot-promoted thread",
+            messages: [
+              {
+                id: MessageId.makeUnsafe("msg-snapshot-promoted"),
+                role: "assistant",
+                text: "hydrated from promoted snapshot",
+                turnId: TurnId.makeUnsafe("turn-snapshot-promoted"),
+                streaming: true,
+                source: "native",
+                createdAt: "2026-03-04T12:00:09.000Z",
+                updatedAt: "2026-03-04T12:00:09.000Z",
+              },
+            ],
+            activities: [],
+            proposedPlans: [],
+            checkpoints: [],
+            updatedAt: "2026-03-04T12:00:09.000Z",
+          } satisfies OrchestrationReadModel["threads"][number],
+        ],
+      };
+
+      sendShellEventPush({
+        kind: "snapshot",
+        snapshot: createShellSnapshotFromReadModel(fixture.snapshot),
+      });
+
+      await vi.waitFor(
+        () => {
+          expect(getThreadDetailSnapshotRequestCount).toBeGreaterThan(
+            detailReadsBeforeMaterialization,
+          );
+          expect(subscribeThreadRequestCountById.get(draftThreadId)).toBe(
+            subscribeCountBeforeMaterialization,
+          );
+          expect(useStore.getState().threadDetailSyncById?.[draftThreadId]).toBe("synced");
+          expect(
+            getThreadFromState(useStore.getState(), draftThreadId)?.messages.at(-1)?.text,
+          ).toBe("hydrated from promoted snapshot");
         },
         { timeout: 4_000, interval: 16 },
       );
@@ -1129,29 +2420,6 @@ describe("EventRouter scoped orchestration sync", () => {
       fixture = previousFixture;
     } finally {
       fixture = buildFixture();
-      await mounted.cleanup();
-    }
-  });
-
-  it("does not resubscribe shell sync when workspace pages change", async () => {
-    const mounted = await mountApp();
-
-    try {
-      let initialSubscribeShellCount = 0;
-      await vi.waitFor(
-        () => {
-          expect(subscribeShellRequestCount).toBeGreaterThan(0);
-          initialSubscribeShellCount = subscribeShellRequestCount;
-        },
-        { timeout: 4_000, interval: 16 },
-      );
-
-      useWorkspaceStore.getState().createWorkspace();
-
-      await new Promise((resolve) => setTimeout(resolve, 120));
-
-      expect(subscribeShellRequestCount).toBe(initialSubscribeShellCount);
-    } finally {
       await mounted.cleanup();
     }
   });

@@ -36,11 +36,15 @@ import { ServerConfig, type ServerConfigShape } from "./config";
 import { resolveCachedEditorIcon } from "./editorAppIcons";
 import { LOCAL_IMAGE_ROUTE_PATH, resolveAllowedLocalPreviewFile } from "./localImageFiles.ts";
 import { renderLocalPdfPage } from "./localPdfPreview.ts";
+import { resolveScratchWorkspacesRoot } from "./scratchWorkspaces.ts";
 import { ProjectFaviconResolver } from "./project/Services/ProjectFaviconResolver";
+import { OrchestrationEngineService } from "./orchestration/Services/OrchestrationEngine";
 import { ProjectionSnapshotQuery } from "./orchestration/Services/ProjectionSnapshotQuery";
 import { ProviderAdapterRegistry } from "./provider/Services/ProviderAdapterRegistry";
+import { getEnabledProviderAdapter } from "./provider/enabledProviderAdapter";
 import { threadArchiveChunks, threadArchiveFileName } from "./orchestration/exportThreadArchive";
 import type { ServerReadiness } from "./server/readiness";
+import { ServerSettingsService } from "./serverSettings";
 import { isLoopbackHost } from "./startupAccess";
 import {
   attachmentPrincipalForSession,
@@ -51,17 +55,30 @@ import {
   reserveManagedAttachmentUpload,
 } from "./managedAttachmentStore";
 import { ManagedAttachmentRepository } from "./persistence/Services/ManagedAttachments";
+import { ComputerService } from "./computer/Services/ComputerService";
 import {
   authorizeDesktopShutdown,
+  DESKTOP_COMPUTER_EMERGENCY_STOP_ROUTE_PATH,
   DESKTOP_SHUTDOWN_ROUTE_PATH,
   type ServerShutdownController,
 } from "./serverShutdown";
 import { resolveFavicon, tryParseHost } from "./siteFaviconCache";
 import {
+  ifNoneMatchSatisfies,
+  isSidecarRequestPath,
+  negotiateStaticEncodingPreference,
+  staticCacheControl,
+  staticEtag,
+} from "./staticAssets";
+import {
   isTrustedAppOrigin,
   normalizeCorsOrigin,
   shouldRejectAuthMutationOrigin,
 } from "./trustedOrigins";
+import {
+  VOICE_UPLOAD_CAPACITY_ERROR_MESSAGE,
+  voiceUploadAdmissionGate,
+} from "./voiceUploadAdmission";
 
 const PROJECT_FAVICON_CACHE_CONTROL = "public, max-age=3600";
 const SITE_FAVICON_CACHE_CONTROL_SUCCESS = "public, max-age=86400"; // 24 h
@@ -185,6 +202,7 @@ export function makeEffectHttpRouteLayer(
   return Layer.mergeAll(
     makeHealthEffectRouteLayer(readiness),
     makeDesktopShutdownEffectRouteLayer(shutdownController),
+    makeDesktopComputerEmergencyStopRouteLayer(),
     authEffectRouteLayer,
     projectFaviconEffectRouteLayer,
     threadExportEffectRouteLayer,
@@ -229,25 +247,86 @@ export function makeDesktopShutdownEffectRouteLayer(shutdownController: ServerSh
   );
 }
 
+/**
+ * The desktop relays physical Escape presses here after its local host latch
+ * has already engaged. The manager-side latch is what keeps queued work from
+ * dispatching once the desktop side is dead or restarting; both sides fail
+ * closed independently rather than trusting a single transport.
+ */
+export function makeDesktopComputerEmergencyStopRouteLayer() {
+  return HttpRouter.add(
+    "POST",
+    DESKTOP_COMPUTER_EMERGENCY_STOP_ROUTE_PATH,
+    Effect.gen(function* () {
+      const request = yield* HttpServerRequest.HttpServerRequest;
+      const config = yield* ServerConfig;
+      const authorization = authorizeDesktopShutdown({
+        config,
+        remoteAddress: request.remoteAddress,
+        authorization: request.headers.authorization,
+      });
+
+      if (!authorization.authorized) {
+        return HttpServerResponse.jsonUnsafe(
+          { error: authorization.reason === "unavailable" ? "Not Found" : "Unauthorized" },
+          {
+            status: authorization.status,
+            ...(authorization.status === 401
+              ? { headers: { "WWW-Authenticate": 'Bearer realm="synara-desktop-emergency-stop"' } }
+              : {}),
+          },
+        );
+      }
+
+      const computerService = Option.getOrUndefined(yield* Effect.serviceOption(ComputerService));
+      if (!computerService) {
+        return HttpServerResponse.jsonUnsafe({ accepted: false }, { status: 404 });
+      }
+
+      yield* Effect.promise(() => computerService.manager.emergencyStopInput()).pipe(
+        Effect.catchCause((cause) =>
+          Effect.logWarning("desktop computer emergency stop failed", Cause.pretty(cause)),
+        ),
+      );
+      return HttpServerResponse.jsonUnsafe({ accepted: true }, { status: 202 });
+    }),
+  );
+}
+
 export function makeHealthEffectRouteLayer(readiness: ServerReadiness) {
   return HttpRouter.add(
     "GET",
     "/health",
-    readiness.getSnapshot.pipe(
-      Effect.map((snapshot) =>
-        HttpServerResponse.jsonUnsafe(
-          {
-            status: "ok",
-            startupReady: snapshot.startupReady,
-            pushBusReady: snapshot.pushBusReady,
-            keybindingsReady: snapshot.keybindingsReady,
-            terminalSubscriptionsReady: snapshot.terminalSubscriptionsReady,
-            orchestrationSubscriptionsReady: snapshot.orchestrationSubscriptionsReady,
+    Effect.gen(function* () {
+      const snapshot = yield* readiness.getSnapshot;
+      const orchestrationEngine = yield* OrchestrationEngineService;
+      const projection = yield* orchestrationEngine.getProjectionCatchUpStatus;
+      return HttpServerResponse.jsonUnsafe(
+        {
+          status: "ok",
+          startupReady: snapshot.startupReady,
+          pushBusReady: snapshot.pushBusReady,
+          keybindingsReady: snapshot.keybindingsReady,
+          terminalSubscriptionsReady: snapshot.terminalSubscriptionsReady,
+          orchestrationSubscriptionsReady: snapshot.orchestrationSubscriptionsReady,
+          // /health is unauthenticated, so only shape-level diagnostics may
+          // leave the process. lastFailure carries pretty-printed causes whose
+          // schema-decode issues can embed raw event payloads (user prompts);
+          // it stays server-side — the log line that recorded the failure is
+          // where operators read the detail.
+          projection: {
+            state: projection.state,
+            inFlight: projection.inFlight,
+            retryAttempts: projection.retryAttempts,
+            hasFailure: projection.lastFailure !== null,
+            highWaterSequence: projection.highWaterSequence,
+            lagByProjector: projection.lagByProjector,
+            missingProjectors: projection.missingProjectors,
           },
-          { status: 200 },
-        ),
-      ),
-    ),
+        },
+        { status: 200 },
+      );
+    }),
   );
 }
 
@@ -784,12 +863,16 @@ export const localImageEffectRouteLayer = HttpRouter.add(
       resolveAllowedLocalPreviewFile({
         requestedPath: url.searchParams.get("path"),
         cwd: url.searchParams.get("cwd"),
+        scratchWorkspacesRoot: resolveScratchWorkspacesRoot(),
         allowAbsoluteLocalPreviewFile: true,
         previewGrant: url.searchParams.get("grant"),
       }).catch(() => null),
     );
     if (!previewFile) {
-      return HttpServerResponse.text("Not Found", { status: 404 });
+      return HttpServerResponse.text("Not Found", {
+        status: 404,
+        headers: localPreviewCorsHeaders({ config, request, url }),
+      });
     }
 
     // Stream (don't use HttpServerResponse.file, which depends on
@@ -1012,25 +1095,35 @@ const binaryUploadEffectHandler = Effect.gen(function* () {
         { status: 400, headers: corsHeaders },
       );
     }
-    const bytes = yield* readEffectBinary(request, SERVER_VOICE_TRANSCRIPTION_MAX_AUDIO_BYTES);
-    const registry = yield* ProviderAdapterRegistry;
-    const adapter = yield* registry.getByProvider(provider as never);
-    if (!adapter.transcribeVoice) {
+    const releaseUpload = voiceUploadAdmissionGate.tryAcquire();
+    if (!releaseUpload) {
       return HttpServerResponse.jsonUnsafe(
-        { error: `Voice transcription is unavailable for provider '${provider}'.` },
-        { status: 400, headers: corsHeaders },
+        { error: VOICE_UPLOAD_CAPACITY_ERROR_MESSAGE },
+        { status: 429, headers: corsHeaders },
       );
     }
-    const result = yield* adapter.transcribeVoice({
-      provider: provider as never,
-      cwd,
-      ...(threadId ? { threadId: ThreadId.makeUnsafe(threadId) } : {}),
-      mimeType,
-      sampleRateHz,
-      durationMs,
-      audioBase64: Buffer.from(bytes).toString("base64"),
-    });
-    return HttpServerResponse.jsonUnsafe(result, { status: 200, headers: corsHeaders });
+    return yield* Effect.gen(function* () {
+      const bytes = yield* readEffectBinary(request, SERVER_VOICE_TRANSCRIPTION_MAX_AUDIO_BYTES);
+      const registry = yield* ProviderAdapterRegistry;
+      const serverSettings = yield* ServerSettingsService;
+      const adapter = yield* getEnabledProviderAdapter(provider as never, serverSettings, registry);
+      if (!adapter.transcribeVoice) {
+        return HttpServerResponse.jsonUnsafe(
+          { error: `Voice transcription is unavailable for provider '${provider}'.` },
+          { status: 400, headers: corsHeaders },
+        );
+      }
+      const result = yield* adapter.transcribeVoice({
+        provider: provider as never,
+        cwd,
+        ...(threadId ? { threadId: ThreadId.makeUnsafe(threadId) } : {}),
+        mimeType,
+        sampleRateHz,
+        durationMs,
+        audioBase64: Buffer.from(bytes).toString("base64"),
+      });
+      return HttpServerResponse.jsonUnsafe(result, { status: 200, headers: corsHeaders });
+    }).pipe(Effect.ensuring(Effect.sync(releaseUpload)));
   }
 
   return HttpServerResponse.text("Not Found", { status: 404, headers: corsHeaders });
@@ -1187,10 +1280,36 @@ export const staticAndDevEffectRouteLayer = HttpRouter.add(
     ) {
       return HttpServerResponse.text("Invalid static file path", { status: 400 });
     }
+    if (isSidecarRequestPath(relativePath)) {
+      return HttpServerResponse.text("Not Found", { status: 404 });
+    }
 
     const isWithinStaticRoot = (candidate: string) =>
       candidate === staticRoot ||
       candidate.startsWith(staticRoot.endsWith(path.sep) ? staticRoot : `${staticRoot}${path.sep}`);
+
+    // Lexical containment is not containment: stat and readFile follow
+    // symlinks, so a link inside the root pointing outside it would be served.
+    // Canonicalize before opening anything. The root itself is canonicalized
+    // too, otherwise a symlinked staticDir would fail its own check.
+    const canonicalStaticRoot = yield* fileSystem
+      .realPath(staticRoot)
+      .pipe(Effect.catch(() => Effect.succeed(staticRoot)));
+    const isWithinCanonicalRoot = (candidate: string) =>
+      candidate === canonicalStaticRoot ||
+      candidate.startsWith(
+        canonicalStaticRoot.endsWith(path.sep)
+          ? canonicalStaticRoot
+          : `${canonicalStaticRoot}${path.sep}`,
+      );
+    const resolvesInsideRoot = Effect.fn(function* (candidate: string) {
+      const real = yield* fileSystem
+        .realPath(candidate)
+        .pipe(Effect.catch(() => Effect.succeed(null)));
+      // A path that cannot be canonicalized does not exist; the caller's own
+      // stat/readFile will fail it, and refusing here keeps 404 semantics.
+      return real === null ? false : isWithinCanonicalRoot(real);
+    });
 
     let filePath = path.resolve(staticRoot, relativePath);
     if (!isWithinStaticRoot(filePath)) {
@@ -1203,29 +1322,80 @@ export const staticAndDevEffectRouteLayer = HttpRouter.add(
       }
     }
 
+    // Serves a resolved static file, preferring build-time .br/.gz sidecars
+    // when the client accepts them. Content-Type always reflects the
+    // underlying file; Vary is set even on identity responses so shared
+    // caches never hand a compressed body to a client that cannot decode it.
+    // Every response carries an ETag derived from the served file (sidecar's
+    // when a sidecar is served, so validators differ per encoding), making
+    // no-cache revalidation a 304 instead of a full re-transfer.
+    const serveStaticFile = Effect.fn(function* (resolvedPath: string) {
+      const cacheHeaders = {
+        "Cache-Control": staticCacheControl(path.relative(staticRoot, resolvedPath)),
+        Vary: "Accept-Encoding",
+      };
+      const ifNoneMatch = request.headers["if-none-match"];
+      const baseContentType = Mime.getType(resolvedPath) ?? "application/octet-stream";
+      const contentType =
+        baseContentType === "text/html" ? "text/html; charset=utf-8" : baseContentType;
+      const respond = Effect.fn(function* (servedPath: string, encoding?: string) {
+        // Canonicalize before opening: a symlink inside the root pointing
+        // outside it passes the lexical guard but must not be served.
+        if (!(yield* resolvesInsideRoot(servedPath))) return null;
+        const info = yield* fileSystem
+          .stat(servedPath)
+          .pipe(Effect.catch(() => Effect.succeed(null)));
+        if (!info || info.type !== "File") return null;
+        const etag = staticEtag(Number(info.size), info.mtime?.getTime() ?? 0, encoding);
+        const encodingHeaders = encoding ? { "Content-Encoding": encoding } : {};
+        const headers = { ...cacheHeaders, ...encodingHeaders, ETag: etag };
+        if (ifNoneMatchSatisfies(ifNoneMatch, etag)) {
+          return HttpServerResponse.empty({ status: 304, headers });
+        }
+        const data = yield* fileSystem
+          .readFile(servedPath)
+          .pipe(Effect.catch(() => Effect.succeed(null)));
+        if (!data) return null;
+        return HttpServerResponse.uint8Array(data, { status: 200, contentType, headers });
+      });
+      const preference = negotiateStaticEncodingPreference(request.headers["accept-encoding"]);
+      // Candidates are ranked by client weight with identity (null) in its own
+      // ranked position, so a client preferring identity over a coding is not
+      // handed a sidecar it ranked lower.
+      for (const candidate of preference.candidates) {
+        if (candidate === null) {
+          const identityResponse = yield* respond(resolvedPath);
+          if (identityResponse) return identityResponse;
+          continue;
+        }
+        const sidecarPath = `${resolvedPath}${candidate.sidecarExtension}`;
+        // Sidecars share the traversal guard with their source file: appending
+        // an extension cannot escape the root, but keep the invariant explicit.
+        if (!isWithinStaticRoot(sidecarPath)) continue;
+        const sidecarResponse = yield* respond(sidecarPath, candidate.encoding);
+        if (sidecarResponse) return sidecarResponse;
+      }
+      // Nothing acceptable was servable. With identity excluded that is a 406
+      // per RFC 9110 §12.5.3; otherwise the file itself is missing.
+      if (!preference.identityAcceptable) {
+        return HttpServerResponse.text("Not Acceptable", {
+          status: 406,
+          headers: { Vary: "Accept-Encoding" },
+        });
+      }
+      return null;
+    });
+
     const fileInfo = yield* fileSystem
       .stat(filePath)
       .pipe(Effect.catch(() => Effect.succeed(null)));
     if (!fileInfo || fileInfo.type !== "File") {
-      const indexPath = path.resolve(staticRoot, "index.html");
-      const indexData = yield* fileSystem
-        .readFile(indexPath)
-        .pipe(Effect.catch(() => Effect.succeed(null)));
-      if (!indexData) return HttpServerResponse.text("Not Found", { status: 404 });
-      return HttpServerResponse.uint8Array(indexData, {
-        status: 200,
-        contentType: "text/html; charset=utf-8",
-      });
+      const fallback = yield* serveStaticFile(path.resolve(staticRoot, "index.html"));
+      return fallback ?? HttpServerResponse.text("Not Found", { status: 404 });
     }
 
-    const data = yield* fileSystem
-      .readFile(filePath)
-      .pipe(Effect.catch(() => Effect.succeed(null)));
-    if (!data) return HttpServerResponse.text("Internal Server Error", { status: 500 });
-    return HttpServerResponse.uint8Array(data, {
-      status: 200,
-      contentType: Mime.getType(filePath) ?? "application/octet-stream",
-    });
+    const response = yield* serveStaticFile(filePath);
+    return response ?? HttpServerResponse.text("Internal Server Error", { status: 500 });
   }),
 );
 

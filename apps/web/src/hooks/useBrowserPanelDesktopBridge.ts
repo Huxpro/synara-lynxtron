@@ -1,13 +1,14 @@
+import type { ThreadId } from "@synara/contracts";
 import { useEffect, useEffectEvent } from "react";
 
 import { getDesktopBridge } from "~/platform/desktopBridge";
 export function useBrowserPanelDesktopBridge(input: {
   onToggle: (() => void) | null;
-  onOpen: (() => void) | null;
+  onOpen: ((threadId: ThreadId) => void) | null;
 }) {
   const { onOpen, onToggle } = input;
   const handleToggle = useEffectEvent(() => onToggle?.());
-  const handleOpen = useEffectEvent(() => onOpen?.());
+  const handleOpen = useEffectEvent((threadId: ThreadId) => onOpen?.(threadId));
   const toggleEnabled = onToggle !== null;
   const openEnabled = onOpen !== null;
 
@@ -34,8 +35,8 @@ export function useBrowserPanelDesktopBridge(input: {
       return;
     }
 
-    const unsubscribe = onOpenBrowserPanelRequest(() => {
-      handleOpen();
+    const unsubscribe = onOpenBrowserPanelRequest(({ threadId }) => {
+      handleOpen(threadId);
     });
 
     return () => {

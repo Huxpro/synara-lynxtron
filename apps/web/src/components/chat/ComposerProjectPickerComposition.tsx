@@ -17,24 +17,24 @@ import { buildComposerProjectPickerFooterModel } from "./ComposerProjectPicker.l
 export function ComposerProjectPickerComposition(props: {
   readonly model: ComposerProjectPickerModel;
   readonly open: boolean;
-  readonly align?: "start" | "center" | "end";
-  readonly side?: "top" | "bottom";
-  readonly searchPlaceholder?: string;
+  readonly align?: "start" | "center" | "end" | undefined;
+  readonly side?: "top" | "bottom" | undefined;
+  readonly searchPlaceholder?: string | undefined;
   readonly addActionLabel: string;
   readonly resetActionLabel: string;
-  readonly retryActionLabel?: string;
-  readonly resetVisible?: boolean;
-  readonly addActionBusy?: boolean;
-  readonly retryActionBusy?: boolean;
-  readonly errorMessage?: string | null;
+  readonly retryActionLabel?: string | undefined;
+  readonly resetVisible?: boolean | undefined;
+  readonly addActionBusy?: boolean | undefined;
+  readonly retryActionBusy?: boolean | undefined;
+  readonly errorMessage?: string | null | undefined;
   readonly onOpenChange: (open: boolean) => void;
   readonly onQueryChange: (query: string) => void;
   readonly onSelectOption: (option: ComposerProjectPickerOption) => void;
   readonly onAddProject: () => void;
   readonly onReset: () => void;
-  readonly onRetry?: () => void;
-  readonly triggerClassName?: string;
-  readonly triggerTestId?: string;
+  readonly onRetry?: (() => void) | undefined;
+  readonly triggerClassName?: string | undefined;
+  readonly triggerTestId?: string | undefined;
 }) {
   const footerModel = buildComposerProjectPickerFooterModel({
     addActionLabel: props.addActionLabel,

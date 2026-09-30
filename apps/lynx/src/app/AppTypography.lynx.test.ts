@@ -9,7 +9,7 @@ describe("Lynx root typography", () => {
   it("selects the generated class for the chosen base size", () => {
     expect(sliceTypographyClassName(12)).toBe("SliceRoot--font-12");
     expect(sliceTypographyClassName(99)).toBe("SliceRoot--font-18");
-    expect(sliceTypographyClassName(undefined)).toBe("SliceRoot--font-12");
+    expect(sliceTypographyClassName(undefined)).toBe("SliceRoot--font-13");
     const app = readFileSync(new URL("./App.tsx", import.meta.url), "utf8");
     expect(app).toContain("sliceTypographyClassName(appearance.chatFontSizePx)");
   });

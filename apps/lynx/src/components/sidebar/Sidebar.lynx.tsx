@@ -28,7 +28,6 @@ import worktreeSvg from "@synara-central-icons/arrow-split-right.svg?raw";
 
 import { SidebarPrimarySurfaceNavigation } from "@synara-web/components/SidebarPrimarySurfaceNavigation";
 import { resolvePullRequestReviewBadge } from "@synara-web/components/SidebarActionBadges.logic";
-import { countUniqueViewerReviewRequests } from "@synara-web/components/pullRequest/pullRequestList.logic";
 import { resolveSidebarPrimarySurface } from "@synara-web/components/SidebarSurface.logic";
 import { SidebarSegmentedPicker } from "@synara-web/components/SidebarSegmentedPicker";
 import { SidebarProjectDisclosure } from "@synara-web/components/SidebarProjectDisclosure";
@@ -93,7 +92,6 @@ import {
   type SidebarProjectSortOrderValue,
   type SidebarThreadSortOrderValue,
 } from "@synara-web/sidebarSortDefaults";
-import { useWorkspaceStore } from "@synara-web/workspaceStore";
 import { useStore } from "@synara-web/store";
 import { dockTerminalThreadId } from "@synara-web/lib/dockTerminalScope";
 import { pinActionLabel } from "@synara-web/lib/pin.logic";
@@ -144,7 +142,11 @@ import { Button } from "../ui/button";
 import { MenuOverlayPortal } from "../ui/menu.lynx";
 import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
 import { lynxNestedInteractiveEventProps } from "../ui/interactive-state.lynx";
-import { deriveSidebarSections, resolveNativeSidebarSpaceId } from "./sidebar.logic";
+import {
+  countUniqueViewerReviewRequests,
+  deriveSidebarSections,
+  resolveNativeSidebarSpaceId,
+} from "./sidebar.logic";
 import { SpaceSwitcherLynx } from "./SpaceSwitcher.lynx";
 import { SpaceEditorDialogLynx } from "./SpaceEditorDialog.lynx";
 import { SpaceProjectPickerDialogLynx } from "./SpaceProjectPickerDialog.lynx";
@@ -176,6 +178,7 @@ import {
 } from "./threadContextActions.logic";
 import {
   createNativeThreadHandoff,
+  fetchNativeThreadHandoffProviderContext,
   resolveNativeThreadHandoffTargets,
 } from "../../app/threadHandoff.lynx";
 import { deleteNativeProjectThreads, removeNativeProject } from "./projectDeletion.lynx.logic";
@@ -479,7 +482,6 @@ async function persistProjectDisclosureState(
 
 export function Sidebar({
   activeThreadId,
-  activeWorkspaceId,
   draftProjectId = null,
   activePath,
   navigate,
@@ -488,7 +490,6 @@ export function Sidebar({
   titlebarControls,
 }: {
   readonly activeThreadId: string | null;
-  readonly activeWorkspaceId?: string | null;
   // Project of the new-thread (draft) route, which the web also treats as focused.
   readonly draftProjectId?: string | null;
   readonly activePath: string;
@@ -578,14 +579,9 @@ export function Sidebar({
   );
   const primarySidebarSurface = resolveSidebarPrimarySurface({
     isOnStudio: activePath === "/studio",
-    isOnWorkspace: activePath === "/workspace",
   });
-  const workspacePages = useWorkspaceStore((state) => state.workspacePages);
-  const createWorkspace = useWorkspaceStore((state) => state.createWorkspace);
-  const reorderWorkspace = useWorkspaceStore((state) => state.reorderWorkspace);
   const chatsSectionVisible = initialSortSettings.showChatsSection;
   const studioSectionVisible = initialSortSettings.showStudioSection;
-  const workspaceSectionVisible = initialSortSettings.showWorkspaceSection;
   const storedActiveSpaceId = useSpacesUiStore((state) => state.activeSpaceId);
   const setActiveSpaceId = useSpacesUiStore((state) => state.setActiveSpaceId);
   const rememberSpaceThread = useSpacesUiStore((state) => state.rememberThread);
@@ -765,8 +761,13 @@ export function Sidebar({
     const { showContextMenu } = await import(
       /* webpackMode: "eager" */ "../../platform/contextMenu"
     );
-    const detail = await fetchThreadHeaderSummary(thread.id);
-    const handoffTargets = resolveNativeThreadHandoffTargets(detail);
+    const [detail, handoffProviders] = await Promise.all([
+      fetchThreadHeaderSummary(thread.id),
+      fetchNativeThreadHandoffProviderContext().catch(() => null),
+    ]);
+    const handoffTargets = handoffProviders
+      ? resolveNativeThreadHandoffTargets(detail, handoffProviders)
+      : [];
     const action = (await showContextMenu(
       buildThreadContextMenuItems({
         isPinned,
@@ -1434,6 +1435,8 @@ export function Sidebar({
       thread,
       project: project
         ? {
+            // Sidebar project groups are always real projects (chats and studio are separate sections).
+            kind: "project" as const,
             cwd: project.workspaceRoot,
             folderName: project.workspaceRoot.split(/[\\/]/).filter(Boolean).at(-1) ?? "",
             name: project.title,
@@ -1738,26 +1741,11 @@ export function Sidebar({
         surfaceKey={primarySidebarSurface}
         picker={
           <SidebarSegmentedPicker
-            views={[
-              ...(studioSectionVisible ? (["studio"] as const) : []),
-              "threads",
-              ...(workspaceSectionVisible ? (["workspace"] as const) : []),
-            ]}
-            activeView={
-              activePath === "/studio"
-                ? "studio"
-                : activePath === "/workspace"
-                  ? "workspace"
-                  : "threads"
-            }
+            views={[...(studioSectionVisible ? (["studio"] as const) : []), "threads"]}
+            activeView={activePath === "/studio" ? "studio" : "threads"}
             onSelectView={(view) => {
               if (view === "studio") {
                 navigate("/studio");
-                return;
-              }
-              if (view === "workspace") {
-                const workspaceId = workspacePages[0]?.id;
-                if (workspaceId) navigate(`/workspace/${workspaceId}`);
                 return;
               }
               navigate("/");
@@ -1778,10 +1766,6 @@ export function Sidebar({
             newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}
             searchShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.search}
             onCreateThread={openPrimaryNewThread}
-            onCreateWorkspace={() => {
-              const workspaceId = createWorkspace();
-              navigate(`/workspace/${workspaceId}`);
-            }}
             onCreateStudioChat={() => navigate("/studio")}
             onOpenSearch={onOpenSearch}
             onOpenKanban={() => navigate("/kanban")}
@@ -1791,55 +1775,57 @@ export function Sidebar({
         }
         body={
           <>
-            {primarySidebarSurface === "workspace" ? (
-              <view className="AppSidebarWorkspace">
-                <text className="AppSidebarWorkspaceLabel">Workspace</text>
-                {workspacePages.map((workspace, workspaceIndex) => (
-                  <SidebarNavigationRow
-                    key={workspace.id}
-                    className={`AppSidebarThread AppSidebarChatThread${
-                      activeWorkspaceId === workspace.id ? " AppSidebarThread--active" : ""
-                    }`}
-                    label={workspace.title}
-                    onActivate={() => navigate(`/workspace/${workspace.id}`)}
-                  >
-                    <text className="AppSidebarWorkspaceTitle">{workspace.title}</text>
-                    <view className="AppSidebarWorkspaceOrder">
-                      <Button
-                        variant="ghost"
-                        size="icon-xs"
-                        disabled={workspaceIndex === 0}
-                        aria-label={`Move ${workspace.title} up`}
-                        onClick={() => reorderWorkspace(workspace.id, workspaceIndex - 1)}
-                      >
-                        <ChevronDownIcon
-                          className="AppSidebarWorkspaceOrderIcon AppSidebarWorkspaceOrderIcon--up"
-                          color={sidebarSecondaryIconColor}
-                          size={14}
-                        />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon-xs"
-                        disabled={workspaceIndex === workspacePages.length - 1}
-                        aria-label={`Move ${workspace.title} down`}
-                        onClick={() => reorderWorkspace(workspace.id, workspaceIndex + 1)}
-                      >
-                        <ChevronDownIcon
-                          className="AppSidebarWorkspaceOrderIcon"
-                          color={sidebarSecondaryIconColor}
-                          size={14}
-                        />
-                      </Button>
-                    </view>
-                  </SidebarNavigationRow>
-                ))}
-              </view>
-            ) : (
-              <>
-                <SidebarPinnedSection
-                  rows={sections.pinnedThreads}
-                  renderRow={(thread) => {
+            <>
+              <SidebarPinnedSection
+                rows={sections.pinnedThreads}
+                renderRow={(thread) => {
+                  const rowModel = resolveSidebarThreadRowModel({
+                    threadId: thread.id,
+                    parentThreadId: thread.parentThreadId,
+                    sidechatSourceThreadId: thread.sidechatSourceThreadId,
+                    activeThreadId,
+                    topLevel: true,
+                  });
+                  return (
+                    <SidebarNavigationRow
+                      key={thread.id}
+                      threadId={thread.id}
+                      active={rowModel.isActive}
+                      className={`AppSidebarThread AppSidebarPinnedThread${
+                        rowModel.isActive ? " AppSidebarThread--active" : ""
+                      }`}
+                      actions={threadHoverActions(thread)}
+                      hoverCard={threadHoverCard(thread)}
+                      label={thread.title}
+                      onActivate={() => navigate(`/thread/${thread.id}`)}
+                      onContextMenu={(position, restoreFocus) =>
+                        void openThreadContextMenu(
+                          thread,
+                          sections.projectGroups.find((group) => group.id === thread.projectId)
+                            ?.workspaceRoot ?? "",
+                          position,
+                          restoreFocus,
+                        )
+                      }
+                    >
+                      <SidebarThreadRowComposition
+                        thread={thread}
+                        provider={thread.provider}
+                        handoffSourceProvider={thread.handoffSourceProvider}
+                        isActive={rowModel.isActive}
+                        variant="pinned"
+                        subagentIndentPx={rowModel.subagentIndentPx}
+                        suffix={<SidebarThreadTrailing thread={thread} />}
+                      />
+                    </SidebarNavigationRow>
+                  );
+                }}
+              />
+              {primarySidebarSurface === "studio" ? (
+                <SidebarStudioSection
+                  hydrated={!isPending}
+                  rows={chatRows.visibleEntries}
+                  renderRow={({ row: { thread, depth } }) => {
                     const rowModel = resolveSidebarThreadRowModel({
                       threadId: thread.id,
                       parentThreadId: thread.parentThreadId,
@@ -1850,9 +1836,7 @@ export function Sidebar({
                     return (
                       <SidebarNavigationRow
                         key={thread.id}
-                        threadId={thread.id}
-                        active={rowModel.isActive}
-                        className={`AppSidebarThread AppSidebarPinnedThread${
+                        className={`AppSidebarThread AppSidebarChatThread${
                           rowModel.isActive ? " AppSidebarThread--active" : ""
                         }`}
                         actions={threadHoverActions(thread)}
@@ -1874,307 +1858,255 @@ export function Sidebar({
                           provider={thread.provider}
                           handoffSourceProvider={thread.handoffSourceProvider}
                           isActive={rowModel.isActive}
-                          variant="pinned"
-                          subagentIndentPx={rowModel.subagentIndentPx}
+                          variant="standard"
+                          subagentIndentPx={Math.max(rowModel.subagentIndentPx, depth * 10)}
                           suffix={<SidebarThreadTrailing thread={thread} />}
                         />
                       </SidebarNavigationRow>
                     );
                   }}
                 />
-                {primarySidebarSurface === "studio" ? (
-                  <SidebarStudioSection
-                    hydrated={!isPending}
-                    rows={chatRows.visibleEntries}
-                    renderRow={({ row: { thread, depth } }) => {
-                      const rowModel = resolveSidebarThreadRowModel({
-                        threadId: thread.id,
-                        parentThreadId: thread.parentThreadId,
-                        sidechatSourceThreadId: thread.sidechatSourceThreadId,
-                        activeThreadId,
-                        topLevel: true,
-                      });
-                      return (
-                        <SidebarNavigationRow
-                          key={thread.id}
-                          className={`AppSidebarThread AppSidebarChatThread${
-                            rowModel.isActive ? " AppSidebarThread--active" : ""
-                          }`}
-                          actions={threadHoverActions(thread)}
-                          hoverCard={threadHoverCard(thread)}
-                          label={thread.title}
-                          onActivate={() => navigate(`/thread/${thread.id}`)}
-                          onContextMenu={(position, restoreFocus) =>
-                            void openThreadContextMenu(
-                              thread,
-                              sections.projectGroups.find((group) => group.id === thread.projectId)
-                                ?.workspaceRoot ?? "",
-                              position,
-                              restoreFocus,
-                            )
-                          }
-                        >
-                          <SidebarThreadRowComposition
-                            thread={thread}
-                            provider={thread.provider}
-                            handoffSourceProvider={thread.handoffSourceProvider}
-                            isActive={rowModel.isActive}
-                            variant="standard"
-                            subagentIndentPx={Math.max(rowModel.subagentIndentPx, depth * 10)}
-                            suffix={<SidebarThreadTrailing thread={thread} />}
-                          />
-                        </SidebarNavigationRow>
-                      );
-                    }}
-                  />
-                ) : (
-                  <SidebarProjectsSection
-                    prelude={
-                      <SpaceSwitcherLynx
-                        activeSpaceId={activeSpaceId}
-                        activityBySpaceId={spaceActivityById}
-                        spaces={data?.spaces ?? []}
-                        onSelect={selectSpace}
-                        onCreate={() => {
-                          setEditingSpace(null);
-                          setProjectIdAfterSpaceCreate(null);
-                          setSpaceEditorMode("create");
-                        }}
-                        onContextMenu={(space, position, restoreFocus) =>
-                          void openSpaceContextMenu(space, position, restoreFocus)
+              ) : (
+                <SidebarProjectsSection
+                  prelude={
+                    <SpaceSwitcherLynx
+                      activeSpaceId={activeSpaceId}
+                      activityBySpaceId={spaceActivityById}
+                      spaces={data?.spaces ?? []}
+                      onSelect={selectSpace}
+                      onCreate={() => {
+                        setEditingSpace(null);
+                        setProjectIdAfterSpaceCreate(null);
+                        setSpaceEditorMode("create");
+                      }}
+                      onContextMenu={(space, position, restoreFocus) =>
+                        void openSpaceContextMenu(space, position, restoreFocus)
+                      }
+                    />
+                  }
+                  state={resolveSidebarProjectsSectionState({
+                    loading: isPending,
+                    error: Boolean(error) && data === undefined,
+                    projectCount:
+                      sections.projectGroups.length === 0 && activeSpace && hasProjectsElsewhere
+                        ? 1
+                        : sections.projectGroups.length,
+                  })}
+                  headerActions={
+                    <>
+                      {sections.projectGroups.length > 0 ? (
+                        <SidebarListSectionHeaderToggleProjectsElement
+                          allExpanded={allProjectsExpanded}
+                          hasFocusedProject={focusedProjectId !== null}
+                          onActivate={toggleAllProjects}
+                        />
+                      ) : null}
+                      <SidebarListSectionHeaderSortElement
+                        projectSortOrder={projectSortOrder}
+                        threadSortOrder={threadSortOrder}
+                        onProjectSortOrderChange={(value) =>
+                          persistSidebarSortOrders(value, threadSortOrder)
+                        }
+                        onThreadSortOrderChange={(value) =>
+                          persistSidebarSortOrders(projectSortOrder, value)
                         }
                       />
-                    }
-                    state={resolveSidebarProjectsSectionState({
-                      loading: isPending,
-                      error: Boolean(error) && data === undefined,
-                      projectCount:
-                        sections.projectGroups.length === 0 && activeSpace && hasProjectsElsewhere
-                          ? 1
-                          : sections.projectGroups.length,
-                    })}
-                    headerActions={
-                      <>
-                        {sections.projectGroups.length > 0 ? (
-                          <SidebarListSectionHeaderToggleProjectsElement
-                            allExpanded={allProjectsExpanded}
-                            hasFocusedProject={focusedProjectId !== null}
-                            onActivate={toggleAllProjects}
-                          />
-                        ) : null}
-                        <SidebarListSectionHeaderSortElement
-                          projectSortOrder={projectSortOrder}
-                          threadSortOrder={threadSortOrder}
-                          onProjectSortOrderChange={(value) =>
-                            persistSidebarSortOrders(value, threadSortOrder)
-                          }
-                          onThreadSortOrderChange={(value) =>
-                            persistSidebarSortOrders(projectSortOrder, value)
-                          }
-                        />
-                        <SidebarListSectionHeaderAddProjectElement
-                          elementId={ADD_PROJECT_TRIGGER_ELEMENT_ID}
-                          onActivate={() => onOpenSearch("~/", ADD_PROJECT_TRIGGER_ELEMENT_ID)}
-                        />
-                      </>
-                    }
-                    rows={sections.projectGroups}
-                    afterList={
-                      !isPending &&
-                      !error &&
-                      sections.projectGroups.length === 0 &&
-                      activeSpace &&
-                      hasProjectsElsewhere ? (
-                        <view className="AppSidebarSpaceEmptyState">
-                          <text className="AppSidebarSpaceEmptyTitle">
-                            {activeSpace.name} is empty
-                          </text>
-                          <text className="AppSidebarSpaceEmptyDescription">
-                            Move projects here, or right-click a project to file it.
-                          </text>
-                          <Button
-                            size="xs"
-                            variant="outline"
-                            onClick={() => setSpaceProjectPickerTarget(activeSpace)}
+                      <SidebarListSectionHeaderAddProjectElement
+                        elementId={ADD_PROJECT_TRIGGER_ELEMENT_ID}
+                        onActivate={() => onOpenSearch("~/", ADD_PROJECT_TRIGGER_ELEMENT_ID)}
+                      />
+                    </>
+                  }
+                  rows={sections.projectGroups}
+                  afterList={
+                    !isPending &&
+                    !error &&
+                    sections.projectGroups.length === 0 &&
+                    activeSpace &&
+                    hasProjectsElsewhere ? (
+                      <view className="AppSidebarSpaceEmptyState">
+                        <text className="AppSidebarSpaceEmptyTitle">
+                          {activeSpace.name} is empty
+                        </text>
+                        <text className="AppSidebarSpaceEmptyDescription">
+                          Move projects here, or right-click a project to file it.
+                        </text>
+                        <Button
+                          size="xs"
+                          variant="outline"
+                          onClick={() => setSpaceProjectPickerTarget(activeSpace)}
+                        >
+                          Move projects here
+                        </Button>
+                      </view>
+                    ) : null
+                  }
+                  renderRow={(group) => {
+                    const projectPagingKey = normalizeSidebarProjectThreadListCwd(
+                      group.workspaceRoot,
+                    );
+                    const isExpanded =
+                      expandedProjectCwds === null || expandedProjectCwds.has(projectPagingKey);
+                    const projectRows = projectRowsById.get(group.id);
+                    const visibleProjectThreadRows = projectRows?.visibleEntries ?? [];
+                    const projectPinned =
+                      group.isPinned === true || persistedPinnedProjectIds.includes(group.id);
+                    const projectRun =
+                      projectDevServersQuery.data?.servers.find(
+                        (server) => server.projectId === group.id,
+                      ) ?? null;
+                    const projectRunServer = projectRunServerByProjectId.get(group.id) ?? null;
+                    const collapsedProjectStatus = isExpanded
+                      ? null
+                      : (projectRows?.projectStatus ?? null);
+                    return (
+                      <SidebarProjectDisclosure
+                        key={group.id}
+                        expanded={isExpanded}
+                        header={
+                          <SidebarNavigationRow
+                            className="AppSidebarProjectHeader"
+                            projectId={group.id}
+                            expanded={isExpanded}
+                            hoverCard={
+                              <SidebarProjectHoverCard
+                                chatCount={group.threads.length}
+                                isPinned={projectPinned}
+                                name={group.title}
+                                path={abbreviateHomePath(
+                                  group.workspaceRoot,
+                                  serverConfigQuery.data?.homeDir ?? null,
+                                )}
+                              />
+                            }
+                            actions={
+                              <>
+                                <SidebarHoverAction
+                                  label={`View pull requests for ${group.title}`}
+                                  onActivate={() => navigate("/pull-requests")}
+                                >
+                                  <PullRequestCompareIcon
+                                    className="AppSidebarHoverActionIcon"
+                                    color={sidebarSecondaryIconColor}
+                                  />
+                                </SidebarHoverAction>
+                                <SidebarHoverAction
+                                  label={`Create new terminal thread in ${group.title}`}
+                                  onActivate={() => void createProjectTerminalThread(group.id)}
+                                >
+                                  <svg
+                                    className="AppSidebarHoverActionIcon"
+                                    content={colorizeLynxSvg(
+                                      terminalSvg,
+                                      sidebarSecondaryIconColor,
+                                    )}
+                                  />
+                                </SidebarHoverAction>
+                                <SidebarHoverAction
+                                  label={`Create new thread in ${group.title}`}
+                                  onActivate={() =>
+                                    navigate(`/new-thread/${encodeURIComponent(group.id)}`)
+                                  }
+                                >
+                                  <PlusIcon
+                                    className="AppSidebarHoverActionIcon"
+                                    color={sidebarSecondaryIconColor}
+                                    size={13}
+                                  />
+                                </SidebarHoverAction>
+                              </>
+                            }
+                            label={`${isExpanded ? "Collapse" : "Expand"} ${group.title}`}
+                            onActivate={() => toggleProject(group.workspaceRoot)}
+                            onContextMenu={(position, restoreFocus) =>
+                              void openProjectContextMenu(group, position, restoreFocus)
+                            }
                           >
-                            Move projects here
-                          </Button>
-                        </view>
-                      ) : null
-                    }
-                    renderRow={(group) => {
-                      const projectPagingKey = normalizeSidebarProjectThreadListCwd(
-                        group.workspaceRoot,
-                      );
-                      const isExpanded =
-                        expandedProjectCwds === null || expandedProjectCwds.has(projectPagingKey);
-                      const projectRows = projectRowsById.get(group.id);
-                      const visibleProjectThreadRows = projectRows?.visibleEntries ?? [];
-                      const projectPinned =
-                        group.isPinned === true || persistedPinnedProjectIds.includes(group.id);
-                      const projectRun =
-                        projectDevServersQuery.data?.servers.find(
-                          (server) => server.projectId === group.id,
-                        ) ?? null;
-                      const projectRunServer = projectRunServerByProjectId.get(group.id) ?? null;
-                      const collapsedProjectStatus = isExpanded
-                        ? null
-                        : (projectRows?.projectStatus ?? null);
-                      return (
-                        <SidebarProjectDisclosure
-                          key={group.id}
-                          expanded={isExpanded}
-                          header={
+                            <ProjectPinAction
+                              pinned={projectPinned}
+                              projectName={group.title}
+                              onActivate={() => void toggleProjectPinned(group)}
+                            />
+                            <SidebarProjectSummary
+                              leadingClassName={
+                                projectPinned ? "AppSidebarProjectFolder--hidden" : undefined
+                              }
+                              leading={
+                                isExpanded ? <FolderOpenIcon size={16} /> : <FolderIcon size={16} />
+                              }
+                              name={group.title}
+                            />
+                            {projectRun || projectRunServer || collapsedProjectStatus ? (
+                              <SidebarThreadTrailingCluster
+                                metaContent={
+                                  projectRun || projectRunServer ? <ProjectRunIndicatorDot /> : null
+                                }
+                                status={collapsedProjectStatus}
+                              />
+                            ) : null}
+                          </SidebarNavigationRow>
+                        }
+                        rows={visibleProjectThreadRows}
+                        renderRow={({ thread, depth }) => {
+                          const rowModel = resolveSidebarThreadRowModel({
+                            threadId: thread.id,
+                            parentThreadId: thread.parentThreadId,
+                            sidechatSourceThreadId: thread.sidechatSourceThreadId,
+                            activeThreadId,
+                          });
+                          return (
                             <SidebarNavigationRow
-                              className="AppSidebarProjectHeader"
-                              projectId={group.id}
-                              expanded={isExpanded}
-                              hoverCard={
-                                <SidebarProjectHoverCard
-                                  chatCount={group.threads.length}
-                                  isPinned={projectPinned}
-                                  name={group.title}
-                                  path={abbreviateHomePath(
-                                    group.workspaceRoot,
-                                    serverConfigQuery.data?.homeDir ?? null,
-                                  )}
-                                />
-                              }
-                              actions={
-                                <>
-                                  <SidebarHoverAction
-                                    label={`View pull requests for ${group.title}`}
-                                    onActivate={() => navigate("/pull-requests")}
-                                  >
-                                    <PullRequestCompareIcon
-                                      className="AppSidebarHoverActionIcon"
-                                      color={sidebarSecondaryIconColor}
-                                    />
-                                  </SidebarHoverAction>
-                                  <SidebarHoverAction
-                                    label={`Create new terminal thread in ${group.title}`}
-                                    onActivate={() => void createProjectTerminalThread(group.id)}
-                                  >
-                                    <svg
-                                      className="AppSidebarHoverActionIcon"
-                                      content={colorizeLynxSvg(
-                                        terminalSvg,
-                                        sidebarSecondaryIconColor,
-                                      )}
-                                    />
-                                  </SidebarHoverAction>
-                                  <SidebarHoverAction
-                                    label={`Create new thread in ${group.title}`}
-                                    onActivate={() =>
-                                      navigate(`/new-thread/${encodeURIComponent(group.id)}`)
-                                    }
-                                  >
-                                    <PlusIcon
-                                      className="AppSidebarHoverActionIcon"
-                                      color={sidebarSecondaryIconColor}
-                                      size={13}
-                                    />
-                                  </SidebarHoverAction>
-                                </>
-                              }
-                              label={`${isExpanded ? "Collapse" : "Expand"} ${group.title}`}
-                              onActivate={() => toggleProject(group.workspaceRoot)}
+                              key={thread.id}
+                              threadId={thread.id}
+                              active={rowModel.isActive}
+                              className={`AppSidebarThread${
+                                rowModel.isActive ? " AppSidebarThread--active" : ""
+                              }`}
+                              actions={threadHoverActions(thread)}
+                              hoverCard={threadHoverCard(thread)}
+                              label={thread.title}
+                              onActivate={() => navigate(`/thread/${thread.id}`)}
                               onContextMenu={(position, restoreFocus) =>
-                                void openProjectContextMenu(group, position, restoreFocus)
+                                void openThreadContextMenu(
+                                  thread,
+                                  group.workspaceRoot,
+                                  position,
+                                  restoreFocus,
+                                )
                               }
                             >
-                              <ProjectPinAction
-                                pinned={projectPinned}
-                                projectName={group.title}
-                                onActivate={() => void toggleProjectPinned(group)}
+                              <SidebarThreadRowComposition
+                                thread={thread}
+                                provider={thread.provider}
+                                handoffSourceProvider={thread.handoffSourceProvider}
+                                isActive={rowModel.isActive}
+                                variant="standard"
+                                subagentIndentPx={Math.max(rowModel.subagentIndentPx, depth * 10)}
+                                suffix={<SidebarThreadTrailing thread={thread} />}
                               />
-                              <SidebarProjectSummary
-                                leadingClassName={
-                                  projectPinned ? "AppSidebarProjectFolder--hidden" : undefined
-                                }
-                                leading={
-                                  isExpanded ? (
-                                    <FolderOpenIcon size={16} />
-                                  ) : (
-                                    <FolderIcon size={16} />
-                                  )
-                                }
-                                name={group.title}
-                              />
-                              {projectRun || projectRunServer || collapsedProjectStatus ? (
-                                <SidebarThreadTrailingCluster
-                                  metaContent={
-                                    projectRun || projectRunServer ? (
-                                      <ProjectRunIndicatorDot />
-                                    ) : null
-                                  }
-                                  status={collapsedProjectStatus}
-                                />
-                              ) : null}
                             </SidebarNavigationRow>
-                          }
-                          rows={visibleProjectThreadRows}
-                          renderRow={({ thread, depth }) => {
-                            const rowModel = resolveSidebarThreadRowModel({
-                              threadId: thread.id,
-                              parentThreadId: thread.parentThreadId,
-                              sidechatSourceThreadId: thread.sidechatSourceThreadId,
-                              activeThreadId,
-                            });
-                            return (
-                              <SidebarNavigationRow
-                                key={thread.id}
-                                threadId={thread.id}
-                                active={rowModel.isActive}
-                                className={`AppSidebarThread${
-                                  rowModel.isActive ? " AppSidebarThread--active" : ""
-                                }`}
-                                actions={threadHoverActions(thread)}
-                                hoverCard={threadHoverCard(thread)}
-                                label={thread.title}
-                                onActivate={() => navigate(`/thread/${thread.id}`)}
-                                onContextMenu={(position, restoreFocus) =>
-                                  void openThreadContextMenu(
-                                    thread,
-                                    group.workspaceRoot,
-                                    position,
-                                    restoreFocus,
-                                  )
-                                }
-                              >
-                                <SidebarThreadRowComposition
-                                  thread={thread}
-                                  provider={thread.provider}
-                                  handoffSourceProvider={thread.handoffSourceProvider}
-                                  isActive={rowModel.isActive}
-                                  variant="standard"
-                                  subagentIndentPx={Math.max(rowModel.subagentIndentPx, depth * 10)}
-                                  suffix={<SidebarThreadTrailing thread={thread} />}
-                                />
-                              </SidebarNavigationRow>
-                            );
-                          }}
-                          canShowMore={projectRows?.canShowMoreThreads ?? false}
-                          canShowLess={projectRows?.canShowLessThreads ?? false}
-                          onShowMore={() =>
-                            setProjectExtraPages(
-                              group.workspaceRoot,
-                              (projectRows?.threadListExtraPages ?? 0) + 1,
-                            )
-                          }
-                          onShowLess={() =>
-                            setProjectExtraPages(
-                              group.workspaceRoot,
-                              Math.max(0, (projectRows?.threadListExtraPages ?? 0) - 1),
-                            )
-                          }
-                        />
-                      );
-                    }}
-                  />
-                )}
-              </>
-            )}
+                          );
+                        }}
+                        canShowMore={projectRows?.canShowMoreThreads ?? false}
+                        canShowLess={projectRows?.canShowLessThreads ?? false}
+                        onShowMore={() =>
+                          setProjectExtraPages(
+                            group.workspaceRoot,
+                            (projectRows?.threadListExtraPages ?? 0) + 1,
+                          )
+                        }
+                        onShowLess={() =>
+                          setProjectExtraPages(
+                            group.workspaceRoot,
+                            Math.max(0, (projectRows?.threadListExtraPages ?? 0) - 1),
+                          )
+                        }
+                      />
+                    );
+                  }}
+                />
+              )}
+            </>
           </>
         }
         trailing={

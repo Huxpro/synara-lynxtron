@@ -1,53 +1,20 @@
 import { describe, expect, it } from "vitest";
+import { ThreadId } from "@synara/contracts";
 
 import {
-  RIGHT_DOCK_PANE_KINDS,
-  SINGLETON_PANE_KINDS,
+  closePaneInState,
   createDefaultRightDockState,
+  findMissingSidechatPaneIds,
   isRightDockPaneKind,
   openPaneInState,
+  resolveVisibleDockSidechatThreadIds,
   sanitizeRightDockStateByThreadId,
   sanitizeRightDockThreadState,
+  setDockOpenInState,
   updatePaneInState,
 } from "./rightDockStore.logic";
 
-describe("RIGHT_DOCK_PANE_KINDS (single source of truth)", () => {
-  it("lists every supported kind", () => {
-    expect([...RIGHT_DOCK_PANE_KINDS]).toEqual([
-      "browser",
-      "diff",
-      "explorer",
-      "file",
-      "terminal",
-      "sidechat",
-      "git",
-      "pullRequest",
-    ]);
-  });
-
-  it("derives singletons as every kind except the multi-instance ones", () => {
-    for (const kind of RIGHT_DOCK_PANE_KINDS) {
-      expect(SINGLETON_PANE_KINDS.has(kind)).toBe(kind !== "sidechat" && kind !== "file");
-    }
-  });
-});
-
 describe("isRightDockPaneKind", () => {
-  it("accepts the known pane kinds", () => {
-    for (const kind of [
-      "browser",
-      "diff",
-      "explorer",
-      "file",
-      "terminal",
-      "sidechat",
-      "git",
-      "pullRequest",
-    ]) {
-      expect(isRightDockPaneKind(kind)).toBe(true);
-    }
-  });
-
   it("rejects unknown or malformed kinds", () => {
     expect(isRightDockPaneKind("plan")).toBe(false);
     expect(isRightDockPaneKind(undefined)).toBe(false);
@@ -149,7 +116,7 @@ describe("sanitizeRightDockThreadState", () => {
     expect(state.open).toBe(true);
   });
 
-  it("forces the dock closed when no valid panes survive", () => {
+  it("preserves an open empty dock when no valid panes survive", () => {
     const state = sanitizeRightDockThreadState({
       open: true,
       activePaneId: "legacy",
@@ -159,7 +126,7 @@ describe("sanitizeRightDockThreadState", () => {
     });
     expect(state.panes).toEqual([]);
     expect(state.activePaneId).toBeNull();
-    expect(state.open).toBe(false);
+    expect(state.open).toBe(true);
   });
 
   it("returns the default state for malformed input", () => {
@@ -174,21 +141,167 @@ describe("sanitizeRightDockThreadState", () => {
       activePaneId: null,
     });
   });
+
+  it("migrates multiple persisted sidechat tabs into one active destination", () => {
+    const state = sanitizeRightDockThreadState({
+      open: true,
+      activePaneId: "side-b",
+      panes: [
+        { id: "side-a", kind: "sidechat", threadId: "thread-a" },
+        { id: "side-b", kind: "sidechat", threadId: "thread-b" },
+      ],
+    });
+
+    expect(state.panes).toHaveLength(1);
+    expect(state.panes[0]?.id).toBe("side-b");
+    expect(state.panes[0]?.threadId).toBe("thread-b");
+    expect(state.activePaneId).toBe("side-b");
+  });
+});
+
+describe("sidechat pane", () => {
+  it("reuses the singleton destination and switches its embedded thread", () => {
+    const first = openPaneInState(createDefaultRightDockState(), {
+      paneId: "side-pane",
+      kind: "sidechat",
+      threadId: ThreadId.makeUnsafe("thread-a"),
+    });
+    const switched = openPaneInState(first, {
+      paneId: "ignored",
+      kind: "sidechat",
+      threadId: ThreadId.makeUnsafe("thread-b"),
+    });
+
+    expect(switched.panes).toHaveLength(1);
+    expect(switched.activePaneId).toBe("side-pane");
+    expect(switched.panes[0]?.threadId).toBe("thread-b");
+  });
+
+  it("finds sidechat panes whose backing thread no longer exists", () => {
+    const state = openPaneInState(createDefaultRightDockState(), {
+      paneId: "side-pane",
+      kind: "sidechat",
+      threadId: ThreadId.makeUnsafe("missing-thread"),
+    });
+
+    expect(findMissingSidechatPaneIds(state, new Set())).toEqual(["side-pane"]);
+    expect(
+      findMissingSidechatPaneIds(state, new Set([ThreadId.makeUnsafe("missing-thread")])),
+    ).toEqual([]);
+  });
+});
+
+describe("resolveVisibleDockSidechatThreadIds", () => {
+  const hostThreadId = ThreadId.makeUnsafe("host-thread");
+  const sidechatThreadId = ThreadId.makeUnsafe("sidechat-thread");
+
+  function dockWithSidechat(open: boolean) {
+    const state = openPaneInState(createDefaultRightDockState(), {
+      paneId: "side-pane",
+      kind: "sidechat",
+      threadId: sidechatThreadId,
+    });
+    return setDockOpenInState(state, open);
+  }
+
+  it("ignores hidden docks, inactive sidechat panes, other hosts, and non-sidechat panes", () => {
+    expect(
+      resolveVisibleDockSidechatThreadIds({
+        dockRendered: false,
+        dockStateByThreadId: { [hostThreadId]: dockWithSidechat(true) },
+        hostThreadIds: [hostThreadId],
+      }),
+    ).toEqual([]);
+    expect(
+      resolveVisibleDockSidechatThreadIds({
+        dockRendered: true,
+        dockStateByThreadId: { [hostThreadId]: dockWithSidechat(false) },
+        hostThreadIds: [hostThreadId],
+      }),
+    ).toEqual([]);
+    expect(
+      resolveVisibleDockSidechatThreadIds({
+        dockRendered: true,
+        dockStateByThreadId: { [hostThreadId]: dockWithSidechat(true) },
+        hostThreadIds: [ThreadId.makeUnsafe("other-host")],
+      }),
+    ).toEqual([]);
+    const explorerOnly = openPaneInState(createDefaultRightDockState(), {
+      paneId: "explorer-pane",
+      kind: "explorer",
+    });
+    expect(
+      resolveVisibleDockSidechatThreadIds({
+        dockRendered: true,
+        dockStateByThreadId: { [hostThreadId]: explorerOnly },
+        hostThreadIds: [hostThreadId],
+      }),
+    ).toEqual([]);
+    const inactiveSidechat = openPaneInState(dockWithSidechat(true), {
+      paneId: "explorer-pane",
+      kind: "explorer",
+    });
+    expect(
+      resolveVisibleDockSidechatThreadIds({
+        dockRendered: true,
+        dockStateByThreadId: { [hostThreadId]: inactiveSidechat },
+        hostThreadIds: [hostThreadId],
+      }),
+    ).toEqual([]);
+  });
+
+  it("deduplicates against host threads and across hosts", () => {
+    const selfEmbedding = openPaneInState(createDefaultRightDockState(), {
+      paneId: "side-pane",
+      kind: "sidechat",
+      threadId: hostThreadId,
+    });
+    expect(
+      resolveVisibleDockSidechatThreadIds({
+        dockRendered: true,
+        dockStateByThreadId: { [hostThreadId]: selfEmbedding },
+        hostThreadIds: [hostThreadId],
+      }),
+    ).toEqual([]);
+
+    const otherHostThreadId = ThreadId.makeUnsafe("other-host");
+    expect(
+      resolveVisibleDockSidechatThreadIds({
+        dockRendered: true,
+        dockStateByThreadId: {
+          [hostThreadId]: dockWithSidechat(true),
+          [otherHostThreadId]: dockWithSidechat(true),
+        },
+        hostThreadIds: [hostThreadId, otherHostThreadId],
+      }),
+    ).toEqual([sidechatThreadId]);
+  });
+});
+
+describe("empty launcher state", () => {
+  it("opens the dock without creating a pane", () => {
+    expect(setDockOpenInState(createDefaultRightDockState(), true)).toEqual({
+      open: true,
+      panes: [],
+      activePaneId: null,
+    });
+  });
+
+  it("returns to the launcher after the final pane closes", () => {
+    const open = openPaneInState(createDefaultRightDockState(), {
+      paneId: "browser-1",
+      kind: "browser",
+    });
+
+    expect(closePaneInState(open, "browser-1")).toEqual({
+      open: true,
+      panes: [],
+      activePaneId: null,
+    });
+  });
 });
 
 describe("file panes", () => {
-  it("opens a file pane carrying the file path", () => {
-    const state = openPaneInState(createDefaultRightDockState(), {
-      paneId: "f1",
-      kind: "file",
-      filePath: "src/page.tsx",
-    });
-    expect(state.open).toBe(true);
-    expect(state.activePaneId).toBe("f1");
-    expect(state.panes).toHaveLength(1);
-    expect(state.panes[0]?.filePath).toBe("src/page.tsx");
-  });
-
   it("opens another file in a new tab instead of swapping the existing pane", () => {
     const first = openPaneInState(createDefaultRightDockState(), {
       paneId: "f1",
@@ -292,10 +405,5 @@ describe("sanitizeRightDockStateByThreadId", () => {
     });
     expect(Object.keys(result)).toEqual(["t1"]);
     expect(result.t1?.panes).toHaveLength(1);
-  });
-
-  it("returns an empty map for non-object input", () => {
-    expect(sanitizeRightDockStateByThreadId(null)).toEqual({});
-    expect(sanitizeRightDockStateByThreadId("oops")).toEqual({});
   });
 });

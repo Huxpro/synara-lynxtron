@@ -13,7 +13,25 @@
 
 @theme inline {
   --animate-skeleton: skeleton 2s -1s infinite linear;
+  /* Status spinners and shimmer labels share 50ms steps (20 fps), aligned by
+     animationTimelineSync. Matching both cadence and phase lets their redraws
+     share frames instead of repeatedly recompositing the translucent sidebar
+     and composer. Keep 1300ms / 26 steps equal to shimmer's 2000ms / 40 steps. */
+  --animate-spin-stepped: spin-stepped 1.3s steps(26, end) infinite;
   --font-sans: var(--font-ui-family);
+  /* Font sizes that follow the size chosen in Settings (useAppTypography). */
+  --text-ui: var(--app-font-size-ui);
+  --text-ui-lg: var(--app-font-size-ui-lg);
+  --text-ui-sm: var(--app-font-size-ui-sm);
+  --text-ui-xs: var(--app-font-size-ui-xs);
+  --text-ui-2xs: var(--app-font-size-ui-2xs);
+  --text-ui-meta: var(--app-font-size-ui-meta);
+  --text-ui-timestamp: var(--app-font-size-ui-timestamp);
+  --text-chat: var(--app-font-size-chat);
+  --text-chat-code: var(--app-font-size-chat-code);
+  --text-chat-meta: var(--app-font-size-chat-meta);
+  --text-chat-tiny: var(--app-font-size-chat-tiny);
+  --font-display: var(--font-display-family);
   --font-mono: var(--font-mono-family);
   --color-warning-foreground: var(--warning-foreground);
   --color-warning: var(--warning);
@@ -71,6 +89,11 @@
       background-position: -200% 0;
     }
   }
+  @keyframes spin-stepped {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 @layer base {
@@ -83,21 +106,17 @@
   }
   :root {
     /* One token for the INTERNAL chat-surface dividers: the horizontal chrome-bar
-       hairlines (chat/workspace/dock/diff headers) AND the right-side pane splits
+       hairlines (chat/dock/diff headers) AND the right-side pane splits
        (diff/browser/dock). All resolve through here so those divider directions read
-       as the same line. The rounded sidebar↔chat seam is intentionally NOT one of
-       these — it stays at full --color-border (see --seam-line) so the card's outer
-       edge reads as before.
+       as the same line. The straight sidebar↔route seam is intentionally NOT one of
+       these — it stays at full --color-border (see --seam-line) so the outer content
+       edge remains distinct.
        (Chat headers previously used the lighter --color-border-light and looked off.)
        Held at a fraction of --color-border so these internal dividers sit slightly MORE
        transparent than card/input borders — color-mix toward transparent scales the
        border's alpha (same proven form as the seam-hover tint below) and stays
        theme-aware because --color-border already differs per theme. */
     --app-surface-divider: color-mix(in srgb, var(--color-border) 60%, transparent);
-    /* Rounded-corner radius of the chat card's seam side. Defined once here so the card
-       radius, the seam ring clip-path, the right-side border-radius, and the backing
-       strip width stay in lockstep. (All call sites still carry a 0.75rem fallback.) */
-    --app-content-card-radius: 0.9rem;
   }
 }
 
@@ -117,9 +136,8 @@
      without duplicating sidebar markup or class strings. */
   .app-sidebar-surface {
     background: var(--app-sidebar-surface, var(--card));
-    box-shadow: var(--app-sidebar-shadow, none);
-    backdrop-filter: var(--app-sidebar-backdrop-filter, none);
     -webkit-backdrop-filter: var(--app-sidebar-backdrop-filter, none);
+    backdrop-filter: var(--app-sidebar-backdrop-filter, none);
   }
 
   /* Small circular icon badges that sit directly on the sidebar surface inside
@@ -136,116 +154,28 @@
       0 1px 2px 0 rgb(0 0 0 / 0.05);
   }
 
-  /* ─── Chat card seam (sidebar ↔ chat divider) ─────────────────────────────────
-     ONE seam only. Do NOT add a border to the sidebar surface, and do NOT draw a
-     divider line on the SidebarRail — either one makes a SECOND vertical line.
+  /* ─── Content seam (sidebar ↔ route divider) ──────────────────────────────────
+     Chat, settings, kanban, automations, and the other route surfaces share one
+     square content edge. The visible seam belongs to the content surface; the
+     SidebarRail remains only the resize hit-area so a second line is never drawn. */
 
-     The card is `overflow-hidden` + rounded on the seam side, so anything painted
-     INSIDE it is clipped to that rounded shape. That means:
-       • The corner WEDGE (the area outside the radius, between the curve and the
-         square outer corner) can never be filled from inside the card — it must be
-         backed by the PARENT. `.chat-content-card-backing` paints that parent with the
-         exact sidebar material (same color token AND same backdrop-filter), so the wedge
-         reads as the sidebar continuing under the card instead of a transparent
-         "triangle" (translucent shell) or a mismatched flat fill ("overlay").
-       • The DIVIDER is a 1px inset RING on ::before (`box-shadow: inset 0 0 0 1px`),
-         NOT a CSS border. The ring follows the inherited rounded corner; we then
-         clip-path it to just the seam-side radius strip so only the left/right curve
-         + vertical line show — never the straight top/bottom/opposite strokes (those
-         straight strokes were the "angle"/L the seam must not have). Color is
-         `--seam-line`; the content-seam SidebarRail intensifies it on hover. */
-  /* Inset routes (settings/workspace) start at x=0 and offset content via padding,
-     so clip the fill to the content box (backs only the chat area, never the sidebar
-     padding). Plain fill, NO backdrop-filter: a backdrop-filter escapes the macOS
-     window's rounded-corner clip and paints over the window edge. */
-  [data-slot="sidebar-inset"]:has(.chat-content-card) {
-    background-color: var(--app-sidebar-surface, var(--card));
-    background-clip: content-box;
-  }
-
-  /* Chat route: the backing wrapper starts AT the seam, so a narrow strip on the seam
-     side fills the card's rounded-corner wedge with the exact sidebar material
-     (color + blur). Width = corner radius keeps the (blurred) strip in the middle of
-     the window, so it never overlaps the macOS window's rounded corners the way a
-     full-bleed backdrop-filter did. */
-  .chat-content-card-backing {
-    position: relative;
-  }
-
-  .chat-content-card-backing::after {
-    content: "";
-    position: absolute;
-    z-index: 0;
-    top: 0;
-    bottom: 0;
-    /* Faded out unless the sidebar is open (see expanded rule below): when collapsed the
-       wrapper reaches the window edge, and a blurred strip there would paint over the
-       macOS window's rounded corner. Driven by opacity (not display) + a transition so
-       the wedge fades in step with the slide — at rest collapsed it is opacity:0, so it
-       still never paints over the window corner. */
-    display: block;
-    opacity: 0;
-    transition: opacity 300ms cubic-bezier(0.32, 0.72, 0, 1);
-    width: var(--app-content-card-radius, 0.75rem);
-    pointer-events: none;
-    background-color: var(--app-sidebar-surface, var(--card));
-    backdrop-filter: var(--app-sidebar-backdrop-filter, none);
-    -webkit-backdrop-filter: var(--app-sidebar-backdrop-filter, none);
-  }
-
-  [data-sidebar-side="left"] .chat-content-card-backing::after {
-    left: 0;
-  }
-
-  /* Only when the chat layout's own sidebar is expanded is the seam (and its wedge) in the
-     middle of the window, safely away from the window's corners — so only then paint the
-     strip. Direct-child :has() so the nested right-dock sidebar-wrapper can't drive this. */
-  [data-slot="sidebar-wrapper"]:has(> [data-slot="sidebar"][data-state="expanded"])
-    .chat-content-card-backing::after {
-    opacity: 1;
-  }
-
-  /* Seam tokens + soft depth, side-agnostic so each value lives in ONE place. The card
-     reads as a RAISED surface floating over the sidebar — a distinct material from the
-     flat macOS window border, not one more competing hairline next to it.
-       • --seam-line   : color of the ::before ring (the vertical divider + corner curve);
-                         the content-seam SidebarRail intensifies it on hover (rule below).
-       • --seam-shadow-*: the depth shadow. Geometry (blur/spread) is shared here; only the
-                         horizontal direction (--seam-shadow-x) and the alpha (light vs dark)
-                         change. The default x=0 is a harmless fallback if no sidebar side is
-                         resolved; real surfaces always set a side below.
-     Keep the shadow subtle: dark mode needs more alpha to register over the dark sidebar.
-     The card's own overflow:hidden never clips this outset shadow, so it lands on the
-     sidebar; when the sidebar is collapsed the seam sits at the window edge and the shadow
-     simply falls off-screen. */
+  /* Seam token, side-agnostic so the value lives in ONE place. The route separates from
+     the sidebar with a flat 1px divider only — no depth shadow is cast onto the sidebar.
+       • --seam-line : color of the straight vertical divider; the content-seam
+                       SidebarRail intensifies it on hover (rule below). */
   .chat-content-card {
-    /* The rounded outer seam reads stronger than --color-border (and NOT the more-transparent
-       --app-surface-divider used by the internal hairlines/splits): the card's outer
+    /* The outer seam reads stronger than --color-border (and NOT the more-transparent
+       --app-surface-divider used by the internal hairlines/splits): the route's outer
        edge against the sidebar should read as solid. Do not re-unify these. */
-    --seam-line: --alpha(var(--color-black) / 8%);
-    --seam-shadow-color: rgba(0, 0, 0, 0.1);
-    --seam-shadow-x: 0px;
-    /* Soft, low-spread depth: a modest blur + negative spread keeps the shadow near the
-       seam edge rather than fanning across the sidebar, just enough to lift the card. */
-    box-shadow: var(--seam-shadow-x) 0 12px -10px var(--seam-shadow-color);
-    /* Match the left sidebar shell's SIDEBAR_OFFCANVAS_MOTION_CLASS slide
-       (`duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]`) so the seam corner
-       rounds/squares and the depth shadow fades IN STEP with the offcanvas animation
-       instead of snapping at frame 0 (the collapsed rule below flips both). */
-    transition:
-      box-shadow 300ms cubic-bezier(0.32, 0.72, 0, 1),
-      border-radius 300ms cubic-bezier(0.32, 0.72, 0, 1);
+    --seam-line: --alpha(var(--color-black) / 5%);
   }
 
   .dark .chat-content-card {
-    --seam-shadow-color: rgba(0, 0, 0, 0.36);
-    --seam-line: --alpha(var(--color-white) / 8%);
+    --seam-line: --alpha(var(--color-white) / 5%);
   }
 
   [data-sidebar-side="left"] .chat-content-card {
-    --seam-shadow-x: -6.5px;
-    border-radius: var(--app-content-card-radius, 0.75rem) 0 0
-      var(--app-content-card-radius, 0.75rem);
+    border-radius: 0;
   }
 
   .chat-content-card::before {
@@ -254,51 +184,79 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    border-radius: inherit;
-    box-shadow: inset 0 0 0 1px var(--seam-line);
-    /* Fade the seam ring with the slide (collapsed rule sets opacity:0) — `display`
+    border-radius: 0;
+    /* Fade the seam divider with the slide (collapsed rule sets opacity:0) — `display`
        can't transition, so opacity is what keeps this in step with the animation. */
     transition: opacity 300ms cubic-bezier(0.32, 0.72, 0, 1);
   }
 
-  /* Keep only the seam-side radius strip: the vertical edge + both curves on that
-     side, clipping away the straight top/bottom strokes and the opposite edge. */
+  /* A single inset stroke produces the straight content edge without adding
+     layout width or painting top/bottom borders. */
   [data-sidebar-side="left"] .chat-content-card::before {
-    clip-path: inset(0 calc(100% - var(--app-content-card-radius, 0.75rem)) 0 0);
+    box-shadow: inset 0.5px 0 0 var(--seam-line);
   }
 
   [data-sidebar-side="left"]:has([data-placement="content-seam"]:hover) .chat-content-card {
     --seam-line: color-mix(in srgb, var(--foreground) 30%, transparent);
   }
 
-  /* Sidebar collapsed (offcanvas): the card fills the window edge-to-edge, so its rounded
-     seam corner would sit ON TOP of the macOS window's OWN rounded corner — two mismatched
-     curves overlapping. Square the card and drop the seam ring + depth here; the window's
-     own corner is then the only one. (The backing strip is already expanded-only.)
-     Use the DIRECT-CHILD combinator: only the chat layout's own sidebar is a direct child of
-     this wrapper; the right dock nests its own sidebar-wrapper, so a plain descendant :has()
-     would also fire on the dock's (always-collapsed) sidebar. */
-  [data-slot="sidebar-wrapper"]:has(> [data-slot="sidebar"][data-state="collapsed"])
-    .chat-content-card {
-    border-radius: 0;
-    /* Fade the depth shadow via its color token rather than `box-shadow: none` —
-       Chromium snaps box-shadow to/from `none`, but keeping the geometry and only
-       driving the color to transparent interpolates cleanly with the slide. */
-    --seam-shadow-color: transparent;
-  }
-
+  /* Sidebar collapsed (offcanvas): drop the divider because the content fills the
+     window edge-to-edge. Use the direct-child combinator so the nested right dock
+     cannot drive the main content seam. */
   [data-slot="sidebar-wrapper"]:has(> [data-slot="sidebar"][data-state="collapsed"])
     .chat-content-card::before {
     opacity: 0;
   }
 
+  /* Rail layout, modeled on Codex. Three tones: the shell (top band + rail) is the lightest
+     in dark and a soft grey in light, the thread panel sits a step toward the surface, and
+     the route body is the surface itself. Panel, route body, and right dock form one inset
+     block under the top band: a hairline border, rounded corners, and a
+     small shell gap to the window's right and bottom edges. Route headers keep rendering
+     their titles and actions, now on the shell band above the block. */
+  [data-sidebar-layout="rail"] {
+    --app-rail-shell-tone: color-mix(in srgb, var(--color-background-surface) 97%, black);
+    --app-rail-panel-background: var(--color-background-surface);
+    --app-rail-shell-background: color-mix(
+      in srgb,
+      var(--app-rail-shell-tone) var(--app-rail-shell-opacity, 100%),
+      transparent
+    );
+    /* Real CSS borders at 0.5px (one device pixel on Retina): per-side inset shadows would
+       overlap on the rounded corners and draw them thicker than the straight edges. */
+    --app-rail-inset-border-width: 0.5px;
+    --app-rail-inset-border: color-mix(in srgb, black 10%, transparent);
+    --app-rail-inset-radius: calc(var(--radius) * 1.3);
+    --app-rail-inset-gap: 3px;
+  }
+
+  .dark [data-sidebar-layout="rail"] {
+    --app-rail-shell-tone: color-mix(in srgb, var(--color-background-surface) 95%, white);
+    --app-rail-panel-background: color-mix(in srgb, var(--color-background-surface) 98.3%, white);
+    --app-rail-inset-border: color-mix(in srgb, white 9%, transparent);
+  }
+
+  /* The panel is the block's left end: border on its outer three sides only. */
+  .app-rail-panel {
+    margin-bottom: var(--app-rail-inset-gap);
+    background: var(--app-rail-panel-background);
+    border: var(--app-rail-inset-border-width) solid var(--app-rail-inset-border);
+    border-right-width: 0;
+    border-radius: var(--app-rail-inset-radius) 0 0 var(--app-rail-inset-radius);
+  }
+
+  /* No sidebar material sits behind the rail layout's rows, so chips take the panel tone. */
+  [data-sidebar-layout="rail"] .sidebar-icon-chip {
+    background: var(--app-rail-panel-background);
+  }
+
   /* ─── Chat-surface header hairline (horizontal counterpart of the seam) ───────────
-     Bottom divider for every chat-surface chrome bar (chat/workspace/dock/diff headers),
+     Bottom divider for every chat-surface chrome bar (chat/dock/diff headers),
      same color as the vertical seam via --app-surface-divider. Painted as a 1px
      background gradient, NOT a CSS border or a positioned pseudo-element: a border would
-     bleed into the seam corner, and an absolutely-positioned line would force the header
+     paint across the seam edge, and an absolutely-positioned line would force the header
      to become a containing block (header toolbars rely on their own stacking/portals).
-     A gradient is layout-neutral and can be shortened on one side (see the card rule). */
+     A gradient is layout-neutral and does not affect the header's layout. */
   .chat-surface-divider {
     background-image: linear-gradient(var(--app-surface-divider), var(--app-surface-divider));
     background-repeat: no-repeat;
@@ -306,22 +264,12 @@
     background-size: 100% 1px;
   }
 
-  /* Inside the rounded card, the horizontal hairline and the vertical seam stroke meet at
-     the seam corner. Two 1px semi-transparent lines sharing a pixel double their alpha and
-     read as a brighter dot, so pull the hairline 1px off the seam side: it butts against
-     the seam stroke instead of crossing it. Anchor to the far edge and shrink the width so
-     only the seam-side end retracts. */
-  [data-sidebar-side="left"] .chat-content-card .chat-surface-divider {
-    background-size: calc(100% - 1px) 1px;
-    background-position: right bottom;
-  }
-
   /* Settings uses a route-level surface so the frosted window material is not
      hidden by nested scroll containers. */
   .app-settings-surface {
     background: var(--app-settings-surface, var(--color-background-surface));
-    backdrop-filter: var(--app-settings-backdrop-filter, none);
     -webkit-backdrop-filter: var(--app-settings-backdrop-filter, none);
+    backdrop-filter: var(--app-settings-backdrop-filter, none);
   }
 
   /* Animate terminal run state in CSS so many open terminals don't schedule JS timers. */
@@ -369,8 +317,34 @@
   }
 }
 
-/* One-shot entry for the sidebar's segment surface swap (Studio <-> Projects <->
-   Workspace). Keyed remounts play this on the incoming surface so the switch reads
+/* The composer model trigger swaps to a fixed placeholder while its menu is open; this
+   plays on the model label when it comes back. */
+@keyframes composer-trigger-label-enter {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(3px);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+.composer-trigger-label-enter {
+  animation: composer-trigger-label-enter 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .composer-trigger-label-enter {
+    animation: none;
+  }
+}
+
+/* One-shot entry for the sidebar's segment surface swap (Studio <-> Projects).
+   Keyed remounts play this on the incoming surface so the switch reads
    as a movement instead of a hard cut. Enter-only by design: no exit or height
    animation, so it cannot feed back into list animation or scroll behavior. */
 @keyframes sidebar-surface-enter {
@@ -771,78 +745,65 @@ label:has(> select#reasoning-effort) select {
   text-underline-offset: 0.18em;
 }
 
-.chat-markdown .thread-marker {
-  border-radius: 0.22em;
+/* Find hits: yellow for every match, orange for the active one — dark text on
+   both so highlights stay readable over prose and syntax-colored code. */
+.chat-markdown .chat-find-match {
+  border-radius: 0.45em;
+  padding: 0.06em 0.2em;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-  transition:
-    background-color 160ms ease,
-    box-shadow 160ms ease,
-    text-decoration-color 160ms ease;
+  background-color: color-mix(in srgb, var(--color-amber-400) 55%, transparent);
+  color: var(--color-stone-900);
 }
 
-.chat-markdown .thread-marker-highlight {
-  padding: 0.02em 0.12em;
+.chat-markdown .chat-find-match-active {
+  background-color: color-mix(in srgb, var(--color-orange-500) 68%, transparent);
+  color: var(--color-stone-950);
 }
 
-/* Markdown can split one marker across inline nodes; only outer edges keep padding/radius. */
-.chat-markdown .thread-marker-highlight.thread-marker-continues-before {
+.chat-markdown .chat-find-match-continues-before {
   padding-left: 0;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.chat-markdown .thread-marker-highlight.thread-marker-continues-after {
+.chat-markdown .chat-find-match-continues-after {
   padding-right: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-}
-
-.chat-markdown .thread-marker-underline {
-  text-decoration-line: underline;
-  text-decoration-thickness: 0.14em;
-  text-underline-offset: 0.18em;
-}
-
-.chat-markdown .thread-marker-yellow {
-  background-color: color-mix(in srgb, var(--color-text-accent) 12%, transparent);
-  text-decoration-color: color-mix(in srgb, var(--color-text-foreground) 22%, transparent);
-}
-
-.chat-markdown .thread-marker-blue {
-  background-color: transparent;
-  text-decoration-color: color-mix(in srgb, var(--color-text-foreground) 22%, transparent);
-}
-
-.chat-markdown .thread-marker-green {
-  background-color: color-mix(in srgb, #34d399 24%, transparent);
-  text-decoration-color: color-mix(in srgb, #10b981 82%, transparent);
-}
-
-.chat-markdown .thread-marker-pink {
-  background-color: color-mix(in srgb, #f472b6 24%, transparent);
-  text-decoration-color: color-mix(in srgb, #ec4899 82%, transparent);
-}
-
-.chat-markdown .thread-marker-done {
-  opacity: 0.58;
-}
-
-.chat-markdown .thread-marker-active {
-  box-shadow:
-    0 0 0 2px var(--color-background-surface),
-    0 0 0 4px color-mix(in srgb, var(--color-text-foreground) 34%, transparent);
-}
-
-.chat-markdown .thread-marker-active.thread-marker-continues-before,
-.chat-markdown .thread-marker-active.thread-marker-continues-after {
-  box-shadow: none;
 }
 
 .chat-markdown blockquote {
   border-left: 2px solid var(--border);
   padding-left: 0.8rem;
   color: var(--muted-foreground);
+}
+
+/* GitHub `> [!NOTE]` alerts (tagged by remarkGithubAlerts). */
+.chat-markdown blockquote[data-github-alert] {
+  --github-alert-color: var(--info);
+  border-left-width: 3px;
+  border-left-color: var(--github-alert-color);
+  color: var(--foreground);
+}
+.chat-markdown blockquote[data-github-alert="tip"] {
+  --github-alert-color: var(--success);
+}
+.chat-markdown blockquote[data-github-alert="important"] {
+  --github-alert-color: var(--status-merged);
+}
+.chat-markdown blockquote[data-github-alert="warning"] {
+  --github-alert-color: var(--warning);
+}
+.chat-markdown blockquote[data-github-alert="caution"] {
+  --github-alert-color: var(--destructive);
+}
+.chat-markdown .markdown-alert-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  color: var(--github-alert-color);
+  font-weight: 500;
 }
 
 .chat-markdown :not(pre) > code {
@@ -1048,10 +1009,10 @@ label:has(> select#reasoning-effort) select {
   border: 0;
   border-radius: 0;
   background: transparent !important;
-  padding: 1rem;
+  padding: var(--editor-file-padding, 1rem);
   font-family: var(--font-chat-code-family);
   font-size: var(--app-font-size-chat-code, 12px);
-  line-height: 1.65;
+  line-height: var(--editor-file-line-height, 1.65);
   tab-size: 2;
 }
 
@@ -1072,6 +1033,84 @@ label:has(> select#reasoning-effort) select {
 .editor-file-viewer__highlight .shiki code,
 .editor-file-viewer__highlight .shiki * {
   font-family: inherit !important;
+}
+
+.editor-file-editor {
+  min-height: 0;
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  overflow: auto;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  padding: 1rem 1rem 1rem 0.75rem;
+  color: color-mix(in srgb, var(--foreground) 88%, transparent);
+  font-family: var(--font-chat-code-family);
+  font-size: var(--app-font-size-chat-code, 12px);
+  line-height: 1.65;
+  tab-size: 2;
+  white-space: pre;
+}
+
+.editor-file-editor:focus-visible {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ring) 45%, transparent);
+}
+
+/* Inline editor shell for the dock explorer: a plain textarea paired with a
+   line-number gutter column. The textarea keeps its own scroll container and
+   the gutter's inner column follows its scrollTop without a second clamped
+   scroll range (a horizontal scrollbar shortens only the textarea viewport).
+   Type metrics must stay identical to .editor-file-editor to keep rows aligned. */
+.editor-file-editor-wrap {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.editor-file-editor__gutter {
+  flex: none;
+  overflow: hidden;
+  width: calc(4ch + 1.75rem);
+  padding: 1rem 0.5rem 1rem 1rem;
+  text-align: right;
+  font-family: var(--font-chat-code-family);
+  font-size: var(--app-font-size-chat-code, 12px);
+  line-height: 1.65;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--foreground) 30%, transparent);
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.editor-file-editor__gutter-line {
+  display: block;
+  white-space: pre;
+}
+
+.editor-file-editor-wrap[hidden] {
+  display: none;
+}
+
+.editor-file-editor__pierre {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  background: transparent;
+  color: color-mix(in srgb, var(--foreground) 88%, transparent);
+  font-family: var(--font-chat-code-family);
+  font-size: var(--app-font-size-chat-code, 12px);
+  line-height: 1.65;
+}
+
+.editor-file-editor__pierre > diffs-container {
+  display: block;
+  min-height: 100%;
+  min-width: 100%;
+  width: max-content;
 }
 
 /* Line-number gutter for the read-only file preview. Rendered via CSS counters
@@ -1114,6 +1153,45 @@ label:has(> select#reasoning-effort) select {
    in content space and therefore scroll with the lines. */
 .editor-file-viewer {
   position: relative;
+  --editor-file-padding: 1rem;
+  --editor-file-line-height: 1.65;
+}
+
+.editor-file-viewer__change-gutter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+  font-family: var(--font-chat-code-family);
+  font-size: var(--app-font-size-chat-code, 12px);
+}
+
+.editor-file-viewer__change-gutter[data-subtle="true"] {
+  opacity: 0.6;
+}
+
+.editor-file-viewer__change-bar {
+  position: absolute;
+  left: calc(var(--editor-file-padding) + 4.6ch);
+  width: 3px;
+  border-radius: 1px;
+  background: var(--success);
+}
+
+.editor-file-viewer__change-bar[data-change="modified"] {
+  background: var(--info);
+}
+
+.editor-file-viewer__change-notch {
+  position: absolute;
+  left: calc(var(--editor-file-padding) + 4.6ch);
+  width: 0;
+  height: 0;
+  transform: translateY(-50%);
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-left: 5px solid var(--destructive);
 }
 
 /* Hover affordance painted over the line-number gutter: an opaque surface strip
@@ -1207,7 +1285,7 @@ label:has(> select#reasoning-effort) select {
   /* Override the global `textarea { font-family: mono }` reset — this field is
      UI chrome, not code, so it must use the normal UI font. */
   font-family: var(--font-ui-family);
-  font-size: 13px;
+  font-size: var(--app-font-size-ui-lg, 13px);
   line-height: 1.5;
   color: var(--color-text-foreground);
   outline: none;
@@ -1374,8 +1452,8 @@ label:has(> select#reasoning-effort) select {
   background: color-mix(in srgb, var(--background) 88%, transparent);
   color: var(--foreground);
   text-decoration: none;
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   transition:
     background-color 120ms ease,
     color 120ms ease,
@@ -1447,13 +1525,13 @@ label:has(> select#reasoning-effort) select {
 }
 
 .local-image-error__title {
-  font-size: 0.8rem;
+  font-size: var(--app-font-size-ui, 13px);
   font-weight: 500;
   color: var(--foreground);
 }
 
 .local-image-error__subtitle {
-  font-size: 0.72rem;
+  font-size: var(--app-font-size-ui-sm, 12px);
   color: var(--muted-foreground);
 }
 
@@ -1462,7 +1540,7 @@ label:has(> select#reasoning-effort) select {
   gap: 0.35rem;
   flex: 0 0 auto;
   padding: 0.32rem 0.55rem;
-  font-size: 0.74rem;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
 }
 
@@ -1573,13 +1651,13 @@ label:has(> select#reasoning-effort) select {
   padding: 16px;
   text-align: center;
   color: var(--destructive);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui, 13px);
 }
 
 .pdf-viewer-page__error-detail {
   max-width: 90%;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   word-break: break-word;
 }
 
@@ -1669,8 +1747,7 @@ label:has(> select#reasoning-effort) select {
    (dist/tailwind.css `@utility scroll-fade`). Same rationale as the shimmer
    block below — importing the full `shadcn` stylesheet would clash with this
    project's custom theme, so the self-contained scroll-fade block lives here.
-   Applied to the transcript scroll container via `scroll-fade-b` so streamed
-   content dissolves toward the composer and the fade clears at the live edge.
+   The transcript's `scroll-edge-fade` (below) builds on these primitives.
    Scroll-aware through `animation-timeline: scroll()`; the `@property`
    initial-values keep it fade-free when the container is not scrollable, and a
    static-fade `@supports` fallback covers browsers without scroll timelines.
@@ -2104,6 +2181,74 @@ label:has(> select#reasoning-effort) select {
   --scroll-fade-mask: none;
 }
 
+/* Scroll edge fade for app chrome scroll areas (the chat transcript), built on the
+   vendored scroll-fade primitives above. Content dissolves to transparent over
+   `--scroll-edge-fade-size` at the top edge and at the bottom edge — or, when
+   `--scroll-edge-fade-inset-b` is set, at that distance above the bottom edge (the
+   floating composer's top) — so the frosted window material shows through instead
+   of a hard cut. Each edge only fades while content is scrolled past it.
+
+   Top: reuses the vendored `--scroll-fade-t` reveal. Bottom: a 0→1 progress slides
+   the whole fade band down past the viewport as the scroll reaches its end, instead
+   of shrinking it in place, so an inset edge never collapses into a hard step over
+   content still passing under the composer. `--scroll-edge-fade-layer` intersects an
+   extra mask (the composer's footer dissolve) with the edges. It is paint-only (no
+   layout or scroll feedback), so it cannot disturb auto-follow or list measurement.
+   ScrollArea's `scrollFade` reads the same `--scroll-edge-fade-size` token. */
+@property --scroll-edge-fade-b-progress {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@keyframes scroll-edge-fade-reveal-b {
+  from {
+    --scroll-edge-fade-b-progress: 1;
+  }
+  to {
+    --scroll-edge-fade-b-progress: 0;
+  }
+}
+
+@utility scroll-edge-fade {
+  --_scroll-fade-size-t: var(--scroll-edge-fade-size);
+  --_scroll-edge-fade-b-start: calc(
+    100% - (var(--scroll-edge-fade-inset-b, 0px) + var(--scroll-edge-fade-size)) *
+      var(--scroll-edge-fade-b-progress, 0)
+  );
+  --scroll-edge-fade-edges: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--scroll-fade-t, 0px),
+    #000 var(--_scroll-edge-fade-b-start),
+    transparent calc(var(--_scroll-edge-fade-b-start) + var(--scroll-edge-fade-size))
+  );
+  -webkit-mask-image:
+    var(--scroll-edge-fade-edges), var(--scroll-edge-fade-layer, linear-gradient(#000, #000));
+  mask-image:
+    var(--scroll-edge-fade-edges), var(--scroll-edge-fade-layer, linear-gradient(#000, #000));
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  @supports (animation-timeline: scroll()) {
+    animation:
+      scroll-fade-reveal-t 1ms ease-in-out,
+      scroll-edge-fade-reveal-b 1ms ease-in-out;
+    animation-timeline: scroll(self y), scroll(self y);
+    animation-range:
+      0 var(--scroll-fade-reveal, calc(var(--spacing) * 24)),
+      calc(100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))) 100%;
+    animation-fill-mode: both;
+  }
+
+  @supports not (animation-timeline: scroll()) {
+    --scroll-fade-t: var(--scroll-edge-fade-size);
+    --scroll-edge-fade-b-progress: 1;
+  }
+}
+
 /* Static end-of-line fade for single-line truncation. Unlike the scroll-fade-*
    family — which reveal/hide the fade based on scroll position and therefore
    need a scrollable container — this is a plain overflow:hidden clip whose
@@ -2148,6 +2293,8 @@ label:has(> select#reasoning-effort) select {
    "Working for …" status line via the `shimmer` class. Provides `shimmer`,
    `shimmer-duration-*`, `shimmer-spread-*`, `shimmer-angle-*`,
    `shimmer-color-*`, `shimmer-once`, `shimmer-reverse`, and `shimmer-none`.
+   One deliberate deviation: the animation is duty-cycled via `--shimmer-timing`
+   (see the note inside `@utility shimmer`).
    Docs: https://ui.shadcn.com/docs/utils/shimmer */
 @property --shimmer-angle {
   syntax: "<angle>";
@@ -2196,7 +2343,11 @@ label:has(> select#reasoning-effort) select {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: var(--shimmer-text-fill, transparent);
-  animation: tw-shimmer var(--shimmer-duration, 2s) linear infinite;
+  /* Animating a clipped text background repaints the label and its overlapping
+     composer blur. The default 2000ms / 40 steps shares the spinner's 50ms cadence;
+     status labels also use animationTimelineSync so those steps land together.
+     Custom durations/timings can opt out of that shared cadence. */
+  animation: tw-shimmer var(--shimmer-duration, 2s) var(--shimmer-timing, steps(40, end)) infinite;
 
   @variant dark {
     --_highlight: var(
@@ -2290,8 +2441,8 @@ label:has(> select#reasoning-effort) select {
   font-weight: 500;
   letter-spacing: 0.01em;
   line-height: 1;
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   text-decoration: none;
   user-select: none;
 }
@@ -2386,6 +2537,39 @@ diffs-container {
   --runtime-full-access-accent: #fe8549;
 }
 
+/* Raised-chrome outline — the single border shared by every surface that floats over
+   the transcript as a solid card: the composer input shell and its attached banners,
+   the stacked rail above it, the docked Environment panel, and kanban cards. These all
+   drew the same color before this token existed (the light recipe below; plain
+   `--border` in dark), so they live on one knob and cannot drift apart again.
+
+   `--surface-border-strength` thins that base color toward transparent. Lower it to
+   make the whole raised-chrome outline recede; 100% restores the full-weight border.
+   Floating menus, pickers, and popovers deliberately stay on plain `border-border` —
+   they are transient overlays, not part of this raised-card family. */
+:root {
+  --surface-border-strength: 55%;
+  --surface-border: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--color-border-heavy) 95%, var(--foreground) 5%)
+      var(--surface-border-strength),
+    transparent
+  );
+  /* Light keeps rail and input identical; only dark splits them (see below). */
+  --composer-stacked-border: var(--surface-border);
+}
+
+.dark {
+  --surface-border: color-mix(in srgb, var(--border) var(--surface-border-strength), transparent);
+  /* The stacked rail reads as a translucent continuation of the input shell, so it
+     runs at half the heavy token — matching the live-changes strip. */
+  --composer-stacked-border: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--color-border-heavy) 50%, transparent) var(--surface-border-strength),
+    transparent
+  );
+}
+
 /* Composer shell/surface corner geometry — single source of truth so radius
    tweaks are not split across Tailwind utilities (and HMR cannot leave stale rules). */
 :root {
@@ -2405,20 +2589,164 @@ diffs-container {
   padding-left: var(--desktop-top-bar-traffic-light-gutter, 90px) !important;
 }
 
-/* Electron: continuous macOS-style corners (do not stack with corner-shape). */
+/* Rail layout route body (unlayered: it overrides the card's background and height
+   utilities and the seam rules). The card element still spans the header band, so it turns
+   transparent and draws the body from pseudo-elements: ::before is the surface behind the
+   route's content, ::after the hairline above it. Margins leave the right and bottom shell
+   gaps, and the card's own bottom radius with its overflow clip rounds whatever the route
+   paints there (fixed overlays are unaffected). The block's top corners sit under the band,
+   inside the card, so the route wrappers that hold a top bar go transparent (below) and the
+   rounded ::before shows through. The block has no shadow: its edge is the 1px border. */
+[data-sidebar-layout="rail"] {
+  /* Route body corners: square only where the panel joins it. */
+  --app-rail-block-radii: 0 var(--app-rail-inset-radius) var(--app-rail-inset-radius) 0;
+  /* The card's own corners: its top edge is the band, so only the bottom ones round. */
+  --app-rail-card-radii: 0 0 var(--app-rail-inset-radius) 0;
+}
+
+/* Panel collapsed: the route body is the whole block, so its left corners round too. */
+[data-sidebar-layout="rail"]:has([data-slot="sidebar"][data-side="left"][data-state="collapsed"]) {
+  --app-rail-block-radii: var(--app-rail-inset-radius);
+  --app-rail-card-radii: 0 0 var(--app-rail-inset-radius) var(--app-rail-inset-radius);
+}
+
+[data-sidebar-layout="rail"] .chat-content-card {
+  margin-right: var(--app-rail-inset-gap);
+  margin-bottom: var(--app-rail-inset-gap);
+  background: transparent;
+  border-radius: var(--app-rail-card-radii);
+}
+
+[data-sidebar-layout="rail"] .chat-content-card.h-dvh {
+  height: calc(100dvh - var(--app-rail-inset-gap));
+}
+
+/* Full-route wrappers (the ones holding the route's top bar, including the dock's surface)
+   repaint the surface as a plain rectangle over the block's rounded top corners; the card
+   body already paints that surface, so they go transparent. */
+[data-sidebar-layout="rail"]
+  .chat-content-card
+  :is(.bg-\[var\(--color-background-surface\)\], .app-settings-surface):has(.app-top-bar) {
+  background: transparent;
+}
+
+/* The dock's bottom-right corner is the block's corner. */
+[data-sidebar-layout="rail"] [data-slot="sidebar"][data-side="right"] [data-slot="sidebar-inner"] {
+  overflow: hidden;
+  border-bottom-right-radius: var(--app-rail-inset-radius);
+}
+
+[data-sidebar-layout="rail"] .chat-content-card::before,
+[data-sidebar-layout="rail"] .chat-content-card::after {
+  content: "";
+  position: absolute;
+  inset: var(--app-top-strip-height) 0 0 0;
+  pointer-events: none;
+  opacity: 1;
+  border-radius: var(--app-rail-block-radii);
+}
+
+[data-sidebar-layout="rail"] .chat-content-card::before {
+  z-index: -1;
+  background: var(--color-background-surface);
+  box-shadow: none;
+}
+
+/* The block's hairline border; with the panel open its left edge is the seam with the panel,
+   which draws no right border of its own. */
+[data-sidebar-layout="rail"] .chat-content-card::after {
+  z-index: 30;
+  border: var(--app-rail-inset-border-width) solid var(--app-rail-inset-border);
+}
+
+/* Panel collapsed: its zero-width box must not leave a border line next to the rail. */
+[data-sidebar-layout="rail"]:has([data-slot="sidebar"][data-side="left"][data-state="collapsed"])
+  .app-rail-panel {
+  border-width: 0;
+}
+
+/* Short divider on the shell band above the seam, detached from the band's edges, marking
+   where the route header starts next to the panel. Hidden with the panel. */
+[data-sidebar-layout="rail"] .app-rail-header-divider {
+  position: absolute;
+  top: calc((var(--app-top-strip-height) - 1.25rem) / 2);
+  left: 0;
+  z-index: 30;
+  width: 1px;
+  height: 1.25rem;
+  pointer-events: none;
+  background: var(--color-border);
+  transition: opacity 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+[data-sidebar-layout="rail"]:has([data-slot="sidebar"][data-side="left"][data-state="collapsed"])
+  .app-rail-header-divider {
+  opacity: 0;
+}
+
+/* Settings floats its top bar over the scrolling page; on the opaque band the page must
+   start below it instead. */
+[data-sidebar-layout="rail"] [data-slot="sidebar-inset-surface"].app-settings-surface {
+  padding-top: var(--app-top-strip-height);
+}
+
+/* Route top bars sit on the shell band; the block's top border replaces their hairline.
+   The shell root already paints the band, so they stay clear: a second coat of the
+   translucent shell tone would read nearly opaque next to the rail. */
+[data-sidebar-layout="rail"] .app-top-bar {
+  background-color: transparent;
+  background-image: none;
+}
+
+/* Right dock: its fixed container keeps the block's gap, and its surface is the card body
+   drawn above, so the dock header sits on the shell band like the route header. */
+[data-sidebar-layout="rail"]
+  [data-slot="sidebar"][data-side="right"]
+  > [data-slot="sidebar-container"] {
+  right: var(--app-rail-inset-gap);
+  bottom: var(--app-rail-inset-gap);
+  height: auto;
+}
+
+/* Collapsed, the dock slides its own width off-screen; the gap above would leave its
+   left border and a sliver of content peeking at the window edge, so it slides the gap too. */
+[data-sidebar-layout="rail"]
+  [data-slot="sidebar"][data-side="right"][data-collapsible="offcanvas"]
+  > [data-slot="sidebar-container"] {
+  translate: calc(100% + var(--app-rail-inset-gap)) 0;
+}
+
+/* Headers right of a collapsed panel clear the traffic lights from the rail's edge, not
+   the window's (the strip over rail + panel keeps the full inset). */
+:root[data-runtime="electron"]
+  [data-sidebar-layout="rail"]
+  .desktop-top-bar-traffic-light-gutter:not(.app-shell-top-strip) {
+  padding-left: calc(
+    var(--desktop-top-bar-traffic-light-gutter, 90px) - var(--app-rail-width)
+  ) !important;
+}
+
+/* Composer and user bubbles share continuous corners; their radii remain the fallback.
+   Electron smoothing must not stack with browser corner-shape. */
 :root[data-runtime="electron"] .chat-composer-shell,
 :root[data-runtime="electron"] .chat-composer-surface,
 :root[data-runtime="electron"] .chat-composer-stacked-top,
-:root[data-runtime="electron"] .chat-composer-surface-banner {
+:root[data-runtime="electron"] .chat-composer-surface-banner,
+:root[data-runtime="electron"] .chat-user-message-bubble,
+:root[data-runtime="electron"] .palette-surface,
+:root[data-runtime="electron"] .palette-row {
   -electron-corner-smoothing: system-ui;
 }
 
 /* Browser: squircle via corner-shape when supported. */
-@supports (corner-shape: round) {
+@supports (corner-shape: squircle) {
   :root:not([data-runtime="electron"]) .chat-composer-shell,
   :root:not([data-runtime="electron"]) .chat-composer-surface,
   :root:not([data-runtime="electron"]) .chat-composer-stacked-top,
-  :root:not([data-runtime="electron"]) .chat-composer-surface-banner {
+  :root:not([data-runtime="electron"]) .chat-composer-surface-banner,
+  :root:not([data-runtime="electron"]) .chat-user-message-bubble,
+  :root:not([data-runtime="electron"]) .palette-surface,
+  :root:not([data-runtime="electron"]) .palette-row {
     corner-shape: squircle;
   }
 }
@@ -2476,17 +2804,67 @@ diffs-container {
   border-top-right-radius: 0;
 }
 
-/* Stacked rail above the composer input: the composer's own surface color at
-   half opacity, so the rail reads as a lighter continuation of the input shell
-   rather than a differently-colored block. */
+/* Composer glass — the same material as the floating menus/pickers
+   (`APP_TRANSLUCENT_POPUP_SURFACE_BASE_CLASS_NAME`) and the sidebar.
+
+   The blur lives on a `::before` at `z-index: -1` rather than on the element itself,
+   exactly like the popup primitive: `backdrop-filter` on the element would make it a
+   containing block and clip the composer's anchored pickers (which rely on
+   `overflow-visible`). Painted behind the element's own translucent fill, the layer
+   frosts the transcript scrolling underneath (see composerOverlay.ts).
+
+   Fill comes from the SAME token the floating menus use (`--popover`, via
+   `--app-composer-picker-surface`), not from `--composer-surface`. In dark mode
+   `--composer-surface` resolves to `--color-background-control-opaque`, which sits
+   within a couple of RGB steps of the chat background — thinning a color to 72% of
+   the color already behind it is a no-op, so the composer read as a flat slab even
+   with the blur running. `--popover` is the elevated token the handoff menu and the
+   pickers are built from, so the composer now lifts off the transcript exactly the
+   way they do.
+
+   `--composer-glass-opacity` keeps every composer-family surface on one knob. */
+:root {
+  --composer-glass-opacity: 55%;
+  --composer-glass-stacked-opacity: calc(var(--composer-glass-opacity) / 2);
+  --composer-glass-filter: blur(40px) saturate(150%);
+  /* Same base as `.composer-picker-menu-surface`, kept opaque here so the shared
+     `--composer-glass-opacity` knob is the only thing thinning it. */
+  --composer-glass-surface: var(--popover);
+}
+
+.chat-composer-surface,
 .chat-composer-stacked-top {
-  background: color-mix(in srgb, var(--composer-surface) 50%, transparent);
+  position: relative;
+}
+
+.chat-composer-surface::before,
+.chat-composer-stacked-top::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-backdrop-filter: var(--composer-glass-filter);
+  backdrop-filter: var(--composer-glass-filter);
+}
+
+/* Stacked rail above the composer input: the elevated glass surface at its
+   dedicated opacity, so the rail reads as a lighter continuation of the input. */
+.chat-composer-stacked-top {
+  background: color-mix(
+    in srgb,
+    var(--composer-glass-surface) var(--composer-glass-stacked-opacity),
+    transparent
+  );
 }
 
 .chat-composer-surface {
-  background: var(--composer-surface);
-  backdrop-filter: var(--app-composer-backdrop-filter, none);
-  -webkit-backdrop-filter: var(--app-composer-backdrop-filter, none);
+  background: color-mix(
+    in srgb,
+    var(--composer-glass-surface) var(--composer-glass-opacity),
+    transparent
+  );
 }
 
 /* Recessed track: a hairline border + faint inner shadow read the base as a sunken
@@ -2496,8 +2874,8 @@ diffs-container {
   border: 1px solid color-mix(in oklab, var(--color-text-foreground) 7%, transparent);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06) !important;
   filter: none !important;
-  backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }
 
 .dark .sidebar-segmented-picker {
@@ -2551,8 +2929,8 @@ diffs-container {
     --app-composer-picker-surface,
     color-mix(in oklab, var(--popover) 70%, transparent)
   );
-  backdrop-filter: var(--app-composer-picker-backdrop-filter, blur(32px));
   -webkit-backdrop-filter: var(--app-composer-picker-backdrop-filter, blur(32px));
+  backdrop-filter: var(--app-composer-picker-backdrop-filter, blur(32px));
 }
 
 /* Density tokens per size modifier (--normal / --small). Width is opt-in below. */
@@ -2588,15 +2966,15 @@ diffs-container {
 
 /* Fixed width — only the composer model/effort/provider pickers opt in. */
 .composer-picker-menu-fixed.composer-picker-menu--normal {
-  width: 13rem;
-  min-width: 13rem;
-  max-width: min(13rem, 92vw);
+  width: 14.5rem;
+  min-width: 14.5rem;
+  max-width: min(14.5rem, 92vw);
 }
 
 .composer-picker-menu-fixed.composer-picker-menu--small {
-  width: 10rem;
-  min-width: 10rem;
-  max-width: min(10rem, 92vw);
+  width: 11.25rem;
+  min-width: 11.25rem;
+  max-width: min(11.25rem, 92vw);
 }
 
 /* Size-aware option rows inside composer picker shells. */
@@ -2680,6 +3058,37 @@ diffs-container {
 .composer-picker-menu--normal [data-slot="menu-popup-body"],
 .composer-picker-menu-wide--normal [data-slot="menu-popup-body"] {
   padding: var(--picker-menu-body-p);
+}
+
+/* Permission mode picker: wider, calmer rows matching the native approval menu. */
+.runtime-mode-menu {
+  width: min(26rem, 92vw);
+  min-width: min(26rem, 92vw);
+  --picker-menu-body-p: 0.375rem;
+  --picker-option-min-h: 2.75rem;
+  --picker-option-px: 0.625rem;
+  --picker-option-py: 0.3125rem;
+}
+
+/* Sidebar Synara/Studio surface switcher: tight shell inset, airy option rows.
+   Composer picker tokens otherwise pin option py to ~1px and win over Tailwind. */
+.sidebar-surface-picker-menu {
+  --picker-menu-body-p: 0.25rem;
+  --picker-option-min-h: 0;
+  --picker-option-px: 0.75rem;
+  --picker-option-py: 0.5625rem;
+}
+
+.runtime-mode-menu-item {
+  align-items: stretch;
+}
+
+.runtime-mode-menu-item--auto[data-checked] {
+  color: var(--color-text-accent);
+}
+
+.runtime-mode-menu-item--auto[data-checked] .runtime-mode-menu-description {
+  color: inherit;
 }
 
 /* Thin scrollbar for long model-provider lists inside picker submenus. */
@@ -2767,4 +3176,9 @@ diffs-container {
   background-clip: text;
   -webkit-background-clip: text;
   animation: ultrathink-rainbow 10s linear infinite;
+}
+
+/* Expanded document panes retain a readable line length while using more space. */
+[data-dock-maximized="true"] .editor-markdown-preview__body {
+  max-width: 1120px;
 }

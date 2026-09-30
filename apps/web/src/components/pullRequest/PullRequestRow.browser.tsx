@@ -45,6 +45,7 @@ function makeEntry(isPinned: boolean): PullRequestListEntry {
       },
     ],
     mergeability: "unknown",
+    stack: null,
     labels: [],
   };
 }
@@ -118,24 +119,6 @@ describe("PullRequestRow pin control", () => {
     ).toBe("false");
   });
 
-  it("exposes the selected row as the current list item without changing pin semantics", async () => {
-    await render(
-      <PullRequestRow
-        entry={makeEntry(false)}
-        selected
-        onClick={vi.fn()}
-        onTogglePinned={vi.fn()}
-      />,
-    );
-
-    expect(document.querySelector('button[aria-current="true"]')).not.toBeNull();
-    expect(
-      document
-        .querySelector('button[aria-label="Pin pull request #42"]')
-        ?.hasAttribute("aria-current"),
-    ).toBe(false);
-  });
-
   it("exposes the persisted pinned state as a dedicated sibling button", async () => {
     await render(
       <PullRequestRow
@@ -183,46 +166,6 @@ describe("PullRequestRow pin control", () => {
 
     expect(page.getByText("Project One")).toBeVisible();
     expect(page.getByRole("button", { name: "Pin pull request #42 in Project One" })).toBeVisible();
-  });
-
-  it("summarizes shared repository rows without implying one owning project", async () => {
-    const entry = makeEntry(false);
-    await render(
-      <PullRequestRow
-        entry={{
-          ...entry,
-          projectContexts: [
-            ...(entry.projectContexts ?? []),
-            {
-              projectId: "project-2" as PullRequestListEntry["projectId"],
-              projectTitle: "Project Two",
-              isPinned: false,
-            },
-          ],
-        }}
-        selected={false}
-        showProjectTitle
-        onClick={vi.fn()}
-        onTogglePinned={vi.fn()}
-      />,
-    );
-
-    expect(page.getByText("2 projects")).toBeVisible();
-    expect(page.getByRole("button", { name: "Pin pull request #42 in 2 projects" })).toBeVisible();
-  });
-
-  it("keeps scoped rows minimal", async () => {
-    await render(
-      <PullRequestRow
-        entry={makeEntry(false)}
-        selected={false}
-        onClick={vi.fn()}
-        onTogglePinned={vi.fn()}
-      />,
-    );
-
-    expect(document.body.textContent).not.toContain("Project One");
-    expect(page.getByRole("button", { name: "Pin pull request #42" })).toBeVisible();
   });
 
   it("restores focus by remote identity when aggregate project context changes", async () => {

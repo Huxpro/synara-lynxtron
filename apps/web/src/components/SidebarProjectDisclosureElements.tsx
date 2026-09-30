@@ -15,13 +15,15 @@ import {
 } from "../sidebarRowStyles";
 import { SidebarMenuSub } from "./ui/sidebar";
 
-export function SidebarProjectDisclosureRootElement(props: { readonly children?: ReactNode }) {
+export function SidebarProjectDisclosureRootElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return <div className="group/collapsible">{props.children}</div>;
 }
 
 export function SidebarProjectDisclosureBodyElement(props: {
   readonly expanded: boolean;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <div

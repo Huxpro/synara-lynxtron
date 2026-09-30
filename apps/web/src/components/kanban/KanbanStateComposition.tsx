@@ -86,8 +86,8 @@ export function resolveKanbanStatePresentation(kind: KanbanStateKind): KanbanSta
 
 export function KanbanStateComposition(props: {
   readonly kind: KanbanStateKind;
-  readonly retrying?: boolean;
-  readonly onRetry?: () => void;
+  readonly retrying?: boolean | undefined;
+  readonly onRetry?: (() => void) | undefined;
 }) {
   const presentation = resolveKanbanStatePresentation(props.kind);
   return (

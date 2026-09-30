@@ -5,7 +5,6 @@ import antigravitySvg from "@synara-provider-icons/antigravity.svg?raw";
 import grokSvg from "@synara-provider-icons/grok.svg?raw";
 import openCodeSvg from "@synara-provider-icons/opencode.svg?raw";
 import droidSvg from "@synara-provider-icons/droid.svg?raw";
-import kiloSvg from "@synara-provider-icons/kilo.svg?raw";
 import piSvg from "@synara-provider-icons/pi.svg?raw";
 
 import { useTheme } from "../adapters/useTheme.lynx";
@@ -18,7 +17,6 @@ const PROVIDER_SVG: Readonly<Record<string, string>> = {
   antigravity: antigravitySvg,
   grok: grokSvg,
   droid: droidSvg,
-  kilo: kiloSvg,
   opencode: openCodeSvg,
   pi: piSvg,
 };

@@ -19,21 +19,15 @@ import {
   CHAT_HEADER_CONTROL_CLASS_NAME,
   CHAT_HEADER_ICON_CONTROL_CLASS_NAME,
   CHAT_HEADER_ICON_STRENGTH_CLASS_NAME,
+  CHAT_SURFACE_CHIP_CLASS_NAME,
+  CHAT_SURFACE_CONTROL_ACTIVE_CLASS_NAME,
 } from "~/components/chat/chatHeaderControls";
 import { ComposerPickerMenuPopup } from "~/components/chat/ComposerPickerMenuPopup";
 import {
   buildFixFindingsPrompt,
   buildResolveConflictsPrompt,
+  createPullRequestContextDraft,
 } from "~/components/chat/environment/environmentPullRequest.logic";
-import {
-  AlertDialog,
-  AlertDialogClose,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogPopup,
-  AlertDialogTitle,
-} from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "~/components/ui/empty";
 import { IconButton } from "~/components/ui/icon-button";
@@ -48,7 +42,7 @@ import {
 import { Skeleton } from "~/components/ui/skeleton";
 import { toastManager } from "~/components/ui/toast";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "~/components/ui/tooltip";
-import { appendComposerPromptText } from "~/lib/chatReferences";
+import { addChatPullRequestContext } from "~/lib/chatReferences";
 import {
   EllipsisIcon,
   ExternalLinkIcon,
@@ -60,6 +54,7 @@ import {
   HammerIcon,
   LoaderIcon,
   LinkIcon,
+  XIcon,
 } from "~/lib/icons";
 import { gitPreparePullRequestThreadMutationOptions } from "~/lib/gitReactQuery";
 import {
@@ -67,22 +62,36 @@ import {
   pullRequestDetailQueryOptions,
   pullRequestQueryErrorState,
 } from "~/lib/pullRequestReactQuery";
+import { type PullRequestContextDraft } from "~/lib/pullRequestContext";
 import { cn } from "~/lib/utils";
 import { ensureNativeApi } from "~/nativeApi";
 import { useHandleNewThread } from "~/hooks/useHandleNewThread";
-import { copyTextToClipboard } from "~/platform/clipboard";
+import {
+  copyPullRequestLink,
+  PullRequestConfirmActionDialog,
+} from "./PullRequestConfirmActionDialog";
 import { PullRequestSummaryTab } from "./PullRequestSummaryTab";
+import { PullRequestStackPopover } from "./PullRequestStackPopover";
 import { PullRequestTimelineTab } from "./PullRequestTimelineTab";
 import { PullRequestsUnavailableState } from "./PullRequestsUnavailableState";
 import { PullRequestWarningNote } from "./PullRequestWarningNote";
-import {
-  PullRequestDetailTabsComposition,
-  type PullRequestDetailTab,
-} from "./PullRequestDetailTabsComposition";
-import { PullRequestDetailCloseComposition } from "./PullRequestDetailCloseComposition";
-import { PULL_REQUEST_ACTION_SUCCESS_LABELS } from "./pullRequestDetail.logic";
+import { assessPullRequestStack, pullRequestMergeBlocker } from "./pullRequestStack.logic";
 
-const AVAILABLE_DETAIL_TABS = ["summary", "timeline", "code"] as const;
+type DetailTab = "summary" | "timeline" | "code";
+
+const ACTION_SUCCESS_LABELS: Record<PullRequestAction, string> = {
+  merge: "Pull request merged",
+  ready: "Marked ready for review",
+  draft: "Converted to draft",
+  close: "Pull request closed",
+  reopen: "Pull request reopened",
+};
+
+const TABS: ReadonlyArray<{ value: DetailTab; label: string }> = [
+  { value: "summary", label: "Summary" },
+  { value: "timeline", label: "Timeline" },
+  { value: "code", label: "Code" },
+];
 
 // Header icon controls follow the chat-header recipe (chrome variant + fixed 28px square +
 // full-strength glyph) so they sit level with the Merge pill and the dock chips.
@@ -99,7 +108,7 @@ const PR_HEADER_ICON_BUTTON_CLASS_NAME = cn(
 // font-normal, so medium made the one filled control shout a weight heavier than its whole row.
 const PR_HEADER_ACTION_BUTTON_CLASS_NAME = cn(
   CHAT_HEADER_CONTROL_CLASS_NAME,
-  "px-3 text-[length:var(--app-font-size-ui,12px)] font-normal sm:text-[length:var(--app-font-size-ui,12px)]",
+  "px-3 text-ui font-normal sm:text-ui",
 );
 
 // Lazy: the diff renderer + worker pool are heavyweight and only needed on the Code tab.
@@ -118,15 +127,19 @@ function DetailSkeleton() {
 
 export function PullRequestDetailPanel({
   input,
-  initialTab = "summary",
+  initialTab: initialTabProp,
   onClose,
-  pollingEnabled = true,
+  onSelectPullRequest,
+  pollingEnabled: pollingEnabledProp,
 }: {
   input: PullRequestDetailInput;
-  initialTab?: PullRequestDetailTab;
+  initialTab?: DetailTab;
   onClose?: () => void;
+  onSelectPullRequest?: (number: number) => void;
   pollingEnabled?: boolean;
 }) {
+  const initialTab = initialTabProp ?? "summary";
+  const pollingEnabled = pollingEnabledProp ?? true;
   const queryClient = useQueryClient();
   const { settings } = useAppSettings();
   const { handleNewThread } = useHandleNewThread();
@@ -135,7 +148,7 @@ export function PullRequestDetailPanel({
   const panelKey = `${input.projectId}\u0000${input.repository}\u0000${input.number}\u0000${initialTab}`;
   const [panelState, setPanelState] = useState<{
     key: string;
-    tab: PullRequestDetailTab;
+    tab: DetailTab;
     mergeMethod: PullRequestMergeMethod;
     confirmAction: "merge" | "close" | null;
   } | null>(null);
@@ -144,7 +157,7 @@ export function PullRequestDetailPanel({
   const mergeMethod = isCurrentPanelState ? panelState.mergeMethod : "merge";
   const confirmAction = isCurrentPanelState ? panelState.confirmAction : null;
   const patchPanelState = (patch: {
-    tab?: PullRequestDetailTab;
+    tab?: DetailTab;
     mergeMethod?: PullRequestMergeMethod;
     confirmAction?: "merge" | "close" | null;
   }) =>
@@ -153,7 +166,7 @@ export function PullRequestDetailPanel({
         ? { ...current, ...patch }
         : { key: panelKey, tab: initialTab, mergeMethod: "merge", confirmAction: null, ...patch },
     );
-  const setTab = (next: PullRequestDetailTab) => patchPanelState({ tab: next });
+  const setTab = (next: DetailTab) => patchPanelState({ tab: next });
   const setMergeMethod = (next: PullRequestMergeMethod) => patchPanelState({ mergeMethod: next });
   const setConfirmAction = (next: "merge" | "close" | null) =>
     patchPanelState({ confirmAction: next });
@@ -184,8 +197,16 @@ export function PullRequestDetailPanel({
         action,
         ...(method ? { mergeMethod: method } : {}),
       })
-      .then(() => {
-        toastManager.add({ type: "success", title: PULL_REQUEST_ACTION_SUCCESS_LABELS[action] });
+      .then((result) => {
+        const title =
+          action === "merge" && result.mergeOutcome === "enqueued"
+            ? detail?.stack
+              ? "Stack added to merge queue"
+              : "Pull request added to merge queue"
+            : action === "merge" && detail?.stack
+              ? "Stack merged"
+              : ACTION_SUCCESS_LABELS[action];
+        toastManager.add({ type: "success", title });
       })
       .catch((error: unknown) => {
         toastManager.add({
@@ -200,11 +221,11 @@ export function PullRequestDetailPanel({
   };
 
   // "Fix findings" and "Resolve conflicts" hand the PR to a fresh thread the same way:
-  // prepare a worktree on the PR branch, create the thread, and pre-fill the composer with
-  // the task-specific prompt for the user to review and send.
+  // prepare a worktree on the PR branch, create the thread, and attach the task as a
+  // context card in its composer for the user to review and send.
   const startPullRequestThread = (
     kind: "findings" | "conflicts",
-    prompt: string,
+    card: PullRequestContextDraft,
     errorTitle: string,
   ) => {
     if (!detail || preparingThread !== null) return;
@@ -225,7 +246,7 @@ export function PullRequestDetailPanel({
           }),
         ).then((threadId) => {
           if (!threadId) throw new Error("Could not create a draft thread for this pull request.");
-          appendComposerPromptText(threadId, prompt);
+          addChatPullRequestContext(threadId, card);
         }),
       )
       .catch((error: unknown) => {
@@ -245,16 +266,22 @@ export function PullRequestDetailPanel({
     if (!detail) return;
     void startPullRequestThread(
       "findings",
-      buildFixFindingsPrompt({
-        prNumber: detail.number,
-        prTitle: detail.title,
-        prUrl: detail.url,
-        headBranch: detail.headBranch,
-        baseBranch: detail.baseBranch,
-        comments: detail.comments,
-        checks: detail.checks,
-        commentsTruncated: detail.commentsTruncated,
-        commentsIncomplete: detail.commentsIncomplete,
+      createPullRequestContextDraft({
+        scope: "everything",
+        pr: detail,
+        title: "Fix findings",
+        subtitle: `#${detail.number} ${detail.title}`,
+        text: buildFixFindingsPrompt({
+          prNumber: detail.number,
+          prTitle: detail.title,
+          prUrl: detail.url,
+          headBranch: detail.headBranch,
+          baseBranch: detail.baseBranch,
+          comments: detail.comments,
+          checks: detail.checks,
+          commentsTruncated: detail.commentsTruncated,
+          commentsIncomplete: detail.commentsIncomplete,
+        }),
       }),
       "Could not prepare findings",
     );
@@ -264,28 +291,20 @@ export function PullRequestDetailPanel({
     if (!detail) return;
     void startPullRequestThread(
       "conflicts",
-      buildResolveConflictsPrompt({
-        prNumber: detail.number,
-        prUrl: detail.url,
-        baseBranch: detail.baseBranch,
-        headBranch: detail.headBranch,
+      createPullRequestContextDraft({
+        scope: "conflicts",
+        pr: detail,
+        title: "Merge conflicts",
+        subtitle: `Conflicts with ${detail.baseBranch}`,
+        text: buildResolveConflictsPrompt({
+          prNumber: detail.number,
+          prUrl: detail.url,
+          baseBranch: detail.baseBranch,
+          headBranch: detail.headBranch,
+        }),
       }),
       "Could not prepare conflict resolution",
     );
-  };
-
-  const copyPullRequestLink = async () => {
-    if (!detail) return;
-    try {
-      await copyTextToClipboard(detail.url);
-      toastManager.add({ type: "success", title: "Pull request link copied" });
-    } catch (error) {
-      toastManager.add({
-        type: "error",
-        title: "Could not copy pull request link",
-        description: error instanceof Error ? error.message : "Clipboard access failed.",
-      });
-    }
   };
 
   const allowedMethods = detail
@@ -301,6 +320,9 @@ export function PullRequestDetailPanel({
   const pendingAction = actionMutation.isPending
     ? (actionMutation.variables?.action ?? null)
     : null;
+  const stackAssessment = detail?.stack ? assessPullRequestStack(detail.stack) : null;
+  const stackMergeTargetCount = stackAssessment?.mergeTargetCount ?? 0;
+  const mergeBlocker = detail ? pullRequestMergeBlocker(detail, stackAssessment) : null;
 
   return (
     <div className="flex h-full min-h-0 w-full flex-col bg-[var(--color-background-surface)] text-foreground">
@@ -309,14 +331,35 @@ export function PullRequestDetailPanel({
       <header className="flex min-h-12 shrink-0 items-center gap-2 px-2">
         {/* No state glyph here: the dock tab above already carries it, and the Summary tab
             spells the state out in words. A third copy in between was pure repetition. */}
-        <PullRequestDetailTabsComposition
-          activeTab={tab}
-          availableTabs={AVAILABLE_DETAIL_TABS}
-          onSelectTab={setTab}
-        />
+        <nav className="flex min-w-0 items-center gap-0.5" aria-label="Pull request detail tabs">
+          {TABS.map((item) => (
+            <button
+              key={item.value}
+              type="button"
+              aria-pressed={tab === item.value}
+              onClick={() => setTab(item.value)}
+              // Same chip skin as the dock tab strip ("PR #357") and the header diff toggle:
+              // one 28px rounded-lg family for every flat control in these header rows.
+              className={cn(
+                CHAT_SURFACE_CHIP_CLASS_NAME,
+                "inline-flex items-center px-2.5",
+                tab === item.value && CHAT_SURFACE_CONTROL_ACTIVE_CLASS_NAME,
+              )}
+            >
+              {item.label}
+            </button>
+          ))}
+        </nav>
         <div className="ml-auto flex shrink-0 items-center gap-1">
           {detail ? (
             <>
+              {detail.stack ? (
+                <PullRequestStackPopover
+                  stack={detail.stack}
+                  currentNumber={detail.number}
+                  {...(onSelectPullRequest ? { onSelectPullRequest } : {})}
+                />
+              ) : null}
               <IconButton
                 variant="chrome"
                 label="Open in external browser"
@@ -370,7 +413,7 @@ export function PullRequestDetailPanel({
                       "Ready for review". Hidden while conflicting — every method would fail. */}
                   {detail.state === "open" &&
                   !detail.isDraft &&
-                  detail.mergeability !== "conflicting" &&
+                  mergeBlocker === null &&
                   allowedMethods.length > 0 ? (
                     <>
                       <MenuRadioGroup
@@ -387,7 +430,7 @@ export function PullRequestDetailPanel({
                       <MenuSeparator />
                     </>
                   ) : null}
-                  <MenuItem onClick={() => void copyPullRequestLink()}>
+                  <MenuItem onClick={() => copyPullRequestLink(detail.url)}>
                     <LinkIcon className="size-3.5 shrink-0" />
                     <span>Copy link</span>
                   </MenuItem>
@@ -439,7 +482,7 @@ export function PullRequestDetailPanel({
                 >
                   Ready for review
                 </Button>
-              ) : detail.state === "open" && detail.mergeability === "conflicting" ? (
+              ) : detail.state === "open" && mergeBlocker !== null ? (
                 // Non-draft only (a draft's next step is "Ready for review"). The header keeps
                 // saying Merge — the action the PR is heading for — but the pill is inert until
                 // the branch is reconciled, and hovering it says why. No method chevron: there
@@ -462,9 +505,18 @@ export function PullRequestDetailPanel({
                       />
                     }
                   >
-                    Merge
+                    {detail.stack && stackAssessment ? (
+                      <>
+                        <span>Merge stack</span>
+                        <span className="rounded-full bg-primary-foreground/16 px-1.5 text-ui-xs tabular-nums">
+                          {stackAssessment.mergeTargetCount}
+                        </span>
+                      </>
+                    ) : (
+                      "Merge"
+                    )}
                   </TooltipTrigger>
-                  <TooltipPopup side="bottom">Resolve merge conflicts before merging</TooltipPopup>
+                  <TooltipPopup side="bottom">{mergeBlocker}</TooltipPopup>
                 </Tooltip>
               ) : detail.state === "open" && !detail.isDraft && allowedMethods.length > 0 ? (
                 // One pill, no method chevron beside it: a split button's label can never sit
@@ -481,7 +533,14 @@ export function PullRequestDetailPanel({
                   {pendingAction === "merge" ? (
                     <>
                       <LoaderIcon className="size-3.5 animate-spin" />
-                      Merging…
+                      {detail.stack ? "Merging stack…" : "Merging…"}
+                    </>
+                  ) : detail.stack && stackAssessment ? (
+                    <>
+                      <span>Merge stack</span>
+                      <span className="rounded-full bg-primary-foreground/16 px-1.5 text-ui-xs tabular-nums">
+                        {stackAssessment.mergeTargetCount}
+                      </span>
                     </>
                   ) : (
                     "Merge"
@@ -490,7 +549,17 @@ export function PullRequestDetailPanel({
               ) : null}
             </>
           ) : null}
-          <PullRequestDetailCloseComposition onClose={onClose} />
+          {onClose ? (
+            <IconButton
+              variant="chrome"
+              label="Close pull request panel"
+              tooltip="Close"
+              className={PR_HEADER_ICON_BUTTON_CLASS_NAME}
+              onClick={onClose}
+            >
+              <XIcon />
+            </IconButton>
+          ) : null}
         </div>
       </header>
 
@@ -511,6 +580,11 @@ export function PullRequestDetailPanel({
           </Empty>
         ) : (
           <div className="flex h-full min-h-0 flex-col">
+            {detail.stackMetadataIncomplete === true ? (
+              <PullRequestWarningNote shape="banner" className="shrink-0" role="status">
+                Stack details could not be loaded. Refresh before merging.
+              </PullRequestWarningNote>
+            ) : null}
             {detailErrorState.backgroundError ? (
               <PullRequestWarningNote shape="banner" className="shrink-0" role="status">
                 Could not refresh pull request details. Showing saved data.
@@ -531,41 +605,24 @@ export function PullRequestDetailPanel({
         )}
       </div>
 
-      <AlertDialog
-        open={confirmAction !== null}
-        onOpenChange={(open) => !open && setConfirmAction(null)}
-      >
-        <AlertDialogPopup>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {confirmAction === "merge" ? "Merge pull request?" : "Close pull request?"}
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              {confirmAction === "merge"
-                ? `This will merge #${input.number} using ${selectedMergeMethod}.`
-                : `This will close #${input.number} without merging it.`}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogClose render={<Button variant="outline" size="sm" />}>
-              Cancel
-            </AlertDialogClose>
-            <Button
-              size="sm"
-              variant={confirmAction === "close" ? "destructive" : "default"}
-              disabled={actionPending}
-              onClick={() => {
-                const action = confirmAction;
-                setConfirmAction(null);
-                if (action === "merge") void runAction("merge", selectedMergeMethod);
-                if (action === "close") void runAction("close");
-              }}
-            >
-              {confirmAction === "merge" ? "Merge" : "Close"}
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogPopup>
-      </AlertDialog>
+      <PullRequestConfirmActionDialog
+        action={
+          confirmAction === "merge"
+            ? { kind: "merge", method: selectedMergeMethod }
+            : confirmAction === "close"
+              ? { kind: "close" }
+              : null
+        }
+        number={input.number}
+        stack={detail?.stack ?? null}
+        stackMergeTargetCount={stackMergeTargetCount}
+        pending={actionPending}
+        onDismiss={() => setConfirmAction(null)}
+        onConfirm={(action) => {
+          if (action.kind === "merge") void runAction("merge", action.method);
+          else void runAction("close");
+        }}
+      />
     </div>
   );
 }

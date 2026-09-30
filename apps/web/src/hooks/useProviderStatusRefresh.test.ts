@@ -1,53 +1,125 @@
-import { QueryClient } from "@tanstack/react-query";
-import { describe, expect, it, vi } from "vitest";
-import type { ServerConfig, ServerProviderStatus } from "@synara/contracts";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { serverQueryKeys } from "../lib/serverReactQuery";
-import { writeProviderStatusesToConfigCache } from "./useProviderStatusRefresh";
+const mocks = vi.hoisted(() => ({
+  cleanup: undefined as (() => void) | undefined,
+  queryClient: {},
+  readNativeApi: vi.fn(),
+  reconcileServerProviderStatuses: vi.fn(async () => undefined),
+}));
 
-const providers = [
-  {
-    provider: "claudeAgent",
-    available: true,
-    version: "2.1.212",
-  },
-] as readonly ServerProviderStatus[];
-
-function config(overrides: Partial<ServerConfig> = {}): ServerConfig {
+vi.mock("react", async () => {
+  const actual = await vi.importActual<typeof import("react")>("react");
   return {
-    homeDir: "/tmp",
-    cwd: "/tmp",
-    providers: [],
-    keybindings: [],
-    editors: [],
-    ...overrides,
-  } as ServerConfig;
+    ...actual,
+    useEffect: (effect: () => void | (() => void)) => {
+      mocks.cleanup = effect() ?? undefined;
+    },
+  };
+});
+
+vi.mock("@tanstack/react-query", () => ({
+  useQueryClient: () => mocks.queryClient,
+}));
+
+vi.mock("../nativeApi", () => ({
+  readNativeApi: mocks.readNativeApi,
+}));
+
+vi.mock("../lib/serverReactQuery", () => ({
+  reconcileServerProviderStatuses: mocks.reconcileServerProviderStatuses,
+}));
+
+import { useProviderStatusRefresh } from "./useProviderStatusRefresh";
+
+function installBrowserGlobals(visibilityState: DocumentVisibilityState) {
+  const windowTarget = new EventTarget();
+  Object.assign(windowTarget, {
+    setTimeout: globalThis.setTimeout,
+    clearTimeout: globalThis.clearTimeout,
+    setInterval: globalThis.setInterval,
+    clearInterval: globalThis.clearInterval,
+  });
+  const documentTarget = new EventTarget();
+  Object.defineProperty(documentTarget, "visibilityState", {
+    configurable: true,
+    value: visibilityState,
+    writable: true,
+  });
+  vi.stubGlobal("window", windowTarget);
+  vi.stubGlobal("document", documentTarget);
+  return {
+    documentTarget,
+    setVisibilityState: (next: DocumentVisibilityState) => {
+      Object.defineProperty(documentTarget, "visibilityState", {
+        configurable: true,
+        value: next,
+        writable: true,
+      });
+    },
+    windowTarget,
+  };
 }
 
-describe("writeProviderStatusesToConfigCache", () => {
-  it("hydrates the complete config before merging an early provider refresh", async () => {
-    const queryClient = new QueryClient();
-    const loadConfig = vi.fn(async () => config({ homeDir: "/real-home" }));
-
-    await writeProviderStatusesToConfigCache(queryClient, providers, loadConfig);
-
-    expect(loadConfig).toHaveBeenCalledOnce();
-    expect(queryClient.getQueryData(serverQueryKeys.config())).toEqual(
-      config({ homeDir: "/real-home", providers: [...providers] }),
-    );
+describe("useProviderStatusRefresh", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    mocks.cleanup = undefined;
+    mocks.readNativeApi.mockReset();
+    mocks.reconcileServerProviderStatuses.mockClear();
   });
 
-  it("merges into an existing config without refetching it", async () => {
-    const queryClient = new QueryClient();
-    queryClient.setQueryData(serverQueryKeys.config(), config({ cwd: "/workspace" }));
-    const loadConfig = vi.fn(async () => config());
+  afterEach(() => {
+    mocks.cleanup?.();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
 
-    await writeProviderStatusesToConfigCache(queryClient, providers, loadConfig);
+  it("still runs the startup refresh after an early focus attempt fails", async () => {
+    const { windowTarget } = installBrowserGlobals("visible");
+    const refreshProviders = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("transport unavailable"))
+      .mockResolvedValueOnce({ providers: [] });
+    mocks.readNativeApi.mockReturnValue({ server: { refreshProviders } });
+    const onRefreshSuccess = vi.fn();
 
-    expect(loadConfig).not.toHaveBeenCalled();
-    expect(queryClient.getQueryData<ServerConfig>(serverQueryKeys.config())).toMatchObject({
-      cwd: "/workspace",
-      providers,
+    useProviderStatusRefresh({
+      initialDelayMs: 10_000,
+      minIntervalMs: 15_000,
+      refreshOnFocus: true,
+      onRefreshSuccess,
     });
+
+    windowTarget.dispatchEvent(new Event("focus"));
+    await vi.advanceTimersByTimeAsync(0);
+    expect(refreshProviders).toHaveBeenCalledTimes(1);
+
+    await vi.advanceTimersByTimeAsync(10_000);
+    expect(refreshProviders).toHaveBeenCalledTimes(2);
+    expect(onRefreshSuccess).toHaveBeenCalledOnce();
+  });
+
+  it("retries a hidden startup refresh when the document becomes visible", async () => {
+    const { documentTarget, setVisibilityState } = installBrowserGlobals("hidden");
+    const refreshProviders = vi.fn().mockResolvedValue({ providers: [] });
+    mocks.readNativeApi.mockReturnValue({ server: { refreshProviders } });
+    const onRefreshSuccess = vi.fn();
+
+    useProviderStatusRefresh({
+      initialDelayMs: 10_000,
+      minIntervalMs: 15_000,
+      refreshOnFocus: true,
+      onRefreshSuccess,
+    });
+
+    await vi.advanceTimersByTimeAsync(10_000);
+    expect(refreshProviders).not.toHaveBeenCalled();
+
+    setVisibilityState("visible");
+    documentTarget.dispatchEvent(new Event("visibilitychange"));
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect(refreshProviders).toHaveBeenCalledOnce();
+    expect(onRefreshSuccess).toHaveBeenCalledOnce();
   });
 });

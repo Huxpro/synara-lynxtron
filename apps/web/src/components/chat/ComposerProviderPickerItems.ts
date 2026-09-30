@@ -51,10 +51,10 @@ function filterProviderOptionsByVisibility<T extends { value: ProviderKind }>(
 }
 
 export function buildComposerProviderPickerItems(input: {
-  readonly providers?: ReadonlyArray<ServerProviderStatus>;
-  readonly hiddenProviders?: ReadonlyArray<ProviderKind>;
-  readonly providerOrder?: ReadonlyArray<ProviderKind>;
-  readonly protectedProviders?: ReadonlyArray<ProviderKind>;
+  readonly providers?: ReadonlyArray<ServerProviderStatus> | undefined;
+  readonly hiddenProviders?: ReadonlyArray<ProviderKind> | undefined;
+  readonly providerOrder?: ReadonlyArray<ProviderKind> | undefined;
+  readonly protectedProviders?: ReadonlyArray<ProviderKind> | undefined;
 }): ReadonlyArray<ComposerProviderPickerItem> {
   const hiddenProviderSet = new Set(input.hiddenProviders ?? []);
   const protectedProviderSet = new Set(input.protectedProviders ?? []);

@@ -55,7 +55,6 @@ describe("Native recent-view switcher", () => {
     expect(source).toContain(
       'import settingsSvg from "@synara-central-icons/settings-gear-4.svg?raw"',
     );
-    expect(source).toContain('import windowSvg from "@synara-central-icons/window.svg?raw"');
     expect(source).toContain(
       'import splitViewSvg from "@synara-central-icons/sidebar-simple-left-wide.svg?raw"',
     );

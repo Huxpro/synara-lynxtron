@@ -1,8 +1,7 @@
 // FILE: useTerminalSurfaceController.ts
-// Purpose: Shared terminal-store controller for non-chat terminal surfaces
-//          (right-dock terminal pane + workspace page). Owns the store selector
-//          slice, the focus-request bump, and the standard create/split/tab/move/
-//          activate/close handlers that were duplicated across those surfaces.
+// Purpose: Terminal-store controller for the right-dock terminal pane. Owns the
+//          store selector slice, focus-request bump, and standard create/split/tab/
+//          move/activate/close handlers.
 // Layer: Web terminal UI hook
 // Note: ChatView is intentionally NOT a consumer — it adds split limits, placeholder
 //       thread cleanup, and split-view navigation, so it shares only the lower-level
@@ -21,10 +20,8 @@ import {
 import { readNativeApi } from "~/nativeApi";
 import { dialogs } from "~/platform/dialogs";
 import { selectThreadTerminalState, useTerminalStateStore } from "~/terminalStateStore";
-import {
-  disposeAndCloseTerminalSession,
-  randomTerminalId,
-} from "~/components/terminal/terminalSession";
+import { randomTerminalId } from "~/components/terminal/terminalIds";
+import { disposeAndCloseTerminalSession } from "~/components/terminal/terminalSession";
 
 type TerminalMetadata = { cliKind: TerminalCliKind | null; label: string };
 type TerminalActivity = {
@@ -38,13 +35,15 @@ export function useTerminalSurfaceController(threadId: ThreadId) {
     selectThreadTerminalState(state.terminalStateByThreadId, threadId),
   );
   const openTerminalThreadPage = useTerminalStateStore((s) => s.openTerminalThreadPage);
-  const applyWorkspaceLayoutPreset = useTerminalStateStore((s) => s.applyWorkspaceLayoutPreset);
   const newTerminal = useTerminalStateStore((s) => s.newTerminal);
   const newTerminalTab = useTerminalStateStore((s) => s.newTerminalTab);
   const splitTerminalRightStore = useTerminalStateStore((s) => s.splitTerminalRight);
   const splitTerminalDownStore = useTerminalStateStore((s) => s.splitTerminalDown);
   const setActiveTerminalStore = useTerminalStateStore((s) => s.setActiveTerminal);
-  const closeTerminalStore = useTerminalStateStore((s) => s.closeTerminal);
+  const closeTerminalAndEnsureReplacementStore = useTerminalStateStore(
+    (s) => s.closeTerminalAndEnsureReplacement,
+  );
+  const closeExitedTerminalStore = useTerminalStateStore((s) => s.closeExitedTerminal);
   const closeTerminalGroupStore = useTerminalStateStore((s) => s.closeTerminalGroup);
   const setTerminalHeightStore = useTerminalStateStore((s) => s.setTerminalHeight);
   const resizeTerminalSplitStore = useTerminalStateStore((s) => s.resizeTerminalSplit);
@@ -104,8 +103,30 @@ export function useTerminalSurfaceController(threadId: ThreadId) {
       return;
     }
     disposeAndCloseTerminalSession({ api, threadId, terminalId });
-    closeTerminalStore(threadId, terminalId);
+    closeTerminalAndEnsureReplacementStore(threadId, terminalId, randomTerminalId());
     bumpFocusRequest();
+  };
+
+  const disposeExitedTerminal = (terminalId: string) => {
+    disposeAndCloseTerminalSession({
+      api: readNativeApi(),
+      threadId,
+      terminalId,
+      processAlreadyExited: true,
+    });
+  };
+
+  const handleTerminalSessionExited = (terminalId: string) => {
+    disposeExitedTerminal(terminalId);
+    closeTerminalAndEnsureReplacementStore(threadId, terminalId, randomTerminalId());
+    bumpFocusRequest();
+  };
+
+  const handleDockTerminalSessionExited = (terminalId: string) => {
+    disposeExitedTerminal(terminalId);
+    const disposition = closeExitedTerminalStore(threadId, terminalId);
+    bumpFocusRequest();
+    return disposition;
   };
 
   const closeTerminalGroup = (groupId: string) => closeTerminalGroupStore(threadId, groupId);
@@ -126,7 +147,6 @@ export function useTerminalSurfaceController(threadId: ThreadId) {
     focusRequestId,
     bumpFocusRequest,
     openTerminalThreadPage,
-    applyWorkspaceLayoutPreset,
     newTerminalGroup,
     splitRight,
     splitDown,
@@ -134,6 +154,8 @@ export function useTerminalSurfaceController(threadId: ThreadId) {
     moveTerminalToNewGroup,
     activateTerminal,
     closeTerminal,
+    handleTerminalSessionExited,
+    handleDockTerminalSessionExited,
     closeTerminalGroup,
     setTerminalHeight,
     resizeTerminalSplit,

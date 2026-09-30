@@ -70,13 +70,13 @@ export function SidebarSearchPaletteMark(props: React.ComponentProps<"mark">) {
 }
 
 export function SidebarSearchPaletteGlyph(props: {
-  className?: string;
+  className?: string | undefined;
   kind: SidebarSearchPaletteGlyphKind;
-  provider?: string;
+  provider?: string | undefined;
 }) {
   if (props.kind === "provider") {
     return <ProviderIcon provider={props.provider as never} className={props.className} />;
   }
   const Glyph = GLYPHS[props.kind];
-  return <Glyph className={props.className} />;
+  return <Glyph {...(props.className ? { className: props.className } : {})} />;
 }

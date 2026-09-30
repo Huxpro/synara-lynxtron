@@ -1,4 +1,4 @@
-export type SidebarView = "threads" | "studio" | "workspace";
+export type SidebarView = "threads" | "studio";
 
 export interface SidebarSegmentGeometry {
   readonly left: string;

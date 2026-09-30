@@ -5,7 +5,7 @@ export function ComposerColumnFrameSurfaceElement({
   className,
 }: {
   readonly children: ReactNode;
-  readonly className?: string;
+  readonly className?: string | undefined;
 }) {
   return <div className={className}>{children}</div>;
 }

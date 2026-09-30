@@ -128,10 +128,8 @@ describe("shellRuntime", () => {
     );
     expect(parseSynaraDeepLink("synara://kanban")).toBe("/kanban");
     expect(parseSynaraDeepLink("synara://kanban/project%20one")).toBe("/kanban/project%20one");
-    expect(parseSynaraDeepLink("synara://workspace")).toBe("/workspace");
-    expect(parseSynaraDeepLink("synara://workspace/workspace%20one")).toBe(
-      "/workspace/workspace%20one",
-    );
+    // The Workspace view was removed upstream; stale links land on the home route.
+    expect(parseSynaraDeepLink("synara://workspace")).toBe("/");
     expect(parseSynaraDeepLink("synara://new-thread/project%20one")).toBe(
       "/new-thread/project%20one",
     );
@@ -200,7 +198,7 @@ describe("shellRuntime", () => {
   it("preserves supported startup surface state from desktop deep links", () => {
     expect(
       parseSynaraDeepLinkInitData(
-        "synara://thread/abc-123?environment=open&diff=1&diffTurnId=turn-7&diffFilePath=src%2Fexample.ts&diffFileTree=open&editor=open&editorMode=diff&editorChat=hidden&editorHistory=open&editorNew=open&editorNewChat=open&editorSearch=open&editorProjectMenu=open&rename=open&terminal=open&workspaceSettings=open&workspaceVisible=open&explorer=open&explorerActionMenu=open&explorerPath=reports%2Fpreview.pdf&explorerQuery=report&explorerCommentLine=7&explorerExpanded=reports&explorerExpanded=reports%2F2026&explorerWidth=520&composerModelMenu=open&composerModelSubmenu=open&composerModelProvider=codex",
+        "synara://thread/abc-123?environment=open&diff=1&diffTurnId=turn-7&diffFilePath=src%2Fexample.ts&diffFileTree=open&editor=open&editorMode=diff&editorChat=hidden&editorHistory=open&editorNew=open&editorNewChat=open&editorSearch=open&editorProjectMenu=open&rename=open&terminal=open&explorer=open&explorerActionMenu=open&explorerPath=reports%2Fpreview.pdf&explorerQuery=report&explorerCommentLine=7&explorerExpanded=reports&explorerExpanded=reports%2F2026&explorerWidth=520&composerModelMenu=open&composerModelSubmenu=open&composerModelProvider=codex",
       ),
     ).toEqual({
       initialDiffOpen: true,
@@ -222,8 +220,6 @@ describe("shellRuntime", () => {
       initialRenameOpen: true,
       initialTerminalOpen: true,
       initialSettingsTarget: null,
-      initialWorkspaceSettingsOpen: true,
-      initialWorkspaceVisible: true,
       initialExplorerOpen: true,
       initialExplorerPresentationMode: "dock",
       initialExplorerActionMenuOpen: true,
@@ -233,19 +229,6 @@ describe("shellRuntime", () => {
       initialExplorerQuery: "report",
       initialExplorerWidth: 520,
       initialRoute: "/thread/abc-123",
-    });
-    expect(
-      parseSynaraDeepLinkInitData(
-        "synara://workspace/workspace-one?workspaceSettings=open&workspaceVisible=open",
-      ),
-    ).toMatchObject({
-      initialDiffOpen: false,
-      initialDiffTurnId: null,
-      initialDiffFilePath: null,
-      initialDiffFileTreeOpen: false,
-      initialRoute: "/workspace/workspace-one",
-      initialWorkspaceSettingsOpen: true,
-      initialWorkspaceVisible: true,
     });
     expect(
       parseSynaraDeepLinkInitData("synara://settings/general?target=environment-panel"),

@@ -2,12 +2,7 @@ import { Schema } from "effect";
 import { assert, it } from "@effect/vitest";
 import { Effect } from "effect";
 
-import {
-  KeybindingsConfig,
-  KeybindingRule,
-  ResolvedKeybindingRule,
-  ResolvedKeybindingsConfig,
-} from "./keybindings";
+import { KeybindingsConfig, KeybindingRule, ResolvedKeybindingRule } from "./keybindings";
 
 const decode = <S extends Schema.Top>(
   schema: S,
@@ -34,6 +29,12 @@ it.effect("parses keybinding rules", () =>
       command: "sidebar.search",
     });
     assert.strictEqual(parsedSearch.command, "sidebar.search");
+
+    const parsedActivity = yield* decode(KeybindingRule, {
+      key: "mod+alt+u",
+      command: "sidebar.activity",
+    });
+    assert.strictEqual(parsedActivity.command, "sidebar.activity");
 
     const parsedAddProject = yield* decode(KeybindingRule, {
       key: "mod+shift+o",
@@ -118,6 +119,12 @@ it.effect("parses keybinding rules", () =>
       command: "composer.focus.toggle",
     });
     assert.strictEqual(parsedComposerFocusToggle.command, "composer.focus.toggle");
+
+    const parsedChatFind = yield* decode(KeybindingRule, {
+      key: "mod+f",
+      command: "chat.find",
+    });
+    assert.strictEqual(parsedChatFind.command, "chat.find");
 
     const parsedNewChat = yield* decode(KeybindingRule, {
       key: "mod+alt+n",
@@ -241,25 +248,6 @@ it.effect("parses resolved keybinding rules", () =>
       },
     });
     assert.strictEqual(parsed.shortcut.key, "d");
-  }),
-);
-
-it.effect("parses resolved keybindings arrays", () =>
-  Effect.gen(function* () {
-    const parsed = yield* decode(ResolvedKeybindingsConfig, [
-      {
-        command: "terminal.toggle",
-        shortcut: {
-          key: "j",
-          metaKey: false,
-          ctrlKey: false,
-          shiftKey: false,
-          altKey: false,
-          modKey: true,
-        },
-      },
-    ]);
-    assert.lengthOf(parsed, 1);
   }),
 );
 

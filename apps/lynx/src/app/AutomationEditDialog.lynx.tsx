@@ -11,11 +11,9 @@ import {
   formFromDefinition,
   isFormSubmittable,
   modelSelectionForProjectChange,
-  providerOptionsForAutomationEdit,
   scheduleFromForm,
   scheduleFromKind,
   SCHEDULE_KIND_OPTIONS,
-  updateInputFromForm,
   type AutomationFormState,
   type IntervalUnit,
   type ScheduleKind,
@@ -23,11 +21,15 @@ import {
 import {
   hasBlockingAutomationDraftWarnings,
   updateAutomationDraftWarningAcknowledgement,
-  warningIdsForAcknowledgedRisks,
   type AutomationDraftWarningId,
 } from "@synara-web/lib/automationDraft";
 
 import { ComposerModelControl } from "../components/composer/ComposerModelControl.lynx";
+import {
+  providerOptionsForAutomationEdit,
+  updateInputFromForm,
+  warningIdsForAcknowledgedRisks,
+} from "./automationEditDialog.logic";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input.lynx";
 import { Textarea } from "../components/ui/textarea.lynx";
@@ -40,7 +42,6 @@ import {
 } from "../components/ui/dialog.lynx";
 import {
   Menu,
-  MenuCheckboxItem,
   MenuGroup,
   MenuGroupLabel,
   MenuItem,
@@ -610,17 +611,6 @@ export function AutomationEditDialog({
                     ))}
                   </MenuRadioGroup>
                 </MenuGroup>
-                {form.mode === "heartbeat" ? (
-                  <>
-                    <MenuSeparator />
-                    <MenuCheckboxItem
-                      checked={form.stopOnError}
-                      onCheckedChange={(value) => setField("stopOnError", value)}
-                    >
-                      Stop on error
-                    </MenuCheckboxItem>
-                  </>
-                ) : null}
               </MenuPopup>
             </Menu>
 

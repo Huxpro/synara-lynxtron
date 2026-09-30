@@ -12,11 +12,11 @@ import {
 export type TimelineStatusTone = "thinking" | "tool" | "info" | "error";
 
 export function TimelineStatusRowComposition(props: {
-  readonly compact?: boolean;
+  readonly compact?: boolean | undefined;
   readonly displayText: string;
   readonly fontSizePx: number;
-  readonly icon?: ReactNode;
-  readonly statusOnly?: boolean;
+  readonly icon?: ReactNode | undefined;
+  readonly statusOnly?: boolean | undefined;
   readonly tone: TimelineStatusTone;
 }) {
   const statusOnly = props.statusOnly ?? false;

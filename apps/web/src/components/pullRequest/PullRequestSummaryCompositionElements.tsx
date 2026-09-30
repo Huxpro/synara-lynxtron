@@ -23,7 +23,7 @@ import {
   PR_SECTION_TITLE_TEXT_CLASS_NAME,
 } from "./pullRequestText";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function PullRequestSummaryRootElement(props: ChildrenProps) {
   return <div className="h-full overflow-y-auto">{props.children}</div>;

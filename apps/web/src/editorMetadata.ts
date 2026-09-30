@@ -55,6 +55,7 @@ const EDITOR_ICONS: Partial<Record<EditorId, Icon>> = {
   ghostty: GhosttyIcon,
   muxy: TerminalAppIcon,
   terminal: TerminalAppIcon,
+  iterm: TerminalAppIcon,
   warp: WarpIcon,
   xcode: XcodeIcon,
   idea: IntelliJIdeaIcon,
@@ -132,7 +133,7 @@ export function resolveEditorLabel(editorId: EditorId, platform: string): string
 }
 
 // Keep the header/picker resilient even when a brand-specific icon does not exist yet.
-export function resolveEditorIcon(editorId: EditorId): Icon {
+function resolveEditorIcon(editorId: EditorId): Icon {
   return EDITOR_ICONS[editorId] ?? OpenCodeIcon;
 }
 

@@ -6,9 +6,9 @@ import {
   type ThreadId,
   type TurnId,
 } from "@synara/contracts";
-import { PROVIDER_DESCRIPTORS } from "@synara/shared/providerMetadata";
+import { VISIBLE_PROVIDER_DESCRIPTORS } from "./betaFeatures";
 
-import { orderedActivities } from "./workLog";
+import { orderedActivities, parseTaskListTasks } from "./workLog";
 import {
   hasLiveLatestTurn,
   isLatestTurnSettled,
@@ -36,10 +36,14 @@ export {
   deriveWorkLogEntries,
   isFileChangeWorkLogEntry,
   isProviderFileEditWorkLogEntry,
+  isRoutedSubagentWorkEntry,
+  omitRoutedSubagentWorkEntries,
   orderedActivities,
   type TimelineEntry,
   type WorkLogAutomation,
   type WorkLogEntry,
+  type WorkLogLiveActivity,
+  type WorkLogLiveActivityState,
   type WorkLogSubagent,
   type WorkLogSubagentAction,
   type WorkLogSynaraCreatedThread,
@@ -53,7 +57,7 @@ export const PROVIDER_OPTIONS: Array<{
   value: ProviderPickerKind;
   label: string;
   available: boolean;
-}> = PROVIDER_DESCRIPTORS.map((descriptor) => ({
+}> = VISIBLE_PROVIDER_DESCRIPTORS.map((descriptor) => ({
   value: descriptor.kind,
   label: descriptor.displayName,
   available: descriptor.available,
@@ -89,19 +93,20 @@ function formatDuration(durationMs: number): string {
   if (durationMs < 1_000) return `${Math.max(1, Math.round(durationMs))}ms`;
   if (durationMs < 10_000) return `${(durationMs / 1_000).toFixed(1)}s`;
   if (durationMs < 60_000) return `${Math.round(durationMs / 1_000)}s`;
-  const minutes = Math.floor(durationMs / 60_000);
-  const seconds = Math.round((durationMs % 60_000) / 1_000);
-  if (seconds === 0) return `${minutes}m`;
-  if (seconds === 60) return `${minutes + 1}m`;
-  return `${minutes}m ${seconds}s`;
+  // Keep settled-time rounding while sharing larger units with live clocks.
+  return formatClockDuration(Math.round(durationMs / 1_000) * 1_000);
 }
 
+// Keep long-running timers compact with days/hours, hours/minutes, or minutes/seconds.
 export function formatClockDuration(durationMs: number): string {
   const elapsedSeconds = Math.max(0, Math.floor(durationMs / 1_000));
   if (elapsedSeconds < 60) return `${elapsedSeconds}s`;
 
-  const hours = Math.floor(elapsedSeconds / 3600);
-  const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+  const days = Math.floor(elapsedSeconds / 86_400);
+  const hours = Math.floor((elapsedSeconds % 86_400) / 3_600);
+  if (days > 0) return hours > 0 ? `${days}d ${hours}h` : `${days}d`;
+
+  const minutes = Math.floor((elapsedSeconds % 3_600) / 60);
   const seconds = elapsedSeconds % 60;
   if (hours > 0) return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
   return seconds > 0 ? `${minutes}m ${seconds}s` : `${minutes}m`;
@@ -159,21 +164,14 @@ type RunningTurnSessionView = {
 /**
  * A session is actively running a turn: it reports the `running` status and still
  * has an in-flight `activeTurnId`. This is the single rule for "there is live work
- * on this session right now" — it gates destructive thread lifecycle actions
- * (archive/delete must stop the turn first) and marks the latest turn as running
- * during read-model reconciliation. Centralized so every gate agrees on what
- * "running" means; widening it later (e.g. to also block `starting`) updates every
- * caller at once instead of leaving a stale inline check behind.
+ * on this session right now" during read-model reconciliation. Thread lifecycle
+ * cleanup is server-owned and intentionally does not use this predicate as a UI
+ * gate.
  */
 export function isSessionRunningTurn<T extends RunningTurnSessionView>(
   session: T | null | undefined,
 ): session is T & { activeTurnId: TurnId } {
   return session != null && session.status === "running" && session.activeTurnId != null;
-}
-
-/** Thread-level form of {@link isSessionRunningTurn}: true while the thread's session has an in-flight turn. */
-export function isThreadRunningTurn(thread: Pick<Thread, "session">): boolean {
-  return isSessionRunningTurn(thread.session);
 }
 
 export function deriveActiveWorkStartedAt(
@@ -200,33 +198,8 @@ function toActiveTaskListState(activity: OrchestrationThreadActivity): ActiveTas
     activity.payload && typeof activity.payload === "object"
       ? (activity.payload as Record<string, unknown>)
       : null;
-  const rawTasks = payload?.tasks;
-  if (!Array.isArray(rawTasks)) {
-    return null;
-  }
-  const tasks = rawTasks
-    .map((entry) => {
-      if (!entry || typeof entry !== "object") return null;
-      const record = entry as Record<string, unknown>;
-      if (typeof record.task !== "string") {
-        return null;
-      }
-      const status =
-        record.status === "completed" || record.status === "inProgress" ? record.status : "pending";
-      return {
-        task: record.task,
-        status,
-      };
-    })
-    .filter(
-      (
-        task,
-      ): task is {
-        task: string;
-        status: "pending" | "inProgress" | "completed";
-      } => task !== null,
-    );
-  if (rawTasks.length > 0 && tasks.length === 0) {
+  const tasks = parseTaskListTasks(payload);
+  if (!tasks) {
     return null;
   }
   return {

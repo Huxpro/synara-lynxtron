@@ -21,6 +21,7 @@ import { Effect, Layer, ServiceMap } from "effect";
 import * as SqlClient from "effect/unstable/sql/SqlClient";
 
 import { ServerConfig } from "./config";
+import { claudeTokenActivityCtes } from "./claudeTokenStats";
 
 const HEATMAP_WINDOW_DAYS = 274; // ~9 months, GitHub-style contribution grid.
 const SKILL_RESULT_LIMIT = 12;
@@ -31,9 +32,10 @@ const PROVIDER_KINDS = new Set<ProviderKind>([
   "antigravity",
   "grok",
   "droid",
-  "kilo",
   "opencode",
   "pi",
+  "devin",
+  "omp",
 ]);
 
 type HeatmapCell = ProfileStats["activity"]["heatmap"][number];
@@ -365,15 +367,32 @@ function weekdayOf(day: string): number {
   return new Date(Date.UTC(year, month - 1, date)).getUTCDay();
 }
 
-function heatmapIntensity(count: number, max: number): number {
-  if (count <= 0 || max <= 0) {
+// Number of non-empty intensity levels (1–4); level 0 is reserved for empty days.
+const HEATMAP_LEVELS = 4;
+
+// Rank a day against the distribution of active days instead of against the window
+// max. Percent-of-max bucketing collapses on skewed data — token counts routinely
+// span orders of magnitude, so one spike day drops every other day below 25% of the
+// max and flattens the entire grid to level 1. Ranking spreads active days across
+// all four levels regardless of scale, and ties share a level (a window where every
+// active day is identical renders uniformly at level 4).
+export function heatmapIntensity(count: number, sortedActiveCounts: readonly number[]): number {
+  if (count <= 0 || sortedActiveCounts.length === 0) {
     return 0;
   }
-  const ratio = count / max;
-  if (ratio <= 0.25) return 1;
-  if (ratio <= 0.5) return 2;
-  if (ratio <= 0.75) return 3;
-  return 4;
+  // Days with a count <= this one, i.e. this day's rank in the active-day distribution.
+  let low = 0;
+  let high = sortedActiveCounts.length;
+  while (low < high) {
+    const mid = (low + high) >>> 1;
+    if (sortedActiveCounts[mid]! <= count) {
+      low = mid + 1;
+    } else {
+      high = mid;
+    }
+  }
+  const level = Math.ceil((low * HEATMAP_LEVELS) / sortedActiveCounts.length);
+  return Math.min(HEATMAP_LEVELS, Math.max(1, level));
 }
 
 function percent1(part: number, total: number): number {
@@ -506,12 +525,13 @@ function computeStreaks(
 function buildHeatmap(countByDay: ReadonlyMap<string, number>, todayKey: string): HeatmapCell[] {
   const windowStart = addDaysIso(todayKey, -(HEATMAP_WINDOW_DAYS - 1));
 
-  let windowMax = 0;
+  const activeCounts: number[] = [];
   for (const [day, count] of countByDay) {
-    if (day >= windowStart && day <= todayKey && count > windowMax) {
-      windowMax = count;
+    if (day >= windowStart && day <= todayKey && count > 0) {
+      activeCounts.push(count);
     }
   }
+  activeCounts.sort((left, right) => left - right);
 
   const heatmap: HeatmapCell[] = [];
   for (let offset = 0; offset < HEATMAP_WINDOW_DAYS; offset += 1) {
@@ -521,7 +541,7 @@ function buildHeatmap(countByDay: ReadonlyMap<string, number>, todayKey: string)
       day,
       count,
       weekday: weekdayOf(day),
-      intensity: heatmapIntensity(count, windowMax),
+      intensity: heatmapIntensity(count, activeCounts),
     });
   }
   return heatmap;
@@ -641,11 +661,11 @@ const makeProfileStatsQuery = Effect.gen(function* () {
       ),
     );
 
-  // Profile history counts all work ever done. Retention hides are soft
-  // deletes whose rows keep feeding these queries directly; explicit deletes
-  // purge the thread's rows AFTER snapshotting the aggregates that matter into
-  // the profile_stats_deleted_* tables (see profileStatsArchive.ts), so every
-  // query below merges live projections with those archived aggregates.
+  // Profile history counts all work ever done. Active and archived thread rows
+  // feed these queries directly; explicit deletes purge the thread's rows AFTER
+  // snapshotting the aggregates that matter into the profile_stats_deleted_*
+  // tables (see profileStatsArchive.ts), so every query below merges current
+  // projections with those deleted-thread aggregates.
   // ── SQL helpers ──────────────────────────────────────────────────────
 
   // Activity = days/hours the user actually sent a Synara prompt. One day-hour
@@ -655,9 +675,9 @@ const makeProfileStatsQuery = Effect.gen(function* () {
       "profileStats.promptActivity",
       sql<PromptActivityRow>`
         WITH prompt_events AS (
-          -- The thread join (no deleted_at filter) keeps retention-hidden rows
-          -- counting while excluding orphan message rows of purged threads,
-          -- which are already counted from the archive tables.
+          -- The thread join (no deleted_at filter) keeps archived and not-yet-
+          -- purged rows counting while excluding orphan message rows of purged
+          -- threads, which are already counted from the archive tables.
           SELECT m.created_at AS created_at
           FROM projection_thread_messages m
           JOIN projection_threads t ON t.thread_id = m.thread_id
@@ -678,7 +698,9 @@ const makeProfileStatsQuery = Effect.gen(function* () {
       `,
     );
 
-  // Token usage for EVERY provider, straight from Synara's own DB (no external
+  // Claude uses versioned turn results (including subagents once), with retained
+  // main-loop results as a partial historical fallback; see claudeTokenStats.ts.
+  // Other providers' token usage comes straight from Synara's own DB (no external
   // ~/.codex/~/.claude archives, so it is provider-agnostic AND per-instance). Each
   // `context-window.updated` activity carries a running per-thread token counter;
   // the positive delta is the tokens processed in that step, bucketed by the
@@ -696,7 +718,8 @@ const makeProfileStatsQuery = Effect.gen(function* () {
         WITH turn_model AS (
           ${turnModelSelectionCte(sql)}
         ),
-        ev AS (
+        ${claudeTokenActivityCtes(sql)},
+        token_activity AS (
           SELECT
             a.thread_id AS thread_id,
             STRFTIME('%Y-%m-%d', DATETIME(a.created_at, ${tz})) AS day,
@@ -745,6 +768,12 @@ const makeProfileStatsQuery = Effect.gen(function* () {
               json_extract(a.payload_json, '$.totalProcessedTokens'),
               json_extract(a.payload_json, '$.usedTokens')
             ) IS NOT NULL
+        ),
+        -- Claude's verified per-turn results are counted separately below. Drop
+        -- provisional/legacy Claude context rows before windowing so they cannot
+        -- change a neighboring provider's cumulative or used-only delta.
+        ev AS (
+          SELECT * FROM token_activity WHERE provider != 'claudeAgent'
         ),
         provider_model_scale AS (
           SELECT thread_id, provider, model, MAX(tp IS NOT NULL) AS has_cumulative
@@ -867,12 +896,17 @@ const makeProfileStatsQuery = Effect.gen(function* () {
           SELECT day, provider, model, d FROM used_only_delta
           WHERE dispatch_origin IS NULL OR dispatch_origin = 'user'
           UNION ALL
+          SELECT STRFTIME('%Y-%m-%d', DATETIME(created_at, ${tz})),
+            'claudeAgent', model, tokens
+          FROM claude_token_rows
+          UNION ALL
           SELECT
             STRFTIME('%Y-%m-%d', DATETIME(a.created_at, ${tz})) AS day,
             COALESCE(a.provider, 'unknown') AS provider,
             COALESCE(a.model, 'unknown') AS model,
             a.tokens AS d
           FROM profile_stats_deleted_tokens a
+          WHERE COALESCE(a.provider, 'unknown') != 'claudeAgent' OR a.token_accounting_version = 1
         )
         SELECT day, provider, model, SUM(d) AS tokens
         FROM all_tokens

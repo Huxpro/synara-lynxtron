@@ -205,11 +205,17 @@ function readEditorRailChatTabsMap(): PersistedEditorRailChatTabsMap {
             return [];
           }
           const candidate = rawTab as Record<string, unknown>;
+          const provider =
+            typeof candidate.provider === "string"
+              ? candidate.provider === "kilo"
+                ? "opencode"
+                : candidate.provider
+              : null;
           if (
             typeof candidate.id !== "string" ||
             typeof candidate.title !== "string" ||
-            typeof candidate.provider !== "string" ||
-            !isProviderKind(candidate.provider)
+            provider === null ||
+            !isProviderKind(provider)
           ) {
             return [];
           }
@@ -217,7 +223,7 @@ function readEditorRailChatTabsMap(): PersistedEditorRailChatTabsMap {
             {
               id: candidate.id as ThreadId,
               title: candidate.title,
-              provider: candidate.provider,
+              provider,
             },
           ];
         }),

@@ -7,8 +7,8 @@ import { SynaraLogo } from "~/components/SynaraLogo";
 import { SidebarDesktopHeaderRootElement } from "~/components/SidebarDesktopHeaderElements";
 
 export function SidebarDesktopHeader(props: {
-  readonly leadingControls?: ReactNode;
-  readonly trafficLightGutter?: boolean;
+  readonly leadingControls?: ReactNode | undefined;
+  readonly trafficLightGutter?: boolean | undefined;
 }) {
   return (
     <SidebarDesktopHeaderRootElement trafficLightGutter={props.trafficLightGutter}>

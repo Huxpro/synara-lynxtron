@@ -7,107 +7,80 @@ import { describe, expect, it } from "vitest";
 import {
   collectDescendantProcesses,
   createProcessTreeKiller,
-  parseProcessCommandMap,
-  parseProcessParentMap,
+  parseProcessChildrenMap,
   type CapturedProcessTree,
+  type ProcessChildrenMap,
   type TerminalKillSignal,
 } from "./processTreeKiller";
 
 describe("processTreeKiller", () => {
   it("collects nested process-tree descendants in parent-first order", () => {
-    const childrenByParentPid = new Map([
-      [100, [101, 102]],
-      [102, [103]],
+    const childrenByParentPid: ProcessChildrenMap = new Map([
+      [
+        100,
+        [
+          { pid: 101, command: "zsh" },
+          { pid: 102, command: "bun run dev" },
+        ],
+      ],
+      [102, [{ pid: 103, command: "tsdown --watch" }]],
     ]);
 
-    expect(collectDescendantProcesses(100, childrenByParentPid)).toEqual([101, 102, 103]);
-  });
-
-  it("parses a lightweight process parent snapshot without command payloads", () => {
-    expect(
-      parseProcessParentMap(`
-        101 100
-        102 100
-        103 102
-        invalid row
-      `),
-    ).toEqual(
-      new Map([
-        [100, [101, 102]],
-        [102, [103]],
-      ]),
-    );
+    expect(collectDescendantProcesses(100, childrenByParentPid)).toEqual([
+      { pid: 101, command: "zsh" },
+      { pid: 102, command: "bun run dev" },
+      { pid: 103, command: "tsdown --watch" },
+    ]);
   });
 
   it("parses current command snapshots with command arguments intact", () => {
     expect(
-      parseProcessCommandMap(`
-        102 bun run dev -- --watch
-        103 /bin/zsh -l
+      parseProcessChildrenMap(`
+        102 100 bun run dev -- --watch
+        103 100 /bin/zsh -l
       `),
     ).toEqual(
       new Map([
-        [102, "bun run dev -- --watch"],
-        [103, "/bin/zsh -l"],
+        [
+          100,
+          [
+            { pid: 102, command: "bun run dev -- --watch" },
+            { pid: 103, command: "/bin/zsh -l" },
+          ],
+        ],
       ]),
     );
   });
 
-  it("reads commands only for descendants discovered by the lightweight snapshot", () => {
-    const commandReadCalls: number[][] = [];
+  it("retries a transient capture failure and tracks descendants", () => {
+    let captureAttempts = 0;
     const killer = createProcessTreeKiller({
-      captureChildrenMap: () =>
-        new Map([
-          [100, [101, 102]],
-          [102, [103]],
-        ]),
-      readCurrentCommands: (pids) => {
-        commandReadCalls.push([...pids]);
-        return new Map([
-          [101, "zsh"],
-          [102, "bun run dev"],
-          [103, "tsdown --watch"],
-        ]);
+      captureChildrenMap: () => {
+        captureAttempts += 1;
+        return captureAttempts === 1
+          ? null
+          : new Map([[100, [{ pid: 101, command: "provider-child" }]]]);
       },
     });
 
     expect(killer.capture(100)).toEqual({
-      descendants: [
-        { pid: 101, command: "zsh" },
-        { pid: 102, command: "bun run dev" },
-        { pid: 103, command: "tsdown --watch" },
-      ],
+      descendants: [{ pid: 101, command: "provider-child" }],
       captureComplete: true,
     });
-    expect(commandReadCalls).toEqual([[101, 102, 103]]);
+    expect(captureAttempts).toBe(2);
   });
 
-  it("marks capture incomplete when descendant identities cannot be read", () => {
+  it("fails closed when every capture attempt fails", () => {
+    let captureAttempts = 0;
     const killer = createProcessTreeKiller({
-      captureChildrenMap: () => new Map([[100, [101]]]),
-      readCurrentCommands: () => null,
+      captureChildrenMap: () => {
+        captureAttempts += 1;
+        return null;
+      },
     });
 
-    expect(killer.capture(100)).toEqual({
-      descendants: [],
-      captureComplete: false,
-    });
-  });
-
-  it("marks capture incomplete when a discovered descendant loses its identity", () => {
-    const killer = createProcessTreeKiller({
-      captureChildrenMap: () =>
-        new Map([
-          [100, [101]],
-          [101, [102]],
-        ]),
-      readCurrentCommands: () => new Map([[101, "zsh"]]),
-    });
-
-    expect(killer.capture(100)).toEqual({
-      descendants: [],
-      captureComplete: false,
-    });
+    expect(killer.capture(100)).toEqual({ descendants: [], captureComplete: false });
+    expect(captureAttempts).toBe(2);
   });
 
   it("validates captured child commands before delayed SIGKILL", () => {
@@ -121,11 +94,11 @@ describe("processTreeKiller", () => {
       ],
     };
     const killer = createProcessTreeKiller({
-      readCurrentCommands: (pids) => {
+      readCurrentProcesses: (pids) => {
         commandReadCalls.push([...pids]);
         return new Map([
-          [102, "bun run dev"],
-          [103, "node unrelated-process.js"],
+          [102, { pid: 102, command: "bun run dev" }],
+          [103, { pid: 103, command: "node unrelated-process.js" }],
         ]);
       },
       signalPid: (pid, signal) => {
@@ -153,7 +126,7 @@ describe("processTreeKiller", () => {
   it("does not validate captured child commands before initial SIGTERM", () => {
     const signaledPids: number[] = [];
     const killer = createProcessTreeKiller({
-      readCurrentCommands: () => {
+      readCurrentProcesses: () => {
         throw new Error("SIGTERM should not read current commands");
       },
       signalPid: (pid) => {
@@ -182,7 +155,7 @@ describe("processTreeKiller", () => {
     const signaledPids: number[] = [];
     const treeSignals: number[] = [];
     const killer = createProcessTreeKiller({
-      readCurrentCommands: () => new Map([[103, "tsdown --watch"]]),
+      readCurrentProcesses: () => new Map([[103, { pid: 103, command: "tsdown --watch" }]]),
       signalPid: (pid) => {
         signaledPids.push(pid);
         return null;

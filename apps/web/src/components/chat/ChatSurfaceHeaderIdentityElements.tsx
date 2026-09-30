@@ -7,7 +7,7 @@ import { cn } from "~/lib/utils";
 
 export function ChatSurfaceHeaderIdentityRootElement(props: {
   readonly highlighted: boolean;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <div
@@ -22,8 +22,8 @@ export function ChatSurfaceHeaderIdentityRootElement(props: {
 }
 
 export function ChatSurfaceHeaderIdentityIconElement(props: {
-  readonly title?: string;
-  readonly children?: ReactNode;
+  readonly title?: string | undefined;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <span className="inline-flex size-3.5 shrink-0 items-center justify-center" title={props.title}>
@@ -34,12 +34,12 @@ export function ChatSurfaceHeaderIdentityIconElement(props: {
 
 export function ChatSurfaceHeaderIdentityTitleElement(props: {
   readonly title: string;
-  readonly displayTitle?: string;
-  readonly onRename?: () => void;
+  readonly displayTitle?: string | undefined;
+  readonly onRename?: (() => void) | undefined;
 }) {
   return (
     <h2
-      className="max-w-[clamp(12rem,42vw,36rem)] truncate font-system-ui text-[length:var(--app-font-size-ui,12px)] font-normal text-foreground"
+      className="max-w-[clamp(12rem,42vw,36rem)] truncate font-system-ui text-ui font-normal text-foreground"
       title={props.title}
       onDoubleClick={props.onRename}
     >

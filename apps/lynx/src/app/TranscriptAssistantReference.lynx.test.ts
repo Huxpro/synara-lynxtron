@@ -154,13 +154,8 @@ describe("Lynx assistant message actions", () => {
   it("uses the shared checkpoint mapping and canonical command for message revert", () => {
     const transcriptSource = readFileSync(new URL("./Transcript.tsx", import.meta.url), "utf8");
     const querySource = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
-    const webSource = readFileSync(
-      new URL("../../../web/src/components/ChatView.tsx", import.meta.url),
-      "utf8",
-    );
 
     expect(querySource).toContain("buildRevertTurnCountByUserMessageId({");
-    expect(webSource).toContain("buildRevertTurnCountByUserMessageId({");
     expect(transcriptSource).toContain('accessibleLabel: "Revert to this message"');
     expect(transcriptSource).toContain("await dialogs.confirm(");
     expect(transcriptSource).toContain('type: "thread.checkpoint.revert"');

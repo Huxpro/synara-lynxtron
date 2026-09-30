@@ -7,11 +7,13 @@ import type { ProviderKind } from "@synara/contracts";
 import { webStorage } from "~/platform/storage";
 import {
   FAVORITE_MODEL_STORAGE_KEYS,
+  migrateLegacyKiloFavoriteModelSlugs,
   parseFavoriteModelSlugs,
   supportsModelFavorites,
 } from "./modelFavorites.logic";
 export {
   FAVORITE_MODEL_STORAGE_KEYS,
+  migrateLegacyKiloFavoriteModelSlugs,
   normalizeFavoriteModelSlugs,
   parseFavoriteModelSlugs,
   supportsModelFavorites,
@@ -31,3 +33,7 @@ export function readFavoriteModelSlugs(provider: ProviderKind): string[] {
     return [];
   }
 }
+
+migrateLegacyKiloFavoriteModelSlugs(
+  typeof globalThis.localStorage === "undefined" ? null : webStorage,
+);

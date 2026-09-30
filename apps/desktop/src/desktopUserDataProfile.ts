@@ -52,22 +52,11 @@ export function resolveDesktopAppDataBase(input?: {
 export function resolveDesktopUserDataPath(input: {
   readonly appDataBase: string;
   readonly userDataDirectoryName: string;
-  readonly override?: string | undefined;
+  readonly testOverridePath?: string | undefined;
 }): string {
-  const override = input.override?.trim();
-  if (override) {
-    if (!Path.isAbsolute(override)) {
-      throw new Error("SYNARA_DESKTOP_USER_DATA_DIR must be an absolute path.");
-    }
-    return Path.resolve(override);
-  }
+  const testOverridePath = input.testOverridePath?.trim();
+  if (testOverridePath) return Path.resolve(testOverridePath);
   return Path.join(input.appDataBase, input.userDataDirectoryName);
-}
-
-export function shouldAcquireDesktopSingleInstanceLock(
-  allowParallelInstance: string | undefined,
-): boolean {
-  return allowParallelInstance !== "1";
 }
 
 function readBridgeProfileSourcePath(targetPath: string): string | null {
@@ -259,4 +248,11 @@ export function repairBrowserProfileFromBridgeManifest(
       error,
     };
   }
+}
+
+/** The comparison harness runs Electron beside the user's own instance. */
+export function shouldAcquireDesktopSingleInstanceLock(
+  allowParallelInstance: string | undefined,
+): boolean {
+  return allowParallelInstance !== "1";
 }

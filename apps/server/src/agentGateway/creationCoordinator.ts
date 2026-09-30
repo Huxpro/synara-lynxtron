@@ -8,13 +8,17 @@ import {
   ProjectId,
   ThreadId,
   TurnId,
+  type ModelSelection,
   type OrchestrationThreadShell,
+  type ProviderInteractionMode,
   type ProviderKind,
   type SynaraCreateThreadsInput,
   type SynaraCreateThreadsResult,
 } from "@synara/contracts";
 import { buildPromptThreadTitleFallback } from "@synara/shared/chatThreads";
+import { WORKTREE_BRANCH_PREFIX } from "@synara/shared/git";
 import { parseGitHubRepositoryNameWithOwnerFromPullRequestUrl } from "@synara/shared/githubRepository";
+import { runtimeModeEscalatesPrivilege } from "@synara/shared/runtimeMode";
 import { Cause, Effect, Option, Semaphore } from "effect";
 
 import type { ServerConfigShape } from "../config.ts";
@@ -48,6 +52,13 @@ import { ToolInputError, errorText } from "./toolInput.ts";
 import { GatewayToolError, gatewayToolErrorResult } from "./toolRuntime.ts";
 
 const CREATION_REPLAY_WAIT_MS = 60_000;
+
+function interactionModeForGatewayTarget(target: ModelSelection): ProviderInteractionMode {
+  if (target.provider === "opencode" && target.options?.agent === "plan") {
+    return "plan";
+  }
+  return "default";
+}
 
 interface PullRequestSelector {
   readonly number: number;
@@ -307,6 +318,17 @@ export const makeCreateThreadsHandler = Effect.fn(function* (
           ),
         );
       }
+      if (
+        context.kind !== "provider-session" &&
+        input.threads.some((spec) => spec.notifyCreatorOnComplete)
+      ) {
+        return yield* Effect.fail(
+          new GatewayToolError(
+            "capability_denied",
+            "Completion delivery requires an authenticated creating thread.",
+          ),
+        );
+      }
       const callerTurnId = context.kind === "provider-session" ? context.callerTurnId! : null;
       const caller =
         context.kind === "provider-session"
@@ -444,7 +466,7 @@ export const makeCreateThreadsHandler = Effect.fn(function* (
       if (deprecatedBranchName) {
         return yield* Effect.fail(
           new ToolInputError(
-            '"branchName" is no longer supported for managed worktrees. Synara creates a detached HEAD; create a branch inside the new thread when the work is ready.',
+            '"branchName" is no longer supported for managed worktrees. Synara creates a managed temporary branch and renames it after the first prompt; create additional branches inside the new thread if needed.',
           ),
         );
       }
@@ -477,12 +499,11 @@ export const makeCreateThreadsHandler = Effect.fn(function* (
               }),
             ),
           );
+          const providerAvailability = providerAvailabilities.get(spec.target.provider);
           const target = yield* resolveAgentGatewayTarget({
             target: spec.target,
             discovery: providerDiscovery,
-            ...(providerAvailabilities.get(spec.target.provider) !== undefined
-              ? { availability: providerAvailabilities.get(spec.target.provider)! }
-              : {}),
+            ...(providerAvailability !== undefined ? { availability: providerAvailability } : {}),
             cwd: project.workspaceRoot,
           });
           const externalPolicy =
@@ -504,21 +525,39 @@ export const makeCreateThreadsHandler = Effect.fn(function* (
               ),
             );
           }
-          if (
-            context.kind === "provider-session" &&
-            spec.runtimeMode === "full-access" &&
-            caller!.runtimeMode !== "full-access"
-          ) {
-            return yield* Effect.fail(
-              new ToolInputError(
-                'Your thread runs in "approval-required" mode, so created threads cannot use "full-access".',
-              ),
-            );
-          }
           const runtimeMode =
             externalPolicy?.runtimeMode ??
             spec.runtimeMode ??
-            (context.kind === "external-client" ? "approval-required" : caller!.runtimeMode);
+            (context.kind === "external-client" || caller!.runtimeMode === "auto"
+              ? "approval-required"
+              : caller!.runtimeMode);
+          if (
+            context.kind === "provider-session" &&
+            runtimeModeEscalatesPrivilege(caller!.runtimeMode, runtimeMode)
+          ) {
+            return yield* Effect.fail(
+              new ToolInputError(
+                `Your thread runs in "${caller!.runtimeMode}" mode, so created threads cannot use higher-privileged "${runtimeMode}".`,
+              ),
+            );
+          }
+          if (spec.enableComputerControl === true) {
+            if (context.kind === "provider-session") {
+              return yield* Effect.fail(
+                new ToolInputError(
+                  "Threads cannot delegate computer control to tasks they create.",
+                ),
+              );
+            }
+            if (!context.capabilities.has("computer:control")) {
+              return yield* Effect.fail(
+                new GatewayToolError(
+                  "capability_denied",
+                  'Computer control requires the explicit "computer:control" scope.',
+                ),
+              );
+            }
+          }
           const title = spec.title ?? buildPromptThreadTitleFallback(spec.prompt);
           let worktreeRef: string | null = null;
           let copyChangesFrom: string | null = null;
@@ -553,10 +592,18 @@ export const makeCreateThreadsHandler = Effect.fn(function* (
                         cwd: project.workspaceRoot,
                         prNumber: pullRequest.number,
                         ...(pullRequest.repositoryNameWithOwner
-                          ? { expectedRepositoryNameWithOwner: pullRequest.repositoryNameWithOwner }
+                          ? {
+                              expectedRepositoryNameWithOwner: pullRequest.repositoryNameWithOwner,
+                            }
                           : {}),
                       })
-                      .pipe(Effect.map((ref) => ({ code: 0, stdout: ref, stderr: "" }))),
+                      .pipe(
+                        Effect.map((ref) => ({
+                          code: 0,
+                          stdout: ref,
+                          stderr: "",
+                        })),
+                      ),
                   )
             ).pipe(
               Effect.map((result) => result.stdout.trim()),
@@ -607,7 +654,13 @@ export const makeCreateThreadsHandler = Effect.fn(function* (
             projectScripts: project.scripts,
             worktreeRef,
             copyChangesFrom,
-            newBranch: null,
+            // Deterministic like the planned path: an exact-plan retry must
+            // resolve to the same branch, and recovery reclaims it by name.
+            // The 8-hex-digit token keeps it a temporary synara/* branch.
+            newBranch:
+              environment === "worktree"
+                ? `${WORKTREE_BRANCH_PREFIX}/${stableGatewayDigest({ operationId, index, resource: "worktree-branch" }, 8)}`
+                : null,
             plannedWorktreePath,
             ownershipPreflightPassed: true,
             ids: makeAgentCreationIds(operationId, index),
@@ -704,10 +757,15 @@ export const makeCreateThreadsHandler = Effect.fn(function* (
                           Effect.flatMap(() =>
                             worktree.branch === null
                               ? Effect.void
-                              : git.deleteBranch({
+                              : // The branch is this operation's own deterministic
+                                // synara/* name and its worktree was just force-removed.
+                                // A non-forced delete would fail whenever the pinned
+                                // ref is not merged into the root HEAD (e.g. PR heads),
+                                // stranding the name and blocking exact-plan retries.
+                                git.deleteBranch({
                                   cwd: worktree.cwd,
                                   branch: worktree.branch,
-                                  force: false,
+                                  force: true,
                                 }),
                           ),
                         )
@@ -861,6 +919,7 @@ export const makeCreateThreadsHandler = Effect.fn(function* (
               planJson: canonicalJson(
                 prepared.map((entry) => ({
                   index: entry.index,
+                  notifyCreatorOnComplete: entry.spec.notifyCreatorOnComplete === true,
                   projectId: entry.projectId,
                   workspaceRoot: entry.workspaceRoot,
                   environment: entry.environment,
@@ -978,6 +1037,7 @@ export const makeCreateThreadsHandler = Effect.fn(function* (
                           cwd: entry.workspaceRoot,
                           ref: entry.worktreeRef!,
                           path: entry.plannedWorktreePath,
+                          ...(entry.newBranch ? { newBranch: entry.newBranch } : {}),
                           ...(entry.copyChangesFrom
                             ? { copyChangesFrom: entry.copyChangesFrom }
                             : {}),
@@ -1035,6 +1095,7 @@ export const makeCreateThreadsHandler = Effect.fn(function* (
                     associatedWorktreeRef = created.worktree.ref;
                   }
 
+                  const interactionMode = interactionModeForGatewayTarget(entry.target);
                   yield* context.assertAuthority();
                   yield* orchestrationEngine
                     .dispatch({
@@ -1045,7 +1106,7 @@ export const makeCreateThreadsHandler = Effect.fn(function* (
                       title: entry.title,
                       modelSelection: entry.target,
                       runtimeMode: entry.runtimeMode,
-                      interactionMode: "default",
+                      interactionMode,
                       envMode: entry.environment,
                       branch,
                       worktreePath,
@@ -1088,7 +1149,13 @@ export const makeCreateThreadsHandler = Effect.fn(function* (
                     dispatchMode: "queue",
                     dispatchOrigin: "agent",
                     runtimeMode: entry.runtimeMode,
-                    interactionMode: "default",
+                    interactionMode,
+                    ...(entry.spec.enableComputerControl === true
+                      ? {
+                          enableComputerControl: true,
+                          computerControlMode: "request" as const,
+                        }
+                      : {}),
                     createdAt: gatewayIsoNow(),
                   });
                   // The dispatch can outlive the caller turn. Recheck after it returns so

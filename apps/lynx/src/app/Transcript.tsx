@@ -31,7 +31,6 @@ import {
   appendOriginalComposerPromptBlocks,
   deriveDisplayedUserMessageState,
 } from "@synara-web/lib/terminalContext";
-import { resolveTranscriptMarkerRange } from "@synara/shared/threadMarkers";
 import { resolveSelectionActionLayout } from "@synara/shared/selectionActionLayout";
 import { pinActionLabel } from "@synara-web/lib/pin.logic";
 import { formatShortTimestamp } from "@synara-web/timestampFormat";
@@ -69,8 +68,6 @@ import {
   CopyIcon,
   MessageCircleIcon,
   NewThreadIcon,
-  PencilIcon,
-  TextWrapIcon,
   Undo2Icon,
 } from "../lib/icons.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
@@ -441,8 +438,6 @@ function TranscriptToolGroup(props: {
 
 function TranscriptSelectionAction(props: {
   readonly onAddToChat: () => void;
-  readonly onHighlight: () => void;
-  readonly onUnderline: () => void;
   readonly selection: MarkdownTextSelection;
   readonly viewport: {
     readonly left: number;
@@ -451,8 +446,6 @@ function TranscriptSelectionAction(props: {
     readonly height: number;
   };
 }) {
-  const highlightPointerActivationRef = useRef(false);
-  const underlinePointerActivationRef = useRef(false);
   const addToChatPointerActivationRef = useRef(false);
   const pointerActivate = (
     lock: { current: boolean },
@@ -468,20 +461,6 @@ function TranscriptSelectionAction(props: {
       lock.current = false;
     }, 300);
   };
-  const highlight = useLynxInteractiveState({
-    baseClassName: "TranscriptSelectionAction",
-    accessibleLabel: "Highlight",
-    onActivate: () => {
-      if (!highlightPointerActivationRef.current) props.onHighlight();
-    },
-  });
-  const underline = useLynxInteractiveState({
-    baseClassName: "TranscriptSelectionAction",
-    accessibleLabel: "Underline",
-    onActivate: () => {
-      if (!underlinePointerActivationRef.current) props.onUnderline();
-    },
-  });
   const addToChat = useLynxInteractiveState({
     baseClassName: "TranscriptSelectionAction",
     accessibleLabel: "Add to chat",
@@ -507,34 +486,6 @@ function TranscriptSelectionAction(props: {
       accessibility-label="Selection actions"
       accessibility-trait="summary"
     >
-      <view
-        className={highlight.className}
-        {...highlight.eventProps}
-        catchmousedown={() =>
-          pointerActivate(
-            highlightPointerActivationRef,
-            props.onHighlight,
-            highlight.eventProps.bindmousedown,
-          )
-        }
-      >
-        <PencilIcon className="TranscriptSelectionActionIcon" size={14} />
-        {compact ? null : <text className="TranscriptSelectionActionLabel">Highlight</text>}
-      </view>
-      <view
-        className={underline.className}
-        {...underline.eventProps}
-        catchmousedown={() =>
-          pointerActivate(
-            underlinePointerActivationRef,
-            props.onUnderline,
-            underline.eventProps.bindmousedown,
-          )
-        }
-      >
-        <TextWrapIcon className="TranscriptSelectionActionIcon" size={13} />
-        {compact ? null : <text className="TranscriptSelectionActionLabel">Underline</text>}
-      </view>
       <view
         className={addToChat.className}
         {...addToChat.eventProps}
@@ -693,7 +644,19 @@ function TranscriptMessage({
       });
     },
   });
-  const displayedUserMessage = isUser ? deriveDisplayedUserMessageState(message.text) : null;
+  const displayedUserMessage = isUser
+    ? deriveDisplayedUserMessageState(message.text, {
+        // Same rule as Electron's MessagesTimeline: any image, file or quoted
+        // selection gives the bubble visible content, so the bootstrap prompt hides.
+        hideImageOnlyBootstrapPrompt: (message.attachments ?? []).some(
+          (attachment) =>
+            attachment.type === "image" ||
+            attachment.type === "file" ||
+            attachment.type === "assistant-selection",
+        ),
+        messageId: message.id,
+      })
+    : null;
   const edit = useLynxInteractiveState({
     baseClassName: "TranscriptMessageAction",
     accessibleLabel: "Edit message",
@@ -750,36 +713,6 @@ function TranscriptMessage({
     });
     if (selection) addAssistantSelection(threadId, selection);
     onTextSelectionChange(null);
-  }
-  function addMarker(style: "highlight" | "underline") {
-    "background only";
-    if (!activeTextSelection || assistantText === null) return;
-    const range = resolveTranscriptMarkerRange({
-      messageText: assistantText,
-      selectedText: activeTextSelection.text,
-    });
-    if (!range) return;
-    const now = Date.now();
-    void import(/* webpackMode: "eager" */ "../data/synaraClient").then(
-      ({ dispatchSynaraCommand }) =>
-        dispatchSynaraCommand({
-          type: "thread.marker.add",
-          commandId: `lynx-command-${now}-${Math.random().toString(16).slice(2)}` as never,
-          threadId: threadId as never,
-          markerId: `lynx-marker-${now}-${Math.random().toString(16).slice(2)}` as never,
-          messageId: message.id,
-          startOffset: range.startOffset,
-          endOffset: range.endOffset,
-          selectedText: activeTextSelection.text,
-          style,
-          color: style === "highlight" ? "yellow" : "blue",
-        }).then(() => {
-          onTextSelectionChange(null);
-          return queryClient.invalidateQueries({
-            queryKey: ["thread-detail", threadId],
-          });
-        }),
-    );
   }
   if (message.role === "system") {
     return (
@@ -950,8 +883,6 @@ function TranscriptMessage({
           <TranscriptSelectionAction
             selection={activeTextSelection}
             onAddToChat={addSelectedTextToChat}
-            onHighlight={() => addMarker("highlight")}
-            onUnderline={() => addMarker("underline")}
             viewport={selectionViewport}
           />
         ) : null}

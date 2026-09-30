@@ -25,7 +25,8 @@ import {
   primaryProjectScript,
 } from "~/projectScripts";
 import { shortcutLabelForCommand } from "~/keybindings";
-import { cn, isMacPlatform } from "~/lib/utils";
+import { keybindingFromKeyboardEvent } from "~/lib/keybindingCapture";
+import { cn } from "~/lib/utils";
 import {
   AlertDialog,
   AlertDialogClose,
@@ -61,8 +62,6 @@ import { Popover, PopoverPopup, PopoverTrigger } from "./ui/popover";
 import { Switch } from "./ui/switch";
 import { Textarea } from "./ui/textarea";
 
-import { getNavigatorPlatform } from "~/platform/env";
-import { useUniqueId } from "~/hooks/useUniqueId";
 const SCRIPT_ICONS: Array<{ id: ProjectScriptIcon; label: string }> = [
   { id: "play", label: "Play" },
   { id: "test", label: "Test" },
@@ -74,11 +73,12 @@ const SCRIPT_ICONS: Array<{ id: ProjectScriptIcon; label: string }> = [
 
 function ScriptIcon({
   icon,
-  className = "size-3.5",
+  className: classNameProp,
 }: {
   icon: ProjectScriptIcon;
   className?: string;
 }) {
+  const className = classNameProp ?? "size-3.5";
   if (icon === "test") return <FlaskConicalIcon className={className} />;
   if (icon === "lint") return <ListChecksIcon className={className} />;
   if (icon === "configure") return <SettingsIcon className={className} />;
@@ -105,115 +105,32 @@ interface ProjectScriptsControlProps {
   onAddScript: (input: NewProjectScriptInput) => Promise<void> | void;
   onUpdateScript: (scriptId: string, input: NewProjectScriptInput) => Promise<void> | void;
   onDeleteScript: (scriptId: string) => Promise<void> | void;
-  initialDialogOpen?: boolean;
-  initialEditingScriptId?: string | null;
-  initialSaving?: boolean;
-  initialValidationError?: string | null;
-}
-
-export function resolveInitialProjectScriptEditorState(
-  scripts: readonly ProjectScript[],
-  keybindings: ResolvedKeybindingsConfig,
-  initialEditingScriptId: string | null,
-) {
-  const script = initialEditingScriptId
-    ? (scripts.find((candidate) => candidate.id === initialEditingScriptId) ?? null)
-    : null;
-  return {
-    script,
-    keybinding: script
-      ? (keybindingValueForCommand(keybindings, commandForProjectScript(script.id)) ?? "")
-      : "",
-  };
-}
-
-function normalizeShortcutKeyToken(key: string): string | null {
-  const normalized = key.toLowerCase();
-  if (
-    normalized === "meta" ||
-    normalized === "control" ||
-    normalized === "ctrl" ||
-    normalized === "shift" ||
-    normalized === "alt" ||
-    normalized === "option"
-  ) {
-    return null;
-  }
-  if (normalized === " ") return "space";
-  if (normalized === "escape") return "esc";
-  if (normalized === "arrowup") return "arrowup";
-  if (normalized === "arrowdown") return "arrowdown";
-  if (normalized === "arrowleft") return "arrowleft";
-  if (normalized === "arrowright") return "arrowright";
-  if (normalized.length === 1) return normalized;
-  if (normalized.startsWith("f") && normalized.length <= 3) return normalized;
-  if (normalized === "enter" || normalized === "tab" || normalized === "backspace") {
-    return normalized;
-  }
-  if (normalized === "delete" || normalized === "home" || normalized === "end") {
-    return normalized;
-  }
-  if (normalized === "pageup" || normalized === "pagedown") return normalized;
-  return null;
-}
-
-function keybindingFromEvent(event: KeyboardEvent<HTMLInputElement>): string | null {
-  const keyToken = normalizeShortcutKeyToken(event.key);
-  if (!keyToken) return null;
-
-  const parts: string[] = [];
-  if (isMacPlatform(getNavigatorPlatform())) {
-    if (event.metaKey) parts.push("mod");
-    if (event.ctrlKey) parts.push("ctrl");
-  } else {
-    if (event.ctrlKey) parts.push("mod");
-    if (event.metaKey) parts.push("meta");
-  }
-  if (event.altKey) parts.push("alt");
-  if (event.shiftKey) parts.push("shift");
-  if (parts.length === 0) {
-    return null;
-  }
-  parts.push(keyToken);
-  return parts.join("+");
 }
 
 export default function ProjectScriptsControl({
   scripts,
   keybindings,
-  preferredScriptId = null,
-  showInlineControls = true,
-  hideInlineLabel = false,
+  preferredScriptId: preferredScriptIdProp,
+  showInlineControls: showInlineControlsProp,
+  hideInlineLabel: hideInlineLabelProp,
   onRunScript,
   onAddScript,
   onUpdateScript,
   onDeleteScript,
-  initialDialogOpen = false,
-  initialEditingScriptId = null,
-  initialSaving = false,
-  initialValidationError = null,
 }: ProjectScriptsControlProps) {
-  const addScriptFormId = useUniqueId();
-  const initialEditor = resolveInitialProjectScriptEditorState(
-    scripts,
-    keybindings,
-    initialEditingScriptId,
-  );
-  const initialEditingScript = initialEditor.script;
-  const [editingScriptId, setEditingScriptId] = useState<string | null>(
-    initialEditingScript?.id ?? null,
-  );
-  const [dialogOpen, setDialogOpen] = useState(initialDialogOpen);
-  const [name, setName] = useState(initialEditingScript?.name ?? "");
-  const [command, setCommand] = useState(initialEditingScript?.command ?? "");
-  const [icon, setIcon] = useState<ProjectScriptIcon>(initialEditingScript?.icon ?? "play");
+  const preferredScriptId = preferredScriptIdProp ?? null;
+  const showInlineControls = showInlineControlsProp ?? true;
+  const hideInlineLabel = hideInlineLabelProp ?? false;
+  const addScriptFormId = React.useId();
+  const [editingScriptId, setEditingScriptId] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [command, setCommand] = useState("");
+  const [icon, setIcon] = useState<ProjectScriptIcon>("play");
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
-  const [runOnWorktreeCreate, setRunOnWorktreeCreate] = useState(
-    initialEditingScript?.runOnWorktreeCreate ?? false,
-  );
-  const [keybinding, setKeybinding] = useState(initialEditor.keybinding);
-  const [validationError, setValidationError] = useState<string | null>(initialValidationError);
-  const [saving, setSaving] = useState(initialSaving);
+  const [runOnWorktreeCreate, setRunOnWorktreeCreate] = useState(false);
+  const [keybinding, setKeybinding] = useState("");
+  const [validationError, setValidationError] = useState<string | null>(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   // Manual memoization kept: this file does not compile under React Compiler (see compile-report).
@@ -226,7 +143,7 @@ export default function ProjectScriptsControl({
   }, [preferredScriptId, scripts]);
   const isEditing = editingScriptId !== null;
   const actionMenuItemClassName =
-    "group grid min-h-9 grid-cols-[1rem_minmax(0,1fr)_1.5rem] items-center gap-2 rounded-xl px-2.5 py-1.5 text-[13px] leading-none data-highlighted:bg-transparent data-highlighted:text-foreground hover:bg-[var(--color-background-button-secondary-hover)] hover:text-foreground focus-visible:bg-[var(--color-background-button-secondary-hover)] focus-visible:text-foreground data-highlighted:hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:hover:text-foreground data-highlighted:focus-visible:bg-[var(--color-background-button-secondary-hover)] data-highlighted:focus-visible:text-foreground [&>svg]:mx-0 [&>svg]:size-4";
+    "group grid min-h-9 grid-cols-[1rem_minmax(0,1fr)_1.5rem] items-center gap-2 rounded-xl px-2.5 py-1.5 text-ui-lg leading-none data-highlighted:bg-transparent data-highlighted:text-foreground hover:bg-[var(--color-background-button-secondary-hover)] hover:text-foreground focus-visible:bg-[var(--color-background-button-secondary-hover)] focus-visible:text-foreground data-highlighted:hover:bg-[var(--color-background-button-secondary-hover)] data-highlighted:hover:text-foreground data-highlighted:focus-visible:bg-[var(--color-background-button-secondary-hover)] data-highlighted:focus-visible:text-foreground [&>svg]:mx-0 [&>svg]:size-4";
 
   const captureKeybinding = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Tab") return;
@@ -235,14 +152,13 @@ export default function ProjectScriptsControl({
       setKeybinding("");
       return;
     }
-    const next = keybindingFromEvent(event);
+    const next = keybindingFromKeyboardEvent(event);
     if (!next) return;
     setKeybinding(next);
   };
 
   const submitAddScript = async (event: FormEvent) => {
     event.preventDefault();
-    if (saving) return;
     const trimmedName = name.trim();
     const trimmedCommand = command.trim();
     if (trimmedName.length === 0) {
@@ -255,7 +171,6 @@ export default function ProjectScriptsControl({
     }
 
     setValidationError(null);
-    setSaving(true);
     try {
       const scriptIdForValidation =
         editingScriptId ??
@@ -283,8 +198,6 @@ export default function ProjectScriptsControl({
       setIconPickerOpen(false);
     } catch (error) {
       setValidationError(error instanceof Error ? error.message : "Failed to save action.");
-    } finally {
-      setSaving(false);
     }
   };
 
@@ -460,7 +373,6 @@ export default function ProjectScriptsControl({
                           variant="outline"
                           className="size-9 shrink-0 hover:bg-popover active:bg-popover data-pressed:bg-popover"
                           aria-label="Choose icon"
-                          disabled={saving}
                         />
                       }
                     >
@@ -474,7 +386,7 @@ export default function ProjectScriptsControl({
                             <button
                               key={entry.id}
                               type="button"
-                              className={`relative flex flex-col items-center gap-2 rounded-md border px-2 py-2 text-xs ${
+                              className={`relative flex flex-col items-center gap-2 rounded-md border px-2 py-2 text-ui leading-snug ${
                                 isSelected
                                   ? "border-[color:var(--color-border)] bg-[var(--sidebar-accent)]"
                                   : "border-[color:var(--color-border-light)] hover:bg-[var(--sidebar-accent)]"
@@ -497,7 +409,6 @@ export default function ProjectScriptsControl({
                     autoFocus
                     placeholder="Test"
                     value={name}
-                    disabled={saving}
                     onChange={(event) => setName(event.target.value)}
                   />
                 </div>
@@ -509,10 +420,9 @@ export default function ProjectScriptsControl({
                   placeholder="Press shortcut"
                   value={keybinding}
                   readOnly
-                  disabled={saving}
                   onKeyDown={captureKeybinding}
                 />
-                <p className="text-xs text-muted-foreground">
+                <p className="text-ui leading-snug text-muted-foreground">
                   Press a shortcut. Use <code>Backspace</code> to clear.
                 </p>
               </div>
@@ -522,19 +432,19 @@ export default function ProjectScriptsControl({
                   id="script-command"
                   placeholder="bun test"
                   value={command}
-                  disabled={saving}
                   onChange={(event) => setCommand(event.target.value)}
                 />
               </div>
-              <label className="flex items-center justify-between gap-3 rounded-md border border-border/70 px-3 py-2 text-sm">
+              <label className="flex items-center justify-between gap-3 rounded-md border border-border/70 px-3 py-2 text-ui leading-snug">
                 <span>Run automatically on worktree creation</span>
                 <Switch
                   checked={runOnWorktreeCreate}
-                  disabled={saving}
                   onCheckedChange={(checked) => setRunOnWorktreeCreate(Boolean(checked))}
                 />
               </label>
-              {validationError && <p className="text-sm text-destructive">{validationError}</p>}
+              {validationError && (
+                <p className="text-ui leading-snug text-destructive">{validationError}</p>
+              )}
             </form>
           </DialogPanel>
           <DialogFooter>
@@ -552,15 +462,14 @@ export default function ProjectScriptsControl({
               type="button"
               variant="outline"
               size="sm"
-              disabled={saving}
               onClick={() => {
                 setDialogOpen(false);
               }}
             >
               Cancel
             </Button>
-            <Button form={addScriptFormId} type="submit" size="sm" disabled={saving}>
-              {saving ? "Saving…" : isEditing ? "Save changes" : "Save action"}
+            <Button form={addScriptFormId} type="submit" size="sm">
+              {isEditing ? "Save changes" : "Save action"}
             </Button>
           </DialogFooter>
         </DialogPopup>

@@ -83,9 +83,9 @@ const harness = vi.hoisted(() => ({
   dispatchCommand: vi.fn(),
   confirm: vi.fn(),
   archiveThread: vi.fn(),
+  releaseArchivedWorktree: vi.fn(),
   unarchiveThread: vi.fn(),
   alreadyUnarchived: false,
-  running: false,
   activeThreadDelete: vi.fn(),
   navigate: vi.fn(),
   toast: vi.fn(),
@@ -101,6 +101,7 @@ const harness = vi.hoisted(() => ({
   resolveSplitViewPaneIdForThread: vi.fn(),
   resolveSplitViewFocusedThreadId: vi.fn(),
   splitViewsById: {} as Record<string, unknown>,
+  shellSnapshotSequence: 0,
 }));
 
 vi.mock("react", () => ({
@@ -157,11 +158,13 @@ vi.mock("../nativeApi", () => ({
     dialogs: { confirm: harness.confirm },
   }),
 }));
-vi.mock("../session-logic", () => ({ isThreadRunningTurn: () => harness.running }));
 vi.mock("../lib/threadArchive", () => ({
   archiveThreadFromClient: harness.archiveThread,
   unarchiveThreadFromClient: harness.unarchiveThread,
   isThreadAlreadyUnarchivedError: () => harness.alreadyUnarchived,
+}));
+vi.mock("../lib/archiveThreadWorktreeCleanup", () => ({
+  releaseOrphanedWorktreeAfterArchive: harness.releaseArchivedWorktree,
 }));
 vi.mock("../lib/activeThreadDelete", () => ({
   deleteActiveThreadFromClient: harness.activeThreadDelete,
@@ -170,13 +173,16 @@ vi.mock("../lib/deletedThreadClientReconciliation", () => ({
   reconcileDeletedThreadsFromClient: harness.reconcileDeletedThreads,
 }));
 vi.mock("../components/ui/toast", () => ({ toastManager: { add: harness.toast } }));
-vi.mock("../store", () => ({
-  useStore: {
-    getState: () => ({
-      removeDeletedThreadFromClientState: harness.removeDeletedThreadFromClientState,
-    }),
-  },
-}));
+vi.mock("../store", () => {
+  const useStore = (selector: (state: unknown) => unknown) =>
+    selector({ shellSnapshotSequence: harness.shellSnapshotSequence });
+  useStore.getState = () => ({
+    shellSnapshotSequence: harness.shellSnapshotSequence,
+    removeDeletedThreadFromClientState: harness.removeDeletedThreadFromClientState,
+  });
+  useStore.subscribe = () => () => {};
+  return { useStore };
+});
 vi.mock("../threadDerivation", () => ({
   getThreadFromState: (_state: unknown, threadId: ThreadId) => ({ id: threadId }),
 }));
@@ -229,12 +235,14 @@ function render(
     routeSplitViewId?: string | null;
     routeThreadId?: ThreadId | null;
     threadsHydrated?: boolean;
+    archiveDeletesOrphanedWorktree?: boolean;
   } = {},
 ) {
   reactHarness.beginRender();
   return useSidebarThreadActions({
     activeSplitView: overrides.activeSplitView ?? null,
     appSettings: {
+      archiveDeletesOrphanedWorktree: overrides.archiveDeletesOrphanedWorktree ?? false,
       confirmThreadArchive: false,
       confirmThreadDelete: false,
       sidebarThreadSortOrder: "updated_at",
@@ -257,7 +265,7 @@ beforeEach(() => {
   reactHarness.reset();
   sidebarThreads = [makeThread(THREAD_ID), makeThread(FALLBACK_ID)];
   harness.pinnedThreadIds = [];
-  harness.running = false;
+  harness.shellSnapshotSequence = 0;
   harness.alreadyUnarchived = false;
   harness.splitViewsById = {};
   for (const mock of [
@@ -267,6 +275,7 @@ beforeEach(() => {
     harness.dispatchCommand,
     harness.confirm,
     harness.archiveThread,
+    harness.releaseArchivedWorktree,
     harness.unarchiveThread,
     harness.activeThreadDelete,
     harness.navigate,
@@ -290,8 +299,9 @@ beforeEach(() => {
   harness.unpinThread.mockImplementation((threadId: ThreadId) => {
     harness.pinnedThreadIds = harness.pinnedThreadIds.filter((id) => id !== threadId);
   });
-  harness.dispatchCommand.mockResolvedValue(undefined);
-  harness.archiveThread.mockResolvedValue(undefined);
+  harness.dispatchCommand.mockResolvedValue({ sequence: 1 });
+  harness.archiveThread.mockResolvedValue(1);
+  harness.releaseArchivedWorktree.mockResolvedValue("removed");
   harness.unarchiveThread.mockResolvedValue(undefined);
   harness.confirm.mockResolvedValue(true);
   harness.handleNewChat.mockResolvedValue({ ok: true });
@@ -384,17 +394,6 @@ describe("useSidebarThreadActions", () => {
     resolveMigration();
   });
 
-  it("rejects running archives without dispatching", async () => {
-    harness.running = true;
-
-    await expect(render().archiveThread(THREAD_ID)).resolves.toBe(false);
-
-    expect(harness.archiveThread).not.toHaveBeenCalled();
-    expect(harness.toast).toHaveBeenCalledWith(
-      expect.objectContaining({ title: "Cannot archive" }),
-    );
-  });
-
   it("serializes archives and navigates the active thread to its fallback", async () => {
     let releaseArchive!: () => void;
     harness.archiveThread.mockImplementation(
@@ -411,6 +410,29 @@ describe("useSidebarThreadActions", () => {
     expect(harness.archiveThread).toHaveBeenCalledOnce();
     expect(harness.navigate).toHaveBeenCalledWith(
       expect.objectContaining({ params: { threadId: FALLBACK_ID }, replace: true }),
+    );
+  });
+
+  it("restores the saved chat draft when archiving the last thread leaves no fallback", async () => {
+    sidebarThreads = [makeThread(THREAD_ID)];
+
+    await expect(render({ routeThreadId: THREAD_ID }).archiveThread(THREAD_ID)).resolves.toBe(true);
+
+    expect(harness.navigate).not.toHaveBeenCalled();
+    expect(harness.handleNewChat).toHaveBeenCalledWith();
+  });
+
+  it("waits for the Undo decision before requesting worktree cleanup", async () => {
+    const controller = render({ archiveDeletesOrphanedWorktree: true });
+    await controller.archiveThreadWithUndo(THREAD_ID);
+    expect(harness.releaseArchivedWorktree).not.toHaveBeenCalled();
+
+    const toast = harness.toast.mock.calls.at(-1)?.[0] as {
+      data: { archiveUndo: { onNoUndo: () => void } };
+    };
+    toast.data.archiveUndo.onNoUndo();
+    expect(harness.releaseArchivedWorktree).toHaveBeenCalledWith(
+      expect.objectContaining({ threadId: THREAD_ID, archiveSequence: 1 }),
     );
   });
 
@@ -502,7 +524,7 @@ describe("useSidebarThreadActions", () => {
     expect(navigation.search()).toEqual({ splitViewId: "split-actions" });
   });
 
-  it("opens a fresh chat when deleting the last pane leaves no fallback", async () => {
+  it("restores the saved chat draft when deleting the last pane leaves no fallback", async () => {
     sidebarThreads = [makeThread(THREAD_ID)];
     harness.resolveSplitViewPaneIdForThread.mockReturnValue("pane-only");
     harness.resolveSplitViewFocusedThreadId.mockReturnValue(null);
@@ -514,6 +536,6 @@ describe("useSidebarThreadActions", () => {
     }).deleteThread(THREAD_ID);
 
     expect(harness.navigate).not.toHaveBeenCalled();
-    expect(harness.handleNewChat).toHaveBeenCalledWith({ fresh: true });
+    expect(harness.handleNewChat).toHaveBeenCalledWith();
   });
 });

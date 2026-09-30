@@ -95,6 +95,7 @@ import type {
   ExternalMcpCapability,
   ExternalMcpCreateIntegrationResult,
   ExternalMcpIntegration,
+  RuntimeMode,
 } from "@synara/contracts";
 import { resolveDefaultSocketUrl } from "../platform/net.socket";
 import { bridgeCall, onGlobalEvent } from "../platform/bridge";
@@ -110,7 +111,7 @@ export interface SynaraThread {
   readonly projectId: string;
   readonly title: string;
   readonly modelSelection: ModelSelection;
-  readonly runtimeMode: "full-access" | "approval-required";
+  readonly runtimeMode: RuntimeMode;
   readonly interactionMode: "default" | "plan";
   readonly parentThreadId?: string | null;
   readonly subagentAgentId?: string | null;

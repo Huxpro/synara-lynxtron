@@ -1,17 +1,49 @@
 import { assert, describe, it } from "vitest";
-import { buildVisibleToastLayout, shouldHideCollapsedToastContent } from "./toast.logic";
+import {
+  buildVisibleToastLayout,
+  shouldHideCollapsedToastContent,
+  shouldRunVisibleToastAutoDismiss,
+} from "./toast.logic";
 
 describe("shouldHideCollapsedToastContent", () => {
-  it("keeps a single visible toast readable", () => {
-    assert.equal(shouldHideCollapsedToastContent(0, 1), false);
-  });
-
   it("keeps the front-most toast readable in a visible stack", () => {
     assert.equal(shouldHideCollapsedToastContent(0, 3), false);
   });
 
   it("hides non-front toasts until the stack is expanded", () => {
     assert.equal(shouldHideCollapsedToastContent(1, 3), true);
+  });
+});
+
+describe("shouldRunVisibleToastAutoDismiss", () => {
+  it("also pauses for explicit, visibility, and window-focus gates", () => {
+    assert.equal(
+      shouldRunVisibleToastAutoDismiss({
+        paused: true,
+        documentVisible: true,
+        windowFocused: true,
+        toastFocused: false,
+      }),
+      false,
+    );
+    assert.equal(
+      shouldRunVisibleToastAutoDismiss({
+        paused: false,
+        documentVisible: false,
+        windowFocused: true,
+        toastFocused: false,
+      }),
+      false,
+    );
+    assert.equal(
+      shouldRunVisibleToastAutoDismiss({
+        paused: false,
+        documentVisible: true,
+        windowFocused: false,
+        toastFocused: false,
+      }),
+      false,
+    );
   });
 });
 

@@ -12,11 +12,11 @@ import {
 
 export function SidebarFooterSection(props: {
   readonly settingsVisible: boolean;
-  readonly settingsActive?: boolean;
+  readonly settingsActive?: boolean | undefined;
   readonly settingsIcon: unknown;
   readonly onOpenSettings: () => void;
-  readonly prelude?: ReactNode;
-  readonly trailing?: ReactNode;
+  readonly prelude?: ReactNode | undefined;
+  readonly trailing?: ReactNode | undefined;
 }) {
   return (
     <SidebarFooterFrameElement>

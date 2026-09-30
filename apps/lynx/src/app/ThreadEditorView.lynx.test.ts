@@ -42,7 +42,8 @@ describe("Lynx Editor view", () => {
     expect(actionsSource).toContain(
       '<text className="ThreadHeaderTextActionLabel">Add action</text>',
     );
-    expect(actionsSource).toContain("resolveNativeThreadHandoffTargets(thread)");
+    expect(actionsSource).toContain("queryFn: () => fetchNativeThreadHandoffProviderContext()");
+    expect(actionsSource).toContain("resolveNativeThreadHandoffTargets(");
     expect(actionsSource).toContain("await createNativeThreadHandoff({");
     expect(routerSource).toContain("subscribeOpenThreadPathInTerminal(");
     expect(routerSource).toContain("consumeOpenThreadPathInTerminal(threadId)");

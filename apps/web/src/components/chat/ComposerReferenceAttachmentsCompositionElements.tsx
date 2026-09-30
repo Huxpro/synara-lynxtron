@@ -20,7 +20,7 @@ import { ComposerPastedTextCard } from "./PastedTextChip";
 export function ComposerReferenceAttachmentsContainerElement({
   children,
 }: {
-  children?: ReactNode;
+  children?: ReactNode | undefined;
 }) {
   return <div className="-mx-1.5 -mt-1 mb-2 flex flex-wrap items-start gap-1.5">{children}</div>;
 }

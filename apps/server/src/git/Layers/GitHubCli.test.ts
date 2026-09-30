@@ -1,5 +1,6 @@
 import { assert, it } from "@effect/vitest";
-import { Effect } from "effect";
+import { Effect, Fiber } from "effect";
+import { TestClock } from "effect/testing";
 import { afterEach, expect, vi } from "vitest";
 
 vi.mock("../../processRunner", () => ({
@@ -49,7 +50,6 @@ layer("GitHubCliLive", (it) => {
         signal: null,
         timedOut: false,
       });
-
       const result = yield* Effect.gen(function* () {
         const gh = yield* GitHubCli;
         return yield* gh.getPullRequest({
@@ -80,6 +80,44 @@ layer("GitHubCliLive", (it) => {
         ["pr", "view", "#42", "--json", PULL_REQUEST_SUMMARY_JSON_FIELDS],
         expect.objectContaining({ cwd: "/repo" }),
       );
+    }),
+  );
+
+  it.effect("serves repeated pull request lookups from cache until a mutation", () =>
+    Effect.gen(function* () {
+      const processResult = (stdout: string) => ({
+        stdout,
+        stderr: "",
+        code: 0,
+        signal: null,
+        timedOut: false,
+      });
+      const viewOutput = JSON.stringify({
+        number: 77,
+        title: "Cached lookup",
+        url: "https://github.com/example-org/sample-repo/pull/77",
+        baseRefName: "main",
+        headRefName: "feature/cached-lookup",
+        state: "OPEN",
+      });
+      mockedRunProcess.mockResolvedValue(processResult(viewOutput));
+      const gh = yield* GitHubCli;
+      const lookup = gh.getPullRequest({ cwd: "/repo-cache", reference: "#77" });
+
+      yield* lookup;
+      yield* lookup;
+      expect(mockedRunProcess).toHaveBeenCalledTimes(1);
+
+      mockedRunProcess.mockResolvedValueOnce(processResult(""));
+      yield* gh.createPullRequest({
+        cwd: "/repo-cache",
+        baseBranch: "main",
+        headSelector: "feature/other",
+        title: "Other",
+        bodyFile: "/tmp/body.md",
+      });
+      yield* lookup;
+      expect(mockedRunProcess).toHaveBeenCalledTimes(3);
     }),
   );
 
@@ -742,6 +780,22 @@ layer("GitHubCliLive", (it) => {
         signal: null,
         timedOut: false,
       });
+      mockedRunProcess.mockResolvedValueOnce({
+        stdout: JSON.stringify({
+          data: {
+            repository: {
+              pr_9: {
+                stackEntry: { position: 2 },
+                stack: { number: 4, size: 3, baseRefName: "main" },
+              },
+            },
+          },
+        }),
+        stderr: "",
+        code: 0,
+        signal: null,
+        timedOut: false,
+      });
 
       const gh = yield* GitHubCli;
       const result = yield* gh.listRepositoryPullRequests({
@@ -756,6 +810,12 @@ layer("GitHubCliLive", (it) => {
       assert.equal(result.entries.length, 1);
       assert.equal(result.entries[0]?.title, "Healthy PR");
       assert.deepStrictEqual(result.entries[0]?.reviewRequestLogins, ["reviewer"]);
+      assert.deepStrictEqual(result.entries[0]?.stack, {
+        number: 4,
+        size: 3,
+        position: 2,
+        baseBranch: "main",
+      });
       expect(mockedRunProcess.mock.calls[0]?.[1]).toEqual([
         "pr",
         "list",
@@ -769,6 +829,18 @@ layer("GitHubCliLive", (it) => {
         "50",
         "--json",
         expect.any(String),
+      ]);
+      expect(mockedRunProcess.mock.calls[1]?.[1]).toEqual([
+        "api",
+        "graphql",
+        "--hostname",
+        "github.com",
+        "-f",
+        expect.stringContaining("pr_9: pullRequest(number: 9)"),
+        "-F",
+        "owner=acme",
+        "-F",
+        "repo=app",
       ]);
     }),
   );
@@ -803,6 +875,96 @@ layer("GitHubCliLive", (it) => {
           "50",
         ]),
       );
+    }),
+  );
+
+  it.effect("enriches an individually recovered pull request with stack metadata", () =>
+    Effect.gen(function* () {
+      mockedRunProcess.mockResolvedValueOnce({
+        stdout: JSON.stringify({
+          number: 99,
+          title: "Pinned beyond the list cap",
+          url: "https://github.com/acme/app/pull/99",
+          headRefName: "stack-top",
+          baseRefName: "stack-base",
+          state: "OPEN",
+          createdAt: "2026-07-01T00:00:00Z",
+          updatedAt: "2026-07-02T00:00:00Z",
+        }),
+        stderr: "",
+        code: 0,
+        signal: null,
+        timedOut: false,
+      });
+      mockedRunProcess.mockResolvedValueOnce({
+        stdout: JSON.stringify({
+          data: {
+            repository: {
+              pr_99: {
+                stackEntry: { position: 3 },
+                stack: { number: 7, size: 3, baseRefName: "main" },
+              },
+            },
+          },
+        }),
+        stderr: "",
+        code: 0,
+        signal: null,
+        timedOut: false,
+      });
+
+      const gh = yield* GitHubCli;
+      const result = yield* gh.getPullRequestListItem({
+        cwd: "/repo",
+        repository: "acme/app",
+        number: 99,
+      });
+
+      assert.deepStrictEqual(result.stack, {
+        number: 7,
+        size: 3,
+        position: 3,
+        baseBranch: "main",
+      });
+      expect(mockedRunProcess.mock.calls[1]?.[1]).toEqual(
+        expect.arrayContaining([expect.stringContaining("pr_99: pullRequest(number: 99)")]),
+      );
+    }),
+  );
+
+  it.effect("keeps repository rows when optional stack enrichment fails", () =>
+    Effect.gen(function* () {
+      mockedRunProcess.mockResolvedValueOnce({
+        stdout: JSON.stringify([
+          {
+            number: 11,
+            title: "Still visible",
+            url: "https://github.com/acme/app/pull/11",
+            headRefName: "feature",
+            baseRefName: "main",
+            state: "OPEN",
+            createdAt: "2026-07-01T00:00:00Z",
+            updatedAt: "2026-07-02T00:00:00Z",
+          },
+        ]),
+        stderr: "",
+        code: 0,
+        signal: null,
+        timedOut: false,
+      });
+      mockedRunProcess.mockRejectedValueOnce(new Error("GraphQL field unavailable"));
+
+      const gh = yield* GitHubCli;
+      const result = yield* gh.listRepositoryPullRequests({
+        cwd: "/repo",
+        repository: "acme/app",
+        state: "open",
+        involvement: "all",
+        viewer: "octocat",
+      });
+
+      assert.equal(result.entries[0]?.title, "Still visible");
+      assert.equal(result.entries[0]?.stack, null);
     }),
   );
 
@@ -956,6 +1118,260 @@ layer("GitHubCliLive", (it) => {
     }),
   );
 
+  for (const { label, login } of [
+    { label: "empty", login: "" },
+    { label: "null", login: null },
+    { label: "whitespace-only", login: " \t " },
+    { label: "missing", login: undefined },
+  ]) {
+    it.effect(`tolerates commit authors with ${label} GitHub login`, () =>
+      Effect.gen(function* () {
+        mockedRunProcess.mockResolvedValueOnce({
+          stdout: JSON.stringify({
+            number: 1016,
+            title: "fix(models): normalize provider model display names",
+            url: "https://github.com/acme/app/pull/1016",
+            headRefName: "fix/normalize-model-display-names",
+            baseRefName: "main",
+            state: "MERGED",
+            mergedAt: "2026-09-08T13:33:01Z",
+            createdAt: "2026-09-07T05:30:14Z",
+            updatedAt: "2026-09-08T13:33:01Z",
+            commits: [
+              {
+                oid: "31967670e7d8ac8e6271187cf91e3d08ed48dc96",
+                messageHeadline: "fix(models): normalize provider model display names",
+                committedDate: "2026-09-07T05:16:29Z",
+                authors: [
+                  { login: " SHLE1 ", name: " SHLE1 " },
+                  {
+                    login,
+                    name: " Local co-author ",
+                    avatarUrl: "https://avatars.githubusercontent.com/unrelated",
+                    url: "https://github.com/unrelated",
+                  },
+                  { login, name: " ", slug: "not-a-user" },
+                ],
+              },
+              {
+                oid: "5a554f9e40043fba3184182c22f7f4bab617fc19",
+                messageHeadline: "fix(models): ignore inherited display-name tokens",
+                committedDate: "2026-09-08T13:18:37Z",
+                // `gh` emits empty-string logins for local-git authors with no
+                // GitHub account. This must not fail the whole detail payload.
+                authors: [{ id: "", login, name: "Emanuele Di Pietro" }],
+              },
+            ],
+          }),
+          stderr: "",
+          code: 0,
+          signal: null,
+          timedOut: false,
+        });
+        const gh = yield* GitHubCli;
+        const detail = yield* gh.getPullRequestDetail({
+          cwd: "/repo",
+          repository: "acme/app",
+          number: 1016,
+        });
+        assert.equal(detail.commits[1]?.oid, "5a554f9e40043fba3184182c22f7f4bab617fc19");
+        assert.equal(
+          detail.commits[1]?.messageHeadline,
+          "fix(models): ignore inherited display-name tokens",
+        );
+        assert.deepStrictEqual(
+          detail.commits.map((commit) => commit.authors),
+          [
+            [
+              {
+                login: "SHLE1",
+                name: "SHLE1",
+                avatarUrl: "https://avatars.githubusercontent.com/SHLE1?size=64",
+                url: "https://github.com/SHLE1",
+              },
+              { login: null, name: "Local co-author", avatarUrl: null, url: null },
+            ],
+            [{ login: null, name: "Emanuele Di Pietro", avatarUrl: null, url: null }],
+          ],
+        );
+      }),
+    );
+  }
+
+  it.effect("does not synthesize profile links for GitHub App commit authors", () =>
+    Effect.gen(function* () {
+      mockedRunProcess.mockResolvedValueOnce({
+        stdout: JSON.stringify({
+          number: 17,
+          title: "App-authored commit",
+          url: "https://github.com/acme/app/pull/17",
+          headRefName: "app-commit",
+          baseRefName: "main",
+          createdAt: "2026-07-01T00:00:00Z",
+          updatedAt: "2026-07-02T00:00:00Z",
+          commits: [
+            {
+              oid: "app123",
+              committedDate: "2026-07-01T00:00:00Z",
+              authors: [{ login: "app/dependabot", name: "dependabot[bot]" }],
+            },
+          ],
+        }),
+        stderr: "",
+        code: 0,
+        signal: null,
+        timedOut: false,
+      });
+      const gh = yield* GitHubCli;
+      const detail = yield* gh.getPullRequestDetail({
+        cwd: "/repo",
+        repository: "acme/app",
+        number: 17,
+      });
+      assert.deepStrictEqual(detail.commits[0]?.authors, [
+        {
+          login: "app/dependabot",
+          name: "dependabot[bot]",
+          avatarUrl: null,
+          url: null,
+        },
+      ]);
+    }),
+  );
+
+  for (const invalidAuthor of [{ login: 123 }, { login: null, name: false }]) {
+    it.effect(`rejects malformed commit author ${JSON.stringify(invalidAuthor)}`, () =>
+      Effect.gen(function* () {
+        mockedRunProcess.mockResolvedValueOnce({
+          stdout: JSON.stringify({
+            number: 9,
+            title: "Malformed author",
+            url: "https://github.com/acme/app/pull/9",
+            headRefName: "malformed-author",
+            baseRefName: "main",
+            createdAt: "2026-07-01T00:00:00Z",
+            updatedAt: "2026-07-02T00:00:00Z",
+            commits: [
+              {
+                oid: "abc123",
+                committedDate: "2026-07-01T00:00:00Z",
+                authors: [invalidAuthor],
+              },
+            ],
+          }),
+          stderr: "",
+          code: 0,
+          signal: null,
+          timedOut: false,
+        });
+        const gh = yield* GitHubCli;
+        const error = yield* gh
+          .getPullRequestDetail({
+            cwd: "/repo",
+            repository: "acme/app",
+            number: 9,
+          })
+          .pipe(Effect.flip);
+        expect(error.detail).toContain("invalid pull request detail JSON");
+      }),
+    );
+  }
+
+  it.effect("normalizes actors without losing comments or treating teams as users", () =>
+    Effect.gen(function* () {
+      mockedRunProcess.mockResolvedValueOnce({
+        stdout: JSON.stringify({
+          number: 9,
+          title: "Nullable actors",
+          url: "https://github.com/acme/app/pull/9",
+          headRefName: "nullable-actors",
+          baseRefName: "main",
+          createdAt: "2026-07-01T00:00:00Z",
+          updatedAt: "2026-07-02T00:00:00Z",
+          author: { login: "local-author", name: "Local author" },
+          reviewRequests: [
+            { login: " reviewer ", slug: "unused" },
+            { __typename: "Team", slug: " platform " },
+            { __typename: "Team", slug: "security" },
+            { __typename: "Team", slug: "infra" },
+          ],
+          comments: [
+            {
+              id: "comment",
+              body: "Keep this comment",
+              createdAt: "2026-07-01T01:00:00Z",
+              author: { login: "former-user", name: "Former user" },
+            },
+          ],
+          reviews: [
+            {
+              id: "review",
+              body: "Keep this review",
+              submittedAt: "2026-07-01T02:00:00Z",
+              state: "APPROVED",
+              author: { login: "reviewer" },
+            },
+          ],
+        }),
+        stderr: "",
+        code: 0,
+        signal: null,
+        timedOut: false,
+      });
+      const gh = yield* GitHubCli;
+      const detail = yield* gh.getPullRequestDetail({
+        cwd: "/repo",
+        repository: "acme/app",
+        number: 9,
+      });
+
+      assert.equal(detail.author?.login, "local-author");
+      assert.deepStrictEqual(detail.reviewers, [
+        {
+          login: "reviewer",
+          name: null,
+          avatarUrl: "https://avatars.githubusercontent.com/reviewer?size=64",
+          url: null,
+        },
+        { login: "platform", name: null, avatarUrl: null, url: null },
+        { login: "security", name: null, avatarUrl: null, url: null },
+        { login: "infra", name: null, avatarUrl: null, url: null },
+      ]);
+      assert.deepStrictEqual(
+        detail.comments.map(({ id, body, author, reviewState }) => ({
+          id,
+          body,
+          author,
+          reviewState,
+        })),
+        [
+          {
+            id: "comment",
+            body: "Keep this comment",
+            author: {
+              login: "former-user",
+              name: "Former user",
+              avatarUrl: "https://avatars.githubusercontent.com/former-user?size=64",
+              url: null,
+            },
+            reviewState: null,
+          },
+          {
+            id: "review",
+            body: "Keep this review",
+            author: {
+              login: "reviewer",
+              name: null,
+              avatarUrl: "https://avatars.githubusercontent.com/reviewer?size=64",
+              url: null,
+            },
+            reviewState: "APPROVED",
+          },
+        ],
+      );
+    }),
+  );
+
   it.effect("loads bounded diffs and runs merge actions", () =>
     Effect.gen(function* () {
       mockedRunProcess
@@ -969,7 +1385,10 @@ layer("GitHubCliLive", (it) => {
           stderrTruncated: false,
         })
         .mockResolvedValueOnce({
-          stdout: "",
+          stdout: JSON.stringify({
+            status: "merged",
+            details: { message: "Pull request was merged." },
+          }),
           stderr: "",
           code: 0,
           signal: null,
@@ -982,7 +1401,7 @@ layer("GitHubCliLive", (it) => {
         repository: "acme/app",
         number: 9,
       });
-      yield* gh.runPullRequestAction({
+      const action = yield* gh.runPullRequestAction({
         cwd: "/repo",
         repository: "acme/app",
         number: 9,
@@ -991,16 +1410,274 @@ layer("GitHubCliLive", (it) => {
       });
 
       assert.equal(diff.truncated, true);
+      assert.deepStrictEqual(action, { mergeOutcome: "merged" });
       expect(mockedRunProcess.mock.calls[0]?.[1]).toEqual(
         expect.arrayContaining(["pr", "diff", "9", "--repo", "github.com/acme/app", "--patch"]),
       );
+      expect(mockedRunProcess.mock.calls[1]?.[1]).toEqual([
+        "api",
+        "--hostname",
+        "github.com",
+        "--method",
+        "PUT",
+        "repos/acme/app/pulls/9/merge-async",
+        "--input",
+        "-",
+      ]);
+      expect(mockedRunProcess.mock.calls[1]?.[2]).toEqual(
+        expect.objectContaining({
+          allowNonZeroExit: true,
+          stdin: JSON.stringify({ merge_method: "squash", merge_action: "default" }),
+        }),
+      );
+    }),
+  );
+
+  it.effect("loads full stack metadata in bottom-to-top order", () =>
+    Effect.gen(function* () {
+      mockedRunProcess.mockResolvedValueOnce({
+        stdout: JSON.stringify({
+          data: {
+            repository: {
+              pullRequest: {
+                stackEntry: { position: 2 },
+                stack: {
+                  number: 17,
+                  size: 2,
+                  baseRefName: "main",
+                  entries: {
+                    totalCount: 2,
+                    nodes: [
+                      {
+                        position: 2,
+                        pullRequest: {
+                          number: 12,
+                          title: "UI layer",
+                          url: "https://github.com/acme/app/pull/12",
+                          headRefName: "feature/ui",
+                          baseRefName: "feature/api",
+                          state: "OPEN",
+                          isDraft: false,
+                          mergedAt: null,
+                          mergeable: "UNKNOWN",
+                          mergeStateStatus: "UNKNOWN",
+                        },
+                      },
+                      {
+                        position: 1,
+                        pullRequest: {
+                          number: 11,
+                          title: "API layer",
+                          url: "https://github.com/acme/app/pull/11",
+                          headRefName: "feature/api",
+                          baseRefName: "main",
+                          state: "MERGED",
+                          isDraft: false,
+                          mergedAt: "2026-08-10T10:00:00Z",
+                          mergeable: "MERGEABLE",
+                          mergeStateStatus: "CLEAN",
+                        },
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        }),
+        stderr: "",
+        code: 0,
+        signal: null,
+        timedOut: false,
+      });
+
+      const gh = yield* GitHubCli;
+      const result = yield* gh.getPullRequestStack({
+        cwd: "/repo",
+        repository: "acme/app",
+        number: 12,
+      });
+
+      expect(result).toMatchObject({
+        number: 17,
+        size: 2,
+        position: 2,
+        baseBranch: "main",
+      });
+      expect(result?.entries.map((entry) => [entry.position, entry.number, entry.state])).toEqual([
+        [1, 11, "merged"],
+        [2, 12, "open"],
+      ]);
+      expect(mockedRunProcess.mock.calls[0]?.[1]).toEqual(
+        expect.arrayContaining([
+          "api",
+          "graphql",
+          "--hostname",
+          "github.com",
+          "-F",
+          "number=12",
+          "-F",
+          "first=100",
+        ]),
+      );
+    }),
+  );
+
+  it.effect("paginates stacks larger than the GraphQL page size", () =>
+    Effect.gen(function* () {
+      const makeEntry = (position: number) => ({
+        position,
+        pullRequest: {
+          number: 1_000 + position,
+          title: `Stack entry ${position}`,
+          url: `https://github.com/acme/app/pull/${1_000 + position}`,
+          headRefName: `feature/stack-${position}`,
+          baseRefName: position === 1 ? "main" : `feature/stack-${position - 1}`,
+          state: "OPEN",
+          isDraft: false,
+          mergedAt: null,
+          mergeable: "MERGEABLE",
+          mergeStateStatus: "CLEAN",
+        },
+      });
+      const makeResponse = (
+        nodes: ReadonlyArray<ReturnType<typeof makeEntry>>,
+        pageInfo: { readonly hasNextPage: boolean; readonly endCursor: string | null },
+      ) =>
+        JSON.stringify({
+          data: {
+            repository: {
+              pullRequest: {
+                stackEntry: { position: 101 },
+                stack: {
+                  number: 29,
+                  size: 101,
+                  baseRefName: "main",
+                  entries: { totalCount: 101, nodes, pageInfo },
+                },
+              },
+            },
+          },
+        });
+
+      mockedRunProcess
+        .mockResolvedValueOnce({
+          stdout: makeResponse(
+            Array.from({ length: 100 }, (_, index) => makeEntry(index + 1)),
+            { hasNextPage: true, endCursor: "cursor-100" },
+          ),
+          stderr: "",
+          code: 0,
+          signal: null,
+          timedOut: false,
+        })
+        .mockResolvedValueOnce({
+          stdout: makeResponse([makeEntry(101)], { hasNextPage: false, endCursor: null }),
+          stderr: "",
+          code: 0,
+          signal: null,
+          timedOut: false,
+        });
+
+      const gh = yield* GitHubCli;
+      const result = yield* gh.getPullRequestStack({
+        cwd: "/repo",
+        repository: "acme/app",
+        number: 1_101,
+      });
+
+      expect(result?.entries).toHaveLength(101);
+      expect(result?.entries.at(-1)).toMatchObject({ position: 101, number: 1_101 });
+      expect(mockedRunProcess).toHaveBeenCalledTimes(2);
+      expect(mockedRunProcess.mock.calls[1]?.[1]).toEqual(
+        expect.arrayContaining(["-F", "after=cursor-100"]),
+      );
+    }),
+  );
+
+  it.effect("falls back to the legacy merge path when async merge is unavailable", () =>
+    Effect.gen(function* () {
+      mockedRunProcess
+        .mockResolvedValueOnce({
+          stdout: "",
+          stderr: "gh: Not Found (HTTP 404)",
+          code: 1,
+          signal: null,
+          timedOut: false,
+        })
+        .mockResolvedValueOnce({
+          stdout: "",
+          stderr: "",
+          code: 0,
+          signal: null,
+          timedOut: false,
+        });
+
+      const gh = yield* GitHubCli;
+      const result = yield* gh.runPullRequestAction({
+        cwd: "/repo",
+        repository: "acme/app",
+        number: 9,
+        action: "merge",
+        mergeMethod: "rebase",
+      });
+
+      expect(result).toEqual({ mergeOutcome: "merged" });
       expect(mockedRunProcess.mock.calls[1]?.[1]).toEqual([
         "pr",
         "merge",
         "9",
         "--repo",
         "github.com/acme/app",
-        "--squash",
+        "--rebase",
+      ]);
+    }),
+  );
+
+  it.effect("polls a pending stack merge until GitHub enqueues it", () =>
+    Effect.gen(function* () {
+      mockedRunProcess
+        .mockResolvedValueOnce({
+          stdout: JSON.stringify({
+            status: "pending",
+            details: { message: "Merge request enqueued.", uuid: "merge-request-1" },
+          }),
+          stderr: "",
+          code: 0,
+          signal: null,
+          timedOut: false,
+        })
+        .mockResolvedValueOnce({
+          stdout: JSON.stringify({
+            status: "enqueued",
+            details: { message: "Pull request was added to the merge queue." },
+          }),
+          stderr: "",
+          code: 0,
+          signal: null,
+          timedOut: false,
+        });
+
+      const gh = yield* GitHubCli;
+      const mergeFiber = yield* gh
+        .runPullRequestAction({
+          cwd: "/repo",
+          repository: "acme/app",
+          number: 12,
+          action: "merge",
+          mergeMethod: "merge",
+        })
+        .pipe(Effect.forkChild);
+      yield* Effect.yieldNow;
+      yield* TestClock.adjust("1 second");
+      const result = yield* Fiber.join(mergeFiber);
+
+      expect(result).toEqual({ mergeOutcome: "enqueued" });
+      expect(mockedRunProcess.mock.calls[1]?.[1]).toEqual([
+        "api",
+        "--hostname",
+        "github.com",
+        "repos/acme/app/pulls/12/merge-async/merge-request-1",
       ]);
     }),
   );

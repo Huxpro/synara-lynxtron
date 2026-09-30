@@ -39,7 +39,7 @@ describe("Lynx diff word wrap setting", () => {
   });
 
   it("keeps word wrapping in the host-neutral code composition contract", () => {
-    expect(compositionSource).toContain("readonly wordWrap?: boolean;");
+    expect(compositionSource).toContain("readonly wordWrap?: boolean | undefined;");
     expect(compositionSource).toContain(
       "<PullRequestCodeLinesElement wordWrap={props.wordWrap ?? false}>",
     );

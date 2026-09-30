@@ -26,6 +26,7 @@ import { DEFAULT_INTERACTION_MODE, type Thread, type ThreadPrimarySurface } from
 export interface NewThreadOptions {
   branch?: string | null;
   worktreePath?: string | null;
+  workingDirectory?: string | null;
   envMode?: DraftThreadEnvMode;
   entryPoint?: ThreadPrimarySurface;
   temporary?: boolean;
@@ -36,6 +37,7 @@ export interface NewThreadOptions {
 export interface InheritedThreadContext {
   branch: string | null;
   worktreePath: string | null;
+  workingDirectory: string | null;
   envMode: DraftThreadEnvMode;
 }
 
@@ -43,9 +45,12 @@ export interface InheritedThreadContext {
 // A pending draft wins outright; otherwise we derive the env mode from the
 // active thread's worktree so a fresh thread inherits the same workspace shape.
 export function resolveInheritedThreadContext(input: {
-  activeThread: Pick<Thread, "branch" | "worktreePath" | "envMode"> | null | undefined;
+  activeThread:
+    | Pick<Thread, "branch" | "worktreePath" | "workingDirectory" | "envMode">
+    | null
+    | undefined;
   activeDraftThread:
-    | Pick<DraftThreadState, "branch" | "worktreePath" | "envMode">
+    | Pick<DraftThreadState, "branch" | "worktreePath" | "workingDirectory" | "envMode">
     | null
     | undefined;
 }): InheritedThreadContext {
@@ -54,12 +59,14 @@ export function resolveInheritedThreadContext(input: {
     return {
       branch: activeDraftThread.branch,
       worktreePath: activeDraftThread.worktreePath,
+      workingDirectory: activeDraftThread.workingDirectory ?? null,
       envMode: activeDraftThread.envMode,
     };
   }
   return {
     branch: activeThread?.branch ?? null,
     worktreePath: activeThread?.worktreePath ?? null,
+    workingDirectory: activeThread?.workingDirectory ?? null,
     envMode: resolveThreadEnvironmentMode({
       envMode: activeThread?.envMode,
       worktreePath: activeThread?.worktreePath ?? null,
@@ -113,6 +120,7 @@ export interface TerminalThreadCreationState {
   modelSelection: ModelSelection;
   runtimeMode: RuntimeMode;
   worktreePath: string | null;
+  workingDirectory: string | null;
 }
 
 // Normalize the currently active server thread into a stable snapshot for pure helpers.
@@ -159,6 +167,7 @@ export function createActiveDraftThreadSnapshot(
     entryPoint: activeDraftThread.entryPoint,
     branch: activeDraftThread.branch,
     worktreePath: activeDraftThread.worktreePath,
+    workingDirectory: activeDraftThread.workingDirectory ?? null,
     lastKnownPr: activeDraftThread.lastKnownPr ?? null,
     envMode: activeDraftThread.envMode,
     ...(activeDraftThread.isTemporary ? { isTemporary: true } : {}),
@@ -202,12 +211,16 @@ export function createFreshDraftThreadSeed(input: {
   createdAt: string;
   entryPoint: ThreadPrimarySurface;
   options: NewThreadOptions | undefined;
+  defaultEnvMode?: DraftThreadEnvMode;
 }): Omit<DraftThreadState, "projectId" | "interactionMode"> {
   return {
     createdAt: input.createdAt,
     branch: input.options?.branch ?? null,
     worktreePath: input.options?.worktreePath ?? null,
-    envMode: input.options?.envMode ?? "local",
+    workingDirectory: input.options?.workingDirectory ?? null,
+    envMode:
+      input.options?.envMode ??
+      (input.options?.worktreePath ? "worktree" : (input.defaultEnvMode ?? "local")),
     runtimeMode: DEFAULT_RUNTIME_MODE,
     entryPoint: input.entryPoint,
     ...(input.options?.temporary ? { isTemporary: true } : {}),
@@ -215,10 +228,11 @@ export function createFreshDraftThreadSeed(input: {
 }
 
 // Detect whether the caller wants to override stored draft context before reuse.
-export function hasDraftContextOverrides(options?: NewThreadOptions): boolean {
+function hasDraftContextOverrides(options?: NewThreadOptions): boolean {
   return (
     options?.branch !== undefined ||
     options?.worktreePath !== undefined ||
+    options?.workingDirectory !== undefined ||
     options?.envMode !== undefined
   );
 }
@@ -232,6 +246,7 @@ export function buildDraftThreadContextPatch(
   entryPoint: ThreadPrimarySurface;
   envMode?: DraftThreadEnvMode;
   worktreePath?: string | null;
+  workingDirectory?: string | null;
 } | null {
   if (!hasDraftContextOverrides(options)) {
     return null;
@@ -242,6 +257,9 @@ export function buildDraftThreadContextPatch(
     ...(options?.branch !== undefined ? { branch: options.branch ?? null } : {}),
     ...(options?.worktreePath !== undefined || shouldClearWorktreeForLocalMode
       ? { worktreePath: options?.worktreePath ?? null }
+      : {}),
+    ...(options?.workingDirectory !== undefined
+      ? { workingDirectory: options.workingDirectory ?? null }
       : {}),
     ...(options?.envMode !== undefined ? { envMode: options.envMode } : {}),
     entryPoint,
@@ -309,11 +327,9 @@ export function resolveTerminalThreadCreationState(
       input.draftThread?.interactionMode ?? DEFAULT_INTERACTION_MODE,
     lastKnownPr:
       input.draftThread?.lastKnownPr ??
-      (input.activeThread?.projectId === input.projectId
-        ? (input.activeThread.lastKnownPr ?? null)
-        : null) ??
+      (input.activeThread?.projectId === input.projectId ? input.activeThread.lastKnownPr : null) ??
       (input.activeDraftThread?.projectId === input.projectId
-        ? (input.activeDraftThread.lastKnownPr ?? null)
+        ? input.activeDraftThread.lastKnownPr
         : null) ??
       null,
     envMode: hasExplicitEnvModeOverride
@@ -332,5 +348,9 @@ export function resolveTerminalThreadCreationState(
       }
       return input.draftThread?.worktreePath ?? null;
     })(),
+    workingDirectory:
+      input.options?.workingDirectory !== undefined
+        ? (input.options.workingDirectory ?? null)
+        : (input.draftThread?.workingDirectory ?? null),
   };
 }

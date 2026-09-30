@@ -33,18 +33,18 @@ import type { KanbanDragPoint } from "./kanbanDnd.logic";
 
 export interface KanbanCardCompositionProps {
   readonly card: KanbanCard;
-  readonly onOpen?: (card: KanbanCard) => void;
+  readonly onOpen?: ((card: KanbanCard) => void) | undefined;
   readonly onContextMenu?: (
     card: KanbanCard,
     event: React.MouseEvent,
     restoreFocus?: () => void,
   ) => void;
-  readonly onOpenActions?: (card: KanbanCard, event: React.MouseEvent) => void;
-  readonly onDragPointerStart?: (card: KanbanCard, point: KanbanDragPoint) => void;
-  readonly isOverlay?: boolean;
-  readonly isDragSource?: boolean;
-  readonly nowMs?: number;
-  readonly visualState?: "default" | "hover" | "focus" | "pressed";
+  readonly onOpenActions?: ((card: KanbanCard, event: React.MouseEvent) => void) | undefined;
+  readonly onDragPointerStart?: ((card: KanbanCard, point: KanbanDragPoint) => void) | undefined;
+  readonly isOverlay?: boolean | undefined;
+  readonly isDragSource?: boolean | undefined;
+  readonly nowMs?: number | undefined;
+  readonly visualState?: "default" | "hover" | "focus" | "pressed" | undefined;
 }
 
 const REDUNDANT_COLUMN_PILL_LABELS = new Set(["Working", "Connecting", "Completed"]);

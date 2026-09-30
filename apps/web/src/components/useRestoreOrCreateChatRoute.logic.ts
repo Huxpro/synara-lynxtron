@@ -15,11 +15,11 @@ export type RestoreRouteResolver = (input: RestoreRouteResolverInput) => LastThr
 
 export interface RestoreOrCreateResult {
   readonly ok: boolean;
-  readonly error?: string;
+  readonly error?: string | undefined;
 }
 
 export interface RestoreOrCreateChatRouteControllerInput {
-  readonly enabled?: boolean;
+  readonly enabled?: boolean | undefined;
   readonly threadsHydrated: boolean;
   readonly threadIds: readonly string[];
   readonly splitViewsHydrated: boolean;

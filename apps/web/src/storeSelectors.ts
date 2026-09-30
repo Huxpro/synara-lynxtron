@@ -3,8 +3,10 @@
 // Exports: Selector factories used by routes and sidebar-heavy components.
 
 import type { ProjectId, ThreadEnvironmentMode, ThreadId } from "@synara/contracts";
+import { isAutomationRunThread } from "@synara/shared/automationMode";
 
 import type { AppState } from "./storeState";
+import { ACCOUNT_RATE_LIMIT_ACTIVITY_KINDS } from "./lib/rateLimits";
 import { resolveThreadDisplayProvider } from "./lib/threadDisplayProvider";
 import { collectByIds, getThreadFromState, getThreadsFromState } from "./threadDerivation";
 import type {
@@ -20,11 +22,13 @@ const EMPTY_THREAD_SHELLS: ThreadShell[] = [];
 export interface ThreadWorkspaceMetadata {
   envMode: ThreadEnvironmentMode | undefined;
   worktreePath: string | null;
+  workingDirectory: string | null;
 }
 
 const EMPTY_THREAD_WORKSPACE_METADATA: ThreadWorkspaceMetadata = Object.freeze({
   envMode: undefined,
   worktreePath: null,
+  workingDirectory: null,
 });
 
 function createStableEntitySelector<T extends { id: string }>(
@@ -112,10 +116,93 @@ export function createAllThreadsSelector(): (state: AppState) => readonly Thread
   };
 }
 
-/** Shell-only projection of all threads, in `threadIds` order. Unlike
- *  `createAllThreadsSelector`, this stays reference-stable across message/activity
- *  streaming updates, so subscribers only re-render on thread-level changes
- *  (create/delete/archive/title/workspace). Use it when message content is not needed. */
+export interface AccountRateLimitThreadActivities {
+  readonly activities: Thread["activities"];
+}
+
+const EMPTY_RATE_LIMIT_THREADS: readonly AccountRateLimitThreadActivities[] = [];
+
+/** Threads narrowed to just their account rate-limit activities (the only input
+ *  `deriveAccountRateLimits` reads). Unlike `createAllThreadsSelector`, this ignores message
+ *  slices entirely and returns a reference-stable result while ordinary activities stream in:
+ *  the result only changes when a rate-limit activity itself is added, removed, or replaced.
+ *  Usage chips subscribe here so a streaming turn does not re-render them per store flush. */
+export function createAccountRateLimitThreadsSelector(): (
+  state: AppState,
+) => readonly AccountRateLimitThreadActivities[] {
+  let previousThreadIds: AppState["threadIds"] | undefined;
+  let previousActivityIdsByThreadId: AppState["activityIdsByThreadId"] | undefined;
+  let previousActivityByThreadId: AppState["activityByThreadId"] | undefined;
+  let previousResult: readonly AccountRateLimitThreadActivities[] = EMPTY_RATE_LIMIT_THREADS;
+
+  return (state) => {
+    if (
+      previousThreadIds === state.threadIds &&
+      previousActivityIdsByThreadId === state.activityIdsByThreadId &&
+      previousActivityByThreadId === state.activityByThreadId
+    ) {
+      return previousResult;
+    }
+
+    previousThreadIds = state.threadIds;
+    previousActivityIdsByThreadId = state.activityIdsByThreadId;
+    previousActivityByThreadId = state.activityByThreadId;
+
+    const nextResult: AccountRateLimitThreadActivities[] = [];
+    for (const threadId of state.threadIds ?? []) {
+      const activityIds = state.activityIdsByThreadId?.[threadId];
+      const activityById = state.activityByThreadId?.[threadId];
+      if (!activityIds || activityIds.length === 0 || !activityById) {
+        continue;
+      }
+      let matched: Thread["activities"][number][] | undefined;
+      for (const activityId of activityIds) {
+        const activity = activityById[activityId];
+        if (activity && ACCOUNT_RATE_LIMIT_ACTIVITY_KINDS.has(activity.kind)) {
+          (matched ??= []).push(activity);
+        }
+      }
+      if (matched) {
+        nextResult.push({ activities: matched });
+      }
+    }
+
+    // Rate-limit activities are rare, so nearly every activity append lands here with an
+    // element-wise identical result; keep the previous reference to spare subscribers.
+    const unchanged =
+      nextResult.length === previousResult.length &&
+      nextResult.every((entry, entryIndex) => {
+        const previousEntry = previousResult[entryIndex];
+        return (
+          previousEntry !== undefined &&
+          entry.activities.length === previousEntry.activities.length &&
+          entry.activities.every(
+            (activity, activityIndex) => previousEntry.activities[activityIndex] === activity,
+          )
+        );
+      });
+    if (unchanged) {
+      return previousResult;
+    }
+
+    previousResult = nextResult.length > 0 ? nextResult : EMPTY_RATE_LIMIT_THREADS;
+    return previousResult;
+  };
+}
+
+/** Shell-only projection of all threads, in `threadIds` order.
+ *
+ *  It reads only `threadIds` + `threadShellById`, so it never rebuilds for message/activity
+ *  *content* changes — but it is NOT fully stable while a turn streams: `ThreadShell.updatedAt`
+ *  is part of the shell, and `threadShellsEqual` compares it, so every delta that advances
+ *  `updatedAt` writes a new shell and yields a new array here. That comparison has to stay:
+ *  the shell is where `updatedAt` lives, and the sidebar both sorts by it
+ *  (`components/Sidebar.logic.ts`) and renders it (`components/SidebarSearchPalette.tsx`).
+ *
+ *  So: cheaper and far less churny than `createAllThreadsSelector` (one new array per delta
+ *  instead of rebuilding every thread's message/activity lists), but subscribers that must not
+ *  re-render during streaming should select a narrower slice (e.g.
+ *  `createThreadWorkspaceMetadataSelector`) rather than relying on this being stable. */
 export function createThreadShellsSelector(): (state: AppState) => readonly ThreadShell[] {
   return (state) => collectByIds(state.threadIds, state.threadShellById, EMPTY_THREAD_SHELLS);
 }
@@ -160,6 +247,7 @@ export function createThreadWorkspaceMetadataSelector(
 ): (state: AppState) => ThreadWorkspaceMetadata {
   let previousEnvMode: ThreadEnvironmentMode | undefined = undefined;
   let previousWorktreePath: string | null = null;
+  let previousWorkingDirectory: string | null = null;
   let previousResult = EMPTY_THREAD_WORKSPACE_METADATA;
 
   return (state) => {
@@ -171,16 +259,81 @@ export function createThreadWorkspaceMetadataSelector(
     const source = state.threadShellById?.[threadId];
     const envMode = source?.envMode;
     const worktreePath = source?.worktreePath ?? null;
-    if (previousEnvMode === envMode && previousWorktreePath === worktreePath) {
+    const workingDirectory = source?.workingDirectory ?? null;
+    if (
+      previousEnvMode === envMode &&
+      previousWorktreePath === worktreePath &&
+      previousWorkingDirectory === workingDirectory
+    ) {
       return previousResult;
     }
 
     previousEnvMode = envMode;
     previousWorktreePath = worktreePath;
+    previousWorkingDirectory = workingDirectory;
     previousResult =
-      envMode === undefined && worktreePath === null
+      envMode === undefined && worktreePath === null && workingDirectory === null
         ? EMPTY_THREAD_WORKSPACE_METADATA
-        : { envMode, worktreePath };
+        : { envMode, worktreePath, workingDirectory };
+    return previousResult;
+  };
+}
+
+export interface ThreadGitActionsMetadata {
+  readonly worktreePath: string | null;
+  readonly branch: string | null;
+  readonly associatedWorktreeBranch: string | null | undefined;
+  readonly createBranchFlowCompleted: boolean;
+  readonly title: string | undefined;
+}
+
+const EMPTY_THREAD_GIT_ACTIONS_METADATA: ThreadGitActionsMetadata = {
+  worktreePath: null,
+  branch: null,
+  associatedWorktreeBranch: null,
+  createBranchFlowCompleted: false,
+  title: undefined,
+};
+
+/** Shell-only git-action inputs (worktree, branch, title) that stay reference-stable
+ *  while a turn streams. The git actions control is always mounted on the chat
+ *  surface and only reads these fields; subscribing it to the full derived Thread
+ *  re-rendered it on every message/activity delta. */
+export function createThreadGitActionsMetadataSelector(
+  threadId: ThreadId | null | undefined,
+): (state: AppState) => ThreadGitActionsMetadata {
+  let previousResult = EMPTY_THREAD_GIT_ACTIONS_METADATA;
+
+  return (state) => {
+    if (!threadId) {
+      return EMPTY_THREAD_GIT_ACTIONS_METADATA;
+    }
+    const source = state.threadShellById?.[threadId];
+    if (!source) {
+      previousResult = EMPTY_THREAD_GIT_ACTIONS_METADATA;
+      return previousResult;
+    }
+    const worktreePath = source.worktreePath ?? null;
+    const branch = source.branch ?? null;
+    const associatedWorktreeBranch = source.associatedWorktreeBranch;
+    const createBranchFlowCompleted = source.createBranchFlowCompleted ?? false;
+    const title = source.title;
+    if (
+      previousResult.worktreePath === worktreePath &&
+      previousResult.branch === branch &&
+      previousResult.associatedWorktreeBranch === associatedWorktreeBranch &&
+      previousResult.createBranchFlowCompleted === createBranchFlowCompleted &&
+      previousResult.title === title
+    ) {
+      return previousResult;
+    }
+    previousResult = {
+      worktreePath,
+      branch,
+      associatedWorktreeBranch,
+      createBranchFlowCompleted,
+      title,
+    };
     return previousResult;
   };
 }
@@ -232,7 +385,7 @@ export function createComposerThreadMentionSourcesSelector(): (
 
     const nextSources = (threadIds ?? []).flatMap((threadId) => {
       const thread = summaryById[threadId];
-      return thread
+      return thread && !thread.sidechatSourceThreadId
         ? [
             {
               id: thread.id,
@@ -272,9 +425,60 @@ export function createComposerThreadMentionSourcesSelector(): (
   };
 }
 
-export function createSidebarDisplayThreadsSelector(): (
-  state: AppState,
-) => readonly SidebarThreadSummary[] {
+export interface SidebarThreadVisibilityOptions {
+  /** Drop the per-run threads standalone automations create (pinned ones stay). */
+  readonly hideAutomationRunThreads?: boolean;
+}
+
+/**
+ * Whether a thread row belongs in user-facing thread lists (sidebar tree, Kanban,
+ * project picker, search). Housekeeping consumers that must see every thread
+ * (retention and reconciliation) read the unfiltered summaries selector instead.
+ */
+export function isSidebarThreadVisible(
+  thread: SidebarThreadSummary,
+  options?: SidebarThreadVisibilityOptions,
+): boolean {
+  if (thread.sidechatSourceThreadId) return false;
+  if (!options?.hideAutomationRunThreads) return true;
+  if (thread.isPinned) return true;
+  return !isAutomationRunThread(thread);
+}
+
+export function createSidechatSummariesForSourceSelector(
+  sourceThreadId: ThreadId,
+): (state: AppState) => readonly SidebarThreadSummary[] {
+  const selectSidebarSummaries = createSidebarThreadSummariesSelector();
+  let previousSummaries: readonly SidebarThreadSummary[] | undefined;
+  let previousSidechats: readonly SidebarThreadSummary[] = [];
+
+  return (state) => {
+    const summaries = selectSidebarSummaries(state);
+    if (summaries === previousSummaries) return previousSidechats;
+    previousSummaries = summaries;
+    const nextSidechats = summaries
+      .filter(
+        (thread) => thread.sidechatSourceThreadId === sourceThreadId && thread.archivedAt == null,
+      )
+      .toSorted(
+        (left, right) =>
+          Date.parse(right.sidechatLastActivityAt ?? right.updatedAt ?? right.createdAt) -
+          Date.parse(left.sidechatLastActivityAt ?? left.updatedAt ?? left.createdAt),
+      );
+    if (
+      nextSidechats.length === previousSidechats.length &&
+      nextSidechats.every((thread, index) => thread === previousSidechats[index])
+    ) {
+      return previousSidechats;
+    }
+    previousSidechats = nextSidechats;
+    return previousSidechats;
+  };
+}
+
+export function createSidebarDisplayThreadsSelector(
+  options?: SidebarThreadVisibilityOptions,
+): (state: AppState) => readonly SidebarThreadSummary[] {
   const selectSidebarSummaries = createSidebarThreadSummariesSelector();
   let previousSummaries: readonly SidebarThreadSummary[] | undefined;
   let previousDisplaySummaries: readonly SidebarThreadSummary[] = [];
@@ -287,7 +491,10 @@ export function createSidebarDisplayThreadsSelector(): (
 
     previousSummaries = sidebarSummaries;
     previousDisplaySummaries = sidebarSummaries.filter(
-      (thread) => !thread.parentThreadId && thread.archivedAt == null,
+      (thread) =>
+        !thread.parentThreadId &&
+        thread.archivedAt == null &&
+        isSidebarThreadVisible(thread, options),
     );
     return previousDisplaySummaries;
   };
@@ -297,9 +504,9 @@ export function createSidebarDisplayThreadsSelector(): (
 // child (subagent) threads so buildProjectThreadTree can nest them under
 // their parent row behind the "N subagents" expand toggle. Flat consumers
 // (pinned rows, search palette) should keep using the display selector.
-export function createSidebarTreeThreadsSelector(): (
-  state: AppState,
-) => readonly SidebarThreadSummary[] {
+export function createSidebarTreeThreadsSelector(
+  options?: SidebarThreadVisibilityOptions,
+): (state: AppState) => readonly SidebarThreadSummary[] {
   const selectSidebarSummaries = createSidebarThreadSummariesSelector();
   let previousSummaries: readonly SidebarThreadSummary[] | undefined;
   let previousTreeSummaries: readonly SidebarThreadSummary[] = [];
@@ -311,8 +518,61 @@ export function createSidebarTreeThreadsSelector(): (
     }
 
     previousSummaries = sidebarSummaries;
-    previousTreeSummaries = sidebarSummaries.filter((thread) => thread.archivedAt == null);
+    previousTreeSummaries = sidebarSummaries.filter(
+      (thread) => thread.archivedAt == null && isSidebarThreadVisible(thread, options),
+    );
     return previousTreeSummaries;
+  };
+}
+
+/**
+ * Last time each project was actually *used*, i.e. when a thread of that project last received a
+ * user message (falling back to the thread's creation time for threads never written to).
+ *
+ * Deliberately not `Project.updatedAt`: that timestamp only moves when project *metadata* changes
+ * (creation, rename, pin, scripts), so ranking by it surfaces the most recently created project
+ * instead of the one you were last talking in. Deliberately not thread `updatedAt` either: that
+ * churns on every streamed token and would rebuild this map continuously.
+ */
+export function createProjectLastActivityAtSelector(): (
+  state: AppState,
+) => ReadonlyMap<ProjectId, string> {
+  let previousThreadIds: AppState["threadIds"] | undefined;
+  let previousSummaryById: AppState["sidebarThreadSummaryById"] | undefined;
+  let previousActivity: ReadonlyMap<ProjectId, string> = new Map();
+
+  return (state) => {
+    const threadIds = state.threadIds;
+    const summaryById = state.sidebarThreadSummaryById;
+    if (threadIds === previousThreadIds && summaryById === previousSummaryById) {
+      return previousActivity;
+    }
+    previousThreadIds = threadIds;
+    previousSummaryById = summaryById;
+
+    const nextActivity = new Map<ProjectId, string>();
+    for (const threadId of threadIds ?? []) {
+      const thread = summaryById[threadId];
+      if (!thread) {
+        continue;
+      }
+      const activityAt = thread.latestUserMessageAt ?? thread.createdAt;
+      const current = nextActivity.get(thread.projectId);
+      if (current === undefined || current < activityAt) {
+        nextActivity.set(thread.projectId, activityAt);
+      }
+    }
+
+    if (
+      nextActivity.size === previousActivity.size &&
+      [...nextActivity].every(
+        ([projectId, activityAt]) => previousActivity.get(projectId) === activityAt,
+      )
+    ) {
+      return previousActivity;
+    }
+    previousActivity = nextActivity;
+    return previousActivity;
   };
 }
 

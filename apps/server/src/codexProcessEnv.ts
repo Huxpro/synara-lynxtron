@@ -15,13 +15,28 @@ import {
 } from "@synara/shared/shell";
 
 import { resolveBaseCodexHomePath, resolveSynaraCodexHomeOverlayPath } from "./codexHomePaths.ts";
-import { buildProviderChildEnvironment } from "./providerChildEnvironment.ts";
+import {
+  buildProviderChildEnvironment,
+  registerProviderCredentialKey,
+} from "./providerChildEnvironment.ts";
 
 const CODEX_PROCESS_SHELL_ENV_NAMES = ["PATH", "SSH_AUTH_SOCK"] as const;
-const NODE_REPL_SANDBOX_ALLOWED_UNIX_SOCKETS = "NODE_REPL_SANDBOX_ALLOWED_UNIX_SOCKETS";
-const NODE_REPL_MCP_SERVER_HEADER = "[mcp_servers.node_repl]";
 const CODEX_OVERLAY_SHARED_STATE_FILES = new Set(["auth.json"]);
+// SQLite databases and their WAL/SHM/journal sidecars are never mirrored into
+// the overlay. SQLite derives sidecar paths from the path it opened the
+// database through, and on Windows deleting a sidecar through a symlink only
+// removes the link, so a per-file mirror lets Synara's app-server and an
+// external `codex` CLI end up with two WALs on one database. The overlay
+// instead points CODEX_SQLITE_HOME at the source home so every process opens
+// the same files through the same path.
+const CODEX_SQLITE_STATE_ENTRY_PATTERN = /^.+\.sqlite(?:-(?:wal|shm|journal))?$/;
 const SYNARA_CONFIG_SUPPRESSIONS_FILE = "synara-config-suppressions-v1.json";
+const SYNARA_MANAGED_MCP_TABLE_HEADER = "[mcp_servers.synara]";
+export const SYNARA_COMPETING_BROWSER_PLUGIN_SECTION_HEADERS = [
+  '[plugins."browser@openai-bundled"]',
+  '[plugins."chrome@openai-bundled"]',
+  '[plugins."computer-use@openai-bundled"]',
+] as const;
 const MAX_CONFIG_SUPPRESSION_SECTIONS = 32;
 const MAX_CONFIG_SUPPRESSION_HEADER_LENGTH = 256;
 const codexOverlayPreparationQueues = new Map<string, Promise<void>>();
@@ -33,22 +48,6 @@ const CONFLICTING_LOCAL_BROWSER_PLUGIN_SECTION_PATTERN =
 interface CodexOverlayEntryLinker {
   readonly symlink: typeof fs.symlink;
   readonly copyFile: typeof fs.copyFile;
-}
-
-export function resolveCodexBrowserUsePipePath(
-  input: {
-    readonly env?: NodeJS.ProcessEnv;
-    readonly platform?: NodeJS.Platform;
-  } = {},
-): string {
-  const env = input.env ?? process.env;
-  const configured = env.SYNARA_BROWSER_USE_PIPE_PATH?.trim();
-  if (configured) {
-    return configured;
-  }
-  return (input.platform ?? process.platform) === "win32"
-    ? String.raw`\\.\pipe\codex-browser-use`
-    : "/tmp/codex-browser-use.sock";
 }
 
 function isSafePluginSectionHeader(value: unknown): value is string {
@@ -88,7 +87,14 @@ export function disableCodexConfigSections(
   sectionHeaders: readonly string[],
   appendMissing = false,
 ): string {
-  const targets = new Set(sectionHeaders.filter(isSafePluginSectionHeader));
+  const targetsByName = new Map<string, string>();
+  for (const header of sectionHeaders) {
+    if (!isSafePluginSectionHeader(header)) continue;
+    const tableName = normalizeTomlTableHeaderName(header);
+    if (tableName !== undefined && !targetsByName.has(tableName)) {
+      targetsByName.set(tableName, header);
+    }
+  }
   const lines = config.split(/\r?\n/);
   const output: string[] = [];
   let inTargetSection = false;
@@ -102,11 +108,11 @@ export function disableCodexConfigSections(
   };
 
   for (const line of lines) {
-    const trimmed = line.trim();
-    if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+    const tableName = normalizeTomlTableHeaderName(line);
+    if (tableName !== undefined) {
       closeTargetSection();
-      inTargetSection = targets.has(trimmed);
-      if (inTargetSection) seenTargetSections.add(trimmed);
+      inTargetSection = targetsByName.has(tableName);
+      if (inTargetSection) seenTargetSections.add(tableName);
       targetSectionHasEnabled = false;
       output.push(line);
       continue;
@@ -124,8 +130,8 @@ export function disableCodexConfigSections(
   closeTargetSection();
 
   if (appendMissing) {
-    for (const header of targets) {
-      if (seenTargetSections.has(header)) continue;
+    for (const [tableName, header] of targetsByName) {
+      if (seenTargetSections.has(tableName)) continue;
       if (output.length > 0 && output.at(-1)?.trim()) {
         output.push("");
       }
@@ -209,13 +215,9 @@ async function ensureCodexOverlaySymlink(input: {
       return;
     }
 
-    if (
-      targetStat.isSymbolicLink() ||
-      /^.+\.sqlite(?:-(?:wal|shm|journal))?$/.test(input.entryName) ||
-      CODEX_OVERLAY_SHARED_STATE_FILES.has(input.entryName)
-    ) {
-      // SQLite files must stay generation-matched, and auth must mirror the
-      // user's real Codex home so external `codex login` changes are visible.
+    if (targetStat.isSymbolicLink() || CODEX_OVERLAY_SHARED_STATE_FILES.has(input.entryName)) {
+      // Auth must mirror the user's real Codex home so external `codex login`
+      // changes are visible.
       await fs.rm(input.targetPath, { recursive: true, force: true });
     } else {
       return;
@@ -223,6 +225,27 @@ async function ensureCodexOverlaySymlink(input: {
   }
 
   await linkOrCopyCodexOverlayEntry(input);
+}
+
+function isCodexSqliteStateEntry(entryName: string): boolean {
+  return CODEX_SQLITE_STATE_ENTRY_PATTERN.test(entryName);
+}
+
+/**
+ * Removes SQLite links that earlier Synara releases mirrored into the overlay.
+ * Only symlinks are removed: a regular database file in the overlay is left
+ * untouched because Synara no longer owns or reads it.
+ */
+async function removeLegacyCodexOverlaySqliteLinks(overlayHomePath: string): Promise<void> {
+  for (const entry of await fs.readdir(overlayHomePath)) {
+    if (!isCodexSqliteStateEntry(entry)) {
+      continue;
+    }
+    const targetPath = path.join(overlayHomePath, entry);
+    if ((await fs.lstat(targetPath)).isSymbolicLink()) {
+      await fs.rm(targetPath, { force: true });
+    }
+  }
 }
 
 export function appendCodexConfigSection(config: string, section: string): string {
@@ -337,7 +360,12 @@ function normalizeTomlTableHeaderName(line: string): string | undefined {
   return parts.length > 0 ? JSON.stringify(parts) : undefined;
 }
 
-function findTomlTableHeader(config: string, header: string) {
+interface TomlTableHeaderLocation {
+  readonly index: number;
+  readonly end: number;
+}
+
+function findTomlTableHeader(config: string, header: string): TomlTableHeaderLocation | undefined {
   const target = normalizeTomlTableHeaderName(header);
   if (!target) {
     return undefined;
@@ -384,6 +412,39 @@ function splitTomlTables(snippet: string): string[] {
     tables.push(current.join("\n").trim());
   }
   return tables.filter((table) => table.length > 0);
+}
+
+function findTomlTableHeaderInNamespace(
+  config: string,
+  namespaceHeader: string,
+): TomlTableHeaderLocation | undefined {
+  const namespace = normalizeTomlTableHeaderName(namespaceHeader);
+  if (!namespace) {
+    return undefined;
+  }
+  const descendantPrefix = `${namespace.slice(0, -1)},`;
+  let offset = 0;
+  for (const rawLine of config.split("\n")) {
+    const line = rawLine.endsWith("\r") ? rawLine.slice(0, -1) : rawLine;
+    const table = normalizeTomlTableHeaderName(line);
+    if (table === namespace || table?.startsWith(descendantPrefix)) {
+      return { index: offset, end: offset + line.length };
+    }
+    offset += rawLine.length + 1;
+  }
+  return undefined;
+}
+
+function removeTomlTableNamespace(config: string, namespaceHeader: string): string {
+  let result = config;
+  while (true) {
+    const match = findTomlTableHeaderInNamespace(result, namespaceHeader);
+    if (!match) {
+      return result;
+    }
+    const tableEnd = findNextTomlTableHeaderIndex(result, match.end);
+    result = `${result.slice(0, match.index)}${result.slice(tableEnd)}`;
+  }
 }
 
 function maskTomlComments(input: string): string {
@@ -517,15 +578,45 @@ export function mergeShellEnvPolicyExclude(config: string, envVarName: string): 
 }
 
 function appendManagedCodexConfigSection(config: string, section: string): string {
-  const tables = splitTomlTables(section.trim()).filter((table) => {
+  let overlayConfig = config;
+  const managedMcpTableName = normalizeTomlTableHeaderName(SYNARA_MANAGED_MCP_TABLE_HEADER);
+  const managedMcpDescendantPrefix = `${managedMcpTableName!.slice(0, -1)},`;
+  const tables: string[] = [];
+
+  for (const table of splitTomlTables(section.trim())) {
     const header = table.split("\n")[0]?.trim();
-    return header === undefined || !configHasTomlTableHeader(config, header);
-  });
+    if (header === undefined) {
+      tables.push(table);
+      continue;
+    }
+    const tableName = normalizeTomlTableHeaderName(header);
+    if (tableName?.startsWith(managedMcpDescendantPrefix)) {
+      continue;
+    }
+    if (tableName === managedMcpTableName) {
+      // The session-scoped gateway entry is authoritative inside Synara's
+      // overlay. The user's source config remains untouched.
+      overlayConfig = removeTomlTableNamespace(overlayConfig, SYNARA_MANAGED_MCP_TABLE_HEADER);
+      // Recover only the fields Synara generates for its HTTP gateway. Saved
+      // stdio fields (including multiline args/env) make Codex reject the config.
+      tables.push(
+        [
+          header,
+          ...table.split("\n").filter((line) => /^\s*(url|bearer_token_env_var)\s*=/.test(line)),
+        ].join("\n"),
+      );
+      continue;
+    }
+    if (!configHasTomlTableHeader(overlayConfig, header)) {
+      tables.push(table);
+    }
+  }
+
   if (tables.length === 0) {
-    return config;
+    return overlayConfig;
   }
   return appendCodexConfigSection(
-    config,
+    overlayConfig,
     `${SYNARA_MANAGED_CODEX_CONFIG_BEGIN}\n${tables.join("\n\n")}\n${SYNARA_MANAGED_CODEX_CONFIG_END}`,
   );
 }
@@ -566,8 +657,9 @@ async function prepareSynaraCodexHomeOverlayUnlocked(input: {
   try {
     // Auth must get a best-effort link/copy before optional entries whose
     // symlinks may fail on restricted Windows installs.
+    await removeLegacyCodexOverlaySqliteLinks(overlayHomePath);
     for (const entry of prioritizeCodexOverlayEntries(await fs.readdir(sourceHomePath))) {
-      if (entry === "config.toml") {
+      if (entry === "config.toml" || isCodexSqliteStateEntry(entry)) {
         continue;
       }
       const sourcePath = path.join(sourceHomePath, entry);
@@ -595,6 +687,7 @@ async function prepareSynaraCodexHomeOverlayUnlocked(input: {
   const suppressionMarkerPath = path.join(overlayHomePath, SYNARA_CONFIG_SUPPRESSIONS_FILE);
   const suppressedSections = [
     ...new Set([
+      ...SYNARA_COMPETING_BROWSER_PLUGIN_SECTION_HEADERS,
       ...findConflictingLocalBrowserPluginSections(sourceConfig),
       ...(await readSynaraConfigSuppressions(suppressionMarkerPath)),
     ]),
@@ -619,14 +712,6 @@ async function prepareSynaraCodexHomeOverlayUnlocked(input: {
       overlayConfig = mergeShellEnvPolicyExclude(overlayConfig, tokenEnvVar);
     }
   }
-  // Codex launches stdio MCP helpers with an environment allowlist, so the
-  // Browser helper must opt in to the socket capability set on its parent.
-  overlayConfig = mergeTomlStringArrayValues(
-    overlayConfig,
-    NODE_REPL_MCP_SERVER_HEADER,
-    "env_vars",
-    [NODE_REPL_SANDBOX_ALLOWED_UNIX_SOCKETS],
-  );
   await fs.writeFile(overlayConfigPath, overlayConfig, "utf8");
   await writeSynaraConfigSuppressions(suppressionMarkerPath, suppressedSections);
 
@@ -667,20 +752,25 @@ export async function buildCodexProcessEnv(
     overlayHomePath || input.homePath
       ? { ...baseEnv, CODEX_HOME: overlayHomePath ?? input.homePath }
       : baseEnv;
+  if (overlayHomePath && !configuredEnv.CODEX_SQLITE_HOME?.trim()) {
+    // Keep every Codex process (Synara's app-server, the user's own `codex`
+    // CLI) on one SQLite home reached through one path; see
+    // CODEX_SQLITE_STATE_ENTRY_PATTERN. A user-provided value wins.
+    configuredEnv.CODEX_SQLITE_HOME = resolveBaseCodexHomePath(baseEnv, input.homePath);
+  }
   const platform = input.platform ?? process.platform;
-  const browserUsePipePath =
-    platform === "win32"
-      ? undefined
-      : resolveCodexBrowserUsePipePath({ env: configuredEnv, platform });
   const effectiveEnv = buildProviderChildEnvironment({
     provider: "codex",
     baseEnv: configuredEnv,
   });
+  const providerEnvKey = readActiveCodexProviderEnvKey(effectiveEnv);
+  if (providerEnvKey) {
+    registerProviderCredentialKey(providerEnvKey);
+  }
 
   if (platform === "darwin" || platform === "linux") {
     try {
       const shell = resolveLoginShell(platform, effectiveEnv.SHELL);
-      const providerEnvKey = readActiveCodexProviderEnvKey(effectiveEnv);
       if (shell && providerEnvKey && !effectiveEnv[providerEnvKey]?.trim()) {
         const shellEnvironment = (input.readEnvironment ?? readEnvironmentFromLoginShell)(shell, [
           ...CODEX_PROCESS_SHELL_ENV_NAMES,
@@ -700,10 +790,6 @@ export async function buildCodexProcessEnv(
     } catch {
       // Keep inherited environment if shell lookup fails.
     }
-  }
-
-  if (browserUsePipePath) {
-    effectiveEnv[NODE_REPL_SANDBOX_ALLOWED_UNIX_SOCKETS] = browserUsePipePath;
   }
 
   return effectiveEnv;

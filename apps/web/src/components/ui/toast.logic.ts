@@ -1,3 +1,5 @@
+export const DEFAULT_TOAST_TIMEOUT_MS = 10_000;
+
 export function shouldHideCollapsedToastContent(
   visibleToastIndex: number,
   visibleToastCount: number,
@@ -6,6 +8,20 @@ export function shouldHideCollapsedToastContent(
   // due to toasts hidden by thread filtering.
   if (visibleToastCount <= 1) return false;
   return visibleToastIndex > 0;
+}
+
+export function shouldRunVisibleToastAutoDismiss({
+  paused,
+  documentVisible,
+  windowFocused,
+  toastFocused,
+}: {
+  paused: boolean;
+  documentVisible: boolean;
+  windowFocused: boolean;
+  toastFocused: boolean;
+}): boolean {
+  return !paused && documentVisible && windowFocused && !toastFocused;
 }
 
 type ToastWithHeight = {

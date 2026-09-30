@@ -19,9 +19,14 @@ export interface LocalPdfPreviewInput {
 
 export interface LocalPdfMetadata {
   readonly pageCount: number;
+  /** Unscaled size of the first page, in PDF points; renderers derive aspect ratio from it. */
+  readonly width: number;
+  readonly height: number;
 }
 
-export interface RenderedLocalPdfPage extends LocalPdfMetadata {
+/** A rendered page: `width`/`height` are the rendered bitmap size, not page points. */
+export interface RenderedLocalPdfPage {
+  readonly pageCount: number;
   readonly bytes: Uint8Array;
   readonly width: number;
   readonly height: number;
@@ -70,7 +75,9 @@ async function loadPdf(input: LocalPdfPreviewInput) {
 export async function inspectLocalPdf(input: LocalPdfPreviewInput): Promise<LocalPdfMetadata> {
   const { document } = await loadPdf(input);
   try {
-    return { pageCount: document.numPages };
+    const firstPage = await document.getPage(1);
+    const viewport = firstPage.getViewport({ scale: 1 });
+    return { pageCount: document.numPages, width: viewport.width, height: viewport.height };
   } finally {
     await document.destroy();
   }

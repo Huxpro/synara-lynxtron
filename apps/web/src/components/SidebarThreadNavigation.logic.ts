@@ -24,7 +24,7 @@ export const SIDEBAR_THREAD_PREWARM_LIMIT = 10;
 export function collectVisibleSidebarThreadIds<T extends string>(input: {
   readonly pinnedThreadIds: readonly T[];
   readonly projectVisibleThreadIds: readonly (readonly T[])[];
-  readonly trailingThreadIds?: readonly T[];
+  readonly trailingThreadIds?: readonly T[] | undefined;
 }): T[] {
   const visibleThreadIds = new Set<T>();
   for (const threadId of input.pinnedThreadIds) {
@@ -92,9 +92,9 @@ export function getSidebarThreadIdForJumpCommand<T extends string>(input: {
 
 export function getSidebarThreadIdsToPrewarm<T extends string>(input: {
   readonly visibleThreadIds: readonly T[];
-  readonly activeThreadId?: T | null;
-  readonly limit?: number;
-  readonly neighborRadius?: number;
+  readonly activeThreadId?: T | null | undefined;
+  readonly limit?: number | undefined;
+  readonly neighborRadius?: number | undefined;
 }): T[] {
   const limit = Math.max(0, input.limit ?? SIDEBAR_THREAD_PREWARM_LIMIT);
   if (limit === 0) {

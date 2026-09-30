@@ -19,7 +19,7 @@ import { SearchInput } from "~/components/ui/search-input";
 import { RefreshCwIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function PullRequestRouteHeaderRootElement(
   props: ChildrenProps & { readonly hostClassName?: string | undefined },
@@ -51,7 +51,7 @@ export function PullRequestRouteHeaderNavigationElement() {
 }
 
 export function PullRequestRouteHeaderTitleElement(props: ChildrenProps) {
-  return <h1 className="truncate font-heading text-sm font-medium">{props.children}</h1>;
+  return <h1 className="truncate font-heading text-ui font-medium">{props.children}</h1>;
 }
 
 export function PullRequestRouteHeaderScopeElement(props: ChildrenProps) {
@@ -60,7 +60,7 @@ export function PullRequestRouteHeaderScopeElement(props: ChildrenProps) {
       <span aria-hidden className="text-muted-foreground/50">
         ·
       </span>
-      <span className="truncate text-xs text-muted-foreground">{props.children}</span>
+      <span className="truncate text-ui text-muted-foreground">{props.children}</span>
     </>
   );
 }
@@ -103,7 +103,14 @@ export function PullRequestFilterPillGroupElement<T extends string>(props: {
   readonly onChange: (value: T) => void;
   readonly onIntent?: ((value: T) => void) | undefined;
 }) {
-  return <PullRequestFilterPillGroup {...props} />;
+  return (
+    <PullRequestFilterPillGroup
+      value={props.value}
+      options={props.options}
+      onChange={props.onChange}
+      {...(props.onIntent ? { onIntent: props.onIntent } : {})}
+    />
+  );
 }
 
 export function PullRequestFiltersSearchRowElement(props: ChildrenProps) {
@@ -127,7 +134,7 @@ export function PullRequestSearchElement(props: {
 }
 
 export function PullRequestSearchUnavailableElement(props: ChildrenProps) {
-  return <div className="min-w-0 flex-1 text-xs text-muted-foreground">{props.children}</div>;
+  return <div className="min-w-0 flex-1 text-ui text-muted-foreground">{props.children}</div>;
 }
 
 export function PullRequestProjectFilterElement(props: {

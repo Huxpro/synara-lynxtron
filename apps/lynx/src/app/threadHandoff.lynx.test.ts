@@ -1,5 +1,6 @@
 import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
+import { DEFAULT_PROVIDER_ORDER } from "@synara-web/providerOrdering";
 
 import {
   buildNativeThreadHandoffCreateCommand,
@@ -31,21 +32,34 @@ const eligibleThread = {
 
 describe("Native thread handoff service", () => {
   it("uses the same eligibility and target-provider policy as the header and sidebar", () => {
-    expect(resolveNativeThreadHandoffTargets(eligibleThread)).toEqual([
+    const disabledProviders = new Set(["grok"]);
+    const providers = {
+      providerSettings: Object.fromEntries(
+        DEFAULT_PROVIDER_ORDER.map((provider) => [
+          provider,
+          { enabled: !disabledProviders.has(provider) },
+        ]),
+      ) as never,
+      providerStatuses: [
+        { provider: "codex", available: true, authStatus: "authenticated" },
+        { provider: "claudeAgent", available: true, authStatus: "authenticated" },
+        { provider: "cursor", available: false, authStatus: "authenticated" },
+        { provider: "grok", available: true, authStatus: "authenticated" },
+        { provider: "opencode", available: true, authStatus: "unknown" },
+      ] as never,
+    };
+    expect(resolveNativeThreadHandoffTargets(eligibleThread, providers)).toEqual([
       "claudeAgent",
-      "cursor",
-      "antigravity",
-      "grok",
-      "droid",
-      "kilo",
       "opencode",
-      "pi",
     ]);
     expect(
-      resolveNativeThreadHandoffTargets({
-        ...eligibleThread,
-        sessionStatus: "running",
-      }),
+      resolveNativeThreadHandoffTargets(
+        {
+          ...eligibleThread,
+          sessionStatus: "running",
+        },
+        providers,
+      ),
     ).toEqual([]);
   });
 

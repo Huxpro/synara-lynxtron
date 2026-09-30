@@ -12,6 +12,12 @@ import { cn } from "~/lib/utils";
 import { PR_STATE_PRESENTATION_ICONS } from "./pullRequestStatePresentation.icons";
 import { resolvePrStatePresentation } from "./pullRequestStatePresentation.logic";
 
+export { PR_STATE_PRESENTATION_ICONS } from "./pullRequestStatePresentation.icons";
+export {
+  resolvePrStatePresentation,
+  type PrStatePresentation,
+} from "./pullRequestStatePresentation.logic";
+
 /**
  * The "this pull request has conflicts" glyph, for surfaces that call the conflict out beside
  * their own copy (a meta row, an environment row) rather than through the state glyph. It

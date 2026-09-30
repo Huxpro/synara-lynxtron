@@ -13,7 +13,7 @@ export function ComposerColumnFrameSurface({
   className,
 }: {
   readonly children: ReactNode;
-  readonly className?: string;
+  readonly className?: string | undefined;
 }) {
   return (
     <ComposerColumnFrameSurfaceElement className={cn(COMPOSER_COLUMN_FRAME_CLASS_NAME, className)}>

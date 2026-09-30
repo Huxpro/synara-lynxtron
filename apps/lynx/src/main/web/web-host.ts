@@ -946,8 +946,6 @@ const initialTerminalOpen =
   new URLSearchParams(globalThis.location.search).get("terminal") === "open";
 const initialTemporaryOpen =
   new URLSearchParams(globalThis.location.search).get("temporary") === "open";
-const initialWorkspaceSettingsOpen =
-  new URLSearchParams(globalThis.location.search).get("workspaceSettings") === "open";
 const initialDiffFileTreeOpen =
   new URLSearchParams(globalThis.location.search).get("diffFileTree") === "open";
 const initialDiffOpen = ["open", "1"].includes(
@@ -955,8 +953,6 @@ const initialDiffOpen = ["open", "1"].includes(
 );
 const initialDiffTurnId = new URLSearchParams(globalThis.location.search).get("diffTurnId");
 const initialDiffFilePath = new URLSearchParams(globalThis.location.search).get("diffFilePath");
-const initialWorkspaceVisible =
-  new URLSearchParams(globalThis.location.search).get("workspaceVisible") === "open";
 const initialExplorerOpen =
   new URLSearchParams(globalThis.location.search).get("explorer") === "open";
 const initialExplorerPresentationMode =
@@ -1025,8 +1021,6 @@ webDocument.body.innerHTML = `
     initialRenameOpen,
     initialTerminalOpen,
     initialTemporaryOpen,
-    initialWorkspaceSettingsOpen,
-    initialWorkspaceVisible,
     initialExplorerOpen,
     initialExplorerPresentationMode,
     initialExplorerActionMenuOpen,

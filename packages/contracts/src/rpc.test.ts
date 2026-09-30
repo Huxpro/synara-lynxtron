@@ -1,20 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  WsAutomationCreateRpc,
-  WsBootstrapRpcGroup,
-  WsFeatureRpcGroup,
-  WsGitStatusLocalRpc,
-  WsProjectsDiscoverScriptsRpc,
-  WsPullRequestsReviewRequestCountRpc,
-  WsRpcError,
-  WsRpcGroup,
-} from "./rpc";
+import { WsBootstrapRpcGroup, WsFeatureRpcGroup, WsComputerRpcGroup } from "./rpc";
+import { COMPUTER_WS_METHODS } from "./computer";
 import { ORCHESTRATION_WS_METHODS } from "./orchestration";
 
 describe("WS RPC contracts", () => {
-  it("exports the additive Effect RPC group", () => {
-    expect(WsRpcGroup).toBeDefined();
+  it("keeps bootstrap and feature RPCs in separate groups", () => {
     expect(WsBootstrapRpcGroup.requests.has("bootstrap.negotiate")).toBe(true);
     expect(WsFeatureRpcGroup.requests.has("bootstrap.negotiate")).toBe(false);
     expect(
@@ -23,35 +14,11 @@ describe("WS RPC contracts", () => {
     expect(WsFeatureRpcGroup.requests.has(ORCHESTRATION_WS_METHODS.reconcileProviderDelivery)).toBe(
       true,
     );
-    expect(WsFeatureRpcGroup.requests.has(ORCHESTRATION_WS_METHODS.getSidebarShellSnapshot)).toBe(
-      true,
-    );
-    expect(WsFeatureRpcGroup.requests.has(ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot)).toBe(
-      true,
-    );
-    expect(WsFeatureRpcGroup.requests.has(ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot)).toBe(
-      true,
-    );
   });
 
-  it("uses a schema-backed transport error", () => {
-    expect(new WsRpcError({ message: "failed" }).message).toBe("failed");
-  });
-
-  it("exports the project script discovery RPC", () => {
-    expect(WsProjectsDiscoverScriptsRpc).toBeDefined();
-  });
-
-  it("exports the automation create RPC", () => {
-    expect(WsAutomationCreateRpc).toBeDefined();
-  });
-
-  it("exports the count-only pull request review RPC", () => {
-    expect(WsPullRequestsReviewRequestCountRpc).toBeDefined();
-  });
-
-  it("exports the local-only git status RPC", () => {
-    expect(WsGitStatusLocalRpc).toBeDefined();
-    expect(WsFeatureRpcGroup.requests.has("git.statusLocal")).toBe(true);
+  it("registers every computer method, including setup", () => {
+    for (const method of Object.values(COMPUTER_WS_METHODS)) {
+      expect(WsComputerRpcGroup.requests.has(method)).toBe(true);
+    }
   });
 });

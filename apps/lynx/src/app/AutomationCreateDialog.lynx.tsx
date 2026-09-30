@@ -9,7 +9,7 @@ import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsGeneralProjection,
 } from "@synara-web/appSettingsStorageProjection.logic";
-import { completionPolicyFromStopWhen } from "@synara-web/lib/automationCompletionPolicy";
+import { completionPolicyFromStopWhen } from "@synara/shared/automationCompletionPolicy";
 import {
   applyScheduleToForm,
   automationFastIntervalLimitMessage,
@@ -48,7 +48,6 @@ import {
 } from "../components/ui/dialog.lynx";
 import {
   Menu,
-  MenuCheckboxItem,
   MenuGroup,
   MenuGroupLabel,
   MenuItem,
@@ -110,18 +109,17 @@ export function AutomationCreateDialog({
   const [modelCatalogProvider, setModelCatalogProvider] = useState<ProviderKind>(
     modelSelection.provider,
   );
-  const [mode, setMode] = useState<AutomationCreateInput["mode"]>("standalone");
+  const [mode, setMode] = useState<NonNullable<AutomationCreateInput["mode"]>>("standalone");
   const [targetThreadId, setTargetThreadId] = useState("");
   const [stopWhen, setStopWhen] = useState("");
   const [scheduleForm, setScheduleForm] = useState<AutomationFormState>(() =>
     formFromDefinition(null, projects[0]?.id ?? "", AUTOMATION_DEFAULT_MODEL_SELECTION),
   );
   const [maxIterations, setMaxIterations] = useState<number | null>(null);
-  const [stopOnError, setStopOnError] = useState(true);
   const [interactionMode, setInteractionMode] =
-    useState<AutomationCreateInput["interactionMode"]>("default");
+    useState<NonNullable<AutomationCreateInput["interactionMode"]>>("default");
   const [runtimeMode, setRuntimeMode] =
-    useState<AutomationCreateInput["runtimeMode"]>("approval-required");
+    useState<NonNullable<AutomationCreateInput["runtimeMode"]>>("approval-required");
   const [worktreeMode, setWorktreeMode] = useState<CreateWorktreeMode>("auto");
   const [acknowledgedWarningIds, setAcknowledgedWarningIds] = useState<
     ReadonlySet<AutomationDraftWarningId>
@@ -167,7 +165,6 @@ export function AutomationCreateDialog({
       formFromDefinition(null, firstProject?.id ?? "", AUTOMATION_DEFAULT_MODEL_SELECTION),
     );
     setMaxIterations(null);
-    setStopOnError(true);
     setInteractionMode("default");
     setRuntimeMode("approval-required");
     setWorktreeMode("auto");
@@ -225,7 +222,6 @@ export function AutomationCreateDialog({
     mode,
     targetThreadId,
     maxIterations: maxIterations === null ? "" : String(maxIterations),
-    stopOnError,
     stopWhen,
   };
   const schedule = scheduleFromForm(formForValidation);
@@ -268,7 +264,6 @@ export function AutomationCreateDialog({
         schedule,
         maxIterations,
         modelSelection,
-        stopOnError,
         targetThreadId:
           mode === "heartbeat" ? (targetThreadId as AutomationCreateInput["targetThreadId"]) : null,
         worktreeMode,
@@ -652,7 +647,9 @@ export function AutomationCreateDialog({
                   <MenuGroupLabel>Mode</MenuGroupLabel>
                   <MenuRadioGroup
                     value={mode}
-                    onValueChange={(value) => setMode(value as AutomationCreateInput["mode"])}
+                    onValueChange={(value) =>
+                      setMode(value as NonNullable<AutomationCreateInput["mode"]>)
+                    }
                   >
                     <MenuRadioItem value="standalone">Standalone</MenuRadioItem>
                     <MenuRadioItem value="heartbeat">Heartbeat</MenuRadioItem>
@@ -700,14 +697,6 @@ export function AutomationCreateDialog({
                     <MenuRadioItem value="25">25 runs</MenuRadioItem>
                   </MenuRadioGroup>
                 </MenuGroup>
-                {mode === "heartbeat" ? (
-                  <>
-                    <MenuSeparator />
-                    <MenuCheckboxItem checked={stopOnError} onCheckedChange={setStopOnError}>
-                      Stop on error
-                    </MenuCheckboxItem>
-                  </>
-                ) : null}
               </MenuPopup>
             </Menu>
             <Menu>
@@ -730,7 +719,7 @@ export function AutomationCreateDialog({
                 <MenuRadioGroup
                   value={runtimeMode}
                   onValueChange={(value) => {
-                    setRuntimeMode(value as AutomationCreateInput["runtimeMode"]);
+                    setRuntimeMode(value as NonNullable<AutomationCreateInput["runtimeMode"]>);
                     setAcknowledgedWarningIds(new Set());
                   }}
                 >

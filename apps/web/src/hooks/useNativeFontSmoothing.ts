@@ -5,16 +5,14 @@
 
 import { useEffect } from "react";
 import { useAppSettings } from "../appSettings";
-import { isMacPlatform } from "../lib/utils";
+import { isMacNavigatorPlatform } from "../lib/utils";
 
-import { getNavigatorPlatform, getDocumentElement } from "~/platform/env";
 export function useNativeFontSmoothing() {
   const { settings } = useAppSettings();
-  const shouldApply = settings.enableNativeFontSmoothing && isMacPlatform(getNavigatorPlatform());
+  const shouldApply = settings.enableNativeFontSmoothing && isMacNavigatorPlatform();
 
   useEffect(() => {
-    const rootStyle = getDocumentElement()?.style;
-    if (!rootStyle) return;
+    const rootStyle = document.documentElement.style;
     if (shouldApply) {
       rootStyle.setProperty("-webkit-font-smoothing", "antialiased");
       rootStyle.setProperty("-moz-osx-font-smoothing", "grayscale");

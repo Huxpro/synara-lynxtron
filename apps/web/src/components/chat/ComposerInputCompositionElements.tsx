@@ -14,14 +14,14 @@ import {
 } from "./composerPickerStyles";
 
 interface ComposerHostElementProps {
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }
 
 export function ComposerInputShellElement(
   props: ComposerHostElementProps & {
     readonly focused: boolean;
     readonly overflowVisible: boolean;
-    readonly providerClassName?: string;
+    readonly providerClassName?: string | undefined;
   },
 ) {
   return (
@@ -42,7 +42,7 @@ export function ComposerInputSurfaceElement(
   props: ComposerHostElementProps & {
     readonly focused: boolean;
     readonly overflowVisible: boolean;
-    readonly providerClassName?: string;
+    readonly providerClassName?: string | undefined;
   },
 ) {
   return (
@@ -132,7 +132,7 @@ export function ComposerFooterActionsElement(
 }
 
 export function ComposerPrimaryActionElement(props: {
-  readonly accessibleLabel?: string;
+  readonly accessibleLabel?: string | undefined;
   readonly disabled: boolean;
   readonly mode: "send" | "sending" | "stop";
   readonly onActivate: () => void;

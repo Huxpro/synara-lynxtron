@@ -6,7 +6,7 @@ import {
   SidebarSearchPalette,
   type SidebarSearchPaletteMode,
   type ImportProviderKind,
-} from "@synara-web/components/SidebarSearchPalette";
+} from "@synara-web/components/SidebarSearchPaletteComposition";
 import { newCommandId } from "@synara-web/lib/utils";
 import {
   APP_SETTINGS_STORAGE_KEY,
@@ -25,7 +25,6 @@ const IMPORT_PROVIDERS: readonly ImportProviderKind[] = [
   "codex",
   "claudeAgent",
   "cursor",
-  "kilo",
   "opencode",
 ];
 

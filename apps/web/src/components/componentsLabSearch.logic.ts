@@ -1,8 +1,8 @@
 export interface ComponentsLabSearchState {
-  readonly embed?: string;
-  readonly state?: string;
-  readonly story?: string;
-  readonly variant?: string;
+  readonly embed?: string | undefined;
+  readonly state?: string | undefined;
+  readonly story?: string | undefined;
+  readonly variant?: string | undefined;
 }
 
 export function resolveComponentsLabSearch(

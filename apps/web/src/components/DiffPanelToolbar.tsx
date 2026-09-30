@@ -21,10 +21,15 @@ import {
   GitBranchIcon,
   GitCommitIcon,
   ListChecksIcon,
+  RefreshCwIcon,
   Rows3Icon,
   XIcon,
 } from "~/lib/icons";
 import { cn } from "~/lib/utils";
+import {
+  ELEVATED_HOVER_SURFACE_CLASS_NAME,
+  ELEVATED_HOVER_SURFACE_RAISED_TEXT_CLASS_NAME,
+} from "~/surfaceStyles";
 import type { TimestampFormat } from "~/appSettings";
 import type { TurnDiffSummary } from "~/types";
 import type { RepoDiffScope } from "~/repoDiffScopeStore";
@@ -32,11 +37,18 @@ import { REPO_DIFF_SCOPE_LABELS } from "~/repoDiffScopeStore";
 import { formatShortTimestamp } from "~/timestampFormat";
 import {
   DIFF_PANEL_PICKER_SCOPE_OPTIONS,
+  isDiffPanelRepoScopeOption,
   resolveDiffPanelPickerLabel,
   resolveDiffPanelScopePickerValue,
+  type DiffPanelRepoScopeOption,
   type DiffPanelTurnScopeIntent,
   type DiffPanelViewSource,
 } from "./DiffPanel.logic";
+import {
+  DiffPanelChangeNavigationButtons,
+  type DiffPanelChangeNavigation,
+} from "./DiffPanelChangeNavigation";
+import { DiffPanelCompareRefMenuSection } from "./DiffPanelCompareRefMenuSection";
 import { DiffPanelFileJumpMenu } from "./DiffPanelFileJumpMenu";
 import { ComposerPickerMenuPopup } from "./chat/ComposerPickerMenuPopup";
 import { EnvironmentRowBody, EnvironmentRowChevron } from "./chat/environment/EnvironmentRow";
@@ -58,9 +70,9 @@ const DIFF_PANEL_PICKER_ICON_CLASS_NAME = "size-3.5 shrink-0 text-[var(--color-t
 /** Tighter than EnvironmentRow — dock header has no 16px icon gutter column. */
 const DIFF_PANEL_PICKER_TRIGGER_CLASS_NAME = cn(
   "flex h-8 min-w-0 max-w-[min(38%,11rem)] cursor-pointer items-center gap-1.5 rounded-lg py-1 pl-1.5 pr-2 text-left",
-  "text-[length:var(--app-font-size-ui,12px)] font-normal text-[var(--color-text-foreground)]",
-  "outline-none transition-colors",
-  "hover:bg-[var(--color-background-elevated-secondary)]",
+  "text-ui font-normal text-[var(--color-text-foreground)]",
+  "outline-none",
+  ELEVATED_HOVER_SURFACE_CLASS_NAME,
   "focus-visible:bg-[var(--color-background-elevated-secondary)]",
 );
 
@@ -93,9 +105,15 @@ interface DiffPanelToolbarProps {
   diffWordWrap: boolean;
   diffIgnoreWhitespace: boolean;
   diffCopyText: string | null;
-  isDiffCopied: boolean;
+  diffCopyLabel: string;
+  reloading: boolean;
   allFilesCollapsed: boolean;
-  onSelectRepoScope: (scope: RepoDiffScope) => void;
+  changeMarkersEnabled: boolean;
+  changeNavigation: DiffPanelChangeNavigation;
+  onChangeMarkersEnabledChange: (enabled: boolean) => void;
+  compareRef: string | null;
+  onSelectRepoScope: (scope: DiffPanelRepoScopeOption) => void;
+  onSelectCompareRef: (ref: string) => void;
   onSelectAllTurns: () => void;
   onSelectLastTurn: () => void;
   onSelectTurn: (turnId: TurnId | null) => void;
@@ -105,6 +123,7 @@ interface DiffPanelToolbarProps {
   onDiffWordWrapChange: (enabled: boolean) => void;
   onDiffIgnoreWhitespaceChange: (enabled: boolean) => void;
   onCopyDiff: () => void;
+  onReload: () => void;
   onToggleCollapseAll: () => void;
   scopePickerOpen?: boolean;
   onScopePickerOpenChange?: (open: boolean) => void;
@@ -116,13 +135,13 @@ function ScopeCountBadge(props: { count: number | undefined }) {
     return null;
   }
   return (
-    <span className="rounded-full bg-muted px-1.5 text-[10px] font-medium text-muted-foreground tabular-nums">
+    <span className="rounded-full bg-muted px-1.5 text-ui-xs font-medium text-muted-foreground tabular-nums">
       {props.count}
     </span>
   );
 }
 
-function resolveScopeMenuIcon(scope: RepoDiffScope | "lastTurn") {
+function resolveScopeMenuIcon(scope: DiffPanelRepoScopeOption | "lastTurn") {
   switch (scope) {
     case "unstaged":
       return <ChangesIcon className={DIFF_PANEL_MENU_ICON_CLASS_NAME} />;
@@ -152,7 +171,11 @@ function resolveTurnNumber(
 
 export const DiffPanelToolbar = function DiffPanelToolbar(props: DiffPanelToolbarProps) {
   const [visibleTurnCount, setVisibleTurnCount] = useState(INITIAL_VISIBLE_TURN_COUNT);
-  const scopePickerLabel = resolveDiffPanelPickerLabel(props.viewSource, props.turnScopeIntent);
+  const scopePickerLabel = resolveDiffPanelPickerLabel(
+    props.viewSource,
+    props.turnScopeIntent,
+    props.compareRef,
+  );
 
   let scopePickerIcon: ReactNode;
   if (props.viewSource.kind === "turn") {
@@ -183,6 +206,7 @@ export const DiffPanelToolbar = function DiffPanelToolbar(props: DiffPanelToolba
     viewSource: props.viewSource,
     latestTurnId,
     turnScopeIntent: props.turnScopeIntent,
+    compareRef: props.compareRef,
   });
   const selectedTurnIndex = props.selectedTurnId
     ? props.orderedTurnDiffSummaries.findIndex((summary) => summary.turnId === props.selectedTurnId)
@@ -247,12 +271,7 @@ export const DiffPanelToolbar = function DiffPanelToolbar(props: DiffPanelToolba
                   props.onSelectLastTurn();
                   return;
                 }
-                if (
-                  value === "workingTree" ||
-                  value === "unstaged" ||
-                  value === "staged" ||
-                  value === "branch"
-                ) {
+                if (isDiffPanelRepoScopeOption(value)) {
                   props.onSelectRepoScope(value);
                 }
               }}
@@ -274,6 +293,14 @@ export const DiffPanelToolbar = function DiffPanelToolbar(props: DiffPanelToolba
               </MenuRadioItem>
             </MenuRadioGroup>
           </MenuGroup>
+          <DiffPanelCompareRefMenuSection
+            cwd={props.activeCwd}
+            open={props.scopePickerOpen ?? false}
+            compareRef={props.compareRef}
+            scopeIsRef={props.viewSource.kind === "repo" && props.viewSource.scope === "ref"}
+            iconClassName={DIFF_PANEL_MENU_ICON_CLASS_NAME}
+            onSelectCompareRef={props.onSelectCompareRef}
+          />
         </ComposerPickerMenuPopup>
       </Menu>
 
@@ -281,12 +308,23 @@ export const DiffPanelToolbar = function DiffPanelToolbar(props: DiffPanelToolba
         <DiffStat
           additions={props.activeStats.additions}
           deletions={props.activeStats.deletions}
-          className="shrink-0 text-[11px] font-medium"
+          className="shrink-0 text-ui-sm font-medium"
         />
       ) : null}
 
       <div className="ml-auto flex min-w-0 items-center gap-1.5">
         <div className="flex items-center gap-1">
+          <IconButton
+            variant="ghost"
+            size="icon-xs"
+            className={DIFF_PANEL_TOOLBAR_ICON_BUTTON_CLASS_NAME}
+            label="Reload diff"
+            title="Reload diff"
+            onClick={props.onReload}
+          >
+            <RefreshCwIcon className={cn("size-3.5", props.reloading && "animate-spin")} />
+          </IconButton>
+
           <Menu>
             <MenuTrigger
               render={
@@ -309,37 +347,23 @@ export const DiffPanelToolbar = function DiffPanelToolbar(props: DiffPanelToolba
             >
               <MenuGroup>
                 <MenuGroupLabel>View</MenuGroupLabel>
-                <div
-                  className="mx-2 mb-1 grid grid-cols-2 rounded-lg bg-[var(--color-background-elevated-secondary)] p-0.5"
-                  role="radiogroup"
-                  aria-label="Diff view"
+                <MenuRadioGroup
+                  value={props.diffRenderMode}
+                  onValueChange={(value) => {
+                    if (value === "stacked" || value === "split") {
+                      props.onDiffRenderModeChange(value);
+                    }
+                  }}
                 >
-                  {(["stacked", "split"] as const).map((mode) => {
-                    const selected = props.diffRenderMode === mode;
-                    return (
-                      <button
-                        key={mode}
-                        type="button"
-                        role="radio"
-                        aria-checked={selected}
-                        className={cn(
-                          "flex h-7 min-w-0 cursor-pointer items-center justify-center gap-1.5 rounded-md px-2 text-[11px] transition-colors",
-                          selected
-                            ? "bg-[var(--color-background-button-secondary)] text-[var(--color-text-foreground)]"
-                            : "text-muted-foreground hover:text-foreground",
-                        )}
-                        onClick={() => props.onDiffRenderModeChange(mode)}
-                      >
-                        {mode === "stacked" ? (
-                          <Rows3Icon className="size-3.5 shrink-0" />
-                        ) : (
-                          <Columns2Icon className="size-3.5 shrink-0" />
-                        )}
-                        <span className="truncate">{mode === "stacked" ? "Stacked" : "Split"}</span>
-                      </button>
-                    );
-                  })}
-                </div>
+                  <MenuRadioItem value="stacked">
+                    <Rows3Icon className={DIFF_PANEL_PICKER_ICON_CLASS_NAME} />
+                    <span>Stacked</span>
+                  </MenuRadioItem>
+                  <MenuRadioItem value="split">
+                    <Columns2Icon className={DIFF_PANEL_PICKER_ICON_CLASS_NAME} />
+                    <span>Split</span>
+                  </MenuRadioItem>
+                </MenuRadioGroup>
                 <MenuCheckboxItem
                   checked={props.diffIgnoreWhitespace}
                   variant="switch"
@@ -358,6 +382,15 @@ export const DiffPanelToolbar = function DiffPanelToolbar(props: DiffPanelToolba
                 >
                   Wrap long lines
                 </MenuCheckboxItem>
+                <MenuCheckboxItem
+                  checked={props.changeMarkersEnabled}
+                  variant="switch"
+                  onCheckedChange={(checked) => {
+                    props.onChangeMarkersEnabledChange(checked === true);
+                  }}
+                >
+                  Change markers
+                </MenuCheckboxItem>
                 {props.diffCopyText ? (
                   <MenuItem
                     onClick={() => {
@@ -365,7 +398,7 @@ export const DiffPanelToolbar = function DiffPanelToolbar(props: DiffPanelToolba
                     }}
                   >
                     <CopyIcon className={DIFF_PANEL_MENU_ICON_CLASS_NAME} />
-                    <span>{props.isDiffCopied ? "Copied diff" : "Copy diff"}</span>
+                    <span>{props.diffCopyLabel}</span>
                   </MenuItem>
                 ) : null}
                 {props.renderableFiles.length > 0 ? (
@@ -383,6 +416,11 @@ export const DiffPanelToolbar = function DiffPanelToolbar(props: DiffPanelToolba
               </MenuGroup>
             </ComposerPickerMenuPopup>
           </Menu>
+
+          <DiffPanelChangeNavigationButtons
+            navigation={props.changeNavigation}
+            className={DIFF_PANEL_TOOLBAR_ICON_BUTTON_CLASS_NAME}
+          />
 
           <DiffPanelFileJumpMenu
             renderableFiles={props.renderableFiles}
@@ -463,7 +501,7 @@ export const DiffPanelToolbar = function DiffPanelToolbar(props: DiffPanelToolba
                     <span className="min-w-0 flex-1 truncate">
                       Turn {resolveTurnNumber(summary, props.inferredCheckpointTurnCountByTurnId)}
                     </span>
-                    <span className="shrink-0 text-[10px] text-muted-foreground tabular-nums">
+                    <span className="shrink-0 text-ui-xs text-muted-foreground tabular-nums">
                       {formatShortTimestamp(summary.completedAt, props.timestampFormat)}
                     </span>
                   </MenuRadioItem>
@@ -473,8 +511,9 @@ export const DiffPanelToolbar = function DiffPanelToolbar(props: DiffPanelToolba
                 <button
                   type="button"
                   className={cn(
-                    "mx-1 mt-1 flex h-8 w-[calc(100%-0.5rem)] cursor-pointer items-center justify-center rounded-md px-2 text-[11px]",
-                    "text-muted-foreground transition-colors hover:bg-[var(--color-background-elevated-secondary)] hover:text-foreground",
+                    "mx-1 mt-1 flex h-8 w-[calc(100%-0.5rem)] cursor-pointer items-center justify-center rounded-md px-2 text-ui-sm",
+                    "text-muted-foreground",
+                    ELEVATED_HOVER_SURFACE_RAISED_TEXT_CLASS_NAME,
                   )}
                   onClick={() => setVisibleTurnCount(nextVisibleTurnCount)}
                 >

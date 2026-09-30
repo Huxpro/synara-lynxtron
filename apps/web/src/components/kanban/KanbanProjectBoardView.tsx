@@ -18,8 +18,17 @@ import {
 } from "@dnd-kit/core";
 import { useRef, useState } from "react";
 
+import {
+  getProviderStartOptions,
+  resolveAssistantDeliveryMode,
+  useAppSettings,
+} from "~/appSettings";
 import { toastManager } from "~/components/ui/toast";
-import { KanbanCardView } from "./KanbanCardView";
+import { useProviderStatusesForLocalConfig } from "~/hooks/useProviderStatusesForLocalConfig";
+import { useRefreshProviderStatusesNow } from "~/hooks/useProviderStatusRefresh";
+import { resolveProviderSendAvailabilityWithRefresh } from "~/lib/providerAvailability";
+import { dispatchKanbanDraftCard } from "../../lib/kanbanDispatch";
+import { KanbanCardView, type KanbanCardPrLookup } from "./KanbanCardView";
 import { KanbanColumn, parseKanbanColumnDropId } from "./KanbanColumn";
 import {
   reorderDraftCardIds,
@@ -28,7 +37,6 @@ import {
   type KanbanProjectBoard,
 } from "./kanban.logic";
 import { useKanbanUiStore } from "../../kanbanUiStore";
-import { useKanbanDraftStart } from "./useKanbanDraftStart";
 
 function resolveDropColumn(board: KanbanProjectBoard, overId: string): KanbanColumnKey | null {
   const columnDrop = parseKanbanColumnDropId(overId);
@@ -52,14 +60,21 @@ export function KanbanProjectBoardView({
   onOpenCard,
   onCardContextMenu,
   onNewTask,
+  prByThreadId,
   nowMs,
 }: {
   board: KanbanProjectBoard;
   onOpenCard: (card: KanbanCard) => void;
   onCardContextMenu?: ((card: KanbanCard, event: React.MouseEvent) => void) | undefined;
   onNewTask: () => void;
+  prByThreadId: KanbanCardPrLookup;
   nowMs?: number;
 }) {
+  const { settings } = useAppSettings();
+  const assistantDeliveryMode = resolveAssistantDeliveryMode(settings);
+  const providerOptionsForDispatch = getProviderStartOptions(settings);
+  const providerStatuses = useProviderStatusesForLocalConfig();
+  const refreshProviderStatuses = useRefreshProviderStatusesNow();
   const setDraftOrder = useKanbanUiStore((state) => state.setDraftOrder);
   const [activeCard, setActiveCard] = useState<KanbanCard | null>(null);
   // A completed drag still emits a click on the source card; swallow exactly that one
@@ -77,7 +92,66 @@ export function KanbanProjectBoardView({
     }
     onOpenCard(card);
   };
-  const startDraft = useKanbanDraftStart(onOpenCard);
+
+  const handleDispatchDrop = async (card: KanbanCard) => {
+    const targetProvider = card.provider ?? settings.defaultProvider;
+    const sendAvailability = await resolveProviderSendAvailabilityWithRefresh({
+      provider: targetProvider,
+      statuses: providerStatuses,
+      refreshStatuses: () => refreshProviderStatuses({ silent: true }),
+    });
+    if (!sendAvailability.usable) {
+      toastManager.add({
+        type: "error",
+        title: sendAvailability.unavailableReason,
+      });
+      return;
+    }
+    // The dispatch marks the optimistic overlay synchronously, so the card jumps
+    // to In Progress before any round-trip; failure results revert it.
+    const result = await dispatchKanbanDraftCard({
+      card,
+      defaultProvider: settings.defaultProvider,
+      assistantDeliveryMode,
+      providerOptions: providerOptionsForDispatch,
+    });
+    if (result.kind === "dispatched") {
+      toastManager.add({
+        type: "success",
+        title: "Draft sent",
+        description: card.title,
+      });
+      return;
+    }
+    if (result.kind === "open-thread") {
+      const description =
+        result.reason === "empty"
+          ? "Nothing to send yet — write the prompt in the composer."
+          : result.reason === "worktree-pending"
+            ? "Open the chat to create the worktree with the normal send flow."
+            : "Open the chat to continue this task.";
+      toastManager.add({
+        type: "info",
+        title: "Finish this draft in the chat",
+        description,
+      });
+      onOpenCard(card);
+      return;
+    }
+    if (result.kind === "unavailable") {
+      toastManager.add({
+        type: "error",
+        title: "Not connected",
+        description: "Reconnect to the server before sending drafts.",
+      });
+      return;
+    }
+    toastManager.add({
+      type: "error",
+      title: "Could not send draft",
+      description: result.message,
+    });
+  };
 
   const handleDragStart = (event: DragStartEvent) => {
     const card = board.draft.find((candidate) => candidate.cardId === event.active.id) ?? null;
@@ -88,7 +162,7 @@ export function KanbanProjectBoardView({
   const releaseClickSuppression = () => {
     // The trailing click (if any) fires synchronously after dragend; release on the
     // next tick so regular clicks keep working when the drop happens off-card.
-    setTimeout(() => {
+    window.setTimeout(() => {
       suppressClickRef.current = false;
     }, 0);
   };
@@ -132,7 +206,7 @@ export function KanbanProjectBoardView({
       if (useKanbanUiStore.getState().optimisticDispatchByThreadId[card.threadId]) {
         return;
       }
-      void startDraft(card);
+      void handleDispatchDrop(card);
       return;
     }
     if (targetColumn === "done") {
@@ -163,6 +237,7 @@ export function KanbanProjectBoardView({
           droppable
           activeCard={activeCard}
           onNewCard={onNewTask}
+          prByThreadId={prByThreadId}
           {...(nowMs !== undefined ? { nowMs } : {})}
         />
         <KanbanColumn
@@ -173,6 +248,7 @@ export function KanbanProjectBoardView({
           onCardContextMenu={onCardContextMenu}
           droppable
           activeCard={activeCard}
+          prByThreadId={prByThreadId}
           {...(nowMs !== undefined ? { nowMs } : {})}
         />
         <KanbanColumn
@@ -183,12 +259,18 @@ export function KanbanProjectBoardView({
           onCardContextMenu={onCardContextMenu}
           droppable
           activeCard={activeCard}
+          prByThreadId={prByThreadId}
           {...(nowMs !== undefined ? { nowMs } : {})}
         />
       </div>
       <DragOverlay dropAnimation={null}>
         {activeCard ? (
-          <KanbanCardView card={activeCard} isOverlay {...(nowMs !== undefined ? { nowMs } : {})} />
+          <KanbanCardView
+            card={activeCard}
+            isOverlay
+            prByThreadId={prByThreadId}
+            {...(nowMs !== undefined ? { nowMs } : {})}
+          />
         ) : null}
       </DragOverlay>
     </DndContext>

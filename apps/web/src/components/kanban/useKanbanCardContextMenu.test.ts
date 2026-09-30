@@ -7,7 +7,6 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const harness = vi.hoisted(() => ({
   clicked: "delete" as string,
-  running: false,
   showContextMenu: vi.fn(),
   confirm: vi.fn(),
   clearOptimisticDispatch: vi.fn(),
@@ -17,7 +16,6 @@ const harness = vi.hoisted(() => ({
   clearTerminalState: vi.fn(),
   deleteActiveThread: vi.fn(),
   archiveThread: vi.fn(),
-  startDraft: vi.fn(),
   toast: vi.fn(),
 }));
 
@@ -73,15 +71,11 @@ vi.mock("../../terminalStateStore", () => ({
   useTerminalStateStore: (selector: (state: unknown) => unknown) =>
     selector({ clearTerminalState: harness.clearTerminalState }),
 }));
-vi.mock("../../session-logic", () => ({ isThreadRunningTurn: () => harness.running }));
 vi.mock("../../threadDerivation", () => ({
   getThreadFromState: () => ({ id: ThreadId.makeUnsafe("thread-kanban") }),
 }));
 vi.mock("../ui/toast", () => ({ toastManager: { add: harness.toast } }));
 vi.mock("../RenameThreadDialog", () => ({ RenameThreadDialog: () => null }));
-vi.mock("./useKanbanDraftStart", () => ({
-  useKanbanDraftStart: () => harness.startDraft,
-}));
 
 import type { SidebarThreadSummary } from "../../types";
 import type { KanbanCard } from "./kanban.logic";
@@ -123,7 +117,6 @@ const EVENT = {
 
 beforeEach(() => {
   harness.clicked = "delete";
-  harness.running = false;
   for (const mock of [
     harness.showContextMenu,
     harness.confirm,
@@ -134,7 +127,6 @@ beforeEach(() => {
     harness.clearTerminalState,
     harness.deleteActiveThread,
     harness.archiveThread,
-    harness.startDraft,
     harness.toast,
   ]) {
     mock.mockReset();
@@ -152,7 +144,7 @@ beforeEach(() => {
 
 describe("useKanbanCardContextMenu", () => {
   it("delegates server-backed deletion and preserves Kanban-local cleanup", async () => {
-    useKanbanCardContextMenu(vi.fn()).onCardContextMenu(CARD, EVENT);
+    useKanbanCardContextMenu().onCardContextMenu(CARD, EVENT);
     await vi.waitFor(() => expect(harness.deleteActiveThread).toHaveBeenCalled());
 
     expect(harness.clearOptimisticDispatch).toHaveBeenCalledWith(THREAD_ID);
@@ -161,31 +153,14 @@ describe("useKanbanCardContextMenu", () => {
     expect(harness.clearTerminalState).toHaveBeenCalledWith(THREAD_ID);
   });
 
-  it("uses the shared archive command after checking active-thread eligibility", async () => {
+  it("uses the shared archive command while server-side cleanup owns active sessions", async () => {
     harness.clicked = "archive";
 
-    useKanbanCardContextMenu(vi.fn()).onCardContextMenu(CARD, EVENT);
+    useKanbanCardContextMenu().onCardContextMenu(CARD, EVENT);
     await vi.waitFor(() => expect(harness.archiveThread).toHaveBeenCalled());
 
     expect(harness.clearOptimisticDispatch).toHaveBeenCalledWith(THREAD_ID);
     expect(harness.archiveThread).toHaveBeenCalledWith(expect.any(Object), THREAD_ID);
-  });
-
-  it("rejects archive while the thread is running", async () => {
-    harness.clicked = "archive";
-    harness.running = true;
-
-    useKanbanCardContextMenu(vi.fn()).onCardContextMenu(CARD, EVENT);
-    await vi.waitFor(() => expect(harness.toast).toHaveBeenCalled());
-
-    expect(harness.archiveThread).not.toHaveBeenCalled();
-    expect(harness.clearOptimisticDispatch).not.toHaveBeenCalled();
-    expect(harness.toast).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: "error",
-        title: "Cannot archive",
-      }),
-    );
   });
 
   it("deletes a local-only draft without invoking active-thread deletion", async () => {
@@ -196,7 +171,7 @@ describe("useKanbanCardContextMenu", () => {
       thread: null,
     } as KanbanCard;
 
-    useKanbanCardContextMenu(vi.fn()).onCardContextMenu(draftCard, EVENT);
+    useKanbanCardContextMenu().onCardContextMenu(draftCard, EVENT);
     await vi.waitFor(() => expect(harness.clearDraftThread).toHaveBeenCalledWith(THREAD_ID));
 
     expect(harness.deleteActiveThread).not.toHaveBeenCalled();
@@ -210,27 +185,10 @@ describe("useKanbanCardContextMenu", () => {
       column: "draft",
     } as KanbanCard;
 
-    useKanbanCardContextMenu(vi.fn()).onCardContextMenu(draftCard, EVENT);
+    useKanbanCardContextMenu().onCardContextMenu(draftCard, EVENT);
     await vi.waitFor(() => expect(harness.clearComposerContent).toHaveBeenCalledWith(THREAD_ID));
 
     expect(harness.deleteActiveThread).not.toHaveBeenCalled();
     expect(harness.clearDraftThread).not.toHaveBeenCalled();
-  });
-
-  it("offers an explicit Start task path for a sendable Draft", async () => {
-    harness.clicked = "start";
-    const draftCard = {
-      ...CARD,
-      column: "draft",
-      draftPrompt: "Run the real task",
-    } as KanbanCard;
-
-    useKanbanCardContextMenu(vi.fn()).onCardContextMenu(draftCard, EVENT);
-    await vi.waitFor(() => expect(harness.startDraft).toHaveBeenCalledWith(draftCard));
-
-    expect(harness.showContextMenu.mock.calls[0]?.[0]).toContainEqual({
-      id: "start",
-      label: "Start task",
-    });
   });
 });

@@ -9,10 +9,8 @@ describe("toast pointer event ownership", () => {
       '"pointer-events-none relative flex overflow-hidden transition-opacity duration-250 data-expanded:opacity-100"',
     );
     expect(source).toContain('"pointer-events-none absolute z-[calc(9999-var(--toast-index))]');
-    expect(source).toContain('<div className="mt-2 flex flex-wrap items-center gap-1.5">');
-    expect(source).toContain(
-      '"pointer-events-auto self-start rounded-md border-[var(--notification-fg)]/20',
-    );
+    expect(source).toContain('<div className="-ms-2 mt-1.5 flex flex-wrap items-center gap-0.5">');
+    expect(source).toContain('"pointer-events-auto self-start rounded-md px-2 font-sans');
     expect(source).toContain(
       '"pointer-events-auto z-10 inline-flex shrink-0 items-center justify-center',
     );

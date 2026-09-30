@@ -13,6 +13,10 @@ import { expandLocalFolderPath } from "~/lib/localFolderMentions";
 import { projectSearchLocalEntriesQueryOptions } from "~/lib/projectReactQuery";
 import { readNativeApi } from "~/nativeApi";
 import { cn } from "~/lib/utils";
+import {
+  ELEVATED_HOVER_SURFACE_CLASS_NAME,
+  ELEVATED_HOVER_SURFACE_RAISED_TEXT_CLASS_NAME,
+} from "~/surfaceStyles";
 import { FolderClosed } from "../FolderClosed";
 import {
   Command,
@@ -33,6 +37,23 @@ type EntriesByPath = Record<string, readonly ProjectFileSystemEntry[] | undefine
 // because every keystroke reshapes mentionQuery in the parent.
 const LOCAL_SEARCH_DEBOUNCE_MS = 220;
 const LOCAL_SEARCH_MIN_QUERY_LENGTH = 2;
+
+/** Row skin shared by every menu entry (use-this-folder, search hit, directory child), so
+ *  keyboard highlight and pointer hover land on the same surface. */
+function directoryMenuRowClassName(isHighlighted: boolean): string {
+  return cn(
+    "cursor-pointer select-none gap-2 rounded-lg px-2 py-1",
+    ELEVATED_HOVER_SURFACE_CLASS_NAME,
+    isHighlighted &&
+      "bg-[var(--color-background-elevated-secondary)] text-[var(--color-text-foreground)]",
+  );
+}
+
+/** Compact icon/text affordance in the menu header (go up, use this folder). */
+const DIRECTORY_MENU_HEADER_ACTION_CLASS_NAME = cn(
+  "shrink-0 rounded-md text-muted-foreground/70",
+  ELEVATED_HOVER_SURFACE_RAISED_TEXT_CLASS_NAME,
+);
 
 export interface ComposerLocalDirectoryMenuHandle {
   moveHighlight: (direction: "up" | "down") => void;
@@ -166,7 +187,7 @@ export function ComposerLocalDirectoryMenu(props: {
     // Timeout-0 keeps every state write asynchronous (no wasted pre-paint
     // render), which also keeps this component eligible for React Compiler.
     let cancelled = false;
-    const timeoutId = setTimeout(() => {
+    const timeoutId = window.setTimeout(() => {
       if (cancelled) return;
       const api = readNativeApi();
       if (!api) {
@@ -197,7 +218,7 @@ export function ComposerLocalDirectoryMenu(props: {
     }, 0);
     return () => {
       cancelled = true;
-      clearTimeout(timeoutId);
+      window.clearTimeout(timeoutId);
     };
   }, [entriesByPath, expandedDirectory, isAwaitingHomeDir, loadingPaths]);
 
@@ -381,14 +402,17 @@ export function ComposerLocalDirectoryMenu(props: {
               aria-label="Go up one directory"
               onMouseDown={(event) => event.preventDefault()}
               onClick={handleGoUp}
-              className="inline-flex size-5 shrink-0 items-center justify-center rounded-md text-muted-foreground/70 transition-colors hover:bg-[var(--color-background-elevated-secondary)] hover:text-foreground"
+              className={cn(
+                DIRECTORY_MENU_HEADER_ACTION_CLASS_NAME,
+                "inline-flex size-5 items-center justify-center",
+              )}
             >
               <ArrowUpIcon className="size-3.5" />
             </button>
           ) : (
             <FolderClosed className="size-3.5 shrink-0 text-muted-foreground/70" />
           )}
-          <span className="min-w-0 flex-1 truncate text-[11px] font-medium text-foreground/80">
+          <span className="min-w-0 flex-1 truncate text-ui-sm font-medium text-foreground/80">
             {headerLabel}
           </span>
           {!isRootDirectory(directory) ? (
@@ -396,7 +420,7 @@ export function ComposerLocalDirectoryMenu(props: {
               type="button"
               onMouseDown={(event) => event.preventDefault()}
               onClick={handleSelectCurrentDirectory}
-              className="shrink-0 rounded-md px-1.5 py-0.5 text-[10.5px] text-muted-foreground/70 transition-colors hover:bg-[var(--color-background-elevated-secondary)] hover:text-foreground"
+              className={cn(DIRECTORY_MENU_HEADER_ACTION_CLASS_NAME, "px-1.5 py-0.5 text-ui-xs")}
             >
               Use this folder
             </button>
@@ -465,7 +489,7 @@ export function ComposerLocalDirectoryMenu(props: {
                   <CommandSeparator className="my-0.5" />
                 ) : null}
                 <CommandGroup>
-                  <CommandGroupLabel className="px-2 pt-1.5 pb-1 text-[10px] font-semibold text-muted-foreground/55">
+                  <CommandGroupLabel className="px-2 pt-1.5 pb-1 text-ui-xs font-semibold text-muted-foreground/55">
                     Matches deeper
                   </CommandGroupLabel>
                   {searchRows.map((entry, searchIndex) => {
@@ -488,25 +512,21 @@ export function ComposerLocalDirectoryMenu(props: {
           </CommandList>
         </div>
         {isAwaitingHomeDir ? (
-          <p className="px-2 py-1.5 text-muted-foreground/50 text-[11px]">
+          <p className="px-2 py-1.5 text-muted-foreground/50 text-ui-sm">
             Waiting for home directory from server…
           </p>
         ) : isLoading && visibleCount === 0 ? (
-          <p className="px-2 py-1.5 text-muted-foreground/50 text-[11px]">Loading local files…</p>
+          <p className="px-2 py-1.5 text-muted-foreground/50 text-ui-sm">Loading local files…</p>
         ) : errorMessage ? (
-          <p className="px-2 py-1.5 text-[var(--color-text-status-error)] text-[11px]">
-            {errorMessage}
-          </p>
+          <p className="px-2 py-1.5 text-destructive/80 text-ui-sm">{errorMessage}</p>
         ) : isSearchPending ? (
-          <p className="px-2 py-1.5 text-muted-foreground/50 text-[11px]">
-            Searching nested files…
-          </p>
+          <p className="px-2 py-1.5 text-muted-foreground/50 text-ui-sm">Searching nested files…</p>
         ) : visibleCount === 0 ? (
-          <p className="px-2 py-1.5 text-muted-foreground/50 text-[11px]">
+          <p className="px-2 py-1.5 text-muted-foreground/50 text-ui-sm">
             {filter.trim().length > 0 ? "No matches." : "No files or folders here."}
           </p>
         ) : searchQuery.data?.truncated ? (
-          <p className="px-2 py-1 text-muted-foreground/40 text-[10.5px]">
+          <p className="px-2 py-1 text-muted-foreground/40 text-ui-xs">
             Showing top matches. Keep typing to narrow.
           </p>
         ) : null}
@@ -527,11 +547,7 @@ function UseCurrentFolderRow(props: {
     <CommandItem
       data-highlight-index={index}
       value="use-current-folder"
-      className={cn(
-        "cursor-pointer select-none gap-2 rounded-lg px-2 py-1 transition-colors hover:bg-[var(--color-background-elevated-secondary)]",
-        isHighlighted &&
-          "bg-[var(--color-background-elevated-secondary)] text-[var(--color-text-foreground)]",
-      )}
+      className={directoryMenuRowClassName(isHighlighted)}
       onMouseDown={(event) => {
         event.preventDefault();
       }}
@@ -542,10 +558,8 @@ function UseCurrentFolderRow(props: {
     >
       <FolderClosed className="size-3.5 text-muted-foreground/60" />
       <div className="min-w-0 flex flex-1 items-center gap-1.5 overflow-hidden">
-        <span className="shrink-0 text-[11.5px] font-medium text-foreground/80">
-          Use this folder
-        </span>
-        <span className="truncate text-[11px] text-muted-foreground/55">{directoryLabel}</span>
+        <span className="shrink-0 text-ui-sm font-medium text-foreground/80">Use this folder</span>
+        <span className="truncate text-ui-sm text-muted-foreground/55">{directoryLabel}</span>
       </div>
     </CommandItem>
   );
@@ -581,11 +595,7 @@ function LocalSearchRow(props: {
     <CommandItem
       data-highlight-index={index}
       value={`search:${entry.kind}:${entry.path}`}
-      className={cn(
-        "cursor-pointer select-none gap-2 rounded-lg px-2 py-1 transition-colors hover:bg-[var(--color-background-elevated-secondary)]",
-        isHighlighted &&
-          "bg-[var(--color-background-elevated-secondary)] text-[var(--color-text-foreground)]",
-      )}
+      className={directoryMenuRowClassName(isHighlighted)}
       onMouseDown={(event) => {
         event.preventDefault();
       }}
@@ -600,11 +610,11 @@ function LocalSearchRow(props: {
         <FileIcon className="size-3.5 text-muted-foreground/60" />
       )}
       <div className="min-w-0 flex flex-1 items-center gap-3">
-        <span className="min-w-0 flex-1 truncate text-[11.5px] font-medium text-foreground/80">
+        <span className="min-w-0 flex-1 truncate text-ui-sm font-medium text-foreground/80">
           {entry.name}
         </span>
         {subtitle ? (
-          <span className="shrink-0 max-w-[60%] truncate pl-2 text-right text-[10.5px] text-muted-foreground/42">
+          <span className="shrink-0 max-w-[60%] truncate pl-2 text-right text-ui-xs text-muted-foreground/42">
             {subtitle}
           </span>
         ) : null}
@@ -627,11 +637,7 @@ function LocalEntryRow(props: {
     <CommandItem
       data-highlight-index={index}
       value={`${entry.kind}:${entry.path}`}
-      className={cn(
-        "cursor-pointer select-none gap-2 rounded-lg px-2 py-1 transition-colors hover:bg-[var(--color-background-elevated-secondary)]",
-        isHighlighted &&
-          "bg-[var(--color-background-elevated-secondary)] text-[var(--color-text-foreground)]",
-      )}
+      className={directoryMenuRowClassName(isHighlighted)}
       onMouseDown={(event) => {
         event.preventDefault();
       }}
@@ -646,7 +652,7 @@ function LocalEntryRow(props: {
         <FileIcon className="size-3.5 text-muted-foreground/60" />
       )}
       <div className="min-w-0 flex flex-1 items-center gap-1.5 overflow-hidden">
-        <span className="truncate text-[11.5px] font-medium text-foreground/80">{entry.name}</span>
+        <span className="truncate text-ui-sm font-medium text-foreground/80">{entry.name}</span>
       </div>
     </CommandItem>
   );

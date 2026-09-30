@@ -4,7 +4,7 @@
 //          skill discovery as supported for every provider.
 // Layer: Server provider tests
 
-import { mkdtempSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, rmSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
@@ -12,6 +12,9 @@ import * as path from "node:path";
 import type {
   ProviderComposerCapabilities,
   ProviderKind,
+  ProviderListAgentsResult,
+  ProviderListCommandsResult,
+  ProviderListModelsResult,
   ProviderListSkillsResult,
 } from "@synara/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
@@ -98,6 +101,31 @@ const runListSkills = (input: {
   }).pipe(Effect.provide(testLayer));
   return Effect.runPromise(
     program as unknown as Effect.Effect<ProviderListSkillsResult, never, never>,
+  );
+};
+
+const runListModels = (input: {
+  adapter: Partial<ProviderAdapterShape<ProviderAdapterError>>;
+  enabled: boolean;
+}) => {
+  const baseLayer = Layer.mergeAll(
+    makeConfigLayer(),
+    ServerSettingsService.layerTest({
+      providers: {
+        cursor: {
+          enabled: input.enabled,
+        },
+      },
+    }),
+    makeRegistryLayer(input.adapter),
+  ).pipe(Layer.provideMerge(NodeServices.layer));
+  const testLayer = ProviderDiscoveryServiceLive.pipe(Layer.provideMerge(baseLayer));
+  const program = Effect.gen(function* () {
+    const discovery = yield* ProviderDiscoveryService;
+    return yield* discovery.listModels({ provider: "cursor" });
+  }).pipe(Effect.provide(testLayer));
+  return Effect.runPromise(
+    program as unknown as Effect.Effect<ProviderListModelsResult, never, never>,
   );
 };
 
@@ -199,5 +227,231 @@ describe("ProviderDiscoveryService.getComposerCapabilities", () => {
 
     expect(capabilities.supportsSkillDiscovery).toBe(true);
     expect(capabilities.supportsSkillMentions).toBe(true);
+  });
+});
+
+describe("ProviderDiscoveryService.listModels", () => {
+  it("skips OpenCode agent and command discovery until re-enabled", async () => {
+    const adapterCalls: string[] = [];
+    const adapter: Partial<ProviderAdapterShape<ProviderAdapterError>> = {
+      listAgents: () => {
+        adapterCalls.push("agents");
+        return Effect.succeed({ agents: [], source: "opencode", cached: false });
+      },
+      listCommands: () => {
+        adapterCalls.push("commands");
+        return Effect.succeed({ commands: [], source: "opencode", cached: false });
+      },
+    };
+    const baseLayer = Layer.mergeAll(
+      makeConfigLayer(),
+      ServerSettingsService.layerTest({
+        providers: { opencode: { enabled: false } },
+      }),
+      makeRegistryLayer(adapter),
+    ).pipe(Layer.provideMerge(NodeServices.layer));
+    const testLayer = ProviderDiscoveryServiceLive.pipe(Layer.provideMerge(baseLayer));
+
+    const result = await Effect.runPromise(
+      Effect.gen(function* () {
+        const discovery = yield* ProviderDiscoveryService;
+        const settings = yield* ServerSettingsService;
+        const disabledAgents = yield* discovery.listAgents({ provider: "opencode", cwd });
+        const disabledCommands = yield* discovery.listCommands({ provider: "opencode", cwd });
+
+        yield* settings.updateSettings({ providers: { opencode: { enabled: true } } });
+        const enabledAgents = yield* discovery.listAgents({ provider: "opencode", cwd });
+        const enabledCommands = yield* discovery.listCommands({ provider: "opencode", cwd });
+
+        return {
+          disabledAgents,
+          disabledCommands,
+          enabledAgents,
+          enabledCommands,
+        };
+      }).pipe(Effect.provide(testLayer)) as Effect.Effect<
+        {
+          disabledAgents: ProviderListAgentsResult;
+          disabledCommands: ProviderListCommandsResult;
+          enabledAgents: ProviderListAgentsResult;
+          enabledCommands: ProviderListCommandsResult;
+        },
+        never,
+        never
+      >,
+    );
+
+    expect(result.disabledAgents).toMatchObject({ agents: [], source: "disabled" });
+    expect(result.disabledCommands).toMatchObject({ commands: [], source: "disabled" });
+    expect(result.enabledAgents.source).toBe("opencode");
+    expect(result.enabledCommands.source).toBe("opencode");
+    expect(adapterCalls).toEqual(["agents", "commands"]);
+  });
+
+  it("does not invoke the adapter for a disabled provider", async () => {
+    let adapterCalls = 0;
+    const result = await runListModels({
+      adapter: {
+        listModels: () => {
+          adapterCalls += 1;
+          return Effect.succeed({
+            models: [{ slug: "cursor-model", name: "Cursor Model" }],
+            source: "cursor.cli",
+            cached: false,
+          });
+        },
+      },
+      enabled: false,
+    });
+
+    expect(result).toEqual({
+      models: [],
+      source: "disabled",
+      cached: false,
+    });
+    expect(adapterCalls).toBe(0);
+  });
+
+  it("serves repeat model discovery from the shared cache without re-invoking the adapter", async () => {
+    let adapterCalls = 0;
+    const baseLayer = Layer.mergeAll(
+      makeConfigLayer(),
+      ServerSettingsService.layerTest(),
+      makeRegistryLayer({
+        listModels: (input) => {
+          adapterCalls += 1;
+          return Effect.succeed({
+            models: [
+              { slug: input.cwd === cwd ? "project-a" : "project-b", name: "Project Model" },
+            ],
+            source: "cursor.cli",
+            cached: false,
+          });
+        },
+      }),
+    ).pipe(Layer.provideMerge(NodeServices.layer));
+    const testLayer = ProviderDiscoveryServiceLive.pipe(Layer.provideMerge(baseLayer));
+
+    const results = await Effect.runPromise(
+      Effect.gen(function* () {
+        const discovery = yield* ProviderDiscoveryService;
+        const first = yield* discovery.listModels({ provider: "cursor", cwd });
+        const second = yield* discovery.listModels({ provider: "cursor", cwd });
+        const otherCwd = yield* discovery.listModels({ provider: "cursor", cwd: homeDir });
+        return { first, second, otherCwd };
+      }).pipe(Effect.provide(testLayer)) as Effect.Effect<
+        Record<"first" | "second" | "otherCwd", ProviderListModelsResult>,
+        never,
+        never
+      >,
+    );
+
+    expect(results.first.cached).toBe(false);
+    expect(results.second).toEqual({ ...results.first, cached: true });
+    expect(results.otherCwd.models).toEqual([{ slug: "project-b", name: "Project Model" }]);
+    expect(results.first.models).toEqual([{ slug: "project-a", name: "Project Model" }]);
+    expect(results.otherCwd.cached).toBe(false);
+    expect(adapterCalls).toBe(2);
+  });
+
+  it("omits malformed model descriptors while preserving valid entries", async () => {
+    const result = await runListModels({
+      adapter: {
+        listModels: () =>
+          Effect.succeed({
+            models: [
+              { slug: "valid-model", name: "Valid Model" },
+              { slug: "invalid-model", name: " " },
+            ],
+            source: "cursor.cli",
+            cached: false,
+          } as ProviderListModelsResult),
+      },
+      enabled: true,
+    });
+
+    expect(result).toEqual({
+      models: [{ slug: "valid-model", name: "Valid Model" }],
+      source: "cursor.cli",
+      cached: false,
+    });
+  });
+
+  it("serves a persisted catalog on a fresh service without re-invoking the adapter", async () => {
+    const catalogPath = path.join(baseDir, "userdata", "provider-models", "catalogs.json");
+    let adapterCalls = 0;
+    const makeAdapter = () => ({
+      listModels: () => {
+        adapterCalls += 1;
+        return Effect.succeed({
+          models: [{ slug: "cursor-model", name: "Cursor Model" }],
+          source: "cursor.cli",
+          cached: false,
+        });
+      },
+    });
+    const makeLayer = () =>
+      ProviderDiscoveryServiceLive.pipe(
+        Layer.provideMerge(
+          Layer.mergeAll(
+            makeConfigLayer(),
+            ServerSettingsService.layerTest(),
+            makeRegistryLayer(makeAdapter()),
+          ).pipe(Layer.provideMerge(NodeServices.layer)),
+        ),
+      );
+
+    const first = await Effect.runPromise(
+      Effect.gen(function* () {
+        const discovery = yield* ProviderDiscoveryService;
+        return yield* discovery.listModels({ provider: "cursor", cwd });
+      }).pipe(Effect.provide(makeLayer())) as Effect.Effect<ProviderListModelsResult, never, never>,
+    );
+    expect(first.cached).toBe(false);
+    expect(adapterCalls).toBe(1);
+
+    // The write daemon flushes asynchronously; wait for the snapshot to land.
+    const deadline = Date.now() + 5_000;
+    while (!existsSync(catalogPath) && Date.now() < deadline) {
+      await new Promise((resolve) => setTimeout(resolve, 25));
+    }
+    expect(existsSync(catalogPath)).toBe(true);
+
+    // A second service over the same stateDir is a restart: it must answer from
+    // the persisted snapshot instead of paying discovery again.
+    const second = await Effect.runPromise(
+      Effect.gen(function* () {
+        const discovery = yield* ProviderDiscoveryService;
+        return yield* discovery.listModels({ provider: "cursor", cwd });
+      }).pipe(Effect.provide(makeLayer())) as Effect.Effect<ProviderListModelsResult, never, never>,
+    );
+
+    expect(second).toEqual({ ...first, cached: true });
+    expect(adapterCalls).toBe(1);
+  });
+
+  it("ignores a malformed persisted catalog and re-discovers", async () => {
+    const catalogPath = path.join(baseDir, "userdata", "provider-models", "catalogs.json");
+    // Private mode: atomicWrite refuses group/other-writable parents.
+    await mkdir(path.dirname(catalogPath), { recursive: true, mode: 0o700 });
+    await writeFile(catalogPath, "{not-json", "utf8");
+
+    let adapterCalls = 0;
+    const result = await runListModels({
+      adapter: {
+        listModels: () => {
+          adapterCalls += 1;
+          return Effect.succeed({
+            models: [{ slug: "cursor-model", name: "Cursor Model" }],
+            source: "cursor.cli",
+            cached: false,
+          });
+        },
+      },
+      enabled: true,
+    });
+
+    expect(result.models).toHaveLength(1);
+    expect(adapterCalls).toBe(1);
   });
 });

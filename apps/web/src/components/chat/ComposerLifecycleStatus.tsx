@@ -8,7 +8,7 @@ import { ComposerLifecycleStatusElement } from "~/components/chat/ComposerLifecy
 export type ComposerLifecycleOperation = "idle" | "sending" | "stopping" | "error";
 
 export interface ComposerLifecycleSnapshot {
-  readonly errorMessage?: string | null;
+  readonly errorMessage?: string | null | undefined;
   readonly operation: ComposerLifecycleOperation;
   readonly sessionStatus: string | null;
 }
@@ -25,7 +25,7 @@ export function resolveComposerLifecycleTransition(input: {
   readonly current: ComposerLifecycleSnapshot;
   readonly includeFailure: boolean;
   readonly previous: ComposerLifecycleSnapshot | null;
-  readonly stopRequested?: boolean;
+  readonly stopRequested?: boolean | undefined;
 }): ComposerLifecyclePresentation | null {
   const { current, previous } = input;
   if (!previous) return null;
@@ -89,8 +89,8 @@ export function resolveComposerLifecycleTransition(input: {
 }
 
 export function ComposerLifecycleStatus(props: {
-  readonly errorMessage?: string | null;
-  readonly includeFailure?: boolean;
+  readonly errorMessage?: string | null | undefined;
+  readonly includeFailure?: boolean | undefined;
   readonly operation: ComposerLifecycleOperation;
   readonly sessionStatus: string | null;
 }) {

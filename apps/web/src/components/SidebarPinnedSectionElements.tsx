@@ -3,10 +3,12 @@
 
 import type { ReactNode } from "react";
 
-export function SidebarPinnedSectionRootElement(props: { readonly children?: ReactNode }) {
+export function SidebarPinnedSectionRootElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return <div className="mb-3">{props.children}</div>;
 }
 
-export function SidebarPinnedListElement(props: { readonly children?: ReactNode }) {
+export function SidebarPinnedListElement(props: { readonly children?: ReactNode | undefined }) {
   return <div className="flex flex-col gap-0.5">{props.children}</div>;
 }

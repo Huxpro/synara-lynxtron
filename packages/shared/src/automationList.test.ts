@@ -26,7 +26,6 @@ function definition(overrides: Partial<AutomationDefinition> = {}): AutomationDe
     mode: "standalone",
     targetThreadId: null,
     maxIterations: null,
-    stopOnError: false,
     completionPolicy: { type: "none" },
     completionPolicyVersion: 0,
     completionPolicyUpdatedAt: "2026-08-14T00:00:00.000Z",
@@ -40,7 +39,7 @@ function definition(overrides: Partial<AutomationDefinition> = {}): AutomationDe
     updatedAt: "2026-08-14T00:00:00.000Z",
     archivedAt: null,
     ...overrides,
-  } as AutomationDefinition;
+  } as unknown as AutomationDefinition;
 }
 
 function run(overrides: Partial<AutomationRun> = {}): AutomationRun {

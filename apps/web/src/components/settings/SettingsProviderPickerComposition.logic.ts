@@ -36,8 +36,8 @@ const providerTitles = new Map(
 );
 
 export function normalizeSettingsProviderPickerValues(input: {
-  readonly hiddenProviders?: readonly string[];
-  readonly providerOrder?: readonly string[];
+  readonly hiddenProviders?: readonly string[] | undefined;
+  readonly providerOrder?: readonly string[] | undefined;
 }): SettingsProviderPickerValues {
   return {
     hiddenProviders: normalizeHiddenProviders(input.hiddenProviders ?? []),

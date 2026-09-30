@@ -5,12 +5,11 @@ import type {
   AutomationSchedule,
   AutomationWorktreeMode,
   ModelSelection,
-  ProviderInteractionMode,
   ProjectId,
   RuntimeMode,
   ProviderKind,
 } from "@synara/contracts";
-import { getDefaultModel } from "@synara/shared/model";
+import { defaultModelSelectionForProvider } from "./defaultModelSelection.logic";
 
 export type CreateWorktreeMode = AutomationWorktreeMode;
 
@@ -18,12 +17,7 @@ export function resolveAutomationModelSelection(input: {
   readonly projectModelSelection: ModelSelection | null | undefined;
   readonly defaultProvider: ProviderKind;
 }): ModelSelection {
-  return (
-    input.projectModelSelection ?? {
-      provider: input.defaultProvider,
-      model: getDefaultModel(input.defaultProvider),
-    }
-  );
+  return input.projectModelSelection ?? defaultModelSelectionForProvider(input.defaultProvider);
 }
 
 export function resolveAutomationModelSelectionForProjectChange(input: {
@@ -53,7 +47,7 @@ export function resolveAutomationModelSelectionForProjectChange(input: {
 export function buildAutomationCreateInput(input: {
   readonly acknowledgeLocalCheckout: boolean;
   readonly acknowledgeFastInterval: boolean;
-  readonly interactionMode: ProviderInteractionMode;
+  readonly interactionMode: NonNullable<AutomationCreateInput["interactionMode"]>;
   readonly completionPolicy: AutomationCompletionPolicy;
   readonly maxIterations: number | null;
   readonly mode: AutomationMode;
@@ -63,7 +57,6 @@ export function buildAutomationCreateInput(input: {
   readonly prompt: string;
   readonly runtimeMode: RuntimeMode;
   readonly schedule: AutomationSchedule;
-  readonly stopOnError: boolean;
   readonly targetThreadId: AutomationCreateInput["targetThreadId"];
   readonly worktreeMode: CreateWorktreeMode;
 }): AutomationCreateInput {
@@ -81,7 +74,6 @@ export function buildAutomationCreateInput(input: {
     mode: input.mode,
     targetThreadId: input.mode === "heartbeat" ? input.targetThreadId : null,
     maxIterations: input.maxIterations,
-    stopOnError: input.stopOnError,
     completionPolicy: input.mode === "heartbeat" ? input.completionPolicy : { type: "none" },
     minimumIntervalSeconds: 60,
     maxRuntimeSeconds: 3600,

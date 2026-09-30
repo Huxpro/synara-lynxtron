@@ -5,13 +5,15 @@ import type { ReactNode, Ref } from "react";
 
 import { SidebarGroup, SidebarMenu } from "./ui/sidebar";
 
-export function SidebarStudioSectionRootElement(props: { readonly children?: ReactNode }) {
+export function SidebarStudioSectionRootElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return <SidebarGroup className="px-1.5 py-1.5">{props.children}</SidebarGroup>;
 }
 
 export function SidebarStudioListElement(props: {
-  readonly children?: ReactNode;
-  readonly listRef?: unknown;
+  readonly children?: ReactNode | undefined;
+  readonly listRef?: unknown | undefined;
 }) {
   return (
     <SidebarMenu ref={props.listRef as Ref<HTMLUListElement>} className="gap-1">
@@ -20,10 +22,8 @@ export function SidebarStudioListElement(props: {
   );
 }
 
-export function SidebarStudioEmptyElement(props: { readonly children?: ReactNode }) {
+export function SidebarStudioEmptyElement(props: { readonly children?: ReactNode | undefined }) {
   return (
-    <div className="px-2 pt-4 text-center text-[length:var(--app-font-size-ui,12px)] text-muted-foreground/58">
-      {props.children}
-    </div>
+    <div className="px-2 pt-4 text-center text-ui text-muted-foreground/58">{props.children}</div>
   );
 }

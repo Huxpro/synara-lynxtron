@@ -24,11 +24,12 @@ interface ThreadWorktreeHandoffDialogProps {
 export function ThreadWorktreeHandoffDialog({
   open,
   worktreeName,
-  busy = false,
+  busy: busyProp,
   onWorktreeNameChange,
   onOpenChange,
   onConfirm,
 }: ThreadWorktreeHandoffDialogProps) {
+  const busy = busyProp ?? false;
   const worktreeInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -74,7 +75,9 @@ export function ThreadWorktreeHandoffDialog({
             }}
           >
             <label className="grid gap-1.5">
-              <span className="text-xs font-medium text-foreground">Worktree name</span>
+              <span className="text-ui leading-snug font-medium text-foreground">
+                Worktree name
+              </span>
               <Input
                 ref={worktreeInputRef}
                 value={worktreeName}

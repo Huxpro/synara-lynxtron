@@ -13,15 +13,15 @@ vi.mock("./ComposerModelTriggerCompositionElements", () => ({
     <span>provider:{provider}</span>
   ),
   ComposerModelTriggerModelLabelElement: ({
-    children,
+    modelLabel,
     hidden,
   }: {
-    children: ReactNode;
+    modelLabel: string;
     hidden: boolean;
   }) => (
     <span>
       {hidden ? "hidden-model:" : "model:"}
-      {children}
+      {modelLabel}
     </span>
   ),
   ComposerModelTriggerFastBadgeElement: () => <span>fast</span>,

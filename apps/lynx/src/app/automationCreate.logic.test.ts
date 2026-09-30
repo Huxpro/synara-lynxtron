@@ -84,7 +84,6 @@ describe("Automation create payload", () => {
         prompt: "  Check regressions.  ",
         runtimeMode: "approval-required",
         schedule,
-        stopOnError: false,
         targetThreadId: null,
         worktreeMode: "worktree",
       }),
@@ -97,7 +96,6 @@ describe("Automation create payload", () => {
       runtimeMode: "approval-required",
       interactionMode: "plan",
       maxIterations: 25,
-      stopOnError: false,
     });
   });
 
@@ -117,7 +115,6 @@ describe("Automation create payload", () => {
         prompt: "Check the selected workspace mode.",
         runtimeMode: "approval-required",
         schedule: { type: "manual" },
-        stopOnError: true,
         targetThreadId: null,
         worktreeMode,
       });
@@ -148,7 +145,6 @@ describe("Automation create payload", () => {
         prompt: "Verify automation permissions.",
         runtimeMode,
         schedule: { type: "manual" },
-        stopOnError: true,
         targetThreadId: null,
         worktreeMode,
       });
@@ -175,7 +171,6 @@ describe("Automation create payload", () => {
       prompt: "Keep working.",
       runtimeMode: "approval-required" as const,
       schedule: { type: "manual" as const },
-      stopOnError: true,
       worktreeMode: "auto" as const,
     };
 
@@ -221,7 +216,6 @@ describe("Automation create payload", () => {
       prompt: "Check frequently.",
       runtimeMode: "approval-required",
       schedule: { type: "interval", everySeconds: 30 },
-      stopOnError: true,
       targetThreadId: null,
       worktreeMode: "worktree",
     });

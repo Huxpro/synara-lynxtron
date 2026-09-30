@@ -1,5 +1,5 @@
 import { ProjectId } from "@synara/contracts";
-import type { OrchestrationProject, OrchestrationReadModel } from "@synara/contracts";
+import type { OrchestrationProject } from "@synara/contracts";
 import { Deferred, Effect, Fiber } from "effect";
 import { describe, expect, it } from "vitest";
 
@@ -52,6 +52,7 @@ function makeItem(number: number, repository = "acme/shared"): GitHubPullRequest
     reviewRequestLogins: [],
     labels: [],
     mergeability: "unknown",
+    stack: null,
   };
 }
 
@@ -60,10 +61,6 @@ function makeBatch(
   rawCount = entries.length,
 ): GitHubPullRequestListBatch {
   return { entries, rawCount };
-}
-
-function makeSnapshot(projects: OrchestrationProject[]): OrchestrationReadModel {
-  return { snapshotSequence: 1, spaces: [], projects, threads: [], updatedAt: now };
 }
 
 function makePins(
@@ -92,7 +89,7 @@ function makeDependencies(input: {
     homeDir: "/tmp",
     github: input.github,
     pins: input.pins ?? makePins(),
-    getSnapshot: () => Effect.succeed(makeSnapshot(input.projects)),
+    listProjects: () => Effect.succeed(input.projects),
     resolveRepositories: (project: OrchestrationProject) => {
       const repository = input.repositories.get(project.id);
       return Effect.succeed({
@@ -116,7 +113,12 @@ describe("PullRequestService", () => {
       listRepositoryPullRequests: () =>
         Effect.sync(() => {
           listReads += 1;
-          return makeBatch([makeItem(1)]);
+          return makeBatch([
+            {
+              ...makeItem(1),
+              stack: { number: 2, size: 3, position: 1, baseBranch: "main" },
+            },
+          ]);
         }),
     };
 
@@ -142,6 +144,12 @@ describe("PullRequestService", () => {
     expect(result.entries).toHaveLength(1);
     expect(result.entries[0]?.projectId).toBe(projectB.id);
     expect(result.entries[0]?.projectContexts).toHaveLength(2);
+    expect(result.entries[0]?.stack).toEqual({
+      number: 2,
+      size: 3,
+      position: 1,
+      baseBranch: "main",
+    });
     expect(result.repositoryBatches).toHaveLength(1);
   });
 

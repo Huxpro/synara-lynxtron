@@ -53,7 +53,7 @@ import { ComposerContextWindowMeterElement } from "../adapters/ComposerInputComp
 import { SEMANTIC_ICON_TONES } from "@synara/shared/semanticIconTone";
 import { SemanticIconTone } from "../adapters/SemanticIconTone.lynx";
 import { SidebarPrimaryActionRow } from "@synara-web/components/SidebarPrimaryActionRow";
-import { SidebarSearchPalette } from "@synara-web/components/SidebarSearchPalette";
+import { SidebarSearchPalette } from "@synara-web/components/SidebarSearchPaletteComposition";
 import { MessageActionButtonLynx } from "../components/ui/MessageActionButton.lynx";
 import { useLynxInteractiveState } from "../components/ui/interactive-state.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
@@ -1683,7 +1683,7 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
     setCatalogProvider(nextSelection.provider);
   };
   const handleFavoriteModelSlugsChange = (
-    _provider: "cursor" | "kilo" | "opencode" | "pi",
+    _provider: "cursor" | "opencode" | "pi",
     slugs: ReadonlyArray<string>,
   ) => {
     "background only";

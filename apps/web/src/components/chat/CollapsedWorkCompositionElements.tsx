@@ -7,7 +7,7 @@ import { DisclosureChevron } from "../ui/DisclosureChevron";
 import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "../ui/collapsible";
 import { disclosureContentClassName } from "~/platform/motion";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function CollapsedWorkRootElement(props: ChildrenProps) {
   return <div className="mb-3">{props.children}</div>;

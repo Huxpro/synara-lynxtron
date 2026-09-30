@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { realpathSync } from "node:fs";
 
-import { Effect, FileSystem, Layer, Path } from "effect";
+import { Effect, FileSystem, Layer, Option, Path } from "effect";
 import type {
   GitActionProgressEvent,
   GitActionProgressPhase,
@@ -27,6 +27,7 @@ import {
 import { GitCore } from "../Services/GitCore.ts";
 import { GitHubCli, type GitHubPullRequestSummary } from "../Services/GitHubCli.ts";
 import { TextGeneration } from "../Services/TextGeneration.ts";
+import { detectPrTemplate } from "../PrTemplateDetection.ts";
 import { buildGitTextGenerationCallInput } from "../textGenerationSelection.ts";
 import { ServerConfig } from "../../config.ts";
 
@@ -819,6 +820,20 @@ export const makeGitManager = Effect.gen(function* () {
   const readConfigValueNullable = (cwd: string, key: string) =>
     gitCore.readConfigValue(cwd, key).pipe(Effect.catch(() => Effect.succeed(null)));
 
+  const gitRefExists = (cwd: string, ref: string) =>
+    gitCore
+      .execute({
+        operation: "GitManager.gitRefExists",
+        cwd,
+        args: ["rev-parse", "--verify", "--quiet", "--end-of-options", `${ref}^{commit}`],
+        allowNonZeroExit: true,
+        maxOutputBytes: 256,
+      })
+      .pipe(
+        Effect.map((result) => result.code === 0),
+        Effect.catch(() => Effect.succeed(false)),
+      );
+
   const resolveRemoteRepositoryContext = (cwd: string, remoteName: string | null) =>
     Effect.gen(function* () {
       if (!remoteName) {
@@ -1219,6 +1234,11 @@ export const makeGitManager = Effect.gen(function* () {
     cwd: string,
     fallbackBranch: string | null,
     textGenerationParams?: GitTextGenerationParams,
+    prOptions?: {
+      readonly title?: string | undefined;
+      readonly body?: string | undefined;
+      readonly draft?: boolean | undefined;
+    },
   ) =>
     Effect.gen(function* () {
       const details = yield* gitCore.statusDetails(cwd);
@@ -1260,21 +1280,45 @@ export const makeGitManager = Effect.gen(function* () {
           `Cannot create a pull request from '${headContext.headBranch}' into itself. Create or switch to a feature branch and retry.`,
         );
       }
-      const rangeContext = yield* gitCore.readRangeContext(cwd, baseBranch);
+      let prTitle = prOptions?.title;
+      let prBody = prOptions?.body;
+      if (prTitle === undefined || prBody === undefined) {
+        const rangeContext = yield* gitCore.readRangeContext(cwd, baseBranch);
+        const originRemoteUrl = headContext.isCrossRepository
+          ? yield* readConfigValueNullable(cwd, "remote.origin.url")
+          : null;
+        const targetRemoteName = headContext.isCrossRepository
+          ? originRemoteUrl
+            ? "origin"
+            : null
+          : headContext.remoteName;
+        const remoteBaseRef = targetRemoteName
+          ? `refs/remotes/${targetRemoteName}/${baseBranch}`
+          : null;
+        const useRemoteBaseRef =
+          remoteBaseRef !== null && (yield* gitRefExists(cwd, remoteBaseRef));
+        const prTemplateTreeish = useRemoteBaseRef ? remoteBaseRef : baseBranch;
+        const prTemplate = Option.getOrUndefined(
+          yield* detectPrTemplate(cwd, prTemplateTreeish, gitCore.execute),
+        );
 
-      const generated = yield* textGeneration.generatePrContent({
-        cwd,
-        baseBranch,
-        headBranch: headContext.headBranch,
-        commitSummary: limitContext(rangeContext.commitSummary, 20_000),
-        diffSummary: limitContext(rangeContext.diffSummary, 20_000),
-        diffPatch: limitContext(rangeContext.diffPatch, 60_000),
-        ...buildGitTextGenerationCallInput(textGenerationParams ?? {}),
-      });
+        const generated = yield* textGeneration.generatePrContent({
+          cwd,
+          baseBranch,
+          headBranch: headContext.headBranch,
+          commitSummary: limitContext(rangeContext.commitSummary, 20_000),
+          diffSummary: limitContext(rangeContext.diffSummary, 20_000),
+          diffPatch: limitContext(rangeContext.diffPatch, 60_000),
+          ...(prTemplate !== undefined ? { prTemplate } : {}),
+          ...buildGitTextGenerationCallInput(textGenerationParams ?? {}),
+        });
+        prTitle ??= generated.title;
+        prBody ??= generated.body;
+      }
 
       const bodyFile = path.join(tempDir, `synara-pr-body-${process.pid}-${randomUUID()}.md`);
       yield* fileSystem
-        .writeFileString(bodyFile, generated.body)
+        .writeFileString(bodyFile, prBody)
         .pipe(
           Effect.mapError((cause) =>
             gitManagerError("runPrStep", "Failed to write pull request body temp file.", cause),
@@ -1285,8 +1329,9 @@ export const makeGitManager = Effect.gen(function* () {
           cwd,
           baseBranch,
           headSelector: headContext.preferredHeadSelector,
-          title: generated.title,
+          title: prTitle,
           bodyFile,
+          ...(prOptions?.draft !== undefined ? { draft: prOptions.draft } : {}),
         })
         .pipe(
           Effect.as(null),
@@ -1315,7 +1360,7 @@ export const makeGitManager = Effect.gen(function* () {
           status: "created" as const,
           baseBranch,
           headBranch: headContext.headBranch,
-          title: generated.title,
+          title: prTitle,
         };
       }
 
@@ -1329,19 +1374,26 @@ export const makeGitManager = Effect.gen(function* () {
       };
     });
 
+  const pullRequestForBranch: GitManagerShape["pullRequestForBranch"] = Effect.fnUntraced(
+    function* (input) {
+      const latest = yield* findLatestPr(input.cwd, {
+        branch: input.branch,
+        upstreamRef: input.upstreamRef,
+      });
+      return latest ? toResolvedPullRequest(latest) : null;
+    },
+  );
+
   const status: GitManagerShape["status"] = Effect.fnUntraced(function* (input) {
     const details = yield* gitCore.statusDetails(input.cwd);
 
     const pr =
       details.branch !== null
-        ? yield* findLatestPr(input.cwd, {
+        ? yield* pullRequestForBranch({
+            cwd: input.cwd,
             branch: details.branch,
             upstreamRef: details.upstreamRef,
-          }).pipe(
-            // Status and PR-resolution surfaces share one mapper so their shapes cannot drift.
-            Effect.map((latest) => (latest ? toResolvedPullRequest(latest) : null)),
-            Effect.catch(() => Effect.succeed(null)),
-          )
+          }).pipe(Effect.catch(() => Effect.succeed(null)))
         : null;
 
     return {
@@ -1350,6 +1402,7 @@ export const makeGitManager = Effect.gen(function* () {
       workingTree: details.workingTree,
       hasUpstream: details.hasUpstream,
       upstreamBranch: details.upstreamBranch,
+      configuredPrBaseBranch: details.configuredPrBaseBranch,
       aheadCount: details.aheadCount,
       behindCount: details.behindCount,
       pr,
@@ -1358,7 +1411,27 @@ export const makeGitManager = Effect.gen(function* () {
 
   const readWorkingTreeDiff: GitManagerShape["readWorkingTreeDiff"] = Effect.fnUntraced(
     function* (input) {
+      if (
+        input.filePath !== undefined &&
+        input.scope !== undefined &&
+        input.scope !== "workingTree"
+      ) {
+        return yield* gitManagerError(
+          "readWorkingTreeDiff",
+          "File-scoped diffs are only supported for the working tree scope.",
+        );
+      }
       switch (input.scope) {
+        case "ref": {
+          const compareRef = input.compareRef?.trim() ?? "";
+          if (compareRef.length === 0) {
+            return yield* gitManagerError(
+              "readWorkingTreeDiff",
+              "A branch or commit is required to compare the working tree against.",
+            );
+          }
+          return yield* gitCore.readRefPatch(input.cwd, compareRef);
+        }
         case "branch":
           return yield* gitCore.readBranchPatch(input.cwd);
         case "staged":
@@ -1367,16 +1440,58 @@ export const makeGitManager = Effect.gen(function* () {
           return yield* gitCore.readUnstagedPatch(input.cwd);
         case "workingTree":
         default:
-          return yield* gitCore.readWorkingTreePatch(input.cwd);
+          return yield* gitCore.readWorkingTreePatch(input.cwd, input.filePath);
       }
+    },
+  );
+
+  const blameLine: GitManagerShape["blameLine"] = Effect.fnUntraced(function* (input) {
+    return yield* gitCore.blameLine(input);
+  });
+
+  const readFileAtRev: GitManagerShape["readFileAtRev"] = Effect.fnUntraced(function* (input) {
+    return yield* gitCore.readFileAtRev(input);
+  });
+
+  // Same reason as summarizeDiff below: the badge surfaces need three integers, not the patch.
+  // Deriving them from the very patch readWorkingTreeDiff would have returned keeps the numbers
+  // identical to the ones a client-side parse produced, so no surface changes what it displays.
+  const readWorkingTreeDiffStats: GitManagerShape["readWorkingTreeDiffStats"] = Effect.fnUntraced(
+    function* (input) {
+      if (input.filePath !== undefined) {
+        return yield* gitManagerError(
+          "readWorkingTreeDiffStats",
+          "File-scoped diff statistics are not supported.",
+        );
+      }
+      if (input.scope === "ref") {
+        const compareRef = input.compareRef?.trim() ?? "";
+        if (compareRef.length === 0) {
+          return yield* gitManagerError(
+            "readWorkingTreeDiffStats",
+            "A branch or commit is required to compare the working tree against.",
+          );
+        }
+        return yield* gitCore.readDiffStats(input.cwd, "ref", compareRef);
+      }
+      return yield* gitCore.readDiffStats(input.cwd, input.scope ?? "workingTree");
     },
   );
 
   // Resolve the patch server-side so large repository data never makes a client→RPC round trip.
   const summarizeDiff: GitManagerShape["summarizeDiff"] = Effect.fnUntraced(function* (input) {
-    const { patch } = yield* readWorkingTreeDiff({ cwd: input.cwd, scope: input.scope });
+    const { patch, truncated } = yield* readWorkingTreeDiff({
+      cwd: input.cwd,
+      scope: input.scope,
+    });
     if (patch.length === 0) {
       return yield* gitManagerError("summarizeDiff", "Cannot summarize an empty diff.");
+    }
+    if (truncated) {
+      return yield* gitManagerError(
+        "summarizeDiff",
+        "Cannot summarize a truncated diff. Narrow the changes and try again.",
+      );
     }
 
     const generated = yield* textGeneration.generateDiffSummary({
@@ -2563,13 +2678,21 @@ The local stash entry was kept for recovery.`,
           phases,
         });
 
-        if (input.action === "push" && initialStatus.hasWorkingTreeChanges) {
+        if (
+          input.action === "push" &&
+          initialStatus.hasWorkingTreeChanges &&
+          !input.allowDirtyWorkingTree
+        ) {
           return yield* gitManagerError(
             "runStackedAction",
             "Commit or stash local changes before pushing.",
           );
         }
-        if (input.action === "create_pr" && initialStatus.hasWorkingTreeChanges) {
+        if (
+          input.action === "create_pr" &&
+          initialStatus.hasWorkingTreeChanges &&
+          !input.allowDirtyWorkingTree
+        ) {
           return yield* gitManagerError(
             "runStackedAction",
             "Commit local changes before creating a PR.",
@@ -2668,7 +2791,11 @@ The local stash entry was kept for recovery.`,
                 Effect.flatMap(() =>
                   Effect.gen(function* () {
                     currentPhase = "pr";
-                    return yield* runPrStep(input.cwd, currentBranch, textGenerationParams);
+                    return yield* runPrStep(input.cwd, currentBranch, textGenerationParams, {
+                      title: input.prTitle,
+                      body: input.prBody,
+                      draft: input.prDraft,
+                    });
                   }),
                 ),
               )
@@ -2704,7 +2831,11 @@ The local stash entry was kept for recovery.`,
 
   return {
     status,
+    pullRequestForBranch,
     readWorkingTreeDiff,
+    readWorkingTreeDiffStats,
+    blameLine,
+    readFileAtRev,
     summarizeDiff,
     resolvePullRequest,
     pullRequestSnapshot,

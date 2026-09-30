@@ -15,7 +15,7 @@ const TONE_CLASS: Record<TimelineStatusTone, string> = {
 
 export function TimelineStatusRowRootElement(props: {
   readonly compact: boolean;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
   readonly tone: TimelineStatusTone;
 }) {
   return (
@@ -33,7 +33,7 @@ export function TimelineStatusRowRootElement(props: {
 
 export function TimelineStatusRowIconElement(props: {
   readonly compact: boolean;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
   readonly tone: TimelineStatusTone;
 }) {
   return (

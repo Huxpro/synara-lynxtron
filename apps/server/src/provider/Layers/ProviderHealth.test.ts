@@ -1,8 +1,11 @@
+import * as OS from "node:os";
+import { join } from "node:path";
+
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import type { ServerProviderStatus } from "@synara/contracts";
 import { DEFAULT_SERVER_SETTINGS, ServerProviderUpdateError } from "@synara/contracts";
 import { describe, it, assert } from "@effect/vitest";
-import { Effect, FileSystem, Layer, Path, Sink, Stream } from "effect";
+import { Duration, Effect, Fiber, FileSystem, Layer, Path, Sink, Stream } from "effect";
 import { TestClock } from "effect/testing";
 import * as PlatformError from "effect/PlatformError";
 import { ChildProcessSpawner } from "effect/unstable/process";
@@ -22,25 +25,26 @@ import {
   checkAntigravityProviderStatus,
   checkCodexProviderStatus,
   checkCursorProviderStatus,
+  checkDevinProviderStatus,
   checkGrokProviderStatus,
   checkOpenCodeProviderStatus,
   checkPiProviderStatus,
-  hasCustomModelProvider,
-  makeDisabledProviderStatus,
   makeCheckClaudeProviderStatus,
   makeCheckCodexProviderStatus,
   makeCheckCursorProviderStatus,
+  makeCheckDevinProviderStatus,
   makeCheckGrokProviderStatus,
-  makeCheckKiloProviderStatus,
   makeCheckOpenCodeProviderStatus,
+  makeDisabledProviderStatus,
   makeProviderHealthLive,
   parseAuthStatusFromOutput,
   parseClaudeAuthStatusFromOutput,
   PACKAGE_MANAGED_PROVIDER_UPDATES,
+  prependPathEntry,
   providerStatusesEqual,
   ProviderHealthLive,
   projectProviderStatusesForSettings,
-  readCodexConfigModelProvider,
+  readCodexConfigModelProviderForEnv,
   stabilizeProviderStatusesAgainstTransientTimeouts,
 } from "./ProviderHealth";
 import { resolvePackageManagedProviderMaintenance } from "../providerMaintenance";
@@ -49,10 +53,14 @@ import { resolvePackageManagedProviderMaintenance } from "../providerMaintenance
 
 const encoder = new TextEncoder();
 
-function mockHandle(result: { stdout: string; stderr: string; code: number }) {
+function mockHandle(
+  result: { stdout: string; stderr: string; code: number },
+  options?: { readonly exitCode?: Effect.Effect<ChildProcessSpawner.ExitCode> },
+) {
   return ChildProcessSpawner.makeHandle({
-    pid: ChildProcessSpawner.ProcessId(1),
-    exitCode: Effect.succeed(ChildProcessSpawner.ExitCode(result.code)),
+    pid: ChildProcessSpawner.ProcessId(0x7ff_f_fffe),
+
+    exitCode: options?.exitCode ?? Effect.succeed(ChildProcessSpawner.ExitCode(result.code)),
     isRunning: Effect.succeed(false),
     kill: () => Effect.void,
     stdin: Sink.drain,
@@ -73,6 +81,7 @@ function mockSpawnerLayer(
       | {
           readonly env?: NodeJS.ProcessEnv;
           readonly windowsVerbatimArguments?: boolean;
+          readonly stdin?: "pipe" | "ignore" | "inherit";
         }
       | undefined,
   ) => {
@@ -90,6 +99,7 @@ function mockSpawnerLayer(
         options?: {
           env?: NodeJS.ProcessEnv;
           windowsVerbatimArguments?: boolean;
+          stdin?: "pipe" | "ignore" | "inherit";
         };
       };
       return Effect.succeed(
@@ -117,10 +127,11 @@ function failingSpawnerLayer(description: string) {
 
 function hangingSpawnerLayer(input: {
   readonly onKill: () => void;
+  readonly onHang?: () => void;
   readonly shouldHang: (args: ReadonlyArray<string>, command: string) => boolean;
 }) {
   const handle = ChildProcessSpawner.makeHandle({
-    pid: ChildProcessSpawner.ProcessId(2),
+    pid: ChildProcessSpawner.ProcessId(0x7fff_fffe),
     exitCode: Effect.never,
     isRunning: Effect.succeed(true),
     kill: () => Effect.sync(input.onKill),
@@ -138,9 +149,11 @@ function hangingSpawnerLayer(input: {
         command: string;
         args: ReadonlyArray<string>;
       };
-      return input.shouldHang(cmd.args, cmd.command)
-        ? Effect.succeed(handle)
-        : Effect.succeed(mockHandle({ stdout: "", stderr: "", code: 0 }));
+      if (!input.shouldHang(cmd.args, cmd.command)) {
+        return Effect.succeed(mockHandle({ stdout: "", stderr: "", code: 0 }));
+      }
+      input.onHang?.();
+      return Effect.succeed(handle);
     }),
   );
 }
@@ -150,12 +163,13 @@ const allProvidersDisabledSettings = {
     codex: { enabled: false },
     claudeAgent: { enabled: false },
     cursor: { enabled: false },
+    devin: { enabled: false },
     antigravity: { enabled: false },
     grok: { enabled: false },
     droid: { enabled: false },
-    kilo: { enabled: false },
     opencode: { enabled: false },
     pi: { enabled: false },
+    omp: { enabled: false },
   },
 } as const;
 
@@ -165,12 +179,13 @@ const allProvidersDisabledServerSettings = {
     codex: { ...DEFAULT_SERVER_SETTINGS.providers.codex, enabled: false },
     claudeAgent: { ...DEFAULT_SERVER_SETTINGS.providers.claudeAgent, enabled: false },
     cursor: { ...DEFAULT_SERVER_SETTINGS.providers.cursor, enabled: false },
+    devin: { ...DEFAULT_SERVER_SETTINGS.providers.devin, enabled: false },
     antigravity: { ...DEFAULT_SERVER_SETTINGS.providers.antigravity, enabled: false },
     grok: { ...DEFAULT_SERVER_SETTINGS.providers.grok, enabled: false },
     droid: { ...DEFAULT_SERVER_SETTINGS.providers.droid, enabled: false },
-    kilo: { ...DEFAULT_SERVER_SETTINGS.providers.kilo, enabled: false },
     opencode: { ...DEFAULT_SERVER_SETTINGS.providers.opencode, enabled: false },
     pi: { ...DEFAULT_SERVER_SETTINGS.providers.pi, enabled: false },
+    omp: { ...DEFAULT_SERVER_SETTINGS.providers.omp, enabled: false },
   },
 } satisfies typeof DEFAULT_SERVER_SETTINGS;
 
@@ -247,6 +262,46 @@ function withTempCodexHome(configContent?: string) {
 
 it.layer(NodeServices.layer)("ProviderHealth", (it) => {
   describe("provider update commands", () => {
+    it("delegates native Claude release-channel truth to Claude", () => {
+      const definition = PACKAGE_MANAGED_PROVIDER_UPDATES.claudeAgent;
+      assert.ok(definition);
+
+      const capabilities = resolvePackageManagedProviderMaintenance(definition, {
+        binaryPath: "claude",
+        realCommandPath: "/Users/test/.local/share/claude/versions/2.1.100/claude",
+      });
+
+      assert.strictEqual(capabilities.latestVersionSource, null);
+      assert.deepStrictEqual(capabilities.update, {
+        command: "claude update",
+        executable: "claude",
+        args: ["update"],
+        lockKey: "claude-native",
+      });
+    });
+
+    it("keeps Claude's latest Homebrew cask source and command aligned", () => {
+      const definition = PACKAGE_MANAGED_PROVIDER_UPDATES.claudeAgent;
+      assert.ok(definition);
+
+      const capabilities = resolvePackageManagedProviderMaintenance(definition, {
+        binaryPath: "/opt/homebrew/bin/claude",
+        realCommandPath: "/opt/homebrew/Caskroom/claude-code@latest/2.1.100/claude",
+      });
+
+      assert.deepStrictEqual(capabilities.latestVersionSource, {
+        kind: "homebrew",
+        name: "claude-code@latest",
+        homebrewKind: "cask",
+      });
+      assert.deepStrictEqual(capabilities.update, {
+        command: "brew upgrade --cask claude-code@latest",
+        executable: "brew",
+        args: ["upgrade", "--cask", "claude-code@latest"],
+        lockKey: "homebrew",
+      });
+    });
+
     it("registers Antigravity's native updater", () => {
       const definition = PACKAGE_MANAGED_PROVIDER_UPDATES.antigravity;
       assert.ok(definition);
@@ -266,32 +321,114 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
       });
     });
 
-    it("updates npm-managed Kilo through its matching package manager and PATH", () => {
-      const definition = PACKAGE_MANAGED_PROVIDER_UPDATES.kilo;
+    it("updates npm-managed Codex through its matching package manager and PATH", () => {
+      const definition = PACKAGE_MANAGED_PROVIDER_UPDATES.codex;
       assert.ok(definition);
 
       const capabilities = resolvePackageManagedProviderMaintenance(definition, {
-        binaryPath: "kilo",
+        binaryPath: "codex",
         realCommandPath:
-          "/Users/test/.nvm/versions/node/v24.13.0/lib/node_modules/@kilocode/cli/bin/kilo",
+          "/Users/test/.nvm/versions/node/v24.13.0/lib/node_modules/@openai/codex/bin/codex",
         commandDirectory: "/Users/test/.nvm/versions/node/v24.13.0/bin",
       });
 
       assert.deepStrictEqual(capabilities.update, {
         command:
-          "npm install -g --prefix /Users/test/.nvm/versions/node/v24.13.0 @kilocode/cli@latest",
+          "npm install -g --prefix /Users/test/.nvm/versions/node/v24.13.0 @openai/codex@latest",
         executable: "npm",
         args: [
           "install",
           "-g",
           "--prefix",
           "/Users/test/.nvm/versions/node/v24.13.0",
-          "@kilocode/cli@latest",
+          "@openai/codex@latest",
         ],
         lockKey: "npm-global",
         pathPrepend: "/Users/test/.nvm/versions/node/v24.13.0/bin",
       });
     });
+
+    it("prepends update PATH entries under one Windows path key", () => {
+      assert.deepStrictEqual(
+        prependPathEntry({ Path: "C:\\Windows", HOME: "home" }, "C:\\npm", "win32"),
+        { Path: "C:\\npm;C:\\Windows", HOME: "home" },
+      );
+      // An already duplicated environment collapses to the key Node would keep.
+      assert.deepStrictEqual(
+        prependPathEntry({ Path: "C:\\Windows", PATH: "C:\\short" }, "C:\\npm", "win32"),
+        { PATH: "C:\\npm;C:\\short;C:\\Windows" },
+      );
+      assert.deepStrictEqual(prependPathEntry({ HOME: "home" }, "C:\\npm", "win32"), {
+        HOME: "home",
+        PATH: "C:\\npm",
+      });
+    });
+
+    it("prepends update PATH entries under PATH on POSIX", () => {
+      assert.deepStrictEqual(
+        prependPathEntry({ PATH: "/usr/bin:/opt/bin", path: "ignored" }, "/opt/bin", "linux"),
+        { PATH: "/opt/bin:/usr/bin", path: "ignored" },
+      );
+    });
+
+    it.effect("runs provider updates with one prepended path key and stdin closed", () =>
+      Effect.gen(function* () {
+        let updateOptions: { env?: NodeJS.ProcessEnv; stdin?: string } | undefined;
+        const fileSystem = yield* FileSystem.FileSystem;
+        const path = yield* Path.Path;
+        const baseDir = yield* fileSystem.makeTempDirectoryScoped({
+          prefix: "provider-update-env-",
+        });
+        const binDir = path.join(baseDir, "bin");
+        yield* fileSystem.makeDirectory(binDir, { recursive: true });
+        yield* fileSystem.writeFileString(
+          path.join(binDir, OS.platform() === "win32" ? "agy.exe" : "agy"),
+          "",
+        );
+        const delimiter = OS.platform() === "win32" ? ";" : ":";
+        // Packaged Windows servers inherit the native "Path" casing; reproduce it here.
+        const inheritedPath = process.env.PATH;
+        const pathKey = OS.platform() === "win32" ? "Path" : "PATH";
+        delete process.env.PATH;
+        process.env[pathKey] = [binDir, inheritedPath].filter(Boolean).join(delimiter);
+        yield* Effect.addFinalizer(() =>
+          Effect.sync(() => {
+            delete process.env[pathKey];
+            process.env.PATH = inheritedPath;
+          }),
+        );
+        const settings = {
+          ...allProvidersDisabledServerSettings,
+          providers: {
+            ...allProvidersDisabledServerSettings.providers,
+            antigravity: { ...DEFAULT_SERVER_SETTINGS.providers.antigravity, enabled: true },
+          },
+        } satisfies typeof DEFAULT_SERVER_SETTINGS;
+        const layer = makeProviderHealthLive().pipe(
+          Layer.provideMerge(ServerSettingsService.layerTest(settings)),
+          Layer.provideMerge(ServerConfig.layerTest(process.cwd(), baseDir)),
+          Layer.provideMerge(
+            mockSpawnerLayer((args, command, _env, options) => {
+              if (path.basename(command).toLowerCase().startsWith("agy") && args[0] === "update") {
+                updateOptions = options;
+              }
+              return { stdout: "", stderr: "", code: 0 };
+            }),
+          ),
+        );
+
+        yield* Effect.gen(function* () {
+          const providerHealth = yield* ProviderHealth;
+          return yield* providerHealth.updateProvider({ provider: "antigravity" });
+        }).pipe(Effect.provide(layer));
+
+        assert.strictEqual(updateOptions?.stdin, "ignore");
+        const env = updateOptions?.env ?? {};
+        const pathKeys = Object.keys(env).filter((key) => key.toUpperCase() === "PATH");
+        assert.strictEqual(pathKeys.length, 1);
+        assert.strictEqual(env[pathKeys[0]!]?.split(delimiter)[0], binDir);
+      }).pipe(Effect.scoped),
+    );
 
     it.effect("stops a hung provider process and persists a failed update state", () =>
       Effect.gen(function* () {
@@ -304,15 +441,15 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
         yield* writeProviderStatusCache({
           filePath: resolveProviderStatusCachePath({
             stateDir: path.join(baseDir, "userdata"),
-            provider: "kilo",
+            provider: "codex",
           }),
           provider: {
-            provider: "kilo",
+            provider: "codex",
             status: "ready",
             available: true,
             authStatus: "authenticated",
             checkedAt: "2026-07-15T12:00:00.000Z",
-            message: "Kilo CLI is installed and authenticated.",
+            message: "Codex CLI is installed and authenticated.",
             version: "7.3.46",
           },
         });
@@ -320,11 +457,11 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
           ...allProvidersDisabledServerSettings,
           providers: {
             ...allProvidersDisabledServerSettings.providers,
-            kilo: {
-              ...DEFAULT_SERVER_SETTINGS.providers.kilo,
+            codex: {
+              ...DEFAULT_SERVER_SETTINGS.providers.codex,
               enabled: true,
               binaryPath:
-                "/Users/test/.nvm/versions/node/v24.13.0/lib/node_modules/@kilocode/cli/bin/kilo",
+                "/Users/test/.nvm/versions/node/v24.13.0/lib/node_modules/@openai/codex/bin/codex",
             },
           },
         } satisfies typeof DEFAULT_SERVER_SETTINGS;
@@ -337,22 +474,100 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
               shouldHang: (args, command) =>
                 command === "npm" &&
                 args.join(" ") ===
-                  "install -g --prefix /Users/test/.nvm/versions/node/v24.13.0 @kilocode/cli@latest",
+                  "install -g --prefix /Users/test/.nvm/versions/node/v24.13.0 @openai/codex@latest",
             }),
           ),
         );
 
         const result = yield* Effect.gen(function* () {
           const providerHealth = yield* ProviderHealth;
-          return yield* TestClock.withLive(providerHealth.updateProvider({ provider: "kilo" }));
+          return yield* TestClock.withLive(providerHealth.updateProvider({ provider: "codex" }));
         }).pipe(Effect.provide(layer));
-        const kilo = result.providers.find((provider) => provider.provider === "kilo");
+        const codex = result.providers.find((provider) => provider.provider === "codex");
 
         assert.strictEqual(killed, true);
-        assert.strictEqual(kilo?.updateState?.status, "failed");
+        assert.strictEqual(codex?.updateState?.status, "failed");
         assert.strictEqual(
-          kilo?.updateState?.message,
+          codex?.updateState?.message,
           "Update timed out after 20 milliseconds. The provider process was stopped.",
+        );
+      }),
+    );
+
+    it.effect("stops a running provider update when the provider is disabled", () =>
+      Effect.gen(function* () {
+        let killed = false;
+        let markStarted!: () => void;
+        const started = new Promise<void>((resolve) => {
+          markStarted = resolve;
+        });
+        const fileSystem = yield* FileSystem.FileSystem;
+        const path = yield* Path.Path;
+        const baseDir = yield* fileSystem.makeTempDirectoryScoped({
+          prefix: "provider-update-disable-",
+        });
+        yield* writeProviderStatusCache({
+          filePath: resolveProviderStatusCachePath({
+            stateDir: path.join(baseDir, "userdata"),
+            provider: "codex",
+          }),
+          provider: {
+            provider: "codex",
+            status: "ready",
+            available: true,
+            authStatus: "authenticated",
+            checkedAt: "2026-07-15T12:00:00.000Z",
+            message: "Codex CLI is installed and authenticated.",
+            version: "7.3.46",
+          },
+        });
+        const settings = {
+          ...allProvidersDisabledServerSettings,
+          providers: {
+            ...allProvidersDisabledServerSettings.providers,
+            codex: {
+              ...DEFAULT_SERVER_SETTINGS.providers.codex,
+              enabled: true,
+              binaryPath:
+                "/Users/test/.nvm/versions/node/v24.13.0/lib/node_modules/@openai/codex/bin/codex",
+            },
+          },
+        } satisfies typeof DEFAULT_SERVER_SETTINGS;
+        const serverSettingsLayer = ServerSettingsService.layerTest(settings);
+        const layer = makeProviderHealthLive({ providerUpdateTimeoutMs: 10_000 }).pipe(
+          Layer.provideMerge(serverSettingsLayer),
+          Layer.provideMerge(ServerConfig.layerTest(process.cwd(), baseDir)),
+          Layer.provideMerge(
+            hangingSpawnerLayer({
+              onKill: () => (killed = true),
+              onHang: markStarted,
+              shouldHang: (args, command) =>
+                command === "npm" &&
+                args.join(" ") ===
+                  "install -g --prefix /Users/test/.nvm/versions/node/v24.13.0 @openai/codex@latest",
+            }),
+          ),
+        );
+
+        const result = yield* TestClock.withLive(
+          Effect.gen(function* () {
+            const providerHealth = yield* ProviderHealth;
+            const serverSettings = yield* ServerSettingsService;
+            const updateFiber = yield* providerHealth
+              .updateProvider({ provider: "codex" })
+              .pipe(Effect.forkChild);
+            yield* Effect.promise(() => started);
+            yield* serverSettings.updateSettings({ providers: { codex: { enabled: false } } });
+            return yield* Fiber.join(updateFiber);
+          }).pipe(Effect.provide(layer)),
+        );
+        const codex = result.providers.find((provider) => provider.provider === "codex");
+
+        assert.strictEqual(killed, true);
+        assert.strictEqual(codex?.updateState?.status, "failed");
+        assert.strictEqual(
+          codex?.updateState?.message,
+          "Update stopped because the provider was disabled.",
         );
       }),
     );
@@ -360,8 +575,8 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
 
   describe("disabled provider handling", () => {
     it("builds an inert status for disabled providers", () => {
-      assert.deepStrictEqual(makeDisabledProviderStatus("kilo", "2026-06-16T12:00:00.000Z"), {
-        provider: "kilo",
+      assert.deepStrictEqual(makeDisabledProviderStatus("opencode", "2026-06-16T12:00:00.000Z"), {
+        provider: "opencode",
         status: "warning",
         available: false,
         authStatus: "unknown",
@@ -378,7 +593,7 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
       );
       const codex = statuses.find((status) => status.provider === "codex");
 
-      assert.strictEqual(statuses.length, 9);
+      assert.strictEqual(statuses.length, 10);
       assert.strictEqual(codex?.available, false);
       assert.strictEqual(codex?.message, "Provider is disabled in Synara settings.");
     });
@@ -473,7 +688,7 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
               if (joined === "--version") {
                 return { stdout: "codex 1.0.0\n", stderr: "", code: 0 };
               }
-              if (joined === "login status" || joined === "login status --json") {
+              if (joined === "-c mcp_servers={} login status") {
                 return { stdout: '{"authenticated":true}\n', stderr: "", code: 0 };
               }
               throw new Error(`Unexpected args: ${joined}`);
@@ -513,7 +728,7 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
         const providerHealth = yield* ProviderHealth;
         const statuses = yield* providerHealth.refresh;
 
-        assert.strictEqual(statuses.length, 9);
+        assert.strictEqual(statuses.length, 10);
         for (const status of statuses) {
           assert.strictEqual(status.available, false);
           assert.strictEqual(status.message, "Provider is disabled in Synara settings.");
@@ -524,13 +739,121 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
       }).pipe(Effect.provide(disabledProviderHealthLayer)),
     );
 
+    it.effect("queues another bounded refresh when the follow-up also becomes stale", () =>
+      Effect.gen(function* () {
+        const fileSystem = yield* FileSystem.FileSystem;
+        const baseDir = yield* fileSystem.makeTempDirectoryScoped({
+          prefix: "provider-health-enable-race-",
+        });
+        const commands: string[] = [];
+        const makeProbeGate = () => {
+          let release!: () => void;
+          let markStarted!: () => void;
+          const released = new Promise<void>((resolve) => {
+            release = resolve;
+          });
+          const started = new Promise<void>((resolve) => {
+            markStarted = resolve;
+          });
+          return { release, released, markStarted, started };
+        };
+        const probeGates = Array.from({ length: 5 }, makeProbeGate);
+        let codexVersionAttempts = 0;
+        const spawnerLayer = Layer.succeed(
+          ChildProcessSpawner.ChildProcessSpawner,
+          ChildProcessSpawner.make((command) => {
+            const input = command as unknown as {
+              readonly command: string;
+              readonly args: ReadonlyArray<string>;
+            };
+            commands.push(input.command);
+            const result = input.args.includes("--version")
+              ? { stdout: `${input.command} 1.0.0\n`, stderr: "", code: 0 }
+              : { stdout: '{"authenticated":true}\n', stderr: "", code: 0 };
+            if (input.command !== "codex" || !input.args.includes("--version")) {
+              return Effect.succeed(mockHandle(result));
+            }
+            const attemptIndex = codexVersionAttempts;
+            codexVersionAttempts += 1;
+            const gate = probeGates[attemptIndex];
+            gate?.markStarted();
+            if (!gate || attemptIndex >= 4) {
+              return Effect.succeed(mockHandle(result));
+            }
+            return Effect.succeed(
+              mockHandle(result, {
+                exitCode: Effect.promise(() => gate.released).pipe(
+                  Effect.as(ChildProcessSpawner.ExitCode(0)),
+                ),
+              }),
+            );
+          }),
+        );
+        const layer = ProviderHealthLive.pipe(
+          Layer.provideMerge(
+            ServerSettingsService.layerTest({
+              ...allProvidersDisabledSettings,
+              providers: {
+                ...allProvidersDisabledSettings.providers,
+                codex: { enabled: true },
+              },
+            }),
+          ),
+          Layer.provideMerge(ServerConfig.layerTest(process.cwd(), baseDir)),
+          Layer.provideMerge(spawnerLayer),
+        );
+
+        yield* Effect.gen(function* () {
+          const providerHealth = yield* ProviderHealth;
+          const serverSettings = yield* ServerSettingsService;
+          const firstRefresh = yield* providerHealth.refresh.pipe(Effect.forkChild);
+          yield* Effect.promise(() => probeGates[0]!.started);
+          yield* serverSettings.updateSettings({ providers: { opencode: { enabled: true } } });
+          const joinedRefresh = yield* providerHealth.refresh.pipe(Effect.forkChild);
+          probeGates[0]!.release();
+          yield* Effect.promise(() => probeGates[1]!.started);
+          yield* serverSettings.updateSettings({ providers: { pi: { enabled: true } } });
+          probeGates[1]!.release();
+          yield* Effect.promise(() => probeGates[2]!.started);
+          yield* serverSettings.updateSettings({ providers: { grok: { enabled: true } } });
+          probeGates[2]!.release();
+          yield* Effect.promise(() => probeGates[3]!.started);
+          yield* serverSettings.updateSettings({ providers: { droid: { enabled: true } } });
+          probeGates[3]!.release();
+          yield* Fiber.join(joinedRefresh);
+          yield* Fiber.join(firstRefresh);
+          yield* Effect.yieldNow;
+          yield* TestClock.adjust(Duration.millis(100));
+          yield* Effect.promise(() => probeGates[4]!.started);
+          const statuses = yield* providerHealth.refresh;
+
+          assert.ok(commands.some((command) => command.includes("opencode")));
+          assert.ok(commands.some((command) => command.includes("pi")));
+          assert.ok(commands.some((command) => command.includes("grok")));
+          assert.ok(commands.some((command) => command.includes("droid")));
+          assert.notStrictEqual(
+            statuses.find((status) => status.provider === "opencode")?.message,
+            "Provider is disabled in Synara settings.",
+          );
+          assert.notStrictEqual(
+            statuses.find((status) => status.provider === "pi")?.message,
+            "Provider is disabled in Synara settings.",
+          );
+          assert.notStrictEqual(
+            statuses.find((status) => status.provider === "droid")?.message,
+            "Provider is disabled in Synara settings.",
+          );
+        }).pipe(Effect.provide(layer));
+      }),
+    );
+
     it.effect("rejects one-click updates for disabled providers", () =>
       Effect.gen(function* () {
         const providerHealth = yield* ProviderHealth;
-        const error = yield* Effect.flip(providerHealth.updateProvider({ provider: "kilo" }));
+        const error = yield* Effect.flip(providerHealth.updateProvider({ provider: "opencode" }));
 
         assert.ok(error instanceof ServerProviderUpdateError);
-        assert.strictEqual(error.provider, "kilo");
+        assert.strictEqual(error.provider, "opencode");
         assert.strictEqual(error.reason, "Provider is disabled in Synara settings.");
       }).pipe(Effect.provide(disabledProviderHealthLayer)),
     );
@@ -600,6 +923,48 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
           checkedAt: "2026-06-04T17:01:00.000Z",
         },
       ]);
+    });
+
+    it("drops a cached update advisory when a transient timeout prevents verification", () => {
+      const previousWithUpdate = {
+        ...previousReadyOpenCode,
+        versionAdvisory: {
+          status: "behind_latest",
+          currentVersion: "1.15.13",
+          latestVersion: "1.16.0",
+          updateCommand: "npm install -g opencode-ai@latest",
+          canUpdate: true,
+          checkedAt: "2026-06-04T17:00:00.000Z",
+          message: "Update available.",
+        },
+      } satisfies ServerProviderStatus;
+
+      const [result] = stabilizeProviderStatusesAgainstTransientTimeouts(
+        [previousWithUpdate],
+        [
+          {
+            provider: "opencode",
+            status: "error",
+            available: false,
+            authStatus: "unknown",
+            checkedAt: "2026-06-04T17:01:00.000Z",
+            message:
+              "OpenCode CLI is installed but failed to run. Timed out while running command.",
+          },
+        ],
+      );
+
+      assert.strictEqual(result?.status, "ready");
+      assert.strictEqual(result?.available, true);
+      assert.deepStrictEqual(result?.versionAdvisory, {
+        status: "unknown",
+        currentVersion: "1.15.13",
+        latestVersion: null,
+        updateCommand: null,
+        canUpdate: false,
+        checkedAt: "2026-06-04T17:01:00.000Z",
+        message: null,
+      });
     });
 
     it("does not hide non-timeout provider failures", () => {
@@ -743,12 +1108,33 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
         false,
       );
     });
+
+    it("detects Auto capability and probe-binary changes", () => {
+      const readyCodex = {
+        ...readyCursor,
+        provider: "codex",
+        supportsAutoRuntimeMode: true,
+        autoRuntimeModeBinaryPath: "codex",
+      } satisfies ServerProviderStatus;
+
+      assert.strictEqual(
+        providerStatusesEqual([readyCodex], [{ ...readyCodex, supportsAutoRuntimeMode: false }]),
+        false,
+      );
+      assert.strictEqual(
+        providerStatusesEqual(
+          [readyCodex],
+          [{ ...readyCodex, autoRuntimeModeBinaryPath: "/custom/bin/codex" }],
+        ),
+        false,
+      );
+    });
   });
 
   // ── checkCodexProviderStatus tests ────────────────────────────────
   //
   // These tests control CODEX_HOME to ensure the custom-provider detection
-  // in hasCustomModelProvider() does not interfere with the auth-probe
+  // in checkCodexProviderStatus does not interfere with the auth-probe
   // path being tested.
 
   describe("checkCodexProviderStatus", () => {
@@ -767,7 +1153,8 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
           mockSpawnerLayer((args) => {
             const joined = args.join(" ");
             if (joined === "--version") return { stdout: "codex 1.0.0\n", stderr: "", code: 0 };
-            if (joined === "login status") return { stdout: "Logged in\n", stderr: "", code: 0 };
+            if (joined === "-c mcp_servers={} login status")
+              return { stdout: "Logged in\n", stderr: "", code: 0 };
             throw new Error(`Unexpected args: ${joined}`);
           }),
         ),
@@ -785,7 +1172,8 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
             assert.strictEqual(command, "/custom/bin/codex");
             const joined = args.join(" ");
             if (joined === "--version") return { stdout: "codex 1.0.0\n", stderr: "", code: 0 };
-            if (joined === "login status") return { stdout: "Logged in\n", stderr: "", code: 0 };
+            if (joined === "-c mcp_servers={} login status")
+              return { stdout: "Logged in\n", stderr: "", code: 0 };
             throw new Error(`Unexpected args: ${joined}`);
           }),
         ),
@@ -807,7 +1195,7 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
             if (commandLine.includes('"--version"')) {
               return { stdout: "codex 1.0.0\n", stderr: "", code: 0 };
             }
-            if (commandLine.includes('"login" "status"')) {
+            if (commandLine.includes('"-c" "mcp_servers={}" "login" "status"')) {
               return { stdout: "Logged in\n", stderr: "", code: 0 };
             }
             throw new Error(`Unexpected args: ${args.join(" ")}`);
@@ -848,7 +1236,7 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
             assert.strictEqual(env?.CODEX_HOME, expectedCodexHome);
             const joined = args.join(" ");
             if (joined === "--version") return { stdout: "codex 1.0.0\n", stderr: "", code: 0 };
-            if (joined === "login status") {
+            if (joined === "-c mcp_servers={} login status") {
               sawLoginStatusProbe = true;
               return { stdout: "Logged in\n", stderr: "", code: 0 };
             }
@@ -893,6 +1281,26 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
       ),
     );
 
+    it.effect("reports Auto unavailable for a supported but older Codex CLI", () =>
+      Effect.gen(function* () {
+        yield* withTempCodexHome();
+        const status = yield* checkCodexProviderStatus;
+        assert.strictEqual(status.status, "ready");
+        assert.strictEqual(status.available, true);
+        assert.strictEqual(status.supportsAutoRuntimeMode, false);
+      }).pipe(
+        Effect.provide(
+          mockSpawnerLayer((args) => {
+            const joined = args.join(" ");
+            if (joined === "--version") return { stdout: "codex 0.123.0\n", stderr: "", code: 0 };
+            if (joined === "-c mcp_servers={} login status")
+              return { stdout: "Logged in\n", stderr: "", code: 0 };
+            throw new Error(`Unexpected args: ${joined}`);
+          }),
+        ),
+      ),
+    );
+
     it.effect("returns unauthenticated when auth probe reports login required", () =>
       Effect.gen(function* () {
         yield* withTempCodexHome();
@@ -910,34 +1318,9 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
           mockSpawnerLayer((args) => {
             const joined = args.join(" ");
             if (joined === "--version") return { stdout: "codex 1.0.0\n", stderr: "", code: 0 };
-            if (joined === "login status") {
+            if (joined === "-c mcp_servers={} login status") {
               return { stdout: "", stderr: "Not logged in. Run codex login.", code: 1 };
             }
-            throw new Error(`Unexpected args: ${joined}`);
-          }),
-        ),
-      ),
-    );
-
-    it.effect("returns unauthenticated when login status output includes 'not logged in'", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome();
-        const status = yield* checkCodexProviderStatus;
-        assert.strictEqual(status.provider, "codex");
-        assert.strictEqual(status.status, "error");
-        assert.strictEqual(status.available, true);
-        assert.strictEqual(status.authStatus, "unauthenticated");
-        assert.strictEqual(
-          status.message,
-          "Codex CLI is not authenticated. Run `codex login` and try again.",
-        );
-      }).pipe(
-        Effect.provide(
-          mockSpawnerLayer((args) => {
-            const joined = args.join(" ");
-            if (joined === "--version") return { stdout: "codex 1.0.0\n", stderr: "", code: 0 };
-            if (joined === "login status")
-              return { stdout: "Not logged in\n", stderr: "", code: 1 };
             throw new Error(`Unexpected args: ${joined}`);
           }),
         ),
@@ -961,7 +1344,7 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
           mockSpawnerLayer((args) => {
             const joined = args.join(" ");
             if (joined === "--version") return { stdout: "codex 1.0.0\n", stderr: "", code: 0 };
-            if (joined === "login status") {
+            if (joined === "-c mcp_servers={} login status") {
               return { stdout: "", stderr: "error: unknown command 'login'", code: 2 };
             }
             throw new Error(`Unexpected args: ${joined}`);
@@ -1038,7 +1421,7 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
           mockSpawnerLayer((args) => {
             const joined = args.join(" ");
             if (joined === "--version") return { stdout: "codex 1.0.0\n", stderr: "", code: 0 };
-            if (joined === "login status")
+            if (joined === "-c mcp_servers={} login status")
               return { stdout: "Not logged in\n", stderr: "", code: 1 };
             throw new Error(`Unexpected args: ${joined}`);
           }),
@@ -1050,12 +1433,6 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
   // ── parseAuthStatusFromOutput pure tests ──────────────────────────
 
   describe("parseAuthStatusFromOutput", () => {
-    it("exit code 0 with no auth markers is ready", () => {
-      const parsed = parseAuthStatusFromOutput({ stdout: "OK\n", stderr: "", code: 0 });
-      assert.strictEqual(parsed.status, "ready");
-      assert.strictEqual(parsed.authStatus, "authenticated");
-    });
-
     it("JSON with authenticated=false is unauthenticated", () => {
       const parsed = parseAuthStatusFromOutput({
         stdout: '[{"authenticated":false}]\n',
@@ -1077,53 +1454,9 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
     });
   });
 
-  // ── readCodexConfigModelProvider tests ─────────────────────────────
+  // ── readCodexConfigModelProviderForEnv tests ─────────────────────────────
 
-  describe("readCodexConfigModelProvider", () => {
-    it.effect("returns undefined when config file does not exist", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome();
-        assert.strictEqual(yield* readCodexConfigModelProvider, undefined);
-      }),
-    );
-
-    it.effect("returns undefined when config has no model_provider key", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome('model = "gpt-5-codex"\n');
-        assert.strictEqual(yield* readCodexConfigModelProvider, undefined);
-      }),
-    );
-
-    it.effect("returns the provider when model_provider is set at top level", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome('model = "gpt-5-codex"\nmodel_provider = "portkey"\n');
-        assert.strictEqual(yield* readCodexConfigModelProvider, "portkey");
-      }),
-    );
-
-    it.effect("returns openai when model_provider is openai", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome('model_provider = "openai"\n');
-        assert.strictEqual(yield* readCodexConfigModelProvider, "openai");
-      }),
-    );
-
-    it.effect("ignores model_provider inside section headers", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome(
-          [
-            'model = "gpt-5-codex"',
-            "",
-            "[model_providers.portkey]",
-            'base_url = "https://api.portkey.ai/v1"',
-            'model_provider = "should-be-ignored"',
-            "",
-          ].join("\n"),
-        );
-        assert.strictEqual(yield* readCodexConfigModelProvider, undefined);
-      }),
-    );
-
+  describe("readCodexConfigModelProviderForEnv", () => {
     it.effect("handles comments and whitespace", () =>
       Effect.gen(function* () {
         yield* withTempCodexHome(
@@ -1136,67 +1469,14 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
             'model = "gpt-5-pro"',
           ].join("\n"),
         );
-        assert.strictEqual(yield* readCodexConfigModelProvider, "azure");
+        assert.strictEqual(yield* readCodexConfigModelProviderForEnv(process.env), "azure");
       }),
     );
 
     it.effect("handles single-quoted values in TOML", () =>
       Effect.gen(function* () {
         yield* withTempCodexHome("model_provider = 'mistral'\n");
-        assert.strictEqual(yield* readCodexConfigModelProvider, "mistral");
-      }),
-    );
-  });
-
-  // ── hasCustomModelProvider tests ───────────────────────────────────
-
-  describe("hasCustomModelProvider", () => {
-    it.effect("returns false when no config file exists", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome();
-        assert.strictEqual(yield* hasCustomModelProvider, false);
-      }),
-    );
-
-    it.effect("returns false when model_provider is not set", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome('model = "gpt-5-codex"\n');
-        assert.strictEqual(yield* hasCustomModelProvider, false);
-      }),
-    );
-
-    it.effect("returns false when model_provider is openai", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome('model_provider = "openai"\n');
-        assert.strictEqual(yield* hasCustomModelProvider, false);
-      }),
-    );
-
-    it.effect("returns true when model_provider is portkey", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome('model_provider = "portkey"\n');
-        assert.strictEqual(yield* hasCustomModelProvider, true);
-      }),
-    );
-
-    it.effect("returns true when model_provider is azure", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome('model_provider = "azure"\n');
-        assert.strictEqual(yield* hasCustomModelProvider, true);
-      }),
-    );
-
-    it.effect("returns true when model_provider is ollama", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome('model_provider = "ollama"\n');
-        assert.strictEqual(yield* hasCustomModelProvider, true);
-      }),
-    );
-
-    it.effect("returns true when model_provider is a custom proxy", () =>
-      Effect.gen(function* () {
-        yield* withTempCodexHome('model_provider = "my-company-proxy"\n');
-        assert.strictEqual(yield* hasCustomModelProvider, true);
+        assert.strictEqual(yield* readCodexConfigModelProviderForEnv(process.env), "mistral");
       }),
     );
   });
@@ -1228,10 +1508,38 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
       ),
     );
 
+    it.effect("fails closed for Auto when the Claude CLI version is unparseable", () =>
+      Effect.gen(function* () {
+        const status = yield* checkClaudeProviderStatus;
+        assert.strictEqual(status.status, "ready");
+        assert.strictEqual(status.available, true);
+        assert.strictEqual(status.supportsAutoRuntimeMode, false);
+        assert.strictEqual(status.autoRuntimeModeBinaryPath, "claude");
+      }).pipe(
+        Effect.provide(
+          mockSpawnerLayer((args) => {
+            const joined = args.join(" ");
+            if (joined === "--version") {
+              return { stdout: "Claude Code development build\n", stderr: "", code: 0 };
+            }
+            if (joined === "auth status") {
+              return {
+                stdout: '{"loggedIn":true,"authMethod":"claude.ai"}\n',
+                stderr: "",
+                code: 0,
+              };
+            }
+            throw new Error(`Unexpected args: ${joined}`);
+          }),
+        ),
+      ),
+    );
+
     it.effect("uses configured claude binary for version and auth probes", () =>
       Effect.gen(function* () {
         const status = yield* makeCheckClaudeProviderStatus(undefined, "/custom/bin/claude");
         assert.strictEqual(status.status, "ready");
+        assert.strictEqual(status.autoRuntimeModeBinaryPath, "/custom/bin/claude");
       }).pipe(
         Effect.provide(
           mockSpawnerLayer((args, command) => {
@@ -1697,14 +2005,14 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
       ),
     );
 
-    it.effect("uses configured opencode binary for version probe", () =>
+    it.effect("expands a tilde opencode binary path for the version probe", () =>
       Effect.gen(function* () {
-        const status = yield* makeCheckOpenCodeProviderStatus("/custom/bin/opencode");
+        const status = yield* makeCheckOpenCodeProviderStatus("~/bin/opencode");
         assert.strictEqual(status.status, "ready");
       }).pipe(
         Effect.provide(
           mockSpawnerLayer((args, command) => {
-            assert.strictEqual(command, "/custom/bin/opencode");
+            assert.strictEqual(command, join(OS.homedir(), "bin/opencode"));
             const joined = args.join(" ");
             if (joined === "--version") return { stdout: "opencode 1.3.17\n", stderr: "", code: 0 };
             throw new Error(`Unexpected args: ${joined}`);
@@ -1725,24 +2033,6 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
           "OpenCode CLI (`opencode`) is not installed or not on PATH.",
         );
       }).pipe(Effect.provide(failingSpawnerLayer("spawn opencode ENOENT"))),
-    );
-  });
-
-  describe("checkKiloProviderStatus", () => {
-    it.effect("uses configured Kilo binary for version probe", () =>
-      Effect.gen(function* () {
-        const status = yield* makeCheckKiloProviderStatus("/custom/bin/kilo");
-        assert.strictEqual(status.status, "ready");
-      }).pipe(
-        Effect.provide(
-          mockSpawnerLayer((args, command) => {
-            assert.strictEqual(command, "/custom/bin/kilo");
-            const joined = args.join(" ");
-            if (joined === "--version") return { stdout: "kilo 7.2.52\n", stderr: "", code: 0 };
-            throw new Error(`Unexpected args: ${joined}`);
-          }),
-        ),
-      ),
     );
   });
 
@@ -1882,7 +2172,7 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
       delete process.env.XAI_API_KEY;
       delete process.env.GROK_CODE_XAI_API_KEY;
       return Effect.gen(function* () {
-        const status = yield* checkGrokProviderStatus;
+        const status = yield* makeCheckGrokProviderStatus(undefined, async () => null);
         assert.strictEqual(status.provider, "grok");
         assert.strictEqual(status.status, "ready");
         assert.strictEqual(status.available, true);
@@ -1948,6 +2238,45 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
       );
     });
 
+    it.effect("marks Grok authenticated from a cached grok login", () => {
+      const previousXaiApiKey = process.env.XAI_API_KEY;
+      const previousApiKey = process.env.GROK_CODE_XAI_API_KEY;
+      delete process.env.XAI_API_KEY;
+      delete process.env.GROK_CODE_XAI_API_KEY;
+      return Effect.gen(function* () {
+        const status = yield* makeCheckGrokProviderStatus(undefined, async () => ({
+          accessToken: "cached-token",
+        }));
+        assert.strictEqual(status.status, "ready");
+        assert.strictEqual(status.authStatus, "authenticated");
+        assert.strictEqual(status.authType, "grokLogin");
+        assert.strictEqual(status.authLabel, "Grok Account");
+        assert.strictEqual(status.message, undefined);
+      }).pipe(
+        Effect.provide(
+          mockSpawnerLayer((args) => {
+            const joined = args.join(" ");
+            if (joined === "--version") return { stdout: "grok 0.1.0\n", stderr: "", code: 0 };
+            throw new Error(`Unexpected args: ${joined}`);
+          }),
+        ),
+        Effect.ensuring(
+          Effect.sync(() => {
+            if (previousXaiApiKey === undefined) {
+              delete process.env.XAI_API_KEY;
+            } else {
+              process.env.XAI_API_KEY = previousXaiApiKey;
+            }
+            if (previousApiKey === undefined) {
+              delete process.env.GROK_CODE_XAI_API_KEY;
+            } else {
+              process.env.GROK_CODE_XAI_API_KEY = previousApiKey;
+            }
+          }),
+        ),
+      );
+    });
+
     it.effect("uses configured Grok binary for version probe", () =>
       Effect.gen(function* () {
         const status = yield* makeCheckGrokProviderStatus("/custom/bin/grok");
@@ -1973,6 +2302,135 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
         assert.strictEqual(status.authStatus, "unknown");
         assert.strictEqual(status.message, "Grok CLI (`grok`) is not installed or not on PATH.");
       }).pipe(Effect.provide(failingSpawnerLayer("spawn grok ENOENT"))),
+    );
+  });
+
+  describe("checkDevinProviderStatus", () => {
+    it.effect("returns ready and authenticated when WINDSURF_API_KEY is present", () => {
+      const previousWindsurfKey = process.env.WINDSURF_API_KEY;
+      const previousDevinKey = process.env.DEVIN_API_KEY;
+      process.env.WINDSURF_API_KEY = "windsurf-test-key";
+      delete process.env.DEVIN_API_KEY;
+      return Effect.gen(function* () {
+        const status = yield* checkDevinProviderStatus;
+        assert.strictEqual(status.provider, "devin");
+        assert.strictEqual(status.status, "ready");
+        assert.strictEqual(status.available, true);
+        assert.strictEqual(status.authStatus, "authenticated");
+        assert.strictEqual(status.authType, "apiKey");
+        assert.strictEqual(status.authLabel, "Devin API Key");
+        assert.strictEqual(status.version, "2.0.0");
+      }).pipe(
+        Effect.provide(
+          mockSpawnerLayer((args) => {
+            const joined = args.join(" ");
+            if (joined === "--version") return { stdout: "devin 2.0.0\n", stderr: "", code: 0 };
+            throw new Error(`Unexpected args: ${joined}`);
+          }),
+        ),
+        Effect.ensuring(
+          Effect.sync(() => {
+            if (previousWindsurfKey === undefined) {
+              delete process.env.WINDSURF_API_KEY;
+            } else {
+              process.env.WINDSURF_API_KEY = previousWindsurfKey;
+            }
+            if (previousDevinKey === undefined) {
+              delete process.env.DEVIN_API_KEY;
+            } else {
+              process.env.DEVIN_API_KEY = previousDevinKey;
+            }
+          }),
+        ),
+      );
+    });
+
+    it.effect("returns ready with auth guidance when no Devin API key is set", () => {
+      const previousWindsurfKey = process.env.WINDSURF_API_KEY;
+      const previousDevinKey = process.env.DEVIN_API_KEY;
+      delete process.env.WINDSURF_API_KEY;
+      delete process.env.DEVIN_API_KEY;
+      return Effect.gen(function* () {
+        // Stub the credential read so a real `devin auth login` on the host
+        // cannot leak an "authenticated" result into this test.
+        const status = yield* makeCheckDevinProviderStatus(undefined, async () => undefined);
+        assert.strictEqual(status.status, "ready");
+        assert.strictEqual(status.available, true);
+        assert.strictEqual(status.authStatus, "unknown");
+        assert.match(status.message ?? "", /devin auth login|WINDSURF_API_KEY/u);
+      }).pipe(
+        Effect.provide(
+          mockSpawnerLayer((args) => {
+            const joined = args.join(" ");
+            if (joined === "--version") return { stdout: "devin 2.0.0\n", stderr: "", code: 0 };
+            throw new Error(`Unexpected args: ${joined}`);
+          }),
+        ),
+        Effect.ensuring(
+          Effect.sync(() => {
+            if (previousWindsurfKey === undefined) {
+              delete process.env.WINDSURF_API_KEY;
+            } else {
+              process.env.WINDSURF_API_KEY = previousWindsurfKey;
+            }
+            if (previousDevinKey === undefined) {
+              delete process.env.DEVIN_API_KEY;
+            } else {
+              process.env.DEVIN_API_KEY = previousDevinKey;
+            }
+          }),
+        ),
+      );
+    });
+
+    it.effect("recognizes credentials saved by devin auth login", () => {
+      let credentialsRead = false;
+      return Effect.gen(function* () {
+        const status = yield* makeCheckDevinProviderStatus(undefined, async () => {
+          credentialsRead = true;
+          return { apiKey: "stored-test-key" };
+        });
+        assert.strictEqual(status.status, "ready");
+        assert.strictEqual(status.available, true);
+        assert.strictEqual(status.authStatus, "authenticated");
+        assert.strictEqual(status.authType, "apiKey");
+        assert.strictEqual(credentialsRead, true);
+      }).pipe(
+        Effect.provide(
+          mockSpawnerLayer((args) => {
+            const joined = args.join(" ");
+            if (joined === "--version") return { stdout: "devin 2.0.0\n", stderr: "", code: 0 };
+            throw new Error(`Unexpected args: ${joined}`);
+          }),
+        ),
+      );
+    });
+
+    it.effect("returns unavailable when Devin CLI is missing", () =>
+      Effect.gen(function* () {
+        const status = yield* checkDevinProviderStatus;
+        assert.strictEqual(status.provider, "devin");
+        assert.strictEqual(status.status, "error");
+        assert.strictEqual(status.available, false);
+        assert.strictEqual(status.authStatus, "unknown");
+        assert.strictEqual(status.message, "Devin CLI (`devin`) is not installed or not on PATH.");
+      }).pipe(Effect.provide(failingSpawnerLayer("spawn devin ENOENT"))),
+    );
+
+    it.effect("uses the configured Devin binary for the version probe", () =>
+      Effect.gen(function* () {
+        const status = yield* makeCheckDevinProviderStatus("/custom/bin/devin");
+        assert.strictEqual(status.status, "ready");
+      }).pipe(
+        Effect.provide(
+          mockSpawnerLayer((args, command) => {
+            assert.strictEqual(command, "/custom/bin/devin");
+            const joined = args.join(" ");
+            if (joined === "--version") return { stdout: "devin 2.1.0\n", stderr: "", code: 0 };
+            throw new Error(`Unexpected args: ${joined}`);
+          }),
+        ),
+      ),
     );
   });
 
@@ -2272,32 +2730,6 @@ it.layer(NodeServices.layer)("ProviderHealth", (it) => {
   // ── parseClaudeAuthStatusFromOutput pure tests ────────────────────
 
   describe("parseClaudeAuthStatusFromOutput", () => {
-    it("exit code 0 with no auth markers is ready", () => {
-      const parsed = parseClaudeAuthStatusFromOutput({ stdout: "OK\n", stderr: "", code: 0 });
-      assert.strictEqual(parsed.status, "ready");
-      assert.strictEqual(parsed.authStatus, "authenticated");
-    });
-
-    it("JSON with loggedIn=true is authenticated", () => {
-      const parsed = parseClaudeAuthStatusFromOutput({
-        stdout: '{"loggedIn":true,"authMethod":"claude.ai"}\n',
-        stderr: "",
-        code: 0,
-      });
-      assert.strictEqual(parsed.status, "ready");
-      assert.strictEqual(parsed.authStatus, "authenticated");
-    });
-
-    it("JSON with loggedIn=false is unauthenticated", () => {
-      const parsed = parseClaudeAuthStatusFromOutput({
-        stdout: '{"loggedIn":false}\n',
-        stderr: "",
-        code: 0,
-      });
-      assert.strictEqual(parsed.status, "error");
-      assert.strictEqual(parsed.authStatus, "unauthenticated");
-    });
-
     it("JSON without auth marker is warning", () => {
       const parsed = parseClaudeAuthStatusFromOutput({
         stdout: '{"ok":true}\n',

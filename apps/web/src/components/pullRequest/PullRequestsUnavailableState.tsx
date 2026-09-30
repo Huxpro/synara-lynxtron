@@ -45,7 +45,7 @@ function githubCliInstallCommand(platform: string): string | null {
 function CommandLine({ command }: { command: string }) {
   const [copied, setCopied] = useState(false);
   const mountedRef = useRef(true);
-  const resetTimerRef = useRef<number | null>(null);
+  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     mountedRef.current = true;

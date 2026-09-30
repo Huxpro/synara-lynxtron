@@ -10,8 +10,8 @@ export const SIDEBAR_SEARCH_LIMITS = ORCHESTRATION_SIDEBAR_SEARCH_LIMITS;
 export interface SidebarSearchMessageThreadSource {
   readonly id: string;
   readonly createdAt: string;
-  readonly updatedAt?: string;
-  readonly messages?: readonly { readonly text: string }[];
+  readonly updatedAt?: string | undefined;
+  readonly messages?: readonly { readonly text: string }[] | undefined;
 }
 
 function boundedMessageText(text: string, limit: number): string {

@@ -16,8 +16,8 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain("<ChevronRightIcon");
     expect(panelSource).not.toContain("EnvironmentDisclosureChevron--open");
     expect(panelSource).not.toMatch(/<ChevronDownIcon[\s\S]{0,120}EnvironmentDisclosureChevron/);
-    expect(panelSource.match(/<EnvironmentDisclosureHeader/g)).toHaveLength(4);
-    expect(panelSource.match(/<EnvironmentDisclosureContent/g)).toHaveLength(4);
+    expect(panelSource.match(/<EnvironmentDisclosureHeader/g)).toHaveLength(3);
+    expect(panelSource.match(/<EnvironmentDisclosureContent/g)).toHaveLength(3);
   });
 
   it("routes actionable rows through the shared keyboard and focus interaction state", () => {
@@ -95,9 +95,9 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain("Toggle environment panel");
     expect(panelSource).toContain('import windowSvg from "@synara-central-icons/window.svg?raw"');
     expect(panelSource).toContain('from "@synara/shared/pinnedMessages"');
-    expect(panelSource).toContain('from "@synara/shared/threadMarkers"');
     expect(panelSource).not.toContain("from '@synara-web/pinnedMessages'");
-    expect(panelSource).not.toContain("from '@synara-web/threadMarkers'");
+    // Electron removed saved transcript markers (upstream #1131).
+    expect(panelSource).not.toContain("threadMarkers");
     expect(appStyles).toMatch(
       /\.TransportStatusNotice\s*\{[^}]*top:\s*8px;[^}]*right:\s*76px;[^}]*z-index:\s*1000;/s,
     );
@@ -239,12 +239,8 @@ describe("Lynx Environment panel", () => {
     expect(queriesSource).toContain("pinnedMessageTextById: Object.fromEntries(");
     expect(transcriptSource).toContain("function scrollToMessage(messageId: string)");
     expect(transcriptSource).toContain('row.kind === "message" && row.message.id === messageId');
-    expect(panelSource).toContain("function EnvironmentMarkerRow(");
-    expect(panelSource).toContain("isThreadMarkerAvailable(props.marker, props.messageText)");
-    expect(panelSource).toContain('type: "thread.marker.done.set"');
-    expect(panelSource).toContain('type: "thread.marker.label.set"');
-    expect(panelSource).toContain('type: "thread.marker.remove"');
-    expect(queriesSource).toContain("threadMarkers: thread.threadMarkers ?? []");
+    expect(panelSource).not.toContain("EnvironmentMarkerRow");
+    expect(queriesSource).not.toContain("threadMarkers");
     expect(panelSource).toContain("onOpenViewer={props.onOpenChanges}");
     expect(diffDockSource).toContain(
       "return fetchWorkingTreeDiff(props.workspaceRoot, diffRequest.scope);",
@@ -496,7 +492,6 @@ describe("Lynx Environment panel", () => {
       "<EnvironmentEditor",
       "<EnvironmentRecap",
       "<EnvironmentPinned",
-      "<EnvironmentMarkers",
       "<EnvironmentProjectInstructions",
       "<EnvironmentNotepad",
     ];
@@ -521,7 +516,6 @@ describe("Lynx Environment panel", () => {
       "showEnvironmentEditor",
       "showEnvironmentRecap",
       "showEnvironmentPinned",
-      "showEnvironmentMarkers",
       "showEnvironmentInstructions",
       "showEnvironmentNotepad",
     ]) {

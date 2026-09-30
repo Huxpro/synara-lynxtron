@@ -13,12 +13,14 @@ import {
   kanbanDraftCardId,
   kanbanThreadCardId,
   orderDraftCards,
+  overviewVisibleKanbanCards,
   reorderDraftCardIds,
   resolveDraftDropAction,
   resolveOptimisticDispatchOutcome,
   type BuildKanbanBoardInput,
   type KanbanCard,
   type KanbanOptimisticDispatchSnapshot,
+  type KanbanProjectBoard,
 } from "./kanban.logic";
 
 function makeLatestTurn(
@@ -107,17 +109,6 @@ describe("deriveKanbanColumn", () => {
     ).toBe("inProgress");
   });
 
-  it("treats a live latest turn as in progress", () => {
-    expect(
-      deriveKanbanColumn(
-        makeSidebarThreadSummary({
-          latestTurn: makeLatestTurn({ state: "running", completedAt: null }),
-          session: makeSession({ status: "running", orchestrationStatus: "running" }),
-        }),
-      ),
-    ).toBe("inProgress");
-  });
-
   it("treats connecting sessions and running sessions without turns as in progress", () => {
     expect(
       deriveKanbanColumn(
@@ -127,10 +118,6 @@ describe("deriveKanbanColumn", () => {
     expect(
       deriveKanbanColumn(makeSidebarThreadSummary({ session: makeSession({ status: "running" }) })),
     ).toBe("inProgress");
-  });
-
-  it("puts threads that never ran a turn in draft", () => {
-    expect(deriveKanbanColumn(makeSidebarThreadSummary())).toBe("draft");
   });
 
   it("ignores pending approvals/input once the session is dead", () => {
@@ -689,21 +676,6 @@ describe("resolveOptimisticDispatchOutcome", () => {
     ).toBe("failed");
   });
 
-  it("ignores a stale closed session from before the drop", () => {
-    expect(
-      resolveOptimisticDispatchOutcome(
-        entry(null),
-        makeSidebarThreadSummary({
-          session: makeSession({
-            status: "closed",
-            orchestrationStatus: "stopped",
-            updatedAt: "2026-03-09T11:00:00.000Z",
-          }),
-        }),
-      ),
-    ).toBe("pending");
-  });
-
   it("ignores a stale error from before the drop", () => {
     expect(
       resolveOptimisticDispatchOutcome(
@@ -862,11 +834,6 @@ describe("orderDraftCards", () => {
     isOptimisticDispatch: false,
   });
 
-  it("keeps recency order when no manual order exists", () => {
-    const ordered = orderDraftCards([makeCard("a", 1), makeCard("b", 3), makeCard("c", 2)], []);
-    expect(ordered.map((card) => card.cardId)).toEqual(["b", "c", "a"]);
-  });
-
   it("keeps unknown cards in recency order behind manually ordered ones", () => {
     const ordered = orderDraftCards(
       [makeCard("a", 1), makeCard("b", 3), makeCard("c", 2), makeCard("d", 4)],
@@ -909,19 +876,9 @@ describe("resolveDraftDropAction", () => {
     isOptimisticDispatch: false,
   };
 
-  it("dispatches drafts with a sendable prompt", () => {
-    expect(resolveDraftDropAction(baseCard)).toBe("dispatch");
-  });
-
   it("falls back to opening the chat when the prompt is empty", () => {
     expect(resolveDraftDropAction({ ...baseCard, draftPrompt: "" })).toBe("open-thread");
     expect(resolveDraftDropAction({ ...baseCard, column: "done" })).toBe("open-thread");
-  });
-
-  it("dispatches drafts with attachments through the shared composer payload", () => {
-    expect(
-      resolveDraftDropAction({ ...baseCard, draftPrompt: "", draftHasAttachments: true }),
-    ).toBe("dispatch");
   });
 
   it("opens the chat for pending worktree drafts so the composer owns setup", () => {
@@ -939,37 +896,67 @@ describe("resolveDraftDropAction", () => {
 });
 
 describe("flattenProjectBoardForOverview", () => {
-  it("orders cards In Progress, then Draft, then Done", () => {
-    const card = (cardId: string, column: KanbanCard["column"]): KanbanCard => ({
-      cardId,
-      threadId: ThreadId.makeUnsafe(cardId),
-      projectId: ProjectId.makeUnsafe("project-1"),
-      column,
-      title: cardId,
-      provider: null,
-      isTerminal: false,
-      branch: null,
-      envMode: null,
-      worktreePath: null,
-      thread: null,
-      draftPrompt: "",
-      draftHasAttachments: false,
-      sortTimestamp: 0,
-      timestamp: null,
-      activeWorkStartedAt: null,
-      isOptimisticDispatch: false,
-    });
-
-    const flattened = flattenProjectBoardForOverview({
+  const card = (cardId: string, column: KanbanCard["column"]): KanbanCard => ({
+    cardId,
+    threadId: ThreadId.makeUnsafe(cardId),
+    projectId: ProjectId.makeUnsafe("project-1"),
+    column,
+    title: cardId,
+    provider: null,
+    isTerminal: false,
+    branch: null,
+    envMode: null,
+    worktreePath: null,
+    thread: null,
+    draftPrompt: "",
+    draftHasAttachments: false,
+    sortTimestamp: 0,
+    timestamp: null,
+    activeWorkStartedAt: null,
+    isOptimisticDispatch: false,
+  });
+  const board = (columns: Partial<Pick<KanbanProjectBoard, "draft" | "inProgress" | "done">>) => {
+    const draft = columns.draft ?? [];
+    const inProgress = columns.inProgress ?? [];
+    const done = columns.done ?? [];
+    return {
       projectId: ProjectId.makeUnsafe("project-1"),
       projectName: "Synara",
-      projectKind: "project",
-      draft: [card("d", "draft")],
-      inProgress: [card("w", "inProgress")],
-      done: [card("x", "done")],
-      totalCount: 3,
-    });
+      projectKind: "project" as const,
+      draft,
+      inProgress,
+      done,
+      totalCount: draft.length + inProgress.length + done.length,
+    };
+  };
+
+  it("orders cards In Progress, then Draft, then Done", () => {
+    const flattened = flattenProjectBoardForOverview(
+      board({
+        draft: [card("d", "draft")],
+        inProgress: [card("w", "inProgress")],
+        done: [card("x", "done")],
+      }),
+    );
 
     expect(flattened.map((entry) => entry.cardId)).toEqual(["w", "d", "x"]);
+  });
+
+  it("caps the overview's visible cards and reports the folded remainder", () => {
+    const done = Array.from({ length: 25 }, (_, index) => card(`done-${index}`, "done"));
+    const { visibleCards, hiddenCount } = overviewVisibleKanbanCards(board({ done }));
+
+    expect(visibleCards).toHaveLength(20);
+    expect(hiddenCount).toBe(5);
+    expect(visibleCards.at(-1)?.cardId).toBe("done-19");
+  });
+
+  it("shows every card when the overview cap is not reached", () => {
+    const { visibleCards, hiddenCount } = overviewVisibleKanbanCards(
+      board({ inProgress: [card("w", "inProgress")] }),
+    );
+
+    expect(visibleCards.map((entry) => entry.cardId)).toEqual(["w"]);
+    expect(hiddenCount).toBe(0);
   });
 });

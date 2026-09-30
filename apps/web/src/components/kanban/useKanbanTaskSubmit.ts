@@ -31,6 +31,7 @@ interface UseKanbanTaskSubmitInput {
   readonly hasSendableContent: boolean;
   readonly selectedProvider: ProviderKind;
   readonly selectedModel: ModelSlug | null;
+  readonly selectedModelSupportsAutoMode: boolean | undefined;
   readonly taskPreview: string;
   readonly trimmedPrompt: string;
   readonly scratchThreadId: ThreadId;
@@ -42,6 +43,8 @@ interface UseKanbanTaskSubmitInput {
   readonly assistantDeliveryMode: AssistantDeliveryMode;
   readonly providerOptionsForDispatch: ProviderStartOptions | undefined;
   readonly providerStatuses: readonly ServerProviderStatus[];
+  readonly isPreparingImages: boolean;
+  readonly waitForPendingImages: () => Promise<void>;
   readonly onOpenChange: (open: boolean) => void;
 }
 
@@ -51,6 +54,7 @@ export function useKanbanTaskSubmit(input: UseKanbanTaskSubmitInput) {
     hasSendableContent,
     selectedProvider,
     selectedModel,
+    selectedModelSupportsAutoMode,
     taskPreview,
     trimmedPrompt,
     scratchThreadId,
@@ -62,6 +66,8 @@ export function useKanbanTaskSubmit(input: UseKanbanTaskSubmitInput) {
     assistantDeliveryMode,
     providerOptionsForDispatch,
     providerStatuses,
+    isPreparingImages,
+    waitForPendingImages,
     onOpenChange,
   } = input;
   const navigate = useNavigate();
@@ -72,7 +78,11 @@ export function useKanbanTaskSubmit(input: UseKanbanTaskSubmitInput) {
   const isCreatingRef = useRef(false);
 
   const canCreate =
-    selectedProjectId !== null && hasSendableContent && selectedModel !== null && !isCreating;
+    selectedProjectId !== null &&
+    hasSendableContent &&
+    selectedModel !== null &&
+    !isCreating &&
+    !isPreparingImages;
 
   const handleCreate = async () => {
     if (
@@ -86,13 +96,24 @@ export function useKanbanTaskSubmit(input: UseKanbanTaskSubmitInput) {
     }
 
     isCreatingRef.current = true;
+    await waitForPendingImages();
     const truncatedPrompt = truncateKanbanTaskPreview(taskPreview);
     // The scratch draft carries the full selection (model + reasoning effort +
     // speed) set through the picker; fall back to a bare selection otherwise.
     const scratchState = useComposerDraftStore.getState().draftsByThreadId[scratchThreadId];
-    const modelSelection =
-      scratchState?.modelSelectionByProvider[selectedProvider] ??
-      buildModelSelection(selectedProvider, selectedModel);
+    const storedModelSelection = scratchState?.modelSelectionByProvider[selectedProvider];
+    const storedModelSupportsAutoMode =
+      storedModelSelection?.provider === "claudeAgent"
+        ? storedModelSelection.supportsAutoMode
+        : undefined;
+    const modelSelection = buildModelSelection(
+      selectedProvider,
+      selectedModel,
+      storedModelSelection?.options,
+      selectedProvider === "claudeAgent"
+        ? (selectedModelSupportsAutoMode ?? storedModelSupportsAutoMode)
+        : undefined,
+    );
     const taskInput = {
       projectId: selectedProjectId,
       prompt: trimmedPrompt,

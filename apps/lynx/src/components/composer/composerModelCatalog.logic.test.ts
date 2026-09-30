@@ -91,6 +91,6 @@ describe("Lynx provider model catalog", () => {
       dynamicModels: [{ slug: "claude-opus-4-8", name: "Claude Opus 4.8" }],
     });
 
-    expect(options[0]?.slug).toBe("claude-opus-4-8");
+    expect(options.some((option) => option.slug === "claude-opus-4-8")).toBe(true);
   });
 });

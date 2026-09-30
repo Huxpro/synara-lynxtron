@@ -2,19 +2,16 @@
 // Purpose: Searchable bulk assignment flow for populating an empty Space.
 
 import type { ProjectId } from "@synara/contracts";
-import {
-  deriveSpaceProjectPickerGroups,
-  spaceProjectPickerFailureMessage,
-  toggleSpaceProjectSelection,
-} from "@synara/shared/spaceProjectPicker";
 import { useEffect, useMemo, useState } from "react";
 
 import type { Project, Space } from "~/types";
 import { CheckIcon } from "~/lib/icons";
+import { groupItemsBySpace, spaceDisplayName } from "~/lib/spaceGrouping";
 import { isOrdinarySpaceProject } from "~/lib/spaces";
 import { cn } from "~/lib/utils";
 import { useSpacesUiStore } from "~/spacesUiStore";
-import { useWorkspaceStore } from "~/workspaceStore";
+import { useVoidSpace } from "~/voidSpaceStore";
+import { useWorkspacePathsStore } from "~/workspacePathsStore";
 import { ProjectSidebarIcon } from "./ProjectSidebarIcon";
 import { SpaceIcon } from "./SpaceIcon";
 import { Button } from "./ui/button";
@@ -34,30 +31,28 @@ export function SpaceProjectPickerDialog(props: {
   targetSpace: Space | null;
   projects: ReadonlyArray<Project>;
   spaces: ReadonlyArray<Space>;
-  initialQuery?: string;
-  searchAutoFocus?: boolean;
-  searchDisabled?: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (
     projectIds: ReadonlyArray<ProjectId>,
   ) => Promise<ReadonlyArray<ProjectId> | void> | ReadonlyArray<ProjectId> | void;
 }) {
-  const [query, setQuery] = useState(props.initialQuery ?? "");
+  const [query, setQuery] = useState("");
   const [selectedIds, setSelectedIds] = useState<ReadonlySet<ProjectId>>(() => new Set());
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const activeSpaceId = useSpacesUiStore((state) => state.activeSpaceId);
-  const homeDir = useWorkspaceStore((state) => state.homeDir);
-  const chatWorkspaceRoot = useWorkspaceStore((state) => state.chatWorkspaceRoot);
-  const studioWorkspaceRoot = useWorkspaceStore((state) => state.studioWorkspaceRoot);
+  const voidSpace = useVoidSpace();
+  const homeDir = useWorkspacePathsStore((state) => state.homeDir);
+  const chatWorkspaceRoot = useWorkspacePathsStore((state) => state.chatWorkspaceRoot);
+  const studioWorkspaceRoot = useWorkspacePathsStore((state) => state.studioWorkspaceRoot);
 
   useEffect(() => {
     if (!props.open) return;
-    setQuery(props.initialQuery ?? "");
+    setQuery("");
     setSelectedIds(new Set());
     setSubmitting(false);
     setError(null);
-  }, [props.initialQuery, props.open, props.targetSpace?.id]);
+  }, [props.open, props.targetSpace?.id]);
 
   const targetSpaceId = props.targetSpace?.id ?? null;
   /**
@@ -74,25 +69,31 @@ export function SpaceProjectPickerDialog(props: {
       ),
     [chatWorkspaceRoot, homeDir, props.projects, studioWorkspaceRoot, targetSpaceId],
   );
-  const picker = useMemo(
+  const candidates = useMemo(() => {
+    const normalizedQuery = query.trim().toLocaleLowerCase();
+    return movableProjects
+      .filter(
+        (project) =>
+          normalizedQuery.length === 0 ||
+          project.name.toLocaleLowerCase().includes(normalizedQuery) ||
+          project.cwd.toLocaleLowerCase().includes(normalizedQuery) ||
+          spaceDisplayName(project.spaceId, props.spaces, voidSpace)
+            .toLocaleLowerCase()
+            .includes(normalizedQuery),
+      )
+      .toSorted((left, right) => left.name.localeCompare(right.name));
+  }, [movableProjects, props.spaces, query, voidSpace]);
+  const candidateGroups = useMemo(
     () =>
-      deriveSpaceProjectPickerGroups({
-        activeSpaceId,
-        projects: movableProjects.map((project) => ({
-          project,
-          id: project.id,
-          name: project.name,
-          path: project.cwd,
-          spaceId: project.spaceId ?? null,
-        })),
-        query,
+      groupItemsBySpace({
+        items: candidates,
         spaces: props.spaces,
-        targetSpaceId,
+        activeSpaceId,
+        spaceIdOf: (project) => project.spaceId ?? null,
+        voidSpace,
       }),
-    [activeSpaceId, movableProjects, props.spaces, query, targetSpaceId],
+    [activeSpaceId, candidates, props.spaces, voidSpace],
   );
-  const candidates = picker.candidates;
-  const candidateGroups = picker.groups;
 
   const submit = async () => {
     if (selectedIds.size === 0 || submitting) return;
@@ -103,10 +104,7 @@ export function SpaceProjectPickerDialog(props: {
       if (failedProjectIds.length > 0) {
         setSelectedIds(new Set(failedProjectIds));
         setError(
-          spaceProjectPickerFailureMessage(
-            failedProjectIds.length,
-            props.targetSpace?.name ?? "the target space",
-          ),
+          `${failedProjectIds.length} could not be moved. Projects processed before the failure remain in ${props.targetSpace?.name ?? "the target space"}. Try again.`,
         );
         setSubmitting(false);
         return;
@@ -137,8 +135,6 @@ export function SpaceProjectPickerDialog(props: {
         </DialogHeader>
         <DialogPanel className="space-y-3">
           <SearchInput
-            autoFocus={props.searchAutoFocus}
-            disabled={props.searchDisabled}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search projects"
@@ -146,18 +142,18 @@ export function SpaceProjectPickerDialog(props: {
           />
           <div className="max-h-72 space-y-3 overflow-y-auto">
             {candidates.length === 0 ? (
-              <p className="px-2 py-8 text-center text-[length:var(--app-font-size-ui,12px)] text-muted-foreground/60">
+              <p className="px-2 py-8 text-center text-ui text-muted-foreground/60">
                 {emptyMessage}
               </p>
             ) : (
               candidateGroups.map((group) => (
                 <section key={group.key}>
-                  <p className="mb-1 flex items-center gap-1.5 px-2 text-[length:var(--app-font-size-ui-xs,10px)] font-medium text-muted-foreground/55">
+                  <p className="mb-1 flex items-center gap-1.5 px-2 text-ui-xs font-medium text-muted-foreground/55">
                     <SpaceIcon icon={group.icon} className="size-3" />
                     <span className="min-w-0 truncate">{group.label}</span>
                   </p>
                   <div className="space-y-1">
-                    {group.items.map(({ project }) => {
+                    {group.items.map((project) => {
                       const selected = selectedIds.has(project.id);
                       return (
                         <button
@@ -167,7 +163,10 @@ export function SpaceProjectPickerDialog(props: {
                           aria-checked={selected}
                           onClick={() =>
                             setSelectedIds((current) => {
-                              return toggleSpaceProjectSelection(current, project.id);
+                              const next = new Set(current);
+                              if (next.has(project.id)) next.delete(project.id);
+                              else next.add(project.id);
+                              return next;
                             })
                           }
                           className={cn(
@@ -176,9 +175,13 @@ export function SpaceProjectPickerDialog(props: {
                           )}
                         >
                           <span className="relative flex size-4 shrink-0 items-center justify-center">
-                            <ProjectSidebarIcon cwd={project.cwd} expanded={project.expanded} />
+                            <ProjectSidebarIcon
+                              cwd={project.cwd}
+                              expanded={project.expanded}
+                              appearance={project.appearance}
+                            />
                           </span>
-                          <span className="min-w-0 flex-1 truncate text-[length:var(--app-font-size-ui,12px)] text-foreground/88">
+                          <span className="min-w-0 flex-1 truncate text-ui text-foreground/88">
                             {project.name}
                           </span>
                           {/* Presentational: the row itself is the checkbox, so this must not
@@ -203,10 +206,7 @@ export function SpaceProjectPickerDialog(props: {
             )}
           </div>
           {error ? (
-            <p
-              role="alert"
-              className="text-[length:var(--app-font-size-ui-xs,10px)] text-destructive"
-            >
+            <p role="alert" className="text-ui-xs text-destructive">
               {error}
             </p>
           ) : null}

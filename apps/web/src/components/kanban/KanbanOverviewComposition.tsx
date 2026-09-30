@@ -21,7 +21,7 @@ import {
   KanbanOverviewProjectsElement,
   KanbanOverviewShowMoreElement,
 } from "~/components/kanban/KanbanOverviewCompositionElements";
-import { KanbanCardView } from "./KanbanCardView";
+import { KanbanCardComposition } from "./KanbanCardComposition";
 import {
   flattenProjectBoardForOverview,
   type KanbanBoard,
@@ -35,9 +35,9 @@ function KanbanOverviewProjectComposition(props: {
   readonly projectBoard: KanbanProjectBoard;
   readonly onOpenProject: (projectId: ProjectId) => void;
   readonly onOpenCard: (card: KanbanCard) => void;
-  readonly onCardContextMenu?: (card: KanbanCard, event: React.MouseEvent) => void;
-  readonly onNewTask?: (projectId: ProjectId) => void;
-  readonly nowMs?: number;
+  readonly onCardContextMenu?: ((card: KanbanCard, event: React.MouseEvent) => void) | undefined;
+  readonly onNewTask?: ((projectId: ProjectId) => void) | undefined;
+  readonly nowMs?: number | undefined;
 }) {
   const cards = flattenProjectBoardForOverview(props.projectBoard);
   const visibleCards =
@@ -68,7 +68,7 @@ function KanbanOverviewProjectComposition(props: {
       <KanbanOverviewCardListElement>
         {visibleCards.map((card) => (
           <KanbanOverviewCardItemElement key={card.cardId}>
-            <KanbanCardView
+            <KanbanCardComposition
               card={card}
               onOpen={props.onOpenCard}
               {...(props.onCardContextMenu ? { onContextMenu: props.onCardContextMenu } : {})}
@@ -93,9 +93,9 @@ export function KanbanOverviewComposition(props: {
   readonly board: KanbanBoard;
   readonly onOpenProject: (projectId: ProjectId) => void;
   readonly onOpenCard: (card: KanbanCard) => void;
-  readonly onCardContextMenu?: (card: KanbanCard, event: React.MouseEvent) => void;
-  readonly onNewTask?: (projectId: ProjectId) => void;
-  readonly nowMs?: number;
+  readonly onCardContextMenu?: ((card: KanbanCard, event: React.MouseEvent) => void) | undefined;
+  readonly onNewTask?: ((projectId: ProjectId) => void) | undefined;
+  readonly nowMs?: number | undefined;
 }) {
   const visibleProjects = props.board.projects.filter(
     (projectBoard) => projectBoard.totalCount > 0,

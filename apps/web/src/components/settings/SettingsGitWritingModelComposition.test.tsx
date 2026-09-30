@@ -19,7 +19,8 @@ describe("SettingsGitWritingModelComposition", () => {
       settings: {
         providers: {
           codex: { customModels: [] },
-          kilo: { customModels: [] },
+          cursor: { customModels: [] },
+          droid: { customModels: [] },
           opencode: { customModels: ["custom/model"] },
         },
       } as never,
@@ -34,12 +35,12 @@ describe("SettingsGitWritingModelComposition", () => {
   });
 
   it("owns canonical copy and changed reset availability", () => {
-    const values = { provider: "kilo" as const, model: "kilo/auto" };
+    const values = { provider: "droid" as const, model: "droid/auto" };
     const markup = renderToStaticMarkup(
       <SettingsGitWritingModelComposition
         values={values}
         defaults={DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES}
-        options={[{ ...values, label: "Kilo / Auto" }]}
+        options={[{ ...values, label: "Droid / Auto" }]}
         onChange={vi.fn()}
       />,
     );

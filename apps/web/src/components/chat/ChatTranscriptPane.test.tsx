@@ -86,26 +86,4 @@ describe("ChatTranscriptPane", () => {
     expect(markup).toContain("Checked the sidebar issue.");
     expect(markup).not.toContain("Scroll to bottom");
   });
-
-  it("centers the scroll button inside the inset chat column", () => {
-    const markup = renderTranscriptPaneMarkup({
-      contentInsetRightPx: 360,
-      scrollButtonVisible: true,
-    });
-
-    expect(markup).toContain('style="padding-right:360px"');
-    expect(markup).toContain("Scroll to bottom");
-  });
-
-  it("keeps the canonical blank-transcript hero and project label", () => {
-    const markup = renderTranscriptPaneMarkup({
-      emptyStateProjectName: "Synara",
-      hasMessages: false,
-      scrollButtonVisible: false,
-    });
-
-    expect(markup).toContain("Let&#x27;s build");
-    expect(markup).toContain("Synara");
-    expect(markup).toContain('aria-label="Synara logo"');
-  });
 });

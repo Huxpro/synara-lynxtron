@@ -11,7 +11,13 @@ describe("SettingsNavigationComposition", () => {
       availableSections: ["general", "appearance"],
     });
 
-    expect(groups.map((group) => group.label)).toEqual(["App", "Synara"]);
+    expect(groups.map((group) => group.label)).toEqual([
+      "Personal",
+      "Integrations",
+      "Coding",
+      "System",
+      "Archived",
+    ]);
     expect(groups[0]?.items.slice(0, 3).map((item) => item.id)).toEqual([
       "general",
       "profile",
@@ -41,7 +47,7 @@ describe("SettingsNavigationComposition", () => {
     expect(markup).toContain('aria-label="Appearance"');
     expect(markup).toContain("General");
     expect(markup).toContain("Appearance");
-    expect(markup).toContain("Providers");
+    expect(markup).toContain("Agent providers");
     expect(markup).toContain("disabled");
   });
 });

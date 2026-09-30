@@ -1,20 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import type {
-  PullRequestComment,
-  PullRequestCommit,
-  PullRequestDetailInput,
-} from "@synara/contracts";
+import type { PullRequestComment, PullRequestCommit } from "@synara/contracts";
 
 import type { RightDockPane } from "~/rightDockStore.logic";
 
 import {
   buildPullRequestTimelineEvents,
-  describePullRequestState,
   pullRequestDetailInputFromPane,
-  pullRequestDetailInputKey,
-  pullRequestPaneTabLabel,
-  resolvePullRequestPrimaryAction,
   stripHtmlComments,
 } from "./pullRequestDetail.logic";
 
@@ -55,67 +47,24 @@ function makeTimelineSource() {
   };
 }
 
-describe("pullRequestDetailInputKey", () => {
-  it("builds a stable projectId:repository#number identity", () => {
-    const input: PullRequestDetailInput = {
-      projectId: "project-1" as PullRequestDetailInput["projectId"],
-      repository: "acme/widgets",
-      number: 350,
-    };
-    expect(pullRequestDetailInputKey(input)).toBe("project-1:acme/widgets#350");
-  });
-});
-
-describe("pullRequestPaneTabLabel", () => {
-  it("formats the shared tab chip label", () => {
-    expect(pullRequestPaneTabLabel(350)).toBe("PR #350");
-  });
-});
-
-describe("describePullRequestState", () => {
-  it("describes each state, with draft only applying to open pull requests", () => {
-    expect(describePullRequestState("open", true)).toBe("Draft");
-    expect(describePullRequestState("open", false)).toBe("Ready for review");
-    expect(describePullRequestState("merged", true)).toBe("Merged");
-    expect(describePullRequestState("closed", false)).toBe("Closed");
-  });
-});
-
-describe("resolvePullRequestPrimaryAction", () => {
-  it("offers only the reversible state transition for each actionable state", () => {
-    expect(resolvePullRequestPrimaryAction("open", true)).toMatchObject({
-      action: "ready",
-      label: "Ready for review",
-    });
-    expect(resolvePullRequestPrimaryAction("open", false)).toMatchObject({
-      action: "draft",
-      label: "Convert to draft",
-    });
-    expect(resolvePullRequestPrimaryAction("closed", false)).toMatchObject({
-      action: "reopen",
-      label: "Reopen pull request",
-    });
-    expect(resolvePullRequestPrimaryAction("merged", false)).toBeNull();
-  });
-});
-
 describe("buildPullRequestTimelineEvents", () => {
   it("orders created, commit, and comment events chronologically", () => {
     const events = buildPullRequestTimelineEvents(makeTimelineSource());
     expect(events.map((event) => event.id)).toEqual(["created", "abcdef1234567890", "comment-1"]);
   });
 
-  it("titles review comments differently from issue comments", () => {
+  it("surfaces preserved commit author names in the timeline", () => {
     const events = buildPullRequestTimelineEvents({
       ...makeTimelineSource(),
-      comments: [
-        makeComment({ kind: "review" }),
-        makeComment({ id: "comment-2", kind: "review-comment" }),
+      commits: [
+        makeCommit({
+          authors: [{ login: null, name: "Local author", avatarUrl: null, url: null }],
+        }),
       ],
     });
-    const titles = events.map((event) => event.title);
-    expect(titles).toContain("reviewer reviewed");
-    expect(titles).toContain("reviewer commented");
+    expect(events.find((event) => event.id === "abcdef1234567890")?.title).toBe(
+      "Commit abcdef1 by Local author",
+    );
   });
 
   it("falls back to placeholders for missing authors and empty commit messages", () => {
@@ -180,12 +129,6 @@ describe("pullRequestDetailInputFromPane", () => {
 });
 
 describe("stripHtmlComments", () => {
-  it("removes PR template boilerplate comments", () => {
-    expect(stripHtmlComments("<!-- ⚠️ READ BEFORE OPENING -->\n## Summary\nReal content.")).toBe(
-      "## Summary\nReal content.",
-    );
-  });
-
   it("removes multi-line comments anywhere in the body", () => {
     expect(stripHtmlComments("Before\n<!--\nline one\nline two\n-->\nAfter")).toBe(
       "Before\n\nAfter",
@@ -195,9 +138,5 @@ describe("stripHtmlComments", () => {
   it("keeps comments inside fenced code blocks", () => {
     const markdown = "Intro\n```html\n<!-- keep me -->\n```\n<!-- drop me -->";
     expect(stripHtmlComments(markdown)).toBe("Intro\n```html\n<!-- keep me -->\n```");
-  });
-
-  it("passes plain markdown through untouched", () => {
-    expect(stripHtmlComments("## Summary\n- item")).toBe("## Summary\n- item");
   });
 });

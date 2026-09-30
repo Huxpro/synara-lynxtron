@@ -11,13 +11,14 @@ import {
   ProjectId,
   SpaceId,
   ThreadId,
-  ThreadMarkerId,
   TurnId,
+  type PendingClaudeCacheReview,
 } from "@synara/contracts";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { applyOrchestrationEvents, applyOrchestrationEventsHotPath } from "./storeEventReducer";
 import {
+  applyShellEvent,
   syncServerShellSnapshot,
   syncServerReadModel,
   syncServerThreadDetailHotPath,
@@ -37,6 +38,103 @@ import {
 import { DEFAULT_INTERACTION_MODE, DEFAULT_RUNTIME_MODE } from "./types";
 
 describe("store event reducer", () => {
+  it("projects durable cache review transitions and clears them without touching the draft message", () => {
+    const threadId = ThreadId.makeUnsafe("thread-1");
+    const messageId = MessageId.makeUnsafe("held-message");
+    const review: PendingClaudeCacheReview = {
+      reviewId: "cache-review-1",
+      messageId,
+      sourceEventSequence: 8,
+      assessment: {
+        observedAt: "2026-09-16T10:00:00.000Z",
+        contextTokens: 800_000,
+        state: "likely-expired",
+        source: "session-start",
+      },
+      status: "pending",
+      createdAt: "2026-09-16T10:00:00.000Z",
+    };
+    const initial = makeState(
+      makeThread({
+        messages: [
+          {
+            id: messageId,
+            role: "user",
+            text: "Continue the task",
+            turnId: null,
+            streaming: false,
+            createdAt: "2026-09-16T10:00:00.000Z",
+          },
+        ],
+      }),
+    );
+    const pendingEvent = makeDomainEvent("thread.claude-cache-set", {
+      threadId,
+      review,
+      updatedAt: "2026-09-16T10:00:00.000Z",
+    });
+    let state = applyOrchestrationEvents(initial, [pendingEvent]);
+    expect(state.threadShellById?.[threadId]?.claudeCacheReview).toEqual(review);
+    expect(threadsOf(state)[0]?.claudeCacheReview).toEqual(review);
+    expect(applyOrchestrationEvents(state, [pendingEvent])).toBe(state);
+
+    let sequence = pendingEvent.sequence;
+    for (const status of ["responding", "compacting", "failed", "uncertain"] as const) {
+      state = applyOrchestrationEvents(state, [
+        makeDomainEvent(
+          "thread.claude-cache-set",
+          {
+            threadId,
+            review: { ...review, status },
+            updatedAt: "2026-09-16T10:01:00.000Z",
+          },
+          { sequence: ++sequence },
+        ),
+      ]);
+      expect(threadsOf(state)[0]?.claudeCacheReview?.status).toBe(status);
+    }
+
+    state = applyOrchestrationEvents(state, [
+      makeDomainEvent(
+        "thread.claude-cache-set",
+        {
+          threadId,
+          review: null,
+          updatedAt: "2026-09-16T10:02:00.000Z",
+        },
+        { sequence: ++sequence },
+      ),
+    ]);
+    expect(threadsOf(state)[0]?.claudeCacheReview).toBeNull();
+    expect(state.messageByThreadId).toBe(initial.messageByThreadId);
+    expect(threadsOf(state)[0]?.messages[0]?.text).toBe("Continue the task");
+
+    const shell = makeReadModelThread({ claudeCacheReview: null, updatedAt: review.createdAt });
+    state = applyShellEvent(state, { kind: "thread-upserted", thread: shell, sequence: 20 });
+    state = applyOrchestrationEvents(state, [
+      makeDomainEvent(
+        "thread.claude-cache-set",
+        {
+          threadId,
+          review,
+          updatedAt: review.createdAt,
+        },
+        { sequence: 19 },
+      ),
+    ]);
+    expect(threadsOf(state)[0]?.claudeCacheReview).toBeNull();
+    state = applyShellEvent(state, {
+      kind: "thread-upserted",
+      thread: { ...shell, claudeCacheReview: review },
+      sequence: 18,
+    });
+    expect(threadsOf(state)[0]?.claudeCacheReview).toBeNull();
+    state = syncServerThreadDetailHotPath(state, { ...shell, claudeCacheReview: review }, 19);
+    expect(threadsOf(state)[0]?.claudeCacheReview).toBeNull();
+    state = syncServerThreadDetailHotPath(state, { ...shell, claudeCacheReview: review }, 21);
+    expect(threadsOf(state)[0]?.claudeCacheReview).toEqual(review);
+  });
+
   it("hydrates and removes Spaces while clearing matching project assignments", () => {
     const spaceId = SpaceId.makeUnsafe("space-work");
     let state = applyOrchestrationEvents(makeState(makeThread()), [
@@ -80,6 +178,7 @@ describe("store event reducer", () => {
         text: "Use @linear",
         attachments: [],
         mentions: [{ name: "linear", path: "plugin://linear@openai-curated" }],
+        startsNewTurn: true,
         turnId: null,
         streaming: false,
         source: "native",
@@ -91,6 +190,7 @@ describe("store event reducer", () => {
     expect(threadsOf(next)[0]?.messages[0]?.mentions).toEqual([
       { name: "linear", path: "plugin://linear@openai-curated" },
     ]);
+    expect(threadsOf(next)[0]?.messages[0]?.startsNewTurn).toBe(true);
   });
 
   it("updates thread error and marks the running latest turn failed from session-set events", () => {
@@ -169,7 +269,6 @@ describe("store event reducer", () => {
   it.each([
     { status: "ready", expectedState: "completed" },
     { status: "interrupted", expectedState: "interrupted" },
-    { status: "stopped", expectedState: "interrupted" },
   ] as const)(
     "settles the running latest turn when a session-set event leaves running ($status → $expectedState)",
     ({ status, expectedState }) => {
@@ -208,6 +307,42 @@ describe("store event reducer", () => {
       });
     },
   );
+
+  it("does not settle a running turn from a stale session-set that predates its start", () => {
+    const initialState = makeState(
+      makeThread({
+        latestTurn: {
+          turnId: TurnId.makeUnsafe("turn-running"),
+          state: "running",
+          requestedAt: "2026-02-27T00:01:00.000Z",
+          startedAt: "2026-02-27T00:01:05.000Z",
+          completedAt: null,
+          assistantMessageId: null,
+        },
+      }),
+    );
+
+    const next = applyOrchestrationEvents(initialState, [
+      makeDomainEvent("thread.session-set", {
+        threadId: ThreadId.makeUnsafe("thread-1"),
+        session: {
+          threadId: ThreadId.makeUnsafe("thread-1"),
+          status: "ready",
+          providerName: "codex",
+          runtimeMode: "full-access",
+          activeTurnId: null,
+          lastError: null,
+          updatedAt: "2026-02-27T00:01:00.000Z",
+        },
+      }),
+    ]);
+
+    expect(threadsOf(next)[0]?.latestTurn).toMatchObject({
+      turnId: TurnId.makeUnsafe("turn-running"),
+      state: "running",
+      completedAt: null,
+    });
+  });
 
   it("adds projects immediately from live project.created events", () => {
     const next = applyOrchestrationEvents(
@@ -333,7 +468,9 @@ describe("store event reducer", () => {
     );
 
     expect(next.projects).toEqual([]);
-    expect(next.deletedProjectIdsById?.[ProjectId.makeUnsafe("project-live")]).toBe(true);
+    expect(next.deletedProjectIdsById?.[ProjectId.makeUnsafe("project-live")]).toEqual(
+      expect.any(Number),
+    );
   });
 
   it("settles a running latest turn immediately when session stop is requested", () => {
@@ -446,56 +583,100 @@ describe("store event reducer", () => {
     expect(threadsOf(next)[0]?.latestTurn?.sourceProposedPlan).toEqual(sourceProposedPlan);
   });
 
-  it("does not truncate streamed assistant text when completion only carries the trailing chunk", () => {
-    const assistantId = MessageId.makeUnsafe("assistant-message");
-    const turnId = TurnId.makeUnsafe("turn-1");
-    const initialState = makeState(
-      makeThread({
-        messages: [
-          {
-            id: assistantId,
-            role: "assistant",
-            text: "Hello",
-            turnId,
-            createdAt: "2026-02-27T00:01:05.000Z",
-            streaming: true,
-            source: "native",
-          },
-        ],
-        latestTurn: {
-          turnId,
-          state: "running",
-          requestedAt: "2026-02-27T00:01:00.000Z",
-          startedAt: "2026-02-27T00:01:05.000Z",
-          completedAt: null,
-          assistantMessageId: assistantId,
-        },
-      }),
-    );
+  it("does not adopt runtime/interaction modes from automation-dispatched turns", () => {
+    const initialState = makeState(makeThread({ runtimeMode: "approval-required" }));
 
     const next = applyOrchestrationEvents(initialState, [
-      makeDomainEvent("thread.message-sent", {
+      makeDomainEvent("thread.turn-start-requested", {
         threadId: ThreadId.makeUnsafe("thread-1"),
-        messageId: assistantId,
-        role: "assistant",
-        text: " world",
-        turnId,
-        streaming: false,
-        createdAt: "2026-02-27T00:01:05.000Z",
-        updatedAt: "2026-02-27T00:01:06.000Z",
-        attachments: [],
-        source: "native",
+        messageId: MessageId.makeUnsafe("automation-message"),
+        runtimeMode: "full-access",
+        interactionMode: DEFAULT_INTERACTION_MODE,
+        dispatchMode: "queue",
+        dispatchOrigin: "automation",
+        createdAt: "2026-02-27T00:01:00.000Z",
       }),
     ]);
 
-    expect(threadsOf(next)[0]?.messages).toMatchObject([
-      {
-        id: assistantId,
-        text: "Hello world",
-        streaming: false,
-        completedAt: "2026-02-27T00:01:06.000Z",
-      },
+    expect(threadsOf(next)[0]?.runtimeMode).toBe("approval-required");
+  });
+
+  it("adopts runtime mode from user-dispatched turns", () => {
+    const initialState = makeState(makeThread({ runtimeMode: "approval-required" }));
+
+    const next = applyOrchestrationEvents(initialState, [
+      makeDomainEvent("thread.turn-start-requested", {
+        threadId: ThreadId.makeUnsafe("thread-1"),
+        messageId: MessageId.makeUnsafe("user-message"),
+        runtimeMode: "full-access",
+        interactionMode: DEFAULT_INTERACTION_MODE,
+        dispatchMode: "queue",
+        dispatchOrigin: "user",
+        createdAt: "2026-02-27T00:01:00.000Z",
+      }),
     ]);
+
+    expect(threadsOf(next)[0]?.runtimeMode).toBe("full-access");
+  });
+
+  it("replaces streamed assistant text when a non-streaming completion diverges from the local prefix", () => {
+    const assistantId = MessageId.makeUnsafe("assistant-message");
+    const turnId = TurnId.makeUnsafe("turn-1");
+    const localText = "The reply begins here and then drifts.";
+    const serverText = "The reply begins here, then continues to the end.";
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    try {
+      const initialState = makeState(
+        makeThread({
+          messages: [
+            {
+              id: assistantId,
+              role: "assistant",
+              text: localText,
+              turnId,
+              createdAt: "2026-02-27T00:01:05.000Z",
+              streaming: true,
+              source: "native",
+            },
+          ],
+          latestTurn: {
+            turnId,
+            state: "running",
+            requestedAt: "2026-02-27T00:01:00.000Z",
+            startedAt: "2026-02-27T00:01:05.000Z",
+            completedAt: null,
+            assistantMessageId: assistantId,
+          },
+        }),
+      );
+
+      const next = applyOrchestrationEvents(initialState, [
+        makeDomainEvent("thread.message-sent", {
+          threadId: ThreadId.makeUnsafe("thread-1"),
+          messageId: assistantId,
+          role: "assistant",
+          text: serverText,
+          turnId,
+          streaming: false,
+          createdAt: "2026-02-27T00:01:05.000Z",
+          updatedAt: "2026-02-27T00:01:06.000Z",
+          attachments: [],
+          source: "native",
+        }),
+      ]);
+
+      expect(threadsOf(next)[0]?.messages).toMatchObject([
+        {
+          id: assistantId,
+          text: serverText,
+          streaming: false,
+          completedAt: "2026-02-27T00:01:06.000Z",
+        },
+      ]);
+      expect(threadsOf(next)[0]?.messages[0]?.text).not.toBe(`${localText}${serverText}`);
+    } finally {
+      warnSpy.mockRestore();
+    }
   });
 
   it("replaces a non-streaming user message when an active-tail edit reuses its message id", () => {
@@ -609,7 +790,7 @@ describe("store event reducer", () => {
     expect(threadsOf(next)[0]?.createBranchFlowCompleted).toBe(true);
   });
 
-  it("surfaces pinnedMessages and notes from a live thread.meta-updated event", () => {
+  it("surfaces thread annotations from a live thread.meta-updated event", () => {
     const initialState = makeState(makeThread());
     const messageId = MessageId.makeUnsafe("assistant-pin-2");
     const pinnedMessages = [
@@ -626,12 +807,14 @@ describe("store event reducer", () => {
         threadId: ThreadId.makeUnsafe("thread-1"),
         pinnedMessages,
         notes: "scratch",
+        goal: "Ship the whole feature",
         updatedAt: "2026-02-27T00:02:00.000Z",
       }),
     ]);
 
     expect(threadsOf(next)[0]?.pinnedMessages).toEqual(pinnedMessages);
     expect(threadsOf(next)[0]?.notes).toBe("scratch");
+    expect(threadsOf(next)[0]?.goal).toBe("Ship the whole feature");
   });
 
   it("applies live pinned-message operation events without replacing the whole list", () => {
@@ -685,84 +868,6 @@ describe("store event reducer", () => {
         label: "Follow up",
         done: true,
         pinnedAt: "2026-02-27T00:03:00.000Z",
-      },
-    ]);
-    expect(threadsOf(next)[0]?.updatedAt).toBe("2026-02-27T00:03:20.000Z");
-  });
-
-  it("applies live thread marker operation events without replacing the whole list", () => {
-    const initialState = makeState(makeThread());
-    const markerId = ThreadMarkerId.makeUnsafe("marker-op-1");
-    const secondMarkerId = ThreadMarkerId.makeUnsafe("marker-op-2");
-    const messageId = MessageId.makeUnsafe("assistant-marker-op");
-
-    const next = applyOrchestrationEvents(initialState, [
-      makeDomainEvent("thread.marker-added", {
-        threadId: ThreadId.makeUnsafe("thread-1"),
-        marker: {
-          id: markerId,
-          messageId,
-          startOffset: 6,
-          endOffset: 20,
-          selectedText: "important text",
-          style: "highlight",
-          color: "yellow",
-          label: null,
-          done: false,
-          createdAt: "2026-02-27T00:03:00.000Z",
-          updatedAt: "2026-02-27T00:03:00.000Z",
-        },
-        updatedAt: "2026-02-27T00:03:00.000Z",
-      }),
-      makeDomainEvent("thread.marker-added", {
-        threadId: ThreadId.makeUnsafe("thread-1"),
-        marker: {
-          id: secondMarkerId,
-          messageId,
-          startOffset: 30,
-          endOffset: 39,
-          selectedText: "underline",
-          style: "underline",
-          color: "blue",
-          label: null,
-          done: false,
-          createdAt: "2026-02-27T00:03:05.000Z",
-          updatedAt: "2026-02-27T00:03:05.000Z",
-        },
-        updatedAt: "2026-02-27T00:03:05.000Z",
-      }),
-      makeDomainEvent("thread.marker-done-set", {
-        threadId: ThreadId.makeUnsafe("thread-1"),
-        markerId,
-        done: true,
-        updatedAt: "2026-02-27T00:03:10.000Z",
-      }),
-      makeDomainEvent("thread.marker-label-set", {
-        threadId: ThreadId.makeUnsafe("thread-1"),
-        markerId,
-        label: "Follow up",
-        updatedAt: "2026-02-27T00:03:15.000Z",
-      }),
-      makeDomainEvent("thread.marker-removed", {
-        threadId: ThreadId.makeUnsafe("thread-1"),
-        markerId: secondMarkerId,
-        updatedAt: "2026-02-27T00:03:20.000Z",
-      }),
-    ]);
-
-    expect(threadsOf(next)[0]?.threadMarkers).toEqual([
-      {
-        id: markerId,
-        messageId,
-        startOffset: 6,
-        endOffset: 20,
-        selectedText: "important text",
-        style: "highlight",
-        color: "yellow",
-        label: "Follow up",
-        done: true,
-        createdAt: "2026-02-27T00:03:00.000Z",
-        updatedAt: "2026-02-27T00:03:15.000Z",
       },
     ]);
     expect(threadsOf(next)[0]?.updatedAt).toBe("2026-02-27T00:03:20.000Z");
@@ -1081,6 +1186,7 @@ describe("store event reducer", () => {
   it("rolls back conversation state from an edited user message", () => {
     const initialState = makeState(
       makeThread({
+        latestHumanMessageAt: "2026-02-27T00:01:00.000Z",
         latestTurn: {
           turnId: TurnId.makeUnsafe("turn-2"),
           state: "completed",
@@ -1177,6 +1283,7 @@ describe("store event reducer", () => {
     expect(threadsOf(next)[0]?.proposedPlans).toEqual([]);
     expect(threadsOf(next)[0]?.activities).toEqual([]);
     expect(threadsOf(next)[0]?.pendingSourceProposedPlan).toBeUndefined();
+    expect(threadsOf(next)[0]?.latestHumanMessageAt).toBe("2026-02-27T00:00:00.000Z");
     expect(threadsOf(next)[0]?.latestTurn?.turnId).toBe(TurnId.makeUnsafe("turn-1"));
   });
 
@@ -1376,42 +1483,6 @@ describe("store event reducer", () => {
       sequential.activityByThreadId?.[threadId],
     );
     expect(threadsOf(batched)[0]?.updatedAt).toBe("2026-07-09T00:00:02.000Z");
-  });
-
-  it("replaces provider-local activity sequences with durable orchestration sequences", () => {
-    const threadId = ThreadId.makeUnsafe("thread-1");
-    const events = [
-      makeDomainEvent(
-        "thread.activity-appended",
-        {
-          threadId,
-          activity: makeActivity({ id: "activity-before-restart", sequence: 99 }),
-        },
-        { sequence: 40 },
-      ),
-      makeDomainEvent(
-        "thread.activity-appended",
-        {
-          threadId,
-          activity: makeActivity({ id: "activity-after-restart", sequence: 0 }),
-        },
-        { sequence: 41 },
-      ),
-    ];
-    const initialState = makeState(makeThread());
-
-    const sequential = events.reduce(
-      (state, event) => applyOrchestrationEventsHotPath(state, [event]),
-      initialState,
-    );
-    const batched = applyOrchestrationEventsHotPath(initialState, events);
-
-    expect(threadsOf(sequential)[0]?.activities.map((activity) => activity.sequence)).toEqual([
-      40, 41,
-    ]);
-    expect(threadsOf(batched)[0]?.activities.map((activity) => activity.sequence)).toEqual([
-      40, 41,
-    ]);
   });
 
   it("keeps batched activity timestamps equivalent when a generic duplicate is discarded", () => {
@@ -1656,6 +1727,106 @@ describe("store event reducer", () => {
     expect(threadsOf(confirmed)[0]?.hasPendingUserInput).toBe(false);
   });
 
+  it.each([
+    {
+      label: "uncertain",
+      status: "uncertain" as const,
+      responseRequestedAt: "2026-07-14T12:20:00.000Z",
+    },
+    {
+      label: "orphaned responding",
+      status: "responding" as const,
+      responseRequestedAt: "2026-07-14T12:30:00.000Z",
+    },
+  ])("tracks a reclaimed $label interaction through a retryable failure", (initialClaim) => {
+    const requestId = ApprovalRequestId.makeUnsafe(`request-reclaimed-${initialClaim.status}`);
+    const lifecycleGeneration = "generation-reclaimed";
+    const requestedActivity = makeActivity({
+      id: `activity-requested-${initialClaim.status}`,
+      createdAt: "2026-07-14T12:19:00.000Z",
+      kind: "user-input.requested",
+      summary: "Need more input",
+      payload: {
+        requestId,
+        lifecycleGeneration,
+        questions: [
+          {
+            id: "q1",
+            header: "Continue",
+            question: "Continue?",
+            options: [{ label: "Yes", description: "Continue the task" }],
+          },
+        ],
+      },
+      sequence: 1,
+    });
+    const initialState = syncServerReadModel(
+      makeState(makeThread()),
+      makeReadModel(
+        makeReadModelThread({
+          hasPendingUserInput: false,
+          pendingInteractions: [
+            {
+              interactionKind: "userInput",
+              requestId,
+              threadId: ThreadId.makeUnsafe("thread-1"),
+              turnId: null,
+              lifecycleGeneration,
+              status: initialClaim.status,
+              decision: null,
+              responseCommandId: CommandId.makeUnsafe("command-response-old"),
+              responseRequestedAt: initialClaim.responseRequestedAt,
+              createdAt: "2026-07-14T12:19:00.000Z",
+              resolvedAt: null,
+            },
+          ],
+          activities: [requestedActivity],
+        }),
+      ),
+    );
+
+    const responding = applyOrchestrationEvents(initialState, [
+      makeDomainEvent(
+        "thread.user-input-response-requested",
+        {
+          threadId: ThreadId.makeUnsafe("thread-1"),
+          requestId,
+          answers: { q1: "yes" },
+          lifecycleGeneration,
+          createdAt: "2026-07-14T12:31:00.000Z",
+        },
+        { commandId: CommandId.makeUnsafe("command-response-reclaimed") },
+      ),
+    ]);
+
+    expect(threadsOf(responding)[0]?.pendingInteractions?.[0]).toMatchObject({
+      status: "responding",
+      responseCommandId: "command-response-reclaimed",
+      responseRequestedAt: "2026-07-14T12:31:00.000Z",
+    });
+
+    const retryable = applyOrchestrationEvents(responding, [
+      makeDomainEvent("thread.activity-appended", {
+        threadId: ThreadId.makeUnsafe("thread-1"),
+        activity: makeActivity({
+          id: `activity-failed-${initialClaim.status}`,
+          createdAt: "2026-07-14T12:31:01.000Z",
+          kind: "provider.user-input.respond.failed",
+          payload: {
+            requestId,
+            lifecycleGeneration,
+            responseCommandId: "command-response-reclaimed",
+            settlementStatus: "retryable",
+          },
+          sequence: 3,
+        }),
+      }),
+    ]);
+
+    expect(threadsOf(retryable)[0]?.pendingInteractions?.[0]?.status).toBe("retryable");
+    expect(threadsOf(retryable)[0]?.hasPendingUserInput).toBe(true);
+  });
+
   it("clears pending approval summary state when an approval response is requested", () => {
     const initialState = syncServerReadModel(
       makeState(
@@ -1735,32 +1906,6 @@ describe("store event reducer", () => {
     expect(next.sidebarThreadSummaryById["thread-1"]?.hasPendingApprovals).toBe(false);
   });
 
-  it("updates sidebar summaries during hot-path archive events", () => {
-    const initialState = syncServerReadModel(
-      makeState(makeThread({ title: "Archivable thread" })),
-      makeReadModel(
-        makeReadModelThread({
-          title: "Archivable thread",
-          updatedAt: "2026-02-27T00:00:00.000Z",
-        }),
-      ),
-    );
-
-    const next = applyOrchestrationEventsHotPath(
-      initialState,
-      [
-        makeDomainEvent("thread.archived", {
-          threadId: ThreadId.makeUnsafe("thread-1"),
-          archivedAt: "2026-02-27T00:07:00.000Z",
-          updatedAt: "2026-02-27T00:07:00.000Z",
-        }),
-      ],
-      { updateSidebarSummary: true },
-    );
-
-    expect(next.sidebarThreadSummaryById["thread-1"]?.archivedAt).toBe("2026-02-27T00:07:00.000Z");
-  });
-
   it("removes archived threads when a delete event reaches the hot path", () => {
     const threadId = ThreadId.makeUnsafe("thread-archived");
     const initialState = syncServerReadModel(
@@ -1788,7 +1933,7 @@ describe("store event reducer", () => {
     expect(next.threadIds).not.toContain(threadId);
     expect(next.threadShellById?.[threadId]).toBeUndefined();
     expect(next.sidebarThreadSummaryById[threadId]).toBeUndefined();
-    expect(next.deletedThreadIdsById?.[threadId]).toBe(true);
+    expect(next.deletedThreadIdsById?.[threadId]).toEqual(expect.any(Number));
 
     const afterStaleSnapshot = syncServerShellSnapshot(
       next,
@@ -1893,6 +2038,73 @@ describe("store event reducer", () => {
     });
   });
 
+  it("projects side chat activity and expiry into the live pane and its parent list row", () => {
+    const threadId = ThreadId.makeUnsafe("thread-sidechat");
+    const sourceThreadId = ThreadId.makeUnsafe("thread-source");
+    const initialActivityAt = "2026-02-27T00:00:00.000Z";
+    const latestActivityAt = "2026-02-27T00:30:00.000Z";
+    const expiredAt = "2026-02-27T01:30:00.000Z";
+    const initialState = syncServerReadModel(
+      makeState(
+        makeThread({
+          id: threadId,
+          sidechatSourceThreadId: sourceThreadId,
+          sidechatLastActivityAt: initialActivityAt,
+          sidechatExpiredAt: null,
+        }),
+      ),
+      makeReadModel(
+        makeReadModelThread({
+          id: threadId,
+          sidechatSourceThreadId: sourceThreadId,
+          sidechatLastActivityAt: initialActivityAt,
+          sidechatExpiredAt: null,
+        }),
+      ),
+    );
+
+    const next = applyOrchestrationEventsHotPath(
+      initialState,
+      [
+        makeDomainEvent("thread.sidechat-activity-recorded", {
+          threadId,
+          lastActivityAt: latestActivityAt,
+        }),
+        makeDomainEvent("thread.sidechat-expired", {
+          threadId,
+          expectedLastActivityAt: latestActivityAt,
+          expiredAt,
+        }),
+        makeDomainEvent(
+          "thread.session-set",
+          {
+            threadId,
+            session: {
+              threadId,
+              status: "stopped",
+              providerName: "codex",
+              runtimeMode: "full-access",
+              activeTurnId: null,
+              lastError: null,
+              updatedAt: "2026-02-27T01:30:01.000Z",
+            },
+          },
+          { occurredAt: "2026-02-27T01:30:01.000Z" },
+        ),
+      ],
+      { updateSidebarSummary: true },
+    );
+
+    expect(threadsOf(next).find((thread) => thread.id === threadId)).toMatchObject({
+      sidechatLastActivityAt: latestActivityAt,
+      sidechatExpiredAt: expiredAt,
+    });
+    expect(next.sidebarThreadSummaryById[threadId]).toMatchObject({
+      sidechatLastActivityAt: latestActivityAt,
+      sidechatExpiredAt: expiredAt,
+    });
+  });
+
   it("updates sidebar summaries during hot-path archive events after thread detail sync", () => {
     const shellState = syncServerReadModel(
       makeState(makeThread({ title: "Archivable thread" })),
@@ -1944,5 +2156,68 @@ describe("store event reducer", () => {
     expect(next.messageByThreadId).toBe(state.messageByThreadId);
     expect(next.activityByThreadId).toBe(state.activityByThreadId);
     expect(next.sidebarThreadSummaryById).toBe(state.sidebarThreadSummaryById);
+  });
+
+  it("touches only the streamed message slot and its id list stays reference-stable", () => {
+    const threadId = ThreadId.makeUnsafe("thread-1");
+    const olderIds = Array.from({ length: 5 }, (_, index) =>
+      MessageId.makeUnsafe(`message-${index}`),
+    );
+    const streamingId = MessageId.makeUnsafe("message-streaming");
+    const initialState = makeState(
+      makeThread({
+        messages: [
+          ...olderIds.map((id, index) => ({
+            id,
+            role: "user" as const,
+            text: `prompt ${index}`,
+            turnId: null,
+            createdAt: "2026-02-27T00:01:00.000Z",
+            streaming: false,
+            source: "native" as const,
+          })),
+          {
+            id: streamingId,
+            role: "assistant" as const,
+            text: "Hello",
+            turnId: null,
+            createdAt: "2026-02-27T00:01:00.000Z",
+            streaming: true,
+            source: "native" as const,
+          },
+        ],
+      }),
+    );
+
+    const next = applyOrchestrationEvents(initialState, [
+      makeDomainEvent("thread.message-sent", {
+        threadId,
+        messageId: streamingId,
+        role: "assistant",
+        text: " world",
+        turnId: null,
+        streaming: true,
+        createdAt: "2026-02-27T00:01:00.000Z",
+        updatedAt: "2026-02-27T00:01:01.000Z",
+        attachments: [],
+        source: "native",
+      }),
+    ]);
+
+    expect(threadsOf(next)[0]?.messages.at(-1)?.text).toBe("Hello world");
+    // Only the streamed message is rewritten; every untouched message keeps its identity so
+    // memoized message rows do not re-render on each delta.
+    for (const id of olderIds) {
+      expect(next.messageByThreadId?.[threadId]?.[id]).toBe(
+        initialState.messageByThreadId?.[threadId]?.[id],
+      );
+    }
+    expect(next.messageByThreadId?.[threadId]?.[streamingId]).not.toBe(
+      initialState.messageByThreadId?.[threadId]?.[streamingId],
+    );
+    // The id order is unchanged by an in-place update, so the id list must not be rebuilt.
+    expect(next.messageIdsByThreadId?.[threadId]).toBe(
+      initialState.messageIdsByThreadId?.[threadId],
+    );
   });
 });

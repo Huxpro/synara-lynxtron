@@ -61,7 +61,7 @@ export const CHAT_SURFACE_CONTROL_HOVER_CLASS_NAME =
  */
 export const CHAT_SURFACE_CHIP_CLASS_NAME = cn(
   CHAT_HEADER_CONTROL_CLASS_NAME,
-  "gap-1.5 border-0 px-1.5 text-[length:var(--app-font-size-ui-sm,11px)] font-normal transition-colors",
+  "gap-1.5 border-0 px-1.5 text-ui-sm font-normal transition-colors",
   CHAT_SURFACE_CONTROL_IDLE_TEXT_CLASS_NAME,
   CHAT_SURFACE_CONTROL_HOVER_CLASS_NAME,
 );
@@ -300,7 +300,8 @@ type ChatHeaderButtonBaseProps = Omit<ComponentProps<typeof Button>, "variant" |
  * Menu/Tooltip `render` target since it forwards the ref and spreads props.
  */
 export const ChatHeaderButton = forwardRef<HTMLButtonElement, ChatHeaderButtonBaseProps>(
-  function ChatHeaderButton({ tone = "outline", className, ...props }, ref) {
+  function ChatHeaderButton({ tone: toneProp, className, ...props }, ref) {
+    const tone = toneProp ?? "outline";
     return (
       <Button
         {...props}
@@ -331,7 +332,8 @@ type ChatHeaderIconButtonBaseProps = Omit<
  * so it composes with the existing Tooltip/Menu `render` wrappers used in the header.
  */
 export const ChatHeaderIconButton = forwardRef<HTMLButtonElement, ChatHeaderIconButtonBaseProps>(
-  function ChatHeaderIconButton({ label, tone = "plain", className, children, ...props }, ref) {
+  function ChatHeaderIconButton({ label, tone: toneProp, className, children, ...props }, ref) {
+    const tone = toneProp ?? "plain";
     return (
       <Button
         {...props}

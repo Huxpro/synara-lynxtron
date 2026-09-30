@@ -37,8 +37,8 @@ export function SettingsNotificationsPanel({
 }: {
   readonly settings: NotificationSettingsValues;
   readonly defaults: NotificationSettingsValues;
-  readonly activityStatus?: ReactNode;
-  readonly desktopStatus?: ReactNode;
+  readonly activityStatus?: ReactNode | undefined;
+  readonly desktopStatus?: ReactNode | undefined;
   readonly updateSetting: (key: NotificationSettingKey, value: boolean) => void;
   readonly renderControl: (args: ControlRenderArgs) => ReactNode;
   readonly renderResetAction: (args: ResetRenderArgs) => ReactNode;

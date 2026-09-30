@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { cn } from "~/lib/utils";
 
 interface ChildrenProps {
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }
 
 export function SidebarSegmentedPickerFrameElement({ children }: ChildrenProps) {
@@ -53,7 +53,7 @@ export function SidebarSegmentButtonElement({
     <button
       type="button"
       className={cn(
-        "relative z-10 flex-1 rounded-md px-2.5 py-0.5 text-[11.5px] font-medium transition-colors duration-200",
+        "relative z-10 flex-1 rounded-md px-2.5 py-0.5 text-ui-sm font-medium transition-colors duration-200",
         active
           ? "text-[var(--color-text-foreground)]"
           : "text-[var(--color-text-foreground-secondary)] hover:text-[var(--color-text-foreground)]",

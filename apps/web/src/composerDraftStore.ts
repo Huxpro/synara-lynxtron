@@ -38,6 +38,7 @@ export {
 export {
   captureComposerPromptHistorySavedDraft,
   COMPOSER_DRAFT_STORAGE_KEY,
+  COMPOSER_DRAFT_STORAGE_VERSION,
   PersistedComposerImageAttachment,
 } from "./composerDraftDomain";
 export type {
@@ -55,6 +56,7 @@ export type {
   QueuedComposerTurn,
   RestoredComposerSourceProposedPlan,
 } from "./composerDraftDomain";
+export type { BrowserAnnotationDraft } from "./lib/browserAnnotations";
 export {
   deriveEffectiveComposerModelState,
   resolvePreferredComposerModelSelection,

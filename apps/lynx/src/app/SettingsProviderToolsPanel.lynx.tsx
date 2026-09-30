@@ -146,10 +146,7 @@ function ProviderTextField(props: {
   const [value, setValue] = useState(storedValue);
   useEffect(() => setValue(storedValue), [storedValue]);
   const configured =
-    props.field.kind === "password" &&
-    (props.field.settingsKey === "kiloServerPassword"
-      ? props.settings.providers.kilo.serverPasswordConfigured
-      : props.settings.providers.opencode.serverPasswordConfigured);
+    props.field.kind === "password" && props.settings.providers.opencode.serverPasswordConfigured;
 
   return (
     <view className="SettingsProviderToolsField">

@@ -10,12 +10,15 @@ import type { NativeApi } from "@synara/contracts";
 
 import { readNativeApi } from "../nativeApi";
 
-export type DialogsPort = NativeApi["dialogs"];
+// `saveFile` is resolved lazily and may be absent, so the port states that explicitly.
+export type DialogsPort = Omit<NativeApi["dialogs"], "saveFile"> & {
+  readonly saveFile?: NativeApi["dialogs"]["saveFile"] | undefined;
+};
 
 // Resolve through readNativeApi only (never ensureNativeApi): existing tests
 // and call sites mock/provide readNativeApi, and the thrown message matches
 // ensureNativeApi's for the genuinely-unavailable case.
-function resolveDialogs(): DialogsPort {
+function resolveDialogs(): NativeApi["dialogs"] {
   const api = readNativeApi();
   if (!api) {
     throw new Error("Native API not found");

@@ -142,6 +142,9 @@ export function detectLynxTaskCompletionToasts(input: {
         threadId: thread.id as never,
         projectId: thread.projectId as never,
         title: thread.title,
+        // Summaries carry no turn id; the completion time identifies the turn, as
+        // `summary:<updatedAt>` does for attention requests above.
+        turnId: `summary:${thread.latestTurnCompletedAt}` as never,
         completedAt: thread.latestTurnCompletedAt,
         assistantSummary: null,
       });

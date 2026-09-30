@@ -4,7 +4,7 @@ import type { ServerProviderStatus } from "@synara/contracts";
 import {
   isProviderUsable,
   normalizeProviderStatusForLocalConfig,
-  providerUnavailableReason,
+  resolveAvailableProviderPreference,
   resolveProviderSendAvailabilityWithRefresh,
 } from "./providerAvailability";
 
@@ -41,24 +41,25 @@ describe("normalizeProviderStatusForLocalConfig", () => {
     });
   });
 
-  it("applies the same custom-path fallback to Claude", () => {
+  it("makes a disabled provider unavailable before its health status refreshes", () => {
     expect(
       normalizeProviderStatusForLocalConfig({
-        provider: "claudeAgent",
+        provider: "opencode",
         status: {
-          ...BASE_STATUS,
-          provider: "claudeAgent",
-          message: "Claude Code CLI (`claude`) is not installed or not on PATH.",
+          ...READY_STATUS,
+          provider: "opencode",
+          message: "OpenCode is ready.",
         },
-        customBinaryPath: "/opt/homebrew/bin/claude",
+        customBinaryPath: "/custom/bin/opencode",
+        disabled: true,
       }),
     ).toEqual({
-      ...BASE_STATUS,
-      provider: "claudeAgent",
-      available: true,
+      provider: "opencode",
       status: "warning",
-      message:
-        "Claude uses a custom local binary path in this app. Availability will be confirmed when you start a session.",
+      available: false,
+      authStatus: "unknown",
+      checkedAt: BASE_STATUS.checkedAt,
+      message: "Provider is disabled in Synara settings.",
     });
   });
 
@@ -122,6 +123,52 @@ describe("normalizeProviderStatusForLocalConfig", () => {
       }),
     ).toEqual({ ...BASE_STATUS, authStatus: "unauthenticated" });
   });
+
+  it("does not reuse Auto capability from a different Claude binary", () => {
+    const status: ServerProviderStatus = {
+      provider: "claudeAgent",
+      status: "ready",
+      available: true,
+      authStatus: "authenticated",
+      supportsAutoRuntimeMode: true,
+      autoRuntimeModeBinaryPath: "claude",
+      checkedAt: BASE_STATUS.checkedAt,
+    };
+
+    expect(
+      normalizeProviderStatusForLocalConfig({
+        provider: "claudeAgent",
+        status,
+        customBinaryPath: "/custom/bin/claude",
+      }),
+    ).toEqual({
+      provider: "claudeAgent",
+      status: "ready",
+      available: true,
+      authStatus: "authenticated",
+      checkedAt: BASE_STATUS.checkedAt,
+    });
+  });
+
+  it("preserves Auto capability probed from the selected Codex binary", () => {
+    const status: ServerProviderStatus = {
+      provider: "codex",
+      status: "ready",
+      available: true,
+      authStatus: "authenticated",
+      supportsAutoRuntimeMode: true,
+      autoRuntimeModeBinaryPath: "/custom/bin/codex",
+      checkedAt: BASE_STATUS.checkedAt,
+    };
+
+    expect(
+      normalizeProviderStatusForLocalConfig({
+        provider: "codex",
+        status,
+        customBinaryPath: "/custom/bin/codex",
+      }),
+    ).toEqual(status);
+  });
 });
 
 describe("isProviderUsable", () => {
@@ -135,6 +182,60 @@ describe("isProviderUsable", () => {
     expect(isProviderUsable({ ...BASE_STATUS, available: true, authStatus: "authenticated" })).toBe(
       true,
     );
+  });
+});
+
+describe("resolveAvailableProviderPreference", () => {
+  it("keeps an installed preferred provider", () => {
+    expect(
+      resolveAvailableProviderPreference({
+        preferredProvider: "antigravity",
+        statuses: [READY_STATUS],
+      }),
+    ).toBe("antigravity");
+  });
+
+  it("falls back to the first visible authenticated provider in picker order", () => {
+    expect(
+      resolveAvailableProviderPreference({
+        preferredProvider: "antigravity",
+        statuses: [
+          BASE_STATUS,
+          {
+            ...READY_STATUS,
+            provider: "claudeAgent",
+            authStatus: "unauthenticated",
+          },
+          { ...READY_STATUS, provider: "cursor" },
+        ],
+        providerOrder: ["claudeAgent", "cursor"],
+      }),
+    ).toBe("cursor");
+  });
+
+  it("falls back when the preferred provider is installed but unauthenticated", () => {
+    expect(
+      resolveAvailableProviderPreference({
+        preferredProvider: "claudeAgent",
+        statuses: [
+          {
+            ...READY_STATUS,
+            provider: "claudeAgent",
+            authStatus: "unauthenticated",
+          },
+          { ...READY_STATUS, provider: "codex" },
+        ],
+      }),
+    ).toBe("codex");
+  });
+
+  it("preserves the preference while provider status is loading", () => {
+    expect(
+      resolveAvailableProviderPreference({
+        preferredProvider: "antigravity",
+        statuses: [],
+      }),
+    ).toBe("antigravity");
   });
 });
 
@@ -193,14 +294,5 @@ describe("resolveProviderSendAvailabilityWithRefresh", () => {
       usable: false,
       unavailableReason: "Antigravity is not authenticated yet.",
     });
-  });
-});
-
-describe("providerUnavailableReason", () => {
-  it("returns provider-specific guidance", () => {
-    expect(providerUnavailableReason({ ...BASE_STATUS, authStatus: "unauthenticated" })).toBe(
-      "Antigravity is not authenticated yet.",
-    );
-    expect(providerUnavailableReason(BASE_STATUS)).toBe(BASE_STATUS.message);
   });
 });

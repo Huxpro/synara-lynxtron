@@ -13,17 +13,17 @@ import {
 describe("SettingsProviderPickerComposition", () => {
   it("normalizes visibility/order and supports deterministic move/hide mutations", () => {
     const values = normalizeSettingsProviderPickerValues({
-      hiddenProviders: ["kilo", "bogus", "kilo"],
-      providerOrder: ["kilo", "codex"],
+      hiddenProviders: ["grok", "bogus", "grok"],
+      providerOrder: ["grok", "codex"],
     });
-    expect(values.hiddenProviders).toEqual(["kilo"]);
-    expect(values.providerOrder.slice(0, 2)).toEqual(["kilo", "codex"]);
+    expect(values.hiddenProviders).toEqual(["grok"]);
+    expect(values.providerOrder.slice(0, 2)).toEqual(["grok", "codex"]);
     const moved = moveSettingsProvider(values, "codex", "up");
-    expect(moved.providerOrder.slice(0, 2)).toEqual(["codex", "kilo"]);
-    expect(setSettingsProviderHidden(moved, "kilo", false).hiddenProviders).toEqual([]);
+    expect(moved.providerOrder.slice(0, 2)).toEqual(["codex", "grok"]);
+    expect(setSettingsProviderHidden(moved, "grok", false).hiddenProviders).toEqual([]);
     expect(buildSettingsProviderPickerItems(values)[0]).toMatchObject({
-      provider: "kilo",
-      title: "Kilo",
+      provider: "grok",
+      title: "Grok",
       hidden: true,
       canMoveUp: false,
     });
@@ -34,7 +34,7 @@ describe("SettingsProviderPickerComposition", () => {
       <SettingsProviderPickerComposition
         values={{
           ...DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES,
-          hiddenProviders: ["kilo"],
+          hiddenProviders: ["grok"],
         }}
         defaults={DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES}
         onChange={vi.fn()}
@@ -43,6 +43,6 @@ describe("SettingsProviderPickerComposition", () => {
     expect(markup).toContain("Provider picker");
     expect(markup).toContain("1 provider hidden");
     expect(markup).toContain("Reset provider picker to default");
-    expect(markup).toContain("Show Kilo in the provider picker");
+    expect(markup).toContain("Show Grok in the provider picker");
   });
 });

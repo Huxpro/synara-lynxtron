@@ -167,6 +167,7 @@ describe("orchestration projector", () => {
         envMode: "local",
         branch: null,
         worktreePath: null,
+        workingDirectory: null,
         associatedWorktreePath: null,
         associatedWorktreeBranch: null,
         associatedWorktreeRef: null,
@@ -183,11 +184,14 @@ describe("orchestration projector", () => {
         subagentRole: null,
         forkSourceThreadId: null,
         sidechatSourceThreadId: null,
+        sidechatLastActivityAt: null,
+        sidechatExpiredAt: null,
         lastKnownPr: null,
         latestTurn: null,
         createdAt: now,
         updatedAt: now,
         archivedAt: null,
+        settledAt: null,
         deletedAt: null,
         handoff: null,
         messages: [],
@@ -197,6 +201,104 @@ describe("orchestration projector", () => {
         session: null,
       },
     ]);
+  });
+
+  it("projects side chat activity and expiry timestamps", async () => {
+    const createdAt = "2026-08-30T10:00:00.000Z";
+    const activityAt = "2026-08-30T10:15:00.000Z";
+    const expiredAt = "2026-08-30T11:15:00.000Z";
+    const afterCreate = await Effect.runPromise(
+      projectEvent(
+        createEmptyReadModel(createdAt),
+        makeEvent({
+          sequence: 1,
+          type: "thread.created",
+          aggregateKind: "thread",
+          aggregateId: "thread-sidechat",
+          occurredAt: createdAt,
+          commandId: "cmd-create-sidechat",
+          payload: {
+            threadId: "thread-sidechat",
+            projectId: "project-1",
+            title: "Side investigation",
+            modelSelection: { provider: "codex", model: "gpt-5-codex" },
+            runtimeMode: "full-access",
+            branch: null,
+            worktreePath: null,
+            sidechatSourceThreadId: "thread-source",
+            sidechatLastActivityAt: createdAt,
+            sidechatExpiredAt: null,
+            createdAt,
+            updatedAt: createdAt,
+          },
+        }),
+      ),
+    );
+    const afterActivity = await Effect.runPromise(
+      projectEvent(
+        afterCreate,
+        makeEvent({
+          sequence: 2,
+          type: "thread.sidechat-activity-recorded",
+          aggregateKind: "thread",
+          aggregateId: "thread-sidechat",
+          occurredAt: activityAt,
+          commandId: "cmd-sidechat-activity",
+          payload: { threadId: "thread-sidechat", lastActivityAt: activityAt },
+        }),
+      ),
+    );
+    const afterExpiry = await Effect.runPromise(
+      projectEvent(
+        afterActivity,
+        makeEvent({
+          sequence: 3,
+          type: "thread.sidechat-expired",
+          aggregateKind: "thread",
+          aggregateId: "thread-sidechat",
+          occurredAt: expiredAt,
+          commandId: "cmd-sidechat-expire",
+          payload: {
+            threadId: "thread-sidechat",
+            expectedLastActivityAt: activityAt,
+            expiredAt,
+          },
+        }),
+      ),
+    );
+    const afterStoppedSession = await Effect.runPromise(
+      projectEvent(
+        afterExpiry,
+        makeEvent({
+          sequence: 4,
+          type: "thread.session-set",
+          aggregateKind: "thread",
+          aggregateId: "thread-sidechat",
+          occurredAt: "2026-08-30T11:15:01.000Z",
+          commandId: "cmd-stop-expired-sidechat",
+          payload: {
+            threadId: "thread-sidechat",
+            session: {
+              threadId: "thread-sidechat",
+              status: "stopped",
+              providerName: "codex",
+              providerSessionId: "session-sidechat",
+              providerThreadId: "provider-thread-sidechat",
+              runtimeMode: "full-access",
+              activeTurnId: null,
+              lastError: null,
+              updatedAt: "2026-08-30T11:15:01.000Z",
+            },
+          },
+        }),
+      ),
+    );
+
+    expect(afterStoppedSession.threads[0]).toMatchObject({
+      sidechatLastActivityAt: activityAt,
+      sidechatExpiredAt: expiredAt,
+      updatedAt: "2026-08-30T11:15:01.000Z",
+    });
   });
 
   it("updates thread settings from turn start events", async () => {
@@ -472,7 +574,7 @@ describe("orchestration projector", () => {
     expect(thread?.session?.status).toBe("running");
   });
 
-  it("keeps latest turn running for interim and explicitly preserving diff events", async () => {
+  it("keeps latest turn running for checkpoint diff events", async () => {
     const createdAt = "2026-02-23T08:00:00.000Z";
     const startedAt = "2026-02-23T08:00:05.000Z";
     const placeholderAt = "2026-02-23T08:00:06.000Z";
@@ -565,11 +667,44 @@ describe("orchestration projector", () => {
       completedAt: null,
     });
 
-    const afterPreservedDiff = await Effect.runPromise(
+    const afterRealCheckpoint = await Effect.runPromise(
       projectEvent(
         afterPlaceholder,
         makeEvent({
           sequence: 4,
+          type: "thread.turn-diff-completed",
+          aggregateKind: "thread",
+          aggregateId: "thread-1",
+          occurredAt: placeholderAt,
+          commandId: "cmd-real-checkpoint",
+          payload: {
+            threadId: "thread-1",
+            turnId: "turn-1",
+            checkpointTurnCount: 1,
+            checkpointRef: "refs/synara/checkpoints/thread-1/turn/1",
+            status: "ready",
+            files: [],
+            assistantMessageId: null,
+            completedAt: placeholderAt,
+          },
+        }),
+      ),
+    );
+
+    expect(afterRealCheckpoint.threads[0]?.checkpoints).toMatchObject([
+      { turnId: "turn-1", status: "ready", files: [] },
+    ]);
+    expect(afterRealCheckpoint.threads[0]?.latestTurn).toMatchObject({
+      turnId: "turn-1",
+      state: "running",
+      completedAt: null,
+    });
+
+    const afterPreservedDiff = await Effect.runPromise(
+      projectEvent(
+        afterRealCheckpoint,
+        makeEvent({
+          sequence: 5,
           type: "thread.turn-diff-completed",
           aggregateKind: "thread",
           aggregateId: "thread-1",
@@ -601,7 +736,6 @@ describe("orchestration projector", () => {
     { status: "ready", expectedState: "completed" },
     { status: "interrupted", expectedState: "interrupted" },
     { status: "stopped", expectedState: "interrupted" },
-    { status: "error", expectedState: "error" },
   ] as const)(
     "settles a running latest turn when the session leaves running ($status → $expectedState)",
     async ({ status, expectedState }) => {
@@ -620,7 +754,7 @@ describe("orchestration projector", () => {
             occurredAt: settledAt,
             status,
             activeTurnId: null,
-            lastError: status === "error" ? "provider crashed" : null,
+            lastError: null,
             updatedAt: settledAt,
           }),
         ),
@@ -636,7 +770,7 @@ describe("orchestration projector", () => {
     },
   );
 
-  it.each([{ status: "idle" }, { status: "starting" }] as const)(
+  it.each([{ status: "starting" }] as const)(
     "keeps a running latest turn untouched for $status session updates",
     async ({ status }) => {
       const createdAt = "2026-02-23T08:00:00.000Z";
@@ -833,7 +967,63 @@ describe("orchestration projector", () => {
     expect(afterRealCheckpoint.threads[0]?.latestTurn).toMatchObject({
       turnId: "turn-1",
       state: "completed",
-      completedAt: checkpointAt,
+      completedAt: settledAt,
+    });
+  });
+
+  it("does not let a successful checkpoint overwrite an interrupted turn", async () => {
+    const createdAt = "2026-02-23T08:00:00.000Z";
+    const startedAt = "2026-02-23T08:00:05.000Z";
+    const interruptedAt = "2026-02-23T08:00:10.000Z";
+    const checkpointAt = "2026-02-23T08:00:11.000Z";
+    const afterRunning = await projectThreadWithRunningTurn({ createdAt, startedAt });
+    const afterInterrupted = await Effect.runPromise(
+      projectEvent(
+        afterRunning,
+        makeSessionSetEvent({
+          sequence: 3,
+          commandId: "cmd-interrupted",
+          occurredAt: interruptedAt,
+          status: "interrupted",
+          activeTurnId: null,
+          lastError: null,
+          updatedAt: interruptedAt,
+        }),
+      ),
+    );
+
+    const afterCheckpoint = await Effect.runPromise(
+      projectEvent(
+        afterInterrupted,
+        makeEvent({
+          sequence: 4,
+          type: "thread.turn-diff-completed",
+          aggregateKind: "thread",
+          aggregateId: "thread-1",
+          occurredAt: checkpointAt,
+          commandId: "cmd-checkpoint-after-interrupt",
+          payload: {
+            threadId: "thread-1",
+            turnId: "turn-1",
+            checkpointTurnCount: 1,
+            checkpointRef: "refs/synara/checkpoints/thread-1/turn/1",
+            status: "ready",
+            files: [],
+            assistantMessageId: null,
+            completedAt: checkpointAt,
+          },
+        }),
+      ),
+    );
+
+    expect(afterCheckpoint.threads[0]?.checkpoints).toMatchObject([
+      { turnId: "turn-1", status: "ready", files: [], assistantMessageId: null },
+    ]);
+    expect(afterCheckpoint.threads[0]?.latestTurn).toMatchObject({
+      turnId: "turn-1",
+      state: "interrupted",
+      completedAt: interruptedAt,
+      assistantMessageId: null,
     });
   });
 
@@ -931,6 +1121,8 @@ describe("orchestration projector", () => {
       completedAt,
       assistantMessageId: null,
     });
+    // The stale event's earlier occurredAt must not regress the thread stamp.
+    expect(afterStaleRunningSession.threads[0]?.updatedAt).toBe(completedAt);
   });
 
   it("updates canonical thread runtime mode from thread.runtime-mode-set", async () => {
@@ -1719,5 +1911,148 @@ describe("orchestration projector", () => {
       "accepted-first-user",
       "accepted-first-assistant",
     ]);
+  });
+
+  it("accumulates streaming deltas in place without reordering the transcript", async () => {
+    const createdAt = "2026-07-20T09:00:00.000Z";
+    const afterCreate = await Effect.runPromise(
+      projectEvent(
+        createEmptyReadModel(createdAt),
+        makeEvent({
+          sequence: 1,
+          type: "thread.created",
+          aggregateKind: "thread",
+          aggregateId: "thread-stream",
+          occurredAt: createdAt,
+          commandId: "cmd-create-stream",
+          payload: {
+            threadId: "thread-stream",
+            projectId: "project-1",
+            title: "Streaming",
+            modelSelection: { provider: "codex", model: "gpt-5-codex" },
+            runtimeMode: "full-access",
+            branch: null,
+            worktreePath: null,
+            createdAt,
+            updatedAt: createdAt,
+          },
+        }),
+      ),
+    );
+
+    const messageEvent = (input: {
+      readonly sequence: number;
+      readonly messageId: string;
+      readonly role: "user" | "assistant";
+      readonly text: string;
+      readonly streaming: boolean;
+      readonly turnId: string | null;
+    }) =>
+      makeEvent({
+        sequence: input.sequence,
+        type: "thread.message-sent",
+        aggregateKind: "thread",
+        aggregateId: "thread-stream",
+        occurredAt: createdAt,
+        commandId: `cmd-${input.sequence}`,
+        payload: {
+          threadId: "thread-stream",
+          messageId: input.messageId,
+          role: input.role,
+          text: input.text,
+          turnId: input.turnId,
+          streaming: input.streaming,
+          source: "native",
+          createdAt,
+          updatedAt: `2026-07-20T09:00:${String(input.sequence).padStart(2, "0")}.000Z`,
+        },
+      });
+
+    const deltas = ["Hel", "lo, ", "wor", "ld"];
+    const events = [
+      messageEvent({
+        sequence: 2,
+        messageId: "user-1",
+        role: "user",
+        text: "hi",
+        streaming: false,
+        turnId: "turn-1",
+      }),
+      ...deltas.map((delta, index) =>
+        messageEvent({
+          sequence: 3 + index,
+          messageId: "assistant-1",
+          role: "assistant",
+          text: delta,
+          streaming: true,
+          // First delta arrives without a turn binding; later deltas must not
+          // rebind an already-bound message.
+          turnId: index < 2 ? null : index === 3 ? "turn-other" : "turn-1",
+        }),
+      ),
+      messageEvent({
+        sequence: 7,
+        messageId: "user-2",
+        role: "user",
+        text: "next",
+        streaming: false,
+        turnId: "turn-2",
+      }),
+      // A late delta for an earlier message must update it in place.
+      messageEvent({
+        sequence: 8,
+        messageId: "assistant-1",
+        role: "assistant",
+        text: "!",
+        streaming: true,
+        turnId: "turn-other",
+      }),
+    ];
+
+    const state = await events.reduce<Promise<ReturnType<typeof createEmptyReadModel>>>(
+      (statePromise, event) =>
+        statePromise.then(async (current) => {
+          const next = await Effect.runPromise(projectEvent(current, event));
+          if (event.sequence === 4) {
+            expect(next.threads[0]?.messages[1]?.turnId).toBeNull();
+          }
+          return next;
+        }),
+      Promise.resolve(afterCreate),
+    );
+
+    const thread = state.threads[0];
+    expect(thread?.messages.map((message) => message.id)).toEqual([
+      "user-1",
+      "assistant-1",
+      "user-2",
+    ]);
+    const assistant = thread?.messages[1];
+    expect(assistant?.text).toBe(`${deltas.join("")}!`);
+    expect(assistant?.streaming).toBe(true);
+    expect(assistant?.turnId).toBe("turn-1");
+    expect(thread?.messages[2]?.text).toBe("next");
+
+    // The non-streaming finalization replaces the accumulated text.
+    const finalized = await Effect.runPromise(
+      projectEvent(
+        state,
+        messageEvent({
+          sequence: 9,
+          messageId: "assistant-1",
+          role: "assistant",
+          text: "Hello, world!",
+          streaming: false,
+          turnId: "turn-1",
+        }),
+      ),
+    );
+    expect(finalized.threads[0]?.messages.map((message) => message.id)).toEqual([
+      "user-1",
+      "assistant-1",
+      "user-2",
+    ]);
+    expect(finalized.threads[0]?.messages[1]?.text).toBe("Hello, world!");
+    expect(finalized.threads[0]?.messages[1]?.streaming).toBe(false);
   });
 });

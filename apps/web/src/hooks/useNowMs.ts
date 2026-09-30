@@ -4,6 +4,7 @@
 // Exports: useNowMs
 
 import { useEffect, useState } from "react";
+import { startVisibleInterval } from "../lib/visibleInterval";
 
 export function useNowMs(enabled: boolean, intervalMs = 1_000): number {
   const [nowMs, setNowMs] = useState(() => Date.now());
@@ -12,19 +13,9 @@ export function useNowMs(enabled: boolean, intervalMs = 1_000): number {
     if (!enabled) {
       return;
     }
-    // Timeout-0 instead of a synchronous set: the immediate refresh lands a
-    // tick after enabling, which is invisible for elapsed-time labels and
-    // keeps this hook eligible for React Compiler optimization.
-    const timeoutId = setTimeout(() => {
-      setNowMs(Date.now());
-    }, 0);
-    const intervalId = setInterval(() => {
+    return startVisibleInterval(() => {
       setNowMs(Date.now());
     }, intervalMs);
-    return () => {
-      clearTimeout(timeoutId);
-      clearInterval(intervalId);
-    };
   }, [enabled, intervalMs]);
 
   return nowMs;

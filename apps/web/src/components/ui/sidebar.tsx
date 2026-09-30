@@ -2,8 +2,8 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
+import { PanelLeftIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
-import { CentralIcon } from "~/lib/central-icons";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { ScrollArea } from "~/components/ui/scroll-area";
@@ -24,8 +24,6 @@ import { Schema } from "effect";
 import { isBrowser } from "~/platform/env";
 import { raf, cancelRaf } from "~/platform/frame";
 import { clampSidebarWidth, sidebarWidthFromPointer } from "~/components/sidebarResize.logic";
-const SIDEBAR_COOKIE_NAME = "sidebar_state";
-const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_MOBILE = "calc(100vw - var(--spacing(3)))";
 const SIDEBAR_WIDTH_ICON = "3rem";
@@ -38,7 +36,8 @@ const SIDEBAR_RESIZE_DEFAULT_MIN_WIDTH = 16 * 16;
  * (Sidebar `className`) and the layout `gapClassName` so they animate in lockstep.
  * Shared by the thread sidebar (left) and the right dock so the two slides match.
  */
-const SIDEBAR_OFFCANVAS_MOTION_CLASS = "duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]";
+const SIDEBAR_OFFCANVAS_MOTION_CLASS =
+  "will-change-[transform] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]";
 
 /**
  * Suppresses the slide entirely — for first mount or a reposition/remount where
@@ -104,7 +103,7 @@ function useSidebar() {
 }
 
 function SidebarProvider({
-  defaultOpen = true,
+  defaultOpen: defaultOpenProp,
   open: openProp,
   onOpenChange: setOpenProp,
   className,
@@ -116,6 +115,7 @@ function SidebarProvider({
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }) {
+  const defaultOpen = defaultOpenProp ?? true;
   const isMobile = useIsMobile();
   const [openMobile, setOpenMobile] = React.useState(false);
 
@@ -123,23 +123,14 @@ function SidebarProvider({
   // We use openProp and setOpenProp for control from outside the component.
   const [_open, _setOpen] = React.useState(defaultOpen);
   const open = openProp ?? _open;
-  // Manual memoization kept: this file does not compile under React Compiler (see compile-report).
   const setOpen = React.useCallback(
-    async (value: boolean | ((value: boolean) => boolean)) => {
+    (value: boolean | ((value: boolean) => boolean)) => {
       const openState = typeof value === "function" ? value(open) : value;
       if (setOpenProp) {
         setOpenProp(openState);
       } else {
         _setOpen(openState);
       }
-
-      // This sets the cookie to keep the sidebar state.
-      await cookieStore.set({
-        expires: Date.now() + SIDEBAR_COOKIE_MAX_AGE * 1000,
-        name: SIDEBAR_COOKIE_NAME,
-        path: "/",
-        value: String(openState),
-      });
     },
     [setOpenProp, open],
   );
@@ -217,7 +208,7 @@ function resolveSidebarResizable(
 function SidebarInstanceProvider({
   side,
   resizable,
-  collapsible = "offcanvas",
+  collapsible: collapsibleProp,
   children,
 }: {
   side: "left" | "right";
@@ -225,6 +216,7 @@ function SidebarInstanceProvider({
   collapsible?: "offcanvas" | "icon" | "none";
   children: React.ReactNode;
 }) {
+  const collapsible = collapsibleProp ?? "offcanvas";
   const { isMobile } = useSidebar();
   const resolvedResizable = React.useMemo(
     () => resolveSidebarResizable(resizable, { collapsible, isMobile }),
@@ -240,14 +232,14 @@ function SidebarInstanceProvider({
 }
 
 function Sidebar({
-  side = "left",
-  variant = "sidebar",
-  collapsible = "offcanvas",
-  resizable = false,
+  side: sideProp,
+  variant: variantProp,
+  collapsible: collapsibleProp,
+  resizable: resizableProp,
   className,
   gapClassName,
   innerClassName,
-  transparentSurface = false,
+  transparentSurface: transparentSurfaceProp,
   children,
   ...props
 }: React.ComponentProps<"div"> & {
@@ -259,6 +251,11 @@ function Sidebar({
   innerClassName?: string;
   transparentSurface?: boolean;
 }) {
+  const side = sideProp ?? "left";
+  const variant = variantProp ?? "sidebar";
+  const collapsible = collapsibleProp ?? "offcanvas";
+  const resizable = resizableProp ?? false;
+  const transparentSurface = transparentSurfaceProp ?? false;
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
   const resolvedResizable = React.useMemo<SidebarResolvedResizableOptions | null>(
     () => resolveSidebarResizable(resizable, { collapsible, isMobile }),
@@ -343,10 +340,14 @@ function Sidebar({
         />
         <div
           className={cn(
-            "fixed inset-y-0 z-0 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
+            // The offcanvas slide animates transform (compositor) instead of left/right
+            // (layout): a fixed panel relayouts its whole subtree per frame otherwise,
+            // which read as a janky close on heavy sidebar content. The gap still
+            // animates width — reserving layout is its job — but its subtree is empty.
+            "fixed inset-y-0 z-0 hidden h-svh w-(--sidebar-width) transition-[left,right,width,transform] duration-200 ease-linear md:flex",
             side === "left"
-              ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
-              : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
+              ? "left-0 group-data-[collapsible=offcanvas]:-translate-x-full"
+              : "right-0 group-data-[collapsible=offcanvas]:translate-x-full",
             // Adjust the padding for floating and inset variants.
             variant === "floating" || variant === "inset"
               ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"
@@ -396,7 +397,7 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
       variant="ghost"
       {...props}
     >
-      <CentralIcon name="sidebar-hidden-left-wide" />
+      <PanelLeftIcon aria-hidden className="size-4" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );
@@ -422,7 +423,7 @@ function SidebarHeaderTrigger({
 }
 
 function SidebarRail({
-  placement = "sidebar-shell",
+  placement: placementProp,
   className,
   onClick,
   onPointerCancel,
@@ -434,6 +435,7 @@ function SidebarRail({
   /** `content-seam` sits on the chat column edge above the card; `sidebar-shell` stays on the sidebar container. */
   placement?: "sidebar-shell" | "content-seam";
 }) {
+  const placement = placementProp ?? "sidebar-shell";
   const { open, toggleSidebar } = useSidebar();
   const sidebarInstance = React.useContext(SidebarInstanceContext);
   const side = sidebarInstance?.side ?? "left";
@@ -814,7 +816,7 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
 function SidebarGroupLabel({ className, render, ...props }: useRender.ComponentProps<"div">) {
   const defaultProps = {
     className: cn(
-      "flex h-8 shrink-0 items-center rounded-lg px-2 font-medium text-sidebar-foreground text-xs outline-hidden ring-ring/60 transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-1 [&>svg]:size-4 [&>svg]:shrink-0",
+      "flex h-8 shrink-0 items-center rounded-lg px-2 font-medium text-sidebar-foreground text-ui leading-snug outline-hidden ring-ring/60 transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-1 [&>svg]:size-4 [&>svg]:shrink-0",
       "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
       className,
     ),
@@ -852,7 +854,7 @@ function SidebarGroupAction({ className, render, ...props }: useRender.Component
 function SidebarGroupContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("w-full text-sm", className)}
+      className={cn("w-full text-ui leading-snug", className)}
       data-sidebar="group-content"
       data-slot="sidebar-group-content"
       {...props}
@@ -883,7 +885,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full cursor-pointer items-center gap-2 overflow-hidden rounded-xl p-2 text-left text-sm outline-hidden ring-ring/60 transition-[width,height,padding] hover:bg-[var(--sidebar-accent)] focus-visible:ring-1 active:bg-[var(--sidebar-accent-active)] active:text-[var(--sidebar-accent-foreground)] disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pe-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-[var(--sidebar-accent-active)] data-[active=true]:text-[var(--sidebar-accent-foreground)] data-[state=open]:hover:bg-[var(--sidebar-accent)] group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg:not([class*='size-'])]:size-4 [&>svg]:shrink-0",
+  "peer/menu-button flex w-full cursor-pointer items-center gap-2 overflow-hidden rounded-xl p-2 text-left text-ui-lg leading-snug outline-hidden ring-ring/60 transition-[width,height,padding] hover:bg-[var(--sidebar-accent)] focus-visible:ring-1 active:bg-[var(--sidebar-accent-active)] active:text-[var(--sidebar-accent-foreground)] disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pe-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-[var(--sidebar-selected)] data-[active=true]:text-[var(--sidebar-accent-foreground)] data-[state=open]:hover:bg-[var(--sidebar-accent)] group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg:not([class*='size-'])]:size-4 [&>svg]:shrink-0",
   {
     defaultVariants: {
       size: "default",
@@ -891,9 +893,9 @@ const sidebarMenuButtonVariants = cva(
     },
     variants: {
       size: {
-        default: "h-8 text-sm",
-        lg: "h-12 text-sm group-data-[collapsible=icon]:p-0!",
-        sm: "h-7 text-xs",
+        default: "h-8 text-ui-lg leading-snug",
+        lg: "h-12 text-ui-lg leading-snug group-data-[collapsible=icon]:p-0!",
+        sm: "h-7 text-ui leading-snug",
       },
       variant: {
         default: "hover:bg-[var(--sidebar-accent)]",
@@ -905,9 +907,9 @@ const sidebarMenuButtonVariants = cva(
 );
 
 function SidebarMenuButton({
-  isActive = false,
-  variant = "default",
-  size = "default",
+  isActive: isActiveProp,
+  variant: variantProp,
+  size: sizeProp,
   tooltip,
   className,
   render,
@@ -916,6 +918,12 @@ function SidebarMenuButton({
   isActive?: boolean;
   tooltip?: string | React.ComponentProps<typeof TooltipPopup>;
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
+  const isActive = isActiveProp ?? false;
+  // `variant`/`size` come from cva's VariantProps, whose types admit an explicit
+  // `null` (meaning "use the cva defaultVariants"). Only `undefined` may fall back
+  // here, so `??` would not preserve behavior.
+  const variant = variantProp === undefined ? "default" : variantProp;
+  const size = sizeProp === undefined ? "default" : sizeProp;
   const { isMobile, state } = useSidebar();
 
   const defaultProps = {
@@ -957,43 +965,11 @@ function SidebarMenuButton({
   );
 }
 
-function SidebarMenuAction({
-  className,
-  showOnHover = false,
-  render,
-  ...props
-}: useRender.ComponentProps<"button"> & {
-  showOnHover?: boolean;
-}) {
-  const defaultProps = {
-    className: cn(
-      "sidebar-icon-button absolute top-1.5 right-1 flex aspect-square w-5 cursor-pointer p-0 text-sidebar-foreground outline-hidden ring-ring/60 transition-transform [&>svg:not([class*='size-'])]:size-4 [&>svg]:shrink-0",
-      // Increases the hit area of the button on mobile.
-      "after:-inset-2 after:absolute md:after:hidden",
-      "peer-data-[size=sm]/menu-button:top-1",
-      "peer-data-[size=default]/menu-button:top-1.5",
-      "peer-data-[size=lg]/menu-button:top-2.5",
-      "group-data-[collapsible=icon]:hidden",
-      showOnHover &&
-        "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-[var(--sidebar-accent-foreground)] md:opacity-0",
-      className,
-    ),
-    "data-sidebar": "menu-action",
-    "data-slot": "sidebar-menu-action",
-  };
-
-  return useRender({
-    defaultTagName: "button",
-    props: mergeProps<"button">(defaultProps, props),
-    render,
-  });
-}
-
 function SidebarMenuBadge({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-lg px-1 font-medium text-sidebar-foreground text-xs tabular-nums",
+        "pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-lg px-1 font-medium text-sidebar-foreground text-ui leading-snug tabular-nums",
         "peer-data-[active=true]/menu-button:text-[var(--sidebar-accent-foreground)]",
         "peer-data-[size=sm]/menu-button:top-1",
         "peer-data-[size=default]/menu-button:top-1.5",
@@ -1010,11 +986,12 @@ function SidebarMenuBadge({ className, ...props }: React.ComponentProps<"div">) 
 
 function SidebarMenuSkeleton({
   className,
-  showIcon = false,
+  showIcon: showIconProp,
   ...props
 }: React.ComponentProps<"div"> & {
   showIcon?: boolean;
 }) {
+  const showIcon = showIconProp ?? false;
   // Random width between 50 to 90%, chosen once per mount so the bar doesn't
   // jitter on re-renders (lazy state init keeps the impure call out of render).
   const [width] = React.useState(() => `${Math.floor(Math.random() * 40) + 50}%`);
@@ -1067,8 +1044,8 @@ function SidebarMenuSubItem({ className, ...props }: React.ComponentProps<"li">)
 }
 
 function SidebarMenuSubButton({
-  size = "md",
-  isActive = false,
+  size: sizeProp,
+  isActive: isActiveProp,
   className,
   render,
   ...props
@@ -1076,12 +1053,14 @@ function SidebarMenuSubButton({
   size?: "sm" | "md";
   isActive?: boolean;
 }) {
+  const size = sizeProp ?? "md";
+  const isActive = isActiveProp ?? false;
   const defaultProps = {
     className: cn(
       "-translate-x-px flex h-7 min-w-0 cursor-pointer items-center gap-2 overflow-hidden rounded-lg px-2 text-sidebar-foreground outline-hidden ring-ring/60 hover:bg-[var(--sidebar-accent)] focus-visible:ring-1 active:bg-[var(--sidebar-accent-active)] active:text-[var(--sidebar-accent-foreground)] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg:not([class*='size-'])]:size-4 [&>svg]:shrink-0",
-      "data-[active=true]:bg-[var(--sidebar-accent-active)] data-[active=true]:text-[var(--sidebar-accent-foreground)]",
-      size === "sm" && "text-xs",
-      size === "md" && "text-sm",
+      "data-[active=true]:bg-[var(--sidebar-selected)] data-[active=true]:text-[var(--sidebar-accent-foreground)]",
+      size === "sm" && "text-ui leading-snug",
+      size === "md" && "text-ui-lg leading-snug",
       "group-data-[collapsible=icon]:hidden",
       className,
     ),
@@ -1112,7 +1091,6 @@ export {
   SidebarInstanceProvider,
   SidebarInset,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,

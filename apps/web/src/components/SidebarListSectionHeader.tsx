@@ -8,7 +8,7 @@ import {
 
 export interface SidebarListSectionHeaderProps {
   readonly label: string;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }
 
 export function SidebarListSectionHeader({ label, children }: SidebarListSectionHeaderProps) {

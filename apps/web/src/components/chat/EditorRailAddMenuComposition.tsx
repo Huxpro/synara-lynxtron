@@ -7,7 +7,7 @@ import {
 export function EditorRailAddMenuComposition(props: {
   readonly onNewChat: () => void;
   readonly onNewTerminal: () => void;
-  readonly terminalDisabled?: boolean;
+  readonly terminalDisabled?: boolean | undefined;
 }) {
   return (
     <>

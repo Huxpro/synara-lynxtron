@@ -9,27 +9,27 @@ import { SettingsRow, SettingsSection } from "./SettingsPanelPrimitives";
 import { SelectItem } from "../ui/select";
 import { Switch } from "../ui/switch";
 
-export function SettingsGeneralRootElement(props: { readonly children?: ReactNode }) {
+export function SettingsGeneralRootElement(props: { readonly children?: ReactNode | undefined }) {
   return <div className="space-y-6">{props.children}</div>;
 }
 
 export function SettingsGeneralSectionElement(props: {
   readonly title: string;
-  readonly targetId?: string;
-  readonly children?: ReactNode;
+  readonly targetId?: string | undefined;
+  readonly children?: ReactNode | undefined;
 }) {
   const section = <SettingsSection title={props.title}>{props.children}</SettingsSection>;
   return props.targetId ? <div id={props.targetId}>{section}</div> : section;
 }
 
 export function SettingsGeneralRowElement(props: {
-  readonly terminal?: boolean;
+  readonly terminal?: boolean | undefined;
   readonly title: string;
   readonly description: string;
   readonly resetLabel: string;
   readonly changed: boolean;
   readonly onReset: () => void;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <SettingsRow

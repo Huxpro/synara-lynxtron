@@ -30,7 +30,6 @@ import {
   MenuTrigger,
 } from "~/components/ui/menu";
 import ProjectScriptsControl from "~/components/ProjectScriptsControl";
-import { ComposerModelEffortPicker } from "~/components/chat/ComposerModelEffortPicker";
 import { ProviderModelPicker } from "~/components/chat/ProviderModelPicker";
 import { TraitsPicker } from "~/components/chat/TraitsPicker";
 import { ProjectId, SpaceId, ThreadId, type ModelSelection } from "@synara/contracts";
@@ -51,7 +50,6 @@ import {
   COMPONENT_LAB_OVERFLOW_MODEL_OPTIONS_BY_PROVIDER,
   COMPONENT_LAB_OPENCODE_MODELS,
   COMPONENT_LAB_OPENCODE_SELECTION,
-  COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_FAVORITES,
   COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS,
   COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_SELECTION,
   COMPONENT_LAB_PROVIDER_STATUSES,
@@ -80,7 +78,10 @@ import { SEMANTIC_ICON_TONES } from "@synara/shared/semanticIconTone";
 import { SemanticIconTone } from "~/components/ui/SemanticIconTone";
 import { SidebarPrimaryActionRow } from "~/components/SidebarPrimaryActionRow";
 import { SidebarProvider } from "~/components/ui/sidebar";
-import { SidebarSearchPalette } from "~/components/SidebarSearchPalette";
+import {
+  SidebarSearchPalette,
+  type SidebarSearchPaletteMode,
+} from "~/components/SidebarSearchPalette";
 import {
   MessageActionButton,
   MESSAGE_ACTION_ICON_CLASS_NAME,
@@ -90,7 +91,6 @@ import {
   SidebarThreadRowSpecimen,
 } from "~/components/SidebarRowSpecimen";
 import { ToastSurfaceFixture } from "~/components/ui/toast";
-import { RightDockTabs } from "~/components/chat/RightDock";
 import { ComposerVoiceButton } from "~/components/chat/ComposerVoiceButton";
 import { ComposerVoiceRecorderBar } from "~/components/chat/ComposerVoiceRecorderBar";
 import { TerminalSearch } from "~/components/TerminalSearch";
@@ -156,7 +156,6 @@ import { FileIcon } from "~/lib/icons";
 import { CentralIcon } from "~/lib/central-icons";
 import { RecentViewSwitcher } from "~/components/RecentViewSwitcher";
 import { ComposerReferenceAttachmentsComposition } from "~/components/chat/ComposerReferenceAttachmentsComposition";
-import { ThreadErrorBanner } from "~/components/chat/ThreadErrorBanner";
 import { CollapsedWorkComposition } from "~/components/chat/CollapsedWorkComposition";
 import {
   TimelineStatusRowComposition,
@@ -197,7 +196,7 @@ const COMPONENT_LAB_SPACE_PROJECTS = [
     defaultModelSelection: null,
     expanded: true,
     spaceId: null,
-    scripts: [],
+    scripts: [] as Project["scripts"],
   },
   {
     id: ProjectId.makeUnsafe("component-lab-beta"),
@@ -210,7 +209,7 @@ const COMPONENT_LAB_SPACE_PROJECTS = [
     defaultModelSelection: null,
     expanded: false,
     spaceId: COMPONENT_LAB_OTHER_SPACE.id,
-    scripts: [],
+    scripts: [] as Project["scripts"],
   },
 ] as const;
 
@@ -230,7 +229,7 @@ const COMPONENT_LAB_AUTOMATION_WEB_PROJECT: Project = {
 
 function AutomationComposerDialogStory(props: {
   readonly state: string;
-  readonly variant?: string;
+  readonly variant?: string | undefined;
 }) {
   const editing = props.variant === "edit";
   const [form, setForm] = useState(() => {
@@ -251,7 +250,6 @@ function AutomationComposerDialogStory(props: {
   return (
     <AutomationDialog
       open
-      editing={editing}
       form={form}
       projects={[COMPONENT_LAB_AUTOMATION_WEB_PROJECT]}
       threads={[]}
@@ -264,7 +262,7 @@ function AutomationComposerDialogStory(props: {
   );
 }
 
-function AutomationDetailPageStory(props: { readonly variant?: string }) {
+function AutomationDetailPageStory(props: { readonly variant?: string | undefined }) {
   const paused = props.variant === "paused";
   return (
     <div className="h-[520px] w-[880px] max-w-[calc(100vw-2rem)] overflow-hidden border border-border bg-background">
@@ -310,7 +308,7 @@ function AutomationDetailPageStory(props: { readonly variant?: string }) {
             <AutomationDetailRow label="Max iterations">Unlimited</AutomationDetailRow>
           </AutomationDetailGroup>
           <AutomationDetailGroup title="Previous runs">
-            <div className="px-1.5 py-1 text-xs text-muted-foreground">No runs yet.</div>
+            <div className="px-1.5 py-1 text-ui text-muted-foreground">No runs yet.</div>
           </AutomationDetailGroup>
         </AutomationDetailComposition>
       </SidebarProvider>
@@ -318,7 +316,10 @@ function AutomationDetailPageStory(props: { readonly variant?: string }) {
   );
 }
 
-function AutomationListPageStory(props: { readonly state: string; readonly variant?: string }) {
+function AutomationListPageStory(props: {
+  readonly state: string;
+  readonly variant?: string | undefined;
+}) {
   const definitions =
     props.variant === "mixed"
       ? [COMPONENT_LAB_AUTOMATION_DEFINITION, COMPONENT_LAB_PAUSED_AUTOMATION_DEFINITION]
@@ -426,7 +427,10 @@ function EditorRailAddMenuStory(props: { readonly open: boolean }) {
   );
 }
 
-function ComposerModelPickerStory(props: { readonly state: string; readonly variant?: string }) {
+function ComposerModelPickerStory(props: {
+  readonly state: string;
+  readonly variant?: string | undefined;
+}) {
   const search = props.state === "search";
   const [selection, setSelection] = useState<ModelSelection>(() =>
     search ? COMPONENT_LAB_OPENCODE_SELECTION : COMPONENT_LAB_MODEL_SELECTION,
@@ -435,13 +439,6 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
   const providerList = props.state === "provider-list";
   const favoriteState = props.state === "favourite";
   const groupDisclosureState = props.state === "group-disclosure";
-  const [favoriteModelSlugs, setFavoriteModelSlugs] = useState<ReadonlyArray<string>>(() =>
-    groupDisclosureState
-      ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_FAVORITES
-      : favoriteState
-        ? ["open-model-02"]
-        : [],
-  );
   const runtimeModels = groupDisclosureState
     ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_MODELS
     : search
@@ -457,8 +454,9 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
     : props.state === "overflow"
       ? COMPONENT_LAB_OVERFLOW_MODEL_OPTIONS_BY_PROVIDER
       : COMPONENT_LAB_MODEL_OPTIONS_BY_PROVIDER;
+  // The story only swaps provider and model; per-provider options reset with the provider.
   const selectModel = (provider: ModelSelection["provider"], model: ModelSelection["model"]) =>
-    setSelection((current) => ({ ...current, provider, model }));
+    setSelection({ provider, model } as ModelSelection);
   const effectiveSelection = groupDisclosureState
     ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_SELECTION
     : selection;
@@ -471,9 +469,7 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
         lockedProvider="opencode"
         providers={COMPONENT_LAB_PROVIDER_STATUSES}
         modelOptionsByProvider={COMPONENT_LAB_MODEL_OPTIONS_BY_PROVIDER}
-        initialOpen
-        favoriteModelSlugsOverride={{ opencode: favoriteModelSlugs }}
-        onFavoriteModelSlugsChange={(_provider, slugs) => setFavoriteModelSlugs(slugs)}
+        open
         onProviderModelChange={selectModel}
       />
     );
@@ -488,7 +484,7 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
           lockedProvider={selection.provider}
           providers={COMPONENT_LAB_PROVIDER_STATUSES}
           modelOptionsByProvider={modelOptionsByProvider}
-          initialOpen={props.state === "open" || providerList || submenuOpen || search}
+          open={props.state === "open" || providerList || submenuOpen || search}
           onProviderModelChange={selectModel}
         />
         <TraitsPicker
@@ -513,136 +509,52 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
         lockedProvider={null}
         providers={COMPONENT_LAB_PROVIDER_STATUSES}
         modelOptionsByProvider={COMPONENT_LAB_MODEL_OPTIONS_BY_PROVIDER}
-        initialOpen
+        open
         onProviderModelChange={selectModel}
       />
     );
   }
+  // Electron's composer now renders the tabbed model picker; the lab shows its trigger
+  // and menu through ProviderModelPicker until the new picker gets its own stories.
   const compact = props.variant === "compact";
   return (
-    <ComposerModelEffortPicker
+    <ProviderModelPicker
       key={props.state}
       compact={compact}
-      hideModelLabel={compact}
-      hideStatusLabel={compact}
+      hideLabel={compact}
       provider={effectiveSelection.provider}
       model={effectiveSelection.model}
       lockedProvider={effectiveSelection.provider}
       providers={COMPONENT_LAB_PROVIDER_STATUSES}
       modelOptionsByProvider={modelOptionsByProvider}
-      threadId={ThreadId.makeUnsafe("component-lab-model-picker")}
-      runtimeModel={runtimeModels.find((model) => model.slug === effectiveSelection.model)}
-      runtimeModels={runtimeModels}
-      modelOptions={effectiveSelection.options}
-      prompt=""
       disabled={props.state === "disabled"}
-      initialOpen={props.state === "open" || submenuOpen || search || groupDisclosureState}
-      initialSubmenuOpen={submenuOpen || search || groupDisclosureState}
-      initialSearchQuery={search ? "model 12" : ""}
-      favoriteModelSlugsOverride={{ opencode: favoriteModelSlugs }}
-      onFavoriteModelSlugsChange={(_provider, slugs) => setFavoriteModelSlugs(slugs)}
-      onPromptChange={() => {}}
+      open={props.state === "open" || submenuOpen || search || groupDisclosureState}
       onProviderModelChange={selectModel}
     />
   );
 }
 
 function SpaceProjectPickerStory(props: { readonly state: string }) {
-  const [open, setOpen] = useState(true);
+  void props;
   return (
-    <SpaceProjectPickerDialog
-      open={open}
-      targetSpace={COMPONENT_LAB_SPACE}
-      projects={COMPONENT_LAB_SPACE_PROJECTS}
-      spaces={[COMPONENT_LAB_SPACE, COMPONENT_LAB_OTHER_SPACE]}
-      initialQuery={props.state === "query" ? "Alpha" : ""}
-      searchAutoFocus={props.state === "focus"}
-      searchDisabled={props.state === "disabled"}
-      onOpenChange={setOpen}
-      onSubmit={() => []}
-    />
+    <RetiredStory reason="Electron's space project picker changed its props; port the new picker before restoring this story." />
   );
 }
 
-function SidebarCommandPaletteStory(props: { readonly state: string; readonly variant?: string }) {
-  const fixture = resolveComponentLabCommandPaletteFixture(props.variant);
-  const routeOpen = props.state === "open" || props.state === "keyboard-highlight";
-  const routeQuery =
-    props.state === "keyboard-highlight" && fixture.actions ? "settings" : fixture.query;
-  const [queryOverride, setQueryOverride] = useState<string | null>(null);
-  const [open, setOpen] = useState(routeOpen);
-  const [mode, setMode] = useState<"search" | "import">("search");
-  useEffect(() => setOpen(routeOpen), [routeOpen]);
+function SidebarCommandPaletteStory(props: {
+  readonly state: string;
+  readonly variant?: string | undefined;
+}) {
+  void props;
   return (
-    <div className="flex min-h-64 items-center justify-center">
-      <button
-        type="button"
-        className="rounded-lg border border-border px-3 py-2 text-xs"
-        onClick={() => setOpen(true)}
-      >
-        Search
-      </button>
-      <SidebarSearchPalette
-        open={open}
-        query={queryOverride ?? routeQuery}
-        onQueryChange={setQueryOverride}
-        mode={mode}
-        onModeChange={setMode}
-        onOpenChange={setOpen}
-        actions={
-          fixture.actions
-            ? [{ id: "settings", label: "Settings", description: "Configure Synara" }]
-            : []
-        }
-        projects={[
-          {
-            id: "component-lab-project",
-            name: "Synara",
-            remoteName: "synara",
-            folderName: "synara",
-            localName: null,
-            cwd: "/workspace/synara",
-            spaceName: "Personal",
-          },
-        ]}
-        threads={
-          fixture.threads
-            ? [
-                {
-                  id: "component-lab-thread",
-                  title: "Component fidelity",
-                  projectId: "component-lab-project",
-                  projectName: "Synara",
-                  projectRemoteName: "synara",
-                  spaceName: "Personal",
-                  provider: "codex",
-                  createdAt: "2026-01-01T00:00:00.000Z",
-                  messages: [{ text: "Align the component library" }],
-                },
-              ]
-            : []
-        }
-        searchStatus={fixture.searchStatus}
-        searchErrorMessage={fixture.searchStatus === "error" ? "Snapshot unavailable." : null}
-        onRetrySearch={() => {}}
-        onCreateChat={() => {}}
-        onCreateThread={() => {}}
-        onAddProjectPath={async () => {}}
-        homeDir="/workspace"
-        onOpenSettings={() => {}}
-        onOpenFeedback={() => {}}
-        onOpenUsageSettings={() => {}}
-        onOpenProject={() => {}}
-        onOpenThread={() => {}}
-        importProviders={[]}
-        onImportThread={async () => {}}
-        filesystemBrowseEnabled={false}
-      />
-    </div>
+    <RetiredStory reason="Electron restyled the command palette (⌘P); port the new palette before restoring this story." />
   );
 }
 
-function FilePreviewErrorStory(props: { readonly state: string; readonly variant?: string }) {
+function FilePreviewErrorStory(props: {
+  readonly state: string;
+  readonly variant?: string | undefined;
+}) {
   const [result, setResult] = useState("Awaiting recovery action");
   const placement =
     props.variant === "explorer-dock"
@@ -662,7 +574,7 @@ function FilePreviewErrorStory(props: { readonly state: string; readonly variant
         onRetry={() => setResult("Retry requested")}
         onClose={ownsClose ? () => setResult("Preview closed") : undefined}
       />
-      <p aria-live="polite" className="px-3 pb-3 text-[11px] text-muted-foreground">
+      <p aria-live="polite" className="px-3 pb-3 text-ui-sm text-muted-foreground">
         {result}
       </p>
     </div>
@@ -683,7 +595,7 @@ function FileTabStory(props: { readonly state: string }) {
           visualState={props.state as "default" | "hover" | "focus" | "pressed"}
         />
       ) : (
-        <p aria-live="polite" className="text-[11px] text-muted-foreground">
+        <p aria-live="polite" className="text-ui-sm text-muted-foreground">
           Tab closed
         </p>
       )}
@@ -691,10 +603,10 @@ function FileTabStory(props: { readonly state: string }) {
   );
 }
 
-function MessageRowStory(props: { readonly state: string; readonly variant?: string }) {
+function MessageRowStory(props: { readonly state: string; readonly variant?: string | undefined }) {
   const [result, setResult] = useState("Awaiting message action");
   const revealed = props.state !== "default";
-  const footerClassName = `flex min-h-6 items-center gap-2 text-[10px] text-muted-foreground/45 ${
+  const footerClassName = `flex min-h-6 items-center gap-2 text-ui-xs text-muted-foreground/45 ${
     revealed ? "opacity-100" : MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME
   }`;
   const actions = (
@@ -720,7 +632,7 @@ function MessageRowStory(props: { readonly state: string; readonly variant?: str
       {props.variant === "user" ? (
         <MessageUserRowComposition>
           <MessageUserBubbleComposition>
-            <p className="text-sm leading-[1.55]">Please align this preview with Electron.</p>
+            <p className="text-ui leading-[1.55]">Please align this preview with Electron.</p>
           </MessageUserBubbleComposition>
           <div className={`${footerClassName} justify-end pr-0.5`}>
             <span>9:41 AM</span>
@@ -729,7 +641,7 @@ function MessageRowStory(props: { readonly state: string; readonly variant?: str
         </MessageUserRowComposition>
       ) : (
         <MessageAssistantRowComposition>
-          <p className="text-sm leading-[1.55]">
+          <p className="text-ui leading-[1.55]">
             The shared message row keeps actions quiet until the row is active.
           </p>
           <div className={footerClassName}>
@@ -738,7 +650,7 @@ function MessageRowStory(props: { readonly state: string; readonly variant?: str
           </div>
         </MessageAssistantRowComposition>
       )}
-      <p aria-live="polite" className="text-[11px] text-muted-foreground">
+      <p aria-live="polite" className="text-ui-sm text-muted-foreground">
         {result}
       </p>
     </div>
@@ -782,7 +694,7 @@ function MenuSwitchStory(props: { readonly state: string }) {
 export function ComponentsLabStoryRenderer(props: {
   readonly state: string;
   readonly storyId: string;
-  readonly variant?: string;
+  readonly variant?: string | undefined;
 }) {
   if (props.storyId === "navigation/recent-view-switcher") {
     return (
@@ -856,12 +768,12 @@ export function ComponentsLabStoryRenderer(props: {
       props.state === "vertical" || (props.state === "default" && props.variant === "vertical");
     return vertical ? (
       <div className="flex h-20 items-center gap-4">
-        <span className="text-xs">Left</span>
+        <span className="text-ui">Left</span>
         <Separator orientation="vertical" />
-        <span className="text-xs">Right</span>
+        <span className="text-ui">Right</span>
       </div>
     ) : (
-      <div className="grid w-72 gap-3 text-xs">
+      <div className="grid w-72 gap-3 text-ui">
         <span>Above</span>
         <Separator />
         <span>Below</span>
@@ -920,7 +832,8 @@ export function ComponentsLabStoryRenderer(props: {
     return (
       <Checkbox
         aria-label="Select project"
-        checked={selected === "mixed" ? "indeterminate" : selected === "checked"}
+        checked={selected === "checked"}
+        indeterminate={selected === "mixed"}
         disabled={selected === "disabled"}
         className={stateClass}
         onCheckedChange={() => {}}
@@ -956,7 +869,7 @@ export function ComponentsLabStoryRenderer(props: {
       >
         <div className={horizontal ? "flex w-[560px] gap-2 p-3" : "grid gap-2 p-3"}>
           {Array.from({ length: 12 }, (_, index) => (
-            <div key={index} className="min-w-28 rounded-lg bg-muted px-3 py-2 text-xs">
+            <div key={index} className="min-w-28 rounded-lg bg-muted px-3 py-2 text-ui">
               Item {index + 1}
             </div>
           ))}
@@ -1013,14 +926,14 @@ export function ComponentsLabStoryRenderer(props: {
       >
         <div className="w-72 rounded-xl border border-border bg-background p-2">
           <CollapsibleTrigger
-            className="flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-sm"
+            className="flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-ui"
             disabled={selected === "disabled"}
           >
             <span>Project details</span>
             <span>⌄</span>
           </CollapsibleTrigger>
           <CollapsiblePanel>
-            <div className="px-2 pt-2 text-xs text-muted-foreground">Shared disclosure content</div>
+            <div className="px-2 pt-2 text-ui text-muted-foreground">Shared disclosure content</div>
           </CollapsiblePanel>
         </div>
       </Collapsible>
@@ -1066,7 +979,7 @@ export function ComponentsLabStoryRenderer(props: {
             ) : null}
             {props.variant === "panel" ? (
               <DialogPanel>
-                <p className="text-sm">
+                <p className="text-ui">
                   {props.state === "long-content"
                     ? "This longer content verifies panel spacing and scrolling. ".repeat(12)
                     : "Dialog panel content"}
@@ -1086,7 +999,7 @@ export function ComponentsLabStoryRenderer(props: {
             ) : null}
             {props.state === "long-content" && props.variant !== "panel" ? (
               <DialogPanel>
-                <p className="text-sm">
+                <p className="text-ui">
                   {"This longer content verifies panel spacing and scrolling. ".repeat(12)}
                 </p>
               </DialogPanel>
@@ -1212,65 +1125,8 @@ export function ComponentsLabStoryRenderer(props: {
     return <EditorRailAddMenuStory open={props.state === "open"} />;
   }
   if (props.storyId === "project-actions/add-editor") {
-    const editing = props.variant === "edit" || props.variant === "shortcut-conflict";
-    const scripts = editing
-      ? [
-          {
-            id: "component-lab-test",
-            name: "Test",
-            command: "bun run test",
-            icon: "test" as const,
-            runOnWorktreeCreate: false,
-          },
-        ]
-      : [];
-    const keybindings =
-      props.variant === "shortcut-conflict"
-        ? ([
-            {
-              command: "script.component-lab-test.run",
-              shortcut: {
-                key: "t",
-                metaKey: false,
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                modKey: true,
-              },
-            },
-          ] as never)
-        : [];
     return (
-      <ProjectScriptsControl
-        key={`${props.variant}:${props.state}`}
-        scripts={scripts}
-        keybindings={keybindings}
-        preferredScriptId={editing ? "component-lab-test" : null}
-        initialEditingScriptId={
-          editing && (props.state !== "default" || props.variant === "shortcut-conflict")
-            ? "component-lab-test"
-            : null
-        }
-        initialDialogOpen={
-          props.state === "open" ||
-          props.state === "saving" ||
-          props.state === "error" ||
-          props.variant === "validation-error" ||
-          props.variant === "shortcut-conflict"
-        }
-        initialSaving={props.state === "saving"}
-        initialValidationError={
-          props.variant === "shortcut-conflict"
-            ? "Shortcut is already assigned to New thread."
-            : props.variant === "validation-error" || props.state === "error"
-              ? "Command is required."
-              : null
-        }
-        onRunScript={() => {}}
-        onAddScript={() => {}}
-        onUpdateScript={() => {}}
-        onDeleteScript={() => {}}
-      />
+      <RetiredStory reason="Electron's project scripts editor changed its props; port it before restoring this story." />
     );
   }
   if (props.storyId === "composer/model-effort-picker") {
@@ -1285,7 +1141,6 @@ export function ComponentsLabStoryRenderer(props: {
           cumulativeCostUsd={fixture.cumulativeCostUsd}
           activeWindowLabel={fixture.activeWindowLabel}
           pendingWindowLabel={fixture.pendingWindowLabel}
-          initialOpen={props.state === "open"}
         />
       </div>
     );
@@ -1335,12 +1190,7 @@ export function ComponentsLabStoryRenderer(props: {
   }
   if (props.storyId === "notifications/thread-error") {
     return (
-      <div className="w-[776px] max-w-full">
-        <ThreadErrorBanner
-          error="The coding agent stopped before the turn completed."
-          onDismiss={() => {}}
-        />
-      </div>
+      <RetiredStory reason="Electron removed the thread error banner; errors render in the transcript." />
     );
   }
   if (props.storyId === "transcript/collapsed-work") {
@@ -1351,7 +1201,7 @@ export function ComponentsLabStoryRenderer(props: {
           open={props.state === "open"}
           onOpenChange={() => {}}
         >
-          <p className="text-xs text-muted-foreground">
+          <p className="text-ui text-muted-foreground">
             Read 3 files and updated the implementation.
           </p>
         </CollapsedWorkComposition>
@@ -1409,25 +1259,9 @@ export function ComponentsLabStoryRenderer(props: {
           : selected === "overflow"
             ? COMPONENT_LAB_RIGHT_DOCK_OVERFLOW_PANES
             : COMPONENT_LAB_RIGHT_DOCK_PANES;
+    void panes;
     return (
-      <div
-        className={`w-full overflow-visible border border-border bg-background ${selected === "overflow" ? "max-w-sm" : "max-w-xl"}`}
-      >
-        <RightDockTabs
-          key={`${props.variant}:${props.state}`}
-          activePaneId="terminal"
-          addMenuKinds={
-            props.variant === "singleton-filtering" ? ["diff", "git"] : ["diff", "browser", "git"]
-          }
-          defaultAddMenuOpen={props.state === "add-menu-open"}
-          paneLabelOverrides={{ "sidechat:component-lab": "Side chat" }}
-          panes={[...panes]}
-          onAddPane={() => {}}
-          onClosePane={() => {}}
-          onCollapse={() => {}}
-          onSelectPane={() => {}}
-        />
-      </div>
+      <RetiredStory reason="Electron's right dock tabs were redesigned; port the new dock before restoring this story." />
     );
   }
   if (props.storyId === "kanban/card") {
@@ -1488,8 +1322,8 @@ export function ComponentsLabStoryRenderer(props: {
               ? COMPONENT_LAB_VOICE_WAVEFORM_LEVELS
               : COMPONENT_LAB_VOICE_SILENCE_LEVELS
           }
-          onCancel={() => {}}
-          onSubmit={() => {}}
+          onDiscard={() => {}}
+          onStop={() => {}}
         />
       </div>
     );
@@ -1637,7 +1471,7 @@ export function ComponentsLabStoryRenderer(props: {
             onActivate={() => {}}
             visualState={visualState as "default" | "hover" | "focus" | "pressed"}
             trailing={
-              fixture.shortcut ? <span className="text-[10px]">{fixture.shortcut}</span> : undefined
+              fixture.shortcut ? <span className="text-ui-xs">{fixture.shortcut}</span> : undefined
             }
           />
         </div>
@@ -1672,7 +1506,7 @@ export function ComponentsLabStoryRenderer(props: {
     };
     return (
       <div
-        className={`flex items-center gap-2 text-sm transition-opacity ${
+        className={`flex items-center gap-2 text-ui transition-opacity ${
           revealed ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         data-message-actions-visible={revealed}
@@ -1733,8 +1567,8 @@ export function ComponentsLabStoryRenderer(props: {
   return (
     <div className="flex min-h-64 items-center justify-center px-8 text-center">
       <div className="max-w-sm">
-        <p className="text-sm font-medium text-foreground">Story renderer not implemented yet</p>
-        <p className="mt-2 text-xs leading-5 text-muted-foreground">
+        <p className="text-ui font-medium text-foreground">Story renderer not implemented yet</p>
+        <p className="mt-2 text-ui leading-5 text-muted-foreground">
           {props.storyId} is in the shared inventory, but this state is not yet backed by the real
           product component.
         </p>
@@ -1743,7 +1577,10 @@ export function ComponentsLabStoryRenderer(props: {
   );
 }
 
-function IndependentTabsStory(props: { readonly state: string; readonly variant?: string }) {
+function IndependentTabsStory(props: {
+  readonly state: string;
+  readonly variant?: string | undefined;
+}) {
   const [result, setResult] = useState("Awaiting tab action");
   const terminal = props.variant !== "chat";
   const tabCount = props.state === "overflow" ? 8 : 3;
@@ -1789,14 +1626,17 @@ function IndependentTabsStory(props: { readonly state: string; readonly variant?
           </>
         }
       />
-      <p aria-live="polite" className="text-[11px] text-muted-foreground">
+      <p aria-live="polite" className="text-ui-sm text-muted-foreground">
         {result}
       </p>
     </div>
   );
 }
 
-function FilePreviewHeaderStory(props: { readonly state: string; readonly variant?: string }) {
+function FilePreviewHeaderStory(props: {
+  readonly state: string;
+  readonly variant?: string | undefined;
+}) {
   const presentation = props.variant === "editor" ? "editor" : "dock";
   const [mode, setMode] = useState<FilePreviewMode>(() =>
     props.state === "source" || props.state === "preview"
@@ -1822,7 +1662,7 @@ function FilePreviewHeaderStory(props: { readonly state: string; readonly varian
         onAskWhyInChat={() => {}}
         truncated={props.variant === "truncated"}
       />
-      <p aria-live="polite" className="px-3 py-2 text-[11px] text-muted-foreground">
+      <p aria-live="polite" className="px-3 py-2 text-ui-sm text-muted-foreground">
         {mode === "preview" ? "Preview mode" : "Source mode"}
       </p>
     </div>
@@ -1848,7 +1688,6 @@ function PdfViewerToolbarStory(props: { readonly state: string }) {
         zoomMode={mode}
         scale={scale}
         openInTarget="/workspace/report.pdf"
-        initialZoomMenuOpen={props.state === "menu-open"}
         onJumpToPage={setPage}
         onZoomIn={() => setMode({ type: "custom", scale: nextZoomScale(scale) })}
         onZoomOut={() => setMode({ type: "custom", scale: previousZoomScale(scale) })}
@@ -1864,4 +1703,9 @@ function PdfViewerToolbarStory(props: { readonly state: string }) {
       </div>
     </div>
   );
+}
+
+/** A story whose Electron component was redesigned or removed upstream; port it before restoring. */
+function RetiredStory(props: { readonly reason: string }) {
+  return <p className="max-w-md text-center text-ui-sm text-muted-foreground">{props.reason}</p>;
 }

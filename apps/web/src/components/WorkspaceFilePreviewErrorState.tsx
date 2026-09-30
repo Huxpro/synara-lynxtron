@@ -4,10 +4,10 @@
 import { WorkspaceFilePreviewErrorStateElement } from "~/components/WorkspaceFilePreviewErrorStateElements";
 
 export function WorkspaceFilePreviewErrorState(props: {
-  readonly detail?: string | null;
-  readonly retrying?: boolean;
+  readonly detail?: string | null | undefined;
+  readonly retrying?: boolean | undefined;
   readonly onRetry: () => void;
-  readonly onClose?: () => void;
+  readonly onClose?: (() => void) | undefined;
 }) {
   return (
     <WorkspaceFilePreviewErrorStateElement

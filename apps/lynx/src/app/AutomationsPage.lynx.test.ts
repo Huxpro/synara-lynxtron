@@ -160,7 +160,9 @@ describe("Lynx Automations route", () => {
     expect(pageSource).toContain("mutationFn: createAutomation");
     expect(pageSource).toContain("<AutomationDialog");
     expect(pageSource).toContain("threads={sidebar.data?.threads ?? []}");
-    expect(pageSource).not.toContain("navigate(`/automations/${encodeURIComponent(definition.id)}`)");
+    expect(pageSource).not.toContain(
+      "navigate(`/automations/${encodeURIComponent(definition.id)}`)",
+    );
     expect(dialogSource).toContain("buildAutomationCreateInput({");
     expect(createLogicSource).toContain("readonly schedule: AutomationSchedule");
     expect(createLogicSource).toContain("schedule: input.schedule");
@@ -184,10 +186,8 @@ describe("Lynx Automations route", () => {
     expect(dialogSource).toContain('acknowledgedWarningIds.has("local-checkout")');
     expect(createLogicSource).toContain("worktreeMode: input.worktreeMode");
     expect(createLogicSource).toContain("maxIterations: input.maxIterations");
-    expect(createLogicSource).toContain("stopOnError: input.stopOnError");
     expect(createLogicSource).toContain("interactionMode: input.interactionMode");
     expect(dialogSource).toContain("Max iterations");
-    expect(dialogSource).toContain("Stop on error");
     expect(dialogSource).toContain("Permissions");
     expect(dialogSource).toContain('<MenuRadioItem value="standalone">Standalone</MenuRadioItem>');
     expect(dialogSource).toContain('<MenuRadioItem value="heartbeat">Heartbeat</MenuRadioItem>');

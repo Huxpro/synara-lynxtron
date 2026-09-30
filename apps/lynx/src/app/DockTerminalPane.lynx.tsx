@@ -3,7 +3,6 @@ import terminalSvg from "@synara-central-icons/console.svg?raw";
 import type { TerminalEvent, ThreadId } from "@synara/contracts";
 import {
   defaultTerminalTitleForCliKind,
-  deriveTerminalOutputIdentity,
   resolveTerminalVisualIdentity,
   type TerminalCliKind,
   type TerminalVisualState,
@@ -221,15 +220,6 @@ export function DockTerminalPane(props: {
       setTerminalActivity(scopeId, id, {
         agentState: event.agentState ?? null,
         hasRunningSubprocess: event.hasRunningSubprocess,
-      });
-      return;
-    }
-    if (event.type === "output") {
-      const identity = deriveTerminalOutputIdentity(event.data);
-      if (!identity) return;
-      setTerminalMetadata(scopeId, id, {
-        cliKind: identity.cliKind,
-        label: identity.title,
       });
       return;
     }

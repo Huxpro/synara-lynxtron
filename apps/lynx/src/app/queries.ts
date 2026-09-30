@@ -23,7 +23,6 @@ import type {
   ProjectId,
   OrchestrationSpaceShell,
   ProviderKind,
-  ThreadMarker,
   PullRequestDetail,
   PullRequestDetailInput,
   PullRequestDiffResult,
@@ -49,6 +48,7 @@ import type {
   OrchestrationCheckpointSummary,
   OrchestrationThreadActivity,
   ThreadHandoff,
+  RuntimeMode,
 } from "@synara/contracts";
 import type { SidebarStatusPresentation } from "@synara-web/components/SidebarStatus.logic";
 import { resolveThreadStatusPill } from "@synara-web/components/SidebarThreadStatus.logic";
@@ -178,7 +178,7 @@ export interface ThreadHeaderSummary {
   readonly createBranchFlowCompleted: boolean;
   readonly provider?: ProviderKind;
   readonly modelSelection: ModelSelection;
-  readonly runtimeMode: "full-access" | "approval-required";
+  readonly runtimeMode: RuntimeMode;
   readonly interactionMode: "default" | "plan";
   readonly sessionStatus: string | null;
   readonly error: string | null;
@@ -191,8 +191,6 @@ export interface ThreadHeaderSummary {
   readonly pinnedMessages: readonly PinnedMessage[];
   readonly pinnedMessageTextById: Readonly<Record<string, string>>;
   readonly pinnedRevision: string;
-  readonly threadMarkers: readonly ThreadMarker[];
-  readonly markerRevision: string;
   readonly lastKnownPr: OrchestrationThreadPullRequest | null;
   readonly pendingApprovals: readonly PendingApproval[];
   readonly pendingUserInputs: readonly PendingUserInput[];
@@ -861,8 +859,6 @@ export async function fetchThreadHeaderSummary(
         .map((message) => [message.id as MessageId, message.text]),
     ),
     pinnedRevision: JSON.stringify(thread.pinnedMessages ?? []),
-    threadMarkers: thread.threadMarkers ?? [],
-    markerRevision: JSON.stringify(thread.threadMarkers ?? []),
     lastKnownPr: thread.lastKnownPr ?? null,
     pendingApprovals: derivePendingApprovals(thread.activities, thread.pendingInteractions),
     pendingUserInputs: derivePendingUserInputs(thread.activities, thread.pendingInteractions),

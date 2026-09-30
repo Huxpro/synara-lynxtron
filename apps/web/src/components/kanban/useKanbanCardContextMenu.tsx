@@ -16,6 +16,9 @@ import { RenameThreadDialog } from "~/components/RenameThreadDialog";
 import { useCopyPathToClipboard, useCopyThreadIdToClipboard } from "~/hooks/useCopyToClipboard";
 import { deleteActiveThreadFromClient } from "~/lib/activeThreadDelete";
 import { gitRemoveWorktreeMutationOptions } from "~/lib/gitReactQuery";
+import { THREAD_CONTEXT_MENU_ICONS } from "~/lib/contextMenuIcons";
+import { pinActionLabel } from "~/lib/pin";
+import { releaseOrphanedWorktreeAfterArchive } from "~/lib/archiveThreadWorktreeCleanup";
 import { archiveThreadFromClient } from "~/lib/threadArchive";
 import { dispatchThreadRename } from "~/lib/threadRename";
 import { newCommandId } from "~/lib/utils";
@@ -24,14 +27,10 @@ import { useKanbanUiStore } from "../../kanbanUiStore";
 import { readNativeApi } from "../../nativeApi";
 import { useStore } from "../../store";
 import { useTerminalStateStore } from "../../terminalStateStore";
-import { isThreadRunningTurn } from "../../session-logic";
 import { getThreadFromState } from "../../threadDerivation";
 import { toastManager } from "../ui/toast";
 import { isKanbanDraftOnlyCard, type KanbanCard } from "./kanban.logic";
-import { resolveKanbanCardActions } from "./kanbanMutation.logic";
-import { useKanbanDraftStart } from "./useKanbanDraftStart";
 
-import { dialogs } from "~/platform/dialogs";
 interface RenameTarget {
   threadId: ThreadId;
   title: string;
@@ -54,23 +53,33 @@ function resolveCardWorkspacePath(card: KanbanCard): string | null {
   });
 }
 
-async function archiveCardThread(threadId: ThreadId) {
+async function archiveCardThread(
+  threadId: ThreadId,
+  worktreeRelease: Omit<
+    Parameters<typeof releaseOrphanedWorktreeAfterArchive>[0],
+    "threadId" | "archiveSequence"
+  >,
+) {
   const api = readNativeApi();
   if (!api) return;
   const thread = getThreadFromState(useStore.getState(), threadId);
   if (!thread) return;
-  if (isThreadRunningTurn(thread)) {
-    toastManager.add({
-      type: "error",
-      title: "Cannot archive",
-      description: "Stop the running session before archiving this thread.",
-    });
-    return;
-  }
   // Archived threads leave the board's thread feed, so a live optimistic
   // dispatch entry could never reconcile — drop it with the card.
   useKanbanUiStore.getState().clearOptimisticDispatch(threadId);
-  await archiveThreadFromClient(api.orchestration, threadId);
+  const archiveSequence = await archiveThreadFromClient(api.orchestration, threadId);
+  if (!worktreeRelease.enabled) return;
+  // Kanban has no Undo toast. Give the asynchronous archive cleanup time to
+  // stop the provider before asking the server to validate and remove anything.
+  globalThis.setTimeout(() => {
+    void releaseOrphanedWorktreeAfterArchive({
+      threadId,
+      archiveSequence,
+      ...worktreeRelease,
+    }).catch((error: unknown) => {
+      console.error("Failed to release worktree after archiving thread", { threadId, error });
+    });
+  }, 8_000);
 }
 
 async function setThreadPinned(threadId: ThreadId, isPinned: boolean) {
@@ -84,9 +93,7 @@ async function setThreadPinned(threadId: ThreadId, isPinned: boolean) {
   });
 }
 
-export function useKanbanCardContextMenu(
-  onOpenCard: (card: KanbanCard) => void,
-): KanbanCardContextMenuController {
+export function useKanbanCardContextMenu(): KanbanCardContextMenuController {
   const { settings } = useAppSettings();
   const queryClient = useQueryClient();
   const removeWorktreeMutation = useMutation(gitRemoveWorktreeMutationOptions({ queryClient }));
@@ -97,7 +104,6 @@ export function useKanbanCardContextMenu(
   );
   const clearTerminalState = useTerminalStateStore((state) => state.clearTerminalState);
   const [renameTarget, setRenameTarget] = useState<RenameTarget | null>(null);
-  const startDraft = useKanbanDraftStart(onOpenCard);
 
   const copyPathToClipboard = useCopyPathToClipboard();
   const copyThreadIdToClipboard = useCopyThreadIdToClipboard();
@@ -139,18 +145,59 @@ export function useKanbanCardContextMenu(
     const deletesOnlyDraft = !isThreadBacked || isDraftOnlyCard;
     const isThreadActionCard = isThreadBacked && !isDraftOnlyCard;
     const workspacePath = resolveCardWorkspacePath(card);
-    const actions = resolveKanbanCardActions(card, {
-      canSupplyStartPrompt: false,
-      copyPathAvailable: workspacePath !== null,
-    });
 
     void (async () => {
-      const clicked = await api.contextMenu.show(actions, position);
-
-      if (clicked === "start") {
-        await startDraft(card);
-        return;
-      }
+      const clicked = await api.contextMenu.show(
+        [
+          ...(isThreadActionCard
+            ? [
+                { id: "rename", label: "Rename thread", icon: THREAD_CONTEXT_MENU_ICONS.rename },
+                {
+                  id: "toggle-pin",
+                  label: pinActionLabel("thread", card.thread?.isPinned ?? false),
+                  icon: THREAD_CONTEXT_MENU_ICONS.pin,
+                },
+              ]
+            : []),
+          ...(workspacePath
+            ? [
+                {
+                  id: "copy-path",
+                  label: "Copy Path",
+                  icon: THREAD_CONTEXT_MENU_ICONS.copy,
+                  separatorBefore: true,
+                },
+              ]
+            : []),
+          ...(isThreadBacked
+            ? [
+                {
+                  id: "copy-thread-id",
+                  label: "Copy Thread ID",
+                  icon: THREAD_CONTEXT_MENU_ICONS.copy,
+                },
+              ]
+            : []),
+          ...(isThreadActionCard
+            ? [
+                {
+                  id: "archive",
+                  label: "Archive",
+                  icon: THREAD_CONTEXT_MENU_ICONS.archive,
+                  separatorBefore: true,
+                },
+              ]
+            : []),
+          {
+            id: "delete",
+            label: deletesOnlyDraft ? "Delete draft" : "Delete",
+            icon: THREAD_CONTEXT_MENU_ICONS.delete,
+            destructive: true,
+            separatorBefore: !isThreadActionCard,
+          },
+        ],
+        position,
+      );
 
       if (clicked === "rename" && isThreadActionCard && card.thread) {
         setRenameTarget({ threadId: card.threadId, title: card.thread.title });
@@ -178,7 +225,7 @@ export function useKanbanCardContextMenu(
       if (clicked === "archive") {
         if (!isThreadActionCard) return;
         if (settings.confirmThreadArchive) {
-          const confirmed = await dialogs.confirm(
+          const confirmed = await api.dialogs.confirm(
             [
               `Archive thread "${card.title}"?`,
               "Archived threads are hidden from the sidebar but can be restored later.",
@@ -186,12 +233,15 @@ export function useKanbanCardContextMenu(
           );
           if (!confirmed) return;
         }
-        await archiveCardThread(card.threadId);
+        await archiveCardThread(card.threadId, {
+          enabled: settings.archiveDeletesOrphanedWorktree,
+          removeWorktree: (worktree) => removeWorktreeMutation.mutateAsync(worktree),
+        });
         return;
       }
       if (clicked !== "delete") return;
       if (settings.confirmThreadDelete) {
-        const confirmed = await dialogs.confirm(
+        const confirmed = await api.dialogs.confirm(
           deletesOnlyDraft
             ? `Delete this draft? This removes its unsent prompt.`
             : [

@@ -24,17 +24,19 @@ import { KanbanStatusIcon } from "./KanbanStatusIcon";
 import type { KanbanColumnKey } from "./kanban.logic";
 import type { KanbanDragPoint } from "./kanbanDnd.logic";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function KanbanCardRootElement(
   props: ChildrenProps & {
     readonly accessibleLabel: string;
     readonly isOverlay: boolean;
     readonly isDragSource: boolean;
-    readonly visualState?: "default" | "hover" | "focus" | "pressed";
-    readonly onActivate?: () => void;
-    readonly onContextMenu?: (event: React.MouseEvent) => void;
-    readonly onDragPointerStart?: (point: KanbanDragPoint) => void;
+    readonly visualState?: "default" | "hover" | "focus" | "pressed" | undefined;
+    readonly onActivate?: (() => void) | undefined;
+    readonly onContextMenu?:
+      | ((event: React.MouseEvent, restoreFocus?: () => void) => void)
+      | undefined;
+    readonly onDragPointerStart?: ((point: KanbanDragPoint) => void) | undefined;
   },
 ) {
   return (
@@ -75,7 +77,7 @@ export function KanbanCardActionsElement(props: {
       type="button"
       aria-label={props.label}
       title={props.label}
-      className="-mr-1 shrink-0 rounded px-1 text-xs text-muted-foreground/70 hover:bg-muted hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none"
+      className="-mr-1 shrink-0 rounded px-1 text-ui text-muted-foreground/70 hover:bg-muted hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none"
       onClick={(event) => {
         event.stopPropagation();
         props.onActivate(event);
@@ -92,7 +94,7 @@ export function KanbanCardTitleRowElement(props: ChildrenProps) {
 
 export function KanbanCardTitleElement(props: ChildrenProps) {
   return (
-    <span className="line-clamp-2 min-w-0 flex-1 text-[13px] leading-snug font-medium text-foreground/90">
+    <span className="line-clamp-2 min-w-0 flex-1 text-ui-lg leading-snug font-medium text-foreground/90">
       {props.children}
     </span>
   );
@@ -108,7 +110,7 @@ export function KanbanCardPinElement() {
 
 export function KanbanCardDraftPreviewElement(props: ChildrenProps) {
   return (
-    <span className="line-clamp-2 text-xs leading-snug text-muted-foreground">
+    <span className="line-clamp-2 text-ui leading-snug text-muted-foreground">
       {props.children}
     </span>
   );
@@ -132,7 +134,7 @@ export function KanbanCardProviderElement(props: { readonly provider: ProviderKi
 
 export function KanbanCardBranchElement(props: { readonly label: string }) {
   return (
-    <span className="flex min-w-0 items-center gap-1 text-[11px] text-muted-foreground/70">
+    <span className="flex min-w-0 items-center gap-1 text-ui-sm text-muted-foreground/70">
       <GitBranchIcon className="size-3 shrink-0" aria-hidden />
       <span className="max-w-32 truncate">{props.label}</span>
     </span>
@@ -186,12 +188,12 @@ export function KanbanCardTrailingElement(props: ChildrenProps) {
 export function KanbanCardOptimisticStatusElement(props: { readonly elapsed: string | null }) {
   return (
     <>
-      <span className="flex shrink-0 items-center gap-1.5 text-[11px] text-sky-600 dark:text-sky-300/90">
+      <span className="flex shrink-0 items-center gap-1.5 text-ui-sm text-sky-600 dark:text-sky-300/90">
         <LoaderIcon className="size-3 shrink-0 animate-spin" aria-hidden />
         Starting…
       </span>
       {props.elapsed ? (
-        <span className="shrink-0 text-[11px] text-muted-foreground/70">
+        <span className="shrink-0 text-ui-sm text-muted-foreground/70">
           Worked for {props.elapsed}
         </span>
       ) : null}
@@ -201,7 +203,7 @@ export function KanbanCardOptimisticStatusElement(props: { readonly elapsed: str
 
 export function KanbanCardStatusPillElement(props: { readonly pill: SidebarStatusPresentation }) {
   return (
-    <span className={cn("flex min-w-0 items-center gap-1.5 text-[11px]", props.pill.colorClass)}>
+    <span className={cn("flex min-w-0 items-center gap-1.5 text-ui-sm", props.pill.colorClass)}>
       <span
         className={cn(
           "size-1.5 shrink-0 rounded-full",
@@ -215,7 +217,7 @@ export function KanbanCardStatusPillElement(props: { readonly pill: SidebarStatu
 }
 
 export function KanbanCardTimestampElement(props: { readonly label: string }) {
-  return <span className="shrink-0 text-[11px] text-muted-foreground/70">{props.label}</span>;
+  return <span className="shrink-0 text-ui-sm text-muted-foreground/70">{props.label}</span>;
 }
 
 export function KanbanCardColumnStatusElement(props: {
@@ -224,7 +226,7 @@ export function KanbanCardColumnStatusElement(props: {
   readonly isTerminal: boolean;
 }) {
   return (
-    <span className="flex shrink-0 items-center gap-1 text-[11px] text-muted-foreground/80">
+    <span className="flex shrink-0 items-center gap-1 text-ui-sm text-muted-foreground/80">
       {props.isTerminal ? (
         <TerminalIcon className="size-3 shrink-0" aria-hidden />
       ) : (

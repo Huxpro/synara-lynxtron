@@ -16,14 +16,14 @@ export type SidebarProjectsSectionState = "ready" | "loading" | "error" | "empty
 export function SidebarProjectsSection<Row>(props: {
   readonly rows: readonly Row[];
   readonly renderRow: (row: Row) => ReactNode;
-  readonly renderList?: (children: ReactNode) => ReactNode;
-  readonly prelude?: ReactNode;
-  readonly headerActions?: ReactNode;
-  readonly afterList?: ReactNode;
-  readonly state?: SidebarProjectsSectionState;
-  readonly loadingLabel?: string;
-  readonly errorLabel?: string;
-  readonly emptyLabel?: string;
+  readonly renderList?: ((children: ReactNode) => ReactNode) | undefined;
+  readonly prelude?: ReactNode | undefined;
+  readonly headerActions?: ReactNode | undefined;
+  readonly afterList?: ReactNode | undefined;
+  readonly state?: SidebarProjectsSectionState | undefined;
+  readonly loadingLabel?: string | undefined;
+  readonly errorLabel?: string | undefined;
+  readonly emptyLabel?: string | undefined;
 }) {
   const state = props.state ?? "ready";
   const rows = props.rows.map((row) => props.renderRow(row));

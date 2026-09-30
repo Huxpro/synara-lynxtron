@@ -15,9 +15,18 @@ import { Schema } from "effect";
 import * as AcpErrors from "./AcpErrors.ts";
 
 import { ProviderAdapterRequestError, type ProviderAdapterError } from "../Errors.ts";
+import { shouldAllowSynaraComputerProviderTool } from "../../agentGateway/computerToolPermission.ts";
+
+// Synara-internal ACP tool kind for provider-native subagent runs. ACP's ToolKind has
+// no subagent variant (Cursor sends `kind: "other"` + `rawInput._toolName: "task"`), so
+// the runtime model tags detected subagent calls with this kind to reach the shared
+// collab_agent_tool_call presentation (agent icon, prompt preview, subagent live meta).
+export const ACP_SUBAGENT_TOOL_KIND = "agent";
 
 export function canonicalItemTypeFromAcpToolKind(kind: string | undefined): ToolLifecycleItemType {
   switch (kind) {
+    case ACP_SUBAGENT_TOOL_KIND:
+      return "collab_agent_tool_call";
     case "execute":
       return "command_execution";
     case "edit":
@@ -34,19 +43,23 @@ export function canonicalItemTypeFromAcpToolKind(kind: string | undefined): Tool
 
 function acpRequestErrorDetail(error: AcpErrors.AcpRequestError): string {
   const message = error.message.trim();
+  const data =
+    typeof error.data === "object" && error.data !== null
+      ? (error.data as Record<string, unknown>)
+      : undefined;
+  const rawDataDetail = data?.detail ?? data?.details;
   const dataDetail =
     typeof error.data === "string"
       ? error.data.trim()
-      : typeof error.data === "object" && error.data !== null
-        ? (() => {
-            const data = error.data as Record<string, unknown>;
-            const detail = data.detail ?? data.details;
-            return typeof detail === "string" ? detail.trim() : "";
-          })()
+      : typeof rawDataDetail === "string"
+        ? rawDataDetail.trim()
         : "";
 
   if (dataDetail && /^(?:internal error(?:: agent error)?|agent error)$/iu.test(message)) {
     return dataDetail;
+  }
+  if (dataDetail && typeof data?.code === "string" && data.code.startsWith("FS_")) {
+    return message ? `${message} ${dataDetail}` : dataDetail;
   }
   return message || dataDetail || "ACP request failed.";
 }
@@ -68,21 +81,9 @@ export function mapAcpToAdapterError(
   return new ProviderAdapterRequestError({
     provider,
     method,
-    detail: error.message,
+    detail: error.message.trim() || "ACP request failed without an error message.",
     cause: error,
   });
-}
-
-export function acpPermissionOutcome(decision: ProviderApprovalDecision): string {
-  switch (decision) {
-    case "acceptForSession":
-      return "allow-always";
-    case "accept":
-      return "allow-once";
-    case "decline":
-    default:
-      return "reject-once";
-  }
 }
 
 type AcpPermissionOptionLike = {
@@ -148,6 +149,12 @@ export function resolveAcpPermissionPolicy(input: {
   readonly runtimeMode: RuntimeMode;
   readonly interactionMode: ProviderInteractionMode | undefined;
   readonly options: ReadonlyArray<AcpPermissionOptionLike>;
+  readonly computerControlEnabled?: boolean;
+  readonly activeTurn?: boolean;
+  readonly toolCall?: {
+    readonly title?: unknown;
+    readonly rawInput?: unknown;
+  };
 }): AcpPermissionPolicyOutcome | undefined {
   if (input.interactionMode === "plan") {
     const optionId = selectAcpPermissionOptionId("decline", input.options);
@@ -156,6 +163,22 @@ export function resolveAcpPermissionPolicy(input: {
 
   if (input.interactionMode === undefined) {
     return { outcome: "cancelled" };
+  }
+
+  if (
+    shouldAllowSynaraComputerProviderTool({
+      computerControlEnabled: input.computerControlEnabled === true,
+      activeTurn: input.activeTurn === true,
+      interactionMode: input.interactionMode,
+      runtimeMode: input.runtimeMode,
+      permission: {
+        title: input.toolCall?.title,
+        rawInput: input.toolCall?.rawInput,
+      },
+    })
+  ) {
+    const optionId = input.options.find((option) => option.kind === "allow_once")?.optionId.trim();
+    if (optionId) return { outcome: "selected", optionId };
   }
 
   return input.runtimeMode === "full-access"

@@ -4,11 +4,11 @@
 // Exports: makeImportThreadHandler.
 
 import {
-  getSessionInfo as getClaudeSessionInfo,
-  getSessionMessages as getClaudeSessionMessages,
-} from "@anthropic-ai/claude-agent-sdk";
-import {
   CommandId,
+  OMP_THINKING_LEVEL_OPTIONS,
+  type ModelSelection,
+  type ModelSlug,
+  type OmpThinkingLevel,
   type OrchestrationImportThreadInput,
   type ProviderKind,
   type ThreadHandoffImportedMessage,
@@ -22,15 +22,20 @@ import type { FileSystem, Path } from "effect";
 import { Data, Effect, Option } from "effect";
 
 import { resolveThreadWorkspaceCwd } from "../checkpointing/Utils";
+import { loadClaudeAgentSdk } from "../provider/claudeAgentSdk.ts";
+import { ensureProviderEnabled } from "../provider/enabledProviderAdapter";
 import type { OrchestrationEngineShape } from "./Services/OrchestrationEngine";
 import type { ProjectionSnapshotQueryShape } from "./Services/ProjectionSnapshotQuery";
+import type { ProviderThreadSnapshot } from "../provider/Services/ProviderAdapter";
 import type { ProviderAdapterRegistryShape } from "../provider/Services/ProviderAdapterRegistry";
 import type { ProviderServiceShape } from "../provider/Services/ProviderService";
+import type { ServerSettingsShape } from "../serverSettings";
 import { parseManagedWorktreeWorkspaceRoot } from "../workspace/managedWorktree";
 import {
   mapClaudeSessionMessages,
   mapCodexSnapshotMessages,
   mapFactorySnapshotMessages,
+  mapOmpSnapshotMessages,
   mapOpenCodeSnapshotMessages,
 } from "./importedThreadMessages";
 
@@ -49,8 +54,8 @@ function providerResumeCursorForImport(provider: ProviderKind, externalId: strin
     case "claudeAgent":
       return { resume: externalId };
     case "droid":
+    case "omp":
       return { schemaVersion: 1, sessionId: externalId };
-    case "kilo":
     case "opencode":
       return { openCodeSessionId: externalId };
     default:
@@ -84,6 +89,7 @@ export interface ImportThreadHandlerOptions {
   readonly projectionSnapshotQuery: ProjectionSnapshotQueryShape;
   readonly providerAdapterRegistry: ProviderAdapterRegistryShape;
   readonly providerService: ProviderServiceShape;
+  readonly serverSettings: ServerSettingsShape;
 }
 
 export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
@@ -107,7 +113,10 @@ export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
     readonly externalId: string;
   }) {
     const claudeSessionInfo = yield* Effect.tryPromise({
-      try: () => getClaudeSessionInfo(input.externalId, input.cwd ? { dir: input.cwd } : undefined),
+      try: async () => {
+        const { getSessionInfo } = await loadClaudeAgentSdk();
+        return getSessionInfo(input.externalId, input.cwd ? { dir: input.cwd } : undefined);
+      },
       catch: (cause) =>
         importMessagesError(
           cause instanceof Error && cause.message.length > 0
@@ -119,7 +128,10 @@ export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
     if (claudeSessionInfo) return;
 
     const sessionFoundElsewhere = yield* Effect.tryPromise({
-      try: () => getClaudeSessionInfo(input.externalId),
+      try: async () => {
+        const { getSessionInfo } = await loadClaudeAgentSdk();
+        return getSessionInfo(input.externalId);
+      },
       catch: () => undefined,
     });
 
@@ -133,20 +145,23 @@ export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
   });
 
   const resolveImportedProviderThreadContext = Effect.fn(function* (input: {
-    readonly provider: "codex" | "droid" | "kilo" | "opencode";
+    readonly provider: "codex" | "droid" | "opencode" | "omp";
     readonly externalId: string;
     readonly projectWorkspaceRoot: string;
     readonly fallbackCwd?: string;
+    readonly prefetchedSnapshot?: ProviderThreadSnapshot | null;
   }) {
     const adapter = yield* options.providerAdapterRegistry.getByProvider(input.provider);
-    if (!adapter.readExternalThread) return null;
+    const readExternalThread = adapter.readExternalThread;
+    if (!readExternalThread && input.prefetchedSnapshot === undefined) return null;
 
-    const snapshot = yield* adapter
-      .readExternalThread({
-        externalThreadId: input.externalId,
-        ...(input.fallbackCwd ? { cwd: input.fallbackCwd } : {}),
-      })
-      .pipe(Effect.catch(() => Effect.succeed(null)));
+    const snapshot =
+      input.prefetchedSnapshot !== undefined
+        ? input.prefetchedSnapshot
+        : yield* readExternalThread!({
+            externalThreadId: input.externalId,
+            ...(input.fallbackCwd ? { cwd: input.fallbackCwd } : {}),
+          }).pipe(Effect.catch(() => Effect.succeed(null)));
     const externalCwd = snapshot?.cwd?.trim();
     if (!externalCwd) return null;
 
@@ -253,8 +268,10 @@ export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
     readonly threadId: ThreadId;
   }) {
     const sessionMessages = yield* Effect.tryPromise({
-      try: () =>
-        getClaudeSessionMessages(input.externalId, input.cwd ? { dir: input.cwd } : undefined),
+      try: async () => {
+        const { getSessionMessages } = await loadClaudeAgentSdk();
+        return getSessionMessages(input.externalId, input.cwd ? { dir: input.cwd } : undefined);
+      },
       catch: (cause) =>
         importMessagesError(
           cause instanceof Error && cause.message.length > 0
@@ -276,7 +293,7 @@ export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
 
   const importOpenCodeCompatibleThreadHistory = Effect.fn(function* (input: {
     readonly importedAt: string;
-    readonly provider: "kilo" | "opencode";
+    readonly provider: "opencode";
     readonly threadId: ThreadId;
   }) {
     const adapter = yield* options.providerAdapterRegistry.getByProvider(input.provider);
@@ -287,7 +304,7 @@ export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
           importMessagesError(
             cause instanceof Error && cause.message.length > 0
               ? cause.message
-              : `Failed to read ${input.provider === "kilo" ? "Kilo" : "OpenCode"} session history.`,
+              : "Failed to read OpenCode session history.",
           ),
         ),
       );
@@ -334,6 +351,22 @@ export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
     });
   });
 
+  const importOmpThreadHistory = Effect.fn(function* (input: {
+    readonly snapshot: ProviderThreadSnapshot;
+    readonly importedAt: string;
+    readonly threadId: ThreadId;
+  }) {
+    yield* dispatchImportedMessages({
+      threadId: input.threadId,
+      messages: mapOmpSnapshotMessages({
+        threadId: input.threadId,
+        turns: input.snapshot.turns,
+        importedAt: input.importedAt,
+      }),
+      createdAt: input.importedAt,
+    });
+  });
+
   return Effect.fnUntraced(function* (body: ImportThreadRequest) {
     const threadOption = yield* options.projectionSnapshotQuery.getThreadDetailById(body.threadId);
     if (Option.isNone(threadOption)) {
@@ -346,6 +379,8 @@ export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
         importMessagesError(`Thread '${body.threadId}' already has an active provider session.`),
       );
     }
+
+    yield* ensureProviderEnabled(thread.modelSelection.provider, options.serverSettings);
 
     const projectOption = yield* options.projectionSnapshotQuery.getProjectShellById(
       thread.projectId,
@@ -365,17 +400,65 @@ export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
     });
     const externalId = body.externalId.trim();
 
+    // OMP sessions are file-backed JSONL transcripts. Read the session file
+    // once up front: it supplies the transcript, the stored cwd for env
+    // detection, and the last-used model so the imported thread keeps running
+    // the model the source session used (omp has no static default model).
+    const ompImportSnapshot =
+      thread.modelSelection.provider === "omp"
+        ? yield* Effect.gen(function* () {
+            const adapter = yield* options.providerAdapterRegistry.getByProvider("omp");
+            if (!adapter.readExternalThread) {
+              return yield* Effect.fail(
+                importMessagesError("Oh My Pi session import is unavailable."),
+              );
+            }
+            return yield* adapter
+              .readExternalThread({
+                externalThreadId: externalId,
+                ...(cwd ? { cwd } : {}),
+              })
+              .pipe(
+                Effect.mapError((cause) =>
+                  importMessagesError(
+                    cause instanceof Error && cause.message.length > 0
+                      ? cause.message
+                      : `Oh My Pi session '${externalId}' was not found on this machine.`,
+                  ),
+                ),
+              );
+          })
+        : null;
+
+    const ompLastUsedModel = ompImportSnapshot?.lastUsedModel;
+    const ompThinkingLevel =
+      ompLastUsedModel?.thinkingLevel &&
+      (OMP_THINKING_LEVEL_OPTIONS as readonly string[]).includes(ompLastUsedModel.thinkingLevel)
+        ? (ompLastUsedModel.thinkingLevel as OmpThinkingLevel)
+        : undefined;
+    const effectiveModelSelection: ModelSelection =
+      ompLastUsedModel !== undefined
+        ? {
+            provider: "omp",
+            model: ompLastUsedModel.model as ModelSlug,
+            ...(ompThinkingLevel ? { options: { thinkingLevel: ompThinkingLevel } } : {}),
+          }
+        : thread.modelSelection;
+
     const importedProviderContext =
       (thread.modelSelection.provider === "codex" ||
         thread.modelSelection.provider === "droid" ||
-        thread.modelSelection.provider === "kilo" ||
-        thread.modelSelection.provider === "opencode") &&
+        thread.modelSelection.provider === "opencode" ||
+        thread.modelSelection.provider === "omp") &&
       project
         ? yield* resolveImportedProviderThreadContext({
             provider: thread.modelSelection.provider,
             externalId,
             projectWorkspaceRoot: project.workspaceRoot,
             ...(cwd ? { fallbackCwd: cwd } : {}),
+            ...(thread.modelSelection.provider === "omp"
+              ? { prefetchedSnapshot: ompImportSnapshot }
+              : {}),
           })
         : null;
 
@@ -388,6 +471,15 @@ export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
       });
     }
 
+    if (effectiveModelSelection !== thread.modelSelection) {
+      yield* options.orchestrationEngine.dispatch({
+        type: "thread.meta.update",
+        commandId: CommandId.makeUnsafe(crypto.randomUUID()),
+        threadId: thread.id,
+        modelSelection: effectiveModelSelection,
+      });
+    }
+
     if (thread.modelSelection.provider === "claudeAgent") {
       yield* ensureClaudeThreadImportable({
         cwd,
@@ -395,14 +487,20 @@ export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
       });
     }
 
+    const importResumeCursor = providerResumeCursorForImport(
+      thread.modelSelection.provider,
+      externalId,
+    );
     const session = yield* options.providerService.startSession(thread.id, {
       threadId: thread.id,
       provider: thread.modelSelection.provider,
       ...((importedProviderContext?.runtimeCwd ?? cwd)
         ? { cwd: importedProviderContext?.runtimeCwd ?? cwd }
         : {}),
-      modelSelection: thread.modelSelection,
-      resumeCursor: providerResumeCursorForImport(thread.modelSelection.provider, externalId),
+      modelSelection: effectiveModelSelection,
+      ...(thread.modelSelection.provider === "codex"
+        ? { forkSourceResumeCursor: importResumeCursor }
+        : { resumeCursor: importResumeCursor }),
       runtimeMode: thread.runtimeMode,
     });
 
@@ -425,13 +523,19 @@ export function makeImportThreadHandler(options: ImportThreadHandlerOptions) {
           externalId,
           importedAt: session.updatedAt,
         });
-      } else if (
-        thread.modelSelection.provider === "kilo" ||
-        thread.modelSelection.provider === "opencode"
-      ) {
+      } else if (thread.modelSelection.provider === "opencode") {
         yield* importOpenCodeCompatibleThreadHistory({
           provider: thread.modelSelection.provider,
           threadId: thread.id,
+          importedAt: session.updatedAt,
+        });
+      } else if (thread.modelSelection.provider === "omp") {
+        if (!ompImportSnapshot) {
+          return yield* Effect.fail(importMessagesError("Oh My Pi session import is unavailable."));
+        }
+        yield* importOmpThreadHistory({
+          threadId: thread.id,
+          snapshot: ompImportSnapshot,
           importedAt: session.updatedAt,
         });
       }

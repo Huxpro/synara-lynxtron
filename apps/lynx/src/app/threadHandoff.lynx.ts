@@ -1,4 +1,10 @@
-import type { ClientOrchestrationCommand, ModelSelection, ProviderKind } from "@synara/contracts";
+import type {
+  ClientOrchestrationCommand,
+  ModelSelection,
+  ProviderKind,
+  ServerProviderStatus,
+  ServerSettingsView,
+} from "@synara/contracts";
 import {
   buildThreadHandoffImportedActivities,
   buildThreadHandoffImportedMessages,
@@ -10,7 +16,12 @@ import {
 import { resolveProviderSendAvailability } from "@synara-web/lib/providerAvailability";
 import { newCommandId, newThreadId } from "@synara-web/lib/utils";
 
-import { fetchFreshServerConfig, dispatchSynaraCommand } from "../data/synaraClient.lynx";
+import {
+  dispatchSynaraCommand,
+  fetchFreshServerConfig,
+  fetchServerConfig,
+  fetchServerSettings,
+} from "../data/synaraClient.lynx";
 import { queryClient, type ThreadHeaderSummary } from "./queries";
 
 export interface NativeThreadHandoffProject {
@@ -18,8 +29,26 @@ export interface NativeThreadHandoffProject {
   readonly defaultModelSelection: ModelSelection | null;
 }
 
+/** Which providers can receive a handoff: enabled in settings and currently usable. */
+export interface NativeThreadHandoffProviderContext {
+  readonly providerSettings: ServerSettingsView["providers"] | null | undefined;
+  readonly providerStatuses: readonly ServerProviderStatus[];
+}
+
+export async function fetchNativeThreadHandoffProviderContext(options?: {
+  readonly fresh?: boolean;
+}): Promise<NativeThreadHandoffProviderContext> {
+  "background only";
+  const [config, settings] = await Promise.all([
+    options?.fresh ? fetchFreshServerConfig() : fetchServerConfig(),
+    fetchServerSettings(),
+  ]);
+  return { providerSettings: settings.providers, providerStatuses: config.providers };
+}
+
 export function resolveNativeThreadHandoffTargets(
   thread: ThreadHeaderSummary | undefined,
+  providers: NativeThreadHandoffProviderContext,
 ): readonly ProviderKind[] {
   if (
     !thread ||
@@ -34,7 +63,11 @@ export function resolveNativeThreadHandoffTargets(
     })
   )
     return [];
-  return resolveAvailableHandoffTargetProviders(thread.modelSelection.provider);
+  return resolveAvailableHandoffTargetProviders({
+    sourceProvider: thread.modelSelection.provider,
+    providerSettings: providers.providerSettings,
+    providerStatuses: providers.providerStatuses,
+  });
 }
 
 export function buildNativeThreadHandoffCreateCommand(input: {
@@ -77,14 +110,14 @@ export async function createNativeThreadHandoff(input: {
   readonly thread: ThreadHeaderSummary;
 }): Promise<string> {
   "background only";
-  const targets = resolveNativeThreadHandoffTargets(input.thread);
+  const providers = await fetchNativeThreadHandoffProviderContext({ fresh: true });
+  const targets = resolveNativeThreadHandoffTargets(input.thread, providers);
   if (!targets.includes(input.targetProvider)) {
     throw new Error("This handoff target is not available for the current thread.");
   }
-  const config = await fetchFreshServerConfig();
   const availability = resolveProviderSendAvailability({
     provider: input.targetProvider,
-    statuses: config.providers,
+    statuses: providers.providerStatuses,
   });
   if (!availability.usable) throw new Error(availability.unavailableReason);
 

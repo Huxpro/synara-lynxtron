@@ -9,13 +9,13 @@ import {
   USER_MESSAGE_BUBBLE_SHELL_CHROME_CLASS_NAME,
 } from "./chatTypography";
 
-export function MessageUserRowElement(props: { readonly children?: ReactNode }) {
+export function MessageUserRowElement(props: { readonly children?: ReactNode | undefined }) {
   return <div className="flex w-full justify-end">{props.children}</div>;
 }
 
 export function MessageUserColumnElement(props: {
   readonly fullWidth: boolean;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <div
@@ -31,7 +31,7 @@ export function MessageUserColumnElement(props: {
 
 export function MessageUserBubbleElement(props: {
   readonly chipOnly: boolean;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <div
@@ -46,6 +46,6 @@ export function MessageUserBubbleElement(props: {
   );
 }
 
-export function MessageAssistantRowElement(props: { readonly children?: ReactNode }) {
+export function MessageAssistantRowElement(props: { readonly children?: ReactNode | undefined }) {
   return <div className="group min-w-0 py-0.5">{props.children}</div>;
 }

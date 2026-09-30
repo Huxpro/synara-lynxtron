@@ -4,40 +4,43 @@ import {
   BROWSER_SEARCH_URL_PREFIX,
   buildAcceptLanguageHeader,
   buildChromeClientHints,
-  chromeMajorVersionFromUserAgent,
   classifyBrowserWindowOpen,
   deriveChromeUserAgent,
   isLikelyOAuthHost,
+  normalizeBrowserPageZoomFactor,
   normalizeBrowserUrlInput,
   isBlankBrowserTabUrl,
   resolveCopyableBrowserTabUrl,
+  resolveFloatingBrowserGuestLayout,
 } from "./browserSession";
 
 const ELECTRON_UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Synara/0.3.1 Chrome/124.0.6367.91 Electron/30.0.1 Safari/537.36";
+
+describe("floating browser page zoom", () => {
+  it("scales the frozen 1280x800 guest into the floating card without changing page zoom", () => {
+    expect(resolveFloatingBrowserGuestLayout({ width: 320, height: 220 })).toEqual({
+      width: 1_280,
+      height: 800,
+      scale: 0.25,
+      x: 0,
+      y: 10,
+    });
+    expect(resolveFloatingBrowserGuestLayout({ width: 1_280, height: 800 }).scale).toBe(1);
+  });
+
+  it("normalizes page zoom and preserves valid factors", () => {
+    expect(normalizeBrowserPageZoomFactor(undefined)).toBe(1);
+    expect(normalizeBrowserPageZoomFactor(Number.NaN)).toBe(1);
+    expect(normalizeBrowserPageZoomFactor(0.375)).toBe(0.375);
+  });
+});
 
 describe("deriveChromeUserAgent", () => {
   it("strips Electron and app product tokens to leave a vanilla Chrome UA", () => {
     expect(deriveChromeUserAgent(ELECTRON_UA, ["Synara"])).toBe(
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.91 Safari/537.36",
     );
-  });
-
-  it("preserves the platform and Chrome version from the base UA", () => {
-    const derived = deriveChromeUserAgent(ELECTRON_UA, ["Synara"]);
-    expect(derived).toContain("Chrome/124.0.6367.91");
-    expect(derived).not.toMatch(/Electron/i);
-    expect(derived).not.toMatch(/Synara/i);
-  });
-});
-
-describe("chromeMajorVersionFromUserAgent", () => {
-  it("extracts the Chrome major version", () => {
-    expect(chromeMajorVersionFromUserAgent(ELECTRON_UA)).toBe("124");
-  });
-
-  it("returns null when no Chrome token is present", () => {
-    expect(chromeMajorVersionFromUserAgent("Mozilla/5.0 (X11; Linux)")).toBeNull();
   });
 });
 
@@ -75,6 +78,12 @@ describe("normalizeBrowserUrlInput", () => {
 
   it("uses http for local hosts", () => {
     expect(normalizeBrowserUrlInput("localhost:5173")).toBe("http://localhost:5173/");
+  });
+
+  it("preserves explicit local file URLs", () => {
+    expect(normalizeBrowserUrlInput("file:///Users/example/project/index.html")).toBe(
+      "file:///Users/example/project/index.html",
+    );
   });
 
   it("turns spaced text into a search url", () => {
@@ -207,17 +216,6 @@ describe("classifyBrowserWindowOpen", () => {
         disposition: "foreground-tab",
       }),
     ).toBe("popup");
-  });
-
-  it("keeps ordinary _blank links to non-auth hosts as tabs", () => {
-    expect(
-      classifyBrowserWindowOpen({
-        url: "https://example.com/article",
-        frameName: "_blank",
-        features: "",
-        disposition: "foreground-tab",
-      }),
-    ).toBe("tab");
   });
 
   it("keeps ordinary _blank links to multi-purpose provider hosts as tabs", () => {

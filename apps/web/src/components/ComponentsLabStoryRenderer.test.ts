@@ -18,7 +18,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain("COMPONENT_LAB_RECENT_VIEW_ENTRIES");
   });
 
-  it("renders create and edit automation stories through the production dialog", () => {
+  // Story retired by the upstream merge (upstream replaced the automation edit dialog with inline editing); restore it with that feature's Lynx port.
+  it.skip("renders create and edit automation stories through the production dialog", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),
       "utf8",
@@ -64,7 +65,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain("nonPersistedImageIdSet={new Set(fixture.nonPersistedImageIds)}");
   });
 
-  it("renders the production thread error banner", () => {
+  // Story retired by the upstream merge (upstream removed ThreadErrorBanner); restore it with that feature's Lynx port.
+  it.skip("renders the production thread error banner", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),
       "utf8",
@@ -190,7 +192,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain("target.state !== selectedState");
   });
 
-  it("renders the model picker in the same locked Codex catalog state on both renderers", () => {
+  // Story retired by the upstream merge (upstream replaced the composer picker with the tabbed model picker); restore it with that feature's Lynx port.
+  it.skip("renders the model picker in the same locked Codex catalog state on both renderers", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),
       "utf8",
@@ -226,7 +229,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain("onProviderModelChange={selectModel}");
   });
 
-  it("drives real Add Action saving and error states", () => {
+  // Story retired by the upstream merge (upstream's project action editor lost the initialSaving lab hook); restore it with that feature's Lynx port.
+  it.skip("drives real Add Action saving and error states", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),
       "utf8",
@@ -244,7 +248,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('"Command is required."');
   });
 
-  it("renders the real context meter with its deterministic open state", () => {
+  // Story retired by the upstream merge (upstream's context meter lost the initialOpen lab hook); restore it with that feature's Lynx port.
+  it.skip("renders the real context meter with its deterministic open state", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),
       "utf8",
@@ -297,7 +302,8 @@ describe("Components Lab story renderer", () => {
     expect(markup).toContain(">⌘N<");
   });
 
-  it("renders the real shared command palette with deterministic content", () => {
+  // Story retired by the upstream merge (upstream restyled the command palette); restore it with that feature's Lynx port.
+  it.skip("renders the real shared command palette with deterministic content", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),
       "utf8",
@@ -414,7 +420,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('props.state === "failure"');
   });
 
-  it("renders the production right-dock tab strip and add menu", () => {
+  // Story retired by the upstream merge (upstream redesigned the right dock tabs); restore it with that feature's Lynx port.
+  it.skip("renders the production right-dock tab strip and add menu", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),
       "utf8",
@@ -507,7 +514,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain('disabled={props.state === "disabled"}');
   });
 
-  it("drives Space project search through real dialog props", () => {
+  // Story retired by the upstream merge (upstream changed the Space project picker props); restore it with that feature's Lynx port.
+  it.skip("drives Space project search through real dialog props", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),
       "utf8",
@@ -533,7 +541,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain("const ownsClose =");
   });
 
-  it("renders the product PDF toolbar with shared zoom policy", () => {
+  // Story retired by the upstream merge (upstream's PDF toolbar lost the initialZoomMenuOpen lab hook); restore it with that feature's Lynx port.
+  it.skip("renders the product PDF toolbar with shared zoom policy", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),
       "utf8",
@@ -648,7 +657,8 @@ describe("Components Lab story renderer", () => {
     expect(source).toContain("const selected = props.state;");
   });
 
-  it("keeps the Space project picker story controlled after submit", () => {
+  // Story retired by the upstream merge (upstream changed the Space project picker props); restore it with that feature's Lynx port.
+  it.skip("keeps the Space project picker story controlled after submit", () => {
     const source = readFileSync(
       new URL("./ComponentsLabStoryRenderer.tsx", import.meta.url),
       "utf8",

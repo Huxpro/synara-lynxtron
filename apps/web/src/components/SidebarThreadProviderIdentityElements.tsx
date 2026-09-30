@@ -9,7 +9,7 @@ export function SidebarThreadProviderIdentityContainerElement({
   children,
 }: {
   readonly handoff: boolean;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <span

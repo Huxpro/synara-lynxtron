@@ -70,6 +70,11 @@ export function getLocationSearch(): string {
   return typeof window === "undefined" ? "" : window.location.search;
 }
 
+/** window.location.protocol (e.g. "synara-beta:"); empty string when no DOM exists. */
+export function getLocationProtocol(): string {
+  return typeof window === "undefined" ? "" : (window.location?.protocol ?? "");
+}
+
 export function getLocationHash(): string {
   return typeof window === "undefined" ? "" : window.location.hash;
 }

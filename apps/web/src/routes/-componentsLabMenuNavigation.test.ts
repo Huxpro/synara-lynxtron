@@ -15,7 +15,8 @@ describe("Electron Components Lab menu navigation", () => {
   it("isolates the lab from product-global notification surfaces", () => {
     const root = readFileSync(new URL("./__root.tsx", import.meta.url), "utf8");
     expect(root).toContain('const componentsLabActive = pathname === "/components-lab"');
-    expect(root).toContain("componentsLabActive ? null : <ProviderUpdateNotifications />");
+    // Provider update prompts mount inside the refresh coordinator.
+    expect(root).toContain("componentsLabActive ? null : <ProviderStatusRefreshCoordinator />");
     expect(root).toContain("componentsLabActive ? null : <TaskCompletionNotifications />");
     expect(root).toContain('if (activeToast?.kind !== "prompt") return');
     expect(root).toContain("toastManager.close(activeToast.toastId)");

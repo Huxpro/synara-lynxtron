@@ -7,38 +7,46 @@ import type { ThreadId } from "@synara/contracts";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import {
-  DOCK_PANE_DEFERRED_HYDRATION_FRAMES,
   dockPaneActivationKey,
   resolveDockPaneRuntimeMode,
+  scheduleDeferredDockPaneHydration,
+  type DeferredDockPaneHydrationScheduler,
   type DockPaneRuntimeMode,
 } from "~/lib/dockPaneActivation";
 import type { RightDockPane, RightDockPaneKind } from "~/rightDockStore.logic";
 
-import { raf, cancelRaf } from "~/platform/frame";
+const browserDockPaneHydrationScheduler: DeferredDockPaneHydrationScheduler = {
+  requestFrame: (callback) => window.requestAnimationFrame(callback),
+  cancelFrame: (frameId) => window.cancelAnimationFrame(frameId),
+  setTimer: (callback, delayMs) => window.setTimeout(callback, delayMs),
+  clearTimer: (timerId) => window.clearTimeout(timerId),
+};
+
 export function useDockPaneRuntimeActivation(input: {
   threadId: ThreadId;
   activePane: RightDockPane | null;
 }) {
   const immediateHydrationKindRef = useRef<RightDockPaneKind | "any" | null>(null);
   const [hydratedPaneKey, setHydratedPaneKey] = useState<string | null>(null);
+  const activePaneId = input.activePane?.id ?? null;
   const activePaneKind = input.activePane?.kind ?? null;
 
   const activePaneKey = useMemo(
     () =>
-      input.activePane
+      activePaneId !== null && activePaneKind !== null
         ? dockPaneActivationKey({
             threadId: input.threadId,
-            paneId: input.activePane.id,
-            kind: input.activePane.kind,
+            paneId: activePaneId,
+            kind: activePaneKind,
           })
         : null,
-    [input.activePane, input.threadId],
+    [activePaneId, activePaneKind, input.threadId],
   );
 
   const activePaneRuntimeMode: DockPaneRuntimeMode =
-    input.activePane && activePaneKey
+    activePaneKind !== null && activePaneKey !== null
       ? resolveDockPaneRuntimeMode({
-          kind: input.activePane.kind,
+          kind: activePaneKind,
           reason:
             immediateHydrationKindRef.current === "any" ||
             immediateHydrationKindRef.current === activePaneKind
@@ -82,7 +90,7 @@ export function useDockPaneRuntimeActivation(input: {
   }, []);
 
   useLayoutEffect(() => {
-    if (!activePaneKind || !activePaneKey) {
+    if (activePaneKind === null || activePaneKey === null) {
       immediateHydrationKindRef.current = null;
       setHydratedPaneKey(null);
       return;
@@ -109,33 +117,10 @@ export function useDockPaneRuntimeActivation(input: {
     }
 
     setHydratedPaneKey((current) => (current === activePaneKey ? current : null));
-    let cancelled = false;
-    let frameId: number | null = null;
-    let framesRemaining = DOCK_PANE_DEFERRED_HYDRATION_FRAMES;
-
-    const tick = () => {
-      framesRemaining -= 1;
-      if (cancelled) {
-        return;
-      }
-      if (framesRemaining <= 0) {
-        setHydratedPaneKey(activePaneKey);
-        return;
-      }
-      frameId = raf(tick);
-    };
-
-    frameId = raf(tick);
-    return () => {
-      cancelled = true;
-      if (frameId !== null) {
-        cancelRaf(frameId);
-      }
-    };
-    // Depend on the pane's semantic identity, not the store object's reference.
-    // Projection updates may recreate an equivalent pane object every render; if
-    // that restarts this effect, the two-frame restore timer can be cancelled
-    // forever and leave a persisted Terminal stuck in preview mode.
+    return scheduleDeferredDockPaneHydration({
+      onHydrate: () => setHydratedPaneKey(activePaneKey),
+      scheduler: browserDockPaneHydrationScheduler,
+    });
   }, [activePaneKey, activePaneKind, hydratedPaneKey]);
 
   return {

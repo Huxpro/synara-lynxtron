@@ -1,11 +1,12 @@
 // Purpose: Scores sidebar palette results for actions, themes, projects, and chat threads.
 // Keeps search local and deterministic so the palette can rank title hits above
 // message-content hits while still surfacing a useful snippet for chat matches.
-import type { ReactNode } from "react";
+import type { ComponentType } from "react";
 
 import type { ProviderKind } from "@synara/contracts";
 import { SIDEBAR_SEARCH_LIMITS } from "@synara/shared/sidebarSearch";
 import { basenameOfPath } from "../file-icons";
+import type { ProjectAppearance } from "../lib/projectAppearance";
 
 export { SIDEBAR_SEARCH_LIMITS } from "@synara/shared/sidebarSearch";
 
@@ -18,7 +19,7 @@ export interface SidebarSearchAction {
   /** Dynamic actions (e.g. "Switch to <space>") execute this instead of a wired-up prop. */
   run?: () => void;
   /** Overrides the id-keyed icon map for actions whose glyph is data (a space's icon). */
-  icon?: (props: { className?: string }) => ReactNode;
+  icon?: ComponentType<{ className?: string }>;
   /**
    * Type-to-jump targets (one per space) only appear once the user types; listing them
    * all in the empty palette would push threads and projects below the fold.
@@ -44,6 +45,7 @@ export interface SidebarSearchProject {
   remoteName: string;
   folderName: string;
   localName: string | null;
+  appearance?: ProjectAppearance | null;
   cwd: string;
   spaceName: string;
   createdAt?: string | undefined;
@@ -68,6 +70,34 @@ export interface SidebarSearchThread {
   messages: readonly {
     text: string;
   }[];
+}
+
+/** Field-wise equality so a rebuilt search thread list can keep its previous identity. */
+export function areSidebarSearchThreadListsEqual(
+  previous: readonly SidebarSearchThread[],
+  next: readonly SidebarSearchThread[],
+): boolean {
+  if (previous === next) return true;
+  if (previous.length !== next.length) return false;
+  for (let index = 0; index < previous.length; index += 1) {
+    const left = previous[index]!;
+    const right = next[index]!;
+    if (
+      left.id !== right.id ||
+      left.title !== right.title ||
+      left.projectId !== right.projectId ||
+      left.projectName !== right.projectName ||
+      left.projectRemoteName !== right.projectRemoteName ||
+      left.spaceName !== right.spaceName ||
+      left.provider !== right.provider ||
+      left.createdAt !== right.createdAt ||
+      left.updatedAt !== right.updatedAt ||
+      left.messages !== right.messages
+    ) {
+      return false;
+    }
+  }
+  return true;
 }
 
 export interface SidebarSearchThreadMatch {

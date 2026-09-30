@@ -8,7 +8,7 @@ import {
   type TerminalOpenInput,
   type TerminalRestartInput,
 } from "@synara/contracts";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   PtySpawnError,
@@ -18,11 +18,13 @@ import {
   type PtySpawnInput,
 } from "../Services/PTY";
 import {
+  __terminalHistorySanitizeTesting,
   __terminalManagerShellTesting,
   TerminalManagerRuntime,
   type TerminalSubprocessActivity,
 } from "./Manager";
 import type { ProcessTreeKiller } from "../processTreeKiller";
+import type { ProcessChildrenSnapshotObserver } from "../windowsProcessSnapshot";
 import { Effect, Encoding } from "effect";
 
 class FakePtyProcess implements PtyProcess {
@@ -187,6 +189,7 @@ describe("TerminalManager", () => {
   const tempDirs: string[] = [];
 
   afterEach(() => {
+    vi.useRealTimers();
     for (const dir of tempDirs.splice(0, tempDirs.length)) {
       fs.rmSync(dir, { recursive: true, force: true });
     }
@@ -227,6 +230,7 @@ describe("TerminalManager", () => {
     options: {
       shellResolver?: () => string;
       subprocessChecker?: (terminalPid: number) => Promise<boolean | TerminalSubprocessActivity>;
+      processSnapshotObserver?: ProcessChildrenSnapshotObserver;
       processTreeKiller?: ProcessTreeKiller;
       subprocessPollIntervalMs?: number;
       processKillGraceMs?: number;
@@ -245,6 +249,9 @@ describe("TerminalManager", () => {
       historyLineLimit,
       shellResolver: options.shellResolver ?? (() => "/bin/bash"),
       ...(options.subprocessChecker ? { subprocessChecker: options.subprocessChecker } : {}),
+      ...(options.processSnapshotObserver
+        ? { processSnapshotObserver: options.processSnapshotObserver }
+        : {}),
       ...(options.processTreeKiller ? { processTreeKiller: options.processTreeKiller } : {}),
       ...(options.subprocessPollIntervalMs
         ? { subprocessPollIntervalMs: options.subprocessPollIntervalMs }
@@ -656,6 +663,108 @@ describe("TerminalManager", () => {
     manager.dispose();
   });
 
+  it("applies one shared process snapshot to multiple terminals per poll cycle", async () => {
+    let captureCount = 0;
+    const observer: ProcessChildrenSnapshotObserver = {
+      capture: vi.fn(async () => {
+        captureCount += 1;
+        if (captureCount === 1) return new Map();
+        return new Map([
+          [9000, [{ pid: 9100, command: "node.exe serve.js" }]],
+          [9001, [{ pid: 9101, command: "node.exe build.js" }]],
+        ]);
+      }),
+      retryDelayMs: () => 0,
+      dispose: vi.fn(),
+    };
+    const { manager } = makeManager(5, {
+      processSnapshotObserver: observer,
+      subprocessPollIntervalMs: 100,
+    });
+    const events: TerminalEvent[] = [];
+    manager.on("event", (event) => {
+      events.push(event);
+    });
+
+    await manager.open(openInput({ terminalId: "default" }));
+    await waitFor(() => captureCount === 1);
+    await manager.open(openInput({ terminalId: "sidecar" }));
+    await manager.write({ threadId: "thread-1", terminalId: "sidecar", data: "echo active\r" });
+
+    await waitFor(
+      () =>
+        events.some(
+          (event) =>
+            event.type === "activity" &&
+            event.terminalId === "default" &&
+            event.hasRunningSubprocess,
+        ) &&
+        events.some(
+          (event) =>
+            event.type === "activity" &&
+            event.terminalId === "sidecar" &&
+            event.hasRunningSubprocess,
+        ),
+      1_200,
+    );
+
+    expect(observer.capture).toHaveBeenCalledTimes(2);
+    manager.dispose();
+  });
+
+  it("honors process snapshot retry backoff instead of probing at the terminal cadence", async () => {
+    let backoffMs = 0;
+    const observer: ProcessChildrenSnapshotObserver = {
+      capture: vi.fn(async () => {
+        backoffMs = 120;
+        return null;
+      }),
+      retryDelayMs: () => backoffMs,
+      dispose: vi.fn(),
+    };
+    const { manager } = makeManager(5, {
+      processSnapshotObserver: observer,
+      subprocessPollIntervalMs: 10,
+    });
+
+    await manager.open(openInput());
+    await waitFor(() => vi.mocked(observer.capture).mock.calls.length === 1);
+    await new Promise((resolve) => setTimeout(resolve, 70));
+    expect(observer.capture).toHaveBeenCalledTimes(1);
+
+    await waitFor(() => vi.mocked(observer.capture).mock.calls.length === 2, 300);
+    manager.dispose();
+  });
+
+  it("preserves the last activity state while a shared snapshot is unavailable", async () => {
+    let captureCount = 0;
+    const observer: ProcessChildrenSnapshotObserver = {
+      capture: vi.fn(async () => {
+        captureCount += 1;
+        return captureCount === 1
+          ? new Map([[9000, [{ pid: 9100, command: "node.exe build.js" }]]])
+          : null;
+      }),
+      retryDelayMs: () => 0,
+      dispose: vi.fn(),
+    };
+    const { manager } = makeManager(5, {
+      processSnapshotObserver: observer,
+      subprocessPollIntervalMs: 20,
+    });
+    const activityEvents: TerminalEvent[] = [];
+    manager.on("event", (event) => {
+      if (event.type === "activity") activityEvents.push(event);
+    });
+
+    await manager.open(openInput());
+    await waitFor(() => captureCount >= 2);
+
+    expect(activityEvents).toHaveLength(1);
+    expect(activityEvents[0]).toMatchObject({ hasRunningSubprocess: true });
+    manager.dispose();
+  });
+
   it("does not brand generic terminals from provider descendants", async () => {
     const { manager } = makeManager(5, {
       subprocessChecker: async () => ({
@@ -825,6 +934,81 @@ describe("TerminalManager", () => {
     manager.dispose();
   });
 
+  it("abandons a string control sequence that never terminates", () => {
+    const { sanitizeTerminalHistoryChunk, maxPendingControlSequenceLength } =
+      __terminalHistorySanitizeTesting;
+    const chunkLength = 4096;
+
+    // An OSC with no BEL/ST terminator (truncated program, crashed TUI, `cat` on a
+    // binary) used to make every later byte accumulate in the carry-over buffer
+    // forever: nothing reached scrollback and each flush rescanned the whole buffer.
+    let pending = `\u001b]0;${"a".repeat(chunkLength)}`;
+    let emitted = "";
+    let flushes = 0;
+    for (let index = 0; index < 64; index += 1) {
+      const result = sanitizeTerminalHistoryChunk(pending, "b".repeat(chunkLength));
+      pending = result.pendingControlSequence;
+      emitted += result.visibleText;
+      if (result.visibleText.length > 0) {
+        flushes += 1;
+      }
+      expect(pending.length).toBeLessThanOrEqual(maxPendingControlSequenceLength);
+    }
+
+    expect(flushes).toBeGreaterThan(0);
+    expect(emitted.length).toBeGreaterThan(maxPendingControlSequenceLength);
+    // Parser state is reset, so ordinary output flows into history again.
+    const recovered = sanitizeTerminalHistoryChunk(pending, "recovered\n");
+    expect(recovered.visibleText.endsWith("recovered\n")).toBe(true);
+    expect(recovered.pendingControlSequence).toBe("");
+  });
+
+  it("keeps recording terminal history after an unterminated control sequence", async () => {
+    const { manager, ptyAdapter } = makeManager();
+    await manager.open(openInput());
+    const process = ptyAdapter.processes[0];
+    expect(process).toBeDefined();
+    if (!process) return;
+
+    process.emitData(
+      `\u001b]0;${"x".repeat(__terminalHistorySanitizeTesting.maxPendingControlSequenceLength + 1)}`,
+    );
+    // Let the runaway sequence flush on its own batch before the next output.
+    await new Promise((resolve) => setTimeout(resolve, 60));
+    process.emitData("visible after overflow\n");
+
+    await manager.close({ threadId: "thread-1" });
+
+    const reopened = await manager.open(openInput());
+    expect(reopened.history.endsWith("visible after overflow\n")).toBe(true);
+
+    manager.dispose();
+  });
+
+  it("releases cached history when a thread is closed without deleting history", async () => {
+    const { manager, ptyAdapter } = makeManager();
+    await manager.open(openInput());
+    const process = ptyAdapter.processes[0];
+    expect(process).toBeDefined();
+    if (!process) return;
+
+    process.emitData("archived output\n");
+    // Archiving closes terminals but keeps their transcripts on disk.
+    await manager.close({ threadId: "thread-1" });
+
+    const persistedHistoryByKey = (
+      manager as unknown as { persistedHistoryByKey: Map<string, string> }
+    ).persistedHistoryByKey;
+    expect(
+      [...persistedHistoryByKey.keys()].filter((key) => key.startsWith("thread-1\u0000")),
+    ).toEqual([]);
+
+    const reopened = await manager.open(openInput());
+    expect(reopened.history).toBe("archived output\n");
+
+    manager.dispose();
+  });
+
   it("strips replay-destructive clears while preserving style sequences", async () => {
     const { manager, ptyAdapter } = makeManager();
     await manager.open(openInput());
@@ -906,25 +1090,6 @@ describe("TerminalManager", () => {
     manager.dispose();
   });
 
-  it("preserves chunk-split ESC sequences with intermediate bytes without leaking final bytes", async () => {
-    const { manager, ptyAdapter } = makeManager();
-    await manager.open(openInput());
-    const process = ptyAdapter.processes[0];
-    expect(process).toBeDefined();
-    if (!process) return;
-
-    process.emitData("before ");
-    process.emitData("\u001b(");
-    process.emitData("Bafter\n");
-
-    await manager.close({ threadId: "thread-1" });
-
-    const reopened = await manager.open(openInput());
-    expect(reopened.history).toBe("before \u001b(Bafter\n");
-
-    manager.dispose();
-  });
-
   it("deletes history file when close(deleteHistory=true)", async () => {
     const { manager, ptyAdapter, logsDir } = makeManager();
     await manager.open(openInput());
@@ -962,6 +1127,33 @@ describe("TerminalManager", () => {
     expect(fs.existsSync(multiTerminalHistoryLogPath(logsDir, "thread-1", "default"))).toBe(false);
     expect(fs.existsSync(multiTerminalHistoryLogPath(logsDir, "thread-1", "sidecar"))).toBe(false);
 
+    manager.dispose();
+  });
+
+  it("keeps terminals reattached after an archive cleanup fence", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-07-23T20:00:00.000Z"));
+    const { manager, ptyAdapter } = makeManager();
+    await manager.open(openInput({ terminalId: "default" }));
+    await manager.open(openInput({ terminalId: "sidecar" }));
+    const defaultProcess = ptyAdapter.processes[0];
+    const sidecarProcess = ptyAdapter.processes[1];
+    expect(defaultProcess).toBeDefined();
+    expect(sidecarProcess).toBeDefined();
+    if (!defaultProcess || !sidecarProcess) return;
+
+    const archivedAt = "2026-07-23T20:00:05.000Z";
+    vi.setSystemTime(new Date("2026-07-23T20:00:10.000Z"));
+    await manager.open(openInput({ terminalId: "sidecar" }));
+
+    await manager.closeSessionsOpenedAtOrBefore({
+      threadId: "thread-1",
+      openedAtOrBefore: archivedAt,
+    });
+
+    expect(defaultProcess.killed).toBe(true);
+    expect(sidecarProcess.killed).toBe(false);
+    await manager.close({ threadId: "thread-1" });
     manager.dispose();
   });
 
@@ -1234,6 +1426,51 @@ describe("TerminalManager", () => {
       expect(spawnInput.env.TERM_PROGRAM).toBeUndefined();
       expect(spawnInput.env.TERMINFO).toBeUndefined();
       expect(spawnInput.env.GHOSTTY_RESOURCES_DIR).toBeUndefined();
+
+      manager.dispose();
+    } finally {
+      restoreEnv();
+    }
+  });
+
+  it("pins COLORTERM and drops inherited color-control env", async () => {
+    const originalValues = new Map<string, string | undefined>();
+    const setEnv = (key: string, value: string) => {
+      if (!originalValues.has(key)) {
+        originalValues.set(key, process.env[key]);
+      }
+      process.env[key] = value;
+    };
+    const restoreEnv = () => {
+      for (const [key, value] of originalValues) {
+        if (value === undefined) {
+          delete process.env[key];
+        } else {
+          process.env[key] = value;
+        }
+      }
+    };
+
+    setEnv("NO_COLOR", "1");
+    setEnv("FORCE_COLOR", "0");
+    setEnv("CLICOLOR", "0");
+    setEnv("CLICOLOR_FORCE", "0");
+    setEnv("COLORFGBG", "0;15");
+    setEnv("COLORTERM", "");
+
+    try {
+      const { manager, ptyAdapter } = makeManager();
+      await manager.open(openInput());
+      const spawnInput = ptyAdapter.spawnInputs[0];
+      expect(spawnInput).toBeDefined();
+      if (!spawnInput) return;
+
+      expect(spawnInput.env.COLORTERM).toBe("truecolor");
+      expect(spawnInput.env.NO_COLOR).toBeUndefined();
+      expect(spawnInput.env.FORCE_COLOR).toBeUndefined();
+      expect(spawnInput.env.CLICOLOR).toBeUndefined();
+      expect(spawnInput.env.CLICOLOR_FORCE).toBeUndefined();
+      expect(spawnInput.env.COLORFGBG).toBeUndefined();
 
       manager.dispose();
     } finally {

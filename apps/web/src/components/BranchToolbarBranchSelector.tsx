@@ -5,17 +5,27 @@
 // menu-item-style affordance inside a ComboboxPopup, not a generic action.
 import type { GitBranch, GitStashInfoResult, GitStatusResult, NativeApi } from "@synara/contracts";
 import { pluralize } from "@synara/shared/text";
-import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ChevronDownIcon, PlusIcon } from "~/lib/icons";
 import { CentralIcon } from "~/lib/central-icons";
-import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  type CSSProperties,
+  useCallback,
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useOptimistic,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 
 import {
   gitBranchesQueryOptions,
   gitQueryKeys,
   gitStatusQueryOptions,
-  invalidateGitQueries,
+  refreshGitQueriesScoped,
 } from "../lib/gitReactQuery";
 import { readNativeApi } from "../nativeApi";
 import { parsePullRequestReference } from "../pullRequestReference";
@@ -28,6 +38,7 @@ import {
   shouldSyncLocalThreadBranch,
 } from "./BranchToolbar.logic";
 import { Button } from "./ui/button";
+import { DiffStat } from "./ui/diff-stat";
 import {
   Dialog,
   DialogDescription,
@@ -55,9 +66,9 @@ import {
   EnvironmentRowChevron,
 } from "./chat/environment/EnvironmentRow";
 import { COMPOSER_TOOLBAR_PICKER_TRIGGER_CLASS_NAME } from "./chat/composerPickerStyles";
+import { ELEVATED_HOVER_SURFACE_CLASS_NAME } from "../surfaceStyles";
 import type { ThreadWorkspacePatch } from "../types";
 
-import { useDebouncedValue } from "@tanstack/react-pacer";
 /**
  * Where the selector is rendered. `toolbar` keeps the compact composer-footer pill;
  * `panel` makes the trigger a full-width Environment panel row and drops its menu
@@ -73,6 +84,7 @@ interface BranchToolbarBranchSelectorProps {
   effectiveEnvMode: EnvMode;
   envLocked: boolean;
   hasServerThread: boolean;
+  isThreadSettled: boolean;
   onSetThreadWorkspace: (patch: ThreadWorkspacePatch) => void;
   onCheckoutPullRequestRequest?: (reference: string) => void;
   onComposerFocusRequest?: () => void;
@@ -167,14 +179,19 @@ function handleCheckoutError(
     cwd: string;
     fallbackTitle: string;
     onSuccess: () => void;
-    queryClient: QueryClient;
-    runBranchAction: (action: () => Promise<void>) => void;
+    runBranchAction: (
+      action: () => Promise<void>,
+      options?: { readonly refreshCwds?: readonly string[] },
+    ) => void;
     onRequestDiscardStash: (input: { cwd: string }) => void;
   },
 ): void {
+  // Recovery always acts on input.cwd, which can differ from the selector's own checkout
+  // (e.g. "Stash & Switch" from a dedicated worktree back to the project root), so every
+  // retry passes it as the awaited refresh scope instead of relying on the default.
+  const retryRefreshOptions = { refreshCwds: [input.cwd] } as const;
   const retryStashAndCheckout = async (): Promise<void> => {
     await input.api.git.stashAndCheckout({ cwd: input.cwd, branch: input.branch });
-    await invalidateGitQueries(input.queryClient);
     input.onSuccess();
   };
 
@@ -199,7 +216,7 @@ function handleCheckoutError(
             } catch (retryError) {
               handleCheckoutError(retryError, input);
             }
-          });
+          }, retryRefreshOptions);
         },
       },
     });
@@ -221,7 +238,7 @@ function handleCheckoutError(
             } catch (retryError) {
               handleCheckoutError(retryError, input);
             }
-          });
+          }, retryRefreshOptions);
         },
       },
     });
@@ -252,7 +269,6 @@ function handleCheckoutError(
                 return;
               }
               if (isStashConflictError(stashError)) {
-                await invalidateGitQueries(input.queryClient);
                 input.onSuccess();
                 addBranchRecoveryToast({
                   type: "warning",
@@ -263,7 +279,7 @@ function handleCheckoutError(
                   actionProps: {
                     children: "Discard stash",
                     className:
-                      "border-destructive bg-destructive text-white shadow-destructive/24 hover:bg-destructive/90",
+                      "text-destructive [:hover,[data-pressed]]:bg-destructive/10 [:hover,[data-pressed]]:text-destructive",
                     onClick: () => {
                       closeActiveBranchRecoveryToast();
                       input.onRequestDiscardStash({ cwd: input.cwd });
@@ -289,7 +305,7 @@ function handleCheckoutError(
                 data: { copyText: toBranchActionErrorMessage(stashError) },
               });
             }
-          });
+          }, retryRefreshOptions);
         },
       },
     });
@@ -363,18 +379,20 @@ export function BranchToolbarBranchSelector({
   effectiveEnvMode,
   envLocked,
   hasServerThread,
+  isThreadSettled,
   onSetThreadWorkspace,
   onCheckoutPullRequestRequest,
   onComposerFocusRequest,
-  variant = "toolbar",
+  variant: variantProp,
 }: BranchToolbarBranchSelectorProps) {
+  const variant = variantProp ?? "toolbar";
   const isPanel = variant === "panel";
   const queryClient = useQueryClient();
   const [isBranchMenuOpen, setIsBranchMenuOpen] = useState(false);
   const [isCreateBranchDialogOpen, setIsCreateBranchDialogOpen] = useState(false);
   const [createBranchName, setCreateBranchName] = useState("");
   const [branchQuery, setBranchQuery] = useState("");
-  const [deferredBranchQuery] = useDebouncedValue(branchQuery, { wait: 100 });
+  const deferredBranchQuery = useDeferredValue(branchQuery);
 
   const branchesQuery = useQuery(gitBranchesQueryOptions(branchCwd));
   const branchStatusQuery = useQuery(gitStatusQueryOptions(branchCwd));
@@ -422,12 +440,11 @@ export function BranchToolbarBranchSelector({
           ),
     [branchPickerItems, normalizedDeferredBranchQuery],
   );
-  // React 17-safe replacement for useOptimistic+useTransition (P1-F5): the
-  // optimistic value is cleared when the action settles; canonical props flow
-  // through whenever no optimistic override is set.
-  const [optimisticBranch, setOptimisticBranch] = useState<string | null>(null);
-  const resolvedActiveBranch = optimisticBranch ?? canonicalActiveBranch;
-  const [isBranchActionPending, setIsBranchActionPending] = useState(false);
+  const [resolvedActiveBranch, setOptimisticBranch] = useOptimistic(
+    canonicalActiveBranch,
+    (_currentBranch: string | null, optimisticBranch: string | null) => optimisticBranch,
+  );
+  const [isBranchActionPending, startBranchActionTransition] = useTransition();
   const [stashDiscardDialog, setStashDiscardDialog] = useState<StashDiscardDialogState | null>(
     null,
   );
@@ -442,6 +459,7 @@ export function BranchToolbarBranchSelector({
         activeThreadBranch,
         currentGitBranch,
         hasServerThread,
+        isThreadSettled,
         isBranchActionPending,
       })
     ) {
@@ -455,21 +473,23 @@ export function BranchToolbarBranchSelector({
     currentGitBranch,
     effectiveEnvMode,
     hasServerThread,
+    isThreadSettled,
     isBranchActionPending,
     onSetThreadWorkspace,
   ]);
 
-  const runBranchAction = (action: () => Promise<void>) => {
-    setIsBranchActionPending(true);
-    void (async () => {
-      try {
-        await action().catch(() => undefined);
-        await invalidateGitQueries(queryClient).catch(() => undefined);
-      } finally {
-        setIsBranchActionPending(false);
-        setOptimisticBranch(null);
-      }
-    })();
+  const runBranchAction = (
+    action: () => Promise<void>,
+    options?: { readonly refreshCwds?: readonly string[] },
+  ) => {
+    startBranchActionTransition(async () => {
+      await action().catch(() => undefined);
+      // Only the acted-on checkout gates re-enabling the selector; the remaining cached
+      // repos (checked-out markers in sibling worktrees) refresh in the background so a
+      // slow unrelated worktree cannot hold the selector disabled.
+      const awaitedCwds = options?.refreshCwds ?? (branchCwd ? [branchCwd] : []);
+      await refreshGitQueriesScoped(queryClient, awaitedCwds).catch(() => undefined);
+    });
   };
 
   const openCreateBranchDialog = useCallback(() => {
@@ -513,15 +533,18 @@ export function BranchToolbarBranchSelector({
     const api = readNativeApi();
     if (!dialog || !api || isDroppingStash) return;
     setIsDroppingStash(true);
-    runBranchAction(async () => {
-      try {
-        if (!dialog.info) return;
-        await api.git.stashDrop({ cwd: dialog.cwd, stashRef: dialog.info.stashRef });
-        setStashDiscardDialog(null);
-      } finally {
-        setIsDroppingStash(false);
-      }
-    });
+    runBranchAction(
+      async () => {
+        try {
+          if (!dialog.info) return;
+          await api.git.stashDrop({ cwd: dialog.cwd, stashRef: dialog.info.stashRef });
+          setStashDiscardDialog(null);
+        } finally {
+          setIsDroppingStash(false);
+        }
+      },
+      { refreshCwds: [dialog.cwd] },
+    );
   }, [isDroppingStash, runBranchAction, stashDiscardDialog]);
 
   const selectBranch = (branch: GitBranch) => {
@@ -560,45 +583,46 @@ export function BranchToolbarBranchSelector({
     setIsBranchMenuOpen(false);
     onComposerFocusRequest?.();
 
-    runBranchAction(async () => {
-      setOptimisticBranch(selectedBranchName);
-      try {
-        await api.git.checkout({ cwd: selectionTarget.checkoutCwd, branch: branch.name });
-        await invalidateGitQueries(queryClient);
-      } catch (error) {
-        handleCheckoutError(error, {
-          api,
-          branch: branch.name,
-          cwd: selectionTarget.checkoutCwd,
-          fallbackTitle: "Failed to checkout branch.",
-          onSuccess: () => {
-            setOptimisticBranch(selectedBranchName);
-            onSetThreadWorkspace({
-              branch: selectedBranchName,
-              worktreePath: selectionTarget.nextWorktreePath,
-            });
-          },
-          queryClient,
-          runBranchAction,
-          onRequestDiscardStash: openStashDiscardDialog,
-        });
-        return;
-      }
-
-      let nextBranchName = selectedBranchName;
-      if (branch.isRemote) {
-        const status = await api.git.status({ cwd: branchCwd }).catch(() => null);
-        if (status?.branch) {
-          nextBranchName = status.branch;
+    runBranchAction(
+      async () => {
+        setOptimisticBranch(selectedBranchName);
+        try {
+          await api.git.checkout({ cwd: selectionTarget.checkoutCwd, branch: branch.name });
+        } catch (error) {
+          handleCheckoutError(error, {
+            api,
+            branch: branch.name,
+            cwd: selectionTarget.checkoutCwd,
+            fallbackTitle: "Failed to checkout branch.",
+            onSuccess: () => {
+              setOptimisticBranch(selectedBranchName);
+              onSetThreadWorkspace({
+                branch: selectedBranchName,
+                worktreePath: selectionTarget.nextWorktreePath,
+              });
+            },
+            runBranchAction,
+            onRequestDiscardStash: openStashDiscardDialog,
+          });
+          return;
         }
-      }
 
-      setOptimisticBranch(nextBranchName);
-      onSetThreadWorkspace({
-        branch: nextBranchName,
-        worktreePath: selectionTarget.nextWorktreePath,
-      });
-    });
+        let nextBranchName = selectedBranchName;
+        if (branch.isRemote) {
+          const status = await api.git.status({ cwd: branchCwd }).catch(() => null);
+          if (status?.branch) {
+            nextBranchName = status.branch;
+          }
+        }
+
+        setOptimisticBranch(nextBranchName);
+        onSetThreadWorkspace({
+          branch: nextBranchName,
+          worktreePath: selectionTarget.nextWorktreePath,
+        });
+      },
+      { refreshCwds: [selectionTarget.checkoutCwd] },
+    );
   };
 
   const createBranch = (rawName: string) => {
@@ -631,7 +655,6 @@ export function BranchToolbarBranchSelector({
               setBranchQuery("");
               setCreateBranchName("");
             },
-            queryClient,
             runBranchAction,
             onRequestDiscardStash: openStashDiscardDialog,
           });
@@ -758,7 +781,9 @@ export function BranchToolbarBranchSelector({
         >
           <div className="flex min-w-0 flex-col items-start py-1">
             <span className="truncate font-medium">Checkout Pull Request</span>
-            <span className="truncate text-muted-foreground text-xs">{prReference}</span>
+            <span className="truncate text-muted-foreground text-ui leading-snug">
+              {prReference}
+            </span>
           </div>
         </ComboboxItem>
       );
@@ -800,21 +825,20 @@ export function BranchToolbarBranchSelector({
             <div className="flex items-center justify-between gap-2">
               <span className="truncate">{itemValue}</span>
               {badge && (
-                <span className="shrink-0 text-[10px] text-muted-foreground/45">{badge}</span>
+                <span className="shrink-0 text-ui-xs text-muted-foreground/45">{badge}</span>
               )}
             </div>
             {currentBranchChangeSummary ? (
-              <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11px] leading-4">
+              <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-ui-sm leading-4">
                 <span className="text-muted-foreground">
                   Uncommitted: {currentBranchChangeSummary.fileCount.toLocaleString()}{" "}
                   {pluralize(currentBranchChangeSummary.fileCount, "file")}
                 </span>
-                <span className="font-mono tabular-nums text-success">
-                  +{currentBranchChangeSummary.insertions.toLocaleString()}
-                </span>
-                <span className="font-mono tabular-nums text-destructive">
-                  -{currentBranchChangeSummary.deletions.toLocaleString()}
-                </span>
+                <DiffStat
+                  className="font-mono"
+                  insertions={currentBranchChangeSummary.insertions}
+                  deletions={currentBranchChangeSummary.deletions}
+                />
               </div>
             ) : null}
           </div>
@@ -901,7 +925,7 @@ export function BranchToolbarBranchSelector({
           <div className="border-t border-[color:var(--color-border-light)] p-1">
             <button
               type="button"
-              className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-[var(--color-text-foreground)] transition-colors hover:bg-[var(--color-background-elevated-secondary)] disabled:cursor-not-allowed disabled:opacity-50"
+              className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-ui text-[var(--color-text-foreground)] disabled:cursor-not-allowed disabled:opacity-50 ${ELEVATED_HOVER_SURFACE_CLASS_NAME}`}
               disabled={isBranchActionPending}
               onClick={openCreateBranchDialog}
             >
@@ -941,7 +965,10 @@ export function BranchToolbarBranchSelector({
               }}
             >
               <div className="space-y-1.5">
-                <label className="block font-medium text-sm" htmlFor="branch-create-name">
+                <label
+                  className="block font-medium text-ui leading-snug"
+                  htmlFor="branch-create-name"
+                >
                   Branch name
                 </label>
                 <Input
@@ -953,7 +980,9 @@ export function BranchToolbarBranchSelector({
                 />
               </div>
               {branchByName.has(createBranchName.trim()) ? (
-                <p className="text-destructive text-sm">A branch with this name already exists.</p>
+                <p className="text-destructive text-ui leading-snug">
+                  A branch with this name already exists.
+                </p>
               ) : null}
               <DialogFooter variant="bare">
                 <Button
@@ -1000,14 +1029,14 @@ export function BranchToolbarBranchSelector({
           </DialogHeader>
           <DialogPanel className="space-y-4">
             {stashDiscardDialog?.loading ? (
-              <p className="text-muted-foreground text-sm">Loading stash details...</p>
+              <p className="text-muted-foreground text-ui leading-snug">Loading stash details...</p>
             ) : stashDiscardDialog?.error ? (
-              <p className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-destructive text-sm">
+              <p className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-destructive text-ui leading-snug">
                 {stashDiscardDialog.error}
               </p>
             ) : stashDiscardDialog?.info ? (
               <>
-                <div className="grid gap-2 rounded-lg border border-[color:var(--color-border-light)] bg-[var(--color-background-elevated-secondary)] p-3 text-sm">
+                <div className="grid gap-2 rounded-lg border border-[color:var(--color-border-light)] bg-[var(--color-background-elevated-secondary)] p-3 text-ui leading-snug">
                   <div className="flex min-w-0 gap-2">
                     <span className="w-20 shrink-0 text-muted-foreground">Branch</span>
                     <span className="min-w-0 truncate font-medium">
@@ -1016,13 +1045,13 @@ export function BranchToolbarBranchSelector({
                   </div>
                   <div className="flex min-w-0 gap-2">
                     <span className="w-20 shrink-0 text-muted-foreground">Worktree</span>
-                    <span className="min-w-0 truncate font-mono text-xs">
+                    <span className="min-w-0 truncate font-mono text-ui leading-snug">
                       {stashDiscardDialog.info.cwd}
                     </span>
                   </div>
                   <div className="flex min-w-0 gap-2">
                     <span className="w-20 shrink-0 text-muted-foreground">Stash</span>
-                    <span className="min-w-0 truncate font-mono text-xs">
+                    <span className="min-w-0 truncate font-mono text-ui leading-snug">
                       {stashDiscardDialog.info.stashRef}
                     </span>
                   </div>
@@ -1032,14 +1061,14 @@ export function BranchToolbarBranchSelector({
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="font-medium text-sm">
+                  <p className="font-medium text-ui leading-snug">
                     Changed files ({stashDiscardDialog.info.files.length})
                   </p>
                   {stashDiscardDialog.info.files.length > 0 ? (
                     <ul className="max-h-48 overflow-auto rounded-lg border border-[color:var(--color-border-light)] bg-[var(--color-background-control-opaque)] py-1">
                       {stashDiscardDialog.info.files.map((file) => (
                         <li
-                          className="truncate px-3 py-1 font-mono text-muted-foreground text-xs"
+                          className="truncate px-3 py-1 font-mono text-muted-foreground text-ui leading-snug"
                           key={file}
                           title={file}
                         >
@@ -1048,7 +1077,7 @@ export function BranchToolbarBranchSelector({
                       ))}
                     </ul>
                   ) : (
-                    <p className="rounded-lg border border-[color:var(--color-border-light)] px-3 py-2 text-muted-foreground text-sm">
+                    <p className="rounded-lg border border-[color:var(--color-border-light)] px-3 py-2 text-muted-foreground text-ui leading-snug">
                       Git did not report changed file names for this stash.
                     </p>
                   )}

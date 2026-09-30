@@ -9,15 +9,22 @@
 import { ServiceMap } from "effect";
 import type { Effect, Scope } from "effect";
 import type {
+  GitBlameLineInput,
+  GitReadFileAtRevInput,
+  GitReadFileAtRevResult,
+  GitBlameLineResult,
   GitCheckoutInput,
   GitCreateBranchInput,
   GitCreateDetachedWorktreeInput,
+  GitWorktreeSetupPhase,
   GitCreateDetachedWorktreeResult,
   GitCreateWorktreeInput,
   GitCreateWorktreeResult,
   GitInitInput,
   GitListBranchesInput,
   GitListBranchesResult,
+  GitListRecentCommitsInput,
+  GitListRecentCommitsResult,
   GitPullResult,
   GitRemoveIndexLockInput,
   GitRemoveWorktreeInput,
@@ -27,6 +34,7 @@ import type {
   GitStashInfoResult,
   GitStatusInput,
   GitStatusResult,
+  GitWorkingTreeDiffStatsResult,
 } from "@synara/contracts";
 
 import type { GitCheckoutDirtyWorktreeError, GitCommandError } from "../Errors.ts";
@@ -39,6 +47,7 @@ export interface ExecuteGitInput {
   readonly allowNonZeroExit?: boolean;
   readonly timeoutMs?: number;
   readonly maxOutputBytes?: number;
+  readonly outputMode?: "error" | "truncate";
   readonly progress?: ExecuteGitProgress;
 }
 
@@ -46,6 +55,8 @@ export interface ExecuteGitResult {
   readonly code: number;
   readonly stdout: string;
   readonly stderr: string;
+  readonly stdoutTruncated?: boolean;
+  readonly stderrTruncated?: boolean;
 }
 
 export interface GitStatusDetails extends Omit<GitStatusResult, "pr"> {
@@ -55,12 +66,22 @@ export interface GitStatusDetails extends Omit<GitStatusResult, "pr"> {
   upstreamRef: string | null;
 }
 
+export interface GitBranchContext {
+  readonly isRepo: boolean;
+  readonly branch: string | null;
+  readonly upstreamRef: string | null;
+}
+
+export type GitDiffScope = "branch" | "staged" | "unstaged" | "workingTree" | "ref";
+
 export interface GitPreparedCommitContext {
   stagedSummary: string;
   stagedPatch: string;
 }
 
 export interface ExecuteGitProgress {
+  /** Use NUL records for machine-readable Git output containing arbitrary paths. */
+  readonly stdoutLineDelimiter?: "\n" | "\0";
   readonly onStdoutLine?: (line: string) => Effect.Effect<void, never>;
   readonly onStderrLine?: (line: string) => Effect.Effect<void, never>;
   readonly onHookStarted?: (hookName: string) => Effect.Effect<void, never>;
@@ -104,6 +125,7 @@ export interface GitRangeContext {
 
 export interface GitWorkingTreePatch {
   patch: string;
+  truncated: boolean;
 }
 
 export interface GitRenameBranchInput {
@@ -206,11 +228,16 @@ export interface GitCoreShape {
     options?: { readonly refreshRemote?: boolean },
   ) => Effect.Effect<GitStatusDetails, GitCommandError>;
 
+  /** Read only branch identity, without diff stats or remote refresh work. */
+  readonly readBranchContext: (cwd: string) => Effect.Effect<GitBranchContext, GitCommandError>;
+
   /**
    * Read a unified patch for the current working tree, including untracked files.
+   * An optional file path limits the patch to that literal path and its rename source.
    */
   readonly readWorkingTreePatch: (
     cwd: string,
+    filePath?: string,
   ) => Effect.Effect<GitWorkingTreePatch, GitCommandError>;
 
   /**
@@ -224,9 +251,29 @@ export interface GitCoreShape {
   readonly readStagedPatch: (cwd: string) => Effect.Effect<GitWorkingTreePatch, GitCommandError>;
 
   /**
-   * Read committed branch changes against the upstream/base branch.
+   * Read aggregate branch changes from the upstream/base merge-base through the working tree.
    */
   readonly readBranchPatch: (cwd: string) => Effect.Effect<GitWorkingTreePatch, GitCommandError>;
+
+  readonly blameLine: (
+    input: GitBlameLineInput,
+  ) => Effect.Effect<GitBlameLineResult, GitCommandError>;
+
+  readonly readFileAtRev: (
+    input: GitReadFileAtRevInput,
+  ) => Effect.Effect<GitReadFileAtRevResult, GitCommandError>;
+
+  readonly readRefPatch: (
+    cwd: string,
+    ref: string,
+  ) => Effect.Effect<GitWorkingTreePatch, GitCommandError>;
+
+  /** Read aggregate diff counts without materializing a unified patch. */
+  readonly readDiffStats: (
+    cwd: string,
+    scope: GitDiffScope,
+    ref?: string,
+  ) => Effect.Effect<GitWorkingTreeDiffStatsResult, GitCommandError>;
 
   /**
    * Build staged change context for commit generation.
@@ -277,6 +324,10 @@ export interface GitCoreShape {
     input: GitListBranchesInput,
   ) => Effect.Effect<GitListBranchesResult, GitCommandError>;
 
+  readonly listRecentCommits: (
+    input: GitListRecentCommitsInput,
+  ) => Effect.Effect<GitListRecentCommitsResult, GitCommandError>;
+
   /**
    * Pull current branch from upstream using fast-forward only.
    */
@@ -308,10 +359,14 @@ export interface GitCoreShape {
   ) => Effect.Effect<void, GitCommandError>;
 
   /**
-   * Create a detached worktree from a branch or ref.
+   * Create a detached worktree from a branch or ref. `onPhase` fires as each
+   * setup phase (branch → worktree → copy-changes) begins, for progress UIs.
    */
   readonly createDetachedWorktree: (
     input: GitCreateDetachedWorktreeInput,
+    options?: {
+      readonly onPhase?: (phase: GitWorktreeSetupPhase) => Effect.Effect<void>;
+    },
   ) => Effect.Effect<GitCreateDetachedWorktreeResult, GitCommandError>;
 
   /**

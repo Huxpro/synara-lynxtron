@@ -12,8 +12,7 @@ import { memo, useMemo, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { PlusIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
-import { KanbanCardView } from "./KanbanCardView";
-import { KanbanColumnComposition } from "./KanbanColumnComposition";
+import { KanbanCardView, type KanbanCardPrLookup } from "./KanbanCardView";
 import { KanbanStatusIcon } from "./KanbanStatusIcon";
 import {
   KANBAN_COLUMN_LABELS,
@@ -46,11 +45,13 @@ function SortableKanbanCard({
   card,
   onOpen,
   onContextMenu,
+  prByThreadId,
   nowMs,
 }: {
   card: KanbanCard;
   onOpen: (card: KanbanCard) => void;
   onContextMenu?: ((card: KanbanCard, event: React.MouseEvent) => void) | undefined;
+  prByThreadId: KanbanCardPrLookup;
   nowMs?: number;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -69,6 +70,7 @@ function SortableKanbanCard({
         card={card}
         onOpen={onOpen}
         {...(onContextMenu ? { onContextMenu } : {})}
+        prByThreadId={prByThreadId}
         isDragSource={isDragging}
         {...(nowMs !== undefined ? { nowMs } : {})}
       />
@@ -82,10 +84,11 @@ function KanbanColumnComponent({
   cards,
   onOpenCard,
   onCardContextMenu,
-  sortable = false,
-  droppable = false,
-  activeCard = null,
+  sortable: sortableProp,
+  droppable: droppableProp,
+  activeCard: activeCardProp,
   onNewCard,
+  prByThreadId,
   nowMs,
 }: {
   projectId: ProjectId;
@@ -102,9 +105,13 @@ function KanbanColumnComponent({
   activeCard?: KanbanCard | null;
   /** Renders a + button in the column header (Draft column's new-task entry point). */
   onNewCard?: (() => void) | undefined;
+  prByThreadId: KanbanCardPrLookup;
   /** Shared board clock for live elapsed labels. */
   nowMs?: number;
 }) {
+  const sortable = sortableProp ?? false;
+  const droppable = droppableProp ?? false;
+  const activeCard = activeCardProp ?? null;
   const dropId = kanbanColumnDropId(projectId, columnKey);
   const { isOver, setNodeRef } = useDroppable({ id: dropId, disabled: !droppable });
   const [showAll, setShowAll] = useState(false);
@@ -117,7 +124,6 @@ function KanbanColumnComponent({
       : cards;
   const hiddenCount = cards.length - cappedCards.length;
 
-  // Manual memoization kept: this file does not compile under React Compiler (see compile-report).
   const sortableItems = useMemo(() => cards.map((card) => card.cardId), [cards]);
 
   const dispatchTarget =
@@ -125,51 +131,41 @@ function KanbanColumnComponent({
     activeCard !== null &&
     resolveDraftDropAction(activeCard) === "dispatch";
 
-  // Read-only columns share their complete structure with the native client.
-  // The outer ref is the Web-only dnd-kit drop-target kernel.
-  if (!sortable) {
-    return (
-      <div
-        ref={setNodeRef}
-        className={cn(
-          "flex min-h-0 min-w-64 flex-1 rounded-xl transition-colors",
-          dispatchTarget && "bg-sky-500/5 ring-1 ring-sky-400/30",
-          dispatchTarget && isOver && "bg-sky-500/10 ring-sky-400/60",
-        )}
-      >
-        <KanbanColumnComposition
-          columnKey={columnKey}
-          cards={cards}
-          onOpenCard={onOpenCard}
-          {...(onCardContextMenu ? { onCardContextMenu } : {})}
-          {...(onNewCard ? { onNewCard } : {})}
-          showDispatchTarget={dispatchTarget}
+  const cardElements = cappedCards.map((card) =>
+    sortable ? (
+      <SortableKanbanCard
+        key={card.cardId}
+        card={card}
+        onOpen={onOpenCard}
+        onContextMenu={onCardContextMenu}
+        prByThreadId={prByThreadId}
+        {...(nowMs !== undefined ? { nowMs } : {})}
+      />
+    ) : (
+      <li key={card.cardId} className="list-none">
+        <KanbanCardView
+          card={card}
+          onOpen={onOpenCard}
+          {...(onCardContextMenu ? { onContextMenu: onCardContextMenu } : {})}
+          prByThreadId={prByThreadId}
           {...(nowMs !== undefined ? { nowMs } : {})}
         />
-      </div>
-    );
-  }
-
-  const cardElements = cappedCards.map((card) => (
-    <SortableKanbanCard
-      key={card.cardId}
-      card={card}
-      onOpen={onOpenCard}
-      onContextMenu={onCardContextMenu}
-      {...(nowMs !== undefined ? { nowMs } : {})}
-    />
-  ));
+      </li>
+    ),
+  );
 
   return (
     <section className="flex min-h-0 min-w-64 flex-1 flex-col">
       <header className="flex shrink-0 items-center gap-2 px-1.5 pb-2">
-        <h3 className="text-[13px] font-medium text-foreground/90">
+        <h3 className="text-ui-lg font-medium text-foreground/90">
           {KANBAN_COLUMN_LABELS[columnKey]}
         </h3>
-        <span className="text-xs text-muted-foreground/70">{cards.length}</span>
+        <span className="text-ui leading-snug text-muted-foreground/70">{cards.length}</span>
         <span className="ml-auto flex shrink-0 items-center gap-1.5">
           {dispatchTarget ? (
-            <span className="text-[11px] text-sky-600 dark:text-sky-300/90">Drop to send</span>
+            <span className="text-ui-sm leading-snug text-sky-600 dark:text-sky-300/90">
+              Drop to send
+            </span>
           ) : null}
           {onNewCard ? (
             <Button
@@ -194,11 +190,15 @@ function KanbanColumnComponent({
           dispatchTarget && isOver && "bg-sky-500/10 ring-sky-400/60",
         )}
       >
-        <SortableContext items={sortableItems} strategy={verticalListSortingStrategy}>
-          {cardElements}
-        </SortableContext>
+        {sortable ? (
+          <SortableContext items={sortableItems} strategy={verticalListSortingStrategy}>
+            {cardElements}
+          </SortableContext>
+        ) : (
+          cardElements
+        )}
         {cards.length === 0 ? (
-          <li className="list-none rounded-lg border border-dashed border-border/60 px-3 py-4 text-center text-xs text-muted-foreground/60">
+          <li className="list-none rounded-lg border border-dashed border-border/60 px-3 py-4 text-center text-ui leading-snug text-muted-foreground/60">
             No cards
           </li>
         ) : null}
@@ -207,7 +207,7 @@ function KanbanColumnComponent({
             <button
               type="button"
               onClick={() => setShowAll(true)}
-              className="w-full rounded-lg px-3 py-1.5 text-center text-xs text-muted-foreground/80 transition-colors hover:bg-muted/40 hover:text-foreground"
+              className="w-full rounded-lg px-3 py-1.5 text-center text-ui leading-snug text-muted-foreground/80 transition-colors hover:bg-muted/40 hover:text-foreground"
             >
               Show {hiddenCount} more
             </button>

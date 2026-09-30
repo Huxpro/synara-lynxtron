@@ -9,7 +9,7 @@ import { resolveSystemStateSemantics } from "~/components/systemStateSemantics";
 import { cn } from "~/lib/utils";
 import { PR_FINE_TEXT_CLASS_NAME, PR_QUIET_INK_CLASS_NAME } from "./pullRequestText";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function PullRequestListRootElement(props: ChildrenProps) {
   return <div className="space-y-0.5">{props.children}</div>;

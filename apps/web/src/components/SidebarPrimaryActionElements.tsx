@@ -11,7 +11,7 @@ import { SidebarLeadingIcon } from "./SidebarLeadingIcon";
 import { SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
 
 interface ChildrenProps {
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }
 
 export function SidebarPrimaryActionItemElement({ children }: ChildrenProps) {
@@ -30,13 +30,13 @@ export function SidebarPrimaryActionButtonElement({
   children,
 }: ChildrenProps & {
   readonly active: boolean;
-  readonly elementId?: string;
+  readonly elementId?: string | undefined;
   readonly accessibleLabel: string;
   readonly disabled: boolean;
   readonly onActivate?: (() => void) | undefined;
   readonly onMouseEnter?: (() => void) | undefined;
   readonly onFocus?: (() => void) | undefined;
-  readonly visualState?: "default" | "hover" | "focus" | "pressed";
+  readonly visualState?: "default" | "hover" | "focus" | "pressed" | undefined;
 }) {
   return (
     <SidebarMenuButton

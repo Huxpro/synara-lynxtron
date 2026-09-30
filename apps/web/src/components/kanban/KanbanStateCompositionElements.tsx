@@ -14,8 +14,8 @@ export function KanbanStateElement(props: {
   readonly title: string;
   readonly variant: KanbanStateElementVariant;
   readonly retryLabel: string;
-  readonly retryDisabled?: boolean;
-  readonly onRetry?: () => void;
+  readonly retryDisabled?: boolean | undefined;
+  readonly onRetry?: (() => void) | undefined;
 }) {
   const semantics = resolveSystemStateSemantics(props.intent);
   return (
@@ -28,12 +28,12 @@ export function KanbanStateElement(props: {
         "flex items-center text-muted-foreground",
         props.variant === "page"
           ? "min-h-72 flex-col justify-center gap-2 text-center"
-          : "justify-between gap-3 rounded-lg border border-border px-3 py-2 text-xs",
+          : "justify-between gap-3 rounded-lg border border-border px-3 py-2 text-ui",
       )}
     >
       <div>
-        <p className="text-sm font-medium text-foreground">{props.title}</p>
-        {props.description ? <p className="mt-1 text-sm">{props.description}</p> : null}
+        <p className="text-ui font-medium text-foreground">{props.title}</p>
+        {props.description ? <p className="mt-1 text-ui">{props.description}</p> : null}
       </div>
       {props.onRetry ? (
         <Button

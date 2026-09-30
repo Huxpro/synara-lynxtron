@@ -31,10 +31,6 @@ import {
   setActiveTerminalInGroupLayout,
   splitTerminalGroupLayout,
 } from "./terminalPaneLayout";
-import {
-  createWorkspaceTerminalGroupFromPreset,
-  type WorkspaceLayoutPresetId,
-} from "./workspaceTerminalLayoutPresets";
 
 import { webStorage } from "~/platform/storage";
 export interface ThreadTerminalState {
@@ -480,6 +476,11 @@ export function sanitizePersistedTerminalStateByThreadId(
 ): Record<ThreadId, ThreadTerminalState> {
   const next: Record<ThreadId, ThreadTerminalState> = {};
   for (const [threadId, state] of Object.entries(terminalStateByThreadId ?? {})) {
+    // Dedicated Workspace pages used synthetic `workspace:*` terminal scopes.
+    // Drop those retired entries while hydrating the shared terminal store.
+    if (threadId.startsWith("workspace:")) {
+      continue;
+    }
     const sanitized = stripVolatileTerminalRuntimeState(state);
     if (!isDefaultThreadTerminalState(sanitized)) {
       next[threadId as ThreadId] = sanitized;
@@ -1028,6 +1029,42 @@ function closeThreadTerminal(state: ThreadTerminalState, terminalId: string): Th
   });
 }
 
+function closeThreadTerminalAndEnsureReplacement(
+  state: ThreadTerminalState,
+  terminalId: string,
+  replacementTerminalId: string,
+): ThreadTerminalState {
+  const normalized = normalizeThreadTerminalState(state);
+  if (!normalized.terminalIds.includes(terminalId)) {
+    return normalized;
+  }
+  if (normalized.terminalIds.length > 1) {
+    return closeThreadTerminal(normalized, terminalId);
+  }
+
+  const withReplacement = newThreadTerminal(normalized, replacementTerminalId);
+  if (!withReplacement.terminalIds.includes(replacementTerminalId)) {
+    return normalized;
+  }
+  return closeThreadTerminal(withReplacement, terminalId);
+}
+
+export type TerminalExitDisposition = "ignored" | "remaining" | "final";
+
+function closeExitedThreadTerminal(
+  state: ThreadTerminalState,
+  terminalId: string,
+): { state: ThreadTerminalState; disposition: TerminalExitDisposition } {
+  const normalized = normalizeThreadTerminalState(state);
+  if (!normalized.terminalIds.includes(terminalId)) {
+    return { state: normalized, disposition: "ignored" };
+  }
+  return {
+    state: closeThreadTerminal(normalized, terminalId),
+    disposition: normalized.terminalIds.length === 1 ? "final" : "remaining",
+  };
+}
+
 function closeThreadTerminalGroup(
   state: ThreadTerminalState,
   groupId: string,
@@ -1138,63 +1175,6 @@ function setThreadTerminalActivity(
   };
 }
 
-function applyThreadWorkspaceLayoutPreset(
-  state: ThreadTerminalState,
-  presetId: WorkspaceLayoutPresetId,
-  terminalIds: readonly string[],
-): ThreadTerminalState {
-  const normalized = normalizeThreadTerminalState(state);
-  const nextTerminalIds = normalizeTerminalIds([...terminalIds]);
-  const activeTerminalId = nextTerminalIds.includes(normalized.activeTerminalId)
-    ? normalized.activeTerminalId
-    : (nextTerminalIds[0] ?? DEFAULT_THREAD_TERMINAL_ID);
-  const terminalLabelsById = ensureTerminalLabels({
-    terminalCliKindsById: normalizeTerminalCliKinds(
-      normalized.terminalCliKindsById,
-      nextTerminalIds,
-    ),
-    terminalIds: nextTerminalIds,
-    terminalLabelsById: normalizeTerminalLabels(normalized.terminalLabelsById, nextTerminalIds),
-    terminalTitleOverridesById: normalizeTerminalTitleOverrides(
-      normalized.terminalTitleOverridesById,
-      nextTerminalIds,
-    ),
-  });
-  const terminalTitleOverridesById = normalizeTerminalTitleOverrides(
-    normalized.terminalTitleOverridesById,
-    nextTerminalIds,
-  );
-  const terminalCliKindsById = normalizeTerminalCliKinds(
-    normalized.terminalCliKindsById,
-    nextTerminalIds,
-  );
-  const terminalGroup = createWorkspaceTerminalGroupFromPreset({
-    presetId,
-    terminalIds: nextTerminalIds,
-    activeTerminalId,
-  });
-
-  return normalizeThreadTerminalState({
-    ...normalized,
-    terminalOpen: true,
-    presentationMode: "workspace",
-    workspaceLayout: "terminal-only",
-    workspaceActiveTab: "terminal",
-    terminalIds: nextTerminalIds,
-    terminalLabelsById,
-    terminalTitleOverridesById,
-    terminalCliKindsById,
-    terminalAttentionStatesById: normalizeTerminalAttentionStates(
-      normalized.terminalAttentionStatesById,
-      nextTerminalIds,
-    ),
-    runningTerminalIds: normalizeRunningTerminalIds(normalized.runningTerminalIds, nextTerminalIds),
-    activeTerminalId,
-    terminalGroups: [terminalGroup],
-    activeTerminalGroupId: terminalGroup.id,
-  });
-}
-
 export function selectThreadTerminalState(
   terminalStateByThreadId: Record<ThreadId, ThreadTerminalState>,
   threadId: ThreadId,
@@ -1269,6 +1249,12 @@ interface TerminalStateStoreState {
   closeWorkspaceChat: (threadId: ThreadId) => void;
   setActiveTerminal: (threadId: ThreadId, terminalId: string) => void;
   closeTerminal: (threadId: ThreadId, terminalId: string) => void;
+  closeTerminalAndEnsureReplacement: (
+    threadId: ThreadId,
+    terminalId: string,
+    replacementTerminalId: string,
+  ) => void;
+  closeExitedTerminal: (threadId: ThreadId, terminalId: string) => TerminalExitDisposition;
   closeTerminalGroup: (threadId: ThreadId, groupId: string) => void;
   resizeTerminalSplit: (
     threadId: ThreadId,
@@ -1280,11 +1266,6 @@ interface TerminalStateStoreState {
     threadId: ThreadId,
     terminalId: string,
     activity: { agentState: TerminalActivityState | null; hasRunningSubprocess: boolean },
-  ) => void;
-  applyWorkspaceLayoutPreset: (
-    threadId: ThreadId,
-    presetId: WorkspaceLayoutPresetId,
-    terminalIds: readonly string[],
   ) => void;
   clearTerminalState: (threadId: ThreadId) => void;
   removeTerminalState: (threadId: ThreadId) => void;
@@ -1386,6 +1367,19 @@ export const useTerminalStateStore = create<TerminalStateStoreState>()(
           updateTerminal(threadId, (state) => setThreadActiveTerminal(state, terminalId)),
         closeTerminal: (threadId, terminalId) =>
           updateTerminal(threadId, (state) => closeThreadTerminal(state, terminalId)),
+        closeTerminalAndEnsureReplacement: (threadId, terminalId, replacementTerminalId) =>
+          updateTerminal(threadId, (state) =>
+            closeThreadTerminalAndEnsureReplacement(state, terminalId, replacementTerminalId),
+          ),
+        closeExitedTerminal: (threadId, terminalId) => {
+          let disposition: TerminalExitDisposition = "ignored";
+          updateTerminal(threadId, (state) => {
+            const transition = closeExitedThreadTerminal(state, terminalId);
+            disposition = transition.disposition;
+            return transition.state;
+          });
+          return disposition;
+        },
         closeTerminalGroup: (threadId, groupId) =>
           updateTerminal(threadId, (state) => closeThreadTerminalGroup(state, groupId)),
         resizeTerminalSplit: (threadId, groupId, splitId, weights) =>
@@ -1395,10 +1389,6 @@ export const useTerminalStateStore = create<TerminalStateStoreState>()(
         setTerminalActivity: (threadId, terminalId, activity) =>
           updateTerminal(threadId, (state) =>
             setThreadTerminalActivity(state, terminalId, activity),
-          ),
-        applyWorkspaceLayoutPreset: (threadId, presetId, terminalIds) =>
-          updateTerminal(threadId, (state) =>
-            applyThreadWorkspaceLayoutPreset(state, presetId, terminalIds),
           ),
         clearTerminalState: (threadId) =>
           updateTerminal(threadId, () => createDefaultThreadTerminalState()),

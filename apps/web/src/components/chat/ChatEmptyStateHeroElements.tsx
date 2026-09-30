@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { SynaraLogo } from "~/components/SynaraLogo";
 
 interface ChildrenProps {
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }
 
 export function ChatEmptyStateHeroFrameElement(props: ChildrenProps) {

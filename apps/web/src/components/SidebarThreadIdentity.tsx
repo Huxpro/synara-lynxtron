@@ -9,9 +9,9 @@ import {
 export interface SidebarThreadIdentityProps {
   readonly title: ReactNode;
   readonly active: boolean;
-  readonly subagent?: boolean;
-  readonly pendingStatusColorClass?: string | null;
-  readonly titleTestId?: string;
+  readonly subagent?: boolean | undefined;
+  readonly pendingStatusColorClass?: string | null | undefined;
+  readonly titleTestId?: string | undefined;
 }
 
 export function SidebarThreadIdentity({

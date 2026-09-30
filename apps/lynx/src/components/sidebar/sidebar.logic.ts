@@ -18,6 +18,8 @@ import {
   type SidebarProjectSortOrderValue,
   type SidebarThreadSortOrderValue,
 } from "@synara-web/sidebarSortDefaults";
+import type { PullRequestListEntry } from "@synara/contracts";
+import { pullRequestListEntryKey } from "@synara-web/components/pullRequest/pullRequestList.logic";
 
 export interface SidebarProjectGroup {
   readonly id: string;
@@ -136,4 +138,14 @@ export function deriveSidebarSections(input: {
     chatThreads: sections.chatThreads,
     studioThreads: sections.studioThreads,
   };
+}
+
+/**
+ * Pull requests awaiting the viewer's review, counted once per repository PR. Electron reads
+ * this from the `pullRequests.reviewRequestCount` RPC; Lynx still derives it from the list.
+ */
+export function countUniqueViewerReviewRequests(entries: readonly PullRequestListEntry[]): number {
+  return new Set(
+    entries.filter((entry) => entry.viewerReviewRequested).map(pullRequestListEntryKey),
+  ).size;
 }

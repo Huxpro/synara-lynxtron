@@ -62,17 +62,10 @@ async function readPersistedAppearance(): Promise<{
   const { hydrateLynxComposerDraftStore } = await import(
     /* webpackMode: "eager" */ "../adapters/composerDraftStore.lynx"
   );
-  const { useWorkspaceStore } = await import(
-    /* webpackMode: "eager" */ "@synara-web/workspaceStore"
-  );
   const { useTerminalStateStore } = await import(
     /* webpackMode: "eager" */ "@synara-web/terminalStateStore"
   );
-  await Promise.all([
-    hydrateLynxComposerDraftStore(),
-    useWorkspaceStore.persist.rehydrate(),
-    useTerminalStateStore.persist.rehydrate(),
-  ]);
+  await Promise.all([hydrateLynxComposerDraftStore(), useTerminalStateStore.persist.rehydrate()]);
   const themeRaw = webStorage.getItem(THEME_STORAGE_KEY);
   return {
     appearance: readSettingsAppearanceProjection(
@@ -101,7 +94,6 @@ export function App() {
     readonly initialTerminalOpen?: unknown;
     readonly initialTemporaryOpen?: unknown;
     readonly initialSettingsTarget?: unknown;
-    readonly initialWorkspaceVisible?: unknown;
     readonly initialExplorerOpen?: unknown;
     readonly initialExplorerPresentationMode?: unknown;
     readonly initialExplorerActionMenuOpen?: unknown;
@@ -148,7 +140,6 @@ export function App() {
     typeof initData.initialSettingsTarget === "string" && initData.initialSettingsTarget.trim()
       ? initData.initialSettingsTarget.trim()
       : null;
-  const initialWorkspaceVisible = initData.initialWorkspaceVisible === true;
   const initialRoute =
     typeof initData.initialRoute === "string" && initData.initialRoute.startsWith("/")
       ? initData.initialRoute
@@ -306,7 +297,6 @@ export function App() {
               initialTerminalOpen={initialTerminalOpen}
               initialTemporaryOpen={initialTemporaryOpen}
               initialSettingsTarget={initialSettingsTarget}
-              initialWorkspaceVisible={initialWorkspaceVisible}
               initialRoute={initialRoute}
               initialExplorerOpen={initialExplorerOpen}
               initialExplorerPresentationMode={initialExplorerPresentationMode}

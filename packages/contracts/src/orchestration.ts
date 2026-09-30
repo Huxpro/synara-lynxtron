@@ -1,4 +1,10 @@
-import { Option, Schema, SchemaIssue, Struct } from "effect";
+import { Option, Schema, SchemaIssue, SchemaTransformation, Struct } from "effect";
+import {
+  ImportProjectInput,
+  ImportProjectResult,
+  ListProjectImportsInput,
+  ListProjectImportsResult,
+} from "./projectImport";
 import {
   PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   PROVIDER_SEND_TURN_MAX_FILE_BYTES,
@@ -8,19 +14,24 @@ export {
   PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   PROVIDER_SEND_TURN_MAX_FILE_BYTES,
   PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
+  PROVIDER_SEND_TURN_MAX_IMAGE_IMPORT_BYTES,
 } from "./attachmentLimits";
 import {
   AntigravityModelOptions,
   ClaudeModelOptions,
   CodexModelOptions,
   CursorModelOptions,
+  DevinModelOptions,
   DroidModelOptions,
   GrokModelOptions,
   OpenCodeModelOptions,
+  OmpModelOptions,
   PiModelOptions,
 } from "./model";
 import { ProviderMentionReference, ProviderSkillReference } from "./providerDiscovery";
+import { AsyncUserInput, AsyncUserInputQuestions, AsyncUserInputResponse } from "./asyncUserInput";
 import { ProjectKind } from "./project";
+import { ClaudeCacheObservation } from "./claudeCache";
 import {
   ApprovalRequestId,
   CheckpointRef,
@@ -34,7 +45,6 @@ import {
   SpaceId,
   ProviderItemId,
   ThreadId,
-  ThreadMarkerId,
   TrimmedNonEmptyString,
   TurnId,
 } from "./baseSchemas";
@@ -47,12 +57,16 @@ export const ORCHESTRATION_WS_METHODS = {
   getThreadDetailSnapshot: "orchestration.getThreadDetailSnapshot",
   dispatchCommand: "orchestration.dispatchCommand",
   importThread: "orchestration.importThread",
+  listProjectImports: "orchestration.listProjectImports",
+  importProject: "orchestration.importProject",
+  regenerateThreadTitle: "orchestration.regenerateThreadTitle",
   repairState: "orchestration.repairState",
   getTurnDiff: "orchestration.getTurnDiff",
   getFullThreadDiff: "orchestration.getFullThreadDiff",
   replayEvents: "orchestration.replayEvents",
   listProviderDeliveryBlockers: "orchestration.listProviderDeliveryBlockers",
   reconcileProviderDelivery: "orchestration.reconcileProviderDelivery",
+  prepareQuitResume: "orchestration.prepareQuitResume",
   subscribeShell: "orchestration.subscribeShell",
   unsubscribeShell: "orchestration.unsubscribeShell",
   subscribeThread: "orchestration.subscribeThread",
@@ -84,11 +98,39 @@ export const ProviderKind = Schema.Literals([
   "antigravity",
   "grok",
   "droid",
-  "kilo",
   "opencode",
   "pi",
+  "devin",
+  "omp",
 ]);
 export type ProviderKind = typeof ProviderKind.Type;
+
+/**
+ * Providers that no longer exist as `ProviderKind` members but may survive in
+ * persisted data. Renamed providers map to their successor; removed providers
+ * map to the runtime that hosted their sessions. Add an entry here whenever a
+ * provider is renamed or removed so persisted payloads keep decoding.
+ */
+export const LEGACY_PROVIDER_MIGRATIONS: Readonly<Record<string, ProviderKind>> = {
+  gemini: "antigravity",
+  kilo: "opencode",
+};
+
+/**
+ * Decodes a persisted provider value, mapping legacy provider names through
+ * `LEGACY_PROVIDER_MIGRATIONS`. Use for durable payloads (handoffs, snapshots)
+ * where a removed provider must not make the whole row undecodable.
+ */
+export const PersistedProviderKind = Schema.String.pipe(
+  Schema.decodeTo(
+    ProviderKind,
+    SchemaTransformation.transform({
+      // ProviderKind still validates the result, so unknown strings fail decode.
+      decode: (provider) => (LEGACY_PROVIDER_MIGRATIONS[provider] ?? provider) as ProviderKind,
+      encode: (provider: ProviderKind) => provider as string,
+    }),
+  ),
+);
 export const ProviderApprovalPolicy = Schema.Literals([
   "untrusted",
   "on-failure",
@@ -102,7 +144,6 @@ export const ProviderSandboxMode = Schema.Literals([
   "danger-full-access",
 ]);
 export type ProviderSandboxMode = typeof ProviderSandboxMode.Type;
-export const DEFAULT_PROVIDER_KIND: ProviderKind = "codex";
 
 export const CodexModelSelection = Schema.Struct({
   provider: Schema.Literal("codex"),
@@ -115,6 +156,7 @@ export const ClaudeModelSelection = Schema.Struct({
   provider: Schema.Literal("claudeAgent"),
   model: TrimmedNonEmptyString,
   options: Schema.optional(ClaudeModelOptions),
+  supportsAutoMode: Schema.optional(Schema.Boolean),
 });
 export type ClaudeModelSelection = typeof ClaudeModelSelection.Type;
 
@@ -153,30 +195,37 @@ export const OpenCodeModelSelection = Schema.Struct({
 });
 export type OpenCodeModelSelection = typeof OpenCodeModelSelection.Type;
 
-export const KiloModelSelection = Schema.Struct({
-  provider: Schema.Literal("kilo"),
-  model: TrimmedNonEmptyString,
-  options: Schema.optional(OpenCodeModelOptions),
-});
-export type KiloModelSelection = typeof KiloModelSelection.Type;
-
 export const PiModelSelection = Schema.Struct({
   provider: Schema.Literal("pi"),
   model: TrimmedNonEmptyString,
   options: Schema.optional(PiModelOptions),
 });
 export type PiModelSelection = typeof PiModelSelection.Type;
+export const OmpModelSelection = Schema.Struct({
+  provider: Schema.Literal("omp"),
+  model: TrimmedNonEmptyString,
+  options: Schema.optional(OmpModelOptions),
+});
+export type OmpModelSelection = typeof OmpModelSelection.Type;
+
+export const DevinModelSelection = Schema.Struct({
+  provider: Schema.Literal("devin"),
+  model: TrimmedNonEmptyString,
+  options: Schema.optional(DevinModelOptions),
+});
+export type DevinModelSelection = typeof DevinModelSelection.Type;
 
 export const ModelSelection = Schema.Union([
   CodexModelSelection,
   ClaudeModelSelection,
   CursorModelSelection,
+  DevinModelSelection,
   AntigravityModelSelection,
   GrokModelSelection,
   DroidModelSelection,
-  KiloModelSelection,
   OpenCodeModelSelection,
   PiModelSelection,
+  OmpModelSelection,
 ]);
 export type ModelSelection = typeof ModelSelection.Type;
 
@@ -189,6 +238,7 @@ export const ClaudeProviderStartOptions = Schema.Struct({
   binaryPath: Schema.optional(TrimmedNonEmptyString),
   permissionMode: Schema.optional(TrimmedNonEmptyString),
   maxThinkingTokens: Schema.optional(NonNegativeInt),
+  enableArtifacts: Schema.optional(Schema.Boolean),
 });
 
 export const AntigravityProviderStartOptions = Schema.Struct({
@@ -214,39 +264,52 @@ export const OpenCodeProviderStartOptions = Schema.Struct({
   experimentalWebSockets: Schema.optional(Schema.Boolean),
 });
 
-export const KiloProviderStartOptions = Schema.Struct({
-  binaryPath: Schema.optional(TrimmedNonEmptyString),
-  serverUrl: Schema.optional(TrimmedNonEmptyString),
-});
-
 export const PiProviderStartOptions = Schema.Struct({
   binaryPath: Schema.optional(TrimmedNonEmptyString),
   agentDir: Schema.optional(TrimmedNonEmptyString),
+});
+export const OmpProviderStartOptions = Schema.Struct({
+  binaryPath: Schema.optional(TrimmedNonEmptyString),
+  agentDir: Schema.optional(TrimmedNonEmptyString),
+});
+
+export const DevinProviderStartOptions = Schema.Struct({
+  binaryPath: Schema.optional(TrimmedNonEmptyString),
 });
 
 export const ProviderStartOptions = Schema.Struct({
   codex: Schema.optional(CodexProviderStartOptions),
   claudeAgent: Schema.optional(ClaudeProviderStartOptions),
   cursor: Schema.optional(CursorProviderStartOptions),
+  devin: Schema.optional(DevinProviderStartOptions),
   antigravity: Schema.optional(AntigravityProviderStartOptions),
   grok: Schema.optional(GrokProviderStartOptions),
   droid: Schema.optional(DroidProviderStartOptions),
-  kilo: Schema.optional(KiloProviderStartOptions),
   opencode: Schema.optional(OpenCodeProviderStartOptions),
   pi: Schema.optional(PiProviderStartOptions),
+  omp: Schema.optional(OmpProviderStartOptions),
 });
 export type ProviderStartOptions = typeof ProviderStartOptions.Type;
 
-export const RuntimeMode = Schema.Literals(["approval-required", "full-access"]);
+export const RuntimeMode = Schema.Literals(["approval-required", "auto", "full-access"]);
 export type RuntimeMode = typeof RuntimeMode.Type;
 export const DEFAULT_RUNTIME_MODE: RuntimeMode = "full-access";
-export const ProviderInteractionMode = Schema.Literals(["default", "plan"]);
+export const ProviderInteractionMode = Schema.Literals(["default", "plan", "debug"]);
 export type ProviderInteractionMode = typeof ProviderInteractionMode.Type;
 export const DEFAULT_PROVIDER_INTERACTION_MODE: ProviderInteractionMode = "default";
 const SidechatSourceThreadId = Schema.optional(Schema.NullOr(ThreadId)).pipe(
   Schema.withDecodingDefault(() => null),
 );
-export const ProviderRequestKind = Schema.Literals(["command", "file-read", "file-change"]);
+const SidechatLifecycleTimestamp = Schema.optional(Schema.NullOr(IsoDateTime)).pipe(
+  Schema.withDecodingDefault(() => null),
+);
+export const ProviderRequestKind = Schema.Literals([
+  "command",
+  "file-read",
+  "file-change",
+  "permissions",
+  "tool",
+]);
 export type ProviderRequestKind = typeof ProviderRequestKind.Type;
 export const AssistantDeliveryMode = Schema.Literals(["buffered", "streaming"]);
 export type AssistantDeliveryMode = typeof AssistantDeliveryMode.Type;
@@ -259,10 +322,14 @@ export const DEFAULT_TURN_DISPATCH_MODE: TurnDispatchMode = "queue";
 // Absent is treated as "user"; only server-dispatched turns carry the flag.
 export const MessageDispatchOrigin = Schema.Literals(["user", "automation", "agent"]);
 export type MessageDispatchOrigin = typeof MessageDispatchOrigin.Type;
+// "automation_run" marks only the per-run throwaway threads standalone automations
+// create. Dedicated automations' own threads stay unmarked: they are persistent
+// conversations the user keeps, not run artifacts.
 export const ThreadCreationSource = Schema.Literals([
   "synara_mcp",
   "external_mcp",
   "provider_native",
+  "automation_run",
 ]);
 export type ThreadCreationSource = typeof ThreadCreationSource.Type;
 export const ProviderReviewTarget = Schema.Union([
@@ -295,6 +362,7 @@ export type ThreadEnvironmentMode = typeof ThreadEnvironmentMode.Type;
 
 export const OrchestrationMessageSource = Schema.Literals([
   "native",
+  "async-user-input",
   "handoff-import",
   "fork-import",
 ]);
@@ -305,11 +373,9 @@ export const MAX_PINNED_PROJECTS = 3;
 const CHAT_ATTACHMENT_ID_MAX_CHARS = 128;
 export const CHAT_ASSISTANT_SELECTION_TEXT_MAX_CHARS = 4_000;
 export const THREAD_NOTES_MAX_CHARS = 16_384;
+export const THREAD_GOAL_MAX_CHARS = 4_096;
 export const PINNED_MESSAGES_MAX_COUNT = 100;
 export const PINNED_MESSAGE_LABEL_MAX_CHARS = 60;
-export const THREAD_MARKERS_MAX_COUNT = 200;
-export const THREAD_MARKER_LABEL_MAX_CHARS = 60;
-export const THREAD_MARKER_SELECTED_TEXT_MAX_CHARS = 4_000;
 // Correlation id is command id by design in this model.
 export const CorrelationId = CommandId;
 export type CorrelationId = typeof CorrelationId.Type;
@@ -487,15 +553,31 @@ export type OrchestrationProjectShell = typeof OrchestrationProjectShell.Type;
 export const OrchestrationMessageRole = Schema.Literals(["user", "assistant", "system"]);
 export type OrchestrationMessageRole = typeof OrchestrationMessageRole.Type;
 
+export const OrchestrationMessageTextSegment = Schema.Struct({
+  /** Causal orchestration-event order; disambiguates equal timestamps. */
+  sequence: NonNegativeInt,
+  startedAt: IsoDateTime,
+  endedAt: IsoDateTime,
+  text: Schema.String,
+});
+export type OrchestrationMessageTextSegment = typeof OrchestrationMessageTextSegment.Type;
+
+// One contiguous run of assistant text deltas between row-making provider
+// events (tool calls, warnings, ...). The web timeline interleaves these
+// segments with tool rows so streamed reasoning renders in execution order
+// instead of one block above every tool call.
 export const OrchestrationMessage = Schema.Struct({
   id: MessageId,
   role: OrchestrationMessageRole,
   text: Schema.String,
+  textSegments: Schema.optional(Schema.Array(OrchestrationMessageTextSegment)),
+  asyncUserInput: Schema.optional(AsyncUserInput),
   attachments: Schema.optional(Schema.Array(ChatAttachment)),
   skills: Schema.optional(Schema.Array(ProviderSkillReference)),
   mentions: Schema.optional(Schema.Array(ProviderMentionReference)),
   dispatchMode: Schema.optional(TurnDispatchMode),
   dispatchOrigin: Schema.optional(MessageDispatchOrigin),
+  startsNewTurn: Schema.optional(Schema.Boolean),
   turnId: Schema.NullOr(TurnId),
   streaming: Schema.Boolean,
   source: OrchestrationMessageSource.pipe(Schema.withDecodingDefault(() => "native")),
@@ -506,7 +588,9 @@ export type OrchestrationMessage = typeof OrchestrationMessage.Type;
 
 export const ThreadHandoff = Schema.Struct({
   sourceThreadId: ThreadId,
-  sourceProvider: ProviderKind,
+  // Handoff metadata is durable: a removed source provider must not make the
+  // whole thread row (and with it the thread list) undecodable.
+  sourceProvider: PersistedProviderKind,
   importedAt: IsoDateTime,
   bootstrapStatus: ThreadHandoffBootstrapStatus,
 });
@@ -639,6 +723,45 @@ export type OrchestrationThreadPullRequest = typeof OrchestrationThreadPullReque
  */
 export const ThreadNotes = Schema.String.check(Schema.isMaxLength(THREAD_NOTES_MAX_CHARS));
 export type ThreadNotes = typeof ThreadNotes.Type;
+export const ThreadGoal = Schema.String.check(Schema.isMaxLength(THREAD_GOAL_MAX_CHARS));
+export type ThreadGoal = typeof ThreadGoal.Type;
+export const ThreadGoalStartBehavior = Schema.Literals(["start-if-idle", "defer"]);
+export type ThreadGoalStartBehavior = typeof ThreadGoalStartBehavior.Type;
+export const ThreadGoalContinuationTrigger = Schema.Literals([
+  "goal-updated",
+  "interaction-mode-updated",
+  "turn-completed",
+  "startup-recovery",
+]);
+export type ThreadGoalContinuationTrigger = typeof ThreadGoalContinuationTrigger.Type;
+/**
+ * Goal pursuit timing. `goalStartedAt` is (re)stamped by the decider whenever a
+ * non-empty goal is set and rebased on resume so `now - goalStartedAt` is always
+ * the active pursuit duration. A non-null `goalPausedAt` means the goal is
+ * paused: injection stops and the elapsed clock freezes at `goalPausedAt`.
+ */
+export const ThreadGoalTimingFields = {
+  goalStartedAt: Schema.optional(Schema.NullOr(IsoDateTime)),
+  goalPausedAt: Schema.optional(Schema.NullOr(IsoDateTime)),
+};
+/**
+ * A completed goal, recorded when the decider processes a `goalAchieved` intent.
+ * `elapsedMs` is the pause-adjusted pursuit duration (null for legacy goals with
+ * no recorded start) and `turnId` anchors the transcript "Goal achieved" badge to
+ * the turn that was live when the goal completed.
+ */
+export const ThreadGoalAchievement = Schema.Struct({
+  goal: ThreadGoal,
+  achievedAt: IsoDateTime,
+  elapsedMs: Schema.NullOr(Schema.Number),
+  turnId: Schema.NullOr(TurnId),
+});
+export type ThreadGoalAchievement = typeof ThreadGoalAchievement.Type;
+export const THREAD_GOAL_ACHIEVEMENTS_MAX_COUNT = 20;
+export const ThreadGoalAchievements = Schema.Array(ThreadGoalAchievement).check(
+  Schema.isMaxLength(THREAD_GOAL_ACHIEVEMENTS_MAX_COUNT),
+);
+export type ThreadGoalAchievements = typeof ThreadGoalAchievements.Type;
 export const PinnedMessageLabel = TrimmedNonEmptyString.check(
   Schema.isMaxLength(PINNED_MESSAGE_LABEL_MAX_CHARS),
 );
@@ -656,36 +779,6 @@ export const ThreadPinnedMessages = Schema.Array(PinnedMessage).check(
   Schema.isMaxLength(PINNED_MESSAGES_MAX_COUNT),
 );
 export type ThreadPinnedMessages = typeof ThreadPinnedMessages.Type;
-export const ThreadMarkerStyle = Schema.Literals(["highlight", "underline"]);
-export type ThreadMarkerStyle = typeof ThreadMarkerStyle.Type;
-export const ThreadMarkerColor = Schema.Literals(["yellow", "blue", "green", "pink"]);
-export type ThreadMarkerColor = typeof ThreadMarkerColor.Type;
-export const ThreadMarkerLabel = TrimmedNonEmptyString.check(
-  Schema.isMaxLength(THREAD_MARKER_LABEL_MAX_CHARS),
-);
-export type ThreadMarkerLabel = typeof ThreadMarkerLabel.Type;
-export const ThreadMarker = Schema.Struct({
-  id: ThreadMarkerId,
-  messageId: MessageId,
-  startOffset: NonNegativeInt,
-  endOffset: NonNegativeInt,
-  selectedText: TrimmedNonEmptyString.check(
-    Schema.isMaxLength(THREAD_MARKER_SELECTED_TEXT_MAX_CHARS),
-  ),
-  style: ThreadMarkerStyle,
-  color: ThreadMarkerColor,
-  label: Schema.optional(Schema.NullOr(ThreadMarkerLabel)).pipe(
-    Schema.withDecodingDefault(() => null),
-  ),
-  done: Schema.optional(Schema.Boolean).pipe(Schema.withDecodingDefault(() => false)),
-  createdAt: IsoDateTime,
-  updatedAt: IsoDateTime,
-});
-export type ThreadMarker = typeof ThreadMarker.Type;
-export const ThreadMarkers = Schema.Array(ThreadMarker).check(
-  Schema.isMaxLength(THREAD_MARKERS_MAX_COUNT),
-);
-export type ThreadMarkers = typeof ThreadMarkers.Type;
 
 export const ProjectionPendingInteractionKind = Schema.Literals(["approval", "userInput"]);
 export type ProjectionPendingInteractionKind = typeof ProjectionPendingInteractionKind.Type;
@@ -718,7 +811,23 @@ export const OrchestrationPendingInteraction = Schema.Struct({
 });
 export type OrchestrationPendingInteraction = typeof OrchestrationPendingInteraction.Type;
 
+export const PendingClaudeCacheReview = Schema.Struct({
+  reviewId: TrimmedNonEmptyString,
+  messageId: MessageId,
+  sourceEventSequence: PositiveInt,
+  assessment: ClaudeCacheObservation,
+  status: Schema.Literals(["pending", "responding", "compacting", "failed", "uncertain"]),
+  compactionTurnId: Schema.optional(TurnId),
+  compactionResponseEventSequence: Schema.optional(PositiveInt),
+  sourceProposedPlan: Schema.optional(SourceProposedPlanReference),
+  requestedAt: Schema.optional(IsoDateTime),
+  error: Schema.optional(Schema.String),
+  createdAt: IsoDateTime,
+});
+export type PendingClaudeCacheReview = typeof PendingClaudeCacheReview.Type;
+
 export const OrchestrationThread = Schema.Struct({
+  claudeCacheReview: Schema.optional(Schema.NullOr(PendingClaudeCacheReview)),
   id: ThreadId,
   projectId: ProjectId,
   title: TrimmedNonEmptyString,
@@ -730,6 +839,9 @@ export const OrchestrationThread = Schema.Struct({
   envMode: Schema.optional(ThreadEnvironmentMode).pipe(Schema.withDecodingDefault(() => "local")),
   branch: Schema.NullOr(TrimmedNonEmptyString),
   worktreePath: Schema.NullOr(TrimmedNonEmptyString),
+  workingDirectory: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)).pipe(
+    Schema.withDecodingDefault(() => null),
+  ),
   associatedWorktreePath: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)).pipe(
     Schema.withDecodingDefault(() => null),
   ),
@@ -772,11 +884,14 @@ export const OrchestrationThread = Schema.Struct({
     Schema.withDecodingDefault(() => null),
   ),
   sidechatSourceThreadId: SidechatSourceThreadId,
+  sidechatLastActivityAt: SidechatLifecycleTimestamp,
+  sidechatExpiredAt: SidechatLifecycleTimestamp,
   lastKnownPr: Schema.optional(Schema.NullOr(OrchestrationThreadPullRequest)).pipe(
     Schema.withDecodingDefault(() => null),
   ),
   latestTurn: Schema.NullOr(OrchestrationLatestTurn),
   latestUserMessageAt: Schema.optional(Schema.NullOr(IsoDateTime)),
+  latestHumanMessageAt: Schema.optional(Schema.NullOr(IsoDateTime)),
   hasPendingApprovals: Schema.optional(Schema.Boolean),
   hasPendingUserInput: Schema.optional(Schema.Boolean),
   hasActionableProposedPlan: Schema.optional(Schema.Boolean),
@@ -785,11 +900,16 @@ export const OrchestrationThread = Schema.Struct({
   archivedAt: Schema.optional(Schema.NullOr(IsoDateTime)).pipe(
     Schema.withDecodingDefault(() => null),
   ),
+  settledAt: Schema.optional(Schema.NullOr(IsoDateTime)).pipe(
+    Schema.withDecodingDefault(() => null),
+  ),
   deletedAt: Schema.NullOr(IsoDateTime),
   handoff: Schema.NullOr(ThreadHandoff).pipe(Schema.withDecodingDefault(() => null)),
   pinnedMessages: Schema.optional(ThreadPinnedMessages),
-  threadMarkers: Schema.optional(ThreadMarkers),
   notes: Schema.optional(ThreadNotes),
+  goal: Schema.optional(ThreadGoal),
+  ...ThreadGoalTimingFields,
+  goalAchievements: Schema.optional(ThreadGoalAchievements),
   messages: Schema.Array(OrchestrationMessage),
   proposedPlans: Schema.Array(OrchestrationProposedPlan).pipe(Schema.withDecodingDefault(() => [])),
   activities: Schema.Array(OrchestrationThreadActivity),
@@ -800,6 +920,7 @@ export const OrchestrationThread = Schema.Struct({
 export type OrchestrationThread = typeof OrchestrationThread.Type;
 
 export const OrchestrationThreadShell = Schema.Struct({
+  claudeCacheReview: Schema.optional(Schema.NullOr(PendingClaudeCacheReview)),
   id: ThreadId,
   projectId: ProjectId,
   title: TrimmedNonEmptyString,
@@ -811,6 +932,9 @@ export const OrchestrationThreadShell = Schema.Struct({
   envMode: Schema.optional(ThreadEnvironmentMode).pipe(Schema.withDecodingDefault(() => "local")),
   branch: Schema.NullOr(TrimmedNonEmptyString),
   worktreePath: Schema.NullOr(TrimmedNonEmptyString),
+  workingDirectory: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)).pipe(
+    Schema.withDecodingDefault(() => null),
+  ),
   associatedWorktreePath: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)).pipe(
     Schema.withDecodingDefault(() => null),
   ),
@@ -853,11 +977,14 @@ export const OrchestrationThreadShell = Schema.Struct({
     Schema.withDecodingDefault(() => null),
   ),
   sidechatSourceThreadId: SidechatSourceThreadId,
+  sidechatLastActivityAt: SidechatLifecycleTimestamp,
+  sidechatExpiredAt: SidechatLifecycleTimestamp,
   lastKnownPr: Schema.optional(Schema.NullOr(OrchestrationThreadPullRequest)).pipe(
     Schema.withDecodingDefault(() => null),
   ),
   latestTurn: Schema.NullOr(OrchestrationLatestTurn),
   latestUserMessageAt: Schema.optional(Schema.NullOr(IsoDateTime)),
+  latestHumanMessageAt: Schema.optional(Schema.NullOr(IsoDateTime)),
   hasPendingApprovals: Schema.optional(Schema.Boolean),
   hasPendingUserInput: Schema.optional(Schema.Boolean),
   hasActionableProposedPlan: Schema.optional(Schema.Boolean),
@@ -866,7 +993,12 @@ export const OrchestrationThreadShell = Schema.Struct({
   archivedAt: Schema.optional(Schema.NullOr(IsoDateTime)).pipe(
     Schema.withDecodingDefault(() => null),
   ),
+  settledAt: Schema.optional(Schema.NullOr(IsoDateTime)).pipe(
+    Schema.withDecodingDefault(() => null),
+  ),
   handoff: Schema.NullOr(ThreadHandoff).pipe(Schema.withDecodingDefault(() => null)),
+  goal: Schema.optional(ThreadGoal),
+  ...ThreadGoalTimingFields,
   session: Schema.NullOr(OrchestrationSession),
 });
 export type OrchestrationThreadShell = typeof OrchestrationThreadShell.Type;
@@ -882,6 +1014,7 @@ export type OrchestrationReadModel = typeof OrchestrationReadModel.Type;
 
 export const OrchestrationShellSnapshot = Schema.Struct({
   snapshotSequence: NonNegativeInt,
+  requiresEmptyProjectShellRepair: Schema.optional(Schema.Boolean),
   spaces: Schema.Array(OrchestrationSpaceShell),
   projects: Schema.Array(OrchestrationProjectShell),
   threads: Schema.Array(OrchestrationThreadShell),
@@ -990,6 +1123,8 @@ export const ProjectCreateCommand = Schema.Struct({
   kind: Schema.optional(ProjectKind).pipe(Schema.withDecodingDefault(() => "project")),
   title: TrimmedNonEmptyString,
   workspaceRoot: TrimmedNonEmptyString,
+  /** Importing into an existing folder must preserve even an empty project shell. */
+  preserveExistingProject: Schema.optional(Schema.Boolean),
   createWorkspaceRootIfMissing: Schema.optional(Schema.Boolean).pipe(
     Schema.withDecodingDefault(() => false),
   ),
@@ -1040,6 +1175,7 @@ const ThreadCreateCommand = Schema.Struct({
   envMode: Schema.optional(ThreadEnvironmentMode).pipe(Schema.withDecodingDefault(() => "local")),
   branch: Schema.NullOr(TrimmedNonEmptyString),
   worktreePath: Schema.NullOr(TrimmedNonEmptyString),
+  workingDirectory: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreePath: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreeBranch: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreeRef: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
@@ -1095,6 +1231,7 @@ const ThreadHandoffCreateCommand = Schema.Struct({
   envMode: Schema.optional(ThreadEnvironmentMode).pipe(Schema.withDecodingDefault(() => "local")),
   branch: Schema.NullOr(TrimmedNonEmptyString),
   worktreePath: Schema.NullOr(TrimmedNonEmptyString),
+  workingDirectory: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreePath: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreeBranch: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreeRef: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
@@ -1120,6 +1257,7 @@ const ThreadForkCreateCommand = Schema.Struct({
   envMode: Schema.optional(ThreadEnvironmentMode).pipe(Schema.withDecodingDefault(() => "local")),
   branch: Schema.NullOr(TrimmedNonEmptyString),
   worktreePath: Schema.NullOr(TrimmedNonEmptyString),
+  workingDirectory: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreePath: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreeBranch: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreeRef: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
@@ -1154,15 +1292,20 @@ const ThreadMetaUpdateCommand = Schema.Struct({
   commandId: CommandId,
   threadId: ThreadId,
   title: Schema.optional(TrimmedNonEmptyString),
+  /** Apply the title only while no newer durable title event exists. */
+  expectedTitleSequence: Schema.optional(NonNegativeInt),
   modelSelection: Schema.optional(ModelSelection),
   envMode: Schema.optional(ThreadEnvironmentMode),
   branch: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   worktreePath: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
+  workingDirectory: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreePath: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreeBranch: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreeRef: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   createBranchFlowCompleted: Schema.optional(Schema.Boolean),
   isPinned: Schema.optional(Schema.Boolean),
+  // Desired settled state; the decider stamps the authoritative settledAt timestamp.
+  isSettled: Schema.optional(Schema.Boolean),
   parentThreadId: Schema.optional(Schema.NullOr(ThreadId)),
   subagentAgentId: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   subagentNickname: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
@@ -1170,8 +1313,14 @@ const ThreadMetaUpdateCommand = Schema.Struct({
   handoff: Schema.optional(Schema.NullOr(ThreadHandoff)),
   lastKnownPr: Schema.optional(Schema.NullOr(OrchestrationThreadPullRequest)),
   pinnedMessages: Schema.optional(ThreadPinnedMessages),
-  threadMarkers: Schema.optional(ThreadMarkers),
   notes: Schema.optional(ThreadNotes),
+  goal: Schema.optional(ThreadGoal),
+  goalStartBehavior: Schema.optional(ThreadGoalStartBehavior),
+  // Desired paused state; the decider stamps the authoritative goal timestamps.
+  goalPaused: Schema.optional(Schema.Boolean),
+  // Marks the active goal accomplished: the decider records a ThreadGoalAchievement
+  // (with pause-adjusted elapsed time) and clears the goal in the same event.
+  goalAchieved: Schema.optional(Schema.Boolean),
 });
 
 const ThreadPinnedMessageAddCommand = Schema.Struct({
@@ -1204,44 +1353,6 @@ const ThreadPinnedMessageLabelSetCommand = Schema.Struct({
   label: Schema.NullOr(PinnedMessageLabel),
 });
 
-const ThreadMarkerAddCommand = Schema.Struct({
-  type: Schema.Literal("thread.marker.add"),
-  commandId: CommandId,
-  threadId: ThreadId,
-  markerId: ThreadMarkerId,
-  messageId: MessageId,
-  startOffset: NonNegativeInt,
-  endOffset: NonNegativeInt,
-  selectedText: TrimmedNonEmptyString.check(
-    Schema.isMaxLength(THREAD_MARKER_SELECTED_TEXT_MAX_CHARS),
-  ),
-  style: ThreadMarkerStyle,
-  color: ThreadMarkerColor,
-});
-
-const ThreadMarkerRemoveCommand = Schema.Struct({
-  type: Schema.Literal("thread.marker.remove"),
-  commandId: CommandId,
-  threadId: ThreadId,
-  markerId: ThreadMarkerId,
-});
-
-const ThreadMarkerDoneSetCommand = Schema.Struct({
-  type: Schema.Literal("thread.marker.done.set"),
-  commandId: CommandId,
-  threadId: ThreadId,
-  markerId: ThreadMarkerId,
-  done: Schema.Boolean,
-});
-
-const ThreadMarkerLabelSetCommand = Schema.Struct({
-  type: Schema.Literal("thread.marker.label.set"),
-  commandId: CommandId,
-  threadId: ThreadId,
-  markerId: ThreadMarkerId,
-  label: Schema.NullOr(ThreadMarkerLabel),
-});
-
 const ThreadRuntimeModeSetCommand = Schema.Struct({
   type: Schema.Literal("thread.runtime-mode.set"),
   commandId: CommandId,
@@ -1258,8 +1369,12 @@ const ThreadInteractionModeSetCommand = Schema.Struct({
   createdAt: IsoDateTime,
 });
 
+export const ComputerControlMode = Schema.Literals(["off", "request", "chat"]);
+export type ComputerControlMode = typeof ComputerControlMode.Type;
+
 export const ThreadTurnStartCommand = Schema.Struct({
   type: Schema.Literal("thread.turn.start"),
+  asyncUserInputResponse: Schema.optional(AsyncUserInputResponse),
   commandId: CommandId,
   threadId: ThreadId,
   message: Schema.Struct({
@@ -1272,6 +1387,9 @@ export const ThreadTurnStartCommand = Schema.Struct({
   }).check(TurnMessageContentCheck),
   modelSelection: Schema.optional(ModelSelection),
   providerOptions: Schema.optional(ProviderStartOptions),
+  enableComputerControl: Schema.optional(Schema.Boolean),
+  computerControlMode: Schema.optional(ComputerControlMode),
+  computerControlGeneration: Schema.optional(NonNegativeInt),
   reviewTarget: Schema.optional(ProviderReviewTarget),
   assistantDeliveryMode: Schema.optional(AssistantDeliveryMode),
   dispatchMode: Schema.optional(TurnDispatchMode).pipe(
@@ -1285,11 +1403,23 @@ export const ThreadTurnStartCommand = Schema.Struct({
     Schema.withDecodingDefault(() => DEFAULT_PROVIDER_INTERACTION_MODE),
   ),
   sourceProposedPlan: Schema.optional(SourceProposedPlanReference),
+  // Server-only (quit resume): accept the turn only while the thread is not archived,
+  // has nothing in flight, and no turn finished on its own since the record was
+  // taken (the recorded turn itself, or any later one). Clients cannot set it:
+  // ClientThreadTurnStartCommand omits the field, so decoding strips a spoofed value.
+  resumePrecondition: Schema.optional(
+    Schema.Struct({
+      /** Turn in flight when the chat was recorded; null while the provider was still connecting. */
+      recordedTurnId: Schema.NullOr(TurnId),
+      recordedAt: IsoDateTime,
+    }),
+  ),
   createdAt: IsoDateTime,
 });
 
 const ClientThreadTurnStartCommand = Schema.Struct({
   type: Schema.Literal("thread.turn.start"),
+  asyncUserInputResponse: Schema.optional(AsyncUserInputResponse),
   commandId: CommandId,
   threadId: ThreadId,
   message: Schema.Struct({
@@ -1302,6 +1432,9 @@ const ClientThreadTurnStartCommand = Schema.Struct({
   }).check(TurnMessageContentCheck),
   modelSelection: Schema.optional(ModelSelection),
   providerOptions: Schema.optional(ProviderStartOptions),
+  enableComputerControl: Schema.optional(Schema.Boolean),
+  computerControlMode: Schema.optional(ComputerControlMode),
+  computerControlGeneration: Schema.optional(NonNegativeInt),
   reviewTarget: Schema.optional(ProviderReviewTarget),
   assistantDeliveryMode: Schema.optional(AssistantDeliveryMode),
   dispatchMode: Schema.optional(TurnDispatchMode).pipe(
@@ -1310,6 +1443,37 @@ const ClientThreadTurnStartCommand = Schema.Struct({
   runtimeMode: RuntimeMode,
   interactionMode: ProviderInteractionMode,
   sourceProposedPlan: Schema.optional(SourceProposedPlanReference),
+  createdAt: IsoDateTime,
+});
+
+const ThreadClaudeCacheRespondCommand = Schema.Struct({
+  type: Schema.Literal("thread.claude-cache.respond"),
+  commandId: CommandId,
+  threadId: ThreadId,
+  messageId: MessageId,
+  reviewId: TrimmedNonEmptyString,
+  decision: Schema.Literals(["continue", "compact", "cancel"]),
+  createdAt: IsoDateTime,
+});
+
+const ThreadClaudeCacheSetCommand = Schema.Struct({
+  type: Schema.Literal("thread.claude-cache.set"),
+  commandId: CommandId,
+  threadId: ThreadId,
+  review: Schema.NullOr(PendingClaudeCacheReview),
+  expectedReviewId: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
+  hold: Schema.optional(
+    Schema.Struct({ sourceEventSequence: PositiveInt, session: OrchestrationSession }),
+  ),
+  createdAt: IsoDateTime,
+});
+
+const ThreadClaudeCacheCompactedCommand = Schema.Struct({
+  type: Schema.Literal("thread.claude-cache.compacted"),
+  commandId: CommandId,
+  threadId: ThreadId,
+  reviewId: TrimmedNonEmptyString,
+  turnId: TurnId,
   createdAt: IsoDateTime,
 });
 
@@ -1344,11 +1508,15 @@ const ThreadDispatchQueuedTurnCommand = Schema.Struct({
   messageId: MessageId,
   modelSelection: Schema.optional(ModelSelection),
   providerOptions: Schema.optional(ProviderStartOptions),
+  enableComputerControl: Schema.optional(Schema.Boolean),
+  computerControlMode: Schema.optional(ComputerControlMode),
+  computerControlGeneration: Schema.optional(NonNegativeInt),
   reviewTarget: Schema.optional(ProviderReviewTarget),
   assistantDeliveryMode: Schema.optional(AssistantDeliveryMode),
   dispatchMode: Schema.optional(TurnDispatchMode).pipe(
     Schema.withDecodingDefault(() => DEFAULT_TURN_DISPATCH_MODE),
   ),
+  dispatchOrigin: Schema.optional(MessageDispatchOrigin),
   runtimeMode: RuntimeMode.pipe(Schema.withDecodingDefault(() => DEFAULT_RUNTIME_MODE)),
   interactionMode: ProviderInteractionMode.pipe(
     Schema.withDecodingDefault(() => DEFAULT_PROVIDER_INTERACTION_MODE),
@@ -1403,6 +1571,9 @@ const ThreadMessageEditAndResendCommand = Schema.Struct({
   text: TrimmedNonEmptyString.check(Schema.isMaxLength(PROVIDER_SEND_TURN_MAX_INPUT_CHARS)),
   modelSelection: Schema.optional(ModelSelection),
   providerOptions: Schema.optional(ProviderStartOptions),
+  enableComputerControl: Schema.optional(Schema.Boolean),
+  computerControlMode: Schema.optional(ComputerControlMode),
+  computerControlGeneration: Schema.optional(NonNegativeInt),
   assistantDeliveryMode: Schema.optional(AssistantDeliveryMode),
   runtimeMode: RuntimeMode,
   interactionMode: ProviderInteractionMode,
@@ -1417,6 +1588,7 @@ const ThreadSessionStopCommand = Schema.Struct({
 });
 
 const ThreadActivityAppendCommand = Schema.Struct({
+  requireUnarchived: Schema.optional(Schema.Boolean),
   type: Schema.Literal("thread.activity.append"),
   commandId: CommandId,
   threadId: ThreadId,
@@ -1444,13 +1616,10 @@ const DispatchableClientOrchestrationCommand = Schema.Union([
   ThreadPinnedMessageRemoveCommand,
   ThreadPinnedMessageDoneSetCommand,
   ThreadPinnedMessageLabelSetCommand,
-  ThreadMarkerAddCommand,
-  ThreadMarkerRemoveCommand,
-  ThreadMarkerDoneSetCommand,
-  ThreadMarkerLabelSetCommand,
   ThreadRuntimeModeSetCommand,
   ThreadInteractionModeSetCommand,
   ThreadTurnStartCommand,
+  ThreadClaudeCacheRespondCommand,
   ThreadTurnInterruptCommand,
   ThreadTaskStopCommand,
   ThreadTaskBackgroundCommand,
@@ -1484,13 +1653,10 @@ export const ClientOrchestrationCommand = Schema.Union([
   ThreadPinnedMessageRemoveCommand,
   ThreadPinnedMessageDoneSetCommand,
   ThreadPinnedMessageLabelSetCommand,
-  ThreadMarkerAddCommand,
-  ThreadMarkerRemoveCommand,
-  ThreadMarkerDoneSetCommand,
-  ThreadMarkerLabelSetCommand,
   ThreadRuntimeModeSetCommand,
   ThreadInteractionModeSetCommand,
   ClientThreadTurnStartCommand,
+  ThreadClaudeCacheRespondCommand,
   ThreadTurnInterruptCommand,
   ThreadTaskStopCommand,
   ThreadTaskBackgroundCommand,
@@ -1508,6 +1674,18 @@ const ThreadSessionSetCommand = Schema.Struct({
   commandId: CommandId,
   threadId: ThreadId,
   session: OrchestrationSession,
+  expectedSessionStatus: Schema.optional(OrchestrationSessionStatus),
+  expectedSessionUpdatedAt: Schema.optional(IsoDateTime),
+  createdAt: IsoDateTime,
+});
+
+const ThreadGoalContinueCommand = Schema.Struct({
+  type: Schema.Literal("thread.goal.continue"),
+  commandId: CommandId,
+  threadId: ThreadId,
+  goalStartedAt: Schema.NullOr(IsoDateTime),
+  trigger: ThreadGoalContinuationTrigger,
+  sourceTurnId: Schema.optional(TurnId),
   createdAt: IsoDateTime,
 });
 
@@ -1526,15 +1704,39 @@ const ThreadMessageAssistantDeltaCommand = Schema.Struct({
   messageId: MessageId,
   delta: Schema.String,
   turnId: Schema.optional(TurnId),
+  // Present only when this delta starts a NEW text segment: a row-making
+  // provider event (tool call, warning, ...) intervened since the previous
+  // assistant delta. Positions the segment in the merged timeline.
+  segmentStartedAt: Schema.optional(IsoDateTime),
+  segmentSequence: Schema.optional(NonNegativeInt),
   createdAt: IsoDateTime,
 });
 
 const ThreadMessageAssistantCompleteCommand = Schema.Struct({
+  asyncQuestions: Schema.optional(AsyncUserInputQuestions),
   type: Schema.Literal("thread.message.assistant.complete"),
   commandId: CommandId,
   threadId: ThreadId,
   messageId: MessageId,
   turnId: Schema.optional(TurnId),
+  createdAt: IsoDateTime,
+});
+
+const ThreadMessageUserBindTurnCommand = Schema.Struct({
+  type: Schema.Literal("thread.message.user.bind-turn"),
+  commandId: CommandId,
+  threadId: ThreadId,
+  messageId: MessageId,
+  turnId: TurnId,
+  createdAt: IsoDateTime,
+});
+
+const ThreadMessageUserSetTurnBoundaryCommand = Schema.Struct({
+  type: Schema.Literal("thread.message.user.set-turn-boundary"),
+  commandId: CommandId,
+  threadId: ThreadId,
+  messageId: MessageId,
+  startsNewTurn: Schema.Boolean,
   createdAt: IsoDateTime,
 });
 
@@ -1581,11 +1783,31 @@ const ThreadConversationRollbackCompleteCommand = Schema.Struct({
   createdAt: IsoDateTime,
 });
 
+const ThreadSidechatActivityRecordCommand = Schema.Struct({
+  type: Schema.Literal("thread.sidechat.activity.record"),
+  commandId: CommandId,
+  threadId: ThreadId,
+  activityAt: IsoDateTime,
+});
+
+const ThreadSidechatExpireCommand = Schema.Struct({
+  type: Schema.Literal("thread.sidechat.expire"),
+  commandId: CommandId,
+  threadId: ThreadId,
+  expectedLastActivityAt: IsoDateTime,
+  expiredAt: IsoDateTime,
+});
+
 const InternalOrchestrationCommand = Schema.Union([
+  ThreadClaudeCacheCompactedCommand,
+  ThreadClaudeCacheSetCommand,
   ThreadSessionSetCommand,
+  ThreadGoalContinueCommand,
   ThreadMessagesImportCommand,
   ThreadMessageAssistantDeltaCommand,
   ThreadMessageAssistantCompleteCommand,
+  ThreadMessageUserBindTurnCommand,
+  ThreadMessageUserSetTurnBoundaryCommand,
   ThreadProposedPlanUpsertCommand,
   ThreadTurnDiffCompleteCommand,
   ThreadActivityAppendCommand,
@@ -1593,6 +1815,8 @@ const InternalOrchestrationCommand = Schema.Union([
   ThreadConversationRollbackCommand,
   ThreadConversationRollbackCompleteCommand,
   ThreadDispatchQueuedTurnCommand,
+  ThreadSidechatActivityRecordCommand,
+  ThreadSidechatExpireCommand,
 ]);
 export type InternalOrchestrationCommand = typeof InternalOrchestrationCommand.Type;
 
@@ -1620,15 +1844,15 @@ export const OrchestrationEventType = Schema.Literals([
   "thread.pinned-message-removed",
   "thread.pinned-message-done-set",
   "thread.pinned-message-label-set",
-  "thread.marker-added",
-  "thread.marker-removed",
-  "thread.marker-done-set",
-  "thread.marker-label-set",
   "thread.runtime-mode-set",
   "thread.interaction-mode-set",
   "thread.message-sent",
+  "thread.async-user-input-answered",
   "thread.turn-queued",
   "thread.turn-start-requested",
+  "thread.claude-cache-set",
+  "thread.claude-cache-response-requested",
+  "thread.goal-continuation-requested",
   "thread.turn-interrupt-requested",
   "thread.task-stop-requested",
   "thread.task-background-requested",
@@ -1644,6 +1868,8 @@ export const OrchestrationEventType = Schema.Literals([
   "thread.proposed-plan-upserted",
   "thread.turn-diff-completed",
   "thread.activity-appended",
+  "thread.sidechat-activity-recorded",
+  "thread.sidechat-expired",
 ]);
 export type OrchestrationEventType = typeof OrchestrationEventType.Type;
 
@@ -1720,6 +1946,9 @@ export const ThreadCreatedPayload = Schema.Struct({
   envMode: Schema.optional(ThreadEnvironmentMode).pipe(Schema.withDecodingDefault(() => "local")),
   branch: Schema.NullOr(TrimmedNonEmptyString),
   worktreePath: Schema.NullOr(TrimmedNonEmptyString),
+  workingDirectory: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)).pipe(
+    Schema.withDecodingDefault(() => null),
+  ),
   associatedWorktreePath: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)).pipe(
     Schema.withDecodingDefault(() => null),
   ),
@@ -1754,6 +1983,8 @@ export const ThreadCreatedPayload = Schema.Struct({
     Schema.withDecodingDefault(() => null),
   ),
   sidechatSourceThreadId: SidechatSourceThreadId,
+  sidechatLastActivityAt: SidechatLifecycleTimestamp,
+  sidechatExpiredAt: SidechatLifecycleTimestamp,
   lastKnownPr: Schema.optional(Schema.NullOr(OrchestrationThreadPullRequest)).pipe(
     Schema.withDecodingDefault(() => null),
   ),
@@ -1765,6 +1996,17 @@ export const ThreadCreatedPayload = Schema.Struct({
 export const ThreadDeletedPayload = Schema.Struct({
   threadId: ThreadId,
   deletedAt: IsoDateTime,
+});
+
+export const ThreadSidechatActivityRecordedPayload = Schema.Struct({
+  threadId: ThreadId,
+  lastActivityAt: IsoDateTime,
+});
+
+export const ThreadSidechatExpiredPayload = Schema.Struct({
+  threadId: ThreadId,
+  expectedLastActivityAt: IsoDateTime,
+  expiredAt: IsoDateTime,
 });
 
 export const ThreadArchivedPayload = Schema.Struct({
@@ -1789,11 +2031,13 @@ export const ThreadMetaUpdatedPayload = Schema.Struct({
   envMode: Schema.optional(ThreadEnvironmentMode),
   branch: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   worktreePath: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
+  workingDirectory: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreePath: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreeBranch: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   associatedWorktreeRef: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   createBranchFlowCompleted: Schema.optional(Schema.Boolean),
   isPinned: Schema.optional(Schema.Boolean),
+  settledAt: Schema.optional(Schema.NullOr(IsoDateTime)),
   parentThreadId: Schema.optional(Schema.NullOr(ThreadId)),
   subagentAgentId: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
   subagentNickname: Schema.optional(Schema.NullOr(TrimmedNonEmptyString)),
@@ -1801,8 +2045,12 @@ export const ThreadMetaUpdatedPayload = Schema.Struct({
   handoff: Schema.optional(Schema.NullOr(ThreadHandoff)),
   lastKnownPr: Schema.optional(Schema.NullOr(OrchestrationThreadPullRequest)),
   pinnedMessages: Schema.optional(ThreadPinnedMessages),
-  threadMarkers: Schema.optional(ThreadMarkers),
   notes: Schema.optional(ThreadNotes),
+  goal: Schema.optional(ThreadGoal),
+  goalStartBehavior: Schema.optional(ThreadGoalStartBehavior),
+  goalStartedAt: Schema.optional(Schema.NullOr(IsoDateTime)),
+  goalPausedAt: Schema.optional(Schema.NullOr(IsoDateTime)),
+  goalAchievements: Schema.optional(ThreadGoalAchievements),
   updatedAt: IsoDateTime,
 });
 
@@ -1832,32 +2080,6 @@ export const ThreadPinnedMessageLabelSetPayload = Schema.Struct({
   updatedAt: IsoDateTime,
 });
 
-export const ThreadMarkerAddedPayload = Schema.Struct({
-  threadId: ThreadId,
-  marker: ThreadMarker,
-  updatedAt: IsoDateTime,
-});
-
-export const ThreadMarkerRemovedPayload = Schema.Struct({
-  threadId: ThreadId,
-  markerId: ThreadMarkerId,
-  updatedAt: IsoDateTime,
-});
-
-export const ThreadMarkerDoneSetPayload = Schema.Struct({
-  threadId: ThreadId,
-  markerId: ThreadMarkerId,
-  done: Schema.Boolean,
-  updatedAt: IsoDateTime,
-});
-
-export const ThreadMarkerLabelSetPayload = Schema.Struct({
-  threadId: ThreadId,
-  markerId: ThreadMarkerId,
-  label: Schema.NullOr(ThreadMarkerLabel),
-  updatedAt: IsoDateTime,
-});
-
 export const ThreadRuntimeModeSetPayload = Schema.Struct({
   threadId: ThreadId,
   runtimeMode: RuntimeMode,
@@ -1866,6 +2088,7 @@ export const ThreadRuntimeModeSetPayload = Schema.Struct({
 
 export const ThreadInteractionModeSetPayload = Schema.Struct({
   threadId: ThreadId,
+  previousInteractionMode: Schema.optional(ProviderInteractionMode),
   interactionMode: ProviderInteractionMode.pipe(
     Schema.withDecodingDefault(() => DEFAULT_PROVIDER_INTERACTION_MODE),
   ),
@@ -1873,15 +2096,22 @@ export const ThreadInteractionModeSetPayload = Schema.Struct({
 });
 
 export const ThreadMessageSentPayload = Schema.Struct({
+  asyncUserInput: Schema.optional(AsyncUserInput),
   threadId: ThreadId,
   messageId: MessageId,
   role: OrchestrationMessageRole,
   text: Schema.String,
+  // Mirrors ThreadMessageAssistantDeltaCommand.segmentStartedAt: set on the
+  // first delta of a new text segment (after a row-making event). The message
+  // projection persists segment boundaries into the message's textSegments.
+  segmentStartedAt: Schema.optional(IsoDateTime),
+  segmentSequence: Schema.optional(NonNegativeInt),
   attachments: Schema.optional(Schema.Array(ChatAttachment)),
   skills: Schema.optional(Schema.Array(ProviderSkillReference)),
   mentions: Schema.optional(Schema.Array(ProviderMentionReference)),
   dispatchMode: Schema.optional(TurnDispatchMode),
   dispatchOrigin: Schema.optional(MessageDispatchOrigin),
+  startsNewTurn: Schema.optional(Schema.Boolean),
   turnId: Schema.NullOr(TurnId),
   streaming: Schema.Boolean,
   source: OrchestrationMessageSource.pipe(Schema.withDecodingDefault(() => "native")),
@@ -1889,14 +2119,36 @@ export const ThreadMessageSentPayload = Schema.Struct({
   updatedAt: IsoDateTime,
 });
 
+export const ThreadAsyncUserInputAnsweredPayload = Schema.Struct({
+  threadId: ThreadId,
+  messageId: MessageId,
+  response: AsyncUserInputResponse,
+});
+
+export const ThreadClaudeCacheSetPayload = Schema.Struct({
+  threadId: ThreadId,
+  review: Schema.NullOr(PendingClaudeCacheReview),
+  updatedAt: IsoDateTime,
+});
+export const ThreadClaudeCacheResponseRequestedPayload = Schema.Struct({
+  threadId: ThreadId,
+  review: PendingClaudeCacheReview,
+  decision: Schema.Literals(["continue", "compact", "cancel"]),
+  createdAt: IsoDateTime,
+});
+
 export const ThreadTurnStartRequestedPayload = Schema.Struct({
   threadId: ThreadId,
   messageId: MessageId,
   modelSelection: Schema.optional(ModelSelection),
   providerOptions: Schema.optional(ProviderStartOptions),
+  enableComputerControl: Schema.optional(Schema.Boolean),
+  computerControlMode: Schema.optional(ComputerControlMode),
+  computerControlGeneration: Schema.optional(NonNegativeInt),
   reviewTarget: Schema.optional(ProviderReviewTarget),
   assistantDeliveryMode: Schema.optional(AssistantDeliveryMode),
   dispatchMode: TurnDispatchMode.pipe(Schema.withDecodingDefault(() => DEFAULT_TURN_DISPATCH_MODE)),
+  dispatchOrigin: Schema.optional(MessageDispatchOrigin),
   runtimeMode: RuntimeMode.pipe(Schema.withDecodingDefault(() => DEFAULT_RUNTIME_MODE)),
   interactionMode: ProviderInteractionMode.pipe(
     Schema.withDecodingDefault(() => DEFAULT_PROVIDER_INTERACTION_MODE),
@@ -1906,6 +2158,14 @@ export const ThreadTurnStartRequestedPayload = Schema.Struct({
 });
 
 export const ThreadTurnQueuedPayload = ThreadTurnStartRequestedPayload;
+
+export const ThreadGoalContinuationRequestedPayload = Schema.Struct({
+  threadId: ThreadId,
+  goalStartedAt: Schema.NullOr(IsoDateTime),
+  trigger: ThreadGoalContinuationTrigger,
+  sourceTurnId: Schema.optional(TurnId),
+  createdAt: IsoDateTime,
+});
 
 export const ThreadTurnInterruptRequestedPayload = Schema.Struct({
   threadId: ThreadId,
@@ -1978,6 +2238,9 @@ export const ThreadMessageEditResendRequestedPayload = Schema.Struct({
   removedTurnIds: Schema.optional(Schema.Array(TurnId)),
   modelSelection: Schema.optional(ModelSelection),
   providerOptions: Schema.optional(ProviderStartOptions),
+  enableComputerControl: Schema.optional(Schema.Boolean),
+  computerControlMode: Schema.optional(ComputerControlMode),
+  computerControlGeneration: Schema.optional(NonNegativeInt),
   assistantDeliveryMode: Schema.optional(AssistantDeliveryMode),
   runtimeMode: RuntimeMode,
   interactionMode: ProviderInteractionMode,
@@ -2120,26 +2383,6 @@ export const OrchestrationEvent = Schema.Union([
   }),
   Schema.Struct({
     ...EventBaseFields,
-    type: Schema.Literal("thread.marker-added"),
-    payload: ThreadMarkerAddedPayload,
-  }),
-  Schema.Struct({
-    ...EventBaseFields,
-    type: Schema.Literal("thread.marker-removed"),
-    payload: ThreadMarkerRemovedPayload,
-  }),
-  Schema.Struct({
-    ...EventBaseFields,
-    type: Schema.Literal("thread.marker-done-set"),
-    payload: ThreadMarkerDoneSetPayload,
-  }),
-  Schema.Struct({
-    ...EventBaseFields,
-    type: Schema.Literal("thread.marker-label-set"),
-    payload: ThreadMarkerLabelSetPayload,
-  }),
-  Schema.Struct({
-    ...EventBaseFields,
     type: Schema.Literal("thread.runtime-mode-set"),
     payload: ThreadRuntimeModeSetPayload,
   }),
@@ -2155,6 +2398,21 @@ export const OrchestrationEvent = Schema.Union([
   }),
   Schema.Struct({
     ...EventBaseFields,
+    type: Schema.Literal("thread.async-user-input-answered"),
+    payload: ThreadAsyncUserInputAnsweredPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("thread.claude-cache-set"),
+    payload: ThreadClaudeCacheSetPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("thread.claude-cache-response-requested"),
+    payload: ThreadClaudeCacheResponseRequestedPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
     type: Schema.Literal("thread.turn-queued"),
     payload: ThreadTurnQueuedPayload,
   }),
@@ -2162,6 +2420,11 @@ export const OrchestrationEvent = Schema.Union([
     ...EventBaseFields,
     type: Schema.Literal("thread.turn-start-requested"),
     payload: ThreadTurnStartRequestedPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("thread.goal-continuation-requested"),
+    payload: ThreadGoalContinuationRequestedPayload,
   }),
   Schema.Struct({
     ...EventBaseFields,
@@ -2237,6 +2500,16 @@ export const OrchestrationEvent = Schema.Union([
     ...EventBaseFields,
     type: Schema.Literal("thread.activity-appended"),
     payload: ThreadActivityAppendedPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("thread.sidechat-activity-recorded"),
+    payload: ThreadSidechatActivityRecordedPayload,
+  }),
+  Schema.Struct({
+    ...EventBaseFields,
+    type: Schema.Literal("thread.sidechat-expired"),
+    payload: ThreadSidechatExpiredPayload,
   }),
 ]);
 export type OrchestrationEvent = typeof OrchestrationEvent.Type;
@@ -2364,15 +2637,6 @@ const OrchestrationGetSidebarSearchSnapshotResult = OrchestrationSidebarSearchSn
 export type OrchestrationGetSidebarSearchSnapshotResult =
   typeof OrchestrationGetSidebarSearchSnapshotResult.Type;
 
-export const OrchestrationGetThreadDetailSnapshotInput = Schema.Struct({
-  threadId: ThreadId,
-});
-export type OrchestrationGetThreadDetailSnapshotInput =
-  typeof OrchestrationGetThreadDetailSnapshotInput.Type;
-const OrchestrationGetThreadDetailSnapshotResult = Schema.NullOr(OrchestrationThreadDetailSnapshot);
-export type OrchestrationGetThreadDetailSnapshotResult =
-  typeof OrchestrationGetThreadDetailSnapshotResult.Type;
-
 export const OrchestrationRepairStateInput = Schema.Struct({});
 export type OrchestrationRepairStateInput = typeof OrchestrationRepairStateInput.Type;
 const OrchestrationRepairStateResult = OrchestrationReadModel;
@@ -2402,6 +2666,7 @@ export type OrchestrationGetFullThreadDiffResult = typeof OrchestrationGetFullTh
 
 export const OrchestrationReplayEventsInput = Schema.Struct({
   fromSequenceExclusive: NonNegativeInt,
+  threadId: Schema.optional(ThreadId),
 });
 export type OrchestrationReplayEventsInput = typeof OrchestrationReplayEventsInput.Type;
 
@@ -2467,6 +2732,31 @@ export const OrchestrationReconcileProviderDeliveryResult = Schema.Struct({
 export type OrchestrationReconcileProviderDeliveryResult =
   typeof OrchestrationReconcileProviderDeliveryResult.Type;
 
+/**
+ * Desktop quit with "Resume chats automatically": the server durably records the
+ * listed threads (plus their current turn) and interrupts them in one step, so
+ * the renderer can reply to the quit request only after the record exists.
+ */
+export const QUIT_RESUME_MAX_THREADS = 256;
+export const QUIT_RESUME_MAX_PROMPT_CHARS = 2_000;
+
+export const OrchestrationPrepareQuitResumeInput = Schema.Struct({
+  threadIds: Schema.Array(ThreadId).check(
+    Schema.isMinLength(1),
+    Schema.isMaxLength(QUIT_RESUME_MAX_THREADS),
+  ),
+  /** User-turn text dispatched on each recorded thread at the next server start. */
+  continuationPrompt: TrimmedNonEmptyString.check(Schema.isMaxLength(QUIT_RESUME_MAX_PROMPT_CHARS)),
+});
+export type OrchestrationPrepareQuitResumeInput = typeof OrchestrationPrepareQuitResumeInput.Type;
+
+export const OrchestrationPrepareQuitResumeResult = Schema.Struct({
+  /** Threads durably recorded for resume (unknown or deleted threads are dropped). */
+  recordedThreadIds: Schema.Array(ThreadId),
+  recordedAt: IsoDateTime,
+});
+export type OrchestrationPrepareQuitResumeResult = typeof OrchestrationPrepareQuitResumeResult.Type;
+
 export const OrchestrationSubscribeShellInput = Schema.Struct({});
 export type OrchestrationSubscribeShellInput = typeof OrchestrationSubscribeShellInput.Type;
 
@@ -2475,8 +2765,25 @@ export type OrchestrationUnsubscribeShellInput = typeof OrchestrationUnsubscribe
 
 export const OrchestrationSubscribeThreadInput = Schema.Struct({
   threadId: ThreadId,
+  // Cursor of the last event the client already applied. When present and the
+  // gap fits the server's replay limit, the stream replays only the gap and
+  // skips the full-history snapshot. Optional so older clients keep the
+  // snapshot-first behavior unchanged.
+  afterSequence: Schema.optional(NonNegativeInt),
 });
 export type OrchestrationSubscribeThreadInput = typeof OrchestrationSubscribeThreadInput.Type;
+
+export const OrchestrationGetThreadDetailSnapshotInput = Schema.Struct({
+  threadId: ThreadId,
+});
+export type OrchestrationGetThreadDetailSnapshotInput =
+  typeof OrchestrationGetThreadDetailSnapshotInput.Type;
+
+export const OrchestrationGetThreadDetailSnapshotResult = Schema.NullOr(
+  OrchestrationThreadDetailSnapshot,
+);
+export type OrchestrationGetThreadDetailSnapshotResult =
+  typeof OrchestrationGetThreadDetailSnapshotResult.Type;
 
 export const OrchestrationImportThreadInput = Schema.Struct({
   threadId: ThreadId,
@@ -2488,6 +2795,22 @@ export const OrchestrationImportThreadResult = Schema.Struct({
   threadId: ThreadId,
 });
 export type OrchestrationImportThreadResult = typeof OrchestrationImportThreadResult.Type;
+
+export const OrchestrationRegenerateThreadTitleInput = Schema.Struct({
+  threadId: ThreadId,
+});
+export type OrchestrationRegenerateThreadTitleInput =
+  typeof OrchestrationRegenerateThreadTitleInput.Type;
+
+export const OrchestrationRegenerateThreadTitleResult = Schema.Union([
+  Schema.Struct({
+    status: Schema.Literals(["renamed", "unchanged"]),
+    title: TrimmedNonEmptyString,
+  }),
+  Schema.Struct({ status: Schema.Literals(["no-context", "stale"]), title: Schema.Null }),
+]);
+export type OrchestrationRegenerateThreadTitleResult =
+  typeof OrchestrationRegenerateThreadTitleResult.Type;
 
 export const OrchestrationUnsubscribeThreadInput = Schema.Struct({
   threadId: ThreadId,
@@ -2527,6 +2850,12 @@ export const OrchestrationRpcSchemas = {
     input: OrchestrationImportThreadInput,
     output: OrchestrationImportThreadResult,
   },
+  listProjectImports: { input: ListProjectImportsInput, output: ListProjectImportsResult },
+  importProject: { input: ImportProjectInput, output: ImportProjectResult },
+  regenerateThreadTitle: {
+    input: OrchestrationRegenerateThreadTitleInput,
+    output: OrchestrationRegenerateThreadTitleResult,
+  },
   getTurnDiff: {
     input: OrchestrationGetTurnDiffInput,
     output: OrchestrationGetTurnDiffResult,
@@ -2546,6 +2875,10 @@ export const OrchestrationRpcSchemas = {
   reconcileProviderDelivery: {
     input: OrchestrationReconcileProviderDeliveryInput,
     output: OrchestrationReconcileProviderDeliveryResult,
+  },
+  prepareQuitResume: {
+    input: OrchestrationPrepareQuitResumeInput,
+    output: OrchestrationPrepareQuitResumeResult,
   },
   subscribeShell: {
     input: OrchestrationSubscribeShellInput,

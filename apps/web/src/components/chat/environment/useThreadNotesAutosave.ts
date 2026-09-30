@@ -32,11 +32,12 @@ export function useThreadNotesAutosave({
   threadId,
   notes,
   onChange,
-  debounceMs = DEFAULT_NOTES_AUTOSAVE_DEBOUNCE_MS,
+  debounceMs: debounceMsProp,
 }: UseThreadNotesAutosaveInput): UseThreadNotesAutosaveResult {
+  const debounceMs = debounceMsProp ?? DEFAULT_NOTES_AUTOSAVE_DEBOUNCE_MS;
   const [value, setValue] = useState(notes);
   const [focused, setFocused] = useState(false);
-  const debounceRef = useRef<number | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const saveInFlightRef = useRef(false);
   const retryAfterInFlightRef = useRef(false);
   const mountedRef = useRef(true);
@@ -57,7 +58,6 @@ export function useThreadNotesAutosave({
     valueRef.current = value;
   }, [value]);
 
-  // Manual memoization kept: this file does not compile under React Compiler (see compile-report).
   const scheduleFlush = useCallback((delayMs: number) => {
     if (debounceRef.current !== null) {
       clearTimeout(debounceRef.current);

@@ -13,10 +13,9 @@ import {
   TriangleAlertIcon,
 } from "~/lib/icons";
 import { type ThreadId } from "@synara/contracts";
-import { buildTerminalSelectionContextMenuItems } from "@synara/shared/contextMenu";
 import { type TerminalActivityState, type TerminalCliKind } from "@synara/shared/terminalThreads";
 import { Terminal } from "@xterm/xterm";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { type TerminalContextSelection } from "~/lib/terminalContext";
 import { readNativeApi } from "~/nativeApi";
 import {
@@ -33,6 +32,7 @@ import {
 import { resolveThreadTerminalLayout } from "./terminal/TerminalLayout";
 import {
   resolveTerminalSelectionActionPosition,
+  resolveTerminalSelectionContextMenuItems,
   shouldHandleTerminalSelectionMouseUp,
   terminalSelectionActionDelayForClickCount,
 } from "./terminal/terminalSelectionActions";
@@ -50,9 +50,6 @@ import { useTerminalDrawerHeight } from "./terminal/useTerminalDrawerHeight";
 import { TerminalSearch } from "./TerminalSearch";
 import { TerminalScrollToBottom } from "./TerminalScrollToBottom";
 
-import { raf } from "~/platform/frame";
-import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
-import { getWindowSelection } from "./chat/chatSelectionDom";
 function serializeRuntimeEnv(runtimeEnv: Record<string, string> | undefined): string {
   if (!runtimeEnv) return "";
   const entries = Object.entries(runtimeEnv);
@@ -70,7 +67,7 @@ function runtimeEnvFromSerialized(
 }
 
 function getTerminalSelectionRect(mountElement: HTMLElement): DOMRect | null {
-  const selection = getWindowSelection();
+  const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
     return null;
   }
@@ -100,7 +97,7 @@ function TerminalRuntimeStatusOverlay({ status }: { status: TerminalRuntimeStatu
   return (
     <div
       className={cn(
-        "pointer-events-none absolute left-1 top-1 z-10 inline-flex h-6 max-w-[calc(100%-0.5rem)] items-center gap-1.5 rounded border px-2 text-[11px] leading-none shadow-sm backdrop-blur",
+        "pointer-events-none absolute left-1 top-1 z-10 inline-flex h-6 max-w-[calc(100%-0.5rem)] items-center gap-1.5 rounded border px-2 text-ui-sm leading-none shadow-sm backdrop-blur",
         "border-destructive/30 bg-destructive/10 text-destructive",
       )}
     >
@@ -126,7 +123,7 @@ interface TerminalViewportProps {
     terminalId: string,
     activity: { hasRunningSubprocess: boolean; agentState: TerminalActivityState | null },
   ) => void;
-  onAddTerminalContext: (selection: TerminalContextSelection) => void;
+  onAddTerminalContext?: ((selection: TerminalContextSelection) => void) | undefined;
   focusRequestId: number;
   autoFocus: boolean;
   isVisible: boolean;
@@ -136,7 +133,7 @@ function TerminalViewport({
   threadId,
   terminalId,
   terminalLabel,
-  terminalCliKind = null,
+  terminalCliKind: terminalCliKindProp,
   cwd,
   runtimeEnv,
   onSessionExited,
@@ -147,6 +144,7 @@ function TerminalViewport({
   autoFocus,
   isVisible,
 }: TerminalViewportProps) {
+  const terminalCliKind = terminalCliKindProp ?? null;
   const containerRef = useRef<HTMLDivElement>(null);
   const terminalRef = useRef<Terminal | null>(null);
   const onAddTerminalContextRef = useRef(onAddTerminalContext);
@@ -161,7 +159,6 @@ function TerminalViewport({
   const [searchAddonInstance, setSearchAddonInstance] = useState<SearchAddon | null>(null);
   const [runtimeStatus, setRuntimeStatus] = useState<TerminalRuntimeStatus>("connecting");
   const runtimeStatusMountedRef = useRef(false);
-  // Manual memoization kept: this file does not compile under React Compiler (see compile-report).
   const trimmedCwd = useMemo(() => cwd.trim(), [cwd]);
   const runtimeCwdReady = trimmedCwd.length > 0;
   const runtimeKey = useMemo(
@@ -213,7 +210,7 @@ function TerminalViewport({
   const runtimeConfigRef = useRef(runtimeConfig);
   const runtimeViewStateRef = useRef(runtimeViewState);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     onAddTerminalContextRef.current = onAddTerminalContext;
   }, [onAddTerminalContext]);
 
@@ -258,7 +255,7 @@ function TerminalViewport({
 
     return () => {
       if (selectionActionTimerRef.current !== null) {
-        clearTimeout(selectionActionTimerRef.current);
+        window.clearTimeout(selectionActionTimerRef.current);
         selectionActionTimerRef.current = null;
       }
       selectionActionOpenRef.current = false;
@@ -310,7 +307,7 @@ function TerminalViewport({
   const clearSelectionAction = useCallback(() => {
     selectionActionRequestIdRef.current += 1;
     if (selectionActionTimerRef.current !== null) {
-      clearTimeout(selectionActionTimerRef.current);
+      window.clearTimeout(selectionActionTimerRef.current);
       selectionActionTimerRef.current = null;
     }
   }, []);
@@ -359,6 +356,13 @@ function TerminalViewport({
     if (selectionActionOpenRef.current) {
       return;
     }
+    const contextMenuItems = resolveTerminalSelectionContextMenuItems(
+      onAddTerminalContextRef.current !== undefined,
+    );
+    if (contextMenuItems.length === 0) {
+      clearSelectionAction();
+      return;
+    }
     const nextAction = readSelectionAction();
     if (!nextAction) {
       clearSelectionAction();
@@ -371,12 +375,16 @@ function TerminalViewport({
     // Promise chain instead of async/try-finally: React Compiler does not yet
     // support try/finally, and it would skip optimizing this whole component.
     void api.contextMenu
-      .show(buildTerminalSelectionContextMenuItems(), nextAction.position)
+      .show(contextMenuItems, nextAction.position)
       .then((clicked) => {
         if (requestId !== selectionActionRequestIdRef.current || clicked !== "add-to-chat") {
           return;
         }
-        onAddTerminalContextRef.current(nextAction.selection);
+        const addTerminalContext = onAddTerminalContextRef.current;
+        if (!addTerminalContext) {
+          return;
+        }
+        addTerminalContext(nextAction.selection);
         terminalRef.current?.clearSelection();
         terminalRuntimeRegistry.focus(runtimeKey);
       })
@@ -408,9 +416,9 @@ function TerminalViewport({
       }
       selectionPointerRef.current = { x: event.clientX, y: event.clientY };
       const delay = terminalSelectionActionDelayForClickCount(event.detail);
-      selectionActionTimerRef.current = setTimeout(() => {
+      selectionActionTimerRef.current = window.setTimeout(() => {
         selectionActionTimerRef.current = null;
-        raf(() => {
+        window.requestAnimationFrame(() => {
           void showSelectionAction();
         });
       }, delay);
@@ -421,11 +429,11 @@ function TerminalViewport({
       selectionGestureActiveRef.current = event.button === 0;
     };
 
-    addWindowEventListener("mouseup", handleMouseUp);
+    window.addEventListener("mouseup", handleMouseUp);
     mount.addEventListener("pointerdown", handlePointerDown);
     return () => {
       selectionDisposable.dispose();
-      removeWindowEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mouseup", handleMouseUp);
       mount.removeEventListener("pointerdown", handlePointerDown);
       clearSelectionAction();
       selectionGestureActiveRef.current = false;
@@ -480,6 +488,7 @@ interface ThreadTerminalDrawerProps {
   workspaceCloseShortcutLabel?: string | undefined;
   onActiveTerminalChange: (terminalId: string) => void;
   onCloseTerminal: (terminalId: string) => void;
+  onTerminalSessionExited: (terminalId: string) => void;
   onCloseTerminalGroup: (groupId: string) => void;
   onHeightChange: (height: number) => void;
   onResizeTerminalSplit: (groupId: string, splitId: string, weights: number[]) => void;
@@ -491,7 +500,7 @@ interface ThreadTerminalDrawerProps {
     terminalId: string,
     activity: { hasRunningSubprocess: boolean; agentState: TerminalActivityState | null },
   ) => void;
-  onAddTerminalContext: (selection: TerminalContextSelection) => void;
+  onAddTerminalContext?: ((selection: TerminalContextSelection) => void) | undefined;
   onTogglePresentationMode?: (() => void) | undefined;
   onTogglePanel?: (() => void) | undefined;
   isPanelOpen?: boolean | undefined;
@@ -503,7 +512,7 @@ export default function ThreadTerminalDrawer({
   runtimeEnv,
   height,
   presentationMode,
-  isVisible = true,
+  isVisible: isVisibleProp,
   terminalIds,
   terminalLabelsById,
   terminalTitleOverridesById,
@@ -526,6 +535,7 @@ export default function ThreadTerminalDrawer({
   workspaceCloseShortcutLabel,
   onActiveTerminalChange,
   onCloseTerminal,
+  onTerminalSessionExited,
   onCloseTerminalGroup,
   onHeightChange,
   onResizeTerminalSplit,
@@ -536,6 +546,7 @@ export default function ThreadTerminalDrawer({
   onTogglePanel,
   isPanelOpen,
 }: ThreadTerminalDrawerProps) {
+  const isVisible = isVisibleProp ?? true;
   const isWorkspaceMode = presentationMode === "workspace";
   const previousRuntimeKeysRef = useRef<Set<string>>(new Set());
   const { drawerHeight, handleResizePointerDown, handleResizePointerMove, handleResizePointerEnd } =
@@ -738,7 +749,7 @@ export default function ThreadTerminalDrawer({
                   terminalCliKind={terminalVisualIdentityById.get(terminalId)?.cliKind ?? null}
                   cwd={cwd}
                   {...(runtimeEnv ? { runtimeEnv } : {})}
-                  onSessionExited={() => onCloseTerminal(terminalId)}
+                  onSessionExited={() => onTerminalSessionExited(terminalId)}
                   onTerminalMetadataChange={onTerminalMetadataChange}
                   onTerminalActivityChange={onTerminalActivityChange}
                   onAddTerminalContext={onAddTerminalContext}

@@ -17,13 +17,13 @@ export function SidebarChatsSection<Row>(props: {
   readonly expanded: boolean;
   readonly rows: readonly Row[];
   readonly renderRow: (row: Row) => ReactNode;
-  readonly toolbar?: ReactNode;
-  readonly emptyLabel?: string;
-  readonly canShowMore?: boolean;
-  readonly canShowLess?: boolean;
+  readonly toolbar?: ReactNode | undefined;
+  readonly emptyLabel?: string | undefined;
+  readonly canShowMore?: boolean | undefined;
+  readonly canShowLess?: boolean | undefined;
   readonly onToggle: () => void;
-  readonly onShowMore?: () => void;
-  readonly onShowLess?: () => void;
+  readonly onShowMore?: (() => void) | undefined;
+  readonly onShowLess?: (() => void) | undefined;
 }) {
   if (!props.visible) return null;
 

@@ -43,7 +43,8 @@ type KanbanComposerDraftSource = Pick<
   | "assistantSelections"
   | "fileComments"
   | "activeProvider"
->;
+> &
+  Partial<Pick<ComposerThreadDraftState, "browserAnnotations">>;
 
 /** Shared projection so the board build and the drop-time dispatch re-check agree. */
 export function buildKanbanComposerDraftSnapshot(
@@ -60,6 +61,7 @@ export function buildKanbanComposerDraftSnapshot(
       draft.persistedAttachments.length > 0 ||
       draft.terminalContexts.some((context) => context.text.trim().length > 0) ||
       draft.assistantSelections.length > 0 ||
+      (draft.browserAnnotations?.length ?? 0) > 0 ||
       draft.fileComments.length > 0,
     provider: draft.activeProvider,
   };
@@ -658,6 +660,23 @@ export function buildKanbanBoard(input: BuildKanbanBoardInput): KanbanBoard {
 /** Overview project columns list cards In Progress → Draft → Done. */
 export function flattenProjectBoardForOverview(board: KanbanProjectBoard): KanbanCard[] {
   return [...board.inProgress, ...board.draft, ...board.done];
+}
+
+const OVERVIEW_RENDER_CAP = 20;
+
+/**
+ * The capped card list an overview project column actually renders, plus the count folded
+ * behind its "Show more" affordance. Shared with the board root so per-card data (PR
+ * badges) is fetched for exactly the rendered set.
+ */
+export function overviewVisibleKanbanCards(board: KanbanProjectBoard): {
+  visibleCards: KanbanCard[];
+  hiddenCount: number;
+} {
+  const cards = flattenProjectBoardForOverview(board);
+  const visibleCards =
+    cards.length > OVERVIEW_RENDER_CAP ? cards.slice(0, OVERVIEW_RENDER_CAP) : cards;
+  return { visibleCards, hiddenCount: cards.length - visibleCards.length };
 }
 
 export type KanbanDraftOpenThreadReason = "not-draft" | "empty" | "worktree-pending";

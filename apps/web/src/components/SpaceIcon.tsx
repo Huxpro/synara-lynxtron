@@ -1,21 +1,30 @@
 // FILE: SpaceIcon.tsx
 // Purpose: Renders built-in and custom Space icons through Synara's Central asset renderer.
 
-import type { SpaceIconName } from "@synara/contracts";
-import { SPACE_ICON_OPTIONS } from "@synara/shared/spacePresentation";
+import { SPACE_ICON_OPTIONS as SHARED_SPACE_ICON_OPTIONS } from "@synara/shared/spacePresentation";
 
 import { CentralIcon } from "~/lib/central-icons";
-import { VOID_SPACE_ICON } from "~/lib/spaceGrouping";
+import { DEFAULT_VOID_SPACE_ICON, type VoidSpaceIconName } from "~/lib/spaceGrouping";
 import { cn } from "~/lib/utils";
 
-export type SpaceIconValue = SpaceIconName | typeof VOID_SPACE_ICON;
+export type SpaceIconValue = VoidSpaceIconName;
+
+export interface SpaceIconOption {
+  readonly name: SpaceIconValue;
+  readonly label: string;
+}
+
+/** Icon options in the order the picker offers them; the spoken labels live in the shared module. */
+export const SPACE_ICON_OPTIONS: ReadonlyArray<SpaceIconOption> = SHARED_SPACE_ICON_OPTIONS;
 
 /**
- * Spoken names for the curated icon set. The asset basenames leak numbering and
- * compound words ("chart-2", "camera-1", "gamecontroller") that read badly to a
- * screen reader and in the picker, so every icon gets a human label here.
+ * Void's own glyph, offered only when editing Void: it is the one icon that means "nothing
+ * is filed here", so a stored Space wearing it would be lying about itself.
  */
-export { SPACE_ICON_OPTIONS };
+export const VOID_SPACE_ICON_OPTIONS: ReadonlyArray<SpaceIconOption> = [
+  { name: DEFAULT_VOID_SPACE_ICON, label: "Black hole" },
+  ...SPACE_ICON_OPTIONS,
+];
 
 export function SpaceIcon(props: {
   icon: SpaceIconValue;

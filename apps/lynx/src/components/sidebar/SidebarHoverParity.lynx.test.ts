@@ -79,7 +79,7 @@ describe("Lynx sidebar hover parity", () => {
     expect(source).toContain("setRenameThreadId(thread.id)");
     expect(source).toContain('if (action === "mark-unread")');
     expect(source).toContain("useStore.getState().markThreadUnread(thread.id as never)");
-    expect(source).toContain("resolveNativeThreadHandoffTargets(detail)");
+    expect(source).toContain("resolveNativeThreadHandoffTargets(detail, handoffProviders)");
     expect(source).toContain('id: "handoff:" + provider');
     expect(source).toContain("await createNativeThreadHandoff({");
     expect(source).toContain('if (action === "open-path-in-terminal")');
@@ -142,10 +142,7 @@ describe("Lynx sidebar hover parity", () => {
     expect(source).toContain('const sidebarSecondaryIconColor = semanticIconColor("secondary")');
     expect(source).toContain("colorizeLynxSvg(pinSvg, sidebarSecondaryIconColor)");
     expect(source).toContain("color={sidebarSecondaryIconColor}");
-    expect(source).toContain(
-      `terminalSvg,
-                                        sidebarSecondaryIconColor`,
-    );
+    expect(source).toMatch(/terminalSvg,\s*sidebarSecondaryIconColor/);
     expect(source).not.toContain("colorizeLynxSvg(pinSvg, svgColors.iconSecondary)");
     const hoverActionStateRule = styles.slice(
       styles.indexOf(".AppSidebarHoverAction.ui-hover,"),

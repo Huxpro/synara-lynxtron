@@ -3,12 +3,12 @@
 // quota/credits with linear progress meters, the provider brand icon, and plan/status pills.
 // Usage is fetched read-only from each CLI's stored credentials by the server.
 
-import type { ProviderKind, ServerProviderUsageSnapshot } from "@synara/contracts";
+import type { ServerProviderUsageSnapshot } from "@synara/contracts";
 import {
   PROVIDER_USAGE_PROVIDERS,
-  mergeProviderUsageRefresh,
   providerUsageDisplayName,
   providerUsageNeedsAuthDetail,
+  selectVisibleProviderUsageSnapshots,
 } from "@synara/shared/providerUsage";
 import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -17,7 +17,8 @@ import { useAppSettings } from "~/appSettings";
 import { ProviderIcon } from "~/components/ProviderIcon";
 import { ProviderUsageLimitRows } from "~/components/ProviderUsageLimitRows";
 import { ProviderUsageLineList } from "~/components/ProviderUsageLineList";
-import { SettingsCard } from "~/components/settings/SettingsPanelPrimitives";
+import { ProviderUsageResetCredits } from "~/components/ProviderUsageResetCredits";
+import { SettingsCard, SettingsSectionShell } from "~/components/settings/SettingsPanelPrimitives";
 import { Button } from "~/components/ui/button";
 import { useProviderUsageSummary } from "~/hooks/useProviderUsageSummary";
 import { RotateCcwIcon, TriangleAlertIcon } from "~/lib/icons";
@@ -29,14 +30,10 @@ import {
   serverQueryKeys,
 } from "~/lib/serverReactQuery";
 import { cn } from "~/lib/utils";
-import {
-  SETTINGS_PANEL_SECTION_CLASS_NAME,
-  SETTINGS_SECTION_LABEL_CLASS_NAME,
-} from "~/settingsPanelStyles";
 import { useStore } from "~/store";
 import { createAllThreadsSelector } from "~/storeSelectors";
 
-const PILL_CLASS_NAME = "shrink-0 rounded-full px-2 py-1 text-[11px] font-medium leading-none";
+const PILL_CLASS_NAME = "shrink-0 rounded-full px-2 py-1 text-ui-sm font-medium leading-none";
 
 interface StatusPill {
   label: string;
@@ -78,8 +75,9 @@ function ProviderUsageCard({
   });
   const meterRows = deriveProviderUsageDisplayRows(usageSummary.rateLimits);
   const usageLines = usageSummary.usageLines;
-
-  const hasUsage = meterRows.length > 0 || usageLines.length > 0;
+  const resetCredits = provider === "codex" ? snapshot.resetCredits : undefined;
+  const hasResetCredits = Boolean(resetCredits && resetCredits.availableCount > 0);
+  const hasUsage = meterRows.length > 0 || usageLines.length > 0 || hasResetCredits;
   const pill = status === "ok" ? null : statusPill(snapshot.status);
 
   return (
@@ -90,7 +88,7 @@ function ProviderUsageCard({
             <span className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-[color:var(--color-border)] bg-muted/60">
               <ProviderIcon provider={provider} className="size-4" />
             </span>
-            <span className="truncate text-sm font-semibold text-foreground">
+            <span className="truncate text-ui-lg font-semibold text-foreground">
               {providerUsageDisplayName(provider)}
             </span>
           </div>
@@ -106,7 +104,7 @@ function ProviderUsageCard({
         {status === "ok" && hasUsage ? (
           <>
             {usageSummary.usageNotice ? (
-              <p className="flex items-start gap-1.5 text-xs leading-relaxed text-amber-600 dark:text-amber-300/90">
+              <p className="flex items-start gap-1.5 text-ui leading-relaxed text-amber-600 dark:text-amber-300/90">
                 <TriangleAlertIcon className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
                 <span>{usageSummary.usageNotice}</span>
               </p>
@@ -114,10 +112,14 @@ function ProviderUsageCard({
             {meterRows.length > 0 ? (
               <ProviderUsageLimitRows rows={meterRows} surface="settings" />
             ) : null}
+            {hasResetCredits && resetCredits ? (
+              <ProviderUsageResetCredits resetCredits={resetCredits} />
+            ) : null}
             {usageLines.length > 0 ? (
               <ProviderUsageLineList
                 className={cn(
-                  meterRows.length > 0 && "border-t border-[color:var(--color-border)] pt-3",
+                  (meterRows.length > 0 || hasResetCredits) &&
+                    "border-t border-[color:var(--color-border)] pt-3",
                 )}
                 lines={usageLines}
                 surface="settings"
@@ -125,7 +127,7 @@ function ProviderUsageCard({
             ) : null}
           </>
         ) : (
-          <p className="text-xs leading-relaxed text-muted-foreground">
+          <p className="text-ui leading-relaxed text-muted-foreground">
             {status === "ok"
               ? "No usage data reported yet."
               : (snapshot.detail ?? providerUsageNeedsAuthDetail(provider))}
@@ -136,16 +138,18 @@ function ProviderUsageCard({
   );
 }
 
-function missingSnapshot(provider: ProviderKind): ServerProviderUsageSnapshot {
-  return {
-    provider,
-    updatedAt: new Date(0).toISOString(),
-    limits: [],
-    usageLines: [],
-    source: "unavailable",
-    status: "error",
-    detail: "Usage is currently unavailable.",
-  };
+function mergeProviderUsageRefresh(
+  previous: readonly ServerProviderUsageSnapshot[] | undefined,
+  next: readonly ServerProviderUsageSnapshot[],
+): readonly ServerProviderUsageSnapshot[] {
+  if (!previous) {
+    return next;
+  }
+  const previousByProvider = new Map(previous.map((snapshot) => [snapshot.provider, snapshot]));
+  const nextByProvider = new Map(next.map((snapshot) => [snapshot.provider, snapshot]));
+  return PROVIDER_USAGE_PROVIDERS.map(
+    (provider) => nextByProvider.get(provider) ?? previousByProvider.get(provider),
+  ).filter((snapshot): snapshot is ServerProviderUsageSnapshot => snapshot !== undefined);
 }
 
 export function ProviderUsageSettingsPanel() {
@@ -166,24 +170,18 @@ export function ProviderUsageSettingsPanel() {
     },
   });
 
-  // Always render a card per supported provider, ordered consistently, even if the batch
-  // omitted one (e.g. a transient server error) — fall back to an "unavailable" placeholder.
-  const byProvider = new Map<ProviderKind, ServerProviderUsageSnapshot>();
-  for (const snapshot of usageQuery.data ?? []) {
-    byProvider.set(snapshot.provider, snapshot);
-  }
-  const cards = PROVIDER_USAGE_PROVIDERS.map(
-    (provider) => byProvider.get(provider) ?? missingSnapshot(provider),
-  );
+  // Use the live payload only. Inventing error placeholders for omitted providers
+  // would count as "connected" and hide unsigned cards.
+  const cards = selectVisibleProviderUsageSnapshots(usageQuery.data ?? []);
 
   const showInitialLoading = usageQuery.isPending && !usageQuery.data;
 
   const isRefreshing = usageQuery.isFetching || refreshMutation.isPending;
 
   return (
-    <section className={SETTINGS_PANEL_SECTION_CLASS_NAME}>
-      <div className="flex items-center justify-between gap-2">
-        <h2 className={SETTINGS_SECTION_LABEL_CLASS_NAME}>Provider usage</h2>
+    <SettingsSectionShell
+      title="Provider usage"
+      action={
         <Button
           size="xs"
           variant="outline"
@@ -194,11 +192,13 @@ export function ProviderUsageSettingsPanel() {
           <RotateCcwIcon className={cn("size-3.5", isRefreshing && "animate-spin")} />
           Refresh
         </Button>
-      </div>
-
+      }
+    >
       {showInitialLoading ? (
         <SettingsCard>
-          <div className="px-4 py-3.5 text-xs text-muted-foreground">Loading provider usage…</div>
+          <div className="px-4 py-3.5 text-ui leading-snug text-muted-foreground">
+            Loading provider usage…
+          </div>
         </SettingsCard>
       ) : (
         <div className="flex flex-col gap-3">
@@ -213,11 +213,12 @@ export function ProviderUsageSettingsPanel() {
         </div>
       )}
 
-      <p className="px-2 text-[11px] leading-relaxed text-muted-foreground">
+      <p className="px-2 text-ui-sm leading-relaxed text-muted-foreground">
         Usage is read locally from each provider CLI&apos;s stored credentials and fetched directly
-        from the provider. OAuth providers may refresh short-lived tokens through their official
-        token endpoint; if a provider shows “Not signed in”, re-authenticate with its CLI.
+        from the provider. The list follows whatever you are signed into; unsigned providers stay
+        visible until any account is connected, then drop away. Short-lived tokens are refreshed
+        through the provider&apos;s own CLI or official token endpoint.
       </p>
-    </section>
+    </SettingsSectionShell>
   );
 }

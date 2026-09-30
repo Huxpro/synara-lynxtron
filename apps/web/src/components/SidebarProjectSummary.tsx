@@ -10,9 +10,9 @@ import {
 export interface SidebarProjectSummaryProps {
   readonly leading: ReactNode;
   readonly name: string;
-  readonly secondaryName?: string | null;
-  readonly leadingClassName?: string;
-  readonly copyClassName?: string;
+  readonly secondaryName?: string | null | undefined;
+  readonly leadingClassName?: string | undefined;
+  readonly copyClassName?: string | undefined;
 }
 
 export function SidebarProjectSummary({

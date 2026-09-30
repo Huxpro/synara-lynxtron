@@ -4,7 +4,7 @@ import { deriveSidebarChatRows, resolveSidebarChatListTransition } from "./Sideb
 
 type TestThread = {
   readonly id: string;
-  readonly parentThreadId?: string | null;
+  readonly parentThreadId?: string | null | undefined;
 };
 
 function makeThread(id: string, parentThreadId?: string): TestThread {

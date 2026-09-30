@@ -27,7 +27,7 @@ export function ComposerExtrasMenuComposition(props: {
   readonly interactionMode: ProviderInteractionMode;
   readonly supportsFastMode: boolean;
   readonly fastModeEnabled: boolean;
-  readonly imageAttachmentsAvailable?: boolean;
+  readonly imageAttachmentsAvailable?: boolean | undefined;
   readonly onPickAttachments?: (() => void) | undefined;
   readonly onAddPhotos: (files: File[]) => void;
   readonly onToggleFastMode: () => void;

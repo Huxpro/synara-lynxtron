@@ -21,15 +21,15 @@ import {
 export interface ComposerReferenceAttachmentsCompositionProps {
   assistantSelections: ReadonlyArray<ChatAssistantSelectionAttachment>;
   fileComments: ReadonlyArray<FileCommentDraft>;
-  pastedTexts?: ReadonlyArray<PastedTextDraft>;
+  pastedTexts?: ReadonlyArray<PastedTextDraft> | undefined;
   files: ReadonlyArray<ComposerFileAttachment>;
   images: ReadonlyArray<ComposerImageAttachment>;
   nonPersistedImageIdSet: ReadonlySet<string>;
   onExpandImage: (preview: ExpandedImagePreview) => void;
   onRemoveAssistantSelections: () => void;
   onRemoveFileComments: () => void;
-  onRemovePastedText?: (pastedTextId: string) => void;
-  onShowPastedTextInField?: (pastedTextId: string) => void;
+  onRemovePastedText?: ((pastedTextId: string) => void) | undefined;
+  onShowPastedTextInField?: ((pastedTextId: string) => void) | undefined;
   onRemoveFile: (fileId: string) => void;
   onRemoveImage: (imageId: string) => void;
 }

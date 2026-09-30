@@ -17,12 +17,18 @@ import { ProviderIcon } from "../ProviderIcon";
 import { ChatPaneDropOverlay } from "../chat-drop-overlay/ChatPaneDropOverlay";
 import { PanelStateMessage } from "./PanelStateMessage";
 import {
-  ChatMountSkeleton,
+  ChatMountLoader,
   DeferredChatView,
   LazyBrowserPanel,
   LazyDiffPanel,
   noopChatSurfaceAction,
 } from "./ChatThreadSurfacePrimitives";
+import { FloatingBrowserPanel } from "./FloatingBrowserPanel";
+import { shouldRenderFloatingBrowserPanel } from "./floatingBrowserPanel.logic";
+import {
+  selectFloatingBrowserRequested,
+  useFloatingBrowserRequestStore,
+} from "./floatingBrowserRequestStore";
 import { useBrowserPanelDesktopBridge } from "../../hooks/useBrowserPanelDesktopBridge";
 import { useHandleNewChat } from "../../hooks/useHandleNewChat";
 import type { ChatRightPanel } from "../../diffRouteSearch";
@@ -30,14 +36,11 @@ import { stripDiffSearchParams } from "../../diffRouteSearch";
 import {
   canComposerHandlePanelWidth,
   createPanelResizeOverlay,
+  attachPanelPointerOverlaySession,
   removePanelResizeOverlay,
-  applyBodyResizeStyles,
-  captureBodyResizeStyleSnapshot,
-  clearBodyResizeStyles,
-  createResizeGuideElement,
-  restoreBodyResizeStyles,
 } from "../../lib/panelResize";
 import { splitViewPaneScopeId } from "../../lib/chatPaneScope";
+import { useRightDockStore } from "../../rightDockStore";
 import { resolveActiveSplitView } from "../../splitViewRoute";
 import { canSubdividePane, collectLeaves, findLeafPaneById } from "../../splitView.logic";
 import {
@@ -56,7 +59,7 @@ import {
   useSplitViewStore,
 } from "../../splitViewStore";
 import { useStore } from "../../store";
-import { createAllThreadsSelector } from "../../storeSelectors";
+import { createThreadShellsSelector } from "../../storeSelectors";
 import {
   normalizeSingleSearchFromPane,
   resolveSplitPaneCloseDecision,
@@ -81,10 +84,9 @@ import {
   CHAT_MAIN_CONTENT_SURFACE_CLASS_NAME,
   CHAT_MAIN_VIEWPORT_SHELL_CLASS_NAME,
 } from "./composerPickerStyles";
+import { routeSplitBrowserPanelOpenRequest } from "./browserPanelOpenRequest";
 import { cn } from "~/lib/utils";
 
-import { raf, cancelRaf } from "~/platform/frame";
-import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 const SPLIT_PANE_PANEL_DEFAULT_WIDTH_PX = 22 * 16;
 const BROWSER_SPLIT_PANE_PANEL_DEFAULT_WIDTH_PX = 30 * 16;
 const SPLIT_PANE_CHAT_MIN_WIDTH = 20 * 16;
@@ -163,6 +165,7 @@ function SplitPaneEmbeddedPanel(props: {
     const startWidth = wrapper.getBoundingClientRect().width;
     const maxWidth = Math.max(minPanelWidth, parent.clientWidth - SPLIT_PANE_CHAT_MIN_WIDTH);
     const resizeOverlay = createPanelResizeOverlay();
+    let detachPointerSession = () => {};
 
     const onPointerMove = (moveEvent: PointerEvent) => {
       const delta = startX - moveEvent.clientX;
@@ -174,18 +177,20 @@ function SplitPaneEmbeddedPanel(props: {
       setLocalStorageItem(storageKey, nextWidth, Schema.Finite);
     };
 
-    const onPointerUp = () => {
+    const finish = () => {
+      detachPointerSession();
       removePanelResizeOverlay(resizeOverlay);
-      clearBodyResizeStyles();
-      resizeOverlay.removeEventListener("pointermove", onPointerMove);
-      resizeOverlay.removeEventListener("pointerup", onPointerUp);
-      resizeOverlay.removeEventListener("pointercancel", onPointerUp);
+      document.body.style.removeProperty("cursor");
+      document.body.style.removeProperty("user-select");
     };
 
-    applyBodyResizeStyles("col-resize");
-    resizeOverlay.addEventListener("pointermove", onPointerMove);
-    resizeOverlay.addEventListener("pointerup", onPointerUp);
-    resizeOverlay.addEventListener("pointercancel", onPointerUp);
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+    detachPointerSession = attachPanelPointerOverlaySession(resizeOverlay, {
+      onMove: onPointerMove,
+      onRelease: finish,
+      onAbort: finish,
+    });
   };
 
   if (!props.panelOpen || !props.threadId) {
@@ -254,7 +259,7 @@ function SplitPaneEmptyState(props: {
       onMouseDown={props.onFocus}
     >
       <div className="w-full max-w-sm space-y-4">
-        <p className="text-center text-sm font-medium text-foreground/70">Select a chat</p>
+        <p className="text-center text-ui-lg font-medium text-foreground/70">Select a chat</p>
         <div className="max-h-[60vh] space-y-1 overflow-y-auto">
           {props.threads.map((thread) => {
             const isUsed = props.excludedThreadIds.has(thread.id);
@@ -280,10 +285,12 @@ function SplitPaneEmptyState(props: {
                   className="size-4 shrink-0"
                 />
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm font-medium text-foreground">
+                  <div className="truncate text-ui-lg leading-snug font-medium text-foreground">
                     {resolveThreadPickerTitle(thread.title)}
                   </div>
-                  <div className="truncate text-xs text-muted-foreground">{projectName}</div>
+                  <div className="truncate text-ui leading-snug text-muted-foreground">
+                    {projectName}
+                  </div>
                 </div>
               </button>
             );
@@ -318,11 +325,12 @@ function SplitDivider(props: {
     let latestRatio = computeRatio(event.clientX, event.clientY);
     let frameId = 0;
     const previousParentPosition = parent.style.position;
-    const previousBodyStyles = captureBodyResizeStyleSnapshot();
+    const previousBodyCursor = document.body.style.cursor;
+    const previousBodyUserSelect = document.body.style.userSelect;
     if (getComputedStyle(parent).position === "static") {
       parent.style.position = "relative";
     }
-    const resizeGuide = createResizeGuideElement()!;
+    const resizeGuide = document.createElement("div");
     resizeGuide.setAttribute("data-split-resize-guide", "true");
     Object.assign(resizeGuide.style, {
       position: "absolute",
@@ -363,28 +371,30 @@ function SplitDivider(props: {
     const onPointerMove = (moveEvent: PointerEvent) => {
       latestRatio = computeRatio(moveEvent.clientX, moveEvent.clientY);
       if (frameId === 0) {
-        frameId = raf(applyGuide);
+        frameId = window.requestAnimationFrame(applyGuide);
       }
     };
     const onPointerUp = () => {
       if (frameId !== 0) {
-        cancelRaf(frameId);
+        window.cancelAnimationFrame(frameId);
         applyGuide();
       }
-      restoreBodyResizeStyles(previousBodyStyles);
+      document.body.style.userSelect = previousBodyUserSelect;
+      document.body.style.cursor = previousBodyCursor;
       parent.style.position = previousParentPosition;
       resizeGuide.remove();
-      removeWindowEventListener("pointermove", onPointerMove);
-      removeWindowEventListener("pointerup", onPointerUp);
-      removeWindowEventListener("pointercancel", onPointerUp);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerUp);
       onSetRatio(splitNodeId, latestRatio);
     };
 
-    applyBodyResizeStyles(direction === "horizontal" ? "col-resize" : "row-resize");
+    document.body.style.userSelect = "none";
+    document.body.style.cursor = direction === "horizontal" ? "col-resize" : "row-resize";
     applyGuide();
-    addWindowEventListener("pointermove", onPointerMove);
-    addWindowEventListener("pointerup", onPointerUp);
-    addWindowEventListener("pointercancel", onPointerUp);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("pointercancel", onPointerUp);
   };
 
   return (
@@ -471,6 +481,9 @@ function SplitPaneSurface(props: {
   onOpenBrowserUrl: (url: string) => void;
   onOpenTurnDiff: (turnId: TurnId, filePath?: string) => void;
   onClosePanel: () => void;
+  showFloatingBrowser: boolean;
+  onCloseFloatingBrowser: () => void;
+  onPopFloatingBrowser: () => void;
   onUpdatePanelState: (
     patch: Partial<Pick<SplitViewPanePanelState, "panel" | "diffTurnId" | "diffFilePath">>,
   ) => void;
@@ -551,6 +564,14 @@ function SplitPaneSurface(props: {
               onSelectThread={props.onSelectThread}
             />
           )}
+          {props.threadId && props.showFloatingBrowser ? (
+            <FloatingBrowserPanel
+              key={props.threadId}
+              threadId={props.threadId}
+              onClose={props.onCloseFloatingBrowser}
+              onPopToSidebar={props.onPopFloatingBrowser}
+            />
+          ) : null}
         </SidebarInset>
       </ChatPaneDropOverlay>
       <SplitPaneEmbeddedPanel
@@ -568,24 +589,24 @@ function SplitPaneSurface(props: {
       {props.isFocused ? (
         <div
           aria-hidden="true"
+          // The accent border alone marks the focused pane; unfocused panes stay
+          // undimmed so they never read as disabled.
           className="pointer-events-none absolute inset-[0.9px] z-20 border border-[color-mix(in_srgb,var(--info)_45%,transparent)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--info)_12%,transparent)] transition-opacity duration-150"
-        />
-      ) : null}
-      {!props.isFocused ? (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-10 bg-foreground/[0.060] transition-opacity duration-150"
         />
       ) : null}
     </div>
   );
 }
 
+// Module-level and shell-only: this surface only reads shell fields (title, projectId,
+// modelSelection, timestamps, sidechatSourceThreadId), so subscribing to full threads would
+// rebuild every thread's message/activity lists on each streaming flush for no benefit.
+const selectThreadShells = createThreadShellsSelector();
+
 export function SplitChatSurface(props: { splitViewId: SplitViewId; routeThreadId: ThreadId }) {
   const navigate = useNavigate();
   const { handleNewChat } = useHandleNewChat();
-  const selectAllThreads = createAllThreadsSelector();
-  const threads = useStore(selectAllThreads);
+  const threads = useStore(selectThreadShells);
   const projects = useStore((store) => store.projects);
   const splitView = useSplitViewStore(
     useMemo(() => selectSplitView(props.splitViewId), [props.splitViewId]),
@@ -598,6 +619,11 @@ export function SplitChatSurface(props: { splitViewId: SplitViewId; routeThreadI
   const removeSplitView = useSplitViewStore((store) => store.removeSplitView);
   const removePaneFromSplitView = useSplitViewStore((store) => store.removePaneFromSplitView);
   const [threadPickerPaneId, setThreadPickerPaneId] = useState<PaneId | null>(null);
+  const requestFloatingBrowser = useFloatingBrowserRequestStore((store) => store.request);
+  const dismissFloatingBrowserForThread = useFloatingBrowserRequestStore((store) => store.dismiss);
+  const floatingBrowserRequestedByThreadId = useFloatingBrowserRequestStore(
+    (store) => store.requestedByThreadId,
+  );
   const { splitView: activeSplitView, routePaneId } = resolveActiveSplitView({
     splitView,
     routeThreadId: props.routeThreadId,
@@ -624,7 +650,7 @@ export function SplitChatSurface(props: { splitViewId: SplitViewId; routeThreadI
       removeSplitView(activeSplitView.id);
       const fallbackThreadId = onlyThreadId ?? props.routeThreadId;
       if (!fallbackThreadId) {
-        void handleNewChat({ fresh: true });
+        void handleNewChat();
         return;
       }
       void navigate({
@@ -725,9 +751,34 @@ export function SplitChatSurface(props: { splitViewId: SplitViewId; routeThreadI
       ? () => togglePanePanel(activeSplitView.focusedPaneId, "browser")
       : null,
     onOpen: activeSplitView
-      ? () => updatePanePanelState(activeSplitView.focusedPaneId, { panel: "browser" })
+      ? (requestedThreadId) => {
+          routeSplitBrowserPanelOpenRequest({
+            splitView: activeSplitView,
+            requestedThreadId,
+            showFloatingBrowser: (paneId) => {
+              const leaf = findLeafPaneById(activeSplitView.root, paneId);
+              if (!leaf?.threadId) {
+                return;
+              }
+              requestFloatingBrowser(leaf.threadId);
+            },
+            rememberFloatingBrowser: requestFloatingBrowser,
+          });
+        }
       : null,
   });
+
+  const closeFloatingBrowser = (threadId: ThreadId) => {
+    dismissFloatingBrowserForThread(threadId);
+  };
+
+  const popFloatingBrowser = (paneId: PaneId) => {
+    if (!activeSplitView) return;
+    const leaf = findLeafPaneById(activeSplitView.root, paneId);
+    if (!leaf?.threadId) return;
+    dismissFloatingBrowserForThread(leaf.threadId);
+    updatePanePanelState(paneId, { panel: "browser" });
+  };
 
   const closePanePanel = (paneId: PaneId) => {
     updatePanePanelState(paneId, { panel: null });
@@ -763,7 +814,7 @@ export function SplitChatSurface(props: { splitViewId: SplitViewId; routeThreadI
     }
 
     removeSplitView(activeSplitView.id);
-    void handleNewChat({ fresh: true });
+    void handleNewChat();
   };
 
   const closePaneThread = (paneId: PaneId) => {
@@ -841,7 +892,7 @@ export function SplitChatSurface(props: { splitViewId: SplitViewId; routeThreadI
       return;
     }
 
-    void handleNewChat({ fresh: true });
+    void handleNewChat();
   };
 
   const handleSetRatio = (nodeId: PaneId, ratio: number) => {
@@ -876,14 +927,21 @@ export function SplitChatSurface(props: { splitViewId: SplitViewId; routeThreadI
     });
   };
 
-  const selectableThreads = threads.toSorted(
-    (left, right) =>
-      Date.parse(right.updatedAt ?? right.createdAt) - Date.parse(left.updatedAt ?? left.createdAt),
+  const selectableThreads = useMemo(
+    () =>
+      threads
+        .filter((thread) => !thread.sidechatSourceThreadId)
+        .toSorted(
+          (left, right) =>
+            Date.parse(right.updatedAt ?? right.createdAt) -
+            Date.parse(left.updatedAt ?? left.createdAt),
+        ),
+    [threads],
   );
   const splitThreadIds = new Set(activeSplitView ? resolveSplitViewThreadIds(activeSplitView) : []);
 
   if (!activeSplitView) {
-    return <ChatMountSkeleton />;
+    return <ChatMountLoader />;
   }
 
   const chooseThreadForPane = (threadId: ThreadId, paneOverride?: PaneId) => {
@@ -944,6 +1002,17 @@ export function SplitChatSurface(props: { splitViewId: SplitViewId; routeThreadI
         onOpenBrowserUrl={() => updatePanePanelState(leaf.id, { panel: "browser" })}
         onOpenTurnDiff={(turnId, filePath) => openPaneTurnDiff(leaf.id, turnId, filePath)}
         onClosePanel={() => closePanePanel(leaf.id)}
+        showFloatingBrowser={shouldRenderFloatingBrowserPanel({
+          hostThreadId: leaf.threadId,
+          floatingThreadId:
+            floatingBrowserRequestedByThreadId[leaf.threadId ?? ""] === true ? leaf.threadId : null,
+          dockBrowserVisible: leaf.panel.panel === "browser",
+          isFocused,
+        })}
+        onCloseFloatingBrowser={() => {
+          if (leaf.threadId) closeFloatingBrowser(leaf.threadId);
+        }}
+        onPopFloatingBrowser={() => popFloatingBrowser(leaf.id)}
         onUpdatePanelState={(patch) => updatePanePanelState(leaf.id, patch)}
         onMaximize={maximizeFocusedPane}
         onCloseThreadPane={() => closePaneThread(leaf.id)}
@@ -1012,10 +1081,12 @@ export function SplitChatSurface(props: { splitViewId: SplitViewId; routeThreadI
                       className="size-4 shrink-0"
                     />
                     <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-medium text-foreground">
+                      <div className="truncate text-ui-lg leading-snug font-medium text-foreground">
                         {resolveThreadPickerTitle(thread.title)}
                       </div>
-                      <div className="truncate text-xs text-muted-foreground">{projectName}</div>
+                      <div className="truncate text-ui leading-snug text-muted-foreground">
+                        {projectName}
+                      </div>
                     </div>
                   </button>
                 );

@@ -6,10 +6,12 @@
 import { type MessageId, type TurnId } from "@synara/contracts";
 import { type TimelineEntry, type WorkLogEntry, formatElapsed } from "../../session-logic";
 import { normalizeCompactToolLabel as normalizeCompactToolLabelValue } from "../../lib/toolCallLabel";
+import { isCodexActivityStatusWorkEntry } from "./agentActivity.logic";
 import {
   isSummarizableToolCallEntry,
   MIN_COLLAPSIBLE_TOOL_GROUP_SIZE,
   summarizeToolCallGroup,
+  workEntryRowCount,
   type ToolCallGroupSummary,
 } from "./toolCallGroup.logic";
 import {
@@ -21,6 +23,14 @@ import {
 } from "../../types";
 
 export const MAX_VISIBLE_WORK_LOG_ENTRIES = 6;
+
+export function canSubmitUserMessageEdit(input: {
+  draft: string;
+  allowEmpty: boolean;
+  disabled: boolean;
+}): boolean {
+  return (input.allowEmpty || input.draft.trim().length > 0) && !input.disabled;
+}
 
 // Ordered item folded into a settled turn's single "Worked for Xs" disclosure.
 // A turn can interleave tool work and intermediate assistant narration
@@ -48,7 +58,11 @@ export function chunkCollapsedTurnItems(
 
   const flushPendingRun = () => {
     if (pendingRun.length === 0) return;
-    if (pendingRun.length >= MIN_COLLAPSIBLE_TOOL_GROUP_SIZE) {
+    const pendingRowCount = pendingRun.reduce(
+      (total, item) => total + workEntryRowCount(item.entry),
+      0,
+    );
+    if (pendingRowCount >= MIN_COLLAPSIBLE_TOOL_GROUP_SIZE) {
       chunks.push({
         kind: "tool-group",
         id: pendingRun[0]!.id,
@@ -87,11 +101,19 @@ export function chunkWorkEntries(entries: ReadonlyArray<WorkLogEntry>): WorkEntr
 }
 
 // One renderable block of a work group: `summary` is non-null when the block
-// renders collapsed behind a "Ran N commands..." disclosure.
+// renders collapsed behind a "Ran N commands..." disclosure. `liveEntry` is
+// non-null while a tool run is still open: the run renders as one line wearing
+// the latest status description, falling back to the newest call.
 export interface WorkEntryRenderPlanChunk {
   id: string;
   entries: WorkLogEntry[];
   summary: ToolCallGroupSummary | null;
+  liveEntry: WorkLogEntry | null;
+}
+
+// Keep the latest activity description visible as technical calls arrive.
+function pickLiveToolEntry(entries: ReadonlyArray<WorkLogEntry>): WorkLogEntry {
+  return entries.findLast(isCodexActivityStatusWorkEntry) ?? entries.at(-1)!;
 }
 
 // Plans a work group's entries block by block. Boundaries are the entries a
@@ -99,7 +121,8 @@ export interface WorkEntryRenderPlanChunk {
 // each tool run between boundaries folds independently. A run stays expanded
 // only while it still has running work, or while it is the trailing block of
 // the live transcript tail (`tailIsLive`): the moment a new narration block
-// starts after it, it stops being the tail and collapses mid-turn.
+// starts after it, it stops being the tail and collapses mid-turn. An expanded
+// run never lists its rows: it folds to a single line for its selected entry.
 export function planWorkEntryRenderChunks(
   entries: ReadonlyArray<WorkLogEntry>,
   options: { tailIsLive: boolean },
@@ -107,13 +130,47 @@ export function planWorkEntryRenderChunks(
   const chunks = chunkWorkEntries(entries);
   return chunks.map((chunk, index) => {
     if (chunk.kind === "item") {
-      return { id: chunk.id, entries: [chunk.entry], summary: null };
+      return { id: chunk.id, entries: [chunk.entry], summary: null, liveEntry: null };
     }
     const summary = summarizeToolCallGroup(chunk.entries);
     const isLiveTail = options.tailIsLive && index === chunks.length - 1;
     const collapsed = summary !== null && !summary.hasRunningEntry && !isLiveTail;
-    return { id: chunk.id, entries: chunk.entries, summary: collapsed ? summary : null };
+    return {
+      id: chunk.id,
+      entries: chunk.entries,
+      summary: collapsed ? summary : null,
+      liveEntry: summary !== null && !collapsed ? pickLiveToolEntry(chunk.entries) : null,
+    };
   });
+}
+
+// A folded chunk renders as one line (settled summary or live newest call)
+// instead of listing its rows.
+export function isFoldedWorkEntryChunk(chunk: WorkEntryRenderPlanChunk): boolean {
+  return chunk.summary !== null || chunk.liveEntry !== null;
+}
+
+// How a folded chunk renders: the line's summary, the rows its disclosure
+// reveals, and a suffix for the open-state key. A live line reveals only the
+// other entries, and keeps its own open state so the run
+// settles collapsed even when the live line was opened.
+export function resolveWorkEntryChunkFold(
+  chunk: WorkEntryRenderPlanChunk,
+): { summary: ToolCallGroupSummary; entries: WorkLogEntry[]; keySuffix: string } | null {
+  if (chunk.summary !== null) {
+    return { summary: chunk.summary, entries: chunk.entries, keySuffix: "" };
+  }
+  const liveSummary = chunk.liveEntry ? summarizeToolCallGroup(chunk.entries) : null;
+  if (!liveSummary) return null;
+  return {
+    summary: liveSummary,
+    // A multi-file edit wears a count ("Edited 9 files"), so its own file rows
+    // still belong behind the line.
+    entries: chunk.entries.filter(
+      (entry) => entry !== chunk.liveEntry || workEntryRowCount(entry) > 1,
+    ),
+    keySuffix: ":live",
+  };
 }
 
 export interface CappedWorkEntryRenderPlan {
@@ -136,7 +193,7 @@ export function capOpenWorkEntryRenderChunks(
 ): CappedWorkEntryRenderPlan {
   const shouldCapEntry = options.shouldCapEntry ?? (() => true);
   const openEntries = chunks.flatMap((chunk) =>
-    chunk.summary === null ? chunk.entries.filter(shouldCapEntry) : [],
+    isFoldedWorkEntryChunk(chunk) ? [] : chunk.entries.filter(shouldCapEntry),
   );
   const maxVisibleEntries = Math.max(0, options.maxVisibleEntries);
   const hiddenEntryCount = Math.max(0, openEntries.length - maxVisibleEntries);
@@ -156,7 +213,7 @@ export function capOpenWorkEntryRenderChunks(
 
   return {
     chunks: chunks.map((chunk) => {
-      if (chunk.summary !== null) return chunk;
+      if (isFoldedWorkEntryChunk(chunk)) return chunk;
       return {
         ...chunk,
         entries: chunk.entries.filter(
@@ -234,6 +291,15 @@ export type MessagesTimelineRow =
       revertTurnCount?: number | undefined;
     }
   | {
+      // One slice of a completed assistant message whose streamed text was
+      // interleaved with tool rows; rendered compactly at its own start time.
+      kind: "message-segment";
+      id: string;
+      createdAt: string;
+      message: ChatMessage;
+      segmentIndex: number;
+    }
+  | {
       kind: "proposed-plan";
       id: string;
       createdAt: string;
@@ -261,6 +327,71 @@ export type MessagesTimelineRow =
 export interface StableMessagesTimelineRowsState {
   byId: Map<string, MessagesTimelineRow>;
   result: MessagesTimelineRow[];
+}
+
+export interface ThreadFindJumpTarget {
+  rowIndex: number;
+  visibleMessageId: MessageId;
+  expandCollapsedWorkMessageId?: MessageId;
+  collapsedNarrationMessageId?: MessageId;
+}
+
+/**
+ * Map a find match onto the row that currently owns it. Settled turns splice
+ * earlier assistant messages out of the live list and fold them into the
+ * terminal row's collapsed narration, so jumping by message id alone misses.
+ */
+export function resolveThreadFindJumpTarget(
+  rows: readonly MessagesTimelineRow[],
+  match: { messageId: MessageId; segmentIndex?: number },
+): ThreadFindJumpTarget | null {
+  const { messageId, segmentIndex } = match;
+  if (segmentIndex !== undefined) {
+    const segmentRowIndex = rows.findIndex(
+      (row) =>
+        row.kind === "message-segment" &&
+        row.message.id === messageId &&
+        row.segmentIndex === segmentIndex,
+    );
+    if (segmentRowIndex >= 0) {
+      return { rowIndex: segmentRowIndex, visibleMessageId: messageId };
+    }
+  }
+
+  const messageRowIndex = rows.findIndex(
+    (row) => row.kind === "message" && row.message.id === messageId,
+  );
+  if (messageRowIndex >= 0) {
+    return { rowIndex: messageRowIndex, visibleMessageId: messageId };
+  }
+
+  const anySegmentRowIndex = rows.findIndex(
+    (row) => row.kind === "message-segment" && row.message.id === messageId,
+  );
+  if (anySegmentRowIndex >= 0) {
+    return { rowIndex: anySegmentRowIndex, visibleMessageId: messageId };
+  }
+
+  for (let rowIndex = 0; rowIndex < rows.length; rowIndex += 1) {
+    const row = rows[rowIndex]!;
+    if (row.kind !== "message" || row.message.role !== "assistant") {
+      continue;
+    }
+    const hasNarration = (row.collapsedTurnItems ?? []).some(
+      (item) => item.kind === "narration" && item.message.id === messageId,
+    );
+    if (!hasNarration) {
+      continue;
+    }
+    return {
+      rowIndex,
+      visibleMessageId: row.message.id,
+      expandCollapsedWorkMessageId: row.message.id,
+      collapsedNarrationMessageId: messageId,
+    };
+  }
+
+  return null;
 }
 
 export function computeMessageDurationStart(
@@ -597,6 +728,21 @@ export function deriveMessagesTimelineRows(input: {
       continue;
     }
 
+    if (timelineEntry.kind === "message-segment") {
+      // Interleaved slice of assistant text, already alternating with the tool
+      // rows in timeline order. Do not merge pending work into it: segment
+      // boundaries ARE tool interventions, so each segment stands alone.
+      flushPendingWorkGroup({ attachToPreviousAssistant: false });
+      nextRows.push({
+        kind: "message-segment",
+        id: timelineEntry.id,
+        createdAt: timelineEntry.createdAt,
+        message: timelineEntry.message,
+        segmentIndex: timelineEntry.segmentIndex,
+      });
+      continue;
+    }
+
     const message = timelineEntry.message;
     const leadingWorkEntries =
       message.role === "assistant" ? pendingWorkGroup?.groupedEntries : undefined;
@@ -751,6 +897,7 @@ function collapseSettledTurns(
     const row = rows[pass]!;
     if (row.kind !== "message" || row.message.role !== "assistant") continue;
     const message = row.message;
+    if (message.asyncUserInput) continue;
     // Only the terminal message of a turn owns the collapsed group.
     if (!terminalAssistantMessageIds.has(message.id)) continue;
     // Never collapse the live turn: streaming text or the in-progress turn stays
@@ -776,6 +923,15 @@ function collapseSettledTurns(
         continue;
       }
       if (prev.kind === "message" && prev.message.role === "assistant") {
+        if (prev.message.asyncUserInput) break;
+        foldIndices.push(scan);
+        continue;
+      }
+      // A settled assistant message whose streamed text interleaved with tool
+      // rows renders as message-segment slices. They are still this turn's
+      // narration, so they fold too instead of stranding everything earlier
+      // outside the disclosure.
+      if (prev.kind === "message-segment" && !prev.message.streaming) {
         foldIndices.push(scan);
         continue;
       }
@@ -795,11 +951,24 @@ function collapseSettledTurns(
     // (e.g. a failed attempt before a retry), which would report only the tail
     // of the turn instead of the full run.
     let collapsedStart = row.durationStart;
+    // All slices of one segmented message share the same ChatMessage, so the
+    // message folds once (at its first slice) to keep narration identity stable.
+    const foldedSegmentMessageIds = new Set<string>();
     for (const index of foldIndices) {
       const folded = rows[index]!;
       if (folded.kind === "work") {
         collapsedStart = earliestTimestamp(collapsedStart, folded.createdAt);
         collectWorkItems(folded.groupedEntries, collapsedItems);
+      } else if (folded.kind === "message-segment") {
+        collapsedStart = earliestTimestamp(collapsedStart, folded.createdAt);
+        if (!foldedSegmentMessageIds.has(folded.message.id)) {
+          foldedSegmentMessageIds.add(folded.message.id);
+          collapsedItems.push({
+            kind: "narration",
+            id: folded.message.id,
+            message: folded.message,
+          });
+        }
       } else if (folded.kind === "message" && folded.message.role === "assistant") {
         collapsedStart = earliestTimestamp(collapsedStart, folded.durationStart);
         if (folded.assistantTurnDiffSummary) {
@@ -914,7 +1083,12 @@ function workLogSubagentsEqual(
 function workLogAutomationsEqual(a: WorkLogEntry["automation"], b: WorkLogEntry["automation"]) {
   if (a === b) return true;
   if (!a || !b) return false;
-  return a.id === b.id && a.name === b.name && a.cadenceLabel === b.cadenceLabel;
+  return (
+    a.id === b.id &&
+    a.name === b.name &&
+    a.cadenceLabel === b.cadenceLabel &&
+    a.proposalState === b.proposalState
+  );
 }
 
 function workLogSynaraThreadCreationsEqual(
@@ -993,6 +1167,23 @@ function workLogToolDetailsEqual(a: WorkLogEntry["toolDetails"], b: WorkLogEntry
   );
 }
 
+function workLogLiveActivitiesEqual(
+  a: WorkLogEntry["liveActivity"],
+  b: WorkLogEntry["liveActivity"],
+): boolean {
+  if (a === b) return true;
+  if (!a || !b) return false;
+  return (
+    a.state === b.state &&
+    a.label === b.label &&
+    a.startedAt === b.startedAt &&
+    a.lastActivityAt === b.lastActivityAt &&
+    a.detail === b.detail &&
+    a.progress === b.progress &&
+    a.elapsedSeconds === b.elapsedSeconds
+  );
+}
+
 function workLogEntryContentEqual(a: WorkLogEntry, b: WorkLogEntry): boolean {
   return (
     a.id === b.id &&
@@ -1016,6 +1207,7 @@ function workLogEntryContentEqual(a: WorkLogEntry, b: WorkLogEntry): boolean {
     workLogSubagentsEqual(a.subagents, b.subagents) &&
     workLogAutomationsEqual(a.automation, b.automation) &&
     workLogSynaraThreadCreationsEqual(a.synaraThreadCreation, b.synaraThreadCreation) &&
+    workLogLiveActivitiesEqual(a.liveActivity, b.liveActivity) &&
     workLogToolDetailsEqual(a.toolDetails, b.toolDetails)
   );
 }
@@ -1098,6 +1290,11 @@ function isRowUnchanged(a: MessagesTimelineRow, b: MessagesTimelineRow): boolean
         a.assistantTurnDiffSummary === bm.assistantTurnDiffSummary &&
         a.revertTurnCount === bm.revertTurnCount
       );
+    }
+
+    case "message-segment": {
+      const bm = b as typeof a;
+      return a.message === bm.message && a.segmentIndex === bm.segmentIndex;
     }
   }
 }

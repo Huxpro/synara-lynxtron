@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
-import type { ModelSelection, ProviderKind } from "@synara/contracts";
-import { getDefaultModel } from "@synara/shared/model";
+import type { ModelSelection, ProviderKind, RuntimeMode } from "@synara/contracts";
 import { PanelStateMessage } from "@synara-web/components/chat/PanelStateMessage";
 import { ComposerProjectPickerComposition } from "@synara-web/components/chat/ComposerProjectPickerComposition";
 import { buildComposerProjectPickerModel } from "@synara-web/components/chat/ComposerProjectPicker.logic";
@@ -33,6 +32,7 @@ import { landingDraftId } from "./landingDraftIdentity.logic";
 import { resolveLandingWorkspaceContext } from "./landingStudioFolder.logic";
 
 import "./landing-composer.css";
+import { defaultModelSelectionForProvider } from "../../app/defaultModelSelection.logic";
 
 function landingId(kind: "command" | "project" | "thread"): string {
   "background only";
@@ -228,10 +228,7 @@ export function LandingComposer(props: {
     if (data?.homeProject.defaultModelSelection) {
       return data.homeProject.defaultModelSelection;
     }
-    return {
-      provider: initialModelProvider,
-      model: getDefaultModel(initialModelProvider),
-    };
+    return defaultModelSelectionForProvider(initialModelProvider);
   }, [data, initialModelProvider, selectedProjectId]);
   const selectedProject = data?.projects.find((project) => project.id === selectedProjectId);
   const targetProject = selectedProject ?? data?.homeProject;
@@ -343,10 +340,7 @@ export function LandingComposer(props: {
         title: projectWorkspaceLabel(workspaceRoot),
         workspaceRoot,
         createWorkspaceRootIfMissing: false,
-        defaultModelSelection: {
-          provider: initialModelProvider,
-          model: getDefaultModel(initialModelProvider),
-        },
+        defaultModelSelection: defaultModelSelectionForProvider(initialModelProvider),
         isPinned: false,
         spaceId: null,
         createdAt: new Date().toISOString(),
@@ -374,7 +368,7 @@ export function LandingComposer(props: {
   async function ensureThread(input: {
     readonly interactionMode: "default" | "plan";
     readonly modelSelection: ModelSelection;
-    readonly runtimeMode: "full-access" | "approval-required";
+    readonly runtimeMode: RuntimeMode;
   }): Promise<void> {
     "background only";
     if (!targetProject || !workspaceContext) {
@@ -534,10 +528,7 @@ export function LandingComposer(props: {
                     title: option.primaryLabel,
                     workspaceRoot: option.workspaceRoot,
                     createWorkspaceRootIfMissing: false,
-                    defaultModelSelection: {
-                      provider: initialModelProvider,
-                      model: getDefaultModel(initialModelProvider),
-                    },
+                    defaultModelSelection: defaultModelSelectionForProvider(initialModelProvider),
                     isPinned: false,
                     spaceId: null,
                     createdAt: new Date().toISOString(),

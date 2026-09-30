@@ -11,15 +11,34 @@ import { useLayoutEffect } from "react";
 
 import { isElectron } from "~/env";
 import { useSidebar } from "~/components/ui/sidebar";
-import { isMacPlatform, isWindowsPlatform } from "~/lib/utils";
-import { platformWindow } from "~/platform/window";
+import { useDesktopCustomTitleBarActive } from "~/hooks/useDesktopCustomTitleBar";
+import { useSidebarLayout } from "~/hooks/useSidebarLayout";
+import { readDesktopZoomFactor, subscribeDesktopZoomFactor } from "~/lib/desktopZoom";
+import { isMacNavigatorPlatform } from "~/lib/utils";
+import { getDocumentElement } from "~/platform/env";
 
-import { getNavigatorPlatform, getDocumentElement } from "~/platform/env";
 /**
  * Class name backed by `index.css` (not Tailwind) so the gutter survives zoom
  * retuning via {@link DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_VAR}.
  */
 export const DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CLASS = "desktop-top-bar-traffic-light-gutter";
+
+/**
+ * Marks a route's top bar in the rail layout, where route headers sit on the shell band
+ * above the inset content block (`index.css` paints them in the shell tone). Every top bar
+ * already takes one of the gutter class names below, so the gutter hooks carry the marker.
+ */
+export const RAIL_LAYOUT_TOP_BAR_CLASS = "app-top-bar";
+
+function withRailLayoutTopBarClass(
+  gutterClassName: string | null,
+  isRailLayout: boolean,
+): string | null {
+  if (!isRailLayout) return gutterClassName;
+  return gutterClassName
+    ? `${RAIL_LAYOUT_TOP_BAR_CLASS} ${gutterClassName}`
+    : RAIL_LAYOUT_TOP_BAR_CLASS;
+}
 
 /**
  * Pure helper: should a top bar at the left edge of the desktop window reserve
@@ -47,10 +66,6 @@ export function shouldReserveDesktopTopBarTrafficLightGutter(input: {
   return !input.sidebarOpen;
 }
 
-function readDesktopZoomFactor(): number {
-  return platformWindow.getZoomFactor();
-}
-
 function applyTrafficLightGutterCssVar(zoomFactor: number): void {
   getDocumentElement()?.style.setProperty(
     DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_VAR,
@@ -63,7 +78,7 @@ function applyTrafficLightGutterCssVar(zoomFactor: number): void {
  * Mount once near the app root (see `__root.tsx`).
  */
 export function useSyncDesktopTopBarTrafficLightGutterZoom(): void {
-  const isMacDesktop = isMacPlatform(getNavigatorPlatform());
+  const isMacDesktop = isMacNavigatorPlatform();
 
   useLayoutEffect(() => {
     if (!isElectron || !isMacDesktop) {
@@ -72,9 +87,7 @@ export function useSyncDesktopTopBarTrafficLightGutterZoom(): void {
 
     applyTrafficLightGutterCssVar(readDesktopZoomFactor());
 
-    const unsubscribe = platformWindow.onZoomFactorChange((zoomFactor) => {
-      applyTrafficLightGutterCssVar(zoomFactor);
-    });
+    const unsubscribe = subscribeDesktopZoomFactor(applyTrafficLightGutterCssVar);
 
     // Preload can attach after the first layout pass; re-apply on the next frame.
     const frame = requestAnimationFrame(() => {
@@ -98,8 +111,9 @@ export function useSyncDesktopTopBarTrafficLightGutterZoom(): void {
  */
 export function useDesktopTopBarTrafficLightGutterClassName(): string | null {
   const { isMobile, open } = useSidebar();
-  const isMacDesktop = isMacPlatform(getNavigatorPlatform());
-  return shouldReserveDesktopTopBarTrafficLightGutter({
+  const isRailLayout = useSidebarLayout() === "rail";
+  const isMacDesktop = isMacNavigatorPlatform();
+  const gutterClassName = shouldReserveDesktopTopBarTrafficLightGutter({
     isElectron,
     isMacDesktop,
     sidebarOpen: open,
@@ -107,16 +121,17 @@ export function useDesktopTopBarTrafficLightGutterClassName(): string | null {
   })
     ? DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CLASS
     : null;
+  return withRailLayoutTopBarClass(gutterClassName, isRailLayout);
 }
 
 /**
- * Tailwind padding that clears the Windows caption-button cluster.
+ * Tailwind padding that clears the frameless caption-button cluster.
  *
- * On Windows the Electron shell is frameless (`frame: false`, see apps/desktop
- * main) and the renderer owns the minimize/maximize/close buttons. They are
- * rendered ONCE as a viewport-fixed cluster pinned to the window's top-right
- * corner (see {@link DesktopWindowControls} mounted in the root route), mirroring
- * how macOS insets its traffic lights at the top-left.
+ * On Windows/Linux the Electron shell can be frameless (`frame: false`, see
+ * apps/desktop main) and the renderer owns the minimize/maximize/close buttons.
+ * They are rendered ONCE as a viewport-fixed cluster pinned to the window's
+ * top-right corner (see {@link DesktopWindowControls} mounted in the root route),
+ * mirroring how macOS insets its traffic lights at the top-left.
  *
  * Each caption button is 46px wide (matching {@link CHAT_SURFACE_HEADER_HEIGHT_PX}),
  * so the three-button cluster spans 138px. Any top bar that can sit flush against
@@ -132,15 +147,16 @@ export const DESKTOP_TOP_BAR_WINDOW_CONTROLS_GUTTER_CLASS = "pr-[138px]! sm:pr-[
 
 /**
  * Pure helper: should a top bar at the right edge of the desktop window reserve
- * space for the Windows caption buttons? Unlike the macOS traffic lights (whose
+ * space for the custom caption buttons? Unlike the macOS traffic lights (whose
  * column is usually owned by the sidebar), the caption cluster always floats at
- * the window's top-right, so every right-flush chrome surface reserves the gutter.
+ * the window's top-right, so every right-flush chrome surface reserves the gutter
+ * whenever the live window is frameless.
  */
 export function shouldReserveDesktopTopBarWindowControlsGutter(input: {
   isElectron: boolean;
-  isWindowsDesktop: boolean;
+  customTitleBarActive: boolean;
 }): boolean {
-  return input.isElectron && input.isWindowsDesktop;
+  return input.isElectron && input.customTitleBarActive;
 }
 
 /**
@@ -151,11 +167,13 @@ export function shouldReserveDesktopTopBarWindowControlsGutter(input: {
  * right edge: chat header, workspace header, plugin nav, the right dock header, etc.
  */
 export function useDesktopTopBarWindowControlsGutterClassName(): string | null {
-  const isWindowsDesktop = isWindowsPlatform(getNavigatorPlatform());
-  return shouldReserveDesktopTopBarWindowControlsGutter({
+  const customTitleBarActive = useDesktopCustomTitleBarActive();
+  const isRailLayout = useSidebarLayout() === "rail";
+  const gutterClassName = shouldReserveDesktopTopBarWindowControlsGutter({
     isElectron,
-    isWindowsDesktop,
+    customTitleBarActive,
   })
     ? DESKTOP_TOP_BAR_WINDOW_CONTROLS_GUTTER_CLASS
     : null;
+  return withRailLayoutTopBarClass(gutterClassName, isRailLayout);
 }

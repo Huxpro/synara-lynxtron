@@ -3,9 +3,9 @@ import { SidebarChatsPaginationElement } from "~/components/SidebarChatsSectionE
 export function SidebarThreadPagination(props: {
   readonly canShowMore: boolean;
   readonly canShowLess: boolean;
-  readonly variant?: "section" | "nested";
-  readonly onShowMore?: () => void;
-  readonly onShowLess?: () => void;
+  readonly variant?: "section" | "nested" | undefined;
+  readonly onShowMore?: (() => void) | undefined;
+  readonly onShowLess?: (() => void) | undefined;
 }) {
   return (
     <SidebarChatsPaginationElement

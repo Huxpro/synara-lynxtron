@@ -4,7 +4,6 @@ import consoleSvg from "@synara-central-icons/console.svg?raw";
 import splitViewSvg from "@synara-central-icons/sidebar-simple-left-wide.svg?raw";
 import pluginSvg from "@synara-central-icons/puzzle.svg?raw";
 import settingsSvg from "@synara-central-icons/settings-gear-4.svg?raw";
-import windowSvg from "@synara-central-icons/window.svg?raw";
 import pinFilledSvg from "@synara-central-icons-fill/pin.svg?raw";
 
 import { useTheme } from "../adapters/useTheme.lynx";
@@ -41,13 +40,6 @@ function RecentViewIcon(props: { readonly entry: RecentViewDisplayEntry }) {
         <svg
           className="RecentViewSwitcherIconSvg"
           content={colorizeLynxSvg(pluginSvg, secondary)}
-        />
-      );
-    case "workspace":
-      return (
-        <svg
-          className="RecentViewSwitcherIconSvg"
-          content={colorizeLynxSvg(windowSvg, secondary)}
         />
       );
     case "chat":

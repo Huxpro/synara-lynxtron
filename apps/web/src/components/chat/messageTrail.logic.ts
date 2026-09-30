@@ -59,6 +59,26 @@ function normalizePreview(text: string): string {
     : collapsed;
 }
 
+// Store messages are immutable — a text change produces a new message object —
+// so the object itself keys its normalized preview. Without this, every
+// transcript render re-runs the whitespace regex over the full text of every
+// message, which is O(total transcript text) per streaming flush.
+const previewByMessage = new WeakMap<object, string>();
+
+function normalizePreviewCached(message: { readonly text: string }): string {
+  const cached = previewByMessage.get(message);
+  if (cached !== undefined) {
+    return cached;
+  }
+  const preview = normalizePreview(message.text);
+  previewByMessage.set(message, preview);
+  return preview;
+}
+
+// The timeline entry array is itself immutable (rebuilt only when its inputs
+// change), so repeat renders off the same entries reuse the whole projection.
+const trailItemsByEntries = new WeakMap<readonly MessageTrailEntry[], MessageTrailItem[]>();
+
 /**
  * Project the timeline into one trail item per user message, in transcript order.
  * Each item also carries the start of its turn's *final* assistant message (the muted
@@ -69,6 +89,10 @@ function normalizePreview(text: string): string {
 export function deriveMessageTrailItems(
   timelineEntries: readonly MessageTrailEntry[],
 ): MessageTrailItem[] {
+  const cachedItems = trailItemsByEntries.get(timelineEntries);
+  if (cachedItems !== undefined) {
+    return cachedItems;
+  }
   const items: MessageTrailItem[] = [];
   // Index of the user item whose turn we're inside; every non-empty assistant row
   // overwrites its response so the last one (the end-of-turn message) wins.
@@ -82,18 +106,19 @@ export function deriveMessageTrailItems(
       items.push({
         id: entry.message.id,
         ordinal: items.length + 1,
-        preview: normalizePreview(entry.message.text),
+        preview: normalizePreviewCached(entry.message),
         responsePreview: "",
         attachmentCount: entry.message.attachments?.length ?? 0,
       });
       currentTurnIndex = items.length - 1;
     } else if (role === "assistant" && currentTurnIndex >= 0) {
-      const responsePreview = normalizePreview(entry.message.text);
+      const responsePreview = normalizePreviewCached(entry.message);
       if (responsePreview !== "") {
         items[currentTurnIndex]!.responsePreview = responsePreview;
       }
     }
   }
+  trailItemsByEntries.set(timelineEntries, items);
   return items;
 }
 
@@ -147,7 +172,8 @@ export function resolveVisibleRowRangeFromAttachedCells(input: {
   readonly attachedCells: readonly AttachedListCell[];
   readonly listHeight: number | undefined;
 }): { readonly top: number; readonly bottom: number } | null {
-  if (typeof input.listHeight !== "number" || !Number.isFinite(input.listHeight)) {
+  const listHeight = input.listHeight;
+  if (typeof listHeight !== "number" || !Number.isFinite(listHeight)) {
     return null;
   }
   const indexes = input.attachedCells
@@ -157,7 +183,7 @@ export function resolveVisibleRowRangeFromAttachedCells(input: {
         Number.isFinite(cell.index) &&
         typeof cell.top === "number" &&
         typeof cell.bottom === "number" &&
-        cell.top < input.listHeight &&
+        cell.top < listHeight &&
         cell.bottom > 0,
     )
     .map((cell) => cell.index as number)

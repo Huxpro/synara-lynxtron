@@ -6,12 +6,14 @@
  * and process-authoritative on the server.
  */
 import {
+  DEFAULT_DROID_GIT_TEXT_GENERATION_MODEL,
+  DEFAULT_GIT_TEXT_GENERATION_MODEL,
   DEFAULT_MODEL_BY_PROVIDER,
   DEFAULT_SERVER_SETTINGS,
   type ModelSelection,
-  type ProviderWithDefaultModel,
   ServerSettings,
   ServerSettingsError,
+  type ProviderKind,
   type ServerSettingsPatch,
   type ServerSettingsView,
 } from "@synara/contracts";
@@ -33,7 +35,12 @@ import {
 } from "effect";
 import * as Semaphore from "effect/Semaphore";
 import { writeFileStringAtomically } from "./atomicWrite";
+import { isServerBetaFeatureEnabled } from "./betaFeatureGate";
 import { ServerConfig } from "./config";
+import {
+  GIT_TEXT_GENERATION_PROVIDER_ORDER,
+  hasDedicatedTextGenerationProvider,
+} from "./git/textGenerationSelection";
 import {
   ProviderCredentials,
   ProviderCredentialsLive,
@@ -62,7 +69,30 @@ export interface ServerSettingsSnapshot {
   readonly settings: ServerSettings;
 }
 
-const SERVER_SETTINGS_MIGRATION_VERSION = 1;
+const SERVER_SETTINGS_MIGRATION_VERSION = 3;
+const PREVIOUS_GIT_TEXT_GENERATION_MODEL = "gpt-5.4-mini";
+const PREVIOUS_LUNA_GIT_TEXT_GENERATION_MODEL = "gpt-5.6-luna";
+
+function migrateSettings(settings: ServerSettings, migrationVersion: number): ServerSettings {
+  const selection = settings.textGenerationModelSelection;
+  if (
+    selection.provider !== "codex" ||
+    !(
+      (migrationVersion < 2 && selection.model === PREVIOUS_GIT_TEXT_GENERATION_MODEL) ||
+      (migrationVersion < 3 && selection.model === PREVIOUS_LUNA_GIT_TEXT_GENERATION_MODEL)
+    )
+  ) {
+    return settings;
+  }
+
+  return {
+    ...settings,
+    textGenerationModelSelection: {
+      ...selection,
+      model: DEFAULT_GIT_TEXT_GENERATION_MODEL,
+    },
+  };
+}
 
 export function toServerSettingsView(settings: ServerSettings): ServerSettingsView {
   return settings;
@@ -83,9 +113,9 @@ export class ServerSettingsService extends ServiceMap.Service<
         const revisionRef = yield* Ref.make(0);
         const emitChange = (settings: ServerSettings) =>
           PubSub.publish(changesPubSub, settings).pipe(Effect.asVoid);
-        const getSettings = Ref.get(currentSettingsRef).pipe(
-          Effect.map(resolveTextGenerationProvider),
-        );
+        const projectSettings = (settings: ServerSettings) =>
+          resolveTextGenerationProvider(gateBetaOnlyProviders(settings));
+        const getSettings = Ref.get(currentSettingsRef).pipe(Effect.map(projectSettings));
         const updateSettings = (patch: ServerSettingsPatch) =>
           Ref.get(currentSettingsRef).pipe(
             Effect.flatMap((currentSettings) =>
@@ -94,7 +124,7 @@ export class ServerSettingsService extends ServiceMap.Service<
             Effect.tap((nextSettings) => Ref.set(currentSettingsRef, nextSettings)),
             Effect.tap(() => Ref.update(revisionRef, (revision) => revision + 1)),
             Effect.tap(emitChange),
-            Effect.map(resolveTextGenerationProvider),
+            Effect.map(projectSettings),
           );
 
         return {
@@ -116,11 +146,11 @@ export class ServerSettingsService extends ServiceMap.Service<
           updateSettingsView: (patch) =>
             updateSettings(patch).pipe(Effect.map(toServerSettingsView)),
           get streamChanges() {
-            return Stream.fromPubSub(changesPubSub).pipe(Stream.map(resolveTextGenerationProvider));
+            return Stream.fromPubSub(changesPubSub).pipe(Stream.map(projectSettings));
           },
           get streamViews() {
             return Stream.fromPubSub(changesPubSub).pipe(
-              Stream.map(resolveTextGenerationProvider),
+              Stream.map(projectSettings),
               Stream.map(toServerSettingsView),
             );
           },
@@ -129,20 +159,43 @@ export class ServerSettingsService extends ServiceMap.Service<
     );
 }
 
-const PROVIDER_ORDER: readonly ProviderWithDefaultModel[] = [
-  "codex",
-  "claudeAgent",
-  "kilo",
-  "opencode",
-];
+/**
+ * Beta-only providers read as disabled on Stable, projected at the read
+ * boundary only — the persisted file and `settingsRef` keep the user's own
+ * value so a Beta -> Stable round trip never loses it.
+ */
+export function gateBetaOnlyProviders(
+  settings: ServerSettings,
+  isEnabled: (feature: string) => boolean = isServerBetaFeatureEnabled,
+): ServerSettings {
+  let changed = false;
+  // A Record view for the write: the fixed Struct keys each keep their own
+  // settings shape at runtime, which index assignment cannot express.
+  const providers = { ...settings.providers } as Record<
+    ProviderKind,
+    ServerSettings["providers"][ProviderKind]
+  >;
+  for (const provider of Object.keys(providers) as ProviderKind[]) {
+    const current = providers[provider];
+    if (!current.enabled || isEnabled(provider)) continue;
+    providers[provider] = { ...current, enabled: false };
+    changed = true;
+  }
+  return changed ? { ...settings, providers: providers as ServerSettings["providers"] } : settings;
+}
 
-function resolveTextGenerationProvider(settings: ServerSettings): ServerSettings {
+export function resolveTextGenerationProvider(settings: ServerSettings): ServerSettings {
   const selection = settings.textGenerationModelSelection;
-  if (settings.providers[selection.provider].enabled) {
+  if (
+    hasDedicatedTextGenerationProvider(selection.provider) &&
+    settings.providers[selection.provider].enabled
+  ) {
     return settings;
   }
 
-  const fallback = PROVIDER_ORDER.find((provider) => settings.providers[provider].enabled);
+  const fallback = GIT_TEXT_GENERATION_PROVIDER_ORDER.find(
+    (provider) => settings.providers[provider].enabled,
+  );
   if (!fallback) {
     return settings;
   }
@@ -151,7 +204,10 @@ function resolveTextGenerationProvider(settings: ServerSettings): ServerSettings
     ...settings,
     textGenerationModelSelection: {
       provider: fallback,
-      model: DEFAULT_MODEL_BY_PROVIDER[fallback],
+      model:
+        fallback === "droid"
+          ? DEFAULT_DROID_GIT_TEXT_GENERATION_MODEL
+          : DEFAULT_MODEL_BY_PROVIDER[fallback],
     } as ModelSelection,
   };
 }
@@ -173,7 +229,7 @@ function normalizeSettings(
   );
 }
 
-const EXTERNAL_SERVER_PROVIDERS = ["kilo", "opencode"] as const;
+const EXTERNAL_SERVER_PROVIDERS = ["opencode"] as const;
 
 function readLegacyProviderPasswords(raw: string): ReadonlyMap<ExternalProviderServer, string> {
   try {
@@ -195,16 +251,81 @@ function readLegacyProviderPasswords(raw: string): ReadonlyMap<ExternalProviderS
 
 function omitProviderPasswords(patch: ServerSettingsPatch): ServerSettingsPatch {
   if (!patch.providers) return patch;
-  const { serverPassword: _kiloPassword, ...kilo } = patch.providers.kilo ?? {};
   const { serverPassword: _openCodePassword, ...opencode } = patch.providers.opencode ?? {};
   return {
     ...patch,
     providers: {
       ...patch.providers,
-      ...(patch.providers.kilo ? { kilo } : {}),
       ...(patch.providers.opencode ? { opencode } : {}),
     },
   };
+}
+
+// Migrate only portable Kilo state. Its model/options shape and enabled flag
+// remain meaningful, but Kilo binary paths, endpoints, and credentials are not
+// compatible with the OpenCode process protocol and must not be copied.
+function migrateRemovedKiloSettings(settings: unknown): unknown {
+  if (settings === null || typeof settings !== "object" || Array.isArray(settings)) {
+    return settings;
+  }
+  const record = settings as Record<string, unknown>;
+  let migrated = record;
+  const selection = record.textGenerationModelSelection;
+  if (selection !== null && typeof selection === "object" && !Array.isArray(selection)) {
+    const selectionRecord = selection as Record<string, unknown>;
+    if (selectionRecord.provider === "kilo") {
+      const options = selectionRecord.options;
+      const migratedOptions =
+        options !== null &&
+        typeof options === "object" &&
+        !Array.isArray(options) &&
+        "kilo" in options
+          ? (options as Record<string, unknown>).kilo
+          : options;
+      migrated = {
+        ...migrated,
+        textGenerationModelSelection: {
+          ...selectionRecord,
+          provider: "opencode",
+          ...(migratedOptions === undefined ? {} : { options: migratedOptions }),
+        },
+      };
+    }
+  }
+
+  const providers = record.providers;
+  if (providers !== null && typeof providers === "object" && !Array.isArray(providers)) {
+    const providerRecord = providers as Record<string, unknown>;
+    const kilo = providerRecord.kilo;
+    if (kilo !== null && typeof kilo === "object" && !Array.isArray(kilo)) {
+      const kiloRecord = kilo as Record<string, unknown>;
+      const existingOpenCode =
+        providerRecord.opencode !== null &&
+        typeof providerRecord.opencode === "object" &&
+        !Array.isArray(providerRecord.opencode)
+          ? (providerRecord.opencode as Record<string, unknown>)
+          : {};
+      const portableCustomModels = [
+        ...(Array.isArray(existingOpenCode.customModels) ? existingOpenCode.customModels : []),
+        ...(Array.isArray(kiloRecord.customModels) ? kiloRecord.customModels : []),
+      ].filter(
+        (value, index, values) => typeof value === "string" && values.indexOf(value) === index,
+      );
+      const { kilo: _removedKilo, ...remainingProviders } = providerRecord;
+      migrated = {
+        ...migrated,
+        providers: {
+          ...remainingProviders,
+          opencode: {
+            ...existingOpenCode,
+            ...(kiloRecord.enabled === true ? { enabled: true } : {}),
+            ...(portableCustomModels.length > 0 ? { customModels: portableCustomModels } : {}),
+          },
+        },
+      };
+    }
+  }
+  return migrated;
 }
 
 function decodeSettingsFromJson(settingsPath: string, raw: string) {
@@ -214,7 +335,9 @@ function decodeSettingsFromJson(settingsPath: string, raw: string) {
       parsed !== null && typeof parsed === "object" && "settings" in parsed
         ? (parsed as { revision?: unknown; migrationVersion?: unknown; settings: unknown })
         : null;
-    const decoded = Schema.decodeUnknownExit(ServerSettings)(envelope?.settings ?? parsed);
+    const decoded = Schema.decodeUnknownExit(ServerSettings)(
+      migrateRemovedKiloSettings(envelope?.settings ?? parsed),
+    );
     if (decoded._tag === "Failure") {
       return { _tag: "Failure" as const, error: Cause.pretty(decoded.cause) };
     }
@@ -258,7 +381,6 @@ const makeServerSettings = Effect.gen(function* () {
 
   const withCredentialState = (settings: ServerSettings) =>
     Effect.all({
-      kilo: providerCredentials.isServerPasswordConfigured("kilo"),
       opencode: providerCredentials.isServerPasswordConfigured("opencode"),
     }).pipe(
       Effect.map(
@@ -266,10 +388,6 @@ const makeServerSettings = Effect.gen(function* () {
           ...settings,
           providers: {
             ...settings.providers,
-            kilo: {
-              ...settings.providers.kilo,
-              serverPasswordConfigured: configured.kilo,
-            },
             opencode: {
               ...settings.providers.opencode,
               serverPasswordConfigured: configured.opencode,
@@ -347,7 +465,9 @@ const makeServerSettings = Effect.gen(function* () {
       ),
     );
     return {
-      settings: yield* withCredentialState(decoded.value),
+      settings: yield* withCredentialState(
+        migrateSettings(decoded.value, decoded.migrationVersion),
+      ),
       revision: decoded.revision,
       migrated:
         legacyPasswords.size > 0 ||
@@ -411,7 +531,9 @@ const makeServerSettings = Effect.gen(function* () {
     yield* Deferred.succeed(startedDeferred, undefined).pipe(Effect.orDie);
   });
 
-  const getSettings = Ref.get(settingsRef).pipe(Effect.map(resolveTextGenerationProvider));
+  const projectSettings = (settings: ServerSettings) =>
+    resolveTextGenerationProvider(gateBetaOnlyProviders(settings));
+  const getSettings = Ref.get(settingsRef).pipe(Effect.map(projectSettings));
   const updateSettings = (patch: ServerSettingsPatch) =>
     writeSemaphore.withPermits(1)(
       Effect.gen(function* () {
@@ -447,7 +569,7 @@ const makeServerSettings = Effect.gen(function* () {
         yield* Ref.set(settingsRef, next);
         yield* Ref.set(revisionRef, nextRevision);
         yield* emitChange(next);
-        return resolveTextGenerationProvider(next);
+        return projectSettings(next);
       }),
     );
 
@@ -466,11 +588,11 @@ const makeServerSettings = Effect.gen(function* () {
     updateSettings,
     updateSettingsView: (patch) => updateSettings(patch).pipe(Effect.map(toServerSettingsView)),
     get streamChanges() {
-      return Stream.fromPubSub(changesPubSub).pipe(Stream.map(resolveTextGenerationProvider));
+      return Stream.fromPubSub(changesPubSub).pipe(Stream.map(projectSettings));
     },
     get streamViews() {
       return Stream.fromPubSub(changesPubSub).pipe(
-        Stream.map(resolveTextGenerationProvider),
+        Stream.map(projectSettings),
         Stream.map(toServerSettingsView),
       );
     },

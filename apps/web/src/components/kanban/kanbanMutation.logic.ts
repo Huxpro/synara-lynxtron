@@ -13,14 +13,14 @@ export type KanbanCardActionId =
 export interface KanbanMutationActionPolicy {
   readonly id: KanbanMutationActionId;
   readonly label: string;
-  readonly destructive?: boolean;
+  readonly destructive?: boolean | undefined;
 }
 
 export interface KanbanCardActionPolicy {
   readonly id: KanbanCardActionId;
   readonly label: string;
-  readonly destructive?: boolean;
-  readonly separatorBefore?: boolean;
+  readonly destructive?: boolean | undefined;
+  readonly separatorBefore?: boolean | undefined;
 }
 
 export const KANBAN_MUTATION_COPY = {
@@ -72,7 +72,7 @@ export function resolveKanbanCardActions(
   options: {
     readonly canSupplyStartPrompt: boolean;
     readonly copyPathAvailable: boolean;
-    readonly deleteAvailable?: boolean;
+    readonly deleteAvailable?: boolean | undefined;
   },
 ): readonly KanbanCardActionPolicy[] {
   const mutationActions = resolveKanbanMutationActions(card, {

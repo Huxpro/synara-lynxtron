@@ -14,6 +14,10 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
+  SYNARA_DESKTOP_SMOKE_USER_DATA_ENV,
+  SYNARA_SOURCE_DESKTOP_BUILD_MARKER,
+} from "@synara/shared/desktopIdentity";
+import {
   comparisonFixtureMismatches,
   openSynaraRpcSession,
   readComparisonFixtureEntities,
@@ -938,7 +942,10 @@ export function desktopComparisonCommands(options, paths, authToken, electronExe
         // Both renderers open inactive so a comparison never steals focus.
         SYNARA_BACKGROUND_LAUNCH: "1",
         SYNARA_DESKTOP_AUTH_TOKEN: authToken,
-        SYNARA_DESKTOP_USER_DATA_DIR: paths.electronUserDataDir,
+        // Desktop main only honors a userData override on a marked source build;
+        // without both, Electron would open the person's real Synara profile.
+        SYNARA_SOURCE_DESKTOP_BUILD_MARKER,
+        [SYNARA_DESKTOP_SMOKE_USER_DATA_ENV]: paths.electronUserDataDir,
         SYNARA_DISABLE_THREAD_RETENTION: "1",
         SYNARA_SKIP_SHELL_ENVIRONMENT_SYNC: "1",
         SYNARA_SKIP_MEDIA_PERMISSION_SETUP: "1",

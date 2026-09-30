@@ -13,7 +13,7 @@ vi.mock("./ComposerTraitRadioSectionCompositionElements", () => ({
   }: {
     children: ReactNode;
     label: string;
-    labelTrailing?: ReactNode;
+    labelTrailing?: ReactNode | undefined;
   }) => (
     <section>
       <h2>

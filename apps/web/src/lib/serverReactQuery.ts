@@ -1,11 +1,16 @@
 import type {
+  ComputerProvisionResult,
   ProviderKind,
+  ServerConfig,
+  ServerConsumeCodexResetCreditInput,
   ServerListProviderUsageInput,
+  ServerProviderStatus,
   ServerStopLocalServerInput,
   ThreadId,
 } from "@synara/contracts";
 import { mutationOptions, queryOptions, type QueryClient } from "@tanstack/react-query";
 import { ensureNativeApi } from "~/nativeApi";
+import { EXPENSIVE_READ_RETRY_OPTIONS } from "./expensiveReadRetry";
 
 export const LOCAL_SERVERS_VISIBLE_REFETCH_INTERVAL_MS = 10_000;
 const LOCAL_SERVERS_DEFAULT_STALE_TIME_MS = 3_000;
@@ -20,14 +25,16 @@ export const serverQueryKeys = {
   localServers: () => ["server", "localServers"] as const,
   providerUsage: (provider: ProviderKind | null | undefined, homePath?: string | null) =>
     ["server", "providerUsage", provider ?? null, homePath ?? null] as const,
-  allProviderUsage: (provider?: ProviderKind | null) =>
-    ["server", "allProviderUsage", provider ?? null] as const,
+  providerUsageRoot: () => ["server", "providerUsage"] as const,
+  allProviderUsage: () => ["server", "allProviderUsage"] as const,
   profileStats: (utcOffsetMinutes: number) =>
     ["server", "profileStats", "peak-hour-v2", utcOffsetMinutes] as const,
   profileTokenStats: (utcOffsetMinutes: number) =>
     ["server", "profileTokenStats", utcOffsetMinutes] as const,
   studioThreadOutputs: (threadId: ThreadId | null) =>
     ["server", "studioThreadOutputs", threadId] as const,
+  computerStatus: () => ["server", "computerStatus"] as const,
+  computerAuditHistory: () => ["server", "computerAuditHistory"] as const,
 };
 
 export const serverMutationKeys = {
@@ -45,6 +52,140 @@ export function serverConfigQueryOptions() {
   });
 }
 
+/** Polled while the Computer use settings panel is visible, so keep it refetchable. */
+export const COMPUTER_STATUS_VISIBLE_REFETCH_INTERVAL_MS = 10_000;
+
+export function computerStatusQueryOptions() {
+  return queryOptions({
+    queryKey: serverQueryKeys.computerStatus(),
+    queryFn: async () => {
+      const api = ensureNativeApi();
+      // Desktop-bridge NativeApi implementations update out of band and may
+      // predate the computer namespace.
+      if (!api.computer) {
+        throw new Error("This app build cannot read computer status.");
+      }
+      return api.computer.getStatus({});
+    },
+    staleTime: LOCAL_SERVERS_DEFAULT_STALE_TIME_MS,
+  });
+}
+
+/** Share one setup request across the settings panel and transcript cards. */
+let computerProvisionInFlight: Promise<ComputerProvisionResult> | undefined;
+export function provisionComputer(): Promise<ComputerProvisionResult> {
+  if (computerProvisionInFlight) return computerProvisionInFlight;
+  const api = ensureNativeApi();
+  if (!api.computer?.provision)
+    return Promise.reject(new Error("This app build cannot set up computer control."));
+  computerProvisionInFlight = api.computer.provision({}).finally(() => {
+    computerProvisionInFlight = undefined;
+  });
+  return computerProvisionInFlight;
+}
+
+interface ProviderStatusSnapshot {
+  readonly revision: number;
+  readonly providers: readonly ServerProviderStatus[];
+  readonly reconciled: boolean;
+}
+
+const latestProviderStatusSnapshotByQueryClient = new WeakMap<
+  QueryClient,
+  ProviderStatusSnapshot
+>();
+
+export function hasReconciledServerProviderStatuses(queryClient: QueryClient): boolean {
+  return latestProviderStatusSnapshotByQueryClient.get(queryClient)?.reconciled === true;
+}
+
+function recordProviderStatusSnapshot(
+  queryClient: QueryClient,
+  providers: readonly ServerProviderStatus[],
+): ProviderStatusSnapshot {
+  const snapshot = {
+    revision: (latestProviderStatusSnapshotByQueryClient.get(queryClient)?.revision ?? 0) + 1,
+    providers,
+    reconciled: true,
+  };
+  latestProviderStatusSnapshotByQueryClient.set(queryClient, snapshot);
+  return snapshot;
+}
+
+/**
+ * Folds an authoritative provider snapshot into server.config. Provider streams
+ * can win the race against the initial config query, so retain the latest
+ * snapshot and apply it after config hydration instead of dropping it.
+ */
+export async function reconcileServerProviderStatuses(
+  queryClient: QueryClient,
+  providers: readonly ServerProviderStatus[],
+  options?: {
+    readonly loadConfig?: () => Promise<ServerConfig>;
+  },
+): Promise<void> {
+  recordProviderStatusSnapshot(queryClient, providers);
+
+  let applied = false;
+  queryClient.setQueryData<ServerConfig>(serverQueryKeys.config(), (current) => {
+    if (!current) return current;
+    applied = true;
+    return { ...current, providers };
+  });
+  if (applied) return;
+
+  const loadConfig =
+    options?.loadConfig ??
+    (() =>
+      queryClient.fetchQuery({
+        ...serverConfigQueryOptions(),
+        staleTime: 0,
+      }));
+  const hydratedConfig = await loadConfig();
+  const latestProviders =
+    latestProviderStatusSnapshotByQueryClient.get(queryClient)?.providers ?? providers;
+  queryClient.setQueryData<ServerConfig>(serverQueryKeys.config(), (current) => ({
+    ...(current ?? hydratedConfig),
+    providers: latestProviders,
+  }));
+}
+
+/**
+ * Refreshes the config projection when the WebSocket reopens without letting
+ * the response overwrite a provider snapshot that arrived while it was in flight.
+ */
+export async function refreshServerConfigAfterTransportOpen(
+  queryClient: QueryClient,
+  options?: {
+    readonly loadConfig?: () => Promise<ServerConfig>;
+  },
+): Promise<void> {
+  const providerSnapshotAtStart = latestProviderStatusSnapshotByQueryClient.get(queryClient);
+  const providerRevisionAtStart = providerSnapshotAtStart?.revision ?? 0;
+  latestProviderStatusSnapshotByQueryClient.set(queryClient, {
+    revision: providerRevisionAtStart,
+    providers: providerSnapshotAtStart?.providers ?? [],
+    reconciled: false,
+  });
+  const loadConfig =
+    options?.loadConfig ??
+    (() =>
+      queryClient.fetchQuery({
+        ...serverConfigQueryOptions(),
+        staleTime: 0,
+      }));
+  const config = await loadConfig();
+  const latestProviderSnapshot = latestProviderStatusSnapshotByQueryClient.get(queryClient);
+  queryClient.setQueryData<ServerConfig>(serverQueryKeys.config(), {
+    ...config,
+    providers:
+      latestProviderSnapshot?.reconciled === true &&
+      latestProviderSnapshot.revision > providerRevisionAtStart
+        ? latestProviderSnapshot.providers
+        : config.providers,
+  });
+}
+
 export function serverAuthSessionQueryOptions() {
   return queryOptions({
     queryKey: serverQueryKeys.authSession(),
@@ -53,6 +194,22 @@ export function serverAuthSessionQueryOptions() {
       return api.server.getAuthSession();
     },
     staleTime: 15_000,
+  });
+}
+
+/**
+ * The execution environment (OS, arch, server version) is fixed for the life of
+ * a server process, so it caches indefinitely; a restart drops the socket and
+ * remounts the app, which refetches.
+ */
+export function serverEnvironmentQueryOptions() {
+  return queryOptions({
+    queryKey: serverQueryKeys.environment(),
+    queryFn: async () => {
+      const api = ensureNativeApi();
+      return api.server.getEnvironment();
+    },
+    staleTime: Infinity,
   });
 }
 
@@ -144,6 +301,7 @@ export function studioThreadOutputsQueryOptions(input: {
     staleTime: STUDIO_THREAD_OUTPUTS_STALE_TIME_MS,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
+    ...EXPENSIVE_READ_RETRY_OPTIONS,
   });
 }
 
@@ -188,6 +346,20 @@ export async function fetchAllProviderUsage(input: ServerListProviderUsageInput 
   return api.server.listProviderUsage(input);
 }
 
+export async function consumeCodexResetCredit(input: ServerConsumeCodexResetCreditInput) {
+  const api = ensureNativeApi();
+  return api.server.consumeCodexResetCredit(input);
+}
+
+/** Provider enablement changes alter the membership of the batch and invalidate any
+ * provider-scoped result that may otherwise survive after a provider is disabled. */
+export async function invalidateProviderUsageQueries(queryClient: QueryClient): Promise<void> {
+  await Promise.all([
+    queryClient.invalidateQueries({ queryKey: serverQueryKeys.allProviderUsage() }),
+    queryClient.invalidateQueries({ queryKey: serverQueryKeys.providerUsageRoot() }),
+  ]);
+}
+
 // Local profile + shareable-card core statistics. The client passes its own fixed
 // UTC offset; all metrics are computed from Synara's local DB projections.
 export function serverProfileStatsQueryOptions(input: { enabled?: boolean } = {}) {
@@ -226,24 +398,24 @@ export function serverProfileTokenStatsQueryOptions(input: { enabled?: boolean }
   });
 }
 
-// Live remaining-usage for every provider in Settings or a single provider in active usage UI.
+// Live remaining-usage for every provider. Always fetches the full batch under a single query
+// key so every surface (settings panel, header chips, branch toolbar) shares one cache entry
+// and one request cycle; the server caches per-provider snapshots, so the batch is cheap.
 export function serverAllProviderUsageQueryOptions(
   input:
     | boolean
     | {
         enabled?: boolean;
-        provider?: ProviderKind | null;
       } = true,
 ) {
   const enabled = typeof input === "boolean" ? input : (input.enabled ?? true);
-  const provider = typeof input === "boolean" ? null : (input.provider ?? null);
   return queryOptions({
-    queryKey: serverQueryKeys.allProviderUsage(provider),
+    queryKey: serverQueryKeys.allProviderUsage(),
     enabled,
     staleTime: 60_000,
     refetchInterval: 60_000,
     refetchOnWindowFocus: false,
     retry: false,
-    queryFn: async () => fetchAllProviderUsage(provider ? { provider } : {}),
+    queryFn: async () => fetchAllProviderUsage(),
   });
 }

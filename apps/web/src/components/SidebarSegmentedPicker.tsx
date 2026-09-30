@@ -16,7 +16,6 @@ import {
 const SIDEBAR_VIEW_LABELS: Record<SidebarView, string> = {
   threads: "Projects",
   studio: "Studio",
-  workspace: "Workspace",
 };
 
 /** Snap the optimistic segment selection back if the navigation never lands. */
@@ -31,7 +30,7 @@ export function SidebarSegmentedPicker({
   views: ReadonlyArray<SidebarView>;
   activeView: SidebarView;
   onSelectView: (view: SidebarView) => void;
-  onPrewarmView?: (view: SidebarView) => void;
+  onPrewarmView?: ((view: SidebarView) => void) | undefined;
 }) {
   const [pendingView, setPendingView] = useState<{
     key: SidebarView;
@@ -40,7 +39,7 @@ export function SidebarSegmentedPicker({
   if (pendingView.key !== activeView) {
     setPendingView({ key: activeView, value: null });
   }
-  const pendingViewResetTimeoutRef = useRef<number | null>(null);
+  const pendingViewResetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const clearPendingViewResetTimeout = useCallback(() => {
     if (pendingViewResetTimeoutRef.current !== null) {
       clearTimeout(pendingViewResetTimeoutRef.current);

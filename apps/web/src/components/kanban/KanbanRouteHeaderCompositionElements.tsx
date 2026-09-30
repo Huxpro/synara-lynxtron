@@ -15,7 +15,7 @@ import { Tooltip, TooltipPopup, TooltipTrigger } from "~/components/ui/tooltip";
 import { ArrowLeftIcon, PlusIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function KanbanRouteHeaderRootElement(
   props: ChildrenProps & { readonly hostClassName?: string | undefined },
@@ -61,14 +61,14 @@ export function KanbanRouteHeaderBackElement(props: { readonly onActivate: () =>
 
 export function KanbanRouteHeaderTitleElement(props: ChildrenProps) {
   return (
-    <h2 className="max-w-[clamp(16rem,50vw,40rem)] truncate text-sm font-medium text-foreground">
+    <h2 className="max-w-[clamp(16rem,50vw,40rem)] truncate text-ui font-medium text-foreground">
       {props.children}
     </h2>
   );
 }
 
 export function KanbanRouteHeaderCountElement(props: ChildrenProps) {
-  return <span className="shrink-0 text-xs text-muted-foreground/70">{props.children}</span>;
+  return <span className="shrink-0 text-ui text-muted-foreground/70">{props.children}</span>;
 }
 
 export function KanbanRouteHeaderSpacerElement() {

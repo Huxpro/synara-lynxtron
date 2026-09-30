@@ -2,20 +2,53 @@ import { describe, expect, it } from "vitest";
 import { Schema } from "effect";
 
 import {
+  PullRequestActor,
+  PullRequestCommit,
+  PullRequestCommitAuthor,
   PullRequestCommentInput,
+  PullRequestActionResult,
   PullRequestDetail,
   PullRequestListEntry,
   PullRequestReviewRequestCountResult,
-  PullRequestSetPinnedInput,
 } from "./pullRequests";
 
 const decodeListEntry = Schema.decodeUnknownSync(PullRequestListEntry);
 const decodeDetail = Schema.decodeUnknownSync(PullRequestDetail);
 const decodeCommentInput = Schema.decodeUnknownSync(PullRequestCommentInput);
-const decodeSetPinnedInput = Schema.decodeUnknownSync(PullRequestSetPinnedInput);
 const decodeReviewRequestCountResult = Schema.decodeUnknownSync(
   PullRequestReviewRequestCountResult,
 );
+const decodeActionResult = Schema.decodeUnknownSync(PullRequestActionResult);
+
+describe("PullRequestCommitAuthor", () => {
+  const decodeAuthor = Schema.decodeUnknownSync(PullRequestCommitAuthor);
+  const localAuthor = {
+    login: null,
+    name: "Local author",
+    avatarUrl: null,
+    url: null,
+  };
+
+  it("preserves name-only authors through the commit wire contract", () => {
+    const commit = Schema.decodeUnknownSync(PullRequestCommit)({
+      oid: "abc123",
+      messageHeadline: "Keep local author",
+      messageBody: "",
+      committedDate: "2026-09-08T13:18:37Z",
+      authors: [localAuthor],
+    });
+    expect(commit.authors).toEqual([localAuthor]);
+    expect(() => Schema.decodeUnknownSync(PullRequestActor)(localAuthor)).toThrow();
+  });
+
+  it.each(["", "   ", 123])("rejects invalid login %j", (login) => {
+    expect(() => decodeAuthor({ ...localAuthor, login })).toThrow();
+  });
+
+  it("rejects non-string names", () => {
+    expect(() => decodeAuthor({ ...localAuthor, name: 123 })).toThrow();
+  });
+});
 
 function listEntry() {
   return {
@@ -47,6 +80,7 @@ describe("PullRequestListEntry", () => {
     expect(decoded.isPinned).toBe(false);
     expect(decoded.projectContexts).toEqual([]);
     expect(decoded.mergeability).toBe("unknown");
+    expect(decoded.stack).toBeNull();
     expect(
       decodeListEntry({ ...listEntry(), isPinned: true, mergeability: "conflicting" }),
     ).toMatchObject({ isPinned: true, mergeability: "conflicting" });
@@ -96,6 +130,24 @@ describe("PullRequestDetail", () => {
     });
 
     expect(decoded.mergeability).toBe("unknown");
+    expect(decoded.stack).toBeNull();
+    expect(decoded.stackMetadataIncomplete).toBe(false);
+    expect(
+      decodeDetail({ ...decoded, stackMetadataIncomplete: true }).stackMetadataIncomplete,
+    ).toBe(true);
+  });
+});
+
+describe("PullRequestActionResult", () => {
+  it("defaults old mutation acknowledgements to no merge outcome", () => {
+    expect(
+      decodeActionResult({
+        projectId: "project-1",
+        repository: "acme/widgets",
+        number: 42,
+        workspaceRoot: "/workspace/project-one",
+      }).mergeOutcome,
+    ).toBeNull();
   });
 });
 
@@ -109,24 +161,6 @@ describe("PullRequestCommentInput", () => {
   it("accepts GitHub's maximum comment length and rejects one character more", () => {
     expect(decodeCommentInput({ ...base, body: "x".repeat(65_536) }).body).toHaveLength(65_536);
     expect(() => decodeCommentInput({ ...base, body: "x".repeat(65_537) })).toThrow();
-  });
-});
-
-describe("PullRequestSetPinnedInput", () => {
-  it("decodes a project-scoped idempotent pin setter", () => {
-    expect(
-      decodeSetPinnedInput({
-        projectId: "project-1",
-        repository: "acme/widgets",
-        number: 42,
-        isPinned: true,
-      }),
-    ).toEqual({
-      projectId: "project-1",
-      repository: "acme/widgets",
-      number: 42,
-      isPinned: true,
-    });
   });
 });
 

@@ -17,6 +17,7 @@ export const SYNARA_WS_TRANSPORT_STATE_EVENT = "synara:ws-transport-state";
 export const SYNARA_WS_COMPATIBILITY_ISSUE_EVENT = "synara:ws-compatibility-issue";
 
 let latestCompatibilityIssue: WsCompatibilityError | null = null;
+let latestTransportState: WsTransportState | null = null;
 
 export interface WsTransportStateEventDetail {
   state: WsTransportState;
@@ -28,6 +29,7 @@ export interface WsCompatibilityIssueEventDetail {
 
 // Emits a browser-local event without leaking transport internals into UI code.
 export function emitWsTransportState(state: WsTransportState): void {
+  latestTransportState = state;
   if (!isBrowser() || typeof CustomEvent === "undefined") {
     return;
   }
@@ -42,7 +44,11 @@ export function emitWsTransportState(state: WsTransportState): void {
 // Subscribes to the shared transport state event. Returns an idempotent cleanup.
 export function addWsTransportStateListener(
   listener: (state: WsTransportState) => void,
+  options?: { readonly replayCurrent?: boolean },
 ): () => void {
+  if (options?.replayCurrent && latestTransportState) {
+    listener(latestTransportState);
+  }
   if (!isBrowser()) {
     return () => undefined;
   }

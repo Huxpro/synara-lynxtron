@@ -18,8 +18,8 @@ export interface ComposerThreadMentionItemSource {
   readonly title: string;
   readonly provider: ProviderKind;
   readonly createdAt: string;
-  readonly archivedAt?: string | null;
-  readonly lastVisitedAt?: string;
+  readonly archivedAt?: string | null | undefined;
+  readonly lastVisitedAt?: string | undefined;
   readonly latestUserMessageAt: string | null;
 }
 
@@ -27,7 +27,7 @@ export interface ComposerThreadMentionProjectSource {
   readonly id: string;
   readonly kind: ProjectKind;
   readonly name: string;
-  readonly folderName?: string;
+  readonly folderName?: string | undefined;
 }
 
 interface ThreadMentionCandidate {

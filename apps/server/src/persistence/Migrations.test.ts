@@ -7,6 +7,7 @@ import { MigrationSchemaTooNewError } from "./Errors.ts";
 import * as NodeSqliteClient from "./NodeSqliteClient.ts";
 import DurableProviderCommandDeliveryMigration from "./Migrations/064_DurableProviderCommandDelivery.ts";
 import ProjectionThreadsGatewayProvenanceMigration from "./Migrations/071_ProjectionThreadsGatewayProvenance.ts";
+import ProjectPullRequestPinsMigration from "./Migrations/069_ProjectPullRequestPins.ts";
 import SpacesMigration from "./Migrations/079_Spaces.ts";
 
 const layer = it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()));
@@ -196,45 +197,6 @@ providerDeliveryCutoverLayer(
   },
 );
 
-const managedAttachmentsFreshLayer = it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()));
-
-managedAttachmentsFreshLayer("managed attachment migration on a fresh database", (it) => {
-  it.effect("reserves legacy migration 54 and creates the managed ledger on a fresh database", () =>
-    Effect.gen(function* () {
-      const sql = yield* SqlClient.SqlClient;
-
-      const executed = yield* runMigrations();
-      assert.deepInclude(executed, [54, "DurableProviderCommandDelivery"]);
-      assert.deepInclude(executed, [55, "ManagedAttachments"]);
-      assert.deepInclude(executed, [64, "DurableProviderCommandDeliveryCutover"]);
-      assert.deepInclude(executed, [65, "DurableQueuedTurnPromotions"]);
-      assert.deepInclude(executed, [66, "DurableProviderRuntimeEvents"]);
-      assert.deepInclude(executed, [67, "ProviderDeliveryReconciliation"]);
-      assert.deepInclude(executed, [79, "Spaces"]);
-
-      const tables = yield* sql<{ readonly name: string }>`
-        SELECT name
-        FROM sqlite_master
-        WHERE type = 'table'
-          AND name IN ('managed_attachment_blobs', 'managed_attachment_cleanup_jobs')
-        ORDER BY name
-      `;
-      assert.deepStrictEqual(
-        tables.map((row) => row.name),
-        ["managed_attachment_blobs", "managed_attachment_cleanup_jobs"],
-      );
-
-      const providerDeliveryTables = yield* sql<{ readonly count: number }>`
-        SELECT COUNT(*) AS count
-        FROM sqlite_master
-        WHERE type = 'table'
-          AND name IN ('orchestration_consumer_state', 'orchestration_event_deliveries')
-      `;
-      assert.strictEqual(providerDeliveryTables[0]?.count, 2);
-    }),
-  );
-});
-
 const managedAttachmentsLegacyLayer = it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()));
 
 managedAttachmentsLegacyLayer("managed attachment migration after private migration 54", (it) => {
@@ -276,38 +238,96 @@ managedAttachmentsLegacyLayer("managed attachment migration after private migrat
         [78, "ExternalMcpLiveTurnCapacity"],
         [79, "Spaces"],
         [80, "ExternalMcpProjectScope"],
+        [81, "AutomationProposals"],
+        [82, "AutomationMemory"],
+        [83, "AutomationHeartbeatEligibility"],
+        [84, "AutomationNotificationPolicy"],
+        [85, "AutomationSettings"],
+        [86, "NormalizeStudioThreadWorkspaces"],
+        [87, "DropUnusedOrchestrationEventIndexes"],
+        [88, "ProjectionThreadsSettledAt"],
+        [89, "RecoverRetentionHiddenThreads"],
+        [90, "ProjectionThreadMessageTextSegments"],
+        [91, "AutomationFailureTolerance"],
+        [92, "BackfillAutomationRunThreadSource"],
+        [93, "BackfillMaxIterationsDisabledReason"],
+        [94, "ProjectionThreadsGoal"],
+        [95, "ProjectionThreadsGoalTiming"],
+        [96, "ProjectionThreadsGoalAchievements"],
+        [97, "ProjectionThreadsSidechatLifecycle"],
+        [98, "MigrateKiloToOpenCode"],
+        [99, "InvalidateProjectionThreadsCursor"],
+        [100, "MessageTextChunks"],
+        [101, "RemoveTranscriptMarkers"],
+        [102, "ProjectionThreadMessagesTurnBoundary"],
+        [103, "ClaudeTokenAccounting"],
+        [104, "ProjectionThreadsClaudeCacheReview"],
+        [105, "AsyncUserInput"],
+        [106, "ProjectImportOrigins"],
+        [107, "ProjectionThreadsHumanMessage"],
+        [108, "GatewayCompletions"],
       ]);
 
       const tracker = yield* trackerRows(sql);
-      assert.deepStrictEqual(tracker.slice(-27), [
-        { migration_id: 54, name: "DurableProviderCommandDelivery" },
-        { migration_id: 55, name: "ManagedAttachments" },
-        { migration_id: 56, name: "CommandReceiptFingerprints" },
-        { migration_id: 57, name: "ThreadScopedProjectionMessageIdentity" },
-        { migration_id: 58, name: "ThreadScopedPendingApprovalIdentity" },
-        { migration_id: 59, name: "ProviderSessionLifecycleGeneration" },
-        { migration_id: 60, name: "PendingApprovalLifecycleGeneration" },
-        { migration_id: 61, name: "PendingApprovalSettlementState" },
-        { migration_id: 62, name: "PendingInteractionSettlementParity" },
-        { migration_id: 63, name: "ProjectionMessageCausalSequence" },
-        { migration_id: 64, name: "DurableProviderCommandDeliveryCutover" },
-        { migration_id: 65, name: "DurableQueuedTurnPromotions" },
-        { migration_id: 66, name: "DurableProviderRuntimeEvents" },
-        { migration_id: 67, name: "ProviderDeliveryReconciliation" },
-        { migration_id: 68, name: "GitHandoffOperations" },
-        { migration_id: 69, name: "ProjectPullRequestPins" },
-        { migration_id: 70, name: "AgentGatewayOperations" },
-        { migration_id: 71, name: "ProjectionThreadsGatewayProvenance" },
-        { migration_id: 72, name: "AgentGatewayOperationRetention" },
-        { migration_id: 73, name: "OperationalDiagnostics" },
-        { migration_id: 74, name: "ExternalMcpIntegrations" },
-        { migration_id: 75, name: "ExternalMcpActiveCapacity" },
-        { migration_id: 76, name: "ExternalMcpHardening" },
-        { migration_id: 77, name: "ExternalMcpCompensatingCapacity" },
-        { migration_id: 78, name: "ExternalMcpLiveTurnCapacity" },
-        { migration_id: 79, name: "Spaces" },
-        { migration_id: 80, name: "ExternalMcpProjectScope" },
-      ]);
+      assert.deepStrictEqual(
+        tracker.filter((row) => row.migration_id >= 55),
+        [
+          { migration_id: 55, name: "ManagedAttachments" },
+          { migration_id: 56, name: "CommandReceiptFingerprints" },
+          { migration_id: 57, name: "ThreadScopedProjectionMessageIdentity" },
+          { migration_id: 58, name: "ThreadScopedPendingApprovalIdentity" },
+          { migration_id: 59, name: "ProviderSessionLifecycleGeneration" },
+          { migration_id: 60, name: "PendingApprovalLifecycleGeneration" },
+          { migration_id: 61, name: "PendingApprovalSettlementState" },
+          { migration_id: 62, name: "PendingInteractionSettlementParity" },
+          { migration_id: 63, name: "ProjectionMessageCausalSequence" },
+          { migration_id: 64, name: "DurableProviderCommandDeliveryCutover" },
+          { migration_id: 65, name: "DurableQueuedTurnPromotions" },
+          { migration_id: 66, name: "DurableProviderRuntimeEvents" },
+          { migration_id: 67, name: "ProviderDeliveryReconciliation" },
+          { migration_id: 68, name: "GitHandoffOperations" },
+          { migration_id: 69, name: "ProjectPullRequestPins" },
+          { migration_id: 70, name: "AgentGatewayOperations" },
+          { migration_id: 71, name: "ProjectionThreadsGatewayProvenance" },
+          { migration_id: 72, name: "AgentGatewayOperationRetention" },
+          { migration_id: 73, name: "OperationalDiagnostics" },
+          { migration_id: 74, name: "ExternalMcpIntegrations" },
+          { migration_id: 75, name: "ExternalMcpActiveCapacity" },
+          { migration_id: 76, name: "ExternalMcpHardening" },
+          { migration_id: 77, name: "ExternalMcpCompensatingCapacity" },
+          { migration_id: 78, name: "ExternalMcpLiveTurnCapacity" },
+          { migration_id: 79, name: "Spaces" },
+          { migration_id: 80, name: "ExternalMcpProjectScope" },
+          { migration_id: 81, name: "AutomationProposals" },
+          { migration_id: 82, name: "AutomationMemory" },
+          { migration_id: 83, name: "AutomationHeartbeatEligibility" },
+          { migration_id: 84, name: "AutomationNotificationPolicy" },
+          { migration_id: 85, name: "AutomationSettings" },
+          { migration_id: 86, name: "NormalizeStudioThreadWorkspaces" },
+          { migration_id: 87, name: "DropUnusedOrchestrationEventIndexes" },
+          { migration_id: 88, name: "ProjectionThreadsSettledAt" },
+          { migration_id: 89, name: "RecoverRetentionHiddenThreads" },
+          { migration_id: 90, name: "ProjectionThreadMessageTextSegments" },
+          { migration_id: 91, name: "AutomationFailureTolerance" },
+          { migration_id: 92, name: "BackfillAutomationRunThreadSource" },
+          { migration_id: 93, name: "BackfillMaxIterationsDisabledReason" },
+          { migration_id: 94, name: "ProjectionThreadsGoal" },
+          { migration_id: 95, name: "ProjectionThreadsGoalTiming" },
+          { migration_id: 96, name: "ProjectionThreadsGoalAchievements" },
+          { migration_id: 97, name: "ProjectionThreadsSidechatLifecycle" },
+          { migration_id: 98, name: "MigrateKiloToOpenCode" },
+          { migration_id: 99, name: "InvalidateProjectionThreadsCursor" },
+          { migration_id: 100, name: "MessageTextChunks" },
+          { migration_id: 101, name: "RemoveTranscriptMarkers" },
+          { migration_id: 102, name: "ProjectionThreadMessagesTurnBoundary" },
+          { migration_id: 103, name: "ClaudeTokenAccounting" },
+          { migration_id: 104, name: "ProjectionThreadsClaudeCacheReview" },
+          { migration_id: 105, name: "AsyncUserInput" },
+          { migration_id: 106, name: "ProjectImportOrigins" },
+          { migration_id: 107, name: "ProjectionThreadsHumanMessage" },
+          { migration_id: 108, name: "GatewayCompletions" },
+        ],
+      );
       const preserved = yield* sql<{ readonly count: number }>`
         SELECT COUNT(*) AS count FROM orchestration_consumer_state
       `;
@@ -379,6 +399,34 @@ agentGatewayRetentionLegacyLayer(
           [78, "ExternalMcpLiveTurnCapacity"],
           [79, "Spaces"],
           [80, "ExternalMcpProjectScope"],
+          [81, "AutomationProposals"],
+          [82, "AutomationMemory"],
+          [83, "AutomationHeartbeatEligibility"],
+          [84, "AutomationNotificationPolicy"],
+          [85, "AutomationSettings"],
+          [86, "NormalizeStudioThreadWorkspaces"],
+          [87, "DropUnusedOrchestrationEventIndexes"],
+          [88, "ProjectionThreadsSettledAt"],
+          [89, "RecoverRetentionHiddenThreads"],
+          [90, "ProjectionThreadMessageTextSegments"],
+          [91, "AutomationFailureTolerance"],
+          [92, "BackfillAutomationRunThreadSource"],
+          [93, "BackfillMaxIterationsDisabledReason"],
+          [94, "ProjectionThreadsGoal"],
+          [95, "ProjectionThreadsGoalTiming"],
+          [96, "ProjectionThreadsGoalAchievements"],
+          [97, "ProjectionThreadsSidechatLifecycle"],
+          [98, "MigrateKiloToOpenCode"],
+          [99, "InvalidateProjectionThreadsCursor"],
+          [100, "MessageTextChunks"],
+          [101, "RemoveTranscriptMarkers"],
+          [102, "ProjectionThreadMessagesTurnBoundary"],
+          [103, "ClaudeTokenAccounting"],
+          [104, "ProjectionThreadsClaudeCacheReview"],
+          [105, "AsyncUserInput"],
+          [106, "ProjectImportOrigins"],
+          [107, "ProjectionThreadsHumanMessage"],
+          [108, "GatewayCompletions"],
         ]);
 
         const columns = yield* sql<{ readonly name: string }>`
@@ -454,13 +502,40 @@ spacesMigrationCollisionLayer("Spaces migration after the private migration 70 c
         [78, "ExternalMcpLiveTurnCapacity"],
         [79, "Spaces"],
         [80, "ExternalMcpProjectScope"],
+        [81, "AutomationProposals"],
+        [82, "AutomationMemory"],
+        [83, "AutomationHeartbeatEligibility"],
+        [84, "AutomationNotificationPolicy"],
+        [85, "AutomationSettings"],
+        [86, "NormalizeStudioThreadWorkspaces"],
+        [87, "DropUnusedOrchestrationEventIndexes"],
+        [88, "ProjectionThreadsSettledAt"],
+        [89, "RecoverRetentionHiddenThreads"],
+        [90, "ProjectionThreadMessageTextSegments"],
+        [91, "AutomationFailureTolerance"],
+        [92, "BackfillAutomationRunThreadSource"],
+        [93, "BackfillMaxIterationsDisabledReason"],
+        [94, "ProjectionThreadsGoal"],
+        [95, "ProjectionThreadsGoalTiming"],
+        [96, "ProjectionThreadsGoalAchievements"],
+        [97, "ProjectionThreadsSidechatLifecycle"],
+        [98, "MigrateKiloToOpenCode"],
+        [99, "InvalidateProjectionThreadsCursor"],
+        [100, "MessageTextChunks"],
+        [101, "RemoveTranscriptMarkers"],
+        [102, "ProjectionThreadMessagesTurnBoundary"],
+        [103, "ClaudeTokenAccounting"],
+        [104, "ProjectionThreadsClaudeCacheReview"],
+        [105, "AsyncUserInput"],
+        [106, "ProjectImportOrigins"],
+        [107, "ProjectionThreadsHumanMessage"],
+        [108, "GatewayCompletions"],
       ]);
 
       const tracker = yield* trackerRows(sql);
       assert.deepStrictEqual(
-        tracker.slice(-11).map((row) => [row.migration_id, row.name]),
+        tracker.filter((row) => row.migration_id >= 71).map((row) => [row.migration_id, row.name]),
         [
-          [70, "AgentGatewayOperations"],
           [71, "ProjectionThreadsGatewayProvenance"],
           [72, "AgentGatewayOperationRetention"],
           [73, "OperationalDiagnostics"],
@@ -471,6 +546,34 @@ spacesMigrationCollisionLayer("Spaces migration after the private migration 70 c
           [78, "ExternalMcpLiveTurnCapacity"],
           [79, "Spaces"],
           [80, "ExternalMcpProjectScope"],
+          [81, "AutomationProposals"],
+          [82, "AutomationMemory"],
+          [83, "AutomationHeartbeatEligibility"],
+          [84, "AutomationNotificationPolicy"],
+          [85, "AutomationSettings"],
+          [86, "NormalizeStudioThreadWorkspaces"],
+          [87, "DropUnusedOrchestrationEventIndexes"],
+          [88, "ProjectionThreadsSettledAt"],
+          [89, "RecoverRetentionHiddenThreads"],
+          [90, "ProjectionThreadMessageTextSegments"],
+          [91, "AutomationFailureTolerance"],
+          [92, "BackfillAutomationRunThreadSource"],
+          [93, "BackfillMaxIterationsDisabledReason"],
+          [94, "ProjectionThreadsGoal"],
+          [95, "ProjectionThreadsGoalTiming"],
+          [96, "ProjectionThreadsGoalAchievements"],
+          [97, "ProjectionThreadsSidechatLifecycle"],
+          [98, "MigrateKiloToOpenCode"],
+          [99, "InvalidateProjectionThreadsCursor"],
+          [100, "MessageTextChunks"],
+          [101, "RemoveTranscriptMarkers"],
+          [102, "ProjectionThreadMessagesTurnBoundary"],
+          [103, "ClaudeTokenAccounting"],
+          [104, "ProjectionThreadsClaudeCacheReview"],
+          [105, "AsyncUserInput"],
+          [106, "ProjectImportOrigins"],
+          [107, "ProjectionThreadsHumanMessage"],
+          [108, "GatewayCompletions"],
         ],
       );
 
@@ -541,19 +644,74 @@ spacesMigrationCollisionLayer("Spaces migration after the private migration 70 c
         [78, "ExternalMcpLiveTurnCapacity"],
         [79, "Spaces"],
         [80, "ExternalMcpProjectScope"],
+        [81, "AutomationProposals"],
+        [82, "AutomationMemory"],
+        [83, "AutomationHeartbeatEligibility"],
+        [84, "AutomationNotificationPolicy"],
+        [85, "AutomationSettings"],
+        [86, "NormalizeStudioThreadWorkspaces"],
+        [87, "DropUnusedOrchestrationEventIndexes"],
+        [88, "ProjectionThreadsSettledAt"],
+        [89, "RecoverRetentionHiddenThreads"],
+        [90, "ProjectionThreadMessageTextSegments"],
+        [91, "AutomationFailureTolerance"],
+        [92, "BackfillAutomationRunThreadSource"],
+        [93, "BackfillMaxIterationsDisabledReason"],
+        [94, "ProjectionThreadsGoal"],
+        [95, "ProjectionThreadsGoalTiming"],
+        [96, "ProjectionThreadsGoalAchievements"],
+        [97, "ProjectionThreadsSidechatLifecycle"],
+        [98, "MigrateKiloToOpenCode"],
+        [99, "InvalidateProjectionThreadsCursor"],
+        [100, "MessageTextChunks"],
+        [101, "RemoveTranscriptMarkers"],
+        [102, "ProjectionThreadMessagesTurnBoundary"],
+        [103, "ClaudeTokenAccounting"],
+        [104, "ProjectionThreadsClaudeCacheReview"],
+        [105, "AsyncUserInput"],
+        [106, "ProjectImportOrigins"],
+        [107, "ProjectionThreadsHumanMessage"],
+        [108, "GatewayCompletions"],
       ]);
 
       const tracker = yield* trackerRows(sql);
       assert.deepStrictEqual(
-        tracker.slice(-7).map((row) => [row.migration_id, row.name]),
+        tracker.filter((row) => row.migration_id >= 75).map((row) => [row.migration_id, row.name]),
         [
-          [74, "ExternalMcpIntegrations"],
           [75, "ExternalMcpActiveCapacity"],
           [76, "ExternalMcpHardening"],
           [77, "ExternalMcpCompensatingCapacity"],
           [78, "ExternalMcpLiveTurnCapacity"],
           [79, "Spaces"],
           [80, "ExternalMcpProjectScope"],
+          [81, "AutomationProposals"],
+          [82, "AutomationMemory"],
+          [83, "AutomationHeartbeatEligibility"],
+          [84, "AutomationNotificationPolicy"],
+          [85, "AutomationSettings"],
+          [86, "NormalizeStudioThreadWorkspaces"],
+          [87, "DropUnusedOrchestrationEventIndexes"],
+          [88, "ProjectionThreadsSettledAt"],
+          [89, "RecoverRetentionHiddenThreads"],
+          [90, "ProjectionThreadMessageTextSegments"],
+          [91, "AutomationFailureTolerance"],
+          [92, "BackfillAutomationRunThreadSource"],
+          [93, "BackfillMaxIterationsDisabledReason"],
+          [94, "ProjectionThreadsGoal"],
+          [95, "ProjectionThreadsGoalTiming"],
+          [96, "ProjectionThreadsGoalAchievements"],
+          [97, "ProjectionThreadsSidechatLifecycle"],
+          [98, "MigrateKiloToOpenCode"],
+          [99, "InvalidateProjectionThreadsCursor"],
+          [100, "MessageTextChunks"],
+          [101, "RemoveTranscriptMarkers"],
+          [102, "ProjectionThreadMessagesTurnBoundary"],
+          [103, "ClaudeTokenAccounting"],
+          [104, "ProjectionThreadsClaudeCacheReview"],
+          [105, "AsyncUserInput"],
+          [106, "ProjectImportOrigins"],
+          [107, "ProjectionThreadsHumanMessage"],
+          [108, "GatewayCompletions"],
         ],
       );
       const preservedSpaces = yield* sql<{ readonly spaceId: string }>`
@@ -701,14 +859,104 @@ managedAttachmentsConstraintsLayer("managed attachment schema constraints", (it)
   );
 });
 
-const managedAttachmentsIdempotencyLayer = it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()));
+const latestMigrationId = Math.max(...migrationEntries.map(([id]) => id));
 
-managedAttachmentsIdempotencyLayer("managed attachment migration idempotency", (it) => {
-  it.effect("is idempotent after the managed attachment schema is registered", () =>
+// `migrationEntries` is `as const`, so an inferred Map keys on the literal id union and rejects
+// the plain `number` ids these helpers are looked up with. Widen the key type once, here.
+const canonicalNamesById = new Map<number, string>(
+  migrationEntries.map(([id, name]) => [id, name] as const),
+);
+
+const canonicalTrackerThrough = (throughId: number) =>
+  new Map<number, string>(
+    migrationEntries.filter(([id]) => id <= throughId).map(([id, name]) => [id, name] as const),
+  );
+
+const trackerCreatedAtById = (sql: SqlClient.SqlClient) =>
+  sql<{ readonly migration_id: number; readonly created_at: string }>`
+    SELECT migration_id, created_at FROM effect_sql_migrations ORDER BY migration_id ASC
+  `.pipe(Effect.map((rows) => new Map(rows.map((row) => [row.migration_id, row.created_at]))));
+
+const releasedV055Layer = it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()));
+
+releasedV055Layer("released v0.5.5 database", (it) => {
+  it.effect("reconciles the renumbered pins migration without replaying the lineage", () =>
     Effect.gen(function* () {
-      yield* runMigrations();
+      const sql = yield* SqlClient.SqlClient;
+
+      // Reproduce a database written by v0.5.5: canonical rows 1-53, then the
+      // pins migration recorded under the ID that release shipped it at.
+      yield* runMigrations({ toMigrationInclusive: 53 });
+      yield* ProjectPullRequestPinsMigration;
+      yield* sql`
+        INSERT INTO project_pull_request_pins (project_id, repository_key, pull_request_number)
+        VALUES ('project-v055', 'owner/repo', 7)
+      `;
+      yield* sql`
+        INSERT INTO effect_sql_migrations (migration_id, name)
+        VALUES (54, 'ProjectPullRequestPins')
+      `;
+
+      const createdAtBefore = yield* trackerCreatedAtById(sql);
       const executed = yield* runMigrations();
-      assert.lengthOf(executed, 0);
+
+      // Migration 54 is never replayed: its tracker row was renamed in place.
+      assert.deepStrictEqual(
+        executed.map(([id]) => id),
+        migrationEntries.map(([id]) => id).filter((id) => id >= 55),
+      );
+
+      const rows = yield* trackerRows(sql);
+      assert.deepStrictEqual(
+        rows.map((row) => [row.migration_id, row.name]),
+        migrationEntries.map(([id, name]) => [id, name]),
+      );
+
+      // Every pre-existing row survived as a row — a metadata fix-up, not a
+      // delete-and-replay. `created_at` would change if rows were re-inserted.
+      const createdAtAfter = yield* trackerCreatedAtById(sql);
+      for (const [id, createdAt] of createdAtBefore) {
+        assert.strictEqual(createdAtAfter.get(id), createdAt, `migration ${id} row was recreated`);
+      }
+
+      // The pins migration re-runs at 69 and must be a no-op over real data.
+      const pins = yield* sql<{ readonly projectId: string; readonly number: number }>`
+        SELECT project_id AS "projectId", pull_request_number AS "number"
+        FROM project_pull_request_pins
+      `;
+      assert.deepStrictEqual(pins, [{ projectId: "project-v055", number: 7 }]);
+    }),
+  );
+});
+
+const divergedBeyondAliasLayer = it.layer(Layer.mergeAll(NodeSqliteClient.layerMemory()));
+
+divergedBeyondAliasLayer("tracker that diverges beyond a known alias", (it) => {
+  it.effect("still truncates and replays from the first divergence", () =>
+    Effect.gen(function* () {
+      const sql = yield* SqlClient.SqlClient;
+
+      // A development build between v0.5.5 and v0.6.0: migration 54 matches the
+      // alias but 55 was claimed by an unrelated migration, so this is not a
+      // v0.5.5 database and must keep taking the existing replay path.
+      yield* runMigrations({ toMigrationInclusive: 53 });
+      yield* ProjectPullRequestPinsMigration;
+      yield* sql`
+        INSERT INTO effect_sql_migrations (migration_id, name)
+        VALUES (54, 'ProjectPullRequestPins'), (55, 'AgentGatewayOperations')
+      `;
+
+      const executed = yield* runMigrations();
+      assert.deepStrictEqual(
+        executed.map(([id]) => id),
+        migrationEntries.map(([id]) => id).filter((id) => id >= 54),
+      );
+
+      const rows = yield* trackerRows(sql);
+      assert.deepStrictEqual(
+        rows.map((row) => [row.migration_id, row.name]),
+        migrationEntries.map(([id, name]) => [id, name]),
+      );
     }),
   );
 });

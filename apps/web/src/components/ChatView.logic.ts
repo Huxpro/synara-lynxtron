@@ -1,14 +1,26 @@
 import {
+  resolveComputerControlMode,
+  type ComposerComputerControlMode,
+} from "../computerControlMode";
+import {
+  DEFAULT_MODEL_BY_PROVIDER,
   ProjectId,
   ThreadId,
+  type AssistantDeliveryMode,
+  type GitWorktreeSetupPhase,
+  type GitWorktreeSetupProgressEvent,
   type ModelSelection,
   type ModelSlug,
   type ProviderApprovalDecision,
+  type ProviderInteractionMode,
   type ProviderKind,
+  type ProviderRequestKind,
+  type ProviderStartOptions,
   type RuntimeMode,
   type ThreadId as ThreadIdType,
 } from "@synara/contracts";
-import { normalizeModelSlug } from "@synara/shared/model";
+import { getDefaultModel, normalizeModelSlug } from "@synara/shared/model";
+import { approvalSessionGrantWidensSessionPolicy } from "@synara/shared/approvalSessionGrant";
 import { buildSynaraBranchName } from "@synara/shared/git";
 import { isGenericChatThreadTitle } from "@synara/shared/chatThreads";
 import { isGenericTerminalThreadTitle } from "@synara/shared/terminalThreads";
@@ -18,10 +30,16 @@ import {
   type Thread,
   type ThreadPrimarySurface,
   type TurnDiffSummary,
+  type WorktreeSetupResolutionAction,
   type WorktreeSetupSnapshot,
   type WorktreeSetupStepId,
 } from "../types";
-import { type DraftThreadState } from "../composerDraftStore";
+import {
+  type DraftThreadEnvMode,
+  type DraftThreadState,
+  type QueuedComposerChatTurn,
+  type QueuedComposerTurn,
+} from "../composerDraftStore";
 import { Schema } from "effect";
 import {
   filterTerminalContextsWithText,
@@ -30,6 +48,10 @@ import {
   type TerminalContextDraft,
 } from "../lib/terminalContext";
 import { filterPastedTextsWithText, type PastedTextDraft } from "../lib/composerPastedText";
+import {
+  normalizePullRequestContexts,
+  type PullRequestContextDraft,
+} from "../lib/pullRequestContext";
 import {
   humanizeSubagentStatus,
   normalizeSubagentStatusKind,
@@ -41,7 +63,7 @@ import {
   type WorkLogEntry,
 } from "../session-logic";
 import { localSubagentThreadId } from "./ChatView.selectors";
-import type { ProviderModelOption } from "../providerModelOptions";
+import { buildModelSelection, type ProviderModelOption } from "../providerModelOptions";
 
 export {
   appendVoiceTranscriptToPrompt,
@@ -58,9 +80,25 @@ export const PROMPT_HISTORY_MAX_ENTRIES = 100;
 export const LastInvokedScriptByProjectSchema = Schema.Record(ProjectId, Schema.String);
 export const DismissedProviderHealthBannersSchema = Schema.Array(Schema.String);
 
+export function canApplyComposerFocus(input: {
+  readonly windowHasFocus: boolean;
+  readonly secondaryChromeReady: boolean;
+  readonly editorAvailable: boolean;
+  readonly editorDisabled: boolean;
+}): boolean {
+  return (
+    input.windowHasFocus &&
+    input.secondaryChromeReady &&
+    input.editorAvailable &&
+    !input.editorDisabled
+  );
+}
+
 export interface PendingFileUndo {
   readonly threadId: ThreadIdType;
-  readonly turnCount: number;
+  // A changes card can merge several turns; one Undo reverts all of them, so the
+  // request only settles once every targeted turn has settled (or one failed).
+  readonly turnCounts: readonly number[];
   readonly existingFailureActivityIds: readonly string[];
 }
 
@@ -72,10 +110,16 @@ export function hasFileUndoSettled(input: {
     return false;
   }
 
-  const targetSummary = input.thread.turnDiffSummaries.find(
-    (summary) => summary.checkpointTurnCount === input.pending.turnCount,
+  const targetTurnCounts = new Set(input.pending.turnCounts);
+  const targetSummaries = input.thread.turnDiffSummaries.filter(
+    (summary) =>
+      summary.checkpointTurnCount !== undefined &&
+      targetTurnCounts.has(summary.checkpointTurnCount),
   );
-  if (targetSummary?.files.length === 0) {
+  if (
+    targetSummaries.length > 0 &&
+    targetSummaries.every((summary) => summary.files.length === 0)
+  ) {
     return true;
   }
 
@@ -86,31 +130,148 @@ export function hasFileUndoSettled(input: {
       existingFailureActivityIdSet.has(activity.id) ||
       typeof activity.payload !== "object" ||
       activity.payload === null ||
-      !("turnCount" in activity.payload)
+      !("turnCount" in activity.payload) ||
+      typeof activity.payload.turnCount !== "number"
     ) {
       return false;
     }
-    return activity.payload.turnCount === input.pending.turnCount;
+    return targetTurnCounts.has(activity.payload.turnCount);
   });
 }
-
-const ALWAYS_ALLOW_RUNTIME_MODE: RuntimeMode = "full-access";
 
 /**
  * "Always allow" (acceptForSession) only auto-approves the live provider turn.
  * Because the client is the source of truth for runtime mode (it sends it with
- * every turn), the choice must also flip the thread to full-access so it survives
- * idle-stop and runtime restarts instead of reverting to approval-required on the
- * next turn. Returns the runtime mode to persist, or null when nothing changes.
+ * every turn), a supervised thread must also flip to full-access so the choice
+ * survives idle-stop and runtime restarts. Auto is different: its AI reviewer
+ * remains the durable policy, while acceptForSession applies only to the current
+ * live provider session. Returns the runtime mode to persist, or null when
+ * nothing changes.
  */
 export function resolveRuntimeModeAfterApprovalDecision(
   currentRuntimeMode: RuntimeMode,
   decision: ProviderApprovalDecision,
+  requestKind?: ProviderRequestKind,
 ): RuntimeMode | null {
-  if (decision === "acceptForSession" && currentRuntimeMode !== ALWAYS_ALLOW_RUNTIME_MODE) {
-    return ALWAYS_ALLOW_RUNTIME_MODE;
+  // Permission-profile and tool grants are narrower than a runtime-mode
+  // override: the provider remembers that exact permission set or tool, and
+  // widening them here would un-supervise commands and file changes the user
+  // never saw.
+  if (!approvalSessionGrantWidensSessionPolicy(requestKind)) {
+    return null;
+  }
+  if (decision === "acceptForSession" && currentRuntimeMode === "approval-required") {
+    return "full-access";
   }
   return null;
+}
+
+export async function commitAfterRuntimeModePersistence(input: {
+  currentRuntimeMode: RuntimeMode;
+  nextRuntimeMode: RuntimeMode;
+  persistRuntimeMode: (mode: RuntimeMode) => Promise<boolean>;
+  commit: () => void;
+}): Promise<boolean> {
+  if (
+    input.nextRuntimeMode !== input.currentRuntimeMode &&
+    !(await input.persistRuntimeMode(input.nextRuntimeMode))
+  ) {
+    return false;
+  }
+  input.commit();
+  return true;
+}
+
+export interface RuntimeModePersistenceQueue {
+  syncAcknowledgedMode: (mode: RuntimeMode) => void;
+  persist: (
+    mode: RuntimeMode,
+    operation: (currentMode: RuntimeMode, nextMode: RuntimeMode) => Promise<boolean>,
+  ) => Promise<boolean>;
+}
+
+/**
+ * Serializes access-mode writes for one thread. Equality is checked only when a
+ * queued choice starts, after earlier choices have settled, so Auto → Full
+ * access → Auto cannot drop the final Auto choice against a stale render.
+ */
+export function createRuntimeModePersistenceQueue(
+  initialMode: RuntimeMode,
+): RuntimeModePersistenceQueue {
+  let acknowledgedMode = initialMode;
+  let pendingCount = 0;
+  let tail: Promise<void> = Promise.resolve();
+
+  return {
+    syncAcknowledgedMode(mode) {
+      if (pendingCount === 0) {
+        acknowledgedMode = mode;
+      }
+    },
+    persist(mode, operation) {
+      pendingCount += 1;
+      const result = tail.then(async () => {
+        if (mode === acknowledgedMode) {
+          return true;
+        }
+        const persisted = await operation(acknowledgedMode, mode);
+        if (persisted) {
+          acknowledgedMode = mode;
+        }
+        return persisted;
+      });
+      tail = result.then(
+        () => undefined,
+        () => undefined,
+      );
+      return result.finally(() => {
+        pendingCount -= 1;
+      });
+    },
+  };
+}
+
+export function modelSelectionsEqual(left: ModelSelection, right: ModelSelection): boolean {
+  return (
+    left.provider === right.provider &&
+    left.model === right.model &&
+    JSON.stringify(left.options ?? null) === JSON.stringify(right.options ?? null) &&
+    (left.provider !== "claudeAgent" ||
+      right.provider !== "claudeAgent" ||
+      left.supportsAutoMode === right.supportsAutoMode)
+  );
+}
+
+/**
+ * Runtime-mode validation uses the canonical thread model. Persist a changed
+ * model first when enabling Auto, but downgrade from Auto first so an
+ * incompatible replacement model is not rejected by the old policy.
+ */
+export async function persistModelSelectionBeforeRuntimeMode(input: {
+  currentModelSelection: ModelSelection;
+  nextModelSelection?: ModelSelection;
+  currentRuntimeMode: RuntimeMode;
+  nextRuntimeMode: RuntimeMode;
+  persistModelSelection: (selection: ModelSelection) => Promise<unknown>;
+  persistRuntimeMode: (mode: RuntimeMode) => Promise<unknown>;
+}): Promise<void> {
+  const nextModelSelection = input.nextModelSelection;
+  const modelChanged =
+    nextModelSelection !== undefined &&
+    !modelSelectionsEqual(input.currentModelSelection, nextModelSelection);
+  const runtimeChanged = input.currentRuntimeMode !== input.nextRuntimeMode;
+  const downgradesFromAuto =
+    input.currentRuntimeMode === "auto" && input.nextRuntimeMode !== "auto";
+
+  if (runtimeChanged && downgradesFromAuto) {
+    await input.persistRuntimeMode(input.nextRuntimeMode);
+  }
+  if (modelChanged && nextModelSelection !== undefined) {
+    await input.persistModelSelection(nextModelSelection);
+  }
+  if (runtimeChanged && !downgradesFromAuto) {
+    await input.persistRuntimeMode(input.nextRuntimeMode);
+  }
 }
 
 export function shouldRenderProviderHealthBanner(input: {
@@ -132,27 +293,61 @@ export function shouldEnableComposerPastedTextCollapse(input: {
   );
 }
 
-export function buildComposerMenuSelectionKey(input: {
-  menuOpen: boolean;
-  picker: string | null;
-  triggerKind: string | null;
-  triggerQuery: string;
-  items: readonly { id: string }[];
-}): string | null {
-  if (!input.menuOpen) {
-    return null;
-  }
-  const sourceKey = input.picker
-    ? `picker:${input.picker}`
-    : `trigger:${input.triggerKind ?? "none"}:${input.triggerQuery}`;
-  return `${sourceKey}\u001f${input.items.map((item) => item.id).join("\u001e")}`;
-}
-
 export function buildTranscriptAutoFollowSignal(input: {
   readonly messageCount: number;
   readonly tailKey: string;
 }): string {
   return `${input.messageCount}\u001f${input.tailKey}`;
+}
+
+// Deliberately excludes the tail message's text length: while a streamed
+// message grows, LegendList's own `maintainScrollAtEnd` keeps the bottom
+// stick, and re-arming the auto-follow re-snap on every store flush would
+// schedule a redundant scrollToEnd per flush for the whole stream. The key
+// still moves on every transition that needs an explicit re-snap: a new tail
+// message, role change, stream start/settle, first content landing, and
+// completion.
+export function buildTranscriptTailKey(
+  tailMessage: {
+    readonly id: string;
+    readonly role: string;
+    readonly streaming?: boolean;
+    readonly text: string;
+    readonly completedAt?: string | null | undefined;
+  } | null,
+): string {
+  if (tailMessage === null) {
+    return "empty";
+  }
+  return [
+    tailMessage.id,
+    tailMessage.role,
+    tailMessage.streaming ? "streaming" : "settled",
+    // While streaming, per-token growth is owned by LegendList's
+    // maintainScrollAtEnd — only the empty->content transition matters here.
+    // Once settled, a projection repair can replace the text under the same id
+    // with nothing else changing, so length is back in the key.
+    tailMessage.streaming
+      ? tailMessage.text.length > 0
+        ? "content"
+        : "empty"
+      : String(tailMessage.text.length),
+    tailMessage.completedAt ?? "",
+  ].join(":");
+}
+
+export function resolveThreadArtifactWorkspaceRoot(input: {
+  readonly isStudioContainer: boolean;
+  readonly projectCwd: string | null;
+  readonly threadWorkspaceCwd: string | null;
+}): string | null {
+  if (input.threadWorkspaceCwd) {
+    return input.threadWorkspaceCwd;
+  }
+  // A normal thread can expose project files while a requested worktree is
+  // still being materialized. Studio has no equivalent project-root fallback:
+  // its selected working directory is the artifact boundary.
+  return input.isStudioContainer ? null : input.projectCwd;
 }
 
 export interface PromptHistoryNavigationState {
@@ -175,7 +370,7 @@ export interface PromptHistoryNavigationResult {
 }
 
 export function derivePromptHistoryFromMessages(
-  messages: ReadonlyArray<Pick<ChatMessage, "role" | "source" | "text">>,
+  messages: ReadonlyArray<Pick<ChatMessage, "id" | "role" | "source" | "text">>,
   limit: number = PROMPT_HISTORY_MAX_ENTRIES,
 ): string[] {
   if (limit <= 0) {
@@ -189,6 +384,7 @@ export function derivePromptHistoryFromMessages(
     }
     const prompt = deriveDisplayedUserMessageState(message.text, {
       hideImageOnlyBootstrapPrompt: true,
+      messageId: message.id,
     }).copyText.trim();
     if (prompt.length === 0) {
       continue;
@@ -236,14 +432,14 @@ export function shouldHandlePromptHistoryNavigationKey(input: {
 }
 
 // `expandedCursor` is a raw index into `prompt` (see PromptHistoryNavigationResult).
-export function isComposerCursorOnFirstLine(prompt: string, expandedCursor: number): boolean {
+function isComposerCursorOnFirstLine(prompt: string, expandedCursor: number): boolean {
   const boundedCursor = Math.max(0, Math.min(prompt.length, expandedCursor));
   const firstLineEnd = prompt.indexOf("\n");
   return firstLineEnd < 0 || boundedCursor <= firstLineEnd;
 }
 
 // `expandedCursor` is a raw index into `prompt` (see PromptHistoryNavigationResult).
-export function isComposerCursorOnLastLine(prompt: string, expandedCursor: number): boolean {
+function isComposerCursorOnLastLine(prompt: string, expandedCursor: number): boolean {
   const boundedCursor = Math.max(0, Math.min(prompt.length, expandedCursor));
   const lastLineStart = prompt.lastIndexOf("\n") + 1;
   return boundedCursor >= lastLineStart;
@@ -289,6 +485,10 @@ export function resolvePromptHistoryNavigation(input: {
     input.state !== null && (activeEntry === undefined || input.currentPrompt !== activeEntry);
 
   if (input.direction === "older") {
+    // Starting history must never replace text the user is still editing.
+    if (input.state === null && input.currentPrompt.length > 0) {
+      return notHandled(null);
+    }
     if (!isComposerCursorOnFirstLine(input.currentPrompt, input.currentExpandedCursor)) {
       return notHandled(input.state);
     }
@@ -475,6 +675,30 @@ export function resolveGitRepoUiState(input: {
   return input.queriedIsRepo ?? !input.isStudioContainer;
 }
 
+export interface SettledThreadBranchMismatch {
+  readonly threadBranch: string;
+  readonly currentBranch: string;
+}
+
+export function resolveSettledThreadBranchMismatch(input: {
+  isSettled: boolean;
+  isLocalWorkspace: boolean;
+  threadBranch: string | null | undefined;
+  currentBranch: string | null | undefined;
+}): SettledThreadBranchMismatch | null {
+  if (!input.isSettled || !input.isLocalWorkspace) {
+    return null;
+  }
+
+  const threadBranch = input.threadBranch?.trim() ?? "";
+  const currentBranch = input.currentBranch?.trim() ?? "";
+  if (!threadBranch || !currentBranch || threadBranch === currentBranch) {
+    return null;
+  }
+
+  return { threadBranch, currentBranch };
+}
+
 // The composer live strip prefers the turn's computed diff (the
 // `thread.turn-diff-completed` event) so it can show real per-file +/- stats.
 // Before that lands, it falls back to mid-turn file-edit work-log activity so
@@ -552,6 +776,48 @@ export function resolveActiveTurnLiveDiffState(input: {
   };
 }
 
+export type ThreadDetailHydration = "ready" | "loading" | "failed";
+
+/**
+ * A server thread's shell row alone cannot distinguish "no messages" from
+ * "history not loaded yet", so an empty timeline only counts as a genuine empty
+ * landing once the detail snapshot has been applied. Local draft threads have no
+ * server detail to wait for and are always ready.
+ */
+export function resolveThreadDetailHydration(input: {
+  readonly isServerThread: boolean;
+  readonly hasTimelineEntries: boolean;
+  readonly detailSyncState: "synced" | "failed" | null;
+}): ThreadDetailHydration {
+  if (!input.isServerThread || input.hasTimelineEntries || input.detailSyncState === "synced") {
+    return "ready";
+  }
+  return input.detailSyncState === "failed" ? "failed" : "loading";
+}
+
+/**
+ * Fallback model selection for a draft thread before the first server turn exists.
+ * An explicit project default wins; otherwise the user's default provider is used
+ * (pi and omp have no default model, so they are skipped), then codex. The model
+ * comes from the project default only when it matches the chosen provider,
+ * otherwise the provider's own default.
+ */
+export function resolveDraftFallbackModelSelection(input: {
+  projectDefault: ModelSelection | null | undefined;
+  settingsDefaultProvider: ProviderKind;
+}): ModelSelection {
+  const settingsProvider =
+    input.settingsDefaultProvider === "pi" || input.settingsDefaultProvider === "omp"
+      ? null
+      : input.settingsDefaultProvider;
+  const provider = input.projectDefault?.provider ?? settingsProvider ?? "codex";
+  const model =
+    (provider === input.projectDefault?.provider ? input.projectDefault.model : null) ??
+    getDefaultModel(provider) ??
+    DEFAULT_MODEL_BY_PROVIDER.codex;
+  return buildModelSelection(provider, model);
+}
+
 export function buildLocalDraftThread(
   threadId: ThreadId,
   draftThread: DraftThreadState,
@@ -575,11 +841,13 @@ export function buildLocalDraftThread(
     envMode: draftThread.envMode,
     branch: draftThread.branch,
     worktreePath: draftThread.worktreePath,
+    workingDirectory: draftThread.workingDirectory ?? null,
     lastKnownPr: draftThread.lastKnownPr ?? null,
     handoff: null,
     turnDiffSummaries: [],
     activities: [],
     proposedPlans: [],
+    ...(draftThread.goal ? { goal: draftThread.goal } : {}),
   };
 }
 
@@ -607,6 +875,26 @@ export function filterSidechatTranscriptMessages(
   return isSidechat
     ? messages.filter((message) => message.source !== "fork-import")
     : [...messages];
+}
+
+// Imported fork history should not lock a Side chat's provider before its first native turn.
+export function threadHasProviderLockingMessages(
+  thread: Pick<Thread, "messages" | "sidechatSourceThreadId">,
+): boolean {
+  if (!thread.sidechatSourceThreadId) {
+    return thread.messages.length > 0;
+  }
+  return thread.messages.some((message) => (message.source ?? "native") !== "fork-import");
+}
+
+export function threadHasProviderLockingActivity(
+  thread: Pick<Thread, "messages" | "sidechatSourceThreadId" | "latestTurn" | "session">,
+): boolean {
+  return (
+    thread.latestTurn !== null ||
+    thread.session !== null ||
+    threadHasProviderLockingMessages(thread)
+  );
 }
 
 export function revokeBlobPreviewUrl(previewUrl: string | undefined): void {
@@ -704,23 +992,35 @@ export interface PullRequestDialogState {
   key: number;
 }
 
-// Ordered client-side phases of the "New worktree" first-send setup. The
-// labels surface verbatim in the transcript's transient setup row.
-export const WORKTREE_SETUP_STEP_DEFINITIONS: ReadonlyArray<{
-  id: WorktreeSetupStepId;
-  label: string;
-}> = [
-  { id: "create-worktree", label: "Creating branch and worktree" },
-  { id: "prepare-thread", label: "Linking thread workspace" },
-  { id: "start-session", label: "Starting session" },
-];
+// Labels for the "New worktree" first-send setup steps, surfaced verbatim in
+// the transcript's transient setup row. Single source — the ordered step list
+// is assembled in `worktreeSetupStepDefinitions`.
+const WORKTREE_SETUP_STEP_LABELS: Record<WorktreeSetupStepId, string> = {
+  "create-branch": "Creating branch",
+  "create-worktree": "Creating worktree",
+  "copy-changes": "Copying local changes",
+  "prepare-thread": "Linking thread workspace",
+  "run-setup-action": "Running setup action",
+  "start-session": "Starting session",
+};
+
+// Creation phases mirror the server's real worktree setup progress events, so
+// each row completes on an actual boundary instead of one row spinning through
+// all of them.
+export const WORKTREE_SETUP_STEP_ID_BY_PHASE: Record<GitWorktreeSetupPhase, WorktreeSetupStepId> = {
+  branch: "create-branch",
+  worktree: "create-worktree",
+  "copy-changes": "copy-changes",
+};
 
 export interface WorktreeSetupSnapshotOptions {
   setupScriptName?: string | null;
+  copyLocalChanges?: boolean;
 }
 
 export interface WorktreeSetupDispatchOptions extends WorktreeSetupSnapshotOptions {
   worktreeSetupStepId?: WorktreeSetupStepId;
+  expectedUserMessageId?: ChatMessage["id"];
 }
 
 function worktreeSetupStepDefinitions(
@@ -729,18 +1029,23 @@ function worktreeSetupStepDefinitions(
 ): ReadonlyArray<{ id: WorktreeSetupStepId; label: string }> {
   const setupScriptName = options?.setupScriptName?.trim();
   const includeSetupStep = activeStepId === "run-setup-action" || Boolean(setupScriptName);
-  if (!includeSetupStep) {
-    return WORKTREE_SETUP_STEP_DEFINITIONS;
+  const includeCopyStep = activeStepId === "copy-changes" || Boolean(options?.copyLocalChanges);
+  const stepIds: WorktreeSetupStepId[] = ["create-branch", "create-worktree"];
+  if (includeCopyStep) {
+    stepIds.push("copy-changes");
   }
-  return [
-    { id: "create-worktree", label: "Creating branch and worktree" },
-    { id: "prepare-thread", label: "Linking thread workspace" },
-    {
-      id: "run-setup-action",
-      label: setupScriptName ? `Running setup action: ${setupScriptName}` : "Running setup action",
-    },
-    { id: "start-session", label: "Starting session" },
-  ];
+  stepIds.push("prepare-thread");
+  if (includeSetupStep) {
+    stepIds.push("run-setup-action");
+  }
+  stepIds.push("start-session");
+  return stepIds.map((id) => ({
+    id,
+    label:
+      id === "run-setup-action" && setupScriptName
+        ? `${WORKTREE_SETUP_STEP_LABELS[id]}: ${setupScriptName}`
+        : WORKTREE_SETUP_STEP_LABELS[id],
+  }));
 }
 
 // How long a failed setup step stays visible before the row is dismissed, so
@@ -776,9 +1081,116 @@ export function worktreeSetupHasError(snapshot: WorktreeSetupSnapshot | null): b
   return snapshot?.steps.some((step) => step.status === "error") ?? false;
 }
 
+/**
+ * Thrown by the send pipeline when the user cancels worktree preparation from
+ * the setup card. The shared send-failure path treats it as a silent rollback:
+ * no error styling on the step row and no thread error banner.
+ */
+export class WorktreeSetupCancelledError extends Error {
+  constructor() {
+    super("Worktree preparation cancelled.");
+    this.name = "WorktreeSetupCancelledError";
+  }
+}
+
+/**
+ * Single-shot resolution of an in-flight worktree preparation. The setup
+ * card's "Cancel" / "Work locally" buttons resolve it; the send pipeline races
+ * `promise` against slow steps (worktree creation, setup scripts) and checks
+ * `action` at step boundaries, honoring the choice at the next checkpoint
+ * before the turn is dispatched. Only the first resolve wins.
+ */
+export interface WorktreeSetupResolution {
+  readonly promise: Promise<WorktreeSetupResolutionAction>;
+  readonly action: WorktreeSetupResolutionAction | null;
+  resolve(action: WorktreeSetupResolutionAction): void;
+}
+
+export function createWorktreeSetupResolution(): WorktreeSetupResolution {
+  let action: WorktreeSetupResolutionAction | null = null;
+  let settle: (resolved: WorktreeSetupResolutionAction) => void = () => {};
+  const promise = new Promise<WorktreeSetupResolutionAction>((resolve) => {
+    settle = resolve;
+  });
+  return {
+    promise,
+    get action() {
+      return action;
+    },
+    resolve(next) {
+      if (action !== null) {
+        return;
+      }
+      action = next;
+      settle(next);
+    },
+  };
+}
+
+export interface WorktreeCreationFlowDeps<Result extends { worktree: { path: string } }> {
+  /** Correlates streamed progress events with this creation request. */
+  progressId: string;
+  subscribeToProgress: (listener: (event: GitWorktreeSetupProgressEvent) => void) => () => void;
+  startCreation: () => Promise<Result>;
+  resolution: WorktreeSetupResolution;
+  /** Advances the setup card to the step matching a streamed creation phase. */
+  onCreationStep: (stepId: WorktreeSetupStepId) => void;
+  removeWorktree: (worktreePath: string) => Promise<unknown>;
+}
+
+export type WorktreeCreationFlowOutcome<Result> =
+  | { outcome: "resolved" }
+  | { outcome: "created"; result: Result };
+
+/**
+ * Runs one worktree creation while the setup card is showing: subscribes to
+ * the server's streamed setup phases, races the creation against the card's
+ * "Cancel" / "Work locally" resolution, and — when the user resolves first —
+ * tears the (possibly still materializing) worktree down once the creation
+ * lands so a resolved send leaves no stray checkout.
+ */
+export async function runWorktreeCreationFlow<Result extends { worktree: { path: string } }>(
+  deps: WorktreeCreationFlowDeps<Result>,
+): Promise<WorktreeCreationFlowOutcome<Result>> {
+  const unsubscribe = deps.subscribeToProgress((event) => {
+    if (
+      event.progressId !== deps.progressId ||
+      event.kind !== "phase_started" ||
+      deps.resolution.action !== null
+    ) {
+      return;
+    }
+    deps.onCreationStep(WORKTREE_SETUP_STEP_ID_BY_PHASE[event.phase]);
+  });
+  try {
+    const creation = deps.startCreation();
+    // `git worktree add` is the longest step; let the card's buttons win the
+    // wait instead of only taking effect once the creation finishes.
+    await Promise.race([creation, deps.resolution.promise]);
+    if (deps.resolution.action !== null) {
+      void creation
+        .then((result) => deps.removeWorktree(result.worktree.path))
+        .catch(() => undefined);
+      return { outcome: "resolved" };
+    }
+    return { outcome: "created", result: await creation };
+  } finally {
+    unsubscribe();
+  }
+}
+
+// Once the turn RPC has resolved the server provably owns the turn; the
+// dispatch marker then only waits for the thread stream to echo the change
+// (session running / message echo / turn change). A dead or stalled stream
+// would otherwise leave the composer spinner stuck forever, so the marker is
+// force-cleared after this bound and the catch-up watchdog re-syncs the real
+// thread state.
+export const LOCAL_DISPATCH_ACK_TIMEOUT_MS = 10_000;
+
 export interface LocalDispatchSnapshot {
   startedAt: string;
   worktreeSetup: WorktreeSetupSnapshot | null;
+  expectedUserMessageId: ChatMessage["id"] | null;
   latestTurnTurnId: Thread["latestTurn"] extends infer T
     ? T extends { turnId: infer U }
       ? U | null
@@ -806,6 +1218,7 @@ export function createLocalDispatchSnapshot(
     worktreeSetup: options?.worktreeSetupStepId
       ? createWorktreeSetupSnapshot(options.worktreeSetupStepId, options)
       : null,
+    expectedUserMessageId: options?.expectedUserMessageId ?? null,
     latestTurnTurnId: latestTurn?.turnId ?? null,
     latestTurnRequestedAt: latestTurn?.requestedAt ?? null,
     latestTurnStartedAt: latestTurn?.startedAt ?? null,
@@ -828,6 +1241,15 @@ export function resolveNextLocalDispatchSnapshot(input: {
   }
 
   if (!worktreeSetupStepId) {
+    // Same in-flight send may call beginLocalDispatch() with no options to keep
+    // the marker. A new expectedUserMessageId means a fresh send — replace the
+    // snapshot so the awaiting-turn bridge and send-busy gate track the new one.
+    if (
+      input.options?.expectedUserMessageId != null &&
+      input.options.expectedUserMessageId !== input.current.expectedUserMessageId
+    ) {
+      return createLocalDispatchSnapshot(input.activeThread, input.options);
+    }
     return input.current;
   }
 
@@ -847,8 +1269,10 @@ export function hasServerAcknowledgedLocalDispatch(input: {
   phase: SessionPhase;
   latestTurn: Thread["latestTurn"] | null;
   session: Thread["session"] | null;
+  messages: readonly ChatMessage[];
   hasPendingApproval: boolean;
   hasPendingUserInput: boolean;
+  claudeCacheReview?: Thread["claudeCacheReview"];
   threadError: string | null | undefined;
 }): boolean {
   if (!input.localDispatch) {
@@ -858,7 +1282,18 @@ export function hasServerAcknowledgedLocalDispatch(input: {
     input.phase === "running" ||
     input.hasPendingApproval ||
     input.hasPendingUserInput ||
+    (input.localDispatch.expectedUserMessageId !== null &&
+      input.claudeCacheReview?.messageId === input.localDispatch.expectedUserMessageId) ||
     Boolean(input.threadError)
+  ) {
+    return true;
+  }
+  if (
+    input.localDispatch.expectedUserMessageId !== null &&
+    input.messages.some(
+      (message) =>
+        message.role === "user" && message.id === input.localDispatch?.expectedUserMessageId,
+    )
   ) {
     return true;
   }
@@ -889,12 +1324,95 @@ export function hasServerAcknowledgedLocalDispatch(input: {
   return false;
 }
 
+/** Fail-open bound for the post-ack "awaiting turn start" Thinking bridge. */
+export const LOCAL_DISPATCH_TURN_TAKEOVER_TIMEOUT_MS = 60_000;
+
+/** The exact label set the transcript's working indicator can render. */
+export type WorkingLabel = "Loading" | "Thinking" | `Starting ${string}…`;
+
+export function resolveWorkingLabel(input: {
+  isSendBusy: boolean;
+  turnTakenOver: boolean;
+  isConnecting?: boolean;
+  providerName?: string;
+}): WorkingLabel {
+  if (input.isSendBusy && !input.turnTakenOver) {
+    return "Loading";
+  }
+  if (input.isConnecting && input.providerName) {
+    return `Starting ${input.providerName}…`;
+  }
+  return "Thinking";
+}
+
 /**
- * Steering a non-Codex provider interrupts the live turn and lets the server
- * re-dispatch the steer text as a fresh turn. Between the abort and the
- * steered turn's start the thread briefly looks idle, which would otherwise
- * let the queued-composer auto-dispatch race the steered turn (and fire every
- * queued message at once). The gate holds auto-dispatch through that gap.
+ * True once a locally dispatched turn is observably live, finished, or blocked
+ * on user interaction. Echo of the user message and a mere
+ * `latestTurn.requestedAt`/`turnId` bump are NOT takeover — those arrive in the
+ * gap before the provider session is actually running.
+ */
+export function hasLiveTurnTakenOver(input: {
+  localDispatch: LocalDispatchSnapshot | null;
+  phase: SessionPhase;
+  latestTurn: Thread["latestTurn"] | null;
+  session: Thread["session"] | null;
+  hasPendingApproval: boolean;
+  hasPendingUserInput: boolean;
+  claudeCacheReview?: Thread["claudeCacheReview"];
+  threadError: string | null | undefined;
+  now?: number;
+}): boolean {
+  if (!input.localDispatch) {
+    return false;
+  }
+  if (input.phase === "running" || input.phase === "connecting") {
+    return true;
+  }
+  if (input.session?.activeTurnId != null) {
+    return true;
+  }
+  if (input.hasPendingApproval || input.hasPendingUserInput || Boolean(input.threadError)) {
+    return true;
+  }
+  if (
+    input.localDispatch.expectedUserMessageId !== null &&
+    input.claudeCacheReview?.messageId === input.localDispatch.expectedUserMessageId
+  ) {
+    return true;
+  }
+
+  const latestTurn = input.latestTurn ?? null;
+  const startedAtChanged =
+    input.localDispatch.latestTurnStartedAt !== (latestTurn?.startedAt ?? null);
+  const completedAtChanged =
+    input.localDispatch.latestTurnCompletedAt !== (latestTurn?.completedAt ?? null);
+  if (startedAtChanged || completedAtChanged) {
+    return true;
+  }
+
+  // Fail-open so Thinking cannot stick forever when a turn is requested but
+  // never becomes live and never surfaces an error. Worktree setup has its own
+  // lifecycle and must not be cut short by this bound.
+  if (!input.localDispatch.worktreeSetup && input.now !== undefined) {
+    const startedAtMs = Date.parse(input.localDispatch.startedAt);
+    if (
+      Number.isFinite(startedAtMs) &&
+      input.now - startedAtMs >= LOCAL_DISPATCH_TURN_TAKEOVER_TIMEOUT_MS
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Steering a provider without native mid-turn steering interrupts the live
+ * turn and lets the server re-dispatch the steer text as a fresh turn.
+ * Between the abort and the steered turn's start the thread briefly looks
+ * idle, which would otherwise let the queued-composer auto-dispatch race the
+ * steered turn (and fire every queued message at once). The gate holds
+ * auto-dispatch through that gap.
  */
 export interface QueuedSteerGate {
   /** The abort gap has been observed (phase left "running" after the steer). */
@@ -966,6 +1484,84 @@ export function resolveQueuedSteerGateTransition(input: {
   };
 }
 
+export function shouldHoldQueuedComposerAutoDispatch(input: {
+  hasQueueableLiveTurn: boolean;
+  phase: SessionPhase;
+  isSendBusy: boolean;
+  isConnecting: boolean;
+  isAwaitingTurnStart: boolean;
+  queuedSteerGate: QueuedSteerGate | null;
+  hasPendingApproval: boolean;
+  hasPendingProgress: boolean;
+  hasPendingUserInput: boolean;
+  queuedTurnCount: number;
+}): boolean {
+  return (
+    input.hasQueueableLiveTurn ||
+    input.phase === "disconnected" ||
+    input.isSendBusy ||
+    input.isConnecting ||
+    input.isAwaitingTurnStart ||
+    input.queuedSteerGate !== null ||
+    input.hasPendingApproval ||
+    input.hasPendingProgress ||
+    input.hasPendingUserInput ||
+    input.queuedTurnCount === 0
+  );
+}
+
+/** The post-ack gap is not live-turn takeover, so hold until `hasLiveTurnTakenOver` or fail-open. */
+export function resolveQueuedComposerAutoDispatchHold(input: {
+  localDispatch: LocalDispatchSnapshot | null;
+  phase: SessionPhase;
+  latestTurn: Thread["latestTurn"] | null;
+  session: Thread["session"] | null;
+  messages: readonly ChatMessage[];
+  isConnecting: boolean;
+  queuedSteerGate: QueuedSteerGate | null;
+  hasPendingApproval: boolean;
+  hasPendingProgress: boolean;
+  hasPendingUserInput: boolean;
+  queuedTurnCount: number;
+  threadError: string | null | undefined;
+  now?: number;
+}): boolean {
+  const isSendBusy =
+    input.localDispatch !== null &&
+    !hasServerAcknowledgedLocalDispatch({
+      localDispatch: input.localDispatch,
+      phase: input.phase,
+      latestTurn: input.latestTurn,
+      session: input.session,
+      messages: input.messages,
+      hasPendingApproval: input.hasPendingApproval,
+      hasPendingUserInput: input.hasPendingUserInput,
+      threadError: input.threadError,
+    });
+  const turnTakenOver = hasLiveTurnTakenOver({
+    localDispatch: input.localDispatch,
+    phase: input.phase,
+    latestTurn: input.latestTurn,
+    session: input.session,
+    hasPendingApproval: input.hasPendingApproval,
+    hasPendingUserInput: input.hasPendingUserInput,
+    threadError: input.threadError,
+    ...(input.now === undefined ? {} : { now: input.now }),
+  });
+  return shouldHoldQueuedComposerAutoDispatch({
+    hasQueueableLiveTurn: input.phase === "running" && input.session?.activeTurnId != null,
+    phase: input.phase,
+    isSendBusy,
+    isConnecting: input.isConnecting,
+    isAwaitingTurnStart: input.localDispatch !== null && !turnTakenOver,
+    queuedSteerGate: input.queuedSteerGate,
+    hasPendingApproval: input.hasPendingApproval,
+    hasPendingProgress: input.hasPendingProgress,
+    hasPendingUserInput: input.hasPendingUserInput,
+    queuedTurnCount: input.queuedTurnCount,
+  });
+}
+
 export const ACTIVE_TURN_LAYOUT_SETTLE_DELAY_MS = 180;
 
 export function shouldStartActiveTurnLayoutGrace(options: {
@@ -992,14 +1588,17 @@ export function deriveComposerSendState(options: {
   imageCount: number;
   fileCount: number;
   assistantSelectionCount: number;
+  browserAnnotationCount: number;
   fileCommentCount: number;
   terminalContexts: ReadonlyArray<TerminalContextDraft>;
   pastedTexts: ReadonlyArray<PastedTextDraft>;
+  pullRequestContexts: ReadonlyArray<PullRequestContextDraft>;
 }): {
   trimmedPrompt: string;
   sendableTerminalContexts: TerminalContextDraft[];
   expiredTerminalContextCount: number;
   sendablePastedTexts: PastedTextDraft[];
+  sendablePullRequestContexts: PullRequestContextDraft[];
   hasSendableContent: boolean;
 } {
   const trimmedPrompt = stripInlineTerminalContextPlaceholders(options.prompt).trim();
@@ -1007,19 +1606,193 @@ export function deriveComposerSendState(options: {
   const expiredTerminalContextCount =
     options.terminalContexts.length - sendableTerminalContexts.length;
   const sendablePastedTexts = filterPastedTextsWithText(options.pastedTexts);
+  const sendablePullRequestContexts = normalizePullRequestContexts(options.pullRequestContexts);
   return {
     trimmedPrompt,
     sendableTerminalContexts,
     expiredTerminalContextCount,
     sendablePastedTexts,
+    sendablePullRequestContexts,
     hasSendableContent:
       trimmedPrompt.length > 0 ||
       options.imageCount > 0 ||
       options.fileCount > 0 ||
       options.assistantSelectionCount > 0 ||
+      options.browserAnnotationCount > 0 ||
       options.fileCommentCount > 0 ||
       sendableTerminalContexts.length > 0 ||
-      sendablePastedTexts.length > 0,
+      sendablePastedTexts.length > 0 ||
+      sendablePullRequestContexts.length > 0,
+  };
+}
+
+/**
+ * Everything a dispatched turn carries besides its message: the composer's model
+ * choice, the provider start options, and the per-turn mode flags.
+ *
+ * ChatView assembles this once per render and every dispatch site spreads a
+ * projection of it. Before, each site re-derived the same six values inline and
+ * listed them one by one in its `useCallback` deps; a single missed dep shipped
+ * a stale computer-control flag (commit ca0e72f3e) and cost React Compiler the
+ * whole component. One object means one dep.
+ */
+export interface TurnDispatchSettings {
+  readonly modelSelection: ModelSelection;
+  /** Absent when the user has configured no provider overrides at all. */
+  readonly providerOptions: ProviderStartOptions | undefined;
+  readonly enableComputerControl: boolean;
+  readonly computerControlMode?: ComposerComputerControlMode | undefined;
+  readonly computerControlGeneration?: number | undefined;
+  readonly assistantDeliveryMode: AssistantDeliveryMode;
+  readonly runtimeMode: RuntimeMode;
+  readonly interactionMode: ProviderInteractionMode;
+  readonly envMode: DraftThreadEnvMode;
+}
+
+/**
+ * A queued turn froze its dispatch settings when it was queued, so dispatching
+ * it later must replay those, not whatever the composer shows now. Every field
+ * falls back to the live settings except Computer access: request mode remains
+ * a frozen one-turn choice, while chat mode still needs the Settings default.
+ * Stop/disable revoke queued generations rather than depending on draft text.
+ *
+ * `interactionMode` is deliberately included here but overridden by the
+ * plan-follow-up path, which decides the mode from the follow-up itself.
+ */
+export function resolveQueuedTurnDispatchSettings(
+  settings: TurnDispatchSettings,
+  queuedTurn: QueuedComposerTurn | null | undefined,
+): TurnDispatchSettings {
+  if (!queuedTurn) {
+    return settings;
+  }
+  const queuedMode = resolveComputerControlMode(
+    queuedTurn.computerControlMode,
+    queuedTurn.enableComputerControl,
+  );
+  const liveMode = resolveComputerControlMode(
+    settings.computerControlMode,
+    settings.enableComputerControl,
+  );
+  const sameGeneration =
+    settings.computerControlGeneration === undefined ||
+    settings.computerControlGeneration === (queuedTurn.computerControlGeneration ?? 0);
+  const computerControlMode =
+    sameGeneration && (queuedMode === "request" || liveMode === "chat") ? queuedMode : "off";
+  const enableComputerControl = computerControlMode !== "off";
+  return {
+    ...settings,
+    modelSelection: queuedTurn.modelSelection ?? settings.modelSelection,
+    providerOptions: queuedTurn.providerOptionsForDispatch ?? settings.providerOptions,
+    enableComputerControl,
+    computerControlGeneration: queuedTurn.computerControlGeneration ?? 0,
+    computerControlMode,
+    runtimeMode: queuedTurn.runtimeMode ?? settings.runtimeMode,
+    interactionMode: queuedTurn.interactionMode ?? settings.interactionMode,
+    // Plan follow-ups carry no environment of their own; they run wherever the
+    // thread already is.
+    envMode: (queuedTurn.kind === "chat" ? queuedTurn.envMode : undefined) ?? settings.envMode,
+  };
+}
+
+function turnDispatchIdentityFields(settings: TurnDispatchSettings) {
+  return {
+    modelSelection: settings.modelSelection,
+    ...(settings.providerOptions ? { providerOptions: settings.providerOptions } : {}),
+    enableComputerControl: settings.enableComputerControl,
+    computerControlGeneration: settings.computerControlGeneration ?? 0,
+    computerControlMode: resolveComputerControlMode(
+      settings.computerControlMode,
+      settings.enableComputerControl,
+    ),
+    assistantDeliveryMode: settings.assistantDeliveryMode,
+  };
+}
+
+function turnDispatchModeFields(settings: TurnDispatchSettings) {
+  return {
+    runtimeMode: settings.runtimeMode,
+    interactionMode: settings.interactionMode,
+  };
+}
+
+/** Settings half of a `thread.turn.start` command payload. */
+export function turnStartDispatchFields(
+  settings: TurnDispatchSettings,
+  dispatchMode: "queue" | "steer",
+) {
+  return {
+    ...turnDispatchIdentityFields(settings),
+    dispatchMode,
+    ...turnDispatchModeFields(settings),
+  };
+}
+
+/**
+ * Settings half of a `thread.message.edit-and-resend` command payload. Same
+ * fields as a turn start minus `dispatchMode`, which that command has no
+ * concept of.
+ */
+export function editAndResendDispatchFields(settings: TurnDispatchSettings) {
+  return {
+    ...turnDispatchIdentityFields(settings),
+    ...turnDispatchModeFields(settings),
+  };
+}
+
+/** Settings half of a queued chat turn stored in the composer draft. */
+export function queuedChatTurnDispatchFields(
+  settings: TurnDispatchSettings,
+  sourceProposedPlan: QueuedComposerChatTurn["sourceProposedPlan"],
+) {
+  return {
+    modelSelection: settings.modelSelection,
+    ...(settings.providerOptions ? { providerOptionsForDispatch: settings.providerOptions } : {}),
+    enableComputerControl: settings.enableComputerControl,
+    computerControlGeneration: settings.computerControlGeneration ?? 0,
+    computerControlMode: resolveComputerControlMode(
+      settings.computerControlMode,
+      settings.enableComputerControl,
+    ),
+    ...(sourceProposedPlan ? { sourceProposedPlan } : {}),
+    ...turnDispatchModeFields(settings),
+    envMode: settings.envMode,
+  };
+}
+
+/**
+ * Settings half of a queued plan follow-up. It carries no `interactionMode`
+ * (the follow-up itself decides that) and no `envMode`.
+ */
+export function queuedPlanFollowUpDispatchFields(settings: TurnDispatchSettings) {
+  return {
+    modelSelection: settings.modelSelection,
+    ...(settings.providerOptions ? { providerOptionsForDispatch: settings.providerOptions } : {}),
+    enableComputerControl: settings.enableComputerControl,
+    computerControlGeneration: settings.computerControlGeneration ?? 0,
+    computerControlMode: resolveComputerControlMode(
+      settings.computerControlMode,
+      settings.enableComputerControl,
+    ),
+    runtimeMode: settings.runtimeMode,
+  };
+}
+
+/**
+ * The thread-level half of the settings: what `thread.create` records on a new
+ * thread and what the pre-turn persistence call writes back to an existing one.
+ */
+/** A new implementation thread starts its own revocation generation. */
+export function planImplementationDispatchSettings(
+  settings: TurnDispatchSettings,
+): TurnDispatchSettings {
+  return { ...settings, interactionMode: "default", computerControlGeneration: 0 };
+}
+
+export function threadSettingsDispatchFields(settings: TurnDispatchSettings) {
+  return {
+    modelSelection: settings.modelSelection,
+    ...turnDispatchModeFields(settings),
   };
 }
 
@@ -1249,6 +2022,16 @@ function resolveTimelineSubagentThread(input: {
   }
 
   return undefined;
+}
+
+export function resolveComposerStripWorkLogEntries(input: {
+  hasDistinctParentSource: boolean;
+  activeWorkLogEntries: WorkLogEntry[];
+  deriveParentWorkLogEntries: () => WorkLogEntry[];
+}): WorkLogEntry[] {
+  return input.hasDistinctParentSource
+    ? input.deriveParentWorkLogEntries()
+    : input.activeWorkLogEntries;
 }
 
 export function enrichSubagentWorkEntries(

@@ -10,8 +10,13 @@ import {
 } from "@synara/shared/githubRepository";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 
+import {
+  CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
+  CHAT_SURFACE_HEADER_HEIGHT_CLASS,
+  CHAT_SURFACE_HEADER_PADDING_X_CLASS,
+} from "~/components/chat/chatHeaderControls";
 import {
   CHAT_MAIN_CONTENT_SURFACE_CLASS_NAME,
   CHAT_MAIN_VIEWPORT_SHELL_CLASS_NAME,
@@ -29,10 +34,6 @@ import {
 } from "~/components/pullRequest/pullRequestFocus";
 import { PullRequestList } from "~/components/pullRequest/PullRequestList";
 import {
-  PullRequestListEmptyComposition,
-  PullRequestListLoadingComposition,
-} from "~/components/pullRequest/PullRequestListComposition";
-import {
   filterPullRequestEntriesByInvolvement,
   groupPullRequestEntriesByInvolvement,
   matchesPullRequestSearchQuery,
@@ -40,18 +41,24 @@ import {
   pullRequestPinToggleInputs,
 } from "~/components/pullRequest/pullRequestList.logic";
 import {
-  PullRequestRouteFiltersComposition,
-  PullRequestRouteHeaderComposition,
-} from "~/components/pullRequest/PullRequestRouteControlsComposition";
+  PullRequestFilterPillGroup,
+  PullRequestProjectFilterPopover,
+} from "~/components/pullRequest/PullRequestListFilters";
 import { PullRequestsUnavailableState } from "~/components/pullRequest/PullRequestsUnavailableState";
 import { usePullRequestPaneStateIcon } from "~/components/pullRequest/usePullRequestPaneStateIcon";
 import { PullRequestWarningNote } from "~/components/pullRequest/PullRequestWarningNote";
 import { RouteInsetSurface } from "~/components/RouteInsetSurface";
+import { SidebarHeaderNavigationControls } from "~/components/SidebarHeaderNavigationControls";
+import { Button } from "~/components/ui/button";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "~/components/ui/empty";
+import { SearchInput } from "~/components/ui/search-input";
+import { Skeleton } from "~/components/ui/skeleton";
 import { toastManager } from "~/components/ui/toast";
 import {
   useDesktopTopBarTrafficLightGutterClassName,
   useDesktopTopBarWindowControlsGutterClassName,
 } from "~/hooks/useDesktopTopBarGutter";
+import { RefreshCwIcon } from "~/lib/icons";
 import {
   prefetchPullRequestListState,
   pullRequestMutationKeys,
@@ -70,9 +77,8 @@ import {
 } from "~/rightDockStore.logic";
 import { useStore } from "~/store";
 import { PR_FINE_TEXT_CLASS_NAME } from "~/components/pullRequest/pullRequestText";
+import { useAppSettings } from "~/appSettings";
 
-import { getDocumentActiveElement, getDocument } from "~/platform/env";
-import { useDebouncedValue } from "@tanstack/react-pacer";
 export interface PullRequestsSearch {
   involvement: PullRequestInvolvement;
   state: PullRequestState;
@@ -129,7 +135,19 @@ export const Route = createFileRoute("/_chat/pull-requests/")({
   component: PullRequestsRouteView,
 });
 
+const INVOLVEMENT_TABS: ReadonlyArray<{ value: PullRequestInvolvement; label: string }> = [
+  { value: "all", label: "All" },
+  { value: "reviewing", label: "Reviewing" },
+  { value: "authored", label: "Authored" },
+];
+const STATE_TABS: ReadonlyArray<{ value: PullRequestState; label: string }> = [
+  { value: "open", label: "Open" },
+  { value: "closed", label: "Closed" },
+  { value: "merged", label: "Merged" },
+];
+
 function PullRequestsRouteView() {
+  const { settings } = useAppSettings();
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const trafficLightGutter = useDesktopTopBarTrafficLightGutterClassName();
@@ -227,7 +245,7 @@ function PullRequestsRouteView() {
   // Multi-project result sets can be large. Keep typing responsive while React catches the
   // filtered rows up in a lower-priority render; virtualization can wait for measured need.
   const normalizedQuery = search.q?.trim().toLowerCase() ?? "";
-  const [query] = useDebouncedValue(normalizedQuery, { wait: 100 });
+  const query = useDeferredValue(normalizedQuery);
   const entries = useMemo(
     () =>
       orderPullRequestEntriesPinnedFirst(
@@ -269,25 +287,25 @@ function PullRequestsRouteView() {
     if (!selectedInput) return;
     // Timeout-0 keeps the state write asynchronous (compiler-eligible); the
     // detail panel animates in over 300ms, so one macrotask is invisible.
-    const timeout = setTimeout(() => setRenderedInput(selectedInput), 0);
-    return () => clearTimeout(timeout);
+    const timeout = window.setTimeout(() => setRenderedInput(selectedInput), 0);
+    return () => window.clearTimeout(timeout);
     // selectedInput is a fresh object literal every render; depend on its primitive
     // fields instead so this only re-fires when the actual selection changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search.selectedProjectId, search.selectedRepo, search.number]);
   useEffect(() => {
     if (detailOpen) return;
-    const timeout = setTimeout(() => setRenderedInput(null), 300);
-    return () => clearTimeout(timeout);
+    const timeout = window.setTimeout(() => setRenderedInput(null), 300);
+    return () => window.clearTimeout(timeout);
   }, [detailOpen]);
 
   const closeDetail = useCallback(() => {
-    const focusWasInsideDock = isFocusInsideRightDock(getDocumentActiveElement());
+    const focusWasInsideDock = isFocusInsideRightDock(document.activeElement);
     const rowToRestore = selectedInput;
     updateSearch(CLEARED_SELECTION);
     if (focusWasInsideDock && rowToRestore) {
       requestAnimationFrame(() => {
-        focusPullRequestRow(getDocument()!, rowToRestore);
+        focusPullRequestRow(document, rowToRestore);
       });
     }
   }, [selectedInput, updateSearch]);
@@ -365,38 +383,92 @@ function PullRequestsRouteView() {
     <div className={cn(CHAT_MAIN_VIEWPORT_SHELL_CLASS_NAME, CHAT_MAIN_CONTENT_SURFACE_CLASS_NAME)}>
       <RouteInsetSurface surfaceClassName="bg-transparent">
         <div className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-[var(--color-background-surface)]">
-          <PullRequestRouteHeaderComposition
-            scopedProjectName={scopedProjectName}
-            refreshDisabled={refreshBlocked}
-            refreshing={refreshMutation.isPending}
-            refreshBlockedReason={
-              activeActionCount > 0 ? "Wait for the pull request action to finish" : undefined
-            }
-            onRefresh={handleManualRefresh}
-            hostClassName={cn(trafficLightGutter, windowControlsGutter)}
-          />
+          <header
+            className={cn(
+              CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
+              CHAT_SURFACE_HEADER_PADDING_X_CLASS,
+              "drag-region",
+              trafficLightGutter,
+              windowControlsGutter,
+            )}
+          >
+            <div className={cn("flex items-center gap-2", CHAT_SURFACE_HEADER_HEIGHT_CLASS)}>
+              <SidebarHeaderNavigationControls />
+              {/* The title rides the surface header like the automations detail route, so the
+                  scroll area opens straight onto the filters and the list. */}
+              <h1 className="truncate font-heading text-ui-lg font-medium">Pull requests</h1>
+              {scopedProjectName ? (
+                <>
+                  <span aria-hidden className="text-muted-foreground/50">
+                    ·
+                  </span>
+                  <span className="truncate text-ui leading-snug text-muted-foreground">
+                    {scopedProjectName}
+                  </span>
+                </>
+              ) : null}
+              <div className="min-w-0 flex-1" />
+              <Button
+                size="icon-sm"
+                variant="ghost"
+                aria-label="Refresh pull requests"
+                title={
+                  activeActionCount > 0 ? "Wait for the pull request action to finish" : "Refresh"
+                }
+                disabled={refreshBlocked}
+                onClick={handleManualRefresh}
+              >
+                {/* Spins only for a refresh the user actually asked for. Background refetches
+                    (window focus, remount) are constant and unprompted, so animating them
+                    turned the header into a fidget rather than a signal. */}
+                <RefreshCwIcon
+                  className={cn("size-4", refreshMutation.isPending && "animate-spin")}
+                />
+              </Button>
+            </div>
+          </header>
           <main className="min-h-0 flex-1 overflow-y-auto">
             <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-5 pb-12 pt-4 sm:px-7">
               {/* Scope first, then search within it: the pills read as the view you are in and
                   the field filters it, which is also the reference layout. */}
-              <PullRequestRouteFiltersComposition
-                involvement={search.involvement}
-                state={search.state}
-                projectId={search.projectId}
-                projects={repositoryProjects}
-                searchQuery={search.q ?? ""}
-                searchCapability="editable"
-                onInvolvementChange={(involvement) =>
-                  updateSearch({ involvement, ...CLEARED_SELECTION })
-                }
-                onStateIntent={handleStateIntent}
-                onStateChange={(state) => updateSearch({ state, ...CLEARED_SELECTION })}
-                onSearchChange={(value) => updateSearch({ q: value || undefined })}
-                onProjectChange={(projectId) => updateSearch({ projectId, ...CLEARED_SELECTION })}
-              />
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <PullRequestFilterPillGroup
+                    value={search.involvement}
+                    options={INVOLVEMENT_TABS}
+                    onChange={(involvement) => updateSearch({ involvement, ...CLEARED_SELECTION })}
+                  />
+                  <PullRequestFilterPillGroup
+                    value={search.state}
+                    options={STATE_TABS}
+                    onIntent={handleStateIntent}
+                    onChange={(state) => updateSearch({ state, ...CLEARED_SELECTION })}
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="min-w-0 flex-1">
+                    {/* The long field list belonged in a spec, not a placeholder. */}
+                    <SearchInput
+                      placeholder="Search pull requests"
+                      value={search.q ?? ""}
+                      onChange={(event) => updateSearch({ q: event.target.value || undefined })}
+                    />
+                  </div>
+                  <PullRequestProjectFilterPopover
+                    projects={repositoryProjects}
+                    value={search.projectId}
+                    onChange={(projectId) => updateSearch({ projectId, ...CLEARED_SELECTION })}
+                  />
+                </div>
+              </div>
 
               {listQuery.isPending || exactInvolvementPending ? (
-                <PullRequestListLoadingComposition />
+                // Mirrors the loaded list's row height and spacing so the switch doesn't jump.
+                <div className="space-y-0.5">
+                  {Array.from({ length: 7 }, (_, index) => (
+                    <Skeleton key={index} className="h-13 w-full rounded-lg" />
+                  ))}
+                </div>
               ) : initialListError ? (
                 <PullRequestsUnavailableState
                   error={initialListError}
@@ -408,22 +480,25 @@ function PullRequestsRouteView() {
                   onRetry={() => void exactInvolvementQuery.refetch()}
                 />
               ) : entries.length === 0 ? (
-                <PullRequestListEmptyComposition
-                  title={
-                    search.involvement === "reviewing" && search.state !== "open"
-                      ? "Review requests only apply to open pull requests"
-                      : "No pull requests found"
-                  }
-                  description={
-                    search.involvement === "reviewing" && search.state !== "open"
-                      ? "Select Open to see pull requests currently awaiting your review."
-                      : "Try another involvement, state, project, or search filter."
-                  }
-                />
+                <Empty className="py-16">
+                  <EmptyHeader>
+                    <EmptyTitle>
+                      {search.involvement === "reviewing" && search.state !== "open"
+                        ? "Review requests only apply to open pull requests"
+                        : "No pull requests found"}
+                    </EmptyTitle>
+                    <EmptyDescription>
+                      {search.involvement === "reviewing" && search.state !== "open"
+                        ? "Select Open to see pull requests currently awaiting your review."
+                        : "Try another involvement, state, project, or search filter."}
+                    </EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
               ) : (
                 <PullRequestList
                   entries={entries}
                   grouped={grouped}
+                  showDiffColors={settings.showPullRequestDiffColors}
                   selectedProjectId={search.selectedProjectId}
                   selectedRepo={search.selectedRepo}
                   selectedNumber={search.number}
@@ -476,7 +551,18 @@ function PullRequestsRouteView() {
         onAddPane={() => {}}
         renderPane={(pane, context) => (
           <Suspense fallback={<PanelStateMessage>Loading pull request...</PanelStateMessage>}>
-            <PullRequestDockPane pane={pane} pollingEnabled={context.isVisible} />
+            <PullRequestDockPane
+              pane={pane}
+              pollingEnabled={context.isVisible}
+              onSelectPullRequest={(number) =>
+                renderedInput &&
+                updateSearch({
+                  selectedProjectId: renderedInput.projectId,
+                  selectedRepo: renderedInput.repository,
+                  number,
+                })
+              }
+            />
           </Suspense>
         )}
       />

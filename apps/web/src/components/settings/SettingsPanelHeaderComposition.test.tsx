@@ -8,7 +8,7 @@ describe("SettingsPanelHeaderComposition", () => {
   it("uses the canonical settings taxonomy copy", () => {
     expect(resolveSettingsPanelHeader("general")).toEqual({
       title: "General",
-      description: "Default provider, thread mode, and sidebar organization.",
+      description: "Choose defaults for new chats, navigation, and the Environment panel.",
     });
     expect(resolveSettingsPanelHeader("appearance").title).toBe("Appearance");
   });
@@ -17,7 +17,7 @@ describe("SettingsPanelHeaderComposition", () => {
     const markup = renderToStaticMarkup(
       <SettingsPanelHeaderComposition section="appearance" restoreDisabled onRestore={vi.fn()} />,
     );
-    expect(markup).toContain("Theme, typography, and timestamp formatting.");
+    expect(markup).toContain("Customize the theme, typography, density, and time format.");
     expect(markup).toContain("Restore defaults");
     expect(markup).toContain("disabled");
   });

@@ -3,10 +3,15 @@
 //   Lynx impl maps to lynx.requestAnimationFrame (available there, but only
 //   namespaced, not as a bare global).
 // Layer: L1 platform port (web implementation)
-// Exports: raf, cancelRaf
+// Exports: raf, cancelRaf, isAnimationFrameAvailable
 
 export function raf(callback: (time: number) => void): number {
   return requestAnimationFrame(callback);
+}
+
+/** False off-DOM and in partial window stubs (node test envs) without rAF. */
+export function isAnimationFrameAvailable(): boolean {
+  return typeof requestAnimationFrame === "function";
 }
 
 export function cancelRaf(handle: number): void {

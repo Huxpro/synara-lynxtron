@@ -30,11 +30,11 @@ export function SettingsRow({
 }: {
   title: ReactNode;
   description: string;
-  status?: ReactNode;
-  resetAction?: ReactNode;
-  control?: ReactNode;
-  children?: ReactNode;
-  onClick?: () => void;
+  status?: ReactNode | undefined;
+  resetAction?: ReactNode | undefined;
+  control?: ReactNode | undefined;
+  children?: ReactNode | undefined;
+  onClick?: (() => void) | undefined;
 }) {
   const anchorId = typeof title === "string" ? settingRowAnchorId(title) : undefined;
   const rootClassName = `${SETTINGS_CARD_ROW_CLASS_NAME}${anchorId ? " scroll-mt-24" : ""}`;
@@ -60,6 +60,11 @@ export function SettingsRow({
           <SettingsRowDescriptionElement className={SETTINGS_CARD_ROW_DESCRIPTION_CLASS_NAME}>
             {description}
           </SettingsRowDescriptionElement>
+          {status ? (
+            <SettingsRowViewElement className="pt-1 text-ui-sm text-muted-foreground">
+              {status}
+            </SettingsRowViewElement>
+          ) : null}
         </SettingsRowViewElement>
         {control ? (
           <SettingsRowViewElement className="flex w-full shrink-0 items-center gap-2 sm:w-auto sm:justify-end">
@@ -67,11 +72,6 @@ export function SettingsRow({
           </SettingsRowViewElement>
         ) : null}
       </SettingsRowLayoutElement>
-      {status ? (
-        <SettingsRowViewElement className="pt-1 text-[11px] text-muted-foreground">
-          {status}
-        </SettingsRowViewElement>
-      ) : null}
       {children}
     </SettingsRowRootElement>
   );

@@ -1,3 +1,4 @@
+import { PROVIDER_DISPLAY_NAMES } from "@synara/contracts";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "@lynx-js/react";
 import pencilSvg from "@synara-central-icons/pencil.svg?raw";
@@ -121,27 +122,7 @@ function utcOffsetMinutes(): number {
 }
 
 function providerLabel(provider: ProviderKind | null): string {
-  if (!provider) return "—";
-  switch (provider) {
-    case "codex":
-      return "Codex";
-    case "claudeAgent":
-      return "Claude";
-    case "cursor":
-      return "Cursor";
-    case "antigravity":
-      return "Antigravity";
-    case "grok":
-      return "Grok";
-    case "droid":
-      return "Droid";
-    case "kilo":
-      return "Kilo";
-    case "opencode":
-      return "OpenCode";
-    case "pi":
-      return "Pi";
-  }
+  return provider ? PROVIDER_DISPLAY_NAMES[provider] : "—";
 }
 
 function hourLabel(hour: number | null): string {

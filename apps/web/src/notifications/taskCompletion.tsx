@@ -12,6 +12,7 @@ import { useAppSettings } from "../appSettings";
 import { isElectron } from "../env";
 import { useDiffRouteSearch } from "../hooks/useDiffRouteSearch";
 import { selectSplitView, useSplitViewStore } from "../splitViewStore";
+import { selectRightDockState, useRightDockStore } from "../rightDockStore";
 import { useStore } from "../store";
 import { createAllThreadsSelector } from "../storeSelectors";
 import { useTerminalStateStore } from "../terminalStateStore";
@@ -22,40 +23,33 @@ import {
   buildInputNeededCopy,
   buildTaskCompletionCopy,
   collectCompletedThreadCandidates,
+  completedThreadNotificationKey,
   collectCompletedTerminalCandidates,
   collectInputNeededThreadCandidates,
   collectTerminalAttentionCandidates,
   isNotificationRuntimeFreshTimestamp,
+  shouldAttemptSystemTaskNotification,
   shouldShowThreadNotificationToast,
 } from "./taskCompletion.logic";
 
-import {
-  isBrowser,
-  isSecureContext,
-  isDocumentVisible,
-  isDocumentFocused,
-  focusWindow,
-  hasNotificationApi,
-} from "~/platform/env";
-import { getDesktopBridge } from "~/platform/desktopBridge";
 export type BrowserNotificationPermissionState =
   | NotificationPermission
   | "unsupported"
   | "insecure";
 
 function isBrowserNotificationSupported(): boolean {
-  return hasNotificationApi();
+  return typeof window !== "undefined" && "Notification" in window;
 }
 
 // Browsers require secure contexts and a user gesture before asking for permission.
 export function readBrowserNotificationPermissionState(): BrowserNotificationPermissionState {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return "unsupported";
   }
   if (!isBrowserNotificationSupported()) {
     return "unsupported";
   }
-  if (!isSecureContext()) {
+  if (!window.isSecureContext) {
     return "insecure";
   }
   return Notification.permission;
@@ -73,10 +67,10 @@ export async function requestBrowserNotificationPermission(): Promise<BrowserNot
 }
 
 function isWindowForeground(): boolean {
-  if (!isBrowser()) {
+  if (typeof document === "undefined") {
     return true;
   }
-  return isDocumentVisible() && isDocumentFocused();
+  return document.visibilityState === "visible" && document.hasFocus();
 }
 
 interface ThreadNotificationCopy {
@@ -101,13 +95,18 @@ async function showSystemThreadNotification(
 ): Promise<boolean> {
   const { body, title } = copy;
 
-  const desktopBridge = getDesktopBridge();
-  if (desktopBridge) {
-    const supported = await desktopBridge.notifications.isSupported();
+  if (window.desktopBridge) {
+    const supported = await window.desktopBridge.notifications.isSupported();
     if (!supported) {
       return false;
     }
-    return desktopBridge.notifications.show({ title, body, silent: false, threadId });
+    return window.desktopBridge.notifications.show({
+      title,
+      body,
+      silent: false,
+      suppressWhenForeground: true,
+      threadId,
+    });
   }
 
   if (readBrowserNotificationPermissionState() !== "granted") {
@@ -119,7 +118,7 @@ async function showSystemThreadNotification(
     tag: `thread-notification:${threadId}`,
   });
   notification.addEventListener("click", () => {
-    focusWindow();
+    window.focus();
     focusThread(threadId, navigate);
   });
   return true;
@@ -138,10 +137,12 @@ function showThreadToast(
     description: body,
     data: {
       allowCrossThreadVisibility: true,
+      compactContextual: true,
       threadId,
       dismissAfterVisibleMs: 8000,
     },
     actionProps: {
+      "aria-label": `Open ${title}`,
       children: "Open",
       onClick: () => focusThread(threadId, navigate),
     },
@@ -160,20 +161,29 @@ export function TaskCompletionNotifications() {
   const splitView = useSplitViewStore(
     useMemo(() => selectSplitView(routeSearch.splitViewId ?? null), [routeSearch.splitViewId]),
   );
+  const rightDockState = useRightDockStore(
+    useMemo(() => selectRightDockState(activeThreadId), [activeThreadId]),
+  );
   const [allThreadsSelector] = useState(() => createAllThreadsSelector());
   const threads = useStore(allThreadsSelector);
   const threadsHydrated = useStore((store) => store.threadsHydrated);
   const terminalStateByThreadId = useTerminalStateStore((store) => store.terminalStateByThreadId);
-  const visibleThreadIds = resolveVisibleToastThreadIds({ activeThreadId, splitView });
+  const visibleThreadIds = resolveVisibleToastThreadIds({
+    activeThreadId,
+    splitView,
+    rightDockRendered: routeSearch.view !== "editor",
+    rightDockState,
+  });
   const previousThreadsRef = useRef<readonly Thread[]>([]);
   const previousTerminalStateRef = useRef(terminalStateByThreadId);
   // Lazy state init: evaluated once, keeping the impure Date.now() call out
   // of re-renders (useRef(Date.now()) re-evaluates its argument every render).
   const [runtimeStartedAtMs] = useState(() => Date.now());
   const readyRef = useRef(false);
+  const notifiedCompletionKeysRef = useRef(new Set<string>());
 
   useEffect(() => {
-    const onMenuAction = getDesktopBridge()?.onMenuAction;
+    const onMenuAction = window.desktopBridge?.onMenuAction;
     if (typeof onMenuAction !== "function") {
       return;
     }
@@ -210,8 +220,10 @@ export function TaskCompletionNotifications() {
     const completions = collectCompletedThreadCandidates(
       previousThreadsRef.current,
       threads,
-    ).filter((candidate) =>
-      isNotificationRuntimeFreshTimestamp(candidate.completedAt, runtimeStartedAtMs),
+    ).filter(
+      (candidate) =>
+        isNotificationRuntimeFreshTimestamp(candidate.completedAt, runtimeStartedAtMs) &&
+        !notifiedCompletionKeysRef.current.has(completedThreadNotificationKey(candidate)),
     );
     const terminalCompletions = collectCompletedTerminalCandidates(
       previousTerminalStateRef.current,
@@ -239,11 +251,13 @@ export function TaskCompletionNotifications() {
       return;
     }
 
-    const shouldAttemptSystemNotification =
-      settings.enableSystemTaskCompletionNotifications &&
-      (getDesktopBridge() ? true : !isWindowForeground());
+    const shouldAttemptSystemNotification = shouldAttemptSystemTaskNotification({
+      enabled: settings.enableSystemTaskCompletionNotifications,
+      isWindowForeground: isWindowForeground(),
+    });
 
     for (const completion of completions) {
+      notifiedCompletionKeysRef.current.add(completedThreadNotificationKey(completion));
       const copy = buildTaskCompletionCopy(completion);
       if (
         settings.enableTaskCompletionToasts &&

@@ -16,7 +16,7 @@ import {
 
 export function SettingsNavigationComposition(props: {
   readonly activeSection: SettingsSectionId;
-  readonly availableSections?: readonly SettingsSectionId[];
+  readonly availableSections?: readonly SettingsSectionId[] | undefined;
   readonly onSelectSection: (section: SettingsSectionId) => void;
 }) {
   const groups = resolveSettingsNavigationCompositionGroups(props);

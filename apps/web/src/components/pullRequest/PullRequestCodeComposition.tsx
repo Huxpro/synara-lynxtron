@@ -92,7 +92,9 @@ export function pairPullRequestCodeLines(
 
 function PullRequestCodeSplitLineRow(props: {
   readonly row: Extract<PullRequestCodeSplitRow, { readonly kind: "paired" }>;
-  readonly syntaxTokensByLineId?: Readonly<Record<string, readonly PullRequestCodeSyntaxToken[]>>;
+  readonly syntaxTokensByLineId?:
+    | Readonly<Record<string, readonly PullRequestCodeSyntaxToken[]>>
+    | undefined;
   readonly wordWrap: boolean;
 }) {
   const leftTokens = props.row.left ? (props.syntaxTokensByLineId?.[props.row.left.id] ?? []) : [];
@@ -134,8 +136,8 @@ function PullRequestCodeSplitLineRow(props: {
 
 export function PullRequestCodeStateComposition(props: {
   readonly kind: "loading" | "error";
-  readonly retrying?: boolean;
-  readonly onRetry?: () => void;
+  readonly retrying?: boolean | undefined;
+  readonly onRetry?: (() => void) | undefined;
 }) {
   return (
     <PullRequestCodeRootElement>
@@ -158,17 +160,19 @@ export function PullRequestCodeStateComposition(props: {
 export function PullRequestCodeComposition(props: {
   readonly view: PullRequestCodeView;
   readonly truncated: boolean;
-  readonly emptyLabel?: string;
-  readonly filePathPresentation?: "full" | "basename-first";
-  readonly renderMode?: "stacked" | "split";
-  readonly showSummary?: boolean;
-  readonly wordWrap?: boolean;
+  readonly emptyLabel?: string | undefined;
+  readonly filePathPresentation?: "full" | "basename-first" | undefined;
+  readonly renderMode?: "stacked" | "split" | undefined;
+  readonly showSummary?: boolean | undefined;
+  readonly wordWrap?: boolean | undefined;
   readonly expandedFileKeys: readonly string[];
   readonly visibleLineCounts: Readonly<Record<string, number>>;
   readonly rawVisibleLineCount: number;
   readonly fileElementId?: (fileKey: string) => string | undefined;
-  readonly renderFileActions?: (filePath: string) => ReactNode;
-  readonly syntaxTokensByLineId?: Readonly<Record<string, readonly PullRequestCodeSyntaxToken[]>>;
+  readonly renderFileActions?: ((filePath: string) => ReactNode) | undefined;
+  readonly syntaxTokensByLineId?:
+    | Readonly<Record<string, readonly PullRequestCodeSyntaxToken[]>>
+    | undefined;
   readonly onToggleFile: (fileKey: string) => void;
   readonly onShowMoreFile: (fileKey: string) => void;
   readonly onShowMoreRaw: () => void;

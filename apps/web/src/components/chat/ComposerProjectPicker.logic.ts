@@ -6,11 +6,11 @@ export interface ComposerProjectPickerSourceProject {
   readonly projectId: ProjectId | null;
   readonly workspaceRoot: string;
   readonly primaryLabel: string;
-  readonly secondaryLabel?: string | null;
-  readonly spaceId?: SpaceId | null;
-  readonly spaceName?: string | null;
-  readonly spaceIcon?: SpaceIconName | null;
-  readonly spaceSortOrder?: number;
+  readonly secondaryLabel?: string | null | undefined;
+  readonly spaceId?: SpaceId | null | undefined;
+  readonly spaceName?: string | null | undefined;
+  readonly spaceIcon?: SpaceIconName | null | undefined;
+  readonly spaceSortOrder?: number | undefined;
 }
 
 export interface ComposerProjectPickerOption {
@@ -65,7 +65,7 @@ export function buildComposerProjectPickerModel(input: {
   readonly projects: readonly ComposerProjectPickerSourceProject[];
   readonly selectedOptionId: string | null;
   readonly query: string;
-  readonly emptyTriggerLabel?: string;
+  readonly emptyTriggerLabel?: string | undefined;
 }): ComposerProjectPickerModel {
   const normalizedQuery = input.query.trim().toLocaleLowerCase();
   const selectedProject =
@@ -131,13 +131,13 @@ export function buildComposerProjectPickerModel(input: {
 
 export function buildComposerProjectPickerFooterModel(input: {
   readonly addActionLabel: string;
-  readonly addActionBusy?: boolean;
+  readonly addActionBusy?: boolean | undefined;
   readonly resetActionLabel: string;
-  readonly resetVisible?: boolean;
-  readonly retryActionLabel?: string;
-  readonly retryActionBusy?: boolean;
-  readonly errorMessage?: string | null;
-  readonly retryVisible?: boolean;
+  readonly resetVisible?: boolean | undefined;
+  readonly retryActionLabel?: string | undefined;
+  readonly retryActionBusy?: boolean | undefined;
+  readonly errorMessage?: string | null | undefined;
+  readonly retryVisible?: boolean | undefined;
 }): ComposerProjectPickerFooterModel {
   return {
     actions: [

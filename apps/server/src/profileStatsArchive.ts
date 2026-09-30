@@ -28,6 +28,7 @@ import { aggregateProfileSkillUsageRows, turnModelSelectionCte } from "./profile
 import { PROVIDER_COMMAND_REACTOR_CONSUMER } from "./persistence/Services/OrchestrationEventDeliveries";
 import { isProviderIntentEventType } from "./orchestration/providerIntentClassification";
 import { THREAD_RETENTION_COMMAND_ID_PREFIX } from "./threadRetention";
+import { claudeTokenActivityCtes } from "./claudeTokenStats";
 
 interface PurgeThreadRow {
   readonly projectId: string | null;
@@ -35,6 +36,7 @@ interface PurgeThreadRow {
   readonly deletedAt: string | null;
   readonly envMode: string | null;
   readonly worktreePath: string | null;
+  readonly workingDirectory: string | null;
   readonly projectKind: string | null;
   readonly workspaceRoot: string | null;
 }
@@ -146,6 +148,7 @@ function threadWorkspaceCwdForCheckpointCleanup(thread: PurgeThreadRow): string 
     projectCwd,
     envMode: normalizeThreadEnvironmentMode(thread.envMode),
     worktreePath: thread.worktreePath,
+    workingDirectory: thread.workingDirectory,
   });
 }
 
@@ -287,9 +290,15 @@ export function aggregateThreadTokenRows(
   rows: ReadonlyArray<TokenActivityRow>,
   fallbackSelection?: { readonly provider: string | null; readonly model: string | null },
 ): ThreadTokenSnapshotRow[] {
+  // Claude's verified turn results are snapshotted separately. Remove its old
+  // context rows before maintaining any delta state, otherwise a large Claude
+  // counter can reset or inflate the next provider's archived delta.
+  const nonClaudeRows = rows.filter(
+    (row) => resolveTokenProviderModel(row, fallbackSelection).provider !== "claudeAgent",
+  );
   const tokensByKey = new Map<string, ThreadTokenSnapshotRow>();
   const cumulativeProviderModels = new Set<string>();
-  for (const row of rows) {
+  for (const row of nonClaudeRows) {
     if (tokenCounterValue(row.totalProcessedTokens) === null) {
       continue;
     }
@@ -298,7 +307,7 @@ export function aggregateThreadTokenRows(
   }
 
   let previousCumulativeTotal: number | null = null;
-  for (const row of rows) {
+  for (const row of nonClaudeRows) {
     const total = tokenCounterValue(row.totalProcessedTokens);
     if (total === null) {
       continue;
@@ -326,7 +335,7 @@ export function aggregateThreadTokenRows(
 
   let previousUsedTotal: number | null = null;
   let previousUsedProviderModelKey: string | null = null;
-  for (const row of rows) {
+  for (const row of nonClaudeRows) {
     const { provider, model } = resolveTokenProviderModel(row, fallbackSelection);
     const providerModelKey = tokenProviderModelKey(provider, model);
     if (cumulativeProviderModels.has(providerModelKey)) {
@@ -372,9 +381,10 @@ export interface ProfileStatsArchiveShape {
   readonly purgeThreadWithStatsSnapshot: (input: {
     readonly threadId: string;
   }) => Effect.Effect<boolean, unknown>;
-  // Purges every soft-deleted thread that was NOT hidden by the retention
-  // sweep. Catches per-thread failures so one bad thread cannot stall the
-  // sweep; returns how many threads were purged.
+  // Purges every soft-deleted thread that a recorded delete event proves was a
+  // manual delete; legacy retention deletes and unknown provenance are kept.
+  // Catches per-thread failures so one bad thread cannot stall the sweep;
+  // returns how many threads were purged.
   readonly purgeSoftDeletedManualThreads: (input?: {
     readonly beforePurge?: (threadId: string) => Effect.Effect<boolean, unknown>;
   }) => Effect.Effect<number, unknown>;
@@ -446,6 +456,7 @@ const makeProfileStatsArchive = Effect.gen(function* () {
           t.deleted_at AS deletedAt,
           t.env_mode AS envMode,
           t.worktree_path AS worktreePath,
+          t.working_directory AS workingDirectory,
           p.kind AS projectKind,
           p.workspace_root AS workspaceRoot
         FROM projection_threads t
@@ -575,6 +586,7 @@ const makeProfileStatsArchive = Effect.gen(function* () {
           t.deleted_at AS deletedAt,
           t.env_mode AS envMode,
           t.worktree_path AS worktreePath,
+          t.working_directory AS workingDirectory,
           p.kind AS projectKind,
           p.workspace_root AS workspaceRoot
         FROM projection_threads t
@@ -658,6 +670,15 @@ const makeProfileStatsArchive = Effect.gen(function* () {
         provider: threadSelection?.provider ?? null,
         model: threadSelection?.model ?? null,
       });
+      // Preserve the same verified Claude rows as the live profile before the
+      // retained runtime fallback is purged along with this thread.
+      const claudeTokenRows = yield* sql<ThreadTokenSnapshotRow>`
+        WITH turn_model AS (${turnModelSelectionCte(sql, { threadId })}),
+          ${claudeTokenActivityCtes(sql, { threadId })}
+        SELECT created_at AS createdAt, 'claudeAgent' AS provider, model, tokens
+        FROM claude_token_rows
+      `;
+      tokenRows.push(...claudeTokenRows);
       const skillRows = aggregateProfileSkillUsageRows(skillMessageRows);
       const hasStatsContribution = hasProfileStatsContribution({
         promptRows: skillMessageRows,
@@ -707,8 +728,10 @@ const makeProfileStatsArchive = Effect.gen(function* () {
         yield* Effect.forEach(
           tokenRows,
           (row) => sql`
-            INSERT INTO profile_stats_deleted_tokens (thread_id, created_at, provider, model, tokens)
-            VALUES (${threadId}, ${row.createdAt}, ${row.provider}, ${row.model}, ${row.tokens})
+            INSERT INTO profile_stats_deleted_tokens
+              (thread_id, created_at, provider, model, tokens, token_accounting_version)
+            VALUES (${threadId}, ${row.createdAt}, ${row.provider}, ${row.model}, ${row.tokens},
+              ${row.provider === "claudeAgent" ? 1 : null})
           `,
           { concurrency: 1, discard: true },
         );
@@ -797,7 +820,9 @@ const makeProfileStatsArchive = Effect.gen(function* () {
       yield* sql`DELETE FROM provider_session_runtime WHERE thread_id = ${threadId}`;
       yield* sql`DELETE FROM projection_pending_interactions WHERE thread_id = ${threadId}`;
       yield* sql`DELETE FROM projection_thread_activities WHERE thread_id = ${threadId}`;
+      yield* sql`DELETE FROM profile_stats_claude_legacy_usage WHERE thread_id = ${threadId}`;
       yield* sql`DELETE FROM projection_thread_messages WHERE thread_id = ${threadId}`;
+      yield* sql`DELETE FROM message_text_segments WHERE thread_id = ${threadId}`;
       yield* sql`DELETE FROM projection_thread_proposed_plans WHERE thread_id = ${threadId}`;
       yield* sql`DELETE FROM projection_thread_sessions WHERE thread_id = ${threadId}`;
       yield* sql`DELETE FROM projection_turns WHERE thread_id = ${threadId}`;
@@ -841,24 +866,22 @@ const makeProfileStatsArchive = Effect.gen(function* () {
     input,
   ) =>
     Effect.gen(function* () {
-      // Classify by the LATEST thread.deleted event: only threads whose most
-      // recent delete came from retention stay hidden-but-kept. Soft-deleted
-      // threads without any recorded delete event (legacy imports) count as
-      // manual deletes and get purged too.
+      // Classify by the LATEST thread.deleted event's command id, which is the
+      // only delete provenance that survives this purge. Purging is irreversible,
+      // so it requires positive evidence of a manual delete: a soft-deleted thread
+      // with no recorded delete event (legacy import, truncated event log) is kept
+      // rather than guessed at.
       const candidates = yield* sql<{ readonly threadId: string }>`
           SELECT t.thread_id AS threadId
           FROM projection_threads t
           WHERE t.deleted_at IS NOT NULL
-            AND COALESCE(
-              (
-                SELECT td.command_id
-                FROM orchestration_events td
-                WHERE td.event_type = 'thread.deleted'
-                  AND td.stream_id = t.thread_id
-                ORDER BY td.sequence DESC
-                LIMIT 1
-              ),
-              ''
+            AND (
+              SELECT td.command_id
+              FROM orchestration_events td
+              WHERE td.event_type = 'thread.deleted'
+                AND td.stream_id = t.thread_id
+              ORDER BY td.sequence DESC
+              LIMIT 1
             ) NOT LIKE ${`${THREAD_RETENTION_COMMAND_ID_PREFIX}%`}
         `;
 

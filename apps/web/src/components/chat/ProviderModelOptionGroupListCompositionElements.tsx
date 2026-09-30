@@ -46,7 +46,7 @@ export function ProviderModelCollapsibleGroupElement(props: {
         <span className="col-start-2 min-w-0 truncate normal-case tracking-normal">
           {props.label}
         </span>
-        <span className="col-start-3 shrink-0 justify-self-end rounded-full bg-[color-mix(in_srgb,var(--foreground)_6%,transparent)] px-1.5 py-px text-[9px] font-normal tabular-nums normal-case tracking-normal text-muted-foreground/70">
+        <span className="col-start-3 shrink-0 justify-self-end rounded-full bg-[color-mix(in_srgb,var(--foreground)_6%,transparent)] px-1.5 py-px text-ui-2xs font-normal tabular-nums normal-case tracking-normal text-muted-foreground/70">
           {props.count}
         </span>
       </CollapsibleTrigger>
@@ -58,12 +58,12 @@ export function ProviderModelCollapsibleGroupElement(props: {
 export function ProviderModelRadioItemElement(props: {
   readonly active: boolean;
   readonly costMultiplierLabel: string | null;
-  readonly description?: string;
+  readonly description?: string | undefined;
   readonly favoriteProvider: FavoriteModelProvider | null;
   readonly isFavorite: boolean;
   readonly modelName: string;
   readonly modelSlug: string;
-  readonly onAfterSelection?: () => void;
+  readonly onAfterSelection?: (() => void) | undefined;
   readonly onSelect: () => void;
   readonly onToggleFavorite: () => void;
 }) {
@@ -108,7 +108,7 @@ export function ProviderModelRadioItemElement(props: {
         ) : props.costMultiplierLabel && props.description ? (
           <span
             title={props.description}
-            className="shrink-0 text-[10px] font-medium tabular-nums text-muted-foreground/65"
+            className="shrink-0 text-ui-xs font-medium tabular-nums text-muted-foreground/65"
           >
             <span aria-hidden="true">{props.costMultiplierLabel}</span>
             <span className="sr-only">{props.description}</span>

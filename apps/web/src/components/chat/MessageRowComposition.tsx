@@ -16,8 +16,8 @@ export const MESSAGE_ROW_HOVER_REVEAL_CLASS_NAME =
   "opacity-0 transition-opacity pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto";
 
 export function MessageUserRowComposition(props: {
-  readonly fullWidth?: boolean;
-  readonly children?: ReactNode;
+  readonly fullWidth?: boolean | undefined;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <MessageUserRowElement>
@@ -29,8 +29,8 @@ export function MessageUserRowComposition(props: {
 }
 
 export function MessageUserBubbleComposition(props: {
-  readonly chipOnly?: boolean;
-  readonly children?: ReactNode;
+  readonly chipOnly?: boolean | undefined;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <MessageUserBubbleElement chipOnly={props.chipOnly ?? false}>
@@ -39,6 +39,8 @@ export function MessageUserBubbleComposition(props: {
   );
 }
 
-export function MessageAssistantRowComposition(props: { readonly children?: ReactNode }) {
+export function MessageAssistantRowComposition(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return <MessageAssistantRowElement>{props.children}</MessageAssistantRowElement>;
 }

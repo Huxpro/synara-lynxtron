@@ -52,3 +52,17 @@ export function matchMediaSafe(): null {
 export function getDocumentElement(): null {
   return null;
 }
+
+/** No URL scheme exists in the Lynx renderer; branding falls back to the stable name. */
+export function getLocationProtocol(): string {
+  return "";
+}
+
+export function getLocationHash(): string {
+  return "";
+}
+
+/** Lynx has no DOM document; DOM-only helpers must treat this as unavailable. */
+export function getDocument(): null {
+  return null;
+}

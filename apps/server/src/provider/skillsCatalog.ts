@@ -12,6 +12,7 @@ import * as fs from "node:fs/promises";
 import * as nodePath from "node:path";
 
 import type { ProviderKind, ProviderSkillDescriptor } from "@synara/contracts";
+import { discoverClaudePluginSkillRoots } from "./claudePluginSkills.ts";
 
 type FrontmatterValue = string | boolean;
 
@@ -19,6 +20,10 @@ export interface SkillRoot {
   readonly path: string;
   readonly scope: string;
   readonly includeMarkdownFiles?: boolean;
+  /** Prefix used by plugin-provided skills whose native invocation is namespaced. */
+  readonly namespace?: string;
+  /** Provider-owned plugin caches should not traverse linked content outside the install. */
+  readonly followSymlinks?: boolean;
 }
 
 // ── Frontmatter parsing ──────────────────────────────────────────────
@@ -123,11 +128,12 @@ async function readdirOrEmpty(path: string): Promise<import("node:fs").Dirent[]>
 async function isWalkableSkillDirectory(
   parentPath: string,
   dirent: import("node:fs").Dirent,
+  followSymlinks: boolean,
 ): Promise<boolean> {
   if (dirent.isDirectory()) {
     return true;
   }
-  if (!dirent.isSymbolicLink()) {
+  if (!followSymlinks || !dirent.isSymbolicLink()) {
     return false;
   }
   try {
@@ -163,12 +169,16 @@ async function isReadableMarkdownFile(
 
 export async function collectSkillMarkdownPaths(
   rootPath: string,
-  options?: { readonly includeMarkdownFiles?: boolean },
+  options?: {
+    readonly includeMarkdownFiles?: boolean;
+    readonly followSymlinks?: boolean;
+  },
 ): Promise<string[]> {
   async function visit(dir: string, depth: number): Promise<string[]> {
     const skillPath = nodePath.join(dir, "SKILL.md");
     try {
-      const stat = await fs.stat(skillPath);
+      const stat =
+        options?.followSymlinks === false ? await fs.lstat(skillPath) : await fs.stat(skillPath);
       if (stat.isFile()) {
         return [skillPath];
       }
@@ -199,7 +209,11 @@ export async function collectSkillMarkdownPaths(
       await Promise.all(
         dirents.map(async (dirent) => ({
           name: dirent.name,
-          isDirectory: await isWalkableSkillDirectory(dir, dirent),
+          isDirectory: await isWalkableSkillDirectory(
+            dir,
+            dirent,
+            options?.followSymlinks !== false,
+          ),
         })),
       )
     )
@@ -218,6 +232,7 @@ export async function collectSkillMarkdownPaths(
 export async function readSkillDescriptor(input: {
   readonly skillPath: string;
   readonly scope: string;
+  readonly namespace?: string;
 }): Promise<ProviderSkillDescriptor | null> {
   let raw: string;
   try {
@@ -232,7 +247,11 @@ export async function readSkillDescriptor(input: {
     skillFilename.toLowerCase() === "skill.md"
       ? nodePath.basename(nodePath.dirname(input.skillPath))
       : nodePath.basename(input.skillPath, nodePath.extname(input.skillPath));
-  const name = readStringField(frontmatter, ["name"]) ?? fallbackName;
+  const unqualifiedName = readStringField(frontmatter, ["name"]) ?? fallbackName;
+  const name =
+    input.namespace && !unqualifiedName.includes(":")
+      ? `${input.namespace}:${unqualifiedName}`
+      : unqualifiedName;
   const description = readStringField(frontmatter, ["description"]);
   const displayName = readStringField(frontmatter, ["display-name", "displayName", "title"]);
   const shortDescription = readStringField(frontmatter, [
@@ -271,10 +290,21 @@ async function collectSkillDescriptorsFromRoots(
     roots.map(async (root) => {
       const skillPaths = await collectSkillMarkdownPaths(
         root.path,
-        root.includeMarkdownFiles ? { includeMarkdownFiles: true } : undefined,
+        root.includeMarkdownFiles || root.followSymlinks === false
+          ? {
+              ...(root.includeMarkdownFiles ? { includeMarkdownFiles: true } : {}),
+              ...(root.followSymlinks === false ? { followSymlinks: false } : {}),
+            }
+          : undefined,
       );
       const descriptors = await Promise.all(
-        skillPaths.map((skillPath) => readSkillDescriptor({ skillPath, scope: root.scope })),
+        skillPaths.map((skillPath) =>
+          readSkillDescriptor({
+            skillPath,
+            scope: root.scope,
+            ...(root.namespace ? { namespace: root.namespace } : {}),
+          }),
+        ),
       );
       return descriptors.filter((skill) => skill !== null);
     }),
@@ -312,6 +342,8 @@ export interface SkillsCatalogDiscoveryInput {
   readonly includeDuplicateOrigins?: boolean;
   /** Bypass the short-lived discovery cache. */
   readonly forceReload?: boolean;
+  /** Provider-configured agent dir (pi/omp) — overrides the default profile root. */
+  readonly agentDir?: string | null;
 }
 
 export interface SkillsCatalogRootInput extends SkillsCatalogDiscoveryInput {
@@ -326,9 +358,10 @@ const HOME_ORIGIN_ORDER = [
   "cursor",
   "grok",
   "factory",
-  "kilo",
   "opencode",
   "pi",
+  "devin",
+  "omp",
   "agents",
 ] as const;
 export type SkillsCatalogOrigin = (typeof HOME_ORIGIN_ORDER)[number] | "project";
@@ -409,17 +442,39 @@ const SKILL_ORIGIN_ROOTS = {
     homeRoots: (input) => [nodePath.join(input.homeDir, ".factory", "skills")],
     projectRootNames: [".factory"],
   },
-  kilo: {
-    homeRoots: (input) => [nodePath.join(input.homeDir, ".kilo", "skills")],
-    projectRootNames: [".kilo"],
-  },
   opencode: {
     homeRoots: (input) => [nodePath.join(input.homeDir, ".config", "opencode", "skills")],
     projectRootNames: [".opencode"],
   },
   pi: {
-    homeRoots: (input) => [nodePath.join(input.homeDir, ".pi", "agent", "skills")],
+    homeRoots: (input) => [
+      nodePath.join(input.agentDir ?? nodePath.join(input.homeDir, ".pi", "agent"), "skills"),
+    ],
     projectRootNames: [".pi"],
+  },
+  devin: {
+    homeRoots: (input) => [
+      ...(process.platform === "win32"
+        ? [
+            nodePath.join(input.homeDir, "AppData", "Roaming", "devin", "skills"),
+            nodePath.join(input.homeDir, "AppData", "Roaming", "cognition", "skills"),
+          ]
+        : []),
+      nodePath.join(input.homeDir, ".config", "devin", "skills"),
+      nodePath.join(input.homeDir, ".config", "cognition", "skills"),
+      nodePath.join(input.homeDir, ".codeium", "windsurf", "skills"),
+      nodePath.join(input.homeDir, ".codeium", "windsurf-next", "skills"),
+      nodePath.join(input.homeDir, ".codeium", "windsurf-insiders", "skills"),
+      // Keep the original path as a compatibility fallback for early Devin CLI builds.
+      nodePath.join(input.homeDir, ".devin", "skills"),
+    ],
+    projectRootNames: [".devin", ".cognition", ".windsurf"],
+  },
+  omp: {
+    homeRoots: (input) => [
+      nodePath.join(input.agentDir ?? nodePath.join(input.homeDir, ".omp", "agent"), "skills"),
+    ],
+    projectRootNames: [".omp"],
   },
   agents: {
     homeRoots: (input) => [nodePath.join(input.homeDir, ".agents", "skills")],
@@ -434,9 +489,10 @@ const PROVIDER_SKILL_ORIGIN_PREFERENCES = {
   antigravity: ["agents"],
   grok: ["grok", "claude", "agents"],
   droid: ["factory", "agents", "claude", "codex"],
-  kilo: ["kilo", "agents", "claude"],
   opencode: ["opencode", "claude", "agents"],
   pi: ["pi", "agents"],
+  devin: ["devin", "claude", "agents"],
+  omp: ["omp", "agents"],
 } as const satisfies Partial<Record<ProviderKind, readonly SkillsHomeOrigin[]>>;
 
 function homeRootsForOrigin(
@@ -487,11 +543,11 @@ function rootsForOrderedOrigins(
   orderedOrigins: ReadonlyArray<SkillsHomeOrigin>,
 ): SkillRoot[] {
   const homeRoots = orderedOrigins.flatMap((origin) =>
-    homeRootsForOrigin(origin, input).map((path) => ({
-      path,
-      scope: origin,
-      ...(origin === "pi" ? { includeMarkdownFiles: true } : {}),
-    })),
+    homeRootsForOrigin(origin, input).map((path) =>
+      origin === "pi" || origin === "omp"
+        ? { path, scope: origin, includeMarkdownFiles: true }
+        : { path, scope: origin },
+    ),
   );
   const homeRootPaths = new Set(homeRoots.map((root) => nodePath.resolve(root.path)));
 
@@ -514,11 +570,11 @@ function rootsForOrderedOrigins(
           if (homeRootPaths.has(nodePath.resolve(rootPath))) {
             continue;
           }
-          projectRoots.push({
-            path: rootPath,
-            scope: "project",
-            ...(origin === "pi" ? { includeMarkdownFiles: true } : {}),
-          });
+          projectRoots.push(
+            origin === "pi" || origin === "omp"
+              ? { path: rootPath, scope: "project", includeMarkdownFiles: true }
+              : { path: rootPath, scope: "project" },
+          );
         }
       }
     }
@@ -546,6 +602,7 @@ export async function discoverSkillsCatalog(
     input.provider ?? "",
     input.homeDir,
     input.synaraBaseDir,
+    input.agentDir?.trim() ?? "",
     input.includeDuplicateOrigins ? "all-origins" : "deduped",
   ].join("\u0000");
 
@@ -563,9 +620,16 @@ export async function discoverSkillsCatalog(
 
   const scan = (async () => {
     await ensureSynaraSkillsDir(input.synaraBaseDir);
+    const roots = [
+      ...skillsCatalogRoots(input),
+      ...(await discoverClaudePluginSkillRoots({
+        homeDir: input.homeDir,
+        ...(input.cwd ? { cwd: input.cwd } : {}),
+      })),
+    ];
     const skills = input.includeDuplicateOrigins
-      ? await collectSkillDescriptorsFromRoots(skillsCatalogRoots(input))
-      : await collectSkillsFromRoots(skillsCatalogRoots(input));
+      ? await collectSkillDescriptorsFromRoots(roots)
+      : await collectSkillsFromRoots(roots);
 
     skillsCatalogCache.delete(cacheKey);
     skillsCatalogCache.set(cacheKey, { at: Date.now(), skills });

@@ -59,3 +59,20 @@ export function mergeProviderUsageRefresh(
     (provider) => nextByProvider.get(provider) ?? previousByProvider.get(provider),
   ).filter((snapshot): snapshot is ServerProviderUsageSnapshot => snapshot !== undefined);
 }
+
+/**
+ * Settings shows every usage-capable provider when none are signed in, so the
+ * panel can still explain how to connect. Once any provider has credentials,
+ * only those connected snapshots stay visible.
+ */
+export function selectVisibleProviderUsageSnapshots(
+  snapshots: ReadonlyArray<ServerProviderUsageSnapshot>,
+): ReadonlyArray<ServerProviderUsageSnapshot> {
+  const byProvider = new Map(snapshots.map((snapshot) => [snapshot.provider, snapshot]));
+  const ordered = PROVIDER_USAGE_PROVIDERS.flatMap((provider) => {
+    const snapshot = byProvider.get(provider);
+    return snapshot ? [snapshot] : [];
+  });
+  const connected = ordered.filter((snapshot) => (snapshot.status ?? "ok") !== "needs-auth");
+  return connected.length > 0 ? connected : ordered;
+}

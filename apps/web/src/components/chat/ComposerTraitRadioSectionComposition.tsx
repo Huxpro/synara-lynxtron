@@ -10,8 +10,8 @@ import {
 export interface ComposerTraitRadioOption {
   readonly value: string;
   readonly label: string;
-  readonly isDefault?: boolean;
-  readonly description?: string | null;
+  readonly isDefault?: boolean | undefined;
+  readonly description?: string | null | undefined;
 }
 
 export function ComposerTraitRadioSectionComposition(props: {
@@ -20,12 +20,12 @@ export function ComposerTraitRadioSectionComposition(props: {
     readonly enabled: boolean;
     readonly onToggle: () => void;
   };
-  readonly note?: ReactNode;
+  readonly note?: ReactNode | undefined;
   readonly value: string;
   readonly options: ReadonlyArray<ComposerTraitRadioOption>;
-  readonly disabled?: boolean;
+  readonly disabled?: boolean | undefined;
   readonly onValueChange: (value: string) => void;
-  readonly onSelectionComplete?: () => void;
+  readonly onSelectionComplete?: (() => void) | undefined;
 }) {
   return (
     <ComposerTraitSectionElement

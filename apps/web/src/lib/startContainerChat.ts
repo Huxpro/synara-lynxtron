@@ -14,7 +14,7 @@ export type StartContainerChatResult =
   | { ok: true; threadId: ThreadId | null }
   | { ok: false; error: string };
 
-type StartFreshContainerChat = (options: { fresh: true }) => Promise<StartContainerChatResult>;
+type StartFreshContainerChat = (options?: { fresh?: boolean }) => Promise<StartContainerChatResult>;
 
 /**
  * Starts a fresh chat in the surface that owns the active project. Thread routes are shared by
@@ -27,11 +27,13 @@ export function startFreshChatForActiveSurface(input: {
   readonly handleNewChat: StartFreshContainerChat;
   readonly handleNewStudioChat: StartFreshContainerChat;
 }): Promise<StartContainerChatResult> {
-  const handler =
-    input.isStudioRoute || isStudioContainerProject(input.activeProject, input.paths)
-      ? input.handleNewStudioChat
-      : input.handleNewChat;
-  return handler({ fresh: true });
+  const isStudio =
+    input.isStudioRoute || isStudioContainerProject(input.activeProject, input.paths);
+  const handler = isStudio ? input.handleNewStudioChat : input.handleNewChat;
+  // Studio always mints a fresh draft; home chat reuses the stored draft thread
+  // when one exists (so a draft typed in a new chat survives switching threads),
+  // falling back to a fresh draft only when there is nothing to resume.
+  return isStudio ? handler({ fresh: true }) : handler();
 }
 
 /**
@@ -46,6 +48,7 @@ export async function startContainerChat(input: {
     options?: NewThreadOptions,
   ) => Promise<ThreadId | null>;
   readonly fresh?: boolean | undefined;
+  readonly forceLocalWorkspace?: boolean | undefined;
   readonly errorLabel: string;
 }): Promise<StartContainerChatResult> {
   try {
@@ -54,7 +57,14 @@ export async function startContainerChat(input: {
       return { ok: false, error: input.errorLabel };
     }
     const threadOptions: NewThreadOptions | undefined =
-      input.fresh === true ? { fresh: true, envMode: "local", worktreePath: null } : undefined;
+      input.fresh === true || input.forceLocalWorkspace === true
+        ? {
+            ...(input.fresh === true ? { fresh: true } : {}),
+            envMode: "local",
+            branch: null,
+            worktreePath: null,
+          }
+        : undefined;
     const threadId = await input.handleNewThread(projectId, threadOptions);
     return { ok: true, threadId };
   } catch (error) {

@@ -7,7 +7,11 @@ import { type ProviderKind, type ServerProviderStatus, type ThreadId } from "@sy
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import type { Project } from "../../types";
-import { formatVoiceRecordingDuration, useVoiceRecorder } from "../../lib/voiceRecorder";
+import {
+  formatVoiceRecordingDuration,
+  isVoiceRecordingCancelledError,
+  useVoiceRecorder,
+} from "../../lib/voiceRecorder";
 import { readNativeApi } from "../../nativeApi";
 import {
   isVoiceRecorderActionArmed,
@@ -77,10 +81,11 @@ export function useComposerVoiceController(
     pendingUserInputCount,
     onTranscriptReady,
     refreshVoiceStatus,
-    actionArmDelayMs = 0,
+    actionArmDelayMs: actionArmDelayMsProp,
     failureCopy: failureCopyOverrides,
     onGuardWarning,
   } = options;
+  const actionArmDelayMs = actionArmDelayMsProp ?? 0;
   const {
     isRecording: isVoiceRecording,
     durationMs: voiceRecordingDurationMs,
@@ -124,7 +129,15 @@ export function useComposerVoiceController(
         setIsVoiceTranscribing(false);
       }
     });
-  }, [cancelVoiceRecording, threadId]);
+  }, [cancelVoiceRecording, selectedProvider, threadId]);
+
+  useEffect(
+    () => () => {
+      voiceTranscriptionRequestIdRef.current += 1;
+      voiceRecordingStartedAtRef.current = null;
+    },
+    [],
+  );
 
   useEffect(() => {
     if (canStartVoiceNotes || !isVoiceRecording) {
@@ -189,7 +202,20 @@ export function useComposerVoiceController(
     try {
       await startVoiceRecording();
       voiceRecordingStartedAtRef.current = performance.now();
+      const api = readNativeApi();
+      const cwd = activeProject?.cwd;
+      if (!cwd) return;
+      void api?.server
+        .prewarmVoice?.({
+          provider: "codex",
+          cwd,
+          ...(activeThreadId ? { threadId: activeThreadId } : {}),
+        })
+        .catch(() => undefined);
     } catch (error) {
+      if (isVoiceRecordingCancelledError(error)) {
+        return;
+      }
       toastManager.add({
         type: "error",
         title: "Could not start recording",

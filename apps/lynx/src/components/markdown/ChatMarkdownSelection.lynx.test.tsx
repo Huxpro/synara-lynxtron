@@ -40,7 +40,8 @@ describe("Lynx transcript text selection", () => {
     expect(transcriptSource).toContain("TranscriptSelectionToolbar--${layout.placement}");
     expect(transcriptSource).toContain("catchmousedown={() =>");
     expect(transcriptSource).toContain("addToChatPointerActivationRef");
-    expect(transcriptSource).toContain("<PencilIcon");
+    // Electron removed saved highlights and underlines (upstream #1131).
+    expect(transcriptSource).not.toContain("<PencilIcon");
     expect(transcriptSource).not.toContain('TranscriptSelectionActionGlyph">✎');
     expect(transcriptSource).toContain("setSelectedAssistantMessageId(null);");
     expect(transcriptSource).toContain("setTextSelection(null);");
@@ -49,6 +50,5 @@ describe("Lynx transcript text selection", () => {
     );
     expect(styles).toContain(".TranscriptSelectionToolbar--top");
     expect(styles).toContain(".TranscriptSelectionToolbar--bottom");
-    expect(transcriptSource).toContain('type: "thread.marker.add"');
   });
 });

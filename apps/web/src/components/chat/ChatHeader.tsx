@@ -12,8 +12,7 @@ import {
   type ResolvedKeybindingsConfig,
   type ThreadId,
 } from "@synara/contracts";
-import { resolveThreadHeaderIconKind } from "@synara/shared/threadHeaderIdentity";
-import { resolveThreadHeaderActionState } from "@synara/shared/threadHeaderActions";
+import { isGenericChatThreadTitle } from "@synara/shared/chatThreads";
 import React, { type Dispatch, type SetStateAction, useEffect, useRef, useState } from "react";
 import { FiGitBranch } from "react-icons/fi";
 import { HiMiniArrowsPointingOut } from "react-icons/hi2";
@@ -39,6 +38,7 @@ import {
   SurfaceChipIcon,
   SurfaceTabChip,
 } from "./chatHeaderControls";
+import { DiffStat } from "../ui/diff-stat";
 import { IconButton } from "../ui/icon-button";
 import { Badge } from "../ui/badge";
 import { Menu, MenuItem, MenuTrigger } from "../ui/menu";
@@ -63,10 +63,7 @@ import { useOpenFavoriteEditorShortcut } from "~/hooks/useOpenFavoriteEditorShor
 import type { RepoDiffTotals } from "~/hooks/useRepoDiffTotals";
 import { ProviderIcon } from "../ProviderIcon";
 import { ProviderUsageMenuControl } from "../ProviderUsageMenuControl";
-import { ChatSurfaceHeaderIdentity } from "./ChatSurfaceHeaderIdentity";
 import { EnvironmentToggle, type EnvironmentToggleState } from "./environment/EnvironmentToggle";
-import { EditorRailAddMenuComposition } from "./EditorRailAddMenuComposition";
-import { IndependentTabRow } from "./IndependentTabRow";
 
 /**
  * Width (px) below which collapsible header controls drop their text labels and
@@ -88,6 +85,10 @@ interface ChatHeaderProps {
   className?: string;
   hideSidebarControls?: boolean;
   hideHandoffControls?: boolean;
+  // Empty-draft landings hide all thread-scoped chrome (title, Hand off, project
+  // scripts, git/open-in) — the chat hasn't started yet — keeping only the sidebar
+  // cluster plus the Environment and right-panel toggles.
+  minimalChrome?: boolean;
   isGitRepo: boolean;
   openInTarget: string | null;
   activeProjectScripts: ProjectScript[] | undefined;
@@ -107,6 +108,8 @@ interface ChatHeaderProps {
   showDiffToggle?: boolean;
   diffOpen: boolean;
   diffDisabledReason?: string | null;
+  rightDockOpen?: boolean;
+  onToggleRightDock?: () => void;
   surfaceMode?: "single" | "split";
   isSidechat?: boolean;
   // When provided, the header collapses the
@@ -172,7 +175,9 @@ function EditorChatHistoryMenu(props: {
   onNavigateToThread: (threadId: ThreadId) => void;
 }) {
   const { settings } = useAppSettings();
-  const selectDisplayThreads = createSidebarDisplayThreadsSelector();
+  const selectDisplayThreads = createSidebarDisplayThreadsSelector({
+    hideAutomationRunThreads: !settings.showAutomationRunThreads,
+  });
   const displayThreads = useStore(selectDisplayThreads);
   const historyThreads = sortThreadsForSidebar(
     displayThreads.filter((thread) => thread.projectId === props.projectId),
@@ -216,7 +221,7 @@ function EditorChatHistoryMenu(props: {
               {thread.id === props.activeThreadId ? (
                 <CheckIcon className="size-3.5 shrink-0 text-muted-foreground" />
               ) : (
-                <span className="shrink-0 text-[10px] text-muted-foreground tabular-nums">
+                <span className="shrink-0 text-ui-xs text-muted-foreground tabular-nums">
                   {formatRelativeTime(thread.updatedAt ?? thread.createdAt)}
                 </span>
               )}
@@ -257,7 +262,9 @@ function EditorRailTabs(props: {
         ];
   });
   const [terminalTabOpen, setTerminalTabOpen] = useState(props.terminalAvailable);
-  const selectDisplayThreads = createSidebarDisplayThreadsSelector();
+  const selectDisplayThreads = createSidebarDisplayThreadsSelector({
+    hideAutomationRunThreads: !settings.showAutomationRunThreads,
+  });
   const displayThreads = useStore(selectDisplayThreads);
   const currentChatTab: EditorRailChatTab = {
     id: props.activeThreadId,
@@ -273,7 +280,7 @@ function EditorRailTabs(props: {
   // asynchronous (no wasted pre-paint render), which also keeps this component
   // eligible for React Compiler; tab seeding/mirroring is invisible at a tick.
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
+    const timeoutId = window.setTimeout(() => {
       const storedTabs = readEditorRailChatTabs(props.projectId);
       setOpenChatTabs(
         storedTabs.length > 0
@@ -287,22 +294,22 @@ function EditorRailTabs(props: {
             ],
       );
     }, 0);
-    return () => clearTimeout(timeoutId);
+    return () => window.clearTimeout(timeoutId);
   }, [props.activeProvider, props.activeThreadId, props.activeThreadTitle, props.projectId]);
   useEffect(() => {
     if (!props.terminalAvailable) {
       return;
     }
-    const timeoutId = setTimeout(() => {
+    const timeoutId = window.setTimeout(() => {
       setTerminalTabOpen(true);
     }, 0);
-    return () => clearTimeout(timeoutId);
+    return () => window.clearTimeout(timeoutId);
   }, [props.terminalAvailable]);
   useEffect(() => {
     if (props.activeSurface !== "chat") {
       return;
     }
-    const timeoutId = setTimeout(() => {
+    const timeoutId = window.setTimeout(() => {
       const activeChatTab: EditorRailChatTab = {
         id: props.activeThreadId,
         title: props.activeThreadTitle,
@@ -323,7 +330,7 @@ function EditorRailTabs(props: {
         return current.map((thread) => (thread.id === activeChatTab.id ? activeChatTab : thread));
       });
     }, 0);
-    return () => clearTimeout(timeoutId);
+    return () => window.clearTimeout(timeoutId);
   }, [
     props.activeProvider,
     props.activeSurface,
@@ -352,6 +359,8 @@ function EditorRailTabs(props: {
       : openChatTabs;
   const chatTabs = orderedOpenTabs.map((thread) => sidebarThreadById.get(thread.id) ?? thread);
   const terminalTabVisible = terminalTabOpen || props.terminalAvailable;
+  const tabCount = chatTabs.length + (terminalTabVisible ? 1 : 0);
+  const shouldShowTabs = tabCount > 1;
   const newTerminalTab = () => {
     setTerminalTabOpen(true);
     props.onNewTerminal();
@@ -395,47 +404,49 @@ function EditorRailTabs(props: {
   };
 
   return (
-    <IndependentTabRow
-      actionPlacement="start"
-      className="flex-1 gap-2 [-webkit-app-region:no-drag]"
-      owner="chat"
-      actions={
-        <>
-          <Menu modal={false}>
-            <MenuTrigger
-              render={
-                <IconButton
-                  variant="ghost"
-                  size="icon-xs"
-                  label="New editor rail item"
-                  title="New"
-                  className="size-5 shrink-0 text-muted-foreground hover:text-foreground"
-                >
-                  <PlusIcon className="size-3.5" />
-                </IconButton>
-              }
-            />
-            <ComposerPickerMenuPopup
-              align="start"
-              side="bottom"
-              sideOffset={6}
-              className="w-44 min-w-44"
-            >
-              <EditorRailAddMenuComposition
-                onNewChat={props.onNewChat}
-                onNewTerminal={newTerminalTab}
-              />
-            </ComposerPickerMenuPopup>
-          </Menu>
-          <EditorChatHistoryMenu
-            projectId={props.projectId}
-            activeThreadId={props.activeThreadId}
-            onNavigateToThread={openChatTab}
+    <div className="flex min-w-0 flex-1 items-center gap-2 [-webkit-app-region:no-drag]">
+      <div className="flex shrink-0 items-center gap-0.5">
+        <Menu modal={false}>
+          <MenuTrigger
+            render={
+              <IconButton
+                variant="ghost"
+                size="icon-xs"
+                label="New editor rail item"
+                title="New"
+                className="size-5 shrink-0 text-muted-foreground hover:text-foreground"
+              >
+                <PlusIcon className="size-3.5" />
+              </IconButton>
+            }
           />
-        </>
-      }
-      tabs={
-        <>
+          <ComposerPickerMenuPopup
+            align="start"
+            side="bottom"
+            sideOffset={6}
+            className="w-44 min-w-44"
+          >
+            <MenuItem onClick={props.onNewChat}>
+              <MessageCircleIcon className="size-3.5 shrink-0 text-muted-foreground" />
+              <span>New chat</span>
+            </MenuItem>
+            <MenuItem onClick={newTerminalTab}>
+              <TerminalIcon className="size-3.5 shrink-0 text-muted-foreground" />
+              <span>New terminal</span>
+            </MenuItem>
+          </ComposerPickerMenuPopup>
+        </Menu>
+        <EditorChatHistoryMenu
+          projectId={props.projectId}
+          activeThreadId={props.activeThreadId}
+          onNavigateToThread={openChatTab}
+        />
+      </div>
+      {shouldShowTabs ? (
+        // Same chip tabs as the right dock's pane strip so every tab row in the
+        // app reads identically. Pushed to the header's right edge (ml-auto) so the
+        // title and new/history controls stay grouped on the left.
+        <div className="ml-auto flex min-w-0 items-center gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {chatTabs.map((thread, index) => (
             <SurfaceTabChip
               key={thread.id}
@@ -472,11 +483,22 @@ function EditorRailTabs(props: {
               onClose={closeTerminalTab}
             />
           ) : null}
-        </>
-      }
-      tabsClassName="justify-end"
-    />
+        </div>
+      ) : null}
+    </div>
   );
+}
+
+export type ChatHeaderThreadIconKind = "none" | "provider" | "terminal";
+
+function resolveChatHeaderThreadIconKind(
+  entryPoint: ThreadPrimarySurface,
+  title?: string,
+): ChatHeaderThreadIconKind {
+  if (entryPoint === "chat" && isGenericChatThreadTitle(title)) {
+    return "none";
+  }
+  return entryPoint === "terminal" ? "terminal" : "provider";
 }
 
 export function ChatHeader({
@@ -487,8 +509,9 @@ export function ChatHeader({
   activeProjectName,
   threadBreadcrumbs,
   className,
-  hideSidebarControls = false,
-  hideHandoffControls = false,
+  hideSidebarControls: hideSidebarControlsProp,
+  hideHandoffControls: hideHandoffControlsProp,
+  minimalChrome: minimalChromeProp,
   isGitRepo,
   openInTarget,
   activeProjectScripts,
@@ -504,16 +527,18 @@ export function ChatHeader({
   handoffBadgeTargetProvider,
   gitCwd,
   diffTotals,
-  showGitActions = true,
-  showDiffToggle = true,
+  showGitActions: showGitActionsProp,
+  showDiffToggle: showDiffToggleProp,
   diffOpen,
-  diffDisabledReason = null,
-  surfaceMode = "single",
-  isSidechat = false,
-  environment = null,
-  chatLayoutAction = null,
-  changeThreadAction = null,
-  editorChatControls = null,
+  diffDisabledReason: diffDisabledReasonProp,
+  rightDockOpen: rightDockOpenProp,
+  onToggleRightDock,
+  surfaceMode: surfaceModeProp,
+  isSidechat: isSidechatProp,
+  environment: environmentProp,
+  chatLayoutAction: chatLayoutActionProp,
+  changeThreadAction: changeThreadActionProp,
+  editorChatControls: editorChatControlsProp,
   onRunProjectScript,
   onAddProjectScript,
   onUpdateProjectScript,
@@ -525,6 +550,19 @@ export function ChatHeader({
   onRenameThread,
   onCloseThreadPane,
 }: ChatHeaderProps) {
+  const hideSidebarControls = hideSidebarControlsProp ?? false;
+  const hideHandoffControls = hideHandoffControlsProp ?? false;
+  const minimalChrome = minimalChromeProp ?? false;
+  const showGitActions = showGitActionsProp ?? true;
+  const showDiffToggle = showDiffToggleProp ?? true;
+  const diffDisabledReason = diffDisabledReasonProp ?? null;
+  const rightDockOpen = rightDockOpenProp ?? false;
+  const surfaceMode = surfaceModeProp ?? "single";
+  const isSidechat = isSidechatProp ?? false;
+  const environment = environmentProp ?? null;
+  const chatLayoutAction = chatLayoutActionProp ?? null;
+  const changeThreadAction = changeThreadActionProp ?? null;
+  const editorChatControls = editorChatControlsProp ?? null;
   const { isMobile, state } = useSidebar();
   const headerRef = useRef<HTMLDivElement>(null);
   const [compact, setCompact] = useState(false);
@@ -533,22 +571,6 @@ export function ChatHeader({
     deletions: diffDeletions,
     hasChanges: showDiffTotals,
   } = diffTotals;
-  const actionState = resolveThreadHeaderActionState({
-    diffDisabledReason,
-    diffOpen,
-    diffTotals,
-    environmentEnabled: environment !== null,
-    hasProject: Boolean(activeProjectName),
-    hasProjectActionSurface: activeProjectScripts !== undefined,
-    isGitRepo,
-    gitActionsAvailable: showGitActions,
-    surface: {
-      kind: editorChatControls ? "editor-rail" : "thread",
-      layout: surfaceMode,
-      primary: hideHandoffControls && !editorChatControls ? "terminal" : "chat",
-      sidechat: isSidechat,
-    },
-  });
 
   // Own the open-favorite editor shortcut here so it survives regardless of which editor UI
   // is mounted (the legacy Open-in button, the Environment panel's Editor section, or
@@ -564,7 +586,7 @@ export function ChatHeader({
   // Split-chat creation moved to a shortcut only; the header keeps just the inline
   // "maximize" affordance for an already-split focused pane.
   const inlineChatLayoutAction = chatLayoutAction?.kind === "maximize" ? chatLayoutAction : null;
-  const threadIconKind = resolveThreadHeaderIconKind(activeThreadEntryPoint, activeThreadTitle);
+  const threadIconKind = resolveChatHeaderThreadIconKind(activeThreadEntryPoint, activeThreadTitle);
   const showSidechatTitleChip = isSidechat && compact;
 
   useEffect(() => {
@@ -588,48 +610,53 @@ export function ChatHeader({
     );
   };
 
-  // The right-side diff toggle (the "open the diff on the right" affordance). It stays in
-  // the header in both layouts — beside the Environment button when that is enabled, and
-  // inside the legacy cluster otherwise — so the familiar right-sidebar control is always a
-  // single click away. Declared once here to avoid duplicating the markup across branches.
-  const diffToggleControl = actionState.showDiff ? (
+  // Single-chat surfaces use this as a true right-dock visibility toggle. Hosts
+  // without a multi-pane dock (split/editor surfaces) keep the legacy diff-only
+  // behavior until they gain their own launcher surface.
+  const togglesRightDock = onToggleRightDock !== undefined;
+  const rightPanelToggleControl = showDiffToggle ? (
     <Tooltip>
       <TooltipTrigger
         render={
           <Toggle
             className={cn(
               CHAT_HEADER_TOGGLE_CLASS_NAME,
-              showDiffTotals ? null : "!size-7 [&_svg,&_[data-slot=central-icon]]:mx-0",
+              togglesRightDock || !showDiffTotals
+                ? "!size-7 [&_svg,&_[data-slot=central-icon]]:mx-0"
+                : null,
             )}
-            pressed={diffOpen}
-            onPressedChange={onToggleDiff}
-            aria-label="Toggle diff panel"
+            pressed={togglesRightDock ? rightDockOpen : diffOpen}
+            onPressedChange={togglesRightDock ? onToggleRightDock : onToggleDiff}
+            aria-label={togglesRightDock ? "Toggle right sidebar" : "Toggle diff panel"}
             variant="default"
             size="xs"
-            disabled={actionState.diffDisabled}
+            disabled={
+              togglesRightDock ? false : !isGitRepo || (diffDisabledReason !== null && !diffOpen)
+            }
           >
-            {actionState.diffStats ? (
-              <span className="inline-flex items-center gap-1">
-                <span className="font-system-ui text-[length:var(--app-font-size-ui-sm,11px)] sm:text-[length:var(--app-font-size-ui-xs,10px)] font-normal tracking-normal tabular-nums text-success">
-                  +{diffAdditions}
-                </span>
-                <span className="font-system-ui text-[length:var(--app-font-size-ui-sm,11px)] sm:text-[length:var(--app-font-size-ui-xs,10px)] font-normal tracking-normal tabular-nums text-destructive">
-                  -{diffDeletions}
-                </span>
-              </span>
+            {!togglesRightDock && showDiffTotals ? (
+              <DiffStat
+                className="font-system-ui text-ui-sm sm:text-ui-xs font-normal tracking-normal"
+                insertions={diffAdditions}
+                deletions={diffDeletions}
+              />
             ) : null}
             <SurfaceChipIcon icon={PanelRightCloseIcon} className="size-4" />
           </Toggle>
         }
       />
       <TooltipPopup side="bottom">
-        {!isGitRepo
-          ? "Diff panel is unavailable because this project is not a git repository."
-          : diffDisabledReason && !diffOpen
-            ? diffDisabledReason
-            : diffToggleShortcutLabel
-              ? `Toggle diff panel (${diffToggleShortcutLabel})`
-              : "Toggle diff panel"}
+        {togglesRightDock
+          ? rightDockOpen
+            ? "Close right sidebar"
+            : "Open right sidebar"
+          : !isGitRepo
+            ? "Diff panel is unavailable because this project is not a git repository."
+            : diffDisabledReason && !diffOpen
+              ? diffDisabledReason
+              : diffToggleShortcutLabel
+                ? `Toggle diff panel (${diffToggleShortcutLabel})`
+                : "Toggle diff panel"}
       </TooltipPopup>
     </Tooltip>
   ) : null;
@@ -645,7 +672,11 @@ export function ChatHeader({
       >
         {hideSidebarControls ? null : <SidebarHeaderNavigationControls />}
         <div
-          className={cn("flex min-w-0 flex-1 items-center gap-2", editorChatControls && "h-full")}
+          className={cn(
+            "flex min-w-0 flex-1 items-center gap-2",
+            editorChatControls && "h-full",
+            minimalChrome && "hidden",
+          )}
         >
           <div
             className={cn(
@@ -654,7 +685,7 @@ export function ChatHeader({
             )}
           >
             {threadBreadcrumbs.length > 0 ? (
-              <div className="flex min-w-0 items-center gap-1 overflow-hidden text-[11px] text-muted-foreground/55">
+              <div className="flex min-w-0 items-center gap-1 overflow-hidden text-ui-sm text-muted-foreground/55">
                 {threadBreadcrumbs.map((breadcrumb, index) => (
                   <React.Fragment key={breadcrumb.threadId}>
                     {index > 0 ? (
@@ -673,41 +704,53 @@ export function ChatHeader({
               </div>
             ) : null}
             <div className={cn("flex min-w-0 items-center gap-2", editorChatControls && "h-full")}>
-              <ChatSurfaceHeaderIdentity
-                title={activeThreadTitle}
-                highlighted={showSidechatTitleChip}
-                iconTitle={
-                  threadIconKind === "terminal"
-                    ? "Terminal"
-                    : PROVIDER_DISPLAY_NAMES[activeProvider]
-                }
-                icon={
-                  threadIconKind === "none" ? undefined : threadIconKind === "terminal" ? (
-                    <TerminalIcon className="size-3.5 text-[var(--color-text-accent)]" />
-                  ) : (
-                    renderProviderIcon(activeProvider, "size-3.5")
-                  )
-                }
-                onRename={() => onRenameThread()}
-                suffix={
-                  showSidechatTitleChip && onCloseThreadPane ? (
-                    <IconButton
-                      variant="chrome"
-                      size="icon-xs"
-                      label="Close selected Side"
-                      tooltip="Close selected Side"
-                      tooltipSide="bottom"
-                      className="size-5 rounded-lg [-webkit-app-region:no-drag] [&_svg]:size-3"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        onCloseThreadPane();
-                      }}
-                    >
-                      <XIcon />
-                    </IconButton>
-                  ) : null
-                }
-              />
+              <div
+                className={cn(
+                  "flex min-w-0 items-center gap-2",
+                  showSidechatTitleChip &&
+                    "rounded-lg bg-secondary py-1 pl-2 pr-1 text-secondary-foreground",
+                )}
+              >
+                {threadIconKind === "none" ? null : (
+                  <span
+                    className="inline-flex size-3.5 shrink-0 items-center justify-center"
+                    title={
+                      threadIconKind === "terminal"
+                        ? "Terminal"
+                        : PROVIDER_DISPLAY_NAMES[activeProvider]
+                    }
+                  >
+                    {threadIconKind === "terminal" ? (
+                      <TerminalIcon className="size-3.5 text-[var(--color-text-accent)]" />
+                    ) : (
+                      renderProviderIcon(activeProvider, "size-3.5")
+                    )}
+                  </span>
+                )}
+                <h2
+                  className="max-w-[clamp(12rem,42vw,36rem)] truncate font-system-ui text-ui font-normal text-foreground"
+                  title={activeThreadTitle}
+                  onDoubleClick={() => onRenameThread()}
+                >
+                  {activeThreadTitle}
+                </h2>
+                {showSidechatTitleChip && onCloseThreadPane ? (
+                  <IconButton
+                    variant="chrome"
+                    size="icon-xs"
+                    label="Close selected Side"
+                    tooltip="Close selected Side"
+                    tooltipSide="bottom"
+                    className="size-5 rounded-lg [-webkit-app-region:no-drag] [&_svg]:size-3"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      onCloseThreadPane();
+                    }}
+                  >
+                    <XIcon />
+                  </IconButton>
+                ) : null}
+              </div>
               {editorChatControls ? (
                 <EditorRailTabs
                   projectId={editorChatControls.projectId}
@@ -731,7 +774,7 @@ export function ChatHeader({
                     render={
                       <Badge
                         variant="outline"
-                        className="hidden !h-6 shrink-0 items-center justify-center gap-1 rounded-md px-1.5 text-[10px] sm:inline-flex"
+                        className="hidden !h-6 shrink-0 items-center justify-center gap-1 rounded-md px-1.5 text-ui-xs sm:inline-flex"
                       >
                         <span className="inline-flex size-4 shrink-0 items-center justify-center">
                           {renderProviderIcon(handoffBadgeSourceProvider, "size-3")}
@@ -751,10 +794,10 @@ export function ChatHeader({
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-2 [-webkit-app-region:no-drag]">
-        {actionState.showProviderUsage ? (
+        {!minimalChrome && !hideHandoffControls && !environment ? (
           <ProviderUsageMenuControl provider={activeProvider} />
         ) : null}
-        {actionState.showHandoff ? (
+        {!minimalChrome && !hideHandoffControls ? (
           <Menu modal={false}>
             <Tooltip>
               <TooltipTrigger
@@ -788,7 +831,7 @@ export function ChatHeader({
             </ComposerPickerMenuPopup>
           </Menu>
         ) : null}
-        {actionState.showProjectActions && activeProjectScripts ? (
+        {!minimalChrome && activeProjectScripts ? (
           <ProjectScriptsControl
             scripts={activeProjectScripts}
             keybindings={keybindings}
@@ -798,6 +841,15 @@ export function ChatHeader({
             onAddScript={onAddProjectScript}
             onUpdateScript={onUpdateProjectScript}
             onDeleteScript={onDeleteProjectScript}
+          />
+        ) : null}
+
+        {!minimalChrome && environment && activeProjectName && showGitActions ? (
+          <GitActionsControl
+            gitCwd={gitCwd}
+            activeThreadId={activeThreadId}
+            hideQuickActionLabel={compact}
+            visibleWhen="pull-available"
           />
         ) : null}
 
@@ -836,20 +888,21 @@ export function ChatHeader({
           </Tooltip>
         ) : null}
 
-        {/* Environment: one button consolidating Open-in-editor and git actions into the
-            Environment panel. The right-side diff toggle stays beside it so the familiar
-            "open the diff on the right" control is preserved. Falls back to the legacy split
-            controls when no environment is resolved. */}
-        {actionState.showEnvironment && environment ? (
+        {/* Environment: one button consolidating Open-in-editor and most git actions into
+            the Environment panel. Pull still appears in this action cluster when the
+            branch is behind. The right-side panel control stays beside it, acting as the
+            multi-pane dock toggle on single chats and the legacy diff toggle in split hosts.
+            Falls back to the legacy controls when no environment is resolved. */}
+        {environment ? (
           <>
             <EnvironmentToggle environment={environment} />
-            {diffToggleControl}
+            {rightPanelToggleControl}
           </>
         ) : (
           <>
             {/* Open in editor: dedicated split-button with an editor switcher; the project
                 action control now lives beside Hand off as its own project command surface. */}
-            {actionState.showLegacyOpenIn ? (
+            {!minimalChrome && activeProjectName ? (
               <OpenInPicker
                 keybindings={keybindings}
                 availableEditors={availableEditors}
@@ -857,7 +910,7 @@ export function ChatHeader({
               />
             ) : null}
 
-            {actionState.showGitActions ? (
+            {!minimalChrome && activeProjectName && showGitActions ? (
               <GitActionsControl
                 gitCwd={gitCwd}
                 activeThreadId={activeThreadId}
@@ -865,7 +918,7 @@ export function ChatHeader({
                 onRegisterCommitAndPushTrigger={onRegisterCommitAndPushTrigger}
               />
             ) : null}
-            {diffToggleControl}
+            {rightPanelToggleControl}
           </>
         )}
       </div>

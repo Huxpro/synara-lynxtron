@@ -1,3 +1,11 @@
+import { Schema } from "effect";
+import type {
+  ImportProjectInput,
+  ImportProjectResult,
+  ListProjectImportsInput,
+  ListProjectImportsResult,
+} from "./projectImport";
+
 import type {
   AuthBearerBootstrapResult,
   AuthBootstrapInput,
@@ -26,9 +34,13 @@ import type {
   AutomationCreateInput,
   AutomationDefinition,
   AutomationDeleteInput,
+  AutomationGetMemoryInput,
   AutomationListInput,
   AutomationListResult,
   AutomationMarkRunReadInput,
+  AutomationMemory,
+  AutomationResolveProposalInput,
+  AutomationResolveProposalResult,
   AutomationRunActionResult,
   AutomationRunNowInput,
   AutomationRunNowResult,
@@ -38,6 +50,7 @@ import type {
 import type {
   GitCheckoutInput,
   GitActionProgressEvent,
+  GitWorktreeSetupProgressEvent,
   GitCreateBranchInput,
   GitCreateDetachedWorktreeInput,
   GitCreateDetachedWorktreeResult,
@@ -55,10 +68,17 @@ import type {
   GitInitInput,
   GitListBranchesInput,
   GitListBranchesResult,
+  GitListRecentCommitsInput,
+  GitListRecentCommitsResult,
   GitPullInput,
   GitPullResult,
+  GitBlameLineInput,
+  GitBlameLineResult,
+  GitReadFileAtRevInput,
+  GitReadFileAtRevResult,
   GitReadWorkingTreeDiffInput,
   GitReadWorkingTreeDiffResult,
+  GitWorkingTreeDiffStatsResult,
   GitRemoveIndexLockInput,
   GitRemoveWorktreeInput,
   GitResolvePullRequestResult,
@@ -78,6 +98,11 @@ import type {
   GitUnstageFilesInput,
   GitUnstageFilesResult,
 } from "./git";
+import type {
+  GitHubProjectProvisionInput,
+  GitHubProjectProvisionProgressEvent,
+  GitHubProjectProvisionResult,
+} from "./githubProjectProvisioning";
 import type {
   PullRequestActionInput,
   PullRequestActionResult,
@@ -105,10 +130,20 @@ import type {
   ProjectListDirectoriesResult,
   ProjectReadFileInput,
   ProjectReadFileResult,
+  ProjectFileChangeEvent,
+  ProjectWatchFileInput,
+  ProjectPrewarmSearchIndexInput,
+  ProjectPrewarmSearchIndexResult,
+  ProjectResolveWorkspaceFileReferencesInput,
+  ProjectResolveWorkspaceFileReferencesResult,
+  ProjectResolveOutOfRootFileReferenceInput,
+  ProjectResolveOutOfRootFileReferenceResult,
   ProjectRunDevServerInput,
   ProjectRunDevServerResult,
   ProjectSearchEntriesInput,
   ProjectSearchEntriesResult,
+  ProjectSearchContentInput,
+  ProjectSearchContentResult,
   ProjectSearchLocalEntriesInput,
   ProjectSearchLocalEntriesResult,
   ProjectStopDevServerInput,
@@ -117,15 +152,71 @@ import type {
   ProjectWriteFileResult,
 } from "./project";
 import type { FilesystemBrowseInput, FilesystemBrowseResult } from "./filesystem";
+import type {
+  DeviceAttachInput,
+  DeviceBootInput,
+  DeviceBootResult,
+  DeviceDescribeUiInput,
+  DeviceScrollToElementInput,
+  DeviceScrollToElementResult,
+  DeviceDescribeUiResult,
+  DeviceDetachInput,
+  DeviceEvent,
+  DeviceInstallAppInput,
+  DeviceInstallAppResult,
+  DeviceKeyEventInput,
+  DeviceLaunchAppInput,
+  DeviceLaunchAppResult,
+  DeviceListInput,
+  DeviceListResult,
+  DeviceOpenUrlInput,
+  DevicePressButtonInput,
+  DeviceScreenshotInput,
+  DeviceScreenshotResult,
+  DeviceStartRecordingInput,
+  DeviceStartRecordingResult,
+  DeviceStopRecordingInput,
+  DeviceStopRecordingResult,
+  DeviceShutdownInput,
+  DeviceSwipeInput,
+  DeviceTapInput,
+  DeviceThreadInput,
+  DeviceTypeTextInput,
+  ThreadDeviceState,
+} from "./device";
+import type {
+  ComputerActionResult,
+  ComputerControlEnabledResult,
+  ComputerEvent,
+  ComputerGetStateInput,
+  ComputerGetStatusInput,
+  ComputerInputClickInput,
+  ComputerInputKeyInput,
+  ComputerInputScrollInput,
+  ComputerListWindowsInput,
+  ComputerListWindowsResult,
+  ComputerProvisionInput,
+  ComputerProvisionResult,
+  ComputerSetControlEnabledInput,
+  ComputerState,
+  ComputerStatusResult,
+  ComputerThreadInput,
+  ThreadComputerState,
+} from "./computer";
+import type { ComputerGetAuditHistoryInput, ComputerGetAuditHistoryResult } from "./computerAudit";
 import type { StudioListThreadOutputsInput, StudioListThreadOutputsResult } from "./studio";
 import type {
   ServerConfig,
   ServerDiagnosticsResult,
+  ServerReadThreadDiagnosticsInput,
+  ServerReadThreadDiagnosticsResult,
   ServerGenerateAutomationIntentInput,
   ServerGenerateAutomationIntentResult,
   ServerGenerateThreadRecapInput,
   ServerGenerateThreadRecapResult,
   ServerGetEnvironmentResult,
+  ServerConsumeCodexResetCreditInput,
+  ServerConsumeCodexResetCreditResult,
   ServerGetProviderUsageSnapshotInput,
   ServerGetProviderUsageSnapshotResult,
   ServerListProviderUsageInput,
@@ -144,6 +235,8 @@ import type {
   ServerUpsertKeybindingResult,
   ServerRemoveKeybindingInput,
   ServerRemoveKeybindingResult,
+  ServerVoicePrewarmInput,
+  ServerVoicePrewarmResult,
   ServerVoiceTranscriptionInput,
   ServerVoiceTranscriptionResult,
 } from "./server";
@@ -162,12 +255,18 @@ import type {
   ClientOrchestrationCommand,
   OrchestrationGetFullThreadDiffInput,
   OrchestrationGetFullThreadDiffResult,
+  OrchestrationGetThreadDetailSnapshotInput,
+  OrchestrationGetThreadDetailSnapshotResult,
   OrchestrationImportThreadInput,
   OrchestrationImportThreadResult,
+  OrchestrationRegenerateThreadTitleInput,
+  OrchestrationRegenerateThreadTitleResult,
   OrchestrationListProviderDeliveryBlockersInput,
   OrchestrationListProviderDeliveryBlockersResult,
   OrchestrationReconcileProviderDeliveryInput,
   OrchestrationReconcileProviderDeliveryResult,
+  OrchestrationPrepareQuitResumeInput,
+  OrchestrationPrepareQuitResumeResult,
   OrchestrationGetTurnDiffInput,
   OrchestrationGetTurnDiffResult,
   OrchestrationEvent,
@@ -176,6 +275,7 @@ import type {
   OrchestrationShellStreamItem,
   OrchestrationSubscribeThreadInput,
   OrchestrationThreadStreamItem,
+  OrchestrationUnsubscribeThreadInput,
 } from "./orchestration";
 import type { EditorId } from "./editor";
 import type { ThreadId } from "./baseSchemas";
@@ -204,6 +304,7 @@ import type {
   StatsGetProfileTokenStatsInput,
   StatsGetProfileTokenStatsResult,
 } from "./stats";
+import type { BrowserAnnotationMethods } from "./browserAnnotations";
 
 export interface ContextMenuItem<T extends string = string> {
   id: T;
@@ -217,6 +318,14 @@ export interface ContextMenuItem<T extends string = string> {
   type?: "normal" | "checkbox" | "radio";
   accelerator?: string;
   submenu?: readonly ContextMenuItem<T>[];
+  /** Central icon basename from the reversed set (e.g. `"pencil"`) or inline `<svg>` markup. */
+  icon?: string;
+}
+
+/** Context menu row sent over the desktop bridge with its icon pre-rasterized by the renderer. */
+export interface DesktopContextMenuItem<T extends string = string> extends ContextMenuItem<T> {
+  /** `data:image/png;base64,` template image rendered at 2x for a 16pt menu icon. */
+  iconDataUrl?: string;
 }
 
 export type DesktopUpdateStatus =
@@ -253,6 +362,9 @@ export interface DesktopUpdateState {
   errorContext: "check" | "download" | "install" | null;
   canRetry: boolean;
   installFailureCount: number;
+  // Build flavor of the running desktop app ("production" | "beta" | "canary" | "cua").
+  // The web UI uses it for beta-only branding; production builds never see it.
+  flavor: "production" | "beta" | "canary" | "cua";
   // Public URL where the user can manually download the release when the
   // in-app updater cannot apply it (silent installer failure, unsigned build,
   // read-only install location, unsupported platform). Null when no GitHub
@@ -266,10 +378,67 @@ export interface DesktopUpdateActionResult {
   state: DesktopUpdateState;
 }
 
+/** In-flight or failed beta download/install reported by the stable side. */
+export interface DesktopBetaInstallProgress {
+  readonly phase: "downloading" | "verifying" | "installing" | "opening" | "error";
+  /** 0-100 while the download reports a content length; null when indeterminate. */
+  readonly percent: number | null;
+  readonly message?: string;
+}
+
+/** Result of a stable-side probe for a parallel Synara Beta install. */
+export interface DesktopBetaChannelState {
+  /** False on web builds and unsupported probing environments. */
+  readonly supported: boolean;
+  /** Flavor of the running desktop app; the card only acts on "production". */
+  readonly flavor: "production" | "beta" | "canary" | "cua";
+  readonly installed: boolean;
+  readonly version: string | null;
+  /** True when this platform can install beta in place (macOS today). */
+  readonly canInstall: boolean;
+  /** Beta's server pid is alive (its launch marker/runtime file says so). */
+  readonly running: boolean;
+  /** Timestamp of the last completed data import reported by the beta app. */
+  readonly lastImportAt: string | null;
+  readonly lastImportError: string | null;
+  /** Public download page handed to the user when beta is not installed. */
+  readonly downloadUrl: string;
+  /** Live download/install progress; an `error` phase stays until the next attempt. */
+  readonly install: DesktopBetaInstallProgress | null;
+  /** Beta only: a stable Synara app was found to switch back to. */
+  readonly stableInstalled: boolean;
+  /** Beta only: leaving can also move the beta app to the Trash (macOS). */
+  readonly canMoveBetaToTrash: boolean;
+  /** Stable download page offered from beta when stable is not installed. */
+  readonly stableDownloadUrl: string;
+}
+
+export type DesktopBetaActionError =
+  | "not-supported"
+  | "not-installed"
+  | "beta-running"
+  | "install-failed"
+  | "launch-failed"
+  | "internal";
+
+export interface DesktopBetaActionResult {
+  readonly ok: boolean;
+  readonly error?: DesktopBetaActionError;
+  readonly message?: string;
+}
+
 export interface BrowserTabState {
+  /** Live popup relationship; not restored as an OAuth session after restart. */
+  openerTabId?: string;
   id: string;
   url: string;
   title: string;
+  /**
+   * Agent-owned tabs use a main-process WebContentsView so the exact page can
+   * stay alive while its chat route is not mounted. Older snapshots omit this
+   * field and are treated as renderer-owned by the web app.
+   */
+  runtimeSurface?: "native" | "renderer";
   status: "live" | "suspended";
   isLoading: boolean;
   canGoBack: boolean;
@@ -325,6 +494,12 @@ export interface BrowserSetPanelBoundsInput {
   threadId: ThreadId;
   bounds: BrowserPanelBounds | null;
   surface?: "native" | "renderer";
+  /** A DOM overlay temporarily covers a still-mounted browser panel. */
+  occluded?: boolean;
+  /** Keep the live native page offscreen and show a non-interactive thumbnail. */
+  preview?: boolean;
+  /** Guest page zoom for a presentation surface; omitted/1 keeps the normal 100% viewport. */
+  pageZoomFactor?: number;
 }
 
 export interface BrowserAttachWebviewInput extends BrowserTabInput {
@@ -378,15 +553,34 @@ export interface DesktopAppSnapShortcutUpdateResult {
   availability: DesktopAppSnapShortcutAvailability;
 }
 
+export type DesktopAppSnapSettingsPane = "accessibility" | "input-monitoring" | "screen-recording";
+
+/** A macOS privacy grant the AppSnap helper can check or request. */
+export type DesktopAppSnapPermissionKind = "accessibility" | "inputMonitoring" | "screenRecording";
+
+export type DesktopAppSnapPermissionGuideState = "closed" | "granted";
+
 export interface DesktopAppSnapState {
   platform: DesktopAppSnapPlatform;
   supported: boolean;
   enabled: boolean;
   status: DesktopAppSnapStatus;
   shortcut: DesktopAppSnapShortcut | null;
+  /**
+   * Only present once a caller asked about Accessibility; the helper reports
+   * just the grants it was queried for, so an absent field means "not asked".
+   */
+  accessibilityPermission?: DesktopAppSnapPermission;
   inputMonitoringPermission: DesktopAppSnapPermission;
   screenRecordingPermission: DesktopAppSnapPermission;
   message: string | null;
+  /** Explicit setup failure; unrelated AppSnap capture errors do not set this. */
+  permissionSetupErrorCode?:
+    | "permission_setup_bundle_unavailable"
+    | "permission_setup_registration_unresolved"
+    | "permission_setup_identity_mismatch";
+  /** Name macOS shows for this build in System Settings permission lists. */
+  appDisplayName: string;
 }
 
 export interface DesktopAppSnapCapture {
@@ -408,9 +602,12 @@ export interface DesktopAppSnapErrorEvent {
   capturedAt: string;
 }
 
-export interface BrowserExecuteCdpInput extends BrowserTabInput {
-  method: string;
-  params?: Record<string, unknown>;
+export interface DesktopAppSnapWindowEntry {
+  windowId: number;
+  appName: string | null;
+  bundleIdentifier: string | null;
+  windowTitle: string | null;
+  appIconDataUrl: string | null;
 }
 
 // Pushed from the desktop main process when the in-app browser copy-link chord fires
@@ -420,7 +617,15 @@ export interface BrowserCopyLinkEvent {
   url: string;
 }
 
+// Pushed after the desktop browser host has accepted an agent request. Keeping
+// the requested thread in the event prevents whichever chat happens to be
+// visible from stealing the browser session.
+export interface BrowserUseOpenPanelRequest {
+  threadId: ThreadId;
+}
+
 interface BrowserControlMethods {
+  vault?: import("./browserVault").BrowserVaultMethods;
   open: (input: BrowserOpenInput) => Promise<ThreadBrowserState>;
   close: (input: BrowserThreadInput) => Promise<ThreadBrowserState>;
   hide: (input: BrowserThreadInput) => Promise<void>;
@@ -431,7 +636,7 @@ interface BrowserControlMethods {
   copyLink: (input: BrowserTabInput) => Promise<void>;
   copyScreenshotToClipboard: (input: BrowserTabInput) => Promise<void>;
   captureScreenshot: (input: BrowserTabInput) => Promise<BrowserCaptureScreenshotResult>;
-  executeCdp: (input: BrowserExecuteCdpInput) => Promise<unknown>;
+  capturePreview: (input: BrowserTabInput) => Promise<string | null>;
   navigate: (input: BrowserNavigateInput) => Promise<ThreadBrowserState>;
   reload: (input: BrowserTabInput) => Promise<ThreadBrowserState>;
   goBack: (input: BrowserTabInput) => Promise<ThreadBrowserState>;
@@ -447,6 +652,7 @@ export interface DesktopNotificationInput {
   title: string;
   body?: string;
   silent?: boolean;
+  suppressWhenForeground?: boolean;
   threadId?: ThreadId;
 }
 
@@ -455,13 +661,100 @@ export interface DesktopWindowState {
   isFullscreen: boolean;
 }
 
+/** Main → renderer: ask whether quit should proceed while chats are running. */
+export type DesktopQuitConfirmationPresentation = "native" | "in-app";
+
+export interface DesktopQuitConfirmationRequest {
+  readonly requestId: string;
+  readonly presentation: DesktopQuitConfirmationPresentation;
+}
+
+export interface DesktopQuitConfirmationChat {
+  readonly id: string;
+  readonly title: string;
+}
+
+/**
+ * Renderer → main: first ack that the UI received the request, then the user's
+ * Stay / Quit decision. `ready` with `runningCount === 0` is treated as allow.
+ */
+export type DesktopQuitConfirmationResponse =
+  | {
+      readonly requestId: string;
+      readonly phase: "ready";
+      readonly runningCount: number;
+      readonly chats: ReadonlyArray<DesktopQuitConfirmationChat>;
+    }
+  | {
+      readonly requestId: string;
+      readonly phase: "decision";
+      readonly allow: boolean;
+    };
+
+/** Windows/Linux frameless title bar preference vs the live BrowserWindow frame. */
+export interface DesktopCustomTitleBarState {
+  supported: boolean;
+  preference: boolean;
+  active: boolean;
+  restartRequired: boolean;
+}
+
+export const DesktopAppIcon = Schema.Literals(["default", "icon", "dark", "beta"]);
+export type DesktopAppIcon = typeof DesktopAppIcon.Type;
+
 export interface SynaraStorageSnapshot {
   readonly version: 1;
   readonly exportedAt: string;
   readonly entries: Readonly<Record<string, string>>;
 }
 
+export type DesktopSafariAccessInfo =
+  | { supported: false }
+  | { supported: true; appName: string; appPath: string | null };
+
+/**
+ * One frame of the desktop app's native computer preview tap: a complete JPEG
+ * of the driven window. `seq` is monotonic per host process; the first frame
+ * marks stream start and frames simply stop when the tap ends or dies. Sent
+ * over the desktop bridge only, never through the computer WebSocket path.
+ */
+export interface DesktopComputerPreviewFrame {
+  readonly windowId: number;
+  readonly seq: number;
+  readonly jpeg: Uint8Array;
+}
+
+/**
+ * Agent cursor colors mirrored from the renderer to the desktop main process.
+ * Each channel is a `#rrggbb` string; an omitted channel keeps the driver's
+ * stock treatment for it, and `null` is the stock monochrome cursor.
+ */
+export interface DesktopAgentCursorStyle {
+  readonly fill?: string;
+  readonly rim?: string;
+  readonly shadow?: string;
+}
+
+export const DESKTOP_RENDERER_ERROR_MESSAGE_MAX_LENGTH = 1024;
+export const DESKTOP_RENDERER_ERROR_STACK_MAX_LENGTH = 8 * 1024;
+
+/** Fixed, bounded exception fields accepted by Beta's diagnostics IPC. */
+export interface DesktopRendererError {
+  readonly message: string;
+  readonly stack?: string | undefined;
+}
+
 export interface DesktopBridge {
+  /** Present only when the desktop main process enables baked-in Beta diagnostics. */
+  betaDiagnostics?: {
+    rendererReady: () => void;
+    reportError: (error: DesktopRendererError) => void;
+  };
+  safariAccess?: {
+    getInfo: () => Promise<DesktopSafariAccessInfo>;
+    openSettings: () => Promise<boolean>;
+    revealApp: () => Promise<boolean>;
+  };
   getWsUrl: () => string | null;
   /**
    * Absolute filesystem path for a File from drag/drop or file inputs.
@@ -476,8 +769,10 @@ export interface DesktopBridge {
   }) => Promise<string | null>;
   confirm: (message: string) => Promise<boolean>;
   setTheme: (theme: DesktopTheme) => Promise<void>;
+  getAppIcon?: () => Promise<DesktopAppIcon>;
+  setAppIcon: (icon: DesktopAppIcon) => Promise<void>;
   showContextMenu: <T extends string>(
-    items: readonly ContextMenuItem<T>[],
+    items: readonly DesktopContextMenuItem<T>[],
     position?: { x: number; y: number },
   ) => Promise<T | null>;
   openExternal: (url: string) => Promise<boolean>;
@@ -495,7 +790,38 @@ export interface DesktopBridge {
     getState: () => Promise<DesktopWindowState>;
     onState: (listener: (state: DesktopWindowState) => void) => () => void;
   };
+  /**
+   * Windows/Linux only. `frame` is fixed at BrowserWindow creation, so changing
+   * the preference requires a relaunch before `active` catches up.
+   */
+  customTitleBar?: {
+    getState: () => Promise<DesktopCustomTitleBarState>;
+    setPreference: (enabled: boolean) => Promise<DesktopCustomTitleBarState>;
+    relaunch: () => Promise<void>;
+  };
+  /**
+   * Live desktop frames from the native computer frame tap, desktop app only.
+   * Plain browser clients never see this member; their preview keeps drawing
+   * the WebSocket stills stream.
+   */
+  computerPreview?: {
+    onFrame: (listener: (frame: DesktopComputerPreviewFrame) => void) => () => void;
+  };
+  /**
+   * Desktop-owned computer preferences. `setCursorStyle` mirrors the agent
+   * cursor colors to the main process, which persists them for the next Cua
+   * driver session and live-pushes them when a session is already open.
+   * `null` restores the stock cursor. Plain browser clients never see this
+   * member; their settings stay local and the driver is not running there.
+   */
+  computer?: {
+    setCursorStyle: (style: DesktopAgentCursorStyle | null) => Promise<void>;
+  };
   onMenuAction: (listener: (action: string) => void) => () => void;
+  onQuitConfirmationRequest: (
+    listener: (request: DesktopQuitConfirmationRequest) => void,
+  ) => () => void;
+  replyQuitConfirmation: (response: DesktopQuitConfirmationResponse) => void;
   /** Current `webContents` page zoom (1 = 100%). Used to keep macOS traffic-light gutter aligned. */
   getZoomFactor: () => number;
   onZoomFactorChange: (listener: (zoomFactor: number) => void) => () => void;
@@ -504,20 +830,61 @@ export interface DesktopBridge {
   downloadUpdate: () => Promise<DesktopUpdateActionResult>;
   installUpdate: () => Promise<DesktopUpdateActionResult>;
   onUpdateState: (listener: (state: DesktopUpdateState) => void) => () => void;
+  /** Stable→Beta opt-in surface. Absent on builds that do not ship it. */
+  beta?: {
+    getState: () => Promise<DesktopBetaChannelState>;
+    /** Downloads and installs Synara Beta when missing (macOS), then opens it. */
+    install: () => Promise<DesktopBetaActionResult>;
+    /**
+     * Installs Synara Beta when missing (macOS), writes the import marker, and
+     * launches it to consume the import.
+     */
+    importAndLaunch: () => Promise<DesktopBetaActionResult>;
+    launch: () => Promise<DesktopBetaActionResult>;
+    /**
+     * Beta only: opens stable Synara, optionally moves the beta app to the
+     * Trash (macOS), then quits beta. Beta data stays in the beta home.
+     */
+    leave: (input: { readonly moveToTrash: boolean }) => Promise<DesktopBetaActionResult>;
+  };
   notifications: {
     isSupported: () => Promise<boolean>;
     show: (input: DesktopNotificationInput) => Promise<boolean>;
   };
   appSnap: {
-    getState: () => Promise<DesktopAppSnapState>;
+    captureCurrentApp: (requestId: string) => Promise<DesktopAppSnapCapture>;
+    cancelCapture: (requestId: string) => Promise<void>;
+    getState: (
+      permissions?: readonly DesktopAppSnapPermissionKind[],
+    ) => Promise<DesktopAppSnapState>;
     setEnabled: (enabled: boolean) => Promise<DesktopAppSnapState>;
     checkShortcut: (
       shortcut: DesktopAppSnapShortcut,
     ) => Promise<DesktopAppSnapShortcutAvailability>;
     setShortcut: (shortcut: DesktopAppSnapShortcut) => Promise<DesktopAppSnapShortcutUpdateResult>;
-    requestPermissions: () => Promise<DesktopAppSnapState>;
+    requestPermissions: (
+      permissions?: readonly DesktopAppSnapPermissionKind[],
+    ) => Promise<DesktopAppSnapState>;
+    /**
+     * Reads current grants without prompting, then walks the floating permission
+     * coach through each pane still missing a grant — opening its System
+     * Settings page and raising that pane's prompt as each step begins, so macOS
+     * never shows several permission dialogs at once.
+     */
+    startPermissionSetup: (
+      permissions: readonly DesktopAppSnapPermissionKind[],
+    ) => Promise<DesktopAppSnapState>;
     listPendingCaptures: () => Promise<DesktopAppSnapCapture[]>;
     acknowledgeCapture: (captureId: string) => Promise<void>;
+    listWindows: () => Promise<DesktopAppSnapWindowEntry[]>;
+    captureWindow: (input: { windowId: number }) => Promise<DesktopAppSnapCapture>;
+    openPermissionSettings: (pane: DesktopAppSnapSettingsPane) => Promise<boolean>;
+    restartApp: () => Promise<void>;
+    showPermissionGuide: (pane: DesktopAppSnapSettingsPane) => Promise<void>;
+    hidePermissionGuide: () => Promise<void>;
+    onPermissionGuideState: (
+      listener: (state: DesktopAppSnapPermissionGuideState) => void,
+    ) => () => void;
     onCaptured: (listener: (capture: DesktopAppSnapCapture) => void) => () => void;
     onError: (listener: (error: DesktopAppSnapErrorEvent) => void) => () => void;
     onState: (listener: (state: DesktopAppSnapState) => void) => () => void;
@@ -532,7 +899,10 @@ export interface DesktopBridge {
     ) => Promise<ServerVoiceTranscriptionResult>;
   };
   browser: BrowserControlMethods & {
-    onBrowserUseOpenPanelRequest: (listener: () => void) => () => void;
+    annotations: BrowserAnnotationMethods;
+    onBrowserUseOpenPanelRequest: (
+      listener: (request: BrowserUseOpenPanelRequest) => void,
+    ) => () => void;
     onBrowserCopyLink: (listener: (event: BrowserCopyLinkEvent) => void) => () => void;
   };
 }
@@ -564,7 +934,24 @@ export interface NativeApi {
     searchLocalEntries: (
       input: ProjectSearchLocalEntriesInput,
     ) => Promise<ProjectSearchLocalEntriesResult>;
-    readFile: (input: ProjectReadFileInput) => Promise<ProjectReadFileResult>;
+    searchContent: (input: ProjectSearchContentInput) => Promise<ProjectSearchContentResult>;
+    prewarmSearchIndex: (
+      input: ProjectPrewarmSearchIndexInput,
+    ) => Promise<ProjectPrewarmSearchIndexResult>;
+    readFile: (
+      input: ProjectReadFileInput,
+      options?: { readonly signal?: AbortSignal },
+    ) => Promise<ProjectReadFileResult>;
+    onFileChange?: (
+      input: ProjectWatchFileInput,
+      callback: (event: ProjectFileChangeEvent) => void,
+    ) => () => void;
+    resolveWorkspaceFileReferences: (
+      input: ProjectResolveWorkspaceFileReferencesInput,
+    ) => Promise<ProjectResolveWorkspaceFileReferencesResult>;
+    resolveOutOfRootFileReference: (
+      input: ProjectResolveOutOfRootFileReferenceInput,
+    ) => Promise<ProjectResolveOutOfRootFileReferenceResult>;
     createLocalFilePreviewGrant: (
       input: ProjectCreateLocalFilePreviewGrantInput,
     ) => Promise<ProjectCreateLocalFilePreviewGrantResult>;
@@ -574,6 +961,13 @@ export interface NativeApi {
     stopDevServer: (input: ProjectStopDevServerInput) => Promise<ProjectStopDevServerResult>;
     listDevServers: () => Promise<ProjectListDevServersResult>;
     onDevServerEvent: (callback: (event: ProjectDevServerEvent) => void) => () => void;
+    provisionFromGitHub: (
+      input: GitHubProjectProvisionInput,
+      options?: { readonly signal?: AbortSignal },
+    ) => Promise<GitHubProjectProvisionResult>;
+    onProvisionProgress: (
+      callback: (event: GitHubProjectProvisionProgressEvent) => void,
+    ) => () => void;
   };
   filesystem: {
     browse: (input: FilesystemBrowseInput) => Promise<FilesystemBrowseResult>;
@@ -592,6 +986,7 @@ export interface NativeApi {
     // Existing branch/worktree API
     githubRepository: (input: GitHubRepositoryInput) => Promise<GitHubRepositoryResult>;
     listBranches: (input: GitListBranchesInput) => Promise<GitListBranchesResult>;
+    listRecentCommits: (input: GitListRecentCommitsInput) => Promise<GitListRecentCommitsResult>;
     createWorktree: (input: GitCreateWorktreeInput) => Promise<GitCreateWorktreeResult>;
     createDetachedWorktree: (
       input: GitCreateDetachedWorktreeInput,
@@ -621,9 +1016,17 @@ export interface NativeApi {
     readWorkingTreeDiff: (
       input: GitReadWorkingTreeDiffInput,
     ) => Promise<GitReadWorkingTreeDiffResult>;
+    readFileAtRev: (input: GitReadFileAtRevInput) => Promise<GitReadFileAtRevResult>;
+    workingTreeDiffStats: (
+      input: GitReadWorkingTreeDiffInput,
+    ) => Promise<GitWorkingTreeDiffStatsResult>;
+    blameLine: (input: GitBlameLineInput) => Promise<GitBlameLineResult>;
     summarizeDiff: (input: GitSummarizeDiffInput) => Promise<GitSummarizeDiffResult>;
     runStackedAction: (input: GitRunStackedActionInput) => Promise<GitRunStackedActionResult>;
     onActionProgress: (callback: (event: GitActionProgressEvent) => void) => () => void;
+    onWorktreeSetupProgress: (
+      callback: (event: GitWorktreeSetupProgressEvent) => void,
+    ) => () => void;
   };
   pullRequests: {
     list: (input: PullRequestsListInput) => Promise<PullRequestsListResult>;
@@ -681,13 +1084,20 @@ export interface NativeApi {
     listProviderUsage: (
       input: ServerListProviderUsageInput,
     ) => Promise<ServerListProviderUsageResult>;
+    consumeCodexResetCredit: (
+      input: ServerConsumeCodexResetCreditInput,
+    ) => Promise<ServerConsumeCodexResetCreditResult>;
     getDiagnostics: () => Promise<ServerDiagnosticsResult>;
+    readThreadDiagnostics: (
+      input: ServerReadThreadDiagnosticsInput,
+    ) => Promise<ServerReadThreadDiagnosticsResult>;
     generateThreadRecap: (
       input: ServerGenerateThreadRecapInput,
     ) => Promise<ServerGenerateThreadRecapResult>;
     generateAutomationIntent: (
       input: ServerGenerateAutomationIntentInput,
     ) => Promise<ServerGenerateAutomationIntentResult>;
+    prewarmVoice?: (input: ServerVoicePrewarmInput) => Promise<ServerVoicePrewarmResult>;
     transcribeVoice: (
       input: ServerVoiceTranscriptionInput,
     ) => Promise<ServerVoiceTranscriptionResult>;
@@ -716,32 +1126,47 @@ export interface NativeApi {
   orchestration: {
     getSnapshot: () => Promise<OrchestrationReadModel>;
     getShellSnapshot: () => Promise<OrchestrationShellSnapshot>;
+    getThreadDetailSnapshot: (
+      input: OrchestrationGetThreadDetailSnapshotInput,
+    ) => Promise<OrchestrationGetThreadDetailSnapshotResult>;
     dispatchCommand: (command: ClientOrchestrationCommand) => Promise<{ sequence: number }>;
     importThread: (
       input: OrchestrationImportThreadInput,
     ) => Promise<OrchestrationImportThreadResult>;
+    listProjectImports: (input: ListProjectImportsInput) => Promise<ListProjectImportsResult>;
+    importProject: (input: ImportProjectInput) => Promise<ImportProjectResult>;
+    regenerateThreadTitle: (
+      input: OrchestrationRegenerateThreadTitleInput,
+    ) => Promise<OrchestrationRegenerateThreadTitleResult>;
     repairState: () => Promise<OrchestrationReadModel>;
     getTurnDiff: (input: OrchestrationGetTurnDiffInput) => Promise<OrchestrationGetTurnDiffResult>;
     getFullThreadDiff: (
       input: OrchestrationGetFullThreadDiffInput,
     ) => Promise<OrchestrationGetFullThreadDiffResult>;
-    replayEvents: (fromSequenceExclusive: number) => Promise<OrchestrationEvent[]>;
+    replayEvents: (
+      fromSequenceExclusive: number,
+      threadId?: ThreadId,
+    ) => Promise<OrchestrationEvent[]>;
     listProviderDeliveryBlockers: (
       input?: OrchestrationListProviderDeliveryBlockersInput,
     ) => Promise<OrchestrationListProviderDeliveryBlockersResult>;
     reconcileProviderDelivery: (
       input: OrchestrationReconcileProviderDeliveryInput,
     ) => Promise<OrchestrationReconcileProviderDeliveryResult>;
+    prepareQuitResume: (
+      input: OrchestrationPrepareQuitResumeInput,
+    ) => Promise<OrchestrationPrepareQuitResumeResult>;
     subscribeShell: () => Promise<void>;
     unsubscribeShell: () => Promise<void>;
     subscribeThread: (input: OrchestrationSubscribeThreadInput) => Promise<void>;
-    unsubscribeThread: (input: OrchestrationSubscribeThreadInput) => Promise<void>;
+    unsubscribeThread: (input: OrchestrationUnsubscribeThreadInput) => Promise<void>;
     onDomainEvent: (callback: (event: OrchestrationEvent) => void) => () => void;
     onShellEvent: (callback: (event: OrchestrationShellStreamItem) => void) => () => void;
     onThreadEvent: (callback: (event: OrchestrationThreadStreamItem) => void) => () => void;
   };
   automation: {
     list: (input?: AutomationListInput) => Promise<AutomationListResult>;
+    getMemory: (input: AutomationGetMemoryInput) => Promise<AutomationMemory | null>;
     create: (input: AutomationCreateInput) => Promise<AutomationDefinition>;
     update: (input: AutomationUpdateInput) => Promise<AutomationDefinition>;
     delete: (input: AutomationDeleteInput) => Promise<void>;
@@ -749,9 +1174,56 @@ export interface NativeApi {
     cancelRun: (input: AutomationCancelRunInput) => Promise<AutomationCancelRunResult>;
     markRunRead: (input: AutomationMarkRunReadInput) => Promise<AutomationRunActionResult>;
     archiveRun: (input: AutomationArchiveRunInput) => Promise<AutomationRunActionResult>;
+    resolveProposal: (
+      input: AutomationResolveProposalInput,
+    ) => Promise<AutomationResolveProposalResult>;
     onEvent: (callback: (event: AutomationStreamEvent) => void) => () => void;
   };
   browser: BrowserControlMethods & {
+    annotations: BrowserAnnotationMethods;
     onCopyLink: (callback: (event: BrowserCopyLinkEvent) => void) => () => void;
+  };
+  // macOS-only in practice: off darwin the server answers `list`/`getThreadState`
+  // with an `unsupported-platform` availability and refuses the rest, so the pane
+  // renders its blocked state rather than the client guessing at capabilities.
+  device: {
+    list: (input: DeviceListInput) => Promise<DeviceListResult>;
+    boot: (input: DeviceBootInput) => Promise<DeviceBootResult>;
+    shutdown: (input: DeviceShutdownInput) => Promise<void>;
+    attach: (input: DeviceAttachInput) => Promise<ThreadDeviceState>;
+    detach: (input: DeviceDetachInput) => Promise<ThreadDeviceState>;
+    getThreadState: (input: DeviceThreadInput) => Promise<ThreadDeviceState>;
+    tap: (input: DeviceTapInput) => Promise<void>;
+    swipe: (input: DeviceSwipeInput) => Promise<void>;
+    typeText: (input: DeviceTypeTextInput) => Promise<void>;
+    keyEvent: (input: DeviceKeyEventInput) => Promise<void>;
+    pressButton: (input: DevicePressButtonInput) => Promise<void>;
+    installApp: (input: DeviceInstallAppInput) => Promise<DeviceInstallAppResult>;
+    launchApp: (input: DeviceLaunchAppInput) => Promise<DeviceLaunchAppResult>;
+    openUrl: (input: DeviceOpenUrlInput) => Promise<void>;
+    screenshot: (input: DeviceScreenshotInput) => Promise<DeviceScreenshotResult>;
+    startRecording: (input: DeviceStartRecordingInput) => Promise<DeviceStartRecordingResult>;
+    stopRecording: (input: DeviceStopRecordingInput) => Promise<DeviceStopRecordingResult>;
+    describeUi: (input: DeviceDescribeUiInput) => Promise<DeviceDescribeUiResult>;
+    scrollToElement: (input: DeviceScrollToElementInput) => Promise<DeviceScrollToElementResult>;
+    onEvent: (callback: (event: DeviceEvent) => void) => () => void;
+  };
+  computer: {
+    /** Thread-independent backend status for surfaces outside any conversation. */
+    getStatus: (input: ComputerGetStatusInput) => Promise<ComputerStatusResult>;
+    getAuditHistory: (
+      input: ComputerGetAuditHistoryInput,
+    ) => Promise<ComputerGetAuditHistoryResult>;
+    provision: (input: ComputerProvisionInput) => Promise<ComputerProvisionResult>;
+    setControlEnabled: (
+      input: ComputerSetControlEnabledInput,
+    ) => Promise<ComputerControlEnabledResult>;
+    getThreadState: (input: ComputerThreadInput) => Promise<ThreadComputerState>;
+    getState: (input: ComputerGetStateInput) => Promise<ComputerState>;
+    /** User input from the computer dock pane; needs no agent turn in flight. */
+    inputClick: (input: ComputerInputClickInput) => Promise<ComputerActionResult>;
+    inputScroll: (input: ComputerInputScrollInput) => Promise<ComputerActionResult>;
+    inputKey: (input: ComputerInputKeyInput) => Promise<ComputerActionResult>;
+    onEvent: (callback: (event: ComputerEvent) => void) => () => void;
   };
 }

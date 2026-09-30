@@ -34,8 +34,8 @@ export function KeyboardShortcutsSettingsComposition({
   includeDesktopShellShortcuts = false,
 }: {
   readonly keybindings: ResolvedKeybindingsConfig;
-  readonly platform?: string;
-  readonly includeDesktopShellShortcuts?: boolean;
+  readonly platform?: string | undefined;
+  readonly includeDesktopShellShortcuts?: boolean | undefined;
 }) {
   const [query, setQuery] = useState("");
   const sections = buildShortcutSheetSections({
@@ -56,12 +56,16 @@ export function KeyboardShortcutsSettingsComposition({
             entries: [
               {
                 id: "reload",
+                command: null,
+                binding: null,
                 label: "Reload app",
                 description: "Reload the current Lynx bundle while preserving the active route.",
                 shortcutLabel: `${desktopModifier}R`,
               },
               {
                 id: "force-reload",
+                command: null,
+                binding: null,
                 label: "Force reload app",
                 description:
                   "Reload the current Lynx bundle when the normal reload path is unavailable.",

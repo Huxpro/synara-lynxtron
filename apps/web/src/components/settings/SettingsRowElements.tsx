@@ -5,15 +5,15 @@
 import type { ReactNode } from "react";
 
 type ElementProps = {
-  readonly className?: string;
-  readonly children?: ReactNode;
+  readonly className?: string | undefined;
+  readonly children?: ReactNode | undefined;
 };
 
 export function SettingsRowRootElement({
   id,
   className,
   children,
-}: ElementProps & { readonly id?: string }) {
+}: ElementProps & { readonly id?: string | undefined }) {
   return (
     <div id={id} className={className} data-slot="settings-row">
       {children}
@@ -25,7 +25,7 @@ export function SettingsRowLayoutElement({
   className,
   children,
   onClick,
-}: ElementProps & { readonly onClick?: () => void }) {
+}: ElementProps & { readonly onClick?: (() => void) | undefined }) {
   return (
     <div className={className} onClick={onClick}>
       {children}

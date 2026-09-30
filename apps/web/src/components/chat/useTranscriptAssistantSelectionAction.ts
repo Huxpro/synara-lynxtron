@@ -21,20 +21,15 @@ import {
 } from "../../lib/assistantSelections";
 import {
   readTranscriptAssistantSelection,
-  resolveSelectionViewportElement,
   resolveTranscriptSelectionActionLayout,
   type TranscriptAssistantSelection,
 } from "./chatSelectionActions";
 
-import { raf } from "~/platform/frame";
-import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
-import { clearWindowSelection, onDocumentSelectionChange } from "./chatSelectionDom";
 export interface PendingTranscriptSelectionAction {
   selection: TranscriptAssistantSelection;
   left: number;
   top: number;
   placement: "top" | "bottom";
-  width: number;
 }
 
 interface UseTranscriptAssistantSelectionActionOptions {
@@ -154,7 +149,7 @@ export function useTranscriptAssistantSelectionAction(
     const container = event.currentTarget;
     const clientX = event.clientX;
     const clientY = event.clientY;
-    raf(() => {
+    window.requestAnimationFrame(() => {
       if (!enabled || !container) {
         setPendingTranscriptSelectionAction(null);
         return;
@@ -173,19 +168,12 @@ export function useTranscriptAssistantSelectionAction(
       const layout = resolveTranscriptSelectionActionLayout({
         selectionRect: selectionState.selectionRect,
         pointer: { x: clientX, y: clientY },
-        viewport: (() => {
-          const rect = (
-            resolveSelectionViewportElement(container) ?? container
-          ).getBoundingClientRect();
-          return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
-        })(),
       });
       setPendingTranscriptSelectionAction({
         selection: selectionState.selection,
         left: layout.left,
         top: layout.top,
         placement: layout.placement,
-        width: layout.width,
       });
     });
   };
@@ -201,7 +189,7 @@ export function useTranscriptAssistantSelectionAction(
       !canReferenceAssistantSelection(pendingSelection.selection)
     ) {
       setPendingTranscriptSelectionAction(null);
-      clearWindowSelection();
+      window.getSelection()?.removeAllRanges();
       return;
     }
 
@@ -234,7 +222,7 @@ export function useTranscriptAssistantSelectionAction(
     const inserted = addComposerAssistantSelectionToDraft(nextSelection);
     setPendingTranscriptSelectionAction(null);
     if (inserted) {
-      clearWindowSelection();
+      window.getSelection()?.removeAllRanges();
       scheduleComposerFocus();
     }
   };
@@ -257,14 +245,26 @@ export function useTranscriptAssistantSelectionAction(
     const handleWindowChange = () => {
       setPendingTranscriptSelectionAction(null);
     };
+    const handleSelectionChange = () => {
+      // The browser can deliver the release's selectionchange after the toolbar mounts.
+      // Keep it open while that event still describes the quote we just captured.
+      const current = readTranscriptAssistantSelection({ container: document.body });
+      if (
+        current?.selection.assistantMessageId !==
+          pendingTranscriptSelectionAction.selection.assistantMessageId ||
+        current?.selection.text !== pendingTranscriptSelectionAction.selection.text
+      ) {
+        setPendingTranscriptSelectionAction(null);
+      }
+    };
 
-    addWindowEventListener("pointerdown", handlePointerDown);
-    addWindowEventListener("resize", handleWindowChange);
-    const removeSelectionListener = onDocumentSelectionChange(handleWindowChange);
+    window.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("resize", handleWindowChange);
+    document.addEventListener("selectionchange", handleSelectionChange);
     return () => {
-      removeWindowEventListener("pointerdown", handlePointerDown);
-      removeWindowEventListener("resize", handleWindowChange);
-      removeSelectionListener();
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("resize", handleWindowChange);
+      document.removeEventListener("selectionchange", handleSelectionChange);
     };
   }, [pendingTranscriptSelectionAction]);
 

@@ -339,7 +339,6 @@ describe("shared sidebar surface routing", () => {
     expect(
       resolveSidebarPrimarySurface({
         isOnStudio: true,
-        isOnWorkspace: false,
       }),
     ).toBe("studio");
   });
@@ -348,9 +347,6 @@ describe("shared sidebar surface routing", () => {
     const source = readFileSync(new URL("./Sidebar.lynx.tsx", import.meta.url), "utf8");
     expect(source).toContain("const chatsSectionVisible = initialSortSettings.showChatsSection");
     expect(source).toContain("const studioSectionVisible = initialSortSettings.showStudioSection");
-    expect(source).toContain(
-      "const workspaceSectionVisible = initialSortSettings.showWorkspaceSection",
-    );
     expect(source).toContain('...(studioSectionVisible ? (["studio"] as const) : [])');
     expect(source).toContain("chatsSectionVisible &&");
     expect(source).toContain(

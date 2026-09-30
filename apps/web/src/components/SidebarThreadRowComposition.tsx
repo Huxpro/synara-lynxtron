@@ -39,16 +39,16 @@ export function SidebarThreadRowComposition({
   readonly provider?: string | null | undefined;
   readonly handoffSourceProvider?: string | null | undefined;
   readonly terminalEntryPoint?: boolean | undefined;
-  readonly terminalLeading?: ReactNode;
-  readonly providerLeading?: ReactNode;
-  readonly subagentLeading?: ReactNode;
-  readonly subagentTitle?: ReactNode;
+  readonly terminalLeading?: ReactNode | undefined;
+  readonly providerLeading?: ReactNode | undefined;
+  readonly subagentLeading?: ReactNode | undefined;
+  readonly subagentTitle?: ReactNode | undefined;
   readonly isActive: boolean;
   readonly variant: "pinned" | "standard";
-  readonly subagentIndentPx?: number;
+  readonly subagentIndentPx?: number | undefined;
   readonly pendingStatusColorClass?: string | null | undefined;
   readonly titleTestId?: string | undefined;
-  readonly suffix?: ReactNode;
+  readonly suffix?: ReactNode | undefined;
 }) {
   const isSubagentThread = Boolean(thread.parentThreadId);
   const showSubagentChrome = variant === "standard" && isSubagentThread;

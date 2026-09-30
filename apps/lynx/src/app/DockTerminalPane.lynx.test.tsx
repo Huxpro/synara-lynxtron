@@ -52,7 +52,6 @@ describe("Native dock terminal pane", () => {
     expect(source).toContain(" DockTerminalPaneGroupBody--hidden");
     expect(source).toContain("tabs.length >= MAX_TERMINALS_PER_GROUP");
     expect(source).toContain("resolveTerminalVisualIdentity({");
-    expect(source).toContain("deriveTerminalOutputIdentity(event.data)");
     expect(source).toContain("defaultTerminalTitleForCliKind(event.cliKind)");
     expect(source).toContain("<ActivityIndicator state={identity.state} />");
     expect(styles).toContain(".DockTerminalPaneActivity--running");

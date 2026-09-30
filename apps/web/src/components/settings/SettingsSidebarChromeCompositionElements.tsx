@@ -15,7 +15,7 @@ import {
   SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME,
 } from "~/settingsSidebarNavStyles";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function SettingsSidebarChromeRootElement(props: ChildrenProps) {
   return <div>{props.children}</div>;
@@ -59,9 +59,9 @@ export function SettingsSidebarSearchElement(props: {
   readonly value: string;
   readonly placeholder: string;
   readonly accessibleLabel: string;
-  readonly onValueChange?: (value: string) => void;
-  readonly onSubmit?: () => void;
-  readonly onEscape?: () => void;
+  readonly onValueChange?: ((value: string) => void) | undefined;
+  readonly onSubmit?: (() => void) | undefined;
+  readonly onEscape?: (() => void) | undefined;
 }) {
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {

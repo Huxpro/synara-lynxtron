@@ -4,6 +4,7 @@
 // Depends on: shared input styling plus caller-provided content slots.
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { SearchIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 import { Input } from "../ui/input";
 import {
@@ -12,8 +13,15 @@ import {
   COMPOSER_PICKER_SEARCH_HEADER_CLASS_NAME,
   COMPOSER_PICKER_SEARCH_INPUT_CLASS_NAME,
 } from "./composerPickerStyles";
+import {
+  PICKER_PANEL_PLAIN_BODY_CLASS_NAME,
+  PICKER_PANEL_PLAIN_SEARCH_HEADER_CLASS_NAME,
+  PICKER_PANEL_PLAIN_SEARCH_ICON_CLASS_NAME,
+  PICKER_PANEL_PLAIN_SEARCH_INPUT_CLASS_NAME,
+} from "./pickerPanelStyles";
 
-const MENU_NAVIGATION_KEYS = new Set([
+/** Keys a search field inside a menu must let through so list navigation keeps working. */
+export const MENU_NAVIGATION_KEYS = new Set([
   "ArrowDown",
   "ArrowUp",
   "Home",
@@ -28,6 +36,7 @@ export function PickerPanelShell(props: {
   searchPlaceholder?: string;
   query?: string;
   onQueryChange?: (query: string) => void;
+  searchInput?: ReactNode;
   stopSearchKeyPropagation?: boolean;
   autoFocusSearch?: boolean;
   children: ReactNode;
@@ -35,19 +44,35 @@ export function PickerPanelShell(props: {
   widthClassName?: string;
   bleedParentPadding?: boolean;
   listMaxHeightClassName?: string;
+  /**
+   * `"plain"` is the dense picker panel: the search area drops all field chrome (no border,
+   * fill, ring, or shadow) down to a magnifier + placeholder over a single hairline divider,
+   * and the body loses its extra padding so the list chrome owns the 4px gutter on its own.
+   * `"default"` keeps the bordered search field used by the composer submenus.
+   */
+  variant?: "default" | "plain";
 }) {
   const {
-    searchPlaceholder = "Search",
-    query = "",
+    searchPlaceholder: searchPlaceholderProp,
+    query: queryProp,
     onQueryChange,
-    stopSearchKeyPropagation = false,
-    autoFocusSearch = false,
+    searchInput,
+    stopSearchKeyPropagation: stopSearchKeyPropagationProp,
+    autoFocusSearch: autoFocusSearchProp,
     children,
     footer,
-    widthClassName = "w-72",
-    bleedParentPadding = false,
+    widthClassName: widthClassNameProp,
+    bleedParentPadding: bleedParentPaddingProp,
     listMaxHeightClassName,
+    variant: variantProp,
   } = props;
+  const searchPlaceholder = searchPlaceholderProp ?? "Search";
+  const query = queryProp ?? "";
+  const stopSearchKeyPropagation = stopSearchKeyPropagationProp ?? false;
+  const autoFocusSearch = autoFocusSearchProp ?? false;
+  const widthClassName = widthClassNameProp ?? "w-72";
+  const bleedParentPadding = bleedParentPaddingProp ?? false;
+  const isPlain = (variantProp ?? "default") === "plain";
   return (
     <div
       className={cn(
@@ -57,19 +82,22 @@ export function PickerPanelShell(props: {
         bleedParentPadding ? cn("-m-1 overflow-clip", COMPOSER_PICKER_RADIUS_CLASS_NAME) : null,
       )}
     >
-      {onQueryChange ? (
+      {onQueryChange || searchInput ? (
         <PickerPanelSearchHeader
           autoFocus={autoFocusSearch}
           bleedParentPadding={bleedParentPadding}
           placeholder={searchPlaceholder}
           query={query}
+          searchInput={searchInput}
           stopKeyPropagation={stopSearchKeyPropagation}
-          onQueryChange={onQueryChange}
+          variant={isPlain ? "plain" : "default"}
+          {...(onQueryChange ? { onQueryChange } : {})}
         />
       ) : null}
       <div
         className={cn(
-          "min-h-0 flex-1 overflow-y-auto overscroll-contain py-0.5",
+          "min-h-0 flex-1 overflow-y-auto overscroll-contain",
+          isPlain ? PICKER_PANEL_PLAIN_BODY_CLASS_NAME : "py-0.5",
           bleedParentPadding ? COMPOSER_PICKER_MODEL_LIST_SCROLL_CLASS_NAME : null,
         )}
       >
@@ -80,54 +108,73 @@ export function PickerPanelShell(props: {
   );
 }
 
+/** The search row of a picker panel; exported so the Components Lab can render it alone. */
 export function PickerPanelSearchHeader(props: {
   autoFocus?: boolean;
   bleedParentPadding?: boolean;
   disabled?: boolean;
   placeholder?: string;
   query: string;
+  searchInput?: ReactNode;
   stopKeyPropagation?: boolean;
-  onQueryChange: (query: string) => void;
+  variant?: "default" | "plain";
+  onQueryChange?: (query: string) => void;
 }) {
+  const isPlain = props.variant === "plain";
+  const canEdit = props.onQueryChange !== undefined;
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
-    if (!props.autoFocus || props.disabled) return;
+    if (!props.autoFocus || props.disabled || !canEdit) return;
     const frame = requestAnimationFrame(() => {
       searchInputRef.current?.focus();
       searchInputRef.current?.select();
     });
     return () => cancelAnimationFrame(frame);
-  }, [props.autoFocus, props.disabled]);
+  }, [props.autoFocus, props.disabled, canEdit]);
 
   return (
     <div
       className={cn(
-        props.bleedParentPadding
-          ? cn(COMPOSER_PICKER_SEARCH_HEADER_CLASS_NAME, "-top-1 pt-2")
-          : "sticky top-0 z-20 shrink-0 border-b border-border bg-[var(--composer-surface)] p-1",
+        isPlain
+          ? PICKER_PANEL_PLAIN_SEARCH_HEADER_CLASS_NAME
+          : props.bleedParentPadding
+            ? cn(COMPOSER_PICKER_SEARCH_HEADER_CLASS_NAME, "-top-1 pt-2")
+            : "sticky top-0 z-20 shrink-0 border-b border-border bg-[var(--composer-surface)] p-1",
       )}
     >
-      <Input
-        className={cn(
-          "rounded-md border-border/60 shadow-none before:hidden has-focus-visible:border-neutral-500/15 has-focus-visible:ring-0 [&_input]:font-sans",
-          props.bleedParentPadding ? COMPOSER_PICKER_SEARCH_INPUT_CLASS_NAME : "bg-background",
-        )}
-        disabled={props.disabled}
-        nativeInput
-        ref={searchInputRef}
-        size="sm"
-        type="search"
-        placeholder={props.placeholder ?? "Search"}
-        value={props.query}
-        onChange={(event) => props.onQueryChange(event.target.value)}
-        onKeyDownCapture={
-          props.stopKeyPropagation
-            ? (event) => {
-                if (!MENU_NAVIGATION_KEYS.has(event.key)) event.stopPropagation();
-              }
-            : undefined
-        }
-      />
+      {isPlain ? (
+        <SearchIcon aria-hidden="true" className={PICKER_PANEL_PLAIN_SEARCH_ICON_CLASS_NAME} />
+      ) : null}
+      {props.searchInput ?? (
+        <Input
+          className={
+            isPlain
+              ? PICKER_PANEL_PLAIN_SEARCH_INPUT_CLASS_NAME
+              : cn(
+                  "rounded-md border-border/60 shadow-none before:hidden has-focus-visible:border-neutral-500/15 has-focus-visible:ring-0 [&_input]:font-sans",
+                  props.bleedParentPadding
+                    ? COMPOSER_PICKER_SEARCH_INPUT_CLASS_NAME
+                    : "bg-background",
+                )
+          }
+          disabled={props.disabled}
+          nativeInput
+          ref={searchInputRef}
+          size="sm"
+          type="search"
+          unstyled={isPlain}
+          placeholder={props.placeholder ?? "Search"}
+          value={props.query}
+          onChange={(event) => props.onQueryChange?.(event.target.value)}
+          onKeyDownCapture={
+            props.stopKeyPropagation
+              ? (event) => {
+                  if (!MENU_NAVIGATION_KEYS.has(event.key)) event.stopPropagation();
+                }
+              : undefined
+          }
+        />
+      )}
     </div>
   );
 }

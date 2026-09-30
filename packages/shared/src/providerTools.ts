@@ -9,17 +9,13 @@ export type ProviderToolTextKey =
   | "antigravityBinaryPath"
   | "grokBinaryPath"
   | "droidBinaryPath"
-  | "kiloBinaryPath"
-  | "kiloServerUrl"
   | "openCodeBinaryPath"
   | "openCodeServerUrl"
   | "piBinaryPath"
   | "piAgentDir";
 
-export type ProviderToolPasswordKey = "kiloServerPassword" | "openCodeServerPassword";
-export type ProviderToolPasswordConfiguredKey =
-  | "kiloServerPasswordConfigured"
-  | "openCodeServerPasswordConfigured";
+export type ProviderToolPasswordKey = "openCodeServerPassword";
+export type ProviderToolPasswordConfiguredKey = "openCodeServerPasswordConfigured";
 export type ProviderToolBooleanKey = "openCodeExperimentalWebSockets";
 
 export type ProviderToolDescriptionSegment = {
@@ -186,40 +182,6 @@ export const PROVIDER_TOOL_CONFIGS: readonly ProviderToolConfig[] = [
         label: "Droid binary path",
         placeholder: "droid",
         description: [text("Leave blank to use "), code("droid"), text(" from your PATH.")],
-      },
-    ],
-  },
-  {
-    provider: "kilo",
-    docs: [
-      { label: "Install", href: "https://kilo.ai/docs/cli" },
-      { label: "Update", href: "https://kilo.ai/docs/cli" },
-      { label: "Config", href: "https://kilo.ai/docs/cli#configuration" },
-    ],
-    fields: [
-      {
-        kind: "text",
-        settingsKey: "kiloBinaryPath",
-        label: "Kilo binary path",
-        placeholder: "Kilo binary path",
-        description: [text("Leave blank to use "), code("kilo"), text(" from your PATH.")],
-      },
-      {
-        kind: "text",
-        settingsKey: "kiloServerUrl",
-        label: "Kilo server URL",
-        placeholder: "http://127.0.0.1:4096",
-        description: [
-          text("Optional existing Kilo server URL. Leave blank to spawn a local server."),
-        ],
-      },
-      {
-        kind: "password",
-        settingsKey: "kiloServerPassword",
-        configuredKey: "kiloServerPasswordConfigured",
-        label: "Kilo server password",
-        placeholder: "Kilo server password",
-        description: [text("Optional password for an externally managed Kilo server.")],
       },
     ],
   },

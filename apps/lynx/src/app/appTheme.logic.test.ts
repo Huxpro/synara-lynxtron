@@ -149,8 +149,8 @@ describe("slice root theme projection", () => {
     expect(variables["--textarea-invalid-border"]).toBe("rgba(224, 46, 42, 0.36)");
     expect(variables["--textarea-invalid-focus-border"]).toBe("rgba(224, 46, 42, 0.64)");
     expect(variables["--secondary-outline-state-surface"]).toBe("#fdfdfd");
-    expect(variables["--secondary-button-state-surface"]).toBe("#f5f6f7");
-    expect(variables["--subtle-button-state-surface"]).toBe("#f5f5f6");
+    expect(variables["--secondary-button-state-surface"]).toBe("#f8f8f9");
+    expect(variables["--subtle-button-state-surface"]).toBe("#f7f7f8");
     expect(variables["--outline-button-state-surface"]).toBe("#f5f5f6");
     expect(appStyles).toContain("--primary-hover-fill: #252525;");
     expect(appStyles).toContain("--primary-hover-fill: #e5e5e5;");

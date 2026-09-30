@@ -4,19 +4,19 @@
 
 import { useMemo, type ReactNode } from "react";
 
+import { isGenericChatThreadTitle } from "@synara/shared/chatThreads";
 import { pluralize } from "@synara/shared/text";
 
 import { createThreadSelector } from "../storeSelectors";
 import { useStore } from "../store";
-import { resolveThreadHandoffBadgeLabel } from "../lib/threadHandoff";
 import { resolveSubagentPresentationForThread } from "../lib/subagentPresentation";
+import { resolveThreadHandoffBadgeLabel } from "../lib/threadHandoff";
+import { SIDEBAR_ROW_LABEL_TEXT_CLASS_NAME } from "../sidebarRowStyles";
 import type { SidebarThreadSummary } from "../types";
 import { TerminalIcon } from "../lib/icons";
 import { cn } from "../lib/utils";
+import { ProviderIcon } from "./ProviderIcon";
 import { SidebarGlyph } from "./sidebarGlyphs";
-import { SidebarThreadSubagentIdentity } from "./SidebarThreadSubagentIdentity";
-import { SidebarThreadProviderIdentity } from "./SidebarThreadProviderIdentity";
-import { SidebarThreadRowComposition } from "./SidebarThreadRowComposition";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "./ui/tooltip";
 
 export interface SidebarThreadTerminalStatus {
@@ -45,11 +45,23 @@ function ProviderAvatarWithTerminal({
   const badgeColorClass = terminalStatus?.colorClass ?? "text-muted-foreground/55";
 
   const hasHandoff = Boolean(handoffSourceProvider);
-  const avatarNode = (
-    <SidebarThreadProviderIdentity
-      provider={provider}
-      handoffSourceProvider={handoffSourceProvider}
-    />
+  const containerClass = hasHandoff
+    ? "relative inline-flex h-3 w-4.5 shrink-0 items-center"
+    : "relative inline-flex size-3 shrink-0 items-center justify-center";
+
+  const avatarNode = hasHandoff ? (
+    <span className={containerClass}>
+      <span className="sidebar-icon-chip absolute left-0 top-1/2 inline-flex size-3 -translate-y-1/2 items-center justify-center rounded-full">
+        <ProviderIcon provider={handoffSourceProvider!} className="size-2" />
+      </span>
+      <span className="sidebar-icon-chip absolute right-0 top-1/2 z-10 inline-flex size-3 -translate-y-1/2 items-center justify-center rounded-full">
+        <ProviderIcon provider={provider} className="size-2" />
+      </span>
+    </span>
+  ) : (
+    <span className={containerClass}>
+      <ProviderIcon provider={provider} className="size-3" />
+    </span>
   );
 
   const wrappedAvatar =
@@ -95,6 +107,42 @@ function ProviderAvatarWithTerminal({
   );
 }
 
+function renderSubagentLabel(input: {
+  thread: SidebarThreadSummary;
+  threads?: Parameters<typeof resolveSubagentPresentationForThread>[0]["threads"];
+  roleClassName?: string | undefined;
+}) {
+  const presentation = resolveSubagentPresentationForThread({
+    thread: {
+      id: input.thread.id,
+      parentThreadId: input.thread.parentThreadId,
+      subagentAgentId: input.thread.subagentAgentId,
+      subagentNickname: input.thread.subagentNickname,
+      subagentRole: input.thread.subagentRole,
+      title: input.thread.title,
+    },
+    threads: input.threads,
+  });
+  const supportingLabel =
+    presentation.role ??
+    (presentation.nickname && presentation.title && presentation.title !== presentation.nickname
+      ? presentation.title
+      : null);
+
+  return (
+    <span className="min-w-0 truncate">
+      <span className="font-medium" style={{ color: presentation.accentColor }}>
+        {presentation.nickname ?? presentation.primaryLabel}
+      </span>
+      {supportingLabel ? (
+        <span className={cn("ml-1 text-muted-foreground/48", input.roleClassName)}>
+          {presentation.role ? `(${presentation.role})` : supportingLabel}
+        </span>
+      ) : null}
+    </span>
+  );
+}
+
 function SidebarSubagentLabel({
   thread,
   roleClassName,
@@ -107,18 +155,12 @@ function SidebarSubagentLabel({
     [thread.parentThreadId],
   );
   const parentThread = useStore(selectParentThread);
-  const presentation = resolveSubagentPresentationForThread({
+
+  return renderSubagentLabel({
     thread,
     threads: parentThread ? [parentThread] : undefined,
+    roleClassName,
   });
-
-  return (
-    <SidebarThreadSubagentIdentity
-      thread={thread}
-      presentation={presentation}
-      supportingClassName={cn("ml-1 text-muted-foreground/48", roleClassName)}
-    />
-  );
 }
 
 export function SidebarThreadRowContent({
@@ -128,7 +170,7 @@ export function SidebarThreadRowContent({
   terminalCount,
   isActive,
   variant,
-  subagentIndentPx = 0,
+  subagentIndentPx: subagentIndentPxProp,
   pendingStatusColorClass,
   suffix,
 }: {
@@ -142,32 +184,82 @@ export function SidebarThreadRowContent({
   pendingStatusColorClass?: string | null | undefined;
   suffix?: ReactNode;
 }) {
+  const subagentIndentPx = subagentIndentPxProp ?? 0;
+  const isSubagentThread = Boolean(thread.parentThreadId);
+  const subagentPresentation =
+    variant === "standard" && isSubagentThread
+      ? resolveSubagentPresentationForThread({
+          thread: {
+            id: thread.id,
+            parentThreadId: thread.parentThreadId,
+            subagentAgentId: thread.subagentAgentId,
+            subagentNickname: thread.subagentNickname,
+            subagentRole: thread.subagentRole,
+            title: thread.title,
+          },
+        })
+      : null;
+  const showThreadProviderAvatar = !isGenericChatThreadTitle(thread.title);
+
   return (
-    <SidebarThreadRowComposition
-      thread={thread}
-      provider={thread.session?.provider ?? thread.modelSelection.provider}
-      handoffSourceProvider={thread.handoff?.sourceProvider}
-      terminalEntryPoint={terminalEntryPoint}
-      terminalLeading={<SidebarGlyph icon={TerminalIcon} variant="chrome" />}
-      providerLeading={
+    <>
+      {variant === "standard" && isSubagentThread ? (
+        <span
+          aria-hidden="true"
+          className="relative inline-flex h-3.5 w-[18px] shrink-0 items-center"
+          style={{ marginLeft: `${subagentIndentPx}px` }}
+        >
+          <span className="absolute left-1.5 top-0 bottom-0 w-px rounded-full bg-border/35" />
+          <span className="absolute left-1.5 top-1/2 h-px w-2.5 -translate-y-1/2 bg-border/35" />
+          <span
+            className="absolute left-1.5 top-1/2 size-[5px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{ backgroundColor: subagentPresentation?.accentColor }}
+          />
+        </span>
+      ) : terminalEntryPoint ? (
+        <SidebarGlyph icon={TerminalIcon} variant="chrome" />
+      ) : showThreadProviderAvatar ? (
         <ProviderAvatarWithTerminal
           thread={thread}
           terminalStatus={terminalStatus}
           terminalCount={terminalCount}
         />
-      }
-      subagentTitle={
-        <SidebarSubagentLabel
-          thread={thread}
-          roleClassName={variant === "standard" ? "text-muted-foreground/42" : undefined}
-        />
-      }
-      isActive={isActive}
-      variant={variant}
-      subagentIndentPx={subagentIndentPx}
-      pendingStatusColorClass={pendingStatusColorClass}
-      titleTestId={variant === "pinned" ? `thread-title-${thread.id}` : undefined}
-      suffix={suffix}
-    />
+      ) : null}
+      <div
+        className={cn(
+          "flex min-w-0 flex-1 items-center text-left",
+          variant === "standard" && isSubagentThread ? "gap-[5px]" : "gap-1.5",
+        )}
+      >
+        <span
+          className={cn(
+            "min-w-0 flex-1 truncate-fade text-ui",
+            isActive ? "text-foreground" : SIDEBAR_ROW_LABEL_TEXT_CLASS_NAME,
+            variant === "standard" && isSubagentThread
+              ? "leading-[18px] text-foreground/80"
+              : "leading-5",
+          )}
+          data-testid={variant === "pinned" ? `thread-title-${thread.id}` : undefined}
+        >
+          {isSubagentThread ? (
+            <SidebarSubagentLabel
+              thread={thread}
+              roleClassName={variant === "standard" ? "text-muted-foreground/42" : undefined}
+            />
+          ) : (
+            thread.title
+          )}
+        </span>
+        {!isSubagentThread && pendingStatusColorClass ? (
+          <span
+            aria-label="Pending approval"
+            className={cn("shrink-0 text-ui-xs font-medium", pendingStatusColorClass)}
+          >
+            Pending
+          </span>
+        ) : null}
+      </div>
+      {suffix}
+    </>
   );
 }

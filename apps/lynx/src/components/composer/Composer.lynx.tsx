@@ -9,6 +9,7 @@ import type {
   ProviderSkillReference,
   ServerProviderStatus,
   OrchestrationThreadActivity,
+  RuntimeMode,
 } from "@synara/contracts";
 import agentMentionSvg from "@synara-central-icons/robot.svg?raw";
 import skillSvg from "@synara-central-icons/building-blocks.svg?raw";
@@ -57,7 +58,7 @@ import { shouldUseCompactComposerFooter } from "@synara-web/components/composerF
 import {
   deriveCumulativeCostUsd,
   deriveContextWindowMeterDisplay,
-  deriveLatestContextWindowSnapshot,
+  deriveLatestContextWindowState,
 } from "@synara-web/lib/contextWindow";
 import { ComposerContextWindowMeterElement } from "../../adapters/ComposerInputCompositionElements.lynx";
 import { ComposerReferenceAttachmentsComposition } from "@synara-web/components/chat/ComposerReferenceAttachmentsComposition";
@@ -313,7 +314,7 @@ interface ComposerProps {
   readonly activeTurnId: string | null;
   readonly interactionMode: "default" | "plan" | undefined;
   readonly modelSelection: ModelSelection | undefined;
-  readonly runtimeMode: "full-access" | "approval-required" | undefined;
+  readonly runtimeMode: RuntimeMode | undefined;
   readonly sessionStatus: string | null;
   readonly threadId: string;
   readonly draftId?: string;
@@ -326,14 +327,12 @@ interface ComposerProps {
   readonly onBeforeSend?: (input: {
     readonly interactionMode: "default" | "plan";
     readonly modelSelection: ModelSelection;
-    readonly runtimeMode: "full-access" | "approval-required";
+    readonly runtimeMode: RuntimeMode;
     readonly text: string;
   }) => Promise<void>;
   readonly onProviderStatusesChange?: (statuses: readonly ServerProviderStatus[]) => void;
   readonly onSetInteractionMode?: (interactionMode: "default" | "plan") => void | Promise<void>;
-  readonly onSetRuntimeMode?: (
-    runtimeMode: "full-access" | "approval-required",
-  ) => void | Promise<void>;
+  readonly onSetRuntimeMode?: (runtimeMode: RuntimeMode) => void | Promise<void>;
   readonly onSendSucceeded?: () => void | Promise<void>;
 }
 
@@ -365,7 +364,11 @@ export function Composer({
   onSendSucceeded,
 }: ComposerProps) {
   const compactFooter = shouldUseCompactComposerFooter(availableWidth);
-  const contextWindow = useMemo(() => deriveLatestContextWindowSnapshot(activities), [activities]);
+  // Electron reads the latest usage epoch, which a completed compaction clears.
+  const contextWindow = useMemo(
+    () => deriveLatestContextWindowState(activities).snapshot,
+    [activities],
+  );
   const contextWindowDisplay = useMemo(
     () => (contextWindow === null ? null : deriveContextWindowMeterDisplay(contextWindow)),
     [contextWindow],
@@ -1625,7 +1628,7 @@ export function Composer({
     }
   }
 
-  async function setRuntimeMode(nextRuntimeMode: "full-access" | "approval-required") {
+  async function setRuntimeMode(nextRuntimeMode: RuntimeMode) {
     "background only";
     setSendError(null);
     try {

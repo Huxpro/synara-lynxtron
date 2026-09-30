@@ -50,6 +50,8 @@ export const APPROVAL_KIND_PROMPT: Record<PendingApproval["requestKind"], string
   command: "Approve this command?",
   "file-read": "Approve reading this file?",
   "file-change": "Approve this file change?",
+  permissions: "Grant these permissions?",
+  tool: "Approve this tool call?",
 };
 
 export function parseApprovalDetail(detail: string | undefined): ParsedApproval {

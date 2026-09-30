@@ -6,7 +6,6 @@
 //          ExplorerActivityBarButton, useExplorerEntryPrefetch, setFileReferenceDragData.
 
 import type { ProjectEntry, ProjectFileSystemEntry } from "@synara/contracts";
-import { shouldShowWorkspaceExplorerEntry } from "@synara/shared/workspaceExplorer";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -42,6 +41,24 @@ import { FileEntryIcon } from "./FileEntryIcon";
 import { fileRowClassName, fileRowIndentStyle } from "./fileRowStyles";
 import { PanelStateMessage } from "./PanelStateMessage";
 
+const EXPLORER_HIDDEN_DIRECTORY_NAMES = new Set([
+  ".cache",
+  ".next",
+  ".nuxt",
+  ".parcel-cache",
+  ".pnpm-store",
+  ".svelte-kit",
+  ".turbo",
+  ".vite",
+  ".yarn",
+  "build",
+  "coverage",
+  "dist",
+  "node_modules",
+  "out",
+  "target",
+]);
+
 // Mirrors the composer mention search: debounce keystrokes so they don't fan
 // out into fuzzy-search RPCs, and cap results to keep the sidebar light.
 const EXPLORER_SEARCH_QUERY_DEBOUNCE_MS = 120;
@@ -59,6 +76,16 @@ export function setFileReferenceDragData(dataTransfer: DataTransfer, path: strin
   dataTransfer.effectAllowed = "copy";
   dataTransfer.setData(CHAT_FILE_REFERENCE_DRAG_TYPE, formatChatFileReference({ path }));
   dataTransfer.setData("text/plain", path);
+}
+
+function shouldShowExplorerEntry(entry: ProjectFileSystemEntry): boolean {
+  if (entry.kind !== "directory") {
+    return true;
+  }
+  if (entry.name.startsWith(".synara")) {
+    return false;
+  }
+  return !EXPLORER_HIDDEN_DIRECTORY_NAMES.has(entry.name);
 }
 
 /**
@@ -210,7 +237,7 @@ function WorkspaceDirectory(props: {
 
   if (query.error) {
     return (
-      <p className="px-3 py-2 text-[11px] text-[var(--color-text-status-error)]">
+      <p className="px-3 py-2 text-ui-sm text-destructive/80">
         {query.error instanceof Error ? query.error.message : "Could not load directory."}
       </p>
     );
@@ -218,7 +245,7 @@ function WorkspaceDirectory(props: {
 
   return (
     <>
-      {(query.data?.entries ?? []).filter(shouldShowWorkspaceExplorerEntry).map((entry) => {
+      {(query.data?.entries ?? []).filter(shouldShowExplorerEntry).map((entry) => {
         if (entry.kind !== "directory") {
           return (
             <ExplorerRow
@@ -393,14 +420,14 @@ function WorkspaceSearchResultRow(props: {
       <div className="flex min-w-0 flex-1 items-baseline gap-1.5 overflow-hidden">
         <span className="shrink-0 truncate font-medium">{name}</span>
         {dir ? (
-          <span className="min-w-0 truncate text-[11px] text-muted-foreground/55">{dir}</span>
+          <span className="min-w-0 truncate text-ui-sm text-muted-foreground/55">{dir}</span>
         ) : null}
       </div>
     </button>
   );
 }
 
-export interface WorkspaceFileSearchState {
+interface WorkspaceFileSearchState {
   // Trimmed live input — drives the "is the box empty?" decision (tree vs results).
   inputQuery: string;
   fileMatches: ReadonlyArray<ProjectEntry>;
@@ -547,7 +574,7 @@ function WorkspaceSearchResultsBody(props: {
         )}
       </div>
       {fileMatches.length > 0 && props.search.truncated ? (
-        <p className="shrink-0 border-t border-border/45 px-3 py-1.5 text-[10px] text-muted-foreground/70">
+        <p className="shrink-0 border-t border-border/45 px-3 py-1.5 text-ui-xs text-muted-foreground/70">
           Showing the top matches. Refine the search to narrow them down.
         </p>
       ) : null}

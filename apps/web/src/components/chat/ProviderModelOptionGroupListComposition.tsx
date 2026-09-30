@@ -15,8 +15,9 @@ import {
   ProviderModelOptionListFrameElement,
   ProviderModelRadioItemElement,
 } from "~/components/chat/ProviderModelOptionGroupListCompositionElements";
+import type { FavoriteModelProvider } from "../../lib/modelFavorites.logic";
 
-export type FavoriteModelProvider = "cursor" | "kilo" | "opencode" | "pi";
+export type { FavoriteModelProvider } from "../../lib/modelFavorites.logic";
 
 export interface ProviderModelOptionGroupListCompositionProps {
   readonly groupedOptions: ReadonlyArray<ProviderModelOptionGroup>;
@@ -27,7 +28,7 @@ export interface ProviderModelOptionGroupListCompositionProps {
   readonly favoriteModelSlugSet: ReadonlySet<string> | undefined;
   readonly onToggleFavorite: (provider: FavoriteModelProvider, slug: string) => void;
   readonly onSelectModel: (slug: string) => void;
-  readonly onAfterSelection?: () => void;
+  readonly onAfterSelection?: (() => void) | undefined;
 }
 
 function ProviderModelCollapsibleGroupComposition(props: {

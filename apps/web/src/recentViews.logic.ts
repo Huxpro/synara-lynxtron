@@ -19,10 +19,6 @@ export type RecentView =
       splitViewId?: string | undefined;
     }
   | {
-      kind: "workspace";
-      workspaceId: string;
-    }
-  | {
       kind: "settings";
       section?: string | undefined;
     }
@@ -49,14 +45,8 @@ export type RecentViewDisplayIcon =
   | { kind: "chat" }
   | { kind: "provider"; provider: ProviderKind }
   | { kind: "terminal"; iconKey: TerminalIconKey }
-  | { kind: "workspace" }
   | { kind: "settings" }
   | { kind: "plugins" };
-
-export interface RecentViewWorkspaceSummary {
-  id: string;
-  title: string;
-}
 
 export interface RecentViewThreadDraftSummary {
   id: ThreadId;
@@ -76,7 +66,6 @@ export interface RecentViewThreadSummary {
 
 export interface RecentViewAvailability {
   availableThreadIds: ReadonlySet<ThreadId>;
-  availableWorkspaceIds: ReadonlySet<string>;
   availableSplitViewIds: ReadonlySet<string>;
   threadIdsBySplitViewId?: ReadonlyMap<string, ReadonlySet<ThreadId>> | undefined;
 }
@@ -100,8 +89,6 @@ export function recentViewKey(view: RecentView): string {
       return view.splitViewId
         ? `thread:${view.threadId}:split:${view.splitViewId}`
         : `thread:${view.threadId}`;
-    case "workspace":
-      return `workspace:${view.workspaceId}`;
     case "settings":
       return view.section ? `settings:${view.section}` : "settings";
     case "plugins":
@@ -113,18 +100,10 @@ export function deriveCurrentRecentView(input: {
   pathname: string;
   routeThreadId: ThreadId | null;
   activeThreadId: ThreadId | null;
-  routeWorkspaceId: string | null;
   splitViewId?: string | undefined;
   settingsSection?: string | undefined;
 }): RecentView | null {
   const splitViewId = normalizeOptionalId(input.splitViewId);
-
-  if (input.pathname.startsWith("/workspace/") && input.routeWorkspaceId) {
-    return {
-      kind: "workspace",
-      workspaceId: input.routeWorkspaceId,
-    };
-  }
 
   if (input.pathname === "/settings") {
     const section = normalizeOptionalId(input.settingsSection);
@@ -203,8 +182,6 @@ function normalizeAvailableView(
       }
       return view;
     }
-    case "workspace":
-      return availability.availableWorkspaceIds.has(view.workspaceId) ? view : null;
     case "settings":
     case "plugins":
       return view;
@@ -252,14 +229,10 @@ export function buildRecentViewDisplayEntries(input: {
   draftThreadsById?: Readonly<Record<string, RecentViewThreadDraftSummary | undefined>>;
   projects: readonly Project[];
   pinnedThreadIds: readonly ThreadId[];
-  workspacePages: readonly RecentViewWorkspaceSummary[];
   terminalVisualIdentityByThreadId?: ReadonlyMap<ThreadId, ResolvedTerminalVisualIdentity>;
 }): RecentViewDisplayEntry[] {
   const currentKey = input.currentView ? recentViewKey(input.currentView) : null;
   const projectNameById = new Map(input.projects.map((project) => [project.id, project.name]));
-  const workspaceNameById = new Map(
-    input.workspacePages.map((workspace) => [workspace.id, workspace.title]),
-  );
   const pinnedThreadIds = new Set(input.pinnedThreadIds);
 
   return input.recentViews.map((view) => {
@@ -298,13 +271,6 @@ export function buildRecentViewDisplayEntries(input: {
           isPinned: pinnedThreadIds.has(view.threadId) || Boolean(thread?.isPinned),
         };
       }
-      case "workspace":
-        return {
-          ...base,
-          icon: { kind: "workspace" },
-          title: workspaceNameById.get(view.workspaceId) ?? "Workspace",
-          subtitle: "Terminal workspace",
-        };
       case "settings":
         return {
           ...base,

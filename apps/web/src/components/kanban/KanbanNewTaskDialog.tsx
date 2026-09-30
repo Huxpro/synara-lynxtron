@@ -38,6 +38,7 @@ import { ComposerReferenceAttachments } from "~/components/chat/ComposerReferenc
 import { ComposerVoiceButton } from "~/components/chat/ComposerVoiceButton";
 import { ComposerVoiceRecorderBar } from "~/components/chat/ComposerVoiceRecorderBar";
 import { useComposerVoiceController } from "~/components/chat/useComposerVoiceController";
+import { resolveRuntimeModelDescriptor } from "~/components/chat/runtimeModelCapabilities";
 import {
   COMPOSER_COMMAND_MENU_INLINE_WRAPPER_CLASS_NAME,
   COMPOSER_EDITOR_MIN_HEIGHT_CLASS_NAME,
@@ -59,10 +60,14 @@ import { useProviderStatusesForLocalConfig } from "~/hooks/useProviderStatusesFo
 import { useComposerDropzone } from "~/hooks/useComposerDropzone";
 import { toastManager } from "~/components/ui/toast";
 import { useTheme } from "~/hooks/useTheme";
-import { ChevronRightIcon, PaperclipIcon } from "~/lib/icons";
+import { ChevronRightIcon, LoaderCircleIcon, PaperclipIcon } from "~/lib/icons";
 import { formatComposerMentionToken } from "~/lib/composerMentions";
 import { findProviderStatus } from "~/lib/providerAvailability";
 import { resolveProviderDiscoveryCwd } from "~/lib/providerDiscovery";
+import {
+  normalizeRuntimeModeForProvider,
+  providerModelSupportsAutoRuntimeMode,
+} from "~/lib/runtimeMode";
 import { serverConfigQueryOptions } from "~/lib/serverReactQuery";
 import { cn } from "~/lib/utils";
 import {
@@ -70,7 +75,7 @@ import {
   type DraftThreadEnvMode,
   useComposerDraftStore,
 } from "../../composerDraftStore";
-import { buildModelSelection } from "../../providerModelOptions";
+import { buildModelSelection, type ProviderOptions } from "../../providerModelOptions";
 import { type ExpandedImagePreview } from "../chat/ExpandedImagePreview";
 import { ExpandedImageOverlay } from "../chat/ExpandedImageOverlay";
 import { useStore } from "../../store";
@@ -109,12 +114,12 @@ export function KanbanNewTaskDialog({
   onOpenChange,
   projectOptions,
   initialProjectId,
-  initialSendAsDraft = false,
+  initialSendAsDraft: initialSendAsDraftProp,
 }: KanbanNewTaskDialogProps) {
+  const initialSendAsDraft = initialSendAsDraftProp ?? false;
   const { settings } = useAppSettings();
   const { resolvedTheme } = useTheme();
   const assistantDeliveryMode = resolveAssistantDeliveryMode(settings);
-  // Manual memoization kept: this file does not compile under React Compiler (see compile-report).
   const providerOptionsForDispatch = useMemo(() => getProviderStartOptions(settings), [settings]);
   const projects = useStore((state) => state.projects);
   const serverConfigQuery = useQuery(serverConfigQueryOptions());
@@ -138,11 +143,15 @@ export function KanbanNewTaskDialog({
     composerSkills,
     composerMentions,
     nonPersistedComposerImageIdSet,
+    isPreparingImages,
+    pendingImageCount,
+    waitForPendingImages,
     selectedProvider,
     selectedModel,
+    selectedModelSupportsAutoMode,
     selectedProviderModelOptions,
     setPrompt,
-    handleProviderModelChange,
+    handleProviderModelChange: setScratchProviderModel,
     addComposerImages,
     removeComposerImage,
     clearComposerAssistantSelections,
@@ -163,7 +172,6 @@ export function KanbanNewTaskDialog({
   const [isTraitsPickerOpen, setIsTraitsPickerOpen] = useState(false);
   const [isDragOverComposer, setIsDragOverComposer] = useState(false);
   const [expandedImage, setExpandedImage] = useState<ExpandedImagePreview | null>(null);
-
   const selectedProject = useMemo(
     () => projects.find((project) => project.id === selectedProjectId) ?? null,
     [projects, selectedProjectId],
@@ -180,6 +188,10 @@ export function KanbanNewTaskDialog({
     () => findProviderStatus(providerStatuses, "codex"),
     [providerStatuses],
   );
+  const selectedProviderStatus = useMemo(
+    () => findProviderStatus(providerStatuses, selectedProvider),
+    [providerStatuses, selectedProvider],
+  );
 
   const modelHintByProvider = useMemo<Partial<Record<ProviderKind, string | null>>>(
     () => ({ [selectedProvider]: selectedModel }),
@@ -188,6 +200,7 @@ export function KanbanNewTaskDialog({
   const {
     modelOptionsByProvider,
     loadingModelProviders,
+    discoveryErrorsByProvider,
     runtimeModelsByProvider,
     selectedRuntimeModel,
     selectedRuntimeAgents,
@@ -199,6 +212,46 @@ export function KanbanNewTaskDialog({
     cwd: providerModelDiscoveryCwd,
     modelHintByProvider,
   });
+  const selectedRuntimeModelForCapabilities = useMemo(
+    () =>
+      selectedRuntimeModel ??
+      (selectedProvider === "claudeAgent" && typeof selectedModelSupportsAutoMode === "boolean"
+        ? {
+            slug: selectedModel ?? "default",
+            name: selectedModel ?? "default",
+            supportsAutoMode: selectedModelSupportsAutoMode,
+          }
+        : undefined),
+    [selectedModel, selectedModelSupportsAutoMode, selectedProvider, selectedRuntimeModel],
+  );
+  const handleProviderModelChange = useCallback(
+    (
+      provider: ProviderKind,
+      model: Parameters<typeof setScratchProviderModel>[1],
+      options?: ProviderOptions,
+    ) => {
+      const runtimeModel = resolveRuntimeModelDescriptor({
+        provider,
+        model,
+        runtimeModels: runtimeModelsByProvider[provider],
+      });
+      setRuntimeMode((current) => normalizeRuntimeModeForProvider(current, provider));
+      setScratchProviderModel(provider, model, runtimeModel?.supportsAutoMode, options);
+    },
+    [runtimeModelsByProvider, setScratchProviderModel],
+  );
+  useEffect(() => {
+    if (
+      runtimeMode === "auto" &&
+      !providerModelSupportsAutoRuntimeMode(
+        selectedProvider,
+        selectedRuntimeModelForCapabilities,
+        selectedProviderStatus,
+      )
+    ) {
+      setRuntimeMode("approval-required");
+    }
+  }, [runtimeMode, selectedProvider, selectedProviderStatus, selectedRuntimeModelForCapabilities]);
   const trimmedPrompt = prompt.trim();
   const hasSendableContent =
     trimmedPrompt.length > 0 ||
@@ -216,6 +269,7 @@ export function KanbanNewTaskDialog({
     hasSendableContent,
     selectedProvider,
     selectedModel,
+    selectedModelSupportsAutoMode: selectedRuntimeModelForCapabilities?.supportsAutoMode,
     taskPreview,
     trimmedPrompt,
     scratchThreadId,
@@ -227,6 +281,8 @@ export function KanbanNewTaskDialog({
     assistantDeliveryMode,
     providerOptionsForDispatch,
     providerStatuses,
+    isPreparingImages,
+    waitForPendingImages,
     onOpenChange,
   });
   const handleCreateRequest = useCallback(() => {
@@ -270,6 +326,7 @@ export function KanbanNewTaskDialog({
     hiddenProviders: settings.hiddenProviders,
     providerOrder: settings.providerOrder,
     piAgentDir: settings.piAgentDir || null,
+    ompAgentDir: settings.ompAgentDir || null,
     handleProviderModelChange,
     setInteractionMode,
     onCreate: handleCreateRequest,
@@ -283,14 +340,27 @@ export function KanbanNewTaskDialog({
     }
     const firstOption = modelOptionsByProvider[selectedProvider][0];
     if (firstOption) {
-      useComposerDraftStore
-        .getState()
-        .setModelSelection(
-          scratchThreadId,
-          buildModelSelection(selectedProvider, firstOption.slug),
-        );
+      useComposerDraftStore.getState().setModelSelection(
+        scratchThreadId,
+        buildModelSelection(
+          selectedProvider,
+          firstOption.slug,
+          undefined,
+          resolveRuntimeModelDescriptor({
+            provider: selectedProvider,
+            model: firstOption.slug,
+            runtimeModels: runtimeModelsByProvider[selectedProvider],
+          })?.supportsAutoMode,
+        ),
+      );
     }
-  }, [modelOptionsByProvider, scratchThreadId, selectedModel, selectedProvider]);
+  }, [
+    modelOptionsByProvider,
+    runtimeModelsByProvider,
+    scratchThreadId,
+    selectedModel,
+    selectedProvider,
+  ]);
 
   const handleTranscriptReady = useCallback(
     (transcript: string) => {
@@ -400,7 +470,7 @@ export function KanbanNewTaskDialog({
               onProjectIdChange={setSelectedProjectId}
             />
             <ChevronRightIcon className="size-3.5 shrink-0 text-muted-foreground/50" aria-hidden />
-            <DialogTitle className="font-system-ui truncate font-medium text-[length:var(--app-font-size-ui,12px)] leading-none">
+            <DialogTitle className="font-system-ui truncate font-medium text-ui leading-none">
               New task
             </DialogTitle>
           </div>
@@ -461,6 +531,15 @@ export function KanbanNewTaskDialog({
               onRemoveFile={ignoreComposerFileRemoval}
               onRemoveImage={removeComposerImage}
             />
+            {isPreparingImages ? (
+              <div
+                className="flex items-center gap-1.5 py-1 text-ui leading-snug text-muted-foreground"
+                role="status"
+              >
+                <LoaderCircleIcon className="size-3.5 animate-spin" />
+                Optimizing {pendingImageCount === 1 ? "image" : "images"}…
+              </div>
+            ) : null}
             <ComposerPromptEditor
               ref={composerEditorRef}
               value={prompt}
@@ -472,7 +551,7 @@ export function KanbanNewTaskDialog({
               className={cn(
                 COMPOSER_EDITOR_MIN_HEIGHT_CLASS_NAME,
                 COMPOSER_EDITOR_TYPOGRAPHY_CLASS_NAME,
-                "px-0 py-0 text-sm",
+                "px-0 py-0",
               )}
               onRemoveTerminalContext={removeComposerTerminalContext}
               onChange={onPromptChange}
@@ -494,8 +573,8 @@ export function KanbanNewTaskDialog({
                 isRecording={voice.isVoiceRecording}
                 isTranscribing={voice.isVoiceTranscribing}
                 waveformLevels={voice.voiceWaveformLevels}
-                onCancel={voice.cancelComposerVoiceRecording}
-                onSubmit={() => void voice.submitComposerVoiceRecording()}
+                onDiscard={voice.cancelComposerVoiceRecording}
+                onStop={() => void voice.submitComposerVoiceRecording()}
               />
             ) : (
               <div className="flex w-full items-center justify-between gap-2">
@@ -507,6 +586,9 @@ export function KanbanNewTaskDialog({
                     onEnvModeChange={setEnvMode}
                   />
                   <RuntimeUsageControls
+                    provider={selectedProvider}
+                    runtimeModel={selectedRuntimeModelForCapabilities}
+                    providerStatus={selectedProviderStatus}
                     runtimeMode={runtimeMode}
                     onRuntimeModeChange={setRuntimeMode}
                   />
@@ -522,9 +604,13 @@ export function KanbanNewTaskDialog({
                     providers={providerStatuses}
                     modelOptionsByProvider={modelOptionsByProvider}
                     loadingModelProviders={loadingModelProviders}
+                    discoveryErrorsByProvider={discoveryErrorsByProvider}
                     hiddenProviders={settings.hiddenProviders}
                     providerOrder={settings.providerOrder}
                     onProviderModelChange={handleProviderModelChange}
+                    onProviderModelRoleSelect={(model, options) =>
+                      handleProviderModelChange("omp", model, options)
+                    }
                     open={isModelPickerOpen}
                     onOpenChange={setIsModelPickerOpen}
                   />
@@ -579,7 +665,7 @@ export function KanbanNewTaskDialog({
               ) : null}
             </div>
             <div className="flex shrink-0 items-center gap-3">
-              <label className="flex cursor-pointer items-center gap-2 text-xs text-muted-foreground">
+              <label className="flex cursor-pointer items-center gap-2 text-ui leading-snug text-muted-foreground">
                 <Switch
                   checked={sendAsDraft}
                   onCheckedChange={(checked) => setSendAsDraft(checked === true)}
@@ -587,7 +673,7 @@ export function KanbanNewTaskDialog({
                 Send as draft
               </label>
               <Button size="sm" onClick={handleCreateRequest} disabled={!canCreate}>
-                {isCreating ? "Creating..." : "Create task"}
+                {isCreating ? "Creating..." : isPreparingImages ? "Optimizing..." : "Create task"}
               </Button>
             </div>
           </div>

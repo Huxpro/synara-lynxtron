@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 
 interface ChildrenProps {
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }
 
 export function SidebarThreadSubagentConnectorElement({
