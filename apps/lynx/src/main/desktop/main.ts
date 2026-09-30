@@ -20,6 +20,7 @@ import path from "path";
 import {
   appendShellLog,
   buildSynaraRelaunchArguments,
+  buildModelPickerShortcutMenuItems,
   buildSearchNavigationMenuItems,
   buildRecentViewNavigationMenuItems,
   buildTerminalInputMenuItems,
@@ -93,6 +94,7 @@ const nativeLynxtron = require("lynxtron") as {
 
 let mainWindow: LynxWindow | null = null;
 let searchNavigationEnabled = false;
+let modelPickerShortcutsEnabled = false;
 let recentViewNavigationEnabled = false;
 let terminalInputOwner: string | null = null;
 let terminalSelectionOwner: string | null = null;
@@ -256,6 +258,18 @@ function initializeAppSnapManager(): DesktopAppSnapManager {
 function dispatchShellEvent(event: string, ...args: unknown[]): void {
   if (!mainWindow || mainWindow.isDestroyed()) return;
   dispatchRendererGlobalEvent(mainWindow, event, ...args);
+}
+
+// View-menu digits the open model picker borrows to pick its rows.
+const MODEL_PICKER_BOUND_DIGITS: ReadonlySet<number> = new Set([1, 2, 3]);
+
+function dispatchModelPickerRow(rowIndex: number): void {
+  dispatchShellEvent("shell:model-picker-key", { rowIndex });
+}
+
+function routeOrModelPickerRow(digit: number, route: string): () => void {
+  return () =>
+    modelPickerShortcutsEnabled ? dispatchModelPickerRow(digit - 1) : dispatchRoute(route);
 }
 
 function dispatchShellCommand(command: KeybindingCommand): void {
@@ -586,21 +600,26 @@ function installApplicationMenu(w: LynxWindow): void {
         ...buildSearchNavigationMenuItems(searchNavigationEnabled, (event) =>
           dispatchShellEvent("shell:search-key", event),
         ),
+        ...buildModelPickerShortcutMenuItems(
+          modelPickerShortcutsEnabled,
+          MODEL_PICKER_BOUND_DIGITS,
+          dispatchModelPickerRow,
+        ),
         { type: "separator" },
         {
           label: "Threads",
           accelerator: "CmdOrCtrl+1",
-          click: () => dispatchRoute("/"),
+          click: routeOrModelPickerRow(1, "/"),
         },
         {
           label: "Projects",
           accelerator: "CmdOrCtrl+2",
-          click: () => dispatchRoute("/kanban"),
+          click: routeOrModelPickerRow(2, "/kanban"),
         },
         {
           label: "Pull Requests",
           accelerator: "CmdOrCtrl+3",
-          click: () => dispatchRoute("/pull-requests"),
+          click: routeOrModelPickerRow(3, "/pull-requests"),
         },
         { type: "separator" },
         {
@@ -1025,6 +1044,13 @@ app.whenReady().then(() => {
                 ? "terminal"
                 : "disabled",
           );
+          installApplicationMenu(w);
+        }
+        callback.sendReply(JSON.stringify({ ok: true }));
+      } else if (name === "shellSetModelPickerShortcutsEnabled") {
+        const enabled = data?.enabled === true;
+        if (modelPickerShortcutsEnabled !== enabled) {
+          modelPickerShortcutsEnabled = enabled;
           installApplicationMenu(w);
         }
         callback.sendReply(JSON.stringify({ ok: true }));

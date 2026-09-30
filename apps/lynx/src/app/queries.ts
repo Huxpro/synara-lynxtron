@@ -58,7 +58,10 @@ import {
   deriveMessagesTimelineRows,
   type MessagesTimelineRow,
 } from "@synara-web/components/chat/MessagesTimeline.logic";
-import { filterSidechatTranscriptMessages } from "@synara-web/components/ChatView.logic";
+import {
+  filterSidechatTranscriptMessages,
+  threadHasProviderLockingActivity,
+} from "@synara-web/components/ChatView.logic";
 import {
   formatAgentActivityEntryPreview,
   isReasoningUpdateWorkEntry,
@@ -177,6 +180,8 @@ export interface ThreadHeaderSummary {
   readonly associatedWorktreeRef: string | null;
   readonly createBranchFlowCompleted: boolean;
   readonly provider?: ProviderKind;
+  /** Electron's `lockedProvider`: a thread with native activity keeps its provider. */
+  readonly lockedProvider: ProviderKind | null;
   readonly modelSelection: ModelSelection;
   readonly runtimeMode: RuntimeMode;
   readonly interactionMode: "default" | "plan";
@@ -839,6 +844,14 @@ export async function fetchThreadHeaderSummary(
     associatedWorktreeRef: thread.associatedWorktreeRef,
     createBranchFlowCompleted: thread.createBranchFlowCompleted,
     provider: thread.session?.provider ?? thread.modelSelection.provider,
+    lockedProvider: threadHasProviderLockingActivity({
+      messages: thread.messages as never,
+      sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
+      latestTurn: thread.latestTurn as never,
+      session: thread.session as never,
+    })
+      ? (thread.session?.provider ?? thread.modelSelection.provider)
+      : null,
     modelSelection: thread.modelSelection,
     runtimeMode: thread.runtimeMode,
     interactionMode: thread.interactionMode,

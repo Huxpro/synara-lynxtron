@@ -102,7 +102,6 @@ import {
   runComposerSendTransaction,
 } from "./composerDispatch.logic";
 import { resolveComposerInputTransition } from "./composerPastedTextInput.logic";
-import { resolveCatalogModelSelection } from "./composerModelCatalog.logic";
 import {
   cutComposerNativeEditorSelection,
   normalizeComposerNativeEditorSnapshot,
@@ -133,7 +132,7 @@ import {
   type NativeComposerFileAttachment,
   type NativeComposerImageAttachment,
 } from "./composerAttachments.lynx";
-import { ComposerModelControl } from "./ComposerModelControl.lynx";
+import { ComposerModelPicker } from "./ComposerModelPicker.lynx";
 import { ComposerVoiceButton, ComposerVoiceRecorderBar } from "./ComposerVoiceControls.lynx";
 import { useNativeComposerVoice } from "./useNativeComposerVoice.lynx";
 import { ExpandedImageOverlay, type NativeExpandedImagePreview } from "./ExpandedImageOverlay.lynx";
@@ -321,6 +320,10 @@ interface ComposerProps {
   readonly draftId?: string;
   readonly workspaceRoot?: string | null;
   readonly emptyLanding?: boolean;
+  /** Provider a started thread is pinned to; the model picker hides every other provider. */
+  readonly lockedProvider?: ProviderKind | null;
+  /** "Add providers" in the model picker: Settings → Providers. */
+  readonly onOpenProviderSettings?: () => void;
   /** Electron's thread composer placeholder (resolveChatComposerPlaceholder). */
   readonly placeholder?: string;
   readonly voiceInputEnabled?: boolean;
@@ -356,6 +359,8 @@ export function Composer({
   draftId,
   workspaceRoot,
   emptyLanding = false,
+  lockedProvider,
+  onOpenProviderSettings,
   placeholder: placeholderProp,
   voiceInputEnabled = false,
   providerStatuses,
@@ -1987,25 +1992,21 @@ export function Composer({
                 />
               ) : null}
               {!isVoiceRecording && !isVoiceTranscribing && activeModelSelection ? (
-                <ComposerModelControl
-                  compact={compactFooter}
+                <ComposerModelPicker
+                  hideModelLabel={compactFooter}
+                  hideStatusLabel={compactFooter}
                   modelSelection={activeModelSelection as never}
+                  lockedProvider={emptyLanding ? null : (lockedProvider ?? null)}
                   catalogProvider={discoveryProvider ?? activeModelSelection.provider}
-                  catalogModelSelection={resolveCatalogModelSelection({
-                    provider: discoveryProvider ?? activeModelSelection.provider,
-                    activeSelection: modelSelection,
-                    rememberedSelection:
-                      draftModelSelectionByProvider?.[
-                        discoveryProvider ?? activeModelSelection.provider
-                      ],
-                  })}
-                  initialPanel={initialModelMenuProvider ? "models" : "providers"}
+                  rememberedSelectionFor={(provider) =>
+                    draftModelSelectionByProvider?.[provider] as ModelSelection | undefined
+                  }
+                  initialOpen={Boolean(initialModelMenuProvider)}
                   runtimeModels={runtimeModelCatalog?.models ?? []}
                   modelsLoading={
                     runtimeModelsPending || (runtimeModelsFetching && !runtimeModelCatalog)
                   }
                   providers={providerStatuses ?? serverConfig?.providers ?? []}
-                  splitTraits={emptyLanding}
                   onCatalogProviderChange={(provider) => {
                     "background only";
                     setModelCatalogProvider(provider);
@@ -2015,6 +2016,7 @@ export function Composer({
                     setModelSelection(brandedThreadId, nextModelSelection);
                     setModelCatalogProvider(null);
                   }}
+                  onOpenProviderSettings={onOpenProviderSettings}
                 />
               ) : null}
               {!isVoiceRecording && !isVoiceTranscribing && showVoiceNotesControl ? (

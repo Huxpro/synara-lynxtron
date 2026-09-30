@@ -568,6 +568,7 @@ function ThreadsLandingPage(props: {
             <ComposerColumnFrameSurface>
               <LandingComposer
                 availableWidth={dockLayout.mainWidth}
+                onOpenProviderSettings={() => history.push("/settings/providers")}
                 containerKind={props.containerKind}
                 branch={branch}
                 envMode={envMode}
@@ -1789,6 +1790,8 @@ function ThreadPage(props: ThreadPageProps) {
         })}
         threadId={threadId}
         modelSelection={currentThread?.modelSelection}
+        lockedProvider={currentThread?.lockedProvider ?? null}
+        onOpenProviderSettings={() => history.push("/settings/providers")}
         runtimeMode={currentThread?.runtimeMode}
         interactionMode={currentThread?.interactionMode}
         sessionStatus={currentThread?.sessionStatus ?? null}
@@ -2347,6 +2350,7 @@ function ThreadPage(props: ThreadPageProps) {
                       <CenteredEmptyLanding projectName={editorRailDraftProject?.name ?? null} />
                       <ComposerColumnFrameSurface>
                         <LandingComposer
+                          onOpenProviderSettings={() => history.push("/settings/providers")}
                           initialProjectId={editorRailDraftProject?.id ?? null}
                           onProjectSelectionChange={setEditorRailDraftProjectId}
                           onThreadCreated={(newThreadId) => onNavigateToThread(newThreadId)}

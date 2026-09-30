@@ -4,6 +4,7 @@ import path from "node:path";
 import { describe, expect, it } from "@rstest/core";
 
 import {
+  buildModelPickerShortcutMenuItems,
   INITIAL_SHELL_ROUTE_DELIVERY_STATE,
   buildSynaraRelaunchArguments,
   buildSearchNavigationMenuItems,
@@ -462,5 +463,32 @@ describe("shellRuntime", () => {
     expect(
       buildTerminalInputMenuItems(true, false, () => {}).map((item) => item.accelerator),
     ).not.toContain("Ctrl+C");
+  });
+});
+
+describe("model picker row shortcuts", () => {
+  it("registers nothing while the picker is closed", () => {
+    expect(buildModelPickerShortcutMenuItems(false, new Set(), () => undefined)).toEqual([]);
+  });
+
+  it("adds hidden mod+digit accelerators for the digits no visible item binds", () => {
+    const picked: number[] = [];
+    const items = buildModelPickerShortcutMenuItems(true, new Set([1, 2, 3]), (rowIndex) =>
+      picked.push(rowIndex),
+    );
+    expect(items.map((item) => item.accelerator)).toEqual([
+      "CmdOrCtrl+4",
+      "CmdOrCtrl+5",
+      "CmdOrCtrl+6",
+      "CmdOrCtrl+7",
+      "CmdOrCtrl+8",
+      "CmdOrCtrl+9",
+    ]);
+    expect(items.every((item) => item.visible === false && item.acceleratorWorksWhenHidden)).toBe(
+      true,
+    );
+    items[0]!.click();
+    items[5]!.click();
+    expect(picked).toEqual([3, 8]);
   });
 });

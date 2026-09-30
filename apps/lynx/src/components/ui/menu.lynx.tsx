@@ -273,6 +273,9 @@ async function resolveMenuTriggerRect(
   return getRectByRef(ref, true);
 }
 
+/** Base UI's default `collisionPadding`. */
+const MENU_COLLISION_PADDING = 5;
+
 function clampMenuCoordinate(value: number, extent: number, limit: number): number {
   if (limit <= 0) return Math.max(0, value);
   return Math.max(0, Math.min(value, Math.max(0, limit - extent)));
@@ -306,6 +309,20 @@ export function resolveMenuCoordinates(input: {
   if (side === "bottom") top = anchorY + anchor.height + sideOffset;
   if (side === "left") left = anchorX - popup.width - sideOffset;
   if (side === "right") left = anchorX + anchor.width + sideOffset;
+
+  // Base UI's default collision avoidance flips the alignment before shifting: a start-
+  // aligned popup that would cross the far edge opens end-aligned when that fits, and the
+  // reverse. Only then does the clamp below shift it.
+  if ((side === "top" || side === "bottom") && viewport.width > 0) {
+    const fitsAt = (candidate: number) =>
+      candidate >= MENU_COLLISION_PADDING &&
+      candidate + popup.width <= viewport.width - MENU_COLLISION_PADDING;
+    if (align === "start" && !fitsAt(left) && fitsAt(anchorX + anchor.width - popup.width)) {
+      left = anchorX + anchor.width - popup.width;
+    } else if (align === "end" && !fitsAt(left) && fitsAt(anchorX)) {
+      left = anchorX;
+    }
+  }
 
   return {
     left: clampMenuCoordinate(left, popup.width, viewport.width),

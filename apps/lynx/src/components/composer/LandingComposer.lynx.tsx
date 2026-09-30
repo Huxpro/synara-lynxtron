@@ -160,6 +160,8 @@ export async function loadLandingBootstrap(
 export function LandingComposer(props: {
   /** Main-column width, so the footer compacts like the thread composer. */
   readonly availableWidth?: number;
+  /** "Add providers" in the model picker: Settings → Providers. */
+  readonly onOpenProviderSettings?: () => void;
   readonly branch?: string | null;
   readonly containerKind?: "chat" | "studio";
   readonly envMode?: "local" | "worktree";
@@ -573,6 +575,7 @@ export function LandingComposer(props: {
         workspaceRoot={workspaceContext?.workspaceRoot ?? targetProject.workspaceRoot}
         providerStatuses={data.serverConfig.providers}
         emptyLanding={true}
+        onOpenProviderSettings={props.onOpenProviderSettings}
         onBeforeSend={ensureThread}
         onSetInteractionMode={(nextInteractionMode) =>
           setInteractionMode(draftId, nextInteractionMode)

@@ -92,12 +92,17 @@ export function unstarModel(
 }
 
 // Legacy per-provider favorites become trait-less presets until the user first edits stars.
-export function seedStarredModelsFromLegacyFavorites(): StoredStarredModel[] {
+// Hosts without `globalThis.localStorage` (Lynx) pass a reader over their storage port.
+export function seedStarredModelsFromLegacyFavorites(
+  readSlugs: (
+    provider: keyof typeof FAVORITE_MODEL_STORAGE_KEYS,
+  ) => string[] = readFavoriteModelSlugs,
+): StoredStarredModel[] {
   const providers = Object.keys(FAVORITE_MODEL_STORAGE_KEYS) as Array<
     keyof typeof FAVORITE_MODEL_STORAGE_KEYS
   >;
   return providers.flatMap((provider) =>
-    readFavoriteModelSlugs(provider).map((model) => ({
+    readSlugs(provider).map((model) => ({
       provider,
       model,
       effort: null,
@@ -107,16 +112,28 @@ export function seedStarredModelsFromLegacyFavorites(): StoredStarredModel[] {
   );
 }
 
-function readStoredStarredModels(): ReadonlyArray<StarredModel> {
+// Decodes the persisted presets: null when nothing is stored yet, [] when unreadable.
+export function parseStoredStarredModels(
+  raw: string | null | undefined,
+): ReadonlyArray<StoredStarredModel> | null {
+  if (!raw) return null;
   try {
-    const raw = globalThis.localStorage?.getItem(STARRED_MODELS_STORAGE_KEY);
-    if (!raw) return normalizeStarredModels(seedStarredModelsFromLegacyFavorites());
-    return normalizeStarredModels(
-      Schema.decodeUnknownSync(StarredModelsSchema)(JSON.parse(raw) as unknown),
-    );
+    return Schema.decodeUnknownSync(StarredModelsSchema)(JSON.parse(raw) as unknown);
   } catch {
     return [];
   }
+}
+
+function readStoredStarredModels(): ReadonlyArray<StarredModel> {
+  let raw: string | null | undefined;
+  try {
+    raw = globalThis.localStorage?.getItem(STARRED_MODELS_STORAGE_KEY);
+  } catch {
+    return [];
+  }
+  return normalizeStarredModels(
+    parseStoredStarredModels(raw) ?? seedStarredModelsFromLegacyFavorites(),
+  );
 }
 
 // Model slugs the cycle shortcut should prefer: starred presets plus legacy favorites.

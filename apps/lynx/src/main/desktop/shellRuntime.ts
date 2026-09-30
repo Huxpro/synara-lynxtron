@@ -155,6 +155,36 @@ export interface SearchNavigationMenuItem {
   readonly click: () => void;
 }
 
+/**
+ * The open composer model picker owns mod+1…9 (Electron's `modelPickerShortcutRowIndex`).
+ * Digits a visible menu item already binds route through that item instead, so only the
+ * remaining digits get hidden accelerators — two items may not share one accelerator.
+ */
+export function buildModelPickerShortcutMenuItems(
+  enabled: boolean,
+  boundDigits: ReadonlySet<number>,
+  dispatch: (rowIndex: number) => void,
+): readonly {
+  readonly label: string;
+  readonly accelerator: string;
+  readonly visible: false;
+  readonly acceleratorWorksWhenHidden: true;
+  readonly registerAccelerator: true;
+  readonly click: () => void;
+}[] {
+  if (!enabled) return [];
+  return [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    .filter((digit) => !boundDigits.has(digit))
+    .map((digit) => ({
+      label: `Model picker: row ${digit}`,
+      accelerator: `CmdOrCtrl+${digit}`,
+      visible: false as const,
+      acceleratorWorksWhenHidden: true as const,
+      registerAccelerator: true as const,
+      click: () => dispatch(digit - 1),
+    }));
+}
+
 export function buildRecentViewNavigationMenuItems(
   enabled: boolean,
   dispatch: (event: "commit" | "cancel") => void,

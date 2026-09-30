@@ -21,6 +21,17 @@ const PROVIDER_SVG: Readonly<Record<string, string>> = {
   pi: piSvg,
 };
 
+// Electron's ClaudeAI glyph paints its brand fill unless a caller passes an explicit color;
+// every other provider glyph follows the text color.
+const PROVIDER_BRAND_COLOR: Readonly<Record<string, string>> = {
+  claudeAgent: "#D97757",
+};
+
+/** The color Electron's provider glyph renders with where the caller only sets a text tint. */
+export function resolveProviderGlyphColor(provider: string, textColor: string): string {
+  return PROVIDER_BRAND_COLOR[provider] ?? textColor;
+}
+
 export function hasLynxProviderIcon(provider: string): boolean {
   return PROVIDER_SVG[provider] !== undefined;
 }
