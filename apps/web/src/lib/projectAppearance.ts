@@ -122,7 +122,8 @@ function resolveEmojiPattern(): RegExp {
 function graphemes(value: string): readonly string[] {
   if (graphemeSegmenter === undefined) {
     graphemeSegmenter =
-      typeof Intl.Segmenter === "function"
+      // Lynx's main-thread engine has no Intl at all, so test the namespace first.
+      typeof Intl !== "undefined" && typeof Intl.Segmenter === "function"
         ? new Intl.Segmenter(undefined, { granularity: "grapheme" })
         : null;
   }

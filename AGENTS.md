@@ -59,6 +59,8 @@ Keep personal model rankings, pricing assumptions, and machine-specific wrapper 
 
 `apps/lynx` pins React 18 types while web and marketing use React 19. The root `@types/react` devDependency exists only so bun's isolated linker hoists the 19 copy as the fallback that dependencies such as `next` resolve `react` types through. Don't pin `react` through tsconfig `paths` instead: Vite, Vitest and Next honor `paths` at runtime and would load the `.d.ts`.
 
+When an upstream sync regenerates `bun.lock`, diff the `@rspack/*` and `@lynx-js/*` versions against the previous lock and restore them unless the bump is intended. The 2026-09-29 sync moved the Lynx build to rspack 2.1.10 and newer lynx-ui/debug-metadata plugins; every check stayed green while the native renderer loaded a blank page. Only the comparison harness (`bun run compare:desktop`) caught it. Lynxtron's main-thread engine (PrimJS) also has no `Intl` and predates `Object.hasOwn`, so feature-detect both.
+
 ## Model Selection
 
 Rankings, higher = better. Cost reflects what I actually pay (OpenAI is near-free for me due to a deal), not list price. Intelligence is how hard a problem you can hand the model unsupervised. Taste covers UI/UX, code quality, API design, and copy.

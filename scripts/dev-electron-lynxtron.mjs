@@ -21,6 +21,7 @@ import {
   comparisonFixtureMismatches,
   openSynaraRpcSession,
   readComparisonFixtureEntities,
+  comparisonFixtureEntitiesFromSnapshot,
   readComparisonFixtureManifest,
   resolveComparisonFixturePaths,
 } from "./comparison-fixture.mjs";
@@ -742,6 +743,24 @@ function nodeAttributeMap(node) {
   );
 }
 
+/** Visible text of a Native DOM in document order, for timeout diagnostics. */
+export function nativeDomTextPreview(root, maxLength = 600) {
+  const texts = [];
+  const stack = [root];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    const text = nodeAttributeMap(node).text ?? node?.nodeValue;
+    if (typeof text === "string" && text.trim().length > 0) texts.push(text.trim());
+    const children = [
+      ...(node?.children ?? []),
+      ...(node?.shadowRoots ?? []),
+      ...(node?.contentDocument ? [node.contentDocument] : []),
+    ];
+    for (let index = children.length - 1; index >= 0; index -= 1) stack.push(children[index]);
+  }
+  return texts.join(" | ").slice(0, maxLength);
+}
+
 export function nativeThreadIdentityFromDom(root, threadId, lastMessageId = null) {
   const queue = [root];
   const matches = [];
@@ -1146,26 +1165,34 @@ async function verifyOwnedNativeThreadIdentity(
   const clientId = `localhost:${port}`;
   const deadline = Date.now() + timeoutMs;
   let lastIdentity = null;
+  let lastTextPreview = null;
+  let lastConnectorError = null;
   let cleanSince = null;
   const stableCleanWindowMs = 1_500;
   while (Date.now() < deadline) {
-    const clients = await connector.listClients();
-    if (!clients.some((client) => client.id === clientId)) {
-      await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+    let document;
+    try {
+      // Other Lynx apps on this machine (simulators, other sessions) come and go
+      // on neighbouring DebugRouter ports; a vanished client must not abort ours.
+      const clients = await connector.listClients();
+      if (!clients.some((client) => client.id === clientId)) {
+        await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+        continue;
+      }
+      const sessions = await connector.sendListSessionMessage(clientId);
+      const session = sessions.at(-1);
+      if (!session) {
+        await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+        continue;
+      }
+      document = await connector.sendCDPMessage(clientId, session.session_id, "DOM.getDocument", {
+        depth: -1,
+      });
+    } catch (error) {
+      lastConnectorError = error instanceof Error ? error.message : String(error);
+      await new Promise((resolveWait) => setTimeout(resolveWait, 250));
       continue;
     }
-    const sessions = await connector.sendListSessionMessage(clientId);
-    const session = sessions.at(-1);
-    if (!session) {
-      await new Promise((resolveWait) => setTimeout(resolveWait, 100));
-      continue;
-    }
-    const document = await connector.sendCDPMessage(
-      clientId,
-      session.session_id,
-      "DOM.getDocument",
-      { depth: -1 },
-    );
     lastIdentity = nativeThreadIdentityFromDom(
       document?.result?.root ?? document?.root ?? document?.result ?? document,
       threadId,
@@ -1175,6 +1202,9 @@ async function verifyOwnedNativeThreadIdentity(
       document?.result?.root ?? document?.root ?? document?.result ?? document,
     );
     lastIdentity = { ...lastIdentity, transientUi };
+    lastTextPreview = nativeDomTextPreview(
+      document?.result?.root ?? document?.root ?? document?.result ?? document,
+    );
     const ready = nativeThreadIdentityIsReady(
       lastIdentity,
       transcriptExpectation,
@@ -1193,7 +1223,7 @@ async function verifyOwnedNativeThreadIdentity(
     await new Promise((resolveWait) => setTimeout(resolveWait, 100));
   }
   throw new Error(
-    `Timed out confirming Native thread/transcript identity ${threadId}: ${JSON.stringify(lastIdentity)}.`,
+    `Timed out confirming Native thread/transcript identity ${threadId}: ${JSON.stringify(lastIdentity)}. Native text: ${JSON.stringify(lastTextPreview)}. Last connector error: ${JSON.stringify(lastConnectorError)}.`,
   );
 }
 
@@ -1820,6 +1850,7 @@ async function readBackendIdentity(socketUrl) {
     return {
       serverInstanceId: session.serverInstanceId,
       snapshotSequence: snapshot?.snapshotSequence ?? null,
+      entities: comparisonFixtureEntitiesFromSnapshot(snapshot),
       visibleThreadIds: (snapshot?.threads ?? [])
         .filter((thread) => thread.deletedAt === null && thread.archivedAt === null)
         .map((thread) => thread.id)
@@ -1828,21 +1859,6 @@ async function readBackendIdentity(socketUrl) {
   } finally {
     session.close();
   }
-}
-
-function eventTypesAfter(databasePath, sequence) {
-  const result = spawnSync(
-    "sqlite3",
-    [
-      "-json",
-      databasePath,
-      `select event_type as type, count(*) as count from orchestration_events where sequence > ${Number(sequence)} group by event_type order by event_type;`,
-    ],
-    { encoding: "utf8" },
-  );
-  return result.status === 0
-    ? JSON.parse(result.stdout || "[]")
-    : [{ error: result.stderr.trim() }];
 }
 
 async function main() {
@@ -2091,28 +2107,26 @@ async function main() {
     recordPhase(run, "native-certified");
 
     // Data freeze: the certified entities must be unchanged after both
-    // renderers attached. Any events appended meanwhile are recorded by type.
-    const backendAfter = await readBackendIdentity(socketUrl.toString());
+    // renderers attached. The server holds its database exclusively while it
+    // runs, so the check reads the snapshot RPC rather than the SQLite file.
+    const { entities, ...backendAfter } = await readBackendIdentity(socketUrl.toString());
     run.backend.after = backendAfter;
-    run.backend.eventsSinceSeed = fixtureManifest
-      ? eventTypesAfter(clonedDatabase, fixtureManifest.sequence)
-      : null;
     if (backendAfter.serverInstanceId !== run.backend.serverInstanceId) {
       throw new Error("The backend restarted during certification.");
     }
-    if (fixtureManifest && run.backend.eventsSinceSeed.length > 0) {
-      // The fixture already contains everything the app settles on first
-      // launch; any event now means a renderer mutated the certified data.
-      throw new Error(
-        `Data changed during certification: ${JSON.stringify(run.backend.eventsSinceSeed)}.`,
-      );
-    }
     if (fixtureManifest) {
-      const entities = readComparisonFixtureEntities(clonedDatabase);
-      const mismatches = comparisonFixtureMismatches(
-        { ...fixtureManifest, sequence: entities.sequence },
-        entities,
-      );
+      run.backend.sequenceSinceSeed = {
+        seed: fixtureManifest.sequence,
+        live: entities.sequence,
+      };
+      if (entities.sequence !== fixtureManifest.sequence) {
+        // The fixture already contains everything the app settles on first
+        // launch; any event now means a renderer mutated the certified data.
+        throw new Error(
+          `Data changed during certification: event sequence ${entities.sequence} after seed ${fixtureManifest.sequence}.`,
+        );
+      }
+      const mismatches = comparisonFixtureMismatches(fixtureManifest, entities);
       if (mismatches.length > 0) {
         throw new Error(`Fixture entities changed during certification: ${mismatches.join("; ")}.`);
       }

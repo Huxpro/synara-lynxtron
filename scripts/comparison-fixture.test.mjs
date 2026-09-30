@@ -12,6 +12,7 @@ import { describe, expect, it } from "vitest";
 import {
   COMPARISON_FIXTURE_IDS,
   COMPARISON_WS_PROTOCOL,
+  comparisonFixtureEntitiesFromSnapshot,
   comparisonFixtureContainerCommands,
   comparisonFixtureMismatches,
   comparisonFixtureSetupCommands,
@@ -185,5 +186,47 @@ describe("comparison WebSocket protocol", () => {
       expect(source).toContain(`minRevision: ${WS_PROTOCOL_MIN_REVISION},`);
       expect(source).toContain(`maxRevision: ${WS_PROTOCOL_MAX_REVISION},`);
     }
+  });
+});
+
+describe("comparison fixture entities from a live snapshot", () => {
+  it("matches the SQLite projection rules: visible ordinary projects and threads only", () => {
+    const entities = comparisonFixtureEntitiesFromSnapshot({
+      snapshotSequence: 849,
+      projects: [
+        { id: "p2", kind: "project", workspaceRoot: "/two", deletedAt: null },
+        { id: "home", kind: "chat", workspaceRoot: "/home", deletedAt: null },
+        { id: "p1", kind: "project", workspaceRoot: "/one", deletedAt: null },
+        { id: "gone", kind: "project", workspaceRoot: "/gone", deletedAt: "2026-01-01" },
+      ],
+      threads: [
+        {
+          id: "t2",
+          projectId: "p1",
+          deletedAt: null,
+          archivedAt: null,
+          messages: [{ id: "a" }, { id: "b" }],
+        },
+        { id: "t1", projectId: "p1", deletedAt: null, archivedAt: null, messages: [] },
+        {
+          id: "archived",
+          projectId: "p1",
+          deletedAt: null,
+          archivedAt: "2026-01-01",
+          messages: [],
+        },
+      ],
+    });
+    expect(entities).toEqual({
+      projects: [
+        { projectId: "p1", workspaceRoot: "/one" },
+        { projectId: "p2", workspaceRoot: "/two" },
+      ],
+      threads: [
+        { threadId: "t1", projectId: "p1", messageCount: 0, lastMessageId: null },
+        { threadId: "t2", projectId: "p1", messageCount: 2, lastMessageId: "b" },
+      ],
+      sequence: 849,
+    });
   });
 });
