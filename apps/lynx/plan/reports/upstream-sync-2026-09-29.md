@@ -18,12 +18,12 @@ passing its tests and sharing code with web where it did before.
 
 ## Fork hooks re-applied onto upstream files
 
-| Area | What was restored |
-| --- | --- |
-| Harness | `data-thread-id`/`data-project-id`/`data-active` on Electron sidebar rows; Components Lab menu navigation and product-surface isolation in `__root.tsx`; comparison launches use `SYNARA_DESKTOP_SMOKE_USER_DATA` + the source-build marker (upstream removed `SYNARA_DESKTOP_USER_DATA_DIR`, so the old variable would have opened the real profile). |
-| Tokens | `tokens.css` rebuilt from upstream's current `:root` block plus the fork-only tokens (disabled opacity, focus roles, browser home palette, typography roles); `index.css` imports it again. Lynx palette gained the project colors (Tailwind v4 values in sRGB) and the restated `--secondary` family moved to 3%. |
-| Shared logic | Sidebar sort catalog, file-preview breadcrumb and mode, file-preview error state with Retry/Close and the empty-file state, provider update batching (`runProviderUpdateBatch`), Kilo favorite migration (invalid legacy data is kept for a retry, as upstream specifies). |
-| Electron fixes | Decision cards scroll in short windows (approval and question cards); choice rows wrap in narrow composers; partial-read disclosure stays visible at every header width. |
+| Area           | What was restored                                                                                                                                                                                                                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Harness        | `data-thread-id`/`data-project-id`/`data-active` on Electron sidebar rows; Components Lab menu navigation and product-surface isolation in `__root.tsx`; comparison launches use `SYNARA_DESKTOP_SMOKE_USER_DATA` + the source-build marker (upstream removed `SYNARA_DESKTOP_USER_DATA_DIR`, so the old variable would have opened the real profile). |
+| Tokens         | `tokens.css` rebuilt from upstream's current `:root` block plus the fork-only tokens (disabled opacity, focus roles, browser home palette, typography roles); `index.css` imports it again. Lynx palette gained the project colors (Tailwind v4 values in sRGB) and the restated `--secondary` family moved to 3%.                                     |
+| Shared logic   | Sidebar sort catalog, file-preview breadcrumb and mode, file-preview error state with Retry/Close and the empty-file state, provider update batching (`runProviderUpdateBatch`), Kilo favorite migration (invalid legacy data is kept for a retry, as upstream specifies).                                                                             |
+| Electron fixes | Decision cards scroll in short windows (approval and question cards); choice rows wrap in narrow composers; partial-read disclosure stays visible at every header width.                                                                                                                                                                               |
 
 ## Deliberate differences from a straight merge
 
@@ -63,6 +63,27 @@ PDF toolbar zoom menu. Each one is restored with that feature's Lynx port.
   `cua-benchmark` archives `HEAD`, which predates the merge commit).
 - Lynx: `rspeedy build --environment lynx` succeeds. rstest has 40 failures, all in the
   41-failure pre-merge baseline (known `.rstest-temp` chunk loading and evidence scripts).
+
+## End-to-end findings after the merge commit
+
+Every static gate and suite was green, and the comparison harness still found four defects that
+would have shipped:
+
+1. **Protocol revision.** Upstream moved the WebSocket protocol to revision 2 (name-only PR commit
+   authors), and the Lynx desktop and web hosts hard-coded revision 1. Both now read
+   `WS_PROTOCOL_*` from contracts. The `.mjs` scripts keep a copy pinned by a test.
+2. **First-run surfaces.** Upstream's Safari-access intro and project-import announcement opened
+   over the compared screen. The harness answers them the way a user would.
+3. **Exclusive database lock.** The server keeps `state.sqlite` under `locking_mode = EXCLUSIVE`,
+   so certification now reads entities through `orchestration.getSnapshot`.
+4. **Toolchain drift.** Regenerating `bun.lock` moved the Lynx build to rspack 2.1.10 and newer
+   lynx-ui/debug-metadata plugins. Native Lynxtron then loaded a blank page (the main-thread
+   script never ran). A template bisection isolated the fault: the pre-merge template rendered
+   in the merged host, and the merged main thread failed. Versions were restored, and
+   `projectAppearance` now feature-detects `Intl`, which PrimJS lacks.
+
+`compare:desktop` certifies the fixture thread on both renderers with background launches:
+Claude stayed frontmost for the whole run.
 
 ## Known gaps
 
