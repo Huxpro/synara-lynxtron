@@ -128,8 +128,6 @@ import {
   ArchiveIcon,
   ClockIcon,
   ChevronDownIcon,
-  FolderIcon,
-  FolderOpenIcon,
   GitBranchIcon,
   PlusIcon,
   SettingsIcon,
@@ -190,6 +188,8 @@ import { SYNARA_DOCS_URL } from "@synara-web/components/SidebarHelpMenu.logic";
 import { settingsRouteLocation } from "../../app/settingsRoute.logic";
 import { useThreadSettledOverrides } from "./useThreadSettledOverrides.lynx";
 import { hasUnreadActivity as hasUnreadActivityOutsideActiveThread } from "@synara-web/components/SidebarActivityView.logic";
+import folderClosedSvg from "@synara-central-icons/folder-2.svg?raw";
+import folderOpenSvg from "@synara-central-icons/folder-open-front.svg?raw";
 import pinSvg from "@synara-central-icons/pin.svg?raw";
 import pinFilledSvg from "@synara-central-icons-fill/pin.svg?raw";
 
@@ -203,6 +203,17 @@ interface PersistedSidebarListState {
   readonly expandedProjectCwds: readonly string[];
   readonly pinnedThreadIds: readonly string[];
   readonly pinnedProjectIds: readonly string[];
+}
+
+/** Electron's project row glyph: Central folder-open-front / folder-2 at 95% foreground. */
+function ProjectFolderGlyph(props: { readonly open: boolean }) {
+  const { svgColors } = useTheme();
+  return (
+    <svg
+      className="AppSidebarProjectFolderGlyph"
+      content={colorizeLynxSvg(props.open ? folderOpenSvg : folderClosedSvg, svgColors.foreground)}
+    />
+  );
 }
 
 function ProjectRunIndicatorDot() {
@@ -2001,13 +2012,7 @@ export function Sidebar({
                                 leadingClassName={
                                   projectPinned ? "AppSidebarProjectFolder--hidden" : undefined
                                 }
-                                leading={
-                                  isExpanded ? (
-                                    <FolderOpenIcon size={16} />
-                                  ) : (
-                                    <FolderIcon size={16} />
-                                  )
-                                }
+                                leading={<ProjectFolderGlyph open={isExpanded} />}
                                 name={group.title}
                               />
                               {projectRun || projectRunServer || collapsedProjectStatus ? (

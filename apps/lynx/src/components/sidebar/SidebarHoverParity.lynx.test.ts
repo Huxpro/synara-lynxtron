@@ -133,8 +133,10 @@ describe("Lynx sidebar hover parity", () => {
     expect(source).toContain("platformWindow.showInFolder(project.workspaceRoot)");
     expect(source).toContain("navigate(`/kanban/${encodeURIComponent(project.id)}`)");
     expect(source).toContain("clipboard.writeText(project.workspaceRoot)");
-    expect(source).toContain("<FolderOpenIcon size={16} />");
-    expect(source).toContain("<FolderIcon size={16} />");
+    expect(source).toContain("<ProjectFolderGlyph open={isExpanded} />");
+    expect(source).toContain(
+      'import folderOpenSvg from "@synara-central-icons/folder-open-front.svg?raw"',
+    );
     expect(source).toContain("<ProjectPinAction");
     expect(source).toContain("props.pinned ? pinFilledSvg : pinSvg");
     expect(source).toContain("projectRun || projectRunServer");

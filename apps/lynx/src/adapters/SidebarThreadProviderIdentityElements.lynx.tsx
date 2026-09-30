@@ -45,9 +45,10 @@ export function SidebarThreadProviderIdentityIconElement({
   readonly provider: string;
   readonly placement: "single" | "source" | "target";
 }) {
-  const { semanticIconColor } = useTheme();
+  // Electron's provider glyph is `text-foreground`, not the dimmer primary icon tone.
+  const { svgColors } = useTheme();
   const source = PROVIDER_SVG[provider];
-  const content = source ? colorizeLynxSvg(source, semanticIconColor("primary")) : undefined;
+  const content = source ? colorizeLynxSvg(source, svgColors.foreground) : undefined;
   return (
     <view className={`SharedSidebarProviderIcon SharedSidebarProviderIcon--${placement}`}>
       {content ? (

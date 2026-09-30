@@ -470,8 +470,9 @@
   flex-direction: column;
 }
 
+/* Top-level (pinned, chat) rows use Electron's `pl-2`. */
 .AppSidebarPinnedThread {
-  margin-left: 0;
+  padding-left: 8px;
 }
 
 .AppSidebarState {
@@ -613,10 +614,12 @@
   box-shadow: inset 0 0 0 1px var(--ring);
 }
 
+/* SIDEBAR_THREAD_ROW_BASE_CLASS_NAME: project threads span the row with `pl-8`, so the
+   highlight runs full width and the indent sits inside it. */
 .AppSidebarThread {
   height: var(--app-density-row-height, 1.75rem);
-  margin: 1px 0 1px 18px;
-  padding: 0 8px;
+  margin: 1px 0;
+  padding: 0 8px 0 32px;
   border-radius: 8px;
 }
 
@@ -809,7 +812,7 @@
 }
 
 .AppSidebarChatThread {
-  margin-left: 0;
+  padding-left: 8px;
 }
 
 .SidebarSearchPopup {
@@ -1010,4 +1013,10 @@
 .AppSidebarSurfaceEnter {
   display: flex;
   flex-direction: column;
+}
+
+.AppSidebarProjectFolderGlyph {
+  width: 16px;
+  height: 16px;
+  opacity: 0.95;
 }
