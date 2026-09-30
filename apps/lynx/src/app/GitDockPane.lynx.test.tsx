@@ -23,10 +23,10 @@ describe("Native Git right-dock pane", () => {
     const router = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
     expect(router).toContain('activePane?.kind === "git"');
     expect(router).toContain(`"diff",
-                "explorer",
-                "terminal",
-                "sidechat",
-                "git"`);
+          "explorer",
+          "terminal",
+          "sidechat",
+          "git",`);
     expect(router).toContain("<GitDockPane");
   });
 

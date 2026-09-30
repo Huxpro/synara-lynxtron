@@ -28,8 +28,10 @@ describe("Lynx Editor view", () => {
     const environmentSource = source("./EnvironmentPanel.lynx.tsx");
 
     const handoffIndex = routerSource.indexOf("<ThreadHeaderActions");
-    const environmentIndex = routerSource.indexOf("<EnvironmentToggle");
-    const diffIndex = routerSource.indexOf("<ThreadRightSidebarToggle");
+    // The landing header renders the same toggles earlier in the file; order is checked
+    // within the thread header, which starts at its actions.
+    const environmentIndex = routerSource.indexOf("<EnvironmentToggle", handoffIndex);
+    const diffIndex = routerSource.indexOf("<ThreadRightSidebarToggle", environmentIndex);
     expect(handoffIndex).toBeGreaterThan(-1);
     expect(environmentIndex).toBeGreaterThan(handoffIndex);
     expect(diffIndex).toBeGreaterThan(environmentIndex);
