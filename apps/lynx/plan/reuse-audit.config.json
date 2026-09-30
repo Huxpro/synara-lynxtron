@@ -70,7 +70,7 @@
       "reason": "platform element adapter beneath shared SettingsRow composition"
     },
     {
-      "regex": "^apps/web/src/components/(AppShellFrameElements|SidebarPrimaryActionElements|SidebarPrimaryNavigationElements|CenteredEmptyLandingElements|CenteredEmptyLandingStackElements|SidebarSegmentedPickerElements|SidebarListSectionHeaderElements|SidebarProjectSummaryElements|SidebarThreadIdentityElements|SidebarThreadSubagentIdentityElements|SidebarThreadProviderIdentityElements|SidebarThreadStatusIndicatorElements|SidebarSearchPaletteElements|SidebarChatsSectionElements|SidebarProjectsSectionElements|chat/ChatSurfaceHeader(Frame|Identity)Elements)\\.tsx$",
+      "regex": "^apps/web/src/components/(AppShellFrameElements|SidebarPrimaryActionElements|SidebarPrimaryNavigationElements|CenteredEmptyLandingElements|CenteredEmptyLandingStackElements|SidebarListSectionHeaderElements|SidebarProjectSummaryElements|SidebarThreadIdentityElements|SidebarThreadSubagentIdentityElements|SidebarThreadProviderIdentityElements|SidebarThreadStatusIndicatorElements|SidebarSearchPaletteElements|SidebarChatsSectionElements|SidebarProjectsSectionElements|chat/ChatSurfaceHeader(Frame|Identity)Elements)\\.tsx$",
       "classification": "SPLIT",
       "reason": "platform host-element adapter beneath shared shell/sidebar composition"
     },

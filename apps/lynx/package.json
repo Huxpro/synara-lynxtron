@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@fontsource/cal-sans": "5.3.0",
     "@lynx-js/config-rsbuild-plugin": "0.2.0",
     "@lynx-js/css-serializer": "0.1.7",
     "@lynx-js/lynx-core": "0.1.4",

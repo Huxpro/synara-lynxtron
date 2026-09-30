@@ -347,7 +347,7 @@ describe("shared sidebar surface routing", () => {
     const source = readFileSync(new URL("./Sidebar.lynx.tsx", import.meta.url), "utf8");
     expect(source).toContain("const chatsSectionVisible = initialSortSettings.showChatsSection");
     expect(source).toContain("const studioSectionVisible = initialSortSettings.showStudioSection");
-    expect(source).toContain('...(studioSectionVisible ? (["studio"] as const) : [])');
+    expect(source).toContain("resolveSidebarSurfacePickerViews(studioSectionVisible)");
     expect(source).toContain("chatsSectionVisible &&");
     expect(source).toContain(
       'fetchPullRequests({\n        state: "open",\n        projectId: null,',

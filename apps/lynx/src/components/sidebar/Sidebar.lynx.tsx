@@ -29,7 +29,7 @@ import worktreeSvg from "@synara-central-icons/arrow-split-right.svg?raw";
 import { SidebarPrimarySurfaceNavigation } from "@synara-web/components/SidebarPrimarySurfaceNavigation";
 import { resolvePullRequestReviewBadge } from "@synara-web/components/SidebarActionBadges.logic";
 import { resolveSidebarPrimarySurface } from "@synara-web/components/SidebarSurface.logic";
-import { SidebarSegmentedPicker } from "@synara-web/components/SidebarSegmentedPicker";
+import { resolveSidebarSurfacePickerViews } from "@synara-web/components/SidebarSurfacePicker.logic";
 import { SidebarProjectDisclosure } from "@synara-web/components/SidebarProjectDisclosure";
 import { SidebarProjectSummary } from "@synara-web/components/SidebarProjectSummary";
 import { SidebarThreadRowComposition } from "@synara-web/components/SidebarThreadRowComposition";
@@ -186,6 +186,7 @@ import "./sidebar.css";
 import { PullRequestCompareIcon } from "./PullRequestCompareIcon.lynx";
 import { SidebarProjectHoverCard, SidebarThreadHoverCard } from "./SidebarHoverCards.lynx";
 import { LYNX_SIDEBAR_PRIMARY_ICONS } from "./SidebarPrimaryIcons.lynx";
+import { SidebarSurfaceHeader } from "./SidebarSurfaceHeader.lynx";
 import pinSvg from "@synara-central-icons/pin.svg?raw";
 import pinFilledSvg from "@synara-central-icons-fill/pin.svg?raw";
 
@@ -1740,8 +1741,8 @@ export function Sidebar({
       <SidebarSurfaceContent
         surfaceKey={primarySidebarSurface}
         picker={
-          <SidebarSegmentedPicker
-            views={[...(studioSectionVisible ? (["studio"] as const) : []), "threads"]}
+          <SidebarSurfaceHeader
+            views={resolveSidebarSurfacePickerViews(studioSectionVisible)}
             activeView={activePath === "/studio" ? "studio" : "threads"}
             onSelectView={(view) => {
               if (view === "studio") {
@@ -1750,6 +1751,9 @@ export function Sidebar({
               }
               navigate("/");
             }}
+            searchElementId={SEARCH_TRIGGER_ELEMENT_ID}
+            searchOpen={searchOpen}
+            onOpenSearch={() => onOpenSearch()}
           />
         }
         navigation={
@@ -1757,17 +1761,13 @@ export function Sidebar({
             surface={primarySidebarSurface}
             pullRequestIcon={PullRequestCompareIcon}
             icons={LYNX_SIDEBAR_PRIMARY_ICONS}
-            searchOpen={searchOpen}
-            searchElementId={SEARCH_TRIGGER_ELEMENT_ID}
             kanbanActive={activePath === "/kanban"}
             pullRequestsActive={activePath === "/pull-requests"}
             automationsActive={activePath.startsWith("/automations")}
             pullRequestsBadge={pullRequestsReviewBadge}
             newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}
-            searchShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.search}
             onCreateThread={openPrimaryNewThread}
             onCreateStudioChat={() => navigate("/studio")}
-            onOpenSearch={onOpenSearch}
             onOpenKanban={() => navigate("/kanban")}
             onOpenPullRequests={() => navigate("/pull-requests")}
             onOpenAutomations={() => navigate("/automations")}

@@ -90,7 +90,7 @@ export { resolveThreadStatusPill, type ThreadStatusPill } from "./SidebarThreadS
 export const THREAD_SELECTION_SAFE_SELECTOR = "[data-thread-item], [data-thread-selection-safe]";
 export const DEBUG_FEATURE_FLAGS_MENU_STORAGE_KEY = "synara:show-debug-feature-flags-menu";
 export type SidebarNewThreadEnvMode = "local" | "worktree";
-export type { SidebarView } from "./SidebarSegmentedPicker.logic";
+export type { SidebarView } from "./SidebarSurfacePicker.logic";
 
 /** Stable repository-resolution input for PR caches. Sidebar-only presentation changes such as
  * expand/collapse and ordering do not invalidate; project roots/names do. */
@@ -104,9 +104,6 @@ export function pullRequestRepositoryConfigFingerprint(
       .toSorted((left, right) => left[0].localeCompare(right[0])),
   );
 }
-
-/** The optimistic segment follows a destination click and clears when the user returns. */
-export { resolvePendingSidebarViewSelection } from "./SidebarSegmentedPicker.logic";
 
 function nonEmptyDisplayValue(value: string | null | undefined): string | null {
   const trimmed = value?.trim();

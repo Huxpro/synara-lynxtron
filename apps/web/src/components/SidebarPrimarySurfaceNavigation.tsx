@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 
-import { ClockIcon, KanbanIcon, NewThreadIcon, SearchIcon } from "~/lib/icons";
+import { ClockIcon, KanbanIcon, NewThreadIcon } from "~/lib/icons";
 import { splitShortcutLabel } from "~/keybindings";
 import { SidebarGlyph } from "~/components/sidebarGlyphs";
 import {
@@ -14,19 +14,16 @@ export interface SidebarPrimarySurfaceIcons {
   readonly automations: Icon;
   readonly kanban: Icon;
   readonly newThread: Icon;
-  readonly search: Icon;
 }
 
 const DEFAULT_ICONS: SidebarPrimarySurfaceIcons = {
   automations: ClockIcon,
   kanban: KanbanIcon,
   newThread: NewThreadIcon,
-  search: SearchIcon,
 };
 
 function item(input: {
   icon: Icon;
-  elementId?: string | undefined;
   label: string;
   onActivate?: (() => void) | undefined;
   onMouseEnter?: (() => void) | undefined;
@@ -38,7 +35,6 @@ function item(input: {
 }): SidebarPrimaryNavigationItem {
   return {
     id: input.label,
-    elementId: input.elementId,
     icon: <SidebarGlyph icon={input.icon} variant="leading" />,
     label: input.label,
     active: input.active,
@@ -51,23 +47,23 @@ function item(input: {
   };
 }
 
+/**
+ * Primary destinations under the sidebar header. Search lives in the header row next to
+ * the surface picker, so neither surface lists it here.
+ */
 export function SidebarPrimarySurfaceNavigation(props: {
   surface: "threads" | "studio";
   pullRequestIcon: Icon;
   icons?: SidebarPrimarySurfaceIcons | undefined;
-  searchOpen?: boolean | undefined;
   kanbanActive?: boolean | undefined;
   pullRequestsActive?: boolean | undefined;
   automationsActive?: boolean | undefined;
   pullRequestsBadge?: Badge | undefined;
   automationsBadge?: Badge | undefined;
   newThreadShortcutLabel?: string | null | undefined;
-  searchShortcutLabel?: string | null | undefined;
-  searchElementId?: string | undefined;
   onCreateStudioChat?: (() => void) | undefined;
   onCreateThread?: (() => void) | undefined;
   onCreateThreadPrewarm?: (() => void) | undefined;
-  onOpenSearch?: (() => void) | undefined;
   onOpenKanban?: (() => void) | undefined;
   onOpenPullRequests?: (() => void) | undefined;
   onOpenAutomations?: (() => void) | undefined;
@@ -81,14 +77,6 @@ export function SidebarPrimarySurfaceNavigation(props: {
             label: "New studio chat",
             onActivate: props.onCreateStudioChat,
           }),
-          item({
-            icon: icons.search,
-            elementId: props.searchElementId,
-            label: "Search",
-            active: props.searchOpen,
-            onActivate: props.onOpenSearch ? () => props.onOpenSearch?.() : undefined,
-            shortcutLabel: props.searchShortcutLabel,
-          }),
         ]
       : [
           item({
@@ -98,14 +86,6 @@ export function SidebarPrimarySurfaceNavigation(props: {
             onMouseEnter: props.onCreateThreadPrewarm,
             onFocus: props.onCreateThreadPrewarm,
             shortcutLabel: props.newThreadShortcutLabel,
-          }),
-          item({
-            icon: icons.search,
-            elementId: props.searchElementId,
-            label: "Search",
-            active: props.searchOpen,
-            onActivate: props.onOpenSearch ? () => props.onOpenSearch?.() : undefined,
-            shortcutLabel: props.searchShortcutLabel,
           }),
           item({
             icon: icons.kanban,

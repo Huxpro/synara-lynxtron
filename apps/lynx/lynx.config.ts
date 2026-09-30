@@ -45,10 +45,6 @@ export default defineConfig({
         __dirname,
         "src/adapters/CenteredEmptyLandingStackElements.lynx.tsx",
       ),
-      "~/components/SidebarSegmentedPickerElements$": path.resolve(
-        __dirname,
-        "src/adapters/SidebarSegmentedPickerElements.lynx.tsx",
-      ),
       "~/components/SidebarListSectionHeaderElements$": path.resolve(
         __dirname,
         "src/adapters/SidebarListSectionHeaderElements.lynx.tsx",

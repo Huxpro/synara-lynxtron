@@ -252,6 +252,10 @@ import { SidebarLeadingIcon } from "./SidebarLeadingIcon";
 import { SidebarPrimaryAction } from "./SidebarPrimaryAction";
 import { RailAutomationsPanel } from "./RailAutomationsPanel";
 import { SIDEBAR_PANEL_TITLE_CLASS_NAME, SidebarPanelTitle } from "./SidebarPanelTitle";
+import {
+  SIDEBAR_SURFACE_PICKER_COPY,
+  resolveSidebarSurfacePickerViews,
+} from "./SidebarSurfacePicker.logic";
 import { SidebarMetaChipStack } from "./SidebarMetaChip";
 import { SidebarRowHoverActions } from "./SidebarRowHoverActions";
 import { SidebarSectionToolbar } from "./SidebarSectionToolbar";
@@ -1179,11 +1183,6 @@ function SidebarActivityBellButton({
     </Tooltip>
   );
 }
-
-const SIDEBAR_SURFACE_PICKER_COPY: Record<SidebarView, { title: string; description: string }> = {
-  threads: { title: "Synara", description: "Build, debug, and ship" },
-  studio: { title: "Studio", description: "Open-ended agent work" },
-};
 
 /**
  * App-switcher style surface picker: a compact pill with the active surface
@@ -6502,7 +6501,7 @@ export default function Sidebar() {
               )}
             >
               <SidebarSurfacePicker
-                views={["threads", ...(studioSectionVisible ? (["studio"] as const) : [])]}
+                views={resolveSidebarSurfacePickerViews(studioSectionVisible)}
                 activeView={isOnStudio ? "studio" : "threads"}
                 onSelectView={handleSidebarViewChange}
                 onPrewarmView={prewarmSidebarViewTarget}

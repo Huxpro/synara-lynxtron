@@ -101,7 +101,7 @@ function resolveLynxImport(specifier, importer) {
     );
   }
   const elementAdapter = specifier.match(
-    /^~\/components\/(?:settings\/|chat\/)?(SettingsSectionElements|SettingsRowElements|AppShellFrameElements|SidebarPrimaryActionElements|SidebarPrimaryNavigationElements|CenteredEmptyLandingElements|CenteredEmptyLandingStackElements|SidebarSegmentedPickerElements|SidebarListSectionHeaderElements|SidebarProjectSummaryElements|SidebarThreadIdentityElements|SidebarSearchPaletteElements|SidebarChatsSectionElements|SidebarProjectsSectionElements|ChatSurfaceHeaderFrameElements|ChatSurfaceHeaderIdentityElements|EditorRailAddMenuCompositionElements)$/,
+    /^~\/components\/(?:settings\/|chat\/)?(SettingsSectionElements|SettingsRowElements|AppShellFrameElements|SidebarPrimaryActionElements|SidebarPrimaryNavigationElements|CenteredEmptyLandingElements|CenteredEmptyLandingStackElements|SidebarListSectionHeaderElements|SidebarProjectSummaryElements|SidebarThreadIdentityElements|SidebarSearchPaletteElements|SidebarChatsSectionElements|SidebarProjectsSectionElements|ChatSurfaceHeaderFrameElements|ChatSurfaceHeaderIdentityElements|EditorRailAddMenuCompositionElements)$/,
   );
   if (elementAdapter) {
     return resolveSourceCandidate(

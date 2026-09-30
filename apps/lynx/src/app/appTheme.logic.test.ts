@@ -95,6 +95,8 @@ describe("slice root theme projection", () => {
     expect(fontStyles).toContain(
       "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2",
     );
+    expect(fontStyles).toContain('font-family: "Cal Sans"');
+    expect(fontStyles).toContain("@fontsource/cal-sans/files/cal-sans-latin-400-normal.woff2");
     expect(fontStyles).not.toContain("font-weight:");
     expect(fontStyles).not.toContain("font-style:");
     expect(fontStyles).not.toContain("unicode-range:");

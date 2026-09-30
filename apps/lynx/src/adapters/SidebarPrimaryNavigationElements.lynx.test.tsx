@@ -101,7 +101,6 @@ describe("sidebar primary navigation shortcut", () => {
     expect(sidebarSource).toContain(
       "newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}",
     );
-    expect(sidebarSource).toContain("searchShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.search}");
   });
 
   it("reveals shortcut keys through the shared row hover and focus states", () => {
