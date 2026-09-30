@@ -2341,6 +2341,26 @@
   opacity: 1;
 }
 
+/* Electron's turn-end footer stays visible at rest. The leading button pulls left by its
+   own icon inset, (2em button − 1.125em glyph) / 2, so the glyph aligns with the text. */
+.TranscriptMessageFooter--assistant {
+  opacity: 1;
+}
+
+.TranscriptMessageFooter--leading-action {
+  margin-left: -5.6875px;
+}
+
+.TranscriptMessageFooter--assistant .TranscriptMessageActionIcon {
+  width: 14.625px;
+  height: 14.625px;
+}
+
+.TranscriptMessageMeta {
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+
 .TranscriptMessageAction {
   display: flex;
   align-items: center;

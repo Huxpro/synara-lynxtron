@@ -70,6 +70,11 @@ interface MarkdownRenderContext {
   readonly tightListItem?: boolean;
 }
 
+interface MarkdownRootEdge {
+  readonly first: boolean;
+  readonly last: boolean;
+}
+
 interface MarkdownListContext {
   readonly ordered: boolean;
   readonly index: number;
@@ -246,9 +251,10 @@ function MarkdownTable(props: {
   readonly node: MarkdownNode;
   readonly nodeKey: string;
   readonly context: MarkdownRenderContext;
+  readonly edgeClassName?: string;
 }) {
   return (
-    <view className="MdTableScroller">
+    <view className={`MdTableScroller${props.edgeClassName ?? ""}`}>
       <view className="MdTable">
         {(props.node.children ?? []).map((row, rowIndex) => (
           <view className="MdTableRow" key={`${props.nodeKey}.row.${rowIndex}`}>
@@ -273,8 +279,30 @@ function MarkdownTable(props: {
   );
 }
 
-function renderTable(node: MarkdownNode, key: string, context: MarkdownRenderContext) {
-  return <MarkdownTable context={context} key={key} node={node} nodeKey={key} />;
+function renderTable(
+  node: MarkdownNode,
+  key: string,
+  context: MarkdownRenderContext,
+  edgeClassName: string,
+) {
+  return (
+    <MarkdownTable
+      context={context}
+      edgeClassName={edgeClassName}
+      key={key}
+      node={node}
+      nodeKey={key}
+    />
+  );
+}
+
+/**
+ * Electron's `.chat-markdown > :first-child { margin-top: 0 }` and `> :last-child
+ * { margin-bottom: 0 }`: the message's first and last blocks sit flush with its box.
+ */
+function markdownEdgeClassName(edge: MarkdownRootEdge | undefined): string {
+  if (!edge) return "";
+  return `${edge.first ? " MdEdge--first" : ""}${edge.last ? " MdEdge--last" : ""}`;
 }
 
 function MarkdownLink({
@@ -409,9 +437,11 @@ function MarkdownTaskCheckbox(props: { readonly checked: boolean }) {
 function MarkdownCodeBlock({
   node,
   nodeKey,
+  edgeClassName = "",
 }: {
   readonly node: MarkdownNode;
   readonly nodeKey: string;
+  readonly edgeClassName?: string;
 }) {
   const [copied, setCopied] = useState(false);
   const [wrap, setWrap] = useState(false);
@@ -464,7 +494,10 @@ function MarkdownCodeBlock({
   }
 
   return (
-    <view className={`MdCodeBlockShell${wrap ? " MdCodeBlockShell--wrap" : ""}`} key={nodeKey}>
+    <view
+      className={`MdCodeBlockShell${wrap ? " MdCodeBlockShell--wrap" : ""}${edgeClassName}`}
+      key={nodeKey}
+    >
       <view className="MdCodeHeader">
         <view className="MdCodeTitle">
           {presentation.isFileReference && presentation.filePath ? (
@@ -539,11 +572,24 @@ function renderNode(
   key: string,
   context: MarkdownRenderContext,
   listContext?: MarkdownListContext,
+  rootEdge?: MarkdownRootEdge,
 ): React.ReactNode {
   const children = () => renderInlineChildren(node, key, context);
+  const edge = markdownEdgeClassName(rootEdge);
   switch (node.type) {
-    case "root":
-      return <view key={key}>{children()}</view>;
+    case "root": {
+      const blocks = node.children ?? [];
+      return (
+        <view key={key}>
+          {blocks.map((child, index) =>
+            renderNode(child, `${key}.${index}`, context, undefined, {
+              first: index === 0,
+              last: index === blocks.length - 1,
+            }),
+          )}
+        </view>
+      );
+    }
     case "text":
       return context.variant === "user" && context.allowComposerChips ? (
         renderUserText(node.value ?? "", key, context)
@@ -553,7 +599,7 @@ function renderNode(
     case "paragraph":
       return (
         <SelectableMarkdownText
-          className={context.tightListItem ? "MdParagraph MdParagraph--tight" : "MdParagraph"}
+          className={`${context.tightListItem ? "MdParagraph MdParagraph--tight" : "MdParagraph"}${edge}`}
           context={context}
           key={key}
         >
@@ -563,7 +609,7 @@ function renderNode(
     case "heading":
       return (
         <SelectableMarkdownText
-          className={`MdHeading MdH${node.depth ?? 3}`}
+          className={`MdHeading MdH${node.depth ?? 3}${edge}`}
           context={context}
           key={key}
         >
@@ -598,14 +644,14 @@ function renderNode(
       );
     case "blockquote":
       return (
-        <view className="MdBlockquote" key={key}>
+        <view className={`MdBlockquote${edge}`} key={key}>
           {children()}
         </view>
       );
     case "list": {
       const loose = isMarkdownListLoose(node);
       return (
-        <view className="MdList" key={key}>
+        <view className={`MdList${edge}`} key={key}>
           {(node.children ?? []).map((child, index) =>
             renderNode(child, `${key}.${index}`, context, {
               ordered: node.ordered === true,
@@ -655,12 +701,12 @@ function renderNode(
       );
     }
     case "code":
-      return <MarkdownCodeBlock node={node} nodeKey={key} />;
+      return <MarkdownCodeBlock edgeClassName={edge} node={node} nodeKey={key} />;
     case "inlineCode":
       return <MarkdownInlineCode context={context} node={node} nodeKey={key} />;
     case "math":
       return (
-        <view className="MdMathBlockShell" key={key}>
+        <view className={`MdMathBlockShell${edge}`} key={key}>
           <text className="MdCode MdMath MdMathBlock">
             ƒ {"  "}
             {node.value ?? ""}
@@ -674,9 +720,9 @@ function renderNode(
         </text>
       );
     case "table":
-      return renderTable(node, key, context);
+      return renderTable(node, key, context, edge);
     case "thematicBreak":
-      return <view className="MdRule" key={key} />;
+      return <view className={`MdRule${edge}`} key={key} />;
     case "break":
       return <text key={key}>{"\n"}</text>;
     case "html":

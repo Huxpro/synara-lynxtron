@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "@lyn
 import arrowDownSvg from "@tabler/icons/outline/arrow-down.svg?raw";
 
 import {
-  PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   type ModelSelection,
   type ProviderInteractionMode,
   type RuntimeMode,
@@ -12,7 +11,10 @@ import {
   resolveLatestTailUserMessageEditTarget,
   resolvePromptEffortFromModelSelection,
 } from "@synara/shared/conversationEdit";
-import { resolveAssistantMessageDisplayText } from "@synara-web/components/chat/MessagesTimeline.logic";
+import {
+  resolveAssistantMessageCopyState,
+  resolveAssistantMessageDisplayText,
+} from "@synara-web/components/chat/MessagesTimeline.logic";
 import { chunkCollapsedTurnItems } from "@synara-web/components/chat/MessagesTimeline.logic";
 import {
   classifyToolCallSummaryCategory,
@@ -33,7 +35,7 @@ import {
 } from "@synara-web/lib/terminalContext";
 import { resolveSelectionActionLayout } from "@synara/shared/selectionActionLayout";
 import { pinActionLabel } from "@synara-web/lib/pin.logic";
-import { formatShortTimestamp } from "@synara-web/timestampFormat";
+import { formatDayAwareTimestamp, formatShortTimestamp } from "@synara-web/timestampFormat";
 import {
   createMarkdownCodeFence,
   formatShellTranscript,
@@ -44,6 +46,7 @@ import {
 // hand-tuned CSS on each side.
 import {
   getChatTranscriptLineHeightPx,
+  getChatMessageFooterTextStyle,
   getChatTranscriptTextStyle,
   getChatTranscriptUserMessageTextStyle,
 } from "@synara-web/components/chat/chatTypography";
@@ -63,21 +66,14 @@ import {
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
-import {
-  ChevronRightIcon,
-  CopyIcon,
-  MessageCircleIcon,
-  NewThreadIcon,
-  Undo2Icon,
-} from "../lib/icons.lynx";
+import { ChevronRightIcon, MessageCircleIcon, NewThreadIcon, Undo2Icon } from "../lib/icons.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import branchSvg from "@synara-central-icons/branch.svg?raw";
+import copySvg from "@synara-central-icons/square-behind-square-6.svg?raw";
 import pinSvg from "@synara-central-icons/pin.svg?raw";
 import { MessageActionButtonLynx } from "../components/ui/MessageActionButton.lynx";
 import { ChatMarkdown, type MarkdownTextSelection } from "../components/markdown/ChatMarkdown";
-import {
-  createAssistantSelectionAttachment,
-  getAssistantSelectionValidationError,
-} from "@synara-web/lib/assistantSelections";
+import { createAssistantSelectionAttachment } from "@synara-web/lib/assistantSelections";
 import { bridgeCall } from "../platform/bridge";
 import { queryClient, type ThreadTranscriptRow } from "./queries";
 import { TranscriptUserMessageEditForm } from "./TranscriptUserMessageEditForm.lynx";
@@ -520,6 +516,7 @@ function TranscriptMessage({
   onThreadError,
   onOpenFileReference,
   onOpenTurnDiff,
+  onForkFromMessage,
   pinnedMessageIds,
   row,
   threadId,
@@ -542,6 +539,7 @@ function TranscriptMessage({
   readonly onThreadError?: (error: string | null) => void;
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly onOpenTurnDiff?: (turnId: string) => void;
+  readonly onForkFromMessage?: (messageId: string) => void;
   readonly pinnedMessageIds: ReadonlySet<string>;
   row: MessageTranscriptRow;
   threadId: string;
@@ -563,31 +561,7 @@ function TranscriptMessage({
   // Same empty/streaming/"(empty response)" resolution the Web timeline uses,
   // so an assistant turn with no text renders identically on both targets.
   const assistantText = isUser ? null : resolveAssistantMessageDisplayText(row);
-  const draftAttachmentCount = useComposerDraftStore((state) => {
-    const draft = state.draftsByThreadId[threadId];
-    return (draft?.files.length ?? 0) + (draft?.assistantSelections.length ?? 0);
-  });
-  const assistantSelectionUnavailable =
-    assistantText === null ||
-    getAssistantSelectionValidationError({
-      assistantMessageId: message.id,
-      text: assistantText ?? "",
-    }) !== null ||
-    draftAttachmentCount >= PROVIDER_SEND_TURN_MAX_ATTACHMENTS;
   const addAssistantSelection = useComposerDraftStore((state) => state.addAssistantSelection);
-  const addToChat = useLynxInteractiveState({
-    baseClassName: "TranscriptMessageAction",
-    accessibleLabel: "Reference whole assistant message",
-    disabled: assistantSelectionUnavailable,
-    onActivate: () => {
-      if (assistantText === null) return;
-      const selection = createAssistantSelectionAttachment({
-        assistantMessageId: message.id,
-        text: assistantText,
-      });
-      if (selection) addAssistantSelection(threadId, selection);
-    },
-  });
   const messageHover = useLynxInteractiveState({
     // The Web host maps DOM mouseover onto Lynx's ui-hover state only for
     // focusable controls or explicit hover owners. Message rows intentionally
@@ -688,6 +662,25 @@ function TranscriptMessage({
     },
   });
   const timestamp = formatShortTimestamp(message.createdAt, timestampFormat);
+  // Electron's footer rules: copy, fork and pin belong to a settled, persisted answer;
+  // a pinned message keeps its pin so it can always be unpinned.
+  const assistantCopyState = resolveAssistantMessageCopyState({
+    text: assistantText,
+    showCopyButton: row.showAssistantCopyButton,
+    streaming: row.assistantCopyStreaming,
+  });
+  const showPinToggle = !isUser && (assistantCopyState.visible || pinned);
+  const showForkAction = !isUser && assistantCopyState.visible && onForkFromMessage !== undefined;
+  const isTerminalAssistantMessage =
+    !isUser && row.showAssistantCopyButton && !row.assistantTurnInProgress;
+  const assistantMeta = isTerminalAssistantMessage
+    ? formatDayAwareTimestamp(message.createdAt, timestampFormat)
+    : "";
+  const fork = useLynxInteractiveState({
+    baseClassName: "TranscriptMessageAction",
+    accessibleLabel: "Fork thread from this turn",
+    onActivate: () => onForkFromMessage?.(message.id),
+  });
   const turnSummary = row.assistantTurnDiffSummary;
   const turnChangedFileCount = turnSummary?.files.length ?? 0;
   const turnAdditions =
@@ -766,10 +759,9 @@ function TranscriptMessage({
           <view className="TranscriptMessageFooter TranscriptMessageFooter--user">
             <text className="TranscriptMessageTimestamp">{timestamp}</text>
             <MessageActionButtonLynx className={copy.className} eventProps={copy.eventProps}>
-              <CopyIcon
-                color={svgColors.iconSecondary}
+              <svg
                 className="TranscriptMessageActionIcon"
-                size={13}
+                content={colorizeLynxSvg(copySvg, svgColors.iconSecondary)}
               />
             </MessageActionButtonLynx>
             {editable && displayedUserMessage?.copyText.trim() ? (
@@ -886,38 +878,53 @@ function TranscriptMessage({
             viewport={selectionViewport}
           />
         ) : null}
-        {assistantText === null ? null : (
+        {assistantCopyState.visible || showPinToggle || assistantMeta.length > 0 ? (
+          // Turn-end actions read Copy → Fork → Pin → time and stay visible at rest, as
+          // in Electron: they belong to a settled turn.
           <view
-            className={`TranscriptMessageFooter${
-              pinned ? " TranscriptMessageFooter--persistent" : ""
+            className={`TranscriptMessageFooter TranscriptMessageFooter--assistant${
+              assistantCopyState.visible || showPinToggle
+                ? " TranscriptMessageFooter--leading-action"
+                : ""
             }`}
           >
-            <MessageActionButtonLynx className={pin.className} eventProps={pin.eventProps}>
-              <svg
-                className="TranscriptMessageActionIcon"
-                content={colorizeLynxSvg(pinSvg, svgColors.iconSecondary)}
-              />
-            </MessageActionButtonLynx>
-            <MessageActionButtonLynx className={copy.className} eventProps={copy.eventProps}>
-              <CopyIcon
-                color={svgColors.iconSecondary}
-                className="TranscriptMessageActionIcon"
-                size={13}
-              />
-            </MessageActionButtonLynx>
-            <view
-              className={`${addToChat.className}${addToChat.disabled ? " ui-disabled" : ""}`}
-              {...addToChat.eventProps}
-            >
-              <MessageCircleIcon
-                color={svgColors.iconSecondary}
-                className="TranscriptMessageActionIcon"
-                size={13}
-              />
-            </view>
-            <text className="TranscriptMessageTimestamp">{timestamp}</text>
+            {assistantCopyState.visible ? (
+              <MessageActionButtonLynx className={copy.className} eventProps={copy.eventProps}>
+                <svg
+                  className="TranscriptMessageActionIcon"
+                  content={colorizeLynxSvg(copySvg, svgColors.iconSecondary)}
+                />
+              </MessageActionButtonLynx>
+            ) : null}
+            {showForkAction ? (
+              <MessageActionButtonLynx className={fork.className} eventProps={fork.eventProps}>
+                <svg
+                  className="TranscriptMessageActionIcon"
+                  content={colorizeLynxSvg(branchSvg, svgColors.iconSecondary)}
+                />
+              </MessageActionButtonLynx>
+            ) : null}
+            {showPinToggle ? (
+              <MessageActionButtonLynx className={pin.className} eventProps={pin.eventProps}>
+                <svg
+                  className="TranscriptMessageActionIcon"
+                  content={colorizeLynxSvg(
+                    pinSvg,
+                    pinned ? svgColors.foreground : svgColors.iconSecondary,
+                  )}
+                />
+              </MessageActionButtonLynx>
+            ) : null}
+            {assistantMeta.length > 0 ? (
+              <text
+                className="TranscriptMessageMeta"
+                style={getChatMessageFooterTextStyle(chatFontSizePx) as Record<string, string>}
+              >
+                {assistantMeta}
+              </text>
+            ) : null}
           </view>
-        )}
+        ) : null}
       </MessageAssistantRowComposition>
     </view>
   );
@@ -940,6 +947,7 @@ function TranscriptRowContent({
   onThreadError,
   onOpenFileReference,
   onOpenTurnDiff,
+  onForkFromMessage,
   pinnedMessageIds,
   row,
   threadId,
@@ -966,6 +974,7 @@ function TranscriptRowContent({
   readonly onThreadError?: (error: string | null) => void;
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly onOpenTurnDiff?: (turnId: string) => void;
+  readonly onForkFromMessage?: (messageId: string) => void;
   readonly pinnedMessageIds: ReadonlySet<string>;
   row: ThreadTranscriptRow;
   threadId: string;
@@ -996,6 +1005,7 @@ function TranscriptRowContent({
         onThreadError={onThreadError}
         onOpenFileReference={onOpenFileReference}
         onOpenTurnDiff={onOpenTurnDiff}
+        onForkFromMessage={onForkFromMessage}
         pinnedMessageIds={pinnedMessageIds}
         row={row}
         threadId={threadId}
@@ -1067,6 +1077,7 @@ export function Transcript({
   modelSelection,
   onOpenFileReference,
   onOpenTurnDiff,
+  onForkFromMessage,
   pinnedMessageIds,
   rows,
   threadId,
@@ -1086,6 +1097,7 @@ export function Transcript({
   readonly modelSelection: ModelSelection | null;
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly onOpenTurnDiff?: (turnId: string) => void;
+  readonly onForkFromMessage?: (messageId: string) => void;
   readonly pinnedMessageIds: ReadonlySet<string>;
   readonly rows: readonly ThreadTranscriptRow[];
   readonly threadId: string;
@@ -1455,6 +1467,7 @@ export function Transcript({
                 onThreadError={onThreadError}
                 onOpenFileReference={onOpenFileReference}
                 onOpenTurnDiff={onOpenTurnDiff}
+                onForkFromMessage={onForkFromMessage}
                 pinnedMessageIds={pinnedMessageIds}
                 row={row}
                 threadId={threadId}

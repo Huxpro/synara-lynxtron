@@ -90,9 +90,7 @@ describe("Lynx markdown file reference token", () => {
       /\.MdTableHeaderText,\s*\.MdTableCellText\s*\{[^}]*display:\s*block;[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*white-space:\s*normal;[^}]*overflow-wrap:\s*anywhere;/s,
     );
     const source = readFileSync(new URL("./ChatMarkdown.lynx.tsx", import.meta.url), "utf8");
-    expect(source).toContain(
-      "return <MarkdownTable context={context} key={key} node={node} nodeKey={key} />;",
-    );
+    expect(source).toMatch(/<MarkdownTable\s+context=\{context\}[\s\S]*?nodeKey=\{key\}\s*\/>/);
     expect(source).not.toContain('<scroll-view className="MdTableScroller"');
     expect(styles).toMatch(
       /\.MdTableHeaderText,\s*\.MdTableCellText\s*\{[^}]*word-break:\s*break-word;/s,

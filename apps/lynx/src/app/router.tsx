@@ -233,6 +233,7 @@ import {
   subscribeOpenThreadPathInTerminal,
 } from "./threadTerminalIntent.lynx";
 import { EditorProjectSwitchMenu } from "./EditorProjectSwitchMenu.lynx";
+import { createNativeThreadFork } from "./threadFork.lynx";
 export const history = createMemoryHistory({ initialEntries: ["/"] });
 
 async function readPersistedLastThreadRoute(): Promise<LastThreadRoute | null> {
@@ -1919,6 +1920,17 @@ function ThreadPage(props: ThreadPageProps) {
             onOpenFileReference={openExplorerFileReference}
             onOpenTurnDiff={openTurnDiff}
             onThreadError={setLocalThreadError}
+            onForkFromMessage={(messageId) => {
+              "background only";
+              if (!currentThread) return;
+              void createNativeThreadFork({ thread: currentThread, throughMessageId: messageId })
+                .then(onNavigateToThread)
+                .catch((error: unknown) =>
+                  setLocalThreadError(
+                    error instanceof Error ? error.message : "Could not fork thread.",
+                  ),
+                );
+            }}
             runtimeMode={currentThread?.runtimeMode ?? null}
             sessionStatus={currentThread?.sessionStatus ?? null}
           />

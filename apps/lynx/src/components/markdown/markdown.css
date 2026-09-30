@@ -531,3 +531,13 @@
   font-family: var(--font-mono-family);
   font-size: 11px;
 }
+
+/* Electron's `.chat-markdown > :first-child/:last-child`: the first and last root blocks
+   drop their outer margins. Last in the file so it wins over every block's own margins. */
+.MdRoot .MdEdge--first {
+  margin-top: 0;
+}
+
+.MdRoot .MdEdge--last {
+  margin-bottom: 0;
+}

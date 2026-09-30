@@ -2,24 +2,29 @@ import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
 describe("Lynx assistant message actions", () => {
-  it("writes a thread-scoped canonical assistant selection from the hover footer", () => {
+  it("shows Electron's settled-turn footer: copy, fork, pin, then the time", () => {
     const source = readFileSync(new URL("./Transcript.tsx", import.meta.url), "utf8");
+    const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
 
-    expect(source).toContain("createAssistantSelectionAttachment({");
-    expect(source).toContain("assistantMessageId: message.id");
-    expect(source).toContain("addAssistantSelection(threadId, selection)");
-    expect(source).toContain("getAssistantSelectionValidationError({");
-    expect(source).toContain("draftAttachmentCount >= PROVIDER_SEND_TURN_MAX_ATTACHMENTS");
-    expect(source).toContain("disabled: assistantSelectionUnavailable");
-    expect(source).toContain('addToChat.disabled ? " ui-disabled" : ""');
-    expect(source).toContain("Reference whole assistant message");
-    expect(source).toContain("baseClassName: `TranscriptMessageHoverRegion LynxWebHoverOwner ${");
-    expect(source).toContain("focusable: false");
-    expect(source).toContain("TranscriptMessageFooter");
-    expect(source).toContain("<MessageCircleIcon");
-    expect(source).not.toContain("Reference selection");
-    expect(routerSource).toContain("threadId={threadId}");
+    expect(source).toContain("resolveAssistantMessageCopyState({");
+    expect(source).toContain("showCopyButton: row.showAssistantCopyButton");
+    expect(source).toContain(
+      "const showPinToggle = !isUser && (assistantCopyState.visible || pinned)",
+    );
+    expect(source).toContain('accessibleLabel: "Fork thread from this turn"');
+    expect(source).toContain("formatDayAwareTimestamp(message.createdAt, timestampFormat)");
+    const copyIndex = source.indexOf("{assistantCopyState.visible ? (");
+    const forkIndex = source.indexOf("{showForkAction ? (", copyIndex);
+    const pinIndex = source.indexOf("{showPinToggle ? (", forkIndex);
+    const metaIndex = source.indexOf("{assistantMeta.length > 0 ? (", pinIndex);
+    expect(copyIndex).toBeGreaterThan(0);
+    expect(forkIndex).toBeGreaterThan(copyIndex);
+    expect(pinIndex).toBeGreaterThan(forkIndex);
+    expect(metaIndex).toBeGreaterThan(pinIndex);
+    expect(source).not.toContain("Reference whole assistant message");
+    expect(styles).toMatch(/\.TranscriptMessageFooter--assistant\s*\{[^}]*opacity:\s*1;/s);
+    expect(routerSource).toContain("createNativeThreadFork({ thread: currentThread");
   });
 
   it("exposes real pin, copy, and timestamp actions on hover", () => {
@@ -45,8 +50,8 @@ describe("Lynx assistant message actions", () => {
     expect(styles).toMatch(
       /\.TranscriptMessageActionIcon\s*\{[^}]*color:\s*var\(--color-icon-secondary\);/s,
     );
-    expect(source).toContain("colorizeLynxSvg(pinSvg, svgColors.iconSecondary)");
-    expect(source.match(/color=\{svgColors\.iconSecondary\}/g)?.length).toBeGreaterThanOrEqual(5);
+    expect(source).toContain("pinned ? svgColors.foreground : svgColors.iconSecondary");
+    expect(source.match(/svgColors\.iconSecondary/g)?.length).toBeGreaterThanOrEqual(5);
     const labSource = readFileSync(
       new URL("./ComponentsLabStoryRenderer.lynx.tsx", import.meta.url),
       "utf8",
