@@ -29,7 +29,7 @@ describe("Lynx Editor view", () => {
 
     const handoffIndex = routerSource.indexOf("<ThreadHeaderActions");
     const environmentIndex = routerSource.indexOf("<EnvironmentToggle");
-    const diffIndex = routerSource.indexOf("<ThreadDiffToggle");
+    const diffIndex = routerSource.indexOf("<ThreadRightSidebarToggle");
     expect(handoffIndex).toBeGreaterThan(-1);
     expect(environmentIndex).toBeGreaterThan(handoffIndex);
     expect(diffIndex).toBeGreaterThan(environmentIndex);

@@ -1101,59 +1101,29 @@
   text-decoration: underline;
 }
 
-.ThreadDiffToggle {
+/* ChatHeader right-dock toggle: `!size-7` chrome toggle, pressed on the secondary tint,
+   with the 16px glyph at 70%. */
+.ThreadRightSidebarToggle {
   display: flex;
   width: 28px;
   min-width: 28px;
   height: 28px;
-  padding: 0 6px;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
-.ThreadDiffToggle--with-stats {
-  width: auto;
-}
-
-.ThreadDiffToggle.ui-hover,
-.ThreadDiffToggle.ui-focus,
-.ThreadDiffToggle.ui-pressed,
-.ThreadDiffToggle--active {
+.ThreadRightSidebarToggle.ui-hover,
+.ThreadRightSidebarToggle.ui-focus,
+.ThreadRightSidebarToggle.ui-pressed,
+.ThreadRightSidebarToggle--active {
   background-color: var(--secondary);
 }
 
-.ThreadDiffToggle.ui-disabled {
-  opacity: 0.4;
-}
-
-.ThreadDiffToggleIcon {
+.ThreadRightSidebarToggleIcon {
   width: 16px;
   height: 16px;
   opacity: 0.7;
-}
-
-.ThreadDiffToggleStats {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.ThreadDiffToggleAddition,
-.ThreadDiffToggleDeletion {
-  font-family: var(--font-ui-family);
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 16px;
-}
-
-.ThreadDiffToggleAddition {
-  color: var(--success);
-}
-
-.ThreadDiffToggleDeletion {
-  color: var(--destructive);
 }
 
 .ThreadTranscriptViewport {

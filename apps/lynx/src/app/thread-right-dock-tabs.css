@@ -57,3 +57,9 @@
 .ThreadRightDockAddMenu {
   width: 176px;
 }
+
+/* Electron's collapse glyph (Central sidebar-simple-right-wide, size-4). */
+.ThreadRightDockHeaderIcon {
+  width: 16px;
+  height: 16px;
+}

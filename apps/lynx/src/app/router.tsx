@@ -39,6 +39,7 @@ import {
   resolveActivePane,
   setActivePaneInState,
   setDockOpenInState,
+  type RightDockPaneKind,
   type RightDockThreadState,
 } from "@synara/shared/rightDock";
 import { resolveThreadHeaderActionState } from "@synara/shared/threadHeaderActions";
@@ -177,9 +178,11 @@ import { newCommandId, newThreadId } from "@synara-web/lib/utils";
 import { DiffDock } from "./DiffDock.lynx";
 import { ThreadRightDockTabs } from "./ThreadRightDockTabs.lynx";
 import { ThreadRightDockHost } from "./ThreadRightDockHost.lynx";
+import { ThreadRightDockLauncher } from "./ThreadRightDockLauncher.lynx";
+import { resolveRightDockLauncherEntries } from "@synara-web/components/chat/rightDockLauncher.logic";
 import { readRightDockThreadState, storeRightDockThreadState } from "./rightDockState.lynx";
 import {
-  ThreadDiffToggle,
+  ThreadRightSidebarToggle,
   usePersistedRightDockState,
   useRightDockLayout,
   useWorkspaceHeaderDiff,
@@ -444,9 +447,7 @@ function ThreadsLandingHeader(props: {
             onChange={props.onEnvironmentOpenChange}
           />
         ) : null}
-        {props.diffToggle ?? (
-          <ThreadDiffToggle open={false} disabled stats={null} onToggle={() => {}} />
-        )}
+        {props.diffToggle ?? <ThreadRightSidebarToggle open={false} onToggle={() => {}} />}
       </view>
     </ChatSurfaceHeaderFrame>
   );
@@ -520,7 +521,8 @@ function ThreadsLandingPage(props: {
   );
   const [diffFileTreeOpen, setDiffFileTreeOpen] = useState(false);
   const activeDockPane = resolveActivePane(rightDockState);
-  const dockOpen = rightDockState.open && Boolean(rightDockState.activePaneId);
+  // The dock opens on its launcher when no pane is active, as Electron's does.
+  const dockOpen = rightDockState.open;
   const diffOpen = rightDockState.open && activeDockPane?.kind === "diff";
   const explorerOpen =
     rightDockState.open && (activeDockPane?.kind === "explorer" || activeDockPane?.kind === "file");
@@ -569,17 +571,11 @@ function ThreadsLandingPage(props: {
           compact={dockLayout.mainWidth < 700}
           diffToggle={
             headerActionState.showDiff ? (
-              <ThreadDiffToggle
-                open={diffOpen}
-                disabled={headerActionState.diffDisabled}
-                stats={headerActionState.diffStats}
+              <ThreadRightSidebarToggle
+                open={rightDockState.open}
                 onToggle={() => {
                   setEnvironmentOpen(false);
-                  updateRightDockState((current) =>
-                    diffOpen
-                      ? setDockOpenInState(current, false)
-                      : openPaneInState(current, { paneId: "diff", kind: "diff" }),
-                  );
+                  updateRightDockState((current) => setDockOpenInState(current, !current.open));
                 }}
               />
             ) : null
@@ -639,6 +635,10 @@ function ThreadsLandingPage(props: {
       </view>
       <ThreadRightDocks
         {...props.explorerDockProps}
+        launcherAvailability={{
+          hasGitRepository: headerDiff.isGitRepo,
+          hasReview: headerDiff.totals.hasChanges,
+        }}
         chatFontSizePx={props.appearance.chatFontSizePx}
         diffOpen={diffOpen}
         dockThread={
@@ -825,6 +825,11 @@ function ThreadRightDocks(
     | "viewportWidth"
   > & {
     readonly dockThread: RightDockThread | undefined;
+    /** What the empty dock's launcher may offer (Review needs changes, Git a repository). */
+    readonly launcherAvailability: {
+      readonly hasGitRepository: boolean;
+      readonly hasReview: boolean;
+    };
     readonly diffOpen: boolean;
     readonly explorerOpen: boolean;
     readonly terminalOpen: boolean;
@@ -950,32 +955,68 @@ function ThreadRightDocks(
       setHydratedTerminalKey(terminalKey);
     }
   }, [terminalKey, terminalOpen]);
+  const addMenuKinds: readonly RightDockPaneKind[] = dockThread?.workspaceRoot
+    ? dockThread.sidechatSource
+      ? [
+          ...(browserSupported ? ["browser" as const] : []),
+          "diff",
+          "explorer",
+          "terminal",
+          "sidechat",
+          "git",
+        ]
+      : [...(browserSupported ? ["browser" as const] : []), "diff", "explorer", "terminal", "git"]
+    : dockThread?.sidechatSource
+      ? [...(browserSupported ? ["browser" as const] : []), "diff", "explorer", "sidechat"]
+      : [...(browserSupported ? ["browser" as const] : []), "diff", "explorer"];
+  const launcherEntries = resolveRightDockLauncherEntries({
+    hasWorkspace: Boolean(dockThread?.workspaceRoot),
+    hasGitRepository: props.launcherAvailability.hasGitRepository,
+    hasReview: props.launcherAvailability.hasReview,
+    // Lynx has no device (simulator) pane; the launcher offers what the add menu can open.
+    supportedKinds: new Set(addMenuKinds),
+  });
+  const openDockPane = (kind: RightDockPaneKind) => {
+    "background only";
+    if (kind === "sidechat") {
+      const source = dockThread?.sidechatSource;
+      if (!source) return;
+      const sidechatThreadId = newThreadId();
+      setSidechatCreateError(null);
+      void dispatchSynaraCommand(
+        buildLynxSidechatCreateCommand({
+          commandId: newCommandId(),
+          createdAt: new Date().toISOString(),
+          source,
+          threadId: sidechatThreadId,
+        }),
+      )
+        .then(async () => {
+          await queryClient.invalidateQueries({ queryKey: ["threads"] });
+          await queryClient.invalidateQueries({
+            queryKey: ["thread-detail", sidechatThreadId],
+          });
+          updateRightDockState((current) =>
+            openPaneInState(current, {
+              paneId: "sidechat:" + sidechatThreadId,
+              kind: "sidechat",
+              threadId: sidechatThreadId,
+            }),
+          );
+        })
+        .catch((error) =>
+          setSidechatCreateError(error instanceof Error ? error.message : String(error)),
+        );
+      return;
+    }
+    if (kind === "explorer") setExplorerPresentationMode("dock");
+    updateRightDockState((current) => openPaneInState(current, { paneId: kind, kind }));
+  };
   const dockTabs = (
     <ThreadRightDockTabs
       activePaneId={rightDockState.activePaneId}
       paneLabelOverrides={paneLabelOverrides}
-      addMenuKinds={
-        dockThread?.workspaceRoot
-          ? dockThread.sidechatSource
-            ? [
-                ...(browserSupported ? ["browser" as const] : []),
-                "diff",
-                "explorer",
-                "terminal",
-                "sidechat",
-                "git",
-              ]
-            : [
-                ...(browserSupported ? ["browser" as const] : []),
-                "diff",
-                "explorer",
-                "terminal",
-                "git",
-              ]
-          : dockThread?.sidechatSource
-            ? [...(browserSupported ? ["browser" as const] : []), "diff", "explorer", "sidechat"]
-            : [...(browserSupported ? ["browser" as const] : []), "diff", "explorer"]
-      }
+      addMenuKinds={addMenuKinds}
       panes={rightDockState.panes.filter(
         (pane) =>
           pane.kind === "browser" ||
@@ -986,42 +1027,7 @@ function ThreadRightDocks(
           pane.kind === "sidechat" ||
           pane.kind === "git",
       )}
-      onAddPane={(kind) => {
-        "background only";
-        if (kind === "sidechat") {
-          const source = dockThread?.sidechatSource;
-          if (!source) return;
-          const sidechatThreadId = newThreadId();
-          setSidechatCreateError(null);
-          void dispatchSynaraCommand(
-            buildLynxSidechatCreateCommand({
-              commandId: newCommandId(),
-              createdAt: new Date().toISOString(),
-              source,
-              threadId: sidechatThreadId,
-            }),
-          )
-            .then(async () => {
-              await queryClient.invalidateQueries({ queryKey: ["threads"] });
-              await queryClient.invalidateQueries({
-                queryKey: ["thread-detail", sidechatThreadId],
-              });
-              updateRightDockState((current) =>
-                openPaneInState(current, {
-                  paneId: "sidechat:" + sidechatThreadId,
-                  kind: "sidechat",
-                  threadId: sidechatThreadId,
-                }),
-              );
-            })
-            .catch((error) =>
-              setSidechatCreateError(error instanceof Error ? error.message : String(error)),
-            );
-          return;
-        }
-        if (kind === "explorer") setExplorerPresentationMode("dock");
-        updateRightDockState((current) => openPaneInState(current, { paneId: kind, kind }));
-      }}
+      onAddPane={openDockPane}
       onClosePane={(paneId) => {
         const pane = rightDockState.panes.find((candidate) => candidate.id === paneId);
         if (pane?.kind === "terminal") {
@@ -1044,9 +1050,12 @@ function ThreadRightDocks(
     <ThreadRightDockHost
       availableWidth={availableWidth}
       onWidthChange={setRightDockWidth}
-      open={rightDockState.open && Boolean(rightDockState.activePaneId)}
+      open={rightDockState.open}
       tabs={dockTabs}
     >
+      {activePane === null ? (
+        <ThreadRightDockLauncher entries={launcherEntries} onOpen={openDockPane} />
+      ) : null}
       {diffOpen ? (
         <DiffDock
           availableWidth={availableWidth}
@@ -1552,7 +1561,7 @@ function ThreadPage(props: ThreadPageProps) {
   const threadRenameInputRef = useRef<InputRef>(null);
   const threadRenameTouchedRef = useRef(false);
   const rightDockLayout = useRightDockLayout({
-    dockOpen: rightDockState.open && Boolean(rightDockState.activePaneId),
+    dockOpen: rightDockState.open,
     fallbackDockWidth: initialExplorerWidth,
     initialDockWidth:
       initialExplorerOpen && viewportWidth > 0
@@ -2530,14 +2539,11 @@ function ThreadPage(props: ThreadPageProps) {
               />
             ) : null}
             {threadHeaderActionState.showDiff ? (
-              <ThreadDiffToggle
-                open={diffOpen}
-                disabled={threadHeaderActionState.diffDisabled}
-                stats={threadHeaderActionState.diffStats}
+              <ThreadRightSidebarToggle
+                open={rightDockState.open}
                 onToggle={() => {
                   closeEnvironmentForAction();
-                  setExplorerOpen(false);
-                  setDiffOpen(!diffOpen);
+                  updateRightDockState((current) => setDockOpenInState(current, !current.open));
                 }}
               />
             ) : null}
@@ -2615,6 +2621,10 @@ function ThreadPage(props: ThreadPageProps) {
         ) : null}
       </view>
       <ThreadRightDocks
+        launcherAvailability={{
+          hasGitRepository: headerDiff.isGitRepo,
+          hasReview: headerDiff.totals.hasChanges,
+        }}
         dockThread={
           currentThread
             ? {

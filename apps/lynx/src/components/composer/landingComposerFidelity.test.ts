@@ -112,7 +112,7 @@ describe("landing composer fidelity contract", () => {
     expect(routerSource).toContain("useProviderHealthBanner(initialModelProvider,");
     expect(routerSource).toContain("<EnvironmentPanel");
     expect(routerSource).toContain("threadId={null}");
-    expect(routerSource).toContain("<ThreadDiffToggle");
+    expect(routerSource).toContain("<ThreadRightSidebarToggle");
     expect(routerSource).toContain("<ThreadRightDocks");
     expect(appStyles).toMatch(
       /\.ThreadsLanding--environment-open \.ThreadsLandingBody\s*\{[^}]*padding-right:\s*312px;/s,

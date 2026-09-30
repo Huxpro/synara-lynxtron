@@ -46,9 +46,9 @@ describe("Lynx Environment panel", () => {
     expect(routerSource).toContain("<EnvironmentToggle");
     expect(routerSource).toContain("<EnvironmentPanel");
     expect(readFileSync(new URL("./threadDock.lynx.tsx", import.meta.url), "utf8")).toContain(
-      'accessibleLabel: "Toggle diff panel"',
+      'accessibleLabel: "Toggle right sidebar"',
     );
-    expect(routerSource).toContain("<ThreadDiffToggle");
+    expect(routerSource).toContain("<ThreadRightSidebarToggle");
     expect(routerSource).not.toContain("accessibleLabel: 'Toggle files panel'");
     expect(routerSource).toContain(
       "const [environmentUserOverride, setEnvironmentUserOverride] = useState<",

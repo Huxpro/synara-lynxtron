@@ -1,8 +1,8 @@
-// Shared thread-surface dock pieces: the header diff toggle, its working-tree
+// Shared thread-surface dock pieces: the header right-sidebar toggle, the working-tree
 // totals, and the right-dock/main-column width split. The thread page and the
 // new-thread landing (the web's draft thread) both use them.
 
-import panelRightCloseSvg from "@synara-central-icons/sidebar-hidden-right-wide.svg?raw";
+import sidebarRightSvg from "@synara-central-icons/sidebar-simple-right-wide.svg?raw";
 import { useCallback, useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
 import { RIGHT_DOCK_MIN_WIDTH_PX, type RightDockThreadState } from "@synara/shared/rightDock";
@@ -65,40 +65,26 @@ export function useWorkspaceHeaderDiff(input: {
   };
 }
 
-export function ThreadDiffToggle(props: {
+/**
+ * Electron's ChatHeader right-dock toggle: shows or hides the right sidebar, which opens on
+ * its launcher when no pane is active.
+ */
+export function ThreadRightSidebarToggle(props: {
   readonly open: boolean;
-  readonly disabled: boolean;
-  readonly stats: { readonly additions: number; readonly deletions: number } | null;
   readonly onToggle: () => void;
 }) {
-  const { semanticIconColor } = useTheme();
+  const { svgColors } = useTheme();
   const toggle = useLynxInteractiveState({
-    baseClassName: `ThreadDiffToggle${props.open ? " ThreadDiffToggle--active" : ""}${
-      props.stats ? " ThreadDiffToggle--with-stats" : ""
-    }`,
-    accessibleLabel: "Toggle diff panel",
-    disabled: props.disabled,
+    baseClassName: `ThreadRightSidebarToggle${props.open ? " ThreadRightSidebarToggle--active" : ""}`,
+    accessibleLabel: "Toggle right sidebar",
     accessibilityValue: props.open ? "On" : "Off",
     onActivate: props.onToggle,
   });
   return (
-    <view
-      className={`${toggle.className}${props.disabled ? " ui-disabled" : ""}`}
-      aria-pressed={props.open}
-      {...toggle.eventProps}
-    >
-      {props.stats ? (
-        <view className="ThreadDiffToggleStats">
-          <text className="ThreadDiffToggleAddition">+{props.stats.additions}</text>
-          <text className="ThreadDiffToggleDeletion">-{props.stats.deletions}</text>
-        </view>
-      ) : null}
+    <view className={toggle.className} aria-pressed={props.open} {...toggle.eventProps}>
       <svg
-        className="ThreadDiffToggleIcon"
-        content={colorizeLynxSvg(
-          panelRightCloseSvg,
-          props.open ? semanticIconColor("primary") : semanticIconColor("secondary"),
-        )}
+        className="ThreadRightSidebarToggleIcon"
+        content={colorizeLynxSvg(sidebarRightSvg, svgColors.foreground)}
       />
     </view>
   );
