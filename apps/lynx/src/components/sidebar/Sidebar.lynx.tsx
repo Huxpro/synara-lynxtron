@@ -184,6 +184,10 @@ import { LYNX_SIDEBAR_PRIMARY_ICONS } from "./SidebarPrimaryIcons.lynx";
 import { SidebarHoverAction, SidebarNavigationRow } from "./SidebarNavigationRow.lynx";
 import { SidebarSurfaceHeader } from "./SidebarSurfaceHeader.lynx";
 import { SidebarActivityView } from "./SidebarActivityView.lynx";
+import { SidebarHelpMenu } from "./SidebarHelpMenu.lynx";
+import { FeedbackDialogLynx, resolveNativeFeedbackContext } from "./FeedbackDialog.lynx";
+import { SYNARA_DOCS_URL } from "@synara-web/components/SidebarHelpMenu.logic";
+import { settingsRouteLocation } from "../../app/settingsRoute.logic";
 import { useThreadSettledOverrides } from "./useThreadSettledOverrides.lynx";
 import { hasUnreadActivity as hasUnreadActivityOutsideActiveThread } from "@synara-web/components/SidebarActivityView.logic";
 import pinSvg from "@synara-central-icons/pin.svg?raw";
@@ -614,6 +618,12 @@ export function Sidebar({
     readonly icon: SpaceIconName;
   } | null>(null);
   const [spaceActionError, setSpaceActionError] = useState<string | null>(null);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const openDocs = () => {
+    "background only";
+    void platformWindow.openExternal(SYNARA_DOCS_URL);
+  };
+  const activeThreadSummary = data?.threads.find((thread) => thread.id === activeThreadId);
   const persistSidebarSortOrders = useCallback(
     (
       nextProjectSortOrder: SidebarProjectSortOrderValue,
@@ -2153,6 +2163,22 @@ export function Sidebar({
         settingsActive={activePath === "/settings"}
         settingsIcon={<SettingsIcon className="AppSidebarSettingsIcon" size={15} />}
         onOpenSettings={() => navigate("/settings")}
+        trailing={
+          <SidebarHelpMenu
+            onOpenShortcuts={() => navigate(settingsRouteLocation("shortcuts"))}
+            onOpenFeedback={() => setFeedbackOpen(true)}
+            onOpenDocs={openDocs}
+          />
+        }
+      />
+      <FeedbackDialogLynx
+        activeThreadId={activeThreadId}
+        open={feedbackOpen}
+        fallbackContext={resolveNativeFeedbackContext(
+          activeThreadSummary,
+          data?.projects.find((project) => project.id === activeThreadSummary?.projectId)?.kind,
+        )}
+        onOpenChange={setFeedbackOpen}
       />
       <SpaceEditorDialogLynx
         mode={spaceEditorMode ?? "edit"}

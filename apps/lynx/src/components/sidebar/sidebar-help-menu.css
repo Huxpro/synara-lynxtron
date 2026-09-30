@@ -1,0 +1,84 @@
+/* Footer Help trigger: SidebarIconButton `size-5 p-0.5 rounded-md` with a 14px glyph. */
+.SidebarHelpTrigger {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.SidebarHelpTrigger.ui-hover,
+.SidebarHelpTrigger.ui-pressed {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.SidebarHelpTrigger.ui-focus {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.SidebarHelpTriggerGlyph {
+  width: 14px;
+  height: 14px;
+}
+
+/* ComposerPickerMenuPopup `w-64` opening above the trigger. */
+.LxMenuPopup.SidebarHelpMenu {
+  width: 256px;
+}
+
+.SidebarHelpMenuLabel {
+  padding: 4px 8px;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+  font-weight: 500;
+  opacity: 1;
+}
+
+/* 26px rows at px-2; LxMenuItem's 1px transparent button border is part of the inset. */
+.SidebarHelpMenu .SidebarHelpMenuItem {
+  min-height: 26px;
+  padding: 0 7px;
+}
+
+.SidebarHelpMenuRow {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.SidebarHelpMenuIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.SidebarHelpMenuText {
+  color: var(--color-text-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 19.5px;
+}
+
+.SidebarHelpMenuText--release {
+  min-width: 0;
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SidebarHelpMenuDate {
+  flex-shrink: 0;
+  color: var(--color-text-foreground-secondary);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 19.5px;
+}
+
+/* `mx-2 my-1 h-px bg-border`. */
+.SidebarHelpMenu .SidebarHelpMenuSeparator {
+  margin: 4px 8px;
+}

@@ -66,7 +66,12 @@ function SidebarSurfacePicker(props: {
           <ChevronDownIcon size={14} color="var(--muted-foreground)" />
         </view>
       </MenuTrigger>
-      <MenuPopup align="start" side="bottom" sideOffset={4} className="SidebarSurfacePickerMenu">
+      <MenuPopup
+        align="start"
+        side="bottom"
+        sideOffset={4}
+        className="LxComposerPickerMenuPopup SidebarSurfacePickerMenu"
+      >
         <MenuRadioGroup
           value={props.activeView}
           onValueChange={(value) => props.onSelectView(value as SidebarView)}

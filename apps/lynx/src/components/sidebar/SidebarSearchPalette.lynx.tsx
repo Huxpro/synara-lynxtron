@@ -19,7 +19,7 @@ import {
   buildNativeSearchProjectCreateCommand,
 } from "./sidebarSearchActions.logic";
 import { buildLynxSidebarSearchActions } from "./sidebarSearchSpaceActions.logic";
-import { FeedbackDialogLynx } from "./FeedbackDialog.lynx";
+import { FeedbackDialogLynx, resolveNativeFeedbackContext } from "./FeedbackDialog.lynx";
 
 const IMPORT_PROVIDERS: readonly ImportProviderKind[] = [
   "codex",
@@ -141,21 +141,7 @@ export function SidebarSearchPaletteLynx(props: {
     ? props.snapshot?.projects.find((project) => project.id === activeThread.projectId)
     : null;
   const feedbackContext = useMemo(
-    () => ({
-      provider: activeThread?.provider ?? null,
-      model: null,
-      projectKind: activeProject?.kind ?? null,
-      environmentMode: null,
-      runtimeMode: null,
-      interactionMode: null,
-      sessionStatus: activeThread?.sessionStatus ?? null,
-      latestTurnState: activeThread?.latestTurnState ?? null,
-      messageCount: activeThread?.messageCount ?? 0,
-      activityCount: 0,
-      hasPendingApproval: activeThread?.hasPendingApprovals === true,
-      hasPendingUserInput: activeThread?.hasPendingUserInput === true,
-      hasThreadError: false,
-    }),
+    () => resolveNativeFeedbackContext(activeThread, activeProject?.kind),
     [activeProject?.kind, activeThread],
   );
 

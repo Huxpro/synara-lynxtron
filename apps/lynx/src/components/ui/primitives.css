@@ -1202,6 +1202,26 @@
     0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
+/* Electron's ComposerPickerMenuPopup shell: 14px radius, 4px body, and a 70% popover frosted
+   over a 40px backdrop blur. Lynx has no backdrop filter, so the tint is painted as an inset
+   shadow over the opaque sidebar surface: the same tone over the sidebar, and whatever is
+   behind the popup stays hidden as Electron's blur hides it. */
+.LxComposerPickerMenuPopup.LxMenuPopup {
+  min-height: 0;
+  padding: 4px;
+  border-radius: 14px;
+  background-color: var(--sidebar);
+  box-shadow:
+    inset 0 0 0 999px var(--app-composer-picker-surface),
+    0 4px 18px -6px rgba(13, 13, 13, 0.07);
+}
+
+.SliceRoot--theme-dark .LxComposerPickerMenuPopup.LxMenuPopup {
+  box-shadow:
+    inset 0 0 0 999px var(--app-composer-picker-surface),
+    0 6px 24px -10px rgba(0, 0, 0, 0.3);
+}
+
 /* Picker menus (Electron ComposerPickerMenuPopup): 4px shell, 26px rows. */
 .LxPickerMenuPopup.LxMenuPopup {
   min-height: 0;

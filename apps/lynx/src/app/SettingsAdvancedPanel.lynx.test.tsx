@@ -24,8 +24,13 @@ describe("Settings Advanced fidelity", () => {
     expect(panelSource).toContain("Recovery tools");
     expect(panelSource).toContain("Version");
     expect(panelSource).toContain("View release history");
-    expect(panelSource).toContain("WHATS_NEW_ENTRIES");
-    expect(panelSource).toContain("sortEntriesByVersionDesc");
+    expect(panelSource).toContain("<ReleaseHistoryDialogLynx");
+    const dialogSource = readFileSync(
+      new URL("./ReleaseHistoryDialog.lynx.tsx", import.meta.url),
+      "utf8",
+    );
+    expect(dialogSource).toContain("WHATS_NEW_ENTRIES");
+    expect(dialogSource).toContain("sortEntriesByVersionDesc");
   });
 
   it("uses host confirmation and refreshes state after repair", () => {
@@ -46,20 +51,29 @@ describe("Settings Advanced fidelity", () => {
     expect(panelSource).toContain("useLynxDisclosurePresence(");
     expect(panelSource).toContain("disclosureContentClassName(");
     expect(panelSource).toContain("disclosureChevronClassName(");
-    expect(panelSource).toContain("useLynxDisclosurePresence(props.open)");
-    expect(panelSource).toContain("<ReleaseHistoryEntry");
-    expect(panelSource).toContain(
+    const dialogSource = readFileSync(
+      new URL("./ReleaseHistoryDialog.lynx.tsx", import.meta.url),
+      "utf8",
+    );
+    expect(dialogSource).toContain("useLynxDisclosurePresence(props.open)");
+    expect(dialogSource).toContain("<ReleaseHistoryEntry");
+    expect(dialogSource).toContain(
       `"SettingsAdvancedReleaseChevron")}
           size={14}`,
     );
-    expect(panelSource).not.toContain("bindtap={() =>\n                        setExpandedRelease");
+    expect(dialogSource).not.toContain(
+      "bindtap={() =>\n                        setExpandedRelease",
+    );
     expect(panelSource).not.toContain("{open ? (");
     expect(panelSource).toContain("aria-expanded={showRecoveryTools}");
     expect(panelSource).toContain('"SettingsAdvancedRecoveryChevron"');
   });
 
   it("matches the Web developer-tools and About row anatomy", () => {
-    const styles = readFileSync(new URL("./settings-advanced-panel.css", import.meta.url), "utf8");
+    const styles = [
+      readFileSync(new URL("./settings-advanced-panel.css", import.meta.url), "utf8"),
+      readFileSync(new URL("./release-history-dialog.css", import.meta.url), "utf8"),
+    ].join("\n");
 
     expect(styles).toMatch(/\.SettingsAdvancedPanel\s*\{[^}]*gap:\s*24px;/s);
     expect(styles).toMatch(

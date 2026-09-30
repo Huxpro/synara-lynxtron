@@ -256,6 +256,11 @@ import {
   SIDEBAR_SURFACE_PICKER_COPY,
   resolveSidebarSurfacePickerViews,
 } from "./SidebarSurfacePicker.logic";
+import {
+  SYNARA_DOCS_URL,
+  helpMenuReleaseTitle,
+  resolveHelpMenuReleaseEntries,
+} from "./SidebarHelpMenu.logic";
 import { SidebarMetaChipStack } from "./SidebarMetaChip";
 import { SidebarRowHoverActions } from "./SidebarRowHoverActions";
 import { SidebarSectionToolbar } from "./SidebarSectionToolbar";
@@ -272,8 +277,6 @@ import { RelocateProjectDialog } from "./RelocateProjectDialog";
 import { RenameThreadDialog } from "./RenameThreadDialog";
 import ReleaseHistoryDialog from "./ReleaseHistoryDialog";
 import { isBetaFeatureOn } from "../betaFeatures";
-import { WHATS_NEW_ENTRIES } from "../whatsNew/entries";
-import { sortEntriesByVersionDesc } from "../whatsNew/logic";
 import {
   SidebarSearchPalette,
   type ImportProviderKind,
@@ -844,11 +847,9 @@ function ProjectSortMenu({
   );
 }
 
-const SYNARA_DOCS_URL = "https://trysynara.com/docs";
-
 // Latest curated releases surfaced directly in the help menu. Static data, so
 // computed once at module scope rather than per render.
-const HELP_MENU_RELEASE_ENTRIES = sortEntriesByVersionDesc(WHATS_NEW_ENTRIES).slice(0, 3);
+const HELP_MENU_RELEASE_ENTRIES = resolveHelpMenuReleaseEntries();
 
 // Footer help menu; swapped out for the desktop-update pill while an update is
 // available (see SidebarFooter).
@@ -910,9 +911,7 @@ function SidebarHelpMenu({
                 className={SIDEBAR_CONTEXT_MENU_ITEM_CLASS_NAME}
                 onClick={() => openReleaseHistory(entry.version)}
               >
-                <span className="min-w-0 flex-1 truncate">
-                  {entry.features[0]?.title ?? `Version ${entry.version}`}
-                </span>
+                <span className="min-w-0 flex-1 truncate">{helpMenuReleaseTitle(entry)}</span>
                 <span className="shrink-0 text-[var(--color-text-foreground-secondary)] tabular-nums">
                   {entry.date}
                 </span>

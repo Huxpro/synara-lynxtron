@@ -271,7 +271,12 @@ function ActivityScopeMenu(props: {
           size={14}
         />
       </MenuTrigger>
-      <MenuPopup align="start" side="bottom" sideOffset={4} className="AppSidebarActivityMenu">
+      <MenuPopup
+        align="start"
+        side="bottom"
+        sideOffset={4}
+        className="LxComposerPickerMenuPopup AppSidebarActivityMenu"
+      >
         <MenuGroup>
           <MenuGroupLabel className="AppSidebarActivityMenuLabel">Activity scope</MenuGroupLabel>
           <MenuRadioGroup
@@ -346,7 +351,12 @@ function ActivityFilterMenu(props: {
           content={colorizeLynxSvg(sortSvg, semanticIconColor("secondary"))}
         />
       </MenuTrigger>
-      <MenuPopup align="end" side="bottom" sideOffset={4} className="AppSidebarActivityMenu">
+      <MenuPopup
+        align="end"
+        side="bottom"
+        sideOffset={4}
+        className="LxComposerPickerMenuPopup AppSidebarActivityMenu"
+      >
         <MenuGroup>
           <MenuGroupLabel className="AppSidebarActivityMenuLabel">Group by</MenuGroupLabel>
           <MenuRadioGroup

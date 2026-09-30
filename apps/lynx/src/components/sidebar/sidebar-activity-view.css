@@ -367,15 +367,6 @@
 /* Scope and group-by menus: ComposerPickerMenuPopup `min-w-44` with compact rows. */
 .LxMenuPopup.AppSidebarActivityMenu {
   width: 176px;
-  min-height: 0;
-  padding: 4px;
-  border-radius: 14px;
-  background-color: var(--app-composer-picker-surface);
-  box-shadow: 0 4px 18px -6px rgba(13, 13, 13, 0.07);
-}
-
-.SliceRoot--theme-dark .LxMenuPopup.AppSidebarActivityMenu {
-  box-shadow: 0 6px 24px -10px rgba(0, 0, 0, 0.3);
 }
 
 /* `min-h-7 py-1 sm:text-ui leading-snug` inside the picker shell: 26px rows, px-2. The

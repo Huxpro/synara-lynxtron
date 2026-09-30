@@ -87,15 +87,6 @@
 /* ComposerPickerMenuPopup with `.sidebar-surface-picker-menu min-w-64`. */
 .LxMenuPopup.SidebarSurfacePickerMenu {
   width: 256px;
-  min-height: 0;
-  padding: 4px;
-  border-radius: 14px;
-  background-color: var(--app-composer-picker-surface);
-  box-shadow: 0 4px 18px -6px rgba(13, 13, 13, 0.07);
-}
-
-.SliceRoot--theme-dark .LxMenuPopup.SidebarSurfacePickerMenu {
-  box-shadow: 0 6px 24px -10px rgba(0, 0, 0, 0.3);
 }
 
 .SidebarSurfacePickerMenu .LxMenuGroup {
