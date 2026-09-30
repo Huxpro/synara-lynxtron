@@ -50,6 +50,8 @@ export const COMPARISON_RENDERER_STORAGE_KEYS = Object.freeze([
   "synara:terminal-state:v1",
   "synara:right-dock-state:v1",
   "synara:recent-views:v1",
+  "synara:safari-access-onboarding:v1",
+  "synara:project-import-announcement:v1",
 ]);
 
 // A key no app version knows, seeded into app settings so a workflow can prove
@@ -661,15 +663,19 @@ export function electronComparisonUrlMatches(candidateUrl, expectedUrl) {
   }
 }
 
+// First-run surfaces that are not part of any compared screen. The Safari intro
+// is answered "later" and the import announcement is marked seen for this
+// installation (the server's worktrees directory), exactly as a user would.
 export function comparisonRendererResetExpression(
   theme,
   appSnap = "acknowledged",
   chatFontSize = null,
   threadId = null,
+  installationKey = null,
 ) {
   return `(() => { const state = Object.fromEntries(${JSON.stringify(
     COMPARISON_RENDERER_STORAGE_KEYS,
-  )}.flatMap((key) => { const value = localStorage.getItem(key); return value === null ? [] : [[key, value]]; })); const appSettings = JSON.parse(state['synara:app-settings:v1'] ?? '{}'); appSettings.enableProviderUpdateChecks = false; appSettings.enableTaskCompletionToasts = false; appSettings[${JSON.stringify(COMPARISON_UNKNOWN_SETTING.key)}] = ${JSON.stringify(COMPARISON_UNKNOWN_SETTING.value)}; if (${JSON.stringify(chatFontSize)} !== null) appSettings.chatFontSizePx = ${JSON.stringify(chatFontSize)}; state['synara:app-settings:v1'] = JSON.stringify(appSettings); if (${JSON.stringify(threadId)} !== null) state['synara:recent-views:v1'] = JSON.stringify({ state: { recentViews: [{ kind: 'thread', threadId: ${JSON.stringify(threadId)} }, { kind: 'settings', section: 'general' }] }, version: 0 }); localStorage.clear(); for (const [key, value] of Object.entries(state)) localStorage.setItem(key, value); localStorage.setItem('synara:theme', ${JSON.stringify(theme)}); if (${JSON.stringify(appSnap)} === 'welcome') localStorage.removeItem('synara:appsnap-welcome:v1'); else localStorage.setItem('synara:appsnap-welcome:v1', '{"acknowledged":true}'); location.reload(); })(); undefined`;
+  )}.flatMap((key) => { const value = localStorage.getItem(key); return value === null ? [] : [[key, value]]; })); const appSettings = JSON.parse(state['synara:app-settings:v1'] ?? '{}'); appSettings.enableProviderUpdateChecks = false; appSettings.enableTaskCompletionToasts = false; appSettings[${JSON.stringify(COMPARISON_UNKNOWN_SETTING.key)}] = ${JSON.stringify(COMPARISON_UNKNOWN_SETTING.value)}; if (${JSON.stringify(chatFontSize)} !== null) appSettings.chatFontSizePx = ${JSON.stringify(chatFontSize)}; state['synara:app-settings:v1'] = JSON.stringify(appSettings); if (${JSON.stringify(threadId)} !== null) state['synara:recent-views:v1'] = JSON.stringify({ state: { recentViews: [{ kind: 'thread', threadId: ${JSON.stringify(threadId)} }, { kind: 'settings', section: 'general' }] }, version: 0 }); localStorage.clear(); for (const [key, value] of Object.entries(state)) localStorage.setItem(key, value); localStorage.setItem('synara:theme', ${JSON.stringify(theme)}); localStorage.setItem('synara:safari-access-onboarding:v1', '"later"'); if (${JSON.stringify(installationKey)} !== null) localStorage.setItem('synara:project-import-announcement:v1', JSON.stringify([${JSON.stringify(installationKey)}])); if (${JSON.stringify(appSnap)} === 'welcome') localStorage.removeItem('synara:appsnap-welcome:v1'); else localStorage.setItem('synara:appsnap-welcome:v1', '{"acknowledged":true}'); location.reload(); })(); undefined`;
 }
 
 /** Opens one singleton right-dock pane through the canonical Electron store. */
@@ -718,7 +724,7 @@ export function comparisonTranscriptReadyExpression(expectation) {
 }
 
 export function comparisonTransientUiReadyExpression() {
-  return `(() => { const notifications = Array.from(document.querySelectorAll('[data-toast-root="true"]')); return { recentViewSwitcherCount: document.querySelectorAll('[role="listbox"][aria-label="Recent views"]').length, selectionToolbarCount: document.querySelectorAll('[data-transcript-selection-action="true"]').length, dialogCount: document.querySelectorAll('[data-slot="dialog-popup"], [data-slot="alert-dialog-popup"], [data-slot="command-dialog-popup"]').length, menuCount: document.querySelectorAll('[data-slot="menu-popup"]').length, notificationCount: notifications.length, notificationDetails: notifications.map((node) => ({ text: node.textContent?.trim() ?? '', type: node.getAttribute('data-type'), state: node.getAttribute('data-state') })), resizeOverlayCount: document.querySelectorAll('[data-panel-resize-overlay="true"]').length }; })()`;
+  return `(() => { const notifications = Array.from(document.querySelectorAll('[data-toast-root="true"]')); return { recentViewSwitcherCount: document.querySelectorAll('[role="listbox"][aria-label="Recent views"]').length, selectionToolbarCount: document.querySelectorAll('[data-transcript-selection-action="true"]').length, dialogCount: document.querySelectorAll('[data-slot="dialog-popup"], [data-slot="alert-dialog-popup"], [data-slot="command-dialog-popup"]').length, dialogTitles: Array.from(document.querySelectorAll('[data-slot="dialog-popup"], [data-slot="alert-dialog-popup"], [data-slot="command-dialog-popup"]')).map((node) => (node.querySelector('[data-slot$="-title"], h1, h2')?.textContent ?? node.getAttribute('aria-label') ?? '').trim().slice(0, 80)), menuCount: document.querySelectorAll('[data-slot="menu-popup"]').length, notificationCount: notifications.length, notificationDetails: notifications.map((node) => ({ text: node.textContent?.trim() ?? '', type: node.getAttribute('data-type'), state: node.getAttribute('data-state') })), resizeOverlayCount: document.querySelectorAll('[data-panel-resize-overlay="true"]').length }; })()`;
 }
 
 function nodeAttributeMap(node) {
@@ -1598,6 +1604,11 @@ async function configureElectronRenderer(
       "refreshing comparison providers",
       { retryTransient: true, timeoutMs: 30_000 },
     );
+    const installationKey = await cdp.evaluate(
+      "import('/src/nativeApi.ts').then(({ ensureNativeApi }) => ensureNativeApi().server.getConfig()).then((config) => config.worktreesDir ?? null)",
+      "reading the comparison installation key",
+      { retryTransient: true, timeoutMs: 30_000 },
+    );
     // The reset reloads the page synchronously at its end; it must not await.
     await cdp.evaluate(
       comparisonRendererResetExpression(
@@ -1605,6 +1616,7 @@ async function configureElectronRenderer(
         options.appSnap,
         options.chatFontSize,
         comparisonElectronAnchorThreadId(options),
+        typeof installationKey === "string" ? installationKey : null,
       ),
       "configuring the Electron comparison state",
       { awaitPromise: false },

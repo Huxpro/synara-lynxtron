@@ -577,8 +577,17 @@ describe("Electron and Lynxtron comparison launcher", () => {
       "synara:appsnap-welcome:v1": '{"acknowledged":true}',
       "synara:terminal-state:v1": '{"state":{"terminal":true}}',
       "synara:right-dock-state:v1": '{"state":{"browser":true}}',
+      "synara:safari-access-onboarding:v1": '"later"',
     });
     expect(reloadCount).toBe(1);
+
+    values.clear();
+    Function(
+      "localStorage",
+      "location",
+      comparisonRendererResetExpression("dark", "acknowledged", null, null, "/fixture/worktrees"),
+    )(localStorage, location);
+    expect(values.get("synara:project-import-announcement:v1")).toBe('["/fixture/worktrees"]');
   });
 
   it("can explicitly retain the AppSnap welcome state for dialog comparison", () => {
@@ -1023,6 +1032,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
       "synara:terminal-state:v1",
       "synara:right-dock-state:v1",
       "synara:recent-views:v1",
+      "synara:safari-access-onboarding:v1",
+      "synara:project-import-announcement:v1",
     ]);
     writeComparisonRendererState(paths, {
       "synara:theme": "dark",

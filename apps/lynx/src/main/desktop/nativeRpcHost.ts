@@ -10,6 +10,11 @@ import {
 import { nativeEventStreamChannel } from "../nativeEventStreams.logic";
 import { resolveSynaraWsUrl } from "./runtimeEndpoint.logic";
 import { normalizeLynxRpcPayload } from "../rpcPayload.logic";
+import {
+  WS_PROTOCOL_EPOCH,
+  WS_PROTOCOL_MAX_REVISION,
+  WS_PROTOCOL_MIN_REVISION,
+} from "@synara/contracts";
 
 const CLIENT_BUILD = "0.5.5-lynx-slice";
 const SOCKET_OPEN_TIMEOUT_MS = 8_000;
@@ -18,10 +23,12 @@ const MAX_RECONNECT_ATTEMPTS = 6;
 const INITIAL_RECONNECT_DELAY_MS = 250;
 const MAX_RECONNECT_DELAY_MS = 2_000;
 const OFFLINE_RETRY_DELAY_MS = 5_000;
+// Negotiated with the same constants the Electron renderer uses, so a server
+// protocol bump can never strand Lynx on a revision the server rejects.
 const PROTOCOL = {
-  epoch: 1,
-  minRevision: 1,
-  maxRevision: 1,
+  epoch: WS_PROTOCOL_EPOCH,
+  minRevision: WS_PROTOCOL_MIN_REVISION,
+  maxRevision: WS_PROTOCOL_MAX_REVISION,
   capabilities: ["orchestration.cursor-safe-streams", "rpc.typed-errors"],
 } as const;
 

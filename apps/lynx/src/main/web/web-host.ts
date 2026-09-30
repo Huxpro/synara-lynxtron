@@ -26,6 +26,11 @@ import {
 } from "./webRpcFrame.logic";
 import { summarizeRelayPendingRequests } from "./webRelayDiagnostics.logic";
 import { isWebSocketOpen } from "./webSocketState.logic";
+import {
+  WS_PROTOCOL_EPOCH,
+  WS_PROTOCOL_MAX_REVISION,
+  WS_PROTOCOL_MIN_REVISION,
+} from "@synara/contracts";
 
 const bundleUrl = "./main.web.bundle";
 const nodejsAdapterUrl = "./nodejs-adapter-web.js";
@@ -57,10 +62,12 @@ const TERMINAL_EVENT = "synara:terminal-event";
 const COMPOSER_MODEL_MENU_QUERY = "composerModelMenu";
 const COMPOSER_MODEL_PROVIDER_QUERY = "composerModelProvider";
 const STORAGE_PREFIX = "synara.lynx.";
+// Negotiated with the same constants the Electron renderer uses, so a server
+// protocol bump can never strand Lynx on a revision the server rejects.
 const PROTOCOL = {
-  epoch: 1,
-  minRevision: 1,
-  maxRevision: 1,
+  epoch: WS_PROTOCOL_EPOCH,
+  minRevision: WS_PROTOCOL_MIN_REVISION,
+  maxRevision: WS_PROTOCOL_MAX_REVISION,
   capabilities: ["orchestration.cursor-safe-streams", "rpc.typed-errors"],
 } as const;
 

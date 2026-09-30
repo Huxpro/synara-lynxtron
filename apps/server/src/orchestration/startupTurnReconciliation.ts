@@ -391,7 +391,7 @@ export const reconcileRestartStuckTurns: Effect.Effect<
   const now = new Date().toISOString();
   const threadsNeedingRestartCleanup = readModel.threads.filter(
     (thread) =>
-      thread.deletedAt === null &&
+      (thread.deletedAt ?? null) === null &&
       (needsRestartReconciliation(thread) ||
         threadHasCheckpointRevertInProgress(thread) ||
         thread.hasPendingApprovals ||

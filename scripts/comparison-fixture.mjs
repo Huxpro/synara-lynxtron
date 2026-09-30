@@ -16,6 +16,11 @@ import { createServer } from "node:net";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+// Plain Node cannot load @synara/contracts (TypeScript with extensionless
+// imports), so the fixture keeps a copy that comparison-fixture.test.mjs pins to
+// WS_PROTOCOL_* — a server protocol bump fails that test instead of the run.
+export const COMPARISON_WS_PROTOCOL = Object.freeze({ epoch: 1, minRevision: 2, maxRevision: 2 });
+
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 export const COMPARISON_FIXTURE_VERSION = 2;
@@ -339,9 +344,9 @@ export async function openSynaraRpcSession(serverUrl, clientBuild = "comparison-
   let negotiated;
   try {
     negotiated = await request(bootstrap, "bootstrap.negotiate", {
-      protocolEpoch: 1,
-      minRevision: 1,
-      maxRevision: 1,
+      protocolEpoch: COMPARISON_WS_PROTOCOL.epoch,
+      minRevision: COMPARISON_WS_PROTOCOL.minRevision,
+      maxRevision: COMPARISON_WS_PROTOCOL.maxRevision,
       clientBuild,
       requiredCapabilities: ["orchestration.cursor-safe-streams", "rpc.typed-errors"],
     });

@@ -1,11 +1,17 @@
 import { spawnSync } from "node:child_process";
-import { mkdtempSync } from "node:fs";
+import { mkdtempSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import {
+  WS_PROTOCOL_EPOCH,
+  WS_PROTOCOL_MAX_REVISION,
+  WS_PROTOCOL_MIN_REVISION,
+} from "@synara/contracts";
 import { describe, expect, it } from "vitest";
 
 import {
   COMPARISON_FIXTURE_IDS,
+  COMPARISON_WS_PROTOCOL,
   comparisonFixtureContainerCommands,
   comparisonFixtureMismatches,
   comparisonFixtureSetupCommands,
@@ -160,5 +166,24 @@ describe("comparison fixture", () => {
       ],
       sequence: 9,
     });
+  });
+});
+
+describe("comparison WebSocket protocol", () => {
+  it("negotiates the revision the server accepts", () => {
+    expect(COMPARISON_WS_PROTOCOL).toEqual({
+      epoch: WS_PROTOCOL_EPOCH,
+      minRevision: WS_PROTOCOL_MIN_REVISION,
+      maxRevision: WS_PROTOCOL_MAX_REVISION,
+    });
+    for (const script of [
+      "../apps/lynx/scripts/connection-preflight.mjs",
+      "../apps/lynx/scripts/probe-snapshot-rpcs.mjs",
+    ]) {
+      const source = readFileSync(new URL(script, import.meta.url), "utf8");
+      expect(source).toContain(`protocolEpoch: ${WS_PROTOCOL_EPOCH},`);
+      expect(source).toContain(`minRevision: ${WS_PROTOCOL_MIN_REVISION},`);
+      expect(source).toContain(`maxRevision: ${WS_PROTOCOL_MAX_REVISION},`);
+    }
   });
 });

@@ -23,7 +23,11 @@ describe("local PDF preview", () => {
     writePdfFixture(path.join(workspace, "report.pdf"));
     const input = { requestedPath: "report.pdf", cwd: workspace };
 
-    await expect(inspectLocalPdf(input)).resolves.toEqual({ pageCount: 1 });
+    await expect(inspectLocalPdf(input)).resolves.toEqual({
+      pageCount: 1,
+      width: 300,
+      height: 180,
+    });
     const page = await renderLocalPdfPage({ ...input, page: 1, width: 600 });
     expect(page).toMatchObject({ pageCount: 1, width: 600, height: 360 });
     expect(Array.from(page.bytes.slice(0, 8))).toEqual([137, 80, 78, 71, 13, 10, 26, 10]);
