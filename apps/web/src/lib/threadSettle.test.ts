@@ -4,7 +4,9 @@ import {
   createOptimisticSettledMutation,
   recordOptimisticSettledMutationSequence,
   reconcileOptimisticSettledMutation,
+  reconcileOptimisticSettledMutations,
 } from "./threadSettle";
+import type { ThreadId } from "@synara/contracts";
 
 describe("optimistic thread settlement", () => {
   it("acknowledges a projection that reaches a newly requested state", () => {
@@ -46,5 +48,38 @@ describe("optimistic thread settlement", () => {
 
     expect(reconcileOptimisticSettledMutation(undo, false, 41).acknowledged).toBe(false);
     expect(reconcileOptimisticSettledMutation(undo, false, 42).acknowledged).toBe(true);
+  });
+
+  it("reconciles every pending override and releases acknowledged or vanished threads", () => {
+    const done = createOptimisticSettledMutation({
+      desiredSettled: true,
+      serverSettledAtDispatch: false,
+    });
+    const current = new Map([
+      ["acked" as ThreadId, done],
+      ["pending" as ThreadId, done],
+      ["gone" as ThreadId, done],
+    ]);
+    const server = new Map<ThreadId, boolean>([
+      ["acked" as ThreadId, true],
+      ["pending" as ThreadId, false],
+    ]);
+
+    const { next, releasedThreadIds } = reconcileOptimisticSettledMutations(
+      current,
+      (threadId) => server.get(threadId),
+      0,
+    );
+
+    expect([...next.keys()]).toEqual(["pending"]);
+    expect(releasedThreadIds).toEqual(["acked", "gone"]);
+  });
+
+  it("returns the same map when nothing changed", () => {
+    const done = {
+      ...createOptimisticSettledMutation({ desiredSettled: true, serverSettledAtDispatch: false }),
+    };
+    const current = new Map([["pending" as ThreadId, done]]);
+    expect(reconcileOptimisticSettledMutations(current, () => false, 0).next).toBe(current);
   });
 });

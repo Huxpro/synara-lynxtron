@@ -252,6 +252,24 @@ async function persistLastThreadRoute(threadId: string): Promise<void> {
   });
 }
 
+async function readPersistedActivityViewEnabled(): Promise<boolean> {
+  "background only";
+  const { hydrateStorage } = await import(/* webpackMode: "eager" */ "../platform/storage");
+  await hydrateStorage();
+  const { readSidebarUiState } = await import(
+    /* webpackMode: "eager" */ "@synara-web/components/Sidebar.uiState"
+  );
+  return readSidebarUiState().activityViewEnabled;
+}
+
+async function persistActivityViewEnabled(activityViewEnabled: boolean): Promise<void> {
+  "background only";
+  const { persistSidebarUiState, readSidebarUiState } = await import(
+    /* webpackMode: "eager" */ "@synara-web/components/Sidebar.uiState"
+  );
+  persistSidebarUiState({ ...readSidebarUiState(), activityViewEnabled });
+}
+
 async function refreshLynxRouteSnapshot(): Promise<unknown> {
   return fetchThreads();
 }
@@ -2718,6 +2736,30 @@ export function SliceRouter({
     "synara-sidebar-search-trigger",
   );
   const navigation = useMemoryNavigationState();
+  // The sidebar's Activity view toggle, persisted in the shared sidebar UI state. The
+  // router owns it so the ⌘⌥U menu command and the header bell drive the same state.
+  const [activityViewEnabled, setActivityViewEnabledState] = useState(false);
+  useEffect(() => {
+    "background only";
+    void readPersistedActivityViewEnabled()
+      .then(setActivityViewEnabledState)
+      .catch(() => {
+        // Without persisted state the sidebar starts in the classic view.
+      });
+  }, []);
+  const setActivityViewEnabled = useCallback((enabled: boolean) => {
+    "background only";
+    setActivityViewEnabledState(enabled);
+    void persistActivityViewEnabled(enabled).catch(() => undefined);
+  }, []);
+  const toggleActivityViewFromCommandRef = useRef(() => {});
+  toggleActivityViewFromCommandRef.current = () => {
+    // Like Electron: from Settings or Studio the shortcut always opens Activity.
+    const elsewhere = route.pathname === "/settings" || route.pathname === "/studio";
+    const next = elsewhere || !activityViewEnabled;
+    setActivityViewEnabled(next);
+    if (next && elsewhere) history.push("/");
+  };
   const setSearchPaletteOpen = useCallback(
     (open: boolean) => {
       "background only";
@@ -3311,6 +3353,10 @@ export function SliceRouter({
             openSearchPalette();
             return;
           }
+          if (command === "sidebar.activity") {
+            toggleActivityViewFromCommandRef.current();
+            return;
+          }
           if (command === "view.recent.next") {
             openOrAdvanceRecentViews("next");
             return;
@@ -3572,6 +3618,8 @@ export function SliceRouter({
           navigate={navigateToChat}
           searchOpen={searchOpen}
           onOpenSearch={openSearchPalette}
+          activityViewEnabled={activityViewEnabled}
+          onActivityViewEnabledChange={setActivityViewEnabled}
           titlebarControls={openTitlebarControls}
         />
       </SidebarDisclosure>

@@ -63,6 +63,46 @@ export function reconcileOptimisticSettledMutation(
   };
 }
 
+/**
+ * Reconciles every pending settle override against the projected threads. Returns the
+ * same map when nothing changed, and the ids whose latest command the projection has
+ * acknowledged (or whose thread is gone) so callers can drop their expiry timers.
+ */
+export function reconcileOptimisticSettledMutations(
+  current: ReadonlyMap<ThreadId, OptimisticSettledMutation>,
+  resolveServerSettled: (threadId: ThreadId) => boolean | undefined,
+  projectionSequence: number,
+): {
+  next: ReadonlyMap<ThreadId, OptimisticSettledMutation>;
+  releasedThreadIds: ThreadId[];
+} {
+  let next: Map<ThreadId, OptimisticSettledMutation> | null = null;
+  const releasedThreadIds: ThreadId[] = [];
+  for (const [threadId, mutation] of current) {
+    const serverSettled = resolveServerSettled(threadId);
+    if (serverSettled === undefined) {
+      next ??= new Map(current);
+      next.delete(threadId);
+      releasedThreadIds.push(threadId);
+      continue;
+    }
+    const reconciliation = reconcileOptimisticSettledMutation(
+      mutation,
+      serverSettled,
+      projectionSequence,
+    );
+    if (reconciliation.acknowledged) {
+      next ??= new Map(current);
+      next.delete(threadId);
+      releasedThreadIds.push(threadId);
+    } else if (reconciliation.mutation !== mutation) {
+      next ??= new Map(current);
+      next.set(threadId, reconciliation.mutation);
+    }
+  }
+  return { next: next ?? current, releasedThreadIds };
+}
+
 // Marks a thread settled (done, dimmed at the bottom of the Activity view) or
 // restores it. The server stamps the authoritative `settledAt` timestamp from
 // the `isSettled` intent, so two clients toggling concurrently converge on the

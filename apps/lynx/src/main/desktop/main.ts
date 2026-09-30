@@ -549,6 +549,11 @@ function installApplicationMenu(w: LynxWindow): void {
           click: () => dispatchShellCommand("sidebar.toggle"),
         },
         {
+          label: "Activity View",
+          accelerator: "CmdOrCtrl+Alt+U",
+          click: () => dispatchShellCommand("sidebar.activity"),
+        },
+        {
           label: "Toggle Browser",
           accelerator: "CmdOrCtrl+Shift+B",
           click: () => dispatchShellCommand("browser.toggle"),

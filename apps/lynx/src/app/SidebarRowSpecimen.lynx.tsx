@@ -6,11 +6,11 @@ import pinSvg from "@synara-central-icons/pin.svg?raw";
 import pinFilledSvg from "@synara-central-icons-fill/pin.svg?raw";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
+import { ProjectPinAction } from "../components/sidebar/Sidebar.lynx";
 import {
-  ProjectPinAction,
   SidebarHoverAction,
   SidebarNavigationRow,
-} from "../components/sidebar/Sidebar.lynx";
+} from "../components/sidebar/SidebarNavigationRow.lynx";
 
 export type SidebarRowSpecimenState =
   | "default"

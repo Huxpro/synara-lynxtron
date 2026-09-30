@@ -115,6 +115,7 @@ const NATIVE_RENDERER_COMMANDS = new Set<KeybindingCommand>([
   "chat.new",
   "sidebar.toggle",
   "sidebar.search",
+  "sidebar.activity",
   "browser.toggle",
   "chat.visible.previous",
   "chat.visible.next",

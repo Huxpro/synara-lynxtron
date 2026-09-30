@@ -1,3 +1,4 @@
+import bellSvg from "@synara-central-icons/notes.svg?raw";
 import searchSvg from "@synara-central-icons/magnifying-glass.svg?raw";
 
 import {
@@ -22,6 +23,12 @@ export function SidebarSurfaceHeader(props: {
   readonly searchElementId: string;
   readonly searchOpen: boolean;
   readonly onOpenSearch: () => void;
+  /** The Activity bell is hidden on Studio, like Electron's header. */
+  readonly activity?: {
+    readonly active: boolean;
+    readonly showUnreadDot: boolean;
+    readonly onToggle: () => void;
+  };
 }) {
   return (
     <view className="SidebarSurfaceHeader">
@@ -38,6 +45,7 @@ export function SidebarSurfaceHeader(props: {
           active={props.searchOpen}
           onActivate={props.onOpenSearch}
         />
+        {props.activity ? <SidebarActivityBellButton {...props.activity} /> : null}
       </view>
     </view>
   );
@@ -96,8 +104,9 @@ function SidebarHeaderIconButton(props: {
 }) {
   const { semanticIconColor } = useTheme();
   const interaction = useLynxInteractiveState({
-    baseClassName: `SidebarHeaderIconButton${props.active ? " SidebarHeaderIconButton--active" : ""}`,
+    baseClassName: "SidebarHeaderIconButton",
     accessibleLabel: props.label,
+    accessibilityValue: props.active ? "Expanded" : "Collapsed",
     programmaticFocusId: props.elementId,
     onActivate: () => props.onActivate(),
   });
@@ -107,6 +116,37 @@ function SidebarHeaderIconButton(props: {
         className="SidebarHeaderIconButtonGlyph"
         content={colorizeLynxSvg(props.icon, semanticIconColor("secondary"))}
       />
+    </view>
+  );
+}
+
+/** Header Activity toggle: accent-tinted while the Activity view is on, dotted when unread. */
+function SidebarActivityBellButton(props: {
+  readonly active: boolean;
+  readonly showUnreadDot: boolean;
+  readonly onToggle: () => void;
+}) {
+  const { semanticIconColor } = useTheme();
+  const interaction = useLynxInteractiveState({
+    baseClassName: `SidebarHeaderIconButton SidebarActivityBell${
+      props.active ? " SidebarActivityBell--active" : ""
+    }`,
+    accessibleLabel: props.active ? "Switch to classic view" : "Switch to activity view",
+    accessibilityValue: props.active ? "On" : "Off",
+    onActivate: () => props.onToggle(),
+  });
+  return (
+    <view
+      className={interaction.className}
+      aria-label={props.active ? "Switch to classic view" : "Switch to activity view"}
+      aria-pressed={props.active}
+      {...interaction.eventProps}
+    >
+      <svg
+        className="SidebarHeaderIconButtonGlyph SidebarActivityBellGlyph"
+        content={colorizeLynxSvg(bellSvg, semanticIconColor(props.active ? "accent" : "secondary"))}
+      />
+      {props.showUnreadDot ? <view className="SidebarActivityBellDot" /> : null}
     </view>
   );
 }

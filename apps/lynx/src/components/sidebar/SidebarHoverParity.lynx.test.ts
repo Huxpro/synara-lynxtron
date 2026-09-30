@@ -12,7 +12,10 @@ describe("Lynx sidebar hover parity", () => {
   });
 
   it("renders the hover card outside the interactive row hit tree", () => {
-    const source = readFileSync(new URL("./Sidebar.lynx.tsx", import.meta.url), "utf8");
+    const source = readFileSync(
+      new URL("./SidebarNavigationRow.lynx.tsx", import.meta.url),
+      "utf8",
+    );
     const rowStart = source.indexOf("function SidebarNavigationRow");
     const actionStart = source.indexOf("function SidebarHoverAction");
     const rowSource = source.slice(rowStart, actionStart);
@@ -29,17 +32,24 @@ describe("Lynx sidebar hover parity", () => {
 
   it("reveals real project and thread actions without activating the row", () => {
     const source = readFileSync(new URL("./Sidebar.lynx.tsx", import.meta.url), "utf8");
+    const rowSource = readFileSync(
+      new URL("./SidebarNavigationRow.lynx.tsx", import.meta.url),
+      "utf8",
+    );
     const styles = readFileSync(new URL("./sidebar.css", import.meta.url), "utf8");
 
-    expect(source).toContain("lynxNestedInteractiveEventProps");
-    expect(source).toContain("data-project-id={props.projectId}");
-    expect(source).toContain("data-thread-id={props.threadId}");
-    const projectIdentityIndex = source.indexOf("data-project-id={props.projectId}");
-    const threadIdentityIndex = source.indexOf(
+    expect(rowSource).toContain("lynxNestedInteractiveEventProps");
+    expect(rowSource).toContain("data-project-id={props.projectId}");
+    expect(rowSource).toContain("data-thread-id={props.threadId}");
+    const projectIdentityIndex = rowSource.indexOf("data-project-id={props.projectId}");
+    const threadIdentityIndex = rowSource.indexOf(
       "data-thread-id={props.threadId}",
       projectIdentityIndex,
     );
-    const activeIdentityIndex = source.indexOf("data-active={props.active}", threadIdentityIndex);
+    const activeIdentityIndex = rowSource.indexOf(
+      "data-active={props.active}",
+      threadIdentityIndex,
+    );
     expect(projectIdentityIndex).toBeGreaterThanOrEqual(0);
     expect(threadIdentityIndex).toBeGreaterThan(projectIdentityIndex);
     expect(activeIdentityIndex).toBeGreaterThan(threadIdentityIndex);
@@ -119,7 +129,7 @@ describe("Lynx sidebar hover parity", () => {
     expect(source).toContain("assignNativeProjectsToSpace({");
     expect(source).toContain("Move projects here");
     expect(source).toContain("void openProjectContextMenu(group, position, restoreFocus)");
-    expect(source).toContain("() => focusLynxNode(rowRef)");
+    expect(rowSource).toContain("() => focusLynxNode(rowRef)");
     expect(source).toContain("platformWindow.showInFolder(project.workspaceRoot)");
     expect(source).toContain("navigate(`/kanban/${encodeURIComponent(project.id)}`)");
     expect(source).toContain("clipboard.writeText(project.workspaceRoot)");
@@ -206,8 +216,12 @@ describe("Lynx sidebar hover parity", () => {
     );
     const styles = readFileSync(new URL("./sidebar.css", import.meta.url), "utf8");
 
-    expect(source).toContain("getRectByRef(rowRef, true)");
-    expect(source).toContain('className="AppSidebarRowHoverCard"');
+    const rowSource = readFileSync(
+      new URL("./SidebarNavigationRow.lynx.tsx", import.meta.url),
+      "utf8",
+    );
+    expect(rowSource).toContain("getRectByRef(rowRef, true)");
+    expect(rowSource).toContain('className="AppSidebarRowHoverCard"');
     expect(styles).toMatch(
       /\.AppSidebarRowHoverCard\s*\{[^}]*position:\s*fixed;[^}]*width:\s*256px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);/s,
     );

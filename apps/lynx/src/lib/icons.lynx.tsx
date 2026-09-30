@@ -44,6 +44,8 @@ const ICON_CONTENT = {
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-bug" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M9 9v-1a3 3 0 0 1 6 0v1" /> <path d="M8 9h8a6 6 0 0 1 1 3v3a5 5 0 0 1 -10 0v-3a6 6 0 0 1 1 -3" /> <path d="M3 13l4 0" /> <path d="M17 13l4 0" /> <path d="M12 20l0 -6" /> <path d="M4 19l3.35 -2" /> <path d="M20 19l-3.35 -2" /> <path d="M4 7l3.75 2.4" /> <path d="M20 7l-3.75 2.4" /> </svg>',
   CheckIcon:
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-check" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M5 12l5 5l10 -10" /> </svg>',
+  CircleCheckIcon:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-check" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /> <path d="M9 12l2 2l4 -4" /> </svg>',
   ChevronDownIcon:
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-down" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M6 9l6 6l6 -6" /> </svg>',
   ChevronLeftIcon:
@@ -225,6 +227,7 @@ export const BlocksIcon: LynxIcon = createLynxIcon(ICON_CONTENT.BlocksIcon);
 export const BrainIcon: LynxIcon = createLynxIcon(ICON_CONTENT.BrainIcon);
 export const BugIcon: LynxIcon = createLynxIcon(ICON_CONTENT.BugIcon);
 export const CheckIcon: LynxIcon = createLynxIcon(ICON_CONTENT.CheckIcon);
+export const CircleCheckIcon: LynxIcon = createLynxIcon(ICON_CONTENT.CircleCheckIcon);
 export const ChevronDownIcon: LynxIcon = createLynxIcon(ICON_CONTENT.ChevronDownIcon);
 export const ChevronLeftIcon: LynxIcon = createLynxIcon(ICON_CONTENT.ChevronLeftIcon);
 export const ChevronRightIcon: LynxIcon = createLynxIcon(ICON_CONTENT.ChevronRightIcon);

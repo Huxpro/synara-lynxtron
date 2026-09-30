@@ -305,6 +305,7 @@ describe("shellRuntime", () => {
     expect(resolveNativeRendererCommand("chat.new")).toBe("chat.new");
     expect(resolveNativeRendererCommand("sidebar.toggle")).toBe("sidebar.toggle");
     expect(resolveNativeRendererCommand("sidebar.search")).toBe("sidebar.search");
+    expect(resolveNativeRendererCommand("sidebar.activity")).toBe("sidebar.activity");
     expect(resolveNativeRendererCommand("browser.toggle")).toBe("browser.toggle");
     expect(resolveNativeRendererCommand("chat.visible.previous")).toBe("chat.visible.previous");
     expect(resolveNativeRendererCommand("chat.visible.next")).toBe("chat.visible.next");

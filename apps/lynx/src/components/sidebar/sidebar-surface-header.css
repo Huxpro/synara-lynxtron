@@ -71,8 +71,7 @@
 }
 
 .SidebarHeaderIconButton.ui-hover,
-.SidebarHeaderIconButton.ui-pressed,
-.SidebarHeaderIconButton--active {
+.SidebarHeaderIconButton.ui-pressed {
   background-color: var(--color-background-button-secondary-hover);
 }
 
@@ -133,4 +132,47 @@
   color: var(--muted-foreground);
   font-size: 12px;
   line-height: 16.5px;
+}
+
+/* Activity bell: `text-muted-foreground/75` at rest, accent on a 15% accent tint when on. */
+.SidebarActivityBell {
+  position: relative;
+}
+
+.SidebarActivityBell .SidebarActivityBellGlyph {
+  opacity: 0.75;
+}
+
+.SidebarActivityBell.ui-hover .SidebarActivityBellGlyph,
+.SidebarActivityBell--active .SidebarActivityBellGlyph {
+  opacity: 1;
+}
+
+.SidebarActivityBell--active,
+.SidebarActivityBell--active.ui-hover,
+.SidebarActivityBell--active.ui-pressed {
+  background-color: rgba(1, 105, 204, 0.15);
+}
+
+.SliceRoot--theme-dark .SidebarActivityBell--active,
+.SliceRoot--theme-dark .SidebarActivityBell--active.ui-hover,
+.SliceRoot--theme-dark .SidebarActivityBell--active.ui-pressed {
+  background-color: rgba(51, 134, 214, 0.15);
+}
+
+/* `absolute top-0.5 right-0.5 size-1.5` accent dot with a 2px sidebar-colored ring. */
+.SidebarActivityBellDot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-width: 2px;
+  border-style: solid;
+  border-left-color: var(--sidebar);
+  border-right-color: var(--sidebar);
+  border-top-color: var(--sidebar);
+  border-bottom-color: var(--sidebar);
+  border-radius: 999px;
+  background-color: var(--color-text-accent);
 }
