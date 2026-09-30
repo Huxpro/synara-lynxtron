@@ -41,24 +41,23 @@ describe("landing composer fidelity contract", () => {
 
     expect(routerSource).toContain("<CenteredEmptyLandingStack>");
     expect(routerSource).toContain("projectName={routePresentation.projectName}");
-    expect(routerSource).toContain("title={routePresentation.headerTitle}");
-    expect(routerSource).toContain(
-      'actionState={{ showHandoff: true, showProjectActions: project?.kind === "project" }}',
-    );
-    expect(routerSource).toContain("thread={undefined}");
+    // Upstream's landing header uses minimalChrome: no title, hand-off or project actions.
+    expect(routerSource).toContain('<view className="ThreadsLandingHeaderIdentity" />');
     expect(routerSource).toContain("<ComposerColumnFrameSurface>");
     expect(routerSource).toContain("<LandingComposer");
-    expect(landingSource).toContain(
-      "<Composer\n        availableWidth={props.availableWidth}\n        voiceInputEnabled",
+    // The context tray sits above the composer, as upstream's empty-landing controls do.
+    expect(landingSource.indexOf("<EmptyThreadContextTray")).toBeLessThan(
+      landingSource.indexOf("<Composer\n        availableWidth={props.availableWidth}"),
     );
-    expect(routerSource).toContain(
-      '<scroll-view className="ThreadsLandingBody" scroll-orientation="vertical"',
-    );
-    expect(routerSource).toContain('<view className="ThreadsLandingBodyInner">');
+    // The heading floats in the space above a bottom-anchored composer.
+    expect(routerSource).toContain('<view className="ThreadsLandingBody">');
+    expect(routerSource).toContain('<view className="ThreadsLandingHero">');
+    expect(routerSource).toContain('<view className="ThreadsLandingComposerDock">');
     expect(appStyles).toMatch(/\.ThreadsLandingBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;/s);
     expect(appStyles).toMatch(
-      /\.ThreadsLandingBodyInner\s*\{[^}]*min-height:\s*100%;[^}]*align-items:\s*center;/s,
+      /\.ThreadsLandingHero\s*\{[^}]*flex:\s*1;[^}]*align-items:\s*center;[^}]*justify-content:\s*center;/s,
     );
+    expect(appStyles).toMatch(/\.ThreadsLandingComposerDock\s*\{[^}]*padding-bottom:\s*12px;/s);
     expect(routerSource).toContain("initialProjectId={selectedProjectId}");
     expect(routerSource).toContain("onProjectSelectionChange={setSelectedProjectId}");
     expect(routerSource).toContain("onProjectSelectionChange={setEditorRailDraftProjectId");

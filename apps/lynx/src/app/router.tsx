@@ -412,35 +412,14 @@ function ThreadsLandingHeader(props: {
   readonly environmentOpen: boolean;
   readonly environmentAvailable: boolean;
   readonly onEnvironmentOpenChange: (open: boolean) => void;
-  readonly project: ProjectSummary | null;
-  readonly title?: "New Chat" | "New thread";
   readonly diffToggle?: ReactNode;
-  readonly compact?: boolean;
 }) {
-  const project = props.project;
+  // Electron renders the empty landing's header with minimalChrome: no title, hand-off or
+  // project actions, only the panel toggles.
   return (
     <ChatSurfaceHeaderFrame className="ThreadsLandingHeader">
-      <view className="ThreadsLandingHeaderIdentity">
-        <ChatSurfaceHeaderIdentity title={props.title ?? "New Chat"} />
-      </view>
+      <view className="ThreadsLandingHeaderIdentity" />
       <view className="ThreadHeaderControls">
-        <ThreadHeaderActions
-          actionState={{ showHandoff: true, showProjectActions: project?.kind === "project" }}
-          compact={props.compact ?? false}
-          project={
-            project
-              ? {
-                  id: project.id,
-                  cwd: project.workspaceRoot,
-                  defaultModelSelection: project.defaultModelSelection,
-                  scripts: project.scripts,
-                }
-              : null
-          }
-          thread={undefined}
-          onNavigateToThread={() => {}}
-          onOpenTerminal={() => {}}
-        />
         {props.environmentAvailable ? (
           <EnvironmentToggle
             open={props.environmentOpen}
@@ -565,10 +544,6 @@ function ThreadsLandingPage(props: {
           environmentOpen={environmentOpen}
           environmentAvailable={environmentProject !== null}
           onEnvironmentOpenChange={setEnvironmentOpen}
-          project={selectedProject}
-          title={routePresentation.headerTitle}
-          // Same rule as the thread page header (compactThreadHeader).
-          compact={dockLayout.mainWidth < 700}
           diffToggle={
             headerActionState.showDiff ? (
               <ThreadRightSidebarToggle
@@ -582,32 +557,35 @@ function ThreadsLandingPage(props: {
           }
         />
         <ProviderHealthBanner status={providerHealth.status} onDismiss={providerHealth.dismiss} />
-        <scroll-view className="ThreadsLandingBody" scroll-orientation="vertical">
-          <view className="ThreadsLandingBodyInner">
-            <CenteredEmptyLandingStack>
-              <CenteredEmptyLanding projectName={routePresentation.projectName} />
-              <ComposerColumnFrameSurface>
-                <LandingComposer
-                  availableWidth={dockLayout.mainWidth}
-                  containerKind={props.containerKind}
-                  branch={branch}
-                  envMode={envMode}
-                  initialModelProvider={initialModelProvider}
-                  initialProjectId={selectedProjectId}
-                  notes={notes}
-                  onEnvModeChange={(nextEnvMode) => {
-                    envModeTouchedRef.current = true;
-                    setEnvMode(nextEnvMode);
-                  }}
-                  onProjectSelectionChange={setSelectedProjectId}
-                  onTemporaryChange={() => setTemporary((current) => !current)}
-                  onThreadCreated={props.onThreadCreated}
-                  temporary={temporary}
-                />
-              </ComposerColumnFrameSurface>
-            </CenteredEmptyLandingStack>
+        {/* Upstream anchors the composer to the bottom of the pane and floats the heading
+            centered in the space above it, so starting a chat keeps the composer where it
+            lives for the rest of the conversation. */}
+        <view className="ThreadsLandingBody">
+          <view className="ThreadsLandingHero">
+            <CenteredEmptyLanding projectName={routePresentation.projectName} />
           </view>
-        </scroll-view>
+          <view className="ThreadsLandingComposerDock">
+            <ComposerColumnFrameSurface>
+              <LandingComposer
+                availableWidth={dockLayout.mainWidth}
+                containerKind={props.containerKind}
+                branch={branch}
+                envMode={envMode}
+                initialModelProvider={initialModelProvider}
+                initialProjectId={selectedProjectId}
+                notes={notes}
+                onEnvModeChange={(nextEnvMode) => {
+                  envModeTouchedRef.current = true;
+                  setEnvMode(nextEnvMode);
+                }}
+                onProjectSelectionChange={setSelectedProjectId}
+                onTemporaryChange={() => setTemporary((current) => !current)}
+                onThreadCreated={props.onThreadCreated}
+                temporary={temporary}
+              />
+            </ComposerColumnFrameSurface>
+          </view>
+        </view>
         {environmentProject ? (
           <EnvironmentPanel
             branch={branch}
@@ -3577,9 +3555,13 @@ export function SliceRouter({
       />
     ) : (
       <view className="ThreadsLanding">
-        <ThreadsLandingHeader project={null} />
+        <ThreadsLandingHeader
+          environmentOpen={false}
+          environmentAvailable={false}
+          onEnvironmentOpenChange={() => {}}
+        />
         <view className="ThreadsLandingBody">
-          <view className="ThreadsLandingBodyInner">
+          <view className="ThreadsLandingHero">
             <PanelStateMessage
               intent={studioRouteController.errorMessage ? "alert" : "status"}
               announcement={

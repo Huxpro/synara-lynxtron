@@ -15,9 +15,11 @@
   margin-bottom: 16px;
 }
 
+/* `text-[26px] sm:text-[30px] leading-[1.15] tracking-[-0.015em] text-foreground/95`. */
 .CenteredEmptyLandingHeading {
   width: 321px;
   color: var(--foreground);
+  opacity: 0.95;
   font-size: 30px;
   font-weight: 400;
   line-height: 35px;
@@ -33,6 +35,9 @@
   width: calc(100% - 48px);
 }
 
+/* The project name is the heading's project-picker trigger: same tone, dotted underline. */
 .CenteredEmptyLandingAccent {
-  color: var(--muted-foreground);
+  color: var(--foreground);
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
 }

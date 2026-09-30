@@ -450,34 +450,6 @@ export function LandingComposer(props: {
           </Button>
         </view>
       ) : null}
-      <Composer
-        availableWidth={props.availableWidth}
-        voiceInputEnabled
-        draftId={draftId}
-        threadId={threadIdRef.current}
-        modelSelection={modelSelection}
-        runtimeMode={runtimeMode}
-        interactionMode={interactionMode}
-        sessionStatus={null}
-        activeTurnId={null}
-        workspaceRoot={workspaceContext?.workspaceRoot ?? targetProject.workspaceRoot}
-        providerStatuses={data.serverConfig.providers}
-        emptyLanding={true}
-        onBeforeSend={ensureThread}
-        onSetInteractionMode={(nextInteractionMode) =>
-          setInteractionMode(draftId, nextInteractionMode)
-        }
-        onSetRuntimeMode={(nextRuntimeMode) => setRuntimeMode(draftId, nextRuntimeMode)}
-        onSendSucceeded={() => {
-          "background only";
-          props.onThreadCreated(threadIdRef.current, { temporary });
-          void Promise.all([
-            queryClient.invalidateQueries({ queryKey: ["threads"] }),
-            queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-            queryClient.invalidateQueries({ queryKey: ["landing-composer-bootstrap"] }),
-          ]);
-        }}
-      />
       <EmptyThreadContextTray
         branch={props.branch ?? null}
         className="LandingComposerTray"
@@ -587,6 +559,34 @@ export function LandingComposer(props: {
             triggerClassName="LandingComposerProjectTrigger"
           />
         }
+      />
+      <Composer
+        availableWidth={props.availableWidth}
+        voiceInputEnabled
+        draftId={draftId}
+        threadId={threadIdRef.current}
+        modelSelection={modelSelection}
+        runtimeMode={runtimeMode}
+        interactionMode={interactionMode}
+        sessionStatus={null}
+        activeTurnId={null}
+        workspaceRoot={workspaceContext?.workspaceRoot ?? targetProject.workspaceRoot}
+        providerStatuses={data.serverConfig.providers}
+        emptyLanding={true}
+        onBeforeSend={ensureThread}
+        onSetInteractionMode={(nextInteractionMode) =>
+          setInteractionMode(draftId, nextInteractionMode)
+        }
+        onSetRuntimeMode={(nextRuntimeMode) => setRuntimeMode(draftId, nextRuntimeMode)}
+        onSendSucceeded={() => {
+          "background only";
+          props.onThreadCreated(threadIdRef.current, { temporary });
+          void Promise.all([
+            queryClient.invalidateQueries({ queryKey: ["threads"] }),
+            queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
+            queryClient.invalidateQueries({ queryKey: ["landing-composer-bootstrap"] }),
+          ]);
+        }}
       />
     </view>
   );
