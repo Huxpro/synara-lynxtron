@@ -126,7 +126,9 @@ async function startServer(flags) {
     },
   });
   if (!(await waitForPort(SERVER_PORT, 60_000))) {
-    throw new Error(`Synara server did not listen on :${SERVER_PORT}; see ${statePath("server.log")}`);
+    throw new Error(
+      `Synara server did not listen on :${SERVER_PORT}; see ${statePath("server.log")}`,
+    );
   }
   console.log(`server pid ${pid} on ws://127.0.0.1:${SERVER_PORT} (trusted web origin ${origin})`);
 }
@@ -142,7 +144,12 @@ async function ensureDisplay() {
     return null;
   }
   if (readPid("xvfb") === null) {
-    startDetached("xvfb", "Xvfb", [XVFB_DISPLAY, "-screen", "0", "1600x1000x24", "-nolisten", "tcp"], {});
+    startDetached(
+      "xvfb",
+      "Xvfb",
+      [XVFB_DISPLAY, "-screen", "0", "1600x1000x24", "-nolisten", "tcp"],
+      {},
+    );
     await delay(1000);
   }
   return XVFB_DISPLAY;
@@ -156,10 +163,14 @@ export function resolveLynxtronBinary(env = process.env) {
 async function startNative(flags) {
   const app = path.join(appRoot, "dist", "desktop");
   if (!fs.existsSync(path.join(app, "main.lynx.bundle"))) {
-    throw new Error("dist/desktop is missing: run `bun run build` (or rspeedy + rsbuild desktop builds) first");
+    throw new Error(
+      "dist/desktop is missing: run `bun run build` (or rspeedy + rsbuild desktop builds) first",
+    );
   }
   if (!(await waitForPort(SERVER_PORT, 500))) {
-    console.warn(`No Synara server on :${SERVER_PORT}; start one with \`node scripts/linux-dev.mjs server\`.`);
+    console.warn(
+      `No Synara server on :${SERVER_PORT}; start one with \`node scripts/linux-dev.mjs server\`.`,
+    );
   }
   await stopProcess("native");
   const display = await ensureDisplay();
@@ -173,7 +184,9 @@ async function startNative(flags) {
   const binary = resolveLynxtronBinary();
   if (flags.get("background")) {
     const pid = startDetached("native", binary, [app], { env });
-    console.log(`native pid ${pid}${display ? ` on DISPLAY=${display}` : ""}; log ${statePath("native.log")}`);
+    console.log(
+      `native pid ${pid}${display ? ` on DISPLAY=${display}` : ""}; log ${statePath("native.log")}`,
+    );
     return;
   }
   const child = spawn(binary, [app], { env, stdio: "inherit" });
@@ -198,7 +211,13 @@ async function main() {
     for (const name of ["native", "server", "xvfb"]) await stopProcess(name);
     return;
   }
-  console.log(fs.readFileSync(fileURLToPath(import.meta.url), "utf8").split("\n").slice(1, 11).join("\n"));
+  console.log(
+    fs
+      .readFileSync(fileURLToPath(import.meta.url), "utf8")
+      .split("\n")
+      .slice(1, 11)
+      .join("\n"),
+  );
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

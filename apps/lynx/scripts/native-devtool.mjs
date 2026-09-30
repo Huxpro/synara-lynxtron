@@ -5,8 +5,10 @@
 //   node scripts/native-devtool.mjs tap <text>            tap the element showing <text>
 //   node scripts/native-devtool.mjs tap-label <label>     tap the element with that aria-label
 //   node scripts/native-devtool.mjs tap-at <x> <y>        tap at logical coordinates
+//   node scripts/native-devtool.mjs inspect <label>       attributes of the element with that aria-label
 //   node scripts/native-devtool.mjs type <text>           insert text into the focused input
 //   node scripts/native-devtool.mjs screenshot <out.png>  DevTool screencast frame (frame dump fallback)
+//   node scripts/native-devtool.mjs console [seconds]     stream console messages and exceptions
 //
 // The session must run with DevTool enabled (linux-dev.mjs native does this).
 
@@ -31,7 +33,7 @@ async function connect() {
   }
   const client = clients[0];
   const sessions = await connector.sendListSessionMessage(client.id);
-  const session = sessions.filter((entry) => entry.type === "lynx").at(-1);
+  const session = sessions.findLast((entry) => entry.type === "lynx");
   if (!session) throw new Error(`DevTool client ${client.id} has no Lynx session`);
   const sessionId = Number(session.session_id);
   return {
@@ -196,6 +198,47 @@ async function screenshot(out) {
   console.log(`wrote ${out} from ${dump}`);
 }
 
+function describeRemoteObject(arg) {
+  if (arg.value !== undefined)
+    return typeof arg.value === "string" ? arg.value : JSON.stringify(arg.value);
+  return arg.description ?? arg.type ?? "";
+}
+
+// Replays the buffered console (Runtime.enable) and keeps streaming new
+// messages from both the background and main-thread VMs.
+async function streamConsole({ connector, clientId, sessionId }, seconds) {
+  const stream = await connector.sendCDPStream(
+    clientId,
+    sessionId,
+    new ReadableStream({
+      async start(controller) {
+        controller.enqueue({ method: "Runtime.enable" });
+        controller.enqueue({ method: "Runtime.enable", sessionId: "Main" });
+        await delay(seconds * 1000);
+        controller.close();
+      },
+    }),
+    { signal: AbortSignal.timeout(seconds * 1000 + 2000) },
+  );
+  try {
+    for await (const message of stream) {
+      const thread =
+        message.sessionId === "Main" || message.params?.consoleTag === "Lepus" ? "main" : "bg";
+      if (message.method === "Runtime.consoleAPICalled") {
+        const text = (message.params.args ?? []).map(describeRemoteObject).join(" ");
+        console.log(`[${thread}/${message.params.type}] ${text}`);
+      } else if (message.method === "Runtime.exceptionThrown") {
+        const details = message.params.exceptionDetails ?? {};
+        console.log(
+          `[${thread}/exception] ${details.exception?.description ?? details.text ?? ""}`,
+        );
+      }
+    }
+  } catch {
+    // The stream ends by timeout.
+  }
+}
+
 async function main() {
   const [command, ...args] = process.argv.slice(2);
   if (command === "screenshot") return screenshot(args[0] ?? "native.png");
@@ -216,12 +259,25 @@ async function main() {
       nodes.find((node) => node.attrs["aria-label"] === label),
       `[aria-label=${JSON.stringify(label)}]`,
     );
+  } else if (command === "inspect") {
+    const label = args.join(" ");
+    const node = (await snapshot(cdp)).find((entry) => entry.attrs["aria-label"] === label);
+    if (!node) throw new Error(`No element with aria-label ${JSON.stringify(label)}`);
+    console.log(JSON.stringify({ name: node.name, ...node.attrs }, null, 2));
   } else if (command === "tap-at") {
     await tapAt(cdp, Number(args[0]), Number(args[1]));
+  } else if (command === "console") {
+    await streamConsole(session, Number(args[0] ?? 5));
   } else if (command === "type") {
     await cdp("Input.insertText", { text: args.join(" ") });
   } else {
-    console.log(fs.readFileSync(fileURLToPath(import.meta.url), "utf8").split("\n").slice(1, 11).join("\n"));
+    console.log(
+      fs
+        .readFileSync(fileURLToPath(import.meta.url), "utf8")
+        .split("\n")
+        .slice(1, 11)
+        .join("\n"),
+    );
   }
 }
 

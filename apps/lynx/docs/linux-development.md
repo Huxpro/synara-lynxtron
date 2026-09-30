@@ -6,10 +6,10 @@ rendered frames. Everything else — the Node host (`src/main/desktop`), the
 Lynx engine, layout, events and DevTool — runs normally. This guide covers the
 three loops that work on Linux today, from fastest to most faithful.
 
-| Loop                               | Renderer                     | See it                      | Drive it                          |
-| ---------------------------------- | ---------------------------- | --------------------------- | --------------------------------- |
-| `bun run dev:web` (HMR)            | Lynx for Web in a browser    | the browser                 | mouse/keyboard, Playwright        |
-| `linux-dev.mjs native` (stock)     | native Lynx (Clay, software) | DevTool screencast          | DevTool (`native-devtool.mjs`)    |
+| Loop                               | Renderer                     | See it                         | Drive it                         |
+| ---------------------------------- | ---------------------------- | ------------------------------ | -------------------------------- |
+| `bun run dev:web` (HMR)            | Lynx for Web in a browser    | the browser                    | mouse/keyboard, Playwright       |
+| `linux-dev.mjs native` (stock)     | native Lynx (Clay, software) | DevTool screencast             | DevTool (`native-devtool.mjs`)   |
 | `linux-dev.mjs native` (presenter) | native Lynx (Clay, software) | X11 window (Xvfb or a desktop) | mouse/keyboard, xdotool, DevTool |
 
 ## Prerequisites
@@ -100,9 +100,23 @@ no DevTool session is available. Drive it like any X11 app, e.g.
 
 Runtime switches understood by the presenter:
 
-| Variable                        | Effect                                                      |
-| ------------------------------- | ----------------------------------------------------------- |
-| `LYNXTRON_FRAME_DUMP=<file>`    | write the latest frame as a binary PPM (set by the harness) |
-| `LYNXTRON_LINUX_RENDERER=noop`  | discard frames like the stock runtime                       |
-| `LYNXTRON_SCREEN_SIZE=WxH`      | size of the virtual display reported to `screen`            |
-| `LYNXTRON_SWAP_RB=1`            | swap red/blue if a platform's pixel order differs           |
+| Variable                       | Effect                                                      |
+| ------------------------------ | ----------------------------------------------------------- |
+| `LYNXTRON_FRAME_DUMP=<file>`   | write the latest frame as a binary PPM (set by the harness) |
+| `LYNXTRON_LINUX_RENDERER=noop` | discard frames like the stock runtime                       |
+| `LYNXTRON_SCREEN_SIZE=WxH`     | size of the virtual display reported to `screen`            |
+| `LYNXTRON_SWAP_RB=1`           | swap red/blue if a platform's pixel order differs           |
+
+## Known issues
+
+- **`bun run dev` with the stock runtime.** The dev template bundle is ~50 MB,
+  and Lynxtron's template fetcher rejects HTTP responses over 10 MB
+  (`on-fetch-resource: Error: Response too large`). The renderer never becomes
+  ready, the host's "could not finish starting" dialog resolves as canceled on
+  Linux, and the app quits. This is not Linux-specific. Use `bun run build`
+  plus `linux-dev.mjs native`, or a runtime whose fetcher accepts larger
+  development bundles.
+- **Lynx for Web typing race.** In the Web renderer the controlled composer
+  textarea can drop a character when keystrokes arrive about 20 ms apart
+  (0 ms and 80 ms spacing are fine). This is a renderer race, not a Linux one.
+- **HiDPI.** The Linux host creates the window at `deviceScaleFactor: 1`.

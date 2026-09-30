@@ -3,6 +3,7 @@ import { describe, expect, it } from "@rstest/core";
 import {
   createSystemAppearanceWatcher,
   parseSystemAppearanceProbeSequence,
+  readSystemDark,
 } from "./systemAppearance";
 import { readFileSync } from "node:fs";
 
@@ -36,6 +37,26 @@ describe("desktop system appearance", () => {
     expect(changes).toEqual([true, false]);
     watcher.dispose();
     expect(cleared).toBe(true);
+  });
+
+  it("reads the freedesktop color scheme on Linux", () => {
+    const gsettings =
+      (values: Record<string, string>) =>
+      (_command: string, args: readonly string[]): string => {
+        const value = values[args[2] ?? ""];
+        if (value === undefined) throw new Error("No such key");
+        return `${value}\n`;
+      };
+    const read = (values: Record<string, string>) =>
+      readSystemDark("linux", gsettings(values) as unknown as Parameters<typeof readSystemDark>[1]);
+    expect(read({ "color-scheme": "'prefer-dark'" })).toBe(true);
+    expect(read({ "color-scheme": "'prefer-light'", "gtk-theme": "'Adwaita-dark'" })).toBe(false);
+    expect(read({ "color-scheme": "'default'", "gtk-theme": "'Adwaita-dark'" })).toBe(true);
+    expect(read({ "gtk-theme": "'Yaru'" })).toBe(false);
+    expect(read({})).toBe(false);
+    expect(readSystemDark("win32", gsettings({ "color-scheme": "'prefer-dark'" }) as never)).toBe(
+      false,
+    );
   });
 
   it("parses only explicit light and dark appearance probe steps", () => {

@@ -70,7 +70,7 @@ import { nativeEventStreamChannel } from "../nativeEventStreams.logic";
 import {
   createSystemAppearanceWatcher,
   parseSystemAppearanceProbeSequence,
-  readMacSystemDark,
+  readSystemDark,
 } from "./systemAppearance";
 import { createSearchKeyMonitor, terminalInputDataForSearchKeyEvent } from "./searchKeyMonitor";
 import { createBrowserViewHost } from "./browserViewProbe";
@@ -125,7 +125,7 @@ let systemAppearanceProbeIndex = 0;
 const systemAppearanceProbeTimers: Array<ReturnType<typeof setTimeout>> = [];
 
 function readCurrentSystemDark(): boolean {
-  return systemAppearanceProbeSequence[systemAppearanceProbeIndex] ?? readMacSystemDark();
+  return systemAppearanceProbeSequence[systemAppearanceProbeIndex] ?? readSystemDark();
 }
 
 function startSystemAppearanceProbe(w: LynxWindow, logFile: string): void {
@@ -720,10 +720,8 @@ app.whenReady().then(() => {
   const savedState = readWindowState(shellPaths.windowState);
   const workArea = resolveShellWorkArea(
     () =>
-      (savedState
-        ? screen.getDisplayMatching(savedState.bounds)
-        : screen.getPrimaryDisplay()
-      ).workArea,
+      (savedState ? screen.getDisplayMatching(savedState.bounds) : screen.getPrimaryDisplay())
+        .workArea,
   );
   const bounds = resolveRestoredBounds(savedState?.bounds ?? null, workArea);
   const windowPresentation = resolveShellWindowPresentation(isBackgroundLaunch);

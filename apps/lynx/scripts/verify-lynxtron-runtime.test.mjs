@@ -56,7 +56,9 @@ test("resolves the Linux devtool runtime, which ships no inspector resources", (
     executable: "/repo/node_modules/@lynx-js/lynxtron/dist/devtool/lynxtron",
     inspectorResourceCandidates: [],
   });
-  assert.doesNotThrow(() => verifyLynxtronRuntime(paths, (filePath) => filePath === paths.executable));
+  assert.doesNotThrow(() =>
+    verifyLynxtronRuntime(paths, (filePath) => filePath === paths.executable),
+  );
 });
 test("fails with an actionable root-install message when inspector assets are missing", () => {
   assert.throws(
