@@ -40,14 +40,19 @@ export function resolveLynxtronRuntimePaths(
   const runtimeRoot = exists(variantExecutable) ? pathApi.join(distRoot, "devtool") : distRoot;
   return {
     executable: pathApi.join(runtimeRoot, "lynxtron"),
-    inspectorResourceCandidates: [pathApi.join(runtimeRoot, "resources", "logbox")],
+    // The Linux runtime ships no LogBox resources; its DevTool (DOM, input,
+    // screencast) works without them, so there is nothing further to verify.
+    inspectorResourceCandidates: [],
   };
 }
 
 export function verifyLynxtronRuntime(paths, exists = existsSync) {
   const missing = [];
   if (!exists(paths.executable)) missing.push(`executable: ${paths.executable}`);
-  if (!paths.inspectorResourceCandidates.some((filePath) => exists(filePath))) {
+  if (
+    paths.inspectorResourceCandidates.length > 0 &&
+    !paths.inspectorResourceCandidates.some((filePath) => exists(filePath))
+  ) {
     missing.push(`inspectorResources: ${paths.inspectorResourceCandidates.join(" or ")}`);
   }
   if (missing.length > 0) {

@@ -406,6 +406,21 @@ export function parseWindowState(raw: string): ShellWindowState | null {
   }
 }
 
+/**
+ * Headless runtimes (Lynxtron on Linux renders windowless) expose no display
+ * list, so `screen` throws. Fall back to a virtual work area large enough for
+ * the default window instead of aborting startup.
+ */
+export const SHELL_FALLBACK_WORK_AREA: ShellRectangle = { x: 0, y: 0, width: 1440, height: 900 };
+
+export function resolveShellWorkArea(readWorkArea: () => ShellRectangle): ShellRectangle {
+  try {
+    return readWorkArea();
+  } catch {
+    return SHELL_FALLBACK_WORK_AREA;
+  }
+}
+
 export function resolveRestoredBounds(
   saved: ShellRectangle | null,
   workArea: ShellRectangle,

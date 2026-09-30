@@ -23,6 +23,8 @@ import {
   resolveNativeRendererCommand,
   resolveRestoredBounds,
   resolveShellUserDataDir,
+  resolveShellWorkArea,
+  SHELL_FALLBACK_WORK_AREA,
   resolveShellWindowPresentation,
   shouldAcquireShellSingleInstanceLock,
   writeJsonAtomic,
@@ -77,6 +79,20 @@ describe("shellRuntime", () => {
         { x: 0, y: 0, width: 1600, height: 1000 },
       ),
     ).toEqual({ x: 200, y: 100, width: 1200, height: 800 });
+  });
+
+  it("falls back to a virtual work area when the runtime has no screen", () => {
+    expect(
+      resolveShellWorkArea(() => {
+        throw new Error("Failed to get screen information");
+      }),
+    ).toEqual(SHELL_FALLBACK_WORK_AREA);
+    expect(resolveShellWorkArea(() => ({ x: 1, y: 2, width: 3, height: 4 }))).toEqual({
+      x: 1,
+      y: 2,
+      width: 3,
+      height: 4,
+    });
   });
 
   it("preserves Electron-supported 864px window bounds", () => {

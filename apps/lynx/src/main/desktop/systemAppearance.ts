@@ -31,6 +31,39 @@ export function readMacSystemDark(execFile: typeof execFileSync = execFileSync):
   }
 }
 
+// freedesktop desktops expose the preference as GNOME's `color-scheme`
+// ("prefer-dark"); older GTK desktops only encode it in the theme name.
+export function readLinuxSystemDark(execFile: typeof execFileSync = execFileSync): boolean {
+  const readSetting = (key: string): string | null => {
+    try {
+      return String(
+        execFile("gsettings", ["get", "org.gnome.desktop.interface", key], {
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "ignore"],
+        }),
+      )
+        .trim()
+        .replace(/^'|'$/g, "")
+        .toLowerCase();
+    } catch {
+      return null;
+    }
+  };
+  const colorScheme = readSetting("color-scheme");
+  if (colorScheme === "prefer-dark") return true;
+  if (colorScheme === "prefer-light") return false;
+  return readSetting("gtk-theme")?.endsWith("-dark") ?? false;
+}
+
+export function readSystemDark(
+  platform: NodeJS.Platform = process.platform,
+  execFile: typeof execFileSync = execFileSync,
+): boolean {
+  if (platform === "darwin") return readMacSystemDark(execFile);
+  if (platform === "linux") return readLinuxSystemDark(execFile);
+  return false;
+}
+
 export function createSystemAppearanceWatcher(input: {
   readonly initialDark: boolean;
   readonly onChange: (dark: boolean) => void;
@@ -39,7 +72,7 @@ export function createSystemAppearanceWatcher(input: {
   readonly clear?: (timer: ReturnType<typeof setInterval>) => void;
   readonly intervalMs?: number;
 }) {
-  const readDark = input.readDark ?? readMacSystemDark;
+  const readDark = input.readDark ?? readSystemDark;
   const schedule = input.schedule ?? setInterval;
   const clear = input.clear ?? clearInterval;
   let currentDark = input.initialDark;

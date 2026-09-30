@@ -15,7 +15,14 @@ describe("shell window chrome", () => {
     expect(resolveShellWindowChrome("win32")).toEqual({ frame: false });
   });
 
-  it("keeps the native frame on Linux", () => {
-    expect(resolveShellWindowChrome("linux")).toEqual({});
+  it("uses a windowless LynxWindow on Linux, the only mode Lynxtron supports there", () => {
+    expect(resolveShellWindowChrome("linux")).toEqual({
+      windowless: true,
+      deviceScaleFactor: 1,
+    });
+  });
+
+  it("keeps the native frame on other platforms", () => {
+    expect(resolveShellWindowChrome("freebsd")).toEqual({});
   });
 });

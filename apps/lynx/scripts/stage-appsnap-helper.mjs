@@ -6,6 +6,12 @@ import { fileURLToPath } from "node:url";
 
 import { buildAppSnapHelper } from "../../desktop/scripts/build-appsnap-helper.mjs";
 
+// AppSnap is a macOS screen-capture helper; other hosts run without it.
+if (process.platform !== "darwin") {
+  console.log("[stage-appsnap-helper] skipped outside macOS");
+  process.exit(0);
+}
+
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const cachePath = path.join(appRoot, ".runtime", "appsnap", "synara-appsnap-helper");
 const targetPath = path.join(appRoot, "dist", "desktop", "synara-appsnap-helper");

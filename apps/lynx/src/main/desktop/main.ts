@@ -35,6 +35,7 @@ import {
   readWindowState,
   reduceShellRouteDelivery,
   resolveRestoredBounds,
+  resolveShellWorkArea,
   resolveNativeRendererCommand,
   resolveShellPaths,
   resolveShellUserDataDir,
@@ -69,7 +70,7 @@ import { nativeEventStreamChannel } from "../nativeEventStreams.logic";
 import {
   createSystemAppearanceWatcher,
   parseSystemAppearanceProbeSequence,
-  readMacSystemDark,
+  readSystemDark,
 } from "./systemAppearance";
 import { createSearchKeyMonitor, terminalInputDataForSearchKeyEvent } from "./searchKeyMonitor";
 import { createBrowserViewHost } from "./browserViewProbe";
@@ -124,7 +125,7 @@ let systemAppearanceProbeIndex = 0;
 const systemAppearanceProbeTimers: Array<ReturnType<typeof setTimeout>> = [];
 
 function readCurrentSystemDark(): boolean {
-  return systemAppearanceProbeSequence[systemAppearanceProbeIndex] ?? readMacSystemDark();
+  return systemAppearanceProbeSequence[systemAppearanceProbeIndex] ?? readSystemDark();
 }
 
 function startSystemAppearanceProbe(w: LynxWindow, logFile: string): void {
@@ -713,10 +714,12 @@ app.whenReady().then(() => {
     app.setAsDefaultProtocolClient("synara");
   }
   const savedState = readWindowState(shellPaths.windowState);
-  const display = savedState
-    ? screen.getDisplayMatching(savedState.bounds)
-    : screen.getPrimaryDisplay();
-  const bounds = resolveRestoredBounds(savedState?.bounds ?? null, display.workArea);
+  const workArea = resolveShellWorkArea(
+    () =>
+      (savedState ? screen.getDisplayMatching(savedState.bounds) : screen.getPrimaryDisplay())
+        .workArea,
+  );
+  const bounds = resolveRestoredBounds(savedState?.bounds ?? null, workArea);
   const windowPresentation = resolveShellWindowPresentation(isBackgroundLaunch);
   const w = new LynxWindow({
     ...bounds,
