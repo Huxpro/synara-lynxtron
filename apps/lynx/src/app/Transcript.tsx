@@ -150,7 +150,9 @@ function TranscriptMessageTrailItem(props: {
       }}
     >
       <view className="TranscriptMessageTrailTick" />
-      <view className="TranscriptMessageTrailTooltip">
+      {/* A passive preview: hidden it still spans the transcript, and Lynx does not inherit
+          pointer-events: none, so its text would bubble taps to the trail item. */}
+      <view className="TranscriptMessageTrailTooltip" user-interaction-enabled={false}>
         <text className="TranscriptMessageTrailPreview">{props.item.preview}</text>
         {props.item.responsePreview ? (
           <text className="TranscriptMessageTrailResponse">{props.item.responsePreview}</text>

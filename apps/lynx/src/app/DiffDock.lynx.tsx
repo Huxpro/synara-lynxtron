@@ -371,6 +371,7 @@ function OpenDiffDock(props: {
       className={`DiffDock${
         props.presentation === "hosted" ? " DiffDock--hosted" : ""
       }${props.open ? " DiffDock--open" : " DiffDock--closed"}`}
+      interactive={props.open}
       defaultWidth={
         props.availableWidth > 0
           ? Math.max(RIGHT_DOCK_MIN_WIDTH_PX, Math.round(props.availableWidth / 2))

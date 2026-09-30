@@ -99,6 +99,10 @@ export function SidebarDisclosure(props: { readonly children: ReactNode; readonl
       }${dragging ? " SidebarDisclosure--resizing" : ""}`}
       aria-hidden={!interactive}
       accessibility-elements-hidden={!interactive}
+      // The scope below only disables shared interactive primitives; native fields and
+      // scroll views ignore it (and Lynx does not inherit pointer-events: none), so the
+      // closed sidebar also refuses touch for its whole subtree.
+      user-interaction-enabled={interactive}
       style={{ width: `${revealed ? width : 0}px` }}
     >
       <view className="SidebarDisclosureInner" style={{ width: `${width}px` }}>

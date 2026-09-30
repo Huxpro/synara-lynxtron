@@ -17,6 +17,7 @@ export function ThreadRightDockHost(props: {
       className={`ThreadRightDockHost${
         props.open ? " ThreadRightDockHost--open" : " ThreadRightDockHost--closed"
       }`}
+      interactive={props.open}
       defaultWidth={
         props.availableWidth > 0
           ? Math.max(RIGHT_DOCK_MIN_WIDTH_PX, Math.round(props.availableWidth / 2))

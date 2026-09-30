@@ -533,6 +533,7 @@ export function ExplorerDock(props: {
           props.presentationMode === "editor-search" ? " ExplorerDock--editor-search" : ""
         }${props.open ? " ExplorerDock--open" : " ExplorerDock--closed"}`}
         aria-hidden={!props.open}
+        user-interaction-enabled={props.open}
       >
         {content}
       </view>
@@ -545,6 +546,7 @@ export function ExplorerDock(props: {
       className={`ExplorerDock${props.hosted ? " ExplorerDock--hosted" : ""}${
         singleFile ? " ExplorerDock--single-file" : ""
       }${props.open ? " ExplorerDock--open" : " ExplorerDock--closed"}`}
+      interactive={props.open}
       defaultWidth={
         props.initialWidth ??
         (props.availableWidth > 0 ? Math.round(props.availableWidth / 2) : 640)

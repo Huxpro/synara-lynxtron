@@ -1117,6 +1117,8 @@ function ThreadRightDocks(
           className={`ThreadRightDockTerminalPane${
             terminalOpen ? "" : " ThreadRightDockTerminalPane--hidden"
           }`}
+          // The hidden terminal stays mounted over the dock; refuse touch while hidden.
+          user-interaction-enabled={terminalOpen}
         >
           <DockTerminalPane
             isActive={terminalOpen}
