@@ -6,11 +6,11 @@ rendered frames. Everything else — the Node host (`src/main/desktop`), the
 Lynx engine, layout, events and DevTool — runs normally. This guide covers the
 three loops that work on Linux today, from fastest to most faithful.
 
-| Loop                               | Renderer                     | See it                         | Drive it                         |
-| ---------------------------------- | ---------------------------- | ------------------------------ | -------------------------------- |
-| `bun run dev:web` (HMR)            | Lynx for Web in a browser    | the browser                    | mouse/keyboard, Playwright       |
-| `linux-dev.mjs native` (stock)     | native Lynx (Clay, software) | DevTool screencast             | DevTool (`native-devtool.mjs`)   |
-| `linux-dev.mjs native` (presenter) | native Lynx (Clay, software) | X11 window (Xvfb or a desktop) | mouse/keyboard, xdotool, DevTool |
+| Loop                               | Renderer                  | See it                         | Drive it                         |
+| ---------------------------------- | ------------------------- | ------------------------------ | -------------------------------- |
+| `bun run dev:web` (HMR)            | Lynx for Web in a browser | the browser                    | mouse/keyboard, Playwright       |
+| `linux-dev.mjs native` (stock)     | native Lynx (Clay)        | DevTool screencast             | DevTool (`native-devtool.mjs`)   |
+| `linux-dev.mjs native` (presenter) | native Lynx (Clay)        | X11 window (Xvfb or a desktop) | mouse/keyboard, xdotool, DevTool |
 
 ## Prerequisites
 
@@ -66,8 +66,14 @@ node scripts/native-devtool.mjs tap Settings          # tap the element showing 
 node scripts/native-devtool.mjs tap-label "Message composer"
 node scripts/native-devtool.mjs type "hello"          # insert text into the focused input
 node scripts/native-devtool.mjs screenshot out.png    # native frame via DevTool screencast
+node scripts/native-devtool.mjs console 10            # console + exceptions for 10 s
 node scripts/linux-dev.mjs stop
 ```
+
+For an edit loop, `node scripts/linux-dev.mjs native --watch` runs
+`rspeedy build --environment lynx --watch` and relaunches the native app with
+every rebuilt template (host changes under `src/main/desktop` still need
+`bunx rsbuild build --environment desktop`).
 
 On Linux the desktop host creates a windowless `LynxWindow` at 1x
 (`resolveShellWindowChrome`) and falls back to a virtual work area because the
@@ -82,40 +88,54 @@ DevTool); `dialog.show*Dialog` resolves as canceled; `shell.openExternal`,
 
 ## Loop 3 — a Lynxtron runtime with the Linux presenter
 
-A Lynxtron build that implements the Linux presenter (software frames
-presented into an X11 window, X11 pointer/wheel/key input forwarded to Lynx,
-a `display::Screen`, and freedesktop-tool backed dialogs, shell, clipboard and
-notifications) is a drop-in replacement for the stock runtime. This is a
-**local** Lynxtron patch, not an upstream feature; point the harness at it:
+A Lynxtron build with the Linux presenter is a drop-in replacement for the
+stock runtime. It is a **local** Lynxtron patch, not an upstream feature:
+
+- Frames: the accelerated renderer (EGL, read back into shared memory) is kept,
+  and each frame is copied into an X11 window and `.runtime/linux-dev/frame.ppm`.
+- Input: X11 pointer, wheel and keyboard events go to Lynx. Click-to-focus
+  works without a window manager, so Xvfb behaves like a desktop.
+- `screen` reports the X display size.
+- System services go through freedesktop tools: file and message dialogs
+  (zenity or kdialog), `openExternal`, `openPath` and `showItemInFolder`
+  (xdg-open, D-Bus FileManager1), `trashItem` (gio), the clipboard
+  (wl-clipboard or xclip), and notifications (notify-send).
+
+Point the harness at the runtime:
 
 ```sh
 LYNXTRON_BIN=/path/to/lynxtron/out/Release/lynxtron node scripts/linux-dev.mjs native
 ```
 
-Without `$DISPLAY` the harness starts `Xvfb :97`; on a desktop session the
-window opens on your display. The presenter also writes each frame to
-`.runtime/linux-dev/frame.ppm`, which `native-devtool.mjs screenshot` uses when
-no DevTool session is available. Drive it like any X11 app, e.g.
-`DISPLAY=:97 xdotool mousemove 64 797 click 1`.
+Without `$DISPLAY` the harness starts `Xvfb :97`. On a desktop session the
+window opens on your display. Drive it like any X11 app, for example
+`DISPLAY=:97 xdotool mousemove 64 797 click 1` or `xdotool type "hello"`, and
+capture it with `xwd -root | convert xwd:- shot.png` or `native-devtool.mjs
+screenshot`.
 
 Runtime switches understood by the presenter:
 
-| Variable                       | Effect                                                      |
-| ------------------------------ | ----------------------------------------------------------- |
-| `LYNXTRON_FRAME_DUMP=<file>`   | write the latest frame as a binary PPM (set by the harness) |
-| `LYNXTRON_LINUX_RENDERER=noop` | discard frames like the stock runtime                       |
-| `LYNXTRON_SCREEN_SIZE=WxH`     | size of the virtual display reported to `screen`            |
-| `LYNXTRON_SWAP_RB=1`           | swap red/blue if a platform's pixel order differs           |
+| Variable                           | Effect                                                      |
+| ---------------------------------- | ----------------------------------------------------------- |
+| `LYNXTRON_FRAME_DUMP=<file>`       | write the latest frame as a binary PPM (set by the harness) |
+| `LYNXTRON_LINUX_RENDERER=noop`     | discard frames like the stock runtime                       |
+| `LYNXTRON_LINUX_RENDERER=software` | CPU renderer (drops GPU-backed images such as SVG icons)    |
+| `LYNXTRON_SCREEN_SIZE=WxH`         | size of the virtual display reported to `screen`            |
+| `LYNXTRON_SWAP_RB=1`               | swap red/blue if a platform's pixel order differs           |
+| `LYNXTRON_X11_TRACE=1`             | log every translated key event to stderr                    |
+
+Notifications need a session bus and a notification daemon, for example
+`eval $(dbus-launch --sh-syntax); dunst &` under Xvfb.
 
 ## Known issues
 
-- **`bun run dev` with the stock runtime.** The dev template bundle is ~50 MB,
-  and Lynxtron's template fetcher rejects HTTP responses over 10 MB
-  (`on-fetch-resource: Error: Response too large`). The renderer never becomes
-  ready, the host's "could not finish starting" dialog resolves as canceled on
-  Linux, and the app quits. This is not Linux-specific. Use `bun run build`
-  plus `linux-dev.mjs native`, or a runtime whose fetcher accepts larger
-  development bundles.
+- **`bun run dev` (native HMR) does not start.** The development template
+  (~50 MB) is over the 10 MB cap in Lynxtron's HTTP template fetcher
+  (`Response too large`). Even when fetched, the engine rejects it with
+  `Decoding template failed`, including when it is loaded from a file. The
+  renderer never becomes ready, the host shows "could not finish starting",
+  and the app quits. This is not Linux-specific; use
+  `linux-dev.mjs native --watch` instead.
 - **Lynx for Web typing race.** In the Web renderer the controlled composer
   textarea can drop a character when keystrokes arrive about 20 ms apart
   (0 ms and 80 ms spacing are fine). This is a renderer race, not a Linux one.

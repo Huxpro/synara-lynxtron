@@ -3,6 +3,7 @@
 //
 //   node scripts/linux-dev.mjs server [--origin URL]   Synara backend on :58090
 //   node scripts/linux-dev.mjs native [--background]   dist/desktop on Linux Lynxtron
+//   node scripts/linux-dev.mjs native --watch          ...and relaunch on every template rebuild
 //   node scripts/linux-dev.mjs status | stop
 //
 // Lynxtron renders windowless on Linux. The native run presents into an X11
@@ -182,6 +183,7 @@ async function startNative(flags) {
     ...(display ? { DISPLAY: display } : {}),
   };
   const binary = resolveLynxtronBinary();
+  if (flags.get("watch")) return watchNative(binary, app, env);
   if (flags.get("background")) {
     const pid = startDetached("native", binary, [app], { env });
     console.log(
@@ -193,6 +195,57 @@ async function startNative(flags) {
   fs.mkdirSync(stateDir, { recursive: true });
   fs.writeFileSync(statePath("native.pid"), String(child.pid));
   child.on("exit", (code) => process.exit(code ?? 1));
+}
+
+// Native edit loop: `rspeedy build --watch` rebuilds the production template
+// (development templates do not decode in the Lynxtron engine), and every new
+// template is copied into dist/desktop and the native app is relaunched.
+async function watchNative(binary, app, env) {
+  const outputBundle = path.join(appRoot, "output", "bundle", "lynx", "main.lynx.bundle");
+  const appBundle = path.join(app, "main.lynx.bundle");
+  const launch = async () => {
+    await stopProcess("native");
+    const pid = startDetached("native", binary, [app], { env });
+    console.log(`[linux-dev] native pid ${pid}; log ${statePath("native.log")}`);
+  };
+  const builder = spawn("bun", ["run", "rspeedy", "build", "--environment", "lynx", "--watch"], {
+    cwd: appRoot,
+    stdio: "inherit",
+  });
+  const shutdown = async () => {
+    builder.kill("SIGTERM");
+    await stopProcess("native");
+    process.exit(0);
+  };
+  process.once("SIGINT", shutdown);
+  process.once("SIGTERM", shutdown);
+  builder.on("exit", (code) => {
+    console.error(`[linux-dev] rspeedy exited (${code})`);
+    void shutdown();
+  });
+
+  let lastMtime = 0;
+  await launch();
+  for (;;) {
+    await delay(500);
+    let stat;
+    try {
+      stat = fs.statSync(outputBundle);
+    } catch {
+      continue;
+    }
+    if (stat.mtimeMs === lastMtime) continue;
+    // Let the writer finish before copying.
+    await delay(300);
+    if (fs.statSync(outputBundle).mtimeMs !== stat.mtimeMs) continue;
+    const first = lastMtime === 0;
+    lastMtime = stat.mtimeMs;
+    fs.copyFileSync(outputBundle, appBundle);
+    if (!first) {
+      console.log("[linux-dev] template rebuilt; relaunching native app");
+      await launch();
+    }
+  }
 }
 
 async function status() {
@@ -215,7 +268,7 @@ async function main() {
     fs
       .readFileSync(fileURLToPath(import.meta.url), "utf8")
       .split("\n")
-      .slice(1, 11)
+      .slice(1, 12)
       .join("\n"),
   );
 }
