@@ -18,8 +18,10 @@ import { openExternalBestEffort } from "../../platform/window";
 import { parseMarkdown, type MarkdownNode, type MarkdownVariant } from "./markdownAst";
 import { resolveAgentChipColor } from "@synara-web/components/composerInlineChip.logic";
 import {
+  isMarkdownListLoose,
   resolveMarkdownCodeBlockPresentation,
   resolveMarkdownInlineTokenPresentation,
+  resolveMarkdownListMarker,
   toggleMarkdownCodeWrap,
   type MarkdownInlineTokenSegment,
 } from "./markdownPresentation.logic";
@@ -62,6 +64,17 @@ interface MarkdownRenderContext {
   readonly onTextSelection?: (selection: MarkdownTextSelection | null) => void;
   readonly selectable: boolean;
   readonly variant: MarkdownVariant;
+  /** Enclosing lists by kind, for nested marker styles. */
+  readonly listDepth?: { readonly ordered: number; readonly unordered: number };
+  /** Inside a tight list item, whose paragraphs render without block margins. */
+  readonly tightListItem?: boolean;
+}
+
+interface MarkdownListContext {
+  readonly ordered: boolean;
+  readonly index: number;
+  readonly start: number | null;
+  readonly loose: boolean;
 }
 
 function SelectableMarkdownText(props: {
@@ -525,7 +538,7 @@ function renderNode(
   node: MarkdownNode,
   key: string,
   context: MarkdownRenderContext,
-  listContext?: { ordered: boolean; index: number },
+  listContext?: MarkdownListContext,
 ): React.ReactNode {
   const children = () => renderInlineChildren(node, key, context);
   switch (node.type) {
@@ -539,7 +552,11 @@ function renderNode(
       );
     case "paragraph":
       return (
-        <SelectableMarkdownText className="MdParagraph" context={context} key={key}>
+        <SelectableMarkdownText
+          className={context.tightListItem ? "MdParagraph MdParagraph--tight" : "MdParagraph"}
+          context={context}
+          key={key}
+        >
           {children()}
         </SelectableMarkdownText>
       );
@@ -585,30 +602,55 @@ function renderNode(
           {children()}
         </view>
       );
-    case "list":
+    case "list": {
+      const loose = isMarkdownListLoose(node);
       return (
         <view className="MdList" key={key}>
           {(node.children ?? []).map((child, index) =>
             renderNode(child, `${key}.${index}`, context, {
               ordered: node.ordered === true,
               index,
+              start: node.start ?? null,
+              loose,
             }),
           )}
         </view>
       );
+    }
     case "listItem": {
       const task = node.checked !== undefined && node.checked !== null;
-      const marker = listContext?.ordered ? `${listContext.index + 1}.` : "•";
+      const ordered = listContext?.ordered === true;
+      const depth = context.listDepth ?? { ordered: 0, unordered: 0 };
+      const marker = resolveMarkdownListMarker({
+        ordered,
+        index: listContext?.index ?? 0,
+        start: listContext?.start,
+        depth: ordered ? depth.ordered : depth.unordered,
+      });
+      const itemContext: MarkdownRenderContext = {
+        ...context,
+        tightListItem: listContext?.loose !== true,
+        listDepth: ordered
+          ? { ...depth, ordered: depth.ordered + 1 }
+          : { ...depth, unordered: depth.unordered + 1 },
+      };
       return (
-        <view className="MdListItem" key={key}>
+        <view
+          className={
+            (listContext?.index ?? 0) > 0 ? "MdListItem MdListItem--following" : "MdListItem"
+          }
+          key={key}
+        >
           {task ? (
             <view className="MdListMarker MdTaskCheckboxSlot">
               <MarkdownTaskCheckbox checked={node.checked === true} />
             </view>
           ) : (
-            <text className="MdListMarker">{marker}</text>
+            <view className="MdListMarker">
+              <text className="MdListMarkerText">{marker}</text>
+            </view>
           )}
-          <view className="MdListBody">{children()}</view>
+          <view className="MdListBody">{renderInlineChildren(node, key, itemContext)}</view>
         </view>
       );
     }

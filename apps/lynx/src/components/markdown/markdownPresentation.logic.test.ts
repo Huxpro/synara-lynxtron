@@ -2,8 +2,10 @@ import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
 import {
+  isMarkdownListLoose,
   resolveMarkdownCodeBlockPresentation,
   resolveMarkdownInlineTokenPresentation,
+  resolveMarkdownListMarker,
   toggleMarkdownCodeWrap,
 } from "./markdownPresentation.logic";
 
@@ -108,5 +110,26 @@ describe("Lynx markdown presentation logic", () => {
     expect(source).toMatch(
       /const userProcessor = unified\(\)\s*\.use\(remarkParse\)\s*\.use\(remarkGfm\);/s,
     );
+  });
+});
+
+describe("markdown list markers", () => {
+  it("follows Electron's nested ordered styles and honors the list start", () => {
+    expect(resolveMarkdownListMarker({ ordered: true, index: 39, depth: 0 })).toBe("40.");
+    expect(resolveMarkdownListMarker({ ordered: true, index: 0, start: 7, depth: 0 })).toBe("7.");
+    expect(resolveMarkdownListMarker({ ordered: true, index: 26, depth: 1 })).toBe("aa.");
+    expect(resolveMarkdownListMarker({ ordered: true, index: 3, depth: 2 })).toBe("iv.");
+  });
+
+  it("cycles disc, circle and square for nested unordered lists", () => {
+    expect(
+      [0, 1, 2, 3].map((depth) => resolveMarkdownListMarker({ ordered: false, index: 0, depth })),
+    ).toEqual(["•", "◦", "▪", "▪"]);
+  });
+
+  it("treats a list as loose when it or any item is spread", () => {
+    expect(isMarkdownListLoose({ spread: false, children: [{ spread: false }] })).toBe(false);
+    expect(isMarkdownListLoose({ spread: false, children: [{ spread: true }] })).toBe(true);
+    expect(isMarkdownListLoose({ spread: true })).toBe(true);
   });
 });

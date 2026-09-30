@@ -198,6 +198,15 @@
   line-height: var(--type-composer-editor-line-height);
 }
 
+/* Electron's placeholder is `text-muted-foreground/40`: 40% of the muted-foreground alpha. */
+.ComposerTextarea::placeholder {
+  color: rgba(13, 13, 13, 0.239);
+}
+
+.SliceRoot--theme-dark .ComposerTextarea::placeholder {
+  color: rgba(252, 252, 252, 0.232);
+}
+
 .ComposerTokenPreview {
   width: 100%;
 }

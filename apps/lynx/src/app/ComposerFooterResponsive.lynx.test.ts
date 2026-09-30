@@ -57,9 +57,9 @@ describe("Native composer footer responsiveness", () => {
   });
 
   it("uses the shared Electron composer placeholder copy", () => {
-    expect(composerSource).toContain("DEFAULT_CHAT_COMPOSER_PLACEHOLDER");
     expect(composerSource).toContain('from "@synara/shared/composerPlaceholder"');
-    expect(composerSource).toContain(": DEFAULT_CHAT_COMPOSER_PLACEHOLDER");
+    expect(composerSource).toContain("resolveChatComposerPlaceholder({");
+    expect(composerSource).toContain("phase: resolveSessionPhase(sessionStatus)");
     expect(composerSource).not.toContain("Ask anything, @mention a path, or use $skill");
   });
 

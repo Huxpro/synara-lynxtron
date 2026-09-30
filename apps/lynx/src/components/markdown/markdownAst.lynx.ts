@@ -10,6 +10,10 @@ export interface MarkdownNode {
   readonly value?: string;
   readonly depth?: number;
   readonly ordered?: boolean;
+  /** Ordered lists: the first item's number. */
+  readonly start?: number | null;
+  /** Lists and items: loose (paragraphs keep their margins) rather than tight. */
+  readonly spread?: boolean;
   readonly checked?: boolean | null;
   readonly url?: string;
   readonly alt?: string;
@@ -37,6 +41,8 @@ function toSerializableNode(node: Record<string, unknown>): MarkdownNode {
     ...(typeof node.value === "string" ? { value: node.value } : {}),
     ...(typeof node.depth === "number" ? { depth: node.depth } : {}),
     ...(typeof node.ordered === "boolean" ? { ordered: node.ordered } : {}),
+    ...(typeof node.start === "number" ? { start: node.start } : {}),
+    ...(typeof node.spread === "boolean" ? { spread: node.spread } : {}),
     ...(typeof node.checked === "boolean" || node.checked === null
       ? { checked: node.checked as boolean | null }
       : {}),

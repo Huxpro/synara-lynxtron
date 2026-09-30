@@ -15,8 +15,9 @@ import agentMentionSvg from "@synara-central-icons/robot.svg?raw";
 import skillSvg from "@synara-central-icons/building-blocks.svg?raw";
 import terminalSvg from "@synara-central-icons/console.svg?raw";
 import {
-  DEFAULT_CHAT_COMPOSER_PLACEHOLDER,
+  resolveChatComposerPlaceholder,
   resolveEmptyComposerEditorMinHeightPx,
+  resolveSessionPhase,
 } from "@synara/shared/composerPlaceholder";
 import { DEFAULT_CHAT_FONT_SIZE_PX, normalizeChatFontSizePx } from "@synara-web/chatFontSize";
 
@@ -320,6 +321,8 @@ interface ComposerProps {
   readonly draftId?: string;
   readonly workspaceRoot?: string | null;
   readonly emptyLanding?: boolean;
+  /** Electron's thread composer placeholder (resolveChatComposerPlaceholder). */
+  readonly placeholder?: string;
   readonly voiceInputEnabled?: boolean;
   readonly providerStatuses?: readonly ServerProviderStatus[];
   readonly pendingUserInputCount?: number;
@@ -353,6 +356,7 @@ export function Composer({
   draftId,
   workspaceRoot,
   emptyLanding = false,
+  placeholder: placeholderProp,
   voiceInputEnabled = false,
   providerStatuses,
   pendingUserInputCount = 0,
@@ -375,12 +379,22 @@ export function Composer({
   );
   const cumulativeCostUsd = useMemo(() => deriveCumulativeCostUsd(activities), [activities]);
   const normalizedChatFontSizePx = normalizeChatFontSizePx(chatFontSizePx);
+  // Hosts with more context (approvals, question options, subagents) pass their own.
+  const placeholder =
+    placeholderProp ??
+    (emptyLanding
+      ? "Ask for follow-up changes or attach images"
+      : resolveChatComposerPlaceholder({
+          approvalPending: false,
+          pendingQuestion: pendingUserInputCount > 0 ? { freeform: false } : null,
+          planFollowUp: false,
+          subagent: false,
+          phase: resolveSessionPhase(sessionStatus),
+        }));
   const emptyEditorMinHeightPx = resolveEmptyComposerEditorMinHeightPx({
     availableWidthPx: availableWidth,
     chatFontSizePx: normalizedChatFontSizePx,
-    placeholder: emptyLanding
-      ? "Ask for follow-up changes or attach images"
-      : DEFAULT_CHAT_COMPOSER_PLACEHOLDER,
+    placeholder,
   });
   const initData = useInitData() as {
     readonly initialComposerModelProvider?: unknown;
@@ -1787,11 +1801,7 @@ export function Composer({
             accessibility-label="Message composer"
             focusable={true}
             default-value={draftProjection.displayText}
-            placeholder={
-              emptyLanding
-                ? "Ask for follow-up changes or attach images"
-                : DEFAULT_CHAT_COMPOSER_PLACEHOLDER
-            }
+            placeholder={placeholder}
             maxlength={8000}
             maxlines={nativeEditorMaxLines}
             enable-scroll-bar={true}

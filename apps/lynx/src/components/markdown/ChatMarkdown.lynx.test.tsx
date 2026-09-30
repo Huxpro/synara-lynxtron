@@ -56,7 +56,7 @@ describe("Lynx markdown file reference token", () => {
       /\.TranscriptAssistantTypography\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s,
     );
     expect(styles).toMatch(
-      /\.MdListMarker\s*\{[^}]*font-size:\s*inherit;[^}]*line-height:\s*inherit;/s,
+      /\.MdListMarkerText\s*\{[^}]*font-size:\s*inherit;[^}]*line-height:\s*inherit;/s,
     );
     expect(styles).toMatch(
       /\.MdBlockquote\s*\{[^}]*border-left-width:\s*2px;[^}]*border-left-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);/s,

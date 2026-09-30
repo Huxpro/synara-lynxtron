@@ -3,6 +3,7 @@ import {
   parseComputerInvocation,
   resolveComputerInvocationMode,
 } from "@synara/shared/computerInvocation";
+import { resolveChatComposerPlaceholder } from "@synara/shared/composerPlaceholder";
 import {
   MessageId,
   OrchestrationThreadActivity,
@@ -5509,23 +5510,17 @@ export default function ChatView({
                     {...(canCollapsePastedTextToDraft
                       ? { onCollapsePastedText: addPastedTextToDraft }
                       : {})}
-                    placeholder={
-                      isComposerApprovalState
-                        ? "Resolve this approval request to continue"
-                        : activePendingProgress
-                          ? activePendingProgress.activeQuestion?.options.length === 0
-                            ? "Type your answer to continue"
-                            : "Type your own answer, or leave this blank to use the selected option"
-                          : showPlanFollowUpPrompt && activeProposedPlan
-                            ? "Add feedback to refine the plan, or leave this blank to implement it"
-                            : activeThread?.parentThreadId
-                              ? "Message this subagent while it works"
-                              : hasLiveTurn
-                                ? "Ask for follow-up changes"
-                                : phase === "disconnected"
-                                  ? "Ask for follow-up changes or attach images"
-                                  : "Ask anything, @tag files/folders, or use / to show available commands"
-                    }
+                    placeholder={resolveChatComposerPlaceholder({
+                      approvalPending: isComposerApprovalState,
+                      pendingQuestion: activePendingProgress
+                        ? {
+                            freeform: activePendingProgress.activeQuestion?.options.length === 0,
+                          }
+                        : null,
+                      planFollowUp: Boolean(showPlanFollowUpPrompt && activeProposedPlan),
+                      subagent: Boolean(activeThread?.parentThreadId),
+                      phase,
+                    })}
                     disabled={isComposerEditorDisabled}
                   />
                 </div>

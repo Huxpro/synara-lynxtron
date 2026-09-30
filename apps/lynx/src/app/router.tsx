@@ -9,6 +9,10 @@
 // itself (@tanstack/history) is pure JS and works fine, so routes are matched
 // and rendered by hand here (see synara-lynx plan 04 pattern P-08).
 
+import {
+  resolveChatComposerPlaceholder,
+  resolveSessionPhase,
+} from "@synara/shared/composerPlaceholder";
 import { createMemoryHistory } from "@tanstack/history";
 import {
   useCallback,
@@ -1786,6 +1790,15 @@ function ThreadPage(props: ThreadPageProps) {
         chatFontSizePx={appearance.chatFontSizePx}
         voiceInputEnabled
         pendingUserInputCount={currentThread?.pendingUserInputs.length ?? 0}
+        placeholder={resolveChatComposerPlaceholder({
+          approvalPending: activePendingApproval !== null,
+          pendingQuestion: activePendingUserInput
+            ? { freeform: activePendingUserInput.questions[0]?.options.length === 0 }
+            : null,
+          planFollowUp: false,
+          subagent: Boolean(currentThread?.parentThreadId),
+          phase: resolveSessionPhase(currentThread?.sessionStatus),
+        })}
         threadId={threadId}
         modelSelection={currentThread?.modelSelection}
         runtimeMode={currentThread?.runtimeMode}

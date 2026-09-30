@@ -185,6 +185,7 @@ export interface ThreadHeaderSummary {
   readonly errorRevision: string | null;
   readonly activeTurnId: string | null;
   readonly sidechatSourceThreadId: string | null;
+  readonly parentThreadId: string | null;
   readonly latestTurnState: string | null;
   readonly workspaceRoot: string | null;
   readonly notes: string;
@@ -845,6 +846,7 @@ export async function fetchThreadHeaderSummary(
     errorRevision: thread.session?.updatedAt ?? null,
     activeTurnId: thread.session?.activeTurnId ?? null,
     sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
+    parentThreadId: thread.parentThreadId ?? null,
     latestTurnState: thread.latestTurn?.state ?? null,
     workspaceRoot: project?.workspaceRoot ?? null,
     notes: thread.notes ?? "",
