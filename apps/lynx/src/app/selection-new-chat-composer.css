@@ -1,0 +1,219 @@
+/* Electron SelectionNewChatComposer: `fixed z-50 w-[320px]` over the transcript. */
+.SelectionChatLayer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 90;
+}
+
+/* Outside presses dismiss the composer (document pointerdown in Electron). */
+.SelectionChatBackdrop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* COMPOSER_INPUT_SHELL + SURFACE: 19.2px radius, a faint 1px ring, and the glass fill
+   (elevated-primary at 55%) that reads as #171717 over the transcript. */
+.SelectionChatComposer {
+  position: absolute;
+  width: 320px;
+  max-width: calc(100vw - 16px);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(13, 13, 13, 0.04);
+  border-radius: 19.2px;
+  background-color: var(--color-background-elevated-primary-opaque);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.SliceRoot--theme-dark .SelectionChatComposer {
+  border-color: rgba(252, 252, 252, 0.039);
+}
+
+/* COMPOSER_EDITOR_PADDING overridden to `px-2.5 pt-2 pb-1`. */
+.SelectionChatEditor {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px 4px;
+}
+
+/* `mb-1 flex items-center justify-between gap-2`. */
+.SelectionChatHeader {
+  height: 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.SelectionChatHeaderActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Button ghost xs / icon-xs: 24px tall, 6px radius, muted text. */
+.SelectionChatButton {
+  height: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+
+.SelectionChatButton.ui-hover,
+.SelectionChatButton.ui-pressed {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.SelectionChatButton.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.SelectionChatButton--disabled {
+  opacity: 0.5;
+}
+
+.SelectionChatOpenButton {
+  gap: 4px;
+  padding: 0 7px;
+}
+
+.SelectionChatOpenLabel {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-xs, 11px);
+  line-height: 16.5px;
+  white-space: nowrap;
+}
+
+.SelectionChatOpenGlyph {
+  width: 12px;
+  height: 12px;
+}
+
+.SelectionChatCloseButton {
+  width: 24px;
+}
+
+.SelectionChatCloseGlyph {
+  width: 14px;
+  height: 14px;
+}
+
+/* ComposerPromptEditor at the chat size: 13px text on a 21.125px line. */
+/* The multiline control's 70px form-field box and gutters do not apply to this bare editor. */
+.SelectionChatEditor .SelectionChatInput {
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+}
+
+/* Height comes inline from the line count. */
+.SelectionChatEditor .SelectionChatInput > .LxInput {
+  width: 100%;
+  padding: 0;
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 21.125px;
+}
+
+.SelectionChatError {
+  padding: 0 12px 8px;
+  color: var(--destructive);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+}
+
+/* COMPOSER_FOOTER_ROW with `gap-2`: `px-1.5 pr-2 pb-1.5`. */
+.SelectionChatFooter {
+  height: 34px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 8px 6px 6px;
+}
+
+/* COMPOSER_TOOLBAR_PICKER_TRIGGER: `gap-1.5 px-2 py-1` capsule, 12px label. */
+.SelectionChatEnvTrigger {
+  height: 26px;
+  display: flex;
+  align-items: center;
+  margin-top: 1px;
+  padding: 4px 8px;
+  border-radius: 13px;
+}
+
+.SelectionChatEnvTrigger.ui-hover,
+.SelectionChatEnvTrigger.ui-pressed {
+  background-color: var(--color-background-elevated-secondary);
+}
+
+.SelectionChatEnvTriggerContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.SelectionChatEnvGlyph {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.SelectionChatEnvLabel {
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
+}
+
+.SelectionChatEnvChevron {
+  width: 12px;
+  height: 12px;
+  opacity: 0.6;
+}
+
+.LxMenuPopup.SelectionChatEnvMenu {
+  width: 240px;
+}
+
+.SelectionChatEnvItem {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.SelectionChatEnvItemLabel {
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+}
+
+/* AssistantSelectionsSummaryChip without a remove action: a 28px capsule, 6px end inset. */
+.SelectionChatHeader .ComposerReferenceSummaryLynx {
+  min-height: 28px;
+  padding: 3px 6px 3px 8px;
+  border-radius: 14px;
+}
+
+.SelectionChatHeader .ComposerReferenceLabelLynx {
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
+}

@@ -235,7 +235,9 @@ function relayBridgeRequest<A>(
 ): Promise<A> {
   return hostBridgeRequest(method, {
     tag,
-    payload,
+    // The bridge drops null-valued keys when it marshals objects, and commands need
+    // explicit nulls (thread.fork.create's worktreePath), so the payload crosses as JSON.
+    payloadJson: JSON.stringify(payload ?? null),
     baseUrl: resolveDefaultSocketUrl(null),
   });
 }

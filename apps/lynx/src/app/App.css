@@ -2380,27 +2380,32 @@
   opacity: 0.4;
 }
 
+/* Electron TranscriptSelectionAction: a fixed 320px slot (pointer-events-none) that centers
+   the toolbar, which sizes to its labels. */
 .TranscriptSelectionToolbar {
   position: fixed;
   z-index: 80;
   display: flex;
-  width: 292px;
-  min-height: 38px;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 2px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background-color: var(--color-background-elevated-primary-opaque);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
 }
 
-.TranscriptSelectionToolbar .TranscriptSelectionAction {
-  flex: 1;
-  min-width: 0;
-  padding-left: 6px;
-  padding-right: 6px;
+/* `rounded-lg border bg-elevated-primary-opaque shadow-md divide-x overflow-hidden`. */
+.TranscriptSelectionToolbarStrip {
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  align-items: center;
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--color-background-elevated-primary-opaque);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  pointer-events: auto;
 }
 
 .TranscriptSelectionToolbar--top {
@@ -2411,14 +2416,19 @@
   transform-origin: center top;
 }
 
+/* Toolbar button: `h-7 px-2.5 text-ui leading-snug`, hover to elevated-secondary. */
 .TranscriptSelectionAction {
+  height: 28px;
   display: flex;
-  min-height: 32px;
-  padding: 0 10px;
+  flex-shrink: 0;
   flex-direction: row;
   align-items: center;
-  gap: 6px;
-  border-radius: 999px;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.TranscriptSelectionAction + .TranscriptSelectionAction {
+  border-left: 1px solid var(--border);
 }
 
 .TranscriptSelectionAction.ui-hover,
@@ -2427,16 +2437,30 @@
   background-color: var(--color-background-elevated-secondary);
 }
 
-.TranscriptSelectionActionIcon {
-  width: 13px;
-  height: 13px;
-  color: var(--foreground);
+.TranscriptSelectionAction--disabled {
+  opacity: 0.4;
+}
+
+.TranscriptSelectionAction--disabled.ui-hover {
+  background-color: transparent;
 }
 
 .TranscriptSelectionActionLabel {
-  color: var(--foreground);
-  font-size: 11px;
-  font-weight: 500;
+  color: var(--color-text-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+  white-space: nowrap;
+}
+
+.TranscriptSelectionToolbarError {
+  margin-top: 6px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background-color: var(--color-background-elevated-primary-opaque);
+  color: var(--destructive);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 16px;
+  pointer-events: auto;
 }
 
 .TranscriptJump {

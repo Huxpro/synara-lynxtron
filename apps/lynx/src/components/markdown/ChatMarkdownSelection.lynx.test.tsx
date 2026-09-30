@@ -36,17 +36,23 @@ describe("Lynx transcript text selection", () => {
     expect(transcriptSource).toContain("readonly viewportLeft?: number");
     expect(transcriptSource).toContain("viewport: props.viewport");
     expect(transcriptSource).toContain("width: `${layout.width}px`");
-    expect(transcriptSource).toContain("const compact = layout.width < 292");
     expect(transcriptSource).toContain("TranscriptSelectionToolbar--${layout.placement}");
-    expect(transcriptSource).toContain("catchmousedown={() =>");
-    expect(transcriptSource).toContain("addToChatPointerActivationRef");
+    // Actions fire on press so the native selection survives; the follow-up tap is swallowed.
+    expect(transcriptSource).toContain("catchmousedown={() => {");
+    expect(transcriptSource).toContain("pressActivatedRef");
+    for (const label of ['label="Add to Chat"', 'label="Add to Side"', 'label="Add to new Chat"']) {
+      expect(transcriptSource).toContain(label);
+    }
     // Electron removed saved highlights and underlines (upstream #1131).
     expect(transcriptSource).not.toContain("<PencilIcon");
     expect(transcriptSource).not.toContain('TranscriptSelectionActionGlyph">✎');
     expect(transcriptSource).toContain("setSelectedAssistantMessageId(null);");
     expect(transcriptSource).toContain("setTextSelection(null);");
     expect(styles).toMatch(
-      /\.TranscriptSelectionToolbar\s*\{[^}]*width:\s*292px;[^}]*min-height:\s*38px;/s,
+      /\.TranscriptSelectionToolbarStrip\s*\{[^}]*border:\s*1px solid var\(--border\);[^}]*border-radius:\s*10px;/s,
+    );
+    expect(styles).toMatch(
+      /\.TranscriptSelectionAction\s*\{[^}]*height:\s*28px;[^}]*padding:\s*0 10px;/s,
     );
     expect(styles).toContain(".TranscriptSelectionToolbar--top");
     expect(styles).toContain(".TranscriptSelectionToolbar--bottom");

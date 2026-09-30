@@ -8,6 +8,7 @@ import { COMPONENT_LAB_RELAY_STORAGE_KEY } from "@synara/shared/componentLab";
 import { installLynxWebInteractionStateBridge } from "./web-interaction-state";
 import { type LynxWebInteractionEvent } from "../webInteractionEvent.logic";
 import { resolveWebInitialRoute } from "./webInitialRoute.logic";
+import { decodeBridgeRpcData } from "../bridgeRpcPayload";
 import {
   buildWebRelaySocketUrl,
   normalizeWebRelayUrl,
@@ -644,8 +645,12 @@ async function renderSvgToPngBlob(svg: string): Promise<Blob> {
 
 async function handleBridgeCall(
   method: string,
-  params: Record<string, unknown> = {},
+  rawParams: Record<string, unknown> = {},
 ): Promise<unknown> {
+  const params =
+    method === "synaraRpc" || method === "synaraRpcStream"
+      ? decodeBridgeRpcData(rawParams)
+      : rawParams;
   try {
     if (method === "synaraRpc") {
       if (params.tag === NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG) {

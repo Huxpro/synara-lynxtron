@@ -10,7 +10,7 @@ describe("resolveSelectionActionLayout", () => {
         pointer: { x: 450, y: 320 },
         viewport: { width: 1280, height: 820 },
       }),
-    ).toEqual({ left: 304, top: 260, placement: "top", width: 292 });
+    ).toEqual({ left: 290, top: 262, placement: "top", width: 320 });
   });
 
   it("flips below and clamps to the viewport edges", () => {
@@ -20,14 +20,14 @@ describe("resolveSelectionActionLayout", () => {
         pointer: { x: 10, y: 20 },
         viewport: { width: 320, height: 180 },
       }),
-    ).toEqual({ left: 8, top: 28, placement: "bottom", width: 292 });
+    ).toEqual({ left: 8, top: 28, placement: "bottom", width: 304 });
     expect(
       resolveSelectionActionLayout({
         selectionRect: { left: 310, top: 170, width: 10, height: 10 },
         pointer: { x: 315, y: 180 },
         viewport: { width: 320, height: 180 },
       }),
-    ).toEqual({ left: 20, top: 130, placement: "top", width: 292 });
+    ).toEqual({ left: 8, top: 132, placement: "top", width: 304 });
   });
 
   it("shrinks and clamps inside an offset narrow pane", () => {
@@ -37,6 +37,6 @@ describe("resolveSelectionActionLayout", () => {
         pointer: { x: 340, y: 280 },
         viewport: { left: 256, top: 46, width: 192, height: 574 },
       }),
-    ).toEqual({ left: 264, top: 220, placement: "top", width: 176 });
+    ).toEqual({ left: 264, top: 222, placement: "top", width: 176 });
   });
 });

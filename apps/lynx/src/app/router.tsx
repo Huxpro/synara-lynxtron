@@ -107,7 +107,14 @@ import { parseSettingsRouteLocation, settingsRouteLocation } from "./settingsRou
 import { projectExplorerDirectories, toggleExpandedDirectory } from "./explorerTree.logic";
 import { threadRecapRevision } from "./environmentRecap.logic";
 import type { EnvironmentBootstrapData } from "./environmentBootstrap.lynx";
-import { Transcript, type TranscriptController } from "./Transcript";
+import {
+  Transcript,
+  type TranscriptController,
+  type TranscriptSelectionAnchor,
+  type TranscriptSelectionHandlers,
+} from "./Transcript";
+import type { TranscriptAssistantSelection } from "@synara-web/components/chat/chatSelectionActions";
+import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
 import { SettingsPage } from "./SettingsPage";
 import { UpdatePage } from "./UpdatePage";
 import { KanbanProjectPage, ProjectsPage, PullRequestsPage } from "./FeatureListsPage";
@@ -173,8 +180,10 @@ import { GitDockPane } from "./GitDockPane.lynx";
 import { BrowserDockPane } from "./BrowserDockPane.lynx";
 import { browserView } from "../platform/browserView.lynx";
 import { EmbeddedSidechatPane } from "./EmbeddedSidechatPane.lynx";
-import { buildLynxSidechatCreateCommand, canCreateLynxSidechat } from "./sidechatCreate.logic";
-import { newCommandId, newThreadId } from "@synara-web/lib/utils";
+import { createNativeSidechat } from "./sidechatCreate.lynx";
+import { addSelectionToNativeSide, startNativeSelectionChat } from "./selectionChat.lynx";
+import { SelectionNewChatComposer } from "./SelectionNewChatComposer.lynx";
+import { canCreateLynxSidechat } from "./sidechatCreate.logic";
 import { DiffDock } from "./DiffDock.lynx";
 import { ThreadRightDockTabs } from "./ThreadRightDockTabs.lynx";
 import { ThreadRightDockHost } from "./ThreadRightDockHost.lynx";
@@ -763,6 +772,17 @@ interface RightDockThread {
   readonly sidechatSource: NonNullable<ThreadPageProps["currentThread"]> | null;
 }
 
+function openSidechatPaneInState(
+  state: RightDockThreadState,
+  sidechatThreadId: string,
+): RightDockThreadState {
+  return openPaneInState(state, {
+    paneId: "sidechat:" + sidechatThreadId,
+    kind: "sidechat",
+    threadId: sidechatThreadId,
+  });
+}
+
 function ThreadRightDocks(
   props: Pick<
     ThreadPageProps,
@@ -960,29 +980,11 @@ function ThreadRightDocks(
     if (kind === "sidechat") {
       const source = dockThread?.sidechatSource;
       if (!source) return;
-      const sidechatThreadId = newThreadId();
       setSidechatCreateError(null);
-      void dispatchSynaraCommand(
-        buildLynxSidechatCreateCommand({
-          commandId: newCommandId(),
-          createdAt: new Date().toISOString(),
-          source,
-          threadId: sidechatThreadId,
-        }),
-      )
-        .then(async () => {
-          await queryClient.invalidateQueries({ queryKey: ["threads"] });
-          await queryClient.invalidateQueries({
-            queryKey: ["thread-detail", sidechatThreadId],
-          });
-          updateRightDockState((current) =>
-            openPaneInState(current, {
-              paneId: "sidechat:" + sidechatThreadId,
-              kind: "sidechat",
-              threadId: sidechatThreadId,
-            }),
-          );
-        })
+      void createNativeSidechat({ source })
+        .then((sidechatThreadId) =>
+          updateRightDockState((current) => openSidechatPaneInState(current, sidechatThreadId)),
+        )
         .catch((error) =>
           setSidechatCreateError(error instanceof Error ? error.message : String(error)),
         );
@@ -1293,6 +1295,11 @@ function ThreadPage(props: ThreadPageProps) {
     terminalPrimaryState.entryPoint === "terminal" &&
     terminalPrimaryState.workspaceLayout === "terminal-only";
   const [providerStatuses, setProviderStatuses] = useState<readonly ServerProviderStatus[]>([]);
+  // The transcript selection that "Add to new Chat" is composing a first message for.
+  const [selectionChat, setSelectionChat] = useState<{
+    readonly selection: TranscriptAssistantSelection;
+    readonly anchor: TranscriptSelectionAnchor;
+  } | null>(null);
   const environmentSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
   );
@@ -1610,6 +1617,23 @@ function ThreadPage(props: ThreadPageProps) {
           }
         : undefined,
   });
+  // Electron's TranscriptSelectionActionLayer: Side needs a main server thread; new chats
+  // open in the thread's project.
+  const transcriptSelectionHandlers: TranscriptSelectionHandlers | undefined =
+    currentThread && currentProject
+      ? {
+          canAddToSide: canCreateLynxSidechat(currentThread),
+          onAddToSide: async (selection) => {
+            "background only";
+            const sidechatThreadId = await addSelectionToNativeSide({
+              source: currentThread,
+              selection,
+            });
+            updateRightDockState((current) => openSidechatPaneInState(current, sidechatThreadId));
+          },
+          onAddToNewChat: (selection, anchor) => setSelectionChat({ selection, anchor }),
+        }
+      : undefined;
   const threadHeaderActionState = resolveThreadHeaderActionState({
     diffDisabledReason:
       currentThread?.workspaceRoot && headerDiff.isPending ? "Checking Git repository…" : null,
@@ -1910,6 +1934,7 @@ function ThreadPage(props: ThreadPageProps) {
             onOpenFileReference={openExplorerFileReference}
             onOpenTurnDiff={openTurnDiff}
             onThreadError={setLocalThreadError}
+            selectionHandlers={transcriptSelectionHandlers}
             onForkFromMessage={(messageId) => {
               "background only";
               if (!currentThread) return;
@@ -1924,6 +1949,31 @@ function ThreadPage(props: ThreadPageProps) {
             runtimeMode={currentThread?.runtimeMode ?? null}
             sessionStatus={currentThread?.sessionStatus ?? null}
           />
+          {selectionChat && currentThread?.workspaceRoot ? (
+            <SelectionNewChatComposer
+              selection={selectionChat.selection}
+              anchor={selectionChat.anchor}
+              defaultEnvMode={environmentSettings.defaultThreadEnvMode}
+              canUseWorktree={headerDiff.isGitRepo}
+              onClose={() => setSelectionChat(null)}
+              onSubmit={async (prompt, envMode, intent) => {
+                "background only";
+                // The composer's current pick (draft) wins over the thread's persisted one.
+                const draft = useComposerDraftStore.getState().draftsByThreadId[threadId];
+                const nextThreadId = await startNativeSelectionChat({
+                  selection: selectionChat.selection,
+                  prompt,
+                  envMode,
+                  intent,
+                  projectId: currentThread.projectId,
+                  projectCwd: currentThread.workspaceRoot!,
+                  modelSelection: draft?.modelSelection ?? currentThread.modelSelection,
+                  runtimeMode: draft?.runtimeMode ?? currentThread.runtimeMode,
+                });
+                onNavigateToThread(nextThreadId);
+              }}
+            />
+          ) : null}
         </view>
       </view>
     ) : bodyState.kind === "empty" ? (
@@ -3530,7 +3580,9 @@ export function SliceRouter({
         {...explorerDockProps}
         onEditorModeChange={setEditorModeOpen}
         onNavigateToThread={(threadId) => {
-          setEditorEntryThreadId(threadId);
+          // Moving between threads inside the Editor keeps the Editor open; chat-surface
+          // navigation (fork, hand-off, a new chat from a selection) stays in chat.
+          if (editorModeOpen) setEditorEntryThreadId(threadId);
           navigate(`/thread/${threadId}`);
         }}
         projects={routeProjects}

@@ -60,6 +60,7 @@ import { CheckIcon, PlusIcon, SearchIcon } from "../../lib/icons.lynx";
 import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
 import { webStorage } from "../../platform/storage";
 import { OpenAIProviderIcon, resolveProviderGlyphColor } from "../OpenAIProviderIcon.lynx";
+import { scheduleLynxInputFocus } from "../ui/focus.lynx";
 import { Input, type InputRef } from "../ui/input.lynx";
 import {
   lynxNestedInteractiveEventProps,
@@ -244,18 +245,11 @@ function ComposerModelPickerPanel(
   const normalizedQuery = query.trim().toLowerCase();
   const searchRef = useRef<InputRef>(null);
   // Electron focuses the search field on open and on every tab switch. The native field
-  // may not exist on the first pass, so focus is retried after the popup settles.
+  // may not exist on the first pass, so focus is retried as the popup settles.
   useEffect(() => {
     "background only";
-    const focus = () => {
-      void Promise.resolve(
-        (searchRef.current as { focus?: () => unknown } | null)?.focus?.(),
-      ).catch(() => undefined);
-    };
-    focus();
     // The menu settles its own focus while it opens; the late attempt lands after it.
-    const retries = [setTimeout(focus, 60), setTimeout(focus, 240)];
-    return () => retries.forEach(clearTimeout);
+    return scheduleLynxInputFocus(searchRef, [0, 60, 240]);
   }, [tab]);
 
   const setTab = (next: ComposerModelPickerTab) => {

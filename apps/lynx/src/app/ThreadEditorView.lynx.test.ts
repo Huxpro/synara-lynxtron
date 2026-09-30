@@ -120,7 +120,8 @@ describe("Lynx Editor view", () => {
     expect(routerSource).toContain('if (event.key === "Escape") setEditorChatHistoryOpen(false)');
     expect(routerSource).toContain("resolveEditorChatHistoryThreads({");
     expect(routerSource).toContain("onNavigateToThread={(threadId) => {");
-    expect(routerSource).toContain("setEditorEntryThreadId(threadId);");
+    // Only navigation from inside the Editor carries the Editor into the next thread.
+    expect(routerSource).toContain("if (editorModeOpen) setEditorEntryThreadId(threadId);");
     expect(routerSource).toContain("navigate(`/thread/${threadId}`);");
     const historyOverlaySource = routerSource.slice(
       routerSource.indexOf("{editorChatHistoryOpen ? ("),

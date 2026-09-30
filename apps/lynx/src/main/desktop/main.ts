@@ -47,6 +47,7 @@ import {
   type ShellWindowState,
   writeJsonAtomic,
 } from "./shellRuntime";
+import { decodeBridgeRpcData } from "../bridgeRpcPayload";
 import fs from "node:fs";
 import type { KeybindingCommand } from "@synara/contracts";
 import { handleUpdater } from "./updateService";
@@ -865,15 +866,15 @@ app.whenReady().then(() => {
                     : data.tag;
         const rpcData =
           name === "synaraRpc" || name === "synaraRpcStream"
-            ? data
+            ? decodeBridgeRpcData(data)
             : { tag: rpcName, payload: data };
         const result =
           name === "synaraRpc" && data.tag === NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG
             ? await import("../syntaxHighlightingHost").then(
                 ({ highlightCodeThemesForNativePreview }) =>
                   highlightCodeThemesForNativePreview({
-                    code: typeof data.payload?.code === "string" ? data.payload.code : "",
-                    path: typeof data.payload?.path === "string" ? data.payload.path : "",
+                    code: typeof rpcData.payload?.code === "string" ? rpcData.payload.code : "",
+                    path: typeof rpcData.payload?.path === "string" ? rpcData.payload.path : "",
                   }),
               )
             : await handleNativeRpc(

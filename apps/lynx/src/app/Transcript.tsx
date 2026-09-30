@@ -74,6 +74,7 @@ import pinSvg from "@synara-central-icons/pin.svg?raw";
 import { MessageActionButtonLynx } from "../components/ui/MessageActionButton.lynx";
 import { ChatMarkdown, type MarkdownTextSelection } from "../components/markdown/ChatMarkdown";
 import { createAssistantSelectionAttachment } from "@synara-web/lib/assistantSelections";
+import type { TranscriptAssistantSelection } from "@synara-web/components/chat/chatSelectionActions";
 import { bridgeCall } from "../platform/bridge";
 import { queryClient, type ThreadTranscriptRow } from "./queries";
 import { TranscriptUserMessageEditForm } from "./TranscriptUserMessageEditForm.lynx";
@@ -432,8 +433,71 @@ function TranscriptToolGroup(props: {
   );
 }
 
+/** Where the selection toolbar sits, so the new-chat composer can open in its place. */
+export interface TranscriptSelectionAnchor {
+  readonly left: number;
+  readonly top: number;
+  readonly placement: "top" | "bottom";
+}
+
+/** Upstream's transcript selection actions beyond Add to Chat (Side, new chat). */
+export interface TranscriptSelectionHandlers {
+  /** False inside a Side chat, which cannot open another Side. */
+  readonly canAddToSide: boolean;
+  readonly onAddToSide: (selection: TranscriptAssistantSelection) => Promise<void>;
+  readonly onAddToNewChat: (
+    selection: TranscriptAssistantSelection,
+    anchor: TranscriptSelectionAnchor,
+  ) => void;
+}
+
+function TranscriptSelectionToolbarButton(props: {
+  readonly label: string;
+  readonly disabled?: boolean;
+  readonly onActivate: () => void;
+}) {
+  // Acting on press keeps the native text selection alive; the tap that follows the same
+  // press is swallowed so it cannot fire twice.
+  const pressActivatedRef = useRef(false);
+  const interaction = useLynxInteractiveState({
+    baseClassName: `TranscriptSelectionAction${
+      props.disabled ? " TranscriptSelectionAction--disabled" : ""
+    }`,
+    accessibleLabel: props.label,
+    disabled: props.disabled,
+    onActivate: () => {
+      if (!pressActivatedRef.current) props.onActivate();
+    },
+  });
+  return (
+    <view
+      className={interaction.className}
+      {...interaction.eventProps}
+      catchmousedown={() => {
+        "background only";
+        if (props.disabled || pressActivatedRef.current) return;
+        pressActivatedRef.current = true;
+        interaction.eventProps.bindmousedown?.();
+        props.onActivate();
+        setTimeout(() => {
+          pressActivatedRef.current = false;
+        }, 300);
+      }}
+    >
+      <text className="TranscriptSelectionActionLabel">{props.label}</text>
+    </view>
+  );
+}
+
+/**
+ * Electron's TranscriptSelectionAction: a divided strip of text actions sized to its labels
+ * and centered in the layout's 320px slot, so no label clips at any font size.
+ */
 function TranscriptSelectionAction(props: {
+  readonly assistantMessageId: string;
+  readonly handlers?: TranscriptSelectionHandlers;
   readonly onAddToChat: () => void;
+  readonly onDismiss: () => void;
   readonly selection: MarkdownTextSelection;
   readonly viewport: {
     readonly left: number;
@@ -442,34 +506,18 @@ function TranscriptSelectionAction(props: {
     readonly height: number;
   };
 }) {
-  const addToChatPointerActivationRef = useRef(false);
-  const pointerActivate = (
-    lock: { current: boolean },
-    activate: () => void,
-    beginPress?: () => void,
-  ) => {
-    "background only";
-    if (lock.current) return;
-    lock.current = true;
-    beginPress?.();
-    activate();
-    setTimeout(() => {
-      lock.current = false;
-    }, 300);
-  };
-  const addToChat = useLynxInteractiveState({
-    baseClassName: "TranscriptSelectionAction",
-    accessibleLabel: "Add to chat",
-    onActivate: () => {
-      if (!addToChatPointerActivationRef.current) props.onAddToChat();
-    },
-  });
+  const [sideBusy, setSideBusy] = useState(false);
+  const [sideError, setSideError] = useState<string | null>(null);
   const layout = resolveSelectionActionLayout({
     selectionRect: props.selection,
     pointer: { x: props.selection.left, y: props.selection.top },
     viewport: props.viewport,
   });
-  const compact = layout.width < 292;
+  const selection: TranscriptAssistantSelection = {
+    assistantMessageId: props.assistantMessageId,
+    text: props.selection.text,
+  };
+  const handlers = props.handlers;
   return (
     <view
       className={`TranscriptSelectionToolbar TranscriptSelectionToolbar--${layout.placement}`}
@@ -482,20 +530,47 @@ function TranscriptSelectionAction(props: {
       accessibility-label="Selection actions"
       accessibility-trait="summary"
     >
-      <view
-        className={addToChat.className}
-        {...addToChat.eventProps}
-        catchmousedown={() =>
-          pointerActivate(
-            addToChatPointerActivationRef,
-            props.onAddToChat,
-            addToChat.eventProps.bindmousedown,
-          )
-        }
-      >
-        <MessageCircleIcon className="TranscriptSelectionActionIcon" size={13} />
-        {compact ? null : <text className="TranscriptSelectionActionLabel">Add to chat</text>}
+      <view className="TranscriptSelectionToolbarStrip">
+        <TranscriptSelectionToolbarButton
+          label="Add to Chat"
+          disabled={sideBusy}
+          onActivate={props.onAddToChat}
+        />
+        {handlers ? (
+          <TranscriptSelectionToolbarButton
+            label="Add to Side"
+            disabled={sideBusy || !handlers.canAddToSide}
+            onActivate={() => {
+              "background only";
+              setSideBusy(true);
+              setSideError(null);
+              void handlers
+                .onAddToSide(selection)
+                .then(() => props.onDismiss())
+                .catch((error: unknown) =>
+                  setSideError(error instanceof Error ? error.message : "Try again."),
+                )
+                .finally(() => setSideBusy(false));
+            }}
+          />
+        ) : null}
+        {handlers ? (
+          <TranscriptSelectionToolbarButton
+            label="Add to new Chat"
+            disabled={sideBusy}
+            onActivate={() => {
+              "background only";
+              handlers.onAddToNewChat(selection, layout);
+              props.onDismiss();
+            }}
+          />
+        ) : null}
       </view>
+      {sideError ? (
+        <text className="TranscriptSelectionToolbarError" accessibility-trait="text">
+          {`Could not add selection to Side. ${sideError}`}
+        </text>
+      ) : null}
     </view>
   );
 }
@@ -517,6 +592,7 @@ function TranscriptMessage({
   onOpenFileReference,
   onOpenTurnDiff,
   onForkFromMessage,
+  selectionHandlers,
   pinnedMessageIds,
   row,
   threadId,
@@ -540,6 +616,7 @@ function TranscriptMessage({
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly onOpenTurnDiff?: (turnId: string) => void;
   readonly onForkFromMessage?: (messageId: string) => void;
+  readonly selectionHandlers?: TranscriptSelectionHandlers;
   readonly pinnedMessageIds: ReadonlySet<string>;
   row: MessageTranscriptRow;
   threadId: string;
@@ -873,8 +950,11 @@ function TranscriptMessage({
         />
         {activeTextSelection ? (
           <TranscriptSelectionAction
+            assistantMessageId={message.id}
+            handlers={selectionHandlers}
             selection={activeTextSelection}
             onAddToChat={addSelectedTextToChat}
+            onDismiss={() => onTextSelectionChange(null)}
             viewport={selectionViewport}
           />
         ) : null}
@@ -948,6 +1028,7 @@ function TranscriptRowContent({
   onOpenFileReference,
   onOpenTurnDiff,
   onForkFromMessage,
+  selectionHandlers,
   pinnedMessageIds,
   row,
   threadId,
@@ -975,6 +1056,7 @@ function TranscriptRowContent({
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly onOpenTurnDiff?: (turnId: string) => void;
   readonly onForkFromMessage?: (messageId: string) => void;
+  readonly selectionHandlers?: TranscriptSelectionHandlers;
   readonly pinnedMessageIds: ReadonlySet<string>;
   row: ThreadTranscriptRow;
   threadId: string;
@@ -1006,6 +1088,7 @@ function TranscriptRowContent({
         onOpenFileReference={onOpenFileReference}
         onOpenTurnDiff={onOpenTurnDiff}
         onForkFromMessage={onForkFromMessage}
+        selectionHandlers={selectionHandlers}
         pinnedMessageIds={pinnedMessageIds}
         row={row}
         threadId={threadId}
@@ -1078,6 +1161,7 @@ export function Transcript({
   onOpenFileReference,
   onOpenTurnDiff,
   onForkFromMessage,
+  selectionHandlers,
   pinnedMessageIds,
   rows,
   threadId,
@@ -1098,6 +1182,7 @@ export function Transcript({
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly onOpenTurnDiff?: (turnId: string) => void;
   readonly onForkFromMessage?: (messageId: string) => void;
+  readonly selectionHandlers?: TranscriptSelectionHandlers;
   readonly pinnedMessageIds: ReadonlySet<string>;
   readonly rows: readonly ThreadTranscriptRow[];
   readonly threadId: string;
@@ -1468,6 +1553,7 @@ export function Transcript({
                 onOpenFileReference={onOpenFileReference}
                 onOpenTurnDiff={onOpenTurnDiff}
                 onForkFromMessage={onForkFromMessage}
+                selectionHandlers={selectionHandlers}
                 pinnedMessageIds={pinnedMessageIds}
                 row={row}
                 threadId={threadId}
