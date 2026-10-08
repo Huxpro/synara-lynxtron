@@ -239,6 +239,7 @@ Route, scroll, and interaction changes never need a restart. A full matrix is fo
 ### Evidence and cleanup gate
 
 - Capture DevTool errors and warnings with every retained Native frame. A successful screenshot with runtime errors is not passing evidence.
+- The Lynx DevTool gives the console backlog to the first `get-console` of an app session and nothing to later calls. Read it once, after the interactions, and treat an empty later read as unknown, not clean. `comparison-cells.mjs` brackets its run with probe errors for this reason.
 - Record the Web geometry, PNG dimensions, Native outer/content dimensions, bundle path, client port, server snapshot identity, theme, route, and cleanup result in the cell's `notes.md`.
 - Close the named browser session and stop owned Web, server, Lynxtron, and DevTool processes. Confirm owned ports are free and byte-exact state restoration succeeded before declaring the harness clean.
 

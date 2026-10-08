@@ -109,9 +109,11 @@ and `@lynx-js/web-core` 0.26.2.
   0.126.2: Bun applies hunks at their recorded line numbers, so the 0.123.1
   patch corrupted `spread.js` instead of failing.
 - The first build did not load: see the zero BigInt row above.
-- On the rebuilt bundle the comparison launcher certified both renderers on the
-  fixture thread with a clean Native console, workflows J3–J6 pass in both
-  renderers, and the Lynx test suite fails the same tests as before the upgrade.
+- On the rebuilt bundle the comparison launcher certifies both renderers on the
+  fixture thread, the paired cell matrix passes 24/24 base cells and 28/28
+  state increments, and workflows J3–J6 pass in both renderers. The Lynx test
+  suite fails the same tests as before the upgrade. Details are in
+  [`plan/reports/toolchain-upgrade-2026-10-08.md`](../plan/reports/toolchain-upgrade-2026-10-08.md).
 
 ## What 0.0.21 improved
 

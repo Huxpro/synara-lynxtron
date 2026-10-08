@@ -8,15 +8,15 @@ Evidence: [n2-divider-matrix-2026-09-29.json](n2-divider-matrix-2026-09-29.json)
 
 Measured on the canonical fixture before any change (dark, 1079×803):
 
-| Divider                                  | Electron                                | Native before                                  |
-| ---------------------------------------- | --------------------------------------- | ---------------------------------------------- |
-| Thread header hairline                   | 60% gradient, layout-neutral            | **not painted** (`--app-surface-divider` undefined) |
-| Right dock seam                          | `--app-surface-divider` (60%)           | full `--border` (100%)                         |
-| Dock tab / preview / Diff / pane headers | 60% gradient, layout-neutral            | 100% border occupying 1px of layout            |
-| Explorer tree seam, search divider       | `border-border/65`                      | 100%                                           |
-| Diff toolbar separators                  | `bg-border/60`                          | **transparent** (`color-mix()` unsupported)    |
-| Git list/diff split                      | `border-border/70` on the diff viewport | 100% on the file list, 12px lower              |
-| Git pane header                          | 46px `DockPaneHeader`                   | 36px, 100% border                              |
+| Divider                                  | Electron                                 | Native before                                                           |
+| ---------------------------------------- | ---------------------------------------- | ----------------------------------------------------------------------- |
+| Thread header hairline                   | 60% gradient, layout-neutral             | **not painted** (`--app-surface-divider` undefined)                     |
+| Right dock seam                          | `--app-surface-divider` (60%)            | full `--border` (100%)                                                  |
+| Dock tab / preview / Diff / pane headers | 60% gradient, layout-neutral             | 100% border occupying 1px of layout                                     |
+| Explorer tree seam, search divider       | `border-border/65`                       | 100%                                                                    |
+| Diff toolbar separators                  | `bg-border/60`                           | **transparent** (`color-mix()` unsupported)                             |
+| Git list/diff split                      | `border-border/70` on the diff viewport  | 100% on the file list, 12px lower                                       |
+| Git pane header                          | 46px `DockPaneHeader`                    | 36px, 100% border                                                       |
 | Browser toolbar / tab bar                | 46px hairline row / 45px `border-border` | 40px border row / 40px bar whose border was covered by the home surface |
 
 Two root causes sit under most of these:
@@ -74,13 +74,13 @@ A pixel check sampled the divider row against its neighbor in temporary
 captures of both windows, recorded only the luminance deltas, and deleted the
 captures.
 
-| Matrix                                                              | Result                                    |
-| ------------------------------------------------------------------- | ----------------------------------------- |
-| 4 surfaces (Explorer, Diff, Git, Browser) × light/dark × 1280×820/1440×900 | 16/16 cells, 80/80 divider probes pass |
-| Largest alpha difference                                            | 0.00333 (tolerance 1/255 = 0.00392)       |
-| Largest edge offset                                                 | 1px (tolerance 1px)                        |
-| Paint kind (border vs layout-neutral gradient)                      | identical for all 11 dividers              |
-| Pixel luminance delta, Electron vs Native                           | within 1 level (3 levels at a 230-level seam, 1.3%) |
+| Matrix                                                                     | Result                                              |
+| -------------------------------------------------------------------------- | --------------------------------------------------- |
+| 4 surfaces (Explorer, Diff, Git, Browser) × light/dark × 1280×820/1440×900 | 16/16 cells, 80/80 divider probes pass              |
+| Largest alpha difference                                                   | 0.00333 (tolerance 1/255 = 0.00392)                 |
+| Largest edge offset                                                        | 1px (tolerance 1px)                                 |
+| Paint kind (border vs layout-neutral gradient)                             | identical for all 11 dividers                       |
+| Pixel luminance delta, Electron vs Native                                  | within 1 level (3 levels at a 230-level seam, 1.3%) |
 
 Every run was a certified N1 run and shut down with zero owned processes.
 

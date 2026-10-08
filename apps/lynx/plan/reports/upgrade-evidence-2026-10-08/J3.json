@@ -1,0 +1,130 @@
+{
+  "workflow": "J3",
+  "runId": "2026-10-08T22-48-33-587Z-85467",
+  "startedAt": "2026-10-08T22:51:01.654Z",
+  "renderers": {
+    "electron": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "open Explorer from the dock on the fixture workspace",
+          "ok": true,
+          "ms": 2417,
+          "detail": {
+            "workspaceRoot": "/Users/bytedance/github/synara/.synara-desktop-comparison/fixture/workspace/synara-fixture-app",
+            "entries": ["README.md", "docs", "package.json", "src"]
+          }
+        },
+        {
+          "name": "search the workspace for a file",
+          "ok": true,
+          "ms": 421,
+          "detail": {
+            "query": "math",
+            "cleared": "Escape"
+          }
+        },
+        {
+          "name": "select a real file and preview its contents",
+          "ok": true,
+          "ms": 3588,
+          "detail": {
+            "path": "src/math.ts",
+            "attempts": 1
+          }
+        },
+        {
+          "name": "switch to Diff and see the file's change",
+          "ok": true,
+          "ms": 1018,
+          "detail": {
+            "file": "src/math.ts",
+            "added": 4,
+            "removed": 0
+          }
+        },
+        {
+          "name": "close Explorer, reopen it, and keep the dock across a reload",
+          "ok": true,
+          "ms": 5863,
+          "detail": {
+            "persisted": ["Diff", "Explorer"]
+          }
+        },
+        {
+          "name": "recover from a real read failure with Retry",
+          "ok": true,
+          "ms": 3943,
+          "detail": {
+            "path": "docs/notes.md"
+          }
+        }
+      ],
+      "result": {
+        "workspaceRoot": "/Users/bytedance/github/synara/.synara-desktop-comparison/fixture/workspace/synara-fixture-app"
+      }
+    },
+    "native": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "open Explorer from the dock on the fixture workspace",
+          "ok": true,
+          "ms": 3319,
+          "detail": {
+            "workspaceRoot": "/Users/bytedance/github/synara/.synara-desktop-comparison/fixture/workspace/synara-fixture-app",
+            "entries": ["README.md", "docs", "package.json", "src"]
+          }
+        },
+        {
+          "name": "search the workspace for a file",
+          "ok": true,
+          "ms": 1952,
+          "detail": {
+            "query": "math",
+            "cleared": "thread switch"
+          }
+        },
+        {
+          "name": "select a real file and preview its contents",
+          "ok": true,
+          "ms": 1876,
+          "detail": {
+            "path": "src/math.ts",
+            "attempts": 1
+          }
+        },
+        {
+          "name": "switch to Diff and see the file's change",
+          "ok": true,
+          "ms": 1409,
+          "detail": {
+            "file": "src/math.ts",
+            "added": 4,
+            "removed": 0
+          }
+        },
+        {
+          "name": "close Explorer, reopen it, and keep the dock across a reload",
+          "ok": true,
+          "ms": 2775,
+          "detail": {
+            "persisted": ["Diff", "Explorer"]
+          }
+        },
+        {
+          "name": "recover from a real read failure with Retry",
+          "ok": true,
+          "ms": 4760,
+          "detail": {
+            "path": "docs/notes.md"
+          }
+        }
+      ],
+      "result": {
+        "workspaceRoot": "/Users/bytedance/github/synara/.synara-desktop-comparison/fixture/workspace/synara-fixture-app"
+      }
+    }
+  },
+  "endedAt": "2026-10-08T22:51:35.051Z"
+}

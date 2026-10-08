@@ -1,0 +1,101 @@
+{
+  "workflow": "J6",
+  "runId": "2026-10-08T22-48-33-587Z-85467",
+  "startedAt": "2026-10-08T22:52:19.159Z",
+  "renderers": {
+    "electron": {
+      "ok": false,
+      "steps": [
+        {
+          "name": "show the populated board as the store and the other client do",
+          "ok": true,
+          "ms": 2643,
+          "detail": {
+            "cards": [
+              {
+                "title": "Fixture secondary",
+                "status": "Done"
+              },
+              {
+                "title": "Fixture transcript",
+                "status": "Done"
+              }
+            ],
+            "peerMatches": true
+          }
+        },
+        {
+          "name": "create a task that runs a real turn; both clients show it",
+          "ok": false,
+          "ms": 180988,
+          "error": "Timed out waiting for the task turn."
+        }
+      ],
+      "error": "Timed out waiting for the task turn."
+    },
+    "native": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "show the populated board as the store and the other client do",
+          "ok": true,
+          "ms": 133,
+          "detail": {
+            "cards": [
+              {
+                "title": "Fixture secondary",
+                "status": "Done"
+              },
+              {
+                "title": "Fixture transcript",
+                "status": "Done"
+              }
+            ],
+            "peerMatches": true
+          }
+        },
+        {
+          "name": "create a task that runs a real turn; both clients show it",
+          "ok": true,
+          "ms": 7809,
+          "detail": {
+            "threadId": "lynx-kanban-task-thread-1791500122976-72c21347cbf308",
+            "title": "Reply with exactly one line J6-native-mv04x1of",
+            "nativeDoneMs": 126,
+            "electronDoneMs": 89
+          }
+        },
+        {
+          "name": "open the task and return to the board",
+          "ok": true,
+          "ms": 684,
+          "detail": {
+            "opened": "lynx-kanban-task-thread-1791500122976-72c21347cbf308"
+          }
+        },
+        {
+          "name": "keep the board across a reconnect",
+          "ok": true,
+          "ms": 5934,
+          "detail": {
+            "cards": 3,
+            "routeRestored": false
+          }
+        },
+        {
+          "name": "pull requests: same empty state (named blocked cell)",
+          "ok": true,
+          "ms": 138,
+          "detail": {
+            "blocked": "The fixture workspace has no GitHub remote, so the PR service has nothing to list; populated PR cells need a real repository.",
+            "emptyStateShown": true
+          }
+        }
+      ],
+      "result": {
+        "token": "J6-native-mv04x1of"
+      }
+    }
+  },
+  "endedAt": "2026-10-08T22:55:37.518Z"
+}

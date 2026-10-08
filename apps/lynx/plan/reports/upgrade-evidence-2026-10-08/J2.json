@@ -1,0 +1,32 @@
+{
+  "workflow": "J2",
+  "runId": "2026-10-08T23-12-46-533Z-92063",
+  "startedAt": "2026-10-08T23:16:06.460Z",
+  "renderers": {
+    "electron": {
+      "ok": false,
+      "steps": [
+        {
+          "name": "build a long transcript with a real turn",
+          "ok": false,
+          "ms": 19557,
+          "error": "\"J2-electron-mv05npab-long\" turn ended error."
+        }
+      ],
+      "error": "\"J2-electron-mv05npab-long\" turn ended error."
+    },
+    "native": {
+      "ok": false,
+      "steps": [
+        {
+          "name": "build a long transcript with a real turn",
+          "ok": false,
+          "ms": 18188,
+          "error": "\"J2-native-mv05o4eo-long\" turn ended error."
+        }
+      ],
+      "error": "\"J2-native-mv05o4eo-long\" turn ended error."
+    }
+  },
+  "endedAt": "2026-10-08T23:16:44.260Z"
+}
