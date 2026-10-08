@@ -803,6 +803,11 @@ export interface KeybindingsShape {
   readonly upsertKeybindingRule: (
     rule: KeybindingRule,
   ) => Effect.Effect<ResolvedKeybindingsConfig, KeybindingsConfigError>;
+
+  /** Remove every custom rule for one command and persist the result. */
+  readonly removeKeybindingRule: (
+    command: KeybindingRule["command"],
+  ) => Effect.Effect<ResolvedKeybindingsConfig, KeybindingsConfigError>;
 }
 
 /**
@@ -816,7 +821,7 @@ const makeKeybindings = Effect.gen(function* () {
   const { keybindingsConfigPath } = yield* ServerConfig;
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
-  const upsertSemaphore = yield* Semaphore.make(1);
+  const mutationSemaphore = yield* Semaphore.make(1);
   const resolvedConfigCacheKey = "resolved" as const;
   const changesPubSub = yield* PubSub.unbounded<KeybindingsChangeEvent>();
   const startedRef = yield* Ref.make(false);
@@ -1029,7 +1034,7 @@ const makeKeybindings = Effect.gen(function* () {
 
   const loadConfigStateFromCacheOrDisk = Cache.get(resolvedConfigCache, resolvedConfigCacheKey);
 
-  const revalidateAndEmit = upsertSemaphore.withPermits(1)(
+  const revalidateAndEmit = mutationSemaphore.withPermits(1)(
     Effect.gen(function* () {
       yield* Cache.invalidate(resolvedConfigCache, resolvedConfigCacheKey);
       const configState = yield* loadConfigStateFromCacheOrDisk;
@@ -1037,7 +1042,7 @@ const makeKeybindings = Effect.gen(function* () {
     }),
   );
 
-  const syncDefaultKeybindingsOnStartup = upsertSemaphore.withPermits(1)(
+  const syncDefaultKeybindingsOnStartup = mutationSemaphore.withPermits(1)(
     Effect.gen(function* () {
       const configExists = yield* readConfigExists;
       if (!configExists) {
@@ -1205,7 +1210,7 @@ const makeKeybindings = Effect.gen(function* () {
       return Stream.fromPubSub(changesPubSub);
     },
     upsertKeybindingRule: (rule) =>
-      upsertSemaphore.withPermits(1)(
+      mutationSemaphore.withPermits(1)(
         Effect.gen(function* () {
           const customConfig = yield* loadWritableCustomKeybindingsConfig();
           const nextConfig = [
@@ -1234,6 +1239,23 @@ const makeKeybindings = Effect.gen(function* () {
             keybindings: nextResolved,
             issues: [],
           });
+          return nextResolved;
+        }),
+      ),
+    removeKeybindingRule: (command) =>
+      mutationSemaphore.withPermits(1)(
+        Effect.gen(function* () {
+          const customConfig = yield* loadWritableCustomKeybindingsConfig();
+          const nextConfig = customConfig.filter((entry) => entry.command !== command);
+          yield* writeConfigAtomically(nextConfig);
+          const nextResolved = mergeWithDefaultKeybindings(
+            compileResolvedKeybindingsConfig(nextConfig),
+          );
+          yield* Cache.set(resolvedConfigCache, resolvedConfigCacheKey, {
+            keybindings: nextResolved,
+            issues: [],
+          });
+          yield* emitChange({ keybindings: nextResolved, issues: [] });
           return nextResolved;
         }),
       ),
