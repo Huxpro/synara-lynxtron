@@ -94,11 +94,7 @@ export function KanbanCardComposition({
       isDragSource={isDragSource}
       visualState={visualState}
       onActivate={onOpen ? () => onOpen(card) : undefined}
-      onContextMenu={
-        onContextMenu
-          ? (event, restoreFocus) => onContextMenu(card, event, restoreFocus)
-          : undefined
-      }
+      onContextMenu={onContextMenu ? (event) => onContextMenu(card, event) : undefined}
       onDragPointerStart={
         onDragPointerStart ? (point) => onDragPointerStart(card, point) : undefined
       }

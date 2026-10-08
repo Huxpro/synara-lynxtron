@@ -472,6 +472,38 @@ async function electronErrors(driver) {
   );
 }
 
+/**
+ * `get-console` prints one `- [level/thread]: message` entry per console
+ * message, each possibly spanning several lines, and nothing when there are
+ * none.
+ */
+export function parseDevtoolConsole(output) {
+  const entries = [];
+  for (const line of output.split("\n")) {
+    const header = /^- \[([a-z]+)\/([a-z-]+)\]: (.*)$/.exec(line);
+    if (header) {
+      entries.push({ level: header[1], thread: header[2], text: header[3] });
+    } else if (entries.length > 0 && line.trim() !== "") {
+      entries[entries.length - 1].text += `\n${line}`;
+    } else if (line.trim() !== "") {
+      throw new Error(`Unrecognized get-console output: ${line}`);
+    }
+  }
+  return entries;
+}
+
+/**
+ * The errors logged between the run's two probes. An unreadable console, or
+ * one that missed either probe, is reported as unavailable, never as clean.
+ */
+export function errorsBetweenProbes(entries, probe) {
+  if (entries === null) return "unavailable: get-console returned no parsable output";
+  const start = entries.findIndex((entry) => entry.text.includes(`${probe}:start`));
+  const end = entries.findIndex((entry) => entry.text.includes(`${probe}:end`));
+  if (start < 0 || end < 0) return "unavailable: get-console did not capture the run's probes";
+  return entries.slice(start + 1, end);
+}
+
 function nativeConsoleErrors(devtoolPort) {
   try {
     const output = execFileSync(
@@ -486,8 +518,7 @@ function nativeConsoleErrors(devtoolPort) {
       ],
       { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
     );
-    const parsed = JSON.parse(output);
-    return Array.isArray(parsed) ? parsed : (parsed.messages ?? parsed.logs ?? []);
+    return parseDevtoolConsole(output);
   } catch {
     return null;
   }
@@ -509,7 +540,14 @@ async function main() {
   await electron.evaluate(
     `window.__comparisonCellErrors ??= []; if (!window.__comparisonCellErrorsHooked) { window.__comparisonCellErrorsHooked = true; addEventListener("error", (event) => window.__comparisonCellErrors.push(String(event.message))); addEventListener("unhandledrejection", (event) => window.__comparisonCellErrors.push(String(event.reason))); }`,
   );
-  const nativeErrorsBefore = nativeConsoleErrors(run.native.devtool.port)?.length ?? null;
+  // The DevTool hands the console backlog to the first `get-console` of an app
+  // session and returns nothing to later ones. So the console is read once, at
+  // the end, and the run brackets itself with two probe errors: errors are
+  // reported only when both probes came back. A session whose console was
+  // already read (an earlier cell run, a manual `get-console`) reports
+  // "unavailable"; relaunch to observe errors.
+  const consoleProbe = `comparison-cells-probe-${Date.now()}`;
+  await native.evaluate(`console.error(${JSON.stringify(`${consoleProbe}:start`)})`);
   const report = {
     runId: run.runId,
     theme: run.options.theme,
@@ -623,14 +661,12 @@ async function main() {
       `[increment] ${run.options.theme} ${run.options.width}×${run.options.height} ${name} (${increment.workflow}): ${cell.pass ? "PASS" : "FAIL"} ${cell.comparison ? `${cell.comparison.matched}/${cell.comparison.compared} controls` : cell.error} ${probeSummary}`,
     );
   }
-  const nativeErrorsAfter = nativeConsoleErrors(run.native.devtool.port);
-  // On Lynxtron the DevTool console capture can return nothing at all (not even
-  // a probe console.error), so an unreadable console is reported as such, never
-  // as "no errors".
-  report.nativeConsoleErrors =
-    nativeErrorsAfter === null || nativeErrorsBefore === null
-      ? "unavailable: get-console returned no parsable output"
-      : nativeErrorsAfter.slice(nativeErrorsBefore);
+  await native.evaluate(`console.error(${JSON.stringify(`${consoleProbe}:end`)})`);
+  await sleep(500);
+  report.nativeConsoleErrors = errorsBetweenProbes(
+    nativeConsoleErrors(run.native.devtool.port),
+    consoleProbe,
+  );
   electron.close();
   native.close();
   const out = option("--out");

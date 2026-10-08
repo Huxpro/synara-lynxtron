@@ -1189,6 +1189,7 @@ export default function DiffPanel({
                 left={diffSelectionAction.pendingAction.left}
                 top={diffSelectionAction.pendingAction.top}
                 placement={diffSelectionAction.pendingAction.placement}
+                width={diffSelectionAction.pendingAction.width}
                 onAddToChat={diffSelectionAction.commit}
               />
             ) : null}

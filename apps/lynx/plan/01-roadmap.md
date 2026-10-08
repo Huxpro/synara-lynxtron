@@ -5,7 +5,7 @@
 
 > **P8-Q1 后当前控制面**：本目录已随应用迁入 `synara/apps/lynx/plan`；审计从主仓执行，不依赖相邻 staging：
 > `bun run --cwd apps/lynx audit:reuse`、`audit:reuse:check`、`audit:style`、`audit:style:check`。P5-R5 的专用 config 仅保留历史证据；其已删除的 fidelity entry 不作为当前门禁运行。
-> `synara-lynx` 保留不改，供恢复与历史审计。
+> `synara-lynx` 已于 2026-09-29 退役：被本树引用的 Phase 0 spikes（不含依赖）、`scripts/generate-native-theme-css.ts`、07/08 goal prompt 已迁入 `apps/lynx`；2026-07-27…07-31 的早期截图未迁入，相关 `shots/` 链接失效。
 
 ## Phase 0 — 风险消减 spike（纯验证，不改主仓）
 

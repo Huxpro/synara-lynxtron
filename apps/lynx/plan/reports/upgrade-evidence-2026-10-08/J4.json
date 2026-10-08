@@ -1,0 +1,181 @@
+{
+  "workflow": "J4",
+  "runId": "2026-10-08T22-48-33-587Z-85467",
+  "startedAt": "2026-10-08T22:51:35.208Z",
+  "renderers": {
+    "electron": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "switch between a thread and Settings with one correct sidebar",
+          "ok": true,
+          "ms": 3696,
+          "detail": {
+            "rounds": [
+              {
+                "settingsMs": 351,
+                "returnedToThread": true
+              },
+              {
+                "settingsMs": 244,
+                "returnedToThread": true
+              },
+              {
+                "settingsMs": 190,
+                "returnedToThread": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "change theme and density; the app applies them",
+          "ok": true,
+          "ms": 2039,
+          "detail": {
+            "before": {
+              "themeMode": "dark",
+              "density": "comfortable"
+            },
+            "applied": {
+              "theme": "light",
+              "density": "compact"
+            }
+          }
+        },
+        {
+          "name": "persist the change and keep settings the app does not know",
+          "ok": true,
+          "ms": 56,
+          "detail": {
+            "themeMode": "light",
+            "density": "compact",
+            "unknownSettingKept": false
+          }
+        },
+        {
+          "name": "keep the appearance across a renderer reload",
+          "ok": true,
+          "ms": 5175,
+          "detail": {
+            "applied": {
+              "theme": "light",
+              "density": "compact"
+            },
+            "persisted": {
+              "themeMode": "light",
+              "density": "compact"
+            }
+          }
+        },
+        {
+          "name": "keep a server setting consistent across both clients",
+          "ok": true,
+          "ms": 2287,
+          "detail": {
+            "electronTonative": "live",
+            "nativeToelectron": "live"
+          }
+        },
+        {
+          "name": "restore the canonical appearance",
+          "ok": true,
+          "ms": 2054,
+          "detail": {
+            "themeMode": "dark",
+            "density": "comfortable"
+          }
+        }
+      ],
+      "result": {}
+    },
+    "native": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "switch between a thread and Settings with one correct sidebar",
+          "ok": true,
+          "ms": 5497,
+          "detail": {
+            "rounds": [
+              {
+                "settingsMs": 518,
+                "returnedToThread": true
+              },
+              {
+                "settingsMs": 685,
+                "returnedToThread": true
+              },
+              {
+                "settingsMs": 507,
+                "returnedToThread": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "change theme and density; the app applies them",
+          "ok": true,
+          "ms": 4263,
+          "detail": {
+            "before": {
+              "themeMode": "dark",
+              "sentinel": "kept"
+            },
+            "applied": {
+              "theme": "light",
+              "density": "compact"
+            }
+          }
+        },
+        {
+          "name": "persist the change and keep settings the app does not know",
+          "ok": true,
+          "ms": 0,
+          "detail": {
+            "themeMode": "light",
+            "density": "compact",
+            "sentinel": "kept",
+            "unknownSettingKept": true
+          }
+        },
+        {
+          "name": "keep the appearance across a renderer reload",
+          "ok": true,
+          "ms": 643,
+          "detail": {
+            "applied": {
+              "theme": "light",
+              "density": "compact"
+            },
+            "persisted": {
+              "themeMode": "light",
+              "density": "compact",
+              "sentinel": "kept"
+            }
+          }
+        },
+        {
+          "name": "keep a server setting consistent across both clients",
+          "ok": true,
+          "ms": 3159,
+          "detail": {
+            "nativeToelectron": "live",
+            "electronTonative": "live"
+          }
+        },
+        {
+          "name": "restore the canonical appearance",
+          "ok": true,
+          "ms": 3250,
+          "detail": {
+            "themeMode": "dark",
+            "density": "comfortable",
+            "sentinel": "kept"
+          }
+        }
+      ],
+      "result": {}
+    }
+  },
+  "endedAt": "2026-10-08T22:52:07.411Z"
+}

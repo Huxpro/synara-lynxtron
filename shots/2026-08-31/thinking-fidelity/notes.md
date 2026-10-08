@@ -1,0 +1,9 @@
+# Expanded Thinking fidelity evidence
+
+- Matched cell: 1280x820, light theme, no right dock, backend `54551`, thread `lynx-landing-thread-1787254540864-987357febecef`. Electron and exact-owned Native PID/window `73286/21126` both held live sockets to the same backend.
+- Structure: Native now preserves Electron's three disclosure levels: the settled `Worked for 5m 21s` turn, the grouped `Read 1 file, 1 other tool call` summary, and each individual row carrying `toolDetails`. Real Computer Use clicks expanded all three; a real upward drag exposed the command detail while the composer stayed reachable.
+- Detail rendering: command/output, pure output, written content, diff, and file lists reuse the canonical `WorkLogToolDetails` data. Command transcripts use the shared `formatShellTranscript` + `createMarkdownCodeFence` path, then render through Native `ChatMarkdown`, including the `bash` header and `$` prompt.
+- Typography: reasoning entries and tool rows now consume the real chat font size instead of fixed 11/12px values. Tool-detail code uses the shared chat line-height calculation; Electron CDP measured JetBrains Mono at 12px / 19.5px with roughly 8px vertical and 9.6px horizontal padding. Native uses the same JetBrains Mono family, 12px / 19.5px local detail tokens, and its existing 8px / 10px code padding.
+- Evidence: `electron-expanded-command.png` and `lynx-expanded-command-final.png`. Electron state was created through real disclosure buttons; Native state used exact-owned Computer Use clicks and drag. DevTool registered no exact-owned client, so no DevTool console/DOM claim is made.
+- Verification: `TranscriptAssistantReference.lynx.test.ts` passes 6/6, ReactLynx scanner reports zero issues for `Transcript.tsx`, `git diff --check` passes, and the complete Lynx/Desktop production build passes.
+- Final runtime-pinned bundle SHA-256: `f5f834d47e063646f6e981ae0cc3c04a5da1a431bc505adea2d5b32bce85eb97`.

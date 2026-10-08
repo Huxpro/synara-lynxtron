@@ -57,7 +57,7 @@ import { OrchestrationEngineLive } from "./OrchestrationEngine.ts";
 import { TurnCheckpointCoordinatorLive } from "./TurnCheckpointCoordinator.ts";
 import { OrchestrationProjectionPipelineLive } from "./ProjectionPipeline.ts";
 import { OrchestrationProjectionSnapshotQueryLive } from "./ProjectionSnapshotQuery.ts";
-import { ProviderCommandReactorLive } from "./ProviderCommandReactor.ts";
+import { makeProviderCommandReactorLive } from "./ProviderCommandReactor.ts";
 import { OrchestrationEngineService } from "../Services/OrchestrationEngine.ts";
 import { ProviderCommandReactor } from "../Services/ProviderCommandReactor.ts";
 import {
@@ -142,6 +142,7 @@ describe("ProviderCommandReactor", () => {
     readonly startReactor?: boolean;
     readonly interruptTurn?: ProviderServiceShape["interruptTurn"];
     readonly stopSession?: ProviderServiceShape["stopSession"];
+    readonly firstEventTimeoutMs?: number;
   }) {
     const now = new Date().toISOString();
     const baseDir = input?.baseDir ?? fs.mkdtempSync(path.join(os.tmpdir(), "synara-reactor-"));
@@ -430,7 +431,9 @@ describe("ProviderCommandReactor", () => {
       Layer.provide(OrchestrationEventStoreLive),
       Layer.provide(OrchestrationCommandReceiptRepositoryLive),
     );
-    const layer = ProviderCommandReactorLive.pipe(
+    const layer = makeProviderCommandReactorLive({
+      firstEventTimeoutMs: input?.firstEventTimeoutMs ?? 60_000,
+    }).pipe(
       Layer.provideMerge(orchestrationLayer),
       Layer.provideMerge(OrchestrationProjectionSnapshotQueryLive),
       Layer.provideMerge(TurnCheckpointCoordinatorLive),
@@ -881,6 +884,128 @@ describe("ProviderCommandReactor", () => {
       harness.deliveryRepository.getConsumerState("provider-command-reactor.v1"),
     );
     expect(consumerState.pipe(Option.getOrThrow).lastAckedSequence).toBe(events.at(-1)!.sequence);
+  });
+
+  it("surfaces an expired turn-start delivery as a visible terminal error", async () => {
+    const harness = await createHarness({ startReactor: false });
+    const now = new Date().toISOString();
+    await Effect.runPromise(
+      harness.engine.dispatch({
+        type: "thread.turn.start",
+        commandId: CommandId.makeUnsafe("cmd-expired-turn-start"),
+        threadId: ThreadId.makeUnsafe("thread-1"),
+        message: {
+          messageId: asMessageId("user-message-expired-turn-start"),
+          role: "user",
+          text: "persisted without a provider reply",
+          attachments: [],
+        },
+        interactionMode: DEFAULT_PROVIDER_INTERACTION_MODE,
+        runtimeMode: "approval-required",
+        createdAt: now,
+      }),
+    );
+    const events = await Effect.runPromise(
+      Stream.runCollect(harness.engine.readEvents(0)).pipe(
+        Effect.map((chunk) => Array.from(chunk)),
+      ),
+    );
+    const turnStart = events.find((event) => event.type === "thread.turn-start-requested")!;
+    await Effect.runPromise(
+      harness.deliveryRepository.claim({
+        consumerName: "provider-command-reactor.v1",
+        eventSequence: turnStart.sequence,
+        threadId: "thread-1",
+        claimOwner: "crashed-turn-start-process",
+        claimedAt: "2020-01-01T00:00:00.000Z",
+        claimExpiresAt: "2020-01-01T00:01:00.000Z",
+      }),
+    );
+
+    await harness.startReactor();
+    await waitFor(async () => (await readHarnessThread(harness))?.session?.status === "error");
+
+    expect(harness.sendTurn).not.toHaveBeenCalled();
+    const thread = await readHarnessThread(harness);
+    expect(
+      thread?.messages.some((message) => message.id === "user-message-expired-turn-start"),
+    ).toBe(true);
+    expect(thread?.session).toMatchObject({
+      status: "error",
+      activeTurnId: null,
+    });
+    expect(thread?.session?.lastError).toContain(
+      "claim expired without a durable acceptance result",
+    );
+    expect(
+      thread?.activities.filter((activity) => activity.kind === "provider.turn.start.failed"),
+    ).toHaveLength(1);
+
+    await harness.drain();
+    const replayedThread = await readHarnessThread(harness);
+    expect(
+      replayedThread?.activities.filter(
+        (activity) => activity.kind === "provider.turn.start.failed",
+      ),
+    ).toHaveLength(1);
+  });
+
+  it("repairs a pre-existing uncertain turn-start delivery without duplicate activity", async () => {
+    const harness = await createHarness({ startReactor: false });
+    const now = new Date().toISOString();
+    await Effect.runPromise(
+      harness.engine.dispatch({
+        type: "thread.turn.start",
+        commandId: CommandId.makeUnsafe("cmd-preexisting-uncertain-turn-start"),
+        threadId: ThreadId.makeUnsafe("thread-1"),
+        message: {
+          messageId: asMessageId("user-message-preexisting-uncertain"),
+          role: "user",
+          text: "repair my terminal state",
+          attachments: [],
+        },
+        interactionMode: DEFAULT_PROVIDER_INTERACTION_MODE,
+        runtimeMode: "approval-required",
+        createdAt: now,
+      }),
+    );
+    const events = await Effect.runPromise(
+      Stream.runCollect(harness.engine.readEvents(0)).pipe(
+        Effect.map((chunk) => Array.from(chunk)),
+      ),
+    );
+    const turnStart = events.find((event) => event.type === "thread.turn-start-requested")!;
+    const claimOwner = "previous-crashed-turn-start-process";
+    await Effect.runPromise(
+      harness.deliveryRepository.claim({
+        consumerName: "provider-command-reactor.v1",
+        eventSequence: turnStart.sequence,
+        threadId: "thread-1",
+        claimOwner,
+        claimedAt: "2020-01-01T00:00:00.000Z",
+        claimExpiresAt: "2020-01-01T00:01:00.000Z",
+      }),
+    );
+    await Effect.runPromise(
+      harness.deliveryRepository.markTerminalFailure({
+        consumerName: "provider-command-reactor.v1",
+        eventSequence: turnStart.sequence,
+        expectedClaimOwner: claimOwner,
+        state: "uncertain",
+        error: "provider acceptance could not be determined",
+        updatedAt: now,
+      }),
+    );
+
+    await harness.startReactor();
+    await waitFor(async () => (await readHarnessThread(harness))?.session?.status === "error");
+    await harness.drain();
+
+    const thread = await readHarnessThread(harness);
+    expect(thread?.session?.lastError).toContain("provider acceptance could not be determined");
+    expect(
+      thread?.activities.filter((activity) => activity.kind === "provider.turn.start.failed"),
+    ).toHaveLength(1);
   });
 
   it("REL-01B gate: quarantines one thread and resumes it after explicit safe retry", async () => {
@@ -3036,6 +3161,103 @@ describe("ProviderCommandReactor", () => {
     const thread = await readHarnessThread(harness);
     expect(thread?.session?.threadId).toBe("thread-1");
     expect(thread?.session?.runtimeMode).toBe("approval-required");
+  });
+
+  it("projects a provider-acknowledged turn as running when its start event is missing", async () => {
+    const harness = await createHarness({ firstEventTimeoutMs: 25 });
+    const now = new Date().toISOString();
+    harness.sendTurn.mockImplementationOnce((input) => {
+      harness.setRuntimeSessionTurnState({
+        threadId: input.threadId,
+        status: "running",
+        activeTurnId: asTurnId("turn-ack-without-event"),
+      });
+      return Effect.succeed({
+        threadId: input.threadId,
+        turnId: asTurnId("turn-ack-without-event"),
+      });
+    });
+
+    await Effect.runPromise(
+      harness.engine.dispatch({
+        type: "thread.turn.start",
+        commandId: CommandId.makeUnsafe("cmd-turn-ack-without-event"),
+        threadId: ThreadId.makeUnsafe("thread-1"),
+        message: {
+          messageId: asMessageId("user-message-turn-ack-without-event"),
+          role: "user",
+          text: "reply even if turn started notification is missing",
+          attachments: [],
+        },
+        interactionMode: DEFAULT_PROVIDER_INTERACTION_MODE,
+        runtimeMode: "approval-required",
+        createdAt: now,
+      }),
+    );
+
+    await waitFor(async () => (await readHarnessThread(harness))?.session?.status === "running");
+    const thread = await readHarnessThread(harness);
+    expect(thread?.session).toMatchObject({
+      status: "running",
+      activeTurnId: "turn-ack-without-event",
+    });
+
+    await waitFor(async () => (await readHarnessThread(harness))?.session?.status === "error");
+    const timedOutThread = await readHarnessThread(harness);
+    expect(timedOutThread?.session?.lastError).toContain("produced no runtime events");
+    expect(
+      timedOutThread?.activities.filter(
+        (activity) => activity.kind === "provider.turn.start.failed",
+      ),
+    ).toHaveLength(1);
+    expect(harness.stopRuntimeSession).toHaveBeenCalledWith({
+      threadId: ThreadId.makeUnsafe("thread-1"),
+    });
+  });
+
+  it("cancels the first-event watchdog after any event from the acknowledged turn", async () => {
+    const harness = await createHarness({ firstEventTimeoutMs: 25 });
+    const now = new Date().toISOString();
+    harness.sendTurn.mockImplementationOnce((input) => {
+      harness.setRuntimeSessionTurnState({
+        threadId: input.threadId,
+        status: "running",
+        activeTurnId: asTurnId("turn-watchdog-observed"),
+      });
+      return Effect.succeed({
+        threadId: input.threadId,
+        turnId: asTurnId("turn-watchdog-observed"),
+      });
+    });
+    await Effect.runPromise(
+      harness.engine.dispatch({
+        type: "thread.turn.start",
+        commandId: CommandId.makeUnsafe("cmd-turn-watchdog-observed"),
+        threadId: ThreadId.makeUnsafe("thread-1"),
+        message: {
+          messageId: asMessageId("user-message-turn-watchdog-observed"),
+          role: "user",
+          text: "observe first event",
+          attachments: [],
+        },
+        interactionMode: DEFAULT_PROVIDER_INTERACTION_MODE,
+        runtimeMode: "approval-required",
+        createdAt: now,
+      }),
+    );
+    await waitFor(async () => (await readHarnessThread(harness))?.session?.status === "running");
+    await harness.emitRuntimeEvent({
+      type: "turn.started",
+      eventId: asEventId("event-turn-watchdog-observed"),
+      provider: "codex",
+      threadId: ThreadId.makeUnsafe("thread-1"),
+      turnId: asTurnId("turn-watchdog-observed"),
+      createdAt: now,
+      payload: {},
+    });
+    await new Promise((resolve) => setTimeout(resolve, 60));
+    expect((await readHarnessThread(harness))?.session?.status).toBe("running");
+    expect(harness.stopRuntimeSession).not.toHaveBeenCalled();
   });
 
   it("routes subagent-thread turn starts to the parent session as steers", async () => {

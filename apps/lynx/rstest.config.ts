@@ -7,4 +7,7 @@ import { withLynxConfig } from "@lynx-js/react/testing-library/rstest-config";
 
 export default defineConfig({
   extends: withLynxConfig(),
+  // Archived Phase 0 spikes are reference material, not part of the app suite.
+  // `scripts/` tests use `node:test`; run them with `bun run test:scripts`.
+  exclude: ["spikes/**", "scripts/**"],
 });

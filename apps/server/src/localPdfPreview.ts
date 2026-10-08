@@ -19,12 +19,15 @@ export interface LocalPdfPreviewInput {
 
 export interface LocalPdfMetadata {
   readonly pageCount: number;
+  readonly width: number;
+  readonly height: number;
 }
 
-export interface RenderedLocalPdfPage extends LocalPdfMetadata {
+export interface RenderedLocalPdfPage {
   readonly bytes: Uint8Array;
   readonly width: number;
   readonly height: number;
+  readonly pageCount: number;
 }
 
 const pageCache = new Map<string, Promise<RenderedLocalPdfPage>>();
@@ -70,7 +73,13 @@ async function loadPdf(input: LocalPdfPreviewInput) {
 export async function inspectLocalPdf(input: LocalPdfPreviewInput): Promise<LocalPdfMetadata> {
   const { document } = await loadPdf(input);
   try {
-    return { pageCount: document.numPages };
+    const firstPage = await document.getPage(1);
+    const viewport = firstPage.getViewport({ scale: 1 });
+    return {
+      pageCount: document.numPages,
+      width: viewport.width,
+      height: viewport.height,
+    };
   } finally {
     await document.destroy();
   }

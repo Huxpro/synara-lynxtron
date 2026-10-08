@@ -1,0 +1,9 @@
+# Composer footer responsive parity
+
+- Source thread: `lynx-landing-thread-1787254540864-987357febecef`, light theme.
+- Shared policy: `shouldUseCompactComposerFooter` enters compact mode below 620px of actual composer/chat-pane width. Native receives `threadHeaderAvailableWidth`, which already subtracts the sidebar and a side-by-side right dock.
+- Narrow matched cell: `864x620`, backend `59193`, 256px sidebar, 416px Terminal, about 192px chat pane. Before the source fix, Electron's footer measured `scrollWidth=269`, `clientWidth=150`; its leading cluster clipped to zero while verbose trailing labels remained. The final Web footer measures `150 === 150`, with icon-only tier 3 controls and a 2px action gap. Exact-owned Native PID/window `69685/18413` renders +, permission, provider, traits, and send as one complete row without wrapped labels. Evidence: `electron-narrow-dock.png`, `lynx-narrow-dock.png`.
+- Wide control: `1280x820`, backend `61519`, no dock, 1024px chat pane. Both renderers restore the full `Full access`, `GPT-5.6 Luna`, and `Low` labels. Electron footer measured `clientWidth=scrollWidth=734`. Evidence: `electron-wide.png`, `lynx-wide.png`.
+- Verification: Web `composerFooterLayout` plus shared composer-composition coverage 14/14; Native footer coverage 2/2; ReactLynx scans for `Composer.lynx.tsx`, `ComposerModelControl.lynx.tsx`, `ComposerInputCompositionElements.lynx.tsx`, and `router.tsx` report zero issues; Web and Lynx/Desktop production builds pass; `git diff --check` passes.
+- Final staged `main.lynx.bundle` SHA-256: `8127d4841af624fd59fdb87ea187e13ef6583dd662e6076431b9468d3925c902`.
+- Electron tier 4 relocates its leading controls into secondary chrome; Native retains the same critical controls as compact icons in the footer because it has no equivalent branch-toolbar row. This is an intentional structure delta with equal reachability, not hidden functionality.

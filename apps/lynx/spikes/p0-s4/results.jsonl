@@ -1,0 +1,8 @@
+[P0-S4] p1_eager_vs_visible {"jsInstances":30,"effectsFired":30,"itemCount":30,"lastScroll":null,"scrollInfo":{"maxScrollOffset":1200,"scrollX":0,"isDragging":false,"scrollY":1202,"scrollWidth":775,"scrollHeight":1680,"scrollLeft":0,"scrollTop":1202},"note":"instances/effects ≈ itemCount proves eager JS creation; attachedCells ≈ viewport proves UI windowing"}
+[P0-S4] pin {"event":"detach-forced","reason":"no SCROLL-source event observed from programmatic scroll"}
+[P0-S4] p3_detach_during_stream {"before":{"scrollTop":3162,"scrollHeight":3640,"listHeight":480,"eventSource":1,"attachedCells":9},"infoBefore":{"maxScrollOffset":3216,"scrollX":0,"isDragging":false,"scrollY":3218,"scrollWidth":775,"scrollHeight":3696,"scrollLeft":0,"scrollTop":3218},"infoAfter":{"maxScrollOffset":4392,"scrollX":0,"isDragging":false,"scrollY":3218,"scrollWidth":775,"scrollHeight":3696,"scrollLeft":0,"scrollTop":3218},"pinned":false,"pass":true,"note":"pass=scrollTop stays while maxScrollOffset grows (no auto-pin while detached)"}
+[P0-S4] p4_reattach {"info":{"maxScrollOffset":5736,"scrollX":0,"isDragging":false,"scrollY":5738,"scrollWidth":775,"scrollHeight":6216,"scrollLeft":0,"scrollTop":5738},"pinned":true,"pass":true}
+[P0-S4] pin {"event":"detach","scrollTop":34.52197265625,"scrollHeight":6720}
+[P0-S4] summary {"jsInstances":150,"effectsFired":150,"itemCount":150,"firstInstanceIdx":[0,1,2,3,4,5,6,7,8,9,10,11],"pinned":false,"lastScroll":{"scrollTop":7472.37451171875,"scrollHeight":8064,"listHeight":480,"eventSource":2,"attachedCells":9}}
+[P0-S4] SUITE_DONE
+[P0-S4] p5_throttle {"throttle200ms_events":1,"throttle16ms_events":10,"eventSourcesSeen":{"1":29,"2":11},"note":"more events at 16ms proves throttle works; sources: 0=DIFF 1=LAYOUT 2=SCROLL"}

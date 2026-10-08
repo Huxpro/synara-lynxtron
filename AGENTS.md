@@ -114,13 +114,11 @@ Use the harness in two distinct modes. Do not pay final-certification costs on e
 1. **Fast Lynx-for-Web loop** — the default for layout, composition, ordinary pointer/keyboard interaction, query state, transcript behavior, and rendered Markdown. Run Web original and Lynx-for-Web against one isolated server and one real snapshot. Iterate in named browser sessions, collect paired screenshots plus numeric geometry, and run focused tests. A complete production build is required at the validated slice boundary, not after every edit.
 2. **Native batch / certification loop** — required for platform semantics and release evidence. Batch several Web-proven slices into one exact-owned Lynxtron run, then verify Native input, focus, accessibility, host integration, persistence, restart, and DevTool console. The full route × theme × size matrix and packaged-app checks belong here.
 
-Every discovery, fast, and Native loop must use this browser-ownership checklist, including loops that do not expect to open a browser:
+Browser ownership applies to loops that open `agent-browser`. Loops that never open one (Native-only runs through `compare:desktop`, server work, unit tests) skip it.
 
-1. At loop entry, run `bun run browser:cleanup`, then independently run `bun run browser:run -- agent-browser session list --json`.
-2. After every timeout, interruption, failed script, failed probe, or failed browser command, stop the loop and repeat both checks before any retry or other work.
-3. At loop exit, repeat both checks before retaining evidence, committing, pushing, or beginning the next loop.
-
-Both checks must report `sessions: []` and zero agent-browser-owned daemon/browser processes. Any remainder is a harness leak: stop, record it as harness failure, and do not continue until an independent retry of both checks passes. Never infer cleanup from `agent-browser close` output alone, reuse a leaked session, or terminate unrelated Chrome, Playwright, remote-debugging, Lynxtron, Lynx Explorer, or other application processes.
+- Run every browser command through `bun run browser:run -- <command> [args...]`. The wrapper runs the cleanup preflight, traps exits and signals, and fails unless `session list --json` is empty and no agent-browser-owned process remains when it returns. Do not repeat those checks by hand around a wrapped command.
+- Run `bun run browser:gate` yourself only when the wrapper could not finish: after a timeout, an interruption, or a killed shell. It must report `sessions: []` and zero agent-browser-owned daemon/browser processes before any retry.
+- A remainder is a harness leak: stop, record it as a harness failure, and do not continue until the gate passes. Never infer cleanup from `agent-browser close` output alone, reuse a leaked session, or terminate unrelated Chrome, Playwright, remote-debugging, Lynxtron, Lynx Explorer, or other application processes.
 
 The fast loop has been validated end to end: Composer, transcript follow/switching, Markdown code actions, and structured mention/skill rendering developed through Lynx-for-Web all passed a later real Lynxtron batch, including canonical send, provider response, restart persistence, scroll, wrap, copy, and a clean exact-client console. Keep the evidence under `shots/2026-08-02/harness/` and `shots/2026-08-02/native-regression/` as the reference run.
 
@@ -146,18 +144,38 @@ Always escalate these to the Native batch:
 - Native `<list>` event shape, real wheel/gesture behavior, DevTool element/console identity, cold start, disk persistence, and packaged bundle loading.
 - CSS or element behavior whose Lynx-for-Web custom-element implementation can differ from the native Lynx engine.
 
-Use one exact-owned isolated app instance for the batch. Prefer Computer Use plus background `showInactive()` operation, do not `Raise` the app, keep the verified instance alive across states, and restart only for an explicit cold-start/persistence cell or a newly staged bundle. A Web pass plus a focused test is not permission to skip this Native boundary.
+Use one exact-owned isolated app instance for the batch: the one `bun run compare:desktop` launches (see below). It runs in the background, so operate it there with Computer Use or the scripted drivers, never `Raise` it, keep it alive across states, and restart only for an explicit cold-start/persistence cell, a new window size or theme, or a newly staged bundle. A Web pass plus a focused test is not permission to skip this Native boundary.
+
+### Comparison launcher (default Native entry point)
+
+`bun run compare:desktop` is the preflight. Do not rebuild its checks by hand. One command:
+
+- builds Web, Electron, and the Lynx bundle, and refuses a stale Native bundle on `--skip-build`;
+- checks its ports, clones the canonical fixture into an isolated home, and verifies the fixture entities;
+- starts one isolated backend, Electron, and Lynxtron against it, sized and themed by `--width`, `--height`, `--theme`, `--route`, `--thread`, `--dock`, and `--terminal`;
+- launches both apps as background agent bundles: Lynxtron never becomes frontmost, and Electron can flash frontmost for about a second only when the launching app is frontmost;
+- resolves the Lynx DevTool port from the owned Lynxtron PID and certifies that both renderers show the same thread on the same backend;
+- writes a run manifest under `.synara-desktop-comparison/runs/` with the PIDs, ports, bundle hashes, and backend identity;
+- stops every owned process and proves none survived when it exits or is interrupted.
+
+Leave it running and drive the certified session with:
+
+- `node scripts/comparison-workflow-run.mjs <J1…J6> --renderer electron|native|both` for the six task workflows, checked against the backend;
+- `node scripts/comparison-cells.mjs` for paired control geometry across the six main surfaces and the declared state increments;
+- Computer Use for exploratory checks and anything that needs real keyboard, pointer, or menu input.
+
+Run workflows and exploratory input after the cells. They leave state behind (an open dock, extra threads), and a base cell measured on top of that is a harness failure, not a product one.
 
 ### Certification preflight gate
 
-Do not retain matrix evidence until every preflight check passes:
+Do not retain matrix evidence unless the launcher reported `certified` for that run. When a cell cannot use the launcher (a packaged app, a Web-only loop), establish the same facts yourself before capturing:
 
-- Run the complete production build. Record the staged bundle path and hash.
-- Dry-run the isolated server. Record the state directory, ports, and owned PIDs.
-- Prepare one complete snapshot for both clients. Create missing project or thread data through the real product API.
-- Start one named browser session. Verify its viewport, visual viewport, device pixel ratio, and PNG dimensions.
-- Verify the Native process, workspace executable, staged bundle, root theme class, and PID-derived DevTool client.
-- Save the original bytes and hashes for every persisted state file that the run will change.
+- The complete production build ran; record the staged bundle path and hash.
+- The isolated server's state directory, ports, and owned PIDs are recorded.
+- Both clients use one snapshot, with missing project or thread data created through the real product API.
+- The browser session's viewport, visual viewport, device pixel ratio, and PNG dimensions match the cell.
+- The Native process, workspace executable, staged bundle, root theme class, and PID-derived DevTool client are verified.
+- The original bytes and hashes of every persisted state file the run will change are saved.
 
 If preflight fails, fix the harness before collecting product evidence. Do not accumulate diagnostic screenshots in the certification matrix.
 
@@ -190,39 +208,38 @@ Classify rendering, content, layout, token, and interaction differences as produ
 
 ### Native production capture
 
-- Prefer Computer Use when it is available. Inspect and operate the already-running owned Synara app through Computer Use instead of restarting or activating it from the shell.
-- Verify the existing process and bundle identity before reuse. Computer Use cannot supply the `dist/desktop` argument required to launch the workspace build, so do not let an implicit background launch select an installed or stale app with the same display name.
-- Keep one verified production instance alive across route, theme, scroll, and interaction cells. Use Computer Use for those state changes, and use DevTool for exact LynxView screenshots, component inspection, and console capture.
+- Computer Use is the default way to operate the running app. Current harnesses (TraeX built-in, Codex Computer Use) drive a window in the background without activating it, so there is no reason to bring the app forward or to fall back to shell-driven UI automation, Midscene, AppleScript, or synthetic `CGEvent` input first.
+- Start each interaction turn with Computer Use app-state inspection, target the launcher's owned app (`Synara Comparison Lynxtron`, PID from the run manifest), and prefer accessibility element IDs over coordinates when exposed. Lynxtron does not expose Lynx content to macOS accessibility yet, so expect coordinates there.
+- Computer Use attaches to a running app; it does not launch the workspace build. Let the launcher start it, and do not let an implicit launch select an installed or stale app with the same display name.
+- Some harnesses ask the user to approve each app before Computer Use may control it, and a non-interactive run cannot grant that. If control is refused, record the refusal and use the scripted workflows and DevTool instead. Do not work around the approval.
+- If Computer Use is genuinely unavailable or cannot address a specific Native surface, record the exact limitation before using a fallback. A fallback interaction is not equivalent evidence unless delivery into the owned Lynx input pipeline is independently proven.
+- Keep one certified instance alive across route, scroll, and interaction cells. Use Computer Use for those state changes, and use DevTool for exact LynxView screenshots, component inspection, and console capture.
 - Do not call `open -a`, AppleScript activation, menu commands that call `show()` or `focus()`, or deep links only to drive the harness. These paths can raise the app over the user's windows.
-- Restart only when a matrix cell explicitly tests cold start, a new bundle must be staged, persisted window bounds must change, or the owned process has exited. Batch all work that needs the same size and bundle into one launch.
 - If the owned app exits twice with the same error, stop the restart loop and diagnose the runtime. Do not keep reopening a window over the user's desktop.
-- Run the complete app build before production capture. `rspeedy build` updates `output/bundle` but does not stage the Lynx bundle in `dist/desktop`; `bun run build` stages both Lynx and desktop assets.
-- Launch with `NODE_ENV=production` and `SYNARA_ENABLE_DEVTOOL=1`. Verify that the process belongs to `apps/lynx`, loads `apps/lynx/dist/desktop/main.lynx.bundle`, and renders the expected `SliceRoot--theme-*` class before collecting evidence.
+- Outside the launcher (for example a single Native smoke run), run `bun run build` in `apps/lynx` first: `rspeedy build` updates `output/bundle` but does not stage the Lynx bundle in `dist/desktop`. Launch with `NODE_ENV=production` and `SYNARA_ENABLE_DEVTOOL=1`, resolve the DevTool client from the owned PID with `lsof`, and never select a client by a remembered port or by list order.
 - Treat any production request to `127.0.0.1:3000`, `localhost:5971`, or another dev asset server as a harness failure. Do not start an arbitrary server to mask it. Stop the owned process, check `NODE_ENV`, process arguments, staged bundle contents, and the active Lynxtron executable, then rebuild.
-- Resolve the DevTool client from the owned Lynxtron PID with `lsof`. Never select a client by a remembered port or by list order. Other Lynxtron and Fiddle clients may reuse adjacent ports.
-- Use a capture helper only when its executable identity gate points to `apps/lynx`. A helper that still references the retired `synara-lynx/slice` staging tree is invalid after the workspace migration.
 
 ### Native window size and persisted state
 
-- Close the owned Lynxtron process before changing its persisted `window-state.json`. Save the original bytes and hash, then record the exact temporary bytes and hash written for the target size.
-- Restart the owned app after each size change. Verify the outer bounds with CoreGraphics and the content frame with DevTool. A `1280×820` macOS window maps to `1280×788` logical content, or `2560×1576` physical pixels at device pixel ratio 2, because the native title bar consumes 32 logical pixels.
-- Do not request Accessibility permission only to resize a window. Persisted state plus restart and CoreGraphics provide an auditable path without controlling the user's desktop.
-- Restore the original file only after the owned app exits and the current file still matches the temporary bytes written by this run. If the file changed unexpectedly, do not overwrite it. Preserve the backup and report both hashes and the possible competing writer.
+- Set the size with the launcher: `bun run compare:desktop --width 1280 --height 820`. It writes the window state for both apps inside its own isolated profile, so no user file is touched and nothing needs restoring.
+- A size change needs a relaunch. Verify the outer bounds with CoreGraphics and the content frame with DevTool. A `1280×820` macOS window maps to `1280×788` logical content, or `2560×1576` physical pixels at device pixel ratio 2, because the native title bar consumes 32 logical pixels.
+- Only when a run must use a non-isolated profile: close the owned process first, save the original `window-state.json` bytes and hash, write the temporary state, and restore the original only after the app exits and the file still matches what this run wrote. If it changed unexpectedly, do not overwrite it; keep the backup and report both hashes.
 
 ### Execute the matrix by restart cost
 
 Put the most expensive state change in the outer loop:
 
-1. Build once and prepare one shared snapshot.
-2. Start Native at `1280×820`. Capture all routes in light and dark mode.
-3. Restart Native at `1440×900`. Capture all routes in light and dark mode.
-4. Reuse one named Web session. Change its viewport without restarting the browser.
+1. Launch the first configuration without `--skip-build`; it builds once.
+2. Run `node scripts/comparison-cells.mjs` against it, then stop the launcher.
+3. Relaunch each remaining theme and size with `--skip-build` and repeat. The launcher refuses the reuse if a bundle source changed in between.
+4. Run workflows and exploratory Computer Use last, on one configuration.
 
-Use Computer Use to change routes, themes, scroll positions, and interaction states. Do not restart Native for those changes. A full two-size matrix should need two normal Native launches unless it includes an explicit cold-start cell or the app crashes.
+Route, scroll, and interaction changes never need a restart. A full matrix is four launches (two themes × two sizes) on one build.
 
 ### Evidence and cleanup gate
 
 - Capture DevTool errors and warnings with every retained Native frame. A successful screenshot with runtime errors is not passing evidence.
+- The Lynx DevTool gives the console backlog to the first `get-console` of an app session and nothing to later calls. Read it once, after the interactions, and treat an empty later read as unknown, not clean. `comparison-cells.mjs` brackets its run with probe errors for this reason.
 - Record the Web geometry, PNG dimensions, Native outer/content dimensions, bundle path, client port, server snapshot identity, theme, route, and cleanup result in the cell's `notes.md`.
 - Close the named browser session and stop owned Web, server, Lynxtron, and DevTool processes. Confirm owned ports are free and byte-exact state restoration succeeded before declaring the harness clean.
 

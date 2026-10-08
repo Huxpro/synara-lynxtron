@@ -31,6 +31,10 @@ describe("Components Lab model fixture", () => {
         (model) => model.slug === COMPONENT_LAB_MODEL_SELECTION.model,
       ),
     ).toBe(true);
+    expect(COMPONENT_LAB_MODEL_SELECTION.provider).toBe("codex");
+    if (COMPONENT_LAB_MODEL_SELECTION.provider !== "codex") {
+      throw new Error("Expected the Components Lab fixture to use Codex.");
+    }
     expect(COMPONENT_LAB_MODEL_SELECTION.options?.reasoningEffort).toBe("low");
   });
 

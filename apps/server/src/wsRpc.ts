@@ -1490,6 +1490,15 @@ const makeWsRpcHandlersLayer = () =>
               ),
             "Failed to update keybinding",
           ),
+        [WS_METHODS.serverRemoveKeybinding]: (input) =>
+          rpcEffect(
+            keybindings
+              .removeKeybindingRule(input.command)
+              .pipe(
+                Effect.map((keybindingsConfig) => ({ keybindings: keybindingsConfig, issues: [] })),
+              ),
+            "Failed to remove keybinding",
+          ),
         [WS_METHODS.subscribeServerLifecycle]: (_, { clientId }) =>
           streamAdmission.guard(
             clientId,

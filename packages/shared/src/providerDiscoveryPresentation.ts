@@ -27,9 +27,10 @@ export function providerDiscoveryItemAccent(name: string): string {
   const index = Math.floor(
     (providerDiscoveryItemHue(name) / 360) * PROVIDER_DISCOVERY_ITEM_ACCENTS.length,
   );
-  return PROVIDER_DISCOVERY_ITEM_ACCENTS[
-    Math.min(PROVIDER_DISCOVERY_ITEM_ACCENTS.length - 1, index)
-  ];
+  return (
+    PROVIDER_DISCOVERY_ITEM_ACCENTS[Math.min(PROVIDER_DISCOVERY_ITEM_ACCENTS.length - 1, index)] ??
+    PROVIDER_DISCOVERY_ITEM_ACCENTS[0]
+  );
 }
 
 export function providerDiscoveryItemGradient(name: string, brandColor?: string): string {

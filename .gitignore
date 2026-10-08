@@ -43,3 +43,7 @@ __screenshots__/
 /browser-sidebar-comment-preload.js.map
 /preload.js.map
 /bootstrap.js.map
+
+# Local P10 viewer state (Codex home overlay, credentials, window state)
+/.p10-view/
+/.p10-view-native/

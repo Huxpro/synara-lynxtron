@@ -153,7 +153,7 @@ export function buildBrowserAddressSuggestions(input: {
       detail: tabUrl,
       url: tabUrl,
       tabId: tab.id,
-      faviconUrl: tab.faviconUrl,
+      ...(tab.faviconUrl !== undefined ? { faviconUrl: tab.faviconUrl } : {}),
     });
   }
 

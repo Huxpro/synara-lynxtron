@@ -71,6 +71,7 @@ import {
 } from "~/components/automation/AutomationDetailComposition";
 import { buildAutomationFormWarnings, formFromDefinition } from "~/lib/automationForm";
 import type { Project } from "~/types";
+import { buildModelSelection } from "~/providerModelOptions";
 import { projectAutomationList } from "@synara/shared/automationList";
 import { AutomationListComposition } from "~/components/automation/AutomationListComposition";
 import { KanbanCardComposition } from "~/components/kanban/KanbanCardComposition";
@@ -185,7 +186,7 @@ const COMPONENT_LAB_OTHER_SPACE = {
   createdAt: "2026-01-01T00:00:00.000Z",
   updatedAt: "2026-01-01T00:00:00.000Z",
 };
-const COMPONENT_LAB_SPACE_PROJECTS = [
+const COMPONENT_LAB_SPACE_PROJECTS: readonly Project[] = [
   {
     id: ProjectId.makeUnsafe("component-lab-alpha"),
     kind: "project",
@@ -212,7 +213,7 @@ const COMPONENT_LAB_SPACE_PROJECTS = [
     spaceId: COMPONENT_LAB_OTHER_SPACE.id,
     scripts: [],
   },
-] as const;
+];
 
 const COMPONENT_LAB_AUTOMATION_WEB_PROJECT: Project = {
   id: COMPONENT_LAB_AUTOMATION_PROJECT.id,
@@ -458,7 +459,7 @@ function ComposerModelPickerStory(props: { readonly state: string; readonly vari
       ? COMPONENT_LAB_OVERFLOW_MODEL_OPTIONS_BY_PROVIDER
       : COMPONENT_LAB_MODEL_OPTIONS_BY_PROVIDER;
   const selectModel = (provider: ModelSelection["provider"], model: ModelSelection["model"]) =>
-    setSelection((current) => ({ ...current, provider, model }));
+    setSelection((current) => buildModelSelection(provider, model, current.options));
   const effectiveSelection = groupDisclosureState
     ? COMPONENT_LAB_OPENCODE_GROUP_DISCLOSURE_SELECTION
     : selection;
@@ -920,7 +921,8 @@ export function ComponentsLabStoryRenderer(props: {
     return (
       <Checkbox
         aria-label="Select project"
-        checked={selected === "mixed" ? "indeterminate" : selected === "checked"}
+        checked={selected === "checked"}
+        indeterminate={selected === "mixed"}
         disabled={selected === "disabled"}
         className={stateClass}
         onCheckedChange={() => {}}

@@ -1,0 +1,40 @@
+diff --git a/runtime/lib/snapshot/snapshot/event.js b/runtime/lib/snapshot/snapshot/event.js
+index fc21952..d087a5d 100644
+--- a/runtime/lib/snapshot/snapshot/event.js
++++ b/runtime/lib/snapshot/snapshot/event.js
+@@ -10,11 +10,11 @@ function updateEvent(snapshot, expIndex, _oldValue, elementIndex, eventType, eve
+     else {
+         event = `${snapshot.__id}:${expIndex}:${spreadKey}`;
+     }
++    if (!snapshot.__elements)
++        return;
+     // todo: reuseId?
+     snapshot.__values[expIndex] = event;
+-    if (snapshot.__elements) {
+-        __AddEvent(snapshot.__elements[elementIndex], eventType, eventName, event);
+-    }
++    __AddEvent(snapshot.__elements[elementIndex], eventType, eventName, event);
+ }
+ export { updateEvent };
+ //# sourceMappingURL=event.js.map
+\ No newline at end of file
+diff --git a/runtime/lib/snapshot/snapshot/spread.js b/runtime/lib/snapshot/snapshot/spread.js
+index 09ec73e..1dbfceb 100644
+--- a/runtime/lib/snapshot/snapshot/spread.js
++++ b/runtime/lib/snapshot/snapshot/spread.js
+@@ -84,8 +84,13 @@ function updateSpread(snapshot, index, oldValue, elementIndex, isListItem = fals
+     }
+     if ('__spread' in newValue) {
+         // first screen
+-        newValue = transformSpread(snapshot, index, newValue);
+-        snapshot.__values[index] = newValue;
++        const transformed = transformSpread(snapshot, index, newValue);
++        if (!snapshot.__elements) {
++            retainSpreadWorkletCtx(transformed, oldValue);
++            return;
++        }
++        newValue = transformed;
++        snapshot.__values[index] = transformed;
+     }
+     if (!snapshot.__elements) {
+         retainSpreadWorkletCtx(newValue, oldValue);

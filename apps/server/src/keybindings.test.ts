@@ -866,6 +866,25 @@ it.layer(NodeServices.layer)("keybindings", (it) => {
     }).pipe(Effect.provide(makeKeybindingsLayer())),
   );
 
+  it.effect("removes one custom command without disturbing other rules", () =>
+    Effect.gen(function* () {
+      const { keybindingsConfigPath } = yield* ServerConfig;
+      yield* writeKeybindingsConfig(keybindingsConfigPath, [
+        { key: "mod+r", command: "script.run-tests.run" },
+        { key: "mod+b", command: "script.build.run" },
+      ]);
+      const keybindings = yield* Keybindings;
+      yield* keybindings.removeKeybindingRule("script.run-tests.run");
+      yield* keybindings.removeKeybindingRule("script.run-tests.run");
+
+      const persisted = yield* readKeybindingsConfig(keybindingsConfigPath);
+      assert.deepEqual(
+        persisted.map(({ key, command }) => ({ key, command })),
+        [{ key: "mod+b", command: "script.build.run" }],
+      );
+    }).pipe(Effect.provide(makeKeybindingsLayer())),
+  );
+
   it.effect("reports non-array config parse errors without duplicate prefix", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;

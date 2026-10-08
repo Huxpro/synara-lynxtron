@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 
 import { isElectron } from "./env";
 
-import { isBrowser } from "~/platform/env";
+import { getLocationHash, isBrowser } from "~/platform/env";
 type RouterHistory = ReturnType<typeof createBrowserHistory>;
 type HistorySubscriberEvent = Parameters<Parameters<RouterHistory["subscribe"]>[0]>[0];
 type HistorySubscriberAction = HistorySubscriberEvent["action"];
@@ -27,7 +27,7 @@ function createAppHistory(): RouterHistory {
   // Electron loads the app from a file-backed shell, so hash history avoids path resolution issues.
   // Components Lab deliberately supports the same copy-pasteable hash URL in a
   // regular browser. Keep normal product navigation on browser history.
-  return isElectron || shouldUseHashHistory(window.location.hash)
+  return isElectron || shouldUseHashHistory(getLocationHash())
     ? createHashHistory()
     : createBrowserHistory();
 }

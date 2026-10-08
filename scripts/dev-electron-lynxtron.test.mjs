@@ -554,8 +554,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
     ]);
     const localStorage = {
       clear: () => values.clear(),
-      getItem: (key: string) => values.get(key) ?? null,
-      setItem: (key: string, value: string) => values.set(key, value),
+      getItem: (key) => values.get(key) ?? null,
+      setItem: (key, value) => values.set(key, value),
     };
     let reloadCount = 0;
     const location = {
@@ -585,9 +585,9 @@ describe("Electron and Lynxtron comparison launcher", () => {
     const values = new Map([["synara:appsnap-welcome:v1", '{"acknowledged":true}']]);
     const localStorage = {
       clear: () => values.clear(),
-      getItem: (key: string) => values.get(key) ?? null,
-      removeItem: (key: string) => values.delete(key),
-      setItem: (key: string, value: string) => values.set(key, value),
+      getItem: (key) => values.get(key) ?? null,
+      removeItem: (key) => values.delete(key),
+      setItem: (key, value) => values.set(key, value),
     };
     const location = { reload() {} };
 
@@ -601,12 +601,12 @@ describe("Electron and Lynxtron comparison launcher", () => {
   });
 
   it("seeds a canonical non-empty recent-view history for thread comparisons", () => {
-    const values = new Map<string, string>();
+    const values = new Map();
     const localStorage = {
       clear: () => values.clear(),
-      getItem: (key: string) => values.get(key) ?? null,
-      removeItem: (key: string) => values.delete(key),
-      setItem: (key: string, value: string) => values.set(key, value),
+      getItem: (key) => values.get(key) ?? null,
+      removeItem: (key) => values.delete(key),
+      setItem: (key, value) => values.set(key, value),
     };
     const location = { reload() {} };
 
@@ -616,7 +616,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       comparisonRendererResetExpression("dark", "acknowledged", null, "thread-canonical"),
     )(localStorage, location);
 
-    expect(JSON.parse(values.get("synara:recent-views:v1")!)).toEqual({
+    expect(JSON.parse(values.get("synara:recent-views:v1"))).toEqual({
       state: {
         recentViews: [
           { kind: "thread", threadId: "thread-canonical" },
@@ -633,9 +633,9 @@ describe("Electron and Lynxtron comparison launcher", () => {
     ]);
     const localStorage = {
       clear: () => values.clear(),
-      getItem: (key: string) => values.get(key) ?? null,
-      removeItem: (key: string) => values.delete(key),
-      setItem: (key: string, value: string) => values.set(key, value),
+      getItem: (key) => values.get(key) ?? null,
+      removeItem: (key) => values.delete(key),
+      setItem: (key, value) => values.set(key, value),
     };
     const location = { reload() {} };
 
@@ -645,7 +645,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       comparisonRendererResetExpression("light", "acknowledged", 18),
     )(localStorage, location);
 
-    expect(JSON.parse(values.get("synara:app-settings:v1")!)).toEqual({
+    expect(JSON.parse(values.get("synara:app-settings:v1"))).toEqual({
       uiDensity: "compact",
       chatFontSizePx: 18,
       enableProviderUpdateChecks: false,
@@ -1107,16 +1107,14 @@ describe("Electron and Lynxtron comparison launcher", () => {
   });
 
   it("retries idempotent Electron reads through a reload and records the activity trail", async () => {
-    const sent: Array<{ id: number; expression: string }> = [];
-    const enabled: string[] = [];
-    const listeners = new Set<(event: { data: string }) => void>();
+    const sent = [];
+    const enabled = [];
+    const listeners = new Set();
     let collectNext = true;
     const socket = {
-      addEventListener: (_type: string, listener: (event: { data: string }) => void) =>
-        listeners.add(listener),
-      removeEventListener: (_type: string, listener: (event: { data: string }) => void) =>
-        listeners.delete(listener),
-      send: (raw: string) => {
+      addEventListener: (_type, listener) => listeners.add(listener),
+      removeEventListener: (_type, listener) => listeners.delete(listener),
+      send: (raw) => {
         const message = JSON.parse(raw);
         if (!message.params) {
           enabled.push(message.method);
@@ -1132,7 +1130,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
         });
       },
     };
-    const trail: Array<Record<string, unknown>> = [];
+    const trail = [];
     const cdp = createElectronCdpClient(socket, trail);
 
     await expect(

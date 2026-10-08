@@ -1,0 +1,697 @@
+{
+  "runId": "2026-10-08T23-07-24-810Z-39777",
+  "theme": "light",
+  "window": {
+    "width": 1280,
+    "height": 820
+  },
+  "tolerancePx": 2,
+  "cells": {
+    "landing": {
+      "surface": "landing",
+      "comparison": {
+        "compared": 29,
+        "matched": 29,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": ["Toggle Sidebar"],
+        "missing": [],
+        "nativeOnly": [
+          "Change model and reasoning",
+          "Collapse synara-fixture-app",
+          "Fixture secondary",
+          "Fixture transcript",
+          "Local",
+          "Message composer",
+          "Resize panel",
+          "Settings"
+        ],
+        "repeated": 3
+      },
+      "pass": true,
+      "electronErrors": []
+    },
+    "thread": {
+      "surface": "thread",
+      "comparison": {
+        "compared": 32,
+        "matched": 28,
+        "exempt": [
+          {
+            "label": "Message 1: Look at this repository and summarize its layout as a short ",
+            "delta": {
+              "x": -14,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          },
+          {
+            "label": "Message 2: In src/math.ts add an exported `subtract(a: number, b: numbe",
+            "delta": {
+              "x": -14,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          },
+          {
+            "label": "Message 3: Without modifying files, reply with a markdown table listing",
+            "delta": {
+              "x": -14,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          },
+          {
+            "label": "Message 4: Without modifying files, write a numbered list of 40 short, ",
+            "delta": {
+              "x": -14,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          }
+        ],
+        "outside": [],
+        "electronOnly": ["Toggle Sidebar"],
+        "missing": [],
+        "nativeOnly": [
+          "Collapse synara-fixture-app",
+          "Conversation transcript",
+          "Expand Worked for 12s",
+          "Expand Worked for 9.8s",
+          "Fixture secondary",
+          "Fixture transcript",
+          "Message composer",
+          "Reference whole assistant message",
+          "Rename thread Fixture transcript",
+          "Resize panel",
+          "Revert to this message",
+          "Review changes for turn 01a0ed42-84d0-7f13-93a4-f393ce79456d",
+          "Settings"
+        ],
+        "repeated": 5
+      },
+      "pass": true,
+      "electronErrors": []
+    },
+    "settings": {
+      "surface": "settings",
+      "comparison": {
+        "compared": 29,
+        "matched": 21,
+        "exempt": [
+          {
+            "label": "Default provider",
+            "delta": {
+              "x": 5,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Default thread mode",
+            "delta": {
+              "x": 5,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Project sort order",
+            "delta": {
+              "x": 5,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Thread sort order",
+            "delta": {
+              "x": 5,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Show the Chats section in the sidebar",
+            "delta": {
+              "x": 5,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Show the Studio section in the sidebar",
+            "delta": {
+              "x": 5,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Show the Workspace section in the sidebar",
+            "delta": {
+              "x": 5,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Open the Environment panel by default on normal threads",
+            "delta": {
+              "x": 5,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          }
+        ],
+        "outside": [],
+        "electronOnly": ["Settings sections"],
+        "missing": [],
+        "nativeOnly": ["Back to app"],
+        "repeated": 0
+      },
+      "pass": true,
+      "electronErrors": []
+    },
+    "kanban": {
+      "surface": "kanban",
+      "comparison": {
+        "compared": 24,
+        "matched": 24,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": [
+          "Collapse synara-fixture-app",
+          "Fixture secondary",
+          "Fixture transcript",
+          "New task",
+          "Settings"
+        ],
+        "repeated": 2
+      },
+      "pass": true,
+      "electronErrors": []
+    },
+    "pr": {
+      "surface": "pr",
+      "comparison": {
+        "compared": 20,
+        "matched": 20,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": ["Toggle Sidebar"],
+        "missing": [],
+        "nativeOnly": [
+          "All",
+          "Authored",
+          "Closed",
+          "Collapse synara-fixture-app",
+          "Fixture secondary",
+          "Fixture transcript",
+          "Merged",
+          "No pull requests found. Try another involvement, state, project, or search filter.",
+          "Open",
+          "Reviewing",
+          "Search pull requests",
+          "Settings"
+        ],
+        "repeated": 3
+      },
+      "pass": true,
+      "electronErrors": []
+    },
+    "automations": {
+      "surface": "automations",
+      "comparison": {
+        "compared": 20,
+        "matched": 20,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": [
+          "Collapse synara-fixture-app",
+          "Fixture secondary",
+          "Fixture transcript",
+          "New automation",
+          "No automations yet. Schedule a prompt to run on its own, or wake an existing thread on a loop.",
+          "Settings"
+        ],
+        "repeated": 2
+      },
+      "pass": true,
+      "electronErrors": []
+    }
+  },
+  "increments": {
+    "landing-diff-dock": {
+      "increment": "landing-diff-dock",
+      "workflow": "J3",
+      "base": "landing",
+      "comparison": {
+        "compared": 39,
+        "matched": 39,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": ["Git actions"],
+        "missing": [],
+        "nativeOnly": [
+          "Change model and reasoning",
+          "Collapse README.md",
+          "Collapse src/math.ts",
+          "Collapse synara-fixture-app",
+          "Diff",
+          "Fixture secondary",
+          "Fixture transcript",
+          "Local",
+          "Message composer",
+          "Resize panel",
+          "Settings"
+        ],
+        "repeated": 5
+      },
+      "probes": [],
+      "pass": true
+    },
+    "model-menu": {
+      "increment": "model-menu",
+      "workflow": "J1",
+      "base": "thread",
+      "comparison": {
+        "compared": 33,
+        "matched": 29,
+        "exempt": [
+          {
+            "label": "Message 1: Look at this repository and summarize its layout as a short ",
+            "delta": {
+              "x": -14,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          },
+          {
+            "label": "Message 2: In src/math.ts add an exported `subtract(a: number, b: numbe",
+            "delta": {
+              "x": -14,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          },
+          {
+            "label": "Message 3: Without modifying files, reply with a markdown table listing",
+            "delta": {
+              "x": -14,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          },
+          {
+            "label": "Message 4: Without modifying files, write a numbered list of 40 short, ",
+            "delta": {
+              "x": -14,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          }
+        ],
+        "outside": [],
+        "electronOnly": ["Toggle Sidebar"],
+        "missing": [],
+        "nativeOnly": [
+          "Collapse synara-fixture-app",
+          "Conversation transcript",
+          "Expand Worked for 12s",
+          "Expand Worked for 9.8s",
+          "Extra High",
+          "Fixture secondary",
+          "Fixture transcript",
+          "High",
+          "Low",
+          "Max",
+          "Medium",
+          "Message composer",
+          "Reference whole assistant message",
+          "Rename thread Fixture transcript",
+          "Resize panel",
+          "Revert to this message",
+          "Review changes for turn 01a0ed42-84d0-7f13-93a4-f393ce79456d",
+          "Settings"
+        ],
+        "repeated": 5
+      },
+      "probes": [
+        {
+          "name": "menu popup",
+          "electron": {
+            "x": 847,
+            "y": 562,
+            "width": 208,
+            "height": 203
+          },
+          "native": {
+            "x": 847,
+            "y": 562,
+            "width": 208,
+            "height": 203
+          },
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "worst": 0,
+          "match": true
+        }
+      ],
+      "pass": true
+    },
+    "add-panel-menu": {
+      "increment": "add-panel-menu",
+      "workflow": "J3",
+      "base": "thread",
+      "comparison": {
+        "compared": 36,
+        "matched": 36,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": ["Git actions"],
+        "missing": [],
+        "nativeOnly": [
+          "Collapse README.md",
+          "Collapse src/math.ts",
+          "Collapse synara-fixture-app",
+          "Conversation transcript",
+          "Diff",
+          "Expand Worked for 12s",
+          "Expand Worked for 9.8s",
+          "Fixture secondary",
+          "Fixture transcript",
+          "Low",
+          "Message composer",
+          "Reference whole assistant message",
+          "Rename thread Fixture transcript",
+          "Resize panel",
+          "Revert to this message",
+          "Review changes for turn 01a0ed42-84d0-7f13-93a4-f393ce79456d",
+          "Settings"
+        ],
+        "repeated": 7
+      },
+      "probes": [
+        {
+          "name": "menu popup",
+          "electron": {
+            "x": 1066,
+            "y": 41,
+            "width": 176,
+            "height": 166
+          },
+          "native": {
+            "x": 1066,
+            "y": 41,
+            "width": 176,
+            "height": 166
+          },
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "worst": 0,
+          "match": true
+        }
+      ],
+      "pass": true
+    },
+    "settings-appearance": {
+      "increment": "settings-appearance",
+      "workflow": "J4",
+      "base": "settings",
+      "comparison": {
+        "compared": 27,
+        "matched": 21,
+        "exempt": [
+          {
+            "label": "Light theme contrast",
+            "delta": {
+              "x": 5,
+              "y": -3,
+              "width": 0,
+              "height": 8
+            },
+            "exemption": "range slider: Electron's <input type=range> box is its 6px track; Native labels the 14px thumb row centred on the same track"
+          },
+          {
+            "label": "Reset theme to default",
+            "delta": {
+              "x": 5.4,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Use system UI font",
+            "delta": {
+              "x": 5,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Light theme UI font",
+            "delta": {
+              "x": 5,
+              "y": 0.5,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Light theme code font",
+            "delta": {
+              "x": 5,
+              "y": 0.5,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Light theme translucent sidebar",
+            "delta": {
+              "x": 5,
+              "y": 1,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          }
+        ],
+        "outside": [],
+        "electronOnly": [
+          "Light theme accent color",
+          "Light theme background color",
+          "Light theme code theme",
+          "Light theme foreground color",
+          "Settings sections",
+          "Theme preference"
+        ],
+        "missing": [],
+        "nativeOnly": [
+          "Back to app",
+          "Import theme",
+          "Light theme accent color hex value",
+          "Light theme background color hex value",
+          "Light theme foreground color hex value",
+          "Theme preference: Dark",
+          "Theme preference: Light",
+          "Theme preference: System"
+        ],
+        "repeated": 0
+      },
+      "probes": [],
+      "pass": true
+    },
+    "automation-dialog": {
+      "increment": "automation-dialog",
+      "workflow": "J5",
+      "base": "automations",
+      "comparison": {
+        "compared": 6,
+        "matched": 6,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": [
+          "Auto fallback may use local checkout. If Synara cannot create a worktree, runs may fall back to editing the active project checkout.",
+          "Change model and reasoning",
+          "Project Home",
+          "Runs in auto",
+          "Schedule Daily at 9:00",
+          "Use template",
+          "Worktree cleanup. Generated worktrees or branches are kept after archiving until you remove them."
+        ],
+        "repeated": 0
+      },
+      "probes": [
+        {
+          "name": "dialog popup",
+          "electron": {
+            "x": 256,
+            "y": 177.5,
+            "width": 768,
+            "height": 465
+          },
+          "native": {
+            "x": 256,
+            "y": 178,
+            "width": 768,
+            "height": 465
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.5,
+            "width": 0,
+            "height": 0
+          },
+          "worst": 0.5,
+          "match": true
+        }
+      ],
+      "pass": true
+    },
+    "automation-model-menu": {
+      "increment": "automation-model-menu",
+      "workflow": "J5",
+      "base": "automations",
+      "comparison": {
+        "compared": 6,
+        "matched": 6,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": [
+          "Auto fallback may use local checkout. If Synara cannot create a worktree, runs may fall back to editing the active project checkout.",
+          "Change model and reasoning",
+          "Project Home",
+          "Runs in auto",
+          "Schedule Daily at 9:00",
+          "Use template",
+          "Worktree cleanup. Generated worktrees or branches are kept after archiving until you remove them."
+        ],
+        "repeated": 0
+      },
+      "probes": [
+        {
+          "name": "menu popup",
+          "electron": {
+            "x": 456.5,
+            "y": 347.5,
+            "width": 208,
+            "height": 244
+          },
+          "native": {
+            "x": 458,
+            "y": 348,
+            "width": 208,
+            "height": 244
+          },
+          "delta": {
+            "x": 1.5,
+            "y": 0.5,
+            "width": 0,
+            "height": 0
+          },
+          "worst": 1.5,
+          "match": true
+        }
+      ],
+      "pass": true
+    },
+    "kanban-new-task": {
+      "increment": "kanban-new-task",
+      "workflow": "J6",
+      "base": "kanban",
+      "comparison": {
+        "compared": 6,
+        "matched": 6,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": ["Change model and reasoning", "Send as draft", "Task prompt"],
+        "repeated": 0
+      },
+      "probes": [
+        {
+          "name": "dialog popup",
+          "electron": {
+            "x": 256,
+            "y": 282.5,
+            "width": 768,
+            "height": 255
+          },
+          "native": {
+            "x": 256,
+            "y": 283,
+            "width": 768,
+            "height": 255
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.5,
+            "width": 0,
+            "height": 0
+          },
+          "worst": 0.5,
+          "match": true
+        }
+      ],
+      "pass": true
+    }
+  },
+  "nativeConsoleErrors": "unavailable: get-console returned no parsable output"
+}

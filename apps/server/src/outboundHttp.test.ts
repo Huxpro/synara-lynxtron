@@ -1,11 +1,15 @@
-import { encodeOutboundMultipart, OutboundHttpError } from "@synara/shared/outboundHttp";
+import {
+  createPinnedLookup,
+  encodeOutboundMultipart,
+  OutboundHttpError,
+} from "@synara/shared/outboundHttp";
 import {
   assertJsonWithinLimits,
   assertOutboundUrlAllowed,
   isPublicIpAddress,
   OutboundPolicyError,
 } from "@synara/shared/outboundHttpPolicy";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("outbound HTTP policy", () => {
   it.each([
@@ -81,5 +85,17 @@ describe("outbound HTTP policy", () => {
         { maxBytes: 1_024 },
       ),
     ).toThrowError(/content type is invalid/u);
+  });
+
+  it("returns the pinned address shape requested by the Node socket", () => {
+    const lookup = createPinnedLookup({ address: "203.0.113.7", family: 4 });
+    const single = vi.fn();
+    const all = vi.fn();
+
+    lookup("chatgpt.com", { family: 0, all: false }, single);
+    lookup("chatgpt.com", { family: 0, all: true }, all);
+
+    expect(single).toHaveBeenCalledWith(null, "203.0.113.7", 4);
+    expect(all).toHaveBeenCalledWith(null, [{ address: "203.0.113.7", family: 4 }]);
   });
 });

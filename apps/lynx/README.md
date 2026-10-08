@@ -17,8 +17,10 @@ atomically.
   `../web/src`; shared model sources resolve to `../../packages/shared`.
   No sibling-repository alias or copied Web JSX is used.
 
-The migration SSOT, audit scripts, historical evidence, and screenshots remain
-in the adjacent `synara-lynx` control-plane repository. Historical notes under
+The migration SSOT lives in `plan/`, with Phase 0 spike conclusions in
+`spikes/`; screenshots and evidence live under the repository-root `shots/`.
+The former `synara-lynx` staging directory was retired on 2026-09-29 after the
+files referenced from this tree were moved here. Historical notes under
 `docs/` describe the compiler probes and packaging gates that established the
 current implementation. See
 [`docs/lynxtron-runtime-compatibility.md`](docs/lynxtron-runtime-compatibility.md)
