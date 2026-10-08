@@ -1,0 +1,124 @@
+/* P2-V1: shared design tokens come straight from the synara repo (P1-F4
+   artifact) — single source of truth for both render targets. Lynx consumes
+   the plain CSS custom properties; the Tailwind-only `@variant dark` block is
+   inert here (light tokens), dark handling lands with the strip pipeline
+   (plan 00 §0.5 step 2). */
+/* BISECT: tokens import disabled to isolate the white-screen cause
+@import "../../../../synara/apps/web/src/tokens.css";
+*/
+.SliceRoot {
+  background-color: #fcfcfc;
+  color: #262626;
+}
+
+.SliceRoot {
+  width: 100%;
+  height: 100%;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-ui-family);
+}
+
+.Page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.PageTitle {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--foreground);
+  margin-bottom: 14px;
+}
+
+.MutedText {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+.Card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.CardTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--card-foreground);
+  margin-bottom: 4px;
+}
+
+.BackLink {
+  font-size: 13px;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.BubbleUser {
+  align-self: flex-end;
+  max-width: 80%;
+  background-color: var(--primary);
+  border-radius: var(--radius-user-message);
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+
+.BubbleAssistant {
+  align-self: flex-start;
+  max-width: 80%;
+  background-color: var(--accent);
+  border-radius: var(--radius-user-message);
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+
+.BubbleRole {
+  font-size: 10px;
+  color: var(--muted-foreground);
+  margin-bottom: 2px;
+  text-transform: none;
+}
+
+.BubbleUser .BubbleRole {
+  color: var(--primary-foreground);
+}
+
+.BubbleText {
+  font-size: 14px;
+  color: var(--foreground);
+}
+
+.BubbleUser .BubbleText {
+  color: var(--primary-foreground);
+}
+
+.Composer {
+  margin-top: auto;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ComposerButton {
+  background-color: var(--primary);
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+}
+
+.ComposerButtonText {
+  color: var(--primary-foreground);
+  font-size: 13px;
+  font-weight: 600;
+}
