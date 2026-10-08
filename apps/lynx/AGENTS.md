@@ -51,16 +51,23 @@ NativeModules.nodejs.exposed.echo("Hello", (res) => {
 
 ## Commands
 
-Use NodeJS ≥ 22 and TypeScript.
+This app is a workspace of the Synara monorepo. Install with `bun install` at the repository root, then run from this directory:
 
-- Install: `npm install`
-- Dev (Desktop): `npm run dev`
-- Build (Desktop): `npm run build`
-- Start (Desktop): `npm start`
-- Dev (Web): `npm run dev:web`
-- Build (Web): `npm run build:web`
-- Start (Web): `npm run start:web`
-- Test: `npm run test`
+- Dev (Desktop): `bun run dev`
+- Build (Desktop): `bun run build`
+- Start (Desktop): `bun run start`
+- Dev (Web): `bun run dev:web`
+- Build (Web): `bun run build:web`
+- Start (Web): `bun run start:web`
+- Type-check: `bun run typecheck`
+- Test: `bun run test -- <files>` (Rstest; never `bun test`), and `bun run test:scripts` for the `node:test` suites under `scripts/`
+
+`bun run start` connects to `SYNARA_WS_URL`, or `ws://127.0.0.1:58090` by default, and shows the app offline when no Synara server is there. To run it against real data next to the Electron reference, use `bun run compare:desktop` from the repository root. The root `AGENTS.md` describes that launcher and the verification loop built on it.
+
+## Read before changing runtime-sensitive code
+
+- [`docs/lynxtron-runtime-compatibility.md`](docs/lynxtron-runtime-compatibility.md): the pinned runtime version, the vendor patch, and every Synara-side workaround with its removal condition.
+- `plan/`: the migration plan, decisions, and the Lynx patterns log (`plan/04-lynx-patterns.md`).
 
 ## Authoring UI (ReactLynx)
 
@@ -85,9 +92,10 @@ UI code in `src/app` runs in the Lynx engine, which is **not a browser**.
 - **No DOM/BOM APIs**: `window`, `document`, `location`, `localStorage` are NOT available.
   - Use `NativeModules.bridge` for host interactions.
   - Use `NativeModules.nodejs` for background logic and data persistence.
-- **Main vs Background**:
-  - `src/app` runs in the Lynx Background thread (Main Thread in Lynx terminology).
-  - It has direct access to `NativeModules.nodejs`.
+- **Main thread vs background thread**:
+  - ReactLynx compiles `src/app` twice. The main thread renders the first screen from precompiled bytecode; the background thread runs effects, event handlers, and `NativeModules` calls.
+  - Code that only works on the background thread must stay inside handlers and effects, not at module scope. A module-level `background-only` import breaks every screen that reaches it.
+  - A bundle can compile and still fail to load or paint. After a dependency or build-config change, launch the app and read the DevTool console.
 
 ### UI Example
 
