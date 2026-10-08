@@ -16,6 +16,7 @@ export interface TranscriptSelectionActionLayout {
   left: number;
   top: number;
   placement: "top" | "bottom";
+  width: number;
 }
 
 export function resolveSelectionViewportElement(container: HTMLElement | null): HTMLElement | null {

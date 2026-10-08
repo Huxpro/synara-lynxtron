@@ -3299,7 +3299,11 @@ export default function Sidebar() {
     [projectPartitions.projects],
   );
   const spaceActivityById = useMemo(() => {
-    return deriveSpaceActivityById({
+    return deriveSpaceActivityById<
+      SpaceId,
+      (typeof allStandardProjectsBase)[number],
+      (typeof sidebarThreads)[number]
+    >({
       projects: allStandardProjectsBase,
       threads: sidebarThreads,
       resolveTone: (thread): SpaceActivityTone | null => {
@@ -5732,7 +5736,7 @@ export default function Sidebar() {
                                 ? subitem.id.slice("move-to-space:".length)
                                 : null;
                               const space = spaceId
-                                ? projectContextMenuSpaceById.get(spaceId)
+                                ? projectContextMenuSpaceById.get(SpaceId.makeUnsafe(spaceId))
                                 : null;
                               return (
                                 <MenuRadioItem key={subitem.id} value={spaceId ?? VOID_SPACE_KEY}>
@@ -5771,10 +5775,12 @@ export default function Sidebar() {
                     <MenuItem
                       className={PROJECT_CONTEXT_MENU_ITEM_CLASS_NAME}
                       onClick={() =>
-                        void handleProjectContextMenuAction(
-                          projectContextMenuState.projectId,
-                          item.id,
-                        )
+                        isProjectContextMenuCommand(item.id)
+                          ? void handleProjectContextMenuAction(
+                              projectContextMenuState.projectId,
+                              item.id,
+                            )
+                          : undefined
                       }
                     >
                       <ProjectContextMenuIcon icon={PROJECT_CONTEXT_MENU_ICONS[item.id]} />

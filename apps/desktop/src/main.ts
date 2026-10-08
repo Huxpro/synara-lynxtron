@@ -54,6 +54,7 @@ import {
   buildContentContextMenuItems,
   buildNativeContextMenuTemplate,
   normalizeContextMenuItems,
+  type ContentContextMenuAction,
   type NormalizedContextMenuItem,
 } from "@synara/shared/contextMenu";
 import {
@@ -203,6 +204,12 @@ import {
   sendAppSnapError,
   sendAppSnapState,
 } from "./appSnapIpc";
+
+function isSpellcheckContextMenuAction(
+  action: ContentContextMenuAction,
+): action is `spellcheck:${number}` {
+  return action.startsWith("spellcheck:");
+}
 
 // Capture the real archive identity before any explicit app.asar lookup. Static
 // snapshotting and the runtime watcher both use this same generation as their
@@ -3126,11 +3133,13 @@ function registerIpcHandlers(): void {
               enabled: item.enabled,
               visible: item.visible,
               checked: item.checked,
-              accelerator: item.accelerator,
               ...(item.submenu
                 ? { submenu: toTemplate(item.submenu) }
                 : { click: () => resolve(item.id) }),
             };
+            if (item.accelerator !== undefined) {
+              itemOption.accelerator = item.accelerator;
+            }
             if (item.destructive) {
               const destructiveIcon = getDestructiveMenuIcon();
               if (destructiveIcon) {
@@ -3405,7 +3414,7 @@ function createWindow(): BrowserWindow {
 
   window.webContents.on("context-menu", (event, params) => {
     event.preventDefault();
-    const items = normalizeContextMenuItems(
+    const items = normalizeContextMenuItems<ContentContextMenuAction>(
       buildContentContextMenuItems({
         dictionarySuggestions: params.dictionarySuggestions,
         misspelledWord: Boolean(params.misspelledWord),
@@ -3419,12 +3428,14 @@ function createWindow(): BrowserWindow {
     const menuTemplate: MenuItemConstructorOptions[] = buildNativeContextMenuTemplate(items).map(
       (item) => {
         if (item.type === "separator") return { type: "separator" };
-        if (item.id.startsWith("spellcheck:")) {
+        if (isSpellcheckContextMenuAction(item.id)) {
           const suggestion = params.dictionarySuggestions[Number(item.id.slice(11))];
           return {
             label: item.label,
             enabled: item.enabled,
-            click: () => suggestion && window.webContents.replaceMisspelling(suggestion),
+            click: () => {
+              if (suggestion) window.webContents.replaceMisspelling(suggestion);
+            },
           };
         }
         if (item.id === "copy-image") {

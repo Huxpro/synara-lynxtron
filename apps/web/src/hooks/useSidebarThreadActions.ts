@@ -667,7 +667,10 @@ export function useSidebarThreadActions(input: {
       }
 
       const deletedIds = new Set<ThreadId>(projectThreads.map((thread) => thread.id));
-      const result = await deleteProjectThreadsSequentially({
+      const result = await deleteProjectThreadsSequentially<
+        ThreadId,
+        (typeof projectThreads)[number]
+      >({
         threads: projectThreads,
         deleteThread: async (thread) => {
           await deleteThread(thread.id, {

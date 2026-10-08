@@ -610,6 +610,7 @@ export function WorkspaceFilePreview(props: WorkspaceFilePreviewProps) {
               left={previewSelectionAction.pendingAction.left}
               top={previewSelectionAction.pendingAction.top}
               placement={previewSelectionAction.pendingAction.placement}
+              width={previewSelectionAction.pendingAction.width}
               onAddToChat={previewSelectionAction.commit}
             />
           ) : null}
