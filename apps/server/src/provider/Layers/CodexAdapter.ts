@@ -1982,30 +1982,42 @@ const makeCodexAdapter = (options?: CodexAdapterLiveOptions) =>
 
     yield* Effect.acquireRelease(
       Effect.gen(function* () {
-        const writeNativeEvent = (event: ProviderEvent) =>
-          Effect.gen(function* () {
-            if (!nativeEventLogger) {
-              return;
-            }
-            yield* nativeEventLogger.write(event, event.threadId);
-          });
-
         const services = yield* Effect.services<never>();
-        const listener = (event: ProviderEvent) =>
-          Effect.gen(function* () {
-            yield* writeNativeEvent(event);
-            const runtimeEvents = mapToRuntimeEvents(event, event.threadId);
-            if (runtimeEvents.length === 0) {
-              yield* Effect.logDebug("ignoring unhandled Codex provider event", {
-                method: event.method,
-                threadId: event.threadId,
-                turnId: event.turnId,
-                itemId: event.itemId,
+        const listener = (event: ProviderEvent) => {
+          // This callback runs on Node's EventEmitter stack. The product event
+          // must enter the adapter queue synchronously: wrapping Queue.offerAll
+          // in an unobserved Promise makes a failed log/Effect environment turn
+          // into a silent loss of every Codex delta and completion event. The
+          // queue is unbounded, so this operation cannot backpressure stdout.
+          const runtimeEvents = mapToRuntimeEvents(event, event.threadId);
+          if (runtimeEvents.length > 0) {
+            Queue.offerAllUnsafe(runtimeEventQueue, runtimeEvents);
+          }
+
+          // Native NDJSON capture is diagnostic only. It must never gate the
+          // canonical product stream; retain failures in the server log instead.
+          if (nativeEventLogger) {
+            void nativeEventLogger
+              .write(event, event.threadId)
+              .pipe(Effect.runPromiseWith(services))
+              .catch((cause) => {
+                void Effect.logWarning("failed to persist native Codex provider event", {
+                  cause: cause instanceof Error ? cause.message : String(cause),
+                  method: event.method,
+                  threadId: event.threadId,
+                }).pipe(Effect.runPromiseWith(services));
               });
-              return;
-            }
-            yield* Queue.offerAll(runtimeEventQueue, runtimeEvents);
-          }).pipe(Effect.runPromiseWith(services));
+          }
+
+          if (runtimeEvents.length === 0) {
+            void Effect.logDebug("ignoring unhandled Codex provider event", {
+              method: event.method,
+              threadId: event.threadId,
+              turnId: event.turnId,
+              itemId: event.itemId,
+            }).pipe(Effect.runPromiseWith(services));
+          }
+        };
         manager.on("event", listener);
         return listener;
       }),

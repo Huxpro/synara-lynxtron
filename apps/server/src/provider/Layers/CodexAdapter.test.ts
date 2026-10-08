@@ -440,6 +440,22 @@ const lifecycleLayer = it.layer(
   ),
 );
 
+const nativeLoggingFailureManager = new FakeCodexManager();
+const nativeLoggingFailureLayer = it.layer(
+  makeCodexAdapterLive({
+    manager: nativeLoggingFailureManager,
+    nativeEventLogger: {
+      filePath: "/tmp/codex-adapter-native-event-log-failure",
+      write: () => Effect.die("native event logger failed"),
+      close: () => Effect.void,
+    },
+  }).pipe(
+    Layer.provideMerge(ServerConfig.layerTest(process.cwd(), process.cwd())),
+    Layer.provideMerge(providerSessionDirectoryTestLayer),
+    Layer.provideMerge(NodeServices.layer),
+  ),
+);
+
 lifecycleLayer("CodexAdapterLive lifecycle", (it) => {
   it.effect("maps Codex 0.144 reasoning summaries from canonical item arrays", () =>
     Effect.gen(function* () {
@@ -1466,6 +1482,37 @@ lifecycleLayer("CodexAdapterLive lifecycle", (it) => {
       assert.equal(firstEvent.value.payload.itemType, "context_compaction");
       assert.equal(firstEvent.value.payload.detail, "Compacting context");
       assert.equal(firstEvent.value.payload.status, "inProgress");
+    }),
+  );
+});
+
+nativeLoggingFailureLayer("CodexAdapterLive native event logging isolation", (it) => {
+  it.effect("keeps assistant deltas in the runtime stream when diagnostic logging fails", () =>
+    Effect.gen(function* () {
+      const adapter = yield* CodexAdapter;
+      const firstEventFiber = yield* Stream.runHead(adapter.streamEvents).pipe(Effect.forkChild);
+
+      nativeLoggingFailureManager.emit("event", {
+        id: asEventId("evt-native-log-failure-delta"),
+        kind: "notification",
+        provider: "codex",
+        threadId: asThreadId("thread-native-log-failure"),
+        createdAt: new Date().toISOString(),
+        method: "item/agentMessage/delta",
+        turnId: asTurnId("turn-native-log-failure"),
+        itemId: asItemId("msg-native-log-failure"),
+        textDelta: "still delivered",
+        payload: {
+          delta: "still delivered",
+        },
+      } satisfies ProviderEvent);
+
+      const firstEvent = yield* Fiber.join(firstEventFiber);
+      assert.equal(firstEvent._tag, "Some");
+      if (firstEvent._tag !== "Some" || firstEvent.value.type !== "content.delta") {
+        return;
+      }
+      assert.equal(firstEvent.value.payload.delta, "still delivered");
     }),
   );
 });
