@@ -417,7 +417,7 @@ type ProviderModelPickerProps = {
 export const ProviderModelPicker = function ProviderModelPicker(props: ProviderModelPickerProps) {
   const { onOpenChange, onSelectionCommitted, open } = props;
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const escapeFocusTimerRef = useRef<number | null>(null);
+  const escapeFocusTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [uncontrolledMenuOpen, setUncontrolledMenuOpen] = useState(props.initialOpen ?? false);
   const selectionCommitTimerRef = useRef<number | null>(null);
   const isMenuOpen = open ?? uncontrolledMenuOpen;
@@ -498,7 +498,7 @@ export const ProviderModelPicker = function ProviderModelPicker(props: ProviderM
           if (escapeFocusTimerRef.current !== null) {
             clearTimeout(escapeFocusTimerRef.current);
           }
-          escapeFocusTimerRef.current = window.setTimeout(() => {
+          escapeFocusTimerRef.current = setTimeout(() => {
             escapeFocusTimerRef.current = null;
             triggerRef.current?.focus();
           }, 0);
