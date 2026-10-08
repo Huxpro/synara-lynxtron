@@ -1,0 +1,1 @@
+"{\"row\":{\"x\":276,\"y\":249,\"w\":487,\"h\":68},\"glyph\":{\"x\":288,\"y\":261,\"w\":44,\"h\":44},\"check\":{\"x\":723,\"y\":269,\"w\":28,\"h\":28},\"relay\":{\"host\":\"ws://127.0.0.1:54095/\",\"serverInstanceId\":\"9240f5bd-66ad-4e46-8f05-9f739b614103\",\"socketState\":1,\"lastTransportError\":null,\"lastRpcError\":null}}"

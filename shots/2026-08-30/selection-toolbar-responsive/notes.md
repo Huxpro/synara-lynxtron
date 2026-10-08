@@ -1,0 +1,9 @@
+# Transcript selection toolbar responsive parity
+
+- Scope: pane-bounded placement and compact presentation for the three transcript selection actions.
+- Final cell: `864x620`, light theme, backend `54883`, thread `lynx-landing-thread-1787254540864-987357febecef`, 256px sidebar, and 416px Terminal dock. The available chat pane was about x=256..448 (192px).
+- Before correction, a real Native reverse drag showed the new 176px compact toolbar at x≈8..160 over the sidebar. The Lynx `bindlayoutchange` width was correct but its `left` was local, so Native now adds the router-owned sidebar origin to the measured shell offset.
+- Final Native: Computer Use on exact-owned PID/window `81470/18583` reverse-selected `Hi! How can I help?`; the icon-only toolbar rendered at about x=264..416, wholly inside the chat pane, with Highlight, Underline, and Add to chat present. Clicking the rightmost action created the real `1 selection` composer attachment. `lynx-narrow-after-add.png` records the post-action state; the live Computer Use frame is the toolbar-position evidence.
+- Web: the actual message event container is a zero-sized `display:contents` node. The new resolver walks to the first non-zero transcript scroller, measured at x=256, y=46, width=192, height=483. Shared placement maps the selected text rect to `{ left: 264, top: 97, width: 176, placement: top }`. Browser mouse drag did not create a selection in this harness, so `electron-narrow.png` is retained only as the matched pane-state frame, not as an interactive-toolbar claim.
+- Verification: shared placement 3/3; Web selection 7/7; Native selection 1/1; ReactLynx scans for `Transcript.tsx` and `router.tsx` report zero issues; Web and Lynx/Desktop production builds pass; `git diff --check` passes.
+- Final staged `main.lynx.bundle` SHA-256: `2b300f5848387a35266a2794e62fb91609a3ca1a4688c36db5286832a0256516`.
