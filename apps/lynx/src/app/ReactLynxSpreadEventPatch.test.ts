@@ -31,7 +31,7 @@ describe("ReactLynx spread event patch", () => {
       "__AddEvent(snapshot.__elements[elementIndex], eventType, eventName, event);",
     );
     expect(rootPackage).toContain(
-      '"@lynx-js/react@0.123.1": "patches/@lynx-js%2Freact@0.123.1.patch"',
+      '"@lynx-js/react@0.126.2": "patches/@lynx-js%2Freact@0.126.2.patch"',
     );
   });
 });

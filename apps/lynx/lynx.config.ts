@@ -421,6 +421,22 @@ export default defineConfig({
           root: "./output/bundle/lynx",
         },
       },
+      tools: {
+        rspack: {
+          module: {
+            rules: [
+              {
+                // Lynxtron cannot decode main-thread bytecode that holds a
+                // zero BigInt constant; see the loader for details.
+                test: /\.[cm]?[jt]sx?$/,
+                issuerLayer: "react:main-thread",
+                enforce: "post",
+                loader: path.resolve(__dirname, "scripts/zero-bigint-literal-loader.mjs"),
+              },
+            ],
+          },
+        },
+      },
     },
   },
   plugins: [
