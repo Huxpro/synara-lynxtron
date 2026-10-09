@@ -9,19 +9,17 @@ import { ProviderInstanceId } from "@synara/contracts";
 import { Schema } from "effect";
 import { isPlainObject } from "./persistedRecord";
 
-import { webStorage } from "~/platform/storage";
-import { isBrowser } from "~/platform/env";
 const STORAGE_KEY = "synara:confirmed-custom-binary-paths:v1";
 
 const isProviderInstanceId = Schema.is(ProviderInstanceId);
 
 export function loadConfirmedCustomBinaryPaths(): Partial<Record<ProviderInstanceId, string>> {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return {};
   }
   let raw: string | null = null;
   try {
-    raw = webStorage.getItem(STORAGE_KEY);
+    raw = window.localStorage.getItem(STORAGE_KEY);
   } catch {
     return {};
   }
@@ -55,11 +53,11 @@ export function loadConfirmedCustomBinaryPaths(): Partial<Record<ProviderInstanc
 export function saveConfirmedCustomBinaryPaths(
   paths: Partial<Record<ProviderInstanceId, string>>,
 ): void {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return;
   }
   try {
-    webStorage.setItem(STORAGE_KEY, JSON.stringify(paths));
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(paths));
   } catch {
     // Best-effort persistence; ignore quota/availability errors.
   }

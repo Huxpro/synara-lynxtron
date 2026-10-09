@@ -2,7 +2,6 @@ import type { ProjectId } from "@synara/contracts";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import { webStorage } from "~/platform/storage";
 const LATEST_PROJECT_STORAGE_KEY = "synara:latest-project:v1";
 
 interface LatestProjectStore {
@@ -29,7 +28,7 @@ export const useLatestProjectStore = create<LatestProjectStore>()(
     }),
     {
       name: LATEST_PROJECT_STORAGE_KEY,
-      storage: createJSONStorage(() => webStorage),
+      storage: createJSONStorage(() => localStorage),
       // Guard against a corrupt persisted value (non-string) reaching consumers
       // that treat it as a project id.
       merge: (persisted, current) => {

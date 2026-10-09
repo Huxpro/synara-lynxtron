@@ -6,6 +6,7 @@
 //   environment shims, generated modules); hand edits to upstream files are
 //   legacy to be removed, so the footprint may only shrink.
 // Usage: node apps/lynx/scripts/upstream-footprint.mjs [--check] [--update-baseline] [--json]
+//   [--working-tree]  measure the working tree instead of HEAD (before committing)
 
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
@@ -61,21 +62,16 @@ export function parseNumstat(output) {
 
 // Files the fork changed that upstream also has. Fork-added files are counted
 // separately: they do not conflict, but they do not belong in upstream's tree.
-export function measureFootprint(upstreamRevision) {
+export function measureFootprint(upstreamRevision, { workingTree = false } = {}) {
   const pathspec = ["--", ...UPSTREAM_OWNED_PATHS];
+  // Without a second revision `git diff` compares against the working tree
+  // (tracked files; an untracked file there is not counted until it is added).
+  const revisions = workingTree ? [upstreamRevision] : [upstreamRevision, "HEAD"];
   const { modified, added, deleted } = parseNameStatus(
-    git(["diff", "--name-status", "--no-renames", upstreamRevision, "HEAD", ...pathspec]),
+    git(["diff", "--name-status", "--no-renames", ...revisions, ...pathspec]),
   );
   const changedLines = parseNumstat(
-    git([
-      "diff",
-      "--numstat",
-      "--no-renames",
-      "--diff-filter=MD",
-      upstreamRevision,
-      "HEAD",
-      ...pathspec,
-    ]),
+    git(["diff", "--numstat", "--no-renames", "--diff-filter=MD", ...revisions, ...pathspec]),
   );
   return {
     modifiedUpstreamFiles: modified.length + deleted.length,
@@ -104,7 +100,7 @@ function main() {
   const flags = new Set(process.argv.slice(2));
   const baseline = JSON.parse(readFileSync(BASELINE_PATH, "utf8"));
   const upstreamRevision = resolveUpstreamRevision(baseline);
-  const current = measureFootprint(upstreamRevision);
+  const current = measureFootprint(upstreamRevision, { workingTree: flags.has("--working-tree") });
   if (flags.has("--update-baseline")) {
     const next = { ...baseline, upstreamRevision, counts: current };
     writeFileSync(BASELINE_PATH, `${JSON.stringify(next, null, 2)}\n`);

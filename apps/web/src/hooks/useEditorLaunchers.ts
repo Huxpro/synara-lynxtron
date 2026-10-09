@@ -17,7 +17,6 @@ import { usePreferredEditor } from "../editorPreferences";
 import { shortcutLabelForCommand } from "../keybindings";
 import { readNativeApi } from "../nativeApi";
 
-import { getNavigatorPlatform } from "~/platform/env";
 export interface EditorLaunchers {
   /** Installed editors for the current platform, in catalog order. */
   options: ReadonlyArray<EditorOption>;
@@ -53,10 +52,10 @@ export function useEditorLaunchers({
   // In context-default mode the primary action is pinned to `defaultEditor` and menu
   // selections are one-shot opens that must not overwrite the persisted preference.
   const effectivePreferred = defaultEditor ?? preferredEditor;
-  const installedOptions = resolveAvailableEditorOptions(getNavigatorPlatform(), availableEditors);
+  const installedOptions = resolveAvailableEditorOptions(navigator.platform, availableEditors);
   const options =
     defaultEditor && !installedOptions.some(({ value }) => value === defaultEditor)
-      ? [resolveEditorOption(defaultEditor, getNavigatorPlatform()), ...installedOptions]
+      ? [resolveEditorOption(defaultEditor, navigator.platform), ...installedOptions]
       : installedOptions;
   const primaryOption = options.find(({ value }) => value === effectivePreferred) ?? null;
   const setDefaultEditor = (editorId: EditorId) => {

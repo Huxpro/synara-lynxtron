@@ -11,7 +11,6 @@ import {
   PULL_REQUEST_AUTO_FIX_BETA_FEATURE,
 } from "@synara/shared/betaFeatures";
 import { PROVIDER_DESCRIPTORS } from "@synara/shared/providerMetadata";
-import { getLocationProtocol } from "~/platform/env";
 
 // The desktop serves the app from its own scheme, so the protocol names the
 // host flavor (branding.ts uses the same signal for display names). A dev
@@ -19,7 +18,7 @@ import { getLocationProtocol } from "~/platform/env";
 // tests have no window and resolve to "unknown", which keeps Beta-only
 // features on — the server gate is the authoritative one.
 const DESKTOP_FLAVOR = desktopFlavorFromProtocol(
-  getLocationProtocol() || undefined,
+  typeof window === "undefined" ? undefined : window.location?.protocol,
   import.meta.env.DEV,
 );
 

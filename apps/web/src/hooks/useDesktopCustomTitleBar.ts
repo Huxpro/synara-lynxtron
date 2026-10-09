@@ -9,7 +9,6 @@ import type { DesktopCustomTitleBarState } from "@synara/contracts";
 
 import { isElectron } from "~/env";
 import { getNavigatorPlatform, isLinuxPlatform, isWindowsPlatform } from "~/lib/utils";
-import { getDesktopBridge } from "~/platform/desktopBridge";
 
 const DEFAULT_STATE: DesktopCustomTitleBarState = {
   supported: false,
@@ -40,7 +39,7 @@ export function useDesktopCustomTitleBarState(): DesktopCustomTitleBarState {
   });
 
   useEffect(() => {
-    const bridge = getDesktopBridge()?.customTitleBar;
+    const bridge = window.desktopBridge?.customTitleBar;
     if (!bridge) return;
     let cancelled = false;
 

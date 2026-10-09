@@ -1,8 +1,5 @@
 import { useSyncExternalStore } from "react";
 
-import { webStorage } from "~/platform/storage";
-import { isBrowser } from "~/platform/env";
-import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 export type FeatureFlag =
   | {
       id: "trigger-action-failed-toasts";
@@ -69,7 +66,7 @@ let cachedRawFeatureFlagState: string | null | undefined;
 let cachedFeatureFlagState = DEFAULT_FEATURE_FLAG_STATE;
 
 function canUseLocalStorage(): boolean {
-  return isBrowser() && typeof webStorage !== "undefined";
+  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
 }
 
 function normalizeFeatureFlagState(value: unknown): FeatureFlagState {
@@ -100,7 +97,7 @@ function readFeatureFlagState(): FeatureFlagState {
   }
 
   try {
-    const raw = webStorage.getItem(FEATURE_FLAG_STORAGE_KEY);
+    const raw = window.localStorage.getItem(FEATURE_FLAG_STORAGE_KEY);
     if (raw === cachedRawFeatureFlagState) {
       return cachedFeatureFlagState;
     }
@@ -124,7 +121,7 @@ function writeFeatureFlagState(state: FeatureFlagState): void {
   if (canUseLocalStorage()) {
     try {
       const raw = JSON.stringify(state);
-      webStorage.setItem(FEATURE_FLAG_STORAGE_KEY, raw);
+      window.localStorage.setItem(FEATURE_FLAG_STORAGE_KEY, raw);
       cachedRawFeatureFlagState = raw;
       cachedFeatureFlagState = state;
     } catch {
@@ -140,7 +137,7 @@ function writeFeatureFlagState(state: FeatureFlagState): void {
 function subscribeFeatureFlags(listener: () => void): () => void {
   listeners.add(listener);
 
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return () => {
       listeners.delete(listener);
     };
@@ -152,10 +149,10 @@ function subscribeFeatureFlags(listener: () => void): () => void {
     }
   };
 
-  addWindowEventListener("storage", onStorage);
+  window.addEventListener("storage", onStorage);
   return () => {
     listeners.delete(listener);
-    removeWindowEventListener("storage", onStorage);
+    window.removeEventListener("storage", onStorage);
   };
 }
 

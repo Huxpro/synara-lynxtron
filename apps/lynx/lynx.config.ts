@@ -76,6 +76,18 @@ const resourceReplacementPattern = new RegExp(
 export const lynxWindowMemberDefines: Readonly<Record<string, string>> = {
   "window.desktopBridge": "undefined",
 };
+// Upstream `apps/web/src` files use the browser globals directly (`window`,
+// `document`, `navigator`, …). The loader binds the names a file uses to the
+// Lynx browser environment (`src/platform/browserEnvironment.lynx.ts`), so the
+// upstream file compiles unchanged on both threads. Scoped to the Web source
+// tree on purpose: npm packages and Lynx-owned code keep the real runtime.
+// Rstest mounts the same rule (rstest.config.ts).
+export const lynxBrowserEnvironmentRule = {
+  test: /\.[cm]?[jt]sx?$/,
+  include: [webSourceRoot],
+  enforce: "pre" as const,
+  loader: path.resolve(__dirname, "scripts/browser-environment-loader.mjs"),
+};
 console.log("rootPath: ", path.resolve(rootPath, "./src/assets"));
 export default defineConfig({
   server: {
@@ -443,10 +455,16 @@ export default defineConfig({
   tools: {
     rspack: (config, { rspack }) => {
       config.plugins ??= [];
+      config.module ??= {};
+      config.module.rules ??= [];
+      config.module.rules.push(lynxBrowserEnvironmentRule);
       // Lynx has no `localStorage` (the wrapper injects the name with no
       // value). Upstream stores that persist through the bare global, and are
       // now reached by session sync (`workspacePathsStore.ts`), get the Lynx
       // storage port instead: the same synchronous getItem/setItem contract.
+      // Web source files get the name from the browser-environment rule above;
+      // this global provision remains for npm packages that default to the bare
+      // `localStorage` (zustand's `persist`).
       config.plugins.push(
         new rspack.ProvidePlugin({
           localStorage: [path.resolve(__dirname, "src/platform/storage.ts"), "webStorage"],

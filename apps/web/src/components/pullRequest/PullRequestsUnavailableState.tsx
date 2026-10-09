@@ -18,14 +18,13 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "~/components/ui/empty";
-import { copyTextToClipboard } from "~/platform/clipboard";
+import { copyTextToClipboard } from "~/hooks/useCopyToClipboard";
 import { CheckIcon, CopyIcon, GitPullRequestIcon, TriangleAlertIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 import { ensureNativeApi } from "~/nativeApi";
 import { formatShortTimestamp } from "~/timestampFormat";
 import { PR_FINE_TEXT_CLASS_NAME, PR_META_TEXT_CLASS_NAME } from "./pullRequestText";
 
-import { getNavigatorPlatform, isBrowser } from "~/platform/env";
 export function isPullRequestsUnavailableError(error: unknown): error is {
   _tag: "PullRequestsUnavailableError";
   reason: string;
@@ -50,13 +49,13 @@ function githubCliInstallCommand(platform: string): string | null {
 function CommandLine({ command }: { command: string }) {
   const [copied, setCopied] = useState(false);
   const mountedRef = useRef(true);
-  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const resetTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
-      if (resetTimerRef.current !== null) clearTimeout(resetTimerRef.current);
+      if (resetTimerRef.current !== null) window.clearTimeout(resetTimerRef.current);
     };
   }, []);
 
@@ -68,8 +67,8 @@ function CommandLine({ command }: { command: string }) {
           () => {
             if (!mountedRef.current) return;
             setCopied(true);
-            if (resetTimerRef.current !== null) clearTimeout(resetTimerRef.current);
-            resetTimerRef.current = setTimeout(() => {
+            if (resetTimerRef.current !== null) window.clearTimeout(resetTimerRef.current);
+            resetTimerRef.current = window.setTimeout(() => {
               resetTimerRef.current = null;
               setCopied(false);
             }, 1500);
@@ -135,7 +134,9 @@ export function PullRequestsUnavailableState({
       ? formatShortTimestamp(unavailable.retryAt, settings.timestampFormat)
       : null;
   const installCommand =
-    notInstalled && isBrowser() ? githubCliInstallCommand(getNavigatorPlatform()) : null;
+    notInstalled && typeof navigator !== "undefined"
+      ? githubCliInstallCommand(navigator.platform)
+      : null;
 
   return (
     <Empty className="py-16">

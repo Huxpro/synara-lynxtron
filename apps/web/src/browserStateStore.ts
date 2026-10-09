@@ -10,7 +10,6 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { isPlainObject, sanitizeStringKeyedRecord } from "./persistedRecord";
 
-import { webStorage } from "~/platform/storage";
 const BROWSER_STATE_STORAGE_KEY = "synara:browser-state:v1";
 const BROWSER_HISTORY_LIMIT = 12;
 const EMPTY_BROWSER_HISTORY: BrowserHistoryEntry[] = [];
@@ -136,7 +135,7 @@ export function createDedupedBrowserStateStorage(
   };
 }
 
-const browserStateStorage = createDedupedBrowserStateStorage(() => webStorage);
+const browserStateStorage = createDedupedBrowserStateStorage(() => localStorage);
 
 export const useBrowserStateStore = create<BrowserStateStore>()(
   persist(

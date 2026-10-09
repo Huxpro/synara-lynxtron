@@ -4,7 +4,7 @@
 // Exports: DisclosureChevron
 
 import { ChevronRightIcon } from "~/lib/icons";
-import { disclosureChevronClassName } from "~/platform/motion";
+import { disclosureChevronClassName } from "~/lib/disclosureMotion";
 import { cn } from "~/lib/utils";
 
 export function DisclosureChevron(props: { open: boolean; className?: string | undefined }) {

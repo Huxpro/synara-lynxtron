@@ -7,8 +7,6 @@ import type { ThreadId } from "@synara/contracts";
 import type { Thread, ChatMessage } from "~/types";
 import { isPlainObject, sanitizeStringKeyedRecord } from "~/persistedRecord";
 
-import { webStorage } from "~/platform/storage";
-import { isBrowser } from "~/platform/env";
 const MAX_RECAP_MESSAGES = 6;
 const MAX_DELTA_MESSAGES = 4;
 const MAX_MESSAGE_CHARS = 600;
@@ -147,11 +145,11 @@ function limitSection(value: string, maxChars: number): string {
 }
 
 function getThreadRecapStorage(): ThreadRecapStorage | null {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return null;
   }
   try {
-    return webStorage;
+    return window.localStorage;
   } catch {
     return null;
   }

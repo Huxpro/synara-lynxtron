@@ -17,7 +17,6 @@ import { type PDFPageProxy, renderPageTextLayer } from "./pdfEngine";
 import { extractPageLinks, type PdfLink } from "./pdfLinks";
 import type { PdfPageIntrinsicSize } from "./pdfZoom";
 
-import { getDevicePixelRatio } from "~/platform/env";
 export interface PdfPageRenderState {
   /** Intrinsic page size (at scale 1) once measured; null before first paint. */
   renderedSize: PdfPageIntrinsicSize | null;
@@ -35,7 +34,7 @@ const MAX_CANVAS_DIMENSION = 4096;
 const MAX_RENDER_DPR = 2;
 
 function resolveRenderDpr(cssWidth: number, cssHeight: number): number {
-  let dpr = Math.min(getDevicePixelRatio(), MAX_RENDER_DPR);
+  let dpr = Math.min(window.devicePixelRatio || 1, MAX_RENDER_DPR);
   const longestSide = Math.max(cssWidth, cssHeight) * dpr;
   if (longestSide > MAX_CANVAS_DIMENSION) {
     dpr *= MAX_CANVAS_DIMENSION / longestSide;

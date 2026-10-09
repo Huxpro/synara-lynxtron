@@ -4,16 +4,22 @@
 // Layer: Web desktop bridge utility
 // Exports: copyPngBlobToDesktopClipboard
 
-import { clipboard } from "~/platform/clipboard";
-
 export async function copyPngBlobToDesktopClipboard(blob: Blob): Promise<boolean> {
+  const writeImagePngDataUrl =
+    typeof window === "undefined"
+      ? undefined
+      : window.desktopBridge?.clipboard?.writeImagePngDataUrl;
+  if (!writeImagePngDataUrl) {
+    return false;
+  }
+
   const dataUrl = await blobToDataUrl(blob);
   if (!dataUrl?.startsWith("data:image/png;base64,")) {
     return false;
   }
 
   try {
-    return await clipboard.writeImagePngDataUrl(dataUrl);
+    return await writeImagePngDataUrl(dataUrl);
   } catch {
     return false;
   }

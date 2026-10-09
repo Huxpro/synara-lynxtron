@@ -8,7 +8,6 @@ import { clampThreadNotes } from "@synara/shared/pinnedMessages";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import { webStorage } from "~/platform/storage";
 const PROJECT_INSTRUCTIONS_STORAGE_KEY = "synara:project-instructions:v1";
 
 function escapeRegExp(value: string): string {
@@ -60,7 +59,7 @@ export const useProjectInstructionsStore = create<ProjectInstructionsStore>()(
     }),
     {
       name: PROJECT_INSTRUCTIONS_STORAGE_KEY,
-      storage: createJSONStorage(() => webStorage),
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 );

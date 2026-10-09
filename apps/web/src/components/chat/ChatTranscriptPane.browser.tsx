@@ -10,7 +10,6 @@ import { render } from "vitest-browser-react";
 import { ChatTranscriptPane } from "./ChatTranscriptPane";
 import { useTranscriptAssistantSelectionAction } from "./useTranscriptAssistantSelectionAction";
 
-import { raf } from "~/platform/frame";
 const EMPTY_WORK_GROUPS: Record<string, boolean> = {};
 const EMPTY_TURN_DIFFS = new Map();
 const EMPTY_REVERT_COUNTS = new Map();
@@ -31,8 +30,8 @@ const TIMELINE_ENTRIES = [
 ];
 
 async function settleLayout(): Promise<void> {
-  await new Promise<void>((resolve) => raf(() => resolve()));
-  await new Promise<void>((resolve) => raf(() => resolve()));
+  await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+  await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
 }
 
 function TranscriptPerfHarness(props: { onTranscriptRender: () => void }) {

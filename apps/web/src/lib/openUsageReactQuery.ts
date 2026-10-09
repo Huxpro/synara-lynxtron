@@ -3,16 +3,14 @@ import { queryOptions } from "@tanstack/react-query";
 
 import { openUsageProviderIdForProvider } from "./openUsageRateLimits";
 
-import { webStorage } from "~/platform/storage";
-import { isBrowser } from "~/platform/env";
 const OPEN_USAGE_BASE_URL = "http://127.0.0.1:6736";
 const OPEN_USAGE_ENABLED_STORAGE_KEY = "synara.openUsage.enabled";
 
 function isOpenUsagePollingEnabled(): boolean {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return false;
   }
-  return webStorage.getItem(OPEN_USAGE_ENABLED_STORAGE_KEY) === "true";
+  return window.localStorage.getItem(OPEN_USAGE_ENABLED_STORAGE_KEY) === "true";
 }
 
 export const openUsageQueryKeys = {

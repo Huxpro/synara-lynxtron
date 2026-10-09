@@ -4,8 +4,6 @@
 // Exports: observeTerminalWriteParsed
 // Depends on: Browser performance APIs and localStorage
 
-import { webStorage } from "~/platform/storage";
-
 interface TerminalWriteSample {
   runtimeKey: string;
   bytes: number;
@@ -28,7 +26,7 @@ const MAX_TERMINAL_PERF_SAMPLES = 200;
 
 function terminalPerfEnabled(): boolean {
   try {
-    return webStorage.getItem(TERMINAL_PERF_STORAGE_KEY) === "1";
+    return window.localStorage.getItem(TERMINAL_PERF_STORAGE_KEY) === "1";
   } catch {
     return false;
   }

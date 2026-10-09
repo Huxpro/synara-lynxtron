@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "@rstest/core";
 import { withLynxConfig } from "@lynx-js/react/testing-library/rstest-config";
 
-import { lynxWindowMemberDefines } from "./lynx.config";
+import { lynxBrowserEnvironmentRule, lynxWindowMemberDefines } from "./lynx.config";
 
 const webSourceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../web/src");
 
@@ -29,6 +29,10 @@ export default defineConfig({
       // sources first; what the testing loader then sees is plain JavaScript.
       config.module ??= {};
       config.module.rules ??= [];
+      // Upstream Web source runs on the Lynx browser environment in the bundle;
+      // bind the same globals here so it is tested as it is compiled. (The test
+      // runtime has jsdom's `window`, which the bundle does not.)
+      config.module.rules.push(lynxBrowserEnvironmentRule);
       config.module.rules.push({
         test: /\.ts$/,
         include: [webSourceRoot],

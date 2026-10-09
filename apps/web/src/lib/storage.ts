@@ -1,11 +1,6 @@
 import { Debouncer } from "@tanstack/react-pacer";
 import type { PersistStorage, StorageValue } from "zustand/middleware";
 
-// flushStorageBeforePageHide lives in the platform zone (it touches
-// window/document); re-exported here so existing imports keep working.
-export { flushStorageBeforePageHide } from "~/platform/storage";
-export type { FlushBeforePageHideEnv } from "~/platform/storage";
-
 export interface StateStorage<R = unknown> {
   getItem: (name: string) => string | null | Promise<string | null>;
   setItem: (name: string, value: string) => R;
@@ -51,6 +46,52 @@ export function createMemoryStorage(): StateStorage {
  * config, otherwise partialize would run eagerly on every `set()` (defeating the
  * deferral) and then again at flush.
  */
+interface PageHideEventTarget {
+  readonly addEventListener: (type: string, listener: () => void) => void;
+}
+
+interface PageVisibilityTarget extends PageHideEventTarget {
+  readonly visibilityState: string;
+}
+
+export interface FlushBeforePageHideEnv {
+  readonly window?: PageHideEventTarget | undefined;
+  readonly document?: PageVisibilityTarget | undefined;
+}
+
+/**
+ * Flush a debounced/deferred storage before the page goes away, so at most one
+ * debounce window of changes can be lost. Wires `beforeunload`, `pagehide`, and
+ * `visibilitychange`→hidden — the latter two fire on mobile/bfcache navigations
+ * where `beforeunload` does not. No-ops when the DOM globals are unavailable
+ * (SSR / non-browser test environments), and is injectable for testing.
+ */
+export function flushStorageBeforePageHide(
+  flush: () => void,
+  env: FlushBeforePageHideEnv = {
+    window: typeof window !== "undefined" ? window : undefined,
+    document: typeof document !== "undefined" ? document : undefined,
+  },
+): void {
+  // Guard each capability separately: SSR-style test environments stub partial
+  // globals (e.g. a `document` with only `documentElement`), and this runs at
+  // module scope in store files — a missing listener API must degrade to a
+  // no-op, never crash module evaluation.
+  const win = env.window;
+  if (typeof win?.addEventListener === "function") {
+    win.addEventListener("beforeunload", flush);
+    win.addEventListener("pagehide", flush);
+  }
+  const doc = env.document;
+  if (typeof doc?.addEventListener === "function") {
+    doc.addEventListener("visibilitychange", () => {
+      if (doc.visibilityState === "hidden") {
+        flush();
+      }
+    });
+  }
+}
+
 export function createDeferredPersistStorage<State, Persisted = State>(options: {
   readonly getStorage: () => StateStorage;
   readonly partialize: (state: State) => Persisted;
