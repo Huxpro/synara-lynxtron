@@ -3,6 +3,8 @@
 // generator, then run `node scripts/generate-event-router.mjs` in apps/lynx.
 // Contents: EventRouter and the file-local declarations it closes over,
 // verbatim; only import specifiers are rewritten.
+// Browser globals Lynx has no value for are bound to Lynx modules below
+// (EVENT_ROUTER_GLOBAL_PORTS): window.
 
 import {
   ThreadId,
@@ -109,6 +111,7 @@ import {
   shouldInvalidateGitQueriesForEvent,
   shouldInvalidateProviderQueriesForEvent,
 } from "~/routes/-rootEventInvalidation";
+import { lynxWindowTimers as window } from "../platform/windowTimers";
 
 const SHELL_SNAPSHOT_BOOTSTRAP_FALLBACK_DELAY_MS = 1_500;
 

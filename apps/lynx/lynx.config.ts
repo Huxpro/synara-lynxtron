@@ -66,16 +66,14 @@ const resourceReplacementPattern = new RegExp(
     .join("|")})$`,
 );
 // Lynx injects `window` into every background bundle as a wrapper parameter
-// with no value, so a member read on it throws. Upstream state-layer source
-// that runs here verbatim (the generated `EventRouter`, `wsNativeApi.ts`) uses
-// exactly these members on the background thread: the timers are the runtime's
-// own globals, and there is no Electron preload bridge on Lynx. `typeof window`
-// checks are untouched, so "is this a browser" branches behave as before.
+// with no value, so a member read on it throws. `wsNativeApi.ts` runs here
+// verbatim and probes the Electron preload bridge (`window.desktopBridge`)
+// while it builds the facade; there is no such bridge on Lynx, so the member is
+// compiled to `undefined`. `typeof window` checks are untouched. Do not add
+// called members here (`window.setTimeout(...)`): Rspack's DefinePlugin does not
+// rewrite a member expression in callee position. The generated `EventRouter`
+// gets its timers from `platform/windowTimers.ts` instead.
 export const lynxWindowMemberDefines: Readonly<Record<string, string>> = {
-  "window.setTimeout": "setTimeout",
-  "window.clearTimeout": "clearTimeout",
-  "window.setInterval": "setInterval",
-  "window.clearInterval": "clearInterval",
   "window.desktopBridge": "undefined",
 };
 console.log("rootPath: ", path.resolve(rootPath, "./src/assets"));

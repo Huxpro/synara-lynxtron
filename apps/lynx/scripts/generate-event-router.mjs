@@ -11,14 +11,22 @@
 // rewritten to the `~/…` form Lynx resolves. Scope resolution is done by the
 // TypeScript checker, so nothing is matched by name or line number.
 //
+// Browser globals are the one thing the extracted code cannot take from an
+// import: Lynx injects `window`, `document`, … into the background bundle with
+// no value, so a member read throws. The generator therefore checks every use
+// of such a global. Members listed in `EVENT_ROUTER_GLOBAL_PORTS` are served by
+// a Lynx module bound to the same name in the generated file (the body stays
+// verbatim); any other use stops the generator.
+//
 //   node scripts/generate-event-router.mjs          # rewrite the generated file
 //   node scripts/generate-event-router.mjs --check  # exit 1 when it drifted
 //
 // The script fails (and writes nothing) when upstream's shape changes in a way
 // it does not understand: a root that is missing, an identifier that resolves
 // to nothing, an import form it cannot re-emit (attributes), a side-effect
-// import that is not listed as ignorable, or module-level code outside the
-// extraction that uses or assigns a binding inside it.
+// import that is not listed as ignorable, module-level code outside the
+// extraction that uses or assigns a binding inside it, or a browser global
+// (or a member of one) that no Lynx port provides.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -43,6 +51,30 @@ export const EVENT_ROUTER_ROOTS = Object.freeze(["EventRouter"]);
  * Empty today; any other side-effect import stops the generator.
  */
 export const EVENT_ROUTER_IGNORED_SIDE_EFFECT_IMPORTS = Object.freeze([]);
+/**
+ * Browser globals that have no value on the Lynx background thread. The
+ * extracted code may not reference them, except through a port below.
+ */
+export const EVENT_ROUTER_BROWSER_GLOBALS = Object.freeze([
+  "window",
+  "document",
+  "navigator",
+  "location",
+  "localStorage",
+  "sessionStorage",
+]);
+/**
+ * Global → the Lynx module (relative to the generated file) whose `exportName`
+ * is bound to the global's name, and the only members the extracted code may
+ * use on it. Adding a member means adding it to that module too.
+ */
+export const EVENT_ROUTER_GLOBAL_PORTS = Object.freeze({
+  window: Object.freeze({
+    module: "../platform/windowTimers",
+    exportName: "lynxWindowTimers",
+    members: Object.freeze(["setTimeout", "clearTimeout", "setInterval", "clearInterval"]),
+  }),
+});
 const WEB_SOURCE_ROOT = "apps/web/src";
 
 export class EventRouterGenerationError extends Error {
@@ -168,6 +200,8 @@ export function extractEventRouter({
   sourcePath = EVENT_ROUTER_SOURCE,
   roots = EVENT_ROUTER_ROOTS,
   allowedSideEffectImports = EVENT_ROUTER_IGNORED_SIDE_EFFECT_IMPORTS,
+  browserGlobals = EVENT_ROUTER_BROWSER_GLOBALS,
+  globalPorts = EVENT_ROUTER_GLOBAL_PORTS,
 }) {
   const sourceFileName = path.posix.join("/", sourcePath);
   const { program, sourceFile } = createProgramForSource(sourceFileName, sourceText);
@@ -191,6 +225,28 @@ export function extractEventRouter({
   }
 
   const unresolved = [];
+  /** Global name → true, for every ported browser global the extraction uses. */
+  const usedGlobalPorts = new Set();
+  const unportedGlobalUses = [];
+  // A browser global is an identifier the checker resolves outside this file
+  // (the DOM lib); a local binding of the same name is an ordinary reference.
+  const noteBrowserGlobalUse = (node, symbol) => {
+    if (!browserGlobals.includes(node.text)) return;
+    if ((symbol.declarations ?? []).some((d) => d.getSourceFile() === sourceFile)) return;
+    const parent = node.parent;
+    // `typeof window` reads no member and is safe on Lynx.
+    if (ts.isTypeOfExpression(parent)) return;
+    const member =
+      ts.isPropertyAccessExpression(parent) && parent.expression === node ? parent.name.text : null;
+    const port = globalPorts[node.text];
+    if (port && member !== null && port.members.includes(member)) {
+      usedGlobalPorts.add(node.text);
+      return;
+    }
+    unportedGlobalUses.push(
+      `${member === null ? node.text : `${node.text}.${member}`} (${sourcePath}:${lineOf(node, sourceFile)})`,
+    );
+  };
   while (queue.length > 0) {
     const statement = queue.pop();
     if (included.has(statement)) continue;
@@ -203,6 +259,7 @@ export function extractEventRouter({
         if (!symbol) {
           unresolved.push(`${node.text} (${sourcePath}:${lineOf(node, sourceFile)})`);
         } else {
+          noteBrowserGlobalUse(node, symbol);
           for (const declaration of symbol.declarations ?? []) {
             if (declaration.getSourceFile() !== sourceFile) continue; // lib global
             const owner = topLevelStatementOf(declaration, sourceFile);
@@ -227,6 +284,12 @@ export function extractEventRouter({
   }
   if (unresolved.length > 0) {
     fail(`closed-over identifiers that resolve to nothing: ${[...new Set(unresolved)].join(", ")}`);
+  }
+  if (unportedGlobalUses.length > 0) {
+    fail(
+      `browser globals with no value on Lynx: ${[...new Set(unportedGlobalUses)].join(", ")}; ` +
+        `provide the member through a Lynx module and list it in EVENT_ROUTER_GLOBAL_PORTS`,
+    );
   }
 
   // Module initialization the extraction would silently drop. Symbol traversal
@@ -336,6 +399,16 @@ export function extractEventRouter({
     );
   }
 
+  // Bound after upstream's imports, under the global's own name, so the body
+  // below stays verbatim and resolves the name to the Lynx module.
+  const portLines = Object.keys(globalPorts)
+    .filter((name) => usedGlobalPorts.has(name))
+    .map((name) => {
+      const port = globalPorts[name];
+      const binding = port.exportName === name ? name : `${port.exportName} as ${name}`;
+      return `import { ${binding} } from ${JSON.stringify(port.module)};`;
+    });
+
   const declarations = sourceFile.statements
     .filter((statement) => included.has(statement))
     .map((statement) => ({
@@ -359,8 +432,17 @@ export function extractEventRouter({
     `// generator, then run \`node scripts/generate-event-router.mjs\` in apps/lynx.`,
     `// Contents: ${roots.join(", ")} and the file-local declarations it closes over,`,
     `// verbatim; only import specifiers are rewritten.`,
+    ...(portLines.length > 0
+      ? [
+          `// Browser globals Lynx has no value for are bound to Lynx modules below`,
+          `// (EVENT_ROUTER_GLOBAL_PORTS): ${Object.keys(globalPorts)
+            .filter((name) => usedGlobalPorts.has(name))
+            .join(", ")}.`,
+        ]
+      : []),
     "",
     ...importLines,
+    ...portLines,
     "",
     declarations.map((declaration) => declaration.text).join("\n\n"),
     "",
@@ -371,6 +453,7 @@ export function extractEventRouter({
     text,
     declarations: declarations.map(({ names, line, endLine }) => ({ names, line, endLine })),
     imports: importLines,
+    globalPorts: portLines,
   };
 }
 

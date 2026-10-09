@@ -6,6 +6,7 @@ import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import {
+  EVENT_ROUTER_GLOBAL_PORTS,
   EVENT_ROUTER_OUTPUT,
   EVENT_ROUTER_SOURCE,
   EventRouterGenerationError,
@@ -89,7 +90,13 @@ test("extraction of the upstream file is deterministic and matches the committed
   const second = extractEventRouter({ sourceText: upstreamSource });
   assert.equal(first.text, second.text);
   assert.ok(first.declarations.some((declaration) => declaration.names.includes("EventRouter")));
-  assert.doesNotMatch(first.text, /from "\.{1,2}\//, "no relative import survives the rewrite");
+  for (const line of first.imports) {
+    assert.doesNotMatch(line, /from "\.{1,2}\//, "no relative import survives the rewrite");
+  }
+  // Upstream's engine uses `window` timers; they are the only global it needs ported.
+  assert.deepEqual(first.globalPorts, [
+    'import { lynxWindowTimers as window } from "../platform/windowTimers";',
+  ]);
 
   const messages = [];
   const code = runEventRouterGenerator({
@@ -284,4 +291,81 @@ test("fails loudly instead of dropping module initialization", () => {
       sourceText: FIXTURE.replace("const UNRELATED = 9;", "const UNRELATED = LIMIT * 2;"),
     }),
   );
+});
+
+const withEventRouterBody = (body) => `
+import { useEffect } from "react";
+
+function EventRouter() {
+  useEffect(() => {
+${body}
+  }, []);
+  return null;
+}
+`;
+
+test("binds a ported browser global to its Lynx module and leaves the body verbatim", () => {
+  const body = `    const timer = window.setTimeout(() => undefined, 5);
+    const interval = window.setInterval(() => undefined, 5);
+    return () => {
+      window.clearTimeout(timer);
+      window.clearInterval(interval);
+    };`;
+  const result = extractEventRouter({ sourceText: withEventRouterBody(body) });
+
+  assert.deepEqual(result.globalPorts, [
+    'import { lynxWindowTimers as window } from "../platform/windowTimers";',
+  ]);
+  assert.ok(result.text.includes(body));
+  // The port line follows upstream's own imports.
+  assert.ok(
+    result.text.indexOf('from "react";') <
+      result.text.indexOf("import { lynxWindowTimers as window }"),
+  );
+
+  // Without a use, nothing is bound.
+  const plain = extractEventRouter({
+    sourceText: withEventRouterBody("    const timer = setTimeout(() => undefined, 5);"),
+  });
+  assert.deepEqual(plain.globalPorts, []);
+  assert.ok(!plain.text.includes("windowTimers"));
+});
+
+test("the window port module provides every member the generator lets through", () => {
+  const portSource = fs.readFileSync(
+    path.join(
+      repoRoot,
+      path.dirname(EVENT_ROUTER_OUTPUT),
+      `${EVENT_ROUTER_GLOBAL_PORTS.window.module}.ts`,
+    ),
+    "utf8",
+  );
+  assert.ok(portSource.includes(`export const ${EVENT_ROUTER_GLOBAL_PORTS.window.exportName}`));
+  for (const member of EVENT_ROUTER_GLOBAL_PORTS.window.members) {
+    assert.match(portSource, new RegExp(`\\b${member}: \\(`), member);
+  }
+});
+
+test("fails loudly on a browser global or member that no Lynx port provides", () => {
+  const unported = (body, expected) =>
+    assert.throws(
+      () => extractEventRouter({ sourceText: withEventRouterBody(body) }),
+      (error) =>
+        error instanceof EventRouterGenerationError &&
+        error.message.includes("browser globals with no value on Lynx") &&
+        error.message.includes(expected),
+    );
+  unported("    window.addEventListener('focus', () => undefined);", "window.addEventListener");
+  unported("    const view = window;\n    void view;", "window (");
+  unported("    document.title = 'x';", "document.title");
+  unported("    void localStorage.getItem('k');", "localStorage.getItem");
+
+  // A local binding of the same name is an ordinary reference, and `typeof`
+  // reads no member.
+  const shadowed = extractEventRouter({
+    sourceText: withEventRouterBody(
+      "    const document = { title: 'x' };\n    void document.title;\n    void (typeof window);",
+    ),
+  });
+  assert.deepEqual(shadowed.globalPorts, []);
 });
