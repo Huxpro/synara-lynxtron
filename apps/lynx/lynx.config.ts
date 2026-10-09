@@ -67,10 +67,12 @@ const resourceReplacementByWebPath = new Map(
     path.resolve(__dirname, entry.lynxSource),
   ]),
 );
+// Matches the resolved upstream file (`…/nativeApi.ts`) and the specifiers
+// that can name it (`../nativeApi`, `./platform/events`).
 const resourceReplacementPattern = new RegExp(
   `(${lynxResourceReplacements
-    .map((entry) => entry.webSource.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&"))
-    .join("|")})$`,
+    .map((entry) => entry.webSource.replace(/\.ts$/, "").replace(/[.*+?^${}()|[\]\\/]/g, "\\$&"))
+    .join("|")})(\\.ts)?$`,
 );
 // Lynx injects `window` into every background bundle as a wrapper parameter
 // with no value, so a member read on it throws. `wsNativeApi.ts` runs here
@@ -80,6 +82,68 @@ const resourceReplacementPattern = new RegExp(
 // called members here (`window.setTimeout(...)`): Rspack's DefinePlugin does not
 // rewrite a member expression in callee position. The generated `EventRouter`
 // gets its timers from `platform/windowTimers.ts` instead.
+/**
+ * Redirects upstream modules that are imported by a relative path
+ * (`../nativeApi` from `lib/gitReactQuery.ts`) to their Lynx implementation,
+ * after resolution, so they land on the same module the `~/…` aliases reach.
+ * Shared with rstest.config.ts: tests must run one facade module, as the
+ * bundle does.
+ */
+export function createLynxResourceReplacementPlugin(rspack: {
+  NormalModuleReplacementPlugin: new (
+    pattern: RegExp,
+    replace: (result: unknown) => void,
+  ) => unknown;
+}): never {
+  return new rspack.NormalModuleReplacementPlugin(resourceReplacementPattern, (result) => {
+    const data = result as {
+      context?: string;
+      request?: string;
+      createData?: { resource?: string; request?: string; userRequest?: string };
+    };
+    // Before resolution: a relative specifier from an upstream file that
+    // points at a replaced module is rewritten to the Lynx file itself, so it
+    // resolves exactly as the `~/…` alias does and both share one module
+    // instance (rewriting the resolved resource instead produced a second
+    // instance of `nativeApi.lynx.ts`).
+    if (!data.createData) {
+      const { context, request } = data;
+      if (typeof context !== "string" || typeof request !== "string") return;
+      if (!request.startsWith(".")) return;
+      const target = path.resolve(context, request);
+      const replacement =
+        resourceReplacementByWebPath.get(target) ??
+        resourceReplacementByWebPath.get(`${target}.ts`);
+      if (replacement) data.request = replacement;
+      return;
+    }
+    // After resolution: anything that still landed on the upstream file.
+    const createData = data.createData;
+    const resource = createData.resource;
+    if (typeof resource !== "string") return;
+    const replacement = resourceReplacementByWebPath.get(resource);
+    if (!replacement) return;
+    createData.resource = replacement;
+    createData.request = replacement;
+    createData.userRequest = replacement;
+  }) as never;
+}
+
+/**
+ * `@tanstack/query-core` runs in server mode without a `window` (no refetch
+ * intervals, no stale timers). This rule gives its modules the Lynx client
+ * environment; see `scripts/query-core-environment-loader.mjs`. Shared with
+ * rstest.config.ts so tests run the query-core the bundle runs.
+ */
+export const lynxQueryCoreEnvironmentRule = {
+  test: /[\\/]@tanstack[\\/]query-core[\\/]build[\\/]modern[\\/][^\\/]+\.js$/,
+  enforce: "pre" as const,
+  loader: path.resolve(__dirname, "scripts/query-core-environment-loader.mjs"),
+  options: {
+    environmentModule: path.resolve(__dirname, "src/platform/queryCoreEnvironment.lynx.ts"),
+  },
+};
+
 export const lynxWindowMemberDefines: Readonly<Record<string, string>> = {
   "window.desktopBridge": "undefined",
 };
@@ -461,6 +525,9 @@ export default defineConfig({
   },
   tools: {
     rspack: (config, { rspack }) => {
+      config.module ??= {};
+      config.module.rules ??= [];
+      config.module.rules.push(lynxQueryCoreEnvironmentRule);
       config.plugins ??= [];
       config.module ??= {};
       config.module.rules ??= [];
@@ -477,20 +544,7 @@ export default defineConfig({
           localStorage: [path.resolve(__dirname, "src/platform/storage.ts"), "webStorage"],
         }),
       );
-      config.plugins.push(
-        new rspack.NormalModuleReplacementPlugin(resourceReplacementPattern, (result) => {
-          const createData = (
-            result as { createData?: { resource?: string; request?: string; userRequest?: string } }
-          ).createData;
-          const resource = createData?.resource;
-          if (!createData || typeof resource !== "string") return;
-          const replacement = resourceReplacementByWebPath.get(resource);
-          if (!replacement) return;
-          createData.resource = replacement;
-          createData.request = replacement;
-          createData.userRequest = replacement;
-        }),
-      );
+      config.plugins.push(createLynxResourceReplacementPlugin(rspack));
     },
   },
   environments: {

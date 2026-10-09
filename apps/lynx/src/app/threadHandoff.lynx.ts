@@ -18,13 +18,15 @@ import {
 import { resolveProviderSendAvailability } from "@synara-web/lib/providerAvailability";
 import { newCommandId, newThreadId } from "@synara-web/lib/utils";
 
-import {
-  dispatchSynaraCommand,
-  fetchFreshServerConfig,
-  fetchServerConfig,
-  fetchServerSettings,
-} from "../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
+
 import type { ThreadHeaderSummary } from "./queries";
+import { queryClient } from "./queryClient";
+import {
+  readServerConfig,
+  readServerSettings,
+  refreshServerProviderStatuses,
+} from "./settingsServerData.lynx";
 
 export interface NativeThreadHandoffProject {
   readonly id: string;
@@ -42,8 +44,8 @@ export async function fetchNativeThreadHandoffProviderContext(options?: {
 }): Promise<NativeThreadHandoffProviderContext> {
   "background only";
   const [config, settings] = await Promise.all([
-    options?.fresh ? fetchFreshServerConfig() : fetchServerConfig(),
-    fetchServerSettings(),
+    options?.fresh ? refreshServerProviderStatuses(queryClient) : readServerConfig(queryClient),
+    readServerSettings(queryClient),
   ]);
   return { providerSettings: settings.providers, providerStatuses: config.providers };
 }
@@ -146,7 +148,7 @@ export async function createNativeThreadHandoff(input: {
 
   const nextThreadId = newThreadId();
   const createdAt = new Date().toISOString();
-  await dispatchSynaraCommand(
+  await ensureNativeApi().orchestration.dispatchCommand(
     buildNativeThreadHandoffCreateCommand({
       createdAt,
       nextThreadId,
@@ -156,7 +158,7 @@ export async function createNativeThreadHandoff(input: {
     }),
   );
   for (const activity of buildThreadHandoffImportedActivities(input.thread as never)) {
-    await dispatchSynaraCommand({
+    await ensureNativeApi().orchestration.dispatchCommand({
       type: "thread.activity.append",
       commandId: newCommandId(),
       threadId: nextThreadId,

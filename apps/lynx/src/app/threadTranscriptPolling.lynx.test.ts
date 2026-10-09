@@ -18,13 +18,12 @@ describe("Lynx thread transcript polling", () => {
     expect(routerOwnerSource).toContain('"background only"');
     expect(routerOwnerSource).toContain("fetchThreadTranscriptRows(threadId)");
     expect(routerOwnerSource).toContain("fetchThreadHeaderSummary(threadId)");
-    expect(routerOwnerSource).toContain("refetchInterval: 500");
     expect(routerOwnerSource).toContain("retry: false");
     expect(routerOwnerSource).toContain("subscribeOrchestrationShellEvents((item) => {");
     // Sidebar, Kanban and route threads follow shell changes through the shared
     // store; only the thread page still polls (plan Step 4).
     expect(routerOwnerSource).toContain("useRouteThreadSummaries()");
-    expect(routerOwnerSource.match(/refetchInterval/g)).toHaveLength(1);
+    expect(routerOwnerSource).not.toContain("refetchInterval");
     expect(routerSource).not.toContain('queryKey: ["threads"]');
     expect(routerSource).not.toContain('queryKey: ["sidebar-snapshot"]');
     expect(routerOwnerSource).toContain("className={`AppNotificationStack${");

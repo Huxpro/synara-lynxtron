@@ -2,7 +2,7 @@
 // snapshot. The transport is a singleton; both queries share its latest read.
 
 import { pullRequestListEntryHasProject } from "@synara/shared/githubRepository";
-import { QueryClient } from "@tanstack/react-query";
+import { queryClient } from "./queryClient";
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsBehaviorProjection,
@@ -85,18 +85,10 @@ import {
   upsertPersistedThreadRecap,
 } from "@synara-web/lib/threadRecap";
 import type { NativeSyntaxHighlightThemes } from "../main/syntaxHighlightingContract.logic";
-import { isLocalAbsolutePath } from "@synara/shared/path";
 import { resolveSnapshotThreadProvider } from "./threadSummaryProjection.logic";
 import { parseMarkdown, type MarkdownNode } from "../components/markdown/markdownAst.lynx";
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 2_000,
-      retry: 1,
-    },
-  },
-});
+export { queryClient };
 
 export interface ThreadSummary {
   readonly id: string;
@@ -259,20 +251,6 @@ export async function resolveNativeAssistantDeliveryMode(): Promise<AssistantDel
   );
 }
 
-export async function refreshProviderUpdatePromptServerConfig() {
-  "background only";
-  const { fetchFreshServerConfig } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return fetchFreshServerConfig();
-}
-
-export async function updatePromptProvider(provider: ProviderKind) {
-  "background only";
-  const { updateProvider } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
-  return updateProvider(provider);
-}
-
 export async function createAutomation(
   input: AutomationCreateInput,
 ): Promise<AutomationDefinition> {
@@ -352,33 +330,6 @@ export async function fetchPluginLibrarySkills(
   return fetchProviderSkills({ provider, cwd: config.cwd });
 }
 
-const EXPLORER_CACHE_TTL_MS = 2_000;
-const EXPLORER_DIRECTORY_CACHE_TTL_MS = 30_000;
-const explorerEntriesCache = new Map<
-  string,
-  {
-    readonly expiresAt: number;
-    readonly result: Promise<ExplorerEntriesResult>;
-  }
->();
-const explorerDirectoryCache = new Map<
-  string,
-  {
-    readonly expiresAt: number;
-    readonly result: Promise<ProjectListDirectoriesResult>;
-  }
->();
-const explorerFileCache = new Map<
-  string,
-  {
-    readonly expiresAt: number;
-    readonly result: Promise<{
-      readonly file: ProjectReadFileResult;
-      readonly syntaxHighlight: NativeSyntaxHighlightThemes | null;
-    }>;
-  }
->();
-
 const transcriptRowsByThreadId = new Map<
   string,
   {
@@ -417,106 +368,10 @@ export async function fetchSidebarSearchSnapshot(): Promise<OrchestrationSidebar
   return fetchSynaraSidebarSearchSnapshot();
 }
 
-export async function fetchExplorerEntries(input: {
-  readonly query: string;
-  readonly workspaceRoot: string;
-}): Promise<ExplorerEntriesResult> {
-  "background only";
-  const cacheKey = `${input.workspaceRoot}\0${input.query}`;
-  const cached = explorerEntriesCache.get(cacheKey);
-  if (cached && cached.expiresAt > Date.now()) return cached.result;
-  const { listProjectDirectories, searchProjectEntries } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  const result = input.query
-    ? searchProjectEntries({
-        cwd: input.workspaceRoot,
-        query: input.query,
-        kind: "file",
-        limit: 80,
-      })
-    : listProjectDirectories({
-        cwd: input.workspaceRoot,
-        includeFiles: true,
-        depth: 1,
-      });
-  explorerEntriesCache.set(cacheKey, {
-    expiresAt: Date.now() + EXPLORER_CACHE_TTL_MS,
-    result,
-  });
-  return result;
-}
-
-export async function fetchExplorerDirectory(input: {
-  readonly relativePath: string;
-  readonly workspaceRoot: string;
-}): Promise<ProjectListDirectoriesResult> {
-  "background only";
-  const cacheKey = `${input.workspaceRoot}\0${input.relativePath}`;
-  const cached = explorerDirectoryCache.get(cacheKey);
-  if (cached && cached.expiresAt > Date.now()) return cached.result;
-  const { listProjectDirectories } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  const result = listProjectDirectories({
-    cwd: input.workspaceRoot,
-    relativePath: input.relativePath,
-    includeFiles: true,
-    depth: 1,
-  });
-  explorerDirectoryCache.set(cacheKey, {
-    expiresAt: Date.now() + EXPLORER_DIRECTORY_CACHE_TTL_MS,
-    result,
-  });
-  void result.catch(() => {
-    if (explorerDirectoryCache.get(cacheKey)?.result === result) {
-      explorerDirectoryCache.delete(cacheKey);
-    }
-  });
-  return result;
-}
-
-export async function fetchExplorerFile(input: {
-  readonly previewGrant?: string;
-  readonly relativePath: string;
-  readonly workspaceRoot: string;
-}): Promise<{
+/** The Explorer's file on screen: upstream's read plus the host's highlighting. */
+export interface ExplorerFileResult {
   readonly file: ProjectReadFileResult;
   readonly syntaxHighlight: NativeSyntaxHighlightThemes | null;
-}> {
-  "background only";
-  const cacheKey = `${input.workspaceRoot}\0${input.relativePath}`;
-  const cached = explorerFileCache.get(cacheKey);
-  if (cached && cached.expiresAt > Date.now()) return cached.result;
-  const { readProjectFileWithSyntax } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  const result = (async () => {
-    let previewGrant = input.previewGrant ?? null;
-    if (!previewGrant && isLocalAbsolutePath(input.relativePath)) {
-      previewGrant = await import(/* webpackMode: "eager" */ "../data/synaraClient").then(
-        async ({ createLocalFilePreviewGrant }) => {
-          const result = await createLocalFilePreviewGrant(input.relativePath);
-          return result.grant;
-        },
-      );
-    }
-    return readProjectFileWithSyntax({
-      cwd: input.workspaceRoot,
-      ...(previewGrant ? { previewGrant } : {}),
-      relativePath: input.relativePath,
-    });
-  })();
-  explorerFileCache.set(cacheKey, {
-    expiresAt: Date.now() + EXPLORER_CACHE_TTL_MS,
-    result,
-  });
-  void result.catch(() => {
-    if (explorerFileCache.get(cacheKey)?.result === result) {
-      explorerFileCache.delete(cacheKey);
-    }
-  });
-  return result;
 }
 
 export async function fetchExplorerLocalPreviewUrl(input: {
@@ -560,8 +415,9 @@ export async function fetchExplorerPdfMetadata(input: {
   readonly height: number;
 }> {
   "background only";
-  const { inspectProjectPdf } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
-  return inspectProjectPdf({
+  // No upstream query for PDF metadata (the Web preview reads it with pdf.js).
+  const { ensureNativeApi } = await import(/* webpackMode: "eager" */ "~/nativeApi");
+  return ensureNativeApi().projects.inspectPdf({
     cwd: input.workspaceRoot,
     path: input.relativePath,
   });

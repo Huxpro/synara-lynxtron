@@ -6,10 +6,10 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxEntries": ["src/app/index.tsx"],
   "parallelImplementationBaseline": {
-    "synaraClientImporters": 29,
-    "useQueryCallSites": 66,
-    "refetchIntervalSites": 8,
-    "routerTsxLines": 3701
+    "synaraClientImporters": 19,
+    "useQueryCallSites": 32,
+    "refetchIntervalSites": 1,
+    "routerTsxLines": 3660
   },
   "patchedSources": ["apps/web/src/routes/__root.tsx"],
   "hardIslandPackages": [

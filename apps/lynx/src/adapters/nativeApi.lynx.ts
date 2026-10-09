@@ -25,6 +25,18 @@ import { requireHttpExternalUrl } from "@synara-web/lib/externalUrl";
 
 import { nativeRpcRequest } from "../data/nativeRpcBridge";
 
+// One instance per thread: `~/nativeApi` and upstream's relative `../nativeApi`
+// imports must land on this same module (lynx.config.ts redirects both). A
+// second instance would keep its own facade cache; report it where the
+// comparison harness counts console errors.
+const moduleCounter = globalThis as { __synaraLynxNativeApiModules?: number };
+moduleCounter.__synaraLynxNativeApiModules = (moduleCounter.__synaraLynxNativeApiModules ?? 0) + 1;
+if (moduleCounter.__synaraLynxNativeApiModules > 1) {
+  console.error(
+    `[nativeApi] adapters/nativeApi.lynx.ts was instantiated ${moduleCounter.__synaraLynxNativeApiModules} times; check lynxResourceReplacements.`,
+  );
+}
+
 let testOverride: NativeApi | undefined;
 let instance: NativeApi | null = null;
 

@@ -28,7 +28,7 @@ import {
   PlusIcon,
 } from "../lib/icons.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
-import { openPathInEditor } from "../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
 import { resolveExplorerPdfOpenTarget } from "./explorerPdf.logic";
 import { clampExplorerPdfPage } from "./explorerPdfPage.logic";
 import { buildPdfPagePreviewUrl } from "./localPreview.logic";
@@ -115,10 +115,7 @@ export function ExplorerPdfFallback(props: {
     setOpening(true);
     setOpenError(null);
     try {
-      await openPathInEditor({
-        cwd: openTarget,
-        editor: "system-default",
-      });
+      await ensureNativeApi().shell.openInEditor(openTarget, "system-default");
     } catch (error) {
       setOpenError(
         error instanceof Error ? error.message : "Could not open this PDF in the default app.",

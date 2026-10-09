@@ -62,16 +62,19 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain("initialStatus={props.initialData?.gitStatus ?? null}");
     expect(panelSource).toContain("props.initialData?.gitStatusLoaded === true");
     expect(panelSource).toContain(
-      "error: props.initialLoadCompleted && props.initialStatus === null",
+      "(statusData === null && props.initialLoadCompleted && !statusQuery.isFetching)",
     );
     expect(panelSource).toContain("initialBranches={props.initialData?.branches ?? null}");
     expect(panelSource).toContain("initialData={props.initialData?.localServers ?? null}");
     expect(panelSource).toContain("initialRepository={props.initialData?.repository ?? null}");
     expect(panelSource).toContain("initialConfig={props.initialData?.config ?? null}");
     expect(panelSource).toContain("const liveQueriesEnabled = props.open && !props.bootstrapOnly");
-    expect(panelSource.match(/open=\{liveQueriesEnabled\}/g)).toHaveLength(6);
+    expect(panelSource.match(/open=\{liveQueriesEnabled\}/g)).toHaveLength(7);
     expect(panelSource).toContain("open={props.open}");
-    expect(panelSource).toContain("initializeGit(props.workspaceRoot)");
+    expect(panelSource).toContain(
+      "gitInitMutationOptions({ cwd: props.workspaceRoot, queryClient })",
+    );
+    expect(panelSource).toContain("await initMutation.mutateAsync()");
     expect(panelSource).toContain('"Retry Initialize Git" : "Initialize Git"');
     expect(panelSource).toContain("const isGitRepo = repositoryQuery.data?.isRepo === true");
     expect(panelSource).toContain("props.onNotesChange(next)");
@@ -128,22 +131,37 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain(
       "useQuery(serverAllProviderUsageQueryOptions({ enabled: liveQueriesEnabled }))",
     );
-    expect(panelSource).toContain("fetchLocalServers()");
-    expect(panelSource).toContain("fetchGitStatus(props.workspaceRoot)");
-    expect(panelSource).toContain("async function pollGitStatus()");
-    expect(panelSource).toContain("await sleepOnHost(15_000)");
+    expect(panelSource).toContain("...serverLocalServersQueryOptions(props.open),");
+    expect(panelSource).toContain(
+      "useQuery(gitStatusQueryOptions(props.workspaceRoot, props.open))",
+    );
+    // No panel-local polling loops: upstream's queries own the cadence.
+    expect(panelSource).not.toContain("async function pollGitStatus()");
+    expect(panelSource).not.toContain("await sleepOnHost(15_000)");
     expect(panelSource).toContain("onOpenViewer={props.onOpenChanges}");
-    expect(panelSource).toContain("fetchGitBranches(props.workspaceRoot)");
-    expect(panelSource).toContain("await checkoutGitBranch({ cwd: props.workspaceRoot, branch })");
+    expect(panelSource).toContain("...gitBranchesQueryOptions(props.workspaceRoot),");
+    expect(panelSource).toContain(
+      "await ensureNativeApi().git.checkout({ cwd: props.workspaceRoot, branch })",
+    );
+    expect(panelSource).toContain(
+      "invalidateGitQueriesForCwds(queryClient, [props.workspaceRoot])",
+    );
     expect(panelSource).toContain('type: "thread.meta.update"');
     expect(panelSource).toContain("Switch branches from the worktree environment controls.");
     expect(panelSource).toContain("buildMenuItems(");
     expect(panelSource).toContain("resolvePullActionAvailability({");
     expect(panelSource).toContain("requiresDefaultBranchConfirmation(");
     expect(panelSource).toContain("resolveDefaultBranchActionDialogCopy({");
-    expect(panelSource).toContain(`await runGitStackedAction(
-        {`);
-    expect(panelSource).toContain("await pullGitBranch(props.workspaceRoot)");
+    expect(panelSource).toContain(
+      "gitRunStackedActionMutationOptions({ cwd: props.workspaceRoot, queryClient })",
+    );
+    // The running action and its progress listener live in the workspace owner.
+    expect(panelSource).toContain("useOutstandingGitAction(props.workspaceRoot)");
+    expect(panelSource).toContain("await runOwnedGitAction({");
+    expect(panelSource).not.toContain("onActionProgress");
+    expect(panelSource).toContain("run: () => stackedActionMutation.mutateAsync(variables),");
+    expect(panelSource).toContain("if (readOutstandingGitAction(props.workspaceRoot)) return;");
+    expect(panelSource).toContain("run: () => pullMutation.mutateAsync(),");
     expect(panelSource).toContain("Git pull failed.");
     expect(panelSource).toContain("await dialogs.confirm(");
     expect(panelSource).toContain("<Dialog");
@@ -160,9 +178,10 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain(
       'label={running ? (progressLabel ?? "Working…") : "Commit and Push"}',
     );
-    expect(panelSource).toContain('event.kind === "phase_started"');
-    expect(panelSource).toContain('event.kind === "hook_started"');
-    expect(panelSource).toContain('event.kind === "hook_output"');
+    const ownerSource = readFileSync(new URL("./gitActionOwner.lynx.ts", import.meta.url), "utf8");
+    expect(ownerSource).toContain('event.kind === "phase_started"');
+    expect(ownerSource).toContain('event.kind === "hook_started"');
+    expect(ownerSource).toContain('event.kind === "hook_output"');
     expect(panelSource).toContain("Git actions");
     expect(panelSource).toContain("Pull");
     expect(panelSource).toContain("Unavailable");
@@ -179,7 +198,7 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain("threadId={props.threadId}");
     expect(panelSource).not.toContain("EnvironmentChangesPopup");
     expect(panelSource).not.toContain("EnvironmentChangesFilePath");
-    expect(panelSource).toContain("stopLocalServer({");
+    expect(panelSource).toContain("await stopLocalServerMutation.mutateAsync({");
     expect(panelSource).toContain("const [stopFeedback, setStopFeedback]");
     expect(panelSource).toContain('message: result.message ?? "Couldn’t stop local server."');
     expect(panelSource).toContain('message: "Couldn’t stop local server."');
@@ -192,8 +211,8 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain("...serverConfigQueryOptions(),");
     expect(panelSource).toContain("environmentEditorOptions(");
     expect(panelSource).toContain("webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor)");
-    expect(panelSource).toContain("await openPathInEditor({");
-    expect(panelSource.indexOf("await openPathInEditor({")).toBeLessThan(
+    expect(panelSource).toContain("await ensureNativeApi().shell.openInEditor(");
+    expect(panelSource.indexOf("await ensureNativeApi().shell.openInEditor(")).toBeLessThan(
       panelSource.indexOf("webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor)"),
     );
     expect(panelSource).toContain("Open in ${activeOption.label}");
@@ -204,7 +223,7 @@ describe("Lynx Environment panel", () => {
     expect(routerSource).toContain(
       'presentationMode={editorSearchActive ? "editor-search" : "editor"}',
     );
-    expect(panelSource).toContain("fetchGitHubRepository(props.workspaceRoot)");
+    expect(panelSource).toContain("...gitGithubRepositoryQueryOptions(props.workspaceRoot,");
     expect(panelSource).toContain("platformWindow.openExternal(repository.url)");
     expect(panelSource).toContain("repository.nameWithOwner");
     expect(panelSource).toContain('import githubSvg from "@synara-central-icons/github.svg?raw"');
@@ -212,10 +231,10 @@ describe("Lynx Environment panel", () => {
       'import arrowUpRightSvg from "@synara-central-icons/arrow-up-right.svg?raw"',
     );
     expect(panelSource).toContain("Could not open repository");
-    expect(panelSource).toContain("fetchGitPullRequestSnapshot({");
-    expect(panelSource).toContain("async function pollPullRequest()");
-    expect(panelSource).toContain("await sleepOnHost(60_000)");
-    expect(panelSource).toContain("setRefreshGeneration((current) => current + 1)");
+    expect(panelSource).toContain("gitPullRequestSnapshotQueryOptions({");
+    expect(panelSource).not.toContain("async function pollPullRequest()");
+    expect(panelSource).not.toContain("await sleepOnHost(60_000)");
+    expect(panelSource).toContain("void snapshotQuery.refetch()");
     expect(panelSource).toContain("summarizePullRequestChecks(checks)");
     expect(panelSource).toContain("summarizePullRequestComments(");
     expect(panelSource).toContain("Conflicts with ${livePullRequest.baseBranch}");
@@ -244,13 +263,11 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).not.toContain("EnvironmentMarkerRow");
     expect(queriesSource).not.toContain("threadMarkers");
     expect(panelSource).toContain("onOpenViewer={props.onOpenChanges}");
+    expect(diffDockSource).toContain("...gitWorkingTreeDiffQueryOptions({");
+    expect(diffDockSource).toContain("ignoreWhitespace: diffIgnoreWhitespace,");
     expect(diffDockSource).toContain(
-      "return fetchWorkingTreeDiff(props.workspaceRoot, diffRequest.scope);",
+      'initialData: diffSource === "workingTree" ? props.initialDiff : undefined',
     );
-    expect(diffDockSource).toContain('"working-tree-diff",');
-    expect(diffDockSource).toContain("diffSource,");
-    expect(diffDockSource).toContain("diffIgnoreWhitespace,");
-    expect(diffDockSource).toContain('refreshGeneration === 0 && diffSource === "workingTree"');
     expect(diffDockSource).toContain("function OpenDiffDock(");
     expect(diffDockSource).not.toContain("enabled: props.open && Boolean(props.workspaceRoot)");
     expect(diffDockSource).toContain("buildPullRequestCodeView(");

@@ -8,7 +8,12 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "@rstest/core";
 import { withLynxConfig } from "@lynx-js/react/testing-library/rstest-config";
 
-import { lynxBrowserEnvironmentRule, lynxWindowMemberDefines } from "./lynx.config";
+import {
+  createLynxResourceReplacementPlugin,
+  lynxBrowserEnvironmentRule,
+  lynxQueryCoreEnvironmentRule,
+  lynxWindowMemberDefines,
+} from "./lynx.config";
 
 const webSourceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../web/src");
 
@@ -21,7 +26,11 @@ export default defineConfig({
   // runs verbatim on Lynx is tested as it is compiled (see lynx.config.ts).
   source: { define: { ...lynxWindowMemberDefines } },
   tools: {
-    rspack: (config) => {
+    rspack: (config, { rspack }) => {
+      // The bundle's module replacements, so a relative `../nativeApi` import
+      // in upstream source reaches the same Lynx facade module as `~/nativeApi`.
+      config.plugins ??= [];
+      config.plugins.push(createLynxResourceReplacementPlugin(rspack));
       // The ReactLynx testing loader parses every file as TSX (the production
       // loader passes `tsx: false` for `.ts`), so a generic arrow function in
       // an upstream `.ts` module (`<Result>(…) => …`, e.g. `appSettings.ts`)
@@ -29,6 +38,7 @@ export default defineConfig({
       // sources first; what the testing loader then sees is plain JavaScript.
       config.module ??= {};
       config.module.rules ??= [];
+      config.module.rules.push(lynxQueryCoreEnvironmentRule);
       // Upstream Web source runs on the Lynx browser environment in the bundle;
       // bind the same globals here so it is tested as it is compiled. (The test
       // runtime has jsdom's `window`, which the bundle does not.)

@@ -91,8 +91,6 @@ describe("landing composer fidelity contract", () => {
     expect(landingSource).toContain("worktreePath: workspaceContext.worktreePath");
     expect(landingSource).toContain("localFoldersError");
     expect(landingSource.match(/serverConfig:\s*config/g)).toHaveLength(3);
-    expect(clientSource).toContain("export async function fetchFreshServerConfig()");
-    expect(clientSource).toContain("providers: providerStatuses.providers");
     expect(landingSource).toContain("fetchServerConfig()");
     expect(landingSource).not.toContain("fetchFreshServerConfig()");
     expect(landingSource).toContain("fetchServerSettings().catch(() => null)");

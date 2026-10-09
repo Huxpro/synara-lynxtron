@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { generatedFileIsFresh, writeGeneratedFile } from "./format-generated.mjs";
+import { countLynxOwnedQueries } from "./query-ownership.mjs";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(scriptDir, "..");
@@ -207,16 +208,10 @@ function countParallelImplementationSites(filePath) {
     true,
     filePath.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
   );
-  let useQueryCallSites = 0;
+  const useQueryCallSites = countLynxOwnedQueries(text, filePath);
   let refetchIntervalSites = 0;
   function visit(node) {
     if (
-      ts.isCallExpression(node) &&
-      ts.isIdentifier(node.expression) &&
-      node.expression.text === "useQuery"
-    ) {
-      useQueryCallSites += 1;
-    } else if (
       (ts.isPropertyAssignment(node) || ts.isShorthandPropertyAssignment(node)) &&
       ts.isIdentifier(node.name) &&
       node.name.text === "refetchInterval"
@@ -563,7 +558,7 @@ const markdown = [
   ),
   "",
   "- `synaraClientImporters`: non-test files under `src/` whose static or dynamic imports resolve to `data/synaraClient.lynx.ts`.",
-  "- `useQueryCallSites`: `useQuery(...)` call expressions under `src/` (non-test).",
+  "- `useQueryCallSites`: queries Lynx owns under `src/` (non-test), as `scripts/query-ownership.mjs` counts them: definitions with `queryKey` and `queryFn`, and query consumers whose options are not provably an imported upstream factory with non-data overrides.",
   "- `refetchIntervalSites`: `refetchInterval` option sites under `src/` (non-test).",
   "- `routerTsxLines`: raw line count of `src/app/router.tsx`.",
   "",

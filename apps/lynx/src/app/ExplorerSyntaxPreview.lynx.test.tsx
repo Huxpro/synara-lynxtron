@@ -48,7 +48,10 @@ describe("Explorer syntax preview", () => {
       new URL("../main/syntaxHighlightingHost.ts", import.meta.url),
       "utf8",
     );
-    const queriesSource = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
+    const explorerQueriesSource = readFileSync(
+      new URL("./explorerQueries.lynx.ts", import.meta.url),
+      "utf8",
+    );
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
 
     expect(source).toContain("readonly highlighted: NativeSyntaxHighlightThemes | null");
@@ -68,9 +71,11 @@ describe("Explorer syntax preview", () => {
     expect(hostSource).toContain('from "shiki/core"');
     expect(hostSource).not.toContain("@pierre/diffs");
     expect(hostSource).not.toContain("from 'shiki'");
-    expect(queriesSource).toContain("readProjectFileWithSyntax");
+    expect(explorerQueriesSource).toContain("export function useExplorerSyntaxHighlight(");
     expect(source).toContain("props.highlighted?.[props.theme]");
-    expect(queriesSource).toContain('/* webpackMode: "eager" */ "../data/synaraClient"');
+    expect(explorerQueriesSource).toContain(
+      '/* webpackMode: "eager" */ "../data/hostSyntaxHighlight.lynx"',
+    );
   });
 
   it("keeps Shiki out of the Lynx UI bundle graph", () => {

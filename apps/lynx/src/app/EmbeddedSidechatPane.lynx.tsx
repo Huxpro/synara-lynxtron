@@ -32,7 +32,9 @@ export function EmbeddedSidechatPane(props: {
       ]);
       return { data: rows, summary };
     },
-    refetchInterval: 500,
+    // No interval: react-query intervals never ran on Lynx before the
+    // query-core environment fix, and this read is refreshed by session-sync
+    // invalidation. A timer here would be a new poll.
     retry: false,
   });
   const summary = query.data?.summary;
