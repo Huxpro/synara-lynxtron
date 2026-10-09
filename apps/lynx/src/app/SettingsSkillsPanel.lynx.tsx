@@ -1,21 +1,28 @@
-import { useEffect, useRef, useState } from "@lynx-js/react";
+import { useRef, useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
+import type { ServerSettingsView } from "@synara/contracts";
 
 import { SettingsSection } from "@synara-web/components/settings/SettingsSection";
 import {
   providerDiscoveryQueryKeys,
   skillsCatalogQueryOptions,
 } from "@synara-web/lib/providerDiscoveryReactQuery";
-import { serverSettingsQueryOptions } from "@synara-web/lib/serverReactQuery";
+import { serverQueryKeys, serverSettingsQueryOptions } from "@synara-web/lib/serverReactQuery";
 
 import { SettingsGeneralBooleanControlElement } from "../adapters/SettingsGeneralCompositionElements.lynx";
 import { OpenAIProviderIcon, hasLynxProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 import {
   buildSettingsSkillGroups,
   buildSettingsSkillSections,
-  nextDisabledSkillNames,
   settingsSkillNameKey,
 } from "./settingsSkills.logic";
+import {
+  EMPTY_SKILL_TOGGLE_QUEUE_STATE,
+  createSkillToggleQueue,
+  projectDisabledSkillNames,
+  type SkillToggleQueue,
+  type SkillToggleQueueState,
+} from "./settingsSkillToggleQueue.logic";
 import { queryClient } from "./queries";
 import {
   LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY,
@@ -50,20 +57,18 @@ function SkillProviderStack(props: { readonly providers: readonly string[] }) {
 export function SettingsSkillsPanel() {
   const catalogQuery = useQuery(skillsCatalogQueryOptions());
   const settingsQuery = useQuery(serverSettingsQueryOptions());
-  const [disabledNames, setDisabledNames] = useState<readonly string[]>([]);
-  const disabledNamesRef = useRef<readonly string[]>([]);
-  const saveQueueRef = useRef<Promise<void>>(Promise.resolve());
-  const saveOperationRef = useRef(0);
-  const [savingSkillKey, setSavingSkillKey] = useState<string | null>(null);
-  const [saveError, setSaveError] = useState<string | null>(null);
+  const [queueState, setQueueState] = useState<SkillToggleQueueState>(
+    EMPTY_SKILL_TOGGLE_QUEUE_STATE,
+  );
+  const queueRef = useRef<SkillToggleQueue | null>(null);
+  const { savingSkillKey, error: saveError } = queueState;
 
-  useEffect(() => {
-    const next = settingsQuery.data?.skills.disabled;
-    if (!next) return;
-    disabledNamesRef.current = next;
-    setDisabledNames(next);
-  }, [settingsQuery.data?.skills.disabled]);
-
+  // Confirmed server state with this panel's unconfirmed toggles on top, so a
+  // confirmation arriving for an earlier toggle cannot undo a later one.
+  const disabledNames = projectDisabledSkillNames(
+    settingsQuery.data?.skills.disabled ?? [],
+    queueState.intents,
+  );
   const disabledKeys = new Set(disabledNames.map(settingsSkillNameKey));
   const groups = buildSettingsSkillGroups(catalogQuery.data?.skills ?? []);
   const sections = buildSettingsSkillSections(catalogQuery.data?.skills ?? []);
@@ -71,46 +76,21 @@ export function SettingsSkillsPanel() {
 
   async function setSkillEnabled(skillName: string, enabled: boolean) {
     "background only";
-    const key = settingsSkillNameKey(skillName);
-    const previous = disabledNamesRef.current;
-    const next = nextDisabledSkillNames({
-      current: previous,
-      skillName,
-      enabled,
+    queueRef.current ??= createSkillToggleQueue({
+      readConfirmed: () =>
+        queryClient.getQueryData<ServerSettingsView>(serverQueryKeys.settings())?.skills.disabled ??
+        [],
+      write: (disabled) =>
+        writeServerSettings(queryClient, { skills: { disabled: [...disabled] } }),
+      onState: setQueueState,
+      // Composer skill pickers are served filtered by these toggles.
+      afterSaved: () =>
+        Promise.all([
+          queryClient.invalidateQueries({ queryKey: providerDiscoveryQueryKeys.all }),
+          queryClient.invalidateQueries({ queryKey: LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY }),
+        ]),
     });
-    disabledNamesRef.current = next;
-    setDisabledNames(next);
-    setSavingSkillKey(key);
-    setSaveError(null);
-    const operationId = saveOperationRef.current + 1;
-    saveOperationRef.current = operationId;
-    saveQueueRef.current = saveQueueRef.current
-      .catch(() => undefined)
-      .then(async () => {
-        try {
-          const settings = await writeServerSettings(queryClient, {
-            skills: { disabled: [...next] },
-          });
-          if (saveOperationRef.current === operationId) {
-            disabledNamesRef.current = settings.skills.disabled;
-            setDisabledNames(settings.skills.disabled);
-            setSavingSkillKey(null);
-          }
-          // Composer skill pickers are served filtered by these toggles.
-          await Promise.all([
-            queryClient.invalidateQueries({ queryKey: providerDiscoveryQueryKeys.all }),
-            queryClient.invalidateQueries({ queryKey: LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY }),
-          ]);
-        } catch (error) {
-          if (saveOperationRef.current === operationId) {
-            disabledNamesRef.current = previous;
-            setDisabledNames(previous);
-            setSavingSkillKey(null);
-            setSaveError(error instanceof Error ? error.message : "Unable to update this skill.");
-          }
-        }
-      });
-    await saveQueueRef.current;
+    await queueRef.current.toggle(skillName, enabled);
   }
 
   if (catalogQuery.isPending || settingsQuery.isPending) {

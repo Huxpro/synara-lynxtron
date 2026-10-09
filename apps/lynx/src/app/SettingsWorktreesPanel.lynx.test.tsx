@@ -42,6 +42,10 @@ describe("Settings Worktrees fidelity", () => {
     expect(panelSource).toContain("await ensureNativeApi().orchestration.dispatchCommand(");
     expect(panelSource).toContain("await removeWorktreeMutation.mutateAsync({");
     expect(panelSource).toContain("force: true");
+    // The dialog does not announce deleting the temporary branch, so it is kept.
+    expect(panelSource).toMatch(
+      /force: true,\n(\s*\/\/[^\n]*\n)*\s*reclaimTemporaryBranch: false,/,
+    );
     expect(panelSource).toContain(
       "queryClient.invalidateQueries({ queryKey: serverQueryKeys.worktrees() })",
     );

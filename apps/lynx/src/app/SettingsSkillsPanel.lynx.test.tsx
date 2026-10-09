@@ -27,19 +27,21 @@ describe("Settings Skills fidelity", () => {
       "utf8",
     );
 
-    expect(panelSource).toContain("disabledNamesRef.current");
-    expect(panelSource).toContain("saveQueueRef.current");
-    expect(panelSource).toContain("saveOperationRef.current");
-    expect(panelSource).toContain("nextDisabledSkillNames({");
-    expect(panelSource).toContain("await writeServerSettings(queryClient, {");
-    expect(panelSource).toContain("skills: { disabled: [...next] }");
+    // Behavior is covered by settingsSkillToggleQueue.logic.test.ts.
+    expect(panelSource).toContain("createSkillToggleQueue({");
+    expect(panelSource).toContain("projectDisabledSkillNames(");
+    expect(panelSource).toContain("queueState.intents");
+    expect(panelSource).toContain(
+      "writeServerSettings(queryClient, { skills: { disabled: [...disabled] } })",
+    );
+    // No effect copies the settings query into local state any more.
+    expect(panelSource).not.toContain("useEffect");
     expect(panelSource).toContain(
       "queryClient.invalidateQueries({ queryKey: providerDiscoveryQueryKeys.all })",
     );
     expect(panelSource).toContain(
       "queryClient.invalidateQueries({ queryKey: LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY })",
     );
-    expect(panelSource).toContain("setDisabledNames(previous)");
   });
 
   it("matches the Web portable summary and grouped-row anatomy", () => {

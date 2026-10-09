@@ -1,4 +1,5 @@
 import { useEffect, useState } from "@lynx-js/react";
+import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { useQuery } from "@tanstack/react-query";
 import type {
   AutomationDefinition,
@@ -31,7 +32,7 @@ import { AutomationDialog } from "./AutomationDialog.lynx";
 import type { ProjectSummary, ThreadSummary } from "./queries";
 import { AutomationTimeInput } from "./AutomationTimeInput.lynx";
 import { ComposerModelControl } from "../components/composer/ComposerModelControl.lynx";
-import { fetchAutomationCreateModels, fetchAutomationCreateServerConfig } from "./queries";
+import { fetchAutomationCreateModels } from "./queries";
 import {
   SCHEDULE_KIND_OPTIONS,
   datetimeLocalFromIso,
@@ -198,11 +199,7 @@ function AutomationDetailModelControl(props: {
   useEffect(() => {
     setCatalogProvider(props.definition.modelSelection.provider);
   }, [props.definition.id, props.definition.modelSelection.provider]);
-  const serverConfig = useQuery({
-    queryKey: ["automation-detail", "server-config"],
-    queryFn: fetchAutomationCreateServerConfig,
-    staleTime: 30_000,
-  });
+  const serverConfig = useQuery(serverConfigQueryOptions());
   const modelCatalog = useQuery({
     queryKey: [
       "automation-detail",

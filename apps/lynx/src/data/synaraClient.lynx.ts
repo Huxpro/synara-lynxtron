@@ -69,8 +69,6 @@ import type {
   ServerConfig,
   ServerGenerateThreadRecapInput,
   ServerGenerateThreadRecapResult,
-  ServerListProviderUsageInput,
-  ServerListProviderUsageResult,
   ServerListLocalServersResult,
   ServerRefreshProvidersResult,
   ServerVoiceTranscriptionInput,
@@ -627,12 +625,6 @@ export async function runGitStackedAction(
     throw new RpcTransportError("Git action stream completed without a final result");
   }
   return result;
-}
-
-export async function fetchAllProviderUsage(
-  input: ServerListProviderUsageInput = {},
-): Promise<ServerListProviderUsageResult> {
-  return transportRequest<ServerListProviderUsageResult>("server.listProviderUsage", input);
 }
 
 export async function fetchLocalServers(): Promise<ServerListLocalServersResult> {

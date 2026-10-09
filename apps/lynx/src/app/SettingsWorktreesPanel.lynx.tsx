@@ -100,6 +100,10 @@ export function SettingsWorktreesPanel() {
         cwd: input.workspaceRoot,
         path: input.path,
         force: true,
+        // The confirmation only announces removing the worktree from disk.
+        // Reclaiming (upstream's default) also deletes the temporary branch,
+        // which can be the last ref to unmerged commits: keep the branch.
+        reclaimTemporaryBranch: false,
       });
     } catch (error) {
       setDeleteError(error instanceof Error ? error.message : "Unable to delete the worktree.");

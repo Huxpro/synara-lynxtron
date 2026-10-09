@@ -37,6 +37,11 @@ function rpcCalls(host: FakeNativeHost) {
   return host.callsNamed("synaraRpc").map((call) => call.params);
 }
 
+/** The request payload as the host receives it (JSON on the bridge, or the object). */
+function hostPayload(call: Record<string, unknown>): unknown {
+  return typeof call.payloadJson === "string" ? JSON.parse(call.payloadJson) : call.payload;
+}
+
 describe("Settings server data over the upstream facade", () => {
   let host: FakeNativeHost;
   let queryClient: QueryClient;
@@ -103,18 +108,25 @@ describe("Settings server data over the upstream facade", () => {
     expect(serverSettingsQueryOptions().queryKey).toEqual(serverQueryKeys.settings());
   });
 
-  it("removes a worktree with upstream's mutation and lists with upstream's query", async () => {
+  it("removes a worktree with upstream's mutation and keeps its temporary branch", async () => {
     await queryClient.fetchQuery(serverWorktreesQueryOptions());
     const options = gitRemoveWorktreeMutationOptions({ queryClient });
+    // The exact variables SettingsWorktreesPanel passes.
     await options.mutationFn?.(
-      { cwd: "/repo", path: "/repo/.worktrees/a", force: true },
+      { cwd: "/repo", path: "/repo/.worktrees/a", force: true, reclaimTemporaryBranch: false },
       undefined as never,
     );
 
     const calls = rpcCalls(host);
     expect(calls.map((call) => call.tag)).toEqual(["server.listWorktrees", "git.removeWorktree"]);
     for (const call of calls) expect(call).not.toHaveProperty("baseUrl");
-    expect(JSON.stringify(calls[1])).toContain("reclaimTemporaryBranch");
+    const sent = hostPayload(calls[1]!);
+    expect(sent).toMatchObject({
+      cwd: "/repo",
+      path: "/repo/.worktrees/a",
+      force: true,
+      reclaimTemporaryBranch: false,
+    });
   });
 
   it("sends orchestration commands in the facade's shape", async () => {
@@ -201,6 +213,27 @@ describe("Settings sources and the legacy client", () => {
         expect(source, `${name} ${legacyKey}`).not.toContain(legacyKey);
       }
       expect(source, name).not.toContain("refetchInterval");
+    }
+  });
+
+  it("no Lynx source keeps a second cache for server config, settings or provider usage", () => {
+    const srcDir = new URL("../", import.meta.url);
+    const sources = (readdirSync(srcDir, { recursive: true }) as string[]).filter(
+      (name) =>
+        /\.tsx?$/.test(name) && !/\.test\.tsx?$/.test(name) && !name.startsWith("generated"),
+    );
+    expect(sources.length).toBeGreaterThan(300);
+    for (const name of sources) {
+      const source = readFileSync(new URL(name, srcDir), "utf8");
+      for (const legacyKey of [
+        '"server-config"',
+        '"sidebar-server-config"',
+        '"server-settings"',
+        '"environment-provider-usage"',
+        '"settings-provider-usage"',
+      ]) {
+        expect(source, `${name} ${legacyKey}`).not.toContain(legacyKey);
+      }
     }
   });
 

@@ -262,9 +262,9 @@ describe("Lynx Automations route", () => {
     expect(dialogSource).toContain("defaultProvider: generalSettings.defaultProvider");
     expect(dialogSource).toContain("<ComposerModelControl");
     expect(dialogSource).toContain("hideStatusLabel");
-    expect(dialogSource).toContain("fetchAutomationCreateServerConfig");
+    expect(dialogSource).toContain("...serverConfigQueryOptions(), enabled: open");
     expect(dialogSource).toContain("fetchAutomationCreateModels");
-    expect(queriesSource).toContain("export async function fetchAutomationCreateServerConfig()");
+    expect(queriesSource).not.toContain("fetchAutomationCreateServerConfig");
     expect(queriesSource).toContain("export async function fetchAutomationCreateModels(");
     expect(dialogSource).toContain("enabled: open");
     expect(dialogSource).toContain("runtimeModels={modelCatalog.data?.models ?? []}");

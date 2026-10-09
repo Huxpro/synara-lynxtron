@@ -1,4 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "@lynx-js/react";
+import {
+  serverAllProviderUsageQueryOptions,
+  serverConfigQueryOptions,
+} from "@synara-web/lib/serverReactQuery";
 import { useQuery } from "@tanstack/react-query";
 import {
   THREAD_NOTES_MAX_CHARS,
@@ -84,9 +88,7 @@ import {
 } from "@synara-web/components/GitActionsControl.logic";
 import {
   dispatchSynaraCommand,
-  fetchAllProviderUsage,
   fetchLocalServers,
-  fetchServerConfig,
   fetchGitHubRepository,
   fetchGitPullRequestSnapshot,
   fetchGitStatus,
@@ -1121,11 +1123,7 @@ function EnvironmentEditor(props: {
   readonly workspaceRoot: string;
 }) {
   const configQuery = useQuery({
-    queryKey: ["server-config"],
-    queryFn: () => {
-      "background only";
-      return fetchServerConfig();
-    },
+    ...serverConfigQueryOptions(),
     enabled: props.open && !props.bootstrapOnly,
     initialData: props.initialConfig ?? undefined,
   });
@@ -2211,15 +2209,7 @@ export function EnvironmentPanel(props: {
       setInitializingGit(false);
     }
   };
-  const usageQuery = useQuery({
-    queryKey: ["environment-provider-usage", props.provider],
-    queryFn: () => {
-      "background only";
-      return fetchAllProviderUsage({});
-    },
-    staleTime: 30_000,
-    enabled: liveQueriesEnabled,
-  });
+  const usageQuery = useQuery(serverAllProviderUsageQueryOptions({ enabled: liveQueriesEnabled }));
   const usage = usageQuery.data?.find((snapshot) => snapshot.provider === props.provider);
   const primaryLimit = usage?.limits[0];
   const usageLabel = primaryLimit

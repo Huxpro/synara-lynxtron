@@ -1,4 +1,5 @@
 import { useLatestProjectStore } from "@synara-web/latestProjectStore";
+import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import {
   resolveCurrentProjectTargetId,
   resolveLatestProjectTargetIdWithFallback,
@@ -390,16 +391,7 @@ export function Sidebar({
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
   );
   const { data, error, isPending } = useSidebarSnapshot();
-  const serverConfigQuery = useQuery({
-    queryKey: ["sidebar-server-config"],
-    queryFn: async () => {
-      "background only";
-      const { fetchServerConfig } = await import(
-        /* webpackMode: "eager" */ "../../data/synaraClient"
-      );
-      return fetchServerConfig();
-    },
-  });
+  const serverConfigQuery = useQuery(serverConfigQueryOptions());
   const projectDevServersQuery = useQuery({
     queryKey: ["project-dev-servers"],
     queryFn: async () => {
