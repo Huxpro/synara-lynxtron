@@ -17,21 +17,32 @@ const REUSE_REPORT = join(repoRoot, "apps/lynx/plan/reports/p5-r1-reuse-baseline
 const WEB_SOURCE_ROOT = "apps/web/src/";
 const TEST_FILE = /\.(test|browser)\.tsx?$|(^|\/)__tests__\/|Fixtures?\.tsx?$/;
 
-// Web modules whose behavior Lynx re-implements instead of sharing. A change
-// here never conflicts in git; it has to be ported by hand, so call it out.
+// Web modules whose behavior Lynx still re-implements instead of sharing. A
+// change here never conflicts in git; it has to be ported by hand, so call it
+// out. Modules leave this list when Lynx starts running the upstream source:
+// wsNativeApi.ts, store.ts, storeSelectors.ts (M1-M3a) and routes/__root.tsx
+// (EventRouter is generated from it) are no longer here.
 export const LYNX_PARALLEL_STATE_MODULES = Object.freeze({
-  "apps/web/src/routes/__root.tsx": "apps/lynx/src/app/router.tsx (session sync, polling)",
-  "apps/web/src/wsTransport.ts": "apps/lynx/src/data/synaraClient.lynx.ts",
-  "apps/web/src/wsNativeApi.ts": "apps/lynx/src/data/synaraClient.lynx.ts",
-  "apps/web/src/store.ts": "apps/lynx/src/app/queries.ts",
-  "apps/web/src/storeSelectors.ts": "apps/lynx/src/app/queries.ts",
+  "apps/web/src/wsTransport.ts": "apps/lynx/src/adapters/wsTransport.lynx.ts (compat transport)",
   "apps/web/src/components/ChatView.tsx": "apps/lynx/src/app/router.tsx (ThreadPage)",
   "apps/web/src/components/Sidebar.tsx": "apps/lynx/src/components/sidebar/Sidebar.lynx.tsx",
 });
 
+// State modules Lynx runs from upstream source (directly, or through the
+// EventRouter generator), whatever the reuse report's classification says.
+export const LYNX_SHARED_STATE_MODULES = Object.freeze(
+  new Set([
+    "apps/web/src/routes/__root.tsx",
+    "apps/web/src/wsNativeApi.ts",
+    "apps/web/src/store.ts",
+    "apps/web/src/storeSelectors.ts",
+  ]),
+);
+
 export function classifyUpstreamChange(path, reuseModules) {
   if (TEST_FILE.test(path)) return "tests";
   if (path in LYNX_PARALLEL_STATE_MODULES) return "parallel-state";
+  if (LYNX_SHARED_STATE_MODULES.has(path)) return "shared";
   const module = reuseModules.get(path);
   if (!module) return "web-only";
   if (module.currentReuse === "SHARED") return "shared";
