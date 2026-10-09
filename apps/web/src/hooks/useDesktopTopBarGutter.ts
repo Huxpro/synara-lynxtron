@@ -14,7 +14,6 @@ import { useSidebar } from "~/components/ui/sidebar";
 import { useDesktopCustomTitleBarActive } from "~/hooks/useDesktopCustomTitleBar";
 import { readDesktopZoomFactor, subscribeDesktopZoomFactor } from "~/lib/desktopZoom";
 import { isMacNavigatorPlatform } from "~/lib/utils";
-import { getDocumentElement } from "~/platform/env";
 
 /**
  * Class name backed by `index.css` (not Tailwind) so the gutter survives zoom
@@ -62,7 +61,7 @@ export function shouldReserveDesktopTopBarTrafficLightGutter(input: {
 }
 
 function applyTrafficLightGutterCssVar(zoomFactor: number): void {
-  getDocumentElement()?.style.setProperty(
+  document.documentElement.style.setProperty(
     DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_VAR,
     `${resolveMacDesktopTopBarTrafficLightGutterCssPx(zoomFactor)}px`,
   );
@@ -92,7 +91,7 @@ export function useSyncDesktopTopBarTrafficLightGutterZoom(): void {
     return () => {
       cancelAnimationFrame(frame);
       unsubscribe();
-      getDocumentElement()?.style.removeProperty(DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_VAR);
+      document.documentElement.style.removeProperty(DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CSS_VAR);
     };
   }, [isMacDesktop]);
 }

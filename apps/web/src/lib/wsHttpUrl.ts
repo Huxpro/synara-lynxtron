@@ -9,12 +9,9 @@
 // relative path never reaches the server. We mirror the WS host and forward the legacy token
 // query param so authenticated GET routes (attachments, local-image, …) can authorize the
 // request without touching cookies.
-import { getDesktopBridge } from "~/platform/desktopBridge";
-import { getLocationOrigin, isBrowser } from "~/platform/env";
-
 export function resolveWsHttpUrl(rawPath: string): string {
-  if (!isBrowser()) return rawPath;
-  const bridgeWsUrl = getDesktopBridge()?.getWsUrl?.();
+  if (typeof window === "undefined") return rawPath;
+  const bridgeWsUrl = window.desktopBridge?.getWsUrl?.();
   const envWsUrl = import.meta.env.VITE_WS_URL as string | undefined;
   const wsCandidate =
     typeof bridgeWsUrl === "string" && bridgeWsUrl.length > 0
@@ -22,7 +19,7 @@ export function resolveWsHttpUrl(rawPath: string): string {
       : typeof envWsUrl === "string" && envWsUrl.length > 0
         ? envWsUrl
         : null;
-  if (!wsCandidate) return new URL(rawPath, getLocationOrigin()).toString();
+  if (!wsCandidate) return new URL(rawPath, window.location.origin).toString();
   try {
     const wsUrl = new URL(wsCandidate);
     const protocol =
@@ -37,7 +34,7 @@ export function resolveWsHttpUrl(rawPath: string): string {
     }
     return httpUrl.toString();
   } catch {
-    return new URL(rawPath, getLocationOrigin()).toString();
+    return new URL(rawPath, window.location.origin).toString();
   }
 }
 

@@ -8,7 +8,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { encodeVoiceRecordingWav } from "./voiceRecorderEncoding";
 
-import { getUserMedia, isGetUserMediaAvailable } from "~/platform/env";
 const TARGET_SAMPLE_RATE = 24_000;
 const BUFFER_SIZE = 2_048;
 
@@ -54,7 +53,7 @@ export function useVoiceRecorder() {
   const runtimeRef = useRef<RecorderRuntime | null>(null);
   const startGenerationRef = useRef(0);
   const isStartingRef = useRef(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timerRef = useRef<number | null>(null);
   const waveformLevelsRef = useRef<number[]>([]);
   const waveformLastEmitAtRef = useRef(0);
   const [isRecording, setIsRecording] = useState(false);
@@ -65,7 +64,7 @@ export function useVoiceRecorder() {
 
   const clearTimer = useCallback(() => {
     if (timerRef.current !== null) {
-      clearInterval(timerRef.current);
+      window.clearInterval(timerRef.current);
       timerRef.current = null;
     }
   }, []);
@@ -107,7 +106,7 @@ export function useVoiceRecorder() {
     if (runtimeRef.current || isStartingRef.current) {
       throw new Error("Voice recording is already running.");
     }
-    if (!isGetUserMediaAvailable()) {
+    if (!navigator.mediaDevices?.getUserMedia) {
       throw new Error("Microphone recording is unavailable in this browser.");
     }
 
@@ -128,7 +127,7 @@ export function useVoiceRecorder() {
     let silentGainNode: GainNode | null = null;
 
     try {
-      stream = await getUserMedia({
+      stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           channelCount: 1,
           echoCancellation: true,
@@ -234,7 +233,7 @@ export function useVoiceRecorder() {
       setWaveformLevels([]);
       setDurationMs(0);
       setIsRecording(true);
-      timerRef.current = setInterval(() => {
+      timerRef.current = window.setInterval(() => {
         const activeRuntime = runtimeRef.current;
         if (!activeRuntime?.hasAudioSignal) {
           return;

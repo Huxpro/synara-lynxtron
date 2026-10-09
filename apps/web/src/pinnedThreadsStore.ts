@@ -8,7 +8,6 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { normalizePinnedIds, pinId, prunePinnedIds, unpinId } from "./pinning.logic";
 
-import { webStorage } from "~/platform/storage";
 interface PinnedThreadsStoreState {
   pinnedThreadIds: ThreadId[];
   pinThread: (threadId: ThreadId) => void;
@@ -67,7 +66,7 @@ export const usePinnedThreadsStore = create<PinnedThreadsStoreState>()(
     }),
     {
       name: PINNED_THREADS_STORAGE_KEY,
-      storage: createJSONStorage(() => webStorage),
+      storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         pinnedThreadIds: normalizePinnedIds(state.pinnedThreadIds),
       }),

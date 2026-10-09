@@ -14,7 +14,6 @@
 
 import type { DeviceOpenPaneRequestedEvent, ThreadDeviceState, ThreadId } from "@synara/contracts";
 import { create } from "zustand";
-import { getDocument } from "~/platform/env";
 
 interface DeviceStateStore {
   threadStatesByThreadId: Record<string, ThreadDeviceState | undefined>;
@@ -85,9 +84,8 @@ export const useDeviceStateStore = create<DeviceStateStore>()((set, get) => ({
 // Dev-only handle so the pane's availability and setup states — which otherwise
 // require a Mac without Xcode, or a broken helper — can be driven directly when
 // verifying the UI. Stripped from production builds by the import.meta.env guard.
-if (import.meta.env.DEV && getDocument() !== null) {
-  (globalThis as unknown as Record<string, unknown>).__deviceStateStoreForTests =
-    useDeviceStateStore;
+if (import.meta.env.DEV && typeof window !== "undefined") {
+  (window as unknown as Record<string, unknown>).__deviceStateStoreForTests = useDeviceStateStore;
 }
 
 export function selectThreadDeviceState(

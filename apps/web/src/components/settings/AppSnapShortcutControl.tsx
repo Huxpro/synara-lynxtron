@@ -27,7 +27,6 @@ import { Button } from "~/components/ui/button";
 import { Kbd, KbdGroup } from "~/components/ui/kbd";
 import { toastManager } from "~/components/ui/toast";
 
-import { getDesktopBridge } from "~/platform/desktopBridge";
 type ShortcutCheckState =
   | { status: "idle"; availability: null }
   | { status: "checking"; availability: null }
@@ -97,7 +96,7 @@ export function AppSnapShortcutControl({
       reportUnavailable(systemConflict);
       return;
     }
-    const bridge = getDesktopBridge()?.appSnap;
+    const bridge = window.desktopBridge?.appSnap;
     if (!bridge) {
       reportUnavailable("Requires the Synara desktop app on macOS.");
       return;
@@ -180,7 +179,7 @@ export function AppSnapShortcutControl({
   }
 
   async function saveShortcut(nextShortcut: DesktopAppSnapShortcut) {
-    const bridge = getDesktopBridge()?.appSnap;
+    const bridge = window.desktopBridge?.appSnap;
     if (!bridge) return;
     const result = await bridge.setShortcut(nextShortcut);
     // The manager adopts every well-formed shortcut, so keep settings in sync

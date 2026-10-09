@@ -40,7 +40,6 @@ import {
 } from "~/lib/terminalContext";
 import { useComposerDraftStore } from "../../composerDraftStore";
 
-import { raf } from "~/platform/frame";
 interface UseKanbanTaskComposerEditorInput {
   readonly promptRef: MutableRefObject<string>;
   readonly setPrompt: (nextPrompt: string) => void;
@@ -95,7 +94,7 @@ export function useKanbanTaskComposerEditor(input: UseKanbanTaskComposerEditorIn
   } = input;
 
   const scheduleComposerFocus = () => {
-    raf(() => {
+    window.requestAnimationFrame(() => {
       composerEditorRef.current?.focusAtEnd();
     });
   };
@@ -126,7 +125,7 @@ export function useKanbanTaskComposerEditor(input: UseKanbanTaskComposerEditorIn
     setComposerTrigger(
       detectComposerTrigger(next.text, expandCollapsedComposerCursor(next.text, nextCursor)),
     );
-    raf(() => {
+    window.requestAnimationFrame(() => {
       composerEditorRef.current?.focusAt(nextCursor);
     });
     return nextCursor;

@@ -9,7 +9,6 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 import type { KanbanOptimisticDispatchSnapshot } from "./components/kanban/kanban.logic";
 
-import { webStorage } from "~/platform/storage";
 /** Which kanban board the user sees: the classic 3-column escape hatch or the v2 board. */
 export type KanbanViewMode = "classic" | "v2";
 
@@ -188,7 +187,7 @@ export const useKanbanUiStore = create<KanbanUiStoreState>()(
     }),
     {
       name: KANBAN_UI_STORAGE_KEY,
-      storage: createJSONStorage(() => webStorage),
+      storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         draftOrderByProjectId: state.draftOrderByProjectId,
         kanbanViewMode: state.kanbanViewMode,

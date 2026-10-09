@@ -1,5 +1,3 @@
-import { getDocument } from "~/platform/env";
-import { dispatchWindowEvent } from "~/platform/events";
 // FILE: nativeSurfaceOcclusion.ts
 // Purpose: Notify native Electron surfaces when a DOM overlay starts or stops obscuring them.
 // Layer: Web cross-surface coordination
@@ -11,10 +9,10 @@ export const NATIVE_SURFACE_OCCLUSION_SYNC_EVENT = "synara:native-surface-occlus
 export const NATIVE_SURFACE_MENU_OVERLAY_SELECTOR = "[data-slot='menu-positioner']";
 
 export function notifyNativeSurfaceOcclusionChange(): void {
-  if (getDocument() === null) {
+  if (typeof window === "undefined") {
     return;
   }
-  dispatchWindowEvent(new Event(NATIVE_SURFACE_OCCLUSION_SYNC_EVENT));
+  window.dispatchEvent(new Event(NATIVE_SURFACE_OCCLUSION_SYNC_EVENT));
 }
 
 /** React callback ref: track only the mounted popup, not mutations across the app. */

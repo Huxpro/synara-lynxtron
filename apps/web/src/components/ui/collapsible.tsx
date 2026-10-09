@@ -2,7 +2,7 @@
 
 import { Collapsible as CollapsiblePrimitive } from "@base-ui/react/collapsible";
 
-import { DISCLOSURE_COLLAPSIBLE_PANEL_CLASS } from "~/platform/motion";
+import { DISCLOSURE_COLLAPSIBLE_PANEL_CLASS } from "~/lib/disclosureMotion";
 import { cn } from "~/lib/utils";
 
 function Collapsible({ ...props }: CollapsiblePrimitive.Root.Props) {

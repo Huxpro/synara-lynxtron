@@ -51,7 +51,7 @@ import {
   type DiffFileEditRequest,
 } from "../lib/diffEditBaseRev";
 import { resolveDiffEnvironmentState } from "../lib/threadEnvironment";
-import { disclosureWidthClassName } from "~/platform/motion";
+import { disclosureWidthClassName } from "../lib/disclosureMotion";
 import { useCopyToClipboard } from "../hooks/useCopyToClipboard";
 import { type RepoDiffScope, useRepoDiffScope, useRepoDiffScopeStore } from "../repoDiffScopeStore";
 import { useStore } from "../store";
@@ -127,7 +127,6 @@ import { type SplitViewPanePanelState } from "../splitViewStore";
 import { formatShortTimestamp } from "../timestampFormat";
 import type { TurnDiffSummary } from "../types";
 
-import { getWindowSelection } from "~/components/chat/chatSelectionDom";
 const EDITOR_DIFF_OPTIONS_MENU_ICON_CLASS_NAME = "size-3.5 shrink-0 text-muted-foreground";
 const EMPTY_KEYBINDINGS: ResolvedKeybindingsConfig = [];
 const DiffRenderModeSchema = Schema.Literals(["stacked", "split"]);
@@ -974,21 +973,21 @@ export default function DiffPanel({
     if (!diffOpen || wasOpen) {
       return;
     }
-    const timeoutId = setTimeout(() => {
+    const timeoutId = window.setTimeout(() => {
       setDiffWordWrap(settings.diffWordWrap);
       setDiffViewKind(resolveInitialDiffViewKind(selectedTurnId));
     }, 0);
-    return () => clearTimeout(timeoutId);
+    return () => window.clearTimeout(timeoutId);
   }, [diffOpen, selectedTurnId, settings.diffWordWrap]);
 
   useEffect(() => {
     if (selectedTurnId === null) {
       return;
     }
-    const timeoutId = setTimeout(() => {
+    const timeoutId = window.setTimeout(() => {
       setDiffViewKind((current) => (current === "turn" ? current : "turn"));
     }, 0);
-    return () => clearTimeout(timeoutId);
+    return () => window.clearTimeout(timeoutId);
   }, [selectedTurnId]);
 
   useEffect(() => {
@@ -1122,7 +1121,7 @@ export default function DiffPanel({
   // The diff body renders inside the @pierre/diffs shadow root, so selection
   // ancestors are resolved through shadow boundaries.
   const readDiffSelection = useCallback((container: HTMLElement) => {
-    const selection = getWindowSelection();
+    const selection = window.getSelection();
     if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
       return null;
     }

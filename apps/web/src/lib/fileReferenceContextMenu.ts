@@ -9,7 +9,6 @@ import { copyTextToClipboard } from "~/hooks/useCopyToClipboard";
 import { getNavigatorPlatform, isMacPlatform, isWindowsPlatform } from "~/lib/utils";
 import { readNativeApi } from "~/nativeApi";
 import { toastManager } from "~/components/ui/toast";
-import { getDesktopBridge } from "~/platform/desktopBridge";
 
 export function getRevealInFolderLabel(platform: string): string {
   if (isWindowsPlatform(platform)) {
@@ -39,7 +38,10 @@ export async function showFileReferenceContextMenu(input: {
   if (!api) {
     return;
   }
-  const revealPath = input.revealPath && getDesktopBridge() ? input.revealPath : undefined;
+  const revealPath =
+    input.revealPath && typeof window !== "undefined" && window.desktopBridge
+      ? input.revealPath
+      : undefined;
   const reference: ChatFileReference = {
     path: input.path,
     ...input.selection,

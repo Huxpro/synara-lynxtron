@@ -39,8 +39,8 @@
       }
     },
     "runtime": {
-      "classes": 1353,
-      "weighted": 18741
+      "classes": 1346,
+      "weighted": 18730
     }
   },
   "classes": [
@@ -18891,7 +18891,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -25090,7 +25090,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -33163,7 +33163,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNMAPPED",
       "reason": "no generated selector or approved deterministic patch"
     },
@@ -39370,7 +39370,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "CUSTOM",
       "reason": "project component class; covered by authored CSS, not the utility denominator"
     },
@@ -45883,7 +45883,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -52152,7 +52152,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -52282,7 +52282,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "CUSTOM",
       "reason": "project component class; covered by authored CSS, not the utility denominator"
     }

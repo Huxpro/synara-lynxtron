@@ -36,7 +36,6 @@ import { useCommittedPathname } from "./useCommittedPathname";
 import type { useHandleNewThread } from "./useHandleNewThread";
 import { isSidechatThread } from "@synara/shared/sidechatThread";
 
-import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 type NewThreadContext = ReturnType<typeof useHandleNewThread>;
 
 const EMPTY_RECENT_VIEW_ENTRIES: RecentViewDisplayEntry[] = [];
@@ -330,11 +329,11 @@ export function useRecentViewSwitcher(input: UseRecentViewSwitcherInput) {
       commitRecentSwitcherSelection();
     };
 
-    addWindowEventListener("keyup", onWindowKeyUp, { capture: true });
-    addWindowEventListener("blur", onWindowBlur);
+    window.addEventListener("keyup", onWindowKeyUp, { capture: true });
+    window.addEventListener("blur", onWindowBlur);
     return () => {
-      removeWindowEventListener("keyup", onWindowKeyUp, { capture: true });
-      removeWindowEventListener("blur", onWindowBlur);
+      window.removeEventListener("keyup", onWindowKeyUp, { capture: true });
+      window.removeEventListener("blur", onWindowBlur);
     };
   }, [commitRecentSwitcherSelection]);
 

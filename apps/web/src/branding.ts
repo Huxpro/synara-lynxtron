@@ -1,7 +1,7 @@
-import { getLocationProtocol } from "~/platform/env";
 export const APP_BASE_NAME = "Synara";
-const isCanaryDesktop = getLocationProtocol() === "synara-canary:";
-const isBetaDesktop = getLocationProtocol() === "synara-beta:";
+const isCanaryDesktop =
+  typeof window !== "undefined" && window.location?.protocol === "synara-canary:";
+const isBetaDesktop = typeof window !== "undefined" && window.location?.protocol === "synara-beta:";
 export const APP_DISPLAY_NAME = isCanaryDesktop
   ? "Synara Canary"
   : isBetaDesktop

@@ -74,7 +74,6 @@ import { useKanbanTaskComposerMenu } from "./useKanbanTaskComposerMenu";
 import { useKanbanTaskScratchDraft } from "./useKanbanTaskScratchDraft";
 import { useKanbanTaskSubmit } from "./useKanbanTaskSubmit";
 
-import { raf, cancelRaf } from "~/platform/frame";
 const EMPTY_COMPOSER_FILES: ReadonlyArray<ComposerFileAttachment> = [];
 
 function ignoreComposerFileRemoval(_fileId: string): void {}
@@ -307,11 +306,11 @@ export function KanbanNewTaskDialog({
   });
 
   useEffect(() => {
-    const frame = raf(() => {
+    const frame = window.requestAnimationFrame(() => {
       composerEditorRef.current?.focusAtEnd();
     });
     return () => {
-      cancelRaf(frame);
+      window.cancelAnimationFrame(frame);
     };
   }, []);
 

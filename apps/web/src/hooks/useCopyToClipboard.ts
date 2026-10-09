@@ -1,9 +1,80 @@
 import * as React from "react";
 
 import { toastManager } from "../components/ui/toast";
-import { copyTextToClipboard } from "../platform/clipboard";
 
-export { copyTextToClipboard };
+function fallbackCopyTextToClipboard(value: string): boolean {
+  if (typeof document === "undefined" || typeof document.execCommand !== "function") {
+    return false;
+  }
+
+  const activeElement =
+    typeof HTMLElement !== "undefined" && document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+  const selection = document.getSelection();
+  const savedRanges =
+    selection == null
+      ? []
+      : Array.from({ length: selection.rangeCount }, (_, index) => selection.getRangeAt(index));
+  const textarea = document.createElement("textarea");
+
+  textarea.value = value;
+  textarea.setAttribute("readonly", "true");
+  textarea.setAttribute("aria-hidden", "true");
+  textarea.style.position = "fixed";
+  textarea.style.top = "0";
+  textarea.style.left = "-9999px";
+  textarea.style.opacity = "0";
+  textarea.style.pointerEvents = "none";
+
+  document.body.appendChild(textarea);
+
+  try {
+    textarea.focus();
+    textarea.select();
+    textarea.setSelectionRange(0, textarea.value.length);
+    return document.execCommand("copy");
+  } finally {
+    textarea.remove();
+
+    if (selection) {
+      selection.removeAllRanges();
+      for (const range of savedRanges) {
+        selection.addRange(range);
+      }
+    }
+
+    activeElement?.focus();
+  }
+}
+
+export async function copyTextToClipboard(value: string): Promise<void> {
+  if (typeof window === "undefined") {
+    throw new Error("Clipboard API unavailable.");
+  }
+
+  if (!value) {
+    return;
+  }
+
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(value);
+      return;
+    } catch (error) {
+      if (fallbackCopyTextToClipboard(value)) {
+        return;
+      }
+      throw error;
+    }
+  }
+
+  if (fallbackCopyTextToClipboard(value)) {
+    return;
+  }
+
+  throw new Error("Clipboard API unavailable.");
+}
 
 export function useCopyToClipboard<TContext = void>({
   timeout: timeoutProp,
@@ -16,7 +87,7 @@ export function useCopyToClipboard<TContext = void>({
 } = {}): { copyToClipboard: (value: string, ctx: TContext) => void; isCopied: boolean } {
   const timeout = timeoutProp ?? 2000;
   const [isCopied, setIsCopied] = React.useState(false);
-  const timeoutIdRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timeoutIdRef = React.useRef<NodeJS.Timeout | null>(null);
   const onCopyRef = React.useRef(onCopy);
   const onErrorRef = React.useRef(onError);
   const timeoutRef = React.useRef(timeout);

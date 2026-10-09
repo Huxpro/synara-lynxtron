@@ -10,7 +10,7 @@ import {
   DISCLOSURE_INNER_CLASS,
   disclosureContentClassName,
   disclosureShellClassName,
-} from "~/platform/motion";
+} from "~/lib/disclosureMotion";
 
 export function DisclosureRegion(props: {
   open: boolean;
