@@ -8,7 +8,7 @@ import {
 import { resolveAppSnapTarget } from "@synara-web/appSnap.logic";
 
 import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
-import { fetchSynaraSidebarShellSnapshot } from "../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
 import { appSnap, type LynxAppSnapCapture } from "../platform/appSnap";
 import { webStorage } from "../platform/storage";
 import { loadLandingBootstrap } from "../components/composer/LandingComposer.lynx";
@@ -52,7 +52,7 @@ export function AppSnapCoordinator(props: {
       seenCaptureIdsRef.current.add(capture.captureId);
       queueRef.current = queueRef.current
         .then(async () => {
-          const snapshot = await fetchSynaraSidebarShellSnapshot();
+          const snapshot = await ensureNativeApi().orchestration.getShellSnapshot();
           const availableThreadIds = new Set<string>(snapshot.threads.map((thread) => thread.id));
           const draftsByThreadId = useComposerDraftStore.getState().draftsByThreadId;
           const restoredThreadId = findAppSnapCaptureThreadId(draftsByThreadId, capture.captureId);

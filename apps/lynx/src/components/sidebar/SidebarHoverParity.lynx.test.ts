@@ -69,10 +69,10 @@ describe("Lynx sidebar hover parity", () => {
     expect(source).toContain("deleteNativeProjectThreads({");
     expect(source).toContain("removeNativeProject({");
     expect(source).toContain("hasAnyThreads: projectThreads.length > 0");
-    expect(source).toContain("fetchProjectDevServers");
+    expect(source).toContain("ensureNativeApi().projects.listDevServers()");
     expect(source).toContain('action === "start-dev"');
     expect(source).toContain("selectPrimaryProjectRunCommand({");
-    expect(source).toContain("discoverProjectScripts({ cwd: projectSummary.workspaceRoot })");
+    expect(source).toContain(".projects.discoverScripts({ cwd: projectSummary.workspaceRoot })");
     expect(source).toContain("upsertProjectRunCommandScripts({");
     expect(source).toContain("<ProjectRunDialogLynx");
     expect(source).toContain("localServerMatchesRun(candidate, run)");

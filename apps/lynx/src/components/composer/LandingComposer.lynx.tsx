@@ -22,13 +22,7 @@ import { queryClient } from "../../app/queries";
 import { projectShellSnapshot } from "../../app/sessionShell.lynx";
 import { EmptyThreadContextTray } from "../../app/EmptyThreadContextTray.lynx";
 import { useComposerDraftStore } from "../../adapters/composerDraftStore.lynx";
-import {
-  dispatchSynaraCommand,
-  browseFilesystem,
-  fetchServerConfig,
-  fetchServerSettings,
-  fetchSynaraSidebarShellSnapshot,
-} from "../../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
 import { dialogs } from "../../platform/dialogs";
 import { webStorage } from "../../platform/storage";
 import { Button } from "../ui/button";
@@ -72,9 +66,11 @@ export async function loadLandingBootstrap(
 ) {
   "background only";
   const [snapshot, config, serverSettings] = await Promise.all([
-    fetchSynaraSidebarShellSnapshot(),
-    fetchServerConfig(),
-    fetchServerSettings().catch(() => null),
+    ensureNativeApi().orchestration.getShellSnapshot(),
+    ensureNativeApi().server.getConfig(),
+    ensureNativeApi()
+      .server.getSettings()
+      .catch(() => null),
   ]);
   const generalSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
@@ -86,9 +82,10 @@ export async function loadLandingBootstrap(
   const normalize = (shell: typeof snapshot) => projectShellSnapshot(useStore.getState(), shell);
   const { spaces, projects: normalizedProjects } = normalize(snapshot);
   const localFolderResult = config.homeDir
-    ? await browseFilesystem({
-        partialPath: `${config.homeDir.replace(/[\\/]+$/, "")}/`,
-      })
+    ? await ensureNativeApi()
+        .filesystem.browse({
+          partialPath: `${config.homeDir.replace(/[\\/]+$/, "")}/`,
+        })
         .then((result) => ({
           entries: result.entries,
           errorMessage: null,
@@ -127,7 +124,7 @@ export async function loadLandingBootstrap(
   }
   const projectId = landingId("project");
   try {
-    await dispatchSynaraCommand({
+    await ensureNativeApi().orchestration.dispatchCommand({
       type: "project.create",
       commandId: landingId("command"),
       projectId,
@@ -137,7 +134,7 @@ export async function loadLandingBootstrap(
       createWorkspaceRootIfMissing: containerKind === "studio",
       createdAt: new Date().toISOString(),
     });
-    const refreshed = await fetchSynaraSidebarShellSnapshot();
+    const refreshed = await ensureNativeApi().orchestration.getShellSnapshot();
     const created = refreshed.projects.find((project) => project.id === projectId);
     if (!created) throw new Error("The new chat workspace was not persisted.");
     return {
@@ -152,7 +149,7 @@ export async function loadLandingBootstrap(
       serverConfig: config,
     };
   } catch (error) {
-    const refreshed = await fetchSynaraSidebarShellSnapshot();
+    const refreshed = await ensureNativeApi().orchestration.getShellSnapshot();
     const recovered = refreshed.projects.find((project) => project.kind === containerKind);
     if (recovered) {
       return {
@@ -351,7 +348,7 @@ export function LandingComposer(props: {
         return;
       }
       const projectId = landingId("project");
-      await dispatchSynaraCommand({
+      await ensureNativeApi().orchestration.dispatchCommand({
         type: "project.create",
         commandId: landingId("command"),
         projectId,
@@ -396,7 +393,7 @@ export function LandingComposer(props: {
     await ensureLandingThreadCreated({
       state: threadCreationRef.current,
       create: async () => {
-        await dispatchSynaraCommand({
+        await ensureNativeApi().orchestration.dispatchCommand({
           type: "thread.create",
           commandId: landingId("command"),
           threadId,
@@ -412,15 +409,19 @@ export function LandingComposer(props: {
         });
       },
       recover: async () =>
-        (await fetchSynaraSidebarShellSnapshot()).threads.some((thread) => thread.id === threadId),
+        (await ensureNativeApi().orchestration.getShellSnapshot()).threads.some(
+          (thread) => thread.id === threadId,
+        ),
     });
     if ((props.notes ?? "").trim().length > 0) {
-      await dispatchSynaraCommand({
-        type: "thread.meta.update",
-        commandId: landingId("command"),
-        threadId,
-        notes: props.notes ?? "",
-      }).catch(() => undefined);
+      await ensureNativeApi()
+        .orchestration.dispatchCommand({
+          type: "thread.meta.update",
+          commandId: landingId("command"),
+          threadId,
+          notes: props.notes ?? "",
+        })
+        .catch(() => undefined);
     }
   }
 
@@ -513,7 +514,7 @@ export function LandingComposer(props: {
                     return;
                   }
                   const projectId = landingId("project");
-                  await dispatchSynaraCommand({
+                  await ensureNativeApi().orchestration.dispatchCommand({
                     type: "project.create",
                     commandId: landingId("command"),
                     projectId,

@@ -53,7 +53,9 @@ describe("Native Feedback dialog parity", () => {
     expect(source).toContain('placeholder: "Share details (required)"');
     expect(source).toContain("maxlength: 5000");
     expect(source).toContain("Diagnostics include app version");
-    expect(source).toContain("fetchSynaraThreadDetailSnapshot(props.activeThreadId!)");
+    expect(source).toContain(
+      ".orchestration.getThreadDetailSnapshot({ threadId: props.activeThreadId as ThreadId })",
+    );
     expect(source).toContain("messageCount: thread.messages.length");
     expect(source).toContain("activityCount: thread.activities.length");
     expect(source).toContain("props.onOpenChange(false);");

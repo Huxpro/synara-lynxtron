@@ -1,5 +1,7 @@
 import { useEffect, useInitData, useMemo, useRef, useState } from "@lynx-js/react";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
+import { projectSearchEntriesQueryOptions } from "@synara-web/lib/projectReactQuery";
+import { providerSkillsQueryOptions } from "@synara-web/lib/providerDiscoveryReactQuery";
 import { getRectByRef } from "@lynx-js/lynx-ui";
 import type { NodesRef } from "@lynx-js/types";
 import { useQuery } from "@tanstack/react-query";
@@ -88,12 +90,7 @@ import {
 } from "@synara-web/lib/composerPastedText";
 import type { FileCommentDraft } from "@synara-web/lib/fileComments";
 import type { TerminalContextDraft } from "@synara-web/lib/terminalContext";
-import {
-  dispatchSynaraCommand,
-  fetchProviderModels,
-  fetchProviderSkills,
-  searchProjectEntries,
-} from "../../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
 import {
   buildComposerInteractionModeSetCommand,
   buildComposerSendText,
@@ -560,9 +557,10 @@ export function Composer({
       if (!discoveryProvider) {
         throw new Error("Provider model discovery requires an active provider.");
       }
-      return fetchProviderModels({
+      // The server schema takes a missing `cwd`, not a null one.
+      return ensureNativeApi().provider.listModels({
         provider: discoveryProvider,
-        cwd: workspaceRoot ?? null,
+        ...(workspaceRoot ? { cwd: workspaceRoot } : {}),
       });
     },
     enabled: Boolean(discoveryProvider),
@@ -597,25 +595,23 @@ export function Composer({
       onProviderStatusesChange?.(serverConfig.providers);
     }
   }, [onProviderStatusesChange, serverConfig]);
-  const { data: providerSkillsCatalog, isPending: providerSkillsPending } = useQuery({
-    queryKey: ["provider-skills", activeProvider ?? null, workspaceRoot ?? null, threadId],
-    queryFn: () => {
-      "background only";
-      if (!activeProvider || !workspaceRoot) {
-        throw new Error("Skill discovery requires a provider and workspace.");
-      }
-      return fetchProviderSkills({
-        provider: activeProvider,
-        cwd: workspaceRoot,
-        threadId,
-      });
-    },
-    enabled:
-      (composerTrigger?.kind === "skill" || composerTrigger?.kind === "slash-command") &&
-      Boolean(activeProvider) &&
-      Boolean(workspaceRoot),
-    staleTime: 30_000,
-  });
+  // Upstream's skill query (and key), so Settings skill toggles refresh it.
+  const providerSkillsQuery = useQuery(
+    providerSkillsQueryOptions({
+      // Disabled without a provider; the placeholder only completes the key.
+      provider: activeProvider ?? "codex",
+      cwd: workspaceRoot ?? null,
+      threadId,
+      enabled:
+        (composerTrigger?.kind === "skill" || composerTrigger?.kind === "slash-command") &&
+        Boolean(activeProvider),
+    }),
+  );
+  const providerSkillsCatalog = providerSkillsQuery.data;
+  // Upstream answers with an empty placeholder while the first read is out.
+  const providerSkillsPending =
+    providerSkillsQuery.isPending ||
+    (providerSkillsQuery.isPlaceholderData && providerSkillsQuery.isFetching);
   const activeRuntimeModel = useMemo(
     () =>
       activeModelSelection
@@ -712,24 +708,15 @@ export function Composer({
     return () => clearTimeout(timer);
   }, [mentionQuery]);
   const effectiveMentionQuery = mentionQuery.length > 0 ? debouncedMentionQuery : "";
-  const { data: workspaceEntriesResult } = useQuery({
-    queryKey: ["composer-path-entries", workspaceRoot ?? null, effectiveMentionQuery],
-    queryFn: () => {
-      "background only";
-      if (!workspaceRoot) throw new Error("Workspace entry search is unavailable.");
-      return searchProjectEntries({
-        cwd: workspaceRoot,
-        query: effectiveMentionQuery,
-        limit: COMPOSER_PATH_QUERY_LIMIT,
-      });
-    },
-    enabled:
-      composerTrigger?.kind === "mention" &&
-      Boolean(workspaceRoot) &&
-      effectiveMentionQuery.length > 0,
-    staleTime: 15_000,
-    placeholderData: (previous) => previous,
-  });
+  const { data: workspaceEntriesResult } = useQuery(
+    projectSearchEntriesQueryOptions({
+      cwd: workspaceRoot ?? null,
+      query: effectiveMentionQuery,
+      limit: COMPOSER_PATH_QUERY_LIMIT,
+      enabled: composerTrigger?.kind === "mention",
+      staleTime: 15_000,
+    }),
+  );
   const pathMentionItems = useMemo(
     () =>
       composerTrigger?.kind === "mention" && effectiveMentionQuery.length > 0
@@ -1504,7 +1491,7 @@ export function Composer({
       setSendError(null);
       setIsStopping(true);
       try {
-        await dispatchSynaraCommand(
+        await ensureNativeApi().orchestration.dispatchCommand(
           buildComposerTurnInterruptCommand({
             activeTurnId,
             commandId: createComposerDispatchId("command"),
@@ -1582,7 +1569,7 @@ export function Composer({
           });
           const assistantDeliveryMode = await resolveNativeAssistantDeliveryMode();
           await stagedFiles.runWithDispatch((attachments) =>
-            dispatchSynaraCommand(
+            ensureNativeApi().orchestration.dispatchCommand(
               buildComposerTurnStartCommand({
                 assistantDeliveryMode,
                 attachments: [...attachments, ...assistantSelections],
@@ -1624,7 +1611,7 @@ export function Composer({
         await onSetInteractionMode(nextInteractionMode);
         return;
       }
-      await dispatchSynaraCommand(
+      await ensureNativeApi().orchestration.dispatchCommand(
         buildComposerInteractionModeSetCommand({
           commandId: createComposerDispatchId("command"),
           createdAt: new Date().toISOString(),
@@ -1646,7 +1633,7 @@ export function Composer({
         await onSetRuntimeMode(nextRuntimeMode);
         return;
       }
-      await dispatchSynaraCommand(
+      await ensureNativeApi().orchestration.dispatchCommand(
         buildComposerRuntimeModeSetCommand({
           commandId: createComposerDispatchId("command"),
           createdAt: new Date().toISOString(),

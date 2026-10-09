@@ -26,10 +26,6 @@ describe("landing composer fidelity contract", () => {
       "utf8",
     );
     const composerSource = readFileSync(new URL("./Composer.lynx.tsx", import.meta.url), "utf8");
-    const clientSource = readFileSync(
-      new URL("../../data/synaraClient.lynx.ts", import.meta.url),
-      "utf8",
-    );
     const sidebarPrimaryActionStyles = readFileSync(
       new URL("../../adapters/sidebar-primary-action-elements.css", import.meta.url),
       "utf8",
@@ -91,9 +87,9 @@ describe("landing composer fidelity contract", () => {
     expect(landingSource).toContain("worktreePath: workspaceContext.worktreePath");
     expect(landingSource).toContain("localFoldersError");
     expect(landingSource.match(/serverConfig:\s*config/g)).toHaveLength(3);
-    expect(landingSource).toContain("fetchServerConfig()");
+    expect(landingSource).toContain("ensureNativeApi().server.getConfig(),");
     expect(landingSource).not.toContain("fetchFreshServerConfig()");
-    expect(landingSource).toContain("fetchServerSettings().catch(() => null)");
+    expect(landingSource).toContain(".server.getSettings()\n      .catch(() => null),");
     expect(landingSource).toContain("serverSettings?.defaultThreadEnvMode");
     expect(landingSource).toContain("export async function loadLandingBootstrap(");
     expect(routerSource).toContain("const initialModelProvider = resolveLandingModelProvider(");

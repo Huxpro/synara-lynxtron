@@ -7,7 +7,7 @@ describe("Lynx Pull Requests detail capabilities", () => {
 
     expect(source).toContain('availableTabs={["summary", "timeline", "code"]}');
     expect(source).toContain('enabled: selectedInput !== null && activeDetailTab === "code"');
-    expect(source).toContain("return fetchPullRequestDiff(selectedInput)");
+    expect(source).toContain("return ensureNativeApi().pullRequests.diff(selectedInput)");
     expect(source).toContain("buildPullRequestCodeView(");
     expect(source).toContain('<PullRequestCodeStateComposition kind="loading"');
     expect(source).toContain("selectedDiffError ? (");
@@ -22,17 +22,17 @@ describe("Lynx Pull Requests detail capabilities", () => {
     expect(source).toContain("commentingAvailable");
   });
 
-  it("keeps the typed RPC path in the background query owner", () => {
-    const queries = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
-    const client = readFileSync(new URL("../data/synaraClient.lynx.ts", import.meta.url), "utf8");
-
-    expect(queries).toContain("export async function fetchPullRequestDiff");
-    expect(queries).toContain("fetchSynaraPullRequestDiff");
-    expect(queries).toContain("export async function postPullRequestComment");
-    expect(queries).toContain("postSynaraPullRequestComment");
-    expect(client).toContain('transportRequest<PullRequestDiffResult>("pullRequests.diff", input)');
-    expect(client).toContain(
-      'transportRequest<PullRequestActionResult>("pullRequests.comment", input)',
+  it("reads and writes pull requests through the shared facade", () => {
+    const source = readFileSync(new URL("./FeatureListsPage.tsx", import.meta.url), "utf8");
+    const composer = readFileSync(
+      new URL("../adapters/PullRequestCommentComposer.lynx.tsx", import.meta.url),
+      "utf8",
     );
+
+    expect(source).toContain("return ensureNativeApi().pullRequests.detail(selectedInput)");
+    expect(source).toContain("ensureNativeApi().pullRequests.action(input)");
+    expect(source).toContain("await ensureNativeApi().pullRequests.setPinned(input)");
+    expect(composer).toContain("ensureNativeApi().pullRequests.comment(input)");
+    expect(source).not.toContain("synaraClient");
   });
 });

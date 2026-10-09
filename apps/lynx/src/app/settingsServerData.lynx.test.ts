@@ -236,24 +236,4 @@ describe("Settings sources and the legacy client", () => {
       }
     }
   });
-
-  it("the legacy client no longer carries the Settings-only requests", () => {
-    const client = readFileSync(new URL("../data/synaraClient.lynx.ts", import.meta.url), "utf8");
-    for (const removed of [
-      "subscribeServerSettings",
-      "updateServerSettings",
-      "repairSynaraState",
-      "fetchManagedWorktrees",
-      "removeManagedWorktree",
-      "fetchSkillsCatalog",
-      "fetchExternalMcpIntegrations",
-      "createExternalMcpIntegration",
-      "revokeExternalMcpIntegration",
-      "refreshExternalMcpPairing",
-      "fetchProfileStats",
-      "fetchProfileTokenStats",
-    ]) {
-      expect(client, removed).not.toContain(removed);
-    }
-  });
 });

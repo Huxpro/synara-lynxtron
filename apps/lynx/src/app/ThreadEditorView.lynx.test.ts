@@ -55,8 +55,10 @@ describe("Lynx Editor view", () => {
     expect(actionsSource).toContain("addProjectAction(project.scripts");
     expect(actionsSource).toContain("updateProjectAction(project.scripts");
     expect(actionsSource).toContain("deleteProjectAction(project.scripts");
-    expect(actionsSource).toContain("await upsertKeybinding(");
-    expect(actionsSource).toContain("await removeKeybinding(");
+    expect(actionsSource).toContain("await ensureNativeApi().server.upsertKeybinding({");
+    expect(actionsSource).toContain("rule: keybindingRule as KeybindingRule,");
+    expect(actionsSource).toContain("await resetProjectScriptKeybinding(");
+    expect(actionsSource).toContain('edits: [{ type: "reset", command: commandForProjectScript(');
     expect(actionsSource).toContain("aria-label={`Edit ${script.name}`}");
     expect(actionsSource).toContain(
       "props.actionState.showProjectActions && (project?.scripts.length ?? 0) > 0",

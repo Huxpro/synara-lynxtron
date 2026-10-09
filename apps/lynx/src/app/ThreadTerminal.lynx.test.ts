@@ -181,11 +181,10 @@ describe("Lynx thread terminal", () => {
       /\.ThreadTerminalJumpIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*opacity:\s*0\.8;/s,
     );
     expect(terminalSource).toContain("platformTerminal.ackOutput({");
-    expect(terminalSource).toContain('"synara:terminal-event"');
-    expect(terminalSource).toContain(
-      'import(/* webpackMode: "eager" */ "../data/synaraClient.lynx")',
-    );
-    expect(terminalSource).toContain("subscribeTerminalEvents(() => {})");
+    // One terminal stream per socket: the shared facade owns it.
+    expect(terminalSource).toContain("return ensureNativeApi().terminal.onEvent(acceptEvent);");
+    expect(terminalSource).not.toContain('"synara:terminal-event"');
+    expect(terminalSource).not.toContain("synaraClient");
     expect(terminalSource).toContain("applyTerminalEventToSnapshot({");
     expect(terminalSource).toContain("readSettingsBehaviorProjection(");
     expect(terminalSource).toContain("webStorage.getItem(APP_SETTINGS_STORAGE_KEY)");

@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "@lynx-js/react";
+import type { NativeApi } from "@synara/contracts";
+import { ensureNativeApi } from "~/nativeApi";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { AutomationDefinitionRow, AutomationTriageRow } from "@synara/shared/automationList";
 import { projectAutomationList } from "@synara/shared/automationList";
@@ -8,14 +10,7 @@ import { PlusIcon, RefreshCwIcon } from "../lib/icons";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import { sleepOnHost } from "../platform/timer";
-import {
-  createAutomation,
-  deleteAutomation,
-  fetchAutomations,
-  queryClient,
-  runAutomationNow,
-  updateAutomation,
-} from "./queries";
+import { queryClient } from "./queries";
 import { useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import { AutomationDialog } from "./AutomationDialog.lynx";
 import { AutomationDetailPage } from "./AutomationDetailPage.lynx";
@@ -218,24 +213,27 @@ export function AutomationsPage({
   const [editOpen, setEditOpen] = useState(false);
   const automations = useQuery({
     queryKey: ["automations"],
-    queryFn: fetchAutomations,
+    queryFn: () => ensureNativeApi().automation.list({}),
   });
   const sidebar = useSidebarSnapshot();
   const updateMutation = useMutation({
-    mutationFn: updateAutomation,
+    mutationFn: (input: Parameters<NativeApi["automation"]["update"]>[0]) =>
+      ensureNativeApi().automation.update(input),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["automations"] });
     },
   });
   const deleteMutation = useMutation({
-    mutationFn: deleteAutomation,
+    mutationFn: (input: Parameters<NativeApi["automation"]["delete"]>[0]) =>
+      ensureNativeApi().automation.delete(input),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["automations"] });
       navigate("/automations");
     },
   });
   const createMutation = useMutation({
-    mutationFn: createAutomation,
+    mutationFn: (input: Parameters<NativeApi["automation"]["create"]>[0]) =>
+      ensureNativeApi().automation.create(input),
     // Like the web list, creating closes the dialog and keeps the list, where
     // the new automation appears; it does not open the detail.
     onSuccess: async () => {
@@ -244,7 +242,8 @@ export function AutomationsPage({
     },
   });
   const runNowMutation = useMutation({
-    mutationFn: runAutomationNow,
+    mutationFn: (input: Parameters<NativeApi["automation"]["runNow"]>[0]) =>
+      ensureNativeApi().automation.runNow(input),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["automations"] });
     },

@@ -19,7 +19,7 @@ describe("Lynx thread transcript polling", () => {
     expect(routerOwnerSource).toContain("fetchThreadTranscriptRows(threadId)");
     expect(routerOwnerSource).toContain("fetchThreadHeaderSummary(threadId)");
     expect(routerOwnerSource).toContain("retry: false");
-    expect(routerOwnerSource).toContain("subscribeOrchestrationShellEvents((item) => {");
+    expect(routerOwnerSource).toContain("ensureNativeApi().orchestration.onShellEvent((item) => {");
     // Sidebar, Kanban and route threads follow shell changes through the shared
     // store; only the thread page still polls (plan Step 4).
     expect(routerOwnerSource).toContain("useRouteThreadSummaries()");

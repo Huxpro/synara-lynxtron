@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "@lynx-js/react";
 
-import { dispatchSynaraCommand } from "../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
 import { queryClient } from "./queries";
 
 function temporaryCommandId(): string {
@@ -50,7 +50,7 @@ export function useTemporaryThreadLifecycle(
       }
       void deleteTemporaryThreadBestEffort({
         dispatchDelete: () =>
-          dispatchSynaraCommand({
+          ensureNativeApi().orchestration.dispatchCommand({
             type: "thread.delete",
             commandId: temporaryCommandId() as never,
             threadId: threadId as never,

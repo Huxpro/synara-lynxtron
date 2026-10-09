@@ -1,4 +1,5 @@
 import { useEffect, useState } from "@lynx-js/react";
+import { ensureNativeApi } from "~/nativeApi";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { useQuery } from "@tanstack/react-query";
 import type {
@@ -32,7 +33,6 @@ import { AutomationDialog } from "./AutomationDialog.lynx";
 import type { ProjectSummary, ThreadSummary } from "./queries";
 import { AutomationTimeInput } from "./AutomationTimeInput.lynx";
 import { ComposerModelControl } from "../components/composer/ComposerModelControl.lynx";
-import { fetchAutomationCreateModels } from "./queries";
 import {
   SCHEDULE_KIND_OPTIONS,
   datetimeLocalFromIso,
@@ -207,11 +207,15 @@ function AutomationDetailModelControl(props: {
       catalogProvider,
       props.project?.workspaceRoot ?? null,
     ],
-    queryFn: () =>
-      fetchAutomationCreateModels({
+    queryFn: () => {
+      "background only";
+      const cwd = props.project?.workspaceRoot;
+      // The server schema takes a missing `cwd`, not a null one.
+      return ensureNativeApi().provider.listModels({
         provider: catalogProvider,
-        cwd: props.project?.workspaceRoot ?? null,
-      }),
+        ...(cwd ? { cwd } : {}),
+      });
+    },
     enabled: Boolean(props.project),
     staleTime: 30_000,
   });

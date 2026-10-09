@@ -1,41 +1,31 @@
 import { useEffect, useState } from "@lynx-js/react";
+import { addWsTransportStateListener } from "@synara-web/wsTransportEvents";
 
-import type { RpcTransportState } from "./rpcTransport.logic";
-import { sleepOnHost } from "../platform/timer";
+import {
+  noticeStateForWsTransportState,
+  type TransportNoticeState,
+} from "../app/transportRecovery.logic";
 
-async function readTransportState(): Promise<RpcTransportState> {
-  "background only";
-  const { getSynaraTransportState } = await import(/* webpackMode: "eager" */ "./synaraClient");
-  return getSynaraTransportState();
-}
-
-export function useSynaraTransportState(): RpcTransportState {
-  const [state, setState] = useState<RpcTransportState>("idle");
+/**
+ * Connection state for the transport notice and the recovery refetch. One
+ * source: the state the shared transport publishes through upstream's
+ * `wsTransportEvents` (the same events session sync and the composer notice
+ * read), not a second observer of the host relay.
+ */
+export function useSynaraTransportState(): TransportNoticeState {
+  const [state, setState] = useState<TransportNoticeState>("idle");
 
   useEffect(() => {
     "background only";
-    let cancelled = false;
-
-    async function observe(): Promise<void> {
-      "background only";
-      while (!cancelled) {
-        try {
-          const next = await readTransportState();
-          if (!cancelled) {
-            setState((current) => (current === next ? current : next));
-          }
-        } catch {
-          // Query failures carry the typed transport error. This observer is a
-          // presentation aid and must never become a second failure source.
-        }
-        if (!cancelled) await sleepOnHost(100);
-      }
-    }
-
-    void observe();
-    return () => {
-      cancelled = true;
-    };
+    let everOpen = false;
+    return addWsTransportStateListener(
+      (next) => {
+        if (next === "open") everOpen = true;
+        const projected = noticeStateForWsTransportState(next, everOpen);
+        setState((current) => (current === projected ? current : projected));
+      },
+      { replayCurrent: true },
+    );
   }, []);
 
   return state;

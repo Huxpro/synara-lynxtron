@@ -3,11 +3,12 @@ import type {
   PullRequestCommentInput,
   PullRequestDetail,
 } from "@synara/contracts";
+import { ensureNativeApi } from "~/nativeApi";
 import { createElement, useRef, useState } from "@lynx-js/react";
 import githubSvg from "@synara-central-icons/github.svg?raw";
 import sendArrowSvg from "@synara-central-icons/arrow-up.svg?raw";
 
-import { postPullRequestComment, queryClient } from "../app/queries";
+import { queryClient } from "../app/queries";
 import { Button } from "../components/ui/button";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { useTheme } from "./useTheme.lynx";
@@ -68,7 +69,9 @@ export function PullRequestCommentComposer(props: {
   const isComposingRef = useRef(false);
   const submittingRef = useRef(false);
   const { activeTheme, semanticIconColor } = useTheme();
-  const postComment = props.postComment ?? postPullRequestComment;
+  const postComment =
+    props.postComment ??
+    ((input: PullRequestCommentInput) => ensureNativeApi().pullRequests.comment(input));
   const normalizedBody = body.trim();
   const canSubmit =
     normalizedBody.length > 0 &&

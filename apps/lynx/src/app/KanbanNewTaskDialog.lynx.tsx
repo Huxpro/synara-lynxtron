@@ -7,6 +7,7 @@ import type {
   ProviderKind,
   RuntimeMode,
 } from "@synara/contracts";
+import { ensureNativeApi } from "~/nativeApi";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { createElement, useRef, useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
@@ -66,11 +67,7 @@ import {
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { dialogs } from "../platform/dialogs";
 import { webStorage } from "../platform/storage";
-import {
-  fetchAutomationCreateModels,
-  resolveNativeAssistantDeliveryMode,
-  type ProjectSummary,
-} from "./queries";
+import { resolveNativeAssistantDeliveryMode, type ProjectSummary } from "./queries";
 import {
   buildNativeKanbanTaskCreateCommand,
   createNativeKanbanTaskId,
@@ -99,16 +96,12 @@ async function dispatchKanbanTaskCommand(
   command: ClientOrchestrationCommand,
 ): Promise<{ readonly sequence: number }> {
   "background only";
-  const { dispatchSynaraCommand } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
-  return dispatchSynaraCommand(command);
+  return ensureNativeApi().orchestration.dispatchCommand(command);
 }
 
 async function fetchKanbanTaskShellSnapshot(): Promise<OrchestrationShellSnapshot> {
   "background only";
-  const { fetchSynaraSidebarShellSnapshot } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return fetchSynaraSidebarShellSnapshot();
+  return ensureNativeApi().orchestration.getShellSnapshot();
 }
 
 function NativeTaskTextarea(props: {
@@ -330,11 +323,15 @@ export function KanbanNewTaskDialog(props: {
       modelCatalogProvider,
       currentProject?.workspaceRoot ?? null,
     ],
-    queryFn: () =>
-      fetchAutomationCreateModels({
+    queryFn: () => {
+      "background only";
+      const cwd = currentProject?.workspaceRoot;
+      // The server schema takes a missing `cwd`, not a null one.
+      return ensureNativeApi().provider.listModels({
         provider: modelCatalogProvider,
-        cwd: currentProject?.workspaceRoot ?? null,
-      }),
+        ...(cwd ? { cwd } : {}),
+      });
+    },
     staleTime: 60_000,
   });
   const images = useComposerDraftStore(

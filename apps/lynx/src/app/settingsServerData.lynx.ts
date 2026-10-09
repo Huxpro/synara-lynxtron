@@ -85,10 +85,3 @@ export function externalMcpIntegrationsQueryOptions() {
     staleTime: 5_000,
   });
 }
-
-/**
- * The composer's skill list still lives under a Lynx-only key
- * (`components/composer/Composer.lynx.tsx`). Skill toggles must refresh it
- * until the composer reads `providerSkillsQueryOptions`; delete this then.
- */
-export const LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY = ["provider-skills"] as const;

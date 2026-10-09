@@ -1,4 +1,5 @@
 import { useEffect, useState } from "@lynx-js/react";
+import { ensureNativeApi } from "~/nativeApi";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -29,7 +30,7 @@ import {
   type AutomationDraftWarningId,
 } from "@synara-web/lib/automationDraft";
 
-import { fetchAutomationCreateModels, type ProjectSummary, type ThreadSummary } from "./queries";
+import type { ProjectSummary, ThreadSummary } from "./queries";
 import { webStorage } from "../platform/storage";
 import { ComposerModelControl } from "../components/composer/ComposerModelControl.lynx";
 import { Button } from "../components/ui/button";
@@ -128,11 +129,15 @@ export function AutomationCreateDialog({
       modelCatalogProvider,
       projects.find((candidate) => candidate.id === projectId)?.workspaceRoot ?? null,
     ],
-    queryFn: () =>
-      fetchAutomationCreateModels({
+    queryFn: () => {
+      "background only";
+      const cwd = projects.find((candidate) => candidate.id === projectId)?.workspaceRoot;
+      // The server schema takes a missing `cwd`, not a null one.
+      return ensureNativeApi().provider.listModels({
         provider: modelCatalogProvider,
-        cwd: projects.find((candidate) => candidate.id === projectId)?.workspaceRoot ?? null,
-      }),
+        ...(cwd ? { cwd } : {}),
+      });
+    },
     enabled: open && Boolean(projects.find((candidate) => candidate.id === projectId)),
     staleTime: 30_000,
   });

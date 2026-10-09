@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "@lynx-js/react";
+import { ensureNativeApi } from "~/nativeApi";
 import arrowDownSvg from "@tabler/icons/outline/arrow-down.svg?raw";
 
 import {
@@ -685,10 +686,7 @@ function TranscriptMessage({
         );
         if (!confirmed) return;
         try {
-          const { dispatchSynaraCommand } = await import(
-            /* webpackMode: "eager" */ "../data/synaraClient"
-          );
-          await dispatchSynaraCommand({
+          await ensureNativeApi().orchestration.dispatchCommand({
             type: "thread.checkpoint.revert",
             commandId: `lynx-command-${Date.now()}-${Math.random().toString(16).slice(2)}` as never,
             threadId: threadId as never,
@@ -733,19 +731,18 @@ function TranscriptMessage({
     accessibleLabel: pinActionLabel("message", pinned),
     onActivate: () => {
       "background only";
-      void import(/* webpackMode: "eager" */ "../data/synaraClient").then(
-        ({ dispatchSynaraCommand }) =>
-          dispatchSynaraCommand({
-            type: pinned ? "thread.pinned-message.remove" : "thread.pinned-message.add",
-            commandId: `lynx-command-${Date.now()}-${Math.random().toString(16).slice(2)}` as never,
-            threadId: threadId as never,
-            messageId: message.id,
-          }).then(() =>
-            queryClient.invalidateQueries({
-              queryKey: ["thread-detail", threadId],
-            }),
-          ),
-      );
+      void ensureNativeApi()
+        .orchestration.dispatchCommand({
+          type: pinned ? "thread.pinned-message.remove" : "thread.pinned-message.add",
+          commandId: `lynx-command-${Date.now()}-${Math.random().toString(16).slice(2)}` as never,
+          threadId: threadId as never,
+          messageId: message.id,
+        })
+        .then(() =>
+          queryClient.invalidateQueries({
+            queryKey: ["thread-detail", threadId],
+          }),
+        );
     },
   });
   const timestamp = formatShortTimestamp(message.createdAt, timestampFormat);
@@ -1314,10 +1311,7 @@ export function Transcript({
     setEditSubmitting(true);
     setEditError(null);
     try {
-      const { dispatchSynaraCommand } = await import(
-        /* webpackMode: "eager" */ "../data/synaraClient"
-      );
-      await dispatchSynaraCommand({
+      await ensureNativeApi().orchestration.dispatchCommand({
         type: "thread.message.edit-and-resend",
         commandId: `lynx-command-${Date.now()}-${Math.random().toString(16).slice(2)}` as never,
         threadId: threadId as never,

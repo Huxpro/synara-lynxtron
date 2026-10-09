@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "@lynx-js/react";
+import { ensureNativeApi } from "~/nativeApi";
 
 import type { KanbanCard } from "@synara-web/components/kanban/kanban.logic";
 import { isKanbanDraftOnlyCard } from "@synara-web/components/kanban/kanban.logic";
@@ -84,9 +85,6 @@ export function useNativeKanbanCardActions(input: {
     setMutationPending(true);
     setMutationTarget({ ...target, error: null });
     try {
-      const { dispatchSynaraCommand } = await import(
-        /* webpackMode: "eager" */ "../data/synaraClient"
-      );
       let command;
       if (action === "start") {
         const text = target.value.trim();
@@ -120,7 +118,7 @@ export function useNativeKanbanCardActions(input: {
           threadId: card.threadId,
         });
       }
-      await dispatchSynaraCommand(command);
+      await ensureNativeApi().orchestration.dispatchCommand(command);
       setMutationNotice(KANBAN_MUTATION_COPY[action].success);
       setMutationTarget(null);
     } catch (error) {
@@ -180,10 +178,7 @@ export function useNativeKanbanCardActions(input: {
           threadId: card.threadId,
         });
         if (!command) return;
-        const { dispatchSynaraCommand } = await import(
-          /* webpackMode: "eager" */ "../data/synaraClient"
-        );
-        await dispatchSynaraCommand(command);
+        await ensureNativeApi().orchestration.dispatchCommand(command);
         setMutationNotice(
           action === "toggle-pin"
             ? card.thread?.isPinned

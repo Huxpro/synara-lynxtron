@@ -18,19 +18,11 @@ describe("Lynx plugin library", () => {
       new URL("./PluginLibraryPage.lynx.tsx", import.meta.url),
       "utf8",
     );
-    const queriesSource = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
-    const clientSource = readFileSync(
-      new URL("../data/synaraClient.lynx.ts", import.meta.url),
-      "utf8",
-    );
     const warningSource = readFileSync(
       new URL("./PluginLibraryWarning.lynx.tsx", import.meta.url),
       "utf8",
     );
 
-    expect(pageSource).toContain("fetchPluginLibraryCapabilities");
-    expect(pageSource).toContain("fetchPluginLibraryPlugins");
-    expect(pageSource).toContain("fetchPluginLibrarySkills");
     expect(pageSource).toContain("if (!plugin.installed) continue;");
     expect(pageSource).toContain("supportsPluginDiscovery");
     expect(pageSource).toContain("supportsSkillDiscovery");
@@ -65,14 +57,14 @@ describe("Lynx plugin library", () => {
     expect(pageSource).not.toContain("PluginLibraryRowStatus");
     expect(pageSource).toContain('className="PluginLibrarySectionTitle">Skills</text>');
     expect(pageSource).toContain("PROVIDER_DISPLAY_NAMES[provider]");
-    expect(pageSource).toContain("fetchPluginLibraryCapabilities(provider)");
-    expect(pageSource).toContain("fetchPluginLibraryPlugins(provider)");
-    expect(pageSource).toContain("fetchPluginLibrarySkills(provider)");
-    expect(queriesSource).toContain("return fetchProviderComposerCapabilities(provider)");
-    expect(queriesSource).toContain("return fetchProviderPlugins({ provider, cwd: config.cwd })");
-    expect(queriesSource).toContain("return fetchProviderSkills({ provider, cwd: config.cwd })");
-    expect(clientSource).toContain(
-      'transportRequest<ProviderListPluginsResult>("provider.listPlugins"',
+    expect(pageSource).toContain(
+      "return ensureNativeApi().provider.getComposerCapabilities({ provider });",
+    );
+    expect(pageSource).toContain(
+      "return ensureNativeApi().provider.listPlugins({ provider, cwd: config.cwd });",
+    );
+    expect(pageSource).toContain(
+      "return ensureNativeApi().provider.listSkills({ provider, cwd: config.cwd });",
     );
   });
 

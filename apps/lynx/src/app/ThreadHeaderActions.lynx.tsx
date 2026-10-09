@@ -26,7 +26,7 @@ import {
 import { DEFAULT_THREAD_TERMINAL_ID } from "@synara-web/types";
 import handoffSvg from "@synara-central-icons/arrow-left-right.svg?raw";
 
-import { dispatchSynaraCommand } from "../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
 import { PlusIcon, SettingsIcon } from "../lib/icons.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
@@ -69,6 +69,18 @@ export function ProjectActionAddButton(props: {
       {!props.compact ? <text className="ThreadHeaderTextActionLabel">Add action</text> : null}
     </Button>
   );
+}
+
+/**
+ * Drops every binding of one project-script command. Upstream's `reset` edit
+ * restores the shipped bindings, which for a project-script command (none
+ * shipped) leaves it unassigned.
+ */
+function resetProjectScriptKeybinding(scriptId: string) {
+  "background only";
+  return ensureNativeApi().server.editKeybindings({
+    edits: [{ type: "reset", command: commandForProjectScript(scriptId) }],
+  });
 }
 
 function commandId(prefix: string): never {
@@ -163,10 +175,9 @@ export function ThreadHeaderActions(props: {
     setEditingScript(script);
     setEditingKeybinding(null);
     setActionDialogOpen(true);
-    const { fetchServerConfig } = await import(
-      /* webpackMode: "eager" */ "../data/synaraClient.lynx"
-    );
-    const config = await fetchServerConfig().catch(() => null);
+    const config = await ensureNativeApi()
+      .server.getConfig()
+      .catch(() => null);
     setEditingKeybinding(
       config
         ? keybindingValueForCommand(config.keybindings, commandForProjectScript(script.id))
@@ -189,7 +200,7 @@ export function ThreadHeaderActions(props: {
       const scripts = editingScript
         ? updateProjectAction(project.scripts, scriptId, value)
         : addProjectAction(project.scripts, scriptId, value);
-      await dispatchSynaraCommand({
+      await ensureNativeApi().orchestration.dispatchCommand({
         type: "project.meta.update",
         commandId: commandId("lynx-project-action"),
         projectId: project.id as never,
@@ -200,15 +211,11 @@ export function ThreadHeaderActions(props: {
         command: commandForProjectScript(scriptId),
       });
       if (keybindingRule) {
-        const { upsertKeybinding } = await import(
-          /* webpackMode: "eager" */ "../data/synaraClient.lynx"
-        );
-        await upsertKeybinding(keybindingRule as KeybindingRule);
+        await ensureNativeApi().server.upsertKeybinding({
+          rule: keybindingRule as KeybindingRule,
+        });
       } else {
-        const { removeKeybinding } = await import(
-          /* webpackMode: "eager" */ "../data/synaraClient.lynx"
-        );
-        await removeKeybinding(commandForProjectScript(scriptId));
+        await resetProjectScriptKeybinding(scriptId);
       }
       await queryClient.invalidateQueries({ queryKey: ["thread-detail", thread?.id] });
       setActionDialogOpen(false);
@@ -226,16 +233,13 @@ export function ThreadHeaderActions(props: {
     setBusy(true);
     setError(null);
     try {
-      await dispatchSynaraCommand({
+      await ensureNativeApi().orchestration.dispatchCommand({
         type: "project.meta.update",
         commandId: commandId("lynx-project-action-delete"),
         projectId: project.id as never,
         scripts: deleteProjectAction(project.scripts, editingScript.id),
       });
-      const { removeKeybinding } = await import(
-        /* webpackMode: "eager" */ "../data/synaraClient.lynx"
-      );
-      await removeKeybinding(commandForProjectScript(editingScript.id));
+      await resetProjectScriptKeybinding(editingScript.id);
       setActionDialogOpen(false);
       setEditingScript(null);
     } catch (cause) {

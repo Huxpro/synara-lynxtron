@@ -7,9 +7,8 @@ import {
 } from "@synara-web/appSettingsStorageProjection.logic";
 
 import { Button } from "../components/ui/button";
-import { subscribeTerminalEvents } from "../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
 import { NotificationDismissIcon } from "./NotificationDismissIcon.lynx";
-import { onGlobalEvent } from "../platform/bridge";
 import { webStorage } from "../platform/storage";
 import { fetchThreadCompletionAssistantSummary, queryClient, type ThreadSummary } from "./queries";
 import {
@@ -21,7 +20,6 @@ import {
 } from "./taskCompletionToast.logic";
 
 const TOAST_VISIBLE_MS = 8_000;
-const TERMINAL_EVENT = "synara:terminal-event";
 const TERMINAL_EVENT_QUERY_KEY = ["terminal-activity-event"] as const;
 interface TerminalEventSnapshot {
   readonly toast: LynxTaskCompletionToast | null;
@@ -145,9 +143,8 @@ export function TaskCompletionToastHost(props: {
 
   useEffect(() => {
     "background only";
-    const disposeGlobalEvent = onGlobalEvent(TERMINAL_EVENT, (event: unknown) => {
-      if (!event || typeof event !== "object" || !("type" in event)) return;
-      const terminalEvent = event as TerminalEvent;
+    // The shared facade owns the one `terminal.events` stream of this socket.
+    return ensureNativeApi().terminal.onEvent((terminalEvent: TerminalEvent) => {
       const result = applyLynxTerminalActivityEvent({
         activeThreadId: activeThreadIdRef.current,
         current: terminalActivityRef.current,
@@ -172,11 +169,6 @@ export function TaskCompletionToastHost(props: {
         version: (current?.version ?? 0) + 1,
       }));
     });
-    const disposeTerminalEvents = subscribeTerminalEvents(() => {});
-    return () => {
-      disposeGlobalEvent();
-      disposeTerminalEvents();
-    };
   }, []);
 
   useEffect(() => {

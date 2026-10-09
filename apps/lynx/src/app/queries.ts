@@ -2,6 +2,8 @@
 // snapshot. The transport is a singleton; both queries share its latest read.
 
 import { pullRequestListEntryHasProject } from "@synara/shared/githubRepository";
+import { ORCHESTRATION_WS_METHODS, type ThreadId } from "@synara/contracts";
+import { ensureNativeApi } from "~/nativeApi";
 import { queryClient } from "./queryClient";
 import {
   APP_SETTINGS_STORAGE_KEY,
@@ -224,110 +226,22 @@ export type ExplorerEntriesResult =
   | (ProjectListDirectoriesResult & { readonly truncated?: undefined })
   | ProjectSearchEntriesResult;
 
-export async function fetchAutomations(): Promise<AutomationListResult> {
-  "background only";
-  const { fetchAutomations: fetchAutomationList } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return fetchAutomationList();
-}
-
 /**
  * The delivery mode for a new turn, resolved at send time from the same setting the
  * web app uses (server value first, then the stored app settings, default streaming).
  */
 export async function resolveNativeAssistantDeliveryMode(): Promise<AssistantDeliveryMode> {
   "background only";
-  const [{ fetchServerSettings }, { webStorage }] = await Promise.all([
-    import(/* webpackMode: "eager" */ "../data/synaraClient"),
-    import(/* webpackMode: "eager" */ "../platform/storage"),
-  ]);
-  const serverSettings = await fetchServerSettings().catch(() => null);
+  const { webStorage } = await import(/* webpackMode: "eager" */ "../platform/storage");
+  const serverSettings = await ensureNativeApi()
+    .server.getSettings()
+    .catch(() => null);
   return resolveAssistantDeliveryMode(
     readSettingsBehaviorProjection(
       webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
       serverSettings?.enableAssistantStreaming,
     ),
   );
-}
-
-export async function createAutomation(
-  input: AutomationCreateInput,
-): Promise<AutomationDefinition> {
-  "background only";
-  const { createAutomation: createAutomationDefinition } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return createAutomationDefinition(input);
-}
-
-export async function runAutomationNow(
-  input: AutomationRunNowInput,
-): Promise<AutomationRunNowResult> {
-  "background only";
-  const { runAutomationNow: runNow } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return runNow(input);
-}
-
-export async function updateAutomation(
-  input: AutomationUpdateInput,
-): Promise<AutomationDefinition> {
-  "background only";
-  const { updateAutomation: updateAutomationDefinition } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return updateAutomationDefinition(input);
-}
-
-export async function deleteAutomation(input: AutomationDeleteInput): Promise<void> {
-  "background only";
-  const { deleteAutomation: deleteAutomationDefinition } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  await deleteAutomationDefinition(input);
-}
-
-export async function fetchPluginLibraryCapabilities(
-  provider: ProviderKind,
-): Promise<ProviderComposerCapabilities> {
-  "background only";
-  const { fetchProviderComposerCapabilities } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return fetchProviderComposerCapabilities(provider);
-}
-
-export async function fetchAutomationCreateModels(input: {
-  readonly provider: ProviderKind;
-  readonly cwd: string | null;
-}): Promise<ProviderListModelsResult> {
-  "background only";
-  const { fetchProviderModels } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
-  return fetchProviderModels(input);
-}
-
-export async function fetchPluginLibraryPlugins(
-  provider: ProviderKind,
-): Promise<ProviderListPluginsResult> {
-  "background only";
-  const { fetchProviderPlugins, fetchServerConfig } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  const config = await fetchServerConfig();
-  return fetchProviderPlugins({ provider, cwd: config.cwd });
-}
-
-export async function fetchPluginLibrarySkills(
-  provider: ProviderKind,
-): Promise<ProviderListSkillsResult> {
-  "background only";
-  const { fetchProviderSkills, fetchServerConfig } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  const config = await fetchServerConfig();
-  return fetchProviderSkills({ provider, cwd: config.cwd });
 }
 
 const transcriptRowsByThreadId = new Map<
@@ -362,10 +276,13 @@ export interface PullRequestSnapshot {
 /** Message windows for the sidebar search palette; a server read upstream does not have. */
 export async function fetchSidebarSearchSnapshot(): Promise<OrchestrationSidebarSearchSnapshot> {
   "background only";
-  const { fetchSynaraSidebarSearchSnapshot } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
+  // `orchestration.getSidebarSearchSnapshot` is a fork-only RPC with no method
+  // on upstream's facade, so it goes straight to the shared host relay request.
+  const { nativeRpcRequest } = await import(/* webpackMode: "eager" */ "../data/nativeRpcBridge");
+  return nativeRpcRequest<OrchestrationSidebarSearchSnapshot>(
+    ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot,
+    {},
   );
-  return fetchSynaraSidebarSearchSnapshot();
 }
 
 /** The Explorer's file on screen: upstream's read plus the host's highlighting. */
@@ -416,10 +333,17 @@ export async function fetchExplorerPdfMetadata(input: {
 }> {
   "background only";
   // No upstream query for PDF metadata (the Web preview reads it with pdf.js).
-  const { ensureNativeApi } = await import(/* webpackMode: "eager" */ "~/nativeApi");
   return ensureNativeApi().projects.inspectPdf({
     cwd: input.workspaceRoot,
     path: input.relativePath,
+  });
+}
+
+/** One authoritative thread detail read through the shared facade. */
+function fetchThreadDetailSnapshot(threadId: string) {
+  "background only";
+  return ensureNativeApi().orchestration.getThreadDetailSnapshot({
+    threadId: threadId as ThreadId,
   });
 }
 
@@ -427,12 +351,10 @@ export async function fetchThreadCompletionAssistantSummary(
   threadId: string,
 ): Promise<string | null> {
   "background only";
-  const [{ fetchSynaraThreadDetailSnapshot }, { summarizeTaskCompletionAssistantMessage }] =
-    await Promise.all([
-      import(/* webpackMode: "eager" */ "../data/synaraClient"),
-      import(/* webpackMode: "eager" */ "@synara-web/notifications/taskCompletion.logic"),
-    ]);
-  const snapshot = await fetchSynaraThreadDetailSnapshot(threadId);
+  const { summarizeTaskCompletionAssistantMessage } = await import(
+    /* webpackMode: "eager" */ "@synara-web/notifications/taskCompletion.logic"
+  );
+  const snapshot = await fetchThreadDetailSnapshot(threadId);
   return snapshot?.thread ? summarizeTaskCompletionAssistantMessage(snapshot.thread) : null;
 }
 
@@ -440,12 +362,9 @@ export async function fetchThreadHeaderSummary(
   threadId: string,
 ): Promise<ThreadHeaderSummary | undefined> {
   "background only";
-  const { fetchSynaraThreadDetailSnapshot, fetchSynaraSidebarShellSnapshot } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
   const [detail, shell] = await Promise.all([
-    fetchSynaraThreadDetailSnapshot(threadId),
-    fetchSynaraSidebarShellSnapshot(),
+    fetchThreadDetailSnapshot(threadId),
+    ensureNativeApi().orchestration.getShellSnapshot(),
   ]);
   const thread = detail?.thread;
   if (!thread) return undefined;
@@ -509,13 +428,11 @@ export async function fetchThreadHeaderSummary(
 
 export async function fetchThreadTranscriptRows(threadId: string): Promise<ThreadTranscriptRow[]> {
   "background only";
-  const [{ fetchSynaraThreadDetailSnapshot }, { useStore }, { projectThreadDetailSnapshot }] =
-    await Promise.all([
-      import(/* webpackMode: "eager" */ "../data/synaraClient"),
-      import(/* webpackMode: "eager" */ "@synara-web/store"),
-      import(/* webpackMode: "eager" */ "./threadDetailProjection.logic"),
-    ]);
-  const snapshot = await fetchSynaraThreadDetailSnapshot(threadId);
+  const [{ useStore }, { projectThreadDetailSnapshot }] = await Promise.all([
+    import(/* webpackMode: "eager" */ "@synara-web/store"),
+    import(/* webpackMode: "eager" */ "./threadDetailProjection.logic"),
+  ]);
+  const snapshot = await fetchThreadDetailSnapshot(threadId);
   if (!snapshot) return [];
   const cached = transcriptRowsByThreadId.get(threadId);
   if (cached?.snapshotSequence === snapshot.snapshotSequence) {
@@ -682,13 +599,11 @@ export async function fetchThreadRecapSummary(
 
 export async function prepareThreadRecap(threadId: string): Promise<ThreadRecapPlan | null> {
   "background only";
-  const [{ fetchSynaraThreadDetailSnapshot }, { useStore }, { projectThreadDetailSnapshot }] =
-    await Promise.all([
-      import(/* webpackMode: "eager" */ "../data/synaraClient"),
-      import(/* webpackMode: "eager" */ "@synara-web/store"),
-      import(/* webpackMode: "eager" */ "./threadDetailProjection.logic"),
-    ]);
-  const snapshot = await fetchSynaraThreadDetailSnapshot(threadId);
+  const [{ useStore }, { projectThreadDetailSnapshot }] = await Promise.all([
+    import(/* webpackMode: "eager" */ "@synara-web/store"),
+    import(/* webpackMode: "eager" */ "./threadDetailProjection.logic"),
+  ]);
+  const snapshot = await fetchThreadDetailSnapshot(threadId);
   if (!snapshot) return null;
   // Projected, not committed: upstream session sync owns thread detail in the store.
   const thread = projectThreadDetailSnapshot(useStore.getState(), snapshot.thread);
@@ -724,9 +639,8 @@ export async function generatePreparedThreadRecap(input: {
   readonly threadId: string;
 }): Promise<ThreadRecapSummary> {
   "background only";
-  const { generateThreadRecap } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
   const cache = readPersistedThreadRecapCache(webStorage);
-  const result = await generateThreadRecap({
+  const result = await ensureNativeApi().server.generateThreadRecap({
     cwd: input.cwd,
     newMaterial: input.plan.newMaterial,
     currentState: input.plan.currentState,
@@ -760,7 +674,6 @@ export async function fetchPullRequests(input: {
   readonly projectId: ProjectId | null;
 }): Promise<PullRequestSnapshot> {
   "background only";
-  const { ensureNativeApi } = await import(/* webpackMode: "eager" */ "~/nativeApi");
   const result = await ensureNativeApi().githubInbox.list({
     state: input.state === "open" ? "open" : "closed",
   });
@@ -786,54 +699,4 @@ export async function fetchPullRequests(input: {
         truncated: batch.truncatedPullRequests,
       })),
   };
-}
-
-export async function fetchPullRequestDetail(
-  input: PullRequestDetailInput,
-): Promise<PullRequestDetail> {
-  "background only";
-  const { fetchSynaraPullRequestDetail } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return fetchSynaraPullRequestDetail(input);
-}
-
-export async function fetchPullRequestDiff(
-  input: PullRequestDetailInput,
-): Promise<PullRequestDiffResult> {
-  "background only";
-  const { fetchSynaraPullRequestDiff } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return fetchSynaraPullRequestDiff(input);
-}
-
-export async function performPullRequestAction(
-  input: PullRequestActionInput,
-): Promise<PullRequestActionResult> {
-  "background only";
-  const { performSynaraPullRequestAction } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return performSynaraPullRequestAction(input);
-}
-
-export async function postPullRequestComment(
-  input: PullRequestCommentInput,
-): Promise<PullRequestActionResult> {
-  "background only";
-  const { postSynaraPullRequestComment } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return postSynaraPullRequestComment(input);
-}
-
-export async function setPullRequestPinned(
-  input: PullRequestSetPinnedInput,
-): Promise<PullRequestSetPinnedResult> {
-  "background only";
-  const { setSynaraPullRequestPinned } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return setSynaraPullRequestPinned(input);
 }

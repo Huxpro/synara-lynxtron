@@ -4,7 +4,7 @@
 // keep their per-phase progress, and that no surface of the group still
 // reaches for the legacy client.
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "@rstest/core";
 import { QueryClient } from "@tanstack/react-query";
@@ -208,22 +208,7 @@ describe("Environment / Git / Explorer sources and the legacy client", () => {
     }
   });
 
-  it("the legacy client no longer carries git, explorer or host-highlight requests", () => {
-    const client = read("../data/synaraClient.lynx.ts");
-    for (const removed of [
-      '"git.',
-      '"projects.readFile"',
-      '"projects.listDirectories"',
-      '"projects.inspectPdf"',
-      '"projects.createLocalFilePreviewGrant"',
-      '"shell.openInEditor"',
-      '"server.stopLocalServer"',
-      '"server.updateProvider"',
-      "synara:git-action-progress",
-      "NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG",
-      "fetchFreshServerConfig",
-    ]) {
-      expect(client, removed).not.toContain(removed);
-    }
+  it("the legacy client is gone: one request path, the shared facade", () => {
+    expect(existsSync(new URL("../data/synaraClient.lynx.ts", import.meta.url))).toBe(false);
   });
 });

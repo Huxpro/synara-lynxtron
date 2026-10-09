@@ -1,4 +1,5 @@
 import { useMemo, useState } from "@lynx-js/react";
+import { ensureNativeApi } from "~/nativeApi";
 import { useQuery } from "@tanstack/react-query";
 import { DEFAULT_MODEL_BY_PROVIDER } from "@synara/contracts";
 
@@ -12,7 +13,8 @@ import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsGeneralProjection,
 } from "@synara-web/appSettingsStorageProjection.logic";
-import type { SidebarSnapshot } from "../../app/queries";
+import { providerComposerCapabilitiesQueryOptions } from "@synara-web/lib/providerDiscoveryReactQuery";
+import { queryClient, type SidebarSnapshot } from "../../app/queries";
 import { webStorage } from "../../platform/storage";
 import {
   buildNativeSearchImportThreadCreateCommand,
@@ -69,13 +71,12 @@ export function SidebarSearchPaletteLynx(props: {
     queryKey: ["sidebar-search-import-providers"],
     queryFn: async () => {
       "background only";
-      const { fetchProviderComposerCapabilities } = await import(
-        /* webpackMode: "eager" */ "../../data/synaraClient.lynx"
-      );
       const capabilities = await Promise.all(
         IMPORT_PROVIDERS.map(async (provider) => ({
           provider,
-          capabilities: await fetchProviderComposerCapabilities(provider).catch(() => null),
+          capabilities: await queryClient
+            .fetchQuery(providerComposerCapabilitiesQueryOptions(provider))
+            .catch(() => null),
         })),
       );
       return capabilities
@@ -87,23 +88,17 @@ export function SidebarSearchPaletteLynx(props: {
 
   const addProjectPath = async (workspaceRoot: string, options?: { createIfMissing?: boolean }) => {
     "background only";
-    const { dispatchSynaraCommand } = await import(
-      /* webpackMode: "eager" */ "../../data/synaraClient.lynx"
-    );
     const command = buildNativeSearchProjectCreateCommand({
       workspaceRoot,
       createIfMissing: options?.createIfMissing === true,
       defaultProvider: generalSettings.defaultProvider,
     });
-    await dispatchSynaraCommand(command);
+    await ensureNativeApi().orchestration.dispatchCommand(command);
     props.onOpenProject(command.projectId);
   };
 
   const importThread = async (provider: ImportProviderKind, externalId: string) => {
     "background only";
-    const { dispatchSynaraCommand, importSynaraThread } = await import(
-      /* webpackMode: "eager" */ "../../data/synaraClient.lynx"
-    );
     const target = props.snapshot?.projects.find((project) => project.kind === "project");
     if (!target) throw new Error("Add a project before importing a thread.");
     const model = DEFAULT_MODEL_BY_PROVIDER[provider];
@@ -117,20 +112,22 @@ export function SidebarSearchPaletteLynx(props: {
     });
     let created = false;
     try {
-      await dispatchSynaraCommand(command);
+      await ensureNativeApi().orchestration.dispatchCommand(command);
       created = true;
-      await importSynaraThread({
+      await ensureNativeApi().orchestration.importThread({
         threadId: command.threadId,
         externalId: externalId.trim(),
       });
       props.onOpenThread(command.threadId);
     } catch (error) {
       if (created) {
-        await dispatchSynaraCommand({
-          type: "thread.delete",
-          commandId: newCommandId(),
-          threadId: command.threadId,
-        }).catch(() => undefined);
+        await ensureNativeApi()
+          .orchestration.dispatchCommand({
+            type: "thread.delete",
+            commandId: newCommandId(),
+            threadId: command.threadId,
+          })
+          .catch(() => undefined);
       }
       throw error;
     }
@@ -175,10 +172,9 @@ export function SidebarSearchPaletteLynx(props: {
         onImportThread={importThread}
         onBrowseFilesystem={async (partialPath) => {
           "background only";
-          const { browseFilesystem } = await import(
-            /* webpackMode: "eager" */ "../../data/synaraClient.lynx"
-          );
-          return browseFilesystem({ partialPath }).catch(() => null);
+          return ensureNativeApi()
+            .filesystem.browse({ partialPath })
+            .catch(() => null);
         }}
         filesystemBrowseEnabled
         appearanceEnabled
