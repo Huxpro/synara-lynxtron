@@ -121,6 +121,9 @@ export function projectLynxKanbanComposerDrafts(
           draft.terminalContexts.length > 0 ||
           draft.pastedTexts.length > 0,
         provider: draft.modelSelection?.provider ?? null,
+        // The default account of a provider shares the provider's id.
+        providerInstanceId: (draft.modelSelection?.provider ??
+          null) as KanbanComposerDraftSnapshot["providerInstanceId"],
       },
     ]),
   );

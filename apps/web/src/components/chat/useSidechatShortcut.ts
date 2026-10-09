@@ -3,24 +3,22 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { requestComposerFocus } from "../../composerFocusRequestStore";
 import { resolveShortcutCommand } from "../../keybindings";
+import { hasOpenDismissibleOverlay } from "../../lib/editableEventTarget";
 import { isTerminalFocused } from "../../lib/terminalFocus";
 import { selectRightDockState, useRightDockStore } from "../../rightDockStore";
 import { scheduleDeferredChatMount } from "./deferredChatMount";
-import { type RightDockPane, resolveActivePane } from "../../rightDockStore.logic";
+import {
+  type RightDockHostId,
+  type RightDockPane,
+  resolveActivePane,
+} from "../../rightDockStore.logic";
 
-function hasOpenDismissibleOverlay(): boolean {
-  return Array.from(
-    document.querySelectorAll<HTMLElement>(
-      '[role="dialog"], [role="alertdialog"], [role="menu"], [role="listbox"], [data-slot="context-menu-popup"], [data-testid="composer-extras-panel"]',
-    ),
-  ).some(
-    (element) =>
-      !element.closest('[inert], [aria-hidden="true"]') && element.getClientRects().length > 0,
-  );
-}
-
-// The single-chat surface owns its dock; embedded ChatViews must not each create
-// or toggle a sidechat in response to the same key event.
+// The dock host owns the shortcut: the single-chat surface for its thread's sidechats, the
+// GitHub inbox for the selected item's. Embedded ChatViews must not each create or toggle a
+// sidechat in response to the same key event.
+//
+// Returns `focusSidechat`, which focuses a sidechat's composer once the dock shows it, for
+// hosts that open one outside the shortcut (the inbox's Ask button).
 export function useSidechatShortcut({
   threadId,
   enabled,
@@ -28,21 +26,26 @@ export function useSidechatShortcut({
   sidechats,
   createSidechat,
   revealSidechat,
+  onHidden,
 }: {
-  threadId: ThreadId;
+  /** The dock host: a thread id, or the GitHub inbox's dock id. */
+  threadId: RightDockHostId;
   enabled: boolean;
   keybindings: ResolvedKeybindingsConfig;
+  /** This host's sidechats, newest first. */
   sidechats: readonly { id: ThreadId; sidechatExpiredAt?: string | null }[];
   createSidechat: () => Promise<void>;
   revealSidechat: () => void;
+  /** Returns focus to the host after the shortcut or Escape hides the sidechat. */
+  onHidden: () => void;
 }) {
   const dockState = useRightDockStore(useMemo(() => selectRightDockState(threadId), [threadId]));
   const [focusRequest, setFocusRequest] = useState<{
-    sourceId: ThreadId;
+    sourceId: RightDockHostId;
     targetId: ThreadId;
   } | null>(null);
-  const creatingFor = useRef(new Set<ThreadId>());
-  const currentSource = useRef<ThreadId | null>(threadId);
+  const creatingFor = useRef(new Set<RightDockHostId>());
+  const currentSource = useRef<RightDockHostId | null>(threadId);
   useEffect(() => {
     currentSource.current = threadId;
     return () => {
@@ -67,7 +70,7 @@ export function useSidechatShortcut({
     const hideSidechat = () => {
       useRightDockStore.getState().setDockOpen(threadId, false);
       setFocusRequest(null);
-      requestComposerFocus(threadId);
+      onHidden();
     };
     const toggleSidechat = () => {
       const store = useRightDockStore.getState();
@@ -148,5 +151,9 @@ export function useSidechatShortcut({
     };
     window.addEventListener("keydown", capture, { capture: true });
     return () => window.removeEventListener("keydown", capture, { capture: true });
-  }, [enabled, threadId, keybindings, sidechats, createSidechat, revealSidechat]);
+  }, [enabled, threadId, keybindings, sidechats, createSidechat, revealSidechat, onHidden]);
+
+  return {
+    focusSidechat: (targetId: ThreadId) => setFocusRequest({ sourceId: threadId, targetId }),
+  };
 }

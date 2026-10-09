@@ -102,6 +102,9 @@ export function useNativeComposerVoice(input: {
 
   const voiceProviderStatus = input.providerStatuses.find((status) => status.provider === "codex");
   const voiceState = deriveComposerVoiceState({
+    // Lynx has no voice-notes setting or per-build gate yet: enabled wherever the host can record.
+    enabled: true,
+    available: true,
     authStatus: voiceProviderStatus?.authStatus,
     voiceTranscriptionAvailable: voiceProviderStatus?.voiceTranscriptionAvailable,
     isRecording,

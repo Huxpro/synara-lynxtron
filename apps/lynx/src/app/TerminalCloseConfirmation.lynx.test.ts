@@ -8,7 +8,7 @@ describe("Lynx terminal close confirmation", () => {
 
     await expect(
       confirmTerminalTabClose({
-        dialogs: { confirm } as never,
+        api: { dialogs: { confirm } } as never,
         enabled: true,
         terminalTitle: "Terminal",
       }),
@@ -23,7 +23,7 @@ describe("Lynx terminal close confirmation", () => {
 
     await expect(
       confirmTerminalTabClose({
-        dialogs: { confirm } as never,
+        api: { dialogs: { confirm } } as never,
         enabled: false,
         terminalTitle: "Terminal",
       }),

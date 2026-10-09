@@ -6,6 +6,20 @@
 import type { ProjectId, ThreadId, TurnId } from "@synara/contracts";
 import { isPlainObject, sanitizeStringKeyedRecord } from "./persistedRecord";
 
+// This file is the renderer-independent copy of apps/web/src/rightDockStore.logic.ts
+// (Lynx cannot load that module's @dnd-kit import). The two helpers below stand in
+// for its `arrayMove` (@dnd-kit/sortable) and `resolveTabAfterClose` (lib/tabStrip).
+function arrayMove<T>(items: readonly T[], from: number, to: number): T[] {
+  const next = items.slice();
+  next.splice(to < 0 ? next.length + to : to, 0, next.splice(from, 1)[0] as T);
+  return next;
+}
+
+function resolveTabAfterClose<T>(remaining: readonly T[], removedIndex: number): T | null {
+  if (remaining.length === 0) return null;
+  return remaining[Math.min(Math.max(removedIndex, 0), remaining.length - 1)] ?? null;
+}
+
 export const RIGHT_DOCK_MIN_WIDTH_PX = 26 * 16;
 export const RIGHT_DOCK_STORAGE_KEY = "synara:right-dock-state:v1";
 
@@ -45,15 +59,22 @@ export interface RightDockPane {
   pullRequestInitialTab: PullRequestInitialTab | null;
 }
 
+/**
+ * The GitHub inbox hosts a dock without a thread: standalone side chats about the selected
+ * item. It is keyed by this fixed id, which can never collide with a thread id.
+ */
+export const GITHUB_INBOX_DOCK_HOST_ID = "github-inbox";
+/** Who owns a dock: a chat thread, or the GitHub inbox page. */
+export type RightDockHostId = ThreadId | typeof GITHUB_INBOX_DOCK_HOST_ID;
+
 export interface RightDockThreadState {
   open: boolean;
   panes: RightDockPane[];
   activePaneId: string | null;
 }
 
-// File previews are the only multi-instance dock kind. Side chats share one
-// destination and switch the embedded thread inside it.
-const MULTI_INSTANCE_PANE_KINDS: ReadonlySet<RightDockPaneKind> = new Set(["file"]);
+// Terminals and file previews have independent tabs. Side chats share one destination.
+const MULTI_INSTANCE_PANE_KINDS: ReadonlySet<RightDockPaneKind> = new Set(["file", "terminal"]);
 
 // Kinds that can only ever have one instance per host thread, derived as
 // "every kind that is not multi-instance" so the two sets can never drift.
@@ -279,11 +300,7 @@ function resolveActiveAfterRemoval(
   if (previousActiveId !== removedId) {
     return previousActiveId;
   }
-  if (panes.length === 0) {
-    return null;
-  }
-  const neighborIndex = Math.min(removedIndex, panes.length - 1);
-  return panes[neighborIndex]?.id ?? null;
+  return resolveTabAfterClose(panes, removedIndex)?.id ?? null;
 }
 
 export function closePaneInState(
@@ -308,6 +325,19 @@ export function closePaneInState(
     panes: nextPanes,
     activePaneId: nextActiveId,
   };
+}
+
+/** Drops a dragged tab onto another tab's slot; the active pane and the dock stay as they are. */
+export function movePaneInState(
+  state: RightDockThreadState,
+  paneId: string,
+  overPaneId: string,
+): RightDockThreadState {
+  const fromIndex = state.panes.findIndex((pane) => pane.id === paneId);
+  const toIndex = state.panes.findIndex((pane) => pane.id === overPaneId);
+  return fromIndex < 0 || toIndex < 0 || fromIndex === toIndex
+    ? state
+    : { ...state, panes: arrayMove(state.panes, fromIndex, toIndex) };
 }
 
 export function setActivePaneInState(
@@ -371,6 +401,24 @@ export function updatePaneInState(
   return changed ? { ...state, panes: nextPanes } : state;
 }
 
+// Points the (singleton) side chat pane at another thread, or removes it for null, without
+// opening or closing the dock. A host whose side chat follows a selection (the GitHub inbox)
+// uses it so a closed dock stays closed and an open one shows the new target.
+export function setSidechatPaneThreadInState(
+  state: RightDockThreadState,
+  input: { paneId: string; threadId: ThreadId | null },
+): RightDockThreadState {
+  const existing = findSingletonPane(state, "sidechat");
+  if (input.threadId === null) {
+    return existing ? closePaneInState(state, existing.id) : state;
+  }
+  if (existing) {
+    return updatePaneInState(state, existing.id, { threadId: input.threadId });
+  }
+  const pane = createPane({ paneId: input.paneId, kind: "sidechat", threadId: input.threadId });
+  return { open: state.open, panes: [...state.panes, pane], activePaneId: pane.id };
+}
+
 // Header toggles behave like a visibility switch for a singleton kind: if that
 // kind is the active visible pane, collapse the dock (preserving tabs);
 // otherwise open/focus it.
@@ -409,14 +457,14 @@ export function findMissingSidechatPaneIds(
 export function resolveVisibleDockSidechatThreadIds(input: {
   dockRendered: boolean;
   dockStateByThreadId: Record<string, RightDockThreadState | undefined>;
-  hostThreadIds: readonly ThreadId[];
+  hostThreadIds: readonly RightDockHostId[];
 }): ThreadId[] {
   if (!input.dockRendered) {
     return [];
   }
 
   const sidechatThreadIds: ThreadId[] = [];
-  const seenThreadIds = new Set<ThreadId>(input.hostThreadIds);
+  const seenThreadIds = new Set<string>(input.hostThreadIds);
   for (const hostThreadId of input.hostThreadIds) {
     const dockState = input.dockStateByThreadId[hostThreadId];
     if (!dockState) {

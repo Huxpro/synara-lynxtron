@@ -1,10 +1,10 @@
+import type { PullRequestInvolvement } from "@synara-web/components/pullRequest/PullRequestRouteControlsComposition";
 import { useCallback, useMemo, useRef, useState } from "@lynx-js/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   ProjectId,
   PullRequestDetailInput,
   PullRequestActionInput,
-  PullRequestInvolvement,
   PullRequestListEntry,
   PullRequestState,
 } from "@synara/contracts";
@@ -555,7 +555,7 @@ export function PullRequestsPage() {
   });
   const pinMutation = useMutation({
     mutationFn: async (entry: PullRequestListEntry) => {
-      const inputs = pullRequestPinToggleInputs(entry, projectId === undefined);
+      const inputs = pullRequestPinToggleInputs(entry);
       for (const input of inputs) {
         await setPullRequestPinned(input);
       }

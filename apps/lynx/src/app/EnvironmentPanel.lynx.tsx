@@ -190,6 +190,7 @@ const GIT_ACTION_GLYPH_SVG: Record<GitGlyphName, string> = {
   commit: commitsSvg,
   push: pushSvg,
   pr: githubSvg,
+  view_pr: githubSvg,
   sync: cloudSyncSvg,
   branch: branchSvg,
 };

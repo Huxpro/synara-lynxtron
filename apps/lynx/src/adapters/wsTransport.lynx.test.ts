@@ -4,12 +4,14 @@ import {
   COMPUTER_WS_METHODS,
   DEVICE_WS_CHANNELS,
   DEVICE_WS_METHODS,
+  ORCHESTRATION_STREAM_OVERFLOW_CODE,
   ORCHESTRATION_WS_CHANNELS,
   ORCHESTRATION_WS_METHODS,
   ThreadId,
   WS_CHANNELS,
   WS_METHODS,
   WS_PROJECT_FILE_WATCH_CAPABILITY,
+  WS_TURN_DISPATCH_SETTLEMENT_CAPABILITY,
 } from "@synara/contracts";
 import {
   getThreadDetailResumeCursor,
@@ -27,13 +29,16 @@ import {
   SNAPSHOT_FAULT_RETRY_MS,
   WsTransport,
   WsTransportRequestInterruptedError,
+  MAX_STREAM_OVERFLOW_RETRIES,
   getProjectFileWatchRetryDelayMs,
+  getStreamOverflowRetryDelayMs,
   mapHostTransportState,
   resolveStreamAdmissionRetry,
   type WsThreadStreamFailure,
 } from "./wsTransport.lynx";
 import {
   FakeRpcFailure,
+  FakeTransportFailure,
   HOLD_REPLY,
   flushHost,
   installFakeNativeHost,
@@ -721,6 +726,116 @@ describe("Lynx WsTransport compat", () => {
     );
     expect(reopened?.payload).toEqual({ threadId });
     expect(reopened?.streamId).not.toBe(threadStream!.streamId);
+  });
+
+  it("asks the server for the verdict when a turn start loses the socket", async () => {
+    await transport.dispose();
+    const command = { type: "thread.turn.start", threadId: "thread-1", commandId: "c-1" };
+    const tags: string[] = [];
+    let settleCalls = 0;
+    host = installFakeNativeHost({
+      rpc: (tag, payload) => {
+        tags.push(tag);
+        if (tag === ORCHESTRATION_WS_METHODS.dispatchCommand) {
+          throw new FakeTransportFailure("socket closed");
+        }
+        if (tag === ORCHESTRATION_WS_METHODS.settleTurnDispatch) {
+          settleCalls += 1;
+          expect(payload).toEqual({ command });
+          return { status: "accepted", sequence: 7 };
+        }
+        return {};
+      },
+    });
+    host.compatibility = {
+      ...COMPATIBILITY,
+      capabilities: [...COMPATIBILITY.capabilities, WS_TURN_DISPATCH_SETTLEMENT_CAPABILITY],
+    };
+    transport = new WsTransport();
+    await transport.request(WS_METHODS.serverGetConfig);
+
+    await expect(
+      transport.request(ORCHESTRATION_WS_METHODS.dispatchCommand, { command }),
+    ).resolves.toEqual({ sequence: 7 });
+    expect(settleCalls).toBe(1);
+    expect(tags.filter((tag) => tag === ORCHESTRATION_WS_METHODS.dispatchCommand)).toHaveLength(1);
+  });
+
+  it("reports a lost turn start as failed when the server cannot settle it", async () => {
+    await transport.dispose();
+    const tags: string[] = [];
+    host = installFakeNativeHost({
+      rpc: (tag) => {
+        tags.push(tag);
+        if (tag === ORCHESTRATION_WS_METHODS.dispatchCommand) {
+          throw new FakeTransportFailure("socket closed");
+        }
+        return {};
+      },
+    });
+    host.compatibility = COMPATIBILITY;
+    transport = new WsTransport();
+    await transport.request(WS_METHODS.serverGetConfig);
+
+    await expect(
+      transport.request(ORCHESTRATION_WS_METHODS.dispatchCommand, {
+        command: { type: "thread.turn.start", threadId: "thread-1" },
+      }),
+    ).rejects.toThrow("socket closed");
+    await expect(
+      transport.request(ORCHESTRATION_WS_METHODS.settleTurnDispatch, { command: {} }),
+    ).rejects.toMatchObject({ code: "WS_TURN_SETTLEMENT_UNAVAILABLE", retryable: false });
+    expect(tags).not.toContain(ORCHESTRATION_WS_METHODS.settleTurnDispatch);
+  });
+
+  it("runs one cancellable project-agent stream per project", async () => {
+    const events: unknown[] = [];
+    transport.subscribe(WS_CHANNELS.projectAgentEvent, (message) => events.push(message.data));
+    await transport.request(WS_METHODS.subscribeProjectAgentEvents, { projectId: "project-1" });
+    await flushHost();
+
+    const [stream] = [...host.streams.values()];
+    expect(stream?.tag).toBe(WS_METHODS.subscribeProjectAgentEvents);
+    expect(stream?.payload).toEqual({ projectId: "project-1" });
+    host.pushStreamItem(stream!.streamId, { kind: "updated" });
+    expect(events).toEqual([{ kind: "updated" }]);
+
+    await transport.unsubscribeProjectAgentEvents("project-1");
+    expect(host.cancelledStreamIds).toEqual([stream!.streamId]);
+    expect(host.streams.size).toBe(0);
+  });
+
+  it("opens the keep-awake and task streams for their push channels", async () => {
+    transport.subscribe(WS_CHANNELS.serverKeepAwakeUpdated, () => undefined);
+    transport.subscribe(WS_CHANNELS.todoEvent, () => undefined);
+    await flushHost();
+    expect([...host.streams.values()].map((stream) => stream.tag).toSorted()).toEqual(
+      [WS_METHODS.subscribeServerKeepAwake, WS_METHODS.subscribeTodoEvents].toSorted(),
+    );
+  });
+
+  it("retries an overflowed shell stream on upstream's schedule, then reports it", async () => {
+    rs.useFakeTimers();
+    const failures: (string | null)[] = [];
+    transport.onShellStreamFailure((failure) => failures.push(failure.code));
+    await transport.request(ORCHESTRATION_WS_METHODS.subscribeShell, {});
+    await flushHostWithFakeTimers();
+
+    for (let attempt = 0; attempt < MAX_STREAM_OVERFLOW_RETRIES; attempt += 1) {
+      const [stream] = [...host.streams.values()];
+      expect(stream?.tag).toBe(ORCHESTRATION_WS_METHODS.subscribeShell);
+      stream!.failTyped({ code: ORCHESTRATION_STREAM_OVERFLOW_CODE });
+      await flushHostWithFakeTimers();
+      expect(host.streams.size).toBe(0);
+      expect(failures).toEqual([]);
+      await rs.advanceTimersByTimeAsync(getStreamOverflowRetryDelayMs(attempt));
+      await flushHostWithFakeTimers();
+    }
+
+    const [last] = [...host.streams.values()];
+    last!.failTyped({ code: ORCHESTRATION_STREAM_OVERFLOW_CODE });
+    await flushHostWithFakeTimers();
+    expect(failures).toEqual([ORCHESTRATION_STREAM_OVERFLOW_CODE]);
   });
 
   it("stops every stream and reports disposed on dispose", async () => {

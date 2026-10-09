@@ -4,7 +4,7 @@ export interface ParsedSettingsRoute {
 }
 
 export function parseSettingsRouteLocation(location: string): ParsedSettingsRoute | null {
-  const [pathname, search = ""] = location.split("?", 2);
+  const [pathname = "", search = ""] = location.split("?", 2);
   const match = pathname.match(/^\/settings(?:\/([^/]+))?$/);
   if (!match) return null;
   return {

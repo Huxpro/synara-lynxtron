@@ -17,18 +17,23 @@ import {
   COMPUTER_WS_METHODS,
   DEVICE_WS_CHANNELS,
   DEVICE_WS_METHODS,
+  ORCHESTRATION_STREAM_OVERFLOW_CODE,
   ORCHESTRATION_WS_CHANNELS,
   ORCHESTRATION_WS_METHODS,
+  TASKS_UNAVAILABLE_ERROR_CODE,
   ThreadId,
   WS_CHANNELS,
   WS_METHODS,
   WS_PROJECT_FILE_WATCH_CAPABILITY,
+  WS_TURN_DISPATCH_SETTLEMENT_CAPABILITY,
+  type ClientOrchestrationCommand,
   type GitActionProgressEvent,
   type GitCreateDetachedWorktreeResult,
   type GitHubProjectProvisionProgressEvent,
   type GitHubProjectProvisionResult,
   type GitRunStackedActionResult,
   type GitWorktreeSetupProgressEvent,
+  type OrchestrationSettleTurnDispatchResult,
   type OrchestrationShellStreamItem,
   type ProjectFileChangeEvent,
   type ProjectWatchFileInput,
@@ -49,7 +54,7 @@ import {
   clearThreadDetailResumeCursor,
   resetThreadDetailResumeCursors,
 } from "@synara-web/threadDetailResumeCursors";
-import type { WsTransportState } from "@synara-web/wsTransportEvents";
+import { trackWsTurnSettlement, type WsTransportState } from "@synara-web/wsTransportEvents";
 import type { RpcTransportState } from "../data/rpcTransport.logic";
 import {
   isHostTransportState,
@@ -80,7 +85,8 @@ export interface WsRequestOptions {
 type WsRequestInterruptionCode =
   | "WS_REQUEST_TIMEOUT"
   | "WS_REQUEST_ABORTED"
-  | "WS_REQUEST_RECONNECTED";
+  | "WS_REQUEST_RECONNECTED"
+  | "WS_TURN_SETTLEMENT_UNAVAILABLE";
 
 /**
  * Same shape as the upstream error so shared callers can keep their checks.
@@ -134,6 +140,8 @@ export interface WsThreadStreamFailure {
   readonly error: Error;
 }
 
+export type WsShellStreamFailure = Omit<WsThreadStreamFailure, "threadId">;
+
 // ── stream failure policy ────────────────────────────────────────────────
 // Upstream `wsTransport.ts` classifies a failed stream by the typed error in
 // its Effect cause. The host relay delivers the same fields on the bridge
@@ -163,6 +171,10 @@ const STREAM_ADMISSION_ERROR_CODES = new Set([
   RESNAPSHOT_REQUIRED_ERROR_CODE,
   "ORCHESTRATION_SNAPSHOT_STALLED",
   "ORCHESTRATION_PROJECTION_STATE_INCOMPLETE",
+  // Retried on the overflowing subscription alone, keeping its applied cursor.
+  ORCHESTRATION_STREAM_OVERFLOW_CODE,
+  // A server that does not offer Tasks refuses the stream for good.
+  TASKS_UNAVAILABLE_ERROR_CODE,
 ]);
 /** Faults only the server can clear: keep a slow retry armed instead of dying. */
 const SNAPSHOT_FAULT_ERROR_CODES = new Set([
@@ -176,6 +188,12 @@ export const MAX_STREAM_DUPLICATE_RETRY_ATTEMPTS = 5;
 export const MAX_THREAD_SNAPSHOT_BOOTSTRAP_RETRY_ATTEMPTS = 12;
 export const MAX_RESNAPSHOT_RETRY_ATTEMPTS = 2;
 export const MAX_PROJECT_FILE_WATCH_RETRY_ATTEMPTS = 5;
+export const MAX_STREAM_OVERFLOW_RETRIES = 8;
+
+/** Upstream's overflow backoff: 250 ms doubling, capped at 16 s. */
+export function getStreamOverflowRetryDelayMs(attempt: number): number {
+  return Math.min(16_000, 250 * 2 ** Math.min(attempt, 6));
+}
 const DEFAULT_STREAM_CAPACITY_RETRY_MS = 1_000;
 const MAX_STREAM_CAPACITY_RETRY_MS = 10_000;
 const DEFAULT_STREAM_DUPLICATE_RETRY_MS = 250;
@@ -279,6 +297,17 @@ function failureDetailsOf(error: unknown): RpcFailureDetails | null {
 }
 
 const THREAD_STREAM_KEY_PREFIX = "orchestration.thread:";
+const PROJECT_AGENT_STREAM_KEY_PREFIX = "projectAgent.events:";
+
+/** The turn start whose acknowledgement was lost with the socket, if this request is one. */
+function uncertainTurnStart(
+  method: string,
+  payload: unknown,
+): Extract<ClientOrchestrationCommand, { type: "thread.turn.start" }> | null {
+  if (method !== ORCHESTRATION_WS_METHODS.dispatchCommand) return null;
+  const command = payload as ClientOrchestrationCommand | null;
+  return command?.type === "thread.turn.start" ? command : null;
+}
 const SHELL_STREAM_KEY = "orchestration.shell";
 
 function threadIdFromStreamKey(key: string): string | null {
@@ -455,6 +484,9 @@ export class WsTransport {
     Record<StreamAdmissionRetryKind, number>
   >();
   private readonly projectFileWatchRetries = new Map<string, number>();
+  private readonly streamOverflowRetries = new Map<string, number>();
+  private readonly shellStreamFailureListeners = new Set<(failure: WsShellStreamFailure) => void>();
+  private readonly projectAgentSubscriptions = new Map<string, unknown>();
   private readonly threadSubscriptions = new Map<string, unknown>();
   /** The input each running thread stream was opened with (upstream `activeThreadStreamInputs`). */
   private readonly activeThreadStreamInputs = new Map<string, unknown>();
@@ -526,6 +558,25 @@ export class WsTransport {
         await scope.race(this.startThreadStream(threadId, input, { forceRestart: wasSubscribed }));
         return undefined as T;
       }
+      if (method === WS_METHODS.subscribeProjectAgentEvents) {
+        const projectId = (params as { projectId: string }).projectId;
+        this.resetStreamRetries(`${PROJECT_AGENT_STREAM_KEY_PREFIX}${projectId}`);
+        this.projectAgentSubscriptions.set(projectId, params);
+        this.startProjectAgentEventStream(projectId, params);
+        return undefined as T;
+      }
+      if (
+        method === ORCHESTRATION_WS_METHODS.settleTurnDispatch &&
+        !this.compatibility?.capabilities.includes(WS_TURN_DISPATCH_SETTLEMENT_CAPABILITY)
+      ) {
+        throw new WsTransportRequestInterruptedError({
+          message:
+            "This server cannot check message delivery. Reconnect to an updated server and check the conversation before sending again.",
+          code: "WS_TURN_SETTLEMENT_UNAVAILABLE",
+          method,
+          retryable: false,
+        });
+      }
       if (method === WS_METHODS.gitRunStackedAction) {
         return (await this.runProgressStream<GitActionProgressEvent, GitRunStackedActionResult>(
           method,
@@ -587,6 +638,23 @@ export class WsTransport {
           if (scope.interrupted()) throw error;
           if (isNativeTransportError(error)) {
             this.setState("closed");
+            // The host lost its socket with the request in flight: the server may
+            // have applied a turn start. Ask it for the durable verdict (upstream
+            // `settleTurnDispatch`) instead of reporting the send as failed.
+            const turn = uncertainTurnStart(method, payload);
+            if (
+              turn &&
+              !this.disposed &&
+              options?.signal?.aborted !== true &&
+              this.compatibility?.capabilities.includes(WS_TURN_DISPATCH_SETTLEMENT_CAPABILITY)
+            ) {
+              const finishSettlement = trackWsTurnSettlement(turn.threadId);
+              try {
+                return (await this.settleTurnDispatch(turn, options?.signal)) as T;
+              } finally {
+                finishSettlement();
+              }
+            }
             throw error;
           }
           this.noteHostResult();
@@ -715,6 +783,67 @@ export class WsTransport {
     };
   }
 
+  /** Upstream `settleTurnDispatch`: repeat until the server accepts or rejects the turn. */
+  private async settleTurnDispatch(
+    command: Extract<ClientOrchestrationCommand, { type: "thread.turn.start" }>,
+    signal: AbortSignal | undefined,
+  ): Promise<{ sequence: number }> {
+    let attempt = 0;
+    for (;;) {
+      if (this.disposed) throw new Error("Transport disposed");
+      if (signal?.aborted) throw signal.reason ?? new Error("Aborted");
+      let result: OrchestrationSettleTurnDispatchResult;
+      try {
+        result = await this.request<OrchestrationSettleTurnDispatchResult>(
+          ORCHESTRATION_WS_METHODS.settleTurnDispatch,
+          { command },
+          signal ? { signal } : undefined,
+        );
+      } catch (error) {
+        if (
+          this.disposed ||
+          signal?.aborted ||
+          (error instanceof WsTransportRequestInterruptedError &&
+            (error.code === "WS_TURN_SETTLEMENT_UNAVAILABLE" ||
+              error.code === "WS_REQUEST_ABORTED"))
+        ) {
+          throw error;
+        }
+        // Repeating settlement is safe: it reads or rejects the original identity.
+        await delay(Math.max(500, Math.min(STREAM_RESTART_DELAY_MS * 2 ** attempt, 5_000)));
+        attempt += 1;
+        continue;
+      }
+      if (result.status === "accepted") return { sequence: result.sequence };
+      throw new Error(result.message);
+    }
+  }
+
+  /** Fires when the shell subscription exhausts its overflow retries. */
+  onShellStreamFailure(listener: (failure: WsShellStreamFailure) => void): () => void {
+    this.shellStreamFailureListeners.add(listener);
+    return () => {
+      this.shellStreamFailureListeners.delete(listener);
+    };
+  }
+
+  /** Drops a project-agent subscription and cancels its stream. */
+  async unsubscribeProjectAgentEvents(projectId: string): Promise<void> {
+    this.projectAgentSubscriptions.delete(projectId);
+    await this.stopStream(`${PROJECT_AGENT_STREAM_KEY_PREFIX}${projectId}`);
+  }
+
+  private startProjectAgentEventStream(projectId: string, params: unknown): void {
+    if (this.projectAgentSubscriptions.get(projectId) !== params) return;
+    this.startStream(
+      `${PROJECT_AGENT_STREAM_KEY_PREFIX}${projectId}`,
+      WS_METHODS.subscribeProjectAgentEvents,
+      params,
+      (event) => this.emit(WS_CHANNELS.projectAgentEvent, event as never),
+      () => this.startProjectAgentEventStream(projectId, params),
+    );
+  }
+
   /** Fires when a per-thread stream dies with no retry left. */
   onThreadStreamFailure(listener: (failure: WsThreadStreamFailure) => void): () => void {
     this.threadStreamFailureListeners.add(listener);
@@ -742,7 +871,10 @@ export class WsTransport {
     this.streamAdmissionRetries.clear();
     this.projectFileWatchRetries.clear();
     this.projectFileSubscriptions.clear();
+    this.projectAgentSubscriptions.clear();
+    this.streamOverflowRetries.clear();
     this.threadStreamFailureListeners.clear();
+    this.shellStreamFailureListeners.clear();
     // Channel, shell, thread and in-flight git streams alike.
     const keys = [...this.streams.keys()];
     await Promise.all(keys.map((key) => this.stopStream(key)));
@@ -975,6 +1107,24 @@ export class WsTransport {
           restart,
         );
         return;
+      case WS_CHANNELS.serverKeepAwakeUpdated:
+        this.startStream(
+          "server.keep-awake",
+          WS_METHODS.subscribeServerKeepAwake,
+          {},
+          (payload) => this.emit(WS_CHANNELS.serverKeepAwakeUpdated, payload as never),
+          restart,
+        );
+        return;
+      case WS_CHANNELS.todoEvent:
+        this.startStream(
+          "todo.events",
+          WS_METHODS.subscribeTodoEvents,
+          {},
+          (event) => this.emit(WS_CHANNELS.todoEvent, event as never),
+          restart,
+        );
+        return;
       case DEVICE_WS_CHANNELS.event:
         this.startStream(
           "device.events",
@@ -1032,13 +1182,17 @@ export class WsTransport {
                 ? "project.devServers"
                 : channel === WS_CHANNELS.automationEvent
                   ? "automation.events"
-                  : channel === DEVICE_WS_CHANNELS.event
-                    ? "device.events"
-                    : channel === COMPUTER_WS_CHANNELS.event
-                      ? "computer.events"
-                      : channel === ORCHESTRATION_WS_CHANNELS.domainEvent
-                        ? "orchestration.domain"
-                        : null;
+                  : channel === WS_CHANNELS.serverKeepAwakeUpdated
+                    ? "server.keep-awake"
+                    : channel === WS_CHANNELS.todoEvent
+                      ? "todo.events"
+                      : channel === DEVICE_WS_CHANNELS.event
+                        ? "device.events"
+                        : channel === COMPUTER_WS_CHANNELS.event
+                          ? "computer.events"
+                          : channel === ORCHESTRATION_WS_CHANNELS.domainEvent
+                            ? "orchestration.domain"
+                            : null;
     if (key) void this.stopStream(key);
   }
 
@@ -1291,6 +1445,17 @@ export class WsTransport {
       scheduleRestart(fileWatchRetryDelayMs);
       return;
     }
+    if (failure?.code === ORCHESTRATION_STREAM_OVERFLOW_CODE) {
+      // A snapshot alone does not prove recovery, so only a stream that stayed
+      // up resets the budget; the last applied cursor is kept.
+      const attempt =
+        lifetimeMs >= STABLE_STREAM_LIFETIME_MS ? 0 : (this.streamOverflowRetries.get(key) ?? 0);
+      if (attempt < MAX_STREAM_OVERFLOW_RETRIES) {
+        this.streamOverflowRetries.set(key, attempt + 1);
+        scheduleRestart(getStreamOverflowRetryDelayMs(attempt));
+        return;
+      }
+    }
     if (failure?.code == null || !STREAM_ADMISSION_ERROR_CODES.has(failure.code)) {
       scheduleBackoffRestart(false);
       return;
@@ -1301,6 +1466,15 @@ export class WsTransport {
     if (threadId !== null && this.threadSubscriptions.has(threadId)) {
       this.emitThreadStreamFailure({ threadId, code: failure.code, error });
     }
+    if (key === SHELL_STREAM_KEY && failure.code === ORCHESTRATION_STREAM_OVERFLOW_CODE) {
+      for (const listener of this.shellStreamFailureListeners) {
+        try {
+          listener({ code: failure.code, error });
+        } catch {
+          // Listener errors must not break transport streams.
+        }
+      }
+    }
     if (SNAPSHOT_FAULT_ERROR_CODES.has(failure.code)) scheduleRestart(SNAPSHOT_FAULT_RETRY_MS);
   }
 
@@ -1310,6 +1484,7 @@ export class WsTransport {
     this.streamFailures.delete(key);
     this.streamAdmissionRetries.delete(key);
     this.projectFileWatchRetries.delete(key);
+    this.streamOverflowRetries.delete(key);
   }
 
   private clearRestartTimer(key: string): void {

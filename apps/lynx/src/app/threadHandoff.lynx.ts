@@ -1,3 +1,5 @@
+import { PROVIDER_DISPLAY_NAMES } from "@synara/contracts";
+import { isProviderKind } from "@synara-web/providerOrdering";
 import type {
   ClientOrchestrationCommand,
   ModelSelection,
@@ -9,7 +11,7 @@ import {
   buildThreadHandoffImportedActivities,
   buildThreadHandoffImportedMessages,
   canCreateThreadHandoff,
-  resolveAvailableHandoffTargetProviders,
+  resolveAvailableHandoffTargets,
   resolveThreadHandoffModelSelection,
   resolveThreadHandoffTitle,
 } from "@synara-web/lib/threadHandoff";
@@ -63,11 +65,32 @@ export function resolveNativeThreadHandoffTargets(
     })
   )
     return [];
-  return resolveAvailableHandoffTargetProviders({
-    sourceProvider: thread.modelSelection.provider,
-    providerSettings: providers.providerSettings,
-    providerStatuses: providers.providerStatuses,
+  // Lynx hands off between the built-in providers' default accounts (provider accounts are
+  // not ported): one instance per provider kind, enabled as the server settings say.
+  const providerInstances = providers.providerStatuses.flatMap((status) => {
+    const provider = status.provider;
+    if (!isProviderKind(provider) || status.instanceId !== provider) return [];
+    return [
+      {
+        instanceId: status.instanceId,
+        provider,
+        driver: provider,
+        label: PROVIDER_DISPLAY_NAMES[provider],
+        enabled: providers.providerSettings?.[provider]?.enabled !== false,
+        isDefault: true,
+        supported: true as const,
+      },
+    ];
   });
+  return [
+    ...new Set(
+      resolveAvailableHandoffTargets({
+        sourceProvider: thread.modelSelection.provider,
+        providerInstances,
+        providerStatuses: providers.providerStatuses,
+      }).map((target) => target.provider),
+    ),
+  ];
 }
 
 export function buildNativeThreadHandoffCreateCommand(input: {

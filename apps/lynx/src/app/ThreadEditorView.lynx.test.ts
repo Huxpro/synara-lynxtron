@@ -68,8 +68,7 @@ describe("Lynx Editor view", () => {
 
   it("reuses the real explorer preview beside the live chat rail", () => {
     const routerSource = source("./router.tsx");
-    const editorStateSource = source("../../../web/src/editorViewState.ts");
-    const webEditorSource = source("../../../web/src/components/EditorWorkspaceView.tsx");
+    const editorStateSource = source("./editorViewState.lynx.ts");
     expect(routerSource).toContain('editorChatOpen ? "" : " ThreadEditorCenter--chat-hidden"');
     expect(routerSource).toContain('editorChatOpen ? "" : " ThreadEditorChat--hidden"');
     expect(routerSource).toContain("explorerFileSyntaxHighlight");
@@ -84,9 +83,6 @@ describe("Lynx Editor view", () => {
     );
     expect(editorStateSource).toContain("export const EDITOR_CHAT_PANE_MIN_WIDTH = 320");
     expect(editorStateSource).toContain("export const EDITOR_CHAT_PANE_MAX_WIDTH = 600");
-    expect(webEditorSource).toContain("readEditorChatPaneVisible()");
-    expect(webEditorSource).toContain("useState(readEditorChatPaneWidth)");
-    expect(webEditorSource).toContain("storeEditorChatPaneVisible(next)");
     expect(routerSource).toContain("initialEditorChatOpen ?? readEditorChatPaneVisible()");
     expect(routerSource).toContain(
       'aria-label={editorChatOpen ? "Hide chat panel" : "Show chat panel"}',
@@ -415,9 +411,12 @@ describe("Lynx Editor view", () => {
       "setDockOpenInState",
     ]) {
       expect(routerSource).toContain(transition);
+      // Upstream keeps this policy in `rightDockStore.logic.ts`; the shared
+      // module mirrors its transitions for Lynx, so both must define each one.
       expect(sharedSource).toContain(`function ${transition}`);
+      expect(webPolicySource).toContain(`function ${transition}`);
     }
-    expect(webPolicySource).toContain('export * from "@synara/shared/rightDock"');
+    expect(routerSource).toContain('from "@synara/shared/rightDock"');
     expect(routerSource).toContain("<ThreadRightDockTabs");
     expect(routerSource).toContain('kind: "file"');
     expect(tabsSource).toContain("<EditorSurfaceTab");

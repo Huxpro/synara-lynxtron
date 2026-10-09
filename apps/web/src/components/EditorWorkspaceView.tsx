@@ -74,19 +74,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { flushWorkspaceEditors } from "~/lib/workspaceEditorSession";
 import { WorkspaceFileEditorPane } from "./chat/WorkspaceFileEditorPane";
 import { WorkspaceFilePreview } from "./WorkspaceFilePreview";
-import {
-  clampEditorChatPaneWidth,
-  EDITOR_CHAT_PANE_DEFAULT_WIDTH,
-  EDITOR_CHAT_PANE_MAX_WIDTH,
-  EDITOR_CHAT_PANE_MIN_WIDTH,
-  readEditorChatPaneVisible,
-  readEditorChatPaneWidth,
-  readEditorSidebarVisible,
-  storeEditorChatPaneVisible,
-  storeEditorChatPaneWidth,
-  storeEditorSidebarVisible,
-} from "~/editorViewState";
 
+const EDITOR_CHAT_PANE_STORAGE_KEY = "synara.editor.chatPaneWidth";
+const EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY = "synara.editor.sidebarVisible";
+const EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY = "synara.editor.chatPaneVisible";
+const EDITOR_CHAT_PANE_DEFAULT_WIDTH = 384;
+const EDITOR_CHAT_PANE_MIN_WIDTH = 320;
+const EDITOR_CHAT_PANE_MAX_WIDTH = 600;
 const EDITOR_CHAT_PANE_KEYBOARD_STEP = 24;
 
 interface EditorWorkspaceViewProps {
@@ -121,8 +115,67 @@ interface EditorWorkspaceViewProps {
   onReferenceInChat?: (reference: ChatFileReference) => void;
   onAskWhyInChat?: (reference: ChatFileReference) => void;
   onCommentInChat?: (comment: FileCommentSelection) => void;
-  onCloseFilePreview?: () => void;
   onSelectProject?: (projectId: ProjectId) => void;
+}
+
+function clampEditorChatPaneWidth(width: number): number {
+  return Math.min(
+    EDITOR_CHAT_PANE_MAX_WIDTH,
+    Math.max(EDITOR_CHAT_PANE_MIN_WIDTH, Math.round(width)),
+  );
+}
+
+function readStoredEditorChatPaneWidth(): number {
+  if (typeof window === "undefined") {
+    return EDITOR_CHAT_PANE_DEFAULT_WIDTH;
+  }
+
+  try {
+    const rawValue = window.localStorage.getItem(EDITOR_CHAT_PANE_STORAGE_KEY);
+    const parsed = rawValue === null ? Number.NaN : Number.parseFloat(rawValue);
+    return Number.isFinite(parsed)
+      ? clampEditorChatPaneWidth(parsed)
+      : EDITOR_CHAT_PANE_DEFAULT_WIDTH;
+  } catch {
+    return EDITOR_CHAT_PANE_DEFAULT_WIDTH;
+  }
+}
+
+function storeEditorChatPaneWidth(width: number): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(
+      EDITOR_CHAT_PANE_STORAGE_KEY,
+      String(clampEditorChatPaneWidth(width)),
+    );
+  } catch {
+    // Best-effort preference persistence only.
+  }
+}
+
+function readStoredEditorVisibility(key: string): boolean {
+  if (typeof window === "undefined") {
+    return true;
+  }
+  try {
+    return window.localStorage.getItem(key) !== "false";
+  } catch {
+    return true;
+  }
+}
+
+function storeEditorVisibility(key: string, visible: boolean): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+  try {
+    window.localStorage.setItem(key, String(visible));
+  } catch {
+    // Best-effort preference persistence only.
+  }
 }
 
 interface EditorChatPaneResizeState {
@@ -228,7 +281,7 @@ function DiffFilesSidebar(props: {
   };
 
   return (
-    <aside className="flex min-h-[11rem] w-full shrink-0 flex-col border-b border-border/65 bg-[var(--color-background-surface)] lg:h-full lg:w-56 lg:border-b-0 lg:border-r">
+    <aside className="flex min-h-[11rem] w-full shrink-0 flex-col border-b border-border/65 app-content-surface lg:h-full lg:w-56 lg:border-b-0 lg:border-r">
       <div className="flex h-10 shrink-0 items-center gap-2 border-b border-border/65 px-3">
         <DiffIcon className="size-3.5 shrink-0 text-muted-foreground" />
         <span className="min-w-0 flex-1 truncate text-ui font-medium text-foreground/86">
@@ -300,7 +353,7 @@ function EditorActivityBar(props: {
   const searchActive = props.sidebarVisible && props.searchActive;
   return (
     <nav
-      className="flex w-12 shrink-0 flex-col items-center border-r border-border/65 bg-[var(--color-background-surface)]"
+      className="flex w-12 shrink-0 flex-col items-center border-r border-border/65 app-content-surface"
       aria-label="Editor activity bar"
     >
       <ExplorerActivityBarButton
@@ -338,14 +391,18 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
   // same way every other chat-surface header does.
   const trafficLightGutterClassName = useDesktopTopBarTrafficLightGutterClassName();
   const { resolvedTheme: editorResolvedTheme } = useTheme();
-  const [chatPaneWidth, setChatPaneWidth] = useState(readEditorChatPaneWidth);
+  const [chatPaneWidth, setChatPaneWidth] = useState(readStoredEditorChatPaneWidth);
   const chatPaneResizeStateRef = useRef<EditorChatPaneResizeState | null>(null);
   // Both side surfaces can be hidden so the main content takes the full width:
   // re-clicking the active activity-bar item collapses the sidebar (VS Code
   // style), and the header chat toggle hides the chat pane (kept mounted so
   // the chat runtime survives).
-  const [sidebarVisible, setSidebarVisible] = useState(() => readEditorSidebarVisible());
-  const [chatPaneVisible, setChatPaneVisible] = useState(() => readEditorChatPaneVisible());
+  const [sidebarVisible, setSidebarVisible] = useState(() =>
+    readStoredEditorVisibility(EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY),
+  );
+  const [chatPaneVisible, setChatPaneVisible] = useState(() =>
+    readStoredEditorVisibility(EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY),
+  );
   // The search pane replaces the explorer/diff sidebar without touching the
   // center mode, so picking a result simply opens it in the file preview. The
   // query lives here so it survives toggling between sidebar panes.
@@ -386,12 +443,12 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
   const handleActivityBarSelectItem = (item: EditorActivityBarItem) => {
     if (isEditorActivityBarItemActive(activityBarSelection(item))) {
       setSidebarVisible(false);
-      storeEditorSidebarVisible(false);
+      storeEditorVisibility(EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY, false);
       return;
     }
     if (!sidebarVisible) {
       setSidebarVisible(true);
-      storeEditorSidebarVisible(true);
+      storeEditorVisibility(EDITOR_SIDEBAR_VISIBLE_STORAGE_KEY, true);
     }
     if (item === "search") {
       setSearchPaneActive(true);
@@ -403,7 +460,7 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
   const toggleChatPaneVisible = () => {
     setChatPaneVisible((previous) => {
       const next = !previous;
-      storeEditorChatPaneVisible(next);
+      storeEditorVisibility(EDITOR_CHAT_PANE_VISIBLE_STORAGE_KEY, next);
       return next;
     });
   };
@@ -523,7 +580,10 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
   };
 
   return (
-    <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col bg-[var(--color-background-root)] text-foreground">
+    <div
+      data-editor-workspace
+      className="flex h-full min-h-0 min-w-0 flex-1 flex-col app-content-surface text-foreground"
+    >
       <div
         className={cn(
           "flex shrink-0 items-center gap-2 px-2 sm:px-3",
@@ -666,7 +726,6 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
                   onAskWhyInChat={props.onAskWhyInChat}
                   onCommentInChat={props.onCommentInChat}
                   onEditFile={props.onEditFile}
-                  onClosePreview={props.onCloseFilePreview}
                 />
               </div>
             ) : null}
@@ -701,7 +760,7 @@ export function EditorWorkspaceView(props: EditorWorkspaceViewProps) {
               state survive toggling the pane. */}
           <aside
             className={cn(
-              "min-h-[18rem] w-full shrink-0 bg-[var(--color-background-surface)] lg:h-full lg:w-[var(--editor-chat-pane-width)]",
+              "min-h-[18rem] w-full shrink-0 app-content-surface lg:h-full lg:w-[var(--editor-chat-pane-width)]",
               chatPaneVisible ? "flex" : "hidden",
             )}
             style={

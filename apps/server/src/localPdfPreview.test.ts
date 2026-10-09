@@ -5,7 +5,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { inspectLocalPdf, renderLocalPdfPage } from "./localPdfPreview";
-import { writePdfFixture } from "./localPdfTestFixture";
+import { writePdfFixture } from "./testing/localPdfTestFixture";
 
 const tempDirs: string[] = [];
 

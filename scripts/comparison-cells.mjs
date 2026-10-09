@@ -158,10 +158,10 @@ export const INCREMENTS = Object.freeze({
     workflow: "J3",
     base: "landing",
     // The web landing is the draft thread: its diff toggle opens the right dock.
-    open: (driver) => driver.tap({ label: "Toggle diff panel" }),
+    open: (driver) => driver.tap({ label: "Toggle right sidebar" }),
     ready: (driver) => driver.find({ label: "Show file tree" }),
     probes: [],
-    close: (driver) => driver.tap({ label: "Toggle diff panel" }),
+    close: (driver) => driver.tap({ label: "Toggle right sidebar" }),
   },
   "model-menu": {
     workflow: "J1",
@@ -175,7 +175,7 @@ export const INCREMENTS = Object.freeze({
     base: "thread",
     open: async (driver) => {
       if (!(await driver.find({ label: "Add panel" }))) {
-        await driver.tap({ label: "Toggle diff panel" });
+        await driver.tap({ label: "Toggle right sidebar" });
         await waitFor(() => driver.find({ label: "Add panel" }), { label: "the dock" });
       }
       await driver.tap({ label: "Add panel" });

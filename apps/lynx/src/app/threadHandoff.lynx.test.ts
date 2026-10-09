@@ -69,11 +69,21 @@ describe("Native thread handoff service", () => {
         ]),
       ) as never,
       providerStatuses: [
-        { provider: "codex", available: true, authStatus: "authenticated" },
-        { provider: "claudeAgent", available: true, authStatus: "authenticated" },
-        { provider: "cursor", available: false, authStatus: "authenticated" },
-        { provider: "grok", available: true, authStatus: "authenticated" },
-        { provider: "opencode", available: true, authStatus: "unknown" },
+        { provider: "codex", instanceId: "codex", available: true, authStatus: "authenticated" },
+        {
+          provider: "claudeAgent",
+          instanceId: "claudeAgent",
+          available: true,
+          authStatus: "authenticated",
+        },
+        {
+          provider: "cursor",
+          instanceId: "cursor",
+          available: false,
+          authStatus: "authenticated",
+        },
+        { provider: "grok", instanceId: "grok", available: true, authStatus: "authenticated" },
+        { provider: "opencode", instanceId: "opencode", available: true, authStatus: "unknown" },
       ] as never,
     };
     expect(resolveNativeThreadHandoffTargets(eligibleThread, providers)).toEqual([

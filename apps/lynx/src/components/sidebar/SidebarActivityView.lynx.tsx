@@ -66,7 +66,7 @@ const ACTIVITY_LIST_PAGE_SIZE = 20;
 /** The slice of a Lynx sidebar project the Activity view labels rows and scopes with. */
 export interface ActivityProject {
   readonly id: string;
-  readonly kind: "project" | "chat" | "studio";
+  readonly kind: "project" | "chat" | "studio" | "group";
   readonly title: string;
   readonly workspaceRoot: string;
 }
@@ -530,6 +530,8 @@ export function SidebarActivityView(props: {
     groupMode,
     pinnedOpen,
     pinned: model.pinned,
+    // Draft threads are a client-side concept Lynx does not have (no draft-thread store).
+    drafts: [],
     recent: recentThreads,
     today: dateBuckets.today,
     yesterday: dateBuckets.yesterday,

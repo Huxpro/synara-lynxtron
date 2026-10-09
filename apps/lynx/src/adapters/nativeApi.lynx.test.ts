@@ -94,7 +94,9 @@ describe("Lynx NativeApi facade", () => {
         "dialogs",
         "filesystem",
         "git",
+        "githubInbox",
         "orchestration",
+        "projectAgent",
         "projects",
         "provider",
         "pullRequests",
@@ -103,6 +105,7 @@ describe("Lynx NativeApi facade", () => {
         "stats",
         "studio",
         "terminal",
+        "todo",
       ].toSorted(),
     );
 

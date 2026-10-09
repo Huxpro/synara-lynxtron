@@ -5,6 +5,8 @@ import { resolveProviderHealthBannerPresentation } from "./ProviderHealthBanner.
 
 const BASE_STATUS: ServerProviderStatus = {
   provider: "codex",
+  driver: "codex",
+  instanceId: "codex" as ServerProviderStatus["instanceId"],
   status: "ready",
   available: true,
   authStatus: "authenticated",

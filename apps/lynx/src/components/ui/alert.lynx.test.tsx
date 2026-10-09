@@ -49,8 +49,8 @@ describe("Alert", () => {
     const alerts = elementTree.root?.querySelectorAll(".LxAlert") ?? [];
     expect(alerts[0]?.getAttribute("style")).toContain("background-color: rgba(224, 46, 42, 0.04)");
     expect(alerts[0]?.getAttribute("style")).toContain("border-color: rgba(224, 46, 42, 0.32)");
-    expect(alerts[1]?.getAttribute("style")).toContain("background-color: rgba(1, 105, 204, 0.04)");
-    expect(alerts[1]?.getAttribute("style")).toContain("border-color: rgba(1, 105, 204, 0.32)");
+    expect(alerts[1]?.getAttribute("style")).toContain("background-color: rgba(199, 70, 20, 0.04)");
+    expect(alerts[1]?.getAttribute("style")).toContain("border-color: rgba(199, 70, 20, 0.32)");
     expect(alerts[2]?.getAttribute("style")).toContain("background-color: rgba(0, 162, 64, 0.04)");
     expect(alerts[2]?.getAttribute("style")).toContain("border-color: rgba(0, 162, 64, 0.32)");
     expect(alerts[3]?.getAttribute("style")).toContain("background-color: rgba(217, 119, 6, 0.04)");

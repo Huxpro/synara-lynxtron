@@ -592,7 +592,6 @@ function FileTabStory(props: { readonly state: string }) {
           icon={<SurfaceChipIcon icon={FileIcon} />}
           label="example.ts"
           onClose={() => setOpen(false)}
-          visualState={props.state as "default" | "hover" | "focus" | "pressed"}
         />
       ) : (
         <p aria-live="polite" className="text-ui-sm text-muted-foreground">

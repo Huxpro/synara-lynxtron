@@ -60,6 +60,8 @@ describe("composer voice policy", () => {
   it("keeps an active recorder visible after provider availability changes", () => {
     expect(
       deriveComposerVoiceState({
+        enabled: true,
+        available: true,
         authStatus: "unauthenticated",
         voiceTranscriptionAvailable: false,
         isRecording: true,

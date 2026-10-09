@@ -112,7 +112,8 @@ export function deriveSidebarSections(input: {
     treeThreads: threads,
     projectSortOrder: input.projectSortOrder ?? DEFAULT_SIDEBAR_PROJECT_SORT_ORDER,
     threadSortOrder: input.threadSortOrder ?? DEFAULT_SIDEBAR_THREAD_SORT_ORDER,
-    resolveProjectSection: (project) => project.kind,
+    // Hubs ("group" containers) are not on Lynx yet; they stay out of every section.
+    resolveProjectSection: (project) => (project.kind === "group" ? null : project.kind),
   });
   const groups: SidebarProjectGroup[] = sections.projectPartitions.projects.map((project) => ({
     id: project.id,

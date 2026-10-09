@@ -29,10 +29,10 @@ const listeners = new Set<(state: ThemeState) => void>();
 function withOpacity(color: string, opacity: number): string {
   const hexMatch = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(color);
   if (hexMatch) {
-    return `rgba(${Number.parseInt(hexMatch[1], 16)}, ${Number.parseInt(
-      hexMatch[2],
+    return `rgba(${Number.parseInt(hexMatch[1]!, 16)}, ${Number.parseInt(
+      hexMatch[2]!,
       16,
-    )}, ${Number.parseInt(hexMatch[3], 16)}, ${opacity})`;
+    )}, ${Number.parseInt(hexMatch[3]!, 16)}, ${opacity})`;
   }
   const rgbMatch = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i.exec(color);
   if (!rgbMatch) return color;
@@ -87,7 +87,7 @@ export function useTheme() {
   const resolvedTokens = buildResolvedThemeTokens(activeTheme, resolvedTheme);
   const semanticIconPalette: SemanticIconPalette = {
     accent: resolvedTokens.derived.iconAccent,
-    disabled: resolvedTokens.aliases["--color-token-disabled-foreground"],
+    disabled: resolvedTokens.aliases["--color-token-disabled-foreground"]!,
     inverse: resolvedTokens.derived.textButtonPrimary,
     primary: resolvedTokens.derived.iconPrimary,
     secondary: resolvedTokens.derived.iconSecondary,

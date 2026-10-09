@@ -23,7 +23,18 @@ import {
 } from "@synara/contracts";
 import { assert, describe, it } from "@effect/vitest";
 import { assessClaudeCache } from "@synara/shared/claudeCache";
-import { Deferred, Effect, Exit, Fiber, Layer, Option, Queue, Random, Stream } from "effect";
+import {
+  Deferred,
+  Effect,
+  Exit,
+  Fiber,
+  Layer,
+  Option,
+  Queue,
+  Random,
+  Schema,
+  Stream,
+} from "effect";
 import { TestClock } from "effect/testing";
 import { afterEach, beforeEach, vi } from "vitest";
 
@@ -37,13 +48,19 @@ import { ServerConfig } from "../../config.ts";
 import { MINIMUM_CLAUDE_AUTO_MODE_CLI_VERSION } from "../claudeCliVersion.ts";
 import { claudeCacheForModel } from "../claudeCacheObservation.ts";
 import { ProviderAdapterRequestError, ProviderAdapterValidationError } from "../Errors.ts";
+import {
+  makeProviderModelDiscoveryCache,
+  providerModelDiscoveryCacheKey,
+} from "../providerModelDiscoveryCache.ts";
 import { ClaudeAdapter, type ClaudeAdapterShape } from "../Services/ClaudeAdapter.ts";
 import {
   buildEmbeddedClaudeSystemPromptAppend,
+  claudeHomeEnvironment,
   makeClaudeAdapterLive as makeClaudeAdapterLiveBase,
   type ClaudeAdapterLiveOptions,
   type ClaudeOwnedProcess,
 } from "./ClaudeAdapter.ts";
+import { claudeIsolatedHomePath } from "../claudeEnvironment.ts";
 
 vi.mock("effect", async (importOriginal) => {
   const actual = await importOriginal<typeof import("effect")>();
@@ -65,6 +82,7 @@ class FakeClaudeQuery implements AsyncIterable<SDKMessage> {
   }> = [];
   private done = false;
   private failure: unknown | undefined;
+  private pendingNext: Promise<IteratorResult<SDKMessage>> | undefined;
 
   public readonly interruptCalls: Array<void> = [];
   public readonly stopTaskCalls: Array<string> = [];
@@ -222,12 +240,21 @@ class FakeClaudeQuery implements AsyncIterable<SDKMessage> {
             value: undefined,
           });
         }
-        return new Promise((resolve, reject) => {
+        const pending = new Promise<IteratorResult<SDKMessage>>((resolve, reject) => {
           this.waiters.push({
             resolve,
             reject,
           });
         });
+        this.pendingNext = pending;
+        return pending;
+      },
+      // The SDK query is an async generator: `return()` settles only after the pending
+      // `next()` does, so a consumer that awaits it while Claude is idle waits until
+      // something else (close, a message) settles that read.
+      return: async () => {
+        await this.pendingNext?.catch(() => undefined);
+        return { done: true, value: undefined };
       },
     };
   }
@@ -717,6 +744,156 @@ describe("Claude Synara harness policy", () => {
 });
 
 describe("ClaudeAdapterLive", () => {
+  it.effect("grants a multi-folder project's extra folders as additional directories", () => {
+    const harness = makeHarness();
+    return Effect.gen(function* () {
+      const adapter = yield* ClaudeAdapter;
+      yield* adapter.startSession({
+        threadId: THREAD_ID,
+        provider: "claudeAgent",
+        cwd: "/tmp/repos/web",
+        additionalDirectories: ["/tmp/repos/api", "/tmp/repos/shared"],
+        runtimeMode: "full-access",
+      });
+
+      assert.deepEqual(harness.getLastCreateQueryInput()?.options.additionalDirectories, [
+        "/tmp/repos/web",
+        "/tmp/repos/api",
+        "/tmp/repos/shared",
+      ]);
+    }).pipe(
+      Effect.provideService(Random.Random, makeDeterministicRandomService()),
+      Effect.provide(harness.layer),
+    );
+  });
+
+  it.effect("passes provider instance environment to temporary command discovery", () => {
+    const harness = makeHarness();
+    return Effect.gen(function* () {
+      const adapter = yield* ClaudeAdapter;
+      if (!adapter.listCommands) {
+        assert.fail("Expected ClaudeAdapter to expose command discovery");
+      }
+      yield* adapter.listCommands({
+        provider: "claudeAgent",
+        cwd: "/tmp/claude-work",
+        homePath: "/tmp/claude-home-work",
+        environment: { ANTHROPIC_AUTH_TOKEN: "work-token" },
+      });
+
+      const createInput = harness.getLastCreateQueryInput();
+      assert.equal(createInput?.options.env?.ANTHROPIC_AUTH_TOKEN, "work-token");
+      assert.equal(createInput?.options.env?.HOME, "/tmp/claude-home-work");
+    }).pipe(
+      Effect.provideService(Random.Random, makeDeterministicRandomService()),
+      Effect.provide(harness.layer),
+    );
+  });
+
+  it.effect(
+    "keeps command discovery caches and account directories isolated by provider instance id",
+    () => {
+      const harness = makeMultiQueryHarness();
+      return Effect.gen(function* () {
+        const adapter = yield* ClaudeAdapter;
+        if (!adapter.listCommands) {
+          assert.fail("Expected ClaudeAdapter to expose command discovery");
+        }
+        const sharedInput = {
+          provider: "claudeAgent" as const,
+          cwd: "/tmp/claude-work",
+          environment: { ANTHROPIC_AUTH_TOKEN: "shared-token" },
+        };
+        yield* adapter.listCommands({ ...sharedInput, instanceId: "claude_work_a" });
+        yield* adapter.listCommands({ ...sharedInput, instanceId: "claude_work_b" });
+
+        assert.equal(harness.createInputs.length, 2);
+        for (const [index, instanceId] of ["claude_work_a", "claude_work_b"].entries()) {
+          const env = harness.createInputs[index]?.options.env;
+          const accountHome = claudeIsolatedHomePath({
+            isolationRootDir: "/tmp/userdata",
+            providerInstanceId: instanceId,
+          });
+          if (process.platform === "darwin") {
+            assert.equal(env?.CLAUDE_CONFIG_DIR, path.join(accountHome, ".claude"));
+            assert.equal(env?.CLAUDE_SECURESTORAGE_CONFIG_DIR, env?.CLAUDE_CONFIG_DIR);
+            assert.notEqual(env?.HOME, accountHome);
+          } else {
+            assert.equal(env?.HOME, accountHome);
+          }
+        }
+      }).pipe(
+        Effect.provideService(Random.Random, makeDeterministicRandomService()),
+        Effect.provide(harness.layer),
+      );
+    },
+  );
+
+  it.effect("starts an environment-only runtime with its Synara-scoped account directories", () => {
+    const harness = makeHarness();
+    return Effect.acquireUseRelease(
+      Effect.sync(() => {
+        const previous = process.env.CLAUDE_CONFIG_DIR;
+        process.env.CLAUDE_CONFIG_DIR = "/tmp/default-claude-config";
+        return previous;
+      }),
+      () =>
+        Effect.gen(function* () {
+          const adapter = yield* ClaudeAdapter;
+          yield* adapter.startSession({
+            threadId: THREAD_ID,
+            provider: "claudeAgent",
+            providerInstanceId: "claude_work",
+            modelSelection: {
+              provider: "claudeAgent",
+              instanceId: "claude_work",
+              model: "claude-sonnet-4-5",
+            },
+            providerOptions: {
+              claudeAgent: {
+                environment: { ANTHROPIC_AUTH_TOKEN: "work-token" },
+              },
+            },
+            runtimeMode: "full-access",
+          });
+
+          const queryEnv = harness.getLastCreateQueryInput()?.options.env;
+          const accountHome = claudeIsolatedHomePath({
+            isolationRootDir: "/tmp/userdata",
+            providerInstanceId: "claude_work",
+          });
+          if (process.platform === "darwin") {
+            assert.equal(queryEnv?.CLAUDE_CONFIG_DIR, path.join(accountHome, ".claude"));
+            assert.equal(queryEnv?.CLAUDE_SECURESTORAGE_CONFIG_DIR, queryEnv?.CLAUDE_CONFIG_DIR);
+            assert.notEqual(queryEnv?.HOME, accountHome);
+          } else {
+            assert.equal(queryEnv?.HOME, accountHome);
+            assert.equal(queryEnv?.CLAUDE_CONFIG_DIR, undefined);
+          }
+          assert.equal(queryEnv?.ANTHROPIC_AUTH_TOKEN, "work-token");
+        }),
+      (previous) =>
+        Effect.sync(() => {
+          if (previous === undefined) delete process.env.CLAUDE_CONFIG_DIR;
+          else process.env.CLAUDE_CONFIG_DIR = previous;
+        }),
+    ).pipe(
+      Effect.provideService(Random.Random, makeDeterministicRandomService()),
+      Effect.provide(harness.layer),
+    );
+  });
+
+  it("sets Windows profile variables for configured Claude homes", () => {
+    assert.deepEqual(claudeHomeEnvironment("C:\\Users\\work\\.claude-work", "win32"), {
+      HOME: "C:\\Users\\work\\.claude-work",
+      USERPROFILE: "C:\\Users\\work\\.claude-work",
+      APPDATA: "C:\\Users\\work\\.claude-work\\AppData\\Roaming",
+      LOCALAPPDATA: "C:\\Users\\work\\.claude-work\\AppData\\Local",
+      HOMEDRIVE: "C:",
+      HOMEPATH: "\\Users\\work\\.claude-work",
+    });
+  });
+
   it.effect("returns validation error for non-claude provider on startSession", () => {
     const harness = makeHarness();
     return Effect.gen(function* () {
@@ -842,6 +1019,126 @@ describe("ClaudeAdapterLive", () => {
       const createInput = harness.getLastCreateQueryInput();
       assert.equal(createInput?.options.permissionMode, "auto");
       assert.equal(createInput?.options.allowDangerouslySkipPermissions, undefined);
+    }).pipe(
+      Effect.provideService(Random.Random, makeDeterministicRandomService()),
+      Effect.provide(harness.layer),
+    );
+  });
+
+  it.effect(
+    "pre-approves Synara group tools for an opted-in coordinator session while Bash still asks",
+    () => {
+      const gateway = makeGatewayCredentialsHarness();
+      const harness = makeMultiQueryHarness({ gatewayCredentials: gateway.credentials });
+      return Effect.gen(function* () {
+        const adapter = yield* ClaudeAdapter;
+        yield* adapter.startSession({
+          threadId: THREAD_ID,
+          provider: "claudeAgent",
+          runtimeMode: "approval-required",
+          autoApproveSynaraTools: true,
+        });
+
+        const canUseTool = harness.createInputs[0]?.options.canUseTool;
+        if (!canUseTool) {
+          return assert.fail("Expected a canUseTool hook on the query options.");
+        }
+
+        for (const [index, toolName] of [
+          "mcp__synara__synara_create_thread",
+          "synara_project_link_repository",
+        ].entries()) {
+          const result = (yield* Effect.promise(() =>
+            canUseTool(
+              toolName,
+              {},
+              {
+                signal: new AbortController().signal,
+                toolUseID: `tool-use-synara-${index}`,
+                requestId: `request-synara-${index}`,
+              },
+            ),
+          )) as PermissionResult;
+          assert.equal(result.behavior, "allow");
+        }
+
+        const bashPermission = canUseTool(
+          "Bash",
+          { command: "pwd" },
+          {
+            signal: new AbortController().signal,
+            toolUseID: "tool-use-bash-1",
+            requestId: "request-bash-1",
+          },
+        );
+        const requested = yield* Stream.filter(
+          adapter.streamEvents,
+          (event) => event.type === "request.opened",
+        ).pipe(Stream.runHead);
+        if (requested._tag !== "Some" || requested.value.type !== "request.opened") {
+          return assert.fail("Bash must still open an approval request.");
+        }
+        if (!requested.value.requestId) {
+          return assert.fail("The approval request must carry a request id.");
+        }
+        yield* adapter.respondToRequest(
+          THREAD_ID,
+          ApprovalRequestId.makeUnsafe(requested.value.requestId),
+          "decline",
+        );
+        yield* Stream.runHead(adapter.streamEvents);
+        const bashResult = (yield* Effect.promise(() => bashPermission)) as PermissionResult;
+        assert.equal(bashResult.behavior, "deny");
+      }).pipe(
+        Effect.provideService(Random.Random, makeDeterministicRandomService()),
+        Effect.provide(harness.layer),
+      );
+    },
+  );
+
+  it.effect("keeps Synara group tools on the approval path when the session did not opt in", () => {
+    const gateway = makeGatewayCredentialsHarness();
+    const harness = makeMultiQueryHarness({ gatewayCredentials: gateway.credentials });
+    return Effect.gen(function* () {
+      const adapter = yield* ClaudeAdapter;
+      yield* adapter.startSession({
+        threadId: THREAD_ID,
+        provider: "claudeAgent",
+        runtimeMode: "approval-required",
+      });
+
+      const canUseTool = harness.createInputs[0]?.options.canUseTool;
+      if (!canUseTool) {
+        return assert.fail("Expected a canUseTool hook on the query options.");
+      }
+
+      const pending = canUseTool(
+        "mcp__synara__synara_create_thread",
+        {},
+        {
+          signal: new AbortController().signal,
+          toolUseID: "tool-use-synara-no-opt-in",
+          requestId: "request-synara-no-opt-in",
+        },
+      );
+      const requested = yield* Stream.filter(
+        adapter.streamEvents,
+        (event) => event.type === "request.opened",
+      ).pipe(Stream.runHead);
+      if (requested._tag !== "Some" || requested.value.type !== "request.opened") {
+        return assert.fail("A non-opted-in session must still ask for gateway tools.");
+      }
+      if (!requested.value.requestId) {
+        return assert.fail("The approval request must carry a request id.");
+      }
+      yield* adapter.respondToRequest(
+        THREAD_ID,
+        ApprovalRequestId.makeUnsafe(requested.value.requestId),
+        "decline",
+      );
+      yield* Stream.runHead(adapter.streamEvents);
+      const result = (yield* Effect.promise(() => pending)) as PermissionResult;
+      assert.equal(result.behavior, "deny");
     }).pipe(
       Effect.provideService(Random.Random, makeDeterministicRandomService()),
       Effect.provide(harness.layer),
@@ -1956,7 +2253,8 @@ describe("ClaudeAdapterLive", () => {
     return Effect.gen(function* () {
       const adapter = yield* ClaudeAdapter;
 
-      const runtimeEventsFiber = yield* Stream.take(adapter.streamEvents, 11).pipe(
+      const runtimeEventsFiber = yield* adapter.streamEvents.pipe(
+        Stream.takeUntil((event) => event.type === "turn.completed"),
         Stream.runCollect,
         Effect.forkChild,
       );
@@ -1976,17 +2274,113 @@ describe("ClaudeAdapterLive", () => {
       harness.query.emit({
         type: "stream_event",
         session_id: "sdk-session-tool-streams",
+        uuid: "thinking-message-start",
+        parent_tool_use_id: null,
+        event: { type: "message_start", message: { id: "thinking-message" } },
+      } as unknown as SDKMessage);
+
+      harness.query.emit({
+        type: "stream_event",
+        session_id: "sdk-session-tool-streams",
+        uuid: "thinking-block-start",
+        parent_tool_use_id: null,
+        event: {
+          type: "content_block_start",
+          index: 2,
+          content_block: { type: "thinking", thinking: "First ", signature: "never-display" },
+        },
+      } as unknown as SDKMessage);
+
+      harness.query.emit({
+        type: "stream_event",
+        session_id: "sdk-session-tool-streams",
         uuid: "stream-thinking",
         parent_tool_use_id: null,
         event: {
           type: "content_block_delta",
-          index: 0,
+          index: 2,
           delta: {
             type: "thinking_delta",
             thinking: "Let",
           },
         },
       } as unknown as SDKMessage);
+
+      for (let snapshot = 0; snapshot < 2; snapshot += 1) {
+        harness.query.emit({
+          type: "assistant",
+          session_id: "sdk-session-tool-streams",
+          uuid: `thinking-snapshot-${snapshot}`,
+          parent_tool_use_id: null,
+          message: {
+            id: "thinking-message",
+            role: "assistant",
+            content: [
+              { type: "thinking", thinking: "First Let us check", signature: "never-display" },
+            ],
+          },
+        } as unknown as SDKMessage);
+      }
+      harness.query.emit({
+        type: "stream_event",
+        session_id: "sdk-session-tool-streams",
+        uuid: "thinking-stop",
+        parent_tool_use_id: null,
+        event: { type: "content_block_stop", index: 2 },
+      } as unknown as SDKMessage);
+
+      harness.query.emit({
+        type: "stream_event",
+        session_id: "sdk-session-tool-streams",
+        uuid: "second-message-start",
+        parent_tool_use_id: null,
+        event: { type: "message_start", message: { id: "second-message" } },
+      } as unknown as SDKMessage);
+      harness.query.emit({
+        type: "stream_event",
+        session_id: "sdk-session-tool-streams",
+        uuid: "second-thinking",
+        parent_tool_use_id: null,
+        event: {
+          type: "content_block_delta",
+          index: 2,
+          delta: { type: "thinking_delta", thinking: "Next" },
+        },
+      } as unknown as SDKMessage);
+      harness.query.emit({
+        type: "stream_event",
+        session_id: "sdk-session-tool-streams",
+        uuid: "second-thinking-stop",
+        parent_tool_use_id: null,
+        event: { type: "content_block_stop", index: 2 },
+      } as unknown as SDKMessage);
+      harness.query.emit({
+        type: "assistant",
+        session_id: "sdk-session-tool-streams",
+        uuid: "second-thinking-snapshot",
+        parent_tool_use_id: null,
+        message: {
+          id: "second-message",
+          role: "assistant",
+          content: [{ type: "thinking", thinking: "Next revised", signature: "never-display" }],
+        },
+      } as unknown as SDKMessage);
+      for (const uuid of ["snapshot-only", "snapshot-only-repeat"]) {
+        harness.query.emit({
+          type: "assistant",
+          session_id: "sdk-session-tool-streams",
+          uuid,
+          parent_tool_use_id: null,
+          message: {
+            id: "snapshot-only-message",
+            role: "assistant",
+            content: [
+              { type: "thinking", thinking: "Snapshot only", signature: "never-display" },
+              { type: "redacted_thinking", data: "never-display" },
+            ],
+          },
+        } as unknown as SDKMessage);
+      }
 
       harness.query.emit({
         type: "stream_event",
@@ -2066,7 +2460,19 @@ describe("ClaudeAdapterLive", () => {
           "session.state.changed",
           "turn.started",
           "thread.started",
+          "item.started",
           "content.delta",
+          "content.delta",
+          "content.delta",
+          "item.completed",
+          "item.started",
+          "content.delta",
+          "item.completed",
+          "content.delta",
+          "item.completed",
+          "item.started",
+          "content.delta",
+          "item.completed",
           "item.started",
           "item.updated",
           "item.updated",
@@ -2080,11 +2486,33 @@ describe("ClaudeAdapterLive", () => {
       );
       assert.equal(reasoningDelta?.type, "content.delta");
       if (reasoningDelta?.type === "content.delta") {
-        assert.equal(reasoningDelta.payload.delta, "Let");
+        assert.equal(reasoningDelta.payload.delta, "First ");
         assert.equal(String(reasoningDelta.turnId), String(turn.turnId));
       }
 
-      const toolStarted = runtimeEvents.find((event) => event.type === "item.started");
+      const reasoningStarted = runtimeEvents.find(
+        (event) => event.type === "item.started" && event.payload.itemType === "reasoning",
+      );
+      const reasoningCompleted = runtimeEvents.find(
+        (event) => event.type === "item.completed" && event.payload.itemType === "reasoning",
+      );
+      assert.equal(reasoningDelta?.itemId, reasoningStarted?.itemId);
+      assert.equal(reasoningCompleted?.itemId, reasoningStarted?.itemId);
+      if (reasoningCompleted?.type === "item.completed") {
+        assert.equal(reasoningCompleted.payload.detail, "First Let us check");
+      }
+      const completedReasoning = runtimeEvents.filter(
+        (event): event is Extract<ProviderRuntimeEvent, { type: "item.completed" }> =>
+          event.type === "item.completed" && event.payload.itemType === "reasoning",
+      );
+      assert.deepEqual(
+        completedReasoning.map((event) => event.payload.detail),
+        ["First Let us check", "Next", "Next revised", "Snapshot only"],
+      );
+      assert.equal(new Set(completedReasoning.map((event) => event.itemId)).size, 3);
+      const toolStarted = runtimeEvents.find(
+        (event) => event.type === "item.started" && event.payload.itemType === "dynamic_tool_call",
+      );
       assert.equal(toolStarted?.type, "item.started");
       if (toolStarted?.type === "item.started") {
         assert.equal(toolStarted.payload.itemType, "dynamic_tool_call");
@@ -2378,6 +2806,7 @@ describe("ClaudeAdapterLive", () => {
         usage: { total_tokens: 123, tool_uses: 4, duration_ms: 987 },
         session_id: "sdk-session-subagent",
         uuid: "task-progress-subagent-1",
+        summary: "  Reviewing the migration.\n",
       } as unknown as SDKMessage);
 
       harness.query.emit({
@@ -2387,7 +2816,7 @@ describe("ClaudeAdapterLive", () => {
         tool_use_id: "tool-task-1",
         status: "completed",
         output_file: "/tmp/task-1-output.md",
-        summary: "Reviewed the migration.",
+        summary: "  Reviewed the migration.\n",
         session_id: "sdk-session-subagent",
         uuid: "task-notification-1",
       } as unknown as SDKMessage);
@@ -2463,6 +2892,17 @@ describe("ClaudeAdapterLive", () => {
           event.type === "thread.token-usage.updated" && event.payload.usage.usedTokens === 123,
       );
       assert.equal(taskUsage?.type, "thread.token-usage.updated");
+
+      const taskProgress = runtimeEvents.find((event) => event.type === "task.progress");
+      assert.equal(taskProgress?.type, "task.progress");
+      if (taskProgress?.type === "task.progress") {
+        assert.equal(taskProgress.payload.summary, "Reviewing the migration.");
+      }
+      const taskCompleted = runtimeEvents.find((event) => event.type === "task.completed");
+      assert.equal(taskCompleted?.type, "task.completed");
+      if (taskCompleted?.type === "task.completed") {
+        assert.equal(taskCompleted.payload.summary, "Reviewed the migration.");
+      }
 
       const childTurnCompleted = childEvents.find((event) => event.type === "turn.completed");
       assert.equal(childTurnCompleted?.type, "turn.completed");
@@ -3478,6 +3918,7 @@ describe("ClaudeAdapterLive", () => {
           ),
         );
 
+      const nextCallsBeforeTaskStart = harness.query.iteratorNextCalls;
       harness.query.emit({
         type: "system",
         subtype: "task_started",
@@ -3488,6 +3929,15 @@ describe("ClaudeAdapterLive", () => {
         session_id: "sdk-session-steer",
         uuid: "task-started-steer-1",
       } as unknown as SDKMessage);
+      // Wait for the stream handler to register the subagent run before steering it:
+      // it pulls the next SDK message only after handling this one.
+      for (
+        let i = 0;
+        i < 10_000 && harness.query.iteratorNextCalls <= nextCallsBeforeTaskStart;
+        i += 1
+      ) {
+        yield* Effect.yieldNow;
+      }
 
       // No pending steer: the hook stays a clean passthrough.
       assert.deepEqual(yield* invokeHook("task-steer-1"), {});
@@ -3558,6 +4008,7 @@ describe("ClaudeAdapterLive", () => {
         runtimeMode: "full-access",
       });
 
+      const nextCallsBeforeTaskStart = harness.query.iteratorNextCalls;
       harness.query.emit({
         type: "system",
         subtype: "task_started",
@@ -3568,6 +4019,15 @@ describe("ClaudeAdapterLive", () => {
         session_id: "sdk-session-steer-attach",
         uuid: "task-started-steer-attach-1",
       } as unknown as SDKMessage);
+      // Wait for the stream handler to register the subagent run before steering it:
+      // it pulls the next SDK message only after handling this one.
+      for (
+        let i = 0;
+        i < 10_000 && harness.query.iteratorNextCalls <= nextCallsBeforeTaskStart;
+        i += 1
+      ) {
+        yield* Effect.yieldNow;
+      }
 
       const hook = harness.getLastCreateQueryInput()?.options.hooks?.PreToolUse?.[0]?.hooks[0];
       assert.isDefined(hook);
@@ -3955,6 +4415,81 @@ describe("ClaudeAdapterLive", () => {
       yield* adapter.stopTask(session.threadId, "wf-1");
       assert.deepEqual(harness.query.stopTaskCalls, ["wf-1"]);
       assert.equal(harness.query.interruptCalls.length, 0);
+    }).pipe(
+      Effect.provideService(Random.Random, makeDeterministicRandomService()),
+      Effect.provide(harness.layer),
+    );
+  });
+
+  it.effect("trims task event strings so untrimmed SDK descriptions stay journalable", () => {
+    const harness = makeHarness();
+    return Effect.gen(function* () {
+      const adapter = yield* ClaudeAdapter;
+      const runtimeEventsFiber = yield* adapter.streamEvents.pipe(
+        Stream.takeUntil(
+          (event) => event.type === "task.updated" && event.payload.taskId === "bash-untrimmed",
+        ),
+        Stream.runCollect,
+        Effect.forkChild,
+      );
+
+      yield* adapter.startSession({
+        threadId: THREAD_ID,
+        provider: "claudeAgent",
+        runtimeMode: "full-access",
+      });
+      harness.query.emit({
+        type: "system",
+        subtype: "task_started",
+        task_id: "bash-untrimmed",
+        tool_use_id: "toolu-bash-untrimmed",
+        task_type: "local_bash",
+        description: "bun run test\n",
+        session_id: "sdk-session-untrimmed",
+        uuid: "bash-untrimmed-started",
+      } as unknown as SDKMessage);
+      harness.query.emit({
+        type: "system",
+        subtype: "task_progress",
+        task_id: "bash-untrimmed",
+        description: "  bun run test \n",
+        last_tool_name: "Bash ",
+        session_id: "sdk-session-untrimmed",
+        uuid: "bash-untrimmed-progress",
+      } as unknown as SDKMessage);
+      harness.query.emit({
+        type: "system",
+        subtype: "task_updated",
+        task_id: "bash-untrimmed",
+        patch: { status: "failed", error: "exit code 1\n" },
+        session_id: "sdk-session-untrimmed",
+        uuid: "bash-untrimmed-updated",
+      } as unknown as SDKMessage);
+
+      const taskEvents = Array.from(yield* Fiber.join(runtimeEventsFiber)).filter(
+        (event) =>
+          (event.type === "task.started" ||
+            event.type === "task.progress" ||
+            event.type === "task.updated") &&
+          event.payload.taskId === "bash-untrimmed",
+      );
+      assert.deepEqual(
+        taskEvents.map((event) => event.type),
+        ["task.started", "task.progress", "task.updated"],
+      );
+      for (const event of taskEvents) {
+        const encoded = yield* Schema.encodeEffect(ProviderRuntimeEvent)(event).pipe(Effect.exit);
+        assert.equal(Exit.isSuccess(encoded), true, `${event.type} must encode`);
+        if (event.type === "task.started" || event.type === "task.progress") {
+          assert.equal(event.payload.description, "bun run test");
+        }
+        if (event.type === "task.progress") {
+          assert.equal(event.payload.lastToolName, "Bash");
+        }
+        if (event.type === "task.updated") {
+          assert.equal(event.payload.error, "exit code 1");
+        }
+      }
     }).pipe(
       Effect.provideService(Random.Random, makeDeterministicRandomService()),
       Effect.provide(harness.layer),
@@ -5161,11 +5696,33 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
 
     return Effect.gen(function* () {
       const adapter = yield* ClaudeAdapter;
+      const noticed = yield* Deferred.make<void>();
+      const observed: ProviderRuntimeEvent[] = [];
+      const exited = yield* adapter.streamEvents.pipe(
+        Stream.tap((event) => {
+          observed.push(event);
+          return event.type === "runtime.warning"
+            ? Deferred.succeed(noticed, undefined)
+            : Effect.void;
+        }),
+        Stream.takeUntil((event) => event.type === "session.exited"),
+        Stream.runCollect,
+        Effect.forkChild,
+      );
       yield* adapter.startSession({
         threadId: THREAD_ID,
         provider: "claudeAgent",
         runtimeMode: "full-access",
       });
+
+      query.emit({
+        type: "system",
+        subtype: "background_tasks_changed",
+        tasks: [{ task_id: "retired-agent", task_type: "local_agent", description: "Working" }],
+        session_id: "sdk-session-retired",
+        uuid: "retired-agent-backgrounded",
+      } as unknown as SDKMessage);
+      yield* Deferred.await(noticed);
 
       const stopping = yield* adapter.stopSession(THREAD_ID).pipe(Effect.forkChild);
       yield* Effect.yieldNow;
@@ -5174,13 +5731,52 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
       assert.equal(query.closeCalls, 1);
       assert.equal(teardownCalls, 1);
       assert.equal((yield* adapter.listSessions()).length, 1);
+      assert.deepEqual(
+        observed.filter((event) => event.type === "task.completed"),
+        [],
+      );
 
       proveExit?.();
       yield* Fiber.join(stopping);
+      yield* Fiber.join(exited);
       assert.equal((yield* adapter.listSessions()).length, 0);
+      const completions = observed.filter((event) => event.type === "task.completed");
+      assert.equal(completions.length, 1);
+      assert.equal(completions[0]?.threadId, THREAD_ID);
+      assert.equal(String(completions[0]?.payload.taskId), "retired-agent");
+      assert.equal(completions[0]?.payload.status, "stopped");
     }).pipe(
       Effect.provideService(Random.Random, makeDeterministicRandomService()),
       Effect.provide(layer),
+    );
+  });
+
+  it.effect("stops an idle session without waiting on the SDK query's pending read", () => {
+    // Regression: quit left Claude running. Interrupting the stream awaited the SDK
+    // generator's return(), which queues behind a read that never settles while
+    // Claude is idle, so teardown never reached query.close() or the process tree.
+    const harness = makeHarness();
+    return Effect.gen(function* () {
+      const adapter = yield* ClaudeAdapter;
+      yield* adapter.startSession({
+        threadId: THREAD_ID,
+        provider: "claudeAgent",
+        runtimeMode: "full-access",
+      });
+      for (let i = 0; i < 10_000 && harness.query.iteratorNextCalls === 0; i += 1) {
+        yield* Effect.yieldNow;
+      }
+
+      const stopping = yield* adapter.stopSession(THREAD_ID).pipe(Effect.forkChild);
+      for (let i = 0; i < 10_000 && stopping.pollUnsafe() === undefined; i += 1) {
+        yield* Effect.yieldNow;
+      }
+
+      assert.notEqual(stopping.pollUnsafe(), undefined, "stopSession must not hang");
+      assert.equal(harness.query.closeCalls, 1);
+    }).pipe(
+      Effect.provideService(Random.Random, makeDeterministicRandomService()),
+      Effect.provide(harness.layer),
     );
   });
 
@@ -5586,13 +6182,61 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
       );
       assert.equal(query.closeCalls, 1);
       assert.equal(createQueryCalls, 1);
+    }).pipe(Effect.provide(layer));
+  });
 
-      const cached = yield* listModels({
+  it.effect("refreshes Claude models while an older session remains active", () => {
+    const queries: FakeClaudeQuery[] = [];
+    const layer = makeClaudeAdapterLive({
+      createQuery: () => {
+        const query = new FakeClaudeQuery();
+        setSupportedModels(query, [
+          {
+            value: "sonnet",
+            resolvedModel: queries.length < 2 ? "claude-sonnet-5" : "claude-sonnet-5-5",
+            displayName: "Sonnet",
+            description: "Sonnet model",
+          },
+        ]);
+        queries.push(query);
+        return query;
+      },
+    }).pipe(
+      Layer.provideMerge(ServerConfig.layerTest("/tmp/claude-adapter-test", "/tmp")),
+      Layer.provideMerge(NodeServices.layer),
+    );
+    let now = 0;
+    const cache = makeProviderModelDiscoveryCache({ now: () => now, freshTtlMs: 1_000 });
+
+    return Effect.gen(function* () {
+      const adapter = yield* ClaudeAdapter;
+      yield* adapter.startSession({
+        threadId: THREAD_ID,
         provider: "claudeAgent",
-        cwd: "/tmp/project",
+        runtimeMode: "approval-required",
       });
-      assert.equal(cached.cached, true);
-      assert.equal(createQueryCalls, 1);
+      const input = { provider: "claudeAgent" as const, cwd: "/tmp/project" };
+      const key = providerModelDiscoveryCacheKey(input);
+      const discover = Effect.suspend(() => adapter.listModels!(input));
+
+      const first = yield* cache.lookup(key, discover);
+      assert.equal(first.models[0]?.resolvedModel, "claude-sonnet-5");
+      const fresh = yield* cache.lookup(key, discover);
+      assert.equal(fresh.cached, true);
+
+      now = 2_000;
+      const stale = yield* cache.lookup(key, discover);
+      assert.equal(stale.models[0]?.resolvedModel, "claude-sonnet-5");
+      yield* Effect.promise(() =>
+        vi.waitFor(async () => {
+          const refreshed = await Effect.runPromise(cache.lookup(key, discover));
+          assert.equal(refreshed.models[0]?.resolvedModel, "claude-sonnet-5-5");
+        }),
+      );
+      assert.equal(yield* adapter.hasSession(THREAD_ID), true);
+      assert.equal(queries[0]?.closeCalls, 0);
+      assert.equal(queries[1]?.closeCalls, 1);
+      assert.equal(queries[2]?.closeCalls, 1);
     }).pipe(Effect.provide(layer));
   });
 
@@ -5704,6 +6348,20 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
           } as unknown as SDKMessage);
         }
 
+        for (const attempt of [1, 2]) {
+          harness.query.emit({
+            type: "system",
+            subtype: "api_retry",
+            attempt,
+            max_retries: 3,
+            retry_delay_ms: 1500,
+            error_status: 503,
+            error: "overloaded",
+            session_id: "sdk-session-retry",
+            uuid: `retry-${attempt}`,
+          } as SDKMessage);
+        }
+
         // Two distinct unknown subtypes, each emitted twice — each must surface
         // exactly one warning (per-kind de-dup), so two warnings in total.
         for (const subtype of ["future_unknown_subtype", "another_unknown_subtype"]) {
@@ -5733,7 +6391,11 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
           event.type === "runtime.warning" ? [event.payload.message] : [],
         );
 
-        assert.equal(warningMessages.length, 2);
+        assert.equal(warningMessages.length, 4);
+        assert.deepEqual(
+          warningMessages.filter((message) => message.includes("Request retry")),
+          ["Request retry 1/3 in 2s (HTTP 503).", "Request retry 2/3 in 2s (HTTP 503)."],
+        );
         assert.equal(
           warningMessages.some((message) => message.includes("thinking_tokens")),
           false,
@@ -7775,32 +8437,61 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
     );
   });
 
-  it.effect("uses an app-generated Claude session id for fresh sessions", () => {
-    const harness = makeHarness();
+  it.effect("restarts unused Claude sessions fresh before native history exists", () => {
+    const harness = makeMultiQueryHarness();
     return Effect.gen(function* () {
       const adapter = yield* ClaudeAdapter;
-
-      const session = yield* adapter.startSession({
+      const startInput = {
         threadId: THREAD_ID,
-        provider: "claudeAgent",
-        runtimeMode: "full-access",
-      });
-
-      const createInput = harness.getLastCreateQueryInput();
+        provider: "claudeAgent" as const,
+        runtimeMode: "full-access" as const,
+      };
+      const session = yield* adapter.startSession(startInput);
+      const createInput = harness.createInputs[0];
       const sessionResumeCursor = session.resumeCursor as {
         threadId?: string;
         resume?: string;
         turnCount?: number;
       };
       assert.equal(sessionResumeCursor.threadId, THREAD_ID);
-      assert.equal(typeof sessionResumeCursor.resume, "string");
+      assert.equal(sessionResumeCursor.resume, undefined);
       assert.equal(sessionResumeCursor.turnCount, 0);
       assert.match(
-        sessionResumeCursor.resume ?? "",
+        createInput?.options.sessionId ?? "",
         /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
       );
       assert.equal(createInput?.options.resume, undefined);
-      assert.equal(createInput?.options.sessionId, sessionResumeCursor.resume);
+
+      const restartInput = {
+        ...startInput,
+        enableComputerControl: true,
+        resumeCursor: session.resumeCursor,
+      };
+      const restarted = yield* adapter.startSession(restartInput);
+      assert.equal(harness.queries[0]?.closeCalls, 1);
+      assert.equal(harness.createInputs[1]?.options.resume, undefined);
+      const nativeSessionId = harness.createInputs[1]?.options.sessionId;
+      assert.ok(nativeSessionId);
+      assert.notEqual(nativeSessionId, createInput?.options.sessionId);
+      assert.equal(adapter.didResumeSession?.(restartInput, restarted), false);
+
+      const completed = yield* Stream.filter(
+        adapter.streamEvents,
+        (event) => event.type === "turn.completed",
+      ).pipe(Stream.runHead, Effect.forkChild);
+      yield* adapter.sendTurn({ threadId: THREAD_ID, input: "continue", attachments: [] });
+      const query = harness.queries[1]!;
+      emitAssistantUsage(query, nativeSessionId, "assistant-confirmed", "Hello", {});
+      emitSuccessResult(query, nativeSessionId, "result-confirmed", {});
+      yield* Fiber.join(completed);
+
+      const confirmed = (yield* adapter.listSessions())[0]!;
+      assert.equal((confirmed.resumeCursor as { resume: string }).resume, nativeSessionId);
+      const resumeInput = { ...restartInput, resumeCursor: confirmed.resumeCursor };
+      const resumed = yield* adapter.startSession(resumeInput);
+      assert.equal(harness.createInputs[2]?.options.resume, nativeSessionId);
+      assert.equal(harness.createInputs[2]?.options.sessionId, undefined);
+      assert.equal(adapter.didResumeSession?.(resumeInput, resumed), true);
     }).pipe(
       Effect.provideService(Random.Random, makeDeterministicRandomService()),
       Effect.provide(harness.layer),
@@ -8523,6 +9214,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         runtimeMode: "full-access",
         modelSelection: {
           provider: "claudeAgent",
+          instanceId: "claudeAgent",
           model: "claude-opus-4-8",
         },
       });
@@ -8531,6 +9223,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         input: "hello",
         modelSelection: {
           provider: "claudeAgent",
+          instanceId: "claudeAgent",
           model: "claude-opus-4-8",
         },
         attachments: [],
@@ -8590,6 +9283,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         runtimeMode: "full-access",
         modelSelection: {
           provider: "claudeAgent",
+          instanceId: "claudeAgent",
           model: "claude-fable-5",
         },
       });
@@ -8599,6 +9293,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         input: "hello",
         modelSelection: {
           provider: "claudeAgent",
+          instanceId: "claudeAgent",
           model: "claude-fable-5",
         },
         attachments: [],
@@ -8646,6 +9341,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         input: "continue",
         modelSelection: {
           provider: "claudeAgent",
+          instanceId: "claudeAgent",
           model: "claude-fable-5",
         },
         attachments: [],
@@ -8672,6 +9368,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         runtimeMode: "full-access",
         modelSelection: {
           provider: "claudeAgent",
+          instanceId: "claudeAgent",
           model: "claude-fable-5",
           options: { autoCompactWindow: "1m" },
         },
@@ -8701,6 +9398,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         runtimeMode: "full-access",
         modelSelection: {
           provider: "claudeAgent",
+          instanceId: "claudeAgent",
           model: "claude-fable-5",
           options: { autoCompactWindow: "1m" },
         },
@@ -8719,6 +9417,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         input: "continue after resume",
         modelSelection: {
           provider: "claudeAgent",
+          instanceId: "claudeAgent",
           model: "claude-fable-5",
           options: { autoCompactWindow: "1m" },
         },
@@ -8739,7 +9438,11 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         threadId: THREAD_ID,
         provider: "claudeAgent",
         runtimeMode: "full-access",
-        modelSelection: { provider: "claudeAgent", model: "claude-opus-4-8" },
+        modelSelection: {
+          provider: "claudeAgent",
+          instanceId: "claudeAgent",
+          model: "claude-opus-4-8",
+        },
       });
       const firstQuery = harness.queries[0];
       assert.ok(firstQuery);
@@ -8751,6 +9454,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
           runtimeMode: "full-access",
           modelSelection: {
             provider: "claudeAgent",
+            instanceId: "claudeAgent",
             model: "claude-opus-4-8",
             options: { effort: "max" },
           },
@@ -8834,7 +9538,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
 
   it.effect("closes an uninstalled Claude query when post-spawn setup fails", () => {
     const query = new FakeClaudeQuery();
-    (query as unknown as { supportedModels: () => Promise<[]> }).supportedModels = () => {
+    (query as unknown as { supportedAgents: () => Promise<[]> }).supportedAgents = () => {
       throw new Error("simulated post-spawn setup failure");
     };
     const layer = makeClaudeAdapterLive({ createQuery: () => query }).pipe(
@@ -9361,6 +10065,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
     { boundary: false, expected: ["item.updated", "item.completed"] },
   ])("publishes native compaction progress (boundary: $boundary)", ({ boundary, expected }) => {
     const harness = makeHarness();
+    const nativeSessionId = "550e8400-e29b-41d4-a716-446655440000";
     harness.query.supportedCommandList = [
       { name: "compact", description: "Compact context", argumentHint: "" },
     ];
@@ -9386,6 +10091,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         threadId: THREAD_ID,
         provider: "claudeAgent",
         runtimeMode: "full-access",
+        resumeCursor: { resume: nativeSessionId },
       });
       const turn = yield* adapter.sendTurn({
         threadId: session.threadId,
@@ -9396,13 +10102,13 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         type: "system",
         subtype: "status",
         status: "compacting",
-        session_id: "sdk-session-progress",
+        session_id: nativeSessionId,
         uuid: "status-compacting-progress",
       } as unknown as SDKMessage);
       if (boundary) {
-        emitCompactionBoundary(harness.query, "sdk-session-progress", "progress-boundary");
+        emitCompactionBoundary(harness.query, nativeSessionId, "progress-boundary");
       }
-      emitSuccessResult(harness.query, "sdk-session-progress", "progress-result", {
+      emitSuccessResult(harness.query, nativeSessionId, "progress-result", {
         total_tokens: 1,
         input_tokens: 1,
         output_tokens: 0,
@@ -9426,6 +10132,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
 
   it.effect("invalidates compaction-call usage until the next assistant response", () => {
     const harness = makeHarness();
+    const nativeSessionId = "550e8400-e29b-41d4-a716-446655440000";
     harness.query.supportedCommandList = [
       { name: "compact", description: "Compact context", argumentHint: "" },
     ];
@@ -9437,6 +10144,11 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         threadId: THREAD_ID,
         provider: "claudeAgent",
         runtimeMode: "full-access",
+        resumeCursor: {
+          resume: nativeSessionId,
+          processedTokenTotal: 0,
+          tokenAccountingVersion: 1,
+        },
       });
       yield* adapter.sendTurn({
         threadId: session.threadId,
@@ -9446,7 +10158,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
 
       emitAssistantUsage(
         harness.query,
-        "sdk-session-compact",
+        nativeSessionId,
         "assistant-before-compact",
         "Preparing to compact",
         { input_tokens: 1, cache_read_input_tokens: 149_999, output_tokens: 0 },
@@ -9455,26 +10167,24 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         type: "system",
         subtype: "status",
         status: "compacting",
-        session_id: "sdk-session-compact",
+        session_id: nativeSessionId,
         uuid: "status-compacting",
       } as unknown as SDKMessage);
-      emitCompactionBoundary(harness.query, "sdk-session-compact", "compact-boundary");
+      emitCompactionBoundary(harness.query, nativeSessionId, "compact-boundary");
+      emitAssistantUsage(harness.query, nativeSessionId, "assistant-compaction-call", "Compacted", {
+        input_tokens: 1,
+        cache_read_input_tokens: 189_999,
+        output_tokens: 0,
+      });
       emitAssistantUsage(
         harness.query,
-        "sdk-session-compact",
-        "assistant-compaction-call",
-        "Compacted",
-        { input_tokens: 1, cache_read_input_tokens: 189_999, output_tokens: 0 },
-      );
-      emitAssistantUsage(
-        harness.query,
-        "sdk-session-compact",
+        nativeSessionId,
         "another-compaction-block",
         "Compacted text block",
         { input_tokens: 1, cache_read_input_tokens: 189_999, output_tokens: 0 },
         "assistant-compaction-call",
       );
-      emitSuccessResult(harness.query, "sdk-session-compact", "result-compact", {
+      emitSuccessResult(harness.query, nativeSessionId, "result-compact", {
         total_tokens: 350_000,
         input_tokens: 2,
         cache_read_input_tokens: 339_998,
@@ -9489,7 +10199,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
       });
       emitAssistantUsage(
         harness.query,
-        "sdk-session-compact",
+        nativeSessionId,
         "assistant-after-compact",
         "Fresh response",
         { input_tokens: 1, cache_read_input_tokens: 19_999, output_tokens: 0 },
@@ -9596,6 +10306,7 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
 
   it.effect("does not promote partial accounting from a legacy resume cursor", () => {
     const harness = makeHarness();
+    const nativeSessionId = "550e8400-e29b-41d4-a716-446655440000";
     harness.query.supportedCommandList = [
       { name: "compact", description: "Compact context", argumentHint: "" },
     ];
@@ -9607,26 +10318,23 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
         threadId: THREAD_ID,
         provider: "claudeAgent",
         runtimeMode: "full-access",
-        resumeCursor: { threadId: THREAD_ID, turnCount: 1, processedTokenTotal: 999_999 },
+        resumeCursor: {
+          threadId: THREAD_ID,
+          resume: nativeSessionId,
+          turnCount: 1,
+          processedTokenTotal: 999_999,
+        },
       });
       yield* adapter.sendTurn({
         threadId: session.threadId,
         input: "/compact",
         attachments: [],
       });
-      emitCompactionBoundary(
-        harness.query,
-        "sdk-session-legacy-compact",
-        "legacy-compact-boundary",
-      );
-      emitAssistantUsage(
-        harness.query,
-        "sdk-session-legacy-compact",
-        "legacy-compaction-call",
-        "Compacted",
-        { total_tokens: 190_000 },
-      );
-      emitSuccessResult(harness.query, "sdk-session-legacy-compact", "legacy-result-compact", {
+      emitCompactionBoundary(harness.query, nativeSessionId, "legacy-compact-boundary");
+      emitAssistantUsage(harness.query, nativeSessionId, "legacy-compaction-call", "Compacted", {
+        total_tokens: 190_000,
+      });
+      emitSuccessResult(harness.query, nativeSessionId, "legacy-result-compact", {
         total_tokens: 190_000,
       });
 
@@ -9639,12 +10347,12 @@ await agent("Draft the spec", { label: "delta-agent", phase: "Two" });
       });
       emitAssistantUsage(
         harness.query,
-        "sdk-session-legacy-compact",
+        nativeSessionId,
         "legacy-fresh-assistant",
         "Fresh response",
         { total_tokens: 20_000 },
       );
-      emitSuccessResult(harness.query, "sdk-session-legacy-compact", "legacy-fresh-result", {
+      emitSuccessResult(harness.query, nativeSessionId, "legacy-fresh-result", {
         total_tokens: 50_000,
       });
 
@@ -11527,6 +12235,47 @@ describe("ClaudeAdapterLive forkThread", () => {
     );
   });
 
+  it.effect(
+    "falls back for stopped account-scoped sessions instead of using the default store",
+    () => {
+      let forkCalls = 0;
+      const layer = makeForkLayer(async () => {
+        forkCalls += 1;
+        return { sessionId: "unexpected" };
+      });
+
+      return Effect.gen(function* () {
+        const adapter = yield* ClaudeAdapter;
+        const result = yield* adapter.forkThread!({
+          sourceThreadId: THREAD_ID,
+          threadId: RESUME_THREAD_ID,
+          runtimeMode: "full-access",
+          modelSelection: {
+            provider: "claudeAgent",
+            instanceId: "work",
+            model: "claude-opus-4-8",
+          },
+          providerOptions: {
+            claudeAgent: { homePath: "/tmp/claude-work" },
+          },
+          sourceResumeCursor: {
+            threadId: String(THREAD_ID),
+            resume: SOURCE_SESSION_ID,
+          },
+        }).pipe(Effect.result);
+
+        assert.equal(forkCalls, 0);
+        assert.equal(result._tag, "Failure");
+        if (result._tag === "Failure" && result.failure instanceof ProviderAdapterValidationError) {
+          assert.include(result.failure.issue, "default SDK store");
+        }
+      }).pipe(
+        Effect.provideService(Random.Random, makeDeterministicRandomService()),
+        Effect.provide(layer),
+      );
+    },
+  );
+
   it.effect("maps a native fork failure to a session/fork request error", () => {
     const layer = makeForkLayer(async () => {
       throw new Error("session file missing");
@@ -12596,6 +13345,81 @@ describe("Claude cache preflight", () => {
     state: "likely-warm" as const,
     source: "request-usage" as const,
   };
+
+  for (const timing of ["early", "late"] as const) {
+    for (const response of ["newer", "same"] as const) {
+      it.effect(`reconciles ${timing} native warmth with the ${response} saved response`, () => {
+        let hookResult: Promise<unknown> | undefined;
+        const reportWarmCache = (options: ClaudeQueryOptions) =>
+          options.hooks!.SessionStart![0]!.hooks[0]!(
+            {
+              hook_event_name: "SessionStart",
+              session_id: nativeSessionId,
+              source: "resume",
+              context_tokens: 120_000,
+              seconds_since_last_response: 0,
+              prompt_cache_likely_expired: false,
+              transcript_path: "/tmp/fixture.jsonl",
+              cwd: "/tmp",
+            },
+            undefined,
+            { signal: new AbortController().signal },
+          );
+        const harness = makeMultiQueryHarness({
+          onCreate: (options) => {
+            if (timing === "early") hookResult = reportWarmCache(options);
+          },
+        });
+        return Effect.gen(function* () {
+          yield* TestClock.adjust("2 hours");
+          const adapter = yield* ClaudeAdapter;
+          const lastResponseAt =
+            response === "same" ? "1970-01-01T02:00:00.000Z" : resumedObservation.lastResponseAt;
+          yield* adapter.startSession({
+            threadId: THREAD_ID,
+            runtimeMode: "full-access",
+            resumeCursor: {
+              resume: nativeSessionId,
+              claudeCache: {
+                ...resumedObservation,
+                observedAt: lastResponseAt,
+                lastResponseAt,
+                cacheReferenceAt: resumedObservation.observedAt,
+                state: "likely-expired",
+              },
+            },
+          });
+          if (timing === "late") {
+            hookResult = reportWarmCache(harness.createInputs[0]!.options);
+          }
+          yield* Effect.promise(() => hookResult!);
+          const observation = yield* adapter.getClaudeCacheObservation!(THREAD_ID);
+          assert.equal(observation?.contextTokens, 120_000);
+          assert.equal(
+            assessClaudeCache(observation, Date.parse(observation!.observedAt) + 1000)
+              .requiresConfirmation,
+            response === "same",
+          );
+          const cursor = (yield* adapter.listSessions())[0]!.resumeCursor;
+          yield* adapter.stopSession(THREAD_ID);
+          yield* adapter.startSession({
+            threadId: THREAD_ID,
+            runtimeMode: "full-access",
+            resumeCursor: cursor,
+          });
+          const restored = yield* adapter.getClaudeCacheObservation!(THREAD_ID);
+          assert.equal(
+            assessClaudeCache(restored, Date.parse(restored!.observedAt) + 1000)
+              .requiresConfirmation,
+            response === "same",
+          );
+        }).pipe(
+          Effect.provideService(Random.Random, makeDeterministicRandomService()),
+          Effect.provide(harness.layer),
+        );
+      });
+    }
+  }
 
   for (const timing of ["early", "late"] as const) {
     for (const model of [undefined, "claude-opus-4-6"]) {

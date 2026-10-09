@@ -634,6 +634,8 @@ export function resolveComponentLabContextWindowFixture(variant: string | undefi
 export const COMPONENT_LAB_PROVIDER_STATUSES: readonly ServerProviderStatus[] = [
   {
     provider: "codex",
+    driver: "codex",
+    instanceId: "codex" as never,
     status: "ready",
     available: true,
     authStatus: "authenticated",
@@ -641,6 +643,8 @@ export const COMPONENT_LAB_PROVIDER_STATUSES: readonly ServerProviderStatus[] = 
   },
   {
     provider: "opencode",
+    driver: "opencode",
+    instanceId: "opencode" as never,
     status: "ready",
     available: true,
     authStatus: "authenticated",

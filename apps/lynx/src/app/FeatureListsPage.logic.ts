@@ -1,14 +1,15 @@
 import type { KanbanBoard, KanbanProjectBoard } from "@synara-web/components/kanban/kanban.logic";
 import { buildKanbanBoard } from "@synara-web/components/kanban/kanban.logic";
 import {
-  filterPullRequestEntriesByInvolvement,
+  filterInboxItemsByInvolvement,
   groupPullRequestEntriesByInvolvement,
   matchesPullRequestSearchQuery,
   orderPullRequestEntriesPinnedFirst,
   type PullRequestListGroup,
 } from "@synara-web/components/pullRequest/pullRequestList.logic";
 import { coalescePullRequestListEntries } from "@synara/shared/githubRepository";
-import type { PullRequestInvolvement, PullRequestListEntry } from "@synara/contracts";
+import type { PullRequestInvolvement } from "@synara-web/components/pullRequest/PullRequestRouteControlsComposition";
+import type { PullRequestListEntry } from "@synara/contracts";
 import type { PullRequestSnapshot, SidebarSnapshot } from "./queries";
 
 export const EMPTY_KANBAN_BOARD: KanbanBoard = {
@@ -54,7 +55,7 @@ export function selectKanbanProjectBoard(
 
 export interface CanonicalSlicePullRequestList {
   readonly entries: readonly PullRequestListEntry[];
-  readonly grouped: readonly PullRequestListGroup[] | null;
+  readonly grouped: readonly PullRequestListGroup<PullRequestListEntry>[] | null;
 }
 
 export const EMPTY_PULL_REQUEST_LIST: CanonicalSlicePullRequestList = {
@@ -83,6 +84,13 @@ export function createPullRequestActionGate(): PullRequestActionGate {
   };
 }
 
+/** The Lynx page's three involvement pills, as upstream's inbox involvement filter. */
+const PULL_REQUEST_INVOLVEMENT_FILTER = {
+  all: "everything",
+  reviewing: "reviewRequested",
+  authored: "authored",
+} as const;
+
 export function buildCanonicalSlicePullRequestList(
   snapshot: PullRequestSnapshot | undefined,
   involvement: PullRequestInvolvement = "all",
@@ -91,10 +99,12 @@ export function buildCanonicalSlicePullRequestList(
   if (!snapshot) return EMPTY_PULL_REQUEST_LIST;
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const entries = orderPullRequestEntriesPinnedFirst(
-    coalescePullRequestListEntries(
-      filterPullRequestEntriesByInvolvement(snapshot.entries, snapshot.viewer, involvement).filter(
-        (entry) => matchesPullRequestSearchQuery(entry, normalizedQuery),
-      ),
+    coalescePullRequestListEntries<PullRequestListEntry>(
+      filterInboxItemsByInvolvement(
+        snapshot.entries,
+        snapshot.viewer,
+        PULL_REQUEST_INVOLVEMENT_FILTER[involvement],
+      ).filter((entry) => matchesPullRequestSearchQuery(entry, normalizedQuery)),
     ),
   );
   return {

@@ -812,7 +812,7 @@ function treeRow(driver, path, kind) {
 
 async function openExplorerFromDock(driver) {
   if (!(await driver.find(DOCK_TARGETS.addPanel))) {
-    await driver.tap({ label: "Toggle diff panel" });
+    await driver.tap({ label: "Toggle right sidebar" });
     await waitFor(() => driver.find(DOCK_TARGETS.addPanel), { label: "the dock" });
   }
   await driver.tap(DOCK_TARGETS.addPanel);
@@ -1018,6 +1018,9 @@ const SETTINGS_TARGETS = {
   },
 };
 
+/** Settings nav label of the section that owns the streaming switch (`settingsNavigation.ts`). */
+const BEHAVIOR_SECTION = "Chat behavior";
+
 /** Scrolls the page content until `target` is on screen. */
 async function scrollIntoView(driver, target, point, maxSteps = 10) {
   for (let index = 0; index < maxSteps; index += 1) {
@@ -1220,9 +1223,9 @@ export async function workflowJ4(context) {
     if ((await readServer()) !== true) throw new Error("Streaming should start enabled.");
     const streaming = pick(driver, SETTINGS_TARGETS.streaming);
     const peerStreaming = pick(peer, SETTINGS_TARGETS.streaming);
-    await openSettingsSection(driver, "Behavior");
-    await openSettingsSection(peer, "Behavior");
-    // A client showing Behavior sees a change made in the other client either
+    await openSettingsSection(driver, BEHAVIOR_SECTION);
+    await openSettingsSection(peer, BEHAVIOR_SECTION);
+    // A client showing that section sees a change made in the other client either
     // live or, at the latest, when the section is opened again.
     const observe = async (client, target, expected) => {
       const live = await waitFor(async () => (await switchIsOn(client, target)) === expected, {
@@ -1231,7 +1234,7 @@ export async function workflowJ4(context) {
       }).catch(() => false);
       if (live) return "live";
       await client.tap(pick(client, SETTINGS_TARGETS.section("General")));
-      await openSettingsSection(client, "Behavior");
+      await openSettingsSection(client, BEHAVIOR_SECTION);
       await waitFor(async () => (await switchIsOn(client, target)) === expected, {
         label: `the ${client.kind} client to show streaming ${expected ? "on" : "off"}`,
       });

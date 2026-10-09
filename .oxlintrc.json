@@ -191,6 +191,67 @@
       "rules": {
         "no-restricted-globals": "off"
       }
+    },
+    {
+      // Upstream sync 2026-10-09 (6f54f53c6): upstream modules new to this list. The
+      // Lynx bundle does not reach them (reuse-audit graph), or reaches `wsTransport.ts`
+      // only as the resource the compat transport replaces.
+      "files": [
+        "apps/web/src/components/AppSnapWelcomeDialog.tsx",
+        "apps/web/src/components/FeatureTourDialog.tsx",
+        "apps/web/src/components/OneTimeCoachmark.tsx",
+        "apps/web/src/components/chat/ChatPaneKeepAlive.tsx",
+        "apps/web/src/components/chat/MessageTrail.tsx",
+        "apps/web/src/components/chat/OpenThreadTabStrip.tsx",
+        "apps/web/src/components/chat/SidechatDockPane.tsx",
+        "apps/web/src/components/chat/SplitPaneLayout.tsx",
+        "apps/web/src/components/chat/group/GroupEnvironmentSection.tsx",
+        "apps/web/src/components/chat/group/LibraryPanel.tsx",
+        "apps/web/src/components/chat/project/ProjectPanel.tsx",
+        "apps/web/src/components/chat/useChatTerminalController.ts",
+        "apps/web/src/components/chat/useComposerEffortCycle.ts",
+        "apps/web/src/components/githubInbox/GitHubInbox.tsx",
+        "apps/web/src/components/githubInbox/useGitHubInboxSidechat.ts",
+        "apps/web/src/components/inbox/InboxView.tsx",
+        "apps/web/src/components/pullRequest/useHostThreadSidechatAsk.ts",
+        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
+        "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
+        "apps/web/src/components/tasks/TaskCard.tsx",
+        "apps/web/src/components/tasks/TasksView.tsx",
+        "apps/web/src/editorViewState.ts",
+        "apps/web/src/fixedShortcuts.ts",
+        "apps/web/src/groupPanelClosedStore.ts",
+        "apps/web/src/hooks/useDesktopMenuShortcuts.ts",
+        "apps/web/src/hooks/useOptimisticTabSelection.ts",
+        "apps/web/src/hooks/useThreadActionShortcuts.ts",
+        "apps/web/src/hooks/useThreadHandoff.ts",
+        "apps/web/src/lib/audioLevel.ts",
+        "apps/web/src/lib/editableEventTarget.ts",
+        "apps/web/src/lib/glassOverlayCutout.ts",
+        "apps/web/src/openThreadTabsStore.ts",
+        "apps/web/src/pinnedProjectAgentsStore.ts",
+        "apps/web/src/routes/_chat.hubs.index.tsx",
+        "apps/web/src/serverBusyState.ts",
+        "apps/web/src/wsTransport.ts"
+      ],
+      "rules": {
+        "no-restricted-globals": "off"
+      }
+    },
+    {
+      // Same sync: the Lynx module graph reaches these, but each DOM access sits in a
+      // component body, effect or event handler that only the Electron renderer mounts
+      // (`useTheme.ts` is aliased to the Lynx adapter for `~/hooks/useTheme`).
+      "files": [
+        "apps/web/src/components/DiagnosticReportAction.tsx",
+        "apps/web/src/components/SidebarHeaderNavigationControls.tsx",
+        "apps/web/src/components/chat/useExpandedImagePreview.ts",
+        "apps/web/src/components/pullRequest/PullRequestMarkdown.tsx",
+        "apps/web/src/hooks/useTheme.ts"
+      ],
+      "rules": {
+        "no-restricted-globals": "off"
+      }
     }
   ]
 }

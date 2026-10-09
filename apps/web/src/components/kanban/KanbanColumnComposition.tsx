@@ -19,7 +19,8 @@ import {
   KanbanColumnTitleElement,
 } from "~/components/kanban/KanbanColumnCompositionElements";
 import { KanbanCardComposition } from "./KanbanCardComposition";
-import { KANBAN_COLUMN_LABELS, type KanbanCard, type KanbanColumnKey } from "./kanban.logic";
+import { KANBAN_COLUMN_V2_LABELS as KANBAN_COLUMN_LABELS } from "@synara/shared/kanban";
+import { type KanbanCard, type KanbanColumnKey } from "./kanban.logic";
 import type { KanbanDragPoint } from "./kanbanDnd.logic";
 
 export const KANBAN_DONE_RENDER_CAP = 30;

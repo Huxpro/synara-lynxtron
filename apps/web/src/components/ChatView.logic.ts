@@ -11,6 +11,7 @@ import {
   type GitWorktreeSetupProgressEvent,
   type ModelSelection,
   type ModelSlug,
+  type ProviderInstanceId,
   type ProviderApprovalDecision,
   type ProviderInteractionMode,
   type ProviderKind,
@@ -82,16 +83,10 @@ export const DismissedProviderHealthBannersSchema = Schema.Array(Schema.String);
 
 export function canApplyComposerFocus(input: {
   readonly windowHasFocus: boolean;
-  readonly secondaryChromeReady: boolean;
   readonly editorAvailable: boolean;
   readonly editorDisabled: boolean;
 }): boolean {
-  return (
-    input.windowHasFocus &&
-    input.secondaryChromeReady &&
-    input.editorAvailable &&
-    !input.editorDisabled
-  );
+  return input.windowHasFocus && input.editorAvailable && !input.editorDisabled;
 }
 
 export interface PendingFileUndo {
@@ -337,7 +332,7 @@ export function buildTranscriptTailKey(
 }
 
 export function resolveThreadArtifactWorkspaceRoot(input: {
-  readonly isStudioContainer: boolean;
+  readonly isGroupContainer: boolean;
   readonly projectCwd: string | null;
   readonly threadWorkspaceCwd: string | null;
 }): string | null {
@@ -345,9 +340,43 @@ export function resolveThreadArtifactWorkspaceRoot(input: {
     return input.threadWorkspaceCwd;
   }
   // A normal thread can expose project files while a requested worktree is
-  // still being materialized. Studio has no equivalent project-root fallback:
+  // still being materialized. Groups has no equivalent project-root fallback:
   // its selected working directory is the artifact boundary.
-  return input.isStudioContainer ? null : input.projectCwd;
+  return input.isGroupContainer ? null : input.projectCwd;
+}
+
+// Accounts are chosen in the model picker (one tab each). The standalone account menu
+// only steps in when the selected account no longer exists, to name it and offer a
+// replacement.
+export function shouldShowComposerProviderInstancePicker(input: {
+  selectedProviderInstanceId: ProviderInstanceId;
+  providerInstances: ReadonlyArray<{ readonly instanceId: ProviderInstanceId }>;
+}): boolean {
+  return !input.providerInstances.some(
+    (instance) => instance.instanceId === input.selectedProviderInstanceId,
+  );
+}
+
+export function buildCollapsedCursorModelOptionsReset(input: {
+  provider: ProviderKind;
+  instanceId: ProviderInstanceId;
+  model: ModelSlug;
+  showExpandedCursorModelVariants: boolean;
+}):
+  | {
+      readonly persistSticky: true;
+      readonly instanceId: ProviderInstanceId;
+      readonly model: ModelSlug;
+    }
+  | undefined {
+  if (input.provider !== "cursor" || input.showExpandedCursorModelVariants) {
+    return undefined;
+  }
+  return {
+    persistSticky: true,
+    instanceId: input.instanceId,
+    model: input.model,
+  };
 }
 
 export interface PromptHistoryNavigationState {
@@ -666,13 +695,13 @@ export function resolveEnvironmentPanelLayout(input: {
   };
 }
 
-// Normal project toolbars stay stable while repository discovery is pending. Studio folders are
+// Normal project toolbars stay stable while repository discovery is pending. Group folders are
 // casual context, however, so they must opt into Git UI only after a positive repository result.
 export function resolveGitRepoUiState(input: {
-  isStudioContainer: boolean;
+  isGroupContainer: boolean;
   queriedIsRepo: boolean | undefined;
 }): boolean {
-  return input.queriedIsRepo ?? !input.isStudioContainer;
+  return input.queriedIsRepo ?? !input.isGroupContainer;
 }
 
 export interface SettledThreadBranchMismatch {
@@ -818,6 +847,11 @@ export function resolveDraftFallbackModelSelection(input: {
   return buildModelSelection(provider, model);
 }
 
+/** Placeholder title for a thread that has not been sent yet (header, open-thread tabs). */
+export function resolveDraftThreadTitle(entryPoint: DraftThreadState["entryPoint"]): string {
+  return entryPoint === "terminal" ? "New terminal" : "New thread";
+}
+
 export function buildLocalDraftThread(
   threadId: ThreadId,
   draftThread: DraftThreadState,
@@ -828,7 +862,7 @@ export function buildLocalDraftThread(
     id: threadId,
     codexThreadId: null,
     projectId: draftThread.projectId,
-    title: draftThread.entryPoint === "terminal" ? "New terminal" : "New thread",
+    title: resolveDraftThreadTitle(draftThread.entryPoint),
     modelSelection: fallbackModelSelection,
     runtimeMode: draftThread.runtimeMode,
     interactionMode: draftThread.interactionMode,
@@ -1152,6 +1186,7 @@ export type WorktreeCreationFlowOutcome<Result> =
 export async function runWorktreeCreationFlow<Result extends { worktree: { path: string } }>(
   deps: WorktreeCreationFlowDeps<Result>,
 ): Promise<WorktreeCreationFlowOutcome<Result>> {
+  if (deps.resolution.action !== null) return { outcome: "resolved" };
   const unsubscribe = deps.subscribeToProgress((event) => {
     if (
       event.progressId !== deps.progressId ||
@@ -1328,14 +1363,20 @@ export function hasServerAcknowledgedLocalDispatch(input: {
 export const LOCAL_DISPATCH_TURN_TAKEOVER_TIMEOUT_MS = 60_000;
 
 /** The exact label set the transcript's working indicator can render. */
-export type WorkingLabel = "Loading" | "Thinking" | `Starting ${string}…`;
+export type WorkingLabel =
+  | "Loading"
+  | "Thinking"
+  | "Checking message delivery…"
+  | `Starting ${string}…`;
 
 export function resolveWorkingLabel(input: {
   isSendBusy: boolean;
   turnTakenOver: boolean;
   isConnecting?: boolean;
+  isSettlingTurnDispatch?: boolean;
   providerName?: string;
 }): WorkingLabel {
+  if (input.isSettlingTurnDispatch) return "Checking message delivery…";
   if (input.isSendBusy && !input.turnTakenOver) {
     return "Loading";
   }
@@ -1821,24 +1862,6 @@ export function shouldRenderTerminalWorkspace(options: {
   // The workspace shell should paint immediately; the terminal viewport gates the
   // backend attach until a valid cwd is available.
   return options.terminalOpen && options.presentationMode === "workspace";
-}
-
-export function resolveProjectScriptTerminalTarget(options: {
-  baseTerminalId: string;
-  createTerminalId: () => string;
-  hasRunningTerminal: boolean;
-  preferNewTerminal?: boolean | undefined;
-  terminalOpen: boolean;
-}): { shouldCreateNewTerminal: boolean; terminalId: string } {
-  // Project scripts require their requested cwd/env before the command write;
-  // live PTYs keep their launch context, so visible or running terminals get a new tab.
-  const shouldCreateNewTerminal =
-    Boolean(options.preferNewTerminal) || options.terminalOpen || options.hasRunningTerminal;
-
-  return {
-    shouldCreateNewTerminal,
-    terminalId: shouldCreateNewTerminal ? options.createTerminalId() : options.baseTerminalId,
-  };
 }
 
 export function shouldAutoDeleteTerminalThreadOnLastClose(options: {

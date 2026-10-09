@@ -181,7 +181,11 @@ export function KanbanCardOptimisticStatusElement(props: { readonly elapsed: str
   );
 }
 
-export function KanbanCardStatusPillElement(props: { readonly pill: SidebarStatusPresentation }) {
+export function KanbanCardStatusPillElement(props: {
+  readonly pill: Pick<SidebarStatusPresentation, "colorClass" | "dotClass" | "pulse"> & {
+    readonly label: string;
+  };
+}) {
   return (
     <span className={cn("flex min-w-0 items-center gap-1.5 text-ui-sm", props.pill.colorClass)}>
       <span

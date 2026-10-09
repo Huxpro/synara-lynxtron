@@ -12,13 +12,22 @@ describe("Electron Components Lab menu navigation", () => {
     expect(root).toContain('navigate({ to: "/components-lab", search: {} })');
   });
 
-  it("isolates the lab from product-global notification surfaces", () => {
+  it("isolates the lab from product-global services", () => {
     const root = readFileSync(new URL("./__root.tsx", import.meta.url), "utf8");
-    expect(root).toContain('const componentsLabActive = pathname === "/components-lab"');
-    // Provider update prompts mount inside the refresh coordinator.
-    expect(root).toContain("componentsLabActive ? null : <ProviderStatusRefreshCoordinator />");
-    expect(root).toContain("componentsLabActive ? null : <TaskCompletionNotifications />");
-    expect(root).toContain('if (activeToast?.kind !== "prompt") return');
-    expect(root).toContain("toastManager.close(activeToast.toastId)");
+    expect(root).toMatch(
+      /const componentsLabActive =\s+useRouterState\(\{ select: \(state\) => state\.location\.pathname \}\) === "\/components-lab"/,
+    );
+    // One gate around every global mount keeps the hook a single block in upstream's file.
+    const gated = root.slice(
+      root.indexOf("{componentsLabActive ? null : ("),
+      root.indexOf("<Outlet />"),
+    );
+    for (const mount of [
+      "<EventRouter />",
+      "<ProviderStatusRefreshCoordinator />",
+      "<TaskCompletionNotifications />",
+    ]) {
+      expect(gated).toContain(mount);
+    }
   });
 });

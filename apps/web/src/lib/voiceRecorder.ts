@@ -26,7 +26,10 @@ interface RecorderRuntime {
   readonly silentGainNode: GainNode;
   readonly stream: MediaStream;
   readonly chunks: Float32Array[];
-  readonly startedAt: number;
+  // Reset to the first frame with real signal, so the timer and the clip skip
+  // the device warm-up (Bluetooth profile switches, cold built-in mics).
+  startedAt: number;
+  hasAudioSignal: boolean;
   sampleRateHz: number;
 }
 
@@ -55,6 +58,8 @@ export function useVoiceRecorder() {
   const waveformLevelsRef = useRef<number[]>([]);
   const waveformLastEmitAtRef = useRef(0);
   const [isRecording, setIsRecording] = useState(false);
+  const [isStarting, setIsStarting] = useState(false);
+  const [hasAudioSignal, setHasAudioSignal] = useState(false);
   const [durationMs, setDurationMs] = useState(0);
   const [waveformLevels, setWaveformLevels] = useState<number[]>([]);
 
@@ -72,6 +77,8 @@ export function useVoiceRecorder() {
     runtimeRef.current = null;
     clearTimer();
     setIsRecording(false);
+    setIsStarting(false);
+    setHasAudioSignal(false);
 
     if (!runtime) {
       setDurationMs(0);
@@ -107,6 +114,7 @@ export function useVoiceRecorder() {
     const startGeneration = startGenerationRef.current + 1;
     startGenerationRef.current = startGeneration;
     isStartingRef.current = true;
+    setIsStarting(true);
     const assertStartIsCurrent = () => {
       if (startGenerationRef.current !== startGeneration) {
         throw new VoiceRecordingCancelledError("Voice recording was cancelled.");
@@ -150,6 +158,7 @@ export function useVoiceRecorder() {
         stream,
         chunks: [],
         startedAt: performance.now(),
+        hasAudioSignal: false,
         sampleRateHz: audioContext.sampleRate,
       };
 
@@ -183,6 +192,18 @@ export function useVoiceRecorder() {
           }
         }
 
+        // A device that is still warming up delivers exact digital silence;
+        // real input always carries some noise. Drop those frames instead of
+        // showing a live recorder that is not hearing anything yet.
+        if (!runtime.hasAudioSignal) {
+          if (sumOfSquares === 0) {
+            return;
+          }
+          runtime.hasAudioSignal = true;
+          runtime.startedAt = performance.now();
+          setHasAudioSignal(true);
+        }
+
         runtime.chunks.push(monoSamples);
 
         const rmsLevel = Math.min(
@@ -207,6 +228,7 @@ export function useVoiceRecorder() {
       assertStartIsCurrent();
       runtimeRef.current = runtime;
       isStartingRef.current = false;
+      setIsStarting(false);
       waveformLevelsRef.current = [];
       waveformLastEmitAtRef.current = 0;
       setWaveformLevels([]);
@@ -214,7 +236,7 @@ export function useVoiceRecorder() {
       setIsRecording(true);
       timerRef.current = setInterval(() => {
         const activeRuntime = runtimeRef.current;
-        if (!activeRuntime) {
+        if (!activeRuntime?.hasAudioSignal) {
           return;
         }
         setDurationMs(Math.max(0, performance.now() - activeRuntime.startedAt));
@@ -227,6 +249,7 @@ export function useVoiceRecorder() {
       await audioContext?.close().catch(() => undefined);
       if (startGenerationRef.current === startGeneration) {
         isStartingRef.current = false;
+        setIsStarting(false);
       }
       throw error;
     }
@@ -262,7 +285,9 @@ export function useVoiceRecorder() {
     await teardownRuntime();
     waveformLevelsRef.current = [];
     waveformLastEmitAtRef.current = 0;
-    setWaveformLevels([]);
+    // Cancelling with nothing recorded (every thread switch) must not hand the host a
+    // fresh empty array to re-render for.
+    setWaveformLevels((current) => (current.length === 0 ? current : []));
   }, [teardownRuntime]);
 
   useEffect(
@@ -274,6 +299,8 @@ export function useVoiceRecorder() {
 
   return {
     isRecording,
+    isStarting,
+    hasAudioSignal,
     durationMs,
     waveformLevels,
     startRecording,

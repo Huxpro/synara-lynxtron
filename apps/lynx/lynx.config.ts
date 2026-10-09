@@ -376,6 +376,9 @@ export default defineConfig({
       "~/platform/env$": path.resolve(rootPath, "./src/platform/env.lynx.ts"),
       "~/platform/motion$": path.resolve(rootPath, "./src/platform/motion.lynx.ts"),
       "~/hooks/useTheme$": path.resolve(rootPath, "./src/adapters/useTheme.lynx.ts"),
+      // Upstream's icon module inlines DOM `<svg>` JSX; shared Web modules get
+      // the Lynx glyph set and the icon-name constants instead.
+      "~/lib/icons$": path.resolve(rootPath, "./src/adapters/webIcons.lynx.ts"),
       "~/hooks/useViewportLayout$": path.resolve(rootPath, "./src/hooks/useViewportLayout.lynx.ts"),
       "~/nativeApi$": path.resolve(rootPath, "./src/adapters/nativeApi.lynx.ts"),
       // Shared state layer (plan/shared-state-architecture.md): the upstream

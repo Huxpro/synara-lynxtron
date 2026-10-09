@@ -1,5 +1,5 @@
 // FILE: RenameDialog.tsx
-// Purpose: Shared single-field rename dialog for threads and projects.
+// Purpose: Shared single-field dialog for thread/project rename and snooze date entry.
 // Layer: Shared UI component
 // Exports: RenameDialog
 
@@ -26,6 +26,10 @@ export interface RenameDialogProps {
   allowEmpty?: boolean | undefined;
   placeholder?: string | undefined;
   saveLabel?: string | undefined;
+  /** Snooze reuses this dialog with a native date-time field. */
+  inputType?: "text" | "datetime-local" | undefined;
+  /** Extra gate on Save beyond the empty check, e.g. a date in the future. */
+  isValueValid?: ((value: string) => boolean) | undefined;
   onOpenChange: (open: boolean) => void;
   onSave: (next: string) => Promise<void> | void;
 }
@@ -43,6 +47,8 @@ export function RenameDialog({
   allowEmpty: allowEmptyProp,
   placeholder,
   saveLabel: saveLabelProp,
+  inputType,
+  isValueValid,
   onOpenChange,
   onSave,
 }: RenameDialogProps) {
@@ -64,6 +70,8 @@ export function RenameDialog({
           allowEmpty={allowEmpty}
           placeholder={placeholder}
           saveLabel={saveLabel}
+          inputType={inputType ?? "text"}
+          isValueValid={isValueValid}
           onOpenChange={onOpenChange}
           onSave={onSave}
         />
@@ -78,6 +86,8 @@ function RenameDialogForm({
   allowEmpty,
   placeholder,
   saveLabel,
+  inputType,
+  isValueValid,
   onOpenChange,
   onSave,
 }: {
@@ -86,6 +96,8 @@ function RenameDialogForm({
   allowEmpty: boolean;
   placeholder: string | undefined;
   saveLabel: string;
+  inputType: "text" | "datetime-local";
+  isValueValid: ((value: string) => boolean) | undefined;
   onOpenChange: (open: boolean) => void;
   onSave: (value: string) => Promise<void> | void;
 }) {
@@ -104,7 +116,8 @@ function RenameDialogForm({
   }, []);
 
   const trimmed = value.trim();
-  const canSave = (allowEmpty || trimmed.length > 0) && !isSaving;
+  const canSave =
+    (allowEmpty || trimmed.length > 0) && (isValueValid?.(trimmed) ?? true) && !isSaving;
 
   const handleSubmit = async () => {
     if (!canSave) return;
@@ -129,6 +142,7 @@ function RenameDialogForm({
           <Input
             ref={inputRef}
             aria-label={inputLabel}
+            type={inputType}
             size="lg"
             value={value}
             placeholder={placeholder}

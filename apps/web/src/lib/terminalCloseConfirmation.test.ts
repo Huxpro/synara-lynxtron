@@ -29,7 +29,7 @@ describe("confirmTerminalTabClose", () => {
 
     await expect(
       confirmTerminalTabClose({
-        dialogs: { confirm, pickFolder: vi.fn() },
+        api: { dialogs: { confirm, pickFolder: vi.fn() } },
         enabled: false,
         terminalTitle: "Deploy shell",
       }),
@@ -42,7 +42,7 @@ describe("confirmTerminalTabClose", () => {
 
     await expect(
       confirmTerminalTabClose({
-        dialogs: { confirm, pickFolder: vi.fn() },
+        api: { dialogs: { confirm, pickFolder: vi.fn() } },
         enabled: true,
         terminalTitle: "Deploy shell",
         willDeleteThread: true,

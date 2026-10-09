@@ -22,12 +22,12 @@ import {
   KanbanOverviewShowMoreElement,
 } from "~/components/kanban/KanbanOverviewCompositionElements";
 import { KanbanCardComposition } from "./KanbanCardComposition";
-import {
-  flattenProjectBoardForOverview,
-  type KanbanBoard,
-  type KanbanCard,
-  type KanbanProjectBoard,
-} from "./kanban.logic";
+import { type KanbanBoard, type KanbanCard, type KanbanProjectBoard } from "./kanban.logic";
+
+/** Overview order: what needs the user first, then live work, drafts and finished threads. */
+function flattenProjectBoardForOverview(board: KanbanProjectBoard): KanbanCard[] {
+  return [...board.awaitingYou, ...board.inProgress, ...board.draft, ...board.done];
+}
 
 const OVERVIEW_RENDER_CAP = 20;
 

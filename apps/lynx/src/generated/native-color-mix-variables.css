@@ -38,6 +38,8 @@
   --color-mix-e1ade8617e: rgba(251, 230, 229, 1);
   /* color-mix(in srgb, var(--background) 88%, var(--success)) */
   --color-mix-90cb3b30d2: rgba(224, 244, 232, 1);
+  /* color-mix(in srgb, var(--background) 90%, var(--color-black)) */
+  --color-mix-97540a7991: rgba(230, 230, 230, 1);
   /* color-mix(in srgb, var(--background) 92%, var(--destructive)) */
   --color-mix-94741172ed: rgba(253, 238, 238, 1);
   /* color-mix(in srgb, var(--background) 92%, var(--success)) */
@@ -54,12 +56,12 @@
   --color-mix-039dc7344a: rgba(255, 255, 255, 0.38);
   /* color-mix(in srgb, var(--card) 70%, transparent) */
   --color-mix-cb4e2c6505: rgba(255, 255, 255, 0.7);
+  /* color-mix(in srgb, var(--color-amber-500) 16%, transparent) */
+  --color-mix-c7d69dcd75: rgba(245, 158, 11, 0.16);
   /* color-mix(in srgb, var(--color-blue-500) 72%, var(--color-white)) */
   --color-mix-aa63857863: rgba(102, 163, 255, 1);
   /* color-mix(in srgb, var(--color-border-focus) 60%, transparent) */
   --color-mix-b5be8b7cf8: rgba(1, 105, 204, 0.6);
-  /* color-mix(in srgb, var(--color-border-heavy) 95%, var(--foreground) 5%) */
-  --color-mix-f0827cee00: rgba(13, 13, 13, 0.105882);
   /* color-mix(in srgb, var(--color-border) 60%, transparent) */
   --color-mix-6971004966: rgba(13, 13, 13, 0.042353);
   /* color-mix(in srgb, var(--color-border) 80%, transparent) */
@@ -80,14 +82,14 @@
   --color-mix-7167ab2c52: rgba(255, 147, 71, 1);
   /* color-mix(in srgb, var(--color-pink-500) 72%, var(--color-white)) */
   --color-mix-5b383c5852: rgba(249, 108, 182, 1);
+  /* color-mix(in srgb, var(--color-red-500) 16%, transparent) */
+  --color-mix-3cd750e3f0: rgba(239, 68, 68, 0.16);
   /* color-mix(in srgb, var(--color-red-500) 72%, var(--color-white)) */
   --color-mix-c2cce6723e: rgba(243, 120, 120, 1);
   /* color-mix(in srgb, var(--color-red-500) 90%, var(--color-white)) */
   --color-mix-cc38c3995d: rgba(241, 87, 87, 1);
-  /* color-mix(in srgb, var(--color-text-accent) 10%, transparent) */
-  --color-mix-b0d834d599: rgba(1, 105, 204, 0.1);
-  /* color-mix(in srgb, var(--color-text-accent) 14%, transparent) */
-  --color-mix-e8fbe7c539: rgba(1, 105, 204, 0.14);
+  /* color-mix(in srgb, var(--color-text-accent) 16%, transparent) */
+  --color-mix-83e3b78aef: rgba(1, 105, 204, 0.16);
   /* color-mix(in srgb, var(--color-text-foreground) 14%, transparent) */
   --color-mix-a374cae8eb: rgba(13, 13, 13, 0.14);
   /* color-mix(in srgb, var(--color-text-foreground) 20%, var(--color-background-control-opaque)) */
@@ -102,6 +104,10 @@
   --color-mix-ae68e1b76e: rgba(224, 46, 42, 0.1);
   /* color-mix(in srgb, var(--destructive) 12%, transparent) */
   --color-mix-79459b1e0a: rgba(224, 46, 42, 0.12);
+  /* color-mix(in srgb, var(--destructive) 13%, transparent) */
+  --color-mix-d750f0a0d1: rgba(224, 46, 42, 0.13);
+  /* color-mix(in srgb, var(--destructive) 16%, transparent) */
+  --color-mix-4ae2ebcfd0: rgba(224, 46, 42, 0.16);
   /* color-mix(in srgb, var(--destructive) 20%, transparent) */
   --color-mix-5a73bfa851: rgba(224, 46, 42, 0.2);
   /* color-mix(in srgb, var(--destructive) 30%, transparent) */
@@ -110,6 +116,8 @@
   --color-mix-3e5361c547: rgba(224, 46, 42, 0.04);
   /* color-mix(in srgb, var(--destructive) 48%, transparent) */
   --color-mix-2ede5e9287: rgba(224, 46, 42, 0.48);
+  /* color-mix(in srgb, var(--destructive) 5%, var(--popover)) */
+  --color-mix-72bf422285: rgba(253, 245, 244, 1);
   /* color-mix(in srgb, var(--destructive) 55%, transparent) */
   --color-mix-27ae7ccbce: rgba(224, 46, 42, 0.55);
   /* color-mix(in srgb, var(--destructive) 6%, transparent) */
@@ -120,6 +128,8 @@
   --color-mix-bca1cc4297: rgba(233, 105, 102, 1);
   /* color-mix(in srgb, var(--destructive) 8%, transparent) */
   --color-mix-b719412534: rgba(224, 46, 42, 0.08);
+  /* color-mix(in srgb, var(--destructive) 8%, var(--popover)) */
+  --color-mix-5615be4615: rgba(253, 238, 238, 1);
   /* color-mix(in srgb, var(--foreground) 14%, transparent) */
   --color-mix-0eec1c8f1e: rgba(13, 13, 13, 0.14);
   /* color-mix(in srgb, var(--foreground) 30%, transparent) */
@@ -211,6 +221,8 @@
   --color-mix-e1ade8617e: rgba(41, 20, 19, 1);
   /* color-mix(in srgb, var(--background) 88%, var(--success)) */
   --color-mix-90cb3b30d2: rgba(14, 34, 22, 1);
+  /* color-mix(in srgb, var(--background) 90%, var(--color-black)) */
+  --color-mix-97540a7991: rgba(14, 14, 14, 1);
   /* color-mix(in srgb, var(--background) 92%, var(--destructive)) */
   --color-mix-94741172ed: rgba(33, 18, 18, 1);
   /* color-mix(in srgb, var(--background) 92%, var(--success)) */
@@ -227,12 +239,12 @@
   --color-mix-039dc7344a: rgba(19, 19, 19, 0.38);
   /* color-mix(in srgb, var(--card) 70%, transparent) */
   --color-mix-cb4e2c6505: rgba(19, 19, 19, 0.7);
+  /* color-mix(in srgb, var(--color-amber-500) 16%, transparent) */
+  --color-mix-c7d69dcd75: rgba(245, 158, 11, 0.16);
   /* color-mix(in srgb, var(--color-blue-500) 72%, var(--color-white)) */
   --color-mix-aa63857863: rgba(102, 163, 255, 1);
   /* color-mix(in srgb, var(--color-border-focus) 60%, transparent) */
   --color-mix-b5be8b7cf8: rgba(51, 134, 214, 0.378824);
-  /* color-mix(in srgb, var(--color-border-heavy) 95%, var(--foreground) 5%) */
-  --color-mix-f0827cee00: rgba(252, 252, 252, 0.161765);
   /* color-mix(in srgb, var(--color-border) 60%, transparent) */
   --color-mix-6971004966: rgba(252, 252, 252, 0.042353);
   /* color-mix(in srgb, var(--color-border) 80%, transparent) */
@@ -253,14 +265,14 @@
   --color-mix-7167ab2c52: rgba(255, 147, 71, 1);
   /* color-mix(in srgb, var(--color-pink-500) 72%, var(--color-white)) */
   --color-mix-5b383c5852: rgba(249, 108, 182, 1);
+  /* color-mix(in srgb, var(--color-red-500) 16%, transparent) */
+  --color-mix-3cd750e3f0: rgba(239, 68, 68, 0.16);
   /* color-mix(in srgb, var(--color-red-500) 72%, var(--color-white)) */
   --color-mix-c2cce6723e: rgba(243, 120, 120, 1);
   /* color-mix(in srgb, var(--color-red-500) 90%, var(--color-white)) */
   --color-mix-cc38c3995d: rgba(241, 87, 87, 1);
-  /* color-mix(in srgb, var(--color-text-accent) 10%, transparent) */
-  --color-mix-b0d834d599: rgba(51, 134, 214, 0.1);
-  /* color-mix(in srgb, var(--color-text-accent) 14%, transparent) */
-  --color-mix-e8fbe7c539: rgba(51, 134, 214, 0.14);
+  /* color-mix(in srgb, var(--color-text-accent) 16%, transparent) */
+  --color-mix-83e3b78aef: rgba(51, 134, 214, 0.16);
   /* color-mix(in srgb, var(--color-text-foreground) 14%, transparent) */
   --color-mix-a374cae8eb: rgba(252, 252, 252, 0.14);
   /* color-mix(in srgb, var(--color-text-foreground) 20%, var(--color-background-control-opaque)) */
@@ -275,6 +287,10 @@
   --color-mix-ae68e1b76e: rgba(224, 46, 42, 0.1);
   /* color-mix(in srgb, var(--destructive) 12%, transparent) */
   --color-mix-79459b1e0a: rgba(224, 46, 42, 0.12);
+  /* color-mix(in srgb, var(--destructive) 13%, transparent) */
+  --color-mix-d750f0a0d1: rgba(224, 46, 42, 0.13);
+  /* color-mix(in srgb, var(--destructive) 16%, transparent) */
+  --color-mix-4ae2ebcfd0: rgba(224, 46, 42, 0.16);
   /* color-mix(in srgb, var(--destructive) 20%, transparent) */
   --color-mix-5a73bfa851: rgba(224, 46, 42, 0.2);
   /* color-mix(in srgb, var(--destructive) 30%, transparent) */
@@ -283,6 +299,8 @@
   --color-mix-3e5361c547: rgba(224, 46, 42, 0.04);
   /* color-mix(in srgb, var(--destructive) 48%, transparent) */
   --color-mix-2ede5e9287: rgba(224, 46, 42, 0.48);
+  /* color-mix(in srgb, var(--destructive) 5%, var(--popover)) */
+  --color-mix-72bf422285: rgba(33, 24, 24, 1);
   /* color-mix(in srgb, var(--destructive) 55%, transparent) */
   --color-mix-27ae7ccbce: rgba(224, 46, 42, 0.55);
   /* color-mix(in srgb, var(--destructive) 6%, transparent) */
@@ -293,6 +311,8 @@
   --color-mix-bca1cc4297: rgba(233, 105, 102, 1);
   /* color-mix(in srgb, var(--destructive) 8%, transparent) */
   --color-mix-b719412534: rgba(224, 46, 42, 0.08);
+  /* color-mix(in srgb, var(--destructive) 8%, var(--popover)) */
+  --color-mix-5615be4615: rgba(39, 25, 25, 1);
   /* color-mix(in srgb, var(--foreground) 14%, transparent) */
   --color-mix-0eec1c8f1e: rgba(252, 252, 252, 0.14);
   /* color-mix(in srgb, var(--foreground) 30%, transparent) */

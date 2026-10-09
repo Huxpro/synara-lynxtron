@@ -1,10 +1,9 @@
 import type { SpaceIconName } from "@synara/contracts";
 import type { ReactNode } from "react";
 
-import { PlusIcon, RefreshCwIcon, XIcon } from "~/lib/icons";
+import { FolderIcon, PlusIcon, RefreshCwIcon, XIcon } from "~/lib/icons";
 import { SpaceIcon } from "../SpaceIcon";
 import { Menu, MenuGroup, MenuGroupLabel, MenuItem, MenuSeparator, MenuTrigger } from "../ui/menu";
-import { FolderClosed } from "../FolderClosed";
 import { PickerTriggerButton } from "./PickerTriggerButton";
 import { ComposerPickerMenuPopup } from "./ComposerPickerMenuPopup";
 import { PickerPanelShell } from "./PickerPanelShell";
@@ -27,7 +26,7 @@ export function ComposerProjectPickerFrameElement(props: {
         render={
           <PickerTriggerButton
             data-testid={props.triggerTestId ?? "project-picker-trigger"}
-            icon={<FolderClosed className="size-3.5" />}
+            icon={<FolderIcon className="size-3.5" />}
             label={
               <span className="flex min-w-0 items-baseline gap-1.5">
                 <span className="min-w-0 truncate text-[var(--color-text-foreground)]">
@@ -110,7 +109,7 @@ export function ComposerProjectPickerOptionElement(props: {
   return (
     <MenuItem data-project-picker-option={props.primaryLabel} onClick={props.onSelect}>
       <span className="flex w-full min-w-0 items-center gap-2">
-        <FolderClosed className="size-3.5 shrink-0 text-muted-foreground/70" />
+        <FolderIcon className="size-3.5 shrink-0 text-muted-foreground/70" />
         <span className="flex min-w-0 items-baseline gap-1.5">
           <span className="min-w-0 truncate">{props.primaryLabel}</span>
           {props.secondaryLabel ? (

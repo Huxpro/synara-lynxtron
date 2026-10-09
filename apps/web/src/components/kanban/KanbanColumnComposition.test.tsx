@@ -12,6 +12,7 @@ function card(index: number, column: KanbanCard["column"]): KanbanCard {
     column,
     title: `Card ${index}`,
     provider: null,
+    providerInstanceId: null,
     isTerminal: false,
     branch: null,
     envMode: null,

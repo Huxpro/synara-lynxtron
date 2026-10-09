@@ -7,6 +7,8 @@ import { ProviderHealthBanner } from "./ProviderHealthBanner.lynx";
 
 const BASE_STATUS: ServerProviderStatus = {
   provider: "codex",
+  driver: "codex",
+  instanceId: "codex" as never,
   status: "ready",
   available: true,
   authStatus: "authenticated",

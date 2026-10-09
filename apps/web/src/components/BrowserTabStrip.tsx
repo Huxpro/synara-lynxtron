@@ -9,6 +9,7 @@ import type { BrowserTabState } from "@synara/contracts";
 import { isBlankBrowserTabUrl } from "@synara/shared/browserSession";
 
 import { GlobeIcon, PlusIcon, XIcon } from "~/lib/icons";
+import { scrollTabIntoView } from "~/lib/tabStrip";
 import { cn } from "~/lib/utils";
 
 import {
@@ -18,6 +19,7 @@ import {
 } from "./BrowserPanel.logic";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "./ui/tooltip";
+import { useHorizontalWheelScroll } from "./chat/chatHeaderControls";
 
 export interface BrowserTabStripProps {
   tabs: readonly BrowserTabState[];
@@ -31,23 +33,10 @@ export interface BrowserTabStripProps {
   onCreateTab: () => void;
 }
 
-// Scroll only the strip itself (not `scrollIntoView`, which would also scroll every
-// scrollable ancestor such as the dock or chat column when the pane mounts offscreen).
-function scrollTabIntoView(strip: HTMLElement, tab: HTMLElement): void {
-  const stripRect = strip.getBoundingClientRect();
-  const tabRect = tab.getBoundingClientRect();
-  const left = tabRect.left - stripRect.left + strip.scrollLeft;
-  const right = left + tabRect.width;
-  if (left < strip.scrollLeft) {
-    strip.scrollLeft = left;
-  } else if (right > strip.scrollLeft + strip.clientWidth) {
-    strip.scrollLeft = right - strip.clientWidth;
-  }
-}
-
 export function BrowserTabStrip(props: BrowserTabStripProps) {
   const { activeTabId, onCloseTab, onCreateTab, onSelectTab } = props;
   const stripRef = useRef<HTMLDivElement>(null);
+  useHorizontalWheelScroll(stripRef);
 
   // A tab created/selected past the visible edge ("New tab" appends at the end) must come
   // into view or the action looks like it did nothing.
@@ -69,7 +58,11 @@ export function BrowserTabStrip(props: BrowserTabStripProps) {
         props.dragRegion && "drag-region",
       )}
     >
-      <div ref={stripRef} className="flex min-w-0 items-center gap-1 overflow-x-auto">
+      <div
+        ref={stripRef}
+        data-testid="browser-tab-strip"
+        className="flex min-w-0 items-center gap-1 overflow-x-auto overflow-y-hidden overscroll-contain"
+      >
         {props.tabs.map((tab) => {
           const isActive = tab.id === activeTabId;
           const tabIsBlank = isBlankBrowserTabUrl(tab);

@@ -2,7 +2,7 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
-import { PanelLeftIcon } from "~/lib/icons";
+import { LayoutAlignLeftIcon, LayoutLeftIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -35,9 +35,11 @@ const SIDEBAR_RESIZE_DEFAULT_MIN_WIDTH = 16 * 16;
  * front-loads the motion and settles softly. Apply to BOTH the sliding container
  * (Sidebar `className`) and the layout `gapClassName` so they animate in lockstep.
  * Shared by the thread sidebar (left) and the right dock so the two slides match.
+ * No standing `will-change`: Chromium promotes the layer while the transition runs, and a
+ * permanent hint keeps the panel's text rasterized at the old scale after a display or
+ * zoom change, so the sidebar stayed blurry until restart.
  */
-const SIDEBAR_OFFCANVAS_MOTION_CLASS =
-  "will-change-[transform] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]";
+const SIDEBAR_OFFCANVAS_MOTION_CLASS = "duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]";
 
 /**
  * Suppresses the slide entirely — for first mount or a reposition/remount where
@@ -240,6 +242,7 @@ function Sidebar({
   gapClassName,
   innerClassName,
   transparentSurface: transparentSurfaceProp,
+  rail,
   children,
   ...props
 }: React.ComponentProps<"div"> & {
@@ -250,6 +253,8 @@ function Sidebar({
   gapClassName?: string;
   innerClassName?: string;
   transparentSurface?: boolean;
+  /** Desktop rail belongs to the outer shell, outside the clipped content surface. */
+  rail?: React.ReactNode;
 }) {
   const side = sideProp ?? "left";
   const variant = variantProp ?? "sidebar";
@@ -328,7 +333,7 @@ function Sidebar({
         {/* This is what handles the sidebar gap on desktop */}
         <div
           className={cn(
-            "relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear",
+            "relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear motion-reduce:transition-none",
             "group-data-[collapsible=offcanvas]:w-0",
             "group-data-[side=right]:rotate-180",
             variant === "floating" || variant === "inset"
@@ -340,11 +345,12 @@ function Sidebar({
         />
         <div
           className={cn(
-            // The offcanvas slide animates transform (compositor) instead of left/right
+            // The offcanvas slide animates translate (compositor; the property Tailwind's
+            // translate-x utilities set, which `transform` does not cover) instead of left/right
             // (layout): a fixed panel relayouts its whole subtree per frame otherwise,
             // which read as a janky close on heavy sidebar content. The gap still
             // animates width — reserving layout is its job — but its subtree is empty.
-            "fixed inset-y-0 z-0 hidden h-svh w-(--sidebar-width) transition-[left,right,width,transform] duration-200 ease-linear md:flex",
+            "fixed inset-y-0 z-0 hidden h-svh w-(--sidebar-width) transition-[left,right,width,translate] duration-200 ease-linear motion-reduce:transition-none md:flex",
             side === "left"
               ? "left-0 group-data-[collapsible=offcanvas]:-translate-x-full"
               : "right-0 group-data-[collapsible=offcanvas]:translate-x-full",
@@ -375,6 +381,7 @@ function Sidebar({
           >
             {children}
           </div>
+          {rail}
         </div>
       </div>
     </SidebarInstanceContext.Provider>
@@ -382,7 +389,10 @@ function Sidebar({
 }
 
 function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, isMobile, open, openMobile } = useSidebar();
+  // The glyph shows the sidebar's current state: a full left column while it is open, a
+  // slim handle once it is collapsed.
+  const SidebarStateIcon = (isMobile ? openMobile : open) ? LayoutLeftIcon : LayoutAlignLeftIcon;
 
   return (
     <Button
@@ -397,7 +407,7 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
       variant="ghost"
       {...props}
     >
-      <PanelLeftIcon aria-hidden className="size-4" />
+      <SidebarStateIcon aria-hidden className="size-4" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );

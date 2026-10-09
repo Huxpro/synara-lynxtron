@@ -82,7 +82,7 @@ describe("deriveSidebarProjectGroups", () => {
     });
 
     expect(groups.map((group) => group.id)).toEqual(["p2", "p1"]);
-    expect(groups[0].threads.map((thread) => thread.id)).toEqual(["new", "old"]);
+    expect(groups[0]!.threads.map((thread) => thread.id)).toEqual(["new", "old"]);
   });
 
   it("applies persisted project and thread sort orders", () => {
@@ -149,7 +149,7 @@ describe("deriveSidebarProjectGroups", () => {
       ],
     });
     expect(groups).toHaveLength(1);
-    expect(groups[0].title).toBe("Other");
+    expect(groups[0]!.title).toBe("Other");
   });
 
   it("keeps hidden chat and studio containers out of Projects", () => {
@@ -230,7 +230,7 @@ describe("deriveSidebarProjectGroups", () => {
     });
 
     expect(sections.pinnedThreads.map((thread) => thread.id)).toEqual(["pinned"]);
-    expect(sections.projectGroups[0].threads.map((thread) => thread.id)).toEqual(["ordinary"]);
+    expect(sections.projectGroups[0]!.threads.map((thread) => thread.id)).toEqual(["ordinary"]);
   });
 
   it("merges client-persisted pins with the server snapshot", () => {
@@ -258,7 +258,7 @@ describe("deriveSidebarProjectGroups", () => {
     });
 
     expect(sections.pinnedThreads.map((thread) => thread.id)).toEqual(["persisted"]);
-    expect(sections.projectGroups[0].threads).toEqual([]);
+    expect(sections.projectGroups[0]!.threads).toEqual([]);
   });
 
   it("orders persisted pinned projects before the ordinary manual order", () => {

@@ -14,7 +14,7 @@ import { PullRequestRowComposition } from "./PullRequestRowComposition";
 
 export function PullRequestListComposition(props: {
   readonly entries: readonly PullRequestListEntry[];
-  readonly grouped: readonly PullRequestListGroup[] | null;
+  readonly grouped: readonly PullRequestListGroup<PullRequestListEntry>[] | null;
   readonly selectedProjectId?: ProjectId | undefined;
   readonly selectedRepo?: string | undefined;
   readonly selectedNumber?: number | undefined;

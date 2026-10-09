@@ -234,7 +234,11 @@ export function KanbanCardOptimisticStatusElement(props: { readonly elapsed: str
   );
 }
 
-export function KanbanCardStatusPillElement(props: { readonly pill: SidebarStatusPresentation }) {
+export function KanbanCardStatusPillElement(props: {
+  readonly pill: Pick<SidebarStatusPresentation, "colorClass" | "dotClass" | "pulse"> & {
+    readonly label: string;
+  };
+}) {
   return (
     <view className="SharedKanbanCardInlineStatus">
       <view

@@ -60,7 +60,6 @@ import type {
   PullRequestActionInput,
   PullRequestActionResult,
   PullRequestCommentInput,
-  PullRequestsListResult,
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
   PullRequestState,
@@ -135,7 +134,7 @@ export interface SynaraThread {
 
 export interface SynaraProject {
   readonly id: string;
-  readonly kind: "project" | "chat" | "studio";
+  readonly kind: "project" | "chat" | "studio" | "group";
   readonly title: string;
   readonly workspaceRoot: string;
 }
@@ -147,7 +146,6 @@ export interface SynaraSnapshot {
 }
 
 /** The server's `pullRequests.list` reply, as the contract defines it. */
-export type SynaraPullRequestListResult = PullRequestsListResult;
 
 const OFFLINE_RETRY_DELAY_MS = 5_000;
 const TRANSPORT_STATE_EVENT = "synara:transport-state";
@@ -524,10 +522,15 @@ export async function upsertKeybinding(
   return transportRequest("server.upsertKeybinding", rule);
 }
 
+/**
+ * Drops every binding of one command. Upstream's `reset` edit restores the
+ * shipped bindings for a command, which for a project-script command (none
+ * shipped) leaves it unassigned.
+ */
 export async function removeKeybinding(
   command: KeybindingRule["command"],
 ): Promise<ServerUpsertKeybindingResult> {
-  return transportRequest("server.removeKeybinding", { command });
+  return ensureNativeApi().server.editKeybindings({ edits: [{ type: "reset", command }] });
 }
 
 export async function refreshProviderStatuses(): Promise<ServerRefreshProvidersResult> {
@@ -760,17 +763,6 @@ export async function stopLocalServer(
   input: ServerStopLocalServerInput,
 ): Promise<ServerStopLocalServerResult> {
   return transportRequest<ServerStopLocalServerResult>("server.stopLocalServer", input);
-}
-
-export async function fetchSynaraPullRequests(input: {
-  readonly state: PullRequestState;
-  readonly projectId: ProjectId | null;
-}): Promise<SynaraPullRequestListResult> {
-  return transportRequest<SynaraPullRequestListResult>("pullRequests.list", {
-    involvement: "all",
-    state: input.state,
-    projectId: input.projectId,
-  });
 }
 
 export async function fetchSynaraPullRequestDetail(

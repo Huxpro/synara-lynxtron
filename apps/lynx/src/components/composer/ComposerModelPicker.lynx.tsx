@@ -255,7 +255,7 @@ function ComposerModelPickerPanel(
   const setTab = (next: ComposerModelPickerTab) => {
     "background only";
     setTabState(next);
-    if (next !== STARRED_TAB) props.onCatalogProviderChange(next);
+    if (next !== STARRED_TAB) props.onCatalogProviderChange(next as ProviderKind);
   };
 
   const pickerSettings = readSettingsProviderPickerProjection(
@@ -315,18 +315,20 @@ function ComposerModelPickerPanel(
     tab === STARRED_TAB
       ? buildStarredTabRows({
           starredModels: usableStarredModels,
-          modelOptionsByProvider,
+          modelOptionsFor: (provider) => modelOptionsByProvider[provider] ?? [],
           query: normalizedQuery,
           current: {
             provider: activeProvider,
+            // Lynx offers each provider's default account only; its id is the provider id.
+            instanceId: activeProvider,
             model: props.modelSelection.model,
             ...resolveStarredTraits(props.currentSelection),
           },
           effortLevelsFor: (provider, model) => traitSelectionFor(provider, model).effortLevels,
         })
       : buildProviderTabRows({
-          provider: tab,
-          options: optionsFor(tab),
+          provider: tab as ProviderKind,
+          options: optionsFor(tab as ProviderKind),
           query: normalizedQuery,
           selectedModel: tab === activeProvider ? props.modelSelection.model : null,
         });

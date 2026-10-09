@@ -7,8 +7,6 @@ import {
 } from "@synara-web/lib/modelFavorites.logic";
 import {
   normalizeStarredModels,
-  parseStoredStarredModels,
-  seedStarredModelsFromLegacyFavorites,
   STARRED_MODELS_STORAGE_KEY,
   toggleStarredModel,
   unstarModel,
@@ -22,11 +20,24 @@ import { webStorage } from "../../platform/storage";
 // first edit writes the new key. The Lynx host has no `globalThis.localStorage`, so the
 // favourites are read through the storage port.
 function readStoredStarredModels(): ReadonlyArray<StoredStarredModel> {
-  const stored = parseStoredStarredModels(webStorage.getItem(STARRED_MODELS_STORAGE_KEY));
-  if (stored !== null) return stored;
+  const raw = webStorage.getItem(STARRED_MODELS_STORAGE_KEY);
+  if (raw) {
+    try {
+      // `normalizeStarredModels` (the only reader) drops entries it does not recognize.
+      const parsed: unknown = JSON.parse(raw);
+      return Array.isArray(parsed) ? (parsed as StoredStarredModel[]) : [];
+    } catch {
+      return [];
+    }
+  }
   migrateLegacyKiloFavoriteModelSlugs(webStorage);
-  return seedStarredModelsFromLegacyFavorites((provider) =>
-    parseFavoriteModelSlugs(webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS[provider])),
+  const providers = Object.keys(FAVORITE_MODEL_STORAGE_KEYS) as Array<
+    keyof typeof FAVORITE_MODEL_STORAGE_KEYS
+  >;
+  return providers.flatMap((provider) =>
+    parseFavoriteModelSlugs(webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS[provider])).map(
+      (model) => ({ provider, model, effort: null, fastMode: null, thinking: null }),
+    ),
   );
 }
 

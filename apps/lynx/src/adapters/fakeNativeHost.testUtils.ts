@@ -44,6 +44,11 @@ export class FakeRpcFailure extends Error {
   }
 }
 
+/** Throw this from `rpc` to answer a request as the host does when its socket drops. */
+export class FakeTransportFailure extends Error {
+  readonly errorKind = "transport";
+}
+
 /** Return this from `rpc` to leave the request unanswered. */
 export const HOLD_REPLY: unique symbol = Symbol("hold-reply");
 
@@ -136,6 +141,10 @@ export function installFakeNativeHost(
           try {
             value = options.rpc?.(String(params.tag), params.payload) ?? {};
           } catch (error) {
+            if (error instanceof FakeTransportFailure) {
+              reply(callback, { error: error.message, errorKind: error.errorKind });
+              return;
+            }
             if (!(error instanceof FakeRpcFailure)) throw error;
             reply(callback, {
               error: error.message,

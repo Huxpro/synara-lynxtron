@@ -143,6 +143,7 @@ describe("Lynx Synara relay state", () => {
   it("exposes the canonical keybinding mutation for Native action editors", () => {
     const source = readFileSync(new URL("./synaraClient.lynx.ts", import.meta.url), "utf8");
     expect(source).toContain('transportRequest("server.upsertKeybinding", rule)');
-    expect(source).toContain('transportRequest("server.removeKeybinding", { command })');
+    expect(source).toContain('server.editKeybindings({ edits: [{ type: "reset", command }] })');
+    expect(source).not.toContain("server.removeKeybinding");
   });
 });

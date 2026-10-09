@@ -12,7 +12,7 @@ import type { ThreadSummary } from "./queries";
 
 export interface EditorProjectSwitchProject {
   readonly id: string;
-  readonly kind: "project" | "chat" | "studio";
+  readonly kind: "project" | "chat" | "studio" | "group";
   readonly title: string;
   readonly spaceId?: SpaceId | null;
 }

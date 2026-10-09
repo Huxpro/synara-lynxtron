@@ -174,7 +174,7 @@ import {
   storeEditorChatPaneVisible,
   storeEditorSidebarVisible,
   storeEditorViewState,
-} from "@synara-web/editorViewState";
+} from "./editorViewState.lynx";
 import { sleepOnHost } from "../platform/timer";
 import { EmptyThreadContextTray } from "./EmptyThreadContextTray.lynx";
 import { ThreadTerminal } from "./ThreadTerminal.lynx";
@@ -207,7 +207,7 @@ import {
   EDITOR_CHAT_PANE_MAX_WIDTH,
   EDITOR_CHAT_PANE_MIN_WIDTH,
   EDITOR_CHAT_PANE_STORAGE_KEY,
-} from "@synara-web/editorViewState";
+} from "./editorViewState.lynx";
 import { EnvironmentPanel, EnvironmentToggle } from "./EnvironmentPanel.lynx";
 import { useTemporaryThreadLifecycle } from "./temporaryThreadLifecycle.lynx";
 import { DesktopTitlebarControls } from "../adapters/DesktopTitlebarControls.lynx";
@@ -291,10 +291,10 @@ interface RouteState {
 }
 
 function parseRoute(pathname: string): RouteState {
-  const [routePathname, routeSearch = ""] = pathname.split("?", 2);
+  const [routePathname = "", routeSearch = ""] = pathname.split("?", 2);
   const threadMatch = routePathname.match(/^\/thread\/([^/]+)$/);
   if (threadMatch) {
-    return { pathname: "/thread/$threadId", params: { threadId: threadMatch[1] } };
+    return { pathname: "/thread/$threadId", params: { threadId: threadMatch[1]! } };
   }
   const settingsRoute = parseSettingsRouteLocation(pathname);
   if (settingsRoute) {
@@ -310,7 +310,7 @@ function parseRoute(pathname: string): RouteState {
   if (newThreadMatch) {
     return {
       pathname: "/new-thread/$projectId",
-      params: { projectId: decodeURIComponent(newThreadMatch[1]) },
+      params: { projectId: decodeURIComponent(newThreadMatch[1]!) },
     };
   }
   if (routePathname === "/studio") {
@@ -335,7 +335,7 @@ function parseRoute(pathname: string): RouteState {
   if (kanbanProjectMatch) {
     return {
       pathname: "/kanban/$projectId",
-      params: { projectId: decodeURIComponent(kanbanProjectMatch[1]) },
+      params: { projectId: decodeURIComponent(kanbanProjectMatch[1]!) },
     };
   }
   if (routePathname === "/pull-requests") {
@@ -351,7 +351,7 @@ function parseRoute(pathname: string): RouteState {
   if (automationMatch) {
     return {
       pathname: "/automations/$automationId",
-      params: { automationId: decodeURIComponent(automationMatch[1]) },
+      params: { automationId: decodeURIComponent(automationMatch[1]!) },
     };
   }
   if (routePathname === "/update") {
@@ -2860,7 +2860,7 @@ export function SliceRouter({
   );
   const activeThreadId =
     route.pathname === "/thread/$threadId"
-      ? route.params.threadId
+      ? (route.params.threadId ?? null)
       : initialRoute
         ? (parseRoute(initialRoute).params.threadId ?? null)
         : null;
@@ -3246,8 +3246,8 @@ export function SliceRouter({
   const navigate = useCallback((to: string) => {
     const threadMatch = to.match(/^\/thread\/([^/]+)$/);
     if (threadMatch) {
-      setPersistedLastRoute({ threadId: threadMatch[1] });
-      void persistLastThreadRoute(threadMatch[1]);
+      setPersistedLastRoute({ threadId: threadMatch[1]! });
+      void persistLastThreadRoute(threadMatch[1]!);
     }
     history.push(to);
   }, []);
@@ -3523,7 +3523,7 @@ export function SliceRouter({
           navigate(`/thread/${threadId}`);
         }}
         projects={routeProjects}
-        threadId={route.params.threadId}
+        threadId={route.params.threadId!}
         threads={routeThreads}
         resolvedTheme={resolvedTheme}
         viewportWidth={viewportWidth}
@@ -3576,7 +3576,7 @@ export function SliceRouter({
     page = <ProjectsPage navigate={(to) => history.push(to)} />;
   } else if (route.pathname === "/kanban/$projectId") {
     page = (
-      <KanbanProjectPage navigate={(to) => history.push(to)} projectId={route.params.projectId} />
+      <KanbanProjectPage navigate={(to) => history.push(to)} projectId={route.params.projectId!} />
     );
   } else if (route.pathname === "/pull-requests") {
     page = <PullRequestsPage />;
@@ -3620,7 +3620,7 @@ export function SliceRouter({
     route.pathname !== "/settings" && route.pathname !== "/components-lab" ? (
       <SidebarDisclosure open={sidebarOpen && !editorModeOpen}>
         <Sidebar
-          activeThreadId={route.pathname === "/thread/$threadId" ? route.params.threadId : null}
+          activeThreadId={route.pathname === "/thread/$threadId" ? route.params.threadId! : null}
           draftProjectId={
             route.pathname === "/new-thread/$projectId" ? route.params.projectId : null
           }

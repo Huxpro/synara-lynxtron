@@ -1,6 +1,7 @@
 // P2-V6: react-query selectors over the real Synara Effect-RPC WebSocket
 // snapshot. The transport is a singleton; both queries share its latest read.
 
+import { pullRequestListEntryHasProject } from "@synara/shared/githubRepository";
 import { QueryClient } from "@tanstack/react-query";
 import {
   APP_SETTINGS_STORAGE_KEY,
@@ -30,8 +31,6 @@ import type {
   PullRequestActionResult,
   PullRequestCommentInput,
   PullRequestListEntry,
-  PullRequestsListRepositoryBatch,
-  PullRequestsListResult,
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
   PullRequestState,
@@ -136,7 +135,7 @@ export interface ThreadSummary {
 
 export interface ProjectSummary {
   readonly id: string;
-  readonly kind: "project" | "chat" | "studio";
+  readonly kind: "project" | "chat" | "studio" | "group";
   readonly title: string;
   readonly remoteName: string;
   readonly folderName: string;
@@ -415,11 +414,25 @@ const transcriptRowsByThreadId = new Map<
   }
 >();
 
+/** A project or repository whose pull requests are missing or stale. */
+export interface PullRequestListError {
+  readonly projectId: ProjectId;
+  readonly projectTitle: string;
+  readonly message: string;
+}
+
+export interface PullRequestRepositoryBatch {
+  readonly repository: string;
+  readonly projectIds: readonly ProjectId[];
+  /** More pull requests exist in the listed state than the server returned. */
+  readonly truncated: boolean;
+}
+
 export interface PullRequestSnapshot {
   readonly viewer: string | null;
   readonly entries: readonly PullRequestListEntry[];
-  readonly errors: readonly PullRequestsListResult["errors"][number][];
-  readonly repositoryBatches: readonly PullRequestsListRepositoryBatch[];
+  readonly errors: readonly PullRequestListError[];
+  readonly repositoryBatches: readonly PullRequestRepositoryBatch[];
 }
 
 /** Message windows for the sidebar search palette; a server read upstream does not have. */
@@ -907,20 +920,42 @@ export async function generatePreparedThreadRecap(input: {
   return persisted;
 }
 
+/**
+ * Pull requests for the Lynx list. Upstream replaced `pullRequests.list` with the GitHub
+ * inbox (`githubInbox.list`: pull requests and issues of every project in one superset); this
+ * keeps the pull-request rows and scopes them to `projectId` on the client, as upstream does.
+ * The inbox knows open and closed; merged pull requests arrive in the closed list.
+ */
 export async function fetchPullRequests(input: {
   readonly state: PullRequestState;
   readonly projectId: ProjectId | null;
 }): Promise<PullRequestSnapshot> {
   "background only";
-  const { fetchSynaraPullRequests } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  const result = await fetchSynaraPullRequests(input);
+  const { ensureNativeApi } = await import(/* webpackMode: "eager" */ "~/nativeApi");
+  const result = await ensureNativeApi().githubInbox.list({
+    state: input.state === "open" ? "open" : "closed",
+  });
+  const inProject = (projectIds: readonly ProjectId[]) =>
+    input.projectId === null || projectIds.includes(input.projectId);
   return {
     viewer: result.viewer,
-    entries: result.entries,
-    errors: result.errors,
-    repositoryBatches: result.repositoryBatches,
+    entries: result.items.flatMap((item) => {
+      if (item.kind !== "pullRequest" || item.state !== input.state) return [];
+      const { kind: _kind, ...entry } = item;
+      return input.projectId === null || pullRequestListEntryHasProject(entry, input.projectId)
+        ? [entry]
+        : [];
+    }),
+    errors: result.errors
+      .filter((error) => !error.showingCachedData && inProject([error.projectId]))
+      .map(({ projectId, projectTitle, message }) => ({ projectId, projectTitle, message })),
+    repositoryBatches: result.repositoryBatches
+      .filter((batch) => inProject(batch.projectIds))
+      .map((batch) => ({
+        repository: batch.repository,
+        projectIds: batch.projectIds,
+        truncated: batch.truncatedPullRequests,
+      })),
   };
 }
 

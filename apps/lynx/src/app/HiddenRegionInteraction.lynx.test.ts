@@ -22,7 +22,6 @@ const HIDDEN_REGION_RULES: Readonly<Record<string, string>> = {
   ".DiffDock--closed": "gated",
   ".BrowserDockPane--hidden": "gated",
   ".DockTerminalPaneSession--hidden": "gated",
-  ".DockTerminalPaneGroupBody--hidden": "gated",
   ".TranscriptMessageTrailTooltip": "gated",
   // A childless native field focused programmatically; the rule applies to the node itself.
   ".ThreadTerminalInputProxy": "no-children",
@@ -77,10 +76,7 @@ describe("hidden region interaction", () => {
       /BrowserDockPane--hidden"\}`\}[\s\S]{0,160}user-interaction-enabled=\{props\.active\}/,
     );
     const terminals = source("./DockTerminalPane.lynx.tsx");
-    expect(terminals).toContain("user-interaction-enabled={tab.id === node.activeTerminalId}");
-    expect(terminals).toContain(
-      "user-interaction-enabled={terminalGroup.id === resolvedLayout.resolvedActiveGroupId}",
-    );
+    expect(terminals).toContain("user-interaction-enabled={tab.id === activeId}");
   });
 
   it("keeps the passive trail preview from taking taps over the transcript", () => {

@@ -27,7 +27,8 @@ import { formatRelativeTime } from "~/lib/relativeTime";
 import { formatElapsed } from "../../session-logic";
 import { resolveThreadStatusPill } from "../Sidebar.logic";
 import { resolvePrStatePresentation } from "../pullRequest/pullRequestStatePresentation.logic";
-import { KANBAN_COLUMN_LABELS, kanbanThreadCardId, type KanbanCard } from "./kanban.logic";
+import { KANBAN_COLUMN_V2_LABELS as KANBAN_COLUMN_LABELS } from "@synara/shared/kanban";
+import { kanbanThreadCardId, type KanbanCard } from "./kanban.logic";
 import type { KanbanDragPoint } from "./kanbanDnd.logic";
 
 export interface KanbanCardCompositionProps {

@@ -17,6 +17,7 @@ import type { WorkLogEntry } from "../session-logic";
 
 import {
   appendVoiceTranscriptToPrompt,
+  buildCollapsedCursorModelOptionsReset,
   buildTranscriptAutoFollowSignal,
   buildTranscriptTailKey,
   canApplyComposerFocus,
@@ -62,7 +63,6 @@ import {
   resolveEnvironmentPanelPreferenceAfterFirstSend,
   resolveEnvironmentPanelPreferenceUpdate,
   resolveGitRepoUiState,
-  resolveProjectScriptTerminalTarget,
   resolveQueuedSteerGateTransition,
   resolveRuntimeModeAfterApprovalDecision,
   resolveSettledThreadBranchMismatch,
@@ -77,6 +77,7 @@ import {
   shouldHandlePromptHistoryNavigationKey,
   shouldRenderProviderHealthBanner,
   shouldShowComposerModelBootstrapSkeleton,
+  shouldShowComposerProviderInstancePicker,
   shouldStartActiveTurnLayoutGrace,
   worktreeSetupHasError,
 } from "./ChatView.logic";
@@ -86,7 +87,6 @@ describe("composer focus admission", () => {
     expect(
       canApplyComposerFocus({
         windowHasFocus: false,
-        secondaryChromeReady: true,
         editorAvailable: true,
         editorDisabled: false,
       }),
@@ -97,15 +97,6 @@ describe("composer focus admission", () => {
     expect(
       canApplyComposerFocus({
         windowHasFocus: true,
-        secondaryChromeReady: false,
-        editorAvailable: true,
-        editorDisabled: false,
-      }),
-    ).toBe(false);
-    expect(
-      canApplyComposerFocus({
-        windowHasFocus: true,
-        secondaryChromeReady: true,
         editorAvailable: false,
         editorDisabled: false,
       }),
@@ -113,7 +104,6 @@ describe("composer focus admission", () => {
     expect(
       canApplyComposerFocus({
         windowHasFocus: true,
-        secondaryChromeReady: true,
         editorAvailable: true,
         editorDisabled: true,
       }),
@@ -124,7 +114,6 @@ describe("composer focus admission", () => {
     expect(
       canApplyComposerFocus({
         windowHasFocus: true,
-        secondaryChromeReady: true,
         editorAvailable: true,
         editorDisabled: false,
       }),
@@ -153,13 +142,52 @@ describe("composer strip work-log derivation", () => {
     });
     expect(deriveParentWorkLogEntries).toHaveBeenCalledOnce();
   });
+
+  it("shows the standalone account menu only for a missing account", () => {
+    expect(
+      shouldShowComposerProviderInstancePicker({
+        selectedProviderInstanceId: "cursor_removed",
+        providerInstances: [{ instanceId: "cursor" }],
+      }),
+    ).toBe(true);
+    // Configured accounts are picked in the model picker's own tabs.
+    expect(
+      shouldShowComposerProviderInstancePicker({
+        selectedProviderInstanceId: "codex_work",
+        providerInstances: [{ instanceId: "codex" }, { instanceId: "codex_work" }],
+      }),
+    ).toBe(false);
+  });
+
+  it("targets collapsed Cursor option resets at the selected non-default instance", () => {
+    expect(
+      buildCollapsedCursorModelOptionsReset({
+        provider: "cursor",
+        instanceId: "cursor_work",
+        model: "cursor/auto" as ModelSlug,
+        showExpandedCursorModelVariants: false,
+      }),
+    ).toEqual({
+      persistSticky: true,
+      instanceId: "cursor_work",
+      model: "cursor/auto",
+    });
+    expect(
+      buildCollapsedCursorModelOptionsReset({
+        provider: "cursor",
+        instanceId: "cursor_work",
+        model: "cursor/auto" as ModelSlug,
+        showExpandedCursorModelVariants: true,
+      }),
+    ).toBeUndefined();
+  });
 });
 
 describe("thread artifact workspace root", () => {
   it("uses a materialized worktree for file previews", () => {
     expect(
       resolveThreadArtifactWorkspaceRoot({
-        isStudioContainer: false,
+        isGroupContainer: false,
         projectCwd: "/repo/project",
         threadWorkspaceCwd: "/repo/worktrees/feature",
       }),
@@ -169,7 +197,7 @@ describe("thread artifact workspace root", () => {
   it("keeps the project fallback while a normal thread worktree is pending", () => {
     expect(
       resolveThreadArtifactWorkspaceRoot({
-        isStudioContainer: false,
+        isGroupContainer: false,
         projectCwd: "/repo/project",
         threadWorkspaceCwd: null,
       }),
@@ -179,7 +207,7 @@ describe("thread artifact workspace root", () => {
   it("does not escape a Studio thread's selected working directory", () => {
     expect(
       resolveThreadArtifactWorkspaceRoot({
-        isStudioContainer: true,
+        isGroupContainer: true,
         projectCwd: "/studio/root",
         threadWorkspaceCwd: null,
       }),
@@ -971,6 +999,8 @@ describe("voice helpers", () => {
   it("derives voice-note availability from provider auth and runtime state", () => {
     expect(
       deriveComposerVoiceState({
+        enabled: true,
+        available: true,
         authStatus: "authenticated",
         voiceTranscriptionAvailable: true,
         isRecording: false,
@@ -984,6 +1014,8 @@ describe("voice helpers", () => {
 
     expect(
       deriveComposerVoiceState({
+        enabled: true,
+        available: true,
         authStatus: "unauthenticated",
         voiceTranscriptionAvailable: true,
         isRecording: true,
@@ -991,6 +1023,51 @@ describe("voice helpers", () => {
       }),
     ).toEqual({
       canRenderVoiceNotes: false,
+      canStartVoiceNotes: false,
+      showVoiceNotesControl: true,
+    });
+
+    expect(
+      deriveComposerVoiceState({
+        enabled: false,
+        available: true,
+        authStatus: "authenticated",
+        voiceTranscriptionAvailable: true,
+        isRecording: false,
+        isTranscribing: false,
+      }),
+    ).toEqual({
+      canRenderVoiceNotes: false,
+      canStartVoiceNotes: false,
+      showVoiceNotesControl: false,
+    });
+
+    expect(
+      deriveComposerVoiceState({
+        enabled: true,
+        available: false,
+        authStatus: "authenticated",
+        voiceTranscriptionAvailable: true,
+        isRecording: false,
+        isTranscribing: false,
+      }),
+    ).toEqual({
+      canRenderVoiceNotes: false,
+      canStartVoiceNotes: false,
+      showVoiceNotesControl: false,
+    });
+
+    expect(
+      deriveComposerVoiceState({
+        enabled: true,
+        available: true,
+        authStatus: "authenticated",
+        voiceTranscriptionAvailable: false,
+        isRecording: false,
+        isTranscribing: false,
+      }),
+    ).toEqual({
+      canRenderVoiceNotes: true,
       canStartVoiceNotes: false,
       showVoiceNotesControl: true,
     });
@@ -1158,19 +1235,19 @@ describe("git repository UI state", () => {
   it("waits for positive repository detection in Studio", () => {
     expect(
       resolveGitRepoUiState({
-        isStudioContainer: true,
+        isGroupContainer: true,
         queriedIsRepo: undefined,
       }),
     ).toBe(false);
     expect(
       resolveGitRepoUiState({
-        isStudioContainer: true,
+        isGroupContainer: true,
         queriedIsRepo: true,
       }),
     ).toBe(true);
     expect(
       resolveGitRepoUiState({
-        isStudioContainer: true,
+        isGroupContainer: true,
         queriedIsRepo: false,
       }),
     ).toBe(false);
@@ -1179,7 +1256,7 @@ describe("git repository UI state", () => {
   it("keeps normal project Git UI stable while discovery is pending", () => {
     expect(
       resolveGitRepoUiState({
-        isStudioContainer: false,
+        isGroupContainer: false,
         queriedIsRepo: undefined,
       }),
     ).toBe(true);
@@ -1597,63 +1674,6 @@ describe("deriveComposerSendState", () => {
   });
 });
 
-describe("resolveProjectScriptTerminalTarget", () => {
-  it("reuses the base terminal only when no terminal is open or running", () => {
-    const target = resolveProjectScriptTerminalTarget({
-      baseTerminalId: "default",
-      createTerminalId: () => "new-terminal",
-      hasRunningTerminal: false,
-      terminalOpen: false,
-    });
-
-    expect(target).toEqual({
-      shouldCreateNewTerminal: false,
-      terminalId: "default",
-    });
-  });
-
-  it("creates a fresh terminal when a live terminal could keep stale cwd or env", () => {
-    expect(
-      resolveProjectScriptTerminalTarget({
-        baseTerminalId: "default",
-        createTerminalId: () => "visible-script-terminal",
-        hasRunningTerminal: false,
-        terminalOpen: true,
-      }),
-    ).toEqual({
-      shouldCreateNewTerminal: true,
-      terminalId: "visible-script-terminal",
-    });
-
-    expect(
-      resolveProjectScriptTerminalTarget({
-        baseTerminalId: "default",
-        createTerminalId: () => "running-script-terminal",
-        hasRunningTerminal: true,
-        terminalOpen: false,
-      }),
-    ).toEqual({
-      shouldCreateNewTerminal: true,
-      terminalId: "running-script-terminal",
-    });
-  });
-
-  it("honors explicit requests for a new terminal", () => {
-    const target = resolveProjectScriptTerminalTarget({
-      baseTerminalId: "default",
-      createTerminalId: () => "forced-script-terminal",
-      hasRunningTerminal: false,
-      preferNewTerminal: true,
-      terminalOpen: false,
-    });
-
-    expect(target).toEqual({
-      shouldCreateNewTerminal: true,
-      terminalId: "forced-script-terminal",
-    });
-  });
-});
-
 describe("shouldRenderProviderHealthBanner", () => {
   it("does not show chat provider health while a terminal thread is active", () => {
     expect(
@@ -1941,6 +1961,25 @@ describe("runWorktreeCreationFlow", () => {
       flow,
     };
   }
+
+  it("does not start Git if setup was resolved during task registration", async () => {
+    const resolution = createWorktreeSetupResolution();
+    resolution.resolve("cancel");
+    let starts = 0;
+    const result = await runWorktreeCreationFlow({
+      progressId: "cancelled-before-git",
+      resolution,
+      subscribeToProgress: () => () => undefined,
+      onCreationStep: () => undefined,
+      startCreation: async () => {
+        starts += 1;
+        return { worktree: { path: "/unused" } };
+      },
+      removeWorktree: async () => undefined,
+    });
+    expect(result).toEqual({ outcome: "resolved" });
+    expect(starts).toBe(0);
+  });
 
   it("advances steps only for this creation's phase-started events", async () => {
     const harness = startFlowHarness();

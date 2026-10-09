@@ -11,11 +11,11 @@ import {
   SearchIcon,
   SettingsIcon,
   SunIcon,
+  FolderIcon,
 } from "~/lib/icons";
 import { BsChat } from "react-icons/bs";
 import { LuArrowDownToLine, LuCornerLeftUp, LuFolderPlus } from "react-icons/lu";
 
-import { FolderClosed } from "~/components/FolderClosed";
 import { ProviderIcon } from "~/components/ProviderIcon";
 
 export type SidebarSearchPaletteGlyphKind =
@@ -47,7 +47,7 @@ const GLYPHS: Record<
   check: CheckIcon,
   "corner-left-up": LuCornerLeftUp,
   "device-laptop": DeviceLaptopIcon,
-  "folder-closed": FolderClosed,
+  "folder-closed": FolderIcon,
   "folder-open": FolderOpenIcon,
   "folder-plus": LuFolderPlus,
   moon: MoonIcon,

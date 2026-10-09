@@ -183,6 +183,7 @@ describe("shared settings navigation projection", () => {
       settings: {
         providers: {
           codex: { customModels: [] },
+          claudeAgent: { customModels: [] },
           cursor: { customModels: [] },
           droid: { customModels: ["openrouter/custom-model"] },
           opencode: { customModels: [] },

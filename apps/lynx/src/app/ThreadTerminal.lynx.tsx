@@ -895,7 +895,7 @@ export function ThreadTerminal({
       try {
         if (
           !(await confirmTerminalTabClose({
-            dialogs,
+            api: { dialogs },
             enabled: confirmationEnabled,
             terminalTitle: "Terminal",
           }))

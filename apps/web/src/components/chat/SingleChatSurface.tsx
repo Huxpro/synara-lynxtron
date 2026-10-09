@@ -1,6 +1,6 @@
 import type { FileDiffMetadata } from "@pierre/diffs/react";
 import { isWorkspaceRelativePathSafe } from "@synara/shared/path";
-import type { ProjectId, ThreadId, TurnId } from "@synara/contracts";
+import type { ProjectId, ResolvedKeybindingsConfig, ThreadId, TurnId } from "@synara/contracts";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { flushWorkspaceEditors } from "~/lib/workspaceEditorSession";
 import { useNavigate } from "@tanstack/react-router";
@@ -14,10 +14,11 @@ import {
   useMemo,
   useRef,
   useState,
-  useSyncExternalStore,
 } from "react";
 import type { EditorLeaveGuard } from "../EditorWorkspaceView";
 
+import { closeTerminalSurface } from "../../hooks/useTerminalSurfaceController";
+import { dockTerminalThreadId } from "../../lib/dockTerminalScope";
 import { useAppSettings } from "../../appSettings";
 import { useComposerDraftStore } from "../../composerDraftStore";
 import type { DiffRouteSearch } from "../../diffRouteSearch";
@@ -36,11 +37,7 @@ import {
   buildWhyLinesPrompt,
   type ChatFileReference,
 } from "../../lib/chatReferences";
-import {
-  dockSidechatPaneScopeId,
-  EDITOR_CHAT_PANE_SCOPE_ID,
-  SINGLE_CHAT_PANE_SCOPE_ID,
-} from "../../lib/chatPaneScope";
+import { EDITOR_CHAT_PANE_SCOPE_ID, SINGLE_CHAT_PANE_SCOPE_ID } from "../../lib/chatPaneScope";
 import type { DockPaneRuntimeMode } from "../../lib/dockPaneActivation";
 import type { FileCommentSelection } from "../../lib/fileComments";
 import type { DiffEditBaseRev, DiffFileEditRequest } from "../../lib/diffEditBaseRev";
@@ -51,12 +48,7 @@ import { projectListDirectoriesQueryOptions } from "../../lib/projectReactQuery"
 import { serverConfigQueryOptions } from "../../lib/serverReactQuery";
 import { useSidechatShortcut } from "./useSidechatShortcut";
 import { waitForSidechatCreator } from "../../lib/sidechatCreatorRegistry";
-import {
-  clearSidechatPaneRetention,
-  getSidechatPaneRetentionVersion,
-  sidechatPaneRetentionRemainingMs,
-  subscribeSidechatPaneRetention,
-} from "../../lib/sidechatCreation";
+import { requestComposerFocus } from "../../composerFocusRequestStore";
 import {
   prefetchWorkspaceFile,
   resolveDockFileOpenTarget,
@@ -69,7 +61,6 @@ import { requestExplorerReveal } from "../../explorerRevealRequestStore";
 import { selectRightDockState, useRightDockStore } from "../../rightDockStore";
 import {
   resolveActivePane,
-  findMissingSidechatPaneIds,
   type RightDockPane,
   type RightDockPaneKind,
 } from "../../rightDockStore.logic";
@@ -80,6 +71,7 @@ import {
   useSplitViewStore,
 } from "../../splitViewStore";
 import { useStore } from "../../store";
+import { useWorkspacePathsStore } from "../../workspacePathsStore";
 import {
   createProjectSelector,
   createSidebarThreadSummariesSelector,
@@ -87,7 +79,6 @@ import {
   createThreadWorkspaceMetadataSelector,
 } from "../../storeSelectors";
 import { sortThreadsForSidebar } from "../Sidebar.logic";
-import { ChatPaneDropOverlay } from "../chat-drop-overlay/ChatPaneDropOverlay";
 import {
   ChatMountLoader,
   DeferredChatView,
@@ -100,6 +91,7 @@ import { FloatingBrowserPanel } from "./FloatingBrowserPanel";
 import { shouldRenderFloatingBrowserPanel } from "./floatingBrowserPanel.logic";
 import { PanelStateMessage } from "./PanelStateMessage";
 import { RightDock } from "./RightDock";
+import { SidechatDockPane, useSidechatDockPanePruning } from "./SidechatDockPane";
 import {
   buildRightDockPaneLabelOverrides,
   getRightDockPaneMeta,
@@ -109,6 +101,7 @@ import {
   CHAT_BACKGROUND_CLASS_NAME,
   CHAT_MAIN_CONTENT_SURFACE_CLASS_NAME,
   CHAT_MAIN_VIEWPORT_SHELL_CLASS_NAME,
+  CHAT_ROUTE_INSET_SHELL_CLASS_NAME,
 } from "./composerPickerStyles";
 import { routeSingleDockPaneOpenRequest } from "./dockPaneOpenRequest";
 import {
@@ -120,7 +113,7 @@ import {
   pullRequestPaneTabLabel,
 } from "../pullRequest/pullRequestDetail.logic";
 import { usePullRequestPaneStateIcon } from "../pullRequest/usePullRequestPaneStateIcon";
-import { RouteInsetSurface } from "../RouteInsetSurface";
+import { ChatPaneBody, KeptChatPane } from "./ChatPaneKeepAlive";
 import { SidebarInset } from "../ui/sidebar";
 import { toastManager } from "../ui/toast";
 import { WorkspaceSearchPalette, type WorkspaceSearchPaletteMode } from "../WorkspaceSearchPalette";
@@ -130,9 +123,12 @@ import {
   resolveRoutePanelBootstrap,
   stripEditorViewSearchParams,
 } from "../../routes/-chatThreadRoute.logic";
+import { isShortcutDispatchSuspended, resolveShortcutCommand } from "~/keybindings";
+import { isTerminalFocused } from "~/lib/terminalFocus";
 import { cn } from "~/lib/utils";
 
 const PullRequestDockPane = lazy(() => import("../pullRequest/PullRequestDockPane"));
+const EMPTY_KEYBINDINGS: ResolvedKeybindingsConfig = [];
 const EditorWorkspaceView = lazy(() =>
   import("../EditorWorkspaceView").then((module) => ({
     default: module.EditorWorkspaceView,
@@ -188,16 +184,6 @@ function RightDockPanePlaceholder(props: { kind: RightDockPaneKind }) {
   return <PanelStateMessage>{label} panel is coming soon.</PanelStateMessage>;
 }
 
-// Embedded dock chats (side chats) manage their own panels through the dock, so the
-// nested ChatView always renders with a closed, inert panel state.
-const DOCK_EMBEDDED_PANEL_STATE: SplitViewPanePanelState = {
-  panel: null,
-  diffTurnId: null,
-  diffFilePath: null,
-  hasOpenedPanel: false,
-  lastOpenPanel: "browser",
-};
-
 export function SingleChatSurface(props: {
   threadId: ThreadId;
   search: DiffRouteSearch;
@@ -212,6 +198,7 @@ export function SingleChatSurface(props: {
   const openPane = useRightDockStore((store) => store.openPane);
   const toggleSingletonPane = useRightDockStore((store) => store.toggleSingletonPane);
   const closePane = useRightDockStore((store) => store.closePane);
+  const movePane = useRightDockStore((store) => store.movePane);
   const setActivePane = useRightDockStore((store) => store.setActivePane);
   const setDockOpen = useRightDockStore((store) => store.setDockOpen);
   const updatePane = useRightDockStore((store) => store.updatePane);
@@ -224,11 +211,9 @@ export function SingleChatSurface(props: {
   const draftThread = useComposerDraftStore(
     (store) => store.draftThreadsByThreadId[props.threadId] ?? null,
   );
-  // A registered-but-unpromoted draft is the freeze case: landing a brand-new
-  // chat commits the whole ChatView subtree synchronously. Defer that mount
-  // behind the chat mount loader so the paint is never blocked. Opening an
-  // existing thread keeps today's immediate mount (no draft -> no loader).
-  const isBrandNewDraftThread = draftThread !== null;
+  // Defer a draft on the first mount so the shell can paint. Once mounted,
+  // DeferredChatView keeps the view alive when navigating between tabs.
+  const isDraftThread = draftThread !== null;
   // File preview must follow the same runtime cwd as chat markdown, diffs, and git:
   // worktree-backed threads resolve links against their materialized worktree.
   const workspaceRoot = resolveFilePreviewWorkspaceRoot({
@@ -238,6 +223,7 @@ export function SingleChatSurface(props: {
     threadWorkingDirectory:
       threadWorkspaceMetadata.workingDirectory ?? draftThread?.workingDirectory ?? null,
   });
+  const homeDir = useWorkspacePathsStore((store) => store.homeDir);
   const dockGitRepositoryQuery = useQuery(gitBranchesQueryOptions(workspaceRoot));
   const hasGitRepository = dockGitRepositoryQuery.data?.isRepo === true;
   const dockDiffTotals = useRepoDiffTotals({
@@ -284,11 +270,18 @@ export function SingleChatSurface(props: {
     // Re-seed editor view state from storage asynchronously so the reset is not a
     // synchronous setState in the effect body; both setters are user-mutable
     // elsewhere, so deriving here would mean stamping the thread key in every one.
-    const timer = setTimeout(() => {
-      setEditorExpandedDirectories(new Set(persisted?.expandedDirectories ?? []));
+    const timer = window.setTimeout(() => {
+      // Keep the current set when the persisted one matches (usually both empty): a fresh
+      // identity would re-render this surface and the chat on every thread switch.
+      setEditorExpandedDirectories((current) => {
+        const next = persisted?.expandedDirectories ?? [];
+        return current.size === next.length && next.every((directory) => current.has(directory))
+          ? current
+          : new Set(next);
+      });
       setEditorCenterMode(props.search.editorFilePath ? "file" : (persisted?.centerMode ?? "diff"));
     }, 0);
-    return () => clearTimeout(timer);
+    return () => window.clearTimeout(timer);
   }, [props.search.editorFilePath, props.threadId]);
   const editorViewActive = props.search.view === "editor";
   useEffect(() => {
@@ -398,28 +391,32 @@ export function SingleChatSurface(props: {
 
   // Ctrl/Cmd+P opens the file-name search palette; Ctrl/Cmd+Shift+F opens the
   // snippet (content) search. Registered with capture so it wins over page-level
-  // defaults (print, browser find) while the chat surface is mounted.
+  // defaults (print, browser find) while the chat surface is mounted. Resolve through
+  // the configured keybindings so Settings and keybindings.json can rebind or unassign
+  // these actions, while the shipped !terminalFocus guard keeps shell input intact.
+  const shortcutConfig = useQuery(serverConfigQueryOptions());
+  const searchKeybindings = shortcutConfig.data?.keybindings ?? EMPTY_KEYBINDINGS;
   useEffect(() => {
     // Editor view returns before rendering the palette, so leave its shortcuts
     // available to the editor instead of swallowing them invisibly.
     if (editorViewActive) return;
 
     const onKeyDown = (event: globalThis.KeyboardEvent) => {
-      if (event.repeat || event.altKey) return;
-      const isPrimaryModifier = event.ctrlKey || event.metaKey;
-      if (!isPrimaryModifier) return;
-      const key = event.key.toLowerCase();
-      if (key !== "p" && key !== "f") return;
-      if (key === "f" && !event.shiftKey) return;
-      if (key === "p" && event.shiftKey) return;
+      if (event.repeat || isShortcutDispatchSuspended()) return;
+      const command = resolveShortcutCommand(event, searchKeybindings, {
+        context: { terminalFocus: isTerminalFocused() },
+      });
+      const mode =
+        command === "search.files" ? "files" : command === "search.content" ? "snippets" : null;
+      if (mode === null) return;
       event.preventDefault();
       event.stopPropagation();
-      setSearchPaletteMode(key === "p" ? "files" : "snippets");
+      setSearchPaletteMode(mode);
       setSearchPaletteOpen(true);
     };
     window.addEventListener("keydown", onKeyDown, { capture: true });
     return () => window.removeEventListener("keydown", onKeyDown, { capture: true });
-  }, [editorViewActive]);
+  }, [editorViewActive, searchKeybindings]);
 
   const handleOpenEditorView = () => {
     void navigate({
@@ -469,20 +466,6 @@ export function SingleChatSurface(props: {
         }),
       });
     });
-
-  const handleCloseEditorFilePreview = () => {
-    setEditorCenterMode("file");
-    void navigate({
-      to: "/$threadId",
-      params: { threadId: props.threadId },
-      replace: true,
-      search: (previous) => ({
-        ...stripDiffSearchParams(previous),
-        view: "editor",
-        editorFilePath: undefined,
-      }),
-    });
-  };
 
   const handleToggleEditorDirectory = (directoryPath: string) => {
     setEditorExpandedDirectories((previous) => {
@@ -766,62 +749,17 @@ export function SingleChatSurface(props: {
   // selector, which re-emits on every streaming token of any thread and would
   // otherwise re-render the entire chat surface + right dock + active pane.
   const threadSummaries = useStore(useMemo(() => createSidebarThreadSummariesSelector(), []));
-  const sidechatPaneRetentionVersion = useSyncExternalStore(
-    subscribeSidechatPaneRetention,
-    getSidechatPaneRetentionVersion,
-    getSidechatPaneRetentionVersion,
+  const existingThreadIds = useMemo(
+    () => new Set(threadSummaries.map((thread) => thread.id)),
+    [threadSummaries],
   );
-  useEffect(() => {
-    if (!threadsHydrated) {
-      return;
-    }
-    const existingThreadIds = new Set(threadSummaries.map((thread) => thread.id));
-    for (const pane of dockState.panes) {
-      if (pane.kind === "sidechat" && pane.threadId && existingThreadIds.has(pane.threadId)) {
-        clearSidechatPaneRetention(pane.threadId);
-      }
-    }
-    const missingPaneIds = findMissingSidechatPaneIds(dockState, existingThreadIds);
-    if (missingPaneIds.length === 0) {
-      return;
-    }
-
-    const timerIds: number[] = [];
-    for (const paneId of missingPaneIds) {
-      const pane = dockState.panes.find((candidate) => candidate.id === paneId);
-      const remainingGraceMs = pane?.threadId ? sidechatPaneRetentionRemainingMs(pane.threadId) : 0;
-      if (remainingGraceMs === null) {
-        continue;
-      }
-      if (remainingGraceMs <= 0) {
-        if (pane?.threadId) {
-          clearSidechatPaneRetention(pane.threadId);
-        }
-        closePane(props.threadId, paneId);
-        continue;
-      }
-      timerIds.push(
-        window.setTimeout(() => {
-          if (pane?.threadId) {
-            clearSidechatPaneRetention(pane.threadId);
-          }
-          closePane(props.threadId, paneId);
-        }, remainingGraceMs),
-      );
-    }
-    return () => {
-      for (const timerId of timerIds) {
-        window.clearTimeout(timerId);
-      }
-    };
-  }, [
-    closePane,
+  useSidechatDockPanePruning({
+    hostId: props.threadId,
     dockState,
-    props.threadId,
-    sidechatPaneRetentionVersion,
-    threadSummaries,
+    existingThreadIds,
     threadsHydrated,
-  ]);
+    closePane,
+  });
   const editorProjectOptions = projects.flatMap((project) =>
     project.kind === "project" ? [{ id: project.id, name: project.name }] : [],
   );
@@ -902,7 +840,6 @@ export function SingleChatSurface(props: {
   const sourceSidechats = useStore(
     useMemo(() => createSidechatSummariesForSourceSelector(props.threadId), [props.threadId]),
   );
-  const shortcutConfig = useQuery(serverConfigQueryOptions());
   useSidechatShortcut({
     threadId: props.threadId,
     enabled: props.search.view !== "editor",
@@ -910,6 +847,7 @@ export function SingleChatSurface(props: {
     sidechats: sourceSidechats,
     createSidechat: createDockSidechat,
     revealSidechat: () => requestImmediateDockHydration("sidechat"),
+    onHidden: () => requestComposerFocus(props.threadId),
   });
 
   const handleAddDockPane = (kind: RightDockPaneKind) => {
@@ -956,6 +894,7 @@ export function SingleChatSurface(props: {
           <Suspense fallback={<PanelStateMessage>Loading pull request...</PanelStateMessage>}>
             <PullRequestDockPane
               pane={pane}
+              hostThreadId={props.threadId}
               pollingEnabled={context.isVisible}
               onClose={() => closePane(props.threadId, pane.id)}
               onSelectPullRequest={(number) =>
@@ -1001,6 +940,7 @@ export function SingleChatSurface(props: {
         return (
           <Suspense fallback={<PanelStateMessage>Loading terminal...</PanelStateMessage>}>
             <DockTerminalPane
+              paneId={pane.id}
               hostThreadId={props.threadId}
               projectId={props.projectId}
               isActive={context.isActive && dockState.open}
@@ -1041,33 +981,15 @@ export function SingleChatSurface(props: {
               onReferenceInChat={handleReferenceInChat}
               onAskWhyInChat={handleAskWhyInChat}
               onCommentInChat={handleCommentInChat}
-              onClosePreview={() => closePane(props.threadId, pane.id)}
             />
           </Suspense>
         );
       case "sidechat":
-        if (!pane.threadId) {
-          return <RightDockPanePlaceholder kind="sidechat" />;
-        }
-        if (!threadSummaries.some((thread) => thread.id === pane.threadId)) {
-          return <PanelStateMessage>Loading side chat...</PanelStateMessage>;
-        }
-        if (context.runtimeMode === "preview") {
-          return null;
-        }
         return (
-          <DeferredChatView
-            threadId={pane.threadId}
-            hideHeader
-            paneScopeId={dockSidechatPaneScopeId(pane.id)}
-            deferMount={false}
-            surfaceMode="split"
-            isFocusedPane={false}
-            panelState={DOCK_EMBEDDED_PANEL_STATE}
-            onToggleDiff={noopChatSurfaceAction}
-            onToggleBrowser={noopChatSurfaceAction}
-            onOpenBrowserUrl={noopChatSurfaceAction}
-            onOpenTurnDiff={noopChatSurfaceAction}
+          <SidechatDockPane
+            pane={pane}
+            runtimeMode={context.runtimeMode}
+            threadExists={pane.threadId !== null && existingThreadIds.has(pane.threadId)}
           />
         );
       default:
@@ -1115,7 +1037,7 @@ export function SingleChatSurface(props: {
 
     // Auto-expand the ancestors a tick later so this is not a synchronous setState
     // in the effect body; the functional update still merges with any user toggles.
-    const expandTimer = setTimeout(() => {
+    const expandTimer = window.setTimeout(() => {
       setEditorExpandedDirectories((previous) => {
         let changed = false;
         const next = new Set(previous);
@@ -1128,7 +1050,7 @@ export function SingleChatSurface(props: {
         return changed ? next : previous;
       });
     }, 0);
-    return () => clearTimeout(expandTimer);
+    return () => window.clearTimeout(expandTimer);
   }, [workspaceRoot, queryClient, selectedEditorFilePath]);
 
   const editorChatPanelState: SplitViewPanePanelState = {
@@ -1167,7 +1089,6 @@ export function SingleChatSurface(props: {
               diffOptionsControl={editorDiffOptionsControl}
               onSelectDiffFile={handleSelectEditorDiffFile}
               onSelectFile={handleSelectEditorFile}
-              onCloseFilePreview={handleCloseEditorFilePreview}
               onToggleDirectory={handleToggleEditorDirectory}
               onCenterModeChange={setEditorCenterMode}
               onExitEditorView={handleCloseEditorView}
@@ -1225,17 +1146,26 @@ export function SingleChatSurface(props: {
       <div
         className={cn(CHAT_MAIN_VIEWPORT_SHELL_CLASS_NAME, CHAT_MAIN_CONTENT_SURFACE_CLASS_NAME)}
       >
-        <ChatPaneDropOverlay
-          canDropInDirection={allowAnySplitDirection}
-          excludedThreadIds={excludedThreadIds}
-          onDrop={handleDropThread}
-          className="flex h-full min-h-0 min-w-0 flex-1"
-        >
-          <RouteInsetSurface surfaceClassName={CHAT_BACKGROUND_CLASS_NAME}>
+        {/* Kept alive across the swap with SplitChatSurface: the pane showing this thread
+            there takes the same chat over instead of mounting a new one. */}
+        <KeptChatPane slotKey={SINGLE_CHAT_PANE_SCOPE_ID} threadId={props.threadId}>
+          <ChatPaneBody
+            fileOpener={dockFileOpener}
+            dropOverlay={{
+              canDropInDirection: allowAnySplitDirection,
+              excludedThreadIds,
+              onDrop: handleDropThread,
+              className: "flex h-full min-h-0 min-w-0 flex-1",
+            }}
+            inset={{
+              className: CHAT_ROUTE_INSET_SHELL_CLASS_NAME,
+              surfaceClassName: CHAT_BACKGROUND_CLASS_NAME,
+            }}
+          >
             <DeferredChatView
               threadId={props.threadId}
               paneScopeId={SINGLE_CHAT_PANE_SCOPE_ID}
-              deferMount={isBrandNewDraftThread}
+              deferMount={isDraftThread}
               surfaceMode="single"
               isFocusedPane
               panelState={chatPanelState}
@@ -1264,8 +1194,8 @@ export function SingleChatSurface(props: {
                 }}
               />
             ) : null}
-          </RouteInsetSurface>
-        </ChatPaneDropOverlay>
+          </ChatPaneBody>
+        </KeptChatPane>
         <RightDock
           state={dockState}
           minWidth={SINGLE_PANEL_MIN_WIDTH}
@@ -1284,6 +1214,24 @@ export function SingleChatSurface(props: {
           {...(paneIconOverrides ? { paneIconOverrides } : {})}
           onSelectPane={handleSelectDockPane}
           onClosePane={(paneId) => {
+            if (dockState.panes.find((pane) => pane.id === paneId)?.kind === "terminal") {
+              void closeTerminalSurface(
+                dockTerminalThreadId(props.threadId),
+                appSettings.confirmTerminalTabClose,
+                paneId,
+              )
+                .then((closed) => {
+                  if (closed) closePane(props.threadId, paneId);
+                })
+                .catch((error: unknown) => {
+                  toastManager.add({
+                    type: "error",
+                    title: "Unable to close terminal",
+                    description: error instanceof Error ? error.message : "Please try again.",
+                  });
+                });
+              return;
+            }
             if (dockState.panes.find((pane) => pane.id === paneId)?.kind !== "explorer") {
               closePane(props.threadId, paneId);
               return;
@@ -1292,6 +1240,7 @@ export function SingleChatSurface(props: {
               if (saved) closePane(props.threadId, paneId);
             });
           }}
+          onMovePane={(paneId, overPaneId) => movePane(props.threadId, paneId, overPaneId)}
           onCollapse={() => setDockOpen(props.threadId, false)}
           onOpenChange={(open) => setDockOpen(props.threadId, open)}
           onAddPane={handleAddDockPane}
@@ -1302,6 +1251,7 @@ export function SingleChatSurface(props: {
           mode={searchPaletteMode}
           onOpenChange={setSearchPaletteOpen}
           cwd={workspaceRoot}
+          homeDir={homeDir}
           onOpenFile={handleOpenWorkspaceSearchFile}
           onOpenDirectory={handleOpenWorkspaceSearchDirectory}
         />
