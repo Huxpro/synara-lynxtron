@@ -25,6 +25,7 @@ import {
   WS_CHANNELS,
   WS_METHODS,
   WS_PROJECT_FILE_WATCH_CAPABILITY,
+  WS_GIT_ACTION_RECOVERY_CAPABILITY,
   WS_TURN_DISPATCH_SETTLEMENT_CAPABILITY,
   type ClientOrchestrationCommand,
   type GitActionProgressEvent,
@@ -578,18 +579,7 @@ export class WsTransport {
         });
       }
       if (method === WS_METHODS.gitRunStackedAction) {
-        return (await this.runProgressStream<GitActionProgressEvent, GitRunStackedActionResult>(
-          method,
-          params,
-          scope,
-          (event) => {
-            this.emit(WS_CHANNELS.gitActionProgress, event);
-            return event.kind === "action_finished"
-              ? (event as Extract<GitActionProgressEvent, { kind: "action_finished" }>).result
-              : undefined;
-          },
-          "Git action stream completed without a final result.",
-        )) as T;
+        return (await this.runRecoverableGitAction(params, scope)) as T;
       }
       if (method === WS_METHODS.gitCreateDetachedWorktree) {
         return (await this.runProgressStream<
@@ -1526,12 +1516,67 @@ export class WsTransport {
    * `onEvent` publishes the progress push and returns the final result once
    * the stream carries it.
    */
+  /**
+   * Upstream `runRecoverableGitAction`. Against a server that advertises recovery
+   * the action is started as `recoverable`, so it outlives this observer; after a
+   * lost socket the same action id is reattached with `resume`, which the server
+   * never treats as a new run. Without the capability the action is request-owned
+   * and a failure is reported as it is: re-running a mutation blindly is not safe.
+   */
+  private async runRecoverableGitAction(
+    params: unknown,
+    scope: RequestAbortScope,
+  ): Promise<GitRunStackedActionResult> {
+    const serverRecovers = () =>
+      this.compatibility?.capabilities.includes(WS_GIT_ACTION_RECOVERY_CAPABILITY) === true;
+    const canRecover = serverRecovers();
+    const command = canRecover ? { ...(params as object), recoverable: true } : params;
+    let resume = false;
+    let attempt = 0;
+    for (;;) {
+      if (this.disposed) throw new Error("Transport disposed");
+      try {
+        // An older server would ignore `resume` and execute the mutation again.
+        if (resume && !serverRecovers()) {
+          throw new Error(
+            "This server cannot recover the Git action. Check the repository status before trying again.",
+          );
+        }
+        return await this.runProgressStream<GitActionProgressEvent, GitRunStackedActionResult>(
+          WS_METHODS.gitRunStackedAction,
+          resume ? { ...(command as object), resume: true } : command,
+          scope,
+          (event) => {
+            this.emit(WS_CHANNELS.gitActionProgress, event);
+            return event.kind === "action_finished"
+              ? (event as Extract<GitActionProgressEvent, { kind: "action_finished" }>).result
+              : undefined;
+          },
+          "Git action stream completed without a final result.",
+          { keepReceivedResult: true },
+        );
+      } catch (error) {
+        if (!canRecover || scope.interrupted() || this.disposed || !isNativeTransportError(error)) {
+          throw error;
+        }
+        resume = true;
+        await scope.race(
+          delay(Math.max(500, Math.min(STREAM_RESTART_DELAY_MS * 2 ** attempt, 5_000))),
+        );
+        attempt += 1;
+      }
+    }
+  }
+
   private async runProgressStream<Event, Result>(
     tag: string,
     params: unknown,
     scope: RequestAbortScope,
     onEvent: (event: Event) => Result | undefined,
     missingResultMessage: string,
+    // A final result that already arrived stands even if the stream then fails
+    // (upstream `runGitActionStream`): the mutation finished on the server.
+    options?: { readonly keepReceivedResult?: boolean },
   ): Promise<Result> {
     if (isMainThread()) throw new Error(`${tag} runs on the background thread.`);
     let result: Result | undefined;
@@ -1547,7 +1592,7 @@ export class WsTransport {
     } catch (error) {
       if (this.streams.get(key) === entry) await this.stopStream(key);
       if (!scope.interrupted() && isNativeTransportError(error)) this.setState("closed");
-      throw error;
+      if (!(options?.keepReceivedResult === true && result !== undefined)) throw error;
     } finally {
       if (this.streams.get(key) === entry) this.streams.delete(key);
       if (entry.streamId !== null) this.streamItemHandlers.delete(entry.streamId);

@@ -10,6 +10,7 @@ import {
   ThreadId,
   WS_CHANNELS,
   WS_METHODS,
+  WS_GIT_ACTION_RECOVERY_CAPABILITY,
   WS_PROJECT_FILE_WATCH_CAPABILITY,
   WS_TURN_DISPATCH_SETTLEMENT_CAPABILITY,
 } from "@synara/contracts";
@@ -836,6 +837,82 @@ describe("Lynx WsTransport compat", () => {
     last!.failTyped({ code: ORCHESTRATION_STREAM_OVERFLOW_CODE });
     await flushHostWithFakeTimers();
     expect(failures).toEqual([ORCHESTRATION_STREAM_OVERFLOW_CODE]);
+  });
+
+  it("reattaches a recoverable git action by id after the socket drops, without re-running it", async () => {
+    rs.useFakeTimers();
+    host.compatibility = {
+      ...COMPATIBILITY,
+      capabilities: [...COMPATIBILITY.capabilities, WS_GIT_ACTION_RECOVERY_CAPABILITY],
+    };
+    await transport.request(WS_METHODS.serverGetConfig);
+    const input = { actionId: "action-1", cwd: "/repo", action: "commit_push" };
+
+    const pending = transport.request(WS_METHODS.gitRunStackedAction, input);
+    await flushHostWithFakeTimers();
+    const [first] = [...host.streams.values()];
+    expect(first?.payload).toEqual({ ...input, recoverable: true });
+    host.pushStreamItem(first!.streamId, { kind: "action_started", actionId: "action-1" });
+    first!.fail("socket closed");
+    await flushHostWithFakeTimers();
+    expect(host.streams.size).toBe(0);
+
+    await rs.advanceTimersByTimeAsync(500);
+    await flushHostWithFakeTimers();
+    const [second] = [...host.streams.values()];
+    expect(second?.tag).toBe(WS_METHODS.gitRunStackedAction);
+    expect(second?.payload).toEqual({ ...input, recoverable: true, resume: true });
+    host.pushStreamItem(second!.streamId, {
+      kind: "action_finished",
+      actionId: "action-1",
+      result: { ok: true },
+    });
+    second!.settle();
+    await flushHostWithFakeTimers();
+
+    await expect(pending).resolves.toEqual({ ok: true });
+  });
+
+  it("does not mark a git action recoverable, or retry it, without the server capability", async () => {
+    rs.useFakeTimers();
+    host.compatibility = COMPATIBILITY;
+    await transport.request(WS_METHODS.serverGetConfig);
+    const input = { actionId: "action-2", cwd: "/repo", action: "commit" };
+
+    const pending = transport.request(WS_METHODS.gitRunStackedAction, input);
+    const outcome = pending.then(
+      () => "resolved",
+      (error: Error) => error.message,
+    );
+    await flushHostWithFakeTimers();
+    const [stream] = [...host.streams.values()];
+    expect(stream?.payload).toEqual(input);
+    stream!.fail("socket closed");
+    await flushHostWithFakeTimers();
+
+    expect(await outcome).toContain("socket closed");
+    await rs.advanceTimersByTimeAsync(10_000);
+    await flushHostWithFakeTimers();
+    expect(host.streams.size).toBe(0);
+  });
+
+  it("returns a git action's final result when the stream fails after it arrived", async () => {
+    const pending = transport.request(WS_METHODS.gitRunStackedAction, {
+      actionId: "action-3",
+      cwd: "/repo",
+      action: "commit",
+    });
+    await flushHost();
+    const [stream] = [...host.streams.values()];
+    host.pushStreamItem(stream!.streamId, {
+      kind: "action_finished",
+      actionId: "action-3",
+      result: { ok: true, commit: "abc" },
+    });
+    stream!.fail("socket closed");
+
+    await expect(pending).resolves.toEqual({ ok: true, commit: "abc" });
+    expect(host.streams.size).toBe(0);
   });
 
   it("stops every stream and reports disposed on dispose", async () => {
