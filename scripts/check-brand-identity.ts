@@ -227,8 +227,13 @@ export interface BrandIdentityBinaryFile {
   readonly contents: Uint8Array;
 }
 
+// The fork's Lynx renderer ships under its own reviewed bundle id. Only that
+// complete id is exempt; any other use of the domain still fails.
+const approvedLynxBundleId = `${incorrectBundleDomain}.lynx`;
+
 function containsForbiddenIdentity(value: string): boolean {
-  return forbiddenPatterns.some((pattern) => pattern.test(value));
+  const candidate = value.replaceAll(approvedLynxBundleId, "");
+  return forbiddenPatterns.some((pattern) => pattern.test(candidate));
 }
 
 function findApprovedIdentityLine(
@@ -309,7 +314,13 @@ export function findVisualBrandAssetViolations(
 }
 
 export function readTrackedFiles(cwd = process.cwd()): BrandIdentityBinaryFile[] {
-  const entries = execFileSync("git", ["ls-files", "--stage", "-z"], { cwd, encoding: "utf8" })
+  // The fork tracks enough files (evidence under shots/) that the listing exceeds
+  // Node's 1 MiB default output buffer, which fails the spawn with ENOBUFS.
+  const entries = execFileSync("git", ["ls-files", "--stage", "-z"], {
+    cwd,
+    encoding: "utf8",
+    maxBuffer: 64 * 1024 * 1024,
+  })
     .split("\0")
     .filter(Boolean);
   // Gitlinks name another repository, not a file owned by this checkout. They may

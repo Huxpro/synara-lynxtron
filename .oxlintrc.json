@@ -83,6 +83,23 @@
       }
     },
     {
+      // Generated verbatim from apps/web/src/routes/__root.tsx (exempt below), so it
+      // carries upstream's `window.setTimeout`-style timer calls. The Lynx bundle
+      // compiles exactly those members away (`lynxWindowMemberDefines` in
+      // apps/lynx/lynx.config.ts); any other restricted global is still an error here
+      // because the generator output is linted with this one rule relaxed only.
+      "files": ["apps/lynx/src/generated/eventRouter.generated.tsx"],
+      "rules": {
+        "no-restricted-globals": [
+          "error",
+          "document",
+          "navigator",
+          "localStorage",
+          "sessionStorage"
+        ]
+      }
+    },
+    {
       // Electron-only renderer modules that the Lynx bundle never reaches (checked
       // against the reuse-audit graph for the 2026-09-29 upstream sync). They keep
       // upstream's direct DOM access so upstream syncs stay mechanical. When one

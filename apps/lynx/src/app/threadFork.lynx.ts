@@ -1,7 +1,7 @@
 import { newThreadId } from "@synara-web/lib/utils";
 
-import { dispatchSynaraCommand } from "../data/synaraClient.lynx";
-import { queryClient, type ThreadHeaderSummary } from "./queries";
+import { ensureNativeApi } from "~/nativeApi";
+import type { ThreadHeaderSummary } from "./queries";
 import { buildNativeThreadForkCreateCommand } from "./threadFork.logic";
 
 export async function createNativeThreadFork(input: {
@@ -10,7 +10,7 @@ export async function createNativeThreadFork(input: {
 }): Promise<string> {
   "background only";
   const nextThreadId = newThreadId();
-  await dispatchSynaraCommand(
+  await ensureNativeApi().orchestration.dispatchCommand(
     buildNativeThreadForkCreateCommand({
       createdAt: new Date().toISOString(),
       nextThreadId,
@@ -18,9 +18,5 @@ export async function createNativeThreadFork(input: {
       throughMessageId: input.throughMessageId,
     }),
   );
-  await Promise.all([
-    queryClient.invalidateQueries({ queryKey: ["threads"] }),
-    queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-  ]);
   return nextThreadId;
 }

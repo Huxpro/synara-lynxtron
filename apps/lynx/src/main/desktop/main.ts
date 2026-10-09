@@ -54,10 +54,15 @@ import { handleUpdater } from "./updateService";
 import { resolveShellWindowChrome } from "./shellWindowChrome";
 import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from "../syntaxHighlightingContract.logic";
 import {
+  cancelNativeRpcStream,
   disposeNativeRpcHost,
   handleNativeRpc,
+  resetNativeRpcStreams,
+  runNativeRpcStream,
+  subscribeNativeRpcCompatibility,
   subscribeNativeRpcTransportState,
 } from "./nativeRpcHost";
+import { rpcFailureReplyFields } from "../rpcFailure.logic";
 import {
   createNativeNotificationService,
   type NativeNotificationConstructor,
@@ -67,7 +72,15 @@ import { createRequire } from "node:module";
 import { DesktopAppSnapManager } from "../../../../desktop/src/appSnapManager";
 import type { DesktopAppSnapErrorEvent, DesktopAppSnapState } from "@synara/contracts";
 import { SYSTEM_APPEARANCE_EVENT } from "../systemAppearanceEvent.logic";
-import { nativeEventStreamChannel } from "../nativeEventStreams.logic";
+import {
+  NATIVE_RPC_COMPATIBILITY_EVENT,
+  NATIVE_RPC_STREAM_CANCEL_METHOD,
+  NATIVE_RPC_STREAM_ITEM_EVENT,
+  NATIVE_RPC_STREAM_RESET_METHOD,
+  NATIVE_TRANSPORT_STATE_EVENT,
+  nativeEventStreamChannel,
+  type NativeRpcStreamItemEvent,
+} from "../nativeEventStreams.logic";
 import {
   createSystemAppearanceWatcher,
   parseSystemAppearanceProbeSequence,
@@ -870,22 +883,36 @@ app.whenReady().then(() => {
                     path: typeof rpcData.payload?.path === "string" ? rpcData.payload.path : "",
                   }),
               )
-            : await handleNativeRpc(
-                name === "synaraRpcStream" ? "synaraRpcStream" : "synaraRpc",
-                rpcData,
-                (event) => {
-                  const channel =
-                    nativeEventStreamChannel(String(rpcData.tag ?? "")) ??
-                    "synara:git-action-progress";
-                  w.sendGlobalEvent(channel, event);
-                },
-              );
+            : name === "synaraRpcStream" && typeof data.streamId === "string"
+              ? // Request-scoped stream for the shared WsTransport compat class:
+                // items are relayed under the renderer's stream id and the reply
+                // settles when the stream ends or is cancelled.
+                await runNativeRpcStream(data.streamId, rpcData, (item) => {
+                  const event: NativeRpcStreamItemEvent = { streamId: data.streamId, item };
+                  w.sendGlobalEvent(NATIVE_RPC_STREAM_ITEM_EVENT, event);
+                })
+              : await handleNativeRpc(
+                  name === "synaraRpcStream" ? "synaraRpcStream" : "synaraRpc",
+                  rpcData,
+                  (event) => {
+                    const channel =
+                      nativeEventStreamChannel(String(rpcData.tag ?? "")) ??
+                      "synara:git-action-progress";
+                    w.sendGlobalEvent(channel, event);
+                  },
+                );
         callback.sendReply(
           JSON.stringify({
             _tag: "NativeRpcResult",
             value: result ?? null,
           }),
         );
+      } else if (name === NATIVE_RPC_STREAM_CANCEL_METHOD) {
+        callback.sendReply(
+          JSON.stringify({ cancelled: cancelNativeRpcStream(String(data?.streamId ?? "")) }),
+        );
+      } else if (name === NATIVE_RPC_STREAM_RESET_METHOD) {
+        callback.sendReply(JSON.stringify(resetNativeRpcStreams()));
       } else if (name === "showDialog") {
         const { message } = data;
         dialog.showMessageBox({ message });
@@ -1280,13 +1307,17 @@ app.whenReady().then(() => {
           ...(error && typeof error === "object" && "errorKind" in error
             ? { errorKind: error.errorKind }
             : {}),
+          ...rpcFailureReplyFields(error),
         }),
       );
     }
   });
 
   const unsubscribeTransportState = subscribeNativeRpcTransportState((state) => {
-    w.sendGlobalEvent("synara:transport-state", state);
+    w.sendGlobalEvent(NATIVE_TRANSPORT_STATE_EVENT, state);
+  });
+  const unsubscribeCompatibility = subscribeNativeRpcCompatibility((compatibility) => {
+    w.sendGlobalEvent(NATIVE_RPC_COMPATIBILITY_EVENT, compatibility);
   });
 
   if (windowPresentation.showInactiveAfterSetup) {
@@ -1325,6 +1356,7 @@ app.whenReady().then(() => {
   loadLynxBundle(w);
   w.on("close", () => {
     unsubscribeTransportState();
+    unsubscribeCompatibility();
     disposeNativeRpcHost();
     appSnapManager?.dispose();
     appSnapManager = null;

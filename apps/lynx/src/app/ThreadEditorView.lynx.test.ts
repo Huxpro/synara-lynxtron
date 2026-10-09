@@ -153,7 +153,8 @@ describe("Lynx Editor view", () => {
     expect(routerSource).toContain("resolveEditorProjectSwitchOptions({");
     expect(routerSource).toContain("groupEditorProjectSwitchOptions({");
     expect(routerSource).toMatch(/useSpacesUiStore\(\s*\(state\) => state\.activeSpaceId\s*\)/s);
-    expect(routerSource).toContain("useStore((state) => state.spaces)");
+    // Spaces come from the shared store that upstream session sync feeds.
+    expect(routerSource).toContain("const editorProjectSpaces = useSessionShellSpaces();");
     expect(routerSource).toContain("spaceId: project.spaceId ?? null");
     expect(projectSwitchMenuSource).toContain("<ComposerProjectPickerGroupElement");
     expect(projectSwitchMenuSource).toContain("<ComposerProjectPickerGroupLabelElement");

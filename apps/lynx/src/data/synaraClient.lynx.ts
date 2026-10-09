@@ -97,10 +97,12 @@ import type {
   ExternalMcpIntegration,
   RuntimeMode,
 } from "@synara/contracts";
+import { onServerSettingsUpdated } from "@synara-web/wsNativeApi";
 import { resolveDefaultSocketUrl } from "../platform/net.socket";
 import { bridgeCall, onGlobalEvent } from "../platform/bridge";
+import { ensureNativeApi } from "../adapters/nativeApi.lynx";
+import { hostBridgeRequest } from "./nativeRpcBridge";
 import { RpcTransportError, type RpcTransportState } from "./rpcTransport.logic";
-import { NATIVE_EVENT_STREAM_CHANNELS } from "../main/nativeEventStreams.logic";
 import {
   NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG,
   type NativeSyntaxHighlightThemes,
@@ -150,8 +152,6 @@ export type SynaraPullRequestListResult = PullRequestsListResult;
 const OFFLINE_RETRY_DELAY_MS = 5_000;
 const TRANSPORT_STATE_EVENT = "synara:transport-state";
 const GIT_ACTION_PROGRESS_EVENT = "synara:git-action-progress";
-const ORCHESTRATION_SHELL_EVENT = NATIVE_EVENT_STREAM_CHANNELS["orchestration.subscribeShell"];
-const SERVER_SETTINGS_EVENT = NATIVE_EVENT_STREAM_CHANNELS["server.subscribeSettings"];
 
 let relayState: RpcTransportState = "idle";
 let relayEverConnected = false;
@@ -159,14 +159,8 @@ let relayOfflineUntilMs = 0;
 const relayStateListeners = new Set<(state: RpcTransportState) => void>();
 const gitActionProgressListeners = new Map<string, (event: GitActionProgressEvent) => void>();
 const terminalEventListeners = new Set<(event: TerminalEvent) => void>();
-const orchestrationShellEventListeners = new Set<(event: OrchestrationShellStreamItem) => void>();
 let terminalEventStream: Promise<void> | null = null;
 let terminalEventRetry: ReturnType<typeof setTimeout> | null = null;
-let orchestrationShellEventStream: Promise<void> | null = null;
-let orchestrationShellEventRetry: ReturnType<typeof setTimeout> | null = null;
-const serverSettingsListeners = new Set<(settings: ServerSettingsView) => void>();
-let serverSettingsStream: Promise<void> | null = null;
-let serverSettingsRetry: ReturnType<typeof setTimeout> | null = null;
 
 function setRelayState(state: RpcTransportState): void {
   if (relayState === state) return;
@@ -197,27 +191,9 @@ onGlobalEvent(GIT_ACTION_PROGRESS_EVENT, (event: unknown) => {
   }
   gitActionProgressListeners.get(event.actionId)?.(event as GitActionProgressEvent);
 });
-onGlobalEvent(ORCHESTRATION_SHELL_EVENT, (event: unknown) => {
-  if (!event || typeof event !== "object") return;
-  for (const listener of orchestrationShellEventListeners) {
-    listener(event as OrchestrationShellStreamItem);
-  }
-});
-onGlobalEvent(SERVER_SETTINGS_EVENT, (event: unknown) => {
-  const settings =
-    event && typeof event === "object" && "settings" in event
-      ? (event as { readonly settings: ServerSettingsView }).settings
-      : null;
-  if (!settings) return;
-  for (const listener of serverSettingsListeners) listener(settings);
-});
 function describeRelayError(error: unknown): string {
   if (error instanceof Error) return error.message;
   return String(error);
-}
-
-interface RelayBridgeError extends Error {
-  readonly name: "SynaraRpcResponseError" | "RpcTransportError";
 }
 
 function relayBridgeRequest<A>(
@@ -231,45 +207,6 @@ function relayBridgeRequest<A>(
     // explicit nulls (thread.fork.create's worktreePath), so the payload crosses as JSON.
     payloadJson: JSON.stringify(payload ?? null),
     baseUrl: resolveDefaultSocketUrl(null),
-  });
-}
-
-function hostBridgeRequest<A>(method: string, params: Record<string, unknown>): Promise<A> {
-  "background only";
-  return new Promise((resolve, reject) => {
-    try {
-      NativeModules.bridge.call(method, params, (reply: unknown) => {
-        try {
-          const parsed = typeof reply === "string" ? JSON.parse(reply) : reply;
-          if (parsed && typeof parsed === "object" && "error" in parsed && parsed.error) {
-            const name: RelayBridgeError["name"] =
-              "errorKind" in parsed && parsed.errorKind === "rpc"
-                ? "SynaraRpcResponseError"
-                : "RpcTransportError";
-            const error: RelayBridgeError = Object.assign(new Error(String(parsed.error)), {
-              name,
-            });
-            reject(error);
-            return;
-          }
-          if (
-            parsed &&
-            typeof parsed === "object" &&
-            "_tag" in parsed &&
-            parsed._tag === "NativeRpcResult" &&
-            "value" in parsed
-          ) {
-            resolve(parsed.value as A);
-            return;
-          }
-          resolve(parsed as A);
-        } catch (error) {
-          reject(error);
-        }
-      });
-    } catch (error) {
-      reject(error);
-    }
   });
 }
 
@@ -332,60 +269,16 @@ function ensureTerminalEventStream(): void {
     });
 }
 
-function ensureOrchestrationShellEventStream(): void {
-  if (orchestrationShellEventStream || orchestrationShellEventListeners.size === 0) {
-    return;
-  }
-  orchestrationShellEventStream = relayStreamRequest<OrchestrationShellStreamItem>(
-    "orchestration.subscribeShell",
-    {},
-  )
-    .then(() => undefined)
-    .catch(() => undefined)
-    .finally(() => {
-      orchestrationShellEventStream = null;
-      if (orchestrationShellEventListeners.size === 0) return;
-      orchestrationShellEventRetry = setTimeout(() => {
-        orchestrationShellEventRetry = null;
-        ensureOrchestrationShellEventStream();
-      }, 1_000);
-    });
-}
-
-function ensureServerSettingsStream(): void {
-  if (serverSettingsStream || serverSettingsListeners.size === 0) return;
-  serverSettingsStream = relayStreamRequest<{ readonly settings: ServerSettingsView }>(
-    "server.subscribeSettings",
-    {},
-  )
-    .then(() => undefined)
-    .catch(() => undefined)
-    .finally(() => {
-      serverSettingsStream = null;
-      if (serverSettingsListeners.size === 0) return;
-      serverSettingsRetry = setTimeout(() => {
-        serverSettingsRetry = null;
-        ensureServerSettingsStream();
-      }, 1_000);
-    });
-}
-
 /**
  * Server settings as the server publishes them: the current view first, then
- * every change, including changes made by other clients.
+ * every change, including changes made by other clients. Served by the
+ * upstream `NativeApi` facade (`wsNativeApi.ts` on the Lynx transport compat);
+ * the first of the shared state layer's push streams to run on Lynx.
  */
 export function subscribeServerSettings(
   listener: (settings: ServerSettingsView) => void,
 ): () => void {
-  serverSettingsListeners.add(listener);
-  ensureServerSettingsStream();
-  return () => {
-    serverSettingsListeners.delete(listener);
-    if (serverSettingsListeners.size === 0 && serverSettingsRetry) {
-      clearTimeout(serverSettingsRetry);
-      serverSettingsRetry = null;
-    }
-  };
+  return onServerSettingsUpdated((payload) => listener(payload.settings));
 }
 
 function transportRequest<A>(tag: string, payload: unknown): Promise<A> {
@@ -426,18 +319,17 @@ export function subscribeTerminalEvents(listener: (event: TerminalEvent) => void
   };
 }
 
+/**
+ * Shell stream items (snapshot, then thread/project changes) as the upstream
+ * facade publishes them. This only listens: the stream itself is opened and
+ * kept alive by upstream's session sync (`EventRouter`, mounted in App.tsx).
+ * The server admits one shell stream per socket, so a second opener here would
+ * be rejected as a duplicate subscription.
+ */
 export function subscribeOrchestrationShellEvents(
   listener: (event: OrchestrationShellStreamItem) => void,
 ): () => void {
-  orchestrationShellEventListeners.add(listener);
-  ensureOrchestrationShellEventStream();
-  return () => {
-    orchestrationShellEventListeners.delete(listener);
-    if (orchestrationShellEventListeners.size === 0 && orchestrationShellEventRetry) {
-      clearTimeout(orchestrationShellEventRetry);
-      orchestrationShellEventRetry = null;
-    }
-  };
+  return ensureNativeApi().orchestration.onShellEvent(listener);
 }
 
 export async function fetchSynaraSnapshot(): Promise<SynaraSnapshot> {
@@ -610,8 +502,10 @@ export async function importSynaraThread(
   return transportRequest<OrchestrationImportThreadResult>("orchestration.importThread", input);
 }
 
+// Served by the upstream `NativeApi` facade: the first requests of the shared
+// state layer to run on Lynx (plan step 1).
 export async function fetchServerSettings(): Promise<ServerSettingsView> {
-  return transportRequest<ServerSettingsView>("server.getSettings", {});
+  return ensureNativeApi().server.getSettings();
 }
 
 export async function updateServerSettings(
@@ -621,7 +515,7 @@ export async function updateServerSettings(
 }
 
 export async function fetchServerConfig(): Promise<ServerConfig> {
-  return transportRequest("server.getConfig", {});
+  return ensureNativeApi().server.getConfig();
 }
 
 export async function upsertKeybinding(

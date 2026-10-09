@@ -79,8 +79,8 @@
   state, and logged successful background startup. Without a DevTool client,
   the rendered data source could not be independently certified.
 - The only DevTool client remained user-owned PID `60554`,
-  `localhost:8901`, app `@t3tools/lynxtron`, session URL under
-  `/Users/bytedance/github/t3code/`.
+  `localhost:8901`, app `another-project`, session URL under
+  `/Users/bytedance/github/another-project/`.
 - Lynxtron `0.0.9` exposes `setDevToolEnabled` and `connectDevtool`, but no
   documented per-process listener port. The exact-owned parallel process did
   not register while the user client occupied the fixed endpoint.

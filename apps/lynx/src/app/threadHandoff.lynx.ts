@@ -22,7 +22,7 @@ import {
   fetchServerConfig,
   fetchServerSettings,
 } from "../data/synaraClient.lynx";
-import { queryClient, type ThreadHeaderSummary } from "./queries";
+import type { ThreadHeaderSummary } from "./queries";
 
 export interface NativeThreadHandoffProject {
   readonly id: string;
@@ -141,6 +141,5 @@ export async function createNativeThreadHandoff(input: {
       createdAt,
     });
   }
-  await queryClient.invalidateQueries({ queryKey: ["threads"] });
   return nextThreadId;
 }

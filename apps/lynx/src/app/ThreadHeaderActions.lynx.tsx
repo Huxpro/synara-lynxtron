@@ -210,10 +210,7 @@ export function ThreadHeaderActions(props: {
         );
         await removeKeybinding(commandForProjectScript(scriptId));
       }
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-        queryClient.invalidateQueries({ queryKey: ["thread-detail", thread?.id] }),
-      ]);
+      await queryClient.invalidateQueries({ queryKey: ["thread-detail", thread?.id] });
       setActionDialogOpen(false);
       setEditingScript(null);
     } catch (cause) {
@@ -239,7 +236,6 @@ export function ThreadHeaderActions(props: {
         /* webpackMode: "eager" */ "../data/synaraClient.lynx"
       );
       await removeKeybinding(commandForProjectScript(editingScript.id));
-      await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
       setActionDialogOpen(false);
       setEditingScript(null);
     } catch (cause) {

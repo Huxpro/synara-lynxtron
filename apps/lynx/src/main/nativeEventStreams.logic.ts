@@ -14,3 +14,93 @@ export function nativeEventStreamChannel(tag: string): string | null {
     ? NATIVE_EVENT_STREAM_CHANNELS[tag as NativeEventStreamTag]
     : null;
 }
+
+/**
+ * Request-scoped stream relay used by the shared `WsTransport` compat class
+ * (`adapters/wsTransport.lynx.ts`). The renderer picks a `streamId`, the host
+ * runs the RPC stream and publishes every item as one global event carrying
+ * that id, and the bridge reply settles when the stream ends. The renderer can
+ * end it early with `synaraRpcStreamCancel`, which the host turns into an
+ * Effect RPC `Interrupt` frame. Unlike the fixed channel table above, this lets
+ * one bridge method carry any stream tag, including per-thread subscriptions.
+ */
+export const NATIVE_RPC_STREAM_ITEM_EVENT = "synara:rpc-stream-item";
+export const NATIVE_RPC_STREAM_CANCEL_METHOD = "synaraRpcStreamCancel";
+/**
+ * Renderer-generation handshake. The host and its socket survive a LynxView
+ * reload while the renderer loses every handler, so a new renderer first asks
+ * for a generation: the host cancels every scoped stream of earlier
+ * generations and only accepts opens/cancels whose stream id carries the
+ * current one. The reply also seeds the renderer's transport state.
+ */
+export const NATIVE_RPC_STREAM_RESET_METHOD = "synaraRpcStreamReset";
+export const NATIVE_TRANSPORT_STATE_EVENT = "synara:transport-state";
+/**
+ * The compatibility the host negotiated for its feature socket, published each
+ * time a (re)connect negotiates and before that socket is reported connected.
+ * The renderer needs the server instance id (a new instance invalidates resume
+ * cursors and replayed push state) and the capability list (optional features).
+ */
+export const NATIVE_RPC_COMPATIBILITY_EVENT = "synara:rpc-compatibility";
+
+/** Structural twin of the contracts `WsBootstrapNegotiateResult`. */
+export interface NativeRpcCompatibility {
+  readonly protocolEpoch: number;
+  readonly negotiatedRevision: number;
+  readonly serverBuild: string;
+  readonly serverInstanceId: string;
+  readonly capabilities: readonly string[];
+}
+
+export function parseNativeRpcCompatibility(value: unknown): NativeRpcCompatibility | null {
+  if (!value || typeof value !== "object") return null;
+  const candidate = value as Partial<Record<keyof NativeRpcCompatibility, unknown>>;
+  if (
+    typeof candidate.protocolEpoch !== "number" ||
+    typeof candidate.negotiatedRevision !== "number" ||
+    typeof candidate.serverInstanceId !== "string"
+  ) {
+    return null;
+  }
+  return {
+    protocolEpoch: candidate.protocolEpoch,
+    negotiatedRevision: candidate.negotiatedRevision,
+    serverBuild: typeof candidate.serverBuild === "string" ? candidate.serverBuild : "",
+    serverInstanceId: candidate.serverInstanceId,
+    capabilities: Array.isArray(candidate.capabilities)
+      ? candidate.capabilities.filter((entry): entry is string => typeof entry === "string")
+      : [],
+  };
+}
+
+export interface NativeRpcStreamResetReply {
+  readonly generation: number;
+  readonly transportState: string;
+  /** The last negotiation of the host socket; `null` before the first connect. */
+  readonly compatibility: NativeRpcCompatibility | null;
+}
+
+export function scopedStreamId(generation: number, key: string, sequence: number): string {
+  return `g${generation}:${key}#${sequence}`;
+}
+
+/** The generation a scoped stream id was minted for, or null for a foreign id. */
+export function scopedStreamGeneration(streamId: string): number | null {
+  const match = /^g(\d+):/.exec(streamId);
+  return match ? Number(match[1]) : null;
+}
+
+export interface NativeRpcStreamItemEvent {
+  readonly streamId: string;
+  readonly item: unknown;
+}
+
+export function isNativeRpcStreamItemEvent(value: unknown): value is NativeRpcStreamItemEvent {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "streamId" in value &&
+    typeof (value as { readonly streamId?: unknown }).streamId === "string" &&
+    "item" in value
+  );
+}

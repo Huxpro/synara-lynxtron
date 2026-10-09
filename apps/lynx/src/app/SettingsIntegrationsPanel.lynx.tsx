@@ -26,7 +26,8 @@ import {
   revokeExternalMcpIntegration,
 } from "../data/synaraClient.lynx";
 import { clipboard } from "../platform/clipboard";
-import { fetchSidebarSnapshot, queryClient } from "./queries";
+import { queryClient } from "./queries";
+import { useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import {
   buildExternalMcpCapabilities,
   describeIntegrationPermissions,
@@ -76,13 +77,7 @@ export function SettingsIntegrationsPanel() {
     },
     staleTime: 5_000,
   });
-  const snapshotQuery = useQuery({
-    queryKey: ["sidebar-snapshot"],
-    queryFn: () => {
-      "background only";
-      return fetchSidebarSnapshot();
-    },
-  });
+  const snapshotQuery = useSidebarSnapshot();
   const [name, setName] = useState("Coding agent");
   const [allProjects, setAllProjects] = useState(true);
   const [selectedProjectIds, setSelectedProjectIds] = useState<readonly string[]>([]);

@@ -345,4 +345,53 @@ describe("rpc transport manager", () => {
     await expect(pending).resolves.toBeUndefined();
     expect(socket.closed).toBe(true);
   });
+
+  it("interrupts a cancellable stream locally and tells the server", async () => {
+    const socket = new FakeSocket();
+    const { manager } = managerFor({
+      connect: async () => socket,
+      closeWhenIdle: false,
+    });
+    const chunks: unknown[] = [];
+    const stream = manager.openStream("orchestration.subscribeShell", {}, (value) =>
+      chunks.push(value),
+    );
+    await flushUntil(() => socket.sent.length === 1);
+    socket.chunkLast({ kind: "snapshot" });
+    expect(chunks).toEqual([{ kind: "snapshot" }]);
+
+    stream.cancel();
+    await expect(stream.settled).resolves.toBeUndefined();
+    expect(JSON.parse(socket.sent.at(-1) ?? "{}")).toEqual({
+      _tag: "Interrupt",
+      requestId: "1",
+    });
+    // The server's interrupt Exit arrives after the local settle and is ignored.
+    socket.emit("message", {
+      data: JSON.stringify({
+        _tag: "Exit",
+        requestId: "1",
+        exit: { _tag: "Failure", cause: { _tag: "Interrupt" } },
+      }),
+    });
+    socket.chunkLast({ kind: "late" });
+    expect(chunks).toEqual([{ kind: "snapshot" }]);
+    expect(socket.closed).toBe(false);
+  });
+
+  it("skips the request when a stream is cancelled before the socket opens", async () => {
+    const socket = new FakeSocket();
+    let release: (() => void) | null = null;
+    const { manager } = managerFor({
+      connect: () =>
+        new Promise<FakeSocket>((resolve) => {
+          release = () => resolve(socket);
+        }),
+    });
+    const stream = manager.openStream("orchestration.subscribeShell", {}, () => undefined);
+    stream.cancel();
+    release!();
+    await expect(stream.settled).resolves.toBeUndefined();
+    expect(socket.sent).toEqual([]);
+  });
 });

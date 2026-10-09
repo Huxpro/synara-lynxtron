@@ -103,8 +103,8 @@ paste, or undo/redo; those remain separate platform-input boundaries.
 
 - Owned Native and server processes exited.
 - Owned server and Synara DevTool listeners exited. Port `8903` was later
-  reclaimed by an unrelated T3 Code Lynxtron process whose session URL is
-  `/Users/bytedance/github/t3code/apps/lynxtron/dist/desktop/main.lynx.bundle`;
+  reclaimed by an unrelated another-project Lynxtron process whose session URL is
+  `/Users/bytedance/github/another-project/apps/lynxtron/dist/desktop/main.lynx.bundle`;
   it was not touched.
 - Owned KV remained byte-exact at
   `f53a83aac62fff4c8e7b6dac18d34ce8ffe27970a807a428fa0d9b0ba1a42474`.

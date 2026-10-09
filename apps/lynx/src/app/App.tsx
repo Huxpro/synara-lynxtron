@@ -42,6 +42,7 @@ import { readPersistedAppearanceFallback } from "./appHydration.logic";
 import { resolveSliceThemeVariables, sliceThemeClassName } from "./appTheme.logic";
 import { queryClient } from "./queries";
 import { SliceRouter } from "./router";
+import { SessionSync } from "./SessionSync.lynx";
 import { retryActiveSynaraQueries } from "./transportRetry.logic";
 import { shouldRefetchAfterTransportRecovery } from "./transportRecovery.logic";
 import { setLynxThemeState, subscribeLynxThemeState } from "../adapters/useTheme.lynx";
@@ -279,6 +280,7 @@ export function App() {
         data-viewport-height={viewportLayout.height}
         style={themeVariables}
       >
+        {storageReady ? <SessionSync /> : null}
         <MenuOverlayProvider>
           {storageReady ? (
             <SliceRouter

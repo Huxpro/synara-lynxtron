@@ -15,6 +15,23 @@ import {
   resolveWebRelayEndpoint,
 } from "./webRelayEndpoint.logic";
 import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from "../syntaxHighlightingContract.logic";
+import {
+  NATIVE_RPC_COMPATIBILITY_EVENT,
+  NATIVE_RPC_STREAM_CANCEL_METHOD,
+  NATIVE_RPC_STREAM_ITEM_EVENT,
+  NATIVE_RPC_STREAM_RESET_METHOD,
+  parseNativeRpcCompatibility,
+  type NativeRpcCompatibility,
+  type NativeRpcStreamItemEvent,
+  type NativeRpcStreamResetReply,
+} from "../nativeEventStreams.logic";
+import {
+  describeRpcFailureCause,
+  rpcFailureReplyFields,
+  type RpcFailureDetails,
+} from "../rpcFailure.logic";
+import { createScopedStreamRegistry } from "../scopedStreamRegistry.logic";
+import { openWebRelayScopedStream } from "./webRelayScopedStream.logic";
 import { REDUCED_MOTION_EVENT } from "../reducedMotionEvent.logic";
 import { normalizeLynxRpcPayload } from "../rpcPayload.logic";
 import { SYSTEM_APPEARANCE_EVENT } from "../systemAppearanceEvent.logic";
@@ -28,6 +45,7 @@ import {
 import { summarizeRelayPendingRequests } from "./webRelayDiagnostics.logic";
 import { isWebSocketOpen } from "./webSocketState.logic";
 import {
+  WS_CLIENT_REQUIRED_CAPABILITIES,
   WS_PROTOCOL_EPOCH,
   WS_PROTOCOL_MAX_REVISION,
   WS_PROTOCOL_MIN_REVISION,
@@ -64,12 +82,14 @@ const COMPOSER_MODEL_MENU_QUERY = "composerModelMenu";
 const COMPOSER_MODEL_PROVIDER_QUERY = "composerModelProvider";
 const STORAGE_PREFIX = "synara.lynx.";
 // Negotiated with the same constants the Electron renderer uses, so a server
-// protocol bump can never strand Lynx on a revision the server rejects.
+// protocol bump can never strand Lynx on a revision the server rejects. The
+// required capabilities are the upstream client's too: the shared transport
+// compat runs the same streams (thread detail snapshots, worktree setup).
 const PROTOCOL = {
   epoch: WS_PROTOCOL_EPOCH,
   minRevision: WS_PROTOCOL_MIN_REVISION,
   maxRevision: WS_PROTOCOL_MAX_REVISION,
-  capabilities: ["orchestration.cursor-safe-streams", "rpc.typed-errors"],
+  capabilities: WS_CLIENT_REQUIRED_CAPABILITIES,
 } as const;
 
 interface PendingRelayRequest {
@@ -78,11 +98,23 @@ interface PendingRelayRequest {
   readonly reject: (error: Error) => void;
   readonly timer: ReturnType<typeof setTimeout> | null;
   readonly chunks?: unknown[];
+  /** Request-scoped stream (shared WsTransport compat): items bypass the chunk buffer. */
+  readonly onItem?: (item: unknown) => void;
 }
 
 class SynaraRpcResponseError extends Error {
   readonly name = "SynaraRpcResponseError";
+  /** The typed server error the message flattens (see `rpcFailure.logic.ts`). */
+  readonly rpcFailure: RpcFailureDetails | null;
+
+  constructor(message: string, rpcFailure: RpcFailureDetails | null = null) {
+    super(message);
+    this.rpcFailure = rpcFailure;
+  }
 }
+
+/** The last negotiation of the relay socket; `null` before the first connect. */
+let relayCompatibility: NativeRpcCompatibility | null = null;
 
 let relaySocket: WebSocket | null = null;
 let relaySocketBaseUrl: string | null = null;
@@ -95,6 +127,7 @@ let relaySequence = 0;
 // the real Clipboard API first.
 let relayClipboardText = "";
 const relayPending = new Map<string, PendingRelayRequest>();
+const scopedStreams = createScopedStreamRegistry();
 const relayRecentRpcTags: string[] = [];
 let transcriptScrollElement: HTMLElement | null = null;
 let transcriptPreviousScrollTop: number | null = null;
@@ -123,6 +156,7 @@ let lastRendererReadyRoute: string | null = null;
 let publishRelayTransportState: ((state: "connected" | "reconnecting" | "offline") => void) | null =
   null;
 let publishRelayGitActionProgress: ((event: unknown) => void) | null = null;
+let publishRelayStreamItem: ((event: NativeRpcStreamItemEvent) => void) | null = null;
 
 interface LynxWebRuntimeConfig {
   readonly wsUrl?: unknown;
@@ -274,11 +308,7 @@ function connectWithPath(baseUrl: string, path: string): Promise<WebSocket> {
   });
 }
 
-async function negotiate(baseUrl: string): Promise<{
-  readonly protocolEpoch: number;
-  readonly negotiatedRevision: number;
-  readonly serverInstanceId: string;
-}> {
+async function negotiate(baseUrl: string): Promise<NativeRpcCompatibility> {
   const socket = await connectWithPath(baseUrl, "/ws/bootstrap");
   try {
     return await new Promise((resolve, reject) => {
@@ -291,13 +321,9 @@ async function negotiate(baseUrl: string): Promise<{
         if (!message || message._tag !== "Exit" || message.requestId !== id) return;
         clearTimeout(timer);
         if (message.exit._tag === "Success") {
-          resolve(
-            message.exit.value as {
-              readonly protocolEpoch: number;
-              readonly negotiatedRevision: number;
-              readonly serverInstanceId: string;
-            },
-          );
+          const result = parseNativeRpcCompatibility(message.exit.value);
+          if (result) resolve(result);
+          else reject(new Error("Synara bootstrap negotiation returned an unreadable result"));
           return;
         }
         reject(
@@ -364,6 +390,9 @@ function rejectPendingRpcDefect(error: SynaraRpcResponseError): void {
 
 async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
   const compatibility = await negotiate(baseUrl);
+  // Published before the negotiated socket opens, so before it reports connected.
+  relayCompatibility = compatibility;
+  lynxView.sendGlobalEvent?.(NATIVE_RPC_COMPATIBILITY_EVENT, [compatibility]);
   const query = new URLSearchParams({
     "x-synara-client-build": CLIENT_BUILD,
     "x-synara-protocol-epoch": String(compatibility.protocolEpoch),
@@ -387,14 +416,18 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
     const pending = relayPending.get(message.requestId);
     if (!pending) return;
     if (message._tag === "Chunk") {
-      if (pending.tag !== "terminal.subscribeEvents") {
-        pending.chunks?.push(...(message as WebRpcChunkFrame).values);
-      }
-      for (const value of message.values) {
-        if (pending.tag === "terminal.subscribeEvents") {
-          lynxView.sendGlobalEvent?.(TERMINAL_EVENT, [value]);
-        } else {
-          publishRelayGitActionProgress?.(value);
+      if (pending.onItem) {
+        for (const value of message.values) pending.onItem(value);
+      } else {
+        if (pending.tag !== "terminal.subscribeEvents") {
+          pending.chunks?.push(...(message as WebRpcChunkFrame).values);
+        }
+        for (const value of message.values) {
+          if (pending.tag === "terminal.subscribeEvents") {
+            lynxView.sendGlobalEvent?.(TERMINAL_EVENT, [value]);
+          } else {
+            publishRelayGitActionProgress?.(value);
+          }
         }
       }
       try {
@@ -423,6 +456,7 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
     }
     const error = new SynaraRpcResponseError(
       `Synara RPC ${pending.tag} failed: ${JSON.stringify(exitMessage.exit.cause)}`,
+      describeRpcFailureCause(exitMessage.exit.cause),
     );
     relayLastRpcError = error.message;
     pending.reject(error);
@@ -520,6 +554,10 @@ async function synaraRpc(
   tagValue: unknown,
   payload: unknown,
   stream = false,
+  options: {
+    /** `null` disables the watchdog; a number replaces the host default. */
+    readonly timeoutMs?: number | null;
+  } = {},
 ): Promise<unknown> {
   const baseUrl = normalizeSynaraWsUrl(
     resolveWebRelayEndpoint(
@@ -535,15 +573,18 @@ async function synaraRpc(
   if (relayRecentRpcTags.length > 40) relayRecentRpcTags.shift();
   const socket = await ensureRelaySocket(baseUrl);
   const id = String(++relaySequence);
+  const timeoutMs = options.timeoutMs === undefined ? RPC_REQUEST_TIMEOUT_MS : options.timeoutMs;
   return new Promise((resolve, reject) => {
     const timer = stream
       ? undefined
-      : setTimeout(() => {
-          relayPending.delete(id);
-          const error = new Error(`Synara RPC ${tag} timed out after ${RPC_REQUEST_TIMEOUT_MS}ms`);
-          reject(error);
-          invalidateRelaySocket(socket, baseUrl, error);
-        }, RPC_REQUEST_TIMEOUT_MS);
+      : timeoutMs === null
+        ? undefined
+        : setTimeout(() => {
+            relayPending.delete(id);
+            const error = new Error(`Synara RPC ${tag} timed out after ${timeoutMs}ms`);
+            reject(error);
+            invalidateRelaySocket(socket, baseUrl, error);
+          }, timeoutMs);
     relayPending.set(id, {
       tag,
       resolve,
@@ -561,6 +602,52 @@ async function synaraRpc(
       invalidateRelaySocket(socket, baseUrl, transportError);
     }
   });
+}
+
+/**
+ * Request-scoped stream for the shared WsTransport compat class. Ownership
+ * (generation, cancel-before-open) lives in the registry; the opener only
+ * talks to the relay socket. Items are relayed under the renderer's stream id.
+ */
+function runScopedRelayStream(
+  baseUrlValue: unknown,
+  streamId: string,
+  tagValue: unknown,
+  payload: unknown,
+): Promise<void> {
+  const baseUrl = normalizeSynaraWsUrl(
+    resolveWebRelayEndpoint(
+      globalThis.__SYNARA_LYNX_RUNTIME__?.wsUrl,
+      readComponentsLabRelayUrl(),
+      baseUrlValue,
+      DEFAULT_SYNARA_WS_URL,
+    ),
+  );
+  const tag = String(tagValue ?? "").trim();
+  if (!tag) throw new Error("Synara RPC tag is required");
+  relayRecentRpcTags.push(tag);
+  if (relayRecentRpcTags.length > 40) relayRecentRpcTags.shift();
+  return scopedStreams.run(streamId, (isCancelled) =>
+    openWebRelayScopedStream(
+      tag,
+      payload,
+      {
+        ensureSocket: () => ensureRelaySocket(baseUrl),
+        isSocketOpen: isWebSocketOpen,
+        nextRequestId: () => String(++relaySequence),
+        pending: relayPending,
+        onItem: (item) => publishRelayStreamItem?.({ streamId, item }),
+        onSendFailure: (socket, error) => invalidateRelaySocket(socket, baseUrl, error),
+        describeError,
+      },
+      isCancelled,
+    ),
+  );
+}
+
+function relayTransportStateView(): string {
+  if (relaySocket && isWebSocketOpen(relaySocket)) return "connected";
+  return relayRecoveryActive || relayReady ? "reconnecting" : "idle";
 }
 
 function readStorageEntries(): Record<string, string> {
@@ -684,10 +771,38 @@ async function handleBridgeCall(
         }
       }
       const tag = String(params.tag ?? "");
-      return await synaraRpc(params.baseUrl, tag, normalizeLynxRpcPayload(tag, params.payload));
+      return await synaraRpc(
+        params.baseUrl,
+        tag,
+        normalizeLynxRpcPayload(tag, params.payload),
+        false,
+        {
+          timeoutMs:
+            params.timeoutMs === null
+              ? null
+              : typeof params.timeoutMs === "number"
+                ? params.timeoutMs
+                : undefined,
+        },
+      );
     }
     if (method === "synaraRpcStream") {
+      if (typeof params.streamId === "string") {
+        await runScopedRelayStream(params.baseUrl, params.streamId, params.tag, params.payload);
+        return null;
+      }
       return await synaraRpc(params.baseUrl, params.tag, params.payload, true);
+    }
+    if (method === NATIVE_RPC_STREAM_CANCEL_METHOD) {
+      return { cancelled: scopedStreams.cancel(String(params.streamId ?? "")) };
+    }
+    if (method === NATIVE_RPC_STREAM_RESET_METHOD) {
+      const reply: NativeRpcStreamResetReply = {
+        generation: scopedStreams.reset(),
+        transportState: relayTransportStateView(),
+        compatibility: relayCompatibility,
+      };
+      return reply;
     }
     if (method === "terminalOpen") {
       return await synaraRpc(params.baseUrl, "terminal.open", params);
@@ -923,6 +1038,7 @@ async function handleBridgeCall(
     return {
       error: describeError(error),
       errorKind: error instanceof SynaraRpcResponseError ? "rpc" : "transport",
+      ...rpcFailureReplyFields(error),
     };
   }
 }
@@ -1059,6 +1175,9 @@ publishRelayTransportState = (state) => {
 };
 publishRelayGitActionProgress = (event) => {
   lynxView.sendGlobalEvent?.(GIT_ACTION_PROGRESS_EVENT, [event]);
+};
+publishRelayStreamItem = (event) => {
+  lynxView.sendGlobalEvent?.(NATIVE_RPC_STREAM_ITEM_EVENT, [event]);
 };
 
 globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => {

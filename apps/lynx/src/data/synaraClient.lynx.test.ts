@@ -21,16 +21,25 @@ describe("Lynx Synara relay state", () => {
     expect(clientSource).not.toContain("featureManager");
 
     const mainSource = readFileSync(new URL("../main/desktop/main.ts", import.meta.url), "utf8");
+    const bridgeSource = readFileSync(new URL("./nativeRpcBridge.ts", import.meta.url), "utf8");
     expect(mainSource).toContain('_tag: "NativeRpcResult"');
-    expect(clientSource).toContain('parsed._tag === "NativeRpcResult"');
-    expect(clientSource).toContain('"orchestration.subscribeShell"');
-    // Long-lived streams are relayed as global events through one shared table.
+    expect(bridgeSource).toContain('parsed._tag === "NativeRpcResult"');
+    expect(clientSource).toContain('import { hostBridgeRequest } from "./nativeRpcBridge";');
+    // The shell stream moved to the upstream NativeApi facade (shared state
+    // layer step 2): upstream's session sync opens it, this module only
+    // listens. A second opener would be a duplicate subscription on the socket.
+    expect(clientSource).not.toContain("orchestration.subscribeShell");
     expect(clientSource).toContain(
-      'const ORCHESTRATION_SHELL_EVENT = NATIVE_EVENT_STREAM_CHANNELS["orchestration.subscribeShell"]',
+      "return ensureNativeApi().orchestration.onShellEvent(listener);",
     );
+    // Server settings moved to the upstream NativeApi facade (shared state
+    // layer step 1); the fixed channel for it is no longer consumed here.
+    expect(clientSource).not.toContain("server.subscribeSettings");
     expect(clientSource).toContain(
-      'const SERVER_SETTINGS_EVENT = NATIVE_EVENT_STREAM_CHANNELS["server.subscribeSettings"]',
+      "return onServerSettingsUpdated((payload) => listener(payload.settings));",
     );
+    expect(clientSource).toContain("return ensureNativeApi().server.getSettings();");
+    expect(clientSource).toContain("return ensureNativeApi().server.getConfig();");
     expect(mainSource).toContain("nativeEventStreamChannel(String(rpcData.tag");
     const nativeHostSource = readFileSync(
       new URL("../main/desktop/nativeRpcHost.ts", import.meta.url),

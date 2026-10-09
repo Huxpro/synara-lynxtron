@@ -303,7 +303,7 @@
   },
   "trustedDependencies": [
     "electron-winstaller",
-    "@lynx-js/lynxtron-builder",
+    "node-pty",
     "@lynx-js/lynxtron",
   ],
   "patchedDependencies": {

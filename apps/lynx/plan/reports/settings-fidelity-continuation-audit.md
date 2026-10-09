@@ -180,7 +180,7 @@ the historical full screenshot matrix cover the newer focused Usage commits.
   `d8dcc6044e3ea9b1aa0e6e7916fce47d003371a6cad8104716bc273a5f6583cc`.
   Usage, Integrations, and Advanced were reached through real touch; the
   runtime console had zero warnings/errors. The owned 8903 process was stopped;
-  unrelated iOS 8901 and t3tools 8902 clients were untouched. A final
+  unrelated iOS 8901 and another-project 8902 clients were untouched. A final
   exact-owned PID `20661` rerun after the accordion calibration proved 55
   44px triggers, `Version 0.5.5, Jul 17` expanded by default, current-release
   feature content, and an empty warning/error console. A final scoped material

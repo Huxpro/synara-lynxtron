@@ -2,7 +2,7 @@ import { newCommandId, newThreadId } from "@synara-web/lib/utils";
 import type { ChatAssistantSelectionAttachment } from "@synara/contracts";
 
 import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
-import { dispatchSynaraCommand } from "../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
 import { queryClient, type ThreadHeaderSummary } from "./queries";
 import { buildLynxSidechatCreateCommand } from "./sidechatCreate.logic";
 
@@ -16,7 +16,7 @@ export async function createNativeSidechat(input: {
 }): Promise<string> {
   "background only";
   const sidechatThreadId = newThreadId();
-  await dispatchSynaraCommand(
+  await ensureNativeApi().orchestration.dispatchCommand(
     buildLynxSidechatCreateCommand({
       commandId: newCommandId(),
       createdAt: new Date().toISOString(),
@@ -27,7 +27,6 @@ export async function createNativeSidechat(input: {
   if (input.seedSelection) {
     useComposerDraftStore.getState().addAssistantSelection(sidechatThreadId, input.seedSelection);
   }
-  await queryClient.invalidateQueries({ queryKey: ["threads"] });
   await queryClient.invalidateQueries({ queryKey: ["thread-detail", sidechatThreadId] });
   return sidechatThreadId;
 }

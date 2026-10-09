@@ -14,7 +14,8 @@ import {
 } from "../platform/motion.lynx";
 import { fetchServerConfig, openPathInEditor, repairSynaraState } from "../data/synaraClient.lynx";
 import { dialogs } from "../platform/dialogs";
-import { fetchSidebarSnapshot, queryClient } from "./queries";
+import { queryClient } from "./queries";
+import { useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import {
   advancedAppVersion,
   firstAvailableEditor,
@@ -34,13 +35,7 @@ export function SettingsAdvancedPanel() {
       return fetchServerConfig();
     },
   });
-  const snapshotQuery = useQuery({
-    queryKey: ["sidebar-snapshot"],
-    queryFn: () => {
-      "background only";
-      return fetchSidebarSnapshot();
-    },
-  });
+  const snapshotQuery = useSidebarSnapshot();
   const allThreadsMessageless = useStore(createAllThreadsMessagelessSelector());
   const threadsHydrated = useStore((state) => state.threadsHydrated);
   const syncServerReadModel = useStore((state) => state.syncServerReadModel);

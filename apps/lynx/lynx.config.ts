@@ -31,6 +31,53 @@ const appVersion = String(
 );
 const configuredSynaraWsUrl = process.env.SYNARA_WS_URL?.trim() ?? "";
 const buildHostInputProbe = process.env.SYNARA_HOST_INPUT_PROBE === "1";
+
+// `resolve.alias` only sees `~/…` specifiers. Upstream modules also import
+// these files relatively (`./nativeApi`, `./wsTransport`, …), so the resolved
+// resource path is rewritten after resolution to the same Lynx replacement the
+// alias points at. Keep both tables in sync; `scripts/reuse-audit.mjs` mirrors
+// them so the audit resolves like the bundle.
+export const lynxResourceReplacements: ReadonlyArray<{
+  readonly webSource: string;
+  readonly lynxSource: string;
+}> = [
+  { webSource: "nativeApi.ts", lynxSource: "src/adapters/nativeApi.lynx.ts" },
+  { webSource: "wsTransport.ts", lynxSource: "src/adapters/wsTransport.lynx.ts" },
+  { webSource: "platform/events.ts", lynxSource: "src/platform/events.ts" },
+  {
+    webSource: "components/ui/confirmDialogFallback.ts",
+    lynxSource: "src/adapters/confirmDialogFallback.lynx.ts",
+  },
+  {
+    webSource: "components/ui/contextMenuFallback.ts",
+    lynxSource: "src/adapters/contextMenuFallback.lynx.ts",
+  },
+];
+const webSourceRoot = path.resolve(__dirname, "../web/src");
+const resourceReplacementByWebPath = new Map(
+  lynxResourceReplacements.map((entry) => [
+    path.join(webSourceRoot, entry.webSource),
+    path.resolve(__dirname, entry.lynxSource),
+  ]),
+);
+const resourceReplacementPattern = new RegExp(
+  `(${lynxResourceReplacements
+    .map((entry) => entry.webSource.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&"))
+    .join("|")})$`,
+);
+// Lynx injects `window` into every background bundle as a wrapper parameter
+// with no value, so a member read on it throws. Upstream state-layer source
+// that runs here verbatim (the generated `EventRouter`, `wsNativeApi.ts`) uses
+// exactly these members on the background thread: the timers are the runtime's
+// own globals, and there is no Electron preload bridge on Lynx. `typeof window`
+// checks are untouched, so "is this a browser" branches behave as before.
+export const lynxWindowMemberDefines: Readonly<Record<string, string>> = {
+  "window.setTimeout": "setTimeout",
+  "window.clearTimeout": "clearTimeout",
+  "window.setInterval": "setInterval",
+  "window.clearInterval": "clearInterval",
+  "window.desktopBridge": "undefined",
+};
 console.log("rootPath: ", path.resolve(rootPath, "./src/assets"));
 export default defineConfig({
   server: {
@@ -212,6 +259,10 @@ export default defineConfig({
         "../../packages/shared/src/githubRepository.ts",
       ),
       "@tanstack/react-query$": path.resolve(rootPath, "./node_modules/@tanstack/react-query"),
+      // Only apps/web depends on the pacer (store.ts already runs it on Lynx,
+      // resolved from there). Lynx-side generated upstream code imports it too
+      // and must get that same copy.
+      "@tanstack/react-pacer$": path.resolve(rootPath, "../web/node_modules/@tanstack/react-pacer"),
       "@synara-provider-icons": path.resolve(rootPath, "../web/public/central-icons-fill"),
       "@synara-central-icons": path.resolve(rootPath, "../web/public/central-icons-reversed"),
       "@synara-central-icons-fill": path.resolve(rootPath, "../web/public/central-icons-fill"),
@@ -329,6 +380,25 @@ export default defineConfig({
       "~/hooks/useTheme$": path.resolve(rootPath, "./src/adapters/useTheme.lynx.ts"),
       "~/hooks/useViewportLayout$": path.resolve(rootPath, "./src/hooks/useViewportLayout.lynx.ts"),
       "~/nativeApi$": path.resolve(rootPath, "./src/adapters/nativeApi.lynx.ts"),
+      // Shared state layer (plan/shared-state-architecture.md): the upstream
+      // NativeApi facade runs on Lynx; only the transport and the DOM-bound
+      // fallbacks below it are swapped. Relative imports of the same files
+      // inside apps/web are redirected by `lynxResourceReplacements` below.
+      "~/wsTransport$": path.resolve(rootPath, "./src/adapters/wsTransport.lynx.ts"),
+      "~/platform/events$": path.resolve(rootPath, "./src/platform/events.ts"),
+      "~/components/ui/confirmDialogFallback$": path.resolve(
+        rootPath,
+        "./src/adapters/confirmDialogFallback.lynx.ts",
+      ),
+      "~/components/ui/contextMenuFallback$": path.resolve(
+        rootPath,
+        "./src/adapters/contextMenuFallback.lynx.ts",
+      ),
+      // Session sync (generated `EventRouter`, plan Step 2) reaches these two
+      // through `~/…`. The draft store is the Lynx facade (the Web store cannot
+      // enter the Lynx bundle, plan decision P6-C1).
+      "~/composerDraftStore$": path.resolve(rootPath, "./src/adapters/composerDraftStore.lynx.ts"),
+      "~/components/ui/toast$": path.resolve(rootPath, "./src/components/ui/toast.lynx.ts"),
       "~/components/ui/button$": path.resolve(rootPath, "./src/components/ui/button.lynx.tsx"),
       "~/components/ui/input$": path.resolve(rootPath, "./src/components/ui/input.lynx.tsx"),
       "~/components/ui/command$": path.resolve(rootPath, "./src/components/ui/command.lynx.tsx"),
@@ -354,6 +424,10 @@ export default defineConfig({
       // (Verified: compat re-exports the same @lynx-js/react instance — no
       // runtime duplication.)
       react$: path.resolve(rootPath, "./src/react-compat-shim.ts"),
+      // The router's component layer crashes on ReactLynx (P2-V1). Upstream
+      // state-layer modules only use a few of its hooks; those run over the
+      // Lynx memory history instead.
+      "@tanstack/react-router$": path.resolve(rootPath, "./src/adapters/reactRouter.lynx.ts"),
       // Rspeedy's Lynx target selects the package's `browser` condition, whose
       // decoder creates a DOM element at module load. PrimJS has no document;
       // use the package's equivalent pure character-entities implementation.
@@ -365,11 +439,40 @@ export default defineConfig({
   output: {
     filename: "[name].[platform].bundle",
   },
+  tools: {
+    rspack: (config, { rspack }) => {
+      config.plugins ??= [];
+      // Lynx has no `localStorage` (the wrapper injects the name with no
+      // value). Upstream stores that persist through the bare global, and are
+      // now reached by session sync (`workspacePathsStore.ts`), get the Lynx
+      // storage port instead: the same synchronous getItem/setItem contract.
+      config.plugins.push(
+        new rspack.ProvidePlugin({
+          localStorage: [path.resolve(__dirname, "src/platform/storage.ts"), "webStorage"],
+        }),
+      );
+      config.plugins.push(
+        new rspack.NormalModuleReplacementPlugin(resourceReplacementPattern, (result) => {
+          const createData = (
+            result as { createData?: { resource?: string; request?: string; userRequest?: string } }
+          ).createData;
+          const resource = createData?.resource;
+          if (!createData || typeof resource !== "string") return;
+          const replacement = resourceReplacementByWebPath.get(resource);
+          if (!replacement) return;
+          createData.resource = replacement;
+          createData.request = replacement;
+          createData.userRequest = replacement;
+        }),
+      );
+    },
+  },
   environments: {
     web: {
       source: {
         preEntry: "./src/runtime-polyfills.ts",
         define: {
+          ...lynxWindowMemberDefines,
           "process.env.SYNARA_WS_URL": JSON.stringify(configuredSynaraWsUrl),
           "process.env.SYNARA_APP_VERSION": JSON.stringify(appVersion),
           "process.env.SYNARA_LYNX_WEB_RELAY": JSON.stringify(buildHostInputProbe ? "0" : "1"),
@@ -398,6 +501,7 @@ export default defineConfig({
         // platform/runtimeEndpointSource.ts). Compiling a port in would let a
         // reused bundle talk to a different server than its host.
         define: {
+          ...lynxWindowMemberDefines,
           "process.env.SYNARA_WS_URL": JSON.stringify(""),
           "process.env.SYNARA_APP_VERSION": JSON.stringify(appVersion),
           "process.env.SYNARA_LYNX_WEB_RELAY": JSON.stringify("0"),

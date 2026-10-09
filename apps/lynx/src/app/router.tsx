@@ -52,7 +52,8 @@ import type { SettingsAppearanceValues } from "@synara-web/components/settings/S
 import type { ThemeState } from "@synara-web/theme/theme.logic";
 import type { SettingsSectionId } from "@synara-web/settingsNavigation";
 import type { Project } from "@synara-web/types";
-import { useStore } from "@synara-web/store";
+import { useSessionShellProjects, useSessionShellSpaces } from "./sessionShell.lynx";
+import { useRouteThreadSummaries } from "./sidebarSnapshot.lynx";
 import { useSpacesUiStore } from "@synara-web/spacesUiStore";
 import { useRecentViewsStore } from "@synara-web/recentViewsStore";
 import {
@@ -99,7 +100,6 @@ import {
   fetchExplorerPdfMetadata,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
-  fetchThreads,
   queryClient,
   type ExplorerEntriesResult,
   type ProjectSummary,
@@ -118,7 +118,6 @@ import {
   type TranscriptSelectionHandlers,
 } from "./Transcript";
 import type { TranscriptAssistantSelection } from "@synara-web/components/chat/chatSelectionActions";
-import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
 import { SettingsPage } from "./SettingsPage";
 import { UpdatePage } from "./UpdatePage";
 import { KanbanProjectPage, ProjectsPage, PullRequestsPage } from "./FeatureListsPage";
@@ -185,8 +184,9 @@ import { BrowserDockPane } from "./BrowserDockPane.lynx";
 import { browserView } from "../platform/browserView.lynx";
 import { EmbeddedSidechatPane } from "./EmbeddedSidechatPane.lynx";
 import { createNativeSidechat } from "./sidechatCreate.lynx";
-import { addSelectionToNativeSide, startNativeSelectionChat } from "./selectionChat.lynx";
-import { SelectionNewChatComposer } from "./SelectionNewChatComposer.lynx";
+import { usePersistedActivityViewEnabled } from "./activityViewState.lynx";
+import { addSelectionToNativeSide } from "./selectionChat.lynx";
+import { ThreadSelectionNewChat } from "./ThreadSelectionNewChat.lynx";
 import { canCreateLynxSidechat } from "./sidechatCreate.logic";
 import { DiffDock } from "./DiffDock.lynx";
 import { ThreadRightDockTabs } from "./ThreadRightDockTabs.lynx";
@@ -273,26 +273,11 @@ async function persistLastThreadRoute(threadId: string): Promise<void> {
   });
 }
 
-async function readPersistedActivityViewEnabled(): Promise<boolean> {
-  "background only";
-  const { hydrateStorage } = await import(/* webpackMode: "eager" */ "../platform/storage");
-  await hydrateStorage();
-  const { readSidebarUiState } = await import(
-    /* webpackMode: "eager" */ "@synara-web/components/Sidebar.uiState"
-  );
-  return readSidebarUiState().activityViewEnabled;
-}
-
-async function persistActivityViewEnabled(activityViewEnabled: boolean): Promise<void> {
-  "background only";
-  const { persistSidebarUiState, readSidebarUiState } = await import(
-    /* webpackMode: "eager" */ "@synara-web/components/Sidebar.uiState"
-  );
-  persistSidebarUiState({ ...readSidebarUiState(), activityViewEnabled });
-}
-
+// Session sync owns the shell read model: an empty thread list is refreshed by
+// its stream, not by a request from here. The controller still waits the
+// fallback delay before it treats the list as final.
 async function refreshLynxRouteSnapshot(): Promise<unknown> {
-  return fetchThreads();
+  return false;
 }
 
 function waitForLynxRouteFallback(): Promise<void> {
@@ -1573,7 +1558,7 @@ function ThreadPage(props: ThreadPageProps) {
   );
   const providerHealthVisible =
     resolveProviderHealthBannerPresentation(providerHealth.status) !== null;
-  const editorProjectSpaces = useStore((state) => state.spaces);
+  const editorProjectSpaces = useSessionShellSpaces();
   const editorActiveSpaceId = useSpacesUiStore((state) => state.activeSpaceId);
   const editorChatHistoryThreads = currentThread
     ? resolveEditorChatHistoryThreads({
@@ -1862,11 +1847,7 @@ function ThreadPage(props: ThreadPageProps) {
         threadId: threadId as never,
         title,
       });
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["thread-detail", threadId] }),
-        queryClient.invalidateQueries({ queryKey: ["threads"] }),
-        queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-      ]);
+      await queryClient.invalidateQueries({ queryKey: ["thread-detail", threadId] });
       setRenamingThread(false);
     } catch (error) {
       setThreadRenameError(error instanceof Error ? error.message : "Unable to rename thread.");
@@ -1952,28 +1933,13 @@ function ThreadPage(props: ThreadPageProps) {
             sessionStatus={currentThread?.sessionStatus ?? null}
           />
           {selectionChat && currentThread?.workspaceRoot ? (
-            <SelectionNewChatComposer
-              selection={selectionChat.selection}
-              anchor={selectionChat.anchor}
+            <ThreadSelectionNewChat
+              thread={{ ...currentThread, workspaceRoot: currentThread.workspaceRoot }}
+              selectionChat={selectionChat}
               defaultEnvMode={environmentSettings.defaultThreadEnvMode}
               canUseWorktree={headerDiff.isGitRepo}
               onClose={() => setSelectionChat(null)}
-              onSubmit={async (prompt, envMode, intent) => {
-                "background only";
-                // The composer's current pick (draft) wins over the thread's persisted one.
-                const draft = useComposerDraftStore.getState().draftsByThreadId[threadId];
-                const nextThreadId = await startNativeSelectionChat({
-                  selection: selectionChat.selection,
-                  prompt,
-                  envMode,
-                  intent,
-                  projectId: currentThread.projectId,
-                  projectCwd: currentThread.workspaceRoot!,
-                  modelSelection: draft?.modelSelection ?? currentThread.modelSelection,
-                  runtimeMode: draft?.runtimeMode ?? currentThread.runtimeMode,
-                });
-                onNavigateToThread(nextThreadId);
-              }}
+              onNavigateToThread={onNavigateToThread}
             />
           ) : null}
         </view>
@@ -2805,22 +2771,7 @@ export function SliceRouter({
     "synara-sidebar-search-trigger",
   );
   const navigation = useMemoryNavigationState();
-  // The sidebar's Activity view toggle, persisted in the shared sidebar UI state. The
-  // router owns it so the ⌘⌥U menu command and the header bell drive the same state.
-  const [activityViewEnabled, setActivityViewEnabledState] = useState(false);
-  useEffect(() => {
-    "background only";
-    void readPersistedActivityViewEnabled()
-      .then(setActivityViewEnabledState)
-      .catch(() => {
-        // Without persisted state the sidebar starts in the classic view.
-      });
-  }, []);
-  const setActivityViewEnabled = useCallback((enabled: boolean) => {
-    "background only";
-    setActivityViewEnabledState(enabled);
-    void persistActivityViewEnabled(enabled).catch(() => undefined);
-  }, []);
+  const [activityViewEnabled, setActivityViewEnabled] = usePersistedActivityViewEnabled();
   const toggleActivityViewFromCommandRef = useRef(() => {});
   toggleActivityViewFromCommandRef.current = () => {
     // Like Electron: from Settings or Studio the shortcut always opens Activity.
@@ -2891,36 +2842,10 @@ export function SliceRouter({
     },
     [sidebarOpen],
   );
-  const { data: routeThreads, isPending: routeThreadsPending } = useQuery({
-    queryKey: ["threads"],
-    queryFn: fetchThreads,
-    enabled: !componentsLabRoute,
-    refetchInterval: 5_000,
-  });
-  useEffect(() => {
-    if (componentsLabRoute) return;
-    let active = true;
-    let invalidateTimer: ReturnType<typeof setTimeout> | null = null;
-    const unsubscribe = subscribeOrchestrationShellEvents((item) => {
-      if (item.kind !== "snapshot" && item.kind !== "thread-upserted") return;
-      if (invalidateTimer !== null) return;
-      invalidateTimer = setTimeout(() => {
-        invalidateTimer = null;
-        if (!active) return;
-        void queryClient.invalidateQueries({ queryKey: ["threads"] });
-        // The sidebar and Kanban board read the sidebar snapshot; refresh it on
-        // the same shell change instead of waiting for its 5s poll, as the web
-        // app updates both live.
-        void queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
-      }, 50);
-    });
-    return () => {
-      active = false;
-      unsubscribe();
-      if (invalidateTimer !== null) clearTimeout(invalidateTimer);
-    };
-  }, [componentsLabRoute]);
-  const routeProjects = useStore((state) => state.projects);
+  // Threads and projects come from the shared store, kept live by session sync.
+  const [routeThreads, routeThreadsHydrated] = useRouteThreadSummaries();
+  const routeThreadsPending = !routeThreadsHydrated;
+  const [routeProjects, sessionShellHydrated] = useSessionShellProjects();
   const recentViews = useRecentViewsStore((state) => state.recentViews);
   const recordRecentView = useRecentViewsStore((state) => state.recordRecentView);
   const pruneRecentViewsStore = useRecentViewsStore((state) => state.pruneRecentViews);
@@ -2955,7 +2880,7 @@ export function SliceRouter({
   const recentViewAvailability = useMemo(
     () => ({
       availableThreadIds: new Set(
-        (routeThreads ?? []).map((thread) => thread.id as import("@synara/contracts").ThreadId),
+        routeThreads.map((thread) => thread.id as import("@synara/contracts").ThreadId),
       ),
       availableSplitViewIds: new Set<string>(),
     }),
@@ -2968,7 +2893,7 @@ export function SliceRouter({
         currentView: currentRecentView,
         // ThreadSummary ids are unbranded strings; the snapshot values are real ids.
         threadsById: Object.fromEntries(
-          (routeThreads ?? []).map((thread) => [
+          routeThreads.map((thread) => [
             thread.id,
             {
               ...thread,
@@ -2978,7 +2903,7 @@ export function SliceRouter({
           ]),
         ),
         projects: routeProjects,
-        pinnedThreadIds: (routeThreads ?? [])
+        pinnedThreadIds: routeThreads
           .filter((thread) => thread.isPinned)
           .map((thread) => thread.id as import("@synara/contracts").ThreadId),
       }),
@@ -3001,9 +2926,9 @@ export function SliceRouter({
     if (currentRecentView) recordRecentView(currentRecentView);
   }, [currentRecentViewKey, recordRecentView]);
   useEffect(() => {
-    if (routeThreadsPending) return;
+    if (routeThreadsPending || !sessionShellHydrated) return;
     pruneRecentViewsStore(recentViewAvailability);
-  }, [pruneRecentViewsStore, recentViewAvailability, routeThreadsPending]);
+  }, [pruneRecentViewsStore, recentViewAvailability, routeThreadsPending, sessionShellHydrated]);
   const appNotifications = (
     <view
       className={`AppNotificationStack${
@@ -3013,7 +2938,7 @@ export function SliceRouter({
       <VoiceNotificationHost />
       <TaskCompletionToastHost
         activeThreadId={activeThreadId}
-        threads={routeThreads ?? []}
+        threads={routeThreads}
         onOpenThread={(threadId) => history.push(`/thread/${threadId}`)}
       />
       <ProviderUpdatePrompt onReview={() => history.push("/settings/providers")} />
@@ -3247,7 +3172,7 @@ export function SliceRouter({
     () =>
       resolveRestorableThreadRoute({
         lastThreadRoute: persistedLastRoute,
-        availableThreadIds: new Set((routeThreads ?? []).map((thread) => thread.id)),
+        availableThreadIds: new Set(routeThreads.map((thread) => thread.id)),
       }),
     [persistedLastRoute, routeThreads],
   );
@@ -3264,7 +3189,7 @@ export function SliceRouter({
   useRestoreOrCreateChatRouteController({
     enabled: coldStartRoutePending && route.pathname === "/" && lastRouteHydrated,
     threadsHydrated: !routeThreadsPending,
-    threadIds: (routeThreads ?? []).map((thread) => thread.id),
+    threadIds: routeThreads.map((thread) => thread.id),
     splitViewsHydrated: true,
     splitViewIds: [],
     readLastThreadRoute,
@@ -3280,7 +3205,7 @@ export function SliceRouter({
         lastThreadRoute: persistedLastRoute,
         projects: routeProjects,
         sortOrder: studioSettings.sidebarThreadSortOrder,
-        threads: routeThreads ?? [],
+        threads: routeThreads,
       }),
     [persistedLastRoute, routeProjects, routeThreads, studioSettings.sidebarThreadSortOrder],
   );
@@ -3291,8 +3216,8 @@ export function SliceRouter({
   }, []);
   const studioRouteController = useRestoreOrCreateChatRouteController({
     enabled: route.pathname === "/studio" && studioSettings.showStudioSection && lastRouteHydrated,
-    threadsHydrated: !routeThreadsPending,
-    threadIds: (routeThreads ?? []).map((thread) => thread.id),
+    threadsHydrated: !routeThreadsPending && sessionShellHydrated,
+    threadIds: routeThreads.map((thread) => thread.id),
     splitViewsHydrated: true,
     splitViewIds: [],
     readLastThreadRoute,
@@ -3364,7 +3289,7 @@ export function SliceRouter({
     (direction: "next" | "previous") => {
       const currentSelection = recentViewSelectionRef.current;
       let views = recentViewsRef.current;
-      if (currentSelection === null) {
+      if (currentSelection === null && sessionShellHydrated) {
         views = pruneRecentViews(views, recentViewAvailability);
         pruneRecentViewsStore(recentViewAvailability);
       }
@@ -3382,7 +3307,7 @@ export function SliceRouter({
         selectedKey: recentViewKey(selectedView),
       });
     },
-    [currentRecentViewKey, pruneRecentViewsStore, recentViewAvailability],
+    [currentRecentViewKey, pruneRecentViewsStore, recentViewAvailability, sessionShellHydrated],
   );
   const renderTitlebarControls = (placement: "open" | "closed") => (
     <DesktopTitlebarControls
@@ -3399,8 +3324,8 @@ export function SliceRouter({
   const navigateBackFromSettings = useCallback(() => {
     const target = resolveSettingsBackTarget({
       lastThreadRoute: persistedLastRoute,
-      availableThreadIds: new Set((routeThreads ?? []).map((thread) => thread.id)),
-      latestThreadId: routeThreads?.[0]?.id ?? null,
+      availableThreadIds: new Set(routeThreads.map((thread) => thread.id)),
+      latestThreadId: routeThreads[0]?.id ?? null,
     });
     history.push(target.kind === "thread" ? `/thread/${target.threadId}` : "/");
   }, [persistedLastRoute, routeThreads]);
@@ -3599,7 +3524,7 @@ export function SliceRouter({
         }}
         projects={routeProjects}
         threadId={route.params.threadId}
-        threads={routeThreads ?? []}
+        threads={routeThreads}
         resolvedTheme={resolvedTheme}
         viewportWidth={viewportWidth}
         viewportHeight={viewportHeight}

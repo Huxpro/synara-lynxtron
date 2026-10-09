@@ -98,8 +98,8 @@ describe("Native thread handoff service", () => {
     expect(source).toContain("resolveThreadHandoffModelSelection({");
     expect(source).toContain("buildThreadHandoffImportedMessages(");
     expect(source).toContain("buildThreadHandoffImportedActivities(");
-    expect(source).toContain("type: 'thread.handoff.create'");
-    expect(source).toContain("type: 'thread.activity.append'");
+    expect(source).toContain('type: "thread.handoff.create"');
+    expect(source).toContain('type: "thread.activity.append"');
   });
 
   it("inherits the source project id even when thread titles are ambiguous", () => {

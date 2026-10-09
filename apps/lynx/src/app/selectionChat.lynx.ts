@@ -4,12 +4,8 @@ import { newCommandId, newMessageId, newThreadId } from "@synara-web/lib/utils";
 
 import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
 import { buildComposerTurnStartCommand } from "../components/composer/composerDispatch.logic";
-import { dispatchSynaraCommand, fetchGitStatus } from "../data/synaraClient.lynx";
-import {
-  queryClient,
-  resolveNativeAssistantDeliveryMode,
-  type ThreadHeaderSummary,
-} from "./queries";
+import { ensureNativeApi } from "~/nativeApi";
+import { resolveNativeAssistantDeliveryMode, type ThreadHeaderSummary } from "./queries";
 import { buildSelectionChatCreateCommand, requireSelectionAttachment } from "./selectionChat.logic";
 import { createNativeSidechat } from "./sidechatCreate.lynx";
 import { canCreateLynxSidechat } from "./sidechatCreate.logic";
@@ -49,11 +45,12 @@ export async function startNativeSelectionChat(input: {
 
   let branch: string | null = null;
   if (input.envMode === "worktree") {
-    branch = (await fetchGitStatus(input.projectCwd)).branch ?? null;
+    branch = (await ensureNativeApi().git.status({ cwd: input.projectCwd })).branch ?? null;
     if (!branch) throw new Error("Check out a branch before starting a new worktree.");
   }
   const threadId = newThreadId();
-  await dispatchSynaraCommand(
+  const { orchestration } = ensureNativeApi();
+  await orchestration.dispatchCommand(
     buildSelectionChatCreateCommand({
       commandId: newCommandId(),
       createdAt: new Date().toISOString(),
@@ -71,7 +68,7 @@ export async function startNativeSelectionChat(input: {
     drafts.setPrompt(threadId, input.prompt);
     drafts.addAssistantSelection(threadId, attachment);
   } else {
-    await dispatchSynaraCommand(
+    await orchestration.dispatchCommand(
       buildComposerTurnStartCommand({
         assistantDeliveryMode: await resolveNativeAssistantDeliveryMode(),
         attachments: [attachment],
@@ -86,9 +83,5 @@ export async function startNativeSelectionChat(input: {
       }),
     );
   }
-  await Promise.all([
-    queryClient.invalidateQueries({ queryKey: ["threads"] }),
-    queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-  ]);
   return threadId;
 }

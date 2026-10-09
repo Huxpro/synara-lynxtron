@@ -27,7 +27,7 @@ Status: complete in-app Native page rendering with bounded navigation controls
   `09a304e4eda71682ae732e5fa562b2eec34a435ea55915f30ba29cb19433d827`
 - Isolated server: `ws://127.0.0.1:58920`
 - Exact Native: PID `18102`, `localhost:8901/session 1`
-- Unrelated `@t3tools/lynxtron` was not touched.
+- Unrelated `another-project` was not touched.
 - Fixture: canonical 593-byte, one-page `report.pdf`, created in a real
   workspace and attached to a real project/thread through product RPCs.
 - `projects.inspectPdf` returned `pageCount: 1`.
@@ -63,5 +63,5 @@ zoom parity. Arbitrary Native text-range selection remains a host/engine gap.
 - Exact-owned Native and server processes were stopped.
 - Owned ports `58920`, `10053`, and `8901` were released.
 - Temporary workspace, Native state, and isolated server state were removed.
-- PID `36919` / `localhost:8902` belongs to the user's `t3code` Lynxtron
+- PID `36919` / `localhost:8902` belongs to the user's `another-project` Lynxtron
   instance and was not touched.

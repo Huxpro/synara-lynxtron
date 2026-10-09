@@ -2,13 +2,15 @@ import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
 describe("Native route-independent sidebar search palette host", () => {
-  it("owns the shared snapshot and existing palette implementation", () => {
+  it("reads the store-backed snapshot and the existing palette implementation", () => {
     const source = readFileSync(
       new URL("./SidebarSearchPaletteHost.lynx.tsx", import.meta.url),
       "utf8",
     );
 
-    expect(source).toContain('queryKey: ["sidebar-snapshot"]');
+    expect(source).toContain("useSidebarSnapshot()");
+    expect(source).not.toContain("refetchInterval");
+    expect(source).not.toContain("subscribeOrchestrationShellEvents");
     expect(source).toContain("<SidebarSearchPaletteLynx");
     expect(source).toContain("onCreateSpace={() => {");
   });
@@ -26,7 +28,9 @@ describe("Native route-independent sidebar search palette host", () => {
       new URL("./SidebarSearchPaletteHost.lynx.tsx", import.meta.url),
       "utf8",
     );
-    expect(hostSource).toContain("const { data, error, isPending, refetch } = useQuery({");
+    expect(hostSource).toContain(
+      "const { data, error, isPending, refetch } = useSidebarSnapshot();",
+    );
     expect(sidebarSource).toContain('onOpenSearch("~/", ADD_PROJECT_TRIGGER_ELEMENT_ID)');
   });
 

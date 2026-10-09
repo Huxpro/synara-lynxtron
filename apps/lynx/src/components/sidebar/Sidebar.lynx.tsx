@@ -118,12 +118,11 @@ import {
 } from "@synara-web/components/SidebarThreadNavigation.logic";
 import {
   fetchPullRequests,
-  fetchSidebarSnapshot,
   fetchThreadHeaderSummary,
-  invalidateSidebarSnapshotProjectionCache,
   queryClient,
   type ThreadSummary,
 } from "../../app/queries";
+import { useSidebarSnapshot } from "../../app/sidebarSnapshot.lynx";
 import {
   ArchiveIcon,
   ClockIcon,
@@ -390,11 +389,7 @@ export function Sidebar({
   const initialSortSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
   );
-  const { data, error, isPending } = useQuery({
-    queryKey: ["sidebar-snapshot", "navigation"],
-    queryFn: fetchSidebarSnapshot,
-    refetchInterval: 5_000,
-  });
+  const { data, error, isPending } = useSidebarSnapshot();
   const serverConfigQuery = useQuery({
     queryKey: ["sidebar-server-config"],
     queryFn: async () => {
@@ -569,10 +564,11 @@ export function Sidebar({
       ]),
     [data, persistedPinnedThreadIds],
   );
+  // The shell sequence session sync has applied: what Electron's settle reconciliation reads.
+  const shellSnapshotSequence = useStore((state) => state.shellSnapshotSequence ?? 0);
   const { settledOverrideByThreadId, setThreadSettled } = useThreadSettledOverrides({
     threads: activityThreads,
-    snapshotSequence: data?.snapshotSequence ?? 0,
-    onSettled: () => void queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
+    snapshotSequence: shellSnapshotSequence,
   });
   const hasUnreadActivity = useMemo(
     () => hasUnreadActivityOutsideActiveThread(activityThreads, activeThreadId as ThreadId | null),
@@ -802,10 +798,6 @@ export function Sidebar({
         setSpaceActionError('Could not delete thread "' + thread.title + '".');
         return;
       }
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-        queryClient.invalidateQueries({ queryKey: ["threads"] }),
-      ]);
       if (activeThreadId === thread.id) {
         const fallbackThreadId = getFallbackThreadIdAfterDelete({
           threads: data?.threads ?? [],
@@ -828,10 +820,6 @@ export function Sidebar({
       /* webpackMode: "eager" */ "../../data/synaraClient"
     );
     await dispatchSynaraCommand(command);
-    await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-      queryClient.invalidateQueries({ queryKey: ["threads"] }),
-    ]);
 
     if (action === "toggle-pin") {
       const { usePinnedThreadsStore } = await import(
@@ -868,7 +856,6 @@ export function Sidebar({
       projectId: project.id as never,
       isPinned: !isPinned,
     });
-    await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
     const { usePinnedProjectsStore } = await import(
       /* webpackMode: "eager" */ "@synara-web/pinnedProjectsStore"
     );
@@ -1037,10 +1024,6 @@ export function Sidebar({
           });
           navigate(fallbackThreadId ? `/thread/${fallbackThreadId}` : "/");
         }
-        await Promise.all([
-          queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-          queryClient.invalidateQueries({ queryKey: ["threads"] }),
-        ]);
       } else if (action === "delete-threads" || action === "delete") {
         const removalThreads =
           action === "delete"
@@ -1113,10 +1096,6 @@ export function Sidebar({
           });
           navigate(fallbackThreadId ? `/thread/${fallbackThreadId}` : "/");
         }
-        await Promise.all([
-          queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-          queryClient.invalidateQueries({ queryKey: ["threads"] }),
-        ]);
         if (deletion.failureCount > 0) {
           const noun = deletion.failureCount === 1 ? "thread" : "threads";
           setSpaceActionError(
@@ -1143,10 +1122,6 @@ export function Sidebar({
         );
         await dispatchSynaraCommand(command);
         setActiveSpaceId(targetSpaceId);
-        await Promise.all([
-          queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-          queryClient.invalidateQueries({ queryKey: ["threads"] }),
-        ]);
       }
     } catch (cause) {
       setSpaceActionError(cause instanceof Error ? cause.message : "Unable to update the project.");
@@ -1188,10 +1163,6 @@ export function Sidebar({
         setActiveSpaceId(null);
         navigate("/");
       }
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-        queryClient.invalidateQueries({ queryKey: ["threads"] }),
-      ]);
     } catch (cause) {
       setSpaceActionError(cause instanceof Error ? cause.message : "Unable to update the space.");
     }
@@ -1229,23 +1200,14 @@ export function Sidebar({
                 : "Try moving the project again."
             }`,
           );
-          await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
           return;
         }
         setActiveSpaceId(spaceId);
         navigate("/");
-        await Promise.all([
-          queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-          queryClient.invalidateQueries({ queryKey: ["threads"] }),
-        ]);
         return;
       }
       setActiveSpaceId(spaceId);
       navigate("/");
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-        queryClient.invalidateQueries({ queryKey: ["threads"] }),
-      ]);
       setSpaceProjectPickerTarget({ id: spaceId, name: value.name.trim(), icon: value.icon });
       return;
     }
@@ -1259,10 +1221,6 @@ export function Sidebar({
     });
     if (!command) return;
     await dispatchSynaraCommand(command);
-    await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-      queryClient.invalidateQueries({ queryKey: ["threads"] }),
-    ]);
   }
 
   async function assignProjectsToSpace(projectIds: readonly ProjectId[]) {
@@ -1277,10 +1235,6 @@ export function Sidebar({
       projectIds,
       spaceId: spaceProjectPickerTarget.id,
     });
-    await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-      queryClient.invalidateQueries({ queryKey: ["threads"] }),
-    ]);
     return failedProjectIds;
   }
 
@@ -1320,10 +1274,7 @@ export function Sidebar({
       await projectDevServersQuery.refetch();
       throw cause;
     }
-    await Promise.all([
-      projectDevServersQuery.refetch(),
-      queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-    ]);
+    await projectDevServersQuery.refetch();
   }
 
   function threadHoverActions(thread: ThreadSummary) {
@@ -1753,7 +1704,6 @@ export function Sidebar({
               }}
               onMarkThreadRead={(threadId, completedAt) => {
                 useStore.getState().markThreadVisited(threadId, completedAt);
-                void queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
               }}
               onThreadContextMenu={(threadId, position, restoreFocus) => {
                 const thread = data?.threads.find((candidate) => candidate.id === threadId);
@@ -2241,8 +2191,6 @@ export function Sidebar({
           if (!renameProjectId) return;
           const { renameProjectLocally } = useStore.getState();
           renameProjectLocally(renameProjectId, nextName.length > 0 ? nextName : null);
-          invalidateSidebarSnapshotProjectionCache();
-          void queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
         }}
       />
       <ThreadRenameDialogLynx
@@ -2269,11 +2217,7 @@ export function Sidebar({
             threadId: renameThreadId as never,
             title,
           });
-          await Promise.all([
-            queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-            queryClient.invalidateQueries({ queryKey: ["threads"] }),
-            queryClient.invalidateQueries({ queryKey: ["thread-detail", renameThreadId] }),
-          ]);
+          await queryClient.invalidateQueries({ queryKey: ["thread-detail", renameThreadId] });
         }}
       />
       <ProjectRunDialogLynx

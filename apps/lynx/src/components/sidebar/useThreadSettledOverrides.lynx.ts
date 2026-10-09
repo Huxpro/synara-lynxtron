@@ -17,13 +17,13 @@ const SETTLE_OVERRIDE_MAX_LIFETIME_MS = 15_000;
 
 /**
  * Done/Undo for the Activity view: dispatches `thread.meta.update` and shows the desired
- * state until the sidebar snapshot acknowledges it, with the same reconciliation Electron's
- * useSidebarThreadActions runs.
+ * state until the shared store's shell projection acknowledges it, with the same
+ * reconciliation Electron's useSidebarThreadActions runs. `snapshotSequence` is the store's
+ * `shellSnapshotSequence`.
  */
 export function useThreadSettledOverrides(input: {
   readonly threads: readonly SidebarThreadSummary[];
   readonly snapshotSequence: number;
-  readonly onSettled: () => void;
 }) {
   const [mutations, setMutations] = useState<ReadonlyMap<ThreadId, OptimisticSettledMutation>>(
     () => new Map(),
@@ -54,11 +54,9 @@ export function useThreadSettledOverrides(input: {
       ),
     );
     try {
-      const { dispatchSynaraCommand } = await import(
-        /* webpackMode: "eager" */ "../../data/synaraClient"
-      );
+      const { ensureNativeApi } = await import(/* webpackMode: "eager" */ "~/nativeApi");
       const sequence = await setThreadSettledFromClient(
-        { dispatchCommand: dispatchSynaraCommand },
+        ensureNativeApi().orchestration,
         threadId,
         isSettled,
       );
@@ -72,7 +70,6 @@ export function useThreadSettledOverrides(input: {
           );
         });
       }
-      input.onSettled();
     } catch (error) {
       // A newer toggle owns the override now; dropping it would revert past the user's intent.
       if (isLatest()) clear(threadId);

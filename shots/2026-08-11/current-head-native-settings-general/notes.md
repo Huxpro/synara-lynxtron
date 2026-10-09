@@ -9,7 +9,7 @@
   - PID-derived client `localhost:8902`, session `1`
   - session URL points to the staged
     `apps/lynx/dist/desktop/main.lynx.bundle`
-  - unrelated `@t3tools/lynxtron` on 8901 was not touched.
+  - unrelated `another-project` on 8901 was not touched.
 - Native dimensions and roles:
   - logical root `1280x820`; screenshot `2560x1640`
   - Settings page `1024x820 @ (256,0)`

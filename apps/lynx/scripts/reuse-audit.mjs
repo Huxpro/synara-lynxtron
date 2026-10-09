@@ -4,6 +4,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { generatedFileIsFresh, writeGeneratedFile } from "./format-generated.mjs";
+
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(scriptDir, "..");
 const checkMode = process.argv.includes("--check");
@@ -18,6 +20,32 @@ const webSourceRoot = path.join(webRoot, "apps/web/src");
 const typescriptPath = path.join(lynxRoot, "node_modules/typescript/lib/typescript.js");
 const typescriptModule = await import(pathToFileURL(typescriptPath));
 const ts = typescriptModule.default ?? typescriptModule;
+
+// The bundle rewrites a few resolved Web resources to Lynx files regardless
+// of how they were imported (`lynxResourceReplacements` in lynx.config.ts, the
+// resource-path twin of `resolve.alias`). Mirror it so the audit graph only
+// claims a Web module is SHARED when the bundle really compiles it.
+const lynxConfigLog = console.log;
+console.log = () => {}; // lynx.config.ts logs on import.
+let lynxResourceReplacements;
+try {
+  ({ lynxResourceReplacements } = await import(
+    pathToFileURL(path.join(lynxRoot, "lynx.config.ts")).href
+  ));
+} finally {
+  console.log = lynxConfigLog;
+}
+const lynxResourceReplacementByWebPath = new Map(
+  lynxResourceReplacements.map((entry) => [
+    path.join(webSourceRoot, entry.webSource),
+    path.join(lynxRoot, entry.lynxSource),
+  ]),
+);
+
+function applyLynxResourceReplacement(resolved) {
+  if (!resolved) return resolved;
+  return lynxResourceReplacementByWebPath.get(resolved) ?? resolved;
+}
 
 const sourceExtensions = [
   ".tsx",
@@ -92,7 +120,7 @@ function resolveLynxImport(specifier, importer) {
     );
   }
   const lynxUiPrimitive = specifier.match(
-    /^~\/components\/ui\/(button|input|dialog|menu|tooltip|scroll-area|collapsible|command|kbd)$/,
+    /^~\/components\/ui\/(button|input|dialog|menu|tooltip|scroll-area|collapsible|command|kbd|toast)$/,
   );
   if (lynxUiPrimitive) {
     return resolveSourceCandidate(
@@ -109,6 +137,18 @@ function resolveLynxImport(specifier, importer) {
       lynxSourceExtensions,
     );
   }
+  if (specifier === "~/composerDraftStore") {
+    return resolveSourceCandidate(
+      path.join(lynxRoot, "src/adapters/composerDraftStore"),
+      lynxSourceExtensions,
+    );
+  }
+  if (specifier === "@tanstack/react-router") {
+    return resolveSourceCandidate(
+      path.join(lynxRoot, "src/adapters/reactRouter"),
+      lynxSourceExtensions,
+    );
+  }
   if (specifier === "~/components/SynaraLogo") {
     return resolveSourceCandidate(
       path.join(lynxRoot, "src/adapters/SynaraLogo"),
@@ -116,25 +156,106 @@ function resolveLynxImport(specifier, importer) {
     );
   }
   if (specifier.startsWith("@synara-web/")) {
-    return resolveSourceCandidate(
-      path.join(webSourceRoot, specifier.slice("@synara-web/".length)),
-      lynxSourceExtensions,
+    return applyLynxResourceReplacement(
+      resolveSourceCandidate(
+        path.join(webSourceRoot, specifier.slice("@synara-web/".length)),
+        lynxSourceExtensions,
+      ),
     );
   }
   if (specifier.startsWith("~/")) {
-    return resolveSourceCandidate(
-      path.join(webSourceRoot, specifier.slice(2)),
-      lynxSourceExtensions,
+    return applyLynxResourceReplacement(
+      resolveSourceCandidate(path.join(webSourceRoot, specifier.slice(2)), lynxSourceExtensions),
     );
   }
   if (specifier.startsWith(".")) {
-    return resolveSourceCandidate(
-      path.resolve(path.dirname(importer), specifier),
-      lynxSourceExtensions,
+    return applyLynxResourceReplacement(
+      resolveSourceCandidate(path.resolve(path.dirname(importer), specifier), lynxSourceExtensions),
     );
   }
   return null;
 }
+
+// ── Lynx parallel-implementation ratchet ─────────────────────────────────
+// The shared state layer replaces the Lynx-only client/read-model/polling code
+// step by step (plan/shared-state-architecture.md). These counts may only go
+// down; `--check` fails when any of them rises above the recorded baseline.
+
+function listLynxSourceFiles(root) {
+  const files = [];
+  const stack = [root];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+      const fullPath = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        stack.push(fullPath);
+      } else if (/\.(tsx?|jsx?)$/.test(entry.name) && !/\.test\.(tsx?|jsx?)$/.test(entry.name)) {
+        files.push(fullPath);
+      }
+    }
+  }
+  return files.sort();
+}
+
+function countParallelImplementationSites(filePath) {
+  const text = fs.readFileSync(filePath, "utf8");
+  const sourceFile = ts.createSourceFile(
+    filePath,
+    text,
+    ts.ScriptTarget.Latest,
+    true,
+    filePath.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+  );
+  let useQueryCallSites = 0;
+  let refetchIntervalSites = 0;
+  function visit(node) {
+    if (
+      ts.isCallExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      node.expression.text === "useQuery"
+    ) {
+      useQueryCallSites += 1;
+    } else if (
+      (ts.isPropertyAssignment(node) || ts.isShorthandPropertyAssignment(node)) &&
+      ts.isIdentifier(node.name) &&
+      node.name.text === "refetchInterval"
+    ) {
+      refetchIntervalSites += 1;
+    }
+    ts.forEachChild(node, visit);
+  }
+  visit(sourceFile);
+  return { useQueryCallSites, refetchIntervalSites };
+}
+
+function measureLynxParallelImplementation() {
+  const lynxSourceRoot = path.join(lynxRoot, "src");
+  const synaraClientPath = path.join(lynxSourceRoot, "data/synaraClient.lynx.ts");
+  const routerPath = path.join(lynxSourceRoot, "app/router.tsx");
+  let synaraClientImporters = 0;
+  let useQueryCallSites = 0;
+  let refetchIntervalSites = 0;
+  for (const filePath of listLynxSourceFiles(lynxSourceRoot)) {
+    if (filePath !== synaraClientPath) {
+      const importsClient = parseModule(filePath).imports.some(
+        (specifier) => resolveLynxImport(specifier, filePath) === synaraClientPath,
+      );
+      if (importsClient) synaraClientImporters += 1;
+    }
+    const sites = countParallelImplementationSites(filePath);
+    useQueryCallSites += sites.useQueryCallSites;
+    refetchIntervalSites += sites.refetchIntervalSites;
+  }
+  const routerText = fs.readFileSync(routerPath, "utf8");
+  const routerTsxLines = routerText.split("\n").length - (routerText.endsWith("\n") ? 1 : 0);
+  return { synaraClientImporters, useQueryCallSites, refetchIntervalSites, routerTsxLines };
+}
+
+const lynxParallelImplementation = {
+  baseline: config.parallelImplementationBaseline ?? null,
+  current: measureLynxParallelImplementation(),
+};
 
 function moduleSpecifiers(sourceFile) {
   const specifiers = [];
@@ -388,6 +509,7 @@ const output = {
     externalImports: [...lynxGraph.external].sort(),
     unresolvedImports: [...lynxGraph.unresolved].sort(),
   },
+  lynxParallelImplementation,
   screens,
 };
 
@@ -431,6 +553,20 @@ const markdown = [
   "Values are `modules / LOC`. The full per-module classification, reason, dependency list, and",
   `unresolved/external import evidence live in \`${relativeTo(path.dirname(outputPath), outputPath)}\`.`,
   "",
+  "## Lynx parallel implementation (ratchet: may only decrease)",
+  "",
+  "| Counter | Baseline | Current |",
+  "|---|---:|---:|",
+  ...Object.entries(lynxParallelImplementation.current).map(
+    ([key, value]) =>
+      `| \`${key}\` | ${lynxParallelImplementation.baseline?.[key] ?? "—"} | ${value} |`,
+  ),
+  "",
+  "- `synaraClientImporters`: non-test files under `src/` whose static or dynamic imports resolve to `data/synaraClient.lynx.ts`.",
+  "- `useQueryCallSites`: `useQuery(...)` call expressions under `src/` (non-test).",
+  "- `refetchIntervalSites`: `refetchInterval` option sites under `src/` (non-test).",
+  "- `routerTsxLines`: raw line count of `src/app/router.tsx`.",
+  "",
   "## Current-state interpretation",
   "",
   ...(
@@ -445,19 +581,35 @@ const markdownPath = path.resolve(workspaceRoot, config.outputMarkdown);
 const markdownText = `${markdown}\n`;
 if (checkMode) {
   const mismatches = [];
-  if (!fs.existsSync(outputPath) || fs.readFileSync(outputPath, "utf8") !== outputText) {
+  if (!generatedFileIsFresh(outputPath, outputText)) {
     mismatches.push(relativeTo(workspaceRoot, outputPath));
   }
-  if (!fs.existsSync(markdownPath) || fs.readFileSync(markdownPath, "utf8") !== markdownText) {
+  if (!generatedFileIsFresh(markdownPath, markdownText)) {
     mismatches.push(relativeTo(workspaceRoot, markdownPath));
   }
   if (mismatches.length > 0) {
     console.error(`reuse audit is stale: ${mismatches.join(", ")}`);
     process.exit(1);
   }
+  const baseline = lynxParallelImplementation.baseline;
+  if (!baseline) {
+    console.error("reuse audit: parallelImplementationBaseline is missing from the config");
+    process.exit(1);
+  }
+  const regressions = Object.entries(lynxParallelImplementation.current).filter(
+    ([key, value]) => typeof baseline[key] === "number" && value > baseline[key],
+  );
+  if (regressions.length > 0) {
+    console.error(
+      `lynx parallel implementation grew: ${regressions
+        .map(([key, value]) => `${key}=${value} (baseline ${baseline[key]})`)
+        .join(", ")}`,
+    );
+    process.exit(1);
+  }
 } else {
-  fs.writeFileSync(outputPath, outputText);
-  fs.writeFileSync(markdownPath, markdownText);
+  writeGeneratedFile(outputPath, outputText);
+  writeGeneratedFile(markdownPath, markdownText);
 }
 
 console.log(

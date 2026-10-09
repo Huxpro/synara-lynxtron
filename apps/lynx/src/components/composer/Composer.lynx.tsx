@@ -35,7 +35,8 @@ import {
 } from "../../platform/inputFocusOwnership.lynx";
 import { clipboard as clipboardPort } from "../../platform/clipboard";
 import { sleepOnHost } from "../../platform/timer";
-import { fetchSidebarSnapshot, resolveNativeAssistantDeliveryMode } from "../../app/queries";
+import { resolveNativeAssistantDeliveryMode } from "../../app/queries";
+import { useSidebarSnapshot } from "../../app/sidebarSnapshot.lynx";
 import {
   splitPromptIntoComposerSegments,
   type ComposerPromptSegment,
@@ -547,11 +548,7 @@ export function Composer({
   const activeModelSelection = draftModelSelection ?? modelSelection;
   const activeProvider = activeModelSelection?.provider as ProviderKind | undefined;
   const discoveryProvider = modelCatalogProvider ?? activeProvider;
-  const { data: mentionSnapshot } = useQuery({
-    queryKey: ["sidebar-snapshot"],
-    queryFn: fetchSidebarSnapshot,
-    refetchInterval: 5_000,
-  });
+  const { data: mentionSnapshot } = useSidebarSnapshot();
   const {
     data: runtimeModelCatalog,
     isFetching: runtimeModelsFetching,
