@@ -8,6 +8,7 @@ import {
 import {
   normalizeStarredModels,
   STARRED_MODELS_STORAGE_KEY,
+  starredModelInstanceId,
   toggleStarredModel,
   unstarModel,
   type StarredModel,
@@ -38,6 +39,23 @@ function readStoredStarredModels(): ReadonlyArray<StoredStarredModel> {
     parseFavoriteModelSlugs(webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS[provider])).map(
       (model) => ({ provider, model, effort: null, fastMode: null, thinking: null }),
     ),
+  );
+}
+
+/**
+ * The presets Lynx can run. Lynx selects each provider's default account only, so a
+ * preset saved for another account (Electron's provider accounts) is left out of the
+ * picker: selecting it here would silently run its model and traits in the default
+ * account. Such presets stay in storage untouched.
+ */
+export function selectableStarredModels(
+  starredModels: ReadonlyArray<StarredModel>,
+  lockedProvider: StarredModel["provider"] | null,
+): ReadonlyArray<StarredModel> {
+  return starredModels.filter(
+    (entry) =>
+      starredModelInstanceId(entry) === entry.provider &&
+      (lockedProvider === null || entry.provider === lockedProvider),
   );
 }
 

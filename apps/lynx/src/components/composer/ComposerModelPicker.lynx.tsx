@@ -77,7 +77,7 @@ import {
 } from "../ui/menu.lynx";
 import { ComposerEffortSlider } from "./ComposerEffortSlider.lynx";
 import { resolveLynxProviderModelOptions } from "./composerModelCatalog.logic";
-import { useStarredModels } from "./useStarredModels.lynx";
+import { selectableStarredModels, useStarredModels } from "./useStarredModels.lynx";
 import "./composer-model-picker.css";
 
 const SHORTCUT_MODIFIER_LABEL = "⌘";
@@ -233,10 +233,7 @@ function ComposerModelPickerPanel(
 ) {
   const { activeProvider, lockedProvider } = props;
   const { starredModels, toggleStarredModel, unstarModel } = useStarredModels();
-  const usableStarredModels =
-    lockedProvider === null
-      ? starredModels
-      : starredModels.filter((entry) => entry.provider === lockedProvider);
+  const usableStarredModels = selectableStarredModels(starredModels, lockedProvider);
   // Every open starts from the fastest entry point: presets when the user has any.
   const [tab, setTabState] = useState<ComposerModelPickerTab>(() =>
     usableStarredModels.length > 0 ? STARRED_TAB : activeProvider,
